@@ -19,7 +19,6 @@ import {
 	getAlignmentFlexObject,
 	getTransformObject,
 	setBackgroundStyles,
-	setCustomData,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -69,20 +68,19 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
+			boxShadow: getBoxShadowObject(boxShadow),
 			padding,
 			margin,
 			border,
 			borderWidth: border.borderWidth,
 			borderRadius: border.borderRadius,
-			opacity: { ...JSON.parse(opacity) },
+			opacity,
 			zIndex,
-			alignment: { ...getAlignmentFlexObject(alignment) },
-
+			alignment: getAlignmentFlexObject(alignment),
 			position,
 			positionOptions: position.options,
 			display,
-			transform,
+			transform: getTransformObject(transform),
 		};
 
 		return response;
@@ -96,19 +94,28 @@ class edit extends MaxiBlock {
 			borderRadius: borderHover.borderRadius,
 		};
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			};
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
+			response.boxShadowHover = getBoxShadowObject(boxShadowHover);
 		}
 
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
-			response.borderHover = {
-				...JSON.parse(borderHover),
-			};
+		if (!isNil(borderHover) && !!borderHover.status) {
+			response.borderHover = borderHover;
 		}
 
 		return response;
+	}
+
+	get getCustomData() {
+		const { uniqueID, motion } = this.props.attributes;
+
+		const motionStatus =
+			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+
+		return {
+			[uniqueID]: {
+				...(motionStatus && { motion }),
+			},
+		};
 	}
 
 	render() {
@@ -125,10 +132,7 @@ class edit extends MaxiBlock {
 				motion,
 			},
 			clientId,
-			customData,
 		} = this.props;
-
-		setCustomData(customData, uniqueID, { motion });
 
 		const classes = classnames(
 			'maxi-block',
@@ -192,7 +196,6 @@ const editSelect = withSelect((select, ownProps) => {
 	} = ownProps;
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	const isAnimatedSVG = () => {
 		if (
@@ -217,7 +220,6 @@ const editSelect = withSelect((select, ownProps) => {
 
 	return {
 		deviceType,
-		customData,
 		isAnimatedSVG: isAnimatedSVG(),
 		hasThirdColour,
 	};

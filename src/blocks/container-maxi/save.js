@@ -48,10 +48,6 @@ const save = props => {
 		!isNil(uniqueID) ? uniqueID : null
 	);
 
-	const shapeDividerValue = !isObject(shapeDivider)
-		? JSON.parse(shapeDivider)
-		: shapeDivider;
-
 	return (
 		<Fragment>
 			{isFirstOnHierarchy && (
@@ -61,7 +57,7 @@ const save = props => {
 					data-motion-id={uniqueID}
 				>
 					<__experimentalArrowDisplayer arrow={arrow} />
-					{!!shapeDividerValue.top.status && (
+					{!!shapeDivider.top.status && (
 						<__experimentalShapeDivider
 							shapeDividerOptions={shapeDivider}
 						/>
@@ -74,7 +70,7 @@ const save = props => {
 							<InnerBlocks.Content />
 						</div>
 					</div>
-					{!!shapeDividerValue.bottom.status && (
+					{!!shapeDivider.bottom.status && (
 						<__experimentalShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}
@@ -90,7 +86,7 @@ const save = props => {
 					<__experimentalBackgroundDisplayer
 						background={background}
 					/>
-					{!!shapeDividerValue.top.status && (
+					{!!shapeDivider.top.status && (
 						<__experimentalShapeDivider
 							shapeDividerOptions={shapeDivider}
 						/>
@@ -98,7 +94,7 @@ const save = props => {
 					<div className='maxi-container-block__wrapper'>
 						<InnerBlocks.Content />
 					</div>
-					{!!shapeDividerValue.bottom.status && (
+					{!!shapeDivider.bottom.status && (
 						<__experimentalShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}

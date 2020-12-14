@@ -22,7 +22,6 @@ import {
 	setTextCustomFormats,
 	getLastBreakpointValue,
 	setBackgroundStyles,
-	setCustomData,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -41,12 +40,29 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isObject, isNil } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * Content
  */
 class edit extends MaxiBlock {
+	state = {
+		formatValue: this.props.generateFormatValue() || {},
+		textSelected: '',
+	};
+
+	componentDidMount() {
+		const { alignment } = this.props.attributes;
+		const { isRTL } = wp.data.select('core/editor').getEditorSettings();
+
+		if (isEmpty(alignment.general.alignment)) {
+			alignment.general.alignment = isRTL ? 'right' : 'left';
+			this.props.setAttributes({ alignment });
+		}
+
+		this.displayStyles();
+	}
+
 	get getObject() {
 		const {
 			uniqueID,
@@ -108,20 +124,20 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			alignment: { ...getAlignmentTextObject(JSON.parse(alignment)) },
+			alignment: getAlignmentTextObject(alignment),
 			size,
-			opacity: { ...getOpacityObject(JSON.parse(opacity)) },
+			opacity: getOpacityObject(opacity),
 			zIndex,
 			position,
 			positionOptions: position.options,
 			display,
-			transform,
+			transform: getTransformObject(transform),
 			margin,
 			padding,
 			border,
 			borderWidth: border.borderWidth,
 			borderRadius: border.borderRadius,
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
+			boxShadow: getBoxShadowObject(boxShadow),
 		};
 
 		return response;
@@ -135,16 +151,12 @@ class edit extends MaxiBlock {
 			borderRadiusHover: borderHover.borderRadius,
 		};
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			};
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
+			response.boxShadowHover = getBoxShadowObject(boxShadowHover);
 		}
 
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
-			response.borderHover = {
-				...JSON.parse(borderHover),
-			};
+		if (!isNil(borderHover) && !!borderHover.status) {
+			response.borderHover = borderHover;
 		}
 
 		return response;
@@ -164,25 +176,24 @@ class edit extends MaxiBlock {
 
 		const response = {};
 
-		if (!isNil(typographyHover) && !!JSON.parse(typographyHover).status) {
-			response.typographyHover = {
-				...JSON.parse(typographyHover),
-			};
+		if (!isNil(typographyHover) && !typographyHover.status) {
+			response.typographyHover = typographyHover;
 		}
 
 		return response;
 	}
 
-	componentDidMount() {
-		const alignment = JSON.parse(this.props.attributes.alignment);
-		const { isRTL } = wp.data.select('core/editor').getEditorSettings();
+	get getCustomData() {
+		const { uniqueID, motion } = this.props.attributes;
 
-		if (isEmpty(alignment.general.alignment)) {
-			alignment.general.alignment = isRTL ? 'right' : 'left';
-			this.props.setAttributes({ alignment: JSON.stringify(alignment) });
-		}
+		const motionStatus =
+			!!motion.interaction.interactionStatus || !!motion.parallax.status;
 
-		this.displayStyles();
+		return {
+			[uniqueID]: {
+				...(motionStatus && { motion }),
+			},
+		};
 	}
 
 	render() {
@@ -214,21 +225,26 @@ class edit extends MaxiBlock {
 			onSplit,
 			onReplace,
 			deviceType,
-			customData,
+			selectedText,
+			generateFormatValue,
 		} = this.props;
 
-		setCustomData(customData, uniqueID, { motion });
+		const { formatValue, textSelected } = this.state;
+
+		if (isEmpty(formatValue) || selectedText !== textSelected)
+			this.setState({
+				formatValue: generateFormatValue(),
+				textSelected: selectedText,
+			});
 
 		const name = 'maxi-blocks/text-maxi';
-
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-text-block',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
+				'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
@@ -241,13 +257,16 @@ class edit extends MaxiBlock {
 		const { getFormatTypes } = select('core/rich-text');
 
 		return [
-			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
+			<Inspector {...this.props} formatValue={formatValue} />,
+			<__experimentalToolbar {...this.props} formatValue={formatValue} />,
 			<__experimentalMotionPreview motion={motion}>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
 					data-align={fullWidth}
+					onClick={() =>
+						this.setState({ formatValue: generateFormatValue() })
+					}
 				>
 					<__experimentalBackgroundDisplayer
 						background={background}
@@ -278,7 +297,7 @@ class edit extends MaxiBlock {
 								const cleanCustomProps = __experimentalSetCustomFormatsWhenPaste(
 									{
 										formatValue,
-										typography: JSON.parse(typography),
+										typography,
 										isList,
 										typeOfList,
 										content,
@@ -287,9 +306,7 @@ class edit extends MaxiBlock {
 
 								if (cleanCustomProps)
 									setAttributes({
-										typography: JSON.stringify(
-											cleanCustomProps.typography
-										),
+										typography: cleanCustomProps.typography,
 										content: cleanCustomProps.content,
 									});
 							}}
@@ -406,30 +423,20 @@ class edit extends MaxiBlock {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const {
-		attributes: { isList, typeOfList },
-	} = ownProps;
-
-	const formatElement = {
-		multilineTag: isList ? 'li' : undefined,
-		multilineWrapperTags: isList ? typeOfList : undefined,
-	};
-	const formatValue = __experimentalGetFormatValue(formatElement);
-
+const editSelect = withSelect(select => {
+	const selectedText = window.getSelection().toString();
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
-		formatValue,
+		// The 'selectedText' attribute is a trigger for generating the formatValue
+		selectedText,
 		deviceType,
-		customData,
 	};
 });
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const {
-		attributes: { typography, content },
+		attributes: { typography, content, isList, typeOfList },
 		setAttributes,
 		clientId,
 	} = ownProps;
@@ -464,10 +471,10 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
 			switch (block.name) {
 				case 'core/list': {
-					const textTypography = JSON.stringify({
-						...JSON.parse(typography),
+					const textTypography = {
+						...typography,
 						...defaultTypography.p,
-					});
+					};
 
 					newBlock = createBlock(name, {
 						...ownProps.attributes,
@@ -493,10 +500,10 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					break;
 				case 'core/heading': {
 					const headingLevel = block.attributes.level;
-					const headingTypography = JSON.stringify({
-						...JSON.parse(typography),
+					const headingTypography = {
+						...typography,
 						...defaultTypography[`h${headingLevel}`],
-					});
+					};
 					newBlock = createBlock(name, {
 						...ownProps.attributes,
 						textLevel: `h${headingLevel}`,
@@ -507,10 +514,10 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					break;
 				}
 				case 'core/paragraph': {
-					const textTypography = JSON.stringify({
-						...JSON.parse(typography),
+					const textTypography = {
+						...typography,
 						...defaultTypography.p,
-					});
+					};
 
 					newBlock = createBlock(name, {
 						...ownProps.attributes,
@@ -563,7 +570,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				const cleanCustomProps = __experimentalSetCustomFormatsWhenPaste(
 					{
 						formatValue,
-						typography: JSON.parse(typography),
+						typography,
 						isList,
 						typeOfList,
 						content,
@@ -572,7 +579,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
 				if (cleanCustomProps)
 					updateBlockAttributes(clientId, {
-						typography: JSON.stringify(cleanCustomProps.typography),
+						typography: cleanCustomProps.typography,
 						content: cleanCustomProps.content,
 					});
 			});
@@ -639,10 +646,22 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		});
 	};
 
+	const generateFormatValue = () => {
+		const formatElement = {
+			multilineTag: isList ? 'li' : undefined,
+			multilineWrapperTags: isList ? typeOfList : undefined,
+			__unstableIsEditableTree: true,
+		};
+		const formatValue = __experimentalGetFormatValue(formatElement);
+
+		return formatValue;
+	};
+
 	return {
 		onReplace,
 		onMerge,
 		onSplit,
+		generateFormatValue,
 	};
 });
 

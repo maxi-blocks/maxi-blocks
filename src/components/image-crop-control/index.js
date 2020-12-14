@@ -11,7 +11,7 @@ const { useSelect } = wp.data;
  */
 import ReactCrop from 'react-image-crop';
 import classnames from 'classnames';
-import { capitalize, isEmpty, isObject } from 'lodash';
+import { capitalize, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -88,11 +88,11 @@ const ImageCropControl = props => {
 	};
 
 	const getWidth = () => {
-		return (cropOptions.crop.width * scaleX()).toFixed(0);
+		return +(cropOptions.crop.width * scaleX()).toFixed(0);
 	};
 
 	const getHeight = () => {
-		return (cropOptions.crop.height * scaleY()).toFixed(0);
+		return +(cropOptions.crop.height * scaleY()).toFixed(0);
 	};
 
 	const deleteFile = () => {
@@ -153,6 +153,7 @@ const ImageCropControl = props => {
 	};
 
 	useEffect(() => {
+		// shouldn't be necessary vvv
 		if (imageID !== mediaID) {
 			setImageID(mediaID);
 			setCrop({
@@ -186,8 +187,8 @@ const ImageCropControl = props => {
 			cropOptions.crop.y = crop.height ? crop.y : 0;
 			cropOptions.crop.width = crop.width ? crop.width : image.width;
 			cropOptions.crop.height = crop.height ? crop.height : image.height;
-			cropOptions.image.width = crop.width ? crop.width : image.width;
-			cropOptions.image.height = crop.height ? crop.height : image.height;
+			cropOptions.image.width = getWidth();
+			cropOptions.image.height = getHeight();
 		}
 
 		onChange(cropOptions);
@@ -197,12 +198,17 @@ const ImageCropControl = props => {
 		setImage(image);
 		cropOptions.crop.width = image.width;
 		cropOptions.crop.height = image.height;
-		cropOptions.image.width = image.width;
-		cropOptions.image.height = image.height;
+
+		if (!cropOptions.image.source_url)
+			cropOptions.image.source_url =
+				imageData.media_details.sizes.full.source_url;
+		if (!cropOptions.image.width)
+			cropOptions.image.width = +imageData.media_details.sizes.full.width;
+		if (!cropOptions.image.height)
+			cropOptions.image.height = +imageData.media_details.sizes.full
+				.height;
 
 		onChange(cropOptions);
-
-		return false;
 	};
 
 	const onInputChange = (target, value) => {

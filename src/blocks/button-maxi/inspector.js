@@ -38,7 +38,7 @@ import * as defaultPresets from './defaults';
 /**
  * External dependencies
  */
-import { isObject, merge } from 'lodash';
+import { merge } from 'lodash';
 
 /**
  * Icons
@@ -95,64 +95,23 @@ const Inspector = props => {
 		formatValue,
 	} = props;
 
-	const backgroundHoverValue = !isObject(backgroundHover)
-		? JSON.parse(backgroundHover)
-		: backgroundHover;
-	const borderValue = !isObject(border) ? JSON.parse(border) : border;
-	const backgroundValue = !isObject(background)
-		? JSON.parse(background)
-		: background;
-	const paddingValue = !isObject(padding) ? JSON.parse(padding) : padding;
-	const typographyValue = !isObject(typography)
-		? JSON.parse(typography)
-		: typography;
-	const boxShadowValue = !isObject(boxShadow)
-		? JSON.parse(boxShadow)
-		: boxShadow;
-	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
-	const iconBorderValue = !isObject(iconBorder)
-		? JSON.parse(iconBorder)
-		: iconBorder;
-	const iconBackgroundValue = !isObject(iconBackground)
-		? JSON.parse(iconBackground)
-		: iconBackground;
-	const iconPaddingValue = !isObject(iconPadding)
-		? JSON.parse(iconPadding)
-		: iconPadding;
-
 	const onChangePreset = number => {
 		const response = {
-			border: borderValue,
-			background: backgroundValue,
-			padding: paddingValue,
-			typography: typographyValue,
-			boxShadow: boxShadowValue,
-			icon: iconValue,
-			iconBorder: iconBorderValue,
-			iconBackground: iconBackgroundValue,
-			iconPadding: iconPaddingValue,
+			border,
+			background,
+			padding,
+			typography,
+			boxShadow,
+			icon,
+			iconBorder,
+			iconBackground,
+			iconPadding,
 		};
 
 		const result = merge(response, defaultPresets[`preset${number}`]);
 
-		Object.entries(result).forEach(([key, value]) => {
-			result[key] = JSON.stringify(value);
-		});
-
 		setAttributes(result);
 	};
-
-	const boxShadowHoverValue = !isObject(boxShadowHover)
-		? JSON.parse(boxShadowHover)
-		: boxShadowHover;
-
-	const typographyHoverValue = !isObject(typographyHover)
-		? JSON.parse(typographyHover)
-		: typographyHover;
-
-	const borderHoverValue = !isObject(borderHover)
-		? JSON.parse(borderHover)
-		: borderHover;
 
 	return (
 		<InspectorControls>
@@ -386,7 +345,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			typographyHoverValue.status
+																			typographyHover.status
 																		)}
 																		options={[
 																			{
@@ -405,19 +364,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			typographyHoverValue.status = Number(
+																			typographyHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					typographyHover: JSON.stringify(
-																						typographyHoverValue
-																					),
+																					typographyHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!typographyHoverValue.status && (
+																	{!!typographyHover.status && (
 																		<TypographyControl
 																			typography={
 																				typographyHover
@@ -508,7 +465,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			backgroundHoverValue.status
+																			backgroundHover.status
 																		}
 																		options={[
 																			{
@@ -527,19 +484,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			backgroundHoverValue.status = Number(
+																			backgroundHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					backgroundHover: JSON.stringify(
-																						backgroundHoverValue
-																					),
+																					backgroundHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!backgroundHoverValue.status && (
+																	{!!backgroundHover.status && (
 																		<BackgroundControl
 																			background={
 																				backgroundHover
@@ -615,7 +570,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			borderHoverValue.status
+																			borderHover.status
 																		)}
 																		options={[
 																			{
@@ -634,19 +589,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			borderHoverValue.status = Number(
+																			borderHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					borderHover: JSON.stringify(
-																						borderHoverValue
-																					),
+																					borderHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!borderHoverValue.status && (
+																	{!!borderHover.status && (
 																		<BorderControl
 																			border={
 																				borderHover
@@ -742,7 +695,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			boxShadowHoverValue.status
+																			boxShadowHover.status
 																		)}
 																		options={[
 																			{
@@ -761,19 +714,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			boxShadowHoverValue.status = Number(
+																			boxShadowHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					boxShadowHover: JSON.stringify(
-																						boxShadowHoverValue
-																					),
+																					boxShadowHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!boxShadowHoverValue.status && (
+																	{!!boxShadowHover.status && (
 																		<BoxShadowControl
 																			boxShadow={
 																				boxShadowHover

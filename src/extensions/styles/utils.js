@@ -746,8 +746,8 @@ export const setBackgroundStyles = (
 export const setTextCustomFormats = (target, typography, typographyHover) => {
 	let response = {};
 
-	const { customFormats } = JSON.parse(typography);
-	const { customFormats: customFormatsHover } = JSON.parse(typographyHover);
+	const { customFormats } = typography;
+	const { customFormats: customFormatsHover } = typographyHover;
 
 	customFormats &&
 		Object.entries(customFormats).forEach(([key, value]) => {

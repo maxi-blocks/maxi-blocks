@@ -15,7 +15,6 @@ import {
 	getLastBreakpointValue,
 	getIconObject,
 	getAlignmentTextObject,
-	setCustomData,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -28,7 +27,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Content
@@ -56,7 +55,7 @@ class edit extends MaxiBlock {
 		const { icon } = this.props.attributes;
 
 		const response = {
-			icon: { ...getIconObject(JSON.parse(icon)) },
+			icon: getIconObject(icon),
 		};
 		return response;
 	}
@@ -65,7 +64,7 @@ class edit extends MaxiBlock {
 		const { alignment } = this.props.attributes;
 
 		const response = {
-			alignment: { ...getAlignmentTextObject(JSON.parse(alignment)) },
+			alignment: getAlignmentTextObject(alignment),
 		};
 
 		return response;
@@ -87,16 +86,16 @@ class edit extends MaxiBlock {
 		const response = {
 			padding,
 			margin,
-			opacity: { ...JSON.parse(opacity) },
+			opacity,
 			border,
 			borderWidth: border.borderWidth,
 			borderRadius: border.borderRadius,
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
+			boxShadow: { ...getBoxShadowObject(boxShadow) },
 			zIndex,
 			position,
 			positionOptions: position.options,
 			display,
-			transform,
+			transform: getTransformObject(transform),
 		};
 
 		return response;
@@ -110,19 +109,32 @@ class edit extends MaxiBlock {
 			borderRadius: borderHover.borderRadius,
 		};
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
 			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+				...getBoxShadowObject(boxShadowHover),
 			};
 		}
 
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+		if (!isNil(borderHover) && !!borderHover.status) {
 			response.borderHover = {
-				...JSON.parse(borderHover),
+				...borderHover,
 			};
 		}
 
 		return response;
+	}
+
+	get getCustomData() {
+		const { uniqueID, motion } = this.props.attributes;
+
+		const motionStatus =
+			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+
+		return {
+			[uniqueID]: {
+				...(motionStatus && { motion }),
+			},
+		};
 	}
 
 	render() {
@@ -135,26 +147,20 @@ class edit extends MaxiBlock {
 				extraClassName,
 				background,
 				display,
-				icon,
-				motion,
 			},
 			className,
 			deviceType,
 			setAttributes,
-			customData,
 		} = this.props;
 
-		setCustomData(customData, uniqueID, { motion });
-
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
-		const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
+		const icon = { ...this.props.attributes.icon };
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-font-icon-block',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
+				'maxi-block-display-none',
 			defaultBlockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
@@ -168,16 +174,16 @@ class edit extends MaxiBlock {
 			<__experimentalToolbar {...this.props} />,
 			<__experimentalBlock className={classes}>
 				<__experimentalBackgroundDisplayer background={background} />
-				{(!!iconValue.icon && (
+				{(!!icon.icon && (
 					<span className='maxi-font-icon-block__icon'>
-						<i className={iconValue.icon} />
+						<i className={icon.icon} />
 					</span>
 				)) || (
 					<__experimentalFontIconPicker
-						onChange={icon => {
-							iconValue.icon = icon;
+						onChange={newIcon => {
+							icon.icon = newIcon;
 							setAttributes({
-								icon: JSON.stringify(iconValue),
+								icon,
 							});
 						}}
 					/>
@@ -189,10 +195,8 @@ class edit extends MaxiBlock {
 
 export default withSelect(select => {
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
 		deviceType,
-		customData,
 	};
 })(edit);

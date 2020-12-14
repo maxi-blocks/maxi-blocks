@@ -16,18 +16,12 @@
 const { Component } = wp.element;
 const { select, dispatch } = wp.data;
 
-/**
- * Internal dependencies
- */
-import { getDefaultProp } from '../styles/utils';
-
 import styleResolver from '../styles/stylesResolver';
-// import customDataResolver from '../custom-data/customDataResolver';
 
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, isObject } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
 
 /**
  * Class
@@ -40,7 +34,6 @@ class MaxiBlock extends Component {
 
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
-		// this.fixProps();
 	}
 
 	componentDidUpdate() {
@@ -106,42 +99,6 @@ class MaxiBlock extends Component {
 
 			this.props.setAttributes({ uniqueID: newUniqueId });
 		}
-	}
-
-	/**
-	 * In case some object has been modified and an old block has a prop that doesn't correspond
-	 * with that object, this should help. It can grow with different handlers/helpers to fix errors.
-	 */
-	fixProps() {
-		Object.entries(this.props.attributes).forEach(([key, value]) => {
-			let obj;
-			try {
-				obj = JSON.parse(value);
-			} catch (error) {
-				return;
-			}
-
-			if (!isObject(obj)) return;
-
-			const defaultObj = JSON.parse(
-				getDefaultProp(this.props.clientId, key)
-			);
-
-			const objKeys = Object.keys(obj).sort();
-			const defaultObjKeys = Object.keys(defaultObj).sort();
-			if (JSON.stringify(objKeys) !== JSON.stringify(defaultObjKeys)) {
-				const newObject = this.generalToDesktop(obj, defaultObj);
-				this.props.setAttributes({ [key]: JSON.stringify(newObject) });
-				this.props.attributes[key] = JSON.stringify(newObject);
-			}
-		});
-	}
-
-	generalToDesktop(obj, defaultObj) {
-		if (obj.hasOwnProperty('general') && !obj.hasOwnProperty('desktop'))
-			defaultObj.desktop = obj.general;
-
-		return defaultObj;
 	}
 
 	/**

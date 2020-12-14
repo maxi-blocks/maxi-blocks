@@ -34,8 +34,6 @@ const save = props => {
 		className
 	);
 
-	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
-
 	return (
 		<div
 			className={classes}
@@ -43,9 +41,9 @@ const save = props => {
 			data-motion-id={uniqueID}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
-			{iconValue.icon && (
+			{icon.icon && (
 				<span className='maxi-font-icon-block__icon'>
-					<i className={iconValue.icon} />
+					<i className={icon.icon} />
 				</span>
 			)}
 		</div>

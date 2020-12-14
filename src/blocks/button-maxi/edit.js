@@ -2,7 +2,8 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { withSelect } = wp.data;
+const { compose } = wp.compose;
+const { withSelect, withDispatch } = wp.data;
 const { __experimentalBlock, RichText } = wp.blockEditor;
 
 /**
@@ -30,22 +31,27 @@ import { __experimentalGetFormatValue } from '../../extensions/text/formats';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Content
  */
 class edit extends MaxiBlock {
+	state = {
+		formatValue: this.props.generateFormatValue() || {},
+		textSelected: '',
+	};
+
 	get getObject() {
 		const { uniqueID, typography, typographyHover } = this.props.attributes;
 
 		let response = {
 			[this.props.attributes.uniqueID]: this.getWrapperObject,
-			[`${this.props.attributes.uniqueID} .maxi-button-extra__button`]: this
+			[`${this.props.attributes.uniqueID} .maxi-button-block__button`]: this
 				.getNormalObject,
-			[`${this.props.attributes.uniqueID} .maxi-button-extra__button:hover`]: this
+			[`${this.props.attributes.uniqueID} .maxi-button-block__button:hover`]: this
 				.getHoverObject,
-			[`${this.props.attributes.uniqueID} .maxi-button-extra__button i`]: this
+			[`${this.props.attributes.uniqueID} .maxi-button-block__button i`]: this
 				.getIconObject,
 		};
 
@@ -53,8 +59,8 @@ class edit extends MaxiBlock {
 			response,
 			setTextCustomFormats(
 				[
-					`${uniqueID} .maxi-button-extra__button`,
-					`${uniqueID} .maxi-button-extra__button li`,
+					`${uniqueID} .maxi-button-block__button`,
+					`${uniqueID} .maxi-button-block__button li`,
 				],
 				typography,
 				typographyHover
@@ -73,14 +79,12 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			icon: { ...getIconObject(icon) },
+			icon: getIconObject(icon),
 			padding: iconPadding,
 			border: iconBorder,
 			borderWidth: iconBorder.borderWidth,
 			borderRadius: iconBorder.borderRadius,
-			background: {
-				...getColorBackgroundObject(iconBackground.colorOptions),
-			},
+			background: getColorBackgroundObject(iconBackground.colorOptions),
 		};
 
 		return response;
@@ -90,7 +94,7 @@ class edit extends MaxiBlock {
 		const { alignment, zIndex, transform, display } = this.props.attributes;
 
 		const response = {
-			alignment: { ...getAlignmentFlexObject(alignment) },
+			alignment: getAlignmentFlexObject(alignment),
 			zIndex,
 			transform: getTransformObject(transform),
 			display,
@@ -121,7 +125,7 @@ class edit extends MaxiBlock {
 			background: {
 				...getColorBackgroundObject(background.colorOptions),
 			},
-			boxShadow: { ...getBoxShadowObject(boxShadow) },
+			boxShadow: getBoxShadowObject(boxShadow),
 			border,
 			borderWidth: border.borderWidth,
 			borderRadius: border.borderRadius,
@@ -205,12 +209,22 @@ class edit extends MaxiBlock {
 			},
 			setAttributes,
 			deviceType,
+			selectedText,
+			generateFormatValue,
 		} = this.props;
+
+		const { formatValue, textSelected } = this.state;
+
+		if (isEmpty(formatValue) || selectedText !== textSelected)
+			this.setState({
+				formatValue: generateFormatValue(),
+				textSelected: selectedText,
+			});
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
-			'maxi-button-extra',
+			'maxi-button-block',
 			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
 				'maxi-block-display-none',
 			blockStyle,
@@ -222,27 +236,31 @@ class edit extends MaxiBlock {
 		);
 
 		const buttonClasses = classnames(
-			'maxi-button-extra__button',
-			icon.position === 'left' && 'maxi-button-extra__button--icon-left',
-			icon.position === 'right' && 'maxi-button-extra__button--icon-right'
+			'maxi-button-block__button',
+			icon.position === 'left' && 'maxi-button-block__button--icon-left',
+			icon.position === 'right' && 'maxi-button-block__button--icon-right'
 		);
 
 		return [
-			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
+			<Inspector {...this.props} formatValue={formatValue} />,
+			<__experimentalToolbar {...this.props} formatValue={formatValue} />,
 			<__experimentalMotionPreview motion={motion}>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
+					onClick={() =>
+						this.setState({ formatValue: generateFormatValue() })
+					}
 				>
 					<div className={buttonClasses}>
 						{icon.icon && <i className={icon.icon} />}
 						<RichText
-							withoutInteractiveFormatting
-							placeholder={__('Set some text…', 'maxi-blocks')}
+							className='maxi-button-block__content'
 							value={content}
+							identifier='content'
 							onChange={content => setAttributes({ content })}
-							identifier='text'
+							placeholder={__('Set some text…', 'maxi-blocks')}
+							withoutInteractiveFormatting
 						/>
 					</div>
 				</__experimentalBlock>
@@ -251,22 +269,34 @@ class edit extends MaxiBlock {
 	}
 }
 
-export default withSelect((select, ownProps) => {
-	const {
-		attributes: { isList, typeOfList },
-	} = ownProps;
-
-	const formatElement = {
-		multilineTag: isList ? 'li' : undefined,
-		multilineWrapperTags: isList ? typeOfList : undefined,
-		__unstableIsEditableTree: true,
-	};
-	const formatValue = __experimentalGetFormatValue(formatElement);
-
+const editSelect = withSelect(select => {
+	const selectedText = window.getSelection().toString();
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
-		formatValue,
+		// The 'selectedText' attribute is a trigger for generating the formatValue
+		selectedText,
 		deviceType,
 	};
-})(edit);
+});
+
+const editDispatch = withDispatch(
+	(dispatch, { attributes: { isList, typeOfList } }) => {
+		const generateFormatValue = () => {
+			const formatElement = {
+				multilineTag: isList ? 'li' : undefined,
+				multilineWrapperTags: isList ? typeOfList : undefined,
+				__unstableIsEditableTree: true,
+			};
+			const formatValue = __experimentalGetFormatValue(formatElement);
+
+			return formatValue;
+		};
+
+		return {
+			generateFormatValue,
+		};
+	}
+);
+
+export default compose(editSelect, editDispatch)(edit);

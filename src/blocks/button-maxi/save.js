@@ -32,11 +32,9 @@ const save = props => {
 		className,
 	} = props;
 
-	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
-
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
-		'maxi-block maxi-button-extra',
+		'maxi-block maxi-button-block',
 		blockStyle,
 		extraClassName,
 		uniqueID,
@@ -54,10 +52,10 @@ const save = props => {
 	};
 
 	const buttonClasses = classnames(
-		'maxi-button-extra__button',
-		iconValue.position === 'left'
-			? 'maxi-button-extra__button--icon-left'
-			: 'maxi-button-extra__button--icon-right'
+		'maxi-button-block__button',
+		icon.position === 'left'
+			? 'maxi-button-block__button--icon-left'
+			: 'maxi-button-block__button--icon-right'
 	);
 
 	return (
@@ -68,7 +66,7 @@ const save = props => {
 		>
 			<__experimentalBackgroundDisplayer background={background} />
 			<Button className={buttonClasses} {...linkProps}>
-				{iconValue.icon && <i className={iconValue.icon} />}
+				{icon.icon && <i className={icon.icon} />}
 				{content}
 			</Button>
 		</div>

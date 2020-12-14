@@ -17,52 +17,52 @@ const attributes = {
 		default: __('Column', 'maxi-blocks'),
 	},
 	columnSize: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalColumn),
+		type: 'object',
+		default: attributesData.__experimentalColumn,
 	},
 	verticalAlign: {
 		type: 'string',
 		default: 'stretch',
 	},
 	opacity: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacity),
+		type: 'object',
+		default: attributesData.opacity,
 	},
 	background: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
+		type: 'object',
+		default: attributesData.background,
 	},
 	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
+		type: 'object',
+		default: attributesData.backgroundHover,
 	},
 	border: {
-		type: 'string',
-		default: JSON.stringify(attributesData.border),
+		type: 'object',
+		default: attributesData.border,
 	},
 	borderHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.borderHover),
+		type: 'object',
+		default: attributesData.borderHover,
 	},
 	fullWidth: {
 		type: 'string',
 		default: 'normal',
 	},
 	boxShadow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
+		type: 'object',
+		default: attributesData.boxShadow,
 	},
 	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
+		type: 'object',
+		default: attributesData.boxShadowHover,
 	},
 	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
+		type: 'object',
+		default: attributesData.margin,
 	},
 	padding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
+		type: 'object',
+		default: attributesData.padding,
 	},
 	extraClassName: {
 		type: 'string',
@@ -76,12 +76,12 @@ const attributes = {
 		type: 'number',
 	},
 	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
+		type: 'object',
+		default: attributesData.__experimentalDisplay,
 	},
 	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
+		type: 'object',
+		default: attributesData.__experimentalTransform,
 	},
 };
 

@@ -6,9 +6,12 @@
  * @return {Object} Action object.
  */
 export function updateCustomData(customData) {
-	const hasContent = Object.values(customData).some(target =>
-		Object.values(target).some(val => !!val)
-	);
+	const hasContent =
+		(!!customData &&
+			Object.values(customData).some(target =>
+				Object.values(target).some(val => !!val)
+			)) ||
+		false;
 
 	return {
 		type: 'UPDATE_CUSTOM_DATA',

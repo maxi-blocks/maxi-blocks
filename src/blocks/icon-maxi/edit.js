@@ -26,7 +26,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, isObject } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * Content
@@ -79,17 +79,17 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
+			boxShadow: getBoxShadowObject(boxShadow),
 			padding,
 			margin,
-			opacity: { ...JSON.parse(opacity) },
+			opacity,
 			zIndex,
-			alignment: { ...getAlignmentFlexObject(alignment) },
+			alignment: getAlignmentFlexObject(alignment),
 
 			position,
 			positionOptions: position.options,
 			display,
-			transform,
+			transform: getTransformObject(transform),
 		};
 
 		return response;
@@ -98,27 +98,13 @@ class edit extends MaxiBlock {
 	get getHoverEffectDetailsBoxObject() {
 		const { hover } = this.props.attributes;
 
-		const background = !isObject(JSON.parse(hover).background)
-			? JSON.parse(JSON.parse(hover).background)
-			: JSON.parse(hover).background;
-
-		const border = !isObject(JSON.parse(hover).border)
-			? JSON.parse(JSON.parse(hover).border)
-			: JSON.parse(hover).border;
-
-		const padding = !isObject(JSON.parse(hover).padding)
-			? JSON.parse(JSON.parse(hover).padding)
-			: JSON.parse(hover).padding;
-
-		const margin = !isObject(JSON.parse(hover).margin)
-			? JSON.parse(JSON.parse(hover).margin)
-			: JSON.parse(hover).margin;
+		const { background, border, padding, margin } = hover;
 
 		const response = {
-			background: { ...getBackgroundObject(background) },
-			border: { ...border },
-			padding: { ...padding },
-			margin: { ...margin },
+			background: getBackgroundObject(background),
+			border,
+			padding,
+			margin,
 		};
 
 		return response;
@@ -126,13 +112,10 @@ class edit extends MaxiBlock {
 
 	get getHoverEffectTitleTextObject() {
 		const { hover } = this.props.attributes;
-
-		const titleTypography = !isObject(JSON.parse(hover).titleTypography)
-			? JSON.parse(JSON.parse(hover).titleTypography)
-			: JSON.parse(hover).titleTypography;
+		const { titleTypography } = hover;
 
 		const response = {
-			typography: { ...titleTypography },
+			typography: titleTypography,
 		};
 
 		return response;
@@ -140,13 +123,10 @@ class edit extends MaxiBlock {
 
 	get getHoverEffectContentTextObject() {
 		const { hover } = this.props.attributes;
-
-		const contentTypography = !isObject(JSON.parse(hover).contentTypography)
-			? JSON.parse(JSON.parse(hover).contentTypography)
-			: JSON.parse(hover).contentTypography;
+		const { contentTypography } = hover;
 
 		const response = {
-			typography: { ...contentTypography },
+			typography: contentTypography,
 		};
 
 		return response;
@@ -157,9 +137,9 @@ class edit extends MaxiBlock {
 
 		const response = {};
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
 			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+				...getBoxShadowObject(boxShadowHover),
 			};
 		}
 
@@ -170,7 +150,7 @@ class edit extends MaxiBlock {
 		const { size } = this.props.attributes;
 
 		const response = {
-			imagesize,
+			imageSize: size,
 		};
 
 		return response;
@@ -184,9 +164,9 @@ class edit extends MaxiBlock {
 			borderRadius: borderHover.borderRadius,
 		};
 
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+		if (!isNil(borderHover) && !!borderHover.status) {
 			response.borderHover = {
-				...JSON.parse(borderHover),
+				...borderHover,
 			};
 		}
 
@@ -215,12 +195,10 @@ class edit extends MaxiBlock {
 		const { captionTypography } = this.props.attributes;
 
 		const response = {
-			captionTypography: { ...JSON.parse(captionTypography) },
-			alignmentTypography: {
-				...getAlignmentTextObject(
-					JSON.parse(captionTypography).textAlign
-				),
-			},
+			captionTypography,
+			alignmentTypography: getAlignmentTextObject(
+				captionTypography.textAlign
+			),
 		};
 
 		return response;
@@ -262,21 +240,17 @@ class edit extends MaxiBlock {
 			fullWidth === 'full' ? 'alignfull' : ''
 		);
 
-		const cropOptionsValue = !isObject(cropOptions)
-			? JSON.parse(cropOptions)
-			: cropOptions;
-
 		const getImage = () => {
 			if (
 				imageSize === 'custom' &&
-				!isEmpty(cropOptionsValue.image.source_url)
+				!isEmpty(cropOptions.image.source_url)
 			)
-				return cropOptionsValue.image;
+				return cropOptions.image;
 			if (imageData && imageSize)
 				return imageData.media_details.sizes[imageSize];
 			if (imageData) return imageData.media_details.sizes.full;
 
-			return undefined;
+			return false;
 		};
 
 		const image = getImage();

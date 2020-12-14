@@ -2,11 +2,10 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
+const { Fragment, RawHTML } = wp.element;
 const { withSelect } = wp.data;
 const { Spinner, IconButton, ResizableBox, Placeholder } = wp.components;
 const { __experimentalBlock, MediaUpload } = wp.blockEditor;
-import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -20,7 +19,6 @@ import {
 	getAlignmentTextObject,
 	setBackgroundStyles,
 	getLastBreakpointValue,
-	setCustomData,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -33,7 +31,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, isObject } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * Icons
@@ -102,7 +100,7 @@ class edit extends MaxiBlock {
 			position,
 			positionOptions: position.options,
 			display,
-			transform,
+			transform: getTransformObject(transform),
 		};
 
 		return response;
@@ -111,29 +109,13 @@ class edit extends MaxiBlock {
 	get getHoverEffectDetailsBoxObject() {
 		const { hover } = this.props.attributes;
 
-		const background = !isObject(JSON.parse(hover).background)
-			? JSON.parse(JSON.parse(hover).background)
-			: JSON.parse(hover).background;
-
-		const border = !isObject(JSON.parse(hover).border)
-			? JSON.parse(JSON.parse(hover).border)
-			: JSON.parse(hover).border;
-
-		const padding = !isObject(JSON.parse(hover).padding)
-			? JSON.parse(JSON.parse(hover).padding)
-			: JSON.parse(hover).padding;
-
-		const margin = !isObject(JSON.parse(hover).margin)
-			? JSON.parse(JSON.parse(hover).margin)
-			: JSON.parse(hover).margin;
+		const { background, border, padding, margin } = hover;
 
 		const response = {
-			background: {
-				...getColorBackgroundObject(background.colorOptions),
-			},
-			border: { ...border },
-			padding: { ...padding },
-			margin: { ...margin },
+			background: getColorBackgroundObject(background.colorOptions),
+			border,
+			padding,
+			margin,
 		};
 
 		return response;
@@ -142,9 +124,7 @@ class edit extends MaxiBlock {
 	get getHoverEffectTitleTextObject() {
 		const { hover } = this.props.attributes;
 
-		const titleTypography = !isObject(JSON.parse(hover).titleTypography)
-			? JSON.parse(JSON.parse(hover).titleTypography)
-			: JSON.parse(hover).titleTypography;
+		const { titleTypography } = hover;
 
 		const response = {
 			typography: { ...titleTypography },
@@ -156,9 +136,7 @@ class edit extends MaxiBlock {
 	get getHoverEffectContentTextObject() {
 		const { hover } = this.props.attributes;
 
-		const contentTypography = !isObject(JSON.parse(hover).contentTypography)
-			? JSON.parse(JSON.parse(hover).contentTypography)
-			: JSON.parse(hover).contentTypography;
+		const { contentTypography } = hover;
 
 		const response = {
 			typography: { ...contentTypography },
@@ -172,10 +150,8 @@ class edit extends MaxiBlock {
 
 		const response = {};
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			};
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
+			response.boxShadowHover = getBoxShadowObject(boxShadowHover);
 		}
 
 		return response;
@@ -185,9 +161,9 @@ class edit extends MaxiBlock {
 		const { boxShadow, size, opacity } = this.props.attributes;
 
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			imagesize,
-			opacity: { ...JSON.parse(opacity) },
+			boxShadow: getBoxShadowObject(boxShadow),
+			imageSize: size,
+			opacity,
 		};
 
 		return response;
@@ -200,15 +176,15 @@ class edit extends MaxiBlock {
 			borderRadius: borderHover.borderRadius,
 		};
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
 			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+				...getBoxShadowObject(boxShadowHover),
 			};
 		}
 
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+		if (!isNil(borderHover) && !!borderHover.status) {
 			response.borderHover = {
-				...JSON.parse(borderHover),
+				...borderHover,
 			};
 		}
 
@@ -219,8 +195,8 @@ class edit extends MaxiBlock {
 		const { boxShadow, opacity, border, clipPath } = this.props.attributes;
 
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			opacity: { ...JSON.parse(opacity) },
+			boxShadow: getBoxShadowObject(boxShadow),
+			opacity,
 			border,
 			borderWidth: border.borderWidth,
 			borderRadius: border.borderRadius,
@@ -239,15 +215,26 @@ class edit extends MaxiBlock {
 		const { captionTypography } = this.props.attributes;
 
 		const response = {
-			captionTypography: { ...JSON.parse(captionTypography) },
+			captionTypography,
 			alignmentTypography: {
-				...getAlignmentTextObject(
-					JSON.parse(captionTypography).textAlign
-				),
+				...getAlignmentTextObject(captionTypography.textAlign),
 			},
 		};
 
 		return response;
+	}
+
+	get getCustomData() {
+		const { uniqueID, motion } = this.props.attributes;
+
+		const motionStatus =
+			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+
+		return {
+			[uniqueID]: {
+				...(motionStatus && { motion }),
+			},
+		};
 	}
 
 	render() {
@@ -260,7 +247,6 @@ class edit extends MaxiBlock {
 				blockStyleBackground,
 				extraClassName,
 				fullWidth,
-				size,
 				background,
 				cropOptions,
 				captionType,
@@ -279,26 +265,21 @@ class edit extends MaxiBlock {
 			imageData,
 			setAttributes,
 			deviceType,
-			customData,
 		} = this.props;
 
-		setCustomData(customData, uniqueID, { motion });
-
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
-
-		const hoverValue = !isObject(hover) ? JSON.parse(hover) : hover;
+		const size = { ...this.props.attributes.size };
 
 		const hoverClasses = classnames(
 			'maxi-block-hover-wrapper',
-			hoverValue.type === 'basic' &&
-				!!hoverValue.preview &&
-				`maxi-hover-effect__${hoverValue.type}__${hoverValue.basicEffectType}`,
-			hoverValue.type === 'text' &&
-				!!hoverValue.preview &&
-				`maxi-hover-effect__${hoverValue.type}__${hoverValue.textEffectType}`,
-			hoverValue.type !== 'none' &&
+			hover.type === 'basic' &&
+				!!hover.preview &&
+				`maxi-hover-effect__${hover.type}__${hover.basicEffectType}`,
+			hover.type === 'text' &&
+				!!hover.preview &&
+				`maxi-hover-effect__${hover.type}__${hover.textEffectType}`,
+			hover.type !== 'none' &&
 				`maxi-hover-effect__${
-					hoverValue.type === 'basic' ? 'basic' : 'text'
+					hover.type === 'basic' ? 'basic' : 'text'
 				}`
 		);
 
@@ -306,31 +287,26 @@ class edit extends MaxiBlock {
 			'maxi-block maxi-image-block',
 			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 			'maxi-block--backend',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
+				'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
 			extraClassName,
 			uniqueID,
 			className,
-			fullWidth === 'full' ? 'alignfull' : ''
+			fullWidth === 'full' && 'alignfull'
 		);
-		const cropOptionsValue = !isObject(cropOptions)
-			? JSON.parse(cropOptions)
-			: cropOptions;
-
-		const sizeValue = !isObject(size) ? JSON.parse(size) : size;
 
 		const getImage = () => {
 			if (
 				imageSize === 'custom' &&
-				!isEmpty(cropOptionsValue.image.source_url)
+				!isEmpty(cropOptions.image.source_url)
 			)
-				return cropOptionsValue.image;
+				return { ...cropOptions.image };
 			if (imageData && imageSize && imageSize !== 'custom')
-				return imageData.media_details.sizes[imageSize];
-			if (imageData) return imageData.media_details.sizes.full;
+				return { ...imageData.media_details.sizes[imageSize] };
+			if (imageData) return { ...imageData.media_details.sizes.full };
 
 			return false;
 		};
@@ -344,17 +320,6 @@ class edit extends MaxiBlock {
 
 			if (imageData.title.rendered)
 				setAttributes({ mediaAltTitle: imageData.title.rendered });
-
-			if (
-				mediaURL !== image.source_url ||
-				mediaWidth !== image.width ||
-				mediaHeight !== image.height
-			)
-				setAttributes({
-					mediaURL: image.source_url,
-					mediaHeight: image.height,
-					mediaWidth: image.width,
-				});
 		}
 
 		return [
@@ -367,7 +332,14 @@ class edit extends MaxiBlock {
 					data-align={fullWidth}
 				>
 					<MediaUpload
-						onSelect={media => setAttributes({ mediaID: media.id })}
+						onSelect={media =>
+							setAttributes({
+								mediaID: media.id,
+								mediaURL: media.url,
+								mediaWidth: media.width,
+								mediaHeight: media.height,
+							})
+						}
 						allowedTypes='image'
 						value={mediaID}
 						render={({ open }) => (
@@ -380,7 +352,7 @@ class edit extends MaxiBlock {
 										<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
-												width: `${sizeValue.general.width}%`,
+												width: `${size.general.width}%`,
 												height: '100%',
 											}}
 											maxWidth='100%'
@@ -409,11 +381,9 @@ class edit extends MaxiBlock {
 														100
 													).toFixed()
 												);
-												sizeValue.general.width = newScale;
+												size.general.width = newScale;
 												setAttributes({
-													size: JSON.stringify(
-														sizeValue
-													),
+													size,
 												});
 											}}
 										>
@@ -429,7 +399,7 @@ class edit extends MaxiBlock {
 												{(!SVGElement && (
 													<img
 														className={`maxi-image-block__image wp-image-${mediaID}`}
-														src={image.source_url}
+														src={mediaURL}
 														width={mediaWidth}
 														height={mediaHeight}
 														alt={mediaAlt}
@@ -439,29 +409,28 @@ class edit extends MaxiBlock {
 														{SVGElement}
 													</RawHTML>
 												)}
-												{hoverValue.type !== 'none' &&
-													hoverValue.type !==
-														'basic' &&
-													!!hoverValue.preview && (
+												{hover.type !== 'none' &&
+													hover.type !== 'basic' &&
+													!!hover.preview && (
 														<div className='maxi-hover-details'>
 															<div
-																className={`maxi-hover-details__content maxi-hover-details__content--${hoverValue.textPreset}`}
+																className={`maxi-hover-details__content maxi-hover-details__content--${hover.textPreset}`}
 															>
 																{!isEmpty(
-																	hoverValue.titleText
+																	hover.titleText
 																) && (
 																	<h3>
 																		{
-																			hoverValue.titleText
+																			hover.titleText
 																		}
 																	</h3>
 																)}
 																{!isEmpty(
-																	hoverValue.contentText
+																	hover.contentText
 																) && (
 																	<p>
 																		{
-																			hoverValue.contentText
+																			hover.contentText
 																		}
 																	</p>
 																)}
@@ -508,11 +477,9 @@ export default withSelect((select, ownProps) => {
 	const { mediaID } = ownProps.attributes;
 	const imageData = select('core').getMedia(mediaID);
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
 		imageData,
 		deviceType,
-		customData,
 	};
 })(edit);

@@ -22,12 +22,12 @@ const attributes = {
 		default: 'full',
 	},
 	cropOptions: {
-		type: 'string',
-		default: JSON.stringify(attributesData.cropOptions),
+		type: 'object',
+		default: attributesData.cropOptions,
 	},
 	alignment: {
-		type: 'string',
-		default: JSON.stringify(attributesData.alignment),
+		type: 'object',
+		default: attributesData.alignment,
 	},
 	captionType: {
 		type: 'string',
@@ -38,52 +38,52 @@ const attributes = {
 		default: '',
 	},
 	captionTypography: {
-		type: 'string',
-		default: JSON.stringify(attributesData.typography),
+		type: 'object',
+		default: attributesData.typography,
 	},
 	fullWidth: {
 		type: 'string',
 		default: 'normal',
 	},
 	size: {
-		type: 'string',
-		default: JSON.stringify(size),
+		type: 'object',
+		default: size,
 	},
 	opacity: {
-		type: 'string',
-		default: JSON.stringify(attributesData.opacity),
+		type: 'object',
+		default: attributesData.opacity,
 	},
 	background: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
+		type: 'object',
+		default: attributesData.background,
 	},
 	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
+		type: 'object',
+		default: attributesData.backgroundHover,
 	},
 	boxShadow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
+		type: 'object',
+		default: attributesData.boxShadow,
 	},
 	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
+		type: 'object',
+		default: attributesData.boxShadowHover,
 	},
 	border: {
-		type: 'string',
-		default: JSON.stringify(attributesData.border),
+		type: 'object',
+		default: attributesData.border,
 	},
 	borderHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.borderHover),
+		type: 'object',
+		default: attributesData.borderHover,
 	},
 	padding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
+		type: 'object',
+		default: attributesData.padding,
 	},
 	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
+		type: 'object',
+		default: attributesData.margin,
 	},
 	mediaID: {
 		type: 'number',
@@ -111,24 +111,24 @@ const attributes = {
 		type: 'number',
 	},
 	position: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalPosition),
+		type: 'object',
+		default: attributesData.__experimentalPosition,
 	},
 	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
+		type: 'object',
+		default: attributesData.__experimentalDisplay,
 	},
 	clipPath: {
 		type: 'string',
 		default: '',
 	},
 	hover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalHover),
+		type: 'object',
+		default: attributesData.__experimentalHover,
 	},
 	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
+		type: 'object',
+		default: attributesData.__experimentalTransform,
 	},
 	content: {
 		type: 'string',

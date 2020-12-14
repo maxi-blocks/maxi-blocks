@@ -15,7 +15,6 @@ import {
 	getTransformObject,
 	setBackgroundStyles,
 	getLastBreakpointValue,
-	setCustomData,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -28,7 +27,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isObject } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Content
@@ -72,12 +71,12 @@ class edit extends MaxiBlock {
 			size,
 			padding,
 			margin,
-			opacity: { ...JSON.parse(opacity) },
+			opacity,
 			zIndex,
 			position,
 			positionOptions: position.options,
 			display,
-			transform,
+			transform: getTransformObject(transform),
 			divider: {
 				label: 'Divider',
 				general: {},
@@ -109,9 +108,9 @@ class edit extends MaxiBlock {
 
 		const response = {};
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
 			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+				...getBoxShadowObject(boxShadowHover),
 			};
 		}
 
@@ -121,12 +120,25 @@ class edit extends MaxiBlock {
 	get getDividerObject() {
 		const { divider, boxShadow } = this.props.attributes;
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			divider: { ...JSON.parse(divider) },
-			opacity: { ...JSON.parse(divider).opacity },
+			boxShadow: { ...getBoxShadowObject(boxShadow) },
+			divider: { ...divider },
+			opacity: { ...divider.opacity },
 		};
 
 		return response;
+	}
+
+	get getCustomData() {
+		const { uniqueID, motion } = this.props.attributes;
+
+		const motionStatus =
+			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+
+		return {
+			[uniqueID]: {
+				...(motionStatus && { motion }),
+			},
+		};
 	}
 
 	render() {
@@ -140,7 +152,6 @@ class edit extends MaxiBlock {
 				lineOrientation,
 				extraClassName,
 				fullWidth,
-				size,
 				background,
 				divider,
 				display,
@@ -151,20 +162,18 @@ class edit extends MaxiBlock {
 			deviceType,
 			onDeviceTypeChange,
 			setAttributes,
-			customData,
 		} = this.props;
 
-		onDeviceTypeChange();
-		setCustomData(customData, uniqueID, { motion });
+		const size = { ...this.props.attributes.size };
 
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+		onDeviceTypeChange();
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-divider-block',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
+				'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
@@ -177,9 +186,6 @@ class edit extends MaxiBlock {
 				: 'maxi-divider-block--horizontal'
 		);
 
-		const sizeValue = !isObject(size) ? JSON.parse(size) : size;
-		const dividerValue = !isObject(divider) ? JSON.parse(divider) : divider;
-
 		return [
 			<Inspector {...this.props} />,
 			<__experimentalToolbar {...this.props} />,
@@ -187,8 +193,7 @@ class edit extends MaxiBlock {
 				size={{
 					width: '100%',
 					height:
-						sizeValue[deviceType].height +
-						sizeValue[deviceType].heightUnit,
+						size[deviceType].height + size[deviceType].heightUnit,
 				}}
 				className={classnames(
 					'maxi-block__resizer',
@@ -198,8 +203,7 @@ class edit extends MaxiBlock {
 				defaultSize={{
 					width: '100%',
 					height:
-						sizeValue[deviceType].height +
-						sizeValue[deviceType].heightUnit,
+						size[deviceType].height + size[deviceType].heightUnit,
 				}}
 				enable={{
 					top: false,
@@ -212,18 +216,18 @@ class edit extends MaxiBlock {
 					topLeft: false,
 				}}
 				onResizeStart={() => {
-					sizeValue[deviceType].heightUnit !== 'px' &&
-						(sizeValue[deviceType].heightUnit = 'px') &&
+					size[deviceType].heightUnit !== 'px' &&
+						(size[deviceType].heightUnit = 'px') &&
 						setAttributes({
-							size: JSON.stringify(sizeValue),
+							size,
 						});
 				}}
 				onResizeStop={(event, direction, elt) => {
-					sizeValue[
+					size[
 						deviceType
 					].height = elt.getBoundingClientRect().height;
 					setAttributes({
-						size: JSON.stringify(sizeValue),
+						size,
 					});
 				}}
 			>
@@ -236,7 +240,7 @@ class edit extends MaxiBlock {
 						<__experimentalBackgroundDisplayer
 							background={background}
 						/>
-						{dividerValue.general['border-style'] !== 'none' && (
+						{divider.general['border-style'] !== 'none' && (
 							<hr className='maxi-divider-block__divider' />
 						)}
 					</__experimentalBlock>
@@ -248,11 +252,9 @@ class edit extends MaxiBlock {
 
 const editSelect = withSelect(select => {
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-	const customData = select('maxiBlocks').receiveMaxiCustomData();
 
 	return {
 		deviceType,
-		customData,
 	};
 });
 
@@ -262,7 +264,7 @@ const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
 		deviceType,
 	} = ownProps;
 
-	const onDeviceTypeChange = function () {
+	const onDeviceTypeChange = () => {
 		let newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
@@ -276,8 +278,7 @@ const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
 				`.maxi-divider-block__resizer__${uniqueID}`
 			);
 			if (isNil(node)) return;
-			const newSize = JSON.parse(size);
-			node.style.height = `${newSize[newDeviceType].height}px`;
+			node.style.height = `${size[newDeviceType].height}px`;
 		}
 	};
 

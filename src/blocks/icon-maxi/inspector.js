@@ -34,7 +34,6 @@ import {
 	__experimentalDisplayControl,
 	__experimentalTransformControl,
 	__experimentalClipPath,
-	__experimentalEntranceAnimationControl,
 	__experimentalHoverEffectControl,
 	__experimentalImageAltControl,
 	__experimentalFancyRadioControl,
@@ -44,7 +43,7 @@ import {
 /**
  * External dependencies
  */
-import { capitalize, isEmpty, isNil, isObject } from 'lodash';
+import { capitalize, isEmpty, isNil } from 'lodash';
 
 /**
  * Inspector
@@ -93,9 +92,7 @@ const Inspector = props => {
 		setAttributes,
 	} = props;
 
-	const sizeValue = !isObject(size) ? JSON.parse(size) : size;
-
-	const defaultSize = JSON.parse(getDefaultProp(clientId, 'size'));
+	const defaultSize = getDefaultProp(clientId, 'size');
 
 	const getSizeOptions = () => {
 		const response = [];
@@ -104,7 +101,7 @@ const Inspector = props => {
 			sizes = Object.entries(sizes).sort((a, b) => {
 				return a[1].width - b[1].width;
 			});
-			sizes.map(size => {
+			sizes.forEach(size => {
 				const name = capitalize(size[0]);
 				const val = size[1];
 				response.push({
@@ -134,14 +131,6 @@ const Inspector = props => {
 		}
 		return response;
 	};
-
-	const boxShadowHoverValue = !isObject(boxShadowHover)
-		? JSON.parse(boxShadowHover)
-		: boxShadowHover;
-
-	const borderHoverValue = !isObject(borderHover)
-		? JSON.parse(borderHover)
-		: borderHover;
 
 	return (
 		<InspectorControls>
@@ -202,179 +191,137 @@ const Inspector = props => {
 												/>
 											),
 										},
-										(function () {
-											if (deviceType === 'general') {
-												return {
-													label: __(
-														'Width / Height',
-														'maxi-blocks'
-													),
-													content: (
-														<Fragment>
-															<SelectControl
-																label={__(
-																	'Image Size',
-																	'maxi-blocks'
-																)}
-																value={
-																	imageSize ||
-																	imageSize ==
-																		'custom'
-																		? imageSize
-																		: 'full'
-																} // is still necessary?
-																options={getSizeOptions()}
-																onChange={imageSize =>
-																	setAttributes(
-																		{
-																			imageSize,
-																		}
-																	)
-																}
-															/>
-															{imageSize ===
-																'custom' && (
-																<ImageCropControl
-																	mediaID={
-																		mediaID
-																	}
-																	cropOptions={JSON.parse(
-																		cropOptions
-																	)}
-																	onChange={cropOptions =>
-																		setAttributes(
-																			{
-																				cropOptions: JSON.stringify(
-																					cropOptions
-																				),
-																			}
-																		)
-																	}
-																/>
-															)}
-															<RangeControl
-																label={__(
-																	'Width',
-																	'maxi-blocks'
-																)}
-																value={
-																	sizeValue
-																		.general
-																		.width
-																}
-																onChange={val => {
-																	if (
-																		isNil(
-																			val
-																		)
-																	)
-																		sizeValue.general.width =
-																			defaultSize.general.width;
-																	else
-																		sizeValue.general.width = val;
+										deviceType === 'general' && {
+											label: __(
+												'Width / Height',
+												'maxi-blocks'
+											),
+											content: (
+												<Fragment>
+													<SelectControl
+														label={__(
+															'Image Size',
+															'maxi-blocks'
+														)}
+														value={
+															imageSize ||
+															imageSize ===
+																'custom'
+																? imageSize
+																: 'full'
+														} // is still necessary?
+														options={getSizeOptions()}
+														onChange={imageSize =>
+															setAttributes({
+																imageSize,
+															})
+														}
+													/>
+													{imageSize === 'custom' && (
+														<ImageCropControl
+															mediaID={mediaID}
+															cropOptions={
+																cropOptions
+															}
+															onChange={cropOptions =>
+																setAttributes({
+																	cropOptions,
+																})
+															}
+														/>
+													)}
+													<RangeControl
+														label={__(
+															'Width',
+															'maxi-blocks'
+														)}
+														value={
+															size.general.width
+														}
+														onChange={val => {
+															if (isNil(val))
+																size.general.width =
+																	defaultSize.general.width;
+															else
+																size.general.width = val;
 
-																	setAttributes(
-																		{
-																			size: JSON.stringify(
-																				sizeValue
-																			),
-																		}
-																	);
-																}}
-																allowReset
-																initialPosition={
-																	defaultSize
-																		.general
-																		.width
-																}
-															/>
-														</Fragment>
-													),
-												};
-											}
-										})(),
-										(function () {
-											if (deviceType === 'general') {
-												return {
-													label: __(
-														'Caption',
-														'maxi-blocks'
-													),
-													content: (
-														<Fragment>
-															<SelectControl
-																value={
-																	captionType
-																}
-																options={getCaptionOptions()}
-																onChange={captionType => {
-																	setAttributes(
-																		{
-																			captionType,
-																		}
-																	);
-																	if (
-																		imageData &&
-																		captionType ===
-																			'attachment'
-																	)
-																		setAttributes(
-																			{
-																				captionContent:
-																					imageData
-																						.caption
-																						.raw,
-																			}
-																		);
-																}}
-															/>
-															{captionType ===
-																'custom' && (
-																<TextareaControl
-																	className='custom-caption'
-																	placeHolder={__(
-																		'Add you Custom Caption here',
-																		'maxi-blocks'
-																	)}
-																	value={
-																		captionContent
-																	}
-																	onChange={captionContent =>
-																		setAttributes(
-																			{
-																				captionContent,
-																			}
-																		)
-																	}
-																/>
+															setAttributes({
+																size,
+															});
+														}}
+														allowReset
+														initialPosition={
+															defaultSize.general
+																.width
+														}
+													/>
+												</Fragment>
+											),
+										},
+										deviceType === 'general' && {
+											label: __('Caption', 'maxi-blocks'),
+											content: (
+												<Fragment>
+													<SelectControl
+														value={captionType}
+														options={getCaptionOptions()}
+														onChange={captionType => {
+															setAttributes({
+																captionType,
+															});
+															if (
+																imageData &&
+																captionType ===
+																	'attachment'
+															)
+																setAttributes({
+																	captionContent:
+																		imageData
+																			.caption
+																			.raw,
+																});
+														}}
+													/>
+													{captionType ===
+														'custom' && (
+														<TextareaControl
+															className='custom-caption'
+															placeHolder={__(
+																'Add you Custom Caption here',
+																'maxi-blocks'
 															)}
-															{captionType !=
-																'none' && (
-																<TypographyControl
-																	typography={
-																		captionTypography
-																	}
-																	defaultTypography={getDefaultProp(
-																		clientId,
-																		'captionTypography'
-																	)}
-																	onChange={captionTypography =>
-																		setAttributes(
-																			{
-																				captionTypography,
-																			}
-																		)
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																/>
+															value={
+																captionContent
+															}
+															onChange={captionContent =>
+																setAttributes({
+																	captionContent,
+																})
+															}
+														/>
+													)}
+													{captionType !== 'none' && (
+														<TypographyControl
+															typography={
+																captionTypography
+															}
+															defaultTypography={getDefaultProp(
+																clientId,
+																'captionTypography'
 															)}
-														</Fragment>
-													),
-												};
-											}
-										})(),
+															onChange={captionTypography =>
+																setAttributes({
+																	captionTypography,
+																})
+															}
+															breakpoint={
+																deviceType
+															}
+														/>
+													)}
+												</Fragment>
+											),
+										},
 										{
 											label: __(
 												'Background',
@@ -387,7 +334,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
@@ -436,7 +383,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
@@ -476,7 +423,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<BorderControl
@@ -503,7 +450,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
@@ -513,7 +460,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			borderHoverValue.status
+																			borderHover.status
 																		)}
 																		options={[
 																			{
@@ -532,19 +479,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			borderHoverValue.status = Number(
+																			borderHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					borderHover: JSON.stringify(
-																						borderHoverValue
-																					),
+																					borderHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!borderHoverValue.status && (
+																	{!!borderHover.status && (
 																		<BorderControl
 																			border={
 																				borderHover
@@ -640,7 +585,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<BoxShadowControl
@@ -667,7 +612,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
@@ -677,7 +622,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			boxShadowHoverValue.status
+																			boxShadowHover.status
 																		)}
 																		options={[
 																			{
@@ -696,19 +641,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			boxShadowHoverValue.status = Number(
+																			boxShadowHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					boxShadowHover: JSON.stringify(
-																						boxShadowHoverValue
-																					),
+																					boxShadowHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!boxShadowHoverValue.status && (
+																	{!!boxShadowHover.status && (
 																		<BoxShadowControl
 																			boxShadow={
 																				boxShadowHover
@@ -811,7 +754,7 @@ const Inspector = props => {
 										}
 										breakpoint={deviceType}
 									/>
-									{deviceType != 'general' && (
+									{deviceType !== 'general' && (
 										<__experimentalResponsiveControl
 											breakpoints={breakpoints}
 											defaultBreakpoints={getDefaultProp(

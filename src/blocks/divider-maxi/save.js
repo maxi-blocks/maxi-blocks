@@ -12,7 +12,7 @@ import { __experimentalBackgroundDisplayer } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isObject } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Save
@@ -31,8 +31,6 @@ const save = props => {
 			divider,
 		},
 	} = props;
-
-	const dividerValue = !isObject(divider) ? JSON.parse(divider) : divider;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -55,7 +53,7 @@ const save = props => {
 			data-motion-id={uniqueID}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
-			{dividerValue.general['border-style'] !== 'none' && (
+			{divider.general['border-style'] !== 'none' && (
 				<Fragment>
 					<hr className='maxi-divider-block__divider' />
 				</Fragment>

@@ -8,11 +8,17 @@ const { SelectControl } = wp.components;
 const { Fragment } = wp.element;
 
 /**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
+
+/**
  * Component
  */
 const BlockStylesControl = props => {
 	const {
 		blockStyle,
+		breakpoint,
 		defaultBlockStyle,
 		blockStyleBackground,
 		onChange,
@@ -27,6 +33,8 @@ const BlockStylesControl = props => {
 		disableHighlightBorder = false,
 		disableHighlightColor1 = false,
 		disableHighlightColor2 = false,
+		onChangeBorder,
+		border,
 	} = props;
 
 	const getSelectorOptions = () => {
@@ -41,6 +49,8 @@ const BlockStylesControl = props => {
 			{ label: __('Custom', 'maxi-blocks'), value: 'maxi-custom' },
 		];
 	};
+
+	const borderValue = !isObject(border) ? JSON.parse(border) : border;
 
 	return (
 		<Fragment>
@@ -108,11 +118,27 @@ const BlockStylesControl = props => {
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={isHighlightBorder =>
+							onChange={isHighlightBorder => {
 								onChange({
 									isHighlightBorder: +isHighlightBorder,
-								})
-							}
+								});
+
+								borderValue.general['border-style'] = 'solid';
+								borderValue.borderWidth.general[
+									'border-right-width'
+								] = 2;
+								borderValue.borderWidth.general[
+									'border-left-width'
+								] = 2;
+								borderValue.borderWidth.general[
+									'border-top-width'
+								] = 2;
+								borderValue.borderWidth.general[
+									'border-bottom-width'
+								] = 2;
+
+								onChangeBorder(JSON.stringify(borderValue));
+							}}
 						/>
 					)}
 					{!disableHighlightColor1 && (

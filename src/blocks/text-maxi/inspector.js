@@ -123,6 +123,7 @@ const Inspector = props => {
 									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
+										breakpoint={deviceType}
 										isHighlightText={isHighlightText}
 										isHighlightBackground={
 											isHighlightBackground
@@ -136,6 +137,10 @@ const Inspector = props => {
 										onChange={obj => setAttributes(obj)}
 										disableHighlightColor1
 										disableHighlightColor2
+										border={border}
+										onChangeBorder={border =>
+											setAttributes({ border })
+										}
 									/>
 								</div>
 								<AccordionControl

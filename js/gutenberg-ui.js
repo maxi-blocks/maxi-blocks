@@ -1,9 +1,9 @@
 const { __, _x, _n, _nx } = wp.i18n;
 
 (function (window, wp) {
-	var layout_id = 'maxi-toolbar-layout';
+	let layout_id = 'maxi-toolbar-layout';
 
-	var layoutHtml = '<div id="' + layout_id + '">';
+	let layoutHtml = '<div id="' + layout_id + '">';
 	layoutHtml += `<a type="button" href="javascript:void(0)" target="_blank" id="maxi-button__show-responsive" class="button maxi-button maxi-button__toolbar">\
 	</i><img src="../wp-content/plugins/maxi-blocks/img/maxi-responsive.svg" /></a>`;
 	layoutHtml += `<a type="button" id="maxi-button__layout" class="button maxi-button maxi-button__toolbar" aria-label="${__(
@@ -25,16 +25,16 @@ const { __, _x, _n, _nx } = wp.i18n;
 	layoutHtml += '</div>';
 
 	// check if gutenberg's editor root element is present.
-	var editorEl = document.getElementById('editor');
+	let editorEl = document.getElementById('editor');
 	if (!editorEl) {
 		// do nothing if there's no gutenberg root element on page.
 		return;
 	}
 
-	var unsubscribe = wp.data.subscribe(function () {
+	let unsubscribe = wp.data.subscribe(function () {
 		setTimeout(function () {
 			if (!document.getElementById(layout_id)) {
-				var toolbalEl = editorEl.querySelector(
+				let toolbalEl = editorEl.querySelector(
 					'.edit-post-header__toolbar'
 				);
 				if (toolbalEl instanceof HTMLElement) {

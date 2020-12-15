@@ -18,9 +18,9 @@ import {
 } from '../../utils';
 import {
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
-	__experimentalFontIconPicker,
+	Toolbar,
+	BackgroundDisplayer,
+	FontIconPicker,
 } from '../../components';
 
 /**
@@ -160,15 +160,15 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
+			<Toolbar {...this.props} />,
 			<__experimentalBlock className={classes}>
-				<__experimentalBackgroundDisplayer background={background} />
+				<BackgroundDisplayer background={background} />
 				{(!!iconValue.icon && (
 					<span className='maxi-font-icon-block__icon'>
 						<i className={iconValue.icon} />
 					</span>
 				)) || (
-					<__experimentalFontIconPicker
+					<FontIconPicker
 						onChange={icon => {
 							iconValue.icon = icon;
 							setAttributes({

@@ -25,15 +25,15 @@ import {
 } from '../../utils';
 import {
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
-	__experimentalMotionPreview,
+	Toolbar,
+	BackgroundDisplayer,
+	MotionPreview,
 } from '../../components';
 import {
-	__experimentalGetFormatValue,
-	__experimentalSetCustomFormatsWhenPaste,
-	__experimentalFromListToText,
-	__experimentalFromTextToList,
+	getFormatValue,
+	setCustomFormatsWhenPaste,
+	fromListToText,
+	fromTextToList,
 } from '../../extensions/text/formats';
 
 /**
@@ -238,16 +238,14 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
-			<__experimentalMotionPreview motion={motion}>
+			<Toolbar {...this.props} />,
+			<MotionPreview motion={motion}>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
 					data-align={fullWidth}
 				>
-					<__experimentalBackgroundDisplayer
-						background={background}
-					/>
+					<BackgroundDisplayer background={background} />
 					{!isList && (
 						<RichText
 							className='maxi-text-block__content'
@@ -261,7 +259,7 @@ class edit extends MaxiBlock {
 										? typeOfList
 										: undefined,
 								};
-								const formatValue = __experimentalGetFormatValue(
+								const formatValue = getFormatValue(
 									formatElement
 								);
 
@@ -271,7 +269,7 @@ class edit extends MaxiBlock {
 								 * This next script will check if there is any format directly related with
 								 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
 								 */
-								const cleanCustomProps = __experimentalSetCustomFormatsWhenPaste(
+								const cleanCustomProps = setCustomFormatsWhenPaste(
 									{
 										formatValue,
 										typography: JSON.parse(typography),
@@ -397,7 +395,7 @@ class edit extends MaxiBlock {
 						</RichText>
 					)}
 				</__experimentalBlock>
-			</__experimentalMotionPreview>,
+			</MotionPreview>,
 		];
 	}
 }
@@ -411,7 +409,7 @@ const editSelect = withSelect((select, ownProps) => {
 		multilineTag: isList ? 'li' : undefined,
 		multilineWrapperTags: isList ? typeOfList : undefined,
 	};
-	const formatValue = __experimentalGetFormatValue(formatElement);
+	const formatValue = getFormatValue(formatElement);
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
@@ -546,7 +544,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					multilineTag: isList ? 'li' : undefined,
 					multilineWrapperTags: isList ? typeOfList : undefined,
 				};
-				const formatValue = __experimentalGetFormatValue(formatElement);
+				const formatValue = getFormatValue(formatElement);
 
 				/**
 				 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
@@ -554,15 +552,13 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				 * This next script will check if there is any format directly related with
 				 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
 				 */
-				const cleanCustomProps = __experimentalSetCustomFormatsWhenPaste(
-					{
-						formatValue,
-						typography: JSON.parse(typography),
-						isList,
-						typeOfList,
-						content,
-					}
-				);
+				const cleanCustomProps = setCustomFormatsWhenPaste({
+					formatValue,
+					typography: JSON.parse(typography),
+					isList,
+					typeOfList,
+					content,
+				});
 
 				if (cleanCustomProps)
 					updateBlockAttributes(clientId, {
@@ -591,8 +587,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				setAttributes({
 					content: content.concat(
 						newBlockIsList
-							? __experimentalFromListToText(nextBlockContent)
-							: __experimentalFromTextToList(nextBlockContent)
+							? fromListToText(nextBlockContent)
+							: fromTextToList(nextBlockContent)
 					),
 				});
 
@@ -612,7 +608,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				updateBlockAttributes(previousBlockClientId, {
 					content: previousBlockContent.concat(
 						ownProps.attributes.isList
-							? __experimentalFromListToText(content)
+							? fromListToText(content)
 							: content
 					),
 				});

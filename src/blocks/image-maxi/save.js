@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { __experimentalBackgroundDisplayer } from '../../components';
+import { BackgroundDisplayer } from '../../components';
 
 /**
  * External dependencies
@@ -78,7 +78,7 @@ const save = props => {
 			data-motion={motion}
 			data-motion-id={uniqueID}
 		>
-			<__experimentalBackgroundDisplayer background={background} />
+			<BackgroundDisplayer background={background} />
 
 			<div className={hoverClasses}>
 				<img

@@ -9,7 +9,7 @@ const { Fragment } = wp.element;
  */
 import { getLastBreakpointValue } from '../../utils';
 import SizeControl from '../size-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -103,7 +103,7 @@ const FullSizeControl = props => {
 				minMaxSettings={minMaxSettings}
 			/>
 
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Advanced Width/Height', 'maxi-blocks')}
 				selected={value.advancedOptions}
 				options={[

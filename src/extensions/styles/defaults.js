@@ -1244,7 +1244,7 @@ export const cropOptions = {
 	},
 };
 
-export const __experimentalDivider = {
+export const divider = {
 	label: 'Divider',
 	general: {
 		'border-color': '#ff4a17',
@@ -1267,7 +1267,7 @@ export const __experimentalDivider = {
 	},
 };
 
-export const __experimentalContainer = {
+export const container = {
 	label: 'Container size',
 	general: {
 		'max-widthUnit': 'px',
@@ -1313,7 +1313,7 @@ export const __experimentalContainer = {
 	},
 };
 
-export const __experimentalColumn = {
+export const column = {
 	label: 'Column size',
 	general: {
 		size: 90,
@@ -1338,7 +1338,7 @@ export const __experimentalColumn = {
 	},
 };
 
-export const __experimentalShapeDivider = {
+export const shapeDivider = {
 	label: 'Shape Divider',
 	top: {
 		status: 0,
@@ -1378,7 +1378,7 @@ export const __experimentalShapeDivider = {
 	},
 };
 
-export const __experimentalPosition = {
+export const position = {
 	label: 'Position',
 	general: {
 		position: '',
@@ -1462,7 +1462,7 @@ export const __experimentalPosition = {
 	},
 };
 
-export const __experimentalDisplay = {
+export const display = {
 	label: 'Display block',
 	general: {
 		display: '',
@@ -1487,7 +1487,7 @@ export const __experimentalDisplay = {
 	},
 };
 
-export const __experimentalHover = {
+export const hover = {
 	label: 'Hover Effects',
 	type: 'none',
 	basicEffectType: 'zoom-in',
@@ -1531,7 +1531,7 @@ export const __experimentalHover = {
 	contentText: 'Add your Hover Content here',
 };
 
-export const __experimentalMotion = {
+export const motion = {
 	label: 'Motion Effects',
 	interaction: {
 		interactionStatus: 0,
@@ -1561,7 +1561,7 @@ export const __experimentalMotion = {
 	},
 };
 
-export const __experimentalArrow = {
+export const arrow = {
 	label: 'Arrow',
 	active: 0,
 	general: {
@@ -1609,7 +1609,7 @@ export const __experimentalArrow = {
 	},
 };
 
-export const __experimentalTransform = {
+export const transform = {
 	label: 'Transform',
 	general: {
 		scaleX: '',

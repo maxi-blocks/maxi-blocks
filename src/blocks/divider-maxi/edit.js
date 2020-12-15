@@ -18,9 +18,9 @@ import {
 } from '../../utils';
 import {
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
-	__experimentalMotionPreview,
+	Toolbar,
+	BackgroundDisplayer,
+	MotionPreview,
 } from '../../components';
 
 /**
@@ -204,7 +204,7 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
+			<Toolbar {...this.props} />,
 			<ResizableBox
 				size={{
 					width: '100%',
@@ -246,20 +246,18 @@ class edit extends MaxiBlock {
 					isVisible: isResizing,
 				}}
 			>
-				<__experimentalMotionPreview motion={motion}>
+				<MotionPreview motion={motion}>
 					<__experimentalBlock
 						className={classes}
 						data-maxi_initial_block_class={defaultBlockStyle}
 						data-align={fullWidth}
 					>
-						<__experimentalBackgroundDisplayer
-							background={background}
-						/>
+						<BackgroundDisplayer background={background} />
 						{dividerValue.general['border-style'] !== 'none' && (
 							<hr className='maxi-divider-block__divider' />
 						)}
 					</__experimentalBlock>
-				</__experimentalMotionPreview>
+				</MotionPreview>
 			</ResizableBox>,
 		];
 	}

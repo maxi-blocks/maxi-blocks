@@ -19,9 +19,9 @@ import {
 } from '../../utils';
 import {
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
-	__experimentalMotionPreview,
+	Toolbar,
+	BackgroundDisplayer,
+	MotionPreview,
 } from '../../components';
 
 /**
@@ -155,8 +155,8 @@ class edit extends MaxiBlock {
 		return [
 			<Fragment>
 				<Inspector {...this.props} />
-				<__experimentalToolbar {...this.props} />
-				<__experimentalMotionPreview motion={motion}>
+				<Toolbar {...this.props} />
+				<MotionPreview motion={motion}>
 					<__experimentalBlock
 						className={classes}
 						data-maxi_initial_block_class={defaultBlockStyle}
@@ -213,7 +213,7 @@ class edit extends MaxiBlock {
 										onClick={onClick}
 										icon={toolbarReplaceImage}
 									/>
-									<__experimentalBackgroundDisplayer
+									<BackgroundDisplayer
 										background={background}
 									/>
 									<RawHTML>{content}</RawHTML>
@@ -221,7 +221,7 @@ class edit extends MaxiBlock {
 							)}
 						</Fragment>
 					</__experimentalBlock>
-				</__experimentalMotionPreview>
+				</MotionPreview>
 			</Fragment>,
 		];
 	}

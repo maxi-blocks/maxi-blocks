@@ -8,7 +8,7 @@ const { SelectControl } = wp.components;
  * Internal dependencies
  */
 import { getLastBreakpointValue } from '../../utils';
-import __experimentalAxisControl from '../axis-control';
+import AxisControl from '../axis-control';
 
 /**
  * External dependencies
@@ -65,7 +65,7 @@ const PositionControl = props => {
 			{!isEmpty(
 				getLastBreakpointValue(value, 'position', breakpoint)
 			) && (
-				<__experimentalAxisControl
+				<AxisControl
 					values={value.options}
 					defaultValues={defaultValues.options}
 					onChange={val => {

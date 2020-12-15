@@ -7,7 +7,7 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 import AddTimeline from './addTimeline';
 import ShowTimeline from './showTimeline';
 import TimelineSettings from './timelineSettings';
@@ -38,7 +38,7 @@ const MotionControl = props => {
 
 	return (
 		<div className={classes}>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Use Motion Effects', 'maxi-blocks')}
 				selected={interaction.interactionStatus}
 				options={[
@@ -52,7 +52,7 @@ const MotionControl = props => {
 			/>
 			{!!interaction.interactionStatus && (
 				<Fragment>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Preview', 'maxi-blocks')}
 						selected={interaction.previewStatus}
 						options={[

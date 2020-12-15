@@ -8,7 +8,7 @@ const { RangeControl } = wp.components;
 /**
  * Internal dependencies
  */
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -36,7 +36,7 @@ const ParallaxControl = props => {
 
 	return (
 		<div className={classes}>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Use Parallax Effect', 'maxi-blocks')}
 				selected={parallaxOptions.status}
 				options={[
@@ -50,7 +50,7 @@ const ParallaxControl = props => {
 			/>
 			{!!parallaxOptions.status && (
 				<Fragment>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Direction', 'maxi-blocks')}
 						selected={parallaxOptions.direction}
 						options={[

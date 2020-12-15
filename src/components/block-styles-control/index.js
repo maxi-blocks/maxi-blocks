@@ -1,4 +1,4 @@
-import { __experimentalFancyRadioControl } from '..';
+import { FancyRadioControl } from '..';
 
 /**
  * WordPress Dependencies
@@ -65,7 +65,7 @@ const BlockStylesControl = props => {
 			{blockStyle !== 'maxi-custom' && (
 				<Fragment>
 					{!disableHighlight && (
-						<__experimentalFancyRadioControl
+						<FancyRadioControl
 							label={__('Highlight', 'maxi-blocks')}
 							selected={isHighlight}
 							options={[
@@ -78,7 +78,7 @@ const BlockStylesControl = props => {
 						/>
 					)}
 					{isFirstOnHierarchy && (
-						<__experimentalFancyRadioControl
+						<FancyRadioControl
 							label={__('Background colour', 'maxi-blocks')}
 							selected={blockStyleBackground}
 							options={[

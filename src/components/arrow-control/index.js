@@ -10,7 +10,7 @@ const { RangeControl } = wp.components;
  */
 import { getLastBreakpointValue } from '../../utils';
 import SizeControl from '../size-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -77,7 +77,7 @@ const ArrowControl = props => {
 	return (
 		<div className={classes}>
 			{
-				<__experimentalFancyRadioControl
+				<FancyRadioControl
 					label={__('Show Arrow', 'maxi-blocks')}
 					selected={value.active}
 					options={[
@@ -92,7 +92,7 @@ const ArrowControl = props => {
 			}
 			{!!value.active && (
 				<Fragment>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label=''
 						selected={getLastBreakpointValue(
 							value,

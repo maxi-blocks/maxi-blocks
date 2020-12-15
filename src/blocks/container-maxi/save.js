@@ -8,9 +8,9 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import {
-	__experimentalShapeDivider,
-	__experimentalBackgroundDisplayer,
-	__experimentalArrowDisplayer,
+	ShapeDivider,
+	BackgroundDisplayer,
+	ArrowDisplayer,
 } from '../../components';
 
 /**
@@ -64,22 +64,18 @@ const save = props => {
 					data-motion-id={uniqueID}
 					data-background={background}
 				>
-					<__experimentalArrowDisplayer arrow={arrow} />
+					<ArrowDisplayer arrow={arrow} />
 					{!!shapeDividerValue.top.status && (
-						<__experimentalShapeDivider
-							shapeDividerOptions={shapeDivider}
-						/>
+						<ShapeDivider shapeDividerOptions={shapeDivider} />
 					)}
 					<div className='maxi-container-block__wrapper'>
-						<__experimentalBackgroundDisplayer
-							background={background}
-						/>
+						<BackgroundDisplayer background={background} />
 						<div className='maxi-container-block__container'>
 							<InnerBlocks.Content />
 						</div>
 					</div>
 					{!!shapeDividerValue.bottom.status && (
-						<__experimentalShapeDivider
+						<ShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}
 						/>
@@ -91,19 +87,15 @@ const save = props => {
 					className={classes}
 					data-gx_initial_block_class={defaultBlockStyle}
 				>
-					<__experimentalBackgroundDisplayer
-						background={background}
-					/>
+					<BackgroundDisplayer background={background} />
 					{!!shapeDividerValue.top.status && (
-						<__experimentalShapeDivider
-							shapeDividerOptions={shapeDivider}
-						/>
+						<ShapeDivider shapeDividerOptions={shapeDivider} />
 					)}
 					<div className='maxi-container-block__wrapper'>
 						<InnerBlocks.Content />
 					</div>
 					{!!shapeDividerValue.bottom.status && (
-						<__experimentalShapeDivider
+						<ShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}
 						/>

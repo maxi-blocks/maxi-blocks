@@ -10,10 +10,10 @@ const { RangeControl, SelectControl, Icon } = wp.components;
  */
 import {
 	ColorControl,
-	SizeControl,
 	DefaultStylesControl,
-	__experimentalOpacityControl,
-	__experimentalFancyRadioControl,
+	OpacityControl,
+	FancyRadioControl,
+	SizeControl,
 } from '../../components';
 import { getLastBreakpointValue } from '../../utils';
 import {
@@ -209,7 +209,7 @@ const DividerControl = props => {
 			)}
 			{!disableBorderRadius &&
 				dividerValue.general['border-style'] === 'solid' && (
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Line Radius', 'maxi-blocks')}
 						selected={dividerValue.general['border-radius']}
 						options={[
@@ -328,7 +328,7 @@ const DividerControl = props => {
 					/>
 				</Fragment>
 			)}
-			<__experimentalOpacityControl
+			<OpacityControl
 				opacity={dividerValue.opacity}
 				defaultOpacity={defaultValue.opacity}
 				onChange={val => {

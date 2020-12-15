@@ -8,8 +8,8 @@ const { Fragment, useState } = wp.element;
 /**
  * Internal dependencies
  */
-import __experimentalOpacityControl from '../opacity-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import OpacityControl from '../opacity-control';
+import FancyRadioControl from '../fancy-radio-control';
 import BackgroundControl from '../background-control';
 import SizeControl from '../size-control';
 
@@ -228,7 +228,7 @@ const ShapeDividerControl = props => {
 
 	return (
 		<div className='maxi-shapedividercontrol'>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label=''
 				selected={shapeDividerStatus}
 				options={[
@@ -239,7 +239,7 @@ const ShapeDividerControl = props => {
 			/>
 			{shapeDividerStatus === 'top' && (
 				<Fragment>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Enable Top Shape Divider', 'maxi-blocks')}
 						selected={shapeDividerTopOptions.status}
 						options={[
@@ -253,7 +253,7 @@ const ShapeDividerControl = props => {
 					/>
 					{!!shapeDividerTopOptions.status && (
 						<Fragment>
-							<__experimentalFancyRadioControl
+							<FancyRadioControl
 								label={__(
 									'Enable Scroll Effect',
 									'maxi-blocks'
@@ -302,7 +302,7 @@ const ShapeDividerControl = props => {
 									/>
 								)}
 							/>
-							<__experimentalOpacityControl
+							<OpacityControl
 								opacity={shapeDividerTopOptions.opacity}
 								defaultOpacity={
 									defaultShapeDividerTopOptions.opacity
@@ -356,7 +356,7 @@ const ShapeDividerControl = props => {
 			)}
 			{shapeDividerStatus === 'bottom' && (
 				<Fragment>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Enable Bottom Shape Divider', 'maxi-blocks')}
 						selected={shapeDividerBottomOptions.status}
 						options={[
@@ -370,7 +370,7 @@ const ShapeDividerControl = props => {
 					/>
 					{!!shapeDividerBottomOptions.status && (
 						<Fragment>
-							<__experimentalFancyRadioControl
+							<FancyRadioControl
 								label={__(
 									'Enable Scroll Effect',
 									'maxi-blocks'
@@ -419,7 +419,7 @@ const ShapeDividerControl = props => {
 									/>
 								)}
 							/>
-							<__experimentalOpacityControl
+							<OpacityControl
 								opacity={shapeDividerBottomOptions.opacity}
 								defaultOpacity={
 									defaultShapeDividerBottomOptions.opacity

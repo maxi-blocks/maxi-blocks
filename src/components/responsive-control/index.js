@@ -12,7 +12,6 @@ import __experimentalNumberControl from '../number-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
 
 /**
  * Component

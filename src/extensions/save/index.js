@@ -27,13 +27,13 @@ const allowedBlocks = [
  */
 
 const withSave = (element, blockType, attributes) => {
+	const linkSettings = { ...attributes.linkSettings };
+
 	if (
 		allowedBlocks.includes(blockType.name) &&
-		!!attributes.linkSettings &&
-		!!JSON.parse(attributes.linkSettings).url
+		!!linkSettings &&
+		!!linkSettings.url
 	) {
-		const linkSettings = JSON.parse(attributes.linkSettings);
-
 		let rel = '';
 		if (linkSettings.nofollow) rel += ' nofollow';
 		if (linkSettings.sponsored) rel += ' sponsored';

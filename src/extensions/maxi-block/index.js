@@ -52,9 +52,7 @@ class MaxiBlock extends Component {
 	}
 
 	get getBreakpoints() {
-		const { breakpoints } = this.props.attributes;
-
-		return JSON.parse(breakpoints);
+		return { ...this.props.attributes.breakpoints };
 	}
 
 	// eslint-disable-next-line class-methods-use-this

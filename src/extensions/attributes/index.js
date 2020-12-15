@@ -63,8 +63,8 @@ const addAttributes = settings => {
 				type: 'boolean',
 			},
 			linkSettings: {
-				type: 'string',
-				default: '{}',
+				type: 'object',
+				default: {},
 			},
 			extraClassName: {
 				type: 'string',
@@ -99,8 +99,15 @@ const addAttributes = settings => {
 			},
 			breakpoints: {
 				type: 'string',
-				default:
-					'{"label":"Breakpoints","general":"","xl":"","l":"","m":"","s":"","xs":""}',
+				default: {
+					label: 'Breakpoints',
+					general: '',
+					xl: '',
+					l: '',
+					m: '',
+					s: '',
+					xs: '',
+				},
 			},
 		});
 	}
@@ -135,10 +142,11 @@ const uniqueIdCreator = name => {
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
 		const {
-			attributes: { uniqueID, breakpoints },
+			attributes: { uniqueID },
 			name,
 			clientId,
 		} = props;
+		const breakpoints = { ...props.attributes.breakpoints };
 
 		if (allowedBlocks.includes(name)) {
 			// uniqueID
@@ -163,19 +171,15 @@ const withAttributes = createHigherOrderComponent(
 			const defaultBreakpoints = select(
 				'maxiBlocks'
 			).receiveMaxiBreakpoints();
-			const value = JSON.parse(breakpoints);
 
-			if (!isNumber(value.xl) && !isEmpty(defaultBreakpoints)) {
-				const response = {
+			if (!isNumber(breakpoints.xl) && !isEmpty(defaultBreakpoints))
+				props.attributes.breakpoints = {
 					xl: defaultBreakpoints.xl,
 					l: defaultBreakpoints.l,
 					m: defaultBreakpoints.m,
 					s: defaultBreakpoints.s,
 					xs: defaultBreakpoints.xs,
 				};
-
-				props.attributes.breakpoints = JSON.stringify(response);
-			}
 		}
 
 		return <BlockEdit {...props} />;

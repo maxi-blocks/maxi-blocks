@@ -1,3 +1,5 @@
+import { FancyRadioControl } from '..';
+
 /**
  * WordPress Dependencies
  */
@@ -11,10 +13,12 @@ const { Fragment } = wp.element;
 const BlockStylesControl = props => {
 	const {
 		blockStyle,
-		onChangeBlockStyle,
 		defaultBlockStyle,
-		onChangeDefaultBlockStyle,
+		isHighlight,
+		blockStyleBackground,
+		onChange,
 		isFirstOnHierarchy,
+		disableHighlight = false,
 	} = props;
 
 	const getSelectorOptions = () => {
@@ -36,7 +40,7 @@ const BlockStylesControl = props => {
 				label={__('Block Style', 'maxi-blocks')}
 				value={blockStyle}
 				options={getSelectorOptions()}
-				onChange={value => onChangeBlockStyle(value)}
+				onChange={blockStyle => onChange({ blockStyle })}
 			/>
 			{blockStyle === 'maxi-custom' && (
 				<SelectControl
@@ -53,8 +57,42 @@ const BlockStylesControl = props => {
 							value: 'maxi-def-light',
 						},
 					]}
-					onChange={value => onChangeDefaultBlockStyle(value)}
+					onChange={defaultBlockStyle =>
+						onChange({ defaultBlockStyle })
+					}
 				/>
+			)}
+			{blockStyle !== 'maxi-custom' && (
+				<Fragment>
+					{!disableHighlight && (
+						<FancyRadioControl
+							label={__('Highlight', 'maxi-blocks')}
+							selected={isHighlight}
+							options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 1 },
+								{ label: __('No', 'maxi-blocks'), value: 0 },
+							]}
+							onChange={isHighlight =>
+								onChange({ isHighlight: +isHighlight })
+							}
+						/>
+					)}
+					{isFirstOnHierarchy && (
+						<FancyRadioControl
+							label={__('Background colour', 'maxi-blocks')}
+							selected={blockStyleBackground}
+							options={[
+								{ label: 1, value: 1 },
+								{ label: 2, value: 2 },
+							]}
+							onChange={blockStyleBackground =>
+								onChange({
+									blockStyleBackground: +blockStyleBackground,
+								})
+							}
+						/>
+					)}
+				</Fragment>
 			)}
 		</Fragment>
 	);

@@ -36,17 +36,25 @@ const allowedBlocks = [
  * @param {Object} settings Original block settings.
  * @return {Object} Filtered block settings.
  */
-function addAttributes(settings) {
+const addAttributes = settings => {
 	// Add custom selector/id
 	if (allowedBlocks.includes(settings.name) && !isNil(settings.attributes)) {
 		settings.attributes = Object.assign(settings.attributes, {
 			blockStyle: {
 				type: 'string',
-				default: 'maxi-custom',
+				default: null,
 			},
 			defaultBlockStyle: {
 				type: 'string',
 				default: 'maxi-def-light',
+			},
+			isHighlight: {
+				type: 'number',
+				default: 0,
+			},
+			blockStyleBackground: {
+				type: 'number',
+				default: 1,
 			},
 			uniqueID: {
 				type: 'string',
@@ -82,7 +90,7 @@ function addAttributes(settings) {
 	}
 
 	return settings;
-}
+};
 
 const uniqueIdCreator = name => {
 	const newID = uniqueId(`${name.replace('maxi-blocks/', '')}-`);

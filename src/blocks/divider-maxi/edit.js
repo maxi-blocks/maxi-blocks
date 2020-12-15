@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-const { Fragment } = wp.element;
 const { __experimentalBlock } = wp.blockEditor;
 const { ResizableBox } = wp.components;
 const { compose } = wp.compose;
@@ -135,6 +134,8 @@ class edit extends MaxiBlock {
 				uniqueID,
 				blockStyle,
 				defaultBlockStyle,
+				blockStyleBackground,
+				isHighlight,
 				lineOrientation,
 				extraClassName,
 				fullWidth,
@@ -162,6 +163,9 @@ class edit extends MaxiBlock {
 			getLastBreakpointValue(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
+			blockStyle !== 'maxi-custom' &&
+				`maxi-background--${blockStyleBackground}`,
+			!!isHighlight && 'maxi-highlight--divider',
 			extraClassName,
 			uniqueID,
 			className,
@@ -228,9 +232,7 @@ class edit extends MaxiBlock {
 					>
 						<BackgroundDisplayer background={background} />
 						{dividerValue.general['border-style'] !== 'none' && (
-							<Fragment>
-								<hr className='maxi-divider-block__divider' />
-							</Fragment>
+							<hr className='maxi-divider-block__divider' />
 						)}
 					</__experimentalBlock>
 				</MotionPreview>

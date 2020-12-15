@@ -182,6 +182,7 @@ class edit extends MaxiBlock {
 				blockStyle,
 				extraClassName,
 				defaultBlockStyle,
+				blockStyleBackground,
 				background,
 				rowPattern,
 				display,
@@ -206,6 +207,8 @@ class edit extends MaxiBlock {
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
+			blockStyle !== 'maxi-custom' &&
+				`maxi-background--${blockStyleBackground}`,
 			extraClassName,
 			className
 		);

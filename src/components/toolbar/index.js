@@ -3,7 +3,6 @@
  */
 const { Popover } = wp.components;
 const { Fragment, useEffect, useState } = wp.element;
-const { select } = wp.data;
 
 /**
  * Internal dependencies
@@ -114,6 +113,8 @@ const MaxiToolbar = props => {
 		formatValue,
 		deviceType,
 		toggleHandlers,
+		hasThirdColour,
+		changeSVGContent,
 	} = props;
 
 	const [anchorRef, setAnchorRef] = useState(
@@ -125,60 +126,6 @@ const MaxiToolbar = props => {
 	});
 
 	if (!allowedBlocks.includes(name)) return null;
-
-	function getThirdSvgColor() {
-		const current_content = select('core/block-editor').getSelectedBlock()
-			.attributes.content;
-
-		if (current_content.indexOf('maxi-svg-color-third') !== -1) return true;
-		return false;
-	}
-
-	function changeContent(color, colorNumber) {
-		let colorClass = '';
-		switch (colorNumber) {
-			case 1:
-				colorClass = 'maxi-svg-color-first';
-				break;
-			case 2:
-				colorClass = 'maxi-svg-color-second';
-				break;
-			case 3:
-				colorClass = 'maxi-svg-color-third';
-				break;
-			default:
-				return;
-		}
-
-		if (colorClass !== '') {
-			const { clientId } = select('core/block-editor').getSelectedBlock();
-			const current_content = select(
-				'core/block-editor'
-			).getSelectedBlock().attributes.content;
-			const regex_line_to_change = new RegExp(
-				`${colorClass}" fill=".+?(?= )`,
-				'g'
-			);
-			const regex_line_to_change2 = new RegExp(
-				`${colorClass}" stroke=".+?(?= )`,
-				'g'
-			);
-			const change_to = `${colorClass}" fill="${color}"`;
-			const change_to2 = `${colorClass}" stroke="${color}"`;
-			let new_content = current_content.replace(
-				regex_line_to_change,
-				change_to
-			);
-			new_content = new_content.replace(
-				regex_line_to_change2,
-				change_to2
-			);
-
-			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				content: new_content,
-			});
-		}
-	}
 
 	return (
 		<Fragment>
@@ -352,7 +299,7 @@ const MaxiToolbar = props => {
 									svgColor={svgColorOrange}
 									onChange={svgColorOrange => {
 										setAttributes({ svgColorOrange });
-										changeContent(svgColorOrange, 1);
+										changeSVGContent(svgColorOrange, 1);
 									}}
 								/>
 								<SvgColor
@@ -360,16 +307,16 @@ const MaxiToolbar = props => {
 									svgColor={svgColorBlack}
 									onChange={svgColorBlack => {
 										setAttributes({ svgColorBlack });
-										changeContent(svgColorBlack, 2);
+										changeSVGContent(svgColorBlack, 2);
 									}}
 								/>
-								{getThirdSvgColor() && (
+								{hasThirdColour && (
 									<SvgColor
 										blockName={name}
 										svgColor={svgColorWhite}
 										onChange={svgColorWhite => {
 											setAttributes({ svgColorWhite });
-											changeContent(svgColorWhite, 3);
+											changeSVGContent(svgColorWhite, 3);
 										}}
 									/>
 								)}

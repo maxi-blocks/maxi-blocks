@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import { alignment, margin } from './data';
+import { alignment } from './data';
 
 /**
  * Attributes
@@ -87,7 +87,7 @@ const attributes = {
 	},
 	margin: {
 		type: 'string',
-		default: JSON.stringify(margin),
+		default: JSON.stringify(attributesData.margin),
 	},
 	padding: {
 		type: 'string',

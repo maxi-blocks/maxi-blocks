@@ -18,7 +18,6 @@ import { isObject } from 'lodash';
 const BlockStylesControl = props => {
 	const {
 		blockStyle,
-		breakpoint,
 		defaultBlockStyle,
 		blockStyleBackground,
 		onChange,

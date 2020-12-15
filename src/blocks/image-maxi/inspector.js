@@ -184,6 +184,10 @@ const Inspector = props => {
 										disableHighlightBorder
 										disableHighlightColor1
 										disableHighlightColor2
+										border={border}
+										onChangeBorder={border =>
+											setAttributes({ border })
+										}
 									/>
 								</div>
 								<AccordionControl

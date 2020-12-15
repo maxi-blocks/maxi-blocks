@@ -36,6 +36,15 @@ import { isNil, isObject } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
+	constructor(props) {
+		super(props);
+		this.buttonRef = React.createRef();
+	}
+
+	componentDidMount() {
+		this.buttonRef.current.focus();
+	}
+
 	get getObject() {
 		const { uniqueID, typography, typographyHover } = this.props.attributes;
 
@@ -235,6 +244,7 @@ class edit extends MaxiBlock {
 					<div className={buttonClasses}>
 						{iconValue.icon && <i className={iconValue.icon} />}
 						<RichText
+							ref={this.buttonRef}
 							withoutInteractiveFormatting
 							placeholder={__('Set some text…', 'maxi-blocks')}
 							value={content}

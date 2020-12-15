@@ -46,6 +46,11 @@ import { isEmpty, isObject, isNil } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
+	constructor(props) {
+		super(props);
+		this.TextRef = React.createRef();
+	}
+
 	get getObject() {
 		const {
 			uniqueID,
@@ -182,6 +187,8 @@ class edit extends MaxiBlock {
 		}
 
 		this.displayStyles();
+
+		this.TextRef.current.focus();
 	}
 
 	render() {
@@ -250,6 +257,7 @@ class edit extends MaxiBlock {
 					/>
 					{!isList && (
 						<RichText
+							ref={this.TextRef}
 							className='maxi-text-block__content'
 							value={content}
 							onChange={content => {

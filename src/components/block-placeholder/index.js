@@ -5,9 +5,15 @@ const { ButtonBlockerAppender } = wp.blockEditor;
 const { useDispatch } = wp.data;
 
 /**
+ * Internal dependencies
+ */
+import getClosest from './getClosest';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNull } from 'lodash';
 
 /**
  * Styles
@@ -25,7 +31,15 @@ const BlockPlaceholder = props => {
 	const { selectBlock } = useDispatch('core/editor');
 
 	return (
-		<div className={classes} onClick={() => selectBlock(clientId)}>
+		<div
+			className={classes}
+			onClick={e => {
+				e.preventDefault();
+				isNull(
+					getClosest(e.target, '.maxi-block-placeholder__button')
+				) && selectBlock(clientId);
+			}}
+		>
 			<p className='maxi-block-placeholder__text'>{content}</p>
 			<ButtonBlockerAppender
 				rootClientId={clientId}

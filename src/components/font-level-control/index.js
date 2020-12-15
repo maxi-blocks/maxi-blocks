@@ -92,7 +92,6 @@ const FontLevelControl = props => {
 			fontOptResponseHover = state[`${value}Hover`];
 			marginOptResponse = state[`${value}Margin`];
 		} else if (!isNil(fontOptions)) {
-			console.log('2');
 			const oldFontOptions = !isObject(fontOptions)
 				? JSON.parse(fontOptions)
 				: fontOptions;

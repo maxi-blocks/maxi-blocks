@@ -87,11 +87,11 @@ const save = props => {
 					className={classes}
 					data-gx_initial_block_class={defaultBlockStyle}
 				>
-					<BackgroundDisplayer background={background} />
 					{!!shapeDividerValue.top.status && (
 						<ShapeDivider shapeDividerOptions={shapeDivider} />
 					)}
 					<div className='maxi-container-block__wrapper'>
+						<BackgroundDisplayer background={background} />
 						<InnerBlocks.Content />
 					</div>
 					{!!shapeDividerValue.bottom.status && (

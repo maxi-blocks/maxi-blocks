@@ -60,16 +60,15 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			data-align={dataAlign}
 			data-gx_initial_block_class={maxiBlockClass}
 		>
-			<BackgroundDisplayer
-				background={background}
-				blockClassName={uniqueID}
-			/>
-
 			{!!shapeDividerValue.top.status && (
 				<ShapeDivider shapeDividerOptions={shapeDivider} />
 			)}
 
 			<div className='maxi-container-block__wrapper'>
+				<BackgroundDisplayer
+					background={background}
+					blockClassName={uniqueID}
+				/>
 				<div className='maxi-container-block__container'>
 					{children}
 				</div>

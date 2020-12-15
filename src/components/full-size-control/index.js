@@ -105,13 +105,13 @@ const FullSizeControl = props => {
 
 			<__experimentalFancyRadioControl
 				label={__('Advanced Width/Height', 'maxi-blocks')}
-				selected={value[breakpoint].advancedOptions}
+				selected={value.advancedOptions}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
 				onChange={val => {
-					value[breakpoint].advancedOptions = Number(val);
+					value.advancedOptions = Number(val);
 					onChange(JSON.stringify(value));
 					if (!Number(val)) {
 						onChangeValue(
@@ -136,7 +136,7 @@ const FullSizeControl = props => {
 					}
 				}}
 			/>
-			{!!value[breakpoint].advancedOptions && (
+			{!!value.advancedOptions && (
 				<Fragment>
 					<SizeControl
 						label={__('Max Width', 'maxi-blocks')}

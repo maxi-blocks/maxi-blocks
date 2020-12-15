@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { SelectControl, TextControl } = wp.components;
+const { TextControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -116,11 +116,15 @@ const Inspector = props => {
 											label: __('Line', 'maxi-blocks'),
 											content: (
 												<Fragment>
-													<SelectControl
+													<FancyRadioControl
+														fullWidthMode
 														label={__(
 															'Line Orientation',
 															'maxi-blocks'
 														)}
+														selected={
+															lineOrientation
+														}
 														options={[
 															{
 																label: __(
@@ -139,18 +143,19 @@ const Inspector = props => {
 																	'vertical',
 															},
 														]}
-														value={lineOrientation}
 														onChange={lineOrientation =>
 															setAttributes({
 																lineOrientation,
 															})
 														}
 													/>
-													<SelectControl
+													<FancyRadioControl
+														fullWidthMode
 														label={__(
 															'Line Vertical Position',
 															'maxi-blocks'
 														)}
+														selected={lineVertical}
 														options={[
 															{
 																label: __(
@@ -176,18 +181,21 @@ const Inspector = props => {
 																	'flex-end',
 															},
 														]}
-														value={lineVertical}
 														onChange={lineVertical =>
 															setAttributes({
 																lineVertical,
 															})
 														}
 													/>
-													<SelectControl
+													<FancyRadioControl
+														fullWidthMode
 														label={__(
 															'Line Horizontal Position',
 															'maxi-blocks'
 														)}
+														selected={
+															lineHorizontal
+														}
 														options={[
 															{
 																label: __(
@@ -213,7 +221,6 @@ const Inspector = props => {
 																	'flex-end',
 															},
 														]}
-														value={lineHorizontal}
 														onChange={lineHorizontal =>
 															setAttributes({
 																lineHorizontal,
@@ -234,6 +241,7 @@ const Inspector = props => {
 														lineOrientation={
 															lineOrientation
 														}
+														breakpoint={deviceType}
 													/>
 												</Fragment>
 											),

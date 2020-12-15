@@ -33,6 +33,12 @@ import { isNil, isObject } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
+	state = {
+		isResizing: false,
+		styles: {},
+		breakpoints: this.getBreakpoints,
+	};
+
 	get getObject() {
 		const { uniqueID, background, backgroundHover } = this.props.attributes;
 
@@ -174,8 +180,27 @@ class edit extends MaxiBlock {
 				: 'maxi-divider-block--horizontal'
 		);
 
+		const { isResizing } = this.state;
 		const sizeValue = !isObject(size) ? JSON.parse(size) : size;
 		const dividerValue = !isObject(divider) ? JSON.parse(divider) : divider;
+
+		const handleOnResizeStart = event => {
+			event.preventDefault();
+			sizeValue[deviceType].heightUnit !== 'px' &&
+				(sizeValue[deviceType].heightUnit = 'px') &&
+				setAttributes({
+					size: JSON.stringify(sizeValue),
+				});
+			this.setState({ isResizing: true });
+		};
+
+		const handleOnResizeStop = (event, direction, elt) => {
+			sizeValue[deviceType].height = elt.getBoundingClientRect().height;
+			setAttributes({
+				size: JSON.stringify(sizeValue),
+			});
+			this.setState({ isResizing: false });
+		};
 
 		return [
 			<Inspector {...this.props} />,
@@ -190,7 +215,10 @@ class edit extends MaxiBlock {
 				className={classnames(
 					'maxi-block__resizer',
 					'maxi-divider-block__resizer',
-					`maxi-divider-block__resizer__${uniqueID}`
+					`maxi-divider-block__resizer__${uniqueID}`,
+					{
+						'is-selected': isSelected,
+					}
 				)}
 				defaultSize={{
 					width: '100%',
@@ -201,27 +229,21 @@ class edit extends MaxiBlock {
 				enable={{
 					top: false,
 					right: false,
-					bottom: isSelected,
+					bottom: true,
 					left: false,
 					topRight: false,
 					bottomRight: false,
 					bottomLeft: false,
 					topLeft: false,
 				}}
-				onResizeStart={() => {
-					sizeValue[deviceType].heightUnit !== 'px' &&
-						(sizeValue[deviceType].heightUnit = 'px') &&
-						setAttributes({
-							size: JSON.stringify(sizeValue),
-						});
-				}}
-				onResizeStop={(event, direction, elt) => {
-					sizeValue[
-						deviceType
-					].height = elt.getBoundingClientRect().height;
-					setAttributes({
-						size: JSON.stringify(sizeValue),
-					});
+				onResizeStart={handleOnResizeStart}
+				onResizeStop={handleOnResizeStop}
+				showHandle={isSelected}
+				__experimentalShowTooltip
+				__experimentalTooltipProps={{
+					axis: 'y',
+					position: 'bottom',
+					isVisible: isResizing,
 				}}
 			>
 				<MotionPreview motion={motion}>

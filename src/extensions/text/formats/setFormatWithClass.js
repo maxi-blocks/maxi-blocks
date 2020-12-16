@@ -7,7 +7,7 @@ const { applyFormat } = wp.richText;
  * Internal dependencies
  */
 import getFormattedString from './getFormattedString';
-import __experimentalGetCurrentFormatClassName from './getCurrentFormatClassName';
+import GetCurrentFormatClassName from './getCurrentFormatClassName';
 import flatFormatsWithClass from './flatFormatsWithClass';
 import getMultiFormatObj from './getMultiFormatObj';
 import defaultCustomFormat from './custom/default';
@@ -434,9 +434,7 @@ const setFormatWithClass = ({
 	isHover = false,
 }) => {
 	const multiFormatObj = getMultiFormatObj(formatValue);
-	const currentClassName = __experimentalGetCurrentFormatClassName(
-		formatValue
-	);
+	const currentClassName = GetCurrentFormatClassName(formatValue);
 	const formatClassName = getFormatClassName(
 		formatValue,
 		typography,

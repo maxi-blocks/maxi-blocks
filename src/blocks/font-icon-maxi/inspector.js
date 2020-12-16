@@ -17,17 +17,17 @@ import {
 	BorderControl,
 	SettingTabsControl,
 	AlignmentControl,
-	__experimentalZIndexControl,
-	__experimentalAxisControl,
-	__experimentalResponsiveControl,
-	__experimentalPositionControl,
-	__experimentalDisplayControl,
-	__experimentalMotionControl,
-	__experimentalTransformControl,
-	__experimentalEntranceAnimationControl,
-	__experimentalFancyRadioControl,
-	__experimentalFontIconControl,
-	__experimentalCustomLabel,
+	ZIndexControl,
+	AxisControl,
+	ResponsiveControl,
+	PositionControl,
+	DisplayControl,
+	MotionControl,
+	TransformControl,
+	EntranceAnimationControl,
+	FancyRadioControl,
+	FontIconControl,
+	CustomLabel,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -96,7 +96,7 @@ const Inspector = props => {
 							content: (
 								<Fragment>
 									<div className='maxi-tab-content__box'>
-										<__experimentalCustomLabel
+										<CustomLabel
 											customLabel={customLabel}
 											onChange={customLabel =>
 												setAttributes({ customLabel })
@@ -150,7 +150,7 @@ const Inspector = props => {
 												),
 												content: (
 													<Fragment>
-														<__experimentalFontIconControl
+														<FontIconControl
 															icon={icon}
 															onChange={obj => {
 																setAttributes(
@@ -211,7 +211,7 @@ const Inspector = props => {
 																),
 																content: (
 																	<Fragment>
-																		<__experimentalFancyRadioControl
+																		<FancyRadioControl
 																			label={__(
 																				'Enable Background Hover',
 																				'maxi-blocks'
@@ -319,7 +319,7 @@ const Inspector = props => {
 																),
 																content: (
 																	<Fragment>
-																		<__experimentalFancyRadioControl
+																		<FancyRadioControl
 																			label={__(
 																				'Enable Border Hover',
 																				'maxi-blocks'
@@ -427,7 +427,7 @@ const Inspector = props => {
 																),
 																content: (
 																	<Fragment>
-																		<__experimentalFancyRadioControl
+																		<FancyRadioControl
 																			label={__(
 																				'Enable Border Hover',
 																				'maxi-blocks'
@@ -499,7 +499,7 @@ const Inspector = props => {
 												),
 												content: (
 													<Fragment>
-														<__experimentalAxisControl
+														<AxisControl
 															values={padding}
 															defaultValues={getDefaultProp(
 																clientId,
@@ -515,7 +515,7 @@ const Inspector = props => {
 															}
 															disableAuto
 														/>
-														<__experimentalAxisControl
+														<AxisControl
 															values={margin}
 															defaultValues={getDefaultProp(
 																clientId,
@@ -572,7 +572,7 @@ const Inspector = props => {
 													'maxi-blocks'
 												),
 												content: (
-													<__experimentalMotionControl
+													<MotionControl
 														motion={motion}
 														onChange={motion =>
 															setAttributes({
@@ -588,7 +588,7 @@ const Inspector = props => {
 													'maxi-blocks'
 												),
 												content: (
-													<__experimentalEntranceAnimationControl
+													<EntranceAnimationControl
 														motion={motion}
 														defaultMotion={getDefaultProp(
 															clientId,
@@ -608,7 +608,7 @@ const Inspector = props => {
 													'maxi-blocks'
 												),
 												content: (
-													<__experimentalTransformControl
+													<TransformControl
 														transform={transform}
 														onChange={transform =>
 															setAttributes({
@@ -626,7 +626,7 @@ const Inspector = props => {
 													'maxi-blocks'
 												),
 												content: (
-													<__experimentalDisplayControl
+													<DisplayControl
 														display={display}
 														onChange={display =>
 															setAttributes({
@@ -643,7 +643,7 @@ const Inspector = props => {
 													'maxi-blocks'
 												),
 												content: (
-													<__experimentalPositionControl
+													<PositionControl
 														position={position}
 														defaultPosition={getDefaultProp(
 															clientId,
@@ -664,7 +664,7 @@ const Inspector = props => {
 													'maxi-blocks'
 												),
 												content: (
-													<__experimentalResponsiveControl
+													<ResponsiveControl
 														breakpoints={
 															breakpoints
 														}
@@ -687,7 +687,7 @@ const Inspector = props => {
 													'maxi-blocks'
 												),
 												content: (
-													<__experimentalZIndexControl
+													<ZIndexControl
 														zIndex={zIndex}
 														defaultZIndex={getDefaultProp(
 															clientId,

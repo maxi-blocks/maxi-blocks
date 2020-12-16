@@ -26,19 +26,19 @@ import {
 	ImageCropControl,
 	SettingTabsControl,
 	TypographyControl,
-	__experimentalZIndexControl,
-	__experimentalAxisControl,
-	__experimentalResponsiveControl,
-	__experimentalOpacityControl,
-	__experimentalPositionControl,
-	__experimentalDisplayControl,
-	__experimentalTransformControl,
-	__experimentalClipPath,
-	__experimentalEntranceAnimationControl,
-	__experimentalHoverEffectControl,
-	__experimentalImageAltControl,
-	__experimentalFancyRadioControl,
-	__experimentalCustomLabel,
+	ZIndexControl,
+	AxisControl,
+	ResponsiveControl,
+	OpacityControl,
+	PositionControl,
+	DisplayControl,
+	TransformControl,
+	ClipPath,
+	EntranceAnimationControl,
+	HoverEffectControl,
+	ImageAltControl,
+	FancyRadioControl,
+	CustomLabel,
 } from '../../components';
 
 /**
@@ -153,7 +153,7 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
-									<__experimentalCustomLabel
+									<CustomLabel
 										customLabel={customLabel}
 										onChange={customLabel =>
 											setAttributes({ customLabel })
@@ -170,7 +170,7 @@ const Inspector = props => {
 										onChange={obj => setAttributes(obj)}
 										disableHighlight
 									/>
-									<__experimentalImageAltControl
+									<ImageAltControl
 										mediaAlt={mediaAlt}
 										altSelector={altSelector}
 										onChangeAltSelector={altSelector => {
@@ -391,7 +391,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalOpacityControl
+																	<OpacityControl
 																		opacity={
 																			opacity
 																		}
@@ -507,7 +507,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -580,7 +580,7 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													{isFirstOnHierarchy && (
-														<__experimentalFancyRadioControl
+														<FancyRadioControl
 															label={__(
 																'Full Width',
 																'maxi-blocks'
@@ -671,7 +671,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -743,7 +743,7 @@ const Inspector = props => {
 											),
 											content: (
 												<Fragment>
-													<__experimentalAxisControl
+													<AxisControl
 														values={padding}
 														defaultValues={getDefaultProp(
 															clientId,
@@ -757,7 +757,7 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														disableAuto
 													/>
-													<__experimentalAxisControl
+													<AxisControl
 														values={margin}
 														defaultValues={getDefaultProp(
 															clientId,
@@ -800,7 +800,7 @@ const Inspector = props => {
 											/>
 										</Fragment>
 									)}
-									<__experimentalZIndexControl
+									<ZIndexControl
 										zIndex={zIndex}
 										defaultZIndex={getDefaultProp(
 											clientId,
@@ -812,7 +812,7 @@ const Inspector = props => {
 										breakpoint={deviceType}
 									/>
 									{deviceType != 'general' && (
-										<__experimentalResponsiveControl
+										<ResponsiveControl
 											breakpoints={breakpoints}
 											defaultBreakpoints={getDefaultProp(
 												clientId,
@@ -824,7 +824,7 @@ const Inspector = props => {
 											breakpoint={deviceType}
 										/>
 									)}
-									<__experimentalPositionControl
+									<PositionControl
 										position={position}
 										defaultPosition={getDefaultProp(
 											clientId,
@@ -835,7 +835,7 @@ const Inspector = props => {
 										}
 										breakpoint={deviceType}
 									/>
-									<__experimentalDisplayControl
+									<DisplayControl
 										display={display}
 										onChange={display =>
 											setAttributes({ display })
@@ -843,7 +843,7 @@ const Inspector = props => {
 										breakpoint={deviceType}
 										defaultDisplay='flex'
 									/>
-									<__experimentalClipPath
+									<ClipPath
 										clipPath={clipPath}
 										onChange={clipPath =>
 											setAttributes({ clipPath })
@@ -859,7 +859,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalHoverEffectControl
+												<HoverEffectControl
 													hover={hover}
 													defaultHover={getDefaultProp(
 														clientId,
@@ -877,7 +877,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalTransformControl
+												<TransformControl
 													transform={transform}
 													onChange={transform =>
 														setAttributes({

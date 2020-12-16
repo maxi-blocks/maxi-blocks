@@ -19,7 +19,7 @@ import {
 	Border,
 	BoxShadow,
 	Mover,
-	ColumnPattern,
+	ToolbarColumnPattern,
 	Divider,
 	DividerColor,
 	DividerAlignment,
@@ -37,10 +37,10 @@ import {
 	PaddingMargin,
 	Size,
 	ToggleBlock,
-	__experimentalColumnMover,
-	__experimentalRowSettings,
-	__experimentalColumnSize,
-	__experimentalColumnsHandlers,
+	ColumnMover,
+	RowSettings,
+	ColumnSize,
+	ColumnsHandlers,
 } from './components';
 
 /**
@@ -147,10 +147,7 @@ const MaxiToolbar = props => {
 					</div>
 					<div className='toolbar-wrapper'>
 						<Mover clientId={clientId} blockName={name} />
-						<__experimentalColumnMover
-							clientId={clientId}
-							blockName={name}
-						/>
+						<ColumnMover clientId={clientId} blockName={name} />
 						<DividerColor
 							blockName={name}
 							divider={divider}
@@ -240,13 +237,13 @@ const MaxiToolbar = props => {
 							isList={isList}
 							breakpoint={deviceType}
 						/>
-						<__experimentalRowSettings
+						<RowSettings
 							blockName={name}
 							horizontalAlign={horizontalAlign}
 							verticalAlign={verticalAlign}
 							onChange={obj => setAttributes(obj)}
 						/>
-						<ColumnPattern
+						<ToolbarColumnPattern
 							clientId={clientId}
 							blockName={name}
 							rowPattern={rowPattern}
@@ -256,7 +253,7 @@ const MaxiToolbar = props => {
 							breakpoint={deviceType}
 						/>
 
-						<__experimentalColumnsHandlers
+						<ColumnsHandlers
 							toggleHandlers={toggleHandlers}
 							blockName={name}
 						/>
@@ -366,7 +363,7 @@ const MaxiToolbar = props => {
 							isFirstOnHierarchy={isFirstOnHierarchy}
 							breakpoint={deviceType}
 						/>
-						<__experimentalColumnSize
+						<ColumnSize
 							clientId={clientId}
 							blockName={name}
 							columnSize={columnSize}

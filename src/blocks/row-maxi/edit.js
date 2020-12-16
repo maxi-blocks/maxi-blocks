@@ -41,12 +41,13 @@ import { isEmpty, isNil, uniqueId, isObject } from 'lodash';
  * InnerBlocks version
  */
 const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const { children, background, className, maxiBlockClass } = props;
+	const { children, background, className, maxiBlockClass, dataAlign } = props;
 
 	return (
 		<__experimentalBlock.div
 			ref={ref}
 			className={className}
+			data-align={dataAlign}
 			data-gx_initial_block_class={maxiBlockClass}
 		>
 			<__experimentalBackgroundDisplayer background={background} />
@@ -199,6 +200,7 @@ class edit extends MaxiBlock {
 				background,
 				rowPattern,
 				display,
+				fullWidth,
 			},
 			clientId,
 			loadTemplate,
@@ -247,10 +249,10 @@ class edit extends MaxiBlock {
 				}}
 			>
 				<InnerBlocks
-					// templateLock={'insert'}
 					__experimentalTagName={ContainerInnerBlocks}
 					__experimentalPassedProps={{
 						className: classes,
+						dataAlign: fullWidth,
 						maxiBlockClass: defaultBlockStyle,
 						background,
 					}}

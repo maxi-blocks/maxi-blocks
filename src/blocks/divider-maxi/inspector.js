@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { SelectControl, TextControl } = wp.components;
+const { TextControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -16,17 +16,17 @@ import {
 	BoxShadowControl,
 	FullSizeControl,
 	SettingTabsControl,
-	__experimentalDividerControl,
-	__experimentalZIndexControl,
-	__experimentalAxisControl,
-	__experimentalResponsiveControl,
-	__experimentalPositionControl,
-	__experimentalDisplayControl,
-	__experimentalMotionControl,
-	__experimentalTransformControl,
-	__experimentalEntranceAnimationControl,
-	__experimentalFancyRadioControl,
-	__experimentalCustomLabel,
+	DividerControl,
+	ZIndexControl,
+	AxisControl,
+	ResponsiveControl,
+	PositionControl,
+	DisplayControl,
+	MotionControl,
+	TransformControl,
+	EntranceAnimationControl,
+	FancyRadioControl,
+	CustomLabel,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -91,7 +91,7 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
-									<__experimentalCustomLabel
+									<CustomLabel
 										customLabel={customLabel}
 										onChange={customLabel =>
 											setAttributes({ customLabel })
@@ -124,11 +124,15 @@ const Inspector = props => {
 											label: __('Line', 'maxi-blocks'),
 											content: (
 												<Fragment>
-													<SelectControl
+													<FancyRadioControl
+														fullWidthMode
 														label={__(
 															'Line Orientation',
 															'maxi-blocks'
 														)}
+														selected={
+															lineOrientation
+														}
 														options={[
 															{
 																label: __(
@@ -147,18 +151,19 @@ const Inspector = props => {
 																	'vertical',
 															},
 														]}
-														value={lineOrientation}
 														onChange={lineOrientation =>
 															setAttributes({
 																lineOrientation,
 															})
 														}
 													/>
-													<SelectControl
+													<FancyRadioControl
+														fullWidthMode
 														label={__(
 															'Line Vertical Position',
 															'maxi-blocks'
 														)}
+														selected={lineVertical}
 														options={[
 															{
 																label: __(
@@ -184,18 +189,21 @@ const Inspector = props => {
 																	'flex-end',
 															},
 														]}
-														value={lineVertical}
 														onChange={lineVertical =>
 															setAttributes({
 																lineVertical,
 															})
 														}
 													/>
-													<SelectControl
+													<FancyRadioControl
+														fullWidthMode
 														label={__(
 															'Line Horizontal Position',
 															'maxi-blocks'
 														)}
+														selected={
+															lineHorizontal
+														}
 														options={[
 															{
 																label: __(
@@ -221,14 +229,13 @@ const Inspector = props => {
 																	'flex-end',
 															},
 														]}
-														value={lineHorizontal}
 														onChange={lineHorizontal =>
 															setAttributes({
 																lineHorizontal,
 															})
 														}
 													/>
-													<__experimentalDividerControl
+													<DividerControl
 														divider={divider}
 														defaultDivider={getDefaultProp(
 															clientId,
@@ -242,6 +249,7 @@ const Inspector = props => {
 														lineOrientation={
 															lineOrientation
 														}
+														breakpoint={deviceType}
 													/>
 												</Fragment>
 											),
@@ -254,7 +262,7 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													{isFirstOnHierarchy && (
-														<__experimentalFancyRadioControl
+														<FancyRadioControl
 															label={__(
 																'Full Width',
 																'maxi-blocks'
@@ -346,7 +354,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Background Hover',
 																			'maxi-blocks'
@@ -454,7 +462,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -526,7 +534,7 @@ const Inspector = props => {
 											),
 											content: (
 												<Fragment>
-													<__experimentalAxisControl
+													<AxisControl
 														values={padding}
 														defaultValues={getDefaultProp(
 															clientId,
@@ -540,7 +548,7 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														disableAuto
 													/>
-													<__experimentalAxisControl
+													<AxisControl
 														values={margin}
 														defaultValues={getDefaultProp(
 															clientId,
@@ -595,7 +603,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalMotionControl
+												<MotionControl
 													motion={motion}
 													onChange={motion =>
 														setAttributes({
@@ -611,7 +619,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalEntranceAnimationControl
+												<EntranceAnimationControl
 													motion={motion}
 													defaultMotion={getDefaultProp(
 														clientId,
@@ -631,7 +639,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalTransformControl
+												<TransformControl
 													transform={transform}
 													onChange={transform =>
 														setAttributes({
@@ -646,7 +654,7 @@ const Inspector = props => {
 										{
 											label: __('Display', 'maxi-blocks'),
 											content: (
-												<__experimentalDisplayControl
+												<DisplayControl
 													display={display}
 													onChange={display =>
 														setAttributes({
@@ -663,7 +671,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalPositionControl
+												<PositionControl
 													position={position}
 													defaultPosition={getDefaultProp(
 														clientId,
@@ -684,7 +692,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalResponsiveControl
+												<ResponsiveControl
 													breakpoints={breakpoints}
 													defaultBreakpoints={getDefaultProp(
 														clientId,
@@ -702,7 +710,7 @@ const Inspector = props => {
 										{
 											label: __('Z-index', 'maxi-blocks'),
 											content: (
-												<__experimentalZIndexControl
+												<ZIndexControl
 													zIndex={zIndex}
 													defaultZIndex={getDefaultProp(
 														clientId,

@@ -77,7 +77,7 @@ const FontLevelControl = props => {
 				? JSON.parse(marginOptions)
 				: marginOptions,
 
-			[state.lastLevel]: value,
+			lastLevel: value,
 		});
 	};
 

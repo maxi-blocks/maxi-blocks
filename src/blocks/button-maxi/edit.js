@@ -19,12 +19,8 @@ import {
 	getLastBreakpointValue,
 	getIconObject,
 } from '../../utils';
-import {
-	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalMotionPreview,
-} from '../../components';
-import { __experimentalGetFormatValue } from '../../extensions/text/formats';
+import { MaxiBlock, Toolbar, MotionPreview } from '../../components';
+import { getFormatValue } from '../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -232,8 +228,8 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
-			<__experimentalMotionPreview motion={motion}>
+			<Toolbar {...this.props} />,
+			<MotionPreview motion={motion}>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
@@ -249,7 +245,7 @@ class edit extends MaxiBlock {
 						/>
 					</div>
 				</__experimentalBlock>
-			</__experimentalMotionPreview>,
+			</MotionPreview>,
 		];
 	}
 }
@@ -264,7 +260,7 @@ export default withSelect((select, ownProps) => {
 		multilineWrapperTags: isList ? typeOfList : undefined,
 		__unstableIsEditableTree: true,
 	};
-	const formatValue = __experimentalGetFormatValue(formatElement);
+	const formatValue = getFormatValue(formatElement);
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 

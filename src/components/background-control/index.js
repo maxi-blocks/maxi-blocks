@@ -9,7 +9,7 @@ const { Icon } = wp.components;
  * Internal dependencies
  */
 import BackgroundLayersControl from './backgroundLayersControl';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 import ColorLayer from './colorLayer';
 import ImageLayer from './imageLayer';
 import VideoLayer from './videoLayer';
@@ -119,7 +119,7 @@ const BackgroundControl = props => {
 				/>
 			)}
 			{getOptions().length > 1 && !backgroundValue.layersOptions.status && (
-				<__experimentalFancyRadioControl
+				<FancyRadioControl
 					label={__('Background', 'maxi-blocks')}
 					fullWidthMode
 					selected={backgroundValue.activeMedia}

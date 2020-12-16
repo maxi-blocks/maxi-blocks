@@ -20,7 +20,7 @@ import FontIconPicker from '../font-icon-picker';
 import AxisControl from '../axis-control';
 import BorderControl from '../border-control';
 import BackgroundControl from '../background-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 import { getLastBreakpointValue, getDefaultProp } from '../../utils';
 import * as defaultPresets from './defaults';
 
@@ -198,7 +198,7 @@ const FontIconControl = props => {
 								max={99}
 							/>
 
-							<__experimentalFancyRadioControl
+							<FancyRadioControl
 								label={__('Icon Position', 'maxi-blocks')}
 								selected={iconValue.position}
 								options={[
@@ -243,7 +243,7 @@ const FontIconControl = props => {
 						/>
 					)}
 					{getOptions().length > 1 && (
-						<__experimentalFancyRadioControl
+						<FancyRadioControl
 							label=''
 							selected={activeOption}
 							options={getOptions()}
@@ -343,7 +343,7 @@ const FontIconControl = props => {
 					)}
 
 					{!simpleMode && (
-						<__experimentalFancyRadioControl
+						<FancyRadioControl
 							label={__('Use Custom Padding', 'maxi-blocks')}
 							selected={iconValue.customPadding}
 							options={[

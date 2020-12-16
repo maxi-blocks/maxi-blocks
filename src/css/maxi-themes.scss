@@ -153,9 +153,11 @@ body.maxi-blocks--active {
 
 				&--color1 {
 					&.maxi-svg-icon-block {
-						svg path {
-							&.maxi-svg-color-first {
-								fill: var(--maxi-light-highlight-color1) !important;
+						.maxi-svg-icon-block__icon {
+							svg path {
+								&.maxi-svg-color-first {
+									fill: var(--maxi-light-highlight-color1) !important;
+								}
 							}
 						}
 					}
@@ -163,8 +165,10 @@ body.maxi-blocks--active {
 
 				&--color2 {
 					&.maxi-svg-icon-block {
-						svg path {
-							stroke: var(--maxi-light-highlight-color2) !important;
+						.maxi-svg-icon-block__icon {
+							svg path {
+								stroke: var(--maxi-light-highlight-color2) !important;
+							}
 						}
 					}
 				}

@@ -129,9 +129,7 @@ class edit extends MaxiBlock {
 			attributes: {
 				uniqueID,
 				defaultBlockStyle,
-				isHighlightText,
-				isHighlightBackground,
-				isHighlightBorder,
+				highlight,
 				blockStyle,
 				blockStyleBackground,
 				extraClassName,
@@ -146,6 +144,9 @@ class edit extends MaxiBlock {
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
 		const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
+		const highlightValue = !isObject(highlight)
+			? JSON.parse(highlight)
+			: highlight;
 
 		const classes = classnames(
 			'maxi-block',
@@ -156,9 +157,10 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!isHighlightText && 'maxi-highlight--text',
-			!!isHighlightBackground && 'maxi-highlight--background',
-			!!isHighlightBorder && 'maxi-highlight--border',
+			!!highlightValue.textHighlight && 'maxi-highlight--text',
+			!!highlightValue.backgroundHighlight &&
+				'maxi-highlight--background',
+			!!highlightValue.borderHighlight && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className
@@ -167,7 +169,10 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector {...this.props} />,
 			<Toolbar {...this.props} />,
-			<__experimentalBlock className={classes}>
+			<__experimentalBlock
+				className={classes}
+				data-maxi_initial_block_class={defaultBlockStyle}
+			>
 				<BackgroundDisplayer background={background} />
 				{(!!iconValue.icon && (
 					<span className='maxi-font-icon-block__icon'>

@@ -23,7 +23,7 @@ const save = props => {
 		attributes: {
 			uniqueID,
 			blockStyle,
-			isHighlightBorder,
+			highlight,
 			defaultBlockStyle,
 			background,
 			extraClassName,
@@ -35,12 +35,15 @@ const save = props => {
 	} = props;
 
 	const dividerValue = !isObject(divider) ? JSON.parse(divider) : divider;
+	const highlightValue = !isObject(highlight)
+		? JSON.parse(highlight)
+		: highlight;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-divider-block',
 		blockStyle,
-		!!isHighlightBorder && 'maxi-highlight--border',
+		!!highlightValue.borderHighlight && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,

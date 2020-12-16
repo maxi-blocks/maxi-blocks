@@ -190,9 +190,7 @@ class edit extends MaxiBlock {
 				uniqueID,
 				blockStyle,
 				defaultBlockStyle,
-				isHighlightText,
-				isHighlightBackground,
-				isHighlightBorder,
+				highlight,
 				blockStyleBackground,
 				extraClassName,
 				background,
@@ -220,6 +218,9 @@ class edit extends MaxiBlock {
 		const name = 'maxi-blocks/text-maxi';
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+		const highlightValue = !isObject(highlight)
+			? JSON.parse(highlight)
+			: highlight;
 
 		const classes = classnames(
 			'maxi-block',
@@ -230,9 +231,10 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!isHighlightText && 'maxi-highlight--text',
-			!!isHighlightBackground && 'maxi-highlight--background',
-			!!isHighlightBorder && 'maxi-highlight--border',
+			!!highlightValue.textHighlight && 'maxi-highlight--text',
+			!!highlightValue.backgroundHighlight &&
+				'maxi-highlight--background',
+			!!highlightValue.borderHighlight && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className

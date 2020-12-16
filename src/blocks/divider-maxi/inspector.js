@@ -47,7 +47,7 @@ const Inspector = props => {
 			blockStyle,
 			defaultBlockStyle,
 			blockStyleBackground,
-			isHighlightBorder,
+			highlight,
 			lineVertical,
 			lineHorizontal,
 			lineOrientation,
@@ -103,18 +103,16 @@ const Inspector = props => {
 										blockStyleBackground={
 											blockStyleBackground
 										}
-										isHighlightBorder={isHighlightBorder}
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
-										onChange={obj => setAttributes(obj)}
+										highlight={highlight}
+										onChange={highlight =>
+											setAttributes({ highlight })
+										}
 										disableHighlightText
 										disableHighlightBackground
 										disableHighlightColor1
 										disableHighlightColor2
-										border={divider}
-										onChangeBorder={divider =>
-											setAttributes({ divider })
-										}
 									/>
 								</div>
 								<AccordionControl

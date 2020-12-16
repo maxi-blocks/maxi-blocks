@@ -8,7 +8,7 @@ import { BackgroundDisplayer } from '../../components';
  */
 import classnames from 'classnames';
 import { RawHTML } from '@wordpress/element';
-import { isNil } from 'lodash';
+import { isNil, isObject } from 'lodash';
 
 /**
  * Save
@@ -19,10 +19,7 @@ const save = props => {
 		attributes: {
 			uniqueID,
 			blockStyle,
-			isHighlightBackground,
-			isHighlightBorder,
-			isHighlightColor1,
-			isHighlightColor2,
+			highlight,
 			defaultBlockStyle,
 			background,
 			extraClassName,
@@ -31,14 +28,18 @@ const save = props => {
 		},
 	} = props;
 
+	const highlightValue = !isObject(highlight)
+		? JSON.parse(highlight)
+		: highlight;
+
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-svg-icon-block',
 		blockStyle,
-		!!isHighlightBackground && 'maxi-highlight--background',
-		!!isHighlightBorder && 'maxi-highlight--border',
-		!!isHighlightColor1 && 'maxi-highlight--color1',
-		!!isHighlightColor2 && 'maxi-highlight--color2',
+		!!highlightValue.backgroundHighlight && 'maxi-highlight--background',
+		!!highlightValue.borderHighlight && 'maxi-highlight--border',
+		!!highlightValue.color1Highlight && 'maxi-highlight--color1',
+		!!highlightValue.color2Highlight && 'maxi-highlight--color2',
 		extraClassName,
 		uniqueID,
 		className,
@@ -52,7 +53,7 @@ const save = props => {
 			data-motion={motion}
 			data-motion-id={uniqueID}
 		>
-			<RawHTML>{content}</RawHTML>
+			<RawHTML className='maxi-svg-icon-block__icon'>{content}</RawHTML>
 			<BackgroundDisplayer background={background} />
 		</div>
 	);

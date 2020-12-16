@@ -46,9 +46,7 @@ const Inspector = props => {
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
-			isHighlightText,
-			isHighlightBackground,
-			isHighlightBorder,
+			highlight,
 			defaultBlockStyle,
 			blockStyleBackground,
 			background,
@@ -108,13 +106,6 @@ const Inspector = props => {
 										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
-											isHighlightText={isHighlightText}
-											isHighlightBackground={
-												isHighlightBackground
-											}
-											isHighlightBorder={
-												isHighlightBorder
-											}
 											blockStyleBackground={
 												blockStyleBackground
 											}
@@ -124,7 +115,10 @@ const Inspector = props => {
 											isFirstOnHierarchy={
 												isFirstOnHierarchy
 											}
-											onChange={obj => setAttributes(obj)}
+											highlight={highlight}
+											onChange={highlight =>
+												setAttributes({ highlight })
+											}
 											disableHighlightColor1
 											disableHighlightColor2
 											border={border}

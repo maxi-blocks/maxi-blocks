@@ -23,9 +23,7 @@ const save = props => {
 			uniqueID,
 			blockStyle,
 			defaultBlockStyle,
-			isHighlightText,
-			isHighlightBackground,
-			isHighlightBorder,
+			highlight,
 			background,
 			linkSettings,
 			content,
@@ -37,14 +35,17 @@ const save = props => {
 	} = props;
 
 	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
+	const highlightValue = !isObject(highlight)
+		? JSON.parse(highlight)
+		: highlight;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-button-extra',
 		blockStyle,
-		!!isHighlightText && 'maxi-highlight--text',
-		!!isHighlightBackground && 'maxi-highlight--background',
-		!!isHighlightBorder && 'maxi-highlight--border',
+		!!highlightValue.textHighlight && 'maxi-highlight--text',
+		!!highlightValue.backgroundHighlight && 'maxi-highlight--background',
+		!!highlightValue.borderHighlight && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,

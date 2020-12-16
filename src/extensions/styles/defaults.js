@@ -1703,3 +1703,12 @@ export const transform = {
 		originY: '',
 	},
 };
+
+export const highlight = {
+	label: 'Highlight',
+	backgroundHighlight: 0,
+	textHighlight: 0,
+	borderHighlight: 0,
+	color1Highlight: 0,
+	color2Highlight: 0,
+};

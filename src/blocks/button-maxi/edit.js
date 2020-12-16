@@ -4,6 +4,7 @@
 const { __ } = wp.i18n;
 const { withSelect } = wp.data;
 const { __experimentalBlock, RichText } = wp.blockEditor;
+const { createRef } = wp.element;
 
 /**
  * Internal dependencies
@@ -38,7 +39,7 @@ import { isNil, isObject } from 'lodash';
 class edit extends MaxiBlock {
 	constructor(props) {
 		super(props);
-		this.buttonRef = React.createRef();
+		this.buttonRef = createRef();
 	}
 
 	componentDidMount() {

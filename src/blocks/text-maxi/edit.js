@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { compose } = wp.compose;
-const { Fragment } = wp.element;
+const { Fragment, createRef } = wp.element;
 const { createBlock } = wp.blocks;
 const { select, withSelect, withDispatch } = wp.data;
 const { __experimentalBlock, RichText, RichTextShortcut } = wp.blockEditor;
@@ -48,7 +48,7 @@ import { isEmpty, isObject, isNil } from 'lodash';
 class edit extends MaxiBlock {
 	constructor(props) {
 		super(props);
-		this.TextRef = React.createRef();
+		this.textRef = createRef();
 	}
 
 	get getObject() {
@@ -188,7 +188,7 @@ class edit extends MaxiBlock {
 
 		this.displayStyles();
 
-		this.TextRef.current.focus();
+		this.textRef.current.focus();
 	}
 
 	render() {
@@ -257,7 +257,7 @@ class edit extends MaxiBlock {
 					/>
 					{!isList && (
 						<RichText
-							ref={this.TextRef}
+							ref={this.textRef}
 							className='maxi-text-block__content'
 							value={content}
 							onChange={content => {

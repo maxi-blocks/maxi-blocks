@@ -59,7 +59,7 @@ const attributes = {
 	},
 	sizeContainer: {
 		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalContainer),
+		default: JSON.stringify(attributesData.container),
 	},
 	boxShadow: {
 		type: 'string',

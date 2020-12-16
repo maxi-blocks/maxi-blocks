@@ -259,7 +259,7 @@ const ColumnPatternsInspector = props => {
 		const newColumnsSizes = [];
 		const columnsPositions = getColumnsPositions(sizes);
 
-		const gap = 2.5;
+		const gap = 2;
 
 		sizes.forEach((column, i) => {
 			if (columnsPositions[i].columnsNumber > 1) {
@@ -310,7 +310,7 @@ const ColumnPatternsInspector = props => {
 			).style.width = sizesWithGaps[j];
 
 			if (columnsPositions[j].rowNumber > 1) {
-				newColumnMargin[breakpoint]['margin-top'] = 2.5;
+				newColumnMargin[breakpoint]['margin-top'] = 2;
 				newColumnMargin[breakpoint].unit = 'em';
 			}
 

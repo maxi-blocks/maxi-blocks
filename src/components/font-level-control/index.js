@@ -9,7 +9,6 @@ const { useState } = wp.element;
  * Internal dependencies
  */
 import defaultTypography from '../../extensions/defaults/typography';
-import defaultMargin from '../../extensions/defaults/margin';
 import { getDefaultProp } from '../../utils';
 
 /**
@@ -104,14 +103,12 @@ const FontLevelControl = props => {
 			fontOptResponseHover = JSON.parse(
 				getDefaultProp(null, 'typographyHover')
 			);
-			marginOptResponse = defaultMargin[value];
 		}
 
 		onChange({
 			textLevel: value,
 			typography: JSON.stringify(fontOptResponse),
 			typographyHover: JSON.stringify(fontOptResponseHover),
-			margin: JSON.stringify(marginOptResponse),
 		});
 	};
 

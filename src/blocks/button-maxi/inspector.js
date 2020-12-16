@@ -38,7 +38,7 @@ import * as defaultPresets from './defaults';
 /**
  * External dependencies
  */
-import { merge } from 'lodash';
+import { merge, cloneDeep } from 'lodash';
 
 /**
  * Icons
@@ -108,7 +108,10 @@ const Inspector = props => {
 			iconPadding,
 		};
 
-		const result = merge(response, defaultPresets[`preset${number}`]);
+		const result = merge(
+			cloneDeep(response),
+			defaultPresets[`preset${number}`]
+		);
 
 		setAttributes(result);
 	};

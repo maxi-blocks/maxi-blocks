@@ -55,8 +55,8 @@ const AxisControl = props => {
 
 	const instanceId = useInstanceId(AxisControl);
 
-	const value = values;
-	const defaultValue = defaultValues;
+	const value = { ...values };
+	const defaultValue = { ...defaultValues };
 
 	const classes = classnames('maxi-axis-control', className);
 
@@ -89,9 +89,9 @@ const AxisControl = props => {
 	};
 
 	const onReset = () => {
-		for (const key of Object.keys(defaultValue[breakpoint])) {
+		Object.keys(defaultValue[breakpoint]).forEach(key => {
 			value[breakpoint][key] = defaultValue[breakpoint][key];
-		}
+		});
 
 		onChange(value);
 	};

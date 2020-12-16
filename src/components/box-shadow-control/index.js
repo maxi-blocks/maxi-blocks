@@ -37,7 +37,7 @@ const BoxShadowControl = props => {
 	const { onChange, className, breakpoint, disableAdvanced = false } = props;
 
 	const boxShadow = { ...props.boxShadow };
-	const defaultBoxShadow = { ...props.boxShadow };
+	const defaultBoxShadow = { ...props.defaultBoxShadow };
 
 	const classes = classnames('maxi-shadow-control', className);
 

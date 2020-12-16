@@ -410,7 +410,7 @@ const HoverEffectControl = props => {
 					{!!hover.paddingStatus && (
 						<__experimentalAxisControl
 							values={hover.padding}
-							defaultHovers={defaultHover.padding}
+							defaultValues={defaultHover.padding}
 							disableAuto
 							onChange={val => {
 								hover.padding = val;
@@ -433,7 +433,7 @@ const HoverEffectControl = props => {
 					{!!hover.marginStatus && (
 						<__experimentalAxisControl
 							values={hover.margin}
-							defaultHovers={defaultHover.margin}
+							defaultValues={defaultHover.margin}
 							disableAuto
 							onChange={val => {
 								hover.margin = val;

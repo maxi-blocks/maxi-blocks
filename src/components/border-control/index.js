@@ -165,7 +165,7 @@ const BorderControl = props => {
 					/>
 					<__experimentalAxisControl
 						values={border.borderWidth}
-						defaultBorders={defaultBorder.borderWidth}
+						defaultValues={defaultBorder.borderWidth}
 						onChange={borderWidth => {
 							border.borderWidth = borderWidth;
 							onChange(border);
@@ -190,7 +190,7 @@ const BorderControl = props => {
 					/>
 					<__experimentalAxisControl
 						values={border.borderRadius}
-						defaultBorders={defaultBorder.borderRadius}
+						defaultValues={defaultBorder.borderRadius}
 						onChange={borderRadius => {
 							border.borderRadius = borderRadius;
 							onChange(border);

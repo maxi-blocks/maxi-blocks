@@ -59,7 +59,7 @@ const PositionControl = props => {
 			) && (
 				<__experimentalAxisControl
 					values={position.options}
-					defaultPosition={defaultPosition.options}
+					defaultValues={defaultPosition.options}
 					onChange={options => {
 						position.options = options;
 						onChange(position);

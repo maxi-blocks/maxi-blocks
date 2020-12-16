@@ -46,7 +46,11 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(uniqueID, background, backgroundHover)
+			setBackgroundStyles({
+				target: uniqueID,
+				background,
+				backgroundHover,
+			})
 		);
 
 		return response;

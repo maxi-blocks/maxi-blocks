@@ -21,7 +21,7 @@ import styleResolver from '../styles/stylesResolver';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId } from 'lodash';
+import { isEmpty, uniqueId, cloneDeep, isObject } from 'lodash';
 
 /**
  * Class
@@ -29,11 +29,13 @@ import { isEmpty, uniqueId } from 'lodash';
 class MaxiBlock extends Component {
 	constructor(...args) {
 		super(...args);
+
 		const { attributes, clientId } = this.props;
 		const { uniqueID, blockStyle } = attributes;
 
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
+		this.cloneObjects(attributes);
 	}
 
 	componentDidUpdate() {
@@ -97,6 +99,21 @@ class MaxiBlock extends Component {
 
 			this.props.setAttributes({ uniqueID: newUniqueId });
 		}
+	}
+
+	/**
+	 * Is necessary to clone deep the objects if we don't want to modify
+	 * the original one on the native Gutenberg store and to make changes into
+	 * the other blocks.
+	 *
+	 * @param {obj} attributes	Block attributes
+	 */
+	cloneObjects(attributes) {
+		Object.entries(attributes).forEach(
+			([key, val]) =>
+				isObject(val) &&
+				this.props.setAttributes({ [key]: cloneDeep(val) })
+		);
 	}
 
 	/**

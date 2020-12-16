@@ -644,16 +644,16 @@ const setBackgroundLayers = (response, layers, target) => {
 	return response;
 };
 
-export const setBackgroundStyles = (
+export const setBackgroundStyles = ({
 	target,
 	background,
 	backgroundHover,
 	overlay,
-	overlayHover
-) => {
+	overlayHover,
+}) => {
 	let response = {};
 
-	if (!isNil(overlay)) {
+	if (!isEmpty(overlay)) {
 		response[
 			`${target} > .maxi-background-displayer .maxi-background-displayer__overlay`
 		] = {
@@ -677,7 +677,7 @@ export const setBackgroundStyles = (
 		};
 	}
 
-	if (!isNil(overlay) && !!overlayHover.status) {
+	if (!isEmpty(overlayHover) && !!overlayHover.status) {
 		response[
 			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__overlay`
 		] = {

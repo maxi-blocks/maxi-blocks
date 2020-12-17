@@ -51,7 +51,7 @@ const Inspector = props => {
 			uniqueID,
 			blockStyle,
 			defaultBlockStyle,
-			isHighlight,
+			highlight,
 			blockStyleBackground,
 			alignment,
 			textLevel,
@@ -102,6 +102,10 @@ const Inspector = props => {
 		? JSON.parse(borderHover)
 		: borderHover;
 
+	const highlightValue = !isObject(highlight)
+		? JSON.parse(highlight)
+		: highlight;
+
 	return (
 		<InspectorControls>
 			<SettingTabsControl
@@ -121,13 +125,22 @@ const Inspector = props => {
 									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										isHighlight={isHighlight}
+										breakpoint={deviceType}
 										blockStyleBackground={
 											blockStyleBackground
 										}
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
-										onChange={obj => setAttributes(obj)}
+										highlight={highlight}
+										onChange={highlight =>
+											setAttributes({ highlight })
+										}
+										disableHighlightColor1
+										disableHighlightColor2
+										border={border}
+										onChangeBorder={border =>
+											setAttributes({ border })
+										}
 									/>
 								</div>
 								<AccordionControl
@@ -305,6 +318,9 @@ const Inspector = props => {
 																	isList={
 																		isList
 																	}
+																	disableColor={
+																		!!highlightValue.textHighlight
+																	}
 																/>
 															),
 														},
@@ -387,6 +403,9 @@ const Inspector = props => {
 																				isList
 																			}
 																			isHover
+																			disableColor={
+																				!!highlightValue.textHighlight
+																			}
 																		/>
 																	)}
 																</Fragment>
@@ -426,6 +445,9 @@ const Inspector = props => {
 																					background,
 																				}
 																			)
+																		}
+																		disableColor={
+																			!!highlightValue.backgroundHighlight
 																		}
 																		disableImage
 																		disableVideo
@@ -494,6 +516,9 @@ const Inspector = props => {
 																					}
 																				)
 																			}
+																			disableColor={
+																				!!highlightValue.backgroundHighlight
+																			}
 																			disableImage
 																			disableVideo
 																			disableSVG
@@ -535,6 +560,9 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
+																	}
+																	disableColor={
+																		!!highlightValue.borderHighlight
 																	}
 																/>
 															),
@@ -601,6 +629,9 @@ const Inspector = props => {
 																			}
 																			breakpoint={
 																				deviceType
+																			}
+																			disableColor={
+																				!!highlightValue.borderHighlight
 																			}
 																		/>
 																	)}

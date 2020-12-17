@@ -48,7 +48,23 @@ const addAttributes = settings => {
 				type: 'string',
 				default: 'maxi-def-light',
 			},
-			isHighlight: {
+			isHighlightText: {
+				type: 'number',
+				default: 0,
+			},
+			isHighlightBackground: {
+				type: 'number',
+				default: 0,
+			},
+			isHighlightBorder: {
+				type: 'number',
+				default: 0,
+			},
+			isHighlightColor1: {
+				type: 'number',
+				default: 0,
+			},
+			isHighlightColor2: {
 				type: 'number',
 				default: 0,
 			},

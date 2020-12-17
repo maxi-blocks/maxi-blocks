@@ -47,27 +47,128 @@ body.maxi-blocks--active {
 			&.maxi-highlight,
 			.maxi-highlight {
 				&--text {
-					@each $level in $levels {
-						#{$level} {
-							color: var(--maxi-#{$style}-highlight) !important;
-						}
+					.maxi-text-block__content {
+						color: var(--maxi-#{$style}-highlight-text) !important;
 
 						&:hover {
-							#{$level} {
-								color: var(--maxi-#{$style}-hover) !important;
+							color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					.maxi-button-extra__button {
+						color: var(--maxi-light-highlight-text) !important;
+
+						&:hover {
+							color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					.maxi-font-icon-block__icon {
+						color: var(--maxi-light-highlight-text) !important;
+
+						&:hover {
+							color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+				}
+
+				&--background {
+					.maxi-text-block__content {
+						background-color: var(--maxi-#{$style}-highlight-background) !important;
+
+						&:hover {
+							background-color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					.maxi-button-extra__button {
+						background-color: var(--maxi-light-highlight-background) !important;
+
+						&:hover {
+							background-color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					.maxi-font-icon-block__icon {
+						background-color: var(--maxi-light-highlight-background) !important;
+
+						&:hover {
+							background-color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					&.maxi-svg-icon-block {
+						.maxi-background-displayer {
+							background-color: var(--maxi-light-highlight-background) !important;
+
+							&:hover {
+								background-color: var(--maxi-#{$style}-hover) !important;
 							}
 						}
 					}
 				}
 
-				&--divider {
-					> .maxi-divider-block__divider {
-						border-color: var(--maxi-light-highlight) !important;
+				&--border {
+					&.maxi-text-block {
+						border-color: var(--maxi-#{$style}-highlight-border) !important;
+
+						&:hover {
+							border-color: var(--maxi-#{$style}-hover) !important;
+						}
 					}
 
-					&:hover {
-						> .maxi-divider-block__divider {
+					.maxi-button-extra__button {
+						border-color: var(--maxi-light-highlight-border) !important;
+
+						&:hover {
+							border-color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					.maxi-divider-block__divider {
+						border-color: var(--maxi-light-highlight-border) !important;
+
+						&:hover {
 							border-color: var(--maxi-light-hover) !important;
+						}
+					}
+
+					&.maxi-font-icon-block {
+						border-color: var(--maxi-light-highlight-border) !important;
+
+						&:hover {
+							border-color: var(--maxi-light-hover) !important;
+						}
+					}
+
+					&.maxi-svg-icon-block {
+						border-color: var(--maxi-light-highlight-border) !important;
+
+						&:hover {
+							border-color: var(--maxi-light-hover) !important;
+						}
+					}
+
+				}
+
+				&--color1 {
+					&.maxi-svg-icon-block {
+						.maxi-svg-icon-block__icon {
+							svg path {
+								&.maxi-svg-color-first {
+									fill: var(--maxi-light-highlight-color1) !important;
+								}
+							}
+						}
+					}
+				}
+
+				&--color2 {
+					&.maxi-svg-icon-block {
+						.maxi-svg-icon-block__icon {
+							svg path {
+								stroke: var(--maxi-light-highlight-color2) !important;
+							}
 						}
 					}
 				}

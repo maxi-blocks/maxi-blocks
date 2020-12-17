@@ -89,6 +89,10 @@ const attributes = {
 		type: 'string',
 		default: JSON.stringify(attributesData.transform),
 	},
+	highlight: {
+		type: 'string',
+		default: JSON.stringify(attributesData.highlight),
+	},
 };
 
 export default attributes;

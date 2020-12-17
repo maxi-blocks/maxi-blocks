@@ -48,10 +48,11 @@ const FontIconControl = props => {
 		icon,
 		onChange,
 		breakpoint,
-		simpleMode = false,
 		iconPadding,
 		iconBorder,
 		iconBackground,
+		simpleMode = false,
+		disableColor = false,
 	} = props;
 
 	const [activeOption, setActiveOption] = useState('iconColor');
@@ -277,7 +278,7 @@ const FontIconControl = props => {
 						/>
 					)}
 
-					{activeOption === 'iconColor' && (
+					{activeOption === 'iconColor' && !disableColor && (
 						<ColorControl
 							label={__('Icon', 'maxi-blocks')}
 							color={getLastBreakpointValue(
@@ -288,7 +289,9 @@ const FontIconControl = props => {
 							defaultColor='#fff'
 							onChange={val => {
 								iconValue[breakpoint].color = val;
-								onChange({ icon: JSON.stringify(iconValue) });
+								onChange({
+									icon: JSON.stringify(iconValue),
+								});
 							}}
 						/>
 					)}

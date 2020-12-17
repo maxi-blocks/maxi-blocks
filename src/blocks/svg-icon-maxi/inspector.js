@@ -52,6 +52,7 @@ const Inspector = props => {
 			isFirstOnHierarchy,
 			blockStyle,
 			defaultBlockStyle,
+			highlight,
 			blockStyleBackground,
 			alignment,
 			background,
@@ -99,6 +100,10 @@ const Inspector = props => {
 		? JSON.parse(borderHover)
 		: borderHover;
 
+	const highlightValue = !isObject(highlight)
+		? JSON.parse(highlight)
+		: highlight;
+
 	return (
 		<InspectorControls>
 			<SettingTabsControl
@@ -123,8 +128,15 @@ const Inspector = props => {
 										}
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
-										onChange={obj => setAttributes(obj)}
-										disableHighlight
+										highlight={highlight}
+										onChange={highlight =>
+											setAttributes({ highlight })
+										}
+										disableHighlightText
+										border={border}
+										onChangeBorder={border =>
+											setAttributes({ border })
+										}
 									/>
 								</div>
 								<AccordionControl
@@ -254,6 +266,9 @@ const Inspector = props => {
 																				}
 																			)
 																		}
+																		disableColor={
+																			!!highlightValue.backgroundHighlight
+																		}
 																		disableImage
 																		disableVideo
 																		disableGradient
@@ -322,6 +337,9 @@ const Inspector = props => {
 																					}
 																				)
 																			}
+																			disableColor={
+																				!!highlightValue.backgroundHighlight
+																			}
 																			disableImage
 																			disableVideo
 																			disableGradient
@@ -364,6 +382,9 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
+																	}
+																	disableColor={
+																		!!highlightValue.borderHighlight
 																	}
 																/>
 															),
@@ -430,6 +451,9 @@ const Inspector = props => {
 																			}
 																			breakpoint={
 																				deviceType
+																			}
+																			disableColor={
+																				!!highlightValue.borderHighlight
 																			}
 																		/>
 																	)}

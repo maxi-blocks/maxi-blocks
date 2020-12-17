@@ -13,7 +13,7 @@ import { BackgroundDisplayer } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isObject } from 'lodash';
 
 /**
  * Save
@@ -24,6 +24,7 @@ const save = props => {
 		attributes: {
 			uniqueID,
 			blockStyle,
+			highlight,
 			defaultBlockStyle,
 			fullWidth,
 			background,
@@ -36,11 +37,18 @@ const save = props => {
 		},
 	} = props;
 
+	const highlightValue = !isObject(highlight)
+		? JSON.parse(highlight)
+		: highlight;
+
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-text-block',
 		'maxi-text-block-wrap',
 		blockStyle,
+		!!highlightValue.textHighlight && 'maxi-highlight--text',
+		!!highlightValue.backgroundHighlight && 'maxi-highlight--background',
+		!!highlightValue.borderHighlight && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,

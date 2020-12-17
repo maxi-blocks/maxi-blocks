@@ -42,6 +42,7 @@ const TypographyControl = props => {
 		formatValue,
 		isList = false,
 		isHover = false,
+		disableColor = false,
 	} = props;
 
 	const typographyValue = !isObject(typography)
@@ -176,21 +177,23 @@ const TypographyControl = props => {
 					});
 				}}
 			/>
-			<ColorControl
-				label={__('Font', 'maxi-blocks')}
-				className='maxi-typography-control__color'
-				color={getCustomFormatValue({
-					typography: typographyValue,
-					formatValue,
-					prop: 'color',
-					breakpoint,
-				})}
-				defaultColor={getDefault('color')}
-				onChange={val => {
-					onChangeFormat({ color: val });
-				}}
-				disableGradient
-			/>
+			{!disableColor && (
+				<ColorControl
+					label={__('Font', 'maxi-blocks')}
+					className='maxi-typography-control__color'
+					color={getCustomFormatValue({
+						typography: typographyValue,
+						formatValue,
+						prop: 'color',
+						breakpoint,
+					})}
+					defaultColor={getDefault('color')}
+					onChange={val => {
+						onChangeFormat({ color: val });
+					}}
+					disableGradient
+				/>
+			)}
 			{!hideAlignment && (
 				<AlignmentControl
 					className='maxi-typography-control__text-alignment'

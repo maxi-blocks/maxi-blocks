@@ -141,7 +141,7 @@ class edit extends MaxiBlock {
 				blockStyle,
 				defaultBlockStyle,
 				blockStyleBackground,
-				isHighlight,
+				highlight,
 				lineOrientation,
 				extraClassName,
 				fullWidth,
@@ -161,6 +161,9 @@ class edit extends MaxiBlock {
 		onDeviceTypeChange();
 
 		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+		const highlightValue = !isObject(highlight)
+			? JSON.parse(highlight)
+			: highlight;
 
 		const classes = classnames(
 			'maxi-block',
@@ -171,7 +174,7 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!isHighlight && 'maxi-highlight--divider',
+			!!highlightValue.borderHighlight && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className,

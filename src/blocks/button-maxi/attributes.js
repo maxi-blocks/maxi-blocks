@@ -109,6 +109,10 @@ const attributes = {
 		type: 'string',
 		default: JSON.stringify(buttonAttributesData.icon),
 	},
+	highlight: {
+		type: 'string',
+		default: JSON.stringify(attributesData.highlight),
+	},
 };
 
 export default attributes;

@@ -13,9 +13,9 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
  */
 import {
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBreadcrumbs,
-	__experimentalBackgroundDisplayer,
+	Toolbar,
+	Breadcrumbs,
+	BackgroundDisplayer,
 } from '../../components';
 import Inspector from './inspector';
 import {
@@ -49,7 +49,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			className={className}
 			data-gx_initial_block_class={maxiBlockClass}
 		>
-			<__experimentalBackgroundDisplayer background={background} />
+			<BackgroundDisplayer background={background} />
 			{children}
 		</__experimentalBlock.div>
 	);
@@ -198,7 +198,7 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar
+			<Toolbar
 				toggleHandlers={() => {
 					this.setState({
 						displayHandlers: !this.state.displayHandlers,
@@ -206,7 +206,7 @@ class edit extends MaxiBlock {
 				}}
 				{...this.props}
 			/>,
-			<__experimentalBreadcrumbs />,
+			<Breadcrumbs />,
 
 			<RowContext.Provider
 				value={{

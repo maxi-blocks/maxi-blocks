@@ -9,7 +9,7 @@ const { applyFormat, toHTMLString, removeFormat } = wp.richText;
 /**
  * Internal dependencies
  */
-import { __experimentalIsFormatActive } from '../../../../extensions/text/formats';
+import { formatActive } from '../../../../extensions/text/formats';
 /**
  * Styles and icons
  */
@@ -24,12 +24,12 @@ const TextFormatCode = props => {
 	const formatName = 'core/code';
 
 	const { isActive } = useSelect(() => {
-		const isActive = __experimentalIsFormatActive(formatValue, formatName);
+		const isActive = formatActive(formatValue, formatName);
 
 		return {
 			isActive,
 		};
-	}, [__experimentalIsFormatActive, formatValue, formatName]);
+	}, [formatActive, formatValue, formatName]);
 
 	const onClick = () => {
 		const newFormat = isActive

@@ -8,9 +8,14 @@ const { RangeControl, SelectControl, Icon } = wp.components;
 /**
  * Internal dependencies
  */
-import ColorControl from '../color-control';
-import DefaultStylesControl from '../default-styles-control';
-import __experimentalOpacityControl from '../opacity-control';
+import {
+	ColorControl,
+	DefaultStylesControl,
+	OpacityControl,
+	FancyRadioControl,
+	SizeControl,
+} from '../../components';
+import { getLastBreakpointValue } from '../../utils';
 import {
 	dividerSolidHorizontal,
 	dividerDottedHorizontal,
@@ -41,7 +46,27 @@ const DividerControl = props => {
 		disableColor = false,
 		disableLineStyle = false,
 		disableBorderRadius = false,
+		breakpoint = 'general',
 	} = props;
+
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 100,
+		},
+		'%': {
+			min: 0,
+			max: 100,
+		},
+	};
 
 	const [orientation, changeOrientation] = useState(lineOrientation);
 
@@ -144,7 +169,7 @@ const DividerControl = props => {
 					defaultColor={defaultDivider.general['border-color']}
 					onChange={val => {
 						divider.general['border-color'] = val;
-						onChange(divider);
+						onChange(JSON.stringify(divider));
 					}}
 					disableGradient
 				/>
@@ -163,60 +188,84 @@ const DividerControl = props => {
 					onChange={val => {
 						divider.general['border-style'] = val;
 						if (val === 'none') divider.general.width = 0;
-						onChange(divider);
+						onChange(JSON.stringify(divider));
 					}}
 				/>
 			)}
 			{!disableBorderRadius &&
 				divider.general['border-style'] === 'solid' && (
-					<SelectControl
-						label={__('Border Radius', 'maxi-blocks')}
+					<FancyRadioControl
+						label={__('Line Radius', 'maxi-blocks')}
+						selected={divider.general['border-radius']}
 						options={[
 							{ label: __('No', 'maxi-blocks'), value: '' },
 							{ label: __('Yes', 'maxi-blocks'), value: '20px' },
 						]}
-						value={divider.general['border-radius']}
 						onChange={val => {
 							divider.general['border-radius'] = val;
-							onChange(divider);
+							onChange(JSON.stringify(divider));
 						}}
 					/>
 				)}
 			{orientation === 'horizontal' && (
 				<Fragment>
-					<RangeControl
-						label={__('Size', 'maxi-blocks')}
-						value={Number(divider.general.width)}
-						onChange={val => {
-							isNil(val)
-								? (divider.general.width =
-										defaultDivider.general.width)
-								: (divider.general.width = Number(val));
+					<SizeControl
+						label={__('Line Size', 'maxi-blocks')}
+						unit={getLastBreakpointValue(
+							divider,
+							'widthUnit',
+							breakpoint
+						)}
+						defaultUnit={defaultDivider[breakpoint].widthUnit}
+						onChangeUnit={val => {
+							divider.general.widthUnit = val;
 
-							onChange(divider);
+							onChange(JSON.stringify(divider));
 						}}
-						allowReset
-						initialPosition={defaultDivider.general.width}
+						value={getLastBreakpointValue(
+							divider,
+							'width',
+							breakpoint
+						)}
+						defaultDivider={defaultDivider[breakpoint].width}
+						onChangeValue={val => {
+							divider.general.width = Number(val);
+
+							onChange(JSON.stringify(divider));
+						}}
+						minMaxSettings={minMaxSettings}
 					/>
-					<RangeControl
-						label={__('Weight', 'maxi-blocks')}
-						value={Number(divider.general['border-top-width'])}
-						onChange={val => {
-							isNil(val)
-								? (divider.general['border-top-width'] =
-										defaultDivider.general[
-											'border-top-width'
-										])
-								: (divider.general['border-top-width'] = Number(
-										val
-								  ));
 
-							onChange(divider);
-						}}
-						allowReset
-						initialPosition={
-							defaultDivider.general['border-top-width']
+					<SizeControl
+						label={__('Line Weight', 'maxi-blocks')}
+						allowedUnits={['px', 'em', 'vw']}
+						unit={getLastBreakpointValue(
+							divider,
+							'border-top-widthUnit',
+							breakpoint
+						)}
+						defaultUnit={
+							defaultDivider[breakpoint]['border-top-widthUnit']
 						}
+						onChangeUnit={val => {
+							divider.general['border-top-widthUnit'] = val;
+
+							onChange(JSON.stringify(divider));
+						}}
+						value={getLastBreakpointValue(
+							divider,
+							'border-top-width',
+							breakpoint
+						)}
+						defaultDivider={
+							defaultDivider[breakpoint]['border-top-width']
+						}
+						onChangeValue={val => {
+							divider.general['border-top-width'] = Number(val);
+
+							onChange(JSON.stringify(divider));
+						}}
+						minMaxSettings={minMaxSettings}
 					/>
 				</Fragment>
 			)}
@@ -231,7 +280,7 @@ const DividerControl = props => {
 										defaultDivider.general.height)
 								: (divider.general.height = Number(val));
 
-							onChange(divider);
+							onChange(JSON.stringify(divider));
 						}}
 						max={100}
 						allowReset
@@ -250,7 +299,7 @@ const DividerControl = props => {
 										'border-right-width'
 								  ] = Number(val));
 
-							onChange(divider);
+							onChange(JSON.stringify(divider));
 						}}
 						max={100}
 						allowReset
@@ -260,12 +309,12 @@ const DividerControl = props => {
 					/>
 				</Fragment>
 			)}
-			<__experimentalOpacityControl
+			<OpacityControl
 				opacity={divider.opacity}
 				defaultOpacity={defaultDivider.opacity}
-				onChange={opacity => {
-					divider.opacity = opacity;
-					onChange(divider);
+				onChange={val => {
+					divider.opacity = JSON.parse(val);
+					onChange(JSON.stringify(divider));
 				}}
 			/>
 		</Fragment>

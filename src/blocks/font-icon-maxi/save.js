@@ -1,13 +1,12 @@
 /**
  * Internal dependencies
  */
-import { __experimentalBackgroundDisplayer } from '../../components';
+import { BackgroundDisplayer } from '../../components';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
 
 /**
  * Save
@@ -24,11 +23,16 @@ const save = props => {
 			icon,
 		},
 	} = props;
+	const highlight = { ...props.attributes.highlight };
+	const { textHighlight, backgroundHighlight, borderHighlight } = highlight;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-font-icon-block',
 		blockStyle,
+		!!textHighlight && 'maxi-highlight--text',
+		!!backgroundHighlight && 'maxi-highlight--background',
+		!!borderHighlight && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className
@@ -40,7 +44,7 @@ const save = props => {
 			data-maxi_initial_block_class={defaultBlockStyle}
 			data-motion-id={uniqueID}
 		>
-			<__experimentalBackgroundDisplayer background={background} />
+			<BackgroundDisplayer background={background} />
 			{icon.icon && (
 				<span className='maxi-font-icon-block__icon'>
 					<i className={icon.icon} />

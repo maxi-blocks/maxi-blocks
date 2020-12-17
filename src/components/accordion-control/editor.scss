@@ -20,12 +20,14 @@
 		}
 
 		// This many values are strange...
-		&__panel:not(.maxi-accordion-control__item__panel--disable-padding) {
-			padding-top: 15px !important;
-			padding-left: 12px !important;
-			padding-right: 12px !important;
-			padding-bottom: 10px !important;
-			background-color: #fff;
+		&__panel {
+			&:not(.maxi-accordion-control__item__panel--disable-padding) {
+				padding-top: 15px !important;
+				padding-left: 12px !important;
+				padding-right: 12px !important;
+				padding-bottom: 10px !important;
+				background-color: #fff;
+			}
 		}
 
 		&__button {

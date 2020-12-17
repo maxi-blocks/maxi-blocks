@@ -17,8 +17,8 @@ import TextFormatSubscript from '../text-format-subscript';
 import TextFormatSuperscript from '../text-format-superscript';
 import TextFormatCode from '../text-format-code';
 import {
-	__experimentalSetFormat,
-	__experimentalGetCustomFormatValue,
+	setFormat,
+	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -44,10 +44,7 @@ const TextOptions = props => {
 	const defaultTypography = { ...props.defaultTypography };
 
 	const onChangeFormat = value => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const { typography: newTypography, content: newContent } = setFormat({
 			formatValue,
 			isList,
 			typography,
@@ -73,7 +70,7 @@ const TextOptions = props => {
 						<FontFamilySelector
 							className='toolbar-item__popover__font-options__font__selector'
 							theme='dark'
-							font={__experimentalGetCustomFormatValue({
+							font={getCustomFormatValue({
 								typography,
 								formatValue,
 								prop: 'font-family',
@@ -115,7 +112,7 @@ const TextOptions = props => {
 							<input
 								type='number'
 								value={trim(
-									__experimentalGetCustomFormatValue({
+									getCustomFormatValue({
 										typography,
 										formatValue,
 										prop: 'font-size',
@@ -168,7 +165,7 @@ const TextOptions = props => {
 							<input
 								type='number'
 								value={trim(
-									__experimentalGetCustomFormatValue({
+									getCustomFormatValue({
 										typography,
 										formatValue,
 										prop: 'line-height',
@@ -221,7 +218,7 @@ const TextOptions = props => {
 							<input
 								type='number'
 								value={trim(
-									__experimentalGetCustomFormatValue({
+									getCustomFormatValue({
 										typography,
 										formatValue,
 										prop: 'letter-spacing',

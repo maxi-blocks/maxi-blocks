@@ -91,23 +91,27 @@ const attributes = {
 	},
 	position: {
 		type: 'object',
-		default: attributesData.__experimentalPosition,
+		default: attributesData.position,
 	},
 	display: {
 		type: 'object',
-		default: attributesData.__experimentalDisplay,
+		default: attributesData.display,
 	},
 	motion: {
 		type: 'object',
-		default: attributesData.__experimentalMotion,
+		default: attributesData.motion,
 	},
 	transform: {
 		type: 'object',
-		default: attributesData.__experimentalTransform,
+		default: attributesData.transform,
 	},
 	icon: {
 		type: 'object',
 		default: buttonAttributesData.icon,
+	},
+	highlight: {
+		type: 'object',
+		default: attributesData.highlight,
 	},
 };
 

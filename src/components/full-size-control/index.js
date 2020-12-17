@@ -9,7 +9,7 @@ const { Fragment } = wp.element;
  */
 import { getLastBreakpointValue } from '../../utils';
 import SizeControl from '../size-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -27,7 +27,6 @@ import './editor.scss';
  */
 const FullSizeControl = props => {
 	const { onChange, className, breakpoint, hideWidth } = props;
-
 	const size = { ...props.size };
 	const defaultSize = { ...props.defaultSize };
 
@@ -89,15 +88,15 @@ const FullSizeControl = props => {
 				minMaxSettings={minMaxSettings}
 			/>
 
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Advanced Width/Height', 'maxi-blocks')}
-				selected={size[breakpoint].advancedOptions}
+				selected={size.advancedOptions}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
 				onChange={val => {
-					size[breakpoint].advancedOptions = Number(val);
+					size.advancedOptions = Number(val);
 					onChange(size);
 					if (!Number(val)) {
 						onChangeValue(
@@ -122,7 +121,7 @@ const FullSizeControl = props => {
 					}
 				}}
 			/>
-			{!!size[breakpoint].advancedOptions && (
+			{!!size.advancedOptions && (
 				<Fragment>
 					<SizeControl
 						label={__('Max Width', 'maxi-blocks')}

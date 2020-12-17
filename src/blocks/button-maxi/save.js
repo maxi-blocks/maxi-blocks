@@ -6,7 +6,7 @@ const { Button } = wp.components;
 /**
  * Internal dependencies
  */
-import { __experimentalBackgroundDisplayer } from '../../components';
+import { BackgroundDisplayer } from '../../components';
 
 /**
  * External dependencies
@@ -27,15 +27,21 @@ const save = props => {
 			linkSettings,
 			content,
 			extraClassName,
-			icon,
 		},
 		className,
 	} = props;
+
+	const icon = { ...props.attributes.icon };
+	const highlight = { ...props.attributes.highlight };
+	const { textHighlight, backgroundHighlight, borderHighlight } = highlight;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-button-block',
 		blockStyle,
+		!!textHighlight && 'maxi-highlight--text',
+		!!backgroundHighlight && 'maxi-highlight--background',
+		!!borderHighlight && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,
@@ -64,7 +70,7 @@ const save = props => {
 			data-maxi_initial_block_class={defaultBlockStyle}
 			data-motion-id={uniqueID}
 		>
-			<__experimentalBackgroundDisplayer background={background} />
+			<BackgroundDisplayer background={background} />
 			<Button className={buttonClasses} {...linkProps}>
 				{icon.icon && <i className={icon.icon} />}
 				{content}

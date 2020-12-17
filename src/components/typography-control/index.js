@@ -14,10 +14,7 @@ import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
-import {
-	__experimentalSetFormat,
-	__experimentalGetCustomFormatValue,
-} from '../../extensions/text/formats';
+import { setFormat, getCustomFormatValue } from '../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -43,8 +40,8 @@ const TypographyControl = props => {
 		formatValue,
 		isList = false,
 		isHover = false,
+		disableColor = false,
 	} = props;
-
 	const typography = { ...props.typography };
 	const defaultTypography = { ...props.defaultTypography };
 
@@ -139,10 +136,7 @@ const TypographyControl = props => {
 	};
 
 	const onChangeFormat = value => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const { typography: newTypography, content: newContent } = setFormat({
 			formatValue,
 			isList,
 			typography,
@@ -160,7 +154,7 @@ const TypographyControl = props => {
 		<div className={classes}>
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
-				font={__experimentalGetCustomFormatValue({
+				font={getCustomFormatValue({
 					typography,
 					formatValue,
 					prop: 'font-family',
@@ -173,21 +167,23 @@ const TypographyControl = props => {
 					});
 				}}
 			/>
-			<ColorControl
-				label={__('Font', 'maxi-blocks')}
-				className='maxi-typography-control__color'
-				color={__experimentalGetCustomFormatValue({
-					typography,
-					formatValue,
-					prop: 'color',
-					breakpoint,
-				})}
-				defaultColor={getDefault('color')}
-				onChange={val => {
-					onChangeFormat({ color: val });
-				}}
-				disableGradient
-			/>
+			{!disableColor && (
+				<ColorControl
+					label={__('Font', 'maxi-blocks')}
+					className='maxi-typography-control__color'
+					color={getCustomFormatValue({
+						typography,
+						formatValue,
+						prop: 'color',
+						breakpoint,
+					})}
+					defaultColor={getDefault('color')}
+					onChange={val => {
+						onChangeFormat({ color: val });
+					}}
+					disableGradient
+				/>
+			)}
 			{!hideAlignment && (
 				<AlignmentControl
 					className='maxi-typography-control__text-alignment'
@@ -204,7 +200,7 @@ const TypographyControl = props => {
 			<SizeControl
 				className='maxi-typography-control__size'
 				label={__('Size', 'maxi-blocks')}
-				unit={__experimentalGetCustomFormatValue({
+				unit={getCustomFormatValue({
 					typography,
 					formatValue,
 					prop: 'font-sizeUnit',
@@ -215,7 +211,7 @@ const TypographyControl = props => {
 					onChangeFormat({ 'font-sizeUnit': val });
 				}}
 				value={trim(
-					__experimentalGetCustomFormatValue({
+					getCustomFormatValue({
 						typography,
 						formatValue,
 						prop: 'font-size',
@@ -232,7 +228,7 @@ const TypographyControl = props => {
 			<SizeControl
 				className='maxi-typography-control__line-height'
 				label={__('Line Height', 'maxi-blocks')}
-				unit={__experimentalGetCustomFormatValue({
+				unit={getCustomFormatValue({
 					typography,
 					formatValue,
 					prop: 'line-heightUnit',
@@ -243,7 +239,7 @@ const TypographyControl = props => {
 					onChangeFormat({ 'line-heightUnit': val });
 				}}
 				value={trim(
-					__experimentalGetCustomFormatValue({
+					getCustomFormatValue({
 						typography,
 						formatValue,
 						prop: 'line-height',
@@ -261,7 +257,7 @@ const TypographyControl = props => {
 			<SizeControl
 				className='maxi-typography-control__letter-spacing'
 				label={__('Letter Spacing', 'maxi-blocks')}
-				unit={__experimentalGetCustomFormatValue({
+				unit={getCustomFormatValue({
 					typography,
 					formatValue,
 					prop: 'letter-spacingUnit',
@@ -272,7 +268,7 @@ const TypographyControl = props => {
 					onChangeFormat({ 'letter-spacingUnit': val });
 				}}
 				value={trim(
-					__experimentalGetCustomFormatValue({
+					getCustomFormatValue({
 						typography,
 						formatValue,
 						prop: 'letter-spacing',
@@ -290,7 +286,7 @@ const TypographyControl = props => {
 			<SelectControl
 				label={__('Weight', 'maxi-blocks')}
 				className='maxi-typography-control__weight'
-				value={__experimentalGetCustomFormatValue({
+				value={getCustomFormatValue({
 					typography,
 					formatValue,
 					prop: 'font-weight',
@@ -304,7 +300,7 @@ const TypographyControl = props => {
 			<SelectControl
 				label={__('Transform', 'maxi-blocks')}
 				className='maxi-typography-control__transform'
-				value={__experimentalGetCustomFormatValue({
+				value={getCustomFormatValue({
 					typography,
 					formatValue,
 					prop: 'text-transform',
@@ -332,7 +328,7 @@ const TypographyControl = props => {
 			<SelectControl
 				label={__('Style', 'maxi-blocks')}
 				className='maxi-typography-control__font-style'
-				value={__experimentalGetCustomFormatValue({
+				value={getCustomFormatValue({
 					typography,
 					formatValue,
 					prop: 'font-style',
@@ -350,7 +346,7 @@ const TypographyControl = props => {
 			<SelectControl
 				label={__('Decoration', 'maxi-blocks')}
 				className='maxi-typography-control__decoration'
-				value={__experimentalGetCustomFormatValue({
+				value={getCustomFormatValue({
 					typography,
 					formatValue,
 					prop: 'text-decoration',
@@ -378,7 +374,7 @@ const TypographyControl = props => {
 			/>
 			<TextShadowControl
 				className='maxi-typography-control__text-shadow'
-				textShadow={__experimentalGetCustomFormatValue({
+				textShadow={getCustomFormatValue({
 					typography,
 					formatValue,
 					prop: 'text-shadow',

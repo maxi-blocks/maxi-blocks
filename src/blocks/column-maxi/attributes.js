@@ -18,7 +18,7 @@ const attributes = {
 	},
 	columnSize: {
 		type: 'object',
-		default: attributesData.__experimentalColumn,
+		default: attributesData.column,
 	},
 	verticalAlign: {
 		type: 'string',
@@ -77,11 +77,11 @@ const attributes = {
 	},
 	display: {
 		type: 'object',
-		default: attributesData.__experimentalDisplay,
+		default: attributesData.display,
 	},
 	transform: {
 		type: 'object',
-		default: attributesData.__experimentalTransform,
+		default: attributesData.transform,
 	},
 };
 

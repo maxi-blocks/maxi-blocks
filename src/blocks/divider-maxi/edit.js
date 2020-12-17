@@ -18,9 +18,9 @@ import {
 } from '../../utils';
 import {
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
-	__experimentalMotionPreview,
+	Toolbar,
+	BackgroundDisplayer,
+	MotionPreview,
 } from '../../components';
 
 /**
@@ -33,6 +33,12 @@ import { isNil } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
+	state = {
+		isResizing: false,
+		styles: {},
+		breakpoints: this.getBreakpoints,
+	};
+
 	get getObject() {
 		const { uniqueID, background, backgroundHover } = this.props.attributes;
 
@@ -152,13 +158,10 @@ class edit extends MaxiBlock {
 				blockStyle,
 				defaultBlockStyle,
 				blockStyleBackground,
-				isHighlight,
 				lineOrientation,
 				extraClassName,
 				fullWidth,
 				background,
-				divider,
-				display,
 				motion,
 			},
 			className,
@@ -167,8 +170,11 @@ class edit extends MaxiBlock {
 			onDeviceTypeChange,
 			setAttributes,
 		} = this.props;
-
 		const size = { ...this.props.attributes.size };
+		const display = { ...this.props.attributes.display };
+		const highlightValue = { ...this.props.attributes.highlight };
+		const divider = { ...this.props.attributes.divider };
+		const { isResizing } = this.state;
 
 		onDeviceTypeChange();
 
@@ -181,7 +187,7 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!isHighlight && 'maxi-highlight--divider',
+			!!highlightValue.borderHighlight && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className,
@@ -190,9 +196,27 @@ class edit extends MaxiBlock {
 				: 'maxi-divider-block--horizontal'
 		);
 
+		const handleOnResizeStart = event => {
+			event.preventDefault();
+			size[deviceType].heightUnit !== 'px' &&
+				(size[deviceType].heightUnit = 'px') &&
+				setAttributes({
+					size,
+				});
+			this.setState({ isResizing: true });
+		};
+
+		const handleOnResizeStop = (event, direction, elt) => {
+			size[deviceType].height = elt.getBoundingClientRect().height;
+			setAttributes({
+				size,
+			});
+			this.setState({ isResizing: false });
+		};
+
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
+			<Toolbar {...this.props} />,
 			<ResizableBox
 				size={{
 					width: '100%',
@@ -202,7 +226,10 @@ class edit extends MaxiBlock {
 				className={classnames(
 					'maxi-block__resizer',
 					'maxi-divider-block__resizer',
-					`maxi-divider-block__resizer__${uniqueID}`
+					`maxi-divider-block__resizer__${uniqueID}`,
+					{
+						'is-selected': isSelected,
+					}
 				)}
 				defaultSize={{
 					width: '100%',
@@ -212,43 +239,35 @@ class edit extends MaxiBlock {
 				enable={{
 					top: false,
 					right: false,
-					bottom: isSelected,
+					bottom: true,
 					left: false,
 					topRight: false,
 					bottomRight: false,
 					bottomLeft: false,
 					topLeft: false,
 				}}
-				onResizeStart={() => {
-					size[deviceType].heightUnit !== 'px' &&
-						(size[deviceType].heightUnit = 'px') &&
-						setAttributes({
-							size,
-						});
-				}}
-				onResizeStop={(event, direction, elt) => {
-					size[
-						deviceType
-					].height = elt.getBoundingClientRect().height;
-					setAttributes({
-						size,
-					});
+				onResizeStart={handleOnResizeStart}
+				onResizeStop={handleOnResizeStop}
+				showHandle={isSelected}
+				__experimentalShowTooltip
+				__experimentalTooltipProps={{
+					axis: 'y',
+					position: 'bottom',
+					isVisible: isResizing,
 				}}
 			>
-				<__experimentalMotionPreview motion={motion}>
+				<MotionPreview motion={motion}>
 					<__experimentalBlock
 						className={classes}
 						data-maxi_initial_block_class={defaultBlockStyle}
 						data-align={fullWidth}
 					>
-						<__experimentalBackgroundDisplayer
-							background={background}
-						/>
+						<BackgroundDisplayer background={background} />
 						{divider.general['border-style'] !== 'none' && (
 							<hr className='maxi-divider-block__divider' />
 						)}
 					</__experimentalBlock>
-				</__experimentalMotionPreview>
+				</MotionPreview>
 			</ResizableBox>,
 		];
 	}

@@ -8,8 +8,8 @@ const { Icon, Button, Tooltip } = wp.components;
  * Internal dependencies
  */
 import {
-	__experimentalSetFormat,
-	__experimentalGetCustomFormatValue,
+	setFormat,
+	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -25,7 +25,7 @@ const TextFormatSubscript = props => {
 
 	const typography = { ...props.typography };
 
-	const superscriptValue = __experimentalGetCustomFormatValue({
+	const superscriptValue = getCustomFormatValue({
 		typography,
 		formatValue,
 		prop: 'vertical-align',
@@ -35,10 +35,7 @@ const TextFormatSubscript = props => {
 	const isActive = (superscriptValue === 'sub' && true) || false;
 
 	const onClick = () => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const { typography: newTypography, content: newContent } = setFormat({
 			formatValue,
 			isActive,
 			isList,

@@ -8,8 +8,8 @@ const { Icon, Button, Tooltip } = wp.components;
  * Internal dependencies
  */
 import {
-	__experimentalSetFormat,
-	__experimentalGetCustomFormatValue,
+	setFormat,
+	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -30,7 +30,7 @@ const TextFormatOverline = props => {
 
 	const typography = { ...props.typography };
 
-	const textDecorationValue = __experimentalGetCustomFormatValue({
+	const textDecorationValue = getCustomFormatValue({
 		typography,
 		formatValue,
 		prop: 'text-decoration',
@@ -50,10 +50,7 @@ const TextFormatOverline = props => {
 	};
 
 	const onClick = () => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const { typography: newTypography, content: newContent } = setFormat({
 			formatValue,
 			isActive,
 			isList,

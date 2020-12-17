@@ -11,13 +11,13 @@ const { Fragment } = wp.element;
 import TypographyControl from '../typography-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
-import __experimentalAxisControl from '../axis-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import AxisControl from '../axis-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
  */
-import { isObject, isNil } from 'lodash';
+import { isNil } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -47,7 +47,7 @@ const HoverEffectControl = props => {
 
 	return (
 		<div className={classes}>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Hover Animation', 'maxi-blocks')}
 				selected={hover.type}
 				options={[
@@ -60,7 +60,7 @@ const HoverEffectControl = props => {
 					onChange(hover);
 				}}
 			/>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Preview', 'maxi-blocks')}
 				selected={hover.preview}
 				options={[
@@ -259,7 +259,7 @@ const HoverEffectControl = props => {
 							onChange(hover);
 						}}
 					/>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						type='classic-border'
 						selected={hover.textPreset}
 						options={[
@@ -302,7 +302,7 @@ const HoverEffectControl = props => {
 							onChange(hover);
 						}}
 					/>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Custom Hover Text', 'maxi-block')}
 						selected={hover.titleStatus}
 						options={[
@@ -338,7 +338,7 @@ const HoverEffectControl = props => {
 							onChange(hover);
 						}}
 					/>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Custom Content Text', 'maxi-block')}
 						selected={hover.contentStatus}
 						options={[
@@ -373,7 +373,7 @@ const HoverEffectControl = props => {
 						disableVideo
 						disableSVG
 					/>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Custom Border', 'maxi-block')}
 						selected={hover.borderStatus}
 						options={[
@@ -395,7 +395,7 @@ const HoverEffectControl = props => {
 							}}
 						/>
 					)}
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Custom Padding', 'maxi-block')}
 						selected={hover.paddingStatus}
 						options={[
@@ -408,7 +408,7 @@ const HoverEffectControl = props => {
 						}}
 					/>
 					{!!hover.paddingStatus && (
-						<__experimentalAxisControl
+						<AxisControl
 							values={hover.padding}
 							defaultValues={defaultHover.padding}
 							disableAuto
@@ -418,7 +418,7 @@ const HoverEffectControl = props => {
 							}}
 						/>
 					)}
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Custom Margin', 'maxi-block')}
 						selected={hover.marginStatus}
 						options={[
@@ -431,7 +431,7 @@ const HoverEffectControl = props => {
 						}}
 					/>
 					{!!hover.marginStatus && (
-						<__experimentalAxisControl
+						<AxisControl
 							values={hover.margin}
 							defaultValues={defaultHover.margin}
 							disableAuto

@@ -63,19 +63,23 @@ const attributes = {
 	},
 	position: {
 		type: 'object',
-		default: attributesData.__experimentalPosition,
+		default: y(attributesData.position),
 	},
 	display: {
 		type: 'object',
-		default: attributesData.__experimentalDisplay,
+		default: y(attributesData.display),
 	},
 	motion: {
 		type: 'object',
-		default: attributesData.__experimentalMotion,
+		default: y(attributesData.motion),
 	},
 	transform: {
 		type: 'object',
-		default: attributesData.__experimentalTransform,
+		default: y(attributesData.transform),
+	},
+	highlight: {
+		type: 'object',
+		default: y(attributesData.highlight),
 	},
 };
 

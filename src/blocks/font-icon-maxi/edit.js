@@ -18,9 +18,9 @@ import {
 } from '../../utils';
 import {
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
-	__experimentalFontIconPicker,
+	Toolbar,
+	BackgroundDisplayer,
+	FontIconPicker,
 } from '../../components';
 
 /**
@@ -150,14 +150,19 @@ class edit extends MaxiBlock {
 				blockStyleBackground,
 				extraClassName,
 				background,
-				display,
 			},
 			className,
 			deviceType,
 			setAttributes,
 		} = this.props;
-
+		const display = { ...this.props.attributes.display };
 		const icon = { ...this.props.attributes.icon };
+		const highlight = { ...this.props.attributes.highlight };
+		const {
+			textHighlight,
+			backgroundHighlight,
+			borderHighlight,
+		} = highlight;
 
 		const classes = classnames(
 			'maxi-block',
@@ -166,8 +171,12 @@ class edit extends MaxiBlock {
 			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
 				'maxi-block-display-none',
 			defaultBlockStyle,
+			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
+			!!textHighlight && 'maxi-highlight--text',
+			!!backgroundHighlight && 'maxi-highlight--background',
+			!!borderHighlight && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className
@@ -175,17 +184,20 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
-			<__experimentalBlock className={classes}>
-				<__experimentalBackgroundDisplayer background={background} />
+			<Toolbar {...this.props} />,
+			<__experimentalBlock
+				className={classes}
+				data-maxi_initial_block_class={defaultBlockStyle}
+			>
+				<BackgroundDisplayer background={background} />
 				{(!!icon.icon && (
 					<span className='maxi-font-icon-block__icon'>
 						<i className={icon.icon} />
 					</span>
 				)) || (
-					<__experimentalFontIconPicker
-						onChange={newIcon => {
-							icon.icon = newIcon;
+					<FontIconPicker
+						onChange={icon => {
+							icon.icon = icon;
 							setAttributes({
 								icon,
 							});

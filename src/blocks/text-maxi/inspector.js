@@ -20,18 +20,18 @@ import {
 	FullSizeControl,
 	SettingTabsControl,
 	TypographyControl,
-	__experimentalZIndexControl,
-	__experimentalResponsiveControl,
-	__experimentalNumberControl,
-	__experimentalOpacityControl,
-	__experimentalAxisControl,
-	__experimentalPositionControl,
-	__experimentalDisplayControl,
-	__experimentalMotionControl,
-	__experimentalTransformControl,
-	__experimentalEntranceAnimationControl,
-	__experimentalFancyRadioControl,
-	__experimentalCustomLabel,
+	ZIndexControl,
+	ResponsiveControl,
+	NumberControl,
+	OpacityControl,
+	AxisControl,
+	PositionControl,
+	DisplayControl,
+	MotionControl,
+	TransformControl,
+	EntranceAnimationControl,
+	FancyRadioControl,
+	CustomLabel,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -46,7 +46,6 @@ const Inspector = props => {
 			uniqueID,
 			blockStyle,
 			defaultBlockStyle,
-			isHighlight,
 			blockStyleBackground,
 			alignment,
 			textLevel,
@@ -63,10 +62,6 @@ const Inspector = props => {
 			size,
 			margin,
 			padding,
-			typographyHover,
-			backgroundHover,
-			boxShadowHover,
-			borderHover,
 			extraClassName,
 			breakpoints,
 			zIndex,
@@ -80,6 +75,11 @@ const Inspector = props => {
 		clientId,
 		formatValue,
 	} = props;
+	const backgroundHover = { ...props.attributes.backgroundHover };
+	const boxShadowHover = { ...props.attributes.boxShadowHover };
+	const typographyHover = { ...props.attributes.typographyHover };
+	const borderHover = { ...props.attributes.borderHover };
+	const highlight = { ...props.attributes.highlight };
 
 	return (
 		<InspectorControls>
@@ -91,7 +91,7 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
-									<__experimentalCustomLabel
+									<CustomLabel
 										customLabel={customLabel}
 										onChange={customLabel =>
 											setAttributes({ customLabel })
@@ -100,13 +100,22 @@ const Inspector = props => {
 									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										isHighlight={isHighlight}
+										breakpoint={deviceType}
 										blockStyleBackground={
 											blockStyleBackground
 										}
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
-										onChange={obj => setAttributes(obj)}
+										highlight={highlight}
+										onChange={highlight =>
+											setAttributes({ highlight })
+										}
+										disableHighlightColor1
+										disableHighlightColor2
+										border={border}
+										onChangeBorder={border =>
+											setAttributes({ border })
+										}
 									/>
 								</div>
 								<AccordionControl
@@ -145,7 +154,6 @@ const Inspector = props => {
 														fontOptionsHover={
 															typographyHover
 														}
-														marginOptions={margin}
 													/>
 												),
 											},
@@ -188,7 +196,7 @@ const Inspector = props => {
 														{typeOfList ===
 															'ol' && (
 															<Fragment>
-																<__experimentalNumberControl
+																<NumberControl
 																	label={__(
 																		'Start from',
 																		'maxi-blocks'
@@ -284,6 +292,9 @@ const Inspector = props => {
 																	isList={
 																		isList
 																	}
+																	disableColor={
+																		!!highlight.textHighlight
+																	}
 																/>
 															),
 														},
@@ -294,7 +305,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Typography Hover',
 																			'maxi-blocks'
@@ -364,6 +375,9 @@ const Inspector = props => {
 																				isList
 																			}
 																			isHover
+																			disableColor={
+																				!!highlight.textHighlight
+																			}
 																		/>
 																	)}
 																</Fragment>
@@ -404,6 +418,9 @@ const Inspector = props => {
 																				}
 																			)
 																		}
+																		disableColor={
+																			!!highlight.backgroundHighlight
+																		}
 																		disableImage
 																		disableVideo
 																		disableSVG
@@ -418,7 +435,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Background Hover',
 																			'maxi-blocks'
@@ -469,6 +486,9 @@ const Inspector = props => {
 																					}
 																				)
 																			}
+																			disableColor={
+																				!!highlight.backgroundHighlight
+																			}
 																			disableImage
 																			disableVideo
 																			disableSVG
@@ -511,6 +531,9 @@ const Inspector = props => {
 																	breakpoint={
 																		deviceType
 																	}
+																	disableColor={
+																		!!highlight.borderHighlight
+																	}
 																/>
 															),
 														},
@@ -521,7 +544,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -575,6 +598,9 @@ const Inspector = props => {
 																			breakpoint={
 																				deviceType
 																			}
+																			disableColor={
+																				!!highlight.borderHighlight
+																			}
 																		/>
 																	)}
 																</Fragment>
@@ -592,7 +618,7 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													{isFirstOnHierarchy && (
-														<__experimentalFancyRadioControl
+														<FancyRadioControl
 															label={__(
 																'Full Width',
 																'maxi-blocks'
@@ -682,7 +708,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -752,7 +778,7 @@ const Inspector = props => {
 											),
 											content: (
 												<Fragment>
-													<__experimentalAxisControl
+													<AxisControl
 														values={padding}
 														defaultValues={getDefaultProp(
 															clientId,
@@ -766,7 +792,7 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														disableAuto
 													/>
-													<__experimentalAxisControl
+													<AxisControl
 														values={margin}
 														defaultValues={getDefaultProp(
 															clientId,
@@ -821,7 +847,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalMotionControl
+												<MotionControl
 													motion={motion}
 													onChange={motion =>
 														setAttributes({
@@ -837,7 +863,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalEntranceAnimationControl
+												<EntranceAnimationControl
 													motion={motion}
 													defaultMotion={getDefaultProp(
 														clientId,
@@ -857,7 +883,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalTransformControl
+												<TransformControl
 													transform={transform}
 													onChange={transform =>
 														setAttributes({
@@ -872,7 +898,7 @@ const Inspector = props => {
 										{
 											label: __('Display', 'maxi-blocks'),
 											content: (
-												<__experimentalDisplayControl
+												<DisplayControl
 													display={display}
 													onChange={display =>
 														setAttributes({
@@ -889,7 +915,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalPositionControl
+												<PositionControl
 													position={position}
 													defaultPosition={getDefaultProp(
 														clientId,
@@ -910,7 +936,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalResponsiveControl
+												<ResponsiveControl
 													breakpoints={breakpoints}
 													defaultBreakpoints={getDefaultProp(
 														clientId,
@@ -928,7 +954,7 @@ const Inspector = props => {
 										{
 											label: __('Z-index', 'maxi-blocks'),
 											content: (
-												<__experimentalZIndexControl
+												<ZIndexControl
 													zIndex={zIndex}
 													defaultZIndex={getDefaultProp(
 														clientId,
@@ -946,7 +972,7 @@ const Inspector = props => {
 										{
 											label: __('Opacity', 'maxi-blocks'),
 											content: (
-												<__experimentalOpacityControl
+												<OpacityControl
 													opacity={opacity}
 													defaultOpacity={getDefaultProp(
 														clientId,

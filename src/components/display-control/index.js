@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -73,7 +73,7 @@ const DisplayControl = props => {
 	};
 	return (
 		<div className={classes}>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Display block', 'maxi-blocks')}
 				selected={getValue()}
 				options={getOptions()}

@@ -8,7 +8,7 @@ const { BaseControl, Button, __experimentalGradientPicker } = wp.components;
  * Internal dependencies
  */
 import CheckBoxControl from '../checkbox-control';
-import __experimentalOpacityControl from '../opacity-control';
+import OpacityControl from '../opacity-control';
 
 /**
  * External dependencies
@@ -70,7 +70,7 @@ const GradientControl = props => {
 					</Button>
 				</div>
 			</BaseControl>
-			<__experimentalOpacityControl
+			<OpacityControl
 				label={__('Gradient Opacity', 'maxi-blocks')}
 				fullWidthMode
 				opacity={gradientOpacity.opacity}

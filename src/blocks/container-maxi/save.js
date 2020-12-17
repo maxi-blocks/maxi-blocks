@@ -8,16 +8,16 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import {
-	__experimentalShapeDivider,
-	__experimentalBackgroundDisplayer,
-	__experimentalArrowDisplayer,
+	ShapeDivider,
+	BackgroundDisplayer,
+	ArrowDisplayer,
 } from '../../components';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isObject } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Save
@@ -32,11 +32,11 @@ const save = props => {
 			fullWidth,
 			background,
 			extraClassName,
-			shapeDivider,
 			arrow,
 		},
 		className,
 	} = props;
+	const shapeDivider = { ...props.attributes.shapeDivider };
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -56,22 +56,18 @@ const save = props => {
 					data-gx_initial_block_class={defaultBlockStyle}
 					data-motion-id={uniqueID}
 				>
-					<__experimentalArrowDisplayer arrow={arrow} />
+					<ArrowDisplayer arrow={arrow} />
 					{!!shapeDivider.top.status && (
-						<__experimentalShapeDivider
-							shapeDividerOptions={shapeDivider}
-						/>
+						<ShapeDivider shapeDividerOptions={shapeDivider} />
 					)}
 					<div className='maxi-container-block__wrapper'>
-						<__experimentalBackgroundDisplayer
-							background={background}
-						/>
+						<BackgroundDisplayer background={background} />
 						<div className='maxi-container-block__container'>
 							<InnerBlocks.Content />
 						</div>
 					</div>
 					{!!shapeDivider.bottom.status && (
-						<__experimentalShapeDivider
+						<ShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}
 						/>
@@ -83,19 +79,15 @@ const save = props => {
 					className={classes}
 					data-gx_initial_block_class={defaultBlockStyle}
 				>
-					<__experimentalBackgroundDisplayer
-						background={background}
-					/>
 					{!!shapeDivider.top.status && (
-						<__experimentalShapeDivider
-							shapeDividerOptions={shapeDivider}
-						/>
+						<ShapeDivider shapeDividerOptions={shapeDivider} />
 					)}
 					<div className='maxi-container-block__wrapper'>
+						<BackgroundDisplayer background={background} />
 						<InnerBlocks.Content />
 					</div>
 					{!!shapeDivider.bottom.status && (
-						<__experimentalShapeDivider
+						<ShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}
 						/>

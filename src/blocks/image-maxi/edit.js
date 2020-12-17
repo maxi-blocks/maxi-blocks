@@ -22,9 +22,9 @@ import {
 } from '../../utils';
 import {
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
-	__experimentalMotionPreview,
+	Toolbar,
+	BackgroundDisplayer,
+	MotionPreview,
 } from '../../components';
 
 /**
@@ -328,8 +328,8 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
-			<__experimentalMotionPreview motion={motion}>
+			<Toolbar {...this.props} />,
+			<MotionPreview motion={motion}>
 				<__experimentalBlock.figure
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
@@ -350,7 +350,7 @@ class edit extends MaxiBlock {
 							<Fragment>
 								{(!isNil(mediaID) && imageData) || mediaURL ? (
 									<Fragment>
-										<__experimentalBackgroundDisplayer
+										<BackgroundDisplayer
 											background={background}
 										/>
 										<ResizableBox
@@ -472,7 +472,7 @@ class edit extends MaxiBlock {
 						)}
 					/>
 				</__experimentalBlock.figure>
-			</__experimentalMotionPreview>,
+			</MotionPreview>,
 		];
 	}
 }

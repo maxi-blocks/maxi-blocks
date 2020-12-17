@@ -18,21 +18,20 @@ import {
 	FullSizeControl,
 	SettingTabsControl,
 	SizeControl,
-	__experimentalZIndexControl,
-	__experimentalAxisControl,
-	__experimentalResponsiveControl,
-	__experimentalOpacityControl,
-	__experimentalShapeDividerControl,
-	__experimentalPositionControl,
-	__experimentalDisplayControl,
-	__experimentalMotionControl,
-	__experimentalTransformControl,
-	__experimentalEntranceAnimationControl,
-	__experimentalArrowControl,
-	__experimentalParallaxControl,
-	__experimentalOverlayControl,
-	__experimentalFancyRadioControl,
-	__experimentalCustomLabel,
+	ZIndexControl,
+	AxisControl,
+	ResponsiveControl,
+	OpacityControl,
+	ShapeDividerControl,
+	PositionControl,
+	DisplayControl,
+	MotionControl,
+	TransformControl,
+	EntranceAnimationControl,
+	ArrowControl,
+	ParallaxControl,
+	FancyRadioControl,
+	CustomLabel,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
 
@@ -51,14 +50,8 @@ const Inspector = props => {
 			fullWidth,
 			size,
 			opacity,
-			background,
-			backgroundHover,
-			overlay,
-			overlayHover,
 			border,
-			borderHover,
 			boxShadow,
-			boxShadowHover,
 			padding,
 			margin,
 			extraClassName,
@@ -75,8 +68,11 @@ const Inspector = props => {
 		setAttributes,
 		clientId,
 	} = props;
-
 	const sizeContainer = { ...props.attributes.sizeContainer };
+	const background = { ...props.attributes.background };
+	const backgroundHover = { ...props.attributes.backgroundHover };
+	const boxShadowHover = { ...props.attributes.boxShadowHover };
+	const borderHover = { ...props.attributes.borderHover };
 
 	const minMaxSettings = {
 		px: {
@@ -107,7 +103,7 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
-									<__experimentalCustomLabel
+									<CustomLabel
 										customLabel={customLabel}
 										onChange={customLabel =>
 											setAttributes({ customLabel })
@@ -122,7 +118,15 @@ const Inspector = props => {
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
-										disableHighlight
+										disableHighlightText
+										disableHighlightBackground
+										disableHighlightBorder
+										disableHighlightColor1
+										disableHighlightColor2
+										border={border}
+										onChangeBorder={border =>
+											setAttributes({ border })
+										}
 									/>
 								</div>
 								<AccordionControl
@@ -136,7 +140,7 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													{isFirstOnHierarchy && (
-														<__experimentalFancyRadioControl
+														<FancyRadioControl
 															label={__(
 																'Full Width',
 																'maxi-blocks'
@@ -210,7 +214,7 @@ const Inspector = props => {
 																		'max-width'
 																	]
 																}
-																defaultValue={
+																default={
 																	getDefaultProp(
 																		clientId,
 																		'sizeContainer'
@@ -220,7 +224,7 @@ const Inspector = props => {
 																		'max-width'
 																	]
 																}
-																onChangeValue={val => {
+																onChange={val => {
 																	sizeContainer[
 																		deviceType
 																	][
@@ -269,7 +273,7 @@ const Inspector = props => {
 																		deviceType
 																	].width
 																}
-																defaultValue={
+																default={
 																	getDefaultProp(
 																		clientId,
 																		'sizeContainer'
@@ -277,7 +281,7 @@ const Inspector = props => {
 																		deviceType
 																	].width
 																}
-																onChangeValue={val => {
+																onChange={val => {
 																	sizeContainer[
 																		deviceType
 																	].width = val;
@@ -346,7 +350,7 @@ const Inspector = props => {
 																	/>
 																	{background.activeMedia ===
 																		'image' && (
-																		<__experimentalParallaxControl
+																		<ParallaxControl
 																			motion={
 																				motion
 																			}
@@ -373,7 +377,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Background Hover',
 																			'maxi-blocks'
@@ -436,105 +440,6 @@ const Inspector = props => {
 												/>
 											),
 										},
-										deviceType === 'general' && {
-											label: __('Overlay', 'maxi-blocks'),
-											disablePadding: true,
-											content: (
-												<SettingTabsControl
-													items={[
-														{
-															label: __(
-																'Normal',
-																'maxi-blocks'
-															),
-															content: (
-																<Fragment>
-																	<__experimentalOverlayControl
-																		overlay={
-																			overlay
-																		}
-																		defaultOverlay={getDefaultProp(
-																			clientId,
-																			'overlay'
-																		)}
-																		onChange={overlay =>
-																			setAttributes(
-																				{
-																					overlay,
-																				}
-																			)
-																		}
-																	/>
-																</Fragment>
-															),
-														},
-														{
-															label: __(
-																'Hover',
-																'maxi-blocks'
-															),
-															content: (
-																<Fragment>
-																	<__experimentalFancyRadioControl
-																		label={__(
-																			'Enable Background Hover',
-																			'maxi-blocks'
-																		)}
-																		selected={
-																			overlayHover.status
-																		}
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
-																		onChange={val => {
-																			overlayHover.status = Number(
-																				val
-																			);
-																			setAttributes(
-																				{
-																					overlayHover,
-																				}
-																			);
-																		}}
-																	/>
-																	{!!overlayHover.status && (
-																		<__experimentalOverlayControl
-																			overlay={
-																				overlayHover
-																			}
-																			defaultOverlay={getDefaultProp(
-																				clientId,
-																				'overlayHover'
-																			)}
-																			onChange={overlayHover =>
-																				setAttributes(
-																					{
-																						overlayHover,
-																					}
-																				)
-																			}
-																		/>
-																	)}
-																</Fragment>
-															),
-														},
-													]}
-												/>
-											),
-										},
 										{
 											label: __('Border', 'maxi-blocks'),
 											disablePadding: true,
@@ -575,7 +480,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -681,7 +586,7 @@ const Inspector = props => {
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -751,9 +656,9 @@ const Inspector = props => {
 											),
 											content: (
 												<Fragment>
-													<__experimentalAxisControl
+													<AxisControl
 														values={padding}
-														defaultValues={getDefaultProp(
+														defaults={getDefaultProp(
 															clientId,
 															'padding'
 														)}
@@ -765,9 +670,9 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														disableAuto
 													/>
-													<__experimentalAxisControl
+													<AxisControl
 														values={margin}
-														defaultValues={getDefaultProp(
+														defaults={getDefaultProp(
 															clientId,
 															'margin'
 														)}
@@ -784,7 +689,7 @@ const Inspector = props => {
 										{
 											label: __('Arrow', 'maxi-blocks'),
 											content: (
-												<__experimentalArrowControl
+												<ArrowControl
 													arrow={arrow}
 													defaultArrow={getDefaultProp(
 														clientId,
@@ -839,7 +744,7 @@ const Inspector = props => {
 											'maxi-blocks'
 										),
 										content: (
-											<__experimentalShapeDividerControl
+											<ShapeDividerControl
 												shapeDividerOptions={
 													shapeDivider
 												}
@@ -861,7 +766,7 @@ const Inspector = props => {
 											'maxi-blocks'
 										),
 										content: (
-											<__experimentalMotionControl
+											<MotionControl
 												motion={motion}
 												onChange={motion =>
 													setAttributes({ motion })
@@ -875,7 +780,7 @@ const Inspector = props => {
 											'maxi-blocks'
 										),
 										content: (
-											<__experimentalEntranceAnimationControl
+											<EntranceAnimationControl
 												motion={motion}
 												defaultMotion={getDefaultProp(
 													clientId,
@@ -890,7 +795,7 @@ const Inspector = props => {
 									{
 										label: __('Transform', 'maxi-blocks'),
 										content: (
-											<__experimentalTransformControl
+											<TransformControl
 												transform={transform}
 												onChange={transform =>
 													setAttributes({ transform })
@@ -903,7 +808,7 @@ const Inspector = props => {
 									{
 										label: __('Display', 'maxi-blocks'),
 										content: (
-											<__experimentalDisplayControl
+											<DisplayControl
 												display={display}
 												onChange={display =>
 													setAttributes({ display })
@@ -915,7 +820,7 @@ const Inspector = props => {
 									{
 										label: __('Position', 'maxi-blocks'),
 										content: (
-											<__experimentalPositionControl
+											<PositionControl
 												position={position}
 												defaultPosition={getDefaultProp(
 													clientId,
@@ -931,7 +836,7 @@ const Inspector = props => {
 									deviceType !== 'general' && {
 										label: __('Breakpoint', 'maxi-blocks'),
 										content: (
-											<__experimentalResponsiveControl
+											<ResponsiveControl
 												breakpoints={breakpoints}
 												defaultBreakpoints={getDefaultProp(
 													clientId,
@@ -949,7 +854,7 @@ const Inspector = props => {
 									{
 										label: __('Z-index', 'maxi-blocks'),
 										content: (
-											<__experimentalZIndexControl
+											<ZIndexControl
 												zIndex={zIndex}
 												defaultZIndex={getDefaultProp(
 													clientId,
@@ -965,7 +870,7 @@ const Inspector = props => {
 									{
 										label: __('Opacity', 'maxi-blocks'),
 										content: (
-											<__experimentalOpacityControl
+											<OpacityControl
 												opacity={opacity}
 												defaultOpacity={getDefaultProp(
 													clientId,

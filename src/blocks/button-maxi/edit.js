@@ -20,12 +20,8 @@ import {
 	getLastBreakpointValue,
 	getIconObject,
 } from '../../utils';
-import {
-	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalMotionPreview,
-} from '../../components';
-import { __experimentalGetFormatValue } from '../../extensions/text/formats';
+import { MaxiBlock, Toolbar, MotionPreview } from '../../components';
+import { getFormatValue } from '../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -203,8 +199,6 @@ class edit extends MaxiBlock {
 				blockStyleBackground,
 				extraClassName,
 				content,
-				display,
-				icon,
 				motion,
 			},
 			setAttributes,
@@ -212,8 +206,15 @@ class edit extends MaxiBlock {
 			selectedText,
 			generateFormatValue,
 		} = this.props;
-
 		const { formatValue, textSelected } = this.state;
+		const display = { ...this.props.attributes.display };
+		const icon = { ...this.props.attributes.icon };
+		const highlight = { ...this.props.attributes.highlight };
+		const {
+			textHighlight,
+			backgroundHighlight,
+			borderHighlight,
+		} = highlight;
 
 		if (isEmpty(formatValue) || selectedText !== textSelected)
 			this.setState({
@@ -230,6 +231,9 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
+			!!textHighlight && 'maxi-highlight--text',
+			!!backgroundHighlight && 'maxi-highlight--background',
+			!!borderHighlight && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className
@@ -243,8 +247,8 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} formatValue={formatValue} />,
-			<__experimentalToolbar {...this.props} formatValue={formatValue} />,
-			<__experimentalMotionPreview motion={motion}>
+			<Toolbar {...this.props} formatValue={formatValue} />,
+			<MotionPreview motion={motion}>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
@@ -264,7 +268,7 @@ class edit extends MaxiBlock {
 						/>
 					</div>
 				</__experimentalBlock>
-			</__experimentalMotionPreview>,
+			</MotionPreview>,
 		];
 	}
 }
@@ -288,7 +292,7 @@ const editDispatch = withDispatch(
 				multilineWrapperTags: isList ? typeOfList : undefined,
 				__unstableIsEditableTree: true,
 			};
-			const formatValue = __experimentalGetFormatValue(formatElement);
+			const formatValue = getFormatValue(formatElement);
 
 			return formatValue;
 		};

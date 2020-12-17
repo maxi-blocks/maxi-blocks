@@ -8,8 +8,8 @@ const { Icon, Button, Tooltip } = wp.components;
  * Internal dependencies
  */
 import {
-	__experimentalGetCustomFormatValue,
-	__experimentalSetFormat,
+	getCustomFormatValue,
+	setFormat,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -28,7 +28,7 @@ const TextItalic = props => {
 
 	const typography = { ...props.typography };
 
-	const italicValue = __experimentalGetCustomFormatValue({
+	const italicValue = getCustomFormatValue({
 		typography,
 		formatValue,
 		prop: 'font-style',
@@ -38,10 +38,7 @@ const TextItalic = props => {
 	const isActive = (italicValue === 'italic' && true) || false;
 
 	const onClick = () => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const { typography: newTypography, content: newContent } = setFormat({
 			formatValue,
 			isActive,
 			isList,

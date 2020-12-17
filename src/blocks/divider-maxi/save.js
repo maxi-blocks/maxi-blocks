@@ -6,7 +6,7 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import { __experimentalBackgroundDisplayer } from '../../components';
+import { BackgroundDisplayer } from '../../components';
 
 /**
  * External dependencies
@@ -28,14 +28,16 @@ const save = props => {
 			extraClassName,
 			fullWidth,
 			lineOrientation,
-			divider,
 		},
 	} = props;
+	const divider = { ...props.attributes.divider };
+	const highlight = { ...props.attributes.highlight };
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-divider-block',
 		blockStyle,
+		!!highlight.borderHighlight && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,
@@ -52,7 +54,7 @@ const save = props => {
 			data-maxi_initial_block_class={defaultBlockStyle}
 			data-motion-id={uniqueID}
 		>
-			<__experimentalBackgroundDisplayer background={background} />
+			<BackgroundDisplayer background={background} />
 			{divider.general['border-style'] !== 'none' && (
 				<Fragment>
 					<hr className='maxi-divider-block__divider' />

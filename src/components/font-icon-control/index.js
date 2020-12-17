@@ -20,7 +20,7 @@ import FontIconPicker from '../font-icon-picker';
 import AxisControl from '../axis-control';
 import BorderControl from '../border-control';
 import BackgroundControl from '../background-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 import { getLastBreakpointValue, getDefaultProp } from '../../utils';
 import * as defaultPresets from './defaults';
 
@@ -43,16 +43,21 @@ import DefaultStylesControl from '../default-styles-control';
  * Component
  */
 const FontIconControl = props => {
-	const { className, onChange, breakpoint, simpleMode = false } = props;
-
-	const [activeOption, setActiveOption] = useState('iconColor');
-
-	const classes = classnames('maxi-font-icon-control', className);
-
+	const {
+		className,
+		onChange,
+		breakpoint,
+		simpleMode = false,
+		disableColor,
+	} = props;
 	const icon = { ...props.icon };
 	const iconBackground = { ...props.iconBackground };
 	const iconPadding = { ...props.iconPadding };
 	const iconBorder = { ...props.iconBorder };
+
+	const [activeOption, setActiveOption] = useState('iconColor');
+
+	const classes = classnames('maxi-font-icon-control', className);
 
 	const getOptions = () => {
 		const options = [
@@ -180,7 +185,7 @@ const FontIconControl = props => {
 								max={99}
 							/>
 
-							<__experimentalFancyRadioControl
+							<FancyRadioControl
 								label={__('Icon Position', 'maxi-blocks')}
 								selected={icon.position}
 								options={[
@@ -225,7 +230,7 @@ const FontIconControl = props => {
 						/>
 					)}
 					{getOptions().length > 1 && (
-						<__experimentalFancyRadioControl
+						<FancyRadioControl
 							label=''
 							selected={activeOption}
 							options={getOptions()}
@@ -255,7 +260,7 @@ const FontIconControl = props => {
 						/>
 					)}
 
-					{activeOption === 'iconColor' && (
+					{activeOption === 'iconColor' && !disableColor && (
 						<ColorControl
 							label={__('Icon', 'maxi-blocks')}
 							color={getLastBreakpointValue(
@@ -321,7 +326,7 @@ const FontIconControl = props => {
 					)}
 
 					{!simpleMode && (
-						<__experimentalFancyRadioControl
+						<FancyRadioControl
 							label={__('Use Custom Padding', 'maxi-blocks')}
 							selected={icon.customPadding}
 							options={[

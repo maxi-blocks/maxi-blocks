@@ -1,4 +1,4 @@
-import { __experimentalFancyRadioControl } from '..';
+import { FancyRadioControl } from '..';
 
 /**
  * WordPress Dependencies
@@ -8,17 +8,28 @@ const { SelectControl } = wp.components;
 const { Fragment } = wp.element;
 
 /**
+ * External dependencies
+ */
+import { isObject, isNil } from 'lodash';
+
+/**
  * Component
  */
 const BlockStylesControl = props => {
 	const {
 		blockStyle,
 		defaultBlockStyle,
-		isHighlight,
 		blockStyleBackground,
 		onChange,
 		isFirstOnHierarchy,
-		disableHighlight = false,
+		highlight,
+		disableHighlightText = false,
+		disableHighlightBackground = false,
+		disableHighlightBorder = false,
+		disableHighlightColor1 = false,
+		disableHighlightColor2 = false,
+		onChangeBorder,
+		border,
 	} = props;
 
 	const getSelectorOptions = () => {
@@ -33,6 +44,13 @@ const BlockStylesControl = props => {
 			{ label: __('Custom', 'maxi-blocks'), value: 'maxi-custom' },
 		];
 	};
+
+	const borderValue =
+		!isNil(border) && !isObject(border) ? JSON.parse(border) : border;
+	const highlightValue =
+		!isNil(highlight) && !isObject(highlight)
+			? JSON.parse(highlight)
+			: highlight;
 
 	return (
 		<Fragment>
@@ -64,21 +82,99 @@ const BlockStylesControl = props => {
 			)}
 			{blockStyle !== 'maxi-custom' && (
 				<Fragment>
-					{!disableHighlight && (
-						<__experimentalFancyRadioControl
-							label={__('Highlight', 'maxi-blocks')}
-							selected={isHighlight}
+					{!disableHighlightText && (
+						<FancyRadioControl
+							label={__('Highlight Text', 'maxi-blocks')}
+							selected={highlightValue.textHighlight}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={isHighlight =>
-								onChange({ isHighlight: +isHighlight })
-							}
+							onChange={val => {
+								highlightValue.textHighlight = Number(val);
+								onChange(JSON.stringify(highlightValue));
+							}}
+						/>
+					)}
+					{!disableHighlightBackground && (
+						<FancyRadioControl
+							label={__('Highlight Background', 'maxi-blocks')}
+							selected={highlightValue.backgroundHighlight}
+							options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 1 },
+								{ label: __('No', 'maxi-blocks'), value: 0 },
+							]}
+							onChange={val => {
+								highlightValue.backgroundHighlight = Number(
+									val
+								);
+								onChange(JSON.stringify(highlightValue));
+							}}
+						/>
+					)}
+					{!disableHighlightBorder && (
+						<FancyRadioControl
+							label={__('Highlight Border', 'maxi-blocks')}
+							selected={highlightValue.borderHighlight}
+							options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 1 },
+								{ label: __('No', 'maxi-blocks'), value: 0 },
+							]}
+							onChange={val => {
+								highlightValue.borderHighlight = Number(val);
+								onChange(JSON.stringify(highlightValue));
+
+								if (!isNil(borderValue)) {
+									borderValue.general['border-style'] =
+										'solid';
+									borderValue.borderWidth.general[
+										'border-right-width'
+									] = 2;
+									borderValue.borderWidth.general[
+										'border-left-width'
+									] = 2;
+									borderValue.borderWidth.general[
+										'border-top-width'
+									] = 2;
+									borderValue.borderWidth.general[
+										'border-bottom-width'
+									] = 2;
+
+									onChangeBorder(JSON.stringify(borderValue));
+								}
+							}}
+						/>
+					)}
+					{!disableHighlightColor1 && (
+						<FancyRadioControl
+							label={__('Highlight SVG Color 1', 'maxi-blocks')}
+							selected={highlightValue.color1Highlight}
+							options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 1 },
+								{ label: __('No', 'maxi-blocks'), value: 0 },
+							]}
+							onChange={val => {
+								highlightValue.color1Highlight = Number(val);
+								onChange(JSON.stringify(highlightValue));
+							}}
+						/>
+					)}
+					{!disableHighlightColor2 && (
+						<FancyRadioControl
+							label={__('Highlight SVG Color 2', 'maxi-blocks')}
+							selected={highlightValue.color2Highlight}
+							options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 1 },
+								{ label: __('No', 'maxi-blocks'), value: 0 },
+							]}
+							onChange={val => {
+								highlightValue.color2Highlight = Number(val);
+								onChange(JSON.stringify(highlightValue));
+							}}
 						/>
 					)}
 					{isFirstOnHierarchy && (
-						<__experimentalFancyRadioControl
+						<FancyRadioControl
 							label={__('Background colour', 'maxi-blocks')}
 							selected={blockStyleBackground}
 							options={[

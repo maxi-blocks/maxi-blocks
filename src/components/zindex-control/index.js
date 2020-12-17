@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
  * Internal dependencies
  */
 import { getLastBreakpointValue } from '../../utils';
-import __experimentalNumberControl from '../number-control';
+import NumberControl from '../number-control';
 
 /**
  * External dependencies
@@ -26,7 +26,7 @@ const ZIndexControl = props => {
 	const defaultZIndex = { ...props.defaultZIndex };
 
 	return (
-		<__experimentalNumberControl
+		<NumberControl
 			label={__('Z-index', 'maxi-blocks')}
 			className={classes}
 			value={getLastBreakpointValue(zIndex, 'z-index', breakpoint)}

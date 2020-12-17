@@ -404,26 +404,6 @@ export const getColorBackgroundObject = colorOptions => {
 	return response;
 };
 
-export const getColorOverlayObject = overlay => {
-	const response = {
-		label: 'Overlay',
-		general: {},
-	};
-
-	if (!isNil(overlay.overlayOptions.gradientOpacity.opacity))
-		response.general.opacity =
-			overlay.overlayOptions.gradientOpacity.opacity.general.opacity;
-
-	if (!isEmpty(overlay.overlayOptions.color))
-		response.general['background-color'] =
-			overlay.overlayOptions.activeColor;
-
-	if (!isEmpty(overlay.overlayOptions.gradient))
-		response.general.background = overlay.overlayOptions.activeColor;
-
-	return response;
-};
-
 export const getImageBackgroundObject = imageOptions => {
 	const response = {
 		label: 'Background Image',
@@ -644,22 +624,8 @@ const setBackgroundLayers = (response, layers, target) => {
 	return response;
 };
 
-export const setBackgroundStyles = ({
-	target,
-	background,
-	backgroundHover,
-	overlay,
-	overlayHover,
-}) => {
+export const setBackgroundStyles = (target, background, backgroundHover) => {
 	let response = {};
-
-	if (!isEmpty(overlay)) {
-		response[
-			`${target} > .maxi-background-displayer .maxi-background-displayer__overlay`
-		] = {
-			overlay: { ...getColorOverlayObject(overlay) },
-		};
-	}
 
 	if (backgroundHover.status) {
 		response[
@@ -674,22 +640,6 @@ export const setBackgroundStyles = ({
 			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__color`
 		] = {
 			backgroundHover: {},
-		};
-	}
-
-	if (!isEmpty(overlayHover) && !!overlayHover.status) {
-		response[
-			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__overlay`
-		] = {
-			overlayHover: {
-				...getColorOverlayObject(overlayHover),
-			},
-		};
-	} else {
-		response[
-			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__overlay`
-		] = {
-			overlayHover: {},
 		};
 	}
 

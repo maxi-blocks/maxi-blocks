@@ -11,7 +11,7 @@ const { SelectControl, Icon } = wp.components;
 import { getLastBreakpointValue } from '../../utils';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import __experimentalAxisControl from '../axis-control';
+import AxisControl from '../axis-control';
 import {
 	borderNone,
 	borderSolid,
@@ -39,6 +39,7 @@ const BorderControl = props => {
 		onChange,
 		breakpoint = 'general',
 		disableAdvanced = false,
+		disableColor = false,
 	} = props;
 
 	const border = { ...props.border };
@@ -119,24 +120,26 @@ const BorderControl = props => {
 					},
 				]}
 			/>
-			<ColorControl
-				label={__('Border', 'maxi-blocks')}
-				color={getLastBreakpointValue(
-					border,
-					'border-color',
-					breakpoint
-				)}
-				defaultColor={defaultBorder[breakpoint]['border-color']}
-				onChange={val => {
-					border[breakpoint]['border-color'] = val;
+			{!disableColor && (
+				<ColorControl
+					label={__('Border', 'maxi-blocks')}
+					color={getLastBreakpointValue(
+						border,
+						'border-color',
+						breakpoint
+					)}
+					defaultColor={defaultBorder[breakpoint]['border-color']}
+					onChange={val => {
+						border[breakpoint]['border-color'] = val;
 
-					onChange(border);
-				}}
-				disableImage
-				disableVideo
-				disableGradient
-				disableGradientAboveBackground
-			/>
+						onChange(border);
+					}}
+					disableImage
+					disableVideo
+					disableGradient
+					disableGradientAboveBackground
+				/>
+			)}
 			{!disableAdvanced && (
 				<Fragment>
 					<SelectControl
@@ -163,11 +166,11 @@ const BorderControl = props => {
 							onChange(border);
 						}}
 					/>
-					<__experimentalAxisControl
+					<AxisControl
 						values={border.borderWidth}
 						defaultValues={defaultBorder.borderWidth}
-						onChange={borderWidth => {
-							border.borderWidth = borderWidth;
+						onChange={val => {
+							border.borderWidth = JSON.parse(val);
 							onChange(border);
 						}}
 						breakpoint={breakpoint}
@@ -188,11 +191,11 @@ const BorderControl = props => {
 						}}
 						disableAuto
 					/>
-					<__experimentalAxisControl
+					<AxisControl
 						values={border.borderRadius}
 						defaultValues={defaultBorder.borderRadius}
-						onChange={borderRadius => {
-							border.borderRadius = borderRadius;
+						onChange={val => {
+							border.borderRadius = JSON.parse(val);
 							onChange(border);
 						}}
 						breakpoint={breakpoint}

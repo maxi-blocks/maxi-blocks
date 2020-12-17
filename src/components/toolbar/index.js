@@ -10,6 +10,11 @@ const { Fragment, useEffect, useState } = wp.element;
 import { getDefaultProp } from '../../utils';
 
 /**
+ * External dependencies
+ */
+import { isObject, isNil } from 'lodash';
+
+/**
  * Utils
  */
 import {
@@ -19,7 +24,7 @@ import {
 	Border,
 	BoxShadow,
 	Mover,
-	ColumnPattern,
+	ToolbarColumnPattern,
 	Divider,
 	DividerColor,
 	DividerAlignment,
@@ -37,10 +42,10 @@ import {
 	PaddingMargin,
 	Size,
 	ToggleBlock,
-	__experimentalColumnMover,
-	__experimentalRowSettings,
-	__experimentalColumnSize,
-	__experimentalColumnsHandlers,
+	ColumnMover,
+	RowSettings,
+	ColumnSize,
+	ColumnsHandlers,
 } from './components';
 
 /**
@@ -105,6 +110,7 @@ const MaxiToolbar = props => {
 			svgColorBlack,
 			svgColorWhite,
 			display,
+			highlight,
 		},
 		clientId,
 		isSelected,
@@ -120,6 +126,11 @@ const MaxiToolbar = props => {
 	const [anchorRef, setAnchorRef] = useState(
 		document.getElementById(`block-${clientId}`)
 	);
+
+	const highlightValue =
+		!isNil(highlight) && !isObject(highlight)
+			? JSON.parse(highlight)
+			: highlight;
 
 	useEffect(() => {
 		setAnchorRef(document.getElementById(`block-${clientId}`));
@@ -147,15 +158,17 @@ const MaxiToolbar = props => {
 					</div>
 					<div className='toolbar-wrapper'>
 						<Mover clientId={clientId} blockName={name} />
-						<__experimentalColumnMover
-							clientId={clientId}
-							blockName={name}
-						/>
-						<DividerColor
-							blockName={name}
-							divider={divider}
-							onChange={divider => setAttributes({ divider })}
-						/>
+						<ColumnMover clientId={clientId} blockName={name} />
+						{!isNil(highlightValue) &&
+							!highlightValue.borderHighlight && (
+								<DividerColor
+									blockName={name}
+									divider={divider}
+									onChange={divider =>
+										setAttributes({ divider })
+									}
+								/>
+							)}
 						<Divider
 							blockName={name}
 							divider={divider}
@@ -198,17 +211,20 @@ const MaxiToolbar = props => {
 							typeOfList={typeOfList}
 							formatValue={formatValue}
 						/>
-						<TextColor
-							blockName={name}
-							typography={typography}
-							content={content}
-							onChange={obj => setAttributes(obj)}
-							breakpoint={deviceType}
-							node={anchorRef}
-							isList={isList}
-							typeOfList={typeOfList}
-							formatValue={formatValue}
-						/>
+						{!isNil(highlightValue) &&
+							!highlightValue.textHighlight && (
+								<TextColor
+									blockName={name}
+									typography={typography}
+									content={content}
+									onChange={obj => setAttributes(obj)}
+									breakpoint={deviceType}
+									node={anchorRef}
+									isList={isList}
+									typeOfList={typeOfList}
+									formatValue={formatValue}
+								/>
+							)}
 						<Alignment
 							blockName={name}
 							alignment={alignment}
@@ -240,13 +256,13 @@ const MaxiToolbar = props => {
 							isList={isList}
 							breakpoint={deviceType}
 						/>
-						<__experimentalRowSettings
+						<RowSettings
 							blockName={name}
 							horizontalAlign={horizontalAlign}
 							verticalAlign={verticalAlign}
 							onChange={obj => setAttributes(obj)}
 						/>
-						<ColumnPattern
+						<ToolbarColumnPattern
 							clientId={clientId}
 							blockName={name}
 							rowPattern={rowPattern}
@@ -256,7 +272,7 @@ const MaxiToolbar = props => {
 							breakpoint={deviceType}
 						/>
 
-						<__experimentalColumnsHandlers
+						<ColumnsHandlers
 							toggleHandlers={toggleHandlers}
 							blockName={name}
 						/>
@@ -284,35 +300,54 @@ const MaxiToolbar = props => {
 							typeOfList={typeOfList}
 							onChange={obj => setAttributes(obj)}
 						/>
-						<BackgroundColor
-							blockName={name}
-							background={background}
-							defaultBackground={getDefaultProp(
-								clientId,
-								'background'
+						{!isNil(highlightValue) &&
+							!highlightValue.backgroundHighlight && (
+								<BackgroundColor
+									blockName={name}
+									background={background}
+									defaultBackground={getDefaultProp(
+										clientId,
+										'background'
+									)}
+									onChange={background =>
+										setAttributes({ background })
+									}
+								/>
 							)}
-							onChange={background =>
-								setAttributes({ background })
-							}
-						/>
 						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<Fragment>
-								<SvgColor
-									blockName={name}
-									svgColor={svgColorOrange}
-									onChange={svgColorOrange => {
-										setAttributes({ svgColorOrange });
-										changeSVGContent(svgColorOrange, 1);
-									}}
-								/>
-								<SvgColor
-									blockName={name}
-									svgColor={svgColorBlack}
-									onChange={svgColorBlack => {
-										setAttributes({ svgColorBlack });
-										changeSVGContent(svgColorBlack, 2);
-									}}
-								/>
+								{!isNil(highlightValue) &&
+									!highlightValue.color1Highlight && (
+										<SvgColor
+											blockName={name}
+											svgColor={svgColorOrange}
+											onChange={svgColorOrange => {
+												setAttributes({
+													svgColorOrange,
+												});
+												changeSVGContent(
+													svgColorOrange,
+													1
+												);
+											}}
+										/>
+									)}
+								{!isNil(highlightValue) &&
+									!highlightValue.color2Highlight && (
+										<SvgColor
+											blockName={name}
+											svgColor={svgColorBlack}
+											onChange={svgColorBlack => {
+												setAttributes({
+													svgColorBlack,
+												});
+												changeSVGContent(
+													svgColorBlack,
+													2
+												);
+											}}
+										/>
+									)}
 								{hasThirdColour && (
 									<SvgColor
 										blockName={name}
@@ -331,6 +366,10 @@ const MaxiToolbar = props => {
 							defaultBorder={getDefaultProp(clientId, 'border')}
 							onChange={border => setAttributes({ border })}
 							breakpoint={deviceType}
+							disableColor={
+								!isNil(highlightValue) &&
+								!!highlightValue.borderHighlight
+							}
 						/>
 						{deviceType === 'general' && (
 							<ImageSize
@@ -366,7 +405,7 @@ const MaxiToolbar = props => {
 							isFirstOnHierarchy={isFirstOnHierarchy}
 							breakpoint={deviceType}
 						/>
-						<__experimentalColumnSize
+						<ColumnSize
 							clientId={clientId}
 							blockName={name}
 							columnSize={columnSize}

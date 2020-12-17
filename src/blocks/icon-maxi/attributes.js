@@ -112,11 +112,11 @@ const attributes = {
 	},
 	position: {
 		type: 'object',
-		default: attributesData.__experimentalPosition,
+		default: attributesData.position,
 	},
 	display: {
 		type: 'object',
-		default: attributesData.__experimentalDisplay,
+		default: attributesData.display,
 	},
 	clipPath: {
 		type: 'string',
@@ -124,11 +124,11 @@ const attributes = {
 	},
 	hover: {
 		type: 'object',
-		default: attributesData.__experimentalHover,
+		default: attributesData.hover,
 	},
 	transform: {
 		type: 'object',
-		default: attributesData.__experimentalTransform,
+		default: attributesData.transform,
 	},
 	content: {
 		type: 'string',

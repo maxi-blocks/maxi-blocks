@@ -10,7 +10,7 @@ const { useSelect, useDispatch } = wp.data;
 /**
  * Internal dependencies
  */
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -62,7 +62,7 @@ const TimelinePresets = props => {
 
 	return (
 		<div className='maxi-motion-control__preset'>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Preset', 'maxi-blocks')}
 				selected={interaction.presetStatus}
 				options={[

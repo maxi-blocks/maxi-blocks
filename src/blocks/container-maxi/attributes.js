@@ -18,7 +18,7 @@ const attributes = {
 	},
 	sizeContainer: {
 		type: 'object',
-		default: attributesData.__experimentalContainer,
+		default: attributesData.container,
 	},
 	fullWidth: {
 		type: 'string',
@@ -39,14 +39,6 @@ const attributes = {
 	backgroundHover: {
 		type: 'object',
 		default: attributesData.backgroundHover,
-	},
-	overlay: {
-		type: 'object',
-		default: attributesData.overlay,
-	},
-	overlayHover: {
-		type: 'object',
-		default: attributesData.overlayHover,
 	},
 	border: {
 		type: 'object',
@@ -74,27 +66,27 @@ const attributes = {
 	},
 	shapeDivider: {
 		type: 'object',
-		default: attributesData.__experimentalShapeDivider,
+		default: attributesData.shapeDivider,
 	},
 	position: {
 		type: 'object',
-		default: attributesData.__experimentalPosition,
+		default: attributesData.position,
 	},
 	display: {
 		type: 'object',
-		default: attributesData.__experimentalDisplay,
+		default: attributesData.display,
 	},
 	motion: {
 		type: 'object',
-		default: attributesData.__experimentalMotion,
+		default: attributesData.motion,
 	},
 	arrow: {
 		type: 'object',
-		default: attributesData.__experimentalArrow,
+		default: attributesData.arrow,
 	},
 	transform: {
 		type: 'object',
-		default: attributesData.__experimentalTransform,
+		default: attributesData.transform,
 	},
 };
 

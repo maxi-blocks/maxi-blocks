@@ -8,8 +8,8 @@ const { Icon, Button, Tooltip } = wp.components;
  * Internal dependencies
  */
 import {
-	__experimentalGetCustomFormatValue,
-	__experimentalSetFormat,
+	getCustomFormatValue,
+	setFormat,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -28,7 +28,7 @@ const TextBold = props => {
 
 	const typography = { ...props.typography };
 
-	const boldValue = __experimentalGetCustomFormatValue({
+	const boldValue = getCustomFormatValue({
 		typography,
 		formatValue,
 		prop: 'font-weight',
@@ -38,10 +38,7 @@ const TextBold = props => {
 	const isActive = (boldValue > 400 && true) || false;
 
 	const onClick = () => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const { typography: newTypography, content: newContent } = setFormat({
 			formatValue,
 			isActive,
 			isList,

@@ -16,8 +16,9 @@ import BorderControl from '../../../border-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
- * Icons
+ * Styles & Icons
  */
+import './editor.scss';
 import { toolbarBorder } from '../../../../icons';
 import { getLastBreakpointValue } from '../../../../utils';
 
@@ -30,7 +31,14 @@ const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/image-maxi'];
  * Component
  */
 const Border = props => {
-	const { blockName, border, defaultBorder, onChange, breakpoint } = props;
+	const {
+		blockName,
+		border,
+		defaultBorder,
+		onChange,
+		breakpoint,
+		disableColor = false,
+	} = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
@@ -77,13 +85,16 @@ const Border = props => {
 				</div>
 			}
 			content={
-				<BorderControl
-					border={border}
-					defaultBorder={defaultBorder}
-					onChange={value => onChange(value)}
-					breakpoint={breakpoint}
-					disableAdvanced
-				/>
+				<div className='toolbar-item__border__popover'>
+					<BorderControl
+						border={border}
+						defaultBorder={defaultBorder}
+						onChange={value => onChange(value)}
+						breakpoint={breakpoint}
+						disableAdvanced
+						disableColor={disableColor}
+					/>
+				</div>
 			}
 		/>
 	);

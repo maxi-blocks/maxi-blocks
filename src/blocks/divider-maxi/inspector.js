@@ -81,6 +81,10 @@ const Inspector = props => {
 		? JSON.parse(boxShadowHover)
 		: boxShadowHover;
 
+	const highlightValue = !isObject(highlight)
+		? JSON.parse(highlight)
+		: highlight;
+
 	return (
 		<InspectorControls>
 			<SettingTabsControl
@@ -248,6 +252,9 @@ const Inspector = props => {
 															lineOrientation
 														}
 														breakpoint={deviceType}
+														disableColor={
+															!!highlightValue.borderHighlight
+														}
 													/>
 												</Fragment>
 											),

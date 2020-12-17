@@ -10,6 +10,11 @@ const { Fragment, useEffect, useState } = wp.element;
 import { getDefaultProp } from '../../utils';
 
 /**
+ * External dependencies
+ */
+import { isObject } from 'lodash';
+
+/**
  * Utils
  */
 import {
@@ -105,6 +110,7 @@ const MaxiToolbar = props => {
 			svgColorBlack,
 			svgColorWhite,
 			display,
+			highlight,
 		},
 		clientId,
 		isSelected,
@@ -120,6 +126,10 @@ const MaxiToolbar = props => {
 	const [anchorRef, setAnchorRef] = useState(
 		document.getElementById(`block-${clientId}`)
 	);
+
+	const highlightValue = !isObject(highlight)
+		? JSON.parse(highlight)
+		: highlight;
 
 	useEffect(() => {
 		setAnchorRef(document.getElementById(`block-${clientId}`));
@@ -148,11 +158,13 @@ const MaxiToolbar = props => {
 					<div className='toolbar-wrapper'>
 						<Mover clientId={clientId} blockName={name} />
 						<ColumnMover clientId={clientId} blockName={name} />
-						<DividerColor
-							blockName={name}
-							divider={divider}
-							onChange={divider => setAttributes({ divider })}
-						/>
+						{!highlightValue.borderHighlight && (
+							<DividerColor
+								blockName={name}
+								divider={divider}
+								onChange={divider => setAttributes({ divider })}
+							/>
+						)}
 						<Divider
 							blockName={name}
 							divider={divider}
@@ -195,17 +207,19 @@ const MaxiToolbar = props => {
 							typeOfList={typeOfList}
 							formatValue={formatValue}
 						/>
-						<TextColor
-							blockName={name}
-							typography={typography}
-							content={content}
-							onChange={obj => setAttributes(obj)}
-							breakpoint={deviceType}
-							node={anchorRef}
-							isList={isList}
-							typeOfList={typeOfList}
-							formatValue={formatValue}
-						/>
+						{!highlightValue.textHighlight && (
+							<TextColor
+								blockName={name}
+								typography={typography}
+								content={content}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+								node={anchorRef}
+								isList={isList}
+								typeOfList={typeOfList}
+								formatValue={formatValue}
+							/>
+						)}
 						<Alignment
 							blockName={name}
 							alignment={alignment}
@@ -281,35 +295,41 @@ const MaxiToolbar = props => {
 							typeOfList={typeOfList}
 							onChange={obj => setAttributes(obj)}
 						/>
-						<BackgroundColor
-							blockName={name}
-							background={background}
-							defaultBackground={getDefaultProp(
-								clientId,
-								'background'
-							)}
-							onChange={background =>
-								setAttributes({ background })
-							}
-						/>
+						{!highlightValue.backgroundHighlight && (
+							<BackgroundColor
+								blockName={name}
+								background={background}
+								defaultBackground={getDefaultProp(
+									clientId,
+									'background'
+								)}
+								onChange={background =>
+									setAttributes({ background })
+								}
+							/>
+						)}
 						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<Fragment>
-								<SvgColor
-									blockName={name}
-									svgColor={svgColorOrange}
-									onChange={svgColorOrange => {
-										setAttributes({ svgColorOrange });
-										changeSVGContent(svgColorOrange, 1);
-									}}
-								/>
-								<SvgColor
-									blockName={name}
-									svgColor={svgColorBlack}
-									onChange={svgColorBlack => {
-										setAttributes({ svgColorBlack });
-										changeSVGContent(svgColorBlack, 2);
-									}}
-								/>
+								{!highlightValue.color1Highlight && (
+									<SvgColor
+										blockName={name}
+										svgColor={svgColorOrange}
+										onChange={svgColorOrange => {
+											setAttributes({ svgColorOrange });
+											changeSVGContent(svgColorOrange, 1);
+										}}
+									/>
+								)}
+								{!highlightValue.color2Highlight && (
+									<SvgColor
+										blockName={name}
+										svgColor={svgColorBlack}
+										onChange={svgColorBlack => {
+											setAttributes({ svgColorBlack });
+											changeSVGContent(svgColorBlack, 2);
+										}}
+									/>
+								)}
 								{hasThirdColour && (
 									<SvgColor
 										blockName={name}
@@ -328,6 +348,7 @@ const MaxiToolbar = props => {
 							defaultBorder={getDefaultProp(clientId, 'border')}
 							onChange={border => setAttributes({ border })}
 							breakpoint={deviceType}
+							disableColor={!!highlightValue.borderHighlight}
 						/>
 						{deviceType === 'general' && (
 							<ImageSize

@@ -179,7 +179,6 @@ const Inspector = props => {
 														fontOptionsHover={
 															typographyHover
 														}
-														marginOptions={margin}
 													/>
 												),
 											},

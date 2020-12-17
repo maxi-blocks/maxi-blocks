@@ -72,7 +72,6 @@ const Inspector = props => {
 			opacity,
 			boxShadow,
 			border,
-			size,
 			padding,
 			margin,
 			backgroundHover,
@@ -100,6 +99,7 @@ const Inspector = props => {
 		setAttributes,
 	} = props;
 
+	const size = { ...props.attributes.size };
 	const defaultSize = getDefaultProp(clientId, 'size');
 
 	const getSizeOptions = () => {

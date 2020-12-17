@@ -19,6 +19,8 @@ const getDeviceType = () => {
 // Motion Effects
 const motionElems = document.querySelectorAll('.maxi-motion-effect');
 motionElems.forEach(function (elem) {
+	if (!maxi_custom_data.custom_data) return;
+
 	const motionID = elem.getAttribute('data-motion-id');
 	const motionData =
 		maxi_custom_data.custom_data[motionID] !== undefined &&

@@ -47,9 +47,10 @@ const BlockStylesControl = props => {
 
 	const borderValue =
 		!isNil(border) && !isObject(border) ? JSON.parse(border) : border;
-	const highlightValue = !isObject(highlight)
-		? JSON.parse(highlight)
-		: highlight;
+	const highlightValue =
+		!isNil(highlight) && !isObject(highlight)
+			? JSON.parse(highlight)
+			: highlight;
 
 	return (
 		<Fragment>

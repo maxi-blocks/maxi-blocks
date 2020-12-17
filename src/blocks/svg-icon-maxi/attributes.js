@@ -116,6 +116,10 @@ const attributes = {
 		type: 'number',
 		default: 64,
 	},
+	highlight: {
+		type: 'string',
+		default: JSON.stringify(attributesData.highlight),
+	},
 };
 
 export default attributes;

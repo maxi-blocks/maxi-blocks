@@ -47,7 +47,7 @@ const Inspector = props => {
 			blockStyle,
 			defaultBlockStyle,
 			blockStyleBackground,
-			isHighlight,
+			highlight,
 			lineVertical,
 			lineHorizontal,
 			lineOrientation,
@@ -81,6 +81,10 @@ const Inspector = props => {
 		? JSON.parse(boxShadowHover)
 		: boxShadowHover;
 
+	const highlightValue = !isObject(highlight)
+		? JSON.parse(highlight)
+		: highlight;
+
 	return (
 		<InspectorControls>
 			<SettingTabsControl
@@ -103,10 +107,16 @@ const Inspector = props => {
 										blockStyleBackground={
 											blockStyleBackground
 										}
-										isHighlight={isHighlight}
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
-										onChange={obj => setAttributes(obj)}
+										highlight={highlight}
+										onChange={highlight =>
+											setAttributes({ highlight })
+										}
+										disableHighlightText
+										disableHighlightBackground
+										disableHighlightColor1
+										disableHighlightColor2
 									/>
 								</div>
 								<AccordionControl
@@ -242,6 +252,9 @@ const Inspector = props => {
 															lineOrientation
 														}
 														breakpoint={deviceType}
+														disableColor={
+															!!highlightValue.borderHighlight
+														}
 													/>
 												</Fragment>
 											),

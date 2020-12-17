@@ -179,7 +179,15 @@ const Inspector = props => {
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
-										disableHighlight
+										disableHighlightText
+										disableHighlightBackground
+										disableHighlightBorder
+										disableHighlightColor1
+										disableHighlightColor2
+										border={border}
+										onChangeBorder={border =>
+											setAttributes({ border })
+										}
 									/>
 								</div>
 								<AccordionControl

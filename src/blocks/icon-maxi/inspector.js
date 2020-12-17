@@ -168,7 +168,7 @@ const Inspector = props => {
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
-										disableHighlight
+										disableHighlightText
 									/>
 									<ImageAltControl
 										mediaAlt={mediaAlt}

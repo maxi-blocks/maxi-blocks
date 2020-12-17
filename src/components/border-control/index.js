@@ -41,6 +41,7 @@ const BorderControl = props => {
 		onChange,
 		breakpoint = 'general',
 		disableAdvanced = false,
+		disableColor = false,
 	} = props;
 
 	const value = !isObject(border) ? JSON.parse(border) : border;
@@ -124,24 +125,26 @@ const BorderControl = props => {
 					},
 				]}
 			/>
-			<ColorControl
-				label={__('Border', 'maxi-blocks')}
-				color={getLastBreakpointValue(
-					value,
-					'border-color',
-					breakpoint
-				)}
-				defaultColor={defaultValue[breakpoint]['border-color']}
-				onChange={val => {
-					value[breakpoint]['border-color'] = val;
+			{!disableColor && (
+				<ColorControl
+					label={__('Border', 'maxi-blocks')}
+					color={getLastBreakpointValue(
+						value,
+						'border-color',
+						breakpoint
+					)}
+					defaultColor={defaultValue[breakpoint]['border-color']}
+					onChange={val => {
+						value[breakpoint]['border-color'] = val;
 
-					onChange(JSON.stringify(value));
-				}}
-				disableImage
-				disableVideo
-				disableGradient
-				disableGradientAboveBackground
-			/>
+						onChange(JSON.stringify(value));
+					}}
+					disableImage
+					disableVideo
+					disableGradient
+					disableGradientAboveBackground
+				/>
+			)}
 			{!disableAdvanced && (
 				<Fragment>
 					<SelectControl

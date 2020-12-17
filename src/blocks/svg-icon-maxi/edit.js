@@ -28,7 +28,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, isObject } from 'lodash';
 import Iframe from 'react-iframe';
 
 /**
@@ -124,6 +124,7 @@ class edit extends MaxiBlock {
 			attributes: {
 				uniqueID,
 				blockStyle,
+				highlight,
 				defaultBlockStyle,
 				blockStyleBackground,
 				extraClassName,
@@ -135,6 +136,9 @@ class edit extends MaxiBlock {
 		} = this.props;
 
 		const { isOpen } = this.state;
+		const highlightValue = !isObject(highlight)
+			? JSON.parse(highlight)
+			: highlight;
 
 		const onClick = () => {
 			this.setState({ isOpen: !isOpen });
@@ -147,6 +151,11 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
+			!!highlightValue.backgroundHighlight &&
+				'maxi-highlight--background',
+			!!highlightValue.borderHighlight && 'maxi-highlight--border',
+			!!highlightValue.color1Highlight && 'maxi-highlight--color1',
+			!!highlightValue.color2Highlight && 'maxi-highlight--color2',
 			extraClassName,
 			uniqueID,
 			className
@@ -216,7 +225,9 @@ class edit extends MaxiBlock {
 									<BackgroundDisplayer
 										background={background}
 									/>
-									<RawHTML>{content}</RawHTML>
+									<RawHTML className='maxi-svg-icon-block__icon'>
+										{content}
+									</RawHTML>
 								</Fragment>
 							)}
 						</Fragment>

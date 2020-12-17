@@ -61,8 +61,6 @@ class edit extends MaxiBlock {
 			uniqueID,
 			background,
 			backgroundHover,
-			overlay,
-			overlayHover,
 			border,
 			borderHover,
 		} = this.props.attributes;
@@ -79,8 +77,6 @@ class edit extends MaxiBlock {
 				uniqueID,
 				background,
 				backgroundHover,
-				overlay,
-				overlayHover,
 				border,
 				borderHover
 			)

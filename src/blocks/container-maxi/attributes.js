@@ -40,14 +40,6 @@ const attributes = {
 		type: 'string',
 		default: JSON.stringify(attributesData.backgroundHover),
 	},
-	overlay: {
-		type: 'string',
-		default: JSON.stringify(attributesData.overlay),
-	},
-	overlayHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.overlayHover),
-	},
 	border: {
 		type: 'string',
 		default: JSON.stringify(attributesData.border),

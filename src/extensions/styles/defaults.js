@@ -658,31 +658,6 @@ export const backgroundHover = {
 	},
 };
 
-export const overlay = {
-	label: 'Overlay',
-	overlayOptions: {
-		overlay: '',
-		activeColor: '',
-		color: '',
-		gradient: '',
-		gradientAboveBackground: false,
-		gradientOpacity: {
-			opacity: {
-				label: 'Opacity',
-				general: {
-					opacity: 1,
-				},
-			},
-		},
-	},
-};
-
-export const overlayHover = {
-	label: 'Overlay Hover',
-	status: 0,
-	...overlay,
-};
-
 export const boxShadow = {
 	label: 'Box Shadow',
 	general: {

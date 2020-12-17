@@ -94,8 +94,6 @@ class edit extends MaxiBlock {
 			arrow,
 			background,
 			backgroundHover,
-			overlay,
-			overlayHover,
 			border,
 			borderHover,
 			boxShadow,
@@ -139,8 +137,6 @@ class edit extends MaxiBlock {
 				`${uniqueID} .maxi-container-block__wrapper`,
 				background,
 				backgroundHover,
-				overlay,
-				overlayHover,
 				border,
 				borderHover
 			),

@@ -39,12 +39,6 @@ const BackgroundDisplayer = props => {
 					<div
 						className={classnames(
 							'maxi-background-displayer__layer',
-							'maxi-background-displayer__overlay'
-						)}
-					/>
-					<div
-						className={classnames(
-							'maxi-background-displayer__layer',
 							'maxi-background-displayer__color'
 						)}
 					/>

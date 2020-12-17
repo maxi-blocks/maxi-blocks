@@ -30,7 +30,6 @@ import {
 	EntranceAnimationControl,
 	ArrowControl,
 	ParallaxControl,
-	OverlayControl,
 	FancyRadioControl,
 	CustomLabel,
 } from '../../components';
@@ -59,8 +58,6 @@ const Inspector = props => {
 			opacity,
 			background,
 			backgroundHover,
-			overlay,
-			overlayHover,
 			border,
 			borderHover,
 			boxShadow,
@@ -111,10 +108,6 @@ const Inspector = props => {
 	const backgroundHoverValue = !isObject(backgroundHover)
 		? JSON.parse(backgroundHover)
 		: backgroundHover;
-
-	const overlayHoverValue = !isObject(overlayHover)
-		? JSON.parse(overlayHover)
-		: overlayHover;
 
 	const boxShadowHoverValue = !isObject(boxShadowHover)
 		? JSON.parse(boxShadowHover)
@@ -480,107 +473,6 @@ const Inspector = props => {
 																			disableImage
 																			disableVideo
 																			disableSVG
-																		/>
-																	)}
-																</Fragment>
-															),
-														},
-													]}
-												/>
-											),
-										},
-										deviceType === 'general' && {
-											label: __('Overlay', 'maxi-blocks'),
-											disablePadding: true,
-											content: (
-												<SettingTabsControl
-													items={[
-														{
-															label: __(
-																'Normal',
-																'maxi-blocks'
-															),
-															content: (
-																<Fragment>
-																	<OverlayControl
-																		overlay={
-																			overlay
-																		}
-																		defaultOverlay={getDefaultProp(
-																			clientId,
-																			'overlay'
-																		)}
-																		onChange={overlay =>
-																			setAttributes(
-																				{
-																					overlay,
-																				}
-																			)
-																		}
-																	/>
-																</Fragment>
-															),
-														},
-														{
-															label: __(
-																'Hover',
-																'maxi-blocks'
-															),
-															content: (
-																<Fragment>
-																	<FancyRadioControl
-																		label={__(
-																			'Enable Background Hover',
-																			'maxi-blocks'
-																		)}
-																		selected={
-																			overlayHoverValue.status
-																		}
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
-																		onChange={val => {
-																			overlayHoverValue.status = Number(
-																				val
-																			);
-																			setAttributes(
-																				{
-																					overlayHover: JSON.stringify(
-																						overlayHoverValue
-																					),
-																				}
-																			);
-																		}}
-																	/>
-																	{!!overlayHoverValue.status && (
-																		<OverlayControl
-																			overlay={
-																				overlayHover
-																			}
-																			defaultOverlay={getDefaultProp(
-																				clientId,
-																				'overlayHover'
-																			)}
-																			onChange={overlayHover =>
-																				setAttributes(
-																					{
-																						overlayHover,
-																					}
-																				)
-																			}
 																		/>
 																	)}
 																</Fragment>

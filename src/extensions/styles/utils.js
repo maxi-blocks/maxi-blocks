@@ -406,26 +406,6 @@ export const getColorBackgroundObject = colorOptions => {
 	return response;
 };
 
-export const getColorOverlayObject = overlay => {
-	const response = {
-		label: 'Overlay',
-		general: {},
-	};
-
-	if (!isNil(overlay.overlayOptions.gradientOpacity.opacity))
-		response.general.opacity =
-			overlay.overlayOptions.gradientOpacity.opacity.general.opacity;
-
-	if (!isEmpty(overlay.overlayOptions.color))
-		response.general['background-color'] =
-			overlay.overlayOptions.activeColor;
-
-	if (!isEmpty(overlay.overlayOptions.gradient))
-		response.general.background = overlay.overlayOptions.activeColor;
-
-	return response;
-};
-
 export const getImageBackgroundObject = imageOptions => {
 	const response = {
 		label: 'Background Image',
@@ -646,13 +626,7 @@ const setBackgroundLayers = (response, layers, target) => {
 	return response;
 };
 
-export const setBackgroundStyles = (
-	target,
-	background,
-	backgroundHover,
-	overlay,
-	overlayHover
-) => {
+export const setBackgroundStyles = (target, background, backgroundHover) => {
 	const backgroundValue = !isObject(background)
 		? JSON.parse(background)
 		: background;
@@ -662,14 +636,6 @@ export const setBackgroundStyles = (
 		: backgroundHover;
 
 	let response = {};
-
-	if (!isNil(overlay)) {
-		response[
-			`${target} > .maxi-background-displayer .maxi-background-displayer__overlay`
-		] = {
-			overlay: { ...getColorOverlayObject(JSON.parse(overlay)) },
-		};
-	}
 
 	if (backgroundHoverValue.status) {
 		response[
@@ -684,22 +650,6 @@ export const setBackgroundStyles = (
 			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__color`
 		] = {
 			backgroundHover: {},
-		};
-	}
-
-	if (!isNil(overlay) && !!JSON.parse(overlayHover).status) {
-		response[
-			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__overlay`
-		] = {
-			overlayHover: {
-				...getColorOverlayObject(JSON.parse(overlayHover)),
-			},
-		};
-	} else {
-		response[
-			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__overlay`
-		] = {
-			overlayHover: {},
 		};
 	}
 

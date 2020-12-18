@@ -27,7 +27,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Content
@@ -45,7 +45,11 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(uniqueID, background, backgroundHover)
+			setBackgroundStyles({
+				target: uniqueID,
+				background,
+				backgroundHover,
+			})
 		);
 
 		return response;
@@ -55,7 +59,7 @@ class edit extends MaxiBlock {
 		const { icon } = this.props.attributes;
 
 		const response = {
-			icon: { ...getIconObject(JSON.parse(icon)) },
+			icon: getIconObject(icon),
 		};
 		return response;
 	}
@@ -64,7 +68,7 @@ class edit extends MaxiBlock {
 		const { alignment } = this.props.attributes;
 
 		const response = {
-			alignment: { ...getAlignmentTextObject(JSON.parse(alignment)) },
+			alignment: getAlignmentTextObject(alignment),
 		};
 
 		return response;
@@ -84,18 +88,18 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			padding: { ...JSON.parse(padding) },
-			margin: { ...JSON.parse(margin) },
-			opacity: { ...JSON.parse(opacity) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			zIndex: { ...JSON.parse(zIndex) },
-			position: { ...JSON.parse(position) },
-			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
+			padding,
+			margin,
+			opacity,
+			border,
+			borderWidth: border.borderWidth,
+			borderRadius: border.borderRadius,
+			boxShadow: { ...getBoxShadowObject(boxShadow) },
+			zIndex,
+			position,
+			positionOptions: position.options,
+			display,
+			transform: getTransformObject(transform),
 		};
 
 		return response;
@@ -105,23 +109,36 @@ class edit extends MaxiBlock {
 		const { boxShadowHover, borderHover } = this.props.attributes;
 
 		const response = {
-			borderWidth: { ...JSON.parse(borderHover).borderWidth },
-			borderRadius: { ...JSON.parse(borderHover).borderRadius },
+			borderWidth: borderHover.borderWidth,
+			borderRadius: borderHover.borderRadius,
 		};
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
 			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+				...getBoxShadowObject(boxShadowHover),
 			};
 		}
 
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+		if (!isNil(borderHover) && !!borderHover.status) {
 			response.borderHover = {
-				...JSON.parse(borderHover),
+				...borderHover,
 			};
 		}
 
 		return response;
+	}
+
+	get getCustomData() {
+		const { uniqueID, motion } = this.props.attributes;
+
+		const motionStatus =
+			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+
+		return {
+			[uniqueID]: {
+				...(motionStatus && { motion }),
+			},
+		};
 	}
 
 	render() {
@@ -133,26 +150,33 @@ class edit extends MaxiBlock {
 				blockStyleBackground,
 				extraClassName,
 				background,
-				display,
-				icon,
 			},
 			className,
 			deviceType,
 			setAttributes,
 		} = this.props;
-
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
-		const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
+		const display = { ...this.props.attributes.display };
+		const icon = { ...this.props.attributes.icon };
+		const highlight = { ...this.props.attributes.highlight };
+		const {
+			textHighlight,
+			backgroundHighlight,
+			borderHighlight,
+		} = highlight;
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-font-icon-block',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
+				'maxi-block-display-none',
 			defaultBlockStyle,
+			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
+			!!textHighlight && 'maxi-highlight--text',
+			!!backgroundHighlight && 'maxi-highlight--background',
+			!!borderHighlight && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className
@@ -161,18 +185,21 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector {...this.props} />,
 			<Toolbar {...this.props} />,
-			<__experimentalBlock className={classes}>
+			<__experimentalBlock
+				className={classes}
+				data-maxi_initial_block_class={defaultBlockStyle}
+			>
 				<BackgroundDisplayer background={background} />
-				{(!!iconValue.icon && (
+				{(!!icon.icon && (
 					<span className='maxi-font-icon-block__icon'>
-						<i className={iconValue.icon} />
+						<i className={icon.icon} />
 					</span>
 				)) || (
 					<FontIconPicker
-						onChange={icon => {
-							iconValue.icon = icon;
+						onChange={newIcon => {
+							icon.icon = newIcon;
 							setAttributes({
-								icon: JSON.stringify(iconValue),
+								icon,
 							});
 						}}
 					/>

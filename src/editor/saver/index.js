@@ -21,10 +21,16 @@ const BlockStylesSaver = () => {
 	});
 
 	const { saveStyles } = useDispatch('maxiBlocks/styles');
+	const { saveCustomData } = useDispatch('maxiBlocks/customData');
 
 	useEffect(() => {
-		if (isSaving && !isPreviewing) saveStyles(true);
-		else if (isSaving && isPreviewing) saveStyles(false);
+		if (isSaving && !isPreviewing) {
+			saveStyles(true);
+			saveCustomData(true);
+		} else if (isSaving && isPreviewing) {
+			saveStyles(false);
+			saveCustomData(false);
+		}
 	}, [isSaving]);
 
 	return null;

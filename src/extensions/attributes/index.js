@@ -44,7 +44,23 @@ const addAttributes = settings => {
 				type: 'string',
 				default: 'maxi-def-light',
 			},
-			isHighlight: {
+			isHighlightText: {
+				type: 'number',
+				default: 0,
+			},
+			isHighlightBackground: {
+				type: 'number',
+				default: 0,
+			},
+			isHighlightBorder: {
+				type: 'number',
+				default: 0,
+			},
+			isHighlightColor1: {
+				type: 'number',
+				default: 0,
+			},
+			isHighlightColor2: {
 				type: 'number',
 				default: 0,
 			},
@@ -59,22 +75,51 @@ const addAttributes = settings => {
 				type: 'boolean',
 			},
 			linkSettings: {
-				type: 'string',
-				default: '{}',
+				type: 'object',
+				default: {},
 			},
 			extraClassName: {
 				type: 'string',
 				default: '',
 			},
 			zIndex: {
-				type: 'string',
-				default:
-					'{"label":"ZIndex","general":{"z-index":""},"xxl":{"z-index":""},"xl":{"z-index":""},"l":{"z-index":""},"m":{"z-index":""},"s":{"z-index":""},"xs":{"z-index":""}}',
+				type: 'object',
+				default: {
+					label: 'ZIndex',
+					general: {
+						'z-index': '',
+					},
+					xxl: {
+						'z-index': '',
+					},
+					xl: {
+						'z-index': '',
+					},
+					l: {
+						'z-index': '',
+					},
+					m: {
+						'z-index': '',
+					},
+					s: {
+						'z-index': '',
+					},
+					xs: {
+						'z-index': '',
+					},
+				},
 			},
 			breakpoints: {
 				type: 'string',
-				default:
-					'{"label":"Breakpoints","general":"","xl":"","l":"","m":"","s":"","xs":""}',
+				default: {
+					label: 'Breakpoints',
+					general: '',
+					xl: '',
+					l: '',
+					m: '',
+					s: '',
+					xs: '',
+				},
 			},
 		});
 	}
@@ -109,10 +154,11 @@ const uniqueIdCreator = name => {
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
 		const {
-			attributes: { uniqueID, breakpoints },
+			attributes: { uniqueID },
 			name,
 			clientId,
 		} = props;
+		const breakpoints = { ...props.attributes.breakpoints };
 
 		if (allowedBlocks.includes(name)) {
 			// uniqueID
@@ -137,19 +183,15 @@ const withAttributes = createHigherOrderComponent(
 			const defaultBreakpoints = select(
 				'maxiBlocks'
 			).receiveMaxiBreakpoints();
-			const value = JSON.parse(breakpoints);
 
-			if (!isNumber(value.xl) && !isEmpty(defaultBreakpoints)) {
-				const response = {
+			if (!isNumber(breakpoints.xl) && !isEmpty(defaultBreakpoints))
+				props.attributes.breakpoints = {
 					xl: defaultBreakpoints.xl,
 					l: defaultBreakpoints.l,
 					m: defaultBreakpoints.m,
 					s: defaultBreakpoints.s,
 					xs: defaultBreakpoints.xs,
 				};
-
-				props.attributes.breakpoints = JSON.stringify(response);
-			}
 		}
 
 		return <BlockEdit {...props} />;

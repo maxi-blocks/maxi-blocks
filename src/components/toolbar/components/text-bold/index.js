@@ -13,11 +13,6 @@ import {
 } from '../../../../extensions/text/formats';
 
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * Styles and icons
  */
 import './editor.scss';
@@ -26,21 +21,15 @@ import { toolbarBold } from '../../../../icons';
 /**
  * TextBold
  */
-const TextBold = ({
-	typography,
-	formatValue,
-	blockName,
-	onChange,
-	isList,
-	breakpoint,
-}) => {
+const TextBold = props => {
+	const { formatValue, blockName, onChange, isList, breakpoint } = props;
+
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typographyValue =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
+	const typography = { ...props.typography };
 
 	const boldValue = getCustomFormatValue({
-		typography: typographyValue,
+		typography,
 		formatValue,
 		prop: 'font-weight',
 		breakpoint,
@@ -53,7 +42,7 @@ const TextBold = ({
 			formatValue,
 			isActive,
 			isList,
-			typography: typographyValue,
+			typography,
 			value: {
 				'font-weight': (isActive && 400) || 800,
 			},
@@ -62,7 +51,7 @@ const TextBold = ({
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			...(newContent && { content: newContent }),
 		});
 	};

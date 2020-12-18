@@ -9,14 +9,13 @@ const { useState } = wp.element;
  * Internal dependencies
  */
 import defaultTypography from '../../extensions/defaults/typography';
-import defaultMargin from '../../extensions/defaults/margin';
 import { getDefaultProp } from '../../utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty, isObject } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -27,57 +26,33 @@ import './editor.scss';
  * Component
  */
 const FontLevelControl = props => {
-	const {
-		className,
-		value,
-		fontOptions,
-		fontOptionsHover,
-		marginOptions,
-		onChange,
-	} = props;
+	const { className, value, fontOptions, fontOptionsHover, onChange } = props;
 
 	const [state, setState] = useState({
 		lastLevel: value,
 		p: {},
 		pHover: {},
-		pMargin: {},
 		h1: {},
 		h1Hover: {},
-		h1Margin: {},
 		h2: {},
 		h2Hover: {},
-		h2Margin: {},
 		h3: {},
 		h3Hover: {},
-		h3Margin: {},
 		h4: {},
 		h4Hover: {},
-		h4Margin: {},
 		h5: {},
 		h5Hover: {},
-		h5Margin: {},
 		h6: {},
 		h6Hover: {},
-		h6Margin: {},
 	});
 
 	const classes = classnames('maxi-font-level-control', className);
 
 	const saveOldies = value => {
 		setState({
-			[state.lastLevel]: !isObject(fontOptions)
-				? JSON.parse(fontOptions)
-				: fontOptions,
-
-			[`${state.lastLevel}Hover`]: !isObject(fontOptionsHover)
-				? JSON.parse(fontOptionsHover)
-				: fontOptionsHover,
-
-			[`${state.lastLevel}Margin`]: !isObject(marginOptions)
-				? JSON.parse(marginOptions)
-				: marginOptions,
-
-			lastLevel: value,
+			[state.lastLevel]: fontOptions,
+			[`${state.lastLevel}Hover`]: fontOptionsHover,
+			[state.lastLevel]: value,
 		});
 	};
 
@@ -85,33 +60,25 @@ const FontLevelControl = props => {
 		saveOldies(value);
 		let fontOptResponse = {};
 		let fontOptResponseHover = {};
-		let marginOptResponse = {};
 
 		if (!isEmpty(state[value])) {
 			fontOptResponse = state[value];
 			fontOptResponseHover = state[`${value}Hover`];
-			marginOptResponse = state[`${value}Margin`];
 		} else if (!isNil(fontOptions)) {
-			const oldFontOptions = !isObject(fontOptions)
-				? JSON.parse(fontOptions)
-				: fontOptions;
+			const oldFontOptions = { ...fontOptions };
 
 			fontOptResponse = {
 				...oldFontOptions,
 				...defaultTypography[value],
 				customFormats: { ...oldFontOptions.customFormats },
 			};
-			fontOptResponseHover = JSON.parse(
-				getDefaultProp(null, 'typographyHover')
-			);
-			marginOptResponse = defaultMargin[value];
+			fontOptResponseHover = getDefaultProp(null, 'typographyHover');
 		}
 
 		onChange({
 			textLevel: value,
-			typography: JSON.stringify(fontOptResponse),
-			typographyHover: JSON.stringify(fontOptResponseHover),
-			margin: JSON.stringify(marginOptResponse),
+			typography: fontOptResponse,
+			typographyHover: fontOptResponseHover,
 		});
 	};
 

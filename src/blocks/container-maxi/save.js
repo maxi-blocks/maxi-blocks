@@ -17,7 +17,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isObject } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Save
@@ -32,12 +32,11 @@ const save = props => {
 			fullWidth,
 			background,
 			extraClassName,
-			shapeDivider,
-			motion,
 			arrow,
 		},
 		className,
 	} = props;
+	const shapeDivider = { ...props.attributes.shapeDivider };
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -49,23 +48,16 @@ const save = props => {
 		!isNil(uniqueID) ? uniqueID : null
 	);
 
-	const shapeDividerValue = !isObject(shapeDivider)
-		? JSON.parse(shapeDivider)
-		: shapeDivider;
-
 	return (
 		<Fragment>
 			{isFirstOnHierarchy && (
 				<section
 					className={classes}
 					data-gx_initial_block_class={defaultBlockStyle}
-					data-motion={motion}
-					data-shape-divider={shapeDivider}
 					data-motion-id={uniqueID}
-					data-background={background}
 				>
 					<ArrowDisplayer arrow={arrow} />
-					{!!shapeDividerValue.top.status && (
+					{!!shapeDivider.top.status && (
 						<ShapeDivider shapeDividerOptions={shapeDivider} />
 					)}
 					<div className='maxi-container-block__wrapper'>
@@ -74,7 +66,7 @@ const save = props => {
 							<InnerBlocks.Content />
 						</div>
 					</div>
-					{!!shapeDividerValue.bottom.status && (
+					{!!shapeDivider.bottom.status && (
 						<ShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}
@@ -87,14 +79,14 @@ const save = props => {
 					className={classes}
 					data-gx_initial_block_class={defaultBlockStyle}
 				>
-					{!!shapeDividerValue.top.status && (
+					{!!shapeDivider.top.status && (
 						<ShapeDivider shapeDividerOptions={shapeDivider} />
 					)}
 					<div className='maxi-container-block__wrapper'>
 						<BackgroundDisplayer background={background} />
 						<InnerBlocks.Content />
 					</div>
-					{!!shapeDividerValue.bottom.status && (
+					{!!shapeDivider.bottom.status && (
 						<ShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}

@@ -30,16 +30,10 @@ import {
 	EntranceAnimationControl,
 	ArrowControl,
 	ParallaxControl,
-	OverlayControl,
 	FancyRadioControl,
 	CustomLabel,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
-
-/**
- * External dependencies
- */
-import { isObject } from 'lodash';
 
 /**
  * Inspector
@@ -53,18 +47,11 @@ const Inspector = props => {
 			blockStyle,
 			defaultBlockStyle,
 			blockStyleBackground,
-			sizeContainer,
 			fullWidth,
 			size,
 			opacity,
-			background,
-			backgroundHover,
-			overlay,
-			overlayHover,
 			border,
-			borderHover,
 			boxShadow,
-			boxShadowHover,
 			padding,
 			margin,
 			extraClassName,
@@ -81,10 +68,11 @@ const Inspector = props => {
 		setAttributes,
 		clientId,
 	} = props;
-
-	const value = !isObject(sizeContainer)
-		? JSON.parse(sizeContainer)
-		: sizeContainer;
+	const sizeContainer = { ...props.attributes.sizeContainer };
+	const background = { ...props.attributes.background };
+	const backgroundHover = { ...props.attributes.backgroundHover };
+	const boxShadowHover = { ...props.attributes.boxShadowHover };
+	const borderHover = { ...props.attributes.borderHover };
 
 	const minMaxSettings = {
 		px: {
@@ -104,25 +92,6 @@ const Inspector = props => {
 			max: 100,
 		},
 	};
-	const backgroundValue = !isObject(background)
-		? JSON.parse(background)
-		: background;
-
-	const backgroundHoverValue = !isObject(backgroundHover)
-		? JSON.parse(backgroundHover)
-		: backgroundHover;
-
-	const overlayHoverValue = !isObject(overlayHover)
-		? JSON.parse(overlayHover)
-		: overlayHover;
-
-	const boxShadowHoverValue = !isObject(boxShadowHover)
-		? JSON.parse(boxShadowHover)
-		: boxShadowHover;
-
-	const borderHoverValue = !isObject(borderHover)
-		? JSON.parse(borderHover)
-		: borderHover;
 
 	return (
 		<InspectorControls>
@@ -149,7 +118,15 @@ const Inspector = props => {
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
-										disableHighlight
+										disableHighlightText
+										disableHighlightBackground
+										disableHighlightBorder
+										disableHighlightColor1
+										disableHighlightColor2
+										border={border}
+										onChangeBorder={border =>
+											setAttributes({ border })
+										}
 									/>
 								</div>
 								<AccordionControl
@@ -202,18 +179,16 @@ const Inspector = props => {
 																	'maxi-blocks'
 																)}
 																unit={
-																	value[
+																	sizeContainer[
 																		deviceType
 																	][
 																		'max-widthUnit'
 																	]
 																}
 																defaultUnit={
-																	JSON.parse(
-																		getDefaultProp(
-																			clientId,
-																			'sizeContainer'
-																		)
+																	getDefaultProp(
+																		clientId,
+																		'sizeContainer'
 																	)[
 																		deviceType
 																	][
@@ -221,32 +196,28 @@ const Inspector = props => {
 																	]
 																}
 																onChangeUnit={val => {
-																	value[
+																	sizeContainer[
 																		deviceType
 																	][
 																		'max-widthUnit'
 																	] = val;
 																	setAttributes(
 																		{
-																			sizeContainer: JSON.stringify(
-																				value
-																			),
+																			sizeContainer,
 																		}
 																	);
 																}}
 																value={
-																	value[
+																	sizeContainer[
 																		deviceType
 																	][
 																		'max-width'
 																	]
 																}
-																defaultValue={
-																	JSON.parse(
-																		getDefaultProp(
-																			clientId,
-																			'sizeContainer'
-																		)
+																default={
+																	getDefaultProp(
+																		clientId,
+																		'sizeContainer'
 																	)[
 																		deviceType
 																	][
@@ -254,16 +225,14 @@ const Inspector = props => {
 																	]
 																}
 																onChangeValue={val => {
-																	value[
+																	sizeContainer[
 																		deviceType
 																	][
 																		'max-width'
 																	] = val;
 																	setAttributes(
 																		{
-																			sizeContainer: JSON.stringify(
-																				value
-																			),
+																			sizeContainer,
 																		}
 																	);
 																}}
@@ -277,56 +246,48 @@ const Inspector = props => {
 																	'maxi-blocks'
 																)}
 																unit={
-																	value[
+																	sizeContainer[
 																		deviceType
 																	].widthUnit
 																}
 																defaultUnit={
-																	JSON.parse(
-																		getDefaultProp(
-																			clientId,
-																			'sizeContainer'
-																		)
+																	getDefaultProp(
+																		clientId,
+																		'sizeContainer'
 																	)[
 																		deviceType
 																	].widthUnit
 																}
 																onChangeUnit={val => {
-																	value[
+																	sizeContainer[
 																		deviceType
 																	].widthUnit = val;
 																	setAttributes(
 																		{
-																			sizeContainer: JSON.stringify(
-																				value
-																			),
+																			sizeContainer,
 																		}
 																	);
 																}}
 																value={
-																	value[
+																	sizeContainer[
 																		deviceType
 																	].width
 																}
-																defaultValue={
-																	JSON.parse(
-																		getDefaultProp(
-																			clientId,
-																			'sizeContainer'
-																		)
+																default={
+																	getDefaultProp(
+																		clientId,
+																		'sizeContainer'
 																	)[
 																		deviceType
 																	].width
 																}
 																onChangeValue={val => {
-																	value[
+																	sizeContainer[
 																		deviceType
 																	].width = val;
 																	setAttributes(
 																		{
-																			sizeContainer: JSON.stringify(
-																				value
-																			),
+																			sizeContainer,
 																		}
 																	);
 																}}
@@ -387,7 +348,7 @@ const Inspector = props => {
 																			)
 																		}
 																	/>
-																	{backgroundValue.activeMedia ===
+																	{background.activeMedia ===
 																		'image' && (
 																		<ParallaxControl
 																			motion={
@@ -422,7 +383,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			backgroundHoverValue.status
+																			backgroundHover.status
 																		}
 																		options={[
 																			{
@@ -441,19 +402,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			backgroundHoverValue.status = Number(
+																			backgroundHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					backgroundHover: JSON.stringify(
-																						backgroundHoverValue
-																					),
+																					backgroundHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!backgroundHoverValue.status && (
+																	{!!backgroundHover.status && (
 																		<BackgroundControl
 																			background={
 																				backgroundHover
@@ -472,107 +431,6 @@ const Inspector = props => {
 																			disableImage
 																			disableVideo
 																			disableSVG
-																		/>
-																	)}
-																</Fragment>
-															),
-														},
-													]}
-												/>
-											),
-										},
-										deviceType === 'general' && {
-											label: __('Overlay', 'maxi-blocks'),
-											disablePadding: true,
-											content: (
-												<SettingTabsControl
-													items={[
-														{
-															label: __(
-																'Normal',
-																'maxi-blocks'
-															),
-															content: (
-																<Fragment>
-																	<OverlayControl
-																		overlay={
-																			overlay
-																		}
-																		defaultOverlay={getDefaultProp(
-																			clientId,
-																			'overlay'
-																		)}
-																		onChange={overlay =>
-																			setAttributes(
-																				{
-																					overlay,
-																				}
-																			)
-																		}
-																	/>
-																</Fragment>
-															),
-														},
-														{
-															label: __(
-																'Hover',
-																'maxi-blocks'
-															),
-															content: (
-																<Fragment>
-																	<FancyRadioControl
-																		label={__(
-																			'Enable Background Hover',
-																			'maxi-blocks'
-																		)}
-																		selected={
-																			overlayHoverValue.status
-																		}
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
-																		onChange={val => {
-																			overlayHoverValue.status = Number(
-																				val
-																			);
-																			setAttributes(
-																				{
-																					overlayHover: JSON.stringify(
-																						overlayHoverValue
-																					),
-																				}
-																			);
-																		}}
-																	/>
-																	{!!overlayHoverValue.status && (
-																		<OverlayControl
-																			overlay={
-																				overlayHover
-																			}
-																			defaultOverlay={getDefaultProp(
-																				clientId,
-																				'overlayHover'
-																			)}
-																			onChange={overlayHover =>
-																				setAttributes(
-																					{
-																						overlayHover,
-																					}
-																				)
-																			}
 																		/>
 																	)}
 																</Fragment>
@@ -628,7 +486,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			borderHoverValue.status
+																			borderHover.status
 																		)}
 																		options={[
 																			{
@@ -647,19 +505,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			borderHoverValue.status = Number(
+																			borderHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					borderHover: JSON.stringify(
-																						borderHoverValue
-																					),
+																					borderHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!borderHoverValue.status && (
+																	{!!borderHover.status && (
 																		<BorderControl
 																			border={
 																				borderHover
@@ -736,7 +592,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			boxShadowHoverValue.status
+																			boxShadowHover.status
 																		)}
 																		options={[
 																			{
@@ -755,19 +611,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			boxShadowHoverValue.status = Number(
+																			boxShadowHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					boxShadowHover: JSON.stringify(
-																						boxShadowHoverValue
-																					),
+																					boxShadowHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!boxShadowHoverValue.status && (
+																	{!!boxShadowHover.status && (
 																		<BoxShadowControl
 																			boxShadow={
 																				boxShadowHover
@@ -804,7 +658,7 @@ const Inspector = props => {
 												<Fragment>
 													<AxisControl
 														values={padding}
-														defaultValues={getDefaultProp(
+														defaults={getDefaultProp(
 															clientId,
 															'padding'
 														)}
@@ -818,7 +672,7 @@ const Inspector = props => {
 													/>
 													<AxisControl
 														values={margin}
-														defaultValues={getDefaultProp(
+														defaults={getDefaultProp(
 															clientId,
 															'margin'
 														)}

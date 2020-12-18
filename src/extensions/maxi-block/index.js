@@ -14,37 +14,28 @@
  * WordPress dependencies
  */
 const { Component } = wp.element;
-const { select } = wp.data;
-
-/**
- * Internal dependencies
- */
-import { getDefaultProp } from '../styles/utils';
+const { select, dispatch } = wp.data;
 
 import styleResolver from '../styles/stylesResolver';
 
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, isEqual, isObject } from 'lodash';
+import { isEmpty, uniqueId, cloneDeep, isObject } from 'lodash';
 
 /**
  * Class
  */
 class MaxiBlock extends Component {
-	state = {
-		styles: {},
-		breakpoints: this.getBreakpoints,
-	};
-
 	constructor(...args) {
 		super(...args);
+
 		const { attributes, clientId } = this.props;
 		const { uniqueID, blockStyle } = attributes;
 
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
-		this.fixProps();
+		this.cloneObjects(attributes);
 	}
 
 	componentDidUpdate() {
@@ -52,17 +43,27 @@ class MaxiBlock extends Component {
 	}
 
 	componentWillUnmount() {
-		this.removeStyle();
+		const obj = this.getObject;
+		const breakpoints = this.getBreakpoints;
+
+		styleResolver(obj, breakpoints, true);
+
+		dispatch('maxiBlocks/customData').removeCustomData(
+			this.props.attributes.uniqueID
+		);
 	}
 
 	get getBreakpoints() {
-		const { breakpoints } = this.props.attributes;
-
-		return JSON.parse(breakpoints);
+		return { ...this.props.attributes.breakpoints };
 	}
 
 	// eslint-disable-next-line class-methods-use-this
 	get getObject() {
+		return null;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	get getCustomData() {
 		return null;
 	}
 
@@ -101,39 +102,18 @@ class MaxiBlock extends Component {
 	}
 
 	/**
-	 * In case some object has been modified and an old block has a prop that doesn't correspond
-	 * with that object, this should help. It can grow with different handlers/helpers to fix errors.
+	 * Is necessary to clone deep the objects if we don't want to modify
+	 * the original one on the native Gutenberg store and to make changes into
+	 * the other blocks.
+	 *
+	 * @param {obj} attributes	Block attributes
 	 */
-	fixProps() {
-		Object.entries(this.props.attributes).forEach(([key, value]) => {
-			let obj;
-			try {
-				obj = JSON.parse(value);
-			} catch (error) {
-				return;
-			}
-
-			if (!isObject(obj)) return;
-
-			const defaultObj = JSON.parse(
-				getDefaultProp(this.props.clientId, key)
-			);
-
-			const objKeys = Object.keys(obj).sort();
-			const defaultObjKeys = Object.keys(defaultObj).sort();
-			if (JSON.stringify(objKeys) !== JSON.stringify(defaultObjKeys)) {
-				const newObject = this.generalToDesktop(obj, defaultObj);
-				this.props.setAttributes({ [key]: JSON.stringify(newObject) });
-				this.props.attributes[key] = JSON.stringify(newObject);
-			}
-		});
-	}
-
-	generalToDesktop(obj, defaultObj) {
-		if (obj.hasOwnProperty('general') && !obj.hasOwnProperty('desktop'))
-			defaultObj.desktop = obj.general;
-
-		return defaultObj;
+	cloneObjects(attributes) {
+		Object.entries(attributes).forEach(
+			([key, val]) =>
+				isObject(val) &&
+				this.props.setAttributes({ [key]: cloneDeep(val) })
+		);
 	}
 
 	/**
@@ -141,26 +121,11 @@ class MaxiBlock extends Component {
 	 */
 	displayStyles() {
 		const obj = this.getObject;
+		const customData = this.getCustomData;
 		const breakpoints = this.getBreakpoints;
 
-		if (
-			!isEqual(obj, this.state.styles) ||
-			!isEqual(breakpoints, this.state.breakpoints)
-		) {
-			this.setState({
-				styles: obj,
-				breakpoints,
-			});
-
-			styleResolver(obj, breakpoints);
-		}
-	}
-
-	removeStyle() {
-		const obj = this.getObject;
-		const breakpoints = this.getBreakpoints;
-
-		styleResolver(obj, breakpoints, true);
+		styleResolver(obj, breakpoints);
+		dispatch('maxiBlocks/customData').updateCustomData(customData);
 	}
 }
 

@@ -13,11 +13,6 @@ import {
 } from '../../../../extensions/text/formats';
 
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * Styles and icons
  */
 import './editor.scss';
@@ -26,21 +21,15 @@ import { toolbarItalic } from '../../../../icons';
 /**
  * TextItalic
  */
-const TextItalic = ({
-	blockName,
-	typography,
-	formatValue,
-	onChange,
-	isList,
-	breakpoint,
-}) => {
+const TextItalic = props => {
+	const { blockName, formatValue, onChange, isList, breakpoint } = props;
+
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typographyValue =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
+	const typography = { ...props.typography };
 
 	const italicValue = getCustomFormatValue({
-		typography: typographyValue,
+		typography,
 		formatValue,
 		prop: 'font-style',
 		breakpoint,
@@ -53,7 +42,7 @@ const TextItalic = ({
 			formatValue,
 			isActive,
 			isList,
-			typography: typographyValue,
+			typography,
 			value: {
 				'font-style': isActive ? '' : 'italic',
 			},
@@ -61,7 +50,7 @@ const TextItalic = ({
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			...(newContent && { content: newContent }),
 		});
 	};

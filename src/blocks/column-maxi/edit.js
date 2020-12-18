@@ -32,7 +32,7 @@ import RowContext from '../row-maxi/context';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, round, isObject } from 'lodash';
+import { isNil, round } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -57,13 +57,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  */
 class edit extends MaxiBlock {
 	get getObject() {
-		const {
-			uniqueID,
-			background,
-			backgroundHover,
-			border,
-			borderHover,
-		} = this.props.attributes;
+		const { uniqueID, background, backgroundHover } = this.props.attributes;
 
 		let response = {
 			[`maxi-column-block__resizer__${uniqueID}`]: this.getResizerObject,
@@ -73,13 +67,11 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(
-				uniqueID,
-				background,
-				backgroundHover,
-				border,
-				borderHover
-			)
+			setBackgroundStyles({
+				target: uniqueID,
+				background: { ...background },
+				backgroundHover: { ...backgroundHover },
+			})
 		);
 
 		return response;
@@ -105,17 +97,17 @@ class edit extends MaxiBlock {
 		} = this.props;
 
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
-			margin: { ...JSON.parse(margin) },
-			padding: { ...JSON.parse(padding) },
-			opacity: { ...getOpacityObject(JSON.parse(opacity)) },
-			zIndex: { ...JSON.parse(zIndex) },
-			columnSize: { ...getColumnSizeObject(JSON.parse(columnSize)) },
-			display: { ...JSON.parse(display) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
+			boxShadow: { ...getBoxShadowObject(boxShadow) },
+			border,
+			borderWidth: border.borderWidth,
+			borderRadius: border.borderRadius,
+			margin,
+			padding,
+			opacity: { ...getOpacityObject(opacity) },
+			zIndex,
+			columnSize: { ...getColumnSizeObject(columnSize) },
+			display,
+			transform: { ...getTransformObject(transform) },
 			column: {
 				label: 'Column',
 				general: {},
@@ -132,19 +124,19 @@ class edit extends MaxiBlock {
 		const { boxShadowHover, borderHover } = this.props.attributes;
 
 		const response = {
-			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
-			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
+			borderWidthHover: borderHover.borderWidth,
+			borderRadiusHover: borderHover.borderRadius,
 		};
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
 			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+				...getBoxShadowObject(boxShadowHover),
 			};
 		}
 
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+		if (!isNil(borderHover) && !!borderHover.status) {
 			response.borderHover = {
-				...JSON.parse(borderHover),
+				...borderHover,
 			};
 		}
 
@@ -155,7 +147,7 @@ class edit extends MaxiBlock {
 		const { background } = this.props.attributes;
 
 		const response = {
-			background: { ...getBackgroundObject(JSON.parse(background)) },
+			background: { ...getBackgroundObject(background) },
 		};
 
 		return response;
@@ -165,8 +157,8 @@ class edit extends MaxiBlock {
 		const { margin, display } = this.props.attributes;
 
 		const response = {
-			margin: { ...JSON.parse(margin) },
-			display: { ...JSON.parse(display) },
+			margin,
+			display,
 		};
 
 		return response;
@@ -198,14 +190,12 @@ class edit extends MaxiBlock {
 
 		onDeviceTypeChange();
 
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
-
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-column-block',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
+				'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
@@ -214,14 +204,10 @@ class edit extends MaxiBlock {
 			className
 		);
 
-		const columnValue = !isObject(columnSize)
-			? JSON.parse(columnSize)
-			: columnSize;
-
 		const getColumnWidthDefault = () => {
-			if (getLastBreakpointValue(columnValue, 'size', deviceType))
+			if (getLastBreakpointValue(columnSize, 'size', deviceType))
 				return `${getLastBreakpointValue(
-					columnValue,
+					columnSize,
 					'size',
 					deviceType
 				)}%`;
@@ -261,7 +247,7 @@ class edit extends MaxiBlock {
 									topLeft: false,
 								}}
 								onResizeStop={(event, direction, elt) => {
-									columnValue[deviceType].size = round(
+									columnSize[deviceType].size = round(
 										Number(elt.style.width.replace('%', ''))
 									);
 
@@ -272,7 +258,7 @@ class edit extends MaxiBlock {
 									);
 
 									setAttributes({
-										columnSize: JSON.stringify(columnValue),
+										columnSize,
 									});
 								}}
 							>
@@ -292,11 +278,9 @@ class edit extends MaxiBlock {
 														clientId={clientId}
 													/>
 											  )
-											: true
-											? () => (
+											: () => (
 													<InnerBlocks.ButtonBlockAppender />
 											  )
-											: false
 									}
 								/>
 							</ResizableBox>
@@ -350,7 +334,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		);
 		if (isNil(node)) return;
 
-		const newColumnSize = JSON.parse(columnSize);
+		const newColumnSize = columnSize;
 
 		const newSize = newColumnSize[newDeviceType].size;
 
@@ -372,7 +356,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const updateRowPattern = (rowBlockId, deviceType, rowPatternAttribute) => {
-		const newRowPatternObject = JSON.parse(rowPatternAttribute);
+		const newRowPatternObject = rowPatternAttribute;
 
 		const { rowPattern } = newRowPatternObject[deviceType];
 
@@ -381,7 +365,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		}
 
 		dispatch('core/block-editor').updateBlockAttributes(rowBlockId, {
-			rowPattern: JSON.stringify(newRowPatternObject),
+			rowPattern: newRowPatternObject,
 		});
 	};
 

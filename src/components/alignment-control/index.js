@@ -7,13 +7,14 @@ const { RadioControl } = wp.components;
  * Internal dependencies
  */
 import { getLastBreakpointValue } from '../../utils';
+
 const { Icon } = wp.components;
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles and Icons
@@ -26,7 +27,6 @@ import { alignLeft, alignCenter, alignRight, alignJustify } from '../../icons';
  */
 const AlignmentControl = props => {
 	const {
-		alignment,
 		className,
 		onChange,
 		label = '',
@@ -68,7 +68,8 @@ const AlignmentControl = props => {
 		return options;
 	};
 
-	const value = !isObject(alignment) ? JSON.parse(alignment) : alignment;
+	const alignment = { ...props.alignment };
+
 	const classes = classnames(
 		'maxi-alignment-control',
 		isEmpty(label) ? 'maxi-alignment-control__no-label' : '',
@@ -79,11 +80,15 @@ const AlignmentControl = props => {
 		<RadioControl
 			label={label}
 			className={classes}
-			selected={getLastBreakpointValue(value, 'alignment', breakpoint)}
+			selected={getLastBreakpointValue(
+				alignment,
+				'alignment',
+				breakpoint
+			)}
 			options={getOptions()}
 			onChange={val => {
-				value[breakpoint].alignment = val;
-				onChange(JSON.stringify(value));
+				alignment[breakpoint].alignment = val;
+				onChange(alignment);
 			}}
 		/>
 	);

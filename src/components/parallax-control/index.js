@@ -14,23 +14,19 @@ import FancyRadioControl from '../fancy-radio-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Component
  */
 const ParallaxControl = props => {
-	const { className, motion, defaultMotion, onChange } = props;
+	const { className, onChange } = props;
 
-	const value = !isObject(motion) ? JSON.parse(motion) : motion;
+	const motion = { ...props.motion };
+	const defaultMotion = { ...props.defaultMotion };
 
-	const { parallax: parallaxOptions } = value;
-
-	const defaultValue = !isObject(defaultMotion)
-		? JSON.parse(defaultMotion)
-		: defaultMotion;
-
-	const { parallax: defaultParallaxOptions } = defaultValue;
+	const { parallax: parallaxOptions } = motion;
+	const { parallax: defaultParallaxOptions } = defaultMotion;
 
 	const classes = classnames('maxi-parallax-control', className);
 
@@ -45,7 +41,7 @@ const ParallaxControl = props => {
 				]}
 				onChange={val => {
 					parallaxOptions.status = Number(val);
-					onChange(JSON.stringify(value));
+					onChange(motion);
 				}}
 			/>
 			{!!parallaxOptions.status && (
@@ -62,7 +58,7 @@ const ParallaxControl = props => {
 						]}
 						onChange={val => {
 							parallaxOptions.direction = val;
-							onChange(JSON.stringify(value));
+							onChange(motion);
 						}}
 					/>
 					<RangeControl
@@ -74,7 +70,7 @@ const ParallaxControl = props => {
 										defaultParallaxOptions.speed)
 								: (parallaxOptions.speed = Number(val));
 
-							onChange(JSON.stringify(value));
+							onChange(motion);
 						}}
 						min={1}
 						max={10}

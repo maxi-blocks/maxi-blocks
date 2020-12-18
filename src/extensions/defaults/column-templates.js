@@ -51,7 +51,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 			'maxi-blocks/column-maxi',
 			{
 				uniqueID: 'maxi-column-maxi-1',
-				columnSize: JSON.stringify({
+				columnSize: {
 					label: 'Column size',
 					general: {
 						fullwidth: false,
@@ -81,8 +81,8 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 						fullwidth: '',
 						size: '',
 					},
-				}),
-				margin: JSON.stringify({
+				},
+				margin: {
 					label: 'Margin',
 					general: {
 						'margin-top': '',
@@ -140,7 +140,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 						sync: true,
 						unit: '',
 					},
-				}),
+				},
 			},
 		];
 	});

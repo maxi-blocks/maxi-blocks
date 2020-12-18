@@ -10,25 +10,16 @@ const { SelectControl } = wp.components;
 import SizeControl from '../size-control';
 
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * Component
  */
 const EntranceAnimationControl = props => {
-	const { motion, defaultMotion, onChange } = props;
+	const { onChange } = props;
 
-	const value = !isObject(motion) ? JSON.parse(motion) : motion;
+	const motion = { ...props.motion };
+	const defaultMotion = { ...props.defaultMotion };
 
-	const { entrance: entranceAnimationOptions } = value;
-
-	const defaultValue = !isObject(defaultMotion)
-		? JSON.parse(defaultMotion)
-		: defaultMotion;
-
-	const { entrance: defaultEntranceAnimationOptions } = defaultValue;
+	const { entrance: entranceAnimationOptions } = motion;
+	const { entrance: defaultEntranceAnimationOptions } = defaultMotion;
 
 	return (
 		<div className='maxi-entrance-animation-control'>
@@ -164,7 +155,7 @@ const EntranceAnimationControl = props => {
 				]}
 				onChange={val => {
 					entranceAnimationOptions.type = val;
-					onChange(JSON.stringify(value));
+					onChange(motion);
 				}}
 			/>
 			<SizeControl
@@ -175,10 +166,10 @@ const EntranceAnimationControl = props => {
 				initial={1}
 				step={0.1}
 				value={entranceAnimationOptions.duration}
-				defaultValue={defaultEntranceAnimationOptions.duration}
+				defaultMotion={defaultEntranceAnimationOptions.duration}
 				onChangeValue={val => {
 					entranceAnimationOptions.duration = val;
-					onChange(JSON.stringify(value));
+					onChange(motion);
 				}}
 			/>
 			<SizeControl
@@ -189,10 +180,10 @@ const EntranceAnimationControl = props => {
 				initial={1}
 				step={0.1}
 				value={entranceAnimationOptions.delay}
-				defaultValue={defaultEntranceAnimationOptions.delay}
+				defaultMotion={defaultEntranceAnimationOptions.delay}
 				onChangeValue={val => {
 					entranceAnimationOptions.delay = val;
-					onChange(JSON.stringify(value));
+					onChange(motion);
 				}}
 			/>
 		</div>

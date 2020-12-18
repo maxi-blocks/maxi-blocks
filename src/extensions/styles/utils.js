@@ -12,7 +12,7 @@ const { getBlockAttributes } = wp.blocks;
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isNumber, isString, isObject } from 'lodash';
+import { isEmpty, isNil, isNumber, isString } from 'lodash';
 
 /**
  * Returns default property of the block
@@ -265,12 +265,10 @@ export const getShapeDividerSVGObject = shapeDivider => {
 		general: {},
 	};
 
-	const backgroundValue = !isObject(shapeDivider.background)
-		? JSON.parse(shapeDivider.background)
-		: shapeDivider.background;
+	const { background } = shapeDivider;
 
-	if (!isEmpty(backgroundValue.colorOptions.color))
-		response.general.fill = backgroundValue.colorOptions.color;
+	if (!isEmpty(background.colorOptions.color))
+		response.general.fill = background.colorOptions.color;
 
 	return response;
 };
@@ -626,23 +624,19 @@ const setBackgroundLayers = (response, layers, target) => {
 	return response;
 };
 
-export const setBackgroundStyles = (target, background, backgroundHover) => {
-	const backgroundValue = !isObject(background)
-		? JSON.parse(background)
-		: background;
-
-	const backgroundHoverValue = !isObject(backgroundHover)
-		? JSON.parse(backgroundHover)
-		: backgroundHover;
-
+export const setBackgroundStyles = ({
+	target,
+	background,
+	backgroundHover,
+}) => {
 	let response = {};
 
-	if (backgroundHoverValue.status) {
+	if (backgroundHover.status) {
 		response[
 			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__color`
 		] = {
 			backgroundHover: {
-				...getColorBackgroundObject(backgroundHoverValue.colorOptions),
+				...getColorBackgroundObject(backgroundHover.colorOptions),
 			},
 		};
 	} else {
@@ -653,57 +647,48 @@ export const setBackgroundStyles = (target, background, backgroundHover) => {
 		};
 	}
 
-	if (
-		backgroundValue.layersOptions &&
-		!!backgroundValue.layersOptions.status
-	) {
+	if (background.layersOptions && !!background.layersOptions.status) {
 		response = setBackgroundLayers(
 			response,
-			backgroundValue.layersOptions.layers,
+			background.layersOptions.layers,
 			target
 		);
 	} else {
 		response = Object.assign(response, {
 			[`${target} > .maxi-background-displayer .maxi-background-displayer__color`]: {
 				background: {
-					...getColorBackgroundObject(backgroundValue.colorOptions),
+					...getColorBackgroundObject(background.colorOptions),
 				},
 			},
 			[`${target} > .maxi-background-displayer .maxi-background-displayer__images`]: {
 				imageBackground: {
-					...getImageBackgroundObject(backgroundValue.imageOptions),
+					...getImageBackgroundObject(background.imageOptions),
 				},
 			},
 			[`${target}:hover > .maxi-background-displayer .maxi-background-displayer__images`]: {
 				imageBackgroundHover: {
-					...getImageBackgroundObject(
-						backgroundHoverValue.imageOptions
-					),
+					...getImageBackgroundObject(backgroundHover.imageOptions),
 				},
 			},
 			[`${target} > .maxi-background-displayer .maxi-background-displayer__video-player`]: {
 				videoBackground: {
-					...getVideoBackgroundObject(backgroundValue.videoOptions),
+					...getVideoBackgroundObject(background.videoOptions),
 				},
 			},
 
 			[`${target}:hover > .maxi-background-displayer .maxi-background-displayer__video-player`]: {
 				videoBackgroundHover: {
-					...getVideoBackgroundObject(
-						backgroundHoverValue.videoOptions
-					),
+					...getVideoBackgroundObject(backgroundHover.videoOptions),
 				},
 			},
 			[`${target} > .maxi-background-displayer .maxi-background-displayer__svg`]: {
 				SVGBackground: {
-					...getSVGWrapperBackgroundObject(
-						backgroundValue.SVGOptions
-					),
+					...getSVGWrapperBackgroundObject(background.SVGOptions),
 				},
 			},
 			[`${target} > .maxi-background-displayer .maxi-background-displayer__svg svg`]: {
 				SVGBackground: {
-					...getSVGBackgroundObject(backgroundValue.SVGOptions),
+					...getSVGBackgroundObject(background.SVGOptions),
 				},
 			},
 		});
@@ -715,8 +700,8 @@ export const setBackgroundStyles = (target, background, backgroundHover) => {
 export const setTextCustomFormats = (target, typography, typographyHover) => {
 	let response = {};
 
-	const { customFormats } = JSON.parse(typography);
-	const { customFormats: customFormatsHover } = JSON.parse(typographyHover);
+	const { customFormats } = typography;
+	const { customFormats: customFormatsHover } = typographyHover;
 
 	customFormats &&
 		Object.entries(customFormats).forEach(([key, value]) => {
@@ -856,14 +841,14 @@ export const setArrowStyles = (
 ) => {
 	return {
 		[`${target} .maxi-container-arrow`]: {
-			arrow: { ...getArrowObject(JSON.parse(arrow)) },
-			shadow: { ...getDropShadowObject(JSON.parse(boxShadow)) },
+			arrow: { ...getArrowObject(arrow) },
+			shadow: { ...getDropShadowObject(boxShadow) },
 		},
 		[`${target} .maxi-container-arrow:after`]: {
-			background: { ...getArrowColorObject(JSON.parse(background)) },
+			background: { ...getArrowColorObject(background) },
 		},
 		[`${target} .maxi-container-arrow:before`]: {
-			border: { ...getArrowBorderObject(JSON.parse(border)) },
+			border: { ...getArrowBorderObject(border) },
 		},
 	};
 };

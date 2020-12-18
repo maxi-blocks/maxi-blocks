@@ -15,7 +15,7 @@ import { getDefaultProp } from '../../utils';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty, isObject } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -50,15 +50,9 @@ const FontLevelControl = props => {
 
 	const saveOldies = value => {
 		setState({
-			[state.lastLevel]: !isObject(fontOptions)
-				? JSON.parse(fontOptions)
-				: fontOptions,
-
-			[`${state.lastLevel}Hover`]: !isObject(fontOptionsHover)
-				? JSON.parse(fontOptionsHover)
-				: fontOptionsHover,
-
-			lastLevel: value,
+			[state.lastLevel]: fontOptions,
+			[`${state.lastLevel}Hover`]: fontOptionsHover,
+			[state.lastLevel]: value,
 		});
 	};
 
@@ -71,24 +65,20 @@ const FontLevelControl = props => {
 			fontOptResponse = state[value];
 			fontOptResponseHover = state[`${value}Hover`];
 		} else if (!isNil(fontOptions)) {
-			const oldFontOptions = !isObject(fontOptions)
-				? JSON.parse(fontOptions)
-				: fontOptions;
+			const oldFontOptions = { ...fontOptions };
 
 			fontOptResponse = {
 				...oldFontOptions,
 				...defaultTypography[value],
 				customFormats: { ...oldFontOptions.customFormats },
 			};
-			fontOptResponseHover = JSON.parse(
-				getDefaultProp(null, 'typographyHover')
-			);
+			fontOptResponseHover = getDefaultProp(null, 'typographyHover');
 		}
 
 		onChange({
 			textLevel: value,
-			typography: JSON.stringify(fontOptResponse),
-			typographyHover: JSON.stringify(fontOptResponseHover),
+			typography: fontOptResponse,
+			typographyHover: fontOptResponseHover,
 		});
 	};
 

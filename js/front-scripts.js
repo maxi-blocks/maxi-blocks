@@ -19,11 +19,20 @@ const getDeviceType = () => {
 // Motion Effects
 const motionElems = document.querySelectorAll('.maxi-motion-effect');
 motionElems.forEach(function (elem) {
+	if (!maxi_custom_data.custom_data) return;
+
 	const motionID = elem.getAttribute('data-motion-id');
-	const motionData = JSON.parse(elem.getAttribute('data-motion'));
-	const shapeDividerData = JSON.parse(
-		elem.getAttribute('data-shape-divider')
-	);
+	const motionData =
+		maxi_custom_data.custom_data[motionID] !== undefined &&
+		maxi_custom_data.custom_data[motionID].hasOwnProperty('motion')
+			? JSON.parse(maxi_custom_data.custom_data[motionID].motion)
+			: null;
+
+	const shapeDividerData =
+		maxi_custom_data.custom_data[motionID] !== undefined &&
+		maxi_custom_data.custom_data[motionID].hasOwnProperty('shapeDivider')
+			? JSON.parse(maxi_custom_data.custom_data[motionID].shapeDivider)
+			: null;
 
 	// Shape Divider
 	if (shapeDividerData !== null) {

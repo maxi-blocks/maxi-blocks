@@ -21,7 +21,7 @@ import ToolbarPopover from '../toolbar-popover';
 /**
  * External dependencies
  */
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Icons
@@ -33,7 +33,7 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-	const { blockName, onChange, isList, formatValue, typography } = props;
+	const { blockName, onChange, isList, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -48,9 +48,7 @@ const Link = props => {
 		};
 	}, [getActiveFormat, formatValue, formatName]);
 
-	const typographyValue = !isObject(typography)
-		? JSON.parse(typography)
-		: typography;
+	const typography = { ...props.typography };
 
 	const createLinkValue = formatOptions => {
 		if (!formatOptions || isEmpty(formatValue)) return {};
@@ -126,13 +124,13 @@ const Link = props => {
 			content: newContent,
 		} = applyLinkFormat({
 			formatValue,
-			typography: typographyValue,
+			typography,
 			linkAttributes: createLinkAttribute(attributes),
 			isList,
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			content: newContent,
 		});
 	};
@@ -144,11 +142,11 @@ const Link = props => {
 		} = removeLinkFormat({
 			formatValue,
 			isList,
-			typography: typographyValue,
+			typography,
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			content: newContent,
 		});
 	};
@@ -163,7 +161,7 @@ const Link = props => {
 		});
 
 		onChange({
-			typography: JSON.stringify(typographyValue),
+			typography,
 			content: newContent,
 		});
 	};

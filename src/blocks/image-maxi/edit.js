@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const { withSelect } = wp.data;
-const { Spinner, IconButton, ResizableBox, Placeholder } = wp.components;
+const { Spinner, Button, ResizableBox, Placeholder } = wp.components;
 const { __experimentalBlock, MediaUpload } = wp.blockEditor;
 import { RawHTML } from '@wordpress/element';
 
@@ -413,7 +413,7 @@ class edit extends MaxiBlock {
 											}}
 										>
 											<div className='maxi-image-block__settings'>
-												<IconButton
+												<Button
 													className='maxi-image-block__settings__upload-button'
 													showTooltip='true'
 													onClick={open}
@@ -482,7 +482,7 @@ class edit extends MaxiBlock {
 											icon={placeholderImage}
 											label=''
 										/>
-										<IconButton
+										<Button
 											className='maxi-image-block__settings__upload-button'
 											showTooltip='true'
 											onClick={open}

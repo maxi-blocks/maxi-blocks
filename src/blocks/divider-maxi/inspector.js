@@ -93,9 +93,7 @@ const Inspector = props => {
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										highlight={highlight}
-										onChange={highlight =>
-											setAttributes({ highlight })
-										}
+										onChange={obj => setAttributes(obj)}
 										disableHighlightText
 										disableHighlightBackground
 										disableHighlightColor1

@@ -27,7 +27,6 @@ const BlockStylesControl = props => {
 		disableHighlightBorder = false,
 		disableHighlightColor1 = false,
 		disableHighlightColor2 = false,
-		onChangeBorder,
 	} = props;
 	const border = { ...props.border };
 	const highlight = { ...props.highlight };
@@ -85,7 +84,7 @@ const BlockStylesControl = props => {
 							]}
 							onChange={val => {
 								highlight.textHighlight = Number(val);
-								onChange(highlight);
+								onChange({ highlight });
 							}}
 						/>
 					)}
@@ -99,7 +98,7 @@ const BlockStylesControl = props => {
 							]}
 							onChange={val => {
 								highlight.backgroundHighlight = Number(val);
-								onChange(highlight);
+								onChange({ highlight });
 							}}
 						/>
 					)}
@@ -113,7 +112,7 @@ const BlockStylesControl = props => {
 							]}
 							onChange={val => {
 								highlight.borderHighlight = Number(val);
-								onChange(highlight);
+								onChange({ highlight });
 
 								if (!isNil(border)) {
 									border.general['border-style'] = 'solid';
@@ -130,7 +129,7 @@ const BlockStylesControl = props => {
 										'border-bottom-width'
 									] = 2;
 
-									onChangeBorder(border);
+									onChange({ border });
 								}
 							}}
 						/>
@@ -145,7 +144,7 @@ const BlockStylesControl = props => {
 							]}
 							onChange={val => {
 								highlight.color1Highlight = Number(val);
-								onChange(highlight);
+								onChange({ highlight });
 							}}
 						/>
 					)}
@@ -159,7 +158,7 @@ const BlockStylesControl = props => {
 							]}
 							onChange={val => {
 								highlight.color2Highlight = Number(val);
-								onChange(highlight);
+								onChange({ highlight });
 							}}
 						/>
 					)}

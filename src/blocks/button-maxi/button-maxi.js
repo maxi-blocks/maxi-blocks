@@ -1,8 +1,8 @@
 /**
- * BLOCK: maxi-blocks/block-image-box
+ * BLOCK: maxi-blocks/button-maxi
  *
- * Registering an image block with Gutenberg.
- * Shows an image and a description. A test block.
+ * Registering a button block with Gutenberg.
+ * Shows a button. A test block.
  */
 
 /**

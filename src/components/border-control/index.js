@@ -170,7 +170,7 @@ const BorderControl = props => {
 						values={border.borderWidth}
 						defaultValues={defaultBorder.borderWidth}
 						onChange={val => {
-							border.borderWidth = JSON.parse(val);
+							border.borderWidth = val;
 							onChange(border);
 						}}
 						breakpoint={breakpoint}
@@ -195,7 +195,7 @@ const BorderControl = props => {
 						values={border.borderRadius}
 						defaultValues={defaultBorder.borderRadius}
 						onChange={val => {
-							border.borderRadius = JSON.parse(val);
+							border.borderRadius = val;
 							onChange(border);
 						}}
 						breakpoint={breakpoint}

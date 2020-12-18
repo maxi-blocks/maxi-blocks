@@ -8,7 +8,7 @@ import { BackgroundDisplayer } from '../../components';
  */
 import classnames from 'classnames';
 import { RawHTML } from '@wordpress/element';
-import { isNil, isObject } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Save
@@ -19,26 +19,28 @@ const save = props => {
 		attributes: {
 			uniqueID,
 			blockStyle,
-			highlight,
 			defaultBlockStyle,
 			background,
 			extraClassName,
 			content,
 		},
 	} = props;
-
-	const highlightValue = !isObject(highlight)
-		? JSON.parse(highlight)
-		: highlight;
+	const highlight = { ...props.attributes.highlight };
+	const {
+		backgroundHighlight,
+		borderHighlight,
+		color1Highlight,
+		color2Highlight,
+	} = highlight;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-svg-icon-block',
 		blockStyle,
-		!!highlightValue.backgroundHighlight && 'maxi-highlight--background',
-		!!highlightValue.borderHighlight && 'maxi-highlight--border',
-		!!highlightValue.color1Highlight && 'maxi-highlight--color1',
-		!!highlightValue.color2Highlight && 'maxi-highlight--color2',
+		!!backgroundHighlight && 'maxi-highlight--background',
+		!!borderHighlight && 'maxi-highlight--border',
+		!!color1Highlight && 'maxi-highlight--color1',
+		!!color2Highlight && 'maxi-highlight--color2',
 		extraClassName,
 		uniqueID,
 		className,

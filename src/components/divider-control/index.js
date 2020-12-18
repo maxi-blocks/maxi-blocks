@@ -169,7 +169,7 @@ const DividerControl = props => {
 					defaultColor={defaultDivider.general['border-color']}
 					onChange={val => {
 						divider.general['border-color'] = val;
-						onChange(JSON.stringify(divider));
+						onChange(divider);
 					}}
 					disableGradient
 				/>
@@ -188,7 +188,7 @@ const DividerControl = props => {
 					onChange={val => {
 						divider.general['border-style'] = val;
 						if (val === 'none') divider.general.width = 0;
-						onChange(JSON.stringify(divider));
+						onChange(divider);
 					}}
 				/>
 			)}
@@ -203,7 +203,7 @@ const DividerControl = props => {
 						]}
 						onChange={val => {
 							divider.general['border-radius'] = val;
-							onChange(JSON.stringify(divider));
+							onChange(divider);
 						}}
 					/>
 				)}
@@ -220,7 +220,7 @@ const DividerControl = props => {
 						onChangeUnit={val => {
 							divider.general.widthUnit = val;
 
-							onChange(JSON.stringify(divider));
+							onChange(divider);
 						}}
 						value={getLastBreakpointValue(
 							divider,
@@ -231,7 +231,7 @@ const DividerControl = props => {
 						onChangeValue={val => {
 							divider.general.width = Number(val);
 
-							onChange(JSON.stringify(divider));
+							onChange(divider);
 						}}
 						minMaxSettings={minMaxSettings}
 					/>
@@ -250,7 +250,7 @@ const DividerControl = props => {
 						onChangeUnit={val => {
 							divider.general['border-top-widthUnit'] = val;
 
-							onChange(JSON.stringify(divider));
+							onChange(divider);
 						}}
 						value={getLastBreakpointValue(
 							divider,
@@ -263,7 +263,7 @@ const DividerControl = props => {
 						onChangeValue={val => {
 							divider.general['border-top-width'] = Number(val);
 
-							onChange(JSON.stringify(divider));
+							onChange(divider);
 						}}
 						minMaxSettings={minMaxSettings}
 					/>
@@ -280,7 +280,7 @@ const DividerControl = props => {
 										defaultDivider.general.height)
 								: (divider.general.height = Number(val));
 
-							onChange(JSON.stringify(divider));
+							onChange(divider);
 						}}
 						max={100}
 						allowReset
@@ -299,7 +299,7 @@ const DividerControl = props => {
 										'border-right-width'
 								  ] = Number(val));
 
-							onChange(JSON.stringify(divider));
+							onChange(divider);
 						}}
 						max={100}
 						allowReset
@@ -313,8 +313,8 @@ const DividerControl = props => {
 				opacity={divider.opacity}
 				defaultOpacity={defaultDivider.opacity}
 				onChange={val => {
-					divider.opacity = JSON.parse(val);
-					onChange(JSON.stringify(divider));
+					divider.opacity = val;
+					onChange(divider);
 				}}
 			/>
 		</Fragment>

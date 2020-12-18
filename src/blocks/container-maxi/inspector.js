@@ -224,7 +224,7 @@ const Inspector = props => {
 																		'max-width'
 																	]
 																}
-																onChange={val => {
+																onChangeValue={val => {
 																	sizeContainer[
 																		deviceType
 																	][
@@ -281,7 +281,7 @@ const Inspector = props => {
 																		deviceType
 																	].width
 																}
-																onChange={val => {
+																onChangeValue={val => {
 																	sizeContainer[
 																		deviceType
 																	].width = val;

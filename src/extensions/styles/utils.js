@@ -624,7 +624,11 @@ const setBackgroundLayers = (response, layers, target) => {
 	return response;
 };
 
-export const setBackgroundStyles = (target, background, backgroundHover) => {
+export const setBackgroundStyles = ({
+	target,
+	background,
+	backgroundHover,
+}) => {
 	let response = {};
 
 	if (backgroundHover.status) {

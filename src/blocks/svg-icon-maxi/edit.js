@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const { compose } = wp.compose;
 const { Fragment, RawHTML } = wp.element;
 const { IconButton, Button, Modal } = wp.components;
@@ -28,7 +29,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, isObject } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 import Iframe from 'react-iframe';
 
 /**
@@ -137,7 +138,6 @@ class edit extends MaxiBlock {
 			attributes: {
 				uniqueID,
 				blockStyle,
-				highlight,
 				defaultBlockStyle,
 				blockStyleBackground,
 				extraClassName,
@@ -147,11 +147,14 @@ class edit extends MaxiBlock {
 			},
 			clientId,
 		} = this.props;
-
 		const { isOpen } = this.state;
-		const highlightValue = !isObject(highlight)
-			? JSON.parse(highlight)
-			: highlight;
+		const highlight = { ...this.props.attributes.highlight };
+		const {
+			backgroundHighlight,
+			borderHighlight,
+			color1Highlight,
+			color2Highlight,
+		} = highlight;
 
 		const onClick = () => {
 			this.setState({ isOpen: !isOpen });
@@ -164,11 +167,10 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!highlightValue.backgroundHighlight &&
-				'maxi-highlight--background',
-			!!highlightValue.borderHighlight && 'maxi-highlight--border',
-			!!highlightValue.color1Highlight && 'maxi-highlight--color1',
-			!!highlightValue.color2Highlight && 'maxi-highlight--color2',
+			!!backgroundHighlight && 'maxi-highlight--background',
+			!!borderHighlight && 'maxi-highlight--border',
+			!!color1Highlight && 'maxi-highlight--color1',
+			!!color2Highlight && 'maxi-highlight--color2',
 			extraClassName,
 			uniqueID,
 			className
@@ -208,7 +210,7 @@ class edit extends MaxiBlock {
 									/>
 
 									<div className='maxi-block-library__modal__loading_message maxi-block__item--hidden'>
-										<p>{__('Saving...', 'maxi-blocks')}</p>
+										<p>{__('Saving…', 'maxi-blocks')}</p>
 									</div>
 								</Modal>
 							)}

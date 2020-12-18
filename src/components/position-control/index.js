@@ -61,7 +61,7 @@ const PositionControl = props => {
 					values={position.options}
 					defaultValues={defaultPosition.options}
 					onChange={val => {
-						position.options = JSON.parse(val);
+						position.options = val;
 						onChange(position);
 					}}
 					breakpoint={breakpoint}

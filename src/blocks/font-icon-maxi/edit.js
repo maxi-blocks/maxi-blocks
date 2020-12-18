@@ -196,8 +196,8 @@ class edit extends MaxiBlock {
 					</span>
 				)) || (
 					<FontIconPicker
-						onChange={icon => {
-							icon.icon = icon;
+						onChange={newIcon => {
+							icon.icon = newIcon;
 							setAttributes({
 								icon,
 							});

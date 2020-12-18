@@ -20,7 +20,6 @@ import { toolbarPadding } from '../../../../icons';
  */
 const PaddingMargin = props => {
 	const {
-		blockName,
 		margin,
 		defaultMargin,
 		onChangeMargin,

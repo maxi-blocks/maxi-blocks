@@ -27,7 +27,7 @@ const save = props => {
 		},
 	} = props;
 
-	const { settings: hoverSettings } = JSON.parse(hover);
+	const { settings: hoverSettings } = hover;
 
 	const classes = classnames(
 		'maxi-block maxi-icon-block',
@@ -43,7 +43,7 @@ const save = props => {
 		<div
 			className={classes}
 			data-maxi_initial_block_class={defaultBlockStyle}
-			data-hover={JSON.stringify(hoverSettings)}
+			data-hover={hoverSettings}
 		>
 			<BackgroundDisplayer background={background} />
 			<div className='maxi-icon-block__icon'>

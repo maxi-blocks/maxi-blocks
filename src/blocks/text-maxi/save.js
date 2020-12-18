@@ -13,7 +13,7 @@ import { BackgroundDisplayer } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isObject } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Save
@@ -24,7 +24,6 @@ const save = props => {
 		attributes: {
 			uniqueID,
 			blockStyle,
-			highlight,
 			defaultBlockStyle,
 			fullWidth,
 			background,
@@ -33,22 +32,20 @@ const save = props => {
 			isList,
 			typeOfList,
 			content,
-			motion,
 		},
 	} = props;
 
-	const highlightValue = !isObject(highlight)
-		? JSON.parse(highlight)
-		: highlight;
+	const highlight = { ...props.attributes.highlight };
+	const { textHighlight, backgroundHighlight, borderHighlight } = highlight;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-text-block',
 		'maxi-text-block-wrap',
 		blockStyle,
-		!!highlightValue.textHighlight && 'maxi-highlight--text',
-		!!highlightValue.backgroundHighlight && 'maxi-highlight--background',
-		!!highlightValue.borderHighlight && 'maxi-highlight--border',
+		!!textHighlight && 'maxi-highlight--text',
+		!!backgroundHighlight && 'maxi-highlight--background',
+		!!borderHighlight && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,
@@ -58,11 +55,7 @@ const save = props => {
 
 	return (
 		<Fragment>
-			<div
-				className={classes}
-				data-motion={motion}
-				data-motion-id={uniqueID}
-			>
+			<div className={classes} data-motion-id={uniqueID}>
 				<BackgroundDisplayer background={background} />
 				<RichText.Content
 					className='maxi-text-block__content'

@@ -116,8 +116,8 @@ const VideoLayer = props => {
 				fullWidthMode
 				opacity={videoOptions.opacity}
 				defaultOpacity={defaultVideoOptions.opacity}
-				onChange={val => {
-					videoOptions.opacity = JSON.parse(val);
+				onChange={opacity => {
+					videoOptions.opacity = opacity;
 					onChange(videoOptions);
 				}}
 			/>

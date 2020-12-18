@@ -36,11 +36,6 @@ import {
 import { getDefaultProp } from '../../utils';
 
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * Inspector
  */
 const Inspector = props => {
@@ -51,7 +46,6 @@ const Inspector = props => {
 			uniqueID,
 			blockStyle,
 			defaultBlockStyle,
-			highlight,
 			blockStyleBackground,
 			alignment,
 			textLevel,
@@ -68,10 +62,6 @@ const Inspector = props => {
 			size,
 			margin,
 			padding,
-			typographyHover,
-			backgroundHover,
-			boxShadowHover,
-			borderHover,
 			extraClassName,
 			breakpoints,
 			zIndex,
@@ -85,26 +75,11 @@ const Inspector = props => {
 		clientId,
 		formatValue,
 	} = props;
-
-	const backgroundHoverValue = !isObject(backgroundHover)
-		? JSON.parse(backgroundHover)
-		: backgroundHover;
-
-	const boxShadowHoverValue = !isObject(boxShadowHover)
-		? JSON.parse(boxShadowHover)
-		: boxShadowHover;
-
-	const typographyHoverValue = !isObject(typographyHover)
-		? JSON.parse(typographyHover)
-		: typographyHover;
-
-	const borderHoverValue = !isObject(borderHover)
-		? JSON.parse(borderHover)
-		: borderHover;
-
-	const highlightValue = !isObject(highlight)
-		? JSON.parse(highlight)
-		: highlight;
+	const backgroundHover = { ...props.attributes.backgroundHover };
+	const boxShadowHover = { ...props.attributes.boxShadowHover };
+	const typographyHover = { ...props.attributes.typographyHover };
+	const borderHover = { ...props.attributes.borderHover };
+	const highlight = { ...props.attributes.highlight };
 
 	return (
 		<InspectorControls>
@@ -288,7 +263,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<TypographyControl
@@ -318,7 +293,7 @@ const Inspector = props => {
 																		isList
 																	}
 																	disableColor={
-																		!!highlightValue.textHighlight
+																		!!highlight.textHighlight
 																	}
 																/>
 															),
@@ -326,7 +301,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
@@ -336,7 +311,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			typographyHoverValue.status
+																			typographyHover.status
 																		)}
 																		options={[
 																			{
@@ -355,19 +330,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			typographyHoverValue.status = Number(
+																			typographyHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					typographyHover: JSON.stringify(
-																						typographyHoverValue
-																					),
+																					typographyHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!typographyHoverValue.status && (
+																	{!!typographyHover.status && (
 																		<TypographyControl
 																			typography={
 																				typographyHover
@@ -403,7 +376,7 @@ const Inspector = props => {
 																			}
 																			isHover
 																			disableColor={
-																				!!highlightValue.textHighlight
+																				!!highlight.textHighlight
 																			}
 																		/>
 																	)}
@@ -426,7 +399,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
@@ -446,7 +419,7 @@ const Inspector = props => {
 																			)
 																		}
 																		disableColor={
-																			!!highlightValue.backgroundHighlight
+																			!!highlight.backgroundHighlight
 																		}
 																		disableImage
 																		disableVideo
@@ -458,7 +431,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
@@ -468,7 +441,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			backgroundHoverValue.status
+																			backgroundHover.status
 																		}
 																		options={[
 																			{
@@ -487,19 +460,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			backgroundHoverValue.status = Number(
+																			backgroundHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					backgroundHover: JSON.stringify(
-																						backgroundHoverValue
-																					),
+																					backgroundHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!backgroundHoverValue.status && (
+																	{!!backgroundHover.status && (
 																		<BackgroundControl
 																			background={
 																				backgroundHover
@@ -516,7 +487,7 @@ const Inspector = props => {
 																				)
 																			}
 																			disableColor={
-																				!!highlightValue.backgroundHighlight
+																				!!highlight.backgroundHighlight
 																			}
 																			disableImage
 																			disableVideo
@@ -539,7 +510,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<BorderControl
@@ -561,7 +532,7 @@ const Inspector = props => {
 																		deviceType
 																	}
 																	disableColor={
-																		!!highlightValue.borderHighlight
+																		!!highlight.borderHighlight
 																	}
 																/>
 															),
@@ -569,7 +540,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
@@ -579,7 +550,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			borderHoverValue.status
+																			borderHover.status
 																		)}
 																		options={[
 																			{
@@ -598,19 +569,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			borderHoverValue.status = Number(
+																			borderHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					borderHover: JSON.stringify(
-																						borderHoverValue
-																					),
+																					borderHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!borderHoverValue.status && (
+																	{!!borderHover.status && (
 																		<BorderControl
 																			border={
 																				borderHover
@@ -630,7 +599,7 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			disableColor={
-																				!!highlightValue.borderHighlight
+																				!!highlight.borderHighlight
 																			}
 																		/>
 																	)}
@@ -708,7 +677,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<BoxShadowControl
@@ -735,7 +704,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
@@ -745,7 +714,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			boxShadowHoverValue.status
+																			boxShadowHover.status
 																		)}
 																		options={[
 																			{
@@ -764,19 +733,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			boxShadowHoverValue.status = Number(
+																			boxShadowHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					boxShadowHover: JSON.stringify(
-																						boxShadowHoverValue
-																					),
+																					boxShadowHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!boxShadowHoverValue.status && (
+																	{!!boxShadowHover.status && (
 																		<BoxShadowControl
 																			boxShadow={
 																				boxShadowHover

@@ -23,29 +23,25 @@ const save = props => {
 			uniqueID,
 			blockStyle,
 			defaultBlockStyle,
-			highlight,
 			background,
 			linkSettings,
 			content,
 			extraClassName,
-			motion,
-			icon,
 		},
 		className,
 	} = props;
 
-	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
-	const highlightValue = !isObject(highlight)
-		? JSON.parse(highlight)
-		: highlight;
+	const icon = { ...props.attributes.icon };
+	const highlight = { ...props.attributes.highlight };
+	const { textHighlight, backgroundHighlight, borderHighlight } = highlight;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
-		'maxi-block maxi-button-extra',
+		'maxi-block maxi-button-block',
 		blockStyle,
-		!!highlightValue.textHighlight && 'maxi-highlight--text',
-		!!highlightValue.backgroundHighlight && 'maxi-highlight--background',
-		!!highlightValue.borderHighlight && 'maxi-highlight--border',
+		!!textHighlight && 'maxi-highlight--text',
+		!!backgroundHighlight && 'maxi-highlight--background',
+		!!borderHighlight && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,
@@ -62,22 +58,21 @@ const save = props => {
 	};
 
 	const buttonClasses = classnames(
-		'maxi-button-extra__button',
-		iconValue.position === 'left'
-			? 'maxi-button-extra__button--icon-left'
-			: 'maxi-button-extra__button--icon-right'
+		'maxi-button-block__button',
+		icon.position === 'left'
+			? 'maxi-button-block__button--icon-left'
+			: 'maxi-button-block__button--icon-right'
 	);
 
 	return (
 		<div
 			className={classes}
 			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion={motion}
 			data-motion-id={uniqueID}
 		>
 			<BackgroundDisplayer background={background} />
 			<Button className={buttonClasses} {...linkProps}>
-				{iconValue.icon && <i className={iconValue.icon} />}
+				{icon.icon && <i className={icon.icon} />}
 				{content}
 			</Button>
 		</div>

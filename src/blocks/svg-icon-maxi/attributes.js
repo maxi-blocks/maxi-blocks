@@ -17,8 +17,8 @@ const attributes = {
 		default: __('SVG Icon', 'maxi-blocks'),
 	},
 	alignment: {
-		type: 'string',
-		default: JSON.stringify(attributesData.alignment),
+		type: 'object',
+		default: attributesData.alignment,
 	},
 	content: {
 		type: 'string',
@@ -29,12 +29,12 @@ const attributes = {
 		default: '',
 	},
 	opacity: {
-		type: 'string',
-		default: JSON.stringify(attributesData.opacity),
+		type: 'object',
+		default: attributesData.opacity,
 	},
 	background: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
+		type: 'object',
+		default: attributesData.background,
 	},
 	svgColorOrange: {
 		type: 'string',
@@ -49,52 +49,52 @@ const attributes = {
 		default: '#FFF',
 	},
 	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
+		type: 'object',
+		default: attributesData.backgroundHover,
 	},
 	boxShadow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
+		type: 'object',
+		default: attributesData.boxShadow,
 	},
 	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
+		type: 'object',
+		default: attributesData.boxShadowHover,
 	},
 	border: {
-		type: 'string',
-		default: JSON.stringify(attributesData.border),
+		type: 'object',
+		default: attributesData.border,
 	},
 	borderHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.borderHover),
+		type: 'object',
+		default: attributesData.borderHover,
 	},
 	padding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
+		type: 'object',
+		default: attributesData.padding,
 	},
 	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
+		type: 'object',
+		default: attributesData.margin,
 	},
 	position: {
-		type: 'string',
-		default: JSON.stringify(attributesData.position),
+		type: 'object',
+		default: attributesData.position,
 	},
 	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.display),
+		type: 'object',
+		default: attributesData.display,
 	},
 	motion: {
-		type: 'string',
-		default: JSON.stringify(attributesData.motion),
+		type: 'object',
+		default: attributesData.motion,
 	},
 	hover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.hover),
+		type: 'object',
+		default: attributesData.hover,
 	},
 	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.transform),
+		type: 'object',
+		default: attributesData.transform,
 	},
 	scale: {
 		type: 'number',
@@ -117,8 +117,8 @@ const attributes = {
 		default: 64,
 	},
 	highlight: {
-		type: 'string',
-		default: JSON.stringify(attributesData.highlight),
+		type: 'object',
+		default: attributesData.highlight,
 	},
 };
 

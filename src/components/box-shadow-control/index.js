@@ -22,7 +22,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Styles and icons
@@ -34,35 +34,26 @@ import { styleNone } from '../../icons';
  * Component
  */
 const BoxShadowControl = props => {
-	const {
-		boxShadow,
-		defaultBoxShadow,
-		onChange,
-		className,
-		breakpoint,
-		disableAdvanced = false,
-	} = props;
+	const { onChange, className, breakpoint, disableAdvanced = false } = props;
 
-	const value = !isObject(boxShadow) ? JSON.parse(boxShadow) : boxShadow;
-
-	const defaultValue = !isObject(defaultBoxShadow)
-		? JSON.parse(defaultBoxShadow)
-		: defaultBoxShadow;
+	const boxShadow = { ...props.boxShadow };
+	const defaultBoxShadow = { ...props.defaultBoxShadow };
 
 	const classes = classnames('maxi-shadow-control', className);
 
 	const onChangeValue = (target, val) => {
 		if (isNil(val))
-			value[breakpoint][target] = defaultValue[breakpoint][target];
-		else value[breakpoint][target] = val;
+			boxShadow[breakpoint][target] =
+				defaultBoxShadow[breakpoint][target];
+		else boxShadow[breakpoint][target] = val;
 
-		onChange(JSON.stringify(value));
+		onChange(boxShadow);
 	};
 
 	const onChangeDefault = defaultBoxShadow => {
-		value[breakpoint] = defaultBoxShadow;
+		boxShadow[breakpoint] = defaultBoxShadow;
 
-		onChange(JSON.stringify(value));
+		onChange(boxShadow);
 	};
 
 	const getIsActive = (typeObj, type) => {
@@ -74,7 +65,11 @@ const BoxShadowControl = props => {
 		];
 
 		const hasBoxShadow = items.some(item => {
-			const itemValue = getLastBreakpointValue(value, item, breakpoint);
+			const itemValue = getLastBreakpointValue(
+				boxShadow,
+				item,
+				breakpoint
+			);
 
 			return !isNil(itemValue) && itemValue !== 0;
 		});
@@ -82,7 +77,11 @@ const BoxShadowControl = props => {
 		if (type === 'none') return false;
 
 		const isActive = !items.some(item => {
-			const itemValue = getLastBreakpointValue(value, item, breakpoint);
+			const itemValue = getLastBreakpointValue(
+				boxShadow,
+				item,
+				breakpoint
+			);
 
 			return itemValue !== typeObj[item];
 		});
@@ -130,8 +129,12 @@ const BoxShadowControl = props => {
 			<ColorControl
 				label={__('Box Shadow', 'maxi-blocks')}
 				className='maxi-shadow-control__color'
-				color={getLastBreakpointValue(value, 'shadowColor', breakpoint)}
-				defaultColor={defaultValue[breakpoint].shadowColor}
+				color={getLastBreakpointValue(
+					boxShadow,
+					'shadowColor',
+					breakpoint
+				)}
+				defaultColor={defaultBoxShadow[breakpoint].shadowColor}
 				onChange={val => onChangeValue('shadowColor', val)}
 				disableGradient
 				disableImage
@@ -145,7 +148,7 @@ const BoxShadowControl = props => {
 						className='maxi-shadow-control__horizontal'
 						value={Number(
 							getLastBreakpointValue(
-								value,
+								boxShadow,
 								'shadowHorizontal',
 								breakpoint
 							)
@@ -157,7 +160,7 @@ const BoxShadowControl = props => {
 						max={100}
 						allowReset
 						initialPosition={
-							defaultValue[breakpoint].shadowHorizontal
+							defaultBoxShadow[breakpoint].shadowHorizontal
 						}
 					/>
 					<RangeControl
@@ -165,7 +168,7 @@ const BoxShadowControl = props => {
 						className='maxi-shadow-control__vertical'
 						value={Number(
 							getLastBreakpointValue(
-								value,
+								boxShadow,
 								'shadowVertical',
 								breakpoint
 							)
@@ -177,7 +180,7 @@ const BoxShadowControl = props => {
 						max={100}
 						allowReset
 						initialPosition={
-							defaultValue[breakpoint].shadowVertical
+							defaultBoxShadow[breakpoint].shadowVertical
 						}
 					/>
 					<RangeControl
@@ -185,7 +188,7 @@ const BoxShadowControl = props => {
 						className='maxi-shadow-control__blur'
 						value={Number(
 							getLastBreakpointValue(
-								value,
+								boxShadow,
 								'shadowBlur',
 								breakpoint
 							)
@@ -196,14 +199,16 @@ const BoxShadowControl = props => {
 						min={0}
 						max={100}
 						allowReset
-						initialPosition={defaultValue[breakpoint].shadowBlur}
+						initialPosition={
+							defaultBoxShadow[breakpoint].shadowBlur
+						}
 					/>
 					<RangeControl
 						label={__('Spread', 'maxi-blocks')}
 						className='maxi-shadow-control__spread-control'
 						value={Number(
 							getLastBreakpointValue(
-								value,
+								boxShadow,
 								'shadowSpread',
 								breakpoint
 							)
@@ -214,7 +219,9 @@ const BoxShadowControl = props => {
 						min={-100}
 						max={100}
 						allowReset
-						initialPosition={defaultValue[breakpoint].shadowSpread}
+						initialPosition={
+							defaultBoxShadow[breakpoint].shadowSpread
+						}
 					/>
 				</Fragment>
 			)}

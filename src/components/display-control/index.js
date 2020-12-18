@@ -12,7 +12,6 @@ import FancyRadioControl from '../fancy-radio-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
 
 /**
  * Styles
@@ -24,19 +23,18 @@ import './editor.scss';
  */
 const DisplayControl = props => {
 	const {
-		display,
 		className,
 		onChange,
 		breakpoint,
 		defaultDisplay = 'inherit',
 	} = props;
 
-	const value = !isObject(display) ? JSON.parse(display) : display;
+	const display = { ...props.display };
 
 	const classes = classnames('maxi-display-control', className);
 
 	const isHide = () => {
-		const objectKeys = Object.keys(value);
+		const objectKeys = Object.keys(display);
 		const breakpointIndex = objectKeys.indexOf(breakpoint) - 1;
 
 		if (breakpointIndex === 0) return false;
@@ -44,8 +42,8 @@ const DisplayControl = props => {
 		let i = breakpointIndex;
 
 		do {
-			if (value[objectKeys[i]].display === 'none') return true;
-			if (value[objectKeys[i]].display === defaultDisplay) return false;
+			if (display[objectKeys[i]].display === 'none') return true;
+			if (display[objectKeys[i]].display === defaultDisplay) return false;
 			i -= 1;
 		} while (i > 0);
 
@@ -55,9 +53,9 @@ const DisplayControl = props => {
 	const getValue = () => {
 		const isPrevHide = isHide();
 
-		return isPrevHide && value[breakpoint].display === ''
+		return isPrevHide && display[breakpoint].display === ''
 			? 'none'
-			: value[breakpoint].display;
+			: display[breakpoint].display;
 	};
 
 	const getOptions = () => {
@@ -80,8 +78,8 @@ const DisplayControl = props => {
 				selected={getValue()}
 				options={getOptions()}
 				onChange={val => {
-					value[breakpoint].display = val;
-					onChange(JSON.stringify(value));
+					display[breakpoint].display = val;
+					onChange(display);
 				}}
 			/>
 		</div>

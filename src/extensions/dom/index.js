@@ -18,9 +18,6 @@ import { isEmpty } from 'lodash';
  *
  */
 const allowedBlocks = [
-	'maxi-blocks/block-image-box',
-	'maxi-blocks/block-title-extra',
-	'maxi-blocks/testimonials-slider-block',
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/button-maxi',
@@ -30,7 +27,6 @@ const allowedBlocks = [
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/svg-icon-maxi',
-	'maxi-blocks/icon-maxi',
 	'maxi-blocks/font-icon-maxi',
 ];
 

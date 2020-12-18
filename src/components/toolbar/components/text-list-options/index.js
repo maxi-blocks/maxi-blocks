@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { IconButton } = wp.components;
+const { Button } = wp.components;
 const {
 	__unstableIndentListItems,
 	__unstableCanIndentListItems,
@@ -95,27 +95,27 @@ const TextListOptions = props => {
 			advancedOptions='list options'
 			content={
 				<div className='toolbar-item__popover__list-options'>
-					<IconButton
+					<Button
 						className='toolbar-item__popover__list-options__button'
 						icon={toolbarOrderedList}
 						onClick={() => onChangeList('ol')}
 						aria-pressed={isList && typeOfList === 'ol'}
 					/>
-					<IconButton
+					<Button
 						className='toolbar-item__popover__list-options__button'
 						icon={toolbarUnorderedList}
 						onClick={() => onChangeList('ul')}
 						aria-pressed={isList && typeOfList === 'ul'}
 					/>
 					{__unstableCanOutdentListItems(formatValue) && (
-						<IconButton
+						<Button
 							className='toolbar-item__popover__list-options__button'
 							icon={toolbarOutdentList}
 							onClick={() => onChangeIndent('outdent')}
 						/>
 					)}
 					{__unstableCanIndentListItems(formatValue) && (
-						<IconButton
+						<Button
 							className='toolbar-item__popover__list-options__button'
 							icon={toolbarIndentList}
 							onClick={() => onChangeIndent('indent')}

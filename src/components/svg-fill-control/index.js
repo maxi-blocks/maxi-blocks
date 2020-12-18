@@ -15,21 +15,16 @@ import { injectImgSVG } from '../../extensions/svg/utils';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isObject } from 'lodash';
 
 /**
  * Component
  */
 const SVGFillControl = props => {
-	const { SVGData, SVGElement, onChange, className } = props;
+	const { SVGElement, onChange, className } = props;
 
 	const classes = classnames('maxi-svg-fill-control', className);
 
-	const SVGValue = !isNil(SVGData)
-		? !isObject(SVGData)
-			? JSON.parse(SVGData)
-			: SVGData
-		: {};
+	const SVGData = { ...props.SVGData };
 
 	const getFillItem = ([id, value], i = 0) => {
 		return (
@@ -43,15 +38,15 @@ const SVGFillControl = props => {
 								label={__('Fill', 'maxi-blocks')}
 								color={value.color}
 								onChange={val => {
-									SVGValue[id].color = val;
+									SVGData[id].color = val;
 									const resEl = injectImgSVG(
 										SVGElement,
-										SVGValue
+										SVGData
 									);
 
 									onChange({
 										SVGElement: resEl.outerHTML,
-										SVGData: JSON.stringify(SVGValue),
+										SVGData,
 									});
 								}}
 							/>
@@ -64,29 +59,29 @@ const SVGFillControl = props => {
 								allowedTypes={['image']}
 								mediaID={value.imageID}
 								onSelectImage={imageData => {
-									SVGValue[id].imageID = imageData.id;
-									SVGValue[id].imageURL = imageData.url;
+									SVGData[id].imageID = imageData.id;
+									SVGData[id].imageURL = imageData.url;
 									const resEl = injectImgSVG(
 										SVGElement,
-										SVGValue
+										SVGData
 									);
 
 									onChange({
 										SVGElement: resEl.outerHTML,
-										SVGData: JSON.stringify(SVGValue),
+										SVGData,
 									});
 								}}
 								onRemoveImage={() => {
-									SVGValue[id].imageID = '';
-									SVGValue[id].imageURL = '';
+									SVGData[id].imageID = '';
+									SVGData[id].imageURL = '';
 									const resEl = injectImgSVG(
 										SVGElement,
-										SVGValue
+										SVGData
 									);
 
 									onChange({
 										SVGElement: resEl.outerHTML,
-										SVGData: JSON.stringify(SVGValue),
+										SVGData,
 									});
 								}}
 							/>
@@ -98,7 +93,7 @@ const SVGFillControl = props => {
 	};
 
 	const getFillItems = () => {
-		const response = Object.entries(SVGValue).map(([id, value], i) => {
+		const response = Object.entries(SVGData).map(([id, value], i) => {
 			return {
 				label: i,
 				content: getFillItem([id, value], i),
@@ -110,11 +105,11 @@ const SVGFillControl = props => {
 
 	return (
 		<div className={classes}>
-			{Object.keys(SVGValue).length > 1 && (
+			{Object.keys(SVGData).length > 1 && (
 				<SettingTabsControl items={getFillItems()} />
 			)}
-			{Object.keys(SVGValue).length === 1 &&
-				getFillItem(Object.entries(SVGValue)[0])}
+			{Object.keys(SVGData).length === 1 &&
+				getFillItem(Object.entries(SVGData)[0])}
 		</div>
 	);
 };

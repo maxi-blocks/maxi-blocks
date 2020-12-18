@@ -14,7 +14,7 @@ import openSidebar from '../../../../extensions/dom';
 /**
  * External dependencies
  */
-import { capitalize, isNil, isObject, trim } from 'lodash';
+import { capitalize, isNil, trim } from 'lodash';
 
 /**
  * Styles & Icons
@@ -28,8 +28,6 @@ import { toolbarSizing } from '../../../../icons';
 const ImageSize = props => {
 	const {
 		blockName,
-		size,
-		defaultSize,
 		onChangeSize,
 		imageSize,
 		onChangeImageSize,
@@ -50,11 +48,8 @@ const ImageSize = props => {
 
 	if (blockName !== 'maxi-blocks/image-maxi') return null;
 
-	const sizeValue = !isObject(size) ? JSON.parse(size) : size;
-
-	const defaultSizeValue = !isObject(defaultSize)
-		? JSON.parse(defaultSize)
-		: defaultSize;
+	const size = { ...props.size };
+	const defaultSize = { ...props.defaultSize };
 
 	const getImageSizeOptions = () => {
 		const response = [];
@@ -116,14 +111,14 @@ const ImageSize = props => {
 					)}
 					<RangeControl
 						label={__('Width', 'maxi-blocks')}
-						value={Number(trim(sizeValue.general.width))}
+						value={Number(trim(size.general.width))}
 						onChange={width => {
 							isNil(width)
-								? (sizeValue.general.width =
-										defaultSizeValue.general.width)
-								: (sizeValue.general.width = width);
+								? (size.general.width =
+										defaultSize.general.width)
+								: (size.general.width = width);
 
-							onChangeSize(JSON.stringify(sizeValue));
+							onChangeSize(size);
 						}}
 						allowReset
 						// initialPosition={}

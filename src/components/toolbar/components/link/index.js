@@ -24,7 +24,7 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-	const { blockName, linkSettings, onChange } = props;
+	const { blockName, onChange } = props;
 
 	if (
 		blockName === 'maxi-blocks/divider-maxi' ||
@@ -32,19 +32,19 @@ const Link = props => {
 	)
 		return null;
 
-	const linkSettingsValue = JSON.parse(linkSettings);
+	const linkSettings = { ...props.linkSettings };
 
 	return (
 		<ToolbarPopover
 			icon={toolbarLink}
 			tooltip={__('Link', 'maxi-blocks')}
 			className={
-				!isEmpty(linkSettingsValue.url) && 'toolbar-item__link--active'
+				!isEmpty(linkSettings.url) && 'toolbar-item__link--active'
 			}
 			content={
 				<__experimentalLinkControl
-					value={linkSettingsValue}
-					onChange={value => onChange(JSON.stringify(value))}
+					value={linkSettings}
+					onChange={value => onChange(value)}
 					settings={[
 						{
 							id: 'opensInNewTab',

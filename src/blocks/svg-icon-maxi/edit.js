@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const { compose } = wp.compose;
 const { Fragment, RawHTML } = wp.element;
 const { Button, Modal } = wp.components;
@@ -28,7 +29,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, isObject } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 import Iframe from 'react-iframe';
 
 /**
@@ -56,7 +57,11 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(uniqueID, background, backgroundHover)
+			setBackgroundStyles({
+				target: uniqueID,
+				background,
+				backgroundHover,
+			})
 		);
 
 		return response;
@@ -77,19 +82,19 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			padding: { ...JSON.parse(padding) },
-			margin: { ...JSON.parse(margin) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
-			opacity: { ...JSON.parse(opacity) },
-			zIndex: { ...JSON.parse(zIndex) },
-			alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
-			position: { ...JSON.parse(position) },
-			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
+			boxShadow: getBoxShadowObject(boxShadow),
+			padding,
+			margin,
+			border,
+			borderWidth: border.borderWidth,
+			borderRadius: border.borderRadius,
+			opacity,
+			zIndex,
+			alignment: getAlignmentFlexObject(alignment),
+			position,
+			positionOptions: position.options,
+			display,
+			transform: getTransformObject(transform),
 		};
 
 		return response;
@@ -99,23 +104,32 @@ class edit extends MaxiBlock {
 		const { boxShadowHover, borderHover } = this.props.attributes;
 
 		const response = {
-			borderWidth: { ...JSON.parse(borderHover).borderWidth },
-			borderRadius: { ...JSON.parse(borderHover).borderRadius },
+			borderWidth: borderHover.borderWidth,
+			borderRadius: borderHover.borderRadius,
 		};
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			};
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
+			response.boxShadowHover = getBoxShadowObject(boxShadowHover);
 		}
 
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
-			response.borderHover = {
-				...JSON.parse(borderHover),
-			};
+		if (!isNil(borderHover) && !!borderHover.status) {
+			response.borderHover = borderHover;
 		}
 
 		return response;
+	}
+
+	get getCustomData() {
+		const { uniqueID, motion } = this.props.attributes;
+
+		const motionStatus =
+			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+
+		return {
+			[uniqueID]: {
+				...(motionStatus && { motion }),
+			},
+		};
 	}
 
 	render() {
@@ -124,7 +138,6 @@ class edit extends MaxiBlock {
 			attributes: {
 				uniqueID,
 				blockStyle,
-				highlight,
 				defaultBlockStyle,
 				blockStyleBackground,
 				extraClassName,
@@ -134,11 +147,14 @@ class edit extends MaxiBlock {
 			},
 			clientId,
 		} = this.props;
-
 		const { isOpen } = this.state;
-		const highlightValue = !isObject(highlight)
-			? JSON.parse(highlight)
-			: highlight;
+		const highlight = { ...this.props.attributes.highlight };
+		const {
+			backgroundHighlight,
+			borderHighlight,
+			color1Highlight,
+			color2Highlight,
+		} = highlight;
 
 		const onClick = () => {
 			this.setState({ isOpen: !isOpen });
@@ -151,11 +167,10 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!highlightValue.backgroundHighlight &&
-				'maxi-highlight--background',
-			!!highlightValue.borderHighlight && 'maxi-highlight--border',
-			!!highlightValue.color1Highlight && 'maxi-highlight--color1',
-			!!highlightValue.color2Highlight && 'maxi-highlight--color2',
+			!!backgroundHighlight && 'maxi-highlight--background',
+			!!borderHighlight && 'maxi-highlight--border',
+			!!color1Highlight && 'maxi-highlight--color1',
+			!!color2Highlight && 'maxi-highlight--color2',
 			extraClassName,
 			uniqueID,
 			className
@@ -195,7 +210,7 @@ class edit extends MaxiBlock {
 									/>
 
 									<div className='maxi-block-library__modal__loading_message maxi-block__item--hidden'>
-										<p>{__('Saving...', 'maxi-blocks')}</p>
+										<p>{__('Saving…', 'maxi-blocks')}</p>
 									</div>
 								</Modal>
 							)}

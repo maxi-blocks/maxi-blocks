@@ -12,7 +12,7 @@ import { BackgroundDisplayer } from '../../components';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isObject } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Save
@@ -23,27 +23,21 @@ const save = props => {
 		attributes: {
 			uniqueID,
 			blockStyle,
-			highlight,
 			defaultBlockStyle,
 			background,
 			extraClassName,
 			fullWidth,
 			lineOrientation,
-			motion,
-			divider,
 		},
 	} = props;
-
-	const dividerValue = !isObject(divider) ? JSON.parse(divider) : divider;
-	const highlightValue = !isObject(highlight)
-		? JSON.parse(highlight)
-		: highlight;
+	const divider = { ...props.attributes.divider };
+	const highlight = { ...props.attributes.highlight };
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-divider-block',
 		blockStyle,
-		!!highlightValue.borderHighlight && 'maxi-highlight--border',
+		!!highlight.borderHighlight && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,
@@ -58,11 +52,10 @@ const save = props => {
 		<div
 			className={classes}
 			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion={motion}
 			data-motion-id={uniqueID}
 		>
 			<BackgroundDisplayer background={background} />
-			{dividerValue.general['border-style'] !== 'none' && (
+			{divider.general['border-style'] !== 'none' && (
 				<Fragment>
 					<hr className='maxi-divider-block__divider' />
 				</Fragment>

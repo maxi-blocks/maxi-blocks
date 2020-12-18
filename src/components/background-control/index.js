@@ -20,7 +20,7 @@ import SVGLayer from './svgLayer';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -41,8 +41,6 @@ import './editor.scss';
 const BackgroundControl = props => {
 	const {
 		className,
-		background,
-		defaultBackground,
 		disableLayers = false,
 		disableImage = false,
 		disableVideo = false,
@@ -54,13 +52,8 @@ const BackgroundControl = props => {
 		onChange,
 	} = props;
 
-	const backgroundValue = !isObject(background)
-		? JSON.parse(background)
-		: background;
-
-	const backgroundDefaultValue = !isObject(defaultBackground)
-		? JSON.parse(defaultBackground)
-		: defaultBackground;
+	const background = { ...props.background };
+	const defaultBackground = { ...props.defaultBackground };
 
 	const classes = classnames('maxi-background-control', className);
 
@@ -111,103 +104,92 @@ const BackgroundControl = props => {
 		<div className={classes}>
 			{!disableLayers && (
 				<BackgroundLayersControl
-					layersOptions={backgroundValue.layersOptions}
+					layersOptions={background.layersOptions}
 					onChange={layersOptions => {
-						backgroundValue.layersOptions = layersOptions;
-						onChange(JSON.stringify(backgroundValue));
+						background.layersOptions = layersOptions;
+						onChange(background);
 					}}
 				/>
 			)}
-			{getOptions().length > 1 && !backgroundValue.layersOptions.status && (
+			{getOptions().length > 1 && !background.layersOptions.status && (
 				<FancyRadioControl
 					label={__('Background', 'maxi-blocks')}
 					fullWidthMode
-					selected={backgroundValue.activeMedia}
+					selected={background.activeMedia}
 					options={getOptions()}
 					onChange={item => {
-						backgroundValue.activeMedia = item;
+						background.activeMedia = item;
 						if (isEmpty(item))
-							backgroundValue.colorOptions.activeColor = '';
+							background.colorOptions.activeColor = '';
 						if (item === 'color')
-							backgroundValue.colorOptions.activeColor =
-								backgroundValue.colorOptions.color;
+							background.colorOptions.activeColor =
+								background.colorOptions.color;
 						if (item === 'gradient')
-							backgroundValue.colorOptions.activeColor =
-								backgroundValue.colorOptions.gradient;
+							background.colorOptions.activeColor =
+								background.colorOptions.gradient;
 
-						onChange(JSON.stringify(backgroundValue));
+						onChange(background);
 					}}
 				/>
 			)}
-			{!backgroundValue.layersOptions.status && (
+			{!background.layersOptions.status && (
 				<Fragment>
-					{!disableColor && backgroundValue.activeMedia === 'color' && (
+					{!disableColor && background.activeMedia === 'color' && (
 						<ColorLayer
-							colorOptions={backgroundValue.colorOptions}
-							defaultColorOptions={
-								backgroundDefaultValue.colorOptions
-							}
+							colorOptions={background.colorOptions}
+							defaultColorOptions={defaultBackground.colorOptions}
 							onChange={colorOptions => {
-								backgroundValue.colorOptions = colorOptions;
+								background.colorOptions = colorOptions;
 
-								onChange(JSON.stringify(backgroundValue));
+								onChange(background);
 							}}
 							disableClipPath={disableClipPath}
 						/>
 					)}
-					{!disableImage && backgroundValue.activeMedia === 'image' && (
+					{!disableImage && background.activeMedia === 'image' && (
 						<ImageLayer
-							imageOptions={backgroundValue.imageOptions}
-							defaultImageOptions={
-								backgroundDefaultValue.imageOptions
-							}
+							imageOptions={background.imageOptions}
+							defaultImageOptions={defaultBackground.imageOptions}
 							onChange={imageOptions => {
-								backgroundValue.imageOptions = imageOptions;
+								background.imageOptions = imageOptions;
 
-								onChange(JSON.stringify(backgroundValue));
+								onChange(background);
 							}}
 							disableClipPath={disableClipPath}
 						/>
 					)}
-					{!disableVideo && backgroundValue.activeMedia === 'video' && (
+					{!disableVideo && background.activeMedia === 'video' && (
 						<VideoLayer
-							videoOptions={backgroundValue.videoOptions}
-							defaultVideoOptions={
-								backgroundDefaultValue.videoOptions
-							}
+							videoOptions={background.videoOptions}
+							defaultVideoOptions={defaultBackground.videoOptions}
 							onChange={videoOptions => {
-								backgroundValue.videoOptions = videoOptions;
+								background.videoOptions = videoOptions;
 
-								onChange(JSON.stringify(backgroundValue));
+								onChange(background);
 							}}
 							disableClipPath={disableClipPath}
 						/>
 					)}
-					{!disableGradient &&
-						backgroundValue.activeMedia === 'gradient' && (
-							<GradientLayer
-								colorOptions={backgroundValue.colorOptions}
-								defaultColorOptions={
-									backgroundDefaultValue.colorOptions
-								}
-								onChange={colorOptions => {
-									backgroundValue.colorOptions = colorOptions;
+					{!disableGradient && background.activeMedia === 'gradient' && (
+						<GradientLayer
+							colorOptions={background.colorOptions}
+							defaultColorOptions={defaultBackground.colorOptions}
+							onChange={colorOptions => {
+								background.colorOptions = colorOptions;
 
-									onChange(JSON.stringify(backgroundValue));
-								}}
-								disableClipPath={disableClipPath}
-							/>
-						)}
-					{!disableSVG && backgroundValue.activeMedia === 'svg' && (
+								onChange(background);
+							}}
+							disableClipPath={disableClipPath}
+						/>
+					)}
+					{!disableSVG && background.activeMedia === 'svg' && (
 						<SVGLayer
-							SVGOptions={backgroundValue.SVGOptions}
-							defaultSVGOptions={
-								backgroundDefaultValue.SVGOptions
-							}
+							SVGOptions={background.SVGOptions}
+							defaultSVGOptions={defaultBackground.SVGOptions}
 							onChange={SVGOptions => {
-								backgroundValue.SVGOptions = SVGOptions;
+								background.SVGOptions = SVGOptions;
 
-								onChange(JSON.stringify(backgroundValue));
+								onChange(background);
 							}}
 						/>
 					)}

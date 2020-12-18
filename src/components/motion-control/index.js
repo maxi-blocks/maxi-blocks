@@ -17,7 +17,6 @@ import TimelinePresets from './timelinePresets';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -28,11 +27,11 @@ import './editor.scss';
  * Component
  */
 const MotionControl = props => {
-	const { className, motion, onChange } = props;
+	const { className, onChange } = props;
 
-	const motionValue = !isObject(motion) ? JSON.parse(motion) : motion;
+	const motion = { ...props.motion };
 
-	const { interaction } = motionValue;
+	const { interaction } = motion;
 
 	const classes = classnames('maxi-motion-control', className);
 
@@ -47,7 +46,7 @@ const MotionControl = props => {
 				]}
 				onChange={val => {
 					interaction.interactionStatus = Number(val);
-					onChange(JSON.stringify(motionValue));
+					onChange(motion);
 				}}
 			/>
 			{!!interaction.interactionStatus && (
@@ -61,42 +60,42 @@ const MotionControl = props => {
 						]}
 						onChange={val => {
 							interaction.previewStatus = Number(val);
-							onChange(JSON.stringify(motionValue));
+							onChange(motion);
 						}}
 					/>
 					<TimelinePresets
 						interaction={interaction}
 						onChange={interaction => {
-							motionValue.interaction = interaction;
+							motion.interaction = interaction;
 
-							onChange(JSON.stringify(motionValue));
+							onChange(motion);
 						}}
 					/>
 
 					<AddTimeline
 						interaction={interaction}
 						onChange={interaction => {
-							motionValue.interaction = interaction;
+							motion.interaction = interaction;
 
-							onChange(JSON.stringify(motionValue));
+							onChange(motion);
 						}}
 					/>
 
 					<ShowTimeline
 						interaction={interaction}
 						onChange={interaction => {
-							motionValue.interaction = interaction;
+							motion.interaction = interaction;
 
-							onChange(JSON.stringify(motionValue));
+							onChange(motion);
 						}}
 					/>
 
 					<TimelineSettings
 						interaction={interaction}
 						onChange={interaction => {
-							motionValue.interaction = interaction;
+							motion.interaction = interaction;
 
-							onChange(JSON.stringify(motionValue));
+							onChange(motion);
 						}}
 					/>
 				</Fragment>

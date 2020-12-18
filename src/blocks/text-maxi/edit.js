@@ -53,7 +53,7 @@ class edit extends MaxiBlock {
 
 	componentDidMount() {
 		const { alignment } = this.props.attributes;
-		const { isRTL } = wp.data.select('core/editor').getEditorSettings();
+		const { isRTL } = select('core/editor').getEditorSettings();
 
 		if (isEmpty(alignment.general.alignment)) {
 			alignment.general.alignment = isRTL ? 'right' : 'left';

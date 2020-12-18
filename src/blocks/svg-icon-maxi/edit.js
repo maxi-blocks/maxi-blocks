@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { compose } = wp.compose;
 const { Fragment, RawHTML } = wp.element;
-const { IconButton, Button, Modal } = wp.components;
+const { Button, Modal } = wp.components;
 const { withSelect, withDispatch } = wp.data;
 const { __experimentalBlock } = wp.blockEditor;
 
@@ -232,7 +232,7 @@ class edit extends MaxiBlock {
 							)}
 							{!isEmpty(content) && (
 								<Fragment>
-									<IconButton
+									<Button
 										className='maxi-svg-icon-block__replace-icon'
 										onClick={onClick}
 										icon={toolbarReplaceImage}

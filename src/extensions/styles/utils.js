@@ -111,15 +111,25 @@ export const getBoxShadowObject = boxShadow => {
 	Object.entries(boxShadow).forEach(([key, value]) => {
 		if (key !== 'label' && key !== 'status') {
 			let boxShadowString = '';
-			isNumber(value.shadowHorizontal) &&
-				(boxShadowString += `${value.shadowHorizontal}px `);
-			isNumber(value.shadowVertical) &&
-				(boxShadowString += `${value.shadowVertical}px `);
-			isNumber(value.shadowBlur) &&
-				(boxShadowString += `${value.shadowBlur}px `);
-			isNumber(value.shadowSpread) &&
-				(boxShadowString += `${value.shadowSpread}px `);
+
+			isEmpty(value.shadowHorizontal) && !isNumber(value.shadowHorizontal)
+				? (boxShadowString += '0 ')
+				: (boxShadowString += `${value.shadowHorizontal}px `);
+
+			isEmpty(value.shadowVertical) && !isNumber(value.shadowVertical)
+				? (boxShadowString += '0 ')
+				: (boxShadowString += `${value.shadowVertical}px `);
+
+			isEmpty(value.shadowBlur) && !isNumber(value.shadowBlur)
+				? (boxShadowString += '0 ')
+				: (boxShadowString += `${value.shadowBlur}px `);
+
+			isEmpty(value.shadowSpread) && !isNumber(value.shadowSpread)
+				? (boxShadowString += '0 ')
+				: (boxShadowString += `${value.shadowSpread}px `);
+
 			!isNil(value.shadowColor) && (boxShadowString += value.shadowColor);
+
 			response[key]['box-shadow'] = boxShadowString.trim();
 		}
 	});

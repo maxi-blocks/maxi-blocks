@@ -11,11 +11,6 @@ import ToolbarPopover from '../toolbar-popover';
 import { getLastBreakpointValue, getDefaultProp } from '../../../../utils';
 
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * Styles & Icons
  */
 import './editor.scss';
@@ -28,7 +23,6 @@ const ColumnSize = props => {
 	const {
 		clientId,
 		blockName,
-		columnSize,
 		verticalAlign,
 		uniqueID,
 		onChange,
@@ -37,7 +31,7 @@ const ColumnSize = props => {
 
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
 
-	const value = !isObject(columnSize) ? JSON.parse(columnSize) : columnSize;
+	const columnSize = { ...props.columnSize };
 
 	return (
 		<ToolbarPopover
@@ -50,18 +44,18 @@ const ColumnSize = props => {
 					<RangeControl
 						label={__('Column Size', 'maxi-blocks')}
 						value={getLastBreakpointValue(
-							value,
+							columnSize,
 							'size',
 							breakpoint
 						)}
 						onChange={val => {
-							value[breakpoint].size = val;
+							columnSize[breakpoint].size = val;
 							document.querySelector(
 								`.maxi-column-block__resizer__${uniqueID}`
 							).style.width = `${val}%`;
 
 							onChange({
-								columnSize: JSON.stringify(value),
+								columnSize,
 								verticalAlign,
 							});
 						}}
@@ -70,9 +64,8 @@ const ColumnSize = props => {
 						step={0.1}
 						allowReset
 						initialPosition={
-							JSON.parse(getDefaultProp(clientId, 'columnSize'))[
-								breakpoint
-							].size
+							getDefaultProp(clientId, 'columnSize')[breakpoint]
+								.size
 						}
 					/>
 					<SelectControl
@@ -102,7 +95,7 @@ const ColumnSize = props => {
 						]}
 						onChange={verticalAlign =>
 							onChange({
-								columnSize: JSON.stringify(value),
+								columnSize,
 								verticalAlign,
 							})
 						}

@@ -35,19 +35,13 @@ import './editor.scss';
  *
  * */
 const ColumnPatternsInspector = props => {
-	const {
-		clientId,
-		rowPattern,
-		onChange,
-		breakpoint,
-		toolbar = false,
-	} = props;
+	const { clientId, onChange, breakpoint, toolbar = false } = props;
 
 	const [numCol, setNumCol] = useState(1);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
-	const rowPatternObject = JSON.parse(rowPattern);
+	const rowPattern = { ...props.rowPattern };
 
 	const { getBlockName, getBlockAttributes, getBlockOrder } = select(
 		'core/block-editor'
@@ -80,10 +74,10 @@ const ColumnPatternsInspector = props => {
 	}, [breakpoint, numCol]);
 
 	useEffect(() => {
-		if (rowPatternObject.general.rowPattern) {
-			setNumCol(getNumCol(rowPatternObject.general.rowPattern));
+		if (rowPattern.general.rowPattern) {
+			setNumCol(getNumCol(rowPattern.general.rowPattern));
 		}
-	}, [breakpoint, rowPatternObject.general.rowPattern]);
+	}, [breakpoint, rowPattern.general.rowPattern]);
 
 	/**
 	 * Creates a new array with columns content before loading template for saving
@@ -202,9 +196,7 @@ const ColumnPatternsInspector = props => {
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
 
 		columnsBlockObjects.forEach(columnObject => {
-			const columnSizeObject = JSON.parse(
-				columnObject.attributes.columnSize
-			);
+			const columnSizeObject = columnObject.attributes.columnSize;
 			columnsSizes.push(columnSizeObject[breakpoint].size);
 		});
 
@@ -300,8 +292,8 @@ const ColumnPatternsInspector = props => {
 			const columnAttributes = column.attributes;
 			const columnUniqueID = columnAttributes.uniqueID;
 
-			const newColumnSize = JSON.parse(columnAttributes.columnSize);
-			const newColumnMargin = JSON.parse(columnAttributes.margin);
+			const newColumnSize = columnAttributes.columnSize;
+			const newColumnMargin = columnAttributes.margin;
 
 			newColumnSize[breakpoint].size = sizesWithGaps[j];
 
@@ -319,8 +311,8 @@ const ColumnPatternsInspector = props => {
 				newColumnMargin[breakpoint].unit = '';
 			}
 
-			columnAttributes.columnSize = JSON.stringify(newColumnSize);
-			columnAttributes.margin = JSON.stringify(newColumnMargin);
+			columnAttributes.columnSize = newColumnSize;
+			columnAttributes.margin = newColumnMargin;
 
 			updateBlockAttributes(columnClientId, columnAttributes);
 		});
@@ -354,8 +346,8 @@ const ColumnPatternsInspector = props => {
 							)}
 							className={patternButtonClassName}
 							aria-pressed={
-								JSON.stringify(getCurrentColumnsSizes()) ===
-								JSON.stringify(applyGap(template.sizes))
+								getCurrentColumnsSizes() ===
+								applyGap(template.sizes)
 							}
 							onClick={() => {
 								if (breakpoint === 'general') {
@@ -364,10 +356,10 @@ const ColumnPatternsInspector = props => {
 									updateTemplate(template.name);
 								}
 
-								rowPatternObject[breakpoint].rowPattern =
+								rowPattern[breakpoint].rowPattern =
 									template.name;
 
-								onChange(JSON.stringify(rowPatternObject));
+								onChange(rowPattern);
 							}}
 						>
 							<Icon

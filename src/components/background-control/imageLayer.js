@@ -129,8 +129,8 @@ const ImageLayer = props => {
 						fullWidthMode
 						opacity={imageOptions.opacity}
 						defaultOpacity={defaultImageOptions.opacity}
-						onChange={val => {
-							imageOptions.opacity = JSON.parse(val);
+						onChange={opacity => {
+							imageOptions.opacity = opacity;
 
 							onChange(imageOptions);
 						}}

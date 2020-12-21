@@ -13,11 +13,6 @@ import {
 } from '../../../../extensions/text/formats';
 
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * Styles and icons
  */
 import { toolbarSuperScript } from '../../../../icons';
@@ -26,13 +21,12 @@ import { toolbarSuperScript } from '../../../../icons';
  * TextFormatSuperscript
  */
 const TextFormatSuperscript = props => {
-	const { typography, formatValue, onChange, isList, breakpoint } = props;
+	const { formatValue, onChange, isList, breakpoint } = props;
 
-	const typographyValue =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
+	const typography = { ...props.typography };
 
 	const superscriptValue = getCustomFormatValue({
-		typography: typographyValue,
+		typography,
 		formatValue,
 		prop: 'vertical-align',
 		breakpoint,
@@ -45,7 +39,7 @@ const TextFormatSuperscript = props => {
 			formatValue,
 			isActive,
 			isList,
-			typography: typographyValue,
+			typography,
 			value: {
 				'vertical-align': isActive ? '' : 'super',
 			},
@@ -53,7 +47,7 @@ const TextFormatSuperscript = props => {
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			...(newContent && { content: newContent }),
 		});
 	};

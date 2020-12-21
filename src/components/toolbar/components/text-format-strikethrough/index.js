@@ -15,7 +15,7 @@ import {
 /**
  * External dependencies
  */
-import { isObject, trim } from 'lodash';
+import { trim } from 'lodash';
 
 /**
  * Styles and icons
@@ -26,13 +26,12 @@ import { toolbarStrikethrough } from '../../../../icons';
  * TextFormatStrikethrough
  */
 const TextFormatStrikethrough = props => {
-	const { typography, formatValue, onChange, isList, breakpoint } = props;
+	const { formatValue, onChange, isList, breakpoint } = props;
 
-	const typographyValue =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
+	const typography = { ...props.typography };
 
 	const textDecorationValue = getCustomFormatValue({
-		typography: typographyValue,
+		typography,
 		formatValue,
 		prop: 'text-decoration',
 		breakpoint,
@@ -55,7 +54,7 @@ const TextFormatStrikethrough = props => {
 			formatValue,
 			isActive,
 			isList,
-			typography: typographyValue,
+			typography,
 			value: {
 				'text-decoration': getTextDecorationValue(),
 			},
@@ -63,7 +62,7 @@ const TextFormatStrikethrough = props => {
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			...(newContent && { content: newContent }),
 		});
 	};

@@ -14,11 +14,6 @@ import BackgroundControl from '../background-control';
 import SizeControl from '../size-control';
 
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * Styles and icons
  */
 import './editor.scss';
@@ -69,25 +64,19 @@ import {
  * Component
  */
 const ShapeDividerControl = props => {
-	const { shapeDividerOptions, defaultShapeDividerOptions, onChange } = props;
+	const { onChange } = props;
 
-	const value = !isObject(shapeDividerOptions)
-		? JSON.parse(shapeDividerOptions)
-		: shapeDividerOptions;
+	const shapeDividerOptions = { ...props.shapeDividerOptions };
+	const defaultShapeDividerOptions = { ...props.defaultShapeDividerOptions };
 
-	let {
+	const {
 		top: shapeDividerTopOptions,
 		bottom: shapeDividerBottomOptions,
-	} = value;
-
-	const defaultValue = !isObject(defaultShapeDividerOptions)
-		? JSON.parse(defaultShapeDividerOptions)
-		: defaultShapeDividerOptions;
-
+	} = shapeDividerOptions;
 	const {
 		top: defaultShapeDividerTopOptions,
 		bottom: defaultShapeDividerBottomOptions,
-	} = defaultValue;
+	} = defaultShapeDividerOptions;
 
 	const shapeItems = [
 		{ label: __('None', 'max-block'), value: '' },
@@ -246,9 +235,9 @@ const ShapeDividerControl = props => {
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 						]}
-						onChange={val => {
-							shapeDividerTopOptions.status = Number(val);
-							onChange(JSON.stringify(value));
+						onChange={status => {
+							shapeDividerTopOptions.status = Number(status);
+							onChange(shapeDividerOptions);
 						}}
 					/>
 					{!!shapeDividerTopOptions.status && (
@@ -271,9 +260,9 @@ const ShapeDividerControl = props => {
 										value: 1,
 									},
 								]}
-								onChange={val => {
-									shapeDividerTopOptions.effects.status = val;
-									onChange(JSON.stringify(value));
+								onChange={status => {
+									shapeDividerTopOptions.effects.status = status;
+									onChange(shapeDividerOptions);
 								}}
 							/>
 							<Dropdown
@@ -295,9 +284,9 @@ const ShapeDividerControl = props => {
 											shapeDividerTopOptions.shapeStyle
 										}
 										options={shapeItems}
-										onChange={val => {
-											shapeDividerTopOptions.shapeStyle = val;
-											onChange(JSON.stringify(value));
+										onChange={shapeStyle => {
+											shapeDividerTopOptions.shapeStyle = shapeStyle;
+											onChange(shapeDividerOptions);
 										}}
 									/>
 								)}
@@ -307,11 +296,9 @@ const ShapeDividerControl = props => {
 								defaultOpacity={
 									defaultShapeDividerTopOptions.opacity
 								}
-								onChange={val => {
-									shapeDividerTopOptions.opacity = JSON.parse(
-										val
-									);
-									onChange(JSON.stringify(value));
+								onChange={opacity => {
+									shapeDividerTopOptions.opacity = opacity;
+									onChange(shapeDividerOptions);
 								}}
 							/>
 							<BackgroundControl
@@ -319,9 +306,9 @@ const ShapeDividerControl = props => {
 								defaultBackground={
 									defaultShapeDividerTopOptions.background
 								}
-								onChange={val => {
-									shapeDividerTopOptions.background = val;
-									onChange(JSON.stringify(value));
+								onChange={background => {
+									shapeDividerTopOptions.background = background;
+									onChange(shapeDividerOptions);
 								}}
 								disableImage
 								disableGradient
@@ -337,17 +324,17 @@ const ShapeDividerControl = props => {
 									defaultShapeDividerTopOptions.heightUnit
 								}
 								allowedUnits={['px']}
-								onChangeUnit={val => {
-									shapeDividerTopOptions.heightUnit = val;
-									onChange(JSON.stringify(value));
+								onChangeUnit={heightUnit => {
+									shapeDividerTopOptions.heightUnit = heightUnit;
+									onChange(shapeDividerOptions);
 								}}
 								value={shapeDividerTopOptions.height}
-								defaultValue={
+								defaultShapeDividerOptions={
 									defaultShapeDividerTopOptions.height
 								}
-								onChangeValue={val => {
-									shapeDividerTopOptions.height = val;
-									onChange(JSON.stringify(value));
+								onChangeValue={height => {
+									shapeDividerTopOptions.height = height;
+									onChange(shapeDividerOptions);
 								}}
 							/>
 						</Fragment>
@@ -363,9 +350,9 @@ const ShapeDividerControl = props => {
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 						]}
-						onChange={val => {
-							shapeDividerBottomOptions.status = Number(val);
-							onChange(JSON.stringify(value));
+						onChange={status => {
+							shapeDividerBottomOptions.status = Number(status);
+							onChange(shapeDividerOptions);
 						}}
 					/>
 					{!!shapeDividerBottomOptions.status && (
@@ -388,9 +375,9 @@ const ShapeDividerControl = props => {
 										value: 1,
 									},
 								]}
-								onChange={val => {
-									shapeDividerBottomOptions.effects.status = val;
-									onChange(JSON.stringify(value));
+								onChange={status => {
+									shapeDividerBottomOptions.effects.status = status;
+									onChange(shapeDividerOptions);
 								}}
 							/>
 							<Dropdown
@@ -412,9 +399,9 @@ const ShapeDividerControl = props => {
 											shapeDividerBottomOptions.shapeStyle
 										}
 										options={shapeItems}
-										onChange={val => {
-											shapeDividerBottomOptions.shapeStyle = val;
-											onChange(JSON.stringify(value));
+										onChange={shapeStyle => {
+											shapeDividerBottomOptions.shapeStyle = shapeStyle;
+											onChange(shapeDividerOptions);
 										}}
 									/>
 								)}
@@ -424,11 +411,9 @@ const ShapeDividerControl = props => {
 								defaultOpacity={
 									defaultShapeDividerBottomOptions.opacity
 								}
-								onChange={val => {
-									shapeDividerBottomOptions.opacity = JSON.parse(
-										val
-									);
-									onChange(JSON.stringify(value));
+								onChange={opacity => {
+									shapeDividerBottomOptions.opacity = opacity;
+									onChange(shapeDividerOptions);
 								}}
 							/>
 							<BackgroundControl
@@ -438,9 +423,9 @@ const ShapeDividerControl = props => {
 								defaultBackground={
 									defaultShapeDividerBottomOptions.background
 								}
-								onChange={val => {
-									shapeDividerBottomOptions.background = val;
-									onChange(JSON.stringify(value));
+								onChange={background => {
+									shapeDividerBottomOptions.background = background;
+									onChange(shapeDividerOptions);
 								}}
 								disableImage
 								disableGradient
@@ -456,17 +441,17 @@ const ShapeDividerControl = props => {
 									defaultShapeDividerBottomOptions.heightUnit
 								}
 								allowedUnits={['px']}
-								onChangeUnit={val => {
-									shapeDividerBottomOptions.heightUnit = val;
-									onChange(JSON.stringify(value));
+								onChangeUnit={heightUnit => {
+									shapeDividerBottomOptions.heightUnit = heightUnit;
+									onChange(shapeDividerOptions);
 								}}
 								value={shapeDividerBottomOptions.height}
-								defaultValue={
+								defaultShapeDividerOptions={
 									defaultShapeDividerBottomOptions.height
 								}
-								onChangeValue={val => {
-									shapeDividerBottomOptions.height = val;
-									onChange(JSON.stringify(value));
+								onChangeValue={height => {
+									shapeDividerBottomOptions.height = height;
+									onChange(shapeDividerOptions);
 								}}
 							/>
 						</Fragment>

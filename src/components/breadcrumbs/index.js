@@ -40,7 +40,7 @@ const MaxiBreadcrumbs = () => {
 
 	const { clientId } = useBlockEditContext();
 
-	const { selectBlock } = useDispatch('core/editor');
+	const { selectBlock } = useDispatch('core/block-editor');
 
 	const [anchorRef, setAnchorRef] = useState(
 		document.getElementById(`block-${clientId}`)

@@ -32,11 +32,6 @@ import {
 import { getDefaultProp } from '../../utils';
 
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * Inspector
  */
 const Inspector = props => {
@@ -49,11 +44,8 @@ const Inspector = props => {
 			defaultBlockStyle,
 			blockStyleBackground,
 			background,
-			backgroundHover,
 			boxShadow,
-			boxShadowHover,
 			border,
-			borderHover,
 			padding,
 			margin,
 			extraClassName,
@@ -63,31 +55,21 @@ const Inspector = props => {
 			display,
 			motion,
 			transform,
-			icon,
 			alignment,
 		},
 		deviceType,
 		setAttributes,
 		clientId,
 	} = props;
-
-	const backgroundHoverValue = !isObject(backgroundHover)
-		? JSON.parse(backgroundHover)
-		: backgroundHover;
-
-	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
-
-	const boxShadowHoverValue = !isObject(boxShadowHover)
-		? JSON.parse(boxShadowHover)
-		: boxShadowHover;
-
-	const borderHoverValue = !isObject(borderHover)
-		? JSON.parse(borderHover)
-		: borderHover;
+	const backgroundHover = { ...props.attributes.backgroundHover };
+	const icon = { ...props.attributes.icon };
+	const boxShadowHover = { ...props.attributes.boxShadowHover };
+	const borderHover = { ...props.attributes.borderHover };
+	const highlight = { ...props.attributes.highlight };
 
 	return (
 		<InspectorControls>
-			{iconValue.icon && (
+			{icon.icon && (
 				<SettingTabsControl
 					disablePadding
 					items={[
@@ -114,8 +96,11 @@ const Inspector = props => {
 											isFirstOnHierarchy={
 												isFirstOnHierarchy
 											}
+											highlight={highlight}
 											onChange={obj => setAttributes(obj)}
-											disableHighlight
+											disableHighlightColor1
+											disableHighlightColor2
+											border={border}
 										/>
 									</div>
 									<AccordionControl
@@ -161,6 +146,9 @@ const Inspector = props => {
 																deviceType
 															}
 															simpleMode
+															disableColor={
+																!!highlight.textHighlight
+															}
 														/>
 													</Fragment>
 												),
@@ -178,7 +166,7 @@ const Inspector = props => {
 															{
 																label: __(
 																	'Normal',
-																	'gutenberg-extra'
+																	'maxi-blocks'
 																),
 																content: (
 																	<Fragment>
@@ -197,6 +185,9 @@ const Inspector = props => {
 																					}
 																				)
 																			}
+																			disableColor={
+																				!!highlight.backgroundHighlight
+																			}
 																			disableImage
 																			disableVideo
 																			disableSVG
@@ -207,7 +198,7 @@ const Inspector = props => {
 															{
 																label: __(
 																	'Hover',
-																	'gutenberg-extra'
+																	'maxi-blocks'
 																),
 																content: (
 																	<Fragment>
@@ -217,7 +208,7 @@ const Inspector = props => {
 																				'maxi-blocks'
 																			)}
 																			selected={
-																				backgroundHoverValue.status
+																				backgroundHover.status
 																			}
 																			options={[
 																				{
@@ -236,19 +227,17 @@ const Inspector = props => {
 																				},
 																			]}
 																			onChange={val => {
-																				backgroundHoverValue.status = Number(
+																				backgroundHover.status = Number(
 																					val
 																				);
 																				setAttributes(
 																					{
-																						backgroundHover: JSON.stringify(
-																							backgroundHoverValue
-																						),
+																						backgroundHover,
 																					}
 																				);
 																			}}
 																		/>
-																		{!!backgroundHoverValue.status && (
+																		{!!backgroundHover.status && (
 																			<BackgroundControl
 																				background={
 																					backgroundHover
@@ -263,6 +252,9 @@ const Inspector = props => {
 																							backgroundHover,
 																						}
 																					)
+																				}
+																				disableColor={
+																					!!highlight.backgroundHighlight
 																				}
 																				disableImage
 																				disableVideo
@@ -309,6 +301,9 @@ const Inspector = props => {
 																		breakpoint={
 																			deviceType
 																		}
+																		disableColor={
+																			!!highlight.borderHighlight
+																		}
 																	/>
 																),
 															},
@@ -325,7 +320,7 @@ const Inspector = props => {
 																				'maxi-blocks'
 																			)}
 																			selected={Number(
-																				borderHoverValue.status
+																				borderHover.status
 																			)}
 																			options={[
 																				{
@@ -344,19 +339,17 @@ const Inspector = props => {
 																				},
 																			]}
 																			onChange={val => {
-																				borderHoverValue.status = Number(
+																				borderHover.status = Number(
 																					val
 																				);
 																				setAttributes(
 																					{
-																						borderHover: JSON.stringify(
-																							borderHoverValue
-																						),
+																						borderHover,
 																					}
 																				);
 																			}}
 																		/>
-																		{!!borderHoverValue.status && (
+																		{!!borderHover.status && (
 																			<BorderControl
 																				border={
 																					borderHover
@@ -374,6 +367,9 @@ const Inspector = props => {
 																				}
 																				breakpoint={
 																					deviceType
+																				}
+																				disableColor={
+																					!!highlight.borderHighlight
 																				}
 																			/>
 																		)}
@@ -396,7 +392,7 @@ const Inspector = props => {
 															{
 																label: __(
 																	'Normal',
-																	'gutenberg-extra'
+																	'maxi-blocks'
 																),
 																content: (
 																	<BoxShadowControl
@@ -423,7 +419,7 @@ const Inspector = props => {
 															{
 																label: __(
 																	'Hover',
-																	'gutenberg-extra'
+																	'maxi-blocks'
 																),
 																content: (
 																	<Fragment>
@@ -433,7 +429,7 @@ const Inspector = props => {
 																				'maxi-blocks'
 																			)}
 																			selected={Number(
-																				boxShadowHoverValue.status
+																				boxShadowHover.status
 																			)}
 																			options={[
 																				{
@@ -452,19 +448,17 @@ const Inspector = props => {
 																				},
 																			]}
 																			onChange={val => {
-																				boxShadowHoverValue.status = Number(
+																				boxShadowHover.status = Number(
 																					val
 																				);
 																				setAttributes(
 																					{
-																						boxShadowHover: JSON.stringify(
-																							boxShadowHoverValue
-																						),
+																						boxShadowHover,
 																					}
 																				);
 																			}}
 																		/>
-																		{!!boxShadowHoverValue.status && (
+																		{!!boxShadowHover.status && (
 																			<BoxShadowControl
 																				boxShadow={
 																					boxShadowHover
@@ -501,7 +495,7 @@ const Inspector = props => {
 													<Fragment>
 														<AxisControl
 															values={padding}
-															defaultValues={getDefaultProp(
+															defaults={getDefaultProp(
 																clientId,
 																'padding'
 															)}
@@ -517,7 +511,7 @@ const Inspector = props => {
 														/>
 														<AxisControl
 															values={margin}
-															defaultValues={getDefaultProp(
+															defaults={getDefaultProp(
 																clientId,
 																'margin'
 															)}

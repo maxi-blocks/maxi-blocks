@@ -57,7 +57,7 @@ const SVGDefaultsDisplayer = props => {
 								SVGElement: resEl.outerHTML,
 								SVGMediaID: null,
 								SVGMediaURL: null,
-								SVGData: JSON.stringify(resData),
+								SVGData: resData,
 							});
 						}}
 					>

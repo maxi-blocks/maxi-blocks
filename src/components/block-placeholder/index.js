@@ -22,7 +22,7 @@ const BlockPlaceholder = props => {
 
 	const classes = classnames('maxi-block-placeholder', className);
 
-	const { selectBlock } = useDispatch('core/editor');
+	const { selectBlock } = useDispatch('core/block-editor');
 
 	return (
 		<div className={classes} onClick={() => selectBlock(clientId)}>

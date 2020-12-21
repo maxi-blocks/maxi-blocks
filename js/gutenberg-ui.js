@@ -79,7 +79,7 @@ function addMaxiLayoutButton() {
  */
 function MaxiInsertLayout() {
 	let block = wp.blocks.createBlock('maxi-blocks/maxi-cloud');
-	wp.data.dispatch('core/editor').insertBlocks(block);
+	wp.data.dispatch('core/block-editor').insertBlocks(block);
 }
 
 jQuery(document).ready(function ($) {
@@ -88,7 +88,7 @@ jQuery(document).ready(function ($) {
 		let custom_css_code = $('textarea#maxi_blocks_custom_ccs_page').val();
 
 		$('style#maxi-blocks-custom-ccs-page').text(custom_css_code);
-		//wp.data.dispatch( 'core/editor' ).editPost( { maxi_custom_css_page: {custom_css_code} } );
+		//wp.data.dispatch( 'core/block-editor' ).editPost( { maxi_custom_css_page: {custom_css_code} } );
 
 		//jQuery('div.editor-post-link input.components-text-control__input').val('item-'+post_count);
 	});

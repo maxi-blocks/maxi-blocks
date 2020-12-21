@@ -35,7 +35,7 @@ import RowContext from './context';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, uniqueId, isObject } from 'lodash';
+import { isEmpty, isNil, uniqueId } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -63,9 +63,6 @@ const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 class edit extends MaxiBlock {
 	state = {
-		styles: {},
-		updating: false,
-		breakpoints: this.getBreakpoints,
 		displayHandlers: false,
 	};
 
@@ -78,15 +75,7 @@ class edit extends MaxiBlock {
 	}
 
 	get getObject() {
-		const {
-			uniqueID,
-			background,
-			backgroundHover,
-			overlay,
-			overlayHover,
-			border,
-			borderHover,
-		} = this.props.attributes;
+		const { uniqueID, background, backgroundHover } = this.props.attributes;
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
@@ -96,15 +85,11 @@ class edit extends MaxiBlock {
 
 		response = Object.assign(
 			response,
-			setBackgroundStyles(
-				uniqueID,
-				background,
-				backgroundHover,
-				overlay,
-				overlayHover,
-				border,
-				borderHover
-			)
+			setBackgroundStyles({
+				target: uniqueID,
+				background: { ...background },
+				backgroundHover: { ...backgroundHover },
+			})
 		);
 
 		return response;
@@ -127,19 +112,19 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
-			size: { ...JSON.parse(size) },
-			margin: { ...JSON.parse(margin) },
-			padding: { ...JSON.parse(padding) },
-			opacity: { ...getOpacityObject(JSON.parse(opacity)) },
-			zIndex: { ...JSON.parse(zIndex) },
-			position: { ...JSON.parse(position) },
-			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
+			boxShadow: { ...getBoxShadowObject(boxShadow) },
+			border,
+			borderWidth: border.borderWidth,
+			borderRadius: border.borderRadius,
+			size,
+			margin,
+			padding,
+			opacity: { ...getOpacityObject(opacity) },
+			zIndex,
+			position,
+			positionOptions: position.options,
+			display,
+			transform: getTransformObject(transform),
 			row: {
 				label: 'Row',
 				general: {},
@@ -158,19 +143,19 @@ class edit extends MaxiBlock {
 		const { boxShadowHover, borderHover } = this.props.attributes;
 
 		const response = {
-			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
-			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
+			borderWidthHover: borderHover.borderWidth,
+			borderRadiusHover: borderHover.borderRadius,
 		};
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
 			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+				...getBoxShadowObject(boxShadowHover),
 			};
 		}
 
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+		if (!isNil(borderHover) && !!borderHover.status) {
 			response.borderHover = {
-				...JSON.parse(borderHover),
+				...borderHover,
 			};
 		}
 
@@ -212,14 +197,12 @@ class edit extends MaxiBlock {
 			deviceType,
 		} = this.props;
 
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
-
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-row-block',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
+				'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
@@ -227,8 +210,6 @@ class edit extends MaxiBlock {
 			extraClassName,
 			className
 		);
-
-		const rowPatternObject = JSON.parse(rowPattern);
 
 		return [
 			<Inspector {...this.props} />,
@@ -274,15 +255,13 @@ class edit extends MaxiBlock {
 													)}
 													className='maxi-row-block__template__button'
 													onClick={() => {
-														rowPatternObject.general.rowPattern =
+														rowPattern.general.rowPattern =
 															template.name;
-														rowPatternObject.m.rowPattern =
+														rowPattern.m.rowPattern =
 															template.responsiveLayout;
 
 														setAttributes({
-															rowPattern: JSON.stringify(
-																rowPatternObject
-															),
+															rowPattern,
 														});
 														loadTemplate(
 															template.name
@@ -373,7 +352,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	 * @param {string} id Block id to select
 	 */
 	const selectOnClick = id => {
-		dispatch('core/editor').selectBlock(id);
+		dispatch('core/block-editor').selectBlock(id);
 	};
 
 	return {

@@ -14,25 +14,16 @@ import AxisControl from '../axis-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Component
  */
 const PositionControl = props => {
-	const {
-		position,
-		defaultPosition,
-		className,
-		onChange,
-		breakpoint = 'general',
-	} = props;
+	const { className, onChange, breakpoint = 'general' } = props;
 
-	const value = !isObject(position) ? JSON.parse(position) : position;
-
-	const defaultValues = !isObject(defaultPosition)
-		? JSON.parse(defaultPosition)
-		: defaultPosition;
+	const position = { ...props.position };
+	const defaultPosition = { ...props.defaultPosition };
 
 	const classes = classnames('maxi-position-control', className);
 
@@ -55,22 +46,23 @@ const PositionControl = props => {
 					{ label: 'Absolute', value: 'absolute' },
 					{ label: 'Fixed', value: 'fixed' },
 				]}
-				value={getLastBreakpointValue(value, 'position', breakpoint)}
+				value={getLastBreakpointValue(position, 'position', breakpoint)}
 				onChange={val => {
-					value[breakpoint].position = val;
-					if (isEmpty(val)) value.options[breakpoint] = cleanOptions;
-					onChange(JSON.stringify(value));
+					position[breakpoint].position = val;
+					if (isEmpty(val))
+						position.options[breakpoint] = cleanOptions;
+					onChange(position);
 				}}
 			/>
 			{!isEmpty(
-				getLastBreakpointValue(value, 'position', breakpoint)
+				getLastBreakpointValue(position, 'position', breakpoint)
 			) && (
 				<AxisControl
-					values={value.options}
-					defaultValues={defaultValues.options}
+					values={position.options}
+					defaultValues={defaultPosition.options}
 					onChange={val => {
-						value.options = JSON.parse(val);
-						onChange(JSON.stringify(value));
+						position.options = val;
+						onChange(position);
 					}}
 					breakpoint={breakpoint}
 					disableAuto

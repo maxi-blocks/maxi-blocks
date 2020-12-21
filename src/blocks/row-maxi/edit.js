@@ -337,7 +337,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	 * @param {string} id Block id to select
 	 */
 	const selectOnClick = id => {
-		dispatch('core/editor').selectBlock(id);
+		dispatch('core/block-editor').selectBlock(id);
 	};
 
 	return {

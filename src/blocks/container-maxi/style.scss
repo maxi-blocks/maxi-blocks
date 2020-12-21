@@ -23,4 +23,18 @@ body.maxi-blocks--active .maxi-container-block {
 		margin-right: auto;
 		margin-left: auto;
 	}
+	&.alignfull {
+		.maxi-container-block__container {
+			width: auto;
+			max-width: 100% !important;
+		}
+
+	}
+}
+
+
+html body.maxi-blocks--active .maxi-container-block {
+	&.alignfull>.maxi-container-block__wrapper>.maxi-container-block__container {
+		max-width: 100% !important;
+	}
 }

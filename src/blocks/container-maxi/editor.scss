@@ -4,6 +4,17 @@
 		border: 1px solid #7fbddc;
 	}
 	&[data-align='full'] {
-		width: auto;
+		width: 100%;
+		max-width: 100%;
+		.maxi-container-block__container {
+			width: 100%;
+			max-width: 100% !important;
+		}
+	}
+}
+
+html body.maxi-blocks--active .maxi-container-block {
+	&[data-align='full']>.maxi-container-block__wrapper>.maxi-container-block__container {
+		max-width: 100% !important;
 	}
 }

@@ -3,11 +3,17 @@
  */
 const { Popover } = wp.components;
 const { Fragment, useEffect, useState } = wp.element;
+const { select } = wp.data;
 
 /**
  * Internal dependencies
  */
 import { getDefaultProp } from '../../utils';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
 
 /**
  * Utils
@@ -132,6 +138,27 @@ const MaxiToolbar = props => {
 
 	if (!allowedBlocks.includes(name)) return null;
 
+	const breadcrumbStatus = () => {
+		const rootBlock = select('core/block-editor').getBlockName(
+			select('core/block-editor').getBlockRootClientId(
+				select('core/block-editor').getSelectedBlockClientId()
+			)
+		);
+		const currentBlock = select('core/block-editor').getBlockName(
+			select('core/block-editor').getSelectedBlockClientId()
+		);
+
+		if (
+			currentBlock === 'maxi-blocks/container-maxi' ||
+			currentBlock === 'maxi-blocks/row-maxi' ||
+			currentBlock === 'maxi-blocks/column-maxi' ||
+			rootBlock === 'maxi-blocks/container-maxi' ||
+			rootBlock === 'maxi-blocks/row-maxi' ||
+			rootBlock === 'maxi-blocks/column-maxi'
+		)
+			return true;
+	};
+
 	return (
 		<Fragment>
 			{isSelected && anchorRef && (
@@ -141,16 +168,20 @@ const MaxiToolbar = props => {
 					position='top center right'
 					focusOnMount={false}
 					anchorRef={anchorRef}
-					className='maxi-toolbar__popover'
+					className={classnames(
+						'maxi-toolbar__popover',
+						!!breadcrumbStatus() &&
+							'maxi-toolbar__popover--has-breadcrumb'
+					)}
 					uniqueid={uniqueID}
 					__unstableSticky
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding
 				>
-					<div className='toolbar-block-custom-label'>
-						{customLabel}
-					</div>
 					<div className='toolbar-wrapper'>
+						<div className='toolbar-block-custom-label'>
+							{customLabel}
+						</div>
 						<Mover clientId={clientId} blockName={name} />
 						<ColumnMover clientId={clientId} blockName={name} />
 						{!!borderHighlight && (

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { IconButton } = wp.components;
+const { Button } = wp.components;
 const {
 	__unstableIndentListItems,
 	__unstableCanIndentListItems,
@@ -16,8 +16,8 @@ const {
  */
 import ToolbarPopover from '../toolbar-popover';
 import {
-	__experimentalFromListToText,
-	__experimentalFromTextToList,
+	fromListToText,
+	fromTextToList,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -47,8 +47,8 @@ const TextListOptions = props => {
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const getContent = content => {
-		if (!isList) return __experimentalFromTextToList(content);
-		return __experimentalFromListToText(content);
+		if (!isList) return fromTextToList(content);
+		return fromListToText(content);
 	};
 
 	const onChangeIndent = type => {
@@ -95,27 +95,27 @@ const TextListOptions = props => {
 			advancedOptions='list options'
 			content={
 				<div className='toolbar-item__popover__list-options'>
-					<IconButton
+					<Button
 						className='toolbar-item__popover__list-options__button'
 						icon={toolbarOrderedList}
 						onClick={() => onChangeList('ol')}
 						aria-pressed={isList && typeOfList === 'ol'}
 					/>
-					<IconButton
+					<Button
 						className='toolbar-item__popover__list-options__button'
 						icon={toolbarUnorderedList}
 						onClick={() => onChangeList('ul')}
 						aria-pressed={isList && typeOfList === 'ul'}
 					/>
 					{__unstableCanOutdentListItems(formatValue) && (
-						<IconButton
+						<Button
 							className='toolbar-item__popover__list-options__button'
 							icon={toolbarOutdentList}
 							onClick={() => onChangeIndent('outdent')}
 						/>
 					)}
 					{__unstableCanIndentListItems(formatValue) && (
-						<IconButton
+						<Button
 							className='toolbar-item__popover__list-options__button'
 							icon={toolbarIndentList}
 							onClick={() => onChangeIndent('indent')}

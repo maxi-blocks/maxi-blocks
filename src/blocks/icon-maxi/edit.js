@@ -16,17 +16,13 @@ import {
 	getAlignmentTextObject,
 	setBackgroundStyles,
 } from '../../utils';
-import {
-	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
-} from '../../components';
+import { MaxiBlock, Toolbar, BackgroundDisplayer } from '../../components';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, isObject } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * Content
@@ -79,16 +75,17 @@ class edit extends MaxiBlock {
 		} = this.props.attributes;
 
 		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			padding: { ...JSON.parse(padding) },
-			margin: { ...JSON.parse(margin) },
-			opacity: { ...JSON.parse(opacity) },
-			zIndex: { ...JSON.parse(zIndex) },
-			alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
-			position: { ...JSON.parse(position) },
-			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
+			boxShadow: getBoxShadowObject(boxShadow),
+			padding,
+			margin,
+			opacity,
+			zIndex,
+			alignment: getAlignmentFlexObject(alignment),
+
+			position,
+			positionOptions: position.options,
+			display,
+			transform: getTransformObject(transform),
 		};
 
 		return response;
@@ -97,27 +94,13 @@ class edit extends MaxiBlock {
 	get getHoverEffectDetailsBoxObject() {
 		const { hover } = this.props.attributes;
 
-		const background = !isObject(JSON.parse(hover).background)
-			? JSON.parse(JSON.parse(hover).background)
-			: JSON.parse(hover).background;
-
-		const border = !isObject(JSON.parse(hover).border)
-			? JSON.parse(JSON.parse(hover).border)
-			: JSON.parse(hover).border;
-
-		const padding = !isObject(JSON.parse(hover).padding)
-			? JSON.parse(JSON.parse(hover).padding)
-			: JSON.parse(hover).padding;
-
-		const margin = !isObject(JSON.parse(hover).margin)
-			? JSON.parse(JSON.parse(hover).margin)
-			: JSON.parse(hover).margin;
+		const { background, border, padding, margin } = hover;
 
 		const response = {
-			background: { ...getBackgroundObject(background) },
-			border: { ...border },
-			padding: { ...padding },
-			margin: { ...margin },
+			background: getBackgroundObject(background),
+			border,
+			padding,
+			margin,
 		};
 
 		return response;
@@ -125,13 +108,10 @@ class edit extends MaxiBlock {
 
 	get getHoverEffectTitleTextObject() {
 		const { hover } = this.props.attributes;
-
-		const titleTypography = !isObject(JSON.parse(hover).titleTypography)
-			? JSON.parse(JSON.parse(hover).titleTypography)
-			: JSON.parse(hover).titleTypography;
+		const { titleTypography } = hover;
 
 		const response = {
-			typography: { ...titleTypography },
+			typography: titleTypography,
 		};
 
 		return response;
@@ -139,13 +119,10 @@ class edit extends MaxiBlock {
 
 	get getHoverEffectContentTextObject() {
 		const { hover } = this.props.attributes;
-
-		const contentTypography = !isObject(JSON.parse(hover).contentTypography)
-			? JSON.parse(JSON.parse(hover).contentTypography)
-			: JSON.parse(hover).contentTypography;
+		const { contentTypography } = hover;
 
 		const response = {
-			typography: { ...contentTypography },
+			typography: contentTypography,
 		};
 
 		return response;
@@ -156,9 +133,9 @@ class edit extends MaxiBlock {
 
 		const response = {};
 
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
+		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
 			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
+				...getBoxShadowObject(boxShadowHover),
 			};
 		}
 
@@ -169,7 +146,7 @@ class edit extends MaxiBlock {
 		const { size } = this.props.attributes;
 
 		const response = {
-			imageSize: { ...JSON.parse(size) },
+			imageSize: size,
 		};
 
 		return response;
@@ -179,13 +156,13 @@ class edit extends MaxiBlock {
 		const { borderHover } = this.props.attributes;
 
 		const response = {
-			borderWidth: { ...JSON.parse(borderHover).borderWidth },
-			borderRadius: { ...JSON.parse(borderHover).borderRadius },
+			borderWidth: borderHover.borderWidth,
+			borderRadius: borderHover.borderRadius,
 		};
 
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
+		if (!isNil(borderHover) && !!borderHover.status) {
 			response.borderHover = {
-				...JSON.parse(borderHover),
+				...borderHover,
 			};
 		}
 
@@ -196,9 +173,9 @@ class edit extends MaxiBlock {
 		const { border, clipPath } = this.props.attributes;
 
 		const response = {
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
+			border,
+			borderWidth: border.borderWidth,
+			borderRadius: border.borderRadius,
 			image: {
 				label: 'Image settings',
 				general: {},
@@ -214,12 +191,10 @@ class edit extends MaxiBlock {
 		const { captionTypography } = this.props.attributes;
 
 		const response = {
-			captionTypography: { ...JSON.parse(captionTypography) },
-			alignmentTypography: {
-				...getAlignmentTextObject(
-					JSON.parse(captionTypography).textAlign
-				),
-			},
+			captionTypography,
+			alignmentTypography: getAlignmentTextObject(
+				captionTypography.textAlign
+			),
 		};
 
 		return response;
@@ -261,21 +236,17 @@ class edit extends MaxiBlock {
 			fullWidth === 'full' ? 'alignfull' : ''
 		);
 
-		const cropOptionsValue = !isObject(cropOptions)
-			? JSON.parse(cropOptions)
-			: cropOptions;
-
 		const getImage = () => {
 			if (
 				imageSize === 'custom' &&
-				!isEmpty(cropOptionsValue.image.source_url)
+				!isEmpty(cropOptions.image.source_url)
 			)
-				return cropOptionsValue.image;
+				return cropOptions.image;
 			if (imageData && imageSize)
 				return imageData.media_details.sizes[imageSize];
 			if (imageData) return imageData.media_details.sizes.full;
 
-			return undefined;
+			return false;
 		};
 
 		const image = getImage();
@@ -298,13 +269,13 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
+			<Toolbar {...this.props} />,
 			<div
 				className={classes}
 				data-maxi_initial_block_class={defaultBlockStyle}
 				data-align={fullWidth}
 			>
-				<__experimentalBackgroundDisplayer background={background} />
+				<BackgroundDisplayer background={background} />
 				<Fragment>
 					<div className='maxi-icon-block__icon'>
 						<div className='maxi-icon-block__icon_content'>

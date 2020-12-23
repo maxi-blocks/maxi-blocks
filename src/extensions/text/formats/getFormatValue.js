@@ -14,7 +14,13 @@ const getFormatValue = formatElement => {
 	const selection = window.getSelection();
 
 	if (selection.anchorNode) {
-		const selectionNode = selection.anchorNode.parentNode;
+		const selectionNode =
+			selection.anchorNode.parentElement.closest(
+				'.maxi-text-block__content'
+			) ||
+			selection.anchorNode.parentElement.closest(
+				'.maxi-button-block__content'
+			);
 		const range = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
 
 		formatElement.element = selectionNode;

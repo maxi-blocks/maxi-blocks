@@ -11,13 +11,13 @@ const { Fragment } = wp.element;
 import TypographyControl from '../typography-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
-import __experimentalAxisControl from '../axis-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import AxisControl from '../axis-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
  */
-import { isObject, isNil } from 'lodash';
+import { isNil } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -38,48 +38,45 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { hover, defaultHover, className, onChange } = props;
+	const { className, onChange } = props;
 
-	const hoverValue = !isObject(hover) ? JSON.parse(hover) : hover;
-
-	const defaultValue = !isObject(defaultHover)
-		? JSON.parse(defaultHover)
-		: defaultHover;
+	const hover = { ...props.hover };
+	const defaultHover = { ...props.defaultHover };
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
 	return (
 		<div className={classes}>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Hover Animation', 'maxi-blocks')}
-				selected={hoverValue.type}
+				selected={hover.type}
 				options={[
 					{ label: <Icon icon={hoverNone} />, value: 'none' },
 					{ label: <Icon icon={hoverBasic} />, value: 'basic' },
 					{ label: <Icon icon={hoverText} />, value: 'text' },
 				]}
 				onChange={val => {
-					hoverValue.type = val;
-					onChange(JSON.stringify(hoverValue));
+					hover.type = val;
+					onChange(hover);
 				}}
 			/>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Preview', 'maxi-blocks')}
-				selected={hoverValue.preview}
+				selected={hover.preview}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
 				onChange={val => {
-					hoverValue.preview = Number(val);
-					onChange(JSON.stringify(hoverValue));
+					hover.preview = Number(val);
+					onChange(hover);
 				}}
 			/>
-			{hoverValue.type === 'basic' && (
+			{hover.type === 'basic' && (
 				<Fragment>
 					<SelectControl
 						label={__('Effect Type', 'maxi-blocks')}
-						value={hoverValue.basicEffectType}
+						value={hover.basicEffectType}
 						options={[
 							{
 								label: __('Zoom In', 'maxi-blocks'),
@@ -132,17 +129,17 @@ const HoverEffectControl = props => {
 							},
 						]}
 						onChange={val => {
-							hoverValue.basicEffectType = val;
-							onChange(JSON.stringify(hoverValue));
+							hover.basicEffectType = val;
+							onChange(hover);
 						}}
 					/>
 				</Fragment>
 			)}
-			{hoverValue.type === 'text' && (
+			{hover.type === 'text' && (
 				<Fragment>
 					<SelectControl
 						label={__('Animation Type', 'maxi-blocks')}
-						value={hoverValue.textEffectType}
+						value={hover.textEffectType}
 						options={[
 							{ label: __('Fade', 'maxi-blocks'), value: 'fade' },
 							{
@@ -258,13 +255,13 @@ const HoverEffectControl = props => {
 							{ label: __('Blur', 'maxi-blocks'), value: 'blur' },
 						]}
 						onChange={val => {
-							hoverValue.textEffectType = val;
-							onChange(JSON.stringify(hoverValue));
+							hover.textEffectType = val;
+							onChange(hover);
 						}}
 					/>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						type='classic-border'
-						selected={hoverValue.textPreset}
+						selected={hover.textPreset}
 						options={[
 							{
 								label: <Icon icon={alignLeftTop} />,
@@ -288,8 +285,8 @@ const HoverEffectControl = props => {
 							},
 						]}
 						onChange={val => {
-							hoverValue.textPreset = val;
-							onChange(JSON.stringify(hoverValue));
+							hover.textPreset = val;
+							onChange(hover);
 						}}
 					/>
 					<TextareaControl
@@ -297,34 +294,33 @@ const HoverEffectControl = props => {
 							'Add your Hover Title Text here',
 							'maxi-blocks'
 						)}
-						value={hoverValue.titleText}
+						value={hover.titleText}
 						onChange={val => {
 							isNil(val)
-								? (hoverValue.titleText =
-										defaultValue.titleText)
-								: (hoverValue.titleText = val);
-							onChange(JSON.stringify(hoverValue));
+								? (hover.titleText = defaultHover.titleText)
+								: (hover.titleText = val);
+							onChange(hover);
 						}}
 					/>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Custom Hover Text', 'maxi-block')}
-						selected={hoverValue.titleStatus}
+						selected={hover.titleStatus}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
 						onChange={val => {
-							hoverValue.titleStatus = parseInt(val);
-							onChange(JSON.stringify(hoverValue));
+							hover.titleStatus = parseInt(val);
+							onChange(hover);
 						}}
 					/>
-					{!!hoverValue.titleStatus && (
+					{!!hover.titleStatus && (
 						<TypographyControl
-							typography={hoverValue.titleTypography}
-							defaultTypography={defaultValue.titleTypography}
+							typography={hover.titleTypography}
+							defaultTypography={defaultHover.titleTypography}
 							hideAlignment
 							onChange={() => {
-								onChange(JSON.stringify(hoverValue));
+								onChange(hover);
 							}}
 						/>
 					)}
@@ -334,115 +330,114 @@ const HoverEffectControl = props => {
 							'Add your Hover Content Text here',
 							'maxi-blocks'
 						)}
-						value={hoverValue.contentText}
+						value={hover.contentText}
 						onChange={val => {
 							isNil(val)
-								? (hoverValue.contentText =
-										defaultValue.contentText)
-								: (hoverValue.contentText = val);
-							onChange(JSON.stringify(hoverValue));
+								? (hover.contentText = defaultHover.contentText)
+								: (hover.contentText = val);
+							onChange(hover);
 						}}
 					/>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Custom Content Text', 'maxi-block')}
-						selected={hoverValue.contentStatus}
+						selected={hover.contentStatus}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
 						onChange={val => {
-							hoverValue.contentStatus = parseInt(val);
-							onChange(JSON.stringify(hoverValue));
+							hover.contentStatus = parseInt(val);
+							onChange(hover);
 						}}
 					/>
-					{!!hoverValue.contentStatus && (
+					{!!hover.contentStatus && (
 						<TypographyControl
-							typography={hoverValue.contentTypography}
-							defaultTypography={defaultValue.contentTypography}
+							typography={hover.contentTypography}
+							defaultTypography={defaultHover.contentTypography}
 							hideAlignment
 							onChange={() => {
-								onChange(JSON.stringify(hoverValue));
+								onChange(hover);
 							}}
 						/>
 					)}
 					<hr />
 					<BackgroundControl
-						background={hoverValue.background}
-						defaultBackground={defaultValue.background}
+						background={hover.background}
+						defaultBackground={defaultHover.background}
 						onChange={val => {
-							hoverValue.background = val;
-							onChange(JSON.stringify(hoverValue));
+							hover.background = val;
+							onChange(hover);
 						}}
 						disableClipPath
 						disableImage
 						disableVideo
 						disableSVG
 					/>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Custom Border', 'maxi-block')}
-						selected={hoverValue.borderStatus}
+						selected={hover.borderStatus}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
 						onChange={val => {
-							hoverValue.borderStatus = parseInt(val);
-							onChange(JSON.stringify(hoverValue));
+							hover.borderStatus = parseInt(val);
+							onChange(hover);
 						}}
 					/>
-					{!!hoverValue.borderStatus && (
+					{!!hover.borderStatus && (
 						<BorderControl
-							border={hoverValue.border}
-							defaultBorder={defaultValue.border}
+							border={hover.border}
+							defaultBorder={defaultHover.border}
 							onChange={val => {
-								hoverValue.border = val;
-								onChange(JSON.stringify(hoverValue));
+								hover.border = val;
+								onChange(hover);
 							}}
 						/>
 					)}
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Custom Padding', 'maxi-block')}
-						selected={hoverValue.paddingStatus}
+						selected={hover.paddingStatus}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
 						onChange={val => {
-							hoverValue.paddingStatus = parseInt(val);
-							onChange(JSON.stringify(hoverValue));
+							hover.paddingStatus = parseInt(val);
+							onChange(hover);
 						}}
 					/>
-					{!!hoverValue.paddingStatus && (
-						<__experimentalAxisControl
-							values={hoverValue.padding}
-							defaultValues={defaultValue.padding}
+					{!!hover.paddingStatus && (
+						<AxisControl
+							values={hover.padding}
+							defaultValues={defaultHover.padding}
 							disableAuto
 							onChange={val => {
-								hoverValue.padding = val;
-								onChange(JSON.stringify(hoverValue));
+								hover.padding = val;
+								onChange(hover);
 							}}
 						/>
 					)}
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Custom Margin', 'maxi-block')}
-						selected={hoverValue.marginStatus}
+						selected={hover.marginStatus}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
 						onChange={val => {
-							hoverValue.marginStatus = parseInt(val);
-							onChange(JSON.stringify(hoverValue));
+							hover.marginStatus = parseInt(val);
+							onChange(hover);
 						}}
 					/>
-					{!!hoverValue.marginStatus && (
-						<__experimentalAxisControl
-							values={hoverValue.margin}
-							defaultValues={defaultValue.margin}
+					{!!hover.marginStatus && (
+						<AxisControl
+							values={hover.margin}
+							defaultValues={defaultHover.margin}
 							disableAuto
 							onChange={val => {
-								hoverValue.margin = val;
-								onChange(JSON.stringify(hoverValue));
+								hover.margin = val;
+								onChange(hover);
 							}}
 						/>
 					)}

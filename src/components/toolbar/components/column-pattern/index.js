@@ -8,12 +8,7 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import { __experimentalColumnPattern } from '../../..';
-
-/**
- * External dependencies
- */
-import { isObject } from 'lodash';
+import { ColumnPattern } from '../../..';
 
 /**
  * Styles & Icons
@@ -21,25 +16,23 @@ import { isObject } from 'lodash';
 import './editor.scss';
 import { toolbarColumnPattern } from '../../../../icons';
 
-const ColumnPattern = props => {
-	const { clientId, blockName, rowPattern, onChange, breakpoint } = props;
+const ToolbarColumnPattern = props => {
+	const { clientId, blockName, onChange, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
-	const rowPatternObject = !isObject(rowPattern)
-		? JSON.parse(rowPattern)
-		: rowPattern;
+	const rowPattern = { ...props.rowPattern };
 
 	return (
 		<Fragment>
-			{rowPatternObject.general.rowPattern && (
+			{rowPattern.general.rowPattern && (
 				<ToolbarPopover
 					className='toolbar-item__column-pattern'
 					icon={toolbarColumnPattern}
 					tooltip={__('Column pattern', 'maxi-blocks')}
 					content={
 						<div className='toolbar-item__column-pattern__popover'>
-							<__experimentalColumnPattern
+							<ColumnPattern
 								clientId={clientId}
 								blockName={blockName}
 								rowPattern={rowPattern}
@@ -58,4 +51,4 @@ const ColumnPattern = props => {
 	);
 };
 
-export default ColumnPattern;
+export default ToolbarColumnPattern;

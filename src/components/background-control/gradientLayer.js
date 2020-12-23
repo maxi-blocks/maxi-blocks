@@ -8,7 +8,7 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import GradientControl from '../gradient-control';
-import __experimentalClipPath from '../clip-path-control';
+import ClipPath from '../clip-path-control';
 
 /**
  * Component
@@ -43,7 +43,7 @@ const GradientLayer = props => {
 				}}
 			/>
 			{!disableClipPath && (
-				<__experimentalClipPath
+				<ClipPath
 					clipPath={colorOptions.clipPath}
 					onChange={val => {
 						colorOptions.clipPath = val;

@@ -7,7 +7,6 @@ const { RawHTML, Fragment } = wp.element;
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
 
 /**
  * Internal Dependencies
@@ -23,12 +22,10 @@ import './style.scss';
  * Component
  */
 const BackgroundDisplayer = props => {
-	const { background, className, blockClassName } = props;
+	const { className, blockClassName } = props;
 
-	const backgroundValue = !isObject(background)
-		? JSON.parse(background)
-		: background;
-	const { status, layers } = backgroundValue.layersOptions;
+	const background = { ...props.background };
+	const { status, layers } = background.layersOptions;
 
 	const classes = classnames('maxi-background-displayer', className);
 
@@ -39,16 +36,10 @@ const BackgroundDisplayer = props => {
 					<div
 						className={classnames(
 							'maxi-background-displayer__layer',
-							'maxi-background-displayer__overlay'
-						)}
-					/>
-					<div
-						className={classnames(
-							'maxi-background-displayer__layer',
 							'maxi-background-displayer__color'
 						)}
 					/>
-					{backgroundValue.activeMedia === 'image' && (
+					{background.activeMedia === 'image' && (
 						<div
 							className={classnames(
 								'maxi-background-displayer__layer',
@@ -56,21 +47,21 @@ const BackgroundDisplayer = props => {
 							)}
 						/>
 					)}
-					{backgroundValue.activeMedia === 'video' && (
+					{background.activeMedia === 'video' && (
 						<VideoLayer
-							videoOptions={backgroundValue.videoOptions}
+							videoOptions={background.videoOptions}
 							blockClassName={blockClassName}
 						/>
 					)}
-					{backgroundValue.activeMedia === 'svg' &&
-						backgroundValue.SVGOptions.SVGElement && (
+					{background.activeMedia === 'svg' &&
+						background.SVGOptions.SVGElement && (
 							<RawHTML
 								className={classnames(
 									'maxi-background-displayer__layer',
 									'maxi-background-displayer__svg'
 								)}
 							>
-								{backgroundValue.SVGOptions.SVGElement}
+								{background.SVGOptions.SVGElement}
 							</RawHTML>
 						)}
 				</Fragment>

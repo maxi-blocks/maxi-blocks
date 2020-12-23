@@ -17,84 +17,76 @@ const attributes = {
 		default: __('Container', 'maxi-blocks'),
 	},
 	sizeContainer: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalContainer),
+		type: 'object',
+		default: attributesData.container,
 	},
 	fullWidth: {
 		type: 'string',
 		default: 'full',
 	},
 	size: {
-		type: 'string',
-		default: JSON.stringify(attributesData.size),
+		type: 'object',
+		default: attributesData.size,
 	},
 	opacity: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacity),
+		type: 'object',
+		default: attributesData.opacity,
 	},
 	background: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
+		type: 'object',
+		default: attributesData.background,
 	},
 	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
-	},
-	overlay: {
-		type: 'string',
-		default: JSON.stringify(attributesData.overlay),
-	},
-	overlayHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.overlayHover),
+		type: 'object',
+		default: attributesData.backgroundHover,
 	},
 	border: {
-		type: 'string',
-		default: JSON.stringify(attributesData.border),
+		type: 'object',
+		default: attributesData.border,
 	},
 	borderHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.borderHover),
+		type: 'object',
+		default: attributesData.borderHover,
 	},
 	boxShadow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
+		type: 'object',
+		default: attributesData.boxShadow,
 	},
 	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
+		type: 'object',
+		default: attributesData.boxShadowHover,
 	},
 	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
+		type: 'object',
+		default: attributesData.margin,
 	},
 	padding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
+		type: 'object',
+		default: attributesData.padding,
 	},
 	shapeDivider: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalShapeDivider),
+		type: 'object',
+		default: attributesData.shapeDivider,
 	},
 	position: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalPosition),
+		type: 'object',
+		default: attributesData.position,
 	},
 	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
+		type: 'object',
+		default: attributesData.display,
 	},
 	motion: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalMotion),
+		type: 'object',
+		default: attributesData.motion,
 	},
 	arrow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalArrow),
+		type: 'object',
+		default: attributesData.arrow,
 	},
 	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
+		type: 'object',
+		default: attributesData.transform,
 	},
 };
 

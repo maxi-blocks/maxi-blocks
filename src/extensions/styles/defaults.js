@@ -351,6 +351,7 @@ export const borderHover = {
 
 export const size = {
 	label: 'Size',
+	advancedOptions: 0,
 	general: {
 		'max-widthUnit': 'px',
 		'max-width': '',
@@ -364,7 +365,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 	xxl: {
 		'max-widthUnit': 'px',
@@ -379,7 +379,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 	xl: {
 		'max-widthUnit': 'px',
@@ -394,7 +393,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 	l: {
 		'max-widthUnit': 'px',
@@ -409,7 +407,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 	m: {
 		'max-widthUnit': 'px',
@@ -424,7 +421,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 	s: {
 		'max-widthUnit': 'px',
@@ -439,7 +435,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 	xs: {
 		'max-widthUnit': 'px',
@@ -454,7 +449,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 };
 
@@ -662,31 +656,6 @@ export const backgroundHover = {
 		},
 		size: '',
 	},
-};
-
-export const overlay = {
-	label: 'Overlay',
-	overlayOptions: {
-		overlay: '',
-		activeColor: '',
-		color: '',
-		gradient: '',
-		gradientAboveBackground: false,
-		gradientOpacity: {
-			opacity: {
-				label: 'Opacity',
-				general: {
-					opacity: 1,
-				},
-			},
-		},
-	},
-};
-
-export const overlayHover = {
-	label: 'Overlay Hover',
-	status: 0,
-	...overlay,
 };
 
 export const boxShadow = {
@@ -1250,7 +1219,7 @@ export const cropOptions = {
 	},
 };
 
-export const __experimentalDivider = {
+export const divider = {
 	label: 'Divider',
 	general: {
 		'border-color': '#ff4a17',
@@ -1273,7 +1242,7 @@ export const __experimentalDivider = {
 	},
 };
 
-export const __experimentalContainer = {
+export const container = {
 	label: 'Container size',
 	general: {
 		'max-widthUnit': 'px',
@@ -1319,7 +1288,7 @@ export const __experimentalContainer = {
 	},
 };
 
-export const __experimentalColumn = {
+export const column = {
 	label: 'Column size',
 	general: {
 		size: 90,
@@ -1344,7 +1313,7 @@ export const __experimentalColumn = {
 	},
 };
 
-export const __experimentalShapeDivider = {
+export const shapeDivider = {
 	label: 'Shape Divider',
 	top: {
 		status: 0,
@@ -1384,7 +1353,7 @@ export const __experimentalShapeDivider = {
 	},
 };
 
-export const __experimentalPosition = {
+export const position = {
 	label: 'Position',
 	general: {
 		position: '',
@@ -1468,7 +1437,7 @@ export const __experimentalPosition = {
 	},
 };
 
-export const __experimentalDisplay = {
+export const display = {
 	label: 'Display block',
 	general: {
 		display: '',
@@ -1493,7 +1462,7 @@ export const __experimentalDisplay = {
 	},
 };
 
-export const __experimentalHover = {
+export const hover = {
 	label: 'Hover Effects',
 	type: 'none',
 	basicEffectType: 'zoom-in',
@@ -1537,7 +1506,7 @@ export const __experimentalHover = {
 	contentText: 'Add your Hover Content here',
 };
 
-export const __experimentalMotion = {
+export const motion = {
 	label: 'Motion Effects',
 	interaction: {
 		interactionStatus: 0,
@@ -1567,7 +1536,7 @@ export const __experimentalMotion = {
 	},
 };
 
-export const __experimentalArrow = {
+export const arrow = {
 	label: 'Arrow',
 	active: 0,
 	general: {
@@ -1615,7 +1584,7 @@ export const __experimentalArrow = {
 	},
 };
 
-export const __experimentalTransform = {
+export const transform = {
 	label: 'Transform',
 	general: {
 		scaleX: '',
@@ -1708,4 +1677,13 @@ export const __experimentalTransform = {
 		originX: '',
 		originY: '',
 	},
+};
+
+export const highlight = {
+	label: 'Highlight',
+	backgroundHighlight: 0,
+	textHighlight: 0,
+	borderHighlight: 0,
+	color1Highlight: 0,
+	color2Highlight: 0,
 };

@@ -9,8 +9,8 @@ const { Button, SelectControl } = wp.components;
  * Internal dependencies
  */
 import MediaUploaderControl from '../media-uploader-control';
-import __experimentalClipPath from '../clip-path-control';
-import __experimentalOpacityControl from '../opacity-control';
+import ClipPath from '../clip-path-control';
+import OpacityControl from '../opacity-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ImageCropControl from '../image-crop-control';
 import SizeControl from '../size-control';
@@ -115,7 +115,7 @@ const ImageLayer = props => {
 						/>
 					))}
 					{!disableClipPath && (
-						<__experimentalClipPath
+						<ClipPath
 							clipPath={imageOptions.clipPath}
 							onChange={val => {
 								imageOptions.clipPath = val;
@@ -124,13 +124,13 @@ const ImageLayer = props => {
 							}}
 						/>
 					)}
-					<__experimentalOpacityControl
+					<OpacityControl
 						label={__('Background Opacity', 'maxi-blocks')}
 						fullWidthMode
 						opacity={imageOptions.opacity}
 						defaultOpacity={defaultImageOptions.opacity}
-						onChange={val => {
-							imageOptions.opacity = JSON.parse(val);
+						onChange={opacity => {
+							imageOptions.opacity = opacity;
 
 							onChange(imageOptions);
 						}}

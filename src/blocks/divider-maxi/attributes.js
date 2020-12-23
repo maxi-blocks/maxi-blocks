@@ -34,60 +34,64 @@ const attributes = {
 		default: 'row',
 	},
 	divider: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDivider),
+		type: 'object',
+		default: attributesData.divider,
 	},
 	fullWidth: {
 		type: 'string',
 		default: 'normal',
 	},
 	size: {
-		type: 'string',
-		default: JSON.stringify(size),
+		type: 'object',
+		default: size,
 	},
 	opacity: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacity),
+		type: 'object',
+		default: attributesData.opacity,
 	},
 	background: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
+		type: 'object',
+		default: attributesData.background,
 	},
 	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
+		type: 'object',
+		default: attributesData.backgroundHover,
 	},
 	boxShadow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
+		type: 'object',
+		default: attributesData.boxShadow,
 	},
 	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
+		type: 'object',
+		default: attributesData.boxShadowHover,
 	},
 	padding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
+		type: 'object',
+		default: attributesData.padding,
 	},
 	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
+		type: 'object',
+		default: attributesData.margin,
 	},
 	position: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalPosition),
+		type: 'object',
+		default: attributesData.position,
 	},
 	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
+		type: 'object',
+		default: attributesData.display,
 	},
 	motion: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalMotion),
+		type: 'object',
+		default: attributesData.motion,
 	},
 	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
+		type: 'object',
+		default: attributesData.transform,
+	},
+	highlight: {
+		type: 'object',
+		default: attributesData.highlight,
 	},
 };
 

@@ -38,8 +38,6 @@ const FullSizeControl = props => {
 
 	const blockName = select( 'core/editor' ).getSelectedBlock().name;
 
-	console.log('blockName: '+ blockName);
-
 	const classes = classnames('maxi-full-size-control', className);
 
 	const onChangeValue = (target, val) => {

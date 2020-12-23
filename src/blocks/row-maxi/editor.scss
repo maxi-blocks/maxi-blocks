@@ -6,6 +6,7 @@
 	outline: 1px solid #81bdda !important;
 	&[data-align='full'] {
 		width: auto;
+		max-width: 100% !important;
 	}
 	.block-list-appender {
 		margin: 0;

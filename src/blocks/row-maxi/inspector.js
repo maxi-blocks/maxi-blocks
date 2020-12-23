@@ -487,7 +487,7 @@ const Inspector = props => {
 															})
 														}
 													/>
-													{fullWidth === 'full' && (
+													{/*fullWidth === 'full' && (
 														<FancyRadioControl
 															label={__(
 																'Gap between columns',
@@ -518,7 +518,7 @@ const Inspector = props => {
 																})
 															}
 														/>
-													)}
+													)*/}
 
 													<FullSizeControl
 														size={size}

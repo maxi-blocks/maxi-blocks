@@ -64,8 +64,6 @@ const getCurrentColumnGap = (clientId, prop) => {
 const generateDefaultColumns = (columns, gap1 = 2.5) => {
 	const numberOfGaps = columns.length - 1;
 
-	//console.log('gapppp: ' + getCurrentColumnGap());
-
 	const total = 100 - gap1 * numberOfGaps;
 
 	return columns.map((column, i) => {

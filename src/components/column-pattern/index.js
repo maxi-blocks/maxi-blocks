@@ -269,23 +269,16 @@ const ColumnPatternsInspector = props => {
 		const newColumnsSizes = [];
 		const columnsPositions = getColumnsPositions(sizes);
 
-		// console.log('Current Gap: '+getCurrentColumnGap());
-
 		const currentGap = getCurrentColumnGap();
 
 		let gap;
 
 		currentGap ? (gap = 2) : (gap = 0);
 
-		//console.log('Gap: '+gap);
-
-		// const gap = 2;
-
 		sizes.forEach((column, i) => {
 			if (columnsPositions[i].columnsNumber > 1) {
 				const numberOfGaps = columnsPositions[i].columnsNumber - 1;
 				const total = 100 - gap * numberOfGaps;
-				console.log('size: '+sizes[i] * total);
 				newColumnsSizes.push(sizes[i] * total);
 			}
 

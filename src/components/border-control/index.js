@@ -120,6 +120,32 @@ const BorderControl = props => {
 					},
 				]}
 			/>
+			{!disableAdvanced && (
+				<SelectControl
+					label={__('Border Type', 'maxi-blocks')}
+					className='maxi-border-control__type'
+					value={getLastBreakpointValue(
+						border,
+						'border-style',
+						breakpoint
+					)}
+					options={[
+						{ label: 'None', value: 'none' },
+						{ label: 'Dotted', value: 'dotted' },
+						{ label: 'Dashed', value: 'dashed' },
+						{ label: 'Solid', value: 'solid' },
+						{ label: 'Double', value: 'double' },
+						{ label: 'Groove', value: 'groove' },
+						{ label: 'Ridge', value: 'ridge' },
+						{ label: 'Inset', value: 'inset' },
+						{ label: 'Outset', value: 'outset' },
+					]}
+					onChange={val => {
+						border[breakpoint]['border-style'] = val;
+						onChange(border);
+					}}
+				/>
+			)}
 			{!disableColor && (
 				<ColorControl
 					label={__('Border', 'maxi-blocks')}
@@ -142,30 +168,6 @@ const BorderControl = props => {
 			)}
 			{!disableAdvanced && (
 				<Fragment>
-					<SelectControl
-						label={__('Border Type', 'maxi-blocks')}
-						className='maxi-border-control__type'
-						value={getLastBreakpointValue(
-							border,
-							'border-style',
-							breakpoint
-						)}
-						options={[
-							{ label: 'None', value: 'none' },
-							{ label: 'Dotted', value: 'dotted' },
-							{ label: 'Dashed', value: 'dashed' },
-							{ label: 'Solid', value: 'solid' },
-							{ label: 'Double', value: 'double' },
-							{ label: 'Groove', value: 'groove' },
-							{ label: 'Ridge', value: 'ridge' },
-							{ label: 'Inset', value: 'inset' },
-							{ label: 'Outset', value: 'outset' },
-						]}
-						onChange={val => {
-							border[breakpoint]['border-style'] = val;
-							onChange(border);
-						}}
-					/>
 					<AxisControl
 						values={border.borderWidth}
 						defaultValues={defaultBorder.borderWidth}

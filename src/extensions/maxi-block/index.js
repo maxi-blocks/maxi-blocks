@@ -13,7 +13,7 @@
 /**
  * WordPress dependencies
  */
-const { Component } = wp.element;
+const { Component, render } = wp.element;
 const { select, dispatch } = wp.data;
 
 import styleResolver from '../styles/stylesResolver';
@@ -124,8 +124,20 @@ class MaxiBlock extends Component {
 		const customData = this.getCustomData;
 		const breakpoints = this.getBreakpoints;
 
-		styleResolver(obj, breakpoints);
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
+
+		if (document.body.classList.contains('maxi-blocks--active')) {
+			const wrapper = document.querySelector(
+				`#maxi-blocks__${this.props.attributes.uniqueID}`
+			);
+			if (!wrapper) {
+				const wrapper = document.createElement('div');
+				wrapper.id = `maxi-blocks__${this.props.attributes.uniqueID}`;
+				document.head.appendChild(wrapper);
+			}
+
+			render(<styles>{styleResolver(obj, breakpoints)}</styles>, wrapper);
+		}
 	}
 }
 

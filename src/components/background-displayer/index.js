@@ -67,7 +67,7 @@ const BackgroundDisplayer = props => {
 				</Fragment>
 			) : (
 				!!layers &&
-				layers.reverse().map(layer => {
+				layers.map(layer => {
 					switch (layer.type) {
 						case 'color':
 						case 'gradient':

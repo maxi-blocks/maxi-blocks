@@ -137,6 +137,8 @@ const BackgroundLayersControl = props => {
 	const { layersOptions, onChange } = props;
 	const { status, layers } = layersOptions;
 
+	let newLayers = [...layers];
+
 	const [selector, changeSelector] = useState(null);
 
 	const getObject = type => {
@@ -253,7 +255,13 @@ const BackgroundLayersControl = props => {
 							},
 						]}
 						onClick={value => {
-							layersOptions.layers.unshift(getObject(value));
+							newLayers = [
+								getObject(value, newLayers.length),
+								...newLayers,
+							];
+
+							layersOptions.layers = newLayers;
+
 							onChange(layersOptions);
 						}}
 						forwards

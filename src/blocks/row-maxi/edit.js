@@ -166,7 +166,7 @@ class edit extends MaxiBlock {
 		const { fullWidth, sizeContainer } = this.props.attributes;
 
 		const response = {
-			sizeContainer: { ...JSON.parse(sizeContainer) },
+			sizeContainer,
 		};
 
 		if (fullWidth !== 'full') return response;

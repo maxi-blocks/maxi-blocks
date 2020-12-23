@@ -58,8 +58,8 @@ const attributes = {
 		default: attributesData.size,
 	},
 	sizeContainer: {
-		type: 'string',
-		default: JSON.stringify(attributesData.container),
+		type: 'object',
+		default: attributesData.container,
 	},
 	boxShadow: {
 		type: 'object',
@@ -88,6 +88,10 @@ const attributes = {
 	transform: {
 		type: 'object',
 		default: attributesData.transform,
+	},
+	columnGap: {
+		type: 'string',
+		default: 'yes',
 	},
 };
 

@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
+const { select } = wp.data;
 
 /**
  * Internal dependencies
@@ -22,13 +23,22 @@ import { isNil } from 'lodash';
  */
 import './editor.scss';
 
+const SPECIAL_BLOCKS = [
+	'maxi-blocks/row-maxi',
+	'maxi-blocks/container-maxi',
+];
+
 /**
  * Component
  */
 const FullSizeControl = props => {
-	const { onChange, className, breakpoint, hideWidth } = props;
+	const { onChange, className, breakpoint, hideWidth} = props;
 	const size = { ...props.size };
 	const defaultSize = { ...props.defaultSize };
+
+	const blockName = select( 'core/editor' ).getSelectedBlock().name;
+
+	console.log('blockName: '+ blockName);
 
 	const classes = classnames('maxi-full-size-control', className);
 
@@ -123,6 +133,7 @@ const FullSizeControl = props => {
 			/>
 			{!!size.advancedOptions && (
 				<Fragment>
+				{!SPECIAL_BLOCKS.includes(blockName) && (
 					<SizeControl
 						label={__('Max Width', 'maxi-blocks')}
 						unit={getLastBreakpointValue(
@@ -143,6 +154,7 @@ const FullSizeControl = props => {
 						onChangeValue={val => onChangeValue('max-width', val)}
 						minMaxSettings={minMaxSettings}
 					/>
+				)}
 
 					<SizeControl
 						label={__('Min Width', 'maxi-blocks')}

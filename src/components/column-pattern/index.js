@@ -242,6 +242,24 @@ const ColumnPatternsInspector = props => {
 	};
 
 	/**
+	 * Get current column gap
+	 *
+	 * @return bool - gap or no gap
+	 */
+	const getCurrentColumnGap = () => {
+		const { getBlock } = select('core/block-editor');
+
+		const gap = getBlock(clientId).attributes.columnGap;
+
+		let gapValue = 1;
+
+		if (gap === 'yes') gapValue = 1;
+		if (gap === 'no') gapValue = 0;
+
+		return gapValue;
+	};
+
+	/**
 	 * Apply gap on columns sizes array
 	 *
 	 * @param {Array} sizes array of columns widths
@@ -251,12 +269,23 @@ const ColumnPatternsInspector = props => {
 		const newColumnsSizes = [];
 		const columnsPositions = getColumnsPositions(sizes);
 
-		const gap = 2;
+		// console.log('Current Gap: '+getCurrentColumnGap());
+
+		const currentGap = getCurrentColumnGap();
+
+		let gap;
+
+		currentGap ? (gap = 2) : (gap = 0);
+
+		//console.log('Gap: '+gap);
+
+		// const gap = 2;
 
 		sizes.forEach((column, i) => {
 			if (columnsPositions[i].columnsNumber > 1) {
 				const numberOfGaps = columnsPositions[i].columnsNumber - 1;
 				const total = 100 - gap * numberOfGaps;
+				console.log('size: '+sizes[i] * total);
 				newColumnsSizes.push(sizes[i] * total);
 			}
 
@@ -264,6 +293,7 @@ const ColumnPatternsInspector = props => {
 				newColumnsSizes.push(100);
 			}
 		});
+
 
 		return newColumnsSizes;
 	};

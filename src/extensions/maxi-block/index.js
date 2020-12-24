@@ -16,12 +16,13 @@
 const { Component, render } = wp.element;
 const { select, dispatch } = wp.data;
 
-import styleResolver from '../styles/stylesResolver';
+import styleResolver from '../styles/newStyleResolver';
+import styleGenerator from '../styles/newStylesGenerator';
 
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, cloneDeep, isObject } from 'lodash';
+import { isEmpty, uniqueId, cloneDeep, isObject, isArray } from 'lodash';
 
 /**
  * Class
@@ -44,9 +45,8 @@ class MaxiBlock extends Component {
 
 	componentWillUnmount() {
 		const obj = this.getObject;
-		const breakpoints = this.getBreakpoints;
 
-		styleResolver(obj, breakpoints, true);
+		styleResolver(obj, true);
 
 		dispatch('maxiBlocks/customData').removeCustomData(
 			this.props.attributes.uniqueID
@@ -111,7 +111,7 @@ class MaxiBlock extends Component {
 	cloneObjects(attributes) {
 		Object.entries(attributes).forEach(
 			([key, val]) =>
-				isObject(val) &&
+				(isObject(val) || isArray(val)) &&
 				this.props.setAttributes({ [key]: cloneDeep(val) })
 		);
 	}
@@ -122,21 +122,22 @@ class MaxiBlock extends Component {
 	displayStyles() {
 		const obj = this.getObject;
 		const customData = this.getCustomData;
-		const breakpoints = this.getBreakpoints;
 
+		const styles = styleResolver(obj);
+		// console.log(styleGenerator(styles));
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
-			const wrapper = document.querySelector(
-				`#maxi-blocks__${this.props.attributes.uniqueID}`
+			let wrapper = document.querySelector(
+				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
 			);
 			if (!wrapper) {
-				const wrapper = document.createElement('div');
-				wrapper.id = `maxi-blocks__${this.props.attributes.uniqueID}`;
+				wrapper = document.createElement('div');
+				wrapper.id = `maxi-blocks__styles--${this.props.attributes.uniqueID}`;
 				document.head.appendChild(wrapper);
 			}
 
-			render(<styles>{styleResolver(obj, breakpoints)}</styles>, wrapper);
+			render(<style>{styleGenerator(styles)}</style>, wrapper);
 		}
 	}
 }

@@ -11,68 +11,47 @@ const { TextControl } = wp.components;
  */
 import {
 	AccordionControl,
-	BackgroundControl,
 	BlockStylesControl,
-	BorderControl,
-	BoxShadowControl,
-	FullSizeControl,
 	SettingTabsControl,
 	SizeControl,
-	ZIndexControl,
-	AxisControl,
-	ResponsiveControl,
-	OpacityControl,
-	ShapeDividerControl,
-	PositionControl,
-	DisplayControl,
-	MotionControl,
-	TransformControl,
-	EntranceAnimationControl,
-	ArrowControl,
-	ParallaxControl,
 	FancyRadioControl,
 	CustomLabel,
 } from '../../components';
-import { getDefaultProp } from '../../utils';
+import FullSizeControl from '../../components/full-size-control/newFullSize';
+import BorderControl from '../../components/border-control/newBorderControl';
+import BoxShadowControl from '../../components/box-shadow-control/newBoxShadowControl';
+import AxisControl from '../../components/axis-control/newAxisControl';
+import ArrowControl from '../../components/arrow-control/newArrowControl';
+import BackgroundControl from '../../components/new-background-control';
+import ShapeDividerControl from '../../components/shape-divider-control/newShapeDividerControl';
+import MotionControl from '../../components/new-motion-control';
+import EntranceAnimationControl from '../../components/entrance-animation-control/newEntranceControl';
+import TransformControl from '../../components/new-transform-control';
+import DisplayControl from '../../components/display-control/newDisplayControl';
+import PositionControl from '../../components/position-control/newPositionControl';
+import ResponsiveControl from '../../components/responsive-control/newResponsiveControl';
+import ZIndexControl from '../../components/zindex-control/newIndexControl';
+import OpacityControl from '../../components/opacity-control/newOpacityControl';
+import ParallaxControl from '../../components/parallax-control/newParallaxControl';
+
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
 /**
  * Inspector
  */
 const Inspector = props => {
+	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
-		attributes: {
-			customLabel,
-			uniqueID,
-			isFirstOnHierarchy,
-			blockStyle,
-			defaultBlockStyle,
-			blockStyleBackground,
-			fullWidth,
-			size,
-			opacity,
-			border,
-			boxShadow,
-			padding,
-			margin,
-			extraClassName,
-			breakpoints,
-			zIndex,
-			shapeDivider,
-			position,
-			display,
-			motion,
-			arrow,
-			transform,
-		},
-		deviceType,
-		setAttributes,
-		clientId,
-	} = props;
-	const sizeContainer = { ...props.attributes.sizeContainer };
-	const background = { ...props.attributes.background };
-	const backgroundHover = { ...props.attributes.backgroundHover };
-	const boxShadowHover = { ...props.attributes.boxShadowHover };
-	const borderHover = { ...props.attributes.borderHover };
+		customLabel,
+		uniqueID,
+		isFirstOnHierarchy,
+		blockStyle,
+		defaultBlockStyle,
+		blockStyleBackground,
+		fullWidth,
+		extraClassName,
+	} = attributes;
 
 	const minMaxSettings = {
 		px: {
@@ -123,7 +102,10 @@ const Inspector = props => {
 										disableHighlightBorder
 										disableHighlightColor1
 										disableHighlightColor2
-										border={border}
+										{...getGroupAttributes(
+											attributes,
+											'border'
+										)}
 									/>
 								</div>
 								<AccordionControl
@@ -176,60 +158,34 @@ const Inspector = props => {
 																	'maxi-blocks'
 																)}
 																unit={
-																	sizeContainer[
-																		deviceType
-																	][
-																		'max-widthUnit'
+																	attributes[
+																		`container-max-width-unit-${deviceType}`
 																	]
 																}
-																defaultUnit={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	][
-																		'max-widthUnit'
-																	]
-																}
+																defaultUnit={getDefaultAttribute(
+																	`max-width-unit-${deviceType}`,
+																	clientId
+																)}
 																onChangeUnit={val => {
-																	sizeContainer[
-																		deviceType
-																	][
-																		'max-widthUnit'
-																	] = val;
 																	setAttributes(
 																		{
-																			sizeContainer,
+																			[`container-max-width-unit-${deviceType}`]: val,
 																		}
 																	);
 																}}
 																value={
-																	sizeContainer[
-																		deviceType
-																	][
-																		'max-width'
+																	attributes[
+																		`container-max-width-${deviceType}`
 																	]
 																}
-																default={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	][
-																		'max-width'
-																	]
-																}
+																default={getDefaultAttribute(
+																	`container-max-width-${deviceType}`,
+																	clientId
+																)}
 																onChangeValue={val => {
-																	sizeContainer[
-																		deviceType
-																	][
-																		'max-width'
-																	] = val;
 																	setAttributes(
 																		{
-																			sizeContainer,
+																			[`container-max-width-${deviceType}`]: val,
 																		}
 																	);
 																}}
@@ -243,48 +199,34 @@ const Inspector = props => {
 																	'maxi-blocks'
 																)}
 																unit={
-																	sizeContainer[
-																		deviceType
-																	].widthUnit
+																	attributes[
+																		`container-width-unit-${deviceType}`
+																	]
 																}
-																defaultUnit={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	].widthUnit
-																}
+																defaultUnit={getDefaultAttribute(
+																	`container-width-unit-${deviceType}`,
+																	clientId
+																)}
 																onChangeUnit={val => {
-																	sizeContainer[
-																		deviceType
-																	].widthUnit = val;
 																	setAttributes(
 																		{
-																			sizeContainer,
+																			[`container-width-unit-${deviceType}`]: val,
 																		}
 																	);
 																}}
 																value={
-																	sizeContainer[
-																		deviceType
-																	].width
+																	attributes[
+																		`container-width-${deviceType}`
+																	]
 																}
-																default={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	].width
-																}
+																default={getDefaultAttribute(
+																	`container-width-${deviceType}`,
+																	clientId
+																)}
 																onChangeValue={val => {
-																	sizeContainer[
-																		deviceType
-																	].width = val;
 																	setAttributes(
 																		{
-																			sizeContainer,
+																			[`container-width-${deviceType}`]: val,
 																		}
 																	);
 																}}
@@ -295,15 +237,14 @@ const Inspector = props => {
 														</Fragment>
 													) : (
 														<FullSizeControl
-															size={size}
-															defaultSize={getDefaultProp(
-																clientId,
+															{...getGroupAttributes(
+																attributes,
 																'size'
 															)}
-															onChange={size =>
-																setAttributes({
-																	size,
-																})
+															onChange={obj =>
+																setAttributes(
+																	obj
+																)
 															}
 															breakpoint={
 																deviceType
@@ -330,36 +271,35 @@ const Inspector = props => {
 															content: (
 																<Fragment>
 																	<BackgroundControl
-																		background={
-																			background
-																		}
-																		defaultBackground={getDefaultProp(
-																			clientId,
-																			'background'
+																		{...getGroupAttributes(
+																			attributes,
+																			[
+																				'background',
+																				'backgroundColor',
+																				'backgroundImage',
+																				'backgroundVideo',
+																				'backgroundGradient',
+																				'backgroundSVG',
+																			]
 																		)}
-																		onChange={background =>
+																		onChange={obj =>
 																			setAttributes(
-																				{
-																					background,
-																				}
+																				obj
 																			)
 																		}
 																	/>
-																	{background.activeMedia ===
+																	{attributes[
+																		'background-active-media'
+																	] ===
 																		'image' && (
 																		<ParallaxControl
-																			motion={
-																				motion
-																			}
-																			defaultMotion={getDefaultProp(
-																				clientId,
-																				'motion'
+																			{...getGroupAttributes(
+																				attributes,
+																				'parallax'
 																			)}
-																			onChange={motion =>
+																			onChange={obj =>
 																				setAttributes(
-																					{
-																						motion,
-																					}
+																					obj
 																				)
 																			}
 																		/>
@@ -380,7 +320,9 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			backgroundHover.status
+																			+attributes[
+																				'background-hover-status'
+																			]
 																		}
 																		options={[
 																			{
@@ -398,36 +340,38 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		onChange={val => {
-																			backgroundHover.status = Number(
-																				val
-																			);
+																		onChange={val =>
 																			setAttributes(
 																				{
-																					backgroundHover,
+																					'background-hover-status': !!val,
 																				}
-																			);
-																		}}
+																			)
+																		}
 																	/>
-																	{!!backgroundHover.status && (
+																	{!!attributes[
+																		'background-hover-status'
+																	] && (
 																		<BackgroundControl
-																			background={
-																				backgroundHover
-																			}
-																			defaultBackground={getDefaultProp(
-																				clientId,
-																				'backgroundHover'
+																			{...getGroupAttributes(
+																				attributes,
+																				[
+																					'backgroundHover',
+																					'backgroundColorHover',
+																					'backgroundImageHover',
+																					'backgroundVideoHover',
+																					'backgroundGradientHover',
+																					'backgroundSVGHover',
+																				]
 																			)}
-																			onChange={backgroundHover =>
+																			onChange={obj =>
 																				setAttributes(
-																					{
-																						backgroundHover,
-																					}
+																					obj
 																				)
 																			}
 																			disableImage
 																			disableVideo
 																			disableSVG
+																			isHover
 																		/>
 																	)}
 																</Fragment>
@@ -450,18 +394,13 @@ const Inspector = props => {
 															),
 															content: (
 																<BorderControl
-																	border={
-																		border
-																	}
-																	defaultBorder={getDefaultProp(
-																		clientId,
+																	{...getGroupAttributes(
+																		attributes,
 																		'border'
 																	)}
-																	onChange={border =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				border,
-																			}
+																			obj
 																		)
 																	}
 																	breakpoint={
@@ -482,9 +421,11 @@ const Inspector = props => {
 																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
-																		selected={Number(
-																			borderHover.status
-																		)}
+																		selected={
+																			attributes[
+																				'border-hover-status'
+																			]
+																		}
 																		options={[
 																			{
 																				label: __(
@@ -502,30 +443,24 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			borderHover.status = Number(
-																				val
-																			);
 																			setAttributes(
 																				{
-																					borderHover,
+																					'border-hover-status': !!val,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!borderHover.status && (
+																	{attributes[
+																		'border-hover-status'
+																	] && (
 																		<BorderControl
-																			border={
-																				borderHover
-																			}
-																			defaultBorder={getDefaultProp(
-																				clientId,
+																			{...getGroupAttributes(
+																				attributes,
 																				'borderHover'
 																			)}
-																			onChange={borderHover =>
+																			onChange={obj =>
 																				setAttributes(
-																					{
-																						borderHover,
-																					}
+																					obj
 																				)
 																			}
 																			breakpoint={
@@ -556,18 +491,13 @@ const Inspector = props => {
 															),
 															content: (
 																<BoxShadowControl
-																	boxShadow={
-																		boxShadow
-																	}
-																	defaultBoxShadow={getDefaultProp(
-																		clientId,
+																	{...getGroupAttributes(
+																		attributes,
 																		'boxShadow'
 																	)}
-																	onChange={boxShadow =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				boxShadow,
-																			}
+																			obj
 																		)
 																	}
 																	breakpoint={
@@ -588,9 +518,11 @@ const Inspector = props => {
 																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
-																		selected={Number(
-																			boxShadowHover.status
-																		)}
+																		selected={
+																			attributes[
+																				'boxShadow-hover-status'
+																			]
+																		}
 																		options={[
 																			{
 																				label: __(
@@ -608,30 +540,24 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			boxShadowHover.status = Number(
-																				val
-																			);
 																			setAttributes(
 																				{
-																					boxShadowHover,
+																					'boxShadow-hover-status': !!val,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!boxShadowHover.status && (
+																	{attributes[
+																		'boxShadow-hover-status'
+																	] && (
 																		<BoxShadowControl
-																			boxShadow={
-																				boxShadowHover
-																			}
-																			defaultBoxShadow={getDefaultProp(
-																				clientId,
-																				'boxShadowHover'
+																			{...getGroupAttributes(
+																				attributes,
+																				'boxShadow-hover'
 																			)}
-																			onChange={boxShadowHover =>
+																			onChange={obj =>
 																				setAttributes(
-																					{
-																						boxShadowHover,
-																					}
+																					obj
 																				)
 																			}
 																			breakpoint={
@@ -654,31 +580,35 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													<AxisControl
-														values={padding}
-														defaults={getDefaultProp(
-															clientId,
+														{...getGroupAttributes(
+															attributes,
 															'padding'
 														)}
-														onChange={padding =>
-															setAttributes({
-																padding,
-															})
+														label={__(
+															'Padding',
+															'maxi-blocks'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
 														}
 														breakpoint={deviceType}
+														target='padding'
 														disableAuto
 													/>
 													<AxisControl
-														values={margin}
-														defaults={getDefaultProp(
-															clientId,
+														{...getGroupAttributes(
+															attributes,
 															'margin'
 														)}
-														onChange={margin =>
-															setAttributes({
-																margin,
-															})
+														label={__(
+															'Margin',
+															'maxi-blocks'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
 														}
 														breakpoint={deviceType}
+														target='margin'
 													/>
 												</Fragment>
 											),
@@ -687,13 +617,12 @@ const Inspector = props => {
 											label: __('Arrow', 'maxi-blocks'),
 											content: (
 												<ArrowControl
-													arrow={arrow}
-													defaultArrow={getDefaultProp(
-														clientId,
+													{...getGroupAttributes(
+														attributes,
 														'arrow'
 													)}
-													onChange={arrow =>
-														setAttributes({ arrow })
+													onChange={obj =>
+														setAttributes(obj)
 													}
 													isFullWidth={fullWidth}
 													breakpoint={deviceType}
@@ -742,17 +671,12 @@ const Inspector = props => {
 										),
 										content: (
 											<ShapeDividerControl
-												shapeDividerOptions={
-													shapeDivider
-												}
-												defaultShapeDividerOptions={getDefaultProp(
-													clientId,
+												{...getGroupAttributes(
+													attributes,
 													'shapeDivider'
 												)}
-												onChange={shapeDivider =>
-													setAttributes({
-														shapeDivider,
-													})
+												onChange={obj =>
+													setAttributes(obj)
 												}
 											/>
 										),
@@ -764,9 +688,12 @@ const Inspector = props => {
 										),
 										content: (
 											<MotionControl
-												motion={motion}
-												onChange={motion =>
-													setAttributes({ motion })
+												{...getGroupAttributes(
+													attributes,
+													'motion'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
 												}
 											/>
 										),
@@ -778,13 +705,12 @@ const Inspector = props => {
 										),
 										content: (
 											<EntranceAnimationControl
-												motion={motion}
-												defaultMotion={getDefaultProp(
-													clientId,
-													'motion'
+												{...getGroupAttributes(
+													attributes,
+													'entrance'
 												)}
-												onChange={motion =>
-													setAttributes({ motion })
+												onChange={obj =>
+													setAttributes(obj)
 												}
 											/>
 										),
@@ -793,9 +719,12 @@ const Inspector = props => {
 										label: __('Transform', 'maxi-blocks'),
 										content: (
 											<TransformControl
-												transform={transform}
-												onChange={transform =>
-													setAttributes({ transform })
+												{...getGroupAttributes(
+													attributes,
+													'transform'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
 												}
 												uniqueID={uniqueID}
 												breakpoint={deviceType}
@@ -806,9 +735,12 @@ const Inspector = props => {
 										label: __('Display', 'maxi-blocks'),
 										content: (
 											<DisplayControl
-												display={display}
-												onChange={display =>
-													setAttributes({ display })
+												{...getGroupAttributes(
+													attributes,
+													'display'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
 												}
 												breakpoint={deviceType}
 											/>
@@ -818,13 +750,12 @@ const Inspector = props => {
 										label: __('Position', 'maxi-blocks'),
 										content: (
 											<PositionControl
-												position={position}
-												defaultPosition={getDefaultProp(
-													clientId,
+												{...getGroupAttributes(
+													attributes,
 													'position'
 												)}
-												onChange={position =>
-													setAttributes({ position })
+												onChange={obj =>
+													setAttributes(obj)
 												}
 												breakpoint={deviceType}
 											/>
@@ -834,15 +765,12 @@ const Inspector = props => {
 										label: __('Breakpoint', 'maxi-blocks'),
 										content: (
 											<ResponsiveControl
-												breakpoints={breakpoints}
-												defaultBreakpoints={getDefaultProp(
-													clientId,
+												{...getGroupAttributes(
+													attributes,
 													'breakpoints'
 												)}
-												onChange={breakpoints =>
-													setAttributes({
-														breakpoints,
-													})
+												onChange={obj =>
+													setAttributes(obj)
 												}
 												breakpoint={deviceType}
 											/>
@@ -852,13 +780,12 @@ const Inspector = props => {
 										label: __('Z-index', 'maxi-blocks'),
 										content: (
 											<ZIndexControl
-												zIndex={zIndex}
-												defaultZIndex={getDefaultProp(
-													clientId,
+												{...getGroupAttributes(
+													attributes,
 													'zIndex'
 												)}
-												onChange={zIndex =>
-													setAttributes({ zIndex })
+												onChange={obj =>
+													setAttributes(obj)
 												}
 												breakpoint={deviceType}
 											/>
@@ -868,14 +795,14 @@ const Inspector = props => {
 										label: __('Opacity', 'maxi-blocks'),
 										content: (
 											<OpacityControl
-												opacity={opacity}
-												defaultOpacity={getDefaultProp(
-													clientId,
-													'opacity'
-												)}
-												onChange={opacity =>
+												opacity={
+													attributes[
+														`opacity-${deviceType}`
+													]
+												}
+												onChange={val =>
 													setAttributes({
-														opacity,
+														[`opacity-${deviceType}`]: val,
 													})
 												}
 												breakpoint={deviceType}

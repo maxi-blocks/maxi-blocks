@@ -26,6 +26,8 @@ const ColorControl = props => {
 	const classes = classnames('maxi-color-control', className);
 
 	const getRGB = colorString => {
+		if (!colorString) return { rgb: { r: 1, g: 1, b: 1, a: 1 } };
+
 		const rgbKeys = ['r', 'g', 'b', 'a'];
 		const output = {};
 		const color = colorString.replace(/^rgba?\(|\s+|\)$/g, '').split(',');

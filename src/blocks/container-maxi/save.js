@@ -36,7 +36,7 @@ const save = props => {
 		},
 		className,
 	} = props;
-	const shapeDivider = { ...props.attributes.shapeDivider };
+	// const shapeDivider = { ...props.attributes.shapeDivider };
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -56,22 +56,22 @@ const save = props => {
 					data-gx_initial_block_class={defaultBlockStyle}
 					data-motion-id={uniqueID}
 				>
-					<ArrowDisplayer arrow={arrow} />
-					{!!shapeDivider.top.status && (
+					{/* <ArrowDisplayer arrow={arrow} /> */}
+					{/* {!!shapeDivider.top.status && (
 						<ShapeDivider shapeDividerOptions={shapeDivider} />
-					)}
+					)} */}
 					<div className='maxi-container-block__wrapper'>
-						<BackgroundDisplayer background={background} />
+						{/* <BackgroundDisplayer background={background} /> */}
 						<div className='maxi-container-block__container'>
 							<InnerBlocks.Content />
 						</div>
 					</div>
-					{!!shapeDivider.bottom.status && (
+					{/* {!!shapeDivider.bottom.status && (
 						<ShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}
 						/>
-					)}
+					)} */}
 				</section>
 			)}
 			{!isFirstOnHierarchy && (
@@ -79,19 +79,19 @@ const save = props => {
 					className={classes}
 					data-gx_initial_block_class={defaultBlockStyle}
 				>
-					{!!shapeDivider.top.status && (
+					{/* {!!shapeDivider.top.status && (
 						<ShapeDivider shapeDividerOptions={shapeDivider} />
-					)}
+					)} */}
 					<div className='maxi-container-block__wrapper'>
-						<BackgroundDisplayer background={background} />
+						{/* <BackgroundDisplayer background={background} /> */}
 						<InnerBlocks.Content />
 					</div>
-					{!!shapeDivider.bottom.status && (
+					{/* {!!shapeDivider.bottom.status && (
 						<ShapeDivider
 							position='bottom'
 							shapeDividerOptions={shapeDivider}
 						/>
-					)}
+					)} */}
 				</div>
 			)}
 		</Fragment>

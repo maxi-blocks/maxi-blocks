@@ -10,7 +10,7 @@ const { getBlockAttributes } = wp.blocks;
  * @param {string} clientId Block's client id
  * @param {string} prop Claimed property to return
  */
-const getDefaultProp = (prop, clientId = null) => {
+const getDefaultAttribute = (prop, clientId = null) => {
 	const { getBlockName, getSelectedBlockClientId } = select(
 		'core/block-editor'
 	);
@@ -22,4 +22,4 @@ const getDefaultProp = (prop, clientId = null) => {
 	return getBlockAttributes(blockName);
 };
 
-export default getDefaultProp;
+export default getDefaultAttribute;

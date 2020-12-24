@@ -18,7 +18,7 @@ import {
 	borderDotted,
 } from './newDefaults';
 
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBrakpointValue';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
 /**

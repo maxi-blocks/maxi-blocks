@@ -1,4 +1,4 @@
-import getLastBreakpointAttribute from '../getLastBrakpointValue';
+import getLastBreakpointAttribute from '..//getLastBreakpointValue';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

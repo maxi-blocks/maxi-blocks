@@ -2,6 +2,8 @@
  * Styles resolver
  */
 const styleResolver = (styles, remover = false) => {
+	if (!styles) return {};
+
 	const response = (remover && []) || {};
 
 	Object.entries(styles).forEach(([target, props]) => {

@@ -56,26 +56,26 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			data-align={dataAlign}
 			data-gx_initial_block_class={maxiBlockClass}
 		>
-			{!!shapeDivider.top.status && (
+			{/* {!!shapeDivider.top.status && (
 				<ShapeDivider shapeDividerOptions={shapeDivider} />
-			)}
+			)} */}
 
 			<div className='maxi-container-block__wrapper'>
-				<BackgroundDisplayer
+				{/* <BackgroundDisplayer
 					background={background}
 					blockClassName={uniqueID}
-				/>
+				/> */}
 				<div className='maxi-container-block__container'>
 					{children}
 				</div>
 			</div>
 
-			{!!shapeDivider.bottom.status && (
+			{/* {!!shapeDivider.bottom.status && (
 				<ShapeDivider
 					position='bottom'
 					shapeDividerOptions={shapeDivider}
 				/>
-			)}
+			)} */}
 		</__experimentalBlock>
 	);
 });
@@ -84,7 +84,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  * Edit
  */
 class edit extends MaxiBlock {
-	get getObject() {
+	get getObjectNulled() {
 		const {
 			uniqueID,
 			arrow,
@@ -216,7 +216,7 @@ class edit extends MaxiBlock {
 		return {};
 	}
 
-	get getCustomData() {
+	get getCustomDataTest() {
 		const { uniqueID, motion, shapeDivider } = this.props.attributes;
 
 		const motionStatus =
@@ -242,11 +242,11 @@ class edit extends MaxiBlock {
 				blockStyleBackground,
 				fullWidth,
 				extraClassName,
-				background,
-				shapeDivider,
-				arrow,
-				display,
-				motion,
+				// background,
+				// shapeDivider,
+				// arrow,
+				// display,
+				// motion,
 			},
 			className,
 			clientId,
@@ -260,8 +260,8 @@ class edit extends MaxiBlock {
 			'maxi-container-block',
 			'maxi-motion-effect',
 			`maxi-motion-effect-${uniqueID}`,
-			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
-				'maxi-block-display-none',
+			// getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
+			// 	'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
@@ -272,59 +272,57 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<Toolbar {...this.props} />,
-			<Breadcrumbs />,
+			// <Toolbar {...this.props} />,
+			// <Breadcrumbs />,
 			<Fragment>
 				{isFirstOnHierarchy && fullWidth && (
-					<MotionPreview motion={motion}>
-						<__experimentalBlock.section
-							className={classes}
-							data-align={fullWidth}
-							data-maxi_initial_block_class={defaultBlockStyle}
-						>
-							<ArrowDisplayer arrow={arrow} />
+					// <MotionPreview motion={motion}>
+					<__experimentalBlock.section
+						className={classes}
+						data-align={fullWidth}
+						data-maxi_initial_block_class={defaultBlockStyle}
+					>
+						{/* <ArrowDisplayer arrow={arrow} /> */}
 
-							{!!shapeDivider.top.status && (
-								<ShapeDivider
-									shapeDividerOptions={shapeDivider}
-								/>
-							)}
+						{/* {!!shapeDivider.top.status && (
+							<ShapeDivider shapeDividerOptions={shapeDivider} />
+						)} */}
 
-							<div className='maxi-container-block__wrapper'>
-								<BackgroundDisplayer
+						<div className='maxi-container-block__wrapper'>
+							{/* <BackgroundDisplayer
 									background={background}
 									blockClassName={uniqueID}
-								/>
-								<InnerBlocks
-									templateLock={false}
-									__experimentalTagName='div'
-									__experimentalPassedProps={{
-										className:
-											'maxi-container-block__container',
-									}}
-									renderAppender={
-										!hasInnerBlock
-											? () => (
-													<BlockPlaceholder
-														clientId={clientId}
-													/>
-											  )
-											: true
-											? () => (
-													<InnerBlocks.ButtonBlockAppender />
-											  )
-											: false
-									}
-								/>
-							</div>
-							{!!shapeDivider.bottom.status && (
-								<ShapeDivider
-									position='bottom'
-									shapeDividerOptions={shapeDivider}
-								/>
-							)}
-						</__experimentalBlock.section>
-					</MotionPreview>
+								/> */}
+							<InnerBlocks
+								templateLock={false}
+								__experimentalTagName='div'
+								__experimentalPassedProps={{
+									className:
+										'maxi-container-block__container',
+								}}
+								renderAppender={
+									!hasInnerBlock
+										? () => (
+												<BlockPlaceholder
+													clientId={clientId}
+												/>
+										  )
+										: true
+										? () => (
+												<InnerBlocks.ButtonBlockAppender />
+										  )
+										: false
+								}
+							/>
+						</div>
+						{/* {!!shapeDivider.bottom.status && (
+							<ShapeDivider
+								position='bottom'
+								shapeDividerOptions={shapeDivider}
+							/>
+						)} */}
+					</__experimentalBlock.section>
+					// </MotionPreview>
 				)}
 				{(!isFirstOnHierarchy || !fullWidth) && (
 					<InnerBlocks
@@ -334,8 +332,8 @@ class edit extends MaxiBlock {
 							className: classes,
 							dataAlign: fullWidth,
 							maxiBlockClass: defaultBlockStyle,
-							shapeDivider,
-							background,
+							// shapeDivider,
+							// background,
 							uniqueID,
 						}}
 						renderAppender={

@@ -110,12 +110,9 @@ const Inspector = props => {
 															'Column Size (%)',
 															'maxi-blocks'
 														)}
-														value={getLastBreakpointValue(
-															columnSize,
-															'size',
-															deviceType
-														)}
+														value={columnSize}
 														onChange={val => {
+															console.log(val);
 															columnSize[
 																deviceType
 															].size = val;

@@ -22,7 +22,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isNumber } from 'lodash';
 
 /**
  * Styles and icons
@@ -71,7 +71,7 @@ const BoxShadowControl = props => {
 				breakpoint
 			);
 
-			return !isNil(itemValue) && itemValue !== 0;
+			return !isNil(itemValue) && isNumber(itemValue) && itemValue !== 0;
 		});
 		if (!hasBoxShadow && type === 'none') return true;
 		if (type === 'none') return false;

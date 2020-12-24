@@ -7,11 +7,11 @@ const { __ } = wp.i18n;
  * Internal dependencies
  */
 import MediaUploaderControl from '../media-uploader-control';
-import __experimentalClipPath from '../clip-path-control';
-import __experimentalOpacityControl from '../opacity-control';
-import __experimentalNumberControl from '../number-control';
-import __experimentalTextControl from '../text-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import ClipPath from '../clip-path-control';
+import OpacityControl from '../opacity-control';
+import NumberControl from '../number-control';
+import TextControl from '../text-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * Component
@@ -26,7 +26,7 @@ const VideoLayer = props => {
 
 	return (
 		<div className='maxi-background-control__video'>
-			<__experimentalTextControl
+			<TextControl
 				label='URL'
 				type='video-url'
 				help='add video'
@@ -38,7 +38,7 @@ const VideoLayer = props => {
 				}}
 			/>
 
-			<__experimentalNumberControl
+			<NumberControl
 				label={__('Start Time (s)', 'maxi-blocks')}
 				min={0}
 				max={999}
@@ -49,7 +49,7 @@ const VideoLayer = props => {
 					onChange(videoOptions);
 				}}
 			/>
-			<__experimentalNumberControl
+			<NumberControl
 				label={__('End Time (s)', 'maxi-blocks')}
 				min={0}
 				max={999}
@@ -63,7 +63,7 @@ const VideoLayer = props => {
 					onChange(videoOptions);
 				}}
 			/>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Loop', 'maxi-blocks')}
 				selected={Number(videoOptions.loop)}
 				options={[
@@ -82,7 +82,7 @@ const VideoLayer = props => {
 					onChange(videoOptions);
 				}}
 			/>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Play on Mobile', 'maxi-blocks')}
 				selected={Number(videoOptions.playOnMobile)}
 				options={[
@@ -102,7 +102,7 @@ const VideoLayer = props => {
 			/>
 
 			{!disableClipPath && (
-				<__experimentalClipPath
+				<ClipPath
 					clipPath={videoOptions.clipPath}
 					onChange={val => {
 						videoOptions.clipPath = val;
@@ -111,13 +111,13 @@ const VideoLayer = props => {
 				/>
 			)}
 
-			<__experimentalOpacityControl
+			<OpacityControl
 				label={__('Video Opacity', 'maxi-blocks')}
 				fullWidthMode
 				opacity={videoOptions.opacity}
 				defaultOpacity={defaultVideoOptions.opacity}
-				onChange={val => {
-					videoOptions.opacity = JSON.parse(val);
+				onChange={opacity => {
+					videoOptions.opacity = opacity;
 					onChange(videoOptions);
 				}}
 			/>

@@ -1,0 +1,178 @@
+/**
+* Default and variables
+*/
+@import './maxi-themes-default.scss';
+
+$styles: 'dark', 'light';
+$levels: 'p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6';
+
+/**
+* Styles
+*/
+body.maxi-blocks--active {
+	@each $style in $styles {
+		.maxi-#{$style} {
+			&.maxi-background-- {
+				&1 {
+					.maxi-background-displayer {
+						background-color: var(--maxi-#{$style}-background-1) !important;
+					}
+				}
+
+				&2 {
+					.maxi-background-displayer {
+						background-color: var(--maxi-#{$style}-background-2) !important;
+					}
+				}
+			}
+
+			@each $level in $levels {
+				#{$level} {
+					font-family: var(--maxi-#{$style}-#{$level}-font-family) !important;
+					color: var(--maxi-#{$style}-#{$level}-color) !important;
+					font-size: var(--maxi-#{$style}-#{$level}-font-size-general) !important;
+					line-height: var(--maxi-#{$style}-#{$level}-line-height-general) !important;
+					font-weight: var(--maxi-#{$style}-#{$level}-font-weight) !important;
+					text-transform: var(--maxi-#{$style}-#{$level}-transform) !important;
+					font-style: var(--maxi-#{$style}-#{$level}-style) !important;
+					text-decoration-style: var(--maxi-#{$style}-#{$level}-decoration) !important;
+					text-decoration-line: var(--maxi-#{$style}-#{$level}-decoration-line) !important;
+				}
+			}
+
+			a {
+				color: var(--maxi-#{$style}-link) !important;
+			}
+
+			&.maxi-highlight,
+			.maxi-highlight {
+				&--text {
+					.maxi-text-block__content {
+						color: var(--maxi-#{$style}-highlight-text) !important;
+
+						&:hover {
+							color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					.maxi-button-extra__button {
+						color: var(--maxi-light-highlight-text) !important;
+
+						&:hover {
+							color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					.maxi-font-icon-block__icon {
+						color: var(--maxi-light-highlight-text) !important;
+
+						&:hover {
+							color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+				}
+
+				&--background {
+					.maxi-text-block__content {
+						background-color: var(--maxi-#{$style}-highlight-background) !important;
+
+						&:hover {
+							background-color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					.maxi-button-extra__button {
+						background-color: var(--maxi-light-highlight-background) !important;
+
+						&:hover {
+							background-color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					.maxi-font-icon-block__icon {
+						background-color: var(--maxi-light-highlight-background) !important;
+
+						&:hover {
+							background-color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					&.maxi-svg-icon-block {
+						.maxi-background-displayer {
+							background-color: var(--maxi-light-highlight-background) !important;
+
+							&:hover {
+								background-color: var(--maxi-#{$style}-hover) !important;
+							}
+						}
+					}
+				}
+
+				&--border {
+					&.maxi-text-block {
+						border-color: var(--maxi-#{$style}-highlight-border) !important;
+
+						&:hover {
+							border-color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					.maxi-button-extra__button {
+						border-color: var(--maxi-light-highlight-border) !important;
+
+						&:hover {
+							border-color: var(--maxi-#{$style}-hover) !important;
+						}
+					}
+
+					.maxi-divider-block__divider {
+						border-color: var(--maxi-light-highlight-border) !important;
+
+						&:hover {
+							border-color: var(--maxi-light-hover) !important;
+						}
+					}
+
+					&.maxi-font-icon-block {
+						border-color: var(--maxi-light-highlight-border) !important;
+
+						&:hover {
+							border-color: var(--maxi-light-hover) !important;
+						}
+					}
+
+					&.maxi-svg-icon-block {
+						border-color: var(--maxi-light-highlight-border) !important;
+
+						&:hover {
+							border-color: var(--maxi-light-hover) !important;
+						}
+					}
+
+				}
+
+				&--color1 {
+					&.maxi-svg-icon-block {
+						.maxi-svg-icon-block__icon {
+							svg path {
+								&.maxi-svg-color-first {
+									fill: var(--maxi-light-highlight-color1) !important;
+								}
+							}
+						}
+					}
+				}
+
+				&--color2 {
+					&.maxi-svg-icon-block {
+						.maxi-svg-icon-block__icon {
+							svg path {
+								stroke: var(--maxi-light-highlight-color2) !important;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

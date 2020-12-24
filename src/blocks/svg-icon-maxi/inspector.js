@@ -22,24 +22,19 @@ import {
 	SvgAnimationControl,
 	SvgAnimationDurationControl,
 	SvgWidthControl,
-	__experimentalZIndexControl,
-	__experimentalAxisControl,
-	__experimentalResponsiveControl,
-	__experimentalOpacityControl,
-	__experimentalPositionControl,
-	__experimentalDisplayControl,
-	__experimentalMotionControl,
-	__experimentalTransformControl,
-	__experimentalClipPath,
-	__experimentalEntranceAnimationControl,
-	__experimentalHoverEffectControl,
-	__experimentalFancyRadioControl,
+	ZIndexControl,
+	AxisControl,
+	ResponsiveControl,
+	OpacityControl,
+	PositionControl,
+	DisplayControl,
+	MotionControl,
+	TransformControl,
+	EntranceAnimationControl,
+	HoverEffectControl,
+	FancyRadioControl,
+	CustomLabel,
 } from '../../components';
-
-/**
- * External dependencies
- */
-import { isEmpty, isObject } from 'lodash';
 
 /**
  * Inspector
@@ -47,10 +42,12 @@ import { isEmpty, isObject } from 'lodash';
 const Inspector = props => {
 	const {
 		attributes: {
+			customLabel,
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
 			defaultBlockStyle,
+			blockStyleBackground,
 			alignment,
 			background,
 			opacity,
@@ -58,9 +55,6 @@ const Inspector = props => {
 			border,
 			padding,
 			margin,
-			backgroundHover,
-			boxShadowHover,
-			borderHover,
 			extraClassName,
 			zIndex,
 			breakpoints,
@@ -78,171 +72,16 @@ const Inspector = props => {
 		clientId,
 		deviceType,
 		setAttributes,
+		changeSVGSize,
+		changeSVGAnimationDuration,
+		changeSVGAnimation,
+		changeSVGStrokeWidth,
+		isAnimatedSVG,
 	} = props;
-
-	function isAnimatedSvg() {
-		if (
-			wp.data.select('core/block-editor').getSelectedBlock() !== null &&
-			wp.data.select('core/block-editor').getSelectedBlock().name ===
-				'maxi-blocks/svg-icon-maxi'
-		) {
-			const { clientId } = wp.data
-				.select('core/block-editor')
-				.getSelectedBlock();
-			const currentContent = wp.data
-				.select('core/block-editor')
-				.getSelectedBlock().attributes.content;
-			if (
-				currentContent.indexOf('<animate') !== -1 ||
-				currentContent.indexOf('<!--animate') !== -1
-			) {
-				const newContent = currentContent.replace(
-					/animateTransform'/g,
-					'animatetransform'
-				);
-				wp.data
-					.dispatch('core/block-editor')
-					.updateBlockAttributes(clientId, { content: newContent });
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
-
-	function changeSvgStrokeWidth(width) {
-		if (width) {
-			const { clientId } = wp.data
-				.select('core/block-editor')
-				.getSelectedBlock();
-			const currentContent = wp.data
-				.select('core/block-editor')
-				.getSelectedBlock().attributes.content;
-			const regexLineToChange = new RegExp('stroke-width=".+?(?= )', 'g');
-			const changeTo = `stroke-width="${width}"`;
-			const newContent = currentContent.replace(
-				regexLineToChange,
-				changeTo
-			);
-
-			wp.data
-				.dispatch('core/block-editor')
-				.updateBlockAttributes(clientId, { content: newContent });
-		}
-	}
-
-	function changeSvgAnimation(animation) {
-		const { clientId } = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock();
-		const currentContent = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock().attributes.content;
-		let newContent = '';
-		const hoverContent = '';
-
-		switch (animation) {
-			case 'loop':
-				newContent = currentContent.replace(
-					/repeatCount="1"/g,
-					'repeatCount="indefinite"'
-				);
-				newContent = newContent.replace(/dur="0"/g, 'dur="3.667s"');
-				break;
-			case 'load-once':
-				newContent = currentContent.replace(
-					/repeatCount="indefinite"/g,
-					'repeatCount="1"'
-				);
-				newContent = newContent.replace(/dur="0"/g, 'dur="3.667s"');
-				break;
-			case 'hover-loop':
-				newContent = currentContent.replace(
-					new RegExp('dur=".+?(?= )', 'g'),
-					'dur="0"'
-				);
-				// hoverContent = currentContent.replace(/repeatCount="1"/g,  'repeatCount="indefinite"');
-				// hoverContent = hoverContent.replace(/dur="0"/g, 'dur="3.667s"');
-				break;
-			case 'hover-once':
-				break;
-			case 'hover-off':
-				break;
-			case 'off':
-				newContent = currentContent.replace(
-					new RegExp('dur=".+?(?= )', 'g'),
-					'dur="0"'
-				);
-				break;
-			default:
-				return;
-		}
-
-		if (!isEmpty(newContent))
-			wp.data
-				.dispatch('core/block-editor')
-				.updateBlockAttributes(clientId, { content: newContent });
-	}
-
-	function changeSvgAnimationDuration(duration) {
-		const { clientId } = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock();
-		const currentContent = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock().attributes.content;
-		let newContent = '';
-
-		const regexLineToChange = new RegExp('dur=".+?(?= )', 'g');
-		const changeTo = `dur="${duration}s"`;
-		newContent = currentContent.replace(regexLineToChange, changeTo);
-
-		if (!isEmpty(newContent))
-			wp.data
-				.dispatch('core/block-editor')
-				.updateBlockAttributes(clientId, { content: newContent });
-	}
-
-	function changeSvgSize(width) {
-		const { clientId } = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock();
-		const currentContent = wp.data
-			.select('core/block-editor')
-			.getSelectedBlock().attributes.content;
-		let newContent = '';
-
-		const regexLineToChange = new RegExp('width=".+?(?=")');
-		const changeTo = `width="${width}`;
-
-		const regexLineToChange2 = new RegExp('height=".+?(?=")');
-		const changeTo2 = `height="${width}`;
-
-		newContent = currentContent.replace(regexLineToChange, changeTo);
-		newContent = newContent.replace(regexLineToChange2, changeTo2);
-
-		if (newContent.indexOf('viewBox') === -1) {
-			const changeTo3 = ' viewBox="0 0 64 64"><defs>';
-			newContent = newContent.replace(/><defs>/, changeTo3);
-		}
-
-		if (!isEmpty(newContent))
-			wp.data
-				.dispatch('core/block-editor')
-				.updateBlockAttributes(clientId, { content: newContent });
-	}
-
-	const backgroundHoverValue = !isObject(backgroundHover)
-		? JSON.parse(backgroundHover)
-		: backgroundHover;
-
-	const boxShadowHoverValue = !isObject(boxShadowHover)
-		? JSON.parse(boxShadowHover)
-		: boxShadowHover;
-
-	const borderHoverValue = !isObject(borderHover)
-		? JSON.parse(borderHover)
-		: borderHover;
+	const backgroundHover = { ...props.attributes.backgroundHover };
+	const boxShadowHover = { ...props.attributes.boxShadowHover };
+	const borderHover = { ...props.attributes.borderHover };
+	const highlight = { ...props.attributes.highlight };
 
 	return (
 		<InspectorControls>
@@ -254,16 +93,24 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
+									<CustomLabel
+										customLabel={customLabel}
+										onChange={customLabel =>
+											setAttributes({ customLabel })
+										}
+									/>
+									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										onChangeBlockStyle={blockStyle =>
-											setAttributes({ blockStyle })
+										blockStyleBackground={
+											blockStyleBackground
 										}
 										defaultBlockStyle={defaultBlockStyle}
-										onChangeDefaultBlockStyle={defaultBlockStyle =>
-											setAttributes({ defaultBlockStyle })
-										}
 										isFirstOnHierarchy={isFirstOnHierarchy}
+										highlight={highlight}
+										onChange={obj => setAttributes(obj)}
+										disableHighlightText
+										border={border}
 									/>
 								</div>
 								<AccordionControl
@@ -287,6 +134,81 @@ const Inspector = props => {
 												/>
 											),
 										},
+										isAnimatedSVG && {
+											label: __(
+												'SVG Animation',
+												'maxi-blocks'
+											),
+											content: (
+												<Fragment>
+													<SvgAnimationControl
+														animation={animation}
+														onChange={animation => {
+															setAttributes({
+																animation,
+															});
+															changeSVGAnimation(
+																animation
+															);
+														}}
+													/>
+													{animation !== 'off' && (
+														<SvgAnimationDurationControl
+															duration={duration}
+															onChange={duration => {
+																setAttributes({
+																	duration,
+																});
+																changeSVGAnimationDuration(
+																	duration
+																);
+															}}
+														/>
+													)}
+												</Fragment>
+											),
+										},
+										{
+											label: __(
+												'SVG Line Width',
+												'maxi-blocks'
+											),
+											content: (
+												<SvgStrokeWidthControl
+													stroke={stroke}
+													defaultStroke={
+														defaultStroke
+													}
+													onChange={stroke => {
+														setAttributes({
+															stroke,
+														});
+														changeSVGStrokeWidth(
+															stroke
+														);
+													}}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __(
+												'SVG Width',
+												'maxi-blocks'
+											),
+											content: (
+												<SvgWidthControl
+													width={width}
+													onChange={width => {
+														setAttributes({
+															width,
+														});
+														changeSVGSize(width);
+													}}
+													breakpoint={deviceType}
+												/>
+											),
+										},
 										{
 											label: __(
 												'Background',
@@ -299,7 +221,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
@@ -318,6 +240,9 @@ const Inspector = props => {
 																				}
 																			)
 																		}
+																		disableColor={
+																			!!highlight.backgroundHighlight
+																		}
 																		disableImage
 																		disableVideo
 																		disableGradient
@@ -329,17 +254,17 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Background Hover',
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			backgroundHoverValue.status
+																			backgroundHover.status
 																		}
 																		options={[
 																			{
@@ -358,19 +283,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			backgroundHoverValue.status = Number(
+																			backgroundHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					backgroundHover: JSON.stringify(
-																						backgroundHoverValue
-																					),
+																					backgroundHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!backgroundHoverValue.status && (
+																	{!!backgroundHover.status && (
 																		<BackgroundControl
 																			background={
 																				backgroundHover
@@ -385,6 +308,9 @@ const Inspector = props => {
 																						backgroundHover,
 																					}
 																				)
+																			}
+																			disableColor={
+																				!!highlight.backgroundHighlight
 																			}
 																			disableImage
 																			disableVideo
@@ -408,7 +334,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<BorderControl
@@ -429,23 +355,26 @@ const Inspector = props => {
 																	breakpoint={
 																		deviceType
 																	}
+																	disableColor={
+																		!!highlight.borderHighlight
+																	}
 																/>
 															),
 														},
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			borderHoverValue.status
+																			borderHover.status
 																		)}
 																		options={[
 																			{
@@ -464,19 +393,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			borderHoverValue.status = Number(
+																			borderHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					borderHover: JSON.stringify(
-																						borderHoverValue
-																					),
+																					borderHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!borderHoverValue.status && (
+																	{!!borderHover.status && (
 																		<BorderControl
 																			border={
 																				borderHover
@@ -495,50 +422,15 @@ const Inspector = props => {
 																			breakpoint={
 																				deviceType
 																			}
+																			disableColor={
+																				!!highlight.borderHighlight
+																			}
 																		/>
 																	)}
 																</Fragment>
 															),
 														},
 													]}
-												/>
-											),
-										},
-										{
-											label: __(
-												'Line Width',
-												'maxi-blocks'
-											),
-											content: (
-												<SvgStrokeWidthControl
-													stroke={stroke}
-													defaultStroke={
-														defaultStroke
-													}
-													onChange={stroke => {
-														setAttributes({
-															stroke,
-														});
-														changeSvgStrokeWidth(
-															stroke
-														);
-													}}
-													breakpoint={deviceType}
-												/>
-											),
-										},
-										{
-											label: __('Width', 'maxi-blocks'),
-											content: (
-												<SvgWidthControl
-													width={width}
-													onChange={width => {
-														setAttributes({
-															width,
-														});
-														changeSvgSize(width);
-													}}
-													breakpoint={deviceType}
 												/>
 											),
 										},
@@ -554,7 +446,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<BoxShadowControl
@@ -581,17 +473,17 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			boxShadowHoverValue.status
+																			boxShadowHover.status
 																		)}
 																		options={[
 																			{
@@ -610,19 +502,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			boxShadowHoverValue.status = Number(
+																			boxShadowHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					boxShadowHover: JSON.stringify(
-																						boxShadowHoverValue
-																					),
+																					boxShadowHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!boxShadowHoverValue.status && (
+																	{!!boxShadowHover.status && (
 																		<BoxShadowControl
 																			boxShadow={
 																				boxShadowHover
@@ -657,9 +547,9 @@ const Inspector = props => {
 											),
 											content: (
 												<Fragment>
-													<__experimentalAxisControl
+													<AxisControl
 														values={padding}
-														defaultValues={getDefaultProp(
+														defaults={getDefaultProp(
 															clientId,
 															'padding'
 														)}
@@ -671,9 +561,9 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														disableAuto
 													/>
-													<__experimentalAxisControl
+													<AxisControl
 														values={margin}
-														defaultValues={getDefaultProp(
+														defaults={getDefaultProp(
 															clientId,
 															'margin'
 														)}
@@ -684,40 +574,6 @@ const Inspector = props => {
 														}
 														breakpoint={deviceType}
 													/>
-												</Fragment>
-											),
-										},
-										isAnimatedSvg() && {
-											label: __(
-												'SVG Animation',
-												'maxi-blocks'
-											),
-											content: (
-												<Fragment>
-													<SvgAnimationControl
-														animation={animation}
-														onChange={animation => {
-															setAttributes({
-																animation,
-															});
-															changeSvgAnimation(
-																animation
-															);
-														}}
-													/>
-													{animation !== 'off' && (
-														<SvgAnimationDurationControl
-															duration={duration}
-															onChange={duration => {
-																setAttributes({
-																	duration,
-																});
-																changeSvgAnimationDuration(
-																	duration
-																);
-															}}
-														/>
-													)}
 												</Fragment>
 											),
 										},
@@ -760,7 +616,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalMotionControl
+												<MotionControl
 													motion={motion}
 													onChange={motion =>
 														setAttributes({
@@ -776,7 +632,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalHoverEffectControl
+												<HoverEffectControl
 													hover={hover}
 													defaultHover={getDefaultProp(
 														clientId,
@@ -794,7 +650,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalEntranceAnimationControl
+												<EntranceAnimationControl
 													motion={motion}
 													defaultMotion={getDefaultProp(
 														clientId,
@@ -814,7 +670,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalTransformControl
+												<TransformControl
 													transform={transform}
 													onChange={transform =>
 														setAttributes({
@@ -829,7 +685,7 @@ const Inspector = props => {
 										{
 											label: __('Display', 'maxi-blocks'),
 											content: (
-												<__experimentalDisplayControl
+												<DisplayControl
 													display={display}
 													onChange={display =>
 														setAttributes({
@@ -846,7 +702,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalPositionControl
+												<PositionControl
 													position={position}
 													defaultPosition={getDefaultProp(
 														clientId,
@@ -867,7 +723,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalResponsiveControl
+												<ResponsiveControl
 													breakpoints={breakpoints}
 													defaultBreakpoints={getDefaultProp(
 														clientId,
@@ -885,7 +741,7 @@ const Inspector = props => {
 										{
 											label: __('Z-index', 'maxi-blocks'),
 											content: (
-												<__experimentalZIndexControl
+												<ZIndexControl
 													zIndex={zIndex}
 													defaultZIndex={getDefaultProp(
 														clientId,
@@ -903,7 +759,7 @@ const Inspector = props => {
 										{
 											label: __('Opacity', 'maxi-blocks'),
 											content: (
-												<__experimentalOpacityControl
+												<OpacityControl
 													opacity={opacity}
 													defaultOpacity={getDefaultProp(
 														clientId,

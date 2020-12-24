@@ -15,7 +15,6 @@ import * as SVGShapes from '../../icons/shape-icons';
  */
 import classnames from 'classnames';
 import DOMPurify from 'dompurify';
-import { isNil } from 'lodash';
 
 /**
  * Styles
@@ -58,7 +57,7 @@ const SVGDefaultsDisplayer = props => {
 								SVGElement: resEl.outerHTML,
 								SVGMediaID: null,
 								SVGMediaURL: null,
-								SVGData: JSON.stringify(resData),
+								SVGData: resData,
 							});
 						}}
 					>

@@ -12,16 +12,16 @@ const { Button } = wp.components;
  * Internal dependencies
  */
 import {
-	__experimentalGetUpdatedString,
-	__experimentalApplyLinkFormat,
-	__experimentalRemoveLinkFormat,
+	getUpdatedString,
+	applyLinkFormat,
+	removeLinkFormat,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
  * External dependencies
  */
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Icons
@@ -33,7 +33,7 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-	const { blockName, onChange, isList, formatValue, typography } = props;
+	const { blockName, onChange, isList, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -48,9 +48,7 @@ const Link = props => {
 		};
 	}, [getActiveFormat, formatValue, formatName]);
 
-	const typographyValue = !isObject(typography)
-		? JSON.parse(typography)
-		: typography;
+	const typography = { ...props.typography };
 
 	const createLinkValue = formatOptions => {
 		if (!formatOptions || isEmpty(formatValue)) return {};
@@ -124,15 +122,15 @@ const Link = props => {
 		const {
 			typography: newTypography,
 			content: newContent,
-		} = __experimentalApplyLinkFormat({
+		} = applyLinkFormat({
 			formatValue,
-			typography: typographyValue,
+			typography,
 			linkAttributes: createLinkAttribute(attributes),
 			isList,
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			content: newContent,
 		});
 	};
@@ -141,20 +139,20 @@ const Link = props => {
 		const {
 			typography: newTypography,
 			content: newContent,
-		} = __experimentalRemoveLinkFormat({
+		} = removeLinkFormat({
 			formatValue,
 			isList,
-			typography: typographyValue,
+			typography,
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			content: newContent,
 		});
 	};
 
 	const updateLinkString = attributes => {
-		const newContent = __experimentalGetUpdatedString({
+		const newContent = getUpdatedString({
 			formatValue: getUpdatedFormatValue(
 				formatValue,
 				createLinkAttribute(attributes)
@@ -163,7 +161,7 @@ const Link = props => {
 		});
 
 		onChange({
-			typography: JSON.stringify(typographyValue),
+			typography,
 			content: newContent,
 		});
 	};

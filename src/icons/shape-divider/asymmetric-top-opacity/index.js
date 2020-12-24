@@ -13,7 +13,7 @@ const asymmetricTopOpacity = (
 		<defs>
 			<Path
 				id='asymmetric-top-opacity-a'
-				fillOpacity='.498'
+				opacity='.498'
 				d='M978.8 122.25q20.45 2.45 39.1-6L1280 0H0l978.8 122.25z'
 			/>
 			<Path

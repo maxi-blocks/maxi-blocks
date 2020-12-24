@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+const { __ } = wp.i18n;
+
+/**
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
@@ -8,65 +13,73 @@ import { icon, alignmentIcon } from './data';
  * Attributes
  */
 const attributes = {
-	icon: {
+	customLabel: {
 		type: 'string',
-		default: JSON.stringify(icon),
+		default: __('Font Icon', 'maxi-blocks'),
+	},
+	icon: {
+		type: 'object',
+		default: icon,
 	},
 	alignment: {
-		type: 'string',
-		default: JSON.stringify(alignmentIcon),
+		type: 'object',
+		default: alignmentIcon,
 	},
 	opacity: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacity),
+		type: 'object',
+		default: attributesData.opacity,
 	},
 	background: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
+		type: 'object',
+		default: attributesData.background,
 	},
 	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
+		type: 'object',
+		default: attributesData.backgroundHover,
 	},
 	border: {
-		type: 'string',
-		default: JSON.stringify(attributesData.border),
+		type: 'object',
+		default: attributesData.border,
 	},
 	borderHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.borderHover),
+		type: 'object',
+		default: attributesData.borderHover,
 	},
 	boxShadow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
+		type: 'object',
+		default: attributesData.boxShadow,
 	},
 	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
+		type: 'object',
+		default: attributesData.boxShadowHover,
 	},
 	padding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
+		type: 'object',
+		default: attributesData.padding,
 	},
 	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
+		type: 'object',
+		default: attributesData.margin,
 	},
 	position: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalPosition),
+		type: 'object',
+		default: attributesData.position,
 	},
 	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
+		type: 'object',
+		default: attributesData.display,
 	},
 	motion: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalMotion),
+		type: 'object',
+		default: attributesData.motion,
 	},
 	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
+		type: 'object',
+		default: attributesData.transform,
+	},
+	highlight: {
+		type: 'object',
+		default: attributesData.highlight,
 	},
 };
 

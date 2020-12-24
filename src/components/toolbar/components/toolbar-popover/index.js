@@ -3,14 +3,7 @@
  */
 const { dispatch } = wp.data;
 const { Fragment, Component } = wp.element;
-const {
-	Button,
-	Icon,
-	IconButton,
-	Popover,
-	withFocusOutside,
-	Tooltip,
-} = wp.components;
+const { Icon, Button, Popover, withFocusOutside, Tooltip } = wp.components;
 
 /**
  * Internal dependencies
@@ -88,14 +81,11 @@ class ToolbarPopover extends Component {
 						position='top center'
 						focusOnMount
 						isAlternate
-						// anchorRef= anchorRef
-						// __unstableSticky={true}
-						// __unstableSlotName= "block-toolbar"
 						shouldAnchorIncludePadding
 					>
 						{content}
 						{!!advancedOptions && (
-							<IconButton
+							<Button
 								className='toolbar-item__popover__advanced-button'
 								icon={toolbarAdvancedSettings}
 								onClick={() =>

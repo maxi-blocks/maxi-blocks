@@ -11,6 +11,11 @@ const { select } = wp.data;
 import { getDefaultProp } from '../../utils';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Utils
  */
 import {
@@ -20,7 +25,7 @@ import {
 	Border,
 	BoxShadow,
 	Mover,
-	ColumnPattern,
+	ToolbarColumnPattern,
 	Divider,
 	DividerColor,
 	DividerAlignment,
@@ -38,10 +43,10 @@ import {
 	PaddingMargin,
 	Size,
 	ToggleBlock,
-	__experimentalColumnMover,
-	__experimentalRowSettings,
-	__experimentalColumnSize,
-	__experimentalColumnsHandlers,
+	ColumnMover,
+	RowSettings,
+	ColumnSize,
+	ColumnsHandlers,
 } from './components';
 
 /**
@@ -53,9 +58,6 @@ import './editor.scss';
  * General
  */
 const allowedBlocks = [
-	'maxi-blocks/block-image-box',
-	'maxi-blocks/block-title-extra',
-	'maxi-blocks/testimonials-slider-block',
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/button-maxi',
@@ -74,6 +76,7 @@ const allowedBlocks = [
 const MaxiToolbar = props => {
 	const {
 		attributes: {
+			customLabel,
 			uniqueID,
 			typography,
 			typographyHover,
@@ -111,10 +114,19 @@ const MaxiToolbar = props => {
 		name,
 		setAttributes,
 		formatValue,
-		// node,
 		deviceType,
 		toggleHandlers,
+		hasThirdColour,
+		changeSVGContent,
 	} = props;
+	const highlight = { ...props.highlight };
+	const {
+		borderHighlight,
+		textHighlight,
+		backgroundHighlight,
+		color1Highlight,
+		color2Highlight,
+	} = highlight;
 
 	const [anchorRef, setAnchorRef] = useState(
 		document.getElementById(`block-${clientId}`)
@@ -126,59 +138,26 @@ const MaxiToolbar = props => {
 
 	if (!allowedBlocks.includes(name)) return null;
 
-	function getThirdSvgColor() {
-		const current_content = select('core/block-editor').getSelectedBlock()
-			.attributes.content;
+	const breadcrumbStatus = () => {
+		const rootBlock = select('core/block-editor').getBlockName(
+			select('core/block-editor').getBlockRootClientId(
+				select('core/block-editor').getSelectedBlockClientId()
+			)
+		);
+		const currentBlock = select('core/block-editor').getBlockName(
+			select('core/block-editor').getSelectedBlockClientId()
+		);
 
-		if (current_content.indexOf('maxi-svg-color-third') !== -1) return true;
-		return false;
-	}
-
-	function changeContent(color, colorNumber) {
-		let colorClass = '';
-		switch (colorNumber) {
-			case 1:
-				colorClass = 'maxi-svg-color-first';
-				break;
-			case 2:
-				colorClass = 'maxi-svg-color-second';
-				break;
-			case 3:
-				colorClass = 'maxi-svg-color-third';
-				break;
-			default:
-				return;
-		}
-
-		if (colorClass !== '') {
-			const { clientId } = select('core/block-editor').getSelectedBlock();
-			const current_content = select(
-				'core/block-editor'
-			).getSelectedBlock().attributes.content;
-			const regex_line_to_change = new RegExp(
-				`${colorClass}" fill=".+?(?= )`,
-				'g'
-			);
-			const regex_line_to_change2 = new RegExp(
-				`${colorClass}" stroke=".+?(?= )`,
-				'g'
-			);
-			const change_to = `${colorClass}" fill="${color}"`;
-			const change_to2 = `${colorClass}" stroke="${color}"`;
-			let new_content = current_content.replace(
-				regex_line_to_change,
-				change_to
-			);
-			new_content = new_content.replace(
-				regex_line_to_change2,
-				change_to2
-			);
-
-			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				content: new_content,
-			});
-		}
-	}
+		if (
+			currentBlock === 'maxi-blocks/container-maxi' ||
+			currentBlock === 'maxi-blocks/row-maxi' ||
+			currentBlock === 'maxi-blocks/column-maxi' ||
+			rootBlock === 'maxi-blocks/container-maxi' ||
+			rootBlock === 'maxi-blocks/row-maxi' ||
+			rootBlock === 'maxi-blocks/column-maxi'
+		)
+			return true;
+	};
 
 	return (
 		<Fragment>
@@ -189,23 +168,29 @@ const MaxiToolbar = props => {
 					position='top center right'
 					focusOnMount={false}
 					anchorRef={anchorRef}
-					className='maxi-toolbar__popover'
+					className={classnames(
+						'maxi-toolbar__popover',
+						!!breadcrumbStatus() &&
+							'maxi-toolbar__popover--has-breadcrumb'
+					)}
 					uniqueid={uniqueID}
 					__unstableSticky
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding
 				>
 					<div className='toolbar-wrapper'>
+						<div className='toolbar-block-custom-label'>
+							{customLabel}
+						</div>
 						<Mover clientId={clientId} blockName={name} />
-						<__experimentalColumnMover
-							clientId={clientId}
-							blockName={name}
-						/>
-						<DividerColor
-							blockName={name}
-							divider={divider}
-							onChange={divider => setAttributes({ divider })}
-						/>
+						<ColumnMover clientId={clientId} blockName={name} />
+						{!!borderHighlight && (
+							<DividerColor
+								blockName={name}
+								divider={divider}
+								onChange={divider => setAttributes({ divider })}
+							/>
+						)}
 						<Divider
 							blockName={name}
 							divider={divider}
@@ -248,17 +233,19 @@ const MaxiToolbar = props => {
 							typeOfList={typeOfList}
 							formatValue={formatValue}
 						/>
-						<TextColor
-							blockName={name}
-							typography={typography}
-							content={content}
-							onChange={obj => setAttributes(obj)}
-							breakpoint={deviceType}
-							node={anchorRef}
-							isList={isList}
-							typeOfList={typeOfList}
-							formatValue={formatValue}
-						/>
+						{!!textHighlight && (
+							<TextColor
+								blockName={name}
+								typography={typography}
+								content={content}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+								node={anchorRef}
+								isList={isList}
+								typeOfList={typeOfList}
+								formatValue={formatValue}
+							/>
+						)}
 						<Alignment
 							blockName={name}
 							alignment={alignment}
@@ -290,13 +277,13 @@ const MaxiToolbar = props => {
 							isList={isList}
 							breakpoint={deviceType}
 						/>
-						<__experimentalRowSettings
+						<RowSettings
 							blockName={name}
 							horizontalAlign={horizontalAlign}
 							verticalAlign={verticalAlign}
 							onChange={obj => setAttributes(obj)}
 						/>
-						<ColumnPattern
+						<ToolbarColumnPattern
 							clientId={clientId}
 							blockName={name}
 							rowPattern={rowPattern}
@@ -306,7 +293,7 @@ const MaxiToolbar = props => {
 							breakpoint={deviceType}
 						/>
 
-						<__experimentalColumnsHandlers
+						<ColumnsHandlers
 							toggleHandlers={toggleHandlers}
 							blockName={name}
 						/>
@@ -334,42 +321,52 @@ const MaxiToolbar = props => {
 							typeOfList={typeOfList}
 							onChange={obj => setAttributes(obj)}
 						/>
-						<BackgroundColor
-							blockName={name}
-							background={background}
-							defaultBackground={getDefaultProp(
-								clientId,
-								'background'
-							)}
-							onChange={background =>
-								setAttributes({ background })
-							}
-						/>
+						{!backgroundHighlight && (
+							<BackgroundColor
+								blockName={name}
+								background={background}
+								defaultBackground={getDefaultProp(
+									clientId,
+									'background'
+								)}
+								onChange={background =>
+									setAttributes({ background })
+								}
+							/>
+						)}
 						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<Fragment>
-								<SvgColor
-									blockName={name}
-									svgColor={svgColorOrange}
-									onChange={svgColorOrange => {
-										setAttributes({ svgColorOrange });
-										changeContent(svgColorOrange, 1);
-									}}
-								/>
-								<SvgColor
-									blockName={name}
-									svgColor={svgColorBlack}
-									onChange={svgColorBlack => {
-										setAttributes({ svgColorBlack });
-										changeContent(svgColorBlack, 2);
-									}}
-								/>
-								{getThirdSvgColor() && (
+								{!color1Highlight && (
+									<SvgColor
+										blockName={name}
+										svgColor={svgColorOrange}
+										onChange={svgColorOrange => {
+											setAttributes({
+												svgColorOrange,
+											});
+											changeSVGContent(svgColorOrange, 1);
+										}}
+									/>
+								)}
+								{!color2Highlight && (
+									<SvgColor
+										blockName={name}
+										svgColor={svgColorBlack}
+										onChange={svgColorBlack => {
+											setAttributes({
+												svgColorBlack,
+											});
+											changeSVGContent(svgColorBlack, 2);
+										}}
+									/>
+								)}
+								{hasThirdColour && (
 									<SvgColor
 										blockName={name}
 										svgColor={svgColorWhite}
 										onChange={svgColorWhite => {
 											setAttributes({ svgColorWhite });
-											changeContent(svgColorWhite, 3);
+											changeSVGContent(svgColorWhite, 3);
 										}}
 									/>
 								)}
@@ -381,6 +378,7 @@ const MaxiToolbar = props => {
 							defaultBorder={getDefaultProp(clientId, 'border')}
 							onChange={border => setAttributes({ border })}
 							breakpoint={deviceType}
+							disableColor={!!borderHighlight}
 						/>
 						{deviceType === 'general' && (
 							<ImageSize
@@ -416,7 +414,7 @@ const MaxiToolbar = props => {
 							isFirstOnHierarchy={isFirstOnHierarchy}
 							breakpoint={deviceType}
 						/>
-						<__experimentalColumnSize
+						<ColumnSize
 							clientId={clientId}
 							blockName={name}
 							columnSize={columnSize}

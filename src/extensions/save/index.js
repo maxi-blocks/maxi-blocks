@@ -15,7 +15,6 @@ const allowedBlocks = [
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/svg-icon-maxi',
-	'maxi-blocks/icon-maxi',
 	'maxi-blocks/font-icon-maxi',
 ];
 
@@ -27,13 +26,13 @@ const allowedBlocks = [
  */
 
 const withSave = (element, blockType, attributes) => {
+	const linkSettings = { ...attributes.linkSettings };
+
 	if (
 		allowedBlocks.includes(blockType.name) &&
-		!!attributes.linkSettings &&
-		!!JSON.parse(attributes.linkSettings).url
+		!!linkSettings &&
+		!!linkSettings.url
 	) {
-		const linkSettings = JSON.parse(attributes.linkSettings);
-
 		let rel = '';
 		if (linkSettings.nofollow) rel += ' nofollow';
 		if (linkSettings.sponsored) rel += ' sponsored';

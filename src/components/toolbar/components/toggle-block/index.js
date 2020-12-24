@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { Fragment } = wp.element;
 const { Icon, Button, Tooltip } = wp.components;
 
 /**
@@ -10,24 +11,18 @@ const { Icon, Button, Tooltip } = wp.components;
 import { getLastBreakpointValue } from '../../../../utils';
 
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * Icons & Styles
  */
 import './editor.scss';
 import { toolbarHide, toolbarShow } from '../../../../icons';
-import { Fragment } from 'react';
 
 /**
  * Toggle Block
  */
 const ToggleBlock = props => {
-	const { display, breakpoint, onChange, defaultDisplay = 'inherit' } = props;
+	const { breakpoint, onChange, defaultDisplay = 'inherit' } = props;
 
-	const displayValue = !isObject(display) ? JSON.parse(display) : display;
+	const display = { ...props.display };
 
 	const isHide = () => {
 		const objectKeys = Object.keys(displayValue);
@@ -73,7 +68,8 @@ const ToggleBlock = props => {
 
 	return (
 		<Fragment>
-			{getValue() === 'none' ? (
+			{getLastBreakpointValue(display, 'display', breakpoint) ===
+			'none' ? (
 				<Tooltip
 					text={__('Show', 'maxi-blocks')}
 					position='bottom center'
@@ -81,10 +77,8 @@ const ToggleBlock = props => {
 					<Button
 						className='toolbar-item toolbar-item__toggle-block'
 						onClick={() => {
-							displayValue[
-								breakpoint
-							].display = getOptions().show;
-							onChange(JSON.stringify(displayValue));
+							display[breakpoint].display = defaultDisplay;
+							onChange(display);
 						}}
 					>
 						<Icon
@@ -101,10 +95,8 @@ const ToggleBlock = props => {
 					<Button
 						className='toolbar-item toolbar-item__toggle-block'
 						onClick={() => {
-							displayValue[
-								breakpoint
-							].display = getOptions().hide;
-							onChange(JSON.stringify(displayValue));
+							display[breakpoint].display = 'none';
+							onChange(display);
 						}}
 					>
 						<Icon

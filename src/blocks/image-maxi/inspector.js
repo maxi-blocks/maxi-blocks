@@ -26,20 +26,21 @@ import {
 	ImageCropControl,
 	SettingTabsControl,
 	TypographyControl,
-	__experimentalZIndexControl,
-	__experimentalAxisControl,
-	__experimentalResponsiveControl,
-	__experimentalOpacityControl,
-	__experimentalPositionControl,
-	__experimentalDisplayControl,
-	__experimentalMotionControl,
-	__experimentalTransformControl,
-	__experimentalClipPath,
-	__experimentalEntranceAnimationControl,
-	__experimentalHoverEffectControl,
-	__experimentalImageAltControl,
-	__experimentalFancyRadioControl,
-	__experimentalSVGDefaultsDisplayer,
+	ZIndexControl,
+	AxisControl,
+	ResponsiveControl,
+	OpacityControl,
+	PositionControl,
+	DisplayControl,
+	MotionControl,
+	TransformControl,
+	ClipPath,
+	EntranceAnimationControl,
+	HoverEffectControl,
+	ImageAltControl,
+	FancyRadioControl,
+	SVGDefaultsDisplayer,
+	CustomLabel,
 } from '../../components';
 import { injectImgSVG } from '../../extensions/svg/utils';
 
@@ -54,10 +55,12 @@ import { capitalize, isEmpty, isNil, isObject } from 'lodash';
 const Inspector = props => {
 	const {
 		attributes: {
+			customLabel,
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
 			defaultBlockStyle,
+			blockStyleBackground,
 			imageSize,
 			cropOptions,
 			fullWidth,
@@ -69,7 +72,6 @@ const Inspector = props => {
 			opacity,
 			boxShadow,
 			border,
-			size,
 			padding,
 			margin,
 			backgroundHover,
@@ -97,9 +99,8 @@ const Inspector = props => {
 		setAttributes,
 	} = props;
 
-	const sizeValue = !isObject(size) ? JSON.parse(size) : size;
-
-	const defaultSize = JSON.parse(getDefaultProp(clientId, 'size'));
+	const size = { ...props.attributes.size };
+	const defaultSize = getDefaultProp(clientId, 'size');
 
 	const getSizeOptions = () => {
 		const response = [];
@@ -121,6 +122,7 @@ const Inspector = props => {
 			label: 'Custom',
 			value: 'custom',
 		});
+
 		return response;
 	};
 
@@ -139,17 +141,25 @@ const Inspector = props => {
 		return response;
 	};
 
-	const backgroundHoverValue = !isObject(backgroundHover)
-		? JSON.parse(backgroundHover)
-		: backgroundHover;
+	const getSizeResponse = size => {
+		if (size === 'custom') {
+			const {
+				source_url: mediaURL,
+				width: mediaWidth,
+				height: mediaHeight,
+			} = cropOptions;
 
-	const boxShadowHoverValue = !isObject(boxShadowHover)
-		? JSON.parse(boxShadowHover)
-		: boxShadowHover;
+			return { mediaURL, mediaWidth, mediaHeight };
+		}
 
-	const borderHoverValue = !isObject(borderHover)
-		? JSON.parse(borderHover)
-		: borderHover;
+		const {
+			source_url: mediaURL,
+			width: mediaWidth,
+			height: mediaHeight,
+		} = imageData.media_details.sizes[size];
+
+		return { mediaURL, mediaWidth, mediaHeight };
+	};
 
 	return (
 		<InspectorControls>
@@ -161,16 +171,27 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
+									<CustomLabel
+										customLabel={customLabel}
+										onChange={customLabel =>
+											setAttributes({ customLabel })
+										}
+									/>
+									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										onChangeBlockStyle={blockStyle =>
-											setAttributes({ blockStyle })
+										blockStyleBackground={
+											blockStyleBackground
 										}
 										defaultBlockStyle={defaultBlockStyle}
-										onChangeDefaultBlockStyle={defaultBlockStyle =>
-											setAttributes({ defaultBlockStyle })
-										}
 										isFirstOnHierarchy={isFirstOnHierarchy}
+										onChange={obj => setAttributes(obj)}
+										disableHighlightText
+										disableHighlightBackground
+										disableHighlightBorder
+										disableHighlightColor1
+										disableHighlightColor2
+										border={border}
 									/>
 								</div>
 								<AccordionControl
@@ -214,25 +235,45 @@ const Inspector = props => {
 																: 'full'
 														} // is still necessary?
 														options={getSizeOptions()}
-														onChange={imageSize =>
+														onChange={imageSize => {
+															const {
+																mediaURL,
+																mediaWidth,
+																mediaHeight,
+															} = getSizeResponse(
+																imageSize
+															);
 															setAttributes({
 																imageSize,
-															})
-														}
+																mediaURL,
+																mediaWidth,
+																mediaHeight,
+															});
+														}}
 													/>
 													{imageSize === 'custom' && (
 														<ImageCropControl
 															mediaID={mediaID}
-															cropOptions={JSON.parse(
+															cropOptions={
 																cropOptions
-															)}
-															onChange={cropOptions =>
-																setAttributes({
-																	cropOptions: JSON.stringify(
-																		cropOptions
-																	),
-																})
 															}
+															onChange={cropOptions => {
+																setAttributes({
+																	cropOptions,
+																	mediaURL:
+																		cropOptions
+																			.image
+																			.source_url,
+																	mediaHeight:
+																		cropOptions
+																			.image
+																			.height,
+																	mediaWidth:
+																		cropOptions
+																			.image
+																			.width,
+																});
+															}}
 														/>
 													)}
 													<RangeControl
@@ -241,20 +282,17 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														value={
-															sizeValue.general
-																.width
+															size.general.width
 														}
 														onChange={val => {
 															if (isNil(val))
-																sizeValue.general.width =
+																size.general.width =
 																	defaultSize.general.width;
 															else
-																sizeValue.general.width = val;
+																size.general.width = val;
 
 															setAttributes({
-																size: JSON.stringify(
-																	sizeValue
-																),
+																size,
 															});
 														}}
 														allowReset
@@ -272,7 +310,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalImageAltControl
+												<ImageAltControl
 													mediaAlt={mediaAlt}
 													altSelector={altSelector}
 													onChangeAltSelector={altSelector => {
@@ -365,7 +403,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
@@ -394,17 +432,17 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Background Hover',
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			backgroundHoverValue.status
+																			backgroundHover.status
 																		}
 																		options={[
 																			{
@@ -423,19 +461,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			backgroundHoverValue.status = Number(
+																			backgroundHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					backgroundHover: JSON.stringify(
-																						backgroundHoverValue
-																					),
+																					backgroundHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!backgroundHoverValue.status && (
+																	{!!backgroundHover.status && (
 																		<BackgroundControl
 																			background={
 																				backgroundHover
@@ -473,7 +509,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<BorderControl
@@ -500,17 +536,17 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			borderHoverValue.status
+																			borderHover.status
 																		)}
 																		options={[
 																			{
@@ -529,19 +565,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			borderHoverValue.status = Number(
+																			borderHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					borderHover: JSON.stringify(
-																						borderHoverValue
-																					),
+																					borderHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!borderHoverValue.status && (
+																	{!!borderHover.status && (
 																		<BorderControl
 																			border={
 																				borderHover
@@ -577,7 +611,7 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													{isFirstOnHierarchy && (
-														<__experimentalFancyRadioControl
+														<FancyRadioControl
 															label={__(
 																'Full Width',
 																'maxi-blocks'
@@ -637,7 +671,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<BoxShadowControl
@@ -664,17 +698,17 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			boxShadowHoverValue.status
+																			boxShadowHover.status
 																		)}
 																		options={[
 																			{
@@ -693,19 +727,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			boxShadowHoverValue.status = Number(
+																			boxShadowHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					boxShadowHover: JSON.stringify(
-																						boxShadowHoverValue
-																					),
+																					boxShadowHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!boxShadowHoverValue.status && (
+																	{!!boxShadowHover.status && (
 																		<BoxShadowControl
 																			boxShadow={
 																				boxShadowHover
@@ -740,7 +772,7 @@ const Inspector = props => {
 											),
 											content: (
 												<Fragment>
-													<__experimentalAxisControl
+													<AxisControl
 														values={padding}
 														defaultValues={getDefaultProp(
 															clientId,
@@ -754,7 +786,7 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														disableAuto
 													/>
-													<__experimentalAxisControl
+													<AxisControl
 														values={margin}
 														defaultValues={getDefaultProp(
 															clientId,
@@ -809,7 +841,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalClipPath
+												<ClipPath
 													clipPath={clipPath}
 													onChange={clipPath =>
 														setAttributes({
@@ -822,7 +854,7 @@ const Inspector = props => {
 										{
 											label: __('Shape', 'maxi-blocks'),
 											content: (
-												<__experimentalSVGDefaultsDisplayer
+												<SVGDefaultsDisplayer
 													SVGOptions={SVGData}
 													SVGCurrentElement={
 														SVGCurrentElement
@@ -831,9 +863,7 @@ const Inspector = props => {
 														const SVGValue = !isObject(
 															SVGOptions.SVGData
 														)
-															? JSON.parse(
-																	SVGOptions.SVGData
-															  )
+															? SVGOptions.SVGData
 															: SVGOptions.SVGData;
 
 														const el = Object.keys(
@@ -866,7 +896,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalMotionControl
+												<MotionControl
 													motion={motion}
 													onChange={motion =>
 														setAttributes({
@@ -882,7 +912,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalHoverEffectControl
+												<HoverEffectControl
 													hover={hover}
 													defaultHover={getDefaultProp(
 														clientId,
@@ -901,7 +931,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalEntranceAnimationControl
+												<EntranceAnimationControl
 													motion={motion}
 													defaultMotion={getDefaultProp(
 														clientId,
@@ -921,7 +951,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalTransformControl
+												<TransformControl
 													transform={transform}
 													onChange={transform =>
 														setAttributes({
@@ -936,7 +966,7 @@ const Inspector = props => {
 										{
 											label: __('Display', 'maxi-blocks'),
 											content: (
-												<__experimentalDisplayControl
+												<DisplayControl
 													display={display}
 													onChange={display =>
 														setAttributes({
@@ -953,7 +983,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalPositionControl
+												<PositionControl
 													position={position}
 													defaultPosition={getDefaultProp(
 														clientId,
@@ -974,7 +1004,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalResponsiveControl
+												<ResponsiveControl
 													breakpoints={breakpoints}
 													defaultBreakpoints={getDefaultProp(
 														clientId,
@@ -992,7 +1022,7 @@ const Inspector = props => {
 										{
 											label: __('Z-index', 'maxi-blocks'),
 											content: (
-												<__experimentalZIndexControl
+												<ZIndexControl
 													zIndex={zIndex}
 													defaultZIndex={getDefaultProp(
 														clientId,
@@ -1010,7 +1040,7 @@ const Inspector = props => {
 										{
 											label: __('Opacity', 'maxi-blocks'),
 											content: (
-												<__experimentalOpacityControl
+												<OpacityControl
 													opacity={opacity}
 													defaultOpacity={getDefaultProp(
 														clientId,

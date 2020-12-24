@@ -13,7 +13,7 @@ const arrowTopOpacity = (
 		<defs>
 			<Path
 				id='arrow-top-opacity-a'
-				fillOpacity='.498'
+				opacity='.498'
 				d='M0 0l640 140L1280 0H0z'
 			/>
 			<Path id='arrow-top-opacity-b' d='M0 0l640 98 640-98H0z' />

@@ -1,13 +1,12 @@
 /**
  * Internal dependencies
  */
-import { __experimentalBackgroundDisplayer } from '../../components';
+import { BackgroundDisplayer } from '../../components';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
 
 /**
  * Save
@@ -21,33 +20,34 @@ const save = props => {
 			defaultBlockStyle,
 			background,
 			extraClassName,
-			motion,
 			icon,
 		},
 	} = props;
+	const highlight = { ...props.attributes.highlight };
+	const { textHighlight, backgroundHighlight, borderHighlight } = highlight;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-font-icon-block',
 		blockStyle,
+		!!textHighlight && 'maxi-highlight--text',
+		!!backgroundHighlight && 'maxi-highlight--background',
+		!!borderHighlight && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className
 	);
 
-	const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
-
 	return (
 		<div
 			className={classes}
 			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion={motion}
 			data-motion-id={uniqueID}
 		>
-			<__experimentalBackgroundDisplayer background={background} />
-			{iconValue.icon && (
+			<BackgroundDisplayer background={background} />
+			{icon.icon && (
 				<span className='maxi-font-icon-block__icon'>
-					<i className={iconValue.icon} />
+					<i className={icon.icon} />
 				</span>
 			)}
 		</div>

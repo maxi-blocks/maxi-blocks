@@ -351,6 +351,7 @@ export const borderHover = {
 
 export const size = {
 	label: 'Size',
+	advancedOptions: 0,
 	general: {
 		'max-widthUnit': 'px',
 		'max-width': '',
@@ -364,7 +365,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 	xxl: {
 		'max-widthUnit': 'px',
@@ -379,7 +379,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 	xl: {
 		'max-widthUnit': 'px',
@@ -394,7 +393,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 	l: {
 		'max-widthUnit': 'px',
@@ -409,7 +407,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 	m: {
 		'max-widthUnit': 'px',
@@ -424,7 +421,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 	s: {
 		'max-widthUnit': 'px',
@@ -439,7 +435,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 	xs: {
 		'max-widthUnit': 'px',
@@ -454,7 +449,6 @@ export const size = {
 		height: '',
 		'min-heightUnit': 'px',
 		'min-height': '',
-		advancedOptions: 0,
 	},
 };
 
@@ -490,6 +484,21 @@ export const background = {
 					widthUnit: '%',
 					height: 100,
 					heightUnit: '%',
+					cropOptions: {
+						image: {
+							source_url: '',
+							width: '',
+							height: '',
+						},
+						crop: {
+							unit: '',
+							x: 0,
+							y: 0,
+							width: 0,
+							height: 0,
+							scale: 100,
+						},
+					},
 				},
 				sizeSettings: {
 					size: '',
@@ -649,31 +658,6 @@ export const backgroundHover = {
 	},
 };
 
-export const overlay = {
-	label: 'Overlay',
-	overlayOptions: {
-		overlay: '',
-		activeColor: '',
-		color: '',
-		gradient: '',
-		gradientAboveBackground: false,
-		gradientOpacity: {
-			opacity: {
-				label: 'Opacity',
-				general: {
-					opacity: 1,
-				},
-			},
-		},
-	},
-};
-
-export const overlayHover = {
-	label: 'Overlay Hover',
-	status: 0,
-	...overlay,
-};
-
 export const boxShadow = {
 	label: 'Box Shadow',
 	general: {
@@ -809,7 +793,7 @@ export const typography = {
 		'font-sizeUnit': 'px',
 		'font-size': 16,
 		'line-heightUnit': '',
-		'line-height': 1.56,
+		'line-height': 1.625,
 		'letter-spacingUnit': 'px',
 		'letter-spacing': 0,
 		'font-weight': 400,
@@ -825,9 +809,9 @@ export const typography = {
 		color: '',
 		'text-align': '',
 		'font-sizeUnit': 'px',
-		'font-size': '',
+		'font-size': 20,
 		'line-heightUnit': '',
-		'line-height': '',
+		'line-height': 1.5,
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
 		'font-weight': '',
@@ -842,9 +826,9 @@ export const typography = {
 		'font-options': {},
 		color: '',
 		'font-sizeUnit': 'px',
-		'font-size': '',
+		'font-size': 18,
 		'line-heightUnit': '',
-		'line-height': '',
+		'line-height': 1.35,
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
 		'font-weight': '',
@@ -859,9 +843,9 @@ export const typography = {
 		'font-options': {},
 		color: '',
 		'font-sizeUnit': 'px',
-		'font-size': '',
+		'font-size': 16,
 		'line-heightUnit': '',
-		'line-height': '',
+		'line-height': 1.625,
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
 		'font-weight': '',
@@ -1235,7 +1219,7 @@ export const cropOptions = {
 	},
 };
 
-export const __experimentalDivider = {
+export const divider = {
 	label: 'Divider',
 	general: {
 		'border-color': '#ff4a17',
@@ -1258,7 +1242,7 @@ export const __experimentalDivider = {
 	},
 };
 
-export const __experimentalContainer = {
+export const container = {
 	label: 'Container size',
 	general: {
 		'max-widthUnit': 'px',
@@ -1304,7 +1288,7 @@ export const __experimentalContainer = {
 	},
 };
 
-export const __experimentalColumn = {
+export const column = {
 	label: 'Column size',
 	general: {
 		size: 90,
@@ -1329,7 +1313,7 @@ export const __experimentalColumn = {
 	},
 };
 
-export const __experimentalShapeDivider = {
+export const shapeDivider = {
 	label: 'Shape Divider',
 	top: {
 		status: 0,
@@ -1342,10 +1326,8 @@ export const __experimentalShapeDivider = {
 			},
 		},
 		shapeStyle: '',
-		colorOptions: {
-			color: '#000000',
-			gradient: '',
-			gradientAboveBackground: false,
+		background: {
+			...background,
 		},
 		effects: {
 			status: 0,
@@ -1362,10 +1344,8 @@ export const __experimentalShapeDivider = {
 			},
 		},
 		shapeStyle: '',
-		colorOptions: {
-			color: '#000000',
-			gradient: '',
-			gradientAboveBackground: false,
+		background: {
+			...background,
 		},
 		effects: {
 			status: 0,
@@ -1373,7 +1353,7 @@ export const __experimentalShapeDivider = {
 	},
 };
 
-export const __experimentalPosition = {
+export const position = {
 	label: 'Position',
 	general: {
 		position: '',
@@ -1457,7 +1437,7 @@ export const __experimentalPosition = {
 	},
 };
 
-export const __experimentalDisplay = {
+export const display = {
 	label: 'Display block',
 	general: {
 		display: '',
@@ -1482,7 +1462,7 @@ export const __experimentalDisplay = {
 	},
 };
 
-export const __experimentalHover = {
+export const hover = {
 	label: 'Hover Effects',
 	type: 'none',
 	basicEffectType: 'zoom-in',
@@ -1526,7 +1506,7 @@ export const __experimentalHover = {
 	contentText: 'Add your Hover Content here',
 };
 
-export const __experimentalMotion = {
+export const motion = {
 	label: 'Motion Effects',
 	interaction: {
 		interactionStatus: 0,
@@ -1556,7 +1536,7 @@ export const __experimentalMotion = {
 	},
 };
 
-export const __experimentalArrow = {
+export const arrow = {
 	label: 'Arrow',
 	active: 0,
 	general: {
@@ -1604,7 +1584,7 @@ export const __experimentalArrow = {
 	},
 };
 
-export const __experimentalTransform = {
+export const transform = {
 	label: 'Transform',
 	general: {
 		scaleX: '',
@@ -1697,4 +1677,13 @@ export const __experimentalTransform = {
 		originX: '',
 		originY: '',
 	},
+};
+
+export const highlight = {
+	label: 'Highlight',
+	backgroundHighlight: 0,
+	textHighlight: 0,
+	borderHighlight: 0,
+	color1Highlight: 0,
+	color2Highlight: 0,
 };

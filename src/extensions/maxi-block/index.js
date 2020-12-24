@@ -9,61 +9,84 @@
  */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable class-methods-use-this */
-/* eslint-disable react/no-did-update-set-state */
-/* eslint-disable prefer-rest-params */
-/* eslint-disable react/sort-comp */
 
 /**
  * WordPress dependencies
  */
 const { Component } = wp.element;
-const { dispatch, select, subscribe } = wp.data;
+const { select, dispatch } = wp.data;
 
-/**
- * Internal dependencies
- */
-import { ResponsiveStylesResolver, BackEndResponsiveStyles } from '../styles';
-import { getDefaultProp } from '../styles/utils';
+import styleResolver from '../styles/stylesResolver';
 
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, isEqual, isNil, isObject } from 'lodash';
+import { isEmpty, uniqueId, cloneDeep, isObject } from 'lodash';
 
 /**
  * Class
  */
 class MaxiBlock extends Component {
-	state = {
-		styles: {},
-		updating: false,
-		breakpoints: this.getBreakpoints,
-	};
+	constructor(...args) {
+		super(...args);
 
-	constructor() {
-		super(...arguments);
-		this.uniqueIDChecker(this.props.attributes.uniqueID);
-		this.fixProps();
-	}
+		const { attributes, clientId } = this.props;
+		const { uniqueID, blockStyle } = attributes;
 
-	componentDidMount() {
-		this.displayStyles();
-		this.saveProps();
+		this.uniqueIDChecker(uniqueID);
+		this.getDefaultBlockStyle(blockStyle, clientId);
+		this.cloneObjects(attributes);
 	}
 
 	componentDidUpdate() {
 		this.displayStyles();
-
-		if (!select('core/editor').isSavingPost() && this.state.updating) {
-			this.setState({
-				updating: false,
-			});
-			this.saveProps();
-		}
 	}
 
 	componentWillUnmount() {
-		this.removeStyle();
+		const obj = this.getObject;
+		const breakpoints = this.getBreakpoints;
+
+		styleResolver(obj, breakpoints, true);
+
+		dispatch('maxiBlocks/customData').removeCustomData(
+			this.props.attributes.uniqueID
+		);
+	}
+
+	get getBreakpoints() {
+		return { ...this.props.attributes.breakpoints };
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	get getObject() {
+		return null;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	get getCustomData() {
+		return null;
+	}
+
+	getDefaultBlockStyle(blockStyle, clientId) {
+		if (blockStyle) return;
+
+		let res;
+
+		const blockRootClientId = select(
+			'core/block-editor'
+		).getBlockRootClientId(clientId);
+
+		if (!blockRootClientId) res = 'maxi-light';
+		else {
+			const parentBlockStyle = select(
+				'core/block-editor'
+			).getBlockAttributes(blockRootClientId).blockStyle;
+
+			if (parentBlockStyle === 'maxi-custom') res = 'maxi-custom';
+			else res = 'maxi-parent';
+		}
+
+		this.props.setAttributes({ blockStyle: res });
 	}
 
 	uniqueIDChecker(idToCheck) {
@@ -79,129 +102,30 @@ class MaxiBlock extends Component {
 	}
 
 	/**
-	 * In case some object has been modified and an old block has a prop that doesn't correspond
-	 * with that object, this should help. It can grow with different handlers/helpers to fix errors.
+	 * Is necessary to clone deep the objects if we don't want to modify
+	 * the original one on the native Gutenberg store and to make changes into
+	 * the other blocks.
+	 *
+	 * @param {obj} attributes	Block attributes
 	 */
-	fixProps() {
-		Object.entries(this.props.attributes).forEach(([key, value]) => {
-			let obj;
-			try {
-				obj = JSON.parse(value);
-			} catch (error) {
-				return;
-			}
-
-			if (!isObject(obj)) return;
-
-			const defaultObj = JSON.parse(
-				getDefaultProp(this.props.clientId, key)
-			);
-
-			const objKeys = Object.keys(obj).sort();
-			const defaultObjKeys = Object.keys(defaultObj).sort();
-			if (JSON.stringify(objKeys) !== JSON.stringify(defaultObjKeys)) {
-				const newObject = this.generalToDesktop(obj, defaultObj);
-				this.props.setAttributes({ [key]: JSON.stringify(newObject) });
-				this.props.attributes[key] = JSON.stringify(newObject);
-			}
-		});
-	}
-
-	generalToDesktop(obj, defaultObj) {
-		if (obj.hasOwnProperty('general') && !obj.hasOwnProperty('desktop'))
-			defaultObj.desktop = obj.general;
-
-		return defaultObj;
-	}
-
-	/**
-	 * Fix preview displays
-	 */
-	saveProps() {
-		const unsubscribe = subscribe(() => {
-			const isSavingPost = select('core/editor').isSavingPost();
-			const isPreviewing = select('core/editor').isPreviewingPost();
-
-			if (isSavingPost && !isPreviewing && !this.state.updating) {
-				this.setState({
-					updating: true,
-				});
-				unsubscribe();
-
-				dispatch('maxiBlocks').saveMaxiStyles(this.getMeta, true);
-			}
-		});
-	}
-
-	get getMeta() {
-		const meta = select('maxiBlocks').receiveMaxiStyles();
-
-		switch (typeof meta) {
-			case 'string':
-				if (!isEmpty(meta)) return JSON.parse(meta);
-				return {};
-			case 'object':
-				return meta;
-			case 'undefined':
-				return {};
-			default:
-				return {};
-		}
-	}
-
-	get getBreakpoints() {
-		const { breakpoints } = this.props.attributes;
-
-		return JSON.parse(breakpoints);
-	}
-
-	get getObject() {
-		return null;
-	}
-
-	metaValue() {
-		const obj = this.getObject;
-		const breakpoints = this.getBreakpoints;
-
-		if (
-			isEqual(obj, this.state.styles) &&
-			isEqual(breakpoints, this.state.breakpoints)
-		)
-			return null;
-
-		const meta = this.getMeta;
-
-		this.setState({
-			styles: obj,
-			breakpoints,
-		});
-
-		return new ResponsiveStylesResolver(obj, meta, breakpoints);
+	cloneObjects(attributes) {
+		Object.entries(attributes).forEach(
+			([key, val]) =>
+				isObject(val) &&
+				this.props.setAttributes({ [key]: cloneDeep(val) })
+		);
 	}
 
 	/**
 	 * Refresh the styles on Editor
 	 */
 	displayStyles() {
-		const newMeta = this.metaValue();
+		const obj = this.getObject;
+		const customData = this.getCustomData;
+		const breakpoints = this.getBreakpoints;
 
-		if (isNil(newMeta)) return;
-		this.saveMeta(newMeta);
-	}
-
-	removeStyle(target = this.props.attributes.uniqueID) {
-		const cleanMeta = { ...this.getMeta };
-		Object.keys(this.getMeta).forEach(key => {
-			if (key.indexOf(target) >= 0) delete cleanMeta[key];
-		});
-
-		this.saveMeta(cleanMeta);
-	}
-
-	saveMeta(newMeta) {
-		dispatch('maxiBlocks')
-			.saveMaxiStyles(newMeta)
-			.then(new BackEndResponsiveStyles(newMeta));
+		styleResolver(obj, breakpoints);
+		dispatch('maxiBlocks/customData').updateCustomData(customData);
 	}
 }
 

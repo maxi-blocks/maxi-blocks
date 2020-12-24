@@ -10,14 +10,9 @@ const { ColorPicker, Icon } = wp.components;
 import { getLastBreakpointValue } from '../../../../utils';
 import ToolbarPopover from '../toolbar-popover';
 import {
-	__experimentalSetFormat,
-	__experimentalGetCustomFormatValue,
+	setFormat,
+	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
-
-/**
- * External dependencies
- */
-import { isObject } from 'lodash';
 
 /**
  * Icons
@@ -29,23 +24,14 @@ import { toolbarType } from '../../../../icons';
  * TextColor
  */
 const TextColor = props => {
-	const {
-		blockName,
-		typography,
-		onChange,
-
-		breakpoint,
-		isList,
-		formatValue,
-	} = props;
+	const { blockName, onChange, breakpoint, isList, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const value =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
+	const typography = { ...props.typography };
 
-	const color = __experimentalGetCustomFormatValue({
-		typography: value,
+	const color = getCustomFormatValue({
+		typography,
 		formatValue,
 		prop: 'color',
 		breakpoint,
@@ -56,13 +42,10 @@ const TextColor = props => {
 	};
 
 	const onClick = val => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const { typography: newTypography, content: newContent } = setFormat({
 			formatValue,
 			isList,
-			typography: value,
+			typography,
 			value: {
 				color: returnColor(val),
 			},
@@ -70,7 +53,7 @@ const TextColor = props => {
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			...(newContent && { content: newContent }),
 		});
 	};
@@ -87,7 +70,7 @@ const TextColor = props => {
 							background: color,
 						}) || {
 							background: getLastBreakpointValue(
-								value,
+								typography,
 								'color',
 								breakpoint
 							),
@@ -104,7 +87,7 @@ const TextColor = props => {
 				<ColorPicker
 					color={
 						color ||
-						getLastBreakpointValue(value, 'color', breakpoint)
+						getLastBreakpointValue(typography, 'color', breakpoint)
 					}
 					onChangeComplete={val => onClick(val)}
 				/>

@@ -11,11 +11,6 @@ import AlignmentControl from '../../../alignment-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * Styles & Icons
  */
 import './editor.scss';
@@ -33,16 +28,16 @@ const ALLOWED_BLOCKS = [
 	'maxi-blocks/text-maxi',
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/image-maxi',
+	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/font-icon-maxi',
 ];
 
 const Alignment = props => {
-	const { blockName, alignment, onChange, breakpoint } = props;
+	const { blockName, onChange, breakpoint } = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
-	const alignmentValue = !isObject(alignment)
-		? JSON.parse(alignment)
-		: alignment;
+	const alignment = { ...props.alignment };
 
 	const alignIcon = CurrentAlignIcon => {
 		switch (CurrentAlignIcon) {
@@ -64,7 +59,7 @@ const Alignment = props => {
 			className='toolbar-item__alignment'
 			tooltip={__('Alignment', 'maxi-blocks')}
 			icon={alignIcon(
-				getLastBreakpointValue(alignmentValue, 'alignment', breakpoint)
+				getLastBreakpointValue(alignment, 'alignment', breakpoint)
 			)}
 			content={
 				<AlignmentControl

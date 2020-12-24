@@ -3,20 +3,19 @@
  */
 const { __ } = wp.i18n;
 const { Button } = wp.components;
-const { Component } = wp.element;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
  */
 import defaultTypography from '../../extensions/defaults/typography';
-import defaultMargin from '../../extensions/defaults/margin';
 import { getDefaultProp } from '../../utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty, isObject } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -26,151 +25,116 @@ import './editor.scss';
 /**
  * Component
  */
-export default class FontLevelControl extends Component {
-	state = {
-		target: this.props.target ? this.props.target : '',
-		lastLevel: this.props.value,
+const FontLevelControl = props => {
+	const { className, value, fontOptions, fontOptionsHover, onChange } = props;
+
+	const [state, setState] = useState({
+		lastLevel: value,
 		p: {},
 		pHover: {},
-		pMargin: {},
 		h1: {},
 		h1Hover: {},
-		h1Margin: {},
 		h2: {},
 		h2Hover: {},
-		h2Margin: {},
 		h3: {},
 		h3Hover: {},
-		h3Margin: {},
 		h4: {},
 		h4Hover: {},
-		h4Margin: {},
 		h5: {},
 		h5Hover: {},
-		h5Margin: {},
 		h6: {},
 		h6Hover: {},
-		h6Margin: {},
+	});
+
+	const classes = classnames('maxi-font-level-control', className);
+
+	const saveOldies = value => {
+		setState({
+			[state.lastLevel]: fontOptions,
+			[`${state.lastLevel}Hover`]: fontOptionsHover,
+			[state.lastLevel]: value,
+		});
 	};
 
-	render() {
-		const {
-			className,
-			value,
-			fontOptions,
-			fontOptionsHover,
-			marginOptions,
-			onChange,
-		} = this.props;
+	const onChangeValue = value => {
+		saveOldies(value);
+		let fontOptResponse = {};
+		let fontOptResponseHover = {};
 
-		const { lastLevel } = this.state;
+		if (!isEmpty(state[value])) {
+			fontOptResponse = state[value];
+			fontOptResponseHover = state[`${value}Hover`];
+		} else if (!isNil(fontOptions)) {
+			const oldFontOptions = { ...fontOptions };
 
-		const classes = classnames('maxi-font-level-control', className);
+			fontOptResponse = {
+				...oldFontOptions,
+				...defaultTypography[value],
+				customFormats: { ...oldFontOptions.customFormats },
+			};
+			fontOptResponseHover = getDefaultProp(null, 'typographyHover');
+		}
 
-		const saveOldies = value => {
-			this.setState({
-				[lastLevel]: !isObject(fontOptions)
-					? JSON.parse(fontOptions)
-					: fontOptions,
+		onChange({
+			textLevel: value,
+			typography: fontOptResponse,
+			typographyHover: fontOptResponseHover,
+		});
+	};
 
-				[`${lastLevel}Hover`]: !isObject(fontOptionsHover)
-					? JSON.parse(fontOptionsHover)
-					: fontOptionsHover,
+	return (
+		<div className={classes}>
+			<Button
+				className='maxi-font-level-control__button'
+				aria-pressed={value === 'p'}
+				onClick={() => onChangeValue('p')}
+			>
+				{__('P', 'maxi-blocks')}
+			</Button>
+			<Button
+				className='maxi-font-level-control__button'
+				aria-pressed={value === 'h1'}
+				onClick={() => onChangeValue('h1')}
+			>
+				{__('H1', 'maxi-blocks')}
+			</Button>
+			<Button
+				className='maxi-font-level-control__button'
+				aria-pressed={value === 'h2'}
+				onClick={() => onChangeValue('h2')}
+			>
+				{__('H2', 'maxi-blocks')}
+			</Button>
+			<Button
+				className='maxi-font-level-control__button'
+				aria-pressed={value === 'h3'}
+				onClick={() => onChangeValue('h3')}
+			>
+				{__('H3', 'maxi-blocks')}
+			</Button>
+			<Button
+				className='maxi-font-level-control__button'
+				aria-pressed={value === 'h4'}
+				onClick={() => onChangeValue('h4')}
+			>
+				{__('H4', 'maxi-blocks')}
+			</Button>
+			<Button
+				className='maxi-font-level-control__button'
+				aria-pressed={value === 'h5'}
+				onClick={() => onChangeValue('h5')}
+			>
+				{__('H5', 'maxi-blocks')}
+			</Button>
+			<Button
+				className='maxi-font-level-control__button'
+				aria-pressed={value === 'h6'}
+				onClick={() => onChangeValue('h6')}
+			>
+				{__('H6', 'maxi-blocks')}
+			</Button>
+		</div>
+	);
+};
 
-				[`${lastLevel}Margin`]: !isObject(marginOptions)
-					? JSON.parse(marginOptions)
-					: marginOptions,
-
-				lastLevel: value,
-			});
-		};
-
-		const onChangeValue = value => {
-			saveOldies(value);
-			let fontOptResponse = {};
-			let fontOptResponseHover = {};
-			let marginOptResponse = {};
-
-			if (!isEmpty(this.state[value])) {
-				fontOptResponse = this.state[value];
-				fontOptResponseHover = this.state[`${value}Hover`];
-				marginOptResponse = this.state[`${value}Margin`];
-			} else if (!isNil(fontOptions)) {
-				const oldFontOptions = !isObject(fontOptions)
-					? JSON.parse(fontOptions)
-					: fontOptions;
-
-				fontOptResponse = {
-					...oldFontOptions,
-					...defaultTypography[value],
-					customFormats: { ...oldFontOptions.customFormats },
-				};
-				fontOptResponseHover = JSON.parse(
-					getDefaultProp(null, 'typographyHover')
-				);
-				marginOptResponse = defaultMargin[value];
-			}
-
-			onChange(
-				value,
-				JSON.stringify(fontOptResponse),
-				JSON.stringify(fontOptResponseHover),
-				JSON.stringify(marginOptResponse)
-			);
-		};
-
-		return (
-			<div className={classes}>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={value === 'p'}
-					onClick={() => onChangeValue('p')}
-				>
-					{__('P', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={value === 'h1'}
-					onClick={() => onChangeValue('h1')}
-				>
-					{__('H1', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={value === 'h2'}
-					onClick={() => onChangeValue('h2')}
-				>
-					{__('H2', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={value === 'h3'}
-					onClick={() => onChangeValue('h3')}
-				>
-					{__('H3', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={value === 'h4'}
-					onClick={() => onChangeValue('h4')}
-				>
-					{__('H4', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={value === 'h5'}
-					onClick={() => onChangeValue('h5')}
-				>
-					{__('H5', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='maxi-font-level-control__button'
-					aria-pressed={value === 'h6'}
-					onClick={() => onChangeValue('h6')}
-				>
-					{__('H6', 'maxi-blocks')}
-				</Button>
-			</div>
-		);
-	}
-}
+export default FontLevelControl;

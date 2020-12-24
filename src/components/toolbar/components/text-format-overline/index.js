@@ -8,14 +8,14 @@ const { Icon, Button, Tooltip } = wp.components;
  * Internal dependencies
  */
 import {
-	__experimentalSetFormat,
-	__experimentalGetCustomFormatValue,
+	setFormat,
+	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
 
 /**
  * External dependencies
  */
-import { isObject, trim } from 'lodash';
+import { trim } from 'lodash';
 
 /**
  * Styles and icons
@@ -26,13 +26,12 @@ import { toolbarOverline } from '../../../../icons';
  * TextFormatOverline
  */
 const TextFormatOverline = props => {
-	const { typography, formatValue, onChange, isList, breakpoint } = props;
+	const { formatValue, onChange, isList, breakpoint } = props;
 
-	const typographyValue =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
+	const typography = { ...props.typography };
 
-	const textDecorationValue = __experimentalGetCustomFormatValue({
-		typography: typographyValue,
+	const textDecorationValue = getCustomFormatValue({
+		typography,
 		formatValue,
 		prop: 'text-decoration',
 		breakpoint,
@@ -51,14 +50,11 @@ const TextFormatOverline = props => {
 	};
 
 	const onClick = () => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const { typography: newTypography, content: newContent } = setFormat({
 			formatValue,
 			isActive,
 			isList,
-			typography: typographyValue,
+			typography,
 			value: {
 				'text-decoration': getTextDecorationValue(),
 			},
@@ -66,7 +62,7 @@ const TextFormatOverline = props => {
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			...(newContent && { content: newContent }),
 		});
 	};

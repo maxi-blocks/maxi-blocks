@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { SelectControl, TextControl } = wp.components;
+const { TextControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -16,23 +16,19 @@ import {
 	BoxShadowControl,
 	FullSizeControl,
 	SettingTabsControl,
-	__experimentalDividerControl,
-	__experimentalZIndexControl,
-	__experimentalAxisControl,
-	__experimentalResponsiveControl,
-	__experimentalPositionControl,
-	__experimentalDisplayControl,
-	__experimentalMotionControl,
-	__experimentalTransformControl,
-	__experimentalEntranceAnimationControl,
-	__experimentalFancyRadioControl,
+	DividerControl,
+	ZIndexControl,
+	AxisControl,
+	ResponsiveControl,
+	PositionControl,
+	DisplayControl,
+	MotionControl,
+	TransformControl,
+	EntranceAnimationControl,
+	FancyRadioControl,
+	CustomLabel,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
-
-/**
- * External dependencies
- */
-import { isObject } from 'lodash';
 
 /**
  * Inspector
@@ -40,10 +36,12 @@ import { isObject } from 'lodash';
 const Inspector = props => {
 	const {
 		attributes: {
+			customLabel,
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
 			defaultBlockStyle,
+			blockStyleBackground,
 			lineVertical,
 			lineHorizontal,
 			lineOrientation,
@@ -51,9 +49,7 @@ const Inspector = props => {
 			fullWidth,
 			size,
 			background,
-			backgroundHover,
 			boxShadow,
-			boxShadowHover,
 			padding,
 			margin,
 			extraClassName,
@@ -68,14 +64,9 @@ const Inspector = props => {
 		setAttributes,
 		clientId,
 	} = props;
-
-	const backgroundHoverValue = !isObject(backgroundHover)
-		? JSON.parse(backgroundHover)
-		: backgroundHover;
-
-	const boxShadowHoverValue = !isObject(boxShadowHover)
-		? JSON.parse(boxShadowHover)
-		: boxShadowHover;
+	const backgroundHover = { ...props.attributes.backgroundHover };
+	const boxShadowHover = { ...props.attributes.boxShadowHover };
+	const highlight = { ...props.attributes.highlight };
 
 	return (
 		<InspectorControls>
@@ -87,16 +78,26 @@ const Inspector = props => {
 						content: (
 							<Fragment>
 								<div className='maxi-tab-content__box'>
+									<CustomLabel
+										customLabel={customLabel}
+										onChange={customLabel =>
+											setAttributes({ customLabel })
+										}
+									/>
+									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										onChangeBlockStyle={blockStyle =>
-											setAttributes({ blockStyle })
+										blockStyleBackground={
+											blockStyleBackground
 										}
 										defaultBlockStyle={defaultBlockStyle}
-										onChangeDefaultBlockStyle={defaultBlockStyle =>
-											setAttributes({ defaultBlockStyle })
-										}
 										isFirstOnHierarchy={isFirstOnHierarchy}
+										highlight={highlight}
+										onChange={obj => setAttributes(obj)}
+										disableHighlightText
+										disableHighlightBackground
+										disableHighlightColor1
+										disableHighlightColor2
 									/>
 								</div>
 								<AccordionControl
@@ -106,11 +107,15 @@ const Inspector = props => {
 											label: __('Line', 'maxi-blocks'),
 											content: (
 												<Fragment>
-													<SelectControl
+													<FancyRadioControl
+														fullWidthMode
 														label={__(
 															'Line Orientation',
 															'maxi-blocks'
 														)}
+														selected={
+															lineOrientation
+														}
 														options={[
 															{
 																label: __(
@@ -129,18 +134,19 @@ const Inspector = props => {
 																	'vertical',
 															},
 														]}
-														value={lineOrientation}
 														onChange={lineOrientation =>
 															setAttributes({
 																lineOrientation,
 															})
 														}
 													/>
-													<SelectControl
+													<FancyRadioControl
+														fullWidthMode
 														label={__(
 															'Line Vertical Position',
 															'maxi-blocks'
 														)}
+														selected={lineVertical}
 														options={[
 															{
 																label: __(
@@ -166,18 +172,21 @@ const Inspector = props => {
 																	'flex-end',
 															},
 														]}
-														value={lineVertical}
 														onChange={lineVertical =>
 															setAttributes({
 																lineVertical,
 															})
 														}
 													/>
-													<SelectControl
+													<FancyRadioControl
+														fullWidthMode
 														label={__(
 															'Line Horizontal Position',
 															'maxi-blocks'
 														)}
+														selected={
+															lineHorizontal
+														}
 														options={[
 															{
 																label: __(
@@ -203,14 +212,13 @@ const Inspector = props => {
 																	'flex-end',
 															},
 														]}
-														value={lineHorizontal}
 														onChange={lineHorizontal =>
 															setAttributes({
 																lineHorizontal,
 															})
 														}
 													/>
-													<__experimentalDividerControl
+													<DividerControl
 														divider={divider}
 														defaultDivider={getDefaultProp(
 															clientId,
@@ -224,6 +232,10 @@ const Inspector = props => {
 														lineOrientation={
 															lineOrientation
 														}
+														breakpoint={deviceType}
+														disableColor={
+															!!highlight.borderHighlight
+														}
 													/>
 												</Fragment>
 											),
@@ -236,7 +248,7 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													{isFirstOnHierarchy && (
-														<__experimentalFancyRadioControl
+														<FancyRadioControl
 															label={__(
 																'Full Width',
 																'maxi-blocks'
@@ -295,7 +307,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
@@ -324,17 +336,17 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Background Hover',
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			backgroundHoverValue.status
+																			backgroundHover.status
 																		}
 																		options={[
 																			{
@@ -353,19 +365,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			backgroundHoverValue.status = Number(
+																			backgroundHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					backgroundHover: JSON.stringify(
-																						backgroundHoverValue
-																					),
+																					backgroundHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!backgroundHoverValue.status && (
+																	{!!backgroundHover.status && (
 																		<BackgroundControl
 																			background={
 																				backgroundHover
@@ -405,7 +415,7 @@ const Inspector = props => {
 														{
 															label: __(
 																'Normal',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<BoxShadowControl
@@ -432,17 +442,17 @@ const Inspector = props => {
 														{
 															label: __(
 																'Hover',
-																'gutenberg-extra'
+																'maxi-blocks'
 															),
 															content: (
 																<Fragment>
-																	<__experimentalFancyRadioControl
+																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
-																			boxShadowHoverValue.status
+																			boxShadowHover.status
 																		)}
 																		options={[
 																			{
@@ -461,19 +471,17 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			boxShadowHoverValue.status = Number(
+																			boxShadowHover.status = Number(
 																				val
 																			);
 																			setAttributes(
 																				{
-																					boxShadowHover: JSON.stringify(
-																						boxShadowHoverValue
-																					),
+																					boxShadowHover,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!boxShadowHoverValue.status && (
+																	{!!boxShadowHover.status && (
 																		<BoxShadowControl
 																			boxShadow={
 																				boxShadowHover
@@ -508,7 +516,7 @@ const Inspector = props => {
 											),
 											content: (
 												<Fragment>
-													<__experimentalAxisControl
+													<AxisControl
 														values={padding}
 														defaultValues={getDefaultProp(
 															clientId,
@@ -522,7 +530,7 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														disableAuto
 													/>
-													<__experimentalAxisControl
+													<AxisControl
 														values={margin}
 														defaultValues={getDefaultProp(
 															clientId,
@@ -577,7 +585,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalMotionControl
+												<MotionControl
 													motion={motion}
 													onChange={motion =>
 														setAttributes({
@@ -593,7 +601,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalEntranceAnimationControl
+												<EntranceAnimationControl
 													motion={motion}
 													defaultMotion={getDefaultProp(
 														clientId,
@@ -613,7 +621,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalTransformControl
+												<TransformControl
 													transform={transform}
 													onChange={transform =>
 														setAttributes({
@@ -628,7 +636,7 @@ const Inspector = props => {
 										{
 											label: __('Display', 'maxi-blocks'),
 											content: (
-												<__experimentalDisplayControl
+												<DisplayControl
 													display={display}
 													onChange={display =>
 														setAttributes({
@@ -645,7 +653,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalPositionControl
+												<PositionControl
 													position={position}
 													defaultPosition={getDefaultProp(
 														clientId,
@@ -666,7 +674,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<__experimentalResponsiveControl
+												<ResponsiveControl
 													breakpoints={breakpoints}
 													defaultBreakpoints={getDefaultProp(
 														clientId,
@@ -684,7 +692,7 @@ const Inspector = props => {
 										{
 											label: __('Z-index', 'maxi-blocks'),
 											content: (
-												<__experimentalZIndexControl
+												<ZIndexControl
 													zIndex={zIndex}
 													defaultZIndex={getDefaultProp(
 														clientId,

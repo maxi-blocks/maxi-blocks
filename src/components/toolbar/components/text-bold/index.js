@@ -8,14 +8,9 @@ const { Icon, Button, Tooltip } = wp.components;
  * Internal dependencies
  */
 import {
-	__experimentalGetCustomFormatValue,
-	__experimentalSetFormat,
+	getCustomFormatValue,
+	setFormat,
 } from '../../../../extensions/text/formats';
-
-/**
- * External dependencies
- */
-import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -26,21 +21,15 @@ import { toolbarBold } from '../../../../icons';
 /**
  * TextBold
  */
-const TextBold = ({
-	typography,
-	formatValue,
-	blockName,
-	onChange,
-	isList,
-	breakpoint,
-}) => {
+const TextBold = props => {
+	const { formatValue, blockName, onChange, isList, breakpoint } = props;
+
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typographyValue =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
+	const typography = { ...props.typography };
 
-	const boldValue = __experimentalGetCustomFormatValue({
-		typography: typographyValue,
+	const boldValue = getCustomFormatValue({
+		typography,
 		formatValue,
 		prop: 'font-weight',
 		breakpoint,
@@ -49,14 +38,11 @@ const TextBold = ({
 	const isActive = (boldValue > 400 && true) || false;
 
 	const onClick = () => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const { typography: newTypography, content: newContent } = setFormat({
 			formatValue,
 			isActive,
 			isList,
-			typography: typographyValue,
+			typography,
 			value: {
 				'font-weight': (isActive && 400) || 800,
 			},
@@ -65,7 +51,7 @@ const TextBold = ({
 		});
 
 		onChange({
-			typography: JSON.stringify(newTypography),
+			typography: newTypography,
 			...(newContent && { content: newContent }),
 		});
 	};

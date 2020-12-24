@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import __experimentalAxisControl from '../../../axis-control';
+import AxisControl from '../../../axis-control';
 
 /**
  * Styles & Icons
@@ -20,7 +20,6 @@ import { toolbarPadding } from '../../../../icons';
  */
 const PaddingMargin = props => {
 	const {
-		blockName,
 		margin,
 		defaultMargin,
 		onChangeMargin,
@@ -37,14 +36,14 @@ const PaddingMargin = props => {
 			icon={toolbarPadding}
 			content={
 				<div className='toolbar-item__padding-margin__popover'>
-					<__experimentalAxisControl
+					<AxisControl
 						values={padding}
 						defaultValues={defaultPadding}
 						onChange={padding => onChangePadding(padding)}
 						breakpoint={breakpoint}
 						disableAuto
 					/>
-					<__experimentalAxisControl
+					<AxisControl
 						values={margin}
 						defaultValues={defaultMargin}
 						onChange={margin => onChangeMargin(margin)}

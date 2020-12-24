@@ -84,7 +84,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  * Edit
  */
 class edit extends MaxiBlock {
-	get getObject() {
+	get getObjectNulled() {
 		const {
 			uniqueID,
 			arrow,
@@ -272,8 +272,8 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<Toolbar {...this.props} />,
-			<Breadcrumbs />,
+			// <Toolbar {...this.props} />,
+			// <Breadcrumbs />,
 			<Fragment>
 				{isFirstOnHierarchy && fullWidth && (
 					<MotionPreview motion={motion}>
@@ -282,7 +282,7 @@ class edit extends MaxiBlock {
 							data-align={fullWidth}
 							data-maxi_initial_block_class={defaultBlockStyle}
 						>
-							<ArrowDisplayer arrow={arrow} />
+							{/* <ArrowDisplayer arrow={arrow} /> */}
 
 							{!!shapeDivider.top.status && (
 								<ShapeDivider

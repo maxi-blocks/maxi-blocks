@@ -53,7 +53,7 @@ const AxisControlTest = props => {
 			},
 		},
 		target,
-		auxTarget = '',
+		auxTarget = false,
 	} = props;
 
 	const instanceId = useInstanceId(AxisControlTest);
@@ -75,7 +75,7 @@ const AxisControlTest = props => {
 	};
 
 	const getKey = key => {
-		return `${target}-${key}${auxTarget && `-${auxTarget}`}`;
+		return `${target}-${key}${auxTarget ? `-${auxTarget}` : ''}`;
 	};
 
 	const getValue = key => {
@@ -122,7 +122,7 @@ const AxisControlTest = props => {
 	};
 
 	const currentUnit =
-		getLastBreakpointAttribute(getValue('unit'), breakpoint) || 'px';
+		getLastBreakpointAttribute(getKey('unit'), breakpoint) || 'px';
 
 	const onChangeValue = (newValue, singleTarget) => {
 		if (
@@ -135,7 +135,7 @@ const AxisControlTest = props => {
 				if (key !== 'sync' && key !== 'unit')
 					response[
 						`${target}-${key}${
-							auxTarget && `-${auxTarget}`
+							auxTarget ? `-${auxTarget}` : ''
 						}-${breakpoint}`
 					] = +newValue;
 			});
@@ -144,7 +144,7 @@ const AxisControlTest = props => {
 		} else {
 			onChange({
 				[`${target}-${singleTarget}${
-					auxTarget && `-${auxTarget}`
+					auxTarget ? `-${auxTarget}` : ''
 				}-${breakpoint}`]: newValue,
 			});
 		}
@@ -163,7 +163,7 @@ const AxisControlTest = props => {
 					onChange={val =>
 						onChange({
 							[`${target}-unit${
-								auxTarget && `-${auxTarget}`
+								auxTarget ? `-${auxTarget}` : ''
 							}-${breakpoint}`]: val,
 						})
 					}

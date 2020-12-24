@@ -1,7 +1,7 @@
 /**
  * Imports
  */
-import newAttributes from '../../extensions/styles/newDefaults';
+import * as newAttributes from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes

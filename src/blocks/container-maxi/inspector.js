@@ -13,13 +13,9 @@ import {
 	AccordionControl,
 	BackgroundControl,
 	BlockStylesControl,
-	BorderControl,
-	BoxShadowControl,
-	FullSizeControl,
 	SettingTabsControl,
 	SizeControl,
 	ZIndexControl,
-	AxisControl,
 	ResponsiveControl,
 	OpacityControl,
 	ShapeDividerControl,
@@ -28,51 +24,45 @@ import {
 	MotionControl,
 	TransformControl,
 	EntranceAnimationControl,
-	ArrowControl,
 	ParallaxControl,
 	FancyRadioControl,
 	CustomLabel,
 } from '../../components';
 import { getDefaultProp } from '../../utils';
+import FullSizeControl from '../../components/full-size-control/newFullSize';
+import BorderControl from '../../components/border-control/newBorderControl';
+import BoxShadowControl from '../../components/box-shadow-control/newBoxShadowControl';
+import AxisControl from '../../components/axis-control/newAxisControl';
+import ArrowControl from '../../components/arrow-control/newArrowControl';
+
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
 /**
  * Inspector
  */
 const Inspector = props => {
+	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
-		attributes: {
-			customLabel,
-			uniqueID,
-			isFirstOnHierarchy,
-			blockStyle,
-			defaultBlockStyle,
-			blockStyleBackground,
-			fullWidth,
-			size,
-			opacity,
-			border,
-			boxShadow,
-			padding,
-			margin,
-			extraClassName,
-			breakpoints,
-			zIndex,
-			shapeDivider,
-			position,
-			display,
-			motion,
-			arrow,
-			transform,
-		},
-		deviceType,
-		setAttributes,
-		clientId,
-	} = props;
-	const sizeContainer = { ...props.attributes.sizeContainer };
+		customLabel,
+		uniqueID,
+		isFirstOnHierarchy,
+		blockStyle,
+		defaultBlockStyle,
+		blockStyleBackground,
+		fullWidth,
+		extraClassName,
+		breakpoints,
+		zIndex,
+		shapeDivider,
+		position,
+		display,
+		motion,
+		arrow,
+		transform,
+	} = attributes;
 	const background = { ...props.attributes.background };
 	const backgroundHover = { ...props.attributes.backgroundHover };
-	const boxShadowHover = { ...props.attributes.boxShadowHover };
-	const borderHover = { ...props.attributes.borderHover };
 
 	const minMaxSettings = {
 		px: {
@@ -123,7 +113,10 @@ const Inspector = props => {
 										disableHighlightBorder
 										disableHighlightColor1
 										disableHighlightColor2
-										border={border}
+										{...getGroupAttributes(
+											attributes,
+											'border'
+										)}
 									/>
 								</div>
 								<AccordionControl
@@ -176,60 +169,34 @@ const Inspector = props => {
 																	'maxi-blocks'
 																)}
 																unit={
-																	sizeContainer[
-																		deviceType
-																	][
-																		'max-widthUnit'
+																	attributes[
+																		`container-max-width-unit-${deviceType}`
 																	]
 																}
-																defaultUnit={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	][
-																		'max-widthUnit'
-																	]
-																}
+																defaultUnit={getDefaultAttribute(
+																	`max-width-unit-${deviceType}`,
+																	clientId
+																)}
 																onChangeUnit={val => {
-																	sizeContainer[
-																		deviceType
-																	][
-																		'max-widthUnit'
-																	] = val;
 																	setAttributes(
 																		{
-																			sizeContainer,
+																			[`container-max-width-unit-${deviceType}`]: val,
 																		}
 																	);
 																}}
 																value={
-																	sizeContainer[
-																		deviceType
-																	][
-																		'max-width'
+																	attributes[
+																		`container-max-width-${deviceType}`
 																	]
 																}
-																default={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	][
-																		'max-width'
-																	]
-																}
+																default={getDefaultAttribute(
+																	`container-max-width-${deviceType}`,
+																	clientId
+																)}
 																onChangeValue={val => {
-																	sizeContainer[
-																		deviceType
-																	][
-																		'max-width'
-																	] = val;
 																	setAttributes(
 																		{
-																			sizeContainer,
+																			[`container-max-width-${deviceType}`]: val,
 																		}
 																	);
 																}}
@@ -243,48 +210,34 @@ const Inspector = props => {
 																	'maxi-blocks'
 																)}
 																unit={
-																	sizeContainer[
-																		deviceType
-																	].widthUnit
+																	attributes[
+																		`container-width-unit-${deviceType}`
+																	]
 																}
-																defaultUnit={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	].widthUnit
-																}
+																defaultUnit={getDefaultAttribute(
+																	`container-width-unit-${deviceType}`,
+																	clientId
+																)}
 																onChangeUnit={val => {
-																	sizeContainer[
-																		deviceType
-																	].widthUnit = val;
 																	setAttributes(
 																		{
-																			sizeContainer,
+																			[`container-width-unit-${deviceType}`]: val,
 																		}
 																	);
 																}}
 																value={
-																	sizeContainer[
-																		deviceType
-																	].width
+																	attributes[
+																		`container-width-${deviceType}`
+																	]
 																}
-																default={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	].width
-																}
+																default={getDefaultAttribute(
+																	`container-width-${deviceType}`,
+																	clientId
+																)}
 																onChangeValue={val => {
-																	sizeContainer[
-																		deviceType
-																	].width = val;
 																	setAttributes(
 																		{
-																			sizeContainer,
+																			[`container-width-${deviceType}`]: val,
 																		}
 																	);
 																}}
@@ -295,15 +248,14 @@ const Inspector = props => {
 														</Fragment>
 													) : (
 														<FullSizeControl
-															size={size}
-															defaultSize={getDefaultProp(
-																clientId,
+															{...getGroupAttributes(
+																attributes,
 																'size'
 															)}
-															onChange={size =>
-																setAttributes({
-																	size,
-																})
+															onChange={obj =>
+																setAttributes(
+																	obj
+																)
 															}
 															breakpoint={
 																deviceType
@@ -313,130 +265,130 @@ const Inspector = props => {
 												</Fragment>
 											),
 										},
-										deviceType === 'general' && {
-											label: __(
-												'Background',
-												'maxi-blocks'
-											),
-											disablePadding: true,
-											content: (
-												<SettingTabsControl
-													items={[
-														{
-															label: __(
-																'Normal',
-																'maxi-blocks'
-															),
-															content: (
-																<Fragment>
-																	<BackgroundControl
-																		background={
-																			background
-																		}
-																		defaultBackground={getDefaultProp(
-																			clientId,
-																			'background'
-																		)}
-																		onChange={background =>
-																			setAttributes(
-																				{
-																					background,
-																				}
-																			)
-																		}
-																	/>
-																	{background.activeMedia ===
-																		'image' && (
-																		<ParallaxControl
-																			motion={
-																				motion
-																			}
-																			defaultMotion={getDefaultProp(
-																				clientId,
-																				'motion'
-																			)}
-																			onChange={motion =>
-																				setAttributes(
-																					{
-																						motion,
-																					}
-																				)
-																			}
-																		/>
-																	)}
-																</Fragment>
-															),
-														},
-														{
-															label: __(
-																'Hover',
-																'maxi-blocks'
-															),
-															content: (
-																<Fragment>
-																	<FancyRadioControl
-																		label={__(
-																			'Enable Background Hover',
-																			'maxi-blocks'
-																		)}
-																		selected={
-																			backgroundHover.status
-																		}
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
-																		onChange={val => {
-																			backgroundHover.status = Number(
-																				val
-																			);
-																			setAttributes(
-																				{
-																					backgroundHover,
-																				}
-																			);
-																		}}
-																	/>
-																	{!!backgroundHover.status && (
-																		<BackgroundControl
-																			background={
-																				backgroundHover
-																			}
-																			defaultBackground={getDefaultProp(
-																				clientId,
-																				'backgroundHover'
-																			)}
-																			onChange={backgroundHover =>
-																				setAttributes(
-																					{
-																						backgroundHover,
-																					}
-																				)
-																			}
-																			disableImage
-																			disableVideo
-																			disableSVG
-																		/>
-																	)}
-																</Fragment>
-															),
-														},
-													]}
-												/>
-											),
-										},
+										// deviceType === 'general' && {
+										// 	label: __(
+										// 		'Background',
+										// 		'maxi-blocks'
+										// 	),
+										// 	disablePadding: true,
+										// 	content: (
+										// 		<SettingTabsControl
+										// 			items={[
+										// 				{
+										// 					label: __(
+										// 						'Normal',
+										// 						'maxi-blocks'
+										// 					),
+										// 					content: (
+										// 						<Fragment>
+										// 							<BackgroundControl
+										// 								background={
+										// 									background
+										// 								}
+										// 								defaultBackground={getDefaultProp(
+										// 									clientId,
+										// 									'background'
+										// 								)}
+										// 								onChange={background =>
+										// 									setAttributes(
+										// 										{
+										// 											background,
+										// 										}
+										// 									)
+										// 								}
+										// 							/>
+										// 							{background.activeMedia ===
+										// 								'image' && (
+										// 								<ParallaxControl
+										// 									motion={
+										// 										motion
+										// 									}
+										// 									defaultMotion={getDefaultProp(
+										// 										clientId,
+										// 										'motion'
+										// 									)}
+										// 									onChange={motion =>
+										// 										setAttributes(
+										// 											{
+										// 												motion,
+										// 											}
+										// 										)
+										// 									}
+										// 								/>
+										// 							)}
+										// 						</Fragment>
+										// 					),
+										// 				},
+										// 				{
+										// 					label: __(
+										// 						'Hover',
+										// 						'maxi-blocks'
+										// 					),
+										// 					content: (
+										// 						<Fragment>
+										// 							<FancyRadioControl
+										// 								label={__(
+										// 									'Enable Background Hover',
+										// 									'maxi-blocks'
+										// 								)}
+										// 								selected={
+										// 									backgroundHover.status
+										// 								}
+										// 								options={[
+										// 									{
+										// 										label: __(
+										// 											'Yes',
+										// 											'maxi-blocks'
+										// 										),
+										// 										value: 1,
+										// 									},
+										// 									{
+										// 										label: __(
+										// 											'No',
+										// 											'maxi-blocks'
+										// 										),
+										// 										value: 0,
+										// 									},
+										// 								]}
+										// 								onChange={val => {
+										// 									backgroundHover.status = Number(
+										// 										val
+										// 									);
+										// 									setAttributes(
+										// 										{
+										// 											backgroundHover,
+										// 										}
+										// 									);
+										// 								}}
+										// 							/>
+										// 							{!!backgroundHover.status && (
+										// 								<BackgroundControl
+										// 									background={
+										// 										backgroundHover
+										// 									}
+										// 									defaultBackground={getDefaultProp(
+										// 										clientId,
+										// 										'backgroundHover'
+										// 									)}
+										// 									onChange={backgroundHover =>
+										// 										setAttributes(
+										// 											{
+										// 												backgroundHover,
+										// 											}
+										// 										)
+										// 									}
+										// 									disableImage
+										// 									disableVideo
+										// 									disableSVG
+										// 								/>
+										// 							)}
+										// 						</Fragment>
+										// 					),
+										// 				},
+										// 			]}
+										// 		/>
+										// 	),
+										// },
 										{
 											label: __('Border', 'maxi-blocks'),
 											disablePadding: true,
@@ -450,18 +402,13 @@ const Inspector = props => {
 															),
 															content: (
 																<BorderControl
-																	border={
-																		border
-																	}
-																	defaultBorder={getDefaultProp(
-																		clientId,
+																	{...getGroupAttributes(
+																		attributes,
 																		'border'
 																	)}
-																	onChange={border =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				border,
-																			}
+																			obj
 																		)
 																	}
 																	breakpoint={
@@ -482,9 +429,11 @@ const Inspector = props => {
 																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
-																		selected={Number(
-																			borderHover.status
-																		)}
+																		selected={
+																			attributes[
+																				'border-hover-status'
+																			]
+																		}
 																		options={[
 																			{
 																				label: __(
@@ -502,30 +451,24 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			borderHover.status = Number(
-																				val
-																			);
 																			setAttributes(
 																				{
-																					borderHover,
+																					'border-hover-status': !!val,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!borderHover.status && (
+																	{attributes[
+																		'border-hover-status'
+																	] && (
 																		<BorderControl
-																			border={
-																				borderHover
-																			}
-																			defaultBorder={getDefaultProp(
-																				clientId,
+																			{...getGroupAttributes(
+																				attributes,
 																				'borderHover'
 																			)}
-																			onChange={borderHover =>
+																			onChange={obj =>
 																				setAttributes(
-																					{
-																						borderHover,
-																					}
+																					obj
 																				)
 																			}
 																			breakpoint={
@@ -556,18 +499,13 @@ const Inspector = props => {
 															),
 															content: (
 																<BoxShadowControl
-																	boxShadow={
-																		boxShadow
-																	}
-																	defaultBoxShadow={getDefaultProp(
-																		clientId,
+																	{...getGroupAttributes(
+																		attributes,
 																		'boxShadow'
 																	)}
-																	onChange={boxShadow =>
+																	onChange={obj =>
 																		setAttributes(
-																			{
-																				boxShadow,
-																			}
+																			obj
 																		)
 																	}
 																	breakpoint={
@@ -588,9 +526,11 @@ const Inspector = props => {
 																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
-																		selected={Number(
-																			boxShadowHover.status
-																		)}
+																		selected={
+																			attributes[
+																				'boxShadow-hover-status'
+																			]
+																		}
 																		options={[
 																			{
 																				label: __(
@@ -608,30 +548,24 @@ const Inspector = props => {
 																			},
 																		]}
 																		onChange={val => {
-																			boxShadowHover.status = Number(
-																				val
-																			);
 																			setAttributes(
 																				{
-																					boxShadowHover,
+																					'boxShadow-hover-status': !!val,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!boxShadowHover.status && (
+																	{attributes[
+																		'boxShadow-hover-status'
+																	] && (
 																		<BoxShadowControl
-																			boxShadow={
-																				boxShadowHover
-																			}
-																			defaultBoxShadow={getDefaultProp(
-																				clientId,
-																				'boxShadowHover'
+																			{...getGroupAttributes(
+																				attributes,
+																				'boxShadow-hover'
 																			)}
-																			onChange={boxShadowHover =>
+																			onChange={obj =>
 																				setAttributes(
-																					{
-																						boxShadowHover,
-																					}
+																					obj
 																				)
 																			}
 																			breakpoint={
@@ -654,31 +588,35 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													<AxisControl
-														values={padding}
-														defaults={getDefaultProp(
-															clientId,
+														{...getGroupAttributes(
+															attributes,
 															'padding'
 														)}
-														onChange={padding =>
-															setAttributes({
-																padding,
-															})
+														label={__(
+															'Padding',
+															'maxi-blocks'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
 														}
 														breakpoint={deviceType}
+														target='padding'
 														disableAuto
 													/>
 													<AxisControl
-														values={margin}
-														defaults={getDefaultProp(
-															clientId,
+														{...getGroupAttributes(
+															attributes,
 															'margin'
 														)}
-														onChange={margin =>
-															setAttributes({
-																margin,
-															})
+														label={__(
+															'Margin',
+															'maxi-blocks'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
 														}
 														breakpoint={deviceType}
+														target='margin'
 													/>
 												</Fragment>
 											),
@@ -687,13 +625,12 @@ const Inspector = props => {
 											label: __('Arrow', 'maxi-blocks'),
 											content: (
 												<ArrowControl
-													arrow={arrow}
-													defaultArrow={getDefaultProp(
-														clientId,
+													{...getGroupAttributes(
+														attributes,
 														'arrow'
 													)}
-													onChange={arrow =>
-														setAttributes({ arrow })
+													onChange={obj =>
+														setAttributes(obj)
 													}
 													isFullWidth={fullWidth}
 													breakpoint={deviceType}
@@ -708,184 +645,184 @@ const Inspector = props => {
 							</Fragment>
 						),
 					},
-					{
-						label: __('Advanced', 'maxi-blocks'),
-						content: (
-							<AccordionControl
-								isPrimary
-								items={[
-									deviceType === 'general' && {
-										label: __(
-											'Custom Classes',
-											'maxi-blocks'
-										),
-										content: (
-											<TextControl
-												label={__(
-													'Additional CSS Classes',
-													'maxi-blocks'
-												)}
-												className='maxi-additional__css-classes'
-												value={extraClassName}
-												onChange={extraClassName =>
-													setAttributes({
-														extraClassName,
-													})
-												}
-											/>
-										),
-									},
-									{
-										label: __(
-											'Shape Divider',
-											'maxi-blocks'
-										),
-										content: (
-											<ShapeDividerControl
-												shapeDividerOptions={
-													shapeDivider
-												}
-												defaultShapeDividerOptions={getDefaultProp(
-													clientId,
-													'shapeDivider'
-												)}
-												onChange={shapeDivider =>
-													setAttributes({
-														shapeDivider,
-													})
-												}
-											/>
-										),
-									},
-									{
-										label: __(
-											'Motion Effects',
-											'maxi-blocks'
-										),
-										content: (
-											<MotionControl
-												motion={motion}
-												onChange={motion =>
-													setAttributes({ motion })
-												}
-											/>
-										),
-									},
-									{
-										label: __(
-											'Entrance Animation',
-											'maxi-blocks'
-										),
-										content: (
-											<EntranceAnimationControl
-												motion={motion}
-												defaultMotion={getDefaultProp(
-													clientId,
-													'motion'
-												)}
-												onChange={motion =>
-													setAttributes({ motion })
-												}
-											/>
-										),
-									},
-									{
-										label: __('Transform', 'maxi-blocks'),
-										content: (
-											<TransformControl
-												transform={transform}
-												onChange={transform =>
-													setAttributes({ transform })
-												}
-												uniqueID={uniqueID}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Display', 'maxi-blocks'),
-										content: (
-											<DisplayControl
-												display={display}
-												onChange={display =>
-													setAttributes({ display })
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Position', 'maxi-blocks'),
-										content: (
-											<PositionControl
-												position={position}
-												defaultPosition={getDefaultProp(
-													clientId,
-													'position'
-												)}
-												onChange={position =>
-													setAttributes({ position })
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									deviceType !== 'general' && {
-										label: __('Breakpoint', 'maxi-blocks'),
-										content: (
-											<ResponsiveControl
-												breakpoints={breakpoints}
-												defaultBreakpoints={getDefaultProp(
-													clientId,
-													'breakpoints'
-												)}
-												onChange={breakpoints =>
-													setAttributes({
-														breakpoints,
-													})
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Z-index', 'maxi-blocks'),
-										content: (
-											<ZIndexControl
-												zIndex={zIndex}
-												defaultZIndex={getDefaultProp(
-													clientId,
-													'zIndex'
-												)}
-												onChange={zIndex =>
-													setAttributes({ zIndex })
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Opacity', 'maxi-blocks'),
-										content: (
-											<OpacityControl
-												opacity={opacity}
-												defaultOpacity={getDefaultProp(
-													clientId,
-													'opacity'
-												)}
-												onChange={opacity =>
-													setAttributes({
-														opacity,
-													})
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-								]}
-							/>
-						),
-					},
+					// {
+					// 	label: __('Advanced', 'maxi-blocks'),
+					// 	content: (
+					// 		<AccordionControl
+					// 			isPrimary
+					// 			items={[
+					// 				deviceType === 'general' && {
+					// 					label: __(
+					// 						'Custom Classes',
+					// 						'maxi-blocks'
+					// 					),
+					// 					content: (
+					// 						<TextControl
+					// 							label={__(
+					// 								'Additional CSS Classes',
+					// 								'maxi-blocks'
+					// 							)}
+					// 							className='maxi-additional__css-classes'
+					// 							value={extraClassName}
+					// 							onChange={extraClassName =>
+					// 								setAttributes({
+					// 									extraClassName,
+					// 								})
+					// 							}
+					// 						/>
+					// 					),
+					// 				},
+					// 				{
+					// 					label: __(
+					// 						'Shape Divider',
+					// 						'maxi-blocks'
+					// 					),
+					// 					content: (
+					// 						<ShapeDividerControl
+					// 							shapeDividerOptions={
+					// 								shapeDivider
+					// 							}
+					// 							defaultShapeDividerOptions={getDefaultProp(
+					// 								clientId,
+					// 								'shapeDivider'
+					// 							)}
+					// 							onChange={shapeDivider =>
+					// 								setAttributes({
+					// 									shapeDivider,
+					// 								})
+					// 							}
+					// 						/>
+					// 					),
+					// 				},
+					// 				{
+					// 					label: __(
+					// 						'Motion Effects',
+					// 						'maxi-blocks'
+					// 					),
+					// 					content: (
+					// 						<MotionControl
+					// 							motion={motion}
+					// 							onChange={motion =>
+					// 								setAttributes({ motion })
+					// 							}
+					// 						/>
+					// 					),
+					// 				},
+					// 				{
+					// 					label: __(
+					// 						'Entrance Animation',
+					// 						'maxi-blocks'
+					// 					),
+					// 					content: (
+					// 						<EntranceAnimationControl
+					// 							motion={motion}
+					// 							defaultMotion={getDefaultProp(
+					// 								clientId,
+					// 								'motion'
+					// 							)}
+					// 							onChange={motion =>
+					// 								setAttributes({ motion })
+					// 							}
+					// 						/>
+					// 					),
+					// 				},
+					// 				{
+					// 					label: __('Transform', 'maxi-blocks'),
+					// 					content: (
+					// 						<TransformControl
+					// 							transform={transform}
+					// 							onChange={transform =>
+					// 								setAttributes({ transform })
+					// 							}
+					// 							uniqueID={uniqueID}
+					// 							breakpoint={deviceType}
+					// 						/>
+					// 					),
+					// 				},
+					// 				{
+					// 					label: __('Display', 'maxi-blocks'),
+					// 					content: (
+					// 						<DisplayControl
+					// 							display={display}
+					// 							onChange={display =>
+					// 								setAttributes({ display })
+					// 							}
+					// 							breakpoint={deviceType}
+					// 						/>
+					// 					),
+					// 				},
+					// 				{
+					// 					label: __('Position', 'maxi-blocks'),
+					// 					content: (
+					// 						<PositionControl
+					// 							position={position}
+					// 							defaultPosition={getDefaultProp(
+					// 								clientId,
+					// 								'position'
+					// 							)}
+					// 							onChange={position =>
+					// 								setAttributes({ position })
+					// 							}
+					// 							breakpoint={deviceType}
+					// 						/>
+					// 					),
+					// 				},
+					// 				deviceType !== 'general' && {
+					// 					label: __('Breakpoint', 'maxi-blocks'),
+					// 					content: (
+					// 						<ResponsiveControl
+					// 							breakpoints={breakpoints}
+					// 							defaultBreakpoints={getDefaultProp(
+					// 								clientId,
+					// 								'breakpoints'
+					// 							)}
+					// 							onChange={breakpoints =>
+					// 								setAttributes({
+					// 									breakpoints,
+					// 								})
+					// 							}
+					// 							breakpoint={deviceType}
+					// 						/>
+					// 					),
+					// 				},
+					// 				{
+					// 					label: __('Z-index', 'maxi-blocks'),
+					// 					content: (
+					// 						<ZIndexControl
+					// 							zIndex={zIndex}
+					// 							defaultZIndex={getDefaultProp(
+					// 								clientId,
+					// 								'zIndex'
+					// 							)}
+					// 							onChange={zIndex =>
+					// 								setAttributes({ zIndex })
+					// 							}
+					// 							breakpoint={deviceType}
+					// 						/>
+					// 					),
+					// 				},
+					// 				{
+					// 					label: __('Opacity', 'maxi-blocks'),
+					// 					content: (
+					// 						<OpacityControl
+					// 							opacity={opacity}
+					// 							defaultOpacity={getDefaultProp(
+					// 								clientId,
+					// 								'opacity'
+					// 							)}
+					// 							onChange={opacity =>
+					// 								setAttributes({
+					// 									opacity,
+					// 								})
+					// 							}
+					// 							breakpoint={deviceType}
+					// 						/>
+					// 					),
+					// 				},
+					// 			]}
+					// 		/>
+					// 	),
+					// },
 				]}
 			/>
 		</InspectorControls>

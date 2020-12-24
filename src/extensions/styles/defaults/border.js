@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 const border = {
 	'border-color-general': {
 		type: 'string',
@@ -382,6 +381,4 @@ const border = {
 	},
 };
 
-export default {
-	border,
-};
+export default border;

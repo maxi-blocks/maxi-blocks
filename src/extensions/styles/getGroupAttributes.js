@@ -1,4 +1,4 @@
-import defaults from './newDefaults';
+import * as defaults from './defaults/index';
 
 const getGroupAttributes = (attributes, target) => {
 	const response = {};

@@ -6,11 +6,6 @@ const { Fragment } = wp.element;
 const { Icon, Button, Tooltip } = wp.components;
 
 /**
- * Internal dependencies
- */
-import { getLastBreakpointValue } from '../../../../utils';
-
-/**
  * Icons & Styles
  */
 import './editor.scss';

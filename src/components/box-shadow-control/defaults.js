@@ -8,7 +8,7 @@ export const boxShadowNone = {
 };
 
 export const boxShadowTotal = {
-	shadowColor: 'rgba(162, 162, 162, 1)',
+	shadowColor: '#a2a2a2',
 	defaultShadowColor: '#000',
 	shadowHorizontal: 0,
 	shadowVertical: 0,
@@ -17,7 +17,7 @@ export const boxShadowTotal = {
 };
 
 export const boxShadowBottom = {
-	shadowColor: 'rgba(162, 162, 162, 1)',
+	shadowColor: '#a2a2a2',
 	defaultShadowColor: '#000',
 	shadowHorizontal: 0,
 	shadowVertical: 20,
@@ -26,7 +26,7 @@ export const boxShadowBottom = {
 };
 
 export const boxShadowSolid = {
-	shadowColor: 'rgba(162, 162, 162, 1)',
+	shadowColor: '#a2a2a2',
 	defaultShadowColor: '#000',
 	shadowHorizontal: 5,
 	shadowVertical: 5,

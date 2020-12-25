@@ -28,10 +28,19 @@ const ColorControl = props => {
 	const getRGB = colorString => {
 		const rgbKeys = ['r', 'g', 'b', 'a'];
 		const output = {};
-		const color = colorString.replace(/^rgba?\(|\s+|\)$/g, '').split(',');
 
-		for (const i in rgbKeys) output[rgbKeys[i]] = color[i] || 1;
+		if (colorString.charAt(0) === '#') {
+			const aRgbHex = colorString.replace('#', '').match(/.{1,2}/g);
 
+			for (const i in rgbKeys)
+				output[rgbKeys[i]] = parseInt(aRgbHex[i], 16) || 1;
+		} else {
+			const color = colorString
+				.replace(/^rgba?\(|\s+|\)$/g, '')
+				.split(',');
+
+			for (const i in rgbKeys) output[rgbKeys[i]] = color[i] || 1;
+		}
 		return { rgb: { ...output } };
 	};
 
@@ -48,13 +57,17 @@ const ColorControl = props => {
 		onChange(defaultColor);
 		setColorAlpha(100);
 		if (!isEmpty(defaultColor))
-			onChange(returnColor(getRGB(defaultColor), 1));
+			onChange(returnColor(getRGB(defaultColor), 100));
 	};
 
 	useEffect(() => {
 		if (color !== currentColor) {
 			setCurrentColor(color);
-			setColorAlpha(getRGB(color).rgb.a);
+			setColorAlpha(
+				getRGB(color).rgb.a === 1 || getRGB(color).rgb.a === 100
+					? 100
+					: getRGB(color).rgb.a
+			);
 		}
 	}, [color, currentColor, setCurrentColor, setColorAlpha, getRGB]);
 

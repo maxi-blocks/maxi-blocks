@@ -39,7 +39,6 @@ const LayerCard = props => {
 		'maxi-background-layer',
 		isOpen && 'maxi-background-layer__open'
 	);
-
 	return (
 		<div className={classes}>
 			<div

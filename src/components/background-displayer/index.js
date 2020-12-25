@@ -67,7 +67,7 @@ const BackgroundDisplayer = props => {
 				</Fragment>
 			) : (
 				!!layers &&
-				layers.map(layer => {
+				layers.map((layer, index) => {
 					switch (layer.type) {
 						case 'color':
 						case 'gradient':
@@ -79,6 +79,7 @@ const BackgroundDisplayer = props => {
 										'maxi-background-displayer__layer',
 										`maxi-background-displayer__${layer.id}`
 									)}
+									style={{ zIndex: layers.length - index }}
 								/>
 							);
 						case 'video':

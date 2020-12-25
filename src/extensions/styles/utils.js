@@ -665,20 +665,9 @@ export const setBackgroundStyles = ({
 					...getImageBackgroundObject(background.imageOptions),
 				},
 			},
-			[`${target}:hover > .maxi-background-displayer .maxi-background-displayer__images`]: {
-				imageBackgroundHover: {
-					...getImageBackgroundObject(backgroundHover.imageOptions),
-				},
-			},
 			[`${target} > .maxi-background-displayer .maxi-background-displayer__video-player`]: {
 				videoBackground: {
 					...getVideoBackgroundObject(background.videoOptions),
-				},
-			},
-
-			[`${target}:hover > .maxi-background-displayer .maxi-background-displayer__video-player`]: {
-				videoBackgroundHover: {
-					...getVideoBackgroundObject(backgroundHover.videoOptions),
 				},
 			},
 			[`${target} > .maxi-background-displayer .maxi-background-displayer__svg`]: {

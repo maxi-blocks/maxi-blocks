@@ -974,6 +974,7 @@ const Inspector = props => {
 														})
 													}
 													breakpoint={deviceType}
+													defaultDisplay='flex'
 												/>
 											),
 										},

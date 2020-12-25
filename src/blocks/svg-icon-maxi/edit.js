@@ -30,7 +30,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, isObject } from 'lodash';
 import Iframe from 'react-iframe';
 
 /**

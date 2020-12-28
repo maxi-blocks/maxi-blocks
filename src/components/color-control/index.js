@@ -32,14 +32,17 @@ const ColorControl = props => {
 		if (colorString.charAt(0) === '#') {
 			const aRgbHex = colorString.replace('#', '').match(/.{1,2}/g);
 
-			for (const i in rgbKeys)
+			rgbKeys.forEach((item, i) => {
 				output[rgbKeys[i]] = parseInt(aRgbHex[i], 16) || 1;
+			});
 		} else {
 			const color = colorString
 				.replace(/^rgba?\(|\s+|\)$/g, '')
 				.split(',');
 
-			for (const i in rgbKeys) output[rgbKeys[i]] = color[i] || 1;
+			rgbKeys.forEach((item, i) => {
+				output[rgbKeys[i]] = color[i] || 1;
+			});
 		}
 		return { rgb: { ...output } };
 	};

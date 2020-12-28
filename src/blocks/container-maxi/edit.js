@@ -47,6 +47,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 		maxiBlockClass,
 		uniqueID,
 		background,
+		arrow,
 	} = props;
 
 	return (
@@ -56,6 +57,8 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			data-align={dataAlign}
 			data-gx_initial_block_class={maxiBlockClass}
 		>
+			<ArrowDisplayer arrow={arrow} />
+
 			{!!shapeDivider.top.status && (
 				<ShapeDivider shapeDividerOptions={shapeDivider} />
 			)}
@@ -337,6 +340,7 @@ class edit extends MaxiBlock {
 							shapeDivider,
 							background,
 							uniqueID,
+							arrow,
 						}}
 						renderAppender={
 							!hasInnerBlock

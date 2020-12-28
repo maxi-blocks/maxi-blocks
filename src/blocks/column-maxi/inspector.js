@@ -112,7 +112,6 @@ const Inspector = props => {
 														)}
 														value={columnSize}
 														onChange={val => {
-															console.log(val);
 															columnSize[
 																deviceType
 															].size = val;

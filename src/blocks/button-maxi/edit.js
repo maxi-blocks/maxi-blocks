@@ -5,6 +5,7 @@ const { __ } = wp.i18n;
 const { compose } = wp.compose;
 const { withSelect, withDispatch } = wp.data;
 const { __experimentalBlock, RichText } = wp.blockEditor;
+const { createRef } = wp.element;
 
 /**
  * Internal dependencies
@@ -33,6 +34,15 @@ import { isNil, isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
+	constructor(props) {
+		super(props);
+		this.buttonRef = createRef();
+	}
+
+	componentDidMount() {
+		this.buttonRef.current.focus();
+	}
+
 	state = {
 		formatValue: this.props.generateFormatValue() || {},
 		textSelected: '',
@@ -259,6 +269,9 @@ class edit extends MaxiBlock {
 					<div className={buttonClasses}>
 						{icon.icon && <i className={icon.icon} />}
 						<RichText
+							ref={this.buttonRef}
+							withoutInteractiveFormatting
+							placeholder={__('Set some text…', 'maxi-blocks')}
 							className='maxi-button-block__content'
 							value={content}
 							identifier='content'

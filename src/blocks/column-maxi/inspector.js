@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { Fragment } = wp.element;
+const { Fragment, useState } = wp.element;
 const { RangeControl, SelectControl, TextControl } = wp.components;
 
 /**
@@ -25,7 +25,7 @@ import {
 	FancyRadioControl,
 	CustomLabel,
 } from '../../components';
-import { getDefaultProp, getLastBreakpointValue } from '../../utils';
+import { getDefaultProp } from '../../utils';
 
 /**
  * Inspector
@@ -60,6 +60,8 @@ const Inspector = props => {
 		setAttributes,
 		clientId,
 	} = props;
+
+	const [colSize, setColSize] = useState(columnSize[deviceType].size);
 
 	return (
 		<InspectorControls>
@@ -110,7 +112,7 @@ const Inspector = props => {
 															'Column Size (%)',
 															'maxi-blocks'
 														)}
-														value={columnSize}
+														value={colSize}
 														onChange={val => {
 															columnSize[
 																deviceType
@@ -119,12 +121,13 @@ const Inspector = props => {
 																`.maxi-column-block__resizer__${uniqueID}`
 															).style.width = `${val}%`;
 
+															setColSize(val);
 															setAttributes({
 																columnSize,
 															});
 														}}
-														min='0'
-														max='100'
+														min={0}
+														max={100}
 														step={0.1}
 														allowReset
 														initialPosition={

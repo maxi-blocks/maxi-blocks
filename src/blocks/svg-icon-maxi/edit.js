@@ -17,6 +17,7 @@ import {
 	getAlignmentFlexObject,
 	getTransformObject,
 	setBackgroundStyles,
+	getLastBreakpointValue,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -29,7 +30,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, isObject } from 'lodash';
 import Iframe from 'react-iframe';
 
 /**
@@ -144,8 +145,10 @@ class edit extends MaxiBlock {
 				content,
 				background,
 				motion,
+				display,
 			},
 			clientId,
+			deviceType,
 		} = this.props;
 		const { isOpen } = this.state;
 		const highlight = { ...this.props.attributes.highlight };
@@ -160,10 +163,14 @@ class edit extends MaxiBlock {
 			this.setState({ isOpen: !isOpen });
 		};
 
+		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-svg-icon-block',
+			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,

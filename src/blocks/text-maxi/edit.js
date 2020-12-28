@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { compose } = wp.compose;
-const { Fragment } = wp.element;
+const { Fragment, createRef } = wp.element;
 const { createBlock } = wp.blocks;
 const { select, withSelect, withDispatch } = wp.data;
 const { __experimentalBlock, RichText, RichTextShortcut } = wp.blockEditor;
@@ -46,6 +46,11 @@ import { isEmpty, isNil } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
+	constructor(props) {
+		super(props);
+		this.textRef = createRef();
+	}
+
 	state = {
 		formatValue: this.props.generateFormatValue() || {},
 		textSelected: '',
@@ -193,6 +198,8 @@ class edit extends MaxiBlock {
 		const motionStatus =
 			!!motion.interaction.interactionStatus || !!motion.parallax.status;
 
+		this.textRef.current.focus();
+
 		return {
 			[uniqueID]: {
 				...(motionStatus && { motion }),
@@ -280,6 +287,7 @@ class edit extends MaxiBlock {
 					<BackgroundDisplayer background={background} />
 					{!isList && (
 						<RichText
+							ref={this.textRef}
 							className='maxi-text-block__content'
 							value={content}
 							onChange={content => {

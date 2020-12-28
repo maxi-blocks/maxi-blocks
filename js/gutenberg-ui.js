@@ -84,7 +84,7 @@ function MaxiInsertLayout() {
 
 jQuery(document).ready(function ($) {
 	$('textarea#maxi_blocks_custom_ccs_page').on('keyup', function () {
-		console.log('t change');
+		//console.log('t change');
 		let custom_css_code = $('textarea#maxi_blocks_custom_ccs_page').val();
 
 		$('style#maxi-blocks-custom-ccs-page').text(custom_css_code);

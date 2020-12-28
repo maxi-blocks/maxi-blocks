@@ -71,6 +71,7 @@ const DisplayControl = props => {
 			{ label: __('Hide', 'maxi-blocks'), value: 'none' },
 		];
 	};
+
 	return (
 		<div className={classes}>
 			<FancyRadioControl

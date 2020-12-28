@@ -41,7 +41,6 @@ const BorderControl = props => {
 		disableAdvanced = false,
 		disableColor = false,
 	} = props;
-
 	const border = { ...props.border };
 	const defaultBorder = { ...props.defaultBorder };
 
@@ -146,7 +145,7 @@ const BorderControl = props => {
 					}}
 				/>
 			)}
-			{!disableColor && (
+			{!disableColor && border[breakpoint]['border-style'] !== 'none' && (
 				<ColorControl
 					label={__('Border', 'maxi-blocks')}
 					color={getLastBreakpointValue(
@@ -166,7 +165,7 @@ const BorderControl = props => {
 					disableGradientAboveBackground
 				/>
 			)}
-			{!disableAdvanced && (
+			{!disableAdvanced && border[breakpoint]['border-style'] !== 'none' && (
 				<Fragment>
 					<AxisControl
 						values={border.borderWidth}

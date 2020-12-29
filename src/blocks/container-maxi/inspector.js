@@ -655,7 +655,7 @@ const Inspector = props => {
 												<Fragment>
 													<AxisControl
 														values={padding}
-														defaults={getDefaultProp(
+														defaultValues={getDefaultProp(
 															clientId,
 															'padding'
 														)}
@@ -669,7 +669,7 @@ const Inspector = props => {
 													/>
 													<AxisControl
 														values={margin}
-														defaults={getDefaultProp(
+														defaultValues={getDefaultProp(
 															clientId,
 															'margin'
 														)}

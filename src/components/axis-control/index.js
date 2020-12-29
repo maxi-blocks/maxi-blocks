@@ -26,8 +26,6 @@ import { reset, sync } from '../../icons';
  */
 const AxisControl = props => {
 	const {
-		values,
-		defaultValues,
 		className,
 		onChange,
 		breakpoint = 'general',
@@ -54,9 +52,8 @@ const AxisControl = props => {
 	} = props;
 
 	const instanceId = useInstanceId(AxisControl);
-
-	const value = { ...values };
-	const defaultValue = { ...defaultValues };
+	const value = { ...props.values };
+	const defaultValue = { ...props.defaultValues };
 
 	const classes = classnames('maxi-axis-control', className);
 

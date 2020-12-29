@@ -41,12 +41,12 @@ const propsObjectManipulator = (value, newObject, breakpoint) => {
 		// avoid numbers with no related metric
 		if (unitChecker.indexOf(target) === 0) unit = '';
 		// values with metrics
-		if (prop.length <= 2 && !isEmpty(prop)) {
+		if (prop.length <= 3 && !isEmpty(prop)) {
 			unitChecker = target;
 			unit = prop;
 		}
 		// values with strings && font-options object
-		if (prop.length > 2 || target === 'font-options')
+		if (prop.length > 3 || target === 'font-options')
 			newObject[breakpoint][target] = prop;
 	});
 

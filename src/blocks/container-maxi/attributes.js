@@ -62,7 +62,7 @@ const attributes = {
 	},
 	padding: {
 		type: 'object',
-		default: attributesData.padding,
+		default: attributesData.paddingContainer,
 	},
 	shapeDivider: {
 		type: 'object',

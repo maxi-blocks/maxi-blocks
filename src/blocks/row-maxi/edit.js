@@ -135,7 +135,6 @@ class edit extends MaxiBlock {
 			response.row.general['justify-content'] = horizontalAlign;
 		if (!isNil(verticalAlign))
 			response.row.general['align-items'] = verticalAlign;
-
 		return response;
 	}
 

@@ -48,12 +48,7 @@ const styleGenerator = () => {
 				if (isEmpty(content)) return;
 
 				if (breakpoint === 'general') {
-					response += `body.maxi-blocks--active .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block--backend.${target}{`;
+					response += `body.maxi-blocks--active .maxi-block--backend.${target}{`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}

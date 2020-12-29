@@ -55,8 +55,8 @@ const AxisControl = props => {
 
 	const instanceId = useInstanceId(AxisControl);
 
-	const value = { ...values };
-	const defaultValue = { ...defaultValues };
+	const value = { ...props.values };
+	const defaultValue = { ...props.defaultValues };
 
 	const classes = classnames('maxi-axis-control', className);
 

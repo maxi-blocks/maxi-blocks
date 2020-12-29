@@ -5,6 +5,7 @@ body.maxi-blocks--active .maxi-text-block {
 	&__content {
 		position: relative;
 		margin: 0;
+		display: inline-block;
 	}
 	a {
 		text-decoration: none;

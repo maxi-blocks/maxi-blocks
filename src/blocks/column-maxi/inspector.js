@@ -25,7 +25,7 @@ import {
 	FancyRadioControl,
 	CustomLabel,
 } from '../../components';
-import { getDefaultProp } from '../../utils';
+import { getDefaultProp, getLastBreakpointValue } from '../../utils';
 
 /**
  * Inspector
@@ -61,7 +61,9 @@ const Inspector = props => {
 		clientId,
 	} = props;
 
-	const [colSize, setColSize] = useState(columnSize[deviceType].size);
+	const [colSize, setColSize] = useState(
+		getLastBreakpointValue(columnSize, 'size', deviceType)
+	);
 
 	return (
 		<InspectorControls>

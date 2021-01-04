@@ -42,7 +42,7 @@ const BoxShadowControl = props => {
 	const classes = classnames('maxi-shadow-control', className);
 
 	const onChangeValue = (target, val) => {
-		if (isNil(val))
+		if (val === undefined)
 			boxShadow[breakpoint][target] =
 				defaultBoxShadow[breakpoint][target];
 		else boxShadow[breakpoint][target] = val;
@@ -73,6 +73,7 @@ const BoxShadowControl = props => {
 
 			return !isNil(itemValue) && isNumber(itemValue) && itemValue !== 0;
 		});
+
 		if (!hasBoxShadow && type === 'none') return true;
 		if (type === 'none') return false;
 
@@ -85,8 +86,8 @@ const BoxShadowControl = props => {
 
 			return itemValue !== typeObj[item];
 		});
-		if (isActive) return true;
-		return false;
+
+		return isActive;
 	};
 
 	return (
@@ -153,9 +154,7 @@ const BoxShadowControl = props => {
 								breakpoint
 							)
 						)}
-						onChange={val =>
-							onChangeValue('shadowHorizontal', Number(val))
-						}
+						onChange={val => onChangeValue('shadowHorizontal', val)}
 						min={-100}
 						max={100}
 						allowReset
@@ -173,9 +172,7 @@ const BoxShadowControl = props => {
 								breakpoint
 							)
 						)}
-						onChange={val =>
-							onChangeValue('shadowVertical', Number(val))
-						}
+						onChange={val => onChangeValue('shadowVertical', val)}
 						min={-100}
 						max={100}
 						allowReset
@@ -193,9 +190,7 @@ const BoxShadowControl = props => {
 								breakpoint
 							)
 						)}
-						onChange={val =>
-							onChangeValue('shadowBlur', Number(val))
-						}
+						onChange={val => onChangeValue('shadowBlur', val)}
 						min={0}
 						max={100}
 						allowReset
@@ -213,9 +208,7 @@ const BoxShadowControl = props => {
 								breakpoint
 							)
 						)}
-						onChange={val =>
-							onChangeValue('shadowSpread', Number(val))
-						}
+						onChange={val => onChangeValue('shadowSpread', val)}
 						min={-100}
 						max={100}
 						allowReset

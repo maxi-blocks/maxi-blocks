@@ -1086,10 +1086,10 @@ export const typographyHover = {
 export const margin = {
 	label: 'Margin',
 	general: {
-		'margin-top': '',
-		'margin-right': '',
-		'margin-bottom': '',
-		'margin-left': '',
+		'margin-top': '0',
+		'margin-right': '0',
+		'margin-bottom': '0',
+		'margin-left': '0',
 		sync: true,
 		unit: 'px',
 	},
@@ -1146,10 +1146,10 @@ export const margin = {
 export const padding = {
 	label: 'Padding',
 	general: {
-		'padding-top': '',
-		'padding-right': '',
-		'padding-bottom': '',
-		'padding-left': '',
+		'padding-top': '0',
+		'padding-right': '0',
+		'padding-bottom': '0',
+		'padding-left': '0',
 		sync: true,
 		unit: 'px',
 	},

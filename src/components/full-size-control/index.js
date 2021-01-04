@@ -36,7 +36,7 @@ const FullSizeControl = props => {
 	const size = { ...props.size };
 	const defaultSize = { ...props.defaultSize };
 
-	const blockName = select( 'core/editor' ).getSelectedBlock().name;
+	const blockName = select( 'core/block-editor' ).getSelectedBlock().name;
 
 	const classes = classnames('maxi-full-size-control', className);
 

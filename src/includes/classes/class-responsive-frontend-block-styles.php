@@ -190,8 +190,8 @@ class ResponsiveFrontendStyles
             if ($property === 'font-options')
                 continue;
 
-            if ($property === 'max-width')
-                $response .= "{$property}: {$value} !important;"; //
+            if ($property === 'max-width' || $property === 'width')
+                $response .= "{$property}: {$value} !important;";
             else $response .= "{$property}: {$value};";
 
 

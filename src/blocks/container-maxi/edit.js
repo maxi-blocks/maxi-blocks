@@ -97,7 +97,6 @@ class edit extends MaxiBlock {
 
 		let response = {
 			[uniqueID]: this.getNormalObject,
-			[uniqueID]: this.getContainerSizeObject,
 			[`${uniqueID}:hover`]: this.getHoverObject,
 			[`${uniqueID}>.maxi-container-block__wrapper`]: this
 				.getWrapperObject,
@@ -148,6 +147,8 @@ class edit extends MaxiBlock {
 			position,
 			display,
 			transform,
+			fullWidth,
+			sizeContainer,
 		} = this.props.attributes;
 
 		const response = {
@@ -167,6 +168,9 @@ class edit extends MaxiBlock {
 				general: {},
 			},
 		};
+
+		if (fullWidth !== 'full')
+			response['sizeContainer'] = sizeContainer;
 
 		return response;
 	}
@@ -231,18 +235,6 @@ class edit extends MaxiBlock {
 				...(shapeStatus && { shapeDivider }),
 			},
 		};
-	}
-
-	get getContainerSizeObject() {
-		const { fullWidth, sizeContainer } = this.props.attributes;
-
-		const response = {
-			sizeContainer,
-		};
-
-		if (fullWidth !== 'full') return response;
-
-		return {};
 	}
 
 	render() {

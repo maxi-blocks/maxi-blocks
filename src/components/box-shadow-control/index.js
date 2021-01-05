@@ -22,7 +22,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEqual } from 'lodash';
+import { isEqual, cloneDeep } from 'lodash';
 
 /**
  * Styles and icons
@@ -42,16 +42,16 @@ const BoxShadowControl = props => {
 	const classes = classnames('maxi-shadow-control', className);
 
 	const onChangeValue = (target, val) => {
-		if (val === undefined)
+		if (typeof val === 'undefined')
 			boxShadow[breakpoint][target] =
 				defaultBoxShadow[breakpoint][target];
 		else boxShadow[breakpoint][target] = val;
 
 		onChange(boxShadow);
 	};
-
+	console.log(boxShadowSolid);
 	const onChangeDefault = defaultBoxShadow => {
-		boxShadow[breakpoint] = { ...defaultBoxShadow };
+		boxShadow[breakpoint] = cloneDeep(defaultBoxShadow);
 
 		onChange(boxShadow);
 	};

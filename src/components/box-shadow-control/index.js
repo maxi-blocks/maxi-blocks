@@ -49,7 +49,7 @@ const BoxShadowControl = props => {
 
 		onChange(boxShadow);
 	};
-	console.log(boxShadowSolid);
+
 	const onChangeDefault = defaultBoxShadow => {
 		boxShadow[breakpoint] = cloneDeep(defaultBoxShadow);
 

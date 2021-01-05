@@ -66,6 +66,9 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 
 	const total = 100 - gap1 * numberOfGaps;
 
+	console.log('gap: '+gap1);
+	console.log('total: '+total);
+
 	return columns.map((column, i) => {
 		return [
 			'maxi-blocks/column-maxi',

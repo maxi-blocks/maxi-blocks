@@ -111,16 +111,44 @@ export const getBoxShadowObject = boxShadow => {
 	Object.entries(boxShadow).forEach(([key, value]) => {
 		if (key !== 'label' && key !== 'status') {
 			let boxShadowString = '';
-			isNumber(value.shadowHorizontal) &&
-				(boxShadowString += `${value.shadowHorizontal}px `);
-			isNumber(value.shadowVertical) &&
-				(boxShadowString += `${value.shadowVertical}px `);
-			isNumber(value.shadowBlur) &&
-				(boxShadowString += `${value.shadowBlur}px `);
-			isNumber(value.shadowSpread) &&
-				(boxShadowString += `${value.shadowSpread}px `);
+
+			if (value.shadowHorizontal !== '') {
+				isNumber(value.shadowHorizontal) &&
+					(boxShadowString += `${value.shadowHorizontal}px `);
+			} else {
+				boxShadowString += '0 ';
+			}
+
+			if (value.shadowVertical !== '') {
+				isNumber(value.shadowVertical) &&
+					(boxShadowString += `${value.shadowVertical}px `);
+			} else {
+				boxShadowString += '0 ';
+			}
+
+			if (value.shadowBlur !== '') {
+				isNumber(value.shadowBlur) &&
+					(boxShadowString += `${value.shadowBlur}px `);
+			} else {
+				boxShadowString += '0 ';
+			}
+
+			if (value.shadowSpread !== '') {
+				isNumber(value.shadowSpread) &&
+					(boxShadowString += `${value.shadowSpread}px `);
+			} else {
+				boxShadowString += '0 ';
+			}
+
 			!isNil(value.shadowColor) && (boxShadowString += value.shadowColor);
-			response[key]['box-shadow'] = boxShadowString.trim();
+
+			if (
+				value.shadowHorizontal !== '' ||
+				value.shadowVertical !== '' ||
+				value.shadowBlur !== '' ||
+				value.shadowSpread !== ''
+			)
+				response[key]['box-shadow'] = boxShadowString.trim();
 		}
 	});
 

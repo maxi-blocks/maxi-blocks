@@ -54,23 +54,10 @@ const BorderControl = props => {
 		onChange(border);
 	};
 
-	const getIsActive = () => {
-		const items = [
-			'border-top-width',
-			'border-right-width',
-			'border-bottom-width',
-			'border-left-width',
-		];
-
-		const hasBorderWidth = items.some(item => {
-			return isNumber(
-				getLastBreakpointValue(border.borderWidth, item, breakpoint)
-			);
-		});
-
-		if (hasBorderWidth)
-			return getLastBreakpointValue(border, 'border-style', breakpoint);
-		return 'none';
+	const getIsActive = type => {
+		return (
+			getLastBreakpointValue(border, 'border-style', breakpoint) === type
+		);
 	};
 
 	return (
@@ -78,7 +65,7 @@ const BorderControl = props => {
 			<DefaultStylesControl
 				items={[
 					{
-						activeItem: getIsActive() === 'none',
+						activeItem: getIsActive('none'),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -88,7 +75,7 @@ const BorderControl = props => {
 						onChange: () => onChangeDefault(borderNone),
 					},
 					{
-						activeItem: getIsActive() === 'solid',
+						activeItem: getIsActive('solid'),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -98,7 +85,7 @@ const BorderControl = props => {
 						onChange: () => onChangeDefault(borderSolid),
 					},
 					{
-						activeItem: getIsActive() === 'dashed',
+						activeItem: getIsActive('dashed'),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -108,7 +95,7 @@ const BorderControl = props => {
 						onChange: () => onChangeDefault(borderDashed),
 					},
 					{
-						activeItem: getIsActive() === 'dotted',
+						activeItem: getIsActive('dotted'),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'

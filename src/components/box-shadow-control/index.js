@@ -22,7 +22,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isNumber } from 'lodash';
+import { isEqual } from 'lodash';
 
 /**
  * Styles and icons
@@ -51,43 +51,40 @@ const BoxShadowControl = props => {
 	};
 
 	const onChangeDefault = defaultBoxShadow => {
-		boxShadow[breakpoint] = defaultBoxShadow;
+		boxShadow[breakpoint] = { ...defaultBoxShadow };
 
 		onChange(boxShadow);
 	};
 
-	const getIsActive = (typeObj, type) => {
-		const items = [
-			'shadowHorizontal',
-			'shadowVertical',
-			'shadowBlur',
-			'shadowSpread',
-		];
+	const getIsActive = typeObj => {
+		const defaultShadows = {
+			shadowHorizontal: typeObj['shadowHorizontal'],
+			shadowVertical: typeObj['shadowVertical'],
+			shadowBlur: typeObj['shadowBlur'],
+			shadowSpread: typeObj['shadowSpread'],
+		};
+		const currentShadows = {
+			shadowHorizontal:
+				getLastBreakpointValue(
+					boxShadow,
+					'shadowHorizontal',
+					breakpoint
+				) || 0,
+			shadowVertical:
+				getLastBreakpointValue(
+					boxShadow,
+					'shadowVertical',
+					breakpoint
+				) || 0,
+			shadowBlur:
+				getLastBreakpointValue(boxShadow, 'shadowBlur', breakpoint) ||
+				0,
+			shadowSpread:
+				getLastBreakpointValue(boxShadow, 'shadowSpread', breakpoint) ||
+				0,
+		};
 
-		const hasBoxShadow = items.some(item => {
-			const itemValue = getLastBreakpointValue(
-				boxShadow,
-				item,
-				breakpoint
-			);
-
-			return !isNil(itemValue) && isNumber(itemValue) && itemValue !== 0;
-		});
-
-		if (!hasBoxShadow && type === 'none') return true;
-		if (type === 'none') return false;
-
-		const isActive = !items.some(item => {
-			const itemValue = getLastBreakpointValue(
-				boxShadow,
-				item,
-				breakpoint
-			);
-
-			return itemValue !== typeObj[item];
-		});
-
-		return isActive;
+		return isEqual(defaultShadows, currentShadows);
 	};
 
 	return (
@@ -95,7 +92,7 @@ const BoxShadowControl = props => {
 			<DefaultStylesControl
 				items={[
 					{
-						activeItem: getIsActive(null, 'none'),
+						activeItem: getIsActive(boxShadowNone, 'none'),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'

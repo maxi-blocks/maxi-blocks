@@ -597,8 +597,36 @@ const getSVGBackgroundObject = SVGOptions => {
 	return response;
 };
 
-const setBackgroundLayers = (response, layers, target) => {
-	layers.forEach(layer => {
+const setBackgroundLayers = (
+	response,
+	backgourndLayers,
+	backgourndHoverlayers,
+	hoverStatus,
+	target
+) => {
+	backgourndHoverlayers.layers.forEach(layer => {
+		const layerHoverTarget = `${target}:hover > .maxi-background-displayer .maxi-background-displayer__${layer.id}`;
+
+		switch (layer.type) {
+			case 'color':
+			case 'gradient':
+				hoverStatus && backgourndHoverlayers.status
+					? (response[layerHoverTarget] = {
+							backgroundHover: {
+								...getColorBackgroundObject(layer.options),
+							},
+					  })
+					: (response[layerHoverTarget] = {
+							backgroundHover: {},
+					  });
+
+				break;
+			default:
+				break;
+		}
+	});
+
+	backgourndLayers.layers.forEach(layer => {
 		const layerTarget = `${target} > .maxi-background-displayer .maxi-background-displayer__${layer.id}`;
 
 		switch (layer.type) {
@@ -658,7 +686,6 @@ export const setBackgroundStyles = ({
 	backgroundHover,
 }) => {
 	let response = {};
-
 	if (backgroundHover.status) {
 		response[
 			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__color`
@@ -674,11 +701,12 @@ export const setBackgroundStyles = ({
 			backgroundHover: {},
 		};
 	}
-
 	if (background.layersOptions && !!background.layersOptions.status) {
 		response = setBackgroundLayers(
 			response,
-			background.layersOptions.layers,
+			background.layersOptions,
+			backgroundHover.layersOptions,
+			backgroundHover.status,
 			target
 		);
 	} else {

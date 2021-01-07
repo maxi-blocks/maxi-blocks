@@ -41,7 +41,6 @@ const BorderControl = props => {
 		disableAdvanced = false,
 		disableColor = false,
 	} = props;
-
 	const border = { ...props.border };
 	const defaultBorder = { ...props.defaultBorder };
 
@@ -55,23 +54,10 @@ const BorderControl = props => {
 		onChange(border);
 	};
 
-	const getIsActive = () => {
-		const items = [
-			'border-top-width',
-			'border-right-width',
-			'border-bottom-width',
-			'border-left-width',
-		];
-
-		const hasBorderWidth = items.some(item => {
-			return isNumber(
-				getLastBreakpointValue(border.borderWidth, item, breakpoint)
-			);
-		});
-
-		if (hasBorderWidth)
-			return getLastBreakpointValue(border, 'border-style', breakpoint);
-		return 'none';
+	const getIsActive = type => {
+		return (
+			getLastBreakpointValue(border, 'border-style', breakpoint) === type
+		);
 	};
 
 	return (
@@ -79,7 +65,7 @@ const BorderControl = props => {
 			<DefaultStylesControl
 				items={[
 					{
-						activeItem: getIsActive() === 'none',
+						activeItem: getIsActive('none'),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -89,7 +75,7 @@ const BorderControl = props => {
 						onChange: () => onChangeDefault(borderNone),
 					},
 					{
-						activeItem: getIsActive() === 'solid',
+						activeItem: getIsActive('solid'),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -99,7 +85,7 @@ const BorderControl = props => {
 						onChange: () => onChangeDefault(borderSolid),
 					},
 					{
-						activeItem: getIsActive() === 'dashed',
+						activeItem: getIsActive('dashed'),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -109,7 +95,7 @@ const BorderControl = props => {
 						onChange: () => onChangeDefault(borderDashed),
 					},
 					{
-						activeItem: getIsActive() === 'dotted',
+						activeItem: getIsActive('dotted'),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -120,7 +106,33 @@ const BorderControl = props => {
 					},
 				]}
 			/>
-			{!disableColor && (
+			{!disableAdvanced && (
+				<SelectControl
+					label={__('Border Type', 'maxi-blocks')}
+					className='maxi-border-control__type'
+					value={getLastBreakpointValue(
+						border,
+						'border-style',
+						breakpoint
+					)}
+					options={[
+						{ label: 'None', value: 'none' },
+						{ label: 'Dotted', value: 'dotted' },
+						{ label: 'Dashed', value: 'dashed' },
+						{ label: 'Solid', value: 'solid' },
+						{ label: 'Double', value: 'double' },
+						{ label: 'Groove', value: 'groove' },
+						{ label: 'Ridge', value: 'ridge' },
+						{ label: 'Inset', value: 'inset' },
+						{ label: 'Outset', value: 'outset' },
+					]}
+					onChange={val => {
+						border[breakpoint]['border-style'] = val;
+						onChange(border);
+					}}
+				/>
+			)}
+			{!disableColor && border[breakpoint]['border-style'] !== 'none' && (
 				<ColorControl
 					label={__('Border', 'maxi-blocks')}
 					color={getLastBreakpointValue(
@@ -140,32 +152,8 @@ const BorderControl = props => {
 					disableGradientAboveBackground
 				/>
 			)}
-			{!disableAdvanced && (
+			{!disableAdvanced && border[breakpoint]['border-style'] !== 'none' && (
 				<Fragment>
-					<SelectControl
-						label={__('Border Type', 'maxi-blocks')}
-						className='maxi-border-control__type'
-						value={getLastBreakpointValue(
-							border,
-							'border-style',
-							breakpoint
-						)}
-						options={[
-							{ label: 'None', value: 'none' },
-							{ label: 'Dotted', value: 'dotted' },
-							{ label: 'Dashed', value: 'dashed' },
-							{ label: 'Solid', value: 'solid' },
-							{ label: 'Double', value: 'double' },
-							{ label: 'Groove', value: 'groove' },
-							{ label: 'Ridge', value: 'ridge' },
-							{ label: 'Inset', value: 'inset' },
-							{ label: 'Outset', value: 'outset' },
-						]}
-						onChange={val => {
-							border[breakpoint]['border-style'] = val;
-							onChange(border);
-						}}
-					/>
 					<AxisControl
 						values={border.borderWidth}
 						defaultValues={defaultBorder.borderWidth}

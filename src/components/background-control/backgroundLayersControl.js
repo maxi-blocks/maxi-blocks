@@ -134,9 +134,9 @@ const LayerCard = props => {
 
 const BackgroundLayersControl = props => {
 	const { layersOptions, onChange } = props;
-	const { status, layers } = layersOptions;
+	const { status } = layersOptions;
 
-	let newLayers = cloneDeep(layers);
+	const layers = cloneDeep(layersOptions.layers);
 
 	const [selector, changeSelector] = useState(null);
 
@@ -254,12 +254,9 @@ const BackgroundLayersControl = props => {
 							},
 						]}
 						onClick={value => {
-							newLayers = [
-								getObject(value, newLayers.length),
-								...newLayers,
-							];
+							layers.push(getObject(value, layers.length));
 
-							layersOptions.layers = newLayers;
+							layersOptions.layers = layers;
 
 							onChange(layersOptions);
 						}}

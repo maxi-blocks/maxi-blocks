@@ -50,7 +50,6 @@ const ImageLayer = props => {
 		pullAt(imageOptions.items, i);
 		onChange(imageOptions);
 		onDoneEdition();
-		console.log(imageOptions);
 	};
 
 	const getAlternativeImage = i => {

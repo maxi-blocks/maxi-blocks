@@ -198,8 +198,6 @@ class edit extends MaxiBlock {
 		const motionStatus =
 			!!motion.interaction.interactionStatus || !!motion.parallax.status;
 
-		this.textRef.current.focus();
-
 		return {
 			[uniqueID]: {
 				...(motionStatus && { motion }),

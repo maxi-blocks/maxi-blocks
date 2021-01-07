@@ -50,8 +50,11 @@
 				}
 			}
 		}
-		&__open .maxi-background-layer__arrow {
-			transform: rotate(90deg);
+		&__open {
+			margin-bottom: 5px;
+			.maxi-background-layer__arrow {
+				transform: rotate(90deg);
+			}
 		}
 
 		&__title {

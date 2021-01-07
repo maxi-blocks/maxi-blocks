@@ -21,7 +21,7 @@ import SVGLayer from './svgLayer';
  */
 import ReactDragListView from 'react-drag-listview';
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, cloneDeep } from 'lodash';
 
 /**
  * Styles and icons
@@ -39,7 +39,6 @@ const LayerCard = props => {
 		'maxi-background-layer',
 		isOpen && 'maxi-background-layer__open'
 	);
-
 	return (
 		<div className={classes}>
 			<div
@@ -135,7 +134,9 @@ const LayerCard = props => {
 
 const BackgroundLayersControl = props => {
 	const { layersOptions, onChange } = props;
-	const { status, layers } = layersOptions;
+	const { status } = layersOptions;
+
+	const layers = cloneDeep(layersOptions.layers);
 
 	const [selector, changeSelector] = useState(null);
 
@@ -253,7 +254,10 @@ const BackgroundLayersControl = props => {
 							},
 						]}
 						onClick={value => {
-							layersOptions.layers.unshift(getObject(value));
+							layers.push(getObject(value, layers.length));
+
+							layersOptions.layers = layers;
+
 							onChange(layersOptions);
 						}}
 						forwards

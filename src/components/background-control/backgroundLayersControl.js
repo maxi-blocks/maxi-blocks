@@ -21,7 +21,7 @@ import SVGLayer from './svgLayer';
  */
 import ReactDragListView from 'react-drag-listview';
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, cloneDeep } from 'lodash';
 
 /**
  * Styles and icons
@@ -136,7 +136,7 @@ const BackgroundLayersControl = props => {
 	const { layersOptions, onChange } = props;
 	const { status, layers } = layersOptions;
 
-	let newLayers = [...layers];
+	let newLayers = cloneDeep(layers);
 
 	const [selector, changeSelector] = useState(null);
 

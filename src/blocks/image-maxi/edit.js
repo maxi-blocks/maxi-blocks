@@ -100,7 +100,6 @@ class edit extends MaxiBlock {
 			margin,
 			zIndex,
 			alignment: { ...getAlignmentFlexObject(alignment) },
-
 			position,
 			positionOptions: position.options,
 			display,
@@ -240,7 +239,6 @@ class edit extends MaxiBlock {
 			},
 		};
 	}
-
 	render() {
 		const {
 			className,
@@ -357,8 +355,15 @@ class edit extends MaxiBlock {
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
 												width: `${
-													isEmpty(size.general.width)
-														? 'auto'
+													!isNil(imageData) &&
+													size.general.width === 100
+														? (imageData
+																.media_details
+																.width /
+																document.querySelector(
+																	`.${uniqueID}`
+																).offsetWidth) *
+														  100
 														: size.general.width
 												}%`,
 												height: '100%',

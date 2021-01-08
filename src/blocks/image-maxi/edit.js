@@ -356,7 +356,11 @@ class edit extends MaxiBlock {
 										<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
-												width: `${size.general.width}%`,
+												width: `${
+													isEmpty(size.general.width)
+														? 'auto'
+														: size.general.width
+												}%`,
 												height: '100%',
 											}}
 											maxWidth='100%'

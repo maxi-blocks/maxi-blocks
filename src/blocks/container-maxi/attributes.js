@@ -22,7 +22,7 @@ const attributes = {
 	},
 	fullWidth: {
 		type: 'string',
-		default: 'normal',
+		default: 'full',
 	},
 	size: {
 		type: 'object',
@@ -62,7 +62,7 @@ const attributes = {
 	},
 	padding: {
 		type: 'object',
-		default: attributesData.paddingContainer,
+		default: attributesData.padding,
 	},
 	shapeDivider: {
 		type: 'object',

@@ -6,6 +6,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 	.maxi-block-hover-wrapper {
 		overflow: hidden;
 		position: relative;
+		width: auto !important;
 	}
 	.maxi-image-block {
 		&__caption {

@@ -809,7 +809,7 @@ export const typography = {
 		color: '',
 		'text-align': '',
 		'font-sizeUnit': 'px',
-		'font-size': 18,
+		'font-size': 20,
 		'line-heightUnit': '',
 		'line-height': 1.5,
 		'letter-spacingUnit': 'px',
@@ -1090,7 +1090,7 @@ export const margin = {
 		'margin-right': '0',
 		'margin-bottom': '0',
 		'margin-left': '0',
-		sync: true,
+		sync: false,
 		unit: 'px',
 	},
 	xxl: {
@@ -1098,7 +1098,7 @@ export const margin = {
 		'margin-right': '',
 		'margin-bottom': '',
 		'margin-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 	xl: {
@@ -1106,7 +1106,7 @@ export const margin = {
 		'margin-right': '',
 		'margin-bottom': '',
 		'margin-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 	l: {
@@ -1114,7 +1114,7 @@ export const margin = {
 		'margin-right': '',
 		'margin-bottom': '',
 		'margin-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 	m: {
@@ -1122,7 +1122,7 @@ export const margin = {
 		'margin-right': '',
 		'margin-bottom': '',
 		'margin-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 	s: {
@@ -1130,7 +1130,7 @@ export const margin = {
 		'margin-right': '',
 		'margin-bottom': '',
 		'margin-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 	xs: {
@@ -1138,7 +1138,7 @@ export const margin = {
 		'margin-right': '',
 		'margin-bottom': '',
 		'margin-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 };
@@ -1150,7 +1150,7 @@ export const padding = {
 		'padding-right': '0',
 		'padding-bottom': '0',
 		'padding-left': '0',
-		sync: true,
+		sync: false,
 		unit: 'px',
 	},
 	xxl: {
@@ -1158,7 +1158,7 @@ export const padding = {
 		'padding-right': '',
 		'padding-bottom': '',
 		'padding-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 	xl: {
@@ -1166,7 +1166,7 @@ export const padding = {
 		'padding-right': '',
 		'padding-bottom': '',
 		'padding-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 	l: {
@@ -1174,7 +1174,7 @@ export const padding = {
 		'padding-right': '',
 		'padding-bottom': '',
 		'padding-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 	m: {
@@ -1182,7 +1182,7 @@ export const padding = {
 		'padding-right': '',
 		'padding-bottom': '',
 		'padding-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 	s: {
@@ -1190,7 +1190,7 @@ export const padding = {
 		'padding-right': '',
 		'padding-bottom': '',
 		'padding-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 	xs: {
@@ -1198,7 +1198,7 @@ export const padding = {
 		'padding-right': '',
 		'padding-bottom': '',
 		'padding-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 };
@@ -1255,7 +1255,7 @@ export const paddingContainer = {
 		'padding-right': '',
 		'padding-bottom': '',
 		'padding-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 	s: {
@@ -1263,7 +1263,7 @@ export const paddingContainer = {
 		'padding-right': '',
 		'padding-bottom': '',
 		'padding-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 	xs: {
@@ -1271,7 +1271,7 @@ export const paddingContainer = {
 		'padding-right': '',
 		'padding-bottom': '',
 		'padding-left': '',
-		sync: true,
+		sync: false,
 		unit: '',
 	},
 };

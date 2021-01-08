@@ -132,7 +132,8 @@ class ResponsiveFrontendStyles
                 $response .= '}';
             }
             if (isset($content['xxl']) && !empty($content['xxl'])) {
-                $response .= "@media only screen and (min-width: {$breakpoints->xl}px) {body.maxi-blocks--active .maxi-block.$target{";
+                $xxl = intval($breakpoints->xl) + 1;
+                $response .= "@media only screen and (min-width: {$xxl}px) {body.maxi-blocks--active .maxi-block.$target{";
                 $response .= self::getStyles($content['xxl']);
                 $response .= '}}';
             }

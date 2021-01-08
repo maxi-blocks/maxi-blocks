@@ -3,8 +3,8 @@ const size = {
 	general: {
 		'max-widthUnit': 'px',
 		'max-width': '',
-		widthUnit: '%',
-		width: 100,
+		widthUnit: 'px',
+		width: '',
 		'min-widthUnit': 'px',
 		'min-width': '',
 		'max-heightUnit': 'px',

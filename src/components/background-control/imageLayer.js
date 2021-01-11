@@ -18,18 +18,15 @@ import SizeControl from '../size-control';
 /**
  * External dependencies
  */
-import { isNumber, pullAt } from 'lodash';
+import { isNumber, pullAt, cloneDeep } from 'lodash';
 
 /**
  * Component
  */
 const ImageLayer = props => {
-	const {
-		imageOptions,
-		defaultImageOptions,
-		onChange,
-		disableClipPath,
-	} = props;
+	const { defaultImageOptions, onChange, disableClipPath } = props;
+
+	const imageOptions = cloneDeep(props.imageOptions);
 
 	const onAddBackground = () => {
 		imageOptions.items.push(defaultImageOptions.items[0]);
@@ -49,8 +46,8 @@ const ImageLayer = props => {
 		setSelector(0);
 	};
 
-	const onRemoveImage = () => {
-		pullAt(imageOptions, selector);
+	const onRemoveImage = i => {
+		pullAt(imageOptions.items, i);
 		onChange(imageOptions);
 		onDoneEdition();
 	};
@@ -85,14 +82,7 @@ const ImageLayer = props => {
 								onChange(imageOptions);
 							}}
 							onRemoveImage={() => {
-								imageOptions.items[selector].imageData.mediaID =
-									'';
-								imageOptions.items[
-									selector
-								].imageData.mediaURL = '';
-								onRemoveImage();
-
-								onChange(imageOptions);
+								onRemoveImage(i);
 							}}
 							placeholder={
 								imageOptions.items.length - 1 === 0
@@ -161,15 +151,7 @@ const ImageLayer = props => {
 										onChange(imageOptions);
 									}}
 									onRemoveImage={() => {
-										imageOptions.items[
-											selector
-										].imageData.mediaID = '';
-										imageOptions.items[
-											selector
-										].imageData.mediaURL = '';
 										onRemoveImage();
-
-										onChange(imageOptions);
 									}}
 									extendSelector={
 										<Button

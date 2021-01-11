@@ -1,5 +1,5 @@
 const arrow = {
-	arrowStatus: {
+	'arrow-status': {
 		type: 'boolean',
 		default: false,
 	},

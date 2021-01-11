@@ -2,7 +2,6 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
 
 /**
  * Styles
@@ -13,17 +12,15 @@ import './style.scss';
  * Component
  */
 const ArrowDisplayer = props => {
-	const { className } = props;
-
-	const arrow = { ...props.arrow };
+	const { className, breakpoint } = props;
 
 	const arrowClasses = classnames(
 		'maxi-container-arrow',
-		`maxi-container-arrow__${arrow.general.side}`,
+		`maxi-container-arrow__${props[`arrow-size-${breakpoint}`]}`,
 		className
 	);
 
-	return !!arrow.active && <div className={arrowClasses} />;
+	return !!props['arrow-status'] && <div className={arrowClasses} />;
 };
 
 export default ArrowDisplayer;

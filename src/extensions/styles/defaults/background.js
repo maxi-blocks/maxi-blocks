@@ -37,7 +37,7 @@ export const backgroundImage = {
 		type: 'number',
 		default: 100,
 	},
-	'background-image-widthUnit': {
+	'background-image-width-unit': {
 		type: 'string',
 		default: '%',
 	},
@@ -45,11 +45,11 @@ export const backgroundImage = {
 		type: 'number',
 		default: 100,
 	},
-	'background-image-heightUnit': {
+	'background-image-height-unit': {
 		type: 'string',
 		default: '%',
 	},
-	'background-image-cropOptions': {
+	'background-image-crop-options': {
 		type: 'object',
 	},
 	'background-image-repeat': {
@@ -60,7 +60,7 @@ export const backgroundImage = {
 		type: 'string',
 		default: 'center center',
 	},
-	'background-image-position-widthUnit': {
+	'background-image-position-width-unit': {
 		type: 'string',
 		default: '%',
 	},
@@ -68,7 +68,7 @@ export const backgroundImage = {
 		type: 'number',
 		default: 0,
 	},
-	'background-image-position-heightUnit': {
+	'background-image-position-height-unit': {
 		type: 'string',
 		default: '%',
 	},
@@ -118,7 +118,7 @@ export const backgroundVideo = {
 		type: 'boolean',
 		default: false,
 	},
-	'background-video-clipPath': {
+	'background-video-clip-path': {
 		type: 'string',
 		default: '',
 	},
@@ -176,14 +176,14 @@ export const backgroundSVG = {
 		type: 'string',
 		default: '',
 	},
-	'background-svg-top-unit': {
+	'background-svg-top--unit': {
 		type: 'string',
 		default: '%',
 	},
 	'background-svg-top': {
 		type: 'number',
 	},
-	'background-svg-left-unit': {
+	'background-svg-left--unit': {
 		type: 'string',
 		default: '%',
 	},

@@ -8,12 +8,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointValue';
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-/**
- * Generates border styles object
- *
- * @param {Object} obj Block border properties
- */
-const getBorderStyles = obj => {
+const getPaddingStyles = obj => {
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 
 	const response = {};
@@ -59,4 +54,4 @@ const getBorderStyles = obj => {
 	return response;
 };
 
-export default getBorderStyles;
+export default getPaddingStyles;

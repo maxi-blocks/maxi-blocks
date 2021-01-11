@@ -30,7 +30,6 @@ const ArrowControl = props => {
 		isFullWidth,
 		breakpoint = 'general',
 		isFirstOnHierarchy,
-		arrowStatus,
 	} = props;
 
 	const classes = classnames('maxi-arrow-control', className);
@@ -78,17 +77,17 @@ const ArrowControl = props => {
 			{
 				<FancyRadioControl
 					label={__('Show Arrow', 'maxi-blocks')}
-					selected={+arrowStatus}
+					selected={+props['arrow-status']}
 					options={[
 						{ label: __('Yes', 'maxi-blocks'), value: 1 },
 						{ label: __('No', 'maxi-blocks'), value: 0 },
 					]}
 					onChange={val => {
-						onChange({ arrowStatus: !!val });
+						onChange({ 'arrow-status': !!val });
 					}}
 				/>
 			}
-			{arrowStatus && (
+			{props['arrow-status'] && (
 				<Fragment>
 					<FancyRadioControl
 						label=''

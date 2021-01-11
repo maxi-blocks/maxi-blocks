@@ -1,143 +1,109 @@
 const boxShadow = {
-	'boxShadow-color-general': {
+	'box-shadow-color-general': {
 		type: 'string',
 		default: '#ffffff',
 	},
-	'boxShadow-horizontal-general': {
-		type: 'string',
-		default: '',
+	'box-shadow-horizontal-general': {
+		type: 'number',
 	},
-	'boxShadow-vertical-general': {
-		type: 'string',
-		default: '',
+	'box-shadow-vertical-general': {
+		type: 'number',
 	},
-	'boxShadow-blur-general': {
-		type: 'string',
-		default: '',
+	'box-shadow-blur-general': {
+		type: 'number',
 	},
-	'boxShadow-spread-general': {
-		type: 'string',
-		default: '',
+	'box-shadow-spread-general': {
+		type: 'number',
 	},
-	'boxShadow-color-xxl': {
+	'box-shadow-color-xxl': {
 		type: 'string',
-		default: '',
 	},
-	'boxShadow-horizontal-xxl': {
-		type: 'string',
-		default: '',
+	'box-shadow-horizontal-xxl': {
+		type: 'number',
 	},
-	'boxShadow-vertical-xxl': {
-		type: 'string',
-		default: '',
+	'box-shadow-vertical-xxl': {
+		type: 'number',
 	},
-	'boxShadow-blur-xxl': {
-		type: 'string',
-		default: '',
+	'box-shadow-blur-xxl': {
+		type: 'number',
 	},
-	'boxShadow-spread-xxl': {
-		type: 'string',
-		default: '',
+	'box-shadow-spread-xxl': {
+		type: 'number',
 	},
-	'boxShadow-color-xl': {
+	'box-shadow-color-xl': {
 		type: 'string',
-		default: '',
 	},
-	'boxShadow-horizontal-xl': {
-		type: 'string',
-		default: '',
+	'box-shadow-horizontal-xl': {
+		type: 'number',
 	},
-	'boxShadow-vertical-xl': {
-		type: 'string',
-		default: '',
+	'box-shadow-vertical-xl': {
+		type: 'number',
 	},
-	'boxShadow-blur-xl': {
-		type: 'string',
-		default: '',
+	'box-shadow-blur-xl': {
+		type: 'number',
 	},
-	'boxShadow-spread-xl': {
-		type: 'string',
-		default: '',
+	'box-shadow-spread-xl': {
+		type: 'number',
 	},
-	'boxShadow-color-l': {
+	'box-shadow-color-l': {
 		type: 'string',
-		default: '',
 	},
-	'boxShadow-horizontal-l': {
-		type: 'string',
-		default: '',
+	'box-shadow-horizontal-l': {
+		type: 'number',
 	},
-	'boxShadow-vertical-l': {
-		type: 'string',
-		default: '',
+	'box-shadow-vertical-l': {
+		type: 'number',
 	},
-	'boxShadow-blur-l': {
-		type: 'string',
-		default: '',
+	'box-shadow-blur-l': {
+		type: 'number',
 	},
-	'boxShadow-spread-l': {
-		type: 'string',
-		default: '',
+	'box-shadow-spread-l': {
+		type: 'number',
 	},
-	'boxShadow-color-m': {
+	'box-shadow-color-m': {
 		type: 'string',
-		default: '',
 	},
-	'boxShadow-horizontal-m': {
-		type: 'string',
-		default: '',
+	'box-shadow-horizontal-m': {
+		type: 'number',
 	},
-	'boxShadow-vertical-m': {
-		type: 'string',
-		default: '',
+	'box-shadow-vertical-m': {
+		type: 'number',
 	},
-	'boxShadow-blur-m': {
-		type: 'string',
-		default: '',
+	'box-shadow-blur-m': {
+		type: 'number',
 	},
-	'boxShadow-spread-m': {
-		type: 'string',
-		default: '',
+	'box-shadow-spread-m': {
+		type: 'number',
 	},
-	'boxShadow-color-s': {
+	'box-shadow-color-s': {
 		type: 'string',
-		default: '',
 	},
-	'boxShadow-horizontal-s': {
-		type: 'string',
-		default: '',
+	'box-shadow-horizontal-s': {
+		type: 'number',
 	},
-	'boxShadow-vertical-s': {
-		type: 'string',
-		default: '',
+	'box-shadow-vertical-s': {
+		type: 'number',
 	},
-	'boxShadow-blur-s': {
-		type: 'string',
-		default: '',
+	'box-shadow-blur-s': {
+		type: 'number',
 	},
-	'boxShadow-spread-s': {
-		type: 'string',
-		default: '',
+	'box-shadow-spread-s': {
+		type: 'number',
 	},
-	'boxShadow-color-xs': {
+	'box-shadow-color-xs': {
 		type: 'string',
-		default: '',
 	},
-	'boxShadow-horizontal-xs': {
-		type: 'string',
-		default: '',
+	'box-shadow-horizontal-xs': {
+		type: 'number',
 	},
-	'boxShadow-vertical-xs': {
-		type: 'string',
-		default: '',
+	'box-shadow-vertical-xs': {
+		type: 'number',
 	},
-	'boxShadow-blur-xs': {
-		type: 'string',
-		default: '',
+	'box-shadow-blur-xs': {
+		type: 'number',
 	},
-	'boxShadow-spread-xs': {
-		type: 'string',
-		default: '',
+	'box-shadow-spread-xs': {
+		type: 'number',
 	},
 };
 

@@ -519,8 +519,8 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			attributes[
-																				'boxShadow-hover-status'
+																			+attributes[
+																				'box-shadow-status-hover'
 																			]
 																		}
 																		options={[
@@ -542,18 +542,18 @@ const Inspector = props => {
 																		onChange={val => {
 																			setAttributes(
 																				{
-																					'boxShadow-hover-status': !!val,
+																					'box-shadow-status-hover': !!val,
 																				}
 																			);
 																		}}
 																	/>
 																	{attributes[
-																		'boxShadow-hover-status'
+																		'box-shadow-status-hover'
 																	] && (
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				'boxShadow-hover'
+																				'boxShadowHover'
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -563,6 +563,7 @@ const Inspector = props => {
 																			breakpoint={
 																				deviceType
 																			}
+																			isHover
 																		/>
 																	)}
 																</Fragment>

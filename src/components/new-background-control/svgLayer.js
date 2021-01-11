@@ -142,7 +142,7 @@ const SVGLayer = props => {
 									unit={
 										SVGOptions[
 											getAttributeKey(
-												'background-svg-top-unit',
+												'background-svg-top--unit',
 												isHover,
 												prefix
 											)
@@ -160,7 +160,7 @@ const SVGLayer = props => {
 									onChangeUnit={val =>
 										onChange({
 											[getAttributeKey(
-												'background-svg-top-unit',
+												'background-svg-top--unit',
 												isHover,
 												prefix
 											)]: val,
@@ -182,7 +182,7 @@ const SVGLayer = props => {
 									unit={
 										SVGOptions[
 											getAttributeKey(
-												'background-svg-leftUnit',
+												'background-svg-left-unit',
 												isHover,
 												prefix
 											)
@@ -200,7 +200,7 @@ const SVGLayer = props => {
 									onChangeUnit={val =>
 										onChange({
 											[getAttributeKey(
-												'background-svg-leftUnit',
+												'background-svg-left-unit',
 												isHover,
 												prefix
 											)]: val,

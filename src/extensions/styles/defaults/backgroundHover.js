@@ -16,7 +16,7 @@ export const backgroundHover = (function backgroundHoverGenerator() {
 	};
 
 	Object.keys(background).forEach(key => {
-		const newKey = key.replace('background-', 'background-hover-');
+		const newKey = `${key}-hover`;
 		const value = { ...background[key] };
 
 		if (value.type === 'string' || value.type === 'number')
@@ -32,7 +32,7 @@ export const backgroundColorHover = (function backgroundHoverGenerator() {
 	const response = {};
 
 	Object.keys(backgroundColor).forEach(key => {
-		const newKey = key.replace('background-', 'background-hover-');
+		const newKey = `${key}-hover`;
 		const value = { ...backgroundColor[key] };
 
 		value.default = '';
@@ -47,7 +47,7 @@ export const backgroundImageHover = (function backgroundHoverGenerator() {
 	const response = {};
 
 	Object.keys(backgroundImage).forEach(key => {
-		const newKey = key.replace('background-', 'background-hover-');
+		const newKey = `${key}-hover`;
 		const value = { ...backgroundImage[key] };
 
 		value.default = '';
@@ -62,7 +62,7 @@ export const backgroundVideoHover = (function backgroundHoverGenerator() {
 	const response = {};
 
 	Object.keys(backgroundVideo).forEach(key => {
-		const newKey = key.replace('background-', 'background-hover-');
+		const newKey = `${key}-hover`;
 		const value = { ...backgroundVideo[key] };
 
 		value.default = '';
@@ -77,7 +77,7 @@ export const backgroundGradientHover = (function backgroundHoverGenerator() {
 	const response = {};
 
 	Object.keys(backgroundGradient).forEach(key => {
-		const newKey = key.replace('background-', 'background-hover-');
+		const newKey = `${key}-hover`;
 		const value = { ...backgroundGradient[key] };
 
 		value.default = '';
@@ -92,7 +92,7 @@ export const backgroundSVGHover = (function backgroundHoverGenerator() {
 	const response = {};
 
 	Object.keys(backgroundSVG).forEach(key => {
-		const newKey = key.replace('background-', 'background-hover-');
+		const newKey = `${key}-hover`;
 		const value = { ...backgroundSVG[key] };
 
 		value.default = '';

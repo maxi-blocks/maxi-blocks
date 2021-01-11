@@ -44,7 +44,7 @@ class MaxiBlock extends Component {
 	}
 
 	componentWillUnmount() {
-		const obj = this.getObject;
+		const obj = this.getStylesObject;
 
 		styleResolver(obj, true);
 
@@ -58,7 +58,7 @@ class MaxiBlock extends Component {
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	get getObject() {
+	get getStylesObject() {
 		return null;
 	}
 
@@ -120,7 +120,7 @@ class MaxiBlock extends Component {
 	 * Refresh the styles on Editor
 	 */
 	displayStyles() {
-		const obj = this.getObject;
+		const obj = this.getStylesObject;
 		const customData = this.getCustomData;
 
 		const styles = styleResolver(obj);

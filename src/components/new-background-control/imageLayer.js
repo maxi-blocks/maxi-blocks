@@ -529,7 +529,7 @@ const ImageLayer = props => {
 												unit={
 													imageOptions[
 														getAttributeKey(
-															'background-image-widthUnit',
+															'background-image-width-unit',
 															isHover,
 															prefix
 														)
@@ -537,7 +537,7 @@ const ImageLayer = props => {
 												}
 												defaultUnit={getDefaultAttribute(
 													getAttributeKey(
-														'background-image-widthUnit',
+														'background-image-width-unit',
 														isHover,
 														prefix
 													)
@@ -545,7 +545,7 @@ const ImageLayer = props => {
 												onChangeUnit={val =>
 													onChange({
 														[getAttributeKey(
-															'background-image-widthUnit',
+															'background-image-width-unit',
 															isHover,
 															prefix
 														)]: val,
@@ -585,7 +585,7 @@ const ImageLayer = props => {
 												unit={
 													imageOptions[
 														getAttributeKey(
-															'background-image-heightUnit',
+															'background-image-height-unit',
 															isHover,
 															prefix
 														)
@@ -593,7 +593,7 @@ const ImageLayer = props => {
 												}
 												defaultUnit={getDefaultAttribute(
 													getAttributeKey(
-														'background-image-heightUnit',
+														'background-image-height-unit',
 														isHover,
 														prefix
 													)
@@ -601,7 +601,7 @@ const ImageLayer = props => {
 												onChangeUnit={val =>
 													onChange({
 														[getAttributeKey(
-															'background-image-heightUnit',
+															'background-image-height-unit',
 															isHover,
 															prefix
 														)]: val,

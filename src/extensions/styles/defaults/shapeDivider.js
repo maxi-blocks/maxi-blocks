@@ -1,11 +1,4 @@
-import {
-	background,
-	backgroundColor,
-	backgroundImage,
-	backgroundVideo,
-	backgroundGradient,
-	backgroundSVG,
-} from './background';
+import { background, backgroundColor } from './background';
 
 const shapeDividerBackground = location => {
 	const response = {};
@@ -44,78 +37,6 @@ const shapeDividerBackgroundColor = location => {
 	return response;
 };
 
-const shapeDividerBackgroundImage = location => {
-	const response = {};
-
-	Object.keys(backgroundImage).forEach(key => {
-		const newKey = key.replace(
-			'background-',
-			`shape-divider-${location}-background-`
-		);
-		const value = { ...backgroundImage[key] };
-
-		value.default = '';
-
-		response[newKey] = value;
-	});
-
-	return response;
-};
-
-const shapeDividerBackgroundVideo = location => {
-	const response = {};
-
-	Object.keys(backgroundVideo).forEach(key => {
-		const newKey = key.replace(
-			'background-',
-			`shape-divider-${location}-background-`
-		);
-		const value = { ...backgroundVideo[key] };
-
-		value.default = '';
-
-		response[newKey] = value;
-	});
-
-	return response;
-};
-
-const shapeDividerBackgroundGradient = location => {
-	const response = {};
-
-	Object.keys(backgroundGradient).forEach(key => {
-		const newKey = key.replace(
-			'background-',
-			`shape-divider-${location}-background-`
-		);
-		const value = { ...backgroundGradient[key] };
-
-		value.default = '';
-
-		response[newKey] = value;
-	});
-
-	return response;
-};
-
-const shapeDividerBackgroundSVG = location => {
-	const response = {};
-
-	Object.keys(backgroundSVG).forEach(key => {
-		const newKey = key.replace(
-			'background-',
-			`shape-divider-${location}-background-`
-		);
-		const value = { ...backgroundSVG[key] };
-
-		value.default = '';
-
-		response[newKey] = value;
-	});
-
-	return response;
-};
-
 const shapeDivider = {
 	'shape-divider-top-status': {
 		type: 'boolean',
@@ -139,10 +60,6 @@ const shapeDivider = {
 	},
 	...shapeDividerBackground('top'),
 	...shapeDividerBackgroundColor('top'),
-	...shapeDividerBackgroundImage('top'),
-	...shapeDividerBackgroundVideo('top'),
-	...shapeDividerBackgroundGradient('top'),
-	...shapeDividerBackgroundSVG('top'),
 	'shape-divider-top-effects-status': {
 		type: 'boolean',
 		default: false,
@@ -169,10 +86,6 @@ const shapeDivider = {
 	},
 	...shapeDividerBackground('bottom'),
 	...shapeDividerBackgroundColor('bottom'),
-	...shapeDividerBackgroundImage('bottom'),
-	...shapeDividerBackgroundVideo('bottom'),
-	...shapeDividerBackgroundGradient('bottom'),
-	...shapeDividerBackgroundSVG('bottom'),
 	'shape-divider-bottom-effects-status': {
 		type: 'boolean',
 		default: false,

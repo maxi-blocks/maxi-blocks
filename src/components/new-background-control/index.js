@@ -53,7 +53,7 @@ const BackgroundControl = props => {
 		disableNoneStyle = false,
 		onChange,
 		isHover = false,
-		prefix = null,
+		prefix = '',
 	} = props;
 	const backgroundActiveMedia =
 		props[getAttributeKey('background-active-media', isHover, prefix)];
@@ -110,15 +110,9 @@ const BackgroundControl = props => {
 			{!disableLayers && (
 				<BackgroundLayersControl
 					layersOptions={layersOptions}
-					onChange={value =>
-						onChange({
-							[getAttributeKey(
-								'background-layers',
-								isHover,
-								prefix
-							)]: value,
-						})
-					}
+					onChange={obj => onChange(obj)}
+					isHover={isHover}
+					prefix={prefix}
 				/>
 			)}
 			{getOptions().length > 1 && layersOptions.length <= 0 && (
@@ -127,15 +121,15 @@ const BackgroundControl = props => {
 					fullWidthMode
 					selected={backgroundActiveMedia}
 					options={getOptions()}
-					onChange={value =>
+					onChange={value => {
 						onChange({
 							[getAttributeKey(
 								'background-active-media',
 								isHover,
 								prefix
 							)]: value,
-						})
-					}
+						});
+					}}
 				/>
 			)}
 			{layersOptions.length <= 0 && (
@@ -193,7 +187,7 @@ const BackgroundControl = props => {
 							gradientOptions={{
 								...getGroupAttributes(
 									props,
-									'backgroundColor',
+									'backgroundGradient',
 									isHover,
 									prefix
 								),

@@ -16,6 +16,7 @@ import VideoLayer from './videoLayer';
 import GradientLayer from './gradientLayer';
 import SVGLayer from './svgLayer';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getAttributeKey from '../../extensions/styles/getAttributeKey';
 
 /**
  * External dependencies
@@ -139,9 +140,12 @@ const LayerCard = props => {
 	);
 };
 
-const BackgroundLayersControl = props => {
-	const { onChange } = props;
-
+const BackgroundLayersControl = ({
+	isHover = false,
+	prefix = '',
+	onChange,
+	...props
+}) => {
 	const layersOptions = cloneDeep(props.layersOptions);
 
 	const [selector, changeSelector] = useState(null);
@@ -202,7 +206,13 @@ const BackgroundLayersControl = props => {
 									1
 								)[0];
 								layersOptions.splice(toIndex, 0, layer);
-								onChange(layersOptions);
+								onChange({
+									[getAttributeKey(
+										'background-layers',
+										isHover,
+										prefix
+									)]: layersOptions,
+								});
 							}}
 							nodeSelector='div.maxi-background-layer'
 							handleSelector='div.maxi-background-layer__row'
@@ -216,7 +226,13 @@ const BackgroundLayersControl = props => {
 										onChange={layer => {
 											layersOptions[i] = layer;
 
-											onChange(layersOptions);
+											onChange({
+												[getAttributeKey(
+													'background-layers',
+													isHover,
+													prefix
+												)]: layersOptions,
+											});
 										}}
 										onOpen={isOpen => {
 											if (isOpen) changeSelector(null);
@@ -229,7 +245,13 @@ const BackgroundLayersControl = props => {
 										onRemove={() => {
 											layersOptions.splice(i, 1);
 
-											onChange(layersOptions);
+											onChange({
+												[getAttributeKey(
+													'background-layers',
+													isHover,
+													prefix
+												)]: layersOptions,
+											});
 										}}
 									/>
 								))}
@@ -262,7 +284,20 @@ const BackgroundLayersControl = props => {
 						onClick={value => {
 							layersOptions.unshift(getObject(value));
 
-							onChange(layersOptions);
+							onChange({
+								[getAttributeKey(
+									'background-layers',
+									isHover,
+									prefix
+								)]: layersOptions,
+								...(layersOptions.length > 0 && {
+									[getAttributeKey(
+										'background-active-media',
+										isHover,
+										prefix
+									)]: 'layers',
+								}),
+							});
 						}}
 						forwards
 					/>

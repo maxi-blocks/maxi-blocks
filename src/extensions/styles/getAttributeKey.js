@@ -1,8 +1,9 @@
-const getAttributeKey = (key, isHover = false, prefix = null) => {
+const getAttributeKey = (key, isHover = false, prefix = false) => {
+	// if (key === 'background-color') debugger;
 	const newKey = !prefix ? key : `${prefix}${key}`;
 
 	if (!isHover) return newKey;
-	return newKey.replace('background-', 'background-hover-');
+	return `${newKey}-hover`;
 };
 
 export default getAttributeKey;

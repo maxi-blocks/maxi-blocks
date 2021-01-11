@@ -2,14 +2,14 @@ import boxShadow from './boxShadow';
 
 const boxShadowHover = (function boxShadowHoverGenerator() {
 	const response = {
-		'boxShadow-hover-status': {
+		'box-shadow-status-hover': {
 			type: 'boolean',
 			default: false,
 		},
 	};
 
 	Object.keys(boxShadow).forEach(key => {
-		const newKey = key.replace('boxShadow-', 'boxShadow-hover-');
+		const newKey = `${key}-hover`;
 		const value = { ...boxShadow[key] };
 
 		value.default = '';

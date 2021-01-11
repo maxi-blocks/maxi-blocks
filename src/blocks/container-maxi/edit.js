@@ -49,7 +49,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 		background,
 		arrow,
 	} = props;
-
+	console.log(props);
 	return (
 		<__experimentalBlock
 			ref={ref}
@@ -208,15 +208,13 @@ class edit extends MaxiBlock {
 	}
 
 	get getContainerObject() {
-		const { isFirstOnHierarchy, sizeContainer } = this.props.attributes;
+		const { sizeContainer } = this.props.attributes;
 
 		const response = {
 			sizeContainer,
 		};
 
-		if (isFirstOnHierarchy) return response;
-
-		return {};
+		return response;
 	}
 
 	get getCustomData() {

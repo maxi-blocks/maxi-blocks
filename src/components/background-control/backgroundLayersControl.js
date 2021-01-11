@@ -196,6 +196,7 @@ const BackgroundLayersControl = props => {
 							onDragEnd={(fromIndex, toIndex) => {
 								let layer = layers.splice(fromIndex, 1)[0];
 								layers.splice(toIndex, 0, layer);
+								layersOptions.layers = layers;
 								onChange(layersOptions);
 							}}
 							nodeSelector='div.maxi-background-layer'
@@ -222,7 +223,7 @@ const BackgroundLayersControl = props => {
 										isOpen={selector === i}
 										onRemove={() => {
 											layers.splice(i, 1);
-
+											layersOptions.layers = layers;
 											onChange(layersOptions);
 										}}
 									/>

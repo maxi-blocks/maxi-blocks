@@ -59,7 +59,7 @@ const attributes = {
 	},
 	sizeContainer: {
 		type: 'object',
-		default: attributesData.container,
+		default: attributesData.row,
 	},
 	boxShadow: {
 		type: 'object',

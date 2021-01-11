@@ -216,20 +216,22 @@ class ResponsiveFrontendStyles
         $fontOptions = [];
         foreach ($meta as $target) {
             foreach ($target['content'] as $breakpoint) {
-                if (array_key_exists('font-family', $breakpoint) && array_key_exists('font-options', $breakpoint))
-                    $fontOptions[$breakpoint['font-family']] = $breakpoint['font-options'];
+                if (array_key_exists('font-family', $breakpoint)) {
+                    $font_style = array_key_exists('font-style', $breakpoint) ? $breakpoint['font-style'] : 'normal';
+                    $fontOptions[$breakpoint['font-family'] . '-' . $font_style] = $font_style;
+                }
             }
         }
 
-        foreach ($fontOptions as $font => $options) {
-            foreach ($options as $style => $link) {
-                wp_enqueue_style(
-                    "{$font}-{$style}",
-                    "https://fonts.googleapis.com/css2?family={$font}"
-                );
-            }
+        foreach ($fontOptions as $font => $value) {
+            $font_name = substr($font, 0, strpos($font,'-'));
+            wp_enqueue_style(
+                "{$font}",
+                "https://fonts.googleapis.com/css2?family={$font_name}"
+            );
         }
-	}
+    }
+
 
 	/**
      * Custom Meta

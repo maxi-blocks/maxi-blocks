@@ -809,9 +809,9 @@ export const typography = {
 		color: '',
 		'text-align': '',
 		'font-sizeUnit': 'px',
-		'font-size': 20,
+		'font-size': '',
 		'line-heightUnit': '',
-		'line-height': 1.5,
+		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
 		'font-weight': '',
@@ -843,9 +843,9 @@ export const typography = {
 		'font-options': {},
 		color: '',
 		'font-sizeUnit': 'px',
-		'font-size': 16,
+		'font-size': '',
 		'line-heightUnit': '',
-		'line-height': 1.625,
+		'line-height': '',
 		'letter-spacingUnit': 'px',
 		'letter-spacing': '',
 		'font-weight': '',
@@ -894,7 +894,7 @@ export const typography = {
 		'font-options': {},
 		color: '',
 		'font-sizeUnit': 'px',
-		'font-size': '',
+		'font-size': '16',
 		'line-heightUnit': '',
 		'line-height': '',
 		'letter-spacingUnit': 'px',
@@ -1203,79 +1203,6 @@ export const padding = {
 	},
 };
 
-export const paddingContainer = {
-	label: 'Padding',
-	general: {
-		'padding-topUnit': 'px',
-		'padding-top': '150',
-		'padding-rightUnit': 'px',
-		'padding-right': '0',
-		'padding-bottomUnit': 'px',
-		'padding-bottom': '150',
-		'padding-leftUnit': 'px',
-		'padding-left': '0',
-		sync: false,
-
-	},
-	xxl: {
-		'padding-topUnit': 'px',
-		'padding-top': '230',
-		'padding-rightUnit': 'px',
-		'padding-right': '0',
-		'padding-bottomUnit': 'px',
-		'padding-bottom': '230',
-		'padding-leftUnit': 'px',
-		'padding-left': '0',
-		sync: false,
-	},
-	xl: {
-		'padding-topUnit': 'px',
-		'padding-top': '150',
-		'padding-rightUnit': 'px',
-		'padding-right': '0',
-		'padding-bottomUnit': 'px',
-		'padding-bottom': '150',
-		'padding-leftUnit': 'px',
-		'padding-left': '0',
-		sync: false,
-	},
-	l: {
-		'padding-topUnit': 'px',
-		'padding-top': '100',
-		'padding-rightUnit': 'px',
-		'padding-right': '0',
-		'padding-bottomUnit': 'px',
-		'padding-bottom': '100',
-		'padding-leftUnit': 'px',
-		'padding-left': '0',
-		sync: false,
-	},
-	m: {
-		'padding-top': '',
-		'padding-right': '',
-		'padding-bottom': '',
-		'padding-left': '',
-		sync: false,
-		unit: '',
-	},
-	s: {
-		'padding-top': '',
-		'padding-right': '',
-		'padding-bottom': '',
-		'padding-left': '',
-		sync: false,
-		unit: '',
-	},
-	xs: {
-		'padding-top': '',
-		'padding-right': '',
-		'padding-bottom': '',
-		'padding-left': '',
-		sync: false,
-		unit: '',
-	},
-};
-
 export const cropOptions = {
 	image: {
 		source_url: '',
@@ -1315,11 +1242,11 @@ export const divider = {
 	},
 };
 
-export const container = {
+export const row = {
 	label: 'Container size',
 	general: {
 		'max-widthUnit': 'px',
-		'max-width': 1790,
+		'max-width': 1170,
 		widthUnit: '%',
 		width: 100,
 	},
@@ -1337,27 +1264,73 @@ export const container = {
 	},
 	l: {
 		'max-widthUnit': 'px',
-		'max-width': 1170,
+		'max-width': 1000,
 		widthUnit: '%',
 		width: 100,
 	},
 	m: {
 		'max-widthUnit': 'px',
-		'max-width': 940,
+		'max-width': 700,
 		widthUnit: '%',
 		width: 100,
 	},
 	s: {
 		'max-widthUnit': 'px',
-		'max-width': 720,
+		'max-width': 460,
 		widthUnit: '%',
 		width: 100,
 	},
 	xs: {
 		'max-widthUnit': 'px',
-		'max-width': 420,
+		'max-width': 300,
 		widthUnit: '%',
 		width: 100,
+	},
+};
+
+export const container = {
+	label: 'Container size',
+	general: {
+		'max-widthUnit': 'px',
+		'max-width': 1170,
+		widthUnit: '%',
+		width: 100,
+	},
+	xxl: {
+		'max-widthUnit': 'px',
+		'max-width': 1790,
+		widthUnit: '%',
+		width: 100,
+	},
+	xl: {
+		'max-widthUnit': 'px',
+		'max-width': 1170,
+		widthUnit: '%',
+		width: 100,
+	},
+	l: {
+		'max-widthUnit': '%',
+		'max-width': 90,
+		widthUnit: 'px',
+		width: 1170,
+	},
+	m: {
+		'max-widthUnit': '%',
+		'max-width': 90,
+		widthUnit: 'px',
+		width: 1000,
+	},
+	s: {
+		'max-widthUnit': '%',
+		'max-width': 90,
+		widthUnit: 'px',
+		width: 700,
+	},
+	xs: {
+		'max-widthUnit': '%',
+		'max-width': 90,
+		widthUnit: 'px',
+		width: 460,
 	},
 };
 

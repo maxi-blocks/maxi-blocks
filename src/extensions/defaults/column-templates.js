@@ -1,10 +1,4 @@
 /**
- * WordPress dependencies
- */
-
-const { select } = wp.data;
-
-/**
  * Icons
  */
 import {
@@ -43,19 +37,6 @@ import {
 /**
  * Helpers
  */
-
-const getCurrentColumnGap = (clientId, prop) => {
-	const { getBlock } = select('core/block-editor');
-
-	const gap = getBlock(clientId).attributes.columnGap;
-
-	let gapValue = 1;
-
-	if (gap === 'yes') gapValue = 1;
-	if (gap === 'no') gapValue = 0;
-
-	return gapValue;
-};
 /**
  *
  * We are generating new columns again each time the user changes the pattern and adding the new columns to them

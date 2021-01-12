@@ -49,7 +49,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 		background,
 		arrow,
 	} = props;
-	console.log(props);
+
 	return (
 		<__experimentalBlock
 			ref={ref}

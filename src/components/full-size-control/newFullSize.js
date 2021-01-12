@@ -28,13 +28,8 @@ import './editor.scss';
  * Component
  */
 const FullSizeControl = props => {
-	const {
-		onChange,
-		className,
-		breakpoint,
-		hideWidth,
-		sizeAdvancedOptions,
-	} = props;
+	const { onChange, className, breakpoint, hideWidth } = props;
+
 	const classes = classnames('maxi-full-size-control', className);
 
 	const onChangeValue = (target, val) => {
@@ -109,13 +104,13 @@ const FullSizeControl = props => {
 			/>
 			<FancyRadioControl
 				label={__('Advanced Width/Height', 'maxi-blocks')}
-				selected={sizeAdvancedOptions}
+				selected={+props['size-advanced-options']}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
 				onChange={val => {
-					onChange({ sizeAdvancedOptions: !!val });
+					onChange({ 'size-advanced-options': !!val });
 					if (!Number(val)) {
 						onChangeValue(
 							[
@@ -139,7 +134,7 @@ const FullSizeControl = props => {
 					}
 				}}
 			/>
-			{sizeAdvancedOptions && (
+			{props['size-advanced-options'] && (
 				<Fragment>
 					<SizeControl
 						label={__('Max Width', 'maxi-blocks')}

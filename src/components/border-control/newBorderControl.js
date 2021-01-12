@@ -17,7 +17,7 @@ import {
 	borderDashed,
 	borderDotted,
 } from './newDefaults';
-
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
@@ -42,6 +42,7 @@ const BorderControl = props => {
 		breakpoint = 'general',
 		disableAdvanced = false,
 		disableColor = false,
+		isHover = false,
 	} = props;
 
 	const classes = classnames('maxi-border-control', className);
@@ -50,7 +51,7 @@ const BorderControl = props => {
 		const response = {};
 
 		Object.entries(defaultProp).forEach(([key, value]) => {
-			response[`${key}-${breakpoint}`] = value;
+			response[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] = value;
 		});
 
 		onChange(response);
@@ -69,7 +70,8 @@ const BorderControl = props => {
 				getLastBreakpointAttribute(
 					'border-top-width',
 					breakpoint,
-					props
+					props,
+					isHover
 				)
 			);
 		});
@@ -78,19 +80,10 @@ const BorderControl = props => {
 			return getLastBreakpointAttribute(
 				'border-style',
 				breakpoint,
-				props
+				props,
+				isHover
 			);
 		return 'none';
-	};
-
-	const getBorderAttributes = type => {
-		const response = {};
-
-		Object.entries(props).forEach(([key, value]) => {
-			if (key.includes(type)) response[key] = value;
-		});
-
-		return response;
 	};
 
 	return (
@@ -145,13 +138,18 @@ const BorderControl = props => {
 					color={getLastBreakpointAttribute(
 						'border-color',
 						breakpoint,
-						props
+						props,
+						isHover
 					)}
 					defaultColor={getDefaultAttribute(
-						`border-color-${breakpoint}`
+						`border-color-${breakpoint}${isHover ? '-hover' : ''}`
 					)}
 					onChange={val => {
-						onChange({ [`border-color-${breakpoint}`]: val });
+						onChange({
+							[`border-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: val,
+						});
 					}}
 					disableImage
 					disableVideo
@@ -167,7 +165,8 @@ const BorderControl = props => {
 						value={getLastBreakpointAttribute(
 							'border-style',
 							breakpoint,
-							props
+							props,
+							isHover
 						)}
 						options={[
 							{ label: 'None', value: 'none' },
@@ -181,11 +180,15 @@ const BorderControl = props => {
 							{ label: 'Outset', value: 'outset' },
 						]}
 						onChange={val => {
-							onChange({ [`border-style-${breakpoint}`]: val });
+							onChange({
+								[`border-style-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: val,
+							});
 						}}
 					/>
 					<AxisControl
-						{...getBorderAttributes('width')}
+						{...getGroupAttributes(props, 'borderWidth', isHover)}
 						target='border'
 						auxTarget='width'
 						label={__('Border width', 'maxi-blocks')}
@@ -207,9 +210,10 @@ const BorderControl = props => {
 							},
 						}}
 						disableAuto
+						isHover
 					/>
 					<AxisControl
-						{...getBorderAttributes('radius')}
+						{...getGroupAttributes(props, 'borderRadius', isHover)}
 						target='border'
 						auxTarget='radius'
 						label={__('Border radius', 'maxi-blocks')}
@@ -234,6 +238,15 @@ const BorderControl = props => {
 							},
 						}}
 						disableAuto
+						isHover
+						inputsArray={[
+							'top-left',
+							'top-right',
+							'bottom-right',
+							'bottom-left',
+							'unit',
+							'sync',
+						]}
 					/>
 				</Fragment>
 			)}

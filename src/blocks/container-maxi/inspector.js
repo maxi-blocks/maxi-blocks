@@ -396,7 +396,11 @@ const Inspector = props => {
 																<BorderControl
 																	{...getGroupAttributes(
 																		attributes,
-																		'border'
+																		[
+																			'border',
+																			'borderWidth',
+																			'borderRadius',
+																		]
 																	)}
 																	onChange={obj =>
 																		setAttributes(
@@ -422,8 +426,8 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			attributes[
-																				'border-hover-status'
+																			+attributes[
+																				'border-status-hover'
 																			]
 																		}
 																		options={[
@@ -445,18 +449,22 @@ const Inspector = props => {
 																		onChange={val => {
 																			setAttributes(
 																				{
-																					'border-hover-status': !!val,
+																					'border-status-hover': !!val,
 																				}
 																			);
 																		}}
 																	/>
 																	{attributes[
-																		'border-hover-status'
+																		'border-status-hover'
 																	] && (
 																		<BorderControl
 																			{...getGroupAttributes(
 																				attributes,
-																				'borderHover'
+																				[
+																					'borderHover',
+																					'borderWidthHover',
+																					'borderRadiusHover',
+																				]
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -466,6 +474,7 @@ const Inspector = props => {
 																			breakpoint={
 																				deviceType
 																			}
+																			isHover
 																		/>
 																	)}
 																</Fragment>

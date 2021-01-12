@@ -27,15 +27,17 @@ const BackgroundContent = props => {
 
 	return (
 		<Fragment>
-			{props[`background-layers${isHover ? '-hover' : ''}`].length <=
-			0 ? (
+			{!props[`background-layers${isHover ? '-hover' : ''}`] ||
+			props[`background-layers${isHover ? '-hover' : ''}`].length <= 0 ? (
 				<Fragment>
-					<div
-						className={classnames(
-							'maxi-background-displayer__layer',
-							'maxi-background-displayer__color'
-						)}
-					/>
+					{!isHover && (
+						<div
+							className={classnames(
+								'maxi-background-displayer__layer',
+								'maxi-background-displayer__color'
+							)}
+						/>
+					)}
 					{props[
 						`background-active-media${isHover ? '-hover' : ''}`
 					] === 'image' && (
@@ -83,6 +85,7 @@ const BackgroundContent = props => {
 						)}
 				</Fragment>
 			) : (
+				props[`background-layers${isHover ? '-hover' : ''}`] &&
 				props[`background-layers${isHover ? '-hover' : ''}`].length >
 					0 &&
 				props[`background-layers${isHover ? '-hover' : ''}`]

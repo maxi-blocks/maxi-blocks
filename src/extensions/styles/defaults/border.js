@@ -1,4 +1,4 @@
-const border = {
+export const border = {
 	'border-color-general': {
 		type: 'string',
 		default: '#ffffff',
@@ -55,6 +55,9 @@ const border = {
 		type: 'string',
 		default: '',
 	},
+};
+
+export const borderWidth = {
 	'border-top-width-general': {
 		type: 'number',
 		default: '',
@@ -217,19 +220,22 @@ const border = {
 		type: 'string',
 		default: '',
 	},
-	'border-top-radius-general': {
+};
+
+export const borderRadius = {
+	'border-top-left-radius-general': {
 		type: 'number',
 		default: '',
 	},
-	'border-right-radius-general': {
+	'border-top-right-radius-general': {
 		type: 'number',
 		default: '',
 	},
-	'border-bottom-radius-general': {
+	'border-bottom-right-radius-general': {
 		type: 'number',
 		default: '',
 	},
-	'border-left-radius-general': {
+	'border-bottom-left-radius-general': {
 		type: 'number',
 		default: '',
 	},
@@ -241,19 +247,19 @@ const border = {
 		type: 'string',
 		default: 'px',
 	},
-	'border-top-radius-xxl': {
+	'border-top-left-radius-xxl': {
 		type: 'number',
 		default: '',
 	},
-	'border-right-radius-xxl': {
+	'border-top-right-radius-xxl': {
 		type: 'number',
 		default: '',
 	},
-	'border-bottom-radius-xxl': {
+	'border-bottom-right-radius-xxl': {
 		type: 'number',
 		default: '',
 	},
-	'border-left-radius-xxl': {
+	'border-bottom-left-radius-xxl': {
 		type: 'number',
 		default: '',
 	},
@@ -264,19 +270,19 @@ const border = {
 		type: 'string',
 		default: '',
 	},
-	'border-top-radius-xl': {
+	'border-top-left-radius-xl': {
 		type: 'number',
 		default: '',
 	},
-	'border-right-radius-xl': {
+	'border-top-right-radius-xl': {
 		type: 'number',
 		default: '',
 	},
-	'border-bottom-radius-xl': {
+	'border-bottom-right-radius-xl': {
 		type: 'number',
 		default: '',
 	},
-	'border-left-radius-xl': {
+	'border-bottom-left-radius-xl': {
 		type: 'number',
 		default: '',
 	},
@@ -287,19 +293,19 @@ const border = {
 		type: 'string',
 		default: '',
 	},
-	'border-top-radius-l': {
+	'border-top-left-radius-l': {
 		type: 'number',
 		default: '',
 	},
-	'border-right-radius-l': {
+	'border-top-right-radius-l': {
 		type: 'number',
 		default: '',
 	},
-	'border-bottom-radius-l': {
+	'border-bottom-right-radius-l': {
 		type: 'number',
 		default: '',
 	},
-	'border-left-radius-l': {
+	'border-bottom-left-radius-l': {
 		type: 'number',
 		default: '',
 	},
@@ -310,19 +316,19 @@ const border = {
 		type: 'string',
 		default: '',
 	},
-	'border-top-radius-m': {
+	'border-top-left-radius-m': {
 		type: 'number',
 		default: '',
 	},
-	'border-right-radius-m': {
+	'border-top-right-radius-m': {
 		type: 'number',
 		default: '',
 	},
-	'border-bottom-radius-m': {
+	'border-bottom-right-radius-m': {
 		type: 'number',
 		default: '',
 	},
-	'border-left-radius-m': {
+	'border-bottom-left-radius-m': {
 		type: 'number',
 		default: '',
 	},
@@ -333,19 +339,19 @@ const border = {
 		type: 'string',
 		default: '',
 	},
-	'border-top-radius-s': {
+	'border-top-left-radius-s': {
 		type: 'number',
 		default: '',
 	},
-	'border-right-radius-s': {
+	'border-top-right-radius-s': {
 		type: 'number',
 		default: '',
 	},
-	'border-bottom-radius-s': {
+	'border-bottom-right-radius-s': {
 		type: 'number',
 		default: '',
 	},
-	'border-left-radius-s': {
+	'border-bottom-left-radius-s': {
 		type: 'number',
 		default: '',
 	},
@@ -356,19 +362,19 @@ const border = {
 		type: 'string',
 		default: '',
 	},
-	'border-top-radius-xs': {
+	'border-top-left-radius-xs': {
 		type: 'number',
 		default: '',
 	},
-	'border-right-radius-xs': {
+	'border-top-right-radius-xs': {
 		type: 'number',
 		default: '',
 	},
-	'border-bottom-radius-xs': {
+	'border-bottom-right-radius-xs': {
 		type: 'number',
 		default: '',
 	},
-	'border-left-radius-xs': {
+	'border-bottom-left-radius-xs': {
 		type: 'number',
 		default: '',
 	},
@@ -380,5 +386,3 @@ const border = {
 		default: '',
 	},
 };
-
-export default border;

@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getGroupAttributes from '../getGroupAttributes';
+import getBorderStyles from './getBorderStyles';
 
 /**
  * External dependencies
@@ -111,6 +112,9 @@ export const getImageBackgroundObject = ({ isHover = false, ...props }) => {
 		props[`background-image-position${isHover ? '-hover' : ''}`] !==
 		'custom'
 	)
+		response.general['background-position'] =
+			props[`background-image-position${isHover ? '-hover' : ''}`];
+	else
 		response.general['background-position'] = `${
 			props[`background-image-position-width${isHover ? '-hover' : ''}`] +
 			props[
@@ -294,7 +298,13 @@ const setBackgroundLayers = (response, layers, target, isHover = false) => {
 };
 
 const getBackgroundStyles = ({ target, isHover = false, ...props }) => {
-	let response = {};
+	let response = {
+		[`${target}${isHover ? ':hover' : ''} > .maxi-background-displayer`]: {
+			border: getBorderStyles({
+				...getGroupAttributes(props, 'borderRadius', isHover),
+			}),
+		},
+	};
 
 	switch (props[`background-active-media${isHover ? '-hover' : ''}`]) {
 		case 'layers':

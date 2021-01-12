@@ -36,7 +36,8 @@ class MaxiBlock extends Component {
 
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
-		this.cloneObjects(attributes);
+		// this.cloneObjects(attributes);
+		this.displayStyles();
 	}
 
 	componentDidUpdate() {
@@ -124,7 +125,6 @@ class MaxiBlock extends Component {
 		const customData = this.getCustomData;
 
 		const styles = styleResolver(obj);
-		// console.log(styleGenerator(styles));
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {

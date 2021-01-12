@@ -126,7 +126,13 @@ const getArrowStyles = props => {
 		},
 		[`${target} .maxi-container-arrow:before`]: {
 			border: {
-				...getArrowBorderObject(getGroupAttributes(props, 'border')),
+				...getArrowBorderObject(
+					getGroupAttributes(props, [
+						'border',
+						'borderWidth',
+						'borderRadius',
+					])
+				),
 			},
 		},
 	};

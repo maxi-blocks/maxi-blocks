@@ -1,5 +1,5 @@
 const size = {
-	sizeAdvancedOptions: {
+	'size-advanced-options': {
 		type: 'boolean',
 		default: false,
 	},

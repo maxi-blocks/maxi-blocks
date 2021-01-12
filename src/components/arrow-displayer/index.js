@@ -16,7 +16,7 @@ const ArrowDisplayer = props => {
 
 	const arrowClasses = classnames(
 		'maxi-container-arrow',
-		`maxi-container-arrow__${props[`arrow-size-${breakpoint}`]}`,
+		`maxi-container-arrow__${props[`arrow-side-${breakpoint}`]}`,
 		className
 	);
 

@@ -5,7 +5,6 @@ export const background = {
 	},
 	'background-layers': {
 		type: 'array',
-		default: [],
 	},
 };
 
@@ -22,8 +21,7 @@ export const backgroundColor = {
 
 export const backgroundImage = {
 	'background-image-mediaID': {
-		type: 'string',
-		default: '',
+		type: 'number',
 	},
 	'background-image-mediaURL': {
 		type: 'string',
@@ -31,7 +29,7 @@ export const backgroundImage = {
 	},
 	'background-image-size': {
 		type: 'string',
-		default: '',
+		default: 'auto',
 	},
 	'background-image-width': {
 		type: 'number',
@@ -66,7 +64,6 @@ export const backgroundImage = {
 	},
 	'background-image-position-width': {
 		type: 'number',
-		default: 0,
 	},
 	'background-image-position-height-unit': {
 		type: 'string',
@@ -74,7 +71,6 @@ export const backgroundImage = {
 	},
 	'background-image-position-height': {
 		type: 'number',
-		default: 0,
 	},
 	'background-image-origin': {
 		type: 'string',
@@ -165,9 +161,6 @@ export const backgroundSVG = {
 	},
 	'background-svg-SVGData': {
 		type: 'object',
-		default: {
-			type: 'object',
-		},
 	},
 	'background-svg-SVGMediaID': {
 		type: 'number',

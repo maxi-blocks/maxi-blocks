@@ -54,13 +54,13 @@ const AxisControlTest = props => {
 		},
 		target,
 		auxTarget = false,
+		isHover = false,
+		inputsArray = ['top', 'right', 'bottom', 'left', 'unit', 'sync'],
 	} = props;
 
 	const instanceId = useInstanceId(AxisControlTest);
 
 	const classes = classnames('maxi-axis-control', className);
-
-	const inputsArray = ['top', 'right', 'bottom', 'left', 'unit', 'sync'];
 
 	const getOptions = () => {
 		const options = [];
@@ -82,7 +82,8 @@ const AxisControlTest = props => {
 		const inputValue = getLastBreakpointAttribute(
 			getKey(key),
 			breakpoint,
-			props
+			props,
+			isHover
 		);
 
 		if (!!Number(inputValue) || parseInt(inputValue, 10) === 0)
@@ -94,8 +95,10 @@ const AxisControlTest = props => {
 		const response = {};
 
 		inputsArray.forEach(key => {
-			response[`${getKey(key)}-${breakpoint}`] = getDefaultAttribute(
-				`${getKey(key)}-${breakpoint}`
+			response[
+				`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
+			] = getDefaultAttribute(
+				`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
 			);
 		});
 
@@ -104,10 +107,13 @@ const AxisControlTest = props => {
 
 	const onChangeSync = () => {
 		onChange({
-			[`${getKey('sync')}-${breakpoint}`]: !getLastBreakpointAttribute(
+			[`${getKey('sync')}-${breakpoint}${
+				isHover ? '-hover' : ''
+			}`]: !getLastBreakpointAttribute(
 				getKey('sync'),
 				breakpoint,
-				props
+				props,
+				isHover
 			),
 		});
 	};
@@ -122,12 +128,22 @@ const AxisControlTest = props => {
 	};
 
 	const currentUnit =
-		getLastBreakpointAttribute(getKey('unit'), breakpoint) || 'px';
+		getLastBreakpointAttribute(
+			getKey('unit'),
+			breakpoint,
+			props,
+			isHover
+		) || 'px';
 
 	const onChangeValue = (newValue, singleTarget) => {
 		if (
 			isNumber(newValue) &&
-			getLastBreakpointAttribute(getKey('sync'), breakpoint, props)
+			getLastBreakpointAttribute(
+				getKey('sync'),
+				breakpoint,
+				props,
+				isHover
+			)
 		) {
 			const response = {};
 
@@ -136,7 +152,7 @@ const AxisControlTest = props => {
 					response[
 						`${target}-${key}${
 							auxTarget ? `-${auxTarget}` : ''
-						}-${breakpoint}`
+						}-${breakpoint}${isHover ? '-hover' : ''}`
 					] = +newValue;
 			});
 
@@ -145,7 +161,7 @@ const AxisControlTest = props => {
 			onChange({
 				[`${target}-${singleTarget}${
 					auxTarget ? `-${auxTarget}` : ''
-				}-${breakpoint}`]: newValue,
+				}-${breakpoint}${isHover ? '-hover' : ''}`]: newValue,
 			});
 		}
 	};
@@ -164,7 +180,7 @@ const AxisControlTest = props => {
 						onChange({
 							[`${target}-unit${
 								auxTarget ? `-${auxTarget}` : ''
-							}-${breakpoint}`]: val,
+							}-${breakpoint}${isHover ? '-hover' : ''}`]: val,
 						})
 					}
 				/>
@@ -189,9 +205,13 @@ const AxisControlTest = props => {
 					<input
 						className='maxi-axis-control__content__item__input'
 						type='number'
-						placeholder={getValue('top') === 'auto' ? 'auto' : ''}
-						value={getDisplayValue('top')}
-						onChange={e => onChangeValue(+e.target.value, 'top')}
+						placeholder={
+							getValue(inputsArray[0]) === 'auto' ? 'auto' : ''
+						}
+						value={getDisplayValue(inputsArray[0])}
+						onChange={e =>
+							onChangeValue(+e.target.value, inputsArray[0])
+						}
 						aria-label={sprintf(__('%s Top', 'maxi-blocks'), label)}
 						min={minMaxSettings[currentUnit].min}
 						max={minMaxSettings[currentUnit].max}
@@ -203,12 +223,12 @@ const AxisControlTest = props => {
 						>
 							<input
 								type='checkbox'
-								checked={getValue('top') === 'auto'}
+								checked={getValue(inputsArray[0]) === 'auto'}
 								onChange={e => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(+newValue, 'top');
+									onChangeValue(+newValue, inputsArray[0]);
 								}}
 								id={`${instanceId}-top`}
 							/>
@@ -223,9 +243,13 @@ const AxisControlTest = props => {
 					<input
 						className='maxi-axis-control__content__item__input'
 						type='number'
-						placeholder={getValue('right') === 'auto' ? 'auto' : ''}
-						value={getDisplayValue('right')}
-						onChange={e => onChangeValue(+e.target.value, 'right')}
+						placeholder={
+							getValue(inputsArray[1]) === 'auto' ? 'auto' : ''
+						}
+						value={getDisplayValue(inputsArray[1])}
+						onChange={e =>
+							onChangeValue(+e.target.value, inputsArray[1])
+						}
 						aria-label={sprintf(
 							__('%s Right', 'maxi-blocks'),
 							label
@@ -240,12 +264,12 @@ const AxisControlTest = props => {
 						>
 							<input
 								type='checkbox'
-								checked={getValue('right') === 'auto'}
+								checked={getValue(inputsArray[1]) === 'auto'}
 								onChange={e => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(+newValue, 'right');
+									onChangeValue(+newValue, inputsArray[1]);
 								}}
 								id={`${instanceId}-right`}
 							/>
@@ -261,10 +285,12 @@ const AxisControlTest = props => {
 						className='maxi-axis-control__content__item__input'
 						type='number'
 						placeholder={
-							getValue('bottom') === 'auto' ? 'auto' : ''
+							getValue(inputsArray[2]) === 'auto' ? 'auto' : ''
 						}
-						value={getDisplayValue('bottom')}
-						onChange={e => onChangeValue(+e.target.value, 'bottom')}
+						value={getDisplayValue(inputsArray[2])}
+						onChange={e =>
+							onChangeValue(+e.target.value, inputsArray[2])
+						}
 						aria-label={sprintf(
 							__('%s Bottom', 'maxi-blocks'),
 							label
@@ -279,12 +305,12 @@ const AxisControlTest = props => {
 						>
 							<input
 								type='checkbox'
-								checked={getValue('bottom') === 'auto'}
+								checked={getValue(inputsArray[2]) === 'auto'}
 								onChange={e => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(+newValue, 'bottom');
+									onChangeValue(+newValue, inputsArray[2]);
 								}}
 								id={`${instanceId}-bottom`}
 							/>
@@ -299,9 +325,13 @@ const AxisControlTest = props => {
 					<input
 						className='maxi-axis-control__content__item__input'
 						type='number'
-						placeholder={getValue('left') === 'auto' ? 'auto' : ''}
-						value={getDisplayValue('left')}
-						onChange={e => onChangeValue(+e.target.value, 'left')}
+						placeholder={
+							getValue(inputsArray[3]) === 'auto' ? 'auto' : ''
+						}
+						value={getDisplayValue(inputsArray[3])}
+						onChange={e =>
+							onChangeValue(+e.target.value, inputsArray[3])
+						}
 						aria-label={sprintf(
 							__('%s Left', 'maxi-blocks'),
 							label
@@ -316,12 +346,12 @@ const AxisControlTest = props => {
 						>
 							<input
 								type='checkbox'
-								checked={getValue('left') === 'auto'}
+								checked={getValue(inputsArray[3]) === 'auto'}
 								onChange={e => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(+newValue, 'left');
+									onChangeValue(+newValue, inputsArray[3]);
 								}}
 								id={`${instanceId}-left`}
 							/>
@@ -335,7 +365,8 @@ const AxisControlTest = props => {
 							getLastBreakpointAttribute(
 								getKey('sync'),
 								breakpoint,
-								props
+								props,
+								isHover
 							)
 								? __('Unsync', 'maxi-blocks')
 								: __('Sync', 'maxi-blocks')
@@ -346,12 +377,14 @@ const AxisControlTest = props => {
 							isPrimary={getLastBreakpointAttribute(
 								getKey('sync'),
 								breakpoint,
-								props
+								props,
+								isHover
 							)}
 							aria-pressed={getLastBreakpointAttribute(
 								getKey('sync'),
 								breakpoint,
-								props
+								props,
+								isHover
 							)}
 							onClick={onChangeSync}
 							isSmall

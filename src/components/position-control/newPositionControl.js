@@ -24,15 +24,6 @@ const PositionControl = props => {
 
 	const classes = classnames('maxi-position-control', className);
 
-	const cleanOptions = {
-		top: '',
-		right: '',
-		bottom: '',
-		left: '',
-		sync: false,
-		unit: '',
-	};
-
 	const getCleanOptions = () => {
 		return {
 			[`position-top-${breakpoint}`]: '',

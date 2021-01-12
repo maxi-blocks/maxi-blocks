@@ -1,8 +1,8 @@
 export { default as alignment } from './alignment';
 export * from './background';
 export * from './backgroundHover';
-export { default as border } from './border';
-export { default as borderHover } from './borderHover';
+export * from './border';
+export * from './borderHover';
 export { default as opacity } from './opacity';
 export { default as size } from './size';
 export { default as boxShadow } from './boxShadow';

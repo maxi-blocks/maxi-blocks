@@ -20,7 +20,11 @@ import {
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
-			...getGroupAttributes(props, 'border'),
+			...getGroupAttributes(props, [
+				'border',
+				'borderWidth',
+				'borderRadius',
+			]),
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -52,7 +56,11 @@ const getHoverObject = props => {
 	const response = {
 		border: getBorderStyles(
 			{
-				...getGroupAttributes(props, 'border', true),
+				...getGroupAttributes(
+					props,
+					['border', 'borderWidth', 'borderRadius'],
+					true
+				),
 			},
 			true
 		),
@@ -145,6 +153,8 @@ const getStyles = props => {
 		},
 	};
 
+	// console.log(response);
+
 	response = {
 		...response,
 		...getBackgroundStyles({
@@ -156,6 +166,7 @@ const getStyles = props => {
 				'backgroundVideo',
 				'backgroundGradient',
 				'backgroundSVG',
+				'borderRadius',
 			]),
 		}),
 		...getBackgroundStyles({
@@ -167,6 +178,7 @@ const getStyles = props => {
 				'backgroundVideoHover',
 				'backgroundGradientHover',
 				'backgroundSVGHover',
+				'borderRadiusHover',
 			]),
 			isHover: true,
 		}),
@@ -175,6 +187,8 @@ const getStyles = props => {
 			...getGroupAttributes(props, [
 				'arrow',
 				'border',
+				'borderWidth',
+				'borderRadius',
 				'background',
 				'backgroundColor',
 				'backgroundGradient',

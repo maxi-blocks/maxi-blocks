@@ -58,7 +58,7 @@ const BackgroundControl = props => {
 	const backgroundActiveMedia =
 		props[getAttributeKey('background-active-media', isHover, prefix)];
 	const layersOptions =
-		props[getAttributeKey('background-layers', isHover, prefix)];
+		props[getAttributeKey('background-layers', isHover, prefix)] || [];
 
 	const classes = classnames('maxi-background-control', className);
 

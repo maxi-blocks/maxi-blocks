@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Maxi Blocks
+ * Plugin Name: Maxi Blocks - issue 745
  * Plugin URI:
  * Description: MaxiBlocks — Last update: 29/12/20
  * Author: Gutenberg Den

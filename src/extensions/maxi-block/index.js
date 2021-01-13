@@ -16,8 +16,12 @@
 const { Component, render } = wp.element;
 const { select, dispatch } = wp.data;
 
+/**
+ * Internal dependencies
+ */
 import styleResolver from '../styles/newStyleResolver';
 import styleGenerator from '../styles/newStylesGenerator';
+import getBreakpoints from '../styles/helpers/getBreakpoints';
 
 /**
  * External dependencies
@@ -55,7 +59,7 @@ class MaxiBlock extends Component {
 	}
 
 	get getBreakpoints() {
-		return { ...this.props.attributes.breakpoints };
+		return getBreakpoints(this.props.attributes);
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -122,9 +126,10 @@ class MaxiBlock extends Component {
 	 */
 	displayStyles() {
 		const obj = this.getStylesObject;
+		const breakpoints = this.getBreakpoints;
 		const customData = this.getCustomData;
 
-		const styles = styleResolver(obj);
+		const styles = styleResolver(obj, false, breakpoints);
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {

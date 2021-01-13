@@ -12,3 +12,4 @@ export { default as getMarginStyles } from './getMarginStyles';
 export { default as getPaddingStyles } from './getPaddingStyles';
 export * from './getShapeDividerStyles';
 export { default as getContainerStyles } from './getContainerStyles';
+export { default as getBreakpoints } from './getBreakpoints';

@@ -111,16 +111,44 @@ export const getBoxShadowObject = boxShadow => {
 	Object.entries(boxShadow).forEach(([key, value]) => {
 		if (key !== 'label' && key !== 'status') {
 			let boxShadowString = '';
-			isNumber(value.shadowHorizontal) &&
-				(boxShadowString += `${value.shadowHorizontal}px `);
-			isNumber(value.shadowVertical) &&
-				(boxShadowString += `${value.shadowVertical}px `);
-			isNumber(value.shadowBlur) &&
-				(boxShadowString += `${value.shadowBlur}px `);
-			isNumber(value.shadowSpread) &&
-				(boxShadowString += `${value.shadowSpread}px `);
+
+			if (value.shadowHorizontal !== '') {
+				isNumber(value.shadowHorizontal) &&
+					(boxShadowString += `${value.shadowHorizontal}px `);
+			} else {
+				boxShadowString += '0 ';
+			}
+
+			if (value.shadowVertical !== '') {
+				isNumber(value.shadowVertical) &&
+					(boxShadowString += `${value.shadowVertical}px `);
+			} else {
+				boxShadowString += '0 ';
+			}
+
+			if (value.shadowBlur !== '') {
+				isNumber(value.shadowBlur) &&
+					(boxShadowString += `${value.shadowBlur}px `);
+			} else {
+				boxShadowString += '0 ';
+			}
+
+			if (value.shadowSpread !== '') {
+				isNumber(value.shadowSpread) &&
+					(boxShadowString += `${value.shadowSpread}px `);
+			} else {
+				boxShadowString += '0 ';
+			}
+
 			!isNil(value.shadowColor) && (boxShadowString += value.shadowColor);
-			response[key]['box-shadow'] = boxShadowString.trim();
+
+			if (
+				value.shadowHorizontal !== '' ||
+				value.shadowVertical !== '' ||
+				value.shadowBlur !== '' ||
+				value.shadowSpread !== ''
+			)
+				response[key]['box-shadow'] = boxShadowString.trim();
 		}
 	});
 
@@ -569,8 +597,36 @@ const getSVGBackgroundObject = SVGOptions => {
 	return response;
 };
 
-const setBackgroundLayers = (response, layers, target) => {
-	layers.forEach(layer => {
+const setBackgroundLayers = (
+	response,
+	backgourndLayers,
+	backgourndHoverlayers,
+	hoverStatus,
+	target
+) => {
+	backgourndHoverlayers.layers.forEach(layer => {
+		const layerHoverTarget = `${target}:hover > .maxi-background-displayer .maxi-background-displayer__${layer.id}`;
+
+		switch (layer.type) {
+			case 'color':
+			case 'gradient':
+				hoverStatus && backgourndHoverlayers.status
+					? (response[layerHoverTarget] = {
+							backgroundHover: {
+								...getColorBackgroundObject(layer.options),
+							},
+					  })
+					: (response[layerHoverTarget] = {
+							backgroundHover: {},
+					  });
+
+				break;
+			default:
+				break;
+		}
+	});
+
+	backgourndLayers.layers.forEach(layer => {
 		const layerTarget = `${target} > .maxi-background-displayer .maxi-background-displayer__${layer.id}`;
 
 		switch (layer.type) {
@@ -630,7 +686,6 @@ export const setBackgroundStyles = ({
 	backgroundHover,
 }) => {
 	let response = {};
-
 	if (backgroundHover.status) {
 		response[
 			`${target}:hover > .maxi-background-displayer .maxi-background-displayer__color`
@@ -646,11 +701,12 @@ export const setBackgroundStyles = ({
 			backgroundHover: {},
 		};
 	}
-
 	if (background.layersOptions && !!background.layersOptions.status) {
 		response = setBackgroundLayers(
 			response,
-			background.layersOptions.layers,
+			background.layersOptions,
+			backgroundHover.layersOptions,
+			backgroundHover.status,
 			target
 		);
 	} else {
@@ -665,20 +721,9 @@ export const setBackgroundStyles = ({
 					...getImageBackgroundObject(background.imageOptions),
 				},
 			},
-			[`${target}:hover > .maxi-background-displayer .maxi-background-displayer__images`]: {
-				imageBackgroundHover: {
-					...getImageBackgroundObject(backgroundHover.imageOptions),
-				},
-			},
 			[`${target} > .maxi-background-displayer .maxi-background-displayer__video-player`]: {
 				videoBackground: {
 					...getVideoBackgroundObject(background.videoOptions),
-				},
-			},
-
-			[`${target}:hover > .maxi-background-displayer .maxi-background-displayer__video-player`]: {
-				videoBackgroundHover: {
-					...getVideoBackgroundObject(backgroundHover.videoOptions),
 				},
 			},
 			[`${target} > .maxi-background-displayer .maxi-background-displayer__svg`]: {

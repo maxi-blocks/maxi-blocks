@@ -64,10 +64,19 @@ const allowedBlocks = [
 	'maxi-blocks/text-maxi',
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/image-maxi',
-	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/font-icon-maxi',
+];
+
+const flexBlocks = [
+	'maxi-blocks/row-maxi',
+	'maxi-blocks/button-maxi',
+	'maxi-blocks/column-maxi',
+	'maxi-blocks/container-maxi',
+	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/divider-maxi',
+	'maxi-blocks/image-maxi',
 ];
 
 /**
@@ -449,9 +458,11 @@ const MaxiToolbar = props => {
 						<Delete clientId={clientId} />
 						<ToggleBlock
 							display={display}
-							breakpoint={deviceType}
 							onChange={display => setAttributes({ display })}
-							defaultDisplay='flex'
+							breakpoint={deviceType}
+							defaultDisplay={
+								flexBlocks.includes(name) ? 'flex' : 'inherit'
+							}
 						/>
 					</div>
 				</Popover>

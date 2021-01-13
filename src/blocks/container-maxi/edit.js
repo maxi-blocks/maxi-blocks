@@ -83,6 +83,11 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 /**
  * Edit
  */
+
+const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
+
+const ROW_TEMPLATE = [ [ 'maxi-blocks/row-maxi' ] ];
+
 class edit extends MaxiBlock {
 	get getObject() {
 		const {
@@ -301,6 +306,8 @@ class edit extends MaxiBlock {
 									blockClassName={uniqueID}
 								/>
 								<InnerBlocks
+									allowedBlocks={ALLOWED_BLOCKS}
+									template={ROW_TEMPLATE}
 									templateLock={false}
 									__experimentalTagName='div'
 									__experimentalPassedProps={{

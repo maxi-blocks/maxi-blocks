@@ -89,10 +89,6 @@ const attributes = {
 		type: 'object',
 		default: attributesData.transform,
 	},
-	columnGap: {
-		type: 'string',
-		default: 'yes',
-	},
 };
 
 export default attributes;

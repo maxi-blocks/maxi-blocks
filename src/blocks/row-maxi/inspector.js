@@ -62,7 +62,6 @@ const Inspector = props => {
 			display,
 			transform,
 			rowPattern,
-			columnGap,
 		},
 		deviceType,
 		setAttributes,
@@ -487,39 +486,6 @@ const Inspector = props => {
 															})
 														}
 													/>
-													{fullWidth === 'full' && (
-														<FancyRadioControl
-															label={__(
-																'Gap between columns',
-																'maxi-blocks'
-															)}
-															selected={columnGap}
-															options={[
-																{
-																	label: __(
-																		'No',
-																		'maxi-blocks'
-																	),
-																	value:
-																		'no',
-																},
-																{
-																	label: __(
-																		'Yes',
-																		'maxi-blocks'
-																	),
-																	value:
-																		'yes',
-																},
-															]}
-															onChange={columnGap =>
-																setAttributes({
-																	columnGap,
-																})
-															}
-														/>
-													)}
-
 													<FullSizeControl
 														size={size}
 														defaultSize={getDefaultProp(

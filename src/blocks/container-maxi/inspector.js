@@ -169,63 +169,22 @@ const Inspector = props => {
 														/>
 													)}
 													{fullWidth === 'full' ? (
-														<Fragment>
-															<SizeControl
-																label={__(
-																	'Width',
-																	'maxi-blocks'
-																)}
-																unit={
-																	sizeContainer[
-																		deviceType
-																	].widthUnit
-																}
-																defaultUnit={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	].widthUnit
-																}
-																onChangeUnit={val => {
-																	sizeContainer[
-																		deviceType
-																	].widthUnit = val;
-																	setAttributes(
-																		{
-																			sizeContainer,
-																		}
-																	);
-																}}
-																value={
-																	sizeContainer[
-																		deviceType
-																	].width
-																}
-																default={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	].width
-																}
-																onChangeValue={val => {
-																	sizeContainer[
-																		deviceType
-																	].width = val;
-																	setAttributes(
-																		{
-																			sizeContainer,
-																		}
-																	);
-																}}
-																minMaxSettings={
-																	minMaxSettings
-																}
-															/>
-														</Fragment>
+														<FullSizeControl
+															hideWidth
+															size={size}
+															defaultSize={getDefaultProp(
+																clientId,
+																'size'
+															)}
+															onChange={size =>
+																setAttributes({
+																	size,
+																})
+															}
+															breakpoint={
+																deviceType
+															}
+														/>
 													) : (
 														<FullSizeControl
 															size={size}

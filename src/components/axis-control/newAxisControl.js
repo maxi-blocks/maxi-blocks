@@ -15,7 +15,7 @@ import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNumber } from 'lodash';
+import { isNumber, isNil } from 'lodash';
 
 /**
  * Styles and icons
@@ -121,10 +121,12 @@ const AxisControlTest = props => {
 	const getDisplayValue = key => {
 		const inputValue = getValue(key);
 
-		if (!!Number(inputValue) || parseInt(inputValue) === 0)
-			return Number(inputValue);
+		const value = isNil(inputValue)
+			? getDefaultAttribute(`padding-${key}-${breakpoint}`)
+			: (!!Number(inputValue) || parseInt(inputValue) === 0) &&
+			  Number(inputValue);
 
-		return inputValue;
+		return value;
 	};
 
 	const currentUnit =
@@ -228,7 +230,7 @@ const AxisControlTest = props => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(+newValue, inputsArray[0]);
+									onChangeValue(newValue, inputsArray[0]);
 								}}
 								id={`${instanceId}-top`}
 							/>
@@ -269,7 +271,7 @@ const AxisControlTest = props => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(+newValue, inputsArray[1]);
+									onChangeValue(newValue, inputsArray[1]);
 								}}
 								id={`${instanceId}-right`}
 							/>
@@ -310,7 +312,7 @@ const AxisControlTest = props => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(+newValue, inputsArray[2]);
+									onChangeValue(newValue, inputsArray[2]);
 								}}
 								id={`${instanceId}-bottom`}
 							/>
@@ -351,7 +353,7 @@ const AxisControlTest = props => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(+newValue, inputsArray[3]);
+									onChangeValue(newValue, inputsArray[3]);
 								}}
 								id={`${instanceId}-left`}
 							/>

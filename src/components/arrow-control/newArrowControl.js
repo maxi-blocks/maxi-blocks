@@ -83,7 +83,7 @@ const ArrowControl = props => {
 						{ label: __('No', 'maxi-blocks'), value: 0 },
 					]}
 					onChange={val => {
-						onChange({ 'arrow-status': !!val });
+						onChange({ 'arrow-status': !!Number(val) });
 					}}
 				/>
 			}
@@ -147,7 +147,12 @@ const ArrowControl = props => {
 							`arrow-width-${breakpoint}`
 						)}
 						onChangeValue={val => {
-							onChangeValue('arrow-width', val);
+							const value = isNil(val)
+								? getDefaultAttribute(
+										`arrow-width-${breakpoint}`
+								  )
+								: val;
+							onChangeValue('arrow-width', value);
 						}}
 						minMaxSettings={minMaxSettings}
 					/>

@@ -168,9 +168,14 @@ const BoxShadowControl = props => {
 							props,
 							isHover
 						)}
-						onChange={val =>
-							onChangeValue('box-shadow-horizontal', +val)
-						}
+						onChange={val => {
+							const value = isNil(val)
+								? getDefaultAttribute(
+										`box-shadow-horizontal-${breakpoint}`
+								  )
+								: val;
+							onChangeValue('box-shadow-horizontal', value);
+						}}
 						min={-100}
 						max={100}
 						allowReset
@@ -189,9 +194,14 @@ const BoxShadowControl = props => {
 							props,
 							isHover
 						)}
-						onChange={val =>
-							onChangeValue('box-shadow-vertical', +val)
-						}
+						onChange={val => {
+							const value = isNil(val)
+								? getDefaultAttribute(
+										`box-shadow-vertical-${breakpoint}`
+								  )
+								: val;
+							onChangeValue('box-shadow-vertical', value);
+						}}
 						min={-100}
 						max={100}
 						allowReset
@@ -209,7 +219,14 @@ const BoxShadowControl = props => {
 							breakpoint
 						)}
 						props
-						onChange={val => onChangeValue('box-shadow-blur', +val)}
+						onChange={val => {
+							const value = isNil(val)
+								? getDefaultAttribute(
+										`box-shadow-blur-${breakpoint}`
+								  )
+								: val;
+							onChangeValue('box-shadow-blur', value);
+						}}
 						min={0}
 						max={100}
 						allowReset
@@ -228,9 +245,14 @@ const BoxShadowControl = props => {
 							props,
 							isHover
 						)}
-						onChange={val =>
-							onChangeValue('box-shadow-spread', +val)
-						}
+						onChange={val => {
+							const value = isNil(val)
+								? getDefaultAttribute(
+										`box-shadow-spread-${breakpoint}`
+								  )
+								: val;
+							onChangeValue('box-shadow-spread', value);
+						}}
 						min={-100}
 						max={100}
 						allowReset

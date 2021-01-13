@@ -110,7 +110,11 @@ const getArrowStyles = props => {
 		[`${target} .maxi-container-arrow`]: {
 			arrow: { ...getArrowObject(getGroupAttributes(props, 'arrow')) },
 			shadow: {
-				...getBoxShadowStyles(getGroupAttributes(props, 'boxShadow')),
+				...getBoxShadowStyles(
+					getGroupAttributes(props, 'boxShadow'),
+					false,
+					props['arrow-status']
+				),
 			},
 		},
 		[`${target} .maxi-container-arrow:after`]: {

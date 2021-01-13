@@ -16,7 +16,6 @@ import {
 	getShapeDividerSVGStyles,
 	getContainerStyles,
 } from '../../extensions/styles/helpers';
-
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -29,9 +28,13 @@ const getNormalObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
-		}),
+		boxShadow: getBoxShadowStyles(
+			{
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			false,
+			props['arrow-status']
+		),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),

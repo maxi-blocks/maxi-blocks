@@ -31,7 +31,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, isNumber } from 'lodash';
 
 /**
  * Icons
@@ -100,7 +100,6 @@ class edit extends MaxiBlock {
 			margin,
 			zIndex,
 			alignment: { ...getAlignmentFlexObject(alignment) },
-
 			position,
 			positionOptions: position.options,
 			display,
@@ -240,7 +239,6 @@ class edit extends MaxiBlock {
 			},
 		};
 	}
-
 	render() {
 		const {
 			className,
@@ -356,7 +354,16 @@ class edit extends MaxiBlock {
 										<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
-												width: `${size.general.width}%`,
+												width: `${
+													!isNumber(
+														size.general.width
+													)
+														? imageData &&
+														  imageData
+																.media_details
+																.width
+														: size.general.width
+												}px`,
 												height: '100%',
 											}}
 											maxWidth='100%'
@@ -376,16 +383,12 @@ class edit extends MaxiBlock {
 												elt,
 												delta
 											) => {
-												const newScale = Number(
-													(
-														(elt.getBoundingClientRect()
-															.width /
-															this
-																.getWrapperWidth) *
-														100
-													).toFixed()
+												size.general.width = parseInt(
+													size.general.width +
+														delta.width,
+													10
 												);
-												size.general.width = newScale;
+
 												setAttributes({
 													size,
 												});

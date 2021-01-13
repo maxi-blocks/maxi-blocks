@@ -52,7 +52,7 @@ const FontLevelControl = props => {
 		setState({
 			[state.lastLevel]: fontOptions,
 			[`${state.lastLevel}Hover`]: fontOptionsHover,
-			[state.lastLevel]: value,
+			lastLevel: value,
 		});
 	};
 

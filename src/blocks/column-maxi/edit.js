@@ -229,7 +229,12 @@ class edit extends MaxiBlock {
 									'maxi-block--backend', // Required by BackEndResponsiveStyles class to apply the styles
 									'maxi-block__resizer',
 									'maxi-column-block__resizer',
-									`maxi-column-block__resizer__${uniqueID}`
+									`maxi-column-block__resizer__${uniqueID}`,
+									getLastBreakpointValue(
+										display,
+										'display',
+										deviceType
+									) === 'none' && 'maxi-block-display-none'
 								)}
 								defaultSize={{
 									width: getColumnWidthDefault(),

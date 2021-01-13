@@ -47,7 +47,7 @@ import { injectImgSVG } from '../../extensions/svg/utils';
 /**
  * External dependencies
  */
-import { capitalize, isEmpty, isNil, isObject } from 'lodash';
+import { capitalize, isEmpty, isNil, isObject, isNumber } from 'lodash';
 
 /**
  * Inspector
@@ -282,7 +282,16 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														value={
-															size.general.width
+															!isNumber(
+																size.general
+																	.width
+															)
+																? imageData &&
+																  imageData
+																		.media_details
+																		.width
+																: size.general
+																		.width
 														}
 														onChange={val => {
 															if (isNil(val))
@@ -295,6 +304,12 @@ const Inspector = props => {
 																size,
 															});
 														}}
+														max={
+															imageData &&
+															imageData
+																.media_details
+																.width
+														}
 														allowReset
 														initialPosition={
 															defaultSize.general
@@ -704,7 +719,7 @@ const Inspector = props => {
 																<Fragment>
 																	<FancyRadioControl
 																		label={__(
-																			'Enable Border Hover',
+																			'Enable Box Shadow Hover',
 																			'maxi-blocks'
 																		)}
 																		selected={Number(
@@ -974,6 +989,7 @@ const Inspector = props => {
 														})
 													}
 													breakpoint={deviceType}
+													defaultDisplay='flex'
 												/>
 											),
 										},

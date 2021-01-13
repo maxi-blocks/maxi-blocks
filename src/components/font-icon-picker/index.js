@@ -43,11 +43,7 @@ const FontIconPicker = props => {
 						<i className={iconClassName} />
 					</div>
 					<div className='maxi-font-icon-picker__control-buttons'>
-						<Button
-							isDefault
-							isLarge
-							className='maxi-font-icon-picker__control-buttons__replace'
-						>
+						<Button className='maxi-font-icon-picker__control-buttons__replace'>
 							<Modal
 								icon={iconClassName}
 								onChange={iconClassName => {
@@ -57,8 +53,6 @@ const FontIconPicker = props => {
 							/>
 						</Button>
 						<Button
-							isDefault
-							isLarge
 							className='maxi-font-icon-picker__control-buttons__remove'
 							onClick={() => {
 								onChange('');

@@ -86,7 +86,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 
 const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
 
-const ROW_TEMPLATE = [ [ 'maxi-blocks/row-maxi' ] ];
+const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
 
 class edit extends MaxiBlock {
 	get getObject() {

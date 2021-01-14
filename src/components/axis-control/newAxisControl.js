@@ -26,7 +26,7 @@ import { reset, sync } from '../../icons';
 /**
  * Component
  */
-const AxisControlTest = props => {
+const AxisControl = props => {
 	const {
 		label = '',
 		className,
@@ -58,7 +58,7 @@ const AxisControlTest = props => {
 		inputsArray = ['top', 'right', 'bottom', 'left', 'unit', 'sync'],
 	} = props;
 
-	const instanceId = useInstanceId(AxisControlTest);
+	const instanceId = useInstanceId(AxisControl);
 
 	const classes = classnames('maxi-axis-control', className);
 
@@ -122,7 +122,7 @@ const AxisControlTest = props => {
 		const inputValue = getValue(key);
 
 		const value = isNil(inputValue)
-			? getDefaultAttribute(`padding-${key}-${breakpoint}`)
+			? getDefaultAttribute(`${getKey(key)}-${breakpoint}`)
 			: (!!Number(inputValue) || parseInt(inputValue) === 0) &&
 			  Number(inputValue);
 
@@ -211,9 +211,9 @@ const AxisControlTest = props => {
 							getValue(inputsArray[0]) === 'auto' ? 'auto' : ''
 						}
 						value={getDisplayValue(inputsArray[0])}
-						onChange={e =>
-							onChangeValue(+e.target.value, inputsArray[0])
-						}
+						onChange={e => {
+							onChangeValue(+e.target.value, inputsArray[0]);
+						}}
 						aria-label={sprintf(__('%s Top', 'maxi-blocks'), label)}
 						min={minMaxSettings[currentUnit].min}
 						max={minMaxSettings[currentUnit].max}
@@ -400,4 +400,4 @@ const AxisControlTest = props => {
 	);
 };
 
-export default AxisControlTest;
+export default AxisControl;

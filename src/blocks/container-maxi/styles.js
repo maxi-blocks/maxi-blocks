@@ -57,22 +57,27 @@ const getNormalObject = props => {
 
 const getHoverObject = props => {
 	const response = {
-		border: getBorderStyles(
-			{
-				...getGroupAttributes(
-					props,
-					['border', 'borderWidth', 'borderRadius'],
-					true
-				),
-			},
-			true
-		),
-		boxShadow: getBoxShadowStyles(
-			{
-				...getGroupAttributes(props, 'boxShadow', true),
-			},
-			true
-		),
+		border:
+			props['border-status-hover'] &&
+			getBorderStyles(
+				{
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						true
+					),
+				},
+				true
+			),
+		boxShadow:
+			props['box-shadow-status-hover'] &&
+			getBoxShadowStyles(
+				{
+					...getGroupAttributes(props, 'boxShadow', true),
+				},
+				true,
+				props['arrow-status']
+			),
 	};
 
 	return response;

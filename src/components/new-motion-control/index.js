@@ -71,7 +71,6 @@ const MotionControl = props => {
 					<TimelineSettings
 						{...getGroupAttributes(props, 'motion')}
 						onChange={obj => {
-							console.log(obj);
 							onChange(obj);
 						}}
 					/>

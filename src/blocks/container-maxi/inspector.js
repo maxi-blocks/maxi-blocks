@@ -402,11 +402,11 @@ const Inspector = props => {
 																			'borderRadius',
 																		]
 																	)}
-																	onChange={obj =>
+																	onChange={obj => {
 																		setAttributes(
 																			obj
-																		)
-																	}
+																		);
+																	}}
 																	breakpoint={
 																		deviceType
 																	}
@@ -425,11 +425,11 @@ const Inspector = props => {
 																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
-																		selected={
-																			+attributes[
+																		selected={Number(
+																			attributes[
 																				'border-status-hover'
 																			]
-																		}
+																		)}
 																		options={[
 																			{
 																				label: __(
@@ -449,12 +449,14 @@ const Inspector = props => {
 																		onChange={val => {
 																			setAttributes(
 																				{
-																					'border-status-hover': !!val,
+																					'border-status-hover': Number(
+																						val
+																					),
 																				}
 																			);
 																		}}
 																	/>
-																	{attributes[
+																	{!!attributes[
 																		'border-status-hover'
 																	] && (
 																		<BorderControl
@@ -527,11 +529,11 @@ const Inspector = props => {
 																			'Enable Box Shadow Hover',
 																			'maxi-blocks'
 																		)}
-																		selected={
-																			+attributes[
+																		selected={Number(
+																			attributes[
 																				'box-shadow-status-hover'
 																			]
-																		}
+																		)}
 																		options={[
 																			{
 																				label: __(
@@ -551,12 +553,14 @@ const Inspector = props => {
 																		onChange={val => {
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': !!val,
+																					'box-shadow-status-hover': Number(
+																						val
+																					),
 																				}
 																			);
 																		}}
 																	/>
-																	{attributes[
+																	{!!attributes[
 																		'box-shadow-status-hover'
 																	] && (
 																		<BoxShadowControl

@@ -7,7 +7,8 @@ const { __ } = wp.i18n;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import AxisControl from '../../../axis-control';
+import AxisControl from '../../../axis-control/newAxisControl';
+import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
  * Styles & Icons
@@ -19,15 +20,7 @@ import { toolbarPadding } from '../../../../icons';
  * PaddingMargin
  */
 const PaddingMargin = props => {
-	const {
-		margin,
-		defaultMargin,
-		onChangeMargin,
-		padding,
-		defaultPadding,
-		onChangePadding,
-		breakpoint,
-	} = props;
+	const { onChange, breakpoint } = props;
 
 	return (
 		<ToolbarPopover
@@ -37,17 +30,18 @@ const PaddingMargin = props => {
 			content={
 				<div className='toolbar-item__padding-margin__popover'>
 					<AxisControl
-						values={padding}
-						defaultValues={defaultPadding}
-						onChange={padding => onChangePadding(padding)}
+						{...getGroupAttributes(props, 'padding')}
+						label={__('Margin', 'maxi-blocks')}
+						onChange={obj => onChange(obj)}
 						breakpoint={breakpoint}
-						disableAuto
+						target='padding'
 					/>
 					<AxisControl
-						values={margin}
-						defaultValues={defaultMargin}
-						onChange={margin => onChangeMargin(margin)}
+						{...getGroupAttributes(props, 'margin')}
+						label={__('Margin', 'maxi-blocks')}
+						onChange={obj => onChange(obj)}
 						breakpoint={breakpoint}
+						target='margin'
 					/>
 				</div>
 			}

@@ -10,7 +10,7 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
  */
 import {
 	MaxiBlock,
-	// Toolbar,
+	Toolbar,
 	Breadcrumbs,
 	BlockPlaceholder,
 	ArrowDisplayer,
@@ -140,7 +140,7 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			// <Toolbar {...this.props} />,
+			<Toolbar {...this.props} />,
 			<Breadcrumbs />,
 			<Fragment>
 				{isFirstOnHierarchy && fullWidth && (

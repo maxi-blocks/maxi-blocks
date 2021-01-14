@@ -12,7 +12,7 @@ import './style.scss';
  * Component
  */
 const ArrowDisplayer = props => {
-	const { className, breakpoint } = props;
+	const { className, breakpoint = 'general' } = props;
 
 	const arrowClasses = classnames(
 		'maxi-container-arrow',

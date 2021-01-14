@@ -33,5 +33,5 @@ import './blocks/test-maxi/test-maxi';
 import './blocks/customizer-maxi/index';
 
 // Editor
-// import './editor/saver';
-import './editor/styler';
+import './editor/saver';
+// import './editor/styler';

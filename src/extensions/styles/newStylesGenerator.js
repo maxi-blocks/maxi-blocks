@@ -34,7 +34,7 @@ const styleGenerator = styles => {
 	Object.entries(styles).forEach(([key, prop]) => {
 		const target = getTarget(key);
 
-		Object.values(prop).forEach(value => {
+		Object.values(prop.content).forEach(value => {
 			Object.entries(value).forEach(([breakpoint, content]) => {
 				if (isEmpty(content)) return;
 
@@ -93,7 +93,6 @@ const styleGenerator = styles => {
 		});
 	});
 
-	// console.log(response);
 	return response;
 };
 

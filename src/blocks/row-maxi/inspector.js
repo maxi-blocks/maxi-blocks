@@ -486,19 +486,42 @@ const Inspector = props => {
 															})
 														}
 													/>
-													<FullSizeControl
-														size={size}
-														defaultSize={getDefaultProp(
-															clientId,
-															'size'
-														)}
-														onChange={size =>
-															setAttributes({
-																size,
-															})
-														}
-														breakpoint={deviceType}
-													/>
+													{fullWidth === 'full' ? (
+														<FullSizeControl
+															hideWidth
+															hideMaxWidth
+															size={size}
+															defaultSize={getDefaultProp(
+																clientId,
+																'size'
+															)}
+															onChange={size =>
+																setAttributes({
+																	size,
+																})
+															}
+															breakpoint={
+																deviceType
+															}
+														/>
+													) : (
+														<FullSizeControl
+															hideMaxWidth
+															size={size}
+															defaultSize={getDefaultProp(
+																clientId,
+																'size'
+															)}
+															onChange={size =>
+																setAttributes({
+																	size,
+																})
+															}
+															breakpoint={
+																deviceType
+															}
+														/>
+													)}
 												</Fragment>
 											),
 										},

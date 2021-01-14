@@ -171,6 +171,7 @@ const Inspector = props => {
 													{fullWidth === 'full' ? (
 														<FullSizeControl
 															hideWidth
+															hideMaxWidth
 															size={size}
 															defaultSize={getDefaultProp(
 																clientId,
@@ -187,6 +188,7 @@ const Inspector = props => {
 														/>
 													) : (
 														<FullSizeControl
+															hideMaxWidth
 															size={size}
 															defaultSize={getDefaultProp(
 																clientId,

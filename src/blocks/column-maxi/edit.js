@@ -215,6 +215,11 @@ class edit extends MaxiBlock {
 			return `${100 / originalNestedColumns.length}%`;
 		};
 
+		/**
+		* Gutenberg still does not have the disallowedBlocks feature
+		*/
+		const ALLOWED_BLOCKS = wp.blocks.getBlockTypes().map(block => block.name).filter(blockName => Array('maxi-blocks/container-maxi', 'maxi-blocks/row-maxi').indexOf(blockName) === -1 );
+
 		return [
 			<Inspector {...this.props} />,
 			<Toolbar {...this.props} />,
@@ -268,7 +273,7 @@ class edit extends MaxiBlock {
 								}}
 							>
 								<InnerBlocks
-									// allowedBlocks={ALLOWED_BLOCKS}
+									allowedBlocks={ALLOWED_BLOCKS}
 									templateLock={false}
 									__experimentalTagName={ContainerInnerBlocks}
 									__experimentalPassedProps={{

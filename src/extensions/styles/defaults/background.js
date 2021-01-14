@@ -175,6 +175,7 @@ export const backgroundSVG = {
 	},
 	'background-svg-top': {
 		type: 'number',
+		default: 0,
 	},
 	'background-svg-left--unit': {
 		type: 'string',
@@ -182,6 +183,7 @@ export const backgroundSVG = {
 	},
 	'background-svg-left': {
 		type: 'number',
+		default: 0,
 	},
 	'background-svg-size': {
 		type: 'string',

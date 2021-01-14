@@ -69,7 +69,7 @@ const GradientLayer = props => {
 					clipPath={
 						gradientOptions[
 							getAttributeKey(
-								'background-clip-path',
+								'background-gradient-clip-path',
 								isHover,
 								prefix
 							)
@@ -78,7 +78,7 @@ const GradientLayer = props => {
 					onChange={val =>
 						onChange({
 							[getAttributeKey(
-								'background-clip-path',
+								'background-gradient-clip-path',
 								isHover,
 								prefix
 							)]: val,

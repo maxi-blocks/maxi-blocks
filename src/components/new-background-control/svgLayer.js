@@ -17,7 +17,7 @@ import getAttributeKey from '../../extensions/styles/getAttributeKey';
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep } from 'lodash';
+import { isEmpty, cloneDeep, isNil } from 'lodash';
 
 /**
  * Component
@@ -25,7 +25,6 @@ import { isEmpty, cloneDeep } from 'lodash';
 const SVGLayer = props => {
 	const { onChange, isHover, prefix } = props;
 	const SVGOptions = cloneDeep(props.SVGOptions);
-
 	return (
 		<Fragment>
 			<SettingTabsControl
@@ -139,6 +138,20 @@ const SVGLayer = props => {
 											)
 										]
 									}
+									defaultValue={getDefaultAttribute(
+										getAttributeKey(
+											'background-svg-top',
+											isHover,
+											prefix
+										)
+									)}
+									defaultUnit={getDefaultAttribute(
+										getAttributeKey(
+											'background-svg-top--unit',
+											isHover,
+											prefix
+										)
+									)}
 									unit={
 										SVGOptions[
 											getAttributeKey(
@@ -148,15 +161,15 @@ const SVGLayer = props => {
 											)
 										]
 									}
-									onChangeValue={val =>
+									onChangeValue={val => {
 										onChange({
 											[getAttributeKey(
 												'background-svg-top',
 												isHover,
 												prefix
 											)]: val,
-										})
-									}
+										});
+									}}
 									onChangeUnit={val =>
 										onChange({
 											[getAttributeKey(
@@ -166,7 +179,8 @@ const SVGLayer = props => {
 											)]: val,
 										})
 									}
-									initial={50}
+									min={0}
+									min={100}
 								/>
 								<SizeControl
 									label={__('X-axis', 'maxi-blocks')}
@@ -179,34 +193,49 @@ const SVGLayer = props => {
 											)
 										]
 									}
+									defaultValue={getDefaultAttribute(
+										getAttributeKey(
+											'background-svg-left',
+											isHover,
+											prefix
+										)
+									)}
+									defaultUnit={getDefaultAttribute(
+										getAttributeKey(
+											'background-svg-left--unit',
+											isHover,
+											prefix
+										)
+									)}
 									unit={
 										SVGOptions[
 											getAttributeKey(
-												'background-svg-left-unit',
+												'background-svg-left--unit',
 												isHover,
 												prefix
 											)
 										]
 									}
-									onChangeValue={val =>
+									onChangeValue={val => {
 										onChange({
 											[getAttributeKey(
 												'background-svg-left',
 												isHover,
 												prefix
 											)]: val,
-										})
-									}
+										});
+									}}
 									onChangeUnit={val =>
 										onChange({
 											[getAttributeKey(
-												'background-svg-left-unit',
+												'background-svg-left--unit',
 												isHover,
 												prefix
 											)]: val,
 										})
 									}
-									initial={50}
+									min={0}
+									min={100}
 								/>
 							</Fragment>
 						),

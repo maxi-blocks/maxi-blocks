@@ -188,7 +188,7 @@ const getStyles = props => {
 				'backgroundSVGHover',
 				'borderRadiusHover',
 			]),
-			isHover: true,
+			isHover: !!props['background-hover-status'],
 		}),
 		...getArrowStyles({
 			target: uniqueID,

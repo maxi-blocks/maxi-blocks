@@ -80,15 +80,13 @@ class ResponsiveFrontendStyles {
 				'breakpoints' => $fields->breakpoints,
 				'content' => []
 			];
-			if (is_array($fields)) {
-				foreach ($fields->content as $field => $props) {
-					foreach ($props as $prop => $value) {
-						if (!isset($response[$target]['content'][$prop]))
-							$response[$target]['content'][$prop] = [];
+			foreach ($fields->content as $field => $props) {
+				foreach ($props as $prop => $value) {
+					if (!isset($response[$target]['content'][$prop]))
+						$response[$target]['content'][$prop] = [];
 
-						$response[$target]['content'][$prop] =
-							array_merge($response[$target]['content'][$prop], (array) $value);
-					}
+					$response[$target]['content'][$prop] =
+						array_merge($response[$target]['content'][$prop], (array) $value);
 				}
 			}
 		}
@@ -225,8 +223,7 @@ class ResponsiveFrontendStyles {
 		global $post;
 		if (!$post || !isset($post->ID))
 			return;
-
-		$custom_data = get_option("mb_custom_data_{$post->ID}");
+			$custom_data = get_option("mb_custom_data_{$post->ID}");
 
 		if (!$custom_data)
 			return;

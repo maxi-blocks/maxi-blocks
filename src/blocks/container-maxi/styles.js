@@ -161,7 +161,7 @@ const getStyles = props => {
 		},
 	};
 
-	// console.log(response);
+	//console.log(response);
 
 	response = {
 		...response,

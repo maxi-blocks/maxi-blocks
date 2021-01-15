@@ -39,53 +39,53 @@ const styleGenerator = styles => {
 				if (isEmpty(content)) return;
 
 				if (breakpoint === 'general') {
-					response += `body.maxi-blocks--active .maxi-block--backend.${target}{`;
+					response += `body.maxi-blocks--active .maxi-block.maxi-block--backend.${target}{`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}
 				if (breakpoint === 'xxl') {
 					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .maxi-block--backend.${target}{`;
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}
 				if (breakpoint === 'xl') {
 					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block--backend.${target}{`;
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .maxi-block.maxi-block--backend.${target},
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block.maxi-block--backend.${target},
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.maxi-block--backend.${target},
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.${target},
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}
 				if (breakpoint === 'l') {
 					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block--backend.${target}{`;
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block.maxi-block--backend.${target},
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.maxi-block--backend.${target},
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.${target},
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}
 				if (breakpoint === 'm') {
 					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block--backend.${target}{`;
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.maxi-block--backend.${target},
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.${target},
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}
 				if (breakpoint === 's') {
 					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block--backend.${target}{`;
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.${target},
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}
 				if (breakpoint === 'xs') {
 					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block--backend.${target}{`;
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}

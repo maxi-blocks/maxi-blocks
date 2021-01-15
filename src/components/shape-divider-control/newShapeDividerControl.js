@@ -225,7 +225,9 @@ const ShapeDividerControl = props => {
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 						]}
 						onChange={status =>
-							onChange({ 'shape-divider-top-status': !!status })
+							onChange({
+								'shape-divider-top-status': !!Number(status),
+							})
 						}
 					/>
 					{!!props['shape-divider-top-status'] && (
@@ -250,7 +252,9 @@ const ShapeDividerControl = props => {
 								]}
 								onChange={status =>
 									onChange({
-										'shape-divider-top-effects-status': status,
+										'shape-divider-top-effects-status': !!Number(
+											status
+										),
 									})
 								}
 							/>
@@ -318,7 +322,7 @@ const ShapeDividerControl = props => {
 									})
 								}
 								value={props['shape-divider-top-height']}
-								defaultShapeDividerOptions={getDefaultAttribute(
+								defaultValue={getDefaultAttribute(
 									'shape-divider-top-height'
 								)}
 								onChangeValue={height =>
@@ -342,7 +346,7 @@ const ShapeDividerControl = props => {
 						]}
 						onChange={status =>
 							onChange({
-								'shape-divider-bottom-status': !!status,
+								'shape-divider-bottom-status': !!Number(status),
 							})
 						}
 					/>
@@ -370,7 +374,9 @@ const ShapeDividerControl = props => {
 								]}
 								onChange={status =>
 									onChange({
-										'shape-divider-bottom-effects-status': !!status,
+										'shape-divider-bottom-effects-status': !!Number(
+											status
+										),
 									})
 								}
 							/>
@@ -438,7 +444,7 @@ const ShapeDividerControl = props => {
 									})
 								}
 								value={props['shape-divider-bottom-height']}
-								defaultShapeDividerOptions={getDefaultAttribute(
+								defaultValue={getDefaultAttribute(
 									'shape-divider-bottom-height'
 								)}
 								onChangeValue={height =>

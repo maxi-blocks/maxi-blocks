@@ -6,6 +6,10 @@ export const background = {
 	'background-layers': {
 		type: 'array',
 	},
+	'background-layers-status': {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 export const backgroundColor = {

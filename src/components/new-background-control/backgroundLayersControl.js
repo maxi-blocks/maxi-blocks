@@ -146,37 +146,37 @@ const BackgroundLayersControl = ({
 	onChange,
 	...props
 }) => {
-	const layersOptions = cloneDeep(props.layersOptions);
+	const layers = cloneDeep(props.layersOptions);
+	const layersStatus = props.layersStatus;
 
 	const [selector, changeSelector] = useState(null);
-	const [layersStatus, setLayersStatus] = useState(layersOptions.length > 0);
 
 	const getObject = type => {
 		switch (type) {
 			case 'color':
 				return {
 					...backgroundLayers.colorOptions,
-					id: layersOptions.length,
+					id: layers.length,
 				};
 			case 'image':
 				return {
 					...backgroundLayers.imageOptions,
-					id: layersOptions.length,
+					id: layers.length,
 				};
 			case 'video':
 				return {
 					...backgroundLayers.videoOptions,
-					id: layersOptions.length,
+					id: layers.length,
 				};
 			case 'gradient':
 				return {
 					...backgroundLayers.gradientOptions,
-					id: layersOptions.length,
+					id: layers.length,
 				};
 			case 'shape':
 				return {
 					...backgroundLayers.SVGOptions,
-					id: layersOptions.length,
+					id: layers.length,
 				};
 			default:
 				break;
@@ -194,24 +194,30 @@ const BackgroundLayersControl = ({
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => setLayersStatus(!!+val)}
+				onChange={val =>
+					onChange({
+						[getAttributeKey(
+							'background-layers-status',
+							isHover,
+							prefix
+						)]: !!Number(val),
+					})
+				}
 			/>
-			{layersStatus && (
+
+			{!!layersStatus && (
 				<div>
-					{!isEmpty(layersOptions) && (
+					{!isEmpty(layers) && (
 						<ReactDragListView
 							onDragEnd={(fromIndex, toIndex) => {
-								const layer = layersOptions.splice(
-									fromIndex,
-									1
-								)[0];
-								layersOptions.splice(toIndex, 0, layer);
+								const layer = layers.splice(fromIndex, 1)[0];
+								layers.splice(toIndex, 0, layer);
 								onChange({
 									[getAttributeKey(
 										'background-layers',
 										isHover,
 										prefix
-									)]: layersOptions,
+									)]: layers,
 								});
 							}}
 							nodeSelector='div.maxi-background-layer'
@@ -219,38 +225,38 @@ const BackgroundLayersControl = ({
 							ignoreSelector='div.maxi-background-layer__content'
 						>
 							<div className='maxi-background-layersOptions'>
-								{layersOptions.map((layer, i) => (
+								{layers.map((layer, i) => (
 									<LayerCard
 										key={`maxi-background-layers__${layer.id}`}
 										layer={layer}
 										onChange={layer => {
-											layersOptions[i] = layer;
+											layers[layer.id] = layer;
 
 											onChange({
 												[getAttributeKey(
 													'background-layers',
 													isHover,
 													prefix
-												)]: layersOptions,
+												)]: layers,
 											});
 										}}
 										onOpen={isOpen => {
 											if (isOpen) changeSelector(null);
 											else
-												selector !== i
-													? changeSelector(i)
+												selector !== layer.id
+													? changeSelector(layer.id)
 													: changeSelector(null);
 										}}
-										isOpen={selector === i}
+										isOpen={selector === layer.id}
 										onRemove={() => {
-											layersOptions.splice(i, 1);
+											layers.splice(i, 1);
 
 											onChange({
 												[getAttributeKey(
 													'background-layers',
 													isHover,
 													prefix
-												)]: layersOptions,
+												)]: layers,
 											});
 										}}
 									/>
@@ -282,15 +288,15 @@ const BackgroundLayersControl = ({
 							},
 						]}
 						onClick={value => {
-							layersOptions.unshift(getObject(value));
+							layers.push(getObject(value));
 
 							onChange({
 								[getAttributeKey(
 									'background-layers',
 									isHover,
 									prefix
-								)]: layersOptions,
-								...(layersOptions.length > 0 && {
+								)]: layers,
+								...(layers.length > 0 && {
 									[getAttributeKey(
 										'background-active-media',
 										isHover,

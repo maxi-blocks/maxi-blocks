@@ -427,11 +427,11 @@ const Inspector = props => {
 																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
-																		selected={Number(
-																			attributes[
+																		selected={
+																			+attributes[
 																				'border-status-hover'
 																			]
-																		)}
+																		}
 																		options={[
 																			{
 																				label: __(
@@ -451,7 +451,7 @@ const Inspector = props => {
 																		onChange={val => {
 																			setAttributes(
 																				{
-																					'border-status-hover': Number(
+																					'border-status-hover': !!Number(
 																						val
 																					),
 																				}
@@ -531,11 +531,11 @@ const Inspector = props => {
 																			'Enable Box Shadow Hover',
 																			'maxi-blocks'
 																		)}
-																		selected={Number(
-																			attributes[
+																		selected={
+																			+attributes[
 																				'box-shadow-status-hover'
 																			]
-																		)}
+																		}
 																		options={[
 																			{
 																				label: __(
@@ -555,7 +555,7 @@ const Inspector = props => {
 																		onChange={val => {
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': Number(
+																					'box-shadow-status-hover': !!Number(
 																						val
 																					),
 																				}

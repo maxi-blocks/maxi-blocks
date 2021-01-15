@@ -59,6 +59,8 @@ const BackgroundControl = props => {
 		props[getAttributeKey('background-active-media', isHover, prefix)];
 	const layersOptions =
 		props[getAttributeKey('background-layers', isHover, prefix)] || [];
+	const layersStatus =
+		props[getAttributeKey('background-layers-status', isHover, prefix)];
 
 	const classes = classnames('maxi-background-control', className);
 
@@ -110,29 +112,32 @@ const BackgroundControl = props => {
 			{!disableLayers && (
 				<BackgroundLayersControl
 					layersOptions={layersOptions}
+					layersStatus={layersStatus}
 					onChange={obj => onChange(obj)}
 					isHover={isHover}
 					prefix={prefix}
 				/>
 			)}
-			{getOptions().length > 1 && layersOptions.length <= 0 && (
-				<FancyRadioControl
-					label={__('Background', 'maxi-blocks')}
-					fullWidthMode
-					selected={backgroundActiveMedia}
-					options={getOptions()}
-					onChange={value => {
-						onChange({
-							[getAttributeKey(
-								'background-active-media',
-								isHover,
-								prefix
-							)]: value,
-						});
-					}}
-				/>
-			)}
-			{layersOptions.length <= 0 && (
+			{!layersStatus &&
+				getOptions().length > 1 &&
+				layersOptions.length <= 0 && (
+					<FancyRadioControl
+						label={__('Background', 'maxi-blocks')}
+						fullWidthMode
+						selected={backgroundActiveMedia}
+						options={getOptions()}
+						onChange={value => {
+							onChange({
+								[getAttributeKey(
+									'background-active-media',
+									isHover,
+									prefix
+								)]: value,
+							});
+						}}
+					/>
+				)}
+			{!layersStatus && layersOptions.length <= 0 && (
 				<Fragment>
 					{!disableColor && backgroundActiveMedia === 'color' && (
 						<ColorLayer

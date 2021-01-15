@@ -14,11 +14,6 @@ body.maxi-blocks--active .maxi-container-block {
 		width: 0;
 		height: 0;
 	}
-	&__wrapper {
-		margin: auto 0;
-		position: relative;
-		//overflow: hidden;
-	}
 	&__container {
 		margin-right: auto;
 		margin-left: auto;
@@ -27,9 +22,7 @@ body.maxi-blocks--active .maxi-container-block {
 }
 
 
-html body.maxi-blocks--active .maxi-container-block {
-	&.alignfull>.maxi-container-block__wrapper>.maxi-container-block__container {
-		max-width: 100% !important;
-		    width: 100% !important;
-	}
+html body.maxi-blocks--active .maxi-container-block.alignfull {
+	max-width: 100% !important;
+	    width: 100% !important;
 }

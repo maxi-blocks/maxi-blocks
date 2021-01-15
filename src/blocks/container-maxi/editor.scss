@@ -2,6 +2,7 @@
 	margin: auto;
 	&__container {
 		border: 1px solid #7fbddc;
+		width: 100%;
 	}
 	&[data-align='full'] {
 		width: 100%;
@@ -15,7 +16,7 @@
 
 html body.maxi-blocks--active .maxi-container-block {
 	&[data-align='full'],
-	&[data-align='full']>.maxi-container-block__wrapper>.maxi-container-block__container {
+	&[data-align='full']>.maxi-container-block__container {
 		max-width: 100% !important;
 		    width: 100% !important;
 	}

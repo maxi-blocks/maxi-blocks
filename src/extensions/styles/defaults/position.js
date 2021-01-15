@@ -24,15 +24,19 @@ const position = {
 	},
 	'position-top-general': {
 		type: 'number',
+		default: '',
 	},
 	'position-right-general': {
 		type: 'number',
+		default: '',
 	},
 	'position-bottom-general': {
 		type: 'number',
+		default: '',
 	},
 	'position-left-general': {
 		type: 'number',
+		default: '',
 	},
 	'position-sync-general': {
 		type: 'boolean',

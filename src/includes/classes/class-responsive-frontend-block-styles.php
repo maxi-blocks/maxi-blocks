@@ -80,13 +80,15 @@ class ResponsiveFrontendStyles {
 				'breakpoints' => $fields->breakpoints,
 				'content' => []
 			];
-			foreach ($fields->content as $field => $props) {
-				foreach ($props as $prop => $value) {
-					if (!isset($response[$target]['content'][$prop]))
-						$response[$target]['content'][$prop] = [];
+			if (is_array($fields)) {
+				foreach ($fields->content as $field => $props) {
+					foreach ($props as $prop => $value) {
+						if (!isset($response[$target]['content'][$prop]))
+							$response[$target]['content'][$prop] = [];
 
-					$response[$target]['content'][$prop] =
-						array_merge($response[$target]['content'][$prop], (array) $value);
+						$response[$target]['content'][$prop] =
+							array_merge($response[$target]['content'][$prop], (array) $value);
+					}
 				}
 			}
 		}

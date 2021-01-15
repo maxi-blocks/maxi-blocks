@@ -22,16 +22,17 @@ motionElems.forEach(function (elem) {
 	if (!maxi_custom_data.custom_data) return;
 
 	const motionID = elem.getAttribute('data-motion-id');
+
 	const motionData =
 		maxi_custom_data.custom_data[motionID] !== undefined &&
 		maxi_custom_data.custom_data[motionID].hasOwnProperty('motion')
-			? JSON.parse(maxi_custom_data.custom_data[motionID].motion)
+			? maxi_custom_data.custom_data[motionID].motion
 			: null;
 
 	const shapeDividerData =
 		maxi_custom_data.custom_data[motionID] !== undefined &&
 		maxi_custom_data.custom_data[motionID].hasOwnProperty('shapeDivider')
-			? JSON.parse(maxi_custom_data.custom_data[motionID].shapeDivider)
+			? maxi_custom_data.custom_data[motionID].shapeDivider
 			: null;
 
 	// Shape Divider

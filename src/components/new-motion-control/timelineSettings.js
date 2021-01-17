@@ -448,7 +448,7 @@ const TimelineSettings = props => {
 							},
 						]}
 						onChange={val =>
-							onChange({ 'motion-tablet-status': !!val })
+							onChange({ 'motion-tablet-status': !!Number(val) })
 						}
 					/>
 					<FancyRadioControl
@@ -465,7 +465,7 @@ const TimelineSettings = props => {
 							},
 						]}
 						onChange={val =>
-							onChange({ 'motion-mobile-status': !!val })
+							onChange({ 'motion-mobile-status': !!Number(val) })
 						}
 					/>
 				</Fragment>

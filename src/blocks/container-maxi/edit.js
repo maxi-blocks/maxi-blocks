@@ -93,7 +93,9 @@ class edit extends MaxiBlock {
 
 		const motionStatus =
 			!!this.props.attributes['motion-status'] ||
+			!isEmpty(this.props.attributes['entrance-type']) ||
 			!!this.props.attributes['parallax-status'];
+
 		const shapeStatus =
 			!!this.props.attributes['shape-divider-top-status'] ||
 			!!this.props.attributes['shape-divider-bottom-status'];
@@ -102,6 +104,8 @@ class edit extends MaxiBlock {
 			[uniqueID]: {
 				...(motionStatus && {
 					...getGroupAttributes(this.props.attributes, 'motion'),
+					...getGroupAttributes(this.props.attributes, 'entrance'),
+					...getGroupAttributes(this.props.attributes, 'parallax'),
 				}),
 				...(shapeStatus && {
 					...getGroupAttributes(

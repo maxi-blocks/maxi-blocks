@@ -190,7 +190,11 @@ export const backgroundSVG = {
 		default: 0,
 	},
 	'background-svg-size': {
+		type: 'number',
+		default: 50,
+	},
+	'background-svg-size--unit': {
 		type: 'string',
-		default: '',
+		default: '%',
 	},
 };

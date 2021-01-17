@@ -197,13 +197,14 @@ const getSVGWrapperBackgroundObject = SVGOptions => {
 		general: {},
 	};
 
-	if (SVGOptions.position)
-		response.general = {
-			...response.general,
-			...SVGOptions.position.general,
-		};
-	if (SVGOptions.size)
-		response.general = { ...response.general, ...SVGOptions.size.general };
+	if (SVGOptions['background-svg-size'])
+		response.general.height = `${SVGOptions['background-svg-size']}${SVGOptions['background-svg-size--unit']}`;
+
+	if (SVGOptions['background-svg-top'])
+		response.general.top = `${SVGOptions['background-svg-top']}${SVGOptions['background-svg-top--unit']}`;
+
+	if (SVGOptions['background-svg-left'])
+		response.general.left = `${SVGOptions['background-svg-left']}${SVGOptions['background-svg-left--unit']}`;
 
 	return response;
 };
@@ -214,7 +215,8 @@ const getSVGBackgroundObject = SVGOptions => {
 		general: {},
 	};
 
-	if (SVGOptions.size) response.general.height = `${SVGOptions.size}%`;
+	if (SVGOptions['background-svg-size'])
+		response.general.height = `${SVGOptions['background-svg-size']}${SVGOptions['background-svg-size--unit']}`;
 
 	return response;
 };
@@ -384,7 +386,7 @@ const getBackgroundStyles = ({ target, isHover = false, ...props }) => {
 				},
 			};
 			break;
-		case 'shape':
+		case 'svg':
 			response[
 				`${target}${
 					isHover ? ':hover' : ''

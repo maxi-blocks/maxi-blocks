@@ -180,7 +180,6 @@ const SVGLayer = props => {
 										})
 									}
 									min={0}
-									min={100}
 								/>
 								<SizeControl
 									label={__('X-axis', 'maxi-blocks')}
@@ -235,7 +234,6 @@ const SVGLayer = props => {
 										})
 									}
 									min={0}
-									min={100}
 								/>
 							</Fragment>
 						),
@@ -261,6 +259,22 @@ const SVGLayer = props => {
 										prefix
 									)
 								)}
+								defaultUnit={getDefaultAttribute(
+									getAttributeKey(
+										'background-svg-size--unit',
+										isHover,
+										prefix
+									)
+								)}
+								unit={
+									SVGOptions[
+										getAttributeKey(
+											'background-svg-size--unit',
+											isHover,
+											prefix
+										)
+									]
+								}
 								onChangeValue={val =>
 									onChange({
 										[getAttributeKey(
@@ -270,10 +284,16 @@ const SVGLayer = props => {
 										)]: val,
 									})
 								}
+								onChangeUnit={val =>
+									onChange({
+										[getAttributeKey(
+											'background-svg-size--unit',
+											isHover,
+											prefix
+										)]: val,
+									})
+								}
 								min={0}
-								max={200}
-								disableUnit
-								initial={100}
 							/>
 						),
 					},

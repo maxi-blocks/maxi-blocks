@@ -118,26 +118,24 @@ const BackgroundControl = props => {
 					prefix={prefix}
 				/>
 			)}
-			{!layersStatus &&
-				getOptions().length > 1 &&
-				layersOptions.length <= 0 && (
-					<FancyRadioControl
-						label={__('Background', 'maxi-blocks')}
-						fullWidthMode
-						selected={backgroundActiveMedia}
-						options={getOptions()}
-						onChange={value => {
-							onChange({
-								[getAttributeKey(
-									'background-active-media',
-									isHover,
-									prefix
-								)]: value,
-							});
-						}}
-					/>
-				)}
-			{!layersStatus && layersOptions.length <= 0 && (
+			{!layersStatus && getOptions().length > 1 && (
+				<FancyRadioControl
+					label={__('Background', 'maxi-blocks')}
+					fullWidthMode
+					selected={backgroundActiveMedia}
+					options={getOptions()}
+					onChange={value => {
+						onChange({
+							[getAttributeKey(
+								'background-active-media',
+								isHover,
+								prefix
+							)]: value,
+						});
+					}}
+				/>
+			)}
+			{!layersStatus && (
 				<Fragment>
 					{!disableColor && backgroundActiveMedia === 'color' && (
 						<ColorLayer

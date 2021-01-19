@@ -8,40 +8,55 @@ const getDividerStyles = (obj, target) => {
 		label: 'Divider',
 		general: {},
 	};
-	console.log('>>>>>', obj);
 	if (target === 'line') {
-		if (!isNil(obj['width']))
-			response.general['width'] = `${obj['width']}${obj['width-unit']}`;
+		if (!isNil(obj['divider-border-style']))
+			response.general['border-style'] = obj['divider-border-style'];
 
-		if (!isNil(obj['height']))
-			response.general[
-				'height'
-			] = `${obj['height']}${obj['height-unit']}`;
+		if (!isNil(obj['divider-border-color']))
+			response.general['border-color'] = obj['divider-border-color'];
 
-		if (!isNil(obj['border-style']))
-			response.general['border-style'] = obj['border-style'];
+		if (obj.lineOrientation === 'horizontal') {
+			response.general['border-right'] = 'none';
+			if (!isNil(obj['divider-width']))
+				response.general[
+					'width'
+				] = `${obj['divider-width']}${obj['divider-width-unit']}`;
+			if (!isNil(obj['divider-border-top-width']))
+				response.general[
+					'border-top-width'
+				] = `${obj['divider-border-top-width']}${obj['divider-border-top-unit']}`;
+		}
 
-		if (!isNil(obj['border-color']))
-			response.general['border-color'] = obj['border-color'];
+		if (obj.lineOrientation === 'vertical') {
+			response.general['border-top'] = 'none';
+			if (!isNil(obj['divider-border-right-width']))
+				response.general[
+					'border-right-width'
+				] = `${obj['divider-border-right-width']}${obj['divider-border-right-unit']}`;
+			if (!isNil(obj['divider-height']))
+				response.general[
+					'height'
+				] = `${obj['divider-height']}${obj['divider-height-unit']}`;
+		}
 
-		if (!isNil(obj['border-top-width']))
-			response.general[
-				'border-top-width'
-			] = `${obj['border-top-width']}${obj['border-top-unit']}`;
-
-		if (!isNil(obj['border-right-width']))
-			response.general[
-				'border-right-width'
-			] = `${obj['border-right-width']}${obj['border-right-unit']}`;
-
-		if (!!obj['border-radius']) response.general['border-radius'] = '20px';
+		if (!!obj['divider-border-radius'])
+			response.general['border-radius'] = '20px';
 	} else {
-		if (!isNil(obj.lineAlign))
+		if (!isNil(obj.lineAlign)) {
 			response.general['flex-direction'] = obj.lineAlign;
-		if (!isNil(obj.lineVertical))
-			response.general['align-items'] = obj.lineVertical;
-		if (!isNil(obj.lineHorizontal))
-			response.general['justify-content'] = obj.lineHorizontal;
+
+			if (obj.lineAlign === 'row') {
+				if (!isNil(obj.lineVertical))
+					response.general['align-items'] = obj.lineVertical;
+				if (!isNil(obj.lineHorizontal))
+					response.general['justify-content'] = obj.lineHorizontal;
+			} else {
+				if (!isNil(obj.lineVertical))
+					response.general['justify-content'] = obj.lineVertical;
+				if (!isNil(obj.lineHorizontal))
+					response.general['align-items'] = obj.lineHorizontal;
+			}
+		}
 	}
 
 	return response;

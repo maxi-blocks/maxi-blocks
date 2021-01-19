@@ -29,14 +29,11 @@ const save = props => {
 		lineOrientation,
 	} = attributes;
 
-	const divider = { ...props.attributes.divider };
-	const highlight = { ...props.attributes.highlight };
-
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-divider-block',
 		blockStyle,
-		!!highlight.borderHighlight && 'maxi-highlight--border',
+		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,
@@ -64,13 +61,11 @@ const save = props => {
 				])}
 				blockClassName={uniqueID}
 			/>
-			{
-				//divider.general['border-style'] !== 'none' && (
+			{attributes['divider-border-style'] !== 'none' && (
 				<Fragment>
 					<hr className='maxi-divider-block__divider' />
 				</Fragment>
-				//)
-			}
+			)}
 		</div>
 	);
 };

@@ -29,11 +29,10 @@ import DisplayControl from '../../components/display-control/newDisplayControl';
 import PositionControl from '../../components/position-control/newPositionControl';
 import ResponsiveControl from '../../components/responsive-control/newResponsiveControl';
 import ZIndexControl from '../../components/zindex-control/newIndexControl';
+import OpacityControl from '../../components/opacity-control/newOpacityControl';
 
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
-
-import { getDefaultProp } from '../../utils';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**
  * Inspector
@@ -210,7 +209,7 @@ const Inspector = props => {
 													<DividerControl
 														{...getGroupAttributes(
 															attributes,
-															'divider'
+															['divider', 'size']
 														)}
 														onChange={obj =>
 															setAttributes(obj)
@@ -364,12 +363,13 @@ const Inspector = props => {
 																		'background-hover-status'
 																	] && (
 																		<BackgroundControl
-																			background={
-																				backgroundHover
-																			}
-																			defaultBackground={getDefaultProp(
-																				clientId,
-																				'backgroundHover'
+																			{...getGroupAttributes(
+																				attributes,
+																				[
+																					'backgroundHover',
+																					'backgroundColorHover',
+																					'backgroundGradientHover',
+																				]
 																			)}
 																			onChange={backgroundHover =>
 																				setAttributes(
@@ -684,6 +684,28 @@ const Inspector = props => {
 													)}
 													onChange={obj =>
 														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __('Opacity', 'maxi-blocks'),
+											content: (
+												<OpacityControl
+													opacity={
+														attributes[
+															`opacity-${deviceType}`
+														]
+													}
+													defaultOpacity={getDefaultAttribute(
+														`opacity-${deviceType}`,
+														clientId
+													)}
+													onChange={val =>
+														setAttributes({
+															[`opacity-${deviceType}`]: val,
+														})
 													}
 													breakpoint={deviceType}
 												/>

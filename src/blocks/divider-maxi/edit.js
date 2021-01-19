@@ -10,16 +10,11 @@ const { withSelect, withDispatch } = wp.data;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	getBoxShadowObject,
-	getTransformObject,
-	setBackgroundStyles,
-	getLastBreakpointValue,
-} from '../../utils';
 import { MaxiBlock, Toolbar } from '../../components';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
 import MotionPreview from '../../components/motion-preview/newMotionPreview';
+import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
 import getStyles from './styles';
 
 /**
@@ -77,7 +72,7 @@ class edit extends MaxiBlock {
 			fullWidth,
 			background,
 		} = attributes;
-		const size = { ...this.props.attributes.size };
+
 		const { isResizing } = this.state;
 
 		onDeviceTypeChange();
@@ -86,8 +81,8 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-divider-block',
-			//getLastBreakpointValue('display', deviceType, attributes) ===
-			//'none' && 'maxi-block-display-none',
+			getLastBreakpointValue('display', deviceType, attributes) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
@@ -102,18 +97,15 @@ class edit extends MaxiBlock {
 
 		const handleOnResizeStart = event => {
 			event.preventDefault();
-			size[deviceType].heightUnit !== 'px' &&
-				(size[deviceType].heightUnit = 'px') &&
-				setAttributes({
-					size,
-				});
+			setAttributes({
+				[`height-unit-${deviceType}`]: 'px',
+			});
 			this.setState({ isResizing: true });
 		};
 
 		const handleOnResizeStop = (event, direction, elt) => {
-			size[deviceType].height = elt.getBoundingClientRect().height;
 			setAttributes({
-				size,
+				[`height-${deviceType}`]: elt.getBoundingClientRect().height,
 			});
 			this.setState({ isResizing: false });
 		};
@@ -124,8 +116,9 @@ class edit extends MaxiBlock {
 			<ResizableBox
 				size={{
 					width: '100%',
-					//height:
-					//size[deviceType].height + size[deviceType].heightUnit,
+					height: `${attributes[`height-${deviceType}`]}${
+						attributes[`-unit-${deviceType}`]
+					}`,
 				}}
 				className={classnames(
 					'maxi-block__resizer',
@@ -137,8 +130,9 @@ class edit extends MaxiBlock {
 				)}
 				defaultSize={{
 					width: '100%',
-					//height:
-					//size[deviceType].height + size[deviceType].heightUnit,
+					height: `${attributes[`height-${deviceType}`]}${
+						attributes[`-unit-${deviceType}`]
+					}`,
 				}}
 				enable={{
 					top: false,
@@ -169,9 +163,9 @@ class edit extends MaxiBlock {
 						data-align={fullWidth}
 					>
 						<BackgroundDisplayer background={background} />
-						{/* {divider.general['border-style'] !== 'none' && ( */}
-						<hr className='maxi-divider-block__divider' />
-						{/* )} */}
+						{attributes['divider-border-style'] !== 'none' && (
+							<hr className='maxi-divider-block__divider' />
+						)}
 					</__experimentalBlock>
 				</MotionPreview>
 			</ResizableBox>,
@@ -189,7 +183,7 @@ const editSelect = withSelect(select => {
 
 const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
 	const {
-		attributes: { uniqueID, size },
+		attributes: { uniqueID },
 		deviceType,
 	} = ownProps;
 
@@ -207,7 +201,9 @@ const editDispatch = withDispatch((dispatch, ownProps, { select }) => {
 				`.maxi-divider-block__resizer__${uniqueID}`
 			);
 			if (isNil(node)) return;
-			node.style.height = `${size[newDeviceType].height}px`;
+			node.style.height = `${
+				ownProps.attributes[`height-${newDeviceType}`]
+			}px`;
 		}
 	};
 

@@ -1,45 +1,45 @@
 const divider = {
-	'border-color': {
+	'divider-border-color': {
 		type: 'string',
 		default: '#ff4a17',
 	},
-	'border-style': {
+	'divider-border-style': {
 		type: 'string',
 		default: 'solid',
 	},
-	'border-top-width': {
+	'divider-border-top-width': {
 		type: 'number',
 		default: 2,
 	},
-	'border-top-unit': {
+	'divider-border-top-unit': {
 		type: 'string',
 		default: 'px',
 	},
-	'border-right-width': {
+	'divider-border-right-width': {
 		type: 'number',
-		default: '',
+		default: 2,
 	},
-	'border-right-unit': {
+	'divider-border-right-unit': {
 		type: 'string',
 		default: 'px',
 	},
-	'border-radius': {
+	'divider-border-radius': {
 		type: 'number',
 		default: '',
 	},
-	width: {
+	'divider-width': {
 		type: 'number',
 		default: 100,
 	},
-	'width-unit': {
+	'divider-width-unit': {
 		type: 'string',
 		default: '%',
 	},
-	heigh: {
+	'divider-height': {
 		type: 'number',
-		default: '',
+		default: 100,
 	},
-	'height-unit': {
+	'divider-height-unit': {
 		type: 'string',
 		default: '%',
 	},

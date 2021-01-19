@@ -7,7 +7,6 @@ const { __ } = wp.i18n;
  * Imports
  */
 import * as newAttributes from '../../extensions/styles/defaults/index';
-import size from './data';
 
 /**
  * Attributes
@@ -37,9 +36,15 @@ const attributes = {
 		type: 'string',
 		default: 'row',
 	},
+	...newAttributes.size,
+	'height-general': {
+		default: 100,
+	},
+	'height-unit-general': {
+		default: 'px',
+	},
 	...newAttributes.divider,
 	...newAttributes.highlight,
-	...newAttributes.size,
 	...newAttributes.opacity,
 	...newAttributes.background,
 	...newAttributes.backgroundColor,
@@ -57,5 +62,4 @@ const attributes = {
 	...newAttributes.motion,
 	...newAttributes.transform,
 };
-
 export default attributes;

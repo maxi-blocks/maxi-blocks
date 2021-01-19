@@ -47,29 +47,16 @@ const getNormalObject = props => {
 		}),
 	};
 
-	// if (!isNil(linesAlign)) {
-	// 	response.divider.general['flex-direction'] = linesAlign;
-	// 	if (linesAlign === 'row') {
-	// 		if (!isNil(lineVertical))
-	// 			response.divider.general['align-items'] = lineVertical;
-	// 		if (!isNil(lineHorizontal))
-	// 			response.divider.general['justify-content'] = lineHorizontal;
-	// 	} else {
-	// 		if (!isNil(lineVertical))
-	// 			response.divider.general['justify-content'] = lineVertical;
-	// 		if (!isNil(lineHorizontal))
-	// 			response.divider.general['align-items'] = lineHorizontal;
-	// 	}
-	// }
-
 	return response;
 };
 
 const getDividerObject = props => {
+	const { lineOrientation } = props;
 	const response = {
 		divider: getDividerStyles(
 			{
 				...getGroupAttributes(props, 'divider'),
+				lineOrientation,
 			},
 			'line'
 		),

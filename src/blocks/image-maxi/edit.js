@@ -231,7 +231,9 @@ class edit extends MaxiBlock {
 		const { uniqueID, motion } = this.props.attributes;
 
 		const motionStatus =
-			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+			!!motion.interaction.interactionStatus ||
+			!!motion.parallax.status ||
+			!isEmpty(motion.entrance.type);
 
 		return {
 			[uniqueID]: {

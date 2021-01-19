@@ -48,6 +48,7 @@ import { injectImgSVG } from '../../extensions/svg/utils';
  * External dependencies
  */
 import { capitalize, isEmpty, isNil, isObject, isNumber } from 'lodash';
+
 /**
  * Inspector
  */

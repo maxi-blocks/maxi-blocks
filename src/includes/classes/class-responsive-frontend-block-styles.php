@@ -191,7 +191,7 @@ class ResponsiveFrontendStyles
             if ($property === 'font-options')
                 continue;
 
-            if ($property === 'max-width' || $property === 'width')
+            if ($property === 'max-width')
                 $response .= "{$property}: {$value} !important;";
             else $response .= "{$property}: {$value};";
 
@@ -232,8 +232,7 @@ class ResponsiveFrontendStyles
         }
     }
 
-
-	/**
+    /**
      * Custom Meta
      */
     public function customMeta()
@@ -245,14 +244,14 @@ class ResponsiveFrontendStyles
         $custom_data = get_option("mb_custom_data_{$post->ID}");
 
         if (!$custom_data)
-			return;
+            return;
 
-		$result = $custom_data['custom_data'];
+        $result = $custom_data['custom_data'];
 
         if (!$result || empty($result))
             return;
 
-		return json_decode($result);
+        return json_decode($result);
     }
 }
 

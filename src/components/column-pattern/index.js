@@ -246,24 +246,6 @@ const ColumnPatternsInspector = props => {
 	};
 
 	/**
-	 * Get current column gap
-	 *
-	 * @return bool - gap or no gap
-	 */
-	const getCurrentColumnGap = () => {
-		const { getBlock } = select('core/block-editor');
-
-		const gap = getBlock(clientId).attributes.columnGap;
-
-		let gapValue = 1;
-
-		if (gap === 'yes') gapValue = 1;
-		if (gap === 'no') gapValue = 0;
-
-		return gapValue;
-	};
-
-	/**
 	 * Apply gap on columns sizes array
 	 *
 	 * @param {Array} sizes array of columns widths
@@ -297,7 +279,6 @@ const ColumnPatternsInspector = props => {
 				newColumnsSizes.push(100);
 			}
 		});
-
 
 		return newColumnsSizes;
 	};

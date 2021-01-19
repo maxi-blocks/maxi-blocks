@@ -100,7 +100,6 @@ class edit extends MaxiBlock {
 			margin,
 			zIndex,
 			alignment: { ...getAlignmentFlexObject(alignment) },
-
 			position,
 			positionOptions: position.options,
 			display,
@@ -240,7 +239,6 @@ class edit extends MaxiBlock {
 			},
 		};
 	}
-
 	render() {
 		const {
 			className,
@@ -353,7 +351,7 @@ class edit extends MaxiBlock {
 										<BackgroundDisplayer
 											background={background}
 										/>
-										<ResizableBox
+<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
 												width: `${
@@ -389,7 +387,8 @@ class edit extends MaxiBlock {
 													size.general.width +
 														delta.width,
 													10
-													);
+												);
+
 												setAttributes({
 													size,
 												});

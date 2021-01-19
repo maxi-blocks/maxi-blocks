@@ -1,160 +1,300 @@
 export const dividerSolidHorizontal = {
-	label: 'Divider',
-	general: {
-		'border-color': '#ff4a17',
-		'border-style': 'solid',
-		widthUnit: '%',
-		width: 100,
-		heightUnit: '%',
-		height: '',
-		'border-top-widthUnit': 'px',
-		'border-top-width': 2,
-		'border-right-widthUnit': 'px',
-		'border-right-width': '',
-		'border-radius': '',
+	'border-color': {
+		type: 'string',
+		default: '#ff4a17',
 	},
-	opacity: {
-		label: 'Opacity',
-		general: {
-			opacity: 1,
-		},
+	'border-style': {
+		type: 'string',
+		default: 'solid',
+	},
+	'border-top-width': {
+		type: 'number',
+		default: 2,
+	},
+	'border-unit-width': {
+		type: 'string',
+		default: 'px',
+	},
+	'border-right-width': {
+		type: 'number',
+		default: '',
+	},
+	'border-radius': {
+		type: 'number',
+		default: '',
+	},
+	width: {
+		type: 'number',
+		default: 100,
+	},
+	'width-unit': {
+		type: 'string',
+		default: '%',
+	},
+	heigh: {
+		type: 'number',
+		default: '',
+	},
+	'height-unit': {
+		type: 'string',
+		default: '%',
 	},
 };
 
 export const dividerDottedHorizontal = {
-	label: 'Divider',
-	general: {
-		'border-color': '#ff4a17',
-		'border-style': 'dotted',
-		widthUnit: '%',
-		width: 100,
-		heightUnit: '%',
-		height: '',
-		'border-top-widthUnit': 'px',
-		'border-top-width': 2,
-		'border-right-widthUnit': 'px',
-		'border-right-width': '',
-		'border-radius': '',
+	'border-color': {
+		type: 'string',
+		default: '#ff4a17',
 	},
-	opacity: {
-		label: 'Opacity',
-		general: {
-			opacity: 1,
-		},
+	'border-style': {
+		type: 'string',
+		default: 'dotted',
+	},
+	'border-top-width': {
+		type: 'number',
+		default: 2,
+	},
+	'border-unit-width': {
+		type: 'string',
+		default: 'px',
+	},
+	'border-right-width': {
+		type: 'number',
+		default: '',
+	},
+	'border-radius': {
+		type: 'number',
+		default: '',
+	},
+	width: {
+		type: 'number',
+		default: 100,
+	},
+	'width-unit': {
+		type: 'string',
+		default: '%',
+	},
+	heigh: {
+		type: 'number',
+		default: '',
+	},
+	'height-unit': {
+		type: 'string',
+		default: '%',
 	},
 };
 
 export const dividerDashedHorizontal = {
-	label: 'Divider',
-	general: {
-		'border-color': '#ff4a17',
-		'border-style': 'dashed',
-		widthUnit: '%',
-		width: 100,
-		heightUnit: '%',
-		height: '',
-		'border-top-widthUnit': 'px',
-		'border-top-width': 2,
-		'border-right-widthUnit': 'px',
-		'border-right-width': '',
-		'border-radius': '',
+	'border-color': {
+		type: 'string',
+		default: '#ff4a17',
 	},
-	opacity: {
-		label: 'Opacity',
-		general: {
-			opacity: 1,
-		},
+	'border-style': {
+		type: 'string',
+		default: 'dashed',
+	},
+	'border-top-width': {
+		type: 'number',
+		default: 2,
+	},
+	'border-unit-width': {
+		type: 'string',
+		default: 'px',
+	},
+	'border-right-width': {
+		type: 'number',
+		default: '',
+	},
+	'border-radius': {
+		type: 'number',
+		default: '',
+	},
+	width: {
+		type: 'number',
+		default: 100,
+	},
+	'width-unit': {
+		type: 'string',
+		default: '%',
+	},
+	heigh: {
+		type: 'number',
+		default: '',
+	},
+	'height-unit': {
+		type: 'string',
+		default: '%',
 	},
 };
 
 export const dividerSolidVertical = {
-	label: 'Divider',
-	general: {
-		'border-color': '#ff4a17',
-		'border-style': 'solid',
-		widthUnit: '%',
-		width: '',
-		heightUnit: '%',
-		height: 100,
-		'border-top-widthUnit': 'px',
-		'border-top-width': '',
-		'border-right-widthUnit': 'px',
-		'border-right-width': 2,
-		'border-radius': '',
+	'border-color': {
+		type: 'string',
+		default: '#ff4a17',
 	},
-	opacity: {
-		label: 'Opacity',
-		general: {
-			opacity: 1,
-		},
+	'border-style': {
+		type: 'string',
+		default: 'solid',
+	},
+	'border-top-width': {
+		type: 'number',
+		default: 2,
+	},
+	'border-unit-width': {
+		type: 'string',
+		default: 'px',
+	},
+	'border-right-width': {
+		type: 'number',
+		default: '',
+	},
+	'border-radius': {
+		type: 'number',
+		default: '',
+	},
+	width: {
+		type: 'number',
+		default: '',
+	},
+	'width-unit': {
+		type: 'string',
+		default: '%',
+	},
+	heigh: {
+		type: 'number',
+		default: 100,
+	},
+	'height-unit': {
+		type: 'string',
+		default: '%',
 	},
 };
 
 export const dividerDottedVertical = {
-	label: 'Divider',
-	general: {
-		'border-color': '#ff4a17',
-		'border-style': 'dotted',
-		widthUnit: '%',
-		width: '',
-		heightUnit: '%',
-		height: 100,
-		'border-top-widthUnit': 'px',
-		'border-top-width': '',
-		'border-right-widthUnit': 'px',
-		'border-right-width': 2,
-		'border-radius': '',
+	'border-color': {
+		type: 'string',
+		default: '#ff4a17',
 	},
-	opacity: {
-		label: 'Opacity',
-		general: {
-			opacity: 1,
-		},
+	'border-style': {
+		type: 'string',
+		default: 'dotted',
+	},
+	'border-top-width': {
+		type: 'number',
+		default: 2,
+	},
+	'border-unit-width': {
+		type: 'string',
+		default: 'px',
+	},
+	'border-right-width': {
+		type: 'number',
+		default: '',
+	},
+	'border-radius': {
+		type: 'number',
+		default: '',
+	},
+	width: {
+		type: 'number',
+		default: '',
+	},
+	'width-unit': {
+		type: 'string',
+		default: '%',
+	},
+	heigh: {
+		type: 'number',
+		default: 100,
+	},
+	'height-unit': {
+		type: 'string',
+		default: '%',
 	},
 };
 
 export const dividerDashedVertical = {
-	label: 'Divider',
-	general: {
-		'border-color': '#ff4a17',
-		'border-style': 'dashed',
-		widthUnit: '%',
-		width: '',
-		heightUnit: '%',
-		height: 100,
-		'border-top-widthUnit': 'px',
-		'border-top-width': '',
-		'border-right-widthUnit': 'px',
-		'border-right-width': 2,
-		'border-radius': '',
+	'border-color': {
+		type: 'string',
+		default: '#ff4a17',
 	},
-	opacity: {
-		label: 'Opacity',
-		general: {
-			opacity: 1,
-		},
+	'border-style': {
+		type: 'string',
+		default: 'dashed',
+	},
+	'border-top-width': {
+		type: 'number',
+		default: 2,
+	},
+	'border-unit-width': {
+		type: 'string',
+		default: 'px',
+	},
+	'border-right-width': {
+		type: 'number',
+		default: '',
+	},
+	'border-radius': {
+		type: 'number',
+		default: '',
+	},
+	width: {
+		type: 'number',
+		default: '',
+	},
+	'width-unit': {
+		type: 'string',
+		default: '%',
+	},
+	heigh: {
+		type: 'number',
+		default: 100,
+	},
+	'height-unit': {
+		type: 'string',
+		default: '%',
 	},
 };
 
 export const dividerNone = {
-	label: 'Divider',
-	general: {
-		'border-color': '',
-		'border-style': 'none',
-		widthUnit: '%',
-		width: '',
-		heightUnit: 'px',
-		height: '',
-		'border-top-widthUnit': 'px',
-		'border-top-width': '',
-		'border-right-widthUnit': 'px',
-		'border-right-width': '',
-		'border-radius': '',
+	'border-color': {
+		type: 'string',
+		default: '',
 	},
-	opacity: {
-		label: 'Opacity',
-		general: {
-			opacity: 1,
-		},
+	'border-style': {
+		type: 'string',
+		default: 'none',
+	},
+	'border-top-width': {
+		type: 'number',
+		default: 2,
+	},
+	'border-unit-width': {
+		type: 'string',
+		default: 'px',
+	},
+	'border-right-width': {
+		type: 'number',
+		default: '',
+	},
+	'border-radius': {
+		type: 'number',
+		default: '',
+	},
+	width: {
+		type: 'number',
+		default: '',
+	},
+	'width-unit': {
+		type: 'string',
+		default: '%',
+	},
+	heigh: {
+		type: 'number',
+		default: '',
+	},
+	'height-unit': {
+		type: 'string',
+		default: '%',
 	},
 };

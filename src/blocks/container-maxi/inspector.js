@@ -319,11 +319,11 @@ const Inspector = props => {
 																			'Enable Background Hover',
 																			'maxi-blocks'
 																		)}
-																		selected={Number(
-																			attributes[
+																		selected={
+																			+attributes[
 																				'background-hover-status'
 																			]
-																		)}
+																		}
 																		options={[
 																			{
 																				label: __(
@@ -343,7 +343,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-hover-status': Number(
+																					'background-hover-status': !!Number(
 																						val
 																					),
 																				}

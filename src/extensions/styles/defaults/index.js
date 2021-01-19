@@ -12,6 +12,8 @@ export { default as margin } from './margin';
 export { default as padding } from './padding';
 export { default as container } from './container';
 export { default as arrow } from './arrow';
+export { default as highlight } from './highlight';
+export { default as divider } from './divider';
 export { default as shapeDivider } from './shapeDivider';
 export * from './motion';
 export { default as transform } from './transform';

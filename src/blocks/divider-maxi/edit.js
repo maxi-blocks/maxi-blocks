@@ -16,18 +16,17 @@ import {
 	setBackgroundStyles,
 	getLastBreakpointValue,
 } from '../../utils';
-import {
-	MaxiBlock,
-	Toolbar,
-	BackgroundDisplayer,
-	MotionPreview,
-} from '../../components';
+import { MaxiBlock, Toolbar } from '../../components';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
+import MotionPreview from '../../components/motion-preview/newMotionPreview';
+import getStyles from './styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Content
@@ -38,142 +37,47 @@ class edit extends MaxiBlock {
 		styles: {},
 		breakpoints: this.getBreakpoints,
 	};
-
-	get getObject() {
-		const { uniqueID, background, backgroundHover } = this.props.attributes;
-
-		let response = {
-			[uniqueID]: this.getNormalObject,
-			[`${uniqueID}:hover hr.maxi-divider-block__divider`]: this
-				.getHoverObject,
-			[`${uniqueID} hr.maxi-divider-block__divider`]: this
-				.getDividerObject,
-		};
-
-		response = Object.assign(
-			response,
-			setBackgroundStyles({
-				target: uniqueID,
-				background,
-				backgroundHover,
-			})
-		);
-
-		return response;
-	}
-
-	get getNormalObject() {
-		const {
-			lineVertical,
-			lineHorizontal,
-			linesAlign,
-			opacity,
-			size,
-			padding,
-			margin,
-			zIndex,
-			position,
-			display,
-			transform,
-		} = this.props.attributes;
-
-		const response = {
-			size,
-			padding,
-			margin,
-			opacity,
-			zIndex,
-			position,
-			positionOptions: position.options,
-			display,
-			transform: getTransformObject(transform),
-			divider: {
-				label: 'Divider',
-				general: {},
-			},
-		};
-
-		if (!isNil(linesAlign)) {
-			response.divider.general['flex-direction'] = linesAlign;
-			if (linesAlign === 'row') {
-				if (!isNil(lineVertical))
-					response.divider.general['align-items'] = lineVertical;
-				if (!isNil(lineHorizontal))
-					response.divider.general[
-						'justify-content'
-					] = lineHorizontal;
-			} else {
-				if (!isNil(lineVertical))
-					response.divider.general['justify-content'] = lineVertical;
-				if (!isNil(lineHorizontal))
-					response.divider.general['align-items'] = lineHorizontal;
-			}
-		}
-
-		return response;
-	}
-
-	get getHoverObject() {
-		const { boxShadowHover } = this.props.attributes;
-
-		const response = {};
-
-		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(boxShadowHover),
-			};
-		}
-
-		return response;
-	}
-
-	get getDividerObject() {
-		const { divider, boxShadow } = this.props.attributes;
-		const response = {
-			boxShadow: { ...getBoxShadowObject(boxShadow) },
-			divider: { ...divider },
-			opacity: { ...divider.opacity },
-		};
-
-		return response;
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
 	}
 
 	get getCustomData() {
-		const { uniqueID, motion } = this.props.attributes;
+		const { uniqueID } = this.props.attributes;
 
 		const motionStatus =
-			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+			!!this.props.attributes['motion-status'] ||
+			!isEmpty(this.props.attributes['entrance-type']);
 
 		return {
 			[uniqueID]: {
-				...(motionStatus && { motion }),
+				...(motionStatus && {
+					...getGroupAttributes(this.props.attributes, 'motion'),
+					...getGroupAttributes(this.props.attributes, 'entrance'),
+				}),
 			},
 		};
 	}
 
 	render() {
 		const {
-			attributes: {
-				uniqueID,
-				blockStyle,
-				defaultBlockStyle,
-				blockStyleBackground,
-				lineOrientation,
-				extraClassName,
-				fullWidth,
-				background,
-				motion,
-			},
+			attributes,
 			className,
-			isSelected,
 			deviceType,
+			isSelected,
 			onDeviceTypeChange,
 			setAttributes,
 		} = this.props;
+		const {
+			uniqueID,
+			blockStyle,
+			defaultBlockStyle,
+			blockStyleBackground,
+			lineOrientation,
+			extraClassName,
+			fullWidth,
+			background,
+		} = attributes;
 		const size = { ...this.props.attributes.size };
-		const display = { ...this.props.attributes.display };
-		const highlightValue = { ...this.props.attributes.highlight };
-		const divider = { ...this.props.attributes.divider };
 		const { isResizing } = this.state;
 
 		onDeviceTypeChange();
@@ -182,12 +86,12 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-divider-block',
-			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
-				'maxi-block-display-none',
+			//getLastBreakpointValue('display', deviceType, attributes) ===
+			//'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!highlightValue.borderHighlight && 'maxi-highlight--border',
+			!!attributes['border-highlight'] && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className,
@@ -220,8 +124,8 @@ class edit extends MaxiBlock {
 			<ResizableBox
 				size={{
 					width: '100%',
-					height:
-						size[deviceType].height + size[deviceType].heightUnit,
+					//height:
+					//size[deviceType].height + size[deviceType].heightUnit,
 				}}
 				className={classnames(
 					'maxi-block__resizer',
@@ -233,8 +137,8 @@ class edit extends MaxiBlock {
 				)}
 				defaultSize={{
 					width: '100%',
-					height:
-						size[deviceType].height + size[deviceType].heightUnit,
+					//height:
+					//size[deviceType].height + size[deviceType].heightUnit,
 				}}
 				enable={{
 					top: false,
@@ -256,16 +160,18 @@ class edit extends MaxiBlock {
 					isVisible: isResizing,
 				}}
 			>
-				<MotionPreview motion={motion}>
+				<MotionPreview
+					motion={{ ...getGroupAttributes(attributes, 'motion') }}
+				>
 					<__experimentalBlock
 						className={classes}
 						data-maxi_initial_block_class={defaultBlockStyle}
 						data-align={fullWidth}
 					>
 						<BackgroundDisplayer background={background} />
-						{divider.general['border-style'] !== 'none' && (
-							<hr className='maxi-divider-block__divider' />
-						)}
+						{/* {divider.general['border-style'] !== 'none' && ( */}
+						<hr className='maxi-divider-block__divider' />
+						{/* )} */}
 					</__experimentalBlock>
 				</MotionPreview>
 			</ResizableBox>,

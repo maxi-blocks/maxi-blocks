@@ -1,3 +1,5 @@
+const { select, withSelect, withDispatch } = wp.data;
+
 /**
  * Icons
  */
@@ -37,15 +39,30 @@ import {
 /**
  * Helpers
  */
+
+function getParentRowGap() {
+	let gap = 2.5;
+
+	//console.log('ParentGap: ' + gap);
+
+	return gap;
+
+	//const parentClientId = select( 'core/block-editor' ).getBlockHierarchyRootClientId( this.props.clientId );
+	//console.log('parentClientId: ' + parentClientId);
+}
+
 /**
  *
  * We are generating new columns again each time the user changes the pattern and adding the new columns to them
  * it's better to update columns attributes in place rather than generating again
  */
-const generateDefaultColumns = (columns, gap1 = 2.5) => {
+const generateDefaultColumns = (columns, gap1 = getParentRowGap()) => {
 	const numberOfGaps = columns.length - 1;
 
 	const total = 100 - gap1 * numberOfGaps;
+
+	//console.log("columns: " + columns);
+	//getParentRowGap();
 
 	return columns.map((column, i) => {
 		return [
@@ -90,7 +107,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 						'margin-right': '',
 						'margin-bottom': '',
 						'margin-left': '',
-						sync: true,
+						sync: false,
 						unit: 'px',
 					},
 					xxl: {
@@ -98,7 +115,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 						'margin-right': '',
 						'margin-bottom': '',
 						'margin-left': '',
-						sync: true,
+						sync: false,
 						unit: '',
 					},
 					xl: {
@@ -106,7 +123,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 						'margin-right': '',
 						'margin-bottom': '',
 						'margin-left': '',
-						sync: true,
+						sync: false,
 						unit: '',
 					},
 					l: {
@@ -114,7 +131,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 						'margin-right': '',
 						'margin-bottom': '',
 						'margin-left': '',
-						sync: true,
+						sync: false,
 						unit: '',
 					},
 					m: {
@@ -122,7 +139,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 						'margin-right': '',
 						'margin-bottom': '',
 						'margin-left': '',
-						sync: true,
+						sync: false,
 						unit: 'em',
 					},
 					s: {
@@ -130,7 +147,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 						'margin-right': '',
 						'margin-bottom': '',
 						'margin-left': '',
-						sync: true,
+						sync: false,
 						unit: '',
 					},
 					xs: {
@@ -138,7 +155,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 						'margin-right': '',
 						'margin-bottom': '',
 						'margin-left': '',
-						sync: true,
+						sync: false,
 						unit: '',
 					},
 				},

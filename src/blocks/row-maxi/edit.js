@@ -327,6 +327,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			column[1].uniqueID = uniqueIdCreator();
 		});
 
+		console.log('template: '+template);
+
 		const newAttributes = template.attributes;
 		dispatch('core/block-editor').updateBlockAttributes(
 			clientId,

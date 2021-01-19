@@ -18,6 +18,8 @@ import {
 } from '../../extensions/defaults/column-templates';
 
 import SizeControl from '../size-control';
+import FancyRadioControl from '../fancy-radio-control';
+
 
 /**
  * External dependencies
@@ -35,9 +37,9 @@ import './editor.scss';
  *
  * */
 const ColumnPatternsInspector = props => {
-	const { clientId, onChange, breakpoint, toolbar = false } = props;
+	const { clientId, onChange, breakpoint, toolbar = false, setAttributes } = props;
 
-	const [numCol, setNumCol] = useState(1);
+	const [numCol, setNumCol, columnGap] = useState(1);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
@@ -156,6 +158,8 @@ const ColumnPatternsInspector = props => {
 		const currentContent = getCurrentContent(innerBlocks);
 		const currentAttributes = getCurrentAttributes(innerBlocks);
 
+		console.log('templateName: ' + templateName);
+
 		const template = cloneDeep(getTemplateObject(templateName));
 		template.content.forEach((column, i) => {
 			column[1].uniqueID = uniqueIdCreator();
@@ -271,14 +275,21 @@ const ColumnPatternsInspector = props => {
 
 		const currentGap = getCurrentColumnGap();
 
+		//console.log('currentGap: ' + currentGap);
+
 		let gap;
 
-		currentGap ? (gap = 2) : (gap = 0);
+		currentGap ? (gap = 2.5) : (gap = 0);
+
+		console.log('gap: ' + gap);
 
 		sizes.forEach((column, i) => {
 			if (columnsPositions[i].columnsNumber > 1) {
 				const numberOfGaps = columnsPositions[i].columnsNumber - 1;
 				const total = 100 - gap * numberOfGaps;
+				//console.log('total: ' + total);
+				//console.log('sizes[i] * total: ' + sizes[i] * total);
+
 				newColumnsSizes.push(sizes[i] * total);
 			}
 
@@ -308,6 +319,8 @@ const ColumnPatternsInspector = props => {
 
 		const sizesWithGaps = applyGap(sizes);
 
+		console.log('sizesWithGaps: ' + sizesWithGaps);
+
 		const columnsPositions = getColumnsPositions(sizes);
 
 		columnsBlockObjects.forEach((column, j) => {
@@ -319,6 +332,8 @@ const ColumnPatternsInspector = props => {
 			const newColumnMargin = columnAttributes.margin;
 
 			newColumnSize[breakpoint].size = sizesWithGaps[j];
+
+			console.log('sizesWithGaps[j]: ' + sizesWithGaps[j]);
 
 			document.querySelector(
 				`.maxi-column-block__resizer__${columnUniqueID}`
@@ -356,7 +371,7 @@ const ColumnPatternsInspector = props => {
 					defaultValue={numCol}
 					onChangeValue={numCol => setNumCol(numCol)}
 					min={1}
-					max={6}
+					max={8}
 					disableReset
 				/>
 			)}
@@ -392,6 +407,40 @@ const ColumnPatternsInspector = props => {
 						</Button>
 					);
 				})}
+			</div>
+			<div className='components-column-pattern__gap'>
+				{numCol !== 1 && (
+				<FancyRadioControl
+					label={__(
+						'Gap',
+						'maxi-blocks'
+					)}
+					selected={columnGap}
+					options={[
+						{
+							label: __(
+								'No',
+								'maxi-blocks'
+							),
+							value:
+								'no',
+						},
+						{
+							label: __(
+								'Yes',
+								'maxi-blocks'
+							),
+							value:
+								'yes',
+						},
+					]}
+					onChange={columnGap =>
+						setAttributes({
+							columnGap,
+						})
+					}
+				/>
+			)}
 			</div>
 		</div>
 	);

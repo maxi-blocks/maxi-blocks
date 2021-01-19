@@ -278,8 +278,8 @@ class edit extends MaxiBlock {
 							data-align={fullWidth}
 							data-maxi_initial_block_class={defaultBlockStyle}
 						>
-							<BackgroundDisplayer background={background} />
 							<ArrowDisplayer arrow={arrow} />
+							<BackgroundDisplayer background={background} />
 
 							{!!shapeDivider.top.status && (
 								<ShapeDivider

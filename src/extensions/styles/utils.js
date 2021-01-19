@@ -825,16 +825,15 @@ export const getArrowObject = arrow => {
 	Object.entries(arrow).forEach(([key, value]) => {
 		if (key === 'label' || key === 'active') return;
 
-		response[key].display = 'block';
-
 		const width = `${value.width}${value.widthUnit}`;
 
 		response[key].display = 'block';
 		response[key].width = `${width}`;
 		response[key].height = `${width}`;
 
+
 		if (value.side === 'top') {
-			response[key].left = `${value.position}%`;
+			response[key].left= `${value.position}%`;
 			response[key].top = `-${(Math.sqrt(2) * value.width) / 2}${
 				value.widthUnit
 			}`;
@@ -846,6 +845,7 @@ export const getArrowObject = arrow => {
 			)}${value.widthUnit})`;
 		}
 		if (value.side === 'bottom') {
+
 			response[key].left = `${value.position}%`;
 			response[key].top = `calc(100% + ${Math.floor(
 				(Math.sqrt(2) * value.width) / 2
@@ -885,14 +885,14 @@ export const setArrowStyles = (
 	boxShadow
 ) => {
 	return {
-		[`${target} .maxi-container-arrow`]: {
+		[`${target} > .maxi-container-arrow`]: {
 			arrow: { ...getArrowObject(arrow) },
 			shadow: { ...getDropShadowObject(boxShadow) },
 		},
-		[`${target} .maxi-container-arrow:after`]: {
+		[`${target} > .maxi-container-arrow:after`]: {
 			background: { ...getArrowColorObject(background) },
 		},
-		[`${target} .maxi-container-arrow:before`]: {
+		[`${target} > .maxi-container-arrow:before`]: {
 			border: { ...getArrowBorderObject(border) },
 		},
 	};

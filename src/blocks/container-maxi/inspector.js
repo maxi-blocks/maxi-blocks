@@ -591,9 +591,6 @@ const Inspector = props => {
 													}
 													isFullWidth={fullWidth}
 													breakpoint={deviceType}
-													isFirstOnHierarchy={
-														isFirstOnHierarchy
-													}
 												/>
 											),
 										},

@@ -169,132 +169,26 @@ const Inspector = props => {
 														/>
 													)}
 													{fullWidth === 'full' ? (
-														<Fragment>
-															<SizeControl
-																label={__(
-																	'Max Width',
-																	'maxi-blocks'
-																)}
-																unit={
-																	sizeContainer[
-																		deviceType
-																	][
-																		'max-widthUnit'
-																	]
-																}
-																defaultUnit={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	][
-																		'max-widthUnit'
-																	]
-																}
-																onChangeUnit={val => {
-																	sizeContainer[
-																		deviceType
-																	][
-																		'max-widthUnit'
-																	] = val;
-																	setAttributes(
-																		{
-																			sizeContainer,
-																		}
-																	);
-																}}
-																value={
-																	sizeContainer[
-																		deviceType
-																	][
-																		'max-width'
-																	]
-																}
-																default={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	][
-																		'max-width'
-																	]
-																}
-																onChangeValue={val => {
-																	sizeContainer[
-																		deviceType
-																	][
-																		'max-width'
-																	] = val;
-																	setAttributes(
-																		{
-																			sizeContainer,
-																		}
-																	);
-																}}
-																minMaxSettings={
-																	minMaxSettings
-																}
-															/>
-															<SizeControl
-																label={__(
-																	'Width',
-																	'maxi-blocks'
-																)}
-																unit={
-																	sizeContainer[
-																		deviceType
-																	].widthUnit
-																}
-																defaultUnit={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	].widthUnit
-																}
-																onChangeUnit={val => {
-																	sizeContainer[
-																		deviceType
-																	].widthUnit = val;
-																	setAttributes(
-																		{
-																			sizeContainer,
-																		}
-																	);
-																}}
-																value={
-																	sizeContainer[
-																		deviceType
-																	].width
-																}
-																default={
-																	getDefaultProp(
-																		clientId,
-																		'sizeContainer'
-																	)[
-																		deviceType
-																	].width
-																}
-																onChangeValue={val => {
-																	sizeContainer[
-																		deviceType
-																	].width = val;
-																	setAttributes(
-																		{
-																			sizeContainer,
-																		}
-																	);
-																}}
-																minMaxSettings={
-																	minMaxSettings
-																}
-															/>
-														</Fragment>
+														<FullSizeControl
+															hideWidth
+															hideMaxWidth
+															size={size}
+															defaultSize={getDefaultProp(
+																clientId,
+																'size'
+															)}
+															onChange={size =>
+																setAttributes({
+																	size,
+																})
+															}
+															breakpoint={
+																deviceType
+															}
+														/>
 													) : (
 														<FullSizeControl
+															hideMaxWidth
 															size={size}
 															defaultSize={getDefaultProp(
 																clientId,
@@ -655,7 +549,7 @@ const Inspector = props => {
 												<Fragment>
 													<AxisControl
 														values={padding}
-														defaults={getDefaultProp(
+														defaultValues={getDefaultProp(
 															clientId,
 															'padding'
 														)}
@@ -669,7 +563,7 @@ const Inspector = props => {
 													/>
 													<AxisControl
 														values={margin}
-														defaults={getDefaultProp(
+														defaultValues={getDefaultProp(
 															clientId,
 															'margin'
 														)}
@@ -697,9 +591,6 @@ const Inspector = props => {
 													}
 													isFullWidth={fullWidth}
 													breakpoint={deviceType}
-													isFirstOnHierarchy={
-														isFirstOnHierarchy
-													}
 												/>
 											),
 										},

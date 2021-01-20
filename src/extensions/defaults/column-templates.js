@@ -44,6 +44,7 @@ import {
  */
 const generateDefaultColumns = (columns, gap1 = 2.5) => {
 	const numberOfGaps = columns.length - 1;
+
 	const total = 100 - gap1 * numberOfGaps;
 
 	return columns.map((column, i) => {

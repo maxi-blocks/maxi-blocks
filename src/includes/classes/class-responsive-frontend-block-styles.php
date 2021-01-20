@@ -132,7 +132,8 @@ class ResponsiveFrontendStyles
                 $response .= '}';
             }
             if (isset($content['xxl']) && !empty($content['xxl'])) {
-                $response .= "@media only screen and (min-width: {$breakpoints->xl}px) {body.maxi-blocks--active .maxi-block.$target{";
+                $xxl = intval($breakpoints->xl) + 1;
+                $response .= "@media only screen and (min-width: {$xxl}px) {body.maxi-blocks--active .maxi-block.$target{";
                 $response .= self::getStyles($content['xxl']);
                 $response .= '}}';
             }
@@ -189,7 +190,12 @@ class ResponsiveFrontendStyles
         foreach ($styles as $property => $value) {
             if ($property === 'font-options')
                 continue;
-            $response .= "{$property}: {$value};";
+
+            if ($property === 'max-width')
+                $response .= "{$property}: {$value} !important;";
+            else $response .= "{$property}: {$value};";
+
+
         }
         return $response;
     }
@@ -210,23 +216,23 @@ class ResponsiveFrontendStyles
         $fontOptions = [];
         foreach ($meta as $target) {
             foreach ($target['content'] as $breakpoint) {
-				if (array_key_exists('font-family', $breakpoint)) {
+                if (array_key_exists('font-family', $breakpoint)) {
                     $font_style = array_key_exists('font-style', $breakpoint) ? $breakpoint['font-style'] : 'normal';
-					$fontOptions[$breakpoint['font-family'] . '-' . $font_style] = $font_style;
-				}
-			}
+                    $fontOptions[$breakpoint['font-family'] . '-' . $font_style] = $font_style;
+                }
+            }
         }
 
         foreach ($fontOptions as $font => $value) {
-			$font_name = substr($font, 0, strpos($font,'-'));
-			wp_enqueue_style(
-				"{$font}",
-				"https://fonts.googleapis.com/css2?family={$font_name}"
-			);
+            $font_name = substr($font, 0, strpos($font,'-'));
+            wp_enqueue_style(
+                "{$font}",
+                "https://fonts.googleapis.com/css2?family={$font_name}"
+            );
         }
-	}
+    }
 
-	/**
+    /**
      * Custom Meta
      */
     public function customMeta()
@@ -238,14 +244,14 @@ class ResponsiveFrontendStyles
         $custom_data = get_option("mb_custom_data_{$post->ID}");
 
         if (!$custom_data)
-			return;
+            return;
 
-		$result = $custom_data['custom_data'];
+        $result = $custom_data['custom_data'];
 
         if (!$result || empty($result))
             return;
 
-		return json_decode($result);
+        return json_decode($result);
     }
 }
 

@@ -18,20 +18,18 @@ import {
 	getTransformObject,
 	getAlignmentTextObject,
 	setBackgroundStyles,
-	getLastBreakpointValue,
 } from '../../utils';
-import {
-	MaxiBlock,
-	Toolbar,
-	BackgroundDisplayer,
-	MotionPreview,
-} from '../../components';
+import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
+import { MaxiBlock, Toolbar } from '../../components';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
+import MotionPreview from '../../components/motion-preview/newMotionPreview';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, isNumber } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * Icons
@@ -227,70 +225,69 @@ class edit extends MaxiBlock {
 		return response;
 	}
 
-	get getCustomData() {
-		const { uniqueID, motion } = this.props.attributes;
+	// Disabled
+	// get getCustomData() {
+	// 	const { uniqueID, motion } = this.props.attributes;
 
-		const motionStatus =
-			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+	// 	const motionStatus =
+	// 		!!motion.interaction.interactionStatus || !!motion.parallax.status;
 
-		return {
-			[uniqueID]: {
-				...(motionStatus && { motion }),
-			},
-		};
-	}
+	// 	return {
+	// 		[uniqueID]: {
+	// 			...(motionStatus && { motion }),
+	// 		},
+	// 	};
+	// }
+
 	render() {
 		const {
 			className,
-			attributes: {
-				uniqueID,
-				blockStyle,
-				defaultBlockStyle,
-				blockStyleBackground,
-				extraClassName,
-				fullWidth,
-				background,
-				cropOptions,
-				captionType,
-				captionContent,
-				imageSize,
-				mediaID,
-				mediaAlt,
-				mediaURL,
-				mediaWidth,
-				mediaHeight,
-				SVGElement,
-				display,
-				hover,
-				motion,
-			},
+			attributes,
 			imageData,
 			setAttributes,
 			deviceType,
 		} = this.props;
+		const {
+			uniqueID,
+			blockStyle,
+			defaultBlockStyle,
+			blockStyleBackground,
+			extraClassName,
+			fullWidth,
+			cropOptions,
+			captionType,
+			captionContent,
+			imageSize,
+			mediaID,
+			mediaAlt,
+			mediaURL,
+			mediaWidth,
+			mediaHeight,
+			SVGElement,
+			// hover,
+		} = attributes;
 
-		const size = { ...this.props.attributes.size };
-
-		const hoverClasses = classnames(
-			'maxi-block-hover-wrapper',
-			hover.type === 'basic' &&
-				!!hover.preview &&
-				`maxi-hover-effect__${hover.type}__${hover.basicEffectType}`,
-			hover.type === 'text' &&
-				!!hover.preview &&
-				`maxi-hover-effect__${hover.type}__${hover.textEffectType}`,
-			hover.type !== 'none' &&
-				`maxi-hover-effect__${
-					hover.type === 'basic' ? 'basic' : 'text'
-				}`
-		);
+		const hoverClasses = '';
+		// const hoverClasses = classnames(
+		// 	'maxi-block-hover-wrapper',
+		// 	hover.type === 'basic' &&
+		// 		!!hover.preview &&
+		// 		`maxi-hover-effect__${hover.type}__${hover.basicEffectType}`,
+		// 	hover.type === 'text' &&
+		// 		!!hover.preview &&
+		// 		`maxi-hover-effect__${hover.type}__${hover.textEffectType}`,
+		// 	hover.type !== 'none' &&
+		// 		`maxi-hover-effect__${
+		// 			hover.type === 'basic' ? 'basic' : 'text'
+		// 		}`
+		// );
 
 		const classes = classnames(
 			'maxi-block maxi-image-block',
 			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 			'maxi-block--backend',
-			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
-				'maxi-block-display-none',
+			getLastBreakpointValue('display', deviceType, attributes) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
@@ -303,6 +300,7 @@ class edit extends MaxiBlock {
 		const getImage = () => {
 			if (
 				imageSize === 'custom' &&
+				cropOptions &&
 				!isEmpty(cropOptions.image.source_url)
 			)
 				return { ...cropOptions.image };
@@ -326,8 +324,9 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			<Toolbar {...this.props} />,
-			<MotionPreview motion={motion}>
+			// <Toolbar {...this.props} />,
+			<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
+				{' '}
 				<__experimentalBlock.figure
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
@@ -349,21 +348,36 @@ class edit extends MaxiBlock {
 								{(!isNil(mediaID) && imageData) || mediaURL ? (
 									<Fragment>
 										<BackgroundDisplayer
-											background={background}
+											{...getGroupAttributes(attributes, [
+												'background',
+												'backgroundColor',
+												'backgroundImage',
+												'backgroundVideo',
+												'backgroundGradient',
+												'backgroundSVG',
+												'backgroundHover',
+												'backgroundColorHover',
+												'backgroundImageHover',
+												'backgroundVideoHover',
+												'backgroundGradientHover',
+												'backgroundSVGHover',
+											])}
+											blockClassName={uniqueID}
 										/>
 										<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
-												width: `${
-													!isNumber(
-														size.general.width
-													)
-														? imageData &&
-														  imageData
-																.media_details
-																.width
-														: size.general.width
-												}px`,
+												// width: `${
+												// 	!isNumber(
+												// 		size.general.width
+												// 	)
+												// 		? imageData &&
+												// 		  imageData
+												// 				.media_details
+												// 				.width
+												// 		: size.general.width
+												// }px`,
+												width: '100%',
 												height: '100%',
 											}}
 											maxWidth='100%'
@@ -383,14 +397,15 @@ class edit extends MaxiBlock {
 												elt,
 												delta
 											) => {
-												size.general.width = parseInt(
-													size.general.width +
-														delta.width,
+												const newWidth = parseInt(
+													attributes[
+														`width-${deviceType}`
+													] + delta.width,
 													10
 												);
 
 												setAttributes({
-													size,
+													[`width-${deviceType}`]: newWidth,
 												});
 											}}
 										>
@@ -416,7 +431,7 @@ class edit extends MaxiBlock {
 														{SVGElement}
 													</RawHTML>
 												)}
-												{hover.type !== 'none' &&
+												{/* {hover.type !== 'none' &&
 													hover.type !== 'basic' &&
 													!!hover.preview && (
 														<div className='maxi-hover-details'>
@@ -443,7 +458,7 @@ class edit extends MaxiBlock {
 																)}
 															</div>
 														</div>
-													)}
+													)} */}
 											</div>
 											{captionType !== 'none' && (
 												<figcaption className='maxi-image-block__caption'>

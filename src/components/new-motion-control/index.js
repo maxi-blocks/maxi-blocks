@@ -41,7 +41,7 @@ const MotionControl = props => {
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => onChange({ 'motion-status': !!val })}
+				onChange={val => onChange({ 'motion-status': !!+val })}
 			/>
 			{props['motion-status'] && (
 				<Fragment>
@@ -53,7 +53,7 @@ const MotionControl = props => {
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
 						onChange={val =>
-							onChange({ 'motion-preview-status': !!val })
+							onChange({ 'motion-preview-status': !!+val })
 						}
 					/>
 					<TimelinePresets
@@ -71,7 +71,6 @@ const MotionControl = props => {
 					<TimelineSettings
 						{...getGroupAttributes(props, 'motion')}
 						onChange={obj => {
-							console.log(obj);
 							onChange(obj);
 						}}
 					/>

@@ -88,21 +88,34 @@ class edit extends MaxiBlock {
 		return getStyles(this.props.attributes);
 	}
 
-	// Disabled
-	// get getCustomDataTest() {
-	// 	const { uniqueID, motion, shapeDivider } = this.props.attributes;
+	get getCustomData() {
+		const { uniqueID } = this.props.attributes;
 
-	// 	const motionStatus =
-	// 		!!motion.interaction.interactionStatus || !!motion.parallax.status;
-	// 	const shapeStatus = !!attributes[''] || !!shapeDivider.bottom.status;
+		const motionStatus =
+			!!this.props.attributes['motion-status'] ||
+			!isEmpty(this.props.attributes['entrance-type']) ||
+			!!this.props.attributes['parallax-status'];
 
-	// 	return {
-	// 		[uniqueID]: {
-	// 			...(motionStatus && { motion }),
-	// 			...(shapeStatus && { shapeDivider }),
-	// 		},
-	// 	};
-	// }
+		const shapeStatus =
+			!!this.props.attributes['shape-divider-top-status'] ||
+			!!this.props.attributes['shape-divider-bottom-status'];
+
+		return {
+			[uniqueID]: {
+				...(motionStatus && {
+					...getGroupAttributes(this.props.attributes, 'motion'),
+					...getGroupAttributes(this.props.attributes, 'entrance'),
+					...getGroupAttributes(this.props.attributes, 'parallax'),
+				}),
+				...(shapeStatus && {
+					...getGroupAttributes(
+						this.props.attributes,
+						'shapeDivider'
+					),
+				}),
+			},
+		};
+	}
 
 	render() {
 		const {

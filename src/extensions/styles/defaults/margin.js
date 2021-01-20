@@ -41,6 +41,7 @@ const margin = {
 	},
 	'margin-sync-xxl': {
 		type: 'boolean',
+		default: '',
 	},
 	'margin-unit-xxl': {
 		type: 'string',
@@ -64,6 +65,7 @@ const margin = {
 	},
 	'margin-sync-xl': {
 		type: 'boolean',
+		default: '',
 	},
 	'margin-unit-xl': {
 		type: 'string',
@@ -87,6 +89,7 @@ const margin = {
 	},
 	'margin-sync-l': {
 		type: 'boolean',
+		default: '',
 	},
 	'margin-unit-l': {
 		type: 'string',
@@ -110,6 +113,7 @@ const margin = {
 	},
 	'margin-sync-m': {
 		type: 'boolean',
+		default: '',
 	},
 	'margin-unit-m': {
 		type: 'string',
@@ -133,6 +137,7 @@ const margin = {
 	},
 	'margin-sync-s': {
 		type: 'boolean',
+		default: '',
 	},
 	'margin-unit-s': {
 		type: 'string',
@@ -156,6 +161,7 @@ const margin = {
 	},
 	'margin-sync-xs': {
 		type: 'boolean',
+		default: '',
 	},
 	'margin-unit-xs': {
 		type: 'string',

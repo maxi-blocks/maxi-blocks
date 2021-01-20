@@ -19,7 +19,10 @@
 
 	.maxi-background-layers {
 		margin-bottom: 8px;
-		counter-reset: bg-layers-counter 0;
+	}
+
+	.maxi-background-layers_options {
+		counter-reset: background-layers-counter 0;
 	}
 
 	.maxi-background-layer {
@@ -73,10 +76,10 @@
 				padding: 7px 10px;
 				border-right: 2px solid #dddfe1;
 				margin-right: 7px;
-				counter-increment: bg-layers-counter 1;
+				counter-increment: background-layers-counter 1;
 
 				&:before {
-					content: counter(bg-layers-counter);
+					content: counter(background-layers-counter);
 				}
 			}
 			&__remover {

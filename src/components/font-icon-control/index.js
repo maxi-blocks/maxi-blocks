@@ -352,7 +352,7 @@ const FontIconControl = props => {
 							}}
 						/>
 					)}
-					{!simpleMode && !!Number(icon.customPadding) && (
+					{!simpleMode && !!+icon.customPadding && (
 						<AxisControl
 							values={iconPadding}
 							defaultValues={getDefaultProp(null, 'iconPadding')}

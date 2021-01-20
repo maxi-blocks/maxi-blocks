@@ -41,6 +41,7 @@ const padding = {
 	},
 	'padding-sync-xxl': {
 		type: 'boolean',
+		default: '',
 	},
 	'padding-unit-xxl': {
 		type: 'string',
@@ -64,6 +65,7 @@ const padding = {
 	},
 	'padding-sync-xl': {
 		type: 'boolean',
+		default: '',
 	},
 	'padding-unit-xl': {
 		type: 'string',
@@ -87,6 +89,7 @@ const padding = {
 	},
 	'padding-sync-l': {
 		type: 'boolean',
+		default: '',
 	},
 	'padding-unit-l': {
 		type: 'string',
@@ -110,6 +113,7 @@ const padding = {
 	},
 	'padding-sync-m': {
 		type: 'boolean',
+		default: '',
 	},
 	'padding-unit-m': {
 		type: 'string',
@@ -133,6 +137,7 @@ const padding = {
 	},
 	'padding-sync-s': {
 		type: 'boolean',
+		default: '',
 	},
 	'padding-unit-s': {
 		type: 'string',
@@ -156,6 +161,7 @@ const padding = {
 	},
 	'padding-sync-xs': {
 		type: 'boolean',
+		default: '',
 	},
 	'padding-unit-xs': {
 		type: 'string',

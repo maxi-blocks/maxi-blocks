@@ -1,4 +1,4 @@
-const typography = {
+const typographyHover = {
 	label: 'Typography',
 	general: {
 		'font-family': 'Roboto',
@@ -165,3 +165,5 @@ const typography = {
 	},
 	customFormats: {},
 };
+
+export default typographyHover;

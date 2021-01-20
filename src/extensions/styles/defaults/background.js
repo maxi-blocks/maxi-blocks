@@ -6,6 +6,10 @@ export const background = {
 	'background-layers': {
 		type: 'array',
 	},
+	'background-layers-status': {
+		type: 'boolean',
+		default: false,
+	},
 };
 
 export const backgroundColor = {
@@ -175,6 +179,7 @@ export const backgroundSVG = {
 	},
 	'background-svg-top': {
 		type: 'number',
+		default: 0,
 	},
 	'background-svg-left--unit': {
 		type: 'string',
@@ -182,9 +187,14 @@ export const backgroundSVG = {
 	},
 	'background-svg-left': {
 		type: 'number',
+		default: 0,
 	},
 	'background-svg-size': {
+		type: 'number',
+		default: 50,
+	},
+	'background-svg-size--unit': {
 		type: 'string',
-		default: '',
+		default: '%',
 	},
 };

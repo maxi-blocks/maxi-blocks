@@ -7,7 +7,6 @@ const { BaseControl, Button, __experimentalGradientPicker } = wp.components;
 /**
  * Internal dependencies
  */
-import CheckBoxControl from '../checkbox-control';
 import OpacityControl from '../opacity-control/newOpacityControl';
 
 /**
@@ -31,9 +30,6 @@ const GradientControl = props => {
 		gradient,
 		defaultGradient = '',
 		onChange,
-		disableGradientAboveBackground = false,
-		gradientAboveBackground,
-		onGradientAboveBackgroundChange,
 		gradientOpacity,
 		onChangeOpacity,
 		defaultOpacity = 1,
@@ -42,9 +38,6 @@ const GradientControl = props => {
 	const classes = classnames('maxi-gradient-control', className);
 
 	const onReset = () => {
-		if (!disableGradientAboveBackground)
-			onGradientAboveBackgroundChange(false);
-
 		onChange(defaultGradient);
 	};
 
@@ -82,13 +75,6 @@ const GradientControl = props => {
 					value={gradient}
 					onChange={gradient => onChange(gradient)}
 				/>
-				{disableGradientAboveBackground && (
-					<CheckBoxControl
-						label={__('Above Background Image', 'maxi-blocks')}
-						checked={gradientAboveBackground}
-						onChange={val => onGradientAboveBackgroundChange(val)}
-					/>
-				)}
 			</div>
 		</div>
 	);

@@ -16,7 +16,6 @@ import {
 	getShapeDividerSVGStyles,
 	getContainerStyles,
 } from '../../extensions/styles/helpers';
-
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -29,9 +28,13 @@ const getNormalObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
-		}),
+		boxShadow: getBoxShadowStyles(
+			{
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			false,
+			props['arrow-status']
+		),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -54,22 +57,27 @@ const getNormalObject = props => {
 
 const getHoverObject = props => {
 	const response = {
-		border: getBorderStyles(
-			{
-				...getGroupAttributes(
-					props,
-					['border', 'borderWidth', 'borderRadius'],
-					true
-				),
-			},
-			true
-		),
-		boxShadow: getBoxShadowStyles(
-			{
-				...getGroupAttributes(props, 'boxShadow', true),
-			},
-			true
-		),
+		border:
+			props['border-status-hover'] &&
+			getBorderStyles(
+				{
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						true
+					),
+				},
+				true
+			),
+		boxShadow:
+			props['box-shadow-status-hover'] &&
+			getBoxShadowStyles(
+				{
+					...getGroupAttributes(props, 'boxShadow', true),
+				},
+				true,
+				props['arrow-status']
+			),
 	};
 
 	return response;
@@ -153,8 +161,6 @@ const getStyles = props => {
 		},
 	};
 
-	// console.log(response);
-
 	response = {
 		...response,
 		...getBackgroundStyles({
@@ -180,7 +186,7 @@ const getStyles = props => {
 				'backgroundSVGHover',
 				'borderRadiusHover',
 			]),
-			isHover: true,
+			isHover: !!props['background-hover-status'],
 		}),
 		...getArrowStyles({
 			target: uniqueID,

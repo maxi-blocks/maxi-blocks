@@ -6,7 +6,8 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import { BackgroundDisplayer } from '../../components';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
 
 /**
  * External dependencies
@@ -18,26 +19,21 @@ import { isNil } from 'lodash';
  * Save
  */
 const save = props => {
+	const { attributes, className } = props;
 	const {
-		className,
-		attributes: {
-			uniqueID,
-			blockStyle,
-			defaultBlockStyle,
-			background,
-			extraClassName,
-			fullWidth,
-			lineOrientation,
-		},
-	} = props;
-	const divider = { ...props.attributes.divider };
-	const highlight = { ...props.attributes.highlight };
+		uniqueID,
+		blockStyle,
+		defaultBlockStyle,
+		fullWidth,
+		extraClassName,
+		lineOrientation,
+	} = attributes;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-divider-block',
 		blockStyle,
-		!!highlight.borderHighlight && 'maxi-highlight--border',
+		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,
@@ -54,8 +50,18 @@ const save = props => {
 			data-maxi_initial_block_class={defaultBlockStyle}
 			data-motion-id={uniqueID}
 		>
-			<BackgroundDisplayer background={background} />
-			{divider.general['border-style'] !== 'none' && (
+			<BackgroundDisplayer
+				{...getGroupAttributes(attributes, [
+					'background',
+					'backgroundColor',
+					'backgroundGradient',
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+				])}
+				blockClassName={uniqueID}
+			/>
+			{attributes['divider-border-style'] !== 'none' && (
 				<Fragment>
 					<hr className='maxi-divider-block__divider' />
 				</Fragment>

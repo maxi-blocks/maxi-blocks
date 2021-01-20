@@ -158,7 +158,7 @@ const EntranceAnimationControl = props => {
 				initial={1}
 				step={0.1}
 				value={props['entrance-duration']}
-				defaultMotion={getDefaultAttribute('entrance-duration')}
+				defaultValue={getDefaultAttribute('entrance-duration')}
 				onChangeValue={val => onChange({ 'entrance-duration': val })}
 			/>
 			<SizeControl
@@ -169,7 +169,7 @@ const EntranceAnimationControl = props => {
 				initial={1}
 				step={0.1}
 				value={props['entrance-delay']}
-				defaultMotion={getDefaultAttribute('entrance-delay')}
+				defaultValue={getDefaultAttribute('entrance-delay')}
 				onChangeValue={val => onChange({ 'entrance-delay': val })}
 			/>
 		</div>

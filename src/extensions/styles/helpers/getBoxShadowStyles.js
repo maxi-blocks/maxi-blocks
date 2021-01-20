@@ -13,7 +13,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block size properties
  */
-const getSizeStyles = (obj, isHover = false) => {
+const getBoxShadowStyles = (obj, isHover = false, dropShadow = false) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
@@ -45,19 +45,29 @@ const getSizeStyles = (obj, isHover = false) => {
 			(boxShadowString += `${
 				obj[`box-shadow-blur-${breakpoint}${isHover ? '-hover' : ''}`]
 			}px `);
+		isNumber(
+			obj[`box-shadow-spread-${breakpoint}${isHover ? '-hover' : ''}`]
+		) &&
+			!dropShadow &&
+			(boxShadowString += `${
+				obj[`box-shadow-spread-${breakpoint}${isHover ? '-hover' : ''}`]
+			}px `);
 		!!obj[`box-shadow-color-${breakpoint}${isHover ? '-hover' : ''}`] &&
 			(boxShadowString +=
 				obj[
 					`box-shadow-color-${breakpoint}${isHover ? '-hover' : ''}`
 				]);
 
-		response[breakpoint] = {
-			filter: `drop-shadow(${boxShadowString.trim()})`,
-			'box-shadow': 0,
-		};
+		response[breakpoint] = dropShadow
+			? {
+					filter: `drop-shadow(${boxShadowString.trim()})`,
+			  }
+			: {
+					'box-shadow': `${boxShadowString.trim()}`,
+			  };
 	});
 
 	return response;
 };
 
-export default getSizeStyles;
+export default getBoxShadowStyles;

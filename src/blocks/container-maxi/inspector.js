@@ -166,13 +166,13 @@ const Inspector = props => {
 																	`max-width-unit-${deviceType}`,
 																	clientId
 																)}
-																onChangeUnit={val => {
+																onChangeUnit={val =>
 																	setAttributes(
 																		{
 																			[`container-max-width-unit-${deviceType}`]: val,
 																		}
-																	);
-																}}
+																	)
+																}
 																value={
 																	attributes[
 																		`container-max-width-${deviceType}`
@@ -182,13 +182,13 @@ const Inspector = props => {
 																	`container-max-width-${deviceType}`,
 																	clientId
 																)}
-																onChangeValue={val => {
+																onChangeValue={val =>
 																	setAttributes(
 																		{
 																			[`container-max-width-${deviceType}`]: val,
 																		}
-																	);
-																}}
+																	)
+																}
 																minMaxSettings={
 																	minMaxSettings
 																}
@@ -207,13 +207,13 @@ const Inspector = props => {
 																	`container-width-unit-${deviceType}`,
 																	clientId
 																)}
-																onChangeUnit={val => {
+																onChangeUnit={val =>
 																	setAttributes(
 																		{
 																			[`container-width-unit-${deviceType}`]: val,
 																		}
-																	);
-																}}
+																	)
+																}
 																value={
 																	attributes[
 																		`container-width-${deviceType}`
@@ -223,13 +223,13 @@ const Inspector = props => {
 																	`container-width-${deviceType}`,
 																	clientId
 																)}
-																onChangeValue={val => {
+																onChangeValue={val =>
 																	setAttributes(
 																		{
 																			[`container-width-${deviceType}`]: val,
 																		}
-																	);
-																}}
+																	)
+																}
 																minMaxSettings={
 																	minMaxSettings
 																}
@@ -343,12 +343,12 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-hover-status': !!val,
+																					'background-hover-status': !!+val,
 																				}
 																			)
 																		}
 																	/>
-																	{!!attributes[
+																	{attributes[
 																		'background-hover-status'
 																	] && (
 																		<BackgroundControl
@@ -449,7 +449,7 @@ const Inspector = props => {
 																		onChange={val => {
 																			setAttributes(
 																				{
-																					'border-status-hover': !!val,
+																					'border-status-hover': !!+val,
 																				}
 																			);
 																		}}
@@ -551,7 +551,7 @@ const Inspector = props => {
 																		onChange={val => {
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': !!val,
+																					'box-shadow-status-hover': !!+val,
 																				}
 																			);
 																		}}
@@ -810,6 +810,10 @@ const Inspector = props => {
 														`opacity-${deviceType}`
 													]
 												}
+												defaultOpacity={getDefaultAttribute(
+													`opacity-${deviceType}`,
+													clientId
+												)}
 												onChange={val =>
 													setAttributes({
 														[`opacity-${deviceType}`]: val,

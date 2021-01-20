@@ -1,9 +1,11 @@
 const transform = {
 	'transform-scale-x-general': {
 		type: 'number',
+		default: '',
 	},
 	'transform-scale-y-general': {
 		type: 'number',
+		default: '',
 	},
 	'transform-translate-x-unit-general': {
 		type: 'string',
@@ -11,6 +13,7 @@ const transform = {
 	},
 	'transform-translate-x-general': {
 		type: 'number',
+		default: 0,
 	},
 	'transform-translate-y-unit-general': {
 		type: 'string',
@@ -18,15 +21,19 @@ const transform = {
 	},
 	'transform-translate-y-general': {
 		type: 'number',
+		default: 0,
 	},
 	'transform-rotate-x-general': {
 		type: 'number',
+		default: '',
 	},
 	'transform-rotate-y-general': {
 		type: 'number',
+		default: '',
 	},
 	'transform-rotate-z-general': {
 		type: 'number',
+		default: '',
 	},
 	'transform-origin-x-general': {
 		type: 'string',

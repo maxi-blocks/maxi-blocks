@@ -230,7 +230,7 @@ const BorderControl = props => {
 								},
 							}}
 							disableAuto
-							isHover
+							isHover={isHover}
 						/>
 						<AxisControl
 							{...getGroupAttributes(
@@ -262,7 +262,7 @@ const BorderControl = props => {
 								},
 							}}
 							disableAuto
-							isHover
+							isHover={isHover}
 							inputsArray={[
 								'top-left',
 								'top-right',

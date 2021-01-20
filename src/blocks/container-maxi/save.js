@@ -117,7 +117,7 @@ const save = props => {
 								'backgroundSVGHover',
 							])}
 							blockClassName={uniqueID}
-						/>{' '}
+						/>
 						<InnerBlocks.Content />
 					</div>
 					{attributes['shape-divider-bottom-status'] && (

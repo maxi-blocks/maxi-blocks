@@ -154,9 +154,7 @@ class edit extends MaxiBlock {
 					isVisible: isResizing,
 				}}
 			>
-				<MotionPreview
-					motion={{ ...getGroupAttributes(attributes, 'motion') }}
-				>
+				<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
 					<__experimentalBlock
 						className={classes}
 						data-maxi_initial_block_class={defaultBlockStyle}

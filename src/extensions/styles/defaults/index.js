@@ -1,4 +1,5 @@
 export { default as alignment } from './alignment';
+export { default as textAlignment } from './textAlignment';
 export * from './background';
 export * from './backgroundHover';
 export * from './border';
@@ -8,6 +9,7 @@ export { default as size } from './size';
 export { default as boxShadow } from './boxShadow';
 export { default as boxShadowHover } from './boxShadowHover';
 export { default as typography } from './typography';
+export { default as typographyHover } from './typographyHover';
 export { default as margin } from './margin';
 export { default as padding } from './padding';
 export { default as container } from './container';

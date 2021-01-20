@@ -16,6 +16,7 @@ import {
 	getShapeDividerSVGStyles,
 	getContainerStyles,
 } from '../../extensions/styles/helpers';
+
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -52,6 +53,9 @@ const getNormalObject = props => {
 		}),
 	};
 
+	// ????
+	// if (fullWidth !== 'full') response.sizeContainer = sizeContainer;
+
 	return response;
 };
 
@@ -83,7 +87,7 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getWrapperObject = props => {
+const getContainerObject = props => {
 	const response = {
 		margin: getMarginStyles({
 			...getGroupAttributes(props, 'margin'),
@@ -91,22 +95,23 @@ const getWrapperObject = props => {
 		padding: getPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
+		sizeContainer: getContainerStyles({
+			...getGroupAttributes(props, 'container'),
+		}),
 	};
 
 	return response;
-};
 
-const getContainerObject = props => {
-	const { isFirstOnHierarchy, fullWidth } = props;
+	// const { isFirstOnHierarchy, fullWidth } = props;
 
-	if (isFirstOnHierarchy && fullWidth === 'full')
-		return {
-			sizeContainer: getContainerStyles({
-				...getGroupAttributes(props, 'container'),
-			}),
-		};
+	// if (isFirstOnHierarchy && fullWidth === 'full')
+	// 	return {
+	// 		sizeContainer: getContainerStyles({
+	// 			...getGroupAttributes(props, 'container'),
+	// 		}),
+	// 	};
 
-	return {};
+	// return {};
 };
 
 const getStyles = props => {
@@ -115,8 +120,7 @@ const getStyles = props => {
 	let response = {
 		[uniqueID]: getNormalObject(props),
 		[`${uniqueID}:hover`]: getHoverObject(props),
-		[`${uniqueID}>.maxi-container-block__wrapper`]: getWrapperObject(props),
-		[`${uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: getContainerObject(
+		[`${uniqueID}>axi-container-block__container`]: getContainerObject(
 			props
 		),
 		[`${uniqueID} .maxi-shape-divider__top`]: {

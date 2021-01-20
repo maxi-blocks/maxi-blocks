@@ -28,7 +28,7 @@ import './editor.scss';
  * Component
  */
 const FullSizeControl = props => {
-	const { onChange, className, breakpoint, hideWidth } = props;
+	const { onChange, className, breakpoint, hideWidth, hideMaxWidth } = props;
 
 	const classes = classnames('maxi-full-size-control', className);
 
@@ -136,31 +136,34 @@ const FullSizeControl = props => {
 			/>
 			{props['size-advanced-options'] && (
 				<Fragment>
-					<SizeControl
-						label={__('Max Width', 'maxi-blocks')}
-						unit={getLastBreakpointAttribute(
-							'max-width-unit',
-							breakpoint,
-							props
-						)}
-						defaultUnit={getDefaultAttribute(
-							`max-width-unit-${breakpoint}`
-						)}
-						onChangeUnit={val =>
-							onChangeValue('max-width-unit', val)
-						}
-						value={getLastBreakpointAttribute(
-							'max-width',
-							breakpoint,
-							props
-						)}
-						defaultValue={getDefaultAttribute(
-							`max-width-${breakpoint}`
-						)}
-						onChangeValue={val => onChangeValue('max-width', val)}
-						minMaxSettings={minMaxSettings}
-					/>
-
+					{!hideMaxWidth && (
+						<SizeControl
+							label={__('Max Width', 'maxi-blocks')}
+							unit={getLastBreakpointAttribute(
+								'max-width-unit',
+								breakpoint,
+								props
+							)}
+							defaultUnit={getDefaultAttribute(
+								`max-width-unit-${breakpoint}`
+							)}
+							onChangeUnit={val =>
+								onChangeValue('max-width-unit', val)
+							}
+							value={getLastBreakpointAttribute(
+								'max-width',
+								breakpoint,
+								props
+							)}
+							defaultValue={getDefaultAttribute(
+								`max-width-${breakpoint}`
+							)}
+							onChangeValue={val =>
+								onChangeValue('max-width', val)
+							}
+							minMaxSettings={minMaxSettings}
+						/>
+					)}
 					<SizeControl
 						label={__('Min Width', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(
@@ -185,7 +188,6 @@ const FullSizeControl = props => {
 						onChangeValue={val => onChangeValue('min-width', val)}
 						minMaxSettings={minMaxSettings}
 					/>
-
 					<SizeControl
 						label={__('Max Height', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(
@@ -210,7 +212,6 @@ const FullSizeControl = props => {
 						onChangeValue={val => onChangeValue('max-height', val)}
 						minMaxSettings={minMaxSettings}
 					/>
-
 					<SizeControl
 						label={__('Min Height', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(

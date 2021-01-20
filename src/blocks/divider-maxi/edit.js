@@ -29,8 +29,6 @@ import { isNil, isEmpty } from 'lodash';
 class edit extends MaxiBlock {
 	state = {
 		isResizing: false,
-		styles: {},
-		breakpoints: this.getBreakpoints,
 	};
 	get getStylesObject() {
 		return getStyles(this.props.attributes);

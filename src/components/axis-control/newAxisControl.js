@@ -86,7 +86,7 @@ const AxisControl = props => {
 			isHover
 		);
 
-		if (!!Number(inputValue) || parseInt(inputValue, 10) === 0)
+		if (!!+inputValue || parseInt(inputValue, 10) === 0)
 			return Number(inputValue);
 		return inputValue;
 	};
@@ -123,7 +123,7 @@ const AxisControl = props => {
 
 		const value = isNil(inputValue)
 			? getDefaultAttribute(`${getKey(key)}-${breakpoint}`)
-			: (!!Number(inputValue) || parseInt(inputValue) === 0) &&
+			: (!!+inputValue || parseInt(inputValue) === 0) &&
 			  Number(inputValue);
 
 		return value;
@@ -211,9 +211,9 @@ const AxisControl = props => {
 							getValue(inputsArray[0]) === 'auto' ? 'auto' : ''
 						}
 						value={getDisplayValue(inputsArray[0])}
-						onChange={e => {
-							onChangeValue(+e.target.value, inputsArray[0]);
-						}}
+						onChange={e =>
+							onChangeValue(+e.target.value, inputsArray[0])
+						}
 						aria-label={sprintf(__('%s Top', 'maxi-blocks'), label)}
 						min={minMaxSettings[currentUnit].min}
 						max={minMaxSettings[currentUnit].max}
@@ -230,7 +230,7 @@ const AxisControl = props => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(newValue, inputsArray[0]);
+									onChangeValue(+newValue, inputsArray[0]);
 								}}
 								id={`${instanceId}-top`}
 							/>

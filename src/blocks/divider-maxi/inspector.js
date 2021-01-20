@@ -352,14 +352,12 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-hover-status': !!Number(
-																						val
-																					),
+																					'background-hover-status': !!+val,
 																				}
 																			)
 																		}
 																	/>
-																	{!!attributes[
+																	{attributes[
 																		'background-hover-status'
 																	] && (
 																		<BackgroundControl
@@ -457,14 +455,12 @@ const Inspector = props => {
 																		onChange={val => {
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': !!Number(
-																						val
-																					),
+																					'box-shadow-status-hover': !!+val,
 																				}
 																			);
 																		}}
 																	/>
-																	{!!attributes[
+																	{attributes[
 																		'box-shadow-status-hover'
 																	] && (
 																		<BoxShadowControl

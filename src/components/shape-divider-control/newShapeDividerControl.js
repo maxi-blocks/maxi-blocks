@@ -226,7 +226,7 @@ const ShapeDividerControl = props => {
 						]}
 						onChange={status =>
 							onChange({
-								'shape-divider-top-status': !!Number(status),
+								'shape-divider-top-status': !!+status,
 							})
 						}
 					/>
@@ -252,9 +252,7 @@ const ShapeDividerControl = props => {
 								]}
 								onChange={status =>
 									onChange({
-										'shape-divider-top-effects-status': !!Number(
-											status
-										),
+										'shape-divider-top-effects-status': !!+status,
 									})
 								}
 							/>
@@ -346,7 +344,7 @@ const ShapeDividerControl = props => {
 						]}
 						onChange={status =>
 							onChange({
-								'shape-divider-bottom-status': !!Number(status),
+								'shape-divider-bottom-status': !!+status,
 							})
 						}
 					/>
@@ -374,9 +372,7 @@ const ShapeDividerControl = props => {
 								]}
 								onChange={status =>
 									onChange({
-										'shape-divider-bottom-effects-status': !!Number(
-											status
-										),
+										'shape-divider-bottom-effects-status': !!+status,
 									})
 								}
 							/>

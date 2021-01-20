@@ -144,10 +144,10 @@ const BackgroundLayersControl = ({
 	isHover = false,
 	prefix = '',
 	onChange,
+	layersStatus,
 	...props
 }) => {
 	const layers = cloneDeep(props.layersOptions);
-	const layersStatus = props.layersStatus;
 
 	const [selector, changeSelector] = useState(null);
 
@@ -200,7 +200,7 @@ const BackgroundLayersControl = ({
 							'background-layers-status',
 							isHover,
 							prefix
-						)]: !!Number(val),
+						)]: !!+val,
 					})
 				}
 			/>
@@ -224,7 +224,7 @@ const BackgroundLayersControl = ({
 							handleSelector='div.maxi-background-layer__row'
 							ignoreSelector='div.maxi-background-layer__content'
 						>
-							<div className='maxi-background-layersOptions'>
+							<div className='maxi-background-layers_options'>
 								{layers.map((layer, i) => (
 									<LayerCard
 										key={`maxi-background-layers__${layer.id}`}

@@ -161,8 +161,6 @@ const getStyles = props => {
 		},
 	};
 
-	//console.log(response);
-
 	response = {
 		...response,
 		...getBackgroundStyles({

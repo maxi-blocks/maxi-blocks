@@ -83,7 +83,7 @@ const ArrowControl = props => {
 						{ label: __('No', 'maxi-blocks'), value: 0 },
 					]}
 					onChange={val => {
-						onChange({ 'arrow-status': !!Number(val) });
+						onChange({ 'arrow-status': !!+val });
 					}}
 				/>
 			}

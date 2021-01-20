@@ -223,7 +223,8 @@ class ResponsiveFrontendStyles {
 		global $post;
 		if (!$post || !isset($post->ID))
 			return;
-			$custom_data = get_option("mb_custom_data_{$post->ID}");
+
+		$custom_data = get_option("mb_custom_data_{$post->ID}");
 
 		if (!$custom_data)
 			return;

@@ -351,7 +351,7 @@ class edit extends MaxiBlock {
 										<BackgroundDisplayer
 											background={background}
 										/>
-										<ResizableBox
+<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
 												width: `${

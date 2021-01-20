@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
+const { select } = wp.data;
 
 /**
  * Internal dependencies
@@ -26,10 +27,9 @@ import './editor.scss';
  * Component
  */
 const FullSizeControl = props => {
-	const { onChange, className, breakpoint, hideWidth } = props;
+	const { onChange, className, breakpoint, hideWidth, hideMaxWidth} = props;
 	const size = { ...props.size };
 	const defaultSize = { ...props.defaultSize };
-
 	const classes = classnames('maxi-full-size-control', className);
 
 	const onChangeValue = (target, val) => {
@@ -123,6 +123,7 @@ const FullSizeControl = props => {
 			/>
 			{!!size.advancedOptions && (
 				<Fragment>
+				{!hideMaxWidth && (
 					<SizeControl
 						label={__('Max Width', 'maxi-blocks')}
 						unit={getLastBreakpointValue(
@@ -143,6 +144,7 @@ const FullSizeControl = props => {
 						onChangeValue={val => onChangeValue('max-width', val)}
 						minMaxSettings={minMaxSettings}
 					/>
+				)}
 
 					<SizeControl
 						label={__('Min Width', 'maxi-blocks')}

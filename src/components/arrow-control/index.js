@@ -16,7 +16,7 @@ import FancyRadioControl from '../fancy-radio-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Component

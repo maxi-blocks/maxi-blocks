@@ -44,7 +44,7 @@ body.maxi-blocks--active {
 	.block-editor-block-list__layout.is-root-container {
 		.maxi-block {
 			&[data-align="full"] {
-				.wp-block {
+				.wp-block:not[data-align=normal] {
 					max-width: none;
 				}
 			}

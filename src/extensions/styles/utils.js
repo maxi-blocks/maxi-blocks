@@ -833,7 +833,7 @@ export const getArrowObject = arrow => {
 
 
 		if (value.side === 'top') {
-			response[key].left= `${value.position}%`;
+			response[key].left = `${value.position}%`;
 			response[key].top = `-${(Math.sqrt(2) * value.width) / 2}${
 				value.widthUnit
 			}`;

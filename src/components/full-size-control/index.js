@@ -23,16 +23,11 @@ import { isNil } from 'lodash';
  */
 import './editor.scss';
 
-const SPECIAL_BLOCKS = [
-	'maxi-blocks/row-maxi',
-	'maxi-blocks/container-maxi',
-];
-
 /**
  * Component
  */
 const FullSizeControl = props => {
-	const { onChange, className, breakpoint, hideWidth} = props;
+	const { onChange, className, breakpoint, hideWidth, hideMaxWidth} = props;
 	const size = { ...props.size };
 	const defaultSize = { ...props.defaultSize };
 
@@ -131,7 +126,7 @@ const FullSizeControl = props => {
 			/>
 			{!!size.advancedOptions && (
 				<Fragment>
-				{!SPECIAL_BLOCKS.includes(blockName) && (
+				{!hideMaxWidth && (
 					<SizeControl
 						label={__('Max Width', 'maxi-blocks')}
 						unit={getLastBreakpointValue(

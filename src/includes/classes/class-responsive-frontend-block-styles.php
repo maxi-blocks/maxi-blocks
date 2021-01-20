@@ -65,7 +65,6 @@ class ResponsiveFrontendStyles {
 		if (!$meta || empty($meta))
 			return;
 
-
 		$meta = json_decode($meta);
 		return $this->organizeMeta($meta);
 	}
@@ -125,7 +124,8 @@ class ResponsiveFrontendStyles {
 				$response .= '}';
 			}
 			if (isset($content['xxl']) && !empty($content['xxl'])) {
-				$response .= "@media only screen and (min-width: {$breakpoints->xl}px) {body.maxi-blocks--active .maxi-block.$target{";
+				$xxl = intval($breakpoints->xl) + 1;
+				$response .= "@media only screen and (min-width: {$xxl}px) {body.maxi-blocks--active .maxi-block.$target{";
 				$response .= $this->getStyles($content['xxl']);
 				$response .= '}}';
 			}
@@ -180,7 +180,10 @@ class ResponsiveFrontendStyles {
 		foreach ($styles as $property => $value) {
 			if ($property === 'font-options')
 				continue;
-			$response .= "{$property}: {$value};";
+
+			if ($property === 'max-width')
+				$response .= "{$property}: {$value} !important;";
+			else $response .= "{$property}: {$value};";
 		}
 		return $response;
 	}

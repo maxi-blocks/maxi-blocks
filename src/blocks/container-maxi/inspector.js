@@ -13,7 +13,6 @@ import {
 	AccordionControl,
 	BlockStylesControl,
 	SettingTabsControl,
-	SizeControl,
 	FancyRadioControl,
 	CustomLabel,
 } from '../../components';
@@ -52,25 +51,6 @@ const Inspector = props => {
 		fullWidth,
 		extraClassName,
 	} = attributes;
-
-	const minMaxSettings = {
-		px: {
-			min: 0,
-			max: 3999,
-		},
-		em: {
-			min: 0,
-			max: 999,
-		},
-		vw: {
-			min: 0,
-			max: 999,
-		},
-		'%': {
-			min: 0,
-			max: 100,
-		},
-	};
 
 	return (
 		<InspectorControls>
@@ -151,96 +131,29 @@ const Inspector = props => {
 														/>
 													)}
 													{fullWidth === 'full' ? (
-														<Fragment>
-															<SizeControl
-																label={__(
-																	'Max Width',
-																	'maxi-blocks'
-																)}
-																unit={
-																	attributes[
-																		`container-max-width-unit-${deviceType}`
-																	]
-																}
-																defaultUnit={getDefaultAttribute(
-																	`max-width-unit-${deviceType}`,
-																	clientId
-																)}
-																onChangeUnit={val =>
-																	setAttributes(
-																		{
-																			[`container-max-width-unit-${deviceType}`]: val,
-																		}
-																	)
-																}
-																value={
-																	attributes[
-																		`container-max-width-${deviceType}`
-																	]
-																}
-																default={getDefaultAttribute(
-																	`container-max-width-${deviceType}`,
-																	clientId
-																)}
-																onChangeValue={val =>
-																	setAttributes(
-																		{
-																			[`container-max-width-${deviceType}`]: val,
-																		}
-																	)
-																}
-																minMaxSettings={
-																	minMaxSettings
-																}
-															/>
-															<SizeControl
-																label={__(
-																	'Width',
-																	'maxi-blocks'
-																)}
-																unit={
-																	attributes[
-																		`container-width-unit-${deviceType}`
-																	]
-																}
-																defaultUnit={getDefaultAttribute(
-																	`container-width-unit-${deviceType}`,
-																	clientId
-																)}
-																onChangeUnit={val =>
-																	setAttributes(
-																		{
-																			[`container-width-unit-${deviceType}`]: val,
-																		}
-																	)
-																}
-																value={
-																	attributes[
-																		`container-width-${deviceType}`
-																	]
-																}
-																default={getDefaultAttribute(
-																	`container-width-${deviceType}`,
-																	clientId
-																)}
-																onChangeValue={val =>
-																	setAttributes(
-																		{
-																			[`container-width-${deviceType}`]: val,
-																		}
-																	)
-																}
-																minMaxSettings={
-																	minMaxSettings
-																}
-															/>
-														</Fragment>
+														<FullSizeControl
+															{...getGroupAttributes(
+																attributes,
+																'size'
+															)}
+															hideWidth
+															hideMaxWidth
+															onChange={size =>
+																setAttributes({
+																	size,
+																})
+															}
+															breakpoint={
+																deviceType
+															}
+														/>
 													) : (
 														<FullSizeControl
 															{...getGroupAttributes(
 																attributes,
 																'size'
 															)}
+															hideMaxWidth
 															onChange={obj =>
 																setAttributes(
 																	obj
@@ -636,9 +549,6 @@ const Inspector = props => {
 													}
 													isFullWidth={fullWidth}
 													breakpoint={deviceType}
-													isFirstOnHierarchy={
-														isFirstOnHierarchy
-													}
 												/>
 											),
 										},

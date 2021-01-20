@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Maxi Blocks - Last Github version
  * Plugin URI:
- * Description: MaxiBlocks — Last update: 14/10/20
+ * Description: MaxiBlocks — Last update: 20/01/21
  * Author: Gutenberg Den
  * Author URI:
  * Version: 0.1
@@ -42,21 +42,6 @@ register_activation_hook(__FILE__, 'maxi_blocks_add_db_table');
  * Block Initializer.
  */
 require_once plugin_dir_path(__FILE__) . 'src/init.php';
-
-
-//======================================================================
-// AUTOUPDATE
-//======================================================================
-
-// require plugin_dir_path( __FILE__ ) .'maxi-plugin-update-checker/plugin-update-checker.php';
-// $gxUpdateChecker = Puc_v4_Factory::buildUpdateChecker('https://s3-eu-west-1.amazonaws.com/gutenberg-extra/gutenberg-extra-free/gutenberg-extra-update/gutenberg-extra-plugin-update.json', __FILE__, 'gutenberg-extra');
-
-
-//======================================================================
-// CUSTOMIZER
-//======================================================================
-
-// require_once plugin_dir_path( __FILE__ ) . 'customizer/customizer.php';
 
 
 //======================================================================

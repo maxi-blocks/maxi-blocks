@@ -34,6 +34,7 @@ registerBlockType('maxi-blocks/row-maxi', {
 	description:
 		'Position one or more blocks, arranged side-by-side (horizontal)',
 	category: 'maxi-blocks',
+	parent: ['maxi-blocks/container-maxi'],
 	supports: {
 		align: true,
 		lightBlockWrapper: true,

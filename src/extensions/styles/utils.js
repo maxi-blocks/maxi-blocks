@@ -833,13 +833,13 @@ export const getArrowObject = arrow => {
 
 
 		if (value.side === 'top') {
-			response[key].left = `${value.position}% `;
+			response[key].left = `${value.position}%`;
 			response[key].top = `-${(Math.sqrt(2) * value.width) / 2}${
 				value.widthUnit
 			}`;
 		}
 		if (value.side === 'right') {
-			response[key].top = `${value.position}% `;
+			response[key].top = `${value.position}%`;
 			response[key].left = `calc(100% + ${Math.floor(
 				(Math.sqrt(2) * value.width) / 2
 			)}${value.widthUnit})`;
@@ -851,7 +851,7 @@ export const getArrowObject = arrow => {
 			)}${value.widthUnit})`;
 		}
 		if (value.side === 'left') {
-			response[key].top = `${value.position}% `;
+			response[key].top = `${value.position}%`;
 			response[key].left = `-${Math.floor(
 				(Math.sqrt(2) * value.width) / 2
 			)}${value.widthUnit}`;

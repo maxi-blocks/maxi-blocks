@@ -68,7 +68,7 @@ const Inspector = props => {
 		setAttributes,
 		clientId,
 		name,
-		columnGap,
+		//columnGap,
 	} = props;
 
 	return (
@@ -118,7 +118,7 @@ const Inspector = props => {
 														clientId={clientId}
 														blockName={name}
 														rowPattern={rowPattern}
-														columnGap={columnGap}
+														//columnGap={columnGap}
 														onChange={rowPattern => {
 															setAttributes({
 																rowPattern,

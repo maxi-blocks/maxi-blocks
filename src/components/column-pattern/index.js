@@ -20,7 +20,6 @@ import {
 import SizeControl from '../size-control';
 import FancyRadioControl from '../fancy-radio-control';
 
-
 /**
  * External dependencies
  */
@@ -37,9 +36,7 @@ import './editor.scss';
  *
  * */
 const ColumnPatternsInspector = props => {
-	const { clientId, onChange, breakpoint, toolbar = false} = props;
-
-	//const [columnGap, setColumnGap] = useState('yes');
+	const { clientId, onChange, breakpoint, toolbar = false } = props;
 
 	const [numCol, setNumCol] = useState(1);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
@@ -51,7 +48,11 @@ const ColumnPatternsInspector = props => {
 		'core/block-editor'
 	);
 
-	console.log('columnGap: ' + rowPattern['general'].columnGap);
+	let removeColumnGap = rowPattern.general.removeColumnGap
+		? rowPattern.general.removeColumnGap
+		: 0;
+
+	console.log('removeColumnGap: ' +  removeColumnGap);
 
 	const { innerBlocks } = useSelect(
 		select => {
@@ -248,24 +249,6 @@ const ColumnPatternsInspector = props => {
 	};
 
 	/**
-	 * Get current column gap
-	 *
-	 * @return {boolean} Gap or no Gap
-	 */
-	const getCurrentColumnGap = () => {
-
-		if (rowPattern['general'].columnGap === 'yes') return true;
-		if (rowPattern['general'].columnGap === 'no') return false;
-	};
-
-	const setCurrentColumnGap = gap => {
-		const { getBlock } = select('core/block-editor');
-
-		getBlock(clientId).attributes.columnGap = gap;
-
-	};
-
-	/**
 	 * Apply gap on columns sizes array
 	 *
 	 * @param {Array} sizes array of columns widths
@@ -275,9 +258,11 @@ const ColumnPatternsInspector = props => {
 		const newColumnsSizes = [];
 		const columnsPositions = getColumnsPositions(sizes);
 
-		const gap = getCurrentColumnGap() ? 2.5 : 0;
+		console.log('removeColumnGap on applyGap: ' +  removeColumnGap);
 
-		console.log('gap: ' + gap);
+		const gap = removeColumnGap ? 0 : 2.5;
+
+		console.log('applygap gap: ' + gap);
 
 		sizes.forEach((column, i) => {
 			if (columnsPositions[i].columnsNumber > 1) {
@@ -312,7 +297,7 @@ const ColumnPatternsInspector = props => {
 
 		const sizesWithGaps = applyGap(sizes);
 
-		console.log('sizesWithGaps: ' + sizesWithGaps);
+		// console.log('sizesWithGaps: ' + sizesWithGaps);
 
 		const columnsPositions = getColumnsPositions(sizes);
 
@@ -366,25 +351,20 @@ const ColumnPatternsInspector = props => {
 
 		const sizesWithGaps = applyGap(sizes);
 
-		console.log('sizesWithGaps: ' + sizesWithGaps);
+	//	console.log('sizesWithGaps: ' + sizesWithGaps);
 
 		columnsBlockObjects.forEach((column, k) => {
 			const columnClientId = column.clientId;
 			const columnAttributes = column.attributes;
-			const columnUniqueID = columnAttributes.uniqueID;
 
 			const newColumnSize = columnAttributes.columnSize;
 
 			newColumnSize[breakpoint].size = sizesWithGaps[k];
-
-			console.log('sizesWithGaps[k]: ' + sizesWithGaps[k]);
-
 			columnAttributes.columnSize = newColumnSize;
 
 			updateBlockAttributes(columnClientId, columnAttributes);
 		});
 	};
-
 
 	const patternButtonClassName = classnames(
 		'components-column-pattern__template-button',
@@ -407,7 +387,6 @@ const ColumnPatternsInspector = props => {
 			)}
 			<div className='components-column-pattern__templates'>
 				{DISPLAYED_TEMPLATES.map(template => {
-					console.log(template.name);
 					return (
 						<Button
 							key={uniqueId(
@@ -441,21 +420,22 @@ const ColumnPatternsInspector = props => {
 				})}
 			</div>
 			<div className='components-column-pattern__gap'>
-				{numCol !== 1 && breakpoint === 'general' &&  (
+				{numCol !== 1 && breakpoint === 'general' && (
 					<FancyRadioControl
-						label={__('Gap','maxi-blocks')}
-						selected={rowPattern['general'].columnGap}
+						label={__('Remove Gap', 'maxi-blocks')}
+						selected={removeColumnGap}
 						options={[
-								{ label: __('Yes', 'maxi-blocks'), value: 'yes' },
-								{ label: __('No', 'maxi-blocks'), value: 'no' },
-							]}
-						onChange={(value) => {
-								updateGaps(rowPattern['general'].rowPattern);
-								rowPattern['general'].columnGap =
-									value;
-								onChange(rowPattern);
-							}
-						}
+							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
+						]}
+						onChange={value => {
+							rowPattern.general.removeColumnGap = Number(value);
+							removeColumnGap = Number(value);
+							onChange(rowPattern);
+							updateGaps(rowPattern.general.rowPattern);
+							console.log('rowPattern: ' + JSON.stringify(rowPattern));
+
+						}}
 					/>
 				)}
 			</div>

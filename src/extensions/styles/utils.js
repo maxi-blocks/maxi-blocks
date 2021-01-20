@@ -834,25 +834,25 @@ export const getArrowObject = arrow => {
 		response[key].height = `${width}`;
 
 		if (value.side === 'top') {
-			response[key].left = `${value.position}%`;
+			response[key].left = `${value.position}% `;
 			response[key].top = `-${(Math.sqrt(2) * value.width) / 2}${
 				value.widthUnit
 			}`;
 		}
 		if (value.side === 'right') {
-			response[key].top = `${value.position}%`;
+			response[key].top = `${value.position}% `;
 			response[key].left = `calc(100% + ${Math.floor(
 				(Math.sqrt(2) * value.width) / 2
 			)}${value.widthUnit})`;
 		}
 		if (value.side === 'bottom') {
-			response[key].left = `${value.position}%`;
+			response[key].left = `${value.position}% `;
 			response[key].top = `calc(100% + ${Math.floor(
 				(Math.sqrt(2) * value.width) / 2
 			)}${value.widthUnit})`;
 		}
 		if (value.side === 'left') {
-			response[key].top = `${value.position}%`;
+			response[key].top = `${value.position}% `;
 			response[key].left = `-${Math.floor(
 				(Math.sqrt(2) * value.width) / 2
 			)}${value.widthUnit}`;
@@ -885,14 +885,14 @@ export const setArrowStyles = (
 	boxShadow
 ) => {
 	return {
-		[`${target} .maxi-container-arrow`]: {
+		[`${target} > .maxi-container-arrow`]: {
 			arrow: { ...getArrowObject(arrow) },
 			shadow: { ...getDropShadowObject(boxShadow) },
 		},
-		[`${target} .maxi-container-arrow:after`]: {
+		[`${target} > .maxi-container-arrow:after`]: {
 			background: { ...getArrowColorObject(background) },
 		},
-		[`${target} .maxi-container-arrow:before`]: {
+		[`${target} > .maxi-container-arrow:before`]: {
 			border: { ...getArrowBorderObject(border) },
 		},
 	};

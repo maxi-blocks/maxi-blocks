@@ -37,9 +37,11 @@ import './editor.scss';
  *
  * */
 const ColumnPatternsInspector = props => {
-	const { clientId, onChange, breakpoint, toolbar = false, setAttributes } = props;
+	const { clientId, onChange, breakpoint, toolbar = false} = props;
 
-	const [numCol, setNumCol, columnGap] = useState(1);
+	//const [columnGap, setColumnGap] = useState('yes');
+
+	const [numCol, setNumCol] = useState(1);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
@@ -48,6 +50,8 @@ const ColumnPatternsInspector = props => {
 	const { getBlockName, getBlockAttributes, getBlockOrder } = select(
 		'core/block-editor'
 	);
+
+	console.log('columnGap: ' + rowPattern['general'].columnGap);
 
 	const { innerBlocks } = useSelect(
 		select => {
@@ -158,8 +162,6 @@ const ColumnPatternsInspector = props => {
 		const currentContent = getCurrentContent(innerBlocks);
 		const currentAttributes = getCurrentAttributes(innerBlocks);
 
-		console.log('templateName: ' + templateName);
-
 		const template = cloneDeep(getTemplateObject(templateName));
 		template.content.forEach((column, i) => {
 			column[1].uniqueID = uniqueIdCreator();
@@ -246,6 +248,24 @@ const ColumnPatternsInspector = props => {
 	};
 
 	/**
+	 * Get current column gap
+	 *
+	 * @return {boolean} Gap or no Gap
+	 */
+	const getCurrentColumnGap = () => {
+
+		if (rowPattern['general'].columnGap === 'yes') return true;
+		if (rowPattern['general'].columnGap === 'no') return false;
+	};
+
+	const setCurrentColumnGap = gap => {
+		const { getBlock } = select('core/block-editor');
+
+		getBlock(clientId).attributes.columnGap = gap;
+
+	};
+
+	/**
 	 * Apply gap on columns sizes array
 	 *
 	 * @param {Array} sizes array of columns widths
@@ -255,13 +275,7 @@ const ColumnPatternsInspector = props => {
 		const newColumnsSizes = [];
 		const columnsPositions = getColumnsPositions(sizes);
 
-		const currentGap = getCurrentColumnGap();
-
-		//console.log('currentGap: ' + currentGap);
-
-		let gap;
-
-		currentGap ? (gap = 2.5) : (gap = 0);
+		const gap = getCurrentColumnGap() ? 2.5 : 0;
 
 		console.log('gap: ' + gap);
 
@@ -269,8 +283,6 @@ const ColumnPatternsInspector = props => {
 			if (columnsPositions[i].columnsNumber > 1) {
 				const numberOfGaps = columnsPositions[i].columnsNumber - 1;
 				const total = 100 - gap * numberOfGaps;
-				//console.log('total: ' + total);
-				//console.log('sizes[i] * total: ' + sizes[i] * total);
 
 				newColumnsSizes.push(sizes[i] * total);
 			}
@@ -337,6 +349,43 @@ const ColumnPatternsInspector = props => {
 		});
 	};
 
+	/**
+	 * Update Gaps
+	 *
+	 * @param {integer} i Element of object FILTERED_TEMPLATES
+	 * @param {Function} callback
+	 */
+	const updateGaps = templateName => {
+		const { getBlock } = select('core/block-editor');
+
+		const columnsBlockObjects = getBlock(clientId).innerBlocks;
+
+		const template = getTemplateObject(templateName);
+
+		const { sizes } = template;
+
+		const sizesWithGaps = applyGap(sizes);
+
+		console.log('sizesWithGaps: ' + sizesWithGaps);
+
+		columnsBlockObjects.forEach((column, k) => {
+			const columnClientId = column.clientId;
+			const columnAttributes = column.attributes;
+			const columnUniqueID = columnAttributes.uniqueID;
+
+			const newColumnSize = columnAttributes.columnSize;
+
+			newColumnSize[breakpoint].size = sizesWithGaps[k];
+
+			console.log('sizesWithGaps[k]: ' + sizesWithGaps[k]);
+
+			columnAttributes.columnSize = newColumnSize;
+
+			updateBlockAttributes(columnClientId, columnAttributes);
+		});
+	};
+
+
 	const patternButtonClassName = classnames(
 		'components-column-pattern__template-button',
 		toolbar && 'components-column-pattern__template-button--toolbar'
@@ -352,12 +401,13 @@ const ColumnPatternsInspector = props => {
 					defaultValue={numCol}
 					onChangeValue={numCol => setNumCol(numCol)}
 					min={1}
-					max={8}
+					max={6}
 					disableReset
 				/>
 			)}
 			<div className='components-column-pattern__templates'>
 				{DISPLAYED_TEMPLATES.map(template => {
+					console.log(template.name);
 					return (
 						<Button
 							key={uniqueId(
@@ -371,6 +421,7 @@ const ColumnPatternsInspector = props => {
 							onClick={() => {
 								if (breakpoint === 'general') {
 									loadTemplate(template.name);
+									updateGaps(template.name);
 								} else {
 									updateTemplate(template.name);
 								}
@@ -390,38 +441,23 @@ const ColumnPatternsInspector = props => {
 				})}
 			</div>
 			<div className='components-column-pattern__gap'>
-				{numCol !== 1 && (
-				<FancyRadioControl
-					label={__(
-						'Gap',
-						'maxi-blocks'
-					)}
-					selected={columnGap}
-					options={[
-						{
-							label: __(
-								'No',
-								'maxi-blocks'
-							),
-							value:
-								'no',
-						},
-						{
-							label: __(
-								'Yes',
-								'maxi-blocks'
-							),
-							value:
-								'yes',
-						},
-					]}
-					onChange={columnGap =>
-						setAttributes({
-							columnGap,
-						})
-					}
-				/>
-			)}
+				{numCol !== 1 && breakpoint === 'general' &&  (
+					<FancyRadioControl
+						label={__('Gap','maxi-blocks')}
+						selected={rowPattern['general'].columnGap}
+						options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 'yes' },
+								{ label: __('No', 'maxi-blocks'), value: 'no' },
+							]}
+						onChange={(value) => {
+								updateGaps(rowPattern['general'].rowPattern);
+								rowPattern['general'].columnGap =
+									value;
+								onChange(rowPattern);
+							}
+						}
+					/>
+				)}
 			</div>
 		</div>
 	);

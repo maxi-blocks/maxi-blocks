@@ -19,10 +19,12 @@ body.maxi-blocks--active .maxi-container-block {
 		margin-left: auto;
 		position: relative;
 	}
+	.maxi-container-block__container {
+		width: 100%;
+	}
 }
-
 
 html body.maxi-blocks--active .maxi-container-block.alignfull {
 	max-width: 100% !important;
-	    width: 100% !important;
+	width: 100% !important;
 }

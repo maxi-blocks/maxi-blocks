@@ -3,6 +3,7 @@ import { PluginSidebar, PluginSidebarMoreMenuItem } from '@wordpress/edit-post';
 import { AdminSettings } from '@wordpress/icons';
 import { Fragment } from '@wordpress/element';
 
+const { __ } = wp.i18n;
 const {
 	RangeControl,
 	SelectControl,

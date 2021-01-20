@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Maxi Blocks - issue 787 - gap
  * Plugin URI:
- * Description: MaxiBlocks - last updated  12/11/2021
+ * Description: MaxiBlocks — Last update: 20/01/21
  * Author: Gutenberg Den
  * Author URI:
  * Version: 0.1

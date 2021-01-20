@@ -55,8 +55,8 @@ const save = props => {
 				data-gx_initial_block_class={defaultBlockStyle}
 				data-motion-id={uniqueID}
 			>
-				<BackgroundDisplayer background={background} />
 				<ArrowDisplayer arrow={arrow} />
+				<BackgroundDisplayer background={background} />
 				{!!shapeDivider.top.status && (
 					<ShapeDivider shapeDividerOptions={shapeDivider} />
 				)}

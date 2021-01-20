@@ -46,7 +46,7 @@ const propsObjectManipulator = (value, newObject, breakpoint) => {
 			unit = prop;
 		}
 		// values with strings && font-options object
-		if (prop.length > 3 || target === 'font-options')
+		if (prop.length > 2 || target === 'font-options')
 			newObject[breakpoint][target] = prop;
 	});
 

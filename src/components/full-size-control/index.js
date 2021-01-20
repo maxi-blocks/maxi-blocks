@@ -30,9 +30,6 @@ const FullSizeControl = props => {
 	const { onChange, className, breakpoint, hideWidth, hideMaxWidth} = props;
 	const size = { ...props.size };
 	const defaultSize = { ...props.defaultSize };
-
-	const blockName = select( 'core/block-editor' ).getSelectedBlock().name;
-
 	const classes = classnames('maxi-full-size-control', className);
 
 	const onChangeValue = (target, val) => {

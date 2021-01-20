@@ -216,9 +216,18 @@ class edit extends MaxiBlock {
 		};
 
 		/**
-		* Gutenberg still does not have the disallowedBlocks feature
-		*/
-		const ALLOWED_BLOCKS = wp.blocks.getBlockTypes().map(block => block.name).filter(blockName => Array('maxi-blocks/container-maxi', 'maxi-blocks/row-maxi').indexOf(blockName) === -1 );
+		 * TODO: Gutenberg still does not have the disallowedBlocks feature
+		 */
+		const ALLOWED_BLOCKS = wp.blocks
+			.getBlockTypes()
+			.map(block => block.name)
+			.filter(
+				blockName =>
+					[
+						'maxi-blocks/container-maxi',
+						'maxi-blocks/row-maxi',
+					].indexOf(blockName) === -1
+			);
 
 		return [
 			<Inspector {...this.props} />,

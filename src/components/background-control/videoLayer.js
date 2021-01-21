@@ -76,7 +76,7 @@ const VideoLayer = props => {
 						value: 1,
 					},
 				]}
-				disabled={!!Number(videoOptions.endTime)}
+				disabled={!!+videoOptions.endTime}
 				onChange={val => {
 					videoOptions.loop = Number(val);
 					onChange(videoOptions);

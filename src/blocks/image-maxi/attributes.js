@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import size from './data';
+import * as newAttributes from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -39,11 +39,6 @@ const attributes = {
 	},
 	cropOptions: {
 		type: 'object',
-		default: attributesData.cropOptions,
-	},
-	alignment: {
-		type: 'object',
-		default: attributesData.alignment,
 	},
 	captionType: {
 		type: 'string',
@@ -60,46 +55,6 @@ const attributes = {
 	fullWidth: {
 		type: 'string',
 		default: 'normal',
-	},
-	size: {
-		type: 'object',
-		default: size,
-	},
-	opacity: {
-		type: 'object',
-		default: attributesData.opacity,
-	},
-	background: {
-		type: 'object',
-		default: attributesData.background,
-	},
-	backgroundHover: {
-		type: 'object',
-		default: attributesData.backgroundHover,
-	},
-	boxShadow: {
-		type: 'object',
-		default: attributesData.boxShadow,
-	},
-	boxShadowHover: {
-		type: 'object',
-		default: attributesData.boxShadowHover,
-	},
-	border: {
-		type: 'object',
-		default: attributesData.border,
-	},
-	borderHover: {
-		type: 'object',
-		default: attributesData.borderHover,
-	},
-	padding: {
-		type: 'object',
-		default: attributesData.padding,
-	},
-	margin: {
-		type: 'object',
-		default: attributesData.margin,
 	},
 	mediaID: {
 		type: 'number',
@@ -126,30 +81,48 @@ const attributes = {
 	mediaHeight: {
 		type: 'number',
 	},
-	position: {
-		type: 'object',
-		default: attributesData.position,
-	},
-	display: {
-		type: 'object',
-		default: attributesData.display,
-	},
 	clipPath: {
 		type: 'string',
 		default: '',
-	},
-	motion: {
-		type: 'object',
-		default: attributesData.motion,
 	},
 	hover: {
 		type: 'object',
 		default: attributesData.hover,
 	},
-	transform: {
-		type: 'object',
-		default: attributesData.transform,
-	},
+	...newAttributes.alignment,
+	...newAttributes.container,
+	...newAttributes.background,
+	...newAttributes.backgroundColor,
+	...newAttributes.backgroundImage,
+	...newAttributes.backgroundVideo,
+	...newAttributes.backgroundGradient,
+	...newAttributes.backgroundSVG,
+	...newAttributes.backgroundHover,
+	...newAttributes.backgroundColorHover,
+	...newAttributes.backgroundImageHover,
+	...newAttributes.backgroundVideoHover,
+	...newAttributes.backgroundGradientHover,
+	...newAttributes.backgroundSVGHover,
+	...newAttributes.size,
+	...newAttributes.opacity,
+	...newAttributes.border,
+	...newAttributes.borderWidth,
+	...newAttributes.borderRadius,
+	...newAttributes.borderHover,
+	...newAttributes.borderWidthHover,
+	...newAttributes.borderRadiusHover,
+	...newAttributes.boxShadow,
+	...newAttributes.boxShadowHover,
+	...newAttributes.margin,
+	...newAttributes.padding,
+	...newAttributes.arrow,
+	...newAttributes.shapeDivider,
+	...newAttributes.motion,
+	...newAttributes.entrance,
+	...newAttributes.parallax,
+	...newAttributes.transform,
+	...newAttributes.display,
+	...newAttributes.position,
 };
 
 export default attributes;

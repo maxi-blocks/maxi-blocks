@@ -1,0 +1,269 @@
+.maxi-transform-control {
+	input[type='range'] {
+		-webkit-appearance: none;
+		width: 100%;
+		height: 4px;
+		border-radius: 0;
+		background: #dddfe1;
+		outline: none;
+		-webkit-transition: 0.2s;
+		transition: opacity 0.2s;
+		&::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			background: #464a53;
+			cursor: pointer;
+		}
+		&::-moz-range-thumb {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			background: #464a53;
+			cursor: pointer;
+		}
+	}
+	&__square-control {
+		display: flex;
+		flex-wrap: wrap;
+		position: relative;
+
+		&__canvas {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 70%;
+			height: 11rem;
+			border: 1px solid #dddfe1;
+			border-radius: 5px;
+			overflow: hidden;
+			&:before {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: 0%;
+				transform: translateY(-50%);
+				width: 100%;
+				height: 1px;
+				border: 1px solid #dddfe1;
+			}
+			&:after {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 1px;
+				height: 100%;
+				border: 1px solid #dddfe1;
+			}
+			&__placeholder,
+			&__origin {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				width: 40px;
+				height: 40px;
+				border: 1px solid #dddfe1;
+				border-radius: 5px;
+				&__button {
+					&[aria-pressed='active'] {
+						background: #464a53 !important;
+						border-color: #464a53 !important;
+					}
+				}
+			}
+			&__resizer {
+				border: 1px solid #dddfe1;
+				.components-resizable-box__handle {
+					&:after {
+						background-color: #464a53;
+					}
+				}
+			}
+			&__draggable {
+				z-index: 9;
+				cursor: move;
+				width: 40px;
+				height: 40px;
+				border: 1px solid #dddfe1;
+				border-radius: 5px;
+				background-color: rgba(0, 0, 0, 0.3);
+			}
+			&__origin {
+				z-index: 1;
+				&__button {
+					position: absolute;
+					transform: translate(-50%, -50%);
+					width: 8px;
+					height: 8px;
+					padding: 0;
+					background-color: #dddfe1;
+					border-radius: 100%;
+				}
+				&__top {
+					top: 0;
+				}
+				&__center {
+					top: 50%;
+				}
+				&__bottom {
+					top: 100%;
+				}
+				&__left {
+					left: 0;
+				}
+				&__middle {
+					left: 50%;
+				}
+				&__right {
+					left: 100%;
+				}
+			}
+		}
+		&__y-control {
+			position: absolute;
+			top: 60px;
+			right: -30px;
+			width: 11rem;
+			@at-root .rtl #{&} {
+				left: -30px;
+				right: unset;
+			}
+
+			input[type='range'] {
+				position: relative;
+				right: 18px;
+				top: 18px;
+				@at-root .rtl #{&} {
+					left: 18px;
+					right: unset;
+				}
+			}
+			&__range {
+				transform: rotate(90deg);
+			}
+			&__value {
+				position: relative;
+				top: 50%;
+				right: -85px;
+				transform: translateY(-50%);
+				@at-root .rtl #{&} {
+					left: -85px;
+					right: unset;
+				}
+				.components-base-control {
+					width: 60px;
+					margin-top: 5px;
+				}
+				&__input {
+					width: 60px;
+					padding-right: 0 !important;
+					@at-root .rtl #{&} {
+						padding-right: 8px !important;
+					}
+				}
+			}
+		}
+		&__x-control {
+			width: 75%;
+			display: flex;
+			align-items: center;
+			margin-top: 5px;
+			&__value {
+				display: flex;
+				flex-direction: column;
+				align-items: flex-end;
+				.components-base-control {
+					width: 61px;
+					margin: 5px 0 0 !important;
+					&__field {
+						margin-bottom: 0;
+					}
+				}
+				&__input {
+					width: 60px;
+					margin-left: 5px;
+					padding-right: 0 !important;
+					@at-root .rtl #{&} {
+						padding-right: 8px !important;
+					}
+				}
+			}
+		}
+		&__sync {
+			position: absolute;
+			top: 180px;
+			right: 0;
+			display: flex;
+			align-items: flex-end;
+			width: 69px;
+			@at-root .rtl #{&} {
+				right: unset;
+				left: 0;
+			}
+
+			.components-maxi-control__reset-button {
+				width: 31px;
+				height: 31px;
+				margin: 0;
+			}
+			button[type='button'] {
+				border: 2px solid #dddfe1;
+				border-radius: 5px;
+				width: 31px;
+				height: 31px;
+				padding: 0;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				margin-right: 5px;
+				&[aria-pressed='true'] {
+					background: #f2f2f2 !important;
+				}
+				svg {
+					width: 18px;
+					height: 18px;
+				}
+			}
+		}
+	}
+	&__rotate-control {
+		&__item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			margin-bottom: 15px;
+			&:last-child {
+				margin: 0;
+				.components-base-control__field {
+					margin-bottom: 0;
+				}
+			}
+			&__label,
+			.components-base-control__field {
+				width: 100%;
+			}
+			&__range {
+				margin: 8px auto !important;
+			}
+			&__input {
+				width: 4rem;
+				margin: auto;
+				margin-left: 5px;
+				padding-right: 0 !important;
+				@at-root .rtl #{&} {
+					padding-right: 8px !important;
+				}
+			}
+			& .components-maxi-control__reset-button {
+				margin-left: 5px;
+			}
+		}
+	}
+}

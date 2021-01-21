@@ -83,7 +83,7 @@ const AxisControl = props => {
 			breakpoint
 		);
 
-		if (!!Number(inputValue) || parseInt(inputValue, 10) === 0)
+		if (!!+inputValue || parseInt(inputValue, 10) === 0)
 			return Number(inputValue);
 		return inputValue;
 	};
@@ -104,7 +104,7 @@ const AxisControl = props => {
 	const getDisplayValue = key => {
 		const inputValue = getValue(key);
 
-		if (!!Number(inputValue) || parseInt(inputValue) === 0)
+		if (!!+inputValue || parseInt(inputValue) === 0)
 			return Number(inputValue);
 
 		return inputValue;
@@ -120,13 +120,13 @@ const AxisControl = props => {
 			for (const key of Object.keys(value[breakpoint])) {
 				if (key !== 'sync' && key !== 'unit')
 					value[breakpoint][key] =
-						!!Number(finalValue) || parseInt(finalValue) === 0
+						!!+finalValue || parseInt(finalValue) === 0
 							? Number(finalValue)
 							: finalValue;
 			}
 		} else {
 			value[breakpoint][getKey(value[breakpoint], target)] =
-				!!Number(finalValue) || parseInt(finalValue) === 0
+				!!+finalValue || parseInt(finalValue) === 0
 					? Number(finalValue)
 					: finalValue;
 		}

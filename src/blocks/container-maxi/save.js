@@ -7,11 +7,10 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import {
-	ShapeDivider,
-	BackgroundDisplayer,
-	ArrowDisplayer,
-} from '../../components';
+import { ArrowDisplayer } from '../../components';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
+import ShapeDivider from '../../components/shape-divider/newShapeDivider';
 
 /**
  * External dependencies
@@ -23,20 +22,14 @@ import { isNil } from 'lodash';
  * Save
  */
 const save = props => {
+	const { attributes, className } = props;
 	const {
-		attributes: {
-			uniqueID,
-			isFirstOnHierarchy,
-			blockStyle,
-			defaultBlockStyle,
-			fullWidth,
-			background,
-			extraClassName,
-			arrow,
-		},
-		className,
-	} = props;
-	const shapeDivider = { ...props.attributes.shapeDivider };
+		uniqueID,
+		blockStyle,
+		defaultBlockStyle,
+		fullWidth,
+		extraClassName,
+	} = attributes;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -55,18 +48,37 @@ const save = props => {
 				data-gx_initial_block_class={defaultBlockStyle}
 				data-motion-id={uniqueID}
 			>
-				<ArrowDisplayer arrow={arrow} />
-				<BackgroundDisplayer background={background} />
-				{!!shapeDivider.top.status && (
-					<ShapeDivider shapeDividerOptions={shapeDivider} />
+				<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />
+				<BackgroundDisplayer
+					{...getGroupAttributes(attributes, [
+						'background',
+						'backgroundColor',
+						'backgroundImage',
+						'backgroundVideo',
+						'backgroundGradient',
+						'backgroundSVG',
+						'backgroundHover',
+						'backgroundColorHover',
+						'backgroundImageHover',
+						'backgroundVideoHover',
+						'backgroundGradientHover',
+						'backgroundSVGHover',
+					])}
+					blockClassName={uniqueID}
+				/>
+				{attributes['shape-divider-top-status'] && (
+					<ShapeDivider
+						{...getGroupAttributes(attributes, 'shapeDivider')}
+						location='top'
+					/>
 				)}
 				<div className='maxi-container-block__container'>
 					<InnerBlocks.Content />
 				</div>
-				{!!shapeDivider.bottom.status && (
+				{attributes['shape-divider-bottom-status'] && (
 					<ShapeDivider
-						position='bottom'
-						shapeDividerOptions={shapeDivider}
+						{...getGroupAttributes(attributes, 'shapeDivider')}
+						location='bottom'
 					/>
 				)}
 			</section>

@@ -48,5 +48,5 @@ registerBlockType('maxi-blocks/image-maxi', {
 		};
 	},
 	edit,
-	save,
+	save: () => null,
 });

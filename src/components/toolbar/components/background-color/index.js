@@ -13,6 +13,7 @@ import ColorControl from '../../../color-control';
  * Styles
  */
 import './editor.scss';
+import getDefaultAttribute from '../../../../extensions/styles/getDefaultAttribute';
 
 /**
  * BackgroundColor
@@ -27,9 +28,6 @@ const BackgroundColor = props => {
 	)
 		return null;
 
-	const background = { ...props.background };
-	const defaultBackground = { ...props.defaultBackground };
-
 	return (
 		<ToolbarPopover
 			className='toolbar-item__background'
@@ -39,7 +37,7 @@ const BackgroundColor = props => {
 				<div
 					className='toolbar-item__icon'
 					style={{
-						background: background.colorOptions.color,
+						background: props['background-color'],
 						border: '1px solid #fff',
 					}}
 				/>
@@ -47,13 +45,9 @@ const BackgroundColor = props => {
 			content={
 				<ColorControl
 					label={__('Background', 'maxi-blocks')}
-					color={background.colorOptions.color}
-					defaultColor={defaultBackground.colorOptions.color}
-					onChange={val => {
-						background.colorOptions.color = val;
-						background.colorOptions.activeColor = val;
-						onChange(background);
-					}}
+					color={props['background-color']}
+					defaultColor={getDefaultAttribute('background-color')}
+					onChange={val => onChange({ 'background-color': val })}
 				/>
 			}
 		/>

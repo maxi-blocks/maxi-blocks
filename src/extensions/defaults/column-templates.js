@@ -61,9 +61,6 @@ const generateDefaultColumns = (columns, gap1 = getParentRowGap()) => {
 
 	const total = 100 - gap1 * numberOfGaps;
 
-	//console.log("columns: " + columns);
-	//getParentRowGap();
-
 	return columns.map((column, i) => {
 		return [
 			'maxi-blocks/column-maxi',
@@ -135,7 +132,7 @@ const generateDefaultColumns = (columns, gap1 = getParentRowGap()) => {
 						unit: '',
 					},
 					m: {
-						'margin-top': i !== 0 ? 0.7 : '',
+						'margin-top': i !== 0 ? 1.5 : '',
 						'margin-right': '',
 						'margin-bottom': '',
 						'margin-left': '',

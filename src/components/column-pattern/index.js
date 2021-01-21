@@ -299,52 +299,36 @@ const ColumnPatternsInspector = props => {
 
 			newColumnSize[breakpoint].size = sizesWithGaps[j];
 
-			document.querySelector(
-				`.maxi-column-block__resizer__${columnUniqueID}`
-			).style.width = sizesWithGaps[j];
+			const columnResizer =
+				document.querySelector(
+					`.maxi-column-block__resizer__${columnUniqueID}`
+				) !== null;
 
-			if (columnsPositions[j].rowNumber > 1) {
-				newColumnMargin[breakpoint]['margin-top'] = 2;
-				newColumnMargin[breakpoint].unit = 'em';
-			}
+			if (columnResizer)
+				document.querySelector(
+					`.maxi-column-block__resizer__${columnUniqueID}`
+				).style.width = sizesWithGaps[j];
 
 			if (columnsPositions[j].rowNumber === 1) {
 				newColumnMargin[breakpoint]['margin-top'] = 0;
 				newColumnMargin[breakpoint].unit = '';
 			}
 
+			if (columnsPositions[j].rowNumber > 1) {
+				newColumnMargin[breakpoint]['margin-top'] = 1.5;
+				newColumnMargin[breakpoint].unit = 'em';
+			}
+
+			if (rowPattern.general.removeColumnGap === 1) {
+				newColumnMargin.m['margin-top'] = 0;
+				newColumnMargin.m.unit = '';
+			} else {
+				newColumnMargin.m['margin-top'] = 1.5;
+				newColumnMargin.m.unit = 'em';
+			}
+
 			columnAttributes.columnSize = newColumnSize;
 			columnAttributes.margin = newColumnMargin;
-
-			updateBlockAttributes(columnClientId, columnAttributes);
-		});
-	};
-
-	/**
-	 * Update Gaps
-	 *
-	 * @param {integer} i Element of object FILTERED_TEMPLATES
-	 * @param {Function} callback
-	 */
-	const updateGaps = templateName => {
-		const { getBlock } = select('core/block-editor');
-
-		const columnsBlockObjects = getBlock(clientId).innerBlocks;
-
-		const template = getTemplateObject(templateName);
-
-		const { sizes } = template;
-
-		const sizesWithGaps = applyGap(sizes);
-
-		columnsBlockObjects.forEach((column, k) => {
-			const columnClientId = column.clientId;
-			const columnAttributes = column.attributes;
-
-			const newColumnSize = columnAttributes.columnSize;
-
-			newColumnSize[breakpoint].size = sizesWithGaps[k];
-			columnAttributes.columnSize = newColumnSize;
 
 			updateBlockAttributes(columnClientId, columnAttributes);
 		});
@@ -384,7 +368,7 @@ const ColumnPatternsInspector = props => {
 							onClick={() => {
 								if (breakpoint === 'general') {
 									loadTemplate(template.name);
-									updateGaps(template.name);
+									updateTemplate(template.name);
 								} else {
 									updateTemplate(template.name);
 								}
@@ -419,7 +403,7 @@ const ColumnPatternsInspector = props => {
 						onChange={value => {
 							rowPattern.general.removeColumnGap = Number(value);
 							onChange(rowPattern);
-							updateGaps(rowPattern.general.rowPattern);
+							updateTemplate(rowPattern.general.rowPattern);
 						}}
 					/>
 				)}

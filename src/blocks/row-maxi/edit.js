@@ -41,7 +41,13 @@ import { isEmpty, isNil, uniqueId } from 'lodash';
  * InnerBlocks version
  */
 const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const { children, background, className, maxiBlockClass, dataAlign } = props;
+	const {
+		children,
+		background,
+		className,
+		maxiBlockClass,
+		dataAlign,
+	} = props;
 
 	return (
 		<__experimentalBlock.div
@@ -132,8 +138,7 @@ class edit extends MaxiBlock {
 			},
 		};
 
-		if (fullWidth !== 'full')
-			response['sizeContainer'] = sizeContainer;
+		if (fullWidth !== 'full') response.sizeContainer = sizeContainer;
 
 		if (!isNil(horizontalAlign))
 			response.row.general['justify-content'] = horizontalAlign;
@@ -326,8 +331,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		template.content.forEach(column => {
 			column[1].uniqueID = uniqueIdCreator();
 		});
-
-		console.log('template: '+template);
 
 		const newAttributes = template.attributes;
 		dispatch('core/block-editor').updateBlockAttributes(

@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
-import BoxShadowControl from '../../../box-shadow-control';
+import BoxShadowControl from '../../../box-shadow-control/newBoxShadowControl';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -14,12 +14,12 @@ import ToolbarPopover from '../toolbar-popover';
  */
 import './editor.scss';
 import { toolbarDropShadow } from '../../../../icons';
+import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
  * BoxShadow
  */
 const ALLOWED_BLOCKS = [
-	// 'maxi-blocks/text-maxi',
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/divider-maxi',
@@ -28,13 +28,7 @@ const ALLOWED_BLOCKS = [
 ];
 
 const BoxShadow = props => {
-	const {
-		blockName,
-		boxShadow,
-		defaultBoxShadow,
-		onChange,
-		breakpoint,
-	} = props;
+	const { blockName, onChange, breakpoint } = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
@@ -46,9 +40,8 @@ const BoxShadow = props => {
 			advancedOptions='box shadow'
 			content={
 				<BoxShadowControl
-					boxShadow={boxShadow}
-					defaultBoxShadow={defaultBoxShadow}
-					onChange={boxShadow => onChange(boxShadow)}
+					{...getGroupAttributes(props, 'boxShadow')}
+					onChange={obj => onChange(obj)}
 					breakpoint={breakpoint}
 					disableAdvanced
 				/>

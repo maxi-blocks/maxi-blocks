@@ -6,9 +6,14 @@ const { createHigherOrderComponent } = wp.compose;
 const { select } = wp.data;
 
 /**
+ * Internal dependencies
+ */
+import * as attributes from '../styles/defaults/index';
+
+/**
  * External Dependencies
  */
-import { uniqueId, isEmpty, isNil, isNumber } from 'lodash';
+import { uniqueId, isEmpty, isNil } from 'lodash';
 
 /**
  * General
@@ -24,6 +29,7 @@ const allowedBlocks = [
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/font-icon-maxi',
+	'maxi-blocks/test-maxi',
 ];
 
 /**
@@ -76,51 +82,13 @@ const addAttributes = settings => {
 			},
 			linkSettings: {
 				type: 'object',
-				default: {},
 			},
 			extraClassName: {
 				type: 'string',
 				default: '',
 			},
-			zIndex: {
-				type: 'object',
-				default: {
-					label: 'ZIndex',
-					general: {
-						'z-index': '',
-					},
-					xxl: {
-						'z-index': '',
-					},
-					xl: {
-						'z-index': '',
-					},
-					l: {
-						'z-index': '',
-					},
-					m: {
-						'z-index': '',
-					},
-					s: {
-						'z-index': '',
-					},
-					xs: {
-						'z-index': '',
-					},
-				},
-			},
-			breakpoints: {
-				type: 'string',
-				default: {
-					label: 'Breakpoints',
-					general: '',
-					xl: '',
-					l: '',
-					m: '',
-					s: '',
-					xs: '',
-				},
-			},
+			...attributes.zIndex,
+			...attributes.breakpoints,
 		});
 	}
 
@@ -158,7 +126,6 @@ const withAttributes = createHigherOrderComponent(
 			name,
 			clientId,
 		} = props;
-		const breakpoints = { ...props.attributes.breakpoints };
 
 		if (allowedBlocks.includes(name)) {
 			// uniqueID
@@ -178,20 +145,6 @@ const withAttributes = createHigherOrderComponent(
 			if (parentBlocks.includes(clientId)) parentBlocks.pop();
 
 			props.attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
-
-			// Breakpoints
-			const defaultBreakpoints = select(
-				'maxiBlocks'
-			).receiveMaxiBreakpoints();
-
-			if (!isNumber(breakpoints.xl) && !isEmpty(defaultBreakpoints))
-				props.attributes.breakpoints = {
-					xl: defaultBreakpoints.xl,
-					l: defaultBreakpoints.l,
-					m: defaultBreakpoints.m,
-					s: defaultBreakpoints.s,
-					xs: defaultBreakpoints.xs,
-				};
 		}
 
 		return <BlockEdit {...props} />;

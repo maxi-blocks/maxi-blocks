@@ -13,15 +13,20 @@
 /**
  * WordPress dependencies
  */
-const { Component } = wp.element;
+const { Component, render } = wp.element;
 const { select, dispatch } = wp.data;
 
-import styleResolver from '../styles/stylesResolver';
+/**
+ * Internal dependencies
+ */
+import styleResolver from '../styles/newStyleResolver';
+import styleGenerator from '../styles/newStylesGenerator';
+import getBreakpoints from '../styles/helpers/getBreakpoints';
 
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, cloneDeep, isObject } from 'lodash';
+import { isEmpty, uniqueId, cloneDeep, isObject, isArray } from 'lodash';
 
 /**
  * Class
@@ -35,7 +40,8 @@ class MaxiBlock extends Component {
 
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
-		this.cloneObjects(attributes);
+		// this.cloneObjects(attributes);
+		this.displayStyles();
 	}
 
 	componentDidUpdate() {
@@ -43,10 +49,9 @@ class MaxiBlock extends Component {
 	}
 
 	componentWillUnmount() {
-		const obj = this.getObject;
-		const breakpoints = this.getBreakpoints;
+		const obj = this.getStylesObject;
 
-		styleResolver(obj, breakpoints, true);
+		styleResolver(obj, true);
 
 		dispatch('maxiBlocks/customData').removeCustomData(
 			this.props.attributes.uniqueID
@@ -54,11 +59,11 @@ class MaxiBlock extends Component {
 	}
 
 	get getBreakpoints() {
-		return { ...this.props.attributes.breakpoints };
+		return getBreakpoints(this.props.attributes);
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	get getObject() {
+	get getStylesObject() {
 		return null;
 	}
 
@@ -111,7 +116,7 @@ class MaxiBlock extends Component {
 	cloneObjects(attributes) {
 		Object.entries(attributes).forEach(
 			([key, val]) =>
-				isObject(val) &&
+				(isObject(val) || isArray(val)) &&
 				this.props.setAttributes({ [key]: cloneDeep(val) })
 		);
 	}
@@ -120,12 +125,25 @@ class MaxiBlock extends Component {
 	 * Refresh the styles on Editor
 	 */
 	displayStyles() {
-		const obj = this.getObject;
-		const customData = this.getCustomData;
+		const obj = this.getStylesObject;
 		const breakpoints = this.getBreakpoints;
+		const customData = this.getCustomData;
 
-		styleResolver(obj, breakpoints);
+		const styles = styleResolver(obj, false, breakpoints);
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
+
+		if (document.body.classList.contains('maxi-blocks--active')) {
+			let wrapper = document.querySelector(
+				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
+			);
+			if (!wrapper) {
+				wrapper = document.createElement('div');
+				wrapper.id = `maxi-blocks__styles--${this.props.attributes.uniqueID}`;
+				document.head.appendChild(wrapper);
+			}
+
+			render(<style>{styleGenerator(styles)}</style>, wrapper);
+		}
 	}
 }
 

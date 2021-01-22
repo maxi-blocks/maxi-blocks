@@ -130,30 +130,13 @@ const Inspector = props => {
 															}
 														/>
 													)}
+
 													{fullWidth === 'full' ? (
 														<FullSizeControl
 															{...getGroupAttributes(
 																attributes,
-																'size'
+																'container'
 															)}
-															hideWidth
-															hideMaxWidth
-															onChange={size =>
-																setAttributes({
-																	size,
-																})
-															}
-															breakpoint={
-																deviceType
-															}
-														/>
-													) : (
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'size'
-															)}
-															hideMaxWidth
 															onChange={obj =>
 																setAttributes(
 																	obj
@@ -162,6 +145,26 @@ const Inspector = props => {
 															breakpoint={
 																deviceType
 															}
+															prefix='container-'
+															hideWidth
+															hideMaxWidth
+														/>
+													) : (
+														<FullSizeControl
+															{...getGroupAttributes(
+																attributes,
+																'container'
+															)}
+															onChange={obj =>
+																setAttributes(
+																	obj
+																)
+															}
+															breakpoint={
+																deviceType
+															}
+															prefix='container-'
+															hideMaxWidth
 														/>
 													)}
 												</Fragment>

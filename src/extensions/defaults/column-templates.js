@@ -1,5 +1,3 @@
-const { select, withSelect, withDispatch } = wp.data;
-
 /**
  * Icons
  */
@@ -21,6 +19,15 @@ import {
 	fourOneOne,
 	fiveColumns,
 	sixColumns,
+	sevenColumns,
+	twoOneOneOneOneOneOne,
+	oneOneOneOneOneOneOneThree,
+	threeOneOneOneOneOneOneOne,
+	oneOneOneOneOneOneTwo,
+	oneOneOneOneOneOneOne,
+	eightColumns,
+	oneOneOneOneOneOneOneOne,
+	twoTwoTwoTwoTwoTwoTwoTwo,
 	oneOneTwo,
 	oneOneOne,
 	oneOneOneOne,
@@ -40,23 +47,12 @@ import {
  * Helpers
  */
 
-function getParentRowGap() {
-	let gap = 2.5;
-
-	//console.log('ParentGap: ' + gap);
-
-	return gap;
-
-	//const parentClientId = select( 'core/block-editor' ).getBlockHierarchyRootClientId( this.props.clientId );
-	//console.log('parentClientId: ' + parentClientId);
-}
-
 /**
  *
  * We are generating new columns again each time the user changes the pattern and adding the new columns to them
  * it's better to update columns attributes in place rather than generating again
  */
-const generateDefaultColumns = (columns, gap1 = getParentRowGap()) => {
+const generateDefaultColumns = (columns, gap1 = 2.5) => {
 	const numberOfGaps = columns.length - 1;
 
 	const total = 100 - gap1 * numberOfGaps;
@@ -557,6 +553,170 @@ const templates = {
 			},
 		],
 	},
+
+	sevenColumns: {
+		default: [
+			{
+				name: '7 columns',
+				icon: sevenColumns,
+				sizes: [1 / 7, 1 / 7, 1 / 7, 1 / 7, 1 / 7, 1 / 7, 1 / 7],
+				responsiveLayout: '1-1-1-1-1-1-1',
+				content: generateDefaultColumns([
+					1 / 7,
+					1 / 7,
+					1 / 7,
+					1 / 7,
+					1 / 7,
+					1 / 7,
+					1 / 7,
+				]),
+
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+		],
+		responsive: [
+			{
+				name: '2-1-1-1-1-1-1',
+				icon: twoOneOneOneOneOneOne,
+				sizes: [1, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
+				content: generateDefaultColumns([
+					1,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+				]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+			{
+				name: '1-1-1-1-1-1-2',
+				icon: oneOneOneOneOneOneTwo,
+				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1],
+				content: generateDefaultColumns([
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1,
+				]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+			{
+				name: '1-1-1-1-1-1-1-3',
+				icon: oneOneOneOneOneOneOneThree,
+				sizes: [1, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3],
+				content: generateDefaultColumns([
+					1,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+				]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+			{
+				name: '3-1-1-1-1-1-1-1',
+				icon: threeOneOneOneOneOneOneOne,
+				sizes: [1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1],
+				content: generateDefaultColumns([
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1,
+				]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+			{
+				name: '1-1-1-1-1-1-1',
+				icon: oneOneOneOneOneOneOne,
+				sizes: [1, 1, 1, 1, 1, 1, 1],
+				content: generateDefaultColumns([1, 1, 1, 1, 1, 1, 1]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+		],
+	},
+
+	eightColumns: {
+		default: [
+			{
+				name: '8 columns',
+				icon: eightColumns,
+				sizes: [1 / 8, 1 / 8, 1 / 8, 1 / 8, 1 / 8, 1 / 8, 1 / 8, 1 / 8],
+				content: generateDefaultColumns([
+					1 / 8,
+					1 / 8,
+					1 / 8,
+					1 / 8,
+					1 / 8,
+					1 / 8,
+					1 / 8,
+					1 / 8,
+				]),
+				responsiveLayout: '2-2-2-2-2-2-2-2',
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+		],
+		responsive: [
+			{
+				name: '1-1-1-1-1-1-1-1',
+				icon: oneOneOneOneOneOneOneOne,
+				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
+				content: generateDefaultColumns([
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+				]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+			{
+				name: '2-2-2-2-2-2-2-2',
+				icon: twoTwoTwoTwoTwoTwoTwoTwo,
+				sizes: [1, 1, 1, 1, 1, 1, 1, 1],
+				content: generateDefaultColumns([1, 1, 1, 1, 1, 1, 1]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+		],
+	},
 };
 
 /**
@@ -619,6 +779,8 @@ function getTemplates(deviceType = 'general', columnsNumber = undefined) {
 		fourColumns,
 		fiveColumns,
 		sixColumns,
+		sevenColumns,
+		eightColumns,
 	} = templates;
 
 	switch (columnsNumber) {
@@ -653,6 +815,16 @@ function getTemplates(deviceType = 'general', columnsNumber = undefined) {
 				return sixColumns.default.concat(sixColumns.responsive);
 			}
 			return sixColumns.default;
+		case 7:
+			if (responsiveSnappingScreens.includes(deviceType)) {
+				return sevenColumns.default.concat(sevenColumns.responsive);
+			}
+			return sevenColumns.default;
+		case 8:
+			if (responsiveSnappingScreens.includes(deviceType)) {
+				return eightColumns.default.concat(eightColumns.responsive);
+			}
+			return eightColumns.default;
 
 		default:
 			return oneColumn.default.concat(
@@ -660,7 +832,9 @@ function getTemplates(deviceType = 'general', columnsNumber = undefined) {
 				threeColumns.default,
 				fourColumns.default,
 				fiveColumns.default,
-				sixColumns.default
+				sixColumns.default,
+				sevenColumns.default,
+				eightColumns.default
 			);
 	}
 }

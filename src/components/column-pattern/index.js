@@ -349,7 +349,7 @@ const ColumnPatternsInspector = props => {
 					defaultValue={numCol}
 					onChangeValue={numCol => setNumCol(numCol)}
 					min={1}
-					max={6}
+					max={8}
 					disableReset
 				/>
 			)}

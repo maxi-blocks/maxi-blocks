@@ -1,5 +1,5 @@
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+
 import {
 	getSizeStyles,
 	getBoxShadowStyles,
@@ -8,7 +8,6 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
-	getBackgroundStyles,
 	getMarginStyles,
 	getPaddingStyles,
 	getColorBackgroundStyles,

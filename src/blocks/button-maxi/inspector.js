@@ -34,14 +34,7 @@ import ResponsiveControl from '../../components/responsive-control/newResponsive
 import ZIndexControl from '../../components/zindex-control/newIndexControl';
 import AlignmentControl from '../../components/alignment-control/newAlignmentControl';
 import FontIconControl from '../../components/font-icon-control/newFontIconControl';
-
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-
-/**
- * External dependencies
- */
-import { merge, cloneDeep } from 'lodash';
 
 /**
  * Icons

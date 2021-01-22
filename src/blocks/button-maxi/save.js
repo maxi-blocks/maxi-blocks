@@ -29,8 +29,6 @@ const save = props => {
 		buttonContent,
 	} = attributes;
 
-	//const icon = { ...props.attributes.icon };
-
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-button-block',
@@ -44,20 +42,20 @@ const save = props => {
 		!isNil(uniqueID) ? uniqueID : null
 	);
 
-	// const linkOpt = !isObject(linkSettings)
-	// 	? JSON.parse(linkSettings)
-	// 	: linkSettings;
+	const linkOpt = !isNil(linkSettings) && linkSettings;
 
 	const linkProps = {
-		//href: linkOpt.url || '',
-		//target: linkOpt.opensInNewTab ? '_blank' : '_self',
+		...linkOpt,
+		href: linkOpt.url || '',
+		target: linkOpt.opensInNewTab ? '_blank' : '_self',
 	};
 
 	const buttonClasses = classnames(
-		'maxi-button-block__button'
-		//icon.position === 'left'
-		//? 'maxi-button-block__button--icon-left'
-		//: 'maxi-button-block__button--icon-right'
+		'maxi-button-block__button',
+		attributes['icon-position'] === 'left' &&
+			'maxi-button-block__button--icon-left',
+		attributes['icon-position'] === 'right' &&
+			'maxi-button-block__button--icon-right'
 	);
 
 	return (

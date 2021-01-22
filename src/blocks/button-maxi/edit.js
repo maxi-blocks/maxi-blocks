@@ -11,16 +11,6 @@ const { createRef } = wp.element;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	getColorBackgroundObject,
-	getBoxShadowObject,
-	getAlignmentFlexObject,
-	getTransformObject,
-	getAlignmentTextObject,
-	setTextCustomFormats,
-	getLastBreakpointValue,
-	getIconObject,
-} from '../../utils';
 import { MaxiBlock, Toolbar } from '../../components';
 import { getFormatValue } from '../../extensions/text/formats';
 import MotionPreview from '../../components/motion-preview/newMotionPreview';
@@ -32,7 +22,7 @@ import getStyles from './styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Content
@@ -55,81 +45,6 @@ class edit extends MaxiBlock {
 		formatValue: this.props.generateFormatValue() || {},
 		textSelected: '',
 	};
-
-	// get getObject() {
-	// 	const { uniqueID, typography, typographyHover } = this.props.attributes;
-
-	// 	let response = {
-	// 		[this.props.attributes.uniqueID]: this.getWrapperObject,
-	// 		[`${this.props.attributes.uniqueID} .maxi-button-block__button`]: this
-	// 			.getNormalObject,
-	// 		[`${this.props.attributes.uniqueID} .maxi-button-block__button:hover`]: this
-	// 			.getHoverObject,
-	// 		[`${this.props.attributes.uniqueID} .maxi-button-block__button i`]: this
-	// 			.getIconObject,
-	// 	};
-
-	// 	response = Object.assign(
-	// 		response,
-	// 		setTextCustomFormats(
-	// 			[
-	// 				`${uniqueID} .maxi-button-block__button`,
-	// 				`${uniqueID} .maxi-button-block__button li`,
-	// 			],
-	// 			typography,
-	// 			typographyHover
-	// 		)
-	// 	);
-
-	// 	return response;
-	// }
-
-	// get getIconObject() {
-	// 	const {
-	// 		icon,
-	// 		iconPadding,
-	// 		iconBorder,
-	// 		iconBackground,
-	// 	} = this.props.attributes;
-
-	// 	const response = {
-	// 		icon: getIconObject(icon),
-	// 		padding: iconPadding,
-	// 		border: iconBorder,
-	// 		borderWidth: iconBorder.borderWidth,
-	// 		borderRadius: iconBorder.borderRadius,
-	// 		background: getColorBackgroundObject(iconBackground.colorOptions),
-	// 	};
-
-	// 	return response;
-	// }
-
-	// get getNormalObject() {
-	// 	const {
-	// 		typography,
-	// 	} = this.props.attributes;
-
-	// 	const response = {
-	// 		typography,
-
-	// 	};
-
-	// 	return response;
-	// }
-
-	// get getHoverObject() {
-	// 	const {
-	// 		typographyHover,
-	// 	} = this.props.attributes;
-
-	// 	if (!isNil(typographyHover) && !!typographyHover.status) {
-	// 		response.typographyHover = {
-	// 			...typographyHover,
-	// 		};
-	// 	}
-
-	// 	return response;
-	// }
 
 	get getCustomData() {
 		const { uniqueID } = this.props.attributes;
@@ -177,8 +92,8 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-button-block',
-			//getLastBreakpointValue('display', deviceType, attributes) ===
-			//	'none' && 'maxi-block-display-none',
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,

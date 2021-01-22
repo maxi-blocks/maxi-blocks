@@ -6,7 +6,7 @@ const { RadioControl } = wp.components;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../utils';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 
 const { Icon } = wp.components;
 
@@ -35,6 +35,8 @@ const AlignmentControl = props => {
 		disableRight = false,
 		disableJustify = false,
 		breakpoint = 'general',
+		type,
+		isHover = false,
 	} = props;
 
 	const getOptions = () => {
@@ -68,8 +70,6 @@ const AlignmentControl = props => {
 		return options;
 	};
 
-	const alignment = { ...props.alignment };
-
 	const classes = classnames(
 		'maxi-alignment-control',
 		isEmpty(label) ? 'maxi-alignment-control__no-label' : '',
@@ -80,16 +80,28 @@ const AlignmentControl = props => {
 		<RadioControl
 			label={label}
 			className={classes}
-			selected={getLastBreakpointValue(
-				alignment,
-				'alignment',
-				breakpoint
+			selected={getLastBreakpointAttribute(
+				type === 'text' ? 'text-alignment' : 'alignment',
+				breakpoint,
+				props,
+				isHover
 			)}
 			options={getOptions()}
-			onChange={val => {
-				alignment[breakpoint].alignment = val;
-				onChange(alignment);
-			}}
+			onChange={val =>
+				onChange(
+					type === 'text'
+						? {
+								[`text-alignment-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: val,
+						  }
+						: {
+								[`alignment-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: val,
+						  }
+				)
+			}
 		/>
 	);
 };

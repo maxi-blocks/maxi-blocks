@@ -1,4 +1,32 @@
 export const preset1 = {
+	'border-color-general': '',
+	'border-style-general': 'none',
+	'border-top-width-general': 0,
+	'border-right-width-general': 0,
+	'border-bottom-width-general': 0,
+	'border-left-width-general': 0,
+	'border-sync-width-general': true,
+	'border-sync-width-unit': 'px',
+	'border-top-left-radius-general': 8,
+	'border-top-right-radius-general': 8,
+	'border-bottom-right-radius-general': 8,
+	'border-bottom-left-radius-general': 8,
+	'border-sync-radius-xxl': true,
+	'border-unit-radius-xxl': 'px',
+	'background-active-media': 'color',
+	'background-color': '#ff4a17',
+	'padding-top-general': 10,
+	'padding-right-general': 40,
+	'padding-bottom-general': 10,
+	'padding-left-general': 40,
+	'padding-unit-general': 'px',
+	'box-shadow-color-general': '#ffffff',
+	'box-shadow-horizontal-general': 0,
+	'box-shadow-vertical-general': 0,
+	'box-shadow-blur-general': 0,
+	'box-shadow-spread-general': 0,
+};
+export const preset10 = {
 	border: {
 		borderWidth: {
 			general: {

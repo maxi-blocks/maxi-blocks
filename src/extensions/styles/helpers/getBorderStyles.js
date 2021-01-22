@@ -13,7 +13,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block border properties
  */
-const getBorderStyles = (obj, isHover = false) => {
+const getBorderStyles = (obj, isHover = false, prefix) => {
 	const keyWords = [
 		'top-left',
 		'top-right',
@@ -31,16 +31,18 @@ const getBorderStyles = (obj, isHover = false) => {
 		response[breakpoint] = {};
 
 		Object.entries(obj).forEach(([key, value]) => {
+			const newKey = prefix ? key.replace(prefix, '') : key;
+
 			const includesBreakpoint =
-				key.lastIndexOf(`-${breakpoint}${isHover ? '-hover' : ''}`) +
+				newKey.lastIndexOf(`-${breakpoint}${isHover ? '-hover' : ''}`) +
 					`-${breakpoint}${isHover ? '-hover' : ''}`.length ===
-				key.length;
+				newKey.length;
 
 			if (
 				!!value &&
 				includesBreakpoint &&
-				!key.includes('sync') &&
-				!key.includes('unit')
+				!newKey.includes('sync') &&
+				!newKey.includes('unit')
 			) {
 				const replacer = new RegExp(
 					`\\b-${breakpoint}${
@@ -48,7 +50,7 @@ const getBorderStyles = (obj, isHover = false) => {
 					}\\b(?!.*\\b-${breakpoint}${isHover ? '-hover' : ''}\\b)`,
 					'gm'
 				);
-				const newLabel = key.replace(replacer, '');
+				const newLabel = newKey.replace(replacer, '');
 
 				if (!keyWords.some(key => newLabel.includes(key)))
 					response[breakpoint][newLabel] = `${value}`;
@@ -57,7 +59,10 @@ const getBorderStyles = (obj, isHover = false) => {
 						newLabel.includes(key)
 					)[0];
 					const unit = getLastBreakpointAttribute(
-						`${newLabel.replace(unitKey, 'unit')}`,
+						`${prefix ? prefix : ''}${newLabel.replace(
+							unitKey,
+							'unit'
+						)}`,
 						breakpoint,
 						obj,
 						isHover

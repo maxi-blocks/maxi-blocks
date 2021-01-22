@@ -13,7 +13,7 @@ import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isNil } from 'lodash';
+import { isObject, isNil, isEmpty } from 'lodash';
 
 /**
  * Save
@@ -78,7 +78,9 @@ const save = props => {
 				blockClassName={uniqueID}
 			/>
 			<Button className={buttonClasses} {...linkProps}>
-				{/* {icon.icon && <i className={icon.icon} />} */}
+				{!isEmpty(attributes['icon-name']) && (
+					<i className={attributes['icon-name']} />
+				)}
 				{buttonContent}
 			</Button>
 		</div>

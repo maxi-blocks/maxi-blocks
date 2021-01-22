@@ -25,6 +25,8 @@ import { MaxiBlock, Toolbar } from '../../components';
 import { getFormatValue } from '../../extensions/text/formats';
 import MotionPreview from '../../components/motion-preview/newMotionPreview';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import getStyles from './styles';
 
 /**
  * External dependencies
@@ -36,6 +38,10 @@ import { isNil, isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
+	}
+
 	constructor(props) {
 		super(props);
 		this.buttonRef = createRef();
@@ -50,143 +56,80 @@ class edit extends MaxiBlock {
 		textSelected: '',
 	};
 
-	get getObject() {
-		const { uniqueID, typography, typographyHover } = this.props.attributes;
+	// get getObject() {
+	// 	const { uniqueID, typography, typographyHover } = this.props.attributes;
 
-		let response = {
-			[this.props.attributes.uniqueID]: this.getWrapperObject,
-			[`${this.props.attributes.uniqueID} .maxi-button-block__button`]: this
-				.getNormalObject,
-			[`${this.props.attributes.uniqueID} .maxi-button-block__button:hover`]: this
-				.getHoverObject,
-			[`${this.props.attributes.uniqueID} .maxi-button-block__button i`]: this
-				.getIconObject,
-		};
+	// 	let response = {
+	// 		[this.props.attributes.uniqueID]: this.getWrapperObject,
+	// 		[`${this.props.attributes.uniqueID} .maxi-button-block__button`]: this
+	// 			.getNormalObject,
+	// 		[`${this.props.attributes.uniqueID} .maxi-button-block__button:hover`]: this
+	// 			.getHoverObject,
+	// 		[`${this.props.attributes.uniqueID} .maxi-button-block__button i`]: this
+	// 			.getIconObject,
+	// 	};
 
-		response = Object.assign(
-			response,
-			setTextCustomFormats(
-				[
-					`${uniqueID} .maxi-button-block__button`,
-					`${uniqueID} .maxi-button-block__button li`,
-				],
-				typography,
-				typographyHover
-			)
-		);
+	// 	response = Object.assign(
+	// 		response,
+	// 		setTextCustomFormats(
+	// 			[
+	// 				`${uniqueID} .maxi-button-block__button`,
+	// 				`${uniqueID} .maxi-button-block__button li`,
+	// 			],
+	// 			typography,
+	// 			typographyHover
+	// 		)
+	// 	);
 
-		return response;
-	}
+	// 	return response;
+	// }
 
-	get getIconObject() {
-		const {
-			icon,
-			iconPadding,
-			iconBorder,
-			iconBackground,
-		} = this.props.attributes;
+	// get getIconObject() {
+	// 	const {
+	// 		icon,
+	// 		iconPadding,
+	// 		iconBorder,
+	// 		iconBackground,
+	// 	} = this.props.attributes;
 
-		const response = {
-			icon: getIconObject(icon),
-			padding: iconPadding,
-			border: iconBorder,
-			borderWidth: iconBorder.borderWidth,
-			borderRadius: iconBorder.borderRadius,
-			background: getColorBackgroundObject(iconBackground.colorOptions),
-		};
+	// 	const response = {
+	// 		icon: getIconObject(icon),
+	// 		padding: iconPadding,
+	// 		border: iconBorder,
+	// 		borderWidth: iconBorder.borderWidth,
+	// 		borderRadius: iconBorder.borderRadius,
+	// 		background: getColorBackgroundObject(iconBackground.colorOptions),
+	// 	};
 
-		return response;
-	}
+	// 	return response;
+	// }
 
-	get getWrapperObject() {
-		const { alignment, zIndex, transform, display } = this.props.attributes;
+	// get getNormalObject() {
+	// 	const {
+	// 		typography,
+	// 	} = this.props.attributes;
 
-		const response = {
-			alignment: getAlignmentFlexObject(alignment),
-			zIndex,
-			transform: getTransformObject(transform),
-			display,
-		};
+	// 	const response = {
+	// 		typography,
 
-		return response;
-	}
+	// 	};
 
-	get getNormalObject() {
-		const {
-			background,
-			alignmentText,
-			typography,
-			boxShadow,
-			border,
-			size,
-			padding,
-			margin,
-			zIndex,
-			position,
-		} = this.props.attributes;
+	// 	return response;
+	// }
 
-		const response = {
-			typography,
-			alignmentText: {
-				...getAlignmentTextObject(alignmentText),
-			},
-			background: {
-				...getColorBackgroundObject(background.colorOptions),
-			},
-			boxShadow: getBoxShadowObject(boxShadow),
-			border,
-			borderWidth: border.borderWidth,
-			borderRadius: border.borderRadius,
-			size,
-			padding,
-			margin,
-			zIndex,
-			position,
-			positionOptions: position.options,
-		};
+	// get getHoverObject() {
+	// 	const {
+	// 		typographyHover,
+	// 	} = this.props.attributes;
 
-		return response;
-	}
+	// 	if (!isNil(typographyHover) && !!typographyHover.status) {
+	// 		response.typographyHover = {
+	// 			...typographyHover,
+	// 		};
+	// 	}
 
-	get getHoverObject() {
-		const {
-			backgroundHover,
-			typographyHover,
-			boxShadowHover,
-			borderHover,
-		} = this.props.attributes;
-
-		const response = {
-			borderWidth: borderHover.borderWidth,
-			borderRadius: borderHover.borderRadius,
-		};
-
-		if (!isNil(backgroundHover) && !!backgroundHover.status) {
-			response.backgroundHover = {
-				...getColorBackgroundObject(backgroundHover),
-			};
-		}
-
-		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(boxShadowHover),
-			};
-		}
-
-		if (!isNil(typographyHover) && !!typographyHover.status) {
-			response.typographyHover = {
-				...typographyHover,
-			};
-		}
-
-		if (!isNil(borderHover) && !!borderHover.status) {
-			response.borderHover = {
-				...borderHover,
-			};
-		}
-
-		return response;
-	}
+	// 	return response;
+	// }
 
 	get getCustomData() {
 		const { uniqueID } = this.props.attributes;
@@ -223,7 +166,6 @@ class edit extends MaxiBlock {
 		} = attributes;
 
 		const { formatValue, textSelected } = this.state;
-		const icon = { ...this.props.attributes.icon };
 
 		if (isEmpty(formatValue) || selectedText !== textSelected)
 			this.setState({
@@ -251,8 +193,10 @@ class edit extends MaxiBlock {
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
-			icon.position === 'left' && 'maxi-button-block__button--icon-left',
-			icon.position === 'right' && 'maxi-button-block__button--icon-right'
+			attributes['icon-position'] === 'left' &&
+				'maxi-button-block__button--icon-left',
+			attributes['icon-position'] === 'right' &&
+				'maxi-button-block__button--icon-right'
 		);
 
 		return [
@@ -267,7 +211,9 @@ class edit extends MaxiBlock {
 					}
 				>
 					<div className={buttonClasses}>
-						{icon.icon && <i className={icon.icon} />}
+						{!isEmpty(attributes['icon-name']) && (
+							<i className={attributes['icon-name']} />
+						)}
 						<RichText
 							ref={this.buttonRef}
 							withoutInteractiveFormatting

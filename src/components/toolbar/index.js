@@ -66,6 +66,7 @@ const allowedBlocks = [
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/container-maxi',
+	'maxi-blocks/group-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/font-icon-maxi',
 ];
@@ -75,6 +76,7 @@ const flexBlocks = [
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
+	'maxi-blocks/group-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/image-maxi',
@@ -134,9 +136,11 @@ const MaxiToolbar = props => {
 
 		if (
 			currentBlock === 'maxi-blocks/container-maxi' ||
+			currentBlock === 'maxi-blocks/group-maxi' ||
 			currentBlock === 'maxi-blocks/row-maxi' ||
 			currentBlock === 'maxi-blocks/column-maxi' ||
 			rootBlock === 'maxi-blocks/container-maxi' ||
+			rootBlock === 'maxi-blocks/group-maxi' ||
 			rootBlock === 'maxi-blocks/row-maxi' ||
 			rootBlock === 'maxi-blocks/column-maxi'
 		)

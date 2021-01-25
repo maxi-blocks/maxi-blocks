@@ -13,7 +13,7 @@ import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Save

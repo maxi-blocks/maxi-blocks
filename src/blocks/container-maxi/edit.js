@@ -228,7 +228,7 @@ class edit extends MaxiBlock {
 						</__experimentalBlock.section>
 					</MotionPreview>
 				)}
-				{(!isFirstOnHierarchy || !fullWidth) && (
+				{!fullWidth && (
 					<InnerBlocks
 						templateLock={false}
 						__experimentalTagName={ContainerInnerBlocks}

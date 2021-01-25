@@ -8,22 +8,6 @@ const container = (() => {
 	breakpoints.forEach(breakpoint => {
 		response = {
 			...response,
-			[`container-max-width-unit-${breakpoint}`]: {
-				type: 'string',
-				default: 'px',
-			},
-			[`container-max-width-${breakpoint}`]: {
-				type: 'number',
-				default: '',
-			},
-			[`container-width-unit-${breakpoint}`]: {
-				type: 'string',
-				default: '%',
-			},
-			[`container-width-${breakpoint}`]: {
-				type: 'number',
-				default: '',
-			},
 			[`container-min-width-unit-${breakpoint}`]: {
 				type: 'string',
 				default: 'px',

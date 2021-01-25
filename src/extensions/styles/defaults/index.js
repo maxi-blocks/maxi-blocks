@@ -15,6 +15,7 @@ export { default as typographyHover } from './typographyHover';
 export { default as margin } from './margin';
 export { default as padding } from './padding';
 export { default as container } from './container';
+export { default as rowPattern } from './rowPattern';
 export { default as arrow } from './arrow';
 export { default as highlight } from './highlight';
 export { default as divider } from './divider';

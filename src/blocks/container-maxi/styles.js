@@ -26,9 +26,12 @@ const getNormalObject = props => {
 				'borderRadius',
 			]),
 		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
+		size: getSizeStyles(
+			{
+				...getGroupAttributes(props, 'container'),
+			},
+			'container-'
+		),
 		boxShadow: getBoxShadowStyles(
 			{
 				...getGroupAttributes(props, 'boxShadow'),

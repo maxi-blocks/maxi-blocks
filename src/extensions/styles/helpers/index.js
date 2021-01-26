@@ -12,6 +12,7 @@ export { default as getMarginStyles } from './getMarginStyles';
 export { default as getDividerStyles } from './getDividerStyles';
 export { default as getAlignmentFlexStyles } from './getAlignmentFlexStyles';
 export { default as getAlignmentTextStyles } from './getAlignmentTextStyles';
+export { default as getColumnSizeStyles } from './getColumnSizeStyles';
 export { default as getIconStyles } from './getIconStyles';
 export { default as getPaddingStyles } from './getPaddingStyles';
 export * from './getShapeDividerStyles';

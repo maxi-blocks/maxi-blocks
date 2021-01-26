@@ -61,5 +61,6 @@ const attributes = {
 	...newAttributes.entrance,
 	...newAttributes.motion,
 	...newAttributes.transform,
+	...newAttributes.zIndex,
 };
 export default attributes;

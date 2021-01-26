@@ -107,6 +107,7 @@ const attributes = {
 	...newAttributes.motion,
 	...newAttributes.entrance,
 	...newAttributes.transform,
+	...newAttributes.zIndex,
 };
 
 export default attributes;

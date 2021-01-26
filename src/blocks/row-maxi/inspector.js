@@ -98,7 +98,6 @@ const Inspector = props => {
 												<Fragment>
 													<ColumnPattern
 														clientId={clientId}
-														blockName={name}
 														{...getGroupAttributes(
 															attributes,
 															'rowPattern'

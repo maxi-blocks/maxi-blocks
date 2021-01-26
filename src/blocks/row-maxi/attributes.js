@@ -57,6 +57,7 @@ const attributes = {
 	...newAttributes.display,
 	...newAttributes.position,
 	...newAttributes.transform,
+	...newAttributes.zIndex,
 };
 
 export default attributes;

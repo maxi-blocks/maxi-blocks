@@ -94,8 +94,6 @@ class edit extends MaxiBlock {
 			extraClassName,
 			defaultBlockStyle,
 			blockStyleBackground,
-			background,
-			rowPattern,
 			fullWidth,
 		} = attributes;
 
@@ -128,7 +126,7 @@ class edit extends MaxiBlock {
 			<RowContext.Provider
 				value={{
 					displayHandlers: this.state.displayHandlers,
-					rowPattern,
+					rowPattern: getGroupAttributes(attributes, 'rowPattern'),
 				}}
 			>
 				<InnerBlocks
@@ -172,13 +170,11 @@ class edit extends MaxiBlock {
 													)}
 													className='maxi-row-block__template__button'
 													onClick={() => {
-														rowPattern.general.rowPattern =
-															template.name;
-														rowPattern.m.rowPattern =
-															template.responsiveLayout;
-
 														setAttributes({
-															rowPattern,
+															'row-pattern-general':
+																template.name,
+															'row-pattern-m':
+																template.responsiveLayout,
 														});
 														loadTemplate(
 															template.name

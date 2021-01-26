@@ -831,7 +831,6 @@ export const getArrowObject = arrow => {
 		response[key].width = `${width}`;
 		response[key].height = `${width}`;
 
-
 		if (value.side === 'top') {
 			response[key].left = `${value.position}%`;
 			response[key].top = `-${(Math.sqrt(2) * value.width) / 2}${
@@ -845,7 +844,6 @@ export const getArrowObject = arrow => {
 			)}${value.widthUnit})`;
 		}
 		if (value.side === 'bottom') {
-
 			response[key].left = `${value.position}%`;
 			response[key].top = `calc(100% + ${Math.floor(
 				(Math.sqrt(2) * value.width) / 2

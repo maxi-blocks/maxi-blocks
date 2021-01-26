@@ -240,7 +240,8 @@ document.addEventListener('DOMContentLoaded', () => {
 					try {
 						if (
 							path.classList.contains('maxi-column-block') ||
-							path.classList.contains('maxi-container-block')
+							path.classList.contains('maxi-container-block') ||
+							path.classList.contains('maxi-group-block')
 						) {
 							pathItem = i;
 							return true;
@@ -272,7 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
 					try {
 						if (
 							path.classList.contains('maxi-column-block') ||
-							path.classList.contains('maxi-container-block')
+							path.classList.contains('maxi-container-block') ||
+							path.classList.contains('maxi-group-block')
 						) {
 							pathItem = i;
 							return true;

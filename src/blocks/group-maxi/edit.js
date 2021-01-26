@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { withSelect } = wp.data;
-const { Fragment, forwardRef } = wp.element;
 const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 
 /**
@@ -27,30 +26,6 @@ import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
 
-const GroupInnerBlocks = forwardRef((props, ref) => {
-	const { children, className, defaultBlockStyle, uniqueID } = props;
-
-	return (
-		<__experimentalBlock
-			ref={ref}
-			className={className}
-			data-gx_initial_block_class={defaultBlockStyle}
-		>
-			<BackgroundDisplayer
-				{...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
-				])}
-				blockClassName={uniqueID}
-			/>
-			<div className='maxi-group-block__group'>{children}</div>
-		</__experimentalBlock>
-	);
-});
 /**
  * Edit
  */
@@ -129,50 +104,43 @@ class edit extends MaxiBlock {
 			<Inspector {...this.props} />,
 			<Toolbar {...this.props} />,
 			<Breadcrumbs />,
-			<Fragment>
-				<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
-					<__experimentalBlock.section
-						className={classes}
-						data-maxi_initial_block_class={defaultBlockStyle}
-					>
-						<BackgroundDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'backgroundColor',
-								'backgroundImage',
-								'backgroundVideo',
-								'backgroundGradient',
-								'backgroundSVG',
-								'backgroundHover',
-								'backgroundColorHover',
-								'backgroundImageHover',
-								'backgroundVideoHover',
-								'backgroundGradientHover',
-								'backgroundSVGHover',
-							])}
-							blockClassName={uniqueID}
-						/>
-						<InnerBlocks
-							allowedBlocks={ALLOWED_BLOCKS}
-							templateLock={false}
-							__experimentalTagName={GroupInnerBlocks}
-							__experimentalPassedProps={{
-								className: classes,
-								...attributes,
-							}}
-							renderAppender={
-								!hasInnerBlock
-									? () => (
-											<BlockPlaceholder
-												clientId={clientId}
-											/>
-									  )
-									: () => <InnerBlocks.ButtonBlockAppender />
-							}
-						/>
-					</__experimentalBlock.section>
-				</MotionPreview>
-			</Fragment>,
+			<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
+				<__experimentalBlock.section
+					className={classes}
+					data-maxi_initial_block_class={defaultBlockStyle}
+				>
+					<BackgroundDisplayer
+						{...getGroupAttributes(attributes, [
+							'background',
+							'backgroundColor',
+							'backgroundImage',
+							'backgroundVideo',
+							'backgroundGradient',
+							'backgroundSVG',
+							'backgroundHover',
+							'backgroundColorHover',
+							'backgroundImageHover',
+							'backgroundVideoHover',
+							'backgroundGradientHover',
+							'backgroundSVGHover',
+						])}
+						blockClassName={uniqueID}
+					/>
+					<InnerBlocks
+						allowedBlocks={ALLOWED_BLOCKS}
+						templateLock={false}
+						__experimentalTagName='div'
+						__experimentalPassedProps={{
+							className: 'maxi-group-block__group',
+						}}
+						renderAppender={
+							!hasInnerBlock
+								? () => <BlockPlaceholder clientId={clientId} />
+								: () => <InnerBlocks.ButtonBlockAppender />
+						}
+					/>
+				</__experimentalBlock.section>
+			</MotionPreview>,
 		];
 	}
 }

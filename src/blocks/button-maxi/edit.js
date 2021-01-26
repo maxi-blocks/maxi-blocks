@@ -15,6 +15,7 @@ import { MaxiBlock, Toolbar } from '../../components';
 import { getFormatValue } from '../../extensions/text/formats';
 import MotionPreview from '../../components/motion-preview/newMotionPreview';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
 import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getStyles from './styles';
 
@@ -129,6 +130,16 @@ class edit extends MaxiBlock {
 						{!isEmpty(attributes['icon-name']) && (
 							<i className={attributes['icon-name']} />
 						)}
+						<BackgroundDisplayer
+							{...getGroupAttributes(attributes, [
+								'background',
+								'backgroundColor',
+								'backgroundGradient',
+								'backgroundHover',
+								'backgroundColorHover',
+								'backgroundGradientHover',
+							])}
+						/>
 						<RichText
 							ref={this.buttonRef}
 							withoutInteractiveFormatting

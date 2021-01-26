@@ -6,10 +6,12 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 const getIconStyles = obj => {
-	const response = {};
+	const response = {
+		general: {},
+	};
 
 	breakpoints.forEach(breakpoint => {
 		if (obj[`icon-size-${breakpoint}`]) {
@@ -34,6 +36,15 @@ const getIconStyles = obj => {
 			}
 		}
 	});
+
+	if (!isNil(obj['icon-background-gradient-opacity']))
+		response.general.opacity = obj['icon-background-gradient-opacity'];
+
+	if (!isEmpty(obj['icon-background-gradient']))
+		response.general['background'] = obj['icon-background-gradient'];
+
+	if (!isEmpty(obj['icon-background-color']))
+		response.general['background'] = obj['icon-background-color'];
 
 	return response;
 };

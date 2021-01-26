@@ -26,7 +26,13 @@ const attributes = {
 	...newAttributes.iconBorderRadius,
 	...newAttributes.iconBorderWidth,
 	...newAttributes.highlight,
-	...newAttributes.alignment,
+	...{
+		...newAttributes.alignment,
+		'alignment-general': {
+			type: 'string',
+			default: 'center',
+		},
+	},
 	...newAttributes.textAlignment,
 	...newAttributes.typography,
 	...newAttributes.typographyHover,

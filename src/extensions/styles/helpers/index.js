@@ -10,7 +10,6 @@ export { default as getBackgroundStyles } from './getBackgroundStyles';
 export { default as getArrowStyles } from './getArrowStyles';
 export { default as getMarginStyles } from './getMarginStyles';
 export { default as getDividerStyles } from './getDividerStyles';
-export { default as getColorBackgroundStyles } from './getColorBackgroundStyles';
 export { default as getAlignmentFlexStyles } from './getAlignmentFlexStyles';
 export { default as getAlignmentTextStyles } from './getAlignmentTextStyles';
 export { default as getIconStyles } from './getIconStyles';

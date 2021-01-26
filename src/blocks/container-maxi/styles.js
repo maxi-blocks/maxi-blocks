@@ -83,8 +83,10 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getWrapperObject = props => {
-	const response = {
+const getContainerObject = props => {
+	const { isFirstOnHierarchy, fullWidth } = props;
+
+	let response = {
 		margin: getMarginStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
@@ -93,20 +95,15 @@ const getWrapperObject = props => {
 		}),
 	};
 
-	return response;
-};
-
-const getContainerObject = props => {
-	const { isFirstOnHierarchy, fullWidth } = props;
-
 	if (isFirstOnHierarchy && fullWidth === 'full')
-		return {
+		response = {
+			...response,
 			sizeContainer: getContainerStyles({
 				...getGroupAttributes(props, 'container'),
 			}),
 		};
 
-	return {};
+	return response;
 };
 
 const getStyles = props => {
@@ -115,8 +112,7 @@ const getStyles = props => {
 	let response = {
 		[uniqueID]: getNormalObject(props),
 		[`${uniqueID}:hover`]: getHoverObject(props),
-		[`${uniqueID}>.maxi-container-block__wrapper`]: getWrapperObject(props),
-		[`${uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: getContainerObject(
+		[`${uniqueID} > .maxi-container-block__container`]: getContainerObject(
 			props
 		),
 		[`${uniqueID} .maxi-shape-divider__top`]: {
@@ -164,7 +160,7 @@ const getStyles = props => {
 	response = {
 		...response,
 		...getBackgroundStyles({
-			target: `${uniqueID} .maxi-container-block__wrapper`,
+			target: uniqueID,
 			...getGroupAttributes(props, [
 				'background',
 				'backgroundColor',
@@ -176,7 +172,7 @@ const getStyles = props => {
 			]),
 		}),
 		...getBackgroundStyles({
-			target: `${uniqueID} .maxi-container-block__wrapper`,
+			target: uniqueID,
 			...getGroupAttributes(props, [
 				'backgroundHover',
 				'backgroundColorHover',

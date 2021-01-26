@@ -64,18 +64,18 @@ const save = props => {
 			data-maxi_initial_block_class={defaultBlockStyle}
 			data-motion-id={uniqueID}
 		>
-			<BackgroundDisplayer
-				{...getGroupAttributes(attributes, [
-					'background',
-					'backgroundColor',
-					'backgroundGradient',
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-				])}
-				blockClassName={uniqueID}
-			/>
 			<Button className={buttonClasses} {...linkProps}>
+				<BackgroundDisplayer
+					{...getGroupAttributes(attributes, [
+						'background',
+						'backgroundColor',
+						'backgroundGradient',
+						'backgroundHover',
+						'backgroundColorHover',
+						'backgroundGradientHover',
+					])}
+					blockClassName={uniqueID}
+				/>
 				{!isEmpty(attributes['icon-name']) && (
 					<i className={attributes['icon-name']} />
 				)}

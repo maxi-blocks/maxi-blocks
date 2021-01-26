@@ -4,6 +4,9 @@ body.maxi-blocks--active .maxi-button-block {
 	width: 100%;
 	margin: 0;
 
+	&__content {
+		z-index: 1;
+	}
 	&__button {
 		height: auto;
 		align-items: center;
@@ -12,6 +15,7 @@ body.maxi-blocks--active .maxi-button-block {
 
 		&--icon-left {
 			i {
+				z-index: 1;
 				order: 0;
 				margin-right: 5px;
 				@at-root .rtl #{&} {
@@ -22,6 +26,7 @@ body.maxi-blocks--active .maxi-button-block {
 
 		&--icon-right {
 			i {
+				z-index: 1;
 				order: 1;
 				margin-left: 5px;
 				@at-root .rtl #{&} {

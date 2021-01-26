@@ -43,7 +43,7 @@ const BorderControl = props => {
 		disableAdvanced = false,
 		disableColor = false,
 		isHover = false,
-		prefix,
+		prefix = '',
 	} = props;
 
 	const classes = classnames('maxi-border-control', className);
@@ -60,10 +60,10 @@ const BorderControl = props => {
 
 	const getIsActive = () => {
 		const items = [
-			`${prefix ? prefix : ''}border-top-width`,
-			`${prefix ? prefix : ''}border-right-width`,
-			`${prefix ? prefix : ''}border-bottom-width`,
-			`${prefix ? prefix : ''}border-left-width`,
+			`${prefix}border-top-width`,
+			`${prefix}border-right-width`,
+			`${prefix}border-bottom-width`,
+			`${prefix}border-left-width`,
 		];
 
 		const hasBorderWidth = items.some(item => {
@@ -74,7 +74,7 @@ const BorderControl = props => {
 
 		if (hasBorderWidth)
 			return getLastBreakpointAttribute(
-				`${prefix ? prefix : ''}border-style`,
+				`${prefix}border-style`,
 				breakpoint,
 				props,
 				isHover
@@ -133,7 +133,7 @@ const BorderControl = props => {
 					label={__('Border Type', 'maxi-blocks')}
 					className='maxi-border-control__type'
 					value={getLastBreakpointAttribute(
-						`${prefix ? prefix : ''}border-style`,
+						`${prefix}border-style`,
 						breakpoint,
 						props,
 						isHover
@@ -162,7 +162,7 @@ const BorderControl = props => {
 			)}
 			{!disableColor &&
 				getLastBreakpointAttribute(
-					`${prefix ? prefix : ''}border-style`,
+					`${prefix}border-style`,
 					breakpoint,
 					props,
 					isHover
@@ -170,13 +170,13 @@ const BorderControl = props => {
 					<ColorControl
 						label={__('Border', 'maxi-blocks')}
 						color={getLastBreakpointAttribute(
-							`${prefix ? prefix : ''}border-color`,
+							`${prefix}border-color`,
 							breakpoint,
 							props,
 							isHover
 						)}
 						defaultColor={getDefaultAttribute(
-							`${prefix ? prefix : ''}border-color-${breakpoint}${
+							`${prefix}border-color-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`
 						)}
@@ -198,7 +198,7 @@ const BorderControl = props => {
 
 			{!disableAdvanced &&
 				getLastBreakpointAttribute(
-					`${prefix ? prefix : ''}border-style`,
+					`${prefix}border-style`,
 					breakpoint,
 					props,
 					isHover
@@ -211,7 +211,7 @@ const BorderControl = props => {
 								isHover,
 								prefix
 							)}
-							target={`${prefix ? prefix : ''}border`}
+							target={`${prefix}border`}
 							auxTarget='width'
 							label={__('Border width', 'maxi-blocks')}
 							onChange={obj => onChange(obj)}
@@ -241,7 +241,7 @@ const BorderControl = props => {
 								isHover,
 								prefix
 							)}
-							target={`${prefix ? prefix : ''}border`}
+							target={`${prefix}border`}
 							auxTarget='radius'
 							label={__('Border radius', 'maxi-blocks')}
 							onChange={obj => onChange(obj)}

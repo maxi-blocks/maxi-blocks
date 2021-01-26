@@ -16,11 +16,11 @@ import {
 	ArrowDisplayer,
 } from '../../components';
 import Inspector from './inspector';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
 import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
 import ShapeDivider from '../../components/shape-divider/newShapeDivider';
 import MotionPreview from '../../components/motion-preview/newMotionPreview';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getStyles from './styles';
 
 /**
@@ -48,28 +48,24 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			data-align={fullWidth}
 			data-gx_initial_block_class={defaultBlockStyle}
 		>
+			<BackgroundDisplayer
+				{...getGroupAttributes(props, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+				])}
+				blockClassName={uniqueID}
+			/>
 			{props['shape-divider-top-status'] && (
 				<ShapeDivider
 					{...getGroupAttributes(props, 'shapeDivider')}
 					location='top'
 				/>
 			)}
-			<div className='maxi-container-block__wrapper'>
-				<BackgroundDisplayer
-					{...getGroupAttributes(props, [
-						'background',
-						'backgroundColor',
-						'backgroundImage',
-						'backgroundVideo',
-						'backgroundGradient',
-						'backgroundSVG',
-					])}
-					blockClassName={uniqueID}
-				/>
-				<div className='maxi-container-block__container'>
-					{children}
-				</div>
-			</div>
+			<div className='maxi-container-block__container'>{children}</div>
 			{props['shape-divider-bottom-status'] && (
 				<ShapeDivider
 					{...getGroupAttributes(props, 'shapeDivider')}
@@ -83,6 +79,10 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 /**
  * Edit
  */
+
+const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
+const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
+
 class edit extends MaxiBlock {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
@@ -141,7 +141,7 @@ class edit extends MaxiBlock {
 			'maxi-container-block',
 			'maxi-motion-effect',
 			`maxi-motion-effect-${uniqueID}`,
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
+			getLastBreakpointValue('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
@@ -169,6 +169,23 @@ class edit extends MaxiBlock {
 								{...getGroupAttributes(attributes, 'arrow')}
 								breakpoint={deviceType}
 							/>
+							<BackgroundDisplayer
+								{...getGroupAttributes(attributes, [
+									'background',
+									'backgroundColor',
+									'backgroundImage',
+									'backgroundVideo',
+									'backgroundGradient',
+									'backgroundSVG',
+									'backgroundHover',
+									'backgroundColorHover',
+									'backgroundImageHover',
+									'backgroundVideoHover',
+									'backgroundGradientHover',
+									'backgroundSVGHover',
+								])}
+								blockClassName={uniqueID}
+							/>
 							{attributes['shape-divider-top-status'] && (
 								<ShapeDivider
 									{...getGroupAttributes(
@@ -178,44 +195,29 @@ class edit extends MaxiBlock {
 									location='top'
 								/>
 							)}
-							<div className='maxi-container-block__wrapper'>
-								<BackgroundDisplayer
-									{...getGroupAttributes(attributes, [
-										'background',
-										'backgroundColor',
-										'backgroundImage',
-										'backgroundVideo',
-										'backgroundGradient',
-										'backgroundSVG',
-										'backgroundHover',
-										'backgroundColorHover',
-										'backgroundImageHover',
-										'backgroundVideoHover',
-										'backgroundGradientHover',
-										'backgroundSVGHover',
-									])}
-									blockClassName={uniqueID}
-								/>
-								<InnerBlocks
-									templateLock={false}
-									__experimentalTagName='div'
-									__experimentalPassedProps={{
-										className:
-											'maxi-container-block__container',
-									}}
-									renderAppender={
-										!hasInnerBlock
-											? () => (
-													<BlockPlaceholder
-														clientId={clientId}
-													/>
-											  )
-											: () => (
-													<InnerBlocks.ButtonBlockAppender />
-											  )
-									}
-								/>
-							</div>
+							<InnerBlocks
+								allowedBlocks={ALLOWED_BLOCKS}
+								template={ROW_TEMPLATE}
+								templateLock={false}
+								__experimentalTagName='div'
+								__experimentalPassedProps={{
+									className:
+										'maxi-container-block__container',
+								}}
+								renderAppender={
+									!hasInnerBlock
+										? () => (
+												<BlockPlaceholder
+													clientId={clientId}
+												/>
+										  )
+										: true
+										? () => (
+												<InnerBlocks.ButtonBlockAppender />
+										  )
+										: false
+								}
+							/>
 							{attributes['shape-divider-bottom-status'] && (
 								<ShapeDivider
 									{...getGroupAttributes(

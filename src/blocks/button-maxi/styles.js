@@ -10,7 +10,7 @@ import {
 	getTransformStyles,
 	getMarginStyles,
 	getPaddingStyles,
-	getColorBackgroundStyles,
+	getBackgroundStyles,
 	getBorderStyles,
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
@@ -35,7 +35,7 @@ const getWrapperObject = props => {
 	return response;
 };
 
-const getNormalObject = (props, uniqueID) => {
+const getNormalObject = props => {
 	const response = {
 		boxShadow: getBoxShadowStyles(
 			{
@@ -58,12 +58,6 @@ const getNormalObject = (props, uniqueID) => {
 		}),
 		position: getPositionStyles({
 			...getGroupAttributes(props, 'position'),
-		}),
-		background: getColorBackgroundStyles({
-			...getGroupAttributes(props, [
-				'backgroundGradient',
-				'backgroundColor',
-			]),
 		}),
 		border: getBorderStyles(
 			{
@@ -105,22 +99,11 @@ const getHoverObject = props => {
 				},
 				true
 			),
-		background:
-			props['background-hover-status'] &&
-			getColorBackgroundStyles(
-				{
-					...getGroupAttributes(
-						props,
-						['backgroundGradient', 'backgroundColor'],
-						true
-					),
-				},
-				true
-			),
 	};
 
 	return response;
 };
+
 const getIconObject = props => {
 	const response = {
 		icon: getIconStyles({
@@ -143,13 +126,6 @@ const getIconObject = props => {
 			false,
 			'icon-'
 		),
-		background: getColorBackgroundStyles(
-			{
-				...getGroupAttributes(props, 'icon'),
-			},
-			false,
-			'icon-'
-		),
 	};
 
 	return response;
@@ -166,6 +142,29 @@ const getStyles = props => {
 		),
 		[`${uniqueID} .maxi-button-block__button:hover`]: getHoverObject(props),
 		[`${uniqueID} .maxi-button-block__button i`]: getIconObject(props),
+	};
+
+	response = {
+		...response,
+		...getBackgroundStyles({
+			target: `${uniqueID} .maxi-button-block__button`,
+			...getGroupAttributes(props, [
+				'backgroundHover',
+				'backgroundColorHover',
+				'backgroundGradientHover',
+				'borderRadiusHover',
+			]),
+			isHover: !!props['background-hover-status'],
+		}),
+		...getBackgroundStyles({
+			target: `${uniqueID} .maxi-button-block__button`,
+			...getGroupAttributes(props, [
+				'background',
+				'backgroundColor',
+				'backgroundGradient',
+				'borderRadius',
+			]),
+		}),
 	};
 
 	return response;

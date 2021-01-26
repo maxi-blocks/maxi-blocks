@@ -36,6 +36,10 @@ export const icon = (() => {
 			type: 'string',
 			default: '',
 		},
+		'icon-background-active-media': {
+			type: 'string',
+			default: 'color',
+		},
 		'icon-background-gradient': {
 			type: 'string',
 			default: '',
@@ -211,36 +215,16 @@ export const iconBorderWidth = (() => {
 	return response;
 })();
 
+import { borderRadius } from './border';
+
 export const iconBorderRadius = (() => {
-	let response = {};
-	breakpoints.forEach(breakpoint => {
-		response = {
-			...response,
-			[`icon-border-top-left-radius-${breakpoint}`]: {
-				type: 'number',
-				default: '',
-			},
-			[`icon-border-top-right-radius-${breakpoint}`]: {
-				type: 'number',
-				default: '',
-			},
-			[`icon-border-bottom-right-radius-${breakpoint}`]: {
-				type: 'number',
-				default: '',
-			},
-			[`icon-border-bottom-left-radius-${breakpoint}`]: {
-				type: 'number',
-				default: '',
-			},
-			[`icon-border-sync-radius-${breakpoint}`]: {
-				type: 'boolean',
-				default: true,
-			},
-			[`icon-border-unit-radius-${breakpoint}`]: {
-				type: 'string',
-				default: 'px',
-			},
-		};
+	const response = {};
+
+	Object.keys(borderRadius).forEach(key => {
+		const newKey = `icon-${key}`;
+		const value = { ...borderRadius[key] };
+
+		response[newKey] = value;
 	});
 
 	return response;

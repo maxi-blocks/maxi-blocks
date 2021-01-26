@@ -9,7 +9,7 @@ const { Icon } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
-import { merge, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
@@ -99,7 +99,7 @@ const FontIconControl = (props, isHover = false) => {
 				iconClassName={props['icon-name']}
 				onChange={val =>
 					onChange({
-						['icon-name']: val,
+						'icon-name': val,
 					})
 				}
 			/>
@@ -226,13 +226,15 @@ const FontIconControl = (props, isHover = false) => {
 									setActiveOption('iconColor');
 								if (item === 'backgroundColor') {
 									onChange({
-										['background-active-media']: 'color',
+										['icon-background-active-media']:
+											'color',
 									});
 									setActiveOption('backgroundColor');
 								}
 								if (item === 'backgroundGradient') {
 									onChange({
-										['background-active-media']: 'gradient',
+										['icon-background-active-media']:
+											'gradient',
 									});
 									setActiveOption('backgroundGradient');
 								}
@@ -289,12 +291,12 @@ const FontIconControl = (props, isHover = false) => {
 							)}
 							onChange={val =>
 								onChange({
-									['icon-background-gradient']: val,
+									'icon-background-gradient': val,
 								})
 							}
 							onChangeOpacity={val =>
 								onChange({
-									['icon-background-gradient-opacity']: val,
+									'icon-background-gradient-opacity': val,
 								})
 							}
 						/>

@@ -115,7 +115,7 @@ const getStyles = props => {
 				'backgroundVideoHover',
 				'backgroundGradientHover',
 			]),
-			isHover: !!props['background-hover-status'],
+			isHover: !!props['background-status-hover'],
 		}),
 	};
 

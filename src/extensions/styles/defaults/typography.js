@@ -1,7 +1,6 @@
 import alignment from './alignment';
 
-const typographyBase = {
-	label: 'Typography',
+export const typography = {
 	'font-family-general': {
 		type: 'string',
 		default: 'Roboto',
@@ -141,7 +140,10 @@ const typographyBase = {
 		type: 'string',
 		default: '',
 	},
-	'font-family-xl': '',
+	'font-family-xl': {
+		type: 'string',
+		default: '',
+	},
 	'font-options-xl': {
 		type: 'object',
 		default: {},
@@ -198,7 +200,10 @@ const typographyBase = {
 		type: 'string',
 		default: '',
 	},
-	'font-family-l': '',
+	'font-family-l': {
+		type: 'string',
+		default: '',
+	},
 	'font-options-l': {
 		type: 'object',
 		default: {},
@@ -255,7 +260,10 @@ const typographyBase = {
 		type: 'string',
 		default: '',
 	},
-	'font-family-m': '',
+	'font-family-m': {
+		type: 'string',
+		default: '',
+	},
 	'font-options-m': {
 		type: 'object',
 		default: {},
@@ -312,7 +320,10 @@ const typographyBase = {
 		type: 'string',
 		default: '',
 	},
-	'font-family-s': '',
+	'font-family-s': {
+		type: 'string',
+		default: '',
+	},
 	'font-options-s': {
 		type: 'object',
 		default: {},
@@ -369,7 +380,10 @@ const typographyBase = {
 		type: 'string',
 		default: '',
 	},
-	'font-family-xs': '',
+	'font-family-xs': {
+		type: 'string',
+		default: '',
+	},
 	'font-options-xs': {
 		type: 'object',
 		default: {},
@@ -426,16 +440,14 @@ const typographyBase = {
 		type: 'string',
 		default: '',
 	},
-	customFormats: {
+	'custom-formats': {
 		type: 'object',
 		default: {},
 	},
 };
 
-const typography = (function typographyGenerator() {
-	const response = {
-		...typographyBase,
-	};
+export const typographyAlignment = (function typographyGenerator() {
+	const response = {};
 
 	Object.entries(alignment).forEach(([key, value]) => {
 		const newKey = key.replace('alignment-', 'typography-alignment-');
@@ -448,5 +460,3 @@ const typography = (function typographyGenerator() {
 
 	return response;
 })();
-
-export default typography;

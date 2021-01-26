@@ -30,11 +30,7 @@ const applyLinkFormat = ({
 		attributes: linkAttributes,
 	});
 
-	const {
-		typography: newTypography,
-		content: newContent,
-		formatValue: newFormatValue,
-	} = setFormatWithClass({
+	return setFormatWithClass({
 		formatValue: linkCustomFormatValue,
 		isList,
 		typography,
@@ -44,11 +40,11 @@ const applyLinkFormat = ({
 		},
 	});
 
-	return {
-		typography: newTypography,
-		content: newContent,
-		formatValue: newFormatValue,
-	};
+	// return {
+	// 	typography: newTypography,
+	// 	content: newContent,
+	// 	formatValue: newFormatValue,
+	// };
 };
 
 export default applyLinkFormat;

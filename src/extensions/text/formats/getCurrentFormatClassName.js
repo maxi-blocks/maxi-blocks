@@ -11,10 +11,10 @@ const { getActiveFormat } = wp.richText;
  *
  * @returns {string} Current className for Maxi Custom format
  */
-const getCurrentFormatClassName = formatValue => {
+const getCurrentFormatClassName = (formatValue, isHover = false) => {
 	const formatOptions = getActiveFormat(
 		formatValue,
-		'maxi-blocks/text-custom'
+		!isHover ? 'maxi-blocks/text-custom' : 'maxi-blocks/text-custom-hover'
 	);
 
 	const currentClassName =

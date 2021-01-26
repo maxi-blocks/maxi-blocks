@@ -11,19 +11,18 @@ import { inRange, compact } from 'lodash';
  *
  * @returns {Object} Classes with its positions
  */
-const getMultiFormatObj = formatValue => {
+const getMultiFormatObj = (formatValue, isHover = false) => {
 	const { start, end } = formatValue;
 	const formatArray = new Array([...formatValue.formats])[0];
+	const formatType = !isHover
+		? 'maxi-blocks/text-custom'
+		: 'maxi-blocks/text-custom-hover';
 
 	const response = formatArray.map((formatEl, i) => {
 		if (formatEl)
 			return compact(
 				formatEl.map(format => {
-					if (
-						format.type === 'maxi-blocks/text-custom' &&
-						i >= start &&
-						i < end
-					)
+					if (format.type === formatType && i >= start && i < end)
 						return format.attributes.className;
 
 					return null;

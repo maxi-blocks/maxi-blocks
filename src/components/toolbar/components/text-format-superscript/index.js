@@ -21,21 +21,20 @@ import { toolbarSuperScript } from '../../../../icons';
  * TextFormatSuperscript
  */
 const TextFormatSuperscript = props => {
-	const { formatValue, onChange, isList, breakpoint } = props;
+	const { formatValue, onChange, isList, breakpoint, typography } = props;
 
-	const typography = { ...props.typography };
-
-	const superscriptValue = getCustomFormatValue({
-		typography,
-		formatValue,
-		prop: 'vertical-align',
-		breakpoint,
-	});
+	const superscriptValue =
+		getCustomFormatValue({
+			typography,
+			formatValue,
+			prop: 'vertical-align',
+			breakpoint,
+		}) || '';
 
 	const isActive = (superscriptValue === 'super' && true) || false;
 
 	const onClick = () => {
-		const { typography: newTypography, content: newContent } = setFormat({
+		const obj = setFormat({
 			formatValue,
 			isActive,
 			isList,
@@ -46,10 +45,7 @@ const TextFormatSuperscript = props => {
 			breakpoint,
 		});
 
-		onChange({
-			typography: newTypography,
-			...(newContent && { content: newContent }),
-		});
+		onChange(obj);
 	};
 
 	return (

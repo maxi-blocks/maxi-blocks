@@ -102,6 +102,10 @@ const MaxiToolbar = props => {
 		fullWidth,
 		isFirstOnHierarchy,
 		linkSettings,
+		isList,
+		content,
+		typeOfList,
+		textLevel,
 	} = attributes;
 	const highlight = { ...props.highlight };
 	const {
@@ -202,13 +206,9 @@ const MaxiToolbar = props => {
 								setAttributes({ lineVertical })
 							}
 						/> */}
-						{/* <TextOptions
+						<TextOptions
+							{...getGroupAttributes(attributes, 'typography')}
 							blockName={name}
-							typography={typography}
-							defaultTypography={getDefaultProp(
-								clientId,
-								'typography'
-							)}
 							onChange={obj => setAttributes(obj)}
 							node={anchorRef}
 							content={content}
@@ -216,7 +216,8 @@ const MaxiToolbar = props => {
 							isList={isList}
 							typeOfList={typeOfList}
 							formatValue={formatValue}
-						/> */}
+							textLevel={textLevel}
+						/>
 						{/* {!!textHighlight && (
 							<TextColor
 								blockName={name}
@@ -236,31 +237,32 @@ const MaxiToolbar = props => {
 							onChange={alignment => setAttributes({ alignment })}
 							breakpoint={deviceType}
 						/> */}
-						{/* <TextLevel
+						<TextLevel
+							{...getGroupAttributes(attributes, [
+								'typography',
+								'typographyHover',
+							])}
 							blockName={name}
 							textLevel={textLevel}
-							typography={typography}
-							typographyHover={typographyHover}
-							margin={margin}
 							isList={isList}
 							onChange={obj => setAttributes(obj)}
-						/> */}
-						{/* <TextBold
-							typography={typography}
+						/>
+						<TextBold
+							{...getGroupAttributes(attributes, 'typography')}
 							formatValue={formatValue}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
 							breakpoint={deviceType}
-						/> */}
-						{/* <TextItalic
-							typography={typography}
+						/>
+						<TextItalic
+							{...getGroupAttributes(attributes, 'typography')}
 							formatValue={formatValue}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
 							breakpoint={deviceType}
-						/> */}
+						/>
 						{/* <RowSettings
 							blockName={name}
 							horizontalAlign={horizontalAlign}

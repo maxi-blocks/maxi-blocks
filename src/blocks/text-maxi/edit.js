@@ -12,35 +12,26 @@ const { __unstableIndentListItems, __unstableOutdentListItems } = wp.richText;
 /**
  * Internal dependencies
  */
-import defaultTypography from '../../extensions/defaults/typography';
+import { defaultTypography } from '../../extensions/text';
 import Inspector from './inspector';
-import {
-	getBoxShadowObject,
-	getAlignmentTextObject,
-	getOpacityObject,
-	getTransformObject,
-	setTextCustomFormats,
-	getLastBreakpointValue,
-	setBackgroundStyles,
-} from '../../utils';
-import {
-	MaxiBlock,
-	Toolbar,
-	BackgroundDisplayer,
-	MotionPreview,
-} from '../../components';
+import { MaxiBlock, Toolbar } from '../../components';
 import {
 	getFormatValue,
 	setCustomFormatsWhenPaste,
 	fromListToText,
 	fromTextToList,
 } from '../../extensions/text/formats';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
+import MotionPreview from '../../components/motion-preview/newMotionPreview';
+import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
+import getStyles from './styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Content
@@ -52,178 +43,51 @@ class edit extends MaxiBlock {
 	}
 
 	state = {
-		formatValue: this.props.generateFormatValue() || {},
+		formatValue:
+			this.props.generateFormatValue(
+				this.textRef ? this.textRef.current : null
+			) || {},
 		textSelected: '',
 	};
 
 	componentDidMount() {
-		const { alignment } = this.props.attributes;
-		const { isRTL } = select('core/editor').getEditorSettings();
+		// const { alignment } = this.props.attributes;
+		// const { isRTL } = select('core/editor').getEditorSettings();
 
-		if (isEmpty(alignment.general.alignment)) {
-			alignment.general.alignment = isRTL ? 'right' : 'left';
-			this.props.setAttributes({ alignment });
-		}
+		// if (isEmpty(alignment.general.alignment)) {
+		// 	alignment.general.alignment = isRTL ? 'right' : 'left';
+		// 	this.props.setAttributes({ alignment });
+		// }
 
 		this.displayStyles();
 	}
 
-	get getObject() {
-		const {
-			uniqueID,
-			background,
-			backgroundHover,
-			typography,
-			typographyHover,
-		} = this.props.attributes;
-
-		let response = {
-			[uniqueID]: this.getNormalObject,
-			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID} .maxi-text-block__content`]: this.getTypographyObject,
-			[`${uniqueID} .maxi-text-block__content:hover`]: this
-				.getTypographyHoverObject,
-			[`${uniqueID} .maxi-text-block__content li`]: this
-				.getTypographyObject,
-			[`${uniqueID} .maxi-text-block__content li:hover`]: this
-				.getTypographyHoverObject,
-			[`${uniqueID} .maxi-text-block__content a`]: this
-				.getTypographyObject,
-			[`${uniqueID} .maxi-text-block__content a:hover`]: this
-				.getTypographyHoverObject,
-		};
-
-		response = Object.assign(
-			response,
-			setBackgroundStyles({
-				target: uniqueID,
-				background,
-				backgroundHover,
-			})
-		);
-
-		response = Object.assign(
-			response,
-			setTextCustomFormats(
-				[
-					`${uniqueID} .maxi-text-block__content`,
-					`${uniqueID} .maxi-text-block__content li`,
-				],
-				typography,
-				typographyHover
-			)
-		);
-
-		return response;
-	}
-
-	get getNormalObject() {
-		const {
-			alignment,
-			opacity,
-			size,
-			zIndex,
-			position,
-			display,
-			transform,
-			margin,
-			padding,
-			border,
-			boxShadow,
-		} = this.props.attributes;
-
-		const response = {
-			alignment: getAlignmentTextObject(alignment),
-			size,
-			opacity: getOpacityObject(opacity),
-			zIndex,
-			position,
-			positionOptions: position.options,
-			display,
-			transform: getTransformObject(transform),
-			margin,
-			padding,
-			border,
-			borderWidth: border.borderWidth,
-			borderRadius: border.borderRadius,
-			boxShadow: getBoxShadowObject(boxShadow),
-		};
-
-		return response;
-	}
-
-	get getHoverObject() {
-		const { borderHover, boxShadowHover } = this.props.attributes;
-
-		const response = {
-			borderWidthHover: borderHover.borderWidth,
-			borderRadiusHover: borderHover.borderRadius,
-		};
-
-		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
-			response.boxShadowHover = getBoxShadowObject(boxShadowHover);
-		}
-
-		if (!isNil(borderHover) && !!borderHover.status) {
-			response.borderHover = borderHover;
-		}
-
-		return response;
-	}
-
-	get getTypographyObject() {
-		const { typography } = this.props.attributes;
-
-		const response = {
-			typography,
-		};
-		return response;
-	}
-
-	get getTypographyHoverObject() {
-		const { typographyHover } = this.props.attributes;
-
-		const response = {};
-
-		if (!isNil(typographyHover) && !typographyHover.status) {
-			response.typographyHover = typographyHover;
-		}
-
-		return response;
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
 	}
 
 	get getCustomData() {
-		const { uniqueID, motion } = this.props.attributes;
+		const { uniqueID } = this.props.attributes;
 
 		const motionStatus =
-			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+			!!this.props.attributes['motion-status'] ||
+			!isEmpty(this.props.attributes['entrance-type']) ||
+			!!this.props.attributes['parallax-status'];
 
 		return {
 			[uniqueID]: {
-				...(motionStatus && { motion }),
+				...(motionStatus && {
+					...getGroupAttributes(this.props.attributes, 'motion'),
+					...getGroupAttributes(this.props.attributes, 'entrance'),
+					...getGroupAttributes(this.props.attributes, 'parallax'),
+				}),
 			},
 		};
 	}
 
 	render() {
 		const {
-			attributes: {
-				uniqueID,
-				blockStyle,
-				defaultBlockStyle,
-				blockStyleBackground,
-				extraClassName,
-				background,
-				textLevel,
-				content,
-				isList,
-				typeOfList,
-				listStart,
-				listReversed,
-				fullWidth,
-				typography,
-				motion,
-			},
+			attributes,
 			className,
 			isSelected,
 			setAttributes,
@@ -235,9 +99,24 @@ class edit extends MaxiBlock {
 			selectedText,
 			generateFormatValue,
 		} = this.props;
+		const {
+			uniqueID,
+			blockStyle,
+			defaultBlockStyle,
+			blockStyleBackground,
+			extraClassName,
+			textLevel,
+			content,
+			isList,
+			typeOfList,
+			listStart,
+			listReversed,
+			fullWidth,
+			typography,
+		} = attributes;
 		const { formatValue, textSelected } = this.state;
+
 		const name = 'maxi-blocks/text-maxi';
-		const display = { ...this.props.attributes.display };
 		const highlight = { ...this.props.attributes.highlight };
 		const {
 			textHighlight,
@@ -247,7 +126,9 @@ class edit extends MaxiBlock {
 
 		if (isEmpty(formatValue) || selectedText !== textSelected)
 			this.setState({
-				formatValue: generateFormatValue(),
+				formatValue: generateFormatValue(
+					this.textRef ? this.textRef.current : null
+				),
 				textSelected: selectedText,
 			});
 
@@ -255,8 +136,8 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-text-block',
-			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
-				'maxi-block-display-none',
+			getLastBreakpointValue('display', deviceType, attributes) ===
+				'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
@@ -273,16 +154,36 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector {...this.props} formatValue={formatValue} />,
 			<Toolbar {...this.props} formatValue={formatValue} />,
-			<MotionPreview motion={motion}>
+			<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
 					data-align={fullWidth}
 					onClick={() =>
-						this.setState({ formatValue: generateFormatValue() })
+						this.setState({
+							formatValue: generateFormatValue(
+								this.textRef ? this.textRef.current : null
+							),
+						})
 					}
 				>
-					<BackgroundDisplayer background={background} />
+					<BackgroundDisplayer
+						{...getGroupAttributes(attributes, [
+							'background',
+							'backgroundColor',
+							'backgroundImage',
+							'backgroundVideo',
+							'backgroundGradient',
+							'backgroundSVG',
+							'backgroundHover',
+							'backgroundColorHover',
+							'backgroundImageHover',
+							'backgroundVideoHover',
+							'backgroundGradientHover',
+							'backgroundSVGHover',
+						])}
+						blockClassName={uniqueID}
+					/>
 					{!isList && (
 						<RichText
 							ref={this.textRef}
@@ -297,8 +198,10 @@ class edit extends MaxiBlock {
 										? typeOfList
 										: undefined,
 								};
+
 								const formatValue = getFormatValue(
-									formatElement
+									formatElement,
+									this.textRef ? this.textRef.current : null
 								);
 
 								/**
@@ -325,7 +228,12 @@ class edit extends MaxiBlock {
 							}}
 							tagName={textLevel}
 							onSplit={onSplit}
-							onReplace={onReplace}
+							onReplace={blocks =>
+								onReplace(
+									blocks,
+									this.textRef ? this.textRef.current : null
+								)
+							}
 							onMerge={onMerge}
 							onRemove={onRemove}
 							placeholder={__(
@@ -367,7 +275,12 @@ class edit extends MaxiBlock {
 							__unstableOnSplitMiddle={() =>
 								createBlock('maxi-blocks/text-maxi')
 							}
-							onReplace={onReplace}
+							onReplace={blocks =>
+								onReplace(
+									blocks,
+									this.textRef ? this.textRef.current : null
+								)
+							}
 							onRemove={onRemove}
 							start={listStart}
 							reversed={!!listReversed}
@@ -448,11 +361,8 @@ const editSelect = withSelect(select => {
 });
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
-	const {
-		attributes: { typography, content, isList, typeOfList },
-		setAttributes,
-		clientId,
-	} = ownProps;
+	const { attributes, setAttributes, clientId } = ownProps;
+	const { content, isList, typeOfList } = attributes;
 
 	const name = 'maxi-blocks/text-maxi';
 
@@ -471,7 +381,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		updateBlockAttributes,
 	} = dispatch('core/block-editor');
 
-	const onReplace = blocks => {
+	const onReplace = (blocks, node) => {
 		const currentBlocks = blocks.filter(item => !!item);
 
 		if (isEmpty(currentBlocks)) {
@@ -485,7 +395,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			switch (block.name) {
 				case 'core/list': {
 					const textTypography = {
-						...typography,
+						...getGroupAttributes(attributes, 'typography'),
 						...defaultTypography.p,
 					};
 
@@ -495,7 +405,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 						typeOfList: block.attributes.ordered ? 'ol' : 'ul',
 						content: block.attributes.values,
 						isList: true,
-						typography: textTypography,
+						...textTypography,
 					});
 					break;
 				}
@@ -514,21 +424,22 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				case 'core/heading': {
 					const headingLevel = block.attributes.level;
 					const headingTypography = {
-						...typography,
+						...getGroupAttributes(attributes, 'typography'),
 						...defaultTypography[`h${headingLevel}`],
 					};
+
 					newBlock = createBlock(name, {
 						...ownProps.attributes,
 						textLevel: `h${headingLevel}`,
 						content: block.attributes.content,
-						typography: headingTypography,
+						...headingTypography,
 						isList: false,
 					});
 					break;
 				}
 				case 'core/paragraph': {
 					const textTypography = {
-						...typography,
+						...getGroupAttributes(attributes, 'typography'),
 						...defaultTypography.p,
 					};
 
@@ -536,7 +447,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 						...ownProps.attributes,
 						content: block.attributes.content,
 						textLevel: 'p',
-						typography: textTypography,
+						...textTypography,
 					});
 					break;
 				}
@@ -571,8 +482,9 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				const formatElement = {
 					multilineTag: isList ? 'li' : undefined,
 					multilineWrapperTags: isList ? typeOfList : undefined,
+					html: content,
 				};
-				const formatValue = getFormatValue(formatElement);
+				const formatValue = getFormatValue(formatElement, node);
 
 				/**
 				 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
@@ -582,17 +494,14 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				 */
 				const cleanCustomProps = setCustomFormatsWhenPaste({
 					formatValue,
-					typography,
+					typography: getGroupAttributes(attributes, 'typography'),
 					isList,
 					typeOfList,
 					content,
 				});
 
 				if (cleanCustomProps)
-					updateBlockAttributes(clientId, {
-						typography: cleanCustomProps.typography,
-						content: cleanCustomProps.content,
-					});
+					updateBlockAttributes(clientId, cleanCustomProps);
 			});
 
 			i === currentBlocks.length - 1 && selectBlock(block.clientId);
@@ -657,13 +566,13 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		});
 	};
 
-	const generateFormatValue = () => {
+	const generateFormatValue = node => {
 		const formatElement = {
 			multilineTag: isList ? 'li' : undefined,
 			multilineWrapperTags: isList ? typeOfList : undefined,
 			__unstableIsEditableTree: true,
 		};
-		const formatValue = getFormatValue(formatElement);
+		const formatValue = getFormatValue(formatElement, node);
 
 		return formatValue;
 	};

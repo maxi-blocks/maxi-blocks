@@ -9,7 +9,6 @@ const { Fragment } = wp.element;
  */
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import ShapeDivider from '../../components/shape-divider/newShapeDivider';
 
 /**
  * External dependencies
@@ -62,21 +61,9 @@ const save = props => {
 					])}
 					blockClassName={uniqueID}
 				/>
-				{attributes['shape-divider-top-status'] && (
-					<ShapeDivider
-						{...getGroupAttributes(attributes, 'shapeDivider')}
-						location='top'
-					/>
-				)}
 				<div className='maxi-group-block__group'>
 					<InnerBlocks.Content />
 				</div>
-				{attributes['shape-divider-bottom-status'] && (
-					<ShapeDivider
-						{...getGroupAttributes(attributes, 'shapeDivider')}
-						location='bottom'
-					/>
-				)}
 			</section>
 		</Fragment>
 	);

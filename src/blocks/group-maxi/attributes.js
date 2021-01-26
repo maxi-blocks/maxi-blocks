@@ -40,7 +40,6 @@ const attributes = {
 	...newAttributes.boxShadowHover,
 	...newAttributes.margin,
 	...newAttributes.padding,
-	...newAttributes.shapeDivider,
 	...newAttributes.motion,
 	...newAttributes.entrance,
 	...newAttributes.parallax,

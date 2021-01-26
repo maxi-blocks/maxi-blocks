@@ -11,8 +11,6 @@ import {
 	getBackgroundStyles,
 	getMarginStyles,
 	getPaddingStyles,
-	getShapeDividerStyles,
-	getShapeDividerSVGStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -92,46 +90,6 @@ const getStyles = props => {
 	let response = {
 		[uniqueID]: getNormalObject(props),
 		[`${uniqueID}:hover`]: getHoverObject(props),
-		[`${uniqueID} .maxi-shape-divider__top`]: {
-			shapeDivider: {
-				...getShapeDividerStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'top'
-				),
-			},
-		},
-		[`${uniqueID} .maxi-shape-divider__top svg`]: {
-			shapeDivider: {
-				...getShapeDividerSVGStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'top'
-				),
-			},
-		},
-		[`${uniqueID} .maxi-shape-divider__bottom`]: {
-			shapeDivider: {
-				...getShapeDividerStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'bottom'
-				),
-			},
-		},
-		[`${uniqueID} .maxi-shape-divider__bottom svg`]: {
-			shapeDivider: {
-				...getShapeDividerSVGStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'bottom'
-				),
-			},
-		},
 	};
 
 	response = {

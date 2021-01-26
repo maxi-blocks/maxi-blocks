@@ -20,7 +20,6 @@ import BorderControl from '../../components/border-control/newBorderControl';
 import BoxShadowControl from '../../components/box-shadow-control/newBoxShadowControl';
 import AxisControl from '../../components/axis-control/newAxisControl';
 import BackgroundControl from '../../components/new-background-control';
-import ShapeDividerControl from '../../components/shape-divider-control/newShapeDividerControl';
 import MotionControl from '../../components/new-motion-control';
 import EntranceAnimationControl from '../../components/entrance-animation-control/newEntranceControl';
 import TransformControl from '../../components/new-transform-control';
@@ -485,23 +484,6 @@ const Inspector = props => {
 													setAttributes({
 														extraClassName,
 													})
-												}
-											/>
-										),
-									},
-									{
-										label: __(
-											'Shape Divider',
-											'maxi-blocks'
-										),
-										content: (
-											<ShapeDividerControl
-												{...getGroupAttributes(
-													attributes,
-													'shapeDivider'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
 												}
 											/>
 										),

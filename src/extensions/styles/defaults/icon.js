@@ -3,6 +3,9 @@
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+import padding from './padding';
+import { border, borderWidth, borderRadius } from './border';
+
 export const icon = (() => {
 	let response = {};
 	breakpoints.forEach(breakpoint => {
@@ -71,43 +74,14 @@ export const icon = (() => {
 
 export const iconPadding = (() => {
 	let response = {};
-	breakpoints.forEach(breakpoint => {
-		response = {
-			...response,
-			[`icon-padding-top-${breakpoint}`]: {
-				type: 'string',
-				default: '',
-			},
-			[`icon-padding-right-${breakpoint}`]: {
-				type: 'string',
-				default: '',
-			},
-			[`icon-padding-bottom-${breakpoint}`]: {
-				type: 'string',
-				default: '',
-			},
-			[`icon-padding-left-${breakpoint}`]: {
-				type: 'string',
-				default: '',
-			},
-			[`icon-padding-sync-${breakpoint}`]: {
-				type: 'boolean',
-				default: '',
-			},
-			[`icon-padding-unit-${breakpoint}`]: {
-				type: 'string',
-				default: '',
-			},
-			[`icon-padding-sync-${breakpoint}`]: {
-				type: 'boolean',
-				default: '',
-			},
-			[`icon-padding-unit-${breakpoint}`]: {
-				type: 'string',
-				default: '',
-			},
-		};
+
+	Object.keys(padding).forEach(key => {
+		const newKey = `icon-${key}`;
+		const value = { ...padding[key] };
+
+		response[newKey] = value;
 	});
+
 	response = {
 		...response,
 		'icon-padding-top-general': {
@@ -126,96 +100,36 @@ export const iconPadding = (() => {
 			type: 'string',
 			default: 20,
 		},
-		'icon-padding-sync-general': {
-			type: 'boolean',
-			default: true,
-		},
-		'icon-padding-unit-general': {
-			type: 'string',
-			default: 'px',
-		},
 	};
 
 	return response;
 })();
 
 export const iconBorder = (() => {
-	let response = {};
-	breakpoints.forEach(breakpoint => {
-		response = {
-			...response,
-			[`icon-border-color-${breakpoint}`]: {
-				type: 'string',
-				default: '',
-			},
-			[`icon-border-style-${breakpoint}`]: {
-				type: 'string',
-				default: '',
-			},
-		};
+	const response = {};
+
+	Object.keys(border).forEach(key => {
+		const newKey = `icon-${key}`;
+		const value = { ...border[key] };
+
+		response[newKey] = value;
 	});
-	response = {
-		...response,
-		'icon-border-color-general': {
-			type: 'string',
-			default: '#ffffff',
-		},
-		'icon-border-style-general': {
-			type: 'string',
-			default: 'none',
-		},
-	};
+
 	return response;
 })();
 
 export const iconBorderWidth = (() => {
-	let response = {};
-	breakpoints.forEach(breakpoint => {
-		response = {
-			...response,
-			[`icon-border-top-width-${breakpoint}`]: {
-				type: 'number',
-				default: '',
-			},
-			[`icon-border-right-width-${breakpoint}`]: {
-				type: 'number',
-				default: '',
-			},
-			[`icon-border-bottom-width-${breakpoint}`]: {
-				type: 'number',
-				default: '',
-			},
-			[`icon-border-left-width-${breakpoint}`]: {
-				type: 'number',
-				default: '',
-			},
-			[`icon-border-sync-width-${breakpoint}`]: {
-				type: 'boolean',
-				default: '',
-			},
-			[`icon-border-unit-width-${breakpoint}`]: {
-				type: 'string',
-				default: '',
-			},
-		};
-	});
+	const response = {};
 
-	response = {
-		...response,
-		'icon-border-sync-width-general': {
-			type: 'boolean',
-			default: true,
-		},
-		'icon-border-unit-width-general': {
-			type: 'string',
-			default: 'px',
-		},
-	};
+	Object.keys(borderWidth).forEach(key => {
+		const newKey = `icon-${key}`;
+		const value = { ...borderWidth[key] };
+
+		response[newKey] = value;
+	});
 
 	return response;
 })();
-
-import { borderRadius } from './border';
 
 export const iconBorderRadius = (() => {
 	const response = {};

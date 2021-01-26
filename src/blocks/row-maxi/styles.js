@@ -67,7 +67,7 @@ const getNormalObject = props => {
 
 	if (!isEmpty(props.verticalAlign))
 		response.row.general['align-items'] = props.verticalAlign;
-	console.log(response);
+
 	return response;
 };
 

@@ -226,14 +226,13 @@ const FontIconControl = (props, isHover = false) => {
 									setActiveOption('iconColor');
 								if (item === 'backgroundColor') {
 									onChange({
-										['icon-background-active-media']:
-											'color',
+										'icon-background-active-media': 'color',
 									});
 									setActiveOption('backgroundColor');
 								}
 								if (item === 'backgroundGradient') {
 									onChange({
-										['icon-background-active-media']:
+										'icon-background-active-media':
 											'gradient',
 									});
 									setActiveOption('backgroundGradient');

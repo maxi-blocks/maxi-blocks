@@ -39,12 +39,6 @@ const applyLinkFormat = ({
 			'text-decoration': 'underline',
 		},
 	});
-
-	// return {
-	// 	typography: newTypography,
-	// 	content: newContent,
-	// 	formatValue: newFormatValue,
-	// };
 };
 
 export default applyLinkFormat;

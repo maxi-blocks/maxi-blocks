@@ -17,9 +17,12 @@ import getMultiFormatObj from './getMultiFormatObj';
 import { inRange, cloneDeep } from 'lodash';
 
 /**
- * General
+ * Generates custom format name
+ *
+ * @param {boolean} isHover 			Is the requested typography under hover state
+ *
+ * @returns {string} Custom format name
  */
-// const formatName = 'maxi-blocks/text-custom';
 const getFormatType = isHover => {
 	return `maxi-blocks/text-custom${isHover ? '-hover' : ''}`;
 };
@@ -64,9 +67,9 @@ const getFormatClassName = (formatValue, typography, isHover) => {
  *
  * @param {Object} 	[$0]					Optional named arguments.
  * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {string} 	[$0.formatName]			RichText format type
  * @param {boolean} [$0.isList]				Text Maxi block has list mode active
  * @param {string} 	[$0.formatClassName]	Maxi Custom format className
+ * @param {boolean} isHover 			Is the requested typography under hover state
  *
  * @returns {string} Format applied content
  */
@@ -521,8 +524,6 @@ const setFormatWithClass = ({
 		isHover,
 		isList,
 	});
-
-	// if (isHover) console.log(newTypography);
 
 	return {
 		...newTypography,

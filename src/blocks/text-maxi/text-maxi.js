@@ -48,5 +48,5 @@ registerBlockType('maxi-blocks/text-maxi', {
 		};
 	},
 	edit,
-	save: () => null,
+	save,
 });

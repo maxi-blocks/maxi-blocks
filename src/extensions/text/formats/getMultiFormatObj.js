@@ -8,6 +8,7 @@ import { inRange, compact } from 'lodash';
  * and the positions for every one of each
  *
  * @param {Object} formatValue 			RichText format value
+ * @param {boolean} isHover 			Is the requested typography under hover state
  *
  * @returns {Object} Classes with its positions
  */

@@ -12,6 +12,7 @@ import getCurrentFormatClassName from './getCurrentFormatClassName';
  * @param {Object} 	[$0.typography]			MaxiBlocks typography
  * @param {Object} 	[$0.prop]				Typography property requested
  * @param {boolean} [$0.breakpoint]			Device type breakpoint
+ * @param {boolean} isHover 			Is the requested typography under hover state
  *
  * @returns {*} Requested property
  */

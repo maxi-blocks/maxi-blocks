@@ -7,7 +7,7 @@ const { getActiveFormat } = wp.richText;
  * Retrieves the current className of the 'maxi
  *
  * @param {Object} formatValue  		RichText format value
- * @param {string} formatName 			Format type
+ * @param {boolean} isHover 			Is the requested typography under hover state
  *
  * @returns {string} Current className for Maxi Custom format
  */

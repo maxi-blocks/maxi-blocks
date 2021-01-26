@@ -13,7 +13,6 @@ import {
 	AccordionControl,
 	BlockStylesControl,
 	SettingTabsControl,
-	ColumnPattern,
 	FancyRadioControl,
 	CustomLabel,
 } from '../../components';
@@ -28,17 +27,16 @@ import PositionControl from '../../components/position-control/newPositionContro
 import ResponsiveControl from '../../components/responsive-control/newResponsiveControl';
 import ZIndexControl from '../../components/zindex-control/newIndexControl';
 import OpacityControl from '../../components/opacity-control/newOpacityControl';
+import ColumnPattern from '../../components/column-pattern/newColumnPattern';
 
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
-
-import { getDefaultProp } from '../../utils';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType, setAttributes, clientId, name } = props;
+	const { attributes, deviceType, setAttributes, clientId, name } = props;
 	const {
 		customLabel,
 		uniqueID,
@@ -101,14 +99,14 @@ const Inspector = props => {
 													<ColumnPattern
 														clientId={clientId}
 														blockName={name}
-														rowPattern={rowPattern}
-														onChange={rowPattern => {
-															setAttributes({
-																rowPattern,
-															});
-														}}
+														{...getGroupAttributes(
+															attributes,
+															'rowPattern'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
 														breakpoint={deviceType}
-														{...props}
 													/>
 													<SelectControl
 														label={__(
@@ -681,9 +679,12 @@ const Inspector = props => {
 										label: __('Transform', 'maxi-blocks'),
 										content: (
 											<TransformControl
-												transform={transform}
-												onChange={transform =>
-													setAttributes({ transform })
+												{...getGroupAttributes(
+													attributes,
+													'transform'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
 												}
 												uniqueID={uniqueID}
 												breakpoint={deviceType}
@@ -694,12 +695,14 @@ const Inspector = props => {
 										label: __('Display', 'maxi-blocks'),
 										content: (
 											<DisplayControl
-												display={display}
-												onChange={display =>
-													setAttributes({ display })
+												{...getGroupAttributes(
+													attributes,
+													'display'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
 												}
 												breakpoint={deviceType}
-												defaultDisplay='flex'
 											/>
 										),
 									},
@@ -707,13 +710,12 @@ const Inspector = props => {
 										label: __('Position', 'maxi-blocks'),
 										content: (
 											<PositionControl
-												position={position}
-												defaultPosition={getDefaultProp(
-													clientId,
+												{...getGroupAttributes(
+													attributes,
 													'position'
 												)}
-												onChange={position =>
-													setAttributes({ position })
+												onChange={obj =>
+													setAttributes(obj)
 												}
 												breakpoint={deviceType}
 											/>
@@ -723,15 +725,12 @@ const Inspector = props => {
 										label: __('Breakpoint', 'maxi-blocks'),
 										content: (
 											<ResponsiveControl
-												breakpoints={breakpoints}
-												defaultBreakpoints={getDefaultProp(
-													clientId,
+												{...getGroupAttributes(
+													attributes,
 													'breakpoints'
 												)}
-												onChange={breakpoints =>
-													setAttributes({
-														breakpoints,
-													})
+												onChange={obj =>
+													setAttributes(obj)
 												}
 												breakpoint={deviceType}
 											/>
@@ -741,13 +740,12 @@ const Inspector = props => {
 										label: __('Z-index', 'maxi-blocks'),
 										content: (
 											<ZIndexControl
-												zIndex={zIndex}
-												defaultZIndex={getDefaultProp(
-													clientId,
+												{...getGroupAttributes(
+													attributes,
 													'zIndex'
 												)}
-												onChange={zIndex =>
-													setAttributes({ zIndex })
+												onChange={obj =>
+													setAttributes(obj)
 												}
 												breakpoint={deviceType}
 											/>
@@ -757,14 +755,18 @@ const Inspector = props => {
 										label: __('Opacity', 'maxi-blocks'),
 										content: (
 											<OpacityControl
-												opacity={opacity}
-												defaultOpacity={getDefaultProp(
-													clientId,
-													'opacity'
+												opacity={
+													attributes[
+														`opacity-${deviceType}`
+													]
+												}
+												defaultOpacity={getDefaultAttribute(
+													`opacity-${deviceType}`,
+													clientId
 												)}
-												onChange={opacity =>
+												onChange={val =>
 													setAttributes({
-														opacity,
+														[`opacity-${deviceType}`]: val,
 													})
 												}
 												breakpoint={deviceType}

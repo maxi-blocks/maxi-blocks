@@ -11,25 +11,17 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 /**
  * Internal dependencies
  */
-import {
-	MaxiBlock,
-	Toolbar,
-	Breadcrumbs,
-	BackgroundDisplayer,
-} from '../../components';
+import { MaxiBlock, Toolbar, Breadcrumbs } from '../../components';
 import Inspector from './inspector';
 import {
 	getTemplates,
 	getTemplateObject,
 } from '../../extensions/defaults/column-templates';
-import {
-	getBoxShadowObject,
-	getOpacityObject,
-	getTransformObject,
-	setBackgroundStyles,
-	getLastBreakpointValue,
-} from '../../utils';
+import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import RowContext from './context';
+import getStyles from './styles';
 
 /**
  * External dependencies
@@ -41,7 +33,13 @@ import { isEmpty, isNil, uniqueId } from 'lodash';
  * InnerBlocks version
  */
 const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const { children, background, className, maxiBlockClass, dataAlign } = props;
+	const {
+		children,
+		className,
+		maxiBlockClass,
+		dataAlign,
+		background,
+	} = props;
 
 	return (
 		<__experimentalBlock.div
@@ -50,7 +48,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			data-align={dataAlign}
 			data-gx_initial_block_class={maxiBlockClass}
 		>
-			<BackgroundDisplayer background={background} />
+			<BackgroundDisplayer {...background} />
 			{children}
 		</__experimentalBlock.div>
 	);
@@ -62,6 +60,10 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 class edit extends MaxiBlock {
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
+	}
+
 	state = {
 		displayHandlers: false,
 	};
@@ -74,110 +76,9 @@ class edit extends MaxiBlock {
 		}
 	}
 
-	get getObject() {
-		const { uniqueID, background, backgroundHover } = this.props.attributes;
-
-		let response = {
-			[uniqueID]: this.getNormalObject,
-			[`${uniqueID}:hover`]: this.getHoverObject,
-		};
-
-		response = Object.assign(
-			response,
-			setBackgroundStyles({
-				target: uniqueID,
-				background: { ...background },
-				backgroundHover: { ...backgroundHover },
-			})
-		);
-
-		return response;
-	}
-
-	get getNormalObject() {
-		const {
-			horizontalAlign,
-			verticalAlign,
-			opacity,
-			border,
-			size,
-			boxShadow,
-			margin,
-			padding,
-			zIndex,
-			position,
-			display,
-			transform,
-			fullWidth,
-			sizeContainer,
-		} = this.props.attributes;
-
-		const response = {
-			boxShadow: { ...getBoxShadowObject(boxShadow) },
-			border,
-			borderWidth: border.borderWidth,
-			borderRadius: border.borderRadius,
-			size,
-			margin,
-			padding,
-			opacity: { ...getOpacityObject(opacity) },
-			zIndex,
-			position,
-			positionOptions: position.options,
-			display,
-			transform: getTransformObject(transform),
-			row: {
-				label: 'Row',
-				general: {},
-			},
-		};
-
-		if (fullWidth !== 'full')
-			response['sizeContainer'] = sizeContainer;
-
-		if (!isNil(horizontalAlign))
-			response.row.general['justify-content'] = horizontalAlign;
-		if (!isNil(verticalAlign))
-			response.row.general['align-items'] = verticalAlign;
-		return response;
-	}
-
-	get getHoverObject() {
-		const { boxShadowHover, borderHover } = this.props.attributes;
-
-		const response = {
-			borderWidthHover: borderHover.borderWidth,
-			borderRadiusHover: borderHover.borderRadius,
-		};
-
-		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(boxShadowHover),
-			};
-		}
-
-		if (!isNil(borderHover) && !!borderHover.status) {
-			response.borderHover = {
-				...borderHover,
-			};
-		}
-
-		return response;
-	}
-
 	render() {
 		const {
-			attributes: {
-				uniqueID,
-				blockStyle,
-				extraClassName,
-				defaultBlockStyle,
-				blockStyleBackground,
-				background,
-				rowPattern,
-				display,
-				fullWidth,
-			},
+			attributes,
 			clientId,
 			loadTemplate,
 			selectOnClick,
@@ -187,13 +88,23 @@ class edit extends MaxiBlock {
 			setAttributes,
 			deviceType,
 		} = this.props;
+		const {
+			uniqueID,
+			blockStyle,
+			extraClassName,
+			defaultBlockStyle,
+			blockStyleBackground,
+			background,
+			rowPattern,
+			fullWidth,
+		} = attributes;
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-row-block',
-			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
-				'maxi-block-display-none',
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
+				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
@@ -226,7 +137,22 @@ class edit extends MaxiBlock {
 						className: classes,
 						dataAlign: fullWidth,
 						maxiBlockClass: defaultBlockStyle,
-						background,
+						background: {
+							...getGroupAttributes(attributes, [
+								'background',
+								'backgroundColor',
+								'backgroundImage',
+								'backgroundVideo',
+								'backgroundGradient',
+								'backgroundSVG',
+								'backgroundHover',
+								'backgroundColorHover',
+								'backgroundImageHover',
+								'backgroundVideoHover',
+								'backgroundGradientHover',
+								'backgroundSVGHover',
+							]),
+						},
 					}}
 					allowedBlocks={ALLOWED_BLOCKS}
 					orientation='horizontal'

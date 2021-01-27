@@ -66,6 +66,7 @@ const allowedBlocks = [
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/container-maxi',
+	'maxi-blocks/group-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/font-icon-maxi',
 ];
@@ -75,6 +76,7 @@ const flexBlocks = [
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
+	'maxi-blocks/group-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/image-maxi',
@@ -102,6 +104,10 @@ const MaxiToolbar = props => {
 		fullWidth,
 		isFirstOnHierarchy,
 		linkSettings,
+		isList,
+		content,
+		typeOfList,
+		textLevel,
 	} = attributes;
 	const highlight = { ...props.highlight };
 	const {
@@ -134,9 +140,11 @@ const MaxiToolbar = props => {
 
 		if (
 			currentBlock === 'maxi-blocks/container-maxi' ||
+			currentBlock === 'maxi-blocks/group-maxi' ||
 			currentBlock === 'maxi-blocks/row-maxi' ||
 			currentBlock === 'maxi-blocks/column-maxi' ||
 			rootBlock === 'maxi-blocks/container-maxi' ||
+			rootBlock === 'maxi-blocks/group-maxi' ||
 			rootBlock === 'maxi-blocks/row-maxi' ||
 			rootBlock === 'maxi-blocks/column-maxi'
 		)
@@ -202,13 +210,9 @@ const MaxiToolbar = props => {
 								setAttributes({ lineVertical })
 							}
 						/> */}
-						{/* <TextOptions
+						<TextOptions
+							{...getGroupAttributes(attributes, 'typography')}
 							blockName={name}
-							typography={typography}
-							defaultTypography={getDefaultProp(
-								clientId,
-								'typography'
-							)}
 							onChange={obj => setAttributes(obj)}
 							node={anchorRef}
 							content={content}
@@ -216,7 +220,8 @@ const MaxiToolbar = props => {
 							isList={isList}
 							typeOfList={typeOfList}
 							formatValue={formatValue}
-						/> */}
+							textLevel={textLevel}
+						/>
 						{/* {!!textHighlight && (
 							<TextColor
 								blockName={name}
@@ -236,31 +241,32 @@ const MaxiToolbar = props => {
 							onChange={alignment => setAttributes({ alignment })}
 							breakpoint={deviceType}
 						/> */}
-						{/* <TextLevel
+						<TextLevel
+							{...getGroupAttributes(attributes, [
+								'typography',
+								'typographyHover',
+							])}
 							blockName={name}
 							textLevel={textLevel}
-							typography={typography}
-							typographyHover={typographyHover}
-							margin={margin}
 							isList={isList}
 							onChange={obj => setAttributes(obj)}
-						/> */}
-						{/* <TextBold
-							typography={typography}
+						/>
+						<TextBold
+							{...getGroupAttributes(attributes, 'typography')}
 							formatValue={formatValue}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
 							breakpoint={deviceType}
-						/> */}
-						{/* <TextItalic
-							typography={typography}
+						/>
+						<TextItalic
+							{...getGroupAttributes(attributes, 'typography')}
 							formatValue={formatValue}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
 							breakpoint={deviceType}
-						/> */}
+						/>
 						{/* <RowSettings
 							blockName={name}
 							horizontalAlign={horizontalAlign}

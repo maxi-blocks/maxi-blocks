@@ -13,6 +13,7 @@ import setFormatWithClass from './setFormatWithClass';
  * External dependencies
  */
 import { isNil, chunk } from 'lodash';
+import getGroupAttributes from '../../styles/getGroupAttributes';
 
 /**
  * Check if the RichText format value is formatted with requested format
@@ -97,24 +98,20 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
 		})[0].attributes;
 		newFormatValue = removeFormat(newFormatValue, 'core/link');
 
-		const {
-			typography: preformattedTypography,
-			content: preformattedContent,
-			formatValue: preformattedFormatValue,
-		} = applyLinkFormat({
+		const linkObj = applyLinkFormat({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			linkAttributes: newAttributes,
 			isList,
 		});
 
-		newTypography = preformattedTypography;
-		newContent = preformattedContent;
-		newFormatValue = preformattedFormatValue;
+		newTypography = getGroupAttributes(linkObj, 'typography');
+		newContent = linkObj.content;
+		newFormatValue = linkObj.formatValue;
 	});
 
 	return {
-		typography: newTypography,
+		...newTypography,
 		content: newContent,
 		formatValue: newFormatValue,
 	};
@@ -234,26 +231,18 @@ const setCustomFormatsWhenPaste = ({
 	let newFormatValue = { ...formatValue };
 
 	if (isLinkUnformatted) {
-		const {
-			typography: linkFormattedTypography,
-			content: linkFormattedContent,
-			formatValue: linkFormattedFormatValue,
-		} = setLinkFormats({
+		const linkObj = setLinkFormats({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			isList,
 		});
 
-		newTypography = linkFormattedTypography;
-		newContent = linkFormattedContent;
-		newFormatValue = linkFormattedFormatValue;
+		newTypography = getGroupAttributes(linkObj, 'typography');
+		newContent = linkObj.content;
+		newFormatValue = linkObj.formatValue;
 	}
 	if (isBoldUnformatted) {
-		const {
-			typography: boldFormattedTypography,
-			content: boldFormattedContent,
-			formatValue: boldFormattedFormatValue,
-		} = setFormat({
+		const boldObj = setFormat({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/bold',
@@ -261,16 +250,12 @@ const setCustomFormatsWhenPaste = ({
 			isList,
 		});
 
-		newTypography = boldFormattedTypography;
-		newContent = boldFormattedContent;
-		newFormatValue = boldFormattedFormatValue;
+		newTypography = getGroupAttributes(boldObj, 'typography');
+		newContent = boldObj.content;
+		newFormatValue = boldObj.formatValue;
 	}
 	if (isItalicUnformatted) {
-		const {
-			typography: italicFormattedTypography,
-			content: italicFormattedContent,
-			formatValue: italicFormattedFormatValue,
-		} = setFormat({
+		const italicObj = setFormat({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/italic',
@@ -278,16 +263,12 @@ const setCustomFormatsWhenPaste = ({
 			isList,
 		});
 
-		newTypography = italicFormattedTypography;
-		newContent = italicFormattedContent;
-		newFormatValue = italicFormattedFormatValue;
+		newTypography = getGroupAttributes(italicObj, 'typography');
+		newContent = italicObj.content;
+		newFormatValue = italicObj.formatValue;
 	}
 	if (isUnderlineUnformatted) {
-		const {
-			typography: underlineFormattedTypography,
-			content: underlineFormattedContent,
-			formatValue: underlineFormattedFormatValue,
-		} = setFormat({
+		const underlineObj = setFormat({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/underline',
@@ -295,16 +276,12 @@ const setCustomFormatsWhenPaste = ({
 			isList,
 		});
 
-		newTypography = underlineFormattedTypography;
-		newContent = underlineFormattedContent;
-		newFormatValue = underlineFormattedFormatValue;
+		newTypography = getGroupAttributes(underlineObj, 'typography');
+		newContent = underlineObj.content;
+		newFormatValue = underlineObj.formatValue;
 	}
 	if (isStrikethroughUnformatted) {
-		const {
-			typography: strikethroughFormattedTypography,
-			content: strikethroughFormattedContent,
-			formatValue: strikethroughFormattedFormatValue,
-		} = setFormat({
+		const strikethoughObj = setFormat({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/strikethrough',
@@ -312,16 +289,12 @@ const setCustomFormatsWhenPaste = ({
 			isList,
 		});
 
-		newTypography = strikethroughFormattedTypography;
-		newContent = strikethroughFormattedContent;
-		newFormatValue = strikethroughFormattedFormatValue;
+		newTypography = getGroupAttributes(strikethoughObj, 'typography');
+		newContent = strikethoughObj.content;
+		newFormatValue = strikethoughObj.formatValue;
 	}
 	if (isSubscriptUnformatted) {
-		const {
-			typography: subscriptFormattedTypography,
-			content: subscriptFormattedContent,
-			formatValue: subscriptFormattedFormatValue,
-		} = setFormat({
+		const subscriptObj = setFormat({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/subscript',
@@ -329,16 +302,12 @@ const setCustomFormatsWhenPaste = ({
 			isList,
 		});
 
-		newTypography = subscriptFormattedTypography;
-		newContent = subscriptFormattedContent;
-		newFormatValue = subscriptFormattedFormatValue;
+		newTypography = getGroupAttributes(subscriptObj, 'typography');
+		newContent = subscriptObj.content;
+		newFormatValue = subscriptObj.formatValue;
 	}
 	if (isSuperscriptUnformatted) {
-		const {
-			typography: superscriptFormattedTypography,
-			content: superscriptFormattedContent,
-			formatValue: superscriptFormattedFormatValue,
-		} = setFormat({
+		const superscriptObj = setFormat({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/superscript',
@@ -346,16 +315,16 @@ const setCustomFormatsWhenPaste = ({
 			isList,
 		});
 
-		newTypography = superscriptFormattedTypography;
-		newContent = superscriptFormattedContent;
-		newFormatValue = superscriptFormattedFormatValue;
+		newTypography = getGroupAttributes(superscriptObj, 'typography');
+		newContent = superscriptObj.content;
+		newFormatValue = superscriptObj.formatValue;
 	}
 
 	newContent = cleanListContent(newContent || content, isList, typeOfList);
 
 	if (newContent) {
 		return {
-			typography: newTypography,
+			...newTypography,
 			content: newContent,
 			formatValue: newFormatValue,
 		};

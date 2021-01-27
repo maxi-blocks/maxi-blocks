@@ -8,6 +8,7 @@ const { Button, BaseControl } = wp.components;
 /**
  * Internal dependencies
  */
+import defaultTypography from '../../../../extensions/text';
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
 import TextFormatStrikethrough from '../text-format-strikethrough';
@@ -20,6 +21,7 @@ import {
 	setFormat,
 	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
+import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
  * External dependencies
@@ -36,26 +38,38 @@ import { toolbarType, reset } from '../../../../icons';
  * TextOptions
  */
 const TextOptions = props => {
-	const { blockName, onChange, breakpoint, isList, formatValue } = props;
+	const {
+		blockName,
+		onChange,
+		breakpoint,
+		isList,
+		formatValue,
+		textLevel,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typography = { ...props.typography };
-	const defaultTypography = { ...props.defaultTypography };
+	const typography = getGroupAttributes(props, 'typography');
+
+	const getValue = prop => {
+		return getCustomFormatValue({
+			typography,
+			formatValue,
+			prop,
+			breakpoint,
+		});
+	};
 
 	const onChangeFormat = value => {
-		const { typography: newTypography, content: newContent } = setFormat({
+		const obj = setFormat({
 			formatValue,
 			isList,
-			typography,
+			typography: getGroupAttributes(props, 'typography'),
 			value,
 			breakpoint,
 		});
 
-		onChange({
-			typography: newTypography,
-			...(newContent && { content: newContent }),
-		});
+		onChange(obj);
 	};
 
 	return (
@@ -70,12 +84,7 @@ const TextOptions = props => {
 						<FontFamilySelector
 							className='toolbar-item__popover__font-options__font__selector'
 							theme='dark'
-							font={getCustomFormatValue({
-								typography,
-								formatValue,
-								prop: 'font-family',
-								breakpoint,
-							})}
+							font={getValue('font-family')}
 							onChange={font => {
 								onChangeFormat({
 									'font-family': font.value,
@@ -88,9 +97,13 @@ const TextOptions = props => {
 							onClick={() => {
 								onChangeFormat({
 									'font-family':
-										defaultTypography['font-family'],
+										defaultTypography[textLevel][
+											`font-family-${breakpoint}`
+										],
 									'font-options':
-										defaultTypography['font-options'],
+										defaultTypography[textLevel][
+											`font-options-${breakpoint}`
+										],
 								});
 							}}
 							isSmall
@@ -111,24 +124,13 @@ const TextOptions = props => {
 						>
 							<input
 								type='number'
-								value={trim(
-									getCustomFormatValue({
-										typography,
-										formatValue,
-										prop: 'font-size',
-										breakpoint,
-									})
-								)}
+								value={trim(getValue('font-size'))}
 								onChange={e => {
 									const newFontSize = isEmpty(e.target.value)
 										? ''
 										: Number(e.target.value);
 
 									onChangeFormat({
-										'font-sizeUnit':
-											typography[breakpoint][
-												'font-sizeUnit'
-											],
 										'font-size': newFontSize,
 									});
 								}}
@@ -137,13 +139,13 @@ const TextOptions = props => {
 								className='components-maxi-control__reset-button'
 								onClick={() => {
 									onChangeFormat({
-										'font-sizeUnit':
-											defaultTypography[breakpoint][
-												'font-sizeUnit'
+										'font-size-unit':
+											defaultTypography[textLevel][
+												`font-size-unit-${breakpoint}`
 											],
 										'font-size':
-											defaultTypography[breakpoint][
-												'font-size'
+											defaultTypography[textLevel][
+												`font-size-${breakpoint}`
 											],
 									});
 								}}
@@ -164,24 +166,13 @@ const TextOptions = props => {
 						>
 							<input
 								type='number'
-								value={trim(
-									getCustomFormatValue({
-										typography,
-										formatValue,
-										prop: 'line-height',
-										breakpoint,
-									})
-								)}
+								value={trim(getValue('line-height'))}
 								onChange={e => {
 									const newFontSize = isEmpty(e.target.value)
 										? ''
 										: Number(e.target.value);
 
 									onChangeFormat({
-										'line-heightUnit':
-											typography[breakpoint][
-												'line-heightUnit'
-											],
 										'line-height': newFontSize,
 									});
 								}}
@@ -190,13 +181,13 @@ const TextOptions = props => {
 								className='components-maxi-control__reset-button'
 								onClick={() => {
 									onChangeFormat({
-										'line-heightUnit':
-											defaultTypography[breakpoint][
-												'line-heightUnit'
+										'line-height-unit':
+											defaultTypography[textLevel][
+												`line-height-unit-${breakpoint}`
 											],
 										'line-height':
-											defaultTypography[breakpoint][
-												'line-height'
+											defaultTypography[textLevel][
+												`line-height-${breakpoint}`
 											],
 									});
 								}}
@@ -217,24 +208,13 @@ const TextOptions = props => {
 						>
 							<input
 								type='number'
-								value={trim(
-									getCustomFormatValue({
-										typography,
-										formatValue,
-										prop: 'letter-spacing',
-										breakpoint,
-									})
-								)}
+								value={trim(getValue('letter-spacing'))}
 								onChange={e => {
 									const newFontSize = isEmpty(e.target.value)
 										? ''
 										: Number(e.target.value);
 
 									onChangeFormat({
-										'letter-spacingUnit':
-											typography[breakpoint][
-												'letter-spacingUnit'
-											],
 										'letter-spacing': newFontSize,
 									});
 								}}
@@ -243,13 +223,13 @@ const TextOptions = props => {
 								className='components-maxi-control__reset-button'
 								onClick={() => {
 									onChangeFormat({
-										'letter-spacingUnit':
-											defaultTypography[breakpoint][
-												'letter-spacingUnit'
+										'letter-spacing-unit':
+											defaultTypography[textLevel][
+												`letter-spacing-unit-${breakpoint}`
 											],
 										'letter-spacing':
-											defaultTypography[breakpoint][
-												'letter-spacing'
+											defaultTypography[textLevel][
+												`letter-spacing-${breakpoint}`
 											],
 									});
 								}}

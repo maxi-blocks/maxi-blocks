@@ -13,53 +13,61 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block size properties
  */
-const getSizeStyles = obj => {
+const getSizeStyles = (obj, prefix = '') => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {
-			...(obj[`max-width-${breakpoint}`] && {
+			...(obj[`${prefix}max-width-${breakpoint}`] && {
 				'max-width':
-					obj[`max-width-${breakpoint}`] +
+					obj[`${prefix}max-width-${breakpoint}`] +
 					getLastBreakpointAttribute(
-						'max-width-unit',
+						`${prefix}max-width-unit`,
 						breakpoint,
 						obj
 					),
 			}),
-			...(obj[`width-${breakpoint}`] && {
+			...(obj[`${prefix}width-${breakpoint}`] && {
 				width:
-					obj[`width-${breakpoint}`] +
-					getLastBreakpointAttribute('width-unit', breakpoint, obj),
+					obj[`${prefix}width-${breakpoint}`] +
+					getLastBreakpointAttribute(
+						`${prefix}width-unit`,
+						breakpoint,
+						obj
+					),
 			}),
-			...(obj[`min-width-${breakpoint}`] && {
+			...(obj[`${prefix}min-width-${breakpoint}`] && {
 				'min-width':
-					obj[`min-width-${breakpoint}`] +
+					obj[`${prefix}min-width-${breakpoint}`] +
 					getLastBreakpointAttribute(
-						'min-width-unit',
+						`${prefix}min-width-unit`,
 						breakpoint,
 						obj
 					),
 			}),
-			...(obj[`max-height-${breakpoint}`] && {
+			...(obj[`${prefix}max-height-${breakpoint}`] && {
 				'max-height':
-					obj[`max-height-${breakpoint}`] +
+					obj[`${prefix}max-height-${breakpoint}`] +
 					getLastBreakpointAttribute(
-						'max-height-unit',
+						`${prefix}max-height-unit`,
 						breakpoint,
 						obj
 					),
 			}),
-			...(obj[`height-${breakpoint}`] && {
+			...(obj[`${prefix}height-${breakpoint}`] && {
 				height:
-					obj[`height-${breakpoint}`] +
-					getLastBreakpointAttribute('height-unit', breakpoint, obj),
-			}),
-			...(obj[`min-height-${breakpoint}`] && {
-				'min-height':
-					obj[`min-height-${breakpoint}`] +
+					obj[`${prefix}height-${breakpoint}`] +
 					getLastBreakpointAttribute(
-						'min-height-unit',
+						`${prefix}height-unit`,
+						breakpoint,
+						obj
+					),
+			}),
+			...(obj[`${prefix}min-height-${breakpoint}`] && {
+				'min-height':
+					obj[`${prefix}min-height-${breakpoint}`] +
+					getLastBreakpointAttribute(
+						`${prefix}min-height-unit`,
 						breakpoint,
 						obj
 					),

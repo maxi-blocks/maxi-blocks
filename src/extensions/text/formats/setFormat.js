@@ -25,11 +25,13 @@ const setFormat = ({
 	isHover = false,
 }) => {
 	if (!formatValue || formatValue.start === formatValue.end) {
+		const response = {};
+
 		Object.entries(value).forEach(([key, val]) => {
-			typography[breakpoint][key] = val;
+			response[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] = val;
 		});
 
-		return { typography };
+		return response;
 	}
 
 	return setFormatWithClass({

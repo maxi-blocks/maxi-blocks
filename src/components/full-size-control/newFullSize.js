@@ -168,9 +168,7 @@ const FullSizeControl = props => {
 								props
 							)}
 							defaultUnit={getDefaultAttribute(
-								`${
-									prefix ? prefix : ''
-								}max-width-unit-${breakpoint}`
+								`${prefix}max-width-unit-${breakpoint}`
 							)}
 							onChangeUnit={val =>
 								onChangeValue(`${prefix}max-width-unit`, val)
@@ -189,7 +187,6 @@ const FullSizeControl = props => {
 							minMaxSettings={minMaxSettings}
 						/>
 					)}
-
 					<SizeControl
 						label={__('Min Width', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(
@@ -198,9 +195,7 @@ const FullSizeControl = props => {
 							props
 						)}
 						defaultUnit={getDefaultAttribute(
-							`${
-								prefix ? prefix : ''
-							}min-width-unit-${breakpoint}`
+							`${prefix}min-width-unit-${breakpoint}`
 						)}
 						onChangeUnit={val =>
 							onChangeValue(`${prefix}min-width-unit`, val)
@@ -218,7 +213,6 @@ const FullSizeControl = props => {
 						}
 						minMaxSettings={minMaxSettings}
 					/>
-
 					<SizeControl
 						label={__('Max Height', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(
@@ -227,9 +221,7 @@ const FullSizeControl = props => {
 							props
 						)}
 						defaultUnit={getDefaultAttribute(
-							`${
-								prefix ? prefix : ''
-							}max-height-unit-${breakpoint}`
+							`${prefix}max-height-unit-${breakpoint}`
 						)}
 						onChangeUnit={val =>
 							onChangeValue(`${prefix}max-height-unit`, val)
@@ -247,7 +239,6 @@ const FullSizeControl = props => {
 						}
 						minMaxSettings={minMaxSettings}
 					/>
-
 					<SizeControl
 						label={__('Min Height', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(
@@ -256,9 +247,7 @@ const FullSizeControl = props => {
 							props
 						)}
 						defaultUnit={getDefaultAttribute(
-							`${
-								prefix ? prefix : ''
-							}min-height-unit-${breakpoint}`
+							`${prefix}min-height-unit-${breakpoint}`
 						)}
 						onChangeUnit={val =>
 							onChangeValue(`${prefix}min-height-unit`, val)

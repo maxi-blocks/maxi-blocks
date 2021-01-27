@@ -22,9 +22,11 @@ motionElems.forEach(function (elem) {
 	if (!maxi_custom_data.custom_data) return;
 
 	const motionID = elem.getAttribute('data-motion-id');
+
 	const motionData =
-		maxi_custom_data.custom_data[motionID] !== undefined
-			? maxi_custom_data.custom_data[motionID]
+		maxi_custom_data.custom_data[motionID] !== undefined &&
+		maxi_custom_data.custom_data[motionID].hasOwnProperty('motion')
+			? maxi_custom_data.custom_data[motionID].motion
 			: null;
 
 	const shapeDividerData =

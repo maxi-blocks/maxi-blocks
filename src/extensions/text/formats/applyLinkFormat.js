@@ -30,11 +30,7 @@ const applyLinkFormat = ({
 		attributes: linkAttributes,
 	});
 
-	const {
-		typography: newTypography,
-		content: newContent,
-		formatValue: newFormatValue,
-	} = setFormatWithClass({
+	return setFormatWithClass({
 		formatValue: linkCustomFormatValue,
 		isList,
 		typography,
@@ -43,12 +39,6 @@ const applyLinkFormat = ({
 			'text-decoration': 'underline',
 		},
 	});
-
-	return {
-		typography: newTypography,
-		content: newContent,
-		formatValue: newFormatValue,
-	};
 };
 
 export default applyLinkFormat;

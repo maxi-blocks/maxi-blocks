@@ -16,13 +16,9 @@ import {
 	getIconObject,
 	getAlignmentTextObject,
 } from '../../utils';
-import {
-	MaxiBlock,
-	Toolbar,
-	BackgroundDisplayer,
-	FontIconPicker,
-} from '../../components';
+import { MaxiBlock, Toolbar, FontIconPicker } from '../../components';
 
+import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
 /**
  * External dependencies
  */

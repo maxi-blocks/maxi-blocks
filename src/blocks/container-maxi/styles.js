@@ -25,9 +25,12 @@ const getNormalObject = props => {
 				'borderRadius',
 			]),
 		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
+		size: getSizeStyles(
+			{
+				...getGroupAttributes(props, 'container'),
+			},
+			'container-'
+		),
 		boxShadow: getBoxShadowStyles(
 			{
 				...getGroupAttributes(props, 'boxShadow'),
@@ -182,7 +185,7 @@ const getStyles = props => {
 				'backgroundSVGHover',
 				'borderRadiusHover',
 			]),
-			isHover: !!props['background-hover-status'],
+			isHover: !!props['background-status-hover'],
 		}),
 		...getArrowStyles({
 			target: uniqueID,

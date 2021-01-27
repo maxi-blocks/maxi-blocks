@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../styles/utils';
+import getLastBreakpointValue from '../../styles/getLastBreakpointValue';
 import getCurrentFormatClassName from './getCurrentFormatClassName';
 
 /**
@@ -12,6 +12,7 @@ import getCurrentFormatClassName from './getCurrentFormatClassName';
  * @param {Object} 	[$0.typography]			MaxiBlocks typography
  * @param {Object} 	[$0.prop]				Typography property requested
  * @param {boolean} [$0.breakpoint]			Device type breakpoint
+ * @param {boolean} isHover 			Is the requested typography under hover state
  *
  * @returns {*} Requested property
  */
@@ -20,16 +21,26 @@ const getCustomFormatValue = ({
 	typography,
 	prop,
 	breakpoint,
+	isHover = false,
 }) => {
 	if (formatValue) {
-		const currentClassName = getCurrentFormatClassName(formatValue);
+		const currentClassName = getCurrentFormatClassName(
+			formatValue,
+			isHover
+		);
 
 		if (currentClassName) {
-			if (typography.customFormats[currentClassName]) {
+			if (
+				typography[`custom-formats${isHover ? '-hover' : ''}`][
+					currentClassName
+				]
+			) {
 				const responsiveValue = getLastBreakpointValue(
-					typography.customFormats[currentClassName],
 					prop,
-					breakpoint
+					breakpoint,
+					typography[`custom-formats${isHover ? '-hover' : ''}`][
+						currentClassName
+					]
 				);
 
 				if (responsiveValue) return responsiveValue;
@@ -37,7 +48,7 @@ const getCustomFormatValue = ({
 		}
 	}
 
-	return getLastBreakpointValue(typography, prop, breakpoint);
+	return getLastBreakpointValue(prop, breakpoint, typography, isHover);
 };
 
 export default getCustomFormatValue;

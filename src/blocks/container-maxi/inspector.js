@@ -13,7 +13,6 @@ import {
 	AccordionControl,
 	BlockStylesControl,
 	SettingTabsControl,
-	SizeControl,
 	FancyRadioControl,
 	CustomLabel,
 } from '../../components';
@@ -52,25 +51,6 @@ const Inspector = props => {
 		fullWidth,
 		extraClassName,
 	} = attributes;
-
-	const minMaxSettings = {
-		px: {
-			min: 0,
-			max: 3999,
-		},
-		em: {
-			min: 0,
-			max: 999,
-		},
-		vw: {
-			min: 0,
-			max: 999,
-		},
-		'%': {
-			min: 0,
-			max: 100,
-		},
-	};
 
 	return (
 		<InspectorControls>
@@ -150,96 +130,12 @@ const Inspector = props => {
 															}
 														/>
 													)}
+
 													{fullWidth === 'full' ? (
-														<Fragment>
-															<SizeControl
-																label={__(
-																	'Max Width',
-																	'maxi-blocks'
-																)}
-																unit={
-																	attributes[
-																		`container-max-width-unit-${deviceType}`
-																	]
-																}
-																defaultUnit={getDefaultAttribute(
-																	`max-width-unit-${deviceType}`,
-																	clientId
-																)}
-																onChangeUnit={val =>
-																	setAttributes(
-																		{
-																			[`container-max-width-unit-${deviceType}`]: val,
-																		}
-																	)
-																}
-																value={
-																	attributes[
-																		`container-max-width-${deviceType}`
-																	]
-																}
-																default={getDefaultAttribute(
-																	`container-max-width-${deviceType}`,
-																	clientId
-																)}
-																onChangeValue={val =>
-																	setAttributes(
-																		{
-																			[`container-max-width-${deviceType}`]: val,
-																		}
-																	)
-																}
-																minMaxSettings={
-																	minMaxSettings
-																}
-															/>
-															<SizeControl
-																label={__(
-																	'Width',
-																	'maxi-blocks'
-																)}
-																unit={
-																	attributes[
-																		`container-width-unit-${deviceType}`
-																	]
-																}
-																defaultUnit={getDefaultAttribute(
-																	`container-width-unit-${deviceType}`,
-																	clientId
-																)}
-																onChangeUnit={val =>
-																	setAttributes(
-																		{
-																			[`container-width-unit-${deviceType}`]: val,
-																		}
-																	)
-																}
-																value={
-																	attributes[
-																		`container-width-${deviceType}`
-																	]
-																}
-																default={getDefaultAttribute(
-																	`container-width-${deviceType}`,
-																	clientId
-																)}
-																onChangeValue={val =>
-																	setAttributes(
-																		{
-																			[`container-width-${deviceType}`]: val,
-																		}
-																	)
-																}
-																minMaxSettings={
-																	minMaxSettings
-																}
-															/>
-														</Fragment>
-													) : (
 														<FullSizeControl
 															{...getGroupAttributes(
 																attributes,
-																'size'
+																'container'
 															)}
 															onChange={obj =>
 																setAttributes(
@@ -249,6 +145,26 @@ const Inspector = props => {
 															breakpoint={
 																deviceType
 															}
+															prefix='container-'
+															hideWidth
+															hideMaxWidth
+														/>
+													) : (
+														<FullSizeControl
+															{...getGroupAttributes(
+																attributes,
+																'container'
+															)}
+															onChange={obj =>
+																setAttributes(
+																	obj
+																)
+															}
+															breakpoint={
+																deviceType
+															}
+															prefix='container-'
+															hideMaxWidth
 														/>
 													)}
 												</Fragment>
@@ -321,7 +237,7 @@ const Inspector = props => {
 																		)}
 																		selected={
 																			+attributes[
-																				'background-hover-status'
+																				'background-status-hover'
 																			]
 																		}
 																		options={[
@@ -343,13 +259,13 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-hover-status': !!+val,
+																					'background-status-hover': !!+val,
 																				}
 																			)
 																		}
 																	/>
 																	{attributes[
-																		'background-hover-status'
+																		'background-status-hover'
 																	] && (
 																		<BackgroundControl
 																			{...getGroupAttributes(

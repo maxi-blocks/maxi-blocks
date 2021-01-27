@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults';
-import { alignment } from './data';
+import * as newAttributes from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -16,10 +16,6 @@ const attributes = {
 	customLabel: {
 		type: 'string',
 		default: __('Text', 'maxi-blocks'),
-	},
-	alignment: {
-		type: 'object',
-		default: alignment,
 	},
 	textLevel: {
 		type: 'string',
@@ -41,57 +37,9 @@ const attributes = {
 		type: 'number',
 		default: 0,
 	},
-	typography: {
-		type: 'object',
-		default: attributesData.typography,
-	},
-	typographyHover: {
-		type: 'object',
-		default: attributesData.typographyHover,
-	},
-	opacity: {
-		type: 'object',
-		default: attributesData.opacity,
-	},
-	background: {
-		type: 'object',
-		default: attributesData.background,
-	},
-	backgroundHover: {
-		type: 'object',
-		default: attributesData.backgroundHover,
-	},
-	boxShadow: {
-		type: 'object',
-		default: attributesData.boxShadow,
-	},
-	boxShadowHover: {
-		type: 'object',
-		default: attributesData.boxShadowHover,
-	},
-	border: {
-		type: 'object',
-		default: attributesData.border,
-	},
-	borderHover: {
-		type: 'object',
-		default: attributesData.borderHover,
-	},
 	fullWidth: {
 		type: 'string',
 		default: 'normal',
-	},
-	size: {
-		type: 'object',
-		default: attributesData.size,
-	},
-	margin: {
-		type: 'object',
-		default: attributesData.margin,
-	},
-	padding: {
-		type: 'object',
-		default: attributesData.padding,
 	},
 	hoverPadding: {
 		type: 'object',
@@ -101,26 +49,44 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	position: {
-		type: 'object',
-		default: attributesData.position,
-	},
-	display: {
-		type: 'object',
-		default: attributesData.display,
-	},
-	motion: {
-		type: 'object',
-		default: attributesData.motion,
-	},
-	transform: {
-		type: 'object',
-		default: attributesData.transform,
-	},
 	highlight: {
 		type: 'object',
 		default: attributesData.highlight,
 	},
+	...newAttributes.container,
+	...newAttributes.background,
+	...newAttributes.backgroundColor,
+	...newAttributes.backgroundImage,
+	...newAttributes.backgroundVideo,
+	...newAttributes.backgroundGradient,
+	...newAttributes.backgroundSVG,
+	...newAttributes.backgroundHover,
+	...newAttributes.backgroundColorHover,
+	...newAttributes.backgroundImageHover,
+	...newAttributes.backgroundVideoHover,
+	...newAttributes.backgroundGradientHover,
+	...newAttributes.backgroundSVGHover,
+	...newAttributes.size,
+	...newAttributes.opacity,
+	...newAttributes.border,
+	...newAttributes.borderWidth,
+	...newAttributes.borderRadius,
+	...newAttributes.borderHover,
+	...newAttributes.borderWidthHover,
+	...newAttributes.borderRadiusHover,
+	...newAttributes.boxShadow,
+	...newAttributes.boxShadowHover,
+	...newAttributes.margin,
+	...newAttributes.padding,
+	...newAttributes.motion,
+	...newAttributes.entrance,
+	...newAttributes.parallax,
+	...newAttributes.transform,
+	...newAttributes.display,
+	...newAttributes.position,
+	...newAttributes.typography,
+	...newAttributes.typographyAlignment,
+	...newAttributes.typographyHover,
 };
 
 export default attributes;

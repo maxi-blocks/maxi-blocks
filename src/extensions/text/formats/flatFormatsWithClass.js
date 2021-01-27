@@ -6,13 +6,12 @@ const { toHTMLString, removeFormat } = wp.richText;
 /**
  * Internal dependencies
  */
-import defaultCustomFormat from './custom/default';
 import getMultiFormatObj from './getMultiFormatObj';
 
 /**
  * External dependencies
  */
-import { isEqual, compact, uniq, flattenDeep, find } from 'lodash';
+import { isEqual, compact, uniq, flattenDeep, find, isEmpty } from 'lodash';
 
 /**
  * Get the classes from custom formats that shares the same
@@ -80,7 +79,7 @@ const flatRepeatedClassNames = (repeatedClasses, formatValue, typography) => {
 	});
 
 	repeatedClasses.forEach(className => {
-		delete newTypography.customFormats[className];
+		delete newTypography['custom-formats'][className];
 	});
 
 	return {
@@ -111,7 +110,7 @@ const removeUnnecessaryFormats = ({
 		start: 0,
 		end: formatValue.formats.length,
 	});
-	const { customFormats } = typography;
+	const { 'custom-formats': customFormats } = typography;
 	let newFormatValue = { ...formatValue };
 	let newContent = content;
 
@@ -129,15 +128,10 @@ const removeUnnecessaryFormats = ({
 				 * again to make it work correctly.
 				 * */
 				if (!format) {
-					delete typography.customFormats[target];
+					delete typography['custom-formats'][target];
 				}
 				// Same style than default
-				if (
-					isEqual(
-						JSON.stringify(style),
-						JSON.stringify(defaultCustomFormat)
-					)
-				) {
+				if (isEmpty(style)) {
 					newFormatValue = removeFormat(
 						format
 							? {
@@ -149,7 +143,7 @@ const removeUnnecessaryFormats = ({
 						'maxi-blocks/text-custom'
 					);
 
-					delete typography.customFormats[target];
+					delete typography['custom-formats'][target];
 
 					return true;
 				}
@@ -188,7 +182,7 @@ const removeUnnecessaryFormats = ({
  */
 
 const flatFormatsWithClass = ({ formatValue, typography, content, isList }) => {
-	const { customFormats } = typography;
+	const { 'custom-formats': customFormats } = typography;
 	const repeatedClasses = getRepeatedClassNames(customFormats, formatValue);
 	let newContent = content;
 	let newFormatValue = { ...formatValue };

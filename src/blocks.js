@@ -30,6 +30,8 @@ import './blocks/group-maxi/group-maxi';
 
 import './blocks/test-maxi/test-maxi';
 
+import './blocks/test-maxi/test-maxi';
+
 // Sidebar
 import './blocks/customizer-maxi/index';
 

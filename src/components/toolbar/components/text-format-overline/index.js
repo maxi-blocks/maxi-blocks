@@ -26,16 +26,15 @@ import { toolbarOverline } from '../../../../icons';
  * TextFormatOverline
  */
 const TextFormatOverline = props => {
-	const { formatValue, onChange, isList, breakpoint } = props;
+	const { formatValue, onChange, isList, breakpoint, typography } = props;
 
-	const typography = { ...props.typography };
-
-	const textDecorationValue = getCustomFormatValue({
-		typography,
-		formatValue,
-		prop: 'text-decoration',
-		breakpoint,
-	});
+	const textDecorationValue =
+		getCustomFormatValue({
+			typography,
+			formatValue,
+			prop: 'text-decoration',
+			breakpoint,
+		}) || '';
 
 	const isActive = textDecorationValue.indexOf('overline') >= 0;
 
@@ -50,7 +49,7 @@ const TextFormatOverline = props => {
 	};
 
 	const onClick = () => {
-		const { typography: newTypography, content: newContent } = setFormat({
+		const obj = setFormat({
 			formatValue,
 			isActive,
 			isList,
@@ -61,10 +60,7 @@ const TextFormatOverline = props => {
 			breakpoint,
 		});
 
-		onChange({
-			typography: newTypography,
-			...(newContent && { content: newContent }),
-		});
+		onChange(obj);
 	};
 
 	return (

@@ -14,3 +14,5 @@ export { default as getPaddingStyles } from './getPaddingStyles';
 export * from './getShapeDividerStyles';
 export { default as getContainerStyles } from './getContainerStyles';
 export { default as getBreakpoints } from './getBreakpoints';
+export { default as getTypographyStyles } from './getTypographyStyles';
+export { default as getCustomFormatsStyles } from './getCustomFormatsStyles';

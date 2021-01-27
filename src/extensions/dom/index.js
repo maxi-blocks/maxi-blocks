@@ -26,8 +26,10 @@ const allowedBlocks = [
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
+	'maxi-blocks/group-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/font-icon-maxi',
+	'maxi-blocks/test-maxi',
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -238,7 +240,8 @@ document.addEventListener('DOMContentLoaded', () => {
 					try {
 						if (
 							path.classList.contains('maxi-column-block') ||
-							path.classList.contains('maxi-container-block')
+							path.classList.contains('maxi-container-block') ||
+							path.classList.contains('maxi-group-block')
 						) {
 							pathItem = i;
 							return true;
@@ -270,7 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
 					try {
 						if (
 							path.classList.contains('maxi-column-block') ||
-							path.classList.contains('maxi-container-block')
+							path.classList.contains('maxi-container-block') ||
+							path.classList.contains('maxi-group-block')
 						) {
 							pathItem = i;
 							return true;

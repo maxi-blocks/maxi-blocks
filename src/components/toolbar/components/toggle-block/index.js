@@ -17,19 +17,18 @@ import { toolbarHide, toolbarShow } from '../../../../icons';
 const ToggleBlock = props => {
 	const { breakpoint, onChange, defaultDisplay = 'inherit' } = props;
 
-	const display = { ...props.display };
-
 	const isHide = () => {
-		const objectKeys = Object.keys(display);
-		const breakpointIndex = objectKeys.indexOf(breakpoint) - 1;
+		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+		const breakpointIndex = breakpoints.indexOf(breakpoint) - 1;
 
-		if (breakpointIndex === 0) return false;
+		if (breakpointIndex <= 0) return false;
 
 		let i = breakpointIndex;
 
 		do {
-			if (display[objectKeys[i]].display === 'none') return true;
-			if (display[objectKeys[i]].display === defaultDisplay) return false;
+			if (props[`$display-${breakpoint[i]}`] === 'none') return true;
+			if (props[`$display-${breakpoint[i]}`] === defaultDisplay)
+				return false;
 			i -= 1;
 		} while (i > 0);
 
@@ -39,9 +38,9 @@ const ToggleBlock = props => {
 	const getValue = () => {
 		const isPrevHide = isHide();
 
-		return isPrevHide && display[breakpoint].display === ''
+		return isPrevHide && props[`display-${breakpoint}`]
 			? 'none'
-			: display[breakpoint].display;
+			: props[`display-${breakpoint}`];
 	};
 
 	const getOptions = () => {
@@ -66,9 +65,14 @@ const ToggleBlock = props => {
 					onClick={e => {
 						e.preventDefault();
 						getValue() === 'none'
-							? (display[breakpoint].display = getOptions().show)
-							: (display[breakpoint].display = getOptions().hide);
-						onChange(display);
+							? onChange({
+									[`display-${breakpoint}`]: getOptions()
+										.show,
+							  })
+							: onChange({
+									[`display-${breakpoint}`]: getOptions()
+										.hide,
+							  });
 					}}
 				>
 					{getValue() === 'none' ? (

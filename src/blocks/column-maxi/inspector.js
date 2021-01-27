@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { Fragment } = wp.element;
+const { Fragment, useState } = wp.element;
 const { RangeControl, SelectControl, TextControl } = wp.components;
 
 /**
@@ -61,6 +61,10 @@ const Inspector = props => {
 		clientId,
 	} = props;
 
+	const [colSize, setColSize] = useState(
+		getLastBreakpointValue(columnSize, 'size', deviceType)
+	);
+
 	return (
 		<InspectorControls>
 			<SettingTabsControl
@@ -110,11 +114,7 @@ const Inspector = props => {
 															'Column Size (%)',
 															'maxi-blocks'
 														)}
-														value={getLastBreakpointValue(
-															columnSize,
-															'size',
-															deviceType
-														)}
+														value={colSize}
 														onChange={val => {
 															columnSize[
 																deviceType
@@ -122,13 +122,14 @@ const Inspector = props => {
 															document.querySelector(
 																`.maxi-column-block__resizer__${uniqueID}`
 															).style.width = `${val}%`;
+															setColSize(val);
 
 															setAttributes({
 																columnSize,
 															});
 														}}
-														min='0'
-														max='100'
+														min={0}
+														max={100}
 														step={0.1}
 														allowReset
 														initialPosition={
@@ -448,7 +449,7 @@ const Inspector = props => {
 																<Fragment>
 																	<FancyRadioControl
 																		label={__(
-																			'Enable Box Shadow Hover',
+																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
 																		selected={Number(

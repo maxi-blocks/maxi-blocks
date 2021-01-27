@@ -456,51 +456,72 @@ const Inspector = props => {
 											),
 											content: (
 												<Fragment>
-													{isFirstOnHierarchy && (
-														<FancyRadioControl
-															label={__(
-																'Full Width',
-																'maxi-blocks'
+													<FancyRadioControl
+														label={__(
+															'Full Width',
+															'maxi-blocks'
+														)}
+														selected={fullWidth}
+														options={[
+															{
+																label: __(
+																	'No',
+																	'maxi-blocks'
+																),
+																value:
+																	'normal',
+															},
+															{
+																label: __(
+																	'Yes',
+																	'maxi-blocks'
+																),
+																value:
+																	'full',
+															},
+														]}
+														onChange={fullWidth =>
+															setAttributes({
+																fullWidth,
+															})
+														}
+													/>
+													{fullWidth === 'full' ? (
+														<FullSizeControl
+															hideWidth
+															hideMaxWidth
+															size={size}
+															defaultSize={getDefaultProp(
+																clientId,
+																'size'
 															)}
-															selected={fullWidth}
-															options={[
-																{
-																	label: __(
-																		'No',
-																		'maxi-blocks'
-																	),
-																	value:
-																		'normal',
-																},
-																{
-																	label: __(
-																		'Yes',
-																		'maxi-blocks'
-																	),
-																	value:
-																		'full',
-																},
-															]}
-															onChange={fullWidth =>
+															onChange={size =>
 																setAttributes({
-																	fullWidth,
+																	size,
 																})
+															}
+															breakpoint={
+																deviceType
+															}
+														/>
+													) : (
+														<FullSizeControl
+															hideMaxWidth
+															size={size}
+															defaultSize={getDefaultProp(
+																clientId,
+																'size'
+															)}
+															onChange={size =>
+																setAttributes({
+																	size,
+																})
+															}
+															breakpoint={
+																deviceType
 															}
 														/>
 													)}
-													<FullSizeControl
-														size={size}
-														defaultSize={getDefaultProp(
-															clientId,
-															'size'
-														)}
-														onChange={size =>
-															setAttributes({
-																size,
-															})
-														}
-														breakpoint={deviceType}
-													/>
 												</Fragment>
 											),
 										},

@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults';
+import * as newAttributes from '../../extensions/styles/defaults/index';
 import * as buttonAttributesData from './data';
 
 /**
@@ -17,102 +17,52 @@ const attributes = {
 		type: 'string',
 		default: __('Button', 'maxi-blocks'),
 	},
-	alignment: {
+	icon: {
 		type: 'object',
-		default: attributesData.alignment,
-	},
-	alignmentText: {
-		type: 'object',
-		default: buttonAttributesData.alignmentText,
-	},
-	typography: {
-		type: 'object',
-		default: buttonAttributesData.typography,
-	},
-	typographyHover: {
-		type: 'object',
-		default: attributesData.typographyHover,
-	},
-	background: {
-		type: 'object',
-		default: buttonAttributesData.background,
-	},
-	backgroundHover: {
-		type: 'object',
-		default: attributesData.backgroundHover,
-	},
-	opacity: {
-		type: 'object',
-		default: attributesData.opacity,
-	},
-	border: {
-		type: 'object',
-		default: buttonAttributesData.border,
-	},
-	borderHover: {
-		type: 'object',
-		default: attributesData.borderHover,
-	},
-	size: {
-		type: 'object',
-		default: attributesData.size,
-	},
-	boxShadow: {
-		type: 'object',
-		default: attributesData.boxShadow,
-	},
-	boxShadowHover: {
-		type: 'object',
-		default: attributesData.boxShadowHover,
-	},
-	margin: {
-		type: 'object',
-		default: attributesData.margin,
-	},
-	padding: {
-		type: 'object',
-		default: buttonAttributesData.padding,
+		//default: buttonAttributesData.icon,
 	},
 	iconPadding: {
 		type: 'object',
-		default: attributesData.padding,
+		//default: attributesData.padding,
 	},
 	iconBorder: {
 		type: 'object',
-		default: attributesData.border,
+		//default: attributesData.border,
 	},
 	iconBackground: {
 		type: 'object',
-		default: attributesData.background,
+		//default: attributesData.background,
 	},
-	content: {
+	buttonContent: {
 		type: 'string',
 		default: '',
 	},
-	position: {
-		type: 'object',
-		default: attributesData.position,
-	},
-	display: {
-		type: 'object',
-		default: attributesData.display,
-	},
-	motion: {
-		type: 'object',
-		default: attributesData.motion,
-	},
-	transform: {
-		type: 'object',
-		default: attributesData.transform,
-	},
-	icon: {
-		type: 'object',
-		default: buttonAttributesData.icon,
-	},
-	highlight: {
-		type: 'object',
-		default: attributesData.highlight,
-	},
+	...newAttributes.highlight,
+	...newAttributes.alignment,
+	...newAttributes.textAlignment,
+	...newAttributes.typography,
+	...newAttributes.typographyHover,
+	...newAttributes.background,
+	...newAttributes.backgroundColor,
+	...newAttributes.backgroundGradient,
+	...newAttributes.backgroundHover,
+	...newAttributes.backgroundColorHover,
+	...newAttributes.backgroundGradientHover,
+	...newAttributes.opacity,
+	...newAttributes.border,
+	...newAttributes.borderWidth,
+	...newAttributes.borderRadius,
+	...newAttributes.borderHover,
+	...newAttributes.size,
+	...newAttributes.boxShadow,
+	...newAttributes.boxShadowHover,
+	...newAttributes.margin,
+	...newAttributes.padding,
+	...newAttributes.display,
+	...newAttributes.position,
+	...newAttributes.motion,
+	...newAttributes.entrance,
+	...newAttributes.transform,
 };
 
 export default attributes;

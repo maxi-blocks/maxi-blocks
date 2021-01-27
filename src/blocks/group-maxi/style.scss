@@ -1,0 +1,25 @@
+body.maxi-blocks--active .maxi-group-block {
+	position: relative;
+	margin-top: 0;
+	margin-bottom: 0;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	&:before {
+		visibility: hidden;
+		content: '';
+		position: absolute;
+		transform: translateX(-50%);
+		border-style: solid;
+		width: 0;
+		height: 0;
+	}
+	&__group {
+		margin-right: auto;
+		margin-left: auto;
+		position: relative;
+	}
+	.maxi-group-block__group {
+		width: 100%;
+	}
+}

@@ -26,10 +26,13 @@ import './blocks/cloud-maxi/cloud-maxi';
 import './blocks/container-maxi/container-maxi';
 import './blocks/font-icon-maxi/font-icon-maxi';
 import './blocks/svg-icon-maxi/svg-icon-maxi';
+import './blocks/group-maxi/group-maxi';
+
+import './blocks/test-maxi/test-maxi';
 
 // Sidebar
 import './blocks/customizer-maxi/index';
 
 // Editor
 import './editor/saver';
-import './editor/styler';
+// import './editor/styler';

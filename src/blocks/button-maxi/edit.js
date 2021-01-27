@@ -21,8 +21,10 @@ import {
 	getLastBreakpointValue,
 	getIconObject,
 } from '../../utils';
-import { MaxiBlock, Toolbar, MotionPreview } from '../../components';
+import { MaxiBlock, Toolbar } from '../../components';
 import { getFormatValue } from '../../extensions/text/formats';
+import MotionPreview from '../../components/motion-preview/newMotionPreview';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**
  * External dependencies
@@ -187,44 +189,41 @@ class edit extends MaxiBlock {
 	}
 
 	get getCustomData() {
-		const { uniqueID, motion } = this.props.attributes;
+		const { uniqueID } = this.props.attributes;
 
 		const motionStatus =
-			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+			!!this.props.attributes['motion-status'] ||
+			!isEmpty(this.props.attributes['entrance-type']);
 
 		return {
 			[uniqueID]: {
-				...(motionStatus && { motion }),
+				...(motionStatus && {
+					...getGroupAttributes(this.props.attributes, 'motion'),
+					...getGroupAttributes(this.props.attributes, 'entrance'),
+				}),
 			},
 		};
 	}
 
 	render() {
 		const {
+			attributes,
 			className,
-			attributes: {
-				uniqueID,
-				blockStyle,
-				defaultBlockStyle,
-				blockStyleBackground,
-				extraClassName,
-				content,
-				motion,
-			},
-			setAttributes,
 			deviceType,
+			setAttributes,
 			selectedText,
 			generateFormatValue,
 		} = this.props;
-		const { formatValue, textSelected } = this.state;
-		const display = { ...this.props.attributes.display };
-		const icon = { ...this.props.attributes.icon };
-		const highlight = { ...this.props.attributes.highlight };
 		const {
-			textHighlight,
-			backgroundHighlight,
-			borderHighlight,
-		} = highlight;
+			uniqueID,
+			blockStyle,
+			defaultBlockStyle,
+			blockStyleBackground,
+			extraClassName,
+		} = attributes;
+
+		const { formatValue, textSelected } = this.state;
+		const icon = { ...this.props.attributes.icon };
 
 		if (isEmpty(formatValue) || selectedText !== textSelected)
 			this.setState({
@@ -236,14 +235,15 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-button-block',
-			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
-				'maxi-block-display-none',
+			//getLastBreakpointValue('display', deviceType, attributes) ===
+			//	'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!textHighlight && 'maxi-highlight--text',
-			!!backgroundHighlight && 'maxi-highlight--background',
-			!!borderHighlight && 'maxi-highlight--border',
+			!!attributes['text-highlight'] && 'maxi-highlight--text',
+			!!attributes['background-highlight'] &&
+				'maxi-highlight--background',
+			!!attributes['border-highlight'] && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className
@@ -258,7 +258,7 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector {...this.props} formatValue={formatValue} />,
 			<Toolbar {...this.props} formatValue={formatValue} />,
-			<MotionPreview motion={motion}>
+			<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
@@ -273,9 +273,11 @@ class edit extends MaxiBlock {
 							withoutInteractiveFormatting
 							placeholder={__('Set some text…', 'maxi-blocks')}
 							className='maxi-button-block__content'
-							value={content}
+							value={attributes.buttonContent}
 							identifier='content'
-							onChange={content => setAttributes({ content })}
+							onChange={buttonContent =>
+								setAttributes({ buttonContent })
+							}
 							placeholder={__('Set some text…', 'maxi-blocks')}
 							withoutInteractiveFormatting
 						/>

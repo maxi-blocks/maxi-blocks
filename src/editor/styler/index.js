@@ -25,7 +25,7 @@ const BlockStyles = () => {
 
 	useEffect(() => setStyles(newStyles), [newStyles]);
 
-	return <style id='testing-styles'>{styles}</style>;
+	return <style>{styles}</style>;
 };
 
 if (document.body.classList.contains('maxi-blocks--active')) {

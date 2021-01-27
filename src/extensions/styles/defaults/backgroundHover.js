@@ -9,7 +9,7 @@ import {
 
 export const backgroundHover = (function backgroundHoverGenerator() {
 	const response = {
-		'background-hover-status': {
+		'background-status-hover': {
 			type: 'boolean',
 			default: false,
 		},

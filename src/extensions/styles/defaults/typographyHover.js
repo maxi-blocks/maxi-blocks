@@ -1,169 +1,23 @@
-const typographyHover = {
-	label: 'Typography',
-	general: {
-		'font-family': 'Roboto',
-		'font-options': {
-			100: 'http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf',
-			'100italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOiCnqEu92Fr1Mu51QrIzcXLsnzjYk.ttf',
-			300: 'http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAx05IsDqlA.ttf',
-			'300italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TjARc9AMX6lJBP.ttf',
-			400: 'http://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf',
-			italic:
-				'http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu52xPKTM1K9nz.ttf',
-			500: 'http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf',
-			'500italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf',
-			700: 'http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf',
-			'700italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBhc9AMX6lJBP.ttf',
-			900: 'http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtvAx05IsDqlA.ttf',
-			'900italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf',
+import { typography } from './typography';
+
+const typographyHover = (function backgroundHoverGenerator() {
+	const response = {
+		'typography-status-hover': {
+			type: 'boolean',
+			default: false,
 		},
-		color: '#9b9b9b',
-		'font-sizeUnit': 'px',
-		'font-size': 16,
-		'line-heightUnit': '',
-		'line-height': 1.625,
-		'letter-spacingUnit': 'px',
-		'letter-spacing': 0,
-		'font-weight': 400,
-		'text-transform': 'none',
-		'font-style': 'normal',
-		'text-decoration': 'none',
-		'text-shadow': '',
-		'vertical-align': '',
-	},
-	xxl: {
-		'font-family': '',
-		'font-options': {},
-		color: '',
-		'text-align': '',
-		'font-sizeUnit': 'px',
-		'font-size': 20,
-		'line-heightUnit': '',
-		'line-height': 1.5,
-		'letter-spacingUnit': 'px',
-		'letter-spacing': '',
-		'font-weight': '',
-		'text-transform': '',
-		'font-style': '',
-		'text-decoration': '',
-		'text-shadow': '',
-		'vertical-align': '',
-	},
-	xl: {
-		'font-family': '',
-		'font-options': {},
-		color: '',
-		'font-sizeUnit': 'px',
-		'font-size': 18,
-		'line-heightUnit': '',
-		'line-height': 1.35,
-		'letter-spacingUnit': 'px',
-		'letter-spacing': '',
-		'font-weight': '',
-		'text-transform': '',
-		'font-style': '',
-		'text-decoration': '',
-		'text-shadow': '',
-		'vertical-align': '',
-	},
-	l: {
-		'font-family': '',
-		'font-options': {},
-		color: '',
-		'font-sizeUnit': 'px',
-		'font-size': 16,
-		'line-heightUnit': '',
-		'line-height': 1.625,
-		'letter-spacingUnit': 'px',
-		'letter-spacing': '',
-		'font-weight': '',
-		'text-transform': '',
-		'font-style': '',
-		'text-decoration': '',
-		'text-shadow': '',
-		'vertical-align': '',
-	},
-	m: {
-		'font-family': '',
-		'font-options': {},
-		color: '',
-		'font-sizeUnit': 'px',
-		'font-size': '',
-		'line-heightUnit': '',
-		'line-height': '',
-		'letter-spacingUnit': 'px',
-		'letter-spacing': '',
-		'font-weight': '',
-		'text-transform': '',
-		'font-style': '',
-		'text-decoration': '',
-		'text-shadow': '',
-		'vertical-align': '',
-	},
-	s: {
-		'font-family': '',
-		'font-options': {},
-		color: '',
-		'font-sizeUnit': 'px',
-		'font-size': '',
-		'line-heightUnit': '',
-		'line-height': '',
-		'letter-spacingUnit': 'px',
-		'letter-spacing': '',
-		'font-weight': '',
-		'text-transform': '',
-		'font-style': '',
-		'text-decoration': '',
-		'text-shadow': '',
-		'vertical-align': '',
-	},
-	xs: {
-		'font-family': '',
-		'font-options': {},
-		color: '',
-		'font-sizeUnit': 'px',
-		'font-size': '',
-		'line-heightUnit': '',
-		'line-height': '',
-		'letter-spacingUnit': 'px',
-		'letter-spacing': '',
-		'font-weight': '',
-		'text-transform': '',
-		'font-style': '',
-		'text-decoration': '',
-		'text-shadow': '',
-		'vertical-align': '',
-	},
-	textAlign: {
-		label: 'Alignment',
-		general: {
-			alignment: 'left',
-		},
-		xxl: {
-			alignment: '',
-		},
-		xl: {
-			alignment: '',
-		},
-		l: {
-			alignment: '',
-		},
-		m: {
-			alignment: '',
-		},
-		s: {
-			alignment: '',
-		},
-		xs: {
-			alignment: '',
-		},
-	},
-	customFormats: {},
-};
+	};
+
+	Object.entries(typography).forEach(([key, val]) => {
+		const newKey = `${key}-hover`;
+		const value = { ...val };
+
+		delete value.default;
+
+		response[newKey] = value;
+	});
+
+	return response;
+})();
 
 export default typographyHover;

@@ -115,8 +115,6 @@ const attributes = {
 	...newAttributes.boxShadowHover,
 	...newAttributes.margin,
 	...newAttributes.padding,
-	...newAttributes.arrow,
-	...newAttributes.shapeDivider,
 	...newAttributes.motion,
 	...newAttributes.entrance,
 	...newAttributes.parallax,

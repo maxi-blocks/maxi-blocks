@@ -20,6 +20,7 @@ import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
 import ShapeDivider from '../../components/shape-divider/newShapeDivider';
 import MotionPreview from '../../components/motion-preview/newMotionPreview';
+import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
 import getStyles from './styles';
 
 /**
@@ -27,7 +28,6 @@ import getStyles from './styles';
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
 
 /**
  * InnerBlocks version

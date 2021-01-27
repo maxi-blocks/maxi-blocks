@@ -11,6 +11,7 @@ import {
 	getCustomFormatValue,
 	setFormat,
 } from '../../../../extensions/text/formats';
+import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
  * Styles and icons
@@ -26,7 +27,7 @@ const TextBold = props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typography = { ...props.typography };
+	const typography = { ...getGroupAttributes(props, 'typography') };
 
 	const boldValue = getCustomFormatValue({
 		typography,
@@ -38,7 +39,7 @@ const TextBold = props => {
 	const isActive = (boldValue > 400 && true) || false;
 
 	const onClick = () => {
-		const { typography: newTypography, content: newContent } = setFormat({
+		const obj = setFormat({
 			formatValue,
 			isActive,
 			isList,
@@ -47,13 +48,9 @@ const TextBold = props => {
 				'font-weight': (isActive && 400) || 800,
 			},
 			breakpoint,
-			// isHover,
 		});
 
-		onChange({
-			typography: newTypography,
-			...(newContent && { content: newContent }),
-		});
+		onChange(obj);
 	};
 
 	return (

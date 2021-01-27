@@ -16,14 +16,16 @@ import {
 	getIconObject,
 	getAlignmentTextObject,
 } from '../../utils';
-import { MaxiBlock, Toolbar, FontIconPicker } from '../../components';
-
+import { MaxiBlock, Toolbar } from '../../components';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
+import FontIconPicker from '../../components/font-icon-picker/newFontIconPicker';
+import getStyles from './styles';
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Content
@@ -125,14 +127,18 @@ class edit extends MaxiBlock {
 	}
 
 	get getCustomData() {
-		const { uniqueID, motion } = this.props.attributes;
+		const { uniqueID } = this.props.attributes;
 
 		const motionStatus =
-			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+			!!this.props.attributes['motion-status'] ||
+			!isEmpty(this.props.attributes['entrance-type']);
 
 		return {
 			[uniqueID]: {
-				...(motionStatus && { motion }),
+				...(motionStatus && {
+					...getGroupAttributes(this.props.attributes, 'motion'),
+					...getGroupAttributes(this.props.attributes, 'entrance'),
+				}),
 			},
 		};
 	}

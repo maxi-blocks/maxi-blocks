@@ -17,7 +17,6 @@ import {
 } from '../../components';
 import Inspector from './inspector';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
 import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
 import ShapeDivider from '../../components/shape-divider/newShapeDivider';
 import MotionPreview from '../../components/motion-preview/newMotionPreview';

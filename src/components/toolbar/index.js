@@ -265,25 +265,23 @@ const MaxiToolbar = props => {
 							isList={isList}
 							breakpoint={deviceType}
 						/> */}
-						{/* <RowSettings
+						<RowSettings
 							blockName={name}
-							horizontalAlign={horizontalAlign}
-							verticalAlign={verticalAlign}
+							horizontalAlign={attributes.horizontalAlign}
+							verticalAlign={attributes.verticalAlign}
 							onChange={obj => setAttributes(obj)}
-						/> */}
-						{/* <ToolbarColumnPattern
+						/>
+						<ToolbarColumnPattern
 							clientId={clientId}
 							blockName={name}
-							rowPattern={rowPattern}
-							onChange={rowPattern =>
-								setAttributes({ rowPattern })
-							}
+							{...getGroupAttributes(attributes, 'rowPattern')}
+							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
-						/> */}
-						{/* <ColumnsHandlers
+						/>
+						<ColumnsHandlers
 							toggleHandlers={toggleHandlers}
 							blockName={name}
-						/> */}
+						/>
 						<Link
 							blockName={name}
 							linkSettings={linkSettings}
@@ -396,15 +394,15 @@ const MaxiToolbar = props => {
 							breakpoint={deviceType}
 							onChange={obj => setAttributes(obj)}
 						/>
-						{/* <ColumnSize
+						<ColumnSize
 							clientId={clientId}
 							blockName={name}
-							columnSize={columnSize}
-							verticalAlign={verticalAlign}
+							{...getGroupAttributes(attributes, 'columnSize')}
+							verticalAlign={attributes.verticalAlign}
 							uniqueID={uniqueID}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
-						/> */}
+						/>
 						<BoxShadow
 							blockName={name}
 							{...getGroupAttributes(attributes, 'boxShadow')}

@@ -64,12 +64,9 @@ const getNormalObject = props => {
 	if (props.fullWidth !== 'full') {
 		response = {
 			...response,
-			containerSize: getContainerStyles(
-				{
-					...getGroupAttributes(props, 'container'),
-				},
-				'container-'
-			),
+			containerSize: getContainerStyles({
+				...getGroupAttributes(props, 'container'),
+			}),
 		};
 	}
 

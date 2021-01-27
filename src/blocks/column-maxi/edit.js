@@ -62,6 +62,7 @@ class edit extends MaxiBlock {
 			originalNestedColumns,
 			rowBlockId,
 			updateRowPattern,
+			setAttributes,
 		} = this.props;
 		const {
 			uniqueID,
@@ -88,14 +89,13 @@ class edit extends MaxiBlock {
 		);
 
 		const getColumnWidthDefault = () => {
-			if (getLastBreakpointAttribute('size', deviceType, attributes))
-				return `${getLastBreakpointAttribute(
-					'size',
+			return `${
+				getLastBreakpointAttribute(
+					'column-size',
 					deviceType,
 					attributes
-				)}%`;
-
-			return `${100 / originalNestedColumns.length}%`;
+				) / originalNestedColumns.length
+			}%`;
 		};
 
 		/**
@@ -265,16 +265,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const updateRowPattern = (rowBlockId, deviceType, rowPatternAttribute) => {
-		const newRowPatternObject = rowPatternAttribute;
-
-		const { rowPattern } = newRowPatternObject[deviceType];
-
-		if (rowPattern.indexOf('custom-') === -1) {
-			newRowPatternObject[deviceType].rowPattern = `custom-${rowPattern}`;
-		}
-
 		dispatch('core/block-editor').updateBlockAttributes(rowBlockId, {
-			rowPattern: newRowPatternObject,
+			rowPattern: rowPatternAttribute[`row-pattern-${deviceType}`],
 		});
 	};
 

@@ -15,8 +15,6 @@ const getColumnSizeStyles = obj => {
 		if (isNumber(obj[`column-size-${breakpoint}`])) {
 			response[breakpoint] = {
 				width: `${obj[`column-size-${breakpoint}`]}%`,
-			};
-			response[breakpoint] = {
 				'flex-basis': `${obj[`column-size-${breakpoint}`]}%`,
 			};
 		}

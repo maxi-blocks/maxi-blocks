@@ -41,7 +41,6 @@ const ColumnPatternsInspector = props => {
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
-	const rowPattern = { ...props.rowPattern };
 
 	const { getBlockName, getBlockAttributes, getBlockOrder } = select(
 		'core/block-editor'
@@ -74,10 +73,10 @@ const ColumnPatternsInspector = props => {
 	}, [breakpoint, numCol]);
 
 	useEffect(() => {
-		if (rowPattern.general.rowPattern) {
-			setNumCol(getNumCol(rowPattern.general.rowPattern));
+		if (props['row-pattern-general']) {
+			setNumCol(getNumCol(props['row-pattern-general']));
 		}
-	}, [breakpoint, rowPattern.general.rowPattern]);
+	}, [breakpoint, props['row-pattern-general']]);
 
 	/**
 	 * Creates a new array with columns content before loading template for saving
@@ -196,8 +195,7 @@ const ColumnPatternsInspector = props => {
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
 
 		columnsBlockObjects.forEach(columnObject => {
-			const columnSizeObject = columnObject.attributes.columnSize;
-			columnsSizes.push(columnSizeObject[breakpoint].size);
+			columnsSizes.push(columnObject[`column-size-${breakpoint}`]);
 		});
 
 		return columnsSizes;
@@ -356,10 +354,9 @@ const ColumnPatternsInspector = props => {
 									updateTemplate(template.name);
 								}
 
-								rowPattern[breakpoint].rowPattern =
-									template.name;
-
-								onChange(rowPattern);
+								onChange({
+									[`row-pattern-${breakpoint}`]: template.name,
+								});
 							}}
 						>
 							<Icon

@@ -45,10 +45,6 @@ const Inspector = props => {
 		extraClassName,
 	} = attributes;
 
-	const [colSize, setColSize] = useState(
-		getLastBreakpointAttribute('column-size', deviceType, attributes)
-	);
-
 	return (
 		<InspectorControls>
 			<SettingTabsControl
@@ -101,13 +97,15 @@ const Inspector = props => {
 															'Column Size (%)',
 															'maxi-blocks'
 														)}
-														value={colSize}
+														value={getLastBreakpointAttribute(
+															'column-size',
+															deviceType,
+															attributes
+														)}
 														onChange={val => {
 															document.querySelector(
 																`.maxi-column-block__resizer__${uniqueID}`
 															).style.width = `${val}%`;
-
-															setColSize(val);
 
 															setAttributes({
 																[`column-size-${deviceType}`]: val,

@@ -29,7 +29,7 @@ const BlockStylesSaver = () => {
 			saveCustomData(true);
 		} else if (isSaving && isPreviewing) {
 			saveStyles(false);
-			saveCustomData(false);
+			saveCustomData(true);
 		}
 	}, [isSaving]);
 

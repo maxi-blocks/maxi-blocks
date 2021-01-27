@@ -34,7 +34,7 @@ const FullSizeControl = props => {
 		breakpoint,
 		hideWidth,
 		hideMaxWidth,
-		prefix = '',
+		prefix,
 	} = props;
 
 	const classes = classnames('maxi-full-size-control', className);

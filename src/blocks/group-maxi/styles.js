@@ -9,15 +9,18 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getBackgroundStyles,
-	getArrowStyles,
 	getMarginStyles,
 	getPaddingStyles,
-	getShapeDividerStyles,
-	getShapeDividerSVGStyles,
-	getContainerStyles,
 } from '../../extensions/styles/helpers';
+
 const getNormalObject = props => {
 	const response = {
+		margin: getMarginStyles({
+			...getGroupAttributes(props, 'margin'),
+		}),
+		padding: getPaddingStyles({
+			...getGroupAttributes(props, 'padding'),
+		}),
 		border: getBorderStyles({
 			...getGroupAttributes(props, [
 				'border',
@@ -25,18 +28,14 @@ const getNormalObject = props => {
 				'borderRadius',
 			]),
 		}),
-		size: getSizeStyles(
-			{
-				...getGroupAttributes(props, 'container'),
-			},
-			'container-'
-		),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 		boxShadow: getBoxShadowStyles(
 			{
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			false,
-			props['arrow-status']
+			false
 		),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -78,33 +77,9 @@ const getHoverObject = props => {
 				{
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				true,
-				props['arrow-status']
+				true
 			),
 	};
-
-	return response;
-};
-
-const getContainerObject = props => {
-	const { isFirstOnHierarchy, fullWidth } = props;
-
-	let response = {
-		margin: getMarginStyles({
-			...getGroupAttributes(props, 'margin'),
-		}),
-		padding: getPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
-		}),
-	};
-
-	if (isFirstOnHierarchy && fullWidth === 'full')
-		response = {
-			...response,
-			sizeContainer: getContainerStyles({
-				...getGroupAttributes(props, 'container'),
-			}),
-		};
 
 	return response;
 };
@@ -115,55 +90,12 @@ const getStyles = props => {
 	let response = {
 		[uniqueID]: getNormalObject(props),
 		[`${uniqueID}:hover`]: getHoverObject(props),
-		[`${uniqueID} > .maxi-container-block__container`]: getContainerObject(
-			props
-		),
-		[`${uniqueID} .maxi-shape-divider__top`]: {
-			shapeDivider: {
-				...getShapeDividerStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'top'
-				),
-			},
-		},
-		[`${uniqueID} .maxi-shape-divider__top svg`]: {
-			shapeDivider: {
-				...getShapeDividerSVGStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'top'
-				),
-			},
-		},
-		[`${uniqueID} .maxi-shape-divider__bottom`]: {
-			shapeDivider: {
-				...getShapeDividerStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'bottom'
-				),
-			},
-		},
-		[`${uniqueID} .maxi-shape-divider__bottom svg`]: {
-			shapeDivider: {
-				...getShapeDividerSVGStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'bottom'
-				),
-			},
-		},
 	};
 
 	response = {
 		...response,
 		...getBackgroundStyles({
-			target: uniqueID,
+			target: [uniqueID],
 			...getGroupAttributes(props, [
 				'background',
 				'backgroundColor',
@@ -175,7 +107,7 @@ const getStyles = props => {
 			]),
 		}),
 		...getBackgroundStyles({
-			target: uniqueID,
+			target: [uniqueID],
 			...getGroupAttributes(props, [
 				'backgroundHover',
 				'backgroundColorHover',
@@ -186,19 +118,6 @@ const getStyles = props => {
 				'borderRadiusHover',
 			]),
 			isHover: !!props['background-hover-status'],
-		}),
-		...getArrowStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'arrow',
-				'border',
-				'borderWidth',
-				'borderRadius',
-				'background',
-				'backgroundColor',
-				'backgroundGradient',
-				'boxShadow',
-			]),
 		}),
 	};
 

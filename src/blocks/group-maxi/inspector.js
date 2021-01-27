@@ -16,13 +16,10 @@ import {
 	FancyRadioControl,
 	CustomLabel,
 } from '../../components';
-import FullSizeControl from '../../components/full-size-control/newFullSize';
 import BorderControl from '../../components/border-control/newBorderControl';
 import BoxShadowControl from '../../components/box-shadow-control/newBoxShadowControl';
 import AxisControl from '../../components/axis-control/newAxisControl';
-import ArrowControl from '../../components/arrow-control/newArrowControl';
 import BackgroundControl from '../../components/new-background-control';
-import ShapeDividerControl from '../../components/shape-divider-control/newShapeDividerControl';
 import MotionControl from '../../components/new-motion-control';
 import EntranceAnimationControl from '../../components/entrance-animation-control/newEntranceControl';
 import TransformControl from '../../components/new-transform-control';
@@ -48,7 +45,6 @@ const Inspector = props => {
 		blockStyle,
 		defaultBlockStyle,
 		blockStyleBackground,
-		fullWidth,
 		extraClassName,
 	} = attributes;
 
@@ -91,85 +87,6 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
-										{
-											label: __(
-												'Width / Height',
-												'maxi-blocks'
-											),
-											content: (
-												<Fragment>
-													{isFirstOnHierarchy && (
-														<FancyRadioControl
-															label={__(
-																'Full Width',
-																'maxi-blocks'
-															)}
-															selected={fullWidth}
-															options={[
-																{
-																	label: __(
-																		'No',
-																		'maxi-blocks'
-																	),
-																	value:
-																		'normal',
-																},
-																{
-																	label: __(
-																		'Yes',
-																		'maxi-blocks'
-																	),
-																	value:
-																		'full',
-																},
-															]}
-															onChange={fullWidth =>
-																setAttributes({
-																	fullWidth,
-																})
-															}
-														/>
-													)}
-
-													{fullWidth === 'full' ? (
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'container'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															prefix='container-'
-															hideWidth
-															hideMaxWidth
-														/>
-													) : (
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'container'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															prefix='container-'
-															hideMaxWidth
-														/>
-													)}
-												</Fragment>
-											),
-										},
 										deviceType === 'general' && {
 											label: __(
 												'Background',
@@ -237,7 +154,7 @@ const Inspector = props => {
 																		)}
 																		selected={
 																			+attributes[
-																				'background-status-hover'
+																				'background-hover-status'
 																			]
 																		}
 																		options={[
@@ -259,13 +176,13 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover': !!+val,
+																					'background-hover-status': !!+val,
 																				}
 																			)
 																		}
 																	/>
 																	{attributes[
-																		'background-status-hover'
+																		'background-hover-status'
 																	] && (
 																		<BackgroundControl
 																			{...getGroupAttributes(
@@ -539,22 +456,6 @@ const Inspector = props => {
 												</Fragment>
 											),
 										},
-										{
-											label: __('Arrow', 'maxi-blocks'),
-											content: (
-												<ArrowControl
-													{...getGroupAttributes(
-														attributes,
-														'arrow'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													isFullWidth={fullWidth}
-													breakpoint={deviceType}
-												/>
-											),
-										},
 									]}
 								/>
 							</Fragment>
@@ -583,23 +484,6 @@ const Inspector = props => {
 													setAttributes({
 														extraClassName,
 													})
-												}
-											/>
-										),
-									},
-									{
-										label: __(
-											'Shape Divider',
-											'maxi-blocks'
-										),
-										content: (
-											<ShapeDividerControl
-												{...getGroupAttributes(
-													attributes,
-													'shapeDivider'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
 												}
 											/>
 										),

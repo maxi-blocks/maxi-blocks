@@ -9,16 +9,18 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getBackgroundStyles,
-	getArrowStyles,
 	getMarginStyles,
 	getPaddingStyles,
-	getShapeDividerStyles,
-	getShapeDividerSVGStyles,
-	getContainerStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
 	const response = {
+		margin: getMarginStyles({
+			...getGroupAttributes(props, 'margin'),
+		}),
+		padding: getPaddingStyles({
+			...getGroupAttributes(props, 'padding'),
+		}),
 		border: getBorderStyles({
 			...getGroupAttributes(props, [
 				'border',
@@ -26,18 +28,14 @@ const getNormalObject = props => {
 				'borderRadius',
 			]),
 		}),
-		size: getSizeStyles(
-			{
-				...getGroupAttributes(props, 'container'),
-			},
-			'container-'
-		),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 		boxShadow: getBoxShadowStyles(
 			{
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			false,
-			props['arrow-status']
+			false
 		),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -55,9 +53,6 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'transform'),
 		}),
 	};
-
-	// ????
-	// if (fullWidth !== 'full') response.sizeContainer = sizeContainer;
 
 	return response;
 };
@@ -82,39 +77,11 @@ const getHoverObject = props => {
 				{
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				true,
-				props['arrow-status']
+				true
 			),
 	};
 
 	return response;
-};
-
-const getContainerObject = props => {
-	const response = {
-		margin: getMarginStyles({
-			...getGroupAttributes(props, 'margin'),
-		}),
-		padding: getPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
-		}),
-		sizeContainer: getContainerStyles({
-			...getGroupAttributes(props, 'container'),
-		}),
-	};
-
-	return response;
-
-	// const { isFirstOnHierarchy, fullWidth } = props;
-
-	// if (isFirstOnHierarchy && fullWidth === 'full')
-	// 	return {
-	// 		sizeContainer: getContainerStyles({
-	// 			...getGroupAttributes(props, 'container'),
-	// 		}),
-	// 	};
-
-	// return {};
 };
 
 const getStyles = props => {
@@ -123,55 +90,12 @@ const getStyles = props => {
 	let response = {
 		[uniqueID]: getNormalObject(props),
 		[`${uniqueID}:hover`]: getHoverObject(props),
-		[`${uniqueID}>axi-container-block__container`]: getContainerObject(
-			props
-		),
-		[`${uniqueID} .maxi-shape-divider__top`]: {
-			shapeDivider: {
-				...getShapeDividerStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'top'
-				),
-			},
-		},
-		[`${uniqueID} .maxi-shape-divider__top svg`]: {
-			shapeDivider: {
-				...getShapeDividerSVGStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'top'
-				),
-			},
-		},
-		[`${uniqueID} .maxi-shape-divider__bottom`]: {
-			shapeDivider: {
-				...getShapeDividerStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'bottom'
-				),
-			},
-		},
-		[`${uniqueID} .maxi-shape-divider__bottom svg`]: {
-			shapeDivider: {
-				...getShapeDividerSVGStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'bottom'
-				),
-			},
-		},
 	};
 
 	response = {
 		...response,
 		...getBackgroundStyles({
-			target: `${uniqueID} .maxi-container-block__wrapper`,
+			target: [uniqueID],
 			...getGroupAttributes(props, [
 				'background',
 				'backgroundColor',
@@ -183,7 +107,7 @@ const getStyles = props => {
 			]),
 		}),
 		...getBackgroundStyles({
-			target: `${uniqueID} .maxi-container-block__wrapper`,
+			target: [uniqueID],
 			...getGroupAttributes(props, [
 				'backgroundHover',
 				'backgroundColorHover',
@@ -193,20 +117,7 @@ const getStyles = props => {
 				'backgroundSVGHover',
 				'borderRadiusHover',
 			]),
-			isHover: !!props['background-status-hover'],
-		}),
-		...getArrowStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'arrow',
-				'border',
-				'borderWidth',
-				'borderRadius',
-				'background',
-				'backgroundColor',
-				'backgroundGradient',
-				'boxShadow',
-			]),
+			isHover: !!props['background-hover-status'],
 		}),
 	};
 

@@ -352,13 +352,13 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover': !!+val,
+																					'background-hover-status': !!+val,
 																				}
 																			)
 																		}
 																	/>
 																	{attributes[
-																		'background-status-hover'
+																		'background-hover-status'
 																	] && (
 																		<BackgroundControl
 																			{...getGroupAttributes(
@@ -464,23 +464,19 @@ const Inspector = props => {
 																		'box-shadow-status-hover'
 																	] && (
 																		<BoxShadowControl
-																			boxShadow={
-																				boxShadowHover
-																			}
-																			defaultBoxShadow={getDefaultProp(
-																				clientId,
+																			{...getGroupAttributes(
+																				attributes,
 																				'boxShadowHover'
 																			)}
-																			onChange={boxShadowHover =>
+																			onChange={obj =>
 																				setAttributes(
-																					{
-																						boxShadowHover,
-																					}
+																					obj
 																				)
 																			}
 																			breakpoint={
 																				deviceType
 																			}
+																			isHover
 																		/>
 																	)}
 																</Fragment>

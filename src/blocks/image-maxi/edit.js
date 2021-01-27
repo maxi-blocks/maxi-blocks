@@ -225,19 +225,22 @@ class edit extends MaxiBlock {
 		return response;
 	}
 
-	// Disabled
-	// get getCustomData() {
-	// 	const { uniqueID, motion } = this.props.attributes;
+	get getCustomData() {
+		const { uniqueID } = this.props.attributes;
 
-	// 	const motionStatus =
-	// 		!!motion.interaction.interactionStatus || !!motion.parallax.status;
+		const motionStatus =
+			!!this.props.attributes['motion-status'] ||
+			!isEmpty(this.props.attributes['entrance-type']);
 
-	// 	return {
-	// 		[uniqueID]: {
-	// 			...(motionStatus && { motion }),
-	// 		},
-	// 	};
-	// }
+		return {
+			[uniqueID]: {
+				...(motionStatus && {
+					...getGroupAttributes(this.props.attributes, 'motion'),
+					...getGroupAttributes(this.props.attributes, 'entrance'),
+				}),
+			},
+		};
+	}
 
 	render() {
 		const {
@@ -364,7 +367,7 @@ class edit extends MaxiBlock {
 											])}
 											blockClassName={uniqueID}
 										/>
-<ResizableBox
+										<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
 												// width: `${

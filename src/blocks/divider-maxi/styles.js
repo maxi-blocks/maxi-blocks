@@ -12,6 +12,7 @@ import {
 	getPaddingStyles,
 	getDividerStyles,
 } from '../../extensions/styles/helpers';
+
 const getNormalObject = props => {
 	const { lineAlign, lineVertical, lineHorizontal } = props;
 	const response = {

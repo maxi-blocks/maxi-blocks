@@ -1,0 +1,13 @@
+.maxi-group-block {
+	margin: auto;
+	&__group {
+		border: 1px solid #7fbddc;
+		width: 100%;
+	}
+	.block-list-appender {
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		z-index: 1;
+	}
+}

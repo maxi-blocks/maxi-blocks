@@ -30,3 +30,4 @@ export { default as containerIcon } from './container-icon';
 export { default as rowIcon } from './row-icon';
 export { default as sectionIcon } from './section-icon';
 export { default as fontIcon } from './font-icon';
+export { default as groupIcon } from './group-icon';

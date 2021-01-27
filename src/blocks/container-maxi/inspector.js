@@ -13,7 +13,6 @@ import {
 	AccordionControl,
 	BlockStylesControl,
 	SettingTabsControl,
-	SizeControl,
 	FancyRadioControl,
 	CustomLabel,
 } from '../../components';
@@ -52,25 +51,6 @@ const Inspector = props => {
 		fullWidth,
 		extraClassName,
 	} = attributes;
-
-	const minMaxSettings = {
-		px: {
-			min: 0,
-			max: 3999,
-		},
-		em: {
-			min: 0,
-			max: 999,
-		},
-		vw: {
-			min: 0,
-			max: 999,
-		},
-		'%': {
-			min: 0,
-			max: 100,
-		},
-	};
 
 	return (
 		<InspectorControls>

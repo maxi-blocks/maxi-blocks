@@ -2,6 +2,7 @@ import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 import {
 	getSizeStyles,
+	getContainerStyles,
 	getBoxShadowStyles,
 	getZIndexStyles,
 	getPositionStyles,
@@ -20,7 +21,7 @@ import {
 import { isEmpty } from 'lodash';
 
 const getNormalObject = props => {
-	const response = {
+	let response = {
 		boxShadow: getBoxShadowStyles({
 			...getGroupAttributes(props, 'boxShadow'),
 		}),
@@ -60,7 +61,17 @@ const getNormalObject = props => {
 		},
 	};
 
-	// if (fullWidth !== 'full') response['sizeContainer'] = sizeContainer;
+	if (props.fullWidth !== 'full') {
+		response = {
+			...response,
+			containerSize: getContainerStyles(
+				{
+					...getGroupAttributes(props, 'container'),
+				},
+				'container-'
+			),
+		};
+	}
 
 	if (!isEmpty(props.horizontalAlign))
 		response.row.general['justify-content'] = props.horizontalAlign;

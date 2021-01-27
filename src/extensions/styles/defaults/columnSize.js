@@ -4,22 +4,28 @@ const columnSize = {
 		default: 90,
 	},
 	'column-size-xxl': {
-		size: '',
+		type: 'number',
+		default: '',
 	},
 	'column-size-xl': {
-		size: '',
+		type: 'number',
+		default: '',
 	},
 	'column-size-l': {
-		size: '',
+		type: 'number',
+		default: '',
 	},
 	'column-size-m': {
-		size: '',
+		type: 'number',
+		default: '',
 	},
 	'column-size-s': {
-		size: '',
+		type: 'number',
+		default: '',
 	},
 	'column-size-xs': {
-		size: '',
+		type: 'number',
+		default: '',
 	},
 };
 

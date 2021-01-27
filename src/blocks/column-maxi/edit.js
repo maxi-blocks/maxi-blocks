@@ -155,7 +155,7 @@ class edit extends MaxiBlock {
 										context.rowPattern
 									);
 
-									onChange({
+									setAttributes({
 										[`column-size-${deviceType}`]: round(
 											+elt.style.width.replace('%', '')
 										),
@@ -241,21 +241,21 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
 		const node = document.querySelector(
-			`.maxi-column-block__resizer__${ownProps.uniqueID}`
+			`.maxi-column-block__resizer__${ownProps.attributes.uniqueID}`
 		);
 		if (isNil(node)) return;
 
-		const newSize = ownProps[`column-size-${newDeviceType}`];
+		const newSize = ownProps.attributes[`column-size-${newDeviceType}`];
 
 		if (['xxl', 'xl', 'l'].includes(newDeviceType)) {
 			if (newSize === '') {
-				node.style.width = `${ownProps[`column-size-general`]}%`;
+				node.style.width = `${ownProps.attributes['column-size-general']}%`;
 			} else {
 				node.style.width = `${newSize}%`;
 			}
 		} else if (['s', 'xs'].includes(newDeviceType)) {
 			if (newSize === '') {
-				node.style.width = `${ownProps[`column-size-m`]}%`;
+				node.style.width = `${ownProps.attributes['column-size-m']}%`;
 			} else {
 				node.style.width = `${newSize}%`;
 			}

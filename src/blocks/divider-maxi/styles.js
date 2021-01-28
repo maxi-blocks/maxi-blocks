@@ -12,6 +12,7 @@ import {
 	getPaddingStyles,
 	getDividerStyles,
 } from '../../extensions/styles/helpers';
+
 const getNormalObject = props => {
 	const { lineAlign, lineVertical, lineHorizontal } = props;
 	const response = {
@@ -115,7 +116,7 @@ const getStyles = props => {
 				'backgroundVideoHover',
 				'backgroundGradientHover',
 			]),
-			isHover: !!props['background-hover-status'],
+			isHover: !!props['background-status-hover'],
 		}),
 	};
 

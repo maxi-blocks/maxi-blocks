@@ -11,6 +11,7 @@ import {
 	getCustomFormatValue,
 	setFormat,
 } from '../../../../extensions/text/formats';
+import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
  * Styles and icons
@@ -26,7 +27,7 @@ const TextItalic = props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typography = { ...props.typography };
+	const typography = { ...getGroupAttributes(props, 'typography') };
 
 	const italicValue = getCustomFormatValue({
 		typography,
@@ -38,7 +39,7 @@ const TextItalic = props => {
 	const isActive = (italicValue === 'italic' && true) || false;
 
 	const onClick = () => {
-		const { typography: newTypography, content: newContent } = setFormat({
+		const obj = setFormat({
 			formatValue,
 			isActive,
 			isList,
@@ -49,10 +50,7 @@ const TextItalic = props => {
 			breakpoint,
 		});
 
-		onChange({
-			typography: newTypography,
-			...(newContent && { content: newContent }),
-		});
+		onChange(obj);
 	};
 
 	return (

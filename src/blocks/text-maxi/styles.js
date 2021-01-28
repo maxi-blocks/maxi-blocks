@@ -9,13 +9,12 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getBackgroundStyles,
-	getArrowStyles,
 	getMarginStyles,
 	getPaddingStyles,
-	getShapeDividerStyles,
-	getShapeDividerSVGStyles,
-	getContainerStyles,
+	getTypographyStyles,
+	getCustomFormatsStyles,
 } from '../../extensions/styles/helpers';
+
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -25,12 +24,9 @@ const getNormalObject = props => {
 				'borderRadius',
 			]),
 		}),
-		size: getSizeStyles(
-			{
-				...getGroupAttributes(props, 'container'),
-			},
-			'container-'
-		),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 		boxShadow: getBoxShadowStyles(
 			{
 				...getGroupAttributes(props, 'boxShadow'),
@@ -53,6 +49,13 @@ const getNormalObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
+		margin: getMarginStyles({
+			...getGroupAttributes(props, 'margin'),
+		}),
+		padding: getPaddingStyles({
+			...getGroupAttributes(props, 'padding'),
+		}),
+		// alignment: getAlignmentTextObject(alignment),
 	};
 
 	return response;
@@ -86,78 +89,49 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getContainerObject = props => {
-	const { isFirstOnHierarchy, fullWidth } = props;
-
-	let response = {
-		margin: getMarginStyles({
-			...getGroupAttributes(props, 'margin'),
-		}),
-		padding: getPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
+const getTypographyObject = props => {
+	const response = {
+		typography: getTypographyStyles({
+			...getGroupAttributes(props, 'typography'),
 		}),
 	};
 
-	if (isFirstOnHierarchy && fullWidth === 'full')
-		response = {
-			...response,
-			sizeContainer: getContainerStyles({
-				...getGroupAttributes(props, 'container'),
-			}),
-		};
+	return response;
+};
+
+const getTypographyHoverObject = props => {
+	const response = {
+		typography: getTypographyStyles(
+			{
+				...getGroupAttributes(props, 'typographyHover'),
+			},
+			true
+		),
+	};
 
 	return response;
 };
 
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { uniqueID, isList } = props;
 
 	let response = {
 		[uniqueID]: getNormalObject(props),
 		[`${uniqueID}:hover`]: getHoverObject(props),
-		[`${uniqueID} > .maxi-container-block__container`]: getContainerObject(
+		[`${uniqueID} .maxi-text-block__content`]: getTypographyObject(props),
+		[`${uniqueID} .maxi-text-block__content:hover`]: getTypographyHoverObject(
 			props
 		),
-		[`${uniqueID} .maxi-shape-divider__top`]: {
-			shapeDivider: {
-				...getShapeDividerStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'top'
-				),
-			},
-		},
-		[`${uniqueID} .maxi-shape-divider__top svg`]: {
-			shapeDivider: {
-				...getShapeDividerSVGStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'top'
-				),
-			},
-		},
-		[`${uniqueID} .maxi-shape-divider__bottom`]: {
-			shapeDivider: {
-				...getShapeDividerStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'bottom'
-				),
-			},
-		},
-		[`${uniqueID} .maxi-shape-divider__bottom svg`]: {
-			shapeDivider: {
-				...getShapeDividerSVGStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'bottom'
-				),
-			},
-		},
+		[`${uniqueID} .maxi-text-block__content li`]: getTypographyObject(
+			props
+		),
+		[`${uniqueID} .maxi-text-block__content li:hover`]: getTypographyHoverObject(
+			props
+		),
+		[`${uniqueID} .maxi-text-block__content a`]: getTypographyObject(props),
+		[`${uniqueID} .maxi-text-block__content a:hover`]: getTypographyHoverObject(
+			props
+		),
 	};
 
 	response = {
@@ -187,19 +161,19 @@ const getStyles = props => {
 			]),
 			isHover: !!props['background-status-hover'],
 		}),
-		...getArrowStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'arrow',
-				'border',
-				'borderWidth',
-				'borderRadius',
-				'background',
-				'backgroundColor',
-				'backgroundGradient',
-				'boxShadow',
-			]),
-		}),
+		...getCustomFormatsStyles(
+			!isList
+				? `${uniqueID} .maxi-text-block__content`
+				: `${uniqueID} .maxi-text-block__content li`,
+			props['custom-formats']
+		),
+		...getCustomFormatsStyles(
+			!isList
+				? `${uniqueID}:hover .maxi-text-block__content`
+				: `${uniqueID}:hover .maxi-text-block__content li`,
+			props['custom-formats-hover'],
+			true
+		),
 	};
 
 	return response;

@@ -10,11 +10,12 @@ import {
 	getBackgroundStyles,
 	getMarginStyles,
 	getPaddingStyles,
-	getDividerStyles,
+	getAlignmentFlexStyles,
+	getIconStyles,
+	getBorderStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
-	const { lineAlign, lineVertical, lineHorizontal } = props;
 	const response = {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -40,33 +41,6 @@ const getNormalObject = props => {
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
-		divider: getDividerStyles({
-			...getGroupAttributes(props, 'divider'),
-			lineAlign,
-			lineVertical,
-			lineHorizontal,
-		}),
-	};
-
-	return response;
-};
-
-const getDividerObject = props => {
-	const { lineOrientation } = props;
-	const response = {
-		divider: getDividerStyles(
-			{
-				...getGroupAttributes(props, 'divider'),
-				lineOrientation,
-			},
-			'line'
-		),
-		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
-		}),
-		opacity: getOpacityStyles({
-			...getGroupAttributes(props, 'opacity'),
-		}),
 	};
 
 	return response;
@@ -74,6 +48,18 @@ const getDividerObject = props => {
 
 const getHoverObject = props => {
 	const response = {
+		border:
+			props['border-status-hover'] &&
+			getBorderStyles(
+				{
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						true
+					),
+				},
+				true
+			),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
 			getBoxShadowStyles(
@@ -87,15 +73,34 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getWrapperObject = props => {
+	const response = {
+		alignment: getAlignmentFlexStyles({
+			...getGroupAttributes(props, 'alignment'),
+		}),
+	};
+
+	return response;
+};
+
+const getIconObject = props => {
+	const response = {
+		icon: getIconStyles({
+			...getGroupAttributes(props, 'icon'),
+		}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
 	let response = {
 		[uniqueID]: getNormalObject(props),
-		[`${uniqueID}:hover hr.maxi-divider-block__divider`]: getHoverObject(
-			props
-		),
-		[`${uniqueID} hr.maxi-divider-block__divider`]: getDividerObject(props),
+		[`${uniqueID}:hover`]: getHoverObject(props),
+		[`${uniqueID} .maxi-font-icon-block__icon`]: getWrapperObject(props),
+		[`${uniqueID} .maxi-font-icon-block__icon i`]: getIconObject(props),
 	};
 
 	response = {

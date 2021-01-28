@@ -11,25 +11,18 @@ const { __experimentalBlock, MediaUpload } = wp.blockEditor;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	getColorBackgroundObject,
-	getBoxShadowObject,
-	getAlignmentFlexObject,
-	getTransformObject,
-	getAlignmentTextObject,
-	setBackgroundStyles,
-} from '../../utils';
 import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
 import { MaxiBlock, Toolbar } from '../../components';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
 import MotionPreview from '../../components/motion-preview/newMotionPreview';
+import getStyles from './styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, isNumber } from 'lodash';
 
 /**
  * Icons
@@ -47,182 +40,8 @@ class edit extends MaxiBlock {
 		return false;
 	}
 
-	get getObject() {
-		const { uniqueID, background, backgroundHover } = this.props.attributes;
-
-		let response = {
-			[uniqueID]: this.getNormalObject,
-			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID} .maxi-block-hover-wrapper`]: this
-				.getImageFrontendObject,
-			[`${uniqueID}:hover .maxi-block-hover-wrapper`]: this
-				.getImageHoverObject,
-			[`${uniqueID} .maxi-block-hover-wrapper img`]: this
-				.getImageBackendObject,
-			[`${uniqueID} .maxi-block-hover-wrapper svg`]: this
-				.getImageBackendObject,
-			[`${uniqueID} figcaption`]: this.getFigcaptionObject,
-			[`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: this
-				.getHoverEffectTitleTextObject,
-			[`${uniqueID} .maxi-hover-details .maxi-hover-details__content p`]: this
-				.getHoverEffectContentTextObject,
-			[`${uniqueID} .maxi-hover-details`]: this
-				.getHoverEffectDetailsBoxObject,
-		};
-
-		response = Object.assign(
-			response,
-			setBackgroundStyles({
-				target: uniqueID,
-				background,
-				backgroundHover,
-			})
-		);
-
-		return response;
-	}
-
-	get getNormalObject() {
-		const {
-			alignment,
-			padding,
-			margin,
-			zIndex,
-			position,
-			display,
-			transform,
-		} = this.props.attributes;
-
-		const response = {
-			padding,
-			margin,
-			zIndex,
-			alignment: { ...getAlignmentFlexObject(alignment) },
-			position,
-			positionOptions: position.options,
-			display,
-			transform: getTransformObject(transform),
-		};
-
-		return response;
-	}
-
-	get getHoverEffectDetailsBoxObject() {
-		const { hover } = this.props.attributes;
-
-		const { background, border, padding, margin } = hover;
-
-		const response = {
-			background: getColorBackgroundObject(background.colorOptions),
-			border,
-			padding,
-			margin,
-		};
-
-		return response;
-	}
-
-	get getHoverEffectTitleTextObject() {
-		const { hover } = this.props.attributes;
-
-		const { titleTypography } = hover;
-
-		const response = {
-			typography: { ...titleTypography },
-		};
-
-		return response;
-	}
-
-	get getHoverEffectContentTextObject() {
-		const { hover } = this.props.attributes;
-
-		const { contentTypography } = hover;
-
-		const response = {
-			typography: { ...contentTypography },
-		};
-
-		return response;
-	}
-
-	get getHoverObject() {
-		const { boxShadowHover } = this.props.attributes;
-
-		const response = {};
-
-		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
-			response.boxShadowHover = getBoxShadowObject(boxShadowHover);
-		}
-
-		return response;
-	}
-
-	get getImageFrontendObject() {
-		const { boxShadow, size, opacity } = this.props.attributes;
-
-		const response = {
-			boxShadow: getBoxShadowObject(boxShadow),
-			imageSize: size,
-			opacity,
-		};
-
-		return response;
-	}
-
-	get getImageHoverObject() {
-		const { boxShadowHover, borderHover } = this.props.attributes;
-		const response = {
-			borderWidth: borderHover.borderWidth,
-			borderRadius: borderHover.borderRadius,
-		};
-
-		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(boxShadowHover),
-			};
-		}
-
-		if (!isNil(borderHover) && !!borderHover.status) {
-			response.borderHover = {
-				...borderHover,
-			};
-		}
-
-		return response;
-	}
-
-	get getImageBackendObject() {
-		const { boxShadow, opacity, border, clipPath } = this.props.attributes;
-
-		const response = {
-			boxShadow: getBoxShadowObject(boxShadow),
-			opacity,
-			border,
-			borderWidth: border.borderWidth,
-			borderRadius: border.borderRadius,
-			image: {
-				label: 'Image settings',
-				general: {},
-			},
-		};
-
-		if (!isNil(clipPath)) response.image.general['clip-path'] = clipPath;
-
-		return response;
-	}
-
-	get getFigcaptionObject() {
-		const { captionTypography } = this.props.attributes;
-
-		const response = {
-			captionTypography,
-			alignmentTypography: {
-				...getAlignmentTextObject(captionTypography.textAlign),
-			},
-		};
-
-		return response;
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
 	}
 
 	get getCustomData() {
@@ -267,23 +86,21 @@ class edit extends MaxiBlock {
 			mediaWidth,
 			mediaHeight,
 			SVGElement,
-			// hover,
 		} = attributes;
 
-		const hoverClasses = '';
-		// const hoverClasses = classnames(
-		// 	'maxi-block-hover-wrapper',
-		// 	hover.type === 'basic' &&
-		// 		!!hover.preview &&
-		// 		`maxi-hover-effect__${hover.type}__${hover.basicEffectType}`,
-		// 	hover.type === 'text' &&
-		// 		!!hover.preview &&
-		// 		`maxi-hover-effect__${hover.type}__${hover.textEffectType}`,
-		// 	hover.type !== 'none' &&
-		// 		`maxi-hover-effect__${
-		// 			hover.type === 'basic' ? 'basic' : 'text'
-		// 		}`
-		// );
+		const hoverClasses = classnames(
+			'maxi-block-hover-wrapper',
+			attributes['hover-type'] === 'basic' &&
+				attributes['hover-preview'] &&
+				`maxi-hover-effect__${attributes['hover-type']}__${attributes['hover-basic-effect-type']}`,
+			attributes['hover-type'] === 'text' &&
+				attributes['hover-preview'] &&
+				`maxi-hover-effect__${attributes['hover-type']}__${attributes['hover-text-effect-type']}`,
+			attributes['hover-type'] !== 'none' &&
+				`maxi-hover-effect__${
+					attributes['hover-type'] === 'basic' ? 'basic' : 'text'
+				}`
+		);
 
 		const classes = classnames(
 			'maxi-block maxi-image-block',
@@ -327,7 +144,7 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector {...this.props} />,
-			// <Toolbar {...this.props} />,
+			<Toolbar {...this.props} />,
 			<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
 				{' '}
 				<__experimentalBlock.figure
@@ -370,17 +187,20 @@ class edit extends MaxiBlock {
 										<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
-												// width: `${
-												// 	!isNumber(
-												// 		size.general.width
-												// 	)
-												// 		? imageData &&
-												// 		  imageData
-												// 				.media_details
-												// 				.width
-												// 		: size.general.width
-												// }px`,
-												width: '100%',
+												width: `${
+													!isNumber(
+														attributes[
+															`width-${deviceType}`
+														]
+													)
+														? imageData &&
+														  imageData
+																.media_details
+																.width
+														: attributes[
+																`width-${deviceType}`
+														  ]
+												}px`,
 												height: '100%',
 											}}
 											maxWidth='100%'
@@ -434,34 +254,46 @@ class edit extends MaxiBlock {
 														{SVGElement}
 													</RawHTML>
 												)}
-												{/* {hover.type !== 'none' &&
-													hover.type !== 'basic' &&
-													!!hover.preview && (
+												{attributes['hover-type'] !==
+													'none' &&
+													attributes['hover-type'] !==
+														'basic' &&
+													attributes[
+														'hover-preview'
+													] && (
 														<div className='maxi-hover-details'>
 															<div
-																className={`maxi-hover-details__content maxi-hover-details__content--${hover.textPreset}`}
+																className={`maxi-hover-details__content maxi-hover-details__content--${attributes['hover-text-preset']}`}
 															>
 																{!isEmpty(
-																	hover.titleText
+																	attributes[
+																		'hover-title-typography-content'
+																	]
 																) && (
 																	<h3>
 																		{
-																			hover.titleText
+																			attributes[
+																				'hover-title-typography-content'
+																			]
 																		}
 																	</h3>
 																)}
 																{!isEmpty(
-																	hover.contentText
+																	attributes[
+																		'hover-content-typography-content'
+																	]
 																) && (
 																	<p>
 																		{
-																			hover.contentText
+																			attributes[
+																				'hover-content-typography-content'
+																			]
 																		}
 																	</p>
 																)}
 															</div>
 														</div>
-													)} */}
+													)}
 											</div>
 											{captionType !== 'none' && (
 												<figcaption className='maxi-image-block__caption'>

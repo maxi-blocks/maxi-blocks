@@ -26,3 +26,4 @@ export { default as breakpoints } from './breakpoints';
 export { default as zIndex } from './zIndex';
 export * from './typography';
 export { default as typographyHover } from './typographyHover';
+export * from './hover';

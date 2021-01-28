@@ -10,12 +10,12 @@ import {
 	getTransformStyles,
 	getBackgroundStyles,
 	getArrowStyles,
-	getMarginStyles,
-	getPaddingStyles,
+	getMarginPaddingStyles,
 	getShapeDividerStyles,
 	getShapeDividerSVGStyles,
 	getContainerStyles,
 } from '../../extensions/styles/helpers';
+
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -90,10 +90,10 @@ const getContainerObject = props => {
 	const { isFirstOnHierarchy, fullWidth } = props;
 
 	let response = {
-		margin: getMarginStyles({
+		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
-		padding: getPaddingStyles({
+		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
 	};

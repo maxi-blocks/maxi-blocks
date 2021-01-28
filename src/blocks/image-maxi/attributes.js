@@ -6,7 +6,6 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults';
 import * as newAttributes from '../../extensions/styles/defaults/index';
 
 /**
@@ -24,8 +23,7 @@ const attributes = {
 		type: 'string',
 	},
 	SVGData: {
-		type: 'string',
-		default: '{}',
+		type: 'object',
 	},
 	SVGMediaID: {
 		type: 'number',
@@ -47,10 +45,6 @@ const attributes = {
 	captionContent: {
 		type: 'string',
 		default: '',
-	},
-	captionTypography: {
-		type: 'object',
-		default: attributesData.typography,
 	},
 	fullWidth: {
 		type: 'string',
@@ -85,10 +79,6 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	hover: {
-		type: 'object',
-		default: attributesData.hover,
-	},
 	...newAttributes.alignment,
 	...newAttributes.container,
 	...newAttributes.background,
@@ -121,6 +111,27 @@ const attributes = {
 	...newAttributes.transform,
 	...newAttributes.display,
 	...newAttributes.position,
+	...newAttributes.position,
+	...newAttributes.hover,
+	...newAttributes.hoverBorder,
+	...newAttributes.hoverBorderWidth,
+	...newAttributes.hoverBorderRadius,
+	...newAttributes.hoverBackground,
+	...newAttributes.hoverBackgroundColor,
+	...newAttributes.hoverBackgroundGradient,
+	...newAttributes.hoverMargin,
+	...newAttributes.hoverPadding,
+	...newAttributes.hoverTitleTypography,
+	...newAttributes.hoverContentTypography,
+	...newAttributes.typography,
+	...newAttributes.textAlignment,
+	...{
+		...newAttributes.alignment,
+		'alignment-general': {
+			type: 'string',
+			default: 'center',
+		},
+	},
 };
 
 export default attributes;

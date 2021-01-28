@@ -85,8 +85,8 @@ const attributes = {
 	...newAttributes.display,
 	...newAttributes.position,
 	...newAttributes.typography,
-	...newAttributes.typographyAlignment,
 	...newAttributes.typographyHover,
+	...newAttributes.textAlignment,
 };
 
 export default attributes;

@@ -8,8 +8,7 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
-	getMarginStyles,
-	getPaddingStyles,
+	getMarginPaddingStyles,
 	getBackgroundStyles,
 	getBorderStyles,
 	getAlignmentFlexStyles,
@@ -47,10 +46,10 @@ const getNormalObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		margin: getMarginStyles({
+		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
-		padding: getPaddingStyles({
+		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
 		zIndex: getZIndexStyles({
@@ -109,7 +108,7 @@ const getIconObject = props => {
 		icon: getIconStyles({
 			...getGroupAttributes(props, 'icon'),
 		}),
-		padding: getPaddingStyles(
+		padding: getMarginPaddingStyles(
 			{
 				...getGroupAttributes(props, 'iconPadding'),
 			},

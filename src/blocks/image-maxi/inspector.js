@@ -14,15 +14,11 @@ const {
 /**
  * Internal dependencies
  */
-import { getDefaultProp } from '../../utils';
 import {
 	AccordionControl,
-	AlignmentControl,
 	BlockStylesControl,
 	SettingTabsControl,
-	TypographyControl,
 	ClipPath,
-	HoverEffectControl,
 	ImageAltControl,
 	FancyRadioControl,
 	SVGDefaultsDisplayer,
@@ -44,6 +40,9 @@ import ResponsiveControl from '../../components/responsive-control/newResponsive
 import ZIndexControl from '../../components/zindex-control/newIndexControl';
 import OpacityControl from '../../components/opacity-control/newOpacityControl';
 import ImageCropControl from '../../components/image-crop-control/newImageCropControl';
+import HoverEffectControl from '../../components/hover-effect-control/newHoverEffectControl';
+import TypographyControl from '../../components/typography-control/newTypographyControl';
+import AlignmentControl from '../../components/alignment-control/newAlignmentControl';
 
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
@@ -51,7 +50,7 @@ import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 /**
  * External dependencies
  */
-import { capitalize, isEmpty, isNil, isObject, isNumber } from 'lodash';
+import { capitalize, isEmpty, isNil, isObject } from 'lodash';
 
 /**
  * Inspector
@@ -76,7 +75,6 @@ const Inspector = props => {
 		fullWidth,
 		captionType,
 		captionContent,
-		captionTypography,
 		mediaID,
 		mediaURL,
 		extraClassName,
@@ -183,24 +181,25 @@ const Inspector = props => {
 								<AccordionControl
 									isSecondary
 									items={[
-										// {
-										// 	label: __(
-										// 		'Alignment',
-										// 		'maxi-blocks'
-										// 	),
-										// 	content: (
-										// 		<AlignmentControl
-										// 			alignment={alignment}
-										// 			onChange={alignment =>
-										// 				setAttributes({
-										// 					alignment,
-										// 				})
-										// 			}
-										// 			disableJustify
-										// 			breakpoint={deviceType}
-										// 		/>
-										// 	),
-										// },
+										{
+											label: __(
+												'Alignment',
+												'maxi-blocks'
+											),
+											content: (
+												<AlignmentControl
+													{...getGroupAttributes(
+														attributes,
+														'alignment'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+													disableJustify
+												/>
+											),
+										},
 										deviceType === 'general' && {
 											label: __(
 												'Image Dimension',
@@ -364,26 +363,25 @@ const Inspector = props => {
 															}
 														/>
 													)}
-													{/* {captionType !== 'none' && (
+													{captionType !== 'none' && (
 														<TypographyControl
-															typography={
-																captionTypography
-															}
-															defaultTypography={getDefaultProp(
-																clientId,
-																'captionTypography'
+															{...getGroupAttributes(
+																attributes,
+																[
+																	'typography',
+																	'textAlignment',
+																]
 															)}
 															onChange={obj =>
-																setAttributes({
-																	captionTypography:
-																		obj.typography,
-																})
+																setAttributes(
+																	obj
+																)
 															}
 															breakpoint={
 																deviceType
 															}
 														/>
-													)} */}
+													)}
 												</Fragment>
 											),
 										},
@@ -826,61 +824,61 @@ const Inspector = props => {
 												/>
 											),
 										},
-										// {
-										// 	label: __(
-										// 		'Clip-Path',
-										// 		'maxi-blocks'
-										// 	),
-										// 	content: (
-										// 		<ClipPath
-										// 			clipPath={clipPath}
-										// 			onChange={clipPath =>
-										// 				setAttributes({
-										// 					clipPath,
-										// 				})
-										// 			}
-										// 		/>
-										// 	),
-										// },
-										// {
-										// 	label: __('Shape', 'maxi-blocks'),
-										// 	content: (
-										// 		<SVGDefaultsDisplayer
-										// 			SVGOptions={SVGData}
-										// 			SVGCurrentElement={
-										// 				SVGCurrentElement
-										// 			}
-										// 			onChange={SVGOptions => {
-										// 				const SVGValue = !isObject(
-										// 					SVGOptions.SVGData
-										// 				)
-										// 					? SVGOptions.SVGData
-										// 					: SVGOptions.SVGData;
+										{
+											label: __(
+												'Clip-Path',
+												'maxi-blocks'
+											),
+											content: (
+												<ClipPath
+													clipPath={clipPath}
+													onChange={clipPath =>
+														setAttributes({
+															clipPath,
+														})
+													}
+												/>
+											),
+										},
+										{
+											label: __('Shape', 'maxi-blocks'),
+											content: (
+												<SVGDefaultsDisplayer
+													SVGOptions={SVGData}
+													SVGCurrentElement={
+														SVGCurrentElement
+													}
+													onChange={SVGOptions => {
+														const SVGValue = !isObject(
+															SVGOptions.SVGData
+														)
+															? SVGOptions.SVGData
+															: SVGOptions.SVGData;
 
-										// 				const el = Object.keys(
-										// 					SVGValue
-										// 				)[0];
+														const el = Object.keys(
+															SVGValue
+														)[0];
 
-										// 				SVGValue[
-										// 					el
-										// 				].imageID = mediaID;
-										// 				SVGValue[
-										// 					el
-										// 				].imageURL = mediaURL;
+														SVGValue[
+															el
+														].imageID = mediaID;
+														SVGValue[
+															el
+														].imageURL = mediaURL;
 
-										// 				setAttributes({
-										// 					...SVGOptions,
-										// 					SVGCurrentElement:
-										// 						SVGOptions.SVGCurrentElement,
-										// 					SVGElement: injectImgSVG(
-										// 						SVGOptions.SVGElement,
-										// 						SVGValue
-										// 					).outerHTML,
-										// 				});
-										// 			}}
-										// 		/>
-										// 	),
-										// },
+														setAttributes({
+															...SVGOptions,
+															SVGCurrentElement:
+																SVGOptions.SVGCurrentElement,
+															SVGElement: injectImgSVG(
+																SVGOptions.SVGElement,
+																SVGValue
+															).outerHTML,
+														});
+													}}
+												/>
+											),
+										},
 										{
 											label: __(
 												'Motion Effects',
@@ -898,25 +896,36 @@ const Inspector = props => {
 												/>
 											),
 										},
-										// {
-										// 	label: __(
-										// 		'Hover Effects',
-										// 		'maxi-blocks'
-										// 	),
-										// 	content: (
-										// 		<HoverEffectControl
-										// 			hover={hover}
-										// 			defaultHover={getDefaultProp(
-										// 				clientId,
-										// 				'hover'
-										// 			)}
-										// 			onChange={hover =>
-										// 				setAttributes({ hover })
-										// 			}
-										// 			uniqueID={uniqueID}
-										// 		/>
-										// 	),
-										// },
+										{
+											label: __(
+												'Hover Effects',
+												'maxi-blocks'
+											),
+											content: (
+												<HoverEffectControl
+													{...getGroupAttributes(
+														attributes,
+														[
+															'hover',
+															'hoverBorder',
+															'hoverBorderWidth',
+															'hoverBorderRadius',
+															'hoverBackground',
+															'hoverBackgroundColor',
+															'hoverBackgroundGradient',
+															'hoverMargin',
+															'hoverPadding',
+															'hoverTitleTypography',
+															'hoverContentTypography',
+														]
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													uniqueID={uniqueID}
+												/>
+											),
+										},
 										{
 											label: __(
 												'Entrance Animation',

@@ -51,8 +51,8 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 			'maxi-blocks/column-maxi',
 			{
 				uniqueID: 'maxi-column-maxi-1',
-				'container-size-general': column * total,
-				'container-size-m': 100,
+				'column-size-general': column * total,
+				'column-size-m': 100,
 				'margin-top-m': i !== 0 ? 0.7 : '',
 				'margin-unit-m': 'em',
 			},

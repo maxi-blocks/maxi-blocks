@@ -288,33 +288,25 @@ const ColumnPatternsInspector = props => {
 		const columnsPositions = getColumnsPositions(sizes);
 
 		columnsBlockObjects.forEach((column, j) => {
-			const columnClientId = column.clientId;
 			const columnAttributes = column.attributes;
-			const columnUniqueID = columnAttributes.uniqueID;
-
-			const newColumnSize = columnAttributes.columnSize;
-			const newColumnMargin = columnAttributes.margin;
-
-			newColumnSize[breakpoint].size = sizesWithGaps[j];
 
 			document.querySelector(
-				`.maxi-column-block__resizer__${columnUniqueID}`
+				`.maxi-column-block__resizer__${columnAttributes.uniqueID}`
 			).style.width = sizesWithGaps[j];
 
 			if (columnsPositions[j].rowNumber > 1) {
-				newColumnMargin[breakpoint]['margin-top'] = 2;
-				newColumnMargin[breakpoint].unit = 'em';
+				columnAttributes[`margin-top-${breakpoint}`] = 2;
+				columnAttributes[`margin-top-unit-${breakpoint}`] = 'em';
 			}
 
 			if (columnsPositions[j].rowNumber === 1) {
-				newColumnMargin[breakpoint]['margin-top'] = 0;
-				newColumnMargin[breakpoint].unit = '';
+				columnAttributes[`margin-top-${breakpoint}`] = 0;
+				columnAttributes[`margin-top-unit-${breakpoint}`] = '';
 			}
 
-			columnAttributes.columnSize = newColumnSize;
-			columnAttributes.margin = newColumnMargin;
+			columnAttributes[`column-size-${breakpoint}`] = sizesWithGaps[j];
 
-			updateBlockAttributes(columnClientId, columnAttributes);
+			updateBlockAttributes(column.clientId, columnAttributes);
 		});
 	};
 

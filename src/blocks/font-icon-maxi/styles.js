@@ -10,13 +10,20 @@ import {
 	getBackgroundStyles,
 	getMarginStyles,
 	getPaddingStyles,
-	getAlignmentFlexStyles,
+	getAlignmentTextStyles,
 	getIconStyles,
 	getBorderStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
 	const response = {
+		boxShadow: getBoxShadowStyles(
+			{
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			false,
+			false
+		),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
@@ -41,6 +48,16 @@ const getNormalObject = props => {
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
+		border: getBorderStyles(
+			{
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			false
+		),
 	};
 
 	return response;
@@ -75,7 +92,7 @@ const getHoverObject = props => {
 
 const getWrapperObject = props => {
 	const response = {
-		alignment: getAlignmentFlexStyles({
+		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'alignment'),
 		}),
 	};

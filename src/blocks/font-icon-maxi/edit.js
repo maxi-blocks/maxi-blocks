@@ -8,17 +8,16 @@ const { withSelect } = wp.data;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlock, Toolbar } from '../../components';
+import { MaxiBlock, Toolbar, FontIconPicker } from '../../components';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import FontIconPicker from '../../components/font-icon-picker/newFontIconPicker';
 import getStyles from './styles';
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Content
@@ -59,7 +58,6 @@ class edit extends MaxiBlock {
 			blockStyleBackground,
 			extraClassName,
 		} = attributes;
-		const icon = { ...this.props.attributes.icon };
 
 		const classes = classnames(
 			'maxi-block',
@@ -97,18 +95,17 @@ class edit extends MaxiBlock {
 						'backgroundGradientHover',
 					])}
 				/>
-				{(!!icon.icon && (
+				{(!isEmpty(attributes['icon-name']) && (
 					<span className='maxi-font-icon-block__icon'>
-						<i className={icon.icon} />
+						<i className={attributes['icon-name']} />
 					</span>
 				)) || (
 					<FontIconPicker
-						onChange={newIcon => {
-							icon.icon = newIcon;
+						onChange={val =>
 							setAttributes({
-								icon,
-							});
-						}}
+								'icon-name': val,
+							})
+						}
 					/>
 				)}
 			</__experimentalBlock>,

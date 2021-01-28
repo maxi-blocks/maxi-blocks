@@ -89,13 +89,20 @@ class edit extends MaxiBlock {
 		);
 
 		const getColumnWidthDefault = () => {
-			return `${
+			if (
 				getLastBreakpointAttribute(
 					'column-size',
 					deviceType,
 					attributes
-				) / originalNestedColumns.length
-			}%`;
+				)
+			)
+				return `${getLastBreakpointAttribute(
+					'column-size',
+					deviceType,
+					attributes
+				)}%`;
+
+			return `${100 / originalNestedColumns.length}%`;
 		};
 
 		/**

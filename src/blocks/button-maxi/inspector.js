@@ -16,10 +16,8 @@ import {
 	SettingTabsControl,
 	TypographyControl,
 	FancyRadioControl,
-	FontIconControl,
 	CustomLabel,
 } from '../../components';
-import { getDefaultProp } from '../../utils';
 import * as defaultPresets from './defaults';
 
 import BorderControl from '../../components/border-control/newBorderControl';
@@ -35,14 +33,8 @@ import PositionControl from '../../components/position-control/newPositionContro
 import ResponsiveControl from '../../components/responsive-control/newResponsiveControl';
 import ZIndexControl from '../../components/zindex-control/newIndexControl';
 import AlignmentControl from '../../components/alignment-control/newAlignmentControl';
-
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
+import FontIconControl from '../../components/font-icon-control/newFontIconControl';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-
-/**
- * External dependencies
- */
-import { merge, cloneDeep } from 'lodash';
 
 /**
  * Icons
@@ -75,31 +67,10 @@ const Inspector = props => {
 		defaultBlockStyle,
 		blockStyleBackground,
 		extraClassName,
-		icon,
-		iconPadding,
-		iconBorder,
-		iconBackground,
 	} = attributes;
 
 	const onChangePreset = number => {
-		const response = {
-			border,
-			background,
-			padding,
-			typography,
-			boxShadow,
-			icon,
-			iconBorder,
-			iconBackground,
-			iconPadding,
-		};
-
-		const result = merge(
-			cloneDeep(response),
-			defaultPresets[`preset${number}`]
-		);
-
-		setAttributes(result);
+		setAttributes({ ...defaultPresets[`preset${number}`] });
 	};
 
 	return (
@@ -238,14 +209,18 @@ const Inspector = props => {
 											label: __('Icon', 'maxi-blocks'),
 											content: (
 												<FontIconControl
-													icon={icon}
-													onChange={obj => {
-														setAttributes(obj);
-													}}
-													iconBorder={iconBorder}
-													iconPadding={iconPadding}
-													iconBackground={
-														iconBackground
+													{...getGroupAttributes(
+														attributes,
+														[
+															'icon',
+															'iconPadding',
+															'iconBorder',
+															'iconBorderWidth',
+															'iconBorderRadius',
+														]
+													)}
+													onChange={obj =>
+														setAttributes(obj)
 													}
 													breakpoint={deviceType}
 												/>
@@ -258,10 +233,10 @@ const Inspector = props => {
 											),
 											content: (
 												<Fragment>
-													{/* <AlignmentControl
+													<AlignmentControl
 														{...getGroupAttributes(
 															attributes,
-															'alignmnet'
+															'alignment'
 														)}
 														onChange={obj =>
 															setAttributes(obj)
@@ -272,13 +247,14 @@ const Inspector = props => {
 													<AlignmentControl
 														{...getGroupAttributes(
 															attributes,
-															'textAlignmnet'
+															'textAlignment'
 														)}
 														onChange={obj =>
 															setAttributes(obj)
 														}
 														breakpoint={deviceType}
-													/> */}
+														type='text'
+													/>
 												</Fragment>
 											),
 										},
@@ -514,6 +490,7 @@ const Inspector = props => {
 																			disableClipPath
 																			disableSVG
 																			disableLayers
+																			isHover
 																		/>
 																	)}
 																</Fragment>
@@ -626,6 +603,7 @@ const Inspector = props => {
 																					'border-highlight'
 																				]
 																			}
+																			isHover
 																		/>
 																	)}
 																</Fragment>

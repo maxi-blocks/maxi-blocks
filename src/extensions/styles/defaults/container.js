@@ -65,29 +65,41 @@ const container = (() => {
 			type: 'number',
 			default: 90,
 		},
-		'container-max-width-unit-l': {
-			type: 'number',
-			default: '%',
-		},
 		'container-max-width-m': {
 			type: 'number',
 			default: 90,
-		},
-		'container-max-width-unit-m': {
-			type: 'number',
-			default: '%',
 		},
 		'container-max-width-s': {
 			type: 'number',
 			default: 90,
 		},
-		'container-max-width-unit-s': {
-			type: 'number',
-			default: '%',
-		},
 		'container-max-width-xs': {
 			type: 'number',
 			default: 90,
+		},
+		'container-max-width-unit-general': {
+			type: 'number',
+			default: 'px',
+		},
+		'container-max-width-unit-xxl': {
+			type: 'number',
+			default: 'px',
+		},
+		'container-max-width-unit-xl': {
+			type: 'number',
+			default: 'px',
+		},
+		'container-max-width-unit-l': {
+			type: 'number',
+			default: '%',
+		},
+		'container-max-width-unit-m': {
+			type: 'number',
+			default: '%',
+		},
+		'container-max-width-unit-s': {
+			type: 'number',
+			default: '%',
 		},
 		'container-max-width-unit-xs': {
 			type: 'number',

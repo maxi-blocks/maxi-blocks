@@ -369,10 +369,10 @@ const Inspector = props => {
 																					'backgroundGradientHover',
 																				]
 																			)}
-																			onChange={backgroundHover =>
+																			onChange={obj =>
 																				setAttributes(
 																					{
-																						backgroundHover,
+																						obj,
 																					}
 																				)
 																			}

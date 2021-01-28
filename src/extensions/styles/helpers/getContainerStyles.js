@@ -15,7 +15,6 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 const getContainerStyles = obj => {
 	const response = {};
-
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {
 			...(obj[`container-max-width-${breakpoint}`] && {

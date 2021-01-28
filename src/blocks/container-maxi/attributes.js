@@ -53,6 +53,7 @@ const attributes = {
 	...newAttributes.transform,
 	...newAttributes.display,
 	...newAttributes.position,
+	...newAttributes.zIndex,
 };
 
 export default attributes;

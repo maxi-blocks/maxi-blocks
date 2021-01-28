@@ -187,6 +187,7 @@ const FullSizeControl = props => {
 							minMaxSettings={minMaxSettings}
 						/>
 					)}
+
 					<SizeControl
 						label={__('Min Width', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(
@@ -213,6 +214,7 @@ const FullSizeControl = props => {
 						}
 						minMaxSettings={minMaxSettings}
 					/>
+
 					<SizeControl
 						label={__('Max Height', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(
@@ -239,6 +241,7 @@ const FullSizeControl = props => {
 						}
 						minMaxSettings={minMaxSettings}
 					/>
+
 					<SizeControl
 						label={__('Min Height', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(

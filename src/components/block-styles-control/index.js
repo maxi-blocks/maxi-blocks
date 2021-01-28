@@ -8,11 +8,6 @@ const { SelectControl } = wp.components;
 const { Fragment } = wp.element;
 
 /**
- * External dependencies
- */
-import { isNil } from 'lodash';
-
-/**
  * Component
  */
 const BlockStylesControl = props => {
@@ -28,8 +23,6 @@ const BlockStylesControl = props => {
 		disableHighlightColor1 = false,
 		disableHighlightColor2 = false,
 	} = props;
-	const border = { ...props.border };
-	const highlight = { ...props.highlight };
 
 	const getSelectorOptions = () => {
 		if (isFirstOnHierarchy)
@@ -77,89 +70,73 @@ const BlockStylesControl = props => {
 					{!disableHighlightText && (
 						<FancyRadioControl
 							label={__('Highlight Text', 'maxi-blocks')}
-							selected={highlight.textHighlight}
+							selected={+props['text-highlight']}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={val => {
-								highlight.textHighlight = Number(val);
-								onChange({ highlight });
-							}}
+							onChange={val =>
+								onChange({ 'text-highlight': !!+val })
+							}
 						/>
 					)}
 					{!disableHighlightBackground && (
 						<FancyRadioControl
 							label={__('Highlight Background', 'maxi-blocks')}
-							selected={highlight.backgroundHighlight}
+							selected={+props['background-highlight']}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={val => {
-								highlight.backgroundHighlight = Number(val);
-								onChange({ highlight });
-							}}
+							onChange={val =>
+								onChange({ 'background-highlight': !!+val })
+							}
 						/>
 					)}
 					{!disableHighlightBorder && (
 						<FancyRadioControl
 							label={__('Highlight Border', 'maxi-blocks')}
-							selected={highlight.borderHighlight}
+							selected={+props['border-highlight']}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
 							onChange={val => {
-								highlight.borderHighlight = Number(val);
-								onChange({ highlight });
-
-								if (!isNil(border)) {
-									border.general['border-style'] = 'solid';
-									border.borderWidth.general[
-										'border-right-width'
-									] = 2;
-									border.borderWidth.general[
-										'border-left-width'
-									] = 2;
-									border.borderWidth.general[
-										'border-top-width'
-									] = 2;
-									border.borderWidth.general[
-										'border-bottom-width'
-									] = 2;
-
-									onChange({ border });
-								}
+								onChange({
+									'border-highlight': !!+val,
+									'border-style-general': 'solid',
+									'border-top-width-general': 2,
+									'border-right-width-general': 2,
+									'border-bottom-width-general': 2,
+									'border-left-width-general': 2,
+								});
 							}}
 						/>
 					)}
 					{!disableHighlightColor1 && (
 						<FancyRadioControl
 							label={__('Highlight SVG Color 1', 'maxi-blocks')}
-							selected={highlight.color1Highlight}
+							selected={+props['color1-highlight']}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={val => {
-								highlight.color1Highlight = Number(val);
-								onChange({ highlight });
-							}}
+							onChange={val =>
+								onChange({ 'color1-highlight': !!+val })
+							}
 						/>
 					)}
 					{!disableHighlightColor2 && (
 						<FancyRadioControl
 							label={__('Highlight SVG Color 2', 'maxi-blocks')}
-							selected={highlight.color2Highlight}
+							selected={+props['color2-highlight']}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={val => {
-								highlight.color2Highlight = Number(val);
-								onChange({ highlight });
-							}}
+							onChange={val =>
+								onChange({ 'color2-highlight': !!+val })
+							}
 						/>
 					)}
 					{isFirstOnHierarchy && (
@@ -170,9 +147,9 @@ const BlockStylesControl = props => {
 								{ label: 1, value: 1 },
 								{ label: 2, value: 2 },
 							]}
-							onChange={blockStyleBackground =>
+							onChange={val =>
 								onChange({
-									blockStyleBackground: +blockStyleBackground,
+									blockStyleBackground: +val,
 								})
 							}
 						/>

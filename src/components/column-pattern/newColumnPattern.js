@@ -195,7 +195,9 @@ const ColumnPatternsInspector = props => {
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
 
 		columnsBlockObjects.forEach(columnObject => {
-			columnsSizes.push(columnObject[`column-size-${breakpoint}`]);
+			columnsSizes.push(
+				columnObject.attributes[`column-size-${breakpoint}`]
+			);
 		});
 
 		return columnsSizes;

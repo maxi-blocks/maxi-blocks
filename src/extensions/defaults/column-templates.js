@@ -46,102 +46,15 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 	const numberOfGaps = columns.length - 1;
 
 	const total = 100 - gap1 * numberOfGaps;
-
 	return columns.map((column, i) => {
 		return [
 			'maxi-blocks/column-maxi',
 			{
 				uniqueID: 'maxi-column-maxi-1',
-				columnSize: {
-					label: 'Column size',
-					general: {
-						fullwidth: false,
-						size: column * total,
-					},
-					xxl: {
-						fullwidth: '',
-						size: '',
-					},
-					xl: {
-						fullwidth: '',
-						size: '',
-					},
-					l: {
-						fullwidth: '',
-						size: '',
-					},
-					m: {
-						fullwidth: false,
-						size: 100,
-					},
-					s: {
-						fullwidth: '',
-						size: '',
-					},
-					xs: {
-						fullwidth: '',
-						size: '',
-					},
-				},
-				margin: {
-					label: 'Margin',
-					general: {
-						'margin-top': '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: 'px',
-					},
-					xxl: {
-						'margin-top': '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: '',
-					},
-					xl: {
-						'margin-top': '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: '',
-					},
-					l: {
-						'margin-top': '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: '',
-					},
-					m: {
-						'margin-top': i !== 0 ? 0.7 : '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: 'em',
-					},
-					s: {
-						'margin-top': '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: '',
-					},
-					xs: {
-						'margin-top': '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: '',
-					},
-				},
+				'container-size-general': column * total,
+				'container-size-m': 100,
+				'margin-top-m': i !== 0 ? 0.7 : '',
+				'margin-unit-m': 'em',
 			},
 		];
 	});

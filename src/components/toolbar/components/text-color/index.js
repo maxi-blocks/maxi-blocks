@@ -7,12 +7,13 @@ const { ColorPicker, Icon } = wp.components;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../../../utils';
+import getLastBreakpointValue from '../../../../extensions/styles/getLastBreakpointValue';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	setFormat,
 	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
+import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
  * Icons
@@ -28,7 +29,7 @@ const TextColor = props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typography = { ...props.typography };
+	const typography = { ...getGroupAttributes(props, 'typography') };
 
 	const color = getCustomFormatValue({
 		typography,
@@ -42,7 +43,7 @@ const TextColor = props => {
 	};
 
 	const onClick = val => {
-		const { typography: newTypography, content: newContent } = setFormat({
+		const obj = setFormat({
 			formatValue,
 			isList,
 			typography,
@@ -52,10 +53,7 @@ const TextColor = props => {
 			breakpoint,
 		});
 
-		onChange({
-			typography: newTypography,
-			...(newContent && { content: newContent }),
-		});
+		onChange(obj);
 	};
 
 	return (
@@ -87,9 +85,9 @@ const TextColor = props => {
 				<ColorPicker
 					color={
 						color ||
-						getLastBreakpointValue(typography, 'color', breakpoint)
+						getLastBreakpointValue('color', breakpoint, typography)
 					}
-					onChangeComplete={val => onClick(val)}
+					onChangeComplete={obj => onClick(obj)}
 				/>
 			}
 		/>

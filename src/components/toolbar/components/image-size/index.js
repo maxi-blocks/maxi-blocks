@@ -21,6 +21,7 @@ import { capitalize, isNil, trim } from 'lodash';
  */
 import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
+import getDefaultAttribute from '../../../../extensions/styles/getDefaultAttribute';
 
 /**
  * ImageSize
@@ -47,9 +48,6 @@ const ImageSize = props => {
 	const { openGeneralSidebar } = useDispatch('core/edit-post');
 
 	if (blockName !== 'maxi-blocks/image-maxi') return null;
-
-	const size = { ...props.size };
-	const defaultSize = { ...props.defaultSize };
 
 	const getImageSizeOptions = () => {
 		const response = [];
@@ -111,17 +109,18 @@ const ImageSize = props => {
 					)}
 					<RangeControl
 						label={__('Width', 'maxi-blocks')}
-						value={Number(trim(size.general.width))}
+						value={Number(trim(props['width-general']))}
 						onChange={width => {
-							isNil(width)
-								? (size.general.width =
-										defaultSize.general.width)
-								: (size.general.width = width);
+							if (isNil(width))
+								onChangeSize({
+									'width-general': getDefaultAttribute(
+										'width-general'
+									),
+								});
 
-							onChangeSize(size);
+							onChangeSize({ 'width-general': width });
 						}}
 						allowReset
-						// initialPosition={}
 					/>
 					<div className='toolbar-image-size-buttons'>
 						<Button

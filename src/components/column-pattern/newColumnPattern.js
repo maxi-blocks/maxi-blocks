@@ -296,12 +296,12 @@ const ColumnPatternsInspector = props => {
 
 			if (columnsPositions[j].rowNumber > 1) {
 				columnAttributes[`margin-top-${breakpoint}`] = 2;
-				columnAttributes[`margin-top-unit-${breakpoint}`] = 'em';
+				columnAttributes[`margin-unit-${breakpoint}`] = 'em';
 			}
 
 			if (columnsPositions[j].rowNumber === 1) {
 				columnAttributes[`margin-top-${breakpoint}`] = 0;
-				columnAttributes[`margin-top-unit-${breakpoint}`] = '';
+				columnAttributes[`margin-unit-${breakpoint}`] = '';
 			}
 
 			columnAttributes[`column-size-${breakpoint}`] = sizesWithGaps[j];

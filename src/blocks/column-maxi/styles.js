@@ -30,9 +30,6 @@ const getNormalObject = props => {
 				'borderRadius',
 			]),
 		}),
-		margin: getMarginStyles({
-			...getGroupAttributes(props, 'margin'),
-		}),
 		padding: getPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),

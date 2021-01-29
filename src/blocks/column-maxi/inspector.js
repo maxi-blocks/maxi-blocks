@@ -429,7 +429,7 @@ const Inspector = props => {
 																<Fragment>
 																	<FancyRadioControl
 																		label={__(
-																			'Enable Box Shadow Hover',
+																			'Enable Border Hover',
 																			'maxi-blocks'
 																		)}
 																		selected={

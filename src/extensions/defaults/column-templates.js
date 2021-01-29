@@ -37,15 +37,22 @@ import {
 /**
  * Helpers
  */
+
+function getParentRowGap() {
+	const gap = 2.5;
+
+	return gap;
+}
+
 /**
  *
  * We are generating new columns again each time the user changes the pattern and adding the new columns to them
  * it's better to update columns attributes in place rather than generating again
  */
-const generateDefaultColumns = (columns, gap1 = 2.5) => {
+const generateDefaultColumns = (columns, gap1 = getParentRowGap()) => {
 	const numberOfGaps = columns.length - 1;
-
 	const total = 100 - gap1 * numberOfGaps;
+
 	return columns.map((column, i) => {
 		return [
 			'maxi-blocks/column-maxi',
@@ -53,7 +60,7 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 				uniqueID: 'maxi-column-maxi-1',
 				'column-size-general': column * total,
 				'column-size-m': 100,
-				'margin-top-m': i !== 0 ? 0.7 : '',
+				'margin-top-m': i !== 0 ? 1.5 : '',
 				'margin-unit-m': 'em',
 			},
 		];

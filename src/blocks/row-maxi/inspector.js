@@ -102,6 +102,9 @@ const Inspector = props => {
 															attributes,
 															'rowPattern'
 														)}
+														removeColumnGap={
+															attributes.removeColumnGap
+														}
 														onChange={obj =>
 															setAttributes(obj)
 														}

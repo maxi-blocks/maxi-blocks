@@ -367,7 +367,7 @@ class edit extends MaxiBlock {
 											])}
 											blockClassName={uniqueID}
 										/>
-										<ResizableBox
+<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
 												// width: `${

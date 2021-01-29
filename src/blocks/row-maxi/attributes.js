@@ -28,6 +28,10 @@ const attributes = {
 		type: 'string',
 		default: 'stretch',
 	},
+	removeColumnGap: {
+		type: 'boolean',
+		default: false,
+	},
 	...newAttributes.container,
 	...newAttributes.rowPattern,
 	...newAttributes.opacity,

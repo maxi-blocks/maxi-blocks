@@ -27,7 +27,7 @@ import './editor.scss';
  * Component
  */
 const FullSizeControl = props => {
-	const { onChange, className, breakpoint, hideWidth, hideMaxWidth} = props;
+	const { onChange, className, breakpoint, hideWidth, hideMaxWidth } = props;
 	const size = { ...props.size };
 	const defaultSize = { ...props.defaultSize };
 	const classes = classnames('maxi-full-size-control', className);
@@ -123,28 +123,32 @@ const FullSizeControl = props => {
 			/>
 			{!!size.advancedOptions && (
 				<Fragment>
-				{!hideMaxWidth && (
-					<SizeControl
-						label={__('Max Width', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
-							size,
-							'max-widthUnit',
-							breakpoint
-						)}
-						defaultUnit={defaultSize[breakpoint]['max-widthUnit']}
-						onChangeUnit={val =>
-							onChangeValue('max-widthUnit', val)
-						}
-						value={getLastBreakpointValue(
-							size,
-							'max-width',
-							breakpoint
-						)}
-						defaultValue={defaultSize[breakpoint]['max-width']}
-						onChangeValue={val => onChangeValue('max-width', val)}
-						minMaxSettings={minMaxSettings}
-					/>
-				)}
+					{!hideMaxWidth && (
+						<SizeControl
+							label={__('Max Width', 'maxi-blocks')}
+							unit={getLastBreakpointValue(
+								size,
+								'max-widthUnit',
+								breakpoint
+							)}
+							defaultUnit={
+								defaultSize[breakpoint]['max-widthUnit']
+							}
+							onChangeUnit={val =>
+								onChangeValue('max-widthUnit', val)
+							}
+							value={getLastBreakpointValue(
+								size,
+								'max-width',
+								breakpoint
+							)}
+							defaultValue={defaultSize[breakpoint]['max-width']}
+							onChangeValue={val =>
+								onChangeValue('max-width', val)
+							}
+							minMaxSettings={minMaxSettings}
+						/>
+					)}
 
 					<SizeControl
 						label={__('Min Width', 'maxi-blocks')}

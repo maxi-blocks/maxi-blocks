@@ -372,22 +372,24 @@ const ColumnPatternsInspector = props => {
 					);
 				})}
 			</div>
-			<div className='components-column-pattern__gap'>
-				{numCol !== 1 && breakpoint === 'general' && (
-					<FancyRadioControl
-						label={__('Remove Gap', 'maxi-blocks')}
-						selected={+props.removeColumnGap}
-						options={[
-							{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
-						onChange={val => {
-							onChange({ removeColumnGap: !!+val });
-							updateTemplate(props['row-pattern-general']);
-						}}
-					/>
-				)}
-			</div>
+			{!toolbar && (
+				<div className='components-column-pattern__gap'>
+					{numCol !== 1 && breakpoint === 'general' && (
+						<FancyRadioControl
+							label={__('Remove Gap', 'maxi-blocks')}
+							selected={+props.removeColumnGap}
+							options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 1 },
+								{ label: __('No', 'maxi-blocks'), value: 0 },
+							]}
+							onChange={val => {
+								onChange({ removeColumnGap: !!+val });
+								updateTemplate(props['row-pattern-general']);
+							}}
+						/>
+					)}
+				</div>
+			)}
 		</div>
 	);
 };

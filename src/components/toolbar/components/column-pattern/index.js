@@ -8,7 +8,7 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import { ColumnPattern } from '../../..';
+import ColumnPattern from '../../../column-pattern/newColumnPattern';
 import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
@@ -40,7 +40,6 @@ const ToolbarColumnPattern = props => {
 								}}
 								toolbar
 								breakpoint={breakpoint}
-								{...props}
 							/>
 						</div>
 					}

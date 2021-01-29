@@ -42,7 +42,7 @@ motionElems.forEach(function (elem) {
 				trigger:
 					'.maxi-motion-effect-' +
 					motionID +
-					' > .maxi-container-block__wrapper .maxi-shape-divider',
+					' > .maxi-shape-divider',
 				start: '-150',
 				scrub: true,
 				markers: false,

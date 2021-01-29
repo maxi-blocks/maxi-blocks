@@ -62,6 +62,7 @@ class edit extends MaxiBlock {
 			originalNestedColumns,
 			rowBlockId,
 			updateRowPattern,
+			setAttributes,
 		} = this.props;
 		const {
 			uniqueID,
@@ -88,9 +89,15 @@ class edit extends MaxiBlock {
 		);
 
 		const getColumnWidthDefault = () => {
-			if (getLastBreakpointAttribute('size', deviceType, attributes))
+			if (
+				getLastBreakpointAttribute(
+					'column-size',
+					deviceType,
+					attributes
+				)
+			)
 				return `${getLastBreakpointAttribute(
-					'size',
+					'column-size',
 					deviceType,
 					attributes
 				)}%`;
@@ -155,7 +162,7 @@ class edit extends MaxiBlock {
 										context.rowPattern
 									);
 
-									onChange({
+									setAttributes({
 										[`column-size-${deviceType}`]: round(
 											+elt.style.width.replace('%', '')
 										),
@@ -241,21 +248,21 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
 		const node = document.querySelector(
-			`.maxi-column-block__resizer__${ownProps.uniqueID}`
+			`.maxi-column-block__resizer__${ownProps.attributes.uniqueID}`
 		);
 		if (isNil(node)) return;
 
-		const newSize = ownProps[`column-size-${newDeviceType}`];
+		const newSize = ownProps.attributes[`column-size-${newDeviceType}`];
 
 		if (['xxl', 'xl', 'l'].includes(newDeviceType)) {
 			if (newSize === '') {
-				node.style.width = `${ownProps[`column-size-general`]}%`;
+				node.style.width = `${ownProps.attributes['column-size-general']}%`;
 			} else {
 				node.style.width = `${newSize}%`;
 			}
 		} else if (['s', 'xs'].includes(newDeviceType)) {
 			if (newSize === '') {
-				node.style.width = `${ownProps[`column-size-m`]}%`;
+				node.style.width = `${ownProps.attributes['column-size-m']}%`;
 			} else {
 				node.style.width = `${newSize}%`;
 			}
@@ -265,16 +272,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const updateRowPattern = (rowBlockId, deviceType, rowPatternAttribute) => {
-		const newRowPatternObject = rowPatternAttribute;
-
-		const { rowPattern } = newRowPatternObject[deviceType];
-
-		if (rowPattern.indexOf('custom-') === -1) {
-			newRowPatternObject[deviceType].rowPattern = `custom-${rowPattern}`;
-		}
-
 		dispatch('core/block-editor').updateBlockAttributes(rowBlockId, {
-			rowPattern: newRowPatternObject,
+			rowPattern: rowPatternAttribute[`row-pattern-${deviceType}`],
 		});
 	};
 

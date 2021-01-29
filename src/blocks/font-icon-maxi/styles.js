@@ -93,7 +93,7 @@ const getHoverObject = props => {
 const getWrapperObject = props => {
 	const response = {
 		textAlignment: getAlignmentTextStyles({
-			...getGroupAttributes(props, 'alignment'),
+			...getGroupAttributes(props, 'textAlignment'),
 		}),
 	};
 

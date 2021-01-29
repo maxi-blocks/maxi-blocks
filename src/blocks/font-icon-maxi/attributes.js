@@ -16,14 +16,14 @@ const attributes = {
 		type: 'string',
 		default: __('Font Icon', 'maxi-blocks'),
 	},
-	...newAttributes.icon,
 	...{
-		...newAttributes.alignment,
-		'alignment-general': {
+		...newAttributes.textAlignment,
+		'text-alignment-general': {
 			type: 'string',
 			default: 'center',
 		},
 	},
+	...newAttributes.icon,
 	...newAttributes.opacity,
 	...newAttributes.background,
 	...newAttributes.backgroundColor,

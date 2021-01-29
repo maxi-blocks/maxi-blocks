@@ -103,7 +103,7 @@ const Inspector = props => {
 														<AlignmentControl
 															{...getGroupAttributes(
 																attributes,
-																'alignment'
+																'textAlignment'
 															)}
 															onChange={obj =>
 																setAttributes(
@@ -114,6 +114,7 @@ const Inspector = props => {
 																deviceType
 															}
 															disableJustify
+															type='text'
 														/>
 													</Fragment>
 												),

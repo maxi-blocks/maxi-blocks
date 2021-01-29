@@ -45,12 +45,7 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
-		const {
-			attributes,
-			className,
-			deviceType,
-			setAttributes,
-		} = this.props;
+		const { attributes, className, deviceType, setAttributes } = this.props;
 		const {
 			uniqueID,
 			blockStyle,

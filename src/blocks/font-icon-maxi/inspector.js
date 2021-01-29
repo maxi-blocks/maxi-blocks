@@ -20,7 +20,6 @@ import {
 	SettingTabsControl,
 	FancyRadioControl,
 	CustomLabel,
-	FontIconControl,
 } from '../../components';
 
 import BorderControl from '../../components/border-control/newBorderControl';
@@ -36,6 +35,7 @@ import ResponsiveControl from '../../components/responsive-control/newResponsive
 import ZIndexControl from '../../components/zindex-control/newIndexControl';
 import AlignmentControl from '../../components/alignment-control/newAlignmentControl';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import FontIconControl from '../../components/font-icon-control/newFontIconControl';
 
 /**
  * Inspector
@@ -128,13 +128,7 @@ const Inspector = props => {
 													<FontIconControl
 														{...getGroupAttributes(
 															attributes,
-															[
-																'icon',
-																'iconPadding',
-																'iconBorder',
-																'iconBorderWidth',
-																'iconBorderRadius',
-															]
+															'icon'
 														)}
 														onChange={obj =>
 															setAttributes(obj)

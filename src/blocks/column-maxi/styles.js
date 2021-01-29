@@ -135,7 +135,7 @@ const getStyles = props => {
 				'backgroundSVGHover',
 				'borderRadiusHover',
 			]),
-			isHover: !!props['background-hover-status'],
+			isHover: !!props['background-status-hover'],
 		}),
 	};
 

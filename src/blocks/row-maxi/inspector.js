@@ -36,7 +36,7 @@ import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId, name } = props;
+	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
 		customLabel,
 		uniqueID,
@@ -278,7 +278,7 @@ const Inspector = props => {
 																		)}
 																		selected={
 																			+attributes[
-																				'background-hover-status'
+																				'background-status-hover'
 																			]
 																		}
 																		options={[
@@ -300,13 +300,13 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-hover-status': !!+val,
+																					'background-status-hover': !!+val,
 																				}
 																			)
 																		}
 																	/>
 																	{attributes[
-																		'background-hover-status'
+																		'background-status-hover'
 																	] && (
 																		<BackgroundControl
 																			{...getGroupAttributes(
@@ -325,6 +325,7 @@ const Inspector = props => {
 																			}
 																			disableVideo
 																			disableSVG
+																			isHover
 																		/>
 																	)}
 																</Fragment>
@@ -427,6 +428,7 @@ const Inspector = props => {
 																			breakpoint={
 																				deviceType
 																			}
+																			isHover
 																		/>
 																	)}
 																</Fragment>

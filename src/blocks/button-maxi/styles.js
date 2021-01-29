@@ -154,7 +154,7 @@ const getStyles = props => {
 				'backgroundGradientHover',
 				'borderRadiusHover',
 			]),
-			isHover: !!props['background-hover-status'],
+			isHover: !!props['background-status-hover'],
 		}),
 		...getBackgroundStyles({
 			target: `${uniqueID} .maxi-button-block__button`,

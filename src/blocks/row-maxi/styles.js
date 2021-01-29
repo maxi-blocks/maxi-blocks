@@ -119,6 +119,17 @@ const getStyles = props => {
 		...getBackgroundStyles({
 			target: uniqueID,
 			...getGroupAttributes(props, [
+				'backgroundHover',
+				'backgroundColorHover',
+				'backgroundImageHover',
+				'backgroundGradientHover',
+				'borderRadiusHover',
+			]),
+			isHover: !!props['background-status-hover'],
+		}),
+		...getBackgroundStyles({
+			target: uniqueID,
+			...getGroupAttributes(props, [
 				'background',
 				'backgroundColor',
 				'backgroundImage',
@@ -127,19 +138,6 @@ const getStyles = props => {
 				'backgroundSVG',
 				'borderRadius',
 			]),
-		}),
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'backgroundHover',
-				'backgroundColorHover',
-				'backgroundImageHover',
-				'backgroundVideoHover',
-				'backgroundGradientHover',
-				'backgroundSVGHover',
-				'borderRadiusHover',
-			]),
-			isHover: !!props['background-hover-status'],
 		}),
 	};
 

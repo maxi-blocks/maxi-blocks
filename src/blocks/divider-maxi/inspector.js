@@ -352,13 +352,13 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-hover-status': !!+val,
+																					'background-status-hover': !!+val,
 																				}
 																			)
 																		}
 																	/>
 																	{attributes[
-																		'background-hover-status'
+																		'background-status-hover'
 																	] && (
 																		<BackgroundControl
 																			{...getGroupAttributes(
@@ -379,6 +379,7 @@ const Inspector = props => {
 																			disableImage
 																			disableVideo
 																			disableSVG
+																			isHover
 																		/>
 																	)}
 																</Fragment>

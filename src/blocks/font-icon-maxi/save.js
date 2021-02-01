@@ -1,41 +1,38 @@
 /**
  * Internal dependencies
  */
-import { BackgroundDisplayer } from '../../components';
+import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Save
  */
 const save = props => {
+	const { className, attributes } = props;
 	const {
-		className,
-		attributes: {
-			uniqueID,
-			blockStyle,
-			defaultBlockStyle,
-			background,
-			extraClassName,
-			icon,
-		},
-	} = props;
-	const highlight = { ...props.attributes.highlight };
-	const { textHighlight, backgroundHighlight, borderHighlight } = highlight;
+		uniqueID,
+		blockStyle,
+		defaultBlockStyle,
+		extraClassName,
+	} = attributes;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-font-icon-block',
 		blockStyle,
-		!!textHighlight && 'maxi-highlight--text',
-		!!backgroundHighlight && 'maxi-highlight--background',
-		!!borderHighlight && 'maxi-highlight--border',
+		!!attributes['text-highlight'] && 'maxi-highlight--text',
+		!!attributes['background-highlight'] && 'maxi-highlight--background',
+		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
-		className
+		className,
+		!isNil(uniqueID) ? uniqueID : null
 	);
 
 	return (
@@ -44,10 +41,20 @@ const save = props => {
 			data-maxi_initial_block_class={defaultBlockStyle}
 			data-motion-id={uniqueID}
 		>
-			<BackgroundDisplayer background={background} />
-			{icon.icon && (
+			<BackgroundDisplayer
+				{...getGroupAttributes(attributes, [
+					'background',
+					'backgroundColor',
+					'backgroundGradient',
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+				])}
+				blockClassName={uniqueID}
+			/>
+			{!isEmpty(attributes['icon-name']) && (
 				<span className='maxi-font-icon-block__icon'>
-					<i className={icon.icon} />
+					<i className={attributes['icon-name']} />
 				</span>
 			)}
 		</div>

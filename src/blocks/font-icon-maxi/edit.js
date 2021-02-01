@@ -8,175 +8,66 @@ const { withSelect } = wp.data;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	getBoxShadowObject,
-	getTransformObject,
-	setBackgroundStyles,
-	getLastBreakpointValue,
-	getIconObject,
-	getAlignmentTextObject,
-} from '../../utils';
-import {
-	MaxiBlock,
-	Toolbar,
-	BackgroundDisplayer,
-	FontIconPicker,
-} from '../../components';
-
+import { MaxiBlock, Toolbar, FontIconPicker } from '../../components';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
+import getStyles from './styles';
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Content
  */
 class edit extends MaxiBlock {
-	get getObject() {
-		const { uniqueID, background, backgroundHover } = this.props.attributes;
-
-		let response = {
-			[uniqueID]: this.getNormalObject,
-			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID} .maxi-font-icon-block__icon`]: this.getWrapperObject,
-			[`${uniqueID} .maxi-font-icon-block__icon i`]: this.getIconObject,
-		};
-
-		response = Object.assign(
-			response,
-			setBackgroundStyles({
-				target: uniqueID,
-				background,
-				backgroundHover,
-			})
-		);
-
-		return response;
-	}
-
-	get getIconObject() {
-		const { icon } = this.props.attributes;
-
-		const response = {
-			icon: getIconObject(icon),
-		};
-		return response;
-	}
-
-	get getWrapperObject() {
-		const { alignment } = this.props.attributes;
-
-		const response = {
-			alignment: getAlignmentTextObject(alignment),
-		};
-
-		return response;
-	}
-
-	get getNormalObject() {
-		const {
-			opacity,
-			padding,
-			margin,
-			zIndex,
-			position,
-			display,
-			transform,
-			boxShadow,
-			border,
-		} = this.props.attributes;
-
-		const response = {
-			padding,
-			margin,
-			opacity,
-			border,
-			borderWidth: border.borderWidth,
-			borderRadius: border.borderRadius,
-			boxShadow: { ...getBoxShadowObject(boxShadow) },
-			zIndex,
-			position,
-			positionOptions: position.options,
-			display,
-			transform: getTransformObject(transform),
-		};
-
-		return response;
-	}
-
-	get getHoverObject() {
-		const { boxShadowHover, borderHover } = this.props.attributes;
-
-		const response = {
-			borderWidth: borderHover.borderWidth,
-			borderRadius: borderHover.borderRadius,
-		};
-
-		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(boxShadowHover),
-			};
-		}
-
-		if (!isNil(borderHover) && !!borderHover.status) {
-			response.borderHover = {
-				...borderHover,
-			};
-		}
-
-		return response;
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
 	}
 
 	get getCustomData() {
-		const { uniqueID, motion } = this.props.attributes;
+		const { uniqueID } = this.props.attributes;
 
 		const motionStatus =
-			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+			!!this.props.attributes['motion-status'] ||
+			!isEmpty(this.props.attributes['entrance-type']);
 
 		return {
 			[uniqueID]: {
-				...(motionStatus && { motion }),
+				...(motionStatus && {
+					...getGroupAttributes(this.props.attributes, 'motion'),
+					...getGroupAttributes(this.props.attributes, 'entrance'),
+				}),
 			},
 		};
 	}
 
 	render() {
+		const { attributes, className, deviceType, setAttributes } = this.props;
 		const {
-			attributes: {
-				uniqueID,
-				defaultBlockStyle,
-				blockStyle,
-				blockStyleBackground,
-				extraClassName,
-				background,
-			},
-			className,
-			deviceType,
-			setAttributes,
-		} = this.props;
-		const display = { ...this.props.attributes.display };
-		const icon = { ...this.props.attributes.icon };
-		const highlight = { ...this.props.attributes.highlight };
-		const {
-			textHighlight,
-			backgroundHighlight,
-			borderHighlight,
-		} = highlight;
+			uniqueID,
+			blockStyle,
+			defaultBlockStyle,
+			blockStyleBackground,
+			extraClassName,
+		} = attributes;
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-font-icon-block',
-			getLastBreakpointValue(display, 'display', deviceType) === 'none' &&
-				'maxi-block-display-none',
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
+				'none' && 'maxi-block-display-none',
 			defaultBlockStyle,
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!textHighlight && 'maxi-highlight--text',
-			!!backgroundHighlight && 'maxi-highlight--background',
-			!!borderHighlight && 'maxi-highlight--border',
+			!!attributes['text-highlight'] && 'maxi-highlight--text',
+			!!attributes['background-highlight'] &&
+				'maxi-highlight--background',
+			!!attributes['border-highlight'] && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className
@@ -189,19 +80,27 @@ class edit extends MaxiBlock {
 				className={classes}
 				data-maxi_initial_block_class={defaultBlockStyle}
 			>
-				<BackgroundDisplayer background={background} />
-				{(!!icon.icon && (
+				<BackgroundDisplayer
+					{...getGroupAttributes(attributes, [
+						'background',
+						'backgroundColor',
+						'backgroundGradient',
+						'backgroundHover',
+						'backgroundColorHover',
+						'backgroundGradientHover',
+					])}
+				/>
+				{(!isEmpty(attributes['icon-name']) && (
 					<span className='maxi-font-icon-block__icon'>
-						<i className={icon.icon} />
+						<i className={attributes['icon-name']} />
 					</span>
 				)) || (
 					<FontIconPicker
-						onChange={newIcon => {
-							icon.icon = newIcon;
+						onChange={val =>
 							setAttributes({
-								icon,
-							});
-						}}
+								'icon-name': val,
+							})
+						}
 					/>
 				)}
 			</__experimentalBlock>,

@@ -16,14 +16,14 @@ const attributes = {
 		type: 'string',
 		default: __('Font Icon', 'maxi-blocks'),
 	},
-	...newAttributes.icon,
 	...{
-		...newAttributes.alignment,
-		'alignment-general': {
+		...newAttributes.textAlignment,
+		'text-alignment-general': {
 			type: 'string',
 			default: 'center',
 		},
 	},
+	...newAttributes.icon,
 	...newAttributes.opacity,
 	...newAttributes.background,
 	...newAttributes.backgroundColor,
@@ -46,6 +46,7 @@ const attributes = {
 	...newAttributes.motion,
 	...newAttributes.transform,
 	...newAttributes.highlight,
+	...newAttributes.entrance,
 };
 
 export default attributes;

@@ -31,7 +31,7 @@ const PaddingMargin = props => {
 				<div className='toolbar-item__padding-margin__popover'>
 					<AxisControl
 						{...getGroupAttributes(props, 'padding')}
-						label={__('Margin', 'maxi-blocks')}
+						label={__('Padding', 'maxi-blocks')}
 						onChange={obj => onChange(obj)}
 						breakpoint={breakpoint}
 						target='padding'

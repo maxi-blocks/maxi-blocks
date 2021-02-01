@@ -50,7 +50,7 @@ import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 /**
  * External dependencies
  */
-import { capitalize, isEmpty, isNil, isObject } from 'lodash';
+import { capitalize, isEmpty, isNil, isObject, trim } from 'lodash';
 
 /**
  * Inspector
@@ -267,9 +267,11 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														value={
-															attributes[
-																'width-general'
-															]
+															+trim(
+																attributes[
+																	'width-general'
+																]
+															)
 														}
 														onChange={val => {
 															if (!isNil(val))
@@ -472,10 +474,7 @@ const Inspector = props => {
 																				[
 																					'backgroundHover',
 																					'backgroundColorHover',
-																					'backgroundImageHover',
-																					'backgroundVideoHover',
 																					'backgroundGradientHover',
-																					'backgroundSVGHover',
 																				]
 																			)}
 																			onChange={obj =>

@@ -111,32 +111,10 @@ const getHoverEffectContentTextObject = props => {
 	return response;
 };
 
-const getHoverObject = props => {
-	const response = {
-		...(props['box-shadow-status-hover'] && {
-			boxShadow: getBoxShadowStyles(
-				{
-					...getGroupAttributes(props, 'boxShadow', true),
-				},
-				true,
-				props['arrow-status']
-			),
-		}),
-	};
-
-	return response;
-};
-
 const getImageFrontendObject = props => {
 	const response = {
-		...(props['box-shadow-status-hover'] && {
-			boxShadow: getBoxShadowStyles(
-				{
-					...getGroupAttributes(props, 'boxShadow', true),
-				},
-				true,
-				props['arrow-status']
-			),
+		boxShadow: getBoxShadowStyles({
+			...getGroupAttributes(props, 'boxShadow'),
 		}),
 		imageSize: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -168,8 +146,7 @@ const getImageHoverObject = props => {
 				{
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				true,
-				props['arrow-status']
+				true
 			),
 		}),
 	};
@@ -229,7 +206,6 @@ const getStyles = props => {
 
 	let response = {
 		[uniqueID]: getNormalObject(props),
-		[`${uniqueID}:hover`]: getHoverObject(props),
 		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageFrontendObject(
 			props
 		),
@@ -257,28 +233,14 @@ const getStyles = props => {
 	response = {
 		...response,
 		...getBackgroundStyles({
-			target: `${uniqueID} .maxi-container-block__wrapper`,
-			...getGroupAttributes(props, [
-				'background',
-				'backgroundColor',
-				'backgroundImage',
-				'backgroundVideo',
-				'backgroundGradient',
-				'backgroundSVG',
-				'borderRadius',
-			]),
-		}),
-		...getBackgroundStyles({
-			target: `${uniqueID} .maxi-container-block__wrapper`,
+			target: uniqueID,
 			...getGroupAttributes(props, [
 				'backgroundHover',
 				'backgroundColorHover',
-				'backgroundImageHover',
-				'backgroundVideoHover',
 				'backgroundGradientHover',
-				'backgroundSVGHover',
 				'borderRadiusHover',
 			]),
+			isHover: !!props['background-status-hover'],
 		}),
 		...getBackgroundStyles({
 			target: `${uniqueID} .maxi-hover-details`,
@@ -295,6 +257,18 @@ const getStyles = props => {
 				backgroundGradient: 'hoverBackgroundGradient',
 				borderRadius: 'hoverBorderRadius',
 			},
+		}),
+		...getBackgroundStyles({
+			target: uniqueID,
+			...getGroupAttributes(props, [
+				'background',
+				'backgroundColor',
+				'backgroundImage',
+				'backgroundVideo',
+				'backgroundGradient',
+				'backgroundSVG',
+				'borderRadius',
+			]),
 		}),
 	};
 

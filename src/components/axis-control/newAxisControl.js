@@ -230,7 +230,7 @@ const AxisControl = props => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(+newValue, inputsArray[0]);
+									onChangeValue(newValue, inputsArray[0]);
 								}}
 								id={`${instanceId}-top`}
 							/>

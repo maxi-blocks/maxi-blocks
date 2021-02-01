@@ -109,16 +109,18 @@ const ImageSize = props => {
 					)}
 					<RangeControl
 						label={__('Width', 'maxi-blocks')}
-						value={Number(trim(props['width-general']))}
-						onChange={width => {
-							if (isNil(width))
+						value={+trim(props['width-general'])}
+						onChange={val => {
+							if (!isNil(val))
+								onChangeSize({
+									'width-general': val,
+								});
+							else
 								onChangeSize({
 									'width-general': getDefaultAttribute(
 										'width-general'
 									),
 								});
-
-							onChangeSize({ 'width-general': width });
 						}}
 						allowReset
 					/>
@@ -127,7 +129,7 @@ const ImageSize = props => {
 							className='toolbar-image-size-buttons__edit-image'
 							onClick={() =>
 								openGeneralSidebar('edit-post/block').then(() =>
-									openSidebar('width height')
+									openSidebar('image dimension')
 								)
 							}
 						>

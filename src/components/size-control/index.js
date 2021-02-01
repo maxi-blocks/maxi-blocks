@@ -149,8 +149,8 @@ const SizeControl = props => {
 							: Number(trim(value))
 					}
 					onChange={val => onChangeValue(Number(val))}
-					min={unit ? minMaxSettings[unit].min : null}
-					max={unit ? minMaxSettings[unit].max : null}
+					min={unit ? minMaxSettings[unit].min : 0}
+					max={unit ? minMaxSettings[unit].max : 999}
 					step={step}
 					withInputField={false}
 					initialPosition={value || initial}

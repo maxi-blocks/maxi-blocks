@@ -243,8 +243,8 @@ const TypographyControl = props => {
 				onChangeUnit={val => {
 					onChangeFormat({ [`${prefix}line-height-unit`]: val });
 				}}
-				value={trim(getValue(`${prefix}line-height`))}
-				defaultTypography={getDefault(`${prefix}line-height`)}
+				value={getValue(`${prefix}line-height`)}
+				defaultValue={getDefault(`${prefix}line-height`)}
 				onChangeValue={val => {
 					onChangeFormat({ [`${prefix}line-height`]: val });
 				}}
@@ -260,7 +260,7 @@ const TypographyControl = props => {
 					onChangeFormat({ [`${prefix}letter-spacing-unit`]: val });
 				}}
 				value={getValue(`${prefix}letter-spacing`)}
-				defaultTypography={getDefault(`${prefix}letter-spacing`)}
+				defaultValue={getDefault(`${prefix}letter-spacing`)}
 				onChangeValue={val => {
 					onChangeFormat({ [`${prefix}letter-spacing`]: val });
 				}}

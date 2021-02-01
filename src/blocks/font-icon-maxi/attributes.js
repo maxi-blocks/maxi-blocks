@@ -46,6 +46,7 @@ const attributes = {
 	...newAttributes.motion,
 	...newAttributes.transform,
 	...newAttributes.highlight,
+	...newAttributes.entrance,
 };
 
 export default attributes;

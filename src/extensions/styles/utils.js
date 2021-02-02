@@ -4,67 +4,9 @@
 /* eslint-disable no-continue */
 
 /**
- * WordPress dependencies
- */
-const { select } = wp.data;
-const { getBlockAttributes } = wp.blocks;
-
-/**
  * External dependencies
  */
 import { isEmpty, isNil, isNumber, isString } from 'lodash';
-
-/**
- * Returns default property of the block
- *
- * @param {string} clientId Block's client id
- * @param {string} prop Claimed property to return
- */
-export const getDefaultProp = (clientId, prop) => {
-	const { getBlockName, getSelectedBlockClientId } = select(
-		'core/block-editor'
-	);
-	const blockName = clientId
-		? getBlockName(clientId)
-		: getBlockName(getSelectedBlockClientId());
-
-	if (prop) return getBlockAttributes(blockName)[prop];
-	return getBlockAttributes(blockName);
-};
-
-/**
- * Gets an object base on Maxi Blocks breakpoints schema and looks for the last set value
- * for a concrete property in case is not set for the requested breakpoint
- */
-export const getLastBreakpointValue = (obj, prop, breakpoint = 'general') => {
-	if (!isNil(obj[breakpoint][prop]) && !isEmpty(obj[breakpoint][prop]))
-		return obj[breakpoint][prop];
-	if (!isNil(obj[breakpoint][prop]) && isNumber(obj[breakpoint][prop]))
-		return obj[breakpoint][prop];
-
-	const objectKeys = Object.keys(obj);
-	const breakpointIndex = objectKeys.indexOf(breakpoint) - 1;
-
-	if (breakpointIndex === 0) return obj[breakpoint][prop];
-
-	let i = breakpointIndex;
-
-	do {
-		if (
-			!isNil(obj[objectKeys[i]][prop]) &&
-			!isEmpty(obj[objectKeys[i]][prop])
-		)
-			return obj[objectKeys[i]][prop];
-		if (
-			!isNil(obj[objectKeys[i]][prop]) &&
-			isNumber(obj[objectKeys[i]][prop])
-		)
-			return obj[objectKeys[i]][prop];
-		i -= 1;
-	} while (i > 0);
-
-	return obj[breakpoint][prop];
-};
 
 export const getDropShadowObject = boxShadow => {
 	const response = {
@@ -830,7 +772,6 @@ export const getArrowObject = arrow => {
 		response[key].display = 'block';
 		response[key].width = `${width}`;
 		response[key].height = `${width}`;
-
 
 		if (value.side === 'top') {
 			response[key].left = `${value.position}%`;

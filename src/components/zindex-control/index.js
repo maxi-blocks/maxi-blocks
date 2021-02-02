@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
  * Internal dependencies
  */
 import NumberControl from '../number-control';
-import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
 /**
@@ -27,7 +27,7 @@ const ZIndexControl = props => {
 		<NumberControl
 			label={__('Z-index', 'maxi-blocks')}
 			className={classes}
-			value={getLastBreakpointValue('z-index', breakpoint, props)}
+			value={getLastBreakpointAttribute('z-index', breakpoint, props)}
 			defaultZIndex={getDefaultAttribute(`z-index-${breakpoint}`)}
 			onChange={val => onChange({ [`z-index-${breakpoint}`]: val })}
 		/>

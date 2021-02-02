@@ -8,7 +8,7 @@ const { select } = wp.data;
 /**
  * Internal dependencies
  */
-import { getDefaultProp } from '../../utils';
+import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
 /**
  * External dependencies
@@ -369,7 +369,10 @@ const MaxiToolbar = props => {
 							<ImageSize
 								{...getGroupAttributes(attributes, 'size')}
 								blockName={name}
-								defaultSize={getDefaultProp(clientId, 'size')}
+								defaultSize={getDefaultAttribute(
+									'size',
+									clientId
+								)}
 								onChangeSize={obj => setAttributes(obj)}
 								imageSize={imageSize}
 								onChangeImageSize={imageSize =>

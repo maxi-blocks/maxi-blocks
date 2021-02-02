@@ -6,7 +6,7 @@ const { dispatch } = wp.data;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from './utils';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 
 /**
  * External dependencies
@@ -22,7 +22,7 @@ const propsObjectManipulator = (value, newObject, breakpoint) => {
 	const object = value[breakpoint];
 	newObject[breakpoint] = {};
 	let unitChecker = '';
-	let unit = getLastBreakpointValue(value, 'unit', breakpoint) || '';
+	let unit = getLastBreakpointAttribute(value, 'unit', breakpoint) || '';
 
 	const nonAllowedProps = ['font-options', 'unit'];
 

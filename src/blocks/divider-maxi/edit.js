@@ -17,7 +17,7 @@ import {
 	MotionPreview,
 } from '../../components';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getStyles from './styles';
 
 /**
@@ -82,7 +82,7 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-divider-block',
-			getLastBreakpointValue('display', deviceType, attributes) ===
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&

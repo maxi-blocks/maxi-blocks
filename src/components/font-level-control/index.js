@@ -9,7 +9,7 @@ const { useState } = wp.element;
  * Internal dependencies
  */
 import { defaultTypography } from '../../extensions/text';
-import { getDefaultProp } from '../../utils';
+import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
 /**
  * External dependencies
@@ -75,7 +75,7 @@ const FontLevelControl = props => {
 				...oldFontOptions,
 				...defaultTypography[value],
 			};
-			fontOptResponseHover = getDefaultProp(null, 'typographyHover');
+			fontOptResponseHover = getDefaultAttribute('typographyHover');
 		}
 
 		onChange({

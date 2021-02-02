@@ -7,7 +7,7 @@ const { ColorPicker, Icon } = wp.components;
 /**
  * Internal dependencies
  */
-import getLastBreakpointValue from '../../../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../../../extensions/styles/getLastBreakpointValue';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	setFormat,
@@ -67,7 +67,7 @@ const TextColor = props => {
 						(color && {
 							background: color,
 						}) || {
-							background: getLastBreakpointValue(
+							background: getLastBreakpointAttribute(
 								typography,
 								'color',
 								breakpoint
@@ -85,7 +85,11 @@ const TextColor = props => {
 				<ColorPicker
 					color={
 						color ||
-						getLastBreakpointValue('color', breakpoint, typography)
+						getLastBreakpointAttribute(
+							'color',
+							breakpoint,
+							typography
+						)
 					}
 					onChangeComplete={obj => onClick(obj)}
 				/>

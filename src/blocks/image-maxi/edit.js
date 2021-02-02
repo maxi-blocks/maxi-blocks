@@ -11,7 +11,6 @@ const { __experimentalBlock, MediaUpload } = wp.blockEditor;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
 import {
 	MaxiBlock,
 	Toolbar,
@@ -19,6 +18,7 @@ import {
 	MotionPreview,
 } from '../../components';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getStyles from './styles';
 
 /**
@@ -109,7 +109,7 @@ class edit extends MaxiBlock {
 			'maxi-block maxi-image-block',
 			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 			'maxi-block--backend',
-			getLastBreakpointValue('display', deviceType, attributes) ===
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&

@@ -17,6 +17,7 @@ import {
 } from '../../components';
 import Inspector from './inspector';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getStyles from './styles';
 
 /**
@@ -24,7 +25,6 @@ import getStyles from './styles';
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
 
 /**
  * Edit
@@ -76,7 +76,7 @@ class edit extends MaxiBlock {
 			'maxi-group-block',
 			'maxi-motion-effect',
 			`maxi-motion-effect-${uniqueID}`,
-			getLastBreakpointValue('display', deviceType, attributes) ===
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,

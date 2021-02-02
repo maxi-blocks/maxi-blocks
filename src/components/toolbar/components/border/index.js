@@ -15,7 +15,7 @@ import ToolbarPopover from '../toolbar-popover';
  */
 import './editor.scss';
 import { toolbarBorder } from '../../../../icons';
-import getLastBreakpointValue from '../../../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../../../extensions/styles/getLastBreakpointValue';
 import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
@@ -40,25 +40,25 @@ const Border = props => {
 				<div
 					className='toolbar-item__border__icon'
 					style={{
-						borderStyle: getLastBreakpointValue(
+						borderStyle: getLastBreakpointAttribute(
 							'border-style',
 							breakpoint,
 							props
 						),
 						background:
-							getLastBreakpointValue(
+							getLastBreakpointAttribute(
 								'border-style',
 								breakpoint,
 								props
 							) === 'none'
 								? 'transparent'
-								: getLastBreakpointValue(
+								: getLastBreakpointAttribute(
 										'border-style',
 										breakpoint,
 										props
 								  ),
 						borderWidth: '1px',
-						borderColor: getLastBreakpointValue(
+						borderColor: getLastBreakpointAttribute(
 							'border-color',
 							breakpoint,
 							props

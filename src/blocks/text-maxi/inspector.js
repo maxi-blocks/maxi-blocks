@@ -35,6 +35,7 @@ import {
 } from '../../components';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 
 /**
  * Inspector
@@ -355,7 +356,7 @@ const Inspector = props => {
 																				!!highlight.textHighlight
 																			}
 																			isHover
-																			originalFontOptions={getLastBreakpointValue(
+																			originalFontOptions={getLastBreakpointAttribute(
 																				'font-options',
 																				deviceType,
 																				attributes

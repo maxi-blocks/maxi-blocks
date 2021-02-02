@@ -8,7 +8,7 @@ const { SelectControl } = wp.components;
  * Internal dependencies
  */
 import defaultTypographies from '../../extensions/defaults/typography';
-import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
@@ -342,7 +342,7 @@ const TypographyControl = props => {
 				onChange={val => {
 					onChangeFormat({ [`${prefix}text-shadow`]: val });
 				}}
-				defaultColor={getLastBreakpointValue(
+				defaultColor={getLastBreakpointAttribute(
 					'color',
 					breakpoint,
 					typography

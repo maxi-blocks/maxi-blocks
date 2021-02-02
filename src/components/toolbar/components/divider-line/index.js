@@ -7,7 +7,8 @@ const { __ } = wp.i18n;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import DividerControl from '../../../divider-control';
+import DividerControl from '../../../divider-control/newDividerControl';
+import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
  * Styles & Icons
@@ -20,13 +21,7 @@ import { toolbarDividerSetting } from '../../../../icons';
  */
 
 const Divider = props => {
-	const {
-		blockName,
-		divider,
-		defaultDivider,
-		lineOrientation,
-		onChange,
-	} = props;
+	const { blockName, lineOrientation, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
@@ -39,10 +34,9 @@ const Divider = props => {
 			content={
 				<div className='toolbar-item__divider-line__popover'>
 					<DividerControl
-						divider={divider}
-						defaultDivider={defaultDivider}
-						onChange={divider => {
-							onChange(divider);
+						{...getGroupAttributes(props, ['divider', 'size'])}
+						onChange={obj => {
+							onChange(obj);
 						}}
 						lineOrientation={lineOrientation}
 						disableColor

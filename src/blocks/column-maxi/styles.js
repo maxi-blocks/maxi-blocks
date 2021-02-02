@@ -6,8 +6,7 @@ import {
 	getColumnSizeStyles,
 	getDisplayStyles,
 	getTransformStyles,
-	getMarginStyles,
-	getPaddingStyles,
+	getMarginPaddingStyles,
 	getBackgroundStyles,
 	getBorderStyles,
 	getOpacityStyles,
@@ -30,7 +29,7 @@ const getNormalObject = props => {
 				'borderRadius',
 			]),
 		}),
-		padding: getPaddingStyles({
+		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
 		opacity: getOpacityStyles({
@@ -90,7 +89,7 @@ const getHoverObject = props => {
 
 const getResizerObject = props => {
 	const response = {
-		margin: getMarginStyles({
+		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
 		display: getDisplayStyles({

@@ -9,7 +9,7 @@ const { SelectControl } = wp.components;
  */
 import defaultTypographies from '../../extensions/defaults/typography';
 import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
-import AlignmentControl from '../alignment-control';
+import AlignmentControl from '../alignment-control/newAlignmentControl';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
 import SizeControl from '../size-control';
@@ -44,12 +44,12 @@ const TypographyControl = props => {
 		isHover = false,
 		originalFontOptions = [],
 		disableColor = false,
+		prefix = '',
+		typography = getGroupAttributes(props, [
+			'typography',
+			...(isHover && ['typographyHover']),
+		]),
 	} = props;
-
-	const typography = getGroupAttributes(props, [
-		'typography',
-		...(isHover && ['typographyHover']),
-	]);
 
 	const classes = classnames('maxi-typography-control', className);
 
@@ -76,9 +76,14 @@ const TypographyControl = props => {
 
 	const getWeightOptions = () => {
 		const fontOptions =
-			!isHover || !typography[`font-options-${breakpoint}-hover`]
+			!isHover ||
+			!typography[`${`${prefix}`}font-options-${breakpoint}-hover`]
 				? Object.keys(originalFontOptions)
-				: Object.keys(typography[`font-options-${breakpoint}-hover`]);
+				: Object.keys(
+						typography[
+							`${`${prefix}`}font-options-${breakpoint}-hover`
+						]
+				  );
 
 		if (fontOptions.length === 0) {
 			return [
@@ -185,11 +190,11 @@ const TypographyControl = props => {
 		<div className={classes}>
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
-				font={getValue('font-family')}
+				font={getValue(`${prefix}font-family`)}
 				onChange={font => {
 					onChangeFormat({
-						'font-family': font.value,
-						'font-options': font.files,
+						[`${prefix}font-family`]: font.value,
+						[`${prefix}font-options`]: font.files,
 					});
 				}}
 			/>
@@ -197,54 +202,51 @@ const TypographyControl = props => {
 				<ColorControl
 					label={__('Font', 'maxi-blocks')}
 					className='maxi-typography-control__color'
-					color={getValue('color')}
-					defaultColor={getDefault('color')}
+					color={getValue(`${prefix}color`)}
+					defaultColor={getDefault(`${prefix}color`)}
 					onChange={val => {
-						onChangeFormat({ color: val });
+						onChangeFormat({ [`${prefix}color`]: val });
 					}}
 					disableGradient
 				/>
 			)}
-			{/* {!hideAlignment && (
+			{!hideAlignment && (
 				<AlignmentControl
+					{...getGroupAttributes(props, 'textAlignment')}
 					className='maxi-typography-control__text-alignment'
 					label={__('Alignment', 'maxi-blocks')}
-					alignment={typography.textAlign}
-					onChange={textAlign => {
-						typography.textAlign = textAlign;
-						onChange({
-							typography,
-						});
-					}}
+					onChange={obj => onChange(obj)}
+					breakpoint={breakpoint}
+					type='text'
 				/>
-			)} */}
+			)}
 			<SizeControl
 				className='maxi-typography-control__size'
 				label={__('Size', 'maxi-blocks')}
-				unit={getValue('font-size-unit')}
-				defaultUnit={getDefault('font-size-unit')}
+				unit={getValue(`${prefix}prefix + font-size-unit`)}
+				defaultUnit={getDefault(`${prefix}font-size-unit`)}
 				onChangeUnit={val => {
-					onChangeFormat({ 'font-size-unit': val });
+					onChangeFormat({ [`${prefix}font-size-unit`]: val });
 				}}
-				value={trim(getValue('font-size'))}
-				defaultTypography={getDefault('font-size')}
+				value={trim(getValue(`${prefix}font-size`))}
+				defaultTypography={getDefault(`${prefix}font-size`)}
 				onChangeValue={val => {
-					onChangeFormat({ 'font-size': val });
+					onChangeFormat({ [`${prefix}font-size`]: val });
 				}}
 				minMaxSettings={minMaxSettings}
 			/>
 			<SizeControl
 				className='maxi-typography-control__line-height'
 				label={__('Line Height', 'maxi-blocks')}
-				unit={getValue('line-height-unit')}
-				defaultUnit={getDefault('line-height-unit')}
+				unit={getValue(`${prefix}line-height-unit`)}
+				defaultUnit={getDefault(`${prefix}line-height-unit`)}
 				onChangeUnit={val => {
-					onChangeFormat({ 'line-height-unit': val });
+					onChangeFormat({ [`${prefix}line-height-unit`]: val });
 				}}
-				value={trim(getValue('line-height'))}
-				defaultTypography={getDefault('line-height')}
+				value={getValue(`${prefix}line-height`)}
+				defaultValue={getDefault(`${prefix}line-height`)}
 				onChangeValue={val => {
-					onChangeFormat({ 'line-height': val });
+					onChangeFormat({ [`${prefix}line-height`]: val });
 				}}
 				minMaxSettings={minMaxSettings}
 				allowedUnits={['px', 'em', 'vw', '%', 'empty']}
@@ -252,15 +254,15 @@ const TypographyControl = props => {
 			<SizeControl
 				className='maxi-typography-control__letter-spacing'
 				label={__('Letter Spacing', 'maxi-blocks')}
-				unit={getValue('letter-spacing-unit')}
-				defaultUnit={getDefault('letter-spacing-unit')}
+				unit={getValue(`${prefix}letter-spacing-unit`)}
+				defaultUnit={getDefault(`${prefix}letter-spacing-unit`)}
 				onChangeUnit={val => {
-					onChangeFormat({ 'letter-spacing-unit': val });
+					onChangeFormat({ [`${prefix}letter-spacing-unit`]: val });
 				}}
-				value={getValue('letter-spacing')}
-				defaultTypography={getDefault('letter-spacing')}
+				value={getValue(`${prefix}letter-spacing`)}
+				defaultValue={getDefault(`${prefix}letter-spacing`)}
 				onChangeValue={val => {
-					onChangeFormat({ 'letter-spacing': val });
+					onChangeFormat({ [`${prefix}letter-spacing`]: val });
 				}}
 				minMaxSettings={minMaxSettings}
 			/>
@@ -268,16 +270,16 @@ const TypographyControl = props => {
 			<SelectControl
 				label={__('Weight', 'maxi-blocks')}
 				className='maxi-typography-control__weight'
-				value={getValue('font-weight')}
+				value={getValue(`${prefix}font-weight`)}
 				options={getWeightOptions()}
 				onChange={val => {
-					onChangeFormat({ 'font-weight': val });
+					onChangeFormat({ [`${prefix}font-weight`]: val });
 				}}
 			/>
 			<SelectControl
 				label={__('Transform', 'maxi-blocks')}
 				className='maxi-typography-control__transform'
-				value={getValue('text-transform')}
+				value={getValue(`${prefix}text-transform`)}
 				options={[
 					{ label: __('Default', 'maxi-blocks'), value: 'none' },
 					{
@@ -294,26 +296,26 @@ const TypographyControl = props => {
 					},
 				]}
 				onChange={val => {
-					onChangeFormat({ 'text-transform': val });
+					onChangeFormat({ [`${prefix}text-transform`]: val });
 				}}
 			/>
 			<SelectControl
 				label={__('Style', 'maxi-blocks')}
 				className='maxi-typography-control__font-style'
-				value={getValue('font-style')}
+				value={getValue(`${prefix}font-style`)}
 				options={[
 					{ label: __('Default', 'maxi-blocks'), value: 'normal' },
 					{ label: __('Italic', 'maxi-blocks'), value: 'italic' },
 					{ label: __('Oblique', 'maxi-blocks'), value: 'oblique' },
 				]}
 				onChange={val => {
-					onChangeFormat({ 'font-style': val });
+					onChangeFormat({ [`${prefix}font-style`]: val });
 				}}
 			/>
 			<SelectControl
 				label={__('Decoration', 'maxi-blocks')}
 				className='maxi-typography-control__decoration'
-				value={getValue('text-decoration')}
+				value={getValue(`${prefix}text-decoration`)}
 				options={[
 					{ label: __('Default', 'maxi-blocks'), value: 'none' },
 					{ label: __('Overline', 'maxi-blocks'), value: 'overline' },
@@ -331,14 +333,14 @@ const TypographyControl = props => {
 					},
 				]}
 				onChange={val => {
-					onChangeFormat({ 'text-decoration': val });
+					onChangeFormat({ [`${prefix}text-decoration`]: val });
 				}}
 			/>
 			<TextShadowControl
 				className='maxi-typography-control__text-shadow'
-				textShadow={getValue('text-shadow')}
+				textShadow={getValue(`${prefix}text-shadow`)}
 				onChange={val => {
-					onChangeFormat({ 'text-shadow': val });
+					onChangeFormat({ [`${prefix}text-shadow`]: val });
 				}}
 				defaultColor={getLastBreakpointValue(
 					'color',

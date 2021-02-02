@@ -18,17 +18,9 @@ import { toolbarDividerSetting } from '../../../../icons';
  * DividerColor
  */
 const DividerColor = props => {
-	const { blockName, onChange } = props;
+	const { blockName, onChange, color } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
-
-	const divider = { ...props.divider };
-
-	const updateDivider = val => {
-		divider.general['border-color'] = val.hex;
-
-		onChange(divider);
-	};
 
 	return (
 		<ToolbarPopover
@@ -38,7 +30,7 @@ const DividerColor = props => {
 				<div
 					className='toolbar-item__text-options__icon'
 					style={{
-						background: divider.general['border-color'],
+						background: color,
 						borderWidth: '1px',
 						borderColor: '#fff',
 						borderStyle: 'solid',
@@ -52,8 +44,10 @@ const DividerColor = props => {
 			}
 			content={
 				<ColorPicker
-					color={divider.general['border-color']}
-					onChangeComplete={val => updateDivider(val)}
+					color={color}
+					onChangeComplete={val =>
+						onChange({ 'divider-border-color': val.hex })
+					}
 				/>
 			}
 		/>

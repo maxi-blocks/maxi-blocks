@@ -9,16 +9,15 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getBackgroundStyles,
-	getMarginStyles,
-	getPaddingStyles,
+	getMarginPaddingStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
 	const response = {
-		margin: getMarginStyles({
+		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
-		padding: getPaddingStyles({
+		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
 		border: getBorderStyles({

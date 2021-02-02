@@ -17,6 +17,7 @@ import {
 	removeLinkFormat,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
+import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
  * External dependencies
@@ -48,7 +49,7 @@ const Link = props => {
 		};
 	}, [getActiveFormat, formatValue, formatName]);
 
-	const typography = { ...props.typography };
+	const typography = { ...getGroupAttributes(props, 'typography') };
 
 	const createLinkValue = formatOptions => {
 		if (!formatOptions || isEmpty(formatValue)) return {};
@@ -119,40 +120,28 @@ const Link = props => {
 			formatValue.end = formatValue.formats.length;
 		}
 
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = applyLinkFormat({
+		const obj = applyLinkFormat({
 			formatValue,
 			typography,
 			linkAttributes: createLinkAttribute(attributes),
 			isList,
 		});
 
-		onChange({
-			typography: newTypography,
-			content: newContent,
-		});
+		onChange(obj);
 	};
 
-	const removeLinkFormat = () => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = removeLinkFormat({
+	const removeLinkFormatHandle = () => {
+		const obj = removeLinkFormat({
 			formatValue,
 			isList,
 			typography,
 		});
 
-		onChange({
-			typography: newTypography,
-			content: newContent,
-		});
+		onChange(obj);
 	};
 
 	const updateLinkString = attributes => {
-		const newContent = getUpdatedString({
+		const content = getUpdatedString({
 			formatValue: getUpdatedFormatValue(
 				formatValue,
 				createLinkAttribute(attributes)
@@ -160,15 +149,12 @@ const Link = props => {
 			isList,
 		});
 
-		onChange({
-			typography,
-			content: newContent,
-		});
+		onChange({ content });
 	};
 
 	const onClick = attributes => {
 		if (!formatOptions) setLinkFormat(attributes);
-		else if (isEmpty(attributes.url)) removeLinkFormat();
+		else if (isEmpty(attributes.url)) removeLinkFormatHandle();
 		else updateLinkString(attributes);
 	};
 

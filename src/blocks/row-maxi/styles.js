@@ -8,8 +8,7 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
-	getMarginStyles,
-	getPaddingStyles,
+	getMarginPaddingStyles,
 	getBackgroundStyles,
 	getBorderStyles,
 	getOpacityStyles,
@@ -35,10 +34,10 @@ const getNormalObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		margin: getMarginStyles({
+		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
-		padding: getPaddingStyles({
+		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
 		opacity: getOpacityStyles({

@@ -108,15 +108,12 @@ const MaxiToolbar = props => {
 		content,
 		typeOfList,
 		textLevel,
+		imageSize,
+		mediaID,
+		lineOrientation,
+		lineVertical,
+		lineHorizontal,
 	} = attributes;
-	const highlight = { ...props.highlight };
-	const {
-		borderHighlight,
-		textHighlight,
-		backgroundHighlight,
-		color1Highlight,
-		color2Highlight,
-	} = highlight;
 
 	const [anchorRef, setAnchorRef] = useState(
 		document.getElementById(`block-${clientId}`)
@@ -176,29 +173,24 @@ const MaxiToolbar = props => {
 						</div>
 						<Mover clientId={clientId} blockName={name} />
 						<ColumnMover clientId={clientId} blockName={name} />
-						{/* {!!borderHighlight && (
+						{!attributes['border-highlight'] && (
 							<DividerColor
+								color={attributes['divider-border-color']}
 								blockName={name}
-								divider={divider}
-								onChange={divider => setAttributes({ divider })}
+								onChange={obj => setAttributes(obj)}
 							/>
-						)} */}
-						{/* <Divider
+						)}
+						<Divider
+							{...getGroupAttributes(attributes, 'divider')}
 							blockName={name}
-							divider={divider}
-							defaultDivider={getDefaultProp(clientId, 'divider')}
 							lineOrientation={lineOrientation}
-							onChange={divider =>
-								setAttributes({
-									divider,
-								})
-							}
-						/> */}
-						{/* <DividerAlignment
+							onChange={obj => setAttributes(obj)}
+						/>
+						<DividerAlignment
+							{...getGroupAttributes(attributes, 'divider')}
 							lineOrientation={lineOrientation}
 							lineVertical={lineVertical}
 							lineHorizontal={lineHorizontal}
-							divider={divider}
 							blockName={name}
 							onChangeOrientation={lineOrientation =>
 								setAttributes({ lineOrientation })
@@ -209,7 +201,7 @@ const MaxiToolbar = props => {
 							onChangeVertical={lineVertical =>
 								setAttributes({ lineVertical })
 							}
-						/> */}
+						/>
 						<TextOptions
 							{...getGroupAttributes(attributes, 'typography')}
 							blockName={name}
@@ -222,10 +214,13 @@ const MaxiToolbar = props => {
 							formatValue={formatValue}
 							textLevel={textLevel}
 						/>
-						{/* {!!textHighlight && (
+						{!attributes['text-highlight'] && (
 							<TextColor
 								blockName={name}
-								typography={typography}
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
 								content={content}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={deviceType}
@@ -234,13 +229,16 @@ const MaxiToolbar = props => {
 								typeOfList={typeOfList}
 								formatValue={formatValue}
 							/>
-						)} */}
-						{/* <Alignment
+						)}
+						<Alignment
 							blockName={name}
-							alignment={alignment}
-							onChange={alignment => setAttributes({ alignment })}
+							{...getGroupAttributes(attributes, [
+								'alignment',
+								'textAlignment',
+							])}
+							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
-						/> */}
+						/>
 						<TextLevel
 							{...getGroupAttributes(attributes, [
 								'typography',
@@ -291,30 +289,30 @@ const MaxiToolbar = props => {
 								setAttributes({ linkSettings })
 							}
 						/>
-						{/* <TextLink
+						<TextLink
+							{...getGroupAttributes(attributes, 'typography')}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
 							formatValue={formatValue}
 							linkSettings={linkSettings}
-							typography={typography}
 							breakpoint={deviceType}
-						/> */}
-						{/* <TextListOptions
+						/>
+						<TextListOptions
 							blockName={name}
 							formatValue={formatValue}
 							content={content}
 							isList={isList}
 							typeOfList={typeOfList}
 							onChange={obj => setAttributes(obj)}
-						/> */}
-						{!backgroundHighlight && (
+						/>
+						{!attributes['background-highlight'] && (
 							<BackgroundColor
-								blockName={name}
 								{...getGroupAttributes(
 									attributes,
 									'backgroundColor'
 								)}
+								blockName={name}
 								onChange={obj => setAttributes(obj)}
 							/>
 						)}
@@ -365,14 +363,14 @@ const MaxiToolbar = props => {
 							])}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
-							disableColor={!!borderHighlight}
+							disableColor={!attributes['border-highlight']}
 						/>
-						{/* {deviceType === 'general' && (
+						{deviceType === 'general' && (
 							<ImageSize
+								{...getGroupAttributes(attributes, 'size')}
 								blockName={name}
-								size={size}
 								defaultSize={getDefaultProp(clientId, 'size')}
-								onChangeSize={size => setAttributes({ size })}
+								onChangeSize={obj => setAttributes(obj)}
 								imageSize={imageSize}
 								onChangeImageSize={imageSize =>
 									setAttributes({ imageSize })
@@ -387,7 +385,7 @@ const MaxiToolbar = props => {
 									setAttributes({ captionType })
 								}
 							/>
-						)} */}
+						)}
 						<Size
 							blockName={name}
 							{...getGroupAttributes(attributes, 'size')}

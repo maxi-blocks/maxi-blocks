@@ -9,10 +9,10 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getBackgroundStyles,
-	getMarginStyles,
-	getPaddingStyles,
+	getMarginPaddingStyles,
 	getTypographyStyles,
 	getCustomFormatsStyles,
+	getAlignmentTextStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -49,13 +49,15 @@ const getNormalObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
-		margin: getMarginStyles({
+		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
-		padding: getPaddingStyles({
+		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
-		// alignment: getAlignmentTextObject(alignment),
+		textAlignment: getAlignmentTextStyles({
+			...getGroupAttributes(props, 'textAlignment'),
+		}),
 	};
 
 	return response;

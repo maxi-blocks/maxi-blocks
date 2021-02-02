@@ -79,7 +79,9 @@ const save = props => {
 				{!isEmpty(attributes['icon-name']) && (
 					<i className={attributes['icon-name']} />
 				)}
-				{buttonContent}
+				<div className='maxi-button-block__button__text'>
+					{buttonContent}
+				</div>
 			</Button>
 		</div>
 	);

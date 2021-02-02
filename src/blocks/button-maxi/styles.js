@@ -13,6 +13,7 @@ import {
 	getBorderStyles,
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
+	getTypographyStyles,
 } from '../../extensions/styles/helpers';
 
 const getWrapperObject = props => {
@@ -71,6 +72,9 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
+		typography: getTypographyStyles({
+			...getGroupAttributes(props, 'typography'),
+		}),
 	};
 
 	return response;
@@ -98,6 +102,12 @@ const getHoverObject = props => {
 				},
 				true
 			),
+		typography: getTypographyStyles(
+			{
+				...getGroupAttributes(props, 'typographyHover'),
+			},
+			true
+		),
 	};
 
 	return response;

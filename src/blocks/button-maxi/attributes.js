@@ -34,7 +34,13 @@ const attributes = {
 		},
 	},
 	...newAttributes.textAlignment,
-	...newAttributes.typography,
+	...{
+		...newAttributes.typography,
+		'color-general': {
+			type: 'string',
+			default: '#fff',
+		},
+	},
 	...newAttributes.typographyHover,
 	...{
 		...newAttributes.background,

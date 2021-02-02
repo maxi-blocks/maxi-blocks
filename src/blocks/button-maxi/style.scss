@@ -13,6 +13,11 @@ body.maxi-blocks--active .maxi-button-block {
 		display: flex;
 		position: relative;
 
+		&__text {
+			position: relative;
+			z-index: 1;
+		}
+
 		&--icon-left {
 			i {
 				z-index: 1;

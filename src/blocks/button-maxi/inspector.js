@@ -14,7 +14,6 @@ import {
 	BlockStylesControl,
 	DefaultStylesControl,
 	SettingTabsControl,
-	TypographyControl,
 	FancyRadioControl,
 	CustomLabel,
 } from '../../components';
@@ -32,6 +31,7 @@ import DisplayControl from '../../components/display-control/newDisplayControl';
 import PositionControl from '../../components/position-control/newPositionControl';
 import ResponsiveControl from '../../components/responsive-control/newResponsiveControl';
 import ZIndexControl from '../../components/zindex-control/newIndexControl';
+import TypographyControl from '../../components/typography-control/newTypographyControl';
 import AlignmentControl from '../../components/alignment-control/newAlignmentControl';
 import FontIconControl from '../../components/font-icon-control/newFontIconControl';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
@@ -258,7 +258,7 @@ const Inspector = props => {
 												</Fragment>
 											),
 										},
-										/*
+
 										{
 											label: __(
 												'Typography',
@@ -275,11 +275,8 @@ const Inspector = props => {
 															),
 															content: (
 																<TypographyControl
-																	typography={
-																		typography
-																	}
-																	defaultTypography={getDefaultProp(
-																		clientId,
+																	{...getGroupAttributes(
+																		attributes,
 																		'typography'
 																	)}
 																	onChange={obj =>
@@ -309,9 +306,11 @@ const Inspector = props => {
 																			'Enable Typography Hover',
 																			'maxi-blocks'
 																		)}
-																		selected={Number(
-																			typographyHover.status
-																		)}
+																		selected={
+																			+attributes[
+																				'typography-status-hover'
+																			]
+																		}
 																		options={[
 																			{
 																				label: __(
@@ -328,38 +327,30 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		onChange={val => {
-																			typographyHover.status = Number(
-																				val
-																			);
+																		onChange={val =>
 																			setAttributes(
 																				{
-																					typographyHover,
+																					'typography-status-hover': !!+val,
 																				}
-																			);
-																		}}
+																			)
+																		}
 																	/>
-																	{!!typographyHover.status && (
+																	{attributes[
+																		'typography-status-hover'
+																	] && (
 																		<TypographyControl
-																			typography={
-																				typographyHover
-																			}
-																			defaultTypography={getDefaultProp(
-																				clientId,
-																				'typographyHover'
+																			{...getGroupAttributes(
+																				attributes,
+																				[
+																					'typography',
+																					'typographyHover',
+																				]
 																			)}
-																			onChange={obj => {
+																			onChange={obj =>
 																				setAttributes(
-																					{
-																						typographyHover:
-																							obj.typography,
-																						...(obj.content && {
-																							content:
-																								obj.content,
-																						}),
-																					}
-																				);
-																			}}
+																					obj
+																				)
+																			}
 																			hideAlignment
 																			breakpoint={
 																				deviceType
@@ -377,7 +368,6 @@ const Inspector = props => {
 												/>
 											),
 										},
-										*/
 										deviceType === 'general' && {
 											label: __(
 												'Background',

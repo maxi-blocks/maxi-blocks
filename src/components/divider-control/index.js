@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment, useState, useEffect } = wp.element;
+const { Fragment } = wp.element;
 const { RangeControl, SelectControl, Icon } = wp.components;
 
 /**
@@ -11,11 +11,10 @@ const { RangeControl, SelectControl, Icon } = wp.components;
 import {
 	ColorControl,
 	DefaultStylesControl,
-	OpacityControl,
 	FancyRadioControl,
 	SizeControl,
 } from '../../components';
-import { getLastBreakpointValue } from '../../utils';
+import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 import {
 	dividerSolidHorizontal,
 	dividerDottedHorizontal,
@@ -46,7 +45,6 @@ const DividerControl = props => {
 		disableColor = false,
 		disableLineStyle = false,
 		disableBorderRadius = false,
-		breakpoint = 'general',
 	} = props;
 
 	const minMaxSettings = {
@@ -68,46 +66,12 @@ const DividerControl = props => {
 		},
 	};
 
-	const [orientation, changeOrientation] = useState(lineOrientation);
-
-	const divider = { ...props.divider };
-	const defaultDivider = { ...props.defaultDivider };
-
-	useEffect(() => {
-		if (lineOrientation !== orientation) {
-			changeOrientation(lineOrientation);
-			if (lineOrientation === 'vertical') {
-				if (!isNil(divider.general.width)) {
-					divider.general.height = divider.general.width;
-					divider.general.width = '';
-				}
-				if (!isNil(divider.general['border-top-width'])) {
-					divider.general['border-right-width'] =
-						divider.general['border-top-width'];
-					divider.general['border-top-width'] = '';
-				}
-			} else {
-				if (!isNil(divider.general.height)) {
-					divider.general.width = divider.general.height;
-					divider.general.height = '';
-				}
-				if (!isNil(divider.general['border-top-width'])) {
-					divider.general['border-top-width'] =
-						divider.general['border-right-width'];
-					divider.general['border-right-width'] = '';
-				}
-			}
-
-			onChange(divider);
-		}
-	}, [lineOrientation, orientation, divider, onChange]);
-
 	return (
 		<Fragment>
 			<DefaultStylesControl
 				items={[
 					{
-						activeItem: divider.general['border-style'] === 'none',
+						activeItem: props['divider-border-style'] === 'none',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -117,7 +81,7 @@ const DividerControl = props => {
 						onChange: () => onChange(dividerNone),
 					},
 					{
-						activeItem: divider.general['border-style'] === 'solid',
+						activeItem: props['divider-border-style'] === 'solid',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -131,8 +95,7 @@ const DividerControl = props => {
 						},
 					},
 					{
-						activeItem:
-							divider.general['border-style'] === 'dashed',
+						activeItem: props['divider-border-style'] === 'dashed',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -146,8 +109,7 @@ const DividerControl = props => {
 						},
 					},
 					{
-						activeItem:
-							divider.general['border-style'] === 'dotted',
+						activeItem: props['divider-border-style'] === 'dotted',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -165,12 +127,9 @@ const DividerControl = props => {
 			{!disableColor && (
 				<ColorControl
 					label={__('Color', 'maxi-blocks')}
-					color={divider.general['border-color']}
-					defaultColor={defaultDivider.general['border-color']}
-					onChange={val => {
-						divider.general['border-color'] = val;
-						onChange(divider);
-					}}
+					color={props['divider-border-color']}
+					defaultColor={getDefaultAttribute('border-color')}
+					onChange={val => onChange({ 'divider-border-color': val })}
 					disableGradient
 				/>
 			)}
@@ -184,139 +143,89 @@ const DividerControl = props => {
 						{ label: __('Solid', 'maxi-blocks'), value: 'solid' },
 						{ label: __('Double', 'maxi-blocks'), value: 'double' },
 					]}
-					value={divider.general['border-style']}
-					onChange={val => {
-						divider.general['border-style'] = val;
-						if (val === 'none') divider.general.width = 0;
-						onChange(divider);
-					}}
+					value={props['divider-border-style']}
+					onChange={val => onChange({ 'divider-border-style': val })}
 				/>
 			)}
-			{!disableBorderRadius &&
-				divider.general['border-style'] === 'solid' && (
-					<FancyRadioControl
-						label={__('Line Radius', 'maxi-blocks')}
-						selected={divider.general['border-radius']}
-						options={[
-							{ label: __('No', 'maxi-blocks'), value: '' },
-							{ label: __('Yes', 'maxi-blocks'), value: '20px' },
-						]}
-						onChange={val => {
-							divider.general['border-radius'] = val;
-							onChange(divider);
-						}}
-					/>
-				)}
-			{orientation === 'horizontal' && (
+			{!disableBorderRadius && props['divider-border-style'] === 'solid' && (
+				<FancyRadioControl
+					label={__('Line Radius', 'maxi-blocks')}
+					selected={props['divider-border-radius']}
+					options={[
+						{ label: __('No', 'maxi-blocks'), value: '' },
+						{ label: __('Yes', 'maxi-blocks'), value: '20px' },
+					]}
+					onChange={val => onChange({ 'divider-border-radius': val })}
+				/>
+			)}
+			{lineOrientation === 'horizontal' && (
 				<Fragment>
 					<SizeControl
 						label={__('Line Size', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
-							divider,
-							'widthUnit',
-							breakpoint
-						)}
-						defaultUnit={defaultDivider[breakpoint].widthUnit}
-						onChangeUnit={val => {
-							divider.general.widthUnit = val;
-
-							onChange(divider);
-						}}
-						value={getLastBreakpointValue(
-							divider,
-							'width',
-							breakpoint
-						)}
-						defaultDivider={defaultDivider[breakpoint].width}
-						onChangeValue={val => {
-							divider.general.width = Number(val);
-
-							onChange(divider);
-						}}
+						unit={props['divider-width-unit']}
+						defaultUnit={getDefaultAttribute('width-unit')}
+						onChange={val =>
+							onChange({ 'divider-width-unit': val })
+						}
+						value={props['divider-width']}
+						defaultValue={getDefaultAttribute('width')}
+						onChangeValue={val =>
+							onChange({ 'divider-width': val })
+						}
 						minMaxSettings={minMaxSettings}
 					/>
 
 					<SizeControl
 						label={__('Line Weight', 'maxi-blocks')}
 						allowedUnits={['px', 'em', 'vw']}
-						unit={getLastBreakpointValue(
-							divider,
-							'border-top-widthUnit',
-							breakpoint
-						)}
-						defaultUnit={
-							defaultDivider[breakpoint]['border-top-widthUnit']
+						unit={props['divider-border-top-unit']}
+						defaultUnit={getDefaultAttribute('border-top-unit')}
+						onChange={val =>
+							onChange({ 'divider-border-top-unit': val })
 						}
-						onChangeUnit={val => {
-							divider.general['border-top-widthUnit'] = val;
-
-							onChange(divider);
-						}}
-						value={getLastBreakpointValue(
-							divider,
-							'border-top-width',
-							breakpoint
-						)}
-						defaultDivider={
-							defaultDivider[breakpoint]['border-top-width']
+						value={props['divider-border-top-width']}
+						defaultValue={getDefaultAttribute('border-top-width')}
+						onChangeValue={val =>
+							onChange({ 'divider-border-top-width': val })
 						}
-						onChangeValue={val => {
-							divider.general['border-top-width'] = Number(val);
-
-							onChange(divider);
-						}}
 						minMaxSettings={minMaxSettings}
 					/>
 				</Fragment>
 			)}
-			{orientation === 'vertical' && (
+			{lineOrientation === 'vertical' && (
 				<Fragment>
 					<RangeControl
 						label={__('Size', 'maxi-blocks')}
-						value={Number(divider.general.height)}
+						value={props['divider-height']}
 						onChange={val => {
-							isNil(val)
-								? (divider.general.height =
-										defaultDivider.general.height)
-								: (divider.general.height = Number(val));
+							const value = isNil(val)
+								? getDefaultAttribute('height')
+								: val;
 
-							onChange(divider);
+							onChange({ 'divider-height': value });
 						}}
 						max={100}
 						allowReset
-						initialPosition={defaultDivider.general.height}
+						initialPosition={getDefaultAttribute('height')}
 					/>
 					<RangeControl
 						label={__('Weight', 'maxi-blocks')}
-						value={Number(divider.general['border-right-width'])}
+						value={props['divider-border-right-width']}
 						onChange={val => {
-							isNil(val)
-								? (divider.general['border-right-width'] =
-										defaultDivider.general[
-											'border-right-width'
-										])
-								: (divider.general[
-										'border-right-width'
-								  ] = Number(val));
+							const value = isNil(val)
+								? getDefaultAttribute('border-right-width')
+								: val;
 
-							onChange(divider);
+							onChange({ 'divider-border-right-width': value });
 						}}
 						max={100}
 						allowReset
-						initialPosition={
-							defaultDivider.general['border-right-width']
-						}
+						initialPosition={getDefaultAttribute(
+							'border-right-width'
+						)}
 					/>
 				</Fragment>
 			)}
-			<OpacityControl
-				opacity={divider.opacity}
-				defaultOpacity={defaultDivider.opacity}
-				onChange={val => {
-					divider.opacity = val;
-					onChange(divider);
-				}}
-			/>
 		</Fragment>
 	);
 };

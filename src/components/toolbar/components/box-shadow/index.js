@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
-import BoxShadowControl from '../../../box-shadow-control/newBoxShadowControl';
+import BoxShadowControl from '../../../box-shadow-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**

@@ -6,8 +6,9 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../utils';
 import NumberControl from '../number-control';
+import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
+import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
 /**
  * External dependencies
@@ -22,19 +23,13 @@ const ZIndexControl = props => {
 
 	const classes = classnames('maxi-zIndex-control', className);
 
-	const zIndex = { ...props.zIndex };
-	const defaultZIndex = { ...props.defaultZIndex };
-
 	return (
 		<NumberControl
 			label={__('Z-index', 'maxi-blocks')}
 			className={classes}
-			value={getLastBreakpointValue(zIndex, 'z-index', breakpoint)}
-			defaultZIndex={defaultZIndex[breakpoint]['z-index']}
-			onChange={val => {
-				zIndex[breakpoint]['z-index'] = val;
-				onChange(zIndex);
-			}}
+			value={getLastBreakpointValue('z-index', breakpoint, props)}
+			defaultZIndex={getDefaultAttribute(`z-index-${breakpoint}`)}
+			onChange={val => onChange({ [`z-index-${breakpoint}`]: val })}
 		/>
 	);
 };

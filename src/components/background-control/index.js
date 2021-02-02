@@ -16,11 +16,13 @@ import VideoLayer from './videoLayer';
 import GradientLayer from './gradientLayer';
 import SVGLayer from './svgLayer';
 
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getAttributeKey from '../../extensions/styles/getAttributeKey';
+
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -50,10 +52,15 @@ const BackgroundControl = props => {
 		disableSVG = false,
 		disableNoneStyle = false,
 		onChange,
+		isHover = false,
+		prefix = '',
 	} = props;
-
-	const background = { ...props.background };
-	const defaultBackground = { ...props.defaultBackground };
+	const backgroundActiveMedia =
+		props[getAttributeKey('background-active-media', isHover, prefix)];
+	const layersOptions =
+		props[getAttributeKey('background-layers', isHover, prefix)] || [];
+	const layersStatus =
+		props[getAttributeKey('background-layers-status', isHover, prefix)];
 
 	const classes = classnames('maxi-background-control', className);
 
@@ -104,93 +111,109 @@ const BackgroundControl = props => {
 		<div className={classes}>
 			{!disableLayers && (
 				<BackgroundLayersControl
-					layersOptions={background.layersOptions}
-					onChange={layersOptions => {
-						background.layersOptions = layersOptions;
-						onChange(background);
-					}}
+					layersOptions={layersOptions}
+					layersStatus={layersStatus}
+					onChange={obj => onChange(obj)}
+					isHover={isHover}
+					prefix={prefix}
 				/>
 			)}
-			{getOptions().length > 1 && !background.layersOptions.status && (
+			{!layersStatus && getOptions().length > 1 && (
 				<FancyRadioControl
 					label={__('Background', 'maxi-blocks')}
 					fullWidthMode
-					selected={background.activeMedia}
+					selected={backgroundActiveMedia}
 					options={getOptions()}
-					onChange={item => {
-						background.activeMedia = item;
-						if (isEmpty(item))
-							background.colorOptions.activeColor = '';
-						if (item === 'color')
-							background.colorOptions.activeColor =
-								background.colorOptions.color;
-						if (item === 'gradient')
-							background.colorOptions.activeColor =
-								background.colorOptions.gradient;
-
-						onChange(background);
+					onChange={value => {
+						onChange({
+							[getAttributeKey(
+								'background-active-media',
+								isHover,
+								prefix
+							)]: value,
+						});
 					}}
 				/>
 			)}
-			{!background.layersOptions.status && (
+			{!layersStatus && (
 				<Fragment>
-					{!disableColor && background.activeMedia === 'color' && (
+					{!disableColor && backgroundActiveMedia === 'color' && (
 						<ColorLayer
-							colorOptions={background.colorOptions}
-							defaultColorOptions={defaultBackground.colorOptions}
-							onChange={colorOptions => {
-								background.colorOptions = colorOptions;
-
-								onChange(background);
+							colorOptions={{
+								...getGroupAttributes(
+									props,
+									'backgroundColor',
+									isHover,
+									prefix
+								),
 							}}
+							onChange={obj => onChange(obj)}
 							disableClipPath={disableClipPath}
+							isHover={isHover}
+							prefix={prefix}
 						/>
 					)}
-					{!disableImage && background.activeMedia === 'image' && (
+					{!disableImage && backgroundActiveMedia === 'image' && (
 						<ImageLayer
-							imageOptions={background.imageOptions}
-							defaultImageOptions={defaultBackground.imageOptions}
-							onChange={imageOptions => {
-								background.imageOptions = imageOptions;
-
-								onChange(background);
+							imageOptions={{
+								...getGroupAttributes(
+									props,
+									'backgroundImage',
+									isHover,
+									prefix
+								),
 							}}
+							onChange={obj => onChange(obj)}
 							disableClipPath={disableClipPath}
+							isHover={isHover}
+							prefix={prefix}
 						/>
 					)}
-					{!disableVideo && background.activeMedia === 'video' && (
+					{!disableVideo && backgroundActiveMedia === 'video' && (
 						<VideoLayer
-							videoOptions={background.videoOptions}
-							defaultVideoOptions={defaultBackground.videoOptions}
-							onChange={videoOptions => {
-								background.videoOptions = videoOptions;
-
-								onChange(background);
+							videoOptions={{
+								...getGroupAttributes(
+									props,
+									'backgroundVideo',
+									isHover,
+									prefix
+								),
 							}}
+							onChange={obj => onChange(obj)}
 							disableClipPath={disableClipPath}
+							isHover={isHover}
+							prefix={prefix}
 						/>
 					)}
-					{!disableGradient && background.activeMedia === 'gradient' && (
+					{!disableGradient && backgroundActiveMedia === 'gradient' && (
 						<GradientLayer
-							colorOptions={background.colorOptions}
-							defaultColorOptions={defaultBackground.colorOptions}
-							onChange={colorOptions => {
-								background.colorOptions = colorOptions;
-
-								onChange(background);
+							gradientOptions={{
+								...getGroupAttributes(
+									props,
+									'backgroundGradient',
+									isHover,
+									prefix
+								),
 							}}
+							onChange={obj => onChange(obj)}
 							disableClipPath={disableClipPath}
+							isHover={isHover}
+							prefix={prefix}
 						/>
 					)}
-					{!disableSVG && background.activeMedia === 'svg' && (
+					{!disableSVG && backgroundActiveMedia === 'svg' && (
 						<SVGLayer
-							SVGOptions={background.SVGOptions}
-							defaultSVGOptions={defaultBackground.SVGOptions}
-							onChange={SVGOptions => {
-								background.SVGOptions = SVGOptions;
-
-								onChange(background);
+							SVGOptions={{
+								...getGroupAttributes(
+									props,
+									'backgroundSVG',
+									isHover,
+									prefix
+								),
 							}}
+							onChange={obj => onChange(obj)}
+							isHover={isHover}
+							prefix={prefix}
 						/>
 					)}
 				</Fragment>

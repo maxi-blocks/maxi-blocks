@@ -9,7 +9,7 @@ const { Icon } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
-import { merge } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
@@ -19,10 +19,13 @@ import ColorControl from '../color-control';
 import FontIconPicker from '../font-icon-picker';
 import AxisControl from '../axis-control';
 import BorderControl from '../border-control';
-import BackgroundControl from '../background-control';
+import GradientControl from '../gradient-control';
 import FancyRadioControl from '../fancy-radio-control';
-import { getLastBreakpointValue, getDefaultProp } from '../../utils';
 import * as defaultPresets from './defaults';
+
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**
  * Styles and icons
@@ -42,7 +45,7 @@ import DefaultStylesControl from '../default-styles-control';
 /**
  * Component
  */
-const FontIconControl = props => {
+const FontIconControl = (props, isHover = false) => {
 	const {
 		className,
 		onChange,
@@ -50,10 +53,6 @@ const FontIconControl = props => {
 		simpleMode = false,
 		disableColor,
 	} = props;
-	const icon = { ...props.icon };
-	const iconBackground = { ...props.iconBackground };
-	const iconPadding = { ...props.iconPadding };
-	const iconBorder = { ...props.iconBorder };
 
 	const [activeOption, setActiveOption] = useState('iconColor');
 
@@ -91,55 +90,49 @@ const FontIconControl = props => {
 	};
 
 	const onChangePreset = number => {
-		const response = {
-			icon,
-			iconBackground,
-			iconPadding,
-			iconBorder,
-		};
-
-		const result = merge(response, defaultPresets[`preset${number}`]);
-
-		Object.entries(result).forEach(([key, value]) => {
-			result[key] = value;
-		});
-
-		onChange(result);
+		onChange({ ...defaultPresets[`preset${number}`] });
 	};
 
 	return (
 		<div className={classes}>
 			<FontIconPicker
-				iconClassName={icon.icon}
-				onChange={iconClassName => {
-					icon.icon = iconClassName;
-					onChange({ icon });
-				}}
+				iconClassName={props['icon-name']}
+				onChange={val =>
+					onChange({
+						'icon-name': val,
+					})
+				}
 			/>
-			{icon.icon && (
+			{!isEmpty(props['icon-name']) && (
 				<Fragment>
 					<SizeControl
 						label={__('Size', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
-							icon,
-							'font-sizeUnit',
-							breakpoint
+						unit={getLastBreakpointAttribute(
+							'icon-size-unit',
+							breakpoint,
+							props
 						)}
-						defaultUnit='px'
-						onChangeUnit={val => {
-							icon[breakpoint]['font-sizeUnit'] = val;
-							onChange({ icon });
-						}}
-						defaultValue=''
-						value={getLastBreakpointValue(
-							icon,
-							'font-size',
-							breakpoint
+						defaultUnit={getDefaultAttribute(
+							`icon-size-unit-${breakpoint}`
 						)}
-						onChangeValue={val => {
-							icon[breakpoint]['font-size'] = val;
-							onChange({ icon });
-						}}
+						onChangeUnit={val =>
+							onChange({
+								[`icon-size-unit-${breakpoint}`]: val,
+							})
+						}
+						defaultValue={getDefaultAttribute(
+							`icon-size-${breakpoint}`
+						)}
+						value={getLastBreakpointAttribute(
+							'icon-size',
+							breakpoint,
+							props
+						)}
+						onChangeValue={val =>
+							onChange({
+								[`icon-size-${breakpoint}`]: val,
+							})
+						}
 						minMaxSettings={{
 							px: {
 								min: 0,
@@ -159,35 +152,28 @@ const FontIconControl = props => {
 							},
 						}}
 					/>
+
 					{!simpleMode && (
 						<Fragment>
 							<SizeControl
 								label={__('Spacing', 'maxi-blocks')}
-								unit={getLastBreakpointValue(
-									icon,
-									'spacing',
-									breakpoint
-								)}
 								disableUnit
-								defaultValue=''
-								value={getLastBreakpointValue(
-									icon,
-									'spacing',
-									breakpoint
+								defaultValue={getDefaultAttribute(
+									'icon-spacing'
 								)}
-								onChangeValue={val => {
-									icon[breakpoint].spacing = val;
+								value={props['icon-spacing']}
+								onChangeValue={val =>
 									onChange({
-										icon,
-									});
-								}}
+										['icon-spacing']: val,
+									})
+								}
 								min={0}
 								max={99}
 							/>
 
 							<FancyRadioControl
 								label={__('Icon Position', 'maxi-blocks')}
-								selected={icon.position}
+								selected={props['icon-position']}
 								options={[
 									{
 										label: __('Left', 'maxi-blocks'),
@@ -198,15 +184,15 @@ const FontIconControl = props => {
 										value: 'right',
 									},
 								]}
-								onChange={val => {
-									icon.position = val;
+								onChange={val =>
 									onChange({
-										icon,
-									});
-								}}
+										['icon-position']: val,
+									})
+								}
 							/>
 						</Fragment>
 					)}
+
 					{!simpleMode && (
 						<DefaultStylesControl
 							className='maxi-icon-default-styles'
@@ -239,23 +225,20 @@ const FontIconControl = props => {
 								if (item === 'iconColor')
 									setActiveOption('iconColor');
 								if (item === 'backgroundColor') {
-									iconBackground.activeMedia = 'color';
 									onChange({
-										iconBackground,
+										'icon-background-active-media': 'color',
 									});
 									setActiveOption('backgroundColor');
 								}
 								if (item === 'backgroundGradient') {
-									iconBackground.activeMedia = 'gradient';
 									onChange({
-										iconBackground,
+										'icon-background-active-media':
+											'gradient',
 									});
 									setActiveOption('backgroundGradient');
 								}
 								if (item === 'border')
 									setActiveOption('border');
-
-								onChange({ icon });
 							}}
 						/>
 					)}
@@ -263,102 +246,88 @@ const FontIconControl = props => {
 					{activeOption === 'iconColor' && !disableColor && (
 						<ColorControl
 							label={__('Icon', 'maxi-blocks')}
-							color={getLastBreakpointValue(
-								icon,
-								'color',
-								breakpoint
-							)}
-							defaultColor='#fff'
-							onChange={val => {
-								icon[breakpoint].color = val;
-								onChange({ icon });
-							}}
+							color={props['icon-color']}
+							defaultColor={getDefaultAttribute('icon-color')}
+							onChange={val => onChange({ 'icon-color': val })}
 						/>
 					)}
 
 					{!simpleMode && activeOption === 'border' && (
 						<BorderControl
-							border={iconBorder}
-							defaultBorder={getDefaultProp(null, 'iconBorder')}
-							onChange={border =>
-								onChange({ iconBorder: border })
-							}
+							{...getGroupAttributes(props, [
+								'iconBorder',
+								'iconBorderWidth',
+								'iconBorderRadius',
+							])}
+							onChange={obj => onChange(obj)}
 							breakpoint={breakpoint}
+							prefix='icon-'
 						/>
 					)}
 
 					{!simpleMode && activeOption === 'backgroundColor' && (
-						<BackgroundControl
-							background={iconBackground}
-							defaultBackground={getDefaultProp(
-								null,
-								'iconBackground'
+						<ColorControl
+							label={__('Background', 'maxi-blocks')}
+							color={props['icon-background-color']}
+							defaultColor={getDefaultAttribute(
+								'icon-background-color'
 							)}
-							onChange={background =>
-								onChange({ iconBackground: background })
+							onChange={val =>
+								onChange({ 'icon-background-color': val })
 							}
-							disableImage
-							disableVideo
-							disableClipPath
-							disableSVG
-							disableGradient
-							disableNoneStyle
 						/>
 					)}
 
 					{!simpleMode && activeOption === 'backgroundGradient' && (
-						<BackgroundControl
-							background={iconBackground}
-							defaultBackground={getDefaultProp(
-								null,
-								'iconBackground'
-							)}
-							onChange={background =>
-								onChange({ iconBackground: background })
+						<GradientControl
+							label={__('Background', 'maxi-blocks')}
+							gradient={props['icon-background-gradient']}
+							gradientOpacity={
+								props['icon-background-gradient-opacity']
 							}
-							disableImage
-							disableVideo
-							disableClipPath
-							disableSVG
-							disableColor
-							disableNoneStyle
+							defaultGradient={getDefaultAttribute(
+								'icon-background-gradient'
+							)}
+							onChange={val =>
+								onChange({
+									'icon-background-gradient': val,
+								})
+							}
+							onChangeOpacity={val =>
+								onChange({
+									'icon-background-gradient-opacity': val,
+								})
+							}
 						/>
 					)}
 
 					{!simpleMode && (
 						<FancyRadioControl
 							label={__('Use Custom Padding', 'maxi-blocks')}
-							selected={icon.customPadding}
+							selected={+props['icon-custom-padding']}
 							options={[
 								{
 									label: __('No', 'maxi-blocks'),
-									value: '0',
+									value: 0,
 								},
 								{
 									label: __('Yes', 'maxi-blocks'),
-									value: '1',
+									value: 1,
 								},
 							]}
-							onChange={customPadding => {
-								icon.customPadding = customPadding;
-								onChange({ icon });
-								if (!Number(customPadding))
-									onChange({
-										iconPadding: getDefaultProp(
-											null,
-											'iconPadding'
-										),
-									});
-							}}
+							onChange={val =>
+								onChange({
+									['icon-custom-padding']: !!+val,
+								})
+							}
 						/>
 					)}
-					{!simpleMode && !!+icon.customPadding && (
+
+					{!simpleMode && props['icon-custom-padding'] && (
 						<AxisControl
-							values={iconPadding}
-							defaultValues={getDefaultProp(null, 'iconPadding')}
-							onChange={padding =>
-								onChange({ iconPadding: padding })
-							}
+							{...getGroupAttributes(props, 'iconPadding')}
+							onChange={obj => onChange(obj)}
+							target='icon-padding'
 							breakpoint={breakpoint}
 							disableAuto
 						/>

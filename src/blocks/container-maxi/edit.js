@@ -14,13 +14,13 @@ import {
 	Breadcrumbs,
 	BlockPlaceholder,
 	ArrowDisplayer,
+	BackgroundDisplayer,
+	MotionPreview,
+	ShapeDivider,
 } from '../../components';
 import Inspector from './inspector';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import ShapeDivider from '../../components/shape-divider/newShapeDivider';
-import MotionPreview from '../../components/motion-preview/newMotionPreview';
 import getStyles from './styles';
 
 /**

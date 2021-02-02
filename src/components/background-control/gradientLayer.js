@@ -9,47 +9,81 @@ const { Fragment } = wp.element;
  */
 import GradientControl from '../gradient-control';
 import ClipPath from '../clip-path-control';
+import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
+import getAttributeKey from '../../extensions/styles/getAttributeKey';
+
+/**
+ * External dependencies
+ */
+import { cloneDeep } from 'lodash';
 
 /**
  * Component
  */
 const GradientLayer = props => {
-	const {
-		colorOptions,
-		defaultColorOptions,
-		onChange,
-		disableClipPath,
-	} = props;
+	const { onChange, disableClipPath, isHover, prefix } = props;
+	const gradientOptions = cloneDeep(props.gradientOptions);
 
 	return (
 		<Fragment>
 			<GradientControl
 				label={__('Background', 'maxi-blocks')}
-				gradient={colorOptions.gradient}
-				gradientOpacity={colorOptions.gradientOpacity}
-				defaultGradient={defaultColorOptions.gradientOpacity.opacity}
-				onChange={val => {
-					colorOptions.gradient = val;
-					colorOptions.activeColor = val;
-
-					onChange(colorOptions);
-				}}
-				onChangeOpacity={() => onChange(colorOptions)}
-				gradientAboveBackground={colorOptions.gradientAboveBackground}
-				onGradientAboveBackgroundChange={val => {
-					colorOptions.gradientAboveBackground = val;
-
-					onChange(colorOptions);
-				}}
+				gradient={
+					gradientOptions[
+						getAttributeKey('background-gradient', isHover, prefix)
+					]
+				}
+				gradientOpacity={
+					gradientOptions[
+						getAttributeKey(
+							'background-gradient-opacity',
+							isHover,
+							prefix
+						)
+					]
+				}
+				defaultGradient={getDefaultAttribute(
+					getAttributeKey('background-gradient', isHover, prefix)
+				)}
+				onChange={val =>
+					onChange({
+						[getAttributeKey(
+							'background-gradient',
+							isHover,
+							prefix
+						)]: val,
+					})
+				}
+				onChangeOpacity={val =>
+					onChange({
+						[getAttributeKey(
+							'background-gradient-opacity',
+							isHover,
+							prefix
+						)]: val,
+					})
+				}
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={colorOptions.clipPath}
-					onChange={val => {
-						colorOptions.clipPath = val;
-
-						onChange(colorOptions);
-					}}
+					clipPath={
+						gradientOptions[
+							getAttributeKey(
+								'background-gradient-clip-path',
+								isHover,
+								prefix
+							)
+						]
+					}
+					onChange={val =>
+						onChange({
+							[getAttributeKey(
+								'background-gradient-clip-path',
+								isHover,
+								prefix
+							)]: val,
+						})
+					}
 				/>
 			)}
 		</Fragment>

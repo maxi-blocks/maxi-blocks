@@ -11,11 +11,10 @@ const { createRef } = wp.element;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlock, Toolbar } from '../../components';
+import { MaxiBlock, Toolbar, MotionPreview } from '../../components';
 import { getFormatValue } from '../../extensions/text/formats';
-import MotionPreview from '../../components/motion-preview/newMotionPreview';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
+import BackgroundDisplayer from '../../components/background-displayer';
 import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getStyles from './styles';
 

@@ -15,20 +15,19 @@ import {
 	SettingTabsControl,
 	FancyRadioControl,
 	CustomLabel,
+	AxisControl,
+	BorderControl,
+	BoxShadowControl,
+	ColumnPattern,
+	DisplayControl,
+	FullSizeControl,
+	OpacityControl,
+	PositionControl,
+	ResponsiveControl,
+	ZIndexControl,
+	BackgroundControl,
+	TransformControl,
 } from '../../components';
-import FullSizeControl from '../../components/full-size-control/newFullSize';
-import BorderControl from '../../components/border-control/newBorderControl';
-import BoxShadowControl from '../../components/box-shadow-control/newBoxShadowControl';
-import AxisControl from '../../components/axis-control/newAxisControl';
-import BackgroundControl from '../../components/new-background-control';
-import TransformControl from '../../components/new-transform-control';
-import DisplayControl from '../../components/display-control/newDisplayControl';
-import PositionControl from '../../components/position-control/newPositionControl';
-import ResponsiveControl from '../../components/responsive-control/newResponsiveControl';
-import ZIndexControl from '../../components/zindex-control/newIndexControl';
-import OpacityControl from '../../components/opacity-control/newOpacityControl';
-import ColumnPattern from '../../components/column-pattern/newColumnPattern';
-
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 

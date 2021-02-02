@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
+import BackgroundDisplayer from '../../components/background-displayer';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**

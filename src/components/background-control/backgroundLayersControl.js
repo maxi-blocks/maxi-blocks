@@ -15,6 +15,8 @@ import ImageLayer from './imageLayer';
 import VideoLayer from './videoLayer';
 import GradientLayer from './gradientLayer';
 import SVGLayer from './svgLayer';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getAttributeKey from '../../extensions/styles/getAttributeKey';
 
 /**
  * External dependencies
@@ -32,13 +34,32 @@ import { moveRight } from '../../icons';
  * Component
  */
 const LayerCard = props => {
-	const { layer, onChange, onOpen, isOpen, onRemove } = props;
-	const { title, type } = layer;
+	const { onChange, onOpen, isOpen, onRemove } = props;
+	const layer = cloneDeep(props.layer);
+	const { type } = layer;
 
 	const classes = classnames(
 		'maxi-background-layer',
 		isOpen && 'maxi-background-layer__open'
 	);
+
+	const getTitle = type => {
+		switch (type) {
+			case 'color':
+				return __('Background Colour', 'maxi-blocks');
+			case 'image':
+				return __('Background Image', 'maxi-blocks');
+			case 'video':
+				return __('Background Video', 'maxi-blocks');
+			case 'gradient':
+				return __('Background Gradient', 'maxi-blocks');
+			case 'shape':
+				return __('Background Shape', 'maxi-blocks');
+			default:
+				return null;
+		}
+	};
+
 	return (
 		<div className={classes}>
 			<div
@@ -49,9 +70,9 @@ const LayerCard = props => {
 					{moveRight}
 				</span>
 				<p className='maxi-background-layer__title'>
-					<span className='maxi-background-layer__title__id'></span>
+					<span className='maxi-background-layer__title__id' />
 					<span className='maxi-background-layer__title__text'>
-						{title}
+						{getTitle(type)}
 					</span>
 					<span
 						className='maxi-background-layer__title__remover'
@@ -63,67 +84,54 @@ const LayerCard = props => {
 				<div className='maxi-background-layer__content'>
 					{(type === 'color' && (
 						<ColorLayer
-							colorOptions={layer.options}
-							defaultColorOptions={
-								backgroundLayers.colorOptions.options
-							}
-							onChange={layerOptions => {
-								layer.options = layerOptions;
-
-								onChange(layer);
+							colorOptions={{
+								...getGroupAttributes(layer, 'backgroundColor'),
 							}}
+							onChange={obj => onChange({ ...layer, ...obj })}
 						/>
 					)) ||
 						(type === 'image' && (
 							<ImageLayer
-								imageOptions={layer.options}
-								defaultImageOptions={
-									backgroundLayers.imageOptions.options
-								}
-								onChange={layerOptions => {
-									layer.options = layerOptions;
-
-									onChange(layer);
+								imageOptions={{
+									...getGroupAttributes(
+										layer,
+										'backgroundImage'
+									),
 								}}
+								onChange={obj => onChange({ ...layer, ...obj })}
 							/>
 						)) ||
 						(type === 'video' && (
 							<VideoLayer
-								videoOptions={layer.options}
-								defaultVideoOptions={
-									backgroundLayers.videoOptions.options
-								}
-								onChange={layerOptions => {
-									layer.options = layerOptions;
-
-									onChange(layer);
+								videoOptions={{
+									...getGroupAttributes(
+										layer,
+										'backgroundVideo'
+									),
 								}}
+								onChange={obj => onChange({ ...layer, ...obj })}
 							/>
 						)) ||
 						(type === 'gradient' && (
 							<GradientLayer
-								colorOptions={layer.options}
-								defaultColorOptions={
-									backgroundLayers.gradientOptions.options
-								}
-								onChange={layerOptions => {
-									layer.options = layerOptions;
-
-									onChange(layer);
+								gradientOptions={{
+									...getGroupAttributes(
+										layer,
+										'backgroundGradient'
+									),
 								}}
+								onChange={obj => onChange({ ...layer, ...obj })}
 							/>
 						)) ||
 						(type === 'shape' && (
 							<SVGLayer
-								SVGOptions={layer.options}
-								defaultSVGOptions={
-									backgroundLayers.SVGOptions.options
-								}
-								onChange={layerOptions => {
-									layer.options = layerOptions;
-
-									onChange(layer);
+								SVGOptions={{
+									...getGroupAttributes(
+										layer,
+										'backgroundSVG'
+									),
 								}}
+								onChange={obj => onChange({ ...layer, ...obj })}
 							/>
 						))}
 				</div>
@@ -132,11 +140,14 @@ const LayerCard = props => {
 	);
 };
 
-const BackgroundLayersControl = props => {
-	const { layersOptions, onChange } = props;
-	const { status } = layersOptions;
-
-	const layers = cloneDeep(layersOptions.layers);
+const BackgroundLayersControl = ({
+	isHover = false,
+	prefix = '',
+	onChange,
+	layersStatus,
+	...props
+}) => {
+	const layers = cloneDeep(props.layersOptions);
 
 	const [selector, changeSelector] = useState(null);
 
@@ -178,53 +189,75 @@ const BackgroundLayersControl = props => {
 		<div className='maxi-background-control__layers'>
 			<FancyRadioControl
 				label={__('Use layers', 'maxi-blocks')}
-				selected={status}
+				selected={+layersStatus}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => {
-					layersOptions.status = +val;
-
-					onChange(layersOptions);
-				}}
+				onChange={val =>
+					onChange({
+						[getAttributeKey(
+							'background-layers-status',
+							isHover,
+							prefix
+						)]: !!+val,
+					})
+				}
 			/>
-			{!!status && (
+
+			{!!layersStatus && (
 				<div>
 					{!isEmpty(layers) && (
 						<ReactDragListView
 							onDragEnd={(fromIndex, toIndex) => {
-								let layer = layers.splice(fromIndex, 1)[0];
+								const layer = layers.splice(fromIndex, 1)[0];
 								layers.splice(toIndex, 0, layer);
-								layersOptions.layers = layers;
-								onChange(layersOptions);
+								onChange({
+									[getAttributeKey(
+										'background-layers',
+										isHover,
+										prefix
+									)]: layers,
+								});
 							}}
 							nodeSelector='div.maxi-background-layer'
 							handleSelector='div.maxi-background-layer__row'
 							ignoreSelector='div.maxi-background-layer__content'
 						>
-							<div className='maxi-background-layers'>
+							<div className='maxi-background-layers_options'>
 								{layers.map((layer, i) => (
 									<LayerCard
 										key={`maxi-background-layers__${layer.id}`}
 										layer={layer}
 										onChange={layer => {
-											layersOptions.layers[i] = layer;
+											layers[layer.id] = layer;
 
-											onChange(layersOptions);
+											onChange({
+												[getAttributeKey(
+													'background-layers',
+													isHover,
+													prefix
+												)]: layers,
+											});
 										}}
 										onOpen={isOpen => {
 											if (isOpen) changeSelector(null);
 											else
-												selector !== i
-													? changeSelector(i)
+												selector !== layer.id
+													? changeSelector(layer.id)
 													: changeSelector(null);
 										}}
-										isOpen={selector === i}
+										isOpen={selector === layer.id}
 										onRemove={() => {
 											layers.splice(i, 1);
-											layersOptions.layers = layers;
-											onChange(layersOptions);
+
+											onChange({
+												[getAttributeKey(
+													'background-layers',
+													isHover,
+													prefix
+												)]: layers,
+											});
 										}}
 									/>
 								))}
@@ -255,11 +288,22 @@ const BackgroundLayersControl = props => {
 							},
 						]}
 						onClick={value => {
-							layers.push(getObject(value, layers.length));
+							layers.push(getObject(value));
 
-							layersOptions.layers = layers;
-
-							onChange(layersOptions);
+							onChange({
+								[getAttributeKey(
+									'background-layers',
+									isHover,
+									prefix
+								)]: layers,
+								...(layers.length > 0 && {
+									[getAttributeKey(
+										'background-active-media',
+										isHover,
+										prefix
+									)]: 'layers',
+								}),
+							});
 						}}
 						forwards
 					/>

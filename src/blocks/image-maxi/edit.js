@@ -12,10 +12,13 @@ const { __experimentalBlock, MediaUpload } = wp.blockEditor;
  */
 import Inspector from './inspector';
 import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
-import { MaxiBlock, Toolbar } from '../../components';
+import {
+	MaxiBlock,
+	Toolbar,
+	BackgroundDisplayer,
+	MotionPreview,
+} from '../../components';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import MotionPreview from '../../components/motion-preview/newMotionPreview';
 import getStyles from './styles';
 
 /**
@@ -184,7 +187,7 @@ class edit extends MaxiBlock {
 											])}
 											blockClassName={uniqueID}
 										/>
-<ResizableBox
+										<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
 												width: `${

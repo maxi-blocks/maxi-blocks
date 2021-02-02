@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import DividerControl from '../../../divider-control/newDividerControl';
+import DividerControl from '../../../divider-control';
 import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**

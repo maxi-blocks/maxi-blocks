@@ -8,10 +8,14 @@ const { withSelect } = wp.data;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlock, Toolbar, FontIconPicker } from '../../components';
+import {
+	MaxiBlock,
+	Toolbar,
+	FontIconPicker,
+	BackgroundDisplayer,
+} from '../../components';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
 import getStyles from './styles';
 /**
  * External dependencies

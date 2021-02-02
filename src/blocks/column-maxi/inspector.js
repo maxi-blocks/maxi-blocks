@@ -15,17 +15,16 @@ import {
 	SettingTabsControl,
 	FancyRadioControl,
 	CustomLabel,
+	AxisControl,
+	BorderControl,
+	BoxShadowControl,
+	DisplayControl,
+	OpacityControl,
+	ResponsiveControl,
+	ZIndexControl,
+	BackgroundControl,
+	TransformControl,
 } from '../../components';
-import BorderControl from '../../components/border-control/newBorderControl';
-import BoxShadowControl from '../../components/box-shadow-control/newBoxShadowControl';
-import AxisControl from '../../components/axis-control/newAxisControl';
-import BackgroundControl from '../../components/new-background-control';
-import TransformControl from '../../components/new-transform-control';
-import DisplayControl from '../../components/display-control/newDisplayControl';
-import ResponsiveControl from '../../components/responsive-control/newResponsiveControl';
-import ZIndexControl from '../../components/zindex-control/newIndexControl';
-import OpacityControl from '../../components/opacity-control/newOpacityControl';
-
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';

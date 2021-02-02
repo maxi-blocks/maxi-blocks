@@ -10,13 +10,13 @@ const { SelectControl, Icon } = wp.components;
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import AxisControl from '../axis-control/newAxisControl';
+import AxisControl from '../axis-control';
 import {
 	borderNone,
 	borderSolid,
 	borderDashed,
 	borderDotted,
-} from './newDefaults';
+} from './defaults';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';

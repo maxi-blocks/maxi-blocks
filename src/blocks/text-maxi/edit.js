@@ -14,7 +14,12 @@ const { __unstableIndentListItems, __unstableOutdentListItems } = wp.richText;
  */
 import { defaultTypography } from '../../extensions/text';
 import Inspector from './inspector';
-import { MaxiBlock, Toolbar } from '../../components';
+import {
+	MaxiBlock,
+	Toolbar,
+	BackgroundDisplayer,
+	MotionPreview,
+} from '../../components';
 import {
 	getFormatValue,
 	setCustomFormatsWhenPaste,
@@ -22,8 +27,6 @@ import {
 	fromTextToList,
 } from '../../extensions/text/formats';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import MotionPreview from '../../components/motion-preview/newMotionPreview';
 import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
 import getStyles from './styles';
 

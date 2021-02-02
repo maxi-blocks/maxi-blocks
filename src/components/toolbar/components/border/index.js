@@ -7,7 +7,7 @@ const { Icon } = wp.components;
 /**
  * Internal dependencies
  */
-import BorderControl from '../../../border-control/newBorderControl';
+import BorderControl from '../../../border-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**

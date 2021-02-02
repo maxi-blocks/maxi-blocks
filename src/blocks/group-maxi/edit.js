@@ -12,11 +12,11 @@ import {
 	Toolbar,
 	Breadcrumbs,
 	BlockPlaceholder,
+	BackgroundDisplayer,
+	MotionPreview,
 } from '../../components';
 import Inspector from './inspector';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import MotionPreview from '../../components/motion-preview/newMotionPreview';
 import getStyles from './styles';
 
 /**

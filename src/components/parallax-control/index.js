@@ -15,6 +15,7 @@ import FancyRadioControl from '../fancy-radio-control';
  */
 import classnames from 'classnames';
 import { isNil } from 'lodash';
+import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
 /**
  * Component
@@ -22,33 +23,24 @@ import { isNil } from 'lodash';
 const ParallaxControl = props => {
 	const { className, onChange } = props;
 
-	const motion = { ...props.motion };
-	const defaultMotion = { ...props.defaultMotion };
-
-	const { parallax: parallaxOptions } = motion;
-	const { parallax: defaultParallaxOptions } = defaultMotion;
-
 	const classes = classnames('maxi-parallax-control', className);
 
 	return (
 		<div className={classes}>
 			<FancyRadioControl
 				label={__('Use Parallax Effect', 'maxi-blocks')}
-				selected={parallaxOptions.status}
+				selected={+props['parallax-status']}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => {
-					parallaxOptions.status = Number(val);
-					onChange(motion);
-				}}
+				onChange={val => onChange({ 'parallax-status': !!val })}
 			/>
-			{!!parallaxOptions.status && (
+			{props['parallax-status'] && (
 				<Fragment>
 					<FancyRadioControl
 						label={__('Direction', 'maxi-blocks')}
-						selected={parallaxOptions.direction}
+						selected={props['parallax-direction']}
 						options={[
 							{ label: __('Up', 'maxi-blocks'), value: 'up' },
 							{
@@ -56,26 +48,26 @@ const ParallaxControl = props => {
 								value: 'down',
 							},
 						]}
-						onChange={val => {
-							parallaxOptions.direction = val;
-							onChange(motion);
-						}}
+						onChange={val =>
+							onChange({ 'parallax-direction': val })
+						}
 					/>
 					<RangeControl
 						label={__('Speed', 'maxi-blocks')}
-						value={parallaxOptions.speed}
+						value={props['parallax-speed']}
 						onChange={val => {
 							isNil(val)
-								? (parallaxOptions.speed =
-										defaultParallaxOptions.speed)
-								: (parallaxOptions.speed = Number(val));
-
-							onChange(motion);
+								? onChange({
+										'parallax-speed': getDefaultAttribute(
+											'parallax-speed'
+										),
+								  })
+								: onChange({ 'parallax-speed': +val });
 						}}
 						min={1}
 						max={10}
 						allowReset
-						initialPosition={defaultParallaxOptions.speed}
+						initialPosition={getDefaultAttribute('parallax-speed')}
 					/>
 				</Fragment>
 			)}

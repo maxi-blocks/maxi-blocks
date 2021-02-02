@@ -18,11 +18,11 @@ import {
 	AxisControl,
 	BorderControl,
 	BoxShadowControl,
-	DisplayControl,
 	OpacityControl,
 	ResponsiveControl,
 	ZIndexControl,
 	BackgroundControl,
+	DisplayControl,
 	TransformControl,
 } from '../../components';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';

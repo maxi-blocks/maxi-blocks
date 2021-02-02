@@ -34,7 +34,6 @@ import {
 	MotionControl,
 	TransformControl,
 } from '../../components';
-
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**

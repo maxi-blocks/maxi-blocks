@@ -28,12 +28,11 @@ import {
 	ResponsiveControl,
 	TypographyControl,
 	ZIndexControl,
+	TransformControl,
+	MotionControl,
 	BackgroundControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
-
-import MotionControl from '../../components/motion-control';
-import TransformControl from '../../components/transform-control';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**

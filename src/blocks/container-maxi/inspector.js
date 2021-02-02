@@ -29,11 +29,11 @@ import {
 	ShapeDividerControl,
 	ZIndexControl,
 	BackgroundControl,
-	MotionControl,
 	TransformControl,
+	MotionControl,
 } from '../../components';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**
  * Inspector

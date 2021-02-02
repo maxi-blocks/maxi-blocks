@@ -41,9 +41,8 @@ import {
 	MotionControl,
 	TransformControl,
 } from '../../components';
-import { injectImgSVG } from '../../extensions/svg/utils';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**
  * External dependencies

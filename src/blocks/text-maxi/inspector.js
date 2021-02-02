@@ -33,9 +33,8 @@ import {
 	MotionControl,
 	TransformControl,
 } from '../../components';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
-import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**
  * Inspector

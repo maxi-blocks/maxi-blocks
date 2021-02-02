@@ -29,7 +29,6 @@ import {
 	MotionControl,
 	TransformControl,
 } from '../../components';
-
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 

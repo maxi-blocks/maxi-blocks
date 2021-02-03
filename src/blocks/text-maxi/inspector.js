@@ -33,9 +33,11 @@ import {
 	MotionControl,
 	TransformControl,
 } from '../../components';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import {
+	getGroupAttributes,
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * Inspector
@@ -63,7 +65,6 @@ const Inspector = props => {
 		listStart,
 		listReversed,
 	} = attributes;
-	const highlight = { ...props.attributes.highlight };
 
 	return (
 		<InspectorControls>
@@ -90,14 +91,13 @@ const Inspector = props => {
 										}
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
-										highlight={highlight}
 										onChange={obj => setAttributes(obj)}
 										disableHighlightColor1
 										disableHighlightColor2
-										{...getGroupAttributes(
-											attributes,
-											'border'
-										)}
+										{...getGroupAttributes(attributes, [
+											'border',
+											'highlight',
+										])}
 									/>
 								</div>
 								<AccordionControl
@@ -277,7 +277,9 @@ const Inspector = props => {
 																		isList
 																	}
 																	disableColor={
-																		!!highlight.textHighlight
+																		!!attributes[
+																			'text-highlight'
+																		]
 																	}
 																/>
 															),
@@ -353,7 +355,9 @@ const Inspector = props => {
 																				isList
 																			}
 																			disableColor={
-																				!!highlight.textHighlight
+																				!!attributes[
+																					'text-highlight'
+																				]
 																			}
 																			isHover
 																			originalFontOptions={getLastBreakpointAttribute(
@@ -404,7 +408,9 @@ const Inspector = props => {
 																			)
 																		}
 																		disableColor={
-																			!!highlight.backgroundHighlight
+																			!!attributes[
+																				'background-highlight'
+																			]
 																		}
 																		disableImage
 																		disableVideo
@@ -475,7 +481,9 @@ const Inspector = props => {
 																				)
 																			}
 																			disableColor={
-																				!!highlight.backgroundHighlight
+																				!!attributes[
+																					'background-highlight'
+																				]
 																			}
 																			disableImage
 																			disableVideo
@@ -519,7 +527,9 @@ const Inspector = props => {
 																		deviceType
 																	}
 																	disableColor={
-																		!!highlight.borderHighlight
+																		!!attributes[
+																			'border-highlight'
+																		]
 																	}
 																/>
 															),
@@ -587,7 +597,9 @@ const Inspector = props => {
 																			}
 																			isHover
 																			disableColor={
-																				!!highlight.borderHighlight
+																				!!attributes[
+																					'border-highlight'
+																				]
 																			}
 																		/>
 																	)}

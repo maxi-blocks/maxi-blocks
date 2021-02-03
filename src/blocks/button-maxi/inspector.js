@@ -33,7 +33,7 @@ import {
 	BackgroundControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Icons

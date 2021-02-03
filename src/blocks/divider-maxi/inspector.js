@@ -29,8 +29,10 @@ import {
 	MotionControl,
 	TransformControl,
 } from '../../components';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import {
+	getGroupAttributes,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * Inspector

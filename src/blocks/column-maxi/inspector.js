@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { Fragment, useState } = wp.element;
+const { Fragment } = wp.element;
 const { RangeControl, SelectControl, TextControl } = wp.components;
 
 /**
@@ -22,12 +22,14 @@ import {
 	ResponsiveControl,
 	ZIndexControl,
 	BackgroundControl,
-	DisplayControl,
 	TransformControl,
+	DisplayControl,
 } from '../../components';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import {
+	getGroupAttributes,
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * Inspector
@@ -96,11 +98,11 @@ const Inspector = props => {
 															'Column Size (%)',
 															'maxi-blocks'
 														)}
-														value={getLastBreakpointAttribute(
-															'column-size',
-															deviceType,
-															attributes
-														)}
+														value={
+															attributes[
+																`column-size-${deviceType}`
+															]
+														}
 														onChange={val => {
 															document.querySelector(
 																`.maxi-column-block__resizer__${uniqueID}`

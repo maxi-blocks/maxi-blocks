@@ -49,10 +49,7 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	highlight: {
-		type: 'object',
-		default: attributesData.highlight,
-	},
+	...newAttributes.highlight,
 	...newAttributes.background,
 	...newAttributes.backgroundColor,
 	...newAttributes.backgroundColorHover,

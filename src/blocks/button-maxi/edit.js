@@ -19,7 +19,7 @@ import {
 } from '../../components';
 import { getFormatValue } from '../../extensions/text/formats';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
 import getStyles from './styles';
 
 /**

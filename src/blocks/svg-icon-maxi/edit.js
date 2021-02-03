@@ -17,7 +17,7 @@ import {
 	getAlignmentFlexObject,
 	getTransformObject,
 	setBackgroundStyles,
-	getLastBreakpointValue,
+	getLastBreakpointAttribute,
 } from '../../utils';
 import {
 	MaxiBlock,
@@ -169,7 +169,7 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-svg-icon-block',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+			getLastBreakpointAttribute(displayValue, 'display', deviceType) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&

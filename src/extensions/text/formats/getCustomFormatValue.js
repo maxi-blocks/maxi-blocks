@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../../styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../styles/getLastBreakpointAttribute';
 import getCurrentFormatClassName from './getCurrentFormatClassName';
 
 /**

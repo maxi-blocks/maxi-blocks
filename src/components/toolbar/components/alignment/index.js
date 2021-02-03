@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../../../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../../../extensions/styles/getLastBreakpointAttribute';
 import AlignmentControl from '../../../alignment-control';
 import ToolbarPopover from '../toolbar-popover';
 import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';

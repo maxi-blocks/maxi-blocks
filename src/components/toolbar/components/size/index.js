@@ -7,7 +7,7 @@ const { RadioControl } = wp.components;
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../../../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../../../extensions/styles/getLastBreakpointAttribute';
 import SizeControl from '../../../size-control';
 import ToolbarPopover from '../toolbar-popover';
 

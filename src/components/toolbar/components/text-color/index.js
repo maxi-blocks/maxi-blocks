@@ -7,7 +7,7 @@ const { ColorPicker, Icon } = wp.components;
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../../../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../../../extensions/styles/getLastBreakpointAttribute';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	setFormat,

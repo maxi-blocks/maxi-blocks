@@ -19,7 +19,7 @@ import {
 import Inspector from './inspector';
 import RowContext from '../row-maxi/context';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
 import getStyles from './styles';
 
 /**

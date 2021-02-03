@@ -10,7 +10,7 @@ const { Fragment } = wp.element;
 import SizeControl from '../size-control';
 import FancyRadioControl from '../fancy-radio-control';
 
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
 /**

@@ -6,7 +6,7 @@ const { dispatch } = wp.data;
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
 
 /**
  * External dependencies

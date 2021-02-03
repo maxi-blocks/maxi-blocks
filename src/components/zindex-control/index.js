@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
  * Internal dependencies
  */
 import NumberControl from '../number-control';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
 /**

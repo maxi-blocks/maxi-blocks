@@ -20,7 +20,7 @@ import {
 } from '../../components';
 import Inspector from './inspector';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
 import getStyles from './styles';
 
 /**

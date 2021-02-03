@@ -8,7 +8,7 @@ const { SelectControl } = wp.components;
  * Internal dependencies
  */
 import defaultTypographies from '../../extensions/defaults/typography';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';

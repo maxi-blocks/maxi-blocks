@@ -8,7 +8,7 @@ const { select } = wp.data;
 /**
  * Internal dependencies
  */
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -53,7 +53,7 @@ import {
  * Styles
  */
 import './editor.scss';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * General

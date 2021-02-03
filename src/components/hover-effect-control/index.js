@@ -13,6 +13,10 @@ import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
 import AxisControl from '../axis-control';
 import FancyRadioControl from '../fancy-radio-control';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -33,8 +37,6 @@ import {
 	alignRightTop,
 	alignRightBottom,
 } from '../../icons';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
 /**
  * Component

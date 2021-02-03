@@ -19,8 +19,7 @@ const { select, dispatch } = wp.data;
 /**
  * Internal dependencies
  */
-import styleResolver from '../styles/newStyleResolver';
-import styleGenerator from '../styles/newStylesGenerator';
+import { styleResolver, styleGenerator } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 
 /**

@@ -73,6 +73,7 @@ const attributes = {
 	...newAttributes.display,
 	...newAttributes.position,
 	...newAttributes.motion,
+	...newAttributes.entrance,
 	...newAttributes.transform,
 	...newAttributes.zIndex,
 	...newAttributes.highlight,

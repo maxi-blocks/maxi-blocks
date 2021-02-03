@@ -40,8 +40,6 @@ class edit extends MaxiBlock {
 	}
 
 	state = {
-		styles: {},
-		breakpoints: this.getBreakpoints,
 		isOpen: false,
 	};
 
@@ -55,8 +53,10 @@ class edit extends MaxiBlock {
 		return {
 			[uniqueID]: {
 				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'motion'),
-					...getGroupAttributes(this.props.attributes, 'entrance'),
+					...getGroupAttributes(this.props.attributes, [
+						'motion',
+						'entrance',
+					]),
 				}),
 			},
 		};

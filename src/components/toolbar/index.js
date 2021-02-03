@@ -318,7 +318,7 @@ const MaxiToolbar = props => {
 						)}
 						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<Fragment>
-								{!attributes.color1Highlight && (
+								{!attributes['color1-highlight'] && (
 									<SvgColor
 										blockName={name}
 										svgColor={attributes.svgColorOrange}
@@ -330,7 +330,7 @@ const MaxiToolbar = props => {
 										}}
 									/>
 								)}
-								{!attributes.color2Highlight && (
+								{!attributes['color2-highlight'] && (
 									<SvgColor
 										blockName={name}
 										svgColor={attributes.svgColorBlack}

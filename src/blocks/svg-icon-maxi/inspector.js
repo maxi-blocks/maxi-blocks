@@ -60,6 +60,10 @@ const Inspector = props => {
 		defaultBlockStyle,
 		blockStyleBackground,
 		extraClassName,
+		animation,
+		duration,
+		stroke,
+		width,
 	} = attributes;
 
 	return (
@@ -124,9 +128,7 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													<SvgAnimationControl
-														animation={
-															attributes.animation
-														}
+														animation={animation}
 														onChange={animation => {
 															setAttributes({
 																animation,
@@ -136,12 +138,9 @@ const Inspector = props => {
 															);
 														}}
 													/>
-													{attributes.animation !==
-														'off' && (
+													{animation !== 'off' && (
 														<SvgAnimationDurationControl
-															duration={
-																attributes.duration
-															}
+															duration={duration}
 															onChange={duration => {
 																setAttributes({
 																	duration,
@@ -162,7 +161,7 @@ const Inspector = props => {
 											),
 											content: (
 												<SvgStrokeWidthControl
-													stroke={attributes.stroke}
+													stroke={stroke}
 													defaultStroke={getDefaultAttribute(
 														'stroke',
 														clientId
@@ -186,7 +185,7 @@ const Inspector = props => {
 											),
 											content: (
 												<SvgWidthControl
-													width={attributes.width}
+													width={width}
 													defaultWidth={getDefaultAttribute(
 														'width',
 														clientId

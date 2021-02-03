@@ -52,13 +52,7 @@ import {
  * Inspector
  */
 const Inspector = props => {
-	const {
-		attributes,
-		deviceType,
-		setAttributes,
-		clientId,
-		formatValue,
-	} = props;
+	const { attributes, deviceType, setAttributes, formatValue } = props;
 	const {
 		customLabel,
 		uniqueID,

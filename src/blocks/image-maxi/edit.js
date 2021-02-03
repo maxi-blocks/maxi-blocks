@@ -120,7 +120,7 @@ class edit extends MaxiBlock {
 		const getImage = () => {
 			if (
 				imageSize === 'custom' &&
-				cropOptions &&
+				!!cropOptions &&
 				!isEmpty(cropOptions.image.source_url)
 			)
 				return { ...cropOptions.image };
@@ -184,7 +184,7 @@ class edit extends MaxiBlock {
 											])}
 											blockClassName={uniqueID}
 										/>
-<ResizableBox
+										<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
 												width: `${

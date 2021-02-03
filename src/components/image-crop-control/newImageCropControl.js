@@ -72,6 +72,8 @@ const ImageCropControl = props => {
 
 	const imgNode = useRef(null);
 	const [crop, setCrop] = useState(cropOptions || defaultCropOptions);
+	const [isFirstRender, changeIsFirstRender] = useState(true);
+	const [imageID, setImageId] = useState(mediaID);
 
 	const ajaxurl = wp.ajax.settings.url;
 
@@ -176,9 +178,11 @@ const ImageCropControl = props => {
 	};
 
 	useEffect(() => {
-		setCrop(defaultCropOptions);
-		deleteFile();
-		onChange(defaultCropOptions);
+		if (mediaID !== imageID) {
+			setCrop(defaultCropOptions);
+			deleteFile();
+			onChange(defaultCropOptions);
+		} else setImageId(mediaID);
 	}, [mediaID]);
 
 	const saveData = newCrop => {
@@ -200,7 +204,8 @@ const ImageCropControl = props => {
 			},
 		};
 
-		onChange(newCropOptions);
+		setCrop(newCropOptions);
+		// onChange(newCropOptions);
 	};
 
 	const onImageLoad = newImage => {
@@ -213,17 +218,12 @@ const ImageCropControl = props => {
 				...(!crop.image.source_url && {
 					source_url: imageData.media_details.sizes.full.source_url,
 				}),
-				...(!crop.image.width && {
+				...(!!crop.image.width && {
 					width: +imageData.media_details.sizes.full.width,
 				}),
-				...(!crop.image.height && {
+				...(!!crop.image.height && {
 					height: +imageData.media_details.sizes.full.height,
 				}),
-			},
-			crop: {
-				...crop.crop,
-				width: newImage.width,
-				height: newImage.height,
 			},
 		};
 
@@ -248,10 +248,12 @@ const ImageCropControl = props => {
 	};
 
 	const onCropComplete = newCrop => {
-		if (!isEqual(defaultCropOptions.crop, crop.crop)) {
+		if (!isEqual(defaultCropOptions.crop, crop.crop) && !isFirstRender) {
 			saveData(newCrop);
 
 			cropper();
+		} else {
+			changeIsFirstRender(false);
 		}
 	};
 

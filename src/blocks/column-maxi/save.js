@@ -6,7 +6,7 @@ const { InnerBlocks } = wp.blockEditor;
 /**
  * Internal dependencies
  */
-import BackgroundDisplayer from '../../components';
+import { BackgroundDisplayer } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**

@@ -12,10 +12,10 @@ const { createRef } = wp.element;
  */
 import Inspector from './inspector';
 import {
-	MaxiBlock,
-	Toolbar,
-	MotionPreview,
 	BackgroundDisplayer,
+	MaxiBlock,
+	MotionPreview,
+	Toolbar,
 } from '../../components';
 import { getFormatValue } from '../../extensions/text/formats';
 import {

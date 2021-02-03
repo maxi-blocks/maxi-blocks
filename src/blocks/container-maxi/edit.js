@@ -10,14 +10,14 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
  */
 import Inspector from './inspector';
 import {
-	MaxiBlock,
-	Toolbar,
-	Breadcrumbs,
-	BlockPlaceholder,
 	ArrowDisplayer,
 	BackgroundDisplayer,
+	BlockPlaceholder,
+	Breadcrumbs,
+	MaxiBlock,
 	MotionPreview,
 	ShapeDivider,
+	Toolbar,
 } from '../../components';
 import {
 	getGroupAttributes,

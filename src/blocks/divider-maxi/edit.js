@@ -11,10 +11,10 @@ const { withSelect, withDispatch } = wp.data;
  */
 import Inspector from './inspector';
 import {
-	MaxiBlock,
-	Toolbar,
 	BackgroundDisplayer,
+	MaxiBlock,
 	MotionPreview,
+	Toolbar,
 } from '../../components';
 import {
 	getGroupAttributes,

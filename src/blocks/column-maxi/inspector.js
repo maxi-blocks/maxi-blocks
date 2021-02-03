@@ -11,19 +11,19 @@ const { RangeControl, SelectControl, TextControl } = wp.components;
  */
 import {
 	AccordionControl,
-	BlockStylesControl,
-	SettingTabsControl,
-	FancyRadioControl,
-	CustomLabel,
 	AxisControl,
+	BackgroundControl,
+	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
+	CustomLabel,
+	DisplayControl,
+	FancyRadioControl,
 	OpacityControl,
 	ResponsiveControl,
-	ZIndexControl,
-	BackgroundControl,
+	SettingTabsControl,
 	TransformControl,
-	DisplayControl,
+	ZIndexControl,
 } from '../../components';
 import {
 	getGroupAttributes,

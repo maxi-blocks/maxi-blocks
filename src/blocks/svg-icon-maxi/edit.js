@@ -13,10 +13,10 @@ const { __experimentalBlock } = wp.blockEditor;
  */
 import Inspector from './inspector';
 import {
-	MaxiBlock,
-	Toolbar,
-	MotionPreview,
 	BackgroundDisplayer,
+	MaxiBlock,
+	MotionPreview,
+	Toolbar,
 } from '../../components';
 import {
 	getGroupAttributes,

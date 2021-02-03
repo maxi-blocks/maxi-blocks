@@ -16,23 +16,23 @@ import { isEmpty } from 'lodash';
  */
 import {
 	AccordionControl,
-	BlockStylesControl,
-	SettingTabsControl,
-	FancyRadioControl,
-	CustomLabel,
 	AlignmentControl,
 	AxisControl,
+	BackgroundControl,
+	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
+	CustomLabel,
 	DisplayControl,
 	EntranceAnimationControl,
+	FancyRadioControl,
 	FontIconControl,
+	MotionControl,
 	PositionControl,
 	ResponsiveControl,
-	ZIndexControl,
-	BackgroundControl,
-	MotionControl,
+	SettingTabsControl,
 	TransformControl,
+	ZIndexControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 

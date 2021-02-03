@@ -11,26 +11,26 @@ const { SelectControl, TextControl } = wp.components;
  */
 import {
 	AccordionControl,
-	BlockStylesControl,
-	SettingTabsControl,
-	FancyRadioControl,
-	CustomLabel,
 	AxisControl,
+	BackgroundControl,
+	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
 	ColumnPattern,
+	CustomLabel,
 	DisplayControl,
+	FancyRadioControl,
 	FullSizeControl,
 	OpacityControl,
 	PositionControl,
 	ResponsiveControl,
-	ZIndexControl,
-	BackgroundControl,
+	SettingTabsControl,
 	TransformControl,
+	ZIndexControl,
 } from '../../components';
 import {
-	getGroupAttributes,
 	getDefaultAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 
 /**

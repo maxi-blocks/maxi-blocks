@@ -9,10 +9,10 @@ const { withSelect } = wp.data;
  */
 import Inspector from './inspector';
 import {
+	BackgroundDisplayer,
+	FontIconPicker,
 	MaxiBlock,
 	Toolbar,
-	FontIconPicker,
-	BackgroundDisplayer,
 } from '../../components';
 import {
 	getGroupAttributes,

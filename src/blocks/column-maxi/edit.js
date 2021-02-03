@@ -13,10 +13,10 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 import Inspector from './inspector';
 import RowContext from '../row-maxi/context';
 import {
+	BackgroundDisplayer,
+	BlockPlaceholder,
 	MaxiBlock,
 	Toolbar,
-	BlockPlaceholder,
-	BackgroundDisplayer,
 } from '../../components';
 import {
 	getGroupAttributes,

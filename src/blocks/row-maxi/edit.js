@@ -14,10 +14,10 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 import Inspector from './inspector';
 import RowContext from './context';
 import {
+	BackgroundDisplayer,
+	Breadcrumbs,
 	MaxiBlock,
 	Toolbar,
-	Breadcrumbs,
-	BackgroundDisplayer,
 } from '../../components';
 import {
 	getTemplates,

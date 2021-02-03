@@ -21,10 +21,10 @@ import {
 	MotionPreview,
 } from '../../components';
 import {
-	getFormatValue,
-	setCustomFormatsWhenPaste,
 	fromListToText,
 	fromTextToList,
+	getFormatValue,
+	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
 import {
 	getGroupAttributes,

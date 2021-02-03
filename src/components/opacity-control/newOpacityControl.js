@@ -22,7 +22,7 @@ const OpacityControl = props => {
 	const {
 		label,
 		opacity,
-		defaultOpacity = 0,
+		defaultOpacity = 1,
 		fullWidthMode = false,
 		className,
 		onChange,

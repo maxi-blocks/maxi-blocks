@@ -14,8 +14,10 @@ import OpacityControl from '../opacity-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ImageCropControl from '../image-crop-control';
 import SizeControl from '../size-control';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
-import getAttributeKey from '../../extensions/styles/getAttributeKey';
+import {
+	getDefaultAttribute,
+	getAttributeKey
+} from '../../extensions/styles';
 
 /**
  * External dependencies

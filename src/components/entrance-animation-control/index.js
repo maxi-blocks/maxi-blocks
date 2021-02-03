@@ -4,11 +4,11 @@
 const { __ } = wp.i18n;
 const { SelectControl } = wp.components;
 
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 /**
  * Internal dependencies
  */
 import SizeControl from '../size-control';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * Component

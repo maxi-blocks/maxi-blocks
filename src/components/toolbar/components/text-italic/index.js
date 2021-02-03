@@ -11,7 +11,7 @@ import {
 	getCustomFormatValue,
 	setFormat,
 } from '../../../../extensions/text/formats';
-import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles and icons

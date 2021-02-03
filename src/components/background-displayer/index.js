@@ -12,12 +12,12 @@ import classnames from 'classnames';
  * Internal Dependencies
  */
 import VideoLayer from './videoLayer';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Styles
  */
 import './style.scss';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**
  * Component

@@ -12,7 +12,7 @@ import OpacityControl from '../opacity-control';
 import FancyRadioControl from '../fancy-radio-control';
 import BackgroundControl from '../background-control';
 import SizeControl from '../size-control';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * Styles and icons

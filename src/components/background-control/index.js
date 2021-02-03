@@ -15,9 +15,7 @@ import ImageLayer from './imageLayer';
 import VideoLayer from './videoLayer';
 import GradientLayer from './gradientLayer';
 import SVGLayer from './svgLayer';
-
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getAttributeKey from '../../extensions/styles/getAttributeKey';
+import { getGroupAttributes, getAttributeKey } from '../../extensions/styles';
 
 /**
  * External dependencies

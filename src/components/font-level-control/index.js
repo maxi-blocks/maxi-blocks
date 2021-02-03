@@ -9,7 +9,10 @@ const { useState } = wp.element;
  * Internal dependencies
  */
 import { defaultTypography } from '../../extensions/text';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
+import {
+	getGroupAttributes,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -21,7 +24,6 @@ import { isNil, isEmpty } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**
  * Component

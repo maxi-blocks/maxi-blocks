@@ -8,8 +8,10 @@ const { RangeControl, SelectControl } = wp.components;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import getLastBreakpointAttribute from '../../../../extensions/styles/getLastBreakpointAttribute';
-import getDefaultAttribute from '../../../../extensions/styles/getDefaultAttribute';
+import {
+	getLastBreakpointAttribute,
+	getDefaultAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * Styles & Icons

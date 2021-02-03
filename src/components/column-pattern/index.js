@@ -16,7 +16,6 @@ import {
 	getTemplates,
 	getTemplateObject,
 } from '../../extensions/defaults/column-templates';
-
 import SizeControl from '../size-control';
 import FancyRadioControl from '../fancy-radio-control';
 

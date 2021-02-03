@@ -15,8 +15,10 @@ import ToolbarPopover from '../toolbar-popover';
  */
 import './editor.scss';
 import { toolbarBorder } from '../../../../icons';
-import getLastBreakpointAttribute from '../../../../extensions/styles/getLastBreakpointAttribute';
-import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * Border

@@ -14,7 +14,7 @@ import {
 	FancyRadioControl,
 	SizeControl,
 } from '../../components';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
+import { getDefaultAttribute } from '../../extensions/styles';
 import {
 	dividerSolidHorizontal,
 	dividerDottedHorizontal,

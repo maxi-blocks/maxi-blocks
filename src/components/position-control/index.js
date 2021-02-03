@@ -7,8 +7,8 @@ const { SelectControl } = wp.components;
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
 import AxisControl from '../axis-control';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies

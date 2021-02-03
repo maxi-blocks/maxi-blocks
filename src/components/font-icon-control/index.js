@@ -22,10 +22,11 @@ import BorderControl from '../border-control';
 import GradientControl from '../gradient-control';
 import FancyRadioControl from '../fancy-radio-control';
 import * as defaultPresets from './defaults';
-
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * Styles and icons

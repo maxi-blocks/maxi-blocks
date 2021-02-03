@@ -8,13 +8,13 @@ const { __ } = wp.i18n;
  */
 import BoxShadowControl from '../../../box-shadow-control';
 import ToolbarPopover from '../toolbar-popover';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Icons
  */
 import './editor.scss';
 import { toolbarDropShadow } from '../../../../icons';
-import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
  * BoxShadow

@@ -17,9 +17,11 @@ import {
 	borderDashed,
 	borderDotted,
 } from './defaults';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies

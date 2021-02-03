@@ -11,8 +11,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import SVGDefaultsDisplayer from '../svg-default-displayer';
 import SVGFillControl from '../svg-fill-control';
 import SizeControl from '../size-control';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
-import getAttributeKey from '../../extensions/styles/getAttributeKey';
+import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
 
 /**
  * External dependencies

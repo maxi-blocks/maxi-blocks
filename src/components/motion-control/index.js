@@ -12,7 +12,7 @@ import AddTimeline from './addTimeline';
 import ShowTimeline from './showTimeline';
 import TimelineSettings from './timelineSettings';
 import TimelinePresets from './timelinePresets';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies

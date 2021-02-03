@@ -9,13 +9,13 @@ const { RangeControl } = wp.components;
  * Internal dependencies
  */
 import FancyRadioControl from '../fancy-radio-control';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isNil } from 'lodash';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 
 /**
  * Component

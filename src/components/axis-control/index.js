@@ -8,8 +8,10 @@ const { BaseControl, SelectControl, Button, Tooltip } = wp.components;
 /**
  * Internal dependencies
  */
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
+import {
+	getLastBreakpointAttribute,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies

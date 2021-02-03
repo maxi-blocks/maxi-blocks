@@ -7,13 +7,16 @@ const { SelectControl } = wp.components;
 /**
  * Internal dependencies
  */
-import defaultTypographies from '../../extensions/defaults/typography';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
-import { setFormat, getCustomFormatValue } from '../../extensions/text/formats';
+import {
+	setFormat,
+	getCustomFormatValue,
+	defaultTypographies,
+} from '../../extensions/text/formats';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,

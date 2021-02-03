@@ -19,7 +19,7 @@ const size = {
 	},
 	'min-width-unit-general': {
 		type: 'string',
-		default: 'px',
+		default: '%',
 	},
 	'min-width-general': {
 		type: 'number',
@@ -62,6 +62,7 @@ const size = {
 	},
 	'min-width-xxl': {
 		type: 'number',
+		default: 100,
 	},
 	'max-height-unit-xxl': {
 		type: 'string',
@@ -206,6 +207,7 @@ const size = {
 	},
 	'min-width-s': {
 		type: 'number',
+		default: 100,
 	},
 	'max-height-unit-s': {
 		type: 'string',
@@ -242,6 +244,7 @@ const size = {
 	},
 	'min-width-xs': {
 		type: 'number',
+		default: 100,
 	},
 	'max-height-unit-xs': {
 		type: 'string',

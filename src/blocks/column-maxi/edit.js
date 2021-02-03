@@ -2,20 +2,26 @@
  * WordPress dependencies
  */
 const { compose } = wp.compose;
-const { Fragment, forwardRef } = wp.element;
-const { ResizableBox, Spinner } = wp.components;
+const { Fragment, forwardRef, createRef } = wp.element;
+const { Spinner } = wp.components;
 const { withSelect, withDispatch, select } = wp.data;
 const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 
 /**
  * Internal dependencies
  */
-import { MaxiBlock, Toolbar, BlockPlaceholder } from '../../components';
 import Inspector from './inspector';
 import RowContext from '../row-maxi/context';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import {
+	BackgroundDisplayer,
+	BlockPlaceholder,
+	MaxiBlock,
+	Toolbar,
+} from '../../components';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -23,6 +29,7 @@ import getStyles from './styles';
  */
 import classnames from 'classnames';
 import { isNil, round } from 'lodash';
+import { Resizable } from 're-resizable';
 
 /**
  * InnerBlocks version
@@ -46,6 +53,11 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  * Editor
  */
 class edit extends MaxiBlock {
+	constructor(props) {
+		super(props);
+		this.resizableObject = createRef();
+	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -72,7 +84,7 @@ class edit extends MaxiBlock {
 			blockStyleBackground,
 		} = attributes;
 
-		onDeviceTypeChange();
+		onDeviceTypeChange(this.resizableObject.current);
 
 		const classes = classnames(
 			'maxi-block',
@@ -120,17 +132,21 @@ class edit extends MaxiBlock {
 			);
 
 		return [
-			<Inspector {...this.props} />,
+			<Inspector
+				resizableObject={this.resizableObject.current}
+				{...this.props}
+			/>,
 			<Toolbar {...this.props} />,
 			<RowContext.Consumer>
 				{context => (
 					<Fragment>
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
-							<ResizableBox
+							<Resizable
+								ref={this.resizableObject}
 								showHandle={context.displayHandlers}
 								className={classnames(
-									'maxi-block--backend', // Required by BackEndResponsiveStyles class to apply the styles
+									'maxi-block--backend',
 									'maxi-block__resizer',
 									'maxi-column-block__resizer',
 									`maxi-column-block__resizer__${uniqueID}`,
@@ -205,7 +221,7 @@ class edit extends MaxiBlock {
 											  )
 									}
 								/>
-							</ResizableBox>
+							</Resizable>
 						)}
 					</Fragment>
 				)}
@@ -243,15 +259,13 @@ const editSelect = withSelect((select, ownProps) => {
 });
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
-	const onDeviceTypeChange = () => {
+	const onDeviceTypeChange = resizableObject => {
+		if (isNil(resizableObject)) return;
+
 		let newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
-		const node = document.querySelector(
-			`.maxi-column-block__resizer__${ownProps.attributes.uniqueID}`
-		);
-		if (isNil(node)) return;
-
+		const node = resizableObject.resizable;
 		const newSize = ownProps.attributes[`column-size-${newDeviceType}`];
 
 		if (['xxl', 'xl', 'l'].includes(newDeviceType)) {

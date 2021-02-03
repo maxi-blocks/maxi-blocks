@@ -10,16 +10,18 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 /**
  * Internal dependencies
  */
+import Inspector from './inspector';
+import RowContext from '../row-maxi/context';
 import {
 	MaxiBlock,
 	Toolbar,
 	BlockPlaceholder,
 	BackgroundDisplayer,
 } from '../../components';
-import Inspector from './inspector';
-import RowContext from '../row-maxi/context';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 
 /**

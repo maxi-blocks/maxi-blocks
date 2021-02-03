@@ -6,8 +6,8 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import BackgroundDisplayer from '../../components/background-displayer';
+import { BackgroundDisplayer } from '../../components';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies

@@ -8,6 +8,7 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 /**
  * Internal dependencies
  */
+import Inspector from './inspector';
 import {
 	MaxiBlock,
 	Toolbar,
@@ -18,9 +19,10 @@ import {
 	MotionPreview,
 	ShapeDivider,
 } from '../../components';
-import Inspector from './inspector';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointAttribute';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -103,9 +105,11 @@ class edit extends MaxiBlock {
 		return {
 			[uniqueID]: {
 				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'motion'),
-					...getGroupAttributes(this.props.attributes, 'entrance'),
-					...getGroupAttributes(this.props.attributes, 'parallax'),
+					...getGroupAttributes(this.props.attributes, [
+						'motion',
+						'entrance',
+						'parallax',
+					]),
 				}),
 				...(shapeStatus && {
 					...getGroupAttributes(

@@ -4,20 +4,25 @@
 const { RangeControl } = wp.components;
 
 /**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
+/**
  * Component
  */
 const SvgWidthControl = props => {
-	const { width, onChange } = props;
+	const { defaultWidth, width, onChange } = props;
 
 	return (
 		<RangeControl
 			value={width}
-			onChange={val => onChange(val)}
+			onChange={val => onChange(!isNil(val) ? val : defaultWidth)}
 			min={10}
 			max={250}
 			step={1}
 			withInputField
-			initialPosition={64}
+			initialPosition={defaultWidth}
 			allowReset
 		/>
 	);

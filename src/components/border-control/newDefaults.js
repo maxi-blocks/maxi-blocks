@@ -1,43 +1,59 @@
-export const borderNone = {
-	'border-color': '#fff',
-	'border-style': 'none',
-	'border-top-width': '',
-	'border-right-width': '',
-	'border-bottom-width': '',
-	'border-left-width': '',
-	'border-sync-width': true,
-	'border-unit-width': 'px',
+export const borderNone = (prefix = '') => {
+	let response = {};
+	response = {
+		[`${prefix}border-color`]: '#fff',
+		[`${prefix}border-style`]: 'none',
+		[`${prefix}border-top-width`]: '',
+		[`${prefix}border-right-width`]: '',
+		[`${prefix}border-bottom-width`]: '',
+		[`${prefix}border-left-width`]: '',
+		[`${prefix}border-sync-width`]: true,
+		[`${prefix}border-unit-width`]: 'px',
+	};
+	return response;
 };
 
-export const borderSolid = {
-	'border-color': '#000',
-	'border-style': 'solid',
-	'border-top-width': 2,
-	'border-right-width': 2,
-	'border-bottom-width': 2,
-	'border-left-width': 2,
-	'border-sync-width': true,
-	'border-unit-width': 'px',
+export const borderSolid = prefix => {
+	let response = {};
+	response = {
+		[`${prefix}border-color`]: '#000',
+		[`${prefix}border-style`]: 'solid',
+		[`${prefix}border-top-width`]: 2,
+		[`${prefix}border-right-width`]: 2,
+		[`${prefix}border-bottom-width`]: 2,
+		[`${prefix}border-left-width`]: 2,
+		[`${prefix}border-sync-width`]: true,
+		[`${prefix}border-unit-width`]: 'px',
+	};
+	return response;
 };
 
-export const borderDashed = {
-	'border-color': '#000',
-	'border-style': 'dashed',
-	'border-top-width': 2,
-	'border-right-width': 2,
-	'border-bottom-width': 2,
-	'border-left-width': 2,
-	'border-sync-width': true,
-	'border-unit-width': 'px',
+export const borderDashed = prefix => {
+	let response = {};
+	response = {
+		[`${prefix}border-color`]: '#000',
+		[`${prefix}border-style`]: 'dashed',
+		[`${prefix}border-top-width`]: 2,
+		[`${prefix}border-right-width`]: 2,
+		[`${prefix}border-bottom-width`]: 2,
+		[`${prefix}border-left-width`]: 2,
+		[`${prefix}border-sync-width`]: true,
+		[`${prefix}border-unit-width`]: 'px',
+	};
+	return response;
 };
 
-export const borderDotted = {
-	'border-color': '#000',
-	'border-style': 'dotted',
-	'border-top-width': 2,
-	'border-right-width': 2,
-	'border-bottom-width': 2,
-	'border-left-width': 2,
-	'border-sync-width': true,
-	'border-unit-width': 'px',
+export const borderDotted = prefix => {
+	let response = {};
+	response = {
+		[`${prefix}border-color`]: '#000',
+		[`${prefix}border-style`]: 'dotted',
+		[`${prefix}border-top-width`]: 2,
+		[`${prefix}border-right-width`]: 2,
+		[`${prefix}border-bottom-width`]: 2,
+		[`${prefix}border-left-width`]: 2,
+		[`${prefix}border-sync-width`]: true,
+		[`${prefix}border-unit-width`]: 'px',
+	};
+	return response;
 };

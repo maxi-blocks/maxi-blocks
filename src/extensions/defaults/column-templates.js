@@ -19,6 +19,15 @@ import {
 	fourOneOne,
 	fiveColumns,
 	sixColumns,
+	sevenColumns,
+	twoOneOneOneOneOneOne,
+	oneOneOneOneOneOneOneThree,
+	threeOneOneOneOneOneOneOne,
+	oneOneOneOneOneOneTwo,
+	oneOneOneOneOneOneOne,
+	eightColumns,
+	oneOneOneOneOneOneOneOne,
+	twoTwoTwoTwoTwoTwoTwoTwo,
 	oneOneTwo,
 	oneOneOne,
 	oneOneOneOne,
@@ -37,6 +46,7 @@ import {
 /**
  * Helpers
  */
+
 /**
  *
  * We are generating new columns again each time the user changes the pattern and adding the new columns to them
@@ -44,7 +54,6 @@ import {
  */
 const generateDefaultColumns = (columns, gap1 = 2.5) => {
 	const numberOfGaps = columns.length - 1;
-
 	const total = 100 - gap1 * numberOfGaps;
 
 	return columns.map((column, i) => {
@@ -52,96 +61,10 @@ const generateDefaultColumns = (columns, gap1 = 2.5) => {
 			'maxi-blocks/column-maxi',
 			{
 				uniqueID: 'maxi-column-maxi-1',
-				columnSize: {
-					label: 'Column size',
-					general: {
-						fullwidth: false,
-						size: column * total,
-					},
-					xxl: {
-						fullwidth: '',
-						size: '',
-					},
-					xl: {
-						fullwidth: '',
-						size: '',
-					},
-					l: {
-						fullwidth: '',
-						size: '',
-					},
-					m: {
-						fullwidth: false,
-						size: 100,
-					},
-					s: {
-						fullwidth: '',
-						size: '',
-					},
-					xs: {
-						fullwidth: '',
-						size: '',
-					},
-				},
-				margin: {
-					label: 'Margin',
-					general: {
-						'margin-top': '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: 'px',
-					},
-					xxl: {
-						'margin-top': '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: '',
-					},
-					xl: {
-						'margin-top': '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: '',
-					},
-					l: {
-						'margin-top': '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: '',
-					},
-					m: {
-						'margin-top': i !== 0 ? 0.7 : '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: 'em',
-					},
-					s: {
-						'margin-top': '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: '',
-					},
-					xs: {
-						'margin-top': '',
-						'margin-right': '',
-						'margin-bottom': '',
-						'margin-left': '',
-						sync: true,
-						unit: '',
-					},
-				},
+				'column-size-general': column * total,
+				'column-size-m': 100,
+				'margin-top-m': i !== 0 ? 1.5 : '',
+				'margin-unit-m': 'em',
 			},
 		];
 	});
@@ -543,6 +466,170 @@ const templates = {
 			},
 		],
 	},
+
+	sevenColumns: {
+		default: [
+			{
+				name: '7 columns',
+				icon: sevenColumns,
+				sizes: [1 / 7, 1 / 7, 1 / 7, 1 / 7, 1 / 7, 1 / 7, 1 / 7],
+				responsiveLayout: '1-1-1-1-1-1-1',
+				content: generateDefaultColumns([
+					1 / 7,
+					1 / 7,
+					1 / 7,
+					1 / 7,
+					1 / 7,
+					1 / 7,
+					1 / 7,
+				]),
+
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+		],
+		responsive: [
+			{
+				name: '2-1-1-1-1-1-1',
+				icon: twoOneOneOneOneOneOne,
+				sizes: [1, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
+				content: generateDefaultColumns([
+					1,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+				]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+			{
+				name: '1-1-1-1-1-1-2',
+				icon: oneOneOneOneOneOneTwo,
+				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1],
+				content: generateDefaultColumns([
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1,
+				]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+			{
+				name: '1-1-1-1-1-1-1-3',
+				icon: oneOneOneOneOneOneOneThree,
+				sizes: [1, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3],
+				content: generateDefaultColumns([
+					1,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+				]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+			{
+				name: '3-1-1-1-1-1-1-1',
+				icon: threeOneOneOneOneOneOneOne,
+				sizes: [1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1],
+				content: generateDefaultColumns([
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1 / 3,
+					1,
+				]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+			{
+				name: '1-1-1-1-1-1-1',
+				icon: oneOneOneOneOneOneOne,
+				sizes: [1, 1, 1, 1, 1, 1, 1],
+				content: generateDefaultColumns([1, 1, 1, 1, 1, 1, 1]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+		],
+	},
+
+	eightColumns: {
+		default: [
+			{
+				name: '8 columns',
+				icon: eightColumns,
+				sizes: [1 / 8, 1 / 8, 1 / 8, 1 / 8, 1 / 8, 1 / 8, 1 / 8, 1 / 8],
+				content: generateDefaultColumns([
+					1 / 8,
+					1 / 8,
+					1 / 8,
+					1 / 8,
+					1 / 8,
+					1 / 8,
+					1 / 8,
+					1 / 8,
+				]),
+				responsiveLayout: '2-2-2-2-2-2-2-2',
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+		],
+		responsive: [
+			{
+				name: '1-1-1-1-1-1-1-1',
+				icon: oneOneOneOneOneOneOneOne,
+				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
+				content: generateDefaultColumns([
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+					1 / 2,
+				]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+			{
+				name: '2-2-2-2-2-2-2-2',
+				icon: twoTwoTwoTwoTwoTwoTwoTwo,
+				sizes: [1, 1, 1, 1, 1, 1, 1, 1],
+				content: generateDefaultColumns([1, 1, 1, 1, 1, 1, 1]),
+				attributes: {
+					horizontalAlign: 'space-between',
+					verticalAlign: 'stretch',
+				},
+			},
+		],
+	},
 };
 
 /**
@@ -574,7 +661,7 @@ function getTemplateObject(templateName) {
 /**
  * Get columns Number based on the template name
  *
- * @param {string} tempalteName name of the template
+ * @param {string} templateName name of the template
  * @return {Integer} Number of Columns for the corresponding template
  */
 function getNumCol(templateName) {
@@ -605,6 +692,8 @@ function getTemplates(deviceType = 'general', columnsNumber = undefined) {
 		fourColumns,
 		fiveColumns,
 		sixColumns,
+		sevenColumns,
+		eightColumns,
 	} = templates;
 
 	switch (columnsNumber) {
@@ -639,6 +728,16 @@ function getTemplates(deviceType = 'general', columnsNumber = undefined) {
 				return sixColumns.default.concat(sixColumns.responsive);
 			}
 			return sixColumns.default;
+		case 7:
+			if (responsiveSnappingScreens.includes(deviceType)) {
+				return sevenColumns.default.concat(sevenColumns.responsive);
+			}
+			return sevenColumns.default;
+		case 8:
+			if (responsiveSnappingScreens.includes(deviceType)) {
+				return eightColumns.default.concat(eightColumns.responsive);
+			}
+			return eightColumns.default;
 
 		default:
 			return oneColumn.default.concat(
@@ -646,7 +745,9 @@ function getTemplates(deviceType = 'general', columnsNumber = undefined) {
 				threeColumns.default,
 				fourColumns.default,
 				fiveColumns.default,
-				sixColumns.default
+				sixColumns.default,
+				sevenColumns.default,
+				eightColumns.default
 			);
 	}
 }

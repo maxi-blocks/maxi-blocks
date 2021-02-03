@@ -8,8 +8,7 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getBackgroundStyles,
-	getMarginStyles,
-	getPaddingStyles,
+	getMarginPaddingStyles,
 	getDividerStyles,
 } from '../../extensions/styles/helpers';
 
@@ -19,10 +18,10 @@ const getNormalObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		margin: getMarginStyles({
+		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
-		padding: getPaddingStyles({
+		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
 		zIndex: getZIndexStyles({

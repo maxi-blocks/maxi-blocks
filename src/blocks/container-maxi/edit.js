@@ -17,10 +17,10 @@ import {
 } from '../../components';
 import Inspector from './inspector';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
 import ShapeDivider from '../../components/shape-divider/newShapeDivider';
 import MotionPreview from '../../components/motion-preview/newMotionPreview';
-import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
 import getStyles from './styles';
 
 /**
@@ -81,7 +81,6 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  */
 
 const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
-
 const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
 
 class edit extends MaxiBlock {
@@ -128,6 +127,7 @@ class edit extends MaxiBlock {
 		} = this.props;
 		const {
 			uniqueID,
+			isFirstOnHierarchy,
 			blockStyle,
 			defaultBlockStyle,
 			blockStyleBackground,
@@ -141,7 +141,7 @@ class edit extends MaxiBlock {
 			'maxi-container-block',
 			'maxi-motion-effect',
 			`maxi-motion-effect-${uniqueID}`,
-			getLastBreakpointValue('display', deviceType, attributes) ===
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
@@ -156,7 +156,7 @@ class edit extends MaxiBlock {
 			<Toolbar {...this.props} />,
 			<Breadcrumbs />,
 			<Fragment>
-				{fullWidth && (
+				{isFirstOnHierarchy && fullWidth && (
 					<MotionPreview
 						{...getGroupAttributes(attributes, 'motion')}
 					>

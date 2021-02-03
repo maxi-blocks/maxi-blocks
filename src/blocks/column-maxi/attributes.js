@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults';
+import * as newAttributes from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -16,53 +16,13 @@ const attributes = {
 		type: 'string',
 		default: __('Column', 'maxi-blocks'),
 	},
-	columnSize: {
-		type: 'object',
-		default: attributesData.column,
-	},
-	verticalAlign: {
-		type: 'string',
-		default: 'stretch',
-	},
-	opacity: {
-		type: 'object',
-		default: attributesData.opacity,
-	},
-	background: {
-		type: 'object',
-		default: attributesData.background,
-	},
-	backgroundHover: {
-		type: 'object',
-		default: attributesData.backgroundHover,
-	},
-	border: {
-		type: 'object',
-		default: attributesData.border,
-	},
-	borderHover: {
-		type: 'object',
-		default: attributesData.borderHover,
-	},
 	fullWidth: {
 		type: 'string',
 		default: 'normal',
 	},
-	boxShadow: {
-		type: 'object',
-		default: attributesData.boxShadow,
-	},
-	boxShadowHover: {
-		type: 'object',
-		default: attributesData.boxShadowHover,
-	},
-	margin: {
-		type: 'object',
-		default: attributesData.margin,
-	},
-	padding: {
-		type: 'object',
-		default: attributesData.padding,
+	verticalAlign: {
+		type: 'string',
+		default: 'stretch',
 	},
 	extraClassName: {
 		type: 'string',
@@ -72,17 +32,31 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	zIndex: {
-		type: 'number',
-	},
-	display: {
-		type: 'object',
-		default: attributesData.display,
-	},
-	transform: {
-		type: 'object',
-		default: attributesData.transform,
-	},
+	...newAttributes.columnSize,
+	...newAttributes.opacity,
+	...newAttributes.background,
+	...newAttributes.backgroundColor,
+	...newAttributes.backgroundImage,
+	...newAttributes.backgroundVideo,
+	...newAttributes.backgroundGradient,
+	...newAttributes.backgroundSVG,
+	...newAttributes.backgroundHover,
+	...newAttributes.backgroundColorHover,
+	...newAttributes.backgroundImageHover,
+	...newAttributes.backgroundVideoHover,
+	...newAttributes.backgroundGradientHover,
+	...newAttributes.backgroundSVGHover,
+	...newAttributes.border,
+	...newAttributes.borderWidth,
+	...newAttributes.borderRadius,
+	...newAttributes.borderHover,
+	...newAttributes.boxShadow,
+	...newAttributes.boxShadowHover,
+	...newAttributes.margin,
+	...newAttributes.padding,
+	...newAttributes.display,
+	...newAttributes.transform,
+	...newAttributes.zIndex,
 };
 
 export default attributes;

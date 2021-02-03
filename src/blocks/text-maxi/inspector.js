@@ -24,9 +24,9 @@ import ZIndexControl from '../../components/zindex-control/newIndexControl';
 import OpacityControl from '../../components/opacity-control/newOpacityControl';
 import TypographyControl from '../../components/typography-control/newTypographyControl';
 import FontLevelControl from '../../components/font-level-control/newFontLevelControl';
+import AlignmentControl from '../../components/alignment-control/newAlignmentControl';
 import {
 	AccordionControl,
-	AlignmentControl,
 	BlockStylesControl,
 	SettingTabsControl,
 	NumberControl,
@@ -104,23 +104,25 @@ const Inspector = props => {
 								<AccordionControl
 									isSecondary
 									items={[
-										// {
-										// 	label: __(
-										// 		'Alignment',
-										// 		'maxi-blocks'
-										// 	),
-										// 	content: (
-										// 		<AlignmentControl
-										// 			alignment={alignment}
-										// 			onChange={alignment =>
-										// 				setAttributes({
-										// 					alignment,
-										// 				})
-										// 			}
-										// 			breakpoint={deviceType}
-										// 		/>
-										// 	),
-										// },
+										{
+											label: __(
+												'Alignment',
+												'maxi-blocks'
+											),
+											content: (
+												<AlignmentControl
+													{...getGroupAttributes(
+														attributes,
+														'textAlignment'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+													type='text'
+												/>
+											),
+										},
 										deviceType === 'general' &&
 											!isList && {
 												label: __(

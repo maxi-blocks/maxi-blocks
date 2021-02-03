@@ -8,7 +8,8 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import { ColumnPattern } from '../../..';
+import ColumnPattern from '../../../column-pattern/newColumnPattern';
+import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
  * Styles & Icons
@@ -21,11 +22,9 @@ const ToolbarColumnPattern = props => {
 
 	if (blockName !== 'maxi-blocks/row-maxi') return null;
 
-	const rowPattern = { ...props.rowPattern };
-
 	return (
 		<Fragment>
-			{rowPattern.general.rowPattern && (
+			{props['row-pattern-general'] && (
 				<ToolbarPopover
 					className='toolbar-item__column-pattern'
 					icon={toolbarColumnPattern}
@@ -35,13 +34,12 @@ const ToolbarColumnPattern = props => {
 							<ColumnPattern
 								clientId={clientId}
 								blockName={blockName}
-								rowPattern={rowPattern}
+								{...getGroupAttributes(props, 'rowPattern')}
 								onChange={rowPattern => {
 									onChange(rowPattern);
 								}}
 								toolbar
 								breakpoint={breakpoint}
-								{...props}
 							/>
 						</div>
 					}

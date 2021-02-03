@@ -6,7 +6,8 @@ const { InnerBlocks } = wp.blockEditor;
 /**
  * Internal dependencies
  */
-import { BackgroundDisplayer } from '../../components';
+import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
+import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 
 /**
  * External dependencies
@@ -18,16 +19,13 @@ import { isNil } from 'lodash';
  * Save
  */
 const save = props => {
+	const { attributes, className } = props;
 	const {
-		attributes: {
-			uniqueID,
-			blockStyle,
-			extraClassName,
-			defaultBlockStyle,
-			background,
-		},
-		className,
-	} = props;
+		uniqueID,
+		blockStyle,
+		extraClassName,
+		defaultBlockStyle,
+	} = attributes;
 
 	const classes = classnames(
 		'maxi-block maxi-column-block',
@@ -42,7 +40,22 @@ const save = props => {
 			className={classes}
 			data-maxi_initial_block_class={defaultBlockStyle}
 		>
-			<BackgroundDisplayer background={background} />
+			<BackgroundDisplayer
+				{...getGroupAttributes(attributes, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundImageHover',
+					'backgroundVideoHover',
+					'backgroundGradientHover',
+					'backgroundSVGHover',
+				])}
+			/>
 			<InnerBlocks.Content />
 		</div>
 	);

@@ -232,7 +232,7 @@ class ResponsiveFrontendStyles {
 		if (!$custom_data)
 			return;
 
-		$result = $custom_data['custom_data'];
+        $result = $custom_data['custom_data'];
 
 		if (!$result || empty($result))
 			return;

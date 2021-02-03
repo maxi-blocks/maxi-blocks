@@ -1,5 +1,4 @@
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-
+import { getGroupAttributes } from '../../extensions/styles';
 import {
 	getBoxShadowStyles,
 	getZIndexStyles,
@@ -32,6 +31,9 @@ const getNormalObject = props => {
 		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
+		margin: getMarginPaddingStyles({
+			...getGroupAttributes(props, 'margin'),
+		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -49,13 +51,14 @@ const getNormalObject = props => {
 				...getGroupAttributes(props, 'columnSize'),
 			}),
 		},
-		column: {
-			general: {},
-		},
+		...(!isEmpty(props.verticalAlign) && {
+			column: {
+				general: {
+					'justify-content': props.verticalAlign,
+				},
+			},
+		}),
 	};
-
-	if (!isEmpty(props.verticalAlign))
-		response.column.general['justify-content'] = props.verticalAlign;
 
 	return response;
 };

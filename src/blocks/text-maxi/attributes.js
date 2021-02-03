@@ -6,7 +6,6 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults';
 import * as newAttributes from '../../extensions/styles/defaults/index';
 
 /**
@@ -40,10 +39,6 @@ const attributes = {
 	fullWidth: {
 		type: 'string',
 		default: 'normal',
-	},
-	hoverPadding: {
-		type: 'object',
-		default: attributesData.padding,
 	},
 	content: {
 		type: 'string',

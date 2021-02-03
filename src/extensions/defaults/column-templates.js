@@ -661,7 +661,7 @@ function getTemplateObject(templateName) {
 /**
  * Get columns Number based on the template name
  *
- * @param {string} tempalteName name of the template
+ * @param {string} templateName name of the template
  * @return {Integer} Number of Columns for the corresponding template
  */
 function getNumCol(templateName) {

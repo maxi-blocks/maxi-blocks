@@ -316,12 +316,12 @@ const MaxiToolbar = props => {
 								onChange={obj => setAttributes(obj)}
 							/>
 						)}
-						{/* {name === 'maxi-blocks/svg-icon-maxi' && (
+						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<Fragment>
-								{!color1Highlight && (
+								{!attributes['color1-highlight'] && (
 									<SvgColor
 										blockName={name}
-										svgColor={svgColorOrange}
+										svgColor={attributes.svgColorOrange}
 										onChange={svgColorOrange => {
 											setAttributes({
 												svgColorOrange,
@@ -330,10 +330,10 @@ const MaxiToolbar = props => {
 										}}
 									/>
 								)}
-								{!color2Highlight && (
+								{!attributes['color2-highlight'] && (
 									<SvgColor
 										blockName={name}
-										svgColor={svgColorBlack}
+										svgColor={attributes.svgColorBlack}
 										onChange={svgColorBlack => {
 											setAttributes({
 												svgColorBlack,
@@ -345,7 +345,7 @@ const MaxiToolbar = props => {
 								{hasThirdColour && (
 									<SvgColor
 										blockName={name}
-										svgColor={svgColorWhite}
+										svgColor={attributes.svgColorWhite}
 										onChange={svgColorWhite => {
 											setAttributes({ svgColorWhite });
 											changeSVGContent(svgColorWhite, 3);
@@ -353,7 +353,7 @@ const MaxiToolbar = props => {
 									/>
 								)}
 							</Fragment>
-						)} */}
+						)}
 						<Border
 							blockName={name}
 							{...getGroupAttributes(attributes, [

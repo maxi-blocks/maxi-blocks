@@ -1,5 +1,4 @@
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-
+import { getGroupAttributes } from '../../extensions/styles';
 import {
 	getSizeStyles,
 	getBoxShadowStyles,

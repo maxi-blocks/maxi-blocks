@@ -21,7 +21,7 @@ import { capitalize, isNil, trim } from 'lodash';
  */
 import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
-import getDefaultAttribute from '../../../../extensions/styles/getDefaultAttribute';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * ImageSize

@@ -150,7 +150,6 @@ class edit extends MaxiBlock {
 						<RichText
 							ref={this.buttonRef}
 							withoutInteractiveFormatting
-							placeholder={__('Set some text…', 'maxi-blocks')}
 							className='maxi-button-block__content'
 							value={attributes.buttonContent}
 							identifier='content'
@@ -158,7 +157,6 @@ class edit extends MaxiBlock {
 								setAttributes({ buttonContent })
 							}
 							placeholder={__('Set some text…', 'maxi-blocks')}
-							withoutInteractiveFormatting
 						/>
 					</div>
 				</__experimentalBlock>

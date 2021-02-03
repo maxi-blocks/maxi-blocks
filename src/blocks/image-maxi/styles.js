@@ -267,7 +267,6 @@ const getStyles = props => {
 				'backgroundVideo',
 				'backgroundGradient',
 				'backgroundSVG',
-				'borderRadius',
 			]),
 		}),
 	};

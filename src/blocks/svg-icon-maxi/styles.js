@@ -1,7 +1,5 @@
 import { getGroupAttributes } from '../../extensions/styles';
 import {
-	getSizeStyles,
-	getContainerStyles,
 	getBoxShadowStyles,
 	getZIndexStyles,
 	getPositionStyles,
@@ -10,69 +8,54 @@ import {
 	getMarginPaddingStyles,
 	getBackgroundStyles,
 	getBorderStyles,
+	getAlignmentFlexStyles,
 	getOpacityStyles,
 } from '../../extensions/styles/helpers';
 
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
 const getNormalObject = props => {
-	let response = {
-		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
-		}),
-		border: getBorderStyles({
-			...getGroupAttributes(props, [
-				'border',
-				'borderWidth',
-				'borderRadius',
-			]),
-		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
+	const response = {
+		boxShadow: getBoxShadowStyles(
+			{
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			false,
+			false
+		),
 		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
 		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
+		border: getBorderStyles(
+			{
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			false
+		),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
 		zIndex: getZIndexStyles({
 			...getGroupAttributes(props, 'zIndex'),
 		}),
+		alignment: getAlignmentFlexStyles({
+			...getGroupAttributes(props, 'alignment'),
+		}),
 		position: getPositionStyles({
 			...getGroupAttributes(props, 'position'),
-		}),
-		display: getDisplayStyles({
-			...getGroupAttributes(props, 'display'),
 		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
-		row: {
-			general: {},
-		},
+		display: getDisplayStyles({
+			...getGroupAttributes(props, 'display'),
+		}),
 	};
-
-	if (props.fullWidth !== 'full') {
-		response = {
-			...response,
-			containerSize: getContainerStyles({
-				...getGroupAttributes(props, 'container'),
-			}),
-		};
-	}
-
-	if (!isEmpty(props.horizontalAlign))
-		response.row.general['justify-content'] = props.horizontalAlign;
-
-	if (!isEmpty(props.verticalAlign))
-		response.row.general['align-items'] = props.verticalAlign;
 
 	return response;
 };
@@ -119,23 +102,12 @@ const getStyles = props => {
 			...getGroupAttributes(props, [
 				'backgroundHover',
 				'backgroundColorHover',
-				'backgroundImageHover',
-				'backgroundGradientHover',
-				'borderRadiusHover',
 			]),
 			isHover: !!props['background-status-hover'],
 		}),
 		...getBackgroundStyles({
 			target: uniqueID,
-			...getGroupAttributes(props, [
-				'background',
-				'backgroundColor',
-				'backgroundImage',
-				'backgroundVideo',
-				'backgroundGradient',
-				'backgroundSVG',
-				'borderRadius',
-			]),
+			...getGroupAttributes(props, ['background', 'backgroundColor']),
 		}),
 	};
 

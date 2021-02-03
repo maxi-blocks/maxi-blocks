@@ -13,24 +13,22 @@ const { __experimentalBlock } = wp.blockEditor;
  */
 import Inspector from './inspector';
 import {
-	getBoxShadowObject,
-	getAlignmentFlexObject,
-	getTransformObject,
-	setBackgroundStyles,
-	getLastBreakpointAttribute,
-} from '../../utils';
-import {
 	MaxiBlock,
 	Toolbar,
-	BackgroundDisplayer,
 	MotionPreview,
+	BackgroundDisplayer,
 } from '../../components';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+import getStyles from './styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 import Iframe from 'react-iframe';
 
 /**
@@ -42,142 +40,63 @@ import { toolbarReplaceImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlock {
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
+	}
+
 	state = {
-		styles: {},
-		breakpoints: this.getBreakpoints,
 		isOpen: false,
 	};
 
-	get getObject() {
-		const { uniqueID, background, backgroundHover } = this.props.attributes;
-
-		let response = {
-			[uniqueID]: this.getNormalObject,
-			[`${uniqueID}:hover`]: this.getHoverObject,
-		};
-
-		response = Object.assign(
-			response,
-			setBackgroundStyles({
-				target: uniqueID,
-				background,
-				backgroundHover,
-			})
-		);
-
-		return response;
-	}
-
-	get getNormalObject() {
-		const {
-			alignment,
-			opacity,
-			boxShadow,
-			padding,
-			margin,
-			zIndex,
-			position,
-			display,
-			transform,
-			border,
-		} = this.props.attributes;
-
-		const response = {
-			boxShadow: getBoxShadowObject(boxShadow),
-			padding,
-			margin,
-			border,
-			borderWidth: border.borderWidth,
-			borderRadius: border.borderRadius,
-			opacity,
-			zIndex,
-			alignment: getAlignmentFlexObject(alignment),
-			position,
-			positionOptions: position.options,
-			display,
-			transform: getTransformObject(transform),
-		};
-
-		return response;
-	}
-
-	get getHoverObject() {
-		const { boxShadowHover, borderHover } = this.props.attributes;
-
-		const response = {
-			borderWidth: borderHover.borderWidth,
-			borderRadius: borderHover.borderRadius,
-		};
-
-		if (!isNil(boxShadowHover) && !!boxShadowHover.status) {
-			response.boxShadowHover = getBoxShadowObject(boxShadowHover);
-		}
-
-		if (!isNil(borderHover) && !!borderHover.status) {
-			response.borderHover = borderHover;
-		}
-
-		return response;
-	}
-
 	get getCustomData() {
-		const { uniqueID, motion } = this.props.attributes;
+		const { uniqueID } = this.props.attributes;
 
 		const motionStatus =
-			!!motion.interaction.interactionStatus || !!motion.parallax.status;
+			!!this.props.attributes['motion-status'] ||
+			!isEmpty(this.props.attributes['entrance-type']);
 
 		return {
 			[uniqueID]: {
-				...(motionStatus && { motion }),
+				...(motionStatus && {
+					...getGroupAttributes(this.props.attributes, [
+						'motion',
+						'entrance',
+					]),
+				}),
 			},
 		};
 	}
 
 	render() {
+		const { className, attributes, clientId, deviceType } = this.props;
 		const {
-			className,
-			attributes: {
-				uniqueID,
-				blockStyle,
-				defaultBlockStyle,
-				blockStyleBackground,
-				extraClassName,
-				content,
-				background,
-				motion,
-				display,
-			},
-			clientId,
-			deviceType,
-		} = this.props;
+			uniqueID,
+			blockStyle,
+			defaultBlockStyle,
+			blockStyleBackground,
+			extraClassName,
+		} = attributes;
+
 		const { isOpen } = this.state;
-		const highlight = { ...this.props.attributes.highlight };
-		const {
-			backgroundHighlight,
-			borderHighlight,
-			color1Highlight,
-			color2Highlight,
-		} = highlight;
 
 		const onClick = () => {
 			this.setState({ isOpen: !isOpen });
 		};
 
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
-
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-svg-icon-block',
-			getLastBreakpointAttribute(displayValue, 'display', deviceType) ===
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!backgroundHighlight && 'maxi-highlight--background',
-			!!borderHighlight && 'maxi-highlight--border',
-			!!color1Highlight && 'maxi-highlight--color1',
-			!!color2Highlight && 'maxi-highlight--color2',
+			!!attributes['background-highlight'] &&
+				'maxi-highlight--background',
+			!!attributes['border-highlight'] && 'maxi-highlight--border',
+			!!attributes['color1-highlight'] && 'maxi-highlight--color1',
+			!!attributes['color2-highlight'] && 'maxi-highlight--color2',
 			extraClassName,
 			uniqueID,
 			className
@@ -187,7 +106,7 @@ class edit extends MaxiBlock {
 			<Fragment>
 				<Inspector {...this.props} />
 				<Toolbar {...this.props} />
-				<MotionPreview motion={motion}>
+				<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
 					<__experimentalBlock
 						className={classes}
 						data-maxi_initial_block_class={defaultBlockStyle}
@@ -221,7 +140,7 @@ class edit extends MaxiBlock {
 									</div>
 								</Modal>
 							)}
-							{isEmpty(content) && (
+							{isEmpty(attributes.content) && (
 								<Fragment>
 									<div className='maxi-svg-icon-block__placeholder'>
 										<Button
@@ -237,7 +156,7 @@ class edit extends MaxiBlock {
 									</div>
 								</Fragment>
 							)}
-							{!isEmpty(content) && (
+							{!isEmpty(attributes.content) && (
 								<Fragment>
 									<Button
 										className='maxi-svg-icon-block__replace-icon'
@@ -245,10 +164,15 @@ class edit extends MaxiBlock {
 										icon={toolbarReplaceImage}
 									/>
 									<BackgroundDisplayer
-										background={background}
+										{...getGroupAttributes(attributes, [
+											'background',
+											'backgroundColor',
+											'backgroundHover',
+											'backgroundColorHover',
+										])}
 									/>
 									<RawHTML className='maxi-svg-icon-block__icon'>
-										{content}
+										{attributes.content}
 									</RawHTML>
 								</Fragment>
 							)}

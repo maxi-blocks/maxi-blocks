@@ -8,7 +8,7 @@ const { __ } = wp.i18n;
  */
 import ToolbarPopover from '../toolbar-popover';
 import DividerControl from '../../../divider-control';
-import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles & Icons

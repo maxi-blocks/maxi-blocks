@@ -4,6 +4,11 @@
 const { RangeControl } = wp.components;
 
 /**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
+/**
  * Component
  */
 const SvgStrokeWidthControl = props => {
@@ -12,7 +17,7 @@ const SvgStrokeWidthControl = props => {
 	return (
 		<RangeControl
 			value={stroke}
-			onChange={val => onChange(val)}
+			onChange={val => onChange(!isNil(val) ? val : defaultStroke)}
 			min={0.1}
 			max={10}
 			step={0.1}

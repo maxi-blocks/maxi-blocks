@@ -28,7 +28,6 @@ import {
 import {
 	getGroupAttributes,
 	getDefaultAttribute,
-	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 
 /**

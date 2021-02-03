@@ -7,6 +7,7 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 /**
  * Internal dependencies
  */
+import Inspector from './inspector';
 import {
 	MaxiBlock,
 	Toolbar,
@@ -15,7 +16,6 @@ import {
 	BackgroundDisplayer,
 	MotionPreview,
 } from '../../components';
-import Inspector from './inspector';
 import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
 import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getStyles from './styles';

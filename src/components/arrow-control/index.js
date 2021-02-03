@@ -10,7 +10,6 @@ const { RangeControl } = wp.components;
  */
 import SizeControl from '../size-control';
 import FancyRadioControl from '../fancy-radio-control';
-
 import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 

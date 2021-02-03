@@ -7,7 +7,7 @@ const { Button } = wp.components;
  * Internal dependencies
  */
 import BackgroundDisplayer from '../../components/background-displayer';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import { getGroupAttributes } from '../../extensions/styles/getGroupAttributes';
 
 /**
  * External dependencies

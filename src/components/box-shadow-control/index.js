@@ -16,7 +16,6 @@ import {
 	boxShadowBottom,
 	boxShadowSolid,
 } from './defaults';
-
 import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
 import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
 

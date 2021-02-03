@@ -93,7 +93,7 @@ const attributes = {
 	...newAttributes.backgroundVideoHover,
 	...newAttributes.backgroundGradientHover,
 	...newAttributes.backgroundSVGHover,
-	...newAttributes.size,
+	...newAttributes.imageSize,
 	...newAttributes.opacity,
 	...newAttributes.border,
 	...newAttributes.borderWidth,

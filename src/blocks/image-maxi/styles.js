@@ -117,7 +117,7 @@ const getImageFrontendObject = props => {
 			...getGroupAttributes(props, 'boxShadow'),
 		}),
 		imageSize: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
+			...getGroupAttributes(props, 'imageSize'),
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -180,7 +180,7 @@ const getImageBackendObject = props => {
 			general: {},
 		},
 		imageSize: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
+			...getGroupAttributes(props, 'imageSize'),
 		}),
 	};
 
@@ -207,7 +207,7 @@ const getFigcaptionObject = props => {
 const getResizeObject = props => {
 	const response = {
 		imageSize: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
+			...getGroupAttributes(props, 'imageSize'),
 		}),
 	};
 
@@ -281,7 +281,6 @@ const getStyles = props => {
 				'backgroundVideo',
 				'backgroundGradient',
 				'backgroundSVG',
-				'borderRadius',
 			]),
 		}),
 	};

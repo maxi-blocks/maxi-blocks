@@ -8,6 +8,7 @@ export { default as alignment } from './alignment';
 export { default as textAlignment } from './textAlignment';
 export { default as opacity } from './opacity';
 export { default as size } from './size';
+export { default as imageSize } from './imageSize';
 export { default as boxShadow } from './boxShadow';
 export { default as boxShadowHover } from './boxShadowHover';
 export { default as margin } from './margin';

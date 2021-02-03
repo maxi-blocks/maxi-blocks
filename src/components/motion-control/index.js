@@ -12,6 +12,7 @@ import AddTimeline from './addTimeline';
 import ShowTimeline from './showTimeline';
 import TimelineSettings from './timelineSettings';
 import TimelinePresets from './timelinePresets';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -29,73 +30,48 @@ import './editor.scss';
 const MotionControl = props => {
 	const { className, onChange } = props;
 
-	const motion = { ...props.motion };
-
-	const { interaction } = motion;
-
 	const classes = classnames('maxi-motion-control', className);
 
 	return (
 		<div className={classes}>
 			<FancyRadioControl
 				label={__('Use Motion Effects', 'maxi-blocks')}
-				selected={interaction.interactionStatus}
+				selected={+props['motion-status']}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => {
-					interaction.interactionStatus = Number(val);
-					onChange(motion);
-				}}
+				onChange={val => onChange({ 'motion-status': !!+val })}
 			/>
-			{!!interaction.interactionStatus && (
+			{props['motion-status'] && (
 				<Fragment>
 					<FancyRadioControl
 						label={__('Preview', 'maxi-blocks')}
-						selected={interaction.previewStatus}
+						selected={+props['motion-preview-status']}
 						options={[
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
-						onChange={val => {
-							interaction.previewStatus = Number(val);
-							onChange(motion);
-						}}
+						onChange={val =>
+							onChange({ 'motion-preview-status': !!+val })
+						}
 					/>
 					<TimelinePresets
-						interaction={interaction}
-						onChange={interaction => {
-							motion.interaction = interaction;
-
-							onChange(motion);
-						}}
+						{...getGroupAttributes(props, 'motion')}
+						onChange={obj => onChange(obj)}
 					/>
-
 					<AddTimeline
-						interaction={interaction}
-						onChange={interaction => {
-							motion.interaction = interaction;
-
-							onChange(motion);
-						}}
+						{...getGroupAttributes(props, 'motion')}
+						onChange={obj => onChange(obj)}
 					/>
-
 					<ShowTimeline
-						interaction={interaction}
-						onChange={interaction => {
-							motion.interaction = interaction;
-
-							onChange(motion);
-						}}
+						{...getGroupAttributes(props, 'motion')}
+						onChange={obj => onChange(obj)}
 					/>
-
 					<TimelineSettings
-						interaction={interaction}
-						onChange={interaction => {
-							motion.interaction = interaction;
-
-							onChange(motion);
+						{...getGroupAttributes(props, 'motion')}
+						onChange={obj => {
+							onChange(obj);
 						}}
 					/>
 				</Fragment>

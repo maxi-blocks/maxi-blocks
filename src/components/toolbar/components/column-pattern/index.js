@@ -8,8 +8,8 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import ColumnPattern from '../../../column-pattern/newColumnPattern';
-import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
+import ColumnPattern from '../../../column-pattern';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles & Icons

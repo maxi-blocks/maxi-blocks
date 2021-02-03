@@ -10,17 +10,15 @@ import { isEmpty, isNull } from 'lodash';
 const MotionPreview = props => {
 	const { className, children } = props;
 
-	const motion = { ...props.motion };
-
 	let motionPreview = {};
 
-	if (!isEmpty(motion.interaction.timeline)) {
-		const currentTime = motion.interaction.activeTimeline.time;
-		const currentIndex = motion.interaction.activeTimeline.index;
+	if (!isEmpty(props['motion-time-line'])) {
+		const currentTime = props['motion-active-time-line-time'];
+		const currentIndex = props['motion-active-time-line-index'];
 
 		if (!isNull(currentTime)) {
 			const currentItem =
-				motion.interaction.timeline[currentTime][currentIndex];
+				props['motion-time-line'][currentTime][currentIndex];
 
 			let transformStyle = '';
 
@@ -65,7 +63,7 @@ const MotionPreview = props => {
 			}
 
 			motionPreview = {
-				transformOrigin: `${motion.interaction.transformOrigin.xAxis} ${motion.interaction.transformOrigin.yAxis}`,
+				transformOrigin: `${props['motion-transform-origin-x']} ${props['motion-transform-origin-y']}`,
 				transformStyle: 'preserve-3d',
 				transform: transformStyle,
 				opacity:
@@ -83,7 +81,7 @@ const MotionPreview = props => {
 	return (
 		<div
 			className={classes}
-			style={motion.interaction.previewStatus ? motionPreview : null}
+			style={props['motion-preview-status'] ? motionPreview : null}
 		>
 			{children}
 		</div>

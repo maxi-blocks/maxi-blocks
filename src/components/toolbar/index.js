@@ -8,7 +8,7 @@ const { select } = wp.data;
 /**
  * Internal dependencies
  */
-import { getDefaultProp } from '../../utils';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -21,18 +21,23 @@ import classnames from 'classnames';
 import {
 	Alignment,
 	BackgroundColor,
-	SvgColor,
 	Border,
 	BoxShadow,
-	Mover,
-	ToolbarColumnPattern,
-	Divider,
-	DividerColor,
-	DividerAlignment,
-	Duplicate,
-	Link,
+	ColumnMover,
+	ColumnsHandlers,
+	ColumnSize,
 	Delete,
+	Divider,
+	DividerAlignment,
+	DividerColor,
+	Duplicate,
 	ImageSize,
+	Link,
+	Mover,
+	PaddingMargin,
+	RowSettings,
+	Size,
+	SvgColor,
 	TextBold,
 	TextColor,
 	TextItalic,
@@ -40,20 +45,15 @@ import {
 	TextLink,
 	TextListOptions,
 	TextOptions,
-	PaddingMargin,
-	Size,
 	ToggleBlock,
-	ColumnMover,
-	RowSettings,
-	ColumnSize,
-	ColumnsHandlers,
+	ToolbarColumnPattern,
 } from './components';
 
 /**
  * Styles
  */
 import './editor.scss';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * General
@@ -369,7 +369,10 @@ const MaxiToolbar = props => {
 							<ImageSize
 								{...getGroupAttributes(attributes, 'size')}
 								blockName={name}
-								defaultSize={getDefaultProp(clientId, 'size')}
+								defaultSize={getDefaultAttribute(
+									'size',
+									clientId
+								)}
 								onChangeSize={obj => setAttributes(obj)}
 								imageSize={imageSize}
 								onChangeImageSize={imageSize =>

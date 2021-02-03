@@ -7,8 +7,8 @@ const { SelectControl } = wp.components;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../utils';
 import AxisControl from '../axis-control';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -22,18 +22,17 @@ import { isEmpty } from 'lodash';
 const PositionControl = props => {
 	const { className, onChange, breakpoint = 'general' } = props;
 
-	const position = { ...props.position };
-	const defaultPosition = { ...props.defaultPosition };
-
 	const classes = classnames('maxi-position-control', className);
 
-	const cleanOptions = {
-		top: '',
-		right: '',
-		bottom: '',
-		left: '',
-		sync: false,
-		unit: '',
+	const getCleanOptions = () => {
+		return {
+			[`position-top-${breakpoint}`]: '',
+			[`position-right-${breakpoint}`]: '',
+			[`position-bottom-${breakpoint}`]: '',
+			[`position-left-${breakpoint}`]: '',
+			[`position-sync-${breakpoint}`]: false,
+			[`position-unit-${breakpoint}`]: '',
+		};
 	};
 
 	return (
@@ -46,24 +45,25 @@ const PositionControl = props => {
 					{ label: 'Absolute', value: 'absolute' },
 					{ label: 'Fixed', value: 'fixed' },
 				]}
-				value={getLastBreakpointValue(position, 'position', breakpoint)}
-				onChange={val => {
-					position[breakpoint].position = val;
-					if (isEmpty(val))
-						position.options[breakpoint] = cleanOptions;
-					onChange(position);
-				}}
+				value={getLastBreakpointAttribute(
+					'position',
+					breakpoint,
+					props
+				)}
+				onChange={val =>
+					onChange({
+						[`position-${breakpoint}`]: val,
+						...(isEmpty(val) && getCleanOptions()),
+					})
+				}
 			/>
 			{!isEmpty(
-				getLastBreakpointValue(position, 'position', breakpoint)
+				getLastBreakpointAttribute('position', breakpoint, props)
 			) && (
 				<AxisControl
-					values={position.options}
-					defaultValues={defaultPosition.options}
-					onChange={val => {
-						position.options = val;
-						onChange(position);
-					}}
+					{...props}
+					target='position'
+					onChange={obj => onChange(obj)}
 					breakpoint={breakpoint}
 					disableAuto
 				/>

@@ -8,8 +8,11 @@ const { useState } = wp.element;
 /**
  * Internal dependencies
  */
-import defaultTypography from '../../extensions/defaults/typography';
-import { getDefaultProp } from '../../utils';
+import { defaultTypography } from '../../extensions/text';
+import {
+	getGroupAttributes,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -26,7 +29,10 @@ import './editor.scss';
  * Component
  */
 const FontLevelControl = props => {
-	const { className, value, fontOptions, fontOptionsHover, onChange } = props;
+	const { className, value, onChange } = props;
+
+	const fontOptions = getGroupAttributes(props, 'typography');
+	const fontOptionsHover = getGroupAttributes(props, 'typographyHover');
 
 	const [state, setState] = useState({
 		lastLevel: value,
@@ -70,15 +76,14 @@ const FontLevelControl = props => {
 			fontOptResponse = {
 				...oldFontOptions,
 				...defaultTypography[value],
-				customFormats: { ...oldFontOptions.customFormats },
 			};
-			fontOptResponseHover = getDefaultProp(null, 'typographyHover');
+			fontOptResponseHover = getDefaultAttribute('typographyHover');
 		}
 
 		onChange({
 			textLevel: value,
-			typography: fontOptResponse,
-			typographyHover: fontOptResponseHover,
+			...fontOptResponse,
+			...fontOptResponseHover,
 		});
 	};
 

@@ -16,7 +16,6 @@ import {
 	getTemplates,
 	getTemplateObject,
 } from '../../extensions/defaults/column-templates';
-
 import SizeControl from '../size-control';
 import FancyRadioControl from '../fancy-radio-control';
 
@@ -196,7 +195,9 @@ const ColumnPatternsInspector = props => {
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
 
 		columnsBlockObjects.forEach(columnObject => {
-			columnsSizes.push(columnObject[`column-size-${breakpoint}`]);
+			columnsSizes.push(
+				columnObject.attributes[`column-size-${breakpoint}`]
+			);
 		});
 
 		return columnsSizes;
@@ -250,13 +251,12 @@ const ColumnPatternsInspector = props => {
 		const newColumnsSizes = [];
 		const columnsPositions = getColumnsPositions(sizes);
 
-		const gap = rowPattern.general.removeColumnGap ? 0 : 2.5;
+		const gap = props.removeColumnGap ? 2.5 : 0;
 
 		sizes.forEach((column, i) => {
 			if (columnsPositions[i].columnsNumber > 1) {
 				const numberOfGaps = columnsPositions[i].columnsNumber - 1;
 				const total = 100 - gap * numberOfGaps;
-
 				newColumnsSizes.push(sizes[i] * total);
 			}
 
@@ -288,51 +288,35 @@ const ColumnPatternsInspector = props => {
 		const columnsPositions = getColumnsPositions(sizes);
 
 		columnsBlockObjects.forEach((column, j) => {
-			const columnClientId = column.clientId;
 			const columnAttributes = column.attributes;
 			const columnUniqueID = columnAttributes.uniqueID;
 
-			const newColumnSize = columnAttributes.columnSize;
-			const newColumnMargin = columnAttributes.margin;
-
-			newColumnSize[breakpoint].size = sizesWithGaps[j];
+			columnAttributes[`column-size-${breakpoint}`] = sizesWithGaps[j];
 
 			const columnResizer =
 				document.querySelector(
 					`.maxi-column-block__resizer__${columnUniqueID}`
 				) !== null;
 
-			if (columnsPositions[j].rowNumber > 1) {
-				newColumnMargin[breakpoint]['margin-top'] = 2;
-				newColumnMargin[breakpoint].unit = 'em';
-			}
 			if (columnResizer)
 				document.querySelector(
 					`.maxi-column-block__resizer__${columnUniqueID}`
 				).style.width = sizesWithGaps[j];
 
-			if (columnsPositions[j].rowNumber === 1) {
-				newColumnMargin[breakpoint]['margin-top'] = 0;
-				newColumnMargin[breakpoint].unit = '';
-			}
-
 			if (columnsPositions[j].rowNumber > 1) {
-				newColumnMargin[breakpoint]['margin-top'] = 1.5;
-				newColumnMargin[breakpoint].unit = 'em';
+				columnAttributes[`margin-top-${breakpoint}`] = 1.5;
+				columnAttributes[`margin-unit-${breakpoint}`] = 'em';
 			}
 
-			if (rowPattern.general.removeColumnGap === 1) {
-				newColumnMargin.m['margin-top'] = 0;
-				newColumnMargin.m.unit = '';
+			if (columnsPositions[j].rowNumber === 1) {
+				columnAttributes['margin-top-m'] = 0;
+				columnAttributes['margin-unit-m'] = '';
 			} else {
-				newColumnMargin.m['margin-top'] = 1.5;
-				newColumnMargin.m.unit = 'em';
+				columnAttributes['margin-top-m'] = 1.5;
+				columnAttributes['margin-unit-m'] = 'em';
 			}
 
-			columnAttributes.columnSize = newColumnSize;
-			columnAttributes.margin = newColumnMargin;
-
-			updateBlockAttributes(columnClientId, columnAttributes);
+			updateBlockAttributes(column.clientId, columnAttributes);
 		});
 	};
 
@@ -351,7 +335,7 @@ const ColumnPatternsInspector = props => {
 					defaultValue={numCol}
 					onChangeValue={numCol => setNumCol(numCol)}
 					min={1}
-					max={8}
+					max={6}
 					disableReset
 				/>
 			)}
@@ -370,7 +354,6 @@ const ColumnPatternsInspector = props => {
 							onClick={() => {
 								if (breakpoint === 'general') {
 									loadTemplate(template.name);
-									updateTemplate(template.name);
 								} else {
 									updateTemplate(template.name);
 								}
@@ -388,27 +371,24 @@ const ColumnPatternsInspector = props => {
 					);
 				})}
 			</div>
-			<div className='components-column-pattern__gap'>
-				{numCol !== 1 && breakpoint === 'general' && (
-					<FancyRadioControl
-						label={__('Remove Gap', 'maxi-blocks')}
-						selected={
-							rowPattern.general.removeColumnGap
-								? rowPattern.general.removeColumnGap
-								: 0
-						}
-						options={[
-							{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
-						onChange={value => {
-							rowPattern.general.removeColumnGap = Number(value);
-							onChange(rowPattern);
-							updateTemplate(rowPattern.general.rowPattern);
-						}}
-					/>
-				)}
-			</div>
+			{!toolbar && (
+				<div className='components-column-pattern__gap'>
+					{numCol !== 1 && breakpoint === 'general' && (
+						<FancyRadioControl
+							label={__('Remove Gap', 'maxi-blocks')}
+							selected={+props.removeColumnGap}
+							options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 1 },
+								{ label: __('No', 'maxi-blocks'), value: 0 },
+							]}
+							onChange={val => {
+								onChange({ removeColumnGap: !!+val });
+								updateTemplate(props['row-pattern-general']);
+							}}
+						/>
+					)}
+				</div>
+			)}
 		</div>
 	);
 };

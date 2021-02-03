@@ -8,7 +8,7 @@ const { __ } = wp.i18n;
  */
 import FontLevelControl from '../../../font-level-control';
 import ToolbarPopover from '../toolbar-popover';
-import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles and icons

@@ -11,30 +11,29 @@ const { Fragment } = wp.element;
  */
 import {
 	AccordionControl,
+	AlignmentControl,
+	AxisControl,
+	BackgroundControl,
 	BlockStylesControl,
-	DefaultStylesControl,
-	SettingTabsControl,
-	FancyRadioControl,
+	BorderControl,
+	BoxShadowControl,
 	CustomLabel,
+	DefaultStylesControl,
+	DisplayControl,
+	EntranceAnimationControl,
+	FancyRadioControl,
+	FontIconControl,
+	FullSizeControl,
+	MotionControl,
+	PositionControl,
+	ResponsiveControl,
+	SettingTabsControl,
+	TransformControl,
+	TypographyControl,
+	ZIndexControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
-
-import BorderControl from '../../components/border-control/newBorderControl';
-import FullSizeControl from '../../components/full-size-control/newFullSize';
-import BoxShadowControl from '../../components/box-shadow-control/newBoxShadowControl';
-import AxisControl from '../../components/axis-control/newAxisControl';
-import BackgroundControl from '../../components/new-background-control';
-import MotionControl from '../../components/new-motion-control';
-import EntranceAnimationControl from '../../components/entrance-animation-control/newEntranceControl';
-import TransformControl from '../../components/new-transform-control';
-import DisplayControl from '../../components/display-control/newDisplayControl';
-import PositionControl from '../../components/position-control/newPositionControl';
-import ResponsiveControl from '../../components/responsive-control/newResponsiveControl';
-import ZIndexControl from '../../components/zindex-control/newIndexControl';
-import TypographyControl from '../../components/typography-control/newTypographyControl';
-import AlignmentControl from '../../components/alignment-control/newAlignmentControl';
-import FontIconControl from '../../components/font-icon-control/newFontIconControl';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Icons

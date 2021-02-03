@@ -1,137 +1,67 @@
 /**
- * WordPress dependencies
- */
-const { __ } = wp.i18n;
-
-/**
  * Layers
  */
 export const colorOptions = {
-	title: __('Background Colour', 'maxi-blocks'),
 	type: 'color',
-	options: {
-		activeColor: '',
-		color: '',
-		clipPath: '',
-	},
+	'background-color': '',
+	'background-color-clip-path': '',
 };
 
 export const imageOptions = {
-	title: __('Background Image', 'maxi-blocks'),
 	type: 'image',
-	options: {
-		items: [
-			{
-				imageData: {
-					mediaID: '',
-					mediaURL: '',
-					width: 100,
-					widthUnit: '%',
-					height: 100,
-					heightUnit: '%',
-					cropOptions: {
-						image: {
-							source_url: '',
-							width: '',
-							height: '',
-						},
-						crop: {
-							unit: '',
-							x: 0,
-							y: 0,
-							width: 0,
-							height: 0,
-							scale: 100,
-						},
-					},
-				},
-				sizeSettings: {
-					size: '',
-					widthUnit: '',
-					width: '',
-					heightUnit: '',
-					height: '',
-				},
-				repeat: 'no-repeat',
-				positionOptions: {
-					position: 'center center',
-					widthUnit: '%',
-					width: 0,
-					heightUnit: '%',
-					height: 0,
-				},
-				origin: 'padding-box',
-				clip: 'border-box',
-				attachment: 'scroll',
-			},
-		],
-		clipPath: '',
-		opacity: {
-			label: 'Opacity',
-			general: {
-				opacity: 1,
-			},
-		},
-	},
+	'background-image-mediaID': '',
+	'background-image-mediaURL': '',
+	'background-image-size': '',
+	'background-image-width': 100,
+	'background-image-width-unit': '%',
+	'background-image-height': 100,
+	'background-image-height-unit': '%',
+	'background-image-cropOptions': {},
+	'background-image-repeat': 'no-repeat',
+	'background-image-position': 'center center',
+	'background-image-position-width-unit': '%',
+	'background-image-position-width': 0,
+	'background-image-position-height-unit': '%',
+	'background-image-position-height': 0,
+	'background-image-origin': 'padding-box',
+	'background-image-clip': 'border-box',
+	'background-image-attachment': 'scroll',
+	'background-image-clip-path': '',
+	'background-image-opacity': 1,
 };
 
 export const videoOptions = {
-	title: __('Background Video', 'maxi-blocks'),
 	type: 'video',
-	options: {
-		mediaID: '',
-		mediaURL: '',
-		startTime: '',
-		endTime: '',
-		loop: 0,
-		clipPath: '',
-		fallbackID: '',
-		fallbackURL: '',
-		playOnMobile: 0,
-		opacity: {
-			label: 'Opacity',
-			general: {
-				opacity: 1,
-			},
-		},
-	},
+	'background-video-mediaID': null,
+	'background-video-mediaURL': '',
+	'background-video-startTime': '',
+	'background-video-endTime': '',
+	'background-video-loop': false,
+	'background-video-clipPath': '',
+	'background-video-fallbackID': null,
+	'background-video-fallbackURL': '',
+	'background-video-playOnMobile': false,
+	'background-video-opacity': 1,
 };
 
 export const gradientOptions = {
-	title: __('Background gradient', 'maxi-blocks'),
 	type: 'gradient',
-	options: {
-		gradient: '',
-		gradientAboveBackground: false,
-		clipPath: '',
-		gradientOpacity: {
-			opacity: {
-				label: 'Opacity',
-				general: {
-					opacity: 1,
-				},
-			},
-		},
-	},
+	'background-gradient': '',
+	'background-gradient-opacity': 1,
+	'background-gradient-clip-path': '',
 };
 
 export const SVGOptions = {
-	title: __('Background Shape', 'maxi-blocks'),
 	type: 'shape',
-	options: {
-		SVGElement: '',
-		SVGData: '{}',
-		SVGMediaID: '',
-		SVGMediaURL: '',
-		position: {
-			label: 'Background SVG position',
-			general: {
-				topUnit: '%',
-				top: '',
-				leftUnit: '%',
-				left: '',
-			},
-		},
-		size: '',
-	},
+	'background-svg-SVGCurrentElement': '',
+	'background-svg-SVGElement': '',
+	'background-svg-SVGData': {},
+	'background-svg-SVGMediaID': null,
+	'background-svg-SVGMediaURL': '',
+	'background-svg-top--unit': '%',
+	'background-svg-top': null,
+	'background-svg-left--unit': '%',
+	'background-svg-left': null,
+	'background-svg-size': 50,
+	'background-svg-size--unit': '%',
 };

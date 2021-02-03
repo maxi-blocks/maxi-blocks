@@ -15,86 +15,148 @@ import { isEmpty, isNil } from 'lodash';
  * @param {Object} background BackgroundControl related object
  *
  */
-export const getColorBackgroundObject = ({ isHover = false, ...props }) => {
+export const getColorBackgroundObject = ({
+	isHover = false,
+	prefix = '',
+	...props
+}) => {
 	const response = {
 		label: 'Background Color',
 		general: {},
 	};
 
-	if (!isEmpty(props[`background-color${isHover ? '-hover' : ''}`]))
+	if (!isEmpty(props[`${prefix}background-color${isHover ? '-hover' : ''}`]))
 		response.general['background-color'] =
-			props[`background-color${isHover ? '-hover' : ''}`];
-	if (!isEmpty(props[`background-color-clip-path${isHover ? '-hover' : ''}`]))
-		response.general['clip-path'] =
-			props[`background-color-clip-path${isHover ? '-hover' : ''}`];
-
-	return response;
-};
-
-export const getGradientBackgroundObject = ({ isHover = false, ...props }) => {
-	const response = {
-		label: 'Background Color',
-		general: {},
-	};
-
-	if (!isNil(props[`background-gradient-opacity${isHover ? '-hover' : ''}`]))
-		response.general.opacity =
-			props[`background-gradient-opacity${isHover ? '-hover' : ''}`];
-	if (!isEmpty(props[`background-gradient${isHover ? '-hover' : ''}`]))
-		response.general.background =
-			props[`background-gradient${isHover ? '-hover' : ''}`];
+			props[`${prefix}background-color${isHover ? '-hover' : ''}`];
 	if (
 		!isEmpty(
-			props[`background-gradient-clip-path${isHover ? '-hover' : ''}`]
+			props[
+				`${prefix}background-color-clip-path${isHover ? '-hover' : ''}`
+			]
 		)
 	)
 		response.general['clip-path'] =
-			props[`background-gradient-clip-path${isHover ? '-hover' : ''}`];
+			props[
+				`${prefix}background-color-clip-path${isHover ? '-hover' : ''}`
+			];
 
 	return response;
 };
 
-export const getImageBackgroundObject = ({ isHover = false, ...props }) => {
+export const getGradientBackgroundObject = ({
+	isHover = false,
+	prefix = '',
+	...props
+}) => {
+	const response = {
+		label: 'Background Color',
+		general: {},
+	};
+
+	if (
+		!isNil(
+			props[
+				`${prefix}background-gradient-opacity${isHover ? '-hover' : ''}`
+			]
+		)
+	)
+		response.general.opacity =
+			props[
+				`${prefix}background-gradient-opacity${isHover ? '-hover' : ''}`
+			];
+	if (
+		!isEmpty(
+			props[`${prefix}background-gradient${isHover ? '-hover' : ''}`]
+		)
+	)
+		response.general.background =
+			props[`${prefix}background-gradient${isHover ? '-hover' : ''}`];
+	if (
+		!isEmpty(
+			props[
+				`${prefix}background-gradient-clip-path${
+					isHover ? '-hover' : ''
+				}`
+			]
+		)
+	)
+		response.general['clip-path'] =
+			props[
+				`${prefix}background-gradient-clip-path${
+					isHover ? '-hover' : ''
+				}`
+			];
+
+	return response;
+};
+
+export const getImageBackgroundObject = ({
+	isHover = false,
+	prefix = '',
+	...props
+}) => {
 	const response = {
 		label: 'Background Image',
 		general: {},
 	};
 
-	if (isEmpty(props[`background-image-mediaURL${isHover ? '-hover' : ''}`]))
+	if (
+		isEmpty(
+			props[
+				`${prefix}background-image-mediaURL${isHover ? '-hover' : ''}`
+			]
+		)
+	)
 		return {};
 
 	// Image
 	if (
-		props[`background-image-size${isHover ? '-hover' : ''}`] === 'custom' &&
+		props[`${prefix}background-image-size${isHover ? '-hover' : ''}`] ===
+			'custom' &&
 		!isNil(props['background-image-crop'])
 	) {
 		response.general[
 			'background-image'
 		] = `url('${props['background-image-crop'].image.source_url}')`;
 	} else if (
-		(props[`background-image-size${isHover ? '-hover' : ''}`] ===
+		(props[`${prefix}background-image-size${isHover ? '-hover' : ''}`] ===
 			'custom' &&
 			isNil(props['background-image-crop'])) ||
-		(props[`background-image-size${isHover ? '-hover' : ''}`] !==
+		(props[`${prefix}background-image-size${isHover ? '-hover' : ''}`] !==
 			'custom' &&
 			!isNil(
-				props[`background-image-mediaURL${isHover ? '-hover' : ''}`]
+				props[
+					`${prefix}background-image-mediaURL${
+						isHover ? '-hover' : ''
+					}`
+				]
 			))
 	) {
 		response.general['background-image'] = `url('${
-			props[`background-image-mediaURL${isHover ? '-hover' : ''}`]
+			props[
+				`${prefix}background-image-mediaURL${isHover ? '-hover' : ''}`
+			]
 		}')`;
 	}
 
 	// Size
-	if (props[`background-image-size${isHover ? '-hover' : ''}`] !== 'custom') {
+	if (
+		props[`${prefix}background-image-size${isHover ? '-hover' : ''}`] !==
+		'custom'
+	) {
 		if (!isNil(response.general['background-size']))
 			response.general['background-size'] = `${
 				response.general['background-size']
-			},${props[`background-image-size${isHover ? '-hover' : ''}`]}`;
+			},${
+				props[
+					`${prefix}background-image-size${isHover ? '-hover' : ''}`
+				]
+			}`;
 		else
 			response.general['background-size'] =
-				props[`background-image-size${isHover ? '-hover' : ''}`];
+				props[
+					`${prefix}background-image-size${isHover ? '-hover' : ''}`
+				];
 	} else if (!isNil(response.general['background-size']))
 		response.general[
 			'background-size'
@@ -102,21 +164,28 @@ export const getImageBackgroundObject = ({ isHover = false, ...props }) => {
 	else response.general['background-size'] = 'cover';
 
 	// Repeat
-	if (props[`background-image-repeat${isHover ? '-hover' : ''}`]) {
+	if (props[`${prefix}background-image-repeat${isHover ? '-hover' : ''}`]) {
 		response.general['background-repeat'] =
-			props[`background-image-repeat${isHover ? '-hover' : ''}`];
+			props[`${prefix}background-image-repeat${isHover ? '-hover' : ''}`];
 	}
 
 	// Position
 	if (
-		props[`background-image-position${isHover ? '-hover' : ''}`] !==
-		'custom'
+		props[
+			`${prefix}background-image-position${isHover ? '-hover' : ''}`
+		] !== 'custom'
 	)
 		response.general['background-position'] =
-			props[`background-image-position${isHover ? '-hover' : ''}`];
+			props[
+				`${prefix}background-image-position${isHover ? '-hover' : ''}`
+			];
 	else
 		response.general['background-position'] = `${
-			props[`background-image-position-width${isHover ? '-hover' : ''}`] +
+			props[
+				`${prefix}background-image-position-width${
+					isHover ? '-hover' : ''
+				}`
+			] +
 			props[
 				`background-image-position-width-unit${isHover ? '-hover' : ''}`
 			]
@@ -131,59 +200,109 @@ export const getImageBackgroundObject = ({ isHover = false, ...props }) => {
 			]
 		}`;
 	// Origin
-	if (props[`background-image-origin${isHover ? '-hover' : ''}`]) {
+	if (props[`${prefix}background-image-origin${isHover ? '-hover' : ''}`]) {
 		response.general['background-origin'] =
-			props[`background-image-origin${isHover ? '-hover' : ''}`];
+			props[`${prefix}background-image-origin${isHover ? '-hover' : ''}`];
 	}
 	// Clip
-	if (props[`background-image-clip${isHover ? '-hover' : ''}`]) {
+	if (props[`${prefix}background-image-clip${isHover ? '-hover' : ''}`]) {
 		response.general['background-clip'] =
-			props[`background-image-clip${isHover ? '-hover' : ''}`];
+			props[`${prefix}background-image-clip${isHover ? '-hover' : ''}`];
 	}
 	// Attachment
-	if (props[`background-image-attachment${isHover ? '-hover' : ''}`]) {
+	if (
+		props[`${prefix}background-image-attachment${isHover ? '-hover' : ''}`]
+	) {
 		if (!isNil(response.general['background-attachment']))
 			response.general['background-attachment'] = `${
 				response.general['background-attachment']
 			},${
-				props[`background-image-attachment${isHover ? '-hover' : ''}`]
+				props[
+					`${prefix}background-image-attachment${
+						isHover ? '-hover' : ''
+					}`
+				]
 			}`;
 		else
 			response.general['background-attachment'] =
-				props[`background-image-attachment${isHover ? '-hover' : ''}`];
+				props[
+					`${prefix}background-image-attachment${
+						isHover ? '-hover' : ''
+					}`
+				];
 	}
-	if (!isNil(props[`background-image-opacity${isHover ? '-hover' : ''}`]))
+	if (
+		!isNil(
+			props[`${prefix}background-image-opacity${isHover ? '-hover' : ''}`]
+		)
+	)
 		response.general.opacity =
-			props[`background-image-opacity${isHover ? '-hover' : ''}`];
+			props[
+				`${prefix}background-image-opacity${isHover ? '-hover' : ''}`
+			];
 
-	if (!isEmpty(props[`background-image-clip-path${isHover ? '-hover' : ''}`]))
+	if (
+		!isEmpty(
+			props[
+				`${prefix}background-image-clip-path${isHover ? '-hover' : ''}`
+			]
+		)
+	)
 		response.general['clip-path'] =
-			props[`background-image-clip-path${isHover ? '-hover' : ''}`];
+			props[
+				`${prefix}background-image-clip-path${isHover ? '-hover' : ''}`
+			];
 
 	return response;
 };
 
-export const getVideoBackgroundObject = ({ isHover = false, ...props }) => {
+export const getVideoBackgroundObject = ({
+	isHover = false,
+	prefix = '',
+	...props
+}) => {
 	const response = {
 		label: 'Video Background',
 		general: {},
 	};
 
-	if (!isNil(props[`background-video-opacity${isHover ? '-hover' : ''}`]))
+	if (
+		!isNil(
+			props[`${prefix}background-video-opacity${isHover ? '-hover' : ''}`]
+		)
+	)
 		response.general.opacity =
-			props[`background-video-opacity${isHover ? '-hover' : ''}`];
-
-	if (!isEmpty(props[`background-video-clip-path${isHover ? '-hover' : ''}`]))
-		response.general['clip-path'] =
-			props[`background-video-clip-path${isHover ? '-hover' : ''}`];
+			props[
+				`${prefix}background-video-opacity${isHover ? '-hover' : ''}`
+			];
 
 	if (
 		!isEmpty(
-			props[`background-video-fallbackURL${isHover ? '-hover' : ''}`]
+			props[
+				`${prefix}background-video-clip-path${isHover ? '-hover' : ''}`
+			]
+		)
+	)
+		response.general['clip-path'] =
+			props[
+				`${prefix}background-video-clip-path${isHover ? '-hover' : ''}`
+			];
+
+	if (
+		!isEmpty(
+			props[
+				`${prefix}background-video-fallbackURL${
+					isHover ? '-hover' : ''
+				}`
+			]
 		)
 	) {
 		response.general.background = `url(${
-			props[`background-video-fallbackURL${isHover ? '-hover' : ''}`]
+			props[
+				`${prefix}background-video-fallbackURL${
+					isHover ? '-hover' : ''
+				}`
+			]
 		})`;
 		response.general['background-size'] = 'cover';
 	}
@@ -221,7 +340,13 @@ const getSVGBackgroundObject = SVGOptions => {
 	return response;
 };
 
-const setBackgroundLayers = (response, layers, target, isHover = false) => {
+const setBackgroundLayers = ({
+	response,
+	layers,
+	target,
+	isHover = false,
+	prefix = '',
+}) => {
 	layers.forEach(layer => {
 		const layerTarget = `${target}${
 			isHover ? ':hover' : ''
@@ -234,8 +359,8 @@ const setBackgroundLayers = (response, layers, target, isHover = false) => {
 						backgroundColor: {
 							...getColorBackgroundObject(
 								getGroupAttributes(layer, 'backgroundColor')
-								// isHover
 							),
+							prefix,
 						},
 					},
 				});
@@ -247,6 +372,7 @@ const setBackgroundLayers = (response, layers, target, isHover = false) => {
 							...getColorBackgroundObject(
 								getGroupAttributes(layer, 'backgroundGradient')
 							),
+							prefix,
 						},
 					},
 				});
@@ -258,6 +384,7 @@ const setBackgroundLayers = (response, layers, target, isHover = false) => {
 							...getImageBackgroundObject(
 								getGroupAttributes(layer, 'backgroundImage')
 							),
+							prefix,
 						},
 					},
 				});
@@ -269,6 +396,7 @@ const setBackgroundLayers = (response, layers, target, isHover = false) => {
 							...getVideoBackgroundObject(
 								getGroupAttributes(layer, 'backgroundVideo')
 							),
+							prefix,
 						},
 					},
 				});
@@ -280,6 +408,7 @@ const setBackgroundLayers = (response, layers, target, isHover = false) => {
 							...getSVGWrapperBackgroundObject(
 								getGroupAttributes(layer, 'backgroundSVG')
 							),
+							prefix,
 						},
 					},
 					[`${layerTarget} svg`]: {
@@ -287,6 +416,7 @@ const setBackgroundLayers = (response, layers, target, isHover = false) => {
 							...getSVGBackgroundObject(
 								getGroupAttributes(layer, 'backgroundSVG')
 							),
+							prefix,
 						},
 					},
 				});
@@ -299,27 +429,54 @@ const setBackgroundLayers = (response, layers, target, isHover = false) => {
 	return response;
 };
 
-const getBackgroundStyles = ({ target, isHover = false, ...props }) => {
+const getBackgroundStyles = ({
+	target,
+	isHover = false,
+	prefix = '',
+	groupAttrNames = {
+		background: 'background',
+		backgroundColor: 'backgroundColor',
+		backgroundImage: 'backgroundImage',
+		backgroundVideo: 'backgroundVideo',
+		backgroundGradient: 'backgroundGradient',
+		backgroundSVG: 'backgroundSVG',
+		borderRadius: 'borderRadius',
+	},
+	...props
+}) => {
 	let response = {
 		[`${target}${isHover ? ':hover' : ''} > .maxi-background-displayer`]: {
 			border: getBorderStyles({
-				...getGroupAttributes(props, 'borderRadius', isHover),
+				...getGroupAttributes(
+					props,
+					groupAttrNames.borderRadius,
+					isHover
+				),
 			}),
 		},
 	};
 
-	switch (props[`background-active-media${isHover ? '-hover' : ''}`]) {
+	switch (
+		props[`${prefix}background-active-media${isHover ? '-hover' : ''}`]
+	) {
 		case 'layers':
 			if (
-				props[`background-layers${isHover ? '-hover' : ''}`] &&
-				props[`background-layers${isHover ? '-hover' : ''}`].length > 0
+				props[`${prefix}background-layers${isHover ? '-hover' : ''}`] &&
+				props[`${prefix}background-layers${isHover ? '-hover' : ''}`]
+					.length > 0
 			) {
-				response = setBackgroundLayers(
+				response = setBackgroundLayers({
 					response,
-					props[`background-layers${isHover ? '-hover' : ''}`],
+					layers:
+						props[
+							`${prefix}background-layers${
+								isHover ? '-hover' : ''
+							}`
+						],
 					target,
-					isHover
-				);
+					isHover,
+					prefix,
+				});
 			}
 			break;
 		case 'color':
@@ -332,10 +489,11 @@ const getBackgroundStyles = ({ target, isHover = false, ...props }) => {
 					...getColorBackgroundObject({
 						...getGroupAttributes(
 							props,
-							'backgroundColor',
+							groupAttrNames.backgroundColor,
 							isHover
 						),
 						isHover,
+						prefix,
 					}),
 				},
 			};
@@ -347,10 +505,15 @@ const getBackgroundStyles = ({ target, isHover = false, ...props }) => {
 				} > .maxi-background-displayer .maxi-background-displayer__images`
 			] = {
 				imageBackground: {
-					...getImageBackgroundObject(
-						getGroupAttributes(props, 'backgroundImage', isHover),
-						isHover
-					),
+					...getImageBackgroundObject({
+						...getGroupAttributes(
+							props,
+							groupAttrNames.backgroundImage,
+							isHover
+						),
+						isHover,
+						prefix,
+					}),
 				},
 			};
 			break;
@@ -361,10 +524,15 @@ const getBackgroundStyles = ({ target, isHover = false, ...props }) => {
 				} > .maxi-background-displayer .maxi-background-displayer__video-player`
 			] = {
 				videoBackground: {
-					...getVideoBackgroundObject(
-						getGroupAttributes(props, 'backgroundVideo', isHover),
-						isHover
-					),
+					...getVideoBackgroundObject({
+						...getGroupAttributes(
+							props,
+							groupAttrNames.backgroundVideo,
+							isHover
+						),
+						isHover,
+						prefix,
+					}),
 				},
 			};
 			break;
@@ -375,14 +543,15 @@ const getBackgroundStyles = ({ target, isHover = false, ...props }) => {
 				} > .maxi-background-displayer .maxi-background-displayer__color`
 			] = {
 				background: {
-					...getGradientBackgroundObject(
-						getGroupAttributes(
+					...getGradientBackgroundObject({
+						...getGroupAttributes(
 							props,
-							'backgroundGradient',
+							groupAttrNames.backgroundGradient,
 							isHover
 						),
-						isHover
-					),
+						isHover,
+						prefix,
+					}),
 				},
 			};
 			break;
@@ -393,10 +562,15 @@ const getBackgroundStyles = ({ target, isHover = false, ...props }) => {
 				} > .maxi-background-displayer .maxi-background-displayer__svg`
 			] = {
 				SVGBackground: {
-					...getSVGWrapperBackgroundObject(
-						getGroupAttributes(props, 'backgroundSVG', isHover),
-						isHover
-					),
+					...getSVGWrapperBackgroundObject({
+						...getGroupAttributes(
+							props,
+							groupAttrNames.backgroundSVG,
+							isHover
+						),
+						isHover,
+						prefix,
+					}),
 				},
 			};
 			response[
@@ -405,10 +579,15 @@ const getBackgroundStyles = ({ target, isHover = false, ...props }) => {
 				} > .maxi-background-displayer .maxi-background-displayer__svg svg`
 			] = {
 				SVGBackground: {
-					...getSVGBackgroundObject(
-						getGroupAttributes(props, 'backgroundSVG', isHover),
-						isHover
-					),
+					...getSVGBackgroundObject({
+						...getGroupAttributes(
+							props,
+							groupAttrNames.backgroundSVG,
+							isHover
+						),
+						isHover,
+						prefix,
+					}),
 				},
 			};
 			break;

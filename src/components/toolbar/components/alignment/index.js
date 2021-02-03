@@ -6,9 +6,10 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../../../utils';
-import AlignmentControl from '../../../alignment-control';
+import getLastBreakpointValue from '../../../../extensions/styles/getLastBreakpointValue';
+import AlignmentControl from '../../../alignment-control/newAlignmentControl';
 import ToolbarPopover from '../toolbar-popover';
+import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
 
 /**
  * Styles & Icons
@@ -32,15 +33,17 @@ const ALLOWED_BLOCKS = [
 	'maxi-blocks/font-icon-maxi',
 ];
 
+const TEXT_BLOCKS = ['maxi-blocks/text-maxi'];
+
 const Alignment = props => {
 	const { blockName, onChange, breakpoint } = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
-	const alignment = { ...props.alignment };
+	const isText = TEXT_BLOCKS.includes(blockName);
 
-	const alignIcon = CurrentAlignIcon => {
-		switch (CurrentAlignIcon) {
+	const alignIcon = currentAlignIcon => {
+		switch (currentAlignIcon) {
 			case 'left':
 				return alignLeft;
 			case 'right':
@@ -59,19 +62,22 @@ const Alignment = props => {
 			className='toolbar-item__alignment'
 			tooltip={__('Alignment', 'maxi-blocks')}
 			icon={alignIcon(
-				getLastBreakpointValue(alignment, 'alignment', breakpoint)
+				getLastBreakpointValue(
+					isText ? 'text-alignment' : 'alignment',
+					breakpoint,
+					props
+				)
 			)}
 			content={
 				<AlignmentControl
-					alignment={alignment}
-					onChange={alignment => onChange(alignment)}
-					disableJustify={
-						!(
-							blockName === 'maxi-blocks/text-maxi' ||
-							blockName === 'maxi-blocks/button-maxi'
-						)
-					}
+					{...getGroupAttributes(
+						props,
+						isText ? 'textAlignment' : 'alignment'
+					)}
+					onChange={obj => onChange(obj)}
+					disableJustify={!isText}
 					breakpoint={breakpoint}
+					type={isText && 'text'}
 				/>
 			}
 		/>

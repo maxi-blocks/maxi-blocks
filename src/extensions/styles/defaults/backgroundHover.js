@@ -7,7 +7,7 @@ import {
 	backgroundSVG,
 } from './background';
 
-export const backgroundHover = (function backgroundHoverGenerator() {
+export const backgroundHover = (() => {
 	const response = {
 		'background-status-hover': {
 			type: 'boolean',
@@ -28,7 +28,7 @@ export const backgroundHover = (function backgroundHoverGenerator() {
 	return response;
 })();
 
-export const backgroundColorHover = (function backgroundHoverGenerator() {
+export const backgroundColorHover = (() => {
 	const response = {};
 
 	Object.keys(backgroundColor).forEach(key => {
@@ -43,7 +43,7 @@ export const backgroundColorHover = (function backgroundHoverGenerator() {
 	return response;
 })();
 
-export const backgroundImageHover = (function backgroundHoverGenerator() {
+export const backgroundImageHover = (() => {
 	const response = {};
 
 	Object.keys(backgroundImage).forEach(key => {
@@ -58,7 +58,7 @@ export const backgroundImageHover = (function backgroundHoverGenerator() {
 	return response;
 })();
 
-export const backgroundVideoHover = (function backgroundHoverGenerator() {
+export const backgroundVideoHover = (() => {
 	const response = {};
 
 	Object.keys(backgroundVideo).forEach(key => {
@@ -73,7 +73,7 @@ export const backgroundVideoHover = (function backgroundHoverGenerator() {
 	return response;
 })();
 
-export const backgroundGradientHover = (function backgroundHoverGenerator() {
+export const backgroundGradientHover = (() => {
 	const response = {};
 
 	Object.keys(backgroundGradient).forEach(key => {
@@ -88,7 +88,7 @@ export const backgroundGradientHover = (function backgroundHoverGenerator() {
 	return response;
 })();
 
-export const backgroundSVGHover = (function backgroundHoverGenerator() {
+export const backgroundSVGHover = (() => {
 	const response = {};
 
 	Object.keys(backgroundSVG).forEach(key => {

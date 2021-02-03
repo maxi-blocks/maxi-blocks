@@ -70,7 +70,7 @@ const save = props => {
 						'backgroundSVGHover',
 					])}
 					blockClassName={uniqueID}
-				/>{' '}
+				/>
 				<RichText.Content
 					className='maxi-text-block__content'
 					value={content}

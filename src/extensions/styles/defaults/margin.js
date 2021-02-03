@@ -17,7 +17,7 @@ const margin = {
 	},
 	'margin-sync-general': {
 		type: 'boolean',
-		default: true,
+		default: false,
 	},
 	'margin-unit-general': {
 		type: 'string',

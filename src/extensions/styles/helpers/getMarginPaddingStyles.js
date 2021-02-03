@@ -8,7 +8,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointValue';
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getMarginStyles = obj => {
+const getMarginPaddingStyles = (obj, prefix = '') => {
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 
 	const response = {};
@@ -17,21 +17,24 @@ const getMarginStyles = obj => {
 		response[breakpoint] = {};
 
 		Object.entries(obj).forEach(([key, value]) => {
+			const newKey = key.replace(prefix, '');
+
 			const includesBreakpoint =
-				key.lastIndexOf(`-${breakpoint}`) + `-${breakpoint}`.length ===
-				key.length;
+				newKey.lastIndexOf(`-${breakpoint}`) +
+					`-${breakpoint}`.length ===
+				newKey.length;
 
 			if (
 				!!value &&
 				includesBreakpoint &&
-				!key.includes('sync') &&
-				!key.includes('unit')
+				!newKey.includes('sync') &&
+				!newKey.includes('unit')
 			) {
 				const replacer = new RegExp(
 					`\\b-${breakpoint}\\b(?!.*\\b-${breakpoint}\\b)`,
 					'gm'
 				);
-				const newLabel = key.replace(replacer, '');
+				const newLabel = newKey.replace(replacer, '');
 
 				if (!keyWords.some(key => newLabel.includes(key)))
 					response[breakpoint][newLabel] = `${value}`;
@@ -39,8 +42,9 @@ const getMarginStyles = obj => {
 					const unitKey = keyWords.filter(key =>
 						newLabel.includes(key)
 					);
+
 					const unit = getLastBreakpointAttribute(
-						`${newLabel.replace(unitKey, 'unit')}`,
+						`${prefix}${newLabel.replace(unitKey, 'unit')}`,
 						breakpoint,
 						obj
 					);
@@ -54,4 +58,4 @@ const getMarginStyles = obj => {
 	return response;
 };
 
-export default getMarginStyles;
+export default getMarginPaddingStyles;

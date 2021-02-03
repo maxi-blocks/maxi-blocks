@@ -6,8 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults';
-import { icon, alignmentIcon } from './data';
+import * as newAttributes from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -17,70 +16,37 @@ const attributes = {
 		type: 'string',
 		default: __('Font Icon', 'maxi-blocks'),
 	},
-	icon: {
-		type: 'object',
-		default: icon,
+	...{
+		...newAttributes.textAlignment,
+		'text-alignment-general': {
+			type: 'string',
+			default: 'center',
+		},
 	},
-	alignment: {
-		type: 'object',
-		default: alignmentIcon,
-	},
-	opacity: {
-		type: 'object',
-		default: attributesData.opacity,
-	},
-	background: {
-		type: 'object',
-		default: attributesData.background,
-	},
-	backgroundHover: {
-		type: 'object',
-		default: attributesData.backgroundHover,
-	},
-	border: {
-		type: 'object',
-		default: attributesData.border,
-	},
-	borderHover: {
-		type: 'object',
-		default: attributesData.borderHover,
-	},
-	boxShadow: {
-		type: 'object',
-		default: attributesData.boxShadow,
-	},
-	boxShadowHover: {
-		type: 'object',
-		default: attributesData.boxShadowHover,
-	},
-	padding: {
-		type: 'object',
-		default: attributesData.padding,
-	},
-	margin: {
-		type: 'object',
-		default: attributesData.margin,
-	},
-	position: {
-		type: 'object',
-		default: attributesData.position,
-	},
-	display: {
-		type: 'object',
-		default: attributesData.display,
-	},
-	motion: {
-		type: 'object',
-		default: attributesData.motion,
-	},
-	transform: {
-		type: 'object',
-		default: attributesData.transform,
-	},
-	highlight: {
-		type: 'object',
-		default: attributesData.highlight,
-	},
+	...newAttributes.icon,
+	...newAttributes.opacity,
+	...newAttributes.background,
+	...newAttributes.backgroundColor,
+	...newAttributes.backgroundGradient,
+	...newAttributes.backgroundHover,
+	...newAttributes.backgroundColorHover,
+	...newAttributes.backgroundGradientHover,
+	...newAttributes.border,
+	...newAttributes.borderWidth,
+	...newAttributes.borderRadius,
+	...newAttributes.borderHover,
+	...newAttributes.borderWidthHover,
+	...newAttributes.borderRadiusHover,
+	...newAttributes.boxShadow,
+	...newAttributes.boxShadowHover,
+	...newAttributes.margin,
+	...newAttributes.padding,
+	...newAttributes.display,
+	...newAttributes.position,
+	...newAttributes.motion,
+	...newAttributes.transform,
+	...newAttributes.highlight,
+	...newAttributes.entrance,
 };
 
 export default attributes;

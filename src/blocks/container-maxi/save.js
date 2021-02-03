@@ -49,6 +49,7 @@ const save = props => {
 				data-motion-id={uniqueID}
 			>
 				<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />
+
 				<BackgroundDisplayer
 					{...getGroupAttributes(attributes, [
 						'background',
@@ -66,15 +67,18 @@ const save = props => {
 					])}
 					blockClassName={uniqueID}
 				/>
+
 				{attributes['shape-divider-top-status'] && (
 					<ShapeDivider
 						{...getGroupAttributes(attributes, 'shapeDivider')}
 						location='top'
 					/>
 				)}
+
 				<div className='maxi-container-block__container'>
 					<InnerBlocks.Content />
 				</div>
+
 				{attributes['shape-divider-bottom-status'] && (
 					<ShapeDivider
 						{...getGroupAttributes(attributes, 'shapeDivider')}

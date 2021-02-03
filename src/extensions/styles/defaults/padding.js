@@ -17,7 +17,7 @@ const padding = {
 	},
 	'padding-sync-general': {
 		type: 'boolean',
-		default: true,
+		default: false,
 	},
 	'padding-unit-general': {
 		type: 'string',

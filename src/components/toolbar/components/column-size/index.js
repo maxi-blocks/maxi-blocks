@@ -8,7 +8,8 @@ const { RangeControl, SelectControl } = wp.components;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import { getLastBreakpointValue, getDefaultProp } from '../../../../utils';
+import getLastBreakpointAttribute from '../../../../extensions/styles/getLastBreakpointValue';
+import getDefaultAttribute from '../../../../extensions/styles/getDefaultAttribute';
 
 /**
  * Styles & Icons
@@ -27,11 +28,10 @@ const ColumnSize = props => {
 		uniqueID,
 		onChange,
 		breakpoint,
+		attributes,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
-
-	const columnSize = { ...props.columnSize };
 
 	return (
 		<ToolbarPopover
@@ -43,19 +43,18 @@ const ColumnSize = props => {
 				<div className='toolbar-item__column-size__popover'>
 					<RangeControl
 						label={__('Column Size', 'maxi-blocks')}
-						value={getLastBreakpointValue(
-							columnSize,
-							'size',
-							breakpoint
+						value={getLastBreakpointAttribute(
+							'column-size',
+							breakpoint,
+							attributes
 						)}
 						onChange={val => {
-							columnSize[breakpoint].size = val;
 							document.querySelector(
 								`.maxi-column-block__resizer__${uniqueID}`
 							).style.width = `${val}%`;
 
 							onChange({
-								columnSize,
+								[`column-size-${breakpoint}`]: val,
 								verticalAlign,
 							});
 						}}
@@ -63,10 +62,10 @@ const ColumnSize = props => {
 						max='100'
 						step={0.1}
 						allowReset
-						initialPosition={
-							getDefaultProp(clientId, 'columnSize')[breakpoint]
-								.size
-						}
+						initialPosition={getDefaultAttribute(
+							`column-size-${breakpoint}`,
+							clientId
+						)}
 					/>
 					<SelectControl
 						label={__('Vertical align', 'maxi-blocks')}
@@ -95,7 +94,6 @@ const ColumnSize = props => {
 						]}
 						onChange={verticalAlign =>
 							onChange({
-								columnSize,
 								verticalAlign,
 							})
 						}

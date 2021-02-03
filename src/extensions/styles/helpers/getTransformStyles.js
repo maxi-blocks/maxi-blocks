@@ -63,7 +63,7 @@ const getTransformStyles = obj => {
 				breakpoint,
 				obj
 			)}${getLastBreakpointAttribute(
-				'translateXUnit',
+				'transform-translate-x-unit',
 				breakpoint,
 				obj
 			)}) `;

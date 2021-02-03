@@ -18,88 +18,64 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block size properties
  */
-const getTypographyStyles = (obj, isHover = false) => {
+const getTypographyStyles = (obj, isHover = false, prefix = '') => {
 	const response = {};
+
+	const getName = (target, breakpoint) =>
+		`${prefix}${target}-${breakpoint}${isHover ? '-hover' : ''}`;
 
 	breakpoints.forEach(breakpoint => {
 		const typography = {
-			...(obj[`font-family-${breakpoint}${isHover ? '-hover' : ''}`] && {
-				'font-family':
-					obj[`font-family-${breakpoint}${isHover ? '-hover' : ''}`],
+			...(obj[getName('font-family', breakpoint)] && {
+				'font-family': obj[getName('font-family', breakpoint)],
 			}),
-			...(obj[`color-${breakpoint}${isHover ? '-hover' : ''}`] && {
-				color: obj[`color-${breakpoint}${isHover ? '-hover' : ''}`],
+			...(obj[getName('color', breakpoint)] && {
+				color: obj[getName('color', breakpoint)],
 			}),
-			...(obj[`font-size-${breakpoint}${isHover ? '-hover' : ''}`] && {
+			...(obj[getName('font-size', breakpoint)] && {
 				'font-size': `${
-					obj[`font-size-${breakpoint}${isHover ? '-hover' : ''}`]
+					obj[getName('font-size', breakpoint)]
 				}${getLastBreakpointAttribute(
-					'font-size-unit',
+					`${prefix}font-size-unit`,
 					breakpoint,
 					obj
 				)}`,
 			}),
-			...(obj[`line-height-${breakpoint}${isHover ? '-hover' : ''}`] && {
-				'line-height': `${
-					obj[`line-height-${breakpoint}${isHover ? '-hover' : ''}`]
-				}${
+			...(obj[getName('line-height', breakpoint)] && {
+				'line-height': `${obj[getName('line-height', breakpoint)]}${
 					getLastBreakpointAttribute(
-						'line-height-unit',
+						`${prefix}line-height-unit`,
 						breakpoint,
 						obj
 					) || ''
 				}`,
 			}),
-			...(obj[
-				`letter-spacing-${breakpoint}${isHover ? '-hover' : ''}`
-			] && {
+			...(obj[getName('letter-spacing', breakpoint)] && {
 				'letter-spacing': `${
-					obj[
-						`letter-spacing-${breakpoint}${isHover ? '-hover' : ''}`
-					]
+					obj[getName('letter-spacing', breakpoint)]
 				}${getLastBreakpointAttribute(
-					'letter-spacing-unit',
+					`${prefix}letter-spacing-unit`,
 					breakpoint,
 					obj
 				)}`,
 			}),
-			...(obj[`font-weight-${breakpoint}${isHover ? '-hover' : ''}`] && {
-				'font-weight':
-					obj[`font-weight-${breakpoint}${isHover ? '-hover' : ''}`],
+			...(obj[getName('font-weight', breakpoint)] && {
+				'font-weight': obj[getName('font-weight', breakpoint)],
 			}),
-			...(obj[
-				`text-transform-${breakpoint}${isHover ? '-hover' : ''}`
-			] && {
-				'text-transform':
-					obj[
-						`text-transform-${breakpoint}${isHover ? '-hover' : ''}`
-					],
+			...(obj[getName('text-transform', breakpoint)] && {
+				'text-transform': obj[getName('text-transform', breakpoint)],
 			}),
-			...(obj[`font-style-${breakpoint}${isHover ? '-hover' : ''}`] && {
-				'font-style':
-					obj[`font-style-${breakpoint}${isHover ? '-hover' : ''}`],
+			...(obj[getName('font-style', breakpoint)] && {
+				'font-style': obj[getName('font-style', breakpoint)],
 			}),
-			...(obj[
-				`text-decoration-${breakpoint}${isHover ? '-hover' : ''}`
-			] && {
-				'text-decoration':
-					obj[
-						`text-decoration-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
-					],
+			...(obj[getName('text-decoration', breakpoint)] && {
+				'text-decoration': obj[getName('text-decoration', breakpoint)],
 			}),
-			...(obj[`text-shadow-${breakpoint}${isHover ? '-hover' : ''}`] && {
-				'text-shadow':
-					obj[`text-shadow-${breakpoint}${isHover ? '-hover' : ''}`],
+			...(obj[getName('text-shadow', breakpoint)] && {
+				'text-shadow': obj[getName('text-shadow', breakpoint)],
 			}),
-			...(obj[
-				`vertical-align-${breakpoint}${isHover ? '-hover' : ''}`
-			] && {
-				'vertical-align':
-					obj[
-						`vertical-align-${breakpoint}${isHover ? '-hover' : ''}`
-					],
+			...(obj[getName('vertical-align', breakpoint)] && {
+				'vertical-align': obj[getName('vertical-align', breakpoint)],
 			}),
 		};
 

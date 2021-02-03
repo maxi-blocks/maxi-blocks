@@ -10,8 +10,7 @@ import {
 	getTransformStyles,
 	getBackgroundStyles,
 	getArrowStyles,
-	getMarginStyles,
-	getPaddingStyles,
+	getMarginPaddingStyles,
 	getShapeDividerStyles,
 	getShapeDividerSVGStyles,
 	getContainerStyles,
@@ -56,9 +55,6 @@ const getNormalObject = props => {
 		}),
 	};
 
-	// ????
-	// if (fullWidth !== 'full') response.sizeContainer = sizeContainer;
-
 	return response;
 };
 
@@ -91,30 +87,26 @@ const getHoverObject = props => {
 };
 
 const getContainerObject = props => {
-	const response = {
-		margin: getMarginStyles({
+	const { isFirstOnHierarchy, fullWidth } = props;
+
+	let response = {
+		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
-		padding: getPaddingStyles({
+		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
-		}),
-		sizeContainer: getContainerStyles({
-			...getGroupAttributes(props, 'container'),
 		}),
 	};
 
+	if (isFirstOnHierarchy && fullWidth === 'full')
+		response = {
+			...response,
+			sizeContainer: getContainerStyles({
+				...getGroupAttributes(props, 'container'),
+			}),
+		};
+
 	return response;
-
-	// const { isFirstOnHierarchy, fullWidth } = props;
-
-	// if (isFirstOnHierarchy && fullWidth === 'full')
-	// 	return {
-	// 		sizeContainer: getContainerStyles({
-	// 			...getGroupAttributes(props, 'container'),
-	// 		}),
-	// 	};
-
-	// return {};
 };
 
 const getStyles = props => {
@@ -123,7 +115,7 @@ const getStyles = props => {
 	let response = {
 		[uniqueID]: getNormalObject(props),
 		[`${uniqueID}:hover`]: getHoverObject(props),
-		[`${uniqueID}>axi-container-block__container`]: getContainerObject(
+		[`${uniqueID} > .maxi-container-block__container`]: getContainerObject(
 			props
 		),
 		[`${uniqueID} .maxi-shape-divider__top`]: {
@@ -171,7 +163,7 @@ const getStyles = props => {
 	response = {
 		...response,
 		...getBackgroundStyles({
-			target: `${uniqueID} .maxi-container-block__wrapper`,
+			target: uniqueID,
 			...getGroupAttributes(props, [
 				'background',
 				'backgroundColor',
@@ -183,7 +175,7 @@ const getStyles = props => {
 			]),
 		}),
 		...getBackgroundStyles({
-			target: `${uniqueID} .maxi-container-block__wrapper`,
+			target: uniqueID,
 			...getGroupAttributes(props, [
 				'backgroundHover',
 				'backgroundColorHover',

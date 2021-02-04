@@ -70,23 +70,41 @@ class ResponsiveFrontendStyles {
 	}
 
 	/**
+	 * Returns default breakpoints values in case breakpoints are not set
+	 */
+	public function getBreakpoints($breakpoints) {
+		if (!empty((array)$breakpoints))
+			return $breakpoints;
+
+		// It may connect to the API to centralize the default values there
+		return (object)[
+			'xs'    => 480,
+			's'     => 768,
+			'm'     => 1024,
+			'l'     => 1366,
+			'xl'    => 1920
+		];
+	}
+
+	/**
 	 * Organizes meta in order to avoid duplicate selectors on style element
 	 */
 	public function organizeMeta($meta) {
 		$response = [];
 		foreach ($meta as $target => $fields) {
 			$response[$target] = [
-				'breakpoints' => $fields->breakpoints,
+				'breakpoints' => $this->getBreakpoints($fields->breakpoints),
 				'content' => []
 			];
 			foreach ($fields->content as $field => $props) {
-				foreach ($props as $prop => $value) {
-					if (!isset($response[$target]['content'][$prop]))
-						$response[$target]['content'][$prop] = [];
+				if (!empty($props))
+					foreach ($props as $prop => $value) {
+						if (!isset($response[$target]['content'][$prop]))
+							$response[$target]['content'][$prop] = [];
 
-					$response[$target]['content'][$prop] =
-						array_merge($response[$target]['content'][$prop], (array) $value);
-				}
+						$response[$target]['content'][$prop] =
+							array_merge($response[$target]['content'][$prop], (array) $value);
+					}
 			}
 		}
 
@@ -116,6 +134,7 @@ class ResponsiveFrontendStyles {
 		foreach ($meta as $target => $element) {
 			$target = $this->getTarget($target);
 			$breakpoints = $element['breakpoints'];
+			// var_dump($element);
 			$content = $element['content'];
 
 			if (isset($content['general']) && !empty($content['general'])) {
@@ -232,7 +251,7 @@ class ResponsiveFrontendStyles {
 		if (!$custom_data)
 			return;
 
-        $result = $custom_data['custom_data'];
+		$result = $custom_data['custom_data'];
 
 		if (!$result || empty($result))
 			return;

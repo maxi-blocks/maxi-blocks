@@ -9,7 +9,6 @@ const { SelectControl, Button } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Styles

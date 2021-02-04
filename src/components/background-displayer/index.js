@@ -12,6 +12,7 @@ import classnames from 'classnames';
  * Internal Dependencies
  */
 import VideoLayer from './videoLayer';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Styles
@@ -21,25 +22,25 @@ import './style.scss';
 /**
  * Component
  */
-const BackgroundDisplayer = props => {
-	const { className, blockClassName } = props;
-
-	const background = { ...props.background };
-	const { status, layers } = background.layersOptions;
-
-	const classes = classnames('maxi-background-displayer', className);
+const BackgroundContent = props => {
+	const { blockClassName, isHover = false } = props;
 
 	return (
-		<div className={classes}>
-			{!status ? (
+		<Fragment>
+			{!props[`background-layers${isHover ? '-hover' : ''}`] ||
+			props[`background-layers${isHover ? '-hover' : ''}`].length <= 0 ? (
 				<Fragment>
-					<div
-						className={classnames(
-							'maxi-background-displayer__layer',
-							'maxi-background-displayer__color'
-						)}
-					/>
-					{background.activeMedia === 'image' && (
+					{!isHover && (
+						<div
+							className={classnames(
+								'maxi-background-displayer__layer',
+								'maxi-background-displayer__color'
+							)}
+						/>
+					)}
+					{props[
+						`background-active-media${isHover ? '-hover' : ''}`
+					] === 'image' && (
 						<div
 							className={classnames(
 								'maxi-background-displayer__layer',
@@ -47,71 +48,109 @@ const BackgroundDisplayer = props => {
 							)}
 						/>
 					)}
-					{background.activeMedia === 'video' && (
+					{props[
+						`background-active-media${isHover ? '-hover' : ''}`
+					] === 'video' && (
 						<VideoLayer
-							videoOptions={background.videoOptions}
+							videoOptions={getGroupAttributes(
+								props,
+								'backgroundVideo',
+								isHover
+							)}
 							blockClassName={blockClassName}
 						/>
 					)}
-					{background.activeMedia === 'svg' &&
-						background.SVGOptions.SVGElement && (
+					{props[
+						`background-active-media${isHover ? '-hover' : ''}`
+					] === 'svg' &&
+						props[
+							`background-svg-SVGElement${
+								isHover ? '-hover' : ''
+							}`
+						] && (
 							<RawHTML
 								className={classnames(
 									'maxi-background-displayer__layer',
 									'maxi-background-displayer__svg'
 								)}
 							>
-								{background.SVGOptions.SVGElement}
+								{
+									props[
+										`background-svg-SVGElement${
+											isHover ? '-hover' : ''
+										}`
+									]
+								}
 							</RawHTML>
 						)}
 				</Fragment>
 			) : (
-				!!layers &&
-				layers.map((layer, index) => {
-					switch (layer.type) {
-						case 'color':
-						case 'gradient':
-						case 'image':
-							return (
-								<div
-									key={`maxi-background-displayer__${layer.id}`}
-									className={classnames(
-										'maxi-background-displayer__layer',
-										`maxi-background-displayer__${layer.id}`
-									)}
-									style={{ zIndex: layers.length - index }}
-								/>
-							);
-						case 'video':
-							return (
-								<VideoLayer
-									videoOptions={layer.options}
-									blockClassName={blockClassName}
-									className={`maxi-background-displayer__${layer.id}`}
-								/>
-							);
-						case 'shape':
-							return (
-								(layer.options.SVGElement && (
-									<RawHTML
+				props[`background-layers${isHover ? '-hover' : ''}`] &&
+				props[`background-layers${isHover ? '-hover' : ''}`].length >
+					0 &&
+				props[`background-layers${isHover ? '-hover' : ''}`]
+					.reverse()
+					.map(layer => {
+						switch (layer.type) {
+							case 'color':
+							case 'gradient':
+							case 'image':
+								return (
+									<div
+										key={`maxi-background-displayer__${layer.id}`}
 										className={classnames(
 											'maxi-background-displayer__layer',
-											'maxi-background-displayer__svg',
 											`maxi-background-displayer__${layer.id}`
 										)}
-									>
-										{layer.options.SVGElement}
-									</RawHTML>
-								)) ||
-								null
-							);
-						default:
-							break;
-					}
+									/>
+								);
+							case 'video':
+								return (
+									<VideoLayer
+										videoOptions={getGroupAttributes(
+											layer,
+											'backgroundVideo',
+											isHover
+										)}
+										blockClassName={blockClassName}
+										className={`maxi-background-displayer__${layer.id}`}
+									/>
+								);
+							case 'shape':
+								return (
+									(layer['background-svg-SVGElement'] && (
+										<RawHTML
+											className={classnames(
+												'maxi-background-displayer__layer',
+												'maxi-background-displayer__svg',
+												`maxi-background-displayer__${layer.id}`
+											)}
+										>
+											{layer['background-svg-SVGElement']}
+										</RawHTML>
+									)) ||
+									null
+								);
+							default:
+								break;
+						}
 
-					return null;
-				})
+						return null;
+					})
 			)}
+		</Fragment>
+	);
+};
+
+const BackgroundDisplayer = props => {
+	const { className } = props;
+
+	const classes = classnames('maxi-background-displayer', className);
+
+	return (
+		<div className={classes}>
+			<BackgroundContent {...props} isHover={false} />
+			<BackgroundContent {...props} isHover />
 		</div>
 	);
 };

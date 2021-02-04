@@ -12,11 +12,16 @@ const { __experimentalBlock } = wp.blockEditor;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlock, Toolbar } from '../../components';
-import MotionPreview from '../../components/motion-preview/newMotionPreview';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import {
+	BackgroundDisplayer,
+	MaxiBlock,
+	MotionPreview,
+	Toolbar,
+} from '../../components';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 
 /**

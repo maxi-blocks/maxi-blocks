@@ -227,6 +227,10 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													<AlignmentControl
+														label={__(
+															'Button',
+															'maxi-blocks'
+														)}
 														{...getGroupAttributes(
 															attributes,
 															'alignment'
@@ -238,6 +242,10 @@ const Inspector = props => {
 														disableJustify
 													/>
 													<AlignmentControl
+														label={__(
+															'Text',
+															'maxi-blocks'
+														)}
 														{...getGroupAttributes(
 															attributes,
 															'textAlignment'

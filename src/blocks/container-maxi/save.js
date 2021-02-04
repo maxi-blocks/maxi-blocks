@@ -7,10 +7,12 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import { ArrowDisplayer } from '../../components';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import ShapeDivider from '../../components/shape-divider/newShapeDivider';
+import {
+	ArrowDisplayer,
+	BackgroundDisplayer,
+	ShapeDivider,
+} from '../../components';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies

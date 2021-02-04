@@ -6,17 +6,15 @@ body.maxi-blocks--active .maxi-button-block {
 
 	&__content {
 		z-index: 1;
+		width: 100%;
+		min-width: 1px;
+		position: relative;
 	}
 	&__button {
 		height: auto;
 		align-items: center;
 		display: flex;
 		position: relative;
-
-		&__text {
-			position: relative;
-			z-index: 1;
-		}
 
 		&--icon-left {
 			i {

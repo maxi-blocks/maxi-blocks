@@ -7,8 +7,8 @@ const { __ } = wp.i18n;
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import AxisControl from '../../../axis-control/newAxisControl';
-import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
+import AxisControl from '../../../axis-control';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles & Icons

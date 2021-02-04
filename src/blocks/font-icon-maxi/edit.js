@@ -8,10 +8,16 @@ const { withSelect } = wp.data;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlock, Toolbar, FontIconPicker } from '../../components';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
+import {
+	BackgroundDisplayer,
+	FontIconPicker,
+	MaxiBlock,
+	Toolbar,
+} from '../../components';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 /**
  * External dependencies
@@ -37,8 +43,10 @@ class edit extends MaxiBlock {
 		return {
 			[uniqueID]: {
 				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'motion'),
-					...getGroupAttributes(this.props.attributes, 'entrance'),
+					...getGroupAttributes(this.props.attributes, [
+						'motion',
+						'entrance',
+					]),
 				}),
 			},
 		};

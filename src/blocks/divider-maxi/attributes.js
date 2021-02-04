@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as newAttributes from '../../extensions/styles/defaults/index';
+import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -36,31 +36,31 @@ const attributes = {
 		type: 'string',
 		default: 'row',
 	},
-	...newAttributes.size,
+	...attributesData.size,
 	'height-general': {
 		default: 100,
 	},
 	'height-unit-general': {
 		default: 'px',
 	},
-	...newAttributes.divider,
-	...newAttributes.highlight,
-	...newAttributes.opacity,
-	...newAttributes.background,
-	...newAttributes.backgroundColor,
-	...newAttributes.backgroundGradient,
-	...newAttributes.backgroundHover,
-	...newAttributes.backgroundColorHover,
-	...newAttributes.backgroundGradientHover,
-	...newAttributes.boxShadow,
-	...newAttributes.boxShadowHover,
-	...newAttributes.padding,
-	...newAttributes.margin,
-	...newAttributes.display,
-	...newAttributes.position,
-	...newAttributes.entrance,
-	...newAttributes.motion,
-	...newAttributes.transform,
-	...newAttributes.zIndex,
+	...attributesData.divider,
+	...attributesData.highlight,
+	...attributesData.opacity,
+	...attributesData.background,
+	...attributesData.backgroundColor,
+	...attributesData.backgroundGradient,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.backgroundGradientHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.padding,
+	...attributesData.margin,
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.entrance,
+	...attributesData.motion,
+	...attributesData.transform,
+	...attributesData.zIndex,
 };
 export default attributes;

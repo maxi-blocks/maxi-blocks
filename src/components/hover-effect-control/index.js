@@ -13,6 +13,10 @@ import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
 import AxisControl from '../axis-control';
 import FancyRadioControl from '../fancy-radio-control';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -40,43 +44,34 @@ import {
 const HoverEffectControl = props => {
 	const { className, onChange } = props;
 
-	const hover = { ...props.hover };
-	const defaultHover = { ...props.defaultHover };
-
 	const classes = classnames('maxi-hover-effect-control', className);
 
 	return (
 		<div className={classes}>
 			<FancyRadioControl
 				label={__('Hover Animation', 'maxi-blocks')}
-				selected={hover.type}
+				selected={props['hover-type']}
 				options={[
 					{ label: <Icon icon={hoverNone} />, value: 'none' },
 					{ label: <Icon icon={hoverBasic} />, value: 'basic' },
 					{ label: <Icon icon={hoverText} />, value: 'text' },
 				]}
-				onChange={val => {
-					hover.type = val;
-					onChange(hover);
-				}}
+				onChange={val => onChange({ 'hover-type': val })}
 			/>
 			<FancyRadioControl
 				label={__('Preview', 'maxi-blocks')}
-				selected={hover.preview}
+				selected={+props['hover-preview']}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => {
-					hover.preview = Number(val);
-					onChange(hover);
-				}}
+				onChange={val => onChange({ 'hover-preview': !!+val })}
 			/>
-			{hover.type === 'basic' && (
+			{props['hover-type'] === 'basic' && (
 				<Fragment>
 					<SelectControl
 						label={__('Effect Type', 'maxi-blocks')}
-						value={hover.basicEffectType}
+						value={props['hover-basic-effect-type']}
 						options={[
 							{
 								label: __('Zoom In', 'maxi-blocks'),
@@ -128,18 +123,17 @@ const HoverEffectControl = props => {
 								value: 'circle-shine',
 							},
 						]}
-						onChange={val => {
-							hover.basicEffectType = val;
-							onChange(hover);
-						}}
+						onChange={val =>
+							onChange({ 'hover-basic-effect-type': val })
+						}
 					/>
 				</Fragment>
 			)}
-			{hover.type === 'text' && (
+			{props['hover-type'] === 'text' && (
 				<Fragment>
 					<SelectControl
 						label={__('Animation Type', 'maxi-blocks')}
-						value={hover.textEffectType}
+						value={props['hover-text-effect-type']}
 						options={[
 							{ label: __('Fade', 'maxi-blocks'), value: 'fade' },
 							{
@@ -254,14 +248,13 @@ const HoverEffectControl = props => {
 							},
 							{ label: __('Blur', 'maxi-blocks'), value: 'blur' },
 						]}
-						onChange={val => {
-							hover.textEffectType = val;
-							onChange(hover);
-						}}
+						onChange={val =>
+							onChange({ 'hover-text-effect-type': val })
+						}
 					/>
 					<FancyRadioControl
 						type='classic-border'
-						selected={hover.textPreset}
+						selected={props['hover-text-preset']}
 						options={[
 							{
 								label: <Icon icon={alignLeftTop} />,
@@ -284,44 +277,48 @@ const HoverEffectControl = props => {
 								value: 'right-bottom',
 							},
 						]}
-						onChange={val => {
-							hover.textPreset = val;
-							onChange(hover);
-						}}
+						onChange={val => onChange({ 'hover-text-preset': val })}
 					/>
 					<TextareaControl
 						placeholder={__(
 							'Add your Hover Title Text here',
 							'maxi-blocks'
 						)}
-						value={hover.titleText}
-						onChange={val => {
-							isNil(val)
-								? (hover.titleText = defaultHover.titleText)
-								: (hover.titleText = val);
-							onChange(hover);
-						}}
+						value={props['hover-title-typography-content']}
+						onChange={val =>
+							onChange({
+								'hover-title-typography-content': isNil(val)
+									? getDefaultAttribute(
+											'hover-title-typography-content'
+									  )
+									: val,
+							})
+						}
 					/>
 					<FancyRadioControl
 						label={__('Custom Hover Text', 'maxi-block')}
-						selected={hover.titleStatus}
+						selected={+props['hover-title-typography-status']}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						onChange={val => {
-							hover.titleStatus = parseInt(val);
-							onChange(hover);
-						}}
+						onChange={val =>
+							onChange({
+								'hover-title-typography-status': !!+val,
+							})
+						}
 					/>
-					{!!hover.titleStatus && (
+					{props['hover-title-typography-status'] && (
 						<TypographyControl
-							typography={hover.titleTypography}
-							defaultTypography={defaultHover.titleTypography}
-							hideAlignment
-							onChange={() => {
-								onChange(hover);
+							typography={{
+								...getGroupAttributes(
+									props,
+									'hoverTitleTypography'
+								),
 							}}
+							hideAlignment
+							onChange={obj => onChange(obj)}
+							prefix='hover-title-'
 						/>
 					)}
 					<hr />
@@ -330,115 +327,116 @@ const HoverEffectControl = props => {
 							'Add your Hover Content Text here',
 							'maxi-blocks'
 						)}
-						value={hover.contentText}
-						onChange={val => {
-							isNil(val)
-								? (hover.contentText = defaultHover.contentText)
-								: (hover.contentText = val);
-							onChange(hover);
-						}}
+						value={props['hover-content-typography-content']}
+						onChange={val =>
+							onChange({
+								'hover-content-typography-content': isNil(val)
+									? getDefaultAttribute(
+											'hover-content-typography-content'
+									  )
+									: val,
+							})
+						}
 					/>
 					<FancyRadioControl
 						label={__('Custom Content Text', 'maxi-block')}
-						selected={hover.contentStatus}
+						selected={+props['hover-content-typography-status']}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						onChange={val => {
-							hover.contentStatus = parseInt(val);
-							onChange(hover);
-						}}
+						onChange={val =>
+							onChange({
+								'hover-content-typography-status': !!+val,
+							})
+						}
 					/>
-					{!!hover.contentStatus && (
+					{props['hover-content-typography-status'] && (
 						<TypographyControl
-							typography={hover.contentTypography}
-							defaultTypography={defaultHover.contentTypography}
-							hideAlignment
-							onChange={() => {
-								onChange(hover);
+							typography={{
+								...getGroupAttributes(
+									props,
+									'hoverContentTypography'
+								),
 							}}
+							hideAlignment
+							onChange={obj => onChange(obj)}
+							prefix='hover-content-'
 						/>
 					)}
 					<hr />
 					<BackgroundControl
-						background={hover.background}
-						defaultBackground={defaultHover.background}
-						onChange={val => {
-							hover.background = val;
-							onChange(hover);
-						}}
+						{...getGroupAttributes(props, [
+							'hoverBackground',
+							'hoverBackgroundColor',
+							'hoverBackgroundGradient',
+						])}
+						onChange={obj => onChange(obj)}
 						disableClipPath
 						disableImage
 						disableVideo
 						disableSVG
+						prefix='hover-'
 					/>
 					<FancyRadioControl
 						label={__('Custom Border', 'maxi-block')}
-						selected={hover.borderStatus}
+						selected={+props['hover-border-status']}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						onChange={val => {
-							hover.borderStatus = parseInt(val);
-							onChange(hover);
-						}}
+						onChange={val =>
+							onChange({ 'hover-border-status': !!+val })
+						}
 					/>
-					{!!hover.borderStatus && (
+					{props['hover-border-status'] && (
 						<BorderControl
-							border={hover.border}
-							defaultBorder={defaultHover.border}
-							onChange={val => {
-								hover.border = val;
-								onChange(hover);
-							}}
+							{...getGroupAttributes(props, [
+								'hoverBorder',
+								'hoverBorderWidth',
+								'hoverBorderRadius',
+							])}
+							onChange={obj => onChange(obj)}
+							prefix='hover-'
 						/>
 					)}
 					<FancyRadioControl
 						label={__('Custom Padding', 'maxi-block')}
-						selected={hover.paddingStatus}
+						selected={+props['hover-padding-status']}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						onChange={val => {
-							hover.paddingStatus = parseInt(val);
-							onChange(hover);
-						}}
+						onChange={val =>
+							onChange({ 'hover-padding-status': !!+val })
+						}
 					/>
-					{!!hover.paddingStatus && (
+					{props['hover-padding-status'] && (
 						<AxisControl
-							values={hover.padding}
-							defaultValues={defaultHover.padding}
+							{...getGroupAttributes(props, 'hoverPadding')}
+							label={__('Padding', 'maxi-blocks')}
+							onChange={obj => onChange(obj)}
+							target='hover-padding'
 							disableAuto
-							onChange={val => {
-								hover.padding = val;
-								onChange(hover);
-							}}
 						/>
 					)}
 					<FancyRadioControl
 						label={__('Custom Margin', 'maxi-block')}
-						selected={hover.marginStatus}
+						selected={+props['hover-margin-status']}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						onChange={val => {
-							hover.marginStatus = parseInt(val);
-							onChange(hover);
-						}}
+						onChange={val =>
+							onChange({ 'hover-margin-status': !!+val })
+						}
 					/>
-					{!!hover.marginStatus && (
+					{props['hover-margin-status'] && (
 						<AxisControl
-							values={hover.margin}
-							defaultValues={defaultHover.margin}
-							disableAuto
-							onChange={val => {
-								hover.margin = val;
-								onChange(hover);
-							}}
+							{...getGroupAttributes(props, 'hoverMargin')}
+							label={__('Margin', 'maxi-blocks')}
+							onChange={obj => onChange(obj)}
+							target='hover-margin'
 						/>
 					)}
 				</Fragment>

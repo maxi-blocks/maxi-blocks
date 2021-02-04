@@ -14,17 +14,22 @@ const { __unstableIndentListItems, __unstableOutdentListItems } = wp.richText;
  */
 import { defaultTypography } from '../../extensions/text';
 import Inspector from './inspector';
-import { MaxiBlock, Toolbar } from '../../components';
 import {
-	getFormatValue,
-	setCustomFormatsWhenPaste,
+	MaxiBlock,
+	Toolbar,
+	BackgroundDisplayer,
+	MotionPreview,
+} from '../../components';
+import {
 	fromListToText,
 	fromTextToList,
+	getFormatValue,
+	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import MotionPreview from '../../components/motion-preview/newMotionPreview';
-import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -77,9 +82,11 @@ class edit extends MaxiBlock {
 		return {
 			[uniqueID]: {
 				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'motion'),
-					...getGroupAttributes(this.props.attributes, 'entrance'),
-					...getGroupAttributes(this.props.attributes, 'parallax'),
+					...getGroupAttributes(this.props.attributes, [
+						'motion',
+						'entrance',
+						'parallax',
+					]),
 				}),
 			},
 		};
@@ -136,7 +143,7 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-text-block',
-			getLastBreakpointValue('display', deviceType, attributes) ===
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&

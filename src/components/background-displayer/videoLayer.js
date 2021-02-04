@@ -32,7 +32,7 @@ const VideoLayer = props => {
 		iframeHeight = `${parentEl.offsetWidth / 1.77}px`; // Set the height of the iframe according to the aspect ratio 16:9
 	}
 
-	let videoUrl = videoOptions.mediaURL;
+	let videoUrl = videoOptions['background-video-mediaURL'];
 
 	const parsedVideo = parseVideo(videoUrl);
 

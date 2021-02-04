@@ -3,7 +3,6 @@
  */
 const { __ } = wp.i18n;
 const { ColorPicker } = wp.components;
-const { Fragment } = wp.element;
 
 /**
  * Internal dependencies

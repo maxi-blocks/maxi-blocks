@@ -19,20 +19,25 @@ import { isEmpty, isNil, has, filter } from 'lodash';
  * Component
  */
 const TimelineSettings = props => {
-	const { interaction, onChange } = props;
+	const { onChange } = props;
 
 	const getCurrentTimelineItem = () => {
-		if (!isEmpty(interaction.timeline[interaction.activeTimeline.time])) {
-			return interaction.timeline[interaction.activeTimeline.time][
-				interaction.activeTimeline.index
-			];
+		if (
+			props['motion-time-line'] &&
+			!isEmpty(
+				props['motion-time-line'][props['motion-active-time-line-time']]
+			)
+		) {
+			return props['motion-time-line'][
+				props['motion-active-time-line-time']
+			][props['motion-active-time-line-index']];
 		}
 	};
 
 	const updateTimelineItemPosition = (prevTime, newTime) => {
-		const newTimeline = { ...interaction.timeline };
+		const newTimeline = { ...props['motion-time-line'] };
 		const prevItem =
-			newTimeline[prevTime][interaction.activeTimeline.index];
+			newTimeline[prevTime][props['motion-active-time-line-index']];
 		prevItem.settings.effectPosition = newTime;
 
 		const result = filter(newTimeline[prevTime], o => {
@@ -59,38 +64,39 @@ const TimelineSettings = props => {
 			};
 		}
 
-		interaction.timeline = {
-			...addResult,
-		};
-
-		interaction.activeTimeline = {
-			time: newTime,
-			index: 0,
-		};
-
-		onChange(interaction);
+		onChange({
+			'motion-time-line': { ...addResult },
+			'motion-active-time-line-time': +newTime,
+			'motion-active-time-line-index': 0,
+		});
 	};
 
 	const updateTimelineItemSettings = (value, name) => {
-		if (!isEmpty(interaction.timeline[interaction.activeTimeline.time])) {
-			const newTimeline = { ...interaction.timeline };
-			newTimeline[interaction.activeTimeline.time][
-				interaction.activeTimeline.index
+		if (
+			!isEmpty(
+				props['motion-time-line'][props['motion-active-time-line-time']]
+			)
+		) {
+			const newTimeline = { ...props['motion-time-line'] };
+			newTimeline[props['motion-active-time-line-time']][
+				props['motion-active-time-line-index']
 			].settings[name] = value;
 
-			interaction.timeline = {
-				...newTimeline,
-			};
-
-			onChange(interaction);
+			onChange({
+				'motion-time-line': newTimeline,
+			});
 		}
 	};
 
 	const getTimelineItemSettingValue = name => {
-		if (!isEmpty(interaction.timeline[interaction.activeTimeline.time])) {
-			return interaction.timeline[interaction.activeTimeline.time][
-				interaction.activeTimeline.index
-			].settings[name];
+		if (
+			!isEmpty(
+				props['motion-time-line'][props['motion-active-time-line-time']]
+			)
+		) {
+			return props['motion-time-line'][
+				props['motion-active-time-line-time']
+			][props['motion-active-time-line-index']].settings[name];
 		}
 	};
 
@@ -387,7 +393,7 @@ const TimelineSettings = props => {
 					<hr />
 					<FancyRadioControl
 						label={__('X-Axis', 'maxi-blocks')}
-						selected={interaction.transformOrigin.xAxis}
+						selected={props['motion-transform-origin-x']}
 						options={[
 							{
 								label: __('Left', 'maxi-blocks'),
@@ -402,18 +408,13 @@ const TimelineSettings = props => {
 								value: 'right',
 							},
 						]}
-						onChange={value => {
-							interaction.transformOrigin = {
-								...interaction.transformOrigin,
-								xAxis: value,
-							};
-
-							onChange(interaction);
-						}}
+						onChange={val =>
+							onChange({ 'motion-transform-origin-x': val })
+						}
 					/>
 					<FancyRadioControl
 						label={__('Y-Axis', 'maxi-blocks')}
-						selected={interaction.transformOrigin.yAxis}
+						selected={props['motion-transform-origin-y']}
 						options={[
 							{
 								label: __('Top', 'maxi-blocks'),
@@ -428,19 +429,14 @@ const TimelineSettings = props => {
 								value: 'bottom',
 							},
 						]}
-						onChange={value => {
-							interaction.transformOrigin = {
-								...interaction.transformOrigin,
-								yAxis: value,
-							};
-
-							onChange(interaction);
-						}}
+						onChange={val =>
+							onChange({ 'motion-transform-origin-y': val })
+						}
 					/>
 					<hr />
 					<FancyRadioControl
 						label={__('Tablet', 'maxi-blocks')}
-						selected={interaction.tabletStatus}
+						selected={+props['motion-tablet-status']}
 						options={[
 							{
 								label: __('Yes', 'maxi-blocks'),
@@ -451,15 +447,13 @@ const TimelineSettings = props => {
 								value: 0,
 							},
 						]}
-						onChange={value => {
-							interaction.tabletStatus = Number(value);
-
-							onChange(interaction);
-						}}
+						onChange={val =>
+							onChange({ 'motion-tablet-status': !!+val })
+						}
 					/>
 					<FancyRadioControl
 						label={__('Mobile', 'maxi-blocks')}
-						selected={interaction.mobileStatus}
+						selected={+props['motion-mobile-status']}
 						options={[
 							{
 								label: __('Yes', 'maxi-blocks'),
@@ -470,11 +464,9 @@ const TimelineSettings = props => {
 								value: 0,
 							},
 						]}
-						onChange={value => {
-							interaction.mobileStatus = Number(value);
-
-							onChange(interaction);
-						}}
+						onChange={val =>
+							onChange({ 'motion-mobile-status': !!+val })
+						}
 					/>
 				</Fragment>
 			)}

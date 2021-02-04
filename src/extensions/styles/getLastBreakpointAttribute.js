@@ -17,7 +17,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  * Gets an object base on Maxi Blocks breakpoints schema and looks for the last set value
  * for a concrete property in case is not set for the requested breakpoint
  */
-const getLastBreakpointValue = (
+const getLastBreakpointAttribute = (
 	target,
 	breakpoint,
 	attributes = null,
@@ -56,4 +56,4 @@ const getLastBreakpointValue = (
 	return currentAttr;
 };
 
-export default getLastBreakpointValue;
+export default getLastBreakpointAttribute;

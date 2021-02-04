@@ -14,119 +14,159 @@ import OpacityControl from '../opacity-control';
 import SettingTabsControl from '../setting-tabs-control';
 import ImageCropControl from '../image-crop-control';
 import SizeControl from '../size-control';
+import {
+	getDefaultAttribute,
+	getAttributeKey
+} from '../../extensions/styles';
 
 /**
  * External dependencies
  */
-import { isNumber, pullAt, cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 /**
  * Component
  */
 const ImageLayer = props => {
-	const { defaultImageOptions, onChange, disableClipPath } = props;
-
+	const { onChange, disableClipPath, isHover, prefix } = props;
 	const imageOptions = cloneDeep(props.imageOptions);
 
-	const onAddBackground = () => {
-		imageOptions.items.push(defaultImageOptions.items[0]);
-	};
-
 	const [isOpen, setIsOpen] = useState(false);
-	const [selector, setSelector] = useState(0);
-
-	const onOpenOptions = (e, i = null) => {
-		e.stopPropagation();
-		setIsOpen(true);
-		if (i) setSelector(i);
-	};
-
-	const onDoneEdition = () => {
-		setIsOpen(false);
-		setSelector(0);
-	};
-
-	const onRemoveImage = i => {
-		pullAt(imageOptions.items, i);
-		onChange(imageOptions);
-		onDoneEdition();
-	};
-
-	const getAlternativeImage = i => {
-		try {
-			return {
-				source_url: imageOptions.items[i].imageData.mediaURL,
-				width: imageOptions.items[i].imageData.width,
-				height: imageOptions.items[i].imageData.height,
-			};
-		} catch (error) {
-			return false;
-		}
-	};
 
 	return (
 		<Fragment>
 			{!isOpen && (
-				<Fragment>
-					{imageOptions.items.map((option, i) => (
-						<MediaUploaderControl
-							mediaID={option.imageData.mediaID}
-							onSelectImage={imageData => {
-								if (!isNumber(option.imageData.mediaID))
-									onAddBackground();
-								option.imageData.mediaID = imageData.id;
-								option.imageData.mediaURL = imageData.url;
-								option.imageData.width = imageData.width;
-								option.imageData.height = imageData.height;
-
-								onChange(imageOptions);
-							}}
-							onRemoveImage={() => {
-								onRemoveImage(i);
-							}}
-							placeholder={
-								imageOptions.items.length - 1 === 0
-									? __('Set image', 'maxi-blocks')
-									: __('Add Another Image', 'maxi-blocks')
-							}
-							extendSelector={
-								option.imageData.mediaID && (
-									<Button
-										isSecondary
-										onClick={e => onOpenOptions(e, i)}
-										className='maxi-background-control__image-edit'
-									>
-										{__('Edit', 'maxi-blocks')}
-									</Button>
-								)
-							}
-							alternativeImage={getAlternativeImage(i)}
-							removeButton={__('Remove', 'maxi-blocks')}
-						/>
-					))}
-					{!disableClipPath && (
-						<ClipPath
-							clipPath={imageOptions.clipPath}
-							onChange={val => {
-								imageOptions.clipPath = val;
-
-								onChange(imageOptions);
-							}}
-						/>
-					)}
-					<OpacityControl
-						label={__('Background Opacity', 'maxi-blocks')}
-						fullWidthMode
-						opacity={imageOptions.opacity}
-						defaultOpacity={defaultImageOptions.opacity}
-						onChange={opacity => {
-							imageOptions.opacity = opacity;
-
-							onChange(imageOptions);
-						}}
-					/>
-				</Fragment>
+				<MediaUploaderControl
+					mediaID={
+						imageOptions[
+							getAttributeKey(
+								'background-image-mediaID',
+								isHover,
+								prefix
+							)
+						]
+					}
+					onSelectImage={imageData =>
+						onChange({
+							[getAttributeKey(
+								'background-image-mediaID',
+								isHover,
+								prefix
+							)]: imageData.id,
+							[getAttributeKey(
+								'background-image-mediaURL',
+								isHover,
+								prefix
+							)]: imageData.url,
+							[getAttributeKey(
+								'background-image-width',
+								isHover,
+								prefix
+							)]: imageData.width,
+							[getAttributeKey(
+								'background-image-height',
+								isHover,
+								prefix
+							)]: imageData.height,
+						})
+					}
+					onRemoveImage={() =>
+						onChange({
+							[getAttributeKey(
+								'background-image-mediaID',
+								isHover,
+								prefix
+							)]: '',
+							[getAttributeKey(
+								'background-image-mediaURL',
+								isHover,
+								prefix
+							)]: '',
+							[getAttributeKey(
+								'background-image-width',
+								isHover,
+								prefix
+							)]: '',
+							[getAttributeKey(
+								'background-image-height',
+								isHover,
+								prefix
+							)]: '',
+						})
+					}
+					placeholder={__('Set image', 'maxi-blocks')}
+					extendSelector={
+						imageOptions[
+							getAttributeKey(
+								'background-image-mediaID',
+								isHover,
+								prefix
+							)
+						] && (
+							<Button
+								isSecondary
+								onClick={e => setIsOpen(true)}
+								className='maxi-background-control__image-edit'
+							>
+								{__('Edit', 'maxi-blocks')}
+							</Button>
+						)
+					}
+					// alternativeImage={{
+					// 	source_url: props['background-image-mediaURL'],
+					// 	width: props['background-image-width'],
+					// 	height: props['background-image-height'],
+					// }}
+					removeButton={__('Remove', 'maxi-blocks')}
+				/>
 			)}
+			{!disableClipPath && (
+				<ClipPath
+					clipPath={
+						imageOptions[
+							getAttributeKey(
+								'background-image-clip-path',
+								isHover,
+								prefix
+							)
+						]
+					}
+					onChange={val =>
+						onChange({
+							[getAttributeKey(
+								'background-image-clip-path',
+								isHover,
+								prefix
+							)]: val,
+						})
+					}
+				/>
+			)}
+			<OpacityControl
+				label={__('Background Opacity', 'maxi-blocks')}
+				fullWidthMode
+				opacity={
+					imageOptions[
+						getAttributeKey(
+							'background-image-opacity',
+							isHover,
+							prefix
+						)
+					]
+				}
+				defaultOpacity={getDefaultAttribute(
+					getAttributeKey('background-image-opacity', isHover, prefix)
+				)}
+				onChange={val =>
+					onChange({
+						[getAttributeKey(
+							'background-image-opacity',
+							isHover,
+							prefix
+						)]: val,
+					})
+				}
+			/>
 			{isOpen && (
 				<SettingTabsControl
 					items={[
@@ -137,26 +177,66 @@ const ImageLayer = props => {
 							content: (
 								<MediaUploaderControl
 									mediaID={
-										imageOptions.items[selector].imageData
-											.mediaID
+										imageOptions[
+											getAttributeKey(
+												'background-image-mediaID',
+												isHover,
+												prefix
+											)
+										]
 									}
-									onSelectImage={imageData => {
-										imageOptions.items[
-											selector
-										].imageData.mediaID = imageData.id;
-										imageOptions.items[
-											selector
-										].imageData.mediaURL = imageData.url;
-
-										onChange(imageOptions);
-									}}
-									onRemoveImage={() => {
-										onRemoveImage();
-									}}
+									onSelectImage={imageData =>
+										onChange({
+											[getAttributeKey(
+												'background-image-mediaID',
+												isHover,
+												prefix
+											)]: imageData.id,
+											[getAttributeKey(
+												'background-image-mediaURL',
+												isHover,
+												prefix
+											)]: imageData.url,
+											[getAttributeKey(
+												'background-image-width',
+												isHover,
+												prefix
+											)]: imageData.width,
+											[getAttributeKey(
+												'background-image-height',
+												isHover,
+												prefix
+											)]: imageData.height,
+										})
+									}
+									onRemoveImage={() =>
+										onChange({
+											[getAttributeKey(
+												'background-image-mediaID',
+												isHover,
+												prefix
+											)]: '',
+											[getAttributeKey(
+												'background-image-mediaURL',
+												isHover,
+												prefix
+											)]: '',
+											[getAttributeKey(
+												'background-image-width',
+												isHover,
+												prefix
+											)]: '',
+											[getAttributeKey(
+												'background-image-height',
+												isHover,
+												prefix
+											)]: '',
+										})
+									}
 									extendSelector={
 										<Button
 											isSecondary
-											onClick={onDoneEdition}
+											onClick={() => setIsOpen(false)}
 											className='maxi-background-control__done-edition'
 										>
 											{__('Done', 'maxi-blocks')}
@@ -164,9 +244,13 @@ const ImageLayer = props => {
 									}
 									replaceButton={__('Replace', 'maxi-blocks')}
 									removeButton={__('Delete', 'maxi-blocks')}
-									alternativeImage={getAlternativeImage(
-										selector
-									)}
+									// alternativeImage={{
+									// 	source_url:
+									// 		props['background-image-mediaURL'],
+									// 	width: props['background-image-width'],
+									// 	height:
+									// 		props['background-image-height'],
+									// }}
 								/>
 							),
 						},
@@ -182,8 +266,13 @@ const ImageLayer = props => {
 											'maxi-blocks'
 										)}
 										value={
-											imageOptions.items[selector]
-												.sizeSettings.size
+											imageOptions[
+												getAttributeKey(
+													'background-image-size',
+													isHover,
+													prefix
+												)
+											]
 										}
 										options={[
 											{
@@ -215,36 +304,51 @@ const ImageLayer = props => {
 												value: 'custom',
 											},
 										]}
-										onChange={val => {
-											imageOptions.items[
-												selector
-											].sizeSettings.size = val;
-
-											onChange(imageOptions);
-										}}
+										onChange={val =>
+											onChange({
+												[getAttributeKey(
+													'background-image-size',
+													isHover,
+													prefix
+												)]: val,
+											})
+										}
 									/>
-									{imageOptions.items[selector].sizeSettings
-										.size === 'custom' && (
+									{imageOptions[
+										getAttributeKey(
+											'background-image-size',
+											isHover,
+											prefix
+										)
+									] === 'custom' && (
 										<ImageCropControl
 											mediaID={
-												imageOptions.items[selector]
-													.imageData.mediaID
+												imageOptions[
+													getAttributeKey(
+														'background-image-mediaID',
+														isHover,
+														prefix
+													)
+												]
 											}
 											cropOptions={
-												imageOptions.items[selector]
-													.imageData.cropOptions
-													? imageOptions.items[
-															selector
-													  ].imageData.cropOptions
-													: {}
+												imageOptions[
+													getAttributeKey(
+														'background-image-cropOptions',
+														isHover,
+														prefix
+													)
+												]
 											}
-											onChange={cropOptions => {
-												imageOptions.items[
-													selector
-												].imageData.cropOptions = cropOptions;
-
-												onChange(imageOptions);
-											}}
+											onChange={cropOptions =>
+												onChange({
+													[getAttributeKey(
+														'background-image-cropOptions',
+														isHover,
+														prefix
+													)]: cropOptions,
+												})
+											}
 										/>
 									)}
 									<SelectControl
@@ -253,7 +357,13 @@ const ImageLayer = props => {
 											'maxi-blocks'
 										)}
 										value={
-											imageOptions.items[selector].repeat
+											imageOptions[
+												getAttributeKey(
+													'background-image-repeat',
+													isHover,
+													prefix
+												)
+											]
 										}
 										options={[
 											{
@@ -299,13 +409,15 @@ const ImageLayer = props => {
 												value: 'round',
 											},
 										]}
-										onChange={val => {
-											imageOptions.items[
-												selector
-											].repeat = val;
-
-											onChange(imageOptions);
-										}}
+										onChange={val =>
+											onChange({
+												[getAttributeKey(
+													'background-image-repeat',
+													isHover,
+													prefix
+												)]: val,
+											})
+										}
 									/>
 									<SelectControl
 										label={__(
@@ -313,8 +425,13 @@ const ImageLayer = props => {
 											'maxi-blocks'
 										)}
 										value={
-											imageOptions.items[selector]
-												.positionOptions.position
+											imageOptions[
+												getAttributeKey(
+													'background-image-position',
+													isHover,
+													prefix
+												)
+											]
 										}
 										options={[
 											{
@@ -388,17 +505,23 @@ const ImageLayer = props => {
 												value: 'custom',
 											},
 										]}
-										onChange={val => {
-											imageOptions.items[
-												selector
-											].positionOptions.position = val;
-
-											onChange(imageOptions);
-										}}
+										onChange={val =>
+											onChange({
+												[getAttributeKey(
+													'background-image-position',
+													isHover,
+													prefix
+												)]: val,
+											})
+										}
 									/>
-									{imageOptions.items[selector]
-										.positionOptions.position ===
-										'custom' && (
+									{imageOptions[
+										getAttributeKey(
+											'background-image-position',
+											isHover,
+											prefix
+										)
+									] === 'custom' && (
 										<Fragment>
 											<SizeControl
 												label={__(
@@ -406,37 +529,55 @@ const ImageLayer = props => {
 													'maxi-blocks'
 												)}
 												unit={
-													imageOptions.items[selector]
-														.positionOptions
-														.widthUnit
+													imageOptions[
+														getAttributeKey(
+															'background-image-width-unit',
+															isHover,
+															prefix
+														)
+													]
 												}
-												defaultUnit={
-													defaultImageOptions[0]
-														.positionOptions
-														.widthUnit
+												defaultUnit={getDefaultAttribute(
+													getAttributeKey(
+														'background-image-width-unit',
+														isHover,
+														prefix
+													)
+												)}
+												onChangeUnit={val =>
+													onChange({
+														[getAttributeKey(
+															'background-image-width-unit',
+															isHover,
+															prefix
+														)]: val,
+													})
 												}
-												onChangeUnit={val => {
-													imageOptions.items[
-														selector
-													].positionOptions.widthUnit = val;
-
-													onChange(imageOptions);
-												}}
 												value={
-													imageOptions.items[selector]
-														.positionOptions.width
+													imageOptions[
+														getAttributeKey(
+															'background-image-width',
+															isHover,
+															prefix
+														)
+													]
 												}
-												defaultValue={
-													defaultImageOptions[0]
-														.positionOptions.width
+												defaultValue={getDefaultAttribute(
+													getAttributeKey(
+														'background-image-width',
+														isHover,
+														prefix
+													)
+												)}
+												onChangeValue={val =>
+													onChange({
+														[getAttributeKey(
+															'background-image-width',
+															isHover,
+															prefix
+														)]: val,
+													})
 												}
-												onChangeValue={val => {
-													imageOptions.items[
-														selector
-													].positionOptions.width = val;
-
-													onChange(imageOptions);
-												}}
 											/>
 											<SizeControl
 												label={__(
@@ -444,37 +585,55 @@ const ImageLayer = props => {
 													'maxi-blocks'
 												)}
 												unit={
-													imageOptions.items[selector]
-														.positionOptions
-														.heightUnit
+													imageOptions[
+														getAttributeKey(
+															'background-image-height-unit',
+															isHover,
+															prefix
+														)
+													]
 												}
-												defaultUnit={
-													defaultImageOptions[0]
-														.positionOptions
-														.heightUnit
+												defaultUnit={getDefaultAttribute(
+													getAttributeKey(
+														'background-image-height-unit',
+														isHover,
+														prefix
+													)
+												)}
+												onChangeUnit={val =>
+													onChange({
+														[getAttributeKey(
+															'background-image-height-unit',
+															isHover,
+															prefix
+														)]: val,
+													})
 												}
-												onChangeUnit={val => {
-													imageOptions.items[
-														selector
-													].positionOptions.heightUnit = val;
-
-													onChange(imageOptions);
-												}}
 												value={
-													imageOptions.items[selector]
-														.positionOptions.height
+													imageOptions[
+														getAttributeKey(
+															'background-image-height',
+															isHover,
+															prefix
+														)
+													]
 												}
-												defaultValue={
-													defaultImageOptions[0]
-														.positionOptions.height
+												defaultValue={getDefaultAttribute(
+													getAttributeKey(
+														'background-image-height',
+														isHover,
+														prefix
+													)
+												)}
+												onChangeValue={val =>
+													onChange({
+														[getAttributeKey(
+															'background-image-height',
+															isHover,
+															prefix
+														)]: val,
+													})
 												}
-												onChangeValue={val => {
-													imageOptions.items[
-														selector
-													].positionOptions.height = val;
-
-													onChange(imageOptions);
-												}}
 											/>
 										</Fragment>
 									)}
@@ -484,7 +643,13 @@ const ImageLayer = props => {
 											'maxi-blocks'
 										)}
 										value={
-											imageOptions.items[selector].origin
+											imageOptions[
+												getAttributeKey(
+													'background-image-origin',
+													isHover,
+													prefix
+												)
+											]
 										}
 										options={[
 											{
@@ -509,13 +674,15 @@ const ImageLayer = props => {
 												value: 'content-box',
 											},
 										]}
-										onChange={val => {
-											imageOptions.items[
-												selector
-											].origin = val;
-
-											onChange(imageOptions);
-										}}
+										onChange={val =>
+											onChange({
+												[getAttributeKey(
+													'background-image-origin',
+													isHover,
+													prefix
+												)]: val,
+											})
+										}
 									/>
 									<SelectControl
 										label={__(
@@ -523,7 +690,13 @@ const ImageLayer = props => {
 											'maxi-blocks'
 										)}
 										value={
-											imageOptions.items[selector].clip
+											imageOptions[
+												getAttributeKey(
+													'background-image-clip-path',
+													isHover,
+													prefix
+												)
+											]
 										}
 										options={[
 											{
@@ -548,13 +721,15 @@ const ImageLayer = props => {
 												value: 'content-box',
 											},
 										]}
-										onChange={val => {
-											imageOptions.items[
-												selector
-											].clip = val;
-
-											onChange(imageOptions);
-										}}
+										onChange={val =>
+											onChange({
+												[getAttributeKey(
+													'background-image-clip-path',
+													isHover,
+													prefix
+												)]: val,
+											})
+										}
 									/>
 									<SelectControl
 										label={__(
@@ -562,8 +737,13 @@ const ImageLayer = props => {
 											'maxi-blocks'
 										)}
 										value={
-											imageOptions.items[selector]
-												.attachment
+											imageOptions[
+												getAttributeKey(
+													'background-image-attachment',
+													isHover,
+													prefix
+												)
+											]
 										}
 										options={[
 											{
@@ -588,13 +768,15 @@ const ImageLayer = props => {
 												value: 'local',
 											},
 										]}
-										onChange={val => {
-											imageOptions.items[
-												selector
-											].attachment = val;
-
-											onChange(imageOptions);
-										}}
+										onChange={val =>
+											onChange({
+												[getAttributeKey(
+													'background-image-attachment',
+													isHover,
+													prefix
+												)]: val,
+											})
+										}
 									/>
 								</Fragment>
 							),

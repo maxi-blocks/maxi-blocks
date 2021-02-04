@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getLastBreakpointValue from '../../styles/getLastBreakpointValue';
+import getLastBreakpointAttribute from '../../styles/getLastBreakpointAttribute';
 import getCurrentFormatClassName from './getCurrentFormatClassName';
 
 /**
@@ -35,7 +35,7 @@ const getCustomFormatValue = ({
 					currentClassName
 				]
 			) {
-				const responsiveValue = getLastBreakpointValue(
+				const responsiveValue = getLastBreakpointAttribute(
 					prop,
 					breakpoint,
 					typography[`custom-formats${isHover ? '-hover' : ''}`][
@@ -48,7 +48,7 @@ const getCustomFormatValue = ({
 		}
 	}
 
-	return getLastBreakpointValue(prop, breakpoint, typography, isHover);
+	return getLastBreakpointAttribute(prop, breakpoint, typography, isHover);
 };
 
 export default getCustomFormatValue;

@@ -6,8 +6,8 @@ const { Button } = wp.components;
 /**
  * Internal dependencies
  */
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
+import { BackgroundDisplayer } from '../../components';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -79,7 +79,7 @@ const save = props => {
 				{!isEmpty(attributes['icon-name']) && (
 					<i className={attributes['icon-name']} />
 				)}
-				<div className='maxi-button-block__button__text'>
+				<div className='maxi-button-block__content'>
 					{buttonContent}
 				</div>
 			</Button>

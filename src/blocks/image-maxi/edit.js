@@ -127,7 +127,7 @@ class edit extends MaxiBlock {
 		const getImage = () => {
 			if (
 				imageSize === 'custom' &&
-				cropOptions &&
+				!!cropOptions &&
 				!isEmpty(cropOptions.image.source_url)
 			)
 				return { ...cropOptions.image };
@@ -153,7 +153,6 @@ class edit extends MaxiBlock {
 			<Inspector {...this.props} />,
 			<Toolbar {...this.props} />,
 			<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
-				{' '}
 				<__experimentalBlock.figure
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}

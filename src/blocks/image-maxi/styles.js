@@ -179,6 +179,9 @@ const getImageBackendObject = props => {
 			label: 'Image settings',
 			general: {},
 		},
+		imageSize: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 	};
 
 	if (clipPath) response.image.general['clip-path'] = clipPath;
@@ -201,6 +204,16 @@ const getFigcaptionObject = props => {
 	return response;
 };
 
+const getResizeObject = props => {
+	const response = {
+		imageSize: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -209,6 +222,7 @@ const getStyles = props => {
 		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageFrontendObject(
 			props
 		),
+		[`${uniqueID} .maxi-image-block__resizer`]: getResizeObject(props),
 		[`${uniqueID}:hover .maxi-block-hover-wrapper`]: getImageHoverObject(
 			props
 		),

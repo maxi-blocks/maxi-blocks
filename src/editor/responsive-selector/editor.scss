@@ -1,66 +1,61 @@
-#maxi-blocks__responsive-toolbar {
+.maxi-responsive-selector {
 	position: absolute;
 	top: 61px;
 	left: 0;
 	z-index: 99999;
-	display: none;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	background: #fff;
+	padding: 10px 20px;
+	box-shadow: 0 5px 15px 0 rgba(119, 119, 119, 0.1);
 
-	.maxi-responsive-selector {
+	&__close {
+		position: absolute;
+		top: -5px;
+		right: -10px;
+		background: #ff4a16;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
 		display: flex;
-		flex-direction: row;
+		justify-content: center;
 		align-items: center;
-		background: #fff;
-		padding: 10px 20px;
-		box-shadow: 0 5px 15px 0 rgba(119, 119, 119, 0.1);
-		position: relative;
+		color: #fff;
+		font-weight: bold;
+		cursor: pointer;
+	}
+	&__button {
+		display: flex;
+		border-radius: 5px;
+		margin: 0 0 0 8px;
+		background-color: #f8f8f8;
+		border: 2px solid #f8f8f8;
+		transition: border-color 0.5s;
+		height: 40px;
+		width: 55px;
+		justify-content: center;
+		align-items: center;
+		padding: 2px 6px !important;
 
-		&__close {
-			position: absolute;
-			top: -5px;
-			right: -10px;
-			background: #ff4a16;
-			width: 20px;
-			height: 20px;
-			border-radius: 50%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			color: #fff;
-			font-weight: bold;
-			cursor: pointer;
+		svg {
+			width: 90%;
+			height: 90%;
 		}
-		&__button {
-			display: flex;
-			border-radius: 5px;
-			margin: 0 0 0 8px;
-			background-color: #f8f8f8;
-			border: 2px solid #f8f8f8;
-			transition: border-color 0.5s;
-			height: 40px;
-			width: 55px;
-			justify-content: center;
-			align-items: center;
-			padding: 2px 6px !important;
-
-			svg {
-				width: 90%;
-				height: 90%;
-			}
-			&:hover {
-				border-color: #e8eaeb;
-				color: #464a53 !important;
-			}
-			&:first-of-type {
-				margin-left: 0;
-				font-size: 1rem;
-			}
-			&[aria-pressed='true'] {
-				border-color: #e8eaeb;
-				border-bottom-color: #ff4a17;
-				background-color: #fff;
-				border-bottom-left-radius: 0;
-				border-bottom-right-radius: 0;
-			}
+		&:hover {
+			border-color: #e8eaeb;
+			color: #464a53 !important;
+		}
+		&:first-of-type {
+			margin-left: 0;
+			font-size: 1rem;
+		}
+		&[aria-pressed='true'] {
+			border-color: #e8eaeb;
+			border-bottom-color: #ff4a17;
+			background-color: #fff;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
 		}
 	}
 }

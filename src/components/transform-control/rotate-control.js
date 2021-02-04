@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const { Button, BaseControl } = wp.components;
 const { useState, useEffect } = wp.element;
 

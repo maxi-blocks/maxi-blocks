@@ -11,11 +11,16 @@ const { __experimentalBlock, MediaUpload } = wp.blockEditor;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
-import { MaxiBlock, Toolbar } from '../../components';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import MotionPreview from '../../components/motion-preview/newMotionPreview';
+import {
+	BackgroundDisplayer,
+	MaxiBlock,
+	MotionPreview,
+	Toolbar,
+} from '../../components';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -54,8 +59,10 @@ class edit extends MaxiBlock {
 		return {
 			[uniqueID]: {
 				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'motion'),
-					...getGroupAttributes(this.props.attributes, 'entrance'),
+					...getGroupAttributes(this.props.attributes, [
+						'motion',
+						'entrance',
+					]),
 				}),
 			},
 		};
@@ -106,7 +113,7 @@ class edit extends MaxiBlock {
 			'maxi-block maxi-image-block',
 			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 			'maxi-block--backend',
-			getLastBreakpointValue('display', deviceType, attributes) ===
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
@@ -184,7 +191,7 @@ class edit extends MaxiBlock {
 											])}
 											blockClassName={uniqueID}
 										/>
-<ResizableBox
+										<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
 												width: `${

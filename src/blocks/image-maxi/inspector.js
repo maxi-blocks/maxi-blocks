@@ -16,36 +16,35 @@ const {
  */
 import {
 	AccordionControl,
+	AlignmentControl,
+	AxisControl,
+	BackgroundControl,
 	BlockStylesControl,
-	SettingTabsControl,
+	BorderControl,
+	BoxShadowControl,
 	ClipPath,
-	ImageAltControl,
-	FancyRadioControl,
-	SVGDefaultsDisplayer,
 	CustomLabel,
+	DisplayControl,
+	EntranceAnimationControl,
+	FancyRadioControl,
+	FullSizeControl,
+	HoverEffectControl,
+	ImageAltControl,
+	ImageCropControl,
+	MotionControl,
+	OpacityControl,
+	PositionControl,
+	ResponsiveControl,
+	SettingTabsControl,
+	SVGDefaultsDisplayer,
+	TransformControl,
+	TypographyControl,
+	ZIndexControl,
 } from '../../components';
-import { injectImgSVG } from '../../extensions/svg/utils';
-
-import FullSizeControl from '../../components/full-size-control/newFullSize';
-import BorderControl from '../../components/border-control/newBorderControl';
-import BoxShadowControl from '../../components/box-shadow-control/newBoxShadowControl';
-import AxisControl from '../../components/axis-control/newAxisControl';
-import BackgroundControl from '../../components/new-background-control';
-import MotionControl from '../../components/new-motion-control';
-import EntranceAnimationControl from '../../components/entrance-animation-control/newEntranceControl';
-import TransformControl from '../../components/new-transform-control';
-import DisplayControl from '../../components/display-control/newDisplayControl';
-import PositionControl from '../../components/position-control/newPositionControl';
-import ResponsiveControl from '../../components/responsive-control/newResponsiveControl';
-import ZIndexControl from '../../components/zindex-control/newIndexControl';
-import OpacityControl from '../../components/opacity-control/newOpacityControl';
-import ImageCropControl from '../../components/image-crop-control/newImageCropControl';
-import HoverEffectControl from '../../components/hover-effect-control/newHoverEffectControl';
-import TypographyControl from '../../components/typography-control/newTypographyControl';
-import AlignmentControl from '../../components/alignment-control/newAlignmentControl';
-
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 
 /**
  * External dependencies

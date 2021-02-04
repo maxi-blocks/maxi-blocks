@@ -7,7 +7,7 @@ const { Icon } = wp.components;
 /**
  * Internal dependencies
  */
-import BorderControl from '../../../border-control/newBorderControl';
+import BorderControl from '../../../border-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -15,8 +15,10 @@ import ToolbarPopover from '../toolbar-popover';
  */
 import './editor.scss';
 import { toolbarBorder } from '../../../../icons';
-import getLastBreakpointValue from '../../../../extensions/styles/getLastBreakpointValue';
-import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * Border
@@ -40,25 +42,25 @@ const Border = props => {
 				<div
 					className='toolbar-item__border__icon'
 					style={{
-						borderStyle: getLastBreakpointValue(
+						borderStyle: getLastBreakpointAttribute(
 							'border-style',
 							breakpoint,
 							props
 						),
 						background:
-							getLastBreakpointValue(
+							getLastBreakpointAttribute(
 								'border-style',
 								breakpoint,
 								props
 							) === 'none'
 								? 'transparent'
-								: getLastBreakpointValue(
+								: getLastBreakpointAttribute(
 										'border-style',
 										breakpoint,
 										props
 								  ),
 						borderWidth: '1px',
-						borderColor: getLastBreakpointValue(
+						borderColor: getLastBreakpointAttribute(
 							'border-color',
 							breakpoint,
 							props

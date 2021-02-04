@@ -17,7 +17,7 @@ import {
 	removeLinkFormat,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
-import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * External dependencies

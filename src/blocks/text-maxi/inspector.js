@@ -9,34 +9,35 @@ const { TextControl, SelectControl } = wp.components;
 /**
  * Internal dependencies
  */
-import FullSizeControl from '../../components/full-size-control/newFullSize';
-import BorderControl from '../../components/border-control/newBorderControl';
-import BoxShadowControl from '../../components/box-shadow-control/newBoxShadowControl';
-import AxisControl from '../../components/axis-control/newAxisControl';
-import BackgroundControl from '../../components/new-background-control';
-import MotionControl from '../../components/new-motion-control';
-import EntranceAnimationControl from '../../components/entrance-animation-control/newEntranceControl';
-import TransformControl from '../../components/new-transform-control';
-import DisplayControl from '../../components/display-control/newDisplayControl';
-import PositionControl from '../../components/position-control/newPositionControl';
-import ResponsiveControl from '../../components/responsive-control/newResponsiveControl';
-import ZIndexControl from '../../components/zindex-control/newIndexControl';
-import OpacityControl from '../../components/opacity-control/newOpacityControl';
-import TypographyControl from '../../components/typography-control/newTypographyControl';
-import FontLevelControl from '../../components/font-level-control/newFontLevelControl';
-import AlignmentControl from '../../components/alignment-control/newAlignmentControl';
 import {
 	AccordionControl,
+	AlignmentControl,
+	AxisControl,
+	BackgroundControl,
 	BlockStylesControl,
-	SettingTabsControl,
-	NumberControl,
-	FancyRadioControl,
+	BorderControl,
+	BoxShadowControl,
 	CustomLabel,
+	DisplayControl,
+	EntranceAnimationControl,
+	FancyRadioControl,
+	FontLevelControl,
+	FullSizeControl,
+	MotionControl,
+	NumberControl,
+	OpacityControl,
+	PositionControl,
+	ResponsiveControl,
+	SettingTabsControl,
+	TransformControl,
+	TypographyControl,
+	ZIndexControl,
 } from '../../components';
-
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
-import getLastBreakpointValue from '../../extensions/styles/getLastBreakpointValue';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * Inspector
@@ -64,7 +65,6 @@ const Inspector = props => {
 		listStart,
 		listReversed,
 	} = attributes;
-	const highlight = { ...props.attributes.highlight };
 
 	return (
 		<InspectorControls>
@@ -91,14 +91,13 @@ const Inspector = props => {
 										}
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
-										highlight={highlight}
 										onChange={obj => setAttributes(obj)}
 										disableHighlightColor1
 										disableHighlightColor2
-										{...getGroupAttributes(
-											attributes,
-											'border'
-										)}
+										{...getGroupAttributes(attributes, [
+											'border',
+											'highlight',
+										])}
 									/>
 								</div>
 								<AccordionControl
@@ -278,7 +277,9 @@ const Inspector = props => {
 																		isList
 																	}
 																	disableColor={
-																		!!highlight.textHighlight
+																		!!attributes[
+																			'text-highlight'
+																		]
 																	}
 																/>
 															),
@@ -354,10 +355,12 @@ const Inspector = props => {
 																				isList
 																			}
 																			disableColor={
-																				!!highlight.textHighlight
+																				!!attributes[
+																					'text-highlight'
+																				]
 																			}
 																			isHover
-																			originalFontOptions={getLastBreakpointValue(
+																			originalFontOptions={getLastBreakpointAttribute(
 																				'font-options',
 																				deviceType,
 																				attributes
@@ -405,7 +408,9 @@ const Inspector = props => {
 																			)
 																		}
 																		disableColor={
-																			!!highlight.backgroundHighlight
+																			!!attributes[
+																				'background-highlight'
+																			]
 																		}
 																		disableImage
 																		disableVideo
@@ -476,7 +481,9 @@ const Inspector = props => {
 																				)
 																			}
 																			disableColor={
-																				!!highlight.backgroundHighlight
+																				!!attributes[
+																					'background-highlight'
+																				]
 																			}
 																			disableImage
 																			disableVideo
@@ -520,7 +527,9 @@ const Inspector = props => {
 																		deviceType
 																	}
 																	disableColor={
-																		!!highlight.borderHighlight
+																		!!attributes[
+																			'border-highlight'
+																		]
 																	}
 																/>
 															),
@@ -588,7 +597,9 @@ const Inspector = props => {
 																			}
 																			isHover
 																			disableColor={
-																				!!highlight.borderHighlight
+																				!!attributes[
+																					'border-highlight'
+																				]
 																			}
 																		/>
 																	)}

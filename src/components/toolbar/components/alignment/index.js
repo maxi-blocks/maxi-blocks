@@ -6,10 +6,12 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
-import getLastBreakpointValue from '../../../../extensions/styles/getLastBreakpointValue';
-import AlignmentControl from '../../../alignment-control/newAlignmentControl';
+import AlignmentControl from '../../../alignment-control';
 import ToolbarPopover from '../toolbar-popover';
-import getGroupAttributes from '../../../../extensions/styles/getGroupAttributes';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * Styles & Icons
@@ -62,7 +64,7 @@ const Alignment = props => {
 			className='toolbar-item__alignment'
 			tooltip={__('Alignment', 'maxi-blocks')}
 			icon={alignIcon(
-				getLastBreakpointValue(
+				getLastBreakpointAttribute(
 					isText ? 'text-alignment' : 'alignment',
 					breakpoint,
 					props

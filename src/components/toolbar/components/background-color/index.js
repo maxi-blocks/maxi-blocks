@@ -8,12 +8,12 @@ const { __ } = wp.i18n;
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * Styles
  */
 import './editor.scss';
-import getDefaultAttribute from '../../../../extensions/styles/getDefaultAttribute';
 
 /**
  * BackgroundColor

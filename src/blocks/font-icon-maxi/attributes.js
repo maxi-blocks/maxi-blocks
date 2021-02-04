@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as newAttributes from '../../extensions/styles/defaults/index';
+import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -17,36 +17,36 @@ const attributes = {
 		default: __('Font Icon', 'maxi-blocks'),
 	},
 	...{
-		...newAttributes.textAlignment,
+		...attributesData.textAlignment,
 		'text-alignment-general': {
 			type: 'string',
 			default: 'center',
 		},
 	},
-	...newAttributes.icon,
-	...newAttributes.opacity,
-	...newAttributes.background,
-	...newAttributes.backgroundColor,
-	...newAttributes.backgroundGradient,
-	...newAttributes.backgroundHover,
-	...newAttributes.backgroundColorHover,
-	...newAttributes.backgroundGradientHover,
-	...newAttributes.border,
-	...newAttributes.borderWidth,
-	...newAttributes.borderRadius,
-	...newAttributes.borderHover,
-	...newAttributes.borderWidthHover,
-	...newAttributes.borderRadiusHover,
-	...newAttributes.boxShadow,
-	...newAttributes.boxShadowHover,
-	...newAttributes.margin,
-	...newAttributes.padding,
-	...newAttributes.display,
-	...newAttributes.position,
-	...newAttributes.motion,
-	...newAttributes.transform,
-	...newAttributes.highlight,
-	...newAttributes.entrance,
+	...attributesData.icon,
+	...attributesData.opacity,
+	...attributesData.background,
+	...attributesData.backgroundColor,
+	...attributesData.backgroundGradient,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.backgroundGradientHover,
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...attributesData.borderRadius,
+	...attributesData.borderHover,
+	...attributesData.borderWidthHover,
+	...attributesData.borderRadiusHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.margin,
+	...attributesData.padding,
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.motion,
+	...attributesData.transform,
+	...attributesData.highlight,
+	...attributesData.entrance,
 };
 
 export default attributes;

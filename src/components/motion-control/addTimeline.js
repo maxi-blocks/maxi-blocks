@@ -14,7 +14,7 @@ import { has, find, isNil } from 'lodash';
  * Component
  */
 const AddTimeline = props => {
-	const { interaction, onChange } = props;
+	const { onChange } = props;
 
 	const [timelineType, setTimelineType] = useState('move');
 	const [timelineTime, setTimelineTime] = useState(0);
@@ -65,33 +65,35 @@ const AddTimeline = props => {
 				break;
 		}
 
-		if (!has(interaction.timeline, time)) {
-			interaction.timeline = {
-				...interaction.timeline,
-				[time]: [
-					{
-						type,
-						settings,
-					},
-				],
-			};
-		} else if (isNil(find(interaction.timeline[time], { type }))) {
-			const newTimeline = { ...interaction.timeline };
+		if (!has(props['motion-time-line'], time)) {
+			onChange({
+				'motion-time-line': {
+					...props['motion-time-line'],
+					[time]: [
+						{
+							type,
+							settings,
+						},
+					],
+				},
+			});
+		} else if (isNil(find(props['motion-time-line'][time], { type }))) {
+			const newTimeline = { ...props['motion-time-line'] };
 			newTimeline[time].unshift({
 				type,
 				settings,
 			});
-			interaction.timeline = {
-				...newTimeline,
-			};
+			onChange({
+				'motion-time-line': {
+					...newTimeline,
+				},
+			});
 		}
 
-		interaction.activeTimeline = {
-			time,
-			index: 0,
-		};
-
-		onChange(interaction);
+		onChange({
+			'motion-active-time-line-time': time,
+			'motion-active-time-line-index': 0,
+		});
 	};
 
 	return (

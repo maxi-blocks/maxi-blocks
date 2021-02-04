@@ -93,7 +93,6 @@ const attributes = {
 	...attributesData.backgroundVideoHover,
 	...attributesData.backgroundGradientHover,
 	...attributesData.backgroundSVGHover,
-	...attributesData.size,
 	...attributesData.opacity,
 	...attributesData.border,
 	...attributesData.borderWidth,
@@ -130,6 +129,25 @@ const attributes = {
 		'alignment-general': {
 			type: 'string',
 			default: 'center',
+		},
+	},
+	...{
+		...attributesData.size,
+		'min-width-unit-general': {
+			type: 'string',
+			default: '%',
+		},
+		'min-width-xxl': {
+			type: 'number',
+			default: 100,
+		},
+		'min-width-s': {
+			type: 'number',
+			default: 100,
+		},
+		'min-width-xs': {
+			type: 'number',
+			default: 100,
 		},
 	},
 };

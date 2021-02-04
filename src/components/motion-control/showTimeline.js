@@ -20,37 +20,37 @@ import { toolbarDelete } from '../../icons';
  * Component
  */
 const ShowTimeline = props => {
-	const { interaction, onChange } = props;
+	const { onChange } = props;
 
 	const removeTimeline = (type, time) => {
-		if (has(interaction.timeline, time)) {
-			const result = filter(interaction.timeline[time], o => {
+		if (has(props['motion-time-line'], time)) {
+			const result = filter(props['motion-time-line'][time], o => {
 				return o.type !== type;
 			});
 
-			interaction.timeline = {
-				...interaction.timeline,
-				[time]: [...result],
-			};
+			onChange({
+				'motion-time-line': {
+					...props['motion-time-line'],
+					[time]: [...result],
+				},
+			});
 
 			if (isEmpty(result)) {
-				const newTimeline = { ...interaction.timeline };
+				const newTimeline = { ...props['motion-time-line'] };
 				delete newTimeline[time];
 
-				interaction.timeline = {
-					...newTimeline,
-				};
+				onChange({
+					'motion-time-line': { ...newTimeline },
+				});
 			}
 		}
 
-		const res = flattenDeep(Object.entries(interaction.timeline));
+		const res = flattenDeep(Object.entries(props['motion-time-line']));
 
-		interaction.activeTimeline = {
-			time: Number(res[0]),
-			index: 0,
-		};
-
-		onChange(interaction);
+		onChange({
+			'motion-active-time-line-time': +res[0],
+			'motion-active-time-line-index': 0,
+		});
 	};
 
 	const typeCount = {
@@ -61,18 +61,21 @@ const ShowTimeline = props => {
 		opacity: 0,
 		blur: 0,
 	};
-	forIn(flattenDeep(Object.values(interaction.timeline)), value => {
-		if (value.type === 'move') typeCount.move++;
-		if (value.type === 'scale') typeCount.scale++;
-		if (value.type === 'skew') typeCount.skew++;
-		if (value.type === 'rotate') typeCount.rotate++;
-		if (value.type === 'opacity') typeCount.opacity++;
-		if (value.type === 'blur') typeCount.blur++;
-	});
+	forIn(
+		flattenDeep(Object.values(props['motion-time-line'] || {})),
+		value => {
+			if (value.type === 'move') typeCount.move++;
+			if (value.type === 'scale') typeCount.scale++;
+			if (value.type === 'skew') typeCount.skew++;
+			if (value.type === 'rotate') typeCount.rotate++;
+			if (value.type === 'opacity') typeCount.opacity++;
+			if (value.type === 'blur') typeCount.blur++;
+		}
+	);
 
 	return (
 		<div className='maxi-motion-control__timeline'>
-			{isEmpty(interaction.timeline) && (
+			{isEmpty(props['motion-time-line']) && (
 				<div className='maxi-motion-control__timeline__no-effects'>
 					<p>
 						{__(
@@ -82,81 +85,89 @@ const ShowTimeline = props => {
 					</p>
 				</div>
 			)}
-			{Object.entries(interaction.timeline).map(
-				([key, value], i, arr) => {
-					const prevValue = !isNil(arr[i - 1]) ? arr[i - 1][0] : 0;
-					return (
-						<Fragment>
-							<div
-								className='maxi-motion-control__timeline__space'
-								style={{
-									flexGrow: `${parseFloat(
-										(Number(key) - Number(prevValue)) / 100
-									)}`,
-								}}
-							/>
-							<div className='maxi-motion-control__timeline__group'>
-								{value.map((item, i) => (
-									<div
-										className={classnames(
-											'maxi-motion-control__timeline__group__item',
-											interaction.activeTimeline.time ===
-												Number(key) &&
-												interaction.activeTimeline
-													.index === i &&
-												'maxi-motion-control__timeline__group__item--active-item'
-										)}
-										onClick={() => {
-											interaction.activeTimeline = {
-												time: Number(key),
-												index: i,
-											};
-											onChange(interaction);
-										}}
-									>
-										<span>
-											{item.type}
-											{typeCount[item.type] % 2 !== 0 && (
-												<Tooltip
-													text={sprintf(
-														__(
-															'You need two "%s" effects to animate it.',
-															'maxi-blocks'
-														),
-														item.type
-															.charAt(0)
-															.toUpperCase() +
-															item.type.slice(1)
-													)}
-													position='top right'
-												>
-													<span className='maxi-motion-control__timeline__group__item--alert'></span>
-												</Tooltip>
+			{props['motion-time-line'] &&
+				Object.entries(props['motion-time-line']).map(
+					([key, value], i, arr) => {
+						const prevValue = !isNil(arr[i - 1])
+							? arr[i - 1][0]
+							: 0;
+						return (
+							<Fragment>
+								<div
+									className='maxi-motion-control__timeline__space'
+									style={{
+										flexGrow: `${parseFloat(
+											(Number(key) - Number(prevValue)) /
+												100
+										)}`,
+									}}
+								/>
+								<div className='maxi-motion-control__timeline__group'>
+									{value.map((item, i) => (
+										<div
+											className={classnames(
+												'maxi-motion-control__timeline__group__item',
+												props[
+													'motion-active-time-line-time'
+												] === Number(key) &&
+													props[
+														'motion-active-time-line-index'
+													] === i &&
+													'maxi-motion-control__timeline__group__item--active-item'
 											)}
-										</span>
-										<div className='maxi-motion-control__timeline__group__item__actions'>
-											<i
-												onClick={e => {
-													e.stopPropagation();
-													removeTimeline(
-														item.type,
-														key
-													);
-												}}
-											>
-												{toolbarDelete}
-											</i>
+											onClick={() =>
+												onChange({
+													'motion-active-time-line-time': +key,
+													'motion-active-time-line-index': 0,
+												})
+											}
+										>
+											<span>
+												{item.type}
+												{typeCount[item.type] % 2 !==
+													0 && (
+													<Tooltip
+														text={sprintf(
+															__(
+																'You need two "%s" effects to animate it.',
+																'maxi-blocks'
+															),
+															item.type
+																.charAt(0)
+																.toUpperCase() +
+																item.type.slice(
+																	1
+																)
+														)}
+														position='top right'
+													>
+														<span className='maxi-motion-control__timeline__group__item--alert' />
+													</Tooltip>
+												)}
+											</span>
+											<div className='maxi-motion-control__timeline__group__item__actions'>
+												<i
+													onClick={e => {
+														e.stopPropagation();
+														removeTimeline(
+															item.type,
+															key
+														);
+													}}
+												>
+													{toolbarDelete}
+												</i>
+											</div>
 										</div>
+									))}
+									<div className='maxi-motion-control__timeline__group__position'>
+										{key}%
 									</div>
-								))}
-								<div className='maxi-motion-control__timeline__group__position'>
-									{key}%
 								</div>
-							</div>
-						</Fragment>
-					);
-				}
-			)}
+							</Fragment>
+						);
+					}
+				)}
 		</div>
 	);
 };

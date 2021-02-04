@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as newAttributes from '../../extensions/styles/defaults/index';
+import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -32,31 +32,31 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	...newAttributes.columnSize,
-	...newAttributes.opacity,
-	...newAttributes.background,
-	...newAttributes.backgroundColor,
-	...newAttributes.backgroundImage,
-	...newAttributes.backgroundVideo,
-	...newAttributes.backgroundGradient,
-	...newAttributes.backgroundSVG,
-	...newAttributes.backgroundHover,
-	...newAttributes.backgroundColorHover,
-	...newAttributes.backgroundImageHover,
-	...newAttributes.backgroundVideoHover,
-	...newAttributes.backgroundGradientHover,
-	...newAttributes.backgroundSVGHover,
-	...newAttributes.border,
-	...newAttributes.borderWidth,
-	...newAttributes.borderRadius,
-	...newAttributes.borderHover,
-	...newAttributes.boxShadow,
-	...newAttributes.boxShadowHover,
-	...newAttributes.margin,
-	...newAttributes.padding,
-	...newAttributes.display,
-	...newAttributes.transform,
-	...newAttributes.zIndex,
+	...attributesData.columnSize,
+	...attributesData.opacity,
+	...attributesData.background,
+	...attributesData.backgroundColor,
+	...attributesData.backgroundImage,
+	...attributesData.backgroundVideo,
+	...attributesData.backgroundGradient,
+	...attributesData.backgroundSVG,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.backgroundImageHover,
+	...attributesData.backgroundVideoHover,
+	...attributesData.backgroundGradientHover,
+	...attributesData.backgroundSVGHover,
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...attributesData.borderRadius,
+	...attributesData.borderHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.margin,
+	...attributesData.padding,
+	...attributesData.display,
+	...attributesData.transform,
+	...attributesData.zIndex,
 };
 
 export default attributes;

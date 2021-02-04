@@ -21,7 +21,7 @@ import { isEmpty, forIn } from 'lodash';
  * Component
  */
 const TimelinePresets = props => {
-	const { interaction, onChange } = props;
+	const { onChange } = props;
 
 	const [presetName, setPresetName] = useState('');
 	const [presetLoad, setPresetLoad] = useState('');
@@ -64,7 +64,7 @@ const TimelinePresets = props => {
 		<div className='maxi-motion-control__preset'>
 			<FancyRadioControl
 				label={__('Preset', 'maxi-blocks')}
-				selected={interaction.presetStatus}
+				selected={+props['motion-preset-status']}
 				options={[
 					{
 						label: __('Yes', 'maxi-blocks'),
@@ -75,12 +75,9 @@ const TimelinePresets = props => {
 						value: 0,
 					},
 				]}
-				onChange={val => {
-					interaction.presetStatus = Number(val);
-					onChange(interaction);
-				}}
+				onChange={val => onChange({ 'motion-preset-status': !!+val })}
 			/>
-			{!!interaction.presetStatus && (
+			{props['motion-preset-status'] && (
 				<Fragment>
 					{getPresetsOptions().length > 1 && (
 						<div className='maxi-motion-control__preset__load'>
@@ -92,20 +89,15 @@ const TimelinePresets = props => {
 							<Button
 								disabled={isEmpty(presetLoad)}
 								onClick={() => {
-									interaction.timeline = {
-										...getPresets()[presetLoad].preset,
-									};
-
-									interaction.activeTimeline = {
-										time: Number(
-											Object.keys(
-												getPresets()[presetLoad].preset
-											)[0]
-										),
-										index: 0,
-									};
-
-									onChange(interaction);
+									onChange({
+										'motion-time-line': {
+											...getPresets()[presetLoad].preset,
+										},
+										'motion-active-time-line-time': +Object.keys(
+											getPresets()[presetLoad].preset
+										)[0],
+										'motion-active-time-line-index': 0,
+									});
 									setPresetLoad('');
 								}}
 							>
@@ -158,7 +150,7 @@ const TimelinePresets = props => {
 										[`pre_${new Date().getTime()}`]: {
 											name: presetName,
 											preset: {
-												...interaction.timeline,
+												...props['motion-time-line'],
 											},
 										},
 									});
@@ -168,7 +160,7 @@ const TimelinePresets = props => {
 										[`pre_${new Date().getTime()}`]: {
 											name: presetName,
 											preset: {
-												...interaction.timeline,
+												...props['motion-time-line'],
 											},
 										},
 									});

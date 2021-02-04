@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as newAttributes from '../../extensions/styles/defaults/index';
+import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -49,34 +49,34 @@ const attributes = {
 		default: 64,
 	},
 	...{
-		...newAttributes.alignment,
+		...attributesData.alignment,
 		'alignment-general': {
 			type: 'string',
 			default: 'center',
 		},
 	},
-	...newAttributes.opacity,
-	...newAttributes.background,
-	...newAttributes.backgroundColor,
-	...newAttributes.backgroundHover,
-	...newAttributes.backgroundColorHover,
-	...newAttributes.boxShadow,
-	...newAttributes.boxShadowHover,
-	...newAttributes.border,
-	...newAttributes.borderWidth,
-	...newAttributes.borderRadius,
-	...newAttributes.borderHover,
-	...newAttributes.borderWidthHover,
-	...newAttributes.borderRadiusHover,
-	...newAttributes.padding,
-	...newAttributes.margin,
-	...newAttributes.display,
-	...newAttributes.position,
-	...newAttributes.motion,
-	...newAttributes.entrance,
-	...newAttributes.transform,
-	...newAttributes.zIndex,
-	...newAttributes.highlight,
+	...attributesData.opacity,
+	...attributesData.background,
+	...attributesData.backgroundColor,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...attributesData.borderRadius,
+	...attributesData.borderHover,
+	...attributesData.borderWidthHover,
+	...attributesData.borderRadiusHover,
+	...attributesData.padding,
+	...attributesData.margin,
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.motion,
+	...attributesData.entrance,
+	...attributesData.transform,
+	...attributesData.zIndex,
+	...attributesData.highlight,
 };
 
 export default attributes;

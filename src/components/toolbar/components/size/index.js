@@ -7,16 +7,18 @@ const { RadioControl } = wp.components;
 /**
  * Internal dependencies
  */
-import getLastBreakpointValue from '../../../../extensions/styles/getLastBreakpointValue';
 import SizeControl from '../../../size-control';
 import ToolbarPopover from '../toolbar-popover';
+import {
+	getLastBreakpointAttribute,
+	getDefaultAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
-import getDefaultAttribute from '../../../../extensions/styles/getDefaultAttribute';
 
 /**
  * General
@@ -72,7 +74,7 @@ const Size = props => {
 						)}
 					<SizeControl
 						label={__('Width', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
+						unit={getLastBreakpointAttribute(
 							'width-unit',
 							breakpoint,
 							props
@@ -82,7 +84,7 @@ const Size = props => {
 						}
 						defaultValue={getDefaultAttribute('width')}
 						defaultUnit={getDefaultAttribute('width-unit')}
-						value={getLastBreakpointValue(
+						value={getLastBreakpointAttribute(
 							'width',
 							breakpoint,
 							props
@@ -93,7 +95,7 @@ const Size = props => {
 					/>
 					<SizeControl
 						label={__('Max Width', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
+						unit={getLastBreakpointAttribute(
 							'max-width-unit',
 							breakpoint,
 							props
@@ -103,7 +105,7 @@ const Size = props => {
 						}
 						defaultValue={getDefaultAttribute('max-width')}
 						defaultUnit={getDefaultAttribute('max-width-unit')}
-						value={getLastBreakpointValue(
+						value={getLastBreakpointAttribute(
 							'max-width',
 							breakpoint,
 							props

@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as newAttributes from '../../extensions/styles/defaults/index';
+import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -20,51 +20,51 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	...newAttributes.icon,
-	...newAttributes.iconPadding,
-	...newAttributes.iconBorder,
-	...newAttributes.iconBorderRadius,
-	...newAttributes.iconBorderWidth,
-	...newAttributes.highlight,
+	...attributesData.icon,
+	...attributesData.iconPadding,
+	...attributesData.iconBorder,
+	...attributesData.iconBorderRadius,
+	...attributesData.iconBorderWidth,
+	...attributesData.highlight,
 	...{
-		...newAttributes.alignment,
+		...attributesData.alignment,
 		'alignment-general': {
 			type: 'string',
 			default: 'center',
 		},
 	},
-	...newAttributes.textAlignment,
+	...attributesData.textAlignment,
 	...{
-		...newAttributes.typography,
+		...attributesData.typography,
 		'color-general': {
 			type: 'string',
 			default: '#fff',
 		},
 	},
-	...newAttributes.typographyHover,
+	...attributesData.typographyHover,
 	...{
-		...newAttributes.background,
+		...attributesData.background,
 		'background-active-media': {
 			type: 'string',
 			default: 'color',
 		},
 	},
 	...{
-		...newAttributes.backgroundColor,
+		...attributesData.backgroundColor,
 		'background-color': {
 			type: 'string',
 			default: '#ff4a17',
 		},
 	},
-	...newAttributes.backgroundGradient,
-	...newAttributes.backgroundHover,
-	...newAttributes.backgroundColorHover,
-	...newAttributes.backgroundGradientHover,
-	...newAttributes.opacity,
-	...newAttributes.border,
-	...newAttributes.borderWidth,
+	...attributesData.backgroundGradient,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.backgroundGradientHover,
+	...attributesData.opacity,
+	...attributesData.border,
+	...attributesData.borderWidth,
 	...{
-		...newAttributes.borderRadius,
+		...attributesData.borderRadius,
 		'border-top-left-radius-general': {
 			type: 'number',
 			default: 25,
@@ -82,15 +82,15 @@ const attributes = {
 			default: 25,
 		},
 	},
-	...newAttributes.borderHover,
-	...newAttributes.borderWidthHover,
-	...newAttributes.borderRadiusHover,
-	...newAttributes.size,
-	...newAttributes.boxShadow,
-	...newAttributes.boxShadowHover,
-	...newAttributes.margin,
+	...attributesData.borderHover,
+	...attributesData.borderWidthHover,
+	...attributesData.borderRadiusHover,
+	...attributesData.size,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.margin,
 	...{
-		...newAttributes.padding,
+		...attributesData.padding,
 		'padding-top-general': {
 			type: 'number',
 			default: 10,
@@ -108,12 +108,12 @@ const attributes = {
 			default: 20,
 		},
 	},
-	...newAttributes.display,
-	...newAttributes.position,
-	...newAttributes.motion,
-	...newAttributes.entrance,
-	...newAttributes.transform,
-	...newAttributes.zIndex,
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.motion,
+	...attributesData.entrance,
+	...attributesData.transform,
+	...attributesData.zIndex,
 };
 
 export default attributes;

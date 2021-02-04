@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { Fragment, useState } = wp.element;
+const { Fragment } = wp.element;
 const { RangeControl, SelectControl, TextControl } = wp.components;
 
 /**
@@ -11,24 +11,24 @@ const { RangeControl, SelectControl, TextControl } = wp.components;
  */
 import {
 	AccordionControl,
+	AxisControl,
+	BackgroundControl,
 	BlockStylesControl,
-	SettingTabsControl,
-	FancyRadioControl,
+	BorderControl,
+	BoxShadowControl,
 	CustomLabel,
+	DisplayControl,
+	FancyRadioControl,
+	OpacityControl,
+	ResponsiveControl,
+	SettingTabsControl,
+	TransformControl,
+	ZIndexControl,
 } from '../../components';
-import BorderControl from '../../components/border-control/newBorderControl';
-import BoxShadowControl from '../../components/box-shadow-control/newBoxShadowControl';
-import AxisControl from '../../components/axis-control/newAxisControl';
-import BackgroundControl from '../../components/new-background-control';
-import TransformControl from '../../components/new-transform-control';
-import DisplayControl from '../../components/display-control/newDisplayControl';
-import ResponsiveControl from '../../components/responsive-control/newResponsiveControl';
-import ZIndexControl from '../../components/zindex-control/newIndexControl';
-import OpacityControl from '../../components/opacity-control/newOpacityControl';
-
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import getDefaultAttribute from '../../extensions/styles/getDefaultAttribute';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import {
+	getGroupAttributes,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * Inspector
@@ -97,11 +97,11 @@ const Inspector = props => {
 															'Column Size (%)',
 															'maxi-blocks'
 														)}
-														value={getLastBreakpointAttribute(
-															'column-size',
-															deviceType,
-															attributes
-														)}
+														value={
+															attributes[
+																`column-size-${deviceType}`
+															]
+														}
 														onChange={val => {
 															document.querySelector(
 																`.maxi-column-block__resizer__${uniqueID}`

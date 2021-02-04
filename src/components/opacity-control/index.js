@@ -7,9 +7,8 @@ const { RangeControl } = wp.components;
 /**
  * External dependencies
  */
-import { getLastBreakpointValue } from '../../utils';
 import classnames from 'classnames';
-import { isNil, isNumber, round, isEmpty } from 'lodash';
+import { isNil, isEmpty, round } from 'lodash';
 
 /**
  * Styles
@@ -22,14 +21,12 @@ import './editor.scss';
 const OpacityControl = props => {
 	const {
 		label,
+		opacity,
+		defaultOpacity = 1,
 		fullWidthMode = false,
 		className,
 		onChange,
-		breakpoint = 'general',
 	} = props;
-
-	const opacity = { ...props.opacity };
-	const defaultOpacity = { ...props.defaultOpacity };
 
 	const classes = classnames(
 		'maxi-opacity-control',
@@ -37,30 +34,20 @@ const OpacityControl = props => {
 		className
 	);
 
-	const getValue = () => {
-		const response = getLastBreakpointValue(opacity, 'opacity', breakpoint);
-
-		if (!isNumber(response)) return response;
-
-		return round(response * 100);
-	};
-
 	return (
 		<RangeControl
 			label={isEmpty(label) ? __('Opacity', 'maxi-blocks') : label}
 			className={classes}
-			value={getValue()}
+			value={opacity * 100}
 			onChange={val => {
 				isNil(val)
-					? (opacity[breakpoint].opacity =
-							defaultOpacity[breakpoint].opacity)
-					: (opacity[breakpoint].opacity = Number(val / 100));
-				onChange(opacity);
+					? onChange(defaultOpacity)
+					: onChange(round(val / 100, 2));
 			}}
 			min={0}
 			max={100}
 			allowReset
-			initialPosition={defaultOpacity[breakpoint].opacity}
+			initialPosition={defaultOpacity}
 		/>
 	);
 };

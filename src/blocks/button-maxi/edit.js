@@ -11,12 +11,17 @@ const { createRef } = wp.element;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlock, Toolbar } from '../../components';
+import {
+	BackgroundDisplayer,
+	MaxiBlock,
+	MotionPreview,
+	Toolbar,
+} from '../../components';
 import { getFormatValue } from '../../extensions/text/formats';
-import MotionPreview from '../../components/motion-preview/newMotionPreview';
-import getGroupAttributes from '../../extensions/styles/getGroupAttributes';
-import BackgroundDisplayer from '../../components/background-displayer/newBackgroundDisplayer';
-import getLastBreakpointAttribute from '../../extensions/styles/getLastBreakpointValue';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -57,8 +62,10 @@ class edit extends MaxiBlock {
 		return {
 			[uniqueID]: {
 				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'motion'),
-					...getGroupAttributes(this.props.attributes, 'entrance'),
+					...getGroupAttributes(this.props.attributes, [
+						'motion',
+						'entrance',
+					]),
 				}),
 			},
 		};

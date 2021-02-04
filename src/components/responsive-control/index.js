@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
@@ -19,8 +20,15 @@ import classnames from 'classnames';
 const ResponsiveControl = props => {
 	const { onChange, className, breakpoint } = props;
 
-	const breakpoints = { ...props.breakpoints };
-	const defaultBreakpoints = { ...props.defaultBreakpoints };
+	const { defaultBreakpoints } = useSelect(select => {
+		const defaultBreakpoints = select(
+			'maxiBlocks'
+		).receiveMaxiBreakpoints();
+
+		return {
+			defaultBreakpoints,
+		};
+	});
 
 	const classes = classnames('maxi-responsive-control', className);
 
@@ -29,12 +37,23 @@ const ResponsiveControl = props => {
 			<NumberControl
 				label={__('Breakpoint', 'maxi-blocks')}
 				className='maxi-responsive-control__breakpoint'
-				value={breakpoints[breakpoint]}
-				defaultBreakpoints={defaultBreakpoints[breakpoint]}
-				onChange={val => {
-					breakpoints[breakpoint] = val;
-					onChange(breakpoints);
-				}}
+				value={
+					props[`breakpoints-${breakpoint}`]
+						? props[`breakpoints-${breakpoint}`]
+						: defaultBreakpoints[
+								breakpoint === 'xxl' ? 'xl' : breakpoint
+						  ]
+				}
+				defaultValue={
+					defaultBreakpoints[breakpoint === 'xxl' ? 'xl' : breakpoint]
+				}
+				onChange={val =>
+					onChange({
+						[`breakpoints-${
+							breakpoint === 'xxl' ? 'xl' : breakpoint
+						}`]: val,
+					})
+				}
 				min={0}
 				max={9999}
 			/>

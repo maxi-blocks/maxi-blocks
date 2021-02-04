@@ -7,7 +7,7 @@ const { useSelect } = wp.data;
 /**
  * Internal dependencies
  */
-import stylesGenerator from '../../extensions/styles/stylesGenerator';
+import { stylesGenerator } from '../../extensions/styles';
 
 /**
  * Component

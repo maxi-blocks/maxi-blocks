@@ -113,9 +113,7 @@ const BlockResizer = props => {
 						'maxi-resizable__handle-left'
 					),
 			}}
-			defaultSize={{
-				width: defaultSize,
-			}}
+			defaultSize={defaultSize}
 			minWidth={minWidth}
 			maxWidth={maxWidth}
 			enable={directions}

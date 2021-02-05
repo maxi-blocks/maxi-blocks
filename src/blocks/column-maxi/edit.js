@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 const { compose } = wp.compose;
-const { Fragment, forwardRef } = wp.element;
-const { ResizableBox, Spinner } = wp.components;
+const { Fragment, forwardRef, createRef } = wp.element;
+const { Spinner } = wp.components;
 const { withSelect, withDispatch, select } = wp.data;
 const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 
@@ -17,6 +17,7 @@ import {
 	BlockPlaceholder,
 	MaxiBlock,
 	Toolbar,
+	BlockResizer,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -52,6 +53,11 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  * Editor
  */
 class edit extends MaxiBlock {
+	constructor(props) {
+		super(props);
+		this.resizableObject = createRef();
+	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -59,26 +65,26 @@ class edit extends MaxiBlock {
 	render() {
 		const {
 			attributes,
-			clientId,
 			className,
-			rowBlockWidth,
-			hasInnerBlock,
+			clientId,
 			deviceType,
+			hasInnerBlock,
 			onDeviceTypeChange,
 			originalNestedColumns,
 			rowBlockId,
-			updateRowPattern,
+			rowBlockWidth,
 			setAttributes,
+			updateRowPattern,
 		} = this.props;
 		const {
-			uniqueID,
 			blockStyle,
-			extraClassName,
-			defaultBlockStyle,
 			blockStyleBackground,
+			defaultBlockStyle,
+			extraClassName,
+			uniqueID,
 		} = attributes;
 
-		onDeviceTypeChange();
+		onDeviceTypeChange(this.resizableObject.current);
 
 		const classes = classnames(
 			'maxi-block',
@@ -124,20 +130,20 @@ class edit extends MaxiBlock {
 						'maxi-blocks/row-maxi',
 					].indexOf(blockName) === -1
 			);
-
 		return [
-			<Inspector {...this.props} />,
+			<Inspector
+				resizableObject={this.resizableObject.current}
+				{...this.props}
+			/>,
 			<Toolbar {...this.props} />,
 			<RowContext.Consumer>
 				{context => (
 					<Fragment>
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
-							<ResizableBox
-								showHandle={context.displayHandlers}
+							<BlockResizer
 								className={classnames(
-									'maxi-block--backend', // Required by BackEndResponsiveStyles class to apply the styles
-									'maxi-block__resizer',
+									'maxi-block--backend',
 									'maxi-column-block__resizer',
 									`maxi-column-block__resizer__${uniqueID}`,
 									getLastBreakpointAttribute(
@@ -146,21 +152,18 @@ class edit extends MaxiBlock {
 										attributes
 									) === 'none' && 'maxi-block-display-none'
 								)}
-								defaultSize={{
-									width: getColumnWidthDefault(),
+								defaultSize={getColumnWidthDefault()}
+								deviceType={deviceType}
+								updateRowPattern={updateRowPattern}
+								rowBlockId={rowBlockId}
+								onChange={obj => setAttributes(obj)}
+								directions={{
+									right: true,
+									left: true,
 								}}
 								minWidth='1%'
 								maxWidth='100%'
-								enable={{
-									top: false,
-									right: true,
-									bottom: false,
-									left: true,
-									topRight: false,
-									bottomRight: false,
-									bottomLeft: false,
-									topLeft: false,
-								}}
+								showHandle={context.displayHandlers}
 								onResizeStop={(event, direction, elt) => {
 									updateRowPattern(
 										rowBlockId,
@@ -211,7 +214,7 @@ class edit extends MaxiBlock {
 											  )
 									}
 								/>
-							</ResizableBox>
+							</BlockResizer>
 						)}
 					</Fragment>
 				)}
@@ -249,15 +252,13 @@ const editSelect = withSelect((select, ownProps) => {
 });
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
-	const onDeviceTypeChange = () => {
+	const onDeviceTypeChange = resizableObject => {
+		if (isNil(resizableObject)) return;
+
 		let newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
-		const node = document.querySelector(
-			`.maxi-column-block__resizer__${ownProps.attributes.uniqueID}`
-		);
-		if (isNil(node)) return;
-
+		const node = resizableObject.resizable;
 		const newSize = ownProps.attributes[`column-size-${newDeviceType}`];
 
 		if (['xxl', 'xl', 'l'].includes(newDeviceType)) {

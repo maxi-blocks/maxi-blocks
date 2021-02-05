@@ -34,7 +34,13 @@ import {
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId } = props;
+	const {
+		attributes,
+		deviceType,
+		setAttributes,
+		clientId,
+		resizableObject,
+	} = props;
 	const {
 		customLabel,
 		uniqueID,
@@ -103,13 +109,16 @@ const Inspector = props => {
 															]
 														}
 														onChange={val => {
-															document.querySelector(
-																`.maxi-column-block__resizer__${uniqueID}`
-															).style.width = `${val}%`;
-
 															setAttributes({
 																[`column-size-${deviceType}`]: val,
 															});
+
+															if (resizableObject)
+																resizableObject.updateSize(
+																	{
+																		width: `${val}%`,
+																	}
+																);
 														}}
 														min={0}
 														max={100}

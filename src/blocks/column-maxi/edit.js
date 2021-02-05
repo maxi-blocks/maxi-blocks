@@ -17,6 +17,7 @@ import {
 	BlockPlaceholder,
 	MaxiBlock,
 	Toolbar,
+	BlockResizer,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -29,7 +30,6 @@ import getStyles from './styles';
  */
 import classnames from 'classnames';
 import { isNil, round } from 'lodash';
-import { Resizable } from 're-resizable';
 
 /**
  * InnerBlocks version
@@ -65,23 +65,23 @@ class edit extends MaxiBlock {
 	render() {
 		const {
 			attributes,
-			clientId,
 			className,
-			rowBlockWidth,
-			hasInnerBlock,
+			clientId,
 			deviceType,
+			hasInnerBlock,
 			onDeviceTypeChange,
 			originalNestedColumns,
 			rowBlockId,
-			updateRowPattern,
+			rowBlockWidth,
 			setAttributes,
+			updateRowPattern,
 		} = this.props;
 		const {
-			uniqueID,
 			blockStyle,
-			extraClassName,
-			defaultBlockStyle,
 			blockStyleBackground,
+			defaultBlockStyle,
+			extraClassName,
+			uniqueID,
 		} = attributes;
 
 		onDeviceTypeChange(this.resizableObject.current);
@@ -130,7 +130,6 @@ class edit extends MaxiBlock {
 						'maxi-blocks/row-maxi',
 					].indexOf(blockName) === -1
 			);
-
 		return [
 			<Inspector
 				resizableObject={this.resizableObject.current}
@@ -142,12 +141,9 @@ class edit extends MaxiBlock {
 					<Fragment>
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
-							<Resizable
-								ref={this.resizableObject}
-								showHandle={context.displayHandlers}
+							<BlockResizer
 								className={classnames(
 									'maxi-block--backend',
-									'maxi-block__resizer',
 									'maxi-column-block__resizer',
 									`maxi-column-block__resizer__${uniqueID}`,
 									getLastBreakpointAttribute(
@@ -156,21 +152,18 @@ class edit extends MaxiBlock {
 										attributes
 									) === 'none' && 'maxi-block-display-none'
 								)}
-								defaultSize={{
-									width: getColumnWidthDefault(),
+								defaultSize={getColumnWidthDefault()}
+								deviceType={deviceType}
+								updateRowPattern={updateRowPattern}
+								rowBlockId={rowBlockId}
+								onChange={obj => setAttributes(obj)}
+								directions={{
+									right: true,
+									left: true,
 								}}
 								minWidth='1%'
 								maxWidth='100%'
-								enable={{
-									top: false,
-									right: true,
-									bottom: false,
-									left: true,
-									topRight: false,
-									bottomRight: false,
-									bottomLeft: false,
-									topLeft: false,
-								}}
+								showHandle={context.displayHandlers}
 								onResizeStop={(event, direction, elt) => {
 									updateRowPattern(
 										rowBlockId,
@@ -221,7 +214,7 @@ class edit extends MaxiBlock {
 											  )
 									}
 								/>
-							</Resizable>
+							</BlockResizer>
 						)}
 					</Fragment>
 				)}

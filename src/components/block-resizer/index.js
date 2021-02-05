@@ -1,14 +1,9 @@
 /**
- * Internal dependencies
- */
-import { getLastBreakpointAttribute } from '../../extensions/styles';
-
-/**
  * External dependencies
  */
 import { Resizable } from 're-resizable';
 import classnames from 'classnames';
-import { round, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Styles and icons
@@ -18,45 +13,35 @@ import './editor.scss';
 /**
  * Component
  */
-const ResizableControl = props => {
+const BlockResizer = props => {
 	const {
-		attributes,
 		children,
-		context,
+		className,
 		defaultSize,
-		deviceType,
 		directions,
-		onChange,
-		rowBlockId,
-		uniqueID,
-		updateRowPattern,
+		maxWidth,
+		minWidth,
+		onResizeStop,
+		showHandle = false,
 	} = props;
 
-	const handleClassName = 'maxi-resizable__handle';
-	const sideHandleClassName = 'maxi-resizable__side-handle';
+	const classes = classnames('maxi-block__resizer', className);
 	const cornerHandleClassName = 'maxi-resizable__corner-handle';
+	const handleClassName = 'maxi-resizable__handle';
+	const showHandlesClassName = showHandle && 'maxi-resizable__handle--show';
+	const sideHandleClassName = 'maxi-resizable__side-handle';
 
 	return (
 		<Resizable
 			ref={this.resizableObject}
-			showHandle={context.displayHandlers}
-			className={classnames(
-				'maxi-block--backend',
-				'maxi-block__resizer',
-				'maxi-column-block__resizer',
-				`maxi-column-block__resizer__${uniqueID}`,
-				getLastBreakpointAttribute(
-					'display',
-					deviceType,
-					attributes
-				) === 'none' && 'maxi-block-display-none'
-			)}
+			className={classes}
 			handleClasses={{
 				top:
 					!isNil(directions.top) &&
 					directions.top &&
 					classnames(
 						handleClassName,
+						showHandlesClassName,
 						sideHandleClassName,
 						'maxi-resizable__handle-top'
 					),
@@ -65,6 +50,7 @@ const ResizableControl = props => {
 					directions.right &&
 					classnames(
 						handleClassName,
+						showHandlesClassName,
 						sideHandleClassName,
 						'maxi-resizable__handle-right'
 					),
@@ -73,6 +59,7 @@ const ResizableControl = props => {
 					directions.bottom &&
 					classnames(
 						handleClassName,
+						showHandlesClassName,
 						sideHandleClassName,
 						'maxi-resizable__handle-bottom'
 					),
@@ -81,6 +68,7 @@ const ResizableControl = props => {
 					directions.left &&
 					classnames(
 						handleClassName,
+						showHandlesClassName,
 						sideHandleClassName,
 						'maxi-resizable__handle-left'
 					),
@@ -89,6 +77,7 @@ const ResizableControl = props => {
 					directions.topLeft &&
 					classnames(
 						handleClassName,
+						showHandlesClassName,
 						cornerHandleClassName,
 						'maxi-resizable__handle-top',
 						'maxi-resizable__handle-left'
@@ -98,6 +87,7 @@ const ResizableControl = props => {
 					directions.topRight &&
 					classnames(
 						handleClassName,
+						showHandlesClassName,
 						cornerHandleClassName,
 						'maxi-resizable__handle-top',
 						'maxi-resizable__handle-right'
@@ -107,6 +97,7 @@ const ResizableControl = props => {
 					directions.bottomRight &&
 					classnames(
 						handleClassName,
+						showHandlesClassName,
 						cornerHandleClassName,
 						'maxi-resizable__handle-bottom',
 						'maxi-resizable__handle-right'
@@ -116,6 +107,7 @@ const ResizableControl = props => {
 					directions.bottomLeft &&
 					classnames(
 						handleClassName,
+						showHandlesClassName,
 						cornerHandleClassName,
 						'maxi-resizable__handle-bottom',
 						'maxi-resizable__handle-left'
@@ -124,22 +116,16 @@ const ResizableControl = props => {
 			defaultSize={{
 				width: defaultSize,
 			}}
-			minWidth='1%'
-			maxWidth='100%'
+			minWidth={minWidth}
+			maxWidth={maxWidth}
 			enable={directions}
-			onResizeStop={(event, direction, elt) => {
-				updateRowPattern(rowBlockId, deviceType, context.rowPattern);
-
-				onChange({
-					[`column-size-${deviceType}`]: round(
-						+elt.style.width.replace('%', '')
-					),
-				});
-			}}
+			onResizeStop={(event, direction, elt) =>
+				onResizeStop(event, direction, elt)
+			}
 		>
 			{children}
 		</Resizable>
 	);
 };
 
-export default ResizableControl;
+export default BlockResizer;

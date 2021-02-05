@@ -1,0 +1,118 @@
+.maxi-block__resizer {
+	.maxi-resizable {
+		&__handle {
+			display: none;
+			width: 15px;
+			height: 15px;
+			&--show {
+				display: block;
+			}
+			&:after {
+				content: '';
+				display: block;
+				width: 15px;
+				height: 15px;
+				border: 2px solid #fff;
+				border-radius: 50%;
+				background: #ff4a17;
+				cursor: inherit;
+				position: absolute;
+				top: calc(50% - #{ceil(15px / 2)});
+				right: calc(50% - #{ceil(15px / 2)});
+			}
+			&:before {
+				content: '';
+				display: block;
+				cursor: inherit;
+				position: absolute;
+				background: #ff4a17;
+			}
+			&-right {
+				&:before {
+					top: 50%;
+					right: calc(50% - 2px);
+					transform: translateY(-50%);
+					width: 4px;
+				}
+			}
+			&-left {
+				&:before {
+					top: 50%;
+					left: calc(50% - 2px);
+					transform: translateY(-50%);
+					width: 4px;
+				}
+			}
+			&-top {
+				&:before {
+					top: calc(50% - 2px);
+					left: 50%;
+					transform: translateX(-50%);
+					height: 4px;
+				}
+			}
+			&-bottom {
+				&:before {
+					bottom: calc(50% - 2px);
+					left: 50%;
+					transform: translateX(-50%);
+					height: 4px;
+				}
+			}
+		}
+		&__side-handle {
+			&.maxi-resizable__handle-top,
+			&.maxi-resizable__handle-bottom {
+				width: 100%;
+				&:active,
+				&:hover {
+					&:before {
+						animation: horiz-line-motion 0.1s ease-out 0s;
+						opacity: 1 !important;
+					}
+				}
+				&:before {
+					width: 100%;
+					opacity: 0;
+				}
+			}
+			&.maxi-resizable__handle-left,
+			&.maxi-resizable__handle-right {
+				height: 100%;
+				&:active,
+				&:hover {
+					&:before {
+						animation: vert-line-motion 0.1s ease-out 0s;
+						opacity: 1 !important;
+					}
+				}
+				&:before {
+					height: 100%;
+					opacity: 0;
+				}
+			}
+		}
+	}
+}
+
+@keyframes horiz-line-motion {
+	0% {
+		opacity: 0;
+		width: 0;
+	}
+	100% {
+		opacity: 1;
+		width: 100%;
+	}
+}
+
+@keyframes vert-line-motion {
+	0% {
+		opacity: 0;
+		height: 0;
+	}
+	100% {
+		opacity: 1;
+		height: 100%;
+	}
+}

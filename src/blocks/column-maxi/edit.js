@@ -17,7 +17,7 @@ import {
 	BlockPlaceholder,
 	MaxiBlock,
 	Toolbar,
-	ResizableControl,
+	BlockResizer,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -29,7 +29,7 @@ import getStyles from './styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, round } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -65,23 +65,23 @@ class edit extends MaxiBlock {
 	render() {
 		const {
 			attributes,
-			clientId,
 			className,
-			rowBlockWidth,
-			hasInnerBlock,
+			clientId,
 			deviceType,
+			hasInnerBlock,
 			onDeviceTypeChange,
 			originalNestedColumns,
 			rowBlockId,
-			updateRowPattern,
+			rowBlockWidth,
 			setAttributes,
+			updateRowPattern,
 		} = this.props;
 		const {
-			uniqueID,
 			blockStyle,
-			extraClassName,
-			defaultBlockStyle,
 			blockStyleBackground,
+			defaultBlockStyle,
+			extraClassName,
+			uniqueID,
 		} = attributes;
 
 		onDeviceTypeChange(this.resizableObject.current);
@@ -130,7 +130,6 @@ class edit extends MaxiBlock {
 						'maxi-blocks/row-maxi',
 					].indexOf(blockName) === -1
 			);
-
 		return [
 			<Inspector
 				resizableObject={this.resizableObject.current}
@@ -142,9 +141,18 @@ class edit extends MaxiBlock {
 					<Fragment>
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
-							<ResizableControl
+							<BlockResizer
+								className={classnames(
+									'maxi-block--backend',
+									'maxi-column-block__resizer',
+									`maxi-column-block__resizer__${uniqueID}`,
+									getLastBreakpointAttribute(
+										'display',
+										deviceType,
+										attributes
+									) === 'none' && 'maxi-block-display-none'
+								)}
 								defaultSize={getColumnWidthDefault()}
-								context={context}
 								deviceType={deviceType}
 								updateRowPattern={updateRowPattern}
 								rowBlockId={rowBlockId}
@@ -152,6 +160,22 @@ class edit extends MaxiBlock {
 								directions={{
 									right: true,
 									left: true,
+								}}
+								minWidth='1%'
+								maxWidth='100%'
+								showHandle={context.displayHandlers}
+								onResizeStop={(event, direction, elt) => {
+									updateRowPattern(
+										rowBlockId,
+										deviceType,
+										context.rowPattern
+									);
+
+									setAttributes({
+										[`column-size-${deviceType}`]: round(
+											+elt.style.width.replace('%', '')
+										),
+									});
 								}}
 							>
 								<InnerBlocks
@@ -190,7 +214,7 @@ class edit extends MaxiBlock {
 											  )
 									}
 								/>
-							</ResizableControl>
+							</BlockResizer>
 						)}
 					</Fragment>
 				)}

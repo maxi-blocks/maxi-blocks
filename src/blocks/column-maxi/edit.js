@@ -131,6 +131,10 @@ class edit extends MaxiBlock {
 					].indexOf(blockName) === -1
 			);
 
+		const handleClassName = 'maxi-resizable__handle';
+		const sideHandleClassName = 'maxi-resizable__side-handle';
+		const cornerHandleClassName = 'maxi-resizable__corner-handle';
+
 		return [
 			<Inspector
 				resizableObject={this.resizableObject.current}
@@ -156,6 +160,52 @@ class edit extends MaxiBlock {
 										attributes
 									) === 'none' && 'maxi-block-display-none'
 								)}
+								handleClasses={{
+									top: classnames(
+										handleClassName,
+										sideHandleClassName,
+										'maxi-resizable__handle-top'
+									),
+									right: classnames(
+										handleClassName,
+										sideHandleClassName,
+										'maxi-resizable__handle-right'
+									),
+									bottom: classnames(
+										handleClassName,
+										sideHandleClassName,
+										'maxi-resizable__handle-bottom'
+									),
+									left: classnames(
+										handleClassName,
+										sideHandleClassName,
+										'maxi-resizable__handle-left'
+									),
+									topLeft: classnames(
+										handleClassName,
+										cornerHandleClassName,
+										'maxi-resizable__handle-top',
+										'maxi-resizable__handle-left'
+									),
+									topRight: classnames(
+										handleClassName,
+										cornerHandleClassName,
+										'maxi-resizable__handle-top',
+										'maxi-resizable__handle-right'
+									),
+									bottomRight: classnames(
+										handleClassName,
+										cornerHandleClassName,
+										'maxi-resizable__handle-bottom',
+										'maxi-resizable__handle-right'
+									),
+									bottomLeft: classnames(
+										handleClassName,
+										cornerHandleClassName,
+										'maxi-resizable__handle-bottom',
+										'maxi-resizable__handle-left'
+									),
+								}}
 								defaultSize={{
 									width: getColumnWidthDefault(),
 								}}

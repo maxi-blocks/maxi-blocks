@@ -11,6 +11,11 @@ import classnames from 'classnames';
 import { round, isNil } from 'lodash';
 
 /**
+ * Styles and icons
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const ResizableControl = props => {

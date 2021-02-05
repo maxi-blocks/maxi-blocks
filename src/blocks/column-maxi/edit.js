@@ -17,6 +17,7 @@ import {
 	BlockPlaceholder,
 	MaxiBlock,
 	Toolbar,
+	ResizableControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -28,8 +29,7 @@ import getStyles from './styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, round } from 'lodash';
-import { Resizable } from 're-resizable';
+import { isNil } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -131,10 +131,6 @@ class edit extends MaxiBlock {
 					].indexOf(blockName) === -1
 			);
 
-		const handleClassName = 'maxi-resizable__handle';
-		const sideHandleClassName = 'maxi-resizable__side-handle';
-		const cornerHandleClassName = 'maxi-resizable__corner-handle';
-
 		return [
 			<Inspector
 				resizableObject={this.resizableObject.current}
@@ -146,93 +142,16 @@ class edit extends MaxiBlock {
 					<Fragment>
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
-							<Resizable
-								ref={this.resizableObject}
-								showHandle={context.displayHandlers}
-								className={classnames(
-									'maxi-block--backend',
-									'maxi-block__resizer',
-									'maxi-column-block__resizer',
-									`maxi-column-block__resizer__${uniqueID}`,
-									getLastBreakpointAttribute(
-										'display',
-										deviceType,
-										attributes
-									) === 'none' && 'maxi-block-display-none'
-								)}
-								handleClasses={{
-									top: classnames(
-										handleClassName,
-										sideHandleClassName,
-										'maxi-resizable__handle-top'
-									),
-									right: classnames(
-										handleClassName,
-										sideHandleClassName,
-										'maxi-resizable__handle-right'
-									),
-									bottom: classnames(
-										handleClassName,
-										sideHandleClassName,
-										'maxi-resizable__handle-bottom'
-									),
-									left: classnames(
-										handleClassName,
-										sideHandleClassName,
-										'maxi-resizable__handle-left'
-									),
-									topLeft: classnames(
-										handleClassName,
-										cornerHandleClassName,
-										'maxi-resizable__handle-top',
-										'maxi-resizable__handle-left'
-									),
-									topRight: classnames(
-										handleClassName,
-										cornerHandleClassName,
-										'maxi-resizable__handle-top',
-										'maxi-resizable__handle-right'
-									),
-									bottomRight: classnames(
-										handleClassName,
-										cornerHandleClassName,
-										'maxi-resizable__handle-bottom',
-										'maxi-resizable__handle-right'
-									),
-									bottomLeft: classnames(
-										handleClassName,
-										cornerHandleClassName,
-										'maxi-resizable__handle-bottom',
-										'maxi-resizable__handle-left'
-									),
-								}}
-								defaultSize={{
-									width: getColumnWidthDefault(),
-								}}
-								minWidth='1%'
-								maxWidth='100%'
-								enable={{
-									top: false,
+							<ResizableControl
+								defaultSize={getColumnWidthDefault()}
+								context={context}
+								deviceType={deviceType}
+								updateRowPattern={updateRowPattern}
+								rowBlockId={rowBlockId}
+								onChange={obj => setAttributes(obj)}
+								directions={{
 									right: true,
-									bottom: false,
 									left: true,
-									topRight: false,
-									bottomRight: false,
-									bottomLeft: false,
-									topLeft: false,
-								}}
-								onResizeStop={(event, direction, elt) => {
-									updateRowPattern(
-										rowBlockId,
-										deviceType,
-										context.rowPattern
-									);
-
-									setAttributes({
-										[`column-size-${deviceType}`]: round(
-											+elt.style.width.replace('%', '')
-										),
-									});
 								}}
 							>
 								<InnerBlocks
@@ -271,7 +190,7 @@ class edit extends MaxiBlock {
 											  )
 									}
 								/>
-							</Resizable>
+							</ResizableControl>
 						)}
 					</Fragment>
 				)}

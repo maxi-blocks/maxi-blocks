@@ -130,6 +130,7 @@ class edit extends MaxiBlock {
 						'maxi-blocks/row-maxi',
 					].indexOf(blockName) === -1
 			);
+
 		return [
 			<Inspector
 				resizableObject={this.resizableObject.current}
@@ -142,6 +143,7 @@ class edit extends MaxiBlock {
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
 							<BlockResizer
+								resizableObject={this.resizableObject}
 								className={classnames(
 									'maxi-block--backend',
 									'maxi-column-block__resizer',
@@ -152,7 +154,7 @@ class edit extends MaxiBlock {
 										attributes
 									) === 'none' && 'maxi-block-display-none'
 								)}
-								defaultSize={getColumnWidthDefault()}
+								defaultSize={{ width: getColumnWidthDefault() }}
 								deviceType={deviceType}
 								updateRowPattern={updateRowPattern}
 								rowBlockId={rowBlockId}

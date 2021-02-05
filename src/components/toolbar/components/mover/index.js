@@ -15,8 +15,7 @@ import { castArray, first, last } from 'lodash';
  * Icons
  */
 import './editor.scss';
-import { toolbarMove } from '../../../../icons';
-import { moveUp, moveDown } from '../../../../icons';
+import { toolbarMove, moveUp, moveDown } from '../../../../icons';
 
 /**
  * Mover
@@ -46,10 +45,10 @@ const Mover = props => {
 				? getTemplateLock(rootClientId)
 				: null;
 			const clientIds = getSelectedBlockClientIds();
-			const blockOrder = getBlockOrder(blockRootClientId);
 			const normalizedClientIds = castArray(clientIds);
 			const firstClientId = first(normalizedClientIds);
 			const blockRootClientId = getBlockRootClientId(firstClientId);
+			const blockOrder = getBlockOrder(blockRootClientId);
 			const firstBlockIndex = getBlockIndex(
 				firstClientId,
 				blockRootClientId

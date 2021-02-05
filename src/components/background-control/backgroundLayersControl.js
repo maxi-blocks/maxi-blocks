@@ -147,6 +147,7 @@ const BackgroundLayersControl = ({
 	...props
 }) => {
 	const layers = cloneDeep(props.layersOptions);
+	layers.sort((a, b) => a.id - b.id);
 
 	const [selector, changeSelector] = useState(null);
 
@@ -248,6 +249,7 @@ const BackgroundLayersControl = ({
 										}}
 										isOpen={selector === layer.id}
 										onRemove={() => {
+											changeSelector(null);
 											layers.splice(i, 1);
 
 											onChange({
@@ -256,6 +258,13 @@ const BackgroundLayersControl = ({
 													isHover,
 													prefix
 												)]: layers,
+												...(layers.length === 0 && {
+													[getAttributeKey(
+														'background-active-media',
+														isHover,
+														prefix
+													)]: 'none',
+												}),
 											});
 										}}
 									/>

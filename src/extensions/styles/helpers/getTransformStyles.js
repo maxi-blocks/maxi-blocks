@@ -113,9 +113,17 @@ const getTransformStyles = obj => {
 				breakpoint,
 				obj
 			)}deg) `;
-		if (isNumber(getLastBreakpointAttribute('rotateZ', breakpoint, obj)))
+		if (
+			isNumber(
+				getLastBreakpointAttribute(
+					'transform-rotate-z',
+					breakpoint,
+					obj
+				)
+			)
+		)
 			transformString += `rotateZ(${getLastBreakpointAttribute(
-				'rotateZ',
+				'transform-rotate-z',
 				breakpoint,
 				obj
 			)}deg) `;

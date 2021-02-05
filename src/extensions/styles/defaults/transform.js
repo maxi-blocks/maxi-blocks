@@ -13,7 +13,6 @@ const transform = {
 	},
 	'transform-translate-x-general': {
 		type: 'number',
-		default: 0,
 	},
 	'transform-translate-y-unit-general': {
 		type: 'string',
@@ -21,7 +20,6 @@ const transform = {
 	},
 	'transform-translate-y-general': {
 		type: 'number',
-		default: 0,
 	},
 	'transform-rotate-x-general': {
 		type: 'number',
@@ -37,11 +35,9 @@ const transform = {
 	},
 	'transform-origin-x-general': {
 		type: 'string',
-		default: 'center',
 	},
 	'transform-origin-y-general': {
 		type: 'string',
-		default: 'center',
 	},
 	'transform-scale-x-xxl': {
 		type: 'number',

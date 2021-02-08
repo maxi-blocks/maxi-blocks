@@ -51,177 +51,78 @@ const TransformControl = props => {
 			`.maxi-block[uniqueid="${uniqueID}"]`
 		);
 		if (node) {
-			let transformStr = '';
-			let originStr = '';
+			let transformString = '';
+			let transformOriginString = '';
 
-			if (
-				isNumber(
-					getLastBreakpointAttribute(
-						'transform-scale-x',
-						breakpoint,
-						transformOptions
-					)
-				)
-			)
-				transformStr += `scaleX(${
-					getLastBreakpointAttribute(
-						'transform-scale-x',
-						breakpoint,
-						transformOptions
-					) / 100
-				}) `;
-			if (
-				isNumber(
-					getLastBreakpointAttribute(
-						'transform-scale-y',
-						breakpoint,
-						transformOptions
-					)
-				)
-			)
-				transformStr += `scaleY(${
-					getLastBreakpointAttribute(
-						'transform-scale-y',
-						breakpoint,
-						transformOptions
-					) / 100
-				}) `;
-			if (
-				isNumber(
-					getLastBreakpointAttribute(
-						'transform-translate-x',
-						breakpoint,
-						transformOptions
-					)
-				)
-			)
-				transformStr += `translateX(${getLastBreakpointAttribute(
-					'transform-translate-x',
-					breakpoint,
-					transformOptions
-				)}${getLastBreakpointAttribute(
-					'transform-translate-x-unit',
-					breakpoint,
-					transformOptions
-				)}) `;
-			if (
-				isNumber(
-					getLastBreakpointAttribute(
-						'transform-translate-y',
-						breakpoint,
-						transformOptions
-					)
-				)
-			)
-				transformStr += `translateY(${getLastBreakpointAttribute(
-					'transform-translate-y',
-					breakpoint,
-					transformOptions
-				)}${getLastBreakpointAttribute(
-					'transform-translate-y-unit',
-					breakpoint,
-					transformOptions
-				)}) `;
-			if (
-				isNumber(
-					getLastBreakpointAttribute(
-						'transform-rotate-x',
-						breakpoint,
-						transformOptions
-					)
-				)
-			)
-				transformStr += `rotateX(${getLastBreakpointAttribute(
-					'transform-rotate-x',
-					breakpoint,
-					transformOptions
-				)}deg) `;
-			if (
-				isNumber(
-					getLastBreakpointAttribute(
-						'transform-rotate-y',
-						breakpoint,
-						transformOptions
-					)
-				)
-			)
-				transformStr += `rotateY(${getLastBreakpointAttribute(
-					'transform-rotate-y',
-					breakpoint,
-					transformOptions
-				)}deg) `;
-			if (
-				isNumber(
-					getLastBreakpointAttribute(
-						'transform-rotate-z',
-						breakpoint,
-						transformOptions
-					)
-				)
-			)
-				transformStr += `rotateZ(${getLastBreakpointAttribute(
-					'transform-rotate-z',
-					breakpoint,
-					transformOptions
-				)}deg) `;
-			if (
-				isNumber(
-					getLastBreakpointAttribute(
-						'transform-origin-x',
-						breakpoint,
-						transformOptions
-					)
-				)
-			)
-				originStr += `${getLastBreakpointAttribute(
-					'transform-origin-x',
-					breakpoint,
-					transformOptions
-				)}% `;
-			if (
-				isNumber(
-					getLastBreakpointAttribute(
-						'transform-origin-y',
-						breakpoint,
-						transformOptions
-					)
-				)
-			)
-				originStr += `${getLastBreakpointAttribute(
-					'transform-origin-y',
-					breakpoint,
-					transformOptions
-				)}% `;
-			if (
-				isString(
-					getLastBreakpointAttribute(
-						'transform-origin-x',
-						breakpoint,
-						transformOptions
-					)
-				)
-			)
-				originStr += `${getLastBreakpointAttribute(
-					'transform-origin-x',
-					breakpoint,
-					transformOptions
-				)} `;
-			if (
-				isString(
-					getLastBreakpointAttribute(
-						'transform-origin-y',
-						breakpoint,
-						transformOptions
-					)
-				)
-			)
-				originStr += `${getLastBreakpointAttribute(
-					'transform-origin-y',
-					breakpoint,
-					transformOptions
-				)} `;
+			const scaleX = getLastBreakpointAttribute(
+				'transform-scale-x',
+				breakpoint,
+				transformOptions
+			);
+			const scaleY = getLastBreakpointAttribute(
+				'transform-scale-y',
+				breakpoint,
+				transformOptions
+			);
+			const translateX = getLastBreakpointAttribute(
+				'transform-translate-x',
+				breakpoint,
+				transformOptions
+			);
+			const translateXUnit = getLastBreakpointAttribute(
+				'transform-translate-x-unit',
+				breakpoint,
+				transformOptions
+			);
+			const translateY = getLastBreakpointAttribute(
+				'transform-translate-y',
+				breakpoint,
+				transformOptions
+			);
+			const translateYUnit = getLastBreakpointAttribute(
+				'transform-translate-y-unit',
+				breakpoint,
+				transformOptions
+			);
+			const rotateX = getLastBreakpointAttribute(
+				'transform-rotate-x',
+				breakpoint,
+				transformOptions
+			);
+			const rotateY = getLastBreakpointAttribute(
+				'transform-rotate-y',
+				breakpoint,
+				transformOptions
+			);
+			const rotateZ = getLastBreakpointAttribute(
+				'transform-rotate-z',
+				breakpoint,
+				transformOptions
+			);
+			const originX = getLastBreakpointAttribute(
+				'transform-origin-x',
+				breakpoint,
+				transformOptions
+			);
+			const originY = getLastBreakpointAttribute(
+				'transform-origin-y',
+				breakpoint,
+				transformOptions
+			);
 
-			node.style = `transform: ${transformStr}; transform-origin: ${originStr}`;
+			if (isNumber(scaleX)) transformString += `scaleX(${scaleX / 100}) `;
+			if (isNumber(scaleY)) transformString += `scaleY(${scaleY / 100}) `;
+			if (isNumber(translateX) && translateX > 0)
+				transformString += `translateX(${translateX}${translateXUnit}) `;
+			if (isNumber(translateY) && translateY > 0)
+				transformString += `translateY(${translateY}${translateYUnit}) `;
+			if (isNumber(rotateX)) transformString += `rotateX(${rotateX}deg) `;
+			if (isNumber(rotateY)) transformString += `rotateY(${rotateY}deg) `;
+			if (isNumber(rotateZ)) transformString += `rotateZ(${rotateZ}deg) `;
+			if (isString(originX)) transformOriginString += `${originX}% `;
+			if (isString(originY)) transformOriginString += `${originY}% `;
+
+			node.style = `transform: ${transformString}; transform-origin: ${transformOriginString}`;
 		}
 	};
 

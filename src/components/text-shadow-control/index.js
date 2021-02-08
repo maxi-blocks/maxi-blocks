@@ -42,7 +42,7 @@ const TextShadow = props => {
 	const color = valueDecomposed[3];
 
 	const onChangeValue = (i, val) => {
-		setCurrentColor(valueDecomposed[3]);
+		setCurrentColor(i === 3 && valueDecomposed[3]);
 
 		if (isNil(val)) valueDecomposed[i] = `${0}${i < 3 ? 'px' : ''}`;
 		else valueDecomposed[i] = `${val}${i < 3 ? 'px' : ''}`;

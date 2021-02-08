@@ -20,6 +20,10 @@ const attributes = {
 		type: 'string',
 		default: 'full',
 	},
+	blockStyle: {
+		type: 'string',
+		default: 'maxi-custom',
+	},
 	...attributesData.container,
 	...attributesData.background,
 	...attributesData.backgroundColor,

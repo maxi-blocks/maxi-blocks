@@ -30,6 +30,8 @@ import { styleNone } from '../../icons';
 const TextShadow = props => {
 	const { value, onChange, defaultColor } = props;
 
+	const [currentColor, setCurrentColor] = useState('#A2A2A2');
+
 	const valueDecomposed =
 		!isEmpty(value) && value !== 'none'
 			? value.split(' ')
@@ -40,6 +42,8 @@ const TextShadow = props => {
 	const color = valueDecomposed[3];
 
 	const onChangeValue = (i, val) => {
+		setCurrentColor(valueDecomposed[3]);
+
 		if (isNil(val)) valueDecomposed[i] = `${0}${i < 3 ? 'px' : ''}`;
 		else valueDecomposed[i] = `${val}${i < 3 ? 'px' : ''}`;
 
@@ -79,34 +83,43 @@ const TextShadow = props => {
 								icon={styleNone}
 							/>
 						),
-						onChange: () => onChange(''),
+						onChange: () => {
+							onChange('');
+							setCurrentColor(currentColor);
+						},
 					},
 					{
-						activeItem: getActiveItem('0px 0px 5px #A2A2A2'),
+						activeItem: getActiveItem(
+							`0px 0px 5px ${currentColor}`
+						),
 						content: (
 							<span className='maxi-textshadow-control__default maxi-textshadow-control__default__total'>
 								{__('Maxi', 'maxi-blocks')}
 							</span>
 						),
-						onChange: () => onChange('0px 0px 5px #A2A2A2'),
+						onChange: () => onChange(`0px 0px 5px ${currentColor}`),
 					},
 					{
-						activeItem: getActiveItem('5px 0px 3px #A2A2A2'),
+						activeItem: getActiveItem(
+							`5px 0px 3px ${currentColor}`
+						),
 						content: (
 							<span className='maxi-textshadow-control__default maxi-textshadow-control__default__bottom'>
 								{__('Maxi', 'maxi-blocks')}
 							</span>
 						),
-						onChange: () => onChange('5px 0px 3px #A2A2A2'),
+						onChange: () => onChange(`5px 0px 3px ${currentColor}`),
 					},
 					{
-						activeItem: getActiveItem('2px 4px 0px #A2A2A2'),
+						activeItem: getActiveItem(
+							`2px 4px 0px ${currentColor}`
+						),
 						content: (
 							<span className='maxi-textshadow-control__default maxi-textshadow-control__default__solid'>
 								{__('Maxi', 'maxi-blocks')}
 							</span>
 						),
-						onChange: () => onChange('2px 4px 0px #A2A2A2'),
+						onChange: () => onChange(`2px 4px 0px ${currentColor}`),
 					},
 				]}
 			/>

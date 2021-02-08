@@ -30,10 +30,10 @@ if (!defined('ABSPATH')) {
  */
 
 
-function gutenberg_extra_block_assets() { // phpcs:ignore
+function maxi_block_assets() { // phpcs:ignore
 	// Register block styles for both frontend + backend.
 	wp_register_style(
-		'gutenberg_extra-style-css', // Handle.
+		'maxi-style-css', // Handle.
 		plugins_url('dist/blocks.style.build.css', dirname(__FILE__)), // Block style CSS.
 		array('wp-editor'), // Dependency to include the CSS after it.
 		null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: File modification time.
@@ -41,7 +41,7 @@ function gutenberg_extra_block_assets() { // phpcs:ignore
 
 	// Register block editor script for backend.
 	wp_register_script(
-		'gutenberg_extra-block-js', // Handle.
+		'maxi-block-js', // Handle.
 		plugins_url('/dist/blocks.build.js', dirname(__FILE__)), // Block.build.js: We register the block here. Built with Webpack.
 		array('wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor'), // Dependencies, defined above.
 		null, // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
@@ -50,7 +50,7 @@ function gutenberg_extra_block_assets() { // phpcs:ignore
 
 	// Register block editor styles for backend.
 	wp_register_style(
-		'gutenberg_extra-block-editor-css', // Handle.
+		'maxi-block-editor-css', // Handle.
 		plugins_url('dist/blocks.editor.build.css', dirname(__FILE__)), // Block editor CSS.
 		array('wp-edit-blocks'), // Dependency to include the CSS after it.
 		null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
@@ -72,20 +72,20 @@ function gutenberg_extra_block_assets() { // phpcs:ignore
 		'cgb/block-maxi-blocks',
 		array(
 			// Enqueue blocks.style.build.css on both frontend & backend.
-			'style'         => 'gutenberg_extra-style-css',
+			'style'         => 'maxi-style-css',
 			// Enqueue blocks.build.js in the editor only.
-			'editor_script' => 'gutenberg_extra-block-js',
+			'editor_script' => 'maxi-block-js',
 			// Enqueue blocks.editor.build.css in the editor only.
-			'editor_style'  => 'gutenberg_extra-block-editor-css',
+			'editor_style'  => 'maxi-block-editor-css',
 		)
 	);
 }
 
 // Hook: Block assets.
-add_action('init', 'gutenberg_extra_block_assets');
+add_action('init', 'maxi_block_assets');
 
 
-function gutenberg_extra_load_custom_wp_admin_script() {
+function maxi_load_custom_wp_admin_script() {
 
 	// Register block editor script for backend.
 	wp_enqueue_script(
@@ -93,26 +93,19 @@ function gutenberg_extra_load_custom_wp_admin_script() {
 		plugins_url('/js/cloud-server.js', dirname(__FILE__)),
 		array('jquery', 'wp-blocks', 'wp-edit-post', 'wp-api')
 	);
-
-	wp_register_script('maxi-blocks-gutenberg-ui-js', plugins_url('/js/gutenberg-ui.js', dirname(__FILE__)), array('wp-i18n'), null, true);
-	wp_localize_script('maxi-blocks-gutenberg-ui-js', 'maxiGutenbergUI', array(
-		'maxi-plugin-url' => plugins_url()
-	));
-
-	wp_enqueue_script('maxi-blocks-gutenberg-ui-js');
 }
 
-add_action('admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_script');
+add_action('admin_enqueue_scripts', 'maxi_load_custom_wp_admin_script');
 
-function gutenberg_extra_load_custom_wp_admin_style() {
+function maxi_load_custom_wp_admin_style() {
 
 	// Register block editor script for backend.
 	wp_register_style(
-		'gutenberg_extra-block-css-admin', // Handle.
+		'maxi-block-css-admin', // Handle.
 		plugins_url('/css/maxi-admin.css', dirname(__FILE__))
 	);
 
-	wp_enqueue_style('gutenberg_extra-block-css-admin');
+	wp_enqueue_style('maxi-block-css-admin');
 
 	wp_enqueue_style(
 		'maxi-blocks-banner',
@@ -121,7 +114,7 @@ function gutenberg_extra_load_custom_wp_admin_style() {
 	);
 }
 
-add_action('admin_enqueue_scripts', 'gutenberg_extra_load_custom_wp_admin_style');
+add_action('admin_enqueue_scripts', 'maxi_load_custom_wp_admin_style');
 
 
 function maxi_load_custom_wp_front_script() {
@@ -165,9 +158,9 @@ function maxi_load_custom_wp_front_script() {
 }
 add_action('wp_enqueue_scripts', 'maxi_load_custom_wp_front_script');
 
-add_filter('block_categories', 'gutenberg_extra_block_category');
+add_filter('block_categories', 'maxi_block_category');
 
-function gutenberg_extra_block_category($categories) {
+function maxi_block_category($categories) {
 	//print_r($categories);
 	return array_merge(
 		array(
@@ -183,22 +176,22 @@ function gutenberg_extra_block_category($categories) {
 
 /* Enabled option */
 
-if (!get_option('gx_enable')) add_option('gx_enable', 'enabled');
+if (!get_option('maxi_enable')) add_option('maxi_enable', 'enabled');
 
-function gx_get_option() {
-	echo get_option('gx_enable');
+function maxi_get_option() {
+	echo get_option('maxi_enable');
 	die();
 }
 
-function gx_insert_block() {
+function maxi_insert_block() {
 
-	$this_title = $_POST['gx_title'];
-	$this_content = $_POST['gx_content'];
+	$this_title = $_POST['maxi_title'];
+	$this_content = $_POST['maxi_content'];
 
 	if ($this_content && $this_title) {
 
 		// 	$has_reusable_block = get_posts( array(
-		// 	'name'           => $_POST['gx_title'],
+		// 	'name'           => $_POST['maxi_title'],
 		// 	'post_type'      => 'wp_block',
 		// 	'posts_per_page' => 1
 		// ) );
@@ -206,8 +199,8 @@ function gx_insert_block() {
 		// if ( ! $has_reusable_block ) {
 		// No reusable block like ours detected.
 		wp_insert_post(array(
-			'post_content'   => $_POST['gx_content'],
-			'post_title'     => $_POST['gx_title'],
+			'post_content'   => $_POST['maxi_content'],
+			'post_title'     => $_POST['maxi_title'],
 			'post_type'      => 'wp_block',
 			'post_status'    => 'publish',
 			'comment_status' => 'closed',
@@ -215,7 +208,7 @@ function gx_insert_block() {
 			'guid'           => sprintf(
 				'%s/wp_block/%s',
 				site_url(),
-				sanitize_title($_POST['gx_title'])
+				sanitize_title($_POST['maxi_title'])
 			)
 		));
 		echo 'success';
@@ -228,19 +221,19 @@ function gx_insert_block() {
 
 
 	wp_die();
-} //function gx_insert_block()
+} //function maxi_insert_block()
 
 
 // remove noopener noreferrer from gutenberg links
-function gx_links_control($rel, $link) {
+function maxi_links_control($rel, $link) {
 	return false;
 }
-add_filter('wp_targeted_link_rel', 'gx_links_control', 10, 2);
+add_filter('wp_targeted_link_rel', 'maxi_links_control', 10, 2);
 
 
 
-add_action('wp_ajax_gx_get_option', 'gx_get_option', 9, 1);
-add_action('wp_ajax_gx_insert_block', 'gx_insert_block', 10, 2);
+add_action('wp_ajax_maxi_get_option', 'maxi_get_option', 9, 1);
+add_action('wp_ajax_maxi_insert_block', 'maxi_insert_block', 10, 2);
 
 // require_once plugin_dir_path( __FILE__ ) . 'includes/layout/layout-functions.php';
 // require_once plugin_dir_path( __FILE__ ) . 'includes/layout/class-component-registry.php';

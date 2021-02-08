@@ -130,13 +130,6 @@ const Inspector = props => {
 												),
 												content: (
 													<FontLevelControl
-														{...getGroupAttributes(
-															attributes,
-															[
-																'typography',
-																'typographyHover',
-															]
-														)}
 														value={textLevel}
 														onChange={obj =>
 															setAttributes(obj)

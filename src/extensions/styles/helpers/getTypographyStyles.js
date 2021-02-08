@@ -20,7 +20,6 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 const getTypographyStyles = (obj, isHover = false, prefix = '') => {
 	const response = {};
-
 	const getName = (target, breakpoint) =>
 		`${prefix}${target}-${breakpoint}${isHover ? '-hover' : ''}`;
 

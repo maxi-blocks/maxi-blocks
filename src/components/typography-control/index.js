@@ -13,7 +13,6 @@ import FontFamilySelector from '../font-family-selector';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
 import { setFormat, getCustomFormatValue } from '../../extensions/text/formats';
-import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -162,19 +161,9 @@ const TypographyControl = props => {
 	};
 
 	const getDefault = prop => {
-		const sameDefaultLevels = ['p', 'ul', 'ol'];
-		if (
-			sameDefaultLevels.some(level => {
-				return level === textLevel;
-			})
-		)
-			return getDefaultAttribute(
-				`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
-			);
-
-		return defaultTypography[textLevel][
+		return getDefaultAttribute(
 			`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
-		];
+		);
 	};
 
 	const onChangeFormat = value => {

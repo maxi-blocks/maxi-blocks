@@ -7,3 +7,4 @@ export * from './hover-icons';
 export * from './responsive-icons';
 export * from './move-icons';
 export * from './button-presets';
+export * from './general-icons';

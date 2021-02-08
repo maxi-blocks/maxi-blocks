@@ -27,7 +27,7 @@ import {
  * Components
  */
 const ResponsiveSelector = props => {
-	const { className } = props;
+	const { className, isOpen, onClose } = props;
 
 	const { deviceType, breakpoints } = useSelect(select => {
 		const { receiveMaxiDeviceType, receiveMaxiBreakpoints } = select(
@@ -84,8 +84,10 @@ const ResponsiveSelector = props => {
 	};
 
 	return (
-		<div className={classes}>
-			<span className='maxi-responsive-selector__close'>X</span>
+		<div className={classes} style={{ display: isOpen ? 'block' : 'none' }}>
+			<span className='maxi-responsive-selector__close' onClick={onClose}>
+				X
+			</span>
 			<Button
 				className='maxi-responsive-selector__button'
 				onClick={() => setScreenSize('general')}

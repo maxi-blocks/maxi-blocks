@@ -21,10 +21,10 @@ import { reset, sync as syncIcon } from '../../icons';
  */
 const SquareControl = props => {
 	const {
-		x,
-		xUnit = null,
-		y,
-		yUnit = null,
+		x = 0,
+		xUnit = '%',
+		y = 0,
+		yUnit = '%',
 		onChange,
 		onSave,
 		type = 'resize',
@@ -434,7 +434,10 @@ const SquareControl = props => {
 								{ label: '%', value: '%' },
 							]}
 							value={yUnit}
-							onChange={val => onChange(xAxis, yAxis, xUnit, val)}
+							onChange={val => {
+								onChange(xAxis, yAxis, xUnit, val);
+								onChange({ yUnit: val });
+							}}
 						/>
 					)}
 				</div>
@@ -493,7 +496,10 @@ const SquareControl = props => {
 								{ label: '%', value: '%' },
 							]}
 							value={xUnit}
-							onChange={val => onChange(xAxis, yAxis, val, yUnit)}
+							onChange={val => {
+								onChange(xAxis, yAxis, val, yUnit);
+								onChange({ xUnit: val });
+							}}
 						/>
 					)}
 				</div>
@@ -522,10 +528,6 @@ const SquareControl = props => {
 				<Button
 					className='components-maxi-control__reset-button'
 					onClick={onReset}
-					// aria-label={sprintf(
-					//     __('Reset %s settings', 'maxi-blocks'),
-					//     value.label.toLowerCase()
-					// )}
 					action='reset'
 					type='reset'
 				>

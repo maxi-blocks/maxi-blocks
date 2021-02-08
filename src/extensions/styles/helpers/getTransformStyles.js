@@ -127,6 +127,11 @@ const getTransformStyles = obj => {
 				breakpoint,
 				obj
 			)}deg) `;
+
+		if (!isEmpty(transformString)) {
+			transformString += '!important;';
+		}
+
 		if (
 			isNumber(
 				getLastBreakpointAttribute(
@@ -187,11 +192,13 @@ const getTransformStyles = obj => {
 		const transformObj = {
 			...(!isEmpty(transformString) && { transform: transformString }),
 			...(!isEmpty(transformOriginString) && {
-				'transform-origin': transformOriginString,
+				'transform-origin': transformOriginString + '!important;',
 			}),
 		};
 		if (!isEmpty(transformObj)) response[breakpoint] = transformObj;
 	});
+
+	console.log('styles: ' + JSON.stringify(response));
 
 	return response;
 };

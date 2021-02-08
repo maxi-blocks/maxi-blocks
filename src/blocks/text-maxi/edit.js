@@ -124,12 +124,6 @@ class edit extends MaxiBlock {
 		const { formatValue, textSelected } = this.state;
 
 		const name = 'maxi-blocks/text-maxi';
-		const highlight = { ...this.props.attributes.highlight };
-		const {
-			textHighlight,
-			backgroundHighlight,
-			borderHighlight,
-		} = highlight;
 
 		if (isEmpty(formatValue) || selectedText !== textSelected)
 			this.setState({
@@ -148,9 +142,10 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!textHighlight && 'maxi-highlight--text',
-			!!backgroundHighlight && 'maxi-highlight--background',
-			!!borderHighlight && 'maxi-highlight--border',
+			!!attributes['text-highlight'] && 'maxi-highlight--text',
+			!!attributes['background-highlight'] &&
+				'maxi-highlight--background',
+			!!attributes['border-highlight'] && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className

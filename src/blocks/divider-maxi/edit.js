@@ -35,6 +35,7 @@ class edit extends MaxiBlock {
 	state = {
 		isResizing: false,
 	};
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}

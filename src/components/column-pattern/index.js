@@ -16,13 +16,14 @@ import {
 	getTemplates,
 	getTemplateObject,
 } from '../../extensions/defaults/column-templates';
+
 import SizeControl from '../size-control';
 import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
  */
-import { uniqueId, isEmpty, isNil, cloneDeep } from 'lodash';
+import { uniqueId, isEmpty, isNil, cloneDeep, isEqual } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -35,7 +36,13 @@ import './editor.scss';
  *
  * */
 const ColumnPatternsInspector = props => {
-	const { clientId, onChange, breakpoint, toolbar = false } = props;
+	const {
+		clientId,
+		onChange,
+		breakpoint,
+		toolbar = false,
+		removeColumnGap,
+	} = props;
 
 	const [numCol, setNumCol] = useState(1);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
@@ -117,7 +124,7 @@ const ColumnPatternsInspector = props => {
 	 *
 	 * @returns {Array} Merged array with column template and current content
 	 */
-	const expandWithNewContent = (template, currentContent) => {
+	const expandWithNewContent = (template, currentContent, hasGap) => {
 		currentContent.forEach((content, i) => {
 			if (!isNil(template[i])) template[i].push(content);
 		});
@@ -154,25 +161,35 @@ const ColumnPatternsInspector = props => {
 	const loadTemplate = templateName => {
 		const currentContent = getCurrentContent(innerBlocks);
 		const currentAttributes = getCurrentAttributes(innerBlocks);
+		const hasGap = removeColumnGap ? 'withoutGap' : 'withGap';
 
 		const template = cloneDeep(getTemplateObject(templateName));
 		template.content.forEach((column, i) => {
-			column[1].uniqueID = uniqueIdCreator();
+			column[1][hasGap].uniqueID = uniqueIdCreator();
 
 			if (currentAttributes.length > i)
-				column[1] = Object.assign(currentAttributes[i], column[1]);
+				column[1] = { ...currentAttributes[i], ...column[1][hasGap] };
 		});
 
-		const newAttributes = Object.assign(
-			getBlockAttributes(clientId),
-			template.attributes
-		);
+		const responsiveTemplate =
+			(template.responsiveLayout &&
+				getTemplateObject(template.responsiveLayout)) ||
+			null;
 
-		updateBlockAttributes(clientId, newAttributes);
+		if (responsiveTemplate)
+			responsiveTemplate.content.forEach((resTemplate, i) => {
+				template.content[i][1][hasGap] = {
+					...template.content[i][1][hasGap],
+					...resTemplate[1][hasGap],
+				};
+			});
+
+		updateBlockAttributes(clientId, template.attributes);
 
 		const newTemplateContent = expandWithNewContent(
 			template.content,
-			currentContent
+			currentContent,
+			hasGap
 		);
 
 		const newTemplate = synchronizeBlocksWithTemplate(
@@ -251,13 +268,12 @@ const ColumnPatternsInspector = props => {
 		const newColumnsSizes = [];
 		const columnsPositions = getColumnsPositions(sizes);
 
-		const gap = props.removeColumnGap ? 2.5 : 0;
+		const gap = !removeColumnGap ? 2.5 : 0;
 
 		sizes.forEach((column, i) => {
 			if (columnsPositions[i].columnsNumber > 1) {
 				const numberOfGaps = columnsPositions[i].columnsNumber - 1;
 				const total = 100 - gap * numberOfGaps;
-
 				newColumnsSizes.push(sizes[i] * total);
 			}
 
@@ -275,53 +291,47 @@ const ColumnPatternsInspector = props => {
 	 * @param {integer} i Element of object FILTERED_TEMPLATES
 	 * @param {Function} callback
 	 */
-	const updateTemplate = templateName => {
+	const updateTemplate = (templateName, removeColGap) => {
 		const { getBlock } = select('core/block-editor');
-
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
+		const hasGap = removeColGap ? 'withoutGap' : 'withGap';
+		const template = cloneDeep(getTemplateObject(templateName));
+		const responsiveTemplate =
+			template.responsiveLayout &&
+			getTemplateObject(template.responsiveLayout);
 
-		const template = getTemplateObject(templateName);
-
-		const { sizes } = template;
-
-		const sizesWithGaps = applyGap(sizes);
-
-		const columnsPositions = getColumnsPositions(sizes);
+		if (responsiveTemplate)
+			responsiveTemplate.content.forEach((resTemplate, i) => {
+				template.content[i][1] = {
+					...template.content[i][1][hasGap],
+					...resTemplate[1][hasGap],
+				};
+			});
+		else
+			template.content.forEach(content => {
+				content[1] = content[1][hasGap];
+			});
 
 		columnsBlockObjects.forEach((column, j) => {
-			const columnAttributes = column.attributes;
-			const columnUniqueID = columnAttributes.uniqueID;
+			const newAttributes = { ...template.content[j][1] };
+			const columnAttributes = { ...newAttributes };
 
-			columnAttributes[`column-size-${breakpoint}`] = sizesWithGaps[j];
+			const { resizableObject } = column.attributes;
 
-			const columnResizer =
-				document.querySelector(
-					`.maxi-column-block__resizer__${columnUniqueID}`
-				) !== null;
-
-			if (columnResizer)
-				document.querySelector(
-					`.maxi-column-block__resizer__${columnUniqueID}`
-				).style.width = sizesWithGaps[j];
-
-			if (columnsPositions[j].rowNumber > 1) {
-				columnAttributes[`margin-top-${breakpoint}`] = 1.5;
-				columnAttributes[`margin-unit-${breakpoint}`] = 'em';
-			}
-			if (columnResizer)
-				document.querySelector(
-					`.maxi-column-block__resizer__${columnUniqueID}`
-				).style.width = sizesWithGaps[j];
-
-			if (columnsPositions[j].rowNumber === 1) {
-				columnAttributes['margin-top-m'] = 0;
-				columnAttributes['margin-unit-m'] = '';
-			} else {
-				columnAttributes['margin-top-m'] = 1.5;
-				columnAttributes['margin-unit-m'] = 'em';
-			}
-
-			updateBlockAttributes(column.clientId, columnAttributes);
+			updateBlockAttributes(column.clientId, columnAttributes).then(
+				() => {
+					if (resizableObject) {
+						resizableObject.updateSize({
+							width: `${
+								newAttributes[`column-size-${breakpoint}`]
+							}%`,
+						});
+						resizableObject.resizable.style.width = `${
+							newAttributes[`column-size-${breakpoint}`]
+						}%`;
+					}
+				}
+			);
 		});
 	};
 
@@ -340,7 +350,7 @@ const ColumnPatternsInspector = props => {
 					defaultValue={numCol}
 					onChangeValue={numCol => setNumCol(numCol)}
 					min={1}
-					max={8}
+					max={6}
 					disableReset
 				/>
 			)}
@@ -352,14 +362,13 @@ const ColumnPatternsInspector = props => {
 								`components-column-pattern--${instanceId}--`
 							)}
 							className={patternButtonClassName}
-							aria-pressed={
-								getCurrentColumnsSizes() ===
+							aria-pressed={isEqual(
+								getCurrentColumnsSizes(),
 								applyGap(template.sizes)
-							}
+							)}
 							onClick={() => {
 								if (breakpoint === 'general') {
 									loadTemplate(template.name);
-									updateTemplate(template.name);
 								} else {
 									updateTemplate(template.name);
 								}
@@ -389,7 +398,10 @@ const ColumnPatternsInspector = props => {
 							]}
 							onChange={val => {
 								onChange({ removeColumnGap: !!+val });
-								updateTemplate(props['row-pattern-general']);
+								updateTemplate(
+									props['row-pattern-general'],
+									!!+val
+								);
 							}}
 						/>
 					)}

@@ -255,6 +255,19 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			column[1].uniqueID = uniqueIdCreator();
 		});
 
+		const responsiveTemplate =
+			(template.responsiveLayout &&
+				getTemplateObject(template.responsiveLayout)) ||
+			null;
+
+		if (responsiveTemplate)
+			responsiveTemplate.content.forEach((resTemplate, i) => {
+				template.content[i][1] = {
+					...template.content[i][1],
+					...resTemplate[1],
+				};
+			});
+
 		const newAttributes = template.attributes;
 		dispatch('core/block-editor').updateBlockAttributes(
 			clientId,

@@ -178,10 +178,14 @@ const ColumnPatternsInspector = props => {
 
 		if (responsiveTemplate)
 			responsiveTemplate.content.forEach((resTemplate, i) => {
-				template.content[i][1][hasGap] = {
+				template.content[i][1] = {
 					...template.content[i][1][hasGap],
 					...resTemplate[1][hasGap],
 				};
+			});
+		else
+			template.content.forEach(content => {
+				content[1] = content[1][hasGap];
 			});
 
 		updateBlockAttributes(clientId, template.attributes);

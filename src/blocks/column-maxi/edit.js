@@ -4,7 +4,7 @@
 const { compose } = wp.compose;
 const { Fragment, forwardRef, createRef } = wp.element;
 const { Spinner } = wp.components;
-const { withSelect, withDispatch, select } = wp.data;
+const { withSelect, withDispatch } = wp.data;
 const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 
 /**

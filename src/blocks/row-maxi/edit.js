@@ -33,7 +33,7 @@ import getStyles from './styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, uniqueId } from 'lodash';
+import { isEmpty, isNil, uniqueId, cloneDeep } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -227,7 +227,10 @@ const editSelect = withSelect((select, ownProps) => {
 });
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
-	const { clientId } = ownProps;
+	const {
+		attributes: { removeColumnGap },
+		clientId,
+	} = ownProps;
 
 	/**
 	 * Creates uniqueID for columns on loading templates
@@ -250,10 +253,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	 * @param {Function} callback
 	 */
 	const loadTemplate = templateName => {
-		const template = getTemplateObject(templateName);
-		template.content.forEach(column => {
-			column[1].uniqueID = uniqueIdCreator();
-		});
+		const template = cloneDeep(getTemplateObject(templateName));
+		const hasGap = removeColumnGap ? 'withoutGap' : 'withGap';
 
 		const responsiveTemplate =
 			(template.responsiveLayout &&
@@ -263,10 +264,18 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		if (responsiveTemplate)
 			responsiveTemplate.content.forEach((resTemplate, i) => {
 				template.content[i][1] = {
-					...template.content[i][1],
-					...resTemplate[1],
+					...template.content[i][1][hasGap],
+					...resTemplate[1][hasGap],
 				};
 			});
+		else
+			template.content.forEach(content => {
+				content[1] = content[1][hasGap];
+			});
+
+		template.content.forEach(column => {
+			column[1].uniqueID = uniqueIdCreator();
+		});
 
 		const newAttributes = template.attributes;
 		dispatch('core/block-editor').updateBlockAttributes(

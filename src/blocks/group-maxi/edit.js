@@ -82,6 +82,9 @@ class edit extends MaxiBlock {
 			`maxi-motion-effect-${uniqueID}`,
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
+			!!attributes['background-highlight'] &&
+				'maxi-highlight--background',
+			!!attributes['border-highlight'] && 'maxi-highlight--border',
 			uniqueID,
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
@@ -113,23 +116,25 @@ class edit extends MaxiBlock {
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
 				>
-					<BackgroundDisplayer
-						{...getGroupAttributes(attributes, [
-							'background',
-							'backgroundColor',
-							'backgroundImage',
-							'backgroundVideo',
-							'backgroundGradient',
-							'backgroundSVG',
-							'backgroundHover',
-							'backgroundColorHover',
-							'backgroundImageHover',
-							'backgroundVideoHover',
-							'backgroundGradientHover',
-							'backgroundSVGHover',
-						])}
-						blockClassName={uniqueID}
-					/>
+					{!attributes['background-highlight'] && (
+						<BackgroundDisplayer
+							{...getGroupAttributes(attributes, [
+								'background',
+								'backgroundColor',
+								'backgroundImage',
+								'backgroundVideo',
+								'backgroundGradient',
+								'backgroundSVG',
+								'backgroundHover',
+								'backgroundColorHover',
+								'backgroundImageHover',
+								'backgroundVideoHover',
+								'backgroundGradientHover',
+								'backgroundSVGHover',
+							])}
+							blockClassName={uniqueID}
+						/>
+					)}
 					<InnerBlocks
 						allowedBlocks={ALLOWED_BLOCKS}
 						templateLock={false}

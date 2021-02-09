@@ -163,14 +163,16 @@ class edit extends MaxiBlock {
 										onClick={onClick}
 										icon={toolbarReplaceImage}
 									/>
-									<BackgroundDisplayer
-										{...getGroupAttributes(attributes, [
-											'background',
-											'backgroundColor',
-											'backgroundHover',
-											'backgroundColorHover',
-										])}
-									/>
+									{!attributes['background-highlight'] && (
+										<BackgroundDisplayer
+											{...getGroupAttributes(attributes, [
+												'background',
+												'backgroundColor',
+												'backgroundHover',
+												'backgroundColorHover',
+											])}
+										/>
+									)}
 									<RawHTML className='maxi-svg-icon-block__icon'>
 										{attributes.content}
 									</RawHTML>

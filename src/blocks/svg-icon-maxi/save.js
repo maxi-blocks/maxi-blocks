@@ -46,14 +46,16 @@ const save = props => {
 			<RawHTML className='maxi-svg-icon-block__icon'>
 				{attributes.content}
 			</RawHTML>
-			<BackgroundDisplayer
-				{...getGroupAttributes(attributes, [
-					'background',
-					'backgroundColor',
-					'backgroundHover',
-					'backgroundColorHover',
-				])}
-			/>
+			{!attributes['background-highlight'] && (
+				<BackgroundDisplayer
+					{...getGroupAttributes(attributes, [
+						'background',
+						'backgroundColor',
+						'backgroundHover',
+						'backgroundColorHover',
+					])}
+				/>
+			)}
 		</div>
 	);
 };

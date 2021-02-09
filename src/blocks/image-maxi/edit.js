@@ -173,23 +173,30 @@ class edit extends MaxiBlock {
 							<Fragment>
 								{(!isNil(mediaID) && imageData) || mediaURL ? (
 									<Fragment>
-										<BackgroundDisplayer
-											{...getGroupAttributes(attributes, [
-												'background',
-												'backgroundColor',
-												'backgroundImage',
-												'backgroundVideo',
-												'backgroundGradient',
-												'backgroundSVG',
-												'backgroundHover',
-												'backgroundColorHover',
-												'backgroundImageHover',
-												'backgroundVideoHover',
-												'backgroundGradientHover',
-												'backgroundSVGHover',
-											])}
-											blockClassName={uniqueID}
-										/>
+										{!attributes[
+											'background-highlight'
+										] && (
+											<BackgroundDisplayer
+												{...getGroupAttributes(
+													attributes,
+													[
+														'background',
+														'backgroundColor',
+														'backgroundImage',
+														'backgroundVideo',
+														'backgroundGradient',
+														'backgroundSVG',
+														'backgroundHover',
+														'backgroundColorHover',
+														'backgroundImageHover',
+														'backgroundVideoHover',
+														'backgroundGradientHover',
+														'backgroundSVGHover',
+													]
+												)}
+												blockClassName={uniqueID}
+											/>
+										)}
 										<ResizableBox
 											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{

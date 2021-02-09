@@ -88,16 +88,18 @@ class edit extends MaxiBlock {
 				className={classes}
 				data-maxi_initial_block_class={defaultBlockStyle}
 			>
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundGradientHover',
-					])}
-				/>
+				{!attributes['background-highlight'] && (
+					<BackgroundDisplayer
+						{...getGroupAttributes(attributes, [
+							'background',
+							'backgroundColor',
+							'backgroundGradient',
+							'backgroundHover',
+							'backgroundColorHover',
+							'backgroundGradientHover',
+						])}
+					/>
+				)}
 				{(!isEmpty(attributes['icon-name']) && (
 					<span className='maxi-font-icon-block__icon'>
 						<i className={attributes['icon-name']} />

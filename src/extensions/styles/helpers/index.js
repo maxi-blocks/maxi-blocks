@@ -7,6 +7,7 @@ export { default as getPositionStyles } from './getPositionStyles';
 export { default as getDisplayStyles } from './getDisplayStyles';
 export { default as getTransformStyles } from './getTransformStyles';
 export { default as getBackgroundStyles } from './getBackgroundStyles';
+export * from './getBackgroundStyles';
 export { default as getArrowStyles } from './getArrowStyles';
 export { default as getDividerStyles } from './getDividerStyles';
 export { default as getAlignmentFlexStyles } from './getAlignmentFlexStyles';

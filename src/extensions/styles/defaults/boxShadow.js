@@ -1,7 +1,7 @@
 const boxShadow = {
 	'box-shadow-color-general': {
 		type: 'string',
-		default: '#96b0cb',
+		default: '#ecf1f6',
 	},
 	'box-shadow-horizontal-general': {
 		type: 'number',

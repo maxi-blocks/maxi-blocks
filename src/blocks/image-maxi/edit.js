@@ -240,7 +240,6 @@ class edit extends MaxiBlock {
 												bottomLeft: true,
 												topLeft: true,
 											}}
-											onResizeStart={() => {}}
 											onResizeStop={handleOnResizeStop}
 										>
 											<div className='maxi-image-block__settings'>

@@ -165,7 +165,6 @@ class edit extends MaxiBlock {
 								minWidth='1%'
 								maxWidth='100%'
 								showHandle={context.displayHandlers}
-								onResizeStart={() => {}}
 								onResizeStop={(event, direction, elt) => {
 									updateRowPattern(
 										rowBlockId,

@@ -1,5 +1,5 @@
 export const boxShadowNone = {
-	'box-shadow-color': '#ecf1f6',
+	'box-shadow-color': 'rgba(150, 176, 203, 0.23)',
 	'box-shadow-horizontal': 0,
 	'box-shadow-vertical': 0,
 	'box-shadow-blur': 0,
@@ -7,7 +7,7 @@ export const boxShadowNone = {
 };
 
 export const boxShadowTotal = {
-	'box-shadow-color': '#ecf1f6',
+	'box-shadow-color': 'rgba(150, 176, 203, 0.23)',
 	'box-shadow-horizontal': 0,
 	'box-shadow-vertical': 30,
 	'box-shadow-blur': 87,
@@ -15,7 +15,7 @@ export const boxShadowTotal = {
 };
 
 export const boxShadowBottom = {
-	'box-shadow-color': '#ecf1f6',
+	'box-shadow-color': 'rgba(150, 176, 203, 0.23)',
 	'box-shadow-horizontal': 0,
 	'box-shadow-vertical': 20,
 	'box-shadow-blur': 30,
@@ -23,7 +23,7 @@ export const boxShadowBottom = {
 };
 
 export const boxShadowSolid = {
-	'box-shadow-color': '#ecf1f6',
+	'box-shadow-color': 'rgba(150, 176, 203, 0.23)',
 	'box-shadow-horizontal': 5,
 	'box-shadow-vertical': 5,
 	'box-shadow-blur': 0,

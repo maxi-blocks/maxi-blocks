@@ -15,9 +15,9 @@ import RowContext from '../row-maxi/context';
 import {
 	BackgroundDisplayer,
 	BlockPlaceholder,
+	BlockResizer,
 	MaxiBlock,
 	Toolbar,
-	BlockResizer,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -100,6 +100,16 @@ class edit extends MaxiBlock {
 			className
 		);
 
+		const handleOnResizeStop = (event, direction, elt) => {
+			updateRowPattern(rowBlockId, deviceType, context.rowPattern);
+
+			setAttributes({
+				[`column-size-${deviceType}`]: round(
+					+elt.style.width.replace('%', '')
+				),
+			});
+		};
+
 		const getColumnWidthDefault = () => {
 			if (
 				getLastBreakpointAttribute(
@@ -166,19 +176,7 @@ class edit extends MaxiBlock {
 								minWidth='1%'
 								maxWidth='100%'
 								showHandle={context.displayHandlers}
-								onResizeStop={(event, direction, elt) => {
-									updateRowPattern(
-										rowBlockId,
-										deviceType,
-										context.rowPattern
-									);
-
-									setAttributes({
-										[`column-size-${deviceType}`]: round(
-											+elt.style.width.replace('%', '')
-										),
-									});
-								}}
+								onResizeStop={handleOnResizeStop}
 							>
 								<InnerBlocks
 									allowedBlocks={ALLOWED_BLOCKS}

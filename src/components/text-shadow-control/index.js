@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment, useState } = wp.element;
+const { Fragment, useState, useEffect } = wp.element;
 const { RangeControl, Icon } = wp.components;
 
 /**
@@ -30,6 +30,8 @@ import { styleNone } from '../../icons';
 const TextShadow = props => {
 	const { value, onChange, defaultColor } = props;
 
+	const [currentColor, setCurrentColor] = useState('#a2a2a2');
+
 	const valueDecomposed =
 		!isEmpty(value) && value !== 'none'
 			? value.split(' ')
@@ -39,9 +41,17 @@ const TextShadow = props => {
 	const blur = Number(valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g)[0]);
 	const color = valueDecomposed[3];
 
+	useEffect(() => {
+		if (color !== defaultColor) {
+			setCurrentColor(color);
+		}
+	}, [color, currentColor, setCurrentColor]);
+
 	const onChangeValue = (i, val) => {
-		if (isNil(val)) valueDecomposed[i] = `${0}px`;
-		else valueDecomposed[i] = `${val}px`;
+		setCurrentColor(i === 3 && val);
+
+		if (isNil(val)) valueDecomposed[i] = `${0}${i < 3 ? 'px' : ''}`;
+		else valueDecomposed[i] = `${val}${i < 3 ? 'px' : ''}`;
 
 		if (
 			valueDecomposed[0] === '0px' &&
@@ -52,11 +62,10 @@ const TextShadow = props => {
 		else onChange(valueDecomposed.join(' '));
 	};
 
-	const getActiveItem = prop => {
-		if (isEmpty(value) && isEmpty(prop)) return true;
-		if (isEmpty(prop)) return false;
+	const getActiveItem = val => {
+		if (value === 'none' && val === 'none') return true;
 
-		const decomposedProp = prop.split(' ');
+		const decomposedProp = val.split(' ');
 		if (Number(decomposedProp[0].match(/[-?0-9\d*]+|\D+/g)[0]) !== x)
 			return false;
 		if (Number(decomposedProp[1].match(/[-?0-9\d*]+|\D+/g)[0]) !== y)
@@ -72,75 +81,86 @@ const TextShadow = props => {
 			<DefaultStylesControl
 				items={[
 					{
-						activeItem: getActiveItem(''),
+						activeItem: getActiveItem('none'),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
 								icon={styleNone}
 							/>
 						),
-						onChange: () => onChange(''),
+						onChange: () => onChange('none'),
 					},
 					{
-						activeItem: getActiveItem('0px 0px 5px #A2A2A2'),
+						activeItem: getActiveItem(
+							`0px 0px 5px ${currentColor}`
+						),
 						content: (
 							<span className='maxi-textshadow-control__default maxi-textshadow-control__default__total'>
 								{__('Maxi', 'maxi-blocks')}
 							</span>
 						),
-						onChange: () => onChange('0px 0px 5px #A2A2A2'),
+						onChange: () => onChange(`0px 0px 5px ${currentColor}`),
 					},
 					{
-						activeItem: getActiveItem('5px 0px 3px #A2A2A2'),
+						activeItem: getActiveItem(
+							`5px 0px 3px ${currentColor}`
+						),
 						content: (
 							<span className='maxi-textshadow-control__default maxi-textshadow-control__default__bottom'>
 								{__('Maxi', 'maxi-blocks')}
 							</span>
 						),
-						onChange: () => onChange('5px 0px 3px #A2A2A2'),
+						onChange: () => onChange(`5px 0px 3px ${currentColor}`),
 					},
 					{
-						activeItem: getActiveItem('2px 4px 0px #A2A2A2'),
+						activeItem: getActiveItem(
+							`2px 4px 0px ${currentColor}`
+						),
 						content: (
 							<span className='maxi-textshadow-control__default maxi-textshadow-control__default__solid'>
 								{__('Maxi', 'maxi-blocks')}
 							</span>
 						),
-						onChange: () => onChange('2px 4px 0px #A2A2A2'),
+						onChange: () => onChange(`2px 4px 0px ${currentColor}`),
 					},
 				]}
 			/>
-			<ColorControl
-				label={__('Color', 'maxi-blocks')}
-				color={color}
-				onChange={val => onChangeValue(3, val)}
-				onReset={() => onChangeValue(3, defaultColor)}
-				disableGradient
-			/>
-			<RangeControl
-				label={__('X', 'maxi-blocks')}
-				value={Number(trim(x))}
-				onChange={val => onChangeValue(0, val)}
-				min={0}
-				max={100}
-				allowReset
-			/>
-			<RangeControl
-				label={__('Y', 'maxi-blocks')}
-				value={Number(trim(y))}
-				onChange={val => onChangeValue(1, val)}
-				min={0}
-				max={100}
-				allowReset
-			/>
-			<RangeControl
-				label={__('Blur', 'maxi-blocks')}
-				value={Number(trim(blur))}
-				onChange={val => onChangeValue(2, val)}
-				min={0}
-				max={100}
-				allowReset
-			/>
+			{value !== 'none' && !isEmpty(value) && (
+				<Fragment>
+					<ColorControl
+						label={__('Color', 'maxi-blocks')}
+						color={color}
+						onChange={val => onChangeValue(3, val)}
+						onReset={() => onChangeValue(3, defaultColor)}
+						disableGradient
+						disableGradientAboveBackground
+					/>
+					<RangeControl
+						label={__('X', 'maxi-blocks')}
+						value={Number(trim(x))}
+						onChange={val => onChangeValue(0, val)}
+						min={0}
+						max={100}
+						allowReset
+					/>
+					<RangeControl
+						label={__('Y', 'maxi-blocks')}
+						value={Number(trim(y))}
+						onChange={val => onChangeValue(1, val)}
+						min={0}
+						max={100}
+						allowReset
+					/>
+					<RangeControl
+						label={__('Blur', 'maxi-blocks')}
+						value={Number(trim(blur))}
+						onChange={val => onChangeValue(2, val)}
+						min={0}
+						max={100}
+						allowReset
+					/>
+				</Fragment>
+			)}
 		</Fragment>
 	);
 };

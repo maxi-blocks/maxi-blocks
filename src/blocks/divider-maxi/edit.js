@@ -141,7 +141,6 @@ class edit extends MaxiBlock {
 					}`,
 				}}
 				showHandle={isSelected}
-				onChange={obj => setAttributes(obj)}
 				directions={{
 					bottom: true,
 				}}

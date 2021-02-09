@@ -34,8 +34,6 @@ const BlockResizer = props => {
 	const showHandlesClassName = showHandle && 'maxi-resizable__handle--show';
 	const sideHandleClassName = 'maxi-resizable__side-handle';
 
-	// console.log(resizableObject);
-
 	return (
 		<Resizable
 			ref={resizableObject}
@@ -123,8 +121,8 @@ const BlockResizer = props => {
 			minWidth={minWidth}
 			maxWidth={maxWidth}
 			enable={directions}
-			onResizeStop={(event, direction, elt) =>
-				onResizeStop(event, direction, elt)
+			onResizeStop={(event, direction, elt, delta) =>
+				onResizeStop(event, direction, elt, delta)
 			}
 			onResizeStart={(event, direction, elt) =>
 				onResizeStart(event, direction, elt)

@@ -42,34 +42,13 @@ const allowedBlocks = [
 const addAttributes = settings => {
 	// Add custom selector/id
 	if (allowedBlocks.includes(settings.name) && !isNil(settings.attributes)) {
-		settings.attributes = Object.assign(settings.attributes, {
+		settings.attributes = {
 			blockStyle: {
 				type: 'string',
-				default: null,
 			},
 			defaultBlockStyle: {
 				type: 'string',
 				default: 'maxi-def-light',
-			},
-			isHighlightText: {
-				type: 'number',
-				default: 0,
-			},
-			isHighlightBackground: {
-				type: 'number',
-				default: 0,
-			},
-			isHighlightBorder: {
-				type: 'number',
-				default: 0,
-			},
-			isHighlightColor1: {
-				type: 'number',
-				default: 0,
-			},
-			isHighlightColor2: {
-				type: 'number',
-				default: 0,
 			},
 			blockStyleBackground: {
 				type: 'number',
@@ -90,7 +69,8 @@ const addAttributes = settings => {
 			},
 			...attributes.zIndex,
 			...attributes.breakpoints,
-		});
+			...settings.attributes,
+		};
 	}
 
 	if (allowedBlocks.includes(settings.name) && !isNil(settings.support)) {

@@ -52,7 +52,6 @@ const Inspector = props => {
 		changeSVGStrokeWidth,
 		clientId,
 		deviceType,
-		hasThirdColour,
 		isAnimatedSVG,
 		setAttributes,
 	} = props;
@@ -139,7 +138,10 @@ const Inspector = props => {
 														color={
 															attributes.svgColorOrange
 														}
-														defaultColor='#ff4917'
+														defaultColor={getDefaultAttribute(
+															'svgColorOrange',
+															clientId
+														)}
 														onChange={svgColorOrange => {
 															setAttributes({
 																svgColorOrange,
@@ -153,13 +155,16 @@ const Inspector = props => {
 													<hr />
 													<SvgColor
 														label={__(
-															'SVG Secondry',
+															'SVG Secondary',
 															'maxi-blocks'
 														)}
 														color={
 															attributes.svgColorBlack
 														}
-														defaultColor='#081219'
+														defaultColor={getDefaultAttribute(
+															'svgColorBlack',
+															clientId
+														)}
 														onChange={svgColorBlack => {
 															setAttributes({
 																svgColorBlack,
@@ -170,28 +175,6 @@ const Inspector = props => {
 															);
 														}}
 													/>
-													<hr />
-													{hasThirdColour && (
-														<SvgColor
-															label={__(
-																'SVG Third',
-																'maxi-blocks'
-															)}
-															color={
-																attributes.svgColorWhite
-															}
-															defaultColor='#ffffff'
-															onChange={svgColorWhite => {
-																setAttributes({
-																	svgColorWhite,
-																});
-																changeSVGContent(
-																	svgColorWhite,
-																	2
-																);
-															}}
-														/>
-													)}
 												</Fragment>
 											),
 										},

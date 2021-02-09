@@ -210,13 +210,9 @@ const editSelect = withSelect((select, ownProps) => {
 		return false;
 	};
 
-	const hasThirdColour =
-		(content.indexOf('maxi-svg-color-third') !== -1 && true) || false;
-
 	return {
 		deviceType,
 		isAnimatedSVG: isAnimatedSVG(),
-		hasThirdColour,
 	};
 });
 

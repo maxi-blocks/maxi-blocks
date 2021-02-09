@@ -95,7 +95,6 @@ const MaxiToolbar = props => {
 		formatValue,
 		deviceType,
 		toggleHandlers,
-		hasThirdColour,
 		changeSVGContent,
 	} = props;
 	const {
@@ -339,16 +338,6 @@ const MaxiToolbar = props => {
 												svgColorBlack,
 											});
 											changeSVGContent(svgColorBlack, 2);
-										}}
-									/>
-								)}
-								{hasThirdColour && (
-									<SvgColor
-										blockName={name}
-										svgColor={attributes.svgColorWhite}
-										onChange={svgColorWhite => {
-											setAttributes({ svgColorWhite });
-											changeSVGContent(svgColorWhite, 3);
 										}}
 									/>
 								)}

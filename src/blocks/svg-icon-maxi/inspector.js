@@ -28,6 +28,7 @@ import {
 	SettingTabsControl,
 	SvgAnimationControl,
 	SvgAnimationDurationControl,
+	SvgColor,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
 	TransformControl,
@@ -43,27 +44,28 @@ import {
  */
 const Inspector = props => {
 	const {
-		clientId,
 		attributes,
-		deviceType,
-		setAttributes,
-		changeSVGSize,
-		changeSVGAnimationDuration,
 		changeSVGAnimation,
+		changeSVGAnimationDuration,
+		changeSVGContent,
+		changeSVGSize,
 		changeSVGStrokeWidth,
+		clientId,
+		deviceType,
 		isAnimatedSVG,
+		setAttributes,
 	} = props;
 	const {
-		customLabel,
-		uniqueID,
-		isFirstOnHierarchy,
-		blockStyle,
-		defaultBlockStyle,
-		blockStyleBackground,
-		extraClassName,
 		animation,
+		blockStyle,
+		blockStyleBackground,
+		customLabel,
+		defaultBlockStyle,
 		duration,
+		extraClassName,
+		isFirstOnHierarchy,
 		stroke,
+		uniqueID,
 		width,
 	} = attributes;
 
@@ -119,6 +121,61 @@ const Inspector = props => {
 													breakpoint={deviceType}
 													disableJustify
 												/>
+											),
+										},
+										{
+											label: __(
+												'SVG Colors',
+												'maxi-blocks'
+											),
+											content: (
+												<Fragment>
+													<SvgColor
+														label={__(
+															'SVG Primary',
+															'maxi-blocks'
+														)}
+														color={
+															attributes.svgColorOrange
+														}
+														defaultColor={getDefaultAttribute(
+															'svgColorOrange',
+															clientId
+														)}
+														onChange={svgColorOrange => {
+															setAttributes({
+																svgColorOrange,
+															});
+															changeSVGContent(
+																svgColorOrange,
+																1
+															);
+														}}
+													/>
+													<hr />
+													<SvgColor
+														label={__(
+															'SVG Secondary',
+															'maxi-blocks'
+														)}
+														color={
+															attributes.svgColorBlack
+														}
+														defaultColor={getDefaultAttribute(
+															'svgColorBlack',
+															clientId
+														)}
+														onChange={svgColorBlack => {
+															setAttributes({
+																svgColorBlack,
+															});
+															changeSVGContent(
+																svgColorBlack,
+																2
+															);
+														}}
+													/>
+												</Fragment>
 											),
 										},
 										isAnimatedSVG && {

@@ -116,7 +116,6 @@ const TextShadow = props => {
 				onChange={val => onChangeValue(3, val)}
 				onReset={() => onChangeValue(3, defaultColor)}
 				disableGradient
-				disableGradientAboveBackground
 			/>
 			<RangeControl
 				label={__('X', 'maxi-blocks')}

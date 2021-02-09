@@ -57,6 +57,10 @@ body.maxi-blocks--active {
 					.maxi-button-block__button,
 					.maxi-font-icon-block__icon i {
 						color: var(--maxi-#{$style}-highlight-text) !important;
+					}
+
+					.maxi-font-icon-block__icon i {
+						color: var(--maxi-#{$style}-highlight-text) !important;
 
 						&:hover {
 							color: var(--maxi-#{$style}-hover) !important;
@@ -66,8 +70,11 @@ body.maxi-blocks--active {
 
 				&--background {
 					&.maxi-text-block,
+					.maxi-button-block__button {
+						background-color: var(--maxi-#{$style}-highlight-background) !important;
+					}
+
 					&.maxi-group-block,
-					.maxi-button-block__button,
 					.maxi-font-icon-block__icon {
 						background-color: var(--maxi-#{$style}-highlight-background) !important;
 
@@ -89,8 +96,13 @@ body.maxi-blocks--active {
 
 				&--border {
 					&.maxi-text-block,
+					.maxi-button-block__button {
+						border-color: var(--maxi-#{$style}-highlight-border) !important;
+						border-style: solid !important;
+						border-width: 2px !important;
+					}
+
 					&.maxi-group-block,
-					.maxi-button-block__button,
 					.maxi-divider-block__divider,
 					&.maxi-font-icon-block,
 					&.maxi-svg-icon-block{

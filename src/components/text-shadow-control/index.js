@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment, useState } = wp.element;
+const { Fragment, useState, useEffect } = wp.element;
 const { RangeControl, Icon } = wp.components;
 
 /**
@@ -30,7 +30,7 @@ import { styleNone } from '../../icons';
 const TextShadow = props => {
 	const { value, onChange, defaultColor } = props;
 
-	const [currentColor, setCurrentColor] = useState('#A2A2A2');
+	const [currentColor, setCurrentColor] = useState('#a2a2a2');
 
 	const valueDecomposed =
 		!isEmpty(value) && value !== 'none'
@@ -41,8 +41,14 @@ const TextShadow = props => {
 	const blur = Number(valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g)[0]);
 	const color = valueDecomposed[3];
 
+	useEffect(() => {
+		if (color !== defaultColor) {
+			setCurrentColor(color);
+		}
+	}, [color, currentColor, setCurrentColor]);
+
 	const onChangeValue = (i, val) => {
-		setCurrentColor(i === 3 && valueDecomposed[3]);
+		setCurrentColor(i === 3 && val);
 
 		if (isNil(val)) valueDecomposed[i] = `${0}${i < 3 ? 'px' : ''}`;
 		else valueDecomposed[i] = `${val}${i < 3 ? 'px' : ''}`;
@@ -82,10 +88,7 @@ const TextShadow = props => {
 								icon={styleNone}
 							/>
 						),
-						onChange: () => {
-							onChange('none');
-							setCurrentColor(currentColor);
-						},
+						onChange: () => onChange('none'),
 					},
 					{
 						activeItem: getActiveItem(

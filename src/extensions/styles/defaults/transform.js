@@ -25,18 +25,18 @@ const transform = {
 	},
 	'transform-rotate-x-general': {
 		type: 'number',
-		default: '',
+		default: 0,
 	},
 	'transform-rotate-y-general': {
 		type: 'number',
-		default: '',
+		default: 0,
 	},
 	'transform-rotate-z-general': {
 		type: 'number',
-		default: '',
+		default: 0,
 	},
 	'transform-origin-x-general': {
-		type: 'string',
+		type: 'number',
 		default: 'center',
 	},
 	'transform-origin-y-general': {

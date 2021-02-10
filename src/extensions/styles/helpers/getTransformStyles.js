@@ -81,6 +81,23 @@ const getTransformStyles = obj => {
 			obj
 		);
 
+		const originValueToNumber = value => {
+			switch (value) {
+				case 'top':
+					return 0;
+				case 'right':
+					return 100;
+				case 'bottom':
+					return 100;
+				case 'left':
+					return 0;
+				case 'center':
+					return 50;
+				default:
+					return false;
+			}
+		};
+
 		if (isNumber(scaleX)) transformString += `scaleX(${scaleX / 100}) `;
 		if (isNumber(scaleY)) transformString += `scaleY(${scaleY / 100}) `;
 		if (isNumber(translateX))
@@ -93,8 +110,10 @@ const getTransformStyles = obj => {
 
 		if (!isEmpty(transformString)) transformString += '!important;';
 
-		if (isString(originX)) transformOriginString += `${originX} `;
-		if (isString(originY)) transformOriginString += `${originY} `;
+		if (isString(originX))
+			transformOriginString += `${originValueToNumber(originX)}% `;
+		if (isString(originY))
+			transformOriginString += `${originValueToNumber(originY)}% `;
 
 		if (isNumber(originX)) transformOriginString += `${originX}% `;
 		if (isNumber(originY)) transformOriginString += `${originY}% `;

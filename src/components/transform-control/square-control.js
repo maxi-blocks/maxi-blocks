@@ -141,9 +141,6 @@ const SquareControl = props => {
 		changeYUnit(yUnit);
 	}, [xUnit, yUnit]);
 
-	console.log('xUnit: ' + xUnit);
-	console.log('yUnit: ' + yUnit);
-
 	return (
 		<div className='maxi-transform-control__square-control'>
 			<div
@@ -450,7 +447,6 @@ const SquareControl = props => {
 							]}
 							value={yAxisUnit}
 							onChange={val => {
-								console.log('newValue ' + val);
 								changeYUnit(val);
 								changeYAxis(yAxis);
 								changeXAxis(xAxis);
@@ -516,7 +512,6 @@ const SquareControl = props => {
 							]}
 							value={xAxisUnit}
 							onChange={val => {
-								console.log('newValue ' + val);
 								changeXUnit(val);
 								changeYAxis(yAxis);
 								changeXAxis(xAxis);

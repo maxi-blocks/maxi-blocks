@@ -66,8 +66,8 @@ const RotateControl = props => {
 					<Button
 						className='components-maxi-control__reset-button'
 						onClick={() => {
-							changeXAxis('');
-							onChange('', yAxis, zAxis);
+							changeXAxis(0);
+							onChange(0, yAxis, zAxis);
 						}}
 						action='reset'
 						type='reset'
@@ -109,8 +109,8 @@ const RotateControl = props => {
 					<Button
 						className='components-maxi-control__reset-button'
 						onClick={() => {
-							changeYAxis('');
-							onChange(xAxis, '', zAxis);
+							changeYAxis(0);
+							onChange(xAxis, 0, zAxis);
 						}}
 						action='reset'
 						type='reset'
@@ -152,8 +152,8 @@ const RotateControl = props => {
 					<Button
 						className='components-maxi-control__reset-button'
 						onClick={() => {
-							changeZAxis('');
-							onChange(xAxis, yAxis, '');
+							changeZAxis(0);
+							onChange(xAxis, yAxis, 0);
 						}}
 						action='reset'
 						type='reset'

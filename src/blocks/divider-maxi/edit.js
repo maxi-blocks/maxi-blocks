@@ -117,9 +117,10 @@ class edit extends MaxiBlock {
 		};
 
 		return [
-			<Inspector {...this.props} />,
-			<Toolbar {...this.props} />,
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<ResizableBox
+				key={uniqueID}
 				size={{
 					width: '100%',
 					height: `${attributes[`height-${deviceType}`]}${

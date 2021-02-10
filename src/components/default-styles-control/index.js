@@ -23,7 +23,7 @@ const DefaultStylesControl = props => {
 
 	return (
 		<div className={classes}>
-			{items.map(item => {
+			{items.map((item, i) => {
 				const classesItem = classnames(
 					'maxi-default-styles-control__button',
 					item.className,
@@ -33,6 +33,7 @@ const DefaultStylesControl = props => {
 
 				return (
 					<Button
+						key={`maxi-default-styles-control__button-${i}`}
 						className={classesItem}
 						onClick={() => item.onChange()}
 					>

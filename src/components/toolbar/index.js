@@ -358,10 +358,6 @@ const MaxiToolbar = props => {
 							<ImageSize
 								{...getGroupAttributes(attributes, 'size')}
 								blockName={name}
-								defaultSize={getDefaultAttribute(
-									'size',
-									clientId
-								)}
 								onChangeSize={obj => setAttributes(obj)}
 								imageSize={imageSize}
 								onChangeImageSize={imageSize =>

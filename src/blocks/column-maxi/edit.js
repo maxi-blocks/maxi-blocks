@@ -15,9 +15,9 @@ import RowContext from '../row-maxi/context';
 import {
 	BackgroundDisplayer,
 	BlockPlaceholder,
+	BlockResizer,
 	MaxiBlock,
 	Toolbar,
-	BlockResizer,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -158,7 +158,6 @@ class edit extends MaxiBlock {
 								deviceType={deviceType}
 								updateRowPattern={updateRowPattern}
 								rowBlockId={rowBlockId}
-								onChange={obj => setAttributes(obj)}
 								directions={{
 									right: true,
 									left: true,

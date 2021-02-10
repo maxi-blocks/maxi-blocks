@@ -193,7 +193,6 @@ const BorderControl = props => {
 						disableImage
 						disableVideo
 						disableGradient
-						disableGradientAboveBackground
 					/>
 				)}
 

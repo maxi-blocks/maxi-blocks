@@ -21,10 +21,10 @@ import { reset, sync as syncIcon } from '../../icons';
  */
 const SquareControl = props => {
 	const {
-		x = 0,
-		xUnit = '%',
-		y = 0,
-		yUnit = '%',
+		x,
+		xUnit = null,
+		y,
+		yUnit = null,
 		onChange,
 		onSave,
 		type = 'resize',
@@ -35,6 +35,8 @@ const SquareControl = props => {
 	const [sync, changeSync] = useState(false);
 	const [xAxis, changeXAxis] = useState(x);
 	const [yAxis, changeYAxis] = useState(y);
+	const [xAxisUnit, changeXUnit] = useState(xUnit);
+	const [yAxisUnit, changeYUnit] = useState(yUnit);
 	const [isMoving, changeIsMoving] = useState(false);
 	const [clientX, changeClientX] = useState(0);
 	const [clientY, changeClientY] = useState(0);
@@ -128,6 +130,14 @@ const SquareControl = props => {
 			}
 		}
 	}, [x, y]);
+
+	useEffect(() => {
+		changeXUnit(xUnit);
+		changeYUnit(yUnit);
+	}, [xUnit, yUnit]);
+
+	console.log('xUnit: ' + xUnit);
+	console.log('yUnit: ' + yUnit);
 
 	return (
 		<div className='maxi-transform-control__square-control'>
@@ -433,10 +443,14 @@ const SquareControl = props => {
 								{ label: 'VW', value: 'vw' },
 								{ label: '%', value: '%' },
 							]}
-							value={yUnit}
+							value={yAxisUnit}
 							onChange={val => {
+								console.log('newValue ' + val);
+								changeYUnit(val);
+								changeYAxis(yAxis);
+								changeXAxis(xAxis);
 								onChange(xAxis, yAxis, xUnit, val);
-								onChange({ yUnit: val });
+								onSave(xAxis, yAxis, xUnit, val);
 							}}
 						/>
 					)}
@@ -495,10 +509,14 @@ const SquareControl = props => {
 								{ label: 'VW', value: 'vw' },
 								{ label: '%', value: '%' },
 							]}
-							value={xUnit}
+							value={xAxisUnit}
 							onChange={val => {
+								console.log('newValue ' + val);
+								changeXUnit(val);
+								changeYAxis(yAxis);
+								changeXAxis(xAxis);
 								onChange(xAxis, yAxis, val, yUnit);
-								onChange({ xUnit: val });
+								onSave(xAxis, yAxis, val, yUnit);
 							}}
 						/>
 					)}

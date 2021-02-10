@@ -33,4 +33,4 @@ import './blocks/customizer-maxi/index';
 
 // Editor
 import './editor/saver';
-// import './editor/styler';
+import './editor/toolbar-buttons';

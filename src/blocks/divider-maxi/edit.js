@@ -119,7 +119,6 @@ class edit extends MaxiBlock {
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<BlockResizer
 				key={uniqueID}
-				resizableObject={this.resizableObject}
 				className={classnames(
 					'maxi-block__resizer',
 					'maxi-divider-block__resizer',

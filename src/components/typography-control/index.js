@@ -12,11 +12,8 @@ import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
-import {
-	setFormat,
-	getCustomFormatValue,
-	defaultTypographies,
-} from '../../extensions/text/formats';
+import { setFormat, getCustomFormatValue } from '../../extensions/text/formats';
+import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -175,7 +172,9 @@ const TypographyControl = props => {
 				`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
 			);
 
-		return defaultTypographies[textLevel][breakpoint][prop];
+		return defaultTypography[textLevel][
+			`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
+		];
 	};
 
 	const onChangeFormat = value => {

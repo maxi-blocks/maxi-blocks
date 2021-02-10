@@ -81,13 +81,13 @@ const SquareControl = props => {
 		switch (type) {
 			case 'resize':
 				return {
-					min: '-100',
+					min: '0',
 					max: '300',
 				};
 			case 'drag':
 				return {
-					min: '-200',
-					max: '200',
+					min: '-100',
+					max: '100',
 				};
 			case 'origin':
 				return {

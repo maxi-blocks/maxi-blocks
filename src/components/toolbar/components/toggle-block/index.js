@@ -89,14 +89,15 @@ const ToggleBlock = props => {
 					className='toolbar-item toolbar-item__toggle-block'
 					onClick={e => {
 						e.preventDefault();
+
 						getValue() === 'none'
 							? onChange({
-									[`display-${breakpoint}`]: getOptions()
-										.show,
+									[`display-${breakpoint}`]: getOptions()[0]
+										.value,
 							  })
 							: onChange({
-									[`display-${breakpoint}`]: getOptions()
-										.hide,
+									[`display-${breakpoint}`]: getOptions()[1]
+										.value,
 							  });
 					}}
 				>

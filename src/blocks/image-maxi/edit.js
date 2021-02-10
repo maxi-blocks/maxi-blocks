@@ -39,11 +39,6 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlock {
-	constructor(props) {
-		super(props);
-		this.resizableObject = createRef();
-	}
-
 	get getWrapperWidth() {
 		const target = document.getElementById(`block-${this.props.clientId}`);
 		if (target) return target.getBoundingClientRect().width;
@@ -156,20 +151,21 @@ class edit extends MaxiBlock {
 		}
 
 		const handleOnResizeStop = (event, direction, elt, delta) => {
-			const newWidth = parseInt(
-				attributes[`width-${deviceType}`] + delta.width,
-				10
-			);
-
 			setAttributes({
-				[`width-${deviceType}`]: newWidth,
+				[`width-${deviceType}`]: parseInt(
+					attributes[`width-${deviceType}`] + delta.width,
+					10
+				),
 			});
 		};
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
-			<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
+			<MotionPreview
+				key={`motion-preview-${uniqueID}`}
+				{...getGroupAttributes(attributes, 'motion')}
+			>
 				<__experimentalBlock.figure
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
@@ -209,9 +205,7 @@ class edit extends MaxiBlock {
 										/>
 
 										<BlockResizer
-											resizableObject={
-												this.resizableObject
-											}
+											key={uniqueID}
 											className={classnames(
 												'maxi-block__resizer maxi-image-block__resizer'
 											)}

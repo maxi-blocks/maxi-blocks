@@ -33,11 +33,6 @@ import { isNil, isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
-	constructor(props) {
-		super(props);
-		this.resizableObject = createRef();
-	}
-
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}

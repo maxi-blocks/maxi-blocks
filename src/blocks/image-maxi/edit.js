@@ -2,9 +2,9 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment, RawHTML } = wp.element;
+const { Fragment, RawHTML, createRef } = wp.element;
 const { withSelect } = wp.data;
-const { Spinner, Button, ResizableBox, Placeholder } = wp.components;
+const { Spinner, Button, Placeholder } = wp.components;
 const { __experimentalBlock, MediaUpload } = wp.blockEditor;
 
 /**
@@ -13,6 +13,7 @@ const { __experimentalBlock, MediaUpload } = wp.blockEditor;
 import Inspector from './inspector';
 import {
 	BackgroundDisplayer,
+	BlockResizer,
 	MaxiBlock,
 	MotionPreview,
 	Toolbar,
@@ -38,6 +39,11 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlock {
+	constructor(props) {
+		super(props);
+		this.resizableObject = createRef();
+	}
+
 	get getWrapperWidth() {
 		const target = document.getElementById(`block-${this.props.clientId}`);
 		if (target) return target.getBoundingClientRect().width;
@@ -149,6 +155,17 @@ class edit extends MaxiBlock {
 				setAttributes({ mediaAltTitle: imageData.title.rendered });
 		}
 
+		const handleOnResizeStop = (event, direction, elt, delta) => {
+			const newWidth = parseInt(
+				attributes[`width-${deviceType}`] + delta.width,
+				10
+			);
+
+			setAttributes({
+				[`width-${deviceType}`]: newWidth,
+			});
+		};
+
 		return [
 			<Inspector {...this.props} />,
 			<Toolbar {...this.props} />,
@@ -190,8 +207,14 @@ class edit extends MaxiBlock {
 											])}
 											blockClassName={uniqueID}
 										/>
-										<ResizableBox
-											className='maxi-block__resizer maxi-image-block__resizer'
+
+										<BlockResizer
+											resizableObject={
+												this.resizableObject
+											}
+											className={classnames(
+												'maxi-block__resizer maxi-image-block__resizer'
+											)}
 											size={{
 												width: `${
 													!isNumber(
@@ -209,34 +232,15 @@ class edit extends MaxiBlock {
 												}px`,
 												height: '100%',
 											}}
+											showHandle
 											maxWidth='100%'
-											enable={{
-												top: false,
-												right: false,
-												bottom: false,
-												left: false,
+											directions={{
 												topRight: true,
 												bottomRight: true,
 												bottomLeft: true,
 												topLeft: true,
 											}}
-											onResizeStop={(
-												event,
-												direction,
-												elt,
-												delta
-											) => {
-												const newWidth = parseInt(
-													attributes[
-														`width-${deviceType}`
-													] + delta.width,
-													10
-												);
-
-												setAttributes({
-													[`width-${deviceType}`]: newWidth,
-												});
-											}}
+											onResizeStop={handleOnResizeStop}
 										>
 											<div className='maxi-image-block__settings'>
 												<Button
@@ -306,7 +310,7 @@ class edit extends MaxiBlock {
 													{captionContent}
 												</figcaption>
 											)}
-										</ResizableBox>
+										</BlockResizer>
 									</Fragment>
 								) : mediaID ? (
 									<Fragment>

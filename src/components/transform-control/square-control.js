@@ -3,7 +3,12 @@
  */
 const { __ } = wp.i18n;
 const { useState, useRef, useCallback, useEffect } = wp.element;
-const { Tooltip, Button, ResizableBox, SelectControl } = wp.components;
+const { Tooltip, Button, SelectControl } = wp.components;
+
+/**
+ * Internal dependencies
+ */
+import BlockResizer from '../block-resizer';
 
 /**
  * External dependencies
@@ -162,18 +167,18 @@ const SquareControl = props => {
 				}}
 			>
 				{type === 'resize' && (
-					<ResizableBox
-						className='maxi-block__resizer maxi-transform-control__square-control__canvas__resizer'
+					<BlockResizer
+						className={classnames(
+							'maxi-block__resizer',
+							' maxi-transform-control__square-control__canvas__resizer'
+						)}
 						defaultSize={getDefaultSize()}
 						maxWidth='100%'
 						maxHeight='100%'
 						minWidth='-100%'
 						minHeight='-100%'
-						enable={{
-							top: false,
-							right: false,
-							bottom: false,
-							left: false,
+						showHandle
+						directions={{
 							topRight: true,
 							bottomRight: true,
 							bottomLeft: true,

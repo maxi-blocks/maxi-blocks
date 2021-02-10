@@ -28,10 +28,6 @@ const attributes = {
 		type: 'string',
 		default: '#081219',
 	},
-	svgColorWhite: {
-		type: 'string',
-		default: '#FFF',
-	},
 	stroke: {
 		type: 'number',
 		default: 2.0,

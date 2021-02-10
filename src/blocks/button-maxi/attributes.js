@@ -67,19 +67,19 @@ const attributes = {
 		...attributesData.borderRadius,
 		'border-top-left-radius-general': {
 			type: 'number',
-			default: 25,
+			default: 10,
 		},
 		'border-top-right-radius-general': {
 			type: 'number',
-			default: 25,
+			default: 10,
 		},
 		'border-bottom-left-radius-general': {
 			type: 'number',
-			default: 25,
+			default: 10,
 		},
 		'border-bottom-right-radius-general': {
 			type: 'number',
-			default: 25,
+			default: 10,
 		},
 	},
 	...attributesData.borderHover,

@@ -12,7 +12,7 @@ import FancyRadioControl from '../fancy-radio-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * Styles
@@ -36,26 +36,39 @@ const DisplayControl = props => {
 		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 		const breakpointIndex = breakpoints.indexOf(breakpoint) - 1;
 
-		if (breakpointIndex <= 0) return false;
+		if (breakpointIndex < 0) return false;
 
 		let i = breakpointIndex;
 
 		do {
-			if (props[`$display-${breakpoint[i]}`] === 'none') return true;
-			if (props[`$display-${breakpoint[i]}`] === defaultDisplay)
+			if (props[`display-${breakpoints[i]}`] === 'none') return true;
+			if (props[`display-${breakpoints[i]}`] === defaultDisplay)
 				return false;
 			i -= 1;
-		} while (i > 0);
+		} while (i >= 0);
 
 		return false;
 	};
 
 	const getValue = () => {
-		const isPrevHide = isHide();
+		if (props[`display-${breakpoint}`] === 'none') return 'none';
 
-		return isPrevHide && props[`display-${breakpoint}`]
-			? 'none'
-			: props[`display-${breakpoint}`];
+		const isPrevHide = isHide();
+		if (
+			isPrevHide &&
+			(isNil(props[`display-${breakpoint}`]) ||
+				props[`display-${breakpoint}`] === '')
+		)
+			return 'none';
+
+		if (
+			isPrevHide &&
+			(!isNil(props[`display-${breakpoint}`]) ||
+				props[`display-${breakpoint}`] !== '')
+		)
+			return defaultDisplay;
+
+		return '';
 	};
 
 	const getOptions = () => {
@@ -80,7 +93,7 @@ const DisplayControl = props => {
 				options={getOptions()}
 				onChange={val =>
 					onChange({
-						[`display-${breakpoint}`]: !isEmpty(val) ? val : '',
+						[`display-${breakpoint}`]: !isEmpty(val) ? val : null,
 					})
 				}
 			/>

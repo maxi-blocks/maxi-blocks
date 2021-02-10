@@ -118,8 +118,9 @@ class edit extends MaxiBlock {
 		);
 
 		return [
-			<Inspector {...this.props} />,
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
+				key={`toolbar-${uniqueID}`}
 				toggleHandlers={() => {
 					this.setState({
 						displayHandlers: !this.state.displayHandlers,

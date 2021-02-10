@@ -133,10 +133,11 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector
+				key={`block-settings-${uniqueID}`}
 				resizableObject={this.resizableObject.current}
 				{...this.props}
 			/>,
-			<Toolbar {...this.props} />,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<RowContext.Consumer>
 				{context => (
 					<Fragment>

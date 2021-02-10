@@ -104,8 +104,8 @@ class edit extends MaxiBlock {
 
 		return [
 			<Fragment>
-				<Inspector {...this.props} />
-				<Toolbar {...this.props} />
+				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
+				<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />
 				<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
 					<__experimentalBlock
 						className={classes}

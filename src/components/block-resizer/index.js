@@ -14,17 +14,7 @@ import './editor.scss';
  * Component
  */
 const BlockResizer = props => {
-	const {
-		children,
-		className,
-		defaultSize,
-		directions,
-		maxWidth,
-		minWidth,
-		onResizeStop,
-		showHandle = false,
-		resizableObject,
-	} = props;
+	const { children, className, directions, showHandle = false } = props;
 
 	const classes = classnames('maxi-block__resizer', className);
 	const cornerHandleClassName = 'maxi-resizable__corner-handle';
@@ -32,11 +22,9 @@ const BlockResizer = props => {
 	const showHandlesClassName = showHandle && 'maxi-resizable__handle--show';
 	const sideHandleClassName = 'maxi-resizable__side-handle';
 
-	// console.log(resizableObject);
-
 	return (
 		<Resizable
-			ref={resizableObject}
+			{...props}
 			className={classes}
 			handleClasses={{
 				top:
@@ -116,13 +104,6 @@ const BlockResizer = props => {
 						'maxi-resizable__handle-left'
 					),
 			}}
-			defaultSize={defaultSize}
-			minWidth={minWidth}
-			maxWidth={maxWidth}
-			enable={directions}
-			onResizeStop={(event, direction, elt) =>
-				onResizeStop(event, direction, elt)
-			}
 		>
 			{children}
 		</Resizable>

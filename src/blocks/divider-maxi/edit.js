@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __experimentalBlock } = wp.blockEditor;
-const { ResizableBox } = wp.components;
+const { createRef } = wp.element;
 const { compose } = wp.compose;
 const { withSelect, withDispatch } = wp.data;
 
@@ -12,6 +12,7 @@ const { withSelect, withDispatch } = wp.data;
 import Inspector from './inspector';
 import {
 	BackgroundDisplayer,
+	BlockResizer,
 	MaxiBlock,
 	MotionPreview,
 	Toolbar,
@@ -32,9 +33,10 @@ import { isNil, isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
-	state = {
-		isResizing: false,
-	};
+	constructor(props) {
+		super(props);
+		this.resizableObject = createRef();
+	}
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
@@ -79,8 +81,6 @@ class edit extends MaxiBlock {
 			background,
 		} = attributes;
 
-		const { isResizing } = this.state;
-
 		onDeviceTypeChange();
 
 		const classes = classnames(
@@ -106,26 +106,20 @@ class edit extends MaxiBlock {
 			setAttributes({
 				[`height-unit-${deviceType}`]: 'px',
 			});
-			this.setState({ isResizing: true });
 		};
 
 		const handleOnResizeStop = (event, direction, elt) => {
 			setAttributes({
 				[`height-${deviceType}`]: elt.getBoundingClientRect().height,
 			});
-			this.setState({ isResizing: false });
 		};
 
 		return [
 			<Inspector {...this.props} />,
 			<Toolbar {...this.props} />,
-			<ResizableBox
-				size={{
-					width: '100%',
-					height: `${attributes[`height-${deviceType}`]}${
-						attributes[`-unit-${deviceType}`]
-					}`,
-				}}
+
+			<BlockResizer
+				resizableObject={this.resizableObject}
 				className={classnames(
 					'maxi-block__resizer',
 					'maxi-divider-block__resizer',
@@ -134,31 +128,24 @@ class edit extends MaxiBlock {
 						'is-selected': isSelected,
 					}
 				)}
+				size={{
+					width: '100%',
+					height: `${attributes[`height-${deviceType}`]}${
+						attributes[`-unit-${deviceType}`]
+					}`,
+				}}
 				defaultSize={{
 					width: '100%',
 					height: `${attributes[`height-${deviceType}`]}${
 						attributes[`-unit-${deviceType}`]
 					}`,
 				}}
-				enable={{
-					top: false,
-					right: false,
+				showHandle={isSelected}
+				directions={{
 					bottom: true,
-					left: false,
-					topRight: false,
-					bottomRight: false,
-					bottomLeft: false,
-					topLeft: false,
 				}}
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}
-				showHandle={isSelected}
-				__experimentalShowTooltip
-				__experimentalTooltipProps={{
-					axis: 'y',
-					position: 'bottom',
-					isVisible: isResizing,
-				}}
 			>
 				<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
 					<__experimentalBlock
@@ -172,7 +159,7 @@ class edit extends MaxiBlock {
 						)}
 					</__experimentalBlock>
 				</MotionPreview>
-			</ResizableBox>,
+			</BlockResizer>,
 		];
 	}
 }

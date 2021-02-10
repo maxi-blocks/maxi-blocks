@@ -30,20 +30,20 @@ const FontIconPicker = props => {
 	return (
 		<div className={classes}>
 			{!iconClassName ? (
-				<Button className='maxi-font-icon-picker__upload'>
+				<div className='maxi-font-icon-picker__upload'>
 					<Modal
 						onChange={iconClassName => {
 							onChange(iconClassName);
 						}}
 					/>
-				</Button>
+				</div>
 			) : (
 				<Fragment>
 					<div className='maxi-font-icon-picker__icon'>
 						<i className={iconClassName} />
 					</div>
 					<div className='maxi-font-icon-picker__control-buttons'>
-						<Button className='maxi-font-icon-picker__control-buttons__replace'>
+						<div className='maxi-font-icon-picker__control-buttons__replace'>
 							<Modal
 								icon={iconClassName}
 								onChange={iconClassName => {
@@ -51,15 +51,16 @@ const FontIconPicker = props => {
 								}}
 								btnText={__('Replace Icon', 'maxi-blocks')}
 							/>
-						</Button>
-						<Button
-							className='maxi-font-icon-picker__control-buttons__remove'
-							onClick={() => {
-								onChange('');
-							}}
-						>
-							{__('Remove Icon', 'maxi-blocks')}
-						</Button>
+						</div>
+						<div className='maxi-font-icon-picker__control-buttons__remove'>
+							<Button
+								onClick={() => {
+									onChange('');
+								}}
+							>
+								{__('Remove Icon', 'maxi-blocks')}
+							</Button>
+						</div>
 					</div>
 				</Fragment>
 			)}

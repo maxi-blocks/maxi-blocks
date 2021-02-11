@@ -81,22 +81,48 @@ const getTransformStyles = obj => {
 			obj
 		);
 
+		const originValueToNumber = value => {
+			switch (value) {
+				case 'top':
+					return 0;
+				case 'right':
+					return 100;
+				case 'bottom':
+					return 100;
+				case 'left':
+					return 0;
+				case 'center':
+					return 50;
+				default:
+					return false;
+			}
+		};
+
 		if (isNumber(scaleX)) transformString += `scaleX(${scaleX / 100}) `;
 		if (isNumber(scaleY)) transformString += `scaleY(${scaleY / 100}) `;
-		if (isNumber(translateX) && translateX > 0)
+		if (isNumber(translateX))
 			transformString += `translateX(${translateX}${translateXUnit}) `;
-		if (isNumber(translateY) && translateY > 0)
+		if (isNumber(translateY))
 			transformString += `translateY(${translateY}${translateYUnit}) `;
 		if (isNumber(rotateX)) transformString += `rotateX(${rotateX}deg) `;
 		if (isNumber(rotateY)) transformString += `rotateY(${rotateY}deg) `;
 		if (isNumber(rotateZ)) transformString += `rotateZ(${rotateZ}deg) `;
-		if (isString(originX)) transformOriginString += `${originX}% `;
-		if (isString(originY)) transformOriginString += `${originY}% `;
+		// TODO: remove the !important after issue #885 (duplicate css) fix
+		if (!isEmpty(transformString)) transformString += '!important;';
+
+		if (isString(originX))
+			transformOriginString += `${originValueToNumber(originX)}% `;
+		if (isString(originY))
+			transformOriginString += `${originValueToNumber(originY)}% `;
+
+		if (isNumber(originX)) transformOriginString += `${originX}% `;
+		if (isNumber(originY)) transformOriginString += `${originY}% `;
 
 		const transformObj = {
 			...(!isEmpty(transformString) && { transform: transformString }),
 			...(!isEmpty(transformOriginString) && {
-				'transform-origin': transformOriginString,
+				// TODO: remove the !important after issue #885 (duplicate css) fix
+				'transform-origin': `${transformOriginString} !important;`,
 			}),
 		};
 		if (!isEmpty(transformObj)) response[breakpoint] = transformObj;

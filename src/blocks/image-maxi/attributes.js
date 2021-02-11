@@ -110,7 +110,6 @@ const attributes = {
 	...attributesData.transform,
 	...attributesData.display,
 	...attributesData.position,
-	...attributesData.position,
 	...attributesData.hover,
 	...attributesData.hoverBorder,
 	...attributesData.hoverBorderWidth,

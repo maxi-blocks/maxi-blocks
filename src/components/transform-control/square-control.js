@@ -40,6 +40,8 @@ const SquareControl = props => {
 	const [sync, changeSync] = useState(false);
 	const [xAxis, changeXAxis] = useState(x);
 	const [yAxis, changeYAxis] = useState(y);
+	const [xAxisUnit, changeXUnit] = useState(xUnit);
+	const [yAxisUnit, changeYUnit] = useState(yUnit);
 	const [isMoving, changeIsMoving] = useState(false);
 	const [clientX, changeClientX] = useState(0);
 	const [clientY, changeClientY] = useState(0);
@@ -79,13 +81,13 @@ const SquareControl = props => {
 		switch (type) {
 			case 'resize':
 				return {
-					min: '-100',
+					min: '0',
 					max: '300',
 				};
 			case 'drag':
 				return {
-					min: '-200',
-					max: '200',
+					min: '-100',
+					max: '100',
 				};
 			case 'origin':
 				return {
@@ -133,6 +135,11 @@ const SquareControl = props => {
 			}
 		}
 	}, [x, y]);
+
+	useEffect(() => {
+		changeXUnit(xUnit);
+		changeYUnit(yUnit);
+	}, [xUnit, yUnit]);
 
 	return (
 		<div className='maxi-transform-control__square-control'>
@@ -438,8 +445,14 @@ const SquareControl = props => {
 								{ label: 'VW', value: 'vw' },
 								{ label: '%', value: '%' },
 							]}
-							value={yUnit}
-							onChange={val => onChange(xAxis, yAxis, xUnit, val)}
+							value={yAxisUnit}
+							onChange={val => {
+								changeYUnit(val);
+								changeYAxis(yAxis);
+								changeXAxis(xAxis);
+								onChange(xAxis, yAxis, xUnit, val);
+								onSave(xAxis, yAxis, xUnit, val);
+							}}
 						/>
 					)}
 				</div>
@@ -497,8 +510,14 @@ const SquareControl = props => {
 								{ label: 'VW', value: 'vw' },
 								{ label: '%', value: '%' },
 							]}
-							value={xUnit}
-							onChange={val => onChange(xAxis, yAxis, val, yUnit)}
+							value={xAxisUnit}
+							onChange={val => {
+								changeXUnit(val);
+								changeYAxis(yAxis);
+								changeXAxis(xAxis);
+								onChange(xAxis, yAxis, val, yUnit);
+								onSave(xAxis, yAxis, val, yUnit);
+							}}
 						/>
 					)}
 				</div>
@@ -527,10 +546,6 @@ const SquareControl = props => {
 				<Button
 					className='components-maxi-control__reset-button'
 					onClick={onReset}
-					// aria-label={sprintf(
-					//     __('Reset %s settings', 'maxi-blocks'),
-					//     value.label.toLowerCase()
-					// )}
 					action='reset'
 					type='reset'
 				>

@@ -28,7 +28,7 @@ const RotateControl = props => {
 	useEffect(() => {
 		changeXAxis(x);
 		changeYAxis(y);
-		changeXAxis(x);
+		changeZAxis(z);
 	}, [x, y, z]);
 
 	return (
@@ -43,11 +43,11 @@ const RotateControl = props => {
 						className='maxi-transform-control__rotate-control__item__range'
 						value={yAxis || ''}
 						onChange={e => {
-							changeYAxis(Number(e.target.value));
-							onChange(xAxis, Number(e.target.value), zAxis);
+							changeXAxis(Number(e.target.value));
+							onChange(Number(e.target.value), yAxis, zAxis);
 						}}
 						min='0'
-						max='100'
+						max='360'
 						orient='vertical'
 					/>
 					<input
@@ -59,20 +59,16 @@ const RotateControl = props => {
 							const newValue = !isEmpty(e.target.value)
 								? Number(e.target.value)
 								: '';
-							changeYAxis(newValue);
-							onChange(xAxis, newValue, zAxis);
+							changeXAxis(newValue);
+							onChange(newValue, yAxis, zAxis);
 						}}
 					/>
 					<Button
 						className='components-maxi-control__reset-button'
 						onClick={() => {
-							changeYAxis('');
-							onChange(xAxis, '', zAxis);
+							changeXAxis(0);
+							onChange(0, yAxis, zAxis);
 						}}
-						// aria-label={sprintf(
-						//     __('Reset %s settings', 'maxi-blocks'),
-						//     value.label.toLowerCase()
-						// )}
 						action='reset'
 						type='reset'
 					>
@@ -90,11 +86,11 @@ const RotateControl = props => {
 						className='maxi-transform-control__rotate-control__item__range'
 						value={xAxis || ''}
 						onChange={e => {
-							changeXAxis(Number(e.target.value));
-							onChange(Number(e.target.value), yAxis, zAxis);
+							changeYAxis(Number(e.target.value));
+							onChange(xAxis, Number(e.target.value), zAxis);
 						}}
 						min='0'
-						max='100'
+						max='360'
 						orient='vertical'
 					/>
 					<input
@@ -106,20 +102,16 @@ const RotateControl = props => {
 							const newValue = !isEmpty(e.target.value)
 								? Number(e.target.value)
 								: '';
-							changeXAxis(newValue);
-							onChange(newValue, yAxis, zAxis);
+							changeYAxis(newValue);
+							onChange(xAxis, newValue, zAxis);
 						}}
 					/>
 					<Button
 						className='components-maxi-control__reset-button'
 						onClick={() => {
-							changeXAxis('');
-							onChange('', yAxis, zAxis);
+							changeYAxis(0);
+							onChange(xAxis, 0, zAxis);
 						}}
-						// aria-label={sprintf(
-						//     __('Reset %s settings', 'maxi-blocks'),
-						//     value.label.toLowerCase()
-						// )}
 						action='reset'
 						type='reset'
 					>
@@ -141,7 +133,7 @@ const RotateControl = props => {
 							onChange(xAxis, yAxis, Number(e.target.value));
 						}}
 						min='0'
-						max='100'
+						max='360'
 						orient='vertical'
 					/>
 					<input
@@ -160,13 +152,9 @@ const RotateControl = props => {
 					<Button
 						className='components-maxi-control__reset-button'
 						onClick={() => {
-							changeZAxis('');
-							onChange(xAxis, yAxis, '');
+							changeZAxis(0);
+							onChange(xAxis, yAxis, 0);
 						}}
-						// aria-label={sprintf(
-						//     __('Reset %s settings', 'maxi-blocks'),
-						//     value.label.toLowerCase()
-						// )}
 						action='reset'
 						type='reset'
 					>

@@ -151,11 +151,12 @@ class edit extends MaxiBlock {
 		}
 
 		const handleOnResizeStop = (event, direction, elt, delta) => {
+			const imageWidth = !isNil(attributes[`width-${deviceType}`])
+				? attributes[`width-${deviceType}`]
+				: 0;
+
 			setAttributes({
-				[`width-${deviceType}`]: parseInt(
-					attributes[`width-${deviceType}`] + delta.width,
-					10
-				),
+				[`width-${deviceType}`]: imageWidth + delta.width,
 			});
 		};
 

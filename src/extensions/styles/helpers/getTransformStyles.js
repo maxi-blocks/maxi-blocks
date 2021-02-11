@@ -107,7 +107,7 @@ const getTransformStyles = obj => {
 		if (isNumber(rotateX)) transformString += `rotateX(${rotateX}deg) `;
 		if (isNumber(rotateY)) transformString += `rotateY(${rotateY}deg) `;
 		if (isNumber(rotateZ)) transformString += `rotateZ(${rotateZ}deg) `;
-
+		// TODO: remove the !important after issue #885 (duplicate css) fix
 		if (!isEmpty(transformString)) transformString += '!important;';
 
 		if (isString(originX))
@@ -121,6 +121,7 @@ const getTransformStyles = obj => {
 		const transformObj = {
 			...(!isEmpty(transformString) && { transform: transformString }),
 			...(!isEmpty(transformOriginString) && {
+				// TODO: remove the !important after issue #885 (duplicate css) fix
 				'transform-origin': `${transformOriginString} !important;`,
 			}),
 		};

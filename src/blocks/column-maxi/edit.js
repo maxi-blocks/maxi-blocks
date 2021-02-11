@@ -138,13 +138,12 @@ class edit extends MaxiBlock {
 				{...this.props}
 			/>,
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
-			<RowContext.Consumer>
+			<RowContext.Consumer key={`column-content-${uniqueID}`}>
 				{context => (
 					<Fragment>
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
 							<BlockResizer
-								resizableObject={this.resizableObject}
 								className={classnames(
 									'maxi-block--backend',
 									'maxi-column-block__resizer',
@@ -156,9 +155,6 @@ class edit extends MaxiBlock {
 									) === 'none' && 'maxi-block-display-none'
 								)}
 								defaultSize={{ width: getColumnWidthDefault() }}
-								deviceType={deviceType}
-								updateRowPattern={updateRowPattern}
-								rowBlockId={rowBlockId}
 								directions={{
 									right: true,
 									left: true,

@@ -128,9 +128,9 @@ class edit extends MaxiBlock {
 				}}
 				{...this.props}
 			/>,
-			<Breadcrumbs />,
-
+			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
 			<RowContext.Provider
+				key={`row-content-${uniqueID}`}
 				value={{
 					displayHandlers: this.state.displayHandlers,
 					rowPattern: getGroupAttributes(attributes, 'rowPattern'),

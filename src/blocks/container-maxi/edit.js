@@ -158,10 +158,11 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
-			<Breadcrumbs />,
-			<Fragment>
+			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
+			<Fragment key={`container-content-${uniqueID}`}>
 				{isFirstOnHierarchy && fullWidth && (
 					<MotionPreview
+						key={`motion-preview-${uniqueID}`}
 						{...getGroupAttributes(attributes, 'motion')}
 					>
 						<__experimentalBlock.section

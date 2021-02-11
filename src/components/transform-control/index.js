@@ -196,9 +196,9 @@ const TransformControl = props => {
 								onChange={(x, y, xUnit, yUnit) => {
 									onChangeTransform({
 										'transform-translate-x': x,
-										'transform-translate-x-unit': x,
+										'transform-translate-x-unit': xUnit,
 										'transform-translate-y': y,
-										'transform-translate-y-unit': y,
+										'transform-translate-y-unit': yUnit,
 									});
 									forceStyles();
 								}}

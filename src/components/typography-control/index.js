@@ -76,6 +76,21 @@ const TypographyControl = props => {
 		},
 	};
 
+	const minMaxSettingsLetterSpacing = {
+		px: {
+			min: -3,
+			max: 30,
+		},
+		em: {
+			min: -1,
+			max: 10,
+		},
+		vw: {
+			min: -1,
+			max: 10,
+		},
+	};
+
 	const getWeightOptions = () => {
 		const fontOptions =
 			!isHover ||
@@ -258,6 +273,7 @@ const TypographyControl = props => {
 			<SizeControl
 				className='maxi-typography-control__letter-spacing'
 				label={__('Letter Spacing', 'maxi-blocks')}
+				allowedUnits={['px', 'em', 'vw']}
 				unit={getValue(`${prefix}letter-spacing-unit`)}
 				defaultUnit={getDefault(`${prefix}letter-spacing-unit`)}
 				onChangeUnit={val => {
@@ -268,7 +284,8 @@ const TypographyControl = props => {
 				onChangeValue={val => {
 					onChangeFormat({ [`${prefix}letter-spacing`]: val });
 				}}
-				minMaxSettings={minMaxSettings}
+				minMaxSettings={minMaxSettingsLetterSpacing}
+				step={0.1}
 			/>
 			<Divider />
 			<SelectControl

@@ -389,7 +389,7 @@ const SquareControl = props => {
 				<input
 					type='range'
 					className='maxi-transform-control__square-control__y-control__range'
-					value={yAxis}
+					value={yAxis || ''}
 					onChange={e => {
 						type !== 'origin' && onSave(xAxis, yAxis, xUnit, yUnit);
 						if (!sync) {
@@ -411,7 +411,7 @@ const SquareControl = props => {
 						type='number'
 						placeholder={getPlaceholder(yAxis)}
 						className='maxi-transform-control__square-control__y-control__value__input'
-						value={yAxis}
+						value={yAxis || ''}
 						onChange={e => {
 							const newValue = !isEmpty(e.target.value)
 								? Number(e.target.value)
@@ -448,7 +448,7 @@ const SquareControl = props => {
 				<input
 					type='range'
 					className='maxi-transform-control__square-control__x-control__range'
-					value={xAxis}
+					value={xAxis || ''}
 					onChange={e => {
 						type !== 'origin' && onSave(xAxis, yAxis, xUnit, yUnit);
 						if (!sync) {
@@ -470,7 +470,7 @@ const SquareControl = props => {
 						type='number'
 						placeholder={getPlaceholder(xAxis)}
 						className='maxi-transform-control__square-control__x-control__value__input'
-						value={xAxis}
+						value={xAxis || ''}
 						onChange={e => {
 							const newValue = !isEmpty(e.target.value)
 								? Number(e.target.value)

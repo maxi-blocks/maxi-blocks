@@ -133,7 +133,10 @@ class edit extends MaxiBlock {
 				{...this.props}
 				formatValue={formatValue}
 			/>,
-			<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
+			<MotionPreview
+				key={`motion-preview-${uniqueID}`}
+				{...getGroupAttributes(attributes, 'motion')}
+			>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}

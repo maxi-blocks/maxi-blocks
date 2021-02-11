@@ -6,11 +6,6 @@ const { Fragment, useEffect, useState } = wp.element;
 const { select } = wp.data;
 
 /**
- * Internal dependencies
- */
-import { getDefaultAttribute } from '../../extensions/styles';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';

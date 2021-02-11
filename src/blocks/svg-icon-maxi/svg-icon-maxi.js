@@ -48,5 +48,5 @@ registerBlockType('maxi-blocks/svg-icon-maxi', {
 		};
 	},
 	edit,
-	save,
+	save: () => null,
 });

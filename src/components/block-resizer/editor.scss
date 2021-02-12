@@ -6,6 +6,7 @@ body.maxi-blocks--active .maxi-block.maxi-block__resizer {
 			display: none;
 			width: 15px;
 			height: 15px;
+			z-index: 2;
 			&--show {
 				display: block;
 			}

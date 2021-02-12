@@ -13,7 +13,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import Modal from './modal';
+import MaxiModalIcon from './modal';
 
 /**
  * Styles
@@ -30,36 +30,37 @@ const FontIconPicker = props => {
 	return (
 		<div className={classes}>
 			{!iconClassName ? (
-				<Button className='maxi-font-icon-picker__upload'>
-					<Modal
+				<div className='maxi-font-icon-picker__upload'>
+					<MaxiModalIcon
 						onChange={iconClassName => {
 							onChange(iconClassName);
 						}}
 					/>
-				</Button>
+				</div>
 			) : (
 				<Fragment>
 					<div className='maxi-font-icon-picker__icon'>
 						<i className={iconClassName} />
 					</div>
 					<div className='maxi-font-icon-picker__control-buttons'>
-						<Button className='maxi-font-icon-picker__control-buttons__replace'>
-							<Modal
+						<div className='maxi-font-icon-picker__control-buttons__replace'>
+							<MaxiModalIcon
 								icon={iconClassName}
 								onChange={iconClassName => {
 									onChange(iconClassName);
 								}}
 								btnText={__('Replace Icon', 'maxi-blocks')}
 							/>
-						</Button>
-						<Button
-							className='maxi-font-icon-picker__control-buttons__remove'
-							onClick={() => {
-								onChange('');
-							}}
-						>
-							{__('Remove Icon', 'maxi-blocks')}
-						</Button>
+						</div>
+						<div className='maxi-font-icon-picker__control-buttons__remove'>
+							<Button
+								onClick={() => {
+									onChange('');
+								}}
+							>
+								{__('Remove Icon', 'maxi-blocks')}
+							</Button>
+						</div>
 					</div>
 				</Fragment>
 			)}

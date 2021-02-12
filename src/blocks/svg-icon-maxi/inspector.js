@@ -28,6 +28,7 @@ import {
 	SettingTabsControl,
 	SvgAnimationControl,
 	SvgAnimationDurationControl,
+	SvgColor,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
 	TransformControl,
@@ -43,27 +44,28 @@ import {
  */
 const Inspector = props => {
 	const {
-		clientId,
 		attributes,
-		deviceType,
-		setAttributes,
-		changeSVGSize,
-		changeSVGAnimationDuration,
 		changeSVGAnimation,
+		changeSVGAnimationDuration,
+		changeSVGContent,
+		changeSVGSize,
 		changeSVGStrokeWidth,
+		clientId,
+		deviceType,
 		isAnimatedSVG,
+		setAttributes,
 	} = props;
 	const {
-		customLabel,
-		uniqueID,
-		isFirstOnHierarchy,
-		blockStyle,
-		defaultBlockStyle,
-		blockStyleBackground,
-		extraClassName,
 		animation,
+		blockStyle,
+		blockStyleBackground,
+		customLabel,
+		defaultBlockStyle,
 		duration,
+		extraClassName,
+		isFirstOnHierarchy,
 		stroke,
+		uniqueID,
 		width,
 	} = attributes;
 
@@ -121,41 +123,104 @@ const Inspector = props => {
 												/>
 											),
 										},
-										isAnimatedSVG && {
+										attributes.content && {
 											label: __(
-												'SVG Animation',
+												'SVG Colors',
 												'maxi-blocks'
 											),
 											content: (
 												<Fragment>
-													<SvgAnimationControl
-														animation={animation}
-														onChange={animation => {
+													<SvgColor
+														label={__(
+															'SVG Primary',
+															'maxi-blocks'
+														)}
+														color={
+															attributes.svgColorOrange
+														}
+														defaultColor={getDefaultAttribute(
+															'svgColorOrange',
+															clientId
+														)}
+														onChange={svgColorOrange => {
 															setAttributes({
-																animation,
+																svgColorOrange,
 															});
-															changeSVGAnimation(
-																animation
+															changeSVGContent(
+																svgColorOrange,
+																1
 															);
 														}}
 													/>
-													{animation !== 'off' && (
-														<SvgAnimationDurationControl
-															duration={duration}
-															onChange={duration => {
-																setAttributes({
-																	duration,
-																});
-																changeSVGAnimationDuration(
-																	duration
-																);
-															}}
-														/>
-													)}
+													<hr />
+													<SvgColor
+														label={__(
+															'SVG Secondary',
+															'maxi-blocks'
+														)}
+														color={
+															attributes.svgColorBlack
+														}
+														defaultColor={getDefaultAttribute(
+															'svgColorBlack',
+															clientId
+														)}
+														onChange={svgColorBlack => {
+															setAttributes({
+																svgColorBlack,
+															});
+															changeSVGContent(
+																svgColorBlack,
+																2
+															);
+														}}
+													/>
 												</Fragment>
 											),
 										},
-										{
+										attributes.content &&
+											isAnimatedSVG && {
+												label: __(
+													'SVG Animation',
+													'maxi-blocks'
+												),
+												content: (
+													<Fragment>
+														<SvgAnimationControl
+															animation={
+																animation
+															}
+															onChange={animation => {
+																setAttributes({
+																	animation,
+																});
+																changeSVGAnimation(
+																	animation
+																);
+															}}
+														/>
+														{animation !==
+															'off' && (
+															<SvgAnimationDurationControl
+																duration={
+																	duration
+																}
+																onChange={duration => {
+																	setAttributes(
+																		{
+																			duration,
+																		}
+																	);
+																	changeSVGAnimationDuration(
+																		duration
+																	);
+																}}
+															/>
+														)}
+													</Fragment>
+												),
+											},
+										attributes.content && {
 											label: __(
 												'SVG Line Width',
 												'maxi-blocks'
@@ -179,7 +244,7 @@ const Inspector = props => {
 												/>
 											),
 										},
-										{
+										attributes.content && {
 											label: __(
 												'SVG Width',
 												'maxi-blocks'

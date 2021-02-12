@@ -322,6 +322,7 @@ const ClipPathControl = props => {
 							{Object.entries(clipPathDefaults).map(
 								([name, newClipPath]) => (
 									<Tooltip
+										key={`clip-path-defaults__item__${name}`}
 										text={name}
 										position='bottom center'
 									>

@@ -6,11 +6,6 @@ const { Fragment, useEffect, useState } = wp.element;
 const { select } = wp.data;
 
 /**
- * Internal dependencies
- */
-import { getDefaultAttribute } from '../../extensions/styles';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -95,7 +90,6 @@ const MaxiToolbar = props => {
 		formatValue,
 		deviceType,
 		toggleHandlers,
-		hasThirdColour,
 		changeSVGContent,
 	} = props;
 	const {
@@ -342,16 +336,6 @@ const MaxiToolbar = props => {
 										}}
 									/>
 								)}
-								{hasThirdColour && (
-									<SvgColor
-										blockName={name}
-										svgColor={attributes.svgColorWhite}
-										onChange={svgColorWhite => {
-											setAttributes({ svgColorWhite });
-											changeSVGContent(svgColorWhite, 3);
-										}}
-									/>
-								)}
 							</Fragment>
 						)}
 						<Border
@@ -369,10 +353,6 @@ const MaxiToolbar = props => {
 							<ImageSize
 								{...getGroupAttributes(attributes, 'size')}
 								blockName={name}
-								defaultSize={getDefaultAttribute(
-									'size',
-									clientId
-								)}
 								onChangeSize={obj => setAttributes(obj)}
 								imageSize={imageSize}
 								onChangeImageSize={imageSize =>

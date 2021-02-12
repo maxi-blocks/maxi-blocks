@@ -6,6 +6,11 @@ const { Fragment } = wp.element;
 const { Icon, Button, Tooltip } = wp.components;
 
 /**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
+/**
  * Icons & Styles
  */
 import './editor.scss';
@@ -21,33 +26,53 @@ const ToggleBlock = props => {
 		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 		const breakpointIndex = breakpoints.indexOf(breakpoint) - 1;
 
-		if (breakpointIndex <= 0) return false;
+		if (breakpointIndex < 0) return false;
 
 		let i = breakpointIndex;
 
 		do {
-			if (props[`$display-${breakpoint[i]}`] === 'none') return true;
-			if (props[`$display-${breakpoint[i]}`] === defaultDisplay)
+			if (props[`display-${breakpoints[i]}`] === 'none') return true;
+			if (props[`display-${breakpoints[i]}`] === defaultDisplay)
 				return false;
 			i -= 1;
-		} while (i > 0);
+		} while (i >= 0);
 
 		return false;
 	};
 
 	const getValue = () => {
-		const isPrevHide = isHide();
+		if (props[`display-${breakpoint}`] === 'none') return 'none';
 
-		return isPrevHide && props[`display-${breakpoint}`]
-			? 'none'
-			: props[`display-${breakpoint}`];
+		const isPrevHide = isHide();
+		if (
+			isPrevHide &&
+			(isNil(props[`display-${breakpoint}`]) ||
+				props[`display-${breakpoint}`] === '')
+		)
+			return 'none';
+
+		if (
+			isPrevHide &&
+			(!isNil(props[`display-${breakpoint}`]) ||
+				props[`display-${breakpoint}`] !== '')
+		)
+			return defaultDisplay;
+
+		return '';
 	};
 
 	const getOptions = () => {
 		const isPrevHide = isHide();
 
-		if (isPrevHide) return { show: defaultDisplay, hide: 'none' };
-		return { show: '', hide: 'none' };
+		if (isPrevHide)
+			return [
+				{ label: __('Show', 'maxi-blocks'), value: defaultDisplay },
+				{ label: __('Hide', 'maxi-blocks'), value: 'none' },
+			];
+		return [
+			{ label: __('Show', 'maxi-blocks'), value: '' },
+			{ label: __('Hide', 'maxi-blocks'), value: 'none' },
+		];
 	};
 
 	return (
@@ -64,14 +89,15 @@ const ToggleBlock = props => {
 					className='toolbar-item toolbar-item__toggle-block'
 					onClick={e => {
 						e.preventDefault();
+
 						getValue() === 'none'
 							? onChange({
-									[`display-${breakpoint}`]: getOptions()
-										.show,
+									[`display-${breakpoint}`]: getOptions()[0]
+										.value,
 							  })
 							: onChange({
-									[`display-${breakpoint}`]: getOptions()
-										.hide,
+									[`display-${breakpoint}`]: getOptions()[1]
+										.value,
 							  });
 					}}
 				>

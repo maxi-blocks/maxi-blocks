@@ -350,12 +350,13 @@ const Inspector = props => {
 														'custom' && (
 														<TextareaControl
 															className='custom-caption'
-															placeHolder={__(
+															placeholder={__(
 																'Add you Custom Caption here',
 																'maxi-blocks'
 															)}
 															value={
-																captionContent
+																captionContent ||
+																''
 															}
 															onChange={captionContent =>
 																setAttributes({

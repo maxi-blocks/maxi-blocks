@@ -35,6 +35,7 @@ const SVGDefaultsDisplayer = props => {
 				const cleanedContent = DOMPurify.sanitize(svgEl);
 				return (
 					<Button
+						key={`maxi-svg-defaults__item-${i}`}
 						className={`maxi-svg-defaults__item ${
 							SVGCurrentElement === i &&
 							'maxi-svg-defaults__item--active'

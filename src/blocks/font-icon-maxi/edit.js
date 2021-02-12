@@ -82,9 +82,10 @@ class edit extends MaxiBlock {
 		);
 
 		return [
-			<Inspector {...this.props} />,
-			<Toolbar {...this.props} />,
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<__experimentalBlock
+				key={`maxi-font-icon-block-${uniqueID}`}
 				className={classes}
 				data-maxi_initial_block_class={defaultBlockStyle}
 			>

@@ -14,6 +14,7 @@ import * as attributes from '../styles/defaults/index';
  * External Dependencies
  */
 import { uniqueId, isEmpty, isNil } from 'lodash';
+import uniqueIDGenerator from './uniqueIDGenerator';
 
 /**
  * General
@@ -82,18 +83,6 @@ const addAttributes = settings => {
 	return settings;
 };
 
-const uniqueIdCreator = name => {
-	const newID = uniqueId(`${name.replace('maxi-blocks/', '')}-`);
-
-	if (
-		!isEmpty(document.getElementsByClassName(newID)) ||
-		!isNil(document.getElementById(newID))
-	)
-		uniqueIdCreator(name);
-
-	return newID;
-};
-
 /**
  * Add custom Maxi Blocks attributes to selected blocks
  *
@@ -113,9 +102,12 @@ const withAttributes = createHigherOrderComponent(
 			if (
 				isNil(uniqueID) ||
 				document.getElementsByClassName(uniqueID).length > 1
-			)
-				props.attributes.uniqueID = uniqueIdCreator(name);
-
+			) {
+				const newName = uniqueId(
+					`${name.replace('maxi-blocks/', '')}-`
+				);
+				props.attributes.uniqueID = uniqueIDGenerator(newName);
+			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')
 				.getBlockParents(clientId)

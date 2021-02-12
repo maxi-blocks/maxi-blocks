@@ -2,10 +2,9 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { synchronizeBlocksWithTemplate } = wp.blocks;
 const { useInstanceId } = wp.compose;
 const { Icon, Button } = wp.components;
-const { select, useSelect, useDispatch } = wp.data;
+const { select } = wp.data;
 const { useState, useEffect } = wp.element;
 
 /**
@@ -14,7 +13,6 @@ const { useState, useEffect } = wp.element;
 import {
 	getNumCol,
 	getTemplates,
-	getTemplateObject,
 } from '../../extensions/defaults/column-templates';
 
 import SizeControl from '../size-control';
@@ -23,13 +21,14 @@ import FancyRadioControl from '../fancy-radio-control';
 /**
  * External dependencies
  */
-import { uniqueId, isEmpty, isNil, cloneDeep, isEqual } from 'lodash';
+import { uniqueId, isEqual } from 'lodash';
 import classnames from 'classnames';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
+import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTemplate';
 
 /**
  * Column patterns
@@ -49,24 +48,6 @@ const ColumnPatternsInspector = props => {
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
 
-	const { getBlockName, getBlockAttributes, getBlockOrder } = select(
-		'core/block-editor'
-	);
-
-	const { innerBlocks } = useSelect(
-		select => {
-			const { getBlockOrder } = select('core/block-editor');
-			return {
-				innerBlocks: getBlockOrder(clientId),
-			};
-		},
-		[clientId]
-	);
-
-	const { updateBlockAttributes, replaceInnerBlocks } = useDispatch(
-		'core/block-editor'
-	);
-
 	useEffect(() => {
 		if (toolbar) {
 			if (breakpoint === 'general') {
@@ -84,125 +65,6 @@ const ColumnPatternsInspector = props => {
 			setNumCol(getNumCol(props['row-pattern-general']));
 		}
 	}, [breakpoint, props['row-pattern-general']]);
-
-	/**
-	 * Creates a new array with columns content before loading template for saving
-	 * current content and be ready to load in new columns
-	 *
-	 * @param {Object} blockIds Inner blocks ids of parent block
-	 * @param {Array} newTemplate Parent array for nesting children
-	 *
-	 * @returns {Array} Array with saved content
-	 */
-	const getCurrentContent = (blockIds, newTemplate = []) => {
-		if (isNil(blockIds) || isEmpty(blockIds)) return [];
-
-		blockIds.forEach(id => {
-			const blockName = getBlockName(id);
-			const blockAttributes = getBlockAttributes(id);
-			const innerBlocks = getBlockOrder(id);
-
-			let response;
-			if (blockName === 'maxi-blocks/column-maxi')
-				newTemplate.push(getCurrentContent(innerBlocks, response));
-			else
-				newTemplate.push([
-					blockName,
-					blockAttributes,
-					getCurrentContent(innerBlocks, response),
-				]);
-		});
-
-		return newTemplate;
-	};
-
-	/**
-	 * Merges an array with new template and current content
-	 *
-	 * @param {Array} template Columns template for load
-	 * @param {Array} currentContent Content inside current template
-	 *
-	 * @returns {Array} Merged array with column template and current content
-	 */
-	const expandWithNewContent = (template, currentContent, hasGap) => {
-		currentContent.forEach((content, i) => {
-			if (!isNil(template[i])) template[i].push(content);
-		});
-
-		return template;
-	};
-
-	/**
-	 * Creates uniqueID for columns on loading templates
-	 */
-	const uniqueIdCreator = () => {
-		const newID = uniqueId('maxi-column-maxi-');
-		if (
-			!isEmpty(document.getElementsByClassName(newID)) ||
-			!isNil(document.getElementById(newID))
-		)
-			uniqueIdCreator();
-
-		return newID;
-	};
-
-	const getCurrentAttributes = blockIds => {
-		return blockIds.map(id => {
-			return getBlockAttributes(id);
-		});
-	};
-
-	/**
-	 * Loads template into InnerBlocks
-	 *
-	 * @param {integer} templateName the name of template
-	 * @param {Function} callback
-	 */
-	const loadTemplate = templateName => {
-		const currentContent = getCurrentContent(innerBlocks);
-		const currentAttributes = getCurrentAttributes(innerBlocks);
-		const hasGap = removeColumnGap ? 'withoutGap' : 'withGap';
-
-		const template = cloneDeep(getTemplateObject(templateName));
-		template.content.forEach((column, i) => {
-			column[1][hasGap].uniqueID = uniqueIdCreator();
-
-			if (currentAttributes.length > i)
-				column[1] = { ...currentAttributes[i], ...column[1][hasGap] };
-		});
-
-		const responsiveTemplate =
-			(template.responsiveLayout &&
-				getTemplateObject(template.responsiveLayout)) ||
-			null;
-
-		if (responsiveTemplate)
-			responsiveTemplate.content.forEach((resTemplate, i) => {
-				template.content[i][1] = {
-					...template.content[i][1][hasGap],
-					...resTemplate[1][hasGap],
-				};
-			});
-		else
-			template.content.forEach(content => {
-				content[1] = content[1][hasGap];
-			});
-
-		updateBlockAttributes(clientId, template.attributes);
-
-		const newTemplateContent = expandWithNewContent(
-			template.content,
-			currentContent,
-			hasGap
-		);
-
-		const newTemplate = synchronizeBlocksWithTemplate(
-			[],
-			newTemplateContent
-		);
-
-		replaceInnerBlocks(clientId, newTemplate, false);
-	};
 
 	/**
 	 * Get current columns sizes
@@ -289,56 +151,6 @@ const ColumnPatternsInspector = props => {
 		return newColumnsSizes;
 	};
 
-	/**
-	 * Update Columns Sizes
-	 *
-	 * @param {integer} i Element of object FILTERED_TEMPLATES
-	 * @param {Function} callback
-	 */
-	const updateTemplate = (templateName, removeColGap) => {
-		const { getBlock } = select('core/block-editor');
-		const columnsBlockObjects = getBlock(clientId).innerBlocks;
-		const hasGap = removeColGap ? 'withoutGap' : 'withGap';
-		const template = cloneDeep(getTemplateObject(templateName));
-		const responsiveTemplate =
-			template.responsiveLayout &&
-			getTemplateObject(template.responsiveLayout);
-
-		if (responsiveTemplate)
-			responsiveTemplate.content.forEach((resTemplate, i) => {
-				template.content[i][1] = {
-					...template.content[i][1][hasGap],
-					...resTemplate[1][hasGap],
-				};
-			});
-		else
-			template.content.forEach(content => {
-				content[1] = content[1][hasGap];
-			});
-
-		columnsBlockObjects.forEach((column, j) => {
-			const newAttributes = { ...template.content[j][1] };
-			const columnAttributes = { ...newAttributes };
-
-			const { resizableObject } = column.attributes;
-
-			updateBlockAttributes(column.clientId, columnAttributes).then(
-				() => {
-					if (resizableObject) {
-						resizableObject.updateSize({
-							width: `${
-								newAttributes[`column-size-${breakpoint}`]
-							}%`,
-						});
-						resizableObject.resizable.style.width = `${
-							newAttributes[`column-size-${breakpoint}`]
-						}%`;
-					}
-				}
-			);
-		});
-	};
-
 	const patternButtonClassName = classnames(
 		'components-column-pattern__template-button',
 		toolbar && 'components-column-pattern__template-button--toolbar'
@@ -371,11 +183,12 @@ const ColumnPatternsInspector = props => {
 								applyGap(template.sizes)
 							)}
 							onClick={() => {
-								if (breakpoint === 'general') {
-									loadTemplate(template.name);
-								} else {
-									updateTemplate(template.name);
-								}
+								loadColumnsTemplate(
+									template.name,
+									removeColumnGap,
+									clientId,
+									breakpoint
+								);
 
 								onChange({
 									[`row-pattern-${breakpoint}`]: template.name,
@@ -402,9 +215,11 @@ const ColumnPatternsInspector = props => {
 							]}
 							onChange={val => {
 								onChange({ removeColumnGap: !!+val });
-								updateTemplate(
+								loadColumnsTemplate(
 									props['row-pattern-general'],
-									!!+val
+									removeColumnGap,
+									clientId,
+									breakpoint
 								);
 							}}
 						/>

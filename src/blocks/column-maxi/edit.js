@@ -157,6 +157,7 @@ class edit extends MaxiBlock {
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
 							<BlockResizer
+								resizableObject={this.resizableObject}
 								className={classnames(
 									'maxi-block',
 									'maxi-block--backend',

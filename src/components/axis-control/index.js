@@ -125,7 +125,7 @@ const AxisControl = props => {
 
 		const value = isNil(inputValue)
 			? getDefaultAttribute(`${getKey(key)}-${breakpoint}`)
-			: +inputValue;
+			: inputValue;
 
 		return value;
 	};

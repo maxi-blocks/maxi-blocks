@@ -14,7 +14,13 @@ import './editor.scss';
  * Component
  */
 const BlockResizer = props => {
-	const { children, className, directions, showHandle = false } = props;
+	const {
+		children,
+		className,
+		directions,
+		showHandle = false,
+		...rest
+	} = props;
 
 	const classes = classnames('maxi-block__resizer', className);
 	const cornerHandleClassName = 'maxi-resizable__corner-handle';
@@ -24,7 +30,7 @@ const BlockResizer = props => {
 
 	return (
 		<Resizable
-			{...props}
+			{...rest}
 			className={classes}
 			handleClasses={{
 				top:

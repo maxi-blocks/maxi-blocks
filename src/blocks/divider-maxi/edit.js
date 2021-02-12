@@ -33,11 +33,6 @@ import { isNil, isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
-	constructor(props) {
-		super(props);
-		this.resizableObject = createRef();
-	}
-
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -115,11 +110,10 @@ class edit extends MaxiBlock {
 		};
 
 		return [
-			<Inspector {...this.props} />,
-			<Toolbar {...this.props} />,
-
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<BlockResizer
-				resizableObject={this.resizableObject}
+				key={uniqueID}
 				className={classnames(
 					'maxi-block__resizer',
 					'maxi-divider-block__resizer',

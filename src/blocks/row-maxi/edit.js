@@ -118,8 +118,9 @@ class edit extends MaxiBlock {
 		);
 
 		return [
-			<Inspector {...this.props} />,
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
+				key={`toolbar-${uniqueID}`}
 				toggleHandlers={() => {
 					this.setState({
 						displayHandlers: !this.state.displayHandlers,
@@ -127,9 +128,9 @@ class edit extends MaxiBlock {
 				}}
 				{...this.props}
 			/>,
-			<Breadcrumbs />,
-
+			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
 			<RowContext.Provider
+				key={`row-content-${uniqueID}`}
 				value={{
 					displayHandlers: this.state.displayHandlers,
 					rowPattern: getGroupAttributes(attributes, 'rowPattern'),

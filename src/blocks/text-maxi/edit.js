@@ -159,9 +159,20 @@ class edit extends MaxiBlock {
 		const { getFormatTypes } = select('core/rich-text');
 
 		return [
-			<Inspector {...this.props} formatValue={formatValue} />,
-			<Toolbar {...this.props} formatValue={formatValue} />,
-			<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				formatValue={formatValue}
+			/>,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				{...this.props}
+				formatValue={formatValue}
+			/>,
+			<MotionPreview
+				key={`motion-preview-${uniqueID}`}
+				{...getGroupAttributes(attributes, 'motion')}
+			>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}

@@ -1,15 +1,18 @@
 /**
+ * WordPress dependencies
+ */
+const { RawHTML } = wp.element;
+
+/**
  * Internal dependencies
  */
-import { BackgroundDisplayer } from '../../components/background-displayer';
+import { BackgroundDisplayer } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { RawHTML } from '@wordpress/element';
-import { isNil } from 'lodash';
 
 /**
  * Save
@@ -33,8 +36,7 @@ const save = props => {
 		!!attributes['color2-highlight'] && 'maxi-highlight--color2',
 		extraClassName,
 		uniqueID,
-		className,
-		!isNil(uniqueID) ? uniqueID : null
+		className
 	);
 
 	return (
@@ -53,6 +55,7 @@ const save = props => {
 					'backgroundHover',
 					'backgroundColorHover',
 				])}
+				blockClassName={uniqueID}
 			/>
 		</div>
 	);

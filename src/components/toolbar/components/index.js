@@ -18,7 +18,7 @@ export { default as PaddingMargin } from './padding-margin';
 export { default as RowSettings } from './row-settings';
 export { default as Size } from './size';
 export { default as Style } from './style';
-export { default as SvgColor } from './svg-colors';
+export { default as SvgColor } from './svg-color';
 export { default as TextBold } from './text-bold';
 export { default as TextColor } from './text-color';
 export { default as TextItalic } from './text-italic';

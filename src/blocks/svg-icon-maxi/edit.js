@@ -103,83 +103,81 @@ class edit extends MaxiBlock {
 		);
 
 		return [
-			<Fragment>
-				<Inspector {...this.props} />
-				<Toolbar {...this.props} />
-				<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
-					<__experimentalBlock
-						className={classes}
-						data-maxi_initial_block_class={defaultBlockStyle}
-						key={clientId}
-					>
-						<Fragment>
-							{isOpen && (
-								<Modal
-									key={`maxi-block-library__modal--${clientId}`}
-									className='maxi-block-library__modal'
-									title={__(
-										'Maxi Cloud Icons Library',
-										'maxi-blocks'
-									)}
-									shouldCloseOnEsc
-									shouldCloseOnClickOutside={false}
-									onRequestClose={onClick}
-								>
-									<Iframe
-										url='https://ge-library.dev700.com/svg-search/'
-										width='100%'
-										height='90%'
-										id='maxi-block-library__modal-iframe'
-										className='maxi-block-library__modal-iframe'
-										display='initial'
-										position='relative'
-									/>
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<MotionPreview
+				key={`motion-preview-${uniqueID}`}
+				{...getGroupAttributes(attributes, 'motion')}
+			>
+				<__experimentalBlock
+					className={classes}
+					data-maxi_initial_block_class={defaultBlockStyle}
+					key={clientId}
+				>
+					<Fragment>
+						{isOpen && (
+							<Modal
+								key={`maxi-block-library__modal--${clientId}`}
+								className='maxi-block-library__modal'
+								title={__(
+									'Maxi Cloud Icons Library',
+									'maxi-blocks'
+								)}
+								shouldCloseOnEsc
+								shouldCloseOnClickOutside={false}
+								onRequestClose={onClick}
+							>
+								<Iframe
+									url='https://ge-library.dev700.com/svg-search/'
+									width='100%'
+									height='90%'
+									id='maxi-block-library__modal-iframe'
+									className='maxi-block-library__modal-iframe'
+									display='initial'
+									position='relative'
+								/>
 
-									<div className='maxi-block-library__modal__loading_message maxi-block__item--hidden'>
-										<p>{__('Saving…', 'maxi-blocks')}</p>
-									</div>
-								</Modal>
-							)}
-							{isEmpty(attributes.content) && (
-								<Fragment>
-									<div className='maxi-svg-icon-block__placeholder'>
-										<Button
-											key={`maxi-block-library__modal-button--${clientId}`}
-											className='maxi-block-library__modal-button'
-											onClick={onClick}
-										>
-											{__(
-												'Select SVG Icon',
-												'maxi-blocks'
-											)}
-										</Button>
-									</div>
-								</Fragment>
-							)}
-							{!isEmpty(attributes.content) && (
-								<Fragment>
+								<div className='maxi-block-library__modal__loading_message maxi-block__item--hidden'>
+									<p>{__('Saving…', 'maxi-blocks')}</p>
+								</div>
+							</Modal>
+						)}
+						{isEmpty(attributes.content) && (
+							<Fragment>
+								<div className='maxi-svg-icon-block__placeholder'>
 									<Button
-										className='maxi-svg-icon-block__replace-icon'
+										key={`maxi-block-library__modal-button--${clientId}`}
+										className='maxi-block-library__modal-button'
 										onClick={onClick}
-										icon={toolbarReplaceImage}
-									/>
-									<BackgroundDisplayer
-										{...getGroupAttributes(attributes, [
-											'background',
-											'backgroundColor',
-											'backgroundHover',
-											'backgroundColorHover',
-										])}
-									/>
-									<RawHTML className='maxi-svg-icon-block__icon'>
-										{attributes.content}
-									</RawHTML>
-								</Fragment>
-							)}
-						</Fragment>
-					</__experimentalBlock>
-				</MotionPreview>
-			</Fragment>,
+									>
+										{__('Select SVG Icon', 'maxi-blocks')}
+									</Button>
+								</div>
+							</Fragment>
+						)}
+						{!isEmpty(attributes.content) && (
+							<Fragment>
+								<Button
+									className='maxi-svg-icon-block__replace-icon'
+									onClick={onClick}
+									icon={toolbarReplaceImage}
+								/>
+								<BackgroundDisplayer
+									{...getGroupAttributes(attributes, [
+										'background',
+										'backgroundColor',
+										'backgroundHover',
+										'backgroundColorHover',
+									])}
+								/>
+								<RawHTML className='maxi-svg-icon-block__icon'>
+									{attributes.content}
+								</RawHTML>
+							</Fragment>
+						)}
+					</Fragment>
+				</__experimentalBlock>
+			</MotionPreview>,
 		];
 	}
 }

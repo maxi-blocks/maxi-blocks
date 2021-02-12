@@ -7,6 +7,7 @@ const { Button } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
+import { uniqueId } from 'lodash';
 
 /**
  * Styles and icons
@@ -23,7 +24,7 @@ const DefaultStylesControl = props => {
 
 	return (
 		<div className={classes}>
-			{items.map((item, i) => {
+			{items.map(item => {
 				const classesItem = classnames(
 					'maxi-default-styles-control__button',
 					item.className,
@@ -33,7 +34,7 @@ const DefaultStylesControl = props => {
 
 				return (
 					<Button
-						key={`maxi-default-styles-control__button-${i}`}
+						key={uniqueId('maxi-default-styles-control__button-')}
 						className={classesItem}
 						onClick={() => item.onChange()}
 					>

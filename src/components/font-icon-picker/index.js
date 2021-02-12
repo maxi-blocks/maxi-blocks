@@ -13,7 +13,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import Modal from './modal';
+import MaxiModalIcon from './modal';
 
 /**
  * Styles
@@ -31,7 +31,7 @@ const FontIconPicker = props => {
 		<div className={classes}>
 			{!iconClassName ? (
 				<div className='maxi-font-icon-picker__upload'>
-					<Modal
+					<MaxiModalIcon
 						onChange={iconClassName => {
 							onChange(iconClassName);
 						}}
@@ -44,7 +44,7 @@ const FontIconPicker = props => {
 					</div>
 					<div className='maxi-font-icon-picker__control-buttons'>
 						<div className='maxi-font-icon-picker__control-buttons__replace'>
-							<Modal
+							<MaxiModalIcon
 								icon={iconClassName}
 								onChange={iconClassName => {
 									onChange(iconClassName);

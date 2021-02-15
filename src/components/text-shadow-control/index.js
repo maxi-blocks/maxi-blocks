@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment, useState, useEffect } = wp.element;
-const { RangeControl, Icon } = wp.components;
+const { Icon } = wp.components;
 
 /**
  * Internal dependencies
@@ -11,6 +11,7 @@ const { RangeControl, Icon } = wp.components;
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import FancyRadioControl from '../fancy-radio-control';
+import RangeSliderControl from '../range-slider-control';
 
 /**
  * External dependencies
@@ -135,47 +136,26 @@ const TextShadow = props => {
 						disableGradient
 						disableGradientAboveBackground
 					/>
-					<RangeControl
+					<RangeSliderControl
 						label={__('X', 'maxi-blocks')}
 						value={Number(trim(x))}
-						onChange={val => {
-							let value = val;
-
-							if (value > 100) value = 100;
-							if (value < 0) value = 0;
-
-							onChangeValue(0, value);
-						}}
+						onChange={val => onChangeValue(0, val)}
 						min={0}
 						max={100}
 						allowReset
 					/>
-					<RangeControl
+					<RangeSliderControl
 						label={__('Y', 'maxi-blocks')}
 						value={Number(trim(y))}
-						onChange={val => {
-							let value = val;
-
-							if (value > 100) value = 100;
-							if (value < 0) value = 0;
-
-							onChangeValue(1, value);
-						}}
+						onChange={val => onChangeValue(1, val)}
 						min={0}
 						max={100}
 						allowReset
 					/>
-					<RangeControl
+					<RangeSliderControl
 						label={__('Blur', 'maxi-blocks')}
 						value={Number(trim(blur))}
-						onChange={val => {
-							let value = val;
-
-							if (value > 100) value = 100;
-							if (value < 0) value = 0;
-
-							onChangeValue(2, value);
-						}}
+						onChange={val => onChangeValue(2, val)}
 						min={0}
 						max={100}
 						allowReset

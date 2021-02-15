@@ -12,7 +12,6 @@ import { reset } from '../../icons';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim } from 'lodash';
 
 /**
  * Component

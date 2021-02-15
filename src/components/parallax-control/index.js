@@ -3,12 +3,12 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { RangeControl } = wp.components;
 
 /**
  * Internal dependencies
  */
 import FancyRadioControl from '../fancy-radio-control';
+import RangeSliderControl from '../range-slider-control';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
@@ -52,23 +52,11 @@ const ParallaxControl = props => {
 							onChange({ 'parallax-direction': val })
 						}
 					/>
-					<RangeControl
+					<RangeSliderControl
 						label={__('Speed', 'maxi-blocks')}
 						value={props['parallax-speed']}
-						onChange={val => {
-							let value = val;
-
-							if (value > 10) value = 10;
-							if (value < 1) value = 1;
-
-							isNil(value)
-								? onChange({
-										'parallax-speed': getDefaultAttribute(
-											'parallax-speed'
-										),
-								  })
-								: onChange({ 'parallax-speed': +value });
-						}}
+						defaultValue={getDefaultAttribute('parallax-speed')}
+						onChange={val => onChange({ 'parallax-speed': +val })}
 						min={1}
 						max={10}
 						allowReset

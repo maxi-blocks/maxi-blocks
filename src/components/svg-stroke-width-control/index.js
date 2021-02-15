@@ -1,12 +1,7 @@
 /**
- * WordPress dependencies
+ * Internal dependencies
  */
-const { RangeControl } = wp.components;
-
-/**
- * External dependencies
- */
-import { isNil } from 'lodash';
+import RangeSliderControl from '../range-slider-control';
 
 /**
  * Component
@@ -15,16 +10,10 @@ const SvgStrokeWidthControl = props => {
 	const { defaultStroke, stroke, onChange } = props;
 
 	return (
-		<RangeControl
+		<RangeSliderControl
 			value={stroke}
-			onChange={val => {
-				let value = val;
-
-				if (value > 10) value = 10;
-				if (value < 0.1) value = 0.1;
-
-				onChange(!isNil(value) ? value : defaultStroke);
-			}}
+			defaultValue={defaultStroke}
+			onChange={val => onChange(val)}
 			min={0.1}
 			max={10}
 			step={0.1}

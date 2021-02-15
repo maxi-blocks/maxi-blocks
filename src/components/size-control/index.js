@@ -3,7 +3,12 @@
  */
 const { __, sprintf } = wp.i18n;
 const { Fragment } = wp.element;
-const { RangeControl, SelectControl, BaseControl, Button } = wp.components;
+const { SelectControl, BaseControl, Button } = wp.components;
+
+/**
+ * Internal dependencies
+ */
+import RangeSliderControl from '../range-slider-control';
 
 /**
  * External dependencies
@@ -142,7 +147,7 @@ const SizeControl = props => {
 				</Button>
 			)}
 			{disableUnit ? (
-				<RangeControl
+				<RangeSliderControl
 					value={+value === '' || +value === 0 ? 0 : +trim(value)}
 					onChange={val => onChangeValue(+val)}
 					min={min}
@@ -152,7 +157,7 @@ const SizeControl = props => {
 					initialPosition={value || initial}
 				/>
 			) : (
-				<RangeControl
+				<RangeSliderControl
 					value={+value === '' || +value === 0 ? 0 : +trim(value)}
 					onChange={val => onChangeValue(+val)}
 					min={unit ? minMaxSettings[unit].min : 0}

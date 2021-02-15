@@ -3,13 +3,13 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { RangeControl } = wp.components;
 
 /**
  * Internal dependencies
  */
 import SizeControl from '../size-control';
 import FancyRadioControl from '../fancy-radio-control';
+import RangeSliderControl from '../range-slider-control';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
@@ -102,26 +102,20 @@ const ArrowControl = props => {
 							onChangeValue('arrow-side', val);
 						}}
 					/>
-					<RangeControl
+					<RangeSliderControl
 						label={__('Position', 'maxi-blocks')}
 						value={getLastBreakpointAttribute(
 							'arrow-position',
 							breakpoint,
 							props
 						)}
-						min='0'
-						max='100'
+						defaultValue={getDefaultAttribute(
+							`arrow-position-${breakpoint}`
+						)}
+						min={0}
+						max={100}
 						onChange={val => {
-							let value = isNil(val)
-								? getDefaultAttribute(
-										`arrow-position-${breakpoint}`
-								  )
-								: val;
-
-							if (value > 100) value = 100;
-							if (value < 0) value = 0;
-
-							onChangeValue('arrow-position', value);
+							onChangeValue('arrow-position', val);
 						}}
 						allowReset
 						initialPosition={getDefaultAttribute(

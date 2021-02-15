@@ -2,8 +2,13 @@
  * WordPress dependencies
  */
 const { __, sprintf } = wp.i18n;
-const { ColorPicker, RangeControl, BaseControl, Button } = wp.components;
+const { ColorPicker, BaseControl, Button } = wp.components;
 const { useState, useEffect } = wp.element;
+
+/**
+ * Internal dependencies
+ */
+import RangeSliderControl from '../range-slider-control';
 
 /**
  * External dependencies
@@ -102,24 +107,17 @@ const ColorControl = props => {
 					</Button>
 				</div>
 			</BaseControl>
-			<RangeControl
+			<RangeSliderControl
 				label={__('Colour Opacity', 'maxi-blocks')}
 				className='maxi-color-control__opacity'
 				value={Number(colorAlpha)}
 				onChange={val => {
-					let value = +val;
-
-					if (value > 100) value = 100;
-					if (value < 0) value = 0;
-
 					if (!isEmpty(color)) {
-						onChange(returnColor(getRGB(color), value / 100));
-						setCurrentColor(
-							returnColor(getRGB(color), value / 100)
-						);
+						onChange(returnColor(getRGB(color), val / 100));
+						setCurrentColor(returnColor(getRGB(color), val / 100));
 					}
 
-					setColorAlpha(value);
+					setColorAlpha(val);
 				}}
 				min={0}
 				max={100}

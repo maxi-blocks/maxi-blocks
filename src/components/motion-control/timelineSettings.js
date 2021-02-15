@@ -3,12 +3,13 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { RangeControl, SelectControl } = wp.components;
+const { SelectControl } = wp.components;
 
 /**
  * Internal dependencies
  */
 import FancyRadioControl from '../fancy-radio-control';
+import RangeSliderControl from '../range-slider-control';
 
 /**
  * External dependencies
@@ -105,7 +106,7 @@ const TimelineSettings = props => {
 			{!isNil(getCurrentTimelineItem()) && (
 				<Fragment>
 					<hr />
-					<RangeControl
+					<RangeSliderControl
 						label={__('Position', 'maxi-blocks')}
 						value={getTimelineItemSettingValue('effectPosition')}
 						onChange={value => {
@@ -129,7 +130,7 @@ const TimelineSettings = props => {
 				getCurrentTimelineItem().type === 'move' && (
 					<Fragment>
 						<div className='maxi-motion-control__timeline-item-settings__setting'>
-							<RangeControl
+							<RangeSliderControl
 								label={__('X', 'maxi-blocks')}
 								help={
 									isEmpty(
@@ -140,12 +141,7 @@ const TimelineSettings = props => {
 								}
 								value={getTimelineItemSettingValue('x')}
 								onChange={val => {
-									let value = val;
-
-									if (value > 500) value = 500;
-									if (value < -500) value = -500;
-
-									updateTimelineItemSettings(value, 'x');
+									updateTimelineItemSettings(val, 'x');
 								}}
 								min={-500}
 								max={500}
@@ -177,7 +173,7 @@ const TimelineSettings = props => {
 							/>
 						</div>
 						<div className='maxi-motion-control__timeline-item-settings__setting'>
-							<RangeControl
+							<RangeSliderControl
 								label={__('Y', 'maxi-blocks')}
 								help={
 									isEmpty(
@@ -188,12 +184,7 @@ const TimelineSettings = props => {
 								}
 								value={getTimelineItemSettingValue('y')}
 								onChange={val => {
-									let value = val;
-
-									if (value > 500) value = 500;
-									if (value < -500) value = -500;
-
-									updateTimelineItemSettings(value, 'y');
+									updateTimelineItemSettings(val, 'y');
 								}}
 								min={-500}
 								max={500}
@@ -225,7 +216,7 @@ const TimelineSettings = props => {
 							/>
 						</div>
 						<div className='maxi-motion-control__timeline-item-settings__setting'>
-							<RangeControl
+							<RangeSliderControl
 								label={__('Z', 'maxi-blocks')}
 								help={
 									isEmpty(
@@ -236,12 +227,7 @@ const TimelineSettings = props => {
 								}
 								value={getTimelineItemSettingValue('z')}
 								onChange={val => {
-									let value = val;
-
-									if (value > 500) value = 500;
-									if (value < -500) value = -500;
-
-									updateTimelineItemSettings(value, 'z');
+									updateTimelineItemSettings(val, 'z');
 								}}
 								min={-500}
 								max={500}
@@ -277,47 +263,32 @@ const TimelineSettings = props => {
 			{!isNil(getCurrentTimelineItem()) &&
 				getCurrentTimelineItem().type === 'rotate' && (
 					<Fragment>
-						<RangeControl
+						<RangeSliderControl
 							label={__('X', 'maxi-blocks')}
 							help='deg'
 							value={getTimelineItemSettingValue('x')}
 							onChange={val => {
-								let value = val;
-
-								if (value > 180) value = 180;
-								if (value < -180) value = -180;
-
-								updateTimelineItemSettings(value, 'x');
+								updateTimelineItemSettings(val, 'x');
 							}}
 							min={-180}
 							max={180}
 						/>
-						<RangeControl
+						<RangeSliderControl
 							label={__('Y', 'maxi-blocks')}
 							help='deg'
 							value={getTimelineItemSettingValue('y')}
 							onChange={val => {
-								let value = val;
-
-								if (value > 180) value = 180;
-								if (value < -180) value = -180;
-
-								updateTimelineItemSettings(value, 'y');
+								updateTimelineItemSettings(val, 'y');
 							}}
 							min={-180}
 							max={180}
 						/>
-						<RangeControl
+						<RangeSliderControl
 							label={__('Z', 'maxi-blocks')}
 							help='deg'
 							value={getTimelineItemSettingValue('z')}
 							onChange={val => {
-								let value = val;
-
-								if (value > 180) value = 180;
-								if (value < -180) value = -180;
-
-								updateTimelineItemSettings(value, 'z');
+								updateTimelineItemSettings(val, 'z');
 							}}
 							min={-180}
 							max={180}
@@ -327,32 +298,22 @@ const TimelineSettings = props => {
 			{!isNil(getCurrentTimelineItem()) &&
 				getCurrentTimelineItem().type === 'skew' && (
 					<Fragment>
-						<RangeControl
+						<RangeSliderControl
 							label={__('X', 'maxi-blocks')}
 							help='deg'
 							value={getTimelineItemSettingValue('x')}
 							onChange={val => {
-								let value = val;
-
-								if (value > 80) value = 80;
-								if (value < -80) value = -80;
-
-								updateTimelineItemSettings(value, 'x');
+								updateTimelineItemSettings(val, 'x');
 							}}
 							min={-80}
 							max={80}
 						/>
-						<RangeControl
+						<RangeSliderControl
 							label={__('Y', 'maxi-blocks')}
 							help='deg'
 							value={getTimelineItemSettingValue('y')}
 							onChange={val => {
-								let value = val;
-
-								if (value > 80) value = 80;
-								if (value < -80) value = -80;
-
-								updateTimelineItemSettings(value, 'y');
+								updateTimelineItemSettings(val, 'y');
 							}}
 							min={-80}
 							max={80}
@@ -362,46 +323,31 @@ const TimelineSettings = props => {
 			{!isNil(getCurrentTimelineItem()) &&
 				getCurrentTimelineItem().type === 'scale' && (
 					<Fragment>
-						<RangeControl
+						<RangeSliderControl
 							label={__('X', 'maxi-blocks')}
 							value={getTimelineItemSettingValue('x')}
 							onChange={val => {
-								let value = val;
-
-								if (value > 2) value = 2;
-								if (value < -2) value = -2;
-
-								updateTimelineItemSettings(value, 'x');
+								updateTimelineItemSettings(val, 'x');
 							}}
 							min={-2}
 							max={2}
 							step={0.1}
 						/>
-						<RangeControl
+						<RangeSliderControl
 							label={__('Y', 'maxi-blocks')}
 							value={getTimelineItemSettingValue('y')}
 							onChange={val => {
-								let value = val;
-
-								if (value > 2) value = 2;
-								if (value < -2) value = -2;
-
-								updateTimelineItemSettings(value, 'y');
+								updateTimelineItemSettings(val, 'y');
 							}}
 							min={-2}
 							max={2}
 							step={0.1}
 						/>
-						<RangeControl
+						<RangeSliderControl
 							label={__('Z', 'maxi-blocks')}
 							value={getTimelineItemSettingValue('z')}
 							onChange={val => {
-								let value = val;
-
-								if (value > 2) value = 2;
-								if (value < -2) value = -2;
-
-								updateTimelineItemSettings(value, 'z');
+								updateTimelineItemSettings(val, 'z');
 							}}
 							min={-2}
 							max={2}
@@ -412,17 +358,12 @@ const TimelineSettings = props => {
 			{!isNil(getCurrentTimelineItem()) &&
 				getCurrentTimelineItem().type === 'opacity' && (
 					<Fragment>
-						<RangeControl
+						<RangeSliderControl
 							label={__('Opacity', 'maxi-blocks')}
 							help='%'
 							value={getTimelineItemSettingValue('opacity')}
 							onChange={val => {
-								let value = val;
-
-								if (value > 1) value = 1;
-								if (value < 0) value = 0;
-
-								updateTimelineItemSettings(value, 'opacity');
+								updateTimelineItemSettings(val, 'opacity');
 							}}
 							initialPosition={1}
 							min={0}
@@ -434,17 +375,12 @@ const TimelineSettings = props => {
 			{!isNil(getCurrentTimelineItem()) &&
 				getCurrentTimelineItem().type === 'blur' && (
 					<Fragment>
-						<RangeControl
+						<RangeSliderControl
 							label={__('Blur', 'maxi-blocks')}
 							help='px'
 							value={getTimelineItemSettingValue('blur')}
 							onChange={val => {
-								let value = val;
-
-								if (value > 100) value = 100;
-								if (value < 0) value = 0;
-
-								updateTimelineItemSettings(value, 'blur');
+								updateTimelineItemSettings(val, 'blur');
 							}}
 							initialPosition={1}
 							min={0}

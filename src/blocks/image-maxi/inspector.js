@@ -273,26 +273,9 @@ const Inspector = props => {
 															)
 														}
 														onChange={val => {
-															let value = val;
-
-															if (
-																value >
-																	imageData &&
-																imageData
-																	.media_details
-																	.width
-															)
-																value =
-																	imageData &&
-																	imageData
-																		.media_details
-																		.width;
-															if (value < 0)
-																value = 0;
-
-															if (!isNil(value))
+															if (!isNil(val))
 																setAttributes({
-																	'width-general': value,
+																	'width-general': val,
 																});
 															else
 																setAttributes({
@@ -302,7 +285,6 @@ const Inspector = props => {
 																	),
 																});
 														}}
-														min={0}
 														max={
 															imageData &&
 															imageData

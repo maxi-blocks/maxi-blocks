@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { RangeControl, SelectControl, TextControl } = wp.components;
+const { SelectControl, TextControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -20,6 +20,7 @@ import {
 	DisplayControl,
 	FancyRadioControl,
 	OpacityControl,
+	RangeSliderControl,
 	ResponsiveControl,
 	SettingTabsControl,
 	TransformControl,
@@ -97,7 +98,7 @@ const Inspector = props => {
 											),
 											content: (
 												<Fragment>
-													<RangeControl
+													<RangeSliderControl
 														className='maxi-column-size-control'
 														label={__(
 															'Column Size (%)',
@@ -109,21 +110,14 @@ const Inspector = props => {
 															]
 														}
 														onChange={val => {
-															let value = val;
-
-															if (value > 100)
-																value = 100;
-															if (value < 0)
-																value = 0;
-
 															setAttributes({
-																[`column-size-${deviceType}`]: value,
+																[`column-size-${deviceType}`]: val,
 															});
 
 															if (resizableObject)
 																resizableObject.updateSize(
 																	{
-																		width: `${value}%`,
+																		width: `${val}%`,
 																	}
 																);
 														}}

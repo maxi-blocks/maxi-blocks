@@ -5,6 +5,11 @@ const { __ } = wp.i18n;
 const { RangeControl } = wp.components;
 
 /**
+ * Internal dependencies
+ */
+import RangeSliderControl from '../range-slider-control';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -35,20 +40,12 @@ const OpacityControl = props => {
 	);
 
 	return (
-		<RangeControl
+		<RangeSliderControl
 			label={isEmpty(label) ? __('Opacity', 'maxi-blocks') : label}
 			className={classes}
 			value={opacity * 100}
-			onChange={val => {
-				let value = val;
-
-				if (value > 100) value = 100;
-				if (value < 0) value = 0;
-
-				isNil(value)
-					? onChange(defaultOpacity)
-					: onChange(round(value / 100, 2));
-			}}
+			defaultValue={defaultOpacity}
+			onChange={val => onChange(round(val / 100, 2))}
 			min={0}
 			max={100}
 			allowReset

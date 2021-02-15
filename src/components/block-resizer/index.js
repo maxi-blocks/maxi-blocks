@@ -19,6 +19,7 @@ const BlockResizer = props => {
 		className,
 		directions,
 		showHandle = false,
+		resizableObject,
 		...rest
 	} = props;
 
@@ -31,6 +32,7 @@ const BlockResizer = props => {
 	return (
 		<Resizable
 			{...rest}
+			ref={resizableObject}
 			className={classes}
 			handleClasses={{
 				top:

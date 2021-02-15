@@ -12,16 +12,17 @@ const { Button } = wp.components;
  * Internal dependencies
  */
 import {
-	__experimentalGetUpdatedString,
-	__experimentalApplyLinkFormat,
-	__experimentalRemoveLinkFormat,
+	getUpdatedString,
+	applyLinkFormat,
+	removeLinkFormat,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * External dependencies
  */
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Icons
@@ -33,7 +34,7 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-	const { blockName, onChange, isList, formatValue, typography } = props;
+	const { blockName, onChange, isList, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -48,9 +49,7 @@ const Link = props => {
 		};
 	}, [getActiveFormat, formatValue, formatName]);
 
-	const typographyValue = !isObject(typography)
-		? JSON.parse(typography)
-		: typography;
+	const typography = { ...getGroupAttributes(props, 'typography') };
 
 	const createLinkValue = formatOptions => {
 		if (!formatOptions || isEmpty(formatValue)) return {};
@@ -121,40 +120,28 @@ const Link = props => {
 			formatValue.end = formatValue.formats.length;
 		}
 
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalApplyLinkFormat({
+		const obj = applyLinkFormat({
 			formatValue,
-			typography: typographyValue,
+			typography,
 			linkAttributes: createLinkAttribute(attributes),
 			isList,
 		});
 
-		onChange({
-			typography: JSON.stringify(newTypography),
-			content: newContent,
-		});
+		onChange(obj);
 	};
 
-	const removeLinkFormat = () => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalRemoveLinkFormat({
+	const removeLinkFormatHandle = () => {
+		const obj = removeLinkFormat({
 			formatValue,
 			isList,
-			typography: typographyValue,
+			typography,
 		});
 
-		onChange({
-			typography: JSON.stringify(newTypography),
-			content: newContent,
-		});
+		onChange(obj);
 	};
 
 	const updateLinkString = attributes => {
-		const newContent = __experimentalGetUpdatedString({
+		const content = getUpdatedString({
 			formatValue: getUpdatedFormatValue(
 				formatValue,
 				createLinkAttribute(attributes)
@@ -162,15 +149,12 @@ const Link = props => {
 			isList,
 		});
 
-		onChange({
-			typography: JSON.stringify(typographyValue),
-			content: newContent,
-		});
+		onChange({ content });
 	};
 
 	const onClick = attributes => {
 		if (!formatOptions) setLinkFormat(attributes);
-		else if (isEmpty(attributes.url)) removeLinkFormat();
+		else if (isEmpty(attributes.url)) removeLinkFormatHandle();
 		else updateLinkString(attributes);
 	};
 

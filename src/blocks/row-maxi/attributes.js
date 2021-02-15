@@ -6,8 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults';
-import rowPattern from './data';
+import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -17,9 +16,9 @@ const attributes = {
 		type: 'string',
 		default: __('Row', 'maxi-blocks'),
 	},
-	rowPattern: {
+	fullWidth: {
 		type: 'string',
-		default: JSON.stringify(rowPattern),
+		default: 'normal',
 	},
 	horizontalAlign: {
 		type: 'string',
@@ -29,62 +28,38 @@ const attributes = {
 		type: 'string',
 		default: 'stretch',
 	},
-	opacity: {
-		type: 'string',
-		default: JSON.stringify(attributesData.opacity),
+	removeColumnGap: {
+		type: 'boolean',
+		default: false,
 	},
-	background: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
-	},
-	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
-	},
-	border: {
-		type: 'string',
-		default: JSON.stringify(attributesData.border),
-	},
-	borderHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.borderHover),
-	},
-	fullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
-	size: {
-		type: 'string',
-		default: JSON.stringify(attributesData.size),
-	},
-	boxShadow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
-	},
-	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
-	},
-	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
-	},
-	padding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
-	},
-	position: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalPosition),
-	},
-	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
-	},
-	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
-	},
+	...attributesData.container,
+	...attributesData.rowPattern,
+	...attributesData.opacity,
+	...attributesData.background,
+	...attributesData.backgroundColor,
+	...attributesData.backgroundImage,
+	...attributesData.backgroundVideo,
+	...attributesData.backgroundGradient,
+	...attributesData.backgroundSVG,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.backgroundImageHover,
+	...attributesData.backgroundGradientHover,
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...attributesData.borderRadius,
+	...attributesData.borderHover,
+	...attributesData.borderWidthHover,
+	...attributesData.borderRadiusHover,
+	...attributesData.size,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.margin,
+	...attributesData.padding,
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.transform,
+	...attributesData.zIndex,
 };
 
 export default attributes;

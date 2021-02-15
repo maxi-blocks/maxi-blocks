@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults';
+import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -16,25 +16,9 @@ const attributes = {
 		type: 'string',
 		default: __('SVG Icon', 'maxi-blocks'),
 	},
-	alignment: {
-		type: 'string',
-		default: JSON.stringify(attributesData.alignment),
-	},
 	content: {
 		type: 'string',
 		default: '',
-	},
-	hoverContent: {
-		type: 'string',
-		default: '',
-	},
-	opacity: {
-		type: 'string',
-		default: JSON.stringify(attributesData.opacity),
-	},
-	background: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
 	},
 	svgColorOrange: {
 		type: 'string',
@@ -43,62 +27,6 @@ const attributes = {
 	svgColorBlack: {
 		type: 'string',
 		default: '#081219',
-	},
-	svgColorWhite: {
-		type: 'string',
-		default: '#FFF',
-	},
-	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
-	},
-	boxShadow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
-	},
-	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
-	},
-	border: {
-		type: 'string',
-		default: JSON.stringify(attributesData.border),
-	},
-	borderHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.borderHover),
-	},
-	padding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
-	},
-	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
-	},
-	position: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalPosition),
-	},
-	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
-	},
-	motion: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalMotion),
-	},
-	hover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalHover),
-	},
-	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
-	},
-	scale: {
-		type: 'number',
-		default: 1.0,
 	},
 	stroke: {
 		type: 'number',
@@ -116,6 +44,35 @@ const attributes = {
 		type: 'number',
 		default: 64,
 	},
+	...{
+		...attributesData.alignment,
+		'alignment-general': {
+			type: 'string',
+			default: 'center',
+		},
+	},
+	...attributesData.opacity,
+	...attributesData.background,
+	...attributesData.backgroundColor,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...attributesData.borderRadius,
+	...attributesData.borderHover,
+	...attributesData.borderWidthHover,
+	...attributesData.borderRadiusHover,
+	...attributesData.padding,
+	...attributesData.margin,
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.motion,
+	...attributesData.entrance,
+	...attributesData.transform,
+	...attributesData.zIndex,
+	...attributesData.highlight,
 };
 
 export default attributes;

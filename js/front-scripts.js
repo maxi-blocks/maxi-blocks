@@ -19,11 +19,21 @@ const getDeviceType = () => {
 // Motion Effects
 const motionElems = document.querySelectorAll('.maxi-motion-effect');
 motionElems.forEach(function (elem) {
+	if (!maxi_custom_data.custom_data) return;
+
 	const motionID = elem.getAttribute('data-motion-id');
-	const motionData = JSON.parse(elem.getAttribute('data-motion'));
-	const shapeDividerData = JSON.parse(
-		elem.getAttribute('data-shape-divider')
-	);
+
+	const motionData =
+		maxi_custom_data.custom_data[motionID] !== undefined &&
+		maxi_custom_data.custom_data[motionID].hasOwnProperty('motion')
+			? maxi_custom_data.custom_data[motionID].motion
+			: null;
+
+	const shapeDividerData =
+		maxi_custom_data.custom_data[motionID] !== undefined &&
+		maxi_custom_data.custom_data[motionID].hasOwnProperty('shapeDivider')
+			? maxi_custom_data.custom_data[motionID].shapeDivider
+			: null;
 
 	// Shape Divider
 	if (shapeDividerData !== null) {
@@ -32,7 +42,7 @@ motionElems.forEach(function (elem) {
 				trigger:
 					'.maxi-motion-effect-' +
 					motionID +
-					' > .maxi-container-block__wrapper .maxi-shape-divider',
+					' > .maxi-shape-divider',
 				start: '-150',
 				scrub: true,
 				markers: false,
@@ -75,13 +85,13 @@ motionElems.forEach(function (elem) {
 
 	if (motionData !== null) {
 		// Parallax Effect
-		if ('parallax' in motionData) {
+		if ('parallax-status' in motionData) {
 			const parallaxElem = document.querySelector(
 				`.maxi-motion-effect-${motionID} > .maxi-background-displayer > .maxi-background-displayer__images`
 			);
-			const parallaxStatus = motionData.parallax.status;
-			const parallaxSpeed = motionData.parallax.speed;
-			const parallaxDirection = motionData.parallax.direction;
+			const parallaxStatus = motionData['parallax-status'];
+			const parallaxSpeed = motionData['parallax-speed'];
+			const parallaxDirection = motionData['parallax-direction'];
 
 			const getBackgroundPosition = () => {
 				if (parallaxDirection === 'up')
@@ -103,19 +113,20 @@ motionElems.forEach(function (elem) {
 		}
 
 		// Entrance Animation
-		if ('entrance' in motionData) {
+		if ('entrance-type' in motionData) {
 			const entranceElem = document.querySelector(
 				'.maxi-motion-effect-' + motionID + ''
 			);
-			const entranceType = motionData.entrance.type;
+
+			const entranceType = motionData['entrance-type'];
 			const entranceDuration =
-				motionData.entrance.duration === ''
+				motionData['entrance-duration'] === ''
 					? 1
-					: motionData.entrance.duration;
+					: motionData['entrance-duration'];
 			const entranceDelay =
-				motionData.entrance.delay === ''
+				motionData['entrance-delay'] === ''
 					? 1
-					: motionData.entrance.delay;
+					: motionData['entrance-delay'];
 
 			if (entranceType !== '') {
 				entranceElem.style.opacity = '0';
@@ -143,11 +154,11 @@ motionElems.forEach(function (elem) {
 		}
 
 		// Motion Effects
-		const interactionStatus = motionData.interaction.interactionStatus;
-		const motionMobileStatus = motionData.interaction.mobileStatus;
-		const motionTabletStatus = motionData.interaction.tabletStatus;
-		const xAxis = motionData.interaction.transformOrigin.xAxis;
-		const yAxis = motionData.interaction.transformOrigin.yAxis;
+		const interactionStatus = motionData['motion-status'];
+		const motionMobileStatus = motionData['motion-mobile-status'];
+		const motionTabletStatus = motionData['motion-tablet-status'];
+		const xAxis = motionData['motion-transform-origin-x'];
+		const yAxis = motionData['motion-transform-origin-y'];
 
 		if (
 			!!interactionStatus &&
@@ -155,7 +166,7 @@ motionElems.forEach(function (elem) {
 				(!!motionTabletStatus && getDeviceType() === 'tablet') ||
 				getDeviceType() === 'desktop')
 		) {
-			Object.entries(motionData.interaction.timeline).forEach(
+			Object.entries(motionData['motion-time-line']).forEach(
 				([key, value], index, array) => {
 					let actions = {};
 					value.forEach(act => {

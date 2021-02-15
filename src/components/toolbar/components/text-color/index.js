@@ -7,17 +7,15 @@ const { ColorPicker, Icon } = wp.components;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../../../utils';
 import ToolbarPopover from '../toolbar-popover';
 import {
-	__experimentalSetFormat,
-	__experimentalGetCustomFormatValue,
+	setFormat,
+	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
-
-/**
- * External dependencies
- */
-import { isObject } from 'lodash';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * Icons
@@ -29,23 +27,14 @@ import { toolbarType } from '../../../../icons';
  * TextColor
  */
 const TextColor = props => {
-	const {
-		blockName,
-		typography,
-		onChange,
-
-		breakpoint,
-		isList,
-		formatValue,
-	} = props;
+	const { blockName, onChange, breakpoint, isList, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const value =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
+	const typography = { ...getGroupAttributes(props, 'typography') };
 
-	const color = __experimentalGetCustomFormatValue({
-		typography: value,
+	const color = getCustomFormatValue({
+		typography,
 		formatValue,
 		prop: 'color',
 		breakpoint,
@@ -56,23 +45,17 @@ const TextColor = props => {
 	};
 
 	const onClick = val => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const obj = setFormat({
 			formatValue,
 			isList,
-			typography: value,
+			typography,
 			value: {
 				color: returnColor(val),
 			},
 			breakpoint,
 		});
 
-		onChange({
-			typography: JSON.stringify(newTypography),
-			...(newContent && { content: newContent }),
-		});
+		onChange(obj);
 	};
 
 	return (
@@ -86,8 +69,8 @@ const TextColor = props => {
 						(color && {
 							background: color,
 						}) || {
-							background: getLastBreakpointValue(
-								value,
+							background: getLastBreakpointAttribute(
+								typography,
 								'color',
 								breakpoint
 							),
@@ -104,9 +87,13 @@ const TextColor = props => {
 				<ColorPicker
 					color={
 						color ||
-						getLastBreakpointValue(value, 'color', breakpoint)
+						getLastBreakpointAttribute(
+							'color',
+							breakpoint,
+							typography
+						)
 					}
-					onChangeComplete={val => onClick(val)}
+					onChangeComplete={obj => onClick(obj)}
 				/>
 			}
 		/>

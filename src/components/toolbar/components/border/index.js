@@ -5,21 +5,20 @@ const { __ } = wp.i18n;
 const { Icon } = wp.components;
 
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import BorderControl from '../../../border-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
- * Icons
+ * Styles & Icons
  */
+import './editor.scss';
 import { toolbarBorder } from '../../../../icons';
-import { getLastBreakpointValue } from '../../../../utils';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * Border
@@ -30,11 +29,9 @@ const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/image-maxi'];
  * Component
  */
 const Border = props => {
-	const { blockName, border, defaultBorder, onChange, breakpoint } = props;
+	const { blockName, onChange, breakpoint, disableColor = false } = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
-
-	const value = !isObject(border) ? JSON.parse(border) : border;
 
 	return (
 		<ToolbarPopover
@@ -45,28 +42,28 @@ const Border = props => {
 				<div
 					className='toolbar-item__border__icon'
 					style={{
-						borderStyle: getLastBreakpointValue(
-							value,
+						borderStyle: getLastBreakpointAttribute(
 							'border-style',
-							breakpoint
+							breakpoint,
+							props
 						),
 						background:
-							getLastBreakpointValue(
-								value,
+							getLastBreakpointAttribute(
 								'border-style',
-								breakpoint
+								breakpoint,
+								props
 							) === 'none'
 								? 'transparent'
-								: getLastBreakpointValue(
-										value,
+								: getLastBreakpointAttribute(
 										'border-style',
-										breakpoint
+										breakpoint,
+										props
 								  ),
 						borderWidth: '1px',
-						borderColor: getLastBreakpointValue(
-							value,
+						borderColor: getLastBreakpointAttribute(
 							'border-color',
-							breakpoint
+							breakpoint,
+							props
 						),
 					}}
 				>
@@ -77,13 +74,19 @@ const Border = props => {
 				</div>
 			}
 			content={
-				<BorderControl
-					border={border}
-					defaultBorder={defaultBorder}
-					onChange={value => onChange(value)}
-					breakpoint={breakpoint}
-					disableAdvanced
-				/>
+				<div className='toolbar-item__border__popover'>
+					<BorderControl
+						{...getGroupAttributes(props, [
+							'border',
+							'borderWidth',
+							'borderRadius',
+						])}
+						onChange={value => onChange(value)}
+						breakpoint={breakpoint}
+						disableAdvanced
+						disableColor={disableColor}
+					/>
+				</div>
 			}
 		/>
 	);

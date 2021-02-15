@@ -8,33 +8,19 @@ const { SelectControl } = wp.components;
  * Internal dependencies
  */
 import SizeControl from '../size-control';
-
-/**
- * External dependencies
- */
-import { isObject } from 'lodash';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * Component
  */
 const EntranceAnimationControl = props => {
-	const { motion, defaultMotion, onChange } = props;
-
-	const value = !isObject(motion) ? JSON.parse(motion) : motion;
-
-	const { entrance: entranceAnimationOptions } = value;
-
-	const defaultValue = !isObject(defaultMotion)
-		? JSON.parse(defaultMotion)
-		: defaultMotion;
-
-	const { entrance: defaultEntranceAnimationOptions } = defaultValue;
+	const { onChange } = props;
 
 	return (
 		<div className='maxi-entrance-animation-control'>
 			<SelectControl
 				label={__('Animation Type', 'maxi-blocks')}
-				value={entranceAnimationOptions.type}
+				value={props['entrance-type']}
 				options={[
 					{ label: 'None', value: '' },
 					{ label: 'Bounce', value: 'bounce' },
@@ -162,10 +148,7 @@ const EntranceAnimationControl = props => {
 					{ label: 'Slide Out Right', value: 'slideOutRight' },
 					{ label: 'Slide Out Up', value: 'slideOutUp' },
 				]}
-				onChange={val => {
-					entranceAnimationOptions.type = val;
-					onChange(JSON.stringify(value));
-				}}
+				onChange={val => onChange({ 'entrance-type': val })}
 			/>
 			<SizeControl
 				label={__('Duration (s)', 'maxi-blocks')}
@@ -174,12 +157,9 @@ const EntranceAnimationControl = props => {
 				max={10}
 				initial={1}
 				step={0.1}
-				value={entranceAnimationOptions.duration}
-				defaultValue={defaultEntranceAnimationOptions.duration}
-				onChangeValue={val => {
-					entranceAnimationOptions.duration = val;
-					onChange(JSON.stringify(value));
-				}}
+				value={props['entrance-duration']}
+				defaultValue={getDefaultAttribute('entrance-duration')}
+				onChangeValue={val => onChange({ 'entrance-duration': val })}
 			/>
 			<SizeControl
 				label={__('Delay (s)', 'maxi-blocks')}
@@ -188,12 +168,9 @@ const EntranceAnimationControl = props => {
 				max={10}
 				initial={1}
 				step={0.1}
-				value={entranceAnimationOptions.delay}
-				defaultValue={defaultEntranceAnimationOptions.delay}
-				onChangeValue={val => {
-					entranceAnimationOptions.delay = val;
-					onChange(JSON.stringify(value));
-				}}
+				value={props['entrance-delay']}
+				defaultValue={getDefaultAttribute('entrance-delay')}
+				onChangeValue={val => onChange({ 'entrance-delay': val })}
 			/>
 		</div>
 	);

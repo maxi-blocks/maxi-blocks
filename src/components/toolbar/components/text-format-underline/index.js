@@ -8,14 +8,14 @@ const { Icon, Button, Tooltip } = wp.components;
  * Internal dependencies
  */
 import {
-	__experimentalSetFormat,
-	__experimentalGetCustomFormatValue,
+	setFormat,
+	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
 
 /**
  * External dependencies
  */
-import { isObject, trim } from 'lodash';
+import { trim } from 'lodash';
 
 /**
  * Styles and icons
@@ -26,17 +26,15 @@ import { toolbarUnderline } from '../../../../icons';
  * TextFormatUnderline
  */
 const TextFormatUnderline = props => {
-	const { typography, formatValue, onChange, isList, breakpoint } = props;
+	const { formatValue, onChange, isList, breakpoint, typography } = props;
 
-	const typographyValue =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
-
-	const textDecorationValue = __experimentalGetCustomFormatValue({
-		typography: typographyValue,
-		formatValue,
-		prop: 'text-decoration',
-		breakpoint,
-	});
+	const textDecorationValue =
+		getCustomFormatValue({
+			typography,
+			formatValue,
+			prop: 'text-decoration',
+			breakpoint,
+		}) || '';
 
 	const isActive = textDecorationValue.indexOf('underline') >= 0;
 
@@ -51,24 +49,18 @@ const TextFormatUnderline = props => {
 	};
 
 	const onClick = () => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const obj = setFormat({
 			formatValue,
 			isActive,
 			isList,
-			typography: typographyValue,
+			typography,
 			value: {
 				'text-decoration': getTextDecorationValue(),
 			},
 			breakpoint,
 		});
 
-		onChange({
-			typography: JSON.stringify(newTypography),
-			...(newContent && { content: newContent }),
-		});
+		onChange(obj);
 	};
 
 	return (

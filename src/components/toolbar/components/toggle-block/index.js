@@ -2,73 +2,118 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { Fragment } = wp.element;
 const { Icon, Button, Tooltip } = wp.components;
-
-/**
- * Internal dependencies
- */
-import { getLastBreakpointValue } from '../../../../utils';
 
 /**
  * External dependencies
  */
-import { isObject } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Icons & Styles
  */
 import './editor.scss';
 import { toolbarHide, toolbarShow } from '../../../../icons';
-import { Fragment } from 'react';
 
 /**
  * Toggle Block
  */
 const ToggleBlock = props => {
-	const { display, breakpoint, onChange, defaultDisplay = 'inherit' } = props;
+	const { breakpoint, onChange, defaultDisplay = 'inherit' } = props;
 
-	const displayValue = !isObject(display) ? JSON.parse(display) : display;
+	const isHide = () => {
+		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+		const breakpointIndex = breakpoints.indexOf(breakpoint) - 1;
+
+		if (breakpointIndex < 0) return false;
+
+		let i = breakpointIndex;
+
+		do {
+			if (props[`display-${breakpoints[i]}`] === 'none') return true;
+			if (props[`display-${breakpoints[i]}`] === defaultDisplay)
+				return false;
+			i -= 1;
+		} while (i >= 0);
+
+		return false;
+	};
+
+	const getValue = () => {
+		if (props[`display-${breakpoint}`] === 'none') return 'none';
+
+		const isPrevHide = isHide();
+		if (
+			isPrevHide &&
+			(isNil(props[`display-${breakpoint}`]) ||
+				props[`display-${breakpoint}`] === '')
+		)
+			return 'none';
+
+		if (
+			isPrevHide &&
+			(!isNil(props[`display-${breakpoint}`]) ||
+				props[`display-${breakpoint}`] !== '')
+		)
+			return defaultDisplay;
+
+		return '';
+	};
+
+	const getOptions = () => {
+		const isPrevHide = isHide();
+
+		if (isPrevHide)
+			return [
+				{ label: __('Show', 'maxi-blocks'), value: defaultDisplay },
+				{ label: __('Hide', 'maxi-blocks'), value: 'none' },
+			];
+		return [
+			{ label: __('Show', 'maxi-blocks'), value: '' },
+			{ label: __('Hide', 'maxi-blocks'), value: 'none' },
+		];
+	};
 
 	return (
 		<Fragment>
-			{getLastBreakpointValue(displayValue, 'display', breakpoint) ===
-			'none' ? (
-				<Tooltip
-					text={__('Show', 'maxi-blocks')}
-					position='bottom center'
+			<Tooltip
+				text={
+					getValue() === 'none'
+						? __('Show', 'maxi-blocks')
+						: __('Hide', 'maxi-blocks')
+				}
+				position='bottom center'
+			>
+				<Button
+					className='toolbar-item toolbar-item__toggle-block'
+					onClick={e => {
+						e.preventDefault();
+
+						getValue() === 'none'
+							? onChange({
+									[`display-${breakpoint}`]: getOptions()[0]
+										.value,
+							  })
+							: onChange({
+									[`display-${breakpoint}`]: getOptions()[1]
+										.value,
+							  });
+					}}
 				>
-					<Button
-						className='toolbar-item toolbar-item__toggle-block'
-						onClick={() => {
-							displayValue[breakpoint].display = defaultDisplay;
-							onChange(JSON.stringify(displayValue));
-						}}
-					>
+					{getValue() === 'none' ? (
 						<Icon
 							className='toolbar-item__icon'
 							icon={toolbarShow}
 						/>
-					</Button>
-				</Tooltip>
-			) : (
-				<Tooltip
-					text={__('Hide', 'maxi-blocks')}
-					position='bottom center'
-				>
-					<Button
-						className='toolbar-item toolbar-item__toggle-block'
-						onClick={() => {
-							displayValue[breakpoint].display = 'none';
-							onChange(JSON.stringify(displayValue));
-						}}
-					>
+					) : (
 						<Icon
 							className='toolbar-item__icon'
 							icon={toolbarHide}
 						/>
-					</Button>
-				</Tooltip>
-			)}
+					)}
+				</Button>
+			</Tooltip>
 		</Fragment>
 	);
 };

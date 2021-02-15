@@ -8,6 +8,7 @@ const { Button, BaseControl } = wp.components;
 /**
  * Internal dependencies
  */
+import defaultTypography from '../../../../extensions/text';
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
 import TextFormatStrikethrough from '../text-format-strikethrough';
@@ -17,14 +18,15 @@ import TextFormatSubscript from '../text-format-subscript';
 import TextFormatSuperscript from '../text-format-superscript';
 import TextFormatCode from '../text-format-code';
 import {
-	__experimentalSetFormat,
-	__experimentalGetCustomFormatValue,
+	setFormat,
+	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * External dependencies
  */
-import { isObject, isEmpty, trim } from 'lodash';
+import { isEmpty, trim } from 'lodash';
 
 /**
  * Styles and icons
@@ -38,39 +40,36 @@ import { toolbarType, reset } from '../../../../icons';
 const TextOptions = props => {
 	const {
 		blockName,
-		typography,
-		defaultTypography,
 		onChange,
 		breakpoint,
 		isList,
 		formatValue,
+		textLevel,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typographyValue =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
+	const typography = getGroupAttributes(props, 'typography');
 
-	const defaultTypographyValue =
-		(!isObject(defaultTypography) && JSON.parse(defaultTypography)) ||
-		defaultTypography;
+	const getValue = prop => {
+		return getCustomFormatValue({
+			typography,
+			formatValue,
+			prop,
+			breakpoint,
+		});
+	};
 
 	const onChangeFormat = value => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const obj = setFormat({
 			formatValue,
 			isList,
-			typography: typographyValue,
+			typography: getGroupAttributes(props, 'typography'),
 			value,
 			breakpoint,
 		});
 
-		onChange({
-			typography: JSON.stringify(newTypography),
-			...(newContent && { content: newContent }),
-		});
+		onChange(obj);
 	};
 
 	return (
@@ -85,12 +84,7 @@ const TextOptions = props => {
 						<FontFamilySelector
 							className='toolbar-item__popover__font-options__font__selector'
 							theme='dark'
-							font={__experimentalGetCustomFormatValue({
-								typography: typographyValue,
-								formatValue,
-								prop: 'font-family',
-								breakpoint,
-							})}
+							font={getValue('font-family')}
 							onChange={font => {
 								onChangeFormat({
 									'font-family': font.value,
@@ -103,9 +97,13 @@ const TextOptions = props => {
 							onClick={() => {
 								onChangeFormat({
 									'font-family':
-										defaultTypographyValue['font-family'],
+										defaultTypography[textLevel][
+											`font-family-${breakpoint}`
+										],
 									'font-options':
-										defaultTypographyValue['font-options'],
+										defaultTypography[textLevel][
+											`font-options-${breakpoint}`
+										],
 								});
 							}}
 							isSmall
@@ -126,24 +124,13 @@ const TextOptions = props => {
 						>
 							<input
 								type='number'
-								value={trim(
-									__experimentalGetCustomFormatValue({
-										typography: typographyValue,
-										formatValue,
-										prop: 'font-size',
-										breakpoint,
-									})
-								)}
+								value={trim(getValue('font-size'))}
 								onChange={e => {
 									const newFontSize = isEmpty(e.target.value)
 										? ''
 										: Number(e.target.value);
 
 									onChangeFormat({
-										'font-sizeUnit':
-											typographyValue[breakpoint][
-												'font-sizeUnit'
-											],
 										'font-size': newFontSize,
 									});
 								}}
@@ -152,13 +139,13 @@ const TextOptions = props => {
 								className='components-maxi-control__reset-button'
 								onClick={() => {
 									onChangeFormat({
-										'font-sizeUnit':
-											defaultTypographyValue[breakpoint][
-												'font-sizeUnit'
+										'font-size-unit':
+											defaultTypography[textLevel][
+												`font-size-unit-${breakpoint}`
 											],
 										'font-size':
-											defaultTypographyValue[breakpoint][
-												'font-size'
+											defaultTypography[textLevel][
+												`font-size-${breakpoint}`
 											],
 									});
 								}}
@@ -179,24 +166,13 @@ const TextOptions = props => {
 						>
 							<input
 								type='number'
-								value={trim(
-									__experimentalGetCustomFormatValue({
-										typography: typographyValue,
-										formatValue,
-										prop: 'line-height',
-										breakpoint,
-									})
-								)}
+								value={trim(getValue('line-height'))}
 								onChange={e => {
 									const newFontSize = isEmpty(e.target.value)
 										? ''
 										: Number(e.target.value);
 
 									onChangeFormat({
-										'line-heightUnit':
-											typographyValue[breakpoint][
-												'line-heightUnit'
-											],
 										'line-height': newFontSize,
 									});
 								}}
@@ -205,13 +181,13 @@ const TextOptions = props => {
 								className='components-maxi-control__reset-button'
 								onClick={() => {
 									onChangeFormat({
-										'line-heightUnit':
-											defaultTypographyValue[breakpoint][
-												'line-heightUnit'
+										'line-height-unit':
+											defaultTypography[textLevel][
+												`line-height-unit-${breakpoint}`
 											],
 										'line-height':
-											defaultTypographyValue[breakpoint][
-												'line-height'
+											defaultTypography[textLevel][
+												`line-height-${breakpoint}`
 											],
 									});
 								}}
@@ -232,24 +208,13 @@ const TextOptions = props => {
 						>
 							<input
 								type='number'
-								value={trim(
-									__experimentalGetCustomFormatValue({
-										typography: typographyValue,
-										formatValue,
-										prop: 'letter-spacing',
-										breakpoint,
-									})
-								)}
+								value={trim(getValue('letter-spacing'))}
 								onChange={e => {
 									const newFontSize = isEmpty(e.target.value)
 										? ''
 										: Number(e.target.value);
 
 									onChangeFormat({
-										'letter-spacingUnit':
-											typographyValue[breakpoint][
-												'letter-spacingUnit'
-											],
 										'letter-spacing': newFontSize,
 									});
 								}}
@@ -258,13 +223,13 @@ const TextOptions = props => {
 								className='components-maxi-control__reset-button'
 								onClick={() => {
 									onChangeFormat({
-										'letter-spacingUnit':
-											defaultTypographyValue[breakpoint][
-												'letter-spacingUnit'
+										'letter-spacing-unit':
+											defaultTypography[textLevel][
+												`letter-spacing-unit-${breakpoint}`
 											],
 										'letter-spacing':
-											defaultTypographyValue[breakpoint][
-												'letter-spacing'
+											defaultTypography[textLevel][
+												`letter-spacing-${breakpoint}`
 											],
 									});
 								}}
@@ -281,35 +246,35 @@ const TextOptions = props => {
 						</BaseControl>
 						<div>
 							<TextFormatOverline
-								typography={typographyValue}
+								typography={typography}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatStrikethrough
-								typography={typographyValue}
+								typography={typography}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatUnderline
-								typography={typographyValue}
+								typography={typography}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSubscript
-								typography={typographyValue}
+								typography={typography}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSuperscript
-								typography={typographyValue}
+								typography={typography}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -55,24 +55,9 @@ import {
 /**
  * Component
  */
-const ShapeDivider = props => {
-	const { position = 'top', shapeDividerOptions } = props;
-
-	const value = !isObject(shapeDividerOptions)
-		? JSON.parse(shapeDividerOptions)
-		: shapeDividerOptions;
-
-	const {
-		top: shapeDividerTopOptions,
-		bottom: shapeDividerBottomOptions,
-	} = value;
-
-	const showShapes = position => {
-		switch (
-			position === 'top'
-				? shapeDividerTopOptions.shapeStyle
-				: shapeDividerBottomOptions.shapeStyle
-		) {
+const ShapeDivider = ({ location, ...props }) => {
+	const showShapes = () => {
+		switch (props[`shape-divider-${location}-shape-style`]) {
 			case 'waves-top':
 				return wavesTop;
 			case 'waves-bottom':
@@ -160,13 +145,11 @@ const ShapeDivider = props => {
 
 	const classes = classnames(
 		'maxi-shape-divider',
-		`maxi-shape-divider__${position === 'top' ? 'top' : 'bottom'}`
+		`maxi-shape-divider__${location}`
 	);
 
 	return (
-		!isEmpty(showShapes(position)) && (
-			<div className={classes}>{showShapes(position)}</div>
-		)
+		!isEmpty(showShapes()) && <div className={classes}>{showShapes()}</div>
 	);
 };
 

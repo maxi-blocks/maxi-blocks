@@ -1,9 +1,15 @@
-body.maxi-blocks--active .maxi-button-extra {
+body.maxi-blocks--active .maxi-button-block {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 	margin: 0;
 
+	&__content {
+		z-index: 1;
+		width: 100%;
+		min-width: 1px;
+		position: relative;
+	}
 	&__button {
 		height: auto;
 		align-items: center;
@@ -12,6 +18,7 @@ body.maxi-blocks--active .maxi-button-extra {
 
 		&--icon-left {
 			i {
+				z-index: 1;
 				order: 0;
 				margin-right: 5px;
 				@at-root .rtl #{&} {
@@ -22,6 +29,7 @@ body.maxi-blocks--active .maxi-button-extra {
 
 		&--icon-right {
 			i {
+				z-index: 1;
 				order: 1;
 				margin-left: 5px;
 				@at-root .rtl #{&} {

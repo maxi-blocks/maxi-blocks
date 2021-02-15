@@ -7,7 +7,8 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import { __experimentalBackgroundDisplayer } from '../../components';
+import { BackgroundDisplayer } from '../../components';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -19,28 +20,30 @@ import { isNil } from 'lodash';
  * Save
  */
 const save = props => {
+	const { className, attributes } = props;
 	const {
-		className,
-		attributes: {
-			uniqueID,
-			blockStyle,
-			defaultBlockStyle,
-			fullWidth,
-			background,
-			extraClassName,
-			textLevel,
-			isList,
-			typeOfList,
-			content,
-			motion,
-		},
-	} = props;
+		uniqueID,
+		blockStyle,
+		defaultBlockStyle,
+		fullWidth,
+		extraClassName,
+		textLevel,
+		isList,
+		typeOfList,
+		content,
+	} = attributes;
+
+	const highlight = { ...props.attributes.highlight };
+	const { textHighlight, backgroundHighlight, borderHighlight } = highlight;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-text-block',
 		'maxi-text-block-wrap',
 		blockStyle,
+		!!textHighlight && 'maxi-highlight--text',
+		!!backgroundHighlight && 'maxi-highlight--background',
+		!!borderHighlight && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,
@@ -50,12 +53,24 @@ const save = props => {
 
 	return (
 		<Fragment>
-			<div
-				className={classes}
-				data-motion={motion}
-				data-motion-id={uniqueID}
-			>
-				<__experimentalBackgroundDisplayer background={background} />
+			<div className={classes} data-motion-id={uniqueID}>
+				<BackgroundDisplayer
+					{...getGroupAttributes(attributes, [
+						'background',
+						'backgroundColor',
+						'backgroundImage',
+						'backgroundVideo',
+						'backgroundGradient',
+						'backgroundSVG',
+						'backgroundHover',
+						'backgroundColorHover',
+						'backgroundImageHover',
+						'backgroundVideoHover',
+						'backgroundGradientHover',
+						'backgroundSVGHover',
+					])}
+					blockClassName={uniqueID}
+				/>
 				<RichText.Content
 					className='maxi-text-block__content'
 					value={content}

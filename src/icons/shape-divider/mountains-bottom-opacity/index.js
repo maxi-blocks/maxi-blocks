@@ -13,7 +13,7 @@ const mountainsBottomOpacity = (
 		<defs>
 			<Path
 				id='mountains-bottom-opacity-a'
-				fill-opacity='.498'
+				fillOpacity='.498'
 				d='M1279.95 99.15L1280 135H0V8.3L60.6.9 156.25 4l86.35 13.9 78.7-9.75 90.1 17.1 94.45-7.7L582.8 29.4l82.65-13.95 76.95 8.5 73.7 22.1 97.6-7.3 83.65 22.95 66.3-10.95 70.8 18.2h79.85z'
 			/>
 			<Path

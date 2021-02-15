@@ -8,6 +8,7 @@ const { useDispatch } = wp.data;
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNull } from 'lodash';
 
 /**
  * Styles
@@ -22,10 +23,19 @@ const BlockPlaceholder = props => {
 
 	const classes = classnames('maxi-block-placeholder', className);
 
-	const { selectBlock } = useDispatch('core/editor');
+	const { selectBlock } = useDispatch('core/block-editor');
 
 	return (
-		<div className={classes} onClick={() => selectBlock(clientId)}>
+		<div
+			className={classes}
+			onClick={e => {
+				e.preventDefault();
+
+				!isNull(
+					e.target.querySelector('.maxi-block-placeholder__button')
+				) && selectBlock(clientId);
+			}}
+		>
 			<p className='maxi-block-placeholder__text'>{content}</p>
 			<ButtonBlockerAppender
 				rootClientId={clientId}

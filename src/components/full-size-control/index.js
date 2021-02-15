@@ -7,15 +7,18 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../utils';
 import SizeControl from '../size-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
+import {
+	getLastBreakpointAttribute,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Styles
@@ -27,31 +30,27 @@ import './editor.scss';
  */
 const FullSizeControl = props => {
 	const {
-		size,
-		defaultSize,
 		onChange,
 		className,
 		breakpoint,
 		hideWidth,
+		hideMaxWidth,
+		prefix = '',
 	} = props;
-
-	const value = isObject(size) ? size : JSON.parse(size);
-
-	const defaultValue = isObject(defaultSize)
-		? defaultSize
-		: JSON.parse(defaultSize);
 
 	const classes = classnames('maxi-full-size-control', className);
 
 	const onChangeValue = (target, val) => {
+		const response = {};
+
 		if (Array.isArray(target)) {
 			target.forEach(el => {
-				value[breakpoint][el] = (!isNil(val) && val) || '';
+				response[`${el}-${breakpoint}`] = (!isNil(val) && val) || '';
 			});
 		} else {
-			value[breakpoint][target] = (!isNil(val) && val) || '';
+			response[`${target}-${breakpoint}`] = (!isNil(val) && val) || '';
 		}
-		onChange(JSON.stringify(value));
+		onChange(response);
 	};
 
 	const minMaxSettings = {
@@ -78,41 +77,64 @@ const FullSizeControl = props => {
 			{!hideWidth && (
 				<SizeControl
 					label={__('Width', 'maxi-blocks')}
-					unit={getLastBreakpointValue(
-						value,
-						'widthUnit',
-						breakpoint
+					unit={getLastBreakpointAttribute(
+						`${prefix}width-unit`,
+						breakpoint,
+						props
 					)}
-					defaultUnit={defaultValue[breakpoint].widthUnit}
-					onChangeUnit={val => onChangeValue('widthUnit', val)}
-					value={getLastBreakpointValue(value, 'width', breakpoint)}
-					defaultValue={defaultValue[breakpoint].width}
-					onChangeValue={val => onChangeValue('width', val)}
+					defaultUnit={getDefaultAttribute(
+						`${prefix}width-unit-${breakpoint}`
+					)}
+					onChangeUnit={val =>
+						onChangeValue(`${prefix}width-unit`, val)
+					}
+					value={getLastBreakpointAttribute(
+						`${prefix}width`,
+						breakpoint,
+						props
+					)}
+					defaultValue={getDefaultAttribute(
+						`${prefix}width-${breakpoint}`
+					)}
+					onChangeValue={val => onChangeValue(`${prefix}width`, val)}
 					minMaxSettings={minMaxSettings}
 				/>
 			)}
-
 			<SizeControl
 				label={__('Height', 'maxi-blocks')}
-				unit={getLastBreakpointValue(value, 'heightUnit', breakpoint)}
-				defaultUnit={defaultValue[breakpoint].heightUnit}
-				onChangeUnit={val => onChangeValue('heightUnit', val)}
-				value={getLastBreakpointValue(value, 'height', breakpoint)}
-				defaultValue={defaultValue[breakpoint].heigh}
-				onChangeValue={val => onChangeValue('height', val)}
+				unit={getLastBreakpointAttribute(
+					`${prefix}height-unit`,
+					breakpoint,
+					props
+				)}
+				defaultUnit={getDefaultAttribute(
+					`${prefix}height-unit-${breakpoint}`
+				)}
+				onChangeUnit={val =>
+					onChangeValue([`${prefix}height-unit`], val)
+				}
+				value={getLastBreakpointAttribute(
+					`${prefix}height`,
+					breakpoint,
+					props
+				)}
+				defaultValue={getDefaultAttribute(
+					`${prefix}height-${breakpoint}`
+				)}
+				onChangeValue={val => onChangeValue([`${prefix}height`], val)}
 				minMaxSettings={minMaxSettings}
 			/>
-
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Advanced Width/Height', 'maxi-blocks')}
-				selected={value[breakpoint].advancedOptions}
+				selected={+props[`${prefix}size-advanced-options`]}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
 				onChange={val => {
-					value[breakpoint].advancedOptions = Number(val);
-					onChange(JSON.stringify(value));
+					onChange({
+						[`${prefix}size-advanced-options`]: !!+val,
+					});
 					if (!Number(val)) {
 						onChangeValue(
 							[
@@ -126,99 +148,122 @@ const FullSizeControl = props => {
 
 						onChangeValue(
 							[
-								'min-widthUnit',
-								'max-widthUnit',
-								'min-heightUnit',
-								'max-heightUnit',
+								'min-width-unit',
+								'max-width-unit',
+								'min-height-unit',
+								'max-height-unit',
 							],
 							'px'
 						);
 					}
 				}}
 			/>
-			{!!value[breakpoint].advancedOptions && (
+			{props[`${prefix}size-advanced-options`] && (
 				<Fragment>
-					<SizeControl
-						label={__('Max Width', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
-							value,
-							'max-widthUnit',
-							breakpoint
-						)}
-						defaultUnit={defaultValue[breakpoint]['max-widthUnit']}
-						onChangeUnit={val =>
-							onChangeValue('max-widthUnit', val)
-						}
-						value={getLastBreakpointValue(
-							value,
-							'max-width',
-							breakpoint
-						)}
-						defaultValue={defaultValue[breakpoint]['max-width']}
-						onChangeValue={val => onChangeValue('max-width', val)}
-						minMaxSettings={minMaxSettings}
-					/>
-
+					{!hideMaxWidth && (
+						<SizeControl
+							label={__('Max Width', 'maxi-blocks')}
+							unit={getLastBreakpointAttribute(
+								`${prefix}max-width-unit`,
+								breakpoint,
+								props
+							)}
+							defaultUnit={getDefaultAttribute(
+								`${prefix}max-width-unit-${breakpoint}`
+							)}
+							onChangeUnit={val =>
+								onChangeValue(`${prefix}max-width-unit`, val)
+							}
+							value={getLastBreakpointAttribute(
+								`${prefix}max-width`,
+								breakpoint,
+								props
+							)}
+							defaultValue={getDefaultAttribute(
+								`${prefix}max-width-${breakpoint}`
+							)}
+							onChangeValue={val =>
+								onChangeValue(`${prefix}max-width`, val)
+							}
+							minMaxSettings={minMaxSettings}
+						/>
+					)}
 					<SizeControl
 						label={__('Min Width', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
-							value,
-							'min-widthUnit',
-							breakpoint
+						unit={getLastBreakpointAttribute(
+							`${prefix}min-width-unit`,
+							breakpoint,
+							props
 						)}
-						defaultUnit={defaultValue[breakpoint]['min-widthUnit']}
+						defaultUnit={getDefaultAttribute(
+							`${prefix}min-width-unit-${breakpoint}`
+						)}
 						onChangeUnit={val =>
-							onChangeValue('min-widthUnit', val)
+							onChangeValue(`${prefix}min-width-unit`, val)
 						}
-						value={getLastBreakpointValue(
-							value,
-							'min-width',
-							breakpoint
+						value={getLastBreakpointAttribute(
+							`${prefix}min-width`,
+							breakpoint,
+							props
 						)}
-						defaultValue={defaultValue[breakpoint]['min-width']}
-						onChangeValue={val => onChangeValue('min-width', val)}
+						defaultValue={getDefaultAttribute(
+							`${prefix}min-width-${breakpoint}`
+						)}
+						onChangeValue={val =>
+							onChangeValue(`${prefix}min-width`, val)
+						}
 						minMaxSettings={minMaxSettings}
 					/>
-
 					<SizeControl
 						label={__('Max Height', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
-							value,
-							'max-heightUnit',
-							breakpoint
+						unit={getLastBreakpointAttribute(
+							`${prefix}max-height-unit`,
+							breakpoint,
+							props
 						)}
-						defaultUnit={defaultValue[breakpoint]['max-heightUnit']}
+						defaultUnit={getDefaultAttribute(
+							`${prefix}max-height-unit-${breakpoint}`
+						)}
 						onChangeUnit={val =>
-							onChangeValue('max-heightUnit', val)
+							onChangeValue(`${prefix}max-height-unit`, val)
 						}
-						value={getLastBreakpointValue(
-							value,
-							'max-height',
-							breakpoint
+						value={getLastBreakpointAttribute(
+							`${prefix}max-height`,
+							breakpoint,
+							props
 						)}
-						defaultValue={defaultValue[breakpoint]['max-height']}
-						onChangeValue={val => onChangeValue('max-height', val)}
+						defaultValue={getDefaultAttribute(
+							`${prefix}max-height-${breakpoint}`
+						)}
+						onChangeValue={val =>
+							onChangeValue(`${prefix}max-height`, val)
+						}
 						minMaxSettings={minMaxSettings}
 					/>
-
 					<SizeControl
 						label={__('Min Height', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
-							value,
-							'min-heightUnit',
-							breakpoint
+						unit={getLastBreakpointAttribute(
+							`${prefix}min-height-unit`,
+							breakpoint,
+							props
 						)}
-						defaultUnit={defaultValue[breakpoint]['min-heightUnit']}
+						defaultUnit={getDefaultAttribute(
+							`${prefix}min-height-unit-${breakpoint}`
+						)}
 						onChangeUnit={val =>
-							onChangeValue('min-heightUnit', val)
+							onChangeValue(`${prefix}min-height-unit`, val)
 						}
-						value={getLastBreakpointValue(
-							value,
-							'min-height',
-							breakpoint
+						value={getLastBreakpointAttribute(
+							`${prefix}min-height`,
+							breakpoint,
+							props
 						)}
-						defaultValue={defaultValue[breakpoint]['min-height']}
-						onChangeValue={val => onChangeValue('min-height', val)}
+						defaultValue={getDefaultAttribute(
+							`${prefix}min-height-${breakpoint}`
+						)}
+						onChangeValue={val =>
+							onChangeValue(`${prefix}min-height`, val)
+						}
 						minMaxSettings={minMaxSettings}
 					/>
 				</Fragment>

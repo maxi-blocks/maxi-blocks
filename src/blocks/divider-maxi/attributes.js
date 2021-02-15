@@ -6,8 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults';
-import size from './data';
+import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -16,6 +15,10 @@ const attributes = {
 	customLabel: {
 		type: 'string',
 		default: __('Divider', 'maxi-blocks'),
+	},
+	fullWidth: {
+		type: 'string',
+		default: 'normal',
 	},
 	lineVertical: {
 		type: 'string',
@@ -29,66 +32,35 @@ const attributes = {
 		type: 'string',
 		default: 'horizontal',
 	},
-	linesAlign: {
+	lineAlign: {
 		type: 'string',
 		default: 'row',
 	},
-	divider: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDivider),
+	...attributesData.size,
+	'height-general': {
+		default: 100,
 	},
-	fullWidth: {
-		type: 'string',
-		default: 'normal',
+	'height-unit-general': {
+		default: 'px',
 	},
-	size: {
-		type: 'string',
-		default: JSON.stringify(size),
-	},
-	opacity: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacity),
-	},
-	background: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
-	},
-	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
-	},
-	boxShadow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
-	},
-	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
-	},
-	padding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
-	},
-	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
-	},
-	position: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalPosition),
-	},
-	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
-	},
-	motion: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalMotion),
-	},
-	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
-	},
+	...attributesData.divider,
+	...attributesData.highlight,
+	...attributesData.opacity,
+	...attributesData.background,
+	...attributesData.backgroundColor,
+	...attributesData.backgroundGradient,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.backgroundGradientHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.padding,
+	...attributesData.margin,
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.entrance,
+	...attributesData.motion,
+	...attributesData.transform,
+	...attributesData.zIndex,
 };
-
 export default attributes;

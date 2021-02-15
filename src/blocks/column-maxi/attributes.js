@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults';
+import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -16,53 +16,13 @@ const attributes = {
 		type: 'string',
 		default: __('Column', 'maxi-blocks'),
 	},
-	columnSize: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalColumn),
-	},
-	verticalAlign: {
-		type: 'string',
-		default: 'stretch',
-	},
-	opacity: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacity),
-	},
-	background: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
-	},
-	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
-	},
-	border: {
-		type: 'string',
-		default: JSON.stringify(attributesData.border),
-	},
-	borderHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.borderHover),
-	},
 	fullWidth: {
 		type: 'string',
 		default: 'normal',
 	},
-	boxShadow: {
+	verticalAlign: {
 		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
-	},
-	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
-	},
-	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
-	},
-	padding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
+		default: 'stretch',
 	},
 	extraClassName: {
 		type: 'string',
@@ -72,17 +32,31 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	zIndex: {
-		type: 'number',
-	},
-	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
-	},
-	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
-	},
+	...attributesData.columnSize,
+	...attributesData.opacity,
+	...attributesData.background,
+	...attributesData.backgroundColor,
+	...attributesData.backgroundImage,
+	...attributesData.backgroundVideo,
+	...attributesData.backgroundGradient,
+	...attributesData.backgroundSVG,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.backgroundImageHover,
+	...attributesData.backgroundVideoHover,
+	...attributesData.backgroundGradientHover,
+	...attributesData.backgroundSVGHover,
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...attributesData.borderRadius,
+	...attributesData.borderHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.margin,
+	...attributesData.padding,
+	...attributesData.display,
+	...attributesData.transform,
+	...attributesData.zIndex,
 };
 
 export default attributes;

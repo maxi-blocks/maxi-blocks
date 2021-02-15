@@ -2,37 +2,33 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
+const { Fragment, RawHTML, createRef } = wp.element;
 const { withSelect } = wp.data;
-const { Spinner, IconButton, ResizableBox, Placeholder } = wp.components;
+const { Spinner, Button, Placeholder } = wp.components;
 const { __experimentalBlock, MediaUpload } = wp.blockEditor;
-import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import {
-	getColorBackgroundObject,
-	getBoxShadowObject,
-	getAlignmentFlexObject,
-	getTransformObject,
-	getAlignmentTextObject,
-	setBackgroundStyles,
-	getLastBreakpointValue,
-} from '../../utils';
-import {
+	BackgroundDisplayer,
+	BlockResizer,
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBackgroundDisplayer,
-	__experimentalMotionPreview,
+	MotionPreview,
+	Toolbar,
 } from '../../components';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+import getStyles from './styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, isObject } from 'lodash';
+import { isEmpty, isNil, isNumber } from 'lodash';
 
 /**
  * Icons
@@ -50,249 +46,67 @@ class edit extends MaxiBlock {
 		return false;
 	}
 
-	get getObject() {
-		const { uniqueID, background, backgroundHover } = this.props.attributes;
-
-		let response = {
-			[uniqueID]: this.getNormalObject,
-			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID} .maxi-block-hover-wrapper`]: this
-				.getImageFrontendObject,
-			[`${uniqueID}:hover .maxi-block-hover-wrapper`]: this
-				.getImageHoverObject,
-			[`${uniqueID} .maxi-block-hover-wrapper img`]: this
-				.getImageBackendObject,
-			[`${uniqueID} .maxi-block-hover-wrapper svg`]: this
-				.getImageBackendObject,
-			[`${uniqueID} figcaption`]: this.getFigcaptionObject,
-			[`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: this
-				.getHoverEffectTitleTextObject,
-			[`${uniqueID} .maxi-hover-details .maxi-hover-details__content p`]: this
-				.getHoverEffectContentTextObject,
-			[`${uniqueID} .maxi-hover-details`]: this
-				.getHoverEffectDetailsBoxObject,
-		};
-
-		response = Object.assign(
-			response,
-			setBackgroundStyles(uniqueID, background, backgroundHover)
-		);
-
-		return response;
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
 	}
 
-	get getNormalObject() {
-		const {
-			alignment,
-			padding,
-			margin,
-			zIndex,
-			position,
-			display,
-			transform,
-		} = this.props.attributes;
+	get getCustomData() {
+		const { uniqueID } = this.props.attributes;
 
-		const response = {
-			padding: { ...JSON.parse(padding) },
-			margin: { ...JSON.parse(margin) },
-			zIndex: { ...JSON.parse(zIndex) },
-			alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
-			position: { ...JSON.parse(position) },
-			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
-		};
+		const motionStatus =
+			!!this.props.attributes['motion-status'] ||
+			!isEmpty(this.props.attributes['entrance-type']);
 
-		return response;
-	}
-
-	get getHoverEffectDetailsBoxObject() {
-		const { hover } = this.props.attributes;
-
-		const background = !isObject(JSON.parse(hover).background)
-			? JSON.parse(JSON.parse(hover).background)
-			: JSON.parse(hover).background;
-
-		const border = !isObject(JSON.parse(hover).border)
-			? JSON.parse(JSON.parse(hover).border)
-			: JSON.parse(hover).border;
-
-		const padding = !isObject(JSON.parse(hover).padding)
-			? JSON.parse(JSON.parse(hover).padding)
-			: JSON.parse(hover).padding;
-
-		const margin = !isObject(JSON.parse(hover).margin)
-			? JSON.parse(JSON.parse(hover).margin)
-			: JSON.parse(hover).margin;
-
-		const response = {
-			background: {
-				...getColorBackgroundObject(background.colorOptions),
-			},
-			border: { ...border },
-			padding: { ...padding },
-			margin: { ...margin },
-		};
-
-		return response;
-	}
-
-	get getHoverEffectTitleTextObject() {
-		const { hover } = this.props.attributes;
-
-		const titleTypography = !isObject(JSON.parse(hover).titleTypography)
-			? JSON.parse(JSON.parse(hover).titleTypography)
-			: JSON.parse(hover).titleTypography;
-
-		const response = {
-			typography: { ...titleTypography },
-		};
-
-		return response;
-	}
-
-	get getHoverEffectContentTextObject() {
-		const { hover } = this.props.attributes;
-
-		const contentTypography = !isObject(JSON.parse(hover).contentTypography)
-			? JSON.parse(JSON.parse(hover).contentTypography)
-			: JSON.parse(hover).contentTypography;
-
-		const response = {
-			typography: { ...contentTypography },
-		};
-
-		return response;
-	}
-
-	get getHoverObject() {
-		const { boxShadowHover } = this.props.attributes;
-
-		const response = {};
-
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			};
-		}
-
-		return response;
-	}
-
-	get getImageFrontendObject() {
-		const { boxShadow, size, opacity } = this.props.attributes;
-
-		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			imageSize: { ...JSON.parse(size) },
-			opacity: { ...JSON.parse(opacity) },
-		};
-
-		return response;
-	}
-
-	get getImageHoverObject() {
-		const { boxShadowHover, borderHover } = this.props.attributes;
-		const response = {
-			borderWidth: { ...JSON.parse(borderHover).borderWidth },
-			borderRadius: { ...JSON.parse(borderHover).borderRadius },
-		};
-
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			};
-		}
-
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
-			response.borderHover = {
-				...JSON.parse(borderHover),
-			};
-		}
-
-		return response;
-	}
-
-	get getImageBackendObject() {
-		const { boxShadow, opacity, border, clipPath } = this.props.attributes;
-
-		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			opacity: { ...JSON.parse(opacity) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
-			image: {
-				label: 'Image settings',
-				general: {},
+		return {
+			[uniqueID]: {
+				...(motionStatus && {
+					...getGroupAttributes(this.props.attributes, [
+						'motion',
+						'entrance',
+					]),
+				}),
 			},
 		};
-
-		if (!isNil(clipPath)) response.image.general['clip-path'] = clipPath;
-
-		return response;
-	}
-
-	get getFigcaptionObject() {
-		const { captionTypography } = this.props.attributes;
-
-		const response = {
-			captionTypography: { ...JSON.parse(captionTypography) },
-			alignmentTypography: {
-				...getAlignmentTextObject(
-					JSON.parse(captionTypography).textAlign
-				),
-			},
-		};
-
-		return response;
 	}
 
 	render() {
 		const {
 			className,
-			attributes: {
-				uniqueID,
-				blockStyle,
-				defaultBlockStyle,
-				extraClassName,
-				fullWidth,
-				size,
-				background,
-				cropOptions,
-				captionType,
-				captionContent,
-				imageSize,
-				mediaID,
-				mediaAlt,
-				mediaURL,
-				mediaWidth,
-				mediaHeight,
-				SVGElement,
-				display,
-				hover,
-				motion,
-			},
+			attributes,
 			imageData,
 			setAttributes,
 			deviceType,
 		} = this.props;
-
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
-
-		const hoverValue = !isObject(hover) ? JSON.parse(hover) : hover;
+		const {
+			uniqueID,
+			blockStyle,
+			defaultBlockStyle,
+			blockStyleBackground,
+			extraClassName,
+			fullWidth,
+			cropOptions,
+			captionType,
+			captionContent,
+			imageSize,
+			mediaID,
+			mediaAlt,
+			mediaURL,
+			mediaWidth,
+			mediaHeight,
+			SVGElement,
+		} = attributes;
 
 		const hoverClasses = classnames(
 			'maxi-block-hover-wrapper',
-			hoverValue.type === 'basic' &&
-				!!hoverValue.preview &&
-				`maxi-hover-effect__${hoverValue.type}__${hoverValue.basicEffectType}`,
-			hoverValue.type === 'text' &&
-				!!hoverValue.preview &&
-				`maxi-hover-effect__${hoverValue.type}__${hoverValue.textEffectType}`,
-			hoverValue.type !== 'none' &&
+			attributes['hover-type'] === 'basic' &&
+				attributes['hover-preview'] &&
+				`maxi-hover-effect__${attributes['hover-type']}__${attributes['hover-basic-effect-type']}`,
+			attributes['hover-type'] === 'text' &&
+				attributes['hover-preview'] &&
+				`maxi-hover-effect__${attributes['hover-type']}__${attributes['hover-text-effect-type']}`,
+			attributes['hover-type'] !== 'none' &&
 				`maxi-hover-effect__${
-					hoverValue.type === 'basic' ? 'basic' : 'text'
+					attributes['hover-type'] === 'basic' ? 'basic' : 'text'
 				}`
 		);
 
@@ -300,29 +114,27 @@ class edit extends MaxiBlock {
 			'maxi-block maxi-image-block',
 			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 			'maxi-block--backend',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
+			blockStyle !== 'maxi-custom' &&
+				`maxi-background--${blockStyleBackground}`,
 			extraClassName,
 			uniqueID,
 			className,
-			fullWidth === 'full' ? 'alignfull' : ''
+			fullWidth === 'full' && 'alignfull'
 		);
-		const cropOptionsValue = !isObject(cropOptions)
-			? JSON.parse(cropOptions)
-			: cropOptions;
-
-		const sizeValue = !isObject(size) ? JSON.parse(size) : size;
 
 		const getImage = () => {
 			if (
 				imageSize === 'custom' &&
-				!isEmpty(cropOptionsValue.image.source_url)
+				!!cropOptions &&
+				!isEmpty(cropOptions.image.source_url)
 			)
-				return cropOptionsValue.image;
+				return { ...cropOptions.image };
 			if (imageData && imageSize && imageSize !== 'custom')
-				return imageData.media_details.sizes[imageSize];
-			if (imageData) return imageData.media_details.sizes.full;
+				return { ...imageData.media_details.sizes[imageSize] };
+			if (imageData) return { ...imageData.media_details.sizes.full };
 
 			return false;
 		};
@@ -336,81 +148,97 @@ class edit extends MaxiBlock {
 
 			if (imageData.title.rendered)
 				setAttributes({ mediaAltTitle: imageData.title.rendered });
-
-			if (
-				mediaURL !== image.source_url ||
-				mediaWidth !== image.width ||
-				mediaHeight !== image.height
-			)
-				setAttributes({
-					mediaURL: image.source_url,
-					mediaHeight: image.height,
-					mediaWidth: image.width,
-				});
 		}
 
+		const handleOnResizeStop = (event, direction, elt, delta) => {
+			const imageWidth = !isNil(attributes[`width-${deviceType}`])
+				? attributes[`width-${deviceType}`]
+				: 0;
+
+			setAttributes({
+				[`width-${deviceType}`]: imageWidth + delta.width,
+			});
+		};
+
 		return [
-			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
-			<__experimentalMotionPreview motion={motion}>
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<MotionPreview
+				key={`motion-preview-${uniqueID}`}
+				{...getGroupAttributes(attributes, 'motion')}
+			>
 				<__experimentalBlock.figure
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
 					data-align={fullWidth}
 				>
 					<MediaUpload
-						onSelect={media => setAttributes({ mediaID: media.id })}
+						onSelect={media =>
+							setAttributes({
+								mediaID: media.id,
+								mediaURL: media.url,
+								mediaWidth: media.width,
+								mediaHeight: media.height,
+							})
+						}
 						allowedTypes='image'
 						value={mediaID}
 						render={({ open }) => (
 							<Fragment>
 								{(!isNil(mediaID) && imageData) || mediaURL ? (
 									<Fragment>
-										<__experimentalBackgroundDisplayer
-											background={background}
+										<BackgroundDisplayer
+											{...getGroupAttributes(attributes, [
+												'background',
+												'backgroundColor',
+												'backgroundImage',
+												'backgroundVideo',
+												'backgroundGradient',
+												'backgroundSVG',
+												'backgroundHover',
+												'backgroundColorHover',
+												'backgroundImageHover',
+												'backgroundVideoHover',
+												'backgroundGradientHover',
+												'backgroundSVGHover',
+											])}
+											blockClassName={uniqueID}
 										/>
-										<ResizableBox
-											className='maxi-block__resizer maxi-image-block__resizer'
+
+										<BlockResizer
+											key={uniqueID}
+											className={classnames(
+												'maxi-block__resizer maxi-image-block__resizer'
+											)}
 											size={{
-												width: `${sizeValue.general.width}%`,
+												width: `${
+													!isNumber(
+														attributes[
+															`width-${deviceType}`
+														]
+													)
+														? imageData &&
+														  imageData
+																.media_details
+																.width
+														: attributes[
+																`width-${deviceType}`
+														  ]
+												}px`,
 												height: '100%',
 											}}
+											showHandle
 											maxWidth='100%'
-											enable={{
-												top: false,
-												right: false,
-												bottom: false,
-												left: false,
+											directions={{
 												topRight: true,
 												bottomRight: true,
 												bottomLeft: true,
 												topLeft: true,
 											}}
-											onResizeStop={(
-												event,
-												direction,
-												elt,
-												delta
-											) => {
-												const newScale = Number(
-													(
-														(elt.getBoundingClientRect()
-															.width /
-															this
-																.getWrapperWidth) *
-														100
-													).toFixed()
-												);
-												sizeValue.general.width = newScale;
-												setAttributes({
-													size: JSON.stringify(
-														sizeValue
-													),
-												});
-											}}
+											onResizeStop={handleOnResizeStop}
 										>
 											<div className='maxi-image-block__settings'>
-												<IconButton
+												<Button
 													className='maxi-image-block__settings__upload-button'
 													showTooltip='true'
 													onClick={open}
@@ -421,7 +249,7 @@ class edit extends MaxiBlock {
 												{(!SVGElement && (
 													<img
 														className={`maxi-image-block__image wp-image-${mediaID}`}
-														src={image.source_url}
+														src={mediaURL}
 														width={mediaWidth}
 														height={mediaHeight}
 														alt={mediaAlt}
@@ -431,29 +259,40 @@ class edit extends MaxiBlock {
 														{SVGElement}
 													</RawHTML>
 												)}
-												{hoverValue.type !== 'none' &&
-													hoverValue.type !==
+												{attributes['hover-type'] !==
+													'none' &&
+													attributes['hover-type'] !==
 														'basic' &&
-													!!hoverValue.preview && (
+													attributes[
+														'hover-preview'
+													] && (
 														<div className='maxi-hover-details'>
 															<div
-																className={`maxi-hover-details__content maxi-hover-details__content--${hoverValue.textPreset}`}
+																className={`maxi-hover-details__content maxi-hover-details__content--${attributes['hover-text-preset']}`}
 															>
 																{!isEmpty(
-																	hoverValue.titleText
+																	attributes[
+																		'hover-title-typography-content'
+																	]
 																) && (
 																	<h3>
 																		{
-																			hoverValue.titleText
+																			attributes[
+																				'hover-title-typography-content'
+																			]
 																		}
 																	</h3>
 																)}
 																{!isEmpty(
-																	hoverValue.contentText
+																	attributes[
+																		'hover-content-typography-content'
+																	]
 																) && (
 																	<p>
 																		{
-																			hoverValue.contentText
+																			attributes[
+																				'hover-content-typography-content'
+																			]
 																		}
 																	</p>
 																)}
@@ -466,7 +305,7 @@ class edit extends MaxiBlock {
 													{captionContent}
 												</figcaption>
 											)}
-										</ResizableBox>
+										</BlockResizer>
 									</Fragment>
 								) : mediaID ? (
 									<Fragment>
@@ -479,7 +318,7 @@ class edit extends MaxiBlock {
 											icon={placeholderImage}
 											label=''
 										/>
-										<IconButton
+										<Button
 											className='maxi-image-block__settings__upload-button'
 											showTooltip='true'
 											onClick={open}
@@ -491,7 +330,7 @@ class edit extends MaxiBlock {
 						)}
 					/>
 				</__experimentalBlock.figure>
-			</__experimentalMotionPreview>,
+			</MotionPreview>,
 		];
 	}
 }

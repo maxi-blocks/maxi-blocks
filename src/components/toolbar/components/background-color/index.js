@@ -8,11 +8,7 @@ const { __ } = wp.i18n;
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-
-/**
- * External dependencies
- */
-import { isObject } from 'lodash';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * Styles
@@ -23,7 +19,7 @@ import './editor.scss';
  * BackgroundColor
  */
 const BackgroundColor = props => {
-	const { blockName, background, defaultBackground, onChange } = props;
+	const { blockName, onChange } = props;
 
 	if (
 		blockName === 'maxi-blocks/divider-maxi' ||
@@ -31,12 +27,6 @@ const BackgroundColor = props => {
 		blockName === 'maxi-blocks/svg-icon-maxi'
 	)
 		return null;
-
-	const value = !isObject(background) ? JSON.parse(background) : background;
-
-	const defaultValue = !isObject(defaultBackground)
-		? JSON.parse(defaultBackground)
-		: defaultBackground;
 
 	return (
 		<ToolbarPopover
@@ -47,7 +37,7 @@ const BackgroundColor = props => {
 				<div
 					className='toolbar-item__icon'
 					style={{
-						background: value.colorOptions.color,
+						background: props['background-color'],
 						border: '1px solid #fff',
 					}}
 				/>
@@ -55,13 +45,9 @@ const BackgroundColor = props => {
 			content={
 				<ColorControl
 					label={__('Background', 'maxi-blocks')}
-					color={value.colorOptions.color}
-					defaultColor={defaultValue.colorOptions.color}
-					onChange={val => {
-						value.colorOptions.color = val;
-						value.colorOptions.activeColor = val;
-						onChange(JSON.stringify(value));
-					}}
+					color={props['background-color']}
+					defaultColor={getDefaultAttribute('background-color')}
+					onChange={val => onChange({ 'background-color': val })}
 				/>
 			}
 		/>

@@ -1,7 +1,10 @@
 body.maxi-blocks--active figure.maxi-image-block {
 	display: flex;
+	justify-content: center;
 	flex-direction: column;
+
 	.maxi-block-hover-wrapper {
+		width: 100%;
 		overflow: hidden;
 		position: relative;
 	}

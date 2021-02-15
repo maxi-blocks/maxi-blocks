@@ -14,13 +14,20 @@ body.maxi-blocks--active .maxi-container-block {
 		width: 0;
 		height: 0;
 	}
-	&__wrapper {
-		margin: auto 0;
-		position: relative;
-		//overflow: hidden;
-	}
 	&__container {
 		margin-right: auto;
 		margin-left: auto;
+		position: relative;
+	}
+	.maxi-container-block__container {
+		width: 100%;
+	}
+}
+
+html body.maxi-blocks--active .maxi-container-block {
+	&.alignfull,
+	&.alignfull > .maxi-container-block__container {
+		max-width: 100% !important;
+		width: 100% !important;
 	}
 }

@@ -10,12 +10,7 @@
  */
 
 // Extensions
-import './extensions/dom';
-import './extensions/store';
-import './extensions/attributes';
-import './extensions/save';
-import './extensions/styles';
-import './extensions/text';
+import './extensions';
 
 // CSS
 import './css';
@@ -31,10 +26,11 @@ import './blocks/cloud-maxi/cloud-maxi';
 import './blocks/container-maxi/container-maxi';
 import './blocks/font-icon-maxi/font-icon-maxi';
 import './blocks/svg-icon-maxi/svg-icon-maxi';
+import './blocks/group-maxi/group-maxi';
 
 // Sidebar
 import './blocks/customizer-maxi/index';
 
 // Editor
 import './editor/saver';
-import './editor/styler';
+import './editor/toolbar-buttons';

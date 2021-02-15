@@ -16,8 +16,8 @@ import {
 	getTemplates,
 	getTemplateObject,
 } from '../../extensions/defaults/column-templates';
-
 import SizeControl from '../size-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -35,19 +35,12 @@ import './editor.scss';
  *
  * */
 const ColumnPatternsInspector = props => {
-	const {
-		clientId,
-		rowPattern,
-		onChange,
-		breakpoint,
-		toolbar = false,
-	} = props;
+	const { clientId, onChange, breakpoint, toolbar = false } = props;
 
 	const [numCol, setNumCol] = useState(1);
 	const [DISPLAYED_TEMPLATES, setDisplayedTemplates] = useState([]);
 
 	const instanceId = useInstanceId(ColumnPatternsInspector);
-	const rowPatternObject = JSON.parse(rowPattern);
 
 	const { getBlockName, getBlockAttributes, getBlockOrder } = select(
 		'core/block-editor'
@@ -80,10 +73,10 @@ const ColumnPatternsInspector = props => {
 	}, [breakpoint, numCol]);
 
 	useEffect(() => {
-		if (rowPatternObject.general.rowPattern) {
-			setNumCol(getNumCol(rowPatternObject.general.rowPattern));
+		if (props['row-pattern-general']) {
+			setNumCol(getNumCol(props['row-pattern-general']));
 		}
-	}, [breakpoint, rowPatternObject.general.rowPattern]);
+	}, [breakpoint, props['row-pattern-general']]);
 
 	/**
 	 * Creates a new array with columns content before loading template for saving
@@ -202,10 +195,9 @@ const ColumnPatternsInspector = props => {
 		const columnsBlockObjects = getBlock(clientId).innerBlocks;
 
 		columnsBlockObjects.forEach(columnObject => {
-			const columnSizeObject = JSON.parse(
-				columnObject.attributes.columnSize
+			columnsSizes.push(
+				columnObject.attributes[`column-size-${breakpoint}`]
 			);
-			columnsSizes.push(columnSizeObject[breakpoint].size);
 		});
 
 		return columnsSizes;
@@ -259,12 +251,13 @@ const ColumnPatternsInspector = props => {
 		const newColumnsSizes = [];
 		const columnsPositions = getColumnsPositions(sizes);
 
-		const gap = 2.5;
+		const gap = props.removeColumnGap ? 2.5 : 0;
 
 		sizes.forEach((column, i) => {
 			if (columnsPositions[i].columnsNumber > 1) {
 				const numberOfGaps = columnsPositions[i].columnsNumber - 1;
 				const total = 100 - gap * numberOfGaps;
+
 				newColumnsSizes.push(sizes[i] * total);
 			}
 
@@ -296,33 +289,39 @@ const ColumnPatternsInspector = props => {
 		const columnsPositions = getColumnsPositions(sizes);
 
 		columnsBlockObjects.forEach((column, j) => {
-			const columnClientId = column.clientId;
 			const columnAttributes = column.attributes;
 			const columnUniqueID = columnAttributes.uniqueID;
 
-			const newColumnSize = JSON.parse(columnAttributes.columnSize);
-			const newColumnMargin = JSON.parse(columnAttributes.margin);
+			columnAttributes[`column-size-${breakpoint}`] = sizesWithGaps[j];
 
-			newColumnSize[breakpoint].size = sizesWithGaps[j];
+			const columnResizer =
+				document.querySelector(
+					`.maxi-column-block__resizer__${columnUniqueID}`
+				) !== null;
 
-			document.querySelector(
-				`.maxi-column-block__resizer__${columnUniqueID}`
-			).style.width = sizesWithGaps[j];
+			if (columnResizer)
+				document.querySelector(
+					`.maxi-column-block__resizer__${columnUniqueID}`
+				).style.width = sizesWithGaps[j];
 
 			if (columnsPositions[j].rowNumber > 1) {
-				newColumnMargin[breakpoint]['margin-top'] = 0.7;
-				newColumnMargin[breakpoint].unit = 'em';
+				columnAttributes[`margin-top-${breakpoint}`] = 1.5;
+				columnAttributes[`margin-unit-${breakpoint}`] = 'em';
 			}
+			if (columnResizer)
+				document.querySelector(
+					`.maxi-column-block__resizer__${columnUniqueID}`
+				).style.width = sizesWithGaps[j];
 
 			if (columnsPositions[j].rowNumber === 1) {
-				newColumnMargin[breakpoint]['margin-top'] = 0;
-				newColumnMargin[breakpoint].unit = '';
+				columnAttributes['margin-top-m'] = 0;
+				columnAttributes['margin-unit-m'] = '';
+			} else {
+				columnAttributes['margin-top-m'] = 1.5;
+				columnAttributes['margin-unit-m'] = 'em';
 			}
 
-			columnAttributes.columnSize = JSON.stringify(newColumnSize);
-			columnAttributes.margin = JSON.stringify(newColumnMargin);
-
-			updateBlockAttributes(columnClientId, columnAttributes);
+			updateBlockAttributes(column.clientId, columnAttributes);
 		});
 	};
 
@@ -341,7 +340,7 @@ const ColumnPatternsInspector = props => {
 					defaultValue={numCol}
 					onChangeValue={numCol => setNumCol(numCol)}
 					min={1}
-					max={6}
+					max={8}
 					disableReset
 				/>
 			)}
@@ -354,20 +353,20 @@ const ColumnPatternsInspector = props => {
 							)}
 							className={patternButtonClassName}
 							aria-pressed={
-								JSON.stringify(getCurrentColumnsSizes()) ===
-								JSON.stringify(applyGap(template.sizes))
+								getCurrentColumnsSizes() ===
+								applyGap(template.sizes)
 							}
 							onClick={() => {
 								if (breakpoint === 'general') {
 									loadTemplate(template.name);
+									updateTemplate(template.name);
 								} else {
 									updateTemplate(template.name);
 								}
 
-								rowPatternObject[breakpoint].rowPattern =
-									template.name;
-
-								onChange(JSON.stringify(rowPatternObject));
+								onChange({
+									[`row-pattern-${breakpoint}`]: template.name,
+								});
 							}}
 						>
 							<Icon
@@ -378,6 +377,24 @@ const ColumnPatternsInspector = props => {
 					);
 				})}
 			</div>
+			{!toolbar && (
+				<div className='components-column-pattern__gap'>
+					{numCol !== 1 && breakpoint === 'general' && (
+						<FancyRadioControl
+							label={__('Remove Gap', 'maxi-blocks')}
+							selected={+props.removeColumnGap}
+							options={[
+								{ label: __('Yes', 'maxi-blocks'), value: 1 },
+								{ label: __('No', 'maxi-blocks'), value: 0 },
+							]}
+							onChange={val => {
+								onChange({ removeColumnGap: !!+val });
+								updateTemplate(props['row-pattern-general']);
+							}}
+						/>
+					)}
+				</div>
+			)}
 		</div>
 	);
 };

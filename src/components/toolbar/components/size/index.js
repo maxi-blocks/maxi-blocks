@@ -7,15 +7,12 @@ const { RadioControl } = wp.components;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../../../utils';
 import SizeControl from '../../../size-control';
 import ToolbarPopover from '../toolbar-popover';
-import { getDefaultProp } from '../../../../utils';
-
-/**
- * External dependencies
- */
-import { isObject } from 'lodash';
+import {
+	getLastBreakpointAttribute,
+	getDefaultAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * Styles & Icons
@@ -41,19 +38,12 @@ const Size = props => {
 	const {
 		blockName,
 		fullWidth,
-		onChangeFullWidth,
-		size,
-		onChangeSize,
+		onChange,
 		isFirstOnHierarchy,
 		breakpoint,
-		clientId,
 	} = props;
 
 	if (EXCLUDED_BLOCKS.includes(blockName)) return null;
-
-	const defaultSize = JSON.parse(getDefaultProp(clientId, 'size'));
-
-	const value = !isObject(size) ? JSON.parse(size) : size;
 
 	return (
 		<ToolbarPopover
@@ -79,56 +69,50 @@ const Size = props => {
 										value: 'full',
 									},
 								]}
-								onChange={fullWidth =>
-									onChangeFullWidth(fullWidth)
-								}
+								onChange={fullWidth => onChange({ fullWidth })}
 							/>
 						)}
 					<SizeControl
 						label={__('Width', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
-							value,
-							'widthUnit',
-							breakpoint
+						unit={getLastBreakpointAttribute(
+							'width-unit',
+							breakpoint,
+							props
 						)}
-						onChangeUnit={val => {
-							value[breakpoint].widthUnit = val;
-							onChangeSize(JSON.stringify(value));
-						}}
-						defaultValue={defaultSize[breakpoint].width}
-						defaultUnit={defaultSize[breakpoint].widthUnit}
-						value={getLastBreakpointValue(
-							value,
+						onChangeUnit={val =>
+							onChange({ [`width-unit-${breakpoint}`]: val })
+						}
+						defaultValue={getDefaultAttribute('width')}
+						defaultUnit={getDefaultAttribute('width-unit')}
+						value={getLastBreakpointAttribute(
 							'width',
-							breakpoint
+							breakpoint,
+							props
 						)}
-						onChangeValue={val => {
-							value[breakpoint].width = val;
-							onChangeSize(JSON.stringify(value));
-						}}
+						onChangeValue={val =>
+							onChange({ [`width-${breakpoint}`]: val })
+						}
 					/>
 					<SizeControl
 						label={__('Max Width', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
-							value,
-							'max-widthUnit',
-							breakpoint
+						unit={getLastBreakpointAttribute(
+							'max-width-unit',
+							breakpoint,
+							props
 						)}
-						onChangeUnit={val => {
-							value[breakpoint]['max-widthUnit'] = val;
-							onChangeSize(JSON.stringify(value));
-						}}
-						defaultValue={defaultSize[breakpoint]['max-width']}
-						defaultUnit={defaultSize[breakpoint]['max-widthUnit']}
-						value={getLastBreakpointValue(
-							value,
+						onChangeUnit={val =>
+							onChange({ [`max-width-unit-${breakpoint}`]: val })
+						}
+						defaultValue={getDefaultAttribute('max-width')}
+						defaultUnit={getDefaultAttribute('max-width-unit')}
+						value={getLastBreakpointAttribute(
 							'max-width',
-							breakpoint
+							breakpoint,
+							props
 						)}
-						onChangeValue={val => {
-							value[breakpoint]['max-width'] = val;
-							onChangeSize(JSON.stringify(value));
-						}}
+						onChangeValue={val =>
+							onChange({ [`max-width-${breakpoint}`]: val })
+						}
 					/>
 				</div>
 			}

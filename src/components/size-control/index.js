@@ -9,7 +9,7 @@ const { RangeControl, SelectControl, BaseControl, Button } = wp.components;
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim } from 'lodash';
+import { trim, isNull } from 'lodash';
 
 /**
  * Styles
@@ -72,7 +72,7 @@ const SizeControl = props => {
 
 	const onReset = () => {
 		onChangeValue(defaultValue);
-		if (!disableUnit) onChangeUnit(defaultUnit);
+		if (!isNull(defaultValue) && !disableUnit) onChangeUnit(defaultUnit);
 	};
 
 	return (
@@ -149,8 +149,8 @@ const SizeControl = props => {
 							: Number(trim(value))
 					}
 					onChange={val => onChangeValue(Number(val))}
-					min={unit ? minMaxSettings[unit].min : null}
-					max={unit ? minMaxSettings[unit].max : null}
+					min={unit ? minMaxSettings[unit].min : 0}
+					max={unit ? minMaxSettings[unit].max : 999}
 					step={step}
 					withInputField={false}
 					initialPosition={value || initial}

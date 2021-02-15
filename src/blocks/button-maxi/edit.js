@@ -2,265 +2,208 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { withSelect } = wp.data;
+const { compose } = wp.compose;
+const { withSelect, withDispatch } = wp.data;
 const { __experimentalBlock, RichText } = wp.blockEditor;
+const { createRef } = wp.element;
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import {
-	getColorBackgroundObject,
-	getBoxShadowObject,
-	getAlignmentFlexObject,
-	getTransformObject,
-	getAlignmentTextObject,
-	setTextCustomFormats,
-	getLastBreakpointValue,
-	getIconObject,
-} from '../../utils';
-import {
+	BackgroundDisplayer,
 	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalMotionPreview,
+	MotionPreview,
+	Toolbar,
 } from '../../components';
-import { __experimentalGetFormatValue } from '../../extensions/text/formats';
+import { getFormatValue } from '../../extensions/text/formats';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+import getStyles from './styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isObject } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Content
  */
 class edit extends MaxiBlock {
-	get getObject() {
-		const { uniqueID, typography, typographyHover } = this.props.attributes;
-
-		let response = {
-			[this.props.attributes.uniqueID]: this.getWrapperObject,
-			[`${this.props.attributes.uniqueID} .maxi-button-extra__button`]: this
-				.getNormalObject,
-			[`${this.props.attributes.uniqueID} .maxi-button-extra__button:hover`]: this
-				.getHoverObject,
-			[`${this.props.attributes.uniqueID} .maxi-button-extra__button i`]: this
-				.getIconObject,
-		};
-
-		response = Object.assign(
-			response,
-			setTextCustomFormats(
-				[
-					`${uniqueID} .maxi-button-extra__button`,
-					`${uniqueID} .maxi-button-extra__button li`,
-				],
-				typography,
-				typographyHover
-			)
-		);
-
-		return response;
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
 	}
 
-	get getIconObject() {
-		const {
-			icon,
-			iconPadding,
-			iconBorder,
-			iconBackground,
-		} = this.props.attributes;
+	constructor(props) {
+		super(props);
+		this.buttonRef = createRef();
+	}
 
-		const response = {
-			icon: { ...getIconObject(JSON.parse(icon)) },
-			padding: { ...JSON.parse(iconPadding) },
-			border: { ...JSON.parse(iconBorder) },
-			borderWidth: { ...JSON.parse(iconBorder).borderWidth },
-			borderRadius: { ...JSON.parse(iconBorder).borderRadius },
-			background: {
-				...getColorBackgroundObject(
-					JSON.parse(iconBackground).colorOptions
-				),
+	componentDidMount() {
+		this.buttonRef.current.focus();
+	}
+
+	state = {
+		formatValue: this.props.generateFormatValue() || {},
+		textSelected: '',
+	};
+
+	get getCustomData() {
+		const { uniqueID } = this.props.attributes;
+
+		const motionStatus =
+			!!this.props.attributes['motion-status'] ||
+			!isEmpty(this.props.attributes['entrance-type']);
+
+		return {
+			[uniqueID]: {
+				...(motionStatus && {
+					...getGroupAttributes(this.props.attributes, [
+						'motion',
+						'entrance',
+					]),
+				}),
 			},
 		};
-
-		return response;
-	}
-
-	get getWrapperObject() {
-		const { alignment, zIndex, transform, display } = this.props.attributes;
-
-		const response = {
-			alignment: { ...getAlignmentFlexObject(JSON.parse(alignment)) },
-			zIndex: { ...JSON.parse(zIndex) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
-			display: { ...JSON.parse(display) },
-		};
-
-		return response;
-	}
-
-	get getNormalObject() {
-		const {
-			background,
-			alignmentText,
-			typography,
-			boxShadow,
-			border,
-			size,
-			padding,
-			margin,
-			zIndex,
-			position,
-		} = this.props.attributes;
-
-		const response = {
-			typography: { ...JSON.parse(typography) },
-			alignmentText: {
-				...getAlignmentTextObject(JSON.parse(alignmentText)),
-			},
-			background: {
-				...getColorBackgroundObject(
-					JSON.parse(background).colorOptions
-				),
-			},
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
-			size: { ...JSON.parse(size) },
-			padding: { ...JSON.parse(padding) },
-			margin: { ...JSON.parse(margin) },
-			zIndex: { ...JSON.parse(zIndex) },
-			position: { ...JSON.parse(position) },
-			positionOptions: { ...JSON.parse(position).options },
-		};
-
-		return response;
-	}
-
-	get getHoverObject() {
-		const {
-			backgroundHover,
-			typographyHover,
-			boxShadowHover,
-			borderHover,
-		} = this.props.attributes;
-
-		const response = {
-			borderWidth: { ...JSON.parse(borderHover).borderWidth },
-			borderRadius: { ...JSON.parse(borderHover).borderRadius },
-		};
-
-		if (!isNil(backgroundHover) && !!JSON.parse(backgroundHover).status) {
-			response.backgroundHover = {
-				...getColorBackgroundObject(JSON.parse(backgroundHover)),
-			};
-		}
-
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			};
-		}
-
-		if (!isNil(typographyHover) && !!JSON.parse(typographyHover).status) {
-			response.typographyHover = {
-				...JSON.parse(typographyHover),
-			};
-		}
-
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
-			response.borderHover = {
-				...JSON.parse(borderHover),
-			};
-		}
-
-		return response;
 	}
 
 	render() {
 		const {
+			attributes,
 			className,
-			attributes: {
-				uniqueID,
-				blockStyle,
-				defaultBlockStyle,
-				extraClassName,
-				content,
-				display,
-				icon,
-				motion,
-			},
-			setAttributes,
 			deviceType,
+			setAttributes,
+			selectedText,
+			generateFormatValue,
 		} = this.props;
+		const {
+			uniqueID,
+			blockStyle,
+			defaultBlockStyle,
+			blockStyleBackground,
+			extraClassName,
+		} = attributes;
 
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+		const { formatValue, textSelected } = this.state;
 
-		const iconValue = !isObject(icon) ? JSON.parse(icon) : icon;
+		if (isEmpty(formatValue) || selectedText !== textSelected)
+			this.setState({
+				formatValue: generateFormatValue(),
+				textSelected: selectedText,
+			});
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
-			'maxi-button-extra',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+			'maxi-button-block',
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
+			blockStyle !== 'maxi-custom' &&
+				`maxi-background--${blockStyleBackground}`,
+			!!attributes['text-highlight'] && 'maxi-highlight--text',
+			!!attributes['background-highlight'] &&
+				'maxi-highlight--background',
+			!!attributes['border-highlight'] && 'maxi-highlight--border',
 			extraClassName,
 			uniqueID,
 			className
 		);
 
 		const buttonClasses = classnames(
-			'maxi-button-extra__button',
-			iconValue.position === 'left' &&
-				'maxi-button-extra__button--icon-left',
-			iconValue.position === 'right' &&
-				'maxi-button-extra__button--icon-right'
+			'maxi-button-block__button',
+			attributes['icon-position'] === 'left' &&
+				'maxi-button-block__button--icon-left',
+			attributes['icon-position'] === 'right' &&
+				'maxi-button-block__button--icon-right'
 		);
 
 		return [
-			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
-			<__experimentalMotionPreview motion={motion}>
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				formatValue={formatValue}
+			/>,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				{...this.props}
+				formatValue={formatValue}
+			/>,
+			<MotionPreview
+				key={`motion-preview-${uniqueID}`}
+				{...getGroupAttributes(attributes, 'motion')}
+			>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
+					onClick={() =>
+						this.setState({ formatValue: generateFormatValue() })
+					}
 				>
 					<div className={buttonClasses}>
-						{iconValue.icon && <i className={iconValue.icon} />}
+						{!isEmpty(attributes['icon-name']) && (
+							<i className={attributes['icon-name']} />
+						)}
+						<BackgroundDisplayer
+							{...getGroupAttributes(attributes, [
+								'background',
+								'backgroundColor',
+								'backgroundGradient',
+								'backgroundHover',
+								'backgroundColorHover',
+								'backgroundGradientHover',
+							])}
+						/>
 						<RichText
+							ref={this.buttonRef}
 							withoutInteractiveFormatting
+							className='maxi-button-block__content'
+							value={attributes.buttonContent}
+							identifier='content'
+							onChange={buttonContent =>
+								setAttributes({ buttonContent })
+							}
 							placeholder={__('Set some text…', 'maxi-blocks')}
-							value={content}
-							onChange={content => setAttributes({ content })}
-							identifier='text'
 						/>
 					</div>
 				</__experimentalBlock>
-			</__experimentalMotionPreview>,
+			</MotionPreview>,
 		];
 	}
 }
 
-export default withSelect((select, ownProps) => {
-	const {
-		attributes: { isList, typeOfList },
-	} = ownProps;
-
-	const formatElement = {
-		multilineTag: isList ? 'li' : undefined,
-		multilineWrapperTags: isList ? typeOfList : undefined,
-		__unstableIsEditableTree: true,
-	};
-	const formatValue = __experimentalGetFormatValue(formatElement);
-
+const editSelect = withSelect(select => {
+	const selectedText = window.getSelection().toString();
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
-		formatValue,
+		// The 'selectedText' attribute is a trigger for generating the formatValue
+		selectedText,
 		deviceType,
 	};
-})(edit);
+});
+
+const editDispatch = withDispatch(
+	(dispatch, { attributes: { isList, typeOfList } }) => {
+		const generateFormatValue = () => {
+			const formatElement = {
+				multilineTag: isList ? 'li' : undefined,
+				multilineWrapperTags: isList ? typeOfList : undefined,
+				__unstableIsEditableTree: true,
+			};
+			const formatValue = getFormatValue(formatElement);
+
+			return formatValue;
+		};
+
+		return {
+			generateFormatValue,
+		};
+	}
+);
+
+export default compose(editSelect, editDispatch)(edit);

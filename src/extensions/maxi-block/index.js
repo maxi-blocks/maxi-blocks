@@ -13,33 +13,34 @@
 /**
  * WordPress dependencies
  */
-const { Component } = wp.element;
+const { Component, render } = wp.element;
+const { select, dispatch } = wp.data;
 
 /**
  * Internal dependencies
  */
-import { getDefaultProp } from '../styles/utils';
-
-import styleResolver from '../styles/stylesResolver';
+import { styleResolver, styleGenerator } from '../styles';
+import getBreakpoints from '../styles/helpers/getBreakpoints';
 
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, isEqual, isObject } from 'lodash';
+import { isEmpty, uniqueId, cloneDeep, isObject, isArray } from 'lodash';
 
 /**
  * Class
  */
 class MaxiBlock extends Component {
-	state = {
-		styles: {},
-		breakpoints: this.getBreakpoints,
-	};
-
 	constructor(...args) {
 		super(...args);
-		this.uniqueIDChecker(this.props.attributes.uniqueID);
-		this.fixProps();
+
+		const { attributes, clientId } = this.props;
+		const { uniqueID, blockStyle } = attributes;
+
+		this.uniqueIDChecker(uniqueID);
+		this.getDefaultBlockStyle(blockStyle, clientId);
+		// this.cloneObjects(attributes);
+		this.displayStyles();
 	}
 
 	componentDidUpdate() {
@@ -47,18 +48,49 @@ class MaxiBlock extends Component {
 	}
 
 	componentWillUnmount() {
-		this.removeStyle();
+		const obj = this.getStylesObject;
+
+		styleResolver(obj, true);
+
+		dispatch('maxiBlocks/customData').removeCustomData(
+			this.props.attributes.uniqueID
+		);
 	}
 
 	get getBreakpoints() {
-		const { breakpoints } = this.props.attributes;
-
-		return JSON.parse(breakpoints);
+		return getBreakpoints(this.props.attributes);
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	get getObject() {
+	get getStylesObject() {
 		return null;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	get getCustomData() {
+		return null;
+	}
+
+	getDefaultBlockStyle(blockStyle, clientId) {
+		if (blockStyle) return;
+
+		let res;
+
+		const blockRootClientId = select(
+			'core/block-editor'
+		).getBlockRootClientId(clientId);
+
+		if (!blockRootClientId) res = 'maxi-light';
+		else {
+			const parentBlockStyle = select(
+				'core/block-editor'
+			).getBlockAttributes(blockRootClientId).blockStyle;
+
+			if (parentBlockStyle === 'maxi-custom') res = 'maxi-custom';
+			else res = 'maxi-parent';
+		}
+
+		this.props.setAttributes({ blockStyle: res });
 	}
 
 	uniqueIDChecker(idToCheck) {
@@ -74,66 +106,43 @@ class MaxiBlock extends Component {
 	}
 
 	/**
-	 * In case some object has been modified and an old block has a prop that doesn't correspond
-	 * with that object, this should help. It can grow with different handlers/helpers to fix errors.
+	 * Is necessary to clone deep the objects if we don't want to modify
+	 * the original one on the native Gutenberg store and to make changes into
+	 * the other blocks.
+	 *
+	 * @param {obj} attributes	Block attributes
 	 */
-	fixProps() {
-		Object.entries(this.props.attributes).forEach(([key, value]) => {
-			let obj;
-			try {
-				obj = JSON.parse(value);
-			} catch (error) {
-				return;
-			}
-
-			if (!isObject(obj)) return;
-
-			const defaultObj = JSON.parse(
-				getDefaultProp(this.props.clientId, key)
-			);
-
-			const objKeys = Object.keys(obj).sort();
-			const defaultObjKeys = Object.keys(defaultObj).sort();
-			if (JSON.stringify(objKeys) !== JSON.stringify(defaultObjKeys)) {
-				const newObject = this.generalToDesktop(obj, defaultObj);
-				this.props.setAttributes({ [key]: JSON.stringify(newObject) });
-				this.props.attributes[key] = JSON.stringify(newObject);
-			}
-		});
-	}
-
-	generalToDesktop(obj, defaultObj) {
-		if (obj.hasOwnProperty('general') && !obj.hasOwnProperty('desktop'))
-			defaultObj.desktop = obj.general;
-
-		return defaultObj;
+	cloneObjects(attributes) {
+		Object.entries(attributes).forEach(
+			([key, val]) =>
+				(isObject(val) || isArray(val)) &&
+				this.props.setAttributes({ [key]: cloneDeep(val) })
+		);
 	}
 
 	/**
 	 * Refresh the styles on Editor
 	 */
 	displayStyles() {
-		const obj = this.getObject;
+		const obj = this.getStylesObject;
 		const breakpoints = this.getBreakpoints;
+		const customData = this.getCustomData;
 
-		if (
-			!isEqual(obj, this.state.styles) ||
-			!isEqual(breakpoints, this.state.breakpoints)
-		) {
-			this.setState({
-				styles: obj,
-				breakpoints,
-			});
+		const styles = styleResolver(obj, false, breakpoints);
+		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
-			styleResolver(obj, breakpoints);
+		if (document.body.classList.contains('maxi-blocks--active')) {
+			let wrapper = document.querySelector(
+				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
+			);
+			if (!wrapper) {
+				wrapper = document.createElement('div');
+				wrapper.id = `maxi-blocks__styles--${this.props.attributes.uniqueID}`;
+				document.head.appendChild(wrapper);
+			}
+
+			render(<style>{styleGenerator(styles)}</style>, wrapper);
 		}
-	}
-
-	removeStyle() {
-		const obj = this.getObject;
-		const breakpoints = this.getBreakpoints;
-
-		styleResolver(obj, breakpoints, true);
 	}
 }
 

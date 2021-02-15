@@ -10,11 +10,6 @@ const { ColorPicker, Icon } = wp.components;
 import ToolbarPopover from '../toolbar-popover';
 
 /**
- * External dependencies
- */
-import { isObject } from 'lodash';
-
-/**
  * Icons
  */
 import { toolbarDividerSetting } from '../../../../icons';
@@ -23,17 +18,9 @@ import { toolbarDividerSetting } from '../../../../icons';
  * DividerColor
  */
 const DividerColor = props => {
-	const { blockName, divider, onChange } = props;
+	const { blockName, onChange, color } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
-
-	const value = !isObject(divider) ? JSON.parse(divider) : divider;
-
-	const updateDivider = val => {
-		value.general['border-color'] = val.hex;
-
-		onChange(JSON.stringify(value));
-	};
 
 	return (
 		<ToolbarPopover
@@ -43,7 +30,7 @@ const DividerColor = props => {
 				<div
 					className='toolbar-item__text-options__icon'
 					style={{
-						background: value.general['border-color'],
+						background: color,
 						borderWidth: '1px',
 						borderColor: '#fff',
 						borderStyle: 'solid',
@@ -57,8 +44,10 @@ const DividerColor = props => {
 			}
 			content={
 				<ColorPicker
-					color={value.general['border-color']}
-					onChangeComplete={val => updateDivider(val)}
+					color={color}
+					onChangeComplete={val =>
+						onChange({ 'divider-border-color': val.hex })
+					}
 				/>
 			}
 		/>

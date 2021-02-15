@@ -8,15 +8,11 @@ const { Fragment, useState } = wp.element;
 /**
  * Internal dependencies
  */
-import __experimentalOpacityControl from '../opacity-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import OpacityControl from '../opacity-control';
+import FancyRadioControl from '../fancy-radio-control';
 import BackgroundControl from '../background-control';
 import SizeControl from '../size-control';
-
-/**
- * External dependencies
- */
-import { isObject } from 'lodash';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * Styles and icons
@@ -69,25 +65,7 @@ import {
  * Component
  */
 const ShapeDividerControl = props => {
-	const { shapeDividerOptions, defaultShapeDividerOptions, onChange } = props;
-
-	const value = !isObject(shapeDividerOptions)
-		? JSON.parse(shapeDividerOptions)
-		: shapeDividerOptions;
-
-	let {
-		top: shapeDividerTopOptions,
-		bottom: shapeDividerBottomOptions,
-	} = value;
-
-	const defaultValue = !isObject(defaultShapeDividerOptions)
-		? JSON.parse(defaultShapeDividerOptions)
-		: defaultShapeDividerOptions;
-
-	const {
-		top: defaultShapeDividerTopOptions,
-		bottom: defaultShapeDividerBottomOptions,
-	} = defaultValue;
+	const { onChange } = props;
 
 	const shapeItems = [
 		{ label: __('None', 'max-block'), value: '' },
@@ -136,8 +114,8 @@ const ShapeDividerControl = props => {
 	const showShapes = position => {
 		switch (
 			position === 'top'
-				? shapeDividerTopOptions.shapeStyle
-				: shapeDividerBottomOptions.shapeStyle
+				? props['shape-divider-top-shape-style']
+				: props['shape-divider-bottom-shape-style']
 		) {
 			case 'waves-top':
 				return wavesTop;
@@ -228,7 +206,7 @@ const ShapeDividerControl = props => {
 
 	return (
 		<div className='maxi-shapedividercontrol'>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label=''
 				selected={shapeDividerStatus}
 				options={[
@@ -239,28 +217,29 @@ const ShapeDividerControl = props => {
 			/>
 			{shapeDividerStatus === 'top' && (
 				<Fragment>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Enable Top Shape Divider', 'maxi-blocks')}
-						selected={shapeDividerTopOptions.status}
+						selected={+props['shape-divider-top-status']}
 						options={[
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 						]}
-						onChange={val => {
-							shapeDividerTopOptions.status = Number(val);
-							onChange(JSON.stringify(value));
-						}}
+						onChange={status =>
+							onChange({
+								'shape-divider-top-status': !!+status,
+							})
+						}
 					/>
-					{!!shapeDividerTopOptions.status && (
+					{!!props['shape-divider-top-status'] && (
 						<Fragment>
-							<__experimentalFancyRadioControl
+							<FancyRadioControl
 								label={__(
 									'Enable Scroll Effect',
 									'maxi-blocks'
 								)}
-								selected={parseInt(
-									shapeDividerTopOptions.effects.status
-								)}
+								selected={
+									+props['shape-divider-top-effects-status']
+								}
 								options={[
 									{
 										label: __('No', 'maxi-blocks'),
@@ -271,10 +250,11 @@ const ShapeDividerControl = props => {
 										value: 1,
 									},
 								]}
-								onChange={val => {
-									shapeDividerTopOptions.effects.status = val;
-									onChange(JSON.stringify(value));
-								}}
+								onChange={status =>
+									onChange({
+										'shape-divider-top-effects-status': !!+status,
+									})
+								}
 							/>
 							<Dropdown
 								className='maxi-shapedividercontrol__shape-selector'
@@ -292,37 +272,34 @@ const ShapeDividerControl = props => {
 									<RadioControl
 										className='maxi-shapedividercontrol__shape-list'
 										selected={
-											shapeDividerTopOptions.shapeStyle
+											props[
+												'shape-divider-top-shape-style'
+											]
 										}
 										options={shapeItems}
-										onChange={val => {
-											shapeDividerTopOptions.shapeStyle = val;
-											onChange(JSON.stringify(value));
-										}}
+										onChange={shapeStyle =>
+											onChange({
+												'shape-divider-top-shape-style': shapeStyle,
+											})
+										}
 									/>
 								)}
 							/>
-							<__experimentalOpacityControl
-								opacity={shapeDividerTopOptions.opacity}
-								defaultOpacity={
-									defaultShapeDividerTopOptions.opacity
+							<OpacityControl
+								opacity={props['shape-divider-top-opacity']}
+								defaultOpacity={getDefaultAttribute(
+									'shape-divider-top-opacity'
+								)}
+								onChange={opacity =>
+									onChange({
+										'shape-divider-top-opacity': opacity,
+									})
 								}
-								onChange={val => {
-									shapeDividerTopOptions.opacity = JSON.parse(
-										val
-									);
-									onChange(JSON.stringify(value));
-								}}
 							/>
 							<BackgroundControl
-								background={shapeDividerTopOptions.background}
-								defaultBackground={
-									defaultShapeDividerTopOptions.background
-								}
-								onChange={val => {
-									shapeDividerTopOptions.background = val;
-									onChange(JSON.stringify(value));
-								}}
+								{...props}
+								prefix='shape-divider-top-'
+								onChange={obj => onChange(obj)}
 								disableImage
 								disableGradient
 								disableVideo
@@ -332,23 +309,25 @@ const ShapeDividerControl = props => {
 							/>
 							<SizeControl
 								label={__('Divider Height', 'maxi-blocks')}
-								unit={shapeDividerTopOptions.heightUnit}
-								defaultUnit={
-									defaultShapeDividerTopOptions.heightUnit
-								}
+								unit={props['shape-divider-top-height-unit']}
+								defaultUnit={getDefaultAttribute(
+									'shape-divider-top-height-unit'
+								)}
 								allowedUnits={['px']}
-								onChangeUnit={val => {
-									shapeDividerTopOptions.heightUnit = val;
-									onChange(JSON.stringify(value));
-								}}
-								value={shapeDividerTopOptions.height}
-								defaultValue={
-									defaultShapeDividerTopOptions.height
+								onChangeUnit={heightUnit =>
+									onChange({
+										'shape-divider-top-height-unit': heightUnit,
+									})
 								}
-								onChangeValue={val => {
-									shapeDividerTopOptions.height = val;
-									onChange(JSON.stringify(value));
-								}}
+								value={props['shape-divider-top-height']}
+								defaultValue={getDefaultAttribute(
+									'shape-divider-top-height'
+								)}
+								onChangeValue={height =>
+									onChange({
+										'shape-divider-top-height': height,
+									})
+								}
 							/>
 						</Fragment>
 					)}
@@ -356,28 +335,31 @@ const ShapeDividerControl = props => {
 			)}
 			{shapeDividerStatus === 'bottom' && (
 				<Fragment>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Enable Bottom Shape Divider', 'maxi-blocks')}
-						selected={shapeDividerBottomOptions.status}
+						selected={+props['shape-divider-bottom-status']}
 						options={[
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 						]}
-						onChange={val => {
-							shapeDividerBottomOptions.status = Number(val);
-							onChange(JSON.stringify(value));
-						}}
+						onChange={status =>
+							onChange({
+								'shape-divider-bottom-status': !!+status,
+							})
+						}
 					/>
-					{!!shapeDividerBottomOptions.status && (
+					{!!props['shape-divider-bottom-status'] && (
 						<Fragment>
-							<__experimentalFancyRadioControl
+							<FancyRadioControl
 								label={__(
 									'Enable Scroll Effect',
 									'maxi-blocks'
 								)}
-								selected={parseInt(
-									shapeDividerBottomOptions.effects.status
-								)}
+								selected={
+									+props[
+										'shape-divider-bottom-effects-status'
+									]
+								}
 								options={[
 									{
 										label: __('No', 'maxi-blocks'),
@@ -388,10 +370,11 @@ const ShapeDividerControl = props => {
 										value: 1,
 									},
 								]}
-								onChange={val => {
-									shapeDividerBottomOptions.effects.status = val;
-									onChange(JSON.stringify(value));
-								}}
+								onChange={status =>
+									onChange({
+										'shape-divider-bottom-effects-status': !!+status,
+									})
+								}
 							/>
 							<Dropdown
 								className='maxi-shapedividercontrol__shape-selector'
@@ -409,39 +392,34 @@ const ShapeDividerControl = props => {
 									<RadioControl
 										className='maxi-shapedividercontrol__shape-list'
 										selected={
-											shapeDividerBottomOptions.shapeStyle
+											props[
+												'shape-divider-bottom-shape-style'
+											]
 										}
 										options={shapeItems}
-										onChange={val => {
-											shapeDividerBottomOptions.shapeStyle = val;
-											onChange(JSON.stringify(value));
-										}}
+										onChange={shapeStyle =>
+											onChange({
+												'shape-divider-bottom-shape-style': shapeStyle,
+											})
+										}
 									/>
 								)}
 							/>
-							<__experimentalOpacityControl
-								opacity={shapeDividerBottomOptions.opacity}
-								defaultOpacity={
-									defaultShapeDividerBottomOptions.opacity
+							<OpacityControl
+								opacity={props['shape-divider-bottom-opacity']}
+								defaultOpacity={getDefaultAttribute(
+									'shape-divider-bottom-opacity'
+								)}
+								onChange={opacity =>
+									onChange({
+										'shape-divider-bottom-opacity': opacity,
+									})
 								}
-								onChange={val => {
-									shapeDividerBottomOptions.opacity = JSON.parse(
-										val
-									);
-									onChange(JSON.stringify(value));
-								}}
 							/>
 							<BackgroundControl
-								background={
-									shapeDividerBottomOptions.background
-								}
-								defaultBackground={
-									defaultShapeDividerBottomOptions.background
-								}
-								onChange={val => {
-									shapeDividerBottomOptions.background = val;
-									onChange(JSON.stringify(value));
-								}}
+								{...props}
+								prefix='shape-divider-bottom-'
+								onChange={obj => onChange(obj)}
 								disableImage
 								disableGradient
 								disableVideo
@@ -451,23 +429,25 @@ const ShapeDividerControl = props => {
 							/>
 							<SizeControl
 								label={__('Divider Height', 'maxi-blocks')}
-								unit={shapeDividerBottomOptions.heightUnit}
-								defaultUnit={
-									defaultShapeDividerBottomOptions.heightUnit
-								}
+								unit={props['shape-divider-bottom-height-unit']}
+								defaultUnit={getDefaultAttribute(
+									'shape-divider-bottom-height-unit'
+								)}
 								allowedUnits={['px']}
-								onChangeUnit={val => {
-									shapeDividerBottomOptions.heightUnit = val;
-									onChange(JSON.stringify(value));
-								}}
-								value={shapeDividerBottomOptions.height}
-								defaultValue={
-									defaultShapeDividerBottomOptions.height
+								onChangeUnit={heightUnit =>
+									onChange({
+										'shape-divider-bottom-height-unit': heightUnit,
+									})
 								}
-								onChangeValue={val => {
-									shapeDividerBottomOptions.height = val;
-									onChange(JSON.stringify(value));
-								}}
+								value={props['shape-divider-bottom-height']}
+								defaultValue={getDefaultAttribute(
+									'shape-divider-bottom-height'
+								)}
+								onChangeValue={height =>
+									onChange({
+										'shape-divider-bottom-height': height,
+									})
+								}
 							/>
 						</Fragment>
 					)}

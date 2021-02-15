@@ -7,20 +7,25 @@ const { applyFormat } = wp.richText;
  * Internal dependencies
  */
 import getFormattedString from './getFormattedString';
-import __experimentalGetCurrentFormatClassName from './getCurrentFormatClassName';
+import getCurrentFormatClassName from './getCurrentFormatClassName';
 import flatFormatsWithClass from './flatFormatsWithClass';
 import getMultiFormatObj from './getMultiFormatObj';
-import defaultCustomFormat from './custom/default';
 
 /**
  * External dependencies
  */
-import { inRange } from 'lodash';
+import { inRange, cloneDeep } from 'lodash';
 
 /**
- * General
+ * Generates custom format name
+ *
+ * @param {boolean} isHover 			Is the requested typography under hover state
+ *
+ * @returns {string} Custom format name
  */
-const formatName = 'maxi-blocks/text-custom';
+const getFormatType = isHover => {
+	return `maxi-blocks/text-custom${isHover ? '-hover' : ''}`;
+};
 
 /**
  * Generates a format and unique className
@@ -38,16 +43,21 @@ const getFormatClassName = (formatValue, typography, isHover) => {
 		end: formatValue.formats.length,
 	});
 
-	let className = `maxi-text-block__custom-format--${
-		Object.keys(typography.customFormats).length
-	}`;
+	const num =
+		(typography[`custom-formats${isHover ? '-hover' : ''}`] &&
+			Object.keys(typography[`custom-formats${isHover ? '-hover' : ''}`])
+				.length) ||
+		0;
+
+	let className = `maxi-text-block__custom-format--${num}`;
 
 	const isRepeat = Object.values(multiFormatObj).some(value => {
 		return value.className === className;
 	});
 
-	if (isRepeat) className += Object.keys(typography.customFormats).length;
-	if (isHover) className += ':hover';
+	// Should be improved vvv
+	if (isRepeat) className += num;
+	if (isHover) className += '--hover';
 
 	return className;
 };
@@ -57,21 +67,21 @@ const getFormatClassName = (formatValue, typography, isHover) => {
  *
  * @param {Object} 	[$0]					Optional named arguments.
  * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {string} 	[$0.formatName]			RichText format type
  * @param {boolean} [$0.isList]				Text Maxi block has list mode active
  * @param {string} 	[$0.formatClassName]	Maxi Custom format className
+ * @param {boolean} isHover 			Is the requested typography under hover state
  *
  * @returns {string} Format applied content
  */
 const applyCustomFormat = ({
 	formatValue,
-	formatName,
 	isList,
 	formatClassName,
+	isHover,
 }) => {
 	return getFormattedString({
 		formatValue,
-		formatName,
+		formatName: getFormatType(isHover),
 		isList,
 		attributes: {
 			attributes: {
@@ -82,82 +92,31 @@ const applyCustomFormat = ({
 };
 
 /**
- * Merges a new value comparing with the default typography object
+ * Merges a cleaned style object comparing with the default typography properties
  *
  * @param {Object} 	typography				MaxiBlocks typography
  * @param {Object} 	value 					Requested values to implement
  * 											on typography object
  * @param {string} 	breakpoint				Device type breakpoint
+ * @param {Object}  currentStyle			Current style properties
  *
- * @returns {Object} Cleaned value
+ * @returns {Object} Cleaned styles properties
  */
-const mergeNewValue = (typography, value, breakpoint) => {
-	Object.entries(value).forEach(([target, val]) => {
-		if (typography[breakpoint][target] === val)
-			value[target] = defaultCustomFormat[breakpoint][target];
-	});
-
-	return value;
-};
-
-/**
- * Sets a new custom format
- *
- * @param {Object} 	[$0]						Optional named arguments.
- * @param {Object} 	[$0.formatValue]			RichText format value
- * @param {Object} 	[$0.typography]				MaxiBlocks typography
- * @param {string} 	[$0.formatClassName]		Maxi Custom format className
- * @param {Object} 	[$0.defaultCustomFormat]	Maxi Custom format className
- * @param {string} 	[$0.breakpoint]				Device type breakpoint
- * @param {Object}	[$0.value]					Requested values to implement
- * 												on typography object
- * @param {Object} 	[$0.isList]					Text Maxi block has list mode active
- *
- * @returns {Object} Formatted typography, content and RichText format
- */
-const setNewFormat = ({
-	formatValue,
+const styleObjectManipulator = ({
 	typography,
-	formatClassName,
-	defaultCustomFormat,
-	breakpoint,
 	value,
-	isList,
+	breakpoint,
+	currentStyle,
 }) => {
-	const newCustomStyle = {
-		[formatClassName]: {
-			...defaultCustomFormat,
-			[breakpoint]: {
-				...defaultCustomFormat[breakpoint],
-				...mergeNewValue(typography, value, breakpoint),
-			},
-		},
-	};
+	const style = cloneDeep(currentStyle);
 
-	const newFormatValue = applyFormat(formatValue, {
-		type: formatName,
-		attributes: {
-			className: formatClassName,
-		},
+	Object.entries(value).forEach(([target, val]) => {
+		if (typography[`${target}-${breakpoint}`] === val)
+			delete style[`${target}-${breakpoint}`];
+		else style[`${target}-${breakpoint}`] = val;
 	});
 
-	typography.customFormats = {
-		...typography.customFormats,
-		...newCustomStyle,
-	};
-
-	const newContent = applyCustomFormat({
-		formatValue,
-		formatName,
-		isList,
-		formatClassName,
-	});
-
-	return {
-		typography,
-		content: newContent,
-		formatValue: newFormatValue,
-	};
+	return style;
 };
 
 /**
@@ -180,21 +139,79 @@ const updateCustomFormat = ({
 	value,
 	isHover,
 }) => {
-	if (isHover && !typography.customFormats[currentClassName])
-		typography.customFormats[currentClassName] = {
-			...defaultCustomFormat,
-			[breakpoint]: {
-				...defaultCustomFormat[breakpoint],
-				...mergeNewValue(typography, value, breakpoint),
-			},
-		};
-	else
-		typography.customFormats[currentClassName][breakpoint] = {
-			...typography.customFormats[currentClassName][breakpoint],
-			...mergeNewValue(typography, value, breakpoint),
-		};
+	typography[`custom-formats${isHover ? '-hover' : ''}`] = {
+		...(!!typography[`custom-formats${isHover ? '-hover' : ''}`] &&
+			typography[`custom-formats${isHover ? '-hover' : ''}`]),
+	}; // Be sure 'custom-formats' is an object
+
+	typography[`custom-formats${isHover ? '-hover' : ''}`][currentClassName] = {
+		...styleObjectManipulator({
+			typography,
+			value,
+			breakpoint,
+			currentStyle:
+				(!!typography[`custom-formats${isHover ? '-hover' : ''}`] &&
+					typography[`custom-formats${isHover ? '-hover' : ''}`][
+						currentClassName
+					]) ||
+				{},
+		}),
+	};
 
 	return { typography };
+};
+
+/**
+ * Sets a new custom format
+ *
+ * @param {Object} 	[$0]						Optional named arguments.
+ * @param {Object} 	[$0.formatValue]			RichText format value
+ * @param {Object} 	[$0.typography]				MaxiBlocks typography
+ * @param {string} 	[$0.formatClassName]		Maxi Custom format className
+ * @param {Object} 	[$0.defaultCustomFormat]	Maxi Custom format className
+ * @param {string} 	[$0.breakpoint]				Device type breakpoint
+ * @param {Object}	[$0.value]					Requested values to implement
+ * 												on typography object
+ * @param {Object} 	[$0.isList]					Text Maxi block has list mode active
+ *
+ * @returns {Object} Formatted typography, content and RichText format
+ */
+const setNewFormat = ({
+	formatValue,
+	typography,
+	formatClassName,
+	breakpoint,
+	value,
+	isList,
+	isHover,
+}) => {
+	const newTypography = updateCustomFormat({
+		typography,
+		currentClassName: formatClassName,
+		breakpoint,
+		value,
+		isHover,
+	});
+
+	const newFormatValue = applyFormat(formatValue, {
+		type: getFormatType(isHover),
+		attributes: {
+			className: formatClassName,
+		},
+	});
+
+	const newContent = applyCustomFormat({
+		formatValue,
+		isList,
+		formatClassName,
+		isHover,
+	});
+
+	return {
+		...newTypography,
+		content: newContent,
+		formatValue: newFormatValue,
+	};
 };
 
 /**
@@ -222,16 +239,21 @@ const generateNewCustomFormat = ({
 	isHover,
 }) => {
 	const newFormatValue = applyFormat(formatValue, {
-		type: formatName,
+		type: getFormatType(isHover),
 		attributes: {
 			className: formatClassName,
 		},
 	});
+	if (!typography[`custom-formats${isHover ? '-hover' : ''}`])
+		typography[`custom-formats${isHover ? '-hover' : ''}`] = {};
 
-	typography.customFormats[formatClassName] = {
+	typography[`custom-formats${isHover ? '-hover' : ''}`][formatClassName] = {
 		...((currentClassName && {
-			...typography.customFormats[currentClassName],
-		}) || { ...defaultCustomFormat }),
+			...typography[`custom-formats${isHover ? '-hover' : ''}`][
+				currentClassName
+			],
+		}) ||
+			{}),
 	};
 
 	const { typography: newTypography } = updateCustomFormat({
@@ -280,7 +302,7 @@ const mergeNewFormat = ({
 	const isFullFormat = !formats.some((formatEl, i) => {
 		return formatEl.some(format => {
 			return (
-				format.type === formatName &&
+				format.type === getFormatType(isHover) &&
 				format.attributes.className === currentClassName &&
 				!inRange(i, start, end)
 			);
@@ -309,9 +331,9 @@ const mergeNewFormat = ({
 
 	const newContent = applyCustomFormat({
 		formatValue: newFormatValue || formatValue,
-		formatName,
 		isList,
 		formatClassName: (isFullFormat && currentClassName) || formatClassName,
+		isHover,
 	});
 
 	return {
@@ -388,10 +410,10 @@ const mergeMultipleFormats = ({
 					typography: newTypography,
 					formatValue: newFormatValue,
 					formatClassName,
-					defaultCustomFormat,
 					breakpoint,
 					value,
 					isList,
+					isHover,
 			  });
 
 		newTypography = newCustomTypography;
@@ -434,9 +456,7 @@ const setFormatWithClass = ({
 	isHover = false,
 }) => {
 	const multiFormatObj = getMultiFormatObj(formatValue);
-	const currentClassName = __experimentalGetCurrentFormatClassName(
-		formatValue
-	);
+	const currentClassName = getCurrentFormatClassName(formatValue, isHover);
 	const formatClassName = getFormatClassName(
 		formatValue,
 		typography,
@@ -447,7 +467,9 @@ const setFormatWithClass = ({
 
 	const hasCustomFormat = formats.some((formatEl, i) => {
 		return formatEl.some(format => {
-			return format.type === formatName && i >= start && i <= end;
+			return (
+				format.type === getFormatType(isHover) && i >= start && i <= end
+			);
 		});
 	});
 	const hasMultiCustomFormat = Object.keys(multiFormatObj).length > 1;
@@ -462,10 +484,10 @@ const setFormatWithClass = ({
 				typography,
 				formatValue,
 				formatClassName,
-				defaultCustomFormat,
 				breakpoint,
 				value,
 				isList,
+				isHover,
 			})) ||
 		(hasCustomFormat &&
 			!hasMultiCustomFormat &&
@@ -504,7 +526,7 @@ const setFormatWithClass = ({
 	});
 
 	return {
-		typography: newTypography,
+		...newTypography,
 		content: newContent,
 		formatValue: newFormatValue,
 	};

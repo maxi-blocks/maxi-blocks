@@ -1,12 +1,14 @@
 .maxi-block-display-none {
 	filter: blur(1px);
-	&:not(.maxi-button-extra, .maxi-divider-block, .maxi-row-block, .maxi-column-block) {
+	&:not(.maxi-text-block, .maxi-divider-block) {
 		display: block !important;
 	}
 	&.maxi-column-block,
 	&.maxi-divider-block,
+	&.maxi-image-block,
+	&.maxi-svg-icon-block,
 	&.maxi-row-block,
-	&.maxi-button-extra {
+	&.maxi-button-block {
 		display: flex !important;
 	}
 	& * {

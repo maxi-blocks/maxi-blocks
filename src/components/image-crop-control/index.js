@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Spinner } = wp.components;
-const { Fragment, useState, useEffect } = wp.element;
+const { Fragment, useState, useEffect, useRef } = wp.element;
 const { useSelect } = wp.data;
 
 /**
@@ -11,7 +11,7 @@ const { useSelect } = wp.data;
  */
 import ReactCrop from 'react-image-crop';
 import classnames from 'classnames';
-import { capitalize, isEmpty, isObject } from 'lodash';
+import { capitalize, isEqual } from 'lodash';
 
 /**
  * Styles
@@ -31,8 +31,8 @@ const GeneralInput = props => {
 				type='number'
 				id={`maxi-image-crop-${target}-control`}
 				name={`maxi-image-crop-${target}-control`}
-				value={Number(value).toFixed()}
-				onChange={e => onChange(parseInt(e.target.value))}
+				value={value ? +value.toFixed() : ''}
+				onChange={e => onChange(+e.target.value)}
 			/>
 		</label>
 	);
@@ -42,10 +42,6 @@ const ImageCropControl = props => {
 	const { cropOptions, mediaID, className, onChange } = props;
 
 	const classes = classnames('maxi-image-crop-control', className);
-
-	const cropOptionsValue = !isObject(cropOptions)
-		? JSON.parse(cropOptions)
-		: cropOptions;
 
 	const { imageData } = useSelect(
 		select => {
@@ -58,63 +54,82 @@ const ImageCropControl = props => {
 		[mediaID]
 	);
 
-	const [imageID, setImageID] = useState(mediaID);
-	const [image, setImage] = useState(null);
-	const [crop, setCrop] = useState({
-		x: !isEmpty(cropOptionsValue) ? cropOptionsValue.crop.x : 0,
-		y: !isEmpty(cropOptionsValue) ? cropOptionsValue.crop.y : 0,
-		width: !isEmpty(cropOptionsValue) ? cropOptionsValue.crop.width : 0,
-		height: !isEmpty(cropOptionsValue) ? cropOptionsValue.crop.height : 0,
-	});
+	const defaultCropOptions = {
+		image: {
+			source_url: '',
+			width: '',
+			height: '',
+		},
+		crop: {
+			unit: 'px',
+			x: '',
+			y: '',
+			width: undefined,
+			height: undefined,
+			scale: 100,
+		},
+	};
+
+	const imgNode = useRef(null);
+	const [crop, setCrop] = useState(cropOptions || defaultCropOptions);
+	const [isFirstRender, changeIsFirstRender] = useState(true);
+	const [imageID, setImageId] = useState(mediaID);
 
 	const ajaxurl = wp.ajax.settings.url;
 
 	const getScale = () => {
-		return cropOptionsValue.crop.scale / 100;
+		return crop.crop.scale / 100;
 	};
 
 	const scaleX = () => {
-		return image.naturalWidth / image.width;
+		return imgNode.current.naturalWidth / imgNode.current.width;
 	};
 
 	const scaleY = () => {
-		return image.naturalHeight / image.height;
+		return imgNode.current.naturalHeight / imgNode.current.height;
 	};
 
 	const getX = () => {
-		return cropOptionsValue.crop.x * scaleX();
+		return crop.crop.x * scaleX();
 	};
 
 	const getY = () => {
-		return cropOptionsValue.crop.y * scaleY();
+		return crop.crop.y * scaleY();
 	};
 
 	const getWidth = () => {
-		return (cropOptionsValue.crop.width * scaleX()).toFixed(0);
+		return +(crop.crop.width * scaleX()).toFixed(0);
 	};
 
 	const getHeight = () => {
-		return (cropOptionsValue.crop.height * scaleY()).toFixed(0);
+		return +(crop.crop.height * scaleY()).toFixed(0);
 	};
 
 	const deleteFile = () => {
-		const data = new FormData();
-		data.append('old_media_src', cropOptionsValue.image.source_url);
+		if (
+			!!imageData &&
+			!!crop.image.source_url &&
+			crop.image.source_url !==
+				imageData.media_details.sizes.full.source_url
+		) {
+			const data = new FormData();
+			data.append('old_media_src', cropOptions.image.source_url);
 
-		fetch(
-			`${
-				window.location.origin + ajaxurl
-			}?action=maxi_remove_custom_image_size`,
-			{
-				method: 'POST',
-				data,
-				body: data,
-			}
-		).catch(err => {
-			console.error(
-				__(`Error cropping the image: ${err}`, 'maxi-blocks')
-			);
-		});
+			fetch(
+				`${
+					window.location.origin + ajaxurl
+				}?action=maxi_remove_custom_image_size`,
+				{
+					method: 'POST',
+					data,
+					body: data,
+				}
+			).catch(err => {
+				console.error(
+					__(`Error cropping the image: ${err}`, 'maxi-blocks')
+				);
+			});
+		}
 	};
 
 	const cropper = () => {
@@ -144,8 +159,16 @@ const ImageCropControl = props => {
 			.then(res => {
 				deleteFile();
 
-				cropOptionsValue.image.source_url = res;
-				onChange(cropOptionsValue);
+				const newCropOptions = {
+					...crop,
+					image: {
+						...crop.image,
+						source_url: res,
+					},
+				};
+
+				setCrop(newCropOptions);
+				onChange(newCropOptions);
 			})
 			.catch(err => {
 				console.error(
@@ -155,75 +178,89 @@ const ImageCropControl = props => {
 	};
 
 	useEffect(() => {
-		if (imageID !== mediaID) {
-			setImageID(mediaID);
-			setCrop({
-				x: '',
-				y: '',
-				width: '',
-				height: '',
-			});
+		if (mediaID !== imageID) {
+			setCrop(defaultCropOptions);
 			deleteFile();
-			onChange({
-				image: {
-					source_url: '',
-					width: '',
-					height: '',
-				},
-				crop: {
-					unit: '',
-					x: '',
-					y: '',
-					width: '',
-					height: '',
-					scale: 100,
-				},
-			});
-		}
-	}, [imageID, mediaID]);
+			onChange(defaultCropOptions);
+		} else setImageId(mediaID);
+	}, [mediaID]);
 
-	const saveData = crop => {
-		if (crop) {
-			cropOptionsValue.crop.x = crop.width ? crop.x : 0;
-			cropOptionsValue.crop.y = crop.height ? crop.y : 0;
-			cropOptionsValue.crop.width = crop.width ? crop.width : image.width;
-			cropOptionsValue.crop.height = crop.height
-				? crop.height
-				: image.height;
-			cropOptionsValue.image.width = crop.width
-				? crop.width
-				: image.width;
-			cropOptionsValue.image.height = crop.height
-				? crop.height
-				: image.height;
-		}
+	const saveData = newCrop => {
+		const newCropOptions = {
+			...crop,
+			image: {
+				...crop.image,
+				width: newCrop.width ? newCrop.width : imgNode.current.width,
+				height: newCrop.height
+					? newCrop.height
+					: imgNode.current.height,
+			},
+			crop: {
+				...crop.crop,
+				x: crop.width ? crop.x : 0,
+				y: crop.height ? crop.y : 0,
+				width: crop.width ? crop.width : imgNode.current.width,
+				height: crop.height ? crop.height : imgNode.current.height,
+			},
+		};
 
-		onChange(cropOptionsValue);
+		setCrop(newCropOptions);
+		// onChange(newCropOptions);
 	};
 
-	const onImageLoad = image => {
-		setImage(image);
-		cropOptionsValue.crop.width = image.width;
-		cropOptionsValue.crop.height = image.height;
-		cropOptionsValue.image.width = image.width;
-		cropOptionsValue.image.height = image.height;
+	const onImageLoad = newImage => {
+		imgNode.current = newImage;
 
-		onChange(cropOptionsValue);
+		const newCropOptions = {
+			...crop,
+			image: {
+				...crop.image,
+				...(!crop.image.source_url && {
+					source_url: imageData.media_details.sizes.full.source_url,
+				}),
+				...(!!crop.image.width && {
+					width: +imageData.media_details.sizes.full.width,
+				}),
+				...(!!crop.image.height && {
+					height: +imageData.media_details.sizes.full.height,
+				}),
+			},
+		};
 
-		return false;
+		setCrop(newCropOptions);
+		onChange(newCropOptions);
 	};
 
 	const onInputChange = (target, value) => {
-		cropOptionsValue.crop[target] = value;
-		onChange(cropOptionsValue);
+		const newCropOptions = {
+			...crop,
+			crop: {
+				...crop.crop,
+				[target]: value,
+			},
+		};
 
-		cropper();
+		if (!isEqual(newCropOptions.crop, crop.crop)) {
+			onChange(newCropOptions);
+
+			cropper();
+		}
 	};
 
-	const onCropComplete = crop => {
-		saveData(crop);
+	const onCropComplete = newCrop => {
+		const letsCrop =
+			!!newCrop.height &&
+			!!newCrop.width &&
+			!isEqual(defaultCropOptions.crop, crop.crop) &&
+			!isFirstRender;
 
-		cropper();
+		if (letsCrop) {
+			saveData(newCrop);
+
+			cropper();
+		} else {
+			changeIsFirstRender(false);
+		}
 	};
 
 	return (
@@ -232,20 +269,29 @@ const ImageCropControl = props => {
 				<Fragment>
 					<ReactCrop
 						src={imageData.media_details.sizes.full.source_url}
-						crop={crop}
+						crop={crop.crop}
 						onImageLoaded={image => onImageLoad(image)}
-						onChange={crop => setCrop(crop)}
+						onChange={newCrop =>
+							!!newCrop.height &&
+							!!newCrop.width &&
+							setCrop({
+								...crop,
+								crop: { ...crop.crop, ...newCrop },
+							})
+						}
 						onComplete={crop => onCropComplete(crop)}
 						keepSelection={false}
 					/>
-					{image && (
+					{imgNode.current && (
 						<div className='maxi-image-crop-control__options'>
 							<GeneralInput
 								target='width'
 								value={
-									cropOptionsValue.crop.width *
-									scaleX() *
-									getScale()
+									(crop.crop.width &&
+										crop.crop.width *
+											scaleX() *
+											getScale()) ||
+									null
 								}
 								onChange={value =>
 									onInputChange(
@@ -257,9 +303,11 @@ const ImageCropControl = props => {
 							<GeneralInput
 								target='height'
 								value={
-									cropOptionsValue.crop.height *
-									scaleY() *
-									getScale()
+									(crop.crop.height &&
+										crop.crop.height *
+											scaleY() *
+											getScale()) ||
+									null
 								}
 								onChange={value =>
 									onInputChange(
@@ -270,17 +318,17 @@ const ImageCropControl = props => {
 							/>
 							<GeneralInput
 								target='x'
-								value={cropOptionsValue.crop.x}
+								value={crop.crop.x}
 								onChange={value => onInputChange('x', value)}
 							/>
 							<GeneralInput
 								target='y'
-								value={cropOptionsValue.crop.y}
+								value={crop.crop.y}
 								onChange={value => onInputChange('y', value)}
 							/>
 							<GeneralInput
 								target='scale'
-								value={Number(cropOptionsValue.crop.scale)}
+								value={Number(crop.crop.scale)}
 								onChange={scale =>
 									onInputChange('scale', scale)
 								}

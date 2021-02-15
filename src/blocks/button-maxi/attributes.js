@@ -6,8 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults';
-import * as buttonAttributesData from './data';
+import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -17,98 +16,104 @@ const attributes = {
 		type: 'string',
 		default: __('Button', 'maxi-blocks'),
 	},
-	alignment: {
-		type: 'string',
-		default: JSON.stringify(attributesData.alignment),
-	},
-	alignmentText: {
-		type: 'string',
-		default: JSON.stringify(buttonAttributesData.alignmentText),
-	},
-	typography: {
-		type: 'string',
-		default: JSON.stringify(buttonAttributesData.typography),
-	},
-	typographyHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.typographyHover),
-	},
-	background: {
-		type: 'string',
-		default: JSON.stringify(buttonAttributesData.background),
-	},
-	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
-	},
-	opacity: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacity),
-	},
-	border: {
-		type: 'string',
-		default: JSON.stringify(buttonAttributesData.border),
-	},
-	borderHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.borderHover),
-	},
-	size: {
-		type: 'string',
-		default: JSON.stringify(attributesData.size),
-	},
-	boxShadow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
-	},
-	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
-	},
-	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
-	},
-	padding: {
-		type: 'string',
-		default: JSON.stringify(buttonAttributesData.padding),
-	},
-	iconPadding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
-	},
-	iconBorder: {
-		type: 'string',
-		default: JSON.stringify(attributesData.border),
-	},
-	iconBackground: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
-	},
-	content: {
+	buttonContent: {
 		type: 'string',
 		default: '',
 	},
-	position: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalPosition),
+	...attributesData.icon,
+	...attributesData.iconPadding,
+	...attributesData.iconBorder,
+	...attributesData.iconBorderRadius,
+	...attributesData.iconBorderWidth,
+	...attributesData.highlight,
+	...{
+		...attributesData.alignment,
+		'alignment-general': {
+			type: 'string',
+			default: 'center',
+		},
 	},
-	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
+	...attributesData.textAlignment,
+	...{
+		...attributesData.typography,
+		'color-general': {
+			type: 'string',
+			default: '#fff',
+		},
 	},
-	motion: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalMotion),
+	...attributesData.typographyHover,
+	...{
+		...attributesData.background,
+		'background-active-media': {
+			type: 'string',
+			default: 'color',
+		},
 	},
-	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
+	...{
+		...attributesData.backgroundColor,
+		'background-color': {
+			type: 'string',
+			default: '#ff4a17',
+		},
 	},
-	icon: {
-		type: 'string',
-		default: JSON.stringify(buttonAttributesData.icon),
+	...attributesData.backgroundGradient,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.backgroundGradientHover,
+	...attributesData.opacity,
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...{
+		...attributesData.borderRadius,
+		'border-top-left-radius-general': {
+			type: 'number',
+			default: 10,
+		},
+		'border-top-right-radius-general': {
+			type: 'number',
+			default: 10,
+		},
+		'border-bottom-left-radius-general': {
+			type: 'number',
+			default: 10,
+		},
+		'border-bottom-right-radius-general': {
+			type: 'number',
+			default: 10,
+		},
 	},
+	...attributesData.borderHover,
+	...attributesData.borderWidthHover,
+	...attributesData.borderRadiusHover,
+	...attributesData.size,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.margin,
+	...{
+		...attributesData.padding,
+		'padding-top-general': {
+			type: 'number',
+			default: 10,
+		},
+		'padding-right-general': {
+			type: 'number',
+			default: 20,
+		},
+		'padding-bottom-general': {
+			type: 'number',
+			default: 10,
+		},
+		'padding-left-general': {
+			type: 'number',
+			default: 20,
+		},
+	},
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.motion,
+	...attributesData.entrance,
+	...attributesData.transform,
+	...attributesData.zIndex,
 };
 
 export default attributes;

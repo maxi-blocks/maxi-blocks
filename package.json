@@ -17,6 +17,7 @@
 		"classnames": "^2.2.6",
 		"css-to-react-native": "^3.0.0",
 		"dompurify": "^2.1.1",
+		"re-resizable": "^6.9.0",
 		"react-accessible-accordion": "^3.3.3",
 		"react-color": "^2.18.1",
 		"react-compound-slider": "^2.5.0",
@@ -28,7 +29,7 @@
 		"react-linear-gradient-picker": "^1.1.2",
 		"react-masonry-css": "^1.0.14",
 		"react-paginate": "^6.5.0",
-		"react-select": "^3.1.0",
+		"react-select": "^4.1.0",
 		"react-tilt": "^0.1.4",
 		"tilt.js": "^1.2.1"
 	},

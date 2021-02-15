@@ -6,9 +6,9 @@ const { Fragment, useEffect, useState } = wp.element;
 const { select } = wp.data;
 
 /**
- * Internal dependencies
+ * External dependencies
  */
-import { getDefaultProp } from '../../utils';
+import classnames from 'classnames';
 
 /**
  * Utils
@@ -16,18 +16,23 @@ import { getDefaultProp } from '../../utils';
 import {
 	Alignment,
 	BackgroundColor,
-	SvgColor,
 	Border,
 	BoxShadow,
-	Mover,
-	ColumnPattern,
-	Divider,
-	DividerColor,
-	DividerAlignment,
-	Duplicate,
-	Link,
+	ColumnMover,
+	ColumnsHandlers,
+	ColumnSize,
 	Delete,
+	Divider,
+	DividerAlignment,
+	DividerColor,
+	Duplicate,
 	ImageSize,
+	Link,
+	Mover,
+	PaddingMargin,
+	RowSettings,
+	Size,
+	SvgColor,
 	TextBold,
 	TextColor,
 	TextItalic,
@@ -35,37 +40,41 @@ import {
 	TextLink,
 	TextListOptions,
 	TextOptions,
-	PaddingMargin,
-	Size,
 	ToggleBlock,
-	__experimentalColumnMover,
-	__experimentalRowSettings,
-	__experimentalColumnSize,
-	__experimentalColumnsHandlers,
+	ToolbarColumnPattern,
 } from './components';
 
 /**
  * Styles
  */
 import './editor.scss';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * General
  */
 const allowedBlocks = [
-	'maxi-blocks/block-image-box',
-	'maxi-blocks/block-title-extra',
-	'maxi-blocks/testimonials-slider-block',
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/text-maxi',
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/image-maxi',
-	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
+	'maxi-blocks/group-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/font-icon-maxi',
+];
+
+const flexBlocks = [
+	'maxi-blocks/row-maxi',
+	'maxi-blocks/button-maxi',
+	'maxi-blocks/column-maxi',
+	'maxi-blocks/container-maxi',
+	'maxi-blocks/group-maxi',
+	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/divider-maxi',
+	'maxi-blocks/image-maxi',
 ];
 
 /**
@@ -73,40 +82,7 @@ const allowedBlocks = [
  */
 const MaxiToolbar = props => {
 	const {
-		attributes: {
-			customLabel,
-			uniqueID,
-			typography,
-			typographyHover,
-			alignment,
-			background,
-			border,
-			size,
-			columnSize,
-			imageSize,
-			mediaID,
-			fullWidth,
-			isFirstOnHierarchy,
-			textLevel,
-			margin,
-			padding,
-			rowPattern,
-			horizontalAlign,
-			verticalAlign,
-			linkSettings,
-			boxShadow,
-			divider,
-			lineOrientation,
-			lineVertical,
-			lineHorizontal,
-			content,
-			isList,
-			typeOfList,
-			svgColorOrange,
-			svgColorBlack,
-			svgColorWhite,
-			display,
-		},
+		attributes,
 		clientId,
 		isSelected,
 		name,
@@ -114,7 +90,24 @@ const MaxiToolbar = props => {
 		formatValue,
 		deviceType,
 		toggleHandlers,
+		changeSVGContent,
 	} = props;
+	const {
+		customLabel,
+		uniqueID,
+		fullWidth,
+		isFirstOnHierarchy,
+		linkSettings,
+		isList,
+		content,
+		typeOfList,
+		textLevel,
+		imageSize,
+		mediaID,
+		lineOrientation,
+		lineVertical,
+		lineHorizontal,
+	} = attributes;
 
 	const [anchorRef, setAnchorRef] = useState(
 		document.getElementById(`block-${clientId}`)
@@ -126,59 +119,28 @@ const MaxiToolbar = props => {
 
 	if (!allowedBlocks.includes(name)) return null;
 
-	function getThirdSvgColor() {
-		const current_content = select('core/block-editor').getSelectedBlock()
-			.attributes.content;
+	const breadcrumbStatus = () => {
+		const rootBlock = select('core/block-editor').getBlockName(
+			select('core/block-editor').getBlockRootClientId(
+				select('core/block-editor').getSelectedBlockClientId()
+			)
+		);
+		const currentBlock = select('core/block-editor').getBlockName(
+			select('core/block-editor').getSelectedBlockClientId()
+		);
 
-		if (current_content.indexOf('maxi-svg-color-third') !== -1) return true;
-		return false;
-	}
-
-	function changeContent(color, colorNumber) {
-		let colorClass = '';
-		switch (colorNumber) {
-			case 1:
-				colorClass = 'maxi-svg-color-first';
-				break;
-			case 2:
-				colorClass = 'maxi-svg-color-second';
-				break;
-			case 3:
-				colorClass = 'maxi-svg-color-third';
-				break;
-			default:
-				return;
-		}
-
-		if (colorClass !== '') {
-			const { clientId } = select('core/block-editor').getSelectedBlock();
-			const current_content = select(
-				'core/block-editor'
-			).getSelectedBlock().attributes.content;
-			const regex_line_to_change = new RegExp(
-				`${colorClass}" fill=".+?(?= )`,
-				'g'
-			);
-			const regex_line_to_change2 = new RegExp(
-				`${colorClass}" stroke=".+?(?= )`,
-				'g'
-			);
-			const change_to = `${colorClass}" fill="${color}"`;
-			const change_to2 = `${colorClass}" stroke="${color}"`;
-			let new_content = current_content.replace(
-				regex_line_to_change,
-				change_to
-			);
-			new_content = new_content.replace(
-				regex_line_to_change2,
-				change_to2
-			);
-
-			dispatch('core/block-editor').updateBlockAttributes(clientId, {
-				content: new_content,
-			});
-		}
-	}
+		if (
+			currentBlock === 'maxi-blocks/container-maxi' ||
+			currentBlock === 'maxi-blocks/group-maxi' ||
+			currentBlock === 'maxi-blocks/row-maxi' ||
+			currentBlock === 'maxi-blocks/column-maxi' ||
+			rootBlock === 'maxi-blocks/container-maxi' ||
+			rootBlock === 'maxi-blocks/group-maxi' ||
+			rootBlock === 'maxi-blocks/row-maxi' ||
+			rootBlock === 'maxi-blocks/column-maxi'
+		)
+			return true;
+	};
 
 	return (
 		<Fragment>
@@ -189,42 +151,40 @@ const MaxiToolbar = props => {
 					position='top center right'
 					focusOnMount={false}
 					anchorRef={anchorRef}
-					className='maxi-toolbar__popover'
+					className={classnames(
+						'maxi-toolbar__popover',
+						!!breadcrumbStatus() &&
+							'maxi-toolbar__popover--has-breadcrumb'
+					)}
 					uniqueid={uniqueID}
 					__unstableSticky
 					__unstableSlotName='block-toolbar'
 					shouldAnchorIncludePadding
 				>
-					<div className='toolbar-block-custom-label'>
-						{customLabel}
-					</div>
 					<div className='toolbar-wrapper'>
+						<div className='toolbar-block-custom-label'>
+							{customLabel}
+						</div>
 						<Mover clientId={clientId} blockName={name} />
-						<__experimentalColumnMover
-							clientId={clientId}
-							blockName={name}
-						/>
-						<DividerColor
-							blockName={name}
-							divider={divider}
-							onChange={divider => setAttributes({ divider })}
-						/>
+						<ColumnMover clientId={clientId} blockName={name} />
+						{!attributes['border-highlight'] && (
+							<DividerColor
+								color={attributes['divider-border-color']}
+								blockName={name}
+								onChange={obj => setAttributes(obj)}
+							/>
+						)}
 						<Divider
+							{...getGroupAttributes(attributes, 'divider')}
 							blockName={name}
-							divider={divider}
-							defaultDivider={getDefaultProp(clientId, 'divider')}
 							lineOrientation={lineOrientation}
-							onChange={divider =>
-								setAttributes({
-									divider,
-								})
-							}
+							onChange={obj => setAttributes(obj)}
 						/>
 						<DividerAlignment
+							{...getGroupAttributes(attributes, 'divider')}
 							lineOrientation={lineOrientation}
 							lineVertical={lineVertical}
 							lineHorizontal={lineHorizontal}
-							divider={divider}
 							blockName={name}
 							onChangeOrientation={lineOrientation =>
 								setAttributes({ lineOrientation })
@@ -237,12 +197,8 @@ const MaxiToolbar = props => {
 							}
 						/>
 						<TextOptions
+							{...getGroupAttributes(attributes, 'typography')}
 							blockName={name}
-							typography={typography}
-							defaultTypography={getDefaultProp(
-								clientId,
-								'typography'
-							)}
 							onChange={obj => setAttributes(obj)}
 							node={anchorRef}
 							content={content}
@@ -250,35 +206,45 @@ const MaxiToolbar = props => {
 							isList={isList}
 							typeOfList={typeOfList}
 							formatValue={formatValue}
+							textLevel={textLevel}
 						/>
-						<TextColor
-							blockName={name}
-							typography={typography}
-							content={content}
-							onChange={obj => setAttributes(obj)}
-							breakpoint={deviceType}
-							node={anchorRef}
-							isList={isList}
-							typeOfList={typeOfList}
-							formatValue={formatValue}
-						/>
+						{!attributes['text-highlight'] && (
+							<TextColor
+								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
+								content={content}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+								node={anchorRef}
+								isList={isList}
+								typeOfList={typeOfList}
+								formatValue={formatValue}
+							/>
+						)}
 						<Alignment
 							blockName={name}
-							alignment={alignment}
-							onChange={alignment => setAttributes({ alignment })}
+							{...getGroupAttributes(attributes, [
+								'alignment',
+								'textAlignment',
+							])}
+							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
 						/>
 						<TextLevel
+							{...getGroupAttributes(attributes, [
+								'typography',
+								'typographyHover',
+							])}
 							blockName={name}
 							textLevel={textLevel}
-							typography={typography}
-							typographyHover={typographyHover}
-							margin={margin}
 							isList={isList}
 							onChange={obj => setAttributes(obj)}
 						/>
 						<TextBold
-							typography={typography}
+							{...getGroupAttributes(attributes, 'typography')}
 							formatValue={formatValue}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
@@ -286,30 +252,27 @@ const MaxiToolbar = props => {
 							breakpoint={deviceType}
 						/>
 						<TextItalic
-							typography={typography}
+							{...getGroupAttributes(attributes, 'typography')}
 							formatValue={formatValue}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
 							breakpoint={deviceType}
 						/>
-						<__experimentalRowSettings
+						<RowSettings
 							blockName={name}
-							horizontalAlign={horizontalAlign}
-							verticalAlign={verticalAlign}
+							horizontalAlign={attributes.horizontalAlign}
+							verticalAlign={attributes.verticalAlign}
 							onChange={obj => setAttributes(obj)}
 						/>
-						<ColumnPattern
+						<ToolbarColumnPattern
 							clientId={clientId}
 							blockName={name}
-							rowPattern={rowPattern}
-							onChange={rowPattern =>
-								setAttributes({ rowPattern })
-							}
+							{...getGroupAttributes(attributes, 'rowPattern')}
+							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
 						/>
-
-						<__experimentalColumnsHandlers
+						<ColumnsHandlers
 							toggleHandlers={toggleHandlers}
 							blockName={name}
 						/>
@@ -321,12 +284,12 @@ const MaxiToolbar = props => {
 							}
 						/>
 						<TextLink
+							{...getGroupAttributes(attributes, 'typography')}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
 							formatValue={formatValue}
 							linkSettings={linkSettings}
-							typography={typography}
 							breakpoint={deviceType}
 						/>
 						<TextListOptions
@@ -337,42 +300,39 @@ const MaxiToolbar = props => {
 							typeOfList={typeOfList}
 							onChange={obj => setAttributes(obj)}
 						/>
-						<BackgroundColor
-							blockName={name}
-							background={background}
-							defaultBackground={getDefaultProp(
-								clientId,
-								'background'
-							)}
-							onChange={background =>
-								setAttributes({ background })
-							}
-						/>
+						{!attributes['background-highlight'] && (
+							<BackgroundColor
+								{...getGroupAttributes(
+									attributes,
+									'backgroundColor'
+								)}
+								blockName={name}
+								onChange={obj => setAttributes(obj)}
+							/>
+						)}
 						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<Fragment>
-								<SvgColor
-									blockName={name}
-									svgColor={svgColorOrange}
-									onChange={svgColorOrange => {
-										setAttributes({ svgColorOrange });
-										changeContent(svgColorOrange, 1);
-									}}
-								/>
-								<SvgColor
-									blockName={name}
-									svgColor={svgColorBlack}
-									onChange={svgColorBlack => {
-										setAttributes({ svgColorBlack });
-										changeContent(svgColorBlack, 2);
-									}}
-								/>
-								{getThirdSvgColor() && (
+								{!attributes['color1-highlight'] && (
 									<SvgColor
 										blockName={name}
-										svgColor={svgColorWhite}
-										onChange={svgColorWhite => {
-											setAttributes({ svgColorWhite });
-											changeContent(svgColorWhite, 3);
+										svgColor={attributes.svgColorOrange}
+										onChange={svgColorOrange => {
+											setAttributes({
+												svgColorOrange,
+											});
+											changeSVGContent(svgColorOrange, 1);
+										}}
+									/>
+								)}
+								{!attributes['color2-highlight'] && (
+									<SvgColor
+										blockName={name}
+										svgColor={attributes.svgColorBlack}
+										onChange={svgColorBlack => {
+											setAttributes({
+												svgColorBlack,
+											});
+											changeSVGContent(svgColorBlack, 2);
 										}}
 									/>
 								)}
@@ -380,17 +340,20 @@ const MaxiToolbar = props => {
 						)}
 						<Border
 							blockName={name}
-							border={border}
-							defaultBorder={getDefaultProp(clientId, 'border')}
-							onChange={border => setAttributes({ border })}
+							{...getGroupAttributes(attributes, [
+								'border',
+								'borderWidth',
+								'borderRadius',
+							])}
+							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
+							disableColor={!attributes['border-highlight']}
 						/>
 						{deviceType === 'general' && (
 							<ImageSize
+								{...getGroupAttributes(attributes, 'size')}
 								blockName={name}
-								size={size}
-								defaultSize={getDefaultProp(clientId, 'size')}
-								onChangeSize={size => setAttributes({ size })}
+								onChangeSize={obj => setAttributes(obj)}
 								imageSize={imageSize}
 								onChangeImageSize={imageSize =>
 									setAttributes({ imageSize })
@@ -406,57 +369,49 @@ const MaxiToolbar = props => {
 								}
 							/>
 						)}
-						<Size
+						{name !== 'maxi-blocks/group-maxi' && (
+							<Size
+								blockName={name}
+								{...getGroupAttributes(attributes, 'size')}
+								fullWidth={fullWidth}
+								isFirstOnHierarchy={isFirstOnHierarchy}
+								breakpoint={deviceType}
+								onChange={obj => setAttributes(obj)}
+							/>
+						)}
+						<ColumnSize
 							clientId={clientId}
 							blockName={name}
-							size={size}
-							defaultSize={getDefaultProp(clientId, 'size')}
-							onChangeSize={size => setAttributes({ size })}
-							fullWidth={fullWidth}
-							onChangeFullWidth={fullWidth =>
-								setAttributes({ fullWidth })
-							}
-							isFirstOnHierarchy={isFirstOnHierarchy}
-							breakpoint={deviceType}
-						/>
-						<__experimentalColumnSize
-							clientId={clientId}
-							blockName={name}
-							columnSize={columnSize}
-							verticalAlign={verticalAlign}
+							{...getGroupAttributes(attributes, 'columnSize')}
+							verticalAlign={attributes.verticalAlign}
 							uniqueID={uniqueID}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
 						/>
 						<BoxShadow
 							blockName={name}
-							boxShadow={boxShadow}
-							defaultBoxShadow={getDefaultProp(
-								clientId,
-								'boxShadow'
-							)}
-							onChange={boxShadow => setAttributes({ boxShadow })}
+							{...getGroupAttributes(attributes, 'boxShadow')}
+							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
 						/>
 						<PaddingMargin
 							blockName={name}
-							margin={margin}
-							defaultMargin={getDefaultProp(clientId, 'margin')}
-							onChangeMargin={margin => setAttributes({ margin })}
-							padding={padding}
-							defaultPadding={getDefaultProp(clientId, 'padding')}
-							onChangePadding={padding =>
-								setAttributes({ padding })
-							}
+							{...getGroupAttributes(attributes, [
+								'margin',
+								'padding',
+							])}
+							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
 						/>
 						<Duplicate clientId={clientId} />
 						<Delete clientId={clientId} />
 						<ToggleBlock
-							display={display}
+							{...getGroupAttributes(attributes, 'display')}
+							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
-							onChange={display => setAttributes({ display })}
-							defaultDisplay='flex'
+							defaultDisplay={
+								flexBlocks.includes(name) ? 'flex' : 'inherit'
+							}
 						/>
 					</div>
 				</Popover>

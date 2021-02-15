@@ -8,6 +8,7 @@ const { __ } = wp.i18n;
  */
 import FontLevelControl from '../../../font-level-control';
 import ToolbarPopover from '../toolbar-popover';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles and icons
@@ -27,15 +28,7 @@ import {
  * TextLevel
  */
 const TextLevel = props => {
-	const {
-		blockName,
-		textLevel,
-		typography,
-		typographyHover,
-		margin,
-		isList,
-		onChange,
-	} = props;
+	const { blockName, textLevel, isList, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi' || isList) return null;
 
@@ -67,23 +60,12 @@ const TextLevel = props => {
 			icon={levelIcon(textLevel)}
 			content={
 				<FontLevelControl
+					{...getGroupAttributes(props, [
+						'typography',
+						'typographyHover',
+					])}
 					value={textLevel}
-					onChange={(
-						textLevel,
-						typography,
-						typographyHover,
-						margin
-					) =>
-						onChange({
-							textLevel,
-							typography,
-							typographyHover,
-							margin,
-						})
-					}
-					fontOptions={typography}
-					fontOptionsHover={typographyHover}
-					marginOptions={margin}
+					onChange={obj => onChange(obj)}
 				/>
 			}
 		/>

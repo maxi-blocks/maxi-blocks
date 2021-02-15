@@ -6,13 +6,13 @@ const { __ } = wp.i18n;
 /**
  * Internal dependencies
  */
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * Styles
@@ -24,40 +24,51 @@ import './editor.scss';
  */
 const DisplayControl = props => {
 	const {
-		display,
 		className,
 		onChange,
 		breakpoint,
 		defaultDisplay = 'inherit',
 	} = props;
 
-	const value = !isObject(display) ? JSON.parse(display) : display;
-
 	const classes = classnames('maxi-display-control', className);
 
 	const isHide = () => {
-		const objectKeys = Object.keys(value);
-		const breakpointIndex = objectKeys.indexOf(breakpoint) - 1;
+		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+		const breakpointIndex = breakpoints.indexOf(breakpoint) - 1;
 
-		if (breakpointIndex === 0) return false;
+		if (breakpointIndex < 0) return false;
 
 		let i = breakpointIndex;
 
 		do {
-			if (value[objectKeys[i]].display === 'none') return true;
-			if (value[objectKeys[i]].display === defaultDisplay) return false;
+			if (props[`display-${breakpoints[i]}`] === 'none') return true;
+			if (props[`display-${breakpoints[i]}`] === defaultDisplay)
+				return false;
 			i -= 1;
-		} while (i > 0);
+		} while (i >= 0);
 
 		return false;
 	};
 
 	const getValue = () => {
-		const isPrevHide = isHide();
+		if (props[`display-${breakpoint}`] === 'none') return 'none';
 
-		return isPrevHide && value[breakpoint].display === ''
-			? 'none'
-			: value[breakpoint].display;
+		const isPrevHide = isHide();
+		if (
+			isPrevHide &&
+			(isNil(props[`display-${breakpoint}`]) ||
+				props[`display-${breakpoint}`] === '')
+		)
+			return 'none';
+
+		if (
+			isPrevHide &&
+			(!isNil(props[`display-${breakpoint}`]) ||
+				props[`display-${breakpoint}`] !== '')
+		)
+			return defaultDisplay;
+
+		return '';
 	};
 
 	const getOptions = () => {
@@ -73,16 +84,18 @@ const DisplayControl = props => {
 			{ label: __('Hide', 'maxi-blocks'), value: 'none' },
 		];
 	};
+
 	return (
 		<div className={classes}>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Display block', 'maxi-blocks')}
 				selected={getValue()}
 				options={getOptions()}
-				onChange={val => {
-					value[breakpoint].display = val;
-					onChange(JSON.stringify(value));
-				}}
+				onChange={val =>
+					onChange({
+						[`display-${breakpoint}`]: !isEmpty(val) ? val : null,
+					})
+				}
 			/>
 		</div>
 	);

@@ -1,51 +1,62 @@
 /**
+ * WordPress dependencies
+ */
+const { RawHTML } = wp.element;
+
+/**
  * Internal dependencies
  */
-import { __experimentalBackgroundDisplayer } from '../../components';
+import { BackgroundDisplayer } from '../../components';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { RawHTML } from '@wordpress/element';
-import { isNil } from 'lodash';
 
 /**
  * Save
  */
 const save = props => {
+	const { className, attributes } = props;
 	const {
-		className,
-		attributes: {
-			uniqueID,
-			blockStyle,
-			defaultBlockStyle,
-			background,
-			extraClassName,
-			motion,
-			content,
-		},
-	} = props;
+		uniqueID,
+		blockStyle,
+		defaultBlockStyle,
+		extraClassName,
+	} = attributes;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-svg-icon-block',
 		blockStyle,
+		!!attributes['background-highlight'] && 'maxi-highlight--background',
+		!!attributes['border-highlight'] && 'maxi-highlight--border',
+		!!attributes['color1-highlight'] && 'maxi-highlight--color1',
+		!!attributes['color2-highlight'] && 'maxi-highlight--color2',
 		extraClassName,
 		uniqueID,
-		className,
-		!isNil(uniqueID) ? uniqueID : null
+		className
 	);
 
 	return (
 		<div
 			className={classes}
 			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion={motion}
 			data-motion-id={uniqueID}
 		>
-			<RawHTML>{content}</RawHTML>
-			<__experimentalBackgroundDisplayer background={background} />
+			<RawHTML className='maxi-svg-icon-block__icon'>
+				{attributes.content}
+			</RawHTML>
+			<BackgroundDisplayer
+				{...getGroupAttributes(attributes, [
+					'background',
+					'backgroundColor',
+					'backgroundHover',
+					'backgroundColorHover',
+				])}
+				blockClassName={uniqueID}
+			/>
 		</div>
 	);
 };

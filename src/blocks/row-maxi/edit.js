@@ -11,45 +11,50 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 /**
  * Internal dependencies
  */
-import {
-	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBreadcrumbs,
-	__experimentalBackgroundDisplayer,
-} from '../../components';
 import Inspector from './inspector';
+import RowContext from './context';
+import {
+	BackgroundDisplayer,
+	Breadcrumbs,
+	MaxiBlock,
+	Toolbar,
+} from '../../components';
 import {
 	getTemplates,
 	getTemplateObject,
 } from '../../extensions/defaults/column-templates';
 import {
-	getBoxShadowObject,
-	getOpacityObject,
-	getTransformObject,
-	setBackgroundStyles,
-	getLastBreakpointValue,
-} from '../../utils';
-import RowContext from './context';
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+import getStyles from './styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, uniqueId, isObject } from 'lodash';
+import { isEmpty, isNil, uniqueId } from 'lodash';
 
 /**
  * InnerBlocks version
  */
 const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const { children, background, className, maxiBlockClass } = props;
+	const {
+		children,
+		className,
+		maxiBlockClass,
+		dataAlign,
+		background,
+	} = props;
 
 	return (
 		<__experimentalBlock.div
 			ref={ref}
 			className={className}
+			data-align={dataAlign}
 			data-gx_initial_block_class={maxiBlockClass}
 		>
-			<__experimentalBackgroundDisplayer background={background} />
+			<BackgroundDisplayer {...background} />
 			{children}
 		</__experimentalBlock.div>
 	);
@@ -61,10 +66,11 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 class edit extends MaxiBlock {
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
+	}
+
 	state = {
-		styles: {},
-		updating: false,
-		breakpoints: this.getBreakpoints,
 		displayHandlers: false,
 	};
 
@@ -76,116 +82,9 @@ class edit extends MaxiBlock {
 		}
 	}
 
-	get getObject() {
-		const {
-			uniqueID,
-			background,
-			backgroundHover,
-			overlay,
-			overlayHover,
-			border,
-			borderHover,
-		} = this.props.attributes;
-
-		let response = {
-			[uniqueID]: this.getNormalObject,
-			[`${uniqueID}:hover`]: this.getHoverObject,
-		};
-
-		response = Object.assign(
-			response,
-			setBackgroundStyles(
-				uniqueID,
-				background,
-				backgroundHover,
-				overlay,
-				overlayHover,
-				border,
-				borderHover
-			)
-		);
-
-		return response;
-	}
-
-	get getNormalObject() {
-		const {
-			horizontalAlign,
-			verticalAlign,
-			opacity,
-			border,
-			size,
-			boxShadow,
-			margin,
-			padding,
-			zIndex,
-			position,
-			display,
-			transform,
-		} = this.props.attributes;
-
-		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
-			size: { ...JSON.parse(size) },
-			margin: { ...JSON.parse(margin) },
-			padding: { ...JSON.parse(padding) },
-			opacity: { ...getOpacityObject(JSON.parse(opacity)) },
-			zIndex: { ...JSON.parse(zIndex) },
-			position: { ...JSON.parse(position) },
-			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
-			row: {
-				label: 'Row',
-				general: {},
-			},
-		};
-
-		if (!isNil(horizontalAlign))
-			response.row.general['justify-content'] = horizontalAlign;
-		if (!isNil(verticalAlign))
-			response.row.general['align-items'] = verticalAlign;
-
-		return response;
-	}
-
-	get getHoverObject() {
-		const { boxShadowHover, borderHover } = this.props.attributes;
-
-		const response = {
-			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
-			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-		};
-
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			};
-		}
-
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
-			response.borderHover = {
-				...JSON.parse(borderHover),
-			};
-		}
-
-		return response;
-	}
-
 	render() {
 		const {
-			attributes: {
-				uniqueID,
-				blockStyle,
-				extraClassName,
-				defaultBlockStyle,
-				background,
-				rowPattern,
-				display,
-			},
+			attributes,
 			clientId,
 			loadTemplate,
 			selectOnClick,
@@ -195,26 +94,33 @@ class edit extends MaxiBlock {
 			setAttributes,
 			deviceType,
 		} = this.props;
-
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+		const {
+			uniqueID,
+			blockStyle,
+			extraClassName,
+			defaultBlockStyle,
+			blockStyleBackground,
+			fullWidth,
+		} = attributes;
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-row-block',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
+			blockStyle !== 'maxi-custom' &&
+				`maxi-background--${blockStyleBackground}`,
 			extraClassName,
 			className
 		);
 
-		const rowPatternObject = JSON.parse(rowPattern);
-
 		return [
-			<Inspector {...this.props} />,
-			<__experimentalToolbar
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
 				toggleHandlers={() => {
 					this.setState({
 						displayHandlers: !this.state.displayHandlers,
@@ -222,21 +128,36 @@ class edit extends MaxiBlock {
 				}}
 				{...this.props}
 			/>,
-			<__experimentalBreadcrumbs />,
-
+			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
 			<RowContext.Provider
+				key={`row-content-${uniqueID}`}
 				value={{
 					displayHandlers: this.state.displayHandlers,
-					rowPattern,
+					rowPattern: getGroupAttributes(attributes, 'rowPattern'),
 				}}
 			>
 				<InnerBlocks
-					// templateLock={'insert'}
 					__experimentalTagName={ContainerInnerBlocks}
 					__experimentalPassedProps={{
 						className: classes,
+						dataAlign: fullWidth,
 						maxiBlockClass: defaultBlockStyle,
-						background,
+						background: {
+							...getGroupAttributes(attributes, [
+								'background',
+								'backgroundColor',
+								'backgroundImage',
+								'backgroundVideo',
+								'backgroundGradient',
+								'backgroundSVG',
+								'backgroundHover',
+								'backgroundColorHover',
+								'backgroundImageHover',
+								'backgroundVideoHover',
+								'backgroundGradientHover',
+								'backgroundSVGHover',
+							]),
+						},
 					}}
 					allowedBlocks={ALLOWED_BLOCKS}
 					orientation='horizontal'
@@ -256,15 +177,11 @@ class edit extends MaxiBlock {
 													)}
 													className='maxi-row-block__template__button'
 													onClick={() => {
-														rowPatternObject.general.rowPattern =
-															template.name;
-														rowPatternObject.m.rowPattern =
-															template.responsiveLayout;
-
 														setAttributes({
-															rowPattern: JSON.stringify(
-																rowPatternObject
-															),
+															'row-pattern-general':
+																template.name,
+															'row-pattern-m':
+																template.responsiveLayout,
 														});
 														loadTemplate(
 															template.name
@@ -355,7 +272,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	 * @param {string} id Block id to select
 	 */
 	const selectOnClick = id => {
-		dispatch('core/editor').selectBlock(id);
+		dispatch('core/block-editor').selectBlock(id);
 	};
 
 	return {

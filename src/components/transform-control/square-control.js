@@ -3,7 +3,12 @@
  */
 const { __ } = wp.i18n;
 const { useState, useRef, useCallback, useEffect } = wp.element;
-const { Tooltip, Button, ResizableBox, SelectControl } = wp.components;
+const { Tooltip, Button, SelectControl } = wp.components;
+
+/**
+ * Internal dependencies
+ */
+import BlockResizer from '../block-resizer';
 
 /**
  * External dependencies
@@ -35,6 +40,8 @@ const SquareControl = props => {
 	const [sync, changeSync] = useState(false);
 	const [xAxis, changeXAxis] = useState(x);
 	const [yAxis, changeYAxis] = useState(y);
+	const [xAxisUnit, changeXUnit] = useState(xUnit);
+	const [yAxisUnit, changeYUnit] = useState(yUnit);
 	const [isMoving, changeIsMoving] = useState(false);
 	const [clientX, changeClientX] = useState(0);
 	const [clientY, changeClientY] = useState(0);
@@ -74,13 +81,13 @@ const SquareControl = props => {
 		switch (type) {
 			case 'resize':
 				return {
-					min: '-100',
+					min: '0',
 					max: '300',
 				};
 			case 'drag':
 				return {
-					min: '-200',
-					max: '200',
+					min: '-100',
+					max: '100',
 				};
 			case 'origin':
 				return {
@@ -129,6 +136,11 @@ const SquareControl = props => {
 		}
 	}, [x, y]);
 
+	useEffect(() => {
+		changeXUnit(xUnit);
+		changeYUnit(yUnit);
+	}, [xUnit, yUnit]);
+
 	return (
 		<div className='maxi-transform-control__square-control'>
 			<div
@@ -152,18 +164,18 @@ const SquareControl = props => {
 				}}
 			>
 				{type === 'resize' && (
-					<ResizableBox
-						className='maxi-block__resizer maxi-transform-control__square-control__canvas__resizer'
+					<BlockResizer
+						className={classnames(
+							'maxi-block__resizer',
+							' maxi-transform-control__square-control__canvas__resizer'
+						)}
 						defaultSize={getDefaultSize()}
 						maxWidth='100%'
 						maxHeight='100%'
 						minWidth='-100%'
 						minHeight='-100%'
-						enable={{
-							top: false,
-							right: false,
-							bottom: false,
-							left: false,
+						showHandle
+						directions={{
 							topRight: true,
 							bottomRight: true,
 							bottomLeft: true,
@@ -384,7 +396,7 @@ const SquareControl = props => {
 				<input
 					type='range'
 					className='maxi-transform-control__square-control__y-control__range'
-					value={yAxis}
+					value={yAxis || ''}
 					onChange={e => {
 						type !== 'origin' && onSave(xAxis, yAxis, xUnit, yUnit);
 						if (!sync) {
@@ -406,7 +418,7 @@ const SquareControl = props => {
 						type='number'
 						placeholder={getPlaceholder(yAxis)}
 						className='maxi-transform-control__square-control__y-control__value__input'
-						value={yAxis}
+						value={yAxis || ''}
 						onChange={e => {
 							const newValue = !isEmpty(e.target.value)
 								? Number(e.target.value)
@@ -433,8 +445,14 @@ const SquareControl = props => {
 								{ label: 'VW', value: 'vw' },
 								{ label: '%', value: '%' },
 							]}
-							value={yUnit}
-							onChange={val => onChange(xAxis, yAxis, xUnit, val)}
+							value={yAxisUnit}
+							onChange={val => {
+								changeYUnit(val);
+								changeYAxis(yAxis);
+								changeXAxis(xAxis);
+								onChange(xAxis, yAxis, xUnit, val);
+								onSave(xAxis, yAxis, xUnit, val);
+							}}
 						/>
 					)}
 				</div>
@@ -443,7 +461,7 @@ const SquareControl = props => {
 				<input
 					type='range'
 					className='maxi-transform-control__square-control__x-control__range'
-					value={xAxis}
+					value={xAxis || ''}
 					onChange={e => {
 						type !== 'origin' && onSave(xAxis, yAxis, xUnit, yUnit);
 						if (!sync) {
@@ -465,7 +483,7 @@ const SquareControl = props => {
 						type='number'
 						placeholder={getPlaceholder(xAxis)}
 						className='maxi-transform-control__square-control__x-control__value__input'
-						value={xAxis}
+						value={xAxis || ''}
 						onChange={e => {
 							const newValue = !isEmpty(e.target.value)
 								? Number(e.target.value)
@@ -492,8 +510,14 @@ const SquareControl = props => {
 								{ label: 'VW', value: 'vw' },
 								{ label: '%', value: '%' },
 							]}
-							value={xUnit}
-							onChange={val => onChange(xAxis, yAxis, val, yUnit)}
+							value={xAxisUnit}
+							onChange={val => {
+								changeXUnit(val);
+								changeYAxis(yAxis);
+								changeXAxis(xAxis);
+								onChange(xAxis, yAxis, val, yUnit);
+								onSave(xAxis, yAxis, val, yUnit);
+							}}
 						/>
 					)}
 				</div>
@@ -522,10 +546,6 @@ const SquareControl = props => {
 				<Button
 					className='components-maxi-control__reset-button'
 					onClick={onReset}
-					// aria-label={sprintf(
-					//     __('Reset %s settings', 'maxi-blocks'),
-					//     value.label.toLowerCase()
-					// )}
 					action='reset'
 					type='reset'
 				>

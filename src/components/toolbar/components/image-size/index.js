@@ -14,13 +14,14 @@ import openSidebar from '../../../../extensions/dom';
 /**
  * External dependencies
  */
-import { capitalize, isNil, isObject, trim } from 'lodash';
+import { capitalize, isNil, trim } from 'lodash';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
 import { toolbarSizing } from '../../../../icons';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * ImageSize
@@ -28,8 +29,6 @@ import { toolbarSizing } from '../../../../icons';
 const ImageSize = props => {
 	const {
 		blockName,
-		size,
-		defaultSize,
 		onChangeSize,
 		imageSize,
 		onChangeImageSize,
@@ -49,12 +48,6 @@ const ImageSize = props => {
 	const { openGeneralSidebar } = useDispatch('core/edit-post');
 
 	if (blockName !== 'maxi-blocks/image-maxi') return null;
-
-	const sizeValue = !isObject(size) ? JSON.parse(size) : size;
-
-	const defaultSizeValue = !isObject(defaultSize)
-		? JSON.parse(defaultSize)
-		: defaultSize;
 
 	const getImageSizeOptions = () => {
 		const response = [];
@@ -116,24 +109,27 @@ const ImageSize = props => {
 					)}
 					<RangeControl
 						label={__('Width', 'maxi-blocks')}
-						value={Number(trim(sizeValue.general.width))}
-						onChange={width => {
-							isNil(width)
-								? (sizeValue.general.width =
-										defaultSizeValue.general.width)
-								: (sizeValue.general.width = width);
-
-							onChangeSize(JSON.stringify(sizeValue));
+						value={+trim(props['width-general'])}
+						onChange={val => {
+							if (!isNil(val))
+								onChangeSize({
+									'width-general': val,
+								});
+							else
+								onChangeSize({
+									'width-general': getDefaultAttribute(
+										'width-general'
+									),
+								});
 						}}
 						allowReset
-						// initialPosition={}
 					/>
 					<div className='toolbar-image-size-buttons'>
 						<Button
 							className='toolbar-image-size-buttons__edit-image'
 							onClick={() =>
 								openGeneralSidebar('edit-post/block').then(() =>
-									openSidebar('width height')
+									openSidebar('image dimension')
 								)
 							}
 						>

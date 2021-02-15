@@ -8,51 +8,39 @@ const { RangeControl } = wp.components;
 /**
  * Internal dependencies
  */
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Component
  */
 const ParallaxControl = props => {
-	const { className, motion, defaultMotion, onChange } = props;
-
-	const value = !isObject(motion) ? JSON.parse(motion) : motion;
-
-	const { parallax: parallaxOptions } = value;
-
-	const defaultValue = !isObject(defaultMotion)
-		? JSON.parse(defaultMotion)
-		: defaultMotion;
-
-	const { parallax: defaultParallaxOptions } = defaultValue;
+	const { className, onChange } = props;
 
 	const classes = classnames('maxi-parallax-control', className);
 
 	return (
 		<div className={classes}>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Use Parallax Effect', 'maxi-blocks')}
-				selected={parallaxOptions.status}
+				selected={+props['parallax-status']}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => {
-					parallaxOptions.status = Number(val);
-					onChange(JSON.stringify(value));
-				}}
+				onChange={val => onChange({ 'parallax-status': !!val })}
 			/>
-			{!!parallaxOptions.status && (
+			{props['parallax-status'] && (
 				<Fragment>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Direction', 'maxi-blocks')}
-						selected={parallaxOptions.direction}
+						selected={props['parallax-direction']}
 						options={[
 							{ label: __('Up', 'maxi-blocks'), value: 'up' },
 							{
@@ -60,26 +48,26 @@ const ParallaxControl = props => {
 								value: 'down',
 							},
 						]}
-						onChange={val => {
-							parallaxOptions.direction = val;
-							onChange(JSON.stringify(value));
-						}}
+						onChange={val =>
+							onChange({ 'parallax-direction': val })
+						}
 					/>
 					<RangeControl
 						label={__('Speed', 'maxi-blocks')}
-						value={parallaxOptions.speed}
+						value={props['parallax-speed']}
 						onChange={val => {
 							isNil(val)
-								? (parallaxOptions.speed =
-										defaultParallaxOptions.speed)
-								: (parallaxOptions.speed = Number(val));
-
-							onChange(JSON.stringify(value));
+								? onChange({
+										'parallax-speed': getDefaultAttribute(
+											'parallax-speed'
+										),
+								  })
+								: onChange({ 'parallax-speed': +val });
 						}}
 						min={1}
 						max={10}
 						allowReset
-						initialPosition={defaultParallaxOptions.speed}
+						initialPosition={getDefaultAttribute('parallax-speed')}
 					/>
 				</Fragment>
 			)}

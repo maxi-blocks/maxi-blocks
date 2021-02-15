@@ -7,14 +7,12 @@ const { BaseControl, Button, __experimentalGradientPicker } = wp.components;
 /**
  * Internal dependencies
  */
-import CheckBoxControl from '../checkbox-control';
-import __experimentalOpacityControl from '../opacity-control';
+import OpacityControl from '../opacity-control';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -30,25 +28,16 @@ const GradientControl = props => {
 		label,
 		className,
 		gradient,
-		gradientOpacity,
 		defaultGradient = '',
 		onChange,
-		disableGradientAboveBackground = false,
-		gradientAboveBackground,
-		onGradientAboveBackgroundChange,
+		gradientOpacity,
 		onChangeOpacity,
+		defaultOpacity = 1,
 	} = props;
-
-	const gradientOpacityValue = !isObject(gradientOpacity)
-		? JSON.parse(gradientOpacity)
-		: gradientOpacity;
 
 	const classes = classnames('maxi-gradient-control', className);
 
 	const onReset = () => {
-		if (!disableGradientAboveBackground)
-			onGradientAboveBackgroundChange(false);
-
 		onChange(defaultGradient);
 	};
 
@@ -74,28 +63,18 @@ const GradientControl = props => {
 					</Button>
 				</div>
 			</BaseControl>
-			<__experimentalOpacityControl
+			<OpacityControl
 				label={__('Gradient Opacity', 'maxi-blocks')}
 				fullWidthMode
-				opacity={gradientOpacityValue.opacity}
-				defaultOpacity={defaultGradient}
-				onChange={val => {
-					gradientOpacityValue.opacity = JSON.parse(val);
-					onChangeOpacity(JSON.stringify(gradientOpacityValue));
-				}}
+				opacity={gradientOpacity}
+				defaultOpacity={defaultOpacity}
+				onChange={val => onChangeOpacity(val)}
 			/>
 			<div className='maxi-gradient-control__gradient'>
 				<__experimentalGradientPicker
 					value={gradient}
-					onChange={val => onChange(val)}
+					onChange={gradient => onChange(gradient)}
 				/>
-				{disableGradientAboveBackground && (
-					<CheckBoxControl
-						label={__('Above Background Image', 'maxi-blocks')}
-						checked={gradientAboveBackground}
-						onChange={val => onGradientAboveBackgroundChange(val)}
-					/>
-				)}
 			</div>
 		</div>
 	);

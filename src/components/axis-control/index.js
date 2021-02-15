@@ -8,13 +8,16 @@ const { BaseControl, SelectControl, Button, Tooltip } = wp.components;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../utils';
+import {
+	getLastBreakpointAttribute,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
+import { isNumber, isNil } from 'lodash';
 
 /**
  * Styles and icons
@@ -27,8 +30,7 @@ import { reset, sync } from '../../icons';
  */
 const AxisControl = props => {
 	const {
-		values,
-		defaultValues,
+		label = '',
 		className,
 		onChange,
 		breakpoint = 'general',
@@ -52,15 +54,13 @@ const AxisControl = props => {
 				max: 999,
 			},
 		},
+		target,
+		auxTarget = false,
+		isHover = false,
+		inputsArray = ['top', 'right', 'bottom', 'left', 'unit', 'sync'],
 	} = props;
 
 	const instanceId = useInstanceId(AxisControl);
-
-	const value = !isObject(values) ? JSON.parse(values) : values;
-
-	const defaultValue = !isObject(defaultValues)
-		? JSON.parse(defaultValues)
-		: defaultValues;
 
 	const classes = classnames('maxi-axis-control', className);
 
@@ -76,89 +76,123 @@ const AxisControl = props => {
 		return options;
 	};
 
-	const getKey = (obj, target) => {
-		return Object.keys(obj)[target];
+	const getKey = key => {
+		return `${target}-${key}${auxTarget ? `-${auxTarget}` : ''}`;
 	};
 
 	const getValue = key => {
-		const inputValue = getLastBreakpointValue(
-			value,
-			[getKey(value[breakpoint], key)],
-			breakpoint
+		const inputValue = getLastBreakpointAttribute(
+			getKey(key),
+			breakpoint,
+			props,
+			isHover
 		);
 
-		if (!!Number(inputValue) || parseInt(inputValue, 10) === 0)
+		if (!!+inputValue || parseInt(inputValue, 10) === 0)
 			return Number(inputValue);
 		return inputValue;
 	};
 
 	const onReset = () => {
-		for (const key of Object.keys(defaultValue[breakpoint])) {
-			value[breakpoint][key] = defaultValue[breakpoint][key];
-		}
+		const response = {};
 
-		onChange(JSON.stringify(value));
+		inputsArray.forEach(key => {
+			response[
+				`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
+			] = getDefaultAttribute(
+				`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
+			);
+		});
+
+		onChange(response);
 	};
 
 	const onChangeSync = () => {
-		value[breakpoint].sync = !value[breakpoint].sync;
-		onChange(JSON.stringify(value));
+		onChange({
+			[`${getKey('sync')}-${breakpoint}${
+				isHover ? '-hover' : ''
+			}`]: !getLastBreakpointAttribute(
+				getKey('sync'),
+				breakpoint,
+				props,
+				isHover
+			),
+		});
 	};
 
 	const getDisplayValue = key => {
 		const inputValue = getValue(key);
 
-		if (!!Number(inputValue) || parseInt(inputValue) === 0)
-			return Number(inputValue);
+		const value = isNil(inputValue)
+			? getDefaultAttribute(`${getKey(key)}-${breakpoint}`)
+			: +inputValue;
 
-		return inputValue;
+		return value;
 	};
 
 	const currentUnit =
-		getLastBreakpointValue(value, 'unit', breakpoint) || 'px';
+		getLastBreakpointAttribute(
+			getKey('unit'),
+			breakpoint,
+			props,
+			isHover
+		) || 'px';
 
-	const onChangeValue = (newValue, target) => {
-		const finalValue = newValue;
+	const onChangeValue = (newValue, singleTarget) => {
+		if (
+			isNumber(newValue) &&
+			getLastBreakpointAttribute(
+				getKey('sync'),
+				breakpoint,
+				props,
+				isHover
+			)
+		) {
+			const response = {};
 
-		if (value[breakpoint].sync === true) {
-			for (const key of Object.keys(value[breakpoint])) {
+			inputsArray.forEach(key => {
 				if (key !== 'sync' && key !== 'unit')
-					value[breakpoint][key] =
-						!!Number(finalValue) || parseInt(finalValue) === 0
-							? Number(finalValue)
-							: finalValue;
-			}
-		} else {
-			value[breakpoint][getKey(value[breakpoint], target)] =
-				!!Number(finalValue) || parseInt(finalValue) === 0
-					? Number(finalValue)
-					: finalValue;
-		}
+					response[
+						`${target}-${key}${
+							auxTarget ? `-${auxTarget}` : ''
+						}-${breakpoint}${isHover ? '-hover' : ''}`
+					] = +newValue;
+			});
 
-		onChange(JSON.stringify(value));
+			onChange(response);
+		} else {
+			onChange({
+				[`${target}-${singleTarget}${
+					auxTarget ? `-${auxTarget}` : ''
+				}-${breakpoint}${isHover ? '-hover' : ''}`]: newValue,
+			});
+		}
 	};
 
 	return (
 		<div className={classes}>
 			<BaseControl
-				label={__(value.label, 'maxi-blocks')}
+				label={__(label, 'maxi-blocks')}
 				className='maxi-axis-control__header'
 			>
 				<SelectControl
 					className='maxi-axis-control__units'
 					options={getOptions()}
 					value={currentUnit}
-					onChange={val => {
-						value[breakpoint].unit = val;
-						onChange(JSON.stringify(value));
-					}}
+					onChange={val =>
+						onChange({
+							[`${target}-unit${
+								auxTarget ? `-${auxTarget}` : ''
+							}-${breakpoint}${isHover ? '-hover' : ''}`]: val,
+						})
+					}
 				/>
 				<Button
 					className='components-maxi-control__reset-button'
 					onClick={onReset}
 					aria-label={sprintf(
 						__('Reset %s settings', 'maxi-blocks'),
-						value.label.toLowerCase()
+						label.toLowerCase()
 					)}
 					action='reset'
 					type='reset'
@@ -174,13 +208,14 @@ const AxisControl = props => {
 					<input
 						className='maxi-axis-control__content__item__input'
 						type='number'
-						placeholder={getValue(0) === 'auto' ? 'auto' : ''}
-						value={getDisplayValue(0)}
-						onChange={e => onChangeValue(e.target.value, 0)}
-						aria-label={sprintf(
-							__('%s Top', 'maxi-blocks'),
-							value.label
-						)}
+						placeholder={
+							getValue(inputsArray[0]) === 'auto' ? 'auto' : ''
+						}
+						value={getDisplayValue(inputsArray[0])}
+						onChange={e =>
+							onChangeValue(+e.target.value, inputsArray[0])
+						}
+						aria-label={sprintf(__('%s Top', 'maxi-blocks'), label)}
 						min={minMaxSettings[currentUnit].min}
 						max={minMaxSettings[currentUnit].max}
 					/>
@@ -191,12 +226,12 @@ const AxisControl = props => {
 						>
 							<input
 								type='checkbox'
-								checked={getValue(0) === 'auto'}
+								checked={getValue(inputsArray[0]) === 'auto'}
 								onChange={e => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(newValue, 0);
+									onChangeValue(newValue, inputsArray[0]);
 								}}
 								id={`${instanceId}-top`}
 							/>
@@ -211,12 +246,16 @@ const AxisControl = props => {
 					<input
 						className='maxi-axis-control__content__item__input'
 						type='number'
-						placeholder={getValue(1) === 'auto' ? 'auto' : ''}
-						value={getDisplayValue(1)}
-						onChange={e => onChangeValue(e.target.value, 1)}
+						placeholder={
+							getValue(inputsArray[1]) === 'auto' ? 'auto' : ''
+						}
+						value={getDisplayValue(inputsArray[1])}
+						onChange={e =>
+							onChangeValue(+e.target.value, inputsArray[1])
+						}
 						aria-label={sprintf(
 							__('%s Right', 'maxi-blocks'),
-							value.label
+							label
 						)}
 						min={minMaxSettings[currentUnit].min}
 						max={minMaxSettings[currentUnit].max}
@@ -228,12 +267,12 @@ const AxisControl = props => {
 						>
 							<input
 								type='checkbox'
-								checked={getValue(1) === 'auto'}
+								checked={getValue(inputsArray[1]) === 'auto'}
 								onChange={e => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(newValue, 1);
+									onChangeValue(newValue, inputsArray[1]);
 								}}
 								id={`${instanceId}-right`}
 							/>
@@ -248,12 +287,16 @@ const AxisControl = props => {
 					<input
 						className='maxi-axis-control__content__item__input'
 						type='number'
-						placeholder={getValue(2) === 'auto' ? 'auto' : ''}
-						value={getDisplayValue(2)}
-						onChange={e => onChangeValue(e.target.value, 2)}
+						placeholder={
+							getValue(inputsArray[2]) === 'auto' ? 'auto' : ''
+						}
+						value={getDisplayValue(inputsArray[2])}
+						onChange={e =>
+							onChangeValue(+e.target.value, inputsArray[2])
+						}
 						aria-label={sprintf(
 							__('%s Bottom', 'maxi-blocks'),
-							value.label
+							label
 						)}
 						min={minMaxSettings[currentUnit].min}
 						max={minMaxSettings[currentUnit].max}
@@ -265,12 +308,12 @@ const AxisControl = props => {
 						>
 							<input
 								type='checkbox'
-								checked={getValue(2) === 'auto'}
+								checked={getValue(inputsArray[2]) === 'auto'}
 								onChange={e => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(newValue, 2);
+									onChangeValue(newValue, inputsArray[2]);
 								}}
 								id={`${instanceId}-bottom`}
 							/>
@@ -285,12 +328,16 @@ const AxisControl = props => {
 					<input
 						className='maxi-axis-control__content__item__input'
 						type='number'
-						placeholder={getValue(3) === 'auto' ? 'auto' : ''}
-						value={getDisplayValue(3)}
-						onChange={e => onChangeValue(e.target.value, 3)}
+						placeholder={
+							getValue(inputsArray[3]) === 'auto' ? 'auto' : ''
+						}
+						value={getDisplayValue(inputsArray[3])}
+						onChange={e =>
+							onChangeValue(+e.target.value, inputsArray[3])
+						}
 						aria-label={sprintf(
 							__('%s Left', 'maxi-blocks'),
-							value.label
+							label
 						)}
 						min={minMaxSettings[currentUnit].min}
 						max={minMaxSettings[currentUnit].max}
@@ -302,12 +349,12 @@ const AxisControl = props => {
 						>
 							<input
 								type='checkbox'
-								checked={getValue(3) === 'auto'}
+								checked={getValue(inputsArray[3]) === 'auto'}
 								onChange={e => {
 									const newValue = e.target.checked
 										? 'auto'
 										: '';
-									onChangeValue(newValue, 3);
+									onChangeValue(newValue, inputsArray[3]);
 								}}
 								id={`${instanceId}-left`}
 							/>
@@ -318,22 +365,29 @@ const AxisControl = props => {
 				<div className='maxi-axis-control__content__item maxi-axis-control__content__item__sync'>
 					<Tooltip
 						text={
-							getLastBreakpointValue(value, 'sync', breakpoint)
+							getLastBreakpointAttribute(
+								getKey('sync'),
+								breakpoint,
+								props,
+								isHover
+							)
 								? __('Unsync', 'maxi-blocks')
 								: __('Sync', 'maxi-blocks')
 						}
 					>
 						<Button
 							aria-label={__('Sync Units', 'maxi-blocks')}
-							isPrimary={getLastBreakpointValue(
-								value,
-								'sync',
-								breakpoint
+							isPrimary={getLastBreakpointAttribute(
+								getKey('sync'),
+								breakpoint,
+								props,
+								isHover
 							)}
-							aria-pressed={getLastBreakpointValue(
-								value,
-								'sync',
-								breakpoint
+							aria-pressed={getLastBreakpointAttribute(
+								getKey('sync'),
+								breakpoint,
+								props,
+								isHover
 							)}
 							onClick={onChangeSync}
 							isSmall

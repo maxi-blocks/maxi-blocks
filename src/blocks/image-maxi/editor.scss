@@ -49,6 +49,7 @@
 	}
 	&__image {
 		display: block;
+		margin: auto;
 	}
 	&__caption {
 		width: 100%;
@@ -66,7 +67,6 @@
 	}
 
 	.maxi-block-hover-wrapper {
-		width: 100% !important;
 		margin: auto;
 	}
 }

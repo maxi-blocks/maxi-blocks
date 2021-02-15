@@ -25,7 +25,7 @@ import './editor.scss';
  * Component
  */
 const SVGDefaultsDisplayer = props => {
-	const { SVGOptions, SVGCurrentElement, onChange, className } = props;
+	const { SVGOptions = {}, SVGCurrentElement, onChange, className } = props;
 
 	const classes = classnames('maxi-svg-defaults', className);
 
@@ -35,6 +35,7 @@ const SVGDefaultsDisplayer = props => {
 				const cleanedContent = DOMPurify.sanitize(svgEl);
 				return (
 					<Button
+						key={`maxi-svg-defaults__item-${i}`}
 						className={`maxi-svg-defaults__item ${
 							SVGCurrentElement === i &&
 							'maxi-svg-defaults__item--active'
@@ -57,7 +58,7 @@ const SVGDefaultsDisplayer = props => {
 								SVGElement: resEl.outerHTML,
 								SVGMediaID: null,
 								SVGMediaURL: null,
-								SVGData: JSON.stringify(resData),
+								SVGData: resData,
 							});
 						}}
 					>

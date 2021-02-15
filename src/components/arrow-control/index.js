@@ -8,35 +8,30 @@ const { RangeControl } = wp.components;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../utils';
 import SizeControl from '../size-control';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
+import {
+	getLastBreakpointAttribute,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Component
  */
 const ArrowControl = props => {
 	const {
-		arrow,
-		defaultArrow,
 		className,
 		onChange,
 		isFullWidth,
 		breakpoint = 'general',
 		isFirstOnHierarchy,
 	} = props;
-
-	const value = !isObject(arrow) ? JSON.parse(arrow) : arrow;
-
-	const defaultValue = !isObject(defaultArrow)
-		? JSON.parse(defaultArrow)
-		: defaultArrow;
 
 	const classes = classnames('maxi-arrow-control', className);
 
@@ -53,6 +48,10 @@ const ArrowControl = props => {
 			]);
 
 		return response;
+	};
+
+	const onChangeValue = (target, value) => {
+		onChange({ [`${target}-${breakpoint}`]: value });
 	};
 
 	const minMaxSettings = {
@@ -77,76 +76,84 @@ const ArrowControl = props => {
 	return (
 		<div className={classes}>
 			{
-				<__experimentalFancyRadioControl
+				<FancyRadioControl
 					label={__('Show Arrow', 'maxi-blocks')}
-					selected={value.active}
+					selected={+props['arrow-status']}
 					options={[
 						{ label: __('Yes', 'maxi-blocks'), value: 1 },
 						{ label: __('No', 'maxi-blocks'), value: 0 },
 					]}
 					onChange={val => {
-						value.active = Number(val);
-						onChange(JSON.stringify(value));
+						onChange({ 'arrow-status': !!+val });
 					}}
 				/>
 			}
-			{!!value.active && (
+			{props['arrow-status'] && (
 				<Fragment>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label=''
-						selected={getLastBreakpointValue(
-							value,
-							'side',
-							breakpoint
+						selected={getLastBreakpointAttribute(
+							'arrow-side',
+							breakpoint,
+							props
 						)}
 						options={getOptions()}
 						onChange={val => {
-							value[breakpoint].side = val;
-							onChange(JSON.stringify(value));
+							onChangeValue('arrow-side', val);
 						}}
 					/>
 					<RangeControl
 						label={__('Position', 'maxi-blocks')}
-						value={getLastBreakpointValue(
-							value,
-							'position',
-							breakpoint
+						value={getLastBreakpointAttribute(
+							'arrow-position',
+							breakpoint,
+							props
 						)}
 						min='0'
 						max='100'
 						onChange={val => {
-							isNil(val)
-								? (value[breakpoint].position =
-										defaultValue[breakpoint].position)
-								: (value[breakpoint].position = val);
+							const value = isNil(val)
+								? getDefaultAttribute(
+										`arrow-position-${breakpoint}`
+								  )
+								: val;
 
-							onChange(JSON.stringify(value));
+							onChangeValue('arrow-position', value);
 						}}
 						allowReset
-						initialPosition={defaultValue[breakpoint].position}
+						initialPosition={getDefaultAttribute(
+							`arrow-position-${breakpoint}`
+						)}
 					/>
 					<SizeControl
 						label={__('Arrow Size', 'maxi-blocks')}
-						unit={getLastBreakpointValue(
-							value,
-							'widthUnit',
-							breakpoint
+						unit={getLastBreakpointAttribute(
+							'arrow-widthUnit',
+							breakpoint,
+							props
 						)}
 						disableUnit
-						defaultUnit={defaultValue[breakpoint].widthUnit}
-						onChangeUnit={val => {
-							value[breakpoint].widthUnit = val;
-							onChange(JSON.stringify(value));
-						}}
-						value={getLastBreakpointValue(
-							value,
-							'width',
-							breakpoint
+						defaultUnit={getDefaultAttribute(
+							`arrow-width-unit-${breakpoint}`
 						)}
-						defaultValue={defaultValue[breakpoint].width}
+						onChangeUnit={val => {
+							onChangeValue('arrow-width-unit', val);
+						}}
+						value={getLastBreakpointAttribute(
+							'arrow-width',
+							breakpoint,
+							props
+						)}
+						defaultArrow={getDefaultAttribute(
+							`arrow-width-${breakpoint}`
+						)}
 						onChangeValue={val => {
-							value[breakpoint].width = val;
-							onChange(JSON.stringify(value));
+							const value = isNil(val)
+								? getDefaultAttribute(
+										`arrow-width-${breakpoint}`
+								  )
+								: val;
+							onChangeValue('arrow-width', value);
 						}}
 						minMaxSettings={minMaxSettings}
 					/>

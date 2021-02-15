@@ -6,17 +6,19 @@ const { createHigherOrderComponent } = wp.compose;
 const { select } = wp.data;
 
 /**
+ * Internal dependencies
+ */
+import * as attributes from '../styles/defaults/index';
+
+/**
  * External Dependencies
  */
-import { uniqueId, isEmpty, isNil, isNumber } from 'lodash';
+import { uniqueId, isEmpty, isNil } from 'lodash';
 
 /**
  * General
  */
 const allowedBlocks = [
-	'maxi-blocks/block-image-box',
-	'maxi-blocks/block-title-extra',
-	'maxi-blocks/testimonials-slider-block',
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/button-maxi',
@@ -25,9 +27,10 @@ const allowedBlocks = [
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
+	'maxi-blocks/group-maxi',
 	'maxi-blocks/svg-icon-maxi',
-	'maxi-blocks/icon-maxi',
 	'maxi-blocks/font-icon-maxi',
+	'maxi-blocks/test-maxi',
 ];
 
 /**
@@ -36,17 +39,20 @@ const allowedBlocks = [
  * @param {Object} settings Original block settings.
  * @return {Object} Filtered block settings.
  */
-function addAttributes(settings) {
+const addAttributes = settings => {
 	// Add custom selector/id
 	if (allowedBlocks.includes(settings.name) && !isNil(settings.attributes)) {
-		settings.attributes = Object.assign(settings.attributes, {
+		settings.attributes = {
 			blockStyle: {
 				type: 'string',
-				default: 'maxi-custom',
 			},
 			defaultBlockStyle: {
 				type: 'string',
 				default: 'maxi-def-light',
+			},
+			blockStyleBackground: {
+				type: 'number',
+				default: 1,
 			},
 			uniqueID: {
 				type: 'string',
@@ -55,24 +61,16 @@ function addAttributes(settings) {
 				type: 'boolean',
 			},
 			linkSettings: {
-				type: 'string',
-				default: '{}',
+				type: 'object',
 			},
 			extraClassName: {
 				type: 'string',
 				default: '',
 			},
-			zIndex: {
-				type: 'string',
-				default:
-					'{"label":"ZIndex","general":{"z-index":""},"xxl":{"z-index":""},"xl":{"z-index":""},"l":{"z-index":""},"m":{"z-index":""},"s":{"z-index":""},"xs":{"z-index":""}}',
-			},
-			breakpoints: {
-				type: 'string',
-				default:
-					'{"label":"Breakpoints","general":"","xl":"","l":"","m":"","s":"","xs":""}',
-			},
-		});
+			...attributes.zIndex,
+			...attributes.breakpoints,
+			...settings.attributes,
+		};
 	}
 
 	if (allowedBlocks.includes(settings.name) && !isNil(settings.support)) {
@@ -82,7 +80,7 @@ function addAttributes(settings) {
 	}
 
 	return settings;
-}
+};
 
 const uniqueIdCreator = name => {
 	const newID = uniqueId(`${name.replace('maxi-blocks/', '')}-`);
@@ -105,7 +103,7 @@ const uniqueIdCreator = name => {
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
 		const {
-			attributes: { uniqueID, breakpoints },
+			attributes: { uniqueID },
 			name,
 			clientId,
 		} = props;
@@ -128,24 +126,6 @@ const withAttributes = createHigherOrderComponent(
 			if (parentBlocks.includes(clientId)) parentBlocks.pop();
 
 			props.attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
-
-			// Breakpoints
-			const defaultBreakpoints = select(
-				'maxiBlocks'
-			).receiveMaxiBreakpoints();
-			const value = JSON.parse(breakpoints);
-
-			if (!isNumber(value.xl) && !isEmpty(defaultBreakpoints)) {
-				const response = {
-					xl: defaultBreakpoints.xl,
-					l: defaultBreakpoints.l,
-					m: defaultBreakpoints.m,
-					s: defaultBreakpoints.s,
-					xs: defaultBreakpoints.xs,
-				};
-
-				props.attributes.breakpoints = JSON.stringify(response);
-			}
 		}
 
 		return <BlockEdit {...props} />;

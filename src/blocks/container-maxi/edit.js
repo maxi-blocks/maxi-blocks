@@ -8,32 +8,28 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 /**
  * Internal dependencies
  */
-import {
-	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBreadcrumbs,
-	__experimentalBlockPlaceholder,
-	__experimentalShapeDivider,
-	__experimentalBackgroundDisplayer,
-	__experimentalArrowDisplayer,
-	__experimentalMotionPreview,
-} from '../../components';
 import Inspector from './inspector';
 import {
-	getBoxShadowObject,
-	getShapeDividerObject,
-	getShapeDividerSVGObject,
-	getTransformObject,
-	setBackgroundStyles,
-	setArrowStyles,
-	getLastBreakpointValue,
-} from '../../utils';
+	ArrowDisplayer,
+	BackgroundDisplayer,
+	BlockPlaceholder,
+	Breadcrumbs,
+	MaxiBlock,
+	MotionPreview,
+	ShapeDivider,
+	Toolbar,
+} from '../../components';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+import getStyles from './styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isObject, isNil } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -41,46 +37,41 @@ import { isEmpty, isObject, isNil } from 'lodash';
 const ContainerInnerBlocks = forwardRef((props, ref) => {
 	const {
 		children,
-		shapeDivider,
 		className,
-		dataAlign,
-		maxiBlockClass,
+		fullWidth,
+		defaultBlockStyle,
 		uniqueID,
-		background,
 	} = props;
-
-	const shapeDividerValue = !isObject(shapeDivider)
-		? JSON.parse(shapeDivider)
-		: shapeDivider;
 
 	return (
 		<__experimentalBlock
 			ref={ref}
 			className={className}
-			data-align={dataAlign}
-			data-gx_initial_block_class={maxiBlockClass}
+			data-align={fullWidth}
+			data-gx_initial_block_class={defaultBlockStyle}
 		>
-			<__experimentalBackgroundDisplayer
-				background={background}
+			<BackgroundDisplayer
+				{...getGroupAttributes(props, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+				])}
 				blockClassName={uniqueID}
 			/>
-
-			{!!shapeDividerValue.top.status && (
-				<__experimentalShapeDivider
-					shapeDividerOptions={shapeDivider}
+			{props['shape-divider-top-status'] && (
+				<ShapeDivider
+					{...getGroupAttributes(props, 'shapeDivider')}
+					location='top'
 				/>
 			)}
-
-			<div className='maxi-container-block__wrapper'>
-				<div className='maxi-container-block__container'>
-					{children}
-				</div>
-			</div>
-
-			{!!shapeDividerValue.bottom.status && (
-				<__experimentalShapeDivider
-					position='bottom'
-					shapeDividerOptions={shapeDivider}
+			<div className='maxi-container-block__container'>{children}</div>
+			{props['shape-divider-bottom-status'] && (
+				<ShapeDivider
+					{...getGroupAttributes(props, 'shapeDivider')}
+					location='bottom'
 				/>
 			)}
 		</__experimentalBlock>
@@ -90,170 +81,63 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 /**
  * Edit
  */
+
+const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
+const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
+
 class edit extends MaxiBlock {
-	get getObject() {
-		const {
-			uniqueID,
-			arrow,
-			background,
-			backgroundHover,
-			overlay,
-			overlayHover,
-			border,
-			borderHover,
-			boxShadow,
-			shapeDivider,
-		} = this.props.attributes;
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
+	}
 
-		let response = {
-			[uniqueID]: this.getNormalObject,
-			[`${uniqueID}:hover`]: this.getHoverObject,
-			[`${uniqueID}>.maxi-container-block__wrapper`]: this
-				.getWrapperObject,
-			[`${uniqueID}>.maxi-container-block__wrapper>.maxi-container-block__container`]: this
-				.getContainerObject,
-			[`${uniqueID} .maxi-shape-divider__top`]: {
-				shapeDivider: {
-					...getShapeDividerObject(JSON.parse(shapeDivider).top),
-				},
-			},
-			[`${uniqueID} .maxi-shape-divider__top svg`]: {
-				shapeDivider: {
-					...getShapeDividerSVGObject(JSON.parse(shapeDivider).top),
-				},
-			},
-			[`${uniqueID} .maxi-shape-divider__bottom`]: {
-				shapeDivider: {
-					...getShapeDividerObject(JSON.parse(shapeDivider).bottom),
-				},
-			},
-			[`${uniqueID} .maxi-shape-divider__bottom svg`]: {
-				shapeDivider: {
-					...getShapeDividerSVGObject(
-						JSON.parse(shapeDivider).bottom
+	get getCustomData() {
+		const { uniqueID } = this.props.attributes;
+
+		const motionStatus =
+			!!this.props.attributes['motion-status'] ||
+			!isEmpty(this.props.attributes['entrance-type']) ||
+			!!this.props.attributes['parallax-status'];
+
+		const shapeStatus =
+			!!this.props.attributes['shape-divider-top-status'] ||
+			!!this.props.attributes['shape-divider-bottom-status'];
+
+		return {
+			[uniqueID]: {
+				...(motionStatus && {
+					...getGroupAttributes(this.props.attributes, [
+						'motion',
+						'entrance',
+						'parallax',
+					]),
+				}),
+				...(shapeStatus && {
+					...getGroupAttributes(
+						this.props.attributes,
+						'shapeDivider'
 					),
-				},
+				}),
 			},
 		};
-
-		response = Object.assign(
-			response,
-			setBackgroundStyles(
-				`${uniqueID} .maxi-container-block__wrapper`,
-				background,
-				backgroundHover,
-				overlay,
-				overlayHover,
-				border,
-				borderHover
-			),
-			setArrowStyles(uniqueID, arrow, background, border, boxShadow)
-		);
-
-		return response;
-	}
-
-	get getNormalObject() {
-		const {
-			size,
-			opacity,
-			border,
-			boxShadow,
-			zIndex,
-			position,
-			display,
-			transform,
-		} = this.props.attributes;
-
-		const response = {
-			size: { ...JSON.parse(size) },
-			border: { ...JSON.parse(border) },
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
-			opacity: { ...JSON.parse(opacity) },
-			zIndex: { ...JSON.parse(zIndex) },
-			position: { ...JSON.parse(position) },
-			positionOptions: { ...JSON.parse(position).options },
-			display: { ...JSON.parse(display) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
-			container: {
-				label: 'Container',
-				general: {},
-			},
-		};
-
-		return response;
-	}
-
-	get getHoverObject() {
-		const { borderHover, boxShadowHover } = this.props.attributes;
-
-		const response = {
-			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
-			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-		};
-
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			};
-		}
-
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
-			response.borderHover = {
-				...JSON.parse(borderHover),
-			};
-		}
-
-		return response;
-	}
-
-	get getWrapperObject() {
-		const { margin, padding } = this.props.attributes;
-
-		const response = {
-			margin: { ...JSON.parse(margin) },
-			padding: { ...JSON.parse(padding) },
-		};
-
-		return response;
-	}
-
-	get getContainerObject() {
-		const { isFirstOnHierarchy, sizeContainer } = this.props.attributes;
-
-		const response = {
-			sizeContainer: { ...JSON.parse(sizeContainer) },
-		};
-
-		if (isFirstOnHierarchy) return response;
-
-		return {};
 	}
 
 	render() {
 		const {
-			attributes: {
-				uniqueID,
-				isFirstOnHierarchy,
-				blockStyle,
-				defaultBlockStyle,
-				fullWidth,
-				extraClassName,
-				background,
-				shapeDivider,
-				arrow,
-				display,
-				motion,
-			},
+			attributes,
 			className,
 			clientId,
 			hasInnerBlock,
 			deviceType,
 		} = this.props;
-
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+		const {
+			uniqueID,
+			isFirstOnHierarchy,
+			blockStyle,
+			defaultBlockStyle,
+			blockStyleBackground,
+			fullWidth,
+			extraClassName,
+		} = attributes;
 
 		const classes = classnames(
 			'maxi-block',
@@ -261,96 +145,108 @@ class edit extends MaxiBlock {
 			'maxi-container-block',
 			'maxi-motion-effect',
 			`maxi-motion-effect-${uniqueID}`,
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
+			blockStyle !== 'maxi-custom' &&
+				`maxi-background--${blockStyleBackground}`,
 			extraClassName,
 			className
 		);
 
-		const shapeDividerValue = !isObject(shapeDivider)
-			? JSON.parse(shapeDivider)
-			: shapeDivider;
-
 		return [
-			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
-			<__experimentalBreadcrumbs />,
-			<Fragment>
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
+			<Fragment key={`container-content-${uniqueID}`}>
 				{isFirstOnHierarchy && fullWidth && (
-					<__experimentalMotionPreview motion={motion}>
+					<MotionPreview
+						key={`motion-preview-${uniqueID}`}
+						{...getGroupAttributes(attributes, 'motion')}
+					>
 						<__experimentalBlock.section
 							className={classes}
 							data-align={fullWidth}
 							data-maxi_initial_block_class={defaultBlockStyle}
 						>
-							<__experimentalArrowDisplayer arrow={arrow} />
-
-							{!!shapeDividerValue.top.status && (
-								<__experimentalShapeDivider
-									shapeDividerOptions={shapeDivider}
+							<ArrowDisplayer
+								{...getGroupAttributes(attributes, 'arrow')}
+								breakpoint={deviceType}
+							/>
+							<BackgroundDisplayer
+								{...getGroupAttributes(attributes, [
+									'background',
+									'backgroundColor',
+									'backgroundImage',
+									'backgroundVideo',
+									'backgroundGradient',
+									'backgroundSVG',
+									'backgroundHover',
+									'backgroundColorHover',
+									'backgroundImageHover',
+									'backgroundVideoHover',
+									'backgroundGradientHover',
+									'backgroundSVGHover',
+								])}
+								blockClassName={uniqueID}
+							/>
+							{attributes['shape-divider-top-status'] && (
+								<ShapeDivider
+									{...getGroupAttributes(
+										attributes,
+										'shapeDivider'
+									)}
+									location='top'
 								/>
 							)}
-
-							<div className='maxi-container-block__wrapper'>
-								<__experimentalBackgroundDisplayer
-									background={background}
-									blockClassName={uniqueID}
-								/>
-								<InnerBlocks
-									templateLock={false}
-									__experimentalTagName='div'
-									__experimentalPassedProps={{
-										className:
-											'maxi-container-block__container',
-									}}
-									renderAppender={
-										!hasInnerBlock
-											? () => (
-													<__experimentalBlockPlaceholder
-														clientId={clientId}
-													/>
-											  )
-											: true
-											? () => (
-													<InnerBlocks.ButtonBlockAppender />
-											  )
-											: false
-									}
-								/>
-							</div>
-							{!!shapeDividerValue.bottom.status && (
-								<__experimentalShapeDivider
-									position='bottom'
-									shapeDividerOptions={shapeDivider}
+							<InnerBlocks
+								allowedBlocks={ALLOWED_BLOCKS}
+								template={ROW_TEMPLATE}
+								templateLock={false}
+								__experimentalTagName='div'
+								__experimentalPassedProps={{
+									className:
+										'maxi-container-block__container',
+								}}
+								renderAppender={
+									!hasInnerBlock
+										? () => (
+												<BlockPlaceholder
+													clientId={clientId}
+												/>
+										  )
+										: true
+										? () => (
+												<InnerBlocks.ButtonBlockAppender />
+										  )
+										: false
+								}
+							/>
+							{attributes['shape-divider-bottom-status'] && (
+								<ShapeDivider
+									{...getGroupAttributes(
+										attributes,
+										'shapeDivider'
+									)}
+									location='bottom'
 								/>
 							)}
 						</__experimentalBlock.section>
-					</__experimentalMotionPreview>
+					</MotionPreview>
 				)}
-				{(!isFirstOnHierarchy || !fullWidth) && (
+				{!fullWidth && (
 					<InnerBlocks
 						templateLock={false}
 						__experimentalTagName={ContainerInnerBlocks}
 						__experimentalPassedProps={{
 							className: classes,
-							dataAlign: fullWidth,
-							maxiBlockClass: defaultBlockStyle,
-							shapeDivider,
-							background,
-							uniqueID,
+							...attributes,
 						}}
 						renderAppender={
 							!hasInnerBlock
-								? () => (
-										<__experimentalBlockPlaceholder
-											clientId={clientId}
-										/>
-								  )
-								: true
-								? () => <InnerBlocks.ButtonBlockAppender />
-								: false
+								? () => <BlockPlaceholder clientId={clientId} />
+								: () => <InnerBlocks.ButtonBlockAppender />
 						}
 					/>
 				)}

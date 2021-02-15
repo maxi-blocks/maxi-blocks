@@ -2,51 +2,58 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
+const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
  */
-import __experimentalNumberControl from '../number-control';
+import NumberControl from '../number-control';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
 
 /**
  * Component
  */
 const ResponsiveControl = props => {
-	const {
-		breakpoints,
-		defaultBreakpoints,
-		onChange,
-		className,
-		breakpoint,
-	} = props;
+	const { onChange, className, breakpoint } = props;
 
-	const value = !isObject(breakpoints)
-		? JSON.parse(breakpoints)
-		: breakpoints;
+	const { defaultBreakpoints } = useSelect(select => {
+		const defaultBreakpoints = select(
+			'maxiBlocks'
+		).receiveMaxiBreakpoints();
 
-	const defaultValue = !isObject(defaultBreakpoints)
-		? JSON.parse(defaultBreakpoints)
-		: defaultBreakpoints;
+		return {
+			defaultBreakpoints,
+		};
+	});
 
 	const classes = classnames('maxi-responsive-control', className);
 
 	return (
 		<div className={classes}>
-			<__experimentalNumberControl
+			<NumberControl
 				label={__('Breakpoint', 'maxi-blocks')}
 				className='maxi-responsive-control__breakpoint'
-				value={value[breakpoint]}
-				defaultValue={defaultValue[breakpoint]}
-				onChange={val => {
-					value[breakpoint] = val;
-					onChange(JSON.stringify(value));
-				}}
+				value={
+					props[`breakpoints-${breakpoint}`]
+						? props[`breakpoints-${breakpoint}`]
+						: defaultBreakpoints[
+								breakpoint === 'xxl' ? 'xl' : breakpoint
+						  ]
+				}
+				defaultValue={
+					defaultBreakpoints[breakpoint === 'xxl' ? 'xl' : breakpoint]
+				}
+				onChange={val =>
+					onChange({
+						[`breakpoints-${
+							breakpoint === 'xxl' ? 'xl' : breakpoint
+						}`]: val,
+					})
+				}
 				min={0}
 				max={9999}
 			/>

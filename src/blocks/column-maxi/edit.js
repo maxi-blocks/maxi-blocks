@@ -2,37 +2,34 @@
  * WordPress dependencies
  */
 const { compose } = wp.compose;
-const { Fragment, forwardRef } = wp.element;
-const { ResizableBox, Spinner } = wp.components;
+const { Fragment, forwardRef, createRef } = wp.element;
+const { Spinner } = wp.components;
 const { withSelect, withDispatch, select } = wp.data;
 const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 
 /**
  * Internal dependencies
  */
-import {
-	MaxiBlock,
-	__experimentalToolbar,
-	__experimentalBlockPlaceholder,
-	__experimentalBackgroundDisplayer,
-} from '../../components';
 import Inspector from './inspector';
-import {
-	getLastBreakpointValue,
-	getBackgroundObject,
-	getBoxShadowObject,
-	getOpacityObject,
-	getColumnSizeObject,
-	getTransformObject,
-	setBackgroundStyles,
-} from '../../utils';
 import RowContext from '../row-maxi/context';
+import {
+	BackgroundDisplayer,
+	BlockPlaceholder,
+	BlockResizer,
+	MaxiBlock,
+	Toolbar,
+} from '../../components';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
+import getStyles from './styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, round, isObject } from 'lodash';
+import { isNil, round } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -46,7 +43,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			className={className}
 			data-gx_initial_block_class={maxiBlockClass}
 		>
-			<__experimentalBackgroundDisplayer background={background} />
+			<BackgroundDisplayer {...background} />
 			{children}
 		</__experimentalBlock.div>
 	);
@@ -56,216 +53,116 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  * Editor
  */
 class edit extends MaxiBlock {
-	get getObject() {
-		const {
-			uniqueID,
-			background,
-			backgroundHover,
-			overlay,
-			overlayHover,
-			border,
-			borderHover,
-		} = this.props.attributes;
-
-		let response = {
-			[`maxi-column-block__resizer__${uniqueID}`]: this.getResizerObject,
-			[uniqueID]: this.getNormalObject,
-			[`${uniqueID}:hover`]: this.getHoverObject,
-		};
-
-		response = Object.assign(
-			response,
-			setBackgroundStyles(
-				uniqueID,
-				background,
-				backgroundHover,
-				overlay,
-				overlayHover,
-				border,
-				borderHover
-			)
-		);
-
-		return response;
+	constructor(props) {
+		super(props);
+		this.resizableObject = createRef();
 	}
 
-	/**
-	 * Get object for styling
-	 */
-	get getNormalObject() {
-		const {
-			attributes: {
-				columnSize,
-				verticalAlign,
-				opacity,
-				boxShadow,
-				border,
-				margin,
-				padding,
-				zIndex,
-				display,
-				transform,
-			},
-		} = this.props;
-
-		const response = {
-			boxShadow: { ...getBoxShadowObject(JSON.parse(boxShadow)) },
-			border: { ...JSON.parse(border) },
-			borderWidth: { ...JSON.parse(border).borderWidth },
-			borderRadius: { ...JSON.parse(border).borderRadius },
-			margin: { ...JSON.parse(margin) },
-			padding: { ...JSON.parse(padding) },
-			opacity: { ...getOpacityObject(JSON.parse(opacity)) },
-			zIndex: { ...JSON.parse(zIndex) },
-			columnSize: { ...getColumnSizeObject(JSON.parse(columnSize)) },
-			display: { ...JSON.parse(display) },
-			transform: { ...getTransformObject(JSON.parse(transform)) },
-			column: {
-				label: 'Column',
-				general: {},
-			},
-		};
-
-		if (!isNil(verticalAlign))
-			response.column.general['justify-content'] = verticalAlign;
-
-		return response;
-	}
-
-	get getHoverObject() {
-		const { boxShadowHover, borderHover } = this.props.attributes;
-
-		const response = {
-			borderWidthHover: { ...JSON.parse(borderHover).borderWidth },
-			borderRadiusHover: { ...JSON.parse(borderHover).borderRadius },
-		};
-
-		if (!isNil(boxShadowHover) && !!JSON.parse(boxShadowHover).status) {
-			response.boxShadowHover = {
-				...getBoxShadowObject(JSON.parse(boxShadowHover)),
-			};
-		}
-
-		if (!isNil(borderHover) && !!JSON.parse(borderHover).status) {
-			response.borderHover = {
-				...JSON.parse(borderHover),
-			};
-		}
-
-		return response;
-	}
-
-	get getBackgroundObject() {
-		const { background } = this.props.attributes;
-
-		const response = {
-			background: { ...getBackgroundObject(JSON.parse(background)) },
-		};
-
-		return response;
-	}
-
-	get getResizerObject() {
-		const { margin, display } = this.props.attributes;
-
-		const response = {
-			margin: { ...JSON.parse(margin) },
-			display: { ...JSON.parse(display) },
-		};
-
-		return response;
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
 	}
 
 	render() {
 		const {
-			attributes: {
-				uniqueID,
-				blockStyle,
-				columnSize,
-				background,
-				extraClassName,
-				defaultBlockStyle,
-				display,
-			},
-			clientId,
+			attributes,
 			className,
-			rowBlockWidth,
-			hasInnerBlock,
+			clientId,
 			deviceType,
+			hasInnerBlock,
 			onDeviceTypeChange,
 			originalNestedColumns,
-			setAttributes,
 			rowBlockId,
+			rowBlockWidth,
+			setAttributes,
 			updateRowPattern,
 		} = this.props;
+		const {
+			blockStyle,
+			blockStyleBackground,
+			defaultBlockStyle,
+			extraClassName,
+			uniqueID,
+		} = attributes;
 
-		onDeviceTypeChange();
-
-		const displayValue = !isObject(display) ? JSON.parse(display) : display;
+		onDeviceTypeChange(this.resizableObject.current);
 
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-column-block',
-			getLastBreakpointValue(displayValue, 'display', deviceType) ===
+			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
+			blockStyle !== 'maxi-custom' &&
+				`maxi-background--${blockStyleBackground}`,
 			extraClassName,
 			className
 		);
 
-		const columnValue = !isObject(columnSize)
-			? JSON.parse(columnSize)
-			: columnSize;
-
 		const getColumnWidthDefault = () => {
-			if (getLastBreakpointValue(columnValue, 'size', deviceType))
-				return `${getLastBreakpointValue(
-					columnValue,
-					'size',
-					deviceType
+			if (
+				getLastBreakpointAttribute(
+					'column-size',
+					deviceType,
+					attributes
+				)
+			)
+				return `${getLastBreakpointAttribute(
+					'column-size',
+					deviceType,
+					attributes
 				)}%`;
 
 			return `${100 / originalNestedColumns.length}%`;
 		};
 
+		/**
+		 * TODO: Gutenberg still does not have the disallowedBlocks feature
+		 */
+		const ALLOWED_BLOCKS = wp.blocks
+			.getBlockTypes()
+			.map(block => block.name)
+			.filter(
+				blockName =>
+					[
+						'maxi-blocks/container-maxi',
+						'maxi-blocks/row-maxi',
+					].indexOf(blockName) === -1
+			);
+
 		return [
-			<Inspector {...this.props} />,
-			<__experimentalToolbar {...this.props} />,
-			<RowContext.Consumer>
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				resizableObject={this.resizableObject.current}
+				{...this.props}
+			/>,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<RowContext.Consumer key={`column-content-${uniqueID}`}>
 				{context => (
 					<Fragment>
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
-							<ResizableBox
-								showHandle={context.displayHandlers}
+							<BlockResizer
 								className={classnames(
-									'maxi-block--backend', // Required by BackEndResponsiveStyles class to apply the styles
-									'maxi-block__resizer',
+									'maxi-block--backend',
 									'maxi-column-block__resizer',
-									`maxi-column-block__resizer__${uniqueID}`
+									`maxi-column-block__resizer__${uniqueID}`,
+									getLastBreakpointAttribute(
+										'display',
+										deviceType,
+										attributes
+									) === 'none' && 'maxi-block-display-none'
 								)}
-								defaultSize={{
-									width: getColumnWidthDefault(),
+								defaultSize={{ width: getColumnWidthDefault() }}
+								directions={{
+									right: true,
+									left: true,
 								}}
 								minWidth='1%'
 								maxWidth='100%'
-								enable={{
-									top: false,
-									right: true,
-									bottom: false,
-									left: true,
-									topRight: false,
-									bottomRight: false,
-									bottomLeft: false,
-									topLeft: false,
-								}}
+								showHandle={context.displayHandlers}
 								onResizeStop={(event, direction, elt) => {
-									columnValue[deviceType].size = round(
-										Number(elt.style.width.replace('%', ''))
-									);
-
 									updateRowPattern(
 										rowBlockId,
 										deviceType,
@@ -273,34 +170,49 @@ class edit extends MaxiBlock {
 									);
 
 									setAttributes({
-										columnSize: JSON.stringify(columnValue),
+										[`column-size-${deviceType}`]: round(
+											+elt.style.width.replace('%', '')
+										),
 									});
 								}}
 							>
 								<InnerBlocks
-									// allowedBlocks={ALLOWED_BLOCKS}
+									allowedBlocks={ALLOWED_BLOCKS}
 									templateLock={false}
 									__experimentalTagName={ContainerInnerBlocks}
 									__experimentalPassedProps={{
 										className: classes,
 										maxiBlockClass: defaultBlockStyle,
-										background,
+										background: {
+											...getGroupAttributes(attributes, [
+												'background',
+												'backgroundColor',
+												'backgroundImage',
+												'backgroundVideo',
+												'backgroundGradient',
+												'backgroundSVG',
+												'backgroundHover',
+												'backgroundColorHover',
+												'backgroundImageHover',
+												'backgroundVideoHover',
+												'backgroundGradientHover',
+												'backgroundSVGHover',
+											]),
+										},
 									}}
 									renderAppender={
 										!hasInnerBlock
 											? () => (
-													<__experimentalBlockPlaceholder
+													<BlockPlaceholder
 														clientId={clientId}
 													/>
 											  )
-											: true
-											? () => (
+											: () => (
 													<InnerBlocks.ButtonBlockAppender />
 											  )
-											: false
 									}
 								/>
-							</ResizableBox>
+							</BlockResizer>
 						)}
 					</Fragment>
 				)}
@@ -338,32 +250,24 @@ const editSelect = withSelect((select, ownProps) => {
 });
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
-	const {
-		attributes: { uniqueID, columnSize },
-	} = ownProps;
+	const onDeviceTypeChange = resizableObject => {
+		if (isNil(resizableObject)) return;
 
-	const onDeviceTypeChange = () => {
 		let newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
 		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
 
-		const node = document.querySelector(
-			`.maxi-column-block__resizer__${uniqueID}`
-		);
-		if (isNil(node)) return;
-
-		const newColumnSize = JSON.parse(columnSize);
-
-		const newSize = newColumnSize[newDeviceType].size;
+		const node = resizableObject.resizable;
+		const newSize = ownProps.attributes[`column-size-${newDeviceType}`];
 
 		if (['xxl', 'xl', 'l'].includes(newDeviceType)) {
 			if (newSize === '') {
-				node.style.width = `${newColumnSize.general.size}%`;
+				node.style.width = `${ownProps.attributes['column-size-general']}%`;
 			} else {
 				node.style.width = `${newSize}%`;
 			}
 		} else if (['s', 'xs'].includes(newDeviceType)) {
 			if (newSize === '') {
-				node.style.width = `${newColumnSize.m.size}%`;
+				node.style.width = `${ownProps.attributes['column-size-m']}%`;
 			} else {
 				node.style.width = `${newSize}%`;
 			}
@@ -373,16 +277,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const updateRowPattern = (rowBlockId, deviceType, rowPatternAttribute) => {
-		const newRowPatternObject = JSON.parse(rowPatternAttribute);
-
-		const { rowPattern } = newRowPatternObject[deviceType];
-
-		if (rowPattern.indexOf('custom-') === -1) {
-			newRowPatternObject[deviceType].rowPattern = `custom-${rowPattern}`;
-		}
-
 		dispatch('core/block-editor').updateBlockAttributes(rowBlockId, {
-			rowPattern: JSON.stringify(newRowPatternObject),
+			rowPattern: rowPatternAttribute[`row-pattern-${deviceType}`],
 		});
 	};
 

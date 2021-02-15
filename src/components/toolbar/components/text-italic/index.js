@@ -8,14 +8,10 @@ const { Icon, Button, Tooltip } = wp.components;
  * Internal dependencies
  */
 import {
-	__experimentalGetCustomFormatValue,
-	__experimentalSetFormat,
+	getCustomFormatValue,
+	setFormat,
 } from '../../../../extensions/text/formats';
-
-/**
- * External dependencies
- */
-import { isObject } from 'lodash';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles and icons
@@ -26,21 +22,15 @@ import { toolbarItalic } from '../../../../icons';
 /**
  * TextItalic
  */
-const TextItalic = ({
-	blockName,
-	typography,
-	formatValue,
-	onChange,
-	isList,
-	breakpoint,
-}) => {
+const TextItalic = props => {
+	const { blockName, formatValue, onChange, isList, breakpoint } = props;
+
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typographyValue =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
+	const typography = { ...getGroupAttributes(props, 'typography') };
 
-	const italicValue = __experimentalGetCustomFormatValue({
-		typography: typographyValue,
+	const italicValue = getCustomFormatValue({
+		typography,
 		formatValue,
 		prop: 'font-style',
 		breakpoint,
@@ -49,24 +39,18 @@ const TextItalic = ({
 	const isActive = (italicValue === 'italic' && true) || false;
 
 	const onClick = () => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const obj = setFormat({
 			formatValue,
 			isActive,
 			isList,
-			typography: typographyValue,
+			typography,
 			value: {
 				'font-style': isActive ? '' : 'italic',
 			},
 			breakpoint,
 		});
 
-		onChange({
-			typography: JSON.stringify(newTypography),
-			...(newContent && { content: newContent }),
-		});
+		onChange(obj);
 	};
 
 	return (

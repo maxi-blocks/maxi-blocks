@@ -8,14 +8,9 @@ const { Icon, Button, Tooltip } = wp.components;
  * Internal dependencies
  */
 import {
-	__experimentalSetFormat,
-	__experimentalGetCustomFormatValue,
+	setFormat,
+	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
-
-/**
- * External dependencies
- */
-import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -26,39 +21,31 @@ import { toolbarSuperScript } from '../../../../icons';
  * TextFormatSuperscript
  */
 const TextFormatSuperscript = props => {
-	const { typography, formatValue, onChange, isList, breakpoint } = props;
+	const { formatValue, onChange, isList, breakpoint, typography } = props;
 
-	const typographyValue =
-		(!isObject(typography) && JSON.parse(typography)) || typography;
-
-	const superscriptValue = __experimentalGetCustomFormatValue({
-		typography: typographyValue,
-		formatValue,
-		prop: 'vertical-align',
-		breakpoint,
-	});
+	const superscriptValue =
+		getCustomFormatValue({
+			typography,
+			formatValue,
+			prop: 'vertical-align',
+			breakpoint,
+		}) || '';
 
 	const isActive = (superscriptValue === 'super' && true) || false;
 
 	const onClick = () => {
-		const {
-			typography: newTypography,
-			content: newContent,
-		} = __experimentalSetFormat({
+		const obj = setFormat({
 			formatValue,
 			isActive,
 			isList,
-			typography: typographyValue,
+			typography,
 			value: {
 				'vertical-align': isActive ? '' : 'super',
 			},
 			breakpoint,
 		});
 
-		onChange({
-			typography: JSON.stringify(newTypography),
-			...(newContent && { content: newContent }),
-		});
+		onChange(obj);
 	};
 
 	return (

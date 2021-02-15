@@ -1,3 +1,5 @@
+const { __ } = wp.i18n;
+
 import { registerPlugin } from '@wordpress/plugins';
 import { PluginSidebar, PluginSidebarMoreMenuItem } from '@wordpress/edit-post';
 import { AdminSettings } from '@wordpress/icons';

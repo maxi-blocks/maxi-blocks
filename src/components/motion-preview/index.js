@@ -2,25 +2,23 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isEmpty, isNull } from 'lodash';
+import { isEmpty, isNull } from 'lodash';
 
 /**
  * Component
  */
 const MotionPreview = props => {
-	const { className, motion, children } = props;
-
-	const motionValue = !isObject(motion) ? JSON.parse(motion) : motion;
+	const { className, children } = props;
 
 	let motionPreview = {};
 
-	if (!isEmpty(motionValue.interaction.timeline)) {
-		const currentTime = motionValue.interaction.activeTimeline.time;
-		const currentIndex = motionValue.interaction.activeTimeline.index;
+	if (!isEmpty(props['motion-time-line'])) {
+		const currentTime = props['motion-active-time-line-time'];
+		const currentIndex = props['motion-active-time-line-index'];
 
 		if (!isNull(currentTime)) {
 			const currentItem =
-				motionValue.interaction.timeline[currentTime][currentIndex];
+				props['motion-time-line'][currentTime][currentIndex];
 
 			let transformStyle = '';
 
@@ -65,7 +63,7 @@ const MotionPreview = props => {
 			}
 
 			motionPreview = {
-				transformOrigin: `${motionValue.interaction.transformOrigin.xAxis} ${motionValue.interaction.transformOrigin.yAxis}`,
+				transformOrigin: `${props['motion-transform-origin-x']} ${props['motion-transform-origin-y']}`,
 				transformStyle: 'preserve-3d',
 				transform: transformStyle,
 				opacity:
@@ -83,9 +81,7 @@ const MotionPreview = props => {
 	return (
 		<div
 			className={classes}
-			style={
-				!!motionValue.interaction.previewStatus ? motionPreview : null
-			}
+			style={props['motion-preview-status'] ? motionPreview : null}
 		>
 			{children}
 		</div>

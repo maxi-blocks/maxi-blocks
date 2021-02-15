@@ -6,7 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults';
+import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -16,86 +16,48 @@ const attributes = {
 		type: 'string',
 		default: __('Container', 'maxi-blocks'),
 	},
-	sizeContainer: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalContainer),
-	},
 	fullWidth: {
 		type: 'string',
 		default: 'full',
 	},
-	size: {
+	blockStyle: {
 		type: 'string',
-		default: JSON.stringify(attributesData.size),
+		default: 'maxi-custom',
 	},
-	opacity: {
-		type: 'number',
-		default: JSON.stringify(attributesData.opacity),
-	},
-	background: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
-	},
-	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
-	},
-	overlay: {
-		type: 'string',
-		default: JSON.stringify(attributesData.overlay),
-	},
-	overlayHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.overlayHover),
-	},
-	border: {
-		type: 'string',
-		default: JSON.stringify(attributesData.border),
-	},
-	borderHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.borderHover),
-	},
-	boxShadow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
-	},
-	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
-	},
-	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
-	},
-	padding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
-	},
-	shapeDivider: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalShapeDivider),
-	},
-	position: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalPosition),
-	},
-	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
-	},
-	motion: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalMotion),
-	},
-	arrow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalArrow),
-	},
-	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
-	},
+	...attributesData.container,
+	...attributesData.background,
+	...attributesData.backgroundColor,
+	...attributesData.backgroundImage,
+	...attributesData.backgroundVideo,
+	...attributesData.backgroundGradient,
+	...attributesData.backgroundSVG,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.backgroundImageHover,
+	...attributesData.backgroundVideoHover,
+	...attributesData.backgroundGradientHover,
+	...attributesData.backgroundSVGHover,
+	...attributesData.size,
+	...attributesData.opacity,
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...attributesData.borderRadius,
+	...attributesData.borderHover,
+	...attributesData.borderWidthHover,
+	...attributesData.borderRadiusHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.margin,
+	...attributesData.padding,
+	...attributesData.arrow,
+	...attributesData.shapeDivider,
+	...attributesData.motion,
+	...attributesData.entrance,
+	...attributesData.parallax,
+	...attributesData.transform,
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.zIndex,
 };
 
 export default attributes;

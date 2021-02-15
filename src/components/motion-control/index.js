@@ -7,17 +7,17 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 import AddTimeline from './addTimeline';
 import ShowTimeline from './showTimeline';
 import TimelineSettings from './timelineSettings';
 import TimelinePresets from './timelinePresets';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject } from 'lodash';
 
 /**
  * Styles and icons
@@ -28,75 +28,50 @@ import './editor.scss';
  * Component
  */
 const MotionControl = props => {
-	const { className, motion, onChange } = props;
-
-	const motionValue = !isObject(motion) ? JSON.parse(motion) : motion;
-
-	const { interaction } = motionValue;
+	const { className, onChange } = props;
 
 	const classes = classnames('maxi-motion-control', className);
 
 	return (
 		<div className={classes}>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Use Motion Effects', 'maxi-blocks')}
-				selected={interaction.interactionStatus}
+				selected={+props['motion-status']}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => {
-					interaction.interactionStatus = Number(val);
-					onChange(JSON.stringify(motionValue));
-				}}
+				onChange={val => onChange({ 'motion-status': !!+val })}
 			/>
-			{!!interaction.interactionStatus && (
+			{props['motion-status'] && (
 				<Fragment>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Preview', 'maxi-blocks')}
-						selected={interaction.previewStatus}
+						selected={+props['motion-preview-status']}
 						options={[
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
-						onChange={val => {
-							interaction.previewStatus = Number(val);
-							onChange(JSON.stringify(motionValue));
-						}}
+						onChange={val =>
+							onChange({ 'motion-preview-status': !!+val })
+						}
 					/>
 					<TimelinePresets
-						interaction={interaction}
-						onChange={interaction => {
-							motionValue.interaction = interaction;
-
-							onChange(JSON.stringify(motionValue));
-						}}
+						{...getGroupAttributes(props, 'motion')}
+						onChange={obj => onChange(obj)}
 					/>
-
 					<AddTimeline
-						interaction={interaction}
-						onChange={interaction => {
-							motionValue.interaction = interaction;
-
-							onChange(JSON.stringify(motionValue));
-						}}
+						{...getGroupAttributes(props, 'motion')}
+						onChange={obj => onChange(obj)}
 					/>
-
 					<ShowTimeline
-						interaction={interaction}
-						onChange={interaction => {
-							motionValue.interaction = interaction;
-
-							onChange(JSON.stringify(motionValue));
-						}}
+						{...getGroupAttributes(props, 'motion')}
+						onChange={obj => onChange(obj)}
 					/>
-
 					<TimelineSettings
-						interaction={interaction}
-						onChange={interaction => {
-							motionValue.interaction = interaction;
-
-							onChange(JSON.stringify(motionValue));
+						{...getGroupAttributes(props, 'motion')}
+						onChange={obj => {
+							onChange(obj);
 						}}
 					/>
 				</Fragment>

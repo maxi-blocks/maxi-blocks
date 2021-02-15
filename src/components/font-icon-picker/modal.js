@@ -206,7 +206,10 @@ const MaxiModalIcon = props => {
 												'maxi-font-icon-picker__category-button--active'
 										)}
 									>
-										Font-Awesome - Regular
+										{__(
+											'Font-Awesome - Regular',
+											'maxi-blocks'
+										)}
 									</button>
 								</li>
 								<li>
@@ -221,7 +224,10 @@ const MaxiModalIcon = props => {
 												'maxi-font-icon-picker__category-button--active'
 										)}
 									>
-										Font-Awesome - Solid
+										{__(
+											'Font-Awesome - Solid',
+											'maxi-blocks'
+										)}
 									</button>
 								</li>
 								<li>
@@ -236,7 +242,10 @@ const MaxiModalIcon = props => {
 												'maxi-font-icon-picker__category-button--active'
 										)}
 									>
-										Font-Awesome - Brands
+										{__(
+											'Font-Awesome - Brands',
+											'maxi-blocks'
+										)}
 									</button>
 								</li>
 							</ul>
@@ -247,7 +256,7 @@ const MaxiModalIcon = props => {
 								}}
 								className='maxi-font-icon-picker__clear-filters'
 							>
-								Clear All Filters
+								{__('Clear All Filters', 'maxi-blocks')}
 							</button>
 						</div>
 						{!isLoading ? (
@@ -258,14 +267,20 @@ const MaxiModalIcon = props => {
 										onChange={value => {
 											setFilters({ search: value });
 										}}
-										placeholder={__('Search for Icons…')}
+										placeholder={__(
+											'Search for Icons…',
+											'maxi-blocks'
+										)}
 									/>
 									<div className='maxi-font-icon-picker__icons-list'>
 										{displayedList.length ? (
 											displayedList
 												.slice(range.start, range.end)
-												.map(icon => (
-													<span className='maxi-font-icon-picker__card'>
+												.map((icon, i) => (
+													<span
+														key={`maxi-font-icon-picker__card-${i}`}
+														className='maxi-font-icon-picker__card'
+													>
 														<i
 															className={`fa${icon.cat.charAt(
 																0
@@ -297,13 +312,19 @@ const MaxiModalIcon = props => {
 																setOpen(!open);
 															}}
 														>
-															Insert
+															{__(
+																'Insert',
+																'maxi-blocks'
+															)}
 														</button>
 													</span>
 												))
 										) : (
 											<span className='maxi-font-icon-picker__no-icons'>
-												No Icons Found
+												{__(
+													'No Icons Found',
+													'maxi-blocks'
+												)}
 											</span>
 										)}
 									</div>
@@ -336,7 +357,7 @@ const MaxiModalIcon = props => {
 								</div>
 							</Fragment>
 						) : (
-							<span>Loading...</span>
+							<span>{__('Loading...', 'maxi-blocks')}</span>
 						)}
 					</div>
 				</Modal>

@@ -8,36 +8,30 @@ const { Fragment } = wp.element;
  * Internal dependencies
  */
 import {
-	__experimentalShapeDivider,
-	__experimentalBackgroundDisplayer,
-	__experimentalArrowDisplayer,
+	ArrowDisplayer,
+	BackgroundDisplayer,
+	ShapeDivider,
 } from '../../components';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isObject } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Save
  */
 const save = props => {
+	const { attributes, className } = props;
 	const {
-		attributes: {
-			uniqueID,
-			isFirstOnHierarchy,
-			blockStyle,
-			defaultBlockStyle,
-			fullWidth,
-			background,
-			extraClassName,
-			shapeDivider,
-			motion,
-			arrow,
-		},
-		className,
-	} = props;
+		uniqueID,
+		blockStyle,
+		defaultBlockStyle,
+		fullWidth,
+		extraClassName,
+	} = attributes;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -49,67 +43,51 @@ const save = props => {
 		!isNil(uniqueID) ? uniqueID : null
 	);
 
-	const shapeDividerValue = !isObject(shapeDivider)
-		? JSON.parse(shapeDivider)
-		: shapeDivider;
-
 	return (
 		<Fragment>
-			{isFirstOnHierarchy && (
-				<section
-					className={classes}
-					data-gx_initial_block_class={defaultBlockStyle}
-					data-motion={motion}
-					data-shape-divider={shapeDivider}
-					data-motion-id={uniqueID}
-					data-background={background}
-				>
-					<__experimentalArrowDisplayer arrow={arrow} />
-					{!!shapeDividerValue.top.status && (
-						<__experimentalShapeDivider
-							shapeDividerOptions={shapeDivider}
-						/>
-					)}
-					<div className='maxi-container-block__wrapper'>
-						<__experimentalBackgroundDisplayer
-							background={background}
-						/>
-						<div className='maxi-container-block__container'>
-							<InnerBlocks.Content />
-						</div>
-					</div>
-					{!!shapeDividerValue.bottom.status && (
-						<__experimentalShapeDivider
-							position='bottom'
-							shapeDividerOptions={shapeDivider}
-						/>
-					)}
-				</section>
-			)}
-			{!isFirstOnHierarchy && (
-				<div
-					className={classes}
-					data-gx_initial_block_class={defaultBlockStyle}
-				>
-					<__experimentalBackgroundDisplayer
-						background={background}
+			<section
+				className={classes}
+				data-gx_initial_block_class={defaultBlockStyle}
+				data-motion-id={uniqueID}
+			>
+				<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />
+
+				<BackgroundDisplayer
+					{...getGroupAttributes(attributes, [
+						'background',
+						'backgroundColor',
+						'backgroundImage',
+						'backgroundVideo',
+						'backgroundGradient',
+						'backgroundSVG',
+						'backgroundHover',
+						'backgroundColorHover',
+						'backgroundImageHover',
+						'backgroundVideoHover',
+						'backgroundGradientHover',
+						'backgroundSVGHover',
+					])}
+					blockClassName={uniqueID}
+				/>
+
+				{attributes['shape-divider-top-status'] && (
+					<ShapeDivider
+						{...getGroupAttributes(attributes, 'shapeDivider')}
+						location='top'
 					/>
-					{!!shapeDividerValue.top.status && (
-						<__experimentalShapeDivider
-							shapeDividerOptions={shapeDivider}
-						/>
-					)}
-					<div className='maxi-container-block__wrapper'>
-						<InnerBlocks.Content />
-					</div>
-					{!!shapeDividerValue.bottom.status && (
-						<__experimentalShapeDivider
-							position='bottom'
-							shapeDividerOptions={shapeDivider}
-						/>
-					)}
+				)}
+
+				<div className='maxi-container-block__container'>
+					<InnerBlocks.Content />
 				</div>
-			)}
+
+				{attributes['shape-divider-bottom-status'] && (
+					<ShapeDivider
+						{...getGroupAttributes(attributes, 'shapeDivider')}
+						location='bottom'
+					/>
+				)}
+			</section>
 		</Fragment>
 	);
 };

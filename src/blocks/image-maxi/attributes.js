@@ -6,8 +6,7 @@ const { __ } = wp.i18n;
 /**
  * Imports
  */
-import * as attributesData from '../../extensions/styles/defaults';
-import size from './data';
+import * as attributesData from '../../extensions/styles/defaults/index';
 
 /**
  * Attributes
@@ -24,8 +23,7 @@ const attributes = {
 		type: 'string',
 	},
 	SVGData: {
-		type: 'string',
-		default: '{}',
+		type: 'object',
 	},
 	SVGMediaID: {
 		type: 'number',
@@ -38,12 +36,7 @@ const attributes = {
 		default: 'full',
 	},
 	cropOptions: {
-		type: 'string',
-		default: JSON.stringify(attributesData.cropOptions),
-	},
-	alignment: {
-		type: 'string',
-		default: JSON.stringify(attributesData.alignment),
+		type: 'object',
 	},
 	captionType: {
 		type: 'string',
@@ -53,53 +46,9 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	captionTypography: {
-		type: 'string',
-		default: JSON.stringify(attributesData.typography),
-	},
 	fullWidth: {
 		type: 'string',
 		default: 'normal',
-	},
-	size: {
-		type: 'string',
-		default: JSON.stringify(size),
-	},
-	opacity: {
-		type: 'string',
-		default: JSON.stringify(attributesData.opacity),
-	},
-	background: {
-		type: 'string',
-		default: JSON.stringify(attributesData.background),
-	},
-	backgroundHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.backgroundHover),
-	},
-	boxShadow: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadow),
-	},
-	boxShadowHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.boxShadowHover),
-	},
-	border: {
-		type: 'string',
-		default: JSON.stringify(attributesData.border),
-	},
-	borderHover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.borderHover),
-	},
-	padding: {
-		type: 'string',
-		default: JSON.stringify(attributesData.padding),
-	},
-	margin: {
-		type: 'string',
-		default: JSON.stringify(attributesData.margin),
 	},
 	mediaID: {
 		type: 'number',
@@ -126,29 +75,79 @@ const attributes = {
 	mediaHeight: {
 		type: 'number',
 	},
-	position: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalPosition),
-	},
-	display: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalDisplay),
-	},
 	clipPath: {
 		type: 'string',
 		default: '',
 	},
-	motion: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalMotion),
+	...attributesData.alignment,
+	...attributesData.container,
+	...attributesData.background,
+	...attributesData.backgroundColor,
+	...attributesData.backgroundImage,
+	...attributesData.backgroundVideo,
+	...attributesData.backgroundGradient,
+	...attributesData.backgroundSVG,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.backgroundImageHover,
+	...attributesData.backgroundVideoHover,
+	...attributesData.backgroundGradientHover,
+	...attributesData.backgroundSVGHover,
+	...attributesData.opacity,
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...attributesData.borderRadius,
+	...attributesData.borderHover,
+	...attributesData.borderWidthHover,
+	...attributesData.borderRadiusHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.margin,
+	...attributesData.padding,
+	...attributesData.motion,
+	...attributesData.entrance,
+	...attributesData.parallax,
+	...attributesData.transform,
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.hover,
+	...attributesData.hoverBorder,
+	...attributesData.hoverBorderWidth,
+	...attributesData.hoverBorderRadius,
+	...attributesData.hoverBackground,
+	...attributesData.hoverBackgroundColor,
+	...attributesData.hoverBackgroundGradient,
+	...attributesData.hoverMargin,
+	...attributesData.hoverPadding,
+	...attributesData.hoverTitleTypography,
+	...attributesData.hoverContentTypography,
+	...attributesData.typography,
+	...attributesData.textAlignment,
+	...{
+		...attributesData.alignment,
+		'alignment-general': {
+			type: 'string',
+			default: 'center',
+		},
 	},
-	hover: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalHover),
-	},
-	transform: {
-		type: 'string',
-		default: JSON.stringify(attributesData.__experimentalTransform),
+	...{
+		...attributesData.size,
+		'min-width-unit-general': {
+			type: 'string',
+			default: '%',
+		},
+		'min-width-xxl': {
+			type: 'number',
+			default: 100,
+		},
+		'min-width-s': {
+			type: 'number',
+			default: 100,
+		},
+		'min-width-xs': {
+			type: 'number',
+			default: 100,
+		},
 	},
 };
 

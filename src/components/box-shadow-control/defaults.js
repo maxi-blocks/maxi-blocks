@@ -1,35 +1,31 @@
 export const boxShadowNone = {
-	shadowColor: 'rgba(255, 255, 255, 1)',
-	defaultShadowColor: '#ffffff',
-	shadowHorizontal: 0,
-	shadowVertical: 0,
-	shadowBlur: 0,
-	shadowSpread: 0,
+	'box-shadow-color': 'rgb(236, 241, 246)',
+	'box-shadow-horizontal': 0,
+	'box-shadow-vertical': 0,
+	'box-shadow-blur': 0,
+	'box-shadow-spread': 0,
 };
 
 export const boxShadowTotal = {
-	shadowColor: 'rgba(162, 162, 162, 1)',
-	defaultShadowColor: '#000',
-	shadowHorizontal: 0,
-	shadowVertical: 0,
-	shadowBlur: 60,
-	shadowSpread: 30,
+	'box-shadow-color': 'rgb(236, 241, 246)',
+	'box-shadow-horizontal': 0,
+	'box-shadow-vertical': 30,
+	'box-shadow-blur': 87,
+	'box-shadow-spread': 0,
 };
 
 export const boxShadowBottom = {
-	shadowColor: 'rgba(162, 162, 162, 1)',
-	defaultShadowColor: '#000',
-	shadowHorizontal: 0,
-	shadowVertical: 20,
-	shadowBlur: 30,
-	shadowSpread: 10,
+	'box-shadow-color': 'rgb(236, 241, 246)',
+	'box-shadow-horizontal': 0,
+	'box-shadow-vertical': 20,
+	'box-shadow-blur': 30,
+	'box-shadow-spread': 10,
 };
 
 export const boxShadowSolid = {
-	shadowColor: 'rgba(162, 162, 162, 1)',
-	defaultShadowColor: '#000',
-	shadowHorizontal: 5,
-	shadowVertical: 5,
-	shadowBlur: 0,
-	shadowSpread: 0,
+	'box-shadow-color': 'rgb(236, 241, 246)',
+	'box-shadow-horizontal': 5,
+	'box-shadow-vertical': 5,
+	'box-shadow-blur': 0,
+	'box-shadow-spread': 0,
 };

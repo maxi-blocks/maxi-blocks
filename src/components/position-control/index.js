@@ -7,42 +7,32 @@ const { SelectControl } = wp.components;
 /**
  * Internal dependencies
  */
-import { getLastBreakpointValue } from '../../utils';
-import __experimentalAxisControl from '../axis-control';
+import AxisControl from '../axis-control';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isObject, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Component
  */
 const PositionControl = props => {
-	const {
-		position,
-		defaultPosition,
-		className,
-		onChange,
-		breakpoint = 'general',
-	} = props;
-
-	const value = !isObject(position) ? JSON.parse(position) : position;
-
-	const defaultValues = !isObject(defaultPosition)
-		? JSON.parse(defaultPosition)
-		: defaultPosition;
+	const { className, onChange, breakpoint = 'general' } = props;
 
 	const classes = classnames('maxi-position-control', className);
 
-	const cleanOptions = {
-		top: '',
-		right: '',
-		bottom: '',
-		left: '',
-		sync: false,
-		unit: '',
+	const getCleanOptions = () => {
+		return {
+			[`position-top-${breakpoint}`]: '',
+			[`position-right-${breakpoint}`]: '',
+			[`position-bottom-${breakpoint}`]: '',
+			[`position-left-${breakpoint}`]: '',
+			[`position-sync-${breakpoint}`]: false,
+			[`position-unit-${breakpoint}`]: '',
+		};
 	};
 
 	return (
@@ -55,23 +45,25 @@ const PositionControl = props => {
 					{ label: 'Absolute', value: 'absolute' },
 					{ label: 'Fixed', value: 'fixed' },
 				]}
-				value={getLastBreakpointValue(value, 'position', breakpoint)}
-				onChange={val => {
-					value[breakpoint].position = val;
-					if (isEmpty(val)) value.options[breakpoint] = cleanOptions;
-					onChange(JSON.stringify(value));
-				}}
+				value={getLastBreakpointAttribute(
+					'position',
+					breakpoint,
+					props
+				)}
+				onChange={val =>
+					onChange({
+						[`position-${breakpoint}`]: val,
+						...(isEmpty(val) && getCleanOptions()),
+					})
+				}
 			/>
 			{!isEmpty(
-				getLastBreakpointValue(value, 'position', breakpoint)
+				getLastBreakpointAttribute('position', breakpoint, props)
 			) && (
-				<__experimentalAxisControl
-					values={value.options}
-					defaultValues={defaultValues.options}
-					onChange={val => {
-						value.options = JSON.parse(val);
-						onChange(JSON.stringify(value));
-					}}
+				<AxisControl
+					{...props}
+					target='position'
+					onChange={obj => onChange(obj)}
 					breakpoint={breakpoint}
 					disableAuto
 				/>

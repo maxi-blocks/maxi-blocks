@@ -158,8 +158,6 @@ const MediaUploader = props => {
 						render={({ open }) => (
 							<Button
 								onClick={open}
-								isDefault
-								isLarge
 								className={
 									mediaType === 'image'
 										? 'maxi-mediauploader-control__replace'

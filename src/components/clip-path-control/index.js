@@ -10,7 +10,7 @@ const { SelectControl, BaseControl, Button, Tooltip } = wp.components;
  */
 import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
-import __experimentalFancyRadioControl from '../fancy-radio-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies
@@ -294,7 +294,7 @@ const ClipPathControl = props => {
 
 	return (
 		<div className={classes}>
-			<__experimentalFancyRadioControl
+			<FancyRadioControl
 				label={__('Use Clip-path', 'maxi-blocks')}
 				selected={hasClipPath}
 				options={[
@@ -308,7 +308,7 @@ const ClipPathControl = props => {
 			/>
 			{!!hasClipPath && (
 				<Fragment>
-					<__experimentalFancyRadioControl
+					<FancyRadioControl
 						label={__('Use Custom', 'maxi-blocks')}
 						selected={isCustom}
 						options={[
@@ -322,6 +322,7 @@ const ClipPathControl = props => {
 							{Object.entries(clipPathDefaults).map(
 								([name, newClipPath]) => (
 									<Tooltip
+										key={`clip-path-defaults__item__${name}`}
 										text={name}
 										position='bottom center'
 									>
@@ -371,7 +372,7 @@ const ClipPathControl = props => {
 								]}
 								onChange={value => onChangeType(value)}
 							/>
-							<__experimentalFancyRadioControl
+							<FancyRadioControl
 								label=''
 								fullWidthMode
 								selected={customMode}

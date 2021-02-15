@@ -1,7 +1,14 @@
+/**
+ * WordPress dependencies
+ */
+const { select } = wp.data;
+
+const { isRTL } = select('core/editor').getEditorSettings();
+
 const textAlignment = {
 	'text-alignment-general': {
 		type: 'string',
-		default: 'left',
+		default: isRTL ? 'right' : 'left',
 	},
 	'text-alignment-xxl': {
 		type: 'string',

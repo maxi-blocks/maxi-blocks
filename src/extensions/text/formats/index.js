@@ -10,3 +10,4 @@ export { default as setFormat } from './setFormat';
 export { default as removeLinkFormat } from './removeLinkFormat';
 export { fromListToText } from './listUtils';
 export { fromTextToList } from './listUtils';
+export { default as withFormatValue } from './withFormatValue';

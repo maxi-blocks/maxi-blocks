@@ -109,14 +109,21 @@ const Inspector = props => {
 															]
 														}
 														onChange={val => {
+															let value = val;
+
+															if (value > 100)
+																value = 100;
+															if (value < 0)
+																value = 0;
+
 															setAttributes({
-																[`column-size-${deviceType}`]: val,
+																[`column-size-${deviceType}`]: value,
 															});
 
 															if (resizableObject)
 																resizableObject.updateSize(
 																	{
-																		width: `${val}%`,
+																		width: `${value}%`,
 																	}
 																);
 														}}

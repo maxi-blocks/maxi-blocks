@@ -17,7 +17,14 @@ const SvgStrokeWidthControl = props => {
 	return (
 		<RangeControl
 			value={stroke}
-			onChange={val => onChange(!isNil(val) ? val : defaultStroke)}
+			onChange={val => {
+				let value = val;
+
+				if (value > 10) value = 10;
+				if (value < 0.1) value = 0.1;
+
+				onChange(!isNil(value) ? value : defaultStroke);
+			}}
 			min={0.1}
 			max={10}
 			step={0.1}

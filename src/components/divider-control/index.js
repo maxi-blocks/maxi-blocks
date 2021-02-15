@@ -198,12 +198,16 @@ const DividerControl = props => {
 						label={__('Size', 'maxi-blocks')}
 						value={props['divider-height']}
 						onChange={val => {
-							const value = isNil(val)
+							let value = isNil(val)
 								? getDefaultAttribute('height')
 								: val;
 
+							if (value > 100) value = 100;
+							if (value < 0) value = 0;
+
 							onChange({ 'divider-height': value });
 						}}
+						min={0}
 						max={100}
 						allowReset
 						initialPosition={getDefaultAttribute('height')}
@@ -212,12 +216,16 @@ const DividerControl = props => {
 						label={__('Weight', 'maxi-blocks')}
 						value={props['divider-border-right-width']}
 						onChange={val => {
-							const value = isNil(val)
+							let value = isNil(val)
 								? getDefaultAttribute('border-right-width')
 								: val;
 
+							if (value > 100) value = 100;
+							if (value < 0) value = 0;
+
 							onChange({ 'divider-border-right-width': value });
 						}}
+						min={0}
 						max={100}
 						allowReset
 						initialPosition={getDefaultAttribute(

@@ -51,17 +51,22 @@ const ColumnSize = props => {
 							attributes
 						)}
 						onChange={val => {
+							let value = val;
+
+							if (value > 100) value = 100;
+							if (value < 0) value = 0;
+
 							document.querySelector(
 								`.maxi-column-block__resizer__${uniqueID}`
-							).style.width = `${val}%`;
+							).style.width = `${value}%`;
 
 							onChange({
-								[`column-size-${breakpoint}`]: val,
+								[`column-size-${breakpoint}`]: value,
 								verticalAlign,
 							});
 						}}
-						min='0'
-						max='100'
+						min={0}
+						max={100}
 						step={0.1}
 						allowReset
 						initialPosition={getDefaultAttribute(

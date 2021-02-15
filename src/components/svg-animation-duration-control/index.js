@@ -20,7 +20,14 @@ const SvgAnimationDurationControl = props => {
 					max={5.0}
 					step={0.1}
 					initialPosition={3.7}
-					onChange={value => onChange(value)}
+					onChange={val => {
+						let value = val;
+
+						if (value > 5.0) value = 5.0;
+						if (value < 1.0) value = 1.0;
+
+						onChange(value);
+					}}
 				/>
 			)}
 		</Fragment>

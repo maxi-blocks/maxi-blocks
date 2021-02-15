@@ -56,13 +56,18 @@ const ParallaxControl = props => {
 						label={__('Speed', 'maxi-blocks')}
 						value={props['parallax-speed']}
 						onChange={val => {
-							isNil(val)
+							let value = val;
+
+							if (value > 10) value = 10;
+							if (value < 1) value = 1;
+
+							isNil(value)
 								? onChange({
 										'parallax-speed': getDefaultAttribute(
 											'parallax-speed'
 										),
 								  })
-								: onChange({ 'parallax-speed': +val });
+								: onChange({ 'parallax-speed': +value });
 						}}
 						min={1}
 						max={10}

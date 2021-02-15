@@ -83,7 +83,14 @@ const SizeControl = props => {
 					className='maxi-size-control__value'
 					value={trim(value)}
 					onChange={e => {
-						onChangeValue(Number(e.target.value));
+						let value = +e.target.value;
+
+						if (value > minMaxSettings[defaultUnit].max)
+							value = minMaxSettings[defaultUnit].max;
+						if (value < minMaxSettings[defaultUnit].min)
+							value = minMaxSettings[defaultUnit].min;
+
+						onChangeValue(value);
 					}}
 					min={min}
 					max={max}
@@ -97,7 +104,14 @@ const SizeControl = props => {
 						className='maxi-size-control__value'
 						value={trim(value)}
 						onChange={e => {
-							onChangeValue(Number(e.target.value));
+							let value = +e.target.value;
+
+							if (value > minMaxSettings[unit].max)
+								value = minMaxSettings[unit].max;
+							if (value < minMaxSettings[unit].min)
+								value = minMaxSettings[unit].min;
+
+							onChangeValue(value);
 						}}
 						min={unit ? minMaxSettings[unit].min : null}
 						max={unit ? minMaxSettings[unit].max : null}
@@ -129,12 +143,8 @@ const SizeControl = props => {
 			)}
 			{disableUnit ? (
 				<RangeControl
-					value={
-						Number(value) === '' || Number(value) === 0
-							? 0
-							: Number(trim(value))
-					}
-					onChange={val => onChangeValue(Number(val))}
+					value={+value === '' || +value === 0 ? 0 : +trim(value)}
+					onChange={val => onChangeValue(+val)}
 					min={min}
 					max={max}
 					step={step}
@@ -143,12 +153,8 @@ const SizeControl = props => {
 				/>
 			) : (
 				<RangeControl
-					value={
-						Number(value) === '' || Number(value) === 0
-							? 0
-							: Number(trim(value))
-					}
-					onChange={val => onChangeValue(Number(val))}
+					value={+value === '' || +value === 0 ? 0 : +trim(value)}
+					onChange={val => onChangeValue(+val)}
 					min={unit ? minMaxSettings[unit].min : 0}
 					max={unit ? minMaxSettings[unit].max : 999}
 					step={step}

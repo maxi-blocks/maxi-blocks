@@ -107,13 +107,19 @@ const ColorControl = props => {
 				className='maxi-color-control__opacity'
 				value={Number(colorAlpha)}
 				onChange={val => {
+					let value = +val;
+
+					if (value > 100) value = 100;
+					if (value < 0) value = 0;
+
 					if (!isEmpty(color)) {
-						onChange(returnColor(getRGB(color), Number(val / 100)));
+						onChange(returnColor(getRGB(color), value / 100));
 						setCurrentColor(
-							returnColor(getRGB(color), Number(val / 100))
+							returnColor(getRGB(color), value / 100)
 						);
 					}
-					setColorAlpha(val);
+
+					setColorAlpha(value);
 				}}
 				min={0}
 				max={100}

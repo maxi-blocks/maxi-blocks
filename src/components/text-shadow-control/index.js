@@ -138,7 +138,14 @@ const TextShadow = props => {
 					<RangeControl
 						label={__('X', 'maxi-blocks')}
 						value={Number(trim(x))}
-						onChange={val => onChangeValue(0, val)}
+						onChange={val => {
+							let value = val;
+
+							if (value > 100) value = 100;
+							if (value < 0) value = 0;
+
+							onChangeValue(0, value);
+						}}
 						min={0}
 						max={100}
 						allowReset
@@ -146,7 +153,14 @@ const TextShadow = props => {
 					<RangeControl
 						label={__('Y', 'maxi-blocks')}
 						value={Number(trim(y))}
-						onChange={val => onChangeValue(1, val)}
+						onChange={val => {
+							let value = val;
+
+							if (value > 100) value = 100;
+							if (value < 0) value = 0;
+
+							onChangeValue(1, value);
+						}}
 						min={0}
 						max={100}
 						allowReset
@@ -154,7 +168,14 @@ const TextShadow = props => {
 					<RangeControl
 						label={__('Blur', 'maxi-blocks')}
 						value={Number(trim(blur))}
-						onChange={val => onChangeValue(2, val)}
+						onChange={val => {
+							let value = val;
+
+							if (value > 100) value = 100;
+							if (value < 0) value = 0;
+
+							onChangeValue(2, value);
+						}}
 						min={0}
 						max={100}
 						allowReset

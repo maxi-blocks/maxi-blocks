@@ -40,9 +40,14 @@ const OpacityControl = props => {
 			className={classes}
 			value={opacity * 100}
 			onChange={val => {
-				isNil(val)
+				let value = val;
+
+				if (value > 100) value = 100;
+				if (value < 0) value = 0;
+
+				isNil(value)
 					? onChange(defaultOpacity)
-					: onChange(round(val / 100, 2));
+					: onChange(round(value / 100, 2));
 			}}
 			min={0}
 			max={100}

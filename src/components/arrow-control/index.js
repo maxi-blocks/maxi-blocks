@@ -112,11 +112,14 @@ const ArrowControl = props => {
 						min='0'
 						max='100'
 						onChange={val => {
-							const value = isNil(val)
+							let value = isNil(val)
 								? getDefaultAttribute(
 										`arrow-position-${breakpoint}`
 								  )
 								: val;
+
+							if (value > 100) value = 100;
+							if (value < 0) value = 0;
 
 							onChangeValue('arrow-position', value);
 						}}
@@ -128,7 +131,7 @@ const ArrowControl = props => {
 					<SizeControl
 						label={__('Arrow Size', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(
-							'arrow-widthUnit',
+							'arrow-width-unit',
 							breakpoint,
 							props
 						)}
@@ -153,6 +156,7 @@ const ArrowControl = props => {
 										`arrow-width-${breakpoint}`
 								  )
 								: val;
+
 							onChangeValue('arrow-width', value);
 						}}
 						minMaxSettings={minMaxSettings}

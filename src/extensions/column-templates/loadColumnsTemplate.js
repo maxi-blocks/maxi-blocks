@@ -34,36 +34,29 @@ const loadTemplate = (template, clientId) => {
 	);
 };
 
-const updateTemplate = (template, columnsBlockObjects, breakpoint) => {
-	columnsBlockObjects.forEach((column, j) => {
-		const columnAttributes = { ...template.content[j][1] };
-
-		const { resizableObject } = column.attributes;
-
-		wp.data
-			.dispatch('core/block-editor')
-			.updateBlockAttributes(column.clientId, columnAttributes)
-			.then(() => {
-				const newWidth = columnAttributes[`column-size-${breakpoint}`];
-				const newMargin = columnAttributes[`margin-top-${breakpoint}`];
-
-				if (resizableObject) {
-					if (newWidth) {
-						resizableObject.updateSize({
-							width: `${newWidth}%`,
-						});
-						resizableObject.resizable.style.width = `${newWidth}%`;
-					}
-					if (newMargin) {
-						// resizableObject.resizable.style.marginTop = `${newMargin}em`;
-					}
-				} else {
-					document.querySelector(
-						`.maxi-column-block__resizer__${column.attributes.uniqueID}`
-					).style.width = `${newWidth}%`;
-				}
-			});
+const updateTemplate = (template, columnsBlockObjects, clientId) => {
+	columnsBlockObjects.forEach((column, i) => {
+		column.attributes = {
+			...column.attributes,
+			...(template.content[i] && template.content[i][1]),
+		};
 	});
+
+	const newAttributes = template.attributes;
+	dispatch('core/block-editor').updateBlockAttributes(
+		clientId,
+		newAttributes
+	);
+
+	const newTemplate = synchronizeBlocksWithTemplate(
+		columnsBlockObjects,
+		template.content
+	);
+	dispatch('core/block-editor').replaceInnerBlocks(
+		clientId,
+		newTemplate,
+		false
+	);
 };
 
 const loadColumnsTemplate = (
@@ -82,7 +75,7 @@ const loadColumnsTemplate = (
 
 	isRowEmpty
 		? loadTemplate(template, clientId)
-		: updateTemplate(template, columnsBlockObjects, breakpoint);
+		: updateTemplate(template, columnsBlockObjects, clientId);
 };
 
 export default loadColumnsTemplate;

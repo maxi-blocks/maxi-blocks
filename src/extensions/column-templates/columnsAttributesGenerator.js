@@ -1,11 +1,22 @@
 import getColumnsPosition from './getColumnsPosition';
 
-const getGeneralColumnAttributes = ({ column, columnPosition, proportion }) => {
+const getGeneralColumnAttributes = ({
+	column,
+	columnPosition,
+	proportion,
+	isFirst,
+}) => {
 	return {
 		'column-size-general': column * proportion,
 		'column-size-m': 100,
-		'margin-top-m': 1.5,
-		'margin-unit-m': 'em',
+		...(!isFirst && {
+			'margin-top-m': 1.5,
+			'margin-unit-m': 'em',
+		}),
+		...(isFirst && {
+			'margin-top-m': '',
+			'margin-unit-m': '',
+		}),
 		...(columnPosition.columnsNumber === 1 && {
 			'column-size-general': 100,
 		}),
@@ -55,6 +66,7 @@ const columnAttributesGenerator = (columns, removeColumnGap, breakpoint) => {
 					column,
 					columnPosition: columnsPositions[i],
 					proportion,
+					isFirst: !i,
 				})) ||
 				getColumnAttributes({
 					column,

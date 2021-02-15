@@ -33,17 +33,14 @@ const save = props => {
 		content,
 	} = attributes;
 
-	const highlight = { ...props.attributes.highlight };
-	const { textHighlight, backgroundHighlight, borderHighlight } = highlight;
-
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-text-block',
 		'maxi-text-block-wrap',
 		blockStyle,
-		!!textHighlight && 'maxi-highlight--text',
-		!!backgroundHighlight && 'maxi-highlight--background',
-		!!borderHighlight && 'maxi-highlight--border',
+		!!attributes['text-highlight'] && 'maxi-highlight--text',
+		!!attributes['background-highlight'] && 'maxi-highlight--background',
+		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
 		className,

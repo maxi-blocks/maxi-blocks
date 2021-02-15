@@ -28,6 +28,7 @@ const save = props => {
 	const {
 		uniqueID,
 		blockStyle,
+		blockStyleBackground,
 		defaultBlockStyle,
 		fullWidth,
 		extraClassName,
@@ -37,6 +38,8 @@ const save = props => {
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
 		'maxi-block maxi-container-block',
 		blockStyle,
+		blockStyle !== 'maxi-custom' &&
+			`maxi-background--${blockStyleBackground}`,
 		extraClassName,
 		className,
 		fullWidth === 'full' ? 'alignfull' : null,

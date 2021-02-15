@@ -88,8 +88,6 @@ const AxisControl = props => {
 			isHover
 		);
 
-		if (!!+inputValue || parseInt(inputValue, 10) === 0)
-			return Number(inputValue);
 		return inputValue;
 	};
 
@@ -121,13 +119,7 @@ const AxisControl = props => {
 	};
 
 	const getDisplayValue = key => {
-		const inputValue = getValue(key);
-
-		const value = isNil(inputValue)
-			? getDefaultAttribute(`${getKey(key)}-${breakpoint}`)
-			: inputValue;
-
-		return value;
+		return isNil(getValue(key)) ? '' : getValue(key);
 	};
 
 	const currentUnit =
@@ -140,7 +132,6 @@ const AxisControl = props => {
 
 	const onChangeValue = (newValue, singleTarget) => {
 		if (
-			isNumber(newValue) &&
 			getLastBreakpointAttribute(
 				getKey('sync'),
 				breakpoint,
@@ -156,7 +147,7 @@ const AxisControl = props => {
 						`${target}-${key}${
 							auxTarget ? `-${auxTarget}` : ''
 						}-${breakpoint}${isHover ? '-hover' : ''}`
-					] = +newValue;
+					] = newValue;
 			});
 
 			onChange(response);
@@ -213,7 +204,7 @@ const AxisControl = props => {
 						}
 						value={getDisplayValue(inputsArray[0])}
 						onChange={e =>
-							onChangeValue(+e.target.value, inputsArray[0])
+							onChangeValue(e.target.value, inputsArray[0])
 						}
 						aria-label={sprintf(__('%s Top', 'maxi-blocks'), label)}
 						min={minMaxSettings[currentUnit].min}
@@ -251,7 +242,7 @@ const AxisControl = props => {
 						}
 						value={getDisplayValue(inputsArray[1])}
 						onChange={e =>
-							onChangeValue(+e.target.value, inputsArray[1])
+							onChangeValue(e.target.value, inputsArray[1])
 						}
 						aria-label={sprintf(
 							__('%s Right', 'maxi-blocks'),
@@ -292,7 +283,7 @@ const AxisControl = props => {
 						}
 						value={getDisplayValue(inputsArray[2])}
 						onChange={e =>
-							onChangeValue(+e.target.value, inputsArray[2])
+							onChangeValue(e.target.value, inputsArray[2])
 						}
 						aria-label={sprintf(
 							__('%s Bottom', 'maxi-blocks'),
@@ -333,7 +324,7 @@ const AxisControl = props => {
 						}
 						value={getDisplayValue(inputsArray[3])}
 						onChange={e =>
-							onChangeValue(+e.target.value, inputsArray[3])
+							onChangeValue(e.target.value, inputsArray[3])
 						}
 						aria-label={sprintf(
 							__('%s Left', 'maxi-blocks'),

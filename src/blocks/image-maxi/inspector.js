@@ -45,6 +45,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
+import { injectImgSVG } from '../../extensions/svg/utils';
 
 /**
  * External dependencies

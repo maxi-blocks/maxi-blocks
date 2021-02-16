@@ -369,14 +369,16 @@ const MaxiToolbar = props => {
 								}
 							/>
 						)}
-						<Size
-							blockName={name}
-							{...getGroupAttributes(attributes, 'size')}
-							fullWidth={fullWidth}
-							isFirstOnHierarchy={isFirstOnHierarchy}
-							breakpoint={deviceType}
-							onChange={obj => setAttributes(obj)}
-						/>
+						{name !== 'maxi-blocks/group-maxi' && (
+							<Size
+								blockName={name}
+								{...getGroupAttributes(attributes, 'size')}
+								fullWidth={fullWidth}
+								isFirstOnHierarchy={isFirstOnHierarchy}
+								breakpoint={deviceType}
+								onChange={obj => setAttributes(obj)}
+							/>
+						)}
 						<ColumnSize
 							clientId={clientId}
 							blockName={name}

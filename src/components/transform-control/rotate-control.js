@@ -41,7 +41,7 @@ const RotateControl = props => {
 					<input
 						type='range'
 						className='maxi-transform-control__rotate-control__item__range'
-						value={xAxis}
+						value={xAxis || 0}
 						onChange={e => {
 							let value = +e.target.value;
 
@@ -92,7 +92,7 @@ const RotateControl = props => {
 					<input
 						type='range'
 						className='maxi-transform-control__rotate-control__item__range'
-						value={yAxis}
+						value={yAxis || 0}
 						onChange={e => {
 							let value = +e.target.value;
 
@@ -142,7 +142,7 @@ const RotateControl = props => {
 					<input
 						type='range'
 						className='maxi-transform-control__rotate-control__item__range'
-						value={zAxis}
+						value={zAxis || 0}
 						onChange={e => {
 							let value = +e.target.value;
 

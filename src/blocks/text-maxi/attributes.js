@@ -68,7 +68,6 @@ const attributes = {
 	...attributesData.container,
 	...attributesData.display,
 	...attributesData.entrance,
-	...attributesData.highlight,
 	...attributesData.margin,
 	...attributesData.motion,
 	...attributesData.opacity,

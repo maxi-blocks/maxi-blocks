@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-const { synchronizeBlocksWithTemplate } = wp.blocks;
 const { forwardRef } = wp.element;
 const { compose, withInstanceId } = wp.compose;
 const { withSelect, withDispatch } = wp.data;
@@ -19,10 +18,7 @@ import {
 	MaxiBlock,
 	Toolbar,
 } from '../../components';
-import {
-	getTemplates,
-	getTemplateObject,
-} from '../../extensions/defaults/column-templates';
+import { getTemplates } from '../../extensions/defaults/column-templates';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -33,7 +29,8 @@ import getStyles from './styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, uniqueId } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
+import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTemplate';
 
 /**
  * InnerBlocks version
@@ -86,7 +83,6 @@ class edit extends MaxiBlock {
 		const {
 			attributes,
 			clientId,
-			loadTemplate,
 			selectOnClick,
 			hasInnerBlock,
 			className,
@@ -183,8 +179,11 @@ class edit extends MaxiBlock {
 															'row-pattern-m':
 																template.responsiveLayout,
 														});
-														loadTemplate(
-															template.name
+														loadColumnsTemplate(
+															template.name,
+															attributes.removeColumnGap,
+															clientId,
+															deviceType
 														);
 													}}
 												>
@@ -227,45 +226,7 @@ const editSelect = withSelect((select, ownProps) => {
 	};
 });
 
-const editDispatch = withDispatch((dispatch, ownProps) => {
-	const { clientId } = ownProps;
-
-	/**
-	 * Creates uniqueID for columns on loading templates
-	 */
-	const uniqueIdCreator = () => {
-		const newID = uniqueId('maxi-column-maxi-');
-		if (
-			!isEmpty(document.getElementsByClassName(newID)) ||
-			!isNil(document.getElementById(newID))
-		)
-			uniqueIdCreator();
-
-		return newID;
-	};
-
-	/**
-	 * Loads template into InnerBlocks
-	 *
-	 * @param {integer} i Element of object TEMPLATES
-	 * @param {Function} callback
-	 */
-	const loadTemplate = templateName => {
-		const template = getTemplateObject(templateName);
-		template.content.forEach(column => {
-			column[1].uniqueID = uniqueIdCreator();
-		});
-
-		const newAttributes = template.attributes;
-		dispatch('core/block-editor').updateBlockAttributes(
-			clientId,
-			newAttributes
-		);
-
-		const newTemplate = synchronizeBlocksWithTemplate([], template.content);
-		dispatch('core/block-editor').replaceInnerBlocks(clientId, newTemplate);
-	};
-
+const editDispatch = withDispatch(dispatch => {
 	/**
 	 * Block selector
 	 *
@@ -276,7 +237,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	return {
-		loadTemplate,
 		selectOnClick,
 	};
 });

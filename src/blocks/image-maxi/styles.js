@@ -233,7 +233,7 @@ const getStyles = props => {
 			props
 		),
 		[`${uniqueID} .maxi-image-block__resizer`]: getResizeObject(props),
-		[`${uniqueID}:hover .maxi-block-hover-wrapper`]: getImageHoverObject(
+		[`${uniqueID}:hover .maxi-block-hover-wrapper img`]: getImageHoverObject(
 			props
 		),
 		[`${uniqueID} .maxi-block-hover-wrapper img`]: getImageBackendObject(

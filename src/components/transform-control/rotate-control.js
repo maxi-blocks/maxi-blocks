@@ -41,7 +41,7 @@ const RotateControl = props => {
 					<input
 						type='range'
 						className='maxi-transform-control__rotate-control__item__range'
-						value={xAxis}
+						value={xAxis || 0}
 						onChange={e => {
 							changeXAxis(Number(e.target.value));
 							onChange(Number(e.target.value), yAxis, zAxis);
@@ -54,7 +54,7 @@ const RotateControl = props => {
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
-						value={xAxis}
+						value={xAxis || ''}
 						onChange={e => {
 							const newValue = !isEmpty(e.target.value)
 								? Number(e.target.value)
@@ -84,7 +84,7 @@ const RotateControl = props => {
 					<input
 						type='range'
 						className='maxi-transform-control__rotate-control__item__range'
-						value={yAxis}
+						value={yAxis || 0}
 						onChange={e => {
 							changeYAxis(Number(e.target.value));
 							onChange(xAxis, Number(e.target.value), zAxis);
@@ -97,7 +97,7 @@ const RotateControl = props => {
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
-						value={yAxis}
+						value={yAxis || ''}
 						onChange={e => {
 							const newValue = !isEmpty(e.target.value)
 								? Number(e.target.value)
@@ -127,7 +127,7 @@ const RotateControl = props => {
 					<input
 						type='range'
 						className='maxi-transform-control__rotate-control__item__range'
-						value={zAxis}
+						value={zAxis || 0}
 						onChange={e => {
 							changeZAxis(Number(e.target.value));
 							onChange(xAxis, yAxis, Number(e.target.value));
@@ -140,7 +140,7 @@ const RotateControl = props => {
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
-						value={zAxis}
+						value={zAxis || ''}
 						onChange={e => {
 							const newValue = !isEmpty(e.target.value)
 								? Number(e.target.value)

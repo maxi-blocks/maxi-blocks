@@ -2,12 +2,13 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { RangeControl, SelectControl } = wp.components;
+const { SelectControl } = wp.components;
 
 /**
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
+import RangeSliderControl from '../../../range-slider-control';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
@@ -43,8 +44,12 @@ const ColumnSize = props => {
 			advancedOptions='column settings'
 			content={
 				<div className='toolbar-item__column-size__popover'>
-					<RangeControl
+					<RangeSliderControl
 						label={__('Column Size', 'maxi-blocks')}
+						defaultValue={getDefaultAttribute(
+							`column-size-${breakpoint}`,
+							clientId
+						)}
 						value={getLastBreakpointAttribute(
 							'column-size',
 							breakpoint,
@@ -60,8 +65,8 @@ const ColumnSize = props => {
 								verticalAlign,
 							});
 						}}
-						min='0'
-						max='100'
+						min={0}
+						max={100}
 						step={0.1}
 						allowReset
 						initialPosition={getDefaultAttribute(

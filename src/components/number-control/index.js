@@ -12,7 +12,6 @@ import { reset } from '../../icons';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim } from 'lodash';
 
 /**
  * Component
@@ -36,7 +35,12 @@ const NumberControl = props => {
 				type='number'
 				value={value || ''}
 				onChange={e => {
-					onChange(Number(e.target.value));
+					let value = +e.target.value;
+
+					if (value > max) value = max;
+					if (value < min) value = min;
+
+					onChange(value);
 				}}
 				min={min}
 				max={max}

@@ -38,6 +38,7 @@ export { default as NumberControl } from './number-control';
 export { default as OpacityControl } from './opacity-control';
 export { default as ParallaxControl } from './parallax-control';
 export { default as PositionControl } from './position-control';
+export { default as RangeSliderControl } from './range-slider-control';
 export { default as ResponsiveControl } from './responsive-control';
 export { default as SettingTabsControl } from './setting-tabs-control';
 export { default as ShapeDivider } from './shape-divider';

@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
 const { Fragment } = wp.element;
-const { RangeControl, SelectControl, TextControl } = wp.components;
+const { SelectControl, TextControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -20,6 +20,7 @@ import {
 	DisplayControl,
 	FancyRadioControl,
 	OpacityControl,
+	RangeSliderControl,
 	ResponsiveControl,
 	SettingTabsControl,
 	TransformControl,
@@ -97,7 +98,7 @@ const Inspector = props => {
 											),
 											content: (
 												<Fragment>
-													<RangeControl
+													<RangeSliderControl
 														className='maxi-column-size-control'
 														label={__(
 															'Column Size (%)',

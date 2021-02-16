@@ -19,148 +19,150 @@ body.maxi-blocks--active {
 			&.maxi-background-- {
 				&1 {
 					> .maxi-background-displayer {
-						background-color: var(--maxi-#{$style}-background-1) !important;
+						background-color: var(--maxi-#{$style}-background-1);
 					}
 				}
 
 				&2 {
 					> .maxi-background-displayer {
-						background-color: var(--maxi-#{$style}-background-2) !important;
+						background-color: var(--maxi-#{$style}-background-2);
 					}
 				}
 			}
 
-			@each $level in $levels {
-				#{$level} {
-					font-size: var(--maxi-#{$style}-#{$level}-font-size-general) !important;
-					line-height: var(--maxi-#{$style}-#{$level}-line-height-general) !important;
-					color: var(--maxi-#{$style}-#{$level}-color) !important;
-					font-family: var(--maxi-#{$style}-#{$level}-font-family) !important;
-					font-weight: var(--maxi-#{$style}-#{$level}-font-weight) !important;
-					font-style: var(--maxi-#{$style}-#{$level}-style) !important;
-					text-transform: var(--maxi-#{$style}-#{$level}-transform) !important;
-					text-decoration-style: var(--maxi-#{$style}-#{$level}-decoration) !important;
-					text-decoration-line: var(--maxi-#{$style}-#{$level}-decoration-line) !important;
+			& .maxi-parent {
+				@each $level in $levels {
+					> #{$level} {
+						font-size: var(--maxi-#{$style}-#{$level}-font-size-general);
+						line-height: var(--maxi-#{$style}-#{$level}-line-height-general);
+						color: var(--maxi-#{$style}-#{$level}-color);
+						font-family: var(--maxi-#{$style}-#{$level}-font-family);
+						font-weight: var(--maxi-#{$style}-#{$level}-font-weight);
+						font-style: var(--maxi-#{$style}-#{$level}-style);
+						text-transform: var(--maxi-#{$style}-#{$level}-transform);
+						text-decoration-style: var(--maxi-#{$style}-#{$level}-decoration);
+						text-decoration-line: var(--maxi-#{$style}-#{$level}-decoration-line);
+					}
 				}
-			}
 
-			a {
-				color: var(--maxi-#{$style}-link) !important;
+				a {
+					color: var(--maxi-#{$style}-link);
+				}
 			}
 
 			&.maxi-highlight,
 			.maxi-highlight {
 				&--text {
 					.maxi-text-block__content {
-						color: var(--maxi-#{$style}-highlight-text) !important;
+						color: var(--maxi-#{$style}-highlight-text);
 
 						&:hover {
-							color: var(--maxi-#{$style}-hover) !important;
+							color: var(--maxi-#{$style}-hover);
 						}
 					}
 
 					.maxi-button-extra__button {
-						color: var(--maxi-light-highlight-text) !important;
+						color: var(--maxi-light-highlight-text);
 
 						&:hover {
-							color: var(--maxi-#{$style}-hover) !important;
+							color: var(--maxi-#{$style}-hover);
 						}
 					}
 
 					.maxi-font-icon-block__icon i {
-						color: var(--maxi-light-highlight-text) !important;
+						color: var(--maxi-light-highlight-text);
 
 						&:hover i{
-							color: var(--maxi-#{$style}-hover) !important;
+							color: var(--maxi-#{$style}-hover);
 						}
 					}
 				}
 
 				&--background {
-					.maxi-text-block__content {
-						background-color: var(--maxi-#{$style}-highlight-background) !important;
+					> .maxi-text-block__content {
+						background-color: var(--maxi-#{$style}-highlight-background);
 
 						&:hover {
-							background-color: var(--maxi-#{$style}-hover) !important;
+							background-color: var(--maxi-#{$style}-hover);
 						}
 					}
 
-					.maxi-button-extra__button {
-						background-color: var(--maxi-light-highlight-background) !important;
+					> .maxi-button-extra__button {
+						background-color: var(--maxi-light-highlight-background);
 
 						&:hover {
-							background-color: var(--maxi-#{$style}-hover) !important;
+							background-color: var(--maxi-#{$style}-hover);
 						}
 					}
 
-					.maxi-font-icon-block__icon {
-						background-color: var(--maxi-light-highlight-background) !important;
+					> .maxi-font-icon-block__icon {
+						background-color: var(--maxi-light-highlight-background);
 
 						&:hover {
-							background-color: var(--maxi-#{$style}-hover) !important;
+							background-color: var(--maxi-#{$style}-hover);
 						}
 					}
 
 					&.maxi-svg-icon-block {
-						.maxi-background-displayer {
-							background-color: var(--maxi-light-highlight-background) !important;
+						> .maxi-background-displayer {
+							background-color: var(--maxi-light-highlight-background);
 
 							&:hover {
-								background-color: var(--maxi-#{$style}-hover) !important;
+								background-color: var(--maxi-#{$style}-hover);
 							}
 						}
 					}
 				}
 
 				&--border {
-					&.maxi-text-block {
-						border-color: var(--maxi-#{$style}-highlight-border) !important;
+					> &.maxi-text-block {
+						border-color: var(--maxi-#{$style}-highlight-border);
 
 						&:hover {
-							border-color: var(--maxi-#{$style}-hover) !important;
+							border-color: var(--maxi-#{$style}-hover);
 						}
 					}
 
-					.maxi-button-extra__button {
-						border-color: var(--maxi-light-highlight-border) !important;
+					> .maxi-button-extra__button {
+						border-color: var(--maxi-light-highlight-border);
 
 						&:hover {
-							border-color: var(--maxi-#{$style}-hover) !important;
+							border-color: var(--maxi-#{$style}-hover);
 						}
 					}
 
-					.maxi-divider-block__divider {
-						border-color: var(--maxi-light-highlight-border) !important;
+					> .maxi-divider-block__divider {
+						border-color: var(--maxi-light-highlight-border);
 
 						&:hover {
-							border-color: var(--maxi-light-hover) !important;
+							border-color: var(--maxi-light-hover);
 						}
 					}
 
-					&.maxi-font-icon-block {
-						border-color: var(--maxi-light-highlight-border) !important;
+					> &.maxi-font-icon-block {
+						border-color: var(--maxi-light-highlight-border);
 
 						&:hover {
-							border-color: var(--maxi-light-hover) !important;
+							border-color: var(--maxi-light-hover);
 						}
 					}
 
-					&.maxi-svg-icon-block {
-						border-color: var(--maxi-light-highlight-border) !important;
+					> &.maxi-svg-icon-block {
+						border-color: var(--maxi-light-highlight-border);
 
 						&:hover {
-							border-color: var(--maxi-light-hover) !important;
+							border-color: var(--maxi-light-hover);
 						}
 					}
 
 				}
 
 				&--color1 {
-					&.maxi-svg-icon-block {
+					> &.maxi-svg-icon-block {
 						.maxi-svg-icon-block__icon {
 							svg path {
 								&.maxi-svg-color-first {
-									fill: var(--maxi-light-highlight-color1) !important;
+									fill: var(--maxi-light-highlight-color1);
 								}
 							}
 						}
@@ -168,10 +170,10 @@ body.maxi-blocks--active {
 				}
 
 				&--color2 {
-					&.maxi-svg-icon-block {
+					> &.maxi-svg-icon-block {
 						.maxi-svg-icon-block__icon {
 							svg path {
-								stroke: var(--maxi-light-highlight-color2) !important;
+								stroke: var(--maxi-light-highlight-color2);
 							}
 						}
 					}
@@ -189,12 +191,12 @@ body.maxi-blocks--active {
 		@each $style in $styles {
 			.edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="#{$responsive_size}"] {
 				.maxi-block--backend {
-					&.maxi-#{$style} {
+					&.maxi-#{$style} .maxi-parent {
 						@each $level in $levels {
-							#{$level} {
+							> #{$level} {
 								&.maxi-text-block__content {
-									font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size}) !important;
-									line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size}) !important;
+									font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size});
+									line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size});
 								}
 							}
 						}
@@ -235,9 +237,9 @@ body.maxi-blocks--active {
 			@each $style in $styles {
 				.maxi-#{$style} {
 					@each $level in $levels {
-						#{$level} {
-							font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage}) !important;
-							line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage}) !important;
+						> #{$level} {
+							font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage});
+							line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage});
 						}
 					}
 				}

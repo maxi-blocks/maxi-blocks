@@ -91,11 +91,8 @@ const addAttributes = settings => {
  */
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
-		const {
-			attributes: { uniqueID },
-			name,
-			clientId,
-		} = props;
+		const { attributes, name, clientId } = props;
+		const { uniqueID } = attributes;
 
 		if (allowedBlocks.includes(name)) {
 			// uniqueID
@@ -106,7 +103,7 @@ const withAttributes = createHigherOrderComponent(
 				const newName = uniqueId(
 					`${name.replace('maxi-blocks/', '')}-`
 				);
-				props.attributes.uniqueID = uniqueIDGenerator(newName);
+				attributes.uniqueID = uniqueIDGenerator(newName);
 			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')
@@ -117,7 +114,14 @@ const withAttributes = createHigherOrderComponent(
 
 			if (parentBlocks.includes(clientId)) parentBlocks.pop();
 
-			props.attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
+			attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
+
+			// RTL
+			if (attributes['text-alignment-general']) {
+				const { isRTL } = select('core/editor').getEditorSettings();
+
+				attributes['text-alignment-general'] = isRTL ? 'right' : 'left';
+			}
 		}
 
 		return <BlockEdit {...props} />;

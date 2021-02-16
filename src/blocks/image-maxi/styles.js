@@ -1,18 +1,19 @@
 import { getGroupAttributes } from '../../extensions/styles';
 import {
-	getBorderStyles,
-	getSizeStyles,
-	getBoxShadowStyles,
-	getOpacityStyles,
-	getZIndexStyles,
-	getPositionStyles,
-	getDisplayStyles,
-	getTransformStyles,
-	getBackgroundStyles,
-	getMarginPaddingStyles,
-	getTypographyStyles,
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
+	getBackgroundStyles,
+	getBorderStyles,
+	getBoxShadowStyles,
+	getDisplayStyles,
+	getHoverEffectsBackgroundStyles,
+	getMarginPaddingStyles,
+	getOpacityStyles,
+	getPositionStyles,
+	getSizeStyles,
+	getTransformStyles,
+	getTypographyStyles,
+	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -74,6 +75,15 @@ const getHoverEffectDetailsBoxObject = props => {
 			},
 			'hover-'
 		),
+		background: {
+			...getHoverEffectsBackgroundStyles({
+				...getGroupAttributes(props, [
+					'hoverBackground',
+					'hoverBackgroundColor',
+					'hoverBackgroundGradient',
+				]),
+			}),
+		},
 	};
 
 	return response;
@@ -255,22 +265,6 @@ const getStyles = props => {
 				'borderRadiusHover',
 			]),
 			isHover: !!props['background-status-hover'],
-		}),
-		...getBackgroundStyles({
-			target: `${uniqueID} .maxi-hover-details`,
-			...getGroupAttributes(props, [
-				'hoverBackground',
-				'hoverBackgroundColor',
-				'hoverBackgroundGradient',
-				'hoverBorderRadius',
-			]),
-			prefix: 'hover-',
-			groupAttrNames: {
-				background: 'hoverBackground',
-				backgroundColor: 'hoverBackgroundColor',
-				backgroundGradient: 'hoverBackgroundGradient',
-				borderRadius: 'hoverBorderRadius',
-			},
 		}),
 		...getBackgroundStyles({
 			target: uniqueID,

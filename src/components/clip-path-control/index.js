@@ -89,7 +89,12 @@ const ClipPathOption = props => {
 						type='number'
 						value={trim(Number(values[0]))}
 						onChange={e => {
-							values[0] = Number(e.target.value);
+							let value = +e.target.value;
+
+							if (value > 100) value = 100;
+							if (value < 0) value = 0;
+
+							values[0] = value;
 
 							onChange(values);
 						}}
@@ -101,7 +106,12 @@ const ClipPathOption = props => {
 							type='number'
 							value={trim(Number(values[1]))}
 							onChange={e => {
-								values[1] = Number(e.target.value);
+								let value = +e.target.value;
+
+								if (value > 100) value = 100;
+								if (value < 0) value = 0;
+
+								values[1] = value;
 
 								onChange(values);
 							}}

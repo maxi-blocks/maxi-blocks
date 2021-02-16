@@ -1,12 +1,7 @@
 /**
- * WordPress dependencies
+ * Internal dependencies
  */
-const { RangeControl } = wp.components;
-
-/**
- * External dependencies
- */
-import { isNil } from 'lodash';
+import RangeSliderControl from '../range-slider-control';
 
 /**
  * Component
@@ -15,9 +10,10 @@ const SvgWidthControl = props => {
 	const { defaultWidth, width, onChange } = props;
 
 	return (
-		<RangeControl
+		<RangeSliderControl
 			value={width}
-			onChange={val => onChange(!isNil(val) ? val : defaultWidth)}
+			defaultValue={defaultWidth}
+			onChange={val => onChange(val)}
 			min={10}
 			max={250}
 			step={1}

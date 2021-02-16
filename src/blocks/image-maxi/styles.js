@@ -45,7 +45,7 @@ const getNormalObject = props => {
 
 const getHoverEffectDetailsBoxObject = props => {
 	const response = {
-		...(props['border-status-hover'] && {
+		...(props['hover-border-status'] && {
 			border: getBorderStyles(
 				{
 					...getGroupAttributes(
@@ -55,10 +55,10 @@ const getHoverEffectDetailsBoxObject = props => {
 							'hoverBorderWidth',
 							'hoverBorderRadius',
 						],
-						true
+						false
 					),
 				},
-				true,
+				false,
 				'hover-'
 			),
 		}),

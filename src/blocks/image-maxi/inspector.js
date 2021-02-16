@@ -922,7 +922,6 @@ const Inspector = props => {
 													onChange={obj =>
 														setAttributes(obj)
 													}
-													uniqueID={uniqueID}
 												/>
 											),
 										},

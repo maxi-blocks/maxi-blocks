@@ -18,13 +18,13 @@ body.maxi-blocks--active {
 		.maxi-#{$style} {
 			&.maxi-background-- {
 				&1 {
-					.maxi-background-displayer {
+					> .maxi-background-displayer {
 						background-color: var(--maxi-#{$style}-background-1) !important;
 					}
 				}
 
 				&2 {
-					.maxi-background-displayer {
+					> .maxi-background-displayer {
 						background-color: var(--maxi-#{$style}-background-2) !important;
 					}
 				}

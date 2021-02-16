@@ -146,24 +146,20 @@ const setFormat = ({ formatValue, typography, oldFormat, value, isList }) => {
 
 		newFormatValue = removeFormat(newFormatValue, oldFormat);
 
-		const {
-			typography: preformattedTypography,
-			content: preformattedContent,
-			formatValue: preformattedFormatValue,
-		} = setFormatWithClass({
+		const obj = setFormatWithClass({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			value,
 			isList,
 		});
 
-		newTypography = preformattedTypography;
-		newContent = preformattedContent;
-		newFormatValue = preformattedFormatValue;
+		newTypography = getGroupAttributes(obj, 'typography');
+		newContent = obj.content;
+		newFormatValue = obj.formatValue;
 	});
 
 	return {
-		typography: newTypography,
+		...newTypography,
 		content: newContent,
 		formatValue: newFormatValue,
 	};

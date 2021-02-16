@@ -122,8 +122,6 @@ class edit extends MaxiBlock {
 			className
 		);
 
-		const { getFormatTypes } = select('core/rich-text');
-
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -220,9 +218,6 @@ class edit extends MaxiBlock {
 							keepPlaceholderOnFocus
 							__unstableEmbedURLOnPaste
 							__unstableAllowPrefixTransformations
-							allowedFormats={getFormatTypes().filter(format => {
-								return format.name !== 'core/link';
-							})}
 						/>
 					)}
 					{isList && (
@@ -262,9 +257,6 @@ class edit extends MaxiBlock {
 							start={listStart}
 							reversed={!!listReversed}
 							type={typeOfList}
-							allowedFormats={getFormatTypes().filter(format => {
-								return format.name !== 'core/link';
-							})}
 						>
 							{({ value, onChange }) =>
 								isSelected && (

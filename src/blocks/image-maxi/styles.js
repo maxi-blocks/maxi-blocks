@@ -45,7 +45,7 @@ const getNormalObject = props => {
 
 const getHoverEffectDetailsBoxObject = props => {
 	const response = {
-		...(props['border-status-hover'] && {
+		...(props['hover-border-status-hover'] && {
 			border: getBorderStyles(
 				{
 					...getGroupAttributes(
@@ -223,7 +223,7 @@ const getStyles = props => {
 			props
 		),
 		[`${uniqueID} .maxi-image-block__resizer`]: getResizeObject(props),
-		[`${uniqueID}:hover .maxi-block-hover-wrapper`]: getImageHoverObject(
+		[`${uniqueID}:hover .maxi-block-hover-wrapper img`]: getImageHoverObject(
 			props
 		),
 		[`${uniqueID} .maxi-block-hover-wrapper img`]: getImageBackendObject(

@@ -561,13 +561,13 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		onChange={val => {
+																		onChange={val =>
 																			setAttributes(
 																				{
-																					'border-status-hover': !!val,
+																					'border-status-hover': !!+val,
 																				}
-																			);
-																		}}
+																			)
+																		}
 																	/>
 																	{attributes[
 																		'border-status-hover'

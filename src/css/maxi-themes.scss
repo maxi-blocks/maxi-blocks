@@ -62,9 +62,9 @@ body.maxi-blocks--active {
 					.maxi-font-icon-block__icon i {
 						color: var(--maxi-#{$style}-highlight-text) !important;
 
-						&:hover {
-							color: var(--maxi-#{$style}-hover) !important;
-						}
+						// &:hover {
+						// 	color: var(--maxi-#{$style}-hover) !important;
+						// }
 					}
 				}
 
@@ -78,18 +78,18 @@ body.maxi-blocks--active {
 					.maxi-font-icon-block__icon {
 						background-color: var(--maxi-#{$style}-highlight-background) !important;
 
-						&:hover {
-							background-color: var(--maxi-#{$style}-hover) !important;
-						}
+						// &:hover {
+						// 	background-color: var(--maxi-#{$style}-hover) !important;
+						// }
 					}
 
 					&.maxi-svg-icon-block {
 						.maxi-background-displayer {
 							background-color: var(--maxi-light-highlight-background) !important;
 
-							&:hover {
-								background-color: var(--maxi-#{$style}-hover) !important;
-							}
+							// &:hover {
+							// 	background-color: var(--maxi-#{$style}-hover) !important;
+							// }
 						}
 					}
 				}
@@ -110,9 +110,9 @@ body.maxi-blocks--active {
 						border-style: solid !important;
 						border-width: 2px !important;
 
-						&:hover {
-							border-color: var(--maxi-#{$style}-hover) !important;
-						}
+						// &:hover {
+						// 	border-color: var(--maxi-#{$style}-hover) !important;
+						// }
 					}
 				}
 

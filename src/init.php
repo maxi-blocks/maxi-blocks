@@ -106,12 +106,6 @@ function maxi_load_custom_wp_admin_style() {
 	);
 
 	wp_enqueue_style('maxi-block-css-admin');
-
-	wp_enqueue_style(
-		'maxi-blocks-banner',
-		plugins_url('/css/maxi-banner.css', dirname(__FILE__)),
-		false
-	);
 }
 
 add_action('admin_enqueue_scripts', 'maxi_load_custom_wp_admin_style');
@@ -120,12 +114,6 @@ add_action('admin_enqueue_scripts', 'maxi_load_custom_wp_admin_style');
 function maxi_load_custom_wp_front_script() {
 
 	wp_enqueue_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js', array(), null, true);
-
-	wp_enqueue_style(
-		'maxi-blocks-banner',
-		plugins_url('/css/maxi-banner.css', dirname(__FILE__)),
-		false
-	);
 
 	wp_enqueue_style(
 		'maxi-animations-styles',

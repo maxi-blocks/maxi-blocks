@@ -233,7 +233,7 @@ class edit extends MaxiBlock {
 											}}
 											showHandle
 											maxWidth='100%'
-											directions={{
+											enable={{
 												topRight: true,
 												bottomRight: true,
 												bottomLeft: true,

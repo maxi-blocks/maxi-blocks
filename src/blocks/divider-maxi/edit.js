@@ -134,7 +134,7 @@ class edit extends MaxiBlock {
 					}`,
 				}}
 				showHandle={isSelected}
-				directions={{
+				enable={{
 					bottom: true,
 				}}
 				onResizeStart={handleOnResizeStart}

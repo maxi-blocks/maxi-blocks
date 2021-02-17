@@ -3,7 +3,6 @@
  */
 import { Resizable } from 're-resizable';
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Styles and icons
@@ -17,7 +16,6 @@ const BlockResizer = props => {
 	const {
 		children,
 		className,
-		directions,
 		showHandle = false,
 		resizableObject,
 		...rest
@@ -29,15 +27,27 @@ const BlockResizer = props => {
 	const showHandlesClassName = showHandle && 'maxi-resizable__handle--show';
 	const sideHandleClassName = 'maxi-resizable__side-handle';
 
+	const enable = {
+		top: false,
+		right: false,
+		bottom: false,
+		left: false,
+		topLeft: false,
+		topRight: false,
+		bottomRight: false,
+		bottomLeft: false,
+		...props.enable,
+	};
+
 	return (
 		<Resizable
 			{...rest}
 			ref={resizableObject}
 			className={classes}
+			enable={enable}
 			handleClasses={{
 				top:
-					!isNil(directions.top) &&
-					directions.top &&
+					enable.top &&
 					classnames(
 						handleClassName,
 						showHandlesClassName,
@@ -45,8 +55,7 @@ const BlockResizer = props => {
 						'maxi-resizable__handle-top'
 					),
 				right:
-					!isNil(directions.right) &&
-					directions.right &&
+					enable.right &&
 					classnames(
 						handleClassName,
 						showHandlesClassName,
@@ -54,8 +63,7 @@ const BlockResizer = props => {
 						'maxi-resizable__handle-right'
 					),
 				bottom:
-					!isNil(directions.bottom) &&
-					directions.bottom &&
+					enable.bottom &&
 					classnames(
 						handleClassName,
 						showHandlesClassName,
@@ -63,8 +71,7 @@ const BlockResizer = props => {
 						'maxi-resizable__handle-bottom'
 					),
 				left:
-					!isNil(directions.left) &&
-					directions.left &&
+					enable.left &&
 					classnames(
 						handleClassName,
 						showHandlesClassName,
@@ -72,8 +79,7 @@ const BlockResizer = props => {
 						'maxi-resizable__handle-left'
 					),
 				topLeft:
-					!isNil(directions.topLeft) &&
-					directions.topLeft &&
+					enable.topLeft &&
 					classnames(
 						handleClassName,
 						showHandlesClassName,
@@ -82,8 +88,7 @@ const BlockResizer = props => {
 						'maxi-resizable__handle-left'
 					),
 				topRight:
-					!isNil(directions.topRight) &&
-					directions.topRight &&
+					enable.topRight &&
 					classnames(
 						handleClassName,
 						showHandlesClassName,
@@ -92,8 +97,7 @@ const BlockResizer = props => {
 						'maxi-resizable__handle-right'
 					),
 				bottomRight:
-					!isNil(directions.bottomRight) &&
-					directions.bottomRight &&
+					enable.bottomRight &&
 					classnames(
 						handleClassName,
 						showHandlesClassName,
@@ -102,8 +106,7 @@ const BlockResizer = props => {
 						'maxi-resizable__handle-right'
 					),
 				bottomLeft:
-					!isNil(directions.bottomLeft) &&
-					directions.bottomLeft &&
+					enable.bottomLeft &&
 					classnames(
 						handleClassName,
 						showHandlesClassName,

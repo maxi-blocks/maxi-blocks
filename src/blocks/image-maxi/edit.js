@@ -28,7 +28,7 @@ import getStyles from './styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil, isNumber } from 'lodash';
+import { isEmpty, isNil, round } from 'lodash';
 
 /**
  * Icons
@@ -94,6 +94,7 @@ class edit extends MaxiBlock {
 			mediaWidth,
 			mediaHeight,
 			SVGElement,
+			imgWidth,
 		} = attributes;
 
 		const hoverClasses = classnames(
@@ -150,16 +151,6 @@ class edit extends MaxiBlock {
 				setAttributes({ mediaAltTitle: imageData.title.rendered });
 		}
 
-		const handleOnResizeStop = (event, direction, elt, delta) => {
-			const imageWidth = !isNil(attributes[`width-${deviceType}`])
-				? attributes[`width-${deviceType}`]
-				: 0;
-
-			setAttributes({
-				[`width-${deviceType}`]: imageWidth + delta.width,
-			});
-		};
-
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
@@ -214,23 +205,7 @@ class edit extends MaxiBlock {
 										<BlockResizer
 											key={uniqueID}
 											className='maxi-block__resizer maxi-image-block__resizer'
-											size={{
-												width: `${
-													!isNumber(
-														attributes[
-															`width-${deviceType}`
-														]
-													)
-														? imageData &&
-														  imageData
-																.media_details
-																.width
-														: attributes[
-																`width-${deviceType}`
-														  ]
-												}px`,
-												height: '100%',
-											}}
+											size={{ width: `${imgWidth}%` }}
 											showHandle
 											maxWidth='100%'
 											enable={{
@@ -239,7 +214,22 @@ class edit extends MaxiBlock {
 												bottomLeft: true,
 												topLeft: true,
 											}}
-											onResizeStop={handleOnResizeStop}
+											onResizeStop={(
+												event,
+												direction,
+												elt,
+												delta
+											) => {
+												setAttributes({
+													imgWidth: +round(
+														elt.style.width.replace(
+															/[^0-9.]/g,
+															''
+														),
+														1
+													),
+												});
+											}}
 										>
 											<div className='maxi-image-block__settings'>
 												<Button

@@ -82,7 +82,10 @@ const MaxiBreadcrumbs = () => {
 									const { title } = blockType;
 
 									return (
-										<li className='maxi-breadcrumbs__item'>
+										<li
+											key={`maxi-breadcrumbs__item-${i}`}
+											className='maxi-breadcrumbs__item'
+										>
 											{i !== 0 && <span>{' > '}</span>}
 											<span
 												className='maxi-breadcrumbs__item__content'

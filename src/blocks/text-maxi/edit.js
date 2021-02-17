@@ -25,6 +25,7 @@ import {
 	fromTextToList,
 	getFormatValue,
 	setCustomFormatsWhenPaste,
+	withFormatValue,
 } from '../../extensions/text/formats';
 import {
 	getGroupAttributes,
@@ -45,26 +46,6 @@ class edit extends MaxiBlock {
 	constructor(props) {
 		super(props);
 		this.textRef = createRef();
-	}
-
-	state = {
-		formatValue:
-			this.props.generateFormatValue(
-				this.textRef ? this.textRef.current : null
-			) || {},
-		textSelected: '',
-	};
-
-	componentDidMount() {
-		// const { alignment } = this.props.attributes;
-		// const { isRTL } = select('core/editor').getEditorSettings();
-
-		// if (isEmpty(alignment.general.alignment)) {
-		// 	alignment.general.alignment = isRTL ? 'right' : 'left';
-		// 	this.props.setAttributes({ alignment });
-		// }
-
-		this.displayStyles();
 	}
 
 	get getStylesObject() {
@@ -103,8 +84,7 @@ class edit extends MaxiBlock {
 			onSplit,
 			onReplace,
 			deviceType,
-			selectedText,
-			generateFormatValue,
+			formatValue,
 		} = this.props;
 		const {
 			uniqueID,
@@ -119,19 +99,9 @@ class edit extends MaxiBlock {
 			listStart,
 			listReversed,
 			fullWidth,
-			typography,
 		} = attributes;
-		const { formatValue, textSelected } = this.state;
 
 		const name = 'maxi-blocks/text-maxi';
-
-		if (isEmpty(formatValue) || selectedText !== textSelected)
-			this.setState({
-				formatValue: generateFormatValue(
-					this.textRef ? this.textRef.current : null
-				),
-				textSelected: selectedText,
-			});
 
 		const classes = classnames(
 			'maxi-block',
@@ -151,23 +121,25 @@ class edit extends MaxiBlock {
 			className
 		);
 
-		const { getFormatTypes } = select('core/rich-text');
-
 		return [
-			<Inspector {...this.props} formatValue={formatValue} />,
-			<Toolbar {...this.props} formatValue={formatValue} />,
-			<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				formatValue={formatValue}
+			/>,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				{...this.props}
+				formatValue={formatValue}
+			/>,
+			<MotionPreview
+				key={`motion-preview-${uniqueID}`}
+				{...getGroupAttributes(attributes, 'motion')}
+			>
 				<__experimentalBlock
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}
 					data-align={fullWidth}
-					onClick={() =>
-						this.setState({
-							formatValue: generateFormatValue(
-								this.textRef ? this.textRef.current : null
-							),
-						})
-					}
 				>
 					{!attributes['background-highlight'] && (
 						<BackgroundDisplayer
@@ -217,7 +189,10 @@ class edit extends MaxiBlock {
 								const cleanCustomProps = setCustomFormatsWhenPaste(
 									{
 										formatValue,
-										typography,
+										typography: getGroupAttributes(
+											attributes,
+											'typography'
+										),
 										isList,
 										typeOfList,
 										content,
@@ -225,10 +200,7 @@ class edit extends MaxiBlock {
 								);
 
 								if (cleanCustomProps)
-									setAttributes({
-										typography: cleanCustomProps.typography,
-										content: cleanCustomProps.content,
-									});
+									setAttributes(cleanCustomProps);
 							}}
 							tagName={textLevel}
 							onSplit={onSplit}
@@ -247,9 +219,6 @@ class edit extends MaxiBlock {
 							keepPlaceholderOnFocus
 							__unstableEmbedURLOnPaste
 							__unstableAllowPrefixTransformations
-							allowedFormats={getFormatTypes().filter(format => {
-								return format.name !== 'core/link';
-							})}
 						/>
 					)}
 					{isList && (
@@ -289,9 +258,6 @@ class edit extends MaxiBlock {
 							start={listStart}
 							reversed={!!listReversed}
 							type={typeOfList}
-							allowedFormats={getFormatTypes().filter(format => {
-								return format.name !== 'core/link';
-							})}
 						>
 							{({ value, onChange }) =>
 								isSelected && (
@@ -353,20 +319,17 @@ class edit extends MaxiBlock {
 	}
 }
 
-const editSelect = withSelect(select => {
-	const selectedText = window.getSelection().toString();
+const editSelect = withSelect((select, ownProps) => {
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
-		// The 'selectedText' attribute is a trigger for generating the formatValue
-		selectedText,
 		deviceType,
 	};
 });
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const { attributes, setAttributes, clientId } = ownProps;
-	const { content, isList, typeOfList } = attributes;
+	const { content } = attributes;
 
 	const name = 'maxi-blocks/text-maxi';
 
@@ -570,23 +533,11 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		});
 	};
 
-	const generateFormatValue = node => {
-		const formatElement = {
-			multilineTag: isList ? 'li' : undefined,
-			multilineWrapperTags: isList ? typeOfList : undefined,
-			__unstableIsEditableTree: true,
-		};
-		const formatValue = getFormatValue(formatElement, node);
-
-		return formatValue;
-	};
-
 	return {
 		onReplace,
 		onMerge,
 		onSplit,
-		generateFormatValue,
 	};
 });
 
-export default compose(editSelect, editDispatch)(edit);
+export default compose(editSelect, editDispatch, withFormatValue)(edit);

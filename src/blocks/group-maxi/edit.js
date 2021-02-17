@@ -108,10 +108,13 @@ class edit extends MaxiBlock {
 			);
 
 		return [
-			<Inspector {...this.props} />,
-			<Toolbar {...this.props} />,
-			<Breadcrumbs />,
-			<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
+			<MotionPreview
+				key={`motion-preview-${uniqueID}`}
+				{...getGroupAttributes(attributes, 'motion')}
+			>
 				<__experimentalBlock.section
 					className={classes}
 					data-maxi_initial_block_class={defaultBlockStyle}

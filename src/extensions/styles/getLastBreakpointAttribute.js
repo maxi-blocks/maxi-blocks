@@ -50,6 +50,7 @@ const getLastBreakpointAttribute = (
 			];
 	} while (
 		breakpointPosition > 0 &&
+		!isNumber(currentAttr) &&
 		(isEmpty(currentAttr) || isNil(currentAttr))
 	);
 

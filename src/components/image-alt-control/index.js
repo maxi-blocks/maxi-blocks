@@ -41,8 +41,8 @@ const ImageAltControl = props => {
 			/>
 			{altSelector === 'custom' && (
 				<TextControl
-					placeHolder={__('Add Your Alt Tag Here', 'maxi-blocks')}
-					value={mediaAlt}
+					placeholder={__('Add Your Alt Tag Here', 'maxi-blocks')}
+					value={mediaAlt || ''}
 					onChange={value => onChangeMediaAlt(value)}
 				/>
 			)}

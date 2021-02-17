@@ -2,14 +2,15 @@
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
-const { RangeControl, Icon } = wp.components;
+const { Fragment, useState } = wp.element;
+const { Icon } = wp.components;
 
 /**
  * Internal dependencies
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
+import RangeSliderControl from '../range-slider-control';
 import {
 	boxShadowNone,
 	boxShadowTotal,
@@ -47,6 +48,8 @@ const BoxShadowControl = props => {
 
 	const classes = classnames('maxi-shadow-control', className);
 
+	const [currentShadow, setCurrentShadow] = useState('none');
+
 	const onChangeValue = (target, val) => {
 		onChange({
 			[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]: !isNil(+val)
@@ -57,10 +60,10 @@ const BoxShadowControl = props => {
 		});
 	};
 
-	const onChangeDefault = defaultBoxShadow => {
+	const onChangeDefault = defaultProp => {
 		const response = {};
 
-		Object.entries(defaultBoxShadow).forEach(([key, value]) => {
+		Object.entries(defaultProp).forEach(([key, value]) => {
 			response[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] = value;
 		});
 
@@ -140,129 +143,132 @@ const BoxShadowControl = props => {
 					},
 				]}
 			/>
-			<ColorControl
-				label={__('Box Shadow', 'maxi-blocks')}
-				className='maxi-shadow-control__color'
-				color={getLastBreakpointAttribute(
-					'box-shadow-color',
-					breakpoint,
-					props,
-					isHover
-				)}
-				defaultColor={getDefaultAttribute(
-					`box-shadow-color-${breakpoint}${isHover ? '-hover' : ''}`
-				)}
-				onChange={val => onChangeValue('box-shadow-color', val)}
-				disableGradient
-				disableImage
-				disableVideo
-				disableGradientAboveBackground
-			/>
-			{!disableAdvanced && (
+			{!getIsActive(null, 'none') && (
 				<Fragment>
-					<RangeControl
-						label={__('Horizontal', 'maxi-blocks')}
-						className='maxi-shadow-control__horizontal'
-						value={getLastBreakpointAttribute(
-							'box-shadow-horizontal',
+					<ColorControl
+						label={__('Box Shadow', 'maxi-blocks')}
+						className='maxi-shadow-control__color'
+						color={getLastBreakpointAttribute(
+							'box-shadow-color',
 							breakpoint,
 							props,
 							isHover
 						)}
-						onChange={val => {
-							const value = isNil(val)
-								? getDefaultAttribute(
-										`box-shadow-horizontal-${breakpoint}`
-								  )
-								: val;
-							onChangeValue('box-shadow-horizontal', value);
-						}}
-						min={-100}
-						max={100}
-						allowReset
-						initialPosition={getDefaultAttribute(
-							`box-shadow-horizontal-${breakpoint}${
+						defaultColor={getDefaultAttribute(
+							`box-shadow-color-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`
 						)}
-					/>
-					<RangeControl
-						label={__('Vertical', 'maxi-blocks')}
-						className='maxi-shadow-control__vertical'
-						value={getLastBreakpointAttribute(
-							'box-shadow-vertical',
-							breakpoint,
-							props,
-							isHover
-						)}
 						onChange={val => {
-							const value = isNil(val)
-								? getDefaultAttribute(
-										`box-shadow-vertical-${breakpoint}`
-								  )
-								: val;
-							onChangeValue('box-shadow-vertical', value);
+							onChange({
+								[`box-shadow-color-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: val,
+							});
 						}}
-						min={-100}
-						max={100}
-						allowReset
-						initialPosition={getDefaultAttribute(
-							`box-shadow-vertical-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`
-						)}
+						disableGradient
+						disableImage
+						disableVideo
 					/>
-					<RangeControl
-						label={__('Blur', 'maxi-blocks')}
-						className='maxi-shadow-control__blur'
-						value={getLastBreakpointAttribute(
-							'box-shadow-blur',
-							breakpoint
-						)}
-						props
-						onChange={val => {
-							const value = isNil(val)
-								? getDefaultAttribute(
-										`box-shadow-blur-${breakpoint}`
-								  )
-								: val;
-							onChangeValue('box-shadow-blur', value);
-						}}
-						min={0}
-						max={100}
-						allowReset
-						initialPosition={getDefaultAttribute(
-							`box-shadow-blur-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`
-						)}
-					/>
-					<RangeControl
-						label={__('Spread', 'maxi-blocks')}
-						className='maxi-shadow-control__spread-control'
-						value={getLastBreakpointAttribute(
-							'box-shadow-spread',
-							breakpoint,
-							props,
-							isHover
-						)}
-						onChange={val => {
-							const value = isNil(val)
-								? getDefaultAttribute(
-										`box-shadow-spread-${breakpoint}`
-								  )
-								: val;
-							onChangeValue('box-shadow-spread', value);
-						}}
-						min={-100}
-						max={100}
-						allowReset
-						initialPosition={getDefaultAttribute(
-							`box-shadow-spread-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`
-						)}
-					/>
+					{!disableAdvanced && (
+						<Fragment>
+							<RangeSliderControl
+								label={__('Horizontal', 'maxi-blocks')}
+								className='maxi-shadow-control__horizontal'
+								defaultValue={getDefaultAttribute(
+									`box-shadow-horizontal-${breakpoint}`
+								)}
+								value={getLastBreakpointAttribute(
+									'box-shadow-horizontal',
+									breakpoint,
+									props,
+									isHover
+								)}
+								onChange={val =>
+									onChangeValue('box-shadow-horizontal', val)
+								}
+								min={-100}
+								max={100}
+								allowReset
+								initialPosition={getDefaultAttribute(
+									`box-shadow-horizontal-${breakpoint}${
+										isHover ? '-hover' : ''
+									}`
+								)}
+							/>
+							<RangeSliderControl
+								label={__('Vertical', 'maxi-blocks')}
+								className='maxi-shadow-control__vertical'
+								defaultValue={getDefaultAttribute(
+									`box-shadow-vertical-${breakpoint}`
+								)}
+								value={getLastBreakpointAttribute(
+									'box-shadow-vertical',
+									breakpoint,
+									props,
+									isHover
+								)}
+								onChange={val =>
+									onChangeValue('box-shadow-vertical', val)
+								}
+								min={-100}
+								max={100}
+								allowReset
+								initialPosition={getDefaultAttribute(
+									`box-shadow-vertical-${breakpoint}${
+										isHover ? '-hover' : ''
+									}`
+								)}
+							/>
+							<RangeSliderControl
+								label={__('Blur', 'maxi-blocks')}
+								className='maxi-shadow-control__blur'
+								defaultValue={getDefaultAttribute(
+									`box-shadow-blur-${breakpoint}`
+								)}
+								value={getLastBreakpointAttribute(
+									'box-shadow-blur',
+									breakpoint
+								)}
+								props
+								onChange={val =>
+									onChangeValue('box-shadow-blur', val)
+								}
+								min={0}
+								max={100}
+								allowReset
+								initialPosition={getDefaultAttribute(
+									`box-shadow-blur-${breakpoint}${
+										isHover ? '-hover' : ''
+									}`
+								)}
+							/>
+							<RangeSliderControl
+								label={__('Spread', 'maxi-blocks')}
+								className='maxi-shadow-control__spread-control'
+								defaultValue={getDefaultAttribute(
+									`box-shadow-spread-${breakpoint}`
+								)}
+								value={getLastBreakpointAttribute(
+									'box-shadow-spread',
+									breakpoint,
+									props,
+									isHover
+								)}
+								onChange={val =>
+									onChangeValue('box-shadow-spread', val)
+								}
+								min={-100}
+								max={100}
+								allowReset
+								initialPosition={getDefaultAttribute(
+									`box-shadow-spread-${breakpoint}${
+										isHover ? '-hover' : ''
+									}`
+								)}
+							/>
+						</Fragment>
+					)}
 				</Fragment>
 			)}
 		</div>

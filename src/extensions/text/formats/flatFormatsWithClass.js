@@ -71,7 +71,10 @@ const flatRepeatedClassNames = (repeatedClasses, formatValue, typography) => {
 
 	newFormatValue.formats = newFormatValue.formats.map(formatEl => {
 		return formatEl.map(format => {
-			if (repeatedClasses.includes(format.attributes.className))
+			if (
+				format.attributes &&
+				repeatedClasses.includes(format.attributes.className)
+			)
 				format.attributes.className = newClassName;
 
 			return format;

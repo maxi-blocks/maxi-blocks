@@ -455,6 +455,9 @@ const setFormatWithClass = ({
 	isList,
 	isHover = false,
 }) => {
+	// Fixes first render when pasting content
+	if (!formatValue || !typography) return {};
+
 	const multiFormatObj = getMultiFormatObj(formatValue);
 	const currentClassName = getCurrentFormatClassName(formatValue, isHover);
 	const formatClassName = getFormatClassName(

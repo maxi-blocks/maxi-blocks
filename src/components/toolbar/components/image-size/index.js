@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Button, SelectControl, RangeControl, RadioControl } = wp.components;
+const { Button, SelectControl, RadioControl } = wp.components;
 const { useSelect, useDispatch } = wp.data;
 
 /**
@@ -10,6 +10,7 @@ const { useSelect, useDispatch } = wp.data;
  */
 import ToolbarPopover from '../toolbar-popover';
 import openSidebar from '../../../../extensions/dom';
+import RangeSliderControl from '../../../range-slider-control';
 
 /**
  * External dependencies
@@ -107,21 +108,15 @@ const ImageSize = props => {
 							onChange={fullWidth => onChangeFullWidth(fullWidth)}
 						/>
 					)}
-					<RangeControl
+					<RangeSliderControl
 						label={__('Width', 'maxi-blocks')}
 						value={+trim(props['width-general'])}
-						onChange={val => {
-							if (!isNil(val))
-								onChangeSize({
-									'width-general': val,
-								});
-							else
-								onChangeSize({
-									'width-general': getDefaultAttribute(
-										'width-general'
-									),
-								});
-						}}
+						defaultValue={getDefaultAttribute('width-general')}
+						onChange={val =>
+							onChangeSize({
+								'width-general': val,
+							})
+						}
 						allowReset
 					/>
 					<div className='toolbar-image-size-buttons'>

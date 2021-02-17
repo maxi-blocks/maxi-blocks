@@ -92,7 +92,7 @@ const ShowTimeline = props => {
 							? arr[i - 1][0]
 							: 0;
 						return (
-							<Fragment>
+							<Fragment key={`maxi-motion-time-line-${i}`}>
 								<div
 									className='maxi-motion-control__timeline__space'
 									style={{
@@ -105,6 +105,7 @@ const ShowTimeline = props => {
 								<div className='maxi-motion-control__timeline__group'>
 									{value.map((item, i) => (
 										<div
+											key={`maxi-motion-control__timeline__group__item-${i}`}
 											className={classnames(
 												'maxi-motion-control__timeline__group__item',
 												props[

@@ -128,7 +128,7 @@ const TextOptions = props => {
 								onChange={e => {
 									const newFontSize = isEmpty(e.target.value)
 										? ''
-										: Number(e.target.value);
+										: +e.target.value;
 
 									onChangeFormat({
 										'font-size': newFontSize,
@@ -170,7 +170,7 @@ const TextOptions = props => {
 								onChange={e => {
 									const newFontSize = isEmpty(e.target.value)
 										? ''
-										: Number(e.target.value);
+										: +e.target.value;
 
 									onChangeFormat({
 										'line-height': newFontSize,
@@ -212,7 +212,7 @@ const TextOptions = props => {
 								onChange={e => {
 									const newFontSize = isEmpty(e.target.value)
 										? ''
-										: Number(e.target.value);
+										: +e.target.value;
 
 									onChangeFormat({
 										'letter-spacing': newFontSize,

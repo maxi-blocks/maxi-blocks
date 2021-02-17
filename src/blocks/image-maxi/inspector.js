@@ -45,6 +45,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
+import { injectImgSVG } from '../../extensions/svg/utils';
 
 /**
  * External dependencies
@@ -350,12 +351,13 @@ const Inspector = props => {
 														'custom' && (
 														<TextareaControl
 															className='custom-caption'
-															placeHolder={__(
+															placeholder={__(
 																'Add you Custom Caption here',
 																'maxi-blocks'
 															)}
 															value={
-																captionContent
+																captionContent ||
+																''
 															}
 															onChange={captionContent =>
 																setAttributes({
@@ -559,13 +561,13 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		onChange={val => {
+																		onChange={val =>
 																			setAttributes(
 																				{
-																					'border-status-hover': !!val,
+																					'border-status-hover': !!+val,
 																				}
-																			);
-																		}}
+																			)
+																		}
 																	/>
 																	{attributes[
 																		'border-status-hover'
@@ -920,7 +922,6 @@ const Inspector = props => {
 													onChange={obj =>
 														setAttributes(obj)
 													}
-													uniqueID={uniqueID}
 												/>
 											),
 										},

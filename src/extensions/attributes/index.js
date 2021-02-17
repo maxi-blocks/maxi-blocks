@@ -14,6 +14,7 @@ import * as attributes from '../styles/defaults/index';
  * External Dependencies
  */
 import { uniqueId, isEmpty, isNil } from 'lodash';
+import uniqueIDGenerator from './uniqueIDGenerator';
 
 /**
  * General
@@ -42,34 +43,13 @@ const allowedBlocks = [
 const addAttributes = settings => {
 	// Add custom selector/id
 	if (allowedBlocks.includes(settings.name) && !isNil(settings.attributes)) {
-		settings.attributes = Object.assign(settings.attributes, {
+		settings.attributes = {
 			blockStyle: {
 				type: 'string',
-				default: null,
 			},
 			defaultBlockStyle: {
 				type: 'string',
 				default: 'maxi-def-light',
-			},
-			isHighlightText: {
-				type: 'number',
-				default: 0,
-			},
-			isHighlightBackground: {
-				type: 'number',
-				default: 0,
-			},
-			isHighlightBorder: {
-				type: 'number',
-				default: 0,
-			},
-			isHighlightColor1: {
-				type: 'number',
-				default: 0,
-			},
-			isHighlightColor2: {
-				type: 'number',
-				default: 0,
 			},
 			blockStyleBackground: {
 				type: 'number',
@@ -90,7 +70,8 @@ const addAttributes = settings => {
 			},
 			...attributes.zIndex,
 			...attributes.breakpoints,
-		});
+			...settings.attributes,
+		};
 	}
 
 	if (allowedBlocks.includes(settings.name) && !isNil(settings.support)) {
@@ -102,18 +83,6 @@ const addAttributes = settings => {
 	return settings;
 };
 
-const uniqueIdCreator = name => {
-	const newID = uniqueId(`${name.replace('maxi-blocks/', '')}-`);
-
-	if (
-		!isEmpty(document.getElementsByClassName(newID)) ||
-		!isNil(document.getElementById(newID))
-	)
-		uniqueIdCreator(name);
-
-	return newID;
-};
-
 /**
  * Add custom Maxi Blocks attributes to selected blocks
  *
@@ -122,20 +91,20 @@ const uniqueIdCreator = name => {
  */
 const withAttributes = createHigherOrderComponent(
 	BlockEdit => props => {
-		const {
-			attributes: { uniqueID },
-			name,
-			clientId,
-		} = props;
+		const { attributes, name, clientId } = props;
+		const { uniqueID } = attributes;
 
 		if (allowedBlocks.includes(name)) {
 			// uniqueID
 			if (
 				isNil(uniqueID) ||
 				document.getElementsByClassName(uniqueID).length > 1
-			)
-				props.attributes.uniqueID = uniqueIdCreator(name);
-
+			) {
+				const newName = uniqueId(
+					`${name.replace('maxi-blocks/', '')}-`
+				);
+				attributes.uniqueID = uniqueIDGenerator(newName);
+			}
 			// isFirstOnHierarchy
 			const parentBlocks = select('core/block-editor')
 				.getBlockParents(clientId)
@@ -145,7 +114,14 @@ const withAttributes = createHigherOrderComponent(
 
 			if (parentBlocks.includes(clientId)) parentBlocks.pop();
 
-			props.attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
+			attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
+
+			// RTL
+			if (attributes['text-alignment-general']) {
+				const { isRTL } = select('core/editor').getEditorSettings();
+
+				attributes['text-alignment-general'] = isRTL ? 'right' : 'left';
+			}
 		}
 
 		return <BlockEdit {...props} />;

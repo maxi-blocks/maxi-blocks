@@ -48,25 +48,129 @@ import {
  */
 
 /**
+ * Get columns positions (Row number and the number of columns in the row)
+ *
+ * @param {Array} sizes array of columns widths
+ * @return {Array} Array of objects
+ */
+
+const getColumnsPositions = sizes => {
+	const columnsPositions = [];
+
+	let columnsSizeSum = 0;
+	let columnsNumberInOneRow = 0;
+	let rowsCount = 1;
+
+	sizes.forEach(size => {
+		columnsSizeSum += size;
+		columnsNumberInOneRow += 1;
+
+		columnsPositions.push({
+			rowNumber: rowsCount,
+		});
+
+		if (Math.round(columnsSizeSum * 100 + Number.EPSILON) / 100 === 1) {
+			columnsPositions.forEach(column => {
+				if (!column.columnsNumber) {
+					column.columnsNumber = columnsNumberInOneRow;
+				}
+			});
+
+			rowsCount += 1;
+			columnsSizeSum = 0;
+			columnsNumberInOneRow = 0;
+		}
+	});
+
+	return columnsPositions;
+};
+
+/**
+ * Apply gap on columns sizes array
+ *
+ * @param {Array} sizes array of columns widths
+ * @return {Array} columns sizes after applying the gap
+ */
+const columnAttributesGenerator = (columns, isResponsive) => {
+	const newColumnsSizes = [];
+	const columnsPositions = getColumnsPositions(columns);
+
+	// This sentence is important vvv
+	// const gap = props.removeColumnGap ? 2.5 : 0;
+	const gap = 2.5;
+
+	const responsive = isResponsive ? 'm' : 'general';
+
+	columns.forEach((column, i) => {
+		if (columnsPositions[i].columnsNumber > 1) {
+			const numberOfGaps = columnsPositions[i].columnsNumber - 1;
+			const total = 100 - gap * numberOfGaps;
+			newColumnsSizes.push({
+				withGap: {
+					[`column-size-${responsive}`]: column * total,
+					...(!isResponsive && { 'column-size-m': 100 }),
+					...((columnsPositions[i].rowNumber > 1 && {
+						'margin-top-m': 1.5,
+						'margin-unit-m': 'em',
+					}) ||
+						(isResponsive && {
+							'margin-top-m': '',
+						})),
+				},
+				withoutGap: {
+					[`column-size-${responsive}`]: column * 100,
+					...(!isResponsive && { 'column-size-m': 100 }),
+					...((columnsPositions[i].rowNumber > 1 && {
+						'margin-top-m': 1.5,
+						'margin-unit-m': 'em',
+					}) ||
+						(isResponsive && {
+							'margin-top-m': '',
+						})),
+				},
+			});
+		}
+		if (columnsPositions[i].columnsNumber === 1) {
+			newColumnsSizes.push({
+				withGap: {
+					[`column-size-${responsive}`]: 100,
+					...(!isResponsive && { 'column-size-m': 100 }),
+					...((columnsPositions[i].rowNumber > 1 && {
+						'margin-top-m': 1.5,
+						'margin-unit-m': 'em',
+					}) ||
+						(isResponsive && {
+							'margin-top-m': '',
+						})),
+				},
+				withoutGap: {
+					[`column-size-${responsive}`]: 100,
+					...(!isResponsive && { 'column-size-m': 100 }),
+					...((columnsPositions[i].rowNumber > 1 && {
+						'margin-top-m': 1.5,
+						'margin-unit-m': 'em',
+					}) ||
+						(isResponsive && {
+							'margin-top-m': '',
+						})),
+				},
+			});
+		}
+	});
+
+	return newColumnsSizes;
+};
+
+/**
  *
  * We are generating new columns again each time the user changes the pattern and adding the new columns to them
  * it's better to update columns attributes in place rather than generating again
  */
-const generateDefaultColumns = (columns, gap1 = 2.5) => {
-	const numberOfGaps = columns.length - 1;
-	const total = 100 - gap1 * numberOfGaps;
+const generateDefaultColumns = (columns, isResponsive = false) => {
+	const newAttributes = columnAttributesGenerator(columns, isResponsive);
 
-	return columns.map((column, i) => {
-		return [
-			'maxi-blocks/column-maxi',
-			{
-				uniqueID: 'maxi-column-maxi-1',
-				'column-size-general': column * total,
-				'column-size-m': 100,
-				'margin-top-m': i !== 0 ? 1.5 : '',
-				'margin-unit-m': 'em',
-			},
-		];
+	return newAttributes.map(colAttr => {
+		return ['maxi-blocks/column-maxi', { ...colAttr }];
 	});
 };
 
@@ -79,7 +183,6 @@ const templates = {
 				icon: oneColumn,
 				sizes: [1],
 				content: generateDefaultColumns([1]),
-				responsiveLayout: '1',
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -95,8 +198,8 @@ const templates = {
 				name: '1-1',
 				icon: twoColumns,
 				sizes: [1 / 2, 1 / 2],
-				content: generateDefaultColumns([1 / 2, 1 / 2]),
 				responsiveLayout: '2-2',
+				content: generateDefaultColumns([1 / 2, 1 / 2]),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -106,8 +209,8 @@ const templates = {
 				name: '1-3',
 				icon: oneThree,
 				sizes: [1 / 4, 3 / 4],
-				content: generateDefaultColumns([1 / 4, 3 / 4]),
 				responsiveLayout: '2-2',
+				content: generateDefaultColumns([1 / 4, 3 / 4]),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -117,8 +220,8 @@ const templates = {
 				name: '3-1',
 				icon: threeOne,
 				sizes: [3 / 4, 1 / 4],
-				content: generateDefaultColumns([3 / 4, 1 / 4]),
 				responsiveLayout: '2-2',
+				content: generateDefaultColumns([3 / 4, 1 / 4]),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -128,8 +231,8 @@ const templates = {
 				name: '1-4',
 				icon: oneFour,
 				sizes: [1 / 5, 4 / 5],
-				content: generateDefaultColumns([1 / 5, 4 / 5]),
 				responsiveLayout: '2-2',
+				content: generateDefaultColumns([1 / 5, 4 / 5]),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -139,8 +242,8 @@ const templates = {
 				name: '4-1',
 				icon: fourOne,
 				sizes: [4 / 5, 1 / 5],
-				content: generateDefaultColumns([4 / 5, 1 / 5]),
 				responsiveLayout: '2-2',
+				content: generateDefaultColumns([4 / 5, 1 / 5]),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -152,7 +255,7 @@ const templates = {
 				name: '2-2',
 				icon: twoTwo,
 				sizes: [1, 1],
-				content: generateDefaultColumns([1, 1]),
+				content: generateDefaultColumns([1, 1], true),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -235,8 +338,7 @@ const templates = {
 				name: '1-1-2',
 				icon: oneOneTwo,
 				sizes: [1 / 2, 1 / 2, 1],
-
-				content: generateDefaultColumns([1 / 2, 1 / 2, 1]),
+				content: generateDefaultColumns([1 / 2, 1 / 2, 1], true),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -246,7 +348,7 @@ const templates = {
 				name: '1-2-2',
 				icon: oneTwoTwo,
 				sizes: [1, 1 / 2, 1 / 2],
-				content: generateDefaultColumns([1, 1 / 2, 1 / 2]),
+				content: generateDefaultColumns([1, 1 / 2, 1 / 2], true),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -256,7 +358,7 @@ const templates = {
 				name: '1-1-1',
 				icon: oneOneOne,
 				sizes: [1, 1, 1],
-				content: generateDefaultColumns([1, 1, 1]),
+				content: generateDefaultColumns([1, 1, 1], true),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -284,7 +386,10 @@ const templates = {
 				name: '1-1-1-1',
 				icon: oneOneOneOne,
 				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2],
-				content: generateDefaultColumns([1 / 2, 1 / 2, 1 / 2, 1 / 2]),
+				content: generateDefaultColumns(
+					[1 / 2, 1 / 2, 1 / 2, 1 / 2],
+					true
+				),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -294,7 +399,7 @@ const templates = {
 				name: '2-1-1-2',
 				icon: twoOneOneTwo,
 				sizes: [1, 1 / 2, 1 / 2, 1],
-				content: generateDefaultColumns([1, 1 / 2, 1 / 2, 1]),
+				content: generateDefaultColumns([1, 1 / 2, 1 / 2, 1], true),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -304,7 +409,7 @@ const templates = {
 				name: '1-1-2-2',
 				icon: oneOneTwoTwo,
 				sizes: [1 / 2, 1 / 2, 1, 1],
-				content: generateDefaultColumns([1 / 2, 1 / 2, 1, 1]),
+				content: generateDefaultColumns([1 / 2, 1 / 2, 1, 1], true),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -314,7 +419,7 @@ const templates = {
 				name: '2-2-1-1',
 				icon: twoTwoOneOne,
 				sizes: [1, 1, 1 / 2, 1 / 2],
-				content: generateDefaultColumns([1, 1, 1 / 2, 1 / 2]),
+				content: generateDefaultColumns([1, 1, 1 / 2, 1 / 2], true),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -324,7 +429,7 @@ const templates = {
 				name: '2-2-2-2',
 				icon: twoTwoTwoTwo,
 				sizes: [1, 1, 1, 1],
-				content: generateDefaultColumns([1, 1, 1, 1]),
+				content: generateDefaultColumns([1, 1, 1, 1], true),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -359,13 +464,10 @@ const templates = {
 				name: '2-1-1-1-1',
 				icon: twoOneOneOneOne,
 				sizes: [1, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
-				content: generateDefaultColumns([
-					1,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-				]),
+				content: generateDefaultColumns(
+					[1, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
+					true
+				),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -375,13 +477,10 @@ const templates = {
 				name: '1-1-2-1-1',
 				icon: oneOneTwoOneOne,
 				sizes: [1 / 2, 1 / 2, 1, 1 / 2, 1 / 2],
-				content: generateDefaultColumns([
-					1 / 2,
-					1 / 2,
-					1,
-					1 / 2,
-					1 / 2,
-				]),
+				content: generateDefaultColumns(
+					[1 / 2, 1 / 2, 1, 1 / 2, 1 / 2],
+					true
+				),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -391,13 +490,10 @@ const templates = {
 				name: '1-1-1-1-2',
 				icon: oneOneOneOneTwo,
 				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2, 1],
-				content: generateDefaultColumns([
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1,
-				]),
+				content: generateDefaultColumns(
+					[1 / 2, 1 / 2, 1 / 2, 1 / 2, 1],
+					true
+				),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -407,7 +503,7 @@ const templates = {
 				name: '1-1-1-1-1',
 				icon: oneOneOneOneOne,
 				sizes: [1, 1, 1, 1, 1],
-				content: generateDefaultColumns([1, 1, 1, 1, 1]),
+				content: generateDefaultColumns([1, 1, 1, 1, 1], true),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -422,6 +518,7 @@ const templates = {
 				name: '6 columns',
 				icon: sixColumns,
 				sizes: [1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6],
+				responsiveLayout: '2-2-2-2-2-2',
 				content: generateDefaultColumns([
 					1 / 6,
 					1 / 6,
@@ -430,7 +527,6 @@ const templates = {
 					1 / 6,
 					1 / 6,
 				]),
-				responsiveLayout: '2-2-2-2-2-2',
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -442,13 +538,10 @@ const templates = {
 				name: '1-1-1-1-1-1',
 				icon: oneOneOneOneOneOne,
 				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
-				content: generateDefaultColumns([
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-				]),
+				content: generateDefaultColumns(
+					[1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
+					true
+				),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -458,7 +551,7 @@ const templates = {
 				name: '2-2-2-2-2-2',
 				icon: twoTwoTwoTwoTwoTwo,
 				sizes: [1, 1, 1, 1, 1, 1],
-				content: generateDefaultColumns([1, 1, 1, 1, 1, 1]),
+				content: generateDefaultColumns([1, 1, 1, 1, 1, 1], true),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -495,15 +588,10 @@ const templates = {
 				name: '2-1-1-1-1-1-1',
 				icon: twoOneOneOneOneOneOne,
 				sizes: [1, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
-				content: generateDefaultColumns([
-					1,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-				]),
+				content: generateDefaultColumns(
+					[1, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
+					true
+				),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -513,15 +601,10 @@ const templates = {
 				name: '1-1-1-1-1-1-2',
 				icon: oneOneOneOneOneOneTwo,
 				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1],
-				content: generateDefaultColumns([
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1,
-				]),
+				content: generateDefaultColumns(
+					[1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1],
+					true
+				),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -531,15 +614,10 @@ const templates = {
 				name: '1-1-1-1-1-1-1-3',
 				icon: oneOneOneOneOneOneOneThree,
 				sizes: [1, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3],
-				content: generateDefaultColumns([
-					1,
-					1 / 3,
-					1 / 3,
-					1 / 3,
-					1 / 3,
-					1 / 3,
-					1 / 3,
-				]),
+				content: generateDefaultColumns(
+					[1, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3],
+					true
+				),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -549,15 +627,10 @@ const templates = {
 				name: '3-1-1-1-1-1-1-1',
 				icon: threeOneOneOneOneOneOneOne,
 				sizes: [1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1],
-				content: generateDefaultColumns([
-					1 / 3,
-					1 / 3,
-					1 / 3,
-					1 / 3,
-					1 / 3,
-					1 / 3,
-					1,
-				]),
+				content: generateDefaultColumns(
+					[1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1 / 3, 1],
+					true
+				),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -567,7 +640,7 @@ const templates = {
 				name: '1-1-1-1-1-1-1',
 				icon: oneOneOneOneOneOneOne,
 				sizes: [1, 1, 1, 1, 1, 1, 1],
-				content: generateDefaultColumns([1, 1, 1, 1, 1, 1, 1]),
+				content: generateDefaultColumns([1, 1, 1, 1, 1, 1, 1], true),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -582,6 +655,7 @@ const templates = {
 				name: '8 columns',
 				icon: eightColumns,
 				sizes: [1 / 8, 1 / 8, 1 / 8, 1 / 8, 1 / 8, 1 / 8, 1 / 8, 1 / 8],
+				responsiveLayout: '2-2-2-2-2-2-2-2',
 				content: generateDefaultColumns([
 					1 / 8,
 					1 / 8,
@@ -592,7 +666,6 @@ const templates = {
 					1 / 8,
 					1 / 8,
 				]),
-				responsiveLayout: '2-2-2-2-2-2-2-2',
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -604,15 +677,10 @@ const templates = {
 				name: '1-1-1-1-1-1-1-1',
 				icon: oneOneOneOneOneOneOneOne,
 				sizes: [1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
-				content: generateDefaultColumns([
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-					1 / 2,
-				]),
+				content: generateDefaultColumns(
+					[1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2, 1 / 2],
+					true
+				),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',
@@ -622,7 +690,7 @@ const templates = {
 				name: '2-2-2-2-2-2-2-2',
 				icon: twoTwoTwoTwoTwoTwoTwoTwo,
 				sizes: [1, 1, 1, 1, 1, 1, 1, 1],
-				content: generateDefaultColumns([1, 1, 1, 1, 1, 1, 1]),
+				content: generateDefaultColumns([1, 1, 1, 1, 1, 1, 1], true),
 				attributes: {
 					horizontalAlign: 'space-between',
 					verticalAlign: 'stretch',

@@ -4,7 +4,7 @@
 const { compose } = wp.compose;
 const { Fragment, forwardRef, createRef } = wp.element;
 const { Spinner } = wp.components;
-const { withSelect, withDispatch, select } = wp.data;
+const { withSelect, withDispatch } = wp.data;
 const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 
 /**
@@ -15,9 +15,9 @@ import RowContext from '../row-maxi/context';
 import {
 	BackgroundDisplayer,
 	BlockPlaceholder,
+	BlockResizer,
 	MaxiBlock,
 	Toolbar,
-	BlockResizer,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -58,6 +58,27 @@ class edit extends MaxiBlock {
 		this.resizableObject = createRef();
 	}
 
+	componentDidUpdate() {
+		this.displayStyles();
+
+		if (this.resizableObject.current) {
+			// Cheating to make appear 'resizableObject' as an attribute 👍
+			this.props.setAttributes({
+				resizableObject: this.resizableObject.current,
+			});
+
+			const columnWidth = getLastBreakpointAttribute(
+				'column-size',
+				this.props.deviceType || 'general',
+				this.props.attributes
+			);
+
+			this.resizableObject.current.updateSize({
+				width: `${columnWidth}%`,
+			});
+		}
+	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -69,7 +90,6 @@ class edit extends MaxiBlock {
 			clientId,
 			deviceType,
 			hasInnerBlock,
-			onDeviceTypeChange,
 			originalNestedColumns,
 			rowBlockId,
 			rowBlockWidth,
@@ -83,8 +103,6 @@ class edit extends MaxiBlock {
 			extraClassName,
 			uniqueID,
 		} = attributes;
-
-		onDeviceTypeChange(this.resizableObject.current);
 
 		const classes = classnames(
 			'maxi-block',
@@ -101,18 +119,13 @@ class edit extends MaxiBlock {
 		);
 
 		const getColumnWidthDefault = () => {
-			if (
-				getLastBreakpointAttribute(
-					'column-size',
-					deviceType,
-					attributes
-				)
-			)
-				return `${getLastBreakpointAttribute(
-					'column-size',
-					deviceType,
-					attributes
-				)}%`;
+			const columnWidth = getLastBreakpointAttribute(
+				'column-size',
+				deviceType,
+				attributes
+			);
+
+			if (columnWidth) return `${columnWidth}%`;
 
 			return `${100 / originalNestedColumns.length}%`;
 		};
@@ -133,11 +146,12 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector
+				key={`block-settings-${uniqueID}`}
 				resizableObject={this.resizableObject.current}
 				{...this.props}
 			/>,
-			<Toolbar {...this.props} />,
-			<RowContext.Consumer>
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<RowContext.Consumer key={`column-content-${uniqueID}`}>
 				{context => (
 					<Fragment>
 						{rowBlockWidth === 0 && <Spinner />}
@@ -145,6 +159,7 @@ class edit extends MaxiBlock {
 							<BlockResizer
 								resizableObject={this.resizableObject}
 								className={classnames(
+									'maxi-block',
 									'maxi-block--backend',
 									'maxi-column-block__resizer',
 									`maxi-column-block__resizer__${uniqueID}`,
@@ -155,10 +170,6 @@ class edit extends MaxiBlock {
 									) === 'none' && 'maxi-block-display-none'
 								)}
 								defaultSize={{ width: getColumnWidthDefault() }}
-								deviceType={deviceType}
-								updateRowPattern={updateRowPattern}
-								rowBlockId={rowBlockId}
-								onChange={obj => setAttributes(obj)}
 								directions={{
 									right: true,
 									left: true,
@@ -253,33 +264,7 @@ const editSelect = withSelect((select, ownProps) => {
 	};
 });
 
-const editDispatch = withDispatch((dispatch, ownProps) => {
-	const onDeviceTypeChange = resizableObject => {
-		if (isNil(resizableObject)) return;
-
-		let newDeviceType = select('maxiBlocks').receiveMaxiDeviceType();
-		newDeviceType = newDeviceType === 'Desktop' ? 'general' : newDeviceType;
-
-		const node = resizableObject.resizable;
-		const newSize = ownProps.attributes[`column-size-${newDeviceType}`];
-
-		if (['xxl', 'xl', 'l'].includes(newDeviceType)) {
-			if (newSize === '') {
-				node.style.width = `${ownProps.attributes['column-size-general']}%`;
-			} else {
-				node.style.width = `${newSize}%`;
-			}
-		} else if (['s', 'xs'].includes(newDeviceType)) {
-			if (newSize === '') {
-				node.style.width = `${ownProps.attributes['column-size-m']}%`;
-			} else {
-				node.style.width = `${newSize}%`;
-			}
-		} else {
-			node.style.width = `${newSize}%`;
-		}
-	};
-
+const editDispatch = withDispatch(dispatch => {
 	const updateRowPattern = (rowBlockId, deviceType, rowPatternAttribute) => {
 		dispatch('core/block-editor').updateBlockAttributes(rowBlockId, {
 			rowPattern: rowPatternAttribute[`row-pattern-${deviceType}`],
@@ -287,7 +272,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	return {
-		onDeviceTypeChange,
 		updateRowPattern,
 	};
 });

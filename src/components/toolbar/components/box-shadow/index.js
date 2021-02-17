@@ -39,12 +39,14 @@ const BoxShadow = props => {
 			icon={toolbarDropShadow}
 			advancedOptions='box shadow'
 			content={
-				<BoxShadowControl
-					{...getGroupAttributes(props, 'boxShadow')}
-					onChange={obj => onChange(obj)}
-					breakpoint={breakpoint}
-					disableAdvanced
-				/>
+				<div className='toolbar-item__box-shadow__popover'>
+					<BoxShadowControl
+						{...getGroupAttributes(props, 'boxShadow')}
+						onChange={obj => onChange(obj)}
+						breakpoint={breakpoint}
+						disableAdvanced
+					/>
+				</div>
 			}
 		/>
 	);

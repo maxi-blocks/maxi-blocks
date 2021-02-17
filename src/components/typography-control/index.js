@@ -12,11 +12,8 @@ import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
-import {
-	setFormat,
-	getCustomFormatValue,
-	defaultTypographies,
-} from '../../extensions/text/formats';
+import { setFormat, getCustomFormatValue } from '../../extensions/text/formats';
+import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -76,6 +73,21 @@ const TypographyControl = props => {
 		'%': {
 			min: 0,
 			max: 100,
+		},
+	};
+
+	const minMaxSettingsLetterSpacing = {
+		px: {
+			min: -3,
+			max: 30,
+		},
+		em: {
+			min: -1,
+			max: 10,
+		},
+		vw: {
+			min: -1,
+			max: 10,
 		},
 	};
 
@@ -175,7 +187,9 @@ const TypographyControl = props => {
 				`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
 			);
 
-		return defaultTypographies[textLevel][breakpoint][prop];
+		return defaultTypography[textLevel][
+			`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
+		];
 	};
 
 	const onChangeFormat = value => {
@@ -234,7 +248,7 @@ const TypographyControl = props => {
 					onChangeFormat({ [`${prefix}font-size-unit`]: val });
 				}}
 				value={trim(getValue(`${prefix}font-size`))}
-				defaultTypography={getDefault(`${prefix}font-size`)}
+				defaultValue={getDefault(`${prefix}font-size`)}
 				onChangeValue={val => {
 					onChangeFormat({ [`${prefix}font-size`]: val });
 				}}
@@ -259,6 +273,7 @@ const TypographyControl = props => {
 			<SizeControl
 				className='maxi-typography-control__letter-spacing'
 				label={__('Letter Spacing', 'maxi-blocks')}
+				allowedUnits={['px', 'em', 'vw']}
 				unit={getValue(`${prefix}letter-spacing-unit`)}
 				defaultUnit={getDefault(`${prefix}letter-spacing-unit`)}
 				onChangeUnit={val => {
@@ -269,7 +284,8 @@ const TypographyControl = props => {
 				onChangeValue={val => {
 					onChangeFormat({ [`${prefix}letter-spacing`]: val });
 				}}
-				minMaxSettings={minMaxSettings}
+				minMaxSettings={minMaxSettingsLetterSpacing}
+				step={0.1}
 			/>
 			<Divider />
 			<SelectControl

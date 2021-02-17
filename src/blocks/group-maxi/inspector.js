@@ -75,13 +75,11 @@ const Inspector = props => {
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
 										disableHighlightText
-										disableHighlightBackground
-										disableHighlightBorder
 										disableHighlightColor1
 										disableHighlightColor2
 										{...getGroupAttributes(
 											attributes,
-											'border'
+											'highlight'
 										)}
 									/>
 								</div>

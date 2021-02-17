@@ -50,17 +50,19 @@ const save = props => {
 			data-maxi_initial_block_class={defaultBlockStyle}
 			data-motion-id={uniqueID}
 		>
-			<BackgroundDisplayer
-				{...getGroupAttributes(attributes, [
-					'background',
-					'backgroundColor',
-					'backgroundGradient',
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-				])}
-				blockClassName={uniqueID}
-			/>
+			{!attributes['background-highlight'] && (
+				<BackgroundDisplayer
+					{...getGroupAttributes(attributes, [
+						'background',
+						'backgroundColor',
+						'backgroundGradient',
+						'backgroundHover',
+						'backgroundColorHover',
+						'backgroundGradientHover',
+					])}
+					blockClassName={uniqueID}
+				/>
+			)}
 			{attributes['divider-border-style'] !== 'none' && (
 				<Fragment>
 					<hr className='maxi-divider-block__divider' />

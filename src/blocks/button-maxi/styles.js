@@ -1,18 +1,19 @@
 import { getGroupAttributes } from '../../extensions/styles';
 import {
-	getSizeStyles,
-	getBoxShadowStyles,
-	getIconStyles,
-	getZIndexStyles,
-	getPositionStyles,
-	getDisplayStyles,
-	getTransformStyles,
-	getMarginPaddingStyles,
-	getBackgroundStyles,
-	getBorderStyles,
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
+	getBorderStyles,
+	getBoxShadowStyles,
+	getColorBackgroundObject,
+	getDisplayStyles,
+	getGradientBackgroundObject,
+	getIconStyles,
+	getMarginPaddingStyles,
+	getPositionStyles,
+	getSizeStyles,
+	getTransformStyles,
 	getTypographyStyles,
+	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 
 const getWrapperObject = props => {
@@ -73,6 +74,16 @@ const getNormalObject = props => {
 		}),
 		typography: getTypographyStyles({
 			...getGroupAttributes(props, 'typography'),
+		}),
+		...(props['background-active-media'] === 'color' && {
+			background: getColorBackgroundObject({
+				...getGroupAttributes(props, 'backgroundColor'),
+			}),
+		}),
+		...(props['background-active-media'] === 'gradient' && {
+			background: getGradientBackgroundObject({
+				...getGroupAttributes(props, 'backgroundGradient'),
+			}),
 		}),
 	};
 
@@ -142,7 +153,7 @@ const getIconObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	let response = {
+	const response = {
 		[uniqueID]: getWrapperObject(props),
 		[`${uniqueID} .maxi-button-block__button`]: getNormalObject(
 			props,
@@ -150,29 +161,6 @@ const getStyles = props => {
 		),
 		[`${uniqueID} .maxi-button-block__button:hover`]: getHoverObject(props),
 		[`${uniqueID} .maxi-button-block__button i`]: getIconObject(props),
-	};
-
-	response = {
-		...response,
-		...getBackgroundStyles({
-			target: `${uniqueID} .maxi-button-block__button`,
-			...getGroupAttributes(props, [
-				'backgroundHover',
-				'backgroundColorHover',
-				'backgroundGradientHover',
-				'borderRadiusHover',
-			]),
-			isHover: !!props['background-status-hover'],
-		}),
-		...getBackgroundStyles({
-			target: `${uniqueID} .maxi-button-block__button`,
-			...getGroupAttributes(props, [
-				'background',
-				'backgroundColor',
-				'backgroundGradient',
-				'borderRadius',
-			]),
-		}),
 	};
 
 	return response;

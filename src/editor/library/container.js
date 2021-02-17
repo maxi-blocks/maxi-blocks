@@ -14,25 +14,61 @@ import Masonry from './masonry';
 import Pagination from './pagination';
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Component
  */
 const LibraryContainer = props => {
-	const { cloudData, onRequestClose } = props;
+	const { cloudData, type, onRequestClose } = props;
 
 	const [filteredData, setFilteredData] = useState(cloudData);
 	const [searchFilter, setSearchFilter] = useState('');
 	const [sidebarFilter, setSidebarFilter] = useState('');
-	const [topbarFilter, setTopbarFilter] = useState('');
+	const [topbarFilter, setTopbarFilter] = useState([]);
 
 	useEffect(() => {
 		setFilteredData(
 			cloudData.filter(el => {
 				return Object.values(el).some(val => {
-					return !!val && val.includes(searchFilter);
+					if (val) {
+						let res = false;
+						// returns all elements when there's no search or filter
+						if (
+							isEmpty(searchFilter) &&
+							isEmpty(sidebarFilter) &&
+							isEmpty(topbarFilter)
+						)
+							res = true;
+
+						if (
+							!isEmpty(searchFilter) &&
+							val.includes(searchFilter)
+						)
+							res = true;
+
+						if (
+							!isEmpty(sidebarFilter) &&
+							val.includes(sidebarFilter)
+						)
+							res = true;
+
+						if (
+							!isEmpty(topbarFilter) &&
+							topbarFilter.includes(val)
+						)
+							res = true;
+
+						return res;
+					}
+
+					return false;
 				});
 			})
 		);
-	}, [searchFilter]);
+	}, [searchFilter, sidebarFilter, topbarFilter]);
 
 	const sidebarFilters = [
 		{ label: __('Hero'), value: 'hero' },
@@ -62,6 +98,7 @@ const LibraryContainer = props => {
 				/>
 				<Masonry
 					elements={filteredData}
+					type={type}
 					onRequestClose={onRequestClose}
 				/>
 				<Pagination />

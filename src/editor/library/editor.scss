@@ -176,13 +176,9 @@
 		display: flex;
 		justify-content: flex-start;
 
-		&__styles {
-			button {
-			}
-		}
-
-		&__cost {
-			button {
+		&__button {
+			&[aria-pressed='true'] {
+				background-color: #ff4a17;
 			}
 		}
 	}

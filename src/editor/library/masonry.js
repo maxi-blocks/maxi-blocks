@@ -3,6 +3,7 @@
  */
 const { Button } = wp.components;
 const { useDispatch, select } = wp.data;
+const { parse } = wp.blocks;
 
 /**
  * Internal dependencies
@@ -51,7 +52,7 @@ const MasonryItem = props => {
 };
 
 const LibraryMasonry = props => {
-	const { elements, onRequestClose } = props;
+	const { elements, type, onRequestClose } = props;
 
 	const breakpointColumnsObj = {
 		default: 4,
@@ -62,17 +63,25 @@ const LibraryMasonry = props => {
 
 	const { replaceBlocks } = useDispatch('core/editor');
 
-	const onRequestInsert = content => {
+	const onRequestInsert = async id => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
-		const parsedContent = JSON.parse(content);
-		const isValid = select('core/block-editor').isValidTemplate(
-			parsedContent
-		);
 
-		if (isValid) {
-			replaceBlocks(clientId, parsedContent);
-			onRequestClose();
-		}
+		await fetch(
+			`http://localhost:8080/maxiblocks/wp-json/maxi-blocks-API/v0.1/${type}/content/${id}`
+		)
+			.then(response => response.json())
+			.then(data => {
+				const parsedContent = parse(JSON.parse(data[0].content));
+				const isValid = select('core/block-editor').isValidTemplate(
+					parsedContent
+				);
+
+				if (isValid) {
+					replaceBlocks(clientId, parsedContent);
+					onRequestClose();
+				}
+			})
+			.catch(err => console.error(err));
 	};
 
 	return (
@@ -85,11 +94,10 @@ const LibraryMasonry = props => {
 				<MasonryItem
 					key={`maxi-cloud-masonry__item-${element.id}`}
 					demoUrl={element.demo_url}
-					// previewIMG={element.preview_imga_url}
-					previewIMG='http://localhost/maxiblocks/wp-content/uploads/2020/08/ezgif-6-1c0478cf3eff.jpg'
+					previewIMG={JSON.parse(element.preview_image_url)}
 					isPro={element.cost === 'pro'}
 					serial={element.title}
-					onRequestInsert={() => onRequestInsert(element.content)}
+					onRequestInsert={() => onRequestInsert(element.id)}
 				/>
 			))}
 		</Masonry>

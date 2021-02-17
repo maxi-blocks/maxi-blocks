@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Icon, Button, Tooltip } = wp.components;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -31,7 +32,10 @@ const TextFormatSubscript = props => {
 			breakpoint,
 		}) || '';
 
-	const isActive = (superscriptValue === 'sub' && true) || false;
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const [isActive, setIsActive] = useState(
+		(superscriptValue === 'sub' && true) || false
+	);
 
 	const onClick = () => {
 		const obj = setFormat({
@@ -44,6 +48,8 @@ const TextFormatSubscript = props => {
 			},
 			breakpoint,
 		});
+
+		setIsActive(!isActive);
 
 		onChange(obj);
 	};

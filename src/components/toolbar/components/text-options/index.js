@@ -4,6 +4,7 @@
 const { __, sprintf } = wp.i18n;
 const { Fragment } = wp.element;
 const { Button, BaseControl } = wp.components;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -49,7 +50,10 @@ const TextOptions = props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typography = getGroupAttributes(props, 'typography');
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const [typography, setTypography] = useState(
+		getGroupAttributes(props, 'typography')
+	);
 
 	const getValue = prop => {
 		return getCustomFormatValue({
@@ -64,10 +68,12 @@ const TextOptions = props => {
 		const obj = setFormat({
 			formatValue,
 			isList,
-			typography: getGroupAttributes(props, 'typography'),
+			typography,
 			value,
 			breakpoint,
 		});
+
+		setTypography(getGroupAttributes(obj, 'typography'));
 
 		onChange(obj);
 	};

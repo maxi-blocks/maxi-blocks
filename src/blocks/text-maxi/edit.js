@@ -99,7 +99,6 @@ class edit extends MaxiBlock {
 			listStart,
 			listReversed,
 			fullWidth,
-			typography,
 		} = attributes;
 
 		const name = 'maxi-blocks/text-maxi';
@@ -188,7 +187,10 @@ class edit extends MaxiBlock {
 								const cleanCustomProps = setCustomFormatsWhenPaste(
 									{
 										formatValue,
-										typography,
+										typography: getGroupAttributes(
+											attributes,
+											'typography'
+										),
 										isList,
 										typeOfList,
 										content,
@@ -196,10 +198,7 @@ class edit extends MaxiBlock {
 								);
 
 								if (cleanCustomProps)
-									setAttributes({
-										typography: cleanCustomProps.typography,
-										content: cleanCustomProps.content,
-									});
+									setAttributes(cleanCustomProps);
 							}}
 							tagName={textLevel}
 							onSplit={onSplit}

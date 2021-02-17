@@ -191,10 +191,7 @@ const Inspector = props => {
 																				[
 																					'backgroundHover',
 																					'backgroundColorHover',
-																					'backgroundImageHover',
-																					'backgroundVideoHover',
 																					'backgroundGradientHover',
-																					'backgroundSVGHover',
 																				]
 																			)}
 																			onChange={obj =>

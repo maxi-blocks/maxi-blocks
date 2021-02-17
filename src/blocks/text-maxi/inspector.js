@@ -469,10 +469,7 @@ const Inspector = props => {
 																				[
 																					'backgroundHover',
 																					'backgroundColorHover',
-																					'backgroundImageHover',
-																					'backgroundVideoHover',
 																					'backgroundGradientHover',
-																					'backgroundSVGHover',
 																				]
 																			)}
 																			onChange={obj =>
@@ -488,6 +485,7 @@ const Inspector = props => {
 																			disableImage
 																			disableVideo
 																			disableSVG
+																			isHover
 																		/>
 																	)}
 																</Fragment>

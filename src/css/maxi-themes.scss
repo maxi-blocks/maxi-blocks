@@ -18,13 +18,15 @@ body.maxi-blocks--active {
 		.maxi-#{$style} {
 			&.maxi-background-- {
 				&1 {
-					.maxi-background-displayer {
+					&.maxi-button-block,
+					> .maxi-background-displayer {
 						background-color: var(--maxi-#{$style}-background-1) !important;
 					}
 				}
 
 				&2 {
-					.maxi-background-displayer {
+					&.maxi-button-block,
+					> .maxi-background-displayer {
 						background-color: var(--maxi-#{$style}-background-2) !important;
 					}
 				}
@@ -51,108 +53,67 @@ body.maxi-blocks--active {
 			&.maxi-highlight,
 			.maxi-highlight {
 				&--text {
-					.maxi-text-block__content {
+					.maxi-text-block__content,
+					.maxi-button-block__button,
+					.maxi-font-icon-block__icon i {
 						color: var(--maxi-#{$style}-highlight-text) !important;
-
-						&:hover {
-							color: var(--maxi-#{$style}-hover) !important;
-						}
-					}
-
-					.maxi-button-extra__button {
-						color: var(--maxi-light-highlight-text) !important;
-
-						&:hover {
-							color: var(--maxi-#{$style}-hover) !important;
-						}
 					}
 
 					.maxi-font-icon-block__icon i {
-						color: var(--maxi-light-highlight-text) !important;
+						color: var(--maxi-#{$style}-highlight-text) !important;
 
-						&:hover i{
-							color: var(--maxi-#{$style}-hover) !important;
-						}
+						// &:hover {
+						// 	color: var(--maxi-#{$style}-hover) !important;
+						// }
 					}
 				}
 
 				&--background {
-					.maxi-text-block__content {
+					&.maxi-text-block,
+					.maxi-button-block__button {
+						background-color: var(--maxi-#{$style}-highlight-background) !important;
+					}
+
+					&.maxi-group-block,
+					.maxi-font-icon-block__icon {
 						background-color: var(--maxi-#{$style}-highlight-background) !important;
 
-						&:hover {
-							background-color: var(--maxi-#{$style}-hover) !important;
-						}
-					}
-
-					.maxi-button-extra__button {
-						background-color: var(--maxi-light-highlight-background) !important;
-
-						&:hover {
-							background-color: var(--maxi-#{$style}-hover) !important;
-						}
-					}
-
-					.maxi-font-icon-block__icon {
-						background-color: var(--maxi-light-highlight-background) !important;
-
-						&:hover {
-							background-color: var(--maxi-#{$style}-hover) !important;
-						}
+						// &:hover {
+						// 	background-color: var(--maxi-#{$style}-hover) !important;
+						// }
 					}
 
 					&.maxi-svg-icon-block {
 						.maxi-background-displayer {
 							background-color: var(--maxi-light-highlight-background) !important;
 
-							&:hover {
-								background-color: var(--maxi-#{$style}-hover) !important;
-							}
+							// &:hover {
+							// 	background-color: var(--maxi-#{$style}-hover) !important;
+							// }
 						}
 					}
 				}
 
 				&--border {
-					&.maxi-text-block {
+					&.maxi-text-block,
+					.maxi-button-block__button {
 						border-color: var(--maxi-#{$style}-highlight-border) !important;
-
-						&:hover {
-							border-color: var(--maxi-#{$style}-hover) !important;
-						}
+						border-style: solid !important;
+						border-width: 2px !important;
 					}
 
-					.maxi-button-extra__button {
-						border-color: var(--maxi-light-highlight-border) !important;
+					&.maxi-group-block,
+					.maxi-divider-block__divider,
+					&.maxi-font-icon-block,
+					&.maxi-svg-icon-block{
+						border-color: var(--maxi-#{$style}-highlight-border) !important;
+						border-style: solid !important;
+						border-width: 2px !important;
 
-						&:hover {
-							border-color: var(--maxi-#{$style}-hover) !important;
-						}
+						// &:hover {
+						// 	border-color: var(--maxi-#{$style}-hover) !important;
+						// }
 					}
-
-					.maxi-divider-block__divider {
-						border-color: var(--maxi-light-highlight-border) !important;
-
-						&:hover {
-							border-color: var(--maxi-light-hover) !important;
-						}
-					}
-
-					&.maxi-font-icon-block {
-						border-color: var(--maxi-light-highlight-border) !important;
-
-						&:hover {
-							border-color: var(--maxi-light-hover) !important;
-						}
-					}
-
-					&.maxi-svg-icon-block {
-						border-color: var(--maxi-light-highlight-border) !important;
-
-						&:hover {
-							border-color: var(--maxi-light-hover) !important;
-						}
-					}
-
 				}
 
 				&--color1 {

@@ -104,11 +104,11 @@ const BlockStylesControl = props => {
 							onChange={val => {
 								onChange({
 									'border-highlight': !!+val,
-									'border-style-general': 'solid',
-									'border-top-width-general': 2,
-									'border-right-width-general': 2,
-									'border-bottom-width-general': 2,
-									'border-left-width-general': 2,
+									// 'border-style-general': 'solid',
+									// 'border-top-width-general': 2,
+									// 'border-right-width-general': 2,
+									// 'border-bottom-width-general': 2,
+									// 'border-left-width-general': 2,
 								});
 							}}
 						/>

@@ -41,13 +41,15 @@ const RotateControl = props => {
 					<input
 						type='range'
 						className='maxi-transform-control__rotate-control__item__range'
-						value={xAxis}
+						value={xAxis || 0}
 						onChange={e => {
-							changeXAxis(Number(e.target.value));
-							onChange(Number(e.target.value), yAxis, zAxis);
+							let value = +e.target.value;
+
+							changeXAxis(value);
+							onChange(value, yAxis, zAxis);
 						}}
-						min='0'
-						max='360'
+						min={0}
+						max={360}
 						orient='vertical'
 					/>
 					<input
@@ -55,10 +57,16 @@ const RotateControl = props => {
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={xAxis}
+						min={0}
+						max={360}
 						onChange={e => {
-							const newValue = !isEmpty(e.target.value)
-								? Number(e.target.value)
-								: '';
+							let value = +e.target.value;
+
+							if (value > 360) value = 360;
+							if (value < 0) value = 0;
+
+							const newValue = !isEmpty(value) ? value : '';
+
 							changeXAxis(newValue);
 							onChange(newValue, yAxis, zAxis);
 						}}
@@ -84,13 +92,15 @@ const RotateControl = props => {
 					<input
 						type='range'
 						className='maxi-transform-control__rotate-control__item__range'
-						value={yAxis}
+						value={yAxis || 0}
 						onChange={e => {
-							changeYAxis(Number(e.target.value));
-							onChange(xAxis, Number(e.target.value), zAxis);
+							let value = +e.target.value;
+
+							changeYAxis(value);
+							onChange(xAxis, value, zAxis);
 						}}
-						min='0'
-						max='360'
+						min={0}
+						max={360}
 						orient='vertical'
 					/>
 					<input
@@ -98,10 +108,15 @@ const RotateControl = props => {
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={yAxis}
+						min={0}
+						max={360}
 						onChange={e => {
-							const newValue = !isEmpty(e.target.value)
-								? Number(e.target.value)
-								: '';
+							let value = +e.target.value;
+
+							if (value > 360) value = 360;
+							if (value < 0) value = 0;
+
+							const newValue = !isEmpty(value) ? value : '';
 							changeYAxis(newValue);
 							onChange(xAxis, newValue, zAxis);
 						}}
@@ -127,13 +142,15 @@ const RotateControl = props => {
 					<input
 						type='range'
 						className='maxi-transform-control__rotate-control__item__range'
-						value={zAxis}
+						value={zAxis || 0}
 						onChange={e => {
-							changeZAxis(Number(e.target.value));
-							onChange(xAxis, yAxis, Number(e.target.value));
+							let value = +e.target.value;
+
+							changeZAxis(value);
+							onChange(xAxis, yAxis, value);
 						}}
-						min='0'
-						max='360'
+						min={0}
+						max={360}
 						orient='vertical'
 					/>
 					<input
@@ -141,10 +158,15 @@ const RotateControl = props => {
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
 						value={zAxis}
+						min={0}
+						max={360}
 						onChange={e => {
-							const newValue = !isEmpty(e.target.value)
-								? Number(e.target.value)
-								: '';
+							let value = +e.target.value;
+
+							if (value > 360) value = 360;
+							if (value < 0) value = 0;
+
+							const newValue = !isEmpty(value) ? value : '';
 							changeZAxis(newValue);
 							onChange(xAxis, yAxis, newValue);
 						}}

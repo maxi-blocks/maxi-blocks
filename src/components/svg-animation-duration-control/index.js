@@ -2,8 +2,12 @@
  * WordPress Dependencies
  */
 const { __ } = wp.i18n;
-const { RangeControl } = wp.components;
 const { Fragment } = wp.element;
+
+/**
+ * Internal dependencies
+ */
+import RangeSliderControl from '../range-slider-control';
 
 /**
  * Component
@@ -13,14 +17,14 @@ const SvgAnimationDurationControl = props => {
 	return (
 		<Fragment>
 			{{ animation } !== 'off' && (
-				<RangeControl
+				<RangeSliderControl
 					label={__('Animation Duration', 'maxi-blocks')}
 					value={duration}
 					min={1.0}
 					max={5.0}
 					step={0.1}
 					initialPosition={3.7}
-					onChange={value => onChange(value)}
+					onChange={val => onChange(val)}
 				/>
 			)}
 		</Fragment>

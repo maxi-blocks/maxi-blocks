@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { RangeControl, SelectControl, Icon } = wp.components;
+const { SelectControl, Icon } = wp.components;
 
 /**
  * Internal dependencies
@@ -12,6 +12,7 @@ import {
 	ColorControl,
 	DefaultStylesControl,
 	FancyRadioControl,
+	RangeSliderControl,
 	SizeControl,
 } from '../../components';
 import { getDefaultAttribute } from '../../extensions/styles';
@@ -194,30 +195,26 @@ const DividerControl = props => {
 			)}
 			{lineOrientation === 'vertical' && (
 				<Fragment>
-					<RangeControl
+					<RangeSliderControl
 						label={__('Size', 'maxi-blocks')}
+						defaultValue={getDefaultAttribute('height')}
 						value={props['divider-height']}
 						onChange={val => {
-							const value = isNil(val)
-								? getDefaultAttribute('height')
-								: val;
-
-							onChange({ 'divider-height': value });
+							onChange({ 'divider-height': val });
 						}}
+						min={0}
 						max={100}
 						allowReset
 						initialPosition={getDefaultAttribute('height')}
 					/>
-					<RangeControl
+					<RangeSliderControl
 						label={__('Weight', 'maxi-blocks')}
+						defaultValue={getDefaultAttribute('border-right-width')}
 						value={props['divider-border-right-width']}
 						onChange={val => {
-							const value = isNil(val)
-								? getDefaultAttribute('border-right-width')
-								: val;
-
-							onChange({ 'divider-border-right-width': value });
+							onChange({ 'divider-border-right-width': val });
 						}}
+						min={0}
 						max={100}
 						allowReset
 						initialPosition={getDefaultAttribute(

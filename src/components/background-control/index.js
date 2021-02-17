@@ -53,6 +53,7 @@ const BackgroundControl = props => {
 		isHover = false,
 		prefix = '',
 	} = props;
+
 	const backgroundActiveMedia =
 		props[getAttributeKey('background-active-media', isHover, prefix)];
 	const layersOptions =

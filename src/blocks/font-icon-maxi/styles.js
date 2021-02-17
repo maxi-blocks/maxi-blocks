@@ -134,7 +134,6 @@ const getStyles = props => {
 			...getGroupAttributes(props, [
 				'backgroundHover',
 				'backgroundColorHover',
-				'backgroundVideoHover',
 				'backgroundGradientHover',
 			]),
 			isHover: !!props['background-status-hover'],

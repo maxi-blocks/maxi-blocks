@@ -17,6 +17,8 @@ const RangeSliderControl = props => {
 	return (
 		<RangeControl
 			{...rest}
+			min={min}
+			max={max}
 			onChange={val => {
 				let value = isNil(val) ? defaultValue : val;
 

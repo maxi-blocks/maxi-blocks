@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Icon, Button, Tooltip } = wp.components;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -36,7 +37,9 @@ const TextFormatOverline = props => {
 			breakpoint,
 		}) || '';
 
-	const isActive = textDecorationValue.indexOf('overline') >= 0;
+	const [isActive, setIsActive] = useState(
+		textDecorationValue.indexOf('overline') >= 0
+	);
 
 	const getTextDecorationValue = () => {
 		if (textDecorationValue === 'none') return 'overline';
@@ -59,6 +62,8 @@ const TextFormatOverline = props => {
 			},
 			breakpoint,
 		});
+
+		setIsActive(!isActive);
 
 		onChange(obj);
 	};

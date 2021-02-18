@@ -34,8 +34,6 @@
     --maxi-dark-p-style: normal;
     --maxi-dark-p-decoration: unset;
     --maxi-dark-p-decoration-line: none;
-    --maxi-dark-a-color: #00ccff;
-    --maxi-dark-a-font-family: Roboto;
     --maxi-dark-h1-color: #ffffff;
     --maxi-dark-h1-font-family: Roboto;
     --maxi-dark-h1-font-size-general: 45px;
@@ -163,6 +161,8 @@
     --maxi-dark-h6-style: normal;
     --maxi-dark-h6-decoration: unset;
     --maxi-dark-h6-decoration-line: none;
+    --maxi-dark-button-text-color: #ffffff;
+    --maxi-dark-button-background-color: #ff4a17;
 
     // Light
     --maxi-light-background-1: #ffffff;
@@ -195,8 +195,6 @@
     --maxi-light-p-style: normal;
     --maxi-light-p-decoration: unset;
     --maxi-light-p-decoration-line: none;
-    --maxi-light-a-color: #ff4a17;
-    --maxi-light-a-font-family: Roboto;
     --maxi-light-h1-color: #000000;
     --maxi-light-h1-font-family: Roboto;
     --maxi-light-h1-font-size-general: 45px;
@@ -323,4 +321,7 @@
     --maxi-light-h6-style: normal;
     --maxi-light-h6-decoration: unset;
     --maxi-light-h6-decoration-line: none;
+    --maxi-light-button-text-color: #ffffff;
+    --maxi-light-button-background-color: #ff4a17;
+
 }

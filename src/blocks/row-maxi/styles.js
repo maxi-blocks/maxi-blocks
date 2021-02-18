@@ -119,7 +119,6 @@ const getStyles = props => {
 			...getGroupAttributes(props, [
 				'backgroundHover',
 				'backgroundColorHover',
-				'backgroundImageHover',
 				'backgroundGradientHover',
 				'borderRadiusHover',
 			]),

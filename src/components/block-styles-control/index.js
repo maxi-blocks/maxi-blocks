@@ -29,12 +29,8 @@ const BlockStylesControl = props => {
 			return [
 				{ label: __('Dark', 'maxi-blocks'), value: 'maxi-dark' },
 				{ label: __('Light', 'maxi-blocks'), value: 'maxi-light' },
-				{ label: __('Custom', 'maxi-blocks'), value: 'maxi-custom' },
 			];
-		return [
-			{ label: __('Parent', 'maxi-blocks'), value: 'maxi-parent' },
-			{ label: __('Custom', 'maxi-blocks'), value: 'maxi-custom' },
-		];
+		return [{ label: __('Parent', 'maxi-blocks'), value: 'maxi-parent' }];
 	};
 
 	return (
@@ -104,11 +100,11 @@ const BlockStylesControl = props => {
 							onChange={val => {
 								onChange({
 									'border-highlight': !!+val,
-									'border-style-general': 'solid',
-									'border-top-width-general': 2,
-									'border-right-width-general': 2,
-									'border-bottom-width-general': 2,
-									'border-left-width-general': 2,
+									// 'border-style-general': 'solid',
+									// 'border-top-width-general': 2,
+									// 'border-right-width-general': 2,
+									// 'border-bottom-width-general': 2,
+									// 'border-left-width-general': 2,
 								});
 							}}
 						/>

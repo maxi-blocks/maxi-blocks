@@ -34,28 +34,10 @@ const attributes = {
 		},
 	},
 	...attributesData.textAlignment,
-	...{
-		...attributesData.typography,
-		'color-general': {
-			type: 'string',
-			default: '#fff',
-		},
-	},
+	...attributesData.typography,
 	...attributesData.typographyHover,
-	...{
-		...attributesData.background,
-		'background-active-media': {
-			type: 'string',
-			default: 'color',
-		},
-	},
-	...{
-		...attributesData.backgroundColor,
-		'background-color': {
-			type: 'string',
-			default: '#ff4a17',
-		},
-	},
+	...attributesData.background,
+	...attributesData.backgroundColor,
 	...attributesData.backgroundGradient,
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,

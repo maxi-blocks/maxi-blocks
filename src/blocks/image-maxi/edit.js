@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment, RawHTML, createRef } = wp.element;
+const { Fragment, RawHTML } = wp.element;
 const { withSelect } = wp.data;
 const { Spinner, Button, Placeholder } = wp.components;
 const { __experimentalBlock, MediaUpload } = wp.blockEditor;
@@ -187,29 +187,33 @@ class edit extends MaxiBlock {
 							<Fragment>
 								{(!isNil(mediaID) && imageData) || mediaURL ? (
 									<Fragment>
-										<BackgroundDisplayer
-											{...getGroupAttributes(attributes, [
-												'background',
-												'backgroundColor',
-												'backgroundImage',
-												'backgroundVideo',
-												'backgroundGradient',
-												'backgroundSVG',
-												'backgroundHover',
-												'backgroundColorHover',
-												'backgroundImageHover',
-												'backgroundVideoHover',
-												'backgroundGradientHover',
-												'backgroundSVGHover',
-											])}
-											blockClassName={uniqueID}
-										/>
-
+										{!attributes[
+											'background-highlight'
+										] && (
+											<BackgroundDisplayer
+												{...getGroupAttributes(
+													attributes,
+													[
+														'background',
+														'backgroundColor',
+														'backgroundImage',
+														'backgroundVideo',
+														'backgroundGradient',
+														'backgroundSVG',
+														'backgroundHover',
+														'backgroundColorHover',
+														'backgroundImageHover',
+														'backgroundVideoHover',
+														'backgroundGradientHover',
+														'backgroundSVGHover',
+													]
+												)}
+												blockClassName={uniqueID}
+											/>
+										)}
 										<BlockResizer
 											key={uniqueID}
-											className={classnames(
-												'maxi-block__resizer maxi-image-block__resizer'
-											)}
+											className='maxi-block__resizer maxi-image-block__resizer'
 											size={{
 												width: `${
 													!isNumber(
@@ -229,7 +233,7 @@ class edit extends MaxiBlock {
 											}}
 											showHandle
 											maxWidth='100%'
-											directions={{
+											enable={{
 												topRight: true,
 												bottomRight: true,
 												bottomLeft: true,

@@ -175,7 +175,7 @@ const SquareControl = props => {
 						minWidth='-100%'
 						minHeight='-100%'
 						showHandle
-						directions={{
+						enable={{
 							topRight: true,
 							bottomRight: true,
 							bottomLeft: true,

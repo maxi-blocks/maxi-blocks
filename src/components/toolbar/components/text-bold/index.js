@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Icon, Button, Tooltip } = wp.components;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -36,7 +37,10 @@ const TextBold = props => {
 		breakpoint,
 	});
 
-	const isActive = (boldValue > 400 && true) || false;
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const [isActive, setIsActive] = useState(
+		(boldValue > 400 && true) || false
+	);
 
 	const onClick = () => {
 		const obj = setFormat({
@@ -49,6 +53,8 @@ const TextBold = props => {
 			},
 			breakpoint,
 		});
+
+		setIsActive(!isActive);
 
 		onChange(obj);
 	};

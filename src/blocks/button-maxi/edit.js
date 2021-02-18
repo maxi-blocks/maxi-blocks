@@ -11,12 +11,7 @@ const { createRef } = wp.element;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	BackgroundDisplayer,
-	MaxiBlock,
-	MotionPreview,
-	Toolbar,
-} from '../../components';
+import { MaxiBlock, MotionPreview, Toolbar } from '../../components';
 import { getFormatValue } from '../../extensions/text/formats';
 import {
 	getGroupAttributes,
@@ -148,16 +143,6 @@ class edit extends MaxiBlock {
 						{!isEmpty(attributes['icon-name']) && (
 							<i className={attributes['icon-name']} />
 						)}
-						<BackgroundDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'backgroundColor',
-								'backgroundGradient',
-								'backgroundHover',
-								'backgroundColorHover',
-								'backgroundGradientHover',
-							])}
-						/>
 						<RichText
 							ref={this.buttonRef}
 							withoutInteractiveFormatting

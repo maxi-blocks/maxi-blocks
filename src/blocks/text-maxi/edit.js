@@ -141,23 +141,25 @@ class edit extends MaxiBlock {
 					data-maxi_initial_block_class={defaultBlockStyle}
 					data-align={fullWidth}
 				>
-					<BackgroundDisplayer
-						{...getGroupAttributes(attributes, [
-							'background',
-							'backgroundColor',
-							'backgroundImage',
-							'backgroundVideo',
-							'backgroundGradient',
-							'backgroundSVG',
-							'backgroundHover',
-							'backgroundColorHover',
-							'backgroundImageHover',
-							'backgroundVideoHover',
-							'backgroundGradientHover',
-							'backgroundSVGHover',
-						])}
-						blockClassName={uniqueID}
-					/>
+					{!attributes['background-highlight'] && (
+						<BackgroundDisplayer
+							{...getGroupAttributes(attributes, [
+								'background',
+								'backgroundColor',
+								'backgroundImage',
+								'backgroundVideo',
+								'backgroundGradient',
+								'backgroundSVG',
+								'backgroundHover',
+								'backgroundColorHover',
+								'backgroundImageHover',
+								'backgroundVideoHover',
+								'backgroundGradientHover',
+								'backgroundSVGHover',
+							])}
+							blockClassName={uniqueID}
+						/>
+					)}
 					{!isList && (
 						<RichText
 							ref={this.textRef}

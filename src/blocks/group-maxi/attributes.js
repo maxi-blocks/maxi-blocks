@@ -38,6 +38,7 @@ const attributes = {
 	...attributesData.borderRadiusHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.highlight,
 	...attributesData.margin,
 	...attributesData.padding,
 	...attributesData.motion,

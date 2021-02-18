@@ -18,143 +18,111 @@ body.maxi-blocks--active {
 		.maxi-#{$style} {
 			&.maxi-background-- {
 				&1 {
+					&.maxi-button-block,
 					> .maxi-background-displayer {
 						background-color: var(--maxi-#{$style}-background-1);
 					}
 				}
 
 				&2 {
+					&.maxi-button-block,
 					> .maxi-background-displayer {
 						background-color: var(--maxi-#{$style}-background-2);
 					}
 				}
 			}
 
-			& .maxi-parent {
-				@each $level in $levels {
-					> #{$level} {
-						font-size: var(--maxi-#{$style}-#{$level}-font-size-general);
-						line-height: var(--maxi-#{$style}-#{$level}-line-height-general);
-						color: var(--maxi-#{$style}-#{$level}-color);
-						font-family: var(--maxi-#{$style}-#{$level}-font-family);
-						font-weight: var(--maxi-#{$style}-#{$level}-font-weight);
-						font-style: var(--maxi-#{$style}-#{$level}-style);
-						text-transform: var(--maxi-#{$style}-#{$level}-transform);
-						text-decoration-style: var(--maxi-#{$style}-#{$level}-decoration);
-						text-decoration-line: var(--maxi-#{$style}-#{$level}-decoration-line);
-					}
+			@each $level in $levels {
+				#{$level} {
+					font-size: var(--maxi-#{$style}-#{$level}-font-size-general);
+					line-height: var(--maxi-#{$style}-#{$level}-line-height-general);
+					color: var(--maxi-#{$style}-#{$level}-color);
+					font-family: var(--maxi-#{$style}-#{$level}-font-family);
+					font-weight: var(--maxi-#{$style}-#{$level}-font-weight);
+					font-style: var(--maxi-#{$style}-#{$level}-style);
+					text-transform: var(--maxi-#{$style}-#{$level}-transform);
+					text-decoration-style: var(--maxi-#{$style}-#{$level}-decoration);
+					text-decoration-line: var(--maxi-#{$style}-#{$level}-decoration-line);
 				}
+			}
 
-				a {
-					color: var(--maxi-#{$style}-link);
-				}
+			a:not(.maxi-button-block__button) {
+				color: var(--maxi-#{$style}-link);
+				&:hover, &:active, &:focus {
+			        color: var(--maxi-#{$style}-hover);
+			        span {
+			        	color: var(--maxi-#{$style}-hover);
+			        }
+			    }
+			}
+
+			hr.maxi-divider-block__divider {
+				border-color: var(--maxi-#{$style}-link);
+			}
+
+			.maxi-button-block__button {
+				color: var(--maxi-#{$style}-button-text-color);
+				background-color: var(--maxi-#{$style}-button-background-color);
+				font-size: var(--maxi-#{$style}-p-font-size-general);
+				font-family: var(--maxi-#{$style}-p-font-family);
+				font-weight: var(--maxi-#{$style}-p-font-weight);
+				font-style: var(--maxi-#{$style}-p-style);
+				text-transform: var(--maxi-#{$style}-p-transform);
+				text-decoration-style: var(--maxi-#{$style}-p-decoration);
+				text-decoration-line: var(--maxi-#{$style}-p-decoration-line);
+				&:hover, &:active, &:focus {
+			        background-color: var(--maxi-#{$style}-hover);
+			    }
 			}
 
 			&.maxi-highlight,
 			.maxi-highlight {
 				&--text {
-					.maxi-text-block__content {
-						color: var(--maxi-#{$style}-highlight-text);
-
-						&:hover {
-							color: var(--maxi-#{$style}-hover);
-						}
-					}
-
-					.maxi-button-extra__button {
-						color: var(--maxi-light-highlight-text);
-
-						&:hover {
-							color: var(--maxi-#{$style}-hover);
-						}
+					.maxi-text-block__content,
+					.maxi-button-block__button,
+					.maxi-font-icon-block__icon i {
+						color: var(--maxi-#{$style}-highlight-text) !important;
 					}
 
 					.maxi-font-icon-block__icon i {
-						color: var(--maxi-light-highlight-text);
-
-						&:hover i{
-							color: var(--maxi-#{$style}-hover);
-						}
+						color: var(--maxi-#{$style}-highlight-text) !important;
 					}
 				}
 
 				&--background {
-					> .maxi-text-block__content {
-						background-color: var(--maxi-#{$style}-highlight-background);
-
-						&:hover {
-							background-color: var(--maxi-#{$style}-hover);
-						}
+					&.maxi-text-block,
+					.maxi-button-block__button {
+						background-color: var(--maxi-#{$style}-highlight-background) !important;
 					}
 
-					> .maxi-button-extra__button {
-						background-color: var(--maxi-light-highlight-background);
-
-						&:hover {
-							background-color: var(--maxi-#{$style}-hover);
-						}
-					}
-
-					> .maxi-font-icon-block__icon {
-						background-color: var(--maxi-light-highlight-background);
-
-						&:hover {
-							background-color: var(--maxi-#{$style}-hover);
-						}
+					&.maxi-group-block,
+					.maxi-font-icon-block__icon {
+						background-color: var(--maxi-#{$style}-highlight-background) !important;
 					}
 
 					&.maxi-svg-icon-block {
 						> .maxi-background-displayer {
 							background-color: var(--maxi-light-highlight-background);
-
-							&:hover {
-								background-color: var(--maxi-#{$style}-hover);
-							}
 						}
 					}
 				}
 
 				&--border {
-					> &.maxi-text-block {
-						border-color: var(--maxi-#{$style}-highlight-border);
-
-						&:hover {
-							border-color: var(--maxi-#{$style}-hover);
-						}
+					&.maxi-text-block,
+					.maxi-button-block__button {
+						border-color: var(--maxi-#{$style}-highlight-border) !important;
+						border-style: solid !important;
+						border-width: 2px !important;
 					}
 
-					> .maxi-button-extra__button {
-						border-color: var(--maxi-light-highlight-border);
-
-						&:hover {
-							border-color: var(--maxi-#{$style}-hover);
-						}
+					&.maxi-group-block,
+					.maxi-divider-block__divider,
+					&.maxi-font-icon-block,
+					&.maxi-svg-icon-block{
+						border-color: var(--maxi-#{$style}-highlight-border) !important;
+						border-style: solid !important;
+						border-width: 2px !important;
 					}
-
-					> .maxi-divider-block__divider {
-						border-color: var(--maxi-light-highlight-border);
-
-						&:hover {
-							border-color: var(--maxi-light-hover);
-						}
-					}
-
-					> &.maxi-font-icon-block {
-						border-color: var(--maxi-light-highlight-border);
-
-						&:hover {
-							border-color: var(--maxi-light-hover);
-						}
-					}
-
-					> &.maxi-svg-icon-block {
-						border-color: var(--maxi-light-highlight-border);
-
-						&:hover {
-							border-color: var(--maxi-light-hover);
-						}
-					}
-
 				}
 
 				&--color1 {
@@ -193,7 +161,7 @@ body.maxi-blocks--active {
 				.maxi-block--backend {
 					&.maxi-#{$style} .maxi-parent {
 						@each $level in $levels {
-							> #{$level} {
+							#{$level} {
 								&.maxi-text-block__content {
 									font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size});
 									line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size});
@@ -237,11 +205,14 @@ body.maxi-blocks--active {
 			@each $style in $styles {
 				.maxi-#{$style} {
 					@each $level in $levels {
-						> #{$level} {
+						#{$level} {
 							font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage});
 							line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage});
 						}
 					}
+				}
+				.maxi-button-block__button {
+					font-size: var(--maxi-#{$style}-p-font-size-#{$current_responsive_stage});
 				}
 			}
 		}

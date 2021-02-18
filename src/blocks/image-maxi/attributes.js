@@ -134,25 +134,6 @@ const attributes = {
 			default: 'center',
 		},
 	},
-	...{
-		...attributesData.size,
-		'min-width-unit-general': {
-			type: 'string',
-			default: '%',
-		},
-		'min-width-xxl': {
-			type: 'number',
-			default: 100,
-		},
-		'min-width-s': {
-			type: 'number',
-			default: 100,
-		},
-		'min-width-xs': {
-			type: 'number',
-			default: 100,
-		},
-	},
 };
 
 export default attributes;

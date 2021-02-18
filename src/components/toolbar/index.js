@@ -83,30 +83,31 @@ const flexBlocks = [
 const MaxiToolbar = props => {
 	const {
 		attributes,
+		changeSVGContent,
 		clientId,
+		deviceType,
+		formatValue,
 		isSelected,
 		name,
 		setAttributes,
-		formatValue,
-		deviceType,
 		toggleHandlers,
-		changeSVGContent,
 	} = props;
 	const {
-		customLabel,
-		uniqueID,
-		fullWidth,
-		isFirstOnHierarchy,
-		linkSettings,
-		isList,
 		content,
-		typeOfList,
-		textLevel,
+		customLabel,
+		fullWidth,
 		imageSize,
-		mediaID,
+		imgWidth,
+		isFirstOnHierarchy,
+		isList,
+		lineHorizontal,
 		lineOrientation,
 		lineVertical,
-		lineHorizontal,
+		linkSettings,
+		mediaID,
+		textLevel,
+		typeOfList,
+		uniqueID,
 	} = attributes;
 
 	const [anchorRef, setAnchorRef] = useState(
@@ -351,8 +352,8 @@ const MaxiToolbar = props => {
 						/>
 						{deviceType === 'general' && (
 							<ImageSize
-								{...getGroupAttributes(attributes, 'size')}
 								blockName={name}
+								imgWidth={imgWidth}
 								onChangeSize={obj => setAttributes(obj)}
 								imageSize={imageSize}
 								onChangeImageSize={imageSize =>

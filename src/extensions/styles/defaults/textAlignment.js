@@ -1,7 +1,7 @@
 const textAlignment = {
 	'text-alignment-general': {
 		type: 'string',
-		default: 'left',
+		default: '',
 	},
 	'text-alignment-xxl': {
 		type: 'string',

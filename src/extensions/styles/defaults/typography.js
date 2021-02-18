@@ -30,7 +30,7 @@ export const typography = {
 	},
 	'color-general': {
 		type: 'string',
-		default: '#9b9b9b',
+		default: '',
 	},
 	'font-size-unit-general': {
 		type: 'string',
@@ -38,7 +38,7 @@ export const typography = {
 	},
 	'font-size-general': {
 		type: 'number',
-		default: 16,
+		default: '',
 	},
 	'line-height-unit-general': {
 		type: 'string',
@@ -46,7 +46,7 @@ export const typography = {
 	},
 	'line-height-general': {
 		type: 'number',
-		default: 1.625,
+		default: '',
 	},
 	'letter-spacing-unit-general': {
 		type: 'string',
@@ -54,23 +54,23 @@ export const typography = {
 	},
 	'letter-spacing-general': {
 		type: 'number',
-		default: 0,
+		default: '',
 	},
 	'font-weight-general': {
 		type: 'number',
-		default: 400,
+		default: '',
 	},
 	'text-transform-general': {
 		type: 'string',
-		default: 'none',
+		default: '',
 	},
 	'font-style-general': {
 		type: 'string',
-		default: 'normal',
+		default: '',
 	},
 	'text-decoration-general': {
 		type: 'string',
-		default: 'none',
+		default: '',
 	},
 	'text-shadow-general': {
 		type: 'string',
@@ -98,7 +98,7 @@ export const typography = {
 	},
 	'font-size-xxl': {
 		type: 'number',
-		default: 20,
+		default: '',
 	},
 	'line-height-unit-xxl': {
 		type: 'string',
@@ -106,7 +106,7 @@ export const typography = {
 	},
 	'line-height-xxl': {
 		type: 'number',
-		default: 1.5,
+		default: '',
 	},
 	'letter-spacing-unit-xxl': {
 		type: 'string',
@@ -158,7 +158,7 @@ export const typography = {
 	},
 	'font-size-xl': {
 		type: 'number',
-		default: 18,
+		default: '',
 	},
 	'line-height-unit-xl': {
 		type: 'string',
@@ -166,7 +166,7 @@ export const typography = {
 	},
 	'line-height-xl': {
 		type: 'number',
-		default: 1.35,
+		default: '',
 	},
 	'letter-spacing-unit-xl': {
 		type: 'string',
@@ -218,7 +218,7 @@ export const typography = {
 	},
 	'font-size-l': {
 		type: 'number',
-		default: 16,
+		default: '',
 	},
 	'line-height-unit-l': {
 		type: 'string',
@@ -226,7 +226,7 @@ export const typography = {
 	},
 	'line-height-l': {
 		type: 'number',
-		default: 1.625,
+		default: '',
 	},
 	'letter-spacing-unit-l': {
 		type: 'string',

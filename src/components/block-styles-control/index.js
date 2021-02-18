@@ -29,12 +29,8 @@ const BlockStylesControl = props => {
 			return [
 				{ label: __('Dark', 'maxi-blocks'), value: 'maxi-dark' },
 				{ label: __('Light', 'maxi-blocks'), value: 'maxi-light' },
-				{ label: __('Custom', 'maxi-blocks'), value: 'maxi-custom' },
 			];
-		return [
-			{ label: __('Parent', 'maxi-blocks'), value: 'maxi-parent' },
-			{ label: __('Custom', 'maxi-blocks'), value: 'maxi-custom' },
-		];
+		return [{ label: __('Parent', 'maxi-blocks'), value: 'maxi-parent' }];
 	};
 
 	return (

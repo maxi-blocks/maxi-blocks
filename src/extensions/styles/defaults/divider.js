@@ -1,7 +1,7 @@
 const divider = {
 	'divider-border-color': {
 		type: 'string',
-		default: '#ff4a17',
+		default: '',
 	},
 	'divider-border-style': {
 		type: 'string',

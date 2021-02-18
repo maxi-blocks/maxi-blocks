@@ -1,7 +1,7 @@
 export const border = {
 	'border-color-general': {
 		type: 'string',
-		default: '#ffffff',
+		default: '',
 	},
 	'border-style-general': {
 		type: 'string',

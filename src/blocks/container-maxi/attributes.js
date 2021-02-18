@@ -22,7 +22,7 @@ const attributes = {
 	},
 	blockStyle: {
 		type: 'string',
-		default: 'maxi-custom',
+		default: 'maxi-light',
 	},
 	...attributesData.container,
 	...attributesData.background,

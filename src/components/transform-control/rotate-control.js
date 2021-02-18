@@ -8,7 +8,7 @@ const { useState, useEffect } = wp.element;
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Icons
@@ -56,19 +56,22 @@ const RotateControl = props => {
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
-						value={xAxis}
+						value={isNil(xAxis) ? '' : xAxis}
 						min={0}
 						max={360}
 						onChange={e => {
-							let value = +e.target.value;
+							if (e.target.value === '') {
+								changeXAxis('');
+								onChange('', yAxis, zAxis);
+							} else {
+								let value = +e.target.value;
 
-							if (value > 360) value = 360;
-							if (value < 0) value = 0;
+								if (value > 360) value = 360;
+								if (value < 0) value = 0;
 
-							const newValue = !isEmpty(value) ? value : '';
-
-							changeXAxis(newValue);
-							onChange(newValue, yAxis, zAxis);
+								changeXAxis(value);
+								onChange(value, yAxis, zAxis);
+							}
 						}}
 					/>
 					<Button
@@ -107,18 +110,22 @@ const RotateControl = props => {
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
-						value={yAxis}
+						value={isNil(yAxis) ? '' : yAxis}
 						min={0}
 						max={360}
 						onChange={e => {
-							let value = +e.target.value;
+							if (e.target.value === '') {
+								changeYAxis('');
+								onChange(xAxis, '', zAxis);
+							} else {
+								let value = +e.target.value;
 
-							if (value > 360) value = 360;
-							if (value < 0) value = 0;
+								if (value > 360) value = 360;
+								if (value < 0) value = 0;
 
-							const newValue = !isEmpty(value) ? value : '';
-							changeYAxis(newValue);
-							onChange(xAxis, newValue, zAxis);
+								changeYAxis(value);
+								onChange(xAxis, value, zAxis);
+							}
 						}}
 					/>
 					<Button
@@ -157,18 +164,22 @@ const RotateControl = props => {
 						type='number'
 						placeholder='0deg'
 						className='maxi-transform-control__rotate-control__item__input'
-						value={zAxis}
+						value={isNil(zAxis) ? '' : zAxis}
 						min={0}
 						max={360}
 						onChange={e => {
-							let value = +e.target.value;
+							if (e.target.value === '') {
+								changeZAxis('');
+								onChange(xAxis, yAxis, '');
+							} else {
+								let value = +e.target.value;
 
-							if (value > 360) value = 360;
-							if (value < 0) value = 0;
+								if (value > 360) value = 360;
+								if (value < 0) value = 0;
 
-							const newValue = !isEmpty(value) ? value : '';
-							changeZAxis(newValue);
-							onChange(xAxis, yAxis, newValue);
+								changeZAxis(value);
+								onChange(xAxis, yAxis, value);
+							}
 						}}
 					/>
 					<Button

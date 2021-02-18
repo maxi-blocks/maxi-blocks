@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Icon, Button, Tooltip } = wp.components;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -36,7 +37,10 @@ const TextFormatStrikethrough = props => {
 			breakpoint,
 		}) || '';
 
-	const isActive = textDecorationValue.indexOf('line-through') >= 0;
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const [isActive, setIsActive] = useState(
+		textDecorationValue.indexOf('line-through') >= 0
+	);
 
 	const getTextDecorationValue = () => {
 		if (textDecorationValue === 'none') return 'line-through';
@@ -59,6 +63,8 @@ const TextFormatStrikethrough = props => {
 			},
 			breakpoint,
 		});
+
+		setIsActive(!isActive);
 
 		onChange(obj);
 	};

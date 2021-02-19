@@ -48,18 +48,6 @@ body.maxi-blocks--active {
 					max-width: none;
 				}
 			}
-
-			&__resizer {
-				.components-resizable-box__handle {
-					&:before,
-					&:after {
-						background: #ff4a17;
-
-					}
-
-
-				}
-			}
 		}
 	}
 }

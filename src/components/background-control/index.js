@@ -121,7 +121,7 @@ const BackgroundControl = props => {
 				<FancyRadioControl
 					label={__('Background', 'maxi-blocks')}
 					fullWidthMode
-					selected={backgroundActiveMedia}
+					selected={backgroundActiveMedia || ''}
 					options={getOptions()}
 					onChange={value => {
 						onChange({

@@ -5,19 +5,15 @@ const boxShadow = {
 	},
 	'box-shadow-horizontal-general': {
 		type: 'number',
-		default: 0,
 	},
 	'box-shadow-vertical-general': {
 		type: 'number',
-		default: 0,
 	},
 	'box-shadow-blur-general': {
 		type: 'number',
-		default: 0,
 	},
 	'box-shadow-spread-general': {
 		type: 'number',
-		default: 0,
 	},
 	'box-shadow-color-xxl': {
 		type: 'string',

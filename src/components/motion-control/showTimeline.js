@@ -105,23 +105,24 @@ const ShowTimeline = props => {
 								<div className='maxi-motion-control__timeline__group'>
 									{value.map((item, i) => (
 										<div
-											key={`maxi-motion-control__timeline__group__item-${i}`}
+											key={`maxi-motion-control__timeline__group__item-${key}-${i}`}
 											className={classnames(
 												'maxi-motion-control__timeline__group__item',
 												props[
 													'motion-active-time-line-time'
-												] === Number(key) &&
+												] === +key &&
 													props[
 														'motion-active-time-line-index'
 													] === i &&
 													'maxi-motion-control__timeline__group__item--active-item'
 											)}
-											onClick={() =>
+											onClick={e => {
+												e.preventDefault();
 												onChange({
 													'motion-active-time-line-time': +key,
-													'motion-active-time-line-index': 0,
-												})
-											}
+													'motion-active-time-line-index': i,
+												});
+											}}
 										>
 											<span>
 												{item.type}

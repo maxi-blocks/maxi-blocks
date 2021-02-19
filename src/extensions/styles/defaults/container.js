@@ -14,7 +14,6 @@ const container = (() => {
 			},
 			[`container-min-width-${breakpoint}`]: {
 				type: 'number',
-				default: '',
 			},
 			[`container-max-height-unit-${breakpoint}`]: {
 				type: 'string',
@@ -22,7 +21,6 @@ const container = (() => {
 			},
 			[`container-max-height-${breakpoint}`]: {
 				type: 'number',
-				default: '',
 			},
 			[`container-height-unit-${breakpoint}`]: {
 				type: 'string',
@@ -30,7 +28,6 @@ const container = (() => {
 			},
 			[`container-height-${breakpoint}`]: {
 				type: 'number',
-				default: '',
 			},
 			[`container-min-height-unit-${breakpoint}`]: {
 				type: 'string',
@@ -38,7 +35,6 @@ const container = (() => {
 			},
 			[`container-min-height-${breakpoint}`]: {
 				type: 'number',
-				default: '',
 			},
 		};
 	});

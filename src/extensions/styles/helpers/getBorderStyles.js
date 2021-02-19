@@ -13,7 +13,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block border properties
  */
-const getBorderStyles = (obj, isHover = false, prefix) => {
+const getBorderStyles = (obj, isHover = false, prefix = '') => {
 	const keyWords = [
 		'top-left',
 		'top-right',
@@ -59,10 +59,7 @@ const getBorderStyles = (obj, isHover = false, prefix) => {
 						newLabel.includes(key)
 					)[0];
 					const unit = getLastBreakpointAttribute(
-						`${prefix ? prefix : ''}${newLabel.replace(
-							unitKey,
-							'unit'
-						)}`,
+						`${prefix}${newLabel.replace(unitKey, 'unit')}`,
 						breakpoint,
 						obj,
 						isHover

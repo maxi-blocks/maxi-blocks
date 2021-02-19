@@ -19,8 +19,7 @@ export const backgroundHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...background[key] };
 
-		if (value.type === 'string' || value.type === 'number')
-			value.default = '';
+		if ('default' in value) delete value.default;
 
 		response[newKey] = value;
 	});
@@ -35,7 +34,7 @@ export const backgroundColorHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...backgroundColor[key] };
 
-		value.default = '';
+		if ('default' in value) delete value.default;
 
 		response[newKey] = value;
 	});
@@ -50,7 +49,7 @@ export const backgroundImageHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...backgroundImage[key] };
 
-		value.default = '';
+		if ('default' in value) delete value.default;
 
 		response[newKey] = value;
 	});
@@ -65,7 +64,7 @@ export const backgroundVideoHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...backgroundVideo[key] };
 
-		value.default = '';
+		if ('default' in value) delete value.default;
 
 		response[newKey] = value;
 	});
@@ -80,7 +79,7 @@ export const backgroundGradientHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...backgroundGradient[key] };
 
-		value.default = '';
+		if ('default' in value) delete value.default;
 
 		response[newKey] = value;
 	});
@@ -95,7 +94,7 @@ export const backgroundSVGHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...backgroundSVG[key] };
 
-		value.default = '';
+		if ('default' in value) delete value.default;
 
 		response[newKey] = value;
 	});

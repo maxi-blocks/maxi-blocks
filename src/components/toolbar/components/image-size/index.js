@@ -30,6 +30,7 @@ import { getDefaultAttribute } from '../../../../extensions/styles';
 const ImageSize = props => {
 	const {
 		blockName,
+		imgWidth,
 		onChangeSize,
 		imageSize,
 		onChangeImageSize,
@@ -110,11 +111,11 @@ const ImageSize = props => {
 					)}
 					<RangeSliderControl
 						label={__('Width', 'maxi-blocks')}
-						value={+trim(props['width-general'])}
-						defaultValue={getDefaultAttribute('width-general')}
+						value={imgWidth}
+						defaultValue={getDefaultAttribute('imgWidth')}
 						onChange={val =>
 							onChangeSize({
-								'width-general': val,
+								imgWidth: val,
 							})
 						}
 						allowReset

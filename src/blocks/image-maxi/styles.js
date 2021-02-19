@@ -39,6 +39,9 @@ const getNormalObject = props => {
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
 		}),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 	};
 
 	return response;
@@ -84,6 +87,9 @@ const getHoverEffectDetailsBoxObject = props => {
 				]),
 			}),
 		},
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 	};
 
 	return response;
@@ -126,12 +132,14 @@ const getImageFrontendObject = props => {
 		boxShadow: getBoxShadowStyles({
 			...getGroupAttributes(props, 'boxShadow'),
 		}),
-		imageSize: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
+		imageSize: {
+			general: {
+				width: `${props.imgWidth}%`,
+			},
+		},
 	};
 
 	return response;
@@ -189,9 +197,6 @@ const getImageBackendObject = props => {
 			label: 'Image settings',
 			general: {},
 		},
-		imageSize: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
 	};
 
 	if (clipPath) response.image.general['clip-path'] = clipPath;

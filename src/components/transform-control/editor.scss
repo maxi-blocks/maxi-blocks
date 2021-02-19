@@ -79,11 +79,6 @@
 			}
 			&__resizer {
 				border: 1px solid #dddfe1;
-				.components-resizable-box__handle {
-					&:after {
-						background-color: #464a53;
-					}
-				}
 			}
 			&__draggable {
 				z-index: 9;

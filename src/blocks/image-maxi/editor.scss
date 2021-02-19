@@ -1,22 +1,14 @@
 .maxi-image-block {
+	&:focus:after {
+		box-shadow: none !important;
+	}
 	.maxi-imageupload-button {
 		height: 100%;
 	}
-	.components-resizable-box {
-		&__container {
-			.components-resizable-box__handle {
-				display: none;
-			}
-		}
-	}
-	&:hover {
-		.components-resizable-box {
-			&__container {
-				.components-resizable-box__handle {
-					display: block;
-				}
-			}
-		}
+
+	&__resizer {
+		height: auto !important;
+		max-height: 100%;
 	}
 
 	&__settings {
@@ -49,6 +41,7 @@
 	}
 	&__image {
 		display: block;
+		max-height: 100%;
 		margin: auto;
 	}
 	&__caption {
@@ -67,6 +60,8 @@
 	}
 
 	.maxi-block-hover-wrapper {
+		width: 100% !important;
+		max-height: 100%;
 		margin: auto;
 	}
 }

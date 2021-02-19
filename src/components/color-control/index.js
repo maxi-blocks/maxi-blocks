@@ -51,6 +51,7 @@ const ColorControl = props => {
 				output[rgbKeys[i]] = color[i] || 1;
 			});
 		}
+
 		return { rgb: { ...output } };
 	};
 
@@ -59,7 +60,7 @@ const ColorControl = props => {
 
 	const returnColor = (val, alpha) => {
 		return !isEmpty(val)
-			? `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${alpha})`
+			? `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${+alpha / 100})`
 			: '';
 	};
 
@@ -79,7 +80,7 @@ const ColorControl = props => {
 			setColorAlpha(
 				getRGB(color).rgb.a === 1 || getRGB(color).rgb.a === 100
 					? 100
-					: getRGB(color).rgb.a
+					: colorAlpha
 			);
 		}
 	}, [color, currentColor, setCurrentColor, setColorAlpha, getRGB]);
@@ -113,11 +114,11 @@ const ColorControl = props => {
 			<RangeSliderControl
 				label={__('Colour Opacity', 'maxi-blocks')}
 				className='maxi-color-control__opacity'
-				value={Number(colorAlpha)}
+				value={+colorAlpha}
 				onChange={val => {
 					if (!isEmpty(color)) {
-						onChange(returnColor(getRGB(color), val / 100));
-						setCurrentColor(returnColor(getRGB(color), val / 100));
+						onChange(returnColor(getRGB(color), val));
+						setCurrentColor(returnColor(getRGB(color), val));
 					}
 
 					setColorAlpha(val);

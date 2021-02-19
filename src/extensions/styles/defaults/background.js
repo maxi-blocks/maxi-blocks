@@ -1,7 +1,6 @@
 export const background = {
 	'background-active-media': {
 		type: 'string',
-		default: '',
 	},
 	'background-layers': {
 		type: 'array',
@@ -15,11 +14,9 @@ export const background = {
 export const backgroundColor = {
 	'background-color': {
 		type: 'string',
-		default: '',
 	},
 	'background-color-clip-path': {
 		type: 'string',
-		default: '',
 	},
 };
 
@@ -29,7 +26,6 @@ export const backgroundImage = {
 	},
 	'background-image-mediaURL': {
 		type: 'string',
-		default: '',
 	},
 	'background-image-size': {
 		type: 'string',
@@ -90,7 +86,6 @@ export const backgroundImage = {
 	},
 	'background-image-clip-path': {
 		type: 'string',
-		default: '',
 	},
 	'background-image-opacity': {
 		type: 'number',
@@ -104,15 +99,12 @@ export const backgroundVideo = {
 	},
 	'background-video-mediaURL': {
 		type: 'string',
-		default: '',
 	},
 	'background-video-startTime': {
 		type: 'string',
-		default: '',
 	},
 	'background-video-endTime': {
 		type: 'string',
-		default: '',
 	},
 	'background-video-loop': {
 		type: 'boolean',
@@ -120,14 +112,12 @@ export const backgroundVideo = {
 	},
 	'background-video-clip-path': {
 		type: 'string',
-		default: '',
 	},
 	'background-video-fallbackID': {
 		type: 'number',
 	},
 	'background-video-fallbackURL': {
 		type: 'string',
-		default: '',
 	},
 	'background-video-playOnMobile': {
 		type: 'boolean',
@@ -142,7 +132,6 @@ export const backgroundVideo = {
 export const backgroundGradient = {
 	'background-gradient': {
 		type: 'string',
-		default: '',
 	},
 	'background-gradient-opacity': {
 		type: 'number',
@@ -150,18 +139,15 @@ export const backgroundGradient = {
 	},
 	'background-gradient-clip-path': {
 		type: 'string',
-		default: '',
 	},
 };
 
 export const backgroundSVG = {
 	'background-svg-SVGCurrentElement': {
 		type: 'string',
-		default: '',
 	},
 	'background-svg-SVGElement': {
 		type: 'string',
-		default: '',
 	},
 	'background-svg-SVGData': {
 		type: 'object',
@@ -171,7 +157,6 @@ export const backgroundSVG = {
 	},
 	'background-svg-SVGMediaURL': {
 		type: 'string',
-		default: '',
 	},
 	'background-svg-top--unit': {
 		type: 'string',

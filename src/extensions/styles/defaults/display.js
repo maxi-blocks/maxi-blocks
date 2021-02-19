@@ -1,7 +1,6 @@
 const display = {
 	'display-general': {
 		type: 'string',
-		default: '',
 	},
 	'display-xxl': {
 		type: 'string',

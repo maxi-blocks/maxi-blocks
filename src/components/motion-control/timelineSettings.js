@@ -140,9 +140,9 @@ const TimelineSettings = props => {
 										: getTimelineItemSettingValue('unitX')
 								}
 								value={getTimelineItemSettingValue('x')}
-								onChange={val => {
-									updateTimelineItemSettings(val, 'x');
-								}}
+								onChange={val =>
+									updateTimelineItemSettings(val, 'x')
+								}
 								min={-500}
 								max={500}
 							/>
@@ -183,9 +183,9 @@ const TimelineSettings = props => {
 										: getTimelineItemSettingValue('unitY')
 								}
 								value={getTimelineItemSettingValue('y')}
-								onChange={val => {
-									updateTimelineItemSettings(val, 'y');
-								}}
+								onChange={val =>
+									updateTimelineItemSettings(val, 'y')
+								}
 								min={-500}
 								max={500}
 							/>
@@ -226,9 +226,9 @@ const TimelineSettings = props => {
 										: getTimelineItemSettingValue('unitZ')
 								}
 								value={getTimelineItemSettingValue('z')}
-								onChange={val => {
-									updateTimelineItemSettings(val, 'z');
-								}}
+								onChange={val =>
+									updateTimelineItemSettings(val, 'z')
+								}
 								min={-500}
 								max={500}
 							/>
@@ -267,9 +267,9 @@ const TimelineSettings = props => {
 							label={__('X', 'maxi-blocks')}
 							help='deg'
 							value={getTimelineItemSettingValue('x')}
-							onChange={val => {
-								updateTimelineItemSettings(val, 'x');
-							}}
+							onChange={val =>
+								updateTimelineItemSettings(val, 'x')
+							}
 							min={-180}
 							max={180}
 						/>
@@ -277,9 +277,9 @@ const TimelineSettings = props => {
 							label={__('Y', 'maxi-blocks')}
 							help='deg'
 							value={getTimelineItemSettingValue('y')}
-							onChange={val => {
-								updateTimelineItemSettings(val, 'y');
-							}}
+							onChange={val =>
+								updateTimelineItemSettings(val, 'y')
+							}
 							min={-180}
 							max={180}
 						/>
@@ -287,9 +287,9 @@ const TimelineSettings = props => {
 							label={__('Z', 'maxi-blocks')}
 							help='deg'
 							value={getTimelineItemSettingValue('z')}
-							onChange={val => {
-								updateTimelineItemSettings(val, 'z');
-							}}
+							onChange={val =>
+								updateTimelineItemSettings(val, 'z')
+							}
 							min={-180}
 							max={180}
 						/>
@@ -302,9 +302,9 @@ const TimelineSettings = props => {
 							label={__('X', 'maxi-blocks')}
 							help='deg'
 							value={getTimelineItemSettingValue('x')}
-							onChange={val => {
-								updateTimelineItemSettings(val, 'x');
-							}}
+							onChange={val =>
+								updateTimelineItemSettings(val, 'x')
+							}
 							min={-80}
 							max={80}
 						/>
@@ -312,9 +312,9 @@ const TimelineSettings = props => {
 							label={__('Y', 'maxi-blocks')}
 							help='deg'
 							value={getTimelineItemSettingValue('y')}
-							onChange={val => {
-								updateTimelineItemSettings(val, 'y');
-							}}
+							onChange={val =>
+								updateTimelineItemSettings(val, 'y')
+							}
 							min={-80}
 							max={80}
 						/>
@@ -326,9 +326,9 @@ const TimelineSettings = props => {
 						<RangeSliderControl
 							label={__('X', 'maxi-blocks')}
 							value={getTimelineItemSettingValue('x')}
-							onChange={val => {
-								updateTimelineItemSettings(val, 'x');
-							}}
+							onChange={val =>
+								updateTimelineItemSettings(val, 'x')
+							}
 							min={-2}
 							max={2}
 							step={0.1}
@@ -336,9 +336,9 @@ const TimelineSettings = props => {
 						<RangeSliderControl
 							label={__('Y', 'maxi-blocks')}
 							value={getTimelineItemSettingValue('y')}
-							onChange={val => {
-								updateTimelineItemSettings(val, 'y');
-							}}
+							onChange={val =>
+								updateTimelineItemSettings(val, 'y')
+							}
 							min={-2}
 							max={2}
 							step={0.1}
@@ -346,9 +346,9 @@ const TimelineSettings = props => {
 						<RangeSliderControl
 							label={__('Z', 'maxi-blocks')}
 							value={getTimelineItemSettingValue('z')}
-							onChange={val => {
-								updateTimelineItemSettings(val, 'z');
-							}}
+							onChange={val =>
+								updateTimelineItemSettings(val, 'z')
+							}
 							min={-2}
 							max={2}
 							step={0.1}
@@ -362,9 +362,9 @@ const TimelineSettings = props => {
 							label={__('Opacity', 'maxi-blocks')}
 							help='%'
 							value={getTimelineItemSettingValue('opacity')}
-							onChange={val => {
-								updateTimelineItemSettings(val, 'opacity');
-							}}
+							onChange={val =>
+								updateTimelineItemSettings(val, 'opacity')
+							}
 							initialPosition={1}
 							min={0}
 							max={1}
@@ -379,9 +379,9 @@ const TimelineSettings = props => {
 							label={__('Blur', 'maxi-blocks')}
 							help='px'
 							value={getTimelineItemSettingValue('blur')}
-							onChange={val => {
-								updateTimelineItemSettings(val, 'blur');
-							}}
+							onChange={val =>
+								updateTimelineItemSettings(val, 'blur')
+							}
 							initialPosition={1}
 							min={0}
 							max={100}

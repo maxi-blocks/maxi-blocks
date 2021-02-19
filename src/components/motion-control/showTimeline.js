@@ -42,15 +42,14 @@ const ShowTimeline = props => {
 				onChange({
 					'motion-time-line': { ...newTimeline },
 				});
+
+				const res = flattenDeep(Object.entries(newTimeline));
+				onChange({
+					'motion-active-time-line-time': +res[0],
+					'motion-active-time-line-index': 0,
+				});
 			}
 		}
-
-		const res = flattenDeep(Object.entries(props['motion-time-line']));
-
-		onChange({
-			'motion-active-time-line-time': +res[0],
-			'motion-active-time-line-index': 0,
-		});
 	};
 
 	const typeCount = {

@@ -17,7 +17,6 @@ export const icon = (() => {
 			},
 			[`icon-size-unit-${breakpoint}`]: {
 				type: 'string',
-				default: '',
 			},
 		};
 	});
@@ -25,7 +24,6 @@ export const icon = (() => {
 		...response,
 		'icon-name': {
 			type: 'string',
-			default: '',
 		},
 		'icon-spacing': {
 			type: 'number',
@@ -37,7 +35,6 @@ export const icon = (() => {
 		},
 		'icon-background-color': {
 			type: 'string',
-			default: '',
 		},
 		'icon-background-active-media': {
 			type: 'string',
@@ -45,11 +42,9 @@ export const icon = (() => {
 		},
 		'icon-background-gradient': {
 			type: 'string',
-			default: '',
 		},
 		'icon-background-gradient-opacity': {
 			type: 'number',
-			default: 1,
 		},
 		'icon-position': {
 			type: 'string',

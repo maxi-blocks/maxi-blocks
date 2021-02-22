@@ -142,7 +142,7 @@ const CopyPaste = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__copy-paste'
-			tooltip={__('ColumnSize', 'maxi-blocks')}
+			tooltip={__('Copy / Paste Style', 'maxi-blocks')}
 			icon={toolbarCopyPaste}
 			content={
 				<div className='toolbar-item__copy-paste__popover'>
@@ -180,7 +180,10 @@ const CopyPaste = props => {
 														className='toolbar-item__copy-paste__popover__item'
 														key={`copy-paste-${attr}`}
 													>
-														<label className='maxi-axis-control__content__item__checkbox'>
+														<label
+															htmlFor={attr}
+															className='maxi-axis-control__content__item__checkbox'
+														>
 															<input
 																type='checkbox'
 																name={attr}
@@ -191,12 +194,7 @@ const CopyPaste = props => {
 																	)
 																}
 															/>
-															<label
-																className=' toolbar-item__copy-paste__popover__checkbox'
-																htmlFor={attr}
-															>
-																{attr}
-															</label>
+															<span>{attr}</span>
 														</label>
 													</div>
 												);

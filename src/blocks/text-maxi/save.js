@@ -44,8 +44,7 @@ const save = props => {
 		extraClassName,
 		uniqueID,
 		className,
-		fullWidth === 'full' ? 'alignfull' : null,
-		!isNil(uniqueID) ? uniqueID : null
+		fullWidth === 'full' ? 'alignfull' : null
 	);
 
 	return (

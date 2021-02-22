@@ -35,8 +35,7 @@ const save = props => {
 		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		blockStyle,
 		extraClassName,
-		className,
-		!isNil(uniqueID) ? uniqueID : null
+		className
 	);
 
 	return (

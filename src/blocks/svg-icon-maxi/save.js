@@ -40,11 +40,7 @@ const save = props => {
 	);
 
 	return (
-		<div
-			className={classes}
-			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion-id={uniqueID}
-		>
+		<div className={classes} data-motion-id={uniqueID}>
 			<RawHTML className='maxi-svg-icon-block__icon'>
 				{attributes.content}
 			</RawHTML>

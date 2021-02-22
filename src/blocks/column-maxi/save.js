@@ -31,15 +31,11 @@ const save = props => {
 		'maxi-block maxi-column-block',
 		blockStyle,
 		extraClassName,
-		className,
-		!isNil(uniqueID) ? uniqueID : null
+		className
 	);
 
 	return (
-		<div
-			className={classes}
-			data-maxi_initial_block_class={defaultBlockStyle}
-		>
+		<div className={classes}>
 			<BackgroundDisplayer
 				{...getGroupAttributes(attributes, [
 					'background',

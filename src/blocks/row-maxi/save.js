@@ -33,15 +33,11 @@ const save = props => {
 		blockStyle,
 		extraClassName,
 		className,
-		fullWidth === 'full' ? 'alignfull' : null,
-		!isNil(uniqueID) ? uniqueID : null
+		fullWidth === 'full' ? 'alignfull' : null
 	);
 
 	return (
-		<div
-			className={classes}
-			data-maxi_initial_block_class={defaultBlockStyle}
-		>
+		<div className={classes}>
 			<BackgroundDisplayer
 				{...getGroupAttributes(attributes, [
 					'background',

@@ -40,16 +40,11 @@ const save = props => {
 		fullWidth === 'full' ? 'alignfull' : null,
 		lineOrientation === 'vertical'
 			? 'maxi-divider-block--vertical'
-			: 'maxi-divider-block--horizontal',
-		!isNil(uniqueID) ? uniqueID : null
+			: 'maxi-divider-block--horizontal'
 	);
 
 	return (
-		<div
-			className={classes}
-			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion-id={uniqueID}
-		>
+		<div className={classes} data-motion-id={uniqueID}>
 			{!attributes['background-highlight'] && (
 				<BackgroundDisplayer
 					{...getGroupAttributes(attributes, [

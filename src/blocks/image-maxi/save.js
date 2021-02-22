@@ -73,11 +73,7 @@ const save = props => {
 	};
 
 	return (
-		<figure
-			className={classes}
-			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion-id={uniqueID}
-		>
+		<figure className={classes} data-motion-id={uniqueID}>
 			{!attributes['background-highlight'] && (
 				<BackgroundDisplayer
 					{...getGroupAttributes(attributes, [

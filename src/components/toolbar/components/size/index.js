@@ -25,7 +25,6 @@ import { toolbarSizing } from '../../../../icons';
  */
 const EXCLUDED_BLOCKS = [
 	'maxi-blocks/image-maxi',
-	'maxi-blocks/divider-maxi',
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/font-icon-maxi',
@@ -53,25 +52,28 @@ const Size = props => {
 			advancedOptions='width height'
 			content={
 				<div className='toolbar-item__size__popover'>
-					{(blockName === 'maxi-blocks/container-maxi' ||
-						blockName === 'maxi-blocks/row-maxi') && (
-						<RadioControl
-							className='toolbar-item__popover__toggle-btn'
-							label={__('Full Width', 'maxi-blocks')}
-							selected={fullWidth}
-							options={[
-								{
-									label: __('No', 'maxi-blocks'),
-									value: 'normal',
-								},
-								{
-									label: __('Yes', 'maxi-blocks'),
-									value: 'full',
-								},
-							]}
-							onChange={fullWidth => onChange({ fullWidth })}
-						/>
-					)}
+					{
+						(isFirstOnHierarchy ||
+							blockName === 'maxi-blocks/row-maxi',
+						(
+							<RadioControl
+								className='toolbar-item__popover__toggle-btn'
+								label={__('Full Width', 'maxi-blocks')}
+								selected={fullWidth}
+								options={[
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 'normal',
+									},
+									{
+										label: __('Yes', 'maxi-blocks'),
+										value: 'full',
+									},
+								]}
+								onChange={fullWidth => onChange({ fullWidth })}
+							/>
+						))
+					}
 					<SizeControl
 						label={__('Width', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(

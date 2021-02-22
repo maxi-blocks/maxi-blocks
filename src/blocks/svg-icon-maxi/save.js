@@ -19,12 +19,7 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { className, attributes } = props;
-	const {
-		uniqueID,
-		blockStyle,
-		defaultBlockStyle,
-		extraClassName,
-	} = attributes;
+	const { uniqueID, blockStyle, extraClassName } = attributes;
 
 	const classes = classnames(
 		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -40,11 +35,7 @@ const save = props => {
 	);
 
 	return (
-		<div
-			className={classes}
-			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion-id={uniqueID}
-		>
+		<div className={classes} data-motion-id={uniqueID}>
 			<RawHTML className='maxi-svg-icon-block__icon'>
 				{attributes.content}
 			</RawHTML>

@@ -119,7 +119,6 @@ class edit extends MaxiBlock {
 				<__experimentalBlock.section
 					className={classes}
 					data-align={fullWidth}
-					data-maxi_initial_block_class={defaultBlockStyle}
 				>
 					{!attributes['background-highlight'] && (
 						<BackgroundDisplayer

@@ -160,7 +160,6 @@ class edit extends MaxiBlock {
 			>
 				<__experimentalBlock.figure
 					className={classes}
-					data-maxi_initial_block_class={defaultBlockStyle}
 					data-align={fullWidth}
 				>
 					<MediaUpload

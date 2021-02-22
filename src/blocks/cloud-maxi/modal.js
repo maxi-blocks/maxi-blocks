@@ -5,6 +5,8 @@
 import { MaxiContext } from './provider';
 import Iframe from 'react-iframe';
 
+import CloudLibrary from '../../editor/library';
+
 /**
  * WordPress dependencies.
  */
@@ -15,26 +17,25 @@ const { Button, Modal } = wp.components;
 class MaxiModal extends Component {
 	state = {
 		isOpen: false,
+		isOpen2: false,
 		loadGlobalStyles: false,
 	};
 
 	render() {
 		const { className = '' } = this.props;
 
-		const { isOpen } = this.state;
+		const { isOpen, isOpen2 } = this.state;
 
 		const onClick = () => {
 			this.setState({ isOpen: !this.state.isOpen });
 		};
-
-		// console.log("isOpen: "+ isOpen);
 
 		return (
 			<Fragment
 				key={`maxi-block-library__fragment--${this.props.clientId}`}
 			>
 				{/* Launch the layout modal window */}
-				<Button
+				{/* <Button
 					key={`maxi-block-library__modal-button--${this.props.clientId}`}
 					isPrimary
 					isLarge
@@ -73,7 +74,28 @@ class MaxiModal extends Component {
 							</Modal>
 						)}
 					</MaxiContext.Consumer>
-				) : null}
+				) : null} */}
+				<Fragment
+					key={`maxi-block-library__fragment--${this.props.clientId}`}
+				>
+					{/* Launch the layout modal window */}
+					<Button
+						key={`maxi-block-library__modal-button--${this.props.clientId}`}
+						isPrimary
+						isLarge
+						className='maxi-block-library__modal-button'
+						onClick={() =>
+							this.setState({ isOpen2: !this.state.isOpen2 })
+						}
+					>
+						{__('Launch the Library', 'maxi-blocks')}
+					</Button>
+					{isOpen2 && (
+						<CloudLibrary
+							onClose={() => this.setState({ isOpen2: !isOpen2 })}
+						/>
+					)}
+				</Fragment>
 			</Fragment>
 		);
 	}

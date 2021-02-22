@@ -170,7 +170,7 @@ class edit extends MaxiBlock {
 									) === 'none' && 'maxi-block-display-none'
 								)}
 								defaultSize={{ width: getColumnWidthDefault() }}
-								directions={{
+								enable={{
 									right: true,
 									left: true,
 								}}

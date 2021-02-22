@@ -1,7 +1,6 @@
 const opacity = {
 	'opacity-general': {
 		type: 'number',
-		default: 1,
 	},
 	'opacity-xxl': {
 		type: 'number',

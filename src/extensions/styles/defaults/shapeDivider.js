@@ -11,7 +11,7 @@ const shapeDividerBackground = location => {
 		const value = { ...background[key] };
 
 		if (value.type === 'string' || value.type === 'number')
-			value.default = '';
+			delete value.default;
 
 		response[newKey] = value;
 	});
@@ -29,7 +29,7 @@ const shapeDividerBackgroundColor = location => {
 		);
 		const value = { ...backgroundColor[key] };
 
-		value.default = '';
+		delete value.default;
 
 		response[newKey] = value;
 	});
@@ -56,7 +56,6 @@ const shapeDivider = {
 	},
 	'shape-divider-top-shape-style': {
 		type: 'string',
-		default: '',
 	},
 	...shapeDividerBackground('top'),
 	...shapeDividerBackgroundColor('top'),
@@ -82,7 +81,6 @@ const shapeDivider = {
 	},
 	'shape-divider-bottom-shape-style': {
 		type: 'string',
-		default: '',
 	},
 	...shapeDividerBackground('bottom'),
 	...shapeDividerBackgroundColor('bottom'),

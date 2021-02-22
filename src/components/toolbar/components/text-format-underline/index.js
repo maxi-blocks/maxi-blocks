@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Icon, Button, Tooltip } = wp.components;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -36,8 +37,10 @@ const TextFormatUnderline = props => {
 			breakpoint,
 		}) || '';
 
-	const isActive = textDecorationValue.indexOf('underline') >= 0;
-
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const [isActive, setIsActive] = useState(
+		textDecorationValue.indexOf('underline') >= 0
+	);
 	const getTextDecorationValue = () => {
 		if (textDecorationValue === 'none') return 'underline';
 
@@ -59,6 +62,8 @@ const TextFormatUnderline = props => {
 			},
 			breakpoint,
 		});
+
+		setIsActive(!isActive);
 
 		onChange(obj);
 	};

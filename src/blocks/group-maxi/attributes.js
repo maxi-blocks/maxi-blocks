@@ -16,6 +16,10 @@ const attributes = {
 		type: 'string',
 		default: __('Group', 'maxi-blocks'),
 	},
+	fullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
 	...attributesData.background,
 	...attributesData.backgroundColor,
 	...attributesData.backgroundImage,
@@ -38,6 +42,7 @@ const attributes = {
 	...attributesData.borderRadiusHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.highlight,
 	...attributesData.margin,
 	...attributesData.padding,
 	...attributesData.motion,

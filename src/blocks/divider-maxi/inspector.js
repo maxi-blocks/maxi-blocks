@@ -371,9 +371,7 @@ const Inspector = props => {
 																			)}
 																			onChange={obj =>
 																				setAttributes(
-																					{
-																						obj,
-																					}
+																					obj
 																				)
 																			}
 																			disableImage

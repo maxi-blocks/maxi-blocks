@@ -73,7 +73,6 @@ class edit extends MaxiBlock {
 			lineOrientation,
 			extraClassName,
 			fullWidth,
-			background,
 		} = attributes;
 
 		onDeviceTypeChange();
@@ -135,7 +134,7 @@ class edit extends MaxiBlock {
 					}`,
 				}}
 				showHandle={isSelected}
-				directions={{
+				enable={{
 					bottom: true,
 				}}
 				onResizeStart={handleOnResizeStart}
@@ -147,7 +146,18 @@ class edit extends MaxiBlock {
 						data-maxi_initial_block_class={defaultBlockStyle}
 						data-align={fullWidth}
 					>
-						<BackgroundDisplayer background={background} />
+						{!attributes['background-highlight'] && (
+							<BackgroundDisplayer
+								{...getGroupAttributes(attributes, [
+									'background',
+									'backgroundColor',
+									'backgroundGradient',
+									'backgroundHover',
+									'backgroundColorHover',
+									'backgroundGradientHover',
+								])}
+							/>
+						)}
 						{attributes['divider-border-style'] !== 'none' && (
 							<hr className='maxi-divider-block__divider' />
 						)}

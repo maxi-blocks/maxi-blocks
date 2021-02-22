@@ -21,6 +21,11 @@ import {
 } from '../../../../extensions/text/formats';
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Styles and icons
  */
 import './editor.scss';
@@ -107,20 +112,22 @@ const TextListOptions = props => {
 						onClick={() => onChangeList('ul')}
 						aria-pressed={isList && typeOfList === 'ul'}
 					/>
-					{__unstableCanOutdentListItems(formatValue) && (
-						<Button
-							className='toolbar-item__popover__list-options__button'
-							icon={toolbarOutdentList}
-							onClick={() => onChangeIndent('outdent')}
-						/>
-					)}
-					{__unstableCanIndentListItems(formatValue) && (
-						<Button
-							className='toolbar-item__popover__list-options__button'
-							icon={toolbarIndentList}
-							onClick={() => onChangeIndent('indent')}
-						/>
-					)}
+					{!isEmpty(formatValue) &&
+						__unstableCanOutdentListItems(formatValue) && (
+							<Button
+								className='toolbar-item__popover__list-options__button'
+								icon={toolbarOutdentList}
+								onClick={() => onChangeIndent('outdent')}
+							/>
+						)}
+					{!isEmpty(formatValue) &&
+						__unstableCanIndentListItems(formatValue) && (
+							<Button
+								className='toolbar-item__popover__list-options__button'
+								icon={toolbarIndentList}
+								onClick={() => onChangeIndent('indent')}
+							/>
+						)}
 				</div>
 			}
 		/>

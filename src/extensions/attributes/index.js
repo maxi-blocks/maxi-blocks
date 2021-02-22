@@ -117,7 +117,10 @@ const withAttributes = createHigherOrderComponent(
 			attributes.isFirstOnHierarchy = isEmpty(parentBlocks);
 
 			// RTL
-			if (attributes['text-alignment-general']) {
+			if (
+				'text-alignment-general' in attributes &&
+				!attributes['text-alignment-general']
+			) {
 				const { isRTL } = select('core/editor').getEditorSettings();
 
 				attributes['text-alignment-general'] = isRTL ? 'right' : 'left';

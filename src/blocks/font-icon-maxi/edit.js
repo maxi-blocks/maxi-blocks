@@ -60,6 +60,7 @@ class edit extends MaxiBlock {
 			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
+			fullWidth,
 		} = attributes;
 
 		const classes = classnames(
@@ -87,18 +88,21 @@ class edit extends MaxiBlock {
 			<__experimentalBlock
 				key={`maxi-font-icon-block-${uniqueID}`}
 				className={classes}
+				data-align={fullWidth}
 				data-maxi_initial_block_class={defaultBlockStyle}
 			>
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundGradientHover',
-					])}
-				/>
+				{!attributes['background-highlight'] && (
+					<BackgroundDisplayer
+						{...getGroupAttributes(attributes, [
+							'background',
+							'backgroundColor',
+							'backgroundGradient',
+							'backgroundHover',
+							'backgroundColorHover',
+							'backgroundGradientHover',
+						])}
+					/>
+				)}
 				{(!isEmpty(attributes['icon-name']) && (
 					<span className='maxi-font-icon-block__icon'>
 						<i className={attributes['icon-name']} />

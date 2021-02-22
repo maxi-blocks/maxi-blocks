@@ -12,7 +12,7 @@ const boxShadowHover = (function boxShadowHoverGenerator() {
 		const newKey = `${key}-hover`;
 		const value = { ...boxShadow[key] };
 
-		value.default = '';
+		if ('default' in value) value.default = '';
 
 		response[newKey] = value;
 	});

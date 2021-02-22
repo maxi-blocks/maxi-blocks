@@ -30,7 +30,6 @@ export const typography = {
 	},
 	'color-general': {
 		type: 'string',
-		default: '#9b9b9b',
 	},
 	'font-size-unit-general': {
 		type: 'string',
@@ -38,15 +37,12 @@ export const typography = {
 	},
 	'font-size-general': {
 		type: 'number',
-		default: 16,
 	},
 	'line-height-unit-general': {
 		type: 'string',
-		default: '',
 	},
 	'line-height-general': {
 		type: 'number',
-		default: 1.625,
 	},
 	'letter-spacing-unit-general': {
 		type: 'string',
@@ -54,35 +50,27 @@ export const typography = {
 	},
 	'letter-spacing-general': {
 		type: 'number',
-		default: 0,
 	},
 	'font-weight-general': {
 		type: 'number',
-		default: 400,
 	},
 	'text-transform-general': {
 		type: 'string',
-		default: 'none',
 	},
 	'font-style-general': {
 		type: 'string',
-		default: 'normal',
 	},
 	'text-decoration-general': {
 		type: 'string',
-		default: 'none',
 	},
 	'text-shadow-general': {
 		type: 'string',
-		default: '',
 	},
 	'vertical-align-general': {
 		type: 'string',
-		default: '',
 	},
 	'font-family-xxl': {
 		type: 'string',
-		default: '',
 	},
 	'font-options-xxl': {
 		type: 'object',
@@ -90,7 +78,6 @@ export const typography = {
 	},
 	'color-xxl': {
 		type: 'string',
-		default: '',
 	},
 	'font-size-unit-xxl': {
 		type: 'string',
@@ -98,15 +85,12 @@ export const typography = {
 	},
 	'font-size-xxl': {
 		type: 'number',
-		default: 20,
 	},
 	'line-height-unit-xxl': {
 		type: 'string',
-		default: '',
 	},
 	'line-height-xxl': {
 		type: 'number',
-		default: 1.5,
 	},
 	'letter-spacing-unit-xxl': {
 		type: 'string',
@@ -114,35 +98,27 @@ export const typography = {
 	},
 	'letter-spacing-xxl': {
 		type: 'number',
-		default: '',
 	},
 	'font-weight-xxl': {
 		type: 'number',
-		default: '',
 	},
 	'text-transform-xxl': {
 		type: 'string',
-		default: '',
 	},
 	'font-style-xxl': {
 		type: 'string',
-		default: '',
 	},
 	'text-decoration-xxl': {
 		type: 'string',
-		default: '',
 	},
 	'text-shadow-xxl': {
 		type: 'string',
-		default: '',
 	},
 	'vertical-align-xxl': {
 		type: 'string',
-		default: '',
 	},
 	'font-family-xl': {
 		type: 'string',
-		default: '',
 	},
 	'font-options-xl': {
 		type: 'object',
@@ -150,7 +126,6 @@ export const typography = {
 	},
 	'color-xl': {
 		type: 'string',
-		default: '',
 	},
 	'font-size-unit-xl': {
 		type: 'string',
@@ -158,15 +133,12 @@ export const typography = {
 	},
 	'font-size-xl': {
 		type: 'number',
-		default: 18,
 	},
 	'line-height-unit-xl': {
 		type: 'string',
-		default: '',
 	},
 	'line-height-xl': {
 		type: 'number',
-		default: 1.35,
 	},
 	'letter-spacing-unit-xl': {
 		type: 'string',
@@ -174,35 +146,27 @@ export const typography = {
 	},
 	'letter-spacing-xl': {
 		type: 'number',
-		default: '',
 	},
 	'font-weight-xl': {
 		type: 'number',
-		default: '',
 	},
 	'text-transform-xl': {
 		type: 'string',
-		default: '',
 	},
 	'font-style-xl': {
 		type: 'string',
-		default: '',
 	},
 	'text-decoration-xl': {
 		type: 'string',
-		default: '',
 	},
 	'text-shadow-xl': {
 		type: 'string',
-		default: '',
 	},
 	'vertical-align-xl': {
 		type: 'string',
-		default: '',
 	},
 	'font-family-l': {
 		type: 'string',
-		default: '',
 	},
 	'font-options-l': {
 		type: 'object',
@@ -210,7 +174,6 @@ export const typography = {
 	},
 	'color-l': {
 		type: 'string',
-		default: '',
 	},
 	'font-size-unit-l': {
 		type: 'string',
@@ -218,15 +181,12 @@ export const typography = {
 	},
 	'font-size-l': {
 		type: 'number',
-		default: 16,
 	},
 	'line-height-unit-l': {
 		type: 'string',
-		default: '',
 	},
 	'line-height-l': {
 		type: 'number',
-		default: 1.625,
 	},
 	'letter-spacing-unit-l': {
 		type: 'string',
@@ -234,35 +194,27 @@ export const typography = {
 	},
 	'letter-spacing-l': {
 		type: 'number',
-		default: '',
 	},
 	'font-weight-l': {
 		type: 'number',
-		default: '',
 	},
 	'text-transform-l': {
 		type: 'string',
-		default: '',
 	},
 	'font-style-l': {
 		type: 'string',
-		default: '',
 	},
 	'text-decoration-l': {
 		type: 'string',
-		default: '',
 	},
 	'text-shadow-l': {
 		type: 'string',
-		default: '',
 	},
 	'vertical-align-l': {
 		type: 'string',
-		default: '',
 	},
 	'font-family-m': {
 		type: 'string',
-		default: '',
 	},
 	'font-options-m': {
 		type: 'object',
@@ -270,7 +222,6 @@ export const typography = {
 	},
 	'color-m': {
 		type: 'string',
-		default: '',
 	},
 	'font-size-unit-m': {
 		type: 'string',
@@ -278,15 +229,12 @@ export const typography = {
 	},
 	'font-size-m': {
 		type: 'number',
-		default: '',
 	},
 	'line-height-unit-m': {
 		type: 'string',
-		default: '',
 	},
 	'line-height-m': {
 		type: 'number',
-		default: '',
 	},
 	'letter-spacing-unit-m': {
 		type: 'string',
@@ -294,35 +242,27 @@ export const typography = {
 	},
 	'letter-spacing-m': {
 		type: 'number',
-		default: '',
 	},
 	'font-weight-m': {
 		type: 'number',
-		default: '',
 	},
 	'text-transform-m': {
 		type: 'string',
-		default: '',
 	},
 	'font-style-m': {
 		type: 'string',
-		default: '',
 	},
 	'text-decoration-m': {
 		type: 'string',
-		default: '',
 	},
 	'text-shadow-m': {
 		type: 'string',
-		default: '',
 	},
 	'vertical-align-m': {
 		type: 'string',
-		default: '',
 	},
 	'font-family-s': {
 		type: 'string',
-		default: '',
 	},
 	'font-options-s': {
 		type: 'object',
@@ -330,7 +270,6 @@ export const typography = {
 	},
 	'color-s': {
 		type: 'string',
-		default: '',
 	},
 	'font-size-unit-s': {
 		type: 'string',
@@ -338,15 +277,12 @@ export const typography = {
 	},
 	'font-size-s': {
 		type: 'number',
-		default: '',
 	},
 	'line-height-unit-s': {
 		type: 'string',
-		default: '',
 	},
 	'line-height-s': {
 		type: 'number',
-		default: '',
 	},
 	'letter-spacing-unit-s': {
 		type: 'string',
@@ -354,35 +290,27 @@ export const typography = {
 	},
 	'letter-spacing-s': {
 		type: 'number',
-		default: '',
 	},
 	'font-weight-s': {
 		type: 'number',
-		default: '',
 	},
 	'text-transform-s': {
 		type: 'string',
-		default: '',
 	},
 	'font-style-s': {
 		type: 'string',
-		default: '',
 	},
 	'text-decoration-s': {
 		type: 'string',
-		default: '',
 	},
 	'text-shadow-s': {
 		type: 'string',
-		default: '',
 	},
 	'vertical-align-s': {
 		type: 'string',
-		default: '',
 	},
 	'font-family-xs': {
 		type: 'string',
-		default: '',
 	},
 	'font-options-xs': {
 		type: 'object',
@@ -390,7 +318,6 @@ export const typography = {
 	},
 	'color-xs': {
 		type: 'string',
-		default: '',
 	},
 	'font-size-unit-xs': {
 		type: 'string',
@@ -398,15 +325,12 @@ export const typography = {
 	},
 	'font-size-xs': {
 		type: 'number',
-		default: '',
 	},
 	'line-height-unit-xs': {
 		type: 'string',
-		default: '',
 	},
 	'line-height-xs': {
 		type: 'number',
-		default: '',
 	},
 	'letter-spacing-unit-xs': {
 		type: 'string',
@@ -414,31 +338,24 @@ export const typography = {
 	},
 	'letter-spacing-xs': {
 		type: 'number',
-		default: '',
 	},
 	'font-weight-xs': {
 		type: 'number',
-		default: '',
 	},
 	'text-transform-xs': {
 		type: 'string',
-		default: '',
 	},
 	'font-style-xs': {
 		type: 'string',
-		default: '',
 	},
 	'text-decoration-xs': {
 		type: 'string',
-		default: '',
 	},
 	'text-shadow-xs': {
 		type: 'string',
-		default: '',
 	},
 	'vertical-align-xs': {
 		type: 'string',
-		default: '',
 	},
 	'custom-formats': {
 		type: 'object',
@@ -453,7 +370,7 @@ export const typographyAlignment = (function typographyGenerator() {
 		const newKey = key.replace('alignment-', 'typography-alignment-');
 
 		if (key.includes('-general')) value.default = 'left';
-		else value.default = '';
+		else delete value.default;
 
 		response[newKey] = value;
 	});

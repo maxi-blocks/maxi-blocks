@@ -5,27 +5,21 @@ const columnSize = {
 	},
 	'column-size-xxl': {
 		type: 'number',
-		default: '',
 	},
 	'column-size-xl': {
 		type: 'number',
-		default: '',
 	},
 	'column-size-l': {
 		type: 'number',
-		default: '',
 	},
 	'column-size-m': {
 		type: 'number',
-		default: '',
 	},
 	'column-size-s': {
 		type: 'number',
-		default: '',
 	},
 	'column-size-xs': {
 		type: 'number',
-		default: '',
 	},
 };
 

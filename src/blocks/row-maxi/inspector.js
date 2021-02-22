@@ -315,7 +315,6 @@ const Inspector = props => {
 																				[
 																					'backgroundHover',
 																					'backgroundColorHover',
-																					'backgroundImageHover',
 																					'backgroundGradientHover',
 																				]
 																			)}
@@ -325,6 +324,7 @@ const Inspector = props => {
 																				)
 																			}
 																			disableVideo
+																			disableImage
 																			disableSVG
 																			isHover
 																		/>

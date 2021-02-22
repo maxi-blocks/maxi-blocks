@@ -88,6 +88,7 @@ class edit extends MaxiBlock {
 				`maxi-background--${blockStyleBackground}`,
 			!!attributes['border-highlight'] && 'maxi-highlight--border',
 			extraClassName,
+			uniqueID,
 			className,
 			lineOrientation === 'vertical'
 				? 'maxi-divider-block--vertical'

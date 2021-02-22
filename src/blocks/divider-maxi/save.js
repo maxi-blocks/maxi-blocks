@@ -35,6 +35,7 @@ const save = props => {
 		blockStyle,
 		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		extraClassName,
+		uniqueID,
 		className,
 		fullWidth === 'full' ? 'alignfull' : null,
 		lineOrientation === 'vertical'

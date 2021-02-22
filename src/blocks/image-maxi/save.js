@@ -50,7 +50,7 @@ const save = props => {
 	);
 
 	const classes = classnames(
-		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+		'maxi-motion-effect',
 		'maxi-block maxi-image-block',
 		fullWidth === 'full' ? 'alignfull' : null,
 		uniqueID,
@@ -76,7 +76,7 @@ const save = props => {
 		<figure
 			className={classes}
 			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion-id={uniqueID}
+			id={uniqueID}
 		>
 			{!attributes['background-highlight'] && (
 				<BackgroundDisplayer

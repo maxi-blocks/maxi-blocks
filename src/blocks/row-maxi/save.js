@@ -41,6 +41,7 @@ const save = props => {
 		<div
 			className={classes}
 			data-maxi_initial_block_class={defaultBlockStyle}
+			id={uniqueID}
 		>
 			<BackgroundDisplayer
 				{...getGroupAttributes(attributes, [

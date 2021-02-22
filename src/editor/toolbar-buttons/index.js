@@ -3,6 +3,8 @@
  */
 const { Button, Icon } = wp.components;
 const { useState, render, Fragment } = wp.element;
+const { useDispatch } = wp.data;
+const { createBlock } = wp.blocks;
 
 /**
  * Internal dependencies
@@ -20,6 +22,12 @@ import { main, responsive } from '../../icons';
 const ToolbarButtons = () => {
 	const [isResponsiveOpen, setIsResponsiveOpen] = useState(false);
 
+	const { insertBlock } = useDispatch('core/block-editor');
+
+	const addCloudLibrary = () => {
+		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
+	};
+
 	return (
 		<Fragment>
 			<div className='maxi-toolbar-layout'>
@@ -34,6 +42,7 @@ const ToolbarButtons = () => {
 					id='maxi-button__layout'
 					className='button maxi-button maxi-button__toolbar'
 					aria-label='Maxi Cloud Library'
+					onClick={() => addCloudLibrary()}
 				>
 					<Icon icon={main} />
 					Maxi Cloud Library

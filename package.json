@@ -27,6 +27,7 @@
 		"react-image-crop": "^8.6.5",
 		"react-lazy-load": "^3.1.13",
 		"react-linear-gradient-picker": "^1.1.2",
+		"react-masonry-css": "^1.0.14",
 		"react-paginate": "^6.5.0",
 		"react-select": "^4.1.0",
 		"react-tilt": "^0.1.4",

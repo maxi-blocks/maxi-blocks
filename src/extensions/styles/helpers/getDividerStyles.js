@@ -18,9 +18,7 @@ const getDividerStyles = (obj, target) => {
 		if (obj.lineOrientation === 'horizontal') {
 			response.general['border-right'] = 'none';
 			if (!isNil(obj['divider-width']))
-				response.general[
-					'width'
-				] = `${obj['divider-width']}${obj['divider-width-unit']}`;
+				response.general.width = `${obj['divider-width']}${obj['divider-width-unit']}`;
 			if (!isNil(obj['divider-border-top-width']))
 				response.general[
 					'border-top-width'
@@ -34,28 +32,24 @@ const getDividerStyles = (obj, target) => {
 					'border-right-width'
 				] = `${obj['divider-border-right-width']}${obj['divider-border-right-unit']}`;
 			if (!isNil(obj['divider-height']))
-				response.general[
-					'height'
-				] = `${obj['divider-height']}${obj['divider-height-unit']}`;
+				response.general.height = `${obj['divider-height']}${obj['divider-height-unit']}`;
 		}
 
-		if (!!obj['divider-border-radius'])
+		if (obj['divider-border-radius'])
 			response.general['border-radius'] = '20px';
-	} else {
-		if (!isNil(obj.lineAlign)) {
-			response.general['flex-direction'] = obj.lineAlign;
+	} else if (!isNil(obj.lineAlign)) {
+		response.general['flex-direction'] = obj.lineAlign;
 
-			if (obj.lineAlign === 'row') {
-				if (!isNil(obj.lineVertical))
-					response.general['align-items'] = obj.lineVertical;
-				if (!isNil(obj.lineHorizontal))
-					response.general['justify-content'] = obj.lineHorizontal;
-			} else {
-				if (!isNil(obj.lineVertical))
-					response.general['justify-content'] = obj.lineVertical;
-				if (!isNil(obj.lineHorizontal))
-					response.general['align-items'] = obj.lineHorizontal;
-			}
+		if (obj.lineAlign === 'row') {
+			if (!isNil(obj.lineVertical))
+				response.general['align-items'] = obj.lineVertical;
+			if (!isNil(obj.lineHorizontal))
+				response.general['justify-content'] = obj.lineHorizontal;
+		} else {
+			if (!isNil(obj.lineVertical))
+				response.general['justify-content'] = obj.lineVertical;
+			if (!isNil(obj.lineHorizontal))
+				response.general['align-items'] = obj.lineHorizontal;
 		}
 	}
 

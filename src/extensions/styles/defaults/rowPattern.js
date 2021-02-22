@@ -1,7 +1,6 @@
 const rowPattern = {
 	'row-pattern-general': {
 		type: 'string',
-		default: '',
 	},
 	'row-pattern-xxl': {
 		type: 'string',

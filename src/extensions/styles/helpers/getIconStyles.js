@@ -41,10 +41,10 @@ const getIconStyles = obj => {
 		response.general.opacity = obj['icon-background-gradient-opacity'];
 
 	if (!isEmpty(obj['icon-background-gradient']))
-		response.general['background'] = obj['icon-background-gradient'];
+		response.general.background = obj['icon-background-gradient'];
 
 	if (!isEmpty(obj['icon-background-color']))
-		response.general['background'] = obj['icon-background-color'];
+		response.general.background = obj['icon-background-color'];
 
 	return response;
 };

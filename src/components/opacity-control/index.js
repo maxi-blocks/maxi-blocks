@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { RangeControl } = wp.components;
 
 /**
  * Internal dependencies
@@ -13,7 +12,7 @@ import RangeSliderControl from '../range-slider-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty, round } from 'lodash';
+import { isEmpty, round } from 'lodash';
 
 /**
  * Styles
@@ -26,7 +25,7 @@ import './editor.scss';
 const OpacityControl = props => {
 	const {
 		label,
-		opacity,
+		opacity = 1,
 		defaultOpacity = 1,
 		fullWidthMode = false,
 		className,

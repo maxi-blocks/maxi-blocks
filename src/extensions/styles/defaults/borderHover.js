@@ -12,7 +12,7 @@ export const borderHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...border[key] };
 
-		value.default = '';
+		if ('default' in value) delete value.default;
 
 		response[newKey] = value;
 	});
@@ -27,7 +27,7 @@ export const borderWidthHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...borderWidth[key] };
 
-		value.default = '';
+		if ('default' in value) delete value.default;
 
 		response[newKey] = value;
 	});
@@ -42,7 +42,7 @@ export const borderRadiusHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...borderRadius[key] };
 
-		value.default = '';
+		if ('default' in value) delete value.default;
 
 		response[newKey] = value;
 	});

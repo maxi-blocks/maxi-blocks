@@ -2,7 +2,7 @@
  * Wordpress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment, useState } = wp.element;
+const { Fragment } = wp.element;
 const { Icon } = wp.components;
 
 /**
@@ -48,15 +48,9 @@ const BoxShadowControl = props => {
 
 	const classes = classnames('maxi-shadow-control', className);
 
-	const [currentShadow, setCurrentShadow] = useState('none');
-
 	const onChangeValue = (target, val) => {
 		onChange({
-			[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]: !isNil(+val)
-				? val
-				: getDefaultAttribute(
-						`${target}-${breakpoint}${isHover ? '-hover' : ''}`
-				  ),
+			[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]: val,
 		});
 	};
 
@@ -111,7 +105,7 @@ const BoxShadowControl = props => {
 			<DefaultStylesControl
 				items={[
 					{
-						activeItem: getIsActive(null, 'none'),
+						activeItem: getIsActive(boxShadowNone, 'none'),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -143,7 +137,7 @@ const BoxShadowControl = props => {
 					},
 				]}
 			/>
-			{!getIsActive(null, 'none') && (
+			{!getIsActive(boxShadowNone, 'none') && (
 				<Fragment>
 					<ColorControl
 						label={__('Box Shadow', 'maxi-blocks')}

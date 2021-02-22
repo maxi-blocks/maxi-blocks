@@ -199,7 +199,7 @@ class ResponsiveFrontendStyles {
 				continue;
 
 			if ($property === 'max-width')
-				$response .= "{$property}: {$value} !important;";
+				$response .= "{$property}: {$value};";
 			else $response .= "{$property}: {$value};";
 		}
 		return $response;

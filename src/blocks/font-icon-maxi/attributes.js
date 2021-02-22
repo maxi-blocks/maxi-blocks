@@ -16,6 +16,10 @@ const attributes = {
 		type: 'string',
 		default: __('Font Icon', 'maxi-blocks'),
 	},
+	fullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
 	...{
 		...attributesData.textAlignment,
 		'text-alignment-general': {

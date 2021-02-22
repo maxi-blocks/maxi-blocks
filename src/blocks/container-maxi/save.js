@@ -18,7 +18,6 @@ import { getGroupAttributes } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Save
@@ -42,6 +41,7 @@ const save = props => {
 			`maxi-background--${blockStyleBackground}`,
 		extraClassName,
 		className,
+		uniqueID,
 		fullWidth === 'full' ? 'alignfull' : null
 	);
 

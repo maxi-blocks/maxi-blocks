@@ -13,26 +13,20 @@ import { getGroupAttributes } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Save
  */
 const save = props => {
 	const { attributes, className } = props;
-	const {
-		uniqueID,
-		blockStyle,
-		extraClassName,
-		defaultBlockStyle,
-		fullWidth,
-	} = attributes;
+	const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
 
 	const classes = classnames(
 		'maxi-block maxi-row-block',
 		blockStyle,
 		extraClassName,
 		className,
+		uniqueID,
 		fullWidth === 'full' ? 'alignfull' : null
 	);
 

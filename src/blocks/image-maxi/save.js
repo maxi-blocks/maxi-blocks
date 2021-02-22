@@ -23,7 +23,6 @@ const save = props => {
 	const {
 		uniqueID,
 		blockStyle,
-		defaultBlockStyle,
 		fullWidth,
 		extraClassName,
 		captionType,

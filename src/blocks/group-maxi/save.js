@@ -14,7 +14,6 @@ import { getGroupAttributes } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Save
@@ -35,7 +34,8 @@ const save = props => {
 		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		blockStyle,
 		extraClassName,
-		className
+		className,
+		uniqueID
 	);
 
 	return (

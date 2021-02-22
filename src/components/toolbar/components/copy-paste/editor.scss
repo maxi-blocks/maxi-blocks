@@ -1,4 +1,64 @@
-// Javad, let's play with your magic 🥳
 .toolbar-item__copy-paste {
-	width: max-content;
+	&__popover {
+		min-width: 150px;
+		&__item {
+			margin-bottom: 5px;
+			&:first-child {
+				margin-top: 5px;
+			}
+			.maxi-axis-control__content__item__checkbox {
+				display: flex;
+				align-items: flex-end;
+			}
+		}
+		&__checkbox {
+			color: #80828a;
+			text-transform: capitalize;
+			font-size: 11px;
+			margin-top: 4px;
+		}
+		input[type='checkbox'] {
+			&:focus {
+				box-shadow: none;
+			}
+			&:checked {
+				&::before {
+					content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M14.83 4.89l1.34.94-5.81 8.38H9.02L5.78 9.67l1.34-1.25 2.57 2.4z' fill='%2380828a'/%3E%3C/svg%3E");
+					margin: -0.2rem 0 0 -0.34rem;
+				}
+				& ~ label {
+					color: #fff;
+				}
+			}
+		}
+		&__button {
+			color: #fff;
+			display: flex;
+			border-bottom: 2px solid #616161;
+			width: 100%;
+			text-align: left;
+			padding: 0;
+			border-radius: 0;
+			box-shadow: none;
+			svg {
+				width: 20px;
+			}
+			&--special {
+				color: #fff;
+				background: #ff4a17;
+				border-radius: 5px;
+				text-align: center;
+				height: 30px;
+				display: block;
+				margin-top: 10px;
+				font-size: 12px;
+			}
+			&:last-child {
+				border-bottom: none;
+			}
+			&:hover {
+				color: #fff;
+			}
+		}
+	}
 }

@@ -16,6 +16,10 @@ const attributes = {
 		type: 'string',
 		default: __('Button', 'maxi-blocks'),
 	},
+	fullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
 	buttonContent: {
 		type: 'string',
 		default: '',

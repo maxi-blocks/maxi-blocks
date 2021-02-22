@@ -30,7 +30,7 @@ const save = props => {
 	} = attributes;
 
 	const classes = classnames(
-		`maxi-motion-effect`,
+		'maxi-motion-effect',
 		'maxi-block maxi-divider-block',
 		blockStyle,
 		!!attributes['border-highlight'] && 'maxi-highlight--border',
@@ -40,7 +40,8 @@ const save = props => {
 		fullWidth === 'full' ? 'alignfull' : null,
 		lineOrientation === 'vertical'
 			? 'maxi-divider-block--vertical'
-			: 'maxi-divider-block--horizontal'
+			: 'maxi-divider-block--horizontal',
+		!isNil(uniqueID) ? uniqueID : null
 	);
 
 	return (

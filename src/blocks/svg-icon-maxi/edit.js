@@ -75,6 +75,7 @@ class edit extends MaxiBlock {
 			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
+			fullWidth,
 		} = attributes;
 
 		const { isOpen } = this.state;
@@ -109,7 +110,11 @@ class edit extends MaxiBlock {
 				key={`motion-preview-${uniqueID}`}
 				{...getGroupAttributes(attributes, 'motion')}
 			>
-				<__experimentalBlock className={classes} key={clientId}>
+				<__experimentalBlock
+					className={classes}
+					data-align={fullWidth}
+					key={clientId}
+				>
 					<Fragment>
 						{isOpen && (
 							<Modal

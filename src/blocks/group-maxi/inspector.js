@@ -47,6 +47,7 @@ const Inspector = props => {
 		defaultBlockStyle,
 		blockStyleBackground,
 		extraClassName,
+		fullWidth,
 	} = attributes;
 
 	return (
@@ -86,6 +87,42 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
+										isFirstOnHierarchy && {
+											label: __(
+												'Width / Height',
+												'maxi-blocks'
+											),
+											content: (
+												<FancyRadioControl
+													label={__(
+														'Full Width',
+														'maxi-blocks'
+													)}
+													selected={fullWidth}
+													options={[
+														{
+															label: __(
+																'No',
+																'maxi-blocks'
+															),
+															value: 'normal',
+														},
+														{
+															label: __(
+																'Yes',
+																'maxi-blocks'
+															),
+															value: 'full',
+														},
+													]}
+													onChange={fullWidth =>
+														setAttributes({
+															fullWidth,
+														})
+													}
+												/>
+											),
+										},
 										deviceType === 'general' && {
 											label: __(
 												'Background',

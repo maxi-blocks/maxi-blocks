@@ -81,6 +81,7 @@ class edit extends MaxiBlock {
 			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
+			fullWidth,
 		} = attributes;
 
 		const { formatValue, textSelected } = this.state;
@@ -134,6 +135,7 @@ class edit extends MaxiBlock {
 			>
 				<__experimentalBlock
 					className={classes}
+					data-align={fullWidth}
 					onClick={() =>
 						this.setState({ formatValue: generateFormatValue() })
 					}

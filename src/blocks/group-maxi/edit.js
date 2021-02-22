@@ -72,6 +72,7 @@ class edit extends MaxiBlock {
 			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
+			fullWidth,
 		} = attributes;
 
 		const classes = classnames(
@@ -115,7 +116,10 @@ class edit extends MaxiBlock {
 				key={`motion-preview-${uniqueID}`}
 				{...getGroupAttributes(attributes, 'motion')}
 			>
-				<__experimentalBlock.section className={classes}>
+				<__experimentalBlock.section
+					className={classes}
+					data-align={fullWidth}
+				>
 					{!attributes['background-highlight'] && (
 						<BackgroundDisplayer
 							{...getGroupAttributes(attributes, [

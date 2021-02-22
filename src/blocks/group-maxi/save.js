@@ -14,7 +14,6 @@ import { getGroupAttributes } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Save
@@ -36,7 +35,7 @@ const save = props => {
 		blockStyle,
 		extraClassName,
 		className,
-		!isNil(uniqueID) ? uniqueID : null
+		uniqueID
 	);
 
 	return (

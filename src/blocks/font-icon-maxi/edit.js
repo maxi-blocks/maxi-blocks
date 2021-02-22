@@ -60,6 +60,7 @@ class edit extends MaxiBlock {
 			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
+			fullWidth,
 		} = attributes;
 
 		const classes = classnames(
@@ -87,7 +88,7 @@ class edit extends MaxiBlock {
 			<__experimentalBlock
 				key={`maxi-font-icon-block-${uniqueID}`}
 				className={classes}
-				data-maxi_initial_block_class={defaultBlockStyle}
+				data-align={fullWidth}
 			>
 				{!attributes['background-highlight'] && (
 					<BackgroundDisplayer

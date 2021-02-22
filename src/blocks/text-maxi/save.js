@@ -14,7 +14,6 @@ import { getGroupAttributes } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Save
@@ -44,8 +43,7 @@ const save = props => {
 		extraClassName,
 		uniqueID,
 		className,
-		fullWidth === 'full' ? 'alignfull' : null,
-		!isNil(uniqueID) ? uniqueID : null
+		fullWidth === 'full' ? 'alignfull' : null
 	);
 
 	return (

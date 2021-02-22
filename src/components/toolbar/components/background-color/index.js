@@ -47,7 +47,12 @@ const BackgroundColor = props => {
 					label={__('Background', 'maxi-blocks')}
 					color={props['background-color']}
 					defaultColor={getDefaultAttribute('background-color')}
-					onChange={val => onChange({ 'background-color': val })}
+					onChange={val =>
+						onChange({
+							'background-color': val,
+							'background-active-media': 'color',
+						})
+					}
 				/>
 			}
 		/>

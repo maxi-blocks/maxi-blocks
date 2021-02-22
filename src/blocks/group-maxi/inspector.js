@@ -47,6 +47,7 @@ const Inspector = props => {
 		defaultBlockStyle,
 		blockStyleBackground,
 		extraClassName,
+		fullWidth,
 	} = attributes;
 
 	return (
@@ -75,19 +76,53 @@ const Inspector = props => {
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
 										disableHighlightText
-										disableHighlightBackground
-										disableHighlightBorder
 										disableHighlightColor1
 										disableHighlightColor2
 										{...getGroupAttributes(
 											attributes,
-											'border'
+											'highlight'
 										)}
 									/>
 								</div>
 								<AccordionControl
 									isPrimary
 									items={[
+										isFirstOnHierarchy && {
+											label: __(
+												'Width / Height',
+												'maxi-blocks'
+											),
+											content: (
+												<FancyRadioControl
+													label={__(
+														'Full Width',
+														'maxi-blocks'
+													)}
+													selected={fullWidth}
+													options={[
+														{
+															label: __(
+																'No',
+																'maxi-blocks'
+															),
+															value: 'normal',
+														},
+														{
+															label: __(
+																'Yes',
+																'maxi-blocks'
+															),
+															value: 'full',
+														},
+													]}
+													onChange={fullWidth =>
+														setAttributes({
+															fullWidth,
+														})
+													}
+												/>
+											),
+										},
 										deviceType === 'general' && {
 											label: __(
 												'Background',
@@ -191,10 +226,7 @@ const Inspector = props => {
 																				[
 																					'backgroundHover',
 																					'backgroundColorHover',
-																					'backgroundImageHover',
-																					'backgroundVideoHover',
 																					'backgroundGradientHover',
-																					'backgroundSVGHover',
 																				]
 																			)}
 																			onChange={obj =>

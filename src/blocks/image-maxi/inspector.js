@@ -50,7 +50,7 @@ import { injectImgSVG } from '../../extensions/svg/utils';
 /**
  * External dependencies
  */
-import { capitalize, isEmpty, isNil, isObject, trim } from 'lodash';
+import { capitalize, isEmpty, isNil, isObject } from 'lodash';
 
 /**
  * Inspector
@@ -267,34 +267,25 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														value={
-															+trim(
-																attributes[
-																	'width-general'
-																]
-															)
+															attributes.imgWidth
 														}
 														onChange={val => {
 															if (!isNil(val))
 																setAttributes({
-																	'width-general': val,
+																	imgWidth: val,
 																});
 															else
 																setAttributes({
-																	'width-general': getDefaultAttribute(
-																		'width-general',
+																	imgWidth: getDefaultAttribute(
+																		'imgWidth',
 																		clientId
 																	),
 																});
 														}}
-														max={
-															imageData &&
-															imageData
-																.media_details
-																.width
-														}
+														max={100}
 														allowReset
 														initialPosition={getDefaultAttribute(
-															'width-general',
+															'imgWidth',
 															clientId
 														)}
 													/>

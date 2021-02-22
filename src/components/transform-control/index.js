@@ -11,6 +11,7 @@ import SettingTabsControl from '../setting-tabs-control';
 import SquareControl from './square-control';
 import RotateControl from './rotate-control';
 import {
+	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -142,10 +143,16 @@ const TransformControl = props => {
 									breakpoint,
 									props
 								)}
+								defaultX={getDefaultAttribute(
+									'transform-scale-x'
+								)}
 								y={getLastBreakpointAttribute(
 									'transform-scale-y',
 									breakpoint,
 									props
+								)}
+								defaultY={getDefaultAttribute(
+									'transform-scale-y'
 								)}
 								onChange={(x, y) => {
 									onChangeTransform({
@@ -178,10 +185,16 @@ const TransformControl = props => {
 									breakpoint,
 									props
 								)}
+								defaultX={getDefaultAttribute(
+									'transform-translate-x'
+								)}
 								y={getLastBreakpointAttribute(
 									'transform-translate-y',
 									breakpoint,
 									props
+								)}
+								defaultY={getDefaultAttribute(
+									'transform-translate-y'
 								)}
 								xUnit={getLastBreakpointAttribute(
 									'transform-translate-x-unit',
@@ -229,15 +242,24 @@ const TransformControl = props => {
 									breakpoint,
 									props
 								)}
+								defaultX={getDefaultAttribute(
+									'transform-rotate-x'
+								)}
 								y={getLastBreakpointAttribute(
 									'transform-rotate-y',
 									breakpoint,
 									props
 								)}
+								defaultY={getDefaultAttribute(
+									'transform-rotate-y'
+								)}
 								z={getLastBreakpointAttribute(
 									'transform-rotate-z',
 									breakpoint,
 									props
+								)}
+								defaultZ={getDefaultAttribute(
+									'transform-rotate-z'
 								)}
 								onChange={(x, y, z) => {
 									onChange({
@@ -260,10 +282,16 @@ const TransformControl = props => {
 									breakpoint,
 									props
 								)}
+								defaultX={getDefaultAttribute(
+									'transform-origin-x'
+								)}
 								y={getLastBreakpointAttribute(
 									'transform-origin-y',
 									breakpoint,
 									props
+								)}
+								defaultY={getDefaultAttribute(
+									'transform-origin-y'
 								)}
 								onChange={(x, y) => {
 									onChange({

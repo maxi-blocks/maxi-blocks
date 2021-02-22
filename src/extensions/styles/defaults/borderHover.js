@@ -1,6 +1,6 @@
 import { border, borderWidth, borderRadius } from './border';
 
-export const borderHover = (function backgroundHoverGenerator() {
+export const borderHover = (() => {
 	const response = {
 		'border-status-hover': {
 			type: 'boolean',
@@ -12,7 +12,7 @@ export const borderHover = (function backgroundHoverGenerator() {
 		const newKey = `${key}-hover`;
 		const value = { ...border[key] };
 
-		value.default = '';
+		if ('default' in value) delete value.default;
 
 		response[newKey] = value;
 	});
@@ -20,14 +20,14 @@ export const borderHover = (function backgroundHoverGenerator() {
 	return response;
 })();
 
-export const borderWidthHover = (function backgroundHoverGenerator() {
+export const borderWidthHover = (() => {
 	const response = {};
 
 	Object.keys(borderWidth).forEach(key => {
 		const newKey = `${key}-hover`;
 		const value = { ...borderWidth[key] };
 
-		value.default = '';
+		if ('default' in value) delete value.default;
 
 		response[newKey] = value;
 	});
@@ -35,17 +35,25 @@ export const borderWidthHover = (function backgroundHoverGenerator() {
 	return response;
 })();
 
-export const borderRadiusHover = (function backgroundHoverGenerator() {
-	const response = {};
+export const borderRadiusHover = (() => {
+	let response = {};
 
 	Object.keys(borderRadius).forEach(key => {
 		const newKey = `${key}-hover`;
 		const value = { ...borderRadius[key] };
 
-		value.default = '';
+		if ('default' in value) delete value.default;
 
 		response[newKey] = value;
 	});
+
+	response = {
+		...response,
+		'border-unit-radius-general-hover': {
+			type: 'string',
+			default: 'px',
+		},
+	};
 
 	return response;
 })();

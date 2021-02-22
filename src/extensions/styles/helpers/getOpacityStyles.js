@@ -13,7 +13,9 @@ const getOpacityStyles = obj => {
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {
-			opacity: obj[`opacity-${breakpoint}`],
+			...(obj[`opacity-${breakpoint}`] && {
+				opacity: obj[`opacity-${breakpoint}`],
+			}),
 		};
 	});
 

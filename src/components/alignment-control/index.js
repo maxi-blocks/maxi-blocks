@@ -80,12 +80,14 @@ const AlignmentControl = props => {
 		<RadioControl
 			label={label}
 			className={classes}
-			selected={getLastBreakpointAttribute(
-				type === 'text' ? 'text-alignment' : 'alignment',
-				breakpoint,
-				props,
-				isHover
-			)}
+			selected={
+				getLastBreakpointAttribute(
+					type === 'text' ? 'text-alignment' : 'alignment',
+					breakpoint,
+					props,
+					isHover
+				) || getOptions()[0].value
+			}
 			options={getOptions()}
 			onChange={val =>
 				onChange(

@@ -4,12 +4,6 @@
 const { Button } = wp.components;
 
 /**
- * Internal dependencies
- */
-import { BackgroundDisplayer } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -65,17 +59,6 @@ const save = props => {
 			data-motion-id={uniqueID}
 		>
 			<Button className={buttonClasses} {...linkProps}>
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundGradientHover',
-					])}
-					blockClassName={uniqueID}
-				/>
 				{!isEmpty(attributes['icon-name']) && (
 					<i className={attributes['icon-name']} />
 				)}

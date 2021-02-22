@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { ColorPicker, Icon } = wp.components;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -33,12 +34,15 @@ const TextColor = props => {
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
-	const color = getCustomFormatValue({
-		typography,
-		formatValue,
-		prop: 'color',
-		breakpoint,
-	});
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const [color, setColor] = useState(
+		getCustomFormatValue({
+			typography,
+			formatValue,
+			prop: 'color',
+			breakpoint,
+		})
+	);
 
 	const returnColor = val => {
 		return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
@@ -54,6 +58,8 @@ const TextColor = props => {
 			},
 			breakpoint,
 		});
+
+		setColor(returnColor(val));
 
 		onChange(obj);
 	};

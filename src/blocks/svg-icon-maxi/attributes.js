@@ -16,6 +16,10 @@ const attributes = {
 		type: 'string',
 		default: __('SVG Icon', 'maxi-blocks'),
 	},
+	fullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
 	content: {
 		type: 'string',
 		default: '',

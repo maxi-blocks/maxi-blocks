@@ -15,7 +15,6 @@ const getDeviceType = () => {
 	}
 	return 'desktop';
 };
-
 // Motion Effects
 const motionElems = document.querySelectorAll('.maxi-motion-effect');
 motionElems.forEach(function (elem) {
@@ -24,25 +23,15 @@ motionElems.forEach(function (elem) {
 	const motionID = elem.getAttribute('data-motion-id');
 
 	const motionData =
-		maxi_custom_data.custom_data[motionID] !== undefined &&
-		maxi_custom_data.custom_data[motionID].hasOwnProperty('motion')
-			? maxi_custom_data.custom_data[motionID].motion
+		maxi_custom_data.custom_data[motionID] !== undefined
+			? maxi_custom_data.custom_data[motionID]
 			: null;
 
-	const shapeDividerData =
-		maxi_custom_data.custom_data[motionID] !== undefined &&
-		maxi_custom_data.custom_data[motionID].hasOwnProperty('shapeDivider')
-			? maxi_custom_data.custom_data[motionID].shapeDivider
-			: null;
-
-	// Shape Divider
-	if (shapeDividerData !== null) {
-		const motionTimeLine = gsap.timeline({
+	if (motionData !== null) {
+		// Shape Divider
+		const shapeDividerTimeline = gsap.timeline({
 			scrollTrigger: {
-				trigger:
-					'.maxi-motion-effect-' +
-					motionID +
-					' > .maxi-shape-divider',
+				trigger: `.maxi-motion-effect-${motionID} > .maxi-shape-divider`,
 				start: '-150',
 				scrub: true,
 				markers: false,
@@ -51,14 +40,9 @@ motionElems.forEach(function (elem) {
 				},
 			},
 		});
-		if (
-			'top' in shapeDividerData &&
-			!!parseInt(shapeDividerData.top.effects.status)
-		) {
-			motionTimeLine.to(
-				'.maxi-motion-effect-' +
-					motionID +
-					' > .maxi-shape-divider.maxi-shape-divider__top',
+		if (motionData['shape-divider-top-effects-status']) {
+			shapeDividerTimeline.to(
+				`.maxi-motion-effect-${motionID} > .maxi-shape-divider.maxi-shape-divider__top`,
 				{
 					height: 0,
 					duration: 1,
@@ -66,14 +50,9 @@ motionElems.forEach(function (elem) {
 				}
 			);
 		}
-		if (
-			'bottom' in shapeDividerData &&
-			!!parseInt(shapeDividerData.bottom.effects.status)
-		) {
-			motionTimeLine.to(
-				'.maxi-motion-effect-' +
-					motionID +
-					' > .maxi-shape-divider.maxi-shape-divider__bottom',
+		if (motionData['shape-divider-bottom-effects-status']) {
+			shapeDividerTimeline.to(
+				`.maxi-motion-effect-${motionID} > .maxi-shape-divider.maxi-shape-divider__bottom`,
 				{
 					height: 0,
 					duration: 1,
@@ -81,9 +60,7 @@ motionElems.forEach(function (elem) {
 				}
 			);
 		}
-	}
 
-	if (motionData !== null) {
 		// Parallax Effect
 		if ('parallax-status' in motionData) {
 			const parallaxElem = document.querySelector(
@@ -100,7 +77,7 @@ motionElems.forEach(function (elem) {
 					return '50% ' + -window.innerHeight * parallaxSpeed + 'px';
 			};
 
-			if (!!parseInt(parallaxStatus)) {
+			if (parallaxStatus) {
 				gsap.to(parallaxElem, {
 					backgroundPosition: getBackgroundPosition(),
 					ease: 'none',

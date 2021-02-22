@@ -27,8 +27,10 @@ import { reset, sync as syncIcon } from '../../icons';
 const SquareControl = props => {
 	const {
 		x,
+		defaultX,
 		xUnit = null,
 		y,
+		defaultY,
 		yUnit = null,
 		onChange,
 		onSave,
@@ -38,8 +40,8 @@ const SquareControl = props => {
 	const canvasRef = useRef(null);
 
 	const [sync, changeSync] = useState(false);
-	const [xAxis, changeXAxis] = useState(x);
-	const [yAxis, changeYAxis] = useState(y);
+	const [xAxis, changeXAxis] = useState(x || '');
+	const [yAxis, changeYAxis] = useState(y || '');
 	const [xAxisUnit, changeXUnit] = useState(xUnit);
 	const [yAxisUnit, changeYUnit] = useState(yUnit);
 	const [isMoving, changeIsMoving] = useState(false);
@@ -71,7 +73,7 @@ const SquareControl = props => {
 			case 'drag':
 				return '0%';
 			case 'origin':
-				return isString(value) ? value : '';
+				return isString(value) ? value : 'center';
 			default:
 				return false;
 		}
@@ -103,13 +105,14 @@ const SquareControl = props => {
 		switch (type) {
 			case 'resize':
 			case 'drag':
-				changeXAxis(0);
-				changeYAxis(0);
-				onSave('', '', '%', '%');
+				changeXAxis(defaultX);
+				changeYAxis(defaultY);
+				onSave(defaultX, defaultY, '%', '%');
 				break;
 			case 'origin':
-				changeXAxis('center');
-				changeYAxis('center');
+				changeXAxis(defaultX);
+				changeYAxis(defaultY);
+				onChange(defaultX, defaultY);
 				break;
 			default:
 				return false;
@@ -148,14 +151,15 @@ const SquareControl = props => {
 				ref={canvasRef}
 				onMouseMove={e => {
 					e.preventDefault();
+
 					if (isMoving) {
 						changeXAxis(
-							Number(xAxis) -
+							Number(xAxis || 0) -
 								(Number(clientX) - Number(e.clientX)) * 2
 						);
 						changeClientX(Number(e.clientX));
 						changeYAxis(
-							Number(yAxis) -
+							Number(yAxis || 0) -
 								(Number(clientY) - Number(e.clientY)) * 2
 						);
 						changeClientY(Number(e.clientY));
@@ -175,7 +179,7 @@ const SquareControl = props => {
 						minWidth='-100%'
 						minHeight='-100%'
 						showHandle
-						directions={{
+						enable={{
 							topRight: true,
 							bottomRight: true,
 							bottomLeft: true,
@@ -205,10 +209,6 @@ const SquareControl = props => {
 				{type === 'drag' && (
 					<span
 						className='maxi-transform-control__square-control__canvas__draggable'
-						onMouseOut={() => {
-							changeIsMoving(false);
-							onSave(xAxis, yAxis, xUnit, yUnit);
-						}}
 						onMouseDown={e => {
 							e.preventDefault();
 							changeClientX(Number(e.clientX));
@@ -216,6 +216,10 @@ const SquareControl = props => {
 							changeIsMoving(true);
 						}}
 						onMouseUp={() => {
+							changeIsMoving(false);
+							onSave(xAxis, yAxis, xUnit, yUnit);
+						}}
+						onMouseOut={() => {
 							changeIsMoving(false);
 							onSave(xAxis, yAxis, xUnit, yUnit);
 						}}

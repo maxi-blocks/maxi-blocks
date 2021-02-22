@@ -11,12 +11,7 @@ const { createRef } = wp.element;
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	BackgroundDisplayer,
-	MaxiBlock,
-	MotionPreview,
-	Toolbar,
-} from '../../components';
+import { MaxiBlock, MotionPreview, Toolbar } from '../../components';
 import { getFormatValue } from '../../extensions/text/formats';
 import {
 	getGroupAttributes,
@@ -86,6 +81,7 @@ class edit extends MaxiBlock {
 			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
+			fullWidth,
 		} = attributes;
 
 		const { formatValue, textSelected } = this.state;
@@ -139,6 +135,7 @@ class edit extends MaxiBlock {
 			>
 				<__experimentalBlock
 					className={classes}
+					data-align={fullWidth}
 					data-maxi_initial_block_class={defaultBlockStyle}
 					onClick={() =>
 						this.setState({ formatValue: generateFormatValue() })
@@ -148,16 +145,6 @@ class edit extends MaxiBlock {
 						{!isEmpty(attributes['icon-name']) && (
 							<i className={attributes['icon-name']} />
 						)}
-						<BackgroundDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'backgroundColor',
-								'backgroundGradient',
-								'backgroundHover',
-								'backgroundColorHover',
-								'backgroundGradientHover',
-							])}
-						/>
 						<RichText
 							ref={this.buttonRef}
 							withoutInteractiveFormatting

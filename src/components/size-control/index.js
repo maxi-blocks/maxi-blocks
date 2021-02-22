@@ -29,7 +29,7 @@ const SizeControl = props => {
 	const {
 		label,
 		className,
-		unit,
+		unit = 'px',
 		onChangeUnit,
 		defaultUnit,
 		disableUnit = false,

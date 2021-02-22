@@ -36,18 +36,20 @@ const attributes = {
 		type: 'string',
 		default: 'row',
 	},
-	...attributesData.size,
-	'width-general': {
-		default: 50,
-	},
-	'width-unit-general': {
-		default: 'px',
-	},
-	'height-general': {
-		default: 100,
-	},
-	'height-unit-general': {
-		default: 'px',
+	...{
+		...attributesData.size,
+		'width-general': {
+			default: 50,
+		},
+		'width-unit-general': {
+			default: 'px',
+		},
+		'height-general': {
+			default: 100,
+		},
+		'height-unit-general': {
+			default: 'px',
+		},
 	},
 	...attributesData.background,
 	...attributesData.backgroundColor,

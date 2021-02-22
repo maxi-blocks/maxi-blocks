@@ -80,6 +80,19 @@ const CopyPaste = props => {
 		return response;
 	};
 
+	const cleanStyleAttributes = attr => {
+		let response = {};
+
+		ATTRIBUTES.forEach(typeAttr => {
+			response = {
+				...response,
+				...getGroupAttributes(attr, typeAttr, false, '', true),
+			};
+		});
+
+		return response;
+	};
+
 	const { blockAttributes, organizedAttributes, copiedStyles } = useSelect(
 		select => {
 			const { getBlockAttributes } = select('core/block-editor');
@@ -89,7 +102,9 @@ const CopyPaste = props => {
 			const organizedAttributes =
 				(copiedStyles && getOrganizedAttributes(copiedStyles)) || {};
 
-			const blockAttributes = getBlockAttributes(clientId);
+			const blockAttributes = cleanStyleAttributes(
+				getBlockAttributes(clientId)
+			);
 
 			return {
 				blockAttributes,

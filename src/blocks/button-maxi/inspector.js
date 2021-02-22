@@ -60,6 +60,7 @@ const Inspector = props => {
 		defaultBlockStyle,
 		blockStyleBackground,
 		extraClassName,
+		fullWidth,
 	} = attributes;
 
 	const onChangePreset = number => {
@@ -610,16 +611,50 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<FullSizeControl
-													{...getGroupAttributes(
-														attributes,
-														'size'
+												<Fragment>
+													{isFirstOnHierarchy && (
+														<FancyRadioControl
+															label={__(
+																'Full Width',
+																'maxi-blocks'
+															)}
+															selected={fullWidth}
+															options={[
+																{
+																	label: __(
+																		'No',
+																		'maxi-blocks'
+																	),
+																	value:
+																		'normal',
+																},
+																{
+																	label: __(
+																		'Yes',
+																		'maxi-blocks'
+																	),
+																	value:
+																		'full',
+																},
+															]}
+															onChange={fullWidth =>
+																setAttributes({
+																	fullWidth,
+																})
+															}
+														/>
 													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													breakpoint={deviceType}
-												/>
+													<FullSizeControl
+														{...getGroupAttributes(
+															attributes,
+															'size'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												</Fragment>
 											),
 										},
 										{

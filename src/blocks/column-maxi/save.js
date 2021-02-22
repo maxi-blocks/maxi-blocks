@@ -13,34 +13,24 @@ import { getGroupAttributes } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Save
  */
 const save = props => {
 	const { attributes, className } = props;
-	const {
-		uniqueID,
-		blockStyle,
-		extraClassName,
-		defaultBlockStyle,
-	} = attributes;
+	const { uniqueID, blockStyle, extraClassName } = attributes;
 
 	const classes = classnames(
 		'maxi-block maxi-column-block',
 		blockStyle,
 		extraClassName,
 		className,
-		!isNil(uniqueID) ? uniqueID : null
+		uniqueID
 	);
 
 	return (
-		<div
-			className={classes}
-			data-maxi_initial_block_class={defaultBlockStyle}
-			id={uniqueID}
-		>
+		<div className={classes} id={uniqueID}>
 			<BackgroundDisplayer
 				{...getGroupAttributes(attributes, [
 					'background',

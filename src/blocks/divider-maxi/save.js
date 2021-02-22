@@ -13,7 +13,6 @@ import { getGroupAttributes } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Save
@@ -23,7 +22,6 @@ const save = props => {
 	const {
 		uniqueID,
 		blockStyle,
-		defaultBlockStyle,
 		fullWidth,
 		extraClassName,
 		lineOrientation,
@@ -40,16 +38,11 @@ const save = props => {
 		fullWidth === 'full' ? 'alignfull' : null,
 		lineOrientation === 'vertical'
 			? 'maxi-divider-block--vertical'
-			: 'maxi-divider-block--horizontal',
-		!isNil(uniqueID) ? uniqueID : null
+			: 'maxi-divider-block--horizontal'
 	);
 
 	return (
-		<div
-			className={classes}
-			data-maxi_initial_block_class={defaultBlockStyle}
-			id={uniqueID}
-		>
+		<div className={classes} id={uniqueID}>
 			{!attributes['background-highlight'] && (
 				<BackgroundDisplayer
 					{...getGroupAttributes(attributes, [

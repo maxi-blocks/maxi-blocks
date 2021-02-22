@@ -32,8 +32,7 @@ const save = props => {
 		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		extraClassName,
 		uniqueID,
-		className,
-		!isNil(uniqueID) ? uniqueID : null
+		className
 	);
 
 	const linkOpt = !isNil(linkSettings) && linkSettings;
@@ -53,11 +52,7 @@ const save = props => {
 	);
 
 	return (
-		<div
-			className={classes}
-			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion-id={uniqueID}
-		>
+		<div className={classes} data-motion-id={uniqueID}>
 			<Button className={buttonClasses} {...linkProps}>
 				{!isEmpty(attributes['icon-name']) && (
 					<i className={attributes['icon-name']} />

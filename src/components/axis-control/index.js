@@ -17,7 +17,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNumber, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Styles and icons
@@ -147,7 +147,7 @@ const AxisControl = props => {
 						`${target}-${key}${
 							auxTarget ? `-${auxTarget}` : ''
 						}-${breakpoint}${isHover ? '-hover' : ''}`
-					] = newValue;
+					] = +newValue;
 			});
 
 			onChange(response);
@@ -155,7 +155,7 @@ const AxisControl = props => {
 			onChange({
 				[`${target}-${singleTarget}${
 					auxTarget ? `-${auxTarget}` : ''
-				}-${breakpoint}${isHover ? '-hover' : ''}`]: newValue,
+				}-${breakpoint}${isHover ? '-hover' : ''}`]: +newValue,
 			});
 		}
 	};

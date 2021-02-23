@@ -4,21 +4,25 @@ const getGroupAttributes = (
 	attributes,
 	target,
 	isHover = false,
-	prefix = ''
+	prefix = '',
+	cleaned = false
 ) => {
 	const response = {};
 
 	if (typeof target === 'string')
 		Object.keys(defaults[`${target}${isHover ? 'Hover' : ''}`]).forEach(
 			key => {
-				response[`${prefix}${key}`] = attributes[`${prefix}${key}`];
+				if ((cleaned && attributes[`${prefix}${key}`]) || !cleaned)
+					response[`${prefix}${key}`] = attributes[`${prefix}${key}`];
 			}
 		);
 	else
 		target.forEach(el => {
 			Object.keys(defaults[`${el}${isHover ? 'Hover' : ''}`]).forEach(
 				key => {
-					response[`${prefix}${key}`] = attributes[`${prefix}${key}`];
+					if ((cleaned && attributes[`${prefix}${key}`]) || !cleaned)
+						response[`${prefix}${key}`] =
+							attributes[`${prefix}${key}`];
 				}
 			);
 		});

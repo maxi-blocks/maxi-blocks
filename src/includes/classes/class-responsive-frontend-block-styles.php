@@ -197,6 +197,8 @@ class ResponsiveFrontendStyles {
 		foreach ($styles as $property => $value) {
 			if ($property === 'font-options')
 				continue;
+
+			$response .= "{$property}: {$value};";
 		}
 		return $response;
 	}

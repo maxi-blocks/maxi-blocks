@@ -13,6 +13,10 @@ const resolvers = {
 		const maxiDeviceType = yield actions.receiveMaxiDeviceType();
 		return actions.sendMaxiDeviceType(maxiDeviceType);
 	},
+	*receiveMaxiStyleCards() {
+		const maxiStyleCards = yield actions.receiveMaxiStyleCards();
+		return actions.sendMaxiStyleCards(maxiStyleCards);
+	},
 };
 
 export default resolvers;

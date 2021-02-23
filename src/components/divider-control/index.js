@@ -27,11 +27,6 @@ import {
 } from './defaults';
 
 /**
- * External dependencies
- */
-import { isNil } from 'lodash';
-
-/**
  * Icons
  */
 import { styleNone, dashed, dotted, solid } from '../../icons';

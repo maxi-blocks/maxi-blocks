@@ -205,7 +205,7 @@ const BackgroundLayersControl = ({
 				}
 			/>
 
-			{!!layersStatus && (
+			{layersStatus && (
 				<div>
 					{!isEmpty(layers) && (
 						<ReactDragListView

@@ -20,7 +20,12 @@ import { isEmpty } from 'lodash';
  * Styles & Icons
  */
 import './editor.scss';
-import { toolbarSizing } from '../../../../icons';
+import {
+	toolbarCopyPaste,
+	toolbarCopy,
+	toolbarPaste,
+	toolbarSpecialPaste,
+} from '../../../../icons';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
@@ -152,30 +157,33 @@ const CopyPaste = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__copy-paste'
-			tooltip={__('ColumnSize', 'maxi-blocks')}
-			icon={toolbarSizing}
-			advancedOptions='column settings'
+			tooltip={__('Copy / Paste Style', 'maxi-blocks')}
+			icon={toolbarCopyPaste}
 			content={
 				<div className='toolbar-item__copy-paste__popover'>
 					<Button
-						className='toolbar-item__popover__copy-paste__button'
+						className='toolbar-item__copy-paste__popover__button'
+						icon={toolbarCopy}
 						onClick={onCopy}
 					>
-						Copy
+						{__('Copy Style', 'maxi-blocks')}
 					</Button>
 					<Button
-						className='toolbar-item__popover__copy-paste__button'
+						className='toolbar-item__copy-paste__popover__button'
+						icon={toolbarPaste}
 						onClick={onPaste}
+						disabled={isEmpty(copiedStyles)}
 					>
-						Paste
+						{__('Paste Style', 'maxi-blocks')}
 					</Button>
 					{!isEmpty(organizedAttributes) && (
 						<Fragment>
 							<Button
-								className='toolbar-item__popover__copy-paste__button'
+								className='toolbar-item__copy-paste__popover__button'
+								icon={toolbarSpecialPaste}
 								onClick={() => setIsOpen(!isOpen)}
 							>
-								Special paste
+								{__('Special Paste', 'maxi-blocks')}
 							</Button>
 							{isOpen && (
 								<form>
@@ -184,30 +192,37 @@ const CopyPaste = props => {
 											attr => {
 												return (
 													<div
+														className='toolbar-item__copy-paste__popover__item'
 														key={`copy-paste-${attr}`}
 													>
-														<label htmlFor={attr}>
-															{attr}
+														<label
+															htmlFor={attr}
+															className='maxi-axis-control__content__item__checkbox'
+														>
+															<input
+																type='checkbox'
+																name={attr}
+																id={attr}
+																onClick={() =>
+																	handleSpecialPaste(
+																		attr
+																	)
+																}
+															/>
+															<span>{attr}</span>
 														</label>
-														<input
-															type='checkbox'
-															name={attr}
-															id={attr}
-															onClick={() =>
-																handleSpecialPaste(
-																	attr
-																)
-															}
-														/>
 													</div>
 												);
 											}
-										)}{' '}
+										)}
 									<Button
-										className='toolbar-item__popover__copy-paste__button'
+										className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
 										onClick={onSpecialPaste}
 									>
-										Paste
+										{__(
+											'Paste Special Style',
+											'maxi-blocks'
+										)}
 									</Button>
 								</form>
 							)}

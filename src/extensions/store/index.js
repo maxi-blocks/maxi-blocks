@@ -30,6 +30,18 @@ const controls = {
 			},
 		});
 	},
+	async RECEIVE_STYLE_CARDS() {
+		return apiFetch({ path: '/maxi-blocks/v1.0/style-cards/' });
+	},
+	async SAVE_STYLE_CARDS(action) {
+		await apiFetch({
+			path: '/maxi-blocks/v1.0/style-cards/',
+			method: 'POST',
+			data: {
+				presets: JSON.stringify(action.styleCards),
+			},
+		});
+	},
 };
 
 const reducer = (
@@ -66,6 +78,17 @@ const reducer = (
 			return {
 				...state,
 				deviceType: action.deviceType,
+			};
+		case 'SEND_STYLE_CARDS':
+			return {
+				...state,
+				styleCards: action.styleCards,
+			};
+		case 'SAVE_STYLE_CARDS':
+			controls.SAVE_STYLE_CARDS(action);
+			return {
+				...state,
+				styleCards: action.styleCards,
 			};
 		default:
 			return state;
@@ -130,6 +153,23 @@ const actions = {
 			deviceType,
 		};
 	},
+	sendMaxiStyleCards(styleCards) {
+		return {
+			type: 'SEND_STYLE_CARDS',
+			styleCards,
+		};
+	},
+	receiveMaxiStyleCards() {
+		return {
+			type: 'RECEIVE_STYLE_CARDS',
+		};
+	},
+	saveMaxiStyleCards(styleCards) {
+		return {
+			type: 'SAVE_STYLE_CARDS',
+			styleCards,
+		};
+	},
 };
 
 const selectors = {
@@ -143,6 +183,10 @@ const selectors = {
 	},
 	receiveMaxiDeviceType(state) {
 		if (state) return state.deviceType;
+		return false;
+	},
+	receiveMaxiStyleCards(state) {
+		if (state) return state.styleCards;
 		return false;
 	},
 };
@@ -159,6 +203,10 @@ const resolvers = {
 	*receiveMaxiDeviceType() {
 		const maxiDeviceType = yield actions.receiveMaxiDeviceType();
 		return actions.sendMaxiDeviceType(maxiDeviceType);
+	},
+	*receiveMaxiStyleCards() {
+		const maxiStyleCards = yield actions.receiveMaxiStyleCards();
+		return actions.sendMaxiStyleCards(maxiStyleCards);
 	},
 };
 

@@ -34,7 +34,7 @@ const save = props => {
 	} = attributes;
 
 	const classes = classnames(
-		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+		'maxi-motion-effect',
 		'maxi-block maxi-container-block',
 		blockStyle,
 		blockStyle !== 'maxi-custom' &&
@@ -50,7 +50,7 @@ const save = props => {
 			<section
 				className={classes}
 				data-gx_initial_block_class={defaultBlockStyle}
-				data-motion-id={uniqueID}
+				id={uniqueID}
 			>
 				<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />
 

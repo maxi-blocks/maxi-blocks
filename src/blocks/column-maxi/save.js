@@ -30,7 +30,7 @@ const save = props => {
 	);
 
 	return (
-		<div className={classes}>
+		<div className={classes} id={uniqueID}>
 			<BackgroundDisplayer
 				{...getGroupAttributes(attributes, [
 					'background',

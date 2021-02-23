@@ -28,7 +28,7 @@ const save = props => {
 	} = attributes;
 
 	const classes = classnames(
-		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+		'maxi-motion-effect',
 		'maxi-block maxi-divider-block',
 		blockStyle,
 		!!attributes['border-highlight'] && 'maxi-highlight--border',
@@ -42,7 +42,7 @@ const save = props => {
 	);
 
 	return (
-		<div className={classes} data-motion-id={uniqueID}>
+		<div className={classes} id={uniqueID}>
 			{!attributes['background-highlight'] && (
 				<BackgroundDisplayer
 					{...getGroupAttributes(attributes, [

@@ -21,6 +21,7 @@ import {
 	ColumnMover,
 	ColumnsHandlers,
 	ColumnSize,
+	CopyPaste,
 	Delete,
 	Divider,
 	DividerAlignment,
@@ -54,27 +55,27 @@ import { getGroupAttributes } from '../../extensions/styles';
  * General
  */
 const allowedBlocks = [
-	'maxi-blocks/row-maxi',
-	'maxi-blocks/column-maxi',
 	'maxi-blocks/button-maxi',
-	'maxi-blocks/text-maxi',
-	'maxi-blocks/divider-maxi',
-	'maxi-blocks/image-maxi',
+	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
-	'maxi-blocks/group-maxi',
-	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/divider-maxi',
 	'maxi-blocks/font-icon-maxi',
+	'maxi-blocks/group-maxi',
+	'maxi-blocks/image-maxi',
+	'maxi-blocks/row-maxi',
+	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/text-maxi',
 ];
 
 const flexBlocks = [
-	'maxi-blocks/row-maxi',
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
-	'maxi-blocks/group-maxi',
-	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/divider-maxi',
+	'maxi-blocks/group-maxi',
 	'maxi-blocks/image-maxi',
+	'maxi-blocks/row-maxi',
+	'maxi-blocks/svg-icon-maxi',
 ];
 
 /**
@@ -370,16 +371,14 @@ const MaxiToolbar = props => {
 								}
 							/>
 						)}
-						{name !== 'maxi-blocks/group-maxi' && (
-							<Size
-								blockName={name}
-								{...getGroupAttributes(attributes, 'size')}
-								fullWidth={fullWidth}
-								isFirstOnHierarchy={isFirstOnHierarchy}
-								breakpoint={deviceType}
-								onChange={obj => setAttributes(obj)}
-							/>
-						)}
+						<Size
+							blockName={name}
+							{...getGroupAttributes(attributes, 'size')}
+							fullWidth={fullWidth}
+							isFirstOnHierarchy={isFirstOnHierarchy}
+							breakpoint={deviceType}
+							onChange={obj => setAttributes(obj)}
+						/>
 						<ColumnSize
 							clientId={clientId}
 							blockName={name}
@@ -414,6 +413,7 @@ const MaxiToolbar = props => {
 								flexBlocks.includes(name) ? 'flex' : 'inherit'
 							}
 						/>
+						<CopyPaste clientId={clientId} />
 					</div>
 				</Popover>
 			)}

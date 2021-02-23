@@ -144,7 +144,6 @@ class edit extends MaxiBlock {
 			'maxi-block--backend',
 			'maxi-container-block',
 			'maxi-motion-effect',
-			`maxi-motion-effect-${uniqueID}`,
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			uniqueID,
@@ -168,7 +167,6 @@ class edit extends MaxiBlock {
 						<__experimentalBlock.section
 							className={classes}
 							data-align={fullWidth}
-							data-maxi_initial_block_class={defaultBlockStyle}
 						>
 							<ArrowDisplayer
 								{...getGroupAttributes(attributes, 'arrow')}

@@ -20,7 +20,7 @@ const motionElems = document.querySelectorAll('.maxi-motion-effect');
 motionElems.forEach(function (elem) {
 	if (!maxi_custom_data.custom_data) return;
 
-	const motionID = elem.getAttribute('data-motion-id');
+	const motionID = elem.id;
 
 	const motionData =
 		maxi_custom_data.custom_data[motionID] !== undefined
@@ -31,7 +31,7 @@ motionElems.forEach(function (elem) {
 		// Shape Divider
 		const shapeDividerTimeline = gsap.timeline({
 			scrollTrigger: {
-				trigger: `.maxi-motion-effect-${motionID} > .maxi-shape-divider`,
+				trigger: `#${motionID} > .maxi-shape-divider`,
 				start: '-150',
 				scrub: true,
 				markers: false,
@@ -42,7 +42,7 @@ motionElems.forEach(function (elem) {
 		});
 		if (motionData['shape-divider-top-effects-status']) {
 			shapeDividerTimeline.to(
-				`.maxi-motion-effect-${motionID} > .maxi-shape-divider.maxi-shape-divider__top`,
+				`#${motionID} > .maxi-shape-divider.maxi-shape-divider__top`,
 				{
 					height: 0,
 					duration: 1,
@@ -52,7 +52,7 @@ motionElems.forEach(function (elem) {
 		}
 		if (motionData['shape-divider-bottom-effects-status']) {
 			shapeDividerTimeline.to(
-				`.maxi-motion-effect-${motionID} > .maxi-shape-divider.maxi-shape-divider__bottom`,
+				`#${motionID} > .maxi-shape-divider.maxi-shape-divider__bottom`,
 				{
 					height: 0,
 					duration: 1,
@@ -64,7 +64,7 @@ motionElems.forEach(function (elem) {
 		// Parallax Effect
 		if ('parallax-status' in motionData) {
 			const parallaxElem = document.querySelector(
-				`.maxi-motion-effect-${motionID} > .maxi-background-displayer > .maxi-background-displayer__images`
+				`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__images`
 			);
 			const parallaxStatus = motionData['parallax-status'];
 			const parallaxSpeed = motionData['parallax-speed'];
@@ -91,9 +91,7 @@ motionElems.forEach(function (elem) {
 
 		// Entrance Animation
 		if ('entrance-type' in motionData) {
-			const entranceElem = document.querySelector(
-				'.maxi-motion-effect-' + motionID + ''
-			);
+			const entranceElem = document.querySelector(`#${motionID}`);
 
 			const entranceType = motionData['entrance-type'];
 			const entranceDuration =
@@ -233,10 +231,7 @@ motionElems.forEach(function (elem) {
 									paused: true,
 									reversed: true,
 								})
-								.to(
-									'.maxi-motion-effect-' + motionID + '',
-									actions
-								),
+								.to(`#${motionID}`, actions),
 							scrub: true,
 							markers: false,
 						});

@@ -18,7 +18,6 @@ import { getGroupAttributes } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Save
@@ -35,15 +34,15 @@ const save = props => {
 	} = attributes;
 
 	const classes = classnames(
-		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+		'maxi-motion-effect',
 		'maxi-block maxi-container-block',
 		blockStyle,
 		blockStyle !== 'maxi-custom' &&
 			`maxi-background--${blockStyleBackground}`,
 		extraClassName,
 		className,
-		fullWidth === 'full' ? 'alignfull' : null,
-		!isNil(uniqueID) ? uniqueID : null
+		uniqueID,
+		fullWidth === 'full' ? 'alignfull' : null
 	);
 
 	return (
@@ -51,7 +50,7 @@ const save = props => {
 			<section
 				className={classes}
 				data-gx_initial_block_class={defaultBlockStyle}
-				data-motion-id={uniqueID}
+				id={uniqueID}
 			>
 				<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />
 

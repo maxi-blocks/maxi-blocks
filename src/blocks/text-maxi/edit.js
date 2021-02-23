@@ -136,11 +136,7 @@ class edit extends MaxiBlock {
 				key={`motion-preview-${uniqueID}`}
 				{...getGroupAttributes(attributes, 'motion')}
 			>
-				<__experimentalBlock
-					className={classes}
-					data-maxi_initial_block_class={defaultBlockStyle}
-					data-align={fullWidth}
-				>
+				<__experimentalBlock className={classes} data-align={fullWidth}>
 					{!attributes['background-highlight'] && (
 						<BackgroundDisplayer
 							{...getGroupAttributes(attributes, [

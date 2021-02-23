@@ -13,7 +13,6 @@ import { getGroupAttributes } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Save
@@ -23,14 +22,13 @@ const save = props => {
 	const {
 		uniqueID,
 		blockStyle,
-		defaultBlockStyle,
 		fullWidth,
 		extraClassName,
 		lineOrientation,
 	} = attributes;
 
 	const classes = classnames(
-		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+		'maxi-motion-effect',
 		'maxi-block maxi-divider-block',
 		blockStyle,
 		!!attributes['border-highlight'] && 'maxi-highlight--border',
@@ -40,16 +38,11 @@ const save = props => {
 		fullWidth === 'full' ? 'alignfull' : null,
 		lineOrientation === 'vertical'
 			? 'maxi-divider-block--vertical'
-			: 'maxi-divider-block--horizontal',
-		!isNil(uniqueID) ? uniqueID : null
+			: 'maxi-divider-block--horizontal'
 	);
 
 	return (
-		<div
-			className={classes}
-			data-maxi_initial_block_class={defaultBlockStyle}
-			data-motion-id={uniqueID}
-		>
+		<div className={classes} id={uniqueID}>
 			{!attributes['background-highlight'] && (
 				<BackgroundDisplayer
 					{...getGroupAttributes(attributes, [

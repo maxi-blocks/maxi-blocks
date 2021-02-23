@@ -23,7 +23,7 @@ body.maxi-blocks--active .maxi-block {
 	text-shadow: inherit;
 	transition: none;
 
-	&.maxi-container-block .maxi-block {
+	&.maxi-container-block .maxi-block:not(.maxi-row-block) {
 		max-width: none;
 	}
 }

@@ -29,3 +29,4 @@ export { default as TextOptions } from './text-options';
 export { default as TextShadow } from './text-shadow';
 export { default as ToggleBlock } from './toggle-block';
 export { default as ToolbarColumnPattern } from './column-pattern';
+export { default as CopyPaste } from './copy-paste';

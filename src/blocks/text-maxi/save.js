@@ -14,7 +14,6 @@ import { getGroupAttributes } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Save
@@ -34,7 +33,7 @@ const save = props => {
 	} = attributes;
 
 	const classes = classnames(
-		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+		'maxi-motion-effect',
 		'maxi-block maxi-text-block',
 		'maxi-text-block-wrap',
 		blockStyle,
@@ -44,13 +43,12 @@ const save = props => {
 		extraClassName,
 		uniqueID,
 		className,
-		fullWidth === 'full' ? 'alignfull' : null,
-		!isNil(uniqueID) ? uniqueID : null
+		fullWidth === 'full' ? 'alignfull' : null
 	);
 
 	return (
 		<Fragment>
-			<div className={classes} data-motion-id={uniqueID}>
+			<div className={classes} id={uniqueID}>
 				{!attributes['background-highlight'] && (
 					<BackgroundDisplayer
 						{...getGroupAttributes(attributes, [

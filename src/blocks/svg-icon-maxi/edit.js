@@ -75,6 +75,7 @@ class edit extends MaxiBlock {
 			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
+			fullWidth,
 		} = attributes;
 
 		const { isOpen } = this.state;
@@ -111,7 +112,7 @@ class edit extends MaxiBlock {
 			>
 				<__experimentalBlock
 					className={classes}
-					data-maxi_initial_block_class={defaultBlockStyle}
+					data-align={fullWidth}
 					key={clientId}
 				>
 					<Fragment>

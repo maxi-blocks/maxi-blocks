@@ -212,6 +212,11 @@ const BackgroundLayersControl = ({
 							onDragEnd={(fromIndex, toIndex) => {
 								const layer = layers.splice(fromIndex, 1)[0];
 								layers.splice(toIndex, 0, layer);
+
+								layers.forEach((layer, i) => {
+									layers[i].id = i;
+								});
+
 								onChange({
 									[getAttributeKey(
 										'background-layers',

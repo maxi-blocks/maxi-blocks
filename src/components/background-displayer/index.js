@@ -95,7 +95,7 @@ const BackgroundContent = props => {
 			) : (
 				layers &&
 				layers.length > 0 &&
-				layers.reverse().map(layer => {
+				layers.map(layer => {
 					switch (layer.type) {
 						case 'color':
 						case 'gradient':

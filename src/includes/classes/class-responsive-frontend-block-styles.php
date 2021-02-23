@@ -197,10 +197,6 @@ class ResponsiveFrontendStyles {
 		foreach ($styles as $property => $value) {
 			if ($property === 'font-options')
 				continue;
-
-			if ($property === 'max-width')
-				$response .= "{$property}: {$value};";
-			else $response .= "{$property}: {$value};";
 		}
 		return $response;
 	}

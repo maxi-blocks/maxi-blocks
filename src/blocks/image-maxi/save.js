@@ -49,7 +49,7 @@ const save = props => {
 	);
 
 	const classes = classnames(
-		`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
+		'maxi-motion-effect',
 		'maxi-block maxi-image-block',
 		fullWidth === 'full' ? 'alignfull' : null,
 		uniqueID,
@@ -72,7 +72,7 @@ const save = props => {
 	};
 
 	return (
-		<figure className={classes} data-motion-id={uniqueID}>
+		<figure className={classes} id={uniqueID}>
 			{!attributes['background-highlight'] && (
 				<BackgroundDisplayer
 					{...getGroupAttributes(attributes, [

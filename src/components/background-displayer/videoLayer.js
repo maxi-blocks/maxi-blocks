@@ -12,6 +12,7 @@ import classnames from 'classnames';
  * Internal Dependencies
  */
 import parseVideo from './utils';
+import { isNil } from 'lodash';
 
 /**
  * Styles
@@ -34,7 +35,7 @@ const VideoLayer = props => {
 
 	let videoUrl = videoOptions['background-video-mediaURL'];
 
-	const parsedVideo = parseVideo(videoUrl);
+	const parsedVideo = !isNil(videoUrl) && parseVideo(videoUrl);
 
 	if (videoUrl && parsedVideo.type === 'youtube') {
 		videoUrl = `https://www.youtube.com/embed/${parsedVideo.id}?controls=0&showinfo=0&rel=0&autoplay=1&mute=1`;

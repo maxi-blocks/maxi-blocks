@@ -141,6 +141,7 @@ class edit extends MaxiBlock {
 					[
 						'maxi-blocks/container-maxi',
 						'maxi-blocks/row-maxi',
+						'maxi-blocks/column-maxi',
 					].indexOf(blockName) === -1
 			);
 

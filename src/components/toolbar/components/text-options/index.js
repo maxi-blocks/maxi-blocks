@@ -9,7 +9,7 @@ const { useState } = wp.element;
 /**
  * Internal dependencies
  */
-import defaultTypography from '../../../../extensions/text';
+import { defaultTypography } from '../../../../extensions/text';
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
 import TextFormatStrikethrough from '../text-format-strikethrough';
@@ -57,7 +57,7 @@ const TextOptions = props => {
 
 	const getValue = prop => {
 		return getCustomFormatValue({
-			typography,
+			defaultTypography,
 			formatValue,
 			prop,
 			breakpoint,
@@ -145,10 +145,6 @@ const TextOptions = props => {
 								className='components-maxi-control__reset-button'
 								onClick={() => {
 									onChangeFormat({
-										'font-size-unit':
-											defaultTypography[textLevel][
-												`font-size-unit-${breakpoint}`
-											],
 										'font-size':
 											defaultTypography[textLevel][
 												`font-size-${breakpoint}`
@@ -187,10 +183,6 @@ const TextOptions = props => {
 								className='components-maxi-control__reset-button'
 								onClick={() => {
 									onChangeFormat({
-										'line-height-unit':
-											defaultTypography[textLevel][
-												`line-height-unit-${breakpoint}`
-											],
 										'line-height':
 											defaultTypography[textLevel][
 												`line-height-${breakpoint}`
@@ -229,10 +221,6 @@ const TextOptions = props => {
 								className='components-maxi-control__reset-button'
 								onClick={() => {
 									onChangeFormat({
-										'letter-spacing-unit':
-											defaultTypography[textLevel][
-												`letter-spacing-unit-${breakpoint}`
-											],
 										'letter-spacing':
 											defaultTypography[textLevel][
 												`letter-spacing-${breakpoint}`

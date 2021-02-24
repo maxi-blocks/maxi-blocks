@@ -162,7 +162,7 @@ const TypographyControl = props => {
 
 	const getValue = prop => {
 		const nonHoverValue = getCustomFormatValue({
-			typography,
+			defaultTypography,
 			formatValue,
 			prop,
 			breakpoint,
@@ -172,7 +172,7 @@ const TypographyControl = props => {
 
 		return (
 			getCustomFormatValue({
-				typography,
+				defaultTypography,
 				formatValue,
 				prop,
 				breakpoint,
@@ -249,7 +249,7 @@ const TypographyControl = props => {
 			<SizeControl
 				className='maxi-typography-control__size'
 				label={__('Size', 'maxi-blocks')}
-				unit={getValue(`${prefix}prefix + font-size-unit`)}
+				unit={getValue(`${prefix}font-size-unit`)}
 				defaultUnit={getDefault(`${prefix}font-size-unit`)}
 				onChangeUnit={val => {
 					onChangeFormat({ [`${prefix}font-size-unit`]: val });

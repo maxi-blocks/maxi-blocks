@@ -135,11 +135,6 @@ const getImageFrontendObject = props => {
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
-		imageSize: {
-			general: {
-				width: `${props.imgWidth}%`,
-			},
-		},
 	};
 
 	return response;
@@ -196,6 +191,11 @@ const getImageBackendObject = props => {
 		image: {
 			label: 'Image settings',
 			general: {},
+		},
+		imageSize: {
+			general: {
+				width: `${props.imgWidth}%`,
+			},
 		},
 	};
 

@@ -111,8 +111,14 @@ const TransformControl = props => {
 				transformOptions
 			);
 
-			if (isNumber(scaleX)) transformString += `scaleX(${scaleX / 100}) `;
-			if (isNumber(scaleY)) transformString += `scaleY(${scaleY / 100}) `;
+			if (isNumber(scaleX))
+				transformString += `scaleX(${
+					scaleX === 0 ? 1 : scaleX / 100
+				}) `;
+			if (isNumber(scaleY))
+				transformString += `scaleY(${
+					scaleY === 0 ? 1 : scaleY / 100
+				}) `;
 			if (isNumber(translateX) && translateX > 0)
 				transformString += `translateX(${translateX}${translateXUnit}) `;
 			if (isNumber(translateY) && translateY > 0)
@@ -158,6 +164,10 @@ const TransformControl = props => {
 									onChangeTransform({
 										'transform-scale-x': x,
 										'transform-scale-y': y,
+									});
+									onChange({
+										[`transform-scale-x-${breakpoint}`]: x,
+										[`transform-scale-y-${breakpoint}`]: y,
 									});
 									forceStyles();
 								}}
@@ -213,6 +223,12 @@ const TransformControl = props => {
 										'transform-translate-y': y,
 										'transform-translate-y-unit': yUnit,
 									});
+									onChange({
+										[`transform-translate-x-${breakpoint}`]: x,
+										[`transform-translate-x-unit-${breakpoint}`]: xUnit,
+										[`transform-translate-y-${breakpoint}`]: y,
+										[`transform-translate-y-unit-${breakpoint}`]: yUnit,
+									});
 									forceStyles();
 								}}
 								onSave={(x, y, xUnit, yUnit) => {
@@ -262,6 +278,11 @@ const TransformControl = props => {
 									'transform-rotate-z'
 								)}
 								onChange={(x, y, z) => {
+									onChangeTransform({
+										'transform-rotate-x': x,
+										'transform-rotate-y': y,
+										'transform-rotate-z': z,
+									});
 									onChange({
 										[`transform-rotate-x-${breakpoint}`]: x,
 										[`transform-rotate-y-${breakpoint}`]: y,

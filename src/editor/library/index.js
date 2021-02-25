@@ -33,12 +33,16 @@ const CloudLibrary = props => {
 
 	const [type, setType] = useState('patterns');
 
-	const { cloudData } = useSelect(select => {
-		const { receiveMaxiCloudLibrary } = select('maxiBlocks/cloudLibrary');
+	const { cloudData, categories } = useSelect(select => {
+		const { receiveMaxiCloudLibrary, receiveCloudCategories } = select(
+			'maxiBlocks/cloudLibrary'
+		);
 		const cloudData = receiveMaxiCloudLibrary(type);
+		const categories = receiveCloudCategories();
 
 		return {
 			cloudData,
+			categories,
 		};
 	});
 
@@ -60,6 +64,7 @@ const CloudLibrary = props => {
 					/>
 					<LibraryContainer
 						cloudData={cloudData}
+						categories={categories}
 						type={type}
 						onRequestClose={onClose}
 					/>

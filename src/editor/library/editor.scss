@@ -154,11 +154,16 @@
 		flex-direction: column;
 
 		&__button {
+			width: 100%;
 			margin-bottom: 0.5rem;
 			padding: 13px;
 			border-radius: 3px;
 			color: #464a53;
 			background-color: #fff;
+
+			&[aria-pressed='true'] {
+				background-color: #ff4a17;
+			}
 		}
 
 		&__remover {
@@ -169,6 +174,10 @@
 			text-align: center;
 			color: #fff;
 			background-color: #ff4a17;
+		}
+
+		.editor-post-taxonomies__hierarchical-terms-list {
+			max-height: none;
 		}
 	}
 

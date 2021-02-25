@@ -4,23 +4,10 @@
 const { Button } = wp.components;
 
 /**
- * External dependencies
- */
-import { pull } from 'lodash';
-
-/**
  * Component
  */
 const TopbarFilter = props => {
-	const { onChange } = props;
-
-	const filters = [...props.filters];
-
-	const handleOnChange = item => {
-		filters.includes(item) ? pull(filters, item) : filters.push(item);
-
-		onChange(filters);
-	};
+	const { styleFilter, onChangeFilter, costFilter, onChangeCost } = props;
 
 	return (
 		<div className='maxi-cloud-topbar'>
@@ -28,18 +15,22 @@ const TopbarFilter = props => {
 				<Button
 					className='maxi-cloud-topbar__button'
 					onClick={() => {
-						handleOnChange('light');
+						if (styleFilter && styleFilter.includes('light'))
+							onChangeFilter('');
+						else onChangeFilter('light');
 					}}
-					aria-pressed={filters.includes('light')}
+					aria-pressed={styleFilter.includes('light')}
 				>
 					Light
 				</Button>
 				<Button
 					className='maxi-cloud-topbar__button'
 					onClick={() => {
-						handleOnChange('dark');
+						if (styleFilter && styleFilter.includes('dark'))
+							onChangeFilter('');
+						else onChangeFilter('dark');
 					}}
-					aria-pressed={filters.includes('dark')}
+					aria-pressed={styleFilter.includes('dark')}
 				>
 					Dark
 				</Button>
@@ -48,18 +39,22 @@ const TopbarFilter = props => {
 				<Button
 					className='maxi-cloud-topbar__button'
 					onClick={() => {
-						handleOnChange('free');
+						if (costFilter && costFilter.includes('free'))
+							onChangeCost('');
+						else onChangeCost('free');
 					}}
-					aria-pressed={filters.includes('free')}
+					aria-pressed={costFilter.includes('free')}
 				>
 					Free
 				</Button>
 				<Button
 					className='maxi-cloud-topbar__button'
 					onClick={() => {
-						handleOnChange('pro');
+						if (costFilter && costFilter.includes('pro'))
+							onChangeCost('');
+						else onChangeCost('pro');
 					}}
-					aria-pressed={filters.includes('pro')}
+					aria-pressed={costFilter.includes('pro')}
 				>
 					Pro
 				</Button>

@@ -47,9 +47,9 @@ if (!class_exists('MaxiBlocksAPI')) :
 		public function mb_register_routes() {
 			register_rest_route(
 				$this->namespace,
-				'/post/(?P<id>\d+)',
+				'/post/(?P<id>[\d]+)',
 				array(
-					'methods'             => 'GET',
+					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array($this, 'get_maxi_blocks_post'),
 					'args' => array(
 						'id' => array(
@@ -67,7 +67,7 @@ if (!class_exists('MaxiBlocksAPI')) :
 				$this->namespace,
 				'/post',
 				array(
-					'methods'             => 'POST',
+					'methods'             => WP_REST_Server::EDITABLE,
 					'callback'            => array($this, 'post_maxi_blocks_post'),
 					'args' => array(
 						'id' => array(
@@ -95,7 +95,7 @@ if (!class_exists('MaxiBlocksAPI')) :
 				$this->namespace,
 				'/breakpoints',
 				array(
-					'methods'             => 'GET',
+					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array($this, 'get_maxi_blocks_breakpoints'),
 					'permission_callback' => function () {
 						// return current_user_can('edit_posts');
@@ -107,7 +107,7 @@ if (!class_exists('MaxiBlocksAPI')) :
 				$this->namespace,
 				'/global-styles',
 				array(
-					'methods'             => 'GET',
+					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array($this, 'get_maxi_blocks_current_global_styles'),
 					'permission_callback' => function () {
 						return current_user_can('edit_posts');
@@ -118,7 +118,7 @@ if (!class_exists('MaxiBlocksAPI')) :
 				$this->namespace,
 				'/global-styles',
 				array(
-					'methods'             => 'POST',
+					'methods'             => WP_REST_Server::EDITABLE,
 					'callback'            => array($this, 'set_maxi_blocks_current_global_styles'),
 					'permission_callback' => function () {
 						return current_user_can('edit_posts');
@@ -129,7 +129,7 @@ if (!class_exists('MaxiBlocksAPI')) :
 				$this->namespace,
 				'/motion-presets',
 				array(
-					'methods'             => 'GET',
+					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array($this, 'get_maxi_blocks_current_global_motion_presets'),
 					'permission_callback' => function () {
 						return current_user_can('edit_posts');
@@ -140,7 +140,7 @@ if (!class_exists('MaxiBlocksAPI')) :
 				$this->namespace,
 				'/motion-presets',
 				array(
-					'methods'             => 'POST',
+					'methods'             => WP_REST_Server::EDITABLE,
 					'callback'            => array($this, 'set_maxi_blocks_current_global_motion_presets'),
 					'permission_callback' => function () {
 						return current_user_can('edit_posts');
@@ -150,9 +150,9 @@ if (!class_exists('MaxiBlocksAPI')) :
 
 			register_rest_route(
 				$this->namespace,
-				'/custom-data/(?P<id>\d+)',
+				'/custom-data/(?P<id>[\d]+)',
 				array(
-					'methods'             => 'GET',
+					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array($this, 'get_maxi_blocks_current_custom_data'),
 					'args' => array(
 						'id' => array(
@@ -170,7 +170,7 @@ if (!class_exists('MaxiBlocksAPI')) :
 				$this->namespace,
 				'/custom-data',
 				array(
-					'methods'             => 'POST',
+					'methods'             => WP_REST_Server::EDITABLE,
 					'callback'            => array($this, 'set_maxi_blocks_current_custom_data'),
 					'args' => array(
 						'id' => array(
@@ -202,6 +202,10 @@ if (!class_exists('MaxiBlocksAPI')) :
 		 * @return $posts JSON feed of returned objects
 		 */
 		public function get_maxi_blocks_post($data) {
+			echo 'hey!';
+			var_dump($data);
+
+
 			$this->mb_register_options($data['id']);
 
 			$response = get_option("mb_post_api_{$data['id']}")['_maxi_blocks_styles_preview'];

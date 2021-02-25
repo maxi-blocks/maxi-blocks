@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const { useState, useEffect } = wp.element;
+const { useState, useEffect, useRef } = wp.element;
+const { dispatch } = wp.data;
 
 /**
  * Internal dependencies
@@ -19,78 +19,144 @@ import Pagination from './pagination';
 import { isEmpty } from 'lodash';
 
 /**
+ * General
+ */
+const ITEMS_PAGE = 20;
+
+/**
  * Component
  */
 const LibraryContainer = props => {
-	const { cloudData, type, onRequestClose } = props;
+	const { type, onRequestClose, categories } = props;
 
+	const [cloudData, setCloudData] = useState(props.cloudData);
 	const [filteredData, setFilteredData] = useState(cloudData);
 	const [searchFilter, setSearchFilter] = useState('');
-	const [sidebarFilter, setSidebarFilter] = useState('');
-	const [topbarFilter, setTopbarFilter] = useState([]);
+	const [sidebarFilter, setSidebarFilter] = useState([]);
+	const [styleFilter, setStyleFilter] = useState('');
+	const [costFilter, setCostFilter] = useState('');
+	const isRequestAvailable = useRef(true);
+
+	const filterData = data => {
+		let i = 1;
+
+		const newData = data.filter(el => {
+			if (i > ITEMS_PAGE) return false;
+			if (
+				isEmpty(searchFilter) &&
+				isEmpty(sidebarFilter) &&
+				isEmpty(styleFilter) &&
+				isEmpty(costFilter)
+			) {
+				i += 1;
+				return true;
+			}
+
+			const searchVal = searchFilter.toLowerCase();
+			// Search filter
+			let searchRes = false;
+			if (isEmpty(searchVal)) searchRes = true;
+			else if (
+				el.cost.toLowerCase().includes(searchVal) ||
+				el.style.toLowerCase().includes(searchVal) ||
+				el.serial.toLowerCase().includes(searchVal) ||
+				el.title.toLowerCase().includes(searchVal)
+			)
+				searchRes = true;
+			else if (
+				categories.some(cat => {
+					return (
+						cat.description.toLowerCase().includes(searchVal) ||
+						cat.name.toLowerCase().includes(searchVal)
+					);
+				})
+			)
+				searchRes = true;
+
+			// Cost filter
+			let costRes = false;
+			if (isEmpty(costFilter)) costRes = true;
+			else if (el.cost.includes(costFilter)) costRes = true;
+
+			// Style filter
+			let styleRes = false;
+			if (isEmpty(styleFilter)) styleRes = true;
+			else if (el.style.includes(styleFilter)) styleRes = true;
+
+			// Categories filter
+			const postCategories = JSON.parse(el.post_categories) || [];
+			let categoriesRes = false;
+			if (isEmpty(sidebarFilter)) categoriesRes = true;
+			else if (!sidebarFilter.some(cat => !postCategories.includes(cat)))
+				categoriesRes = true;
+
+			const res = searchRes && costRes && styleRes && categoriesRes;
+			if (res) i += 1;
+			return res;
+		});
+
+		setFilteredData(newData);
+
+		return newData;
+	};
+
+	const updateFilters = data => {
+		const newData = filterData(data);
+
+		if (isRequestAvailable.current && newData.length < ITEMS_PAGE) {
+			const avoidIds = Object.values(data).map(item => item.id);
+
+			const search = {
+				type,
+				style: styleFilter,
+				cost: costFilter,
+				category: '',
+				search: searchFilter,
+				avoid_ids: avoidIds,
+			};
+
+			dispatch('maxiBlocks/cloudLibrary')
+				.requestMaxiCloudLibrary(search)
+				.then(({ newContent }) => {
+					const newCloudData = [...data, ...newContent];
+
+					setCloudData(newCloudData);
+
+					if (newContent < ITEMS_PAGE)
+						isRequestAvailable.current = false;
+					else updateFilters(newCloudData);
+				});
+		}
+	};
 
 	useEffect(() => {
-		setFilteredData(
-			cloudData.filter(el => {
-				return Object.values(el).some(val => {
-					if (val) {
-						let res = false;
-						// returns all elements when there's no search or filter
-						if (
-							isEmpty(searchFilter) &&
-							isEmpty(sidebarFilter) &&
-							isEmpty(topbarFilter)
-						)
-							res = true;
-
-						if (
-							!isEmpty(searchFilter) &&
-							val.includes(searchFilter)
-						)
-							res = true;
-
-						if (
-							!isEmpty(sidebarFilter) &&
-							val.includes(sidebarFilter)
-						)
-							res = true;
-
-						if (
-							!isEmpty(topbarFilter) &&
-							topbarFilter.includes(val)
-						)
-							res = true;
-
-						return res;
-					}
-
-					return false;
-				});
-			})
-		);
-	}, [searchFilter, sidebarFilter, topbarFilter]);
-
-	const sidebarFilters = [
-		{ label: __('Hero'), value: 'hero' },
-		{ label: __('Testimonial'), value: 'testimonial' },
-		{ label: __('Text Content'), value: 'text-content' },
-		{ label: __('Style'), value: 'style' },
-	];
+		isRequestAvailable.current = true;
+		updateFilters(cloudData);
+	}, [searchFilter, sidebarFilter, styleFilter, costFilter]);
 
 	return (
 		<div className='maxi-cloud-container'>
 			<div className='maxi-cloud-container__sidebar'>
 				<SidebarFilter
-					options={sidebarFilters}
+					categories={categories}
 					filters={sidebarFilter}
-					onChange={filters => setSidebarFilter(filters)}
-					onReset={() => setSidebarFilter('')}
+					onChange={filters => {
+						setSidebarFilter(filters);
+					}}
+					onReset={() => {
+						setSidebarFilter([]);
+						setCostFilter('');
+						setStyleFilter('');
+						setSearchFilter('');
+					}}
 				/>
 			</div>
 			<div className='maxi-cloud-container__content'>
 				<TopbarFilter
-					filters={topbarFilter}
-					onChange={filters => setTopbarFilter(filters)}
+					styleFilter={styleFilter}
+					onChangeFilter={filter => setStyleFilter(filter)}
+					costFilter={costFilter}
+					onChangeCost={cost => setCostFilter(cost)}
 				/>
 				<Searcher
 					value={searchFilter}
@@ -100,6 +166,7 @@ const LibraryContainer = props => {
 					elements={filteredData}
 					type={type}
 					onRequestClose={onRequestClose}
+					itemsPage={ITEMS_PAGE}
 				/>
 				<Pagination />
 			</div>

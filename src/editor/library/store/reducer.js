@@ -9,6 +9,7 @@ const reducer = (
 			blocks: [],
 			styleCards: [],
 		},
+		cloudCat: {},
 	},
 	action
 ) => {
@@ -20,6 +21,23 @@ const reducer = (
 					...state.cloudLibrary,
 					[action.objType]: action.cloudLibrary,
 				},
+			};
+		case 'REQUEST_CLOUD_LIBRARY':
+			// Maybe needs an optimization...
+			if (action.newContent)
+				action.newContent.forEach(content => {
+					const { type } = content;
+
+					state.cloudLibrary[type].push(content);
+				});
+			return {
+				...state,
+				cloudLibrary: state.cloudLibrary,
+			};
+		case 'SEND_LIBRARY_CAT':
+			return {
+				...state,
+				cloudCat: action.cloudCat,
 			};
 		default:
 			return state;

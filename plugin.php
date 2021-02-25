@@ -13,26 +13,25 @@
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
-  exit;
+	exit;
 }
 
-function maxi_blocks_add_db_table()
-{
-  global $wpdb;
-  $db_table_name = $wpdb->prefix . 'maxi_blocks_general';  // table name
-  $charset_collate = $wpdb->get_charset_collate();
+function maxi_blocks_add_db_table() {
+	global $wpdb;
+	$db_table_name = $wpdb->prefix . 'maxi_blocks_general';  // table name
+	$charset_collate = $wpdb->get_charset_collate();
 
-  //Check to see if the table exists already, if not, then create it
-  if ($wpdb->get_var("show tables like '$db_table_name'") != $db_table_name) {
-    $sql = "CREATE TABLE $db_table_name (
+	//Check to see if the table exists already, if not, then create it
+	if ($wpdb->get_var("show tables like '$db_table_name'") != $db_table_name) {
+		$sql = "CREATE TABLE $db_table_name (
                 id varchar(128) NOT NULL,
                 object longtext NOT NULL,
                 UNIQUE (id)
         ) $charset_collate;";
 
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
-  }
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+	}
 }
 
 
@@ -54,3 +53,8 @@ require_once plugin_dir_path(__FILE__) . 'page-content-setting/dynamic_content.p
 // STYLING API
 //======================================================================
 require_once plugin_dir_path(__FILE__) . 'API/class-maxi-blocks-api.php';
+
+//======================================================================
+// ADMIN MENU
+//======================================================================
+require_once plugin_dir_path(__FILE__) . 'includes/maxiblocks-admin-page.php';

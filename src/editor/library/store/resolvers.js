@@ -17,6 +17,10 @@ const resolvers = {
 		const maxiCloudLibrary = yield actions.receiveMaxiCloudLibrary(type);
 		return actions.sendMaxiCloudLibrary(maxiCloudLibrary, type);
 	},
+	*receiveCloudCategories() {
+		const categoriesContent = yield actions.receiveCloudCategories();
+		return actions.sendCloudCategories(categoriesContent);
+	},
 };
 
 export default resolvers;

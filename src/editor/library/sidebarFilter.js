@@ -5,30 +5,31 @@ const { __ } = wp.i18n;
 const { Button } = wp.components;
 
 /**
+ * Internal dependencies
+ */
+import HierarchicalTermSelector from './hierarchical-term-selector';
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Component
  */
-const SidebarFilterButton = props => {
-	const { label, onClick } = props;
-
-	return (
-		<Button className='maxi-cloud-sidebar__button' onClick={onClick}>
-			{label}
-		</Button>
-	);
-};
-
 const SidebarFilter = props => {
-	const { options, filters, onChange, onReset } = props;
+	const { categories, filters, onChange, onReset } = props;
 
 	return (
 		<div className='maxi-cloud-sidebar'>
-			{options.map(option => (
-				<SidebarFilterButton
-					key={`maxi-cloud-sidebar--${option.value}`}
-					label={option.label}
-					onClick={() => onChange(option.value)}
+			{!isEmpty(categories) && (
+				<HierarchicalTermSelector
+					label='testing'
+					terms={categories}
+					selectedTerms={filters}
+					onUpdateTerms={filters => onChange(filters)}
 				/>
-			))}
+			)}
 			<Button className='maxi-cloud-sidebar__remover' onClick={onReset}>
 				{__('CLEAR ALL FILTERS', 'maxi-blocks')}
 			</Button>

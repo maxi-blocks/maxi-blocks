@@ -4,10 +4,7 @@
 const { Button } = wp.components;
 const { useDispatch, select } = wp.data;
 const { parse } = wp.blocks;
-
-/**
- * Internal dependencies
- */
+const { apiFetch } = wp;
 
 /**
  * External dependencies
@@ -27,7 +24,12 @@ const MasonryItem = props => {
 			</div>
 			<div className='maxi-cloud-masonry-card__container'>
 				<div className='maxi-cloud-masonry-card__buttons'>
-					<Button className='maxi-cloud-masonry-card__button'>
+					<Button
+						isLink
+						href={demoUrl}
+						target='_blank'
+						className='maxi-cloud-masonry-card__button'
+					>
 						Preview
 					</Button>
 					<Button className='maxi-cloud-masonry-card__button'>
@@ -64,14 +66,29 @@ const LibraryMasonry = props => {
 	const { replaceBlocks } = useDispatch('core/editor');
 
 	const onRequestInsert = async id => {
+		const serverURL = await apiFetch({
+			path: 'wp/v2/settings',
+		}).then(res => {
+			const serverURL = res['maxi-blocks-cloud-library-api-server'];
+			if (new URL(serverURL)) return serverURL;
+
+			console.error(
+				`Ups, seems the server URL you've set is not valid => ${serverURL}. Change it and try again 👍`
+			);
+
+			return false;
+		});
+
+		if (!serverURL) return false;
+
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
 
 		await fetch(
-			`http://localhost:8080/maxiblocks/wp-json/maxi-blocks-API/v0.1/${type}/content/${id}`
+			`${serverURL}/wp-json/maxi-blocks-API/v0.1/${type}/content/${id}`
 		)
 			.then(response => response.json())
 			.then(data => {
-				const parsedContent = parse(JSON.parse(data[0].content));
+				const parsedContent = parse(data[0].content);
 				const isValid = select('core/block-editor').isValidTemplate(
 					parsedContent
 				);
@@ -82,6 +99,8 @@ const LibraryMasonry = props => {
 				}
 			})
 			.catch(err => console.error(err));
+
+		return true;
 	};
 
 	return (
@@ -90,16 +109,18 @@ const LibraryMasonry = props => {
 			breakpointCols={breakpointColumnsObj}
 			columnClassName='maxi-cloud-masonry__column'
 		>
-			{Object.values(elements).map(element => (
-				<MasonryItem
-					key={`maxi-cloud-masonry__item-${element.id}`}
-					demoUrl={element.demo_url}
-					previewIMG={JSON.parse(element.preview_image_url)}
-					isPro={element.cost === 'pro'}
-					serial={element.title}
-					onRequestInsert={() => onRequestInsert(element.id)}
-				/>
-			))}
+			{Object.values(elements).map(element => {
+				return (
+					<MasonryItem
+						key={`maxi-cloud-masonry__item-${element.id}`}
+						demoUrl={element.post_url}
+						previewIMG={element.preview_image_url}
+						isPro={element.cost === 'pro'}
+						serial={element.serial}
+						onRequestInsert={() => onRequestInsert(element.id)}
+					/>
+				);
+			})}
 		</Masonry>
 	);
 };

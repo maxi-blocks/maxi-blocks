@@ -452,12 +452,12 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover': !!val,
+																					'background-status-hover': !!+val,
 																				}
 																			)
 																		}
 																	/>
-																	{!!attributes[
+																	{attributes[
 																		'background-status-hover'
 																	] && (
 																		<BackgroundControl

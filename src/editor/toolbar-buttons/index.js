@@ -10,6 +10,7 @@ const { createBlock } = wp.blocks;
  * Internal dependencies
  */
 import ResponsiveSelector from '../responsive-selector';
+import MaxiStyleCardsEditor from '../style-cards';
 
 /**
  * Icons
@@ -47,14 +48,7 @@ const ToolbarButtons = () => {
 					<Icon icon={main} />
 					Maxi Cloud Library
 				</Button>
-				<Button
-					id='maxi-button__go-to-customizer'
-					className='button maxi-button maxi-button__toolbar'
-					aria-label='Global Styles'
-				>
-					<Icon icon={main} />
-					Global Styles
-				</Button>
+				<MaxiStyleCardsEditor />
 			</div>
 			<ResponsiveSelector
 				isOpen={isResponsiveOpen}

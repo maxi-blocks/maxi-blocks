@@ -35,7 +35,7 @@ const controls = {
 			path: '/maxi-blocks/v1.0/style-cards/',
 			method: 'POST',
 			data: {
-				presets: JSON.stringify(action.styleCards),
+				styleCards: JSON.stringify(action.styleCards),
 			},
 		});
 	},

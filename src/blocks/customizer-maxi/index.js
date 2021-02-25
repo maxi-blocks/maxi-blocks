@@ -123,20 +123,20 @@ const PluginSidebarMoreMenuItemStyleCards = props => {
 						onClick={() => {
 							if (isEmpty(styleCards)) {
 								saveMaxiStyleCards({
-									[`pre_${new Date().getTime()}`]: {
+									[`sc_${new Date().getTime()}`]: {
 										name: styleCardName,
+										status: '',
 										styleCard: {
-											...props['motion-time-line'],
 										},
 									},
 								});
 							} else {
 								saveMaxiStyleCards({
 									...getStyleCards(),
-									[`pre_${new Date().getTime()}`]: {
+									[`sc_${new Date().getTime()}`]: {
 										name: styleCardName,
+										status: '',
 										styleCard: {
-											...props['motion-time-line'],
 										},
 									},
 								});
@@ -145,7 +145,7 @@ const PluginSidebarMoreMenuItemStyleCards = props => {
 							setStyleCardName('');
 						}}
 					>
-						{__('Save Preset', 'maxi-blocks')}
+						{__('Save Style Card', 'maxi-blocks')}
 					</Button>
 				</div>
 			</PluginSidebar>
@@ -153,6 +153,6 @@ const PluginSidebarMoreMenuItemStyleCards = props => {
 	);
 };
 
-registerPlugin('maxi-blocks-customizer-sidebar', {
-	render: PluginSidebarMoreMenuItemStyleCards,
-});
+// registerPlugin('maxi-blocks-customizer-sidebar', {
+// 	render: PluginSidebarMoreMenuItemStyleCards,
+// });

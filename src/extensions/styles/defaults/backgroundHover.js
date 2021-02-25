@@ -8,12 +8,7 @@ import {
 } from './background';
 
 export const backgroundHover = (() => {
-	const response = {
-		'background-status-hover': {
-			type: 'boolean',
-			default: false,
-		},
-	};
+	let response = {};
 
 	Object.keys(background).forEach(key => {
 		const newKey = `${key}-hover`;
@@ -23,6 +18,18 @@ export const backgroundHover = (() => {
 
 		response[newKey] = value;
 	});
+
+	response = {
+		...response,
+		'background-status-hover': {
+			type: 'boolean',
+			default: false,
+		},
+		'background-layers-status-hover': {
+			type: 'boolean',
+			default: false,
+		},
+	};
 
 	return response;
 })();

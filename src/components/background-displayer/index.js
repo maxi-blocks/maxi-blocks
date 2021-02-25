@@ -30,9 +30,7 @@ const BackgroundContent = props => {
 		props[`background-layers${isHover ? '-hover' : ''}`]
 	);
 
-	if (!layers) return null;
-
-	layers.sort((a, b) => a.id - b.id);
+	if (layers) layers.sort((a, b) => a.id - b.id);
 
 	return (
 		<Fragment>

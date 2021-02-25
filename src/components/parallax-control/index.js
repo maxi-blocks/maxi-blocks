@@ -34,7 +34,7 @@ const ParallaxControl = props => {
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => onChange({ 'parallax-status': !!val })}
+				onChange={val => onChange({ 'parallax-status': !!+val })}
 			/>
 			{props['parallax-status'] && (
 				<Fragment>

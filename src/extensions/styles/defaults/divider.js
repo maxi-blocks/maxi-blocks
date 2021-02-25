@@ -27,11 +27,11 @@ const divider = {
 	},
 	'divider-width': {
 		type: 'number',
-		default: 100,
+		default: 50,
 	},
 	'divider-width-unit': {
 		type: 'string',
-		default: '%',
+		default: 'px',
 	},
 	'divider-height': {
 		type: 'number',

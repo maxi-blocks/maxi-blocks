@@ -111,14 +111,8 @@ const TransformControl = props => {
 				transformOptions
 			);
 
-			if (isNumber(scaleX))
-				transformString += `scaleX(${
-					scaleX === 0 ? 1 : scaleX / 100
-				}) `;
-			if (isNumber(scaleY))
-				transformString += `scaleY(${
-					scaleY === 0 ? 1 : scaleY / 100
-				}) `;
+			if (isNumber(scaleX)) transformString += `scaleX(${scaleX / 100}) `;
+			if (isNumber(scaleY)) transformString += `scaleY(${scaleY / 100}) `;
 			if (isNumber(translateX) && translateX > 0)
 				transformString += `translateX(${translateX}${translateXUnit}) `;
 			if (isNumber(translateY) && translateY > 0)

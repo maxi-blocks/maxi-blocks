@@ -42,8 +42,8 @@ const SquareControl = props => {
 	const [sync, changeSync] = useState(false);
 	const [xAxis, changeXAxis] = useState(x || '');
 	const [yAxis, changeYAxis] = useState(y || '');
-	const [xAxisUnit, changeXUnit] = useState(xUnit);
-	const [yAxisUnit, changeYUnit] = useState(yUnit);
+	const [xAxisUnit, changeXUnit] = useState(xUnit || '%');
+	const [yAxisUnit, changeYUnit] = useState(yUnit || '%');
 	const [isMoving, changeIsMoving] = useState(false);
 	const [clientX, changeClientX] = useState(0);
 	const [clientY, changeClientY] = useState(0);
@@ -104,10 +104,14 @@ const SquareControl = props => {
 	const onReset = () => {
 		switch (type) {
 			case 'resize':
-			case 'drag':
 				changeXAxis(defaultX);
 				changeYAxis(defaultY);
 				onSave(defaultX, defaultY, '%', '%');
+				break;
+			case 'drag':
+				changeXAxis(0);
+				changeYAxis(0);
+				onSave(0, 0, '%', '%');
 				break;
 			case 'origin':
 				changeXAxis(defaultX);
@@ -432,12 +436,12 @@ const SquareControl = props => {
 								onSave(xAxis, yAxis, xUnit, yUnit);
 							if (!sync) {
 								changeYAxis(newValue);
-								onChange(xAxis, newValue);
+								onChange(xAxis, newValue, xUnit, yUnit);
 							} else {
 								changeYAxis(newValue);
 								changeXAxis(newValue);
-								onChange(xAxis, newValue);
-								onChange(newValue, yAxis);
+								onChange(xAxis, newValue, xUnit, yUnit);
+								onChange(newValue, yAxis, xUnit, yUnit);
 							}
 						}}
 					/>
@@ -497,12 +501,12 @@ const SquareControl = props => {
 								onSave(xAxis, yAxis, xUnit, yUnit);
 							if (!sync) {
 								changeXAxis(newValue);
-								onChange(newValue, yAxis);
+								onChange(newValue, yAxis, xUnit, yUnit);
 							} else {
 								changeYAxis(newValue);
 								changeXAxis(newValue);
-								onChange(xAxis, newValue);
-								onChange(newValue, yAxis);
+								onChange(xAxis, newValue, xUnit, yUnit);
+								onChange(newValue, yAxis, xUnit, yUnit);
 							}
 						}}
 					/>

@@ -77,7 +77,7 @@ const SizeControl = props => {
 
 	const onReset = () => {
 		onChangeValue(defaultValue);
-		if (!isNull(defaultValue) && !disableUnit) onChangeUnit(defaultUnit);
+		if (!isNull(defaultUnit) && !disableUnit) onChangeUnit(defaultUnit);
 	};
 
 	return (

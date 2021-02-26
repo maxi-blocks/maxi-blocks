@@ -43,6 +43,7 @@ export const motion = {
 export const entrance = {
 	'entrance-type': {
 		type: 'string',
+		default: 'none',
 	},
 	'entrance-duration': {
 		type: 'number',

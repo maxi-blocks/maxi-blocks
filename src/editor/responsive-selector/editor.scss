@@ -26,7 +26,8 @@
 		cursor: pointer;
 	}
 	&__button {
-		display: flex;
+		display: inline-block;
+		vertical-align: top;
 		border-radius: 5px;
 		margin: 0 0 0 8px;
 		background-color: #f8f8f8;
@@ -34,10 +35,12 @@
 		transition: border-color 0.5s;
 		height: 40px;
 		width: 55px;
-		justify-content: center;
-		align-items: center;
 		padding: 2px 6px !important;
 
+		&:focus {
+			box-shadow: none !important;
+			outline: none !important;
+		}
 		svg {
 			width: 90%;
 			height: 90%;

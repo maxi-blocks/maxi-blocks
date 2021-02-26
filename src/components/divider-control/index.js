@@ -146,19 +146,19 @@ const DividerControl = props => {
 			{props['divider-border-style'] !== 'none' &&
 				!disableBorderRadius &&
 				props['divider-border-style'] === 'solid' && (
-					<SizeControl
+					<FancyRadioControl
 						label={__('Line Radius', 'maxi-blocks')}
-						value={props['divider-border-radius']}
-						disableUnit
-						defaultValue={getDefaultAttribute(
-							'divider-border-radius'
-						)}
-						onChangeValue={val =>
+						selected={props['divider-border-radius']}
+						options={[
+							{ label: __('No', 'maxi-blocks'), value: '' },
+							{
+								label: __('Yes', 'maxi-blocks'),
+								value: '20px',
+							},
+						]}
+						onChange={val =>
 							onChange({ 'divider-border-radius': val })
 						}
-						allowedUnits={['px']}
-						min={0}
-						max={20}
 					/>
 				)}
 			{props['divider-border-style'] !== 'none' &&

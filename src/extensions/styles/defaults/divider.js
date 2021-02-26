@@ -23,7 +23,7 @@ const divider = {
 		default: 'px',
 	},
 	'divider-border-radius': {
-		type: 'number',
+		type: 'string',
 		default: '',
 	},
 	'divider-width': {

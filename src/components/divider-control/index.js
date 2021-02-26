@@ -120,7 +120,7 @@ const DividerControl = props => {
 					},
 				]}
 			/>
-			{!disableColor && (
+			{props['divider-border-style'] !== 'none' && !disableColor && (
 				<ColorControl
 					label={__('Color', 'maxi-blocks')}
 					color={props['divider-border-color']}
@@ -143,81 +143,100 @@ const DividerControl = props => {
 					onChange={val => onChange({ 'divider-border-style': val })}
 				/>
 			)}
-			{!disableBorderRadius && props['divider-border-style'] === 'solid' && (
-				<FancyRadioControl
-					label={__('Line Radius', 'maxi-blocks')}
-					selected={props['divider-border-radius']}
-					options={[
-						{ label: __('No', 'maxi-blocks'), value: '' },
-						{ label: __('Yes', 'maxi-blocks'), value: '20px' },
-					]}
-					onChange={val => onChange({ 'divider-border-radius': val })}
-				/>
-			)}
-			{lineOrientation === 'horizontal' && (
-				<Fragment>
+			{props['divider-border-style'] !== 'none' &&
+				!disableBorderRadius &&
+				props['divider-border-style'] === 'solid' && (
 					<SizeControl
-						label={__('Line Size', 'maxi-blocks')}
-						unit={props['divider-width-unit']}
-						defaultUnit={getDefaultAttribute('width-unit')}
-						onChange={val =>
-							onChange({ 'divider-width-unit': val })
-						}
-						value={props['divider-width']}
-						defaultValue={getDefaultAttribute('width')}
-						onChangeValue={val =>
-							onChange({ 'divider-width': val })
-						}
-						minMaxSettings={minMaxSettings}
-					/>
-
-					<SizeControl
-						label={__('Line Weight', 'maxi-blocks')}
-						allowedUnits={['px', 'em', 'vw']}
-						unit={props['divider-border-top-unit']}
-						defaultUnit={getDefaultAttribute('border-top-unit')}
-						onChange={val =>
-							onChange({ 'divider-border-top-unit': val })
-						}
-						value={props['divider-border-top-width']}
-						defaultValue={getDefaultAttribute('border-top-width')}
-						onChangeValue={val =>
-							onChange({ 'divider-border-top-width': val })
-						}
-						minMaxSettings={minMaxSettings}
-					/>
-				</Fragment>
-			)}
-			{lineOrientation === 'vertical' && (
-				<Fragment>
-					<RangeSliderControl
-						label={__('Size', 'maxi-blocks')}
-						defaultValue={getDefaultAttribute('height')}
-						value={props['divider-height']}
-						onChange={val => {
-							onChange({ 'divider-height': val });
-						}}
-						min={0}
-						max={100}
-						allowReset
-						initialPosition={getDefaultAttribute('height')}
-					/>
-					<RangeSliderControl
-						label={__('Weight', 'maxi-blocks')}
-						defaultValue={getDefaultAttribute('border-right-width')}
-						value={props['divider-border-right-width']}
-						onChange={val => {
-							onChange({ 'divider-border-right-width': val });
-						}}
-						min={0}
-						max={100}
-						allowReset
-						initialPosition={getDefaultAttribute(
-							'border-right-width'
+						label={__('Line Radius', 'maxi-blocks')}
+						value={props['divider-border-radius']}
+						disableUnit
+						defaultValue={getDefaultAttribute(
+							'divider-border-radius'
 						)}
+						onChangeValue={val =>
+							onChange({ 'divider-border-radius': val })
+						}
+						allowedUnits={['px']}
+						min={0}
+						max={20}
 					/>
-				</Fragment>
-			)}
+				)}
+			{props['divider-border-style'] !== 'none' &&
+				lineOrientation === 'horizontal' && (
+					<Fragment>
+						<SizeControl
+							label={__('Line Size', 'maxi-blocks')}
+							unit={props['divider-width-unit']}
+							defaultUnit={getDefaultAttribute(
+								'divider-width-unit'
+							)}
+							onChangeUnit={val =>
+								onChange({ 'divider-width-unit': val })
+							}
+							value={props['divider-width']}
+							defaultValue={getDefaultAttribute('divider-width')}
+							onChangeValue={val =>
+								onChange({ 'divider-width': val })
+							}
+							minMaxSettings={minMaxSettings}
+						/>
+						<SizeControl
+							label={__('Line Weight', 'maxi-blocks')}
+							allowedUnits={['px', 'em', 'vw']}
+							unit={props['divider-border-top-unit']}
+							defaultUnit={getDefaultAttribute(
+								'divider-border-top-unit'
+							)}
+							onChangeUnit={val =>
+								onChange({ 'divider-border-top-unit': val })
+							}
+							onChange={val =>
+								onChange({ 'divider-border-top-width': val })
+							}
+							value={props['divider-border-top-width']}
+							defaultValue={getDefaultAttribute(
+								'divider-border-top-width'
+							)}
+							onChangeValue={val =>
+								onChange({ 'divider-border-top-width': val })
+							}
+							minMaxSettings={minMaxSettings}
+						/>
+					</Fragment>
+				)}
+			{props['divider-border-style'] !== 'none' &&
+				lineOrientation === 'vertical' && (
+					<Fragment>
+						<RangeSliderControl
+							label={__('Size', 'maxi-blocks')}
+							defaultValue={getDefaultAttribute('height')}
+							value={props['divider-height']}
+							onChange={val => {
+								onChange({ 'divider-height': val });
+							}}
+							min={0}
+							max={100}
+							allowReset
+							initialPosition={getDefaultAttribute('height')}
+						/>
+						<RangeSliderControl
+							label={__('Weight', 'maxi-blocks')}
+							defaultValue={getDefaultAttribute(
+								'border-right-width'
+							)}
+							value={props['divider-border-right-width']}
+							onChange={val => {
+								onChange({ 'divider-border-right-width': val });
+							}}
+							min={0}
+							max={100}
+							allowReset
+							initialPosition={getDefaultAttribute(
+								'border-right-width'
+							)}
+						/>
+					</Fragment>
+				)}
 		</Fragment>
 	);
 };

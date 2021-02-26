@@ -22,7 +22,7 @@ const EntranceAnimationControl = props => {
 				label={__('Animation Type', 'maxi-blocks')}
 				value={props['entrance-type']}
 				options={[
-					{ label: 'None', value: '' },
+					{ label: 'None', value: 'none' },
 					{ label: 'Bounce', value: 'bounce' },
 					{ label: 'Flash', value: 'flash' },
 					{ label: 'Pulse', value: 'pulse' },

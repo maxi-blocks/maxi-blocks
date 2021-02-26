@@ -1,5 +1,4 @@
 export const preset1 = {
-	'icon-name': 'fas fa-arrow-right',
 	'icon-position': 'right',
 	'icon-spacing': 10,
 	'icon-color': '#fff',
@@ -21,6 +20,7 @@ export const preset1 = {
 	'border-top-right-radius-general': 0,
 	'border-bottom-right-radius-general': 0,
 	'border-bottom-left-radius-general': 0,
+	'icon-border-unit-radius-general': 'px',
 	'icon-border-top-left-radius-general': 0,
 	'icon-border-top-right-radius-general': 0,
 	'icon-border-bottom-right-radius-general': 0,
@@ -28,7 +28,6 @@ export const preset1 = {
 };
 
 export const preset2 = {
-	'icon-name': 'fas fa-arrow-right',
 	'icon-position': 'right',
 	'icon-spacing': 10,
 	'icon-color': '#fff',
@@ -50,6 +49,7 @@ export const preset2 = {
 	'border-top-right-radius-general': 5,
 	'border-bottom-right-radius-general': 5,
 	'border-bottom-left-radius-general': 5,
+	'icon-border-unit-radius-general': 'px',
 	'icon-border-top-left-radius-general': 5,
 	'icon-border-top-right-radius-general': 5,
 	'icon-border-bottom-right-radius-general': 5,
@@ -57,7 +57,6 @@ export const preset2 = {
 };
 
 export const preset3 = {
-	'icon-name': 'fas fa-arrow-right',
 	'icon-position': 'right',
 	'icon-spacing': 10,
 	'icon-color': '#fff',
@@ -79,6 +78,7 @@ export const preset3 = {
 	'border-top-right-radius-general': 0,
 	'border-bottom-right-radius-general': 0,
 	'border-bottom-left-radius-general': 0,
+	'icon-border-unit-radius-general': 'px',
 	'icon-border-top-left-radius-general': 0,
 	'icon-border-top-right-radius-general': 0,
 	'icon-border-bottom-right-radius-general': 0,

@@ -90,7 +90,10 @@ motionElems.forEach(function (elem) {
 		}
 
 		// Entrance Animation
-		if ('entrance-type' in motionData) {
+		if (
+			'entrance-type' in motionData &&
+			motionData['entrance-type'] !== 'none'
+		) {
 			const entranceElem = document.querySelector(`#${motionID}`);
 
 			const entranceType = motionData['entrance-type'];

@@ -350,7 +350,7 @@ const setBackgroundLayers = ({
 	layers.forEach(layer => {
 		const layerTarget = `${target}${
 			isHover ? ':hover' : ''
-		} > .maxi-background-displayer .maxi-background-displayer__${layer.id}`;
+		} > .maxi-background-displayer.maxi-background-displayer__${layer.id}`;
 
 		switch (layer.type) {
 			case 'color':

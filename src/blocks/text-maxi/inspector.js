@@ -66,6 +66,8 @@ const Inspector = props => {
 		listReversed,
 	} = attributes;
 
+	console.log('formatValue: ' + JSON.stringify(formatValue));
+
 	return (
 		<InspectorControls>
 			<SettingTabsControl

@@ -40,6 +40,7 @@ const TypographyControl = props => {
 		className,
 		textLevel = 'p',
 		hideAlignment = false,
+		hideTextShadow = false,
 		onChange,
 		breakpoint = 'general',
 		formatValue,
@@ -364,18 +365,20 @@ const TypographyControl = props => {
 					onChangeFormat({ [`${prefix}text-decoration`]: val });
 				}}
 			/>
-			<TextShadowControl
-				className='maxi-typography-control__text-shadow'
-				textShadow={getValue(`${prefix}text-shadow`)}
-				onChange={val => {
-					onChangeFormat({ [`${prefix}text-shadow`]: val });
-				}}
-				defaultColor={getLastBreakpointAttribute(
-					'color',
-					breakpoint,
-					typography
-				)}
-			/>
+			{!hideTextShadow && (
+				<TextShadowControl
+					className='maxi-typography-control__text-shadow'
+					textShadow={getValue(`${prefix}text-shadow`)}
+					onChange={val => {
+						onChangeFormat({ [`${prefix}text-shadow`]: val });
+					}}
+					defaultColor={getLastBreakpointAttribute(
+						'color',
+						breakpoint,
+						typography
+					)}
+				/>
+			)}
 		</div>
 	);
 };

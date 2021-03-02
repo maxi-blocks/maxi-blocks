@@ -7,8 +7,24 @@ const { Fragment, useState } = wp.element;
 const { Button, SelectControl, Popover, Icon } = wp.components;
 
 import { isEmpty, forIn } from 'lodash';
-import { main } from '../../icons';
+import { styleCardBoat, reset, SCdelete } from '../../icons';
 import './editor.scss';
+
+import {
+	SettingTabsControl,
+	AccordionControl,
+	ColorControl,
+	TypographyControl,
+} from '../../components';
+
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
+
+import attributes from './attributes';
+
+console.log('attributes: ' + JSON.stringify(attributes));
 
 const MaxiStyleCardsEditor = withState({
 	isVisible: false,
@@ -22,6 +38,7 @@ const MaxiStyleCardsEditor = withState({
 	const [styleCardName, setStyleCardName] = useState('');
 	const [styleCardLoad, setStyleCardLoad] = useState('');
 	const { saveMaxiStyleCards } = useDispatch('maxiBlocks');
+	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	const { styleCards } = useSelect(select => {
 		const { receiveMaxiStyleCards } = select('maxiBlocks');
@@ -64,8 +81,8 @@ const MaxiStyleCardsEditor = withState({
 				aria-label='Style Cards'
 				onClick={toggleVisible}
 			>
-				<Icon icon={main} />
-				{__('Style Cards', 'maxi-blocks')}
+				<Icon icon={styleCardBoat} />
+				{__('Style Card Editor', 'maxi-blocks')}
 			</Button>
 			{isVisible && (
 				<Popover
@@ -74,52 +91,106 @@ const MaxiStyleCardsEditor = withState({
 					className='maxi-style-cards__popover'
 					focusOnMount
 				>
-					<div className='maxi-style-cards__card__load'>
-						<SelectControl
-							value={styleCardLoad}
-							options={getStyleCardsOptions()}
-							onChange={val => setStyleCardLoad(val)}
-						/>
+					<h2>
+						<Icon icon={styleCardBoat} />
+						{__('Style Card Editor', 'maxi-blocks')}
+					</h2>
+					<div className='maxi-style-cards__sc'>
 						<Button
-							disabled={isEmpty(styleCardLoad)}
+							className='maxi-style-cards-control__sc--add-more'
 							onClick={() => {
-								{/*onChange({
-									...getStyleCards()[styleCardLoad].styleCard,
-								});*/}
-								setStyleCardLoad('');
+								// TO DO: add cloud modal for SCs here
 							}}
 						>
-							{__('Load', 'maxi-blocks')}
+							{__('Add More Style Cards', 'maxi-blocks')}
 						</Button>
-						<Button
-							className='maxi-style-cards-control__preset__load--delete'
-							disabled={isEmpty(styleCardLoad)}
-							onClick={() => {
-								const newStyleCards = {
-									...getStyleCards(),
-								};
+						<div className='maxi-style-cards__sc--three'>
+							<SelectControl
+								value={styleCardLoad}
+								options={getStyleCardsOptions()}
+								onChange={val => setStyleCardLoad(val)}
+							/>
+							<Button
+								className='maxi-style-cards-control__sc--reset'
+								disabled={isEmpty(styleCardLoad)}
+								onClick={() => {
+									const newStyleCards = {
+										...getStyleCards(),
+									};
 
-								if (
-									window.confirm(
-										sprintf(
-											__(
-												'Are you sure to delete "%s" style card?',
-												'maxi-blocks'
-											),
-											getStyleCards()[styleCardLoad].name
+									if (
+										window.confirm(
+											sprintf(
+												__(
+													'Are you sure to reset "%s" style card\'s styles?',
+													'maxi-blocks'
+												),
+												getStyleCards()[styleCardLoad].name
+											)
 										)
-									)
-								) {
-									delete newStyleCards[styleCardLoad];
-									saveMaxiStyleCards(newStyleCards);
+									) {
+										delete newStyleCards[styleCardLoad];
+										saveMaxiStyleCards(newStyleCards);
+										setStyleCardLoad('');
+									}
+								}}
+							>
+								<Icon icon={reset} />
+							</Button>
+							<Button
+								className='maxi-style-cards-control__sc--delete'
+								disabled={isEmpty(styleCardLoad)}
+								onClick={() => {
+									const newStyleCards = {
+										...getStyleCards(),
+									};
+
+									if (
+										window.confirm(
+											sprintf(
+												__(
+													'Are you sure to delete "%s" style card?',
+													'maxi-blocks'
+												),
+												getStyleCards()[styleCardLoad].name
+											)
+										)
+									) {
+										delete newStyleCards[styleCardLoad];
+										saveMaxiStyleCards(newStyleCards);
+										setStyleCardLoad('');
+									}
+								}}
+							>
+								<Icon icon={SCdelete} />
+							</Button>
+						</div>
+						<div className='maxi-style-cards__sc--two'>
+							<Button
+								disabled={isEmpty(styleCardLoad)}
+								onClick={() => {
+									{/*onChange({
+										...getStyleCards()[styleCardLoad].styleCard,
+									});*/}
 									setStyleCardLoad('');
-								}
-							}}
-						>
-							{__('Delete', 'maxi-blocks')}
-						</Button>
+								}}
+							>
+								{__('Preview', 'maxi-blocks')}
+							</Button>
+							<Button
+								disabled={isEmpty(styleCardLoad)}
+								onClick={() => {
+									{/*onChange({
+										...getStyleCards()[styleCardLoad].styleCard,
+									});*/}
+									setStyleCardLoad('');
+								}}
+							>
+								{__('Apply', 'maxi-blocks')}
+							</Button>
+						</div>
 					</div>
-					<div className='maxi-style-cards-control__preset__save'>
+					<div className='maxi-style-cards-control__sc__save'>
 						<input
 							type='text'
 							placeholder={__(
@@ -159,6 +230,306 @@ const MaxiStyleCardsEditor = withState({
 							{__('Save Style Card', 'maxi-blocks')}
 						</Button>
 					</div>
+					<SettingTabsControl
+						disablePadding
+						items={[
+							{
+								label: __('Light Style Preset', 'maxi-blocks'),
+								content: (
+									<Fragment>
+										<div className='maxi-tab-content__box'>
+											<AccordionControl
+												isSecondary
+												items={[
+													{
+														label: __(
+															'Background Colours',
+															'maxi-blocks'
+														),
+														content: (
+															<Fragment>
+																<ColorControl
+																	label={__(
+																		'Background 1',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-style-cards-control__sc__bg1-color'
+																	color={''}
+																	defaultColor={''}
+																	onChange={val => {}}
+																/>
+																<ColorControl
+																	label={__(
+																		'Background 2',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-style-cards-control__sc__bg2-color'
+																	color={''}
+																	defaultColor={''}
+																	onChange={val => {}}
+																/>
+															</Fragment>
+														),
+													},
+													{
+														label: __(
+															'Body',
+															'maxi-blocks'
+														),
+														content: (
+															<Fragment>
+																<ColorControl
+																	label={__(
+																		'Text',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-style-cards-control__sc__text-color'
+																	color={''}
+																	defaultColor={''}
+																	onChange={val => {}}
+																/>
+																<TypographyControl
+																	{...getGroupAttributes(
+																		attributes,
+																		'typography'
+																	)}
+																	className='maxi-style-cards-control__sc__text-typography'
+																	textLevel='p'
+																	onChange={''}
+																	hideAlignment
+																	hideTextShadow
+																	breakpoint={
+																		deviceType
+																	}
+																/>
+															</Fragment>
+														),
+													},
+													{
+														label: __(
+															'H1',
+															'maxi-blocks'
+														),
+														content: (
+															<Fragment>
+																<ColorControl
+																	label={__(
+																		'H1',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-style-cards-control__sc__h1-color'
+																	color={''}
+																	defaultColor={''}
+																	onChange={val => {}}
+																/>
+																<TypographyControl
+																	{...getGroupAttributes(
+																		attributes,
+																		'typography'
+																	)}
+																	className='maxi-style-cards-control__sc__h1-typography'
+																	textLevel='p'
+																	onChange={''}
+																	hideAlignment
+																	hideTextShadow
+																	breakpoint={
+																		deviceType
+																	}
+																/>
+															</Fragment>
+														),
+													},
+													{
+														label: __(
+															'H2',
+															'maxi-blocks'
+														),
+														content: (
+															<Fragment>
+																<ColorControl
+																	label={__(
+																		'H2',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-style-cards-control__sc__h2-color'
+																	color={''}
+																	defaultColor={''}
+																	onChange={val => {}}
+																/>
+																<TypographyControl
+																	{...getGroupAttributes(
+																		attributes,
+																		'typography'
+																	)}
+																	className='maxi-style-cards-control__sc__h2-typography'
+																	textLevel='p'
+																	onChange={''}
+																	hideAlignment
+																	hideTextShadow
+																	breakpoint={
+																		deviceType
+																	}
+																/>
+															</Fragment>
+														),
+													},
+													{
+														label: __(
+															'H3',
+															'maxi-blocks'
+														),
+														content: (
+															<Fragment>
+																<ColorControl
+																	label={__(
+																		'H3',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-style-cards-control__sc__h3-color'
+																	color={''}
+																	defaultColor={''}
+																	onChange={val => {}}
+																/>
+																<TypographyControl
+																	{...getGroupAttributes(
+																		attributes,
+																		'typography'
+																	)}
+																	className='maxi-style-cards-control__sc__h3-typography'
+																	textLevel='p'
+																	onChange={''}
+																	hideAlignment
+																	hideTextShadow
+																	breakpoint={
+																		deviceType
+																	}
+																/>
+															</Fragment>
+														),
+													},
+													{
+														label: __(
+															'H4',
+															'maxi-blocks'
+														),
+														content: (
+															<Fragment>
+																<ColorControl
+																	label={__(
+																		'H4',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-style-cards-control__sc__h4-color'
+																	color={''}
+																	defaultColor={''}
+																	onChange={val => {}}
+																/>
+																<TypographyControl
+																	{...getGroupAttributes(
+																		attributes,
+																		'typography'
+																	)}
+																	className='maxi-style-cards-control__sc__h4-typography'
+																	textLevel='p'
+																	onChange={''}
+																	hideAlignment
+																	hideTextShadow
+																	breakpoint={
+																		deviceType
+																	}
+																/>
+															</Fragment>
+														),
+													},
+													{
+														label: __(
+															'H5',
+															'maxi-blocks'
+														),
+														content: (
+															<Fragment>
+																<ColorControl
+																	label={__(
+																		'H5',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-style-cards-control__sc__h5-color'
+																	color={''}
+																	defaultColor={''}
+																	onChange={val => {}}
+																/>
+																<TypographyControl
+																	{...getGroupAttributes(
+																		attributes,
+																		'typography'
+																	)}
+																	className='maxi-style-cards-control__sc__h5-typography'
+																	textLevel='p'
+																	onChange={''}
+																	hideAlignment
+																	hideTextShadow
+																	breakpoint={
+																		deviceType
+																	}
+																/>
+															</Fragment>
+														),
+													},
+													{
+														label: __(
+															'H6',
+															'maxi-blocks'
+														),
+														content: (
+															<Fragment>
+																<ColorControl
+																	label={__(
+																		'H6',
+																		'maxi-blocks'
+																	)}
+																	className='maxi-style-cards-control__sc__h6-color'
+																	color={''}
+																	defaultColor={''}
+																	onChange={val => {}}
+																/>
+																<TypographyControl
+																	{...getGroupAttributes(
+																		attributes,
+																		'typography'
+																	)}
+																	className='maxi-style-cards-control__sc__h6-typography'
+																	textLevel='p'
+																	onChange={''}
+																	hideAlignment
+																	hideTextShadow
+																	breakpoint={
+																		deviceType
+																	}
+																/>
+															</Fragment>
+														),
+													},
+												]}
+											/>
+										</div>
+									</Fragment>
+								),
+							},
+							{
+								label: __('Dark Style Preset', 'maxi-blocks'),
+								content: (
+									<Fragment>
+										<div className='maxi-tab-content__box'>
+											<AccordionControl
+												isSecondary
+												items={[]}
+											/>
+										</div>
+									</Fragment>
+								),
+							},
+						]}
+					/>
 				</Popover>
 			)}
 		</Fragment>

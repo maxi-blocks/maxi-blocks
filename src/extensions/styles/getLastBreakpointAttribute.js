@@ -28,33 +28,39 @@ const getLastBreakpointAttribute = (
 	);
 
 	const attr = attributes || getBlockAttributes(getSelectedBlockClientId());
-	let currentAttr = attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
 
-	if (
-		!isNil(currentAttr) &&
-		(isNumber(currentAttr) ||
-			isBoolean(currentAttr) ||
-			!isEmpty(currentAttr))
-	)
+	let currentAttr;
+
+	if (!isNil(attr)) {
+		currentAttr = attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
+
+		if (
+			!isNil(currentAttr) &&
+			(isNumber(currentAttr) ||
+				isBoolean(currentAttr) ||
+				!isEmpty(currentAttr))
+		)
+			return currentAttr;
+
+		let breakpointPosition = breakpoints.indexOf(breakpoint);
+
+		do {
+			breakpointPosition -= 1;
+			currentAttr =
+				attr[
+					`${target}-${breakpoints[breakpointPosition]}${
+						isHover ? '-hover' : ''
+					}`
+				];
+		} while (
+			breakpointPosition > 0 &&
+			!isNumber(currentAttr) &&
+			(isEmpty(currentAttr) || isNil(currentAttr))
+		);
+
 		return currentAttr;
-
-	let breakpointPosition = breakpoints.indexOf(breakpoint);
-
-	do {
-		breakpointPosition -= 1;
-		currentAttr =
-			attr[
-				`${target}-${breakpoints[breakpointPosition]}${
-					isHover ? '-hover' : ''
-				}`
-			];
-	} while (
-		breakpointPosition > 0 &&
-		!isNumber(currentAttr) &&
-		(isEmpty(currentAttr) || isNil(currentAttr))
-	);
-
-	return currentAttr;
+	}
+	return false;
 };
 
 export default getLastBreakpointAttribute;

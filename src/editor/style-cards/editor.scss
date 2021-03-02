@@ -2,4 +2,8 @@ body .components-popover.maxi-style-cards__popover {
     position: fixed !important;
     left: 25px !important;
     top: 48px !important;
+    z-index: 10000;
+    .components-popover__content {
+    	 min-width: 315px;
+    }
 }

@@ -213,22 +213,19 @@ const ShapeDividerControl = props => {
 					{ label: __('Top', 'maxi-blocks'), value: 'top' },
 					{ label: __('Bottom', 'maxi-blocks'), value: 'bottom' },
 				]}
-				onChange={value => setShapeDividerStatus(value)}
+				onChange={val => setShapeDividerStatus(val)}
 			/>
 			{shapeDividerStatus === 'top' && (
 				<Fragment>
 					<FancyRadioControl
 						label={__('Enable Top Shape Divider', 'maxi-blocks')}
-						selected={+props['shape-divider-top-status']}
+						selected={props['shape-divider-top-status']}
 						options={[
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 						]}
-						onChange={status =>
-							onChange({
-								'shape-divider-top-status': !!+status,
-							})
-						}
+						attr='shape-divider-top-status'
+						onChange={obj => onChange(obj)}
 					/>
 					{!!props['shape-divider-top-status'] && (
 						<Fragment>
@@ -238,7 +235,7 @@ const ShapeDividerControl = props => {
 									'maxi-blocks'
 								)}
 								selected={
-									+props['shape-divider-top-effects-status']
+									props['shape-divider-top-effects-status']
 								}
 								options={[
 									{
@@ -250,11 +247,8 @@ const ShapeDividerControl = props => {
 										value: 1,
 									},
 								]}
-								onChange={status =>
-									onChange({
-										'shape-divider-top-effects-status': !!+status,
-									})
-								}
+								attr='shape-divider-top-effects-status'
+								onChange={obj => onChange(obj)}
 							/>
 							<Dropdown
 								className='maxi-shapedividercontrol__shape-selector'
@@ -337,16 +331,13 @@ const ShapeDividerControl = props => {
 				<Fragment>
 					<FancyRadioControl
 						label={__('Enable Bottom Shape Divider', 'maxi-blocks')}
-						selected={+props['shape-divider-bottom-status']}
+						selected={props['shape-divider-bottom-status']}
 						options={[
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 						]}
-						onChange={status =>
-							onChange({
-								'shape-divider-bottom-status': !!+status,
-							})
-						}
+						attr='shape-divider-bottom-status'
+						onChange={obj => onChange(obj)}
 					/>
 					{!!props['shape-divider-bottom-status'] && (
 						<Fragment>
@@ -356,9 +347,7 @@ const ShapeDividerControl = props => {
 									'maxi-blocks'
 								)}
 								selected={
-									+props[
-										'shape-divider-bottom-effects-status'
-									]
+									props['shape-divider-bottom-effects-status']
 								}
 								options={[
 									{
@@ -370,11 +359,8 @@ const ShapeDividerControl = props => {
 										value: 1,
 									},
 								]}
-								onChange={status =>
-									onChange({
-										'shape-divider-bottom-effects-status': !!+status,
-									})
-								}
+								attr='shape-divider-bottom-effects-status'
+								onChange={obj => onChange(obj)}
 							/>
 							<Dropdown
 								className='maxi-shapedividercontrol__shape-selector'

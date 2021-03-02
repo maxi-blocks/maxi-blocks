@@ -66,73 +66,61 @@ const BlockStylesControl = props => {
 					{!disableHighlightText && (
 						<FancyRadioControl
 							label={__('Highlight Text', 'maxi-blocks')}
-							selected={+props['text-highlight']}
+							selected={props['text-highlight']}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={val =>
-								onChange({ 'text-highlight': !!+val })
-							}
+							attr='text-highlight'
+							onChange={obj => onChange(obj)}
 						/>
 					)}
 					{!disableHighlightBackground && (
 						<FancyRadioControl
 							label={__('Highlight Background', 'maxi-blocks')}
-							selected={+props['background-highlight']}
+							selected={props['background-highlight']}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={val =>
-								onChange({ 'background-highlight': !!+val })
-							}
+							attr='background-highlight'
+							onChange={obj => onChange(obj)}
 						/>
 					)}
 					{!disableHighlightBorder && (
 						<FancyRadioControl
 							label={__('Highlight Border', 'maxi-blocks')}
-							selected={+props['border-highlight']}
+							selected={props['border-highlight']}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={val => {
-								onChange({
-									'border-highlight': !!+val,
-									// 'border-style-general': 'solid',
-									// 'border-top-width-general': 2,
-									// 'border-right-width-general': 2,
-									// 'border-bottom-width-general': 2,
-									// 'border-left-width-general': 2,
-								});
-							}}
+							attr='border-highlight'
+							onChange={obj => onChange(obj)}
 						/>
 					)}
 					{!disableHighlightColor1 && (
 						<FancyRadioControl
 							label={__('Highlight SVG Color 1', 'maxi-blocks')}
-							selected={+props['color1-highlight']}
+							selected={props['color1-highlight']}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={val =>
-								onChange({ 'color1-highlight': !!+val })
-							}
+							attr='color1-highlight'
+							onChange={obj => onChange(obj)}
 						/>
 					)}
 					{!disableHighlightColor2 && (
 						<FancyRadioControl
 							label={__('Highlight SVG Color 2', 'maxi-blocks')}
-							selected={+props['color2-highlight']}
+							selected={props['color2-highlight']}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={val =>
-								onChange({ 'color2-highlight': !!+val })
-							}
+							attr='color2-highlight'
+							onChange={obj => onChange(obj)}
 						/>
 					)}
 					{isFirstOnHierarchy && (
@@ -143,11 +131,8 @@ const BlockStylesControl = props => {
 								{ label: 1, value: 1 },
 								{ label: 2, value: 2 },
 							]}
-							onChange={val =>
-								onChange({
-									blockStyleBackground: +val,
-								})
-							}
+							attr='blockStyleBackground'
+							onChange={obj => onChange(obj)}
 						/>
 					)}
 				</Fragment>

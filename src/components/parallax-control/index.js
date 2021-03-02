@@ -29,12 +29,13 @@ const ParallaxControl = props => {
 		<div className={classes}>
 			<FancyRadioControl
 				label={__('Use Parallax Effect', 'maxi-blocks')}
-				selected={+props['parallax-status']}
+				selected={props['parallax-status']}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => onChange({ 'parallax-status': !!+val })}
+				attr='parallax-status'
+				onChange={obj => onChange(obj)}
 			/>
 			{props['parallax-status'] && (
 				<Fragment>
@@ -48,9 +49,8 @@ const ParallaxControl = props => {
 								value: 'down',
 							},
 						]}
-						onChange={val =>
-							onChange({ 'parallax-direction': val })
-						}
+						attr='parallax-direction'
+						onChange={obj => onChange(obj)}
 					/>
 					<RangeSliderControl
 						label={__('Speed', 'maxi-blocks')}

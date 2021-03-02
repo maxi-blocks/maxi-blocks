@@ -78,14 +78,13 @@ const ArrowControl = props => {
 			{
 				<FancyRadioControl
 					label={__('Show Arrow', 'maxi-blocks')}
-					selected={+props['arrow-status']}
+					selected={props['arrow-status']}
 					options={[
 						{ label: __('Yes', 'maxi-blocks'), value: 1 },
 						{ label: __('No', 'maxi-blocks'), value: 0 },
 					]}
-					onChange={val => {
-						onChange({ 'arrow-status': !!+val });
-					}}
+					attr='arrow-status'
+					onChange={obj => onChange(obj)}
 				/>
 			}
 			{props['arrow-status'] && (
@@ -98,9 +97,8 @@ const ArrowControl = props => {
 							props
 						)}
 						options={getOptions()}
-						onChange={val => {
-							onChangeValue('arrow-side', val);
-						}}
+						attr={`arrow-side-${breakpoint}`}
+						onChange={obj => onChange(obj)}
 					/>
 					<RangeSliderControl
 						label={__('Position', 'maxi-blocks')}

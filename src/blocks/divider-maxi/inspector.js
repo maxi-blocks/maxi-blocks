@@ -122,10 +122,9 @@ const Inspector = props => {
 																	'vertical',
 															},
 														]}
-														onChange={lineOrientation =>
-															setAttributes({
-																lineOrientation,
-															})
+														attr='lineOrientation'
+														onChange={obj =>
+															setAttributes(obj)
 														}
 													/>
 													<FancyRadioControl
@@ -160,10 +159,9 @@ const Inspector = props => {
 																	'flex-end',
 															},
 														]}
-														onChange={lineVertical =>
-															setAttributes({
-																lineVertical,
-															})
+														attr='lineVertical'
+														onChange={obj =>
+															setAttributes(obj)
 														}
 													/>
 													<FancyRadioControl
@@ -200,10 +198,9 @@ const Inspector = props => {
 																	'flex-end',
 															},
 														]}
-														onChange={lineHorizontal =>
-															setAttributes({
-																lineHorizontal,
-															})
+														attr='lineHorizontal'
+														onChange={obj =>
+															setAttributes(obj)
 														}
 													/>
 													<DividerControl
@@ -259,10 +256,11 @@ const Inspector = props => {
 																		'full',
 																},
 															]}
-															onChange={fullWidth =>
-																setAttributes({
-																	fullWidth,
-																})
+															attr='fullWidth'
+															onChange={obj =>
+																setAttributes(
+																	obj
+																)
 															}
 														/>
 													)}
@@ -329,7 +327,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			+attributes[
+																			attributes[
 																				'background-status-hover'
 																			]
 																		}
@@ -349,11 +347,10 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		onChange={val =>
+																		attr='background-status-hover'
+																		onChange={obj =>
 																			setAttributes(
-																				{
-																					'background-status-hover': !!+val,
-																				}
+																				obj
 																			)
 																		}
 																	/>
@@ -431,7 +428,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			+attributes[
+																			attributes[
 																				'box-shadow-status-hover'
 																			]
 																		}
@@ -451,13 +448,12 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		onChange={val => {
+																		attr='box-shadow-status-hover'
+																		onChange={obj =>
 																			setAttributes(
-																				{
-																					'box-shadow-status-hover': !!+val,
-																				}
-																			);
-																		}}
+																				obj
+																			)
+																		}
 																	/>
 																	{attributes[
 																		'box-shadow-status-hover'

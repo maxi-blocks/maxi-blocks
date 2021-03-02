@@ -133,10 +133,9 @@ const Inspector = props => {
 															value: 'full',
 														},
 													]}
-													onChange={fullWidth =>
-														setAttributes({
-															fullWidth,
-														})
+													attr='fullWidth'
+													onChange={obj =>
+														setAttributes(obj)
 													}
 												/>
 											),
@@ -359,7 +358,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			+attributes[
+																			attributes[
 																				'background-status-hover'
 																			]
 																		}
@@ -379,11 +378,10 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		onChange={val =>
+																		attr='background-status-hover'
+																		onChange={obj =>
 																			setAttributes(
-																				{
-																					'background-status-hover': !!+val,
-																				}
+																				obj
 																			)
 																		}
 																	/>
@@ -473,7 +471,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			+attributes[
+																			attributes[
 																				'border-status-hover'
 																			]
 																		}
@@ -493,11 +491,10 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		onChange={val =>
+																		attr='border-status-hover'
+																		onChange={obj =>
 																			setAttributes(
-																				{
-																					'border-status-hover': !!+val,
-																				}
+																				obj
 																			)
 																		}
 																	/>
@@ -580,7 +577,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			+attributes[
+																			attributes[
 																				'box-shadow-status-hover'
 																			]
 																		}
@@ -600,13 +597,12 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		onChange={val => {
+																		attr='box-shadow-status-hover'
+																		onChange={obj =>
 																			setAttributes(
-																				{
-																					'box-shadow-status-hover': !!+val,
-																				}
-																			);
-																		}}
+																				obj
+																			)
+																		}
 																	/>
 																	{attributes[
 																		'box-shadow-status-hover'

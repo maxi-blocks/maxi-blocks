@@ -156,9 +156,8 @@ const DividerControl = props => {
 								value: '20px',
 							},
 						]}
-						onChange={val =>
-							onChange({ 'divider-border-radius': val })
-						}
+						attr='divider-border-radius'
+						onChange={obj => onChange(obj)}
 					/>
 				)}
 			{props['divider-border-style'] !== 'none' &&

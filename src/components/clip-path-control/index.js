@@ -311,9 +311,9 @@ const ClipPathControl = props => {
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={value => {
+				onChange={val => {
 					onChange('');
-					changeHasClipPath(Number(value));
+					changeHasClipPath(+val);
 				}}
 			/>
 			{!!hasClipPath && (
@@ -325,7 +325,7 @@ const ClipPathControl = props => {
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
-						onChange={value => changeIsCustom(Number(value))}
+						onChange={val => changeIsCustom(+val)}
 					/>
 					{!isCustom && (
 						<div className='clip-path-defaults'>
@@ -386,7 +386,6 @@ const ClipPathControl = props => {
 								label=''
 								fullWidthMode
 								selected={customMode}
-								onChange={item => setCustomMode(item)}
 								options={[
 									{
 										label: __('Visual', 'maxi-blocks'),
@@ -397,6 +396,7 @@ const ClipPathControl = props => {
 										value: 'data',
 									},
 								]}
+								onChange={val => setCustomMode(val)}
 							/>
 							{customMode === 'visual' && (
 								<ClipPathVisualEditor

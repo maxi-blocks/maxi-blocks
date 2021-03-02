@@ -213,8 +213,9 @@ const ColumnPatternsInspector = props => {
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							onChange={val => {
-								onChange({ removeColumnGap: !!+val });
+							attr='removeColumnGap'
+							onChange={obj => {
+								onChange(obj);
 								loadColumnsTemplate(
 									props['row-pattern-general'],
 									!!+val,

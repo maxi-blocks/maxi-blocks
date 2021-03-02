@@ -185,11 +185,8 @@ const FontIconControl = (props, isHover = false) => {
 										value: 'right',
 									},
 								]}
-								onChange={val =>
-									onChange({
-										['icon-position']: val,
-									})
-								}
+								attr='icon-position'
+								onChange={obj => onChange(obj)}
 							/>
 						</Fragment>
 					)}
@@ -305,7 +302,7 @@ const FontIconControl = (props, isHover = false) => {
 					{!simpleMode && (
 						<FancyRadioControl
 							label={__('Use Custom Padding', 'maxi-blocks')}
-							selected={+props['icon-custom-padding']}
+							selected={props['icon-custom-padding']}
 							options={[
 								{
 									label: __('No', 'maxi-blocks'),
@@ -316,11 +313,8 @@ const FontIconControl = (props, isHover = false) => {
 									value: 1,
 								},
 							]}
-							onChange={val =>
-								onChange({
-									['icon-custom-padding']: !!+val,
-								})
-							}
+							attr='icon-custom-padding'
+							onChange={obj => onChange(obj)}
 						/>
 					)}
 

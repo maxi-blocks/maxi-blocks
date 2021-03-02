@@ -56,16 +56,18 @@ const HoverEffectControl = props => {
 					{ label: <Icon icon={hoverBasic} />, value: 'basic' },
 					{ label: <Icon icon={hoverText} />, value: 'text' },
 				]}
-				onChange={val => onChange({ 'hover-type': val })}
+				attr='hover-type'
+				onChange={obj => onChange(obj)}
 			/>
 			<FancyRadioControl
 				label={__('Preview', 'maxi-blocks')}
-				selected={+props['hover-preview']}
+				selected={props['hover-preview']}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => onChange({ 'hover-preview': !!+val })}
+				attr='hover-preview'
+				onChange={obj => onChange(obj)}
 			/>
 			{props['hover-type'] === 'basic' && (
 				<Fragment>
@@ -277,7 +279,8 @@ const HoverEffectControl = props => {
 								value: 'right-bottom',
 							},
 						]}
-						onChange={val => onChange({ 'hover-text-preset': val })}
+						attr='hover-text-preset'
+						onChange={obj => onChange(obj)}
 					/>
 					<TextareaControl
 						placeholder={__(
@@ -297,16 +300,13 @@ const HoverEffectControl = props => {
 					/>
 					<FancyRadioControl
 						label={__('Custom Hover Text', 'maxi-block')}
-						selected={+props['hover-title-typography-status']}
+						selected={props['hover-title-typography-status']}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						onChange={val =>
-							onChange({
-								'hover-title-typography-status': !!+val,
-							})
-						}
+						attr='hover-title-typography-status'
+						onChange={obj => onChange(obj)}
 					/>
 					{props['hover-title-typography-status'] && (
 						<TypographyControl
@@ -340,16 +340,13 @@ const HoverEffectControl = props => {
 					/>
 					<FancyRadioControl
 						label={__('Custom Content Text', 'maxi-block')}
-						selected={+props['hover-content-typography-status']}
+						selected={props['hover-content-typography-status']}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						onChange={val =>
-							onChange({
-								'hover-content-typography-status': !!+val,
-							})
-						}
+						attr='hover-content-typography-status'
+						onChange={obj => onChange(obj)}
 					/>
 					{props['hover-content-typography-status'] && (
 						<TypographyControl
@@ -381,14 +378,13 @@ const HoverEffectControl = props => {
 					/>
 					<FancyRadioControl
 						label={__('Custom Border', 'maxi-block')}
-						selected={+props['hover-border-status']}
+						selected={props['hover-border-status']}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						onChange={val =>
-							onChange({ 'hover-border-status': !!+val })
-						}
+						attr='hover-border-status'
+						onChange={obj => onChange(obj)}
 					/>
 					{props['hover-border-status'] && (
 						<BorderControl
@@ -403,14 +399,13 @@ const HoverEffectControl = props => {
 					)}
 					<FancyRadioControl
 						label={__('Custom Padding', 'maxi-block')}
-						selected={+props['hover-padding-status']}
+						selected={props['hover-padding-status']}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						onChange={val =>
-							onChange({ 'hover-padding-status': !!+val })
-						}
+						attr='hover-padding-status'
+						onChange={obj => onChange(obj)}
 					/>
 					{props['hover-padding-status'] && (
 						<AxisControl
@@ -423,14 +418,13 @@ const HoverEffectControl = props => {
 					)}
 					<FancyRadioControl
 						label={__('Custom Margin', 'maxi-block')}
-						selected={+props['hover-margin-status']}
+						selected={props['hover-margin-status']}
 						options={[
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						onChange={val =>
-							onChange({ 'hover-margin-status': !!+val })
-						}
+						attr='hover-margin-status'
+						onChange={obj => onChange(obj)}
 					/>
 					{props['hover-margin-status'] && (
 						<AxisControl

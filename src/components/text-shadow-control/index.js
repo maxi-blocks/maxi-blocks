@@ -183,7 +183,7 @@ const TextShadowControl = props => {
 		<div className={classes}>
 			<FancyRadioControl
 				label={__('Text Shadow', 'maxi-blocks')}
-				selected={Number(showOptions)}
+				selected={showOptions}
 				options={[
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },

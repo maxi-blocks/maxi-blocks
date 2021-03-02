@@ -111,7 +111,7 @@ const VideoLayer = props => {
 			<FancyRadioControl
 				label={__('Loop', 'maxi-blocks')}
 				selected={
-					+videoOptions[
+					videoOptions[
 						getAttributeKey(
 							'background-video-loop',
 							isHover,
@@ -138,20 +138,13 @@ const VideoLayer = props => {
 						)
 					]
 				}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-video-loop',
-							isHover,
-							prefix
-						)]: !!val,
-					})
-				}
+				attr={getAttributeKey('background-video-loop', isHover, prefix)}
+				onChange={obj => onChange(obj)}
 			/>
 			<FancyRadioControl
 				label={__('Play on Mobile', 'maxi-blocks')}
 				selected={
-					+videoOptions[
+					videoOptions[
 						getAttributeKey(
 							'background-video-playOnMobile',
 							isHover,
@@ -169,15 +162,12 @@ const VideoLayer = props => {
 						value: 1,
 					},
 				]}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-video-playOnMobile',
-							isHover,
-							prefix
-						)]: !!val,
-					})
-				}
+				attr={getAttributeKey(
+					'background-video-playOnMobile',
+					isHover,
+					prefix
+				)}
+				onChange={obj => onChange(obj)}
 			/>
 
 			{!disableClipPath && (

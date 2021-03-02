@@ -131,10 +131,9 @@ const FullSizeControl = props => {
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => {
-					onChange({
-						[`${prefix}size-advanced-options`]: !!+val,
-					});
+				attr={`${prefix}size-advanced-options`}
+				onChange={obj => {
+					onChange(obj);
 					if (!Number(val)) {
 						onChangeValue(
 							[

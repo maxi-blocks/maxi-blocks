@@ -123,15 +123,12 @@ const BackgroundControl = props => {
 					fullWidthMode
 					selected={backgroundActiveMedia || ''}
 					options={getOptions()}
-					onChange={value => {
-						onChange({
-							[getAttributeKey(
-								'background-active-media',
-								isHover,
-								prefix
-							)]: value,
-						});
-					}}
+					attr={getAttributeKey(
+						'background-active-media',
+						isHover,
+						prefix
+					)}
+					onChange={obj => onChange(obj)}
 				/>
 			)}
 			{!layersStatus && (

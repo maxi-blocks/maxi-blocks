@@ -205,7 +205,7 @@ const BackgroundLayersControl = ({
 							'background-active-media',
 							isHover,
 							prefix
-						)]: '',
+						)]: !!+val ? 'layers' : '',
 					})
 				}
 			/>

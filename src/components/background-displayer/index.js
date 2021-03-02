@@ -34,9 +34,14 @@ const BackgroundContent = props => {
 
 	return (
 		<Fragment>
-			{!props['background-layers-status'] ? (
+			{!props[`background-layers-status${isHover ? '-hover' : ''}`] ? (
 				<Fragment>
-					{!isHover && (
+					{(props[
+						`background-active-media${isHover ? '-hover' : ''}`
+					] === 'color' ||
+						props[
+							`background-active-media${isHover ? '-hover' : ''}`
+						] === 'gradient') && (
 						<div
 							className={classnames(
 								'maxi-background-displayer__layer',

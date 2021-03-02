@@ -194,12 +194,15 @@ const BackgroundLayersControl = ({
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				attr={getAttributeKey(
-					'background-layers-status',
-					isHover,
-					prefix
-				)}
-				onChange={obj => onChange(obj)}
+				onChange={val =>
+					onChange({
+						[getAttributeKey(
+							'background-layers-status',
+							isHover,
+							prefix
+						)]: val,
+					})
+				}
 			/>
 
 			{layersStatus && (

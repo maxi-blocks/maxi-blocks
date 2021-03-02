@@ -396,6 +396,7 @@ const ClipPathControl = props => {
 										value: 'data',
 									},
 								]}
+								optionType='string'
 								onChange={val => setCustomMode(val)}
 							/>
 							{customMode === 'visual' && (

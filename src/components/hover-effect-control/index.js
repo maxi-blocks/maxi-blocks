@@ -56,8 +56,7 @@ const HoverEffectControl = props => {
 					{ label: <Icon icon={hoverBasic} />, value: 'basic' },
 					{ label: <Icon icon={hoverText} />, value: 'text' },
 				]}
-				attr='hover-type'
-				onChange={obj => onChange(obj)}
+				onChange={val => onChange({ 'hover-type': val })}
 			/>
 			<FancyRadioControl
 				label={__('Preview', 'maxi-blocks')}
@@ -66,8 +65,7 @@ const HoverEffectControl = props => {
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				attr='hover-preview'
-				onChange={obj => onChange(obj)}
+				onChange={val => onChange({ 'hover-preview': val })}
 			/>
 			{props['hover-type'] === 'basic' && (
 				<Fragment>
@@ -279,8 +277,7 @@ const HoverEffectControl = props => {
 								value: 'right-bottom',
 							},
 						]}
-						attr='hover-text-preset'
-						onChange={obj => onChange(obj)}
+						onChange={val => onChange({ 'hover-text-preset': val })}
 					/>
 					<TextareaControl
 						placeholder={__(
@@ -305,8 +302,9 @@ const HoverEffectControl = props => {
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						attr='hover-title-typography-status'
-						onChange={obj => onChange(obj)}
+						onChange={val =>
+							onChange({ 'hover-title-typography-status': val })
+						}
 					/>
 					{props['hover-title-typography-status'] && (
 						<TypographyControl
@@ -345,8 +343,9 @@ const HoverEffectControl = props => {
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						attr='hover-content-typography-status'
-						onChange={obj => onChange(obj)}
+						onChange={val =>
+							onChange({ 'hover-content-typography-status': val })
+						}
 					/>
 					{props['hover-content-typography-status'] && (
 						<TypographyControl
@@ -383,8 +382,9 @@ const HoverEffectControl = props => {
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						attr='hover-border-status'
-						onChange={obj => onChange(obj)}
+						onChange={val =>
+							onChange({ 'hover-border-status': val })
+						}
 					/>
 					{props['hover-border-status'] && (
 						<BorderControl
@@ -404,8 +404,9 @@ const HoverEffectControl = props => {
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						attr='hover-padding-status'
-						onChange={obj => onChange(obj)}
+						onChange={val =>
+							onChange({ 'hover-padding-status': val })
+						}
 					/>
 					{props['hover-padding-status'] && (
 						<AxisControl
@@ -423,8 +424,9 @@ const HoverEffectControl = props => {
 							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
 						]}
-						attr='hover-margin-status'
-						onChange={obj => onChange(obj)}
+						onChange={val =>
+							onChange({ 'hover-margin-status': val })
+						}
 					/>
 					{props['hover-margin-status'] && (
 						<AxisControl

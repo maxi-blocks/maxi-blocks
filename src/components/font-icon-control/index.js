@@ -185,8 +185,10 @@ const FontIconControl = (props, isHover = false) => {
 										value: 'right',
 									},
 								]}
-								attr='icon-position'
-								onChange={obj => onChange(obj)}
+								optionType='string'
+								onChange={val =>
+									onChange({ 'icon-position': val })
+								}
 							/>
 						</Fragment>
 					)}
@@ -313,8 +315,9 @@ const FontIconControl = (props, isHover = false) => {
 									value: 1,
 								},
 							]}
-							attr='icon-custom-padding'
-							onChange={obj => onChange(obj)}
+							onChange={val =>
+								onChange({ 'icon-custom-padding': val })
+							}
 						/>
 					)}
 

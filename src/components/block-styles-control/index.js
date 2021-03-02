@@ -71,8 +71,9 @@ const BlockStylesControl = props => {
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							attr='text-highlight'
-							onChange={obj => onChange(obj)}
+							onChange={val =>
+								onChange({ 'text-highlight': val })
+							}
 						/>
 					)}
 					{!disableHighlightBackground && (
@@ -83,8 +84,9 @@ const BlockStylesControl = props => {
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							attr='background-highlight'
-							onChange={obj => onChange(obj)}
+							onChange={val =>
+								onChange({ 'background-highlight': val })
+							}
 						/>
 					)}
 					{!disableHighlightBorder && (
@@ -95,8 +97,9 @@ const BlockStylesControl = props => {
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							attr='border-highlight'
-							onChange={obj => onChange(obj)}
+							onChange={val =>
+								onChange({ 'border-highlight': val })
+							}
 						/>
 					)}
 					{!disableHighlightColor1 && (
@@ -107,8 +110,9 @@ const BlockStylesControl = props => {
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							attr='color1-highlight'
-							onChange={obj => onChange(obj)}
+							onChange={val =>
+								onChange({ 'color1-highlight': val })
+							}
 						/>
 					)}
 					{!disableHighlightColor2 && (
@@ -119,8 +123,9 @@ const BlockStylesControl = props => {
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
 							]}
-							attr='color2-highlight'
-							onChange={obj => onChange(obj)}
+							onChange={val =>
+								onChange({ 'color2-highlight': val })
+							}
 						/>
 					)}
 					{isFirstOnHierarchy && (
@@ -131,8 +136,9 @@ const BlockStylesControl = props => {
 								{ label: 1, value: 1 },
 								{ label: 2, value: 2 },
 							]}
-							attr='blockStyleBackground'
-							onChange={obj => onChange(obj)}
+							onChange={val =>
+								onChange({ blockStyleBackground: val })
+							}
 						/>
 					)}
 				</Fragment>

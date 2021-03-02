@@ -75,8 +75,7 @@ const TimelinePresets = props => {
 						value: 0,
 					},
 				]}
-				attr='motion-preset-status'
-				onChange={obj => onChange(obj)}
+				onChange={val => onChange({ 'motion-preset-status': val })}
 			/>
 			{props['motion-preset-status'] && (
 				<Fragment>

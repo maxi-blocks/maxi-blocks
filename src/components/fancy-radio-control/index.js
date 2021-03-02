@@ -19,7 +19,7 @@ import './editor.scss';
  */
 const FancyRadioControl = props => {
 	const {
-		attr = '',
+		optionType = 'boolean',
 		className,
 		fullWidthMode = false,
 		label = '',
@@ -46,16 +46,22 @@ const FancyRadioControl = props => {
 					typeof options[0].value === 'number' ? +selected : selected
 				}
 				options={options}
-				onChange={val =>
-					!isEmpty(attr)
-						? onChange({
-								[attr]:
-									typeof options[0].value === 'number'
-										? !!+val
-										: val,
-						  })
-						: onChange(val)
-				}
+				onChange={val => {
+					switch (optionType) {
+						case 'boolean':
+							onChange(!!+val);
+							break;
+						case 'string':
+							onChange(val.toString());
+							break;
+						case 'number':
+							onChange(+val);
+							break;
+						default:
+							onChange(val);
+							break;
+					}
+				}}
 			/>
 		</div>
 	);

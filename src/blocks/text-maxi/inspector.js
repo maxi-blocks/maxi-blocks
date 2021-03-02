@@ -317,10 +317,11 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		attr='typography-status-hover'
-																		onChange={obj =>
+																		onChange={val =>
 																			setAttributes(
-																				obj
+																				{
+																					'typography-status-hover': val,
+																				}
 																			)
 																		}
 																	/>
@@ -451,10 +452,11 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		attr='background-status-hover'
-																		onChange={obj =>
+																		onChange={val =>
 																			setAttributes(
-																				obj
+																				{
+																					'background-status-hover': val,
+																				}
 																			)
 																		}
 																	/>
@@ -563,10 +565,11 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		attr='border-status-hover'
-																		onChange={obj =>
+																		onChange={val =>
 																			setAttributes(
-																				obj
+																				{
+																					'border-status-hover': val,
+																				}
 																			)
 																		}
 																	/>
@@ -637,11 +640,11 @@ const Inspector = props => {
 																		'full',
 																},
 															]}
-															attr='fullWidth'
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
+															optionType='string'
+															onChange={fullWidth =>
+																setAttributes({
+																	fullWidth,
+																})
 															}
 														/>
 													)}
@@ -723,10 +726,11 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		attr='box-shadow-status-hover'
-																		onChange={obj =>
+																		onChange={val =>
 																			setAttributes(
-																				obj
+																				{
+																					'box-shadow-status-hover': val,
+																				}
 																			)
 																		}
 																	/>

@@ -34,8 +34,7 @@ const ParallaxControl = props => {
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				attr='parallax-status'
-				onChange={obj => onChange(obj)}
+				onChange={val => onChange({ 'parallax-status': val })}
 			/>
 			{props['parallax-status'] && (
 				<Fragment>
@@ -49,8 +48,10 @@ const ParallaxControl = props => {
 								value: 'down',
 							},
 						]}
-						attr='parallax-direction'
-						onChange={obj => onChange(obj)}
+						optionType='string'
+						onChange={val =>
+							onChange({ 'parallax-direction': val })
+						}
 					/>
 					<RangeSliderControl
 						label={__('Speed', 'maxi-blocks')}

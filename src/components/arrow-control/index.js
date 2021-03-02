@@ -83,8 +83,7 @@ const ArrowControl = props => {
 						{ label: __('Yes', 'maxi-blocks'), value: 1 },
 						{ label: __('No', 'maxi-blocks'), value: 0 },
 					]}
-					attr='arrow-status'
-					onChange={obj => onChange(obj)}
+					onChange={val => onChange({ 'arrow-status': val })}
 				/>
 			}
 			{props['arrow-status'] && (
@@ -97,8 +96,10 @@ const ArrowControl = props => {
 							props
 						)}
 						options={getOptions()}
-						attr={`arrow-side-${breakpoint}`}
-						onChange={obj => onChange(obj)}
+						optionType='string'
+						onChange={val =>
+							onChange({ [`arrow-side-${breakpoint}`]: val })
+						}
 					/>
 					<RangeSliderControl
 						label={__('Position', 'maxi-blocks')}

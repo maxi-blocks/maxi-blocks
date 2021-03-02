@@ -40,7 +40,7 @@ const ColumnPatternsInspector = props => {
 		onChange,
 		breakpoint,
 		toolbar = false,
-		removeColumnGap,
+		removeColumnGap = false,
 	} = props;
 
 	const [numCol, setNumCol] = useState(1);
@@ -134,7 +134,7 @@ const ColumnPatternsInspector = props => {
 		const newColumnsSizes = [];
 		const columnsPositions = getColumnsPositions(sizes);
 
-		const gap = !removeColumnGap ? 2.5 : 0;
+		const gap = removeColumnGap ? 0 : 2.5;
 
 		sizes.forEach((column, i) => {
 			if (columnsPositions[i].columnsNumber > 1) {
@@ -208,7 +208,7 @@ const ColumnPatternsInspector = props => {
 					{numCol !== 1 && breakpoint === 'general' && (
 						<FancyRadioControl
 							label={__('Remove Gap', 'maxi-blocks')}
-							selected={+props.removeColumnGap}
+							selected={+removeColumnGap}
 							options={[
 								{ label: __('Yes', 'maxi-blocks'), value: 1 },
 								{ label: __('No', 'maxi-blocks'), value: 0 },
@@ -217,7 +217,7 @@ const ColumnPatternsInspector = props => {
 								onChange({ removeColumnGap: !!+val });
 								loadColumnsTemplate(
 									props['row-pattern-general'],
-									removeColumnGap,
+									!!+val,
 									clientId,
 									breakpoint
 								);

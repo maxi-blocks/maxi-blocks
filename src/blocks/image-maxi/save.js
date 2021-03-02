@@ -29,8 +29,8 @@ const save = props => {
 		captionContent,
 		mediaID,
 		mediaURL,
-		mediaWidth,
-		mediaHeight,
+		// mediaWidth,
+		// mediaHeight,
 		mediaAlt,
 		mediaAltWp,
 		mediaAltTitle,
@@ -97,8 +97,8 @@ const save = props => {
 					<img
 						className={`wp-image-${mediaID}`}
 						src={mediaURL}
-						width={mediaWidth}
-						height={mediaHeight}
+						// width={mediaWidth}
+						// height={mediaHeight}
 						alt={imageAlt()}
 					/>
 				)) || <RawHTML>{SVGElement}</RawHTML>}

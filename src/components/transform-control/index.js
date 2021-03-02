@@ -159,6 +159,10 @@ const TransformControl = props => {
 										'transform-scale-x': x,
 										'transform-scale-y': y,
 									});
+									onChange({
+										[`transform-scale-x-${breakpoint}`]: x,
+										[`transform-scale-y-${breakpoint}`]: y,
+									});
 									forceStyles();
 								}}
 								onSave={(x, y) => {
@@ -213,6 +217,12 @@ const TransformControl = props => {
 										'transform-translate-y': y,
 										'transform-translate-y-unit': yUnit,
 									});
+									onChange({
+										[`transform-translate-x-${breakpoint}`]: x,
+										[`transform-translate-x-unit-${breakpoint}`]: xUnit,
+										[`transform-translate-y-${breakpoint}`]: y,
+										[`transform-translate-y-unit-${breakpoint}`]: yUnit,
+									});
 									forceStyles();
 								}}
 								onSave={(x, y, xUnit, yUnit) => {
@@ -262,6 +272,11 @@ const TransformControl = props => {
 									'transform-rotate-z'
 								)}
 								onChange={(x, y, z) => {
+									onChangeTransform({
+										'transform-rotate-x': x,
+										'transform-rotate-y': y,
+										'transform-rotate-z': z,
+									});
 									onChange({
 										[`transform-rotate-x-${breakpoint}`]: x,
 										[`transform-rotate-y-${breakpoint}`]: y,

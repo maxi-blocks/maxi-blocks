@@ -34,7 +34,7 @@ const BackgroundContent = props => {
 
 	return (
 		<Fragment>
-			{!layers || layers.length <= 0 ? (
+			{!props['background-layers-status'] ? (
 				<Fragment>
 					{!isHover && (
 						<div

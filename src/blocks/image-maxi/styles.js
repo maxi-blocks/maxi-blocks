@@ -244,9 +244,7 @@ const getStyles = props => {
 		[`${uniqueID}:hover .maxi-block-hover-wrapper img`]: getImageHoverObject(
 			props
 		),
-		[`${uniqueID} .maxi-block-hover-wrapper img`]: getImageBackendObject(
-			props
-		),
+		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageBackendObject(props),
 		[`${uniqueID} .maxi-block-hover-wrapper svg`]: getImageBackendObject(
 			props
 		),

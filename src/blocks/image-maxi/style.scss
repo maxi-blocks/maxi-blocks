@@ -4,8 +4,9 @@ body.maxi-blocks--active figure.maxi-image-block {
 	flex-direction: column;
 
 	.maxi-block-hover-wrapper {
+		display: flex;
+		flex-direction: inherit;
 		width: 100%;
-		min-width: 100%;
 		overflow: hidden;
 		position: relative;
 	}

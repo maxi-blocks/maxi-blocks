@@ -62,8 +62,6 @@ const DividerControl = props => {
 		},
 	};
 
-	console.log(props['divider-width']);
-
 	return (
 		<Fragment>
 			<DefaultStylesControl

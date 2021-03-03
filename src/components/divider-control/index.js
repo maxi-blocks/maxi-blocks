@@ -62,6 +62,8 @@ const DividerControl = props => {
 		},
 	};
 
+	console.log(props['divider-width']);
+
 	return (
 		<Fragment>
 			<DefaultStylesControl
@@ -86,7 +88,12 @@ const DividerControl = props => {
 						),
 						onChange: () => {
 							if (lineOrientation === 'horizontal')
-								onChange(dividerSolidHorizontal);
+								onChange({
+									...dividerSolidHorizontal,
+									'divider-width': props['divider-width'],
+									'divider-width-unit':
+										props['divider-width-unit'],
+								});
 							else onChange(dividerSolidVertical);
 						},
 					},
@@ -100,7 +107,12 @@ const DividerControl = props => {
 						),
 						onChange: () => {
 							if (lineOrientation === 'horizontal')
-								onChange(dividerDashedHorizontal);
+								onChange({
+									...dividerDashedHorizontal,
+									'divider-width': props['divider-width'],
+									'divider-width-unit':
+										props['divider-width-unit'],
+								});
 							else onChange(dividerDashedVertical);
 						},
 					},
@@ -114,7 +126,12 @@ const DividerControl = props => {
 						),
 						onChange: () => {
 							if (lineOrientation === 'horizontal')
-								onChange(dividerDottedHorizontal);
+								onChange({
+									...dividerDottedHorizontal,
+									'divider-width': props['divider-width'],
+									'divider-width-unit':
+										props['divider-width-unit'],
+								});
 							else onChange(dividerDottedVertical);
 						},
 					},

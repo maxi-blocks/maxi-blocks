@@ -5,8 +5,6 @@ export const dividerSolidHorizontal = {
 	'divider-border-unit-width': 'px',
 	'divider-border-right-width': 2,
 	'divider-border-radius': 20,
-	'divider-width': 50,
-	'divider-width-unit': 'px',
 	'divider-heigh': 100,
 	'divider-height-unit': '%',
 };
@@ -18,8 +16,6 @@ export const dividerDottedHorizontal = {
 	'divider-border-unit-width': 'px',
 	'divider-border-right-width': 2,
 	'divider-border-radius': 20,
-	'divider-width': 50,
-	'divider-width-unit': 'px',
 	'divider-heigh': 100,
 	'divider-height-unit': '%',
 };
@@ -31,8 +27,6 @@ export const dividerDashedHorizontal = {
 	'divider-border-unit-width': 'px',
 	'divider-border-right-width': 2,
 	'divider-border-radius': 20,
-	'divider-width': 50,
-	'divider-width-unit': 'px',
 	'divider-heigh': 100,
 	'divider-height-unit': '%',
 };
@@ -83,8 +77,8 @@ export const dividerNone = {
 	'divider-border-unit-width': 'px',
 	'divider-border-right-width': 2,
 	'divider-border-radius': 20,
-	'divider-width': 100,
-	'divider-width-unit': '%',
-	'divider-heigh': 100,
-	'divider-height-unit': '%',
+	'divider-width': 50,
+	'divider-width-unit': 'px',
+	'divider-heigh': 50,
+	'divider-height-unit': 'px',
 };

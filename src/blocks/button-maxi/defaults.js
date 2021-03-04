@@ -26,8 +26,6 @@ export const preset1 = {
 	/* Icon */
 	'icon-position': 'right',
 	'icon-spacing': 10,
-	'icon-color': '#fff',
-	'icon-border-color-general': '',
 	'icon-border-style-general': 'none',
 	'icon-border-top-width-general': '',
 	'icon-border-right-width-general': '',
@@ -76,8 +74,6 @@ export const preset2 = {
 	/* Icon */
 	'icon-position': 'right',
 	'icon-spacing': 10,
-	'icon-color': '#fff',
-	'icon-border-color-general': '',
 	'icon-border-style-general': 'none',
 	'icon-border-top-width-general': '',
 	'icon-border-right-width-general': '',
@@ -126,8 +122,6 @@ export const preset3 = {
 	/* icon */
 	'icon-position': 'right',
 	'icon-spacing': 10,
-	'icon-color': '#fff',
-	'icon-border-color-general': '',
 	'icon-border-style-general': 'none',
 	'icon-border-top-width-general': '',
 	'icon-border-right-width-general': '',
@@ -176,8 +170,6 @@ export const preset4 = {
 	/* Icon */
 	'icon-position': 'right',
 	'icon-spacing': 10,
-	'icon-color': '#fff',
-	'icon-border-color-general': '',
 	'icon-border-style-general': 'none',
 	'icon-border-top-width-general': '',
 	'icon-border-right-width-general': '',
@@ -226,8 +218,6 @@ export const preset5 = {
 	/* icon */
 	'icon-position': 'right',
 	'icon-spacing': 10,
-	'icon-color': '#fff',
-	'icon-border-color-general': '#fff',
 	'icon-border-style-general': 'solid',
 	'icon-border-top-width-general': 1,
 	'icon-border-right-width-general': 1,
@@ -276,8 +266,6 @@ export const preset6 = {
 	/* icon */
 	'icon-position': 'left',
 	'icon-spacing': 10,
-	'icon-color': '#fff',
-	'icon-border-color-general': '',
 	'icon-border-style-general': 'none',
 	'icon-border-top-width-general': '',
 	'icon-border-right-width-general': '',

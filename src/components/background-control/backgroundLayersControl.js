@@ -200,7 +200,12 @@ const BackgroundLayersControl = ({
 							'background-layers-status',
 							isHover,
 							prefix
-						)]: val,
+						)]: !!+val,
+						[getAttributeKey(
+							'background-active-media',
+							isHover,
+							prefix
+						)]: !!+val ? 'layers' : '',
 					})
 				}
 			/>

@@ -46,7 +46,7 @@ import DefaultStylesControl from '../default-styles-control';
 /**
  * Component
  */
-const FontIconControl = (props, isHover = false) => {
+const FontIconControl = props => {
 	const {
 		className,
 		onChange,

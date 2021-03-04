@@ -711,7 +711,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': val,
+																					'box-shadow-status-hover': !!+val,
 																				}
 																			)
 																		}
@@ -841,32 +841,42 @@ const Inspector = props => {
 														SVGCurrentElement
 													}
 													onChange={SVGOptions => {
-														const SVGValue = !isObject(
-															SVGOptions.SVGData
-														)
-															? SVGOptions.SVGData
-															: SVGOptions.SVGData;
+														if (
+															!isEmpty(SVGOptions)
+														) {
+															const SVGValue = !isObject(
+																SVGOptions.SVGData
+															)
+																? SVGOptions.SVGData
+																: SVGOptions.SVGData;
 
-														const el = Object.keys(
-															SVGValue
-														)[0];
-
-														SVGValue[
-															el
-														].imageID = mediaID;
-														SVGValue[
-															el
-														].imageURL = mediaURL;
-
-														setAttributes({
-															...SVGOptions,
-															SVGCurrentElement:
-																SVGOptions.SVGCurrentElement,
-															SVGElement: injectImgSVG(
-																SVGOptions.SVGElement,
+															const el = Object.keys(
 																SVGValue
-															).outerHTML,
-														});
+															)[0];
+
+															SVGValue[
+																el
+															].imageID = mediaID;
+															SVGValue[
+																el
+															].imageURL = mediaURL;
+
+															setAttributes({
+																...SVGOptions,
+																SVGCurrentElement:
+																	SVGOptions.SVGCurrentElement,
+																SVGElement: injectImgSVG(
+																	SVGOptions.SVGElement,
+																	SVGValue
+																).outerHTML,
+															});
+														} else {
+															setAttributes({
+																SVGCurrentElement:
+																	'',
+																SVGElement: '',
+															});
+														}
 													}}
 												/>
 											),

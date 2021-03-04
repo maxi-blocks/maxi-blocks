@@ -369,7 +369,7 @@ const setBackgroundLayers = ({
 				Object.assign(response, {
 					[layerTarget]: {
 						backgroundGradient: {
-							...getColorBackgroundObject(
+							...getGradientBackgroundObject(
 								getGroupAttributes(layer, 'backgroundGradient')
 							),
 							prefix,

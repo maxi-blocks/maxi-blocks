@@ -2,12 +2,14 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { ColorPicker, Icon } = wp.components;
+const { Icon } = wp.components;
 
 /**
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
+import ColorControl from '../../../color-control';
+import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * Icons
@@ -18,7 +20,7 @@ import { toolbarDividerSetting } from '../../../../icons';
  * DividerColor
  */
 const DividerColor = props => {
-	const { blockName, onChange, color } = props;
+	const { blockName, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
@@ -30,7 +32,7 @@ const DividerColor = props => {
 				<div
 					className='toolbar-item__text-options__icon'
 					style={{
-						background: color,
+						background: props['divider-border-color'],
 						borderWidth: '1px',
 						borderColor: '#fff',
 						borderStyle: 'solid',
@@ -43,11 +45,12 @@ const DividerColor = props => {
 				</div>
 			}
 			content={
-				<ColorPicker
-					color={color}
-					onChangeComplete={val =>
-						onChange({ 'divider-border-color': val.hex })
-					}
+				<ColorControl
+					label={__('Divider', 'maxi-blocks')}
+					color={props['divider-border-color']}
+					defaultColor={getDefaultAttribute('border-color')}
+					onChange={val => onChange({ 'divider-border-color': val })}
+					disableGradient
 				/>
 			}
 		/>

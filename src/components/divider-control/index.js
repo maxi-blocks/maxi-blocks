@@ -86,12 +86,7 @@ const DividerControl = props => {
 						),
 						onChange: () => {
 							if (lineOrientation === 'horizontal')
-								onChange({
-									...dividerSolidHorizontal,
-									'divider-width': props['divider-width'],
-									'divider-width-unit':
-										props['divider-width-unit'],
-								});
+								onChange(dividerSolidHorizontal);
 							else onChange(dividerSolidVertical);
 						},
 					},
@@ -105,12 +100,7 @@ const DividerControl = props => {
 						),
 						onChange: () => {
 							if (lineOrientation === 'horizontal')
-								onChange({
-									...dividerDashedHorizontal,
-									'divider-width': props['divider-width'],
-									'divider-width-unit':
-										props['divider-width-unit'],
-								});
+								onChange(dividerDashedHorizontal);
 							else onChange(dividerDashedVertical);
 						},
 					},
@@ -124,12 +114,7 @@ const DividerControl = props => {
 						),
 						onChange: () => {
 							if (lineOrientation === 'horizontal')
-								onChange({
-									...dividerDottedHorizontal,
-									'divider-width': props['divider-width'],
-									'divider-width-unit':
-										props['divider-width-unit'],
-								});
+								onChange(dividerDottedHorizontal);
 							else onChange(dividerDottedVertical);
 						},
 					},

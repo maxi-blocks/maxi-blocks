@@ -710,7 +710,7 @@ const Inspector = props => {
 																		onChange={val => {
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': !!val,
+																					'box-shadow-status-hover': !!+val,
 																				}
 																			);
 																		}}

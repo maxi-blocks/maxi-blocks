@@ -42,9 +42,11 @@ const OpacityControl = props => {
 		<RangeSliderControl
 			label={isEmpty(label) ? __('Opacity', 'maxi-blocks') : label}
 			className={classes}
-			value={opacity * 100}
+			value={round(opacity * 100, 2)}
 			defaultValue={defaultOpacity}
-			onChange={val => onChange(round(val / 100, 2))}
+			onChange={val => {
+				onChange(round(val / 100, 2));
+			}}
 			min={0}
 			max={100}
 			allowReset

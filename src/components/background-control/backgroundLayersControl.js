@@ -189,7 +189,7 @@ const BackgroundLayersControl = ({
 		<div className='maxi-background-control__layers'>
 			<FancyRadioControl
 				label={__('Use layers', 'maxi-blocks')}
-				selected={+layersStatus}
+				selected={layersStatus}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },

@@ -64,7 +64,7 @@ const TimelinePresets = props => {
 		<div className='maxi-motion-control__preset'>
 			<FancyRadioControl
 				label={__('Preset', 'maxi-blocks')}
-				selected={+props['motion-preset-status']}
+				selected={props['motion-preset-status']}
 				options={[
 					{
 						label: __('Yes', 'maxi-blocks'),
@@ -75,7 +75,7 @@ const TimelinePresets = props => {
 						value: 0,
 					},
 				]}
-				onChange={val => onChange({ 'motion-preset-status': !!+val })}
+				onChange={val => onChange({ 'motion-preset-status': val })}
 			/>
 			{props['motion-preset-status'] && (
 				<Fragment>

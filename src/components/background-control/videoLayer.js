@@ -111,7 +111,7 @@ const VideoLayer = props => {
 			<FancyRadioControl
 				label={__('Loop', 'maxi-blocks')}
 				selected={
-					+videoOptions[
+					videoOptions[
 						getAttributeKey(
 							'background-video-loop',
 							isHover,
@@ -144,14 +144,14 @@ const VideoLayer = props => {
 							'background-video-loop',
 							isHover,
 							prefix
-						)]: !!val,
+						)]: val,
 					})
 				}
 			/>
 			<FancyRadioControl
 				label={__('Play on Mobile', 'maxi-blocks')}
 				selected={
-					+videoOptions[
+					videoOptions[
 						getAttributeKey(
 							'background-video-playOnMobile',
 							isHover,
@@ -175,7 +175,7 @@ const VideoLayer = props => {
 							'background-video-playOnMobile',
 							isHover,
 							prefix
-						)]: !!val,
+						)]: val,
 					})
 				}
 			/>

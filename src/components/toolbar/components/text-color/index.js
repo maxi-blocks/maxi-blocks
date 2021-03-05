@@ -2,19 +2,21 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { ColorPicker, Icon } = wp.components;
+const { Icon } = wp.components;
 const { useState } = wp.element;
 
 /**
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
+import ColorControl from '../../../color-control';
 import {
 	setFormat,
 	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
 import {
 	getGroupAttributes,
+	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
 
@@ -90,7 +92,9 @@ const TextColor = props => {
 				</div>
 			}
 			content={
-				<ColorPicker
+				<ColorControl
+					label={__('Text', 'maxi-blocks')}
+					defaultColor={getDefaultAttribute('color')}
 					color={
 						color ||
 						getLastBreakpointAttribute(
@@ -99,7 +103,11 @@ const TextColor = props => {
 							typography
 						)
 					}
-					onChangeComplete={obj => onClick(obj)}
+					onChange={val =>
+						onChange({
+							[`color-${breakpoint}`]: val,
+						})
+					}
 				/>
 			}
 		/>

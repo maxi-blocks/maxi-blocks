@@ -7,6 +7,7 @@ const { BaseControl, Button } = wp.components;
  * Internal dependencies
  */
 import { reset } from '../../icons';
+import NumberInputControl from '../number-input-control';
 
 /**
  * External dependencies
@@ -31,19 +32,11 @@ const NumberControl = props => {
 
 	return (
 		<BaseControl label={label} className={classes}>
-			<input
-				type='number'
-				value={value || ''}
-				onChange={e => {
-					let value = +e.target.value;
-
-					if (value > max) value = max;
-					if (value < min) value = min;
-
-					onChange(value);
-				}}
+			<NumberInputControl
+				value={value}
 				min={min}
 				max={max}
+				onChange={val => onChange(val)}
 			/>
 			<Button
 				className='components-maxi-control__reset-button'

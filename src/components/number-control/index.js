@@ -7,7 +7,7 @@ const { BaseControl, Button } = wp.components;
  * Internal dependencies
  */
 import { reset } from '../../icons';
-import NumberInputControl from '../number-input-control';
+import NumberInput from '../number-input';
 
 /**
  * External dependencies
@@ -22,7 +22,7 @@ const NumberControl = props => {
 		label,
 		className,
 		value,
-		defaultValue,
+		defaultValue = '',
 		min = -999,
 		max = 999,
 		onChange,
@@ -32,7 +32,7 @@ const NumberControl = props => {
 
 	return (
 		<BaseControl label={label} className={classes}>
-			<NumberInputControl
+			<NumberInput
 				value={value}
 				min={min}
 				max={max}

@@ -38,10 +38,6 @@ const divider = {
 		type: 'number',
 		default: 100,
 	},
-	'divider-height-unit': {
-		type: 'string',
-		default: '%',
-	},
 };
 
 export default divider;

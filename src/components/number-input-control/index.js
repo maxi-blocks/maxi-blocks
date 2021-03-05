@@ -33,13 +33,15 @@ const NumberInputControl = props => {
 
 	useEffect(() => {
 		if (isNil(value)) setCounter('');
+		if (value === 'auto') setCounter('auto');
 	});
 
 	return (
 		<div className={classes}>
 			<button
 				onClick={() => {
-					let value = round(+counter + step, 2);
+					let value =
+						counter === 'auto' ? 0 : round(+counter + step, 2);
 
 					if (value > max) value = max;
 					if (value < min) value = min;
@@ -52,7 +54,8 @@ const NumberInputControl = props => {
 			</button>
 			<button
 				onClick={() => {
-					let value = round(+counter - step, 2);
+					let value =
+						counter === 'auto' ? 0 : round(+counter - step, 2);
 
 					if (value > max) value = max;
 					if (value < min) value = min;

@@ -39,6 +39,7 @@ const NumberInputControl = props => {
 	return (
 		<div className={classes}>
 			<button
+				className='maxi-number-input-control__spinner maxi-number-input-control__spinner--up'
 				onClick={() => {
 					let value =
 						counter === 'auto' ? 0 : round(+counter + step, 2);
@@ -50,9 +51,10 @@ const NumberInputControl = props => {
 					onChange(value);
 				}}
 			>
-				+
+				<div class='maxi-number-input-control__spinner--up__arrow'></div>
 			</button>
 			<button
+				className='maxi-number-input-control__spinner maxi-number-input-control__spinner--down'
 				onClick={() => {
 					let value =
 						counter === 'auto' ? 0 : round(+counter - step, 2);
@@ -64,7 +66,7 @@ const NumberInputControl = props => {
 					onChange(value);
 				}}
 			>
-				-
+				<div class='maxi-number-input-control__spinner--down__arrow'></div>
 			</button>
 			<input
 				type='text'

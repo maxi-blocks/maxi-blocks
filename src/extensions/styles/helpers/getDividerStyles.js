@@ -32,7 +32,7 @@ const getDividerStyles = (obj, target) => {
 					'border-right-width'
 				] = `${obj['divider-border-right-width']}${obj['divider-border-right-unit']}`;
 			if (!isNil(obj['divider-height']))
-				response.general.height = `${obj['divider-height']}${obj['divider-height-unit']}`;
+				response.general.height = `${obj['divider-height']}%}`;
 		}
 
 		if (obj['divider-border-radius'])

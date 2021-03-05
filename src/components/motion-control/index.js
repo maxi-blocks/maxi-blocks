@@ -36,24 +36,24 @@ const MotionControl = props => {
 		<div className={classes}>
 			<FancyRadioControl
 				label={__('Use Motion Effects', 'maxi-blocks')}
-				selected={+props['motion-status']}
+				selected={props['motion-status']}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => onChange({ 'motion-status': !!+val })}
+				onChange={val => onChange({ 'motion-status': val })}
 			/>
 			{props['motion-status'] && (
 				<Fragment>
 					<FancyRadioControl
 						label={__('Preview', 'maxi-blocks')}
-						selected={+props['motion-preview-status']}
+						selected={props['motion-preview-status']}
 						options={[
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
 						onChange={val =>
-							onChange({ 'motion-preview-status': !!+val })
+							onChange({ 'motion-preview-status': val })
 						}
 					/>
 					<TimelinePresets

@@ -126,15 +126,13 @@ const FullSizeControl = props => {
 			/>
 			<FancyRadioControl
 				label={__('Advanced Width/Height', 'maxi-blocks')}
-				selected={+props[`${prefix}size-advanced-options`]}
+				selected={props[`${prefix}size-advanced-options`]}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
 				onChange={val => {
-					onChange({
-						[`${prefix}size-advanced-options`]: !!+val,
-					});
+					onChange({ [`${prefix}size-advanced-options`]: val });
 					if (!Number(val)) {
 						onChangeValue(
 							[

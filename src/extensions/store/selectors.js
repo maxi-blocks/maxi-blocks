@@ -15,10 +15,6 @@ const selectors = {
 		if (state) return state.copiedStyles;
 		return false;
 	},
-	receiveMaxiStyleCards(state) {
-		if (state) return state.styleCards;
-		return false;
-	},
 };
 
 export default selectors;

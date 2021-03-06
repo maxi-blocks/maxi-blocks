@@ -9,6 +9,7 @@
 		"lint": "eslint --fix src/*"
 	},
 	"dependencies": {
+		"@absolunet/json-to-scss": "^1.0.0",
 		"@wordpress/compose": "^3.24.4",
 		"@wordpress/icons": "^1.4.0",
 		"@wordpress/media-utils": "^1.19.5",

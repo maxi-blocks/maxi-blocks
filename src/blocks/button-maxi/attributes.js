@@ -7,7 +7,6 @@ const { __ } = wp.i18n;
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-
 /**
  * Attributes
  */
@@ -40,8 +39,20 @@ const attributes = {
 	...attributesData.textAlignment,
 	...attributesData.typography,
 	...attributesData.typographyHover,
-	...attributesData.background,
-	...attributesData.backgroundColor,
+	...{
+		...attributesData.background,
+		'background-active-media': {
+			type: 'string',
+			default: 'color',
+		},
+	},
+	...{
+		...attributesData.backgroundColor,
+		'background-color': {
+			type: 'string',
+			default: '#ffffff',
+		},
+	},
 	...attributesData.backgroundGradient,
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,

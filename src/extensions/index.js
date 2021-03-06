@@ -5,3 +5,4 @@ import './save';
 import './store';
 import './styles';
 import './text';
+import './style-cards';

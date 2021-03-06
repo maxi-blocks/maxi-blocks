@@ -8,6 +8,7 @@ const { getBlockAttributes } = wp.blocks;
  * External dependencies
  */
 import { isString, isArray, isNil } from 'lodash';
+import getStyleCardAttr from './defaults/style-card';
 
 /**
  * Returns the block name if they are all the same
@@ -44,7 +45,23 @@ const getDefaultAttribute = (prop, clientIds = null) => {
 	else if (isNil(clientIds))
 		blockName = getBlocksName(getSelectedBlockClientIds());
 
-	if (blockName) return getBlockAttributes(blockName)[prop];
+	console.log(getStyleCardAttr());
+	console.log('blockName: ' + blockName);
+	// if (blockName) console.log('prop:' + prop + '    defautl attr: ' + getBlockAttributes(blockName)[prop]);
+	if (prop === 'background-color') {
+		console.log('background-color');
+		return '#ffffff';
+	}
+	if (prop === 'color-general') {
+		console.log('color-general');
+		return '#000000';
+	}
+	// else {
+	// if (blockName) {
+	// 	console.log('returned: ' + getBlockAttributes(blockName)[prop]);
+	// 	return getBlockAttributes(blockName)[prop];
+	// }
+	// }
 
 	return null;
 };

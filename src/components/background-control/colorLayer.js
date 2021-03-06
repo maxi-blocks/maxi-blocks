@@ -24,6 +24,10 @@ const colorLayer = props => {
 
 	const colorOptions = cloneDeep(props.colorOptions);
 
+	const testDefaultColor = getDefaultAttribute(getAttributeKey('background-color', isHover, prefix));
+
+	console.log('testDefaultColor: ' + testDefaultColor);
+
 	return (
 		<Fragment>
 			<ColorControl

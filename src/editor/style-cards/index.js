@@ -24,8 +24,6 @@ import {
 
 import attributes from './attributes';
 
-console.log('attributes: ' + JSON.stringify(attributes));
-
 const MaxiStyleCardsEditor = withState({
 	isVisible: false,
 })(({ isVisible, setState }) => {
@@ -37,16 +35,13 @@ const MaxiStyleCardsEditor = withState({
 
 	const [styleCardName, setStyleCardName] = useState('');
 	const [styleCardLoad, setStyleCardLoad] = useState('');
-	const { saveMaxiStyleCards } = useDispatch('maxiBlocks');
+	const { saveMaxiStyleCards,  receiveMaxiStyleCards } = useDispatch('maxiBlocks/style-cards');
+
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
-	const { styleCards } = useSelect(select => {
-		const { receiveMaxiStyleCards } = select('maxiBlocks');
+	const styleCards = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 
-		return {
-			styleCards: receiveMaxiStyleCards(),
-		};
-	});
+	//console.log('styleCards: ' + JSON.stringify(styleCards));
 
 	const getStyleCards = () => {
 		switch (typeof styleCards) {
@@ -63,15 +58,40 @@ const MaxiStyleCardsEditor = withState({
 	};
 
 	const getStyleCardsOptions = () => {
-		const styleCardsArr = [
-			{ label: __('Select Style Card', 'maxi-blocks'), value: '' },
-		];
+		const styleCardsArr = [{}];
 
 		forIn(getStyleCards(), (value, key) =>
 			styleCardsArr.push({ label: value.name, value: key })
 		);
 		return styleCardsArr;
 	};
+
+	const getStyleCardCurrent = () => {
+		let styleCardCurrent = '';
+		const allStyleCards = getStyleCards();
+
+		forIn(allStyleCards, function get(value, key) {
+			if (value.status === 'active') styleCardCurrent = key;
+		});
+
+		return styleCardCurrent;
+	};
+
+	const setStyleCardCurrent = card => {
+		let styleCardCurrent = '';
+		const allStyleCards = getStyleCards();
+
+		forIn(allStyleCards, function get(value, key) {
+			if (value.status === 'active' && card !== key) value.status = '';
+			if (card === key) value.status === 'active';
+		});
+
+		console.log('allStyleCards' + JSON.stringify(allStyleCards));
+
+		return allStyleCards;
+	};
+
+	//console.log('getStyleCardCurrent: ' + getStyleCardCurrent());
 
 	return (
 		<Fragment>
@@ -106,9 +126,9 @@ const MaxiStyleCardsEditor = withState({
 						</Button>
 						<div className='maxi-style-cards__sc--three'>
 							<SelectControl
-								value={styleCardLoad}
+								value={getStyleCardCurrent()}
 								options={getStyleCardsOptions()}
-								onChange={val => setStyleCardLoad(val)}
+								onChange={val => {setStyleCardLoad(val); setStyleCardCurrent(val)}}
 							/>
 							<Button
 								className='maxi-style-cards-control__sc--reset'

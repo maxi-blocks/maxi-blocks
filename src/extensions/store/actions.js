@@ -67,22 +67,5 @@ const actions = {
 			copiedStyles,
 		};
 	},
-	sendMaxiStyleCards(styleCards) {
-		return {
-			type: 'SEND_STYLE_CARDS',
-			styleCards,
-		};
-	},
-	receiveMaxiStyleCards() {
-		return {
-			type: 'RECEIVE_STYLE_CARDS',
-		};
-	},
-	saveMaxiStyleCards(styleCards) {
-		return {
-			type: 'SAVE_STYLE_CARDS',
-			styleCards,
-		};
-	},
 };
 export default actions;

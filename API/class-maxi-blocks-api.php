@@ -247,14 +247,20 @@ if (!class_exists('MaxiBlocksAPI')) :
 		}
 
 		public function get_maxi_blocks_current_style_cards() {
+			if (!get_option('maxi_style_cards') || get_option('maxi_style_cards') === '') {
+				require_once (dirname(__FILE__) . '/style-cards/default-style-card-maxi.php');
+				$defaultStyleCard = getDefaultStyleCard();
+				update_option('maxi_style_cards', $defaultStyleCard);
+			}
+
 			return get_option('maxi_style_cards');
 		}
 
 		public function set_maxi_blocks_current_style_cards($request) {
 			$request_result = $request->get_json_params();
-			$result = $request_result;
+			//$result = $request_result;
 
-			return update_option('maxi_style_cards', $result['styleCards']);
+			return update_option('maxi_style_cards', $request_result['styleCards']);
 		}
 
 		public function get_maxi_blocks_current_global_motion_presets() {

@@ -91,6 +91,7 @@ const DisplayControl = props => {
 				label={__('Display block', 'maxi-blocks')}
 				selected={getValue()}
 				options={getOptions()}
+				optionType='string'
 				onChange={val =>
 					onChange({
 						[`display-${breakpoint}`]: !isEmpty(val) ? val : null,

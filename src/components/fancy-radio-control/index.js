@@ -6,6 +6,7 @@ const { RadioControl } = wp.components;
 /**
  * External dependencies
  */
+import { isEmpty } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -18,12 +19,13 @@ import './editor.scss';
  */
 const FancyRadioControl = props => {
 	const {
+		optionType = 'boolean',
 		className,
 		fullWidthMode = false,
 		label = '',
-		selected,
-		options,
 		onChange,
+		options,
+		selected,
 		type = 'fancy',
 	} = props;
 
@@ -40,9 +42,26 @@ const FancyRadioControl = props => {
 		<div className={classes}>
 			<RadioControl
 				label={label}
-				selected={selected}
+				selected={
+					typeof options[0].value === 'number' ? +selected : selected
+				}
 				options={options}
-				onChange={onChange}
+				onChange={val => {
+					switch (optionType) {
+						case 'boolean':
+							onChange(!!+val);
+							break;
+						case 'string':
+							onChange(val.toString());
+							break;
+						case 'number':
+							onChange(+val);
+							break;
+						default:
+							onChange(val);
+							break;
+					}
+				}}
 			/>
 		</div>
 	);

@@ -429,7 +429,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			+attributes[
+																			attributes[
 																				'background-status-hover'
 																			]
 																		}
@@ -452,7 +452,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover': !!+val,
+																					'background-status-hover': val,
 																				}
 																			)
 																		}
@@ -532,7 +532,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			+attributes[
+																			attributes[
 																				'border-status-hover'
 																			]
 																		}
@@ -555,7 +555,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'border-status-hover': !!+val,
+																					'border-status-hover': val,
 																				}
 																			)
 																		}
@@ -622,6 +622,7 @@ const Inspector = props => {
 																		'full',
 																},
 															]}
+															optionType='string'
 															onChange={fullWidth =>
 																setAttributes({
 																	fullWidth,
@@ -687,7 +688,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			+attributes[
+																			attributes[
 																				'box-shadow-status-hover'
 																			]
 																		}
@@ -707,13 +708,13 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		onChange={val => {
+																		onChange={val =>
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': !!val,
+																					'box-shadow-status-hover': !!+val,
 																				}
-																			);
-																		}}
+																			)
+																		}
 																	/>
 																	{attributes[
 																		'box-shadow-status-hover'
@@ -840,32 +841,42 @@ const Inspector = props => {
 														SVGCurrentElement
 													}
 													onChange={SVGOptions => {
-														const SVGValue = !isObject(
-															SVGOptions.SVGData
-														)
-															? SVGOptions.SVGData
-															: SVGOptions.SVGData;
+														if (
+															!isEmpty(SVGOptions)
+														) {
+															const SVGValue = !isObject(
+																SVGOptions.SVGData
+															)
+																? SVGOptions.SVGData
+																: SVGOptions.SVGData;
 
-														const el = Object.keys(
-															SVGValue
-														)[0];
-
-														SVGValue[
-															el
-														].imageID = mediaID;
-														SVGValue[
-															el
-														].imageURL = mediaURL;
-
-														setAttributes({
-															...SVGOptions,
-															SVGCurrentElement:
-																SVGOptions.SVGCurrentElement,
-															SVGElement: injectImgSVG(
-																SVGOptions.SVGElement,
+															const el = Object.keys(
 																SVGValue
-															).outerHTML,
-														});
+															)[0];
+
+															SVGValue[
+																el
+															].imageID = mediaID;
+															SVGValue[
+																el
+															].imageURL = mediaURL;
+
+															setAttributes({
+																...SVGOptions,
+																SVGCurrentElement:
+																	SVGOptions.SVGCurrentElement,
+																SVGElement: injectImgSVG(
+																	SVGOptions.SVGElement,
+																	SVGValue
+																).outerHTML,
+															});
+														} else {
+															setAttributes({
+																SVGCurrentElement:
+																	'',
+																SVGElement: '',
+															});
+														}
 													}}
 												/>
 											),

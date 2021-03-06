@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __, sprintf } = wp.i18n;
-const { ColorPicker, BaseControl, Button } = wp.components;
+const { BaseControl, Button } = wp.components;
 const { useState, useEffect } = wp.element;
 
 /**
@@ -13,6 +13,7 @@ import RangeSliderControl from '../range-slider-control';
 /**
  * External dependencies
  */
+import ChromePicker from 'react-color';
 import { isEmpty } from 'lodash';
 import classnames from 'classnames';
 
@@ -128,7 +129,7 @@ const ColorControl = props => {
 				initialPosition={100}
 			/>
 			<div className='maxi-color-control__color'>
-				<ColorPicker
+				<ChromePicker
 					color={currentColor}
 					onChangeComplete={val => {
 						onChange(returnColor(val, colorAlpha));

@@ -49,7 +49,10 @@ import {
  * Styles
  */
 import './editor.scss';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * General
@@ -171,7 +174,7 @@ const MaxiToolbar = props => {
 						<ColumnMover clientId={clientId} blockName={name} />
 						{!attributes['border-highlight'] && (
 							<DividerColor
-								color={attributes['divider-border-color']}
+								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
 								onChange={obj => setAttributes(obj)}
 							/>
@@ -317,6 +320,10 @@ const MaxiToolbar = props => {
 								{!attributes['color1-highlight'] && (
 									<SvgColor
 										blockName={name}
+										svgColorDefault={getDefaultAttribute(
+											'svgColorOrange',
+											clientId
+										)}
 										svgColor={attributes.svgColorOrange}
 										onChange={svgColorOrange => {
 											setAttributes({
@@ -329,6 +336,10 @@ const MaxiToolbar = props => {
 								{!attributes['color2-highlight'] && (
 									<SvgColor
 										blockName={name}
+										svgColorDefault={getDefaultAttribute(
+											'svgColorBlack',
+											clientId
+										)}
 										svgColor={attributes.svgColorBlack}
 										onChange={svgColorBlack => {
 											setAttributes({

@@ -46,13 +46,7 @@ const attributes = {
 			default: 'color',
 		},
 	},
-	...{
-		...attributesData.backgroundColor,
-		'background-color': {
-			type: 'string',
-			default: '#ffffff',
-		},
-	},
+	...attributesData.backgroundColor,
 	...attributesData.backgroundGradient,
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,

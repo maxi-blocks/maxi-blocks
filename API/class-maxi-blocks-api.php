@@ -247,20 +247,48 @@ if (!class_exists('MaxiBlocksAPI')) :
 		}
 
 		public function get_maxi_blocks_current_style_cards() {
-			if (!get_option('maxi_style_cards') || get_option('maxi_style_cards') === '') {
+			// if (!get_option('maxi_style_cards') || get_option('maxi_style_cards') === '') {
+			// 	require_once (dirname(__FILE__) . '/style-cards/default-style-card-maxi.php');
+			// 	$defaultStyleCard = getDefaultStyleCard();
+			// 	update_option('maxi_style_cards', $defaultStyleCard);
+			// }
+
+			// return get_option('maxi_style_cards');
+
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'maxi_blocks_general';  // table name
+			$query = 'SELECT object FROM ' . $table_name . ' where id = "style_cards_current"';
+			$maxi_blocks_style_cards_current = $wpdb->get_var($query);
+			if ($maxi_blocks_style_cards_current && !empty($maxi_blocks_style_cards_current))
+				return $maxi_blocks_style_cards_current;
+			else {
 				require_once (dirname(__FILE__) . '/style-cards/default-style-card-maxi.php');
 				$defaultStyleCard = getDefaultStyleCard();
-				update_option('maxi_style_cards', $defaultStyleCard);
+
+				$wpdb->replace($table_name, array(
+					'id' => 'style_cards_current',
+					'object' => $defaultStyleCard,
+				));
+				$maxi_blocks_style_cards_current = $wpdb->get_var($query);
+				return $maxi_blocks_style_cards_current;
 			}
 
-			return get_option('maxi_style_cards');
 		}
 
 		public function set_maxi_blocks_current_style_cards($request) {
-			$request_result = $request->get_json_params();
-			//$result = $request_result;
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'maxi_blocks_general';  // table name
 
-			return update_option('maxi_style_cards', $request_result['styleCards']);
+			$request_result = $request->get_json_params();
+
+			$wpdb->replace($table_name, array(
+				'id' => 'style_cards_current',
+				'object' => $request_result['styleCards'],
+			));
+			//
+			// //$result = $request_result;
+
+			// return update_option('maxi_style_cards', $request_result['styleCards']);
 		}
 
 		public function get_maxi_blocks_current_global_motion_presets() {

@@ -86,12 +86,10 @@ const MaxiStyleCardsEditor = withState({
 			if (card === key) value.status === 'active';
 		});
 
-		console.log('allStyleCards' + JSON.stringify(allStyleCards));
+		//console.log('allStyleCards' + JSON.stringify(allStyleCards));
 
 		return allStyleCards;
 	};
-
-	//console.log('getStyleCardCurrent: ' + getStyleCardCurrent());
 
 	return (
 		<Fragment>

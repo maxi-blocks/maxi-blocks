@@ -45,25 +45,24 @@ const getDefaultAttribute = (prop, clientIds = null) => {
 	else if (isNil(clientIds))
 		blockName = getBlocksName(getSelectedBlockClientIds());
 
-	console.log(getStyleCardAttr());
-	console.log('blockName: ' + blockName);
-	// if (blockName) console.log('prop:' + prop + '    defautl attr: ' + getBlockAttributes(blockName)[prop]);
-	if (prop === 'background-color') {
-		console.log('background-color');
-		return '#ffffff';
+	console.log(prop);
+	// console.log(getStyleCardAttr());
+	switch (prop) {
+		case 'background-color':
+			return '#eeeeee';
+		case 'color-general':
+			return '#000000';
+		default: {
+			return getBlockAttributes(blockName)[prop];
+		}
 	}
-	if (prop === 'color-general') {
-		console.log('color-general');
-		return '#000000';
-	}
+
 	// else {
 	// if (blockName) {
 	// 	console.log('returned: ' + getBlockAttributes(blockName)[prop]);
 	// 	return getBlockAttributes(blockName)[prop];
 	// }
 	// }
-
-	return null;
 };
 
 export default getDefaultAttribute;

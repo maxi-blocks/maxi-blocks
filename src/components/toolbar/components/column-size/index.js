@@ -15,6 +15,11 @@ import {
 } from '../../../../extensions/styles';
 
 /**
+ * External dependencies
+ */
+import { round } from 'lodash';
+
+/**
  * Styles & Icons
  */
 import './editor.scss';
@@ -50,10 +55,13 @@ const ColumnSize = props => {
 							`column-size-${breakpoint}`,
 							clientId
 						)}
-						value={getLastBreakpointAttribute(
-							'column-size',
-							breakpoint,
-							attributes
+						value={round(
+							getLastBreakpointAttribute(
+								'column-size',
+								breakpoint,
+								attributes
+							),
+							2
 						)}
 						onChange={val => {
 							document.querySelector(

@@ -43,35 +43,49 @@ const SVGLayer = props => {
 										)
 									]
 								}
-								onChange={obj =>
-									onChange({
-										[getAttributeKey(
-											'background-svg-SVGCurrentElement',
-											isHover,
-											prefix
-										)]: obj.SVGCurrentElement,
-										[getAttributeKey(
-											'background-svg-SVGElement',
-											isHover,
-											prefix
-										)]: obj.SVGElement,
-										[getAttributeKey(
-											'background-svg-SVGMediaID',
-											isHover,
-											prefix
-										)]: obj.SVGMediaID,
-										[getAttributeKey(
-											'background-svg-SVGMediaURL',
-											isHover,
-											prefix
-										)]: obj.SVGMediaURL,
-										[getAttributeKey(
-											'background-svg-SVGData',
-											isHover,
-											prefix
-										)]: obj.SVGData,
-									})
-								}
+								onChange={obj => {
+									if (!isEmpty(obj))
+										onChange({
+											[getAttributeKey(
+												'background-svg-SVGCurrentElement',
+												isHover,
+												prefix
+											)]: obj.SVGCurrentElement,
+											[getAttributeKey(
+												'background-svg-SVGElement',
+												isHover,
+												prefix
+											)]: obj.SVGElement,
+											[getAttributeKey(
+												'background-svg-SVGMediaID',
+												isHover,
+												prefix
+											)]: obj.SVGMediaID,
+											[getAttributeKey(
+												'background-svg-SVGMediaURL',
+												isHover,
+												prefix
+											)]: obj.SVGMediaURL,
+											[getAttributeKey(
+												'background-svg-SVGData',
+												isHover,
+												prefix
+											)]: obj.SVGData,
+										});
+									else
+										onChange({
+											[getAttributeKey(
+												'background-svg-SVGCurrentElement',
+												isHover,
+												prefix
+											)]: '',
+											[getAttributeKey(
+												'background-svg-SVGElement',
+												isHover,
+												prefix
+											)]: '',
+										});
+								}}
 							/>
 						),
 					},

@@ -18,6 +18,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
+import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
 
 /**
  * External dependencies
@@ -29,10 +30,6 @@ import { isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
-	get getStylesObject() {
-		return getStyles(this.props.attributes);
-	}
-
 	constructor(props) {
 		super(props);
 		this.buttonRef = createRef();
@@ -40,6 +37,29 @@ class edit extends MaxiBlock {
 
 	componentDidMount() {
 		this.buttonRef.current.focus();
+
+		console.log('current attr ' + this.props.attributes['background-color']);
+
+		if(!this.props.attributes['background-color'])
+			this.props.setAttributes({
+			'background-color': '#ff4a17',
+		});
+
+		// console.log('after ' + JSON.stringify(this.props.attributes));
+
+		console.log('after change: ' + this.props.attributes['background-color']);
+	}
+
+	componentDidUpdate() {
+		this.displayStyles();
+
+		// this.props.setAttributes({
+		// 	'background-color': this.props.attributes.backgroundColor.current,
+		// });
+	}
+
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
 	}
 
 	state = {

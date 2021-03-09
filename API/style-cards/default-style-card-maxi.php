@@ -7,6 +7,11 @@ function getDefaultStyleCard() {
         "status": "active",
         "styleCard":
         {
+            "dark": {},
+            "light":{}
+        },
+        "styleCardDefaults":
+        {
             "dark":
             {
                 "background-1": "#081219",

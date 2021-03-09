@@ -7,6 +7,7 @@ const { __ } = wp.i18n;
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+
 /**
  * Attributes
  */
@@ -47,6 +48,14 @@ const attributes = {
 		},
 	},
 	...attributesData.backgroundColor,
+	// ...attributesData.backgroundColor,
+	// ...{
+	// 	...attributesData.backgroundColor,
+	// 	'background-color': {
+	// 		type: 'string',
+	// 		default: '#ff0000',
+	// 	},
+	// },
 	...attributesData.backgroundGradient,
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,

@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash';
 
 const { select } = wp.data;
 
-const getStyleCardAttr = (attribute = null, style = 'light') => {
+const getStyleCardAttr = (attribute = null, style = 'light', defaultAtt = false) => {
 	const styleCards = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 
 	const getStyleCards = () => {
@@ -22,15 +22,26 @@ const getStyleCardAttr = (attribute = null, style = 'light') => {
 	// console.log({getStyleCards} + typeof {getStyleCards});
 
 	if (typeof { getStyleCards } === 'object') {
-		//console.log('OBJECT!');
 		const styleCardsArr = Object.keys(getStyleCards()).map(key => {
-			const styleCardsArrToCheck = getStyleCards()[key].styleCard[style][
-				attribute
-			];
-			if (styleCardsArrToCheck) return styleCardsArrToCheck;
+			if (!defaultAtt) {
+				const styleCardsArrToCheck = getStyleCards()[key].styleCard[
+					style
+				][attribute];
+				if (styleCardsArrToCheck) return styleCardsArrToCheck;
+
+				const styleCardsDefaultArrToCheck = getStyleCards()[key]
+					.styleCardDefaults[style][attribute];
+				if (styleCardsDefaultArrToCheck)
+					return styleCardsDefaultArrToCheck;
+				return false;
+			}
+			const styleCardsDefaultArrToCheck = getStyleCards()[key]
+				.styleCardDefaults[style][attribute];
+			if (styleCardsDefaultArrToCheck) return styleCardsDefaultArrToCheck;
 			return false;
 		});
-		return styleCardsArr;
+
+		return styleCardsArr.toString();
 	}
 	return false;
 };

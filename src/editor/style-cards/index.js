@@ -22,6 +22,8 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 
+import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
+// TO DO: remove when components are ready
 import attributes from './attributes';
 
 const MaxiStyleCardsEditor = withState({
@@ -32,6 +34,7 @@ const MaxiStyleCardsEditor = withState({
 	};
 
 	const { isRTL } = select('core/editor').getEditorSettings();
+	// const { onChange } = props;
 
 	const [styleCardName, setStyleCardName] = useState('');
 	const [styleCardLoad, setStyleCardLoad] = useState('');
@@ -41,7 +44,7 @@ const MaxiStyleCardsEditor = withState({
 
 	const styleCards = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 
-	//console.log('styleCards: ' + JSON.stringify(styleCards));
+	console.log('styleCards: ' + JSON.stringify(styleCards));
 
 	const getStyleCards = () => {
 		switch (typeof styleCards) {
@@ -57,8 +60,10 @@ const MaxiStyleCardsEditor = withState({
 		}
 	};
 
+	const updatedStyleCard = getStyleCards();
+
 	const getStyleCardsOptions = () => {
-		const styleCardsArr = [{}];
+		const styleCardsArr = [];
 
 		forIn(getStyleCards(), (value, key) =>
 			styleCardsArr.push({ label: value.name, value: key })
@@ -86,10 +91,12 @@ const MaxiStyleCardsEditor = withState({
 			if (card === key) value.status === 'active';
 		});
 
-		//console.log('allStyleCards' + JSON.stringify(allStyleCards));
+		console.log('allStyleCards' + JSON.stringify(allStyleCards));
 
 		return allStyleCards;
 	};
+
+	// console.log('getStyleCardCurrent: ' + getStyleCardCurrent());
 
 	return (
 		<Fragment>
@@ -228,6 +235,8 @@ const MaxiStyleCardsEditor = withState({
 											status: '',
 											styleCard: {
 											},
+											styleCardDefaults: {
+											},
 										},
 									});
 								} else {
@@ -237,6 +246,8 @@ const MaxiStyleCardsEditor = withState({
 											name: styleCardName,
 											status: '',
 											styleCard: {
+											},
+											styleCardDefaults: {
 											},
 										},
 									});
@@ -271,17 +282,26 @@ const MaxiStyleCardsEditor = withState({
 																		'Background 1',
 																		'maxi-blocks'
 																	)}
-																	className='maxi-style-cards-control__sc__bg1-color'
-																	color={''}
-																	defaultColor={''}
-																	onChange={val => {}}
+																	className='maxi-style-cards-control__sc__bg1-color--light'
+																	color={getStyleCardAttr(
+																		'background-1',
+																		'light',
+																		false
+																	)}
+																	defaultColor={getStyleCardAttr(
+																		'background-1',
+																		'light',
+																		true
+																	)}
+																	// onChange={val => setState({ 'background-1': val })}
+																	disableGradient
 																/>
 																<ColorControl
 																	label={__(
 																		'Background 2',
 																		'maxi-blocks'
 																	)}
-																	className='maxi-style-cards-control__sc__bg2-color'
+																	className='maxi-style-cards-control__sc__bg2-color--light'
 																	color={''}
 																	defaultColor={''}
 																	onChange={val => {}}

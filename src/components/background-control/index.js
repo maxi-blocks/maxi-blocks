@@ -49,6 +49,7 @@ const BackgroundControl = props => {
 		disableClipPath = false,
 		disableSVG = false,
 		disableNoneStyle = false,
+		useStyleCard = false,
 		onChange,
 		isHover = false,
 		prefix = '',
@@ -151,6 +152,7 @@ const BackgroundControl = props => {
 							disableClipPath={disableClipPath}
 							isHover={isHover}
 							prefix={prefix}
+							useStyleCard={useStyleCard}
 						/>
 					)}
 					{!disableImage && backgroundActiveMedia === 'image' && (

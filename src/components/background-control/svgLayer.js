@@ -16,7 +16,7 @@ import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep, isNil } from 'lodash';
+import { isEmpty, cloneDeep } from 'lodash';
 
 /**
  * Component
@@ -24,6 +24,7 @@ import { isEmpty, cloneDeep, isNil } from 'lodash';
 const SVGLayer = props => {
 	const { onChange, isHover, prefix } = props;
 	const SVGOptions = cloneDeep(props.SVGOptions);
+
 	return (
 		<Fragment>
 			<SettingTabsControl
@@ -34,6 +35,7 @@ const SVGLayer = props => {
 						content: (
 							<SVGDefaultsDisplayer
 								SVGOptions={SVGOptions}
+								prefix='background-svg-'
 								SVGCurrentElement={
 									SVGOptions[
 										getAttributeKey(
@@ -111,7 +113,7 @@ const SVGLayer = props => {
 										)
 									]
 								}
-								onChange={obj =>
+								onChange={obj => {
 									onChange({
 										[getAttributeKey(
 											'background-svg-SVGData',
@@ -123,8 +125,8 @@ const SVGLayer = props => {
 											isHover,
 											prefix
 										)]: obj.SVGElement,
-									})
-								}
+									});
+								}}
 							/>
 						),
 					},

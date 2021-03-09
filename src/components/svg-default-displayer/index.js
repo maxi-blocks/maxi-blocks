@@ -27,7 +27,13 @@ import { styleNone } from '../../icons';
  * Component
  */
 const SVGDefaultsDisplayer = props => {
-	const { SVGOptions = {}, SVGCurrentElement, onChange, className } = props;
+	const {
+		SVGOptions = {},
+		SVGCurrentElement,
+		onChange,
+		className,
+		prefix = '',
+	} = props;
 
 	const classes = classnames('maxi-svg-defaults', className);
 
@@ -61,7 +67,7 @@ const SVGDefaultsDisplayer = props => {
 								.firstElementChild;
 
 							const resData = generateDataObject(
-								SVGOptions.SVGData,
+								SVGOptions[`${prefix}SVGData`],
 								svg
 							);
 							const resEl = injectImgSVG(svg, resData);

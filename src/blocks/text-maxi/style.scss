@@ -4,8 +4,12 @@ body.maxi-blocks--active .maxi-text-block {
 	&__content {
 		position: relative;
 		display: inline-block;
-		width: 100%;
 		margin: 0;
+		width: 100%;
+	}
+	ul,
+	ol {
+		list-style-position: inside;
 	}
 	a {
 		text-decoration: none;

@@ -290,15 +290,15 @@ const SVGLayer = props => {
 										)
 									]
 								}
-								onChangeValue={val =>
+								onChangeValue={val => {
 									onChange({
 										[getAttributeKey(
 											'background-svg-size',
 											isHover,
 											prefix
 										)]: val,
-									})
-								}
+									});
+								}}
 								onChangeUnit={val =>
 									onChange({
 										[getAttributeKey(

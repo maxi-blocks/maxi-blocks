@@ -2,7 +2,11 @@ import { isEmpty } from 'lodash';
 
 const { select } = wp.data;
 
-const getStyleCardAttr = (attribute = null, style = 'light', defaultAtt = false) => {
+const getStyleCardAttr = (
+	attribute = null,
+	style = 'light',
+	defaultAtt = false
+) => {
 	const styleCards = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 
 	const getStyleCards = () => {
@@ -18,8 +22,6 @@ const getStyleCardAttr = (attribute = null, style = 'light', defaultAtt = false)
 				return false;
 		}
 	};
-
-	// console.log({getStyleCards} + typeof {getStyleCards});
 
 	if (typeof { getStyleCards } === 'object') {
 		const styleCardsArr = Object.keys(getStyleCards()).map(key => {

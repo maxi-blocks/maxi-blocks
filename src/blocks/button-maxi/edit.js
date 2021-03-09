@@ -37,25 +37,22 @@ class edit extends MaxiBlock {
 
 	componentDidMount() {
 		this.buttonRef.current.focus();
-
-		console.log('current attr ' + this.props.attributes['background-color']);
-
-		if(!this.props.attributes['background-color'])
-			this.props.setAttributes({
-			'background-color': '#ff4a17',
-		});
-
-		// console.log('after ' + JSON.stringify(this.props.attributes));
-
-		console.log('after change: ' + this.props.attributes['background-color']);
 	}
 
 	componentDidUpdate() {
+		const { blockStyle, blockStyleBackground } = this.props.attributes;
+		const blockStyleClean = blockStyle.replace('maxi-', '');
+
 		this.displayStyles();
 
-		// this.props.setAttributes({
-		// 	'background-color': this.props.attributes.backgroundColor.current,
-		// });
+		if (!this.props.attributes['background-color'])
+			this.props.setAttributes({
+				'background-color': getStyleCardAttr(
+					`background-${blockStyleBackground}`,
+					blockStyleClean,
+					false
+				),
+			});
 	}
 
 	get getStylesObject() {

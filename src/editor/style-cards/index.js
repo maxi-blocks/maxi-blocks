@@ -17,14 +17,7 @@ import {
 	TypographyControl,
 } from '../../components';
 
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
-
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
-// TO DO: remove when components are ready
-import attributes from './attributes';
 
 const MaxiStyleCardsEditor = withState({
 	isVisible: false,
@@ -38,13 +31,11 @@ const MaxiStyleCardsEditor = withState({
 
 	const [styleCardName, setStyleCardName] = useState('');
 	const [styleCardLoad, setStyleCardLoad] = useState('');
-	const { saveMaxiStyleCards,  receiveMaxiStyleCards } = useDispatch('maxiBlocks/style-cards');
+	const { saveMaxiStyleCards } = useDispatch('maxiBlocks/style-cards');
 
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	const styleCards = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
-
-	console.log('styleCards: ' + JSON.stringify(styleCards));
 
 	const getStyleCards = () => {
 		switch (typeof styleCards) {
@@ -60,6 +51,7 @@ const MaxiStyleCardsEditor = withState({
 		}
 	};
 
+	// TO DO: keep all SC changes here
 	const updatedStyleCard = getStyleCards();
 
 	const getStyleCardsOptions = () => {
@@ -82,6 +74,7 @@ const MaxiStyleCardsEditor = withState({
 		return styleCardCurrent;
 	};
 
+	// TO DO: set active state
 	const setStyleCardCurrent = card => {
 		let styleCardCurrent = '';
 		const allStyleCards = getStyleCards();
@@ -91,12 +84,8 @@ const MaxiStyleCardsEditor = withState({
 			if (card === key) value.status === 'active';
 		});
 
-		console.log('allStyleCards' + JSON.stringify(allStyleCards));
-
 		return allStyleCards;
 	};
-
-	// console.log('getStyleCardCurrent: ' + getStyleCardCurrent());
 
 	return (
 		<Fragment>
@@ -194,9 +183,7 @@ const MaxiStyleCardsEditor = withState({
 							<Button
 								disabled={isEmpty(styleCardLoad)}
 								onClick={() => {
-									{/*onChange({
-										...getStyleCards()[styleCardLoad].styleCard,
-									});*/}
+									{}
 									setStyleCardLoad('');
 								}}
 							>
@@ -205,9 +192,7 @@ const MaxiStyleCardsEditor = withState({
 							<Button
 								disabled={isEmpty(styleCardLoad)}
 								onClick={() => {
-									{/*onChange({
-										...getStyleCards()[styleCardLoad].styleCard,
-									});*/}
+									{}
 									setStyleCardLoad('');
 								}}
 							>
@@ -293,7 +278,7 @@ const MaxiStyleCardsEditor = withState({
 																		'light',
 																		true
 																	)}
-																	// onChange={val => setState({ 'background-1': val })}
+																	onChange={val => {}}
 																	disableGradient
 																/>
 																<ColorControl
@@ -302,8 +287,16 @@ const MaxiStyleCardsEditor = withState({
 																		'maxi-blocks'
 																	)}
 																	className='maxi-style-cards-control__sc__bg2-color--light'
-																	color={''}
-																	defaultColor={''}
+																	color={getStyleCardAttr(
+																		'background-2',
+																		'light',
+																		false
+																	)}
+																	defaultColor={getStyleCardAttr(
+																		'background-2',
+																		'light',
+																		true
+																	)}
 																	onChange={val => {}}
 																/>
 															</Fragment>
@@ -327,10 +320,7 @@ const MaxiStyleCardsEditor = withState({
 																	onChange={val => {}}
 																/>
 																<TypographyControl
-																	{...getGroupAttributes(
-																		attributes,
-																		'typography'
-																	)}
+
 																	className='maxi-style-cards-control__sc__text-typography'
 																	textLevel='p'
 																	onChange={''}
@@ -361,10 +351,7 @@ const MaxiStyleCardsEditor = withState({
 																	onChange={val => {}}
 																/>
 																<TypographyControl
-																	{...getGroupAttributes(
-																		attributes,
-																		'typography'
-																	)}
+
 																	className='maxi-style-cards-control__sc__h1-typography'
 																	textLevel='p'
 																	onChange={''}
@@ -395,10 +382,6 @@ const MaxiStyleCardsEditor = withState({
 																	onChange={val => {}}
 																/>
 																<TypographyControl
-																	{...getGroupAttributes(
-																		attributes,
-																		'typography'
-																	)}
 																	className='maxi-style-cards-control__sc__h2-typography'
 																	textLevel='p'
 																	onChange={''}
@@ -429,10 +412,7 @@ const MaxiStyleCardsEditor = withState({
 																	onChange={val => {}}
 																/>
 																<TypographyControl
-																	{...getGroupAttributes(
-																		attributes,
-																		'typography'
-																	)}
+
 																	className='maxi-style-cards-control__sc__h3-typography'
 																	textLevel='p'
 																	onChange={''}
@@ -463,10 +443,7 @@ const MaxiStyleCardsEditor = withState({
 																	onChange={val => {}}
 																/>
 																<TypographyControl
-																	{...getGroupAttributes(
-																		attributes,
-																		'typography'
-																	)}
+
 																	className='maxi-style-cards-control__sc__h4-typography'
 																	textLevel='p'
 																	onChange={''}
@@ -497,10 +474,7 @@ const MaxiStyleCardsEditor = withState({
 																	onChange={val => {}}
 																/>
 																<TypographyControl
-																	{...getGroupAttributes(
-																		attributes,
-																		'typography'
-																	)}
+
 																	className='maxi-style-cards-control__sc__h5-typography'
 																	textLevel='p'
 																	onChange={''}
@@ -531,10 +505,7 @@ const MaxiStyleCardsEditor = withState({
 																	onChange={val => {}}
 																/>
 																<TypographyControl
-																	{...getGroupAttributes(
-																		attributes,
-																		'typography'
-																	)}
+
 																	className='maxi-style-cards-control__sc__h6-typography'
 																	textLevel='p'
 																	onChange={''}

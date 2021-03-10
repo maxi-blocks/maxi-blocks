@@ -123,7 +123,8 @@ const TransformControl = props => {
 			if (isString(originX)) transformOriginString += `${originX}% `;
 			if (isString(originY)) transformOriginString += `${originY}% `;
 
-			node.style = `transform: ${transformString}; transform-origin: ${transformOriginString}`;
+			node.style.transform = transformString;
+			node.style.transformOrigin = transformOriginString;
 		}
 	};
 

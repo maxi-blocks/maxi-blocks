@@ -35,6 +35,16 @@ const getWrapperObject = props => {
 	return response;
 };
 
+const getContentObject = props => {
+	const response = {
+		typography: getTypographyStyles({
+			...getGroupAttributes(props, 'typography'),
+		}),
+	};
+
+	return response;
+};
+
 const getNormalObject = props => {
 	const response = {
 		boxShadow: getBoxShadowStyles(
@@ -71,9 +81,6 @@ const getNormalObject = props => {
 		),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
-		}),
-		typography: getTypographyStyles({
-			...getGroupAttributes(props, 'typography'),
 		}),
 		...(props['background-active-media'] === 'color' && {
 			background: getColorBackgroundObject({
@@ -156,6 +163,10 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: getWrapperObject(props),
 		[`${uniqueID} .maxi-button-block__button`]: getNormalObject(
+			props,
+			uniqueID
+		),
+		[`${uniqueID} .maxi-button-block__content`]: getContentObject(
 			props,
 			uniqueID
 		),

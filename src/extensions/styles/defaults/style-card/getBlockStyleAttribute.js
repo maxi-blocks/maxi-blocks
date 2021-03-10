@@ -1,11 +1,8 @@
 const { select } = wp.data;
 
 const getBlockStyleAttribute = props => {
-	const {
-		getSelectedBlockClientId,
-		getBlockAttributes,
-		getBlockParents,
-	} = select('core/block-editor');
+	const { clientId } = props;
+	const { getBlockAttributes, getBlockParents } = select('core/block-editor');
 	const { blockStyle } = props.attributes;
 
 	switch (blockStyle) {
@@ -14,7 +11,6 @@ const getBlockStyleAttribute = props => {
 		case 'maxi-dark':
 			return 'dark';
 		case 'maxi-parent': {
-			const clientId = getSelectedBlockClientId();
 			return getBlockAttributes(
 				getBlockParents(clientId)[0]
 			).blockStyle.replace('maxi-', '');

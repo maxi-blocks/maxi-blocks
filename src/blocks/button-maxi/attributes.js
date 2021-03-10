@@ -38,7 +38,15 @@ const attributes = {
 		},
 	},
 	...attributesData.textAlignment,
-	...attributesData.typography,
+	...{
+		...attributesData.typography,
+		'font-family-general': {
+			type: 'string',
+		},
+		'font-size-general': {
+			type: 'number',
+		},
+	},
 	...attributesData.typographyHover,
 	...{
 		...attributesData.background,

@@ -43,6 +43,8 @@ class edit extends MaxiBlock {
 	componentDidUpdate() {
 		const blockStyle = getBlockStyleAttribute(this.props);
 
+		console.log('this.props.attributes: ' + JSON.stringify(this.props.attributes));
+
 		if (!this.props.attributes['background-color'])
 			this.props.setAttributes({
 				'background-color': getStyleCardAttr(
@@ -51,6 +53,34 @@ class edit extends MaxiBlock {
 					false
 				),
 			});
+
+		if (!this.props.attributes['color-general'])
+			this.props.setAttributes({
+				'color-general': getStyleCardAttr(
+					'button-text-color',
+					blockStyle,
+					false
+				),
+			});
+
+		if (!this.props.attributes['font-family-general'])
+			this.props.setAttributes({
+				'font-family-general': getStyleCardAttr(
+					'p-font-family',
+					blockStyle,
+					false
+				),
+			});
+
+		if (!this.props.attributes['font-size-general'])
+			this.props.setAttributes({
+				'font-size-general': getStyleCardAttr(
+					'p-font-size-general',
+					blockStyle,
+					false
+				),
+			});
+
 		this.displayStyles();
 	}
 

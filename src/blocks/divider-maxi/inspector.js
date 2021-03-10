@@ -122,6 +122,7 @@ const Inspector = props => {
 																	'vertical',
 															},
 														]}
+														optionType='string'
 														onChange={lineOrientation =>
 															setAttributes({
 																lineOrientation,
@@ -160,6 +161,7 @@ const Inspector = props => {
 																	'flex-end',
 															},
 														]}
+														optionType='string'
 														onChange={lineVertical =>
 															setAttributes({
 																lineVertical,
@@ -200,6 +202,7 @@ const Inspector = props => {
 																	'flex-end',
 															},
 														]}
+														optionType='string'
 														onChange={lineHorizontal =>
 															setAttributes({
 																lineHorizontal,

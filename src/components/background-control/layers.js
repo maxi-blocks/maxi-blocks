@@ -62,6 +62,6 @@ export const SVGOptions = {
 	'background-svg-top': null,
 	'background-svg-left--unit': '%',
 	'background-svg-left': null,
-	'background-svg-size': 50,
+	'background-svg-size': 100,
 	'background-svg-size--unit': '%',
 };

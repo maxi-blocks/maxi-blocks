@@ -57,6 +57,9 @@ export const injectImgSVG = (svg, SVGData = {}) => {
 		} else if (!isEmpty(el.color)) {
 			SVGLayers[i].style.fill = el.color;
 			SVGLayers[i].setAttribute('fill', el.color);
+		} else {
+			SVGLayers[i].style.fill = '';
+			SVGLayers[i].setAttribute('fill', '');
 		}
 	});
 

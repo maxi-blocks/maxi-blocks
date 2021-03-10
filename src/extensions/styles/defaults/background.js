@@ -176,7 +176,7 @@ export const backgroundSVG = {
 	},
 	'background-svg-size': {
 		type: 'number',
-		default: 50,
+		default: 100,
 	},
 	'background-svg-size--unit': {
 		type: 'string',

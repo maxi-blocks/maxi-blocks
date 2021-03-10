@@ -56,6 +56,7 @@ const HoverEffectControl = props => {
 					{ label: <Icon icon={hoverBasic} />, value: 'basic' },
 					{ label: <Icon icon={hoverText} />, value: 'text' },
 				]}
+				optionType='string'
 				onChange={val => onChange({ 'hover-type': val })}
 			/>
 			<FancyRadioControl

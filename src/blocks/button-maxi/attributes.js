@@ -48,14 +48,6 @@ const attributes = {
 		},
 	},
 	...attributesData.backgroundColor,
-	// ...attributesData.backgroundColor,
-	// ...{
-	// 	...attributesData.backgroundColor,
-	// 	'background-color': {
-	// 		type: 'string',
-	// 		default: '#ff0000',
-	// 	},
-	// },
 	...attributesData.backgroundGradient,
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,

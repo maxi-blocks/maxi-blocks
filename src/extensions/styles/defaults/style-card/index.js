@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 const { select } = wp.data;
 
@@ -8,6 +8,8 @@ const getStyleCardAttr = (
 	defaultAtt = false
 ) => {
 	const styleCards = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
+
+	// console.log('styleCards: ' + styleCards);
 
 	const getStyleCards = () => {
 		switch (typeof styleCards) {
@@ -22,24 +24,24 @@ const getStyleCardAttr = (
 				return false;
 		}
 	};
+	console.log('getStyleCards: ' + JSON.stringify(getStyleCards()));
 
-	if (typeof { getStyleCards } === 'object') {
+	if (typeof getStyleCards() === 'object') {
 		const styleCardsArr = Object.keys(getStyleCards()).map(key => {
 			if (!defaultAtt) {
 				const styleCardsArrToCheck = getStyleCards()[key].styleCard[
 					style
 				][attribute];
-				if (styleCardsArrToCheck) return styleCardsArrToCheck;
-
+				if (!isNil(styleCardsArrToCheck)) return styleCardsArrToCheck;
 				const styleCardsDefaultArrToCheck = getStyleCards()[key]
 					.styleCardDefaults[style][attribute];
-				if (styleCardsDefaultArrToCheck)
+				if (!isNil(styleCardsDefaultArrToCheck))
 					return styleCardsDefaultArrToCheck;
 				return false;
 			}
 			const styleCardsDefaultArrToCheck = getStyleCards()[key]
 				.styleCardDefaults[style][attribute];
-			if (styleCardsDefaultArrToCheck) return styleCardsDefaultArrToCheck;
+			if (!isNil(styleCardsDefaultArrToCheck)) return styleCardsDefaultArrToCheck;
 			return false;
 		});
 

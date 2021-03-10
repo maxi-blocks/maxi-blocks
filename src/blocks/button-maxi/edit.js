@@ -40,7 +40,7 @@ class edit extends MaxiBlock {
 	}
 
 	componentDidUpdate() {
-		const { blockStyle, blockStyleBackground } = this.props.attributes;
+		const { blockStyle } = this.props.attributes;
 		const blockStyleClean = blockStyle.replace('maxi-', '');
 
 		this.displayStyles();
@@ -48,7 +48,7 @@ class edit extends MaxiBlock {
 		if (!this.props.attributes['background-color'])
 			this.props.setAttributes({
 				'background-color': getStyleCardAttr(
-					`background-${blockStyleBackground}`,
+					'button-background-color',
 					blockStyleClean,
 					false
 				),

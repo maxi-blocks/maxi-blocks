@@ -24,7 +24,7 @@ const getStyleCardAttr = (
 				return false;
 		}
 	};
-	console.log('getStyleCards: ' + JSON.stringify(getStyleCards()));
+	// console.log('getStyleCards: ' + JSON.stringify(getStyleCards()));
 
 	if (typeof getStyleCards() === 'object') {
 		const styleCardsArr = Object.keys(getStyleCards()).map(key => {

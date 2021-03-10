@@ -19,6 +19,7 @@ import {
 } from '../../extensions/styles';
 import getStyles from './styles';
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
+import getBlockStyleAttribute from '../../extensions/styles/defaults/style-card/getBlockStyleAttribute';
 
 /**
  * External dependencies
@@ -40,19 +41,17 @@ class edit extends MaxiBlock {
 	}
 
 	componentDidUpdate() {
-		const { blockStyle } = this.props.attributes;
-		const blockStyleClean = blockStyle.replace('maxi-', '');
-
-		this.displayStyles();
+		const blockStyle = getBlockStyleAttribute(this.props);
 
 		if (!this.props.attributes['background-color'])
 			this.props.setAttributes({
 				'background-color': getStyleCardAttr(
 					'button-background-color',
-					blockStyleClean,
+					blockStyle,
 					false
 				),
 			});
+		this.displayStyles();
 	}
 
 	get getStylesObject() {

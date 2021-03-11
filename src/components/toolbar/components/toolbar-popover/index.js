@@ -78,8 +78,8 @@ class ToolbarPopover extends Component {
 					<Popover
 						className='toolbar-item__popover'
 						noArrow={false}
+						onFocusOutside={() => this.handleFocusOutside()}
 						position='top center'
-						focusOnMount
 						isAlternate
 						shouldAnchorIncludePadding
 					>

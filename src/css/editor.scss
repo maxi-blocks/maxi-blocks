@@ -199,6 +199,7 @@ body .toolbar-item__popover {
 	select {
 		padding: 0 24px 0px 10px !important;
 		opacity: 1 !important;
+		min-width: 4rem;
 	}
 
 	button.components-range-control__reset,
@@ -281,7 +282,7 @@ body .toolbar-item__popover {
 		.components-base-control__field {
 			margin-bottom: 0;
 			.components-select-control__input {
-				min-width: 3.2rem;
+				min-width: 4rem;
 				max-width: 100%;
 			}
 		}

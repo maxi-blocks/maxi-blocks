@@ -136,6 +136,7 @@ const BlockStylesControl = props => {
 								{ label: 1, value: 1 },
 								{ label: 2, value: 2 },
 							]}
+							optionType='number'
 							onChange={val =>
 								onChange({ blockStyleBackground: val })
 							}

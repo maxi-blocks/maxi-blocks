@@ -9,12 +9,6 @@
  * Webpack is compiling as the input file.
  */
 
-// CSS Ponyfill
-import cssVars from 'css-vars-ponyfill';
-cssVars({
-	rootElement: document,
-});
-
 // Extensions
 import './extensions';
 

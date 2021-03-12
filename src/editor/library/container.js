@@ -130,6 +130,11 @@ const LibraryContainer = props => {
 	};
 
 	useEffect(() => {
+		setCloudData(props.cloudData);
+		updateFilters(props.cloudData);
+	}, [type]);
+
+	useEffect(() => {
 		isRequestAvailable.current = true;
 		updateFilters(cloudData);
 	}, [searchFilter, sidebarFilter, styleFilter, costFilter]);

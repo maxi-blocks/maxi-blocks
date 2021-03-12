@@ -4,7 +4,7 @@
 const { __ } = wp.i18n;
 const { Modal } = wp.components;
 const { useSelect } = wp.data;
-const { useState, Fragment } = wp.element;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -18,7 +18,7 @@ import LibrarySpinner from './spinner';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isBoolean, isArray } from 'lodash';
 
 /**
  * Styles
@@ -56,19 +56,18 @@ const CloudLibrary = props => {
 			shouldCloseOnClickOutside={false}
 			onRequestClose={onClose}
 		>
-			{(isEmpty(cloudData) && <LibrarySpinner />) || (
-				<Fragment>
-					<LibraryToolbar
-						type={type}
-						onChange={type => setType(type)}
-					/>
-					<LibraryContainer
-						cloudData={cloudData}
-						categories={categories}
-						type={type}
-						onRequestClose={onClose}
-					/>
-				</Fragment>
+			<LibraryToolbar type={type} onChange={type => setType(type)} />
+			{isEmpty(cloudData) && <LibrarySpinner />}
+			{isArray(cloudData) && !isEmpty(cloudData) && (
+				<LibraryContainer
+					cloudData={cloudData}
+					categories={categories}
+					type={type}
+					onRequestClose={onClose}
+				/>
+			)}
+			{!cloudData && isBoolean(cloudData) && (
+				<p>There are no items for this type</p>
 			)}
 		</Modal>
 	);

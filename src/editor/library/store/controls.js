@@ -37,7 +37,7 @@ const controls = {
 				console.error(
 					`RECEIVE_CLOUD_LIBRARY: The plugin didn't receive the data from the server. If you're one of the super devs of Maxi, is possible the Cloud Library API is empty. Anyway, the error: ${err}`
 				);
-				return [];
+				return false;
 			});
 	},
 	async REQUEST_CLOUD_LIBRARY({ search }) {
@@ -66,7 +66,7 @@ const controls = {
 				console.error(
 					`REQUEST_CLOUD_LIBRARY: The plugin didn't receive the data from the server. If you're one of the super devs of Maxi, is possible the Cloud Library API is empty. Anyway, the error: ${err}`
 				);
-				return [];
+				return false;
 			});
 	},
 	async RECEIVE_LIBRARY_CAT() {

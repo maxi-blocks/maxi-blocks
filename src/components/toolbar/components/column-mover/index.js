@@ -27,25 +27,19 @@ const ColumnMover = props => {
 
 	const { rootClientId, isLeftDisabled, isRightDisabled } = useSelect(
 		select => {
-			const {
-				getBlockRootClientId,
-				getBlockIndex,
-				getBlock,
-				getSelectedBlockClientId,
-			} = select('core/block-editor');
+			const { getBlockRootClientId, getBlockIndex, getBlock } = select(
+				'core/block-editor'
+			);
 
-			const currentColumnId = getSelectedBlockClientId();
-			const rowId = getBlockRootClientId(currentColumnId);
+			const rowId = getBlockRootClientId(clientId);
 			const rowBlock = !isNil(rowId) && getBlock(rowId);
 			const columnsCount = !isNil(rowBlock)
 				? rowBlock.innerBlocks.length
 				: 0;
-
 			const firstClientId =
 				!isNil(rowBlock) && rowBlock.innerBlocks[0].clientId;
 			const blockRootClientId = getBlockRootClientId(firstClientId);
-
-			const currentItemOrder = getBlockIndex(currentColumnId, rowId);
+			const currentItemOrder = getBlockIndex(clientId, rowId);
 			const isFirstBlock = currentItemOrder === 0;
 			const isLastBlock = currentItemOrder === columnsCount - 1;
 

@@ -57,10 +57,10 @@ const LibraryContainer = props => {
 			let searchRes = false;
 			if (isEmpty(searchVal)) searchRes = true;
 			else if (
-				el.cost.toLowerCase().includes(searchVal) ||
-				el.style.toLowerCase().includes(searchVal) ||
-				el.serial.toLowerCase().includes(searchVal) ||
-				el.title.toLowerCase().includes(searchVal)
+				(el.cost && el.cost.toLowerCase().includes(searchVal)) ||
+				(el.style && el.style.toLowerCase().includes(searchVal)) ||
+				(el.serial && el.serial.toLowerCase().includes(searchVal)) ||
+				(el.title && el.title.toLowerCase().includes(searchVal))
 			)
 				searchRes = true;
 			else if (

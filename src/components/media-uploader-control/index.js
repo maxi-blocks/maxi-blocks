@@ -89,19 +89,7 @@ const MediaUploader = props => {
 							{!mediaID && placeholder}
 							{!!mediaID && !imageData && <Spinner />}
 							{mediaType === 'image' && !!mediaID && imageData && (
-								<ResponsiveWrapper
-									naturalWidth={
-										alternativeImage
-											? alternativeImage.width
-											: imageData.media_details.width
-									}
-									naturalHeight={
-										alternativeImage
-											? alternativeImage.height
-											: imageData.media_details.height
-									}
-									className='maxi-mediauploader-control__responsive-wrapper'
-								>
+								<div className='maxi-mediauploader-control__responsive-wrapper'>
 									<img
 										src={
 											alternativeImage
@@ -110,7 +98,7 @@ const MediaUploader = props => {
 										}
 										alt={__('Image', 'maxi-blocks')}
 									/>
-								</ResponsiveWrapper>
+								</div>
 							)}
 							{mediaType === 'video' && !!mediaID && imageData && (
 								<ResponsiveWrapper

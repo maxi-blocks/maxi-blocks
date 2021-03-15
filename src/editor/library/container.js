@@ -16,18 +16,18 @@ import Pagination from './pagination';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isNumber } from 'lodash';
 
 /**
  * General
  */
-const ITEMS_PAGE = 20;
+const ITEMS_PAGE = 2;
 
 /**
  * Component
  */
 const LibraryContainer = props => {
-	const { type, onRequestClose, categories } = props;
+	const { type, cloudInfo, onRequestClose, categories } = props;
 
 	const [cloudData, setCloudData] = useState(props.cloudData);
 	const [filteredData, setFilteredData] = useState(cloudData);
@@ -35,13 +35,16 @@ const LibraryContainer = props => {
 	const [sidebarFilter, setSidebarFilter] = useState([]);
 	const [styleFilter, setStyleFilter] = useState('');
 	const [costFilter, setCostFilter] = useState('');
+	const [page, setPage] = useState(0);
+	const [totalItems, setTotalItems] = useState(cloudInfo[type].total);
 	const isRequestAvailable = useRef(true);
 
 	const filterData = data => {
 		let i = 1;
 
-		const newData = data.filter(el => {
+		const newData = data.filter((el, j) => {
 			if (i > ITEMS_PAGE) return false;
+			if (j < page * ITEMS_PAGE) return false;
 			if (
 				isEmpty(searchFilter) &&
 				isEmpty(sidebarFilter) &&
@@ -110,7 +113,7 @@ const LibraryContainer = props => {
 				type,
 				style: styleFilter,
 				cost: costFilter,
-				category: '',
+				category: JSON.stringify(sidebarFilter),
 				search: searchFilter,
 				avoid_ids: avoidIds,
 			};
@@ -132,7 +135,54 @@ const LibraryContainer = props => {
 	useEffect(() => {
 		setCloudData(props.cloudData);
 		updateFilters(props.cloudData);
-	}, [type]);
+
+		if (
+			isEmpty(searchFilter) &&
+			isEmpty(styleFilter) &&
+			isEmpty(costFilter) &&
+			isEmpty(sidebarFilter)
+		)
+			setTotalItems(cloudInfo[type].total);
+	}, [type, page]);
+
+	// Get total number search items when search changes
+	// Waits 500ms to do the request to API due to typing
+	useEffect(() => {
+		const searchNumTimeOut = setTimeout(() => {
+			const search = {
+				type,
+				style: styleFilter,
+				cost: costFilter,
+				category: JSON.stringify(sidebarFilter),
+				search: searchFilter,
+			};
+			dispatch('maxiBlocks/cloudLibrary')
+				.receiveMaxiCloudSearchItems(search)
+				.then(({ searchItems }) => {
+					if (isNumber(searchItems)) setTotalItems(searchItems);
+					else setTotalItems(cloudInfo[type].total);
+				});
+		}, 500);
+
+		return () => clearTimeout(searchNumTimeOut);
+	}, [searchFilter]);
+
+	// Get total number search items
+	useEffect(() => {
+		const search = {
+			type,
+			style: styleFilter,
+			cost: costFilter,
+			category: JSON.stringify(sidebarFilter),
+			search: searchFilter,
+		};
+		dispatch('maxiBlocks/cloudLibrary')
+			.receiveMaxiCloudSearchItems(search)
+			.then(({ searchItems }) => {
+				if (isNumber(searchItems)) setTotalItems(searchItems);
+				else setTotalItems(cloudInfo[type].total);
+			});
+	}, [sidebarFilter, styleFilter, costFilter]);
 
 	useEffect(() => {
 		isRequestAvailable.current = true;
@@ -153,19 +203,29 @@ const LibraryContainer = props => {
 						setCostFilter('');
 						setStyleFilter('');
 						setSearchFilter('');
+						setPage(0);
 					}}
 				/>
 			</div>
 			<div className='maxi-cloud-container__content'>
 				<TopbarFilter
 					styleFilter={styleFilter}
-					onChangeFilter={filter => setStyleFilter(filter)}
+					onChangeFilter={filter => {
+						setStyleFilter(filter);
+						setPage(0);
+					}}
 					costFilter={costFilter}
-					onChangeCost={cost => setCostFilter(cost)}
+					onChangeCost={cost => {
+						setCostFilter(cost);
+						setPage(0);
+					}}
 				/>
 				<Searcher
 					value={searchFilter}
-					onChange={value => setSearchFilter(value)}
+					onChange={value => {
+						setSearchFilter(value);
+						setPage(0);
+					}}
 				/>
 				<Masonry
 					elements={filteredData}
@@ -173,7 +233,12 @@ const LibraryContainer = props => {
 					onRequestClose={onRequestClose}
 					itemsPage={ITEMS_PAGE}
 				/>
-				<Pagination />
+				<Pagination
+					page={page}
+					onPageChange={page => setPage(page)}
+					itemsPage={ITEMS_PAGE}
+					totalItems={totalItems}
+				/>
 			</div>
 		</div>
 	);

@@ -10,6 +10,7 @@ const reducer = (
 			styleCards: [],
 		},
 		cloudCat: {},
+		cloudInfo: {},
 	},
 	action
 ) => {
@@ -21,6 +22,11 @@ const reducer = (
 					...state.cloudLibrary,
 					[action.objType]: action.cloudLibrary,
 				},
+			};
+		case 'SEND_CLOUD_INFO':
+			return {
+				...state,
+				cloudInfo: action.cloudInfo,
 			};
 		case 'REQUEST_CLOUD_LIBRARY':
 			// Maybe needs an optimization...

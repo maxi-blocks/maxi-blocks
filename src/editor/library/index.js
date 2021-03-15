@@ -33,15 +33,19 @@ const CloudLibrary = props => {
 
 	const [type, setType] = useState('patterns');
 
-	const { cloudData, categories } = useSelect(select => {
-		const { receiveMaxiCloudLibrary, receiveCloudCategories } = select(
-			'maxiBlocks/cloudLibrary'
-		);
+	const { cloudData, cloudInfo, categories } = useSelect(select => {
+		const {
+			receiveMaxiCloudLibrary,
+			receiveMaxiCloudInfo,
+			receiveCloudCategories,
+		} = select('maxiBlocks/cloudLibrary');
 		const cloudData = receiveMaxiCloudLibrary(type);
+		const cloudInfo = receiveMaxiCloudInfo();
 		const categories = receiveCloudCategories();
 
 		return {
 			cloudData,
+			cloudInfo,
 			categories,
 		};
 	});
@@ -58,14 +62,17 @@ const CloudLibrary = props => {
 		>
 			<LibraryToolbar type={type} onChange={type => setType(type)} />
 			{isEmpty(cloudData) && <LibrarySpinner />}
-			{isArray(cloudData) && !isEmpty(cloudData) && (
-				<LibraryContainer
-					cloudData={cloudData}
-					categories={categories}
-					type={type}
-					onRequestClose={onClose}
-				/>
-			)}
+			{isArray(cloudData) &&
+				!isEmpty(cloudData) &&
+				!isEmpty(cloudInfo) && (
+					<LibraryContainer
+						cloudData={cloudData}
+						cloudInfo={cloudInfo}
+						categories={categories}
+						type={type}
+						onRequestClose={onClose}
+					/>
+				)}
 			{!cloudData && isBoolean(cloudData) && (
 				<p>There are no items for this type</p>
 			)}

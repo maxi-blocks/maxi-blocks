@@ -17,6 +17,17 @@ const actions = {
 			objType,
 		};
 	},
+	receiveMaxiCloudInfo() {
+		return {
+			type: 'RECEIVE_CLOUD_INFO',
+		};
+	},
+	sendMaxiCloudInfo(cloudInfo) {
+		return {
+			type: 'SEND_CLOUD_INFO',
+			cloudInfo,
+		};
+	},
 	async requestMaxiCloudLibrary(search = null) {
 		const newContent = await controls.REQUEST_CLOUD_LIBRARY({
 			search,
@@ -26,6 +37,16 @@ const actions = {
 			type: 'REQUEST_CLOUD_LIBRARY',
 			newContent,
 			objType: search.type,
+		};
+	},
+	async receiveMaxiCloudSearchItems(search = null) {
+		const searchItems = await controls.REQUEST_CLOUD_LIBRARY_NUM({
+			search,
+		});
+
+		return {
+			type: 'REQUEST_CLOUD_LIBRARY_NUM',
+			searchItems,
 		};
 	},
 	receiveCloudCategories() {

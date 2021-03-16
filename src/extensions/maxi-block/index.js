@@ -19,13 +19,14 @@ const { select, dispatch } = wp.data;
 /**
  * Internal dependencies
  */
-import { styleResolver, styleGenerator } from '../styles';
+import { styleResolver, styleGenerator, getGroupAttributes } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
+import { loadFonts } from '../text/fonts';
 
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, cloneDeep, isObject, isArray } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
 
 /**
  * Class
@@ -39,7 +40,11 @@ class MaxiBlock extends Component {
 
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
-		// this.cloneObjects(attributes);
+
+		// Font loader
+		const typography = getGroupAttributes(attributes, 'typography');
+		if (!isEmpty(typography)) this.loadFonts(typography);
+
 		this.displayStyles();
 	}
 
@@ -105,19 +110,10 @@ class MaxiBlock extends Component {
 		}
 	}
 
-	/**
-	 * Is necessary to clone deep the objects if we don't want to modify
-	 * the original one on the native Gutenberg store and to make changes into
-	 * the other blocks.
-	 *
-	 * @param {obj} attributes	Block attributes
-	 */
-	cloneObjects(attributes) {
-		Object.entries(attributes).forEach(
-			([key, val]) =>
-				(isObject(val) || isArray(val)) &&
-				this.props.setAttributes({ [key]: cloneDeep(val) })
-		);
+	loadFonts(typography) {
+		Object.entries(typography).forEach(([key, val]) => {
+			if (key.includes('font-family')) loadFonts(val);
+		});
 	}
 
 	/**

@@ -2,14 +2,14 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Fragment, useState } = wp.element;
+const { Fragment } = wp.element;
 const { Button, Dropdown, Spinner, Icon } = wp.components;
+const { useSelect } = wp.data;
 
 /**
  * Internal dependencies
  */
-import FontFamilyResolver from '../../extensions/styles/fonts';
-
+import { loadFonts } from '../../extensions/text/fonts';
 /**
  * External dependencies
  */
@@ -27,11 +27,20 @@ import { chevronDown } from '../../icons';
  * Component
  */
 const FontFamilySelector = props => {
-	const fonts = new FontFamilyResolver();
-
-	const [options, setOptions] = useState(fonts.optionsGetter);
-
 	const { font, onChange, className, theme = 'light' } = props;
+
+	const { options } = useSelect(select => {
+		const { getFonts } = select('maxiBlocks/fonts');
+
+		const fonts = getFonts();
+		const options = Object.values(fonts).map(({ value }) => {
+			return { label: value, value };
+		});
+
+		return {
+			options,
+		};
+	});
 
 	const selectFontFamilyStyles = {
 		control: styles => ({
@@ -70,15 +79,10 @@ const FontFamilySelector = props => {
 		}),
 	};
 
-	const checkout = () => {
-		setTimeout(() => {
-			setOptions(fonts.optionsGetter);
-		}, 2500);
-	};
-
 	const onFontChange = newFont => {
 		onChange(newFont);
-		fonts.loadFonts(newFont.value, newFont.files);
+
+		loadFonts(newFont.value, newFont.files);
 	};
 
 	const classes = classnames('maxi-font-family-selector', className);
@@ -112,22 +116,21 @@ const FontFamilySelector = props => {
 				<Fragment>
 					{!isNil(options) && (
 						<Select
-							autoFocus
-							backspaceRemovesValue={false}
-							controlShouldRenderValue={false}
-							hideSelectedOptions={false}
-							isClearable={false}
-							menuIsOpen
-							onChange={value => onFontChange(value)}
+							value={font}
 							options={options}
 							placeholder={__('Search…', 'maxi-blocks')}
+							onChange={value => onFontChange(value)}
+							controlShouldRenderValue={false}
+							hideSelectedOptions={false}
 							styles={selectFontFamilyStyles}
+							isClearable={false}
+							backspaceRemovesValue={false}
 							tabSelectsValue={false}
-							value={font}
+							menuIsOpen
 							closeMenuOnSelect
+							autoFocus
 						/>
 					)}
-					{isNil(options) && checkout()}
 					{isNil(options) && <Spinner />}
 				</Fragment>
 			)}

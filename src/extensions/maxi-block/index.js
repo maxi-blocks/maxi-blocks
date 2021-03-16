@@ -80,14 +80,22 @@ class MaxiBlock extends Component {
 			'core/block-editor'
 		).getBlockRootClientId(clientId);
 
-		if (!blockRootClientId) res = 'maxi-light';
-		else {
-			const parentBlockStyle = select(
-				'core/block-editor'
-			).getBlockAttributes(blockRootClientId).blockStyle;
-
-			if (parentBlockStyle === 'maxi-custom') res = 'maxi-custom';
-			else res = 'maxi-parent';
+		if (!blockRootClientId) {
+			res = 'maxi-light';
+		} else {
+			if (
+				select('core/block-editor')
+					.getBlockName(blockRootClientId)
+					.includes('maxi-blocks')
+			) {
+				select('core/block-editor').getBlockAttributes(
+					blockRootClientId
+				).blockStyle === 'maxi-custom'
+					? (res = 'maxi-custom')
+					: (res = 'maxi-parent');
+			} else {
+				res = 'maxi-light';
+			}
 		}
 
 		this.props.setAttributes({ blockStyle: res });

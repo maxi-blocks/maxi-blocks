@@ -9,7 +9,7 @@ const { Icon, Button, Tooltip } = wp.components;
 /**
  * External dependencies
  */
-import { castArray, first, last } from 'lodash';
+import { isNil } from 'lodash';
 
 /**
  * Icons
@@ -23,29 +23,25 @@ import { moveRight, moveLeft } from '../../../../icons';
 const ColumnMover = props => {
 	const { clientId, blockName } = props;
 
+	if (blockName !== 'maxi-blocks/column-maxi') return null;
+
 	const { rootClientId, isLeftDisabled, isRightDisabled } = useSelect(
 		select => {
-			const {
-				getBlockRootClientId,
-				getBlockIndex,
-				getBlockOrder,
-				getSelectedBlockClientIds,
-			} = select('core/block-editor');
-			const clientIds = getSelectedBlockClientIds();
-			const blockOrder = getBlockOrder(blockRootClientId);
-			const normalizedClientIds = castArray(clientIds);
-			const firstClientId = first(normalizedClientIds);
+			const { getBlockRootClientId, getBlockIndex, getBlock } = select(
+				'core/block-editor'
+			);
+
+			const rowId = getBlockRootClientId(clientId);
+			const rowBlock = !isNil(rowId) && getBlock(rowId);
+			const columnsCount = !isNil(rowBlock)
+				? rowBlock.innerBlocks.length
+				: 0;
+			const firstClientId =
+				!isNil(rowBlock) && rowBlock.innerBlocks[0].clientId;
 			const blockRootClientId = getBlockRootClientId(firstClientId);
-			const firstBlockIndex = getBlockIndex(
-				firstClientId,
-				blockRootClientId
-			);
-			const lastBlockIndex = getBlockIndex(
-				last(normalizedClientIds),
-				blockRootClientId
-			);
-			const isFirstBlock = firstBlockIndex === 0;
-			const isLastBlock = lastBlockIndex === blockOrder.length - 1;
+			const currentItemOrder = getBlockIndex(clientId, rowId);
+			const isFirstBlock = currentItemOrder === 0;
+			const isLastBlock = currentItemOrder === columnsCount - 1;
 
 			return {
 				rootClientId: blockRootClientId,

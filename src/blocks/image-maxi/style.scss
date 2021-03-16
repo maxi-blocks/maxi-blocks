@@ -3,9 +3,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 	justify-content: center;
 	flex-direction: column;
 
-	.maxi-block-hover-wrapper {
+	.maxi-image-block-shape-wrapper {
 		width: 100%;
-		min-width: 100%;
+	}
+	.maxi-block-hover-wrapper {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
 		overflow: hidden;
 		position: relative;
 	}

@@ -227,9 +227,11 @@ document.addEventListener('readystatechange', () => {
 		 */
 		window.addEventListener('mouseover', e => {
 			let pathItem = null;
+			const ev = window.event || e;
+			const paths = ev.path || (ev.composedPath && ev.composedPath());
 			const hasPath =
-				!!e.path &&
-				Array.from(e.path).some((path, i) => {
+				!!paths &&
+				Array.from(paths).some((path, i) => {
 					if (path && path.classList)
 						try {
 							if (
@@ -251,9 +253,9 @@ document.addEventListener('readystatechange', () => {
 				});
 
 			if (hasPath) {
-				e.path[pathItem].classList.add('maxi-block--hovered');
+				paths[pathItem].classList.add('maxi-block--hovered');
 				const blockListAppenders = Array.from(
-					e.path[pathItem].getElementsByClassName(
+					paths[pathItem].getElementsByClassName(
 						'block-list-appender'
 					)
 				);
@@ -264,9 +266,11 @@ document.addEventListener('readystatechange', () => {
 		});
 		window.addEventListener('mouseout', e => {
 			let pathItem = null;
+			const ev = window.event || e;
+			const paths = ev.path || (ev.composedPath && ev.composedPath());
 			const hasPath =
-				!!e.path &&
-				Array.from(e.path).some((path, i) => {
+				!!paths &&
+				Array.from(paths).some((path, i) => {
 					if (path && path.classList)
 						try {
 							if (
@@ -287,9 +291,9 @@ document.addEventListener('readystatechange', () => {
 				});
 
 			if (hasPath) {
-				e.path[pathItem].classList.remove('maxi-block--hovered');
+				paths[pathItem].classList.remove('maxi-block--hovered');
 				const blockListAppenders = Array.from(
-					e.path[pathItem].getElementsByClassName(
+					paths[pathItem].getElementsByClassName(
 						'block-list-appender'
 					)
 				);

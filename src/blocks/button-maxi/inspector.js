@@ -309,7 +309,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			+attributes[
+																			attributes[
 																				'typography-status-hover'
 																			]
 																		}
@@ -332,7 +332,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'typography-status-hover': !!+val,
+																					'typography-status-hover': val,
 																				}
 																			)
 																		}
@@ -427,7 +427,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			+attributes[
+																			attributes[
 																				'background-status-hover'
 																			]
 																		}
@@ -450,7 +450,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover': !!+val,
+																					'background-status-hover': val,
 																				}
 																			)
 																		}
@@ -542,7 +542,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			+attributes[
+																			attributes[
 																				'border-status-hover'
 																			]
 																		}
@@ -565,7 +565,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'border-status-hover': !!+val,
+																					'border-status-hover': val,
 																				}
 																			)
 																		}
@@ -637,6 +637,7 @@ const Inspector = props => {
 																		'full',
 																},
 															]}
+															optionType='string'
 															onChange={fullWidth =>
 																setAttributes({
 																	fullWidth,
@@ -701,7 +702,7 @@ const Inspector = props => {
 																			'maxi-blocks'
 																		)}
 																		selected={
-																			+attributes[
+																			attributes[
 																				'box-shadow-status-hover'
 																			]
 																		}
@@ -721,13 +722,13 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		onChange={val => {
+																		onChange={val =>
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': !!+val,
+																					'box-shadow-status-hover': val,
 																				}
-																			);
-																		}}
+																			)
+																		}
 																	/>
 																	{attributes[
 																		'box-shadow-status-hover'

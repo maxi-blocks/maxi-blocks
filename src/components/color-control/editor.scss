@@ -1,4 +1,24 @@
 .maxi-color-control {
+	.chrome-picker {
+		width: 290px !important;
+		box-shadow: none !important;
+		& > div {
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+		}
+		input {
+			border-radius: 5px !important;
+			background-color: rgba(33, 141, 250, 0) !important;
+			border: 2px solid #dddfe1 !important;
+			font-size: 13px !important;
+			height: 27px !important;
+			box-shadow: none !important;
+			width: 90% !important;
+			&:focus {
+				border-color: #d0d0d0 !important;
+			}
+		}
+	}
 	&__opacity {
 		.components-base-control__field {
 			flex-direction: column;

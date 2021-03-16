@@ -57,6 +57,9 @@ export const injectImgSVG = (svg, SVGData = {}) => {
 		} else if (!isEmpty(el.color)) {
 			SVGLayers[i].style.fill = el.color;
 			SVGLayers[i].setAttribute('fill', el.color);
+		} else {
+			SVGLayers[i].style.fill = '';
+			SVGLayers[i].setAttribute('fill', '');
 		}
 	});
 
@@ -72,6 +75,10 @@ export const generateDataObject = (data, svg) => {
 		imageID: '',
 		imageURL: '',
 	};
+	const { getBlockAttributes, getSelectedBlockClientId } = select(
+		'core/block-editor'
+	);
+	const { uniqueID } = getBlockAttributes(getSelectedBlockClientId());
 	const SVGLayers = Array.from(
 		svg.querySelectorAll('path, circle, rect, polygon, line, ellipse')
 	);
@@ -88,7 +95,7 @@ export const generateDataObject = (data, svg) => {
 				Object.keys(response).length <= i ||
 				Object.keys(response).length === 0
 			)
-				response[`${svg.dataset.item}__${uniqueId()}`] = obj;
+				response[`${uniqueID}__${uniqueId()}`] = obj;
 		});
 
 	return response;

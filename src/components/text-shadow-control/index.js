@@ -37,16 +37,10 @@ const TextShadow = props => {
 		!isEmpty(value) && value !== 'none'
 			? value.split(' ')
 			: `0px 0px 0px ${defaultColor}`.split(' ');
-	const x = Number(valueDecomposed[0].match(/[-?0-9\d*]+|\D+/g)[0]);
-	const y = Number(valueDecomposed[1].match(/[-?0-9\d*]+|\D+/g)[0]);
-	const blur = Number(valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g)[0]);
+	const x = +valueDecomposed[0].match(/[-?0-9\d*]+|\D+/g)[0];
+	const y = +valueDecomposed[1].match(/[-?0-9\d*]+|\D+/g)[0];
+	const blur = +valueDecomposed[2].match(/[-?0-9\d*]+|\D+/g)[0];
 	const color = valueDecomposed[3];
-
-	useEffect(() => {
-		if (color !== defaultColor) {
-			setCurrentColor(color);
-		}
-	}, [color, currentColor, setCurrentColor]);
 
 	const onChangeValue = (i, val) => {
 		setCurrentColor(i === 3 && val);
@@ -64,14 +58,12 @@ const TextShadow = props => {
 	};
 
 	const getActiveItem = val => {
-		if (value === 'none' && val === 'none') return true;
+		if (val === 'none' && (isNil(value) || value === 'none')) return true;
 
 		const decomposedProp = val.split(' ');
-		if (Number(decomposedProp[0].match(/[-?0-9\d*]+|\D+/g)[0]) !== x)
-			return false;
-		if (Number(decomposedProp[1].match(/[-?0-9\d*]+|\D+/g)[0]) !== y)
-			return false;
-		if (Number(decomposedProp[2].match(/[-?0-9\d*]+|\D+/g)[0]) !== blur)
+		if (+decomposedProp[0].match(/[-?0-9\d*]+|\D+/g)[0] !== x) return false;
+		if (+decomposedProp[1].match(/[-?0-9\d*]+|\D+/g)[0] !== y) return false;
+		if (+decomposedProp[2].match(/[-?0-9\d*]+|\D+/g)[0] !== blur)
 			return false;
 
 		return true;
@@ -138,7 +130,7 @@ const TextShadow = props => {
 					/>
 					<RangeSliderControl
 						label={__('X', 'maxi-blocks')}
-						value={Number(trim(x))}
+						value={+trim(x)}
 						onChange={val => onChangeValue(0, val)}
 						min={0}
 						max={100}
@@ -146,7 +138,7 @@ const TextShadow = props => {
 					/>
 					<RangeSliderControl
 						label={__('Y', 'maxi-blocks')}
-						value={Number(trim(y))}
+						value={+trim(y)}
 						onChange={val => onChangeValue(1, val)}
 						min={0}
 						max={100}
@@ -154,7 +146,7 @@ const TextShadow = props => {
 					/>
 					<RangeSliderControl
 						label={__('Blur', 'maxi-blocks')}
-						value={Number(trim(blur))}
+						value={+trim(blur)}
 						onChange={val => onChangeValue(2, val)}
 						min={0}
 						max={100}
@@ -183,7 +175,7 @@ const TextShadowControl = props => {
 		<div className={classes}>
 			<FancyRadioControl
 				label={__('Text Shadow', 'maxi-blocks')}
-				selected={Number(showOptions)}
+				selected={showOptions}
 				options={[
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },

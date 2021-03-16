@@ -80,7 +80,6 @@ class edit extends MaxiBlock {
 		const {
 			uniqueID,
 			blockStyle,
-			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
 			fullWidth,
@@ -248,7 +247,7 @@ class edit extends MaxiBlock {
 														alt={mediaAlt}
 													/>
 												)) || (
-													<RawHTML>
+													<RawHTML className='maxi-image-block-shape-wrapper'>
 														{SVGElement}
 													</RawHTML>
 												)}

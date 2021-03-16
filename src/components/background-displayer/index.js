@@ -34,9 +34,14 @@ const BackgroundContent = props => {
 
 	return (
 		<Fragment>
-			{!layers || layers.length <= 0 ? (
+			{!props[`background-layers-status${isHover ? '-hover' : ''}`] ? (
 				<Fragment>
-					{!isHover && (
+					{(props[
+						`background-active-media${isHover ? '-hover' : ''}`
+					] === 'color' ||
+						props[
+							`background-active-media${isHover ? '-hover' : ''}`
+						] === 'gradient') && (
 						<div
 							className={classnames(
 								'maxi-background-displayer__layer',
@@ -100,7 +105,7 @@ const BackgroundContent = props => {
 						case 'image':
 							return (
 								<div
-									key={`maxi-background-displayer__${layer.id}`}
+									key={`maxi-background-displayer__${layer.type}__${layer.id}`}
 									className={classnames(
 										'maxi-background-displayer__layer',
 										`maxi-background-displayer__${layer.id}`
@@ -123,6 +128,7 @@ const BackgroundContent = props => {
 							return (
 								(layer['background-svg-SVGElement'] && (
 									<RawHTML
+										key={`maxi-background-displayer__${layer.type}__${layer.id}`}
 										className={classnames(
 											'maxi-background-displayer__layer',
 											'maxi-background-displayer__svg',

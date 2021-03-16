@@ -46,7 +46,7 @@ import DefaultStylesControl from '../default-styles-control';
 /**
  * Component
  */
-const FontIconControl = (props, isHover = false) => {
+const FontIconControl = props => {
 	const {
 		className,
 		onChange,
@@ -185,10 +185,9 @@ const FontIconControl = (props, isHover = false) => {
 										value: 'right',
 									},
 								]}
+								optionType='string'
 								onChange={val =>
-									onChange({
-										['icon-position']: val,
-									})
+									onChange({ 'icon-position': val })
 								}
 							/>
 						</Fragment>
@@ -305,7 +304,7 @@ const FontIconControl = (props, isHover = false) => {
 					{!simpleMode && (
 						<FancyRadioControl
 							label={__('Use Custom Padding', 'maxi-blocks')}
-							selected={+props['icon-custom-padding']}
+							selected={props['icon-custom-padding']}
 							options={[
 								{
 									label: __('No', 'maxi-blocks'),
@@ -317,9 +316,7 @@ const FontIconControl = (props, isHover = false) => {
 								},
 							]}
 							onChange={val =>
-								onChange({
-									['icon-custom-padding']: !!+val,
-								})
+								onChange({ 'icon-custom-padding': val })
 							}
 						/>
 					)}

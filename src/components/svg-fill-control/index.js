@@ -15,6 +15,7 @@ import { injectImgSVG } from '../../extensions/svg/utils';
  * External dependencies
  */
 import classnames from 'classnames';
+import { cloneDeep } from 'lodash';
 
 /**
  * Component
@@ -24,7 +25,7 @@ const SVGFillControl = props => {
 
 	const classes = classnames('maxi-svg-fill-control', className);
 
-	const SVGData = { ...props.SVGData };
+	const SVGData = cloneDeep(props.SVGData);
 
 	const getFillItem = ([id, value], i = 0) => {
 		return (
@@ -74,9 +75,11 @@ const SVGFillControl = props => {
 								onRemoveImage={() => {
 									SVGData[id].imageID = '';
 									SVGData[id].imageURL = '';
+
 									const resEl = injectImgSVG(
 										SVGElement,
-										SVGData
+										SVGData,
+										true
 									);
 
 									onChange({

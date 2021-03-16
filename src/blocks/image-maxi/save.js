@@ -101,7 +101,11 @@ const save = props => {
 						// height={mediaHeight}
 						alt={imageAlt()}
 					/>
-				)) || <RawHTML>{SVGElement}</RawHTML>}
+				)) || (
+					<RawHTML className='maxi-image-block-shape-wrapper'>
+						{SVGElement}
+					</RawHTML>
+				)}
 				{captionType !== 'none' && (
 					<figcaption className='maxi-image-block__caption'>
 						{captionContent}

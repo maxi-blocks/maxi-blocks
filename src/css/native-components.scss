@@ -84,6 +84,7 @@
                 margin-bottom: 0;
                 margin-right: 10px;
                 flex: 1;
+				min-height: 18px;
             }
 
             // SelectorControl
@@ -185,6 +186,7 @@
         }
         .components-base-control__field {
             margin-bottom: 0 !important;
+			flex-wrap: wrap;
 
             .components-range-control__wrapper {
                 margin-left: 0;
@@ -235,7 +237,7 @@
         padding: 20px;
         min-width: 373px !important;
         box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important;
-        @at-root .rtl #{&} {  
+        @at-root .rtl #{&} {
             min-width: 0px !important;
         }
     }

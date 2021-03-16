@@ -47,6 +47,7 @@ const Mover = props => {
 			const clientIds = getSelectedBlockClientIds();
 			const normalizedClientIds = castArray(clientIds);
 			const firstClientId = first(normalizedClientIds);
+			const lastClientId = last(normalizedClientIds);
 			const blockRootClientId = getBlockRootClientId(firstClientId);
 			const blockOrder = getBlockOrder(blockRootClientId);
 			const firstBlockIndex = getBlockIndex(
@@ -54,7 +55,7 @@ const Mover = props => {
 				blockRootClientId
 			);
 			const lastBlockIndex = getBlockIndex(
-				last(normalizedClientIds),
+				lastClientId,
 				blockRootClientId
 			);
 			const isFirstBlock = firstBlockIndex === 0;

@@ -11,7 +11,7 @@ const { useSelect } = wp.data;
  */
 import ReactCrop from 'react-image-crop';
 import classnames from 'classnames';
-import { capitalize, isEqual } from 'lodash';
+import { capitalize, isEqual, isNumber } from 'lodash';
 
 /**
  * Styles
@@ -31,7 +31,7 @@ const GeneralInput = props => {
 				type='number'
 				id={`maxi-image-crop-${target}-control`}
 				name={`maxi-image-crop-${target}-control`}
-				value={value ? +value.toFixed() : ''}
+				value={isNumber(value) ? +value.toFixed() : ''}
 				onChange={e => onChange(+e.target.value)}
 			/>
 		</label>

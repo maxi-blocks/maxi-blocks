@@ -64,6 +64,7 @@ export const backgroundImage = {
 	},
 	'background-image-position-width': {
 		type: 'number',
+		default: 0,
 	},
 	'background-image-position-height-unit': {
 		type: 'string',
@@ -71,6 +72,7 @@ export const backgroundImage = {
 	},
 	'background-image-position-height': {
 		type: 'number',
+		default: 0,
 	},
 	'background-image-origin': {
 		type: 'string',
@@ -176,7 +178,7 @@ export const backgroundSVG = {
 	},
 	'background-svg-size': {
 		type: 'number',
-		default: 50,
+		default: 100,
 	},
 	'background-svg-size--unit': {
 		type: 'string',

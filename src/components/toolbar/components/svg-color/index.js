@@ -2,18 +2,18 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { ColorPicker } = wp.components;
 
 /**
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
+import ColorControl from '../../../color-control';
 
 /**
  * SvgColor
  */
 const SvgColor = props => {
-	const { blockName, svgColor, onChange } = props;
+	const { blockName, svgColor, svgColorDefault, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
@@ -31,10 +31,12 @@ const SvgColor = props => {
 				/>
 			}
 			content={
-				<ColorPicker
+				<ColorControl
+					label={__('SVG', 'maxi-blocks')}
 					color={svgColor}
-					onChangeComplete={val => onChange(val.hex)}
-					disableAlpha
+					defaultColor={svgColorDefault}
+					onChange={val => onChange({ [svgColor]: val })}
+					disableGradient
 				/>
 			}
 		/>

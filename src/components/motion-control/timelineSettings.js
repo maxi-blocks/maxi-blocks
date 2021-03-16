@@ -409,6 +409,7 @@ const TimelineSettings = props => {
 								value: 'right',
 							},
 						]}
+						optionType='string'
 						onChange={val =>
 							onChange({ 'motion-transform-origin-x': val })
 						}
@@ -430,6 +431,7 @@ const TimelineSettings = props => {
 								value: 'bottom',
 							},
 						]}
+						optionType='string'
 						onChange={val =>
 							onChange({ 'motion-transform-origin-y': val })
 						}
@@ -437,7 +439,7 @@ const TimelineSettings = props => {
 					<hr />
 					<FancyRadioControl
 						label={__('Tablet', 'maxi-blocks')}
-						selected={+props['motion-tablet-status']}
+						selected={props['motion-tablet-status']}
 						options={[
 							{
 								label: __('Yes', 'maxi-blocks'),
@@ -449,12 +451,12 @@ const TimelineSettings = props => {
 							},
 						]}
 						onChange={val =>
-							onChange({ 'motion-tablet-status': !!+val })
+							onChange({ 'motion-tablet-status': val })
 						}
 					/>
 					<FancyRadioControl
 						label={__('Mobile', 'maxi-blocks')}
-						selected={+props['motion-mobile-status']}
+						selected={props['motion-mobile-status']}
 						options={[
 							{
 								label: __('Yes', 'maxi-blocks'),
@@ -466,7 +468,7 @@ const TimelineSettings = props => {
 							},
 						]}
 						onChange={val =>
-							onChange({ 'motion-mobile-status': !!+val })
+							onChange({ 'motion-mobile-status': val })
 						}
 					/>
 				</Fragment>

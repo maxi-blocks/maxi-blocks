@@ -85,9 +85,16 @@ class MaxiBlock extends Component {
 			const parentBlockStyle = select(
 				'core/block-editor'
 			).getBlockAttributes(blockRootClientId).blockStyle;
+			const parentBlockName = select('core/block-editor').getBlockName(
+				blockRootClientId
+			);
 
-			if (parentBlockStyle === 'maxi-custom') res = 'maxi-custom';
-			else res = 'maxi-parent';
+			if (parentBlockName.includes('maxi-blocks')) {
+				if (parentBlockStyle === 'maxi-custom') res = 'maxi-custom';
+				else res = 'maxi-parent';
+			} else {
+				res = 'maxi-light';
+			}
 		}
 
 		this.props.setAttributes({ blockStyle: res });

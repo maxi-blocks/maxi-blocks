@@ -43,7 +43,7 @@ class edit extends MaxiBlock {
 	componentDidUpdate() {
 		const blockStyle = getBlockStyleAttribute(this.props);
 
-		console.log('this.props.attributes: ' + JSON.stringify(this.props.attributes));
+		// console.log('this.props.attributes: ' + JSON.stringify(this.props.attributes));
 
 		if (!this.props.attributes['background-color'])
 			this.props.setAttributes({

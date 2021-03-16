@@ -3,13 +3,16 @@
  */
 const { Button } = wp.components;
 const { useDispatch, select } = wp.data;
-const { parse } = wp.blocks;
+const { parse } = wp.blockSerializationDefaultParser;
+const { createBlock } = wp.blocks;
+
 const { apiFetch } = wp;
 
 /**
  * External dependencies
  */
 import Masonry from 'react-masonry-css';
+import { isEmpty } from 'lodash';
 
 /**
  * Component
@@ -65,6 +68,22 @@ const LibraryMasonry = props => {
 
 	const { replaceBlocks } = useDispatch('core/editor');
 
+	/**
+	 * Well, this is a cheating function. It generates new blocks with the content get from the parse process,
+	 * and is avoiding the validation that throws and error on the console. This wouldn't be a problem in future,
+	 * onces we have a stable version with deprecations. The problem is that we are still changing the 'save' part
+	 * of some blocks, so when parsing with wp.blocks.parse is validating and throwing an error. Now we are creating
+	 * new blocks replacing the non-validate ones.
+	 */
+	const cleanOriginalContent = content => {
+		return content.map(block => {
+			if (!isEmpty(block.innerBlocks))
+				block.innerBlocks = cleanOriginalContent(block.innerBlocks);
+
+			return createBlock(block.blockName, block.attrs, block.innerBlocks);
+		});
+	};
+
 	const onRequestInsert = async id => {
 		const serverURL = await apiFetch({
 			path: 'wp/v2/settings',
@@ -89,14 +108,11 @@ const LibraryMasonry = props => {
 			.then(response => response.json())
 			.then(data => {
 				const parsedContent = parse(data[0].content);
-				const isValid = select('core/block-editor').isValidTemplate(
-					parsedContent
-				);
 
-				if (isValid) {
-					replaceBlocks(clientId, parsedContent);
-					onRequestClose();
-				}
+				const cleanParsedContent = cleanOriginalContent(parsedContent);
+
+				replaceBlocks(clientId, cleanParsedContent);
+				onRequestClose();
 			})
 			.catch(err => console.error(err));
 

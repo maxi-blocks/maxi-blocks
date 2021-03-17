@@ -31,6 +31,7 @@ export { default as FullSizeControl } from './full-size-control';
 export { default as HoverEffectControl } from './hover-effect-control';
 export { default as ImageAltControl } from './image-alt-control';
 export { default as ImageCropControl } from './image-crop-control';
+export { default as Indicators } from './indicators';
 export { default as MaxiBlock } from '../extensions/maxi-block';
 export { default as MotionControl } from './motion-control';
 export { default as MotionPreview } from './motion-preview';

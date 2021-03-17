@@ -40,6 +40,15 @@ class edit extends MaxiBlock {
 
 	componentDidMount() {
 		this.buttonRef.current.focus();
+
+		const { formatValue, textSelected } = this.state;
+		const { selectedText } = this.props;
+
+		if (isEmpty(formatValue) || selectedText !== textSelected)
+			this.setState({
+				formatValue: generateFormatValue(),
+				textSelected: selectedText,
+			});
 	}
 
 	state = {
@@ -72,25 +81,17 @@ class edit extends MaxiBlock {
 			className,
 			deviceType,
 			setAttributes,
-			selectedText,
 			generateFormatValue,
 		} = this.props;
 		const {
 			uniqueID,
 			blockStyle,
-			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
 			fullWidth,
 		} = attributes;
 
-		const { formatValue, textSelected } = this.state;
-
-		if (isEmpty(formatValue) || selectedText !== textSelected)
-			this.setState({
-				formatValue: generateFormatValue(),
-				textSelected: selectedText,
-			});
+		const { formatValue } = this.state;
 
 		const classes = classnames(
 			'maxi-block',

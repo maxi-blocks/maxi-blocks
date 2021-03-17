@@ -48,7 +48,9 @@ const getCustomFormatValue = ({
 		}
 	}
 
-	return getLastBreakpointAttribute(prop, breakpoint, typography, isHover);
+	return typography
+		? getLastBreakpointAttribute(prop, breakpoint, typography, isHover)
+		: '';
 };
 
 export default getCustomFormatValue;

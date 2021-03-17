@@ -58,7 +58,6 @@ const Inspector = props => {
 		isFirstOnHierarchy,
 		blockStyle,
 		defaultBlockStyle,
-		blockStyleBackground,
 		extraClassName,
 		fullWidth,
 	} = attributes;
@@ -88,9 +87,6 @@ const Inspector = props => {
 									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										blockStyleBackground={
-											blockStyleBackground
-										}
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}

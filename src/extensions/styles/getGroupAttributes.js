@@ -9,6 +9,13 @@ const getGroupAttributes = (
 ) => {
 	const response = {};
 
+	console.log('attributes: ' + JSON.stringify(attributes));
+	console.log('target: ' + target);
+	console.log('isHover: ' + isHover);
+	console.log('prefix: ' + prefix);
+	console.log('cleaned: ' + cleaned);
+	console.log('=======================================');
+
 	if (typeof target === 'string')
 		Object.keys(defaults[`${target}${isHover ? 'Hover' : ''}`]).forEach(
 			key => {

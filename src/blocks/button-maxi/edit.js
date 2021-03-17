@@ -18,8 +18,6 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
-import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
-import getBlockStyleAttribute from '../../extensions/styles/defaults/style-card/getBlockStyleAttribute';
 
 /**
  * External dependencies

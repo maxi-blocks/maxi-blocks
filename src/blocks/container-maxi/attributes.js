@@ -24,9 +24,19 @@ const attributes = {
 		type: 'string',
 		default: 'maxi-light',
 	},
+	updateStyleCard: {
+		type: 'bool',
+		default: false,
+	},
 	...attributesData.container,
 	...attributesData.background,
-	...attributesData.backgroundColor,
+	...{
+		...attributesData.backgroundColor,
+		'background-color': {
+			type: 'string',
+			default: 'styleCard',
+		},
+	},
 	...attributesData.backgroundImage,
 	...attributesData.backgroundVideo,
 	...attributesData.backgroundGradient,

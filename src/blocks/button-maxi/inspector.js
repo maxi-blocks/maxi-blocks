@@ -51,7 +51,7 @@ import {
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, formatValue } = props;
+	const { attributes, deviceType, setAttributes, formatValue, clientId } = props;
 	const {
 		customLabel,
 		uniqueID,
@@ -92,6 +92,7 @@ const Inspector = props => {
 										onChange={obj => setAttributes(obj)}
 										disableHighlightColor1
 										disableHighlightColor2
+										disableBlockStyleBackground
 										{...getGroupAttributes(attributes, [
 											'border',
 											'highlight',
@@ -389,7 +390,11 @@ const Inspector = props => {
 																				'background',
 																				'backgroundColor',
 																				'backgroundGradient',
-																			]
+																			],
+																			false,
+																			'',
+																			false,
+																			clientId
 																		)}
 																		onChange={obj =>
 																			setAttributes(

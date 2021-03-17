@@ -1,6 +1,6 @@
 const { __, sprintf } = wp.i18n;
 
-const { select, useSelect, useDispatch } = wp.data;
+const { select, dispatch, useSelect, useDispatch } = wp.data;
 const { Fragment, useState } = wp.element;
 const { Button, SelectControl, Popover, Icon } = wp.components;
 
@@ -52,13 +52,13 @@ const MaxiStyleCardsTab = ({
 										SCStyle,
 										true
 									)}
-									onChange={val =>
+									onChange={val => {
 										onChangeValue(
 											'button-background-color',
 											val,
 											SCStyle
-										)
-									}
+										);
+									}}
 									disableGradient
 								/>
 							</Fragment>
@@ -81,7 +81,7 @@ const MaxiStyleCardsTabs = SC => {
 		};
 	});
 
-	console.log('SC on tabs: ' + JSON.stringify(SC));
+	// console.log('SC on tabs: ' + JSON.stringify(SC));
 
 	const { saveMaxiStyleCards } = useDispatch('maxiBlocks/style-cards');
 	const styleCards = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
@@ -113,7 +113,7 @@ const MaxiStyleCardsTabs = SC => {
 
 	const [currentSC, changeCurrentSC] = useState(SC.SC); // remove this double SC
 
-	console.log('currentSC state: ' + JSON.stringify(currentSC));
+	// console.log('currentSC state: ' + JSON.stringify(currentSC));
 
 	const applySC = SC => {
 		// Light
@@ -134,10 +134,25 @@ const MaxiStyleCardsTabs = SC => {
 		});
 	};
 
-	const onChangeValue = (prop, value, style) => {
-		// // console.log('prop: ' + prop + ' value ' + value + ' style ' + style);
+	const reRenderBlocks = () => {
+		const allBlocks = select('core/block-editor').getBlocks();
+		Object.entries(allBlocks).forEach(([key, val]) => {
+			const { clientId, attributes } = val;
 
-		// // console.log('currentSC style: ' + JSON.stringify(currentSC.styleCard));
+			if (!isNil(clientId) && !isNil(attributes)) {
+				const { updateStyleCard } = attributes;
+				console.log('updateStyleCard ' + JSON.stringify(updateStyleCard));
+				if (!isNil(updateStyleCard)) {
+					console.log(`update for ${clientId}`);
+					dispatch('core/block-editor').updateBlockAttributes(clientId, {
+						updateStyleCard: !updateStyleCard,
+					});
+				}
+			}
+		});
+	};
+
+	const onChangeValue = (prop, value, style) => {
 
 		const newCurrentSC = {
 			...currentSC,
@@ -146,8 +161,6 @@ const MaxiStyleCardsTabs = SC => {
 				[style]: { ...currentSC[style], [prop]: value },
 			},
 		};
-
-		// console.log('newCurrentSC ' + JSON.stringify(newCurrentSC));
 
 		changeCurrentSC(newCurrentSC);
 
@@ -180,6 +193,8 @@ const MaxiStyleCardsTabs = SC => {
 		// console.log('newStyleCards: ' + JSON.stringify(newStyleCards));
 
 		applySC(newCurrentSC);
+
+		reRenderBlocks();
 
 		saveMaxiStyleCards(newStyleCards);
 	};

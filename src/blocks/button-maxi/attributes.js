@@ -24,6 +24,10 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
+	updateStyleCard: {
+		type: 'bool',
+		default: false,
+	},
 	...attributesData.icon,
 	...attributesData.iconPadding,
 	...attributesData.iconBorder,
@@ -55,7 +59,14 @@ const attributes = {
 			default: 'color',
 		},
 	},
-	...attributesData.backgroundColor,
+	...{
+		...attributesData.backgroundColor,
+		'background-color': {
+			type: 'string',
+			default: 'styleCard',
+		},
+	},
+	// ...attributesData.backgroundColor,
 	...attributesData.backgroundGradient,
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,

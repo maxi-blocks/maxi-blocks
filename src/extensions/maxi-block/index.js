@@ -7,13 +7,11 @@
 /**
  * Disabled some ESLint rules; this file needs to be cleaned
  */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable class-methods-use-this */
 
 /**
  * WordPress dependencies
  */
-const { Component, render } = wp.element;
+const { Component, render, createRef } = wp.element;
 const { select, dispatch } = wp.data;
 
 /**
@@ -25,7 +23,7 @@ import getBreakpoints from '../styles/helpers/getBreakpoints';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, cloneDeep, isObject, isArray } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
 
 /**
  * Class
@@ -39,8 +37,9 @@ class MaxiBlock extends Component {
 
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
-		// this.cloneObjects(attributes);
 		this.displayStyles();
+
+		this.blockRef = createRef();
 	}
 
 	componentDidUpdate() {
@@ -82,20 +81,17 @@ class MaxiBlock extends Component {
 
 		if (!blockRootClientId) {
 			res = 'maxi-light';
+		} else if (
+			select('core/block-editor')
+				.getBlockName(blockRootClientId)
+				.includes('maxi-blocks')
+		) {
+			select('core/block-editor').getBlockAttributes(blockRootClientId)
+				.blockStyle === 'maxi-custom'
+				? (res = 'maxi-custom')
+				: (res = 'maxi-parent');
 		} else {
-			if (
-				select('core/block-editor')
-					.getBlockName(blockRootClientId)
-					.includes('maxi-blocks')
-			) {
-				select('core/block-editor').getBlockAttributes(
-					blockRootClientId
-				).blockStyle === 'maxi-custom'
-					? (res = 'maxi-custom')
-					: (res = 'maxi-parent');
-			} else {
-				res = 'maxi-light';
-			}
+			res = 'maxi-light';
 		}
 
 		this.props.setAttributes({ blockStyle: res });
@@ -111,21 +107,6 @@ class MaxiBlock extends Component {
 
 			this.props.setAttributes({ uniqueID: newUniqueId });
 		}
-	}
-
-	/**
-	 * Is necessary to clone deep the objects if we don't want to modify
-	 * the original one on the native Gutenberg store and to make changes into
-	 * the other blocks.
-	 *
-	 * @param {obj} attributes	Block attributes
-	 */
-	cloneObjects(attributes) {
-		Object.entries(attributes).forEach(
-			([key, val]) =>
-				(isObject(val) || isArray(val)) &&
-				this.props.setAttributes({ [key]: cloneDeep(val) })
-		);
 	}
 
 	/**

@@ -16,6 +16,7 @@ import {
 } from '../../components';
 
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
+import exportStyleCard from './exportStyleCard';
 
 const MaxiStyleCardsTab = ({
 	SC,
@@ -24,8 +25,6 @@ const MaxiStyleCardsTab = ({
 	onChange,
 	onChangeValue,
 }) => {
-	// // console.log('SC[button-background-color] ' + SC['button-background-color']);
-
 	const getColor = attr => {
 		if (!isNil(SC.styleCard[SCStyle][attr]))
 			return SC.styleCard[SCStyle][attr];
@@ -114,7 +113,7 @@ const MaxiStyleCardsTabs = SC => {
 
 	const [currentSC, changeCurrentSC] = useState(SC.SC); // remove this double SC
 
-	// console.log('currentSC state: ' + JSON.stringify(currentSC));
+	console.log('currentSC state: ' + JSON.stringify(currentSC));
 
 	const applySC = SC => {
 		// Light
@@ -259,9 +258,6 @@ const MaxiStyleCardsEditor = () => {
 	const [styleCardName, setStyleCardName] = useState('');
 	const [styleCardLoad, setStyleCardLoad] = useState('');
 
-	// const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-	// // console.log('styleCards: ' + styleCards);
-
 	const getStyleCardsOptions = () => {
 		const styleCardsArr = [];
 
@@ -270,8 +266,6 @@ const MaxiStyleCardsEditor = () => {
 		);
 		return styleCardsArr;
 	};
-
-	// // console.log('getStyleCardCurrentKey: ' + getStyleCardCurrentKey());
 
 	const getStyleCardCurrentValue = () => {
 		let styleCardCurrentValue = '';
@@ -310,6 +304,8 @@ const MaxiStyleCardsEditor = () => {
 			)
 		);
 	}
+
+	const currentSCname = getStyleCards()[getStyleCardCurrentKey()].name;
 
 	return (
 		<Popover
@@ -383,7 +379,7 @@ const MaxiStyleCardsEditor = () => {
 											'Are you sure to delete "%s" style card?',
 											'maxi-blocks'
 										),
-										getStyleCards()[getStyleCardCurrentKey()].name
+										currentSCname
 									)
 								)
 							) {
@@ -424,9 +420,7 @@ const MaxiStyleCardsEditor = () => {
 											'Are you sure you want to apply "%s" style card? It will apply the styles to the whole site',
 											'maxi-blocks'
 										),
-										getStyleCards()[
-											getStyleCardCurrentKey()
-										].name
+										currentSCname
 									)
 								)
 							) {
@@ -442,6 +436,25 @@ const MaxiStyleCardsEditor = () => {
 						}}
 					>
 						{__('Apply', 'maxi-blocks')}
+					</Button>
+				</div>
+				<div className='maxi-style-cards__sc--two'>
+					<Button
+						disabled={false}
+						onClick={() => {
+							const fileName = `${currentSCname}.json`;
+							exportStyleCard(getStyleCardCurrentValue(), fileName);
+						}}
+					>
+						{__('Export', 'maxi-blocks')}
+					</Button>
+					<Button
+						disabled={false}
+						onClick={() => {
+
+						}}
+					>
+						{__('Import', 'maxi-blocks')}
 					</Button>
 				</div>
 			</div>

@@ -24,25 +24,26 @@ const getStyleCardAttr = (
 				return false;
 		}
 	};
-	// console.log('getStyleCards: ' + JSON.stringify(getStyleCards()));
 
 	if (typeof getStyleCards() === 'object') {
 		const styleCardsArr = Object.keys(getStyleCards()).map(key => {
-			if (!defaultAtt) {
-				const styleCardsArrToCheck = getStyleCards()[key].styleCard[
-					style
-				][attribute];
-				if (!isNil(styleCardsArrToCheck)) return styleCardsArrToCheck;
+			if (getStyleCards()[key].status === 'active') {
+				if (!defaultAtt) {
+					const styleCardsArrToCheck = getStyleCards()[key].styleCard[
+						style
+					][attribute];
+					if (!isNil(styleCardsArrToCheck)) return styleCardsArrToCheck;
+					const styleCardsDefaultArrToCheck = getStyleCards()[key]
+						.styleCardDefaults[style][attribute];
+					if (!isNil(styleCardsDefaultArrToCheck))
+						return styleCardsDefaultArrToCheck;
+					return false;
+				}
 				const styleCardsDefaultArrToCheck = getStyleCards()[key]
 					.styleCardDefaults[style][attribute];
-				if (!isNil(styleCardsDefaultArrToCheck))
-					return styleCardsDefaultArrToCheck;
+				if (!isNil(styleCardsDefaultArrToCheck)) return styleCardsDefaultArrToCheck;
 				return false;
 			}
-			const styleCardsDefaultArrToCheck = getStyleCards()[key]
-				.styleCardDefaults[style][attribute];
-			if (!isNil(styleCardsDefaultArrToCheck)) return styleCardsDefaultArrToCheck;
-			return false;
 		});
 
 		return styleCardsArr.toString();

@@ -103,7 +103,7 @@ const getStyles = props => {
 				'backgroundHover',
 				'backgroundColorHover',
 			]),
-			isHover: !!props['background-status-hover'],
+			isHover: true,
 		}),
 		...getBackgroundStyles({
 			target: uniqueID,

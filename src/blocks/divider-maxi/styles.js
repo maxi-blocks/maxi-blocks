@@ -114,7 +114,7 @@ const getStyles = props => {
 				'backgroundColorHover',
 				'backgroundGradientHover',
 			]),
-			isHover: !!props['background-status-hover'],
+			isHover: true,
 		}),
 	};
 

@@ -1,5 +1,4 @@
 const p = {
-	'color-general': '#9b9b9b',
 	'font-size-general': 16,
 	'line-height-general': 1.625,
 	'letter-spacing-general': 0,
@@ -13,7 +12,6 @@ const p = {
 };
 
 const h1 = {
-	'color-general': '#081219',
 	'font-size-general': 45,
 	'line-height-general': 1.22,
 	'font-weight-general': 500,
@@ -28,7 +26,6 @@ const h1 = {
 };
 
 const h2 = {
-	'color-general': '#081219',
 	'font-size-general': 38,
 	'line-height-general': 1.33,
 	'font-weight-general': 500,
@@ -43,7 +40,6 @@ const h2 = {
 };
 
 const h3 = {
-	'color-general': '#081219',
 	'font-size-general': 30,
 	'line-height-general': 1.33,
 	'font-weight-general': 500,
@@ -58,7 +54,6 @@ const h3 = {
 };
 
 const h4 = {
-	'color-general': '#081219',
 	'font-size-general': 26,
 	'line-height-general': 1.39,
 	'font-weight-general': 500,
@@ -73,7 +68,6 @@ const h4 = {
 };
 
 const h5 = {
-	'color-general': '#081219',
 	'font-size-general': 22,
 	'line-height-general': 1.45,
 	'font-weight-general': 500,
@@ -88,7 +82,6 @@ const h5 = {
 };
 
 const h6 = {
-	'color-general': '#081219',
 	'font-size-general': 20,
 	'line-height-general': 1.5,
 	'font-weight-general': 500,

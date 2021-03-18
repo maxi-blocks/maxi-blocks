@@ -37,19 +37,16 @@
 			border-right: 6px solid #ff4a17;
 			border-top: 6px solid #ff4a17;
 			bottom: 0;
-			-webkit-box-sizing: border-box;
 			box-sizing: border-box;
 			left: 0;
 			margin: auto;
 			position: absolute;
 			right: 0;
 			top: 0;
-			-webkit-transform-origin: center center;
 			transform-origin: center center;
 		}
 
 		&:before {
-			-webkit-animation: rotate 1s ease-in-out infinite;
 			animation: rotate 1s ease-in-out infinite;
 			height: 100%;
 			width: 100%;
@@ -83,14 +80,8 @@
 			padding: 7px 14px;
 			font-size: 13px;
 			cursor: pointer;
-			display: -webkit-box;
-			display: -ms-flexbox;
 			display: flex;
-			-webkit-box-align: center;
-			-ms-flex-align: center;
 			align-items: center;
-			-webkit-box-pack: center;
-			-ms-flex-pack: center;
 			justify-content: center;
 
 			svg {
@@ -113,14 +104,8 @@
 		}
 
 		&__logo {
-			display: -webkit-box;
-			display: -ms-flexbox;
 			display: flex;
-			-webkit-box-align: center;
-			-ms-flex-align: center;
 			align-items: center;
-			-webkit-box-pack: center;
-			-ms-flex-pack: center;
 			justify-content: center;
 			color: #000;
 			text-decoration: none;

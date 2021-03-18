@@ -19,13 +19,14 @@ const { select, dispatch } = wp.data;
 /**
  * Internal dependencies
  */
-import { styleResolver, styleGenerator } from '../styles';
+import { styleResolver, styleGenerator, getGroupAttributes } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
+import { loadFonts } from '../text/fonts';
 
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId, cloneDeep, isObject, isArray } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
 
 /**
  * Class
@@ -39,7 +40,11 @@ class MaxiBlock extends Component {
 
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
-		// this.cloneObjects(attributes);
+
+		// Font loader
+		const typography = getGroupAttributes(attributes, 'typography');
+		if (!isEmpty(typography)) this.loadFonts(typography);
+
 		this.displayStyles();
 	}
 
@@ -80,14 +85,19 @@ class MaxiBlock extends Component {
 			'core/block-editor'
 		).getBlockRootClientId(clientId);
 
-		if (!blockRootClientId) res = 'maxi-light';
-		else {
-			const parentBlockStyle = select(
-				'core/block-editor'
-			).getBlockAttributes(blockRootClientId).blockStyle;
-
-			if (parentBlockStyle === 'maxi-custom') res = 'maxi-custom';
-			else res = 'maxi-parent';
+		if (!blockRootClientId) {
+			res = 'maxi-light';
+		} else if (
+			select('core/block-editor')
+				.getBlockName(blockRootClientId)
+				.includes('maxi-blocks')
+		) {
+			select('core/block-editor').getBlockAttributes(blockRootClientId)
+				.blockStyle === 'maxi-custom'
+				? (res = 'maxi-custom')
+				: (res = 'maxi-parent');
+		} else {
+			res = 'maxi-light';
 		}
 
 		this.props.setAttributes({ blockStyle: res });
@@ -105,19 +115,10 @@ class MaxiBlock extends Component {
 		}
 	}
 
-	/**
-	 * Is necessary to clone deep the objects if we don't want to modify
-	 * the original one on the native Gutenberg store and to make changes into
-	 * the other blocks.
-	 *
-	 * @param {obj} attributes	Block attributes
-	 */
-	cloneObjects(attributes) {
-		Object.entries(attributes).forEach(
-			([key, val]) =>
-				(isObject(val) || isArray(val)) &&
-				this.props.setAttributes({ [key]: cloneDeep(val) })
-		);
+	loadFonts(typography) {
+		Object.entries(typography).forEach(([key, val]) => {
+			if (key.includes('font-family')) loadFonts(val);
+		});
 	}
 
 	/**
@@ -127,17 +128,18 @@ class MaxiBlock extends Component {
 		const obj = this.getStylesObject;
 		const breakpoints = this.getBreakpoints;
 		const customData = this.getCustomData;
+		const { uniqueID } = this.props.attributes;
 
-		const styles = styleResolver(obj, false, breakpoints);
+		const styles = styleResolver(uniqueID, obj, false, breakpoints);
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			let wrapper = document.querySelector(
-				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
+				`#maxi-blocks__styles--${uniqueID}`
 			);
 			if (!wrapper) {
 				wrapper = document.createElement('div');
-				wrapper.id = `maxi-blocks__styles--${this.props.attributes.uniqueID}`;
+				wrapper.id = `maxi-blocks__styles--${uniqueID}`;
 				document.head.appendChild(wrapper);
 			}
 

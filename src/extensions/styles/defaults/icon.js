@@ -48,7 +48,7 @@ export const icon = (() => {
 		},
 		'icon-position': {
 			type: 'string',
-			default: 'left',
+			default: 'right',
 		},
 		'icon-size-general': {
 			type: 'number',

@@ -5,9 +5,10 @@
  *
  * @return {Object} Action object.
  */
-export function updateStyles(styles) {
+export function updateStyles(target = null, styles) {
 	return {
 		type: 'UPDATE_STYLES',
+		target,
 		styles,
 	};
 }

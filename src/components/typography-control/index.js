@@ -4,6 +4,7 @@
 const { __ } = wp.i18n;
 const { SelectControl } = wp.components;
 const { useState } = wp.element;
+const { select } = wp.data;
 
 /**
  * Internal dependencies
@@ -45,7 +46,6 @@ const TypographyControl = props => {
 		formatValue,
 		isList = false,
 		isHover = false,
-		originalFontOptions = [],
 		disableColor = false,
 		prefix = '',
 	} = props;
@@ -96,16 +96,32 @@ const TypographyControl = props => {
 		},
 	};
 
+	const getValue = prop => {
+		const nonHoverValue = getCustomFormatValue({
+			defaultTypography,
+			formatValue,
+			prop,
+			breakpoint,
+		});
+
+		if (!isHover) return nonHoverValue;
+
+		return (
+			getCustomFormatValue({
+				defaultTypography,
+				formatValue,
+				prop,
+				breakpoint,
+				isHover,
+			}) || nonHoverValue
+		);
+	};
+
 	const getWeightOptions = () => {
-		const fontOptions =
-			!isHover ||
-			!typography[`${`${prefix}`}font-options-${breakpoint}-hover`]
-				? Object.keys(originalFontOptions)
-				: Object.keys(
-						typography[
-							`${`${prefix}`}font-options-${breakpoint}-hover`
-						]
-				  );
+		const { getFont } = select('maxiBlocks/fonts');
+
+		const fontFiles = getFont(getValue(`${prefix}font-family`)).files;
+		const fontOptions = Object.keys(fontFiles).map(key => key);
 
 		if (fontOptions.length === 0) {
 			return [
@@ -158,27 +174,6 @@ const TypographyControl = props => {
 			}
 		});
 		return response;
-	};
-
-	const getValue = prop => {
-		const nonHoverValue = getCustomFormatValue({
-			defaultTypography,
-			formatValue,
-			prop,
-			breakpoint,
-		});
-
-		if (!isHover) return nonHoverValue;
-
-		return (
-			getCustomFormatValue({
-				defaultTypography,
-				formatValue,
-				prop,
-				breakpoint,
-				isHover,
-			}) || nonHoverValue
-		);
 	};
 
 	const getDefault = prop => {

@@ -1,0 +1,25 @@
+.maxi-toolbar-layout {
+	&__button {
+		display: flex;
+		align-items: center;
+		font-family: Roboto, sans-serif;
+		font-size: 14px;
+		letter-spacing: 0.5px;
+		color: #081219;
+		background-color: #fff;
+		margin-left: 10px;
+		border-radius: 3px;
+		float: right;
+		border: 2px solid #dddfe2;
+		box-shadow: none !important;
+		padding: 5px 10px;
+		justify-content: center;
+		min-height: 45px;
+		transition: all 0.5s;
+
+		&[aria-pressed='true'],
+		&:hover {
+			border-color: #ff4a17;
+		}
+	}
+}

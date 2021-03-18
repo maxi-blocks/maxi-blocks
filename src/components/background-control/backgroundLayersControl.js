@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { useState } = wp.element;
+const { useState, RawHTML } = wp.element;
 
 /**
  * Internal dependencies
@@ -42,6 +42,36 @@ const LayerCard = props => {
 		isOpen && 'maxi-background-layer__open'
 	);
 
+	const previewStyles = type => {
+		let response = {};
+
+		if (type === 'color')
+			response = {
+				...response,
+				background: layer['background-color'],
+			};
+
+		if (type === 'gradient')
+			response = {
+				...response,
+				background: layer['background-gradient'],
+			};
+
+		if (type === 'image')
+			response = {
+				...response,
+				background: `url(${layer['background-image-mediaURL']})`,
+			};
+
+		if (type === 'video')
+			response = {
+				...response,
+				background: `url(${layer['background-video-fallbackURL']})`,
+			};
+
+		return response;
+	};
+
 	const getTitle = type => {
 		switch (type) {
 			case 'color':
@@ -71,6 +101,16 @@ const LayerCard = props => {
 				<p className='maxi-background-layer__title'>
 					<span className='maxi-background-layer__title__id' />
 					<span className='maxi-background-layer__title__text'>
+						<span
+							className='maxi-background-layer__preview'
+							style={previewStyles(type)}
+						>
+							{type === 'shape' && (
+								<RawHTML>
+									{layer['background-svg-SVGElement']}
+								</RawHTML>
+							)}
+						</span>
 						{getTitle(type)}
 					</span>
 					<span

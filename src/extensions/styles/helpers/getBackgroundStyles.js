@@ -444,6 +444,8 @@ const getBackgroundStyles = ({
 	},
 	...props
 }) => {
+	if (isHover && !props[`${prefix}background-status-hover`]) return {};
+
 	let response = {
 		[`${target}${isHover ? ':hover' : ''} > .maxi-background-displayer`]: {
 			border: getBorderStyles({

@@ -87,20 +87,17 @@ class MaxiBlock extends Component {
 
 		if (!blockRootClientId) {
 			res = 'maxi-light';
+		} else if (
+			select('core/block-editor')
+				.getBlockName(blockRootClientId)
+				.includes('maxi-blocks')
+		) {
+			select('core/block-editor').getBlockAttributes(blockRootClientId)
+				.blockStyle === 'maxi-custom'
+				? (res = 'maxi-custom')
+				: (res = 'maxi-parent');
 		} else {
-			if (
-				select('core/block-editor')
-					.getBlockName(blockRootClientId)
-					.includes('maxi-blocks')
-			) {
-				select('core/block-editor').getBlockAttributes(
-					blockRootClientId
-				).blockStyle === 'maxi-custom'
-					? (res = 'maxi-custom')
-					: (res = 'maxi-parent');
-			} else {
-				res = 'maxi-light';
-			}
+			res = 'maxi-light';
 		}
 
 		this.props.setAttributes({ blockStyle: res });
@@ -131,17 +128,18 @@ class MaxiBlock extends Component {
 		const obj = this.getStylesObject;
 		const breakpoints = this.getBreakpoints;
 		const customData = this.getCustomData;
+		const { uniqueID } = this.props.attributes;
 
-		const styles = styleResolver(obj, false, breakpoints);
+		const styles = styleResolver(uniqueID, obj, false, breakpoints);
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			let wrapper = document.querySelector(
-				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
+				`#maxi-blocks__styles--${uniqueID}`
 			);
 			if (!wrapper) {
 				wrapper = document.createElement('div');
-				wrapper.id = `maxi-blocks__styles--${this.props.attributes.uniqueID}`;
+				wrapper.id = `maxi-blocks__styles--${uniqueID}`;
 				document.head.appendChild(wrapper);
 			}
 

@@ -113,7 +113,7 @@ const getStyles = props => {
 				'backgroundGradientHover',
 				'borderRadiusHover',
 			]),
-			isHover: !!props['background-status-hover'],
+			isHover: true,
 		}),
 	};
 

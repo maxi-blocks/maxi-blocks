@@ -13,11 +13,15 @@ const getGroupAttributes = (
 ) => {
 	const response = {};
 
-//	console.log('attributes: ' + JSON.stringify(attributes));
+	// console.log('attributes ' +JSON.stringify(attributes));
+
+	const { uniqueID } = attributes;
 
 	const getBlockStyleAttribute = () => {
 		// const { clientId } = props;
-		const { getBlockAttributes, getBlockParents } = select('core/block-editor');
+		const { getBlockAttributes, getBlockParents } = select(
+			'core/block-editor'
+		);
 		const { blockStyle } = attributes;
 
 		switch (blockStyle) {
@@ -35,28 +39,35 @@ const getGroupAttributes = (
 		}
 	};
 
-
-//	console.log('isHover: ' + isHover);
-//	console.log('prefix: ' + prefix);
-// 	console.log('cleaned: ' + cleaned);
-
-
 	if (typeof target === 'string')
 		Object.keys(defaults[`${target}${isHover ? 'Hover' : ''}`]).forEach(
 			key => {
 				if ((cleaned && attributes[`${prefix}${key}`]) || !cleaned) {
-					if (target === 'backgroundColor') {
-					//	console.log('attr: ' + attributes[`${prefix}${key}`]);
-
-					}
 					const currentAttr = attributes[`${prefix}${key}`];
-					if (typeof currentAttr === 'string' && currentAttr.indexOf('styleCard') !== -1)
-						response[`${prefix}${key}`] = getStyleCardAttr(
-							'button-background-color',
-							getBlockStyleAttribute(),
-							false
-						);
-					else response[`${prefix}${key}`] = attributes[`${prefix}${key}`];
+					if (
+						typeof currentAttr === 'string' &&
+						currentAttr.indexOf('styleCard') !== -1
+					) {
+						if (
+							target === 'backgroundColor' &&
+							typeof uniqueID === 'string' &&
+							uniqueID.indexOf('button-maxi') !== -1
+						) {
+							response[`${prefix}${key}`] = getStyleCardAttr(
+								'button-background-color',
+								getBlockStyleAttribute(),
+								false
+							);
+						} else {
+							response[`${prefix}${key}`] = getStyleCardAttr(
+								'background-1',
+								getBlockStyleAttribute(),
+								false
+							);
+						}
+					} else
+						response[`${prefix}${key}`] =
+							attributes[`${prefix}${key}`];
 				}
 			}
 		);

@@ -25,8 +25,8 @@ const attributes = {
 		default: '',
 	},
 	updateStyleCard: {
-		type: 'bool',
-		default: false,
+		type: 'number',
+		default: 0,
 	},
 	...attributesData.icon,
 	...attributesData.iconPadding,

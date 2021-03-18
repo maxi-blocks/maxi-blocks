@@ -77,11 +77,17 @@ class edit extends MaxiBlock {
 		} = this.props;
 		const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
 
-		const { formatValue, textSelected } = this.state;
+		const { formatValue, textSelected, updateStyleCard } = this.state;
 
 		if (isEmpty(formatValue) || selectedText !== textSelected)
 			this.setState({
 				formatValue: generateFormatValue(),
+				textSelected: selectedText,
+			});
+
+		if (isEmpty(updateStyleCard))
+			this.setState({
+				updateStyleCard: generateFormatValue(),
 				textSelected: selectedText,
 			});
 

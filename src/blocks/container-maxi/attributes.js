@@ -25,8 +25,8 @@ const attributes = {
 		default: 'maxi-light',
 	},
 	updateStyleCard: {
-		type: 'bool',
-		default: false,
+		type: 'number',
+		default: 0,
 	},
 	...attributesData.container,
 	...attributesData.background,

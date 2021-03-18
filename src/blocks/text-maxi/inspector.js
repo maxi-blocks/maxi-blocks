@@ -360,11 +360,6 @@ const Inspector = props => {
 																				]
 																			}
 																			isHover
-																			originalFontOptions={getLastBreakpointAttribute(
-																				'font-options',
-																				deviceType,
-																				attributes
-																			)}
 																		/>
 																	)}
 																</Fragment>

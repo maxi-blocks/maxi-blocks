@@ -232,8 +232,8 @@ const MaxiStyleCardsTabs = SC => {
 		// Light
 		Object.entries(SC.styleCard.light).forEach(([key, val]) => {
 			// if (key === 'background-1')
-			console.log('key ' + key);
-			console.log('val ' + val);
+			// console.log('key ' + key);
+			// console.log('val ' + val);
 			document.documentElement.style.setProperty(
 				`--maxi-light-${key}`,
 				val
@@ -258,9 +258,9 @@ const MaxiStyleCardsTabs = SC => {
 				const { updateStyleCard } = attributes;
 				console.log('updateStyleCard ' + JSON.stringify(updateStyleCard));
 				if (!isNil(updateStyleCard)) {
-					console.log(`update for ${clientId}`);
+					// console.log(`update for ${clientId}`);
 					dispatch('core/block-editor').updateBlockAttributes(clientId, {
-						updateStyleCard: !updateStyleCard,
+						updateStyleCard: new Date().getTime(),
 					});
 				}
 			}

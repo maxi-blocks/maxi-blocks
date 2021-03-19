@@ -10,6 +10,29 @@
 	padding: 10px 20px;
 	box-shadow: 0 5px 15px 0 rgba(119, 119, 119, 0.1);
 
+	.action-buttons {
+		display: inline-block;
+		&__button {
+			font-family: Roboto, sans-serif;
+			font-size: 14px;
+			letter-spacing: 0.5px;
+			color: #081219;
+			background-color: #fff;
+			margin-left: 10px;
+			border-radius: 3px;
+			border: 2px solid #dddfe2;
+			box-shadow: none !important;
+			height: 40px;
+			transition: all 0.5s;
+
+			svg {
+				margin-right: 5px;
+			}
+			&:hover {
+				border-color: #ff4a17;
+			}
+		}
+	}
 	&__close {
 		position: absolute;
 		top: -5px;
@@ -59,6 +82,32 @@
 			background-color: #fff;
 			border-bottom-left-radius: 0;
 			border-bottom-right-radius: 0;
+		}
+	}
+}
+@media only screen and (max-width: 768px) {
+	.maxi-responsive-selector {
+		display: block;
+		width: 80px;
+		padding: 10px 12px;
+		.action-buttons {
+			&__button {
+				margin: 0 0 8px 0;
+				svg {
+					margin-right: 0;
+				}
+			}
+		}
+		&__button {
+			margin: 0 0 8px 0;
+			display: block;
+		}
+	}
+}
+@media only screen and (max-width: 1366px) {
+	.action-buttons {
+		&__button span {
+			display: none;
 		}
 	}
 }

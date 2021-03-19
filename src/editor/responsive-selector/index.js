@@ -2,8 +2,9 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { Button } = wp.components;
+const { Button, Icon } = wp.components;
 const { useSelect, useDispatch } = wp.data;
+const { createBlock } = wp.blocks;
 
 /**
  * External dependencies
@@ -21,6 +22,8 @@ import {
 	largeMode,
 	mediumMode,
 	smallMode,
+	cloudLib,
+	globalOptions,
 } from '../../icons';
 
 /**
@@ -28,6 +31,12 @@ import {
  */
 const ResponsiveSelector = props => {
 	const { className, isOpen, onClose } = props;
+
+	const addCloudLibrary = () => {
+		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
+	};
+
+	const { insertBlock } = useDispatch('core/block-editor');
 
 	const { deviceType, breakpoints } = useSelect(select => {
 		const { receiveMaxiDeviceType, receiveMaxiBreakpoints } = select(
@@ -137,6 +146,23 @@ const ResponsiveSelector = props => {
 			>
 				{xsMode}
 			</Button>
+			<div className='action-buttons'>
+				<Button
+					className='action-buttons__button'
+					aria-label='Cloud Library'
+					onClick={() => addCloudLibrary()}
+				>
+					<Icon icon={cloudLib} />
+					<span>{__('Cloud Library', 'maxi-blocks')}</span>
+				</Button>
+				<Button
+					className='action-buttons__button'
+					aria-label='Global Styles'
+				>
+					<Icon icon={globalOptions} />
+					<span>{__('Global Styles', 'maxi-blocks')}</span>
+				</Button>
+			</div>
 		</div>
 	);
 };

@@ -3,8 +3,6 @@
  */
 const { Button, Icon } = wp.components;
 const { useState, render, Fragment } = wp.element;
-const { useDispatch } = wp.data;
-const { createBlock } = wp.blocks;
 
 /**
  * Internal dependencies
@@ -12,9 +10,10 @@ const { createBlock } = wp.blocks;
 import ResponsiveSelector from '../responsive-selector';
 
 /**
- * Icons
+ * Styles
  */
-import { main, responsive } from '../../icons';
+import './editor.scss';
+import { main } from '../../icons';
 
 /**
  * Component
@@ -22,38 +21,15 @@ import { main, responsive } from '../../icons';
 const ToolbarButtons = () => {
 	const [isResponsiveOpen, setIsResponsiveOpen] = useState(false);
 
-	const { insertBlock } = useDispatch('core/block-editor');
-
-	const addCloudLibrary = () => {
-		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
-	};
-
 	return (
 		<Fragment>
 			<div className='maxi-toolbar-layout'>
 				<Button
-					id='maxi-button__show-responsive'
-					className='button maxi-button maxi-button__toolbar'
+					className='maxi-toolbar-layout__button'
+					aria-pressed={isResponsiveOpen}
 					onClick={() => setIsResponsiveOpen(!isResponsiveOpen)}
 				>
-					<Icon icon={responsive} />
-				</Button>
-				<Button
-					id='maxi-button__layout'
-					className='button maxi-button maxi-button__toolbar'
-					aria-label='Maxi Cloud Library'
-					onClick={() => addCloudLibrary()}
-				>
 					<Icon icon={main} />
-					Maxi Cloud Library
-				</Button>
-				<Button
-					id='maxi-button__go-to-customizer'
-					className='button maxi-button maxi-button__toolbar'
-					aria-label='Global Styles'
-				>
-					<Icon icon={main} />
-					Global Styles
 				</Button>
 			</div>
 			<ResponsiveSelector

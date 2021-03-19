@@ -10,6 +10,7 @@ const { useSelect } = wp.data;
  * Internal dependencies
  */
 import { loadFonts } from '../../extensions/text/fonts';
+import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
 /**
  * External dependencies
  */
@@ -92,6 +93,12 @@ const FontFamilySelector = props => {
 		theme === 'dark' && 'maxi-font-family-selector__popover__dark'
 	);
 
+	let fontSC;
+	if (font === 'styleCard') {
+		fontSC = getStyleCardAttr('p-font-family', theme, false);
+		loadFonts(fontSC);
+	} else fontSC = font;
+
 	return (
 		<Dropdown
 			className={classes}
@@ -100,7 +107,7 @@ const FontFamilySelector = props => {
 					className='maxi-font-family-selector__button'
 					onClick={onToggle}
 				>
-					{font}
+					{fontSC}
 					<Icon
 						className='maxi-font-family-selector__button__icon'
 						icon={chevronDown}
@@ -116,7 +123,7 @@ const FontFamilySelector = props => {
 				<Fragment>
 					{!isNil(options) && (
 						<Select
-							value={font}
+							value={fontSC}
 							options={options}
 							placeholder={__('Search…', 'maxi-blocks')}
 							onChange={value => onFontChange(value)}

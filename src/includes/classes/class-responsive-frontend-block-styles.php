@@ -227,6 +227,17 @@ class ResponsiveFrontendStyles {
 
 		foreach ($fontOptions as $font => $value) {
 			$font_name = substr($font, 0, strpos($font, '-'));
+			if ( ! function_exists('write_log')) {
+			   function write_log ( $log )  {
+			      if ( is_array( $log ) || is_object( $log ) ) {
+			         error_log( print_r( $log, true ) );
+			      } else {
+			         error_log( $log );
+			      }
+			   }
+			}
+			$font_name = str_replace(',', '', $font_name);
+			write_log($font_name);
 			wp_enqueue_style(
 				"{$font}",
 				"https://fonts.googleapis.com/css2?family={$font_name}"

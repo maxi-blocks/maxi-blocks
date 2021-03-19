@@ -213,6 +213,7 @@ const TypographyControl = props => {
 		onChange(obj);
 	};
 
+	console.log('font-family ' + getValue(`${prefix}font-family`));
 	return (
 		<div className={classes}>
 			<FontFamilySelector

@@ -46,9 +46,11 @@ const attributes = {
 		...attributesData.typography,
 		'font-family-general': {
 			type: 'string',
+			default: 'Oswald',
 		},
 		'font-size-general': {
 			type: 'number',
+			default: 16,
 		},
 	},
 	...attributesData.typographyHover,
@@ -63,10 +65,9 @@ const attributes = {
 		...attributesData.backgroundColor,
 		'background-color': {
 			type: 'string',
-			default: 'styleCard',
+			// default: 'styleCard',
 		},
 	},
-	// ...attributesData.backgroundColor,
 	...attributesData.backgroundGradient,
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,

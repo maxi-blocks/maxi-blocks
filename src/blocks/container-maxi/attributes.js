@@ -29,7 +29,13 @@ const attributes = {
 		default: 0,
 	},
 	...attributesData.container,
-	...attributesData.background,
+	...{
+		...attributesData.background,
+		'background-active-media': {
+			type: 'string',
+			default: 'color',
+		},
+	},
 	...{
 		...attributesData.backgroundColor,
 		'background-color': {

@@ -231,6 +231,9 @@ add_action('wp_ajax_maxi_insert_block', 'maxi_insert_block', 10, 2);
 // Post Meta register
 require_once plugin_dir_path(__FILE__) . 'includes/classes/class-responsive-frontend-block-styles.php';
 
+// Style Cards variables
+require_once plugin_dir_path(__FILE__) . 'includes/classes/class-style-cards-variables.php';
+
 // Image crop and image sizes
 require_once plugin_dir_path(__FILE__) . 'includes/classes/class-image-size.php';
 

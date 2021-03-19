@@ -18,6 +18,45 @@ import {
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
 import exportStyleCard from './exportStyleCard';
 
+const getTypographyGroup = (SC, level) => {
+	const response = {};
+
+	Object.entries(SC).forEach(([key, val]) => {
+		if (key.includes(`${level}-`)) {
+			if (key.includes('font-size')) {
+				const [num, unit] = val.match(/[a-zA-Z]+|[0-9]+/g);
+				response[key] = num;
+				const newUnitKey = key.replace('font-size', 'font-size-unit');
+				response[newUnitKey] = unit;
+				return;
+			}
+			response[key] = val;
+		}
+	});
+
+	return response;
+};
+
+const parseSC = (SC, newSC) => {
+	const parsedSC = {};
+	Object.entries(newSC).forEach(([key, val]) => {
+		if (key.includes('font-size')) {
+			const isUnit = key.includes('-unit');
+			const newKey = isUnit ? key.replace('-unit', '') : key;
+
+			const [num, unit] = SC[newKey].match(/[a-zA-Z]+|[0-9]+/g);
+
+			if (isUnit) {
+				parsedSC[newKey] = num + val;
+			} else {
+				parsedSC[key] = val + unit;
+			}
+		}
+	});
+
+	return parsedSC;
+};
+
 const MaxiStyleCardsTab = ({
 	SC,
 	SCStyle,
@@ -60,6 +99,80 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 									disableGradient
+								/>
+								<ColorControl
+									label={__(
+										'Background 1',
+										'maxi-blocks'
+									)}
+									className={`maxi-style-cards-control__sc__bg-color-1-${SCStyle}`}
+									color={getColor('background-1')}
+									defaultColor={getStyleCardAttr(
+										'background-1',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue(
+											'background-1',
+											val,
+											SCStyle
+										);
+									}}
+									disableGradient
+								/>
+								<ColorControl
+									label={__(
+										'Background 2',
+										'maxi-blocks'
+									)}
+									className={`maxi-style-cards-control__sc__bg-color-2-${SCStyle}`}
+									color={getColor('background-2')}
+									defaultColor={getStyleCardAttr(
+										'background-2',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue(
+											'background-2',
+											val,
+											SCStyle
+										);
+									}}
+									disableGradient
+								/>
+							</Fragment>
+						),
+					},
+					{
+						label: __('Body', 'maxi-blocks'),
+						content: (
+							<Fragment>
+								<TypographyControl
+									typography={getTypographyGroup(SC, 'p')}
+									prefix='p-'
+									disableFormats
+									className='maxi-style-cards-control__sc__text-typography'
+									textLevel='p'
+									hideAlignment
+									hideTextShadow
+									breakpoint={deviceType}
+									onChange={obj => {
+										const parsedContent = parseSC(
+											SC,
+											obj
+										);
+										Object.entries(
+											parsedContent
+										).forEach(([key, val]) => {
+											onChangeValue(
+												key,
+												val,
+												'light'
+											);
+										});
+									}}
 								/>
 							</Fragment>
 						),
@@ -115,10 +228,12 @@ const MaxiStyleCardsTabs = SC => {
 
 	// console.log('currentSC state: ' + JSON.stringify(currentSC));
 
-	const applySC = SC => {
+	const applySConBackend = SC => {
 		// Light
 		Object.entries(SC.styleCard.light).forEach(([key, val]) => {
 			// if (key === 'background-1')
+			console.log('key ' + key);
+			console.log('val ' + val);
 			document.documentElement.style.setProperty(
 				`--maxi-light-${key}`,
 				val
@@ -192,7 +307,7 @@ const MaxiStyleCardsTabs = SC => {
 
 		// console.log('newStyleCards: ' + JSON.stringify(newStyleCards));
 
-		applySC(newCurrentSC);
+		applySConBackend(newCurrentSC);
 
 		reRenderBlocks();
 
@@ -246,28 +361,32 @@ const MaxiStyleCardsEditor = () => {
 	const { saveMaxiStyleCards } = useDispatch('maxiBlocks/style-cards');
 
 	const getStyleCards = () => {
-		switch (typeof styleCards) {
-			case 'string':
-				if (!isEmpty(styleCards)) return JSON.parse(styleCards);
-				return {};
-			case 'object':
-				return styleCards;
-			case 'undefined':
-				return {};
-			default:
-				return {};
-		}
+		if (!isNil(styleCards)) {
+			switch (typeof styleCards) {
+				case 'string':
+					if (!isEmpty(styleCards)) return JSON.parse(styleCards);
+					return {};
+				case 'object':
+					return styleCards;
+				case 'undefined':
+					return {};
+				default:
+					return {};
+			}
+		} else return false;
 	};
 
 	const getStyleCardCurrentKey = () => {
 		let styleCardCurrent = '';
 		const allStyleCards = getStyleCards();
+		if (allStyleCards) {
+			forIn(allStyleCards, function get(value, key) {
+				if (value.status === 'active') styleCardCurrent = key;
+			});
 
-		forIn(allStyleCards, function get(value, key) {
-			if (value.status === 'active') styleCardCurrent = key;
-		});
-
-		return styleCardCurrent;
+			return styleCardCurrent;
+		}
+		return false;
 	};
 
 	const [styleCardName, setStyleCardName] = useState('');
@@ -320,7 +439,11 @@ const MaxiStyleCardsEditor = () => {
 		);
 	}
 
-	const currentSCname = getStyleCards()[getStyleCardCurrentKey()].name;
+	const currentSCname = () => {
+		if (getStyleCards() && getStyleCardCurrentKey())
+			return getStyleCards()[getStyleCardCurrentKey()].name;
+		return false;
+	};
 
 	return (
 		<Popover

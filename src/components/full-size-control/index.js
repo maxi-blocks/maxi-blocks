@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
+const { select } = wp.data;
 
 /**
  * Internal dependencies
@@ -72,9 +73,19 @@ const FullSizeControl = props => {
 		},
 	};
 
+	const widthAllowedBlocks = [
+		'maxi-blocks/container-maxi',
+		'maxi-blocks/row-maxi',
+		'maxi-blocks/column-maxi',
+	];
+
+	const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
+		select('core/block-editor').getSelectedBlockClientId()
+	);
+
 	return (
 		<div className={classes}>
-			{!hideWidth && (
+			{!hideWidth && currentBlockRoot && (
 				<SizeControl
 					label={__('Width', 'maxi-blocks')}
 					unit={getLastBreakpointAttribute(

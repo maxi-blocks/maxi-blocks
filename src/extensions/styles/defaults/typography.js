@@ -52,10 +52,6 @@ export const typography = {
 	'font-family-xxl': {
 		type: 'string',
 	},
-	'font-options-xxl': {
-		type: 'object',
-		default: {},
-	},
 	'color-xxl': {
 		type: 'string',
 	},
@@ -99,10 +95,6 @@ export const typography = {
 	},
 	'font-family-xl': {
 		type: 'string',
-	},
-	'font-options-xl': {
-		type: 'object',
-		default: {},
 	},
 	'color-xl': {
 		type: 'string',
@@ -148,10 +140,6 @@ export const typography = {
 	'font-family-l': {
 		type: 'string',
 	},
-	'font-options-l': {
-		type: 'object',
-		default: {},
-	},
 	'color-l': {
 		type: 'string',
 	},
@@ -195,10 +183,6 @@ export const typography = {
 	},
 	'font-family-m': {
 		type: 'string',
-	},
-	'font-options-m': {
-		type: 'object',
-		default: {},
 	},
 	'color-m': {
 		type: 'string',
@@ -244,10 +228,6 @@ export const typography = {
 	'font-family-s': {
 		type: 'string',
 	},
-	'font-options-s': {
-		type: 'object',
-		default: {},
-	},
 	'color-s': {
 		type: 'string',
 	},
@@ -292,10 +272,6 @@ export const typography = {
 	'font-family-xs': {
 		type: 'string',
 	},
-	'font-options-xs': {
-		type: 'object',
-		default: {},
-	},
 	'color-xs': {
 		type: 'string',
 	},
@@ -336,10 +312,6 @@ export const typography = {
 	},
 	'vertical-align-xs': {
 		type: 'string',
-	},
-	'custom-formats': {
-		type: 'object',
-		default: {},
 	},
 };
 

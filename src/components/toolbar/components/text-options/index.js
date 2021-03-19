@@ -106,10 +106,6 @@ const TextOptions = props => {
 										defaultTypography[textLevel][
 											`font-family-${breakpoint}`
 										],
-									'font-options':
-										defaultTypography[textLevel][
-											`font-options-${breakpoint}`
-										],
 								});
 							}}
 							isSmall

@@ -8,8 +8,6 @@ const { useState, render, Fragment } = wp.element;
  * Internal dependencies
  */
 import ResponsiveSelector from '../responsive-selector';
-import MaxiStyleCardsEditor from '../style-cards';
-
 /**
  * Styles
  */
@@ -32,7 +30,6 @@ const ToolbarButtons = () => {
 				>
 					<Icon icon={main} />
 				</Button>
-				<MaxiStyleCardsEditor />
 			</div>
 			<ResponsiveSelector
 				isOpen={isResponsiveOpen}

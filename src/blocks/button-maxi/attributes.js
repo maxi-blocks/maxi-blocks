@@ -42,17 +42,18 @@ const attributes = {
 		},
 	},
 	...attributesData.textAlignment,
-	...{
-		...attributesData.typography,
-		'font-family-general': {
-			type: 'string',
-			default: 'Oswald',
-		},
-		'font-size-general': {
-			type: 'number',
-			default: 16,
-		},
-	},
+	...attributesData.typography,
+	// ...{
+	// 	...attributesData.typography,
+	// 	'font-family-general': {
+	// 		type: 'string',
+	// 		default: 'Roboto',
+	// 	},
+	// 	'font-size-general': {
+	// 		type: 'number',
+	// 		default: 16,
+	// 	},
+	// },
 	...attributesData.typographyHover,
 	...{
 		...attributesData.background,

@@ -5,7 +5,7 @@ const { Fragment, useState } = wp.element;
 const { Button, SelectControl, Popover, Icon } = wp.components;
 
 import { isEmpty, forIn, isNil } from 'lodash';
-import { styleCardBoat, reset, SCdelete } from '../../icons';
+import { styleCardBoat, reset, SCdelete, globalOptions } from '../../icons';
 import './editor.scss';
 
 import {
@@ -149,7 +149,7 @@ const MaxiStyleCardsTab = ({
 						label: __('Body', 'maxi-blocks'),
 						content: (
 							<Fragment>
-								<TypographyControl
+								{/*<TypographyControl
 									typography={getTypographyGroup(SC, 'p')}
 									prefix='p-'
 									disableFormats
@@ -173,7 +173,7 @@ const MaxiStyleCardsTab = ({
 											);
 										});
 									}}
-								/>
+								/>*/}
 							</Fragment>
 						),
 					},
@@ -648,11 +648,11 @@ const MaxiStyleCardsEditorPopUp = () => {
 		<Fragment>
 			<Button
 				id='maxi-button__go-to-customizer'
-				className='button maxi-button maxi-button__toolbar'
-				aria-label={__('Style Cards', 'maxi-blocks')}
+				className='action-buttons__button'
+				aria-label={__('Style Card Editor', 'maxi-blocks')}
 				onClick={() => setIsVisible(!isVisible)}
 			>
-				<Icon icon={styleCardBoat} />
+				<Icon icon={globalOptions} />
 				{__('Style Card Editor', 'maxi-blocks')}
 			</Button>
 			{isVisible && <MaxiStyleCardsEditor />}

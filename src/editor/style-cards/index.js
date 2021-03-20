@@ -67,7 +67,9 @@ const MaxiStyleCardsTab = ({
 	const getColor = attr => {
 		if (!isNil(SC.styleCard[SCStyle][attr]))
 			return SC.styleCard[SCStyle][attr];
-		return SC.styleCardDefaults[SCStyle][attr];
+		if (!isNil(SC.styleCardDefaults[SCStyle][attr]))
+			return SC.styleCardDefaults[SCStyle][attr];
+		return false;
 	};
 
 	return (
@@ -183,191 +185,34 @@ const MaxiStyleCardsTab = ({
 	);
 };
 
-const MaxiStyleCardsTabs = SC => {
-	const { deviceType } = useSelect(select => {
-		const { receiveMaxiDeviceType } = select('maxiBlocks');
+const MaxiStyleCardsEditor = () => {
+	const { isRTL, deviceType } = useSelect(select => {
+		const { getEditorSettings } = select('core/editor');
+		const { isRTL } = getEditorSettings();
 
+		const { receiveMaxiDeviceType } = select('maxiBlocks');
 		const deviceType = receiveMaxiDeviceType();
 
 		return {
+			isRTL,
 			deviceType,
 		};
 	});
-
-	// console.log('SC on tabs: ' + JSON.stringify(SC));
-
-	const { saveMaxiStyleCards } = useDispatch('maxiBlocks/style-cards');
-	const styleCards = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
-
-	const getStyleCards = () => {
-		switch (typeof styleCards) {
-			case 'string':
-				if (!isEmpty(styleCards)) return JSON.parse(styleCards);
-				return {};
-			case 'object':
-				return styleCards;
-			case 'undefined':
-				return {};
-			default:
-				return {};
-		}
-	};
-
-	const getStyleCardCurrentKey = () => {
-		let styleCardCurrent = '';
-		const allStyleCards = getStyleCards();
-
-		forIn(allStyleCards, function get(value, key) {
-			if (value.status === 'active') styleCardCurrent = key;
-		});
-
-		return styleCardCurrent;
-	};
-
-	const [currentSC, changeCurrentSC] = useState(SC.SC); // remove this double SC
-
-	// console.log('currentSC state: ' + JSON.stringify(currentSC));
-
-	const applySConBackend = SC => {
-		// Light
-		Object.entries(SC.styleCard.light).forEach(([key, val]) => {
-			// if (key === 'background-1')
-			// console.log('key ' + key);
-			// console.log('val ' + val);
-			document.documentElement.style.setProperty(
-				`--maxi-light-${key}`,
-				val
-			);
-		});
-		// Dark
-		Object.entries(SC.styleCard.light).forEach(([key, val]) => {
-			// if (key === 'background-1')
-			document.documentElement.style.setProperty(
-				`--maxi-dark-${key}`,
-				val
-			);
-		});
-	};
-
-	const reRenderBlocks = () => {
-		const allBlocks = select('core/block-editor').getBlocks();
-		Object.entries(allBlocks).forEach(([key, val]) => {
-			const { clientId, attributes } = val;
-
-			if (!isNil(clientId) && !isNil(attributes)) {
-				const { updateStyleCard } = attributes;
-				console.log('updateStyleCard ' + JSON.stringify(updateStyleCard));
-				if (!isNil(updateStyleCard)) {
-					// console.log(`update for ${clientId}`);
-					dispatch('core/block-editor').updateBlockAttributes(clientId, {
-						updateStyleCard: new Date().getTime(),
-					});
-				}
-			}
-		});
-	};
-
-	const onChangeValue = (prop, value, style) => {
-
-		const newCurrentSC = {
-			...currentSC,
-			styleCard: {
-				...currentSC.styleCard,
-				[style]: { ...currentSC[style], [prop]: value },
-			},
-		};
-
-		changeCurrentSC(newCurrentSC);
-
-		const oldStyleCards = select(
-			'maxiBlocks/style-cards'
-		).receiveMaxiStyleCards();
-
-		const getStyleCards = () => {
-			switch (typeof oldStyleCards) {
-				case 'string':
-					if (!isEmpty(oldStyleCards))
-						return JSON.parse(oldStyleCards);
-					return {};
-				case 'object':
-					return oldStyleCards;
-				case 'undefined':
-					return {};
-				default:
-					return {};
-			}
-		};
-
-		// console.log('getStyleCardCurrentKey: ' + getStyleCardCurrentKey());
-
-		const newStyleCards = {
-			...getStyleCards(),
-			[getStyleCardCurrentKey()]: newCurrentSC,
-		};
-
-		// console.log('newStyleCards: ' + JSON.stringify(newStyleCards));
-
-		applySConBackend(newCurrentSC);
-
-		reRenderBlocks();
-
-		saveMaxiStyleCards(newStyleCards);
-	};
-
-	return (
-		<SettingTabsControl
-			disablePadding
-			items={[
-				{
-					label: __('Light Style Preset', 'maxi-blocks'),
-					content: (
-						<MaxiStyleCardsTab
-							SC={currentSC}
-							SCStyle='light'
-							onChangeValue={onChangeValue}
-							deviceType={deviceType}
-						/>
-					),
-				},
-				{
-					label: __('Dark Style Preset', 'maxi-blocks'),
-					content: (
-						<MaxiStyleCardsTab
-							SC={currentSC}
-							SCStyle='dark'
-							onChangeValue={onChangeValue}
-							deviceType={deviceType}
-						/>
-					),
-				},
-			]}
-		/>
-	);
-};
-
-const MaxiStyleCardsEditor = () => {
-	const { isRTL, styleCards } = useSelect(select => {
-		const { getEditorSettings } = select('core/editor');
-		const { receiveMaxiStyleCards } = select('maxiBlocks/style-cards');
-
-		const { isRTL } = getEditorSettings();
-		const styleCards = receiveMaxiStyleCards();
-
-		return {
-			isRTL,
-			styleCards,
-		};
-	});
+	const { receiveMaxiStyleCards } = select('maxiBlocks/style-cards');
 	const { saveMaxiStyleCards } = useDispatch('maxiBlocks/style-cards');
 
+	const styleCards = receiveMaxiStyleCards();
+
+	const [currentSC, changeCurrentSC] = useState(styleCards);
+
 	const getStyleCards = () => {
-		if (!isNil(styleCards)) {
-			switch (typeof styleCards) {
+		if (!isNil(currentSC)) {
+			switch (typeof currentSC) {
 				case 'string':
-					if (!isEmpty(styleCards)) return JSON.parse(styleCards);
+					if (!isEmpty(currentSC)) return JSON.parse(currentSC);
 					return {};
 				case 'object':
-					return styleCards;
+					return currentSC;
 				case 'undefined':
 					return {};
 				default:
@@ -376,9 +221,10 @@ const MaxiStyleCardsEditor = () => {
 		} else return false;
 	};
 
+	const allStyleCards = getStyleCards();
+
 	const getStyleCardCurrentKey = () => {
 		let styleCardCurrent = '';
-		const allStyleCards = getStyleCards();
 		if (allStyleCards) {
 			forIn(allStyleCards, function get(value, key) {
 				if (value.status === 'active') styleCardCurrent = key;
@@ -394,34 +240,36 @@ const MaxiStyleCardsEditor = () => {
 
 	const getStyleCardsOptions = () => {
 		const styleCardsArr = [];
-
-		forIn(getStyleCards(), (value, key) =>
+		forIn(allStyleCards, (value, key) =>
 			styleCardsArr.push({ label: value.name, value: key })
 		);
 		return styleCardsArr;
 	};
 
 	const getStyleCardCurrentValue = () => {
-		let styleCardCurrentValue = '';
-		const allStyleCards = getStyleCards();
+		let styleCardCurrentValue = {};
+		if (!isNil(allStyleCards)) {
+			forIn(allStyleCards, function get(value, key) {
+				if (value.status === 'active') styleCardCurrentValue = value;
+			});
 
-		forIn(allStyleCards, function get(value, key) {
-			if (value.status === 'active') styleCardCurrentValue = value;
-		});
-		// console.log('styleCardCurrentValue: ' +  JSON.stringify(styleCardCurrentValue));
-		return styleCardCurrentValue;
+			// console.log('styleCardCurrentValue: ' +  JSON.stringify(styleCardCurrentValue));
+			if (!isNil(styleCardCurrentValue)) return styleCardCurrentValue;
+			return false;
+		}
+		return false;
 	};
 
 	// TO DO: set active state
 	const setStyleCardCurrent = card => {
-		const allStyleCards = getStyleCards();
-
 		forIn(allStyleCards, function get(value, key) {
 			if (value.status === 'active' && card !== key) value.status = '';
 			if (card === key) value.status = 'active';
 		});
+		// console.log('new allStyleCards: ' + JSON.stringify(allStyleCards));
+		changeCurrentSC(allStyleCards);
 
-		return allStyleCards;
+		// return allStyleCards;
 	};
 
 	const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
@@ -440,9 +288,79 @@ const MaxiStyleCardsEditor = () => {
 	}
 
 	const currentSCname = () => {
-		if (getStyleCards() && getStyleCardCurrentKey())
-			return getStyleCards()[getStyleCardCurrentKey()].name;
+		if (allStyleCards && getStyleCardCurrentKey())
+			return allStyleCards[getStyleCardCurrentKey()].name;
 		return false;
+	};
+
+	const changeSConBackend = SC => {
+		// Light
+		Object.entries(SC.styleCard.light).forEach(([key, val]) => {
+			document.documentElement.style.setProperty(
+				`--maxi-light-${key}`,
+				val
+			);
+		});
+		// Dark
+		Object.entries(SC.styleCard.light).forEach(([key, val]) => {
+			document.documentElement.style.setProperty(
+				`--maxi-dark-${key}`,
+				val
+			);
+		});
+	};
+
+	const reRenderBlocks = () => {
+		const allBlocks = select('core/block-editor').getBlocks();
+		Object.entries(allBlocks).forEach(([key, val]) => {
+			const { clientId, attributes } = val;
+
+			if (!isNil(clientId) && !isNil(attributes)) {
+				const { updateStyleCard } = attributes;
+				// console.log('updateStyleCard ' + JSON.stringify(updateStyleCard));
+				if (!isNil(updateStyleCard)) {
+					// console.log(`update for ${clientId}`);
+					dispatch('core/block-editor').updateBlockAttributes(clientId, {
+						updateStyleCard: new Date().getTime(),
+					});
+				}
+			}
+		});
+	};
+
+	const [stateSC, changeStateSC] = useState(getStyleCardCurrentValue());
+
+	const onChangeValue = (prop, value, style) => {
+		const stateSCbefore = stateSC.styleCard;
+		const stateSCstyleBefore = stateSC.styleCard[style];
+
+		const newStateSC = {
+			...stateSC,
+			styleCard: {
+				...stateSCbefore,
+				[style]: { ...stateSCstyleBefore, [prop]: value },
+			},
+		};
+
+		changeStateSC(newStateSC);
+
+		changeSConBackend(newStateSC);
+
+		// reRenderBlocks();
+	};
+
+	const applyCurrentSCglobally = () => {
+		const newStyleCards = {
+			...allStyleCards,
+			[getStyleCardCurrentKey()]: {
+				name: stateSC.name,
+				status: stateSC.status,
+				styleCard: stateSC.styleCard,
+				styleCardDefaults: stateSC.styleCardDefaults,
+			},
+		};
+
+		saveMaxiStyleCards(newStyleCards);
 	};
 
 	return (
@@ -480,7 +398,7 @@ const MaxiStyleCardsEditor = () => {
 						disabled={isEmpty(styleCardLoad)}
 						onClick={() => {
 							const newStyleCards = {
-								...getStyleCards(),
+								...allStyleCards,
 							};
 
 							if (
@@ -490,7 +408,7 @@ const MaxiStyleCardsEditor = () => {
 											'Are you sure to reset "%s" style card\'s styles?',
 											'maxi-blocks'
 										),
-										getStyleCards()[styleCardLoad].name
+										allStyleCards[styleCardLoad].name
 									)
 								)
 							) {
@@ -507,7 +425,7 @@ const MaxiStyleCardsEditor = () => {
 						disabled={isEmpty(styleCardLoad)}
 						onClick={() => {
 							const newStyleCards = {
-								...getStyleCards(),
+								...allStyleCards,
 							};
 
 							if (
@@ -562,14 +480,7 @@ const MaxiStyleCardsEditor = () => {
 									)
 								)
 							) {
-								const saveDraftButton = document.querySelector(
-									'button.editor-post-save-draft'
-								);
-								const updatePageButton = document.querySelector(
-									'button.editor-post-publish-button__button'
-								);
-								if (saveDraftButton) maxiClick(saveDraftButton);
-								else maxiClick(updatePageButton);
+								applyCurrentSCglobally();
 							}
 						}}
 					>
@@ -620,7 +531,7 @@ const MaxiStyleCardsEditor = () => {
 							});
 						} else {
 							saveMaxiStyleCards({
-								...getStyleCards(),
+								...allStyleCards,
 								[`sc_${new Date().getTime()}`]: {
 									name: styleCardName,
 									status: '',
@@ -635,8 +546,34 @@ const MaxiStyleCardsEditor = () => {
 				>
 					{__('Save Style Card', 'maxi-blocks')}
 				</Button>
-				<MaxiStyleCardsTabs SC={getStyleCardCurrentValue()} />
 			</div>
+			<SettingTabsControl
+				disablePadding
+				items={[
+					{
+						label: __('Light Style Preset', 'maxi-blocks'),
+						content: (
+							<MaxiStyleCardsTab
+								SC={stateSC}
+								SCStyle='light'
+								onChangeValue={onChangeValue}
+								deviceType={deviceType}
+							/>
+						),
+					},
+					{
+						label: __('Dark Style Preset', 'maxi-blocks'),
+						content: (
+							<MaxiStyleCardsTab
+								SC={stateSC}
+								SCStyle='dark'
+								onChangeValue={onChangeValue}
+								deviceType={deviceType}
+							/>
+						),
+					},
+				]}
+			/>
 		</Popover>
 	);
 };

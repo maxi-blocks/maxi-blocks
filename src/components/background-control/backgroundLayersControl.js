@@ -98,18 +98,19 @@ const LayerCard = props => {
 				<span className='maxi-background-layer__arrow'>
 					{moveRight}
 				</span>
-				<p className='maxi-background-layer__title'>
+				<div className='maxi-background-layer__title'>
 					<span className='maxi-background-layer__title__id' />
 					<span className='maxi-background-layer__title__text'>
 						<span
 							className='maxi-background-layer__preview'
 							style={previewStyles(type)}
 						>
-							{type === 'shape' && (
-								<RawHTML>
-									{layer['background-svg-SVGElement']}
-								</RawHTML>
-							)}
+							{type === 'shape' &&
+								layer['background-svg-SVGElement'] && (
+									<RawHTML>
+										{layer['background-svg-SVGElement']}
+									</RawHTML>
+								)}
 						</span>
 						{getTitle(type)}
 					</span>
@@ -117,7 +118,7 @@ const LayerCard = props => {
 						className='maxi-background-layer__title__remover'
 						onClick={onRemove}
 					/>
-				</p>
+				</div>
 			</div>
 			{isOpen && (
 				<div className='maxi-background-layer__content'>

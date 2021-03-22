@@ -15,6 +15,12 @@ body.maxi-blocks--active .maxi-button-block {
 		display: flex;
 		position: relative;
 
+		i {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-sizing: content-box;
+		}
 		&--icon-left {
 			i {
 				z-index: 1;

@@ -12,13 +12,28 @@ const getIconStyles = obj => {
 	const response = {
 		general: {},
 	};
-
+	console.log(obj);
 	breakpoints.forEach(breakpoint => {
 		if (obj[`icon-size-${breakpoint}`]) {
 			response[breakpoint] = {
 				'font-size': `${obj[`icon-size-${breakpoint}`]}${
 					obj[`icon-size-unit-${breakpoint}`]
 				}`,
+				'min-width': `${
+					obj[`icon-size-${breakpoint}`] +
+					(obj[`icon-padding-right-${breakpoint}`] || 0) +
+					(obj[`icon-padding-left-${breakpoint}`] || 0)
+				}${obj[`icon-size-unit-${breakpoint}`]}`,
+				width: `${
+					obj[`icon-size-${breakpoint}`] +
+					(obj[`icon-padding-right-${breakpoint}`] || 0) +
+					(obj[`icon-padding-left-${breakpoint}`] || 0)
+				}${obj[`icon-size-unit-${breakpoint}`]}`,
+				height: `${
+					obj[`icon-size-${breakpoint}`] +
+					(obj[`icon-padding-top-${breakpoint}`] || 0) +
+					(obj[`icon-padding-bottom-${breakpoint}`] || 0)
+				}${obj[`icon-size-unit-${breakpoint}`]}`,
 			};
 		}
 

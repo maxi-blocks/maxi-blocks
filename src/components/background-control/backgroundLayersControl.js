@@ -43,33 +43,26 @@ const LayerCard = props => {
 	);
 
 	const previewStyles = type => {
-		let response = {};
-
-		if (type === 'color')
-			response = {
-				...response,
-				background: layer['background-color'],
-			};
-
-		if (type === 'gradient')
-			response = {
-				...response,
-				background: layer['background-gradient'],
-			};
-
-		if (type === 'image')
-			response = {
-				...response,
-				background: `url(${layer['background-image-mediaURL']})`,
-			};
-
-		if (type === 'video')
-			response = {
-				...response,
-				background: `url(${layer['background-video-fallbackURL']})`,
-			};
-
-		return response;
+		switch (type) {
+			case 'color':
+				return {
+					background: layer['background-color'],
+				};
+			case 'gradient':
+				return {
+					background: layer['background-gradient'],
+				};
+			case 'image':
+				return {
+					background: `url(${layer['background-image-mediaURL']})`,
+				};
+			case 'video':
+				return {
+					background: `url(${layer['background-video-fallbackURL']})`,
+				};
+			default:
+				return {};
+		}
 	};
 
 	const getTitle = type => {

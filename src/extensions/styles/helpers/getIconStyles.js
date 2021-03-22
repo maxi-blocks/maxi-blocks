@@ -12,7 +12,7 @@ const getIconStyles = obj => {
 	const response = {
 		general: {},
 	};
-	console.log(obj);
+
 	breakpoints.forEach(breakpoint => {
 		if (obj[`icon-size-${breakpoint}`]) {
 			response[breakpoint] = {

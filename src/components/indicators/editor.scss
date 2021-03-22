@@ -5,20 +5,20 @@
 	&:hover {
 		.maxi-indicators__padding,
 		.maxi-indicators__margin {
-			opacity: 0.5;
+			opacity: 1;
 		}
 	}
 	.maxi-indicators__margin,
 	.maxi-indicators__padding {
-		width: 100%;
-		background-color: rgba(3, 225, 109, 0.3);
-		opacity: 0;
-		color: #222;
-		font-size: 12px;
+		position: absolute;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		position: absolute;
+		width: 100%;
+		background-color: #e5f2f8;
+		opacity: 0;
+		color: #9b9b9b;
+		font: 12px Roboto, sans-serif;
 		z-index: 1;
 		transition: opacity 0.5s;
 		&--top {
@@ -39,6 +39,7 @@
 		}
 	}
 	.maxi-indicators__margin {
-		background-color: rgba(91, 3, 255, 0.3);
+		background-color: #ffa48b;
+		color: #222;
 	}
 }

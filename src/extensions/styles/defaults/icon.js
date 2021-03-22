@@ -81,19 +81,19 @@ export const iconPadding = (() => {
 		...response,
 		'icon-padding-top-general': {
 			type: 'string',
-			default: 10,
+			default: 2,
 		},
 		'icon-padding-right-general': {
 			type: 'string',
-			default: 10,
+			default: 2,
 		},
 		'icon-padding-bottom-general': {
 			type: 'string',
-			default: 10,
+			default: 2,
 		},
 		'icon-padding-left-general': {
 			type: 'string',
-			default: 10,
+			default: 2,
 		},
 	};
 

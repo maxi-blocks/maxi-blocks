@@ -4,7 +4,7 @@
 const { SVG, Path } = wp.primitives;
 
 const styleCardBoat = (
-	<SVG preserveAspectRatio='none' x='0px' y='0px' width="30px" height="30px" viewBox="0 0 64 64">
+	<SVG preserveAspectRatio='none' x='0px' y='0px' width="24px" height="24px" viewBox="0 0 64 64">
 		<defs>
 			<Path
 				fill='#FF4A17'

@@ -62,13 +62,14 @@ const attributes = {
 			default: 'color',
 		},
 	},
-	...{
-		...attributesData.backgroundColor,
-		'background-color': {
-			type: 'string',
-			default: 'styleCard',
-		},
-	},
+	...attributesData.backgroundColor,
+	// ...{
+	// 	...attributesData.backgroundColor,
+	// 	'background-color': {
+	// 		type: 'string',
+	// 		default: 'styleCard',
+	// 	},
+	// },
 	...attributesData.backgroundGradient,
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,

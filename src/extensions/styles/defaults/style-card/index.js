@@ -9,8 +9,6 @@ const getStyleCardAttr = (
 ) => {
 	const styleCards = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 
-	// console.log('styleCards: ' + styleCards);
-
 	const getStyleCards = () => {
 		switch (typeof styleCards) {
 			case 'string':
@@ -26,27 +24,48 @@ const getStyleCardAttr = (
 	};
 
 	if (typeof getStyleCards() === 'object') {
-		const styleCardsArr = Object.keys(getStyleCards()).map(key => {
+		const activeStyleCard = Object.keys(getStyleCards()).map(key => {
+			let activeSC;
 			if (getStyleCards()[key].status === 'active') {
+				activeSC = getStyleCards()[key];
+			}
+
+			if (!isNil(activeSC)) return activeSC;
+			return false;
+		});
+
+		if (!isNil(activeStyleCard) && !isEmpty(activeStyleCard)) {
+			let activeStyleCardFiltered;
+
+			Object.keys(activeStyleCard).forEach(function removeFalse(key) {
+				if (activeStyleCard[key]) {
+					activeStyleCardFiltered = activeStyleCard[key];
+				}
+			});
+
+			if (!isNil(activeStyleCardFiltered)) {
 				if (!defaultAtt) {
-					const styleCardsArrToCheck = getStyleCards()[key].styleCard[
-						style
-					][attribute];
-					if (!isNil(styleCardsArrToCheck)) return styleCardsArrToCheck;
-					const styleCardsDefaultArrToCheck = getStyleCards()[key]
-						.styleCardDefaults[style][attribute];
+					const styleCardsArrToCheck =
+						activeStyleCardFiltered.styleCard[style][attribute];
+					if (!isNil(styleCardsArrToCheck))
+						return styleCardsArrToCheck;
+					const styleCardsDefaultArrToCheck =
+						activeStyleCardFiltered.styleCardDefaults[style][
+							attribute
+						];
 					if (!isNil(styleCardsDefaultArrToCheck))
 						return styleCardsDefaultArrToCheck;
 					return false;
 				}
-				const styleCardsDefaultArrToCheck = getStyleCards()[key]
-					.styleCardDefaults[style][attribute];
-				if (!isNil(styleCardsDefaultArrToCheck)) return styleCardsDefaultArrToCheck;
+				const styleCardsDefaultArrToCheck =
+					activeStyleCardFiltered.styleCardDefaults[style][attribute];
+				if (!isNil(styleCardsDefaultArrToCheck))
+					return styleCardsDefaultArrToCheck;
 				return false;
 			}
-		});
-
-		return styleCardsArr.toString();
+			return false;
+		}
+		return false;
 	}
 	return false;
 };

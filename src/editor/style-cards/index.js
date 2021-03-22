@@ -5,7 +5,7 @@ const { Fragment, useState } = wp.element;
 const { Button, SelectControl, Popover, Icon } = wp.components;
 
 import { isEmpty, forIn, isNil } from 'lodash';
-import { styleCardBoat, reset, SCdelete, globalOptions } from '../../icons';
+import { styleCardBoat, reset, SCdelete } from '../../icons';
 import './editor.scss';
 
 import {
@@ -72,6 +72,7 @@ const MaxiStyleCardsTab = ({
 		return false;
 	};
 
+	// console.log('default button bg: ' + getStyleCardAttr('button-background-color',SCStyle,true));
 	return (
 		<div className='maxi-tab-content__box'>
 			<AccordionControl
@@ -103,10 +104,7 @@ const MaxiStyleCardsTab = ({
 									disableGradient
 								/>
 								<ColorControl
-									label={__(
-										'Background 1',
-										'maxi-blocks'
-									)}
+									label={__('Background 1', 'maxi-blocks')}
 									className={`maxi-style-cards-control__sc__bg-color-1-${SCStyle}`}
 									color={getColor('background-1')}
 									defaultColor={getStyleCardAttr(
@@ -124,10 +122,7 @@ const MaxiStyleCardsTab = ({
 									disableGradient
 								/>
 								<ColorControl
-									label={__(
-										'Background 2',
-										'maxi-blocks'
-									)}
+									label={__('Background 2', 'maxi-blocks')}
 									className={`maxi-style-cards-control__sc__bg-color-2-${SCStyle}`}
 									color={getColor('background-2')}
 									defaultColor={getStyleCardAttr(
@@ -176,6 +171,103 @@ const MaxiStyleCardsTab = ({
 										});
 									}}
 								/>*/}
+							</Fragment>
+						),
+					},
+					{
+						label: __('Highlight', 'maxi-blocks'),
+						content: (
+							<Fragment>
+								<ColorControl
+									label={__('Text', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__highlight-color-text--${SCStyle}`}
+									color={getColor('highlight-text')}
+									defaultColor={getStyleCardAttr(
+										'highlight-text',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue(
+											'highlight-text',
+											val,
+											SCStyle
+										);
+									}}
+									disableGradient
+								/>
+								<ColorControl
+									label={__('Background', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__highlight-color-bg-${SCStyle}`}
+									color={getColor('highlight-background')}
+									defaultColor={getStyleCardAttr(
+										'highlight-background',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue(
+											'highlight-background',
+											val,
+											SCStyle
+										);
+									}}
+									disableGradient
+								/>
+								<ColorControl
+									label={__('Border', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__highlight-color-border-${SCStyle}`}
+									color={getColor('highlight-border')}
+									defaultColor={getStyleCardAttr(
+										'highlight-border',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue(
+											'highlight-border',
+											val,
+											SCStyle
+										);
+									}}
+									disableGradient
+								/>
+								<ColorControl
+									label={__('SVG First', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__highlight-svg-1-${SCStyle}`}
+									color={getColor('highlight-color1')}
+									defaultColor={getStyleCardAttr(
+										'highlight-color1',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue(
+											'highlight-color1',
+											val,
+											SCStyle
+										);
+									}}
+									disableGradient
+								/>
+								<ColorControl
+									label={__('SVG Second', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__highlight-svg-2-${SCStyle}`}
+									color={getColor('highlight-color2')}
+									defaultColor={getStyleCardAttr(
+										'highlight-color2',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue(
+											'highlight-color2',
+											val,
+											SCStyle
+										);
+									}}
+									disableGradient
+								/>
 							</Fragment>
 						),
 					},
@@ -252,24 +344,39 @@ const MaxiStyleCardsEditor = () => {
 			forIn(allStyleCards, function get(value, key) {
 				if (value.status === 'active') styleCardCurrentValue = value;
 			});
-
-			// console.log('styleCardCurrentValue: ' +  JSON.stringify(styleCardCurrentValue));
 			if (!isNil(styleCardCurrentValue)) return styleCardCurrentValue;
 			return false;
 		}
 		return false;
 	};
 
-	// TO DO: set active state
+	const [stateSC, changeStateSC] = useState(getStyleCardCurrentValue());
+
+	const changeSConBackend = SC => {
+		// Light
+		Object.entries(SC.styleCard.light).forEach(([key, val]) => {
+			document.documentElement.style.setProperty(
+				`--maxi-light-${key}`,
+				val
+			);
+		});
+		// Dark
+		Object.entries(SC.styleCard.dark).forEach(([key, val]) => {
+			document.documentElement.style.setProperty(
+				`--maxi-dark-${key}`,
+				val
+			);
+		});
+	};
+
 	const setStyleCardCurrent = card => {
 		forIn(allStyleCards, function get(value, key) {
 			if (value.status === 'active' && card !== key) value.status = '';
 			if (card === key) value.status = 'active';
 		});
-		// console.log('new allStyleCards: ' + JSON.stringify(allStyleCards));
 		changeCurrentSC(allStyleCards);
-
-		// return allStyleCards;
+		changeStateSC(getStyleCardCurrentValue());
+		changeSConBackend(getStyleCardCurrentValue());
 	};
 
 	const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
@@ -286,29 +393,6 @@ const MaxiStyleCardsEditor = () => {
 			)
 		);
 	}
-
-	const currentSCname = () => {
-		if (allStyleCards && getStyleCardCurrentKey())
-			return allStyleCards[getStyleCardCurrentKey()].name;
-		return false;
-	};
-
-	const changeSConBackend = SC => {
-		// Light
-		Object.entries(SC.styleCard.light).forEach(([key, val]) => {
-			document.documentElement.style.setProperty(
-				`--maxi-light-${key}`,
-				val
-			);
-		});
-		// Dark
-		Object.entries(SC.styleCard.light).forEach(([key, val]) => {
-			document.documentElement.style.setProperty(
-				`--maxi-dark-${key}`,
-				val
-			);
-		});
-	};
 
 	const reRenderBlocks = () => {
 		const allBlocks = select('core/block-editor').getBlocks();
@@ -328,8 +412,6 @@ const MaxiStyleCardsEditor = () => {
 		});
 	};
 
-	const [stateSC, changeStateSC] = useState(getStyleCardCurrentValue());
-
 	const onChangeValue = (prop, value, style) => {
 		const stateSCbefore = stateSC.styleCard;
 		const stateSCstyleBefore = stateSC.styleCard[style];
@@ -347,6 +429,14 @@ const MaxiStyleCardsEditor = () => {
 		changeSConBackend(newStateSC);
 
 		// reRenderBlocks();
+	};
+
+	const currentSCname = () => {
+		if (!isNil(stateSC)) {
+			console.log('currentSC name: ' + stateSC.name);
+			return stateSC.name;
+		}
+		return 'Current Style Card';
 	};
 
 	const applyCurrentSCglobally = () => {
@@ -435,7 +525,7 @@ const MaxiStyleCardsEditor = () => {
 											'Are you sure to delete "%s" style card?',
 											'maxi-blocks'
 										),
-										currentSCname
+										allStyleCards[styleCardLoad].name
 									)
 								)
 							) {
@@ -491,7 +581,7 @@ const MaxiStyleCardsEditor = () => {
 					<Button
 						disabled={false}
 						onClick={() => {
-							const fileName = `${currentSCname}.json`;
+							const fileName = `${stateSC.name}.json`;
 							exportStyleCard(getStyleCardCurrentValue(), fileName);
 						}}
 					>
@@ -520,13 +610,16 @@ const MaxiStyleCardsEditor = () => {
 				<Button
 					disabled={isEmpty(styleCardName)}
 					onClick={() => {
-						if (isEmpty(styleCards)) {
+						if (isEmpty(allStyleCards)) {
 							saveMaxiStyleCards({
 								[`sc_${new Date().getTime()}`]: {
 									name: styleCardName,
 									status: '',
-									styleCard: {},
-									styleCardDefaults: {},
+									styleCard: { dark: {}, light: {} },
+									styleCardDefaults: {
+										...stateSC.styleCard,
+										...stateSC.styleCardDefaults,
+									},
 								},
 							});
 						} else {
@@ -535,16 +628,18 @@ const MaxiStyleCardsEditor = () => {
 								[`sc_${new Date().getTime()}`]: {
 									name: styleCardName,
 									status: '',
-									styleCard: {},
-									styleCardDefaults: {},
+									styleCard: { dark: {}, light: {} },
+									styleCardDefaults: {
+										...stateSC.styleCard,
+										...stateSC.styleCardDefaults,
+									},
 								},
 							});
 						}
-
 						setStyleCardName('');
 					}}
 				>
-					{__('Save Style Card', 'maxi-blocks')}
+					{__('Add New Style Card', 'maxi-blocks')}
 				</Button>
 			</div>
 			<SettingTabsControl
@@ -589,7 +684,7 @@ const MaxiStyleCardsEditorPopUp = () => {
 				aria-label={__('Style Card Editor', 'maxi-blocks')}
 				onClick={() => setIsVisible(!isVisible)}
 			>
-				<Icon icon={globalOptions} />
+				<Icon icon={styleCardBoat} />
 				{__('Style Card Editor', 'maxi-blocks')}
 			</Button>
 			{isVisible && <MaxiStyleCardsEditor />}

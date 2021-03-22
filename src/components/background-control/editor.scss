@@ -29,6 +29,18 @@
 		display: flex;
 		flex-direction: column;
 
+		&__preview {
+			display: block;
+			width: 25px;
+			height: 25px;
+			margin: auto;
+			border: 2px solid #dddfe1;
+			opacity: 1;
+			float: left;
+			border-radius: 5px;
+			margin-right: 10px;
+			background-size: cover !important;
+		}
 		&__row {
 			margin: 0 0 5px 0;
 			display: flex;
@@ -70,6 +82,9 @@
 
 			&:hover {
 				background-color: #f2f2f2;
+			}
+			&__text {
+				line-height: 25px;
 			}
 			&__id {
 				background: #f2f2f2;

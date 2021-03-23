@@ -19,7 +19,6 @@
 		opacity: 0;
 		color: #9b9b9b;
 		font: 12px Roboto, sans-serif;
-		z-index: 1;
 		transition: opacity 0.5s;
 		&--top {
 			top: 0;
@@ -41,5 +40,6 @@
 	.maxi-indicators__margin {
 		background-color: #ffa48b;
 		color: #222;
+		z-index: 1;
 	}
 }

@@ -191,11 +191,6 @@ const getImageBackendObject = props => {
 			label: 'Image settings',
 			general: {},
 		},
-		imageSize: {
-			general: {
-				width: `${props.imgWidth}%`,
-			},
-		},
 	};
 
 	if (clipPath) response.image.general['clip-path'] = clipPath;

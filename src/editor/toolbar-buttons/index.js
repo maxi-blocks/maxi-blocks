@@ -53,6 +53,9 @@ document.addEventListener('readystatechange', () => {
 				.appendChild(toolbarButtonsWrapper);
 
 			render(<ToolbarButtons />, toolbarButtonsWrapper);
+
+			// Initialize SCs
+			wp.data.select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 		}
 	}
 });

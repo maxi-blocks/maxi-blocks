@@ -19,14 +19,14 @@ body.maxi-blocks--active {
 			&.maxi-background-- {
 				&1 {
 					&.maxi-button-block,
-					> .maxi-background-displayer {
+					> .maxi-background-displayer .maxi-background-displayer__color{
 						background-color: var(--maxi-#{$style}-background-1);
 					}
 				}
 
 				&2 {
 					&.maxi-button-block,
-					> .maxi-background-displayer {
+					> .maxi-background-displayer .maxi-background-displayer__color{
 						background-color: var(--maxi-#{$style}-background-2);
 					}
 				}
@@ -73,6 +73,19 @@ body.maxi-blocks--active {
 				&:hover, &:active, &:focus {
 			        background-color: var(--maxi-#{$style}-hover);
 			    }
+			}
+
+			.maxi-svg-icon-block {
+				.maxi-svg-icon-block__icon {
+					svg path {
+						&.maxi-svg-color-icon-fill {
+							fill: var(--maxi-#{$style}-highlight-icon-fill);
+						}
+						&.maxi-svg-color-icon-libe {
+							stroke: var(--maxi-#{$style}-highlight-icon-line);
+						}
+					}
+				}
 			}
 
 			&.maxi-highlight,
@@ -125,23 +138,23 @@ body.maxi-blocks--active {
 					}
 				}
 
-				&--color1 {
+				&--icon-fill {
 					> &.maxi-svg-icon-block {
 						.maxi-svg-icon-block__icon {
 							svg path {
 								&.maxi-svg-color-first {
-									fill: var(--maxi-light-highlight-color1);
+									fill: var(--maxi-#{$style}-highlight-color1);
 								}
 							}
 						}
 					}
 				}
 
-				&--color2 {
+				&--icon-stroke {
 					> &.maxi-svg-icon-block {
 						.maxi-svg-icon-block__icon {
 							svg path {
-								stroke: var(--maxi-light-highlight-color2);
+								stroke: var(--maxi-#{$style}-highlight-color2);
 							}
 						}
 					}

@@ -3,6 +3,7 @@ const { __, sprintf } = wp.i18n;
 const { select, dispatch, useSelect, useDispatch } = wp.data;
 const { Fragment, useState } = wp.element;
 const { Button, SelectControl, Popover, Icon } = wp.components;
+const { MediaUpload, MediaUploadCheck } = wp.blockEditor;
 
 import { isEmpty, forIn, isNil } from 'lodash';
 import { styleCardBoat, reset, SCdelete } from '../../icons';
@@ -57,12 +58,39 @@ const parseSC = (SC, newSC) => {
 	return parsedSC;
 };
 
+const changeBoatIcon = (prop, value) => {
+	if (prop === 'icon-fill') {
+		const boatToFill = document.getElementById('styleCardBoat_a');
+		boatToFill.setAttribute('fill', value);
+	}
+	if (prop === 'icon-line') {
+		const boatToStroke = document.getElementById('styleCardBoat_b');
+		boatToStroke.setAttribute('stroke', value);
+	}
+};
+
+const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
+
+function maxiClick(element) {
+	mouseClickEvents.forEach(mouseEventType =>
+		element.dispatchEvent(
+			new MouseEvent(mouseEventType, {
+				view: window,
+				bubbles: true,
+				cancelable: true,
+				buttons: 1,
+			})
+		)
+	);
+}
+
 const MaxiStyleCardsTab = ({
 	SC,
 	SCStyle,
 	deviceType,
 	onChange,
 	onChangeValue,
+	currentKey,
 }) => {
 	const getColor = attr => {
 		if (!isNil(SC.styleCard[SCStyle][attr]))
@@ -71,6 +99,20 @@ const MaxiStyleCardsTab = ({
 			return SC.styleCardDefaults[SCStyle][attr];
 		return false;
 	};
+
+	const iconFill = getColor('icon-fill');
+	const iconLine = getColor('icon-line');
+	if (iconFill) changeBoatIcon('icon-fill', iconFill);
+	if (iconLine) changeBoatIcon('icon-line', iconLine);
+
+	const addActiveSCdropdownStyle = () => {
+		const select = document.getElementsByClassName('maxi-style-cards__sc-select');
+		if(!isNil(select[0])) {const options = select[0].getElementsByTagName('option');}
+
+		if(!isNil(options[0]))console.log('options ' + options[0]);
+	};
+
+	// addActiveSCdropdownStyle();
 
 	// console.log('default button bg: ' + getStyleCardAttr('button-background-color',SCStyle,true));
 	return (
@@ -233,17 +275,17 @@ const MaxiStyleCardsTab = ({
 									disableGradient
 								/>
 								<ColorControl
-									label={__('SVG First', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__highlight-svg-1-${SCStyle}`}
-									color={getColor('highlight-color1')}
+									label={__('Icon Line', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__highlight-icon-line-${SCStyle}`}
+									color={getColor('highlight-icon-line')}
 									defaultColor={getStyleCardAttr(
-										'highlight-color1',
+										'highlight-icon-line',
 										SCStyle,
 										true
 									)}
 									onChange={val => {
 										onChangeValue(
-											'highlight-color1',
+											'highlight-icon-line',
 											val,
 											SCStyle
 										);
@@ -251,20 +293,65 @@ const MaxiStyleCardsTab = ({
 									disableGradient
 								/>
 								<ColorControl
-									label={__('SVG Second', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__highlight-svg-2-${SCStyle}`}
-									color={getColor('highlight-color2')}
+									label={__('Icon Fill', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__highlight-icon-fill-${SCStyle}`}
+									color={getColor('highlight-icon-fill')}
 									defaultColor={getStyleCardAttr(
-										'highlight-color2',
+										'highlight-icon-fill',
 										SCStyle,
 										true
 									)}
 									onChange={val => {
 										onChangeValue(
-											'highlight-color2',
+											'highlight-icon-fill',
 											val,
 											SCStyle
 										);
+									}}
+									disableGradient
+								/>
+							</Fragment>
+						),
+					},
+					{
+						label: __('Icon', 'maxi-blocks'),
+						content: (
+							<Fragment>
+								<ColorControl
+									label={__('Line', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__icon-line-${SCStyle}`}
+									color={getColor('icon-line')}
+									defaultColor={getStyleCardAttr(
+										'icon-line',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue(
+											'icon-line',
+											val,
+											SCStyle
+										);
+										changeBoatIcon('icon-line', val);
+									}}
+									disableGradient
+								/>
+								<ColorControl
+									label={__('Fill', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__icon-fill-${SCStyle}`}
+									color={getColor('icon-fill')}
+									defaultColor={getStyleCardAttr(
+										'icon-fill',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue(
+											'icon-fill',
+											val,
+											SCStyle
+										);
+										changeBoatIcon('icon-fill', val);
 									}}
 									disableGradient
 								/>
@@ -297,6 +384,8 @@ const MaxiStyleCardsEditor = () => {
 
 	const [currentSC, changeCurrentSC] = useState(styleCards);
 
+	const [styleCardName, setStyleCardName] = useState('');
+
 	const getStyleCards = () => {
 		if (!isNil(currentSC)) {
 			switch (typeof currentSC) {
@@ -315,45 +404,55 @@ const MaxiStyleCardsEditor = () => {
 
 	const allStyleCards = getStyleCards();
 
-	const getStyleCardCurrentKey = () => {
-		let styleCardCurrent = '';
+	const getStyleCardActiveKey = () => {
+		let styleCardActive = '';
 		if (allStyleCards) {
 			forIn(allStyleCards, function get(value, key) {
-				if (value.status === 'active') styleCardCurrent = key;
+				if (value.status === 'active') styleCardActive = key;
 			});
 
-			return styleCardCurrent;
+			return styleCardActive;
 		}
 		return false;
 	};
 
-	const [styleCardName, setStyleCardName] = useState('');
-	const [styleCardLoad, setStyleCardLoad] = useState('');
-
-	const getStyleCardsOptions = () => {
-		const styleCardsArr = [];
-		forIn(allStyleCards, (value, key) =>
-			styleCardsArr.push({ label: value.name, value: key })
-		);
-		return styleCardsArr;
-	};
-
-	const getStyleCardCurrentValue = () => {
-		let styleCardCurrentValue = {};
+	const getStyleCardActiveValue = () => {
+		let styleCardActiveValue = {};
 		if (!isNil(allStyleCards)) {
 			forIn(allStyleCards, function get(value, key) {
-				if (value.status === 'active') styleCardCurrentValue = value;
+				if (value.status === 'active') styleCardActiveValue = value;
 			});
-			if (!isNil(styleCardCurrentValue)) return styleCardCurrentValue;
+			if (!isNil(styleCardActiveValue)) return styleCardActiveValue;
 			return false;
 		}
 		return false;
 	};
 
-	const [stateSC, changeStateSC] = useState(getStyleCardCurrentValue());
+	const [stateSC, changeStateSC] = useState(getStyleCardActiveValue());
+
+	const [currentSCkey, changeCurrentSCkey] = useState(getStyleCardActiveKey());
+
+	console.log('currentSCkey: ' + currentSCkey);
+
+	const getStyleCardsOptions = () => {
+		const styleCardsArr = [];
+		forIn(allStyleCards, (value, key) =>
+			styleCardsArr.push({
+				label: value.name,
+				value: key,
+			})
+		);
+		return styleCardsArr;
+	};
 
 	const changeSConBackend = SC => {
 		// Light
+		Object.entries(SC.styleCardDefaults.light).forEach(([key, val]) => {
+			document.documentElement.style.setProperty(
+				`--maxi-light-${key}`,
+				val
+			);
+		});
 		Object.entries(SC.styleCard.light).forEach(([key, val]) => {
 			document.documentElement.style.setProperty(
 				`--maxi-light-${key}`,
@@ -361,6 +460,12 @@ const MaxiStyleCardsEditor = () => {
 			);
 		});
 		// Dark
+		Object.entries(SC.styleCardDefaults.dark).forEach(([key, val]) => {
+			document.documentElement.style.setProperty(
+				`--maxi-dark-${key}`,
+				val
+			);
+		});
 		Object.entries(SC.styleCard.dark).forEach(([key, val]) => {
 			document.documentElement.style.setProperty(
 				`--maxi-dark-${key}`,
@@ -369,30 +474,27 @@ const MaxiStyleCardsEditor = () => {
 		});
 	};
 
-	const setStyleCardCurrent = card => {
+	const setStyleCardActive = cardKey => {
 		forIn(allStyleCards, function get(value, key) {
-			if (value.status === 'active' && card !== key) value.status = '';
-			if (card === key) value.status = 'active';
+			if (value.status === 'active' && cardKey !== key) value.status = '';
+			if (cardKey === key) value.status = 'active';
 		});
 		changeCurrentSC(allStyleCards);
-		changeStateSC(getStyleCardCurrentValue());
-		changeSConBackend(getStyleCardCurrentValue());
+		changeStateSC(getStyleCardActiveValue());
+		changeSConBackend(getStyleCardActiveValue());
 	};
 
-	const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
-
-	function maxiClick(element) {
-		mouseClickEvents.forEach(mouseEventType =>
-			element.dispatchEvent(
-				new MouseEvent(mouseEventType, {
-					view: window,
-					bubbles: true,
-					cancelable: true,
-					buttons: 1,
-				})
-			)
-		);
-	}
+	const getStyleCardCurrentValue = cardKey => {
+		let styleCardCurrentValue = {};
+		if (!isNil(allStyleCards)) {
+			forIn(allStyleCards, function get(value, key) {
+				if (key === cardKey) styleCardCurrentValue = value;
+			});
+			if (!isNil(styleCardCurrentValue)) return styleCardCurrentValue;
+			return false;
+		}
+		return false;
+	};
 
 	const reRenderBlocks = () => {
 		const allBlocks = select('core/block-editor').getBlocks();
@@ -405,7 +507,7 @@ const MaxiStyleCardsEditor = () => {
 				if (!isNil(updateStyleCard)) {
 					// console.log(`update for ${clientId}`);
 					dispatch('core/block-editor').updateBlockAttributes(clientId, {
-						updateStyleCard: new Date().getTime(),
+							updateStyleCard: new Date().getTime(),
 					});
 				}
 			}
@@ -433,16 +535,44 @@ const MaxiStyleCardsEditor = () => {
 
 	const currentSCname = () => {
 		if (!isNil(stateSC)) {
-			console.log('currentSC name: ' + stateSC.name);
+			// console.log('currentSC name: ' + stateSC.name);
 			return stateSC.name;
 		}
 		return 'Current Style Card';
 	};
 
+	const isDefaultOrActive = keySC => {
+		if (keySC === 'sc_maxi') return true;
+		if (allStyleCards[keySC].status === 'active') return true;
+
+		return false;
+	};
+
+	const [isDefaultOrActiveState, changeIsDefaultOrActiveState] = useState(
+		isDefaultOrActive(currentSCkey)
+	);
+
 	const applyCurrentSCglobally = () => {
+		setStyleCardActive(currentSCkey);
+		changeIsDefaultOrActiveState(isDefaultOrActive(currentSCkey));
+
 		const newStyleCards = {
 			...allStyleCards,
-			[getStyleCardCurrentKey()]: {
+			[currentSCkey]: {
+				name: stateSC.name,
+				status: 'active',
+				styleCard: stateSC.styleCard,
+				styleCardDefaults: stateSC.styleCardDefaults,
+			},
+		};
+
+		saveMaxiStyleCards(newStyleCards);
+	};
+
+	const saveCurrentSC = () => {
+		const newStyleCards = {
+			...allStyleCards,
+			[currentSCkey]: {
 				name: stateSC.name,
 				status: stateSC.status,
 				styleCard: stateSC.styleCard,
@@ -453,223 +583,292 @@ const MaxiStyleCardsEditor = () => {
 		saveMaxiStyleCards(newStyleCards);
 	};
 
+	const saveImportedStyleCard = card => {
+		changeStateSC(card);
+		changeSConBackend(card);
+
+		const newId = `sc_${new Date().getTime()}`;
+
+		console.log('newId  ' + newId);
+
+		const newAllSCs = {
+			...allStyleCards,
+			[newId]: card,
+		};
+
+		saveMaxiStyleCards(newAllSCs);
+	};
+
 	return (
-		<Popover
-			noArrow
-			position={isRTL ? 'top left right' : 'top right left'}
-			className='maxi-style-cards__popover'
-			focusOnMount
-		>
-			<h2>
-				<Icon icon={styleCardBoat} />
-				{__('Style Card Editor', 'maxi-blocks')}
-			</h2>
-			<div className='maxi-style-cards__sc'>
-				<Button
-					className='maxi-style-cards-control__sc--add-more'
-					onClick={() => {
-						// TO DO: add cloud modal for SCs here
-					}}
-				>
-					{__('Add More Style Cards', 'maxi-blocks')}
-				</Button>
-				<div className='maxi-style-cards__sc--three'>
-					<SelectControl
-						value={getStyleCardCurrentKey()}
-						options={getStyleCardsOptions()}
-						onChange={val => {
-							setStyleCardLoad(val);
-							setStyleCardCurrent(val);
-						}
-					}
+		!isEmpty(currentSC) && (
+			<Popover
+				noArrow
+				position={isRTL ? 'top left right' : 'top right left'}
+				className='maxi-style-cards__popover maxi-sidebar'
+				focusOnMount
+			>
+				<h2>
+					<Icon icon={styleCardBoat} />
+					{__('Style Card Editor', 'maxi-blocks')}
+				</h2>
+				<div className='maxi-style-cards__sc'>
+					<Button
+						className='maxi-style-cards-control__sc--add-more'
+						onClick={() => {
+							// TO DO: add cloud modal for SCs here
+						}}
+					>
+						{__('Add More Style Cards', 'maxi-blocks')}
+					</Button>
+					<div className='maxi-style-cards__sc--three'>
+						<SelectControl
+							className='maxi-style-cards__sc-select'
+							value={currentSCkey}
+							options={getStyleCardsOptions()}
+							onChange={val => {
+								changeCurrentSCkey(val);
+								changeCurrentSC(allStyleCards);
+								changeIsDefaultOrActiveState(
+									isDefaultOrActive(val)
+								);
+								changeStateSC(getStyleCardCurrentValue(val));
+								changeSConBackend(
+									getStyleCardCurrentValue(val)
+								);
+							}}
+						/>
+						<Button
+							className='maxi-style-cards-control__sc--reset'
+							onClick={() => {
+								if (
+									window.confirm(
+										sprintf(
+											__(
+												'Are you sure to reset "%s" style card\'s styles to defaults? Don\'t forget to apply the changes after',
+												'maxi-blocks'
+											),
+											currentSCname
+										)
+									)
+								) {
+									const newStyleCards = {
+										...allStyleCards,
+										[currentSCkey]: {
+											...allStyleCards[currentSCkey],
+											styleCard: {
+												light: {},
+												dark: {},
+											},
+										},
+									};
+								}
+							}}
+						>
+							<Icon icon={reset} />
+						</Button>
+						<Button
+							disabled={isDefaultOrActiveState}
+							className='maxi-style-cards-control__sc--delete'
+							onClick={() => {
+								const newStyleCards = {
+									...allStyleCards,
+								};
+
+								if (
+									window.confirm(
+										sprintf(
+											__(
+												'Are you sure you want to delete "%s" style card? You cannot undo it',
+												'maxi-blocks'
+											),
+											allStyleCards[currentSCkey].name
+										)
+									)
+								) {
+									delete newStyleCards[currentSCkey];
+									saveMaxiStyleCards(newStyleCards);
+								}
+							}}
+						>
+							<Icon icon={SCdelete} />
+						</Button>
+					</div>
+					<div className='maxi-style-cards__sc--three'>
+						<Button
+							disabled={false}
+							onClick={() => {
+								const previewButton = document.querySelector(
+									'.block-editor-post-preview__button-toggle'
+								);
+								maxiClick(previewButton);
+								setTimeout(function triggerPreview() {
+									const previewButtonExternal = document.querySelector(
+										'a.edit-post-header-preview__button-external'
+									);
+									maxiClick(previewButtonExternal);
+								}, 1);
+							}}
+						>
+							{__('Preview', 'maxi-blocks')}
+						</Button>
+						<Button
+							disabled={false}
+							onClick={() => {
+								if (
+									window.confirm(
+										sprintf(
+											__(
+												'Are you sure you want to save currently active "%s" style card? It will apply the styles to the whole site',
+												'maxi-blocks'
+											),
+											currentSCname
+										)
+									)
+								) {
+									saveCurrentSC();
+								}
+							}}
+						>
+							{__('Save', 'maxi-blocks')}
+						</Button>
+						<Button
+							disabled={false}
+							onClick={() => {
+								if (
+									window.confirm(
+										sprintf(
+											__(
+												'Are you sure you want to apply "%s" style card? It will apply the styles to the whole site',
+												'maxi-blocks'
+											),
+											currentSCname
+										)
+									)
+								) {
+									applyCurrentSCglobally();
+								}
+							}}
+						>
+							{__('Apply', 'maxi-blocks')}
+						</Button>
+					</div>
+					<div className='maxi-style-cards__sc--two'>
+						<Button
+							disabled={false}
+							onClick={() => {
+								const fileName = `${stateSC.name}.txt`;
+								exportStyleCard(
+									{
+										...stateSC,
+										status: '',
+									},
+									fileName
+								);
+							}}
+						>
+							{__('Export', 'maxi-blocks')}
+						</Button>
+						<MediaUploadCheck>
+							<MediaUpload
+								onSelect={media => {
+									fetch(media.url)
+										.then(response => response.json())
+										.then(jsonData => {
+											saveImportedStyleCard(jsonData);
+											// console.log(jsonData);
+										})
+										.catch(error => {
+											// handle your errors here
+											console.error(error);
+										});
+								}}
+								allowedTypes='text'
+								// value={ mediaId }
+								render={({ open }) => (
+									<Button onClick={open}>
+										{__('Import', 'maxi-blocks')}
+									</Button>
+								)}
+							/>
+						</MediaUploadCheck>
+					</div>
+				</div>
+				<div className='maxi-style-cards-control__sc__save'>
+					<input
+						type='text'
+						placeholder={__(
+							'Add your Style Card Name here',
+							'maxi-blocks'
+						)}
+						value={styleCardName}
+						onChange={e => setStyleCardName(e.target.value)}
 					/>
 					<Button
-						className='maxi-style-cards-control__sc--reset'
-						disabled={isEmpty(styleCardLoad)}
+						disabled={isEmpty(styleCardName)}
 						onClick={() => {
-							const newStyleCards = {
-								...allStyleCards,
-							};
-
-							if (
-								window.confirm(
-									sprintf(
-										__(
-											'Are you sure to reset "%s" style card\'s styles?',
-											'maxi-blocks'
-										),
-										allStyleCards[styleCardLoad].name
-									)
-								)
-							) {
-								delete newStyleCards[styleCardLoad];
-								saveMaxiStyleCards(newStyleCards);
-								setStyleCardLoad('');
+							if (isEmpty(allStyleCards)) {
+								saveMaxiStyleCards({
+									[`sc_${new Date().getTime()}`]: {
+										name: styleCardName,
+										status: '',
+										styleCard: { dark: {}, light: {} },
+										styleCardDefaults: {
+											...stateSC.styleCard,
+											...stateSC.styleCardDefaults,
+										},
+									},
+								});
+							} else {
+								saveMaxiStyleCards({
+									...allStyleCards,
+									[`sc_${new Date().getTime()}`]: {
+										name: styleCardName,
+										status: '',
+										styleCard: { dark: {}, light: {} },
+										styleCardDefaults: {
+											...stateSC.styleCard,
+											...stateSC.styleCardDefaults,
+										},
+									},
+								});
 							}
+							setStyleCardName('');
 						}}
 					>
-						<Icon icon={reset} />
-					</Button>
-					<Button
-						className='maxi-style-cards-control__sc--delete'
-						disabled={isEmpty(styleCardLoad)}
-						onClick={() => {
-							const newStyleCards = {
-								...allStyleCards,
-							};
-
-							if (
-								window.confirm(
-									sprintf(
-										__(
-											'Are you sure to delete "%s" style card?',
-											'maxi-blocks'
-										),
-										allStyleCards[styleCardLoad].name
-									)
-								)
-							) {
-								delete newStyleCards[styleCardLoad];
-								saveMaxiStyleCards(newStyleCards);
-								setStyleCardLoad('');
-							}
-						}}
-					>
-						<Icon icon={SCdelete} />
+						{__('Add New Style Card', 'maxi-blocks')}
 					</Button>
 				</div>
-				<div className='maxi-style-cards__sc--two'>
-					<Button
-						disabled={false}
-						onClick={() => {
-							const previewButton = document.querySelector(
-								'.block-editor-post-preview__button-toggle'
-							);
-							maxiClick(previewButton);
-							setTimeout(function triggerPreview() {
-								const previewButtonExternal = document.querySelector(
-									'a.edit-post-header-preview__button-external'
-								);
-								maxiClick(previewButtonExternal);
-							}, 1);
-						}}
-					>
-						{__('Preview', 'maxi-blocks')}
-					</Button>
-					<Button
-						disabled={false}
-						onClick={() => {
-							if (
-								window.confirm(
-									sprintf(
-										__(
-											'Are you sure you want to apply "%s" style card? It will apply the styles to the whole site',
-											'maxi-blocks'
-										),
-										currentSCname
-									)
-								)
-							) {
-								applyCurrentSCglobally();
-							}
-						}}
-					>
-						{__('Apply', 'maxi-blocks')}
-					</Button>
-				</div>
-				<div className='maxi-style-cards__sc--two'>
-					<Button
-						disabled={false}
-						onClick={() => {
-							const fileName = `${stateSC.name}.json`;
-							exportStyleCard(getStyleCardCurrentValue(), fileName);
-						}}
-					>
-						{__('Export', 'maxi-blocks')}
-					</Button>
-					<Button
-						disabled={false}
-						onClick={() => {
-
-						}}
-					>
-						{__('Import', 'maxi-blocks')}
-					</Button>
-				</div>
-			</div>
-			<div className='maxi-style-cards-control__sc__save'>
-				<input
-					type='text'
-					placeholder={__(
-						'Add your Style Card Name here',
-						'maxi-blocks'
-					)}
-					value={styleCardName}
-					onChange={e => setStyleCardName(e.target.value)}
+				<SettingTabsControl
+					disablePadding
+					items={[
+						{
+							label: __('Light Style Preset', 'maxi-blocks'),
+							content: (
+								<MaxiStyleCardsTab
+									SC={stateSC}
+									SCStyle='light'
+									onChangeValue={onChangeValue}
+									deviceType={deviceType}
+									currentKey={getStyleCardActiveKey()}
+								/>
+							),
+						},
+						{
+							label: __('Dark Style Preset', 'maxi-blocks'),
+							content: (
+								<MaxiStyleCardsTab
+									SC={stateSC}
+									SCStyle='dark'
+									onChangeValue={onChangeValue}
+									deviceType={deviceType}
+									currentKey={getStyleCardActiveKey()}
+								/>
+							),
+						},
+					]}
 				/>
-				<Button
-					disabled={isEmpty(styleCardName)}
-					onClick={() => {
-						if (isEmpty(allStyleCards)) {
-							saveMaxiStyleCards({
-								[`sc_${new Date().getTime()}`]: {
-									name: styleCardName,
-									status: '',
-									styleCard: { dark: {}, light: {} },
-									styleCardDefaults: {
-										...stateSC.styleCard,
-										...stateSC.styleCardDefaults,
-									},
-								},
-							});
-						} else {
-							saveMaxiStyleCards({
-								...allStyleCards,
-								[`sc_${new Date().getTime()}`]: {
-									name: styleCardName,
-									status: '',
-									styleCard: { dark: {}, light: {} },
-									styleCardDefaults: {
-										...stateSC.styleCard,
-										...stateSC.styleCardDefaults,
-									},
-								},
-							});
-						}
-						setStyleCardName('');
-					}}
-				>
-					{__('Add New Style Card', 'maxi-blocks')}
-				</Button>
-			</div>
-			<SettingTabsControl
-				disablePadding
-				items={[
-					{
-						label: __('Light Style Preset', 'maxi-blocks'),
-						content: (
-							<MaxiStyleCardsTab
-								SC={stateSC}
-								SCStyle='light'
-								onChangeValue={onChangeValue}
-								deviceType={deviceType}
-							/>
-						),
-					},
-					{
-						label: __('Dark Style Preset', 'maxi-blocks'),
-						content: (
-							<MaxiStyleCardsTab
-								SC={stateSC}
-								SCStyle='dark'
-								onChangeValue={onChangeValue}
-								deviceType={deviceType}
-							/>
-						),
-					},
-				]}
-			/>
-		</Popover>
+			</Popover>
+		)
 	);
 };
 

@@ -45,7 +45,7 @@ class StyleCardsVariables {
 		if ($maxi_blocks_style_cards_current && !empty($maxi_blocks_style_cards_current))
 			return $maxi_blocks_style_cards_current;
 		else {
-			require_once (dirname(__FILE__) . '/style-cards/default-style-card-maxi.php');
+			require_once ( MAXI_PLUGIN_DIR_PATH . 'API/style-cards/default-style-card-maxi.php');
 			$defaultStyleCard = getDefaultStyleCard();
 
 			$wpdb->replace($table_name, array(

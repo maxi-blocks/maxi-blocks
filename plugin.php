@@ -16,6 +16,8 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
+define( 'MAXI_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__ ) );
+
 function maxi_blocks_add_db_table()
 {
   global $wpdb;

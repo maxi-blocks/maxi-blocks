@@ -85,6 +85,10 @@ class StyleCardsVariables {
 			foreach ($final_sc_array['light'] as $css_rule => $style_value) {
 				$response .= '--maxi-light-'.$css_rule.':'.$style_value.';';
 			}
+
+			foreach ($final_sc_array['dark'] as $css_rule => $style_value) {
+				$response .= '--maxi-dark-'.$css_rule.':'.$style_value.';';
+			}
 		}
 
 		$response .= '}';

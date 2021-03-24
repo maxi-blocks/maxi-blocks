@@ -537,7 +537,6 @@ const MaxiStyleCardsEditor = () => {
 
 	const currentSCname = () => {
 		if (!isNil(stateSC)) {
-			// console.log('currentSC name: ' + stateSC.name);
 			return stateSC.name;
 		}
 		return 'Current Style Card';
@@ -560,18 +559,21 @@ const MaxiStyleCardsEditor = () => {
 	);
 
 	const applyCurrentSCglobally = () => {
-		// setStyleCardActive(currentSCkey);
 		changeIsDefaultOrActiveState(isDefaultOrActive(currentSCkey));
+		setStyleCardActive(currentSCkey);
+
+		console.log('stateSC: ' + JSON.stringify(stateSC));
 
 		const newStyleCards = {
 			...allStyleCards,
 			[currentSCkey]: {
-				name: stateSC.name,
+				...stateSC,
 				status: 'active',
-				styleCard: stateSC.styleCard,
-				styleCardDefaults: stateSC.styleCardDefaults,
 			},
 		};
+
+		changeStateSC(stateSC);
+		changeSConBackend(stateSC);
 
 		saveMaxiStyleCards(newStyleCards);
 	};

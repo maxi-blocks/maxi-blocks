@@ -81,12 +81,13 @@ body.maxi-blocks--active {
 						&.maxi-svg-color-icon-fill {
 							fill: var(--maxi-#{$style}-highlight-icon-fill);
 						}
-						&.maxi-svg-color-icon-libe {
+						&.maxi-svg-color-icon-line {
 							stroke: var(--maxi-#{$style}-highlight-icon-line);
 						}
 					}
 				}
 			}
+
 
 			&.maxi-highlight,
 			.maxi-highlight {

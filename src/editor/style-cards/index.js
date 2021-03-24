@@ -58,17 +58,6 @@ const parseSC = (SC, newSC) => {
 	return parsedSC;
 };
 
-const changeBoatIcon = (prop, value) => {
-	if (prop === 'icon-fill') {
-		const boatToFill = document.getElementById('styleCardBoat_a');
-		boatToFill.setAttribute('fill', value);
-	}
-	if (prop === 'icon-line') {
-		const boatToStroke = document.getElementById('styleCardBoat_b');
-		boatToStroke.setAttribute('stroke', value);
-	}
-};
-
 const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
 
 function maxiClick(element) {
@@ -112,11 +101,6 @@ const MaxiStyleCardsTab = ({
 			return SC.styleCardDefaults[SCStyle][attr];
 		return false;
 	};
-
-	const iconFill = getColor('icon-fill');
-	const iconLine = getColor('icon-line');
-	if (iconFill) changeBoatIcon('icon-fill', iconFill);
-	if (iconLine) changeBoatIcon('icon-line', iconLine);
 
 	if (document.querySelectorAll('.maxi-style-cards__sc-select option'))
 		setTimeout(function scSelect() {
@@ -340,7 +324,6 @@ const MaxiStyleCardsTab = ({
 											val,
 											SCStyle
 										);
-										changeBoatIcon('icon-line', val);
 									}}
 									disableGradient
 								/>
@@ -359,7 +342,6 @@ const MaxiStyleCardsTab = ({
 											val,
 											SCStyle
 										);
-										changeBoatIcon('icon-fill', val);
 									}}
 									disableGradient
 								/>

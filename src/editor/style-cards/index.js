@@ -84,6 +84,19 @@ function maxiClick(element) {
 	);
 }
 
+const addActiveSCdropdownStyle = keySC => {
+	const selectArr = document.querySelectorAll(
+		'.maxi-style-cards__sc-select option'
+	);
+	if (!isNil(selectArr)) {
+		selectArr.forEach(option => {
+			if (option.value === keySC)
+				option.classList.add('maxi-current-option');
+			else option.classList.remove('maxi-current-option');
+		});
+	}
+};
+
 const MaxiStyleCardsTab = ({
 	SC,
 	SCStyle,
@@ -105,18 +118,10 @@ const MaxiStyleCardsTab = ({
 	if (iconFill) changeBoatIcon('icon-fill', iconFill);
 	if (iconLine) changeBoatIcon('icon-line', iconLine);
 
-	const addActiveSCdropdownStyle = () => {
-		const selectArr = document.querySelectorAll(
-			'.maxi-style-cards__sc-select option'
-		);
-		for (let i = 0; i < selectArr.length; ++i) {
-			if (selectArr[i].value === currentKey)
-				selectArr[i].classList.add('maxi-current-option');
-		}
-	};
-
 	if (document.querySelectorAll('.maxi-style-cards__sc-select option'))
-		setTimeout(function(){ addActiveSCdropdownStyle(); }, 300);
+		setTimeout(function scSelect() {
+			addActiveSCdropdownStyle(currentKey);
+		}, 300);
 
 	return (
 		<div className='maxi-tab-content__box'>
@@ -554,6 +559,16 @@ const MaxiStyleCardsEditor = () => {
 		return false;
 	};
 
+	const isActive = keySC => {
+		if (
+			!isNil(allStyleCards[keySC]) &&
+			allStyleCards[keySC].status === 'active'
+		)
+			return true;
+
+		return false;
+	};
+
 	const [isDefaultOrActiveState, changeIsDefaultOrActiveState] = useState(
 		isDefaultOrActive(currentSCkey)
 	);
@@ -561,8 +576,6 @@ const MaxiStyleCardsEditor = () => {
 	const applyCurrentSCglobally = () => {
 		changeIsDefaultOrActiveState(isDefaultOrActive(currentSCkey));
 		setStyleCardActive(currentSCkey);
-
-		console.log('stateSC: ' + JSON.stringify(stateSC));
 
 		const newStyleCards = {
 			...allStyleCards,
@@ -574,6 +587,8 @@ const MaxiStyleCardsEditor = () => {
 
 		changeStateSC(stateSC);
 		changeSConBackend(stateSC);
+
+		addActiveSCdropdownStyle(currentSCkey);
 
 		saveMaxiStyleCards(newStyleCards);
 	};
@@ -613,8 +628,6 @@ const MaxiStyleCardsEditor = () => {
 				},
 			},
 		};
-
-		console.log('resetStyleCards: ' + JSON.stringify(resetStyleCards));
 
 		changeStateSC(resetStyleCard);
 		changeSConBackend(resetStyleCard);
@@ -716,6 +729,15 @@ const MaxiStyleCardsEditor = () => {
 									)
 								) {
 									delete newStyleCards[currentSCkey];
+									changeCurrentSCkey('sc_maxi');
+									changeCurrentSC(newStyleCards);
+									changeIsDefaultOrActiveState(true);
+									changeStateSC(
+										getStyleCardCurrentValue('sc_maxi')
+									);
+									changeSConBackend(
+										getStyleCardCurrentValue('sc_maxi')
+									);
 									saveMaxiStyleCards(newStyleCards);
 								}
 							}}
@@ -742,21 +764,22 @@ const MaxiStyleCardsEditor = () => {
 							{__('Preview', 'maxi-blocks')}
 						</Button>
 						<Button
-							disabled={false}
 							onClick={() => {
-								if (
-									window.confirm(
-										sprintf(
-											__(
-												'Are you sure you want to save currently active "%s" style card? It will apply the styles to the whole site',
-												'maxi-blocks'
-											),
-											currentSCname
+								if (isActive(currentSCkey)) {
+									if (
+										window.confirm(
+											sprintf(
+												__(
+													'Are you sure you want to save currently active "%s" style card? It will apply new styles to the whole site',
+													'maxi-blocks'
+												),
+												currentSCname
+											)
 										)
 									)
-								) {
-									saveCurrentSC();
+										saveCurrentSC();
 								}
+								saveCurrentSC();
 							}}
 						>
 							{__('Save', 'maxi-blocks')}

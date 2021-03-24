@@ -73,12 +73,6 @@ const FullSizeControl = props => {
 		},
 	};
 
-	const widthAllowedBlocks = [
-		'maxi-blocks/container-maxi',
-		'maxi-blocks/row-maxi',
-		'maxi-blocks/column-maxi',
-	];
-
 	const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
 		select('core/block-editor').getSelectedBlockClientId()
 	);

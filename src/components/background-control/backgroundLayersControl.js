@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
-const { useState } = wp.element;
+const { useState, RawHTML } = wp.element;
 
 /**
  * Internal dependencies
@@ -42,6 +42,29 @@ const LayerCard = props => {
 		isOpen && 'maxi-background-layer__open'
 	);
 
+	const previewStyles = type => {
+		switch (type) {
+			case 'color':
+				return {
+					background: layer['background-color'],
+				};
+			case 'gradient':
+				return {
+					background: layer['background-gradient'],
+				};
+			case 'image':
+				return {
+					background: `url(${layer['background-image-mediaURL']})`,
+				};
+			case 'video':
+				return {
+					background: `url(${layer['background-video-fallbackURL']})`,
+				};
+			default:
+				return {};
+		}
+	};
+
 	const getTitle = type => {
 		switch (type) {
 			case 'color':
@@ -68,16 +91,27 @@ const LayerCard = props => {
 				<span className='maxi-background-layer__arrow'>
 					{moveRight}
 				</span>
-				<p className='maxi-background-layer__title'>
+				<div className='maxi-background-layer__title'>
 					<span className='maxi-background-layer__title__id' />
 					<span className='maxi-background-layer__title__text'>
+						<span
+							className='maxi-background-layer__preview'
+							style={previewStyles(type)}
+						>
+							{type === 'shape' &&
+								layer['background-svg-SVGElement'] && (
+									<RawHTML>
+										{layer['background-svg-SVGElement']}
+									</RawHTML>
+								)}
+						</span>
 						{getTitle(type)}
 					</span>
 					<span
 						className='maxi-background-layer__title__remover'
 						onClick={onRemove}
 					/>
-				</p>
+				</div>
 			</div>
 			{isOpen && (
 				<div className='maxi-background-layer__content'>

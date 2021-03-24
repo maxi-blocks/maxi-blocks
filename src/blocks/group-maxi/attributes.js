@@ -51,6 +51,7 @@ const attributes = {
 	...attributesData.transform,
 	...attributesData.display,
 	...attributesData.position,
+	...attributesData.arrow,
 };
 
 export default attributes;

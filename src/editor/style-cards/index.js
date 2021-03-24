@@ -106,15 +106,18 @@ const MaxiStyleCardsTab = ({
 	if (iconLine) changeBoatIcon('icon-line', iconLine);
 
 	const addActiveSCdropdownStyle = () => {
-		const select = document.getElementsByClassName('maxi-style-cards__sc-select');
-		if(!isNil(select[0])) {const options = select[0].getElementsByTagName('option');}
-
-		if(!isNil(options[0]))console.log('options ' + options[0]);
+		const selectArr = document.querySelectorAll(
+			'.maxi-style-cards__sc-select option'
+		);
+		for (let i = 0; i < selectArr.length; ++i) {
+			if (selectArr[i].value === currentKey)
+				selectArr[i].classList.add('maxi-current-option');
+		}
 	};
 
-	// addActiveSCdropdownStyle();
+	if (document.querySelectorAll('.maxi-style-cards__sc-select option'))
+		setTimeout(function(){ addActiveSCdropdownStyle(); }, 300);
 
-	// console.log('default button bg: ' + getStyleCardAttr('button-background-color',SCStyle,true));
 	return (
 		<div className='maxi-tab-content__box'>
 			<AccordionControl
@@ -430,9 +433,9 @@ const MaxiStyleCardsEditor = () => {
 
 	const [stateSC, changeStateSC] = useState(getStyleCardActiveValue());
 
-	const [currentSCkey, changeCurrentSCkey] = useState(getStyleCardActiveKey());
-
-	console.log('currentSCkey: ' + currentSCkey);
+	const [currentSCkey, changeCurrentSCkey] = useState(
+		getStyleCardActiveKey()
+	);
 
 	const getStyleCardsOptions = () => {
 		const styleCardsArr = [];
@@ -527,7 +530,6 @@ const MaxiStyleCardsEditor = () => {
 		};
 
 		changeStateSC(newStateSC);
-
 		changeSConBackend(newStateSC);
 
 		// reRenderBlocks();
@@ -543,7 +545,12 @@ const MaxiStyleCardsEditor = () => {
 
 	const isDefaultOrActive = keySC => {
 		if (keySC === 'sc_maxi') return true;
-		if (allStyleCards[keySC].status === 'active') return true;
+
+		if (
+			!isNil(allStyleCards[keySC]) &&
+			allStyleCards[keySC].status === 'active'
+		)
+			return true;
 
 		return false;
 	};
@@ -553,7 +560,7 @@ const MaxiStyleCardsEditor = () => {
 	);
 
 	const applyCurrentSCglobally = () => {
-		setStyleCardActive(currentSCkey);
+		// setStyleCardActive(currentSCkey);
 		changeIsDefaultOrActiveState(isDefaultOrActive(currentSCkey));
 
 		const newStyleCards = {
@@ -583,13 +590,40 @@ const MaxiStyleCardsEditor = () => {
 		saveMaxiStyleCards(newStyleCards);
 	};
 
+	const resetCurrentSC = () => {
+		const resetStyleCard = {
+			...allStyleCards[currentSCkey],
+			styleCard: {
+				light: {},
+				dark: {},
+			},
+		};
+
+		console.log('resetStyleCard: ' + JSON.stringify(resetStyleCard));
+
+		const resetStyleCards = {
+			...allStyleCards,
+			[currentSCkey]: {
+				...allStyleCards[currentSCkey],
+				styleCard: {
+					light: {},
+					dark: {},
+				},
+			},
+		};
+
+		console.log('resetStyleCards: ' + JSON.stringify(resetStyleCards));
+
+		changeStateSC(resetStyleCard);
+		changeSConBackend(resetStyleCard);
+		changeCurrentSC(resetStyleCards);
+	};
+
 	const saveImportedStyleCard = card => {
 		changeStateSC(card);
 		changeSConBackend(card);
 
 		const newId = `sc_${new Date().getTime()}`;
-
-		console.log('newId  ' + newId);
 
 		const newAllSCs = {
 			...allStyleCards,
@@ -597,6 +631,9 @@ const MaxiStyleCardsEditor = () => {
 		};
 
 		saveMaxiStyleCards(newAllSCs);
+		changeCurrentSCkey(newId);
+		changeCurrentSC(newAllSCs);
+		changeIsDefaultOrActiveState(false);
 	};
 
 	return (
@@ -651,16 +688,7 @@ const MaxiStyleCardsEditor = () => {
 										)
 									)
 								) {
-									const newStyleCards = {
-										...allStyleCards,
-										[currentSCkey]: {
-											...allStyleCards[currentSCkey],
-											styleCard: {
-												light: {},
-												dark: {},
-											},
-										},
-									};
+									resetCurrentSC();
 								}
 							}}
 						>
@@ -783,7 +811,6 @@ const MaxiStyleCardsEditor = () => {
 										});
 								}}
 								allowedTypes='text'
-								// value={ mediaId }
 								render={({ open }) => (
 									<Button onClick={open}>
 										{__('Import', 'maxi-blocks')}

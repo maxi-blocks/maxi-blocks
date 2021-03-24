@@ -24,11 +24,12 @@ import { toolbarItalic } from '../../../../icons';
  * TextItalic
  */
 const TextItalic = props => {
-	const { blockName, formatValue, onChange, isList, breakpoint } = props;
+	const { blockName, getFormatValue, onChange, isList, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
+	const formatValue = getFormatValue();
 
 	const italicValue = getCustomFormatValue({
 		typography,
@@ -43,6 +44,8 @@ const TextItalic = props => {
 	);
 
 	const onClick = () => {
+		const formatValue = getFormatValue();
+
 		const obj = setFormat({
 			formatValue,
 			isActive,

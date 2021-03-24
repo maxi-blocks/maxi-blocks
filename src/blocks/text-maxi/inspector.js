@@ -36,7 +36,6 @@ import {
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
-	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 
 /**
@@ -48,7 +47,7 @@ const Inspector = props => {
 		deviceType,
 		setAttributes,
 		clientId,
-		formatValue,
+		getFormatValue,
 	} = props;
 	const {
 		customLabel,
@@ -270,8 +269,8 @@ const Inspector = props => {
 																	breakpoint={
 																		deviceType
 																	}
-																	formatValue={
-																		formatValue
+																	getFormatValue={
+																		getFormatValue
 																	}
 																	isList={
 																		isList
@@ -348,8 +347,8 @@ const Inspector = props => {
 																			breakpoint={
 																				deviceType
 																			}
-																			formatValue={
-																				formatValue
+																			getFormatValue={
+																				getFormatValue
 																			}
 																			isList={
 																				isList

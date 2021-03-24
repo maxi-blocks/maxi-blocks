@@ -42,14 +42,16 @@ import {
 const TextListOptions = props => {
 	const {
 		blockName,
-		formatValue,
+		getFormatValue,
 		isList,
 		typeOfList,
-		content,
+		// content,
 		onChange,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
+
+	const formatValue = getFormatValue();
 
 	const getContent = content => {
 		if (!isList) return fromTextToList(content);
@@ -58,6 +60,7 @@ const TextListOptions = props => {
 
 	const onChangeIndent = type => {
 		let newFormat = '';
+		const formatValue = getFormatValue();
 
 		if (type === 'indent')
 			newFormat = __unstableIndentListItems(formatValue, {
@@ -78,6 +81,8 @@ const TextListOptions = props => {
 	};
 
 	const onChangeList = type => {
+		const { text: content } = getFormatValue();
+
 		if (typeOfList === type)
 			onChange({
 				isList: !isList,

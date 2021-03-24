@@ -23,7 +23,7 @@ import {
 import {
 	fromListToText,
 	fromTextToList,
-	getFormatValue,
+	generateFormatValue,
 	setCustomFormatsWhenPaste,
 	withFormatValue,
 } from '../../extensions/text/formats';
@@ -43,6 +43,8 @@ import { isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
+	propsToAvoid = ['content', 'formatValue'];
+
 	constructor(props) {
 		super(props);
 		this.textRef = createRef();
@@ -74,6 +76,7 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
+		console.log('render block');
 		const {
 			attributes,
 			className,
@@ -84,12 +87,11 @@ class edit extends MaxiBlock {
 			onSplit,
 			onReplace,
 			deviceType,
-			formatValue,
+			getFormatValue,
 		} = this.props;
 		const {
 			uniqueID,
 			blockStyle,
-			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
 			textLevel,
@@ -125,12 +127,14 @@ class edit extends MaxiBlock {
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
-				formatValue={formatValue}
+				getFormatValue={getFormatValue}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				{...this.props}
-				formatValue={formatValue}
+				getFormatValue={getFormatValue}
+				avoidProp={this.avoidProp}
+				node={this.textRef.current}
 			/>,
 			<MotionPreview
 				key={`motion-preview-${uniqueID}`}
@@ -171,7 +175,7 @@ class edit extends MaxiBlock {
 										: undefined,
 								};
 
-								const formatValue = getFormatValue(
+								const formatValue = generateFormatValue(
 									formatElement,
 									this.textRef ? this.textRef.current : null
 								);
@@ -447,7 +451,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					multilineWrapperTags: isList ? typeOfList : undefined,
 					html: content,
 				};
-				const formatValue = getFormatValue(formatElement, node);
+				const formatValue = generateFormatValue(formatElement, node);
 
 				/**
 				 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats

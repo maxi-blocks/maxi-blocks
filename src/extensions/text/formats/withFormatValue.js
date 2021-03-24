@@ -8,7 +8,7 @@ const { useSelect } = wp.data;
 /**
  * Internal dependencies
  */
-import getFormatValue from './getFormatValue';
+import generateFormatValue from './generateFormatValue';
 
 /**
  * Component
@@ -43,7 +43,7 @@ const withFormatValue = createHigherOrderComponent(
 
 			const [formatValue, setFormatValue] = useState(
 				(ref.current &&
-					getFormatValue(
+					generateFormatValue(
 						formatElement,
 						ref.current.textRef.current
 					)) ||
@@ -53,7 +53,7 @@ const withFormatValue = createHigherOrderComponent(
 			useEffect(() => {
 				setFormatValue(
 					(ref.current &&
-						getFormatValue(
+						generateFormatValue(
 							formatElement,
 							ref.current.textRef.current
 						)) ||
@@ -61,10 +61,12 @@ const withFormatValue = createHigherOrderComponent(
 				);
 			}, [selectionStart, selectionEnd]);
 
+			const getFormatValue = () => formatValue;
+
 			return (
 				<WrappedComponent
 					ref={ref}
-					formatValue={formatValue}
+					getFormatValue={getFormatValue}
 					{...props}
 				/>
 			);

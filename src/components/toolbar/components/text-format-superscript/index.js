@@ -22,7 +22,9 @@ import { toolbarSuperScript } from '../../../../icons';
  * TextFormatSuperscript
  */
 const TextFormatSuperscript = props => {
-	const { formatValue, onChange, isList, breakpoint, typography } = props;
+	const { getFormatValue, onChange, isList, breakpoint, typography } = props;
+
+	const formatValue = getFormatValue();
 
 	const superscriptValue =
 		getCustomFormatValue({

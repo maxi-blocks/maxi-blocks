@@ -2,13 +2,14 @@
  * WordPress dependencies
  */
 const { Popover } = wp.components;
-const { Fragment, useEffect, useState } = wp.element;
+const { Fragment, useEffect, useState, memo } = wp.element;
 const { select } = wp.data;
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEqual, isEmpty } from 'lodash';
 
 /**
  * Utils
@@ -84,352 +85,405 @@ const flexBlocks = [
 /**
  * Component
  */
-const MaxiToolbar = props => {
-	const {
-		attributes,
-		changeSVGContent,
-		clientId,
-		deviceType,
-		formatValue,
-		isSelected,
-		name,
-		setAttributes,
-		toggleHandlers,
-	} = props;
-	const {
-		content,
-		customLabel,
-		fullWidth,
-		imageSize,
-		imgWidth,
-		isFirstOnHierarchy,
-		isList,
-		lineHorizontal,
-		lineOrientation,
-		lineVertical,
-		linkSettings,
-		mediaID,
-		textLevel,
-		typeOfList,
-		uniqueID,
-	} = attributes;
+const MaxiToolbar = memo(
+	props => {
+		console.log('render toolbar');
+		const {
+			attributes,
+			changeSVGContent,
+			clientId,
+			deviceType,
+			getFormatValue,
+			isSelected,
+			name,
+			setAttributes,
+			toggleHandlers,
+			node,
+		} = props;
+		const {
+			customLabel,
+			fullWidth,
+			imageSize,
+			imgWidth,
+			isFirstOnHierarchy,
+			isList,
+			lineHorizontal,
+			lineOrientation,
+			lineVertical,
+			linkSettings,
+			mediaID,
+			textLevel,
+			typeOfList,
+			uniqueID,
+		} = attributes;
 
-	const [anchorRef, setAnchorRef] = useState(
-		document.getElementById(`block-${clientId}`)
-	);
+		const [anchorRef, setAnchorRef] = useState(
+			node // document.getElementById(`block-${clientId}`)
+		);
 
-	useEffect(() => {
-		setAnchorRef(document.getElementById(`block-${clientId}`));
-	});
+		useEffect(() => {
+			setAnchorRef(node);
+		}, [node]);
 
-	if (!allowedBlocks.includes(name)) return null;
+		if (!allowedBlocks.includes(name)) return null;
 
-	const breadcrumbStatus = () => {
-		const rootBlock = select('core/block-editor').getBlockName(
-			select('core/block-editor').getBlockRootClientId(
+		const breadcrumbStatus = () => {
+			const rootBlock = select('core/block-editor').getBlockName(
+				select('core/block-editor').getBlockRootClientId(
+					select('core/block-editor').getSelectedBlockClientId()
+				)
+			);
+			const currentBlock = select('core/block-editor').getBlockName(
 				select('core/block-editor').getSelectedBlockClientId()
+			);
+
+			if (
+				currentBlock === 'maxi-blocks/container-maxi' ||
+				currentBlock === 'maxi-blocks/group-maxi' ||
+				currentBlock === 'maxi-blocks/row-maxi' ||
+				currentBlock === 'maxi-blocks/column-maxi' ||
+				rootBlock === 'maxi-blocks/container-maxi' ||
+				rootBlock === 'maxi-blocks/group-maxi' ||
+				rootBlock === 'maxi-blocks/row-maxi' ||
+				rootBlock === 'maxi-blocks/column-maxi'
 			)
-		);
-		const currentBlock = select('core/block-editor').getBlockName(
-			select('core/block-editor').getSelectedBlockClientId()
-		);
+				return true;
+		};
 
-		if (
-			currentBlock === 'maxi-blocks/container-maxi' ||
-			currentBlock === 'maxi-blocks/group-maxi' ||
-			currentBlock === 'maxi-blocks/row-maxi' ||
-			currentBlock === 'maxi-blocks/column-maxi' ||
-			rootBlock === 'maxi-blocks/container-maxi' ||
-			rootBlock === 'maxi-blocks/group-maxi' ||
-			rootBlock === 'maxi-blocks/row-maxi' ||
-			rootBlock === 'maxi-blocks/column-maxi'
-		)
-			return true;
-	};
-
-	return (
-		<Fragment>
-			{isSelected && anchorRef && (
-				<Popover
-					noArrow
-					animate={false}
-					position='top center right'
-					focusOnMount={false}
-					anchorRef={anchorRef}
-					className={classnames(
-						'maxi-toolbar__popover',
-						!!breadcrumbStatus() &&
-							'maxi-toolbar__popover--has-breadcrumb'
-					)}
-					uniqueid={uniqueID}
-					__unstableSticky
-					__unstableSlotName='block-toolbar'
-					shouldAnchorIncludePadding
-				>
-					<div className='toolbar-wrapper'>
-						<div className='toolbar-block-custom-label'>
-							{customLabel}
-						</div>
-						<Mover clientId={clientId} blockName={name} />
-						<ColumnMover clientId={clientId} blockName={name} />
-						{!attributes['border-highlight'] && (
-							<DividerColor
+		return (
+			<Fragment>
+				{isSelected && anchorRef && (
+					<Popover
+						noArrow
+						animate={false}
+						position='top center right'
+						focusOnMount={false}
+						anchorRef={anchorRef}
+						className={classnames(
+							'maxi-toolbar__popover',
+							!!breadcrumbStatus() &&
+								'maxi-toolbar__popover--has-breadcrumb'
+						)}
+						uniqueid={uniqueID}
+						__unstableSticky
+						__unstableSlotName='block-toolbar'
+						shouldAnchorIncludePadding
+					>
+						<div className='toolbar-wrapper'>
+							<div className='toolbar-block-custom-label'>
+								{customLabel}
+							</div>
+							<Mover clientId={clientId} blockName={name} />
+							<ColumnMover clientId={clientId} blockName={name} />
+							{!attributes['border-highlight'] && (
+								<DividerColor
+									{...getGroupAttributes(
+										attributes,
+										'divider'
+									)}
+									blockName={name}
+									onChange={obj => setAttributes(obj)}
+								/>
+							)}
+							<Divider
 								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
+								lineOrientation={lineOrientation}
 								onChange={obj => setAttributes(obj)}
 							/>
-						)}
-						<Divider
-							{...getGroupAttributes(attributes, 'divider')}
-							blockName={name}
-							lineOrientation={lineOrientation}
-							onChange={obj => setAttributes(obj)}
-						/>
-						<DividerAlignment
-							{...getGroupAttributes(attributes, 'divider')}
-							lineOrientation={lineOrientation}
-							lineVertical={lineVertical}
-							lineHorizontal={lineHorizontal}
-							blockName={name}
-							onChangeOrientation={lineOrientation =>
-								setAttributes({ lineOrientation })
-							}
-							onChangeHorizontal={lineHorizontal =>
-								setAttributes({ lineHorizontal })
-							}
-							onChangeVertical={lineVertical =>
-								setAttributes({ lineVertical })
-							}
-						/>
-						<TextOptions
-							{...getGroupAttributes(attributes, 'typography')}
-							blockName={name}
-							onChange={obj => setAttributes(obj)}
-							node={anchorRef}
-							content={content}
-							breakpoint={deviceType}
-							isList={isList}
-							typeOfList={typeOfList}
-							formatValue={formatValue}
-							textLevel={textLevel}
-						/>
-						{!attributes['text-highlight'] && (
-							<TextColor
+							<DividerAlignment
+								{...getGroupAttributes(attributes, 'divider')}
+								lineOrientation={lineOrientation}
+								lineVertical={lineVertical}
+								lineHorizontal={lineHorizontal}
 								blockName={name}
+								onChangeOrientation={lineOrientation =>
+									setAttributes({ lineOrientation })
+								}
+								onChangeHorizontal={lineHorizontal =>
+									setAttributes({ lineHorizontal })
+								}
+								onChangeVertical={lineVertical =>
+									setAttributes({ lineVertical })
+								}
+							/>
+							<TextOptions
 								{...getGroupAttributes(
 									attributes,
 									'typography'
 								)}
-								content={content}
+								blockName={name}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
 								node={anchorRef}
+								breakpoint={deviceType}
 								isList={isList}
 								typeOfList={typeOfList}
-								formatValue={formatValue}
+								getFormatValue={getFormatValue}
+								textLevel={textLevel}
 							/>
-						)}
-						<Alignment
-							blockName={name}
-							{...getGroupAttributes(attributes, [
-								'alignment',
-								'textAlignment',
-							])}
-							onChange={obj => setAttributes(obj)}
-							breakpoint={deviceType}
-						/>
-						<TextLevel
-							{...getGroupAttributes(attributes, [
-								'typography',
-								'typographyHover',
-							])}
-							blockName={name}
-							textLevel={textLevel}
-							isList={isList}
-							onChange={obj => setAttributes(obj)}
-						/>
-						<TextBold
-							{...getGroupAttributes(attributes, 'typography')}
-							formatValue={formatValue}
-							blockName={name}
-							onChange={obj => setAttributes(obj)}
-							isList={isList}
-							breakpoint={deviceType}
-						/>
-						<TextItalic
-							{...getGroupAttributes(attributes, 'typography')}
-							formatValue={formatValue}
-							blockName={name}
-							onChange={obj => setAttributes(obj)}
-							isList={isList}
-							breakpoint={deviceType}
-						/>
-						<RowSettings
-							blockName={name}
-							horizontalAlign={attributes.horizontalAlign}
-							verticalAlign={attributes.verticalAlign}
-							onChange={obj => setAttributes(obj)}
-						/>
-						<ToolbarColumnPattern
-							clientId={clientId}
-							blockName={name}
-							{...getGroupAttributes(attributes, 'rowPattern')}
-							onChange={obj => setAttributes(obj)}
-							breakpoint={deviceType}
-						/>
-						<ColumnsHandlers
-							toggleHandlers={toggleHandlers}
-							blockName={name}
-						/>
-						<Link
-							blockName={name}
-							linkSettings={linkSettings}
-							onChange={linkSettings =>
-								setAttributes({ linkSettings })
-							}
-						/>
-						<TextLink
-							{...getGroupAttributes(attributes, 'typography')}
-							blockName={name}
-							onChange={obj => setAttributes(obj)}
-							isList={isList}
-							formatValue={formatValue}
-							linkSettings={linkSettings}
-							breakpoint={deviceType}
-						/>
-						<TextListOptions
-							blockName={name}
-							formatValue={formatValue}
-							content={content}
-							isList={isList}
-							typeOfList={typeOfList}
-							onChange={obj => setAttributes(obj)}
-						/>
-						{!attributes['background-highlight'] && (
-							<BackgroundColor
+							{!attributes['text-highlight'] && (
+								<TextColor
+									blockName={name}
+									{...getGroupAttributes(
+										attributes,
+										'typography'
+									)}
+									onChange={obj => setAttributes(obj)}
+									breakpoint={deviceType}
+									node={anchorRef}
+									isList={isList}
+									typeOfList={typeOfList}
+									getFormatValue={getFormatValue}
+								/>
+							)}
+							<Alignment
+								blockName={name}
+								{...getGroupAttributes(attributes, [
+									'alignment',
+									'textAlignment',
+								])}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+							/>
+							<TextLevel
+								{...getGroupAttributes(attributes, [
+									'typography',
+									'typographyHover',
+								])}
+								blockName={name}
+								textLevel={textLevel}
+								isList={isList}
+								onChange={obj => setAttributes(obj)}
+							/>
+							<TextBold
 								{...getGroupAttributes(
 									attributes,
-									'backgroundColor'
+									'typography'
+								)}
+								getFormatValue={getFormatValue}
+								blockName={name}
+								onChange={obj => setAttributes(obj)}
+								isList={isList}
+								breakpoint={deviceType}
+							/>
+							<TextItalic
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
+								getFormatValue={getFormatValue}
+								blockName={name}
+								onChange={obj => setAttributes(obj)}
+								isList={isList}
+								breakpoint={deviceType}
+							/>
+							<RowSettings
+								blockName={name}
+								horizontalAlign={attributes.horizontalAlign}
+								verticalAlign={attributes.verticalAlign}
+								onChange={obj => setAttributes(obj)}
+							/>
+							<ToolbarColumnPattern
+								clientId={clientId}
+								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									'rowPattern'
+								)}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+							/>
+							<ColumnsHandlers
+								toggleHandlers={toggleHandlers}
+								blockName={name}
+							/>
+							<Link
+								blockName={name}
+								linkSettings={linkSettings}
+								onChange={linkSettings =>
+									setAttributes({ linkSettings })
+								}
+							/>
+							<TextLink
+								{...getGroupAttributes(
+									attributes,
+									'typography'
 								)}
 								blockName={name}
 								onChange={obj => setAttributes(obj)}
+								isList={isList}
+								getFormatValue={getFormatValue}
+								linkSettings={linkSettings}
+								breakpoint={deviceType}
 							/>
-						)}
-						{name === 'maxi-blocks/svg-icon-maxi' && (
-							<Fragment>
-								{!attributes['color1-highlight'] && (
-									<SvgColor
-										blockName={name}
-										svgColorDefault={getDefaultAttribute(
-											'svgColorOrange',
-											clientId
-										)}
-										svgColor={attributes.svgColorOrange}
-										onChange={svgColorOrange => {
-											setAttributes({
-												svgColorOrange,
-											});
-											changeSVGContent(svgColorOrange, 1);
-										}}
-									/>
-								)}
-								{!attributes['color2-highlight'] && (
-									<SvgColor
-										blockName={name}
-										svgColorDefault={getDefaultAttribute(
-											'svgColorBlack',
-											clientId
-										)}
-										svgColor={attributes.svgColorBlack}
-										onChange={svgColorBlack => {
-											setAttributes({
-												svgColorBlack,
-											});
-											changeSVGContent(svgColorBlack, 2);
-										}}
-									/>
-								)}
-							</Fragment>
-						)}
-						<Border
-							blockName={name}
-							{...getGroupAttributes(attributes, [
-								'border',
-								'borderWidth',
-								'borderRadius',
-							])}
-							onChange={obj => setAttributes(obj)}
-							breakpoint={deviceType}
-							disableColor={!attributes['border-highlight']}
-						/>
-						{deviceType === 'general' && (
-							<ImageSize
+							<TextListOptions
 								blockName={name}
-								imgWidth={imgWidth}
-								onChangeSize={obj => setAttributes(obj)}
-								imageSize={imageSize}
-								onChangeImageSize={imageSize =>
-									setAttributes({ imageSize })
-								}
-								mediaID={mediaID}
+								getFormatValue={getFormatValue}
+								isList={isList}
+								typeOfList={typeOfList}
+								onChange={obj => setAttributes(obj)}
+							/>
+							{!attributes['background-highlight'] && (
+								<BackgroundColor
+									{...getGroupAttributes(
+										attributes,
+										'backgroundColor'
+									)}
+									blockName={name}
+									onChange={obj => setAttributes(obj)}
+								/>
+							)}
+							{name === 'maxi-blocks/svg-icon-maxi' && (
+								<Fragment>
+									{!attributes['color1-highlight'] && (
+										<SvgColor
+											blockName={name}
+											svgColorDefault={getDefaultAttribute(
+												'svgColorOrange',
+												clientId
+											)}
+											svgColor={attributes.svgColorOrange}
+											onChange={svgColorOrange => {
+												setAttributes({
+													svgColorOrange,
+												});
+												changeSVGContent(
+													svgColorOrange,
+													1
+												);
+											}}
+										/>
+									)}
+									{!attributes['color2-highlight'] && (
+										<SvgColor
+											blockName={name}
+											svgColorDefault={getDefaultAttribute(
+												'svgColorBlack',
+												clientId
+											)}
+											svgColor={attributes.svgColorBlack}
+											onChange={svgColorBlack => {
+												setAttributes({
+													svgColorBlack,
+												});
+												changeSVGContent(
+													svgColorBlack,
+													2
+												);
+											}}
+										/>
+									)}
+								</Fragment>
+							)}
+							<Border
+								blockName={name}
+								{...getGroupAttributes(attributes, [
+									'border',
+									'borderWidth',
+									'borderRadius',
+								])}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+								disableColor={!attributes['border-highlight']}
+							/>
+							{deviceType === 'general' && (
+								<ImageSize
+									blockName={name}
+									imgWidth={imgWidth}
+									onChangeSize={obj => setAttributes(obj)}
+									imageSize={imageSize}
+									onChangeImageSize={imageSize =>
+										setAttributes({ imageSize })
+									}
+									mediaID={mediaID}
+									fullWidth={fullWidth}
+									onChangeFullWidth={fullWidth =>
+										setAttributes({ fullWidth })
+									}
+									isFirstOnHierarchy={isFirstOnHierarchy}
+									onChangeCaption={captionType =>
+										setAttributes({ captionType })
+									}
+								/>
+							)}
+							<Size
+								blockName={name}
+								{...getGroupAttributes(attributes, 'size')}
 								fullWidth={fullWidth}
-								onChangeFullWidth={fullWidth =>
-									setAttributes({ fullWidth })
-								}
 								isFirstOnHierarchy={isFirstOnHierarchy}
-								onChangeCaption={captionType =>
-									setAttributes({ captionType })
+								breakpoint={deviceType}
+								onChange={obj => setAttributes(obj)}
+							/>
+							<ColumnSize
+								clientId={clientId}
+								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									'columnSize'
+								)}
+								verticalAlign={attributes.verticalAlign}
+								uniqueID={uniqueID}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+							/>
+							<BoxShadow
+								blockName={name}
+								{...getGroupAttributes(attributes, 'boxShadow')}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+							/>
+							<PaddingMargin
+								blockName={name}
+								{...getGroupAttributes(attributes, [
+									'margin',
+									'padding',
+								])}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+							/>
+							<Duplicate clientId={clientId} />
+							<Delete clientId={clientId} />
+							<ToggleBlock
+								{...getGroupAttributes(attributes, 'display')}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+								defaultDisplay={
+									flexBlocks.includes(name)
+										? 'flex'
+										: 'inherit'
 								}
 							/>
-						)}
-						<Size
-							blockName={name}
-							{...getGroupAttributes(attributes, 'size')}
-							fullWidth={fullWidth}
-							isFirstOnHierarchy={isFirstOnHierarchy}
-							breakpoint={deviceType}
-							onChange={obj => setAttributes(obj)}
-						/>
-						<ColumnSize
-							clientId={clientId}
-							blockName={name}
-							{...getGroupAttributes(attributes, 'columnSize')}
-							verticalAlign={attributes.verticalAlign}
-							uniqueID={uniqueID}
-							onChange={obj => setAttributes(obj)}
-							breakpoint={deviceType}
-						/>
-						<BoxShadow
-							blockName={name}
-							{...getGroupAttributes(attributes, 'boxShadow')}
-							onChange={obj => setAttributes(obj)}
-							breakpoint={deviceType}
-						/>
-						<PaddingMargin
-							blockName={name}
-							{...getGroupAttributes(attributes, [
-								'margin',
-								'padding',
-							])}
-							onChange={obj => setAttributes(obj)}
-							breakpoint={deviceType}
-						/>
-						<Duplicate clientId={clientId} />
-						<Delete clientId={clientId} />
-						<ToggleBlock
-							{...getGroupAttributes(attributes, 'display')}
-							onChange={obj => setAttributes(obj)}
-							breakpoint={deviceType}
-							defaultDisplay={
-								flexBlocks.includes(name) ? 'flex' : 'inherit'
-							}
-						/>
-						<CopyPaste clientId={clientId} />
-					</div>
-				</Popover>
-			)}
-		</Fragment>
-	);
-};
+							<CopyPaste clientId={clientId} />
+						</div>
+					</Popover>
+				)}
+			</Fragment>
+		);
+	}
+	// Avoids non-necessary renderings
+	// ({ attributes: oldAttributes }, { attributes: newAttributes }) => {
+	// 	if (!isEmpty(oldAttributes.propsToAvoid)) {
+	// 		this.propsToAvoid.forEach(prop => {
+	// 			delete oldAttributes[prop];
+	// 			delete newAttributes[prop];
+	// 		});
+
+	// 		if (!isEqual(oldAttributes, newAttributes))
+	// 			Object.keys(oldAttributes).forEach(key => {
+	// 				if (oldAttributes[key] !== newAttributes[key])
+	// 					// eslint-disable-next-line no-console
+	// 					console.log(
+	// 						`The block is rendering due to changes on this prop: ${key}.`,
+	// 						`Old prop was: ${oldAttributes[key]}.`,
+	// 						`New prop is: ${newAttributes[key]}`
+	// 					);
+	// 			});
+
+	// 		return isEqual(oldAttributes, newAttributes);
+	// 	}
+
+	// 	return isEqual(oldAttributes, newAttributes);
+	// }
+);
 
 export default MaxiToolbar;

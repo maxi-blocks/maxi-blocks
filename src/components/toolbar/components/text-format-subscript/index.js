@@ -22,7 +22,9 @@ import { toolbarSubScript } from '../../../../icons';
  * TextFormatSubscript
  */
 const TextFormatSubscript = props => {
-	const { formatValue, onChange, isList, breakpoint, typography } = props;
+	const { getFormatValue, onChange, isList, breakpoint, typography } = props;
+
+	const formatValue = getFormatValue();
 
 	const superscriptValue =
 		getCustomFormatValue({

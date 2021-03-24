@@ -27,7 +27,9 @@ import { toolbarStrikethrough } from '../../../../icons';
  * TextFormatStrikethrough
  */
 const TextFormatStrikethrough = props => {
-	const { formatValue, onChange, isList, breakpoint, typography } = props;
+	const { getFormatValue, onChange, isList, breakpoint, typography } = props;
+
+	const formatValue = getFormatValue();
 
 	const textDecorationValue =
 		getCustomFormatValue({

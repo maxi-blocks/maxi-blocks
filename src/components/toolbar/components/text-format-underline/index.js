@@ -27,7 +27,9 @@ import { toolbarUnderline } from '../../../../icons';
  * TextFormatUnderline
  */
 const TextFormatUnderline = props => {
-	const { formatValue, onChange, isList, breakpoint, typography } = props;
+	const { getFormatValue, onChange, isList, breakpoint, typography } = props;
+
+	const formatValue = getFormatValue();
 
 	const textDecorationValue =
 		getCustomFormatValue({

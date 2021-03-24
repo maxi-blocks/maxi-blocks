@@ -44,7 +44,7 @@ const TextOptions = props => {
 		onChange,
 		breakpoint,
 		isList,
-		formatValue,
+		getFormatValue,
 		textLevel,
 	} = props;
 
@@ -56,6 +56,8 @@ const TextOptions = props => {
 	);
 
 	const getValue = prop => {
+		const formatValue = getFormatValue();
+
 		return getCustomFormatValue({
 			defaultTypography,
 			formatValue,
@@ -65,6 +67,8 @@ const TextOptions = props => {
 	};
 
 	const onChangeFormat = value => {
+		const formatValue = getFormatValue();
+
 		const obj = setFormat({
 			formatValue,
 			isList,
@@ -237,35 +241,35 @@ const TextOptions = props => {
 						<div>
 							<TextFormatOverline
 								typography={typography}
-								formatValue={formatValue}
+								getFormatValue={getFormatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatStrikethrough
 								typography={typography}
-								formatValue={formatValue}
+								getFormatValue={getFormatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatUnderline
 								typography={typography}
-								formatValue={formatValue}
+								getFormatValue={getFormatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSubscript
 								typography={typography}
-								formatValue={formatValue}
+								getFormatValue={getFormatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSuperscript
 								typography={typography}
-								formatValue={formatValue}
+								getFormatValue={getFormatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
@@ -273,7 +277,7 @@ const TextOptions = props => {
 							<TextFormatCode
 								onChange={content => onChange({ content })}
 								isList={isList}
-								formatValue={formatValue}
+								getFormatValue={getFormatValue}
 							/>
 						</div>
 					</Fragment>

@@ -34,11 +34,12 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-	const { blockName, onChange, isList, formatValue } = props;
+	const { blockName, onChange, isList, getFormatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const formatName = 'maxi-blocks/text-link';
+	const formatValue = getFormatValue();
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const { formatOptions } = useSelect(() => {
@@ -52,6 +53,8 @@ const Link = props => {
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
 	const createLinkValue = formatOptions => {
+		const formatValue = getFormatValue();
+
 		if (!formatOptions || isEmpty(formatValue)) return {};
 
 		const {
@@ -113,6 +116,8 @@ const Link = props => {
 	};
 
 	const setLinkFormat = attributes => {
+		const formatValue = getFormatValue();
+
 		const { start, end } = formatValue;
 
 		if (start === end) {
@@ -131,6 +136,8 @@ const Link = props => {
 	};
 
 	const removeLinkFormatHandle = () => {
+		const formatValue = getFormatValue();
+
 		const obj = removeLinkFormat({
 			formatValue,
 			isList,
@@ -141,6 +148,8 @@ const Link = props => {
 	};
 
 	const updateLinkString = attributes => {
+		const formatValue = getFormatValue();
+
 		const content = getUpdatedString({
 			formatValue: getUpdatedFormatValue(
 				formatValue,

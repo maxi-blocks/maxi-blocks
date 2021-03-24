@@ -26,12 +26,14 @@ import { loadFonts } from '../text/fonts';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId } from 'lodash';
+import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
 
 /**
  * Class
  */
 class MaxiBlock extends Component {
+	propsToAvoid = [];
+
 	constructor(...args) {
 		super(...args);
 
@@ -48,8 +50,60 @@ class MaxiBlock extends Component {
 		this.displayStyles();
 	}
 
-	componentDidUpdate() {
-		this.displayStyles();
+	shouldComponentUpdate(nextProps, nextState) {
+		if (!isEmpty(this.propsToAvoid)) {
+			const oldAttributes = cloneDeep(nextProps.attributes);
+			const newAttributes = cloneDeep(this.props.attributes);
+
+			this.propsToAvoid.forEach(prop => {
+				delete oldAttributes[prop];
+				delete newAttributes[prop];
+			});
+
+			if (!isEqual(oldAttributes, newAttributes))
+				this.difference(oldAttributes, newAttributes);
+
+			return !isEqual(oldAttributes, newAttributes);
+		}
+
+		return !isEqual(nextProps.attributes, this.props.attributes);
+	}
+
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		if (!snapshot) this.displayStyles();
+	}
+
+	// Just for debugging!
+	// eslint-disable-next-line react/sort-comp
+	difference(obj1, obj2) {
+		Object.keys(obj1).forEach(key => {
+			if (obj1[key] !== obj2[key])
+				// eslint-disable-next-line no-console
+				console.log(
+					`The block is rendering due to changes on this prop: ${key}.`,
+					`Old prop was: ${obj1[key]}.`,
+					`New prop is: ${obj2[key]}`
+				);
+		});
+	}
+
+	getSnapshotBeforeUpdate(prevProps) {
+		if (!isEmpty(this.propsToAvoid)) {
+			const oldAttributes = cloneDeep(prevProps.attributes);
+			const newAttributes = cloneDeep(this.props.attributes);
+
+			this.propsToAvoid.forEach(prop => {
+				delete oldAttributes[prop];
+				delete newAttributes[prop];
+			});
+
+			if (!isEqual(oldAttributes, newAttributes))
+				this.difference(oldAttributes, newAttributes);
+
+			return isEqual(oldAttributes, newAttributes);
+		}
+
+		return isEqual(prevProps.attributes, this.props.attributes);
 	}
 
 	componentWillUnmount() {

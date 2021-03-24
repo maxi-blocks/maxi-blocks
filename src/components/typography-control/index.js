@@ -43,7 +43,8 @@ const TypographyControl = props => {
 		hideAlignment = false,
 		onChange,
 		breakpoint = 'general',
-		formatValue,
+		// formatValue,
+		getFormatValue,
 		isList = false,
 		isHover = false,
 		disableColor = false,
@@ -97,6 +98,8 @@ const TypographyControl = props => {
 	};
 
 	const getValue = prop => {
+		const formatValue = getFormatValue();
+
 		const nonHoverValue = getCustomFormatValue({
 			defaultTypography,
 			formatValue,
@@ -193,6 +196,8 @@ const TypographyControl = props => {
 	};
 
 	const onChangeFormat = value => {
+		const formatValue = getFormatValue();
+
 		const obj = setFormat({
 			formatValue,
 			isList,

@@ -27,7 +27,9 @@ import { toolbarOverline } from '../../../../icons';
  * TextFormatOverline
  */
 const TextFormatOverline = props => {
-	const { formatValue, onChange, isList, breakpoint, typography } = props;
+	const { getFormatValue, onChange, isList, breakpoint, typography } = props;
+
+	const formatValue = getFormatValue();
 
 	const textDecorationValue =
 		getCustomFormatValue({

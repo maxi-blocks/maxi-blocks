@@ -24,11 +24,12 @@ import { toolbarBold } from '../../../../icons';
  * TextBold
  */
 const TextBold = props => {
-	const { formatValue, blockName, onChange, isList, breakpoint } = props;
+	const { getFormatValue, blockName, onChange, isList, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
+	const formatValue = getFormatValue();
 
 	const boldValue = getCustomFormatValue({
 		typography,
@@ -43,6 +44,8 @@ const TextBold = props => {
 	);
 
 	const onClick = () => {
+		const formatValue = getFormatValue();
+
 		const obj = setFormat({
 			formatValue,
 			isActive,

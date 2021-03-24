@@ -12,7 +12,7 @@ const { createRef } = wp.element;
  */
 import Inspector from './inspector';
 import { MaxiBlock, MotionPreview, Toolbar } from '../../components';
-import { getFormatValue } from '../../extensions/text/formats';
+import { generateFormatValue } from '../../extensions/text/formats';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -181,7 +181,7 @@ const editDispatch = withDispatch(
 				multilineWrapperTags: isList ? typeOfList : undefined,
 				__unstableIsEditableTree: true,
 			};
-			const formatValue = getFormatValue(formatElement);
+			const formatValue = generateFormatValue(formatElement);
 
 			return formatValue;
 		};

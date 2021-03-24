@@ -19,7 +19,9 @@ import { toolbarCode } from '../../../../icons';
  * TextFormatCode
  */
 const TextFormatCode = props => {
-	const { onChange, isList, formatValue } = props;
+	const { onChange, isList, getFormatValue } = props;
+
+	const formatValue = getFormatValue();
 
 	const formatName = 'core/code';
 

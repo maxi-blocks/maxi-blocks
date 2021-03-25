@@ -70,7 +70,6 @@ class edit extends MaxiBlock {
 		const {
 			uniqueID,
 			blockStyle,
-			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
 			fullWidth,

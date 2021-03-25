@@ -3,6 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { useState, RawHTML } = wp.element;
+const { Icon } = wp.components;
 
 /**
  * Internal dependencies
@@ -27,7 +28,7 @@ import { isEmpty, cloneDeep } from 'lodash';
 /**
  * Styles and icons
  */
-import { moveRight } from '../../icons';
+import { moveRight, toolbarSizing } from '../../icons';
 
 /**
  * Component
@@ -106,6 +107,9 @@ const LayerCard = props => {
 								)}
 						</span>
 						{getTitle(type)}
+					</span>
+					<span className='maxi-background-layer__title__mover'>
+						<Icon icon={toolbarSizing} />
 					</span>
 					<span
 						className='maxi-background-layer__title__remover'
@@ -265,7 +269,7 @@ const BackgroundLayersControl = ({
 								});
 							}}
 							nodeSelector='div.maxi-background-layer'
-							handleSelector='div.maxi-background-layer__row'
+							handleSelector='span.maxi-background-layer__title__mover'
 							ignoreSelector='div.maxi-background-layer__content'
 						>
 							<div className='maxi-background-layers_options'>

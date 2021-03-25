@@ -129,7 +129,7 @@ class edit extends MaxiBlock {
 				{...this.props}
 				getFormatValue={getFormatValue}
 				avoidProp={this.avoidProp}
-				node={this.textRef.current}
+				node={this.blockRef.current}
 			/>,
 			<MotionPreview
 				key={`motion-preview-${uniqueID}`}
@@ -214,7 +214,11 @@ class edit extends MaxiBlock {
 							keepPlaceholderOnFocus
 							__unstableEmbedURLOnPaste
 							__unstableAllowPrefixTransformations
-						/>
+						>
+							{value => {
+								console.log(value);
+							}}
+						</RichText>
 					)}
 					{isList && (
 						<RichText

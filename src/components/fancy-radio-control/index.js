@@ -6,7 +6,6 @@ const { RadioControl } = wp.components;
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
 import classnames from 'classnames';
 
 /**

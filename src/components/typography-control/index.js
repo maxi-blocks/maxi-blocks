@@ -41,7 +41,6 @@ const TypographyControl = props => {
 		className,
 		textLevel = 'p',
 		hideAlignment = false,
-		hideTextShadow = false,
 		onChange,
 		breakpoint = 'general',
 		formatValue,
@@ -208,7 +207,6 @@ const TypographyControl = props => {
 		onChange(obj);
 	};
 
-	// console.log('font-family ' + getValue(`${prefix}font-family`));
 	return (
 		<div className={classes}>
 			<FontFamilySelector
@@ -361,20 +359,18 @@ const TypographyControl = props => {
 					onChangeFormat({ [`${prefix}text-decoration`]: val });
 				}}
 			/>
-			{!hideTextShadow && (
-				<TextShadowControl
-					className='maxi-typography-control__text-shadow'
-					textShadow={getValue(`${prefix}text-shadow`)}
-					onChange={val => {
-						onChangeFormat({ [`${prefix}text-shadow`]: val });
-					}}
-					defaultColor={getLastBreakpointAttribute(
-						'color',
-						breakpoint,
-						typography
-					)}
-				/>
-			)}
+			<TextShadowControl
+				className='maxi-typography-control__text-shadow'
+				textShadow={getValue(`${prefix}text-shadow`)}
+				onChange={val => {
+					onChangeFormat({ [`${prefix}text-shadow`]: val });
+				}}
+				defaultColor={getLastBreakpointAttribute(
+					'color',
+					breakpoint,
+					typography
+				)}
+			/>
 		</div>
 	);
 };

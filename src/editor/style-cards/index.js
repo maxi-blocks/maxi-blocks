@@ -855,33 +855,17 @@ const MaxiStyleCardsEditor = () => {
 					<Button
 						disabled={isEmpty(styleCardName)}
 						onClick={() => {
-							if (isEmpty(allStyleCards)) {
-								saveMaxiStyleCards({
-									[`sc_${new Date().getTime()}`]: {
-										name: styleCardName,
-										status: '',
-										styleCard: { dark: {}, light: {} },
-										styleCardDefaults: {
-											...stateSC.styleCard,
-											...stateSC.styleCardDefaults,
-										},
-									},
-								});
-							} else {
-								saveMaxiStyleCards({
-									...allStyleCards,
-									[`sc_${new Date().getTime()}`]: {
-										name: styleCardName,
-										status: '',
-										styleCard: { dark: {}, light: {} },
-										styleCardDefaults: {
-											...stateSC.styleCard,
-											...stateSC.styleCardDefaults,
-										},
-									},
-								});
-							}
-							setStyleCardName('');
+							const newStyleCard = {
+								name: styleCardName,
+								status: '',
+								styleCard: { dark: {}, light: {} },
+								styleCardDefaults: {
+									...stateSC.styleCard,
+									...stateSC.styleCardDefaults,
+								},
+							};
+							console.log('newStyleCard: ' + JSON.stringify(newStyleCard));
+							saveImportedStyleCard(newStyleCard);
 						}}
 					>
 						{__('Add New Style Card', 'maxi-blocks')}

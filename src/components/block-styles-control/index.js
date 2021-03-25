@@ -50,9 +50,7 @@ const BlockStylesControl = props => {
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
-						onChange={val =>
-							onChange({ 'text-highlight': val })
-						}
+						onChange={val => onChange({ 'text-highlight': val })}
 					/>
 				)}
 				{!disableHighlightBackground && (
@@ -76,9 +74,7 @@ const BlockStylesControl = props => {
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
-						onChange={val =>
-							onChange({ 'border-highlight': val })
-						}
+						onChange={val => onChange({ 'border-highlight': val })}
 					/>
 				)}
 				{!disableHighlightColor1 && (
@@ -89,9 +85,7 @@ const BlockStylesControl = props => {
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
-						onChange={val =>
-							onChange({ 'color1-highlight': val })
-						}
+						onChange={val => onChange({ 'color1-highlight': val })}
 					/>
 				)}
 				{!disableHighlightColor2 && (
@@ -102,15 +96,14 @@ const BlockStylesControl = props => {
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
-						onChange={val =>
-							onChange({ 'color2-highlight': val })
-						}
+						onChange={val => onChange({ 'color2-highlight': val })}
 					/>
 				)}
 				{isFirstOnHierarchy && !disableBlockStyleBackground && (
 					<FancyRadioControl
 						label={__('Background colour', 'maxi-blocks')}
 						selected={blockStyleBackground}
+						optionType='number'
 						options={[
 							{ label: 1, value: 1 },
 							{ label: 2, value: 2 },

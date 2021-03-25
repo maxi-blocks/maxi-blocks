@@ -24,6 +24,7 @@ import { cloneDeep } from 'lodash';
  */
 const VideoLayer = props => {
 	const { onChange, disableClipPath, isHover, prefix } = props;
+
 	const videoOptions = cloneDeep(props.videoOptions);
 
 	return (
@@ -31,7 +32,7 @@ const VideoLayer = props => {
 			<TextControl
 				label='URL'
 				type='video-url'
-				help='add video'
+				help={__('Add Video', 'maxi-blocks')}
 				value={
 					videoOptions[
 						getAttributeKey(
@@ -52,7 +53,6 @@ const VideoLayer = props => {
 					})
 				}
 			/>
-
 			<NumberControl
 				label={__('Start Time (s)', 'maxi-blocks')}
 				min={0}
@@ -179,29 +179,6 @@ const VideoLayer = props => {
 					})
 				}
 			/>
-
-			{!disableClipPath && (
-				<ClipPath
-					clipPath={
-						videoOptions[
-							getAttributeKey(
-								'background-video-clipPath',
-								isHover,
-								prefix
-							)
-						]
-					}
-					onChange={val =>
-						onChange({
-							[getAttributeKey(
-								'background-video-clipPath',
-								isHover,
-								prefix
-							)]: val,
-						})
-					}
-				/>
-			)}
 			<OpacityControl
 				label={__('Video Opacity', 'maxi-blocks')}
 				fullWidthMode

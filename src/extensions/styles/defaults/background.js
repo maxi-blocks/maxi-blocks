@@ -127,7 +127,7 @@ export const backgroundVideo = {
 	},
 	'background-video-opacity': {
 		type: 'number',
-		default: 1,
+		default: 100,
 	},
 };
 

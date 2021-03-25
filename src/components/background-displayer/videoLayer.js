@@ -37,54 +37,62 @@ const VideoLayer = props => {
 
 	const parsedVideo = !isNil(videoUrl) && parseVideo(videoUrl);
 
-	if (videoUrl && parsedVideo.type === 'youtube') {
+	if (!isNil(videoUrl) && parsedVideo.type === 'youtube') {
 		videoUrl = `https://www.youtube.com/embed/${parsedVideo.id}?controls=0&showinfo=0&rel=0&autoplay=1&mute=1`;
 
-		if (parseInt(videoOptions.loop)) {
-			videoUrl += `&loop=1&&playlist=${parsedVideo.id}`;
+		if (videoOptions['background-video-loop']) {
+			videoUrl += `&loop=1&playlist=${parsedVideo.id}`;
 		}
 
-		if (videoOptions.startTime) {
-			videoUrl += `&start=${videoOptions.startTime}`;
+		if (videoOptions['background-video-startTime']) {
+			videoUrl += `&start=${videoOptions['background-video-startTime']}`;
 		}
 
-		if (videoOptions.endTime) {
-			videoUrl += `&end=${videoOptions.endTime}`;
+		if (videoOptions['background-video-endTime']) {
+			videoUrl += `&end=${videoOptions['background-video-endTime']}`;
 		}
 	}
 
-	if (videoUrl && parsedVideo.type === 'vimeo') {
+	if (!isNil(videoUrl) && parsedVideo.type === 'vimeo') {
 		videoUrl = `https://player.vimeo.com/video/${parsedVideo.id}?controls=0&autoplay=1&muted=1&autopause=0`;
 
-		if (parseInt(videoOptions.loop)) {
+		if (videoOptions['background-video-loop']) {
 			videoUrl += '&loop=1';
 		}
 
-		if (videoOptions.startTime) {
-			videoUrl += `#t=${videoOptions.startTime}`;
+		if (videoOptions['background-video-startTime']) {
+			videoUrl += `#t=${videoOptions['background-video-startTime']}`;
 		}
 	}
 
-	if (parsedVideo.type === 'direct') {
-		if (videoOptions.startTime && !videoOptions.endTime) {
-			videoUrl += `#t=${videoOptions.startTime}`;
+	if (!isNil(videoUrl) && parsedVideo.type === 'direct') {
+		if (
+			videoOptions['background-video-startTime'] &&
+			!videoOptions['background-video-endTime']
+		) {
+			videoUrl += `#t=${videoOptions['background-video-startTime']}`;
 		}
 
-		if (videoOptions.endTime) {
-			videoUrl += `#t=${videoOptions.startTime},${videoOptions.endTime}`;
+		if (videoOptions['background-video-endTime']) {
+			videoUrl += `#t=${videoOptions['background-video-startTime']},${videoOptions['background-video-endTime']}`;
 		}
 	}
 
 	const videoPlayerClasses = classnames(
 		'maxi-background-displayer__layer',
 		'maxi-background-displayer__video-player',
-		!videoOptions.playOnMobile &&
+		!videoOptions['background-video-playOnMobile'] &&
 			'maxi-background-displayer__video-player--mobile-hidden',
 		className
 	);
 
 	// Pasue vimeo at the endTime
-	if (parsedVideo.type === 'vimeo' && videoOptions.endTime && parentEl) {
+	if (
+		!isNil(videoUrl) &&
+		parsedVideo.type === 'vimeo' &&
+		videoOptions['background-video-endTime'] &&
+		parentEl
+	) {
 		const scriptsArray = Array.from(window.document.scripts);
 
 		const vimeoIsMounted = scriptsArray.findIndex(
@@ -136,37 +144,40 @@ const VideoLayer = props => {
 
 	return (
 		<Fragment>
-			{videoUrl && (
-				<div
-					className={videoPlayerClasses}
-					data-start={videoOptions.startTime}
-					data-end={videoOptions.endTime}
-					data-type={parsedVideo.type}
-				>
-					{parsedVideo.type === 'direct' && (
-						<video
-							loop={!!parseInt(videoOptions.loop)}
-							src={videoUrl}
-							autoPlay
-							muted
-						/>
-					)}
-
-					{(parsedVideo.type === 'youtube' ||
-						parsedVideo.type === 'vimeo') && (
-						<div className='maxi-background-displayer__video-player__iframe-wrapper'>
-							<iframe
-								title={`${parsedVideo.type} video`}
+			{!isNil(videoUrl) &&
+				videoUrl.match(
+					/https?:\/\/.*\.(?:mp4|webm|ogg)|(http:|https:|)\/\/(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(&\S+)?/
+				) && (
+					<div
+						className={videoPlayerClasses}
+						data-start={videoOptions['background-video-startTime']}
+						data-end={videoOptions['background-video-endTime']}
+						data-type={parsedVideo.type}
+					>
+						{parsedVideo.type === 'direct' && (
+							<video
+								loop={!!+videoOptions['background-video-loop']}
 								src={videoUrl}
-								frameBorder='0'
-								allow='autoplay'
-								allowFullScreen='allowfullscreen'
-								style={{ height: iframeHeight }}
+								autoPlay
+								muted
 							/>
-						</div>
-					)}
-				</div>
-			)}
+						)}
+
+						{(parsedVideo.type === 'youtube' ||
+							parsedVideo.type === 'vimeo') && (
+							<div className='maxi-background-displayer__video-player__iframe-wrapper'>
+								<iframe
+									title={`${parsedVideo.type} video`}
+									src={videoUrl}
+									frameBorder='0'
+									allow='autoplay'
+									allowFullScreen='allowfullscreen'
+									style={{ height: iframeHeight }}
+								/>
+							</div>
+						)}
+					</div>
+				)}
 		</Fragment>
 	);
 };

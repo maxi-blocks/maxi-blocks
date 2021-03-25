@@ -73,12 +73,6 @@ const FullSizeControl = props => {
 		},
 	};
 
-	const widthAllowedBlocks = [
-		'maxi-blocks/container-maxi',
-		'maxi-blocks/row-maxi',
-		'maxi-blocks/column-maxi',
-	];
-
 	const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
 		select('core/block-editor').getSelectedBlockClientId()
 	);
@@ -137,14 +131,14 @@ const FullSizeControl = props => {
 			/>
 			<FancyRadioControl
 				label={__('Advanced Width/Height', 'maxi-blocks')}
-				selected={props[`${prefix}size-advanced-options`]}
+				selected={props[`${prefix}size-advanced-options`] || 0}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
 				onChange={val => {
 					onChange({ [`${prefix}size-advanced-options`]: val });
-					if (!Number(val)) {
+					if (!+val) {
 						onChangeValue(
 							[
 								'min-width',

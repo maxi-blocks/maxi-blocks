@@ -3,16 +3,15 @@
  */
 const { __ } = wp.i18n;
 const { compose } = wp.compose;
-const { withSelect, withDispatch } = wp.data;
+const { withSelect } = wp.data;
 const { __experimentalBlock, RichText } = wp.blockEditor;
-const { createRef } = wp.element;
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import { MaxiBlock, MotionPreview, Toolbar } from '../../components';
-import { getFormatValue } from '../../extensions/text/formats';
+import { withFormatValue } from '../../extensions/text/formats';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -33,19 +32,9 @@ class edit extends MaxiBlock {
 		return getStyles(this.props.attributes);
 	}
 
-	constructor(props) {
-		super(props);
-		this.buttonRef = createRef();
-	}
-
 	componentDidMount() {
-		this.buttonRef.current.focus();
+		this.blockRef.current.focus();
 	}
-
-	state = {
-		formatValue: this.props.generateFormatValue() || {},
-		textSelected: '',
-	};
 
 	get getCustomData() {
 		const { uniqueID } = this.props.attributes;
@@ -72,25 +61,15 @@ class edit extends MaxiBlock {
 			className,
 			deviceType,
 			setAttributes,
-			selectedText,
-			generateFormatValue,
+			formatValue,
 		} = this.props;
 		const {
 			uniqueID,
 			blockStyle,
-			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
 			fullWidth,
 		} = attributes;
-
-		const { formatValue, textSelected } = this.state;
-
-		if (isEmpty(formatValue) || selectedText !== textSelected)
-			this.setState({
-				formatValue: generateFormatValue(),
-				textSelected: selectedText,
-			});
 
 		const classes = classnames(
 			'maxi-block',
@@ -133,19 +112,13 @@ class edit extends MaxiBlock {
 				key={`motion-preview-${uniqueID}`}
 				{...getGroupAttributes(attributes, 'motion')}
 			>
-				<__experimentalBlock
-					className={classes}
-					data-align={fullWidth}
-					onClick={() =>
-						this.setState({ formatValue: generateFormatValue() })
-					}
-				>
+				<__experimentalBlock className={classes} data-align={fullWidth}>
 					<div className={buttonClasses}>
 						{!isEmpty(attributes['icon-name']) && (
 							<i className={attributes['icon-name']} />
 						)}
 						<RichText
-							ref={this.buttonRef}
+							ref={this.blockRef}
 							withoutInteractiveFormatting
 							className='maxi-button-block__content'
 							value={attributes.buttonContent}
@@ -163,33 +136,11 @@ class edit extends MaxiBlock {
 }
 
 const editSelect = withSelect(select => {
-	const selectedText = window.getSelection().toString();
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
-		// The 'selectedText' attribute is a trigger for generating the formatValue
-		selectedText,
 		deviceType,
 	};
 });
 
-const editDispatch = withDispatch(
-	(dispatch, { attributes: { isList, typeOfList } }) => {
-		const generateFormatValue = () => {
-			const formatElement = {
-				multilineTag: isList ? 'li' : undefined,
-				multilineWrapperTags: isList ? typeOfList : undefined,
-				__unstableIsEditableTree: true,
-			};
-			const formatValue = getFormatValue(formatElement);
-
-			return formatValue;
-		};
-
-		return {
-			generateFormatValue,
-		};
-	}
-);
-
-export default compose(editSelect, editDispatch)(edit);
+export default compose(editSelect, withFormatValue)(edit);

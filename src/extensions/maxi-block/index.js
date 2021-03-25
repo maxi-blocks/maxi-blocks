@@ -7,13 +7,11 @@
 /**
  * Disabled some ESLint rules; this file needs to be cleaned
  */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable class-methods-use-this */
 
 /**
  * WordPress dependencies
  */
-const { Component, render } = wp.element;
+const { Component, render, createRef } = wp.element;
 const { select, dispatch } = wp.data;
 
 /**
@@ -44,10 +42,12 @@ class MaxiBlock extends Component {
 		this.getDefaultBlockStyle(blockStyle, clientId);
 
 		// Font loader
-		const typography = getGroupAttributes(attributes, 'typography');
-		if (!isEmpty(typography)) this.loadFonts(typography);
+		this.typography = getGroupAttributes(attributes, 'typography');
+		if (!isEmpty(this.typography)) this.loadFonts();
 
 		this.displayStyles();
+
+		this.blockRef = createRef();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -169,8 +169,8 @@ class MaxiBlock extends Component {
 		}
 	}
 
-	loadFonts(typography) {
-		Object.entries(typography).forEach(([key, val]) => {
+	loadFonts() {
+		Object.entries(this.typography).forEach(([key, val]) => {
 			if (key.includes('font-family')) loadFonts(val);
 		});
 	}

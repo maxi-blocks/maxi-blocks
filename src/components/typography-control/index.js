@@ -98,7 +98,7 @@ const TypographyControl = props => {
 
 	const getValue = prop => {
 		const nonHoverValue = getCustomFormatValue({
-			defaultTypography,
+			typography,
 			formatValue,
 			prop,
 			breakpoint,
@@ -108,7 +108,7 @@ const TypographyControl = props => {
 
 		return (
 			getCustomFormatValue({
-				defaultTypography,
+				typography,
 				formatValue,
 				prop,
 				breakpoint,

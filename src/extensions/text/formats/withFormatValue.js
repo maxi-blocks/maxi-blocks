@@ -45,7 +45,7 @@ const withFormatValue = createHigherOrderComponent(
 				(ref.current &&
 					getFormatValue(
 						formatElement,
-						ref.current.textRef.current
+						ref.current.blockRef.current
 					)) ||
 					{}
 			);
@@ -55,7 +55,7 @@ const withFormatValue = createHigherOrderComponent(
 					(ref.current &&
 						getFormatValue(
 							formatElement,
-							ref.current.textRef.current
+							ref.current.blockRef.current
 						)) ||
 						{}
 				);

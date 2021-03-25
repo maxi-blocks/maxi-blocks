@@ -3,6 +3,7 @@
  */
 const { __, sprintf } = wp.i18n;
 const { BaseControl, Button, __experimentalGradientPicker } = wp.components;
+const { useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -32,8 +33,10 @@ const GradientControl = props => {
 		onChange,
 		gradientOpacity,
 		onChangeOpacity,
-		defaultOpacity = 1,
+		defaultOpacity = 100,
 	} = props;
+
+	const [currentGradient, setCurrentGradient] = useState(gradient);
 
 	const classes = classnames('maxi-gradient-control', className);
 
@@ -72,8 +75,11 @@ const GradientControl = props => {
 			/>
 			<div className='maxi-gradient-control__gradient'>
 				<__experimentalGradientPicker
-					value={gradient}
-					onChange={gradient => onChange(gradient)}
+					value={currentGradient}
+					onChange={gradient => {
+						setCurrentGradient(gradient);
+						onChange(gradient);
+					}}
 				/>
 			</div>
 		</div>

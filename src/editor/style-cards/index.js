@@ -518,6 +518,7 @@ const MaxiStyleCardsEditor = () => {
 
 		changeStateSC(newStateSC);
 		changeSConBackend(newStateSC);
+		changeCanBeResettedState(canBeResetted(currentSCkey));
 
 		// reRenderBlocks();
 	};
@@ -541,6 +542,10 @@ const MaxiStyleCardsEditor = () => {
 		return false;
 	};
 
+	const [isDefaultOrActiveState, changeIsDefaultOrActiveState] = useState(
+		isDefaultOrActive(currentSCkey)
+	);
+
 	const isActive = keySC => {
 		if (
 			!isNil(allStyleCards[keySC]) &&
@@ -551,8 +556,18 @@ const MaxiStyleCardsEditor = () => {
 		return false;
 	};
 
-	const [isDefaultOrActiveState, changeIsDefaultOrActiveState] = useState(
-		isDefaultOrActive(currentSCkey)
+	const canBeResetted = keySC => {
+		if (
+			!isNil(allStyleCards[keySC]) &&
+			(!isEmpty(allStyleCards[keySC].styleCard.light) ||
+				!isEmpty(allStyleCards[keySC].styleCard.dark))
+		)
+			return true;
+		return false;
+	};
+
+	const [canBeResettedState, changeCanBeResettedState] = useState(
+		canBeResetted(currentSCkey)
 	);
 
 	const applyCurrentSCglobally = () => {
@@ -571,6 +586,7 @@ const MaxiStyleCardsEditor = () => {
 		changeSConBackend(stateSC);
 
 		addActiveSCdropdownStyle(currentSCkey);
+		changeCanBeResettedState(canBeResetted(currentSCkey));
 
 		saveMaxiStyleCards(newStyleCards);
 	};
@@ -586,6 +602,8 @@ const MaxiStyleCardsEditor = () => {
 			},
 		};
 
+		changeCanBeResettedState(canBeResetted(currentSCkey));
+		changeCurrentSC(newStyleCards);
 		saveMaxiStyleCards(newStyleCards);
 	};
 
@@ -597,8 +615,6 @@ const MaxiStyleCardsEditor = () => {
 				dark: {},
 			},
 		};
-
-		console.log('resetStyleCard: ' + JSON.stringify(resetStyleCard));
 
 		const resetStyleCards = {
 			...allStyleCards,
@@ -633,6 +649,14 @@ const MaxiStyleCardsEditor = () => {
 		changeIsDefaultOrActiveState(false);
 	};
 
+	const switchCurrentSC = keySC => {
+		saveCurrentSC(currentSCkey);
+		changeCurrentSCkey(keySC);
+		changeStateSC(getStyleCardCurrentValue(keySC));
+		changeSConBackend(getStyleCardCurrentValue(keySC));
+		changeIsDefaultOrActiveState(isDefaultOrActive(keySC));
+	};
+
 	return (
 		!isEmpty(currentSC) && (
 			<Popover
@@ -660,18 +684,11 @@ const MaxiStyleCardsEditor = () => {
 							value={currentSCkey}
 							options={getStyleCardsOptions()}
 							onChange={val => {
-								changeCurrentSCkey(val);
-								changeCurrentSC(allStyleCards);
-								changeIsDefaultOrActiveState(
-									isDefaultOrActive(val)
-								);
-								changeStateSC(getStyleCardCurrentValue(val));
-								changeSConBackend(
-									getStyleCardCurrentValue(val)
-								);
+								switchCurrentSC(val);
 							}}
 						/>
 						<Button
+							disabled={!canBeResetted(currentSCkey)}
 							className='maxi-style-cards-control__sc--reset'
 							onClick={() => {
 								if (
@@ -810,10 +827,8 @@ const MaxiStyleCardsEditor = () => {
 										.then(response => response.json())
 										.then(jsonData => {
 											saveImportedStyleCard(jsonData);
-											// console.log(jsonData);
 										})
 										.catch(error => {
-											// handle your errors here
 											console.error(error);
 										});
 								}}

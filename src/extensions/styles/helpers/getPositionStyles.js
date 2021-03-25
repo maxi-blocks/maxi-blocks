@@ -6,7 +6,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * General
@@ -25,10 +25,8 @@ const getPositionStyles = obj => {
 		if (!isEmpty(obj[`position-${breakpoint}`]))
 			response[breakpoint] = {
 				position: obj[`position-${breakpoint}`],
-				...(getLastBreakpointAttribute(
-					'position-top',
-					breakpoint,
-					obj
+				...(!isNil(
+					getLastBreakpointAttribute('position-top', breakpoint, obj)
 				) && {
 					top:
 						getLastBreakpointAttribute(
@@ -42,10 +40,12 @@ const getPositionStyles = obj => {
 							obj
 						),
 				}),
-				...(getLastBreakpointAttribute(
-					'position-right',
-					breakpoint,
-					obj
+				...(!isNil(
+					getLastBreakpointAttribute(
+						'position-right',
+						breakpoint,
+						obj
+					)
 				) && {
 					right:
 						getLastBreakpointAttribute(
@@ -59,10 +59,12 @@ const getPositionStyles = obj => {
 							obj
 						),
 				}),
-				...(getLastBreakpointAttribute(
-					'position-bottom',
-					breakpoint,
-					obj
+				...(!isNil(
+					getLastBreakpointAttribute(
+						'position-bottom',
+						breakpoint,
+						obj
+					)
 				) && {
 					bottom:
 						getLastBreakpointAttribute(
@@ -76,10 +78,8 @@ const getPositionStyles = obj => {
 							obj
 						),
 				}),
-				...(getLastBreakpointAttribute(
-					'position-left',
-					breakpoint,
-					obj
+				...(!isNil(
+					getLastBreakpointAttribute('position-left', breakpoint, obj)
 				) && {
 					left:
 						getLastBreakpointAttribute(

@@ -17,8 +17,9 @@ const { select, dispatch } = wp.data;
 /**
  * Internal dependencies
  */
-import { styleResolver, styleGenerator } from '../styles';
+import { styleResolver, styleGenerator, getGroupAttributes } from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
+import { loadFonts } from '../text/fonts';
 
 /**
  * External dependencies
@@ -37,6 +38,11 @@ class MaxiBlock extends Component {
 
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
+
+		// Font loader
+		this.typography = getGroupAttributes(attributes, 'typography');
+		if (!isEmpty(this.typography)) this.loadFonts();
+
 		this.displayStyles();
 
 		this.blockRef = createRef();
@@ -109,6 +115,12 @@ class MaxiBlock extends Component {
 		}
 	}
 
+	loadFonts() {
+		Object.entries(this.typography).forEach(([key, val]) => {
+			if (key.includes('font-family')) loadFonts(val);
+		});
+	}
+
 	/**
 	 * Refresh the styles on Editor
 	 */
@@ -116,17 +128,18 @@ class MaxiBlock extends Component {
 		const obj = this.getStylesObject;
 		const breakpoints = this.getBreakpoints;
 		const customData = this.getCustomData;
+		const { uniqueID } = this.props.attributes;
 
-		const styles = styleResolver(obj, false, breakpoints);
+		const styles = styleResolver(uniqueID, obj, false, breakpoints);
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
 			let wrapper = document.querySelector(
-				`#maxi-blocks__styles--${this.props.attributes.uniqueID}`
+				`#maxi-blocks__styles--${uniqueID}`
 			);
 			if (!wrapper) {
 				wrapper = document.createElement('div');
-				wrapper.id = `maxi-blocks__styles--${this.props.attributes.uniqueID}`;
+				wrapper.id = `maxi-blocks__styles--${uniqueID}`;
 				document.head.appendChild(wrapper);
 			}
 

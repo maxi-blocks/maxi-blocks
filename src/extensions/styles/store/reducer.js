@@ -14,6 +14,11 @@ import controls from './controls';
 function reducer(state = { styles: {}, isUpdate: null }, action) {
 	switch (action.type) {
 		case 'UPDATE_STYLES':
+			if (action.target) {
+				Object.keys(state.styles).forEach(key => {
+					if (key.includes(action.target)) delete state.styles[key];
+				});
+			}
 			return {
 				...state,
 				styles: { ...state.styles, ...action.styles },

@@ -5,29 +5,6 @@ export const typography = {
 		type: 'string',
 		default: 'Roboto',
 	},
-	'font-options-general': {
-		type: 'object',
-		default: {
-			100: 'http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1MmgWxPKTM1K9nz.ttf',
-			'100italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOiCnqEu92Fr1Mu51QrIzcXLsnzjYk.ttf',
-			300: 'http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmSU5vAx05IsDqlA.ttf',
-			'300italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TjARc9AMX6lJBP.ttf',
-			400: 'http://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf',
-			italic:
-				'http://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu52xPKTM1K9nz.ttf',
-			500: 'http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9vAx05IsDqlA.ttf',
-			'500italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51S7ABc9AMX6lJBP.ttf',
-			700: 'http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlvAx05IsDqlA.ttf',
-			'700italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBhc9AMX6lJBP.ttf',
-			900: 'http://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmYUtvAx05IsDqlA.ttf',
-			'900italic':
-				'http://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TLBBc9AMX6lJBP.ttf',
-		},
-	},
 	'color-general': {
 		type: 'string',
 	},
@@ -75,10 +52,6 @@ export const typography = {
 	'font-family-xxl': {
 		type: 'string',
 	},
-	'font-options-xxl': {
-		type: 'object',
-		default: {},
-	},
 	'color-xxl': {
 		type: 'string',
 	},
@@ -122,10 +95,6 @@ export const typography = {
 	},
 	'font-family-xl': {
 		type: 'string',
-	},
-	'font-options-xl': {
-		type: 'object',
-		default: {},
 	},
 	'color-xl': {
 		type: 'string',
@@ -171,10 +140,6 @@ export const typography = {
 	'font-family-l': {
 		type: 'string',
 	},
-	'font-options-l': {
-		type: 'object',
-		default: {},
-	},
 	'color-l': {
 		type: 'string',
 	},
@@ -218,10 +183,6 @@ export const typography = {
 	},
 	'font-family-m': {
 		type: 'string',
-	},
-	'font-options-m': {
-		type: 'object',
-		default: {},
 	},
 	'color-m': {
 		type: 'string',
@@ -267,10 +228,6 @@ export const typography = {
 	'font-family-s': {
 		type: 'string',
 	},
-	'font-options-s': {
-		type: 'object',
-		default: {},
-	},
 	'color-s': {
 		type: 'string',
 	},
@@ -315,10 +272,6 @@ export const typography = {
 	'font-family-xs': {
 		type: 'string',
 	},
-	'font-options-xs': {
-		type: 'object',
-		default: {},
-	},
 	'color-xs': {
 		type: 'string',
 	},
@@ -359,10 +312,6 @@ export const typography = {
 	},
 	'vertical-align-xs': {
 		type: 'string',
-	},
-	'custom-formats': {
-		type: 'object',
-		default: {},
 	},
 };
 

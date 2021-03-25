@@ -35,7 +35,10 @@ const getDividerStyles = (obj, target) => {
 				response.general.height = `${obj['divider-height']}%}`;
 		}
 
-		if (obj['divider-border-radius'])
+		if (
+			obj['divider-border-radius'] &&
+			obj['divider-border-style'] !== 'dotted'
+		)
 			response.general['border-radius'] = '20px';
 	} else if (!isNil(obj.lineAlign)) {
 		response.general['flex-direction'] = obj.lineAlign;

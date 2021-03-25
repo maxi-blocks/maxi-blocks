@@ -191,11 +191,6 @@ const getImageBackendObject = props => {
 			label: 'Image settings',
 			general: {},
 		},
-		imageSize: {
-			general: {
-				width: `${props.imgWidth}%`,
-			},
-		},
 	};
 
 	if (clipPath) response.image.general['clip-path'] = clipPath;
@@ -266,7 +261,7 @@ const getStyles = props => {
 				'backgroundGradientHover',
 				'borderRadiusHover',
 			]),
-			isHover: !!props['background-status-hover'],
+			isHover: true,
 		}),
 		...getBackgroundStyles({
 			target: uniqueID,

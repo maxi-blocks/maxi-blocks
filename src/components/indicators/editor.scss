@@ -1,0 +1,45 @@
+.maxi-indicators {
+	position: relative;
+	transition: opacity 0.5s;
+
+	&:hover {
+		.maxi-indicators__padding,
+		.maxi-indicators__margin {
+			opacity: 1;
+		}
+	}
+	.maxi-indicators__margin,
+	.maxi-indicators__padding {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		background-color: #e5f2f8;
+		opacity: 0;
+		color: #9b9b9b;
+		font: 12px Roboto, sans-serif;
+		transition: opacity 0.5s;
+		&--top {
+			top: 0;
+		}
+		&--right {
+			top: 0;
+			right: 0;
+			height: 100%;
+		}
+		&--bottom {
+			bottom: 0;
+		}
+		&--left {
+			top: 0;
+			left: 0;
+			height: 100%;
+		}
+	}
+	.maxi-indicators__margin {
+		background-color: #ffa48b;
+		color: #222;
+		z-index: 1;
+	}
+}

@@ -14,4 +14,4 @@ page-content-setting
 src/includes
 customizer/js/maxi-admin.js
 js/cloud-server.js
-src/extensions/styles/font.js
+src/extensions/text/fonts/font.js

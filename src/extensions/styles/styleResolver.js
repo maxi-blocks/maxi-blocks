@@ -6,7 +6,7 @@ const { dispatch } = wp.data;
 /**
  * Styles resolver
  */
-const styleResolver = (styles, remover = false, breakpoints) => {
+const styleResolver = (target, styles, remover = false, breakpoints) => {
 	if (!styles) return {};
 
 	const response = (remover && []) || {};
@@ -23,7 +23,7 @@ const styleResolver = (styles, remover = false, breakpoints) => {
 		if (remover) response.push(target);
 	});
 
-	if (!remover) dispatch('maxiBlocks/styles').updateStyles(response);
+	if (!remover) dispatch('maxiBlocks/styles').updateStyles(target, response);
 	else dispatch('maxiBlocks/styles').removeStyles(response);
 
 	return response;

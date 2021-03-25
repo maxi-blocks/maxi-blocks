@@ -14,6 +14,7 @@ import {
 	BackgroundDisplayer,
 	BlockPlaceholder,
 	Breadcrumbs,
+	Indicators,
 	MaxiBlock,
 	MotionPreview,
 	ShapeDivider,
@@ -133,7 +134,6 @@ class edit extends MaxiBlock {
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
-			defaultBlockStyle,
 			blockStyleBackground,
 			fullWidth,
 			extraClassName,
@@ -160,78 +160,87 @@ class edit extends MaxiBlock {
 			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
 			<Fragment key={`container-content-${uniqueID}`}>
 				{isFirstOnHierarchy && fullWidth && (
-					<MotionPreview
-						key={`motion-preview-${uniqueID}`}
-						{...getGroupAttributes(attributes, 'motion')}
+					<Indicators
+						key={`indicators-${uniqueID}`}
+						deviceType={deviceType}
+						{...getGroupAttributes(attributes, [
+							'padding',
+							'margin',
+						])}
 					>
-						<__experimentalBlock.section
-							className={classes}
-							data-align={fullWidth}
+						<MotionPreview
+							key={`motion-preview-${uniqueID}`}
+							{...getGroupAttributes(attributes, 'motion')}
 						>
-							<ArrowDisplayer
-								{...getGroupAttributes(attributes, 'arrow')}
-								breakpoint={deviceType}
-							/>
-							<BackgroundDisplayer
-								{...getGroupAttributes(attributes, [
-									'background',
-									'backgroundColor',
-									'backgroundImage',
-									'backgroundVideo',
-									'backgroundGradient',
-									'backgroundSVG',
-									'backgroundHover',
-									'backgroundColorHover',
-									'backgroundImageHover',
-									'backgroundVideoHover',
-									'backgroundGradientHover',
-									'backgroundSVGHover',
-								])}
-								blockClassName={uniqueID}
-							/>
-							{attributes['shape-divider-top-status'] && (
-								<ShapeDivider
-									{...getGroupAttributes(
-										attributes,
-										'shapeDivider'
-									)}
-									location='top'
+							<__experimentalBlock.section
+								className={classes}
+								data-align={fullWidth}
+							>
+								<ArrowDisplayer
+									{...getGroupAttributes(attributes, 'arrow')}
+									breakpoint={deviceType}
 								/>
-							)}
-							<InnerBlocks
-								allowedBlocks={ALLOWED_BLOCKS}
-								template={ROW_TEMPLATE}
-								templateLock={false}
-								__experimentalTagName='div'
-								__experimentalPassedProps={{
-									className:
-										'maxi-container-block__container',
-								}}
-								renderAppender={
-									!hasInnerBlock
-										? () => (
-												<BlockPlaceholder
-													clientId={clientId}
-												/>
-										  )
-										: true
-										? () => (
-												<InnerBlocks.ButtonBlockAppender />
-										  )
-										: false
-								}
-							/>
-							{attributes['shape-divider-bottom-status'] && (
-								<ShapeDivider
-									{...getGroupAttributes(
-										attributes,
-										'shapeDivider'
-									)}
-									location='bottom'
+								<BackgroundDisplayer
+									{...getGroupAttributes(attributes, [
+										'background',
+										'backgroundColor',
+										'backgroundImage',
+										'backgroundVideo',
+										'backgroundGradient',
+										'backgroundSVG',
+										'backgroundHover',
+										'backgroundColorHover',
+										'backgroundImageHover',
+										'backgroundVideoHover',
+										'backgroundGradientHover',
+										'backgroundSVGHover',
+									])}
+									blockClassName={uniqueID}
 								/>
-							)}
-						</__experimentalBlock.section>
-					</MotionPreview>
+								{attributes['shape-divider-top-status'] && (
+									<ShapeDivider
+										{...getGroupAttributes(
+											attributes,
+											'shapeDivider'
+										)}
+										location='top'
+									/>
+								)}
+								<InnerBlocks
+									allowedBlocks={ALLOWED_BLOCKS}
+									template={ROW_TEMPLATE}
+									templateLock={false}
+									__experimentalTagName='div'
+									__experimentalPassedProps={{
+										className:
+											'maxi-container-block__container',
+									}}
+									renderAppender={
+										!hasInnerBlock
+											? () => (
+													<BlockPlaceholder
+														clientId={clientId}
+													/>
+											  )
+											: true
+											? () => (
+													<InnerBlocks.ButtonBlockAppender />
+											  )
+											: false
+									}
+								/>
+								{attributes['shape-divider-bottom-status'] && (
+									<ShapeDivider
+										{...getGroupAttributes(
+											attributes,
+											'shapeDivider'
+										)}
+										location='bottom'
+									/>
+								)}
+							</__experimentalBlock.section>
+						</MotionPreview>
+					</Indicators>
 				)}
 				{!fullWidth && (
 					<InnerBlocks

@@ -215,8 +215,8 @@ class edit extends MaxiBlock {
 							__unstableEmbedURLOnPaste
 							__unstableAllowPrefixTransformations
 						>
-							{value => {
-								setFormatValue(value.value);
+							{({ value }) => {
+								setFormatValue(value);
 							}}
 						</RichText>
 					)}
@@ -258,58 +258,63 @@ class edit extends MaxiBlock {
 							reversed={!!listReversed}
 							type={typeOfList}
 						>
-							{({ value, onChange }) =>
-								isSelected && (
-									<Fragment>
-										<RichTextShortcut
-											type='primary'
-											character='['
-											onUse={() => {
-												onChange(
-													__unstableOutdentListItems(
-														value
-													)
-												);
-											}}
-										/>
-										<RichTextShortcut
-											type='primary'
-											character=']'
-											onUse={() => {
-												onChange(
-													__unstableIndentListItems(
-														value,
-														{ type: typeOfList }
-													)
-												);
-											}}
-										/>
-										<RichTextShortcut
-											type='primary'
-											character='m'
-											onUse={() => {
-												onChange(
-													__unstableIndentListItems(
-														value,
-														{ type: typeOfList }
-													)
-												);
-											}}
-										/>
-										<RichTextShortcut
-											type='primaryShift'
-											character='m'
-											onUse={() => {
-												onChange(
-													__unstableOutdentListItems(
-														value
-													)
-												);
-											}}
-										/>
-									</Fragment>
-								)
-							}
+							{({ value, onChange }) => {
+								setFormatValue(value);
+
+								if (isSelected)
+									return (
+										<Fragment>
+											<RichTextShortcut
+												type='primary'
+												character='['
+												onUse={() => {
+													onChange(
+														__unstableOutdentListItems(
+															value
+														)
+													);
+												}}
+											/>
+											<RichTextShortcut
+												type='primary'
+												character=']'
+												onUse={() => {
+													onChange(
+														__unstableIndentListItems(
+															value,
+															{ type: typeOfList }
+														)
+													);
+												}}
+											/>
+											<RichTextShortcut
+												type='primary'
+												character='m'
+												onUse={() => {
+													onChange(
+														__unstableIndentListItems(
+															value,
+															{ type: typeOfList }
+														)
+													);
+												}}
+											/>
+											<RichTextShortcut
+												type='primaryShift'
+												character='m'
+												onUse={() => {
+													onChange(
+														__unstableOutdentListItems(
+															value
+														)
+													);
+												}}
+											/>
+										</Fragment>
+									);
+
+								return null;
+							}}
 						</RichText>
 					)}
 				</__experimentalBlock>

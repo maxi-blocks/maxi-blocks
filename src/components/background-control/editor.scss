@@ -29,6 +29,18 @@
 		display: flex;
 		flex-direction: column;
 
+		&__preview {
+			display: block;
+			width: 25px;
+			height: 25px;
+			margin: auto;
+			border: 2px solid #dddfe1;
+			opacity: 1;
+			float: left;
+			border-radius: 5px;
+			margin-right: 10px;
+			background-size: cover !important;
+		}
 		&__row {
 			margin: 0 0 5px 0;
 			display: flex;
@@ -40,6 +52,10 @@
 			border-radius: 5px;
 			padding: 1rem;
 			margin-bottom: 0.5rem;
+
+			.chrome-picker {
+				width: 100% !important;
+			}
 		}
 
 		&__arrow {
@@ -59,17 +75,21 @@
 		}
 
 		&__title {
+			position: relative;
 			display: flex;
 			align-items: center;
 			width: 100%;
 			margin: 0 0 0 12px;
 			border: 2px solid #dddfe1;
 			border-radius: 5px;
-			cursor: move;
 			transition: all 0.5s;
+			cursor: pointer;
 
 			&:hover {
 				background-color: #f2f2f2;
+			}
+			&__text {
+				line-height: 25px;
 			}
 			&__id {
 				background: #f2f2f2;
@@ -81,6 +101,24 @@
 
 				&:before {
 					content: counter(background-layers-counter);
+				}
+			}
+			&__mover {
+				display: block;
+				width: 15px;
+				height: 15px;
+				position: absolute;
+				top: 50%;
+				right: 30px;
+				transform: translateY(-50%);
+				cursor: move;
+
+				svg {
+					width: 15px;
+					height: 15px;
+					path {
+						stroke: #000;
+					}
 				}
 			}
 			&__remover {

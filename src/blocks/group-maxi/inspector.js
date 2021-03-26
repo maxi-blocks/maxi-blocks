@@ -11,6 +11,7 @@ const { TextControl } = wp.components;
  */
 import {
 	AccordionControl,
+	ArrowControl,
 	AxisControl,
 	BackgroundControl,
 	BlockStylesControl,
@@ -488,6 +489,22 @@ const Inspector = props => {
 														target='margin'
 													/>
 												</Fragment>
+											),
+										},
+										{
+											label: __('Arrow', 'maxi-blocks'),
+											content: (
+												<ArrowControl
+													{...getGroupAttributes(
+														attributes,
+														'arrow'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													isFullWidth={fullWidth}
+													breakpoint={deviceType}
+												/>
 											),
 										},
 									]}

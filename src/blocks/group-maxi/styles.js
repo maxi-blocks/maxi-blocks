@@ -8,6 +8,7 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
+	getArrowStyles,
 	getBackgroundStyles,
 	getMarginPaddingStyles,
 } from '../../extensions/styles/helpers';
@@ -114,6 +115,19 @@ const getStyles = props => {
 				'borderRadiusHover',
 			]),
 			isHover: true,
+		}),
+		...getArrowStyles({
+			target: uniqueID,
+			...getGroupAttributes(props, [
+				'arrow',
+				'border',
+				'borderWidth',
+				'borderRadius',
+				'background',
+				'backgroundColor',
+				'backgroundGradient',
+				'boxShadow',
+			]),
 		}),
 	};
 

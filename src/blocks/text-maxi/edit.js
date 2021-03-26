@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { compose } = wp.compose;
-const { Fragment, createRef } = wp.element;
+const { Fragment } = wp.element;
 const { createBlock } = wp.blocks;
 const { select, withSelect, withDispatch } = wp.data;
 const { __experimentalBlock, RichText, RichTextShortcut } = wp.blockEditor;
@@ -43,11 +43,6 @@ import { isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
-	constructor(props) {
-		super(props);
-		this.textRef = createRef();
-	}
-
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -89,7 +84,6 @@ class edit extends MaxiBlock {
 		const {
 			uniqueID,
 			blockStyle,
-			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
 			textLevel,
@@ -158,7 +152,7 @@ class edit extends MaxiBlock {
 					)}
 					{!isList && (
 						<RichText
-							ref={this.textRef}
+							ref={this.blockRef}
 							className='maxi-text-block__content'
 							value={content}
 							onChange={content => {
@@ -173,7 +167,7 @@ class edit extends MaxiBlock {
 
 								const formatValue = getFormatValue(
 									formatElement,
-									this.textRef ? this.textRef.current : null
+									this.blockRef ? this.blockRef.current : null
 								);
 
 								/**
@@ -203,7 +197,7 @@ class edit extends MaxiBlock {
 							onReplace={blocks =>
 								onReplace(
 									blocks,
-									this.textRef ? this.textRef.current : null
+									this.blockRef ? this.blockRef.current : null
 								)
 							}
 							onMerge={onMerge}
@@ -247,7 +241,7 @@ class edit extends MaxiBlock {
 							onReplace={blocks =>
 								onReplace(
 									blocks,
-									this.textRef ? this.textRef.current : null
+									this.blockRef ? this.blockRef.current : null
 								)
 							}
 							onRemove={onRemove}

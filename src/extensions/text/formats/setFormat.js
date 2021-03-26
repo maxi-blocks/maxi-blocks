@@ -25,7 +25,7 @@ const setFormat = ({
 	isHover = false,
 }) => {
 	if (!formatValue || formatValue.start === formatValue.end) {
-		const response = {};
+		const response = { ...typography };
 
 		Object.entries(value).forEach(([key, val]) => {
 			response[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] = val;

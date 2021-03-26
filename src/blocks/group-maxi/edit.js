@@ -9,6 +9,7 @@ const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
  */
 import Inspector from './inspector';
 import {
+	ArrowDisplayer,
 	BackgroundDisplayer,
 	BlockPlaceholder,
 	Breadcrumbs,
@@ -69,7 +70,6 @@ class edit extends MaxiBlock {
 		const {
 			uniqueID,
 			blockStyle,
-			defaultBlockStyle,
 			blockStyleBackground,
 			extraClassName,
 			fullWidth,
@@ -121,6 +121,10 @@ class edit extends MaxiBlock {
 					className={classes}
 					data-align={fullWidth}
 				>
+					<ArrowDisplayer
+						{...getGroupAttributes(attributes, 'arrow')}
+						breakpoint={deviceType}
+					/>
 					{!attributes['background-highlight'] && (
 						<BackgroundDisplayer
 							{...getGroupAttributes(attributes, [

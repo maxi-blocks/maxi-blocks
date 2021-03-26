@@ -134,7 +134,6 @@ class edit extends MaxiBlock {
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
-			defaultBlockStyle,
 			blockStyleBackground,
 			fullWidth,
 			extraClassName,

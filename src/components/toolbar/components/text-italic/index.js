@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
 const { Icon, Button, Tooltip } = wp.components;
-const { useState } = wp.element;
+const { useState, useEffect } = wp.element;
 
 /**
  * Internal dependencies
@@ -28,20 +29,27 @@ const TextItalic = props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typography = { ...getGroupAttributes(props, 'typography') };
 	const formatValue = getFormatValue();
 
-	const italicValue = getCustomFormatValue({
-		typography,
-		formatValue,
-		prop: 'font-style',
-		breakpoint,
-	});
+	const getItalicValue = () =>
+		getCustomFormatValue({
+			typography: { ...getGroupAttributes(props, 'typography') },
+			formatValue,
+			prop: 'font-style',
+			breakpoint,
+		});
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const italicValue = getItalicValue();
+
 	const [isActive, setIsActive] = useState(
 		(italicValue === 'italic' && true) || false
 	);
+
+	useEffect(() => {
+		const italicValue = getItalicValue();
+
+		setIsActive((italicValue === 'italic' && true) || false);
+	});
 
 	const onClick = () => {
 		const formatValue = getFormatValue();
@@ -50,7 +58,7 @@ const TextItalic = props => {
 			formatValue,
 			isActive,
 			isList,
-			typography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			value: {
 				'font-style': isActive ? '' : 'italic',
 			},

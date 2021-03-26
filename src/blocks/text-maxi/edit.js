@@ -43,7 +43,7 @@ import { isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
-	propsToAvoid = ['content', 'formatValue'];
+	propsToAvoidRendering = ['content', 'formatValue'];
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
@@ -71,7 +71,6 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
-		console.log('render block');
 		const {
 			attributes,
 			className,
@@ -83,6 +82,7 @@ class edit extends MaxiBlock {
 			onReplace,
 			deviceType,
 			getFormatValue,
+			setFormatValue,
 		} = this.props;
 		const {
 			uniqueID,
@@ -216,7 +216,7 @@ class edit extends MaxiBlock {
 							__unstableAllowPrefixTransformations
 						>
 							{value => {
-								console.log(value);
+								setFormatValue(value.value);
 							}}
 						</RichText>
 					)}

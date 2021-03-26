@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
 const { __ } = wp.i18n;
 const { Icon, Button, Tooltip } = wp.components;
-const { useState } = wp.element;
+const { useState, useEffect } = wp.element;
 
 /**
  * Internal dependencies
@@ -28,29 +29,38 @@ const TextBold = props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const typography = { ...getGroupAttributes(props, 'typography') };
-	const formatValue = getFormatValue();
+	const getBoldValue = () => {
+		const formatValue = getFormatValue();
 
-	const boldValue = getCustomFormatValue({
-		typography,
-		formatValue,
-		prop: 'font-weight',
-		breakpoint,
-	});
+		return getCustomFormatValue({
+			typography: { ...getGroupAttributes(props, 'typography') },
+			formatValue,
+			prop: 'font-weight',
+			breakpoint,
+		});
+	};
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const boldValue = getBoldValue();
+
 	const [isActive, setIsActive] = useState(
 		(boldValue > 400 && true) || false
 	);
 
+	useEffect(() => {
+		const boldValue = getBoldValue();
+
+		setIsActive((boldValue > 400 && true) || false);
+	});
+
 	const onClick = () => {
 		const formatValue = getFormatValue();
+		const boldValue = getBoldValue();
 
 		const obj = setFormat({
 			formatValue,
-			isActive,
+			isActive: (boldValue > 400 && true) || false,
 			isList,
-			typography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			value: {
 				'font-weight': (isActive && 400) || 800,
 			},

@@ -3,7 +3,6 @@
  */
 const { __ } = wp.i18n;
 const { SelectControl } = wp.components;
-const { useState } = wp.element;
 const { select } = wp.data;
 
 /**
@@ -43,7 +42,6 @@ const TypographyControl = props => {
 		hideAlignment = false,
 		onChange,
 		breakpoint = 'general',
-		// formatValue,
 		getFormatValue,
 		isList = false,
 		isHover = false,
@@ -51,13 +49,12 @@ const TypographyControl = props => {
 		prefix = '',
 	} = props;
 
-	const [typography, setTypography] = useState(
+	const typography =
 		props.typography ||
-			getGroupAttributes(props, [
-				'typography',
-				...(isHover && ['typographyHover']),
-			])
-	);
+		getGroupAttributes(props, [
+			'typography',
+			...(isHover && ['typographyHover']),
+		]);
 
 	const classes = classnames('maxi-typography-control', className);
 
@@ -206,8 +203,6 @@ const TypographyControl = props => {
 			breakpoint,
 			isHover,
 		});
-
-		setTypography(obj);
 
 		onChange(obj);
 	};

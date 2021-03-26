@@ -2,11 +2,14 @@
  * Maxi Blocks Block component extension
  *
  * @todo Comment properly
+ * @todo Transform to functional component or HOC
+ * @todo Integrate `formatValue` into it
  */
 
 /**
  * Disabled some ESLint rules; this file needs to be cleaned
  */
+/* eslint-disable class-methods-use-this */
 
 /**
  * WordPress dependencies
@@ -30,7 +33,9 @@ import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
  * Class
  */
 class MaxiBlock extends Component {
-	propsToAvoid = [];
+	propsToAvoidRendering = [];
+
+	propsToAvoidStyling = [];
 
 	constructor(...args) {
 		super(...args);
@@ -50,29 +55,6 @@ class MaxiBlock extends Component {
 		this.blockRef = createRef();
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if (!isEmpty(this.propsToAvoid)) {
-			const oldAttributes = cloneDeep(nextProps.attributes);
-			const newAttributes = cloneDeep(this.props.attributes);
-
-			this.propsToAvoid.forEach(prop => {
-				delete oldAttributes[prop];
-				delete newAttributes[prop];
-			});
-
-			if (!isEqual(oldAttributes, newAttributes))
-				this.difference(oldAttributes, newAttributes);
-
-			return !isEqual(oldAttributes, newAttributes);
-		}
-
-		return !isEqual(nextProps.attributes, this.props.attributes);
-	}
-
-	componentDidUpdate(prevProps, prevState, snapshot) {
-		if (!snapshot) this.displayStyles();
-	}
-
 	// Just for debugging!
 	// eslint-disable-next-line react/sort-comp
 	difference(obj1, obj2) {
@@ -87,12 +69,38 @@ class MaxiBlock extends Component {
 		});
 	}
 
+	/**
+	 * Prevents rendering
+	 */
+	shouldComponentUpdate(nextProps, nextState) {
+		if (!isEmpty(this.propsToAvoidRendering)) {
+			const oldAttributes = cloneDeep(nextProps.attributes);
+			const newAttributes = cloneDeep(this.props.attributes);
+
+			this.propsToAvoidRendering.forEach(prop => {
+				delete oldAttributes[prop];
+				delete newAttributes[prop];
+			});
+
+			if (!isEqual(oldAttributes, newAttributes) && false)
+				// Just for debugging 👍
+				this.difference(oldAttributes, newAttributes);
+
+			return !isEqual(oldAttributes, newAttributes);
+		}
+
+		return !isEqual(nextProps.attributes, this.props.attributes);
+	}
+
+	/**
+	 * Prevents styling
+	 */
 	getSnapshotBeforeUpdate(prevProps) {
-		if (!isEmpty(this.propsToAvoid)) {
+		if (!isEmpty(this.propsToAvoidStyling)) {
 			const oldAttributes = cloneDeep(prevProps.attributes);
 			const newAttributes = cloneDeep(this.props.attributes);
 
-			this.propsToAvoid.forEach(prop => {
+			this.propsToAvoidStyling.forEach(prop => {
 				delete oldAttributes[prop];
 				delete newAttributes[prop];
 			});
@@ -104,6 +112,10 @@ class MaxiBlock extends Component {
 		}
 
 		return isEqual(prevProps.attributes, this.props.attributes);
+	}
+
+	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
+		if (!shouldDisplayStyles) this.displayStyles();
 	}
 
 	componentWillUnmount() {

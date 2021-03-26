@@ -3,7 +3,7 @@
  */
 const { __ } = wp.i18n;
 const { Icon, Button, Tooltip } = wp.components;
-const { useState } = wp.element;
+const { useState, useEffect } = wp.element;
 
 /**
  * Internal dependencies
@@ -12,6 +12,7 @@ import {
 	setFormat,
 	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles and icons
@@ -22,29 +23,38 @@ import { toolbarSuperScript } from '../../../../icons';
  * TextFormatSuperscript
  */
 const TextFormatSuperscript = props => {
-	const { getFormatValue, onChange, isList, breakpoint, typography } = props;
+	const { getFormatValue, onChange, isList, breakpoint } = props;
 
 	const formatValue = getFormatValue();
 
-	const superscriptValue =
+	const getSuperscriptValue = () =>
 		getCustomFormatValue({
-			typography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			formatValue,
 			prop: 'vertical-align',
 			breakpoint,
 		}) || '';
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const superscriptValue = getSuperscriptValue();
+
 	const [isActive, setIsActive] = useState(
 		(superscriptValue === 'super' && true) || false
 	);
 
+	useEffect(() => {
+		const superscriptValue = getSuperscriptValue();
+
+		setIsActive((superscriptValue === 'super' && true) || false);
+	});
+
 	const onClick = () => {
+		const formatValue = getFormatValue();
+
 		const obj = setFormat({
 			formatValue,
 			isActive,
 			isList,
-			typography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			value: {
 				'vertical-align': isActive ? '' : 'super',
 			},

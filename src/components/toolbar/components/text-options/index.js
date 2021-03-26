@@ -4,7 +4,6 @@
 const { __, sprintf } = wp.i18n;
 const { Fragment } = wp.element;
 const { Button, BaseControl } = wp.components;
-const { useState } = wp.element;
 
 /**
  * Internal dependencies
@@ -50,16 +49,11 @@ const TextOptions = props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const [typography, setTypography] = useState(
-		getGroupAttributes(props, 'typography')
-	);
-
 	const getValue = prop => {
 		const formatValue = getFormatValue();
 
 		return getCustomFormatValue({
-			defaultTypography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			formatValue,
 			prop,
 			breakpoint,
@@ -72,12 +66,10 @@ const TextOptions = props => {
 		const obj = setFormat({
 			formatValue,
 			isList,
-			typography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			value,
 			breakpoint,
 		});
-
-		setTypography(getGroupAttributes(obj, 'typography'));
 
 		onChange(obj);
 	};
@@ -240,35 +232,35 @@ const TextOptions = props => {
 						</BaseControl>
 						<div>
 							<TextFormatOverline
-								typography={typography}
+								{...getGroupAttributes(props, 'typography')}
 								getFormatValue={getFormatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatStrikethrough
-								typography={typography}
+								{...getGroupAttributes(props, 'typography')}
 								getFormatValue={getFormatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatUnderline
-								typography={typography}
+								{...getGroupAttributes(props, 'typography')}
 								getFormatValue={getFormatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSubscript
-								typography={typography}
+								{...getGroupAttributes(props, 'typography')}
 								getFormatValue={getFormatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSuperscript
-								typography={typography}
+								{...getGroupAttributes(props, 'typography')}
 								getFormatValue={getFormatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}

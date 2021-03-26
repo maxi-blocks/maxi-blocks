@@ -34,6 +34,8 @@ const TextFormatCode = props => {
 	}, [formatActive, formatValue, formatName]);
 
 	const onClick = () => {
+		const formatValue = getFormatValue();
+
 		const newFormat = isActive
 			? removeFormat(formatValue, formatName)
 			: applyFormat(formatValue, {

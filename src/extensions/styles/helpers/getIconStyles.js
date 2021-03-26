@@ -21,18 +21,15 @@ const getIconStyles = obj => {
 				}`,
 				'min-width': `${
 					obj[`icon-size-${breakpoint}`] +
-					(obj[`icon-padding-right-${breakpoint}`] || 0) +
-					(obj[`icon-padding-left-${breakpoint}`] || 0)
+					obj[`icon-size-${breakpoint}`] * 0.5
 				}${obj[`icon-size-unit-${breakpoint}`]}`,
 				width: `${
 					obj[`icon-size-${breakpoint}`] +
-					(obj[`icon-padding-right-${breakpoint}`] || 0) +
-					(obj[`icon-padding-left-${breakpoint}`] || 0)
+					obj[`icon-size-${breakpoint}`] * 0.5
 				}${obj[`icon-size-unit-${breakpoint}`]}`,
 				height: `${
 					obj[`icon-size-${breakpoint}`] +
-					(obj[`icon-padding-top-${breakpoint}`] || 0) +
-					(obj[`icon-padding-bottom-${breakpoint}`] || 0)
+					obj[`icon-size-${breakpoint}`] * 0.5
 				}${obj[`icon-size-unit-${breakpoint}`]}`,
 			};
 		}

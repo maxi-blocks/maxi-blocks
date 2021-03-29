@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path, G } = wp.primitives;
+import { SVG, Path, G } from '@wordpress/primitives';
 
 const dividerIcon = (
 	<SVG

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path } = wp.primitives;
+import { SVG, Path } from '@wordpress/primitives';
 
 const ui = (
 	<SVG height={512} viewBox='0 0 441.618 441.618' width={512}>

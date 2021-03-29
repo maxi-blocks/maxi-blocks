@@ -1,4 +1,4 @@
-const { Path, SVG } = wp.components;
+import { SVG, Path } from '@wordpress/primitives';
 
 const ChevronDown = (
 	<SVG width='24px' height='24px' className='maxi-font-family-selector-icon'>

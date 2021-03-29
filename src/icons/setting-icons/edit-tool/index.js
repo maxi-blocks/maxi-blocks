@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path } = wp.primitives;
+import { SVG, Path } from '@wordpress/primitives';
 
 const editTool = (
 	<SVG height={512} viewBox='0 0 467.765 467.765' width={512}>

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { RangeControl } = wp.components;
+import { RangeControl } from '@wordpress/components';
 
 /**
  * External dependencies

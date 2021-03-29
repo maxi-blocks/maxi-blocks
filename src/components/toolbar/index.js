@@ -31,6 +31,7 @@ import {
 	Link,
 	Mover,
 	PaddingMargin,
+	ReusableBlocks,
 	RowSettings,
 	Size,
 	SvgColor,
@@ -171,6 +172,7 @@ const MaxiToolbar = props => {
 							{customLabel}
 						</div>
 						<Mover clientId={clientId} blockName={name} />
+						<ReusableBlocks clientId={clientId} />
 						<ColumnMover clientId={clientId} blockName={name} />
 						{!attributes['border-highlight'] && (
 							<DividerColor

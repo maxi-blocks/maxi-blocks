@@ -29,6 +29,7 @@ const save = props => {
 		captionContent,
 		mediaID,
 		mediaURL,
+		imgWidth,
 		mediaWidth,
 		mediaHeight,
 		mediaAlt,
@@ -96,13 +97,17 @@ const save = props => {
 				{(!SVGElement && (
 					<img
 						className={`wp-image-${mediaID}`}
+						style={{ width: `${imgWidth}%` }}
 						src={mediaURL}
 						width={mediaWidth}
 						height={mediaHeight}
 						alt={imageAlt()}
 					/>
 				)) || (
-					<RawHTML className='maxi-image-block-shape-wrapper'>
+					<RawHTML
+						style={{ width: `${imgWidth}%` }}
+						className='maxi-image-block-shape-wrapper'
+					>
 						{SVGElement}
 					</RawHTML>
 				)}

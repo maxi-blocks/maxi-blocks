@@ -131,7 +131,6 @@ const AxisControl = props => {
 		) || 'px';
 
 	const onChangeValue = (newValue, singleTarget) => {
-		console.log(newValue, singleTarget);
 		if (
 			getLastBreakpointAttribute(
 				getKey('sync'),

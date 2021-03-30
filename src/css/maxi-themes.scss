@@ -96,6 +96,7 @@ body.maxi-blocks--active {
 					}
 
 					&.maxi-group-block,
+					.maxi-container-arrow:after,
 					.maxi-font-icon-block__icon {
 						background-color: var(--maxi-#{$style}-highlight-background) !important;
 					}

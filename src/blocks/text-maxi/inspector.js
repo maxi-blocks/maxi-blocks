@@ -276,6 +276,7 @@ const Inspector = props => {
 																	isList={
 																		isList
 																	}
+																	disableFormats
 																	disableColor={
 																		!!attributes[
 																			'text-highlight'

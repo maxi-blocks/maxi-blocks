@@ -390,11 +390,7 @@ const Inspector = props => {
 																				'background',
 																				'backgroundColor',
 																				'backgroundGradient',
-																			],
-																			false,
-																			'',
-																			false,
-																			clientId
+																			]
 																		)}
 																		onChange={obj =>
 																			setAttributes(
@@ -411,6 +407,11 @@ const Inspector = props => {
 																		disableClipPath
 																		disableSVG
 																		disableLayers
+																		scAtt='button-background-color'
+																		blockStyle={
+																			blockStyle
+																		}
+																		useStyleCard
 																	/>
 																</Fragment>
 															),

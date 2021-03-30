@@ -36,13 +36,12 @@ body.maxi-blocks--active {
 				#{$level} {
 					font-size: var(--maxi-#{$style}-#{$level}-font-size-general);
 					line-height: var(--maxi-#{$style}-#{$level}-line-height-general);
-					color: var(--maxi-#{$style}-#{$level}-color);
-					font-family: var(--maxi-#{$style}-#{$level}-font-family);
-					font-weight: var(--maxi-#{$style}-#{$level}-font-weight);
-					font-style: var(--maxi-#{$style}-#{$level}-style);
-					text-transform: var(--maxi-#{$style}-#{$level}-transform);
-					text-decoration-style: var(--maxi-#{$style}-#{$level}-decoration);
-					text-decoration-line: var(--maxi-#{$style}-#{$level}-decoration-line);
+					color: var(--maxi-#{$style}-#{$level}-color-general);
+					font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
+					font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
+					font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
+					text-transform: var(--maxi-#{$style}-#{$level}-text-transform-general);
+					text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-general);
 				}
 			}
 
@@ -63,13 +62,12 @@ body.maxi-blocks--active {
 			.maxi-button-block__button {
 				color: var(--maxi-#{$style}-button-text-color);
 				background-color: var(--maxi-#{$style}-button-background-color);
-				font-size: var(--maxi-#{$style}-p-font-size-general);
-				font-family: var(--maxi-#{$style}-p-font-family);
-				font-weight: var(--maxi-#{$style}-p-font-weight);
-				font-style: var(--maxi-#{$style}-p-style);
-				text-transform: var(--maxi-#{$style}-p-transform);
-				text-decoration-style: var(--maxi-#{$style}-p-decoration);
-				text-decoration-line: var(--maxi-#{$style}-p-decoration-line);
+				font-size: var(--maxi-#{$style}-button-font-size-general);
+				font-family: var(--maxi-#{$style}-button-font-family);
+				font-weight: var(--maxi-#{$style}-button-font-weight);
+				font-style: var(--maxi-#{$style}-button-font-style-general);
+				text-transform: var(--maxi-#{$style}-button-text-transform-general);
+				text-decoration: var(--maxi-#{$style}-button-text-decoration-general);
 				&:hover, &:active, &:focus {
 			        background-color: var(--maxi-#{$style}-hover);
 			    }

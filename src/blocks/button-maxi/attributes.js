@@ -42,18 +42,7 @@ const attributes = {
 		},
 	},
 	...attributesData.textAlignment,
-	...attributesData.typography,
-	// ...{
-	// 	...attributesData.typography,
-	// 	'font-family-general': {
-	// 		type: 'string',
-	// 		default: 'Roboto',
-	// 	},
-	// 	'font-size-general': {
-	// 		type: 'number',
-	// 		default: 16,
-	// 	},
-	// },
+//	...attributesData.typography,
 	...attributesData.typographyHover,
 	...{
 		...attributesData.background,
@@ -62,14 +51,14 @@ const attributes = {
 			default: 'color',
 		},
 	},
-	...attributesData.backgroundColor,
-	// ...{
-	// 	...attributesData.backgroundColor,
-	// 	'background-color': {
-	// 		type: 'string',
-	// 		default: 'styleCard',
-	// 	},
-	// },
+	// ...attributesData.backgroundColor,
+	...{
+		...attributesData.backgroundColor,
+		'background-color': {
+			type: 'string',
+			default: 'styleCard',
+		},
+	},
 	...attributesData.backgroundGradient,
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,

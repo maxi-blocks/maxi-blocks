@@ -49,10 +49,12 @@ const BackgroundControl = props => {
 		disableClipPath = false,
 		disableSVG = false,
 		disableNoneStyle = false,
-		useStyleCard = false,
 		onChange,
 		isHover = false,
 		prefix = '',
+		scAtt,
+		blockStyle,
+		useStyleCard,
 	} = props;
 
 	const backgroundActiveMedia =
@@ -152,6 +154,8 @@ const BackgroundControl = props => {
 							disableClipPath={disableClipPath}
 							isHover={isHover}
 							prefix={prefix}
+							scAtt={scAtt}
+							blockStyle={blockStyle}
 							useStyleCard={useStyleCard}
 						/>
 					)}

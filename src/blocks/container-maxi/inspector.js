@@ -205,6 +205,11 @@ const Inspector = props => {
 																				obj
 																			)
 																		}
+																		scAtt={`background-${blockStyleBackground}`}
+																		blockStyle={
+																			blockStyle
+																		}
+																		useStyleCard
 																	/>
 																	{attributes[
 																		'background-active-media'

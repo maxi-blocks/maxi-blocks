@@ -182,6 +182,11 @@ const BackgroundLayersControl = ({
 	prefix = '',
 	onChange,
 	layersStatus,
+	disableImage = false,
+	disableVideo = false,
+	disableGradient = false,
+	disableColor = false,
+	disableSVG = false,
 	...props
 }) => {
 	const layers = cloneDeep(props.layersOptions);
@@ -322,26 +327,51 @@ const BackgroundLayersControl = ({
 					)}
 					<LoaderControl
 						options={[
-							{
-								label: __('Background Colour', 'maxi-blocks'),
-								value: 'color',
-							},
-							{
-								label: __('Background Image', 'maxi-blocks'),
-								value: 'image',
-							},
-							{
-								label: __('Background Video', 'maxi-blocks'),
-								value: 'video',
-							},
-							{
-								label: __('Background Gradient', 'maxi-blocks'),
-								value: 'gradient',
-							},
-							{
-								label: __('Background Shape', 'maxi-blocks'),
-								value: 'shape',
-							},
+							...(!disableColor && [
+								{
+									label: __(
+										'Background Colour',
+										'maxi-blocks'
+									),
+									value: 'color',
+								},
+							]),
+							...(!disableImage && [
+								{
+									label: __(
+										'Background Image',
+										'maxi-blocks'
+									),
+									value: 'image',
+								},
+							]),
+							...(!disableVideo && [
+								{
+									label: __(
+										'Background Video',
+										'maxi-blocks'
+									),
+									value: 'video',
+								},
+							]),
+							...(!disableGradient && [
+								{
+									label: __(
+										'Background Gradient',
+										'maxi-blocks'
+									),
+									value: 'gradient',
+								},
+							]),
+							...(!disableSVG && [
+								{
+									label: __(
+										'Background Shape',
+										'maxi-blocks'
+									),
+									value: 'shape',
+								},
+							]),
 						]}
 						onClick={value => {
 							layers.push(getObject(value));

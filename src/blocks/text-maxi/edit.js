@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-
 import { compose } from '@wordpress/compose';
 import { Fragment } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';

@@ -12,6 +12,7 @@
 
 node_modules
 dist
+build
 
 # Ignore Mac DS_Store files
 **/.DS_Store

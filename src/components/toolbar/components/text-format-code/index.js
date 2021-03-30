@@ -9,7 +9,10 @@ const { applyFormat, toHTMLString, removeFormat } = wp.richText;
 /**
  * Internal dependencies
  */
-import { formatActive } from '../../../../extensions/text/formats';
+import {
+	formatActive,
+	withFormatValue,
+} from '../../../../extensions/text/formats';
 /**
  * Styles and icons
  */
@@ -18,10 +21,8 @@ import { toolbarCode } from '../../../../icons';
 /**
  * TextFormatCode
  */
-const TextFormatCode = props => {
-	const { onChange, isList, getFormatValue } = props;
-
-	const formatValue = getFormatValue();
+const TextFormatCode = withFormatValue(props => {
+	const { onChange, isList, formatValue } = props;
 
 	const formatName = 'core/code';
 
@@ -34,8 +35,6 @@ const TextFormatCode = props => {
 	}, [formatActive, formatValue, formatName]);
 
 	const onClick = () => {
-		const formatValue = getFormatValue();
-
 		const newFormat = isActive
 			? removeFormat(formatValue, formatName)
 			: applyFormat(formatValue, {
@@ -62,6 +61,6 @@ const TextFormatCode = props => {
 			</Button>
 		</Tooltip>
 	);
-};
+});
 
 export default TextFormatCode;

@@ -12,6 +12,7 @@ const { useState, useEffect } = wp.element;
 import {
 	getCustomFormatValue,
 	setFormat,
+	withFormatValue,
 } from '../../../../extensions/text/formats';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
@@ -24,12 +25,10 @@ import { toolbarItalic } from '../../../../icons';
 /**
  * TextItalic
  */
-const TextItalic = props => {
-	const { blockName, getFormatValue, onChange, isList, breakpoint } = props;
+const TextItalic = withFormatValue(props => {
+	const { blockName, formatValue, onChange, isList, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
-
-	const formatValue = getFormatValue();
 
 	const getItalicValue = () =>
 		getCustomFormatValue({
@@ -52,8 +51,6 @@ const TextItalic = props => {
 	});
 
 	const onClick = () => {
-		const formatValue = getFormatValue();
-
 		const obj = setFormat({
 			formatValue,
 			isActive,
@@ -81,6 +78,6 @@ const TextItalic = props => {
 			</Button>
 		</Tooltip>
 	);
-};
+});
 
 export default TextItalic;

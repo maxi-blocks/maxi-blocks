@@ -42,13 +42,7 @@ import {
  * Inspector
  */
 const Inspector = props => {
-	const {
-		attributes,
-		deviceType,
-		setAttributes,
-		clientId,
-		getFormatValue,
-	} = props;
+	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
 		customLabel,
 		isFirstOnHierarchy,
@@ -269,9 +263,6 @@ const Inspector = props => {
 																	breakpoint={
 																		deviceType
 																	}
-																	getFormatValue={
-																		getFormatValue
-																	}
 																	isList={
 																		isList
 																	}
@@ -346,9 +337,6 @@ const Inspector = props => {
 																			hideAlignment
 																			breakpoint={
 																				deviceType
-																			}
-																			getFormatValue={
-																				getFormatValue
 																			}
 																			isList={
 																				isList

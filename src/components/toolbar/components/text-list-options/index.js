@@ -18,6 +18,7 @@ import ToolbarPopover from '../toolbar-popover';
 import {
 	fromListToText,
 	fromTextToList,
+	withFormatValue,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -39,19 +40,10 @@ import {
 /**
  * TextListOptions
  */
-const TextListOptions = props => {
-	const {
-		blockName,
-		getFormatValue,
-		isList,
-		typeOfList,
-		// content,
-		onChange,
-	} = props;
+const TextListOptions = withFormatValue(props => {
+	const { blockName, formatValue, isList, typeOfList, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
-
-	const formatValue = getFormatValue();
 
 	const getContent = content => {
 		if (!isList) return fromTextToList(content);
@@ -60,7 +52,6 @@ const TextListOptions = props => {
 
 	const onChangeIndent = type => {
 		let newFormat = '';
-		const formatValue = getFormatValue();
 
 		if (type === 'indent')
 			newFormat = __unstableIndentListItems(formatValue, {
@@ -81,7 +72,7 @@ const TextListOptions = props => {
 	};
 
 	const onChangeList = type => {
-		const { text: content } = getFormatValue();
+		const { text: content } = formatValue;
 
 		if (typeOfList === type)
 			onChange({
@@ -137,6 +128,6 @@ const TextListOptions = props => {
 			}
 		/>
 	);
-};
+});
 
 export default TextListOptions;

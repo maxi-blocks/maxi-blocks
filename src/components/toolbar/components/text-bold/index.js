@@ -12,6 +12,7 @@ const { useState, useEffect } = wp.element;
 import {
 	getCustomFormatValue,
 	setFormat,
+	withFormatValue,
 } from '../../../../extensions/text/formats';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
@@ -24,21 +25,18 @@ import { toolbarBold } from '../../../../icons';
 /**
  * TextBold
  */
-const TextBold = props => {
-	const { getFormatValue, blockName, onChange, isList, breakpoint } = props;
+const TextBold = withFormatValue(props => {
+	const { blockName, onChange, isList, breakpoint, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const getBoldValue = () => {
-		const formatValue = getFormatValue();
-
-		return getCustomFormatValue({
+	const getBoldValue = () =>
+		getCustomFormatValue({
 			typography: { ...getGroupAttributes(props, 'typography') },
 			formatValue,
 			prop: 'font-weight',
 			breakpoint,
 		});
-	};
 
 	const boldValue = getBoldValue();
 
@@ -53,7 +51,6 @@ const TextBold = props => {
 	});
 
 	const onClick = () => {
-		const formatValue = getFormatValue();
 		const boldValue = getBoldValue();
 
 		const obj = setFormat({
@@ -83,6 +80,6 @@ const TextBold = props => {
 			</Button>
 		</Tooltip>
 	);
-};
+});
 
 export default TextBold;

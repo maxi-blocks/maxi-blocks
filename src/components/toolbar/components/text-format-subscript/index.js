@@ -23,9 +23,7 @@ import { toolbarSubScript } from '../../../../icons';
  * TextFormatSubscript
  */
 const TextFormatSubscript = props => {
-	const { getFormatValue, onChange, isList, breakpoint } = props;
-
-	const formatValue = getFormatValue();
+	const { formatValue, onChange, isList, breakpoint } = props;
 
 	const getSuperscriptValue = () =>
 		getCustomFormatValue({
@@ -49,8 +47,6 @@ const TextFormatSubscript = props => {
 	});
 
 	const onClick = () => {
-		const formatValue = getFormatValue();
-
 		const obj = setFormat({
 			formatValue,
 			isActive,

@@ -9,7 +9,10 @@ const { Icon } = wp.components;
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-import { getCustomFormatValue } from '../../../../extensions/text/formats';
+import {
+	getCustomFormatValue,
+	withFormatValue,
+} from '../../../../extensions/text/formats';
 import {
 	getGroupAttributes,
 	getDefaultAttribute,
@@ -25,13 +28,12 @@ import { toolbarType } from '../../../../icons';
 /**
  * TextColor
  */
-const TextColor = props => {
-	const { blockName, onChange, breakpoint, getFormatValue } = props;
+const TextColor = withFormatValue(props => {
+	const { blockName, onChange, breakpoint, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
-	const formatValue = getFormatValue();
 
 	const color = getCustomFormatValue({
 		typography,
@@ -86,6 +88,6 @@ const TextColor = props => {
 			}
 		/>
 	);
-};
+});
 
 export default TextColor;

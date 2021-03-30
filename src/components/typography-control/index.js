@@ -13,7 +13,11 @@ import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
-import { setFormat, getCustomFormatValue } from '../../extensions/text/formats';
+import {
+	setFormat,
+	getCustomFormatValue,
+	withFormatValue,
+} from '../../extensions/text/formats';
 import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,
@@ -35,14 +39,14 @@ import './editor.scss';
 /**
  * Component
  */
-const TypographyControl = props => {
+const TypographyControl = withFormatValue(props => {
 	const {
 		className,
 		textLevel = 'p',
 		hideAlignment = false,
 		onChange,
 		breakpoint = 'general',
-		getFormatValue,
+		formatValue,
 		isList = false,
 		isHover = false,
 		disableColor = false,
@@ -95,8 +99,6 @@ const TypographyControl = props => {
 	};
 
 	const getValue = prop => {
-		const formatValue = getFormatValue();
-
 		const nonHoverValue = getCustomFormatValue({
 			typography,
 			formatValue,
@@ -118,7 +120,7 @@ const TypographyControl = props => {
 	};
 
 	const getWeightOptions = () => {
-		const { getFont } = select('maxiBlocks/fonts');
+		const { getFont } = select('maxiBlocks/text');
 
 		const fontFiles = getFont(getValue(`${prefix}font-family`)).files;
 		const fontOptions = Object.keys(fontFiles).map(key => key);
@@ -193,8 +195,6 @@ const TypographyControl = props => {
 	};
 
 	const onChangeFormat = value => {
-		const formatValue = getFormatValue();
-
 		const obj = setFormat({
 			formatValue,
 			isList,
@@ -373,6 +373,6 @@ const TypographyControl = props => {
 			/>
 		</div>
 	);
-};
+});
 
 export default TypographyControl;

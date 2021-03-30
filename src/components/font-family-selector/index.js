@@ -30,7 +30,7 @@ const FontFamilySelector = props => {
 	const { font, onChange, className, theme = 'light' } = props;
 
 	const { options } = useSelect(select => {
-		const { getFonts } = select('maxiBlocks/fonts');
+		const { getFonts } = select('maxiBlocks/text');
 
 		const fonts = getFonts();
 		const options = Object.values(fonts).map(({ value }) => {

@@ -20,6 +20,7 @@ import TextFormatCode from '../text-format-code';
 import {
 	setFormat,
 	getCustomFormatValue,
+	withFormatValue,
 } from '../../../../extensions/text/formats';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
@@ -37,32 +38,27 @@ import { toolbarType, reset } from '../../../../icons';
 /**
  * TextOptions
  */
-const TextOptions = props => {
+const TextOptions = withFormatValue(props => {
 	const {
 		blockName,
 		onChange,
 		breakpoint,
 		isList,
-		getFormatValue,
 		textLevel,
+		formatValue,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const getValue = prop => {
-		const formatValue = getFormatValue();
-
-		return getCustomFormatValue({
+	const getValue = prop =>
+		getCustomFormatValue({
 			typography: { ...getGroupAttributes(props, 'typography') },
 			formatValue,
 			prop,
 			breakpoint,
 		});
-	};
 
 	const onChangeFormat = value => {
-		const formatValue = getFormatValue();
-
 		const obj = setFormat({
 			formatValue,
 			isList,
@@ -233,35 +229,35 @@ const TextOptions = props => {
 						<div>
 							<TextFormatOverline
 								{...getGroupAttributes(props, 'typography')}
-								getFormatValue={getFormatValue}
+								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatStrikethrough
 								{...getGroupAttributes(props, 'typography')}
-								getFormatValue={getFormatValue}
+								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatUnderline
 								{...getGroupAttributes(props, 'typography')}
-								getFormatValue={getFormatValue}
+								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSubscript
 								{...getGroupAttributes(props, 'typography')}
-								getFormatValue={getFormatValue}
+								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSuperscript
 								{...getGroupAttributes(props, 'typography')}
-								getFormatValue={getFormatValue}
+								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
@@ -269,7 +265,7 @@ const TextOptions = props => {
 							<TextFormatCode
 								onChange={content => onChange({ content })}
 								isList={isList}
-								getFormatValue={getFormatValue}
+								formatValue={formatValue}
 							/>
 						</div>
 					</Fragment>
@@ -277,6 +273,6 @@ const TextOptions = props => {
 			}
 		/>
 	);
-};
+});
 
 export default TextOptions;

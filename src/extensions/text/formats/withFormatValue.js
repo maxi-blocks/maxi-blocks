@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { createHigherOrderComponent, pure } = wp.compose;
-const { useRef } = wp.element;
+const { useSelect } = wp.data;
 
 /**
  * Component
@@ -10,20 +10,15 @@ const { useRef } = wp.element;
 const withFormatValue = createHigherOrderComponent(
 	WrappedComponent =>
 		pure(props => {
-			const formatValue = useRef({});
+			const { formatValue } = useSelect(select => {
+				const { getFormatValue } = select('maxiBlocks/text');
 
-			const getFormatValue = () => formatValue.current;
-			const setFormatValue = newFormatValue => {
-				formatValue.current = newFormatValue;
-			};
+				const formatValue = getFormatValue();
 
-			return (
-				<WrappedComponent
-					getFormatValue={getFormatValue}
-					setFormatValue={setFormatValue}
-					{...props}
-				/>
-			);
+				return { formatValue };
+			});
+
+			return <WrappedComponent formatValue={formatValue} {...props} />;
 		}),
 	'withFormatValue'
 );

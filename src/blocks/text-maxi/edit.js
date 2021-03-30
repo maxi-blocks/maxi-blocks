@@ -5,7 +5,7 @@ const { __ } = wp.i18n;
 const { compose } = wp.compose;
 const { Fragment } = wp.element;
 const { createBlock } = wp.blocks;
-const { select, withSelect, withDispatch } = wp.data;
+const { select, withSelect, withDispatch, dispatch } = wp.data;
 const { __experimentalBlock, RichText, RichTextShortcut } = wp.blockEditor;
 const { __unstableIndentListItems, __unstableOutdentListItems } = wp.richText;
 
@@ -25,7 +25,6 @@ import {
 	fromTextToList,
 	generateFormatValue,
 	setCustomFormatsWhenPaste,
-	withFormatValue,
 } from '../../extensions/text/formats';
 import {
 	getGroupAttributes,
@@ -81,8 +80,6 @@ class edit extends MaxiBlock {
 			onSplit,
 			onReplace,
 			deviceType,
-			getFormatValue,
-			setFormatValue,
 		} = this.props;
 		const {
 			uniqueID,
@@ -119,15 +116,10 @@ class edit extends MaxiBlock {
 		);
 
 		return [
-			<Inspector
-				key={`block-settings-${uniqueID}`}
-				{...this.props}
-				getFormatValue={getFormatValue}
-			/>,
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				{...this.props}
-				getFormatValue={getFormatValue}
 				avoidProp={this.avoidProp}
 				node={this.blockRef.current}
 			/>,
@@ -216,7 +208,9 @@ class edit extends MaxiBlock {
 							__unstableAllowPrefixTransformations
 						>
 							{({ value }) => {
-								setFormatValue(value);
+								dispatch('maxiBlocks/text').sendFormatValue(
+									value
+								);
 							}}
 						</RichText>
 					)}
@@ -259,7 +253,9 @@ class edit extends MaxiBlock {
 							type={typeOfList}
 						>
 							{({ value, onChange }) => {
-								setFormatValue(value);
+								dispatch('maxiBlocks/text').sendFormatValue(
+									value
+								);
 
 								if (isSelected)
 									return (
@@ -544,4 +540,4 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 });
 
-export default compose(editSelect, editDispatch, withFormatValue)(edit);
+export default compose(editSelect, editDispatch)(edit);

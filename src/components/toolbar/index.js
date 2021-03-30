@@ -37,6 +37,7 @@ import {
 	TextBold,
 	TextItalic,
 	TextLevel,
+	TextColor,
 	TextLink,
 	TextListOptions,
 	TextOptions,
@@ -89,7 +90,6 @@ const MaxiToolbar = props => {
 		changeSVGContent,
 		clientId,
 		deviceType,
-		getFormatValue,
 		isSelected,
 		name,
 		setAttributes,
@@ -209,24 +209,22 @@ const MaxiToolbar = props => {
 							breakpoint={deviceType}
 							isList={isList}
 							typeOfList={typeOfList}
-							getFormatValue={getFormatValue}
 							textLevel={textLevel}
 						/>
-						{/* {!attributes['text-highlight'] && (
-								<TextColor
-									blockName={name}
-									{...getGroupAttributes(
-										attributes,
-										'typography'
-									)}
-									onChange={obj => setAttributes(obj)}
-									breakpoint={deviceType}
-									node={anchorRef}
-									isList={isList}
-									typeOfList={typeOfList}
-									getFormatValue={getFormatValue}
-								/>
-							)} */}
+						{!attributes['text-highlight'] && (
+							<TextColor
+								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+								node={anchorRef}
+								isList={isList}
+								typeOfList={typeOfList}
+							/>
+						)}
 						<Alignment
 							blockName={name}
 							{...getGroupAttributes(attributes, [
@@ -248,7 +246,6 @@ const MaxiToolbar = props => {
 						/>
 						<TextBold
 							{...getGroupAttributes(attributes, 'typography')}
-							getFormatValue={getFormatValue}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
@@ -256,7 +253,6 @@ const MaxiToolbar = props => {
 						/>
 						<TextItalic
 							{...getGroupAttributes(attributes, 'typography')}
-							getFormatValue={getFormatValue}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
@@ -291,13 +287,11 @@ const MaxiToolbar = props => {
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
-							getFormatValue={getFormatValue}
 							linkSettings={linkSettings}
 							breakpoint={deviceType}
 						/>
 						<TextListOptions
 							blockName={name}
-							getFormatValue={getFormatValue}
 							isList={isList}
 							typeOfList={typeOfList}
 							onChange={obj => setAttributes(obj)}

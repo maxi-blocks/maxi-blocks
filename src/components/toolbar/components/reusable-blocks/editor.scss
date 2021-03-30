@@ -1,0 +1,30 @@
+.toolbar-item__reusable-blocks {
+	&__popover {
+		min-width: 350px;
+		form {
+			width: 100%;
+			display: flex;
+			.components-button {
+				color: #fff;
+				background-color: #4f515c;
+				border: 2px solid #7a7c85;
+				height: 32px;
+				margin-left: 5px;
+				border-radius: 5px;
+			}
+			.components-base-control {
+				width: 100%;
+				.components-text-control__input {
+					&:focus {
+						border-color: #fff;
+						box-shadow: none;
+						outline: none;
+					}
+				}
+				&__label {
+					flex: 0 !important;
+				}
+			}
+		}
+	}
+}

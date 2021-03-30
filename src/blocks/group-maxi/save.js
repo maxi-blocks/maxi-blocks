@@ -7,7 +7,7 @@ const { Fragment } = wp.element;
 /**
  * Internal dependencies
  */
-import { BackgroundDisplayer } from '../../components';
+import { ArrowDisplayer, BackgroundDisplayer } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
@@ -45,6 +45,7 @@ const save = props => {
 				data-gx_initial_block_class={defaultBlockStyle}
 				id={uniqueID}
 			>
+				<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />
 				<BackgroundDisplayer
 					{...getGroupAttributes(attributes, [
 						'background',

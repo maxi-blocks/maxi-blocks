@@ -19,6 +19,18 @@ const getIconStyles = obj => {
 				'font-size': `${obj[`icon-size-${breakpoint}`]}${
 					obj[`icon-size-unit-${breakpoint}`]
 				}`,
+				'min-width': `${
+					obj[`icon-size-${breakpoint}`] +
+					obj[`icon-size-${breakpoint}`] * 0.5
+				}${obj[`icon-size-unit-${breakpoint}`]}`,
+				width: `${
+					obj[`icon-size-${breakpoint}`] +
+					obj[`icon-size-${breakpoint}`] * 0.5
+				}${obj[`icon-size-unit-${breakpoint}`]}`,
+				height: `${
+					obj[`icon-size-${breakpoint}`] +
+					obj[`icon-size-${breakpoint}`] * 0.5
+				}${obj[`icon-size-unit-${breakpoint}`]}`,
 			};
 		}
 

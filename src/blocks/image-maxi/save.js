@@ -93,21 +93,17 @@ const save = props => {
 					blockClassName={uniqueID}
 				/>
 			)}
-			<div className={hoverClasses}>
+			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>
 				{(!SVGElement && (
 					<img
 						className={`wp-image-${mediaID}`}
-						style={{ width: `${imgWidth}%` }}
 						src={mediaURL}
 						width={mediaWidth}
 						height={mediaHeight}
 						alt={imageAlt()}
 					/>
 				)) || (
-					<RawHTML
-						style={{ width: `${imgWidth}%` }}
-						className='maxi-image-block-shape-wrapper'
-					>
+					<RawHTML className='maxi-image-block-shape-wrapper'>
 						{SVGElement}
 					</RawHTML>
 				)}

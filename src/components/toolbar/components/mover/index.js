@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 const { Draggable, Icon, Button, Tooltip } = wp.components;
 const { useSelect, useDispatch } = wp.data;
 const { useEffect, useRef, Fragment } = wp.element;

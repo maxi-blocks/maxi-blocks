@@ -221,6 +221,7 @@ const FontIconControl = props => {
 							selected={activeOption}
 							options={getOptions()}
 							fullWidthMode
+							optionType='string'
 							onChange={item => {
 								if (item === 'iconColor')
 									setActiveOption('iconColor');

@@ -15,11 +15,15 @@ const { Component, Fragment } = wp.element;
 const { Button, Modal } = wp.components;
 
 class MaxiModal extends Component {
-	state = {
-		isOpen: false,
-		isOpen2: false,
-		loadGlobalStyles: false,
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			isOpen: false,
+			isOpen2: false,
+			loadGlobalStyles: false,
+		};
+	}
 
 	render() {
 		const { className = '' } = this.props;

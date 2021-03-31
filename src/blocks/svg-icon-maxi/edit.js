@@ -40,13 +40,17 @@ import { toolbarReplaceImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlock {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			isOpen: false,
+		};
+	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
-
-	state = {
-		isOpen: false,
-	};
 
 	get getCustomData() {
 		const { uniqueID } = this.props.attributes;

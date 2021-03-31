@@ -63,13 +63,17 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 class edit extends MaxiBlock {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			displayHandlers: false,
+		};
+	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
-
-	state = {
-		displayHandlers: false,
-	};
 
 	handleFocusOutside() {
 		if (this.state.displayHandlers) {

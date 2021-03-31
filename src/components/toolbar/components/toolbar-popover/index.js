@@ -25,9 +25,13 @@ import './editor.scss';
  * Component
  */
 class ToolbarPopover extends Component {
-	state = {
-		isOpen: false,
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			isOpen: false,
+		};
+	}
 
 	onToggle() {
 		const { isOpen } = this.state;

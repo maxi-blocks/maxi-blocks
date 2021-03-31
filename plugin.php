@@ -54,3 +54,6 @@ require_once plugin_dir_path(__FILE__) . 'page-content-setting/dynamic_content.p
 // STYLING API
 //======================================================================
 require_once plugin_dir_path(__FILE__) . 'API/class-maxi-blocks-api.php';
+
+require_once plugin_dir_path(__FILE__) . 'templates/class-maxi-blocks-page-template.php';
+

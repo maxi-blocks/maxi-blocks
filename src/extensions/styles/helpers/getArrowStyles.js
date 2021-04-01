@@ -17,19 +17,23 @@ export const getArrowBorderObject = props => {
 
 	if (!isEmpty(props['border-color-general']))
 		response.general.background = props['border-color-general'];
-	if (props['border-bottom-width-general'] !== '') {
+
+	if (props['border-bottom-width-general']) {
 		response.general.top = `calc(${
 			props['border-bottom-width-general'] / 2
-		}${props['border-bottom-width-unit-general']})`;
+		}${props['border-unit-width-general']})`;
+
 		response.general.left = `calc(${
 			props['border-bottom-width-general'] / 2
-		}${props['border-bottom-width-unit-general']})`;
+		}${props['border-unit-width-general']})`;
+
 		response.general.width = `calc(50% + ${
 			props['border-bottom-width-general'] * 2
-		}${props['border-bottom-width-unit-general']})`;
+		}${props['border-unit-width-general']})`;
+
 		response.general.height = `calc(50% + ${
 			props['border-bottom-width-general'] * 2
-		}${props['border-bottom-width-unit-general']})`;
+		}${props['border-unit-width-general']})`;
 	}
 
 	return response;

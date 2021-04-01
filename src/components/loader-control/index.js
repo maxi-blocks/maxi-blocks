@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { useState } = wp.element;
+import { useState } from '@wordpress/element';
 const { SelectControl, Button } = wp.components;
 
 /**

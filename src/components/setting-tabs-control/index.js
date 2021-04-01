@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { useState } = wp.element;
+import { useState } from '@wordpress/element';
 const { Button } = wp.components;
 
 /**

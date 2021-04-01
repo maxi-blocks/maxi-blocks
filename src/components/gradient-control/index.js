@@ -3,7 +3,7 @@
  */
 const { __, sprintf } = wp.i18n;
 const { BaseControl, Button, __experimentalGradientPicker } = wp.components;
-const { useState } = wp.element;
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies

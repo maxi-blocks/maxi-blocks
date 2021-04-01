@@ -8,7 +8,7 @@ const { RadioControl } = wp.components;
  */
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 
-const { Icon } = wp.components;
+import { Icon } from '@wordpress/components';
 
 /**
  * External dependencies

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 const { Fragment, useState } = wp.element;
-const { Icon } = wp.components;
+import { Icon } from '@wordpress/components';
 
 /**
  * External dependencies

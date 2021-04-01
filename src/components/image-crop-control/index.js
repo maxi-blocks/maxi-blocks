@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 
 const { Spinner } = wp.components;
 const { Fragment, useState, useEffect, useRef } = wp.element;
-const { useSelect } = wp.data;
+import { useSelect } from '@wordpress/data';
 
 /**
  * External dependencies

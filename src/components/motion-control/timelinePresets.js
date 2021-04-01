@@ -4,7 +4,7 @@
 const { __, sprintf } = wp.i18n;
 const { Button, SelectControl } = wp.components;
 const { Fragment } = wp.element;
-const { useState } = wp.element;
+import { useState } from '@wordpress/element';
 const { useSelect, useDispatch } = wp.data;
 
 /**

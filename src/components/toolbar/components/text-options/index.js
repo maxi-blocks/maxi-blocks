@@ -4,7 +4,7 @@
 const { __, sprintf } = wp.i18n;
 const { Fragment } = wp.element;
 const { Button, BaseControl } = wp.components;
-const { useState } = wp.element;
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies

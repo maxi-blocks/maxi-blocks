@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 const { Fragment } = wp.element;
 const { Button, Dropdown, Spinner, Icon } = wp.components;
-const { useSelect } = wp.data;
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies

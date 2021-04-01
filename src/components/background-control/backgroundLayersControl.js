@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 const { useState, RawHTML } = wp.element;
-const { Icon } = wp.components;
+import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies

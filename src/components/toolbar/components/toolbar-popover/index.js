@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { dispatch } = wp.data;
+import { dispatch } from '@wordpress/data';
 const { Fragment, Component } = wp.element;
 const { Icon, Button, Popover, withFocusOutside, Tooltip } = wp.components;
 

@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 const { Fragment } = wp.element;
 const { __experimentalLinkControl } = wp.blockEditor;
-const { useSelect } = wp.data;
+import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';
 const { Button } = wp.components;
 

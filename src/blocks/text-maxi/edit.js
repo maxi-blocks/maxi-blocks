@@ -1,13 +1,20 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const { compose } = wp.compose;
-const { Fragment } = wp.element;
-const { createBlock } = wp.blocks;
-const { select, withSelect, withDispatch } = wp.data;
-const { __experimentalBlock, RichText, RichTextShortcut } = wp.blockEditor;
-const { __unstableIndentListItems, __unstableOutdentListItems } = wp.richText;
+import { __ } from '@wordpress/i18n';
+import { compose } from '@wordpress/compose';
+import { Fragment } from '@wordpress/element';
+import { createBlock } from '@wordpress/blocks';
+import { select, withSelect, withDispatch } from '@wordpress/data';
+import {
+	__experimentalBlock,
+	RichText,
+	RichTextShortcut,
+} from '@wordpress/block-editor';
+import {
+	__unstableIndentListItems,
+	__unstableOutdentListItems,
+} from '@wordpress/rich-text';
 
 /**
  * Internal dependencies

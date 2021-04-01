@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG } = wp.primitives;
+import { SVG } from '@wordpress/primitives';
 
 /**
  * External dependencies

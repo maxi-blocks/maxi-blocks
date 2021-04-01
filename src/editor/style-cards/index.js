@@ -19,7 +19,6 @@ import {
 } from '../../components';
 
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
-import exportStyleCard from './exportStyleCard';
 
 const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
 
@@ -35,6 +34,18 @@ function maxiClick(element) {
 		)
 	);
 }
+
+const exportStyleCard = (data, fileName) => {
+	const a = document.createElement('a');
+	document.body.appendChild(a);
+	a.style = 'display: none';
+	const json = JSON.stringify(data);
+	const blob = new Blob([json], { type: 'text/plain' });
+	const url = window.URL.createObjectURL(blob);
+	a.href = url;
+	a.download = fileName;
+	a.click();
+};
 
 const addActiveSCdropdownStyle = keySC => {
 	const selectArr = document.querySelectorAll(

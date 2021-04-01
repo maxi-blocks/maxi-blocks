@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path } = wp.primitives;
+import { SVG, Path } from '@wordpress/primitives';
 
 const image = (
 	<SVG data-name='Layer 1' viewBox='0 0 21.15 21.15'>

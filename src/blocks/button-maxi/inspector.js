@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 const { InspectorControls } = wp.blockEditor;
 const { TextControl, Icon } = wp.components;
 const { Fragment } = wp.element;

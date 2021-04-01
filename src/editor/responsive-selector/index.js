@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 const { Button, Icon } = wp.components;
 const { useSelect, useDispatch } = wp.data;
 const { createBlock } = wp.blocks;

@@ -36,7 +36,6 @@ h2.gx_error {
 	}
 }
 
-
 /*****************
 * Editor settings
 ******************/
@@ -44,7 +43,7 @@ body.maxi-blocks--active {
 	.block-editor-block-list__layout.is-root-container {
 		.maxi-block {
 			&[data-align="full"] {
-				.wp-block:not[data-align=normal] {
+				.wp-block:not[data-align="normal"] {
 					max-width: none;
 				}
 			}
@@ -206,7 +205,7 @@ body .toolbar-item__popover {
 		font-size: 0 !important;
 
 		&:before {
-			content: url("../img/maxi-reset.svg") !important;
+			content: url("../../img/maxi-reset.svg") !important;
 			margin: auto;
 			margin-left: auto;
 			color: #464a53;
@@ -224,8 +223,6 @@ body .toolbar-item__popover {
 		color: #fff;
 	}
 }
-
-
 
 body.maxi-blocks--active.rtl .maxi-sidebar,
 body.rtl .maxi-popover,

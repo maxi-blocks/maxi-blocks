@@ -2,7 +2,7 @@ export { default as advanced } from './advanced';
 export { default as box } from './box';
 export { default as brokenLink } from './broken-link';
 export { default as boxSettings } from './box-settings';
-export { default as button } from './button';
+export { default as settingButton } from './button';
 export { default as chevronDown } from './chevron-down';
 export { default as colorWheel } from './color-wheel';
 export { default as colors } from './colors';

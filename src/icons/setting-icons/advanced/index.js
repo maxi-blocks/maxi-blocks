@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path } = wp.primitives;
+import { SVG, Path } from '@wordpress/primitives';
 
 const advanced = (
 	<SVG width={36.07} height={36.063} viewBox='0 0 36.07 36.063'>

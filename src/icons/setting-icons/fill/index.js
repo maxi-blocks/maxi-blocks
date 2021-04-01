@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path } = wp.primitives;
+import { SVG, Path } from '@wordpress/primitives';
 
 const fill = (
 	<SVG height={512} viewBox='0 0 467.766 467.766' width={512}>

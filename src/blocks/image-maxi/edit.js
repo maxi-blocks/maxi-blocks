@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 const { Fragment, RawHTML } = wp.element;
 const { withSelect } = wp.data;
 const { Spinner, Button, Placeholder } = wp.components;

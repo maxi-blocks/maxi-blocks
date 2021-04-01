@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path, Circle } = wp.primitives;
+import { SVG, Path, Circle } from '@wordpress/primitives';
 
 const group = (
 	<SVG preserveAspectRatio='none' width={24} height={24} viewBox='0 0 24 24'>

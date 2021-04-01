@@ -82,7 +82,7 @@ function maxi_block_assets() { // phpcs:ignore
 }
 
 // Hook: Block assets.
-add_action('init', 'maxi_block_assets');
+// add_action('init', 'maxi_block_assets');
 
 
 function maxi_load_custom_wp_admin_script() {

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path } = wp.primitives;
+import { SVG, Path } from '@wordpress/primitives';
 
 const boxSettings = (
 	<SVG x='0px' y='0px' viewBox='0 0 34 35' xmlSpace='preserve'>

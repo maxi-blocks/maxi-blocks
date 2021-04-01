@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path } = wp.primitives;
+import { SVG, Path } from '@wordpress/primitives';
 
 const main = (
 	<SVG id='Layer_1' x='0px' y='0px' viewBox='0 0 45 38' xmlSpace='preserve'>

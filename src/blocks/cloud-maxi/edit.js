@@ -11,7 +11,7 @@ import { library } from '../../icons';
 /**
  * WordPress dependencies.
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 const { Placeholder } = wp.components;
 const { Component, Fragment } = wp.element;
 const { BlockControls, BlockAlignmentToolbar } = wp.editor;

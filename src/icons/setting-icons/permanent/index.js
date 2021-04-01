@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path } = wp.primitives;
+import { SVG, Path } from '@wordpress/primitives';
 
 const permanent = (
 	<SVG viewBox='0 0 469.333 469.333'>

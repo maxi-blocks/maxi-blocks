@@ -1,0 +1,790 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ColorControl should render ColorControl 1`] = `
+<div
+  className="maxi-color-control"
+>
+  <div
+    className="components-base-control maxi-color-control__display css-wdf2ti-Wrapper e1puf3u0"
+  >
+    <div
+      className="components-base-control__field css-11vcxb9-StyledField e1puf3u1"
+    >
+      <span
+        className="components-base-control__label"
+      >
+        undefined Colour
+      </span>
+      <div
+        className="maxi-color-control__display__color"
+      >
+        <span
+          style={
+            Object {
+              "background": "#FFF",
+            }
+          }
+        />
+        <button
+          aria-describedby={null}
+          aria-label="Reset font size settings"
+          className="components-button components-maxi-control__reset-button"
+          onClick={[Function]}
+          type="reset"
+        >
+          <svg
+            aria-hidden={true}
+            focusable={false}
+            role="img"
+            viewBox="0 0 17 16"
+          >
+            <path
+              d="M16.55.91v5c0 .27-.1.5-.3.7s-.43.3-.7.3h-5.09c-.27 0-.51-.1-.7-.3-.2-.2-.3-.44-.3-.72s.1-.52.3-.72c.2-.2.43-.3.7-.3h2.56c-.63-.9-1.29-1.6-1.98-2.13-.7-.52-1.56-.78-2.58-.78-1.63 0-3.01.57-4.14 1.7-1.14 1.14-1.7 2.51-1.7 4.12 0 1.62.57 2.99 1.7 4.13 1.13 1.14 2.52 1.7 4.14 1.7 1.25 0 2.39-.37 3.41-1.11 1.02-.74 1.73-1.7 2.12-2.89.08-.27.25-.47.52-.61.26-.13.53-.16.8-.06s.47.27.59.52.15.51.06.78a7.759 7.759 0 01-2.88 3.94c-1.37 1-2.92 1.5-4.62 1.5-2.19 0-4.05-.77-5.59-2.31S.56 9.97.56 7.79s.77-4.04 2.31-5.58C4.4.68 6.27-.09 8.46-.09c.35 0 .69.02 1.02.06.32.04.61.09.88.14.26.05.53.14.8.27s.49.23.67.31c.18.08.38.21.61.39.23.18.4.31.52.41s.27.25.47.47.33.36.39.44.19.23.38.47.3.38.34.42V.91c0-.27.1-.5.3-.7s.44-.3.72-.3.52.1.72.3.27.43.27.7z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="components-base-control components-range-control maxi-color-control__opacity css-wdf2ti-Wrapper e1puf3u0"
+  >
+    <div
+      className="components-base-control__field css-11vcxb9-StyledField e1puf3u1"
+    >
+      <label
+        className="components-base-control__label css-pezhm9-StyledLabel e1puf3u2"
+        htmlFor="inspector-range-control-0"
+      >
+        Colour Opacity
+      </label>
+      <div
+        className="components-range-control__root css-cnpwwj-Root exqw8y20"
+      >
+        <div
+          className="components-range-control__wrapper css-1yn9onp-Wrapper exqw8y21"
+          color="var( --wp-admin-theme-color, #00669b)"
+        >
+          <input
+            aria-hidden={false}
+            aria-label="Colour Opacity"
+            className="components-range-control__slider css-pioupe-InputRange exqw8y211"
+            disabled={false}
+            id="inspector-range-control-0"
+            max={100}
+            min={0}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onMouseLeave={[Function]}
+            onMouseMove={[Function]}
+            step={1}
+            tabIndex={0}
+            type="range"
+            value={100}
+          />
+          <span
+            aria-hidden={true}
+            className="css-6zw57b-Rail exqw8y24"
+            disabled={false}
+          />
+          <span
+            aria-hidden={true}
+            className="components-range-control__track css-8esixb-Track exqw8y25"
+            disabled={false}
+            style={
+              Object {
+                "width": "100%",
+              }
+            }
+          />
+          <span
+            className="css-18yj1rn-ThumbWrapper exqw8y29"
+            style={
+              Object {
+                "left": "100%",
+              }
+            }
+          >
+            <span
+              aria-hidden={true}
+              className="css-13qro67-Thumb exqw8y210"
+            />
+          </span>
+          <span
+            aria-hidden={false}
+            className="components-simple-tooltip components-range-control__tooltip css-lyfq97-Tooltip exqw8y212"
+            role="tooltip"
+            style={
+              Object {
+                "left": "100%",
+                "zIndex": 100,
+              }
+            }
+          >
+            100
+          </span>
+        </div>
+        <div
+          className="components-flex components-input-control components-number-control components-range-control__number exqw8y213 ep48uk90 e1cr7zh10 css-1gezd1o-Flex-Root-Input-InputNumber eboqfv50"
+          direction="column"
+        >
+          <div
+            className="components-flex__item e1cr7zh14 css-d373l0-Item-LabelWrapper eboqfv51"
+          />
+          <div
+            className="components-input-control__container css-2epv2a-Container e1cr7zh11"
+            disabled={false}
+          >
+            <input
+              aria-label="Colour Opacity"
+              autoComplete="off"
+              className="components-input-control__input css-18r749p-Input e1cr7zh12"
+              disabled={false}
+              id="inspector-input-control-0"
+              inputMode="decimal"
+              max={100}
+              min={0}
+              onBlur={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+              onPointerCancel={[Function]}
+              onPointerDown={[Function]}
+              onPointerMove={[Function]}
+              onPointerUp={[Function]}
+              size="default"
+              step={1}
+              type="number"
+              value={100}
+            />
+            <div
+              aria-hidden="true"
+              className="components-input-control__backdrop css-tekiis-BackdropUI e1cr7zh15"
+              disabled={false}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="maxi-color-control__color"
+  >
+    <div
+      className="chrome-picker "
+      style={
+        Object {
+          "MozBorderRadius": "2px",
+          "MozBoxShadow": "0 0 2px rgba(0,0,0,.3), 0 4px 8px rgba(0,0,0,.3)",
+          "OBorderRadius": "2px",
+          "OBoxShadow": "0 0 2px rgba(0,0,0,.3), 0 4px 8px rgba(0,0,0,.3)",
+          "WebkitBorderRadius": "2px",
+          "WebkitBoxShadow": "0 0 2px rgba(0,0,0,.3), 0 4px 8px rgba(0,0,0,.3)",
+          "background": "#fff",
+          "borderRadius": "2px",
+          "boxShadow": "0 0 2px rgba(0,0,0,.3), 0 4px 8px rgba(0,0,0,.3)",
+          "boxSizing": "initial",
+          "fontFamily": "Menlo",
+          "msBorderRadius": "2px",
+          "msBoxShadow": "0 0 2px rgba(0,0,0,.3), 0 4px 8px rgba(0,0,0,.3)",
+          "width": 225,
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "MozBorderRadius": "2px 2px 0 0",
+            "OBorderRadius": "2px 2px 0 0",
+            "WebkitBorderRadius": "2px 2px 0 0",
+            "borderRadius": "2px 2px 0 0",
+            "msBorderRadius": "2px 2px 0 0",
+            "overflow": "hidden",
+            "paddingBottom": "55%",
+            "position": "relative",
+            "width": "100%",
+          }
+        }
+      >
+        <div
+          onMouseDown={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          style={
+            Object {
+              "MozBorderRadius": undefined,
+              "OBorderRadius": undefined,
+              "WebkitBorderRadius": undefined,
+              "background": "hsl(0,100%, 50%)",
+              "borderRadius": undefined,
+              "bottom": "0px",
+              "left": "0px",
+              "msBorderRadius": undefined,
+              "position": "absolute",
+              "right": "0px",
+              "top": "0px",
+            }
+          }
+        >
+          <style>
+            
+          .saturation-white {
+            background: -webkit-linear-gradient(to right, #fff, rgba(255,255,255,0));
+            background: linear-gradient(to right, #fff, rgba(255,255,255,0));
+          }
+          .saturation-black {
+            background: -webkit-linear-gradient(to top, #000, rgba(0,0,0,0));
+            background: linear-gradient(to top, #000, rgba(0,0,0,0));
+          }
+        
+          </style>
+          <div
+            className="saturation-white"
+            style={
+              Object {
+                "MozBorderRadius": undefined,
+                "OBorderRadius": undefined,
+                "WebkitBorderRadius": undefined,
+                "borderRadius": undefined,
+                "bottom": "0px",
+                "left": "0px",
+                "msBorderRadius": undefined,
+                "position": "absolute",
+                "right": "0px",
+                "top": "0px",
+              }
+            }
+          >
+            <div
+              className="saturation-black"
+              style={
+                Object {
+                  "MozBorderRadius": undefined,
+                  "MozBoxShadow": undefined,
+                  "OBorderRadius": undefined,
+                  "OBoxShadow": undefined,
+                  "WebkitBorderRadius": undefined,
+                  "WebkitBoxShadow": undefined,
+                  "borderRadius": undefined,
+                  "bottom": "0px",
+                  "boxShadow": undefined,
+                  "left": "0px",
+                  "msBorderRadius": undefined,
+                  "msBoxShadow": undefined,
+                  "position": "absolute",
+                  "right": "0px",
+                  "top": "0px",
+                }
+              }
+            />
+            <div
+              style={
+                Object {
+                  "cursor": "default",
+                  "left": "0%",
+                  "position": "absolute",
+                  "top": "0%",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "MozBorderRadius": "6px",
+                    "MozBoxShadow": "inset 0 0 0 1px #fff",
+                    "MozTransform": "translate(-6px, -6px)",
+                    "OBorderRadius": "6px",
+                    "OBoxShadow": "inset 0 0 0 1px #fff",
+                    "OTransform": "translate(-6px, -6px)",
+                    "WebkitBorderRadius": "6px",
+                    "WebkitBoxShadow": "inset 0 0 0 1px #fff",
+                    "WebkitTransform": "translate(-6px, -6px)",
+                    "borderRadius": "6px",
+                    "boxShadow": "inset 0 0 0 1px #fff",
+                    "height": "12px",
+                    "msBorderRadius": "6px",
+                    "msBoxShadow": "inset 0 0 0 1px #fff",
+                    "msTransform": "translate(-6px, -6px)",
+                    "transform": "translate(-6px, -6px)",
+                    "width": "12px",
+                  }
+                }
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        style={
+          Object {
+            "padding": "16px 16px 12px",
+          }
+        }
+      >
+        <div
+          className="flexbox-fix"
+          style={
+            Object {
+              "display": "flex",
+            }
+          }
+        >
+          <div
+            style={
+              Object {
+                "width": "22px",
+              }
+            }
+          >
+            <div
+              style={
+                Object {
+                  "MozBorderRadius": "8px",
+                  "OBorderRadius": "8px",
+                  "WebkitBorderRadius": "8px",
+                  "borderRadius": "8px",
+                  "height": "10px",
+                  "marginTop": "0px",
+                  "msBorderRadius": "8px",
+                  "overflow": "hidden",
+                  "position": "relative",
+                  "width": "10px",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "MozBorderRadius": "8px",
+                    "MozBoxShadow": "inset 0 0 0 1px rgba(0,0,0,.1)",
+                    "OBorderRadius": "8px",
+                    "OBoxShadow": "inset 0 0 0 1px rgba(0,0,0,.1)",
+                    "WebkitBorderRadius": "8px",
+                    "WebkitBoxShadow": "inset 0 0 0 1px rgba(0,0,0,.1)",
+                    "background": "rgba(255, 255, 255, 1)",
+                    "borderRadius": "8px",
+                    "bottom": "0px",
+                    "boxShadow": "inset 0 0 0 1px rgba(0,0,0,.1)",
+                    "left": "0px",
+                    "msBorderRadius": "8px",
+                    "msBoxShadow": "inset 0 0 0 1px rgba(0,0,0,.1)",
+                    "position": "absolute",
+                    "right": "0px",
+                    "top": "0px",
+                    "zIndex": "2",
+                  }
+                }
+              />
+              <div
+                style={
+                  Object {
+                    "MozBorderRadius": undefined,
+                    "MozBoxShadow": undefined,
+                    "OBorderRadius": undefined,
+                    "OBoxShadow": undefined,
+                    "WebkitBorderRadius": undefined,
+                    "WebkitBoxShadow": undefined,
+                    "background": "url(data:image/png;base64,00) center left",
+                    "borderRadius": undefined,
+                    "bottom": "0px",
+                    "boxShadow": undefined,
+                    "left": "0px",
+                    "msBorderRadius": undefined,
+                    "msBoxShadow": undefined,
+                    "position": "absolute",
+                    "right": "0px",
+                    "top": "0px",
+                  }
+                }
+              />
+            </div>
+          </div>
+          <div
+            style={
+              Object {
+                "MozBoxFlex": "1",
+                "WebkitBoxFlex": "1",
+                "WebkitFlex": "1",
+                "flex": "1",
+                "msFlex": "1",
+              }
+            }
+          >
+            <div
+              style={
+                Object {
+                  "height": "10px",
+                  "marginBottom": "0px",
+                  "position": "relative",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "MozBorderRadius": undefined,
+                    "MozBoxShadow": undefined,
+                    "OBorderRadius": undefined,
+                    "OBoxShadow": undefined,
+                    "WebkitBorderRadius": undefined,
+                    "WebkitBoxShadow": undefined,
+                    "borderRadius": undefined,
+                    "bottom": "0px",
+                    "boxShadow": undefined,
+                    "left": "0px",
+                    "msBorderRadius": undefined,
+                    "msBoxShadow": undefined,
+                    "position": "absolute",
+                    "right": "0px",
+                    "top": "0px",
+                  }
+                }
+              >
+                <div
+                  className="hue-horizontal"
+                  onMouseDown={[Function]}
+                  onTouchMove={[Function]}
+                  onTouchStart={[Function]}
+                  style={
+                    Object {
+                      "MozBorderRadius": undefined,
+                      "OBorderRadius": undefined,
+                      "WebkitBorderRadius": undefined,
+                      "borderRadius": undefined,
+                      "height": "100%",
+                      "msBorderRadius": undefined,
+                      "padding": "0 2px",
+                      "position": "relative",
+                    }
+                  }
+                >
+                  <style>
+                    
+            .hue-horizontal {
+              background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0
+                33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+              background: -webkit-linear-gradient(to right, #f00 0%, #ff0
+                17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+            }
+
+            .hue-vertical {
+              background: linear-gradient(to top, #f00 0%, #ff0 17%, #0f0 33%,
+                #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+              background: -webkit-linear-gradient(to top, #f00 0%, #ff0 17%,
+                #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+            }
+          
+                  </style>
+                  <div
+                    style={
+                      Object {
+                        "left": "0%",
+                        "position": "absolute",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "MozBorderRadius": "6px",
+                          "MozBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                          "MozTransform": "translate(-6px, -1px)",
+                          "OBorderRadius": "6px",
+                          "OBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                          "OTransform": "translate(-6px, -1px)",
+                          "WebkitBorderRadius": "6px",
+                          "WebkitBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                          "WebkitTransform": "translate(-6px, -1px)",
+                          "backgroundColor": "rgb(248, 248, 248)",
+                          "borderRadius": "6px",
+                          "boxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                          "height": "12px",
+                          "msBorderRadius": "6px",
+                          "msBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                          "msTransform": "translate(-6px, -1px)",
+                          "transform": "translate(-6px, -1px)",
+                          "width": "12px",
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              style={
+                Object {
+                  "display": "none",
+                  "height": "10px",
+                  "position": "relative",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "MozBorderRadius": undefined,
+                    "OBorderRadius": undefined,
+                    "WebkitBorderRadius": undefined,
+                    "borderRadius": undefined,
+                    "bottom": "0px",
+                    "left": "0px",
+                    "msBorderRadius": undefined,
+                    "position": "absolute",
+                    "right": "0px",
+                    "top": "0px",
+                  }
+                }
+              >
+                <div
+                  style={
+                    Object {
+                      "MozBorderRadius": undefined,
+                      "OBorderRadius": undefined,
+                      "WebkitBorderRadius": undefined,
+                      "borderRadius": undefined,
+                      "bottom": "0px",
+                      "left": "0px",
+                      "msBorderRadius": undefined,
+                      "overflow": "hidden",
+                      "position": "absolute",
+                      "right": "0px",
+                      "top": "0px",
+                    }
+                  }
+                >
+                  <div
+                    style={
+                      Object {
+                        "MozBorderRadius": undefined,
+                        "MozBoxShadow": undefined,
+                        "OBorderRadius": undefined,
+                        "OBoxShadow": undefined,
+                        "WebkitBorderRadius": undefined,
+                        "WebkitBoxShadow": undefined,
+                        "background": "url(data:image/png;base64,00) center left",
+                        "borderRadius": undefined,
+                        "bottom": "0px",
+                        "boxShadow": undefined,
+                        "left": "0px",
+                        "msBorderRadius": undefined,
+                        "msBoxShadow": undefined,
+                        "position": "absolute",
+                        "right": "0px",
+                        "top": "0px",
+                      }
+                    }
+                  />
+                </div>
+                <div
+                  style={
+                    Object {
+                      "MozBorderRadius": undefined,
+                      "MozBoxShadow": undefined,
+                      "OBorderRadius": undefined,
+                      "OBoxShadow": undefined,
+                      "WebkitBorderRadius": undefined,
+                      "WebkitBoxShadow": undefined,
+                      "background": "linear-gradient(to right, rgba(255,255,255, 0) 0%,
+           rgba(255,255,255, 1) 100%)",
+                      "borderRadius": undefined,
+                      "bottom": "0px",
+                      "boxShadow": undefined,
+                      "left": "0px",
+                      "msBorderRadius": undefined,
+                      "msBoxShadow": undefined,
+                      "position": "absolute",
+                      "right": "0px",
+                      "top": "0px",
+                    }
+                  }
+                />
+                <div
+                  onMouseDown={[Function]}
+                  onTouchMove={[Function]}
+                  onTouchStart={[Function]}
+                  style={
+                    Object {
+                      "height": "100%",
+                      "margin": "0 3px",
+                      "position": "relative",
+                    }
+                  }
+                >
+                  <div
+                    style={
+                      Object {
+                        "left": "100%",
+                        "position": "absolute",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "MozBorderRadius": "6px",
+                          "MozBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                          "MozTransform": "translate(-6px, -1px)",
+                          "OBorderRadius": "6px",
+                          "OBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                          "OTransform": "translate(-6px, -1px)",
+                          "WebkitBorderRadius": "6px",
+                          "WebkitBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                          "WebkitTransform": "translate(-6px, -1px)",
+                          "backgroundColor": "rgb(248, 248, 248)",
+                          "borderRadius": "6px",
+                          "boxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                          "height": "12px",
+                          "msBorderRadius": "6px",
+                          "msBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                          "msTransform": "translate(-6px, -1px)",
+                          "transform": "translate(-6px, -1px)",
+                          "width": "12px",
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="flexbox-fix"
+          style={
+            Object {
+              "display": "flex",
+              "paddingTop": "16px",
+            }
+          }
+        >
+          <div
+            className="flexbox-fix"
+            style={
+              Object {
+                "MozBoxFlex": "1",
+                "WebkitBoxFlex": "1",
+                "WebkitFlex": "1",
+                "display": "flex",
+                "flex": "1",
+                "marginLeft": "-6px",
+                "msFlex": "1",
+              }
+            }
+          >
+            <div
+              style={
+                Object {
+                  "paddingLeft": "6px",
+                  "width": "100%",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "position": "relative",
+                  }
+                }
+              >
+                <input
+                  id="rc-editable-input-1"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  spellCheck="false"
+                  style={
+                    Object {
+                      "MozBorderRadius": "2px",
+                      "MozBoxShadow": "inset 0 0 0 1px #dadada",
+                      "OBorderRadius": "2px",
+                      "OBoxShadow": "inset 0 0 0 1px #dadada",
+                      "WebkitBorderRadius": "2px",
+                      "WebkitBoxShadow": "inset 0 0 0 1px #dadada",
+                      "border": "none",
+                      "borderRadius": "2px",
+                      "boxShadow": "inset 0 0 0 1px #dadada",
+                      "color": "#333",
+                      "fontSize": "11px",
+                      "height": "21px",
+                      "msBorderRadius": "2px",
+                      "msBoxShadow": "inset 0 0 0 1px #dadada",
+                      "textAlign": "center",
+                      "width": "100%",
+                    }
+                  }
+                  value="#FFFFFF"
+                />
+                <label
+                  htmlFor="rc-editable-input-1"
+                  onMouseDown={[Function]}
+                  style={
+                    Object {
+                      "color": "#969696",
+                      "display": "block",
+                      "fontSize": "11px",
+                      "lineHeight": "11px",
+                      "marginTop": "12px",
+                      "textAlign": "center",
+                      "textTransform": "uppercase",
+                    }
+                  }
+                >
+                  hex
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            style={
+              Object {
+                "position": "relative",
+                "textAlign": "right",
+                "width": "32px",
+              }
+            }
+          >
+            <div
+              onClick={[Function]}
+              style={
+                Object {
+                  "cursor": "pointer",
+                  "marginRight": "-4px",
+                  "marginTop": "12px",
+                  "position": "relative",
+                }
+              }
+            >
+              <svg
+                onMouseEnter={[Function]}
+                onMouseOut={[Function]}
+                onMouseOver={[Function]}
+                style={
+                  Object {
+                    "MozBorderRadius": "5px",
+                    "OBorderRadius": "5px",
+                    "WebkitBorderRadius": "5px",
+                    "border": "1px transparent solid",
+                    "borderRadius": "5px",
+                    "fill": "#333",
+                    "height": "24px",
+                    "msBorderRadius": "5px",
+                    "width": "24px",
+                  }
+                }
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

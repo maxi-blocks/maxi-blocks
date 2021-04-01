@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path } = wp.primitives;
+import { SVG, Path } from '@wordpress/primitives';
 
 const brokenLink = (
 	<SVG height={512} viewBox='0 0 515.556 515.556' width={512}>

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path } = wp.primitives;
+import { SVG, Path } from '@wordpress/primitives';
 
 const infoButton = (
 	<SVG viewBox='0 0 202.978 202.978'>

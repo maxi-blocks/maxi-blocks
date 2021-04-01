@@ -1,7 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
+
 const { SelectControl } = wp.components;
 const { select } = wp.data;
 
@@ -57,7 +58,7 @@ const TypographyControl = withFormatValue(props => {
 		props.typography ||
 		getGroupAttributes(props, [
 			'typography',
-			...(isHover && ['typographyHover']),
+			...(isHover ? ['typographyHover'] : []),
 		]);
 
 	const classes = classnames('maxi-typography-control', className);

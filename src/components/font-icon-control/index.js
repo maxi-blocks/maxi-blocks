@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 const { Fragment, useState } = wp.element;
 const { Icon } = wp.components;
 
@@ -60,32 +60,30 @@ const FontIconControl = props => {
 	const classes = classnames('maxi-font-icon-control', className);
 
 	const getOptions = () => {
-		const options = [
-			...[
-				{
-					label: <Icon icon={fontIconSettings} />,
-					value: 'iconColor',
-				},
-			],
-			...(!simpleMode && [
-				{
-					label: <Icon icon={backgroundColor} />,
-					value: 'backgroundColor',
-				},
-			]),
-			...(!simpleMode && [
-				{
-					label: <Icon icon={backgroundGradient()} />,
-					value: 'backgroundGradient',
-				},
-			]),
-			...(!simpleMode && [
-				{
-					label: <Icon icon={solid} />,
-					value: 'border',
-				},
-			]),
-		];
+		const options = [];
+
+		options.push({
+			label: <Icon icon={fontIconSettings} />,
+			value: 'iconColor',
+		});
+
+		!simpleMode &&
+			options.push({
+				label: <Icon icon={backgroundColor} />,
+				value: 'backgroundColor',
+			});
+
+		!simpleMode &&
+			options.push({
+				label: <Icon icon={backgroundGradient()} />,
+				value: 'backgroundGradient',
+			});
+
+		!simpleMode &&
+			options.push({
+				label: <Icon icon={solid} />,
+				value: 'border',
+			});
 
 		return options;
 	};

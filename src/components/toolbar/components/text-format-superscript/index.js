@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 const { Icon, Button, Tooltip } = wp.components;
 const { useState, useEffect } = wp.element;
 

@@ -36,11 +36,11 @@ const BlockStylesSaver = () => {
 	return null;
 };
 
-if (document.body.classList.contains('maxi-blocks--active')) {
-	const wrapper = document.createElement('div');
-	wrapper.id = 'maxi-blocks__saver';
+// if (document.body.classList.contains('maxi-blocks--active')) {
+const wrapper = document.createElement('div');
+wrapper.id = 'maxi-blocks__saver';
 
-	document.head.appendChild(wrapper);
+document.head.appendChild(wrapper);
 
-	wp.element.render(<BlockStylesSaver />, wrapper);
-}
+wp.element.render(<BlockStylesSaver />, wrapper);
+// }

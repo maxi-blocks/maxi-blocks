@@ -7,6 +7,8 @@
 
 import React, { createContext, Component } from 'react';
 
+const { apiFetch } = wp;
+
 export const MaxiContext = createContext({
 	layouts: '',
 	sections: '',
@@ -14,15 +16,11 @@ export const MaxiContext = createContext({
 });
 
 export default class MaxiProvider extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			layouts: '',
-			sections: '',
-			all: '',
-		};
-	}
+	state = {
+		layouts: '',
+		sections: '',
+		all: '',
+	};
 
 	async componentDidMount() {
 		async components => {

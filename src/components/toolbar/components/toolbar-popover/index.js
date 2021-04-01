@@ -25,12 +25,14 @@ import './editor.scss';
  * Component
  */
 class ToolbarPopover extends Component {
-	constructor(props) {
-		super(props);
+	state = {
+		isOpen: false,
+	};
 
-		this.state = {
+	handleFocusOutside() {
+		this.setState({
 			isOpen: false,
-		};
+		});
 	}
 
 	onToggle() {
@@ -38,12 +40,6 @@ class ToolbarPopover extends Component {
 
 		this.setState({
 			isOpen: !isOpen,
-		});
-	}
-
-	handleFocusOutside() {
-		this.setState({
-			isOpen: false,
 		});
 	}
 

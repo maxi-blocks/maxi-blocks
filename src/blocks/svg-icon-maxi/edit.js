@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+
 const { compose } = wp.compose;
 const { Fragment, RawHTML } = wp.element;
 const { Button, Modal } = wp.components;
@@ -40,17 +41,13 @@ import { toolbarReplaceImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlock {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			isOpen: false,
-		};
-	}
-
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
+
+	state = {
+		isOpen: false,
+	};
 
 	get getCustomData() {
 		const { uniqueID } = this.props.attributes;

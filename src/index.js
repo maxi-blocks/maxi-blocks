@@ -29,7 +29,7 @@ import './blocks/svg-icon-maxi/svg-icon-maxi';
 import './blocks/group-maxi/group-maxi';
 
 // Sidebar
-import './blocks/customizer-maxi/index';
+// import './blocks/customizer-maxi/index';
 
 // Editor
 import './editor/saver';

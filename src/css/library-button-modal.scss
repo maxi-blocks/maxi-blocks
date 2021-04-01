@@ -1,7 +1,8 @@
 /*********************
 * Library button modal
 *********************/
-.edit-post-layout.is-sidebar-opened .edit-post-plugin-sidebar__sidebar-layout.maxi-sidebar,
+.edit-post-layout.is-sidebar-opened
+	.edit-post-plugin-sidebar__sidebar-layout.maxi-sidebar,
 .edit-post-layout.is-sidebar-opened .edit-post-sidebar.maxi-sidebar {
 	overflow-x: hidden;
 	width: 330px;
@@ -52,7 +53,7 @@
 }
 
 .maxi-tab.maxi-content-tab-label:before {
-	content: url("../img/maxi-content.svg");
+	content: url("../../img/maxi-content.svg");
 	transition: all 0.3s;
 	display: block;
 	transform: scale(1.2);
@@ -62,7 +63,7 @@
 }
 
 .maxi-tab.maxi-style-tab-label:before {
-	content: url("../img/maxi-style.svg");
+	content: url("../../img/maxi-style.svg");
 	transition: all 0.3s;
 	display: block;
 	min-height: 37px;
@@ -70,7 +71,7 @@
 }
 
 .maxi-tab.maxi-advanced-tab-label:before {
-	content: url("../img/maxi-advanced.svg");
+	content: url("../../img/maxi-advanced.svg");
 	transition: all 0.3s;
 	display: block;
 	min-height: 37px;
@@ -136,12 +137,16 @@
 	color: #dddfe1;
 }
 
-.maxi-sidebar .components-form-toggle.is-checked .components-form-toggle__track {
+.maxi-sidebar
+	.components-form-toggle.is-checked
+	.components-form-toggle__track {
 	background-color: #00ccff;
 	border: 9px solid transparent;
 }
 
-.maxi-sidebar .components-form-toggle.is-checked .components-form-toggle__thumb {
+.maxi-sidebar
+	.components-form-toggle.is-checked
+	.components-form-toggle__thumb {
 	background-color: #fff;
 	border-width: 0;
 }

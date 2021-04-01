@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path } = wp.primitives;
+import { SVG, Path } from '@wordpress/primitives';
 
 const subscript = (
 	<SVG id='Layer_1' x='0px' y='0px' viewBox='0 0 24 24' xmlSpace='preserve'>

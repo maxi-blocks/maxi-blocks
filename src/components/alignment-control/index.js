@@ -40,32 +40,31 @@ const AlignmentControl = props => {
 	} = props;
 
 	const getOptions = () => {
-		const options = [
-			...(!disableLeft && [
-				{
-					label: <Icon icon={alignLeft} />,
-					value: 'left',
-				},
-			]),
-			...(!disableCenter && [
-				{
-					label: <Icon icon={alignCenter} />,
-					value: 'center',
-				},
-			]),
-			...(!disableRight && [
-				{
-					label: <Icon icon={alignRight} />,
-					value: 'right',
-				},
-			]),
-			...(!disableJustify && [
-				{
-					label: <Icon icon={alignJustify} />,
-					value: 'justify',
-				},
-			]),
-		];
+		const options = [];
+
+		!disableLeft &&
+			options.push({
+				label: <Icon icon={alignLeft} />,
+				value: 'left',
+			});
+
+		!disableCenter &&
+			options.push({
+				label: <Icon icon={alignCenter} />,
+				value: 'center',
+			});
+
+		!disableRight &&
+			options.push({
+				label: <Icon icon={alignRight} />,
+				value: 'right',
+			});
+
+		!disableJustify &&
+			options.push({
+				label: <Icon icon={alignJustify} />,
+				value: 'justify',
+			});
 
 		return options;
 	};

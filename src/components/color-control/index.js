@@ -1,9 +1,9 @@
 /**
  * WordPress dependencies
  */
-const { __, sprintf } = wp.i18n;
-const { BaseControl, Button } = wp.components;
-const { useState, useEffect } = wp.element;
+import { __, sprintf } from '@wordpress/i18n';
+import { BaseControl, Button } from '@wordpress/components';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies

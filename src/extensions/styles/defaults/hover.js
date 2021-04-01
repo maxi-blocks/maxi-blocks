@@ -1,4 +1,4 @@
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 
 import { border, borderWidth, borderRadius } from './border';
 import { background, backgroundColor, backgroundGradient } from './background';

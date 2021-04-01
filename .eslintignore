@@ -3,6 +3,7 @@
 **/node_modules/**
 build
 node_modules
+jest.config.js
 
 API
 css

@@ -117,6 +117,11 @@ const BackgroundControl = props => {
 					onChange={obj => onChange(obj)}
 					isHover={isHover}
 					prefix={prefix}
+					disableImage={disableImage}
+					disableVideo={disableVideo}
+					disableGradient={disableGradient}
+					disableColor={disableColor}
+					disableSVG={disableSVG}
 				/>
 			)}
 			{!layersStatus && getOptions().length > 1 && (

@@ -42,6 +42,7 @@ body.maxi-blocks--active {
 					font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
 					text-transform: var(--maxi-#{$style}-#{$level}-text-transform-general);
 					text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-general);
+					letter-spacing: var(--maxi-#{$style}-#{$level}-text-letter-spacing-general);
 				}
 			}
 
@@ -143,7 +144,7 @@ body.maxi-blocks--active {
 						.maxi-svg-icon-block__icon {
 							svg path {
 								&.maxi-svg-color-first {
-									fill: var(--maxi-#{$style}-highlight-color1);
+									fill: var(--maxi-#{$style}-highlight-icon-fill);
 								}
 							}
 						}
@@ -154,7 +155,7 @@ body.maxi-blocks--active {
 					> &.maxi-svg-icon-block {
 						.maxi-svg-icon-block__icon {
 							svg path {
-								stroke: var(--maxi-#{$style}-highlight-color2);
+								stroke: var(--maxi-#{$style}-highlight-icon-line);
 							}
 						}
 					}
@@ -178,6 +179,7 @@ body.maxi-blocks--active {
 								&.maxi-text-block__content {
 									font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size});
 									line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size});
+									letter-spacing: var(--maxi-#{$style}-#{$level}-text-letter-spacing-#{$responsive_size});
 								}
 							}
 						}
@@ -221,11 +223,14 @@ body.maxi-blocks--active {
 						#{$level} {
 							font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage});
 							line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage});
+							letter-spacing: var(--maxi-#{$style}-#{$level}-text-letter-spacing-#{$current_responsive_stage});
 						}
 					}
 				}
 				.maxi-button-block__button {
-					font-size: var(--maxi-#{$style}-p-font-size-#{$current_responsive_stage});
+					font-size: var(--maxi-#{$style}-button-font-size-#{$current_responsive_stage});
+					line-height: var(--maxi-#{$style}-button-line-height-#{$current_responsive_stage});
+					letter-spacing: var(--maxi-#{$style}-button-text-letter-spacing-#{$current_responsive_stage});
 				}
 			}
 		}

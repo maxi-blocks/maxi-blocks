@@ -77,7 +77,7 @@ const attributes = {
 	...attributesData.size,
 	...attributesData.textAlignment,
 	...attributesData.transform,
-	//...attributesData.typography,
+	...attributesData.typography,
 	...attributesData.typographyHover,
 };
 

@@ -89,29 +89,14 @@ const MaxiStyleCardsTab = ({
 	const getTypographyGroup = level => {
 		const response = {};
 
-		Object.entries(SC.styleCardDefaults[SCStyle]).forEach(([key, val]) => {
-			if (key.includes(`${level}-`)) {
-				if (key.includes('font-size')) {
-					const [num, unit] = val.match(/[a-zA-Z]+|[0-9]+/g);
-					response[key] = num;
-					const newUnitKey = key.replace(
-						'font-size',
-						'font-size-unit'
-					);
-
-					response[newUnitKey] = unit;
-					return;
-				}
-				response[key] = val;
-			}
-		});
-
-		if (!isEmpty(SC.styleCard[SCStyle])) {
-			Object.entries(SC.styleCard[SCStyle]).forEach(([key, val]) => {
+		const styleCardDefaultsTypography = SCstyle => {
+			Object.entries(SCstyle).forEach(([key, val]) => {
 				if (key.includes(`${level}-`)) {
 					if (key.includes('font-size')) {
-						// console.log('key: ' + key + ' val: ' + val);
+						console.log('key: ' + key + ' val: ' + val);
 						const [num, unit] = val.match(/[a-zA-Z]+|[0-9]+/g);
+						console.log('num: ' + num);
+						console.log('unit: ' + unit);
 						response[key] = num;
 						const newUnitKey = key.replace(
 							'font-size',
@@ -120,10 +105,33 @@ const MaxiStyleCardsTab = ({
 						response[newUnitKey] = unit;
 						return;
 					}
+					if (key.includes('letter-spacing')) {
+						let newVal;
+						if (typeof val === 'number') newVal = `${val}px`;
+						else newVal = val;
+
+						console.log(typeof val + ' ' + val + ' ' + newVal);
+						const [num, unit] = newVal.match(/[a-zA-Z]+|[0-9\.]+/g);
+						console.log('num: ' + num);
+						console.log('unit: ' + unit);
+						response[key] = num;
+						const newUnitKey = key.replace(
+							'letter-spacing',
+							'letter-spacing-unit'
+						);
+
+						response[newUnitKey] = unit;
+						return;
+					}
 					response[key] = val;
 				}
 			});
-		}
+		};
+
+		styleCardDefaultsTypography(SC.styleCardDefaults[SCStyle]);
+
+		if (!isEmpty(SC.styleCard[SCStyle]))
+			styleCardDefaultsTypography(SC.styleCard[SCStyle]);
 
 		return response;
 	};
@@ -138,7 +146,7 @@ const MaxiStyleCardsTab = ({
 			<AccordionControl
 				isSecondary
 				items={[
-					{
+				deviceType === 'general' &&	{
 						label: __('Background Colours', 'maxi-blocks'),
 						content: (
 							<Fragment>
@@ -181,7 +189,7 @@ const MaxiStyleCardsTab = ({
 							</Fragment>
 						),
 					},
-					{
+					deviceType !== 'general' && {
 						label: __('Paragraph', 'maxi-blocks'),
 						content: (
 							<Fragment>
@@ -195,7 +203,9 @@ const MaxiStyleCardsTab = ({
 									hideTextShadow
 									breakpoint={deviceType}
 									onChange={obj => {
-										const parsedContent = parseSCtypography(obj);
+										const parsedContent = parseSCtypography(
+											obj
+										);
 										console.log('parsedContent p' + JSON.stringify(parsedContent));
 										onChangeValue(
 											'typography',
@@ -221,7 +231,7 @@ const MaxiStyleCardsTab = ({
 							</Fragment>
 						),
 					},
-					{
+					deviceType !== 'general' && {
 						label: __('Button', 'maxi-blocks'),
 						content: (
 							<Fragment>
@@ -235,7 +245,9 @@ const MaxiStyleCardsTab = ({
 									hideTextShadow
 									breakpoint={deviceType}
 									onChange={obj => {
-										const parsedContent = parseSCtypography(obj);
+										const parsedContent = parseSCtypography(
+											obj
+										);
 										// console.log('parsedContent' + JSON.stringify(parsedContent));
 										onChangeValue(
 											'typography',
@@ -268,7 +280,7 @@ const MaxiStyleCardsTab = ({
 							</Fragment>
 						),
 					},
-					{
+					deviceType !== 'general' && {
 						label: __('H1', 'maxi-blocks'),
 						content: (
 							<TypographyControl
@@ -281,7 +293,9 @@ const MaxiStyleCardsTab = ({
 								hideTextShadow
 								breakpoint={deviceType}
 								onChange={obj => {
-									const parsedContent = parseSCtypography(obj);
+									const parsedContent = parseSCtypography(
+										obj
+									);
 									// console.log('parsedContent' + JSON.stringify(parsedContent));
 									onChangeValue(
 										'typography',
@@ -292,7 +306,7 @@ const MaxiStyleCardsTab = ({
 							/>
 						),
 					},
-					{
+					deviceType === 'general' && {
 						label: __('Highlight', 'maxi-blocks'),
 						content: (
 							<Fragment>
@@ -389,7 +403,7 @@ const MaxiStyleCardsTab = ({
 							</Fragment>
 						),
 					},
-					{
+					deviceType === 'general' && {
 						label: __('Hover', 'maxi-blocks'),
 						content: (
 							<ColorControl
@@ -408,7 +422,7 @@ const MaxiStyleCardsTab = ({
 							/>
 						),
 					},
-					{
+					deviceType === 'general' && {
 						label: __('Icon', 'maxi-blocks'),
 						content: (
 							<Fragment>

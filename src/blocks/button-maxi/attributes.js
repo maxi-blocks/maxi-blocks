@@ -42,7 +42,7 @@ const attributes = {
 		},
 	},
 	...attributesData.textAlignment,
-//	...attributesData.typography,
+	...attributesData.typography,
 	...attributesData.typographyHover,
 	...{
 		...attributesData.background,

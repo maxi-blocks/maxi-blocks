@@ -228,6 +228,42 @@ const BackgroundLayersControl = ({
 		return false;
 	};
 
+	const getOptions = () => {
+		const options = [];
+
+		!disableColor &&
+			options.push({
+				label: __('Background Colour', 'maxi-blocks'),
+				value: 'color',
+			});
+
+		!disableColor &&
+			options.push({
+				label: __('Background Image', 'maxi-blocks'),
+				value: 'image',
+			});
+
+		!disableVideo &&
+			options.push({
+				label: __('Background Video', 'maxi-blocks'),
+				value: 'video',
+			});
+
+		!disableGradient &&
+			options.push({
+				label: __('Background Gradient', 'maxi-blocks'),
+				value: 'gradient',
+			});
+
+		!disableSVG &&
+			options.push({
+				label: __('Background Shape', 'maxi-blocks'),
+				value: 'shape',
+			});
+
+		return options;
+	};
+
 	return (
 		<div className='maxi-background-control__layers'>
 			<FancyRadioControl
@@ -326,53 +362,7 @@ const BackgroundLayersControl = ({
 						</ReactDragListView>
 					)}
 					<LoaderControl
-						options={[
-							...(!disableColor && [
-								{
-									label: __(
-										'Background Colour',
-										'maxi-blocks'
-									),
-									value: 'color',
-								},
-							]),
-							...(!disableImage && [
-								{
-									label: __(
-										'Background Image',
-										'maxi-blocks'
-									),
-									value: 'image',
-								},
-							]),
-							...(!disableVideo && [
-								{
-									label: __(
-										'Background Video',
-										'maxi-blocks'
-									),
-									value: 'video',
-								},
-							]),
-							...(!disableGradient && [
-								{
-									label: __(
-										'Background Gradient',
-										'maxi-blocks'
-									),
-									value: 'gradient',
-								},
-							]),
-							...(!disableSVG && [
-								{
-									label: __(
-										'Background Shape',
-										'maxi-blocks'
-									),
-									value: 'shape',
-								},
-							]),
-						]}
+						options={getOptions()}
 						onClick={value => {
 							layers.push(getObject(value));
 

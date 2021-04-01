@@ -147,7 +147,7 @@ const AxisControl = props => {
 						`${target}-${key}${
 							auxTarget ? `-${auxTarget}` : ''
 						}-${breakpoint}${isHover ? '-hover' : ''}`
-					] = +newValue;
+					] = newValue;
 			});
 
 			onChange(response);
@@ -155,7 +155,7 @@ const AxisControl = props => {
 			onChange({
 				[`${target}-${singleTarget}${
 					auxTarget ? `-${auxTarget}` : ''
-				}-${breakpoint}${isHover ? '-hover' : ''}`]: +newValue,
+				}-${breakpoint}${isHover ? '-hover' : ''}`]: newValue,
 			});
 		}
 	};

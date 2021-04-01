@@ -29,6 +29,7 @@ const save = props => {
 		captionContent,
 		mediaID,
 		mediaURL,
+		imgWidth,
 		mediaWidth,
 		mediaHeight,
 		mediaAlt,
@@ -92,7 +93,7 @@ const save = props => {
 					blockClassName={uniqueID}
 				/>
 			)}
-			<div className={hoverClasses}>
+			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>
 				{(!SVGElement && (
 					<img
 						className={`wp-image-${mediaID}`}

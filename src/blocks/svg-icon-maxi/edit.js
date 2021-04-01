@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+
 const { compose } = wp.compose;
 const { Fragment, RawHTML } = wp.element;
 const { Button, Modal } = wp.components;

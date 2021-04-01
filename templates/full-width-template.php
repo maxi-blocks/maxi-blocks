@@ -7,7 +7,7 @@
 get_header();
 ?>
 
-<main style="width: 100%" id="maxi-main-container" role="main">
+<main id="maxi-main-container" role="main">
 
 	<?php
 

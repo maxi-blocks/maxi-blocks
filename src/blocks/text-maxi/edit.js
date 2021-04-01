@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { Fragment } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
-import { select, withSelect, withDispatch } from '@wordpress/data';
+import { select, withSelect, withDispatch, dispatch } from '@wordpress/data';
 import {
 	__experimentalBlock,
 	RichText,
@@ -49,7 +49,7 @@ import { isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
-	propsToAvoidRendering = ['content', 'formatValue'];
+	propsToAvoidRendering = ['formatValue'];
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
@@ -123,13 +123,12 @@ class edit extends MaxiBlock {
 		);
 
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
+			<Inspector
+				key={`block-settings-${uniqueID}`}
 				{...this.props}
-				avoidProp={this.avoidProp}
-				node={this.blockRef.current}
+				propsToAvoid={['content', 'formatValue']}
 			/>,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<MotionPreview
 				key={`motion-preview-${uniqueID}`}
 				{...getGroupAttributes(attributes, 'motion')}

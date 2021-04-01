@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+const { __ } = wp.i18n;
 const { BaseControl } = wp.components;
 const { useState } = wp.element;
 
@@ -32,51 +33,27 @@ const TextControl = props => {
 
 	const videoUrlRegex = /(https?:\/\/)www.(youtube.com\/watch[?]v=([a-zA-Z0-9_-]{11}))|https?:\/\/(www.)?vimeo.com\/([0-9]{9})|https?:\/\/.*\.(?:mp4|webm|ogg)$/g;
 
-	// Validate Input on blur
-	const validateInput = target => {
-		const text = target.value;
-
-		// video-url type validation
-		if (type === 'video-url') {
-			if (!videoUrlRegex.test(text)) {
-				setValidationText('Invalid video url');
-			} else {
-				setValidationText(null);
-			}
-		}
-
-		if (value === '') {
-			setValidationText(null);
-		}
-	};
-
-	// Validate Input onChange
-	const onChangeValue = value => {
-		if (type === 'video-url') {
-			if (videoUrlRegex.test(value)) {
-				setValidationText(null);
-			}
-		}
-
-		if (value === '') {
-			setValidationText(null);
-		}
-	};
-
 	return (
 		<BaseControl label={label} className={classes}>
 			<input
-				type='text'
-				value={value}
+				type={type === 'video-url' ? 'url' : 'text'}
+				value={value || ''}
 				onChange={e => {
-					e.preventDefault();
-					onChange(e.target.value);
-					onChangeValue(e.target.value);
+					const textValue = e.target.value;
+					if (type === 'video-url') {
+						if (textValue && !videoUrlRegex.test(textValue)) {
+							setValidationText(
+								__('Invalid video URL', 'maxi-blocks')
+							);
+						} else {
+							setValidationText(null);
+						}
+					}
+					onChange(textValue);
 				}}
-				onBlur={value => validateInput(value.target)}
 				placeholder={placeholder}
 			/>
-			{!!validationText && (
+			{type === 'video-url' && !!validationText && (
 				<div className='maxi-input-control__validation-text'>
 					{validationText}
 				</div>

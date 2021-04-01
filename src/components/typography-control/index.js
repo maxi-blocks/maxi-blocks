@@ -259,7 +259,7 @@ const TypographyControl = withFormatValue(props => {
 			<SizeControl
 				className='maxi-typography-control__line-height'
 				label={__('Line Height', 'maxi-blocks')}
-				unit={getValue(`${prefix}line-height-unit`)}
+				unit={getValue(`${prefix}line-height-unit`) || ''}
 				defaultUnit={getDefault(`${prefix}line-height-unit`)}
 				onChangeUnit={val => {
 					onChangeFormat({ [`${prefix}line-height-unit`]: val });

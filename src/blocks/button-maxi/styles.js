@@ -134,6 +134,7 @@ const getIconObject = props => {
 	const response = {
 		icon: getIconStyles({
 			...getGroupAttributes(props, 'icon'),
+			...getGroupAttributes(props, 'iconPadding'),
 		}),
 		padding: getMarginPaddingStyles(
 			{

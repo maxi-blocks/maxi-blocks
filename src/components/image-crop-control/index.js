@@ -1,7 +1,8 @@
 /**
  * Wordpress dependencies
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
+
 const { Spinner } = wp.components;
 const { Fragment, useState, useEffect, useRef } = wp.element;
 const { useSelect } = wp.data;

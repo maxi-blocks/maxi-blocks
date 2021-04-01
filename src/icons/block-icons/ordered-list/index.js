@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path } = wp.primitives;
+import { SVG, Path } from '@wordpress/primitives';
 
 const orderedList = (
 	<SVG preserveAspectRatio='none' width={24} height={24} viewBox='0 0 24 24'>

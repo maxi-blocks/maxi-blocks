@@ -55,6 +55,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 class edit extends MaxiBlock {
 	constructor(props) {
 		super(props);
+
 		this.resizableObject = createRef();
 	}
 

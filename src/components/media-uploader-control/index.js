@@ -1,7 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
+
 const { withSelect } = wp.data;
 const { MediaUpload, MediaUploadCheck } = wp.blockEditor;
 const { Button, ResponsiveWrapper, Spinner } = wp.components;

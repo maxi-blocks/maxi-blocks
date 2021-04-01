@@ -5,6 +5,11 @@ import classnames from 'classnames';
 import { isEmpty, isNull } from 'lodash';
 
 /**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const MotionPreview = props => {

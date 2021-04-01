@@ -1,7 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
+
 const { SelectControl } = wp.components;
 const { useState } = wp.element;
 const { select } = wp.data;
@@ -54,7 +55,7 @@ const TypographyControl = props => {
 		props.typography ||
 			getGroupAttributes(props, [
 				'typography',
-				...(isHover && ['typographyHover']),
+				// ...(isHover && ['typographyHover']),
 			])
 	);
 
@@ -259,7 +260,7 @@ const TypographyControl = props => {
 			<SizeControl
 				className='maxi-typography-control__line-height'
 				label={__('Line Height', 'maxi-blocks')}
-				unit={getValue(`${prefix}line-height-unit`)}
+				unit={getValue(`${prefix}line-height-unit`) || ''}
 				defaultUnit={getDefault(`${prefix}line-height-unit`)}
 				onChangeUnit={val => {
 					onChangeFormat({ [`${prefix}line-height-unit`]: val });

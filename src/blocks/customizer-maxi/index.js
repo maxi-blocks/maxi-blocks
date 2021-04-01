@@ -1,4 +1,4 @@
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 
 import { registerPlugin } from '@wordpress/plugins';
 import { PluginSidebar, PluginSidebarMoreMenuItem } from '@wordpress/edit-post';

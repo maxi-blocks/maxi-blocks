@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { SVG, Path, G } = wp.primitives;
+import { SVG, Path, G } from '@wordpress/primitives';
 
 const presetOne = () => (
 	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 88.3 34.9'>

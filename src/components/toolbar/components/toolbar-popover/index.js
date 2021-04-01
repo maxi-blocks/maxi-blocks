@@ -29,17 +29,17 @@ class ToolbarPopover extends Component {
 		isOpen: false,
 	};
 
+	handleFocusOutside() {
+		this.setState({
+			isOpen: false,
+		});
+	}
+
 	onToggle() {
 		const { isOpen } = this.state;
 
 		this.setState({
 			isOpen: !isOpen,
-		});
-	}
-
-	handleFocusOutside() {
-		this.setState({
-			isOpen: false,
 		});
 	}
 

@@ -64,44 +64,43 @@ const BackgroundControl = props => {
 	const classes = classnames('maxi-background-control', className);
 
 	const getOptions = () => {
-		const options = [
-			...(!disableNoneStyle && [
-				{
-					label: <Icon icon={styleNone} />,
-					value: '',
-				},
-			]),
-			...(!disableColor && [
-				{
-					label: <Icon icon={backgroundColor} />,
-					value: 'color',
-				},
-			]),
-			...(!disableImage && [
-				{
-					label: <Icon icon={backgroundImage} />,
-					value: 'image',
-				},
-			]),
-			...(!disableVideo && [
-				{
-					label: <Icon icon={backgroundVideo} />,
-					value: 'video',
-				},
-			]),
-			...(!disableGradient && [
-				{
-					label: <Icon icon={backgroundGradient()} />,
-					value: 'gradient',
-				},
-			]),
-			...(!disableSVG && [
-				{
-					label: <Icon icon={shape} />,
-					value: 'svg',
-				},
-			]),
-		];
+		const options = [];
+
+		!disableNoneStyle &&
+			options.push({
+				label: <Icon icon={styleNone} />,
+				value: '',
+			});
+
+		!disableColor &&
+			options.push({
+				label: <Icon icon={backgroundColor} />,
+				value: 'color',
+			});
+
+		!disableImage &&
+			options.push({
+				label: <Icon icon={backgroundImage} />,
+				value: 'image',
+			});
+
+		!disableVideo &&
+			options.push({
+				label: <Icon icon={backgroundVideo} />,
+				value: 'video',
+			});
+
+		!disableGradient &&
+			options.push({
+				label: <Icon icon={backgroundGradient()} />,
+				value: 'gradient',
+			});
+
+		!disableSVG &&
+			options.push({
+				label: <Icon icon={shape} />,
+				value: 'svg',
+			});
 
 		return options;
 	};

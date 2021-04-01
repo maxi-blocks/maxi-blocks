@@ -73,7 +73,12 @@ class MaxiBlock extends Component {
 	 * Prevents rendering
 	 */
 	shouldComponentUpdate(nextProps, nextState) {
-		if (this.props.isSelected !== nextProps.isSelected) return true;
+		// Ensures rendering when selecting or unselecting
+		if (
+			!this.props.isSelected ||
+			this.props.isSelected !== nextProps.isSelected
+		)
+			return true;
 
 		if (!isEmpty(this.propsToAvoidRendering)) {
 			const oldAttributes = cloneDeep(nextProps.attributes);

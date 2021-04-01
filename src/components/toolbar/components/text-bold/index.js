@@ -3,8 +3,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+
 const { Icon, Button, Tooltip } = wp.components;
-const { useState, useEffect } = wp.element;
 
 /**
  * Internal dependencies
@@ -30,41 +30,28 @@ const TextBold = withFormatValue(props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	const getBoldValue = () =>
-		getCustomFormatValue({
-			typography: { ...getGroupAttributes(props, 'typography') },
-			formatValue,
-			prop: 'font-weight',
-			breakpoint,
-		});
+	const typography = { ...getGroupAttributes(props, 'typography') };
 
-	const boldValue = getBoldValue();
-
-	const [isActive, setIsActive] = useState(
-		(boldValue > 400 && true) || false
-	);
-
-	useEffect(() => {
-		const boldValue = getBoldValue();
-
-		setIsActive((boldValue > 400 && true) || false);
+	const boldValue = getCustomFormatValue({
+		typography,
+		formatValue,
+		prop: 'font-weight',
+		breakpoint,
 	});
 
-	const onClick = () => {
-		const boldValue = getBoldValue();
+	const isActive = (boldValue > 400 && true) || false;
 
+	const onClick = () => {
 		const obj = setFormat({
 			formatValue,
-			isActive: (boldValue > 400 && true) || false,
+			isActive,
 			isList,
-			typography: { ...getGroupAttributes(props, 'typography') },
+			typography,
 			value: {
 				'font-weight': (isActive && 400) || 800,
 			},
 			breakpoint,
 		});
-
-		setIsActive(!isActive);
 
 		onChange(obj);
 	};

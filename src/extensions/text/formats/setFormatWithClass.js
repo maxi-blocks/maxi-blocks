@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { applyFormat } = wp.richText;
+const { applyFormat, toHTMLString } = wp.richText;
 
 /**
  * Internal dependencies
@@ -10,11 +10,12 @@ import getFormattedString from './getFormattedString';
 import getCurrentFormatClassName from './getCurrentFormatClassName';
 import flatFormatsWithClass from './flatFormatsWithClass';
 import getMultiFormatObj from './getMultiFormatObj';
+import defaultTypography from '../defaults';
 
 /**
  * External dependencies
  */
-import { inRange, cloneDeep } from 'lodash';
+import { inRange, cloneDeep, isEmpty } from 'lodash';
 
 /**
  * Generates custom format name
@@ -107,11 +108,16 @@ const styleObjectManipulator = ({
 	value,
 	breakpoint,
 	currentStyle,
+	textLevel = 'p', // temporary
 }) => {
 	const style = cloneDeep(currentStyle);
 
 	Object.entries(value).forEach(([target, val]) => {
 		if (typography[`${target}-${breakpoint}`] === val)
+			delete style[`${target}-${breakpoint}`];
+		else if (
+			defaultTypography[textLevel][`${target}-${breakpoint}`] === val
+		)
 			delete style[`${target}-${breakpoint}`];
 		else style[`${target}-${breakpoint}`] = val;
 	});
@@ -270,6 +276,93 @@ const generateNewCustomFormat = ({
 	};
 };
 
+const removeCustomFormat = ({ formatValue, className, isList }) => {
+	const newFormatValue = cloneDeep(formatValue);
+
+	Object.entries(newFormatValue.formats).forEach(([key, value]) => {
+		if (value && value[0].attributes.className === className)
+			newFormatValue.formats[key] = null;
+	});
+
+	const newContent = toHTMLString({
+		value: newFormatValue,
+		multilineTag: (isList && 'li') || null,
+	});
+
+	return { formatValue: newFormatValue, content: newContent };
+};
+
+const manageCustomFormat = ({
+	formatValue,
+	typography,
+	currentClassName,
+	formatClassName,
+	breakpoint,
+	value,
+	isHover,
+	isList = false, // temporary
+	isFullFormat,
+}) => {
+	const {
+		typography: newTypography,
+		formatValue: newFormatValue,
+	} = generateNewCustomFormat({
+		typography,
+		formatValue,
+		currentClassName,
+		formatClassName,
+		breakpoint,
+		value,
+		isHover,
+	});
+
+	const { typography: cleanedTypography } = updateCustomFormat({
+		typography,
+		currentClassName: formatClassName,
+		breakpoint,
+		value,
+		isHover,
+	});
+
+	if (
+		isEmpty(
+			cleanedTypography[`custom-formats${isHover ? '-hover' : ''}`][
+				currentClassName
+			]
+		)
+	) {
+		const {
+			formatValue: newFormatValue,
+			content: newContent,
+		} = removeCustomFormat({
+			formatValue,
+			className: formatClassName,
+			isList: false,
+		});
+
+		return {
+			typography: newTypography,
+			formatValue: newFormatValue,
+			content: newContent,
+		};
+		// eslint-disable-next-line no-else-return
+	} else {
+		const newContent = applyCustomFormat({
+			formatValue: newFormatValue || formatValue,
+			isList,
+			formatClassName:
+				(isFullFormat && currentClassName) || formatClassName,
+			isHover,
+		});
+
+		return {
+			typography: newTypography,
+			formatValue: newFormatValue,
+			content: newContent,
+		};
+	}
+};
+
 /**
  * Merge new custom format
  *
@@ -309,7 +402,11 @@ const mergeNewFormat = ({
 		});
 	});
 
-	const { typography: newTypography, formatValue: newFormatValue } =
+	const {
+		typography: newTypography,
+		formatValue: newFormatValue,
+		content: newContent,
+	} =
 		currentClassName && isFullFormat
 			? updateCustomFormat({
 					typography,
@@ -319,7 +416,7 @@ const mergeNewFormat = ({
 					value,
 					isHover,
 			  })
-			: generateNewCustomFormat({
+			: manageCustomFormat({
 					typography,
 					formatValue,
 					currentClassName,
@@ -327,14 +424,8 @@ const mergeNewFormat = ({
 					breakpoint,
 					value,
 					isHover,
+					isFullFormat,
 			  });
-
-	const newContent = applyCustomFormat({
-		formatValue: newFormatValue || formatValue,
-		isList,
-		formatClassName: (isFullFormat && currentClassName) || formatClassName,
-		isHover,
-	});
 
 	return {
 		typography: newTypography,
@@ -454,6 +545,7 @@ const setFormatWithClass = ({
 	value,
 	isList,
 	isHover = false,
+	textLevel = 'p',
 }) => {
 	// Fixes first render when pasting content
 	if (!formatValue || !typography) return {};

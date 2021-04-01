@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { Fragment } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
-import { select, withSelect, withDispatch } from '@wordpress/data';
+import { select, withSelect, withDispatch, dispatch } from '@wordpress/data';
 import {
 	__experimentalBlock,
 	RichText,
@@ -49,7 +49,7 @@ import { isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
-	propsToAvoidRendering = ['content', 'formatValue'];
+	propsToAvoidRendering = ['formatValue'];
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
@@ -123,13 +123,12 @@ class edit extends MaxiBlock {
 		);
 
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
+			<Inspector
+				key={`block-settings-${uniqueID}`}
 				{...this.props}
-				avoidProp={this.avoidProp}
-				node={this.blockRef.current}
+				propsToAvoid={['content', 'formatValue']}
 			/>,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<MotionPreview
 				key={`motion-preview-${uniqueID}`}
 				{...getGroupAttributes(attributes, 'motion')}
@@ -162,39 +161,39 @@ class edit extends MaxiBlock {
 							onChange={content => {
 								setAttributes({ content });
 
-								const formatElement = {
-									multilineTag: isList ? 'li' : undefined,
-									multilineWrapperTags: isList
-										? typeOfList
-										: undefined,
-								};
+								// const formatElement = {
+								// 	multilineTag: isList ? 'li' : undefined,
+								// 	multilineWrapperTags: isList
+								// 		? typeOfList
+								// 		: undefined,
+								// };
 
-								const formatValue = generateFormatValue(
-									formatElement,
-									this.blockRef ? this.blockRef.current : null
-								);
+								// const formatValue = generateFormatValue(
+								// 	formatElement,
+								// 	this.blockRef ? this.blockRef.current : null
+								// );
 
-								/**
-								 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-								 * and add some coding manually
-								 * This next script will check if there is any format directly related with
-								 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
-								 */
-								const cleanCustomProps = setCustomFormatsWhenPaste(
-									{
-										formatValue,
-										typography: getGroupAttributes(
-											attributes,
-											'typography'
-										),
-										isList,
-										typeOfList,
-										content,
-									}
-								);
+								// /**
+								//  * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+								//  * and add some coding manually
+								//  * This next script will check if there is any format directly related with
+								//  * native format 'core/link' and if it's so, will format it in Maxi Blocks way
+								//  */
+								// const cleanCustomProps = setCustomFormatsWhenPaste(
+								// 	{
+								// 		formatValue,
+								// 		typography: getGroupAttributes(
+								// 			attributes,
+								// 			'typography'
+								// 		),
+								// 		isList,
+								// 		typeOfList,
+								// 		content,
+								// 	}
+								// );
 
-								if (cleanCustomProps)
-									setAttributes(cleanCustomProps);
+								// if (cleanCustomProps)
+								// 	setAttributes(cleanCustomProps);
 							}}
 							tagName={textLevel}
 							onSplit={onSplit}
@@ -355,6 +354,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		updateBlockAttributes,
 	} = dispatch('core/block-editor');
 
+	const { getFormatValue } = select('maxiBlocks/text');
+
 	const onReplace = (blocks, node) => {
 		const currentBlocks = blocks.filter(item => !!item);
 
@@ -453,12 +454,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					clientId,
 				} = block.blocks[0];
 
-				const formatElement = {
-					multilineTag: isList ? 'li' : undefined,
-					multilineWrapperTags: isList ? typeOfList : undefined,
-					html: content,
-				};
-				const formatValue = generateFormatValue(formatElement, node);
+				const formatValue = getFormatValue();
 
 				/**
 				 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats

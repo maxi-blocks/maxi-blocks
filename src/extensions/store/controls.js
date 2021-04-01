@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { apiFetch } = wp;
-const { select } = wp.data;
+import { select } from '@wordpress/data';
 
 const controls = {
 	async RECEIVE_BREAKPOINTS() {

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { select } = wp.data;
+import { select } from '@wordpress/data';
 
 /**
  * Prepares the styles to be ready for JS FontFace API

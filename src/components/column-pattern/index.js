@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 const { useInstanceId } = wp.compose;
 const { Icon, Button } = wp.components;
-const { select } = wp.data;
+import { select } from '@wordpress/data';
 const { useState, useEffect } = wp.element;
 
 /**

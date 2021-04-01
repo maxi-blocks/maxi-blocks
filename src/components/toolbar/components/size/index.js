@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 const { RadioControl } = wp.components;
 const { Fragment } = wp.element;
-const { select } = wp.data;
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies

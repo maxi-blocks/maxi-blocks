@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 const { Fragment } = wp.element;
 const { __experimentalLinkControl } = wp.blockEditor;
 const { useSelect } = wp.data;
-const { getActiveFormat } = wp.richText;
+import { getActiveFormat } from '@wordpress/rich-text';
 const { Button } = wp.components;
 
 /**

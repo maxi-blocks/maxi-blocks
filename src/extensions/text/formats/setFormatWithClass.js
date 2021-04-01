@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { applyFormat } = wp.richText;
+import { applyFormat } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies

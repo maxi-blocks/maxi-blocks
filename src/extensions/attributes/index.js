@@ -3,7 +3,7 @@
  */
 const { addFilter } = wp.hooks;
 const { createHigherOrderComponent } = wp.compose;
-const { select } = wp.data;
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies

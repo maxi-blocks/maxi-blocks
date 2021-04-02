@@ -40,7 +40,6 @@ const attributes = {
 		...attributesData.backgroundColor,
 		'background-color': {
 			type: 'string',
-			default: 'styleCard',
 		},
 	},
 	...attributesData.backgroundImage,

@@ -51,12 +51,11 @@ const attributes = {
 			default: 'color',
 		},
 	},
-	// ...attributesData.backgroundColor,
+	...attributesData.backgroundColor,
 	...{
 		...attributesData.backgroundColor,
 		'background-color': {
 			type: 'string',
-			default: 'styleCard',
 		},
 	},
 	...attributesData.backgroundGradient,

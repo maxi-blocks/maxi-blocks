@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 const { InspectorControls } = wp.blockEditor;
 const { TextControl, Icon } = wp.components;
-const { Fragment } = wp.element;
+import { Fragment  } from '@wordpress/element';
 
 /**
  * Internal dependencies

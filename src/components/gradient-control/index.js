@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { __, sprintf } = wp.i18n;
+import { __, sprintf } from '@wordpress/i18n';
 const { BaseControl, Button, __experimentalGradientPicker } = wp.components;
 import { useState } from '@wordpress/element';
 

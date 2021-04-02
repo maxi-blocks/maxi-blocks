@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 const { SelectControl, TextareaControl, Icon } = wp.components;
-const { Fragment } = wp.element;
+import { Fragment  } from '@wordpress/element';
 
 /**
  * Internal dependencies

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 const { Fragment, RawHTML } = wp.element;
-const { withSelect } = wp.data;
+import { withSelect } from '@wordpress/data';
 const { Spinner, Button, Placeholder } = wp.components;
 const { __experimentalBlock, MediaUpload } = wp.blockEditor;
 

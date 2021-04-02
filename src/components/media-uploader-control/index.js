@@ -3,9 +3,9 @@
  */
 import { __ } from '@wordpress/i18n';
 
-const { withSelect } = wp.data;
-const { MediaUpload, MediaUploadCheck } = wp.blockEditor;
-const { Button, ResponsiveWrapper, Spinner } = wp.components;
+import { withSelect } from '@wordpress/data';
+import { MediaUpload, MediaUploadCheck } from '@wordpress/blockEditor';
+import { Button, ResponsiveWrapper, Spinner } from '@wordpress/components';
 
 /**
  * External dependencies

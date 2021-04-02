@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 const { InspectorControls } = wp.blockEditor;
-const { Fragment } = wp.element;
+import { Fragment  } from '@wordpress/element';
 const {
 	RangeControl,
 	SelectControl,

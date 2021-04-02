@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { BaseControl } = wp.components;
-const { useInstanceId } = wp.compose;
+import { useInstanceId  } from '@wordpress/compose';
 
 /**
  * External dependencies

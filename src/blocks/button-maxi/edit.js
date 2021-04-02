@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 const { compose } = wp.compose;
-const { withSelect } = wp.data;
+import { withSelect } from '@wordpress/data';
 const { __experimentalBlock, RichText } = wp.blockEditor;
 
 /**

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 const { __experimentalBlock } = wp.blockEditor;
-const { withSelect } = wp.data;
+import { withSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies

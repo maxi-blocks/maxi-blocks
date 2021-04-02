@@ -1,7 +1,7 @@
 /**
  * Wordpress dependencies
  */
-const { RadioControl } = wp.components;
+import { RadioControl } from '@wordpress/components';
 
 /**
  * Internal dependencies

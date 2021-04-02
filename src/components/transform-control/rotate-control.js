@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 const { Button, BaseControl } = wp.components;
-const { useState, useEffect } = wp.element;
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * External dependencies

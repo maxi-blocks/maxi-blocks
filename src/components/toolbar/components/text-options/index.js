@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { __, sprintf } = wp.i18n;
-const { Fragment } = wp.element;
+import { __, sprintf } from '@wordpress/i18n';
+import { Fragment  } from '@wordpress/element';
 const { Button, BaseControl } = wp.components;
 import { useState } from '@wordpress/element';
 

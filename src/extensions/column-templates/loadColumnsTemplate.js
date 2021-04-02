@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { dispatch } from '@wordpress/data';
-const { synchronizeBlocksWithTemplate } = wp.blocks;
+import { synchronizeBlocksWithTemplate } from '@wordpress/blocks';
 
 /**
  * Internal dependencies

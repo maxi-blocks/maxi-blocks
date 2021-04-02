@@ -4,6 +4,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 	flex-direction: column;
 
 	.maxi-image-block-shape-wrapper {
+		display: flex;
 		width: 100%;
 	}
 	.maxi-block-hover-wrapper {

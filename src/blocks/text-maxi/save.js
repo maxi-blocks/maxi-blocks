@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { RichText } = wp.blockEditor;
+import { RichText  } from '@wordpress/block-editor';
 import { Fragment  } from '@wordpress/element';
 
 /**

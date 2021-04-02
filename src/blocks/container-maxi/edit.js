@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { withSelect } from '@wordpress/data';
-const { Fragment, forwardRef } = wp.element;
-const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
+import { Fragment, forwardRef } from '@wordpress/element';
+import { InnerBlocks, __experimentalBlock } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies

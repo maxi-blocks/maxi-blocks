@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Icon, Button, Tooltip } = wp.components;
+import { Icon, Button, Tooltip } from '@wordpress/components';
 import { useDispatch  } from '@wordpress/data';
 
 /**

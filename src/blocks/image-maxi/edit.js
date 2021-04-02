@@ -2,10 +2,10 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Fragment, RawHTML } = wp.element;
+import { Fragment, RawHTML } from '@wordpress/element';
 import { withSelect } from '@wordpress/data';
-const { Spinner, Button, Placeholder } = wp.components;
-const { __experimentalBlock, MediaUpload } = wp.blockEditor;
+import { Spinner, Button, Placeholder } from '@wordpress/components';
+import { __experimentalBlock, MediaUpload } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies

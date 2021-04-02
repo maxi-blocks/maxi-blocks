@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-const { Icon, Button, Tooltip } = wp.components;
+import { Icon, Button, Tooltip } from '@wordpress/components';
 const { applyFormat, toHTMLString, removeFormat } = wp.richText;
 
 /**

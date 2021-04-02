@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch  } from '@wordpress/data';
-const { Icon, Button, Tooltip } = wp.components;
+import { Icon, Button, Tooltip } from '@wordpress/components';
 
 /**
  * Icons

@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 const { Modal } = wp.components;
 import { useSelect } from '@wordpress/data';
-const { useState, Fragment } = wp.element;
+import { useState, Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies

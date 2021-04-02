@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { Button } from '@wordpress/components';
-const { useDispatch, select } = wp.data;
-const { parse } = wp.blocks;
+import { useDispatch, select } from '@wordpress/data';
+import { parse } from '@wordpress/blocks';
 
 /**
  * Internal dependencies

@@ -3,7 +3,7 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { Fragment  } from '@wordpress/element';
-const { Button, BaseControl } = wp.components;
+import { Button, BaseControl } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 /**

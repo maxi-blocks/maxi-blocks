@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { useEffect } = wp.element;
-const { useDispatch, useSelect } = wp.data;
+import { useEffect } from '@wordpress/element';
+import { useDispatch, useSelect } from '@wordpress/data';
 
 /**
  * Component

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Button, BaseControl } = wp.components;
+import { Button, BaseControl } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 
 /**

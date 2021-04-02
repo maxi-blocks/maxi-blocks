@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { Icon, Button, Tooltip } from '@wordpress/components';
-const { applyFormat, toHTMLString, removeFormat } = wp.richText;
+import { applyFormat, toHTMLString, removeFormat } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies

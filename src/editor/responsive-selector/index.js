@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { Button, Icon } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
-const { createBlock } = wp.blocks;
+import { createBlock } from '@wordpress/blocks';
 
 /**
  * External dependencies

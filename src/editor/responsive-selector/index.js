@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 const { Button, Icon } = wp.components;
-const { useSelect, useDispatch } = wp.data;
+import { useSelect, useDispatch } from '@wordpress/data';
 const { createBlock } = wp.blocks;
 
 /**

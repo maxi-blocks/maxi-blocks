@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 const { Draggable, Icon, Button, Tooltip } = wp.components;
-const { useSelect, useDispatch } = wp.data;
+import { useSelect, useDispatch } from '@wordpress/data';
 const { useEffect, useRef, Fragment } = wp.element;
 
 /**

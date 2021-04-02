@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Fragment  } from '@wordpress/element';
-const { useSelect, useDispatch } = wp.data;
+import { useSelect, useDispatch } from '@wordpress/data';
 const { Icon, Button, Tooltip } = wp.components;
 
 /**

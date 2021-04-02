@@ -34,7 +34,7 @@ const getFontStyle = variant => {
  * @param {string} font Name of the selected font
  */
 const loadFonts = font => {
-	if (font && document.fonts && !document.fonts.check(`12px ${font}`)) {
+	if (font && document.fonts && document.fonts.status === 'loaded') {
 		const { files } = select('maxiBlocks/fonts').getFont(font);
 
 		// FontFace API

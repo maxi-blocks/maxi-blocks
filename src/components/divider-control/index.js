@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Fragment  } from '@wordpress/element';
-const { SelectControl, Icon } = wp.components;
+import { SelectControl, Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies

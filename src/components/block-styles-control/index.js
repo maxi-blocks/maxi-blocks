@@ -4,7 +4,7 @@ import { FancyRadioControl } from '..';
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { SelectControl } = wp.components;
+import { SelectControl } from '@wordpress/components';
 import { Fragment  } from '@wordpress/element';
 
 /**

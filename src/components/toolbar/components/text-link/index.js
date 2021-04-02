@@ -6,7 +6,7 @@ import { Fragment  } from '@wordpress/element';
 const { __experimentalLinkControl } = wp.blockEditor;
 import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';
-const { Button } = wp.components;
+import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies

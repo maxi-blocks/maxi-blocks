@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { useState, RawHTML } = wp.element;
+import { useState, RawHTML } from '@wordpress/element';
 import { Icon } from '@wordpress/components';
 
 /**

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Fragment  } from '@wordpress/element';
-const { Button, Dropdown, Spinner, Icon } = wp.components;
+import { Button, Dropdown, Spinner, Icon } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 
 /**

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 
-const { Button, SelectControl } = wp.components;
+import { Button, SelectControl } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 /**

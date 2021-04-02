@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-const { Button, SelectControl } = wp.components;
+import { Button, SelectControl } from '@wordpress/components';
 import { Fragment  } from '@wordpress/element';
 import { useState } from '@wordpress/element';
 const { useSelect, useDispatch } = wp.data;

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 const { RadioControl, Dropdown } = wp.components;
-const { Fragment, useState } = wp.element;
+import { Fragment, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies

@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 const { TextControl, Button } = wp.components;
 const { useCallback, useState } = wp.element;
-const { useDispatch } = wp.data;
+import { useDispatch  } from '@wordpress/data';
 import ToolbarPopover from '../toolbar-popover';
 
 /**

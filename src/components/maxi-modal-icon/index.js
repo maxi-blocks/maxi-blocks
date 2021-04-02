@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-const { Fragment, useState } = wp.element;
+import { Fragment, useState } from '@wordpress/element';
 const { Button, Modal } = wp.components;
 
 /**

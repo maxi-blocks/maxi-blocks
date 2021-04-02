@@ -3,7 +3,7 @@
  */
 const { compose } = wp.compose;
 const { Fragment, forwardRef, createRef } = wp.element;
-const { Spinner } = wp.components;
+import { Spinner } from '@wordpress/components';
 const { withSelect, withDispatch } = wp.data;
 const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
 

@@ -1,6 +1,4 @@
 const { __, sprintf } = wp.i18n;
-// import React from 'react';
-// import { Prompt } from 'react-router';
 
 const { select, dispatch, useSelect, useDispatch } = wp.data;
 const { Fragment, useState } = wp.element;
@@ -100,14 +98,16 @@ const MaxiStyleCardsTab = ({
 	const getTypographyGroup = level => {
 		const response = {};
 
+		const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 		const styleCardDefaultsTypography = SCstyle => {
 			Object.entries(SCstyle).forEach(([key, val]) => {
 				if (key.includes(`${level}-`)) {
 					if (key.includes('font-size')) {
-						console.log('key: ' + key + ' val: ' + val);
+						// console.log('key: ' + key + ' val: ' + val);
 						const [num, unit] = val.match(/[a-zA-Z]+|[0-9]+/g);
-						console.log('num: ' + num);
-						console.log('unit: ' + unit);
+						// console.log('num: ' + num);
+						// console.log('unit: ' + unit);
 						response[key] = num;
 						const newUnitKey = key.replace(
 							'font-size',
@@ -121,10 +121,10 @@ const MaxiStyleCardsTab = ({
 						if (typeof val === 'number') newVal = `${val}px`;
 						else newVal = val;
 
-						console.log(typeof val + ' ' + val + ' ' + newVal);
+						// console.log(typeof val + ' ' + val + ' ' + newVal);
 						const [num, unit] = newVal.match(/[a-zA-Z]+|[0-9\.]+/g);
-						console.log('num: ' + num);
-						console.log('unit: ' + unit);
+						// console.log('num: ' + num);
+						// console.log('unit: ' + unit);
 						response[key] = num;
 						const newUnitKey = key.replace(
 							'letter-spacing',
@@ -133,6 +133,15 @@ const MaxiStyleCardsTab = ({
 
 						response[newUnitKey] = unit;
 						return;
+					}
+					if (key.includes('general')) {
+						breakpoints.forEach(breakpoint => {
+							const checkKey = key.replace('general', breakpoint);
+							console.log('checkKey ' + checkKey);
+
+							if (isNil(SCstyle.checkKey))
+								response[checkKey] = val;
+						});
 					}
 					response[key] = val;
 				}
@@ -157,7 +166,7 @@ const MaxiStyleCardsTab = ({
 			<AccordionControl
 				isSecondary
 				items={[
-				deviceType === 'general' &&	{
+					deviceType === 'general' && {
 						label: __('Background Colours', 'maxi-blocks'),
 						content: (
 							<Fragment>
@@ -304,13 +313,137 @@ const MaxiStyleCardsTab = ({
 								hideTextShadow
 								breakpoint={deviceType}
 								onChange={obj => {
-									const parsedContent = parseSCtypography(
+									const parsedTypography = parseSCtypography(
 										obj
 									);
-									// console.log('parsedContent' + JSON.stringify(parsedContent));
 									onChangeValue(
 										'typography',
-										parsedContent,
+										parsedTypography,
+										SCStyle
+									);
+								}}
+							/>
+						),
+					},
+					deviceType !== 'general' && {
+						label: __('H2', 'maxi-blocks'),
+						content: (
+							<TypographyControl
+								typography={getTypographyGroup('h2')}
+								prefix='h2-'
+								disableFormats
+								className='maxi-style-cards-control__sc__h2-typography'
+								textLevel='h2'
+								hideAlignment
+								hideTextShadow
+								breakpoint={deviceType}
+								onChange={obj => {
+									const parsedTypography = parseSCtypography(
+										obj
+									);
+									onChangeValue(
+										'typography',
+										parsedTypography,
+										SCStyle
+									);
+								}}
+							/>
+						),
+					},
+					deviceType !== 'general' && {
+						label: __('H3', 'maxi-blocks'),
+						content: (
+							<TypographyControl
+								typography={getTypographyGroup('h3')}
+								prefix='h3-'
+								disableFormats
+								className='maxi-style-cards-control__sc__h3-typography'
+								textLevel='h3'
+								hideAlignment
+								hideTextShadow
+								breakpoint={deviceType}
+								onChange={obj => {
+									const parsedTypography = parseSCtypography(
+										obj
+									);
+									onChangeValue(
+										'typography',
+										parsedTypography,
+										SCStyle
+									);
+								}}
+							/>
+						),
+					},
+					deviceType !== 'general' && {
+						label: __('H4', 'maxi-blocks'),
+						content: (
+							<TypographyControl
+								typography={getTypographyGroup('h4')}
+								prefix='h4-'
+								disableFormats
+								className='maxi-style-cards-control__sc__h4-typography'
+								textLevel='h4'
+								hideAlignment
+								hideTextShadow
+								breakpoint={deviceType}
+								onChange={obj => {
+									const parsedTypography = parseSCtypography(
+										obj
+									);
+									onChangeValue(
+										'typography',
+										parsedTypography,
+										SCStyle
+									);
+								}}
+							/>
+						),
+					},
+					deviceType !== 'general' && {
+						label: __('H5', 'maxi-blocks'),
+						content: (
+							<TypographyControl
+								typography={getTypographyGroup('h5')}
+								prefix='h5-'
+								disableFormats
+								className='maxi-style-cards-control__sc__h5-typography'
+								textLevel='h5'
+								hideAlignment
+								hideTextShadow
+								breakpoint={deviceType}
+								onChange={obj => {
+									const parsedTypography = parseSCtypography(
+										obj
+									);
+									onChangeValue(
+										'typography',
+										parsedTypography,
+										SCStyle
+									);
+								}}
+							/>
+						),
+					},
+					deviceType !== 'general' && {
+						label: __('H6', 'maxi-blocks'),
+						content: (
+							<TypographyControl
+								typography={getTypographyGroup('h6')}
+								prefix='h6-'
+								disableFormats
+								className='maxi-style-cards-control__sc__h6-typography'
+								textLevel='h6'
+								hideAlignment
+								hideTextShadow
+								breakpoint={deviceType}
+								onChange={obj => {
+									const parsedTypography = parseSCtypography(
+										obj
+									);
+									onChangeValue(
+										'typography',
+										parsedTypography,
 										SCStyle
 									);
 								}}

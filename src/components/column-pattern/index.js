@@ -217,7 +217,7 @@ const ColumnPatternsInspector = props => {
 								onChange({ removeColumnGap });
 								loadColumnsTemplate(
 									props['row-pattern-general'],
-									!!+val,
+									!!+removeColumnGap,
 									clientId,
 									breakpoint
 								);

@@ -2,10 +2,10 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { useInstanceId } = wp.compose;
-const { Icon, Button } = wp.components;
+import { useInstanceId } from '@wordpress/compose';
+import { Icon, Button } from '@wordpress/components';
 import { select } from '@wordpress/data';
-const { useState, useEffect } = wp.element;
+import { useState, useEffect } from '@wordpress/elements';
 
 /**
  * Internal dependencies

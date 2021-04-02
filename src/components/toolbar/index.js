@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { Popover } = wp.components;
-const { Fragment, useEffect, useState } = wp.element;
+import { Popover } from '@wordpress/components';
+import { Fragment, useEffect, useState } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**

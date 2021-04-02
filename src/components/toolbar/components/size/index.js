@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { RadioControl } = wp.components;
-const { Fragment } = wp.element;
+import { RadioControl } from '@wordpress/components';
+import { Fragment } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**

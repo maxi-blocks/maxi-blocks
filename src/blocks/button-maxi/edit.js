@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { withSelect } from '@wordpress/data';
-import { __experimentalBlock, RichText } from '@wordpress/compose';
+import { __experimentalBlock, RichText } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies

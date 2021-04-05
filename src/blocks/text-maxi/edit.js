@@ -161,39 +161,39 @@ class edit extends MaxiBlock {
 							onChange={content => {
 								setAttributes({ content });
 
-								// const formatElement = {
-								// 	multilineTag: isList ? 'li' : undefined,
-								// 	multilineWrapperTags: isList
-								// 		? typeOfList
-								// 		: undefined,
-								// };
+								const formatElement = {
+									multilineTag: isList ? 'li' : undefined,
+									multilineWrapperTags: isList
+										? typeOfList
+										: undefined,
+								};
 
-								// const formatValue = generateFormatValue(
-								// 	formatElement,
-								// 	this.blockRef ? this.blockRef.current : null
-								// );
+								const formatValue = generateFormatValue(
+									formatElement,
+									this.blockRef ? this.blockRef.current : null
+								);
 
-								// /**
-								//  * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-								//  * and add some coding manually
-								//  * This next script will check if there is any format directly related with
-								//  * native format 'core/link' and if it's so, will format it in Maxi Blocks way
-								//  */
-								// const cleanCustomProps = setCustomFormatsWhenPaste(
-								// 	{
-								// 		formatValue,
-								// 		typography: getGroupAttributes(
-								// 			attributes,
-								// 			'typography'
-								// 		),
-								// 		isList,
-								// 		typeOfList,
-								// 		content,
-								// 	}
-								// );
+								/**
+								 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+								 * and add some coding manually
+								 * This next script will check if there is any format directly related with
+								 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
+								 */
+								const cleanCustomProps = setCustomFormatsWhenPaste(
+									{
+										formatValue,
+										typography: getGroupAttributes(
+											attributes,
+											'typography'
+										),
+										isList,
+										typeOfList,
+										content,
+									}
+								);
 
-								// if (cleanCustomProps)
-								// 	setAttributes(cleanCustomProps);
+								if (cleanCustomProps)
+									setAttributes(cleanCustomProps);
 							}}
 							tagName={textLevel}
 							onSplit={onSplit}

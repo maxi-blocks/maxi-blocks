@@ -9,7 +9,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType } from '@wordpress/block';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Block dependencies

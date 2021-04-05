@@ -1,9 +1,9 @@
 /**
  * WordPress dependencies
  */
-const { __, sprintf } = wp.i18n;
-const { Fragment } = wp.element;
-const { SelectControl, BaseControl, Button } = wp.components;
+import { __, sprintf } from '@wordpress/i18n';
+import { Fragment  } from '@wordpress/element';
+import { SelectControl, BaseControl, Button  } from '@wordpress/components';
 
 /**
  * Internal dependencies

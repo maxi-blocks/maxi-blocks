@@ -3,11 +3,11 @@
  */
 import { __ } from '@wordpress/i18n';
 
-const { compose } = wp.compose;
-const { Fragment, RawHTML } = wp.element;
-const { Button, Modal } = wp.components;
-const { withSelect, withDispatch } = wp.data;
-const { __experimentalBlock } = wp.blockEditor;
+import { compose } from '@wordpress/compose';
+import { Fragment, RawHTML } from '@wordpress/element';
+import { Button, Modal } from '@wordpress/components';
+import { withSelect, withDispatch } from '@wordpress/data';
+import { __experimentalBlock } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { select } = wp.data;
+import { select } from '@wordpress/data';
 
 const getBreakpoints = obj => {
 	const defaultBreakpoints = select('maxiBlocks').receiveMaxiBreakpoints();

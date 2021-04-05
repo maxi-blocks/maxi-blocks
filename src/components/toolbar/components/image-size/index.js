@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Button, SelectControl, RadioControl } = wp.components;
-const { useSelect, useDispatch } = wp.data;
+import { Button, SelectControl, RadioControl } from '@wordpress/components';
+import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies

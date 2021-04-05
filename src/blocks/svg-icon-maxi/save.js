@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { RawHTML } = wp.element;
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies

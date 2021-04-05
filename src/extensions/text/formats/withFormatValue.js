@@ -1,9 +1,9 @@
 /**
  * WordPress dependencies
  */
-const { createHigherOrderComponent, pure } = wp.compose;
-const { useRef, useState, useEffect } = wp.element;
-const { useSelect } = wp.data;
+import { createHigherOrderComponent, pure } from '@wordpress/compose';
+import { useRef, useState, useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies

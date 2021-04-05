@@ -1,9 +1,9 @@
 /**
  * WordPress dependencies
  */
-const { useInstanceId } = wp.compose;
-const { __, sprintf } = wp.i18n;
-const { BaseControl, SelectControl, Button, Tooltip } = wp.components;
+import { useInstanceId  } from '@wordpress/compose';
+import { __, sprintf } from '@wordpress/i18n';
+import { BaseControl, SelectControl, Button, Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies

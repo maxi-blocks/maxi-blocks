@@ -13,6 +13,8 @@ import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
 import AxisControl from '../axis-control';
 import FancyRadioControl from '../fancy-radio-control';
+import RangeSliderControl from '../range-slider-control';
+
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -96,10 +98,6 @@ const HoverEffectControl = props => {
 							},
 							{ label: __('Blur', 'maxi-blocks'), value: 'blur' },
 							{
-								label: __('Clear Blur', 'maxi-blocks'),
-								value: 'clear-blur',
-							},
-							{
 								label: __('Sepia', 'maxi-blocks'),
 								value: 'sepia',
 							},
@@ -128,6 +126,59 @@ const HoverEffectControl = props => {
 							onChange({ 'hover-basic-effect-type': val })
 						}
 					/>
+					{props['hover-type'] === 'basic' &&
+						(props['hover-basic-effect-type'] === 'zoom-in' ||
+							props['hover-basic-effect-type'] === 'zoom-out' ||
+							props['hover-basic-effect-type'] === 'rotate' ||
+							props['hover-basic-effect-type'] === 'blur' ||
+							props['hover-basic-effect-type'] === 'slide') && (
+							<Fragment>
+								<RangeSliderControl
+									label={__('Duration(s)', 'maxi-blocks')}
+									className={classes}
+									value={props['hover-transition-duration']}
+									defaultValue={getDefaultAttribute(
+										'hover-transition-duration'
+									)}
+									onChange={val =>
+										onChange({
+											'hover-transition-duration': val,
+										})
+									}
+									min={0}
+									step={0.1}
+									max={10}
+									allowReset
+									initialPosition={getDefaultAttribute(
+										'hover-transition-duration'
+									)}
+								/>
+								<RangeSliderControl
+									label={__('Amount', 'maxi-blocks')}
+									className={classes}
+									value={
+										props[
+											`hover-basic-${props['hover-basic-effect-type']}-value`
+										]
+									}
+									defaultValue={getDefaultAttribute(
+										`hover-basic-${props['hover-basic-effect-type']}-value`
+									)}
+									onChange={val =>
+										onChange({
+											[`hover-basic-${props['hover-basic-effect-type']}-value`]: val,
+										})
+									}
+									min={0}
+									step={0.1}
+									max={100}
+									allowReset
+									initialPosition={getDefaultAttribute(
+										`hover-basic-${props['hover-basic-effect-type']}-value`
+									)}
+								/>
+							</Fragment>
+						)}
 				</Fragment>
 			)}
 			{props['hover-type'] === 'text' && (

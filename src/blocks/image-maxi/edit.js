@@ -14,6 +14,7 @@ import Inspector from './inspector';
 import {
 	BackgroundDisplayer,
 	BlockResizer,
+	HoverPreview,
 	MaxiBlock,
 	MotionPreview,
 	Toolbar,
@@ -239,8 +240,13 @@ class edit extends MaxiBlock {
 											</div>
 											<div className={hoverClasses}>
 												{(!SVGElement && (
-													<img
-														className={`maxi-image-block__image wp-image-${mediaID}`}
+													<HoverPreview
+														key={`hover-preview-${uniqueID}`}
+														{...getGroupAttributes(
+															attributes,
+															'hover'
+														)}
+														mediaID={mediaID}
 														src={mediaURL}
 														width={mediaWidth}
 														height={mediaHeight}

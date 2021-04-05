@@ -27,6 +27,30 @@ export const hover = {
 		type: 'string',
 		default: 'center-center',
 	},
+	'hover-transition-duration': {
+		type: 'number',
+		default: 0.3,
+	},
+	'hover-basic-zoom-in-value': {
+		type: 'number',
+		default: 1.3,
+	},
+	'hover-basic-zoom-out-value': {
+		type: 'number',
+		default: 1.5,
+	},
+	'hover-basic-slide-value': {
+		type: 'number',
+		default: 30,
+	},
+	'hover-basic-rotate-value': {
+		type: 'number',
+		default: 15,
+	},
+	'hover-basic-blur-value': {
+		type: 'number',
+		default: 2,
+	},
 };
 
 export const hoverBorder = (() => {

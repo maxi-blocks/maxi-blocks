@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Fragment, useState, useEffect } = wp.element;
-const { Icon } = wp.components;
+import { Fragment, useState, useEffect } from '@wordpress/element';
+import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies

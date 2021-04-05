@@ -1,11 +1,11 @@
 /**
  * WordPress dependencies
  */
-const { compose } = wp.compose;
-const { Fragment, forwardRef, createRef } = wp.element;
-const { Spinner } = wp.components;
-const { withSelect, withDispatch } = wp.data;
-const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
+import { compose } from '@wordpress/compose';
+import { Fragment, forwardRef, createRef } from '@wordpress/element';
+import { Spinner } from '@wordpress/components';
+import { withSelect, withDispatch } from '@wordpress/data';
+import { InnerBlocks, __experimentalBlock } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies

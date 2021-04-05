@@ -1,11 +1,11 @@
 /**
  * WordPress dependencies
  */
-const { forwardRef } = wp.element;
-const { compose, withInstanceId } = wp.compose;
-const { withSelect, withDispatch } = wp.data;
-const { Button, Icon, withFocusOutside } = wp.components;
-const { InnerBlocks, __experimentalBlock } = wp.blockEditor;
+import { forwardRef } from '@wordpress/element';
+import { compose, withInstanceId } from '@wordpress/compose';
+import { withSelect, withDispatch } from '@wordpress/data';
+import { Button, Icon, withFocusOutside } from '@wordpress/components';
+import { InnerBlocks, __experimentalBlock } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies

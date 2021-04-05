@@ -2,9 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Button } = wp.components;
-const { useState, Fragment } = wp.element;
-const { useSelect, useDispatch, dispatch } = wp.data;
+import { Button } from '@wordpress/components';
+import { useState, Fragment } from '@wordpress/element';
+import { useSelect, useDispatch, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies

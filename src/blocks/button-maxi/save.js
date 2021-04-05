@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { Button } = wp.components;
+import { Button } from '@wordpress/components';
 
 /**
  * External dependencies
@@ -53,13 +53,16 @@ const save = props => {
 
 	return (
 		<div className={classes} id={uniqueID}>
-			<Button className={buttonClasses} {...linkProps}>
+			<Button
+				className={buttonClasses}
+				{...(!isEmpty(linkProps.href) && linkProps)}
+			>
 				{!isEmpty(attributes['icon-name']) && (
 					<i className={attributes['icon-name']} />
 				)}
-				<div className='maxi-button-block__content'>
+				<span className='maxi-button-block__content'>
 					{buttonContent}
-				</div>
+				</span>
 			</Button>
 		</div>
 	);

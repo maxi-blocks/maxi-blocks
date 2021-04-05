@@ -1,10 +1,10 @@
 /**
  * WordPress dependencies
  */
-const { Popover } = wp.components;
-const { useBlockEditContext } = wp.blockEditor;
-const { Fragment, useEffect, useState } = wp.element;
-const { useSelect, useDispatch, select } = wp.data;
+import { Popover } from '@wordpress/components';
+import { useBlockEditContext } from '@wordpress/block-editor';
+import { Fragment, useEffect, useState } from '@wordpress/element';
+import { useSelect, useDispatch, select } from '@wordpress/data';
 
 /**
  * External dependencies

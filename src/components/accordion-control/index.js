@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { Icon } = wp.components;
-const { useState } = wp.element;
+import { Icon } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 
 /**
  * External dependencies

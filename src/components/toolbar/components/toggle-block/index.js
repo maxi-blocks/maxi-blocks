@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Fragment } = wp.element;
-const { Icon, Button, Tooltip } = wp.components;
+import { Fragment  } from '@wordpress/element';
+import { Icon, Button, Tooltip } from '@wordpress/components';
 
 /**
  * External dependencies

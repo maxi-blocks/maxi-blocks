@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Fragment } = wp.element;
-const { select } = wp.data;
+import { Fragment } from '@wordpress/element';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies

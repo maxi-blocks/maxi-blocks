@@ -3,10 +3,9 @@
  */
 import { __ } from '@wordpress/i18n';
 
-
-const { SelectControl } = wp.components;
-const { Fragment, useState } = wp.element;
-const { select } = wp.data;
+import { SelectControl } from '@wordpress/components';
+import { Fragment, useState } from '@wordpress/element';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies

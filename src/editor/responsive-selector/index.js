@@ -2,9 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Button, Icon } = wp.components;
-const { useSelect, useDispatch } = wp.data;
-const { createBlock } = wp.blocks;
+import { Button, Icon } from '@wordpress/components';
+import { useSelect, useDispatch } from '@wordpress/data';
+import { createBlock } from '@wordpress/blocks';
 
 /**
  * External dependencies

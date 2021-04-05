@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { createContext } = wp.element;
+import { createContext } from '@wordpress/element';
 
 const RowContext = createContext();
 

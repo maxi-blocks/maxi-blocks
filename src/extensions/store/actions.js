@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { dispatch } = wp.data;
+import { dispatch } from '@wordpress/data';
 
 const actions = {
 	receiveMaxiBreakpoints() {

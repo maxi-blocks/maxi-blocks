@@ -2,11 +2,11 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Fragment } = wp.element;
-const { __experimentalLinkControl } = wp.blockEditor;
-const { useSelect } = wp.data;
-const { getActiveFormat } = wp.richText;
-const { Button } = wp.components;
+import { Fragment  } from '@wordpress/element';
+import { __experimentalLinkControl } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
+import { getActiveFormat } from '@wordpress/rich-text';
+import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies

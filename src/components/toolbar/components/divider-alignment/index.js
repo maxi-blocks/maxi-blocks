@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { SelectControl, RadioControl } = wp.components;
+import { SelectControl, RadioControl } from '@wordpress/components';
 import ToolbarPopover from '../toolbar-popover';
 
 /**

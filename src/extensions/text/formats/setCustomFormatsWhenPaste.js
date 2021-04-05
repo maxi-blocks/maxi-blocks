@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { removeFormat } = wp.richText;
+import { select } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies

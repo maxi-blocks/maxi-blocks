@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { getActiveFormat } = wp.richText;
+import { getActiveFormat } from '@wordpress/rich-text';
 
 /**
  * External dependencies

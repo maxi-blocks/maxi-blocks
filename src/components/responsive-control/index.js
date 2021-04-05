@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { useSelect } = wp.data;
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies

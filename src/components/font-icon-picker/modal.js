@@ -2,8 +2,8 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-const { useState, useEffect, Fragment } = wp.element;
-const { Button, Modal, TextControl } = wp.components;
+import { useState, useEffect, Fragment } from '@wordpress/element';
+import { Button, Modal, TextControl } from '@wordpress/components';
 
 /**
  * External dependencies.

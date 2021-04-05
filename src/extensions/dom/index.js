@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { select, dispatch } = wp.data;
+import { select, dispatch } from '@wordpress/data';
 
 /**
  * External dependencies

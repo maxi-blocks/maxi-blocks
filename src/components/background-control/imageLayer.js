@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Fragment, useState } = wp.element;
-const { Button, SelectControl } = wp.components;
+import { Fragment, useState } from '@wordpress/element';
+import { Button, SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies

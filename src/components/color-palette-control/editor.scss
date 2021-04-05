@@ -1,0 +1,21 @@
+.maxi-calor-palette-control {
+	display: flex;
+	flex-wrap: nowrap;
+	&__button {
+		display: block;
+		width: 100%;
+		min-width: 2rem;
+		min-height: 2rem;
+		margin: 0 0.1rem;
+		padding: 0;
+		background: #f8f8f8;
+		&:hover {
+			box-shadow: none;
+			outline: none;
+			color: inherit;
+		}
+		&[aria-pressed='true'] {
+			border: 2px solid #bdbdbd;
+		}
+	}
+}

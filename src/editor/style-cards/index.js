@@ -137,7 +137,7 @@ const MaxiStyleCardsTab = ({
 					if (key.includes('general')) {
 						breakpoints.forEach(breakpoint => {
 							const checkKey = key.replace('general', breakpoint);
-							console.log('checkKey ' + checkKey);
+							// console.log('checkKey ' + checkKey);
 
 							if (isNil(SCstyle.checkKey))
 								response[checkKey] = val;
@@ -167,49 +167,83 @@ const MaxiStyleCardsTab = ({
 				isSecondary
 				items={[
 					deviceType === 'general' && {
-						label: __('Background Colours', 'maxi-blocks'),
+						label: __('Colours', 'maxi-blocks'),
 						content: (
 							<Fragment>
 								<ColorControl
-									label={__('Background 1', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__bg-color-1-${SCStyle}`}
-									color={getColor('background-1')}
+									label={__('1st ', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__color-1-${SCStyle}`}
+									color={getColor('color-1')}
 									defaultColor={getStyleCardAttr(
-										'background-1',
+										'color-1',
 										SCStyle,
 										true
 									)}
 									onChange={val => {
-										onChangeValue(
-											'background-1',
-											val,
-											SCStyle
-										);
+										onChangeValue('color-1', val, SCStyle);
 									}}
 									disableGradient
 								/>
 								<ColorControl
-									label={__('Background 2', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__bg-color-2-${SCStyle}`}
-									color={getColor('background-2')}
+									label={__('2nd ', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__color-2-${SCStyle}`}
+									color={getColor('color-2')}
 									defaultColor={getStyleCardAttr(
-										'background-2',
+										'color-2',
 										SCStyle,
 										true
 									)}
 									onChange={val => {
-										onChangeValue(
-											'background-2',
-											val,
-											SCStyle
-										);
+										onChangeValue('color-2', val, SCStyle);
+									}}
+									disableGradient
+								/>
+								<ColorControl
+									label={__('3rd ', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__color-3-${SCStyle}`}
+									color={getColor('color-3')}
+									defaultColor={getStyleCardAttr(
+										'color-3',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue('color-3', val, SCStyle);
+									}}
+									disableGradient
+								/>
+								<ColorControl
+									label={__('4th ', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__color-4-${SCStyle}`}
+									color={getColor('color-4')}
+									defaultColor={getStyleCardAttr(
+										'color-4',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue('color-4', val, SCStyle);
+									}}
+									disableGradient
+								/>
+								<ColorControl
+									label={__('5th ', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__color-5-${SCStyle}`}
+									color={getColor('color-5')}
+									defaultColor={getStyleCardAttr(
+										'color-5',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue('color-5', val, SCStyle);
 									}}
 									disableGradient
 								/>
 							</Fragment>
 						),
 					},
-					deviceType !== 'general' && {
+					{
 						label: __('Paragraph', 'maxi-blocks'),
 						content: (
 							<Fragment>
@@ -222,6 +256,7 @@ const MaxiStyleCardsTab = ({
 									hideAlignment
 									hideTextShadow
 									breakpoint={deviceType}
+									styleCards
 									onChange={obj => {
 										const parsedContent = parseSCtypography(
 											obj
@@ -234,24 +269,26 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 								/>
-								<ColorControl
-									label={__('Link', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__link-color-${SCStyle}`}
-									color={getColor('link')}
-									defaultColor={getStyleCardAttr(
-										'link',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue('link', val, SCStyle);
-									}}
-									disableGradient
-								/>
+								{deviceType === 'general' && (
+									<ColorControl
+										label={__('Link', 'maxi-blocks')}
+										className={`maxi-style-cards-control__sc__link-color-${SCStyle}`}
+										color={getColor('link')}
+										defaultColor={getStyleCardAttr(
+											'link',
+											SCStyle,
+											true
+										)}
+										onChange={val => {
+											onChangeValue('link', val, SCStyle);
+										}}
+										disableGradient
+									/>
+								)}
 							</Fragment>
 						),
 					},
-					deviceType !== 'general' && {
+					{
 						label: __('Button', 'maxi-blocks'),
 						content: (
 							<Fragment>
@@ -264,6 +301,7 @@ const MaxiStyleCardsTab = ({
 									hideAlignment
 									hideTextShadow
 									breakpoint={deviceType}
+									styleCards
 									onChange={obj => {
 										const parsedContent = parseSCtypography(
 											obj
@@ -300,7 +338,7 @@ const MaxiStyleCardsTab = ({
 							</Fragment>
 						),
 					},
-					deviceType !== 'general' && {
+					{
 						label: __('H1', 'maxi-blocks'),
 						content: (
 							<TypographyControl
@@ -312,6 +350,7 @@ const MaxiStyleCardsTab = ({
 								hideAlignment
 								hideTextShadow
 								breakpoint={deviceType}
+								styleCards
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj
@@ -325,7 +364,7 @@ const MaxiStyleCardsTab = ({
 							/>
 						),
 					},
-					deviceType !== 'general' && {
+					{
 						label: __('H2', 'maxi-blocks'),
 						content: (
 							<TypographyControl
@@ -337,6 +376,7 @@ const MaxiStyleCardsTab = ({
 								hideAlignment
 								hideTextShadow
 								breakpoint={deviceType}
+								styleCards
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj
@@ -350,7 +390,7 @@ const MaxiStyleCardsTab = ({
 							/>
 						),
 					},
-					deviceType !== 'general' && {
+					{
 						label: __('H3', 'maxi-blocks'),
 						content: (
 							<TypographyControl
@@ -362,6 +402,7 @@ const MaxiStyleCardsTab = ({
 								hideAlignment
 								hideTextShadow
 								breakpoint={deviceType}
+								styleCards
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj
@@ -375,7 +416,7 @@ const MaxiStyleCardsTab = ({
 							/>
 						),
 					},
-					deviceType !== 'general' && {
+					{
 						label: __('H4', 'maxi-blocks'),
 						content: (
 							<TypographyControl
@@ -387,6 +428,7 @@ const MaxiStyleCardsTab = ({
 								hideAlignment
 								hideTextShadow
 								breakpoint={deviceType}
+								styleCards
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj
@@ -400,7 +442,7 @@ const MaxiStyleCardsTab = ({
 							/>
 						),
 					},
-					deviceType !== 'general' && {
+					{
 						label: __('H5', 'maxi-blocks'),
 						content: (
 							<TypographyControl
@@ -412,6 +454,7 @@ const MaxiStyleCardsTab = ({
 								hideAlignment
 								hideTextShadow
 								breakpoint={deviceType}
+								styleCards
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj
@@ -425,7 +468,7 @@ const MaxiStyleCardsTab = ({
 							/>
 						),
 					},
-					deviceType !== 'general' && {
+					{
 						label: __('H6', 'maxi-blocks'),
 						content: (
 							<TypographyControl
@@ -437,6 +480,7 @@ const MaxiStyleCardsTab = ({
 								hideAlignment
 								hideTextShadow
 								breakpoint={deviceType}
+								styleCards
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj

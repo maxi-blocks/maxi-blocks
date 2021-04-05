@@ -48,7 +48,7 @@ body.maxi-blocks--active {
 
 			a:not(.maxi-button-block__button) {
 				color: var(--maxi-#{$style}-link);
-				&:hover, &:active, &:focus {
+				&:visited, &:hover, &:active, &:focus {
 			        color: var(--maxi-#{$style}-hover);
 			        span {
 			        	color: var(--maxi-#{$style}-hover);
@@ -177,7 +177,7 @@ body.maxi-blocks--active {
 						@each $level in $levels {
 							#{$level} {
 								&.maxi-text-block__content {
-									color: var(--maxi-#{$style}-#{$level}-text-color-#{$responsive_size});
+									color: var(--maxi-#{$style}-#{$level}-color-#{$responsive_size});
 									font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size});
 									line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size});
 									letter-spacing: var(--maxi-#{$style}-#{$level}-text-letter-spacing-#{$responsive_size});

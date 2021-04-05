@@ -9,6 +9,7 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import RangeSliderControl from '../range-slider-control';
+import ColorPaletteControl from '../color-palette-control';
 
 /**
  * External dependencies
@@ -112,6 +113,7 @@ const ColorControl = props => {
 					</Button>
 				</div>
 			</BaseControl>
+			<ColorPaletteControl />
 			<RangeSliderControl
 				label={__('Colour Opacity', 'maxi-blocks')}
 				className='maxi-color-control__opacity'

@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { useState, useEffect } = wp.element;
-const { withFallbackStyles } = wp.components;
+import { useState, useEffect } from '@wordpress/element';
+import { withFallbackStyles } from '@wordpress/components';
 
 /**
  * Internal dependencies

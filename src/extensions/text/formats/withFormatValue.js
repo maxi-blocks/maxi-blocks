@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { createHigherOrderComponent, pure } = wp.compose;
-const { useSelect } = wp.data;
+import { createHigherOrderComponent, pure } from '@wordpress/compose';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Component

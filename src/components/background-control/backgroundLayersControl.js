@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { useState, RawHTML } = wp.element;
-const { Icon } = wp.components;
+import { useState, RawHTML } from '@wordpress/element';
+import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -182,6 +182,11 @@ const BackgroundLayersControl = ({
 	prefix = '',
 	onChange,
 	layersStatus,
+	disableImage = false,
+	disableVideo = false,
+	disableGradient = false,
+	disableColor = false,
+	disableSVG = false,
 	...props
 }) => {
 	const layers = cloneDeep(props.layersOptions);
@@ -221,6 +226,42 @@ const BackgroundLayersControl = ({
 		}
 
 		return false;
+	};
+
+	const getOptions = () => {
+		const options = [];
+
+		!disableColor &&
+			options.push({
+				label: __('Background Colour', 'maxi-blocks'),
+				value: 'color',
+			});
+
+		!disableColor &&
+			options.push({
+				label: __('Background Image', 'maxi-blocks'),
+				value: 'image',
+			});
+
+		!disableVideo &&
+			options.push({
+				label: __('Background Video', 'maxi-blocks'),
+				value: 'video',
+			});
+
+		!disableGradient &&
+			options.push({
+				label: __('Background Gradient', 'maxi-blocks'),
+				value: 'gradient',
+			});
+
+		!disableSVG &&
+			options.push({
+				label: __('Background Shape', 'maxi-blocks'),
+				value: 'shape',
+			});
+
+		return options;
 	};
 
 	return (
@@ -321,28 +362,7 @@ const BackgroundLayersControl = ({
 						</ReactDragListView>
 					)}
 					<LoaderControl
-						options={[
-							{
-								label: __('Background Colour', 'maxi-blocks'),
-								value: 'color',
-							},
-							{
-								label: __('Background Image', 'maxi-blocks'),
-								value: 'image',
-							},
-							{
-								label: __('Background Video', 'maxi-blocks'),
-								value: 'video',
-							},
-							{
-								label: __('Background Gradient', 'maxi-blocks'),
-								value: 'gradient',
-							},
-							{
-								label: __('Background Shape', 'maxi-blocks'),
-								value: 'shape',
-							},
-						]}
+						options={getOptions()}
 						onClick={value => {
 							layers.push(getObject(value));
 

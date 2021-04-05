@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { apiFetch } = wp;
-const { select } = wp.data;
+import apiFetch from '@wordpress/api-fetch';
+import { select } from '@wordpress/data';
 
 /**
  * Controls

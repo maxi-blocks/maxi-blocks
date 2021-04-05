@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Fragment } = wp.element;
-const { Icon } = wp.components;
+import { Fragment  } from '@wordpress/element';
+import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -114,6 +114,11 @@ const BackgroundControl = props => {
 					onChange={obj => onChange(obj)}
 					isHover={isHover}
 					prefix={prefix}
+					disableImage={disableImage}
+					disableVideo={disableVideo}
+					disableGradient={disableGradient}
+					disableColor={disableColor}
+					disableSVG={disableSVG}
 				/>
 			)}
 			{!layersStatus && getOptions().length > 1 && (

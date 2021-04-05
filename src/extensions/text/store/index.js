@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { registerStore } = wp.data;
+import { registerStore } from '@wordpress/data';
 
 /**
  * Internal dependencies

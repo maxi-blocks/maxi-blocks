@@ -14,8 +14,8 @@
 /**
  * WordPress dependencies
  */
-const { Component, render, createRef } = wp.element;
-const { select, dispatch } = wp.data;
+import { Component, render, createRef } from '@wordpress/element';
+import { select, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies

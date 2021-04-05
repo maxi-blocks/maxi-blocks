@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { InnerBlocks } = wp.blockEditor;
-const { Fragment } = wp.element;
+import { InnerBlocks } from '@wordpress/block-editor';
+import { Fragment  } from '@wordpress/element';
 
 /**
  * Internal dependencies

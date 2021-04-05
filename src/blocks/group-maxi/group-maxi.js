@@ -8,7 +8,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { registerBlockType } = wp.blocks;
+import { registerBlockType  } from '@wordpress/blocks';
 
 /**
  * Block dependencies

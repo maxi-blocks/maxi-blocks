@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { select } = wp.data;
-const { getBlockAttributes } = wp.blocks;
+import { select } from '@wordpress/data';
+import { getBlockAttributes } from '@wordpress/blocks';
 
 /**
  * External dependencies

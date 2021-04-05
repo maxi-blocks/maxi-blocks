@@ -2,10 +2,10 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { useInstanceId } = wp.compose;
-const { Icon, Button } = wp.components;
-const { select } = wp.data;
-const { useState, useEffect } = wp.element;
+import { useInstanceId } from '@wordpress/compose';
+import { Icon, Button } from '@wordpress/components';
+import { select } from '@wordpress/data';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -217,7 +217,7 @@ const ColumnPatternsInspector = props => {
 								onChange({ removeColumnGap });
 								loadColumnsTemplate(
 									props['row-pattern-general'],
-									!!+val,
+									!!+removeColumnGap,
 									clientId,
 									breakpoint
 								);

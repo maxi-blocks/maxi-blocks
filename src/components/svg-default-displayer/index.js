@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { Button } = wp.components;
-const { RawHTML } = wp.element;
+import { Button } from '@wordpress/components';
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies

@@ -2,9 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { compose } = wp.compose;
-const { withSelect, dispatch } = wp.data;
-const { __experimentalBlock, RichText } = wp.blockEditor;
+import { compose } from '@wordpress/compose';
+import { withSelect, dispatch } from '@wordpress/data';
+import { __experimentalBlock, RichText } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies

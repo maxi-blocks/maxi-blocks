@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { SelectControl, TextareaControl, Icon } = wp.components;
-const { Fragment } = wp.element;
+import { SelectControl, TextareaControl, Icon } from '@wordpress/components';
+import { Fragment  } from '@wordpress/element';
 
 /**
  * Internal dependencies

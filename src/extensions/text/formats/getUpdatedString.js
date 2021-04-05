@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { toHTMLString } = wp.richText;
+import { toHTMLString } from '@wordpress/rich-text';
 
 /**
  * Updates the content of the string

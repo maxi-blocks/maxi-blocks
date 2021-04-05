@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { applyFormat, toHTMLString } = wp.richText;
+import { applyFormat, toHTMLString } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies

@@ -1,10 +1,10 @@
 /**
  * WordPress dependencies
  */
-const { __experimentalBlock } = wp.blockEditor;
-const { createRef } = wp.element;
-const { compose } = wp.compose;
-const { withSelect, withDispatch } = wp.data;
+import { __experimentalBlock } from '@wordpress/block-editor';
+import { createRef } from '@wordpress/element';
+import { compose } from '@wordpress/compose';
+import { withSelect, withDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies

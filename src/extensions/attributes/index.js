@@ -1,9 +1,9 @@
 /**
  * WordPress Dependencies
  */
-const { addFilter } = wp.hooks;
-const { createHigherOrderComponent } = wp.compose;
-const { select } = wp.data;
+import { addFilter } from '@wordpress/hooks';
+import { createHigherOrderComponent } from '@wordpress/compose';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies

@@ -3,8 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 
-const { SelectControl } = wp.components;
-const { select } = wp.data;
+import { SelectControl } from '@wordpress/components';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies

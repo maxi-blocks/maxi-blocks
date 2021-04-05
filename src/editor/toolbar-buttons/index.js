@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { Button, Icon } = wp.components;
-const { useState, render, Fragment } = wp.element;
+import { Button, Icon } from '@wordpress/components';
+import { useState, render, Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies

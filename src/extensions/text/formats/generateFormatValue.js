@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { create } = wp.richText;
+import { create } from '@wordpress/rich-text';
 
 /**
  * Generates RichText format value

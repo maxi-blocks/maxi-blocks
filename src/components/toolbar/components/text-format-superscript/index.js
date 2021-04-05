@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Icon, Button, Tooltip } = wp.components;
-const { useState, useEffect } = wp.element;
+import { Icon, Button, Tooltip } from '@wordpress/components';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies

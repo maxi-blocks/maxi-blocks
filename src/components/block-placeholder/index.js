@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-const { ButtonBlockerAppender } = wp.blockEditor;
-const { useDispatch } = wp.data;
+import { ButtonBlockerAppender } from '@wordpress/block-editor';
+import { useDispatch  } from '@wordpress/data';
 
 /**
  * External dependencies

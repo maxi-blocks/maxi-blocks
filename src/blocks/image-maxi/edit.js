@@ -244,7 +244,11 @@ class edit extends MaxiBlock {
 														key={`hover-preview-${uniqueID}`}
 														{...getGroupAttributes(
 															attributes,
-															'hover'
+															[
+																'hover',
+																'hoverTitleTypography',
+																'hoverContentTypography',
+															]
 														)}
 														mediaID={mediaID}
 														src={mediaURL}
@@ -257,46 +261,6 @@ class edit extends MaxiBlock {
 														{SVGElement}
 													</RawHTML>
 												)}
-												{attributes['hover-type'] !==
-													'none' &&
-													attributes['hover-type'] !==
-														'basic' &&
-													attributes[
-														'hover-preview'
-													] && (
-														<div className='maxi-hover-details'>
-															<div
-																className={`maxi-hover-details__content maxi-hover-details__content--${attributes['hover-text-preset']}`}
-															>
-																{!isEmpty(
-																	attributes[
-																		'hover-title-typography-content'
-																	]
-																) && (
-																	<h3>
-																		{
-																			attributes[
-																				'hover-title-typography-content'
-																			]
-																		}
-																	</h3>
-																)}
-																{!isEmpty(
-																	attributes[
-																		'hover-content-typography-content'
-																	]
-																) && (
-																	<p>
-																		{
-																			attributes[
-																				'hover-content-typography-content'
-																			]
-																		}
-																	</p>
-																)}
-															</div>
-														</div>
-													)}
 											</div>
 											{captionType !== 'none' && (
 												<figcaption className='maxi-image-block__caption'>

@@ -2,6 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Component
@@ -15,10 +16,10 @@ const HoverPreview = props => {
 		<div className={classes}>
 			<img
 				style={
-					props['hover-type'] === 'basic' &&
-					(props['hover-basic-effect-type'] === 'zoom-in' ||
-						props['hover-basic-effect-type'] === 'zoom-out' ||
-						props['hover-basic-effect-type'] === 'slide')
+					props['hover-type'] === 'text' ||
+					props['hover-basic-effect-type'] === 'zoom-in' ||
+					props['hover-basic-effect-type'] === 'zoom-out' ||
+					props['hover-basic-effect-type'] === 'slide'
 						? {
 								'transition-duration': `${props['hover-transition-duration']}s`,
 						  }
@@ -58,6 +59,39 @@ const HoverPreview = props => {
 				height={props.height}
 				alt={props.alt}
 			/>
+			{props['hover-type'] !== 'none' &&
+				props['hover-type'] !== 'basic' &&
+				props['hover-preview'] && (
+					<div
+						style={
+							props['hover-type'] === 'text'
+								? {
+										'transition-duration': `${props['hover-transition-duration']}s`,
+								  }
+								: null
+						}
+						className='maxi-hover-details'
+					>
+						<div
+							className={`maxi-hover-details__content maxi-hover-details__content--${props['hover-text-preset']}`}
+						>
+							{!isEmpty(
+								props['hover-title-typography-content']
+							) && (
+								<h3>
+									{props['hover-title-typography-content']}
+								</h3>
+							)}
+							{!isEmpty(
+								props['hover-content-typography-content']
+							) && (
+								<p>
+									{props['hover-content-typography-content']}
+								</p>
+							)}
+						</div>
+					</div>
+				)}
 		</div>
 	);
 };

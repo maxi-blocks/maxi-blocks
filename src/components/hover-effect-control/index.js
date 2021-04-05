@@ -70,6 +70,28 @@ const HoverEffectControl = props => {
 				]}
 				onChange={val => onChange({ 'hover-preview': val })}
 			/>
+			{props['hover-type'] !== 'none' && (
+				<RangeSliderControl
+					label={__('Duration(s)', 'maxi-blocks')}
+					className={classes}
+					value={props['hover-transition-duration']}
+					defaultValue={getDefaultAttribute(
+						'hover-transition-duration'
+					)}
+					onChange={val =>
+						onChange({
+							'hover-transition-duration': val,
+						})
+					}
+					min={0}
+					step={0.1}
+					max={10}
+					allowReset
+					initialPosition={getDefaultAttribute(
+						'hover-basic-transition-duration'
+					)}
+				/>
+			)}
 			{props['hover-type'] === 'basic' && (
 				<Fragment>
 					<SelectControl
@@ -126,33 +148,13 @@ const HoverEffectControl = props => {
 							onChange({ 'hover-basic-effect-type': val })
 						}
 					/>
-					{props['hover-type'] === 'basic' &&
+					{props['hover-type'] === 'text' &&
 						(props['hover-basic-effect-type'] === 'zoom-in' ||
 							props['hover-basic-effect-type'] === 'zoom-out' ||
 							props['hover-basic-effect-type'] === 'rotate' ||
 							props['hover-basic-effect-type'] === 'blur' ||
 							props['hover-basic-effect-type'] === 'slide') && (
 							<Fragment>
-								<RangeSliderControl
-									label={__('Duration(s)', 'maxi-blocks')}
-									className={classes}
-									value={props['hover-transition-duration']}
-									defaultValue={getDefaultAttribute(
-										'hover-transition-duration'
-									)}
-									onChange={val =>
-										onChange({
-											'hover-transition-duration': val,
-										})
-									}
-									min={0}
-									step={0.1}
-									max={10}
-									allowReset
-									initialPosition={getDefaultAttribute(
-										'hover-transition-duration'
-									)}
-								/>
 								<RangeSliderControl
 									label={__('Amount', 'maxi-blocks')}
 									className={classes}
@@ -221,84 +223,9 @@ const HoverEffectControl = props => {
 								value: 'slide-left',
 							},
 							{
-								label: __('Hinge Up', 'maxi-blocks'),
-								value: 'hinge-up',
-							},
-							{
-								label: __('Hinge Right', 'maxi-blocks'),
-								value: 'hinge-right',
-							},
-							{
-								label: __('Hinge Down', 'maxi-blocks'),
-								value: 'hinge-down',
-							},
-							{
-								label: __('Hinge Left', 'maxi-blocks'),
-								value: 'hinge-left',
-							},
-							{
 								label: __('Flip Horizontal', 'maxi-blocks'),
 								value: 'flip-horiz',
 							},
-							{
-								label: __('Flip Vertical', 'maxi-blocks'),
-								value: 'flip-vert',
-							},
-							{
-								label: __('Fold Up', 'maxi-blocks'),
-								value: 'fold-up',
-							},
-							{
-								label: __('Fold Right', 'maxi-blocks'),
-								value: 'fold-right',
-							},
-							{
-								label: __('Fold Down', 'maxi-blocks'),
-								value: 'fold-down',
-							},
-							{
-								label: __('Fold Left', 'maxi-blocks'),
-								value: 'fold-left',
-							},
-							{
-								label: __('Zoom In', 'maxi-blocks'),
-								value: 'zoom-in',
-							},
-							{
-								label: __('Zoom Out', 'maxi-blocks'),
-								value: 'zoom-out',
-							},
-							{
-								label: __('Zoom Out Up', 'maxi-blocks'),
-								value: 'zoom-out-up',
-							},
-							{
-								label: __('Zoom Out Down', 'maxi-blocks'),
-								value: 'zoom-out-down',
-							},
-							{
-								label: __('Zoom Out Right', 'maxi-blocks'),
-								value: 'zoom-out-right',
-							},
-							{
-								label: __('Zoom Out Left', 'maxi-blocks'),
-								value: 'zoom-out-left',
-							},
-							{
-								label: __(
-									'Zoom Out Flip Horizontal',
-									'maxi-blocks'
-								),
-								value: 'zoom-out-flip-horiz',
-							},
-							{
-								label: __(
-									'Zoom Out Flip Vertical',
-									'maxi-blocks'
-								),
-								value: 'zoom-out-flip-vert',
-							},
-							{ label: __('Blur', 'maxi-blocks'), value: 'blur' },
 						]}
 						onChange={val =>
 							onChange({ 'hover-text-effect-type': val })

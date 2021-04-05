@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { SelectControl, TextareaControl, Icon } from '@wordpress/components';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -307,6 +307,7 @@ const HoverEffectControl = props => {
 					<FancyRadioControl
 						type='classic-border'
 						selected={props['hover-text-preset']}
+						optionType='string'
 						options={[
 							{
 								label: <Icon icon={alignLeftTop} />,

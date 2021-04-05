@@ -2,9 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { InspectorControls } = wp.blockEditor;
-const { Fragment } = wp.element;
-const { TextControl, SelectControl } = wp.components;
+import { InspectorControls } from '@wordpress/block-editor';
+import { Fragment  } from '@wordpress/element';
+import { TextControl, SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies

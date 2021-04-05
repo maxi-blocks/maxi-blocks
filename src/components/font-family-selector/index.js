@@ -2,9 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Fragment } = wp.element;
-const { Button, Dropdown, Spinner, Icon } = wp.components;
-const { useSelect } = wp.data;
+import { Fragment  } from '@wordpress/element';
+import { Button, Dropdown, Spinner, Icon } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies

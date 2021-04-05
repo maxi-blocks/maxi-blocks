@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { useEffect, useState } = wp.element;
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { SelectControl, Icon } = wp.components;
+import { SelectControl, Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies

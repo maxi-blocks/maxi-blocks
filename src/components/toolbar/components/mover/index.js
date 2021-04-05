@@ -2,9 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Draggable, Icon, Button, Tooltip } = wp.components;
-const { useSelect, useDispatch } = wp.data;
-const { useEffect, useRef, Fragment } = wp.element;
+import { Draggable, Icon, Button, Tooltip } from '@wordpress/components';
+import { useSelect, useDispatch } from '@wordpress/data';
+import { useEffect, useRef, Fragment } from '@wordpress/element';
 
 /**
  * External dependencies

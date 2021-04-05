@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { useState, useEffect, Fragment } = wp.element;
-const { SelectControl, BaseControl, Button, Tooltip } = wp.components;
+import { useState, useEffect, Fragment } from '@wordpress/element';
+import { SelectControl, BaseControl, Button, Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies

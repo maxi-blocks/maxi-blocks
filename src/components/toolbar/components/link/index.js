@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { __experimentalLinkControl } = wp.blockEditor;
+import { __experimentalLinkControl } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies

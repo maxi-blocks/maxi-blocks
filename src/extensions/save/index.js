@@ -1,7 +1,7 @@
 /**
  * WordPress Dependencies
  */
-const { addFilter } = wp.hooks;
+import { addFilter } from '@wordpress/hooks';
 
 /**
  * General

@@ -133,6 +133,8 @@ class MaxiBlock extends Component {
 		dispatch('maxiBlocks/customData').removeCustomData(
 			this.props.attributes.uniqueID
 		);
+
+		dispatch('maxiBlocks/text').sendFormatValue({});
 	}
 
 	get getBreakpoints() {

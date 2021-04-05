@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { applyFormat, toHTMLString } from '@wordpress/rich-text';
+import { removeFormat, toHTMLString } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
@@ -11,7 +11,15 @@ import getMultiFormatObj from './getMultiFormatObj';
 /**
  * External dependencies
  */
-import { isEqual, compact, uniq, flattenDeep, find, isEmpty } from 'lodash';
+import {
+	isEqual,
+	compact,
+	uniq,
+	flattenDeep,
+	find,
+	isEmpty,
+	cloneDeep,
+} from 'lodash';
 
 /**
  * Get the classes from custom formats that shares the same
@@ -70,19 +78,22 @@ export const flatRepeatedClassNames = (
 	const newClassName = repeatedClasses[0];
 	repeatedClasses.shift();
 
-	const newFormatValue = { ...formatValue };
-	const newTypography = { ...typography };
+	const newFormatValue = cloneDeep(formatValue);
+	const newTypography = cloneDeep(typography);
 
 	newFormatValue.formats = newFormatValue.formats.map(formatEl => {
-		return formatEl.map(format => {
-			if (
-				format.attributes &&
-				repeatedClasses.includes(format.attributes.className)
-			)
-				format.attributes.className = newClassName;
+		if (formatEl)
+			return formatEl.map(format => {
+				if (
+					format.attributes &&
+					repeatedClasses.includes(format.attributes.className)
+				)
+					format.attributes.className = newClassName;
 
-			return format;
-		});
+				return format;
+			});
+
+		return formatEl;
 	});
 
 	repeatedClasses.forEach(className => {
@@ -204,7 +215,7 @@ const flatFormatsWithClass = ({ formatValue, typography, content, isList }) => {
 		} = flatRepeatedClassNames(repeatedClasses, formatValue, typography);
 
 		newContent = toHTMLString({
-			value: newFormatValue,
+			value: preformattedFormatValue,
 			multilineTag: (isList && 'li') || null,
 		});
 

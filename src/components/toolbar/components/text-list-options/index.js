@@ -3,13 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Button } from '@wordpress/components';
-const {
+import {
 	__unstableIndentListItems,
 	__unstableCanIndentListItems,
 	__unstableOutdentListItems,
 	__unstableCanOutdentListItems,
 	toHTMLString,
-} = wp.richText;
+} from '@wordpress/rich-text';
 
 /**
  * Internal dependencies

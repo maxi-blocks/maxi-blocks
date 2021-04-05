@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { FancyRadioControl } from '..';
 
-const { useState } = wp.element;
+import { useState } from '@wordpress/element';
 
 /**
  * External dependencies

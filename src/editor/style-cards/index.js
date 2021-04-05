@@ -1,10 +1,9 @@
-const { __, sprintf } = wp.i18n;
+import { __, sprintf } from '@wordpress/i18n';
 
-const { select, dispatch, useSelect, useDispatch } = wp.data;
-const { Fragment, useState } = wp.element;
-const { Button, SelectControl, Popover, Icon } = wp.components;
-const { MediaUpload, MediaUploadCheck } = wp.blockEditor;
-
+import { select, dispatch, useSelect, useDispatch } from '@wordpress/data';
+import { Fragment, useState } from '@wordpress/element';
+import { Button, SelectControl, Popover, Icon } from '@wordpress/components';
+import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { isEmpty, forIn, isNil } from 'lodash';
 import { styleCardBoat, reset, SCdelete } from '../../icons';
 import './editor.scss';

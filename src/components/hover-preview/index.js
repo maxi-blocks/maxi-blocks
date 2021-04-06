@@ -50,22 +50,27 @@ const HoverPreview = props => {
 							e.target.style.marginLeft = '';
 							e.target.style.filter = '';
 						}
-					} else {
-						e.target.style = '';
 					}
 				}}
 				onMouseOut={e => {
 					if (props['hover-type'] === 'basic') {
 						if (props['hover-basic-effect-type'] === 'zoom-in')
 							e.target.style.transform = 'scale(1)';
-						if (props['hover-basic-effect-type'] === 'rotate')
+						else if (props['hover-basic-effect-type'] === 'rotate')
 							e.target.style.transform = 'rotate(0)';
-						if (props['hover-basic-effect-type'] === 'zoom-out')
+						else if (
+							props['hover-basic-effect-type'] === 'zoom-out'
+						)
 							e.target.style.transform = `scale(${props['hover-basic-zoom-out-value']})`;
-						if (props['hover-basic-effect-type'] === 'slide')
+						else if (props['hover-basic-effect-type'] === 'slide')
 							e.target.style.marginLeft = 0;
-						if (props['hover-basic-effect-type'] === 'blur')
+						else if (props['hover-basic-effect-type'] === 'blur')
 							e.target.style.filter = 'blur(0)';
+						else {
+							e.target.style.transform = '';
+							e.target.style.marginLeft = '';
+							e.target.style.filter = '';
+						}
 					}
 				}}
 				className={`maxi-image-block__image wp-image-${props.mediaID}`}

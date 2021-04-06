@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
+import { Fragment, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -11,6 +11,7 @@ import ColorControl from '../color-control';
 import ClipPath from '../clip-path-control';
 import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
+import ColorPaletteControl from '../color-palette-control';
 
 /**
  * External dependencies
@@ -20,7 +21,7 @@ import { cloneDeep } from 'lodash';
 /**
  * Component
  */
-const colorLayer = props => {
+const ColorLayer = props => {
 	const {
 		onChange,
 		disableClipPath,
@@ -29,6 +30,7 @@ const colorLayer = props => {
 		scAtt,
 		blockStyle,
 		useStyleCard,
+		noPalette,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -68,6 +70,14 @@ const colorLayer = props => {
 
 	return (
 		<Fragment>
+			{!noPalette && (
+				<Fragment>
+					<ColorPaletteControl
+						className={`maxi-color-palette--${getBlockStyle()}`}
+						// onChange={}
+					/>
+				</Fragment>
+			)}
 			<ColorControl
 				label={__('Background', 'maxi-blocks')}
 				color={
@@ -114,4 +124,4 @@ const colorLayer = props => {
 	);
 };
 
-export default colorLayer;
+export default ColorLayer;

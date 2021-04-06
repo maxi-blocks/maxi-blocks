@@ -5,7 +5,7 @@ import { FancyRadioControl } from '..';
  */
 import { __ } from '@wordpress/i18n';
 import { SelectControl } from '@wordpress/components';
-import { Fragment  } from '@wordpress/element';
+import { Fragment, useState } from '@wordpress/element';
 
 /**
  * Component
@@ -33,13 +33,18 @@ const BlockStylesControl = props => {
 		return [{ label: __('Parent', 'maxi-blocks'), value: 'maxi-parent' }];
 	};
 
+	const [colorPaletteClass, setColorPaletteClass] = useState(blockStyle);
+
 	return (
 		<Fragment>
 			<SelectControl
 				label={__('Block Style', 'maxi-blocks')}
 				value={blockStyle}
 				options={getSelectorOptions()}
-				onChange={blockStyle => onChange({ blockStyle })}
+				onChange={blockStyle => {
+					onChange({ blockStyle });
+					setColorPaletteClass(blockStyle);
+				}}
 			/>
 			<Fragment>
 				{!disableHighlightText && (

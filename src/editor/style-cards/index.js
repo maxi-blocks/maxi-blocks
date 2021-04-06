@@ -182,6 +182,7 @@ const MaxiStyleCardsTab = ({
 										onChangeValue('color-1', val, SCStyle);
 									}}
 									disableGradient
+									noPalette
 								/>
 								<ColorControl
 									label={__('2nd ', 'maxi-blocks')}
@@ -196,6 +197,7 @@ const MaxiStyleCardsTab = ({
 										onChangeValue('color-2', val, SCStyle);
 									}}
 									disableGradient
+									noPalette
 								/>
 								<ColorControl
 									label={__('3rd ', 'maxi-blocks')}
@@ -210,6 +212,7 @@ const MaxiStyleCardsTab = ({
 										onChangeValue('color-3', val, SCStyle);
 									}}
 									disableGradient
+									noPalette
 								/>
 								<ColorControl
 									label={__('4th ', 'maxi-blocks')}
@@ -224,6 +227,7 @@ const MaxiStyleCardsTab = ({
 										onChangeValue('color-4', val, SCStyle);
 									}}
 									disableGradient
+									noPalette
 								/>
 								<ColorControl
 									label={__('5th ', 'maxi-blocks')}
@@ -238,6 +242,7 @@ const MaxiStyleCardsTab = ({
 										onChangeValue('color-5', val, SCStyle);
 									}}
 									disableGradient
+									noPalette
 								/>
 							</Fragment>
 						),
@@ -256,6 +261,7 @@ const MaxiStyleCardsTab = ({
 									hideTextShadow
 									breakpoint={deviceType}
 									styleCards
+									noPalette
 									onChange={obj => {
 										const parsedContent = parseSCtypography(
 											obj
@@ -282,6 +288,7 @@ const MaxiStyleCardsTab = ({
 											onChangeValue('link', val, SCStyle);
 										}}
 										disableGradient
+										noPalette
 									/>
 								)}
 							</Fragment>
@@ -301,6 +308,7 @@ const MaxiStyleCardsTab = ({
 									hideTextShadow
 									breakpoint={deviceType}
 									styleCards
+									noPalette
 									onChange={obj => {
 										const parsedContent = parseSCtypography(
 											obj
@@ -333,6 +341,7 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 									disableGradient
+									noPalette
 								/>
 							</Fragment>
 						),
@@ -350,6 +359,7 @@ const MaxiStyleCardsTab = ({
 								hideTextShadow
 								breakpoint={deviceType}
 								styleCards
+								noPalette
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj
@@ -376,6 +386,7 @@ const MaxiStyleCardsTab = ({
 								hideTextShadow
 								breakpoint={deviceType}
 								styleCards
+								noPalette
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj
@@ -402,6 +413,7 @@ const MaxiStyleCardsTab = ({
 								hideTextShadow
 								breakpoint={deviceType}
 								styleCards
+								noPalette
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj
@@ -428,6 +440,7 @@ const MaxiStyleCardsTab = ({
 								hideTextShadow
 								breakpoint={deviceType}
 								styleCards
+								noPalette
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj
@@ -454,6 +467,7 @@ const MaxiStyleCardsTab = ({
 								hideTextShadow
 								breakpoint={deviceType}
 								styleCards
+								noPalette
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj
@@ -480,6 +494,7 @@ const MaxiStyleCardsTab = ({
 								hideTextShadow
 								breakpoint={deviceType}
 								styleCards
+								noPalette
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj
@@ -514,6 +529,7 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 									disableGradient
+									noPalette
 								/>
 								<ColorControl
 									label={__('Background', 'maxi-blocks')}
@@ -532,6 +548,7 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 									disableGradient
+									noPalette
 								/>
 								<ColorControl
 									label={__('Border', 'maxi-blocks')}
@@ -550,6 +567,7 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 									disableGradient
+									noPalette
 								/>
 								<ColorControl
 									label={__('Icon Line', 'maxi-blocks')}
@@ -568,6 +586,7 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 									disableGradient
+									noPalette
 								/>
 								<ColorControl
 									label={__('Icon Fill', 'maxi-blocks')}
@@ -586,6 +605,7 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 									disableGradient
+									noPalette
 								/>
 							</Fragment>
 						),
@@ -606,6 +626,7 @@ const MaxiStyleCardsTab = ({
 									onChangeValue('hover', val, SCStyle);
 								}}
 								disableGradient
+								noPalette
 							/>
 						),
 					},
@@ -630,6 +651,7 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 									disableGradient
+									noPalette
 								/>
 								<ColorControl
 									label={__('Fill', 'maxi-blocks')}
@@ -648,6 +670,7 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 									disableGradient
+									noPalette
 								/>
 							</Fragment>
 						),

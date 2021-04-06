@@ -135,6 +135,9 @@ class edit extends MaxiBlock {
 			isFirstOnHierarchy,
 			blockStyle,
 			blockStyleBackground,
+			blockStyleBorder,
+			blockStyleBackgroundHover,
+			blockStyleBorderHover,
 			fullWidth,
 			extraClassName,
 		} = attributes;
@@ -148,8 +151,10 @@ class edit extends MaxiBlock {
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
+			`maxi-background--${blockStyleBackground}`,
+			`maxi-border--${blockStyleBorder}`,
+			`maxi-background-hover--${blockStyleBackgroundHover}`,
+			`maxi-border-hover--${blockStyleBorderHover}`,
 			extraClassName,
 			className
 		);

@@ -49,6 +49,9 @@ const Inspector = props => {
 		blockStyle,
 		defaultBlockStyle,
 		blockStyleBackground,
+		blockStyleBorder,
+		blockStyleBackgroundHover,
+		blockStyleBorderHover,
 		fullWidth,
 		extraClassName,
 	} = attributes;
@@ -72,9 +75,6 @@ const Inspector = props => {
 									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										blockStyleBackground={
-											blockStyleBackground
-										}
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
@@ -209,6 +209,9 @@ const Inspector = props => {
 																		blockStyle={
 																			blockStyle
 																		}
+																		blockStyleBackground={
+																			blockStyleBackground
+																		}
 																		useStyleCard
 																	/>
 																	{attributes[
@@ -288,6 +291,9 @@ const Inspector = props => {
 																					obj
 																				)
 																			}
+																			blockStyleBackground={
+																				blockStyleBackgroundHover
+																			}
 																			disableImage
 																			disableVideo
 																			disableSVG
@@ -322,6 +328,9 @@ const Inspector = props => {
 																			'borderRadius',
 																		]
 																	)}
+																	blockStyleBorder={
+																		blockStyleBorder
+																	}
 																	onChange={obj =>
 																		setAttributes(
 																			obj
@@ -386,6 +395,9 @@ const Inspector = props => {
 																					'borderRadiusHover',
 																				]
 																			)}
+																			blockStyleBorder={
+																				blockStyleBorderHover
+																			}
 																			onChange={obj =>
 																				setAttributes(
 																					obj

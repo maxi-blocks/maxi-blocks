@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { Icon } from '@wordpress/components';
 
 /**
@@ -54,7 +54,10 @@ const BackgroundControl = props => {
 		prefix = '',
 		scAtt,
 		blockStyle,
-		useStyleCard,
+		noPalette,
+		blockStyleBackground,
+		attributes,
+		setAttributes,
 	} = props;
 
 	const backgroundActiveMedia =
@@ -160,7 +163,10 @@ const BackgroundControl = props => {
 							prefix={prefix}
 							scAtt={scAtt}
 							blockStyle={blockStyle}
-							useStyleCard={useStyleCard}
+							noPalette={noPalette}
+							colorPreSet={blockStyleBackground}
+							attributes={attributes}
+							setAttributes={setAttributes}
 						/>
 					)}
 					{!disableImage && backgroundActiveMedia === 'image' && (

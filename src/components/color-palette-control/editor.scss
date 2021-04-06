@@ -1,21 +1,25 @@
-.maxi-calor-palette-control {
-	display: flex;
-	flex-wrap: nowrap;
-	&__button {
-		display: block;
-		width: 100%;
-		min-width: 2rem;
-		min-height: 2rem;
-		margin: 0 0.1rem;
-		padding: 0;
-		background: #f8f8f8;
-		&:hover {
-			box-shadow: none;
-			outline: none;
-			color: inherit;
+.maxi-sc-color-palette {
+	.components-radio-control__option {
+		border: none !important;
+		border-radius: 0 !important;
+		min-width: 35px !important;
+		height: 35px !important;
+		margin-right: 3px;
+		&:last-child {
+			margin-right: 0;
 		}
-		&[aria-pressed='true'] {
-			border: 2px solid #bdbdbd;
+		:hover {
+			opacity: 0.7;
+		}
+		label {
+			border: 8px solid #eee;
+		}
+		input {
+			width: 100%;
+  			height: 100%;
+  			&:checked & {
+				border: 2px solid #bdbdbd !important;
+			}
 		}
 	}
 }

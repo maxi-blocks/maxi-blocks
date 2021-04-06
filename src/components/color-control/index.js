@@ -3,13 +3,12 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { BaseControl, Button } from '@wordpress/components';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import RangeSliderControl from '../range-slider-control';
-import ColorPaletteControl from '../color-palette-control';
 
 /**
  * External dependencies
@@ -28,7 +27,15 @@ import { reset } from '../../icons';
  * Component
  */
 const ColorControl = props => {
-	const { label, className, color, defaultColor = '', onChange } = props;
+	const {
+		label,
+		className,
+		color,
+		defaultColor = '',
+		onChange,
+		attributes,
+		setAttributes,
+	} = props;
 
 	const classes = classnames('maxi-color-control', className);
 
@@ -113,7 +120,6 @@ const ColorControl = props => {
 					</Button>
 				</div>
 			</BaseControl>
-			<ColorPaletteControl />
 			<RangeSliderControl
 				label={__('Colour Opacity', 'maxi-blocks')}
 				className='maxi-color-control__opacity'

@@ -52,6 +52,7 @@ const TypographyControl = props => {
 		disableFormats = false,
 		hideTextShadow = false,
 		styleCards = false,
+		noPalette = false,
 	} = props;
 
 	const [typography, setTypography] = useState(
@@ -262,6 +263,7 @@ const TypographyControl = props => {
 								onChangeFormat({ [`${prefix}color`]: val });
 							}}
 							disableGradient
+							noPalette={noPalette}
 						/>
 					)}
 				</Fragment>

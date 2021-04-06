@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import fonts from '../fonts';
+import fonts from '../fonts/fonts';
 
 /**
  * Reducer managing the styles
@@ -11,11 +11,20 @@ import fonts from '../fonts';
  *
  * @return {Object} Updated state.
  */
-function reducer(state = { fonts: { ...fonts } }, action) {
+function reducer(state = { fonts: { ...fonts }, formatValue: {} }, action) {
 	switch (action.type) {
 		case 'RECEIVE_FONTS':
 			return {
 				...state,
+			};
+		case 'RECEIVE_FORMAT_VALUE':
+			return {
+				...state,
+			};
+		case 'SEND_FORMAT_VALUE':
+			return {
+				...state,
+				formatValue: action.formatValue,
 			};
 		default:
 			return state;

@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { Fragment } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
-import { select, withSelect, withDispatch } from '@wordpress/data';
+import { select, withSelect, withDispatch, dispatch } from '@wordpress/data';
 import {
 	__experimentalBlock,
 	RichText,
@@ -30,9 +30,8 @@ import {
 import {
 	fromListToText,
 	fromTextToList,
-	getFormatValue,
+	generateFormatValue,
 	setCustomFormatsWhenPaste,
-	withFormatValue,
 } from '../../extensions/text/formats';
 import {
 	getGroupAttributes,
@@ -50,6 +49,8 @@ import { isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlock {
+	propsToAvoidRendering = ['formatValue'];
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -86,7 +87,6 @@ class edit extends MaxiBlock {
 			onSplit,
 			onReplace,
 			deviceType,
-			formatValue,
 		} = this.props;
 		const {
 			uniqueID,
@@ -126,13 +126,9 @@ class edit extends MaxiBlock {
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
-				formatValue={formatValue}
+				propsToAvoid={['content', 'formatValue']}
 			/>,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				{...this.props}
-				formatValue={formatValue}
-			/>,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<MotionPreview
 				key={`motion-preview-${uniqueID}`}
 				{...getGroupAttributes(attributes, 'motion')}
@@ -172,7 +168,7 @@ class edit extends MaxiBlock {
 										: undefined,
 								};
 
-								const formatValue = getFormatValue(
+								const formatValue = generateFormatValue(
 									formatElement,
 									this.blockRef ? this.blockRef.current : null
 								);
@@ -216,7 +212,13 @@ class edit extends MaxiBlock {
 							keepPlaceholderOnFocus
 							__unstableEmbedURLOnPaste
 							__unstableAllowPrefixTransformations
-						/>
+						>
+							{({ value }) => {
+								dispatch('maxiBlocks/text').sendFormatValue(
+									value
+								);
+							}}
+						</RichText>
 					)}
 					{isList && (
 						<RichText
@@ -256,58 +258,65 @@ class edit extends MaxiBlock {
 							reversed={!!listReversed}
 							type={typeOfList}
 						>
-							{({ value, onChange }) =>
-								isSelected && (
-									<Fragment>
-										<RichTextShortcut
-											type='primary'
-											character='['
-											onUse={() => {
-												onChange(
-													__unstableOutdentListItems(
-														value
-													)
-												);
-											}}
-										/>
-										<RichTextShortcut
-											type='primary'
-											character=']'
-											onUse={() => {
-												onChange(
-													__unstableIndentListItems(
-														value,
-														{ type: typeOfList }
-													)
-												);
-											}}
-										/>
-										<RichTextShortcut
-											type='primary'
-											character='m'
-											onUse={() => {
-												onChange(
-													__unstableIndentListItems(
-														value,
-														{ type: typeOfList }
-													)
-												);
-											}}
-										/>
-										<RichTextShortcut
-											type='primaryShift'
-											character='m'
-											onUse={() => {
-												onChange(
-													__unstableOutdentListItems(
-														value
-													)
-												);
-											}}
-										/>
-									</Fragment>
-								)
-							}
+							{({ value, onChange }) => {
+								dispatch('maxiBlocks/text').sendFormatValue(
+									value
+								);
+
+								if (isSelected)
+									return (
+										<Fragment>
+											<RichTextShortcut
+												type='primary'
+												character='['
+												onUse={() => {
+													onChange(
+														__unstableOutdentListItems(
+															value
+														)
+													);
+												}}
+											/>
+											<RichTextShortcut
+												type='primary'
+												character=']'
+												onUse={() => {
+													onChange(
+														__unstableIndentListItems(
+															value,
+															{ type: typeOfList }
+														)
+													);
+												}}
+											/>
+											<RichTextShortcut
+												type='primary'
+												character='m'
+												onUse={() => {
+													onChange(
+														__unstableIndentListItems(
+															value,
+															{ type: typeOfList }
+														)
+													);
+												}}
+											/>
+											<RichTextShortcut
+												type='primaryShift'
+												character='m'
+												onUse={() => {
+													onChange(
+														__unstableOutdentListItems(
+															value
+														)
+													);
+												}}
+											/>
+										</Fragment>
+									);
+
+								return null;
+							}}
 						</RichText>
 					)}
 				</__experimentalBlock>
@@ -344,6 +353,8 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		selectBlock,
 		updateBlockAttributes,
 	} = dispatch('core/block-editor');
+
+	const { getFormatValue } = select('maxiBlocks/text');
 
 	const onReplace = (blocks, node) => {
 		const currentBlocks = blocks.filter(item => !!item);
@@ -443,12 +454,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					clientId,
 				} = block.blocks[0];
 
-				const formatElement = {
-					multilineTag: isList ? 'li' : undefined,
-					multilineWrapperTags: isList ? typeOfList : undefined,
-					html: content,
-				};
-				const formatValue = getFormatValue(formatElement, node);
+				const formatValue = getFormatValue();
 
 				/**
 				 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
@@ -537,4 +543,4 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 });
 
-export default compose(editSelect, editDispatch, withFormatValue)(edit);
+export default compose(editSelect, editDispatch)(edit);

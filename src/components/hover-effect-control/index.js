@@ -15,6 +15,11 @@ import AxisControl from '../axis-control';
 import FancyRadioControl from '../fancy-radio-control';
 import RangeSliderControl from '../range-slider-control';
 
+/**
+ * External dependencies
+ */
+import BezierEditor from 'bezier-easing-editor';
+
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -50,6 +55,11 @@ const HoverEffectControl = props => {
 
 	return (
 		<div className={classes}>
+			<BezierEditor
+				//value={this.state.val}
+				onChange={val => console.log(val, typeof val)}
+			/>
+
 			<FancyRadioControl
 				label={__('Hover Animation', 'maxi-blocks')}
 				selected={props['hover-type']}
@@ -59,7 +69,12 @@ const HoverEffectControl = props => {
 					{ label: <Icon icon={hoverText} />, value: 'text' },
 				]}
 				optionType='string'
-				onChange={val => onChange({ 'hover-type': val })}
+				onChange={val =>
+					onChange({
+						'hover-type': val,
+						'hover-transition-duration': 0.3,
+					})
+				}
 			/>
 			<FancyRadioControl
 				label={__('Preview', 'maxi-blocks')}
@@ -70,7 +85,16 @@ const HoverEffectControl = props => {
 				]}
 				onChange={val => onChange({ 'hover-preview': val })}
 			/>
-			{props['hover-type'] !== 'none' && (
+			{(props['hover-type'] === 'text' ||
+				props['hover-basic-effect-type'] === 'zoom-in' ||
+				props['hover-basic-effect-type'] === 'zoom-out' ||
+				props['hover-basic-effect-type'] === 'slide' ||
+				props['hover-basic-effect-type'] === 'rotate' ||
+				props['hover-basic-effect-type'] === 'blur' ||
+				props['hover-basic-effect-type'] === 'sepia' ||
+				props['hover-basic-effect-type'] === 'clear-sepia' ||
+				props['hover-basic-effect-type'] === 'grey-scale' ||
+				props['hover-basic-effect-type'] === 'clear-greay-scale') && (
 				<RangeSliderControl
 					label={__('Duration(s)', 'maxi-blocks')}
 					className={classes}
@@ -148,7 +172,7 @@ const HoverEffectControl = props => {
 							onChange({ 'hover-basic-effect-type': val })
 						}
 					/>
-					{props['hover-type'] === 'text' &&
+					{props['hover-type'] === 'basic' &&
 						(props['hover-basic-effect-type'] === 'zoom-in' ||
 							props['hover-basic-effect-type'] === 'zoom-out' ||
 							props['hover-basic-effect-type'] === 'rotate' ||

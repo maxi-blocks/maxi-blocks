@@ -19,9 +19,15 @@ const HoverPreview = props => {
 					props['hover-type'] === 'text' ||
 					props['hover-basic-effect-type'] === 'zoom-in' ||
 					props['hover-basic-effect-type'] === 'zoom-out' ||
-					props['hover-basic-effect-type'] === 'slide'
+					props['hover-basic-effect-type'] === 'slide' ||
+					props['hover-basic-effect-type'] === 'rotate' ||
+					props['hover-basic-effect-type'] === 'blur' ||
+					props['hover-basic-effect-type'] === 'sepia' ||
+					props['hover-basic-effect-type'] === 'clear-sepia' ||
+					props['hover-basic-effect-type'] === 'grey-scale' ||
+					props['hover-basic-effect-type'] === 'clear-greay-scale'
 						? {
-								'transition-duration': `${props['hover-transition-duration']}s`,
+								transitionDuration: `${props['hover-transition-duration']}s`,
 						  }
 						: null
 				}
@@ -29,14 +35,23 @@ const HoverPreview = props => {
 					if (props['hover-type'] === 'basic') {
 						if (props['hover-basic-effect-type'] === 'zoom-in')
 							e.target.style.transform = `scale(${props['hover-basic-zoom-in-value']})`;
-						if (props['hover-basic-effect-type'] === 'rotate')
+						else if (props['hover-basic-effect-type'] === 'rotate')
 							e.target.style.transform = `rotate(${props['hover-basic-rotate-value']}deg)`;
-						if (props['hover-basic-effect-type'] === 'zoom-out')
+						else if (
+							props['hover-basic-effect-type'] === 'zoom-out'
+						)
 							e.target.style.transform = 'scale(1)';
-						if (props['hover-basic-effect-type'] === 'slide')
+						else if (props['hover-basic-effect-type'] === 'slide')
 							e.target.style.marginLeft = `${props['hover-basic-slide-value']}px`;
-						if (props['hover-basic-effect-type'] === 'blur')
+						else if (props['hover-basic-effect-type'] === 'blur')
 							e.target.style.filter = `blur(${props['hover-basic-blur-value']}px)`;
+						else {
+							e.target.style.transform = '';
+							e.target.style.marginLeft = '';
+							e.target.style.filter = '';
+						}
+					} else {
+						e.target.style = '';
 					}
 				}}
 				onMouseOut={e => {

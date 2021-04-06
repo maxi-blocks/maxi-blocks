@@ -1,5 +1,5 @@
 const palette = {
-	'palette-status': {
+	'palette-custom-color': {
 		type: 'boolean',
 		default: false,
 	},

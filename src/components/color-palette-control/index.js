@@ -4,8 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { FancyRadioControl } from '..';
 
-import { useState } from '@wordpress/element';
-
 /**
  * External dependencies
  */
@@ -26,6 +24,19 @@ const ColorPaletteControl = props => {
 
 	return (
 		<div className={classes}>
+			<FancyRadioControl
+				label={__('Custom Colour', 'maxi-blocks')}
+				selected={props['palette-custom-color']}
+				options={[
+					{ label: __('Yes', 'maxi-blocks'), value: 1 },
+					{ label: __('No', 'maxi-blocks'), value: 0 },
+				]}
+				onChange={val =>
+					onChange({
+						['palette-custom-color']: val,
+					})
+				}
+			/>
 			<FancyRadioControl
 				className='maxi-sc-color-palette'
 				selected={props[`${colorPaletteType}-palette-preset-color`]}

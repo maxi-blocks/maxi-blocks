@@ -2,14 +2,18 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment, useState } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import ColorControl from '../color-control';
 import ClipPath from '../clip-path-control';
-import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getAttributeKey,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
 import ColorPaletteControl from '../color-palette-control';
 
@@ -31,6 +35,7 @@ const ColorLayer = props => {
 		blockStyle,
 		useStyleCard,
 		noPalette,
+		attributes,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -73,29 +78,32 @@ const ColorLayer = props => {
 			{!noPalette && (
 				<Fragment>
 					<ColorPaletteControl
+						{...getGroupAttributes(attributes, 'palette')}
 						className={`maxi-color-palette--${getBlockStyle()}`}
 						onChange={obj => onChange(obj)}
 					/>
 				</Fragment>
 			)}
-			<ColorControl
-				label={__('Background', 'maxi-blocks')}
-				color={
-					colorOptions[
+			{attributes['palette-custom-color'] && (
+				<ColorControl
+					label={__('Background', 'maxi-blocks')}
+					color={
+						colorOptions[
+							getAttributeKey('background-color', isHover, prefix)
+						]
+					}
+					defaultColor={getDefaultAttribute(
 						getAttributeKey('background-color', isHover, prefix)
-					]
-				}
-				defaultColor={getDefaultAttribute(
-					getAttributeKey('background-color', isHover, prefix)
-				)}
-				onChange={val => {
-					colorOptions[
-						getAttributeKey('background-color', isHover, prefix)
-					] = val;
+					)}
+					onChange={val => {
+						colorOptions[
+							getAttributeKey('background-color', isHover, prefix)
+						] = val;
 
-					onChange(colorOptions);
-				}}
-			/>
+						onChange(colorOptions);
+					}}
+				/>
+			)}
 			{!disableClipPath && (
 				<ClipPath
 					clipPath={

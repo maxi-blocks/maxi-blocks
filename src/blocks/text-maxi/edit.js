@@ -117,7 +117,13 @@ class edit extends MaxiBlock {
 			!!attributes['background-highlight'] &&
 				'maxi-highlight--background',
 			!!attributes['border-highlight'] && 'maxi-highlight--border',
-			`maxi-sc-background-color-${attributes['background-palette-preset-color']}`,
+			attributes['background-active-media'] === 'color' &&
+				!!attributes['palette-custom-color'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-background-color-${
+					attributes['background-palette-preset-color']
+				}`,
 			extraClassName,
 			uniqueID,
 			className

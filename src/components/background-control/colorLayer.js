@@ -74,7 +74,7 @@ const ColorLayer = props => {
 				<Fragment>
 					<ColorPaletteControl
 						className={`maxi-color-palette--${getBlockStyle()}`}
-						// onChange={}
+						onChange={obj => onChange(obj)}
 					/>
 				</Fragment>
 			)}

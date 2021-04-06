@@ -22,15 +22,13 @@ import './editor.scss';
 const ColorPaletteControl = props => {
 	const { className, onChange, colorPaletteType = 'background' } = props;
 
-	const getColorPaletteType = `${colorPaletteType}-preset-color`;
-
 	const classes = classnames('maxi-color-palette-control', className);
 
 	return (
 		<div className={classes}>
 			<FancyRadioControl
 				className='maxi-sc-color-palette'
-				selected={getColorPaletteType}
+				selected={props[`${colorPaletteType}-palette-preset-color`]}
 				optionType='number'
 				options={[
 					{ value: 1 },
@@ -41,7 +39,11 @@ const ColorPaletteControl = props => {
 					{ value: 6 },
 					{ value: 7 },
 				]}
-				onChange={val => onChange({ getColorPaletteType: val })}
+				onChange={val =>
+					onChange({
+						[`${colorPaletteType}-palette-preset-color`]: val,
+					})
+				}
 			/>
 		</div>
 	);

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * Component
@@ -28,6 +28,19 @@ const HoverPreview = props => {
 					props['hover-basic-effect-type'] === 'clear-greay-scale'
 						? {
 								transitionDuration: `${props['hover-transition-duration']}s`,
+								transitionTimingFunction:
+									props['hover-transition-easing'] !==
+									'cubic-bezier'
+										? props['hover-transition-easing']
+										: !isNil(
+												props[
+													'hover-transition-easing-cubic-bezier'
+												]
+										  )
+										? `cubic-bezier(${props[
+												'hover-transition-easing-cubic-bezier'
+										  ].join()})`
+										: 'easing',
 						  }
 						: null
 				}
@@ -85,6 +98,8 @@ const HoverPreview = props => {
 					<div
 						style={{
 							transitionDuration: `${props['hover-transition-duration']}s`,
+							transitionTimingFunction:
+								props['hover-transition-easing'],
 						}}
 						className='maxi-hover-details'
 					>

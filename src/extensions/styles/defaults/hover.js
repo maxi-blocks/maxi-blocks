@@ -27,6 +27,13 @@ export const hover = {
 		type: 'string',
 		default: 'center-center',
 	},
+	'hover-transition-easing': {
+		type: 'string',
+		default: 'easing',
+	},
+	'hover-transition-easing-cubic-bezier': {
+		type: 'object',
+	},
 	'hover-transition-duration': {
 		type: 'number',
 		default: 0.3,

@@ -15,6 +15,7 @@ import {
 	getUpdatedString,
 	applyLinkFormat,
 	removeLinkFormat,
+	withFormatValue,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
@@ -33,7 +34,7 @@ import { toolbarLink } from '../../../../icons';
 /**
  * Link
  */
-const Link = props => {
+const Link = withFormatValue(props => {
 	const { blockName, onChange, isList, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
@@ -198,6 +199,6 @@ const Link = props => {
 			}
 		/>
 	);
-};
+});
 
 export default Link;

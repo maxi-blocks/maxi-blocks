@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
-import { withSelect } from '@wordpress/data';
+import { withSelect, dispatch } from '@wordpress/data';
 import { __experimentalBlock, RichText } from '@wordpress/block-editor';
 
 /**
@@ -11,7 +11,6 @@ import { __experimentalBlock, RichText } from '@wordpress/block-editor';
  */
 import Inspector from './inspector';
 import { MaxiBlock, MotionPreview, Toolbar } from '../../components';
-import { withFormatValue } from '../../extensions/text/formats';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -56,13 +55,7 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
-		const {
-			attributes,
-			className,
-			deviceType,
-			setAttributes,
-			formatValue,
-		} = this.props;
+		const { attributes, className, deviceType, setAttributes } = this.props;
 		const {
 			uniqueID,
 			blockStyle,
@@ -98,16 +91,8 @@ class edit extends MaxiBlock {
 		);
 
 		return [
-			<Inspector
-				key={`block-settings-${uniqueID}`}
-				{...this.props}
-				formatValue={formatValue}
-			/>,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				{...this.props}
-				formatValue={formatValue}
-			/>,
+			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<MotionPreview
 				key={`motion-preview-${uniqueID}`}
 				{...getGroupAttributes(attributes, 'motion')}
@@ -127,7 +112,13 @@ class edit extends MaxiBlock {
 								setAttributes({ buttonContent })
 							}
 							placeholder={__('Set some text…', 'maxi-blocks')}
-						/>
+						>
+							{({ value }) => {
+								dispatch('maxiBlocks/text').sendFormatValue(
+									value
+								);
+							}}
+						</RichText>
 					</div>
 				</__experimentalBlock>
 			</MotionPreview>,
@@ -143,4 +134,4 @@ const editSelect = withSelect(select => {
 	};
 });
 
-export default compose(editSelect, withFormatValue)(edit);
+export default compose(editSelect)(edit);

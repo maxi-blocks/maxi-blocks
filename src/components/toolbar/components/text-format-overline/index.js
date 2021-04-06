@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Icon, Button, Tooltip } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,43 +22,58 @@ import { trim } from 'lodash';
  * Styles and icons
  */
 import { toolbarOverline } from '../../../../icons';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * TextFormatOverline
  */
 const TextFormatOverline = props => {
-	const { formatValue, onChange, isList, breakpoint, typography } = props;
+	const { formatValue, onChange, isList, breakpoint } = props;
 
-	const textDecorationValue =
-		getCustomFormatValue({
-			typography,
-			formatValue,
-			prop: 'text-decoration',
-			breakpoint,
-		}) || '';
+	const getTextDecorationValue = () => {
+		return (
+			getCustomFormatValue({
+				typography: { ...getGroupAttributes(props, 'typography') },
+				formatValue,
+				prop: 'text-decoration',
+				breakpoint,
+			}) || ''
+		);
+	};
+
+	const textDecorationValue = getTextDecorationValue();
 
 	const [isActive, setIsActive] = useState(
 		textDecorationValue.indexOf('overline') >= 0
 	);
 
-	const getTextDecorationValue = () => {
-		if (textDecorationValue === 'none') return 'overline';
+	useEffect(() => {
+		const textDecorationValue = getTextDecorationValue();
 
-		const response = isActive
-			? textDecorationValue.replace('overline', '')
-			: `${textDecorationValue} overline`;
-
-		return trim(response);
-	};
+		setIsActive(textDecorationValue.indexOf('overline') >= 0);
+	});
 
 	const onClick = () => {
+		const textDecorationValue = getTextDecorationValue();
+
+		let response;
+
+		if (textDecorationValue === 'none') response = 'overline';
+		else
+			response =
+				textDecorationValue.indexOf('overline') >= 0
+					? textDecorationValue.replace('overline', '')
+					: `${textDecorationValue} overline`;
+
+		response = trim(response);
+
 		const obj = setFormat({
 			formatValue,
-			isActive,
+			isActive: textDecorationValue.indexOf('overline') >= 0,
 			isList,
-			typography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			value: {
-				'text-decoration': getTextDecorationValue(),
+				'text-decoration': response,
 			},
 			breakpoint,
 		});

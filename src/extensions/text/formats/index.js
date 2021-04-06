@@ -1,6 +1,6 @@
 import './registerFormats';
 
-export { default as getFormatValue } from './getFormatValue';
+export { default as generateFormatValue } from './generateFormatValue';
 export { default as formatActive } from './isFormatActive';
 export { default as getUpdatedString } from './getUpdatedString';
 export { default as applyLinkFormat } from './applyLinkFormat';

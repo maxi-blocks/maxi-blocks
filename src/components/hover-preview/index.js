@@ -83,13 +83,9 @@ const HoverPreview = props => {
 				props['hover-type'] !== 'basic' &&
 				props['hover-preview'] && (
 					<div
-						style={
-							props['hover-type'] === 'text'
-								? {
-										'transition-duration': `${props['hover-transition-duration']}s`,
-								  }
-								: null
-						}
+						style={{
+							transitionDuration: `${props['hover-transition-duration']}s`,
+						}}
 						className='maxi-hover-details'
 					>
 						<div

@@ -118,39 +118,6 @@ const save = props => {
 						{captionContent}
 					</figcaption>
 				)}
-				{attributes['hover-type'] === 'text' &&
-					attributes['hover-text-effect-type'] !== 'none' && (
-						<div className='maxi-hover-details'>
-							<div
-								className={`maxi-hover-details__content maxi-hover-details__content--${attributes['hover-text-preset']}`}
-							>
-								{!isEmpty(
-									attributes['hover-title-typography-content']
-								) && (
-									<h3>
-										{
-											attributes[
-												'hover-title-typography-content'
-											]
-										}
-									</h3>
-								)}
-								{!isEmpty(
-									attributes[
-										'hover-content-typography-content'
-									]
-								) && (
-									<p>
-										{
-											attributes[
-												'hover-content-typography-content'
-											]
-										}
-									</p>
-								)}
-							</div>
-						</div>
-					)}
 			</div>
 		</figure>
 	);

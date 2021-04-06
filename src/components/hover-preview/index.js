@@ -15,36 +15,37 @@ const HoverPreview = props => {
 	return (
 		<div className={classes}>
 			<img
-				style={
-					props['hover-type'] === 'text' ||
-					props['hover-basic-effect-type'] === 'zoom-in' ||
-					props['hover-basic-effect-type'] === 'zoom-out' ||
-					props['hover-basic-effect-type'] === 'slide' ||
-					props['hover-basic-effect-type'] === 'rotate' ||
-					props['hover-basic-effect-type'] === 'blur' ||
-					props['hover-basic-effect-type'] === 'sepia' ||
-					props['hover-basic-effect-type'] === 'clear-sepia' ||
-					props['hover-basic-effect-type'] === 'grey-scale' ||
-					props['hover-basic-effect-type'] === 'clear-greay-scale'
-						? {
-								transitionDuration: `${props['hover-transition-duration']}s`,
-								transitionTimingFunction:
-									props['hover-transition-easing'] !==
-									'cubic-bezier'
-										? props['hover-transition-easing']
-										: !isNil(
-												props[
-													'hover-transition-easing-cubic-bezier'
-												]
-										  )
-										? `cubic-bezier(${props[
-												'hover-transition-easing-cubic-bezier'
-										  ].join()})`
-										: 'easing',
-						  }
-						: null
-				}
 				onMouseOver={e => {
+					if (
+						props['hover-type'] === 'text' ||
+						props['hover-basic-effect-type'] === 'zoom-in' ||
+						props['hover-basic-effect-type'] === 'zoom-out' ||
+						props['hover-basic-effect-type'] === 'slide' ||
+						props['hover-basic-effect-type'] === 'rotate' ||
+						props['hover-basic-effect-type'] === 'blur' ||
+						props['hover-basic-effect-type'] === 'sepia' ||
+						props['hover-basic-effect-type'] === 'clear-sepia' ||
+						props['hover-basic-effect-type'] === 'grey-scale' ||
+						props['hover-basic-effect-type'] === 'clear-greay-scale'
+					) {
+						e.target.style.transitionDuration = `${props['hover-transition-duration']}s`;
+						e.target.style.transitionTimingFunction = `
+						${
+							props['hover-transition-easing'] !== 'cubic-bezier'
+								? props['hover-transition-easing']
+								: !isNil(
+										props[
+											'hover-transition-easing-cubic-bezier'
+										]
+								  )
+								? `cubic-bezier(${props[
+										'hover-transition-easing-cubic-bezier'
+								  ].join()})`
+								: 'easing'
+						}
+						`;
+					}
+
 					if (props['hover-type'] === 'basic') {
 						if (props['hover-basic-effect-type'] === 'zoom-in')
 							e.target.style.transform = `scale(${props['hover-basic-zoom-in-value']})`;
@@ -100,6 +101,19 @@ const HoverPreview = props => {
 							transitionDuration: `${props['hover-transition-duration']}s`,
 							transitionTimingFunction:
 								props['hover-transition-easing'],
+							transitionTimingFunction:
+								props['hover-transition-easing'] !==
+								'cubic-bezier'
+									? props['hover-transition-easing']
+									: !isNil(
+											props[
+												'hover-transition-easing-cubic-bezier'
+											]
+									  )
+									? `cubic-bezier(${props[
+											'hover-transition-easing-cubic-bezier'
+									  ].join()})`
+									: 'easing',
 						}}
 						className='maxi-hover-details'
 					>

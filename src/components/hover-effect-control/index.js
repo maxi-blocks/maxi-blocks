@@ -49,7 +49,7 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, uniqueID } = props;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
@@ -64,12 +64,15 @@ const HoverEffectControl = props => {
 					{ label: <Icon icon={hoverText} />, value: 'text' },
 				]}
 				optionType='string'
-				onChange={val =>
+				onChange={val => {
+					document.querySelector(
+						`.maxi-block[uniqueid="${uniqueID}"] img.maxi-image-block__image`
+					).style = '';
 					onChange({
 						'hover-type': val,
 						'hover-transition-duration': 0.3,
-					})
-				}
+					});
+				}}
 			/>
 			<FancyRadioControl
 				label={__('Preview', 'maxi-blocks')}

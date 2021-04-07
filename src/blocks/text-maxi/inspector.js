@@ -688,12 +688,18 @@ const Inspector = props => {
 																<BoxShadowControl
 																	{...getGroupAttributes(
 																		attributes,
-																		'boxShadow'
+																		[
+																			'boxShadow',
+																			'palette',
+																		]
 																	)}
 																	onChange={obj =>
 																		setAttributes(
 																			obj
 																		)
+																	}
+																	blockStyle={
+																		blockStyle
 																	}
 																	breakpoint={
 																		deviceType
@@ -748,7 +754,10 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				'boxShadowHover'
+																				[
+																					'boxShadowHover',
+																					'palette',
+																				]
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -759,6 +768,9 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
+																			blockStyle={
+																				blockStyle
+																			}
 																		/>
 																	)}
 																</Fragment>

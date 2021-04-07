@@ -31,6 +31,22 @@ const palette = {
 		type: 'number',
 		default: 1,
 	},
+	'palette-custom-box-shadow-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-custom-box-shadow-hover-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-box-shadow-color': {
+		type: 'number',
+		default: 1,
+	},
+	'palette-preset-box-shadow-hover-color': {
+		type: 'number',
+		default: 1,
+	},
 };
 
 export default palette;

@@ -18,7 +18,12 @@ import './editor.scss';
  * Component
  */
 const ColorPaletteControl = props => {
-	const { className, onChange, colorPaletteType = 'background' } = props;
+	const {
+		className,
+		onChange,
+		colorPaletteType = 'background',
+		isHover,
+	} = props;
 
 	const classes = classnames('maxi-color-palette-control', className);
 
@@ -26,20 +31,28 @@ const ColorPaletteControl = props => {
 		<div className={classes}>
 			<FancyRadioControl
 				label={__('Custom Colour', 'maxi-blocks')}
-				selected={props['palette-custom-color']}
+				selected={
+					props[`palette-custom-color${isHover ? '-hover' : ''}`]
+				}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
 				onChange={val =>
 					onChange({
-						['palette-custom-color']: val,
+						[`palette-custom-color${isHover ? '-hover' : ''}`]: val,
 					})
 				}
 			/>
 			<FancyRadioControl
 				className='maxi-sc-color-palette'
-				selected={props[`${colorPaletteType}-palette-preset-color`]}
+				selected={
+					props[
+						`${colorPaletteType}-palette-preset-color${
+							isHover ? '-hover' : ''
+						}`
+					]
+				}
 				optionType='number'
 				options={[
 					{ value: 1 },
@@ -52,7 +65,9 @@ const ColorPaletteControl = props => {
 				]}
 				onChange={val =>
 					onChange({
-						[`${colorPaletteType}-palette-preset-color`]: val,
+						[`${colorPaletteType}-palette-preset-color${
+							isHover ? '-hover' : ''
+						}`]: val,
 					})
 				}
 			/>

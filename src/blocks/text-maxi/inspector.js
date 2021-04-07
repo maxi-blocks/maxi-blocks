@@ -396,11 +396,9 @@ const Inspector = props => {
 																				'backgroundVideo',
 																				'backgroundGradient',
 																				'backgroundSVG',
+																				'palette',
 																			]
 																		)}
-																		attributes={
-																			attributes
-																		}
 																		onChange={obj =>
 																			setAttributes(
 																				obj
@@ -469,6 +467,7 @@ const Inspector = props => {
 																					'backgroundHover',
 																					'backgroundColorHover',
 																					'backgroundGradientHover',
+																					'palette',
 																				]
 																			)}
 																			onChange={obj =>

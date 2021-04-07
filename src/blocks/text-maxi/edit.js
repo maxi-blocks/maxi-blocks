@@ -103,6 +103,24 @@ class edit extends MaxiBlock {
 		} = attributes;
 
 		const name = 'maxi-blocks/text-maxi';
+		console.log(attributes);
+		const paletteClasses = classnames(
+			attributes['background-active-media'] === 'color' &&
+				!attributes['palette-custom-color'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-background-color-${
+					attributes['background-palette-preset-color']
+				}`,
+			attributes['background-active-media-hover'] === 'color' &&
+				!attributes['palette-custom-color-hover'] &&
+				attributes['background-status-hover'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-background-color-hover-${
+					attributes['background-palette-preset-color-hover']
+				}`
+		);
 
 		const classes = classnames(
 			'maxi-block',
@@ -117,13 +135,7 @@ class edit extends MaxiBlock {
 			!!attributes['background-highlight'] &&
 				'maxi-highlight--background',
 			!!attributes['border-highlight'] && 'maxi-highlight--border',
-			attributes['background-active-media'] === 'color' &&
-				!!attributes['palette-custom-color'] &&
-				`maxi-sc-${
-					blockStyle === 'maxi-light' ? 'light' : 'dark'
-				}-background-color-${
-					attributes['background-palette-preset-color']
-				}`,
+			paletteClasses,
 			extraClassName,
 			uniqueID,
 			className

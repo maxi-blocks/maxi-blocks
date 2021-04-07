@@ -35,7 +35,6 @@ const ColorLayer = props => {
 		blockStyle,
 		useStyleCard,
 		noPalette,
-		attributes,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -78,13 +77,14 @@ const ColorLayer = props => {
 			{!noPalette && (
 				<Fragment>
 					<ColorPaletteControl
-						{...getGroupAttributes(attributes, 'palette')}
+						{...getGroupAttributes(props, 'palette')}
+						isHover={isHover}
 						className={`maxi-color-palette--${getBlockStyle()}`}
 						onChange={obj => onChange(obj)}
 					/>
 				</Fragment>
 			)}
-			{attributes['palette-custom-color'] && (
+			{props[`palette-custom-color${isHover ? '-hover' : ''}`] && (
 				<ColorControl
 					label={__('Background', 'maxi-blocks')}
 					color={

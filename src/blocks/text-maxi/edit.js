@@ -113,25 +113,25 @@ class edit extends MaxiBlock {
 					attributes['palette-preset-background-color']
 				}`,
 			attributes['background-active-media-hover'] === 'color' &&
-				!attributes['palette-custom-background-color-hover'] &&
+				!attributes['palette-custom-background-hover-color'] &&
 				attributes['background-status-hover'] &&
 				`maxi-sc-${
 					blockStyle === 'maxi-light' ? 'light' : 'dark'
-				}-background-color-hover-${
-					attributes['palette-preset-background-color-hover']
+				}-background-hover-color-${
+					attributes['palette-preset-background-hover-color']
 				}`,
-			attributes[`border-style-${deviceType}`] !== 'none' &&
+			attributes[`border-style-general`] !== 'none' &&
 				!attributes['palette-custom-border-color'] &&
 				`maxi-sc-${
 					blockStyle === 'maxi-light' ? 'light' : 'dark'
 				}-border-color-${attributes['palette-preset-border-color']}`,
-			attributes[`border-style-${deviceType}-hover`] !== 'none' &&
-				!attributes['palette-custom-border-color-hover'] &&
+			attributes[`border-style-general-hover`] !== 'none' &&
+				!attributes['palette-custom-border-hover-color'] &&
 				attributes['border-status-hover'] &&
 				`maxi-sc-${
 					blockStyle === 'maxi-light' ? 'light' : 'dark'
-				}-border-color-hover-${
-					attributes['palette-preset-border-color-hover']
+				}-border-hover-color-${
+					attributes['palette-preset-border-hover-color']
 				}`
 		);
 

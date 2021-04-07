@@ -112,9 +112,9 @@ const ColorControl = props => {
 			/>
 			{palette &&
 				palette[
-					`palette-custom-${colorPaletteType}-color${
+					`palette-custom-${colorPaletteType}${
 						isHover ? '-hover' : ''
-					}`
+					}-color`
 				] && (
 					<div className={classes}>
 						<BaseControl

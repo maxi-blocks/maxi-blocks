@@ -3,7 +3,7 @@ const palette = {
 		type: 'boolean',
 		default: false,
 	},
-	'palette-custom-background-color-hover': {
+	'palette-custom-background-hover-color': {
 		type: 'boolean',
 		default: false,
 	},
@@ -11,7 +11,7 @@ const palette = {
 		type: 'number',
 		default: 1,
 	},
-	'palette-preset-background-color-hover': {
+	'palette-preset-background-hover-color': {
 		type: 'number',
 		default: 1,
 	},
@@ -19,7 +19,7 @@ const palette = {
 		type: 'boolean',
 		default: false,
 	},
-	'palette-custom-border-color-hover': {
+	'palette-custom-border-hover-color': {
 		type: 'boolean',
 		default: false,
 	},
@@ -27,7 +27,7 @@ const palette = {
 		type: 'number',
 		default: 1,
 	},
-	'palette-preset-border-color-hover': {
+	'palette-preset-border-hover-color': {
 		type: 'number',
 		default: 1,
 	},

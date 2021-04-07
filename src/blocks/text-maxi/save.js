@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { RichText  } from '@wordpress/block-editor';
-import { Fragment  } from '@wordpress/element';
+import { RichText } from '@wordpress/block-editor';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -32,6 +32,37 @@ const save = props => {
 		content,
 	} = attributes;
 
+	const paletteClasses = classnames(
+		attributes['background-active-media'] === 'color' &&
+			!attributes['palette-custom-background-color'] &&
+			`maxi-sc-${
+				blockStyle === 'maxi-light' ? 'light' : 'dark'
+			}-background-color-${
+				attributes['palette-preset-background-color']
+			}`,
+		attributes['background-active-media-hover'] === 'color' &&
+			!attributes['palette-custom-background-hover-color'] &&
+			attributes['background-status-hover'] &&
+			`maxi-sc-${
+				blockStyle === 'maxi-light' ? 'light' : 'dark'
+			}-background-hover-color-${
+				attributes['palette-preset-background-hover-color']
+			}`,
+		attributes[`border-style-general`] !== 'none' &&
+			!attributes['palette-custom-border-color'] &&
+			`maxi-sc-${
+				blockStyle === 'maxi-light' ? 'light' : 'dark'
+			}-border-color-${attributes['palette-preset-border-color']}`,
+		attributes[`border-style-general-hover`] !== 'none' &&
+			!attributes['palette-custom-border-hover-color'] &&
+			attributes['border-status-hover'] &&
+			`maxi-sc-${
+				blockStyle === 'maxi-light' ? 'light' : 'dark'
+			}-border-hover-color-${
+				attributes['palette-preset-border-hover-color']
+			}`
+	);
+
 	const classes = classnames(
 		'maxi-motion-effect',
 		'maxi-block maxi-text-block',
@@ -40,6 +71,7 @@ const save = props => {
 		!!attributes['text-highlight'] && 'maxi-highlight--text',
 		!!attributes['background-highlight'] && 'maxi-highlight--background',
 		!!attributes['border-highlight'] && 'maxi-highlight--border',
+		paletteClasses,
 		extraClassName,
 		uniqueID,
 		className,

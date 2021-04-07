@@ -103,22 +103,35 @@ class edit extends MaxiBlock {
 		} = attributes;
 
 		const name = 'maxi-blocks/text-maxi';
-		console.log(attributes);
+
 		const paletteClasses = classnames(
 			attributes['background-active-media'] === 'color' &&
-				!attributes['palette-custom-color'] &&
+				!attributes['palette-custom-background-color'] &&
 				`maxi-sc-${
 					blockStyle === 'maxi-light' ? 'light' : 'dark'
 				}-background-color-${
-					attributes['background-palette-preset-color']
+					attributes['palette-preset-background-color']
 				}`,
 			attributes['background-active-media-hover'] === 'color' &&
-				!attributes['palette-custom-color-hover'] &&
+				!attributes['palette-custom-background-color-hover'] &&
 				attributes['background-status-hover'] &&
 				`maxi-sc-${
 					blockStyle === 'maxi-light' ? 'light' : 'dark'
 				}-background-color-hover-${
-					attributes['background-palette-preset-color-hover']
+					attributes['palette-preset-background-color-hover']
+				}`,
+			attributes[`border-style-${deviceType}`] !== 'none' &&
+				!attributes['palette-custom-border-color'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-border-color-${attributes['palette-preset-border-color']}`,
+			attributes[`border-style-${deviceType}-hover`] !== 'none' &&
+				!attributes['palette-custom-border-color-hover'] &&
+				attributes['border-status-hover'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-border-color-hover-${
+					attributes['palette-preset-border-color-hover']
 				}`
 		);
 

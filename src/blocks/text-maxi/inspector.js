@@ -36,7 +36,6 @@ import {
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
-	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 
 /**
@@ -480,6 +479,9 @@ const Inspector = props => {
 																					'background-highlight'
 																				]
 																			}
+																			blockStyle={
+																				blockStyle
+																			}
 																			disableImage
 																			disableVideo
 																			disableSVG
@@ -512,6 +514,7 @@ const Inspector = props => {
 																			'border',
 																			'borderWidth',
 																			'borderRadius',
+																			'palette',
 																		]
 																	)}
 																	onChange={obj =>
@@ -521,6 +524,9 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
+																	}
+																	blockStyle={
+																		blockStyle
 																	}
 																	disableColor={
 																		!!attributes[
@@ -581,6 +587,7 @@ const Inspector = props => {
 																					'borderHover',
 																					'borderWidthHover',
 																					'borderRadiusHover',
+																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -592,6 +599,9 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
+																			blockStyle={
+																				blockStyle
+																			}
 																			disableColor={
 																				!!attributes[
 																					'border-highlight'

@@ -45,6 +45,7 @@ const BorderControl = props => {
 		disableColor = false,
 		isHover = false,
 		prefix = '',
+		blockStyle,
 	} = props;
 
 	const classes = classnames('maxi-border-control', className);
@@ -193,6 +194,11 @@ const BorderControl = props => {
 						disableImage
 						disableVideo
 						disableGradient
+						blockStyle={blockStyle}
+						isHover={isHover}
+						palette={{ ...getGroupAttributes(props, 'palette') }}
+						colorPaletteType='border'
+						onChangePalette={val => onChange(val)}
 					/>
 				)}
 

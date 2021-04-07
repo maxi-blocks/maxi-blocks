@@ -32,7 +32,11 @@ const ColorPaletteControl = props => {
 			<FancyRadioControl
 				label={__('Custom Colour', 'maxi-blocks')}
 				selected={
-					props[`palette-custom-color${isHover ? '-hover' : ''}`]
+					props[
+						`palette-custom-${colorPaletteType}-color${
+							isHover ? '-hover' : ''
+						}`
+					]
 				}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
@@ -40,7 +44,9 @@ const ColorPaletteControl = props => {
 				]}
 				onChange={val =>
 					onChange({
-						[`palette-custom-color${isHover ? '-hover' : ''}`]: val,
+						[`palette-custom-${colorPaletteType}-color${
+							isHover ? '-hover' : ''
+						}`]: val,
 					})
 				}
 			/>
@@ -48,7 +54,7 @@ const ColorPaletteControl = props => {
 				className='maxi-sc-color-palette'
 				selected={
 					props[
-						`${colorPaletteType}-palette-preset-color${
+						`palette-preset-${colorPaletteType}-color${
 							isHover ? '-hover' : ''
 						}`
 					]
@@ -65,7 +71,7 @@ const ColorPaletteControl = props => {
 				]}
 				onChange={val =>
 					onChange({
-						[`${colorPaletteType}-palette-preset-color${
+						[`palette-preset-${colorPaletteType}-color${
 							isHover ? '-hover' : ''
 						}`]: val,
 					})

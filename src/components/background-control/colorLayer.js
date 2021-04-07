@@ -15,7 +15,6 @@ import {
 	getGroupAttributes,
 } from '../../extensions/styles';
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
-import ColorPaletteControl from '../color-palette-control';
 
 /**
  * External dependencies
@@ -34,7 +33,6 @@ const ColorLayer = props => {
 		scAtt,
 		blockStyle,
 		useStyleCard,
-		noPalette,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -74,36 +72,29 @@ const ColorLayer = props => {
 
 	return (
 		<Fragment>
-			{!noPalette && (
-				<Fragment>
-					<ColorPaletteControl
-						{...getGroupAttributes(props, 'palette')}
-						isHover={isHover}
-						className={`maxi-color-palette--${getBlockStyle()}`}
-						onChange={obj => onChange(obj)}
-					/>
-				</Fragment>
-			)}
-			{props[`palette-custom-color${isHover ? '-hover' : ''}`] && (
-				<ColorControl
-					label={__('Background', 'maxi-blocks')}
-					color={
-						colorOptions[
-							getAttributeKey('background-color', isHover, prefix)
-						]
-					}
-					defaultColor={getDefaultAttribute(
+			<ColorControl
+				label={__('Background', 'maxi-blocks')}
+				color={
+					colorOptions[
 						getAttributeKey('background-color', isHover, prefix)
-					)}
-					onChange={val => {
-						colorOptions[
-							getAttributeKey('background-color', isHover, prefix)
-						] = val;
+					]
+				}
+				defaultColor={getDefaultAttribute(
+					getAttributeKey('background-color', isHover, prefix)
+				)}
+				onChange={val => {
+					colorOptions[
+						getAttributeKey('background-color', isHover, prefix)
+					] = val;
 
-						onChange(colorOptions);
-					}}
-				/>
-			)}
+					onChange(colorOptions);
+				}}
+				blockStyle={getBlockStyle()}
+				palette={{ ...getGroupAttributes(props, 'palette') }}
+				isHover={isHover}
+				colorPaletteType='background'
+				onChangePalette={val => onChange(val)}
+			/>
 			{!disableClipPath && (
 				<ClipPath
 					clipPath={

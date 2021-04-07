@@ -2,8 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Icon } = wp.components;
-const { useState } = wp.element;
+import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -11,8 +10,8 @@ const { useState } = wp.element;
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
 import {
-	setFormat,
 	getCustomFormatValue,
+	withFormatValue,
 } from '../../../../extensions/text/formats';
 import {
 	getGroupAttributes,
@@ -29,42 +28,19 @@ import { toolbarType } from '../../../../icons';
 /**
  * TextColor
  */
-const TextColor = props => {
-	const { blockName, onChange, breakpoint, isList, formatValue } = props;
+const TextColor = withFormatValue(props => {
+	const { blockName, onChange, breakpoint, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const [color, setColor] = useState(
-		getCustomFormatValue({
-			typography,
-			formatValue,
-			prop: 'color',
-			breakpoint,
-		})
-	);
-
-	const returnColor = val => {
-		return `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${val.rgb.a})`;
-	};
-
-	const onClick = val => {
-		const obj = setFormat({
-			formatValue,
-			isList,
-			typography,
-			value: {
-				color: returnColor(val),
-			},
-			breakpoint,
-		});
-
-		setColor(returnColor(val));
-
-		onChange(obj);
-	};
+	const color = getCustomFormatValue({
+		typography,
+		formatValue,
+		prop: 'color',
+		breakpoint,
+	});
 
 	return (
 		<ToolbarPopover
@@ -112,6 +88,6 @@ const TextColor = props => {
 			}
 		/>
 	);
-};
+});
 
 export default TextColor;

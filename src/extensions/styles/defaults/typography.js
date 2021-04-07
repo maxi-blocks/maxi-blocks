@@ -313,6 +313,9 @@ export const typography = {
 	'vertical-align-xs': {
 		type: 'string',
 	},
+	'custom-formats': {
+		type: 'object',
+	},
 };
 
 export const typographyAlignment = (function typographyGenerator() {

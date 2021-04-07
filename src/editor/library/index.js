@@ -2,9 +2,9 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-const { Modal } = wp.components;
-const { useSelect } = wp.data;
-const { useState, Fragment } = wp.element;
+import { Modal } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+import { useState, Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies

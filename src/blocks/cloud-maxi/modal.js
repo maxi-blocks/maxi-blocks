@@ -12,8 +12,7 @@ import CloudLibrary from '../../editor/library';
  */
 import { __ } from '@wordpress/i18n';
 
-const { Component, Fragment } = wp.element;
-const { Button, Modal } = wp.components;
+import { Component, Fragment } from '@wordpress/element';import { Button, Modal } from '@wordpress/components';
 
 class MaxiModal extends Component {
 	state = {

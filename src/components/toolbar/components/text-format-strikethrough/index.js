@@ -2,8 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Icon, Button, Tooltip } = wp.components;
-const { useState } = wp.element;
+import { Icon, Button, Tooltip } from '@wordpress/components';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -12,6 +12,7 @@ import {
 	setFormat,
 	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -27,39 +28,52 @@ import { toolbarStrikethrough } from '../../../../icons';
  * TextFormatStrikethrough
  */
 const TextFormatStrikethrough = props => {
-	const { formatValue, onChange, isList, breakpoint, typography } = props;
+	const { formatValue, onChange, isList, breakpoint } = props;
 
-	const textDecorationValue =
-		getCustomFormatValue({
-			typography,
-			formatValue,
-			prop: 'text-decoration',
-			breakpoint,
-		}) || '';
+	const getTextDecorationValue = () => {
+		return (
+			getCustomFormatValue({
+				typography: { ...getGroupAttributes(props, 'typography') },
+				formatValue,
+				prop: 'text-decoration',
+				breakpoint,
+			}) || ''
+		);
+	};
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const textDecorationValue = getTextDecorationValue();
+
 	const [isActive, setIsActive] = useState(
 		textDecorationValue.indexOf('line-through') >= 0
 	);
 
-	const getTextDecorationValue = () => {
-		if (textDecorationValue === 'none') return 'line-through';
+	useEffect(() => {
+		const textDecorationValue = getTextDecorationValue();
 
-		const response = isActive
-			? textDecorationValue.replace('line-through', '')
-			: `${textDecorationValue} line-through`;
-
-		return trim(response);
-	};
+		setIsActive(textDecorationValue.indexOf('line-through') >= 0);
+	});
 
 	const onClick = () => {
+		const textDecorationValue = getTextDecorationValue();
+
+		let response;
+
+		if (textDecorationValue === 'none') response = 'overline';
+		else
+			response =
+				textDecorationValue.indexOf('overline') >= 0
+					? textDecorationValue.replace('overline', '')
+					: `${textDecorationValue} overline`;
+
+		response = trim(response);
+
 		const obj = setFormat({
 			formatValue,
 			isActive,
 			isList,
-			typography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			value: {
-				'text-decoration': getTextDecorationValue(),
+				'text-decoration': response,
 			},
 			breakpoint,
 		});

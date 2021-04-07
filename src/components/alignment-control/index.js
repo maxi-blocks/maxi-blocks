@@ -1,14 +1,14 @@
 /**
  * Wordpress dependencies
  */
-const { RadioControl } = wp.components;
+import { RadioControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 
-const { Icon } = wp.components;
+import { Icon } from '@wordpress/components';
 
 /**
  * External dependencies

@@ -1,11 +1,11 @@
 /**
  * WordPress dependencies
  */
-const { __, sprintf } = wp.i18n;
-const { Button, SelectControl } = wp.components;
-const { Fragment } = wp.element;
-const { useState } = wp.element;
-const { useSelect, useDispatch } = wp.data;
+import { __, sprintf } from '@wordpress/i18n';
+import { Button, SelectControl } from '@wordpress/components';
+import { Fragment  } from '@wordpress/element';
+import { useState } from '@wordpress/element';
+import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies

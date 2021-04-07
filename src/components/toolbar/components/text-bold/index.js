@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Icon, Button, Tooltip } = wp.components;
-const { useState } = wp.element;
+import { Icon, Button, Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -11,6 +11,7 @@ const { useState } = wp.element;
 import {
 	getCustomFormatValue,
 	setFormat,
+	withFormatValue,
 } from '../../../../extensions/text/formats';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
@@ -23,8 +24,8 @@ import { toolbarBold } from '../../../../icons';
 /**
  * TextBold
  */
-const TextBold = props => {
-	const { formatValue, blockName, onChange, isList, breakpoint } = props;
+const TextBold = withFormatValue(props => {
+	const { blockName, onChange, isList, breakpoint, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -37,10 +38,7 @@ const TextBold = props => {
 		breakpoint,
 	});
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const [isActive, setIsActive] = useState(
-		(boldValue > 400 && true) || false
-	);
+	const isActive = (boldValue > 400 && true) || false;
 
 	const onClick = () => {
 		const obj = setFormat({
@@ -53,8 +51,6 @@ const TextBold = props => {
 			},
 			breakpoint,
 		});
-
-		setIsActive(!isActive);
 
 		onChange(obj);
 	};
@@ -70,6 +66,6 @@ const TextBold = props => {
 			</Button>
 		</Tooltip>
 	);
-};
+});
 
 export default TextBold;

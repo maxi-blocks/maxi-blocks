@@ -1,10 +1,9 @@
 /**
  * WordPress dependencies
  */
-const { __, sprintf } = wp.i18n;
-const { Fragment } = wp.element;
-const { Button, BaseControl } = wp.components;
-const { useState } = wp.element;
+import { __, sprintf } from '@wordpress/i18n';
+import { Fragment } from '@wordpress/element';
+import { Button, BaseControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -21,6 +20,7 @@ import TextFormatCode from '../text-format-code';
 import {
 	setFormat,
 	getCustomFormatValue,
+	withFormatValue,
 } from '../../../../extensions/text/formats';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
@@ -38,42 +38,34 @@ import { toolbarType, reset } from '../../../../icons';
 /**
  * TextOptions
  */
-const TextOptions = props => {
+const TextOptions = withFormatValue(props => {
 	const {
 		blockName,
 		onChange,
 		breakpoint,
 		isList,
-		formatValue,
 		textLevel,
+		formatValue,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const [typography, setTypography] = useState(
-		getGroupAttributes(props, 'typography')
-	);
-
-	const getValue = prop => {
-		return getCustomFormatValue({
-			defaultTypography,
+	const getValue = prop =>
+		getCustomFormatValue({
+			typography: { ...getGroupAttributes(props, 'typography') },
 			formatValue,
 			prop,
 			breakpoint,
 		});
-	};
 
 	const onChangeFormat = value => {
 		const obj = setFormat({
 			formatValue,
 			isList,
-			typography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			value,
 			breakpoint,
 		});
-
-		setTypography(getGroupAttributes(obj, 'typography'));
 
 		onChange(obj);
 	};
@@ -236,35 +228,35 @@ const TextOptions = props => {
 						</BaseControl>
 						<div>
 							<TextFormatOverline
-								typography={typography}
+								{...getGroupAttributes(props, 'typography')}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatStrikethrough
-								typography={typography}
+								{...getGroupAttributes(props, 'typography')}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatUnderline
-								typography={typography}
+								{...getGroupAttributes(props, 'typography')}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSubscript
-								typography={typography}
+								{...getGroupAttributes(props, 'typography')}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
 							/>
 							<TextFormatSuperscript
-								typography={typography}
+								{...getGroupAttributes(props, 'typography')}
 								formatValue={formatValue}
 								onChange={obj => onChange(obj)}
 								isList={isList}
@@ -281,6 +273,6 @@ const TextOptions = props => {
 			}
 		/>
 	);
-};
+});
 
 export default TextOptions;

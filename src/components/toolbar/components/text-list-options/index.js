@@ -2,14 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Button } = wp.components;
-const {
+import { Button } from '@wordpress/components';
+import {
 	__unstableIndentListItems,
 	__unstableCanIndentListItems,
 	__unstableOutdentListItems,
 	__unstableCanOutdentListItems,
 	toHTMLString,
-} = wp.richText;
+} from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
@@ -18,6 +18,7 @@ import ToolbarPopover from '../toolbar-popover';
 import {
 	fromListToText,
 	fromTextToList,
+	withFormatValue,
 } from '../../../../extensions/text/formats';
 
 /**
@@ -39,15 +40,8 @@ import {
 /**
  * TextListOptions
  */
-const TextListOptions = props => {
-	const {
-		blockName,
-		formatValue,
-		isList,
-		typeOfList,
-		content,
-		onChange,
-	} = props;
+const TextListOptions = withFormatValue(props => {
+	const { blockName, formatValue, isList, typeOfList, onChange } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -78,6 +72,8 @@ const TextListOptions = props => {
 	};
 
 	const onChangeList = type => {
+		const { text: content } = formatValue;
+
 		if (typeOfList === type)
 			onChange({
 				isList: !isList,
@@ -132,6 +128,6 @@ const TextListOptions = props => {
 			}
 		/>
 	);
-};
+});
 
 export default TextListOptions;

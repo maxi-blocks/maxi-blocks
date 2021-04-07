@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { Icon } = wp.components;
+import { Icon } from '@wordpress/components';
 
 /**
  * Icons

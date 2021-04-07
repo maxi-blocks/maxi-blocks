@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { BaseControl, Button } = wp.components;
+import { BaseControl, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies

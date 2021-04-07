@@ -2,11 +2,11 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-const { Fragment } = wp.element;
-const { __experimentalLinkControl } = wp.blockEditor;
-const { useSelect } = wp.data;
-const { getActiveFormat } = wp.richText;
-const { Button } = wp.components;
+import { Fragment  } from '@wordpress/element';
+import { __experimentalLinkControl } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
+import { getActiveFormat } from '@wordpress/rich-text';
+import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -15,6 +15,7 @@ import {
 	getUpdatedString,
 	applyLinkFormat,
 	removeLinkFormat,
+	withFormatValue,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
@@ -33,7 +34,7 @@ import { toolbarLink } from '../../../../icons';
 /**
  * Link
  */
-const Link = props => {
+const Link = withFormatValue(props => {
 	const { blockName, onChange, isList, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
@@ -198,6 +199,6 @@ const Link = props => {
 			}
 		/>
 	);
-};
+});
 
 export default Link;

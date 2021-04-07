@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-const { toHTMLString, removeFormat } = wp.richText;
+import { removeFormat, toHTMLString } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
@@ -11,7 +11,15 @@ import getMultiFormatObj from './getMultiFormatObj';
 /**
  * External dependencies
  */
-import { isEqual, compact, uniq, flattenDeep, find, isEmpty } from 'lodash';
+import {
+	isEqual,
+	compact,
+	uniq,
+	flattenDeep,
+	find,
+	isEmpty,
+	cloneDeep,
+} from 'lodash';
 
 /**
  * Get the classes from custom formats that shares the same
@@ -22,7 +30,7 @@ import { isEqual, compact, uniq, flattenDeep, find, isEmpty } from 'lodash';
  *
  * @returns {Array} Repeated classNames
  */
-const getRepeatedClassNames = (customFormats, formatValue) => {
+export const getRepeatedClassNames = (customFormats, formatValue) => {
 	const multiFormatObj = getMultiFormatObj({
 		...formatValue,
 		start: 0,
@@ -62,23 +70,30 @@ const getRepeatedClassNames = (customFormats, formatValue) => {
  *
  * @returns {Object} Cleaned RichText format value and Maxi typography
  */
-const flatRepeatedClassNames = (repeatedClasses, formatValue, typography) => {
+export const flatRepeatedClassNames = (
+	repeatedClasses,
+	formatValue,
+	typography
+) => {
 	const newClassName = repeatedClasses[0];
 	repeatedClasses.shift();
 
-	const newFormatValue = { ...formatValue };
-	const newTypography = { ...typography };
+	const newFormatValue = cloneDeep(formatValue);
+	const newTypography = cloneDeep(typography);
 
 	newFormatValue.formats = newFormatValue.formats.map(formatEl => {
-		return formatEl.map(format => {
-			if (
-				format.attributes &&
-				repeatedClasses.includes(format.attributes.className)
-			)
-				format.attributes.className = newClassName;
+		if (formatEl)
+			return formatEl.map(format => {
+				if (
+					format.attributes &&
+					repeatedClasses.includes(format.attributes.className)
+				)
+					format.attributes.className = newClassName;
 
-			return format;
-		});
+				return format;
+			});
+
+		return formatEl;
 	});
 
 	repeatedClasses.forEach(className => {
@@ -102,7 +117,7 @@ const flatRepeatedClassNames = (repeatedClasses, formatValue, typography) => {
  *
  * @returns {Object} Cleaned RichText format value, content and Maxi typography
  */
-const removeUnnecessaryFormats = ({
+export const removeUnnecessaryFormats = ({
 	formatValue,
 	typography,
 	content,
@@ -186,7 +201,9 @@ const removeUnnecessaryFormats = ({
 
 const flatFormatsWithClass = ({ formatValue, typography, content, isList }) => {
 	const { 'custom-formats': customFormats } = typography;
+
 	const repeatedClasses = getRepeatedClassNames(customFormats, formatValue);
+
 	let newContent = content;
 	let newFormatValue = { ...formatValue };
 	let newTypography = { ...typography };
@@ -198,7 +215,7 @@ const flatFormatsWithClass = ({ formatValue, typography, content, isList }) => {
 		} = flatRepeatedClassNames(repeatedClasses, formatValue, typography);
 
 		newContent = toHTMLString({
-			value: newFormatValue,
+			value: preformattedFormatValue,
 			multilineTag: (isList && 'li') || null,
 		});
 

@@ -255,7 +255,10 @@ const Inspector = props => {
 																<TypographyControl
 																	{...getGroupAttributes(
 																		attributes,
-																		'typography'
+																		[
+																			'typography',
+																			'palette',
+																		]
 																	)}
 																	textLevel={
 																		textLevel
@@ -280,6 +283,9 @@ const Inspector = props => {
 																		!!attributes[
 																			'text-highlight'
 																		]
+																	}
+																	blockStyle={
+																		blockStyle
 																	}
 																/>
 															),
@@ -334,6 +340,7 @@ const Inspector = props => {
 																				[
 																					'typography',
 																					'typographyHover',
+																					'palette',
 																				]
 																			)}
 																			textLevel={
@@ -360,6 +367,9 @@ const Inspector = props => {
 																				]
 																			}
 																			isHover
+																			blockStyle={
+																				blockStyle
+																			}
 																		/>
 																	)}
 																</Fragment>

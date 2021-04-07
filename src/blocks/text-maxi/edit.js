@@ -151,6 +151,21 @@ class edit extends MaxiBlock {
 					blockStyle === 'maxi-light' ? 'light' : 'dark'
 				}-box-shadow-hover-color-${
 					attributes['palette-preset-box-shadow-hover-color']
+				}`,
+			// Typography Color
+			!attributes['palette-custom-typography-color'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-typography-color-${
+					attributes['palette-preset-typography-color']
+				}`,
+
+			!attributes['palette-custom-typography-hover-color'] &&
+				attributes['typography-status-hover'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-typography-hover-color-${
+					attributes['palette-preset-typography-hover-color']
 				}`
 		);
 

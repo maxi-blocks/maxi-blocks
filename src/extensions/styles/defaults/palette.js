@@ -47,6 +47,22 @@ const palette = {
 		type: 'number',
 		default: 1,
 	},
+	'palette-custom-typography-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-custom-typography-hover-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-typography-color': {
+		type: 'number',
+		default: 1,
+	},
+	'palette-preset-typography-hover-color': {
+		type: 'number',
+		default: 1,
+	},
 };
 
 export default palette;

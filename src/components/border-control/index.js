@@ -194,6 +194,7 @@ const BorderControl = props => {
 						disableImage
 						disableVideo
 						disableGradient
+						showPalette
 						blockStyle={blockStyle}
 						isHover={isHover}
 						palette={{ ...getGroupAttributes(props, 'palette') }}

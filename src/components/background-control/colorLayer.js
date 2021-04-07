@@ -89,6 +89,7 @@ const ColorLayer = props => {
 
 					onChange(colorOptions);
 				}}
+				showPalette
 				blockStyle={getBlockStyle()}
 				palette={{ ...getGroupAttributes(props, 'palette') }}
 				isHover={isHover}

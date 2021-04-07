@@ -35,8 +35,8 @@ const getFontStyle = variant => {
  */
 const loadFonts = font => {
 	// !document.fonts.check(`12px ${font})` with this condition Font Selector have a problem in Firefox(Windows) so we should find a solution for it in future now with removing it the problem will fix temporary :)
-	if (font && document.fonts /* && !document.fonts.check(`12px ${font}`)*/) {
-		const { files } = select('maxiBlocks/fonts').getFont(font);
+	if (font && document.fonts /* && !document.fonts.check(`12px ${font}`) */) {
+		const { files } = select('maxiBlocks/text').getFont(font);
 
 		// FontFace API
 		Object.entries(files).forEach(variant => {

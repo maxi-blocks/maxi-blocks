@@ -224,7 +224,6 @@ const MaxiToolbar = props => {
 								breakpoint={deviceType}
 								node={anchorRef}
 								isList={isList}
-								typeOfList={typeOfList}
 							/>
 						)}
 						<Alignment

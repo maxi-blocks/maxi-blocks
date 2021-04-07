@@ -4,7 +4,7 @@
 import { inRange, compact } from 'lodash';
 
 /**
- * Generates an object with the Maxi Custom format and its different classes
+ * Generates an object with the Maxi Custom formats and its different classes
  * and the positions for every one of each
  *
  * @param {Object} formatValue 			RichText format value
@@ -13,13 +13,12 @@ import { inRange, compact } from 'lodash';
  * @returns {Object} Classes with its positions
  */
 const getMultiFormatObj = (formatValue, isHover = false) => {
-	const { start, end } = formatValue;
-	const formatArray = new Array([...formatValue.formats])[0];
+	const { start, end, formats } = formatValue;
 	const formatType = !isHover
 		? 'maxi-blocks/text-custom'
 		: 'maxi-blocks/text-custom-hover';
 
-	const response = formatArray.map((formatEl, i) => {
+	const response = formats.map((formatEl, i) => {
 		if (formatEl)
 			return compact(
 				formatEl.map(format => {
@@ -30,7 +29,7 @@ const getMultiFormatObj = (formatValue, isHover = false) => {
 				})
 			);
 
-		return [null];
+		return formatEl;
 	});
 
 	const obj = {};

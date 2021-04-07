@@ -12,6 +12,7 @@ import ColorControl from '../../../color-control';
 import {
 	getCustomFormatValue,
 	withFormatValue,
+	setFormat,
 } from '../../../../extensions/text/formats';
 import {
 	getGroupAttributes,
@@ -29,7 +30,7 @@ import { toolbarType } from '../../../../icons';
  * TextColor
  */
 const TextColor = withFormatValue(props => {
-	const { blockName, onChange, breakpoint, formatValue } = props;
+	const { blockName, onChange, breakpoint, formatValue, isList } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -41,6 +42,18 @@ const TextColor = withFormatValue(props => {
 		prop: 'color',
 		breakpoint,
 	});
+
+	const onChangeFormat = value => {
+		const obj = setFormat({
+			formatValue,
+			isList,
+			typography,
+			value,
+			breakpoint,
+		});
+
+		onChange(obj);
+	};
 
 	return (
 		<ToolbarPopover
@@ -80,8 +93,8 @@ const TextColor = withFormatValue(props => {
 						)
 					}
 					onChange={val =>
-						onChange({
-							[`color-${breakpoint}`]: val,
+						onChangeFormat({
+							color: val,
 						})
 					}
 				/>

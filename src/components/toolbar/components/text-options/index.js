@@ -50,9 +50,11 @@ const TextOptions = withFormatValue(props => {
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
+	const typography = { ...getGroupAttributes(props, 'typography') };
+
 	const getValue = prop =>
 		getCustomFormatValue({
-			typography: { ...getGroupAttributes(props, 'typography') },
+			typography,
 			formatValue,
 			prop,
 			breakpoint,
@@ -62,7 +64,7 @@ const TextOptions = withFormatValue(props => {
 		const obj = setFormat({
 			formatValue,
 			isList,
-			typography: { ...getGroupAttributes(props, 'typography') },
+			typography,
 			value,
 			breakpoint,
 		});

@@ -1,0 +1,41 @@
+/**
+ * WordPress
+ */
+import { select } from '@wordpress/data';
+
+/**
+ * External dependencies
+ */
+import TestRenderer from 'react-test-renderer';
+import 'jest-canvas-mock';
+
+/**
+ * Internal dependencies
+ */
+import TextMaxi from '../edit';
+
+const setAttributes = jest.fn();
+
+jest.mock(
+	'../../../../node_modules/@wordpress/data/src/components/select',
+	() => {
+		// This allows us to tweak the returned value on each test
+		const mock = jest.fn();
+		return mock;
+	}
+);
+
+describe('TextMaxi', () => {
+	it('renders without crashing', () => {
+		debugger;
+		select.mockImplementation(() => 'general');
+		const renderer = TestRenderer.create(
+			<TextMaxi
+				attributes={{ content: '' }}
+				setAttributes={setAttributes}
+			/>
+		);
+
+		expect(renderer.toJSON()).toBeTruthy();
+	});
+});

@@ -133,18 +133,20 @@ const ColorControl = props => {
 									background: color,
 								}}
 							/>
-							<Button
-								className='components-maxi-control__reset-button'
-								onClick={() => onReset()}
-								aria-label={sprintf(
-									/* translators: %s: a textual label  */
-									__('Reset %s settings', 'maxi-blocks'),
-									'font size'
-								)}
-								type='reset'
-							>
-								{reset}
-							</Button>
+							{!showPalette && (
+								<Button
+									className='components-maxi-control__reset-button'
+									onClick={() => onReset()}
+									aria-label={sprintf(
+										/* translators: %s: a textual label  */
+										__('Reset %s settings', 'maxi-blocks'),
+										'font size'
+									)}
+									type='reset'
+								>
+									{reset}
+								</Button>
+							)}
 						</div>
 					</BaseControl>
 					<RangeSliderControl

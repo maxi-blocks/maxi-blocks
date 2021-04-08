@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { SelectControl, Icon } from '@wordpress/components';
 
 /**
@@ -15,7 +15,10 @@ import {
 	RangeSliderControl,
 	SizeControl,
 } from '../../components';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import {
 	dividerSolidHorizontal,
 	dividerDottedHorizontal,
@@ -41,6 +44,8 @@ const DividerControl = props => {
 		disableColor = false,
 		disableLineStyle = false,
 		disableBorderRadius = false,
+		blockStyle,
+		isHover = false,
 	} = props;
 
 	const minMaxSettings = {
@@ -127,6 +132,12 @@ const DividerControl = props => {
 					defaultColor={getDefaultAttribute('border-color')}
 					onChange={val => onChange({ 'divider-border-color': val })}
 					disableGradient
+					showPalette
+					blockStyle={blockStyle}
+					palette={{ ...getGroupAttributes(props, 'palette') }}
+					isHover={isHover}
+					colorPaletteType='border'
+					onChangePalette={val => onChange(val)}
 				/>
 			)}
 			{!disableLineStyle && (

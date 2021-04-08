@@ -20,6 +20,7 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
+	...attributesData.palette,
 	...attributesData.background,
 	...attributesData.backgroundColor,
 	...attributesData.backgroundImage,

@@ -65,6 +65,71 @@ class edit extends MaxiBlock {
 		} = this.props;
 		const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
 
+		const paletteClasses = classnames(
+			// Background Color
+			attributes['background-active-media'] === 'color' &&
+				!attributes['palette-custom-background-color'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-background-color-${
+					attributes['palette-preset-background-color']
+				}`,
+
+			attributes['background-active-media-hover'] === 'color' &&
+				!attributes['palette-custom-background-hover-color'] &&
+				attributes['background-status-hover'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-background-hover-color-${
+					attributes['palette-preset-background-hover-color']
+				}`,
+			// Border Color
+			attributes['border-style-general'] !== 'none' &&
+				!attributes['palette-custom-border-color'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-border-color-${attributes['palette-preset-border-color']}`,
+
+			attributes['border-style-general-hover'] !== 'none' &&
+				!attributes['palette-custom-border-hover-color'] &&
+				attributes['border-status-hover'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-border-hover-color-${
+					attributes['palette-preset-border-hover-color']
+				}`,
+			// Box-Shadow Color
+			!attributes['palette-custom-box-shadow-color'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-box-shadow-color-${
+					attributes['palette-preset-box-shadow-color']
+				}`,
+
+			!attributes['palette-custom-box-shadow-hover-color'] &&
+				attributes['box-shadow-status-hover'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-box-shadow-hover-color-${
+					attributes['palette-preset-box-shadow-hover-color']
+				}`,
+			// Typography Color
+			!attributes['palette-custom-typography-color'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-typography-color-${
+					attributes['palette-preset-typography-color']
+				}`,
+
+			!attributes['palette-custom-typography-hover-color'] &&
+				attributes['typography-status-hover'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-typography-hover-color-${
+					attributes['palette-preset-typography-hover-color']
+				}`
+		);
+
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
@@ -76,6 +141,7 @@ class edit extends MaxiBlock {
 			!!attributes['background-highlight'] &&
 				'maxi-highlight--background',
 			!!attributes['border-highlight'] && 'maxi-highlight--border',
+			paletteClasses,
 			extraClassName,
 			uniqueID,
 			className

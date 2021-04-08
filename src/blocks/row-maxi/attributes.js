@@ -32,6 +32,7 @@ const attributes = {
 		type: 'boolean',
 		default: false,
 	},
+	...attributesData.palette,
 	...attributesData.container,
 	...attributesData.rowPattern,
 	...attributesData.opacity,

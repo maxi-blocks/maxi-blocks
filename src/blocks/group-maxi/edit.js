@@ -74,7 +74,7 @@ class edit extends MaxiBlock {
 			extraClassName,
 			fullWidth,
 		} = attributes;
-		console.log(attributes);
+
 		const paletteClasses = classnames(
 			// Background Color
 			attributes['background-active-media'] === 'color' &&

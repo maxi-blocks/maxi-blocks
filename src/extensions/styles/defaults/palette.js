@@ -63,6 +63,22 @@ const palette = {
 		type: 'number',
 		default: 1,
 	},
+	'palette-custom-icon-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-custom-icon-hover-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-icon-color': {
+		type: 'number',
+		default: 1,
+	},
+	'palette-preset-icon-hover-color': {
+		type: 'number',
+		default: 1,
+	},
 };
 
 export default palette;

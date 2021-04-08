@@ -90,7 +90,13 @@ const save = props => {
 				blockStyle === 'maxi-light' ? 'light' : 'dark'
 			}-typography-hover-color-${
 				attributes['palette-preset-typography-hover-color']
-			}`
+			}`,
+		// Icon Color
+		!isEmpty(attributes['icon-name']) &&
+			!attributes['palette-custom-icon-color'] &&
+			`maxi-sc-${
+				blockStyle === 'maxi-light' ? 'light' : 'dark'
+			}-icon-color-${attributes['palette-preset-icon-color']}`
 	);
 
 	const classes = classnames(

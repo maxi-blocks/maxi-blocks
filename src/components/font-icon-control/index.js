@@ -53,6 +53,8 @@ const FontIconControl = props => {
 		breakpoint,
 		simpleMode = false,
 		disableColor,
+		isHover = false,
+		blockStyle,
 	} = props;
 
 	const [activeOption, setActiveOption] = useState('iconColor');
@@ -248,6 +250,14 @@ const FontIconControl = props => {
 							color={props['icon-color']}
 							defaultColor={getDefaultAttribute('icon-color')}
 							onChange={val => onChange({ 'icon-color': val })}
+							showPalette
+							blockStyle={blockStyle}
+							isHover={isHover}
+							palette={{
+								...getGroupAttributes(props, 'palette'),
+							}}
+							colorPaletteType='icon'
+							onChangePalette={val => onChange(val)}
 						/>
 					)}
 

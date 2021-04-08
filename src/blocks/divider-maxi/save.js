@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -27,11 +27,53 @@ const save = props => {
 		lineOrientation,
 	} = attributes;
 
+	const paletteClasses = classnames(
+		// Background Color
+		attributes['background-active-media'] === 'color' &&
+			!attributes['palette-custom-background-color'] &&
+			`maxi-sc-${
+				blockStyle === 'maxi-light' ? 'light' : 'dark'
+			}-background-color-${
+				attributes['palette-preset-background-color']
+			}`,
+
+		attributes['background-active-media-hover'] === 'color' &&
+			!attributes['palette-custom-background-hover-color'] &&
+			attributes['background-status-hover'] &&
+			`maxi-sc-${
+				blockStyle === 'maxi-light' ? 'light' : 'dark'
+			}-background-hover-color-${
+				attributes['palette-preset-background-hover-color']
+			}`,
+		// Border Color
+		attributes['border-style-general'] !== 'none' &&
+			!attributes['palette-custom-border-color'] &&
+			`maxi-sc-${
+				blockStyle === 'maxi-light' ? 'light' : 'dark'
+			}-border-color-${attributes['palette-preset-border-color']}`,
+		// Box-Shadow Color
+		!attributes['palette-custom-box-shadow-color'] &&
+			`maxi-sc-${
+				blockStyle === 'maxi-light' ? 'light' : 'dark'
+			}-box-shadow-color-${
+				attributes['palette-preset-box-shadow-color']
+			}`,
+
+		!attributes['palette-custom-box-shadow-hover-color'] &&
+			attributes['box-shadow-status-hover'] &&
+			`maxi-sc-${
+				blockStyle === 'maxi-light' ? 'light' : 'dark'
+			}-box-shadow-hover-color-${
+				attributes['palette-preset-box-shadow-hover-color']
+			}`
+	);
+
 	const classes = classnames(
 		'maxi-motion-effect',
 		'maxi-block maxi-divider-block',
 		blockStyle,
 		!!attributes['border-highlight'] && 'maxi-highlight--border',
+		paletteClasses,
 		extraClassName,
 		uniqueID,
 		className,

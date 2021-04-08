@@ -2,7 +2,7 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { Icon } from '@wordpress/components';
 
 /**
@@ -20,6 +20,7 @@ import {
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 
 /**
@@ -44,6 +45,7 @@ const BoxShadowControl = props => {
 		breakpoint,
 		disableAdvanced = false,
 		isHover = false,
+		blockStyle,
 	} = props;
 
 	const classes = classnames('maxi-shadow-control', className);
@@ -163,6 +165,12 @@ const BoxShadowControl = props => {
 						disableGradient
 						disableImage
 						disableVideo
+						showPalette
+						blockStyle={blockStyle}
+						isHover={isHover}
+						palette={{ ...getGroupAttributes(props, 'palette') }}
+						colorPaletteType='box-shadow'
+						onChangePalette={val => onChange(val)}
 					/>
 					{!disableAdvanced && (
 						<Fragment>

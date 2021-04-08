@@ -2,16 +2,19 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment, useState } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import ColorControl from '../color-control';
 import ClipPath from '../clip-path-control';
-import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getAttributeKey,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
-import ColorPaletteControl from '../color-palette-control';
 
 /**
  * External dependencies
@@ -30,7 +33,6 @@ const ColorLayer = props => {
 		scAtt,
 		blockStyle,
 		useStyleCard,
-		noPalette,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -70,14 +72,6 @@ const ColorLayer = props => {
 
 	return (
 		<Fragment>
-			{!noPalette && (
-				<Fragment>
-					<ColorPaletteControl
-						className={`maxi-color-palette--${getBlockStyle()}`}
-						onChange={obj => onChange(obj)}
-					/>
-				</Fragment>
-			)}
 			<ColorControl
 				label={__('Background', 'maxi-blocks')}
 				color={
@@ -95,6 +89,12 @@ const ColorLayer = props => {
 
 					onChange(colorOptions);
 				}}
+				showPalette
+				blockStyle={getBlockStyle()}
+				palette={{ ...getGroupAttributes(props, 'palette') }}
+				isHover={isHover}
+				colorPaletteType='background'
+				onChangePalette={val => onChange(val)}
 			/>
 			{!disableClipPath && (
 				<ClipPath

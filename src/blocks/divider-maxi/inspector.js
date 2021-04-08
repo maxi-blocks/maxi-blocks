@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { TextControl } from '@wordpress/components';
 
 /**
@@ -212,7 +212,11 @@ const Inspector = props => {
 													<DividerControl
 														{...getGroupAttributes(
 															attributes,
-															['divider', 'size']
+															[
+																'divider',
+																'size',
+																'palette',
+															]
 														)}
 														onChange={obj =>
 															setAttributes(obj)
@@ -226,6 +230,7 @@ const Inspector = props => {
 																'border-highlight'
 															]
 														}
+														blockStyle={blockStyle}
 													/>
 												</Fragment>
 											),
@@ -306,6 +311,7 @@ const Inspector = props => {
 																				'background',
 																				'backgroundColor',
 																				'backgroundGradient',
+																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -316,6 +322,9 @@ const Inspector = props => {
 																		disableImage
 																		disableVideo
 																		disableSVG
+																		blockStyle={
+																			blockStyle
+																		}
 																	/>
 																</Fragment>
 															),
@@ -371,6 +380,7 @@ const Inspector = props => {
 																					'backgroundHover',
 																					'backgroundColorHover',
 																					'backgroundGradientHover',
+																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -382,6 +392,9 @@ const Inspector = props => {
 																			disableVideo
 																			disableSVG
 																			isHover
+																			blockStyle={
+																				blockStyle
+																			}
 																		/>
 																	)}
 																</Fragment>
@@ -409,7 +422,10 @@ const Inspector = props => {
 																<BoxShadowControl
 																	{...getGroupAttributes(
 																		attributes,
-																		'boxShadow'
+																		[
+																			'boxShadow',
+																			'palette',
+																		]
 																	)}
 																	onChange={obj =>
 																		setAttributes(
@@ -418,6 +434,9 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
+																	}
+																	blockStyle={
+																		blockStyle
 																	}
 																/>
 															),
@@ -469,7 +488,10 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				'boxShadowHover'
+																				[
+																					'boxShadowHover',
+																					'palette',
+																				]
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -480,6 +502,9 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
+																			blockStyle={
+																				blockStyle
+																			}
 																		/>
 																	)}
 																</Fragment>

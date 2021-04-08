@@ -53,6 +53,7 @@ const TypographyControl = props => {
 		hideTextShadow = false,
 		styleCards = false,
 		noPalette = false,
+		blockStyle,
 	} = props;
 
 	const [typography, setTypography] = useState(
@@ -118,12 +119,12 @@ const TypographyControl = props => {
 		// console.log(prop + ' ' + nonHoverValue);
 
 		if (!isHover) return nonHoverValue;
-			// return getValueWithSC(
-			// 	nonHoverValue,
-			// 	`${prop}-${breakpoint}`,
-			// 	blockStyle,
-			// 	textLevel
-			// );
+		// return getValueWithSC(
+		// 	nonHoverValue,
+		// 	`${prop}-${breakpoint}`,
+		// 	blockStyle,
+		// 	textLevel
+		// );
 
 		return (
 			getCustomFormatValue({
@@ -263,7 +264,14 @@ const TypographyControl = props => {
 								onChangeFormat({ [`${prefix}color`]: val });
 							}}
 							disableGradient
-							noPalette={noPalette}
+							showPalette
+							blockStyle={blockStyle}
+							isHover={isHover}
+							palette={{
+								...getGroupAttributes(props, 'palette'),
+							}}
+							colorPaletteType='typography'
+							onChangePalette={val => onChange(val)}
 						/>
 					)}
 				</Fragment>
@@ -286,7 +294,9 @@ const TypographyControl = props => {
 						unit={getValue(`${prefix}font-size-unit`)}
 						defaultUnit={getDefault(`${prefix}font-size-unit`)}
 						onChangeUnit={val => {
-							onChangeFormat({ [`${prefix}font-size-unit`]: val });
+							onChangeFormat({
+								[`${prefix}font-size-unit`]: val,
+							});
 						}}
 						value={trim(getValue(`${prefix}font-size`))}
 						defaultValue={getDefault(`${prefix}font-size`)}
@@ -301,7 +311,9 @@ const TypographyControl = props => {
 						unit={getValue(`${prefix}line-height-unit`) || ''}
 						defaultUnit={getDefault(`${prefix}line-height-unit`)}
 						onChangeUnit={val => {
-							onChangeFormat({ [`${prefix}line-height-unit`]: val });
+							onChangeFormat({
+								[`${prefix}line-height-unit`]: val,
+							});
 						}}
 						value={getValue(`${prefix}line-height`)}
 						defaultValue={getDefault(`${prefix}line-height`)}
@@ -318,12 +330,16 @@ const TypographyControl = props => {
 						unit={getValue(`${prefix}letter-spacing-unit`)}
 						defaultUnit={getDefault(`${prefix}letter-spacing-unit`)}
 						onChangeUnit={val => {
-							onChangeFormat({ [`${prefix}letter-spacing-unit`]: val });
+							onChangeFormat({
+								[`${prefix}letter-spacing-unit`]: val,
+							});
 						}}
 						value={getValue(`${prefix}letter-spacing`)}
 						defaultValue={getDefault(`${prefix}letter-spacing`)}
 						onChangeValue={val => {
-							onChangeFormat({ [`${prefix}letter-spacing`]: val });
+							onChangeFormat({
+								[`${prefix}letter-spacing`]: val,
+							});
 						}}
 						minMaxSettings={minMaxSettingsLetterSpacing}
 						step={0.1}
@@ -347,7 +363,10 @@ const TypographyControl = props => {
 						className='maxi-typography-control__transform'
 						value={getValue(`${prefix}text-transform`)}
 						options={[
-							{ label: __('Default', 'maxi-blocks'), value: 'none' },
+							{
+								label: __('Default', 'maxi-blocks'),
+								value: 'none',
+							},
 							{
 								label: __('Capitalize', 'maxi-blocks'),
 								value: 'capitalize',
@@ -362,7 +381,9 @@ const TypographyControl = props => {
 							},
 						]}
 						onChange={val => {
-							onChangeFormat({ [`${prefix}text-transform`]: val });
+							onChangeFormat({
+								[`${prefix}text-transform`]: val,
+							});
 						}}
 					/>
 					<SelectControl
@@ -370,9 +391,18 @@ const TypographyControl = props => {
 						className='maxi-typography-control__font-style'
 						value={getValue(`${prefix}font-style`)}
 						options={[
-							{ label: __('Default', 'maxi-blocks'), value: 'normal' },
-							{ label: __('Italic', 'maxi-blocks'), value: 'italic' },
-							{ label: __('Oblique', 'maxi-blocks'), value: 'oblique' },
+							{
+								label: __('Default', 'maxi-blocks'),
+								value: 'normal',
+							},
+							{
+								label: __('Italic', 'maxi-blocks'),
+								value: 'italic',
+							},
+							{
+								label: __('Oblique', 'maxi-blocks'),
+								value: 'oblique',
+							},
 						]}
 						onChange={val => {
 							onChangeFormat({ [`${prefix}font-style`]: val });
@@ -383,8 +413,14 @@ const TypographyControl = props => {
 						className='maxi-typography-control__decoration'
 						value={getValue(`${prefix}text-decoration`)}
 						options={[
-							{ label: __('Default', 'maxi-blocks'), value: 'none' },
-							{ label: __('Overline', 'maxi-blocks'), value: 'overline' },
+							{
+								label: __('Default', 'maxi-blocks'),
+								value: 'none',
+							},
+							{
+								label: __('Overline', 'maxi-blocks'),
+								value: 'overline',
+							},
 							{
 								label: __('Line Through', 'maxi-blocks'),
 								value: 'line-through',
@@ -399,7 +435,9 @@ const TypographyControl = props => {
 							},
 						]}
 						onChange={val => {
-							onChangeFormat({ [`${prefix}text-decoration`]: val });
+							onChangeFormat({
+								[`${prefix}text-decoration`]: val,
+							});
 						}}
 					/>
 					{!hideTextShadow && (
@@ -407,7 +445,9 @@ const TypographyControl = props => {
 							className='maxi-typography-control__text-shadow'
 							textShadow={getValue(`${prefix}text-shadow`)}
 							onChange={val => {
-								onChangeFormat({ [`${prefix}text-shadow`]: val });
+								onChangeFormat({
+									[`${prefix}text-shadow`]: val,
+								});
 							}}
 							defaultColor={getLastBreakpointAttribute(
 								'color',

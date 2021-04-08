@@ -83,6 +83,7 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
+	...attributesData.palette,
 	...attributesData.alignment,
 	...attributesData.background,
 	...attributesData.backgroundColor,

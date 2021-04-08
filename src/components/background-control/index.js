@@ -56,8 +56,6 @@ const BackgroundControl = props => {
 		blockStyle,
 		noPalette,
 		blockStyleBackground,
-		attributes,
-		setAttributes,
 	} = props;
 
 	const backgroundActiveMedia =
@@ -149,6 +147,7 @@ const BackgroundControl = props => {
 				<Fragment>
 					{!disableColor && backgroundActiveMedia === 'color' && (
 						<ColorLayer
+							{...getGroupAttributes(props, 'palette')}
 							colorOptions={{
 								...getGroupAttributes(
 									props,
@@ -165,8 +164,6 @@ const BackgroundControl = props => {
 							blockStyle={blockStyle}
 							noPalette={noPalette}
 							colorPreSet={blockStyleBackground}
-							attributes={attributes}
-							setAttributes={setAttributes}
 						/>
 					)}
 					{!disableImage && backgroundActiveMedia === 'image' && (

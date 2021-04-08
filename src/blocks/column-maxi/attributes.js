@@ -32,6 +32,7 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
+	...attributesData.palette,
 	...attributesData.columnSize,
 	...attributesData.opacity,
 	...attributesData.background,

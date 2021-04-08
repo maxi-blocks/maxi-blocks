@@ -27,6 +27,7 @@ const attributes = {
 			default: 'center',
 		},
 	},
+	...attributesData.palette,
 	...attributesData.icon,
 	...attributesData.opacity,
 	...attributesData.background,

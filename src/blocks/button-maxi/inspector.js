@@ -214,12 +214,14 @@ const Inspector = props => {
 															'iconBorder',
 															'iconBorderWidth',
 															'iconBorderRadius',
+															'palette',
 														]
 													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}
 													breakpoint={deviceType}
+													blockStyle={blockStyle}
 												/>
 											),
 										},

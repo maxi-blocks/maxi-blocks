@@ -17,22 +17,6 @@ $color_set: '1', '2', '3', '4', '5', '6', '7';
 body.maxi-blocks--active {
 	@each $style in $styles {
 		.maxi-#{$style} {
-			&.maxi-background-- {
-				&1 {
-					&.maxi-button-block,
-					> .maxi-background-displayer .maxi-background-displayer__color{
-						background-color: var(--maxi-#{$style}-background-1);
-					}
-				}
-
-				&2 {
-					&.maxi-button-block,
-					> .maxi-background-displayer .maxi-background-displayer__color{
-						background-color: var(--maxi-#{$style}-background-2);
-					}
-				}
-			}
-
 			@each $level in $levels {
 				#{$level} {
 					color: var(--maxi-#{$style}-#{$level}-color-general);
@@ -88,76 +72,38 @@ body.maxi-blocks--active {
 				}
 			}
 
-
-			&.maxi-highlight,
-			.maxi-highlight {
-				&--text {
-					.maxi-text-block__content,
-					.maxi-button-block__button,
-					.maxi-font-icon-block__icon i {
-						color: var(--maxi-#{$style}-highlight-text) !important;
-					}
-
-					.maxi-font-icon-block__icon i {
-						color: var(--maxi-#{$style}-highlight-text) !important;
+			@each $color_number in $color_set {
+				&.maxi-sc-#{$style}-background-color-#{$color_number} {
+					&.maxi-button-block,
+					> .maxi-background-displayer .maxi-background-displayer__color {
+						background-color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
-
-				&--background {
-					&.maxi-text-block,
-					.maxi-button-block__button {
-						background-color: var(--maxi-#{$style}-highlight-background) !important;
+				&.maxi-sc-#{$style}-border-color-#{$color_number} {
+					border-color: var(--maxi-#{$style}-color-#{$color_number});
+				}
+				&.maxi-sc-#{$style}-typography-color-#{$color_number} {
+					&.maxi-button-block,
+					.maxi-text-block__content {
+						color: var(--maxi-#{$style}-color-#{$color_number});
 					}
-
-					&.maxi-group-block,
-					.maxi-container-arrow:after,
-					.maxi-font-icon-block__icon {
-						background-color: var(--maxi-#{$style}-highlight-background) !important;
-					}
-
-					&.maxi-svg-icon-block {
-						> .maxi-background-displayer {
-							background-color: var(--maxi-light-highlight-background);
+				}
+			}
+			&:hover {
+				@each $color_number in $color_set {
+					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
+						&.maxi-button-block,
+						> .maxi-background-displayer .maxi-background-displayer__color {
+							background-color: var(--maxi-#{$style}-color-#{$color_number});
 						}
 					}
-				}
-
-				&--border {
-					&.maxi-text-block,
-					.maxi-button-block__button {
-						border-color: var(--maxi-#{$style}-highlight-border) !important;
-						border-style: solid !important;
-						border-width: 2px !important;
+					&.maxi-sc-#{$style}-border-hover-color-#{$color_number} {
+						border-color: var(--maxi-#{$style}-color-#{$color_number});
 					}
-
-					&.maxi-group-block,
-					.maxi-divider-block__divider,
-					&.maxi-font-icon-block,
-					&.maxi-svg-icon-block{
-						border-color: var(--maxi-#{$style}-highlight-border) !important;
-						border-style: solid !important;
-						border-width: 2px !important;
-					}
-				}
-
-				&--icon-fill {
-					> &.maxi-svg-icon-block {
-						.maxi-svg-icon-block__icon {
-							svg path {
-								&.maxi-svg-color-first {
-									fill: var(--maxi-#{$style}-highlight-icon-fill);
-								}
-							}
-						}
-					}
-				}
-
-				&--icon-stroke {
-					> &.maxi-svg-icon-block {
-						.maxi-svg-icon-block__icon {
-							svg path {
-								stroke: var(--maxi-#{$style}-highlight-icon-line);
-							}
+					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
+						&.maxi-button-block,
+						.maxi-text-block__content {
+							color: var(--maxi-#{$style}-color-#{$color_number});
 						}
 					}
 				}
@@ -175,6 +121,44 @@ body.maxi-blocks--active {
 			@each $color_number in $color_set {
 				.maxi-sc-color-palette .components-radio-control__option input[value="#{$color_number}"] + label {
 					background-color: var(--maxi-#{$style}-color-#{$color_number});
+				}
+			}
+		}
+		div#editor .maxi-block--backend {
+			@each $color_number in $color_set {
+				&.maxi-sc-#{$style}-background-color-#{$color_number} {
+					&.maxi-button-block,
+					> .maxi-background-displayer .maxi-background-displayer__color {
+						background-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-border-color-#{$color_number} {
+					border-color: var(--maxi-#{$style}-color-#{$color_number});
+				}
+				&.maxi-sc-#{$style}-typography-color-#{$color_number} {
+					&.maxi-button-block,
+					.maxi-text-block__content {
+						color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+			}
+			&:hover {
+				@each $color_number in $color_set {
+					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
+						&.maxi-button-block,
+						> .maxi-background-displayer .maxi-background-displayer__color {
+							background-color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-border-hover-color-#{$color_number} {
+						border-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
+						&.maxi-button-block,
+						.maxi-text-block__content {
+							color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
 				}
 			}
 		}

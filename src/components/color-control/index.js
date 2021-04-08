@@ -108,7 +108,9 @@ const ColorControl = props => {
 					isHover={isHover}
 					colorPaletteType={colorPaletteType}
 					className={`maxi-color-palette--${
-						blockStyle === 'maxi-light' ? 'light' : 'dark'
+						blockStyle === 'maxi-light' || blockStyle === 'light'
+							? 'light'
+							: 'dark'
 					}`}
 					onChange={obj => onChangePalette(obj)}
 				/>

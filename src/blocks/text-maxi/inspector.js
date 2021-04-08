@@ -421,6 +421,9 @@ const Inspector = props => {
 																		disableImage
 																		disableVideo
 																		disableSVG
+																		blockStyle={
+																			blockStyle
+																		}
 																	/>
 																</Fragment>
 															),

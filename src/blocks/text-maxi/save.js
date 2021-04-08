@@ -108,9 +108,6 @@ const save = props => {
 		'maxi-block maxi-text-block',
 		'maxi-text-block-wrap',
 		blockStyle,
-		!!attributes['text-highlight'] && 'maxi-highlight--text',
-		!!attributes['background-highlight'] && 'maxi-highlight--background',
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		paletteClasses,
 		extraClassName,
 		uniqueID,
@@ -121,25 +118,23 @@ const save = props => {
 	return (
 		<Fragment>
 			<div className={classes} id={uniqueID}>
-				{!attributes['background-highlight'] && (
-					<BackgroundDisplayer
-						{...getGroupAttributes(attributes, [
-							'background',
-							'backgroundColor',
-							'backgroundImage',
-							'backgroundVideo',
-							'backgroundGradient',
-							'backgroundSVG',
-							'backgroundHover',
-							'backgroundColorHover',
-							'backgroundImageHover',
-							'backgroundVideoHover',
-							'backgroundGradientHover',
-							'backgroundSVGHover',
-						])}
-						blockClassName={uniqueID}
-					/>
-				)}
+				<BackgroundDisplayer
+					{...getGroupAttributes(attributes, [
+						'background',
+						'backgroundColor',
+						'backgroundImage',
+						'backgroundVideo',
+						'backgroundGradient',
+						'backgroundSVG',
+						'backgroundHover',
+						'backgroundColorHover',
+						'backgroundImageHover',
+						'backgroundVideoHover',
+						'backgroundGradientHover',
+						'backgroundSVGHover',
+					])}
+					blockClassName={uniqueID}
+				/>
 				<RichText.Content
 					className='maxi-text-block__content'
 					value={content}

@@ -174,13 +174,11 @@ const MaxiToolbar = props => {
 						<Mover clientId={clientId} blockName={name} />
 						<ReusableBlocks clientId={clientId} />
 						<ColumnMover clientId={clientId} blockName={name} />
-						{!attributes['border-highlight'] && (
-							<DividerColor
-								{...getGroupAttributes(attributes, 'divider')}
-								blockName={name}
-								onChange={obj => setAttributes(obj)}
-							/>
-						)}
+						<DividerColor
+							{...getGroupAttributes(attributes, 'divider')}
+							blockName={name}
+							onChange={obj => setAttributes(obj)}
+						/>
 						<Divider
 							{...getGroupAttributes(attributes, 'divider')}
 							blockName={name}
@@ -215,22 +213,17 @@ const MaxiToolbar = props => {
 							formatValue={formatValue}
 							textLevel={textLevel}
 						/>
-						{!attributes['text-highlight'] && (
-							<TextColor
-								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
-								content={content}
-								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
-								node={anchorRef}
-								isList={isList}
-								typeOfList={typeOfList}
-								formatValue={formatValue}
-							/>
-						)}
+						<TextColor
+							blockName={name}
+							{...getGroupAttributes(attributes, 'typography')}
+							content={content}
+							onChange={obj => setAttributes(obj)}
+							breakpoint={deviceType}
+							node={anchorRef}
+							isList={isList}
+							typeOfList={typeOfList}
+							formatValue={formatValue}
+						/>
 						<Alignment
 							blockName={name}
 							{...getGroupAttributes(attributes, [
@@ -307,50 +300,44 @@ const MaxiToolbar = props => {
 							typeOfList={typeOfList}
 							onChange={obj => setAttributes(obj)}
 						/>
-						{!attributes['background-highlight'] && (
-							<BackgroundColor
-								{...getGroupAttributes(
-									attributes,
-									'backgroundColor'
-								)}
-								blockName={name}
-								onChange={obj => setAttributes(obj)}
-							/>
-						)}
+						<BackgroundColor
+							{...getGroupAttributes(
+								attributes,
+								'backgroundColor'
+							)}
+							blockName={name}
+							onChange={obj => setAttributes(obj)}
+						/>
 						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<Fragment>
-								{!attributes['color1-highlight'] && (
-									<SvgColor
-										blockName={name}
-										svgColorDefault={getDefaultAttribute(
-											'svgColorOrange',
-											clientId
-										)}
-										svgColor={attributes.svgColorOrange}
-										onChange={svgColorOrange => {
-											setAttributes({
-												svgColorOrange,
-											});
-											changeSVGContent(svgColorOrange, 1);
-										}}
-									/>
-								)}
-								{!attributes['color2-highlight'] && (
-									<SvgColor
-										blockName={name}
-										svgColorDefault={getDefaultAttribute(
-											'svgColorBlack',
-											clientId
-										)}
-										svgColor={attributes.svgColorBlack}
-										onChange={svgColorBlack => {
-											setAttributes({
-												svgColorBlack,
-											});
-											changeSVGContent(svgColorBlack, 2);
-										}}
-									/>
-								)}
+								<SvgColor
+									blockName={name}
+									svgColorDefault={getDefaultAttribute(
+										'svgColorOrange',
+										clientId
+									)}
+									svgColor={attributes.svgColorOrange}
+									onChange={svgColorOrange => {
+										setAttributes({
+											svgColorOrange,
+										});
+										changeSVGContent(svgColorOrange, 1);
+									}}
+								/>
+								<SvgColor
+									blockName={name}
+									svgColorDefault={getDefaultAttribute(
+										'svgColorBlack',
+										clientId
+									)}
+									svgColor={attributes.svgColorBlack}
+									onChange={svgColorBlack => {
+										setAttributes({
+											svgColorBlack,
+										});
+										changeSVGContent(svgColorBlack, 2);
+									}}
+								/>
 							</Fragment>
 						)}
 						<Border
@@ -362,7 +349,6 @@ const MaxiToolbar = props => {
 							])}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
-							disableColor={!attributes['border-highlight']}
 						/>
 						{deviceType === 'general' && (
 							<ImageSize

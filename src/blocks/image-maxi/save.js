@@ -130,25 +130,23 @@ const save = props => {
 
 	return (
 		<figure className={classes} id={uniqueID}>
-			{!attributes['background-highlight'] && (
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundImage',
-						'backgroundVideo',
-						'backgroundGradient',
-						'backgroundSVG',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundImageHover',
-						'backgroundVideoHover',
-						'backgroundGradientHover',
-						'backgroundSVGHover',
-					])}
-					blockClassName={uniqueID}
-				/>
-			)}
+			<BackgroundDisplayer
+				{...getGroupAttributes(attributes, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundImageHover',
+					'backgroundVideoHover',
+					'backgroundGradientHover',
+					'backgroundSVGHover',
+				])}
+				blockClassName={uniqueID}
+			/>
 			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>
 				{(!SVGElement && (
 					<img

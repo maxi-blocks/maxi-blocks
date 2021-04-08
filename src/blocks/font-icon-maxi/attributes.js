@@ -50,7 +50,6 @@ const attributes = {
 	...attributesData.position,
 	...attributesData.motion,
 	...attributesData.transform,
-	...attributesData.highlight,
 	...attributesData.entrance,
 };
 

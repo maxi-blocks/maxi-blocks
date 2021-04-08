@@ -68,8 +68,6 @@ const Inspector = props => {
 		uniqueID,
 		isFirstOnHierarchy,
 		blockStyle,
-		defaultBlockStyle,
-		blockStyleBackground,
 		imageSize,
 		cropOptions,
 		fullWidth,
@@ -164,18 +162,8 @@ const Inspector = props => {
 									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										blockStyleBackground={
-											blockStyleBackground
-										}
-										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
-										disableHighlightText
-										disableHighlightBackground
-										disableHighlightBorder
-										disableHighlightColor1
-										disableHighlightColor2
-										// border={border}
 									/>
 								</div>
 								<AccordionControl

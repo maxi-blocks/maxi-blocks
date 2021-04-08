@@ -86,8 +86,6 @@ const save = props => {
 	const classes = classnames(
 		'maxi-motion-effect',
 		'maxi-block maxi-group-block',
-		!!attributes['background-highlight'] && 'maxi-highlight--background',
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		blockStyle,
 		paletteClasses,
 		extraClassName,

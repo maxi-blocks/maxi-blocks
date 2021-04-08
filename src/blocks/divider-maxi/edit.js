@@ -131,7 +131,6 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
 			paletteClasses,
 			extraClassName,
 			uniqueID,
@@ -191,18 +190,16 @@ class edit extends MaxiBlock {
 						className={classes}
 						data-align={fullWidth}
 					>
-						{!attributes['background-highlight'] && (
-							<BackgroundDisplayer
-								{...getGroupAttributes(attributes, [
-									'background',
-									'backgroundColor',
-									'backgroundGradient',
-									'backgroundHover',
-									'backgroundColorHover',
-									'backgroundGradientHover',
-								])}
-							/>
-						)}
+						<BackgroundDisplayer
+							{...getGroupAttributes(attributes, [
+								'background',
+								'backgroundColor',
+								'backgroundGradient',
+								'backgroundHover',
+								'backgroundColorHover',
+								'backgroundGradientHover',
+							])}
+						/>
 						{attributes['divider-border-style'] !== 'none' && (
 							<hr className='maxi-divider-block__divider' />
 						)}

@@ -45,7 +45,6 @@ const attributes = {
 		default: '',
 	},
 	...attributesData.palette,
-	...attributesData.highlight,
 	...attributesData.background,
 	...attributesData.backgroundColor,
 	...attributesData.backgroundColorHover,

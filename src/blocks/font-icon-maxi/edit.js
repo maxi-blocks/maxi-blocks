@@ -134,10 +134,6 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!attributes['text-highlight'] && 'maxi-highlight--text',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
 			paletteClasses,
 			extraClassName,
 			uniqueID,
@@ -152,18 +148,16 @@ class edit extends MaxiBlock {
 				className={classes}
 				data-align={fullWidth}
 			>
-				{!attributes['background-highlight'] && (
-					<BackgroundDisplayer
-						{...getGroupAttributes(attributes, [
-							'background',
-							'backgroundColor',
-							'backgroundGradient',
-							'backgroundHover',
-							'backgroundColorHover',
-							'backgroundGradientHover',
-						])}
-					/>
-				)}
+				<BackgroundDisplayer
+					{...getGroupAttributes(attributes, [
+						'background',
+						'backgroundColor',
+						'backgroundGradient',
+						'backgroundHover',
+						'backgroundColorHover',
+						'backgroundGradientHover',
+					])}
+				/>
 				{(!isEmpty(attributes['icon-name']) && (
 					<span className='maxi-font-icon-block__icon'>
 						<i className={attributes['icon-name']} />

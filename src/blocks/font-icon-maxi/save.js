@@ -82,9 +82,6 @@ const save = props => {
 		'maxi-motion-effect',
 		'maxi-block maxi-font-icon-block',
 		blockStyle,
-		!!attributes['text-highlight'] && 'maxi-highlight--text',
-		!!attributes['background-highlight'] && 'maxi-highlight--background',
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		paletteClasses,
 		extraClassName,
 		uniqueID,
@@ -93,19 +90,17 @@ const save = props => {
 
 	return (
 		<div className={classes} id={uniqueID}>
-			{!attributes['background-highlight'] && (
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundGradientHover',
-					])}
-					blockClassName={uniqueID}
-				/>
-			)}
+			<BackgroundDisplayer
+				{...getGroupAttributes(attributes, [
+					'background',
+					'backgroundColor',
+					'backgroundGradient',
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+				])}
+				blockClassName={uniqueID}
+			/>
 			{!isEmpty(attributes['icon-name']) && (
 				<span className='maxi-font-icon-block__icon'>
 					<i className={attributes['icon-name']} />

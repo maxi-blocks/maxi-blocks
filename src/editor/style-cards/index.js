@@ -631,7 +631,7 @@ const MaxiStyleCardsTab = ({
 						),
 					},
 					deviceType === 'general' && {
-						label: __('Icon', 'maxi-blocks'),
+						label: __('SVG Icon', 'maxi-blocks'),
 						content: (
 							<Fragment>
 								<ColorControl
@@ -673,6 +673,50 @@ const MaxiStyleCardsTab = ({
 									noPalette
 								/>
 							</Fragment>
+						),
+					},
+					deviceType === 'general' && {
+						label: __('Font Icon', 'maxi-blocks'),
+						content: (
+							<ColorControl
+								label={__('Font Icon', 'maxi-blocks')}
+								className={`maxi-style-cards-control__sc__icon-line-${SCStyle}`}
+								color={getColor('font-icon')}
+								defaultColor={getStyleCardAttr(
+									'font-icon',
+									SCStyle,
+									true
+								)}
+								onChange={val => {
+									onChangeValue('font-icon', val, SCStyle);
+								}}
+								disableGradient
+								noPalette
+							/>
+						),
+					},
+					deviceType === 'general' && {
+						label: __('Divider', 'maxi-blocks'),
+						content: (
+							<ColorControl
+								label={__('Divider', 'maxi-blocks')}
+								className={`maxi-style-cards-control__sc__icon-line-${SCStyle}`}
+								color={getColor('icon-line')}
+								defaultColor={getStyleCardAttr(
+									'icon-line',
+									SCStyle,
+									true
+								)}
+								onChange={val => {
+									onChangeValue(
+										'icon-line',
+										val,
+										SCStyle
+									);
+								}}
+								disableGradient
+								noPalette
+							/>
 						),
 					},
 				]}

@@ -35,15 +35,12 @@ body.maxi-blocks--active {
 
 			@each $level in $levels {
 				#{$level} {
-					font-size: var(--maxi-#{$style}-#{$level}-font-size-general);
-					line-height: var(--maxi-#{$style}-#{$level}-line-height-general);
 					color: var(--maxi-#{$style}-#{$level}-color-general);
 					font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
 					font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
 					font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
 					text-transform: var(--maxi-#{$style}-#{$level}-text-transform-general);
 					text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-general);
-					letter-spacing: var(--maxi-#{$style}-#{$level}-text-letter-spacing-general);
 				}
 			}
 
@@ -58,13 +55,16 @@ body.maxi-blocks--active {
 			}
 
 			hr.maxi-divider-block__divider {
-				border-color: var(--maxi-#{$style}-link);
+				border-color: var(--maxi-#{$style}-divider-color);
+			}
+
+			.maxi-font-icon-block__icon i {
+				color: var(--maxi-#{$style}-font-icon-color);
 			}
 
 			.maxi-button-block__button {
 				color: var(--maxi-#{$style}-button-text-color);
 				background-color: var(--maxi-#{$style}-button-background-color);
-				font-size: var(--maxi-#{$style}-button-font-size-general);
 				font-family: var(--maxi-#{$style}-button-font-family);
 				font-weight: var(--maxi-#{$style}-button-font-weight);
 				font-style: var(--maxi-#{$style}-button-font-style-general);
@@ -205,6 +205,9 @@ body.maxi-blocks--active {
 						line-height: var(--maxi-#{$style}-button-line-height-#{$responsive_size});
 						letter-spacing: var(--maxi-#{$style}-button-text-letter-spacing-#{$responsive_size});
 					}
+					.maxi-font-icon-block__icon i {
+						font-size: var(--maxi-#{$style}-font-icon-font-size-#{$responsive_size});
+					}
 				}
 			}
 		}
@@ -253,6 +256,9 @@ body.maxi-blocks--active {
 					font-size: var(--maxi-#{$style}-button-font-size-#{$current_responsive_stage});
 					line-height: var(--maxi-#{$style}-button-line-height-#{$current_responsive_stage});
 					letter-spacing: var(--maxi-#{$style}-button-text-letter-spacing-#{$current_responsive_stage});
+				}
+				.maxi-font-icon-block__icon i {
+					font-size: var(--maxi-#{$style}-font-icon-font-size-#{$current_responsive_stage});
 				}
 			}
 		}

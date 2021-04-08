@@ -108,7 +108,9 @@ const ColorControl = props => {
 					isHover={isHover}
 					colorPaletteType={colorPaletteType}
 					className={`maxi-color-palette--${
-						blockStyle === 'maxi-light' ? 'light' : 'dark'
+						blockStyle === 'maxi-light' || blockStyle === 'light'
+							? 'light'
+							: 'dark'
 					}`}
 					onChange={obj => onChangePalette(obj)}
 				/>
@@ -131,18 +133,20 @@ const ColorControl = props => {
 									background: color,
 								}}
 							/>
-							<Button
-								className='components-maxi-control__reset-button'
-								onClick={() => onReset()}
-								aria-label={sprintf(
-									/* translators: %s: a textual label  */
-									__('Reset %s settings', 'maxi-blocks'),
-									'font size'
-								)}
-								type='reset'
-							>
-								{reset}
-							</Button>
+							{!showPalette && (
+								<Button
+									className='components-maxi-control__reset-button'
+									onClick={() => onReset()}
+									aria-label={sprintf(
+										/* translators: %s: a textual label  */
+										__('Reset %s settings', 'maxi-blocks'),
+										'font size'
+									)}
+									type='reset'
+								>
+									{reset}
+								</Button>
+							)}
 						</div>
 					</BaseControl>
 					<RangeSliderControl

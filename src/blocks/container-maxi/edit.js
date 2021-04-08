@@ -30,7 +30,7 @@ import getStyles from './styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * InnerBlocks version
@@ -161,7 +161,8 @@ class edit extends MaxiBlock {
 					attributes['palette-preset-background-hover-color']
 				}`,
 			// Border Color
-			attributes['border-style-general'] !== 'none' &&
+			!isEmpty(attributes['border-style-general']) &&
+				attributes['border-style-general'] !== 'none' &&
 				!attributes['palette-custom-border-color'] &&
 				`maxi-sc-${
 					blockStyle === 'maxi-light' ? 'light' : 'dark'
@@ -176,7 +177,11 @@ class edit extends MaxiBlock {
 					attributes['palette-preset-border-hover-color']
 				}`,
 			// Box-Shadow Color
-			!attributes['palette-custom-box-shadow-color'] &&
+			!isNil(attributes['box-shadow-blur-general']) &&
+				!isNil(attributes['box-shadow-horizontal-general']) &&
+				!isNil(attributes['box-shadow-vertical-general']) &&
+				!isNil(attributes['box-shadow-spread-general']) &&
+				!attributes['palette-custom-box-shadow-color'] &&
 				`maxi-sc-${
 					blockStyle === 'maxi-light' ? 'light' : 'dark'
 				}-box-shadow-color-${

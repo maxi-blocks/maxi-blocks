@@ -74,14 +74,15 @@ body.maxi-blocks--active {
 
 			@each $color_number in $color_set {
 				&.maxi-sc-#{$style}-background-color-#{$color_number} {
-					&.maxi-button-block,
+					&.maxi-button-block .maxi-button-block__button,
 					> .maxi-background-displayer .maxi-background-displayer__color {
 						background-color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				&.maxi-sc-#{$style}-border-color-#{$color_number} {
 					border-color: var(--maxi-#{$style}-color-#{$color_number});
-					> .maxi-block-hover-wrapper {
+					> .maxi-block-hover-wrapper,
+					> .maxi-button-block__button {
 						border-color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 					> .maxi-container-arrow:before,
@@ -91,7 +92,13 @@ body.maxi-blocks--active {
 				}
 				&.maxi-sc-#{$style}-typography-color-#{$color_number} {
 					&.maxi-button-block,
-					> .maxi-text-block__content {
+					> .maxi-text-block__content,
+					.maxi-image-block__caption {
+						color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-icon-color-#{$color_number} {
+					.maxi-font-icon-block__icon i {
 						color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
@@ -99,14 +106,15 @@ body.maxi-blocks--active {
 			&:hover {
 				@each $color_number in $color_set {
 					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
-						&.maxi-button-block,
+						&.maxi-button-block .maxi-button-block__button,
 						> .maxi-background-displayer .maxi-background-displayer__color {
 							background-color: var(--maxi-#{$style}-color-#{$color_number});
 						}
 					}
 					&.maxi-sc-#{$style}-border-hover-color-#{$color_number} {
 						border-color: var(--maxi-#{$style}-color-#{$color_number});
-						> .maxi-block-hover-wrapper {
+						> .maxi-block-hover-wrapper,
+						> .maxi-button-block__button {
 							border-color: var(--maxi-#{$style}-color-#{$color_number});
 						}
 						> .maxi-container-arrow:before,
@@ -116,7 +124,13 @@ body.maxi-blocks--active {
 					}
 					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
 						&.maxi-button-block,
-						> .maxi-text-block__content {
+						> .maxi-text-block__content,
+						.maxi-image-block__caption {
+							color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-icon-hover-color-#{$color_number} {
+						.maxi-font-icon-block__icon i {
 							color: var(--maxi-#{$style}-color-#{$color_number});
 						}
 					}
@@ -141,14 +155,15 @@ body.maxi-blocks--active {
 		div#editor .maxi-block--backend {
 			@each $color_number in $color_set {
 				&.maxi-sc-#{$style}-background-color-#{$color_number} {
-					&.maxi-button-block,
+					&.maxi-button-block .maxi-button-block__button,
 					> .maxi-background-displayer .maxi-background-displayer__color {
 						background-color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				&.maxi-sc-#{$style}-border-color-#{$color_number} {
 					border-color: var(--maxi-#{$style}-color-#{$color_number});
-					> .maxi-block__resizer .maxi-block-hover-wrapper {
+					> .maxi-block__resizer .maxi-block-hover-wrapper,
+					> .maxi-button-block__button {
 						border-color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 					> .maxi-container-arrow:before,
@@ -158,7 +173,13 @@ body.maxi-blocks--active {
 				}
 				&.maxi-sc-#{$style}-typography-color-#{$color_number} {
 					&.maxi-button-block,
-					> .maxi-text-block__content {
+					> .maxi-text-block__content,
+					.maxi-image-block__caption {
+						color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-icon-color-#{$color_number} {
+					.maxi-font-icon-block__icon i {
 						color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
@@ -166,14 +187,15 @@ body.maxi-blocks--active {
 			&:hover {
 				@each $color_number in $color_set {
 					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
-						&.maxi-button-block,
+						&.maxi-button-block .maxi-button-block__button,
 						> .maxi-background-displayer .maxi-background-displayer__color {
 							background-color: var(--maxi-#{$style}-color-#{$color_number});
 						}
 					}
 					&.maxi-sc-#{$style}-border-hover-color-#{$color_number} {
 						border-color: var(--maxi-#{$style}-color-#{$color_number});
-						> .maxi-block__resizer .maxi-block-hover-wrapper {
+						> .maxi-block__resizer .maxi-block-hover-wrapper,
+						> .maxi-button-block__button {
 							border-color: var(--maxi-#{$style}-color-#{$color_number});
 						}
 						> .maxi-container-arrow:before,
@@ -183,7 +205,13 @@ body.maxi-blocks--active {
 					}
 					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
 						&.maxi-button-block,
-						> .maxi-text-block__content {
+						> .maxi-text-block__content,
+						.maxi-image-block__caption {
+							color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-icon-hover-color-#{$color_number} {
+						.maxi-font-icon-block__icon i {
 							color: var(--maxi-#{$style}-color-#{$color_number});
 						}
 					}

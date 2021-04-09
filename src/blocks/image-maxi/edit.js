@@ -162,6 +162,13 @@ class edit extends MaxiBlock {
 					blockStyle === 'maxi-light' ? 'light' : 'dark'
 				}-box-shadow-hover-color-${
 					attributes['palette-preset-box-shadow-hover-color']
+				}`,
+			// Typography Color
+			!attributes['palette-custom-typography-color'] &&
+				`maxi-sc-${
+					blockStyle === 'maxi-light' ? 'light' : 'dark'
+				}-typography-color-${
+					attributes['palette-preset-typography-color']
 				}`
 		);
 
@@ -232,30 +239,23 @@ class edit extends MaxiBlock {
 							<Fragment>
 								{(!isNil(mediaID) && imageData) || mediaURL ? (
 									<Fragment>
-										{!attributes[
-											'background-highlight'
-										] && (
-											<BackgroundDisplayer
-												{...getGroupAttributes(
-													attributes,
-													[
-														'background',
-														'backgroundColor',
-														'backgroundImage',
-														'backgroundVideo',
-														'backgroundGradient',
-														'backgroundSVG',
-														'backgroundHover',
-														'backgroundColorHover',
-														'backgroundImageHover',
-														'backgroundVideoHover',
-														'backgroundGradientHover',
-														'backgroundSVGHover',
-													]
-												)}
-												blockClassName={uniqueID}
-											/>
-										)}
+										<BackgroundDisplayer
+											{...getGroupAttributes(attributes, [
+												'background',
+												'backgroundColor',
+												'backgroundImage',
+												'backgroundVideo',
+												'backgroundGradient',
+												'backgroundSVG',
+												'backgroundHover',
+												'backgroundColorHover',
+												'backgroundImageHover',
+												'backgroundVideoHover',
+												'backgroundGradientHover',
+												'backgroundSVGHover',
+											])}
+											blockClassName={uniqueID}
+										/>
 										<BlockResizer
 											key={uniqueID}
 											className='maxi-block__resizer maxi-image-block__resizer'

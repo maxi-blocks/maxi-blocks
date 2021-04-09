@@ -25,10 +25,6 @@ const save = props => {
 		'maxi-motion-effect',
 		'maxi-block maxi-svg-icon-block',
 		blockStyle,
-		!!attributes['background-highlight'] && 'maxi-highlight--background',
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
-		!!attributes['color1-highlight'] && 'maxi-highlight--color1',
-		!!attributes['color2-highlight'] && 'maxi-highlight--color2',
 		extraClassName,
 		uniqueID,
 		className

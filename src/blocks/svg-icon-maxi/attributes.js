@@ -76,7 +76,6 @@ const attributes = {
 	...attributesData.entrance,
 	...attributesData.transform,
 	...attributesData.zIndex,
-	...attributesData.highlight,
 };
 
 export default attributes;

@@ -34,7 +34,6 @@ const attributes = {
 	...attributesData.iconBorder,
 	...attributesData.iconBorderRadius,
 	...attributesData.iconBorderWidth,
-	...attributesData.highlight,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {

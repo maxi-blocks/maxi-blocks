@@ -78,7 +78,6 @@ const save = props => {
 		'maxi-motion-effect',
 		'maxi-block maxi-divider-block',
 		blockStyle,
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		paletteClasses,
 		extraClassName,
 		uniqueID,
@@ -91,19 +90,17 @@ const save = props => {
 
 	return (
 		<div className={classes} id={uniqueID}>
-			{!attributes['background-highlight'] && (
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundGradientHover',
-					])}
-					blockClassName={uniqueID}
-				/>
-			)}
+			<BackgroundDisplayer
+				{...getGroupAttributes(attributes, [
+					'background',
+					'backgroundColor',
+					'backgroundGradient',
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+				])}
+				blockClassName={uniqueID}
+			/>
 			{attributes['divider-border-style'] !== 'none' && (
 				<Fragment>
 					<hr className='maxi-divider-block__divider' />

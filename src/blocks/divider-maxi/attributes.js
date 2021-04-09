@@ -57,7 +57,6 @@ const attributes = {
 	...attributesData.display,
 	...attributesData.divider,
 	...attributesData.entrance,
-	...attributesData.highlight,
 	...attributesData.margin,
 	...attributesData.motion,
 	...attributesData.opacity,

@@ -44,8 +44,6 @@ const Inspector = props => {
 		uniqueID,
 		isFirstOnHierarchy,
 		blockStyle,
-		defaultBlockStyle,
-		blockStyleBackground,
 		fullWidth,
 		extraClassName,
 		lineOrientation,
@@ -71,21 +69,9 @@ const Inspector = props => {
 									/>
 									<hr />
 									<BlockStylesControl
-										{...getGroupAttributes(attributes, [
-											'border',
-											'highlight',
-										])}
 										blockStyle={blockStyle}
-										blockStyleBackground={
-											blockStyleBackground
-										}
-										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
-										disableHighlightText
-										disableHighlightBackground
-										disableHighlightColor1
-										disableHighlightColor2
 									/>
 								</div>
 								<AccordionControl
@@ -225,11 +211,6 @@ const Inspector = props => {
 															lineOrientation
 														}
 														breakpoint={deviceType}
-														disableColor={
-															!!attributes[
-																'border-highlight'
-															]
-														}
 														blockStyle={blockStyle}
 													/>
 												</Fragment>

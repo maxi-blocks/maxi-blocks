@@ -183,10 +183,6 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!attributes['text-highlight'] && 'maxi-highlight--text',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
 			paletteClasses,
 			extraClassName,
 			uniqueID,
@@ -209,25 +205,23 @@ class edit extends MaxiBlock {
 				{...getGroupAttributes(attributes, 'motion')}
 			>
 				<__experimentalBlock className={classes} data-align={fullWidth}>
-					{!attributes['background-highlight'] && (
-						<BackgroundDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'backgroundColor',
-								'backgroundImage',
-								'backgroundVideo',
-								'backgroundGradient',
-								'backgroundSVG',
-								'backgroundHover',
-								'backgroundColorHover',
-								'backgroundImageHover',
-								'backgroundVideoHover',
-								'backgroundGradientHover',
-								'backgroundSVGHover',
-							])}
-							blockClassName={uniqueID}
-						/>
-					)}
+					<BackgroundDisplayer
+						{...getGroupAttributes(attributes, [
+							'background',
+							'backgroundColor',
+							'backgroundImage',
+							'backgroundVideo',
+							'backgroundGradient',
+							'backgroundSVG',
+							'backgroundHover',
+							'backgroundColorHover',
+							'backgroundImageHover',
+							'backgroundVideoHover',
+							'backgroundGradientHover',
+							'backgroundSVGHover',
+						])}
+						blockClassName={uniqueID}
+					/>
 					{!isList && (
 						<RichText
 							ref={this.blockRef}

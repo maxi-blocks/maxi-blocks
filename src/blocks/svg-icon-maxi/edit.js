@@ -93,11 +93,6 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
-			!!attributes['color1-highlight'] && 'maxi-highlight--color1',
-			!!attributes['color2-highlight'] && 'maxi-highlight--color2',
 			extraClassName,
 			uniqueID,
 			className

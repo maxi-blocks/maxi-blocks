@@ -101,7 +101,12 @@ const save = props => {
 				blockStyle === 'maxi-light' ? 'light' : 'dark'
 			}-box-shadow-hover-color-${
 				attributes['palette-preset-box-shadow-hover-color']
-			}`
+			}`,
+		// Typography Color
+		!attributes['palette-custom-typography-color'] &&
+			`maxi-sc-${
+				blockStyle === 'maxi-light' ? 'light' : 'dark'
+			}-typography-color-${attributes['palette-preset-typography-color']}`
 	);
 
 	const classes = classnames(
@@ -130,25 +135,23 @@ const save = props => {
 
 	return (
 		<figure className={classes} id={uniqueID}>
-			{!attributes['background-highlight'] && (
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundImage',
-						'backgroundVideo',
-						'backgroundGradient',
-						'backgroundSVG',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundImageHover',
-						'backgroundVideoHover',
-						'backgroundGradientHover',
-						'backgroundSVGHover',
-					])}
-					blockClassName={uniqueID}
-				/>
-			)}
+			<BackgroundDisplayer
+				{...getGroupAttributes(attributes, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundImageHover',
+					'backgroundVideoHover',
+					'backgroundGradientHover',
+					'backgroundSVGHover',
+				])}
+				blockClassName={uniqueID}
+			/>
 			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>
 				{(!SVGElement && (
 					<img

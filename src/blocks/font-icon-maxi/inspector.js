@@ -46,8 +46,6 @@ const Inspector = props => {
 		uniqueID,
 		isFirstOnHierarchy,
 		blockStyle,
-		defaultBlockStyle,
-		blockStyleBackground,
 		extraClassName,
 		fullWidth,
 	} = attributes;
@@ -72,22 +70,10 @@ const Inspector = props => {
 										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
-											blockStyleBackground={
-												blockStyleBackground
-											}
-											defaultBlockStyle={
-												defaultBlockStyle
-											}
 											isFirstOnHierarchy={
 												isFirstOnHierarchy
 											}
 											onChange={obj => setAttributes(obj)}
-											disableHighlightColor1
-											disableHighlightColor2
-											{...getGroupAttributes(attributes, [
-												'border',
-												'highlight',
-											])}
 										/>
 									</div>
 									<AccordionControl
@@ -172,11 +158,6 @@ const Inspector = props => {
 														}
 														breakpoint={deviceType}
 														simpleMode
-														disableColor={
-															!!attributes[
-																'text-highlight'
-															]
-														}
 														blockStyle={blockStyle}
 													/>
 												),
@@ -212,11 +193,6 @@ const Inspector = props => {
 																				setAttributes(
 																					obj
 																				)
-																			}
-																			disableColor={
-																				!!attributes[
-																					'background-highlight'
-																				]
 																			}
 																			disableVideo
 																			disableSVG
@@ -287,11 +263,6 @@ const Inspector = props => {
 																						obj
 																					)
 																				}
-																				disableColor={
-																					!!attributes[
-																						'background-Highlight'
-																					]
-																				}
 																				disableImage
 																				disableVideo
 																				disableClipPath
@@ -342,11 +313,6 @@ const Inspector = props => {
 																		}}
 																		breakpoint={
 																			deviceType
-																		}
-																		disableColor={
-																			!!attributes[
-																				'border-highlight'
-																			]
 																		}
 																		blockStyle={
 																			blockStyle
@@ -415,11 +381,6 @@ const Inspector = props => {
 																				}
 																				breakpoint={
 																					deviceType
-																				}
-																				disableColor={
-																					!!attributes[
-																						'border-highlight'
-																					]
 																				}
 																				isHover
 																				blockStyle={

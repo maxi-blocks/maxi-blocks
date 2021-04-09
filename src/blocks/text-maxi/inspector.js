@@ -37,7 +37,6 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
-
 /**
  * Inspector
  */

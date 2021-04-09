@@ -26,7 +26,6 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNumber, isUndefined } from 'lodash';
 
 /**
  * Icons

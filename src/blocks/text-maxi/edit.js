@@ -189,6 +189,7 @@ class edit extends MaxiBlock {
 								// 			isList,
 								// 			typeOfList,
 								// 			content,
+								// 			textLevel;
 								// 		}
 								// 	);
 
@@ -335,7 +336,7 @@ const editSelect = withSelect((select, ownProps) => {
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const { attributes, setAttributes, clientId } = ownProps;
-	const { content } = attributes;
+	const { content, textLevel } = attributes;
 
 	const name = 'maxi-blocks/text-maxi';
 
@@ -468,6 +469,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 					isList,
 					typeOfList,
 					content,
+					textLevel,
 				});
 
 				if (cleanCustomProps)

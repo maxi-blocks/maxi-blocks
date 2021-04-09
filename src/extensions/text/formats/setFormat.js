@@ -23,6 +23,7 @@ const setFormat = ({
 	value,
 	breakpoint = 'general',
 	isHover = false,
+	textLevel,
 }) => {
 	if (!formatValue || formatValue.start === formatValue.end) {
 		const response = { ...typography };
@@ -41,6 +42,7 @@ const setFormat = ({
 		value,
 		breakpoint,
 		isHover,
+		textLevel,
 	});
 };
 

@@ -15,7 +15,8 @@ import { toHTMLString } from '@wordpress/rich-text';
 const getUpdatedString = ({ formatValue, isList }) => {
 	const newContent = toHTMLString({
 		value: formatValue,
-		multilineTag: (isList && 'li') || null,
+		multilineTag: isList ? 'li' : null,
+		preserveWhiteSpace: true,
 	});
 
 	return newContent;

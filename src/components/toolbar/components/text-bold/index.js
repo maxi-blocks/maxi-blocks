@@ -25,7 +25,14 @@ import { toolbarBold } from '../../../../icons';
  * TextBold
  */
 const TextBold = withFormatValue(props => {
-	const { blockName, onChange, isList, breakpoint, formatValue } = props;
+	const {
+		blockName,
+		onChange,
+		isList,
+		breakpoint,
+		formatValue,
+		textLevel,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -50,6 +57,7 @@ const TextBold = withFormatValue(props => {
 				'font-weight': (isActive && 400) || 800,
 			},
 			breakpoint,
+			textLevel,
 		});
 
 		onChange(obj);

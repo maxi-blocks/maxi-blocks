@@ -144,6 +144,7 @@ const updateCustomFormat = ({
 	breakpoint,
 	value,
 	isHover,
+	textLevel,
 }) => {
 	typography[`custom-formats${isHover ? '-hover' : ''}`] = {
 		...(!!typography[`custom-formats${isHover ? '-hover' : ''}`] &&
@@ -161,6 +162,7 @@ const updateCustomFormat = ({
 						currentClassName
 					]) ||
 				{},
+			textLevel,
 		}),
 	};
 
@@ -190,6 +192,7 @@ const setNewFormat = ({
 	value,
 	isList,
 	isHover,
+	textLevel,
 }) => {
 	const newTypography = updateCustomFormat({
 		typography,
@@ -197,6 +200,7 @@ const setNewFormat = ({
 		breakpoint,
 		value,
 		isHover,
+		textLevel,
 	});
 
 	const newFormatValue = applyFormat(formatValue, {
@@ -244,6 +248,7 @@ const generateNewCustomFormat = ({
 	value,
 	isHover,
 	isList,
+	textLevel,
 }) => {
 	const newFormatValue = applyFormat(formatValue, {
 		type: getFormatType(isHover),
@@ -269,6 +274,7 @@ const generateNewCustomFormat = ({
 		breakpoint,
 		value,
 		isHover,
+		textLevel,
 	});
 
 	const { content: newContent } = applyCustomFormat({
@@ -295,7 +301,8 @@ const removeCustomFormat = ({ formatValue, className, isList }) => {
 
 	const newContent = toHTMLString({
 		value: newFormatValue,
-		multilineTag: (isList && 'li') || null,
+		multilineTag: isList ? 'li' : null,
+		preserveWhiteSpace: true,
 	});
 
 	return { formatValue: newFormatValue, content: newContent };
@@ -307,6 +314,7 @@ export const checkFormatCoincidence = ({
 	breakpoint,
 	value,
 	isHover,
+	textLevel,
 }) => {
 	const clonedTypography = { ...typography };
 	const { 'custom-formats': customFormats } = clonedTypography;
@@ -321,6 +329,7 @@ export const checkFormatCoincidence = ({
 		breakpoint,
 		value,
 		isHover,
+		textLevel,
 	}).typography;
 
 	let coincidence = false;
@@ -375,6 +384,7 @@ const mergeNewFormat = ({
 	value,
 	isHover,
 	isList,
+	textLevel,
 }) => {
 	const { start, end, formats } = formatValue;
 
@@ -435,6 +445,7 @@ const mergeNewFormat = ({
 			breakpoint,
 			value,
 			isHover,
+			textLevel,
 		});
 
 		newTypography = cleanedTypography;
@@ -509,6 +520,7 @@ const mergeMultipleFormats = ({
 	isList,
 	isHover = false,
 	isWholeContent,
+	textLevel,
 }) => {
 	let newTypography = { ...typography };
 	let newContent = '';
@@ -551,6 +563,7 @@ const mergeMultipleFormats = ({
 					value,
 					isHover,
 					isList,
+					textLevel,
 			  })
 			: setNewFormat({
 					typography: newTypography,
@@ -560,6 +573,7 @@ const mergeMultipleFormats = ({
 					value,
 					isList,
 					isHover,
+					textLevel,
 			  });
 
 		newTypography = newCustomTypography;
@@ -655,6 +669,7 @@ const setFormatWithClass = ({
 				value,
 				isList,
 				isHover,
+				textLevel,
 			})) ||
 		(hasCustomFormat &&
 			!hasMultiCustomFormat &&
@@ -668,6 +683,7 @@ const setFormatWithClass = ({
 				value,
 				isList,
 				isHover,
+				textLevel,
 			})) ||
 		(hasCustomFormat &&
 			(hasMultiCustomFormat || isWholeContent) &&
@@ -685,7 +701,6 @@ const setFormatWithClass = ({
 	const {
 		typography: newTypography,
 		content: newContent,
-		// formatValue: newFormatValue,
 	} = flatFormatsWithClass({
 		typography: preformattedTypography || typography,
 		content: preformattedContent || content,
@@ -694,17 +709,9 @@ const setFormatWithClass = ({
 		isList,
 	});
 
-	// const testContent = toHTMLString({
-	// 	value: newFormatValue,
-	// 	multilineTag: (isList && 'li') || null,
-	// });
-
-	// if (testContent !== newContent) console.log('meeeec');
-
 	return {
 		...newTypography,
 		content: newContent,
-		// formatValue: newFormatValue,
 	};
 };
 

@@ -26,7 +26,14 @@ import { toolbarItalic } from '../../../../icons';
  * TextItalic
  */
 const TextItalic = withFormatValue(props => {
-	const { blockName, formatValue, onChange, isList, breakpoint } = props;
+	const {
+		blockName,
+		formatValue,
+		onChange,
+		isList,
+		breakpoint,
+		textLevel,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -60,6 +67,7 @@ const TextItalic = withFormatValue(props => {
 				'font-style': isActive ? '' : 'italic',
 			},
 			breakpoint,
+			textLevel,
 		});
 
 		setIsActive(!isActive);

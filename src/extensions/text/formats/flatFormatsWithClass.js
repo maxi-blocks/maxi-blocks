@@ -177,7 +177,8 @@ export const removeUnnecessaryFormats = ({
 				start: formatValue.start,
 				end: formatValue.end,
 			},
-			multilineTag: (isList && 'li') || null,
+			multilineTag: isList ? 'li' : null,
+			preserveWhiteSpace: true,
 		});
 
 	return {
@@ -216,7 +217,8 @@ const flatFormatsWithClass = ({ formatValue, typography, content, isList }) => {
 
 		newContent = toHTMLString({
 			value: preformattedFormatValue,
-			multilineTag: (isList && 'li') || null,
+			multilineTag: isList ? 'li' : null,
+			preserveWhiteSpace: true,
 		});
 
 		newFormatValue = preformattedFormatValue;

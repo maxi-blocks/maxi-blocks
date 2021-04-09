@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/rich-text';
+import { removeFormat } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
@@ -18,7 +18,7 @@ import setFormatWithClass from './setFormatWithClass';
  *
  * @returns {Object} Returns cleaned and formatted typography and content
  */
-const removeLinkFormat = ({ formatValue, typography, isList }) => {
+const removeLinkFormat = ({ formatValue, typography, isList, textLevel }) => {
 	const removedLinkFormatValue = removeFormat(
 		formatValue,
 		'maxi-blocks/text-link'
@@ -35,6 +35,7 @@ const removeLinkFormat = ({ formatValue, typography, isList }) => {
 			color: '',
 			'text-decoration': '',
 		},
+		textLevel,
 	});
 
 	return {

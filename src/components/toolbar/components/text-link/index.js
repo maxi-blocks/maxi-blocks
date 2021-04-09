@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { __experimentalLinkControl } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';
@@ -35,7 +35,7 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = withFormatValue(props => {
-	const { blockName, onChange, isList, formatValue } = props;
+	const { blockName, onChange, isList, formatValue, textLevel } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -126,6 +126,7 @@ const Link = withFormatValue(props => {
 			typography,
 			linkAttributes: createLinkAttribute(attributes),
 			isList,
+			textLevel,
 		});
 
 		onChange(obj);
@@ -136,6 +137,7 @@ const Link = withFormatValue(props => {
 			formatValue,
 			isList,
 			typography,
+			textLevel,
 		});
 
 		onChange(obj);

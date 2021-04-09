@@ -67,6 +67,7 @@ const TextOptions = withFormatValue(props => {
 			typography,
 			value,
 			breakpoint,
+			textLevel,
 		});
 
 		onChange(obj);
@@ -235,6 +236,7 @@ const TextOptions = withFormatValue(props => {
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
+								textLevel={textLevel}
 							/>
 							<TextFormatStrikethrough
 								{...getGroupAttributes(props, 'typography')}
@@ -242,6 +244,7 @@ const TextOptions = withFormatValue(props => {
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
+								textLevel={textLevel}
 							/>
 							<TextFormatUnderline
 								{...getGroupAttributes(props, 'typography')}
@@ -249,6 +252,7 @@ const TextOptions = withFormatValue(props => {
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
+								textLevel={textLevel}
 							/>
 							<TextFormatSubscript
 								{...getGroupAttributes(props, 'typography')}
@@ -256,6 +260,7 @@ const TextOptions = withFormatValue(props => {
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
+								textLevel={textLevel}
 							/>
 							<TextFormatSuperscript
 								{...getGroupAttributes(props, 'typography')}
@@ -263,11 +268,13 @@ const TextOptions = withFormatValue(props => {
 								onChange={obj => onChange(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
+								textLevel={textLevel}
 							/>
 							<TextFormatCode
 								onChange={content => onChange({ content })}
 								isList={isList}
 								formatValue={formatValue}
+								textLevel={textLevel}
 							/>
 						</div>
 					</Fragment>

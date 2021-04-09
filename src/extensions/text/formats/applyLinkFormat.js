@@ -24,6 +24,7 @@ const applyLinkFormat = ({
 	typography,
 	linkAttributes = {},
 	isList,
+	textLevel,
 }) => {
 	const linkCustomFormatValue = applyFormat(formatValue, {
 		type: 'maxi-blocks/text-link',
@@ -38,6 +39,7 @@ const applyLinkFormat = ({
 			color: '#ff4a17',
 			'text-decoration': 'underline',
 		},
+		textLevel,
 	});
 };
 

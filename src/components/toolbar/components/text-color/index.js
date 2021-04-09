@@ -30,7 +30,14 @@ import { toolbarType } from '../../../../icons';
  * TextColor
  */
 const TextColor = withFormatValue(props => {
-	const { blockName, onChange, breakpoint, formatValue, isList } = props;
+	const {
+		blockName,
+		onChange,
+		breakpoint,
+		formatValue,
+		isList,
+		textLevel,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -50,6 +57,7 @@ const TextColor = withFormatValue(props => {
 			typography,
 			value,
 			breakpoint,
+			textLevel,
 		});
 
 		onChange(obj);

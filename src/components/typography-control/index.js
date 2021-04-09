@@ -203,6 +203,7 @@ const TypographyControl = withFormatValue(props => {
 			value,
 			breakpoint,
 			isHover,
+			textLevel,
 		});
 
 		onChange(obj);

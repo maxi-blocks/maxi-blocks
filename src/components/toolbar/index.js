@@ -224,6 +224,7 @@ const MaxiToolbar = props => {
 								breakpoint={deviceType}
 								node={anchorRef}
 								isList={isList}
+								textLevel={textLevel}
 							/>
 						)}
 						<Alignment
@@ -251,6 +252,7 @@ const MaxiToolbar = props => {
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
 							breakpoint={deviceType}
+							textLevel={textLevel}
 						/>
 						<TextItalic
 							{...getGroupAttributes(attributes, 'typography')}
@@ -282,6 +284,7 @@ const MaxiToolbar = props => {
 							onChange={linkSettings =>
 								setAttributes({ linkSettings })
 							}
+							textLevel={textLevel}
 						/>
 						<TextLink
 							{...getGroupAttributes(attributes, 'typography')}

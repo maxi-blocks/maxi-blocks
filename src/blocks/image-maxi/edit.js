@@ -21,6 +21,7 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteClasses,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -110,68 +111,6 @@ class edit extends MaxiBlock {
 				}`
 		);
 
-		const paletteClasses = classnames(
-			// Background Color
-			attributes['background-active-media'] === 'color' &&
-				!attributes['palette-custom-background-color'] &&
-				`maxi-sc-${
-					blockStyle === 'maxi-light' ? 'light' : 'dark'
-				}-background-color-${
-					attributes['palette-preset-background-color']
-				}`,
-
-			attributes['background-active-media-hover'] === 'color' &&
-				!attributes['palette-custom-background-hover-color'] &&
-				attributes['background-status-hover'] &&
-				`maxi-sc-${
-					blockStyle === 'maxi-light' ? 'light' : 'dark'
-				}-background-hover-color-${
-					attributes['palette-preset-background-hover-color']
-				}`,
-			// Border Color
-			!isEmpty(attributes['border-style-general']) &&
-				attributes['border-style-general'] !== 'none' &&
-				!attributes['palette-custom-border-color'] &&
-				`maxi-sc-${
-					blockStyle === 'maxi-light' ? 'light' : 'dark'
-				}-border-color-${attributes['palette-preset-border-color']}`,
-
-			attributes['border-style-general-hover'] !== 'none' &&
-				!attributes['palette-custom-border-hover-color'] &&
-				attributes['border-status-hover'] &&
-				`maxi-sc-${
-					blockStyle === 'maxi-light' ? 'light' : 'dark'
-				}-border-hover-color-${
-					attributes['palette-preset-border-hover-color']
-				}`,
-			// Box-Shadow Color
-			!isNil(attributes['box-shadow-blur-general']) &&
-				!isNil(attributes['box-shadow-horizontal-general']) &&
-				!isNil(attributes['box-shadow-vertical-general']) &&
-				!isNil(attributes['box-shadow-spread-general']) &&
-				!attributes['palette-custom-box-shadow-color'] &&
-				`maxi-sc-${
-					blockStyle === 'maxi-light' ? 'light' : 'dark'
-				}-box-shadow-color-${
-					attributes['palette-preset-box-shadow-color']
-				}`,
-
-			!attributes['palette-custom-box-shadow-hover-color'] &&
-				attributes['box-shadow-status-hover'] &&
-				`maxi-sc-${
-					blockStyle === 'maxi-light' ? 'light' : 'dark'
-				}-box-shadow-hover-color-${
-					attributes['palette-preset-box-shadow-hover-color']
-				}`,
-			// Typography Color
-			!attributes['palette-custom-typography-color'] &&
-				`maxi-sc-${
-					blockStyle === 'maxi-light' ? 'light' : 'dark'
-				}-typography-color-${
-					attributes['palette-preset-typography-color']
-				}`
-		);
-
 		const classes = classnames(
 			'maxi-block maxi-image-block',
 			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
@@ -181,7 +120,16 @@ class edit extends MaxiBlock {
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,
-			paletteClasses,
+			getPaletteClasses(attributes, blockStyle, [
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+			]),
 			extraClassName,
 			uniqueID,
 			className,

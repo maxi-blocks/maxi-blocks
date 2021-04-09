@@ -102,6 +102,11 @@ body.maxi-blocks--active {
 						color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
+				&.maxi-sc-#{$style}-box-shadow-color-#{$color_number} {
+					&, > .maxi-block-hover-wrapper {
+						--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
 			}
 			&:hover {
 				@each $color_number in $color_set {
@@ -132,6 +137,11 @@ body.maxi-blocks--active {
 					&.maxi-sc-#{$style}-icon-hover-color-#{$color_number} {
 						.maxi-font-icon-block__icon i {
 							color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {
+						&, > .maxi-block-hover-wrapper {
+							--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
 						}
 					}
 				}
@@ -183,6 +193,11 @@ body.maxi-blocks--active {
 						color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
+				&.maxi-sc-#{$style}-box-shadow-color-#{$color_number} {
+					&, > .maxi-block__resizer .maxi-block-hover-wrapper {
+						--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
 			}
 			&:hover {
 				@each $color_number in $color_set {
@@ -213,6 +228,11 @@ body.maxi-blocks--active {
 					&.maxi-sc-#{$style}-icon-hover-color-#{$color_number} {
 						.maxi-font-icon-block__icon i {
 							color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {
+						&, > .maxi-block__resizer .maxi-block-hover-wrapper {
+							--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
 						}
 					}
 				}

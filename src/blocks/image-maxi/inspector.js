@@ -352,6 +352,7 @@ const Inspector = props => {
 																[
 																	'typography',
 																	'textAlignment',
+																	'palette',
 																]
 															)}
 															onChange={obj =>
@@ -361,6 +362,9 @@ const Inspector = props => {
 															}
 															breakpoint={
 																deviceType
+															}
+															blockStyle={
+																blockStyle
 															}
 														/>
 													)}

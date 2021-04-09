@@ -101,7 +101,12 @@ const save = props => {
 				blockStyle === 'maxi-light' ? 'light' : 'dark'
 			}-box-shadow-hover-color-${
 				attributes['palette-preset-box-shadow-hover-color']
-			}`
+			}`,
+		// Typography Color
+		!attributes['palette-custom-typography-color'] &&
+			`maxi-sc-${
+				blockStyle === 'maxi-light' ? 'light' : 'dark'
+			}-typography-color-${attributes['palette-preset-typography-color']}`
 	);
 
 	const classes = classnames(

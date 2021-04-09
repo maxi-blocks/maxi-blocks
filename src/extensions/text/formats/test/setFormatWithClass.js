@@ -5,6 +5,32 @@ import setFormatWithClass, {
 	checkFormatCoincidence,
 } from '../setFormatWithClass';
 
+/**
+ * Reproduce the formatValue object as it is, with 'empty' slots instead of
+ * 'null' or 'undefined' in the array 'formats'.
+ */
+const formatValueCleaner = formatValue => {
+	const array = [];
+	const response = {};
+	const newFormatValue = { ...formatValue };
+	const { formats } = newFormatValue;
+	const totalLength = formats.length;
+
+	array.length = totalLength;
+
+	formats.forEach((format, i) => {
+		if (format) response[i] = format;
+	});
+
+	Object.entries(response).forEach(([key, value]) => {
+		array[key] = value;
+	});
+
+	formatValue.formats = array;
+
+	return formatValue;
+};
+
 describe('setFormatWithClass', () => {
 	it('setFormatWithClass: add simple custom format', () => {
 		const formatValue = {
@@ -39,7 +65,7 @@ describe('setFormatWithClass', () => {
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue,
+			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
@@ -126,7 +152,7 @@ describe('setFormatWithClass', () => {
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue,
+			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
@@ -210,7 +236,7 @@ describe('setFormatWithClass', () => {
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue,
+			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
@@ -311,7 +337,7 @@ describe('setFormatWithClass', () => {
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue,
+			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
@@ -402,7 +428,7 @@ describe('setFormatWithClass', () => {
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue,
+			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
@@ -551,7 +577,7 @@ describe('setFormatWithClass', () => {
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue,
+			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
@@ -650,7 +676,7 @@ describe('setFormatWithClass', () => {
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue,
+			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
@@ -776,7 +802,7 @@ describe('setFormatWithClass', () => {
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue,
+			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
@@ -906,7 +932,7 @@ describe('setFormatWithClass', () => {
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue,
+			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
@@ -1009,7 +1035,7 @@ describe('setFormatWithClass', () => {
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue,
+			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
@@ -1135,7 +1161,7 @@ describe('setFormatWithClass', () => {
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue,
+			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
@@ -1178,48 +1204,21 @@ describe('setFormatWithClass', () => {
 					{
 						type: 'maxi-blocks/text-custom',
 						attributes: {
-							className: 'maxi-text-block__custom-format--1',
-						},
-						unregisteredAttributes: {},
-					},
-				],
-				null,
-				[
-					{
-						type: 'maxi-blocks/text-custom',
-						attributes: {
-							className: 'maxi-text-block__custom-format--2',
-						},
-						unregisteredAttributes: {},
-					},
-				],
-				[
-					{
-						type: 'maxi-blocks/text-custom',
-						attributes: {
 							className: 'maxi-text-block__custom-format--0',
 						},
 						unregisteredAttributes: {},
 					},
 				],
-			],
-			replacements: [
 				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--1',
+						},
+						unregisteredAttributes: {},
+					},
+				],
 				null,
 			],
 			text: 'Testing Text Maxi',
@@ -1229,86 +1228,273 @@ describe('setFormatWithClass', () => {
 				{
 					type: 'maxi-blocks/text-custom',
 					attributes: {
-						className: 'maxi-text-block__custom-format--1',
+						className: 'maxi-text-block__custom-format--0',
 					},
 					unregisteredAttributes: {},
 				},
 			],
 		};
 		const typography = {
-			'font-family-general': 'Roboto',
-			'font-size-unit-general': 'px',
-			'font-size-general': 16,
-			'line-height-general': 1.625,
-			'letter-spacing-unit-general': 'px',
-			'letter-spacing-general': 0,
-			'font-size-unit-xxl': 'px',
-			'letter-spacing-unit-xxl': 'px',
-			'font-size-unit-xl': 'px',
-			'letter-spacing-unit-xl': 'px',
-			'font-size-unit-l': 'px',
-			'letter-spacing-unit-l': 'px',
-			'font-size-unit-m': 'px',
-			'letter-spacing-unit-m': 'px',
-			'font-size-unit-s': 'px',
-			'letter-spacing-unit-s': 'px',
-			'font-size-unit-xs': 'px',
-			'letter-spacing-unit-xs': 'px',
 			'custom-formats': {
+				'maxi-text-block__custom-format--0': {
+					'font-weight-general': 800,
+				},
 				'maxi-text-block__custom-format--1': {
 					'font-style-general': 'italic',
-				},
-				'maxi-text-block__custom-format--2': {
-					'color-general': 'rgba(58,22,237,1)',
 				},
 			},
 		};
 		const value = {
-			'font-weight': 800,
+			color: 'rgba(52,17,228,1)',
 		};
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue,
+			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
 		});
 
 		const expectedResult = {
-			'font-family-general': 'Roboto',
-			'font-size-unit-general': 'px',
-			'font-size-general': 16,
-			'line-height-general': 1.625,
-			'letter-spacing-unit-general': 'px',
-			'letter-spacing-general': 0,
-			'font-size-unit-xxl': 'px',
-			'letter-spacing-unit-xxl': 'px',
-			'font-size-unit-xl': 'px',
-			'letter-spacing-unit-xl': 'px',
-			'font-size-unit-l': 'px',
-			'letter-spacing-unit-l': 'px',
-			'font-size-unit-m': 'px',
-			'letter-spacing-unit-m': 'px',
-			'font-size-unit-s': 'px',
-			'letter-spacing-unit-s': 'px',
-			'font-size-unit-xs': 'px',
-			'letter-spacing-unit-xs': 'px',
 			'custom-formats': {
-				'maxi-text-block__custom-format--1': {
-					'font-style-general': 'italic',
-					'font-weight-general': 800,
-				},
-				'maxi-text-block__custom-format--2': {
-					'color-general': 'rgba(58,22,237,1)',
-					'font-weight-general': 800,
-				},
 				'maxi-text-block__custom-format--0': {
 					'font-weight-general': 800,
+					'color-general': 'rgba(52,17,228,1)',
+				},
+				'maxi-text-block__custom-format--1': {
+					'font-style-general': 'italic',
+					'color-general': 'rgba(52,17,228,1)',
+				},
+				'maxi-text-block__custom-format--3': {
+					'color-general': 'rgba(52,17,228,1)',
 				},
 			},
 			content:
-				'Testing Text <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">M</span>a<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--2">x</span><span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">i</span>',
+				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">M</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--3">a</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">x</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--3">i</maxi-blocks/text-custom>',
+		};
+
+		expect(JSON.stringify(result)).toStrictEqual(
+			JSON.stringify(expectedResult)
+		);
+	});
+	it('setFormatWithClass: add whole custom format segment that selects all the content above other different and multiple format parts', () => {
+		const formatValue = {
+			formats: [
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--3',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--1',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--3',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+			],
+			text: 'Testing Text Maxi',
+			start: 0,
+			end: 17,
+			activeFormats: [],
+		};
+		const typography = {
+			'custom-formats': {
+				'maxi-text-block__custom-format--0': {
+					'font-weight-general': 800,
+					'color-general': 'rgba(52,17,228,1)',
+				},
+				'maxi-text-block__custom-format--1': {
+					'font-style-general': 'italic',
+					'color-general': 'rgba(52,17,228,1)',
+				},
+				'maxi-text-block__custom-format--3': {
+					'color-general': 'rgba(52,17,228,1)',
+				},
+			},
+		};
+		const value = {
+			'text-decoration': 'underline',
+		};
+		const isList = false;
+
+		const result = setFormatWithClass({
+			formatValue: formatValueCleaner(formatValue),
+			typography,
+			value,
+			isList,
+		});
+
+		const expectedResult = {
+			'custom-formats': {
+				'maxi-text-block__custom-format--0': {
+					'font-weight-general': 800,
+					'color-general': 'rgba(52,17,228,1)',
+					'text-decoration-general': 'underline',
+				},
+				'maxi-text-block__custom-format--1': {
+					'font-style-general': 'italic',
+					'color-general': 'rgba(52,17,228,1)',
+					'text-decoration-general': 'underline',
+				},
+				'maxi-text-block__custom-format--33': {
+					'color-general': 'rgba(52,17,228,1)',
+					'text-decoration-general': 'underline',
+				},
+			},
+			'text-decoration-general': 'underline',
+			content:
+				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">M</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--33">a</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">x</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--33">i</maxi-blocks/text-custom>',
+		};
+
+		expect(JSON.stringify(result)).toStrictEqual(
+			JSON.stringify(expectedResult)
+		);
+	});
+	it('setFormatWithClass: remove whole custom format segment that selects all the content above other different and multiple format parts', () => {
+		const formatValue = {
+			formats: [
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--33',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--1',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--33',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+			],
+			text: 'Testing Text Maxi',
+			start: 0,
+			end: 17,
+			activeFormats: [],
+		};
+		const typography = {
+			'text-decoration-general': 'underline',
+			'custom-formats': {
+				'maxi-text-block__custom-format--0': {
+					'font-weight-general': 800,
+					'color-general': 'rgba(52,17,228,1)',
+					'text-decoration-general': 'underline',
+				},
+				'maxi-text-block__custom-format--1': {
+					'font-style-general': 'italic',
+					'color-general': 'rgba(52,17,228,1)',
+					'text-decoration-general': 'underline',
+				},
+				'maxi-text-block__custom-format--33': {
+					'color-general': 'rgba(52,17,228,1)',
+					'text-decoration-general': 'underline',
+				},
+			},
+		};
+		const value = {
+			'text-decoration': '',
+		};
+		const isList = false;
+
+		const result = setFormatWithClass({
+			formatValue: formatValueCleaner(formatValue),
+			typography,
+			value,
+			isList,
+		});
+
+		const expectedResult = {
+			'text-decoration-general': '',
+			'custom-formats': {
+				'maxi-text-block__custom-format--0': {
+					'font-weight-general': 800,
+					'color-general': 'rgba(52,17,228,1)',
+				},
+				'maxi-text-block__custom-format--1': {
+					'font-style-general': 'italic',
+					'color-general': 'rgba(52,17,228,1)',
+				},
+				'maxi-text-block__custom-format--3': {
+					'color-general': 'rgba(52,17,228,1)',
+				},
+			},
+			content:
+				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--0">M</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--3">a</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">x</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--3">i</maxi-blocks/text-custom>',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(

@@ -301,6 +301,54 @@ const removeCustomFormat = ({ formatValue, className, isList }) => {
 	return { formatValue: newFormatValue, content: newContent };
 };
 
+export const checkFormatCoincidence = ({
+	typography,
+	className,
+	breakpoint,
+	value,
+	isHover,
+}) => {
+	const clonedTypography = { ...typography };
+	const { 'custom-formats': customFormats } = clonedTypography;
+
+	if (isNil(customFormats)) return false;
+
+	const {
+		'custom-formats': { [className]: updatedFormat },
+	} = updateCustomFormat({
+		typography: clonedTypography,
+		currentClassName: className,
+		breakpoint,
+		value,
+		isHover,
+	}).typography;
+
+	let coincidence = false;
+
+	Object.entries(customFormats).forEach(([key, value]) => {
+		if (
+			key !== className &&
+			Object.keys(value).length === Object.keys(updatedFormat).length
+		) {
+			const hasCoincidence = !Object.entries(value).some(
+				([target, content]) => {
+					if (
+						updatedFormat[target] &&
+						updatedFormat[target] === content
+					)
+						return false;
+
+					return true;
+				}
+			);
+
+			if (hasCoincidence) coincidence = key;
+		}
+	});
+
+	return coincidence;
+};
+
 /**
  * Merge new custom format
  *
@@ -342,46 +390,60 @@ const mergeNewFormat = ({
 
 		return formatEl;
 	});
+	const classCoincidence = checkFormatCoincidence({
+		typography,
+		className: currentClassName || formatClassName,
+		value,
+		breakpoint,
+		isHover,
+	});
+
+	// console.log(classCoincidence);
 
 	let newTypography = { ...typography };
 	let newFormatValue = { ...formatValue };
 	let newContent = content;
 
-	if (!(currentClassName && isFullFormat)) {
-		const {
-			typography: preformattedTypography,
-			formatValue: preformattedFormatValue,
-			content: preformattedContent,
-		} = generateNewCustomFormat({
-			typography,
-			formatValue,
-			currentClassName,
-			formatClassName,
+	if (!classCoincidence) {
+		if (!(currentClassName && isFullFormat)) {
+			const {
+				typography: preformattedTypography,
+				formatValue: preformattedFormatValue,
+				content: preformattedContent,
+			} = generateNewCustomFormat({
+				typography,
+				formatValue,
+				currentClassName,
+				formatClassName,
+				breakpoint,
+				value,
+				isHover,
+				isList,
+			});
+
+			newTypography = preformattedTypography;
+			newFormatValue = preformattedFormatValue;
+			newContent = preformattedContent;
+		}
+
+		const { typography: cleanedTypography } = updateCustomFormat({
+			typography: newTypography,
+			currentClassName:
+				currentClassName && isFullFormat
+					? currentClassName
+					: formatClassName,
 			breakpoint,
 			value,
 			isHover,
-			isList,
 		});
 
-		newTypography = preformattedTypography;
-		newFormatValue = preformattedFormatValue;
-		newContent = preformattedContent;
+		newTypography = cleanedTypography;
 	}
 
-	const { typography: cleanedTypography } = updateCustomFormat({
-		typography: newTypography,
-		currentClassName:
-			currentClassName && isFullFormat
-				? currentClassName
-				: formatClassName,
-		breakpoint,
-		value,
-		isHover,
-	});
-
 	if (
+		!classCoincidence &&
 		isEmpty(
-			cleanedTypography[`custom-formats${isHover ? '-hover' : ''}`][
+			newTypography[`custom-formats${isHover ? '-hover' : ''}`][
 				currentClassName ?? formatClassName
 			]
 		)
@@ -402,14 +464,18 @@ const mergeNewFormat = ({
 			formatValue: newFormatValue || formatValue,
 			isList,
 			className:
-				currentClassName && isFullFormat
+				classCoincidence ||
+				(currentClassName && isFullFormat
 					? currentClassName
-					: formatClassName,
+					: formatClassName),
 			isHover,
 		});
 
 		newContent = cleanedContent;
 	}
+
+	if (classCoincidence && currentClassName)
+		delete newTypography['custom-formats'][currentClassName];
 
 	return {
 		typography: newTypography,
@@ -442,17 +508,22 @@ const mergeMultipleFormats = ({
 	multiFormatObj,
 	isList,
 	isHover = false,
+	isWholeContent,
 }) => {
 	let newTypography = { ...typography };
 	let newContent = '';
 	let newFormatValue = { ...formatValue };
 
 	Object.values(multiFormatObj).forEach((format, i) => {
-		const newMultiFormatObj = getMultiFormatObj({
-			...newFormatValue,
-			start: formatValue.start,
-			end: formatValue.end,
-		});
+		const newMultiFormatObj = getMultiFormatObj(
+			{
+				...newFormatValue,
+				start: formatValue.start,
+				end: formatValue.end,
+			},
+			isHover,
+			isWholeContent
+		);
 		const formatClassName = getFormatClassName(
 			newFormatValue,
 			newTypography,
@@ -500,84 +571,19 @@ const mergeMultipleFormats = ({
 		};
 	});
 
+	if (isWholeContent) {
+		Object.entries(value).forEach(([key, val]) => {
+			newTypography[
+				`${key}-${breakpoint}${isHover ? '-hover' : ''}`
+			] = val;
+		});
+	}
+
 	return {
 		typography: newTypography,
 		content: newContent,
 		formatValue: newFormatValue,
 	};
-};
-
-const manageCoincidentFormat = ({
-	formatValue,
-	isList,
-	classCoincidence,
-	isHover,
-	currentClassName,
-	typography,
-}) => {
-	const newTypography = { ...typography };
-
-	const { content } = applyCustomFormat({
-		formatValue,
-		isList,
-		className: classCoincidence,
-		isHover,
-	});
-
-	if (currentClassName)
-		delete newTypography['custom-formats'][currentClassName];
-
-	return { content, typography: newTypography };
-};
-
-export const checkFormatCoincidence = ({
-	typography,
-	className,
-	breakpoint,
-	value,
-	isHover,
-}) => {
-	const clonedTypography = { ...typography };
-	const { 'custom-formats': customFormats } = clonedTypography;
-
-	if (isNil(customFormats)) return false;
-
-	const {
-		'custom-formats': { [className]: updatedFormat },
-	} = updateCustomFormat({
-		typography: clonedTypography,
-		currentClassName: className,
-		breakpoint,
-		value,
-		isHover,
-	}).typography;
-
-	let coincidence = false;
-
-	Object.entries(customFormats).forEach(([key, value]) => {
-		if (
-			key !== className &&
-			Object.keys(value).length === Object.keys(updatedFormat).length
-		) {
-			const hasCoincidence = !Object.entries(value).some(
-				([target, content]) => {
-					if (
-						updatedFormat[target] &&
-						updatedFormat[target] === content
-					)
-						return false;
-
-					return true;
-				}
-			);
-
-			// console.log(hasCoincidence);
-
-			if (hasCoincidence) coincidence = key;
-		}
-	});
-
-	return coincidence;
 };
 
 /**
@@ -609,7 +615,12 @@ const setFormatWithClass = ({
 
 	const { start, end, formats } = formatValue;
 
-	const multiFormatObj = getMultiFormatObj(formatValue);
+	const isWholeContent = end - start === formats.length;
+	const multiFormatObj = getMultiFormatObj(
+		formatValue,
+		isHover,
+		isWholeContent
+	);
 	const currentClassName = getCurrentFormatClassName(formatValue, isHover);
 	const formatClassName = getFormatClassName(
 		formatValue,
@@ -629,15 +640,6 @@ const setFormatWithClass = ({
 		return formatEl;
 	});
 	const hasMultiCustomFormat = Object.keys(multiFormatObj).length > 1;
-	const classCoincidence = checkFormatCoincidence({
-		typography,
-		className: currentClassName || formatClassName,
-		value,
-		breakpoint,
-		isHover,
-	});
-
-	// console.log(classCoincidence);
 
 	const {
 		typography: preformattedTypography,
@@ -655,17 +657,8 @@ const setFormatWithClass = ({
 				isHover,
 			})) ||
 		(hasCustomFormat &&
-			classCoincidence &&
-			manageCoincidentFormat({
-				formatValue,
-				isList,
-				classCoincidence,
-				isHover,
-				currentClassName,
-				typography,
-			})) ||
-		(hasCustomFormat &&
 			!hasMultiCustomFormat &&
+			!isWholeContent &&
 			mergeNewFormat({
 				typography,
 				formatValue,
@@ -677,7 +670,7 @@ const setFormatWithClass = ({
 				isHover,
 			})) ||
 		(hasCustomFormat &&
-			hasMultiCustomFormat &&
+			(hasMultiCustomFormat || isWholeContent) &&
 			mergeMultipleFormats({
 				typography,
 				formatValue,
@@ -686,6 +679,7 @@ const setFormatWithClass = ({
 				isList,
 				multiFormatObj,
 				isHover,
+				isWholeContent,
 			}));
 
 	const {

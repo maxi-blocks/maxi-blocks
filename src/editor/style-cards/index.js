@@ -112,6 +112,15 @@ const MaxiStyleCardsTab = ({
 		const styleCardDefaultsTypography = SCstyle => {
 			Object.entries(SCstyle).forEach(([key, val]) => {
 				if (key.includes(`${level}-`)) {
+					if (key.includes('general')) {
+						breakpoints.forEach(breakpoint => {
+							const checkKey = key.replace('general', breakpoint);
+
+							if (isNil(SCstyle.checkKey)) {
+								response[checkKey] = val;
+							}
+						});
+					}
 					if (key.includes('font-size')) {
 						const [num, unit] = val.match(/[a-zA-Z]+|[0-9]+/g);
 						response[key] = num;
@@ -136,14 +145,6 @@ const MaxiStyleCardsTab = ({
 
 						response[newUnitKey] = unit;
 						return;
-					}
-					if (key.includes('general')) {
-						breakpoints.forEach(breakpoint => {
-							const checkKey = key.replace('general', breakpoint);
-
-							if (isNil(SCstyle.checkKey))
-								response[checkKey] = val;
-						});
 					}
 					response[key] = val;
 				}
@@ -247,6 +248,36 @@ const MaxiStyleCardsTab = ({
 									disableGradient
 									noPalette
 								/>
+								<ColorControl
+									label={__('6th ', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__color-6-${SCStyle}`}
+									color={getColor('color-6')}
+									defaultColor={getStyleCardAttr(
+										'color-6',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue('color-6', val, SCStyle);
+									}}
+									disableGradient
+									noPalette
+								/>
+								<ColorControl
+									label={__('7th ', 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__color-7-${SCStyle}`}
+									color={getColor('color-7')}
+									defaultColor={getStyleCardAttr(
+										'color-7',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue('color-7', val, SCStyle);
+									}}
+									disableGradient
+									noPalette
+								/>
 							</Fragment>
 						),
 					},
@@ -264,6 +295,7 @@ const MaxiStyleCardsTab = ({
 									hideTextShadow
 									breakpoint={deviceType}
 									noPalette
+									styleCards
 									onChange={obj => {
 										const parsedContent = parseSCtypography(
 											obj
@@ -310,6 +342,7 @@ const MaxiStyleCardsTab = ({
 									hideTextShadow
 									breakpoint={deviceType}
 									noPalette
+									styleCards
 									onChange={obj => {
 										const parsedContent = parseSCtypography(
 											obj
@@ -358,8 +391,8 @@ const MaxiStyleCardsTab = ({
 								hideAlignment
 								hideTextShadow
 								breakpoint={deviceType}
-								styleCards
 								noPalette
+								styleCards
 								onChange={obj => {
 									const parsedTypography = parseSCtypography(
 										obj
@@ -568,6 +601,7 @@ const MaxiStyleCardsTab = ({
 									}}
 									disableGradient
 									noPalette
+									styleCards
 								/>
 								<ColorControl
 									label={__('Icon Line', 'maxi-blocks')}

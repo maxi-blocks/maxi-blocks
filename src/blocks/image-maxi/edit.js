@@ -81,7 +81,6 @@ class edit extends MaxiBlock {
 		const {
 			uniqueID,
 			blockStyle,
-			blockStyleBackground,
 			extraClassName,
 			fullWidth,
 			cropOptions,
@@ -118,8 +117,6 @@ class edit extends MaxiBlock {
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
 			getPaletteClasses(attributes, blockStyle, [
 				'background',
 				'background-hover',

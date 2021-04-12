@@ -1,4 +1,5 @@
 export { default as getAttributeKey } from './getAttributeKey';
+export { default as getBlockStyle } from './getBlockStyle';
 export { default as getDefaultAttribute } from './getDefaultAttribute';
 export { default as getGroupAttributes } from './getGroupAttributes';
 export { default as getLastBreakpointAttribute } from './getLastBreakpointAttribute';

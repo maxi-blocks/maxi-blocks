@@ -47,10 +47,6 @@ const Inspector = props => {
 		uniqueID,
 		isFirstOnHierarchy,
 		blockStyle,
-		blockStyleBackground,
-		blockStyleBorder,
-		blockStyleBackgroundHover,
-		blockStyleBorderHover,
 		fullWidth,
 		extraClassName,
 	} = attributes;
@@ -195,12 +191,8 @@ const Inspector = props => {
 																				obj
 																			)
 																		}
-																		scAtt={`background-${blockStyleBackground}`}
 																		blockStyle={
 																			blockStyle
-																		}
-																		blockStyleBackground={
-																			blockStyleBackground
 																		}
 																		useStyleCard
 																	/>
@@ -282,9 +274,6 @@ const Inspector = props => {
 																					obj
 																				)
 																			}
-																			blockStyleBackground={
-																				blockStyleBackgroundHover
-																			}
 																			disableImage
 																			disableVideo
 																			disableSVG
@@ -323,9 +312,6 @@ const Inspector = props => {
 																			'palette',
 																		]
 																	)}
-																	blockStyleBorder={
-																		blockStyleBorder
-																	}
 																	onChange={obj =>
 																		setAttributes(
 																			obj
@@ -394,9 +380,6 @@ const Inspector = props => {
 																					'palette',
 																				]
 																			)}
-																			blockStyleBorder={
-																				blockStyleBorderHover
-																			}
 																			onChange={obj =>
 																				setAttributes(
 																					obj

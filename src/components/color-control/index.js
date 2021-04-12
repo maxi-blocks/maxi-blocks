@@ -10,7 +10,7 @@ import { useState, useEffect, Fragment } from '@wordpress/element';
  */
 import RangeSliderControl from '../range-slider-control';
 import ColorPaletteControl from '../color-palette-control';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getBlockStyle } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -108,11 +108,9 @@ const ColorControl = props => {
 					{...palette}
 					isHover={isHover}
 					colorPaletteType={colorPaletteType}
-					className={`maxi-color-palette--${
-						blockStyle === 'maxi-light' || blockStyle === 'light'
-							? 'light'
-							: 'dark'
-					}`}
+					className={`maxi-color-palette--${getBlockStyle(
+						blockStyle
+					)}`}
 					onChange={obj => onChangePalette(obj)}
 				/>
 			)}

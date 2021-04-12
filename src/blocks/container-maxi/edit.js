@@ -135,10 +135,6 @@ class edit extends MaxiBlock {
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
-			blockStyleBackground,
-			blockStyleBorder,
-			blockStyleBackgroundHover,
-			blockStyleBorderHover,
 			fullWidth,
 			extraClassName,
 		} = attributes;
@@ -152,10 +148,6 @@ class edit extends MaxiBlock {
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
-			`maxi-background--${blockStyleBackground}`,
-			`maxi-border--${blockStyleBorder}`,
-			`maxi-background-hover--${blockStyleBackgroundHover}`,
-			`maxi-border-hover--${blockStyleBorderHover}`,
 			getPaletteClasses(attributes, blockStyle, [
 				'background',
 				'background-hover',

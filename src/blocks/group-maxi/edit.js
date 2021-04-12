@@ -68,13 +68,7 @@ class edit extends MaxiBlock {
 			hasInnerBlock,
 			deviceType,
 		} = this.props;
-		const {
-			uniqueID,
-			blockStyle,
-			blockStyleBackground,
-			extraClassName,
-			fullWidth,
-		} = attributes;
+		const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
 
 		const classes = classnames(
 			'maxi-block',
@@ -86,8 +80,6 @@ class edit extends MaxiBlock {
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
 			getPaletteClasses(attributes, blockStyle, [
 				'background',
 				'background-hover',

@@ -79,6 +79,14 @@ const palette = {
 		type: 'number',
 		default: 1,
 	},
+	'palette-preset-divider-color': {
+		type: 'number',
+		default: 1,
+	},
+	'palette-preset-divider-hover-color': {
+		type: 'number',
+		default: 1,
+	},
 };
 
 export default palette;

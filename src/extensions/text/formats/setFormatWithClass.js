@@ -110,11 +110,15 @@ const styleObjectManipulator = ({
 }) => {
 	const style = { ...currentStyle };
 
+	const sameDefaultLevels = ['p', 'ul', 'ol'];
+
 	Object.entries(value).forEach(([target, val]) => {
 		if (typography[`${target}-${breakpoint}`] === val)
 			delete style[`${target}-${breakpoint}`];
 		else if (
-			defaultTypography[textLevel][`${target}-${breakpoint}`] === val
+			defaultTypography[
+				sameDefaultLevels.includes(textLevel) ? 'p' : textLevel
+			][`${target}-${breakpoint}`] === val
 		)
 			delete style[`${target}-${breakpoint}`];
 		else if (isNil(val) || (isEmpty(val) && !isNumber(val)))
@@ -408,8 +412,6 @@ const mergeNewFormat = ({
 		isHover,
 	});
 
-	// console.log(classCoincidence);
-
 	let newTypography = { ...typography };
 	let newFormatValue = { ...formatValue };
 	let newContent = content;
@@ -451,14 +453,13 @@ const mergeNewFormat = ({
 		newTypography = cleanedTypography;
 	}
 
-	if (
-		!classCoincidence &&
-		isEmpty(
-			newTypography[`custom-formats${isHover ? '-hover' : ''}`][
-				currentClassName ?? formatClassName
-			]
-		)
-	) {
+	const {
+		[`custom-formats${isHover ? '-hover' : ''}`]: {
+			[currentClassName || formatClassName]: customFormats,
+		},
+	} = newTypography;
+
+	if (!classCoincidence && isEmpty(customFormats)) {
 		const {
 			formatValue: cleanedFormatValue,
 			content: cleanedContent,
@@ -623,6 +624,7 @@ const setFormatWithClass = ({
 	isList,
 	isHover = false,
 	textLevel = 'p',
+	returnFormatValue = false,
 }) => {
 	// Fixes first render when pasting content
 	if (!formatValue || !typography) return {};
@@ -701,6 +703,7 @@ const setFormatWithClass = ({
 	const {
 		typography: newTypography,
 		content: newContent,
+		formatValue: newFormatValue,
 	} = flatFormatsWithClass({
 		typography: preformattedTypography || typography,
 		content: preformattedContent || content,
@@ -712,6 +715,7 @@ const setFormatWithClass = ({
 	return {
 		...newTypography,
 		content: newContent,
+		...(returnFormatValue ? { formatValue: newFormatValue } : {}),
 	};
 };
 

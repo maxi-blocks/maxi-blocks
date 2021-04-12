@@ -128,7 +128,11 @@ class edit extends MaxiBlock {
 				{...this.props}
 				propsToAvoid={['content', 'formatValue']}
 			/>,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				{...this.props}
+				propsToAvoid={['content', 'formatValue']}
+			/>,
 			<MotionPreview
 				key={`motion-preview-${uniqueID}`}
 				{...getGroupAttributes(attributes, 'motion')}
@@ -161,40 +165,40 @@ class edit extends MaxiBlock {
 							onChange={content => {
 								setAttributes({ content });
 
-								// 	const formatElement = {
-								// 		multilineTag: isList ? 'li' : undefined,
-								// 		multilineWrapperTags: isList
-								// 			? typeOfList
-								// 			: undefined,
-								// 	};
+								const formatElement = {
+									multilineTag: isList ? 'li' : undefined,
+									multilineWrapperTags: isList
+										? typeOfList
+										: undefined,
+								};
 
-								// 	const formatValue = generateFormatValue(
-								// 		formatElement,
-								// 		this.blockRef ? this.blockRef.current : null
-								// 	);
+								const formatValue = generateFormatValue(
+									formatElement,
+									this.blockRef ? this.blockRef.current : null
+								);
 
-								// 	/**
-								// 	 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-								// 	 * and add some coding manually
-								// 	 * This next script will check if there is any format directly related with
-								// 	 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
-								// 	 */
-								// 	const cleanCustomProps = setCustomFormatsWhenPaste(
-								// 		{
-								// 			formatValue,
-								// 			typography: getGroupAttributes(
-								// 				attributes,
-								// 				'typography'
-								// 			),
-								// 			isList,
-								// 			typeOfList,
-								// 			content,
-								// 			textLevel;
-								// 		}
-								// 	);
+								/**
+								 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+								 * and add some coding manually
+								 * This next script will check if there is any format directly related with
+								 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
+								 */
+								const cleanCustomProps = setCustomFormatsWhenPaste(
+									{
+										formatValue,
+										typography: getGroupAttributes(
+											attributes,
+											'typography'
+										),
+										isList,
+										typeOfList,
+										content,
+										textLevel,
+									}
+								);
 
-								// 	if (cleanCustomProps)
-								// 		setAttributes(cleanCustomProps);
+								if (cleanCustomProps)
+									setAttributes(cleanCustomProps);
 							}}
 							tagName={textLevel}
 							onSplit={onSplit}
@@ -336,7 +340,7 @@ const editSelect = withSelect((select, ownProps) => {
 
 const editDispatch = withDispatch((dispatch, ownProps) => {
 	const { attributes, setAttributes, clientId } = ownProps;
-	const { content, textLevel } = attributes;
+	const { content, textLevel, isList } = attributes;
 
 	const name = 'maxi-blocks/text-maxi';
 
@@ -493,12 +497,16 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 				const nextBlockContent = nextBlockAttributes.content;
 				const newBlockIsList = nextBlockAttributes.isList;
 
+				const nextBlockContentNeedsTransform =
+					isList !== newBlockIsList;
+				const newNextBlockContent = nextBlockContentNeedsTransform
+					? newBlockIsList
+						? fromListToText(nextBlockContent)
+						: fromTextToList(nextBlockContent)
+					: nextBlockContent;
+
 				setAttributes({
-					content: content.concat(
-						newBlockIsList
-							? fromListToText(nextBlockContent)
-							: fromTextToList(nextBlockContent)
-					),
+					content: content.concat(newNextBlockContent),
 				});
 
 				removeBlock(nextBlockClientId);

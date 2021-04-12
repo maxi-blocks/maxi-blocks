@@ -4,32 +4,7 @@
 import setFormatWithClass, {
 	checkFormatCoincidence,
 } from '../setFormatWithClass';
-
-/**
- * Reproduce the formatValue object as it is, with 'empty' slots instead of
- * 'null' or 'undefined' in the array 'formats'.
- */
-const formatValueCleaner = formatValue => {
-	const array = [];
-	const response = {};
-	const newFormatValue = { ...formatValue };
-	const { formats } = newFormatValue;
-	const totalLength = formats.length;
-
-	array.length = totalLength;
-
-	formats.forEach((format, i) => {
-		if (format) response[i] = format;
-	});
-
-	Object.entries(response).forEach(([key, value]) => {
-		array[key] = value;
-	});
-
-	formatValue.formats = array;
-
-	return formatValue;
-};
+import formatValueCleaner from '../formatValueCleaner';
 
 describe('setFormatWithClass', () => {
 	it('setFormatWithClass: add simple custom format', () => {
@@ -166,6 +141,187 @@ describe('setFormatWithClass', () => {
 			JSON.stringify(expectedResult)
 		);
 	});
+	it('setFormatWithClass: add second simple custom format on the content', () => {
+		const formatValue = {
+			formats: [
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+			],
+			text: 'Testing Text Maxi',
+			start: 13,
+			end: 15,
+			activeFormats: [],
+		};
+		const typography = {
+			'custom-formats': {
+				'maxi-text-block__custom-format--0': {
+					'font-style-general': 'italic',
+				},
+			},
+		};
+		const value = {
+			'font-weight': 800,
+		};
+		const isList = false;
+
+		const result = setFormatWithClass({
+			formatValue: formatValueCleaner(formatValue),
+			typography,
+			value,
+			isList,
+		});
+
+		const expectedResult = {
+			'custom-formats': {
+				'maxi-text-block__custom-format--0': {
+					'font-style-general': 'italic',
+				},
+				'maxi-text-block__custom-format--1': {
+					'font-weight-general': 800,
+				},
+			},
+			content:
+				'Testing Text <maxi-blocks/text-custom className="maxi-text-block__custom-format--1">Ma</maxi-blocks/text-custom><maxi-blocks/text-custom className="maxi-text-block__custom-format--0">xi</maxi-blocks/text-custom>',
+		};
+
+		expect(JSON.stringify(result)).toStrictEqual(
+			JSON.stringify(expectedResult)
+		);
+	});
+	it('setFormatWithClass: remove second simple custom format on the content', () => {
+		const formatValue = {
+			formats: [
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--1',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--1',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+			],
+			text: 'Testing Text Maxi',
+			start: 13,
+			end: 15,
+			activeFormats: [
+				{
+					type: 'maxi-blocks/text-custom',
+					attributes: {
+						className: 'maxi-text-block__custom-format--1',
+					},
+					unregisteredAttributes: {},
+				},
+			],
+		};
+		const typography = {
+			'custom-formats': {
+				'maxi-text-block__custom-format--0': {
+					'font-style-general': 'italic',
+				},
+				'maxi-text-block__custom-format--1': {
+					'font-weight-general': 800,
+				},
+			},
+		};
+		const value = {
+			'font-weight': 400,
+		};
+		const isList = false;
+
+		const result = setFormatWithClass({
+			formatValue: formatValueCleaner(formatValue),
+			typography,
+			value,
+			isList,
+		});
+
+		const expectedResult = {
+			'custom-formats': {
+				'maxi-text-block__custom-format--0': {
+					'font-style-general': 'italic',
+				},
+			},
+			content:
+				'Testing Text Ma<maxi-blocks/text-custom className="maxi-text-block__custom-format--0">xi</maxi-blocks/text-custom>',
+		};
+
+		expect(JSON.stringify(result)).toStrictEqual(
+			JSON.stringify(expectedResult)
+		);
+	});
+
 	it('setFormatWithClass: add second simple custom format over other simple custom format', () => {
 		const formatValue = {
 			formats: [

@@ -40,6 +40,7 @@ const applyLinkFormat = ({
 			'text-decoration': 'underline',
 		},
 		textLevel,
+		returnFormatValue: true,
 	});
 };
 

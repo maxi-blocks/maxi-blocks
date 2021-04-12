@@ -1014,7 +1014,12 @@ const Inspector = memo(
 		);
 	},
 	// Avoids non-necessary renderings
-	({ attributes: oldAttr, propsToAvoid }, { attributes: newAttr }) => {
+	(
+		{ attributes: oldAttr, propsToAvoid, isSelected: wasSelected },
+		{ attributes: newAttr, isSelected }
+	) => {
+		if (!wasSelected || wasSelected !== isSelected) return false;
+
 		const oldAttributes = cloneDeep(oldAttr);
 		const newAttributes = cloneDeep(newAttr);
 

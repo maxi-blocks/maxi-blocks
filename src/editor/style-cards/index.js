@@ -66,10 +66,21 @@ const MaxiStyleCardsTab = ({
 	currentKey,
 }) => {
 	const getColor = attr => {
-		if (!isNil(SC.styleCard[SCStyle][attr]))
-			return SC.styleCard[SCStyle][attr];
-		if (!isNil(SC.styleCardDefaults[SCStyle][attr]))
-			return SC.styleCardDefaults[SCStyle][attr];
+		const scStyleColor = SC.styleCard[SCStyle][attr];
+		if (!isNil(scStyleColor)) return scStyleColor;
+
+		const scStyleColorDefault = SC.styleCardDefaults[SCStyle][attr];
+		if (!isNil(scStyleColorDefault)) {
+			if (scStyleColorDefault.includes('var')) {
+				const scStyleColorDefaultVar = scStyleColorDefault.match(
+					/color-\d/
+				);
+				const scStyleColorDefaultColor =
+					SC.styleCardDefaults[SCStyle][scStyleColorDefaultVar];
+				if (!isNil(scStyleColorDefaultColor))
+					return scStyleColorDefaultColor;
+			} else return scStyleColorDefault;
+		}
 		return false;
 	};
 
@@ -90,7 +101,6 @@ const MaxiStyleCardsTab = ({
 			}
 			if (!key.includes('-unit')) parsedTypography[key] = val;
 		});
-		// console.log('new sc ' + JSON.stringify(newSC));
 		return parsedTypography;
 	};
 
@@ -103,10 +113,7 @@ const MaxiStyleCardsTab = ({
 			Object.entries(SCstyle).forEach(([key, val]) => {
 				if (key.includes(`${level}-`)) {
 					if (key.includes('font-size')) {
-						// console.log('key: ' + key + ' val: ' + val);
 						const [num, unit] = val.match(/[a-zA-Z]+|[0-9]+/g);
-						// console.log('num: ' + num);
-						// console.log('unit: ' + unit);
 						response[key] = num;
 						const newUnitKey = key.replace(
 							'font-size',
@@ -120,10 +127,7 @@ const MaxiStyleCardsTab = ({
 						if (typeof val === 'number') newVal = `${val}px`;
 						else newVal = val;
 
-						// console.log(typeof val + ' ' + val + ' ' + newVal);
 						const [num, unit] = newVal.match(/[a-zA-Z]+|[0-9\.]+/g);
-						// console.log('num: ' + num);
-						// console.log('unit: ' + unit);
 						response[key] = num;
 						const newUnitKey = key.replace(
 							'letter-spacing',
@@ -136,7 +140,6 @@ const MaxiStyleCardsTab = ({
 					if (key.includes('general')) {
 						breakpoints.forEach(breakpoint => {
 							const checkKey = key.replace('general', breakpoint);
-							// console.log('checkKey ' + checkKey);
 
 							if (isNil(SCstyle.checkKey))
 								response[checkKey] = val;
@@ -260,13 +263,12 @@ const MaxiStyleCardsTab = ({
 									hideAlignment
 									hideTextShadow
 									breakpoint={deviceType}
-									styleCards
 									noPalette
 									onChange={obj => {
 										const parsedContent = parseSCtypography(
 											obj
 										);
-										console.log('parsedContent p' + JSON.stringify(parsedContent));
+										// console.log('parsedContent p' + JSON.stringify(parsedContent));
 										onChangeValue(
 											'typography',
 											parsedContent,
@@ -307,13 +309,11 @@ const MaxiStyleCardsTab = ({
 									hideAlignment
 									hideTextShadow
 									breakpoint={deviceType}
-									styleCards
 									noPalette
 									onChange={obj => {
 										const parsedContent = parseSCtypography(
 											obj
 										);
-										// console.log('parsedContent' + JSON.stringify(parsedContent));
 										onChangeValue(
 											'typography',
 											parsedContent,
@@ -680,15 +680,15 @@ const MaxiStyleCardsTab = ({
 						content: (
 							<ColorControl
 								label={__('Font Icon', 'maxi-blocks')}
-								className={`maxi-style-cards-control__sc__icon-line-${SCStyle}`}
-								color={getColor('font-icon')}
+								className={`maxi-style-cards-control__sc__font-icon-${SCStyle}`}
+								color={getColor('font-icon-color')}
 								defaultColor={getStyleCardAttr(
-									'font-icon',
+									'font-icon-color',
 									SCStyle,
 									true
 								)}
 								onChange={val => {
-									onChangeValue('font-icon', val, SCStyle);
+									onChangeValue('font-icon-color', val, SCStyle);
 								}}
 								disableGradient
 								noPalette
@@ -700,16 +700,16 @@ const MaxiStyleCardsTab = ({
 						content: (
 							<ColorControl
 								label={__('Divider', 'maxi-blocks')}
-								className={`maxi-style-cards-control__sc__icon-line-${SCStyle}`}
-								color={getColor('icon-line')}
+								className={`maxi-style-cards-control__sc__divider-color-${SCStyle}`}
+								color={getColor('divider-color')}
 								defaultColor={getStyleCardAttr(
-									'icon-line',
+									'divider-color',
 									SCStyle,
 									true
 								)}
 								onChange={val => {
 									onChangeValue(
-										'icon-line',
+										'divider-color',
 										val,
 										SCStyle
 									);
@@ -872,12 +872,8 @@ const MaxiStyleCardsEditor = () => {
 	);
 
 	const onChangeValue = (prop, value, style) => {
-		// console.log('prop ' + prop);
-		// console.log('value ' + value);
-		// console.log('style ' + style);
 		let newStateSC = {};
 		if (prop === 'typography') {
-			console.log('YES');
 			newStateSC = {
 				...stateSC,
 				styleCard: {
@@ -894,8 +890,6 @@ const MaxiStyleCardsEditor = () => {
 				},
 			};
 		}
-
-		// console.log('newStateSC ' + JSON.stringify(newStateSC));
 
 		changeStateSC(newStateSC);
 		changeSConBackend(newStateSC);
@@ -1300,7 +1294,6 @@ const MaxiStyleCardsEditor = () => {
 									...stateSC.styleCardDefaults,
 								},
 							};
-							console.log('newStyleCard: ' + JSON.stringify(newStyleCard));
 							saveImportedStyleCard(newStyleCard);
 						}}
 					>

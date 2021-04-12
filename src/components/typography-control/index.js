@@ -265,6 +265,7 @@ const TypographyControl = props => {
 							}}
 							disableGradient
 							showPalette
+							noPalette={noPalette}
 							blockStyle={blockStyle}
 							isHover={isHover}
 							palette={{

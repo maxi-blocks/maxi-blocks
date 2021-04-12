@@ -59,8 +59,21 @@ const getStyleCardAttr = (
 				}
 				const styleCardsDefaultArrToCheck =
 					activeStyleCardFiltered.styleCardDefaults[style][attribute];
-				if (!isNil(styleCardsDefaultArrToCheck))
-					return styleCardsDefaultArrToCheck;
+
+				if (!isNil(styleCardsDefaultArrToCheck)) {
+					if (styleCardsDefaultArrToCheck.includes('var')) {
+						const styleCardsDefaultArrVar = styleCardsDefaultArrToCheck.match(
+							/color-\d/
+						);
+						const styleCardsDefaultArrVarColor =
+							activeStyleCardFiltered.styleCardDefaults[style][
+								styleCardsDefaultArrVar
+							];
+						if (!isNil(styleCardsDefaultArrVarColor))
+							return styleCardsDefaultArrVarColor;
+					} else return styleCardsDefaultArrToCheck;
+				}
+
 				return false;
 			}
 			return false;

@@ -29,41 +29,10 @@ const getLastBreakpointAttributeSingle = (
 
 	const attr = attributes || getBlockAttributes(getSelectedBlockClientId());
 
-	const getBlockStyleAttribute = () => {
-		const { getBlockAttributes, getBlockParents } = select(
-			'core/block-editor'
-		);
-		const { blockStyle } = attr;
-
-		switch (blockStyle) {
-			case 'maxi-light':
-				return 'light';
-			case 'maxi-dark':
-				return 'dark';
-			case 'maxi-parent': {
-				return getBlockAttributes(
-					getBlockParents(getSelectedBlockClientId)[0]
-				).blockStyle.replace('maxi-', '');
-			}
-			default:
-				return 'light';
-		}
-	};
-
 	let currentAttr;
 
 	if (!isNil(attr)) {
 		currentAttr = attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
-
-		if (currentAttr === 'styleCard') {
-			if (target === 'font-family') {
-				currentAttr = getStyleCardAttr(
-					'p-font-family',
-					getBlockStyleAttribute(),
-					false
-				);
-			}
-		}
 
 		if (
 			!isNil(currentAttr) &&

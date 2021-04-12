@@ -29,7 +29,7 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			case 'dark':
 				return 'dark';
 			case 'maxi-parent': {
-				return isNull(parentStyles)
+				return isNil(parentStyles)
 					? 'dark'
 					: parentStyles.blockStyle === 'maxi-light' ||
 					  parentStyles.blockStyle === 'light'

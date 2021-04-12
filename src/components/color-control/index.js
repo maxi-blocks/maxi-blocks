@@ -37,6 +37,7 @@ const ColorControl = props => {
 		onChange,
 		isHover,
 		blockStyle,
+		noPalette,
 		showPalette = false,
 		palette,
 		colorPaletteType,
@@ -102,7 +103,7 @@ const ColorControl = props => {
 
 	return (
 		<Fragment>
-			{showPalette && (
+			{!noPalette && showPalette && (
 				<ColorPaletteControl
 					{...palette}
 					isHover={isHover}
@@ -121,7 +122,8 @@ const ColorControl = props => {
 					`palette-custom-${colorPaletteType}${
 						isHover ? '-hover' : ''
 					}-color`
-				]) ? (
+				]) ||
+			noPalette ? (
 				<div className={classes}>
 					<BaseControl
 						className='maxi-color-control__display'

@@ -27,10 +27,6 @@ const save = props => {
 	const {
 		uniqueID,
 		blockStyle,
-		blockStyleBackground,
-		blockStyleBorder,
-		blockStyleBackgroundHover,
-		blockStyleBorderHover,
 		defaultBlockStyle,
 		fullWidth,
 		extraClassName,
@@ -40,10 +36,6 @@ const save = props => {
 		'maxi-motion-effect',
 		'maxi-block maxi-container-block',
 		blockStyle,
-		`maxi-background--${blockStyleBackground}`,
-		`maxi-border--${blockStyleBorder}`,
-		`maxi-background-hover--${blockStyleBackgroundHover}`,
-		`maxi-border-hover--${blockStyleBorderHover}`,
 		getPaletteClasses(attributes, blockStyle, [
 			'background',
 			'background-hover',

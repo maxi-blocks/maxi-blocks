@@ -52,10 +52,8 @@ const BackgroundControl = props => {
 		onChange,
 		isHover = false,
 		prefix = '',
-		scAtt,
 		blockStyle,
 		noPalette,
-		blockStyleBackground,
 	} = props;
 
 	const backgroundActiveMedia =
@@ -160,10 +158,8 @@ const BackgroundControl = props => {
 							disableClipPath={disableClipPath}
 							isHover={isHover}
 							prefix={prefix}
-							scAtt={scAtt}
 							blockStyle={blockStyle}
 							noPalette={noPalette}
-							colorPreSet={blockStyleBackground}
 						/>
 					)}
 					{!disableImage && backgroundActiveMedia === 'image' && (

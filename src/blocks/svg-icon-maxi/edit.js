@@ -70,13 +70,7 @@ class edit extends MaxiBlock {
 
 	render() {
 		const { className, attributes, clientId, deviceType } = this.props;
-		const {
-			uniqueID,
-			blockStyle,
-			blockStyleBackground,
-			extraClassName,
-			fullWidth,
-		} = attributes;
+		const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
 
 		const { isOpen } = this.state;
 
@@ -91,8 +85,6 @@ class edit extends MaxiBlock {
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
 			extraClassName,
 			uniqueID,
 			className

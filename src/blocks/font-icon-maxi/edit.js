@@ -59,7 +59,6 @@ class edit extends MaxiBlock {
 			uniqueID,
 			blockStyle,
 			defaultBlockStyle,
-			blockStyleBackground,
 			extraClassName,
 			fullWidth,
 		} = attributes;
@@ -72,8 +71,6 @@ class edit extends MaxiBlock {
 				'none' && 'maxi-block-display-none',
 			defaultBlockStyle,
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
 			getPaletteClasses(attributes, blockStyle, [
 				'background',
 				'background-hover',

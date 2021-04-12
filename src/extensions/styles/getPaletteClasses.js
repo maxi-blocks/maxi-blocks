@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getBlockStyle from './getBlockStyle';
+import getPaletteDefault from './getPaletteDefault';
 
 /**
  * External dependencies
@@ -15,28 +16,36 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			attributes['background-active-media'] === 'color' &&
 			!attributes['palette-custom-background-color'] &&
 			`maxi-sc-${getBlockStyle(blockStyle)}-background-color-${
-				attributes['palette-preset-background-color']
+				!isNil(attributes['palette-preset-background-color'])
+					? attributes['palette-preset-background-color']
+					: getPaletteDefault('background')
 			}`,
 		allowedPalettes.includes('background-hover') &&
 			attributes['background-active-media-hover'] === 'color' &&
 			!attributes['palette-custom-background-hover-color'] &&
 			attributes['background-status-hover'] &&
 			`maxi-sc-${getBlockStyle(blockStyle)}-background-hover-color-${
-				attributes['palette-preset-background-hover-color']
+				!isNil(attributes['palette-preset-background-hover-color'])
+					? attributes['palette-preset-background-hover-color']
+					: getPaletteDefault('background')
 			}`,
 		allowedPalettes.includes('border') &&
 			!isEmpty(attributes['border-style-general']) &&
 			attributes['border-style-general'] !== 'none' &&
 			!attributes['palette-custom-border-color'] &&
 			`maxi-sc-${getBlockStyle(blockStyle)}-border-color-${
-				attributes['palette-preset-border-color']
+				!isNil(attributes['palette-preset-border-color'])
+					? attributes['palette-preset-border-color']
+					: getPaletteDefault('border')
 			}`,
 		allowedPalettes.includes('border-hover') &&
 			attributes['border-style-general-hover'] !== 'none' &&
 			!attributes['palette-custom-border-hover-color'] &&
 			attributes['border-status-hover'] &&
 			`maxi-sc-${getBlockStyle(blockStyle)}-border-hover-color-${
-				attributes['palette-preset-border-hover-color']
+				!isNil(attributes['palette-preset-border-hover-color'])
+					? attributes['palette-preset-border-hover-color']
+					: getPaletteDefault('border')
 			}`,
 		allowedPalettes.includes('box-shadow') &&
 			!isNil(attributes['box-shadow-blur-general']) &&
@@ -45,37 +54,49 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			!isNil(attributes['box-shadow-spread-general']) &&
 			!attributes['palette-custom-box-shadow-color'] &&
 			`maxi-sc-${getBlockStyle(blockStyle)}-box-shadow-color-${
-				attributes['palette-preset-box-shadow-color']
+				!isNil(attributes['palette-preset-box-shadow-color'])
+					? attributes['palette-preset-box-shadow-color']
+					: getPaletteDefault('box-shadow')
 			}`,
 		allowedPalettes.includes('box-shadow-hover') &&
 			!attributes['palette-custom-box-shadow-hover-color'] &&
 			attributes['box-shadow-status-hover'] &&
 			`maxi-sc-${getBlockStyle(blockStyle)}-box-shadow-hover-color-${
-				attributes['palette-preset-box-shadow-hover-color']
+				!isNil(attributes['palette-preset-box-shadow-hover-color'])
+					? attributes['palette-preset-box-shadow-hover-color']
+					: getPaletteDefault('box-shadow')
 			}`,
 		allowedPalettes.includes('typography') &&
 			!attributes['palette-custom-typography-color'] &&
 			`maxi-sc-${getBlockStyle(blockStyle)}-typography-color-${
-				attributes['palette-preset-typography-color']
+				!isNil(attributes['palette-preset-typography-color'])
+					? attributes['palette-preset-typography-color']
+					: getPaletteDefault('typography')
 			}`,
 		allowedPalettes.includes('typography-hover') &&
 			!attributes['palette-custom-typography-hover-color'] &&
 			attributes['typography-status-hover'] &&
 			`maxi-sc-${getBlockStyle(blockStyle)}-typography-hover-color-${
-				attributes['palette-preset-typography-hover-color']
+				!isNil(attributes['palette-preset-typography-hover-color'])
+					? attributes['palette-preset-typography-hover-color']
+					: getPaletteDefault('typography')
 			}`,
 		allowedPalettes.includes('icon') &&
 			!isEmpty(attributes['icon-name']) &&
 			!attributes['palette-custom-icon-color'] &&
 			`maxi-sc-${getBlockStyle(blockStyle)}-icon-color-${
-				attributes['palette-preset-icon-color']
+				!isNil(attributes['palette-preset-icon-color'])
+					? attributes['palette-preset-icon-color']
+					: getPaletteDefault('icon')
 			}`,
 		allowedPalettes.includes('divider') &&
 			!isEmpty(attributes['divider-border-style']) &&
 			attributes['divider-border-style'] !== 'none' &&
 			!attributes['palette-custom-divider-color'] &&
 			`maxi-sc-${getBlockStyle(blockStyle)}-divider-color-${
-				attributes['palette-preset-divider-color']
+				!isNil(attributes['palette-preset-divider-color'])
+					? attributes['palette-preset-divider-color']
+					: getPaletteDefault('divider')
 			}`
 	);
 

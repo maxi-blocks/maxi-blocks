@@ -5,9 +5,15 @@ import { __ } from '@wordpress/i18n';
 import { FancyRadioControl } from '..';
 
 /**
+ * Internal dependencies
+ */
+import getPaletteDefault from '../../extensions/styles/getPaletteDefault';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Styles
@@ -37,11 +43,19 @@ const ColorPaletteControl = props => {
 				<FancyRadioControl
 					className='maxi-sc-color-palette'
 					selected={
-						props[
-							`palette-preset-${colorPaletteType}${
-								isHover ? '-hover' : ''
-							}-color`
-						]
+						!isNil(
+							props[
+								`palette-preset-${colorPaletteType}${
+									isHover ? '-hover' : ''
+								}-color`
+							]
+						)
+							? props[
+									`palette-preset-${colorPaletteType}${
+										isHover ? '-hover' : ''
+									}-color`
+							  ]
+							: getPaletteDefault(colorPaletteType)
 					}
 					optionType='number'
 					options={[

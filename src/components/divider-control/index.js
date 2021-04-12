@@ -136,7 +136,7 @@ const DividerControl = props => {
 					blockStyle={blockStyle}
 					palette={{ ...getGroupAttributes(props, 'palette') }}
 					isHover={isHover}
-					colorPaletteType='border'
+					colorPaletteType='divider'
 					onChangePalette={val => onChange(val)}
 				/>
 			)}

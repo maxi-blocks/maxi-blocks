@@ -9,11 +9,10 @@ const palette = {
 	},
 	'palette-preset-background-color': {
 		type: 'number',
-		default: 1,
 	},
 	'palette-preset-background-hover-color': {
 		type: 'number',
-		default: 1,
+		default: 6,
 	},
 	'palette-custom-border-color': {
 		type: 'boolean',
@@ -25,11 +24,11 @@ const palette = {
 	},
 	'palette-preset-border-color': {
 		type: 'number',
-		default: 1,
+		default: 2,
 	},
 	'palette-preset-border-hover-color': {
 		type: 'number',
-		default: 1,
+		default: 6,
 	},
 	'palette-custom-box-shadow-color': {
 		type: 'boolean',
@@ -45,7 +44,7 @@ const palette = {
 	},
 	'palette-preset-box-shadow-hover-color': {
 		type: 'number',
-		default: 1,
+		default: 6,
 	},
 	'palette-custom-typography-color': {
 		type: 'boolean',
@@ -57,11 +56,9 @@ const palette = {
 	},
 	'palette-preset-typography-color': {
 		type: 'number',
-		default: 1,
 	},
 	'palette-preset-typography-hover-color': {
 		type: 'number',
-		default: 1,
 	},
 	'palette-custom-icon-color': {
 		type: 'boolean',
@@ -73,19 +70,19 @@ const palette = {
 	},
 	'palette-preset-icon-color': {
 		type: 'number',
-		default: 1,
+		default: 7,
 	},
 	'palette-preset-icon-hover-color': {
 		type: 'number',
-		default: 1,
+		default: 6,
 	},
 	'palette-preset-divider-color': {
 		type: 'number',
-		default: 1,
+		default: 4,
 	},
 	'palette-preset-divider-hover-color': {
 		type: 'number',
-		default: 1,
+		default: 6,
 	},
 };
 

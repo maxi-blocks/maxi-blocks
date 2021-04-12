@@ -14,9 +14,94 @@ $color_set: '1', '2', '3', '4', '5', '6', '7';
 /**
 * Styles
 */
+
+/* Frontend */
 body.maxi-blocks--active {
 	@each $style in $styles {
 		.maxi-#{$style} {
+			/* Color Presets */
+			@each $color_number in $color_set {
+				&.maxi-sc-#{$style}-background-color-#{$color_number} {
+					&.maxi-button-block .maxi-button-block__button,
+					> .maxi-background-displayer .maxi-background-displayer__color {
+						background-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-border-color-#{$color_number} {
+					border-color: var(--maxi-#{$style}-color-#{$color_number});
+					> .maxi-block-hover-wrapper,
+					> .maxi-button-block__button {
+						border-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					> .maxi-container-arrow:before,
+					> .maxi-container-arrow:after {
+						background: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-typography-color-#{$color_number} {
+					&.maxi-button-block,
+					> .maxi-text-block__content,
+					.maxi-image-block__caption {
+						color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-icon-color-#{$color_number} {
+					.maxi-font-icon-block__icon i {
+						color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-box-shadow-color-#{$color_number} {
+					&, > .maxi-block-hover-wrapper {
+						--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-divider-color-#{$color_number} {
+					hr {
+						border-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+			}
+			/* Color Presets on hover */
+			&:hover {
+				@each $color_number in $color_set {
+					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
+						&.maxi-button-block .maxi-button-block__button,
+						> .maxi-background-displayer .maxi-background-displayer__color {
+							background-color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-border-hover-color-#{$color_number} {
+						border-color: var(--maxi-#{$style}-color-#{$color_number});
+						> .maxi-block-hover-wrapper,
+						> .maxi-button-block__button {
+							border-color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+						> .maxi-container-arrow:before,
+						> .maxi-container-arrow:after {
+							background: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
+						&.maxi-button-block,
+						> .maxi-text-block__content,
+						.maxi-image-block__caption {
+							color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-icon-hover-color-#{$color_number} {
+						.maxi-font-icon-block__icon i {
+							color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {
+						&, > .maxi-block-hover-wrapper {
+							--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+				}
+			}
+
+			/* Individual settings per a block type */
 			@each $level in $levels {
 				#{$level} {
 					color: var(--maxi-#{$style}-#{$level}-color-general);
@@ -67,86 +152,6 @@ body.maxi-blocks--active {
 						}
 						&.maxi-svg-color-icon-line {
 							stroke: var(--maxi-#{$style}-highlight-icon-line);
-						}
-					}
-				}
-			}
-
-			@each $color_number in $color_set {
-				&.maxi-sc-#{$style}-background-color-#{$color_number} {
-					&.maxi-button-block .maxi-button-block__button,
-					> .maxi-background-displayer .maxi-background-displayer__color {
-						background-color: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-border-color-#{$color_number} {
-					border-color: var(--maxi-#{$style}-color-#{$color_number});
-					> .maxi-block-hover-wrapper,
-					> .maxi-button-block__button {
-						border-color: var(--maxi-#{$style}-color-#{$color_number});
-					}
-					> .maxi-container-arrow:before,
-					> .maxi-container-arrow:after {
-						background: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-typography-color-#{$color_number} {
-					&.maxi-button-block,
-					> .maxi-text-block__content,
-					.maxi-image-block__caption {
-						color: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-icon-color-#{$color_number} {
-					.maxi-font-icon-block__icon i {
-						color: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-box-shadow-color-#{$color_number} {
-					&, > .maxi-block-hover-wrapper {
-						--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-divider-color-#{$color_number} {
-					hr {
-						border-color: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-			}
-			&:hover {
-				@each $color_number in $color_set {
-					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
-						&.maxi-button-block .maxi-button-block__button,
-						> .maxi-background-displayer .maxi-background-displayer__color {
-							background-color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-					}
-					&.maxi-sc-#{$style}-border-hover-color-#{$color_number} {
-						border-color: var(--maxi-#{$style}-color-#{$color_number});
-						> .maxi-block-hover-wrapper,
-						> .maxi-button-block__button {
-							border-color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-						> .maxi-container-arrow:before,
-						> .maxi-container-arrow:after {
-							background: var(--maxi-#{$style}-color-#{$color_number});
-						}
-					}
-					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
-						&.maxi-button-block,
-						> .maxi-text-block__content,
-						.maxi-image-block__caption {
-							color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-					}
-					&.maxi-sc-#{$style}-icon-hover-color-#{$color_number} {
-						.maxi-font-icon-block__icon i {
-							color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-					}
-					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {
-						&, > .maxi-block-hover-wrapper {
-							--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
 						}
 					}
 				}

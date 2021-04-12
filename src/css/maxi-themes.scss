@@ -107,6 +107,11 @@ body.maxi-blocks--active {
 						--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
+				&.maxi-sc-#{$style}-divider-color-#{$color_number} {
+					hr {
+						border-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
 			}
 			&:hover {
 				@each $color_number in $color_set {
@@ -155,6 +160,7 @@ body.maxi-blocks--active {
 */
 body.maxi-blocks--active {
 	@each $style in $styles {
+		/* Palette */
 		div#editor .maxi-color-palette--#{$style} {
 			@each $color_number in $color_set {
 				.maxi-sc-color-palette .components-radio-control__option input[value="#{$color_number}"] + label {
@@ -162,6 +168,7 @@ body.maxi-blocks--active {
 				}
 			}
 		}
+		/* Blocks on Backend */
 		div#editor .maxi-block--backend {
 			@each $color_number in $color_set {
 				&.maxi-sc-#{$style}-background-color-#{$color_number} {
@@ -196,6 +203,11 @@ body.maxi-blocks--active {
 				&.maxi-sc-#{$style}-box-shadow-color-#{$color_number} {
 					&, > .maxi-block__resizer .maxi-block-hover-wrapper {
 						--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-divider-color-#{$color_number} {
+					hr {
+						border-color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 			}

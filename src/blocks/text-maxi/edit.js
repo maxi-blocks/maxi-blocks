@@ -88,6 +88,7 @@ class edit extends MaxiBlock {
 			onReplace,
 			deviceType,
 			formatValue,
+			clientId,
 		} = this.props;
 		const {
 			uniqueID,
@@ -125,6 +126,7 @@ class edit extends MaxiBlock {
 					'typography-hover',
 				],
 				'maxi-blocks/text-maxi',
+				clientId,
 				textLevel
 			),
 			extraClassName,

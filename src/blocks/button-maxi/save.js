@@ -18,7 +18,7 @@ import { isNil, isEmpty } from 'lodash';
  * Save
  */
 const save = props => {
-	const { className, attributes } = props;
+	const { className, attributes, clientId } = props;
 	const {
 		uniqueID,
 		blockStyle,
@@ -45,7 +45,8 @@ const save = props => {
 				'typography-hover',
 				'icon',
 			],
-			'maxi-blocks/button-maxi'
+			'maxi-blocks/button-maxi',
+			clientId
 		),
 		extraClassName,
 		uniqueID,

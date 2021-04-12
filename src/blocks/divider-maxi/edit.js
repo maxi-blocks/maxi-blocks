@@ -64,6 +64,7 @@ class edit extends MaxiBlock {
 			isSelected,
 			onDeviceTypeChange,
 			setAttributes,
+			clientId,
 		} = this.props;
 		const {
 			uniqueID,
@@ -82,14 +83,20 @@ class edit extends MaxiBlock {
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
-			getPaletteClasses(attributes, blockStyle, [
-				'background',
-				'background-hover',
-				'divider',
-				'divider-hover',
-				'box-shadow',
-				'box-shadow-hover',
-			]),
+			getPaletteClasses(
+				attributes,
+				blockStyle,
+				[
+					'background',
+					'background-hover',
+					'divider',
+					'divider-hover',
+					'box-shadow',
+					'box-shadow-hover',
+				],
+				'',
+				clientId
+			),
 			extraClassName,
 			uniqueID,
 			className,

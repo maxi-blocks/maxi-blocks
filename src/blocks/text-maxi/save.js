@@ -19,7 +19,7 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { className, attributes } = props;
+	const { className, attributes, clientId } = props;
 	const {
 		uniqueID,
 		blockStyle,
@@ -51,6 +51,7 @@ const save = props => {
 				'typography-hover',
 			],
 			'maxi-blocks/text-maxi',
+			clientId,
 			textLevel
 		),
 		extraClassName,

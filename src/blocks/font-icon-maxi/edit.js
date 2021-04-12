@@ -54,7 +54,13 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
-		const { attributes, className, deviceType, setAttributes } = this.props;
+		const {
+			attributes,
+			className,
+			deviceType,
+			setAttributes,
+			clientId,
+		} = this.props;
 		const {
 			uniqueID,
 			blockStyle,
@@ -71,15 +77,21 @@ class edit extends MaxiBlock {
 				'none' && 'maxi-block-display-none',
 			defaultBlockStyle,
 			blockStyle,
-			getPaletteClasses(attributes, blockStyle, [
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-				'icon',
-			]),
+			getPaletteClasses(
+				attributes,
+				blockStyle,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+					'icon',
+				],
+				'',
+				clientId
+			),
 			extraClassName,
 			uniqueID,
 			className

@@ -63,6 +63,7 @@ class edit extends MaxiBlock {
 			deviceType,
 			setAttributes,
 			formatValue,
+			clientId,
 		} = this.props;
 		const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
 
@@ -87,7 +88,8 @@ class edit extends MaxiBlock {
 					'typography-hover',
 					'icon',
 				],
-				'maxi-blocks/button-maxi'
+				'maxi-blocks/button-maxi',
+				clientId
 			),
 			extraClassName,
 			uniqueID,

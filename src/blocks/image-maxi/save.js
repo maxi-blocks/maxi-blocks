@@ -19,7 +19,7 @@ import { isEmpty } from 'lodash';
  * Save
  */
 const save = props => {
-	const { className, attributes } = props;
+	const { className, attributes, clientId } = props;
 	const {
 		uniqueID,
 		blockStyle,
@@ -55,16 +55,22 @@ const save = props => {
 		fullWidth === 'full' ? 'alignfull' : null,
 		uniqueID,
 		blockStyle,
-		getPaletteClasses(attributes, blockStyle, [
-			'background',
-			'background-hover',
-			'border',
-			'border-hover',
-			'box-shadow',
-			'box-shadow-hover',
-			'typography',
-			'typography-hover',
-		]),
+		getPaletteClasses(
+			attributes,
+			blockStyle,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+			],
+			'',
+			clientId
+		),
 		extraClassName,
 		className
 	);

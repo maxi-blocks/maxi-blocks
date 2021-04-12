@@ -88,8 +88,8 @@ class edit extends MaxiBlock {
 			getPaletteClasses(attributes, blockStyle, [
 				'background',
 				'background-hover',
-				'border',
-				'border-hover',
+				'divider',
+				'divider-hover',
 				'box-shadow',
 				'box-shadow-hover',
 			]),

@@ -69,6 +69,13 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			!attributes['palette-custom-icon-color'] &&
 			`maxi-sc-${getBlockStyle(blockStyle)}-icon-color-${
 				attributes['palette-preset-icon-color']
+			}`,
+		allowedPalettes.includes('divider') &&
+			!isEmpty(attributes['divider-border-style']) &&
+			attributes['divider-border-style'] !== 'none' &&
+			!attributes['palette-custom-divider-color'] &&
+			`maxi-sc-${getBlockStyle(blockStyle)}-divider-color-${
+				attributes['palette-preset-divider-color']
 			}`
 	);
 

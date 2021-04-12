@@ -10,7 +10,12 @@ import getPaletteDefault from './getPaletteDefault';
 import classnames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
 
-const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
+const getPaletteClasses = (
+	attributes,
+	blockStyle,
+	allowedPalettes,
+	blokType
+) => {
 	const paletteClasses = classnames(
 		allowedPalettes.includes('background') &&
 			attributes['background-active-media'] === 'color' &&
@@ -18,7 +23,7 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			`maxi-sc-${getBlockStyle(blockStyle)}-background-color-${
 				!isNil(attributes['palette-preset-background-color'])
 					? attributes['palette-preset-background-color']
-					: getPaletteDefault('background')
+					: getPaletteDefault('background', blokType)
 			}`,
 		allowedPalettes.includes('background-hover') &&
 			attributes['background-active-media-hover'] === 'color' &&
@@ -27,7 +32,7 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			`maxi-sc-${getBlockStyle(blockStyle)}-background-hover-color-${
 				!isNil(attributes['palette-preset-background-hover-color'])
 					? attributes['palette-preset-background-hover-color']
-					: getPaletteDefault('background')
+					: getPaletteDefault('background', blokType)
 			}`,
 		allowedPalettes.includes('border') &&
 			!isEmpty(attributes['border-style-general']) &&
@@ -36,7 +41,7 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			`maxi-sc-${getBlockStyle(blockStyle)}-border-color-${
 				!isNil(attributes['palette-preset-border-color'])
 					? attributes['palette-preset-border-color']
-					: getPaletteDefault('border')
+					: getPaletteDefault('border', blokType)
 			}`,
 		allowedPalettes.includes('border-hover') &&
 			attributes['border-style-general-hover'] !== 'none' &&
@@ -45,7 +50,7 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			`maxi-sc-${getBlockStyle(blockStyle)}-border-hover-color-${
 				!isNil(attributes['palette-preset-border-hover-color'])
 					? attributes['palette-preset-border-hover-color']
-					: getPaletteDefault('border')
+					: getPaletteDefault('border', blokType)
 			}`,
 		allowedPalettes.includes('box-shadow') &&
 			!isNil(attributes['box-shadow-blur-general']) &&
@@ -56,7 +61,7 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			`maxi-sc-${getBlockStyle(blockStyle)}-box-shadow-color-${
 				!isNil(attributes['palette-preset-box-shadow-color'])
 					? attributes['palette-preset-box-shadow-color']
-					: getPaletteDefault('box-shadow')
+					: getPaletteDefault('box-shadow', blokType)
 			}`,
 		allowedPalettes.includes('box-shadow-hover') &&
 			!attributes['palette-custom-box-shadow-hover-color'] &&
@@ -64,14 +69,14 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			`maxi-sc-${getBlockStyle(blockStyle)}-box-shadow-hover-color-${
 				!isNil(attributes['palette-preset-box-shadow-hover-color'])
 					? attributes['palette-preset-box-shadow-hover-color']
-					: getPaletteDefault('box-shadow')
+					: getPaletteDefault('box-shadow', blokType)
 			}`,
 		allowedPalettes.includes('typography') &&
 			!attributes['palette-custom-typography-color'] &&
 			`maxi-sc-${getBlockStyle(blockStyle)}-typography-color-${
 				!isNil(attributes['palette-preset-typography-color'])
 					? attributes['palette-preset-typography-color']
-					: getPaletteDefault('typography')
+					: getPaletteDefault('typography', blokType)
 			}`,
 		allowedPalettes.includes('typography-hover') &&
 			!attributes['palette-custom-typography-hover-color'] &&
@@ -79,7 +84,7 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			`maxi-sc-${getBlockStyle(blockStyle)}-typography-hover-color-${
 				!isNil(attributes['palette-preset-typography-hover-color'])
 					? attributes['palette-preset-typography-hover-color']
-					: getPaletteDefault('typography')
+					: getPaletteDefault('typography', blokType)
 			}`,
 		allowedPalettes.includes('icon') &&
 			!isEmpty(attributes['icon-name']) &&
@@ -87,7 +92,7 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			`maxi-sc-${getBlockStyle(blockStyle)}-icon-color-${
 				!isNil(attributes['palette-preset-icon-color'])
 					? attributes['palette-preset-icon-color']
-					: getPaletteDefault('icon')
+					: getPaletteDefault('icon', blokType)
 			}`,
 		allowedPalettes.includes('divider') &&
 			!isEmpty(attributes['divider-border-style']) &&
@@ -96,7 +101,7 @@ const getPaletteClasses = (attributes, blockStyle, allowedPalettes) => {
 			`maxi-sc-${getBlockStyle(blockStyle)}-divider-color-${
 				!isNil(attributes['palette-preset-divider-color'])
 					? attributes['palette-preset-divider-color']
-					: getPaletteDefault('divider')
+					: getPaletteDefault('divider', blokType)
 			}`
 	);
 

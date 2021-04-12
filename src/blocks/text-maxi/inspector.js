@@ -47,6 +47,7 @@ const Inspector = props => {
 		setAttributes,
 		clientId,
 		formatValue,
+		name,
 	} = props;
 	const {
 		customLabel,
@@ -265,6 +266,9 @@ const Inspector = props => {
 																		isList
 																	}
 																	disableFormats
+																	blockName={
+																		name
+																	}
 																	blockStyle={
 																		blockStyle
 																	}
@@ -343,6 +347,9 @@ const Inspector = props => {
 																				isList
 																			}
 																			isHover
+																			blockName={
+																				name
+																			}
 																			blockStyle={
 																				blockStyle
 																			}

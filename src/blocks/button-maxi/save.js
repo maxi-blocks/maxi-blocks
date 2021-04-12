@@ -31,17 +31,22 @@ const save = props => {
 		'maxi-motion-effect',
 		'maxi-block maxi-button-block',
 		blockStyle,
-		getPaletteClasses(attributes, blockStyle, [
-			'background',
-			'background-hover',
-			'border',
-			'border-hover',
-			'box-shadow',
-			'box-shadow-hover',
-			'typography',
-			'typography-hover',
-			'icon',
-		]),
+		getPaletteClasses(
+			attributes,
+			blockStyle,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+				'icon',
+			],
+			'maxi-blocks/button-maxi'
+		),
 		extraClassName,
 		uniqueID,
 		className

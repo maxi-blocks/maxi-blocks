@@ -53,6 +53,7 @@ const BackgroundControl = props => {
 		isHover = false,
 		prefix = '',
 		blockStyle,
+		blockName,
 		noPalette,
 	} = props;
 
@@ -159,6 +160,7 @@ const BackgroundControl = props => {
 							isHover={isHover}
 							prefix={prefix}
 							blockStyle={blockStyle}
+							blockName={blockName}
 							noPalette={noPalette}
 						/>
 					)}

@@ -37,6 +37,8 @@ const ColorControl = props => {
 		onChange,
 		isHover,
 		blockStyle,
+		blockName,
+		textLevel,
 		showPalette = false,
 		palette,
 		colorPaletteType,
@@ -105,6 +107,8 @@ const ColorControl = props => {
 			{showPalette && (
 				<ColorPaletteControl
 					{...palette}
+					blockName={blockName}
+					textLevel={textLevel}
 					isHover={isHover}
 					colorPaletteType={colorPaletteType}
 					className={`maxi-color-palette--${getBlockStyle(

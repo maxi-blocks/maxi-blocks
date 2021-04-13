@@ -171,6 +171,7 @@ const BoxShadowControl = props => {
 						palette={{ ...getGroupAttributes(props, 'palette') }}
 						colorPaletteType='box-shadow'
 						onChangePalette={val => onChange(val)}
+						deviceType={breakpoint}
 					/>
 					{!disableAdvanced && (
 						<Fragment>

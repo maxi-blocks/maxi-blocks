@@ -19,7 +19,7 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { className, attributes } = props;
+	const { className, attributes, clientId } = props;
 	const {
 		uniqueID,
 		blockStyle,
@@ -37,16 +37,23 @@ const save = props => {
 		'maxi-block maxi-text-block',
 		'maxi-text-block-wrap',
 		blockStyle,
-		getPaletteClasses(attributes, blockStyle, [
-			'background',
-			'background-hover',
-			'border',
-			'border-hover',
-			'box-shadow',
-			'box-shadow-hover',
-			'typography',
-			'typography-hover',
-		]),
+		getPaletteClasses(
+			attributes,
+			blockStyle,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+			],
+			'maxi-blocks/text-maxi',
+			clientId,
+			textLevel
+		),
 		extraClassName,
 		uniqueID,
 		className,

@@ -18,7 +18,7 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { attributes, className } = props;
+	const { attributes, className, clientId } = props;
 	const {
 		uniqueID,
 		blockStyle,
@@ -31,14 +31,20 @@ const save = props => {
 		'maxi-motion-effect',
 		'maxi-block maxi-divider-block',
 		blockStyle,
-		getPaletteClasses(attributes, blockStyle, [
-			'background',
-			'background-hover',
-			'divider',
-			'divider-hover',
-			'box-shadow',
-			'box-shadow-hover',
-		]),
+		getPaletteClasses(
+			attributes,
+			blockStyle,
+			[
+				'background',
+				'background-hover',
+				'divider',
+				'divider-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'',
+			clientId
+		),
 		extraClassName,
 		uniqueID,
 		className,

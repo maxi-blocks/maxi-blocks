@@ -32,6 +32,7 @@ const ColorLayer = props => {
 		prefix,
 		scAtt,
 		blockStyle,
+		blockName,
 		useStyleCard,
 	} = props;
 
@@ -91,6 +92,7 @@ const ColorLayer = props => {
 				}}
 				showPalette
 				blockStyle={getBlockStyle()}
+				blockName={blockName}
 				palette={{ ...getGroupAttributes(props, 'palette') }}
 				isHover={isHover}
 				colorPaletteType='background'

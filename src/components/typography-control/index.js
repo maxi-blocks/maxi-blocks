@@ -41,6 +41,7 @@ const TypographyControl = props => {
 	const {
 		className,
 		textLevel = 'p',
+		blockName,
 		hideAlignment = false,
 		onChange,
 		breakpoint = 'general',
@@ -264,6 +265,8 @@ const TypographyControl = props => {
 								onChangeFormat({ [`${prefix}color`]: val });
 							}}
 							disableGradient
+							blockName={blockName}
+							textLevel={textLevel}
 							showPalette
 							noPalette={noPalette}
 							blockStyle={blockStyle}

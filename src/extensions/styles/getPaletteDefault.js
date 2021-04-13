@@ -1,33 +1,18 @@
-/**
- * Wordpress dependencies
- */
-import { select } from '@wordpress/data';
-
-const getPaletteDefault = colorPaletteType => {
-	const {
-		getBlockName,
-		getSelectedBlockClientId,
-		getBlockAttributes,
-	} = select('core/block-editor');
-
-	const currentBlockName = select('core/blocks').getBlockType(
-		getBlockName(getSelectedBlockClientId())
-	).name;
-
-	const currentBlockAttr = getBlockAttributes(getSelectedBlockClientId());
-
+const getPaletteDefault = (
+	colorPaletteType,
+	blockName = '',
+	textLevel = 'p'
+) => {
 	let defaultValue = '';
 
 	if (colorPaletteType === 'typography') {
-		['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(
-			currentBlockAttr.textLevel
-		)
+		['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(textLevel)
 			? (defaultValue = '5')
 			: (defaultValue = '3');
 	}
 
 	if (colorPaletteType === 'background') {
-		if (currentBlockName === 'maxi-blocks/button-maxi') {
+		if (blockName === 'maxi-blocks/button-maxi') {
 			defaultValue = '4';
 		} else {
 			defaultValue = '1';

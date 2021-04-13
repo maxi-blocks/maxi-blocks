@@ -88,6 +88,7 @@ class edit extends MaxiBlock {
 			onReplace,
 			deviceType,
 			formatValue,
+			clientId,
 		} = this.props;
 		const {
 			uniqueID,
@@ -111,16 +112,23 @@ class edit extends MaxiBlock {
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
-			getPaletteClasses(attributes, blockStyle, [
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-				'typography',
-				'typography-hover',
-			]),
+			getPaletteClasses(
+				attributes,
+				blockStyle,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+					'typography',
+					'typography-hover',
+				],
+				'maxi-blocks/text-maxi',
+				clientId,
+				textLevel
+			),
 			extraClassName,
 			uniqueID,
 			className

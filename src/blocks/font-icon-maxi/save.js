@@ -14,22 +14,28 @@ import { isEmpty } from 'lodash';
  * Save
  */
 const save = props => {
-	const { className, attributes } = props;
+	const { className, attributes, clientId } = props;
 	const { uniqueID, blockStyle, extraClassName } = attributes;
 
 	const classes = classnames(
 		'maxi-motion-effect',
 		'maxi-block maxi-font-icon-block',
 		blockStyle,
-		getPaletteClasses(attributes, blockStyle, [
-			'background',
-			'background-hover',
-			'border',
-			'border-hover',
-			'box-shadow',
-			'box-shadow-hover',
-			'icon',
-		]),
+		getPaletteClasses(
+			attributes,
+			blockStyle,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'icon',
+			],
+			'',
+			clientId
+		),
 		extraClassName,
 		uniqueID,
 		className

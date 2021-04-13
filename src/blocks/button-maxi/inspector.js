@@ -51,7 +51,7 @@ import {
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, formatValue } = props;
+	const { attributes, deviceType, setAttributes, formatValue, name } = props;
 	const {
 		customLabel,
 		uniqueID,
@@ -286,6 +286,9 @@ const Inspector = props => {
 																	formatValue={
 																		formatValue
 																	}
+																	blockName={
+																		name
+																	}
 																	blockStyle={
 																		blockStyle
 																	}
@@ -358,6 +361,9 @@ const Inspector = props => {
 																				formatValue
 																			}
 																			isHover
+																			blockName={
+																				name
+																			}
 																			blockStyle={
 																				blockStyle
 																			}
@@ -407,6 +413,9 @@ const Inspector = props => {
 																		disableSVG
 																		disableLayers
 																		scAtt='button-background-color'
+																		blockName={
+																			name
+																		}
 																		blockStyle={
 																			blockStyle
 																		}
@@ -480,6 +489,9 @@ const Inspector = props => {
 																			disableSVG
 																			disableLayers
 																			isHover
+																			blockName={
+																				name
+																			}
 																			blockStyle={
 																				blockStyle
 																			}

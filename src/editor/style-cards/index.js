@@ -13,6 +13,7 @@ import {
 	AccordionControl,
 	ColorControl,
 	TypographyControl,
+	FancyRadioControl,
 } from '../../components';
 
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
@@ -163,6 +164,8 @@ const MaxiStyleCardsTab = ({
 		setTimeout(function scSelect() {
 			addActiveSCdropdownStyle(currentKey);
 		}, 300);
+
+	const isGlobalButtonBackground = 1;
 
 	return (
 		<div className='maxi-tab-content__box'>
@@ -354,28 +357,56 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 								/>
-								<ColorControl
+								<FancyRadioControl
 									label={__(
-										'Button Background',
+										'Use Global Background',
 										'maxi-blocks'
 									)}
-									className={`maxi-style-cards-control__sc__button-bg-color--${SCStyle}`}
-									color={getColor('button-background-color')}
-									defaultColor={getStyleCardAttr(
-										'button-background-color',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
+									selected={isGlobalButtonBackground}
+									options={[
+										{
+											label: __('Yes', 'maxi-blocks'),
+											value: 1,
+										},
+										{
+											label: __('No', 'maxi-blocks'),
+											value: 0,
+										},
+									]}
+									onChange={isGlobalButtonBackground => {
 										onChangeValue(
-											'button-background-color',
-											val,
+											'global',
+											isGlobalButtonBackground,
 											SCStyle
 										);
 									}}
-									disableGradient
-									noPalette
 								/>
+								{isGlobalButtonBackground && (
+									<ColorControl
+										label={__(
+											'Button Background',
+											'maxi-blocks'
+										)}
+										className={`maxi-style-cards-control__sc__button-bg-color--${SCStyle}`}
+										color={getColor(
+											'button-background-color'
+										)}
+										defaultColor={getStyleCardAttr(
+											'button-background-color',
+											SCStyle,
+											true
+										)}
+										onChange={val => {
+											onChangeValue(
+												'button-background-color',
+												val,
+												SCStyle
+											);
+										}}
+										disableGradient
+										noPalette
+									/>
+								)}
 							</Fragment>
 						),
 					},
@@ -722,7 +753,11 @@ const MaxiStyleCardsTab = ({
 									true
 								)}
 								onChange={val => {
-									onChangeValue('font-icon-color', val, SCStyle);
+									onChangeValue(
+										'font-icon-color',
+										val,
+										SCStyle
+									);
 								}}
 								disableGradient
 								noPalette
@@ -907,22 +942,26 @@ const MaxiStyleCardsEditor = () => {
 
 	const onChangeValue = (prop, value, style) => {
 		let newStateSC = {};
-		if (prop === 'typography') {
-			newStateSC = {
-				...stateSC,
-				styleCard: {
-					...stateSC.styleCard,
-					[style]: { ...stateSC.styleCard[style], ...value },
-				},
-			};
-		} else {
-			newStateSC = {
-				...stateSC,
-				styleCard: {
-					...stateSC.styleCard,
-					[style]: { ...stateSC.styleCard[style], [prop]: value },
-				},
-			};
+		switch (prop) {
+			case 'typography':
+				newStateSC = {
+					...stateSC,
+					styleCard: {
+						...stateSC.styleCard,
+						[style]: { ...stateSC.styleCard[style], ...value },
+					},
+				};
+				break;
+			case 'global':
+				break;
+			default:
+				newStateSC = {
+					...stateSC,
+					styleCard: {
+						...stateSC.styleCard,
+						[style]: { ...stateSC.styleCard[style], [prop]: value },
+					},
+				};
 		}
 
 		changeStateSC(newStateSC);

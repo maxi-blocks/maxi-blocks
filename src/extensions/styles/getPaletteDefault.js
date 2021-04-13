@@ -6,17 +6,22 @@ const getPaletteDefault = (
 	let defaultValue = '';
 
 	if (colorPaletteType === 'typography') {
-		['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(textLevel)
-			? (defaultValue = '5')
-			: (defaultValue = '3');
+		if (
+			blockName === 'maxi-blocks/text-maxi' &&
+			['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(textLevel)
+		) {
+			defaultValue = '5';
+		} else {
+			defaultValue = '3';
+		}
+
+		if (blockName === 'maxi-blocks/button-maxi') defaultValue = '1';
 	}
 
 	if (colorPaletteType === 'background') {
-		if (blockName === 'maxi-blocks/button-maxi') {
-			defaultValue = '4';
-		} else {
-			defaultValue = '1';
-		}
+		blockName === 'maxi-blocks/button-maxi'
+			? (defaultValue = '4')
+			: (defaultValue = '1');
 	}
 
 	return defaultValue;

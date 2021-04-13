@@ -30,6 +30,7 @@ const ColorPaletteControl = props => {
 		colorPaletteType = 'background',
 		isHover,
 		blockName,
+		textLevel,
 	} = props;
 
 	const classes = classnames('maxi-color-palette-control', className);
@@ -56,7 +57,11 @@ const ColorPaletteControl = props => {
 										isHover ? '-hover' : ''
 									}-color`
 							  ]
-							: getPaletteDefault(colorPaletteType, blockName)
+							: getPaletteDefault(
+									colorPaletteType,
+									blockName,
+									textLevel
+							  )
 					}
 					optionType='number'
 					options={[

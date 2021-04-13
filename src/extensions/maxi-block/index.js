@@ -134,7 +134,7 @@ class MaxiBlock extends Component {
 			this.props.attributes.uniqueID
 		);
 
-		dispatch('maxiBlocks/text').sendFormatValue({});
+		dispatch('maxiBlocks/text').removeFormatValue(this.props.clientId);
 	}
 
 	get getBreakpoints() {

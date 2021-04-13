@@ -1,3 +1,4 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */
@@ -5,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { Fragment } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
-import { select, withSelect, withDispatch, dispatch } from '@wordpress/data';
+import { withSelect, dispatch } from '@wordpress/data';
 import {
 	__experimentalBlock,
 	RichText,
@@ -19,7 +20,6 @@ import {
 /**
  * Internal dependencies
  */
-import { defaultTypography } from '../../extensions/text';
 import Inspector from './inspector';
 import {
 	MaxiBlock,
@@ -28,8 +28,6 @@ import {
 	MotionPreview,
 } from '../../components';
 import {
-	fromListToText,
-	fromTextToList,
 	generateFormatValue,
 	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
@@ -38,6 +36,7 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
+import { onReplace, onMerge, onSplit } from './utils';
 
 /**
  * External dependencies
@@ -83,10 +82,8 @@ class edit extends MaxiBlock {
 			isSelected,
 			setAttributes,
 			onRemove,
-			onMerge,
-			onSplit,
-			onReplace,
 			deviceType,
+			clientId,
 		} = this.props;
 		const {
 			uniqueID,
@@ -201,14 +198,11 @@ class edit extends MaxiBlock {
 									setAttributes(cleanCustomProps);
 							}}
 							tagName={textLevel}
-							onSplit={onSplit}
-							onReplace={blocks =>
-								onReplace(
-									blocks,
-									this.blockRef ? this.blockRef.current : null
-								)
+							onSplit={value =>
+								onSplit(this.props.attributes, value)
 							}
-							onMerge={onMerge}
+							onReplace={blocks => onReplace(this.props, blocks)}
+							onMerge={forward => onMerge(this.props, forward)}
 							onRemove={onRemove}
 							placeholder={__(
 								'Set your Maxi Text here…',
@@ -220,7 +214,8 @@ class edit extends MaxiBlock {
 						>
 							{({ value }) => {
 								dispatch('maxiBlocks/text').sendFormatValue(
-									value
+									value,
+									clientId
 								);
 							}}
 						</RichText>
@@ -235,7 +230,6 @@ class edit extends MaxiBlock {
 							onChange={content => setAttributes({ content })}
 							value={content}
 							placeholder={__('Write list…', 'maxi-blocks')}
-							onMerge={onMerge}
 							onSplit={value => {
 								if (!value) {
 									return createBlock(name, {
@@ -252,12 +246,8 @@ class edit extends MaxiBlock {
 							__unstableOnSplitMiddle={() =>
 								createBlock('maxi-blocks/text-maxi')
 							}
-							onReplace={blocks =>
-								onReplace(
-									blocks,
-									this.blockRef ? this.blockRef.current : null
-								)
-							}
+							onReplace={blocks => onReplace(this.props, blocks)}
+							onMerge={forward => onMerge(this.props, forward)}
 							onRemove={onRemove}
 							start={listStart}
 							reversed={!!listReversed}
@@ -265,7 +255,8 @@ class edit extends MaxiBlock {
 						>
 							{({ value, onChange }) => {
 								dispatch('maxiBlocks/text').sendFormatValue(
-									value
+									value,
+									clientId
 								);
 
 								if (isSelected)
@@ -330,7 +321,7 @@ class edit extends MaxiBlock {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
+const editSelect = withSelect(select => {
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
@@ -338,219 +329,4 @@ const editSelect = withSelect((select, ownProps) => {
 	};
 });
 
-const editDispatch = withDispatch((dispatch, ownProps) => {
-	const { attributes, setAttributes, clientId } = ownProps;
-	const { content, textLevel, isList } = attributes;
-
-	const name = 'maxi-blocks/text-maxi';
-
-	const {
-		getBlockIndex,
-		getBlockRootClientId,
-		getNextBlockClientId,
-		getPreviousBlockClientId,
-		getBlockAttributes,
-	} = select('core/block-editor');
-
-	const {
-		insertBlock,
-		removeBlock,
-		selectBlock,
-		updateBlockAttributes,
-	} = dispatch('core/block-editor');
-
-	const { getFormatValue } = select('maxiBlocks/text');
-
-	const onReplace = (blocks, node) => {
-		const currentBlocks = blocks.filter(item => !!item);
-
-		if (isEmpty(currentBlocks)) {
-			insertBlock(createBlock(name, getBlockAttributes(name)));
-			return;
-		}
-
-		currentBlocks.forEach((block, i) => {
-			let newBlock = {};
-
-			switch (block.name) {
-				case 'core/list': {
-					const textTypography = {
-						...getGroupAttributes(attributes, 'typography'),
-						...defaultTypography.p,
-					};
-
-					newBlock = createBlock(name, {
-						...ownProps.attributes,
-						textLevel: block.attributes.ordered ? 'ol' : 'ul',
-						typeOfList: block.attributes.ordered ? 'ol' : 'ul',
-						content: block.attributes.values,
-						isList: true,
-						...textTypography,
-					});
-					break;
-				}
-				case 'core/image':
-					newBlock = createBlock('maxi-blocks/image-maxi', {
-						...getBlockAttributes('maxi-blocks/image-maxi'),
-						mediaURL: block.attributes.url,
-						altSelector: 'custom',
-						mediaALT: block.attributes.alt,
-						captionType:
-							(!isEmpty(block.attributes.caption) && 'custom') ||
-							'none',
-						captionContent: block.attributes.caption,
-					});
-					break;
-				case 'core/heading': {
-					const headingLevel = block.attributes.level;
-					const headingTypography = {
-						...getGroupAttributes(attributes, 'typography'),
-						...defaultTypography[`h${headingLevel}`],
-					};
-
-					newBlock = createBlock(name, {
-						...ownProps.attributes,
-						textLevel: `h${headingLevel}`,
-						content: block.attributes.content,
-						...headingTypography,
-						isList: false,
-					});
-					break;
-				}
-				case 'core/paragraph': {
-					const textTypography = {
-						...getGroupAttributes(attributes, 'typography'),
-						...defaultTypography.p,
-					};
-
-					newBlock = createBlock(name, {
-						...ownProps.attributes,
-						content: block.attributes.content,
-						textLevel: 'p',
-						...textTypography,
-					});
-					break;
-				}
-				case 'maxi-blocks/text-maxi':
-					if (block.attributes.isList) {
-						newBlock = createBlock(name, {
-							...block.attributes,
-						});
-					} else {
-						newBlock = createBlock(name, {
-							...ownProps.attributes,
-							content: block.attributes.content,
-							isList: false,
-						});
-					}
-					break;
-				default:
-					newBlock = block;
-					break;
-			}
-
-			insertBlock(
-				newBlock,
-				getBlockIndex(clientId),
-				getBlockRootClientId(clientId)
-			).then(block => {
-				const {
-					attributes: { content, isList, typeOfList },
-					clientId,
-				} = block.blocks[0];
-
-				const formatValue = getFormatValue();
-
-				/**
-				 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-				 * and add some coding manually
-				 * This next script will check if there is any format directly related with
-				 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
-				 */
-				const cleanCustomProps = setCustomFormatsWhenPaste({
-					formatValue,
-					typography: getGroupAttributes(attributes, 'typography'),
-					isList,
-					typeOfList,
-					content,
-					textLevel,
-				});
-
-				if (cleanCustomProps)
-					updateBlockAttributes(clientId, cleanCustomProps);
-			});
-
-			i === currentBlocks.length - 1 && selectBlock(block.clientId);
-		});
-
-		removeBlock(clientId);
-	};
-
-	const onMerge = forward => {
-		if (forward) {
-			const nextBlockClientId = getNextBlockClientId(clientId);
-
-			if (nextBlockClientId) {
-				const nextBlockAttributes = getBlockAttributes(
-					nextBlockClientId
-				);
-				const nextBlockContent = nextBlockAttributes.content;
-				const newBlockIsList = nextBlockAttributes.isList;
-
-				const nextBlockContentNeedsTransform =
-					isList !== newBlockIsList;
-				const newNextBlockContent = nextBlockContentNeedsTransform
-					? newBlockIsList
-						? fromListToText(nextBlockContent)
-						: fromTextToList(nextBlockContent)
-					: nextBlockContent;
-
-				setAttributes({
-					content: content.concat(newNextBlockContent),
-				});
-
-				removeBlock(nextBlockClientId);
-			}
-		} else {
-			const previousBlockClientId = getPreviousBlockClientId(clientId);
-
-			if (!previousBlockClientId) {
-				removeBlock(clientId);
-			} else {
-				const previousBlockAttributes = getBlockAttributes(
-					previousBlockClientId
-				);
-				const previousBlockContent = previousBlockAttributes.content;
-
-				updateBlockAttributes(previousBlockClientId, {
-					content: previousBlockContent.concat(
-						ownProps.attributes.isList
-							? fromListToText(content)
-							: content
-					),
-				});
-
-				removeBlock(clientId);
-			}
-		}
-	};
-
-	const onSplit = value => {
-		if (!value) {
-			return createBlock(name);
-		}
-
-		return createBlock(name, {
-			...ownProps.attributes,
-			content: value,
-		});
-	};
-
-	return {
-		onReplace,
-		onMerge,
-		onSplit,
-	};
-});
-
-export default compose(editSelect, editDispatch)(edit);
+export default compose(editSelect)(edit);

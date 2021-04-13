@@ -165,8 +165,6 @@ const MaxiStyleCardsTab = ({
 			addActiveSCdropdownStyle(currentKey);
 		}, 300);
 
-	const isGlobalButtonBackground = 1;
-
 	return (
 		<div className='maxi-tab-content__box'>
 			<AccordionControl
@@ -340,7 +338,6 @@ const MaxiStyleCardsTab = ({
 									prefix='button-'
 									disableFormats
 									className='maxi-style-cards-control__sc__button-typography'
-									// textLevel='p'
 									hideAlignment
 									hideTextShadow
 									breakpoint={deviceType}
@@ -362,7 +359,9 @@ const MaxiStyleCardsTab = ({
 										'Use Global Background',
 										'maxi-blocks'
 									)}
-									selected={isGlobalButtonBackground}
+									selected={getColor(
+										'global-button-background'
+									)}
 									options={[
 										{
 											label: __('Yes', 'maxi-blocks'),
@@ -373,15 +372,15 @@ const MaxiStyleCardsTab = ({
 											value: 0,
 										},
 									]}
-									onChange={isGlobalButtonBackground => {
+									onChange={val => {
 										onChangeValue(
-											'global',
-											isGlobalButtonBackground,
+											'global-button-background',
+											val,
 											SCStyle
 										);
 									}}
 								/>
-								{isGlobalButtonBackground && (
+								{getColor('global-button-background') && (
 									<ColorControl
 										label={__(
 											'Button Background',
@@ -942,27 +941,26 @@ const MaxiStyleCardsEditor = () => {
 
 	const onChangeValue = (prop, value, style) => {
 		let newStateSC = {};
-		switch (prop) {
-			case 'typography':
-				newStateSC = {
-					...stateSC,
-					styleCard: {
-						...stateSC.styleCard,
-						[style]: { ...stateSC.styleCard[style], ...value },
-					},
-				};
-				break;
-			case 'global':
-				break;
-			default:
-				newStateSC = {
-					...stateSC,
-					styleCard: {
-						...stateSC.styleCard,
-						[style]: { ...stateSC.styleCard[style], [prop]: value },
-					},
-				};
+
+		if (prop === 'typography') {
+			newStateSC = {
+				...stateSC,
+				styleCard: {
+					...stateSC.styleCard,
+					[style]: { ...stateSC.styleCard[style], ...value },
+				},
+			};
+		} else {
+			newStateSC = {
+				...stateSC,
+				styleCard: {
+					...stateSC.styleCard,
+					[style]: { ...stateSC.styleCard[style], [prop]: value },
+				},
+			};
 		}
+
+		console.log(prop + ': ' + value);
 
 		changeStateSC(newStateSC);
 		changeSConBackend(newStateSC);

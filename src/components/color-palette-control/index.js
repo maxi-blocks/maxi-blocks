@@ -7,7 +7,10 @@ import { FancyRadioControl } from '..';
 /**
  * Internal dependencies
  */
-import getPaletteDefault from '../../extensions/styles/getPaletteDefault';
+import {
+	getPaletteDefault,
+	getDefaultAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -30,6 +33,8 @@ const ColorPaletteControl = props => {
 		colorPaletteType = 'background',
 		isHover,
 		blockName,
+		textLevel,
+		deviceType,
 	} = props;
 
 	const classes = classnames('maxi-color-palette-control', className);
@@ -56,7 +61,11 @@ const ColorPaletteControl = props => {
 										isHover ? '-hover' : ''
 									}-color`
 							  ]
-							: getPaletteDefault(colorPaletteType, blockName)
+							: getPaletteDefault(
+									colorPaletteType,
+									blockName,
+									textLevel
+							  )
 					}
 					optionType='number'
 					options={[
@@ -90,13 +99,27 @@ const ColorPaletteControl = props => {
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val =>
+				onChange={val => {
 					onChange({
 						[`palette-custom-${colorPaletteType}${
 							isHover ? '-hover' : ''
 						}-color`]: val,
-					})
-				}
+					});
+
+					if (
+						!!props[
+							`palette-custom-${colorPaletteType}${
+								isHover ? '-hover' : ''
+							}-color`
+						] &&
+						colorPaletteType === 'box-shadow'
+					)
+						onChange({
+							[`box-shadow-color-${deviceType}`]: getDefaultAttribute(
+								`box-shadow-color-${deviceType}`
+							),
+						});
+				}}
 			/>
 		</div>
 	);

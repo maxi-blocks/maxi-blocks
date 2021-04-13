@@ -44,6 +44,7 @@ const ColorControl = props => {
 		palette,
 		colorPaletteType,
 		onChangePalette,
+		deviceType,
 	} = props;
 
 	const classes = classnames('maxi-color-control', className);
@@ -116,6 +117,7 @@ const ColorControl = props => {
 						blockStyle
 					)}`}
 					onChange={obj => onChangePalette(obj)}
+					deviceType={deviceType}
 				/>
 			)}
 			{!showPalette ||

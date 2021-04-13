@@ -80,6 +80,7 @@ const Border = props => {
 							'border',
 							'borderWidth',
 							'borderRadius',
+							'palette',
 						])}
 						onChange={value => onChange(value)}
 						breakpoint={breakpoint}

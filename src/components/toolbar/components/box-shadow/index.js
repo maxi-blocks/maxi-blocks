@@ -41,7 +41,7 @@ const BoxShadow = props => {
 			content={
 				<div className='toolbar-item__box-shadow__popover'>
 					<BoxShadowControl
-						{...getGroupAttributes(props, 'boxShadow')}
+						{...getGroupAttributes(props, ['boxShadow', 'palette'])}
 						onChange={obj => onChange(obj)}
 						breakpoint={breakpoint}
 						disableAdvanced

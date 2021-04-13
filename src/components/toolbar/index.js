@@ -346,6 +346,7 @@ const MaxiToolbar = props => {
 								'border',
 								'borderWidth',
 								'borderRadius',
+								'palette',
 							])}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
@@ -389,7 +390,10 @@ const MaxiToolbar = props => {
 						/>
 						<BoxShadow
 							blockName={name}
-							{...getGroupAttributes(attributes, 'boxShadow')}
+							{...getGroupAttributes(attributes, [
+								'boxShadow',
+								'palette',
+							])}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
 						/>

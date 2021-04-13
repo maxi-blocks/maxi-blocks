@@ -177,8 +177,13 @@ const MaxiToolbar = props => {
 						<ReusableBlocks clientId={clientId} />
 						<ColumnMover clientId={clientId} blockName={name} />
 						<DividerColor
-							{...getGroupAttributes(attributes, 'divider')}
+							{...getGroupAttributes(attributes, [
+								'divider',
+								'palette',
+							])}
 							blockName={name}
+							blockStyle={blockStyle}
+							breakpoint={deviceType}
 							onChange={obj => setAttributes(obj)}
 						/>
 						<Divider

@@ -217,7 +217,11 @@ const MaxiToolbar = props => {
 						/>
 						<TextColor
 							blockName={name}
-							{...getGroupAttributes(attributes, 'typography')}
+							blockStyle={blockStyle}
+							{...getGroupAttributes(attributes, [
+								'typography',
+								'palette',
+							])}
 							content={content}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}

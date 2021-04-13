@@ -39,6 +39,18 @@ const ColorPaletteControl = props => {
 
 	const classes = classnames('maxi-color-palette-control', className);
 
+	const currentItem = !isNil(
+		props[
+			`palette-preset-${colorPaletteType}${isHover ? '-hover' : ''}-color`
+		]
+	)
+		? props[
+				`palette-preset-${colorPaletteType}${
+					isHover ? '-hover' : ''
+				}-color`
+		  ]
+		: getPaletteDefault(colorPaletteType, blockName, textLevel);
+
 	return (
 		<div className={classes}>
 			{!props[
@@ -46,45 +58,30 @@ const ColorPaletteControl = props => {
 					isHover ? '-hover' : ''
 				}-color`
 			] && (
-				<FancyRadioControl
-					className='maxi-sc-color-palette'
-					selected={
-						!isNil(
-							props[
-								`palette-preset-${colorPaletteType}${
-									isHover ? '-hover' : ''
-								}-color`
-							]
-						)
-							? props[
-									`palette-preset-${colorPaletteType}${
+				<div className='maxi-sc-color-palette'>
+					{['1', '2', '3', '4', '5', '6', '7'].map(item => (
+						<div
+							key={`maxi-sc-color-palette__box__${item}`}
+							className={`maxi-sc-color-palette__box ${
+								String(currentItem) === item
+									? 'maxi-sc-color-palette__box__active'
+									: ''
+							}`}
+							data-item={item}
+							onClick={e =>
+								onChange({
+									[`palette-preset-${colorPaletteType}${
 										isHover ? '-hover' : ''
-									}-color`
-							  ]
-							: getPaletteDefault(
-									colorPaletteType,
-									blockName,
-									textLevel
-							  )
-					}
-					optionType='number'
-					options={[
-						{ value: 1 },
-						{ value: 2 },
-						{ value: 3 },
-						{ value: 4 },
-						{ value: 5 },
-						{ value: 6 },
-						{ value: 7 },
-					]}
-					onChange={val =>
-						onChange({
-							[`palette-preset-${colorPaletteType}${
-								isHover ? '-hover' : ''
-							}-color`]: val,
-						})
-					}
-				/>
+									}-color`]: e.currentTarget.dataset.item,
+								})
+							}
+						>
+							<span
+								className={`maxi-sc-color-palette__box__item maxi-sc-color-palette__box__item__${item}`}
+							></span>
+						</div>
+					))}
+				</div>
 			)}
 			<FancyRadioControl
 				label={__('Custom Colour', 'maxi-blocks')}

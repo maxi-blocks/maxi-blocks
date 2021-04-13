@@ -168,7 +168,7 @@ body.maxi-blocks--active {
 		/* Palette */
 		div#editor .maxi-color-palette--#{$style} {
 			@each $color_number in $color_set {
-				.maxi-sc-color-palette .components-radio-control__option input[value="#{$color_number}"] + label {
+				.maxi-sc-color-palette .maxi-sc-color-palette__box .maxi-sc-color-palette__box__item__#{$color_number} {
 					background-color: var(--maxi-#{$style}-color-#{$color_number});
 				}
 			}

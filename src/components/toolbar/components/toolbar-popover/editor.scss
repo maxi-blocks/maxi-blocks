@@ -1,4 +1,16 @@
 .toolbar-item__popover {
+	.maxi-sc-color-palette {
+		&__box {
+			background-color: #52545f;
+			&__active,
+			&:hover {
+				border-color: #fff;
+			}
+			&__item {
+				border-color: #fff;
+			}
+		}
+	}
 	.components-color-picker__inputs-toggle {
 		border: 0;
 

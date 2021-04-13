@@ -1,29 +1,35 @@
-.maxi-sc-color-palette {
+.maxi-color-palette-control {
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 10px;
+	flex-wrap: wrap;
+	flex-direction: column;
 
-	&__box {
+	.maxi-sc-color-palette {
 		display: flex;
+		justify-content: space-between;
 		align-items: center;
-		justify-content: center;
-		width: 13%;
-		height: 35px;
-		background-color: #eee;
-		border: 2px solid transparent;
-		cursor: pointer;
-		transition: all 0.5s;
+		margin-bottom: 10px;
 
-		&__active,
-		&:hover {
-			border: 2px solid #bdbdbd;
-		}
-		&__item {
-			width: 20px;
-			height: 20px;
-			border: 1px solid #dfe2e4;
-			border-radius: 3px;
+		&__box {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 13%;
+			height: 35px;
+			background-color: #eee;
+			border: 2px solid transparent;
+			cursor: pointer;
+			transition: all 0.5s;
+
+			&__active,
+			&:hover {
+				border: 2px solid #bdbdbd;
+			}
+			&__item {
+				width: 20px;
+				height: 20px;
+				border: 1px solid #dfe2e4;
+				border-radius: 3px;
+			}
 		}
 	}
 }

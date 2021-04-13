@@ -54,7 +54,7 @@
 				position: relative;
 				padding-right: 2px;
 				&:after {
-					content: "";
+					content: '';
 					position: absolute;
 					top: 50%;
 					right: 0;
@@ -131,7 +131,7 @@ body .toolbar-item__popover {
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {
 		&:before {
-			content: url("../../../img/maxi-reset-white.svg") !important;
+			content: url('../../../img/maxi-reset-white.svg') !important;
 		}
 	}
 
@@ -337,7 +337,7 @@ body .toolbar-item__popover {
 		flex-wrap: wrap;
 	}
 
-	input[type="number"] {
+	input[type='number'] {
 		color: #fff;
 		border-color: #80828a;
 		&::placeholder {
@@ -375,7 +375,7 @@ body .toolbar-item__popover {
 			&:hover {
 				background-color: transparent !important;
 			}
-			&[aria-pressed="true"] {
+			&[aria-pressed='true'] {
 				border-color: #fff;
 				svg {
 					fill: #fff;
@@ -444,7 +444,7 @@ body .toolbar-item__popover {
 			&:last-of-type {
 				border: 2px solid #5b5d68;
 			}
-			&[aria-pressed="true"] {
+			&[aria-pressed='true'] {
 				background: #4c4e59;
 				border: 3px solid #dddfe1;
 				border-bottom: 3px solid #ff4a17;
@@ -460,7 +460,7 @@ body .toolbar-item__popover {
 		.components-base-control__label {
 			flex-basis: 100%;
 		}
-		input[type="number"] {
+		input[type='number'] {
 			width: 3.5rem;
 		}
 	}

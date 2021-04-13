@@ -85,6 +85,7 @@ const ColorPaletteControl = props => {
 			)}
 			<FancyRadioControl
 				label={__('Custom Colour', 'maxi-blocks')}
+				className='maxi-sc-color-palette__custom'
 				selected={
 					props[
 						`palette-custom-${colorPaletteType}${

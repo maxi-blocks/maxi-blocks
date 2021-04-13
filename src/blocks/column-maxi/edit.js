@@ -164,7 +164,11 @@ class edit extends MaxiBlock {
 				resizableObject={this.resizableObject.current}
 				{...this.props}
 			/>,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				{...this.props}
+				blockStyle={blockStyle}
+			/>,
 			<RowContext.Consumer key={`column-content-${uniqueID}`}>
 				{context => (
 					<Fragment>

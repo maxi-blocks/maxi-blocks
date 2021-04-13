@@ -114,6 +114,7 @@ class edit extends MaxiBlock {
 				key={`toolbar-${uniqueID}`}
 				{...this.props}
 				formatValue={formatValue}
+				blockStyle={blockStyle}
 			/>,
 			<MotionPreview
 				key={`motion-preview-${uniqueID}`}

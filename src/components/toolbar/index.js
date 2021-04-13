@@ -96,7 +96,9 @@ const MaxiToolbar = props => {
 		name,
 		setAttributes,
 		toggleHandlers,
+		blockStyle,
 	} = props;
+
 	const {
 		content,
 		customLabel,
@@ -301,11 +303,13 @@ const MaxiToolbar = props => {
 							onChange={obj => setAttributes(obj)}
 						/>
 						<BackgroundColor
-							{...getGroupAttributes(
-								attributes,
-								'backgroundColor'
-							)}
+							{...getGroupAttributes(attributes, [
+								'backgroundColor',
+								'palette',
+							])}
 							blockName={name}
+							blockStyle={blockStyle}
+							breakpoint={deviceType}
 							onChange={obj => setAttributes(obj)}
 						/>
 						{name === 'maxi-blocks/svg-icon-maxi' && (

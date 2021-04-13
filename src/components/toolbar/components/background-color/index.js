@@ -8,7 +8,10 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../../../extensions/styles';
 
 /**
  * Styles
@@ -19,7 +22,7 @@ import './editor.scss';
  * BackgroundColor
  */
 const BackgroundColor = props => {
-	const { blockName, onChange } = props;
+	const { blockName, onChange, blockStyle, breakpoint } = props;
 
 	if (
 		blockName === 'maxi-blocks/divider-maxi' ||
@@ -43,17 +46,25 @@ const BackgroundColor = props => {
 				/>
 			}
 			content={
-				<ColorControl
-					label={__('Background', 'maxi-blocks')}
-					color={props['background-color']}
-					defaultColor={getDefaultAttribute('background-color')}
-					onChange={val =>
-						onChange({
-							'background-color': val,
-							'background-active-media': 'color',
-						})
-					}
-				/>
+				<div className='toolbar-item__background__popover'>
+					<ColorControl
+						label={__('Background', 'maxi-blocks')}
+						color={props['background-color']}
+						defaultColor={getDefaultAttribute('background-color')}
+						onChange={val =>
+							onChange({
+								'background-color': val,
+								'background-active-media': 'color',
+							})
+						}
+						showPalette
+						blockStyle={blockStyle}
+						palette={{ ...getGroupAttributes(props, 'palette') }}
+						colorPaletteType='background'
+						onChangePalette={val => onChange(val)}
+						deviceType={breakpoint}
+					/>
+				</div>
 			}
 		/>
 	);

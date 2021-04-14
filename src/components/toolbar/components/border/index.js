@@ -40,7 +40,7 @@ const Border = props => {
 	} = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
-	console.log(props);
+
 	return (
 		<ToolbarPopover
 			className='toolbar-item__border'

@@ -4,7 +4,8 @@ body .components-popover.maxi-style-cards__popover {
     top: 109px !important;
     z-index: 10000;
     .components-popover__content {
-    	 min-width: 315px;
+    	max-height: 900px !important;
+    	min-width: 315px;
     }
 }
 

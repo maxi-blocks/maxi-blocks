@@ -64,6 +64,7 @@ const MaxiStyleCardsTab = ({
 	deviceType,
 	onChange,
 	onChangeValue,
+	onChangeDelete,
 	currentKey,
 }) => {
 	const getColor = attr => {
@@ -373,12 +374,12 @@ const MaxiStyleCardsTab = ({
 										},
 									]}
 									onChange={val => {
-										onChangeValue(
-											'button-background-color-global',
-											val,
-											SCStyle
-										);
-										if (val === 1)
+										if (!val)
+											onChangeDelete(
+												'button-background-color',
+												SCStyle
+											);
+										if (val)
 											onChangeValue(
 												'button-background-color',
 												getColor(
@@ -386,6 +387,11 @@ const MaxiStyleCardsTab = ({
 												),
 												SCStyle
 											);
+										onChangeValue(
+											'button-background-color-global',
+											val,
+											SCStyle
+										);
 									}}
 								/>
 								{getColor('button-background-color-global') && (
@@ -844,6 +850,23 @@ const MaxiStyleCardsEditor = () => {
 		canBeResetted(currentSCkey)
 	);
 
+	const onChangeDelete = (prop, style) => {
+		const newStateSC = stateSC;
+
+		delete newStateSC.styleCard[style][prop];
+
+		const inlineStyles = document.getElementById(
+			'maxi-blocks-sc-vars-inline-css'
+		);
+		inlineStyles.parentNode.removeChild(inlineStyles);
+		document.documentElement.style.removeProperty(
+			`--maxi-${style}-${prop}`
+		);
+
+		changeStateSC(newStateSC);
+		changeCanBeResettedState(canBeResetted(currentSCkey));
+	};
+
 	const onChangeValue = (prop, value, style) => {
 		let newStateSC = {};
 
@@ -1286,6 +1309,7 @@ const MaxiStyleCardsEditor = () => {
 									SC={stateSC}
 									SCStyle='light'
 									onChangeValue={onChangeValue}
+									onChangeDelete={onChangeDelete}
 									deviceType={deviceType}
 									currentKey={getStyleCardActiveKey()}
 								/>
@@ -1298,6 +1322,7 @@ const MaxiStyleCardsEditor = () => {
 									SC={stateSC}
 									SCStyle='dark'
 									onChangeValue={onChangeValue}
+									onChangeDelete={onChangeDelete}
 									deviceType={deviceType}
 									currentKey={getStyleCardActiveKey()}
 								/>

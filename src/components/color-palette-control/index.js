@@ -56,11 +56,11 @@ const ColorPaletteControl = props => {
 				}-color`
 			] && (
 				<div className='maxi-sc-color-palette'>
-					{['1', '2', '3', '4', '5', '6', '7'].map(item => (
+					{[1, 2, 3, 4, 5, 6, 7].map(item => (
 						<div
 							key={`maxi-sc-color-palette__box__${item}`}
 							className={`maxi-sc-color-palette__box ${
-								String(currentItem) === item
+								currentItem === item
 									? 'maxi-sc-color-palette__box__active'
 									: ''
 							}`}
@@ -69,7 +69,7 @@ const ColorPaletteControl = props => {
 								onChange({
 									[`palette-preset-${colorPaletteType}${
 										isHover ? '-hover' : ''
-									}-color`]: e.currentTarget.dataset.item,
+									}-color`]: +e.currentTarget.dataset.item,
 								})
 							}
 						>

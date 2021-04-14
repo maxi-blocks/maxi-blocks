@@ -24,9 +24,7 @@ body.maxi-blocks--active {
 				&.maxi-sc-#{$style}-background-color-#{$color_number} {
 					&.maxi-button-block .maxi-button-block__button,
 					> .maxi-background-displayer .maxi-background-displayer__color {
-						background-color: var(--maxi-#{$style}-color-#{$color_number});
-						--maxi-#{$style}-button-background-color-ind: var(--maxi-#{$style}-color-#{$color_number});
-						//--maxi-#{$style}-button-background-color: var(--maxi-#{$style}-color-#{$color_number});
+						--maxi-#{$style}-button-background-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				&.maxi-sc-#{$style}-border-color-#{$color_number} {
@@ -45,9 +43,14 @@ body.maxi-blocks--active {
 				}
 				&.maxi-sc-#{$style}-typography-color-#{$color_number} {
 					&.maxi-button-block,
-					> .maxi-text-block__content,
 					.maxi-image-block__caption {
-						color: var(--maxi-#{$style}-color-#{$color_number});
+						--maxi-#{$style}-button-text-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+
+					}
+				}
+				@each $level in $levels {
+					&.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content {
+						--maxi-#{$style}-#{$level}-color-general-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				&.maxi-sc-#{$style}-icon-color-#{$color_number} {
@@ -140,7 +143,7 @@ body.maxi-blocks--active {
 		.maxi-#{$style}[class*='maxi-sc'] {
 			@each $level in $levels {
 				#{$level} {
-					// color: var(--maxi-#{$style}-#{$level}-color-general);
+					color: var(--maxi-#{$style}-#{$level}-color-general, var(--maxi-#{$style}-#{$level}-color-general-palette));
 					font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
 					font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
 					font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
@@ -168,9 +171,8 @@ body.maxi-blocks--active {
 			}
 
 			&.maxi-button-block .maxi-button-block__button {
-
-				// color: var(--maxi-#{$style}-button-text-color);
-				background-color: var(--maxi-#{$style}-button-background-color, var(--maxi-#{$style}-button-background-color-ind));
+				color: var(--maxi-#{$style}-button-text-color, var(--maxi-#{$style}-button-text-color-palette));
+				background-color: var(--maxi-#{$style}-button-background-color, var(--maxi-#{$style}-button-background-color-palette));
 				font-family: var(--maxi-#{$style}-button-font-family);
 				font-weight: var(--maxi-#{$style}-button-font-weight);
 				font-style: var(--maxi-#{$style}-button-font-style-general);

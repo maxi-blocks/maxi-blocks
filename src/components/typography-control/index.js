@@ -104,10 +104,6 @@ const TypographyControl = props => {
 	};
 
 	const getValue = prop => {
-		// console.log('ty ' + JSON.stringify(typography));
-		// console.log('disableFormats ' + disableFormats);
-		// console.log('prop ' + prop);
-		// console.log(typography[`${prop}-${breakpoint}`]);
 		if (disableFormats) return typography[`${prop}-${breakpoint}`];
 
 		const nonHoverValue = getCustomFormatValue({
@@ -117,15 +113,7 @@ const TypographyControl = props => {
 			breakpoint,
 		});
 
-		// console.log(prop + ' ' + nonHoverValue);
-
 		if (!isHover) return nonHoverValue;
-		// return getValueWithSC(
-		// 	nonHoverValue,
-		// 	`${prop}-${breakpoint}`,
-		// 	blockStyle,
-		// 	textLevel
-		// );
 
 		return (
 			getCustomFormatValue({
@@ -211,19 +199,19 @@ const TypographyControl = props => {
 			`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
 		);
 
-		// const sameDefaultLevels = ['p', 'ul', 'ol'];
-		// if (
-		// 	sameDefaultLevels.some(level => {
-		// 		return level === textLevel;
-		// 	})
-		// )
-		// 	return getDefaultAttribute(
-		// 		`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
-		// 	);
+		// 	const sameDefaultLevels = ['p', 'ul', 'ol'];
+		// 	if (
+		// 		sameDefaultLevels.some(level => {
+		// 			return level === textLevel;
+		// 		})
+		// 	)
+		// 		return getDefaultAttribute(
+		// 			`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
+		// 		);
 
-		// return defaultTypography[textLevel][
-		// 	`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
-		// ];
+		// 	return defaultTypography[textLevel][
+		// 		`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
+		// 	];
 	};
 
 	const onChangeFormat = value => {
@@ -255,7 +243,7 @@ const TypographyControl = props => {
 							});
 						}}
 					/>
-					{!disableColor && (
+					{!disableColor && !styleCards && (
 						<ColorControl
 							label={__('Font', 'maxi-blocks')}
 							className='maxi-typography-control__color'

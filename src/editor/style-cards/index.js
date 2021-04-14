@@ -577,7 +577,9 @@ const MaxiStyleCardsTab = ({
 											if (val)
 												onChangeValue(
 													'h1-color-general',
-													getColor('h1-color-general'),
+													getColor(
+														'h1-color-general'
+													),
 													SCStyle
 												);
 											onChangeValue(
@@ -667,7 +669,9 @@ const MaxiStyleCardsTab = ({
 											if (val)
 												onChangeValue(
 													'h2-color-general',
-													getColor('h2-color-general'),
+													getColor(
+														'h2-color-general'
+													),
 													SCStyle
 												);
 											onChangeValue(
@@ -757,7 +761,9 @@ const MaxiStyleCardsTab = ({
 											if (val)
 												onChangeValue(
 													'h3-color-general',
-													getColor('h3-color-general'),
+													getColor(
+														'h3-color-general'
+													),
 													SCStyle
 												);
 											onChangeValue(
@@ -847,7 +853,9 @@ const MaxiStyleCardsTab = ({
 											if (val)
 												onChangeValue(
 													'h4-color-general',
-													getColor('h4-color-general'),
+													getColor(
+														'h4-color-general'
+													),
 													SCStyle
 												);
 											onChangeValue(
@@ -937,7 +945,9 @@ const MaxiStyleCardsTab = ({
 											if (val)
 												onChangeValue(
 													'h5-color-general',
-													getColor('h5-color-general'),
+													getColor(
+														'h5-color-general'
+													),
 													SCStyle
 												);
 											onChangeValue(
@@ -1027,7 +1037,9 @@ const MaxiStyleCardsTab = ({
 											if (val)
 												onChangeValue(
 													'h6-color-general',
-													getColor('h6-color-general'),
+													getColor(
+														'h6-color-general'
+													),
 													SCStyle
 												);
 											onChangeValue(
@@ -1585,10 +1597,17 @@ const MaxiStyleCardsEditor = () => {
 				className='maxi-style-cards__popover maxi-sidebar'
 				focusOnMount
 			>
-				<h2>
+				<h2 className='maxi-style-cards__popover__title'>
 					<Icon icon={styleCardBoat} />
 					{__('Style Card Editor', 'maxi-blocks')}
 				</h2>
+				<hr />
+				<div className='maxi-style-cards__popover__sub-title'>
+					{__(
+						'Group of blocks composed with a similar style or layout',
+						'maxi-blocks'
+					)}
+				</div>
 				<div className='maxi-style-cards__sc'>
 					<Button
 						className='maxi-style-cards-control__sc--add-more'

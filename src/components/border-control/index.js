@@ -46,6 +46,7 @@ const BorderControl = props => {
 		isHover = false,
 		prefix = '',
 		blockStyle,
+		clientId,
 	} = props;
 
 	const classes = classnames('maxi-border-control', className);
@@ -201,6 +202,7 @@ const BorderControl = props => {
 						colorPaletteType='border'
 						onChangePalette={val => onChange(val)}
 						deviceType={breakpoint}
+						clientId={clientId}
 					/>
 				)}
 

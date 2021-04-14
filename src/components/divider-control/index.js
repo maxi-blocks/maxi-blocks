@@ -46,6 +46,7 @@ const DividerControl = props => {
 		disableBorderRadius = false,
 		blockStyle,
 		isHover = false,
+		clientId,
 	} = props;
 
 	const minMaxSettings = {
@@ -138,6 +139,7 @@ const DividerControl = props => {
 					isHover={isHover}
 					colorPaletteType='divider'
 					onChangePalette={val => onChange(val)}
+					clientId={clientId}
 				/>
 			)}
 			{!disableLineStyle && (

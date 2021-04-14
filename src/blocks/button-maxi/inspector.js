@@ -51,7 +51,14 @@ import {
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, formatValue, name } = props;
+	const {
+		attributes,
+		deviceType,
+		setAttributes,
+		formatValue,
+		name,
+		clientId,
+	} = props;
 	const {
 		customLabel,
 		uniqueID,
@@ -292,6 +299,9 @@ const Inspector = props => {
 																	blockStyle={
 																		blockStyle
 																	}
+																	clientId={
+																		clientId
+																	}
 																/>
 															),
 														},
@@ -367,6 +377,9 @@ const Inspector = props => {
 																			blockStyle={
 																				blockStyle
 																			}
+																			clientId={
+																				clientId
+																			}
 																		/>
 																	)}
 																</Fragment>
@@ -420,6 +433,9 @@ const Inspector = props => {
 																			blockStyle
 																		}
 																		useStyleCard
+																		clientId={
+																			clientId
+																		}
 																	/>
 																</Fragment>
 															),
@@ -495,6 +511,9 @@ const Inspector = props => {
 																			blockStyle={
 																				blockStyle
 																			}
+																			clientId={
+																				clientId
+																			}
 																		/>
 																	)}
 																</Fragment>
@@ -536,6 +555,9 @@ const Inspector = props => {
 																	}
 																	blockStyle={
 																		blockStyle
+																	}
+																	clientId={
+																		clientId
 																	}
 																/>
 															),
@@ -605,6 +627,9 @@ const Inspector = props => {
 																			isHover
 																			blockStyle={
 																				blockStyle
+																			}
+																			clientId={
+																				clientId
 																			}
 																		/>
 																	)}
@@ -702,6 +727,9 @@ const Inspector = props => {
 																	blockStyle={
 																		blockStyle
 																	}
+																	clientId={
+																		clientId
+																	}
 																/>
 															),
 														},
@@ -768,6 +796,9 @@ const Inspector = props => {
 																			isHover
 																			blockStyle={
 																				blockStyle
+																			}
+																			clientId={
+																				clientId
 																			}
 																		/>
 																	)}

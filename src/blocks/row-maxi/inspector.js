@@ -250,6 +250,9 @@ const Inspector = props => {
 																		blockStyle={
 																			blockStyle
 																		}
+																		clientId={
+																			clientId
+																		}
 																	/>
 																</Fragment>
 															),
@@ -320,6 +323,9 @@ const Inspector = props => {
 																			blockStyle={
 																				blockStyle
 																			}
+																			clientId={
+																				clientId
+																			}
 																		/>
 																	)}
 																</Fragment>
@@ -361,6 +367,9 @@ const Inspector = props => {
 																	}
 																	blockStyle={
 																		blockStyle
+																	}
+																	clientId={
+																		clientId
 																	}
 																/>
 															),
@@ -430,6 +439,9 @@ const Inspector = props => {
 																			isHover
 																			blockStyle={
 																				blockStyle
+																			}
+																			clientId={
+																				clientId
 																			}
 																		/>
 																	)}
@@ -546,6 +558,9 @@ const Inspector = props => {
 																	blockStyle={
 																		blockStyle
 																	}
+																	clientId={
+																		clientId
+																	}
 																/>
 															),
 														},
@@ -611,6 +626,9 @@ const Inspector = props => {
 																			}
 																			blockStyle={
 																				blockStyle
+																			}
+																			clientId={
+																				clientId
 																			}
 																		/>
 																	)}

@@ -40,7 +40,7 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes } = props;
+	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
 		customLabel,
 		uniqueID,
@@ -159,6 +159,7 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														simpleMode
 														blockStyle={blockStyle}
+														clientId={clientId}
 													/>
 												),
 											},
@@ -199,6 +200,9 @@ const Inspector = props => {
 																			disableImage
 																			blockStyle={
 																				blockStyle
+																			}
+																			clientId={
+																				clientId
 																			}
 																		/>
 																	</Fragment>
@@ -272,6 +276,9 @@ const Inspector = props => {
 																				blockStyle={
 																					blockStyle
 																				}
+																				clientId={
+																					clientId
+																				}
 																			/>
 																		)}
 																	</Fragment>
@@ -316,6 +323,9 @@ const Inspector = props => {
 																		}
 																		blockStyle={
 																			blockStyle
+																		}
+																		clientId={
+																			clientId
 																		}
 																	/>
 																),
@@ -386,6 +396,9 @@ const Inspector = props => {
 																				blockStyle={
 																					blockStyle
 																				}
+																				clientId={
+																					clientId
+																				}
 																			/>
 																		)}
 																	</Fragment>
@@ -428,6 +441,9 @@ const Inspector = props => {
 																		}
 																		blockStyle={
 																			blockStyle
+																		}
+																		clientId={
+																			clientId
 																		}
 																	/>
 																),
@@ -495,6 +511,9 @@ const Inspector = props => {
 																				isHover
 																				blockStyle={
 																					blockStyle
+																				}
+																				clientId={
+																					clientId
 																				}
 																			/>
 																		)}

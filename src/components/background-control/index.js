@@ -55,6 +55,7 @@ const BackgroundControl = props => {
 		blockStyle,
 		blockName,
 		noPalette,
+		clientId,
 	} = props;
 
 	const backgroundActiveMedia =
@@ -162,6 +163,7 @@ const BackgroundControl = props => {
 							blockStyle={blockStyle}
 							blockName={blockName}
 							noPalette={noPalette}
+							clientId={clientId}
 						/>
 					)}
 					{!disableImage && backgroundActiveMedia === 'image' && (

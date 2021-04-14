@@ -185,6 +185,7 @@ const MaxiToolbar = props => {
 							blockStyle={blockStyle}
 							breakpoint={deviceType}
 							onChange={obj => setAttributes(obj)}
+							clientId={clientId}
 						/>
 						<Divider
 							{...getGroupAttributes(attributes, 'divider')}
@@ -234,6 +235,7 @@ const MaxiToolbar = props => {
 							isList={isList}
 							typeOfList={typeOfList}
 							formatValue={formatValue}
+							clientId={clientId}
 						/>
 						<Alignment
 							blockName={name}
@@ -320,6 +322,7 @@ const MaxiToolbar = props => {
 							blockStyle={blockStyle}
 							breakpoint={deviceType}
 							onChange={obj => setAttributes(obj)}
+							clientId={clientId}
 						/>
 						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<Fragment>
@@ -363,6 +366,8 @@ const MaxiToolbar = props => {
 							])}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
+							blockStyle={blockStyle}
+							clientId={clientId}
 						/>
 						{deviceType === 'general' && (
 							<ImageSize

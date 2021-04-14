@@ -9,6 +9,7 @@ import { Icon } from '@wordpress/components';
  */
 import BorderControl from '../../../border-control';
 import ToolbarPopover from '../toolbar-popover';
+import getBlockStyle from '../../../../extensions/styles/getBlockStyle';
 
 /**
  * Styles & Icons
@@ -29,10 +30,17 @@ const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/image-maxi'];
  * Component
  */
 const Border = props => {
-	const { blockName, onChange, breakpoint, disableColor = false } = props;
+	const {
+		blockName,
+		onChange,
+		breakpoint,
+		disableColor = false,
+		blockStyle,
+		clientId,
+	} = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
-
+	console.log(props);
 	return (
 		<ToolbarPopover
 			className='toolbar-item__border'
@@ -60,11 +68,16 @@ const Border = props => {
 										props
 								  ),
 						borderWidth: '1px',
-						borderColor: getLastBreakpointAttribute(
-							'border-color',
-							breakpoint,
-							props
-						),
+						borderColor:
+							getLastBreakpointAttribute(
+								'border-color',
+								breakpoint,
+								props
+							) ||
+							`var(--maxi-${getBlockStyle(
+								blockStyle,
+								clientId
+							)}-color-${props['palette-preset-border-color']})`,
 					}}
 				>
 					<Icon

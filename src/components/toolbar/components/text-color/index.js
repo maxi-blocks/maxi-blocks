@@ -16,6 +16,7 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
+import getBlockStyle from '../../../../extensions/styles/getBlockStyle';
 
 /**
  * Icons
@@ -27,7 +28,14 @@ import { toolbarType } from '../../../../icons';
  * TextColor
  */
 const TextColor = props => {
-	const { blockName, onChange, breakpoint, blockStyle, formatValue } = props;
+	const {
+		blockName,
+		onChange,
+		breakpoint,
+		blockStyle,
+		formatValue,
+		clientId,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -54,11 +62,18 @@ const TextColor = props => {
 						(color && {
 							background: color,
 						}) || {
-							background: getLastBreakpointAttribute(
-								typography,
-								'color',
-								breakpoint
-							),
+							background:
+								getLastBreakpointAttribute(
+									typography,
+									'color',
+									breakpoint
+								) ||
+								`var(--maxi-${getBlockStyle(
+									blockStyle,
+									clientId
+								)}-color-${
+									props['palette-preset-typography-color']
+								})`,
 						}
 					}
 				>

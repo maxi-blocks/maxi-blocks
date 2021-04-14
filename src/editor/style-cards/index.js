@@ -360,7 +360,7 @@ const MaxiStyleCardsTab = ({
 										'maxi-blocks'
 									)}
 									selected={getColor(
-										'global-button-background'
+										'button-background-color-global'
 									)}
 									options={[
 										{
@@ -374,13 +374,21 @@ const MaxiStyleCardsTab = ({
 									]}
 									onChange={val => {
 										onChangeValue(
-											'global-button-background',
+											'button-background-color-global',
 											val,
 											SCStyle
 										);
+										if (val === 1)
+											onChangeValue(
+												'button-background-color',
+												getColor(
+													'button-background-color'
+												),
+												SCStyle
+											);
 									}}
 								/>
-								{getColor('global-button-background') && (
+								{getColor('button-background-color-global') && (
 									<ColorControl
 										label={__(
 											'Button Background',
@@ -569,109 +577,6 @@ const MaxiStyleCardsTab = ({
 									);
 								}}
 							/>
-						),
-					},
-					deviceType === 'general' && {
-						label: __('Highlight', 'maxi-blocks'),
-						content: (
-							<Fragment>
-								<ColorControl
-									label={__('Text', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__highlight-color-text--${SCStyle}`}
-									color={getColor('highlight-text')}
-									defaultColor={getStyleCardAttr(
-										'highlight-text',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue(
-											'highlight-text',
-											val,
-											SCStyle
-										);
-									}}
-									disableGradient
-									noPalette
-								/>
-								<ColorControl
-									label={__('Background', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__highlight-color-bg-${SCStyle}`}
-									color={getColor('highlight-background')}
-									defaultColor={getStyleCardAttr(
-										'highlight-background',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue(
-											'highlight-background',
-											val,
-											SCStyle
-										);
-									}}
-									disableGradient
-									noPalette
-								/>
-								<ColorControl
-									label={__('Border', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__highlight-color-border-${SCStyle}`}
-									color={getColor('highlight-border')}
-									defaultColor={getStyleCardAttr(
-										'highlight-border',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue(
-											'highlight-border',
-											val,
-											SCStyle
-										);
-									}}
-									disableGradient
-									noPalette
-									styleCards
-								/>
-								<ColorControl
-									label={__('Icon Line', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__highlight-icon-line-${SCStyle}`}
-									color={getColor('highlight-icon-line')}
-									defaultColor={getStyleCardAttr(
-										'highlight-icon-line',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue(
-											'highlight-icon-line',
-											val,
-											SCStyle
-										);
-									}}
-									disableGradient
-									noPalette
-								/>
-								<ColorControl
-									label={__('Icon Fill', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__highlight-icon-fill-${SCStyle}`}
-									color={getColor('highlight-icon-fill')}
-									defaultColor={getStyleCardAttr(
-										'highlight-icon-fill',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue(
-											'highlight-icon-fill',
-											val,
-											SCStyle
-										);
-									}}
-									disableGradient
-									noPalette
-								/>
-							</Fragment>
 						),
 					},
 					deviceType === 'general' && {

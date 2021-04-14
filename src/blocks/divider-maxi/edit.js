@@ -120,7 +120,11 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				{...this.props}
+				blockStyle={blockStyle}
+			/>,
 			<BlockResizer
 				key={uniqueID}
 				className={classnames(

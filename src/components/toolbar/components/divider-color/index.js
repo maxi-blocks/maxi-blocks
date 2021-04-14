@@ -9,18 +9,22 @@ import { Icon } from '@wordpress/components';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../../../extensions/styles';
 
 /**
- * Icons
+ * Styles & Icons
  */
+import './editor.scss';
 import { toolbarDividerSetting } from '../../../../icons';
 
 /**
  * DividerColor
  */
 const DividerColor = props => {
-	const { blockName, onChange } = props;
+	const { blockName, onChange, blockStyle, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
@@ -45,13 +49,23 @@ const DividerColor = props => {
 				</div>
 			}
 			content={
-				<ColorControl
-					label={__('Divider', 'maxi-blocks')}
-					color={props['divider-border-color']}
-					defaultColor={getDefaultAttribute('border-color')}
-					onChange={val => onChange({ 'divider-border-color': val })}
-					disableGradient
-				/>
+				<div className='toolbar-item__divider-color__popover'>
+					<ColorControl
+						label={__('Divider', 'maxi-blocks')}
+						color={props['divider-border-color']}
+						defaultColor={getDefaultAttribute('border-color')}
+						onChange={val =>
+							onChange({ 'divider-border-color': val })
+						}
+						disableGradient
+						showPalette
+						blockStyle={blockStyle}
+						palette={{ ...getGroupAttributes(props, 'palette') }}
+						colorPaletteType='divider'
+						onChangePalette={val => onChange(val)}
+						deviceType={breakpoint}
+					/>
+				</div>
 			}
 		/>
 	);

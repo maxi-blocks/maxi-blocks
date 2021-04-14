@@ -96,7 +96,9 @@ const MaxiToolbar = props => {
 		name,
 		setAttributes,
 		toggleHandlers,
+		blockStyle,
 	} = props;
+
 	const {
 		content,
 		customLabel,
@@ -175,8 +177,13 @@ const MaxiToolbar = props => {
 						<ReusableBlocks clientId={clientId} />
 						<ColumnMover clientId={clientId} blockName={name} />
 						<DividerColor
-							{...getGroupAttributes(attributes, 'divider')}
+							{...getGroupAttributes(attributes, [
+								'divider',
+								'palette',
+							])}
 							blockName={name}
+							blockStyle={blockStyle}
+							breakpoint={deviceType}
 							onChange={obj => setAttributes(obj)}
 						/>
 						<Divider
@@ -215,7 +222,11 @@ const MaxiToolbar = props => {
 						/>
 						<TextColor
 							blockName={name}
-							{...getGroupAttributes(attributes, 'typography')}
+							blockStyle={blockStyle}
+							{...getGroupAttributes(attributes, [
+								'typography',
+								'palette',
+							])}
 							content={content}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
@@ -301,11 +312,13 @@ const MaxiToolbar = props => {
 							onChange={obj => setAttributes(obj)}
 						/>
 						<BackgroundColor
-							{...getGroupAttributes(
-								attributes,
-								'backgroundColor'
-							)}
+							{...getGroupAttributes(attributes, [
+								'backgroundColor',
+								'palette',
+							])}
 							blockName={name}
+							blockStyle={blockStyle}
+							breakpoint={deviceType}
 							onChange={obj => setAttributes(obj)}
 						/>
 						{name === 'maxi-blocks/svg-icon-maxi' && (
@@ -346,6 +359,7 @@ const MaxiToolbar = props => {
 								'border',
 								'borderWidth',
 								'borderRadius',
+								'palette',
 							])}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
@@ -389,7 +403,10 @@ const MaxiToolbar = props => {
 						/>
 						<BoxShadow
 							blockName={name}
-							{...getGroupAttributes(attributes, 'boxShadow')}
+							{...getGroupAttributes(attributes, [
+								'boxShadow',
+								'palette',
+							])}
 							onChange={obj => setAttributes(obj)}
 							breakpoint={deviceType}
 						/>

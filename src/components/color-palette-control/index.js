@@ -7,10 +7,7 @@ import { FancyRadioControl } from '..';
 /**
  * Internal dependencies
  */
-import {
-	getPaletteDefault,
-	getDefaultAttribute,
-} from '../../extensions/styles';
+import { getPaletteDefault } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -109,14 +106,38 @@ const ColorPaletteControl = props => {
 							`palette-custom-${colorPaletteType}${
 								isHover ? '-hover' : ''
 							}-color`
-						] &&
-						colorPaletteType === 'box-shadow'
-					)
-						onChange({
-							[`box-shadow-color-${deviceType}`]: getDefaultAttribute(
-								`box-shadow-color-${deviceType}`
-							),
-						});
+						]
+					) {
+						colorPaletteType === 'box-shadow' &&
+							onChange({
+								[`box-shadow-color-${deviceType}`]: '',
+							});
+
+						colorPaletteType === 'border' &&
+							onChange({
+								[`border-color-${deviceType}`]: '',
+							});
+
+						colorPaletteType === 'typography' &&
+							onChange({
+								[`color-${deviceType}`]: '',
+							});
+
+						colorPaletteType === 'background' &&
+							onChange({
+								['background-color']: '',
+							});
+
+						colorPaletteType === 'divider' &&
+							onChange({
+								['divider-border-color']: '',
+							});
+
+						colorPaletteType === 'icon' &&
+							onChange({
+								['icon-color']: '',
+							});
+					}
 				}}
 			/>
 		</div>

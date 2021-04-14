@@ -1,7 +1,10 @@
 /**
  * Internal dependencies
  */
+import getFormattedString from './getFormattedString';
+import getHasCustomFormat from './getHasCustomFormat';
 import setFormatWithClass from './setFormatWithClass';
+import flatFormatsWithClass from './flatFormatsWithClass';
 
 /**
  *
@@ -26,13 +29,44 @@ const setFormat = ({
 	textLevel,
 }) => {
 	if (!formatValue || formatValue.start === formatValue.end) {
-		const response = { ...typography };
+		const newTypography = { ...typography };
+		const newFormatValue = {
+			...formatValue,
+			start: 0,
+			end: formatValue.formats.length,
+		};
 
 		Object.entries(value).forEach(([key, val]) => {
-			response[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] = val;
+			newTypography[
+				`${key}-${breakpoint}${isHover ? '-hover' : ''}`
+			] = val;
 		});
 
-		return response;
+		const hasCustomFormat = getHasCustomFormat(newFormatValue, isHover);
+
+		if (hasCustomFormat) {
+			const content = getFormattedString({
+				formatValue: newFormatValue,
+				isList,
+			});
+
+			const {
+				typography: cleanedTypography,
+				content: cleanedContent,
+			} = flatFormatsWithClass({
+				formatValue: newFormatValue,
+				typography: newTypography,
+				content,
+				isList,
+				value,
+				breakpoint,
+				textLevel,
+			});
+
+			return { ...cleanedTypography, content: cleanedContent };
+		}
+
+		return newTypography;
 	}
 
 	return setFormatWithClass({

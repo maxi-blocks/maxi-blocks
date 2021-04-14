@@ -157,4 +157,9 @@ describe('getMultiFormatObj', () => {
 			},
 		});
 	});
+	/**
+	 * Missing tests
+	 * - With hover
+	 * - With isWholeContent
+	 */
 });

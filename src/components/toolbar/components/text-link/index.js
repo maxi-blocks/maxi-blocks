@@ -12,7 +12,7 @@ import { Button } from '@wordpress/components';
  * Internal dependencies
  */
 import {
-	getUpdatedString,
+	getFormattedString,
 	applyLinkFormat,
 	removeLinkFormat,
 	withFormatValue,
@@ -144,7 +144,7 @@ const Link = withFormatValue(props => {
 	};
 
 	const updateLinkString = attributes => {
-		const content = getUpdatedString({
+		const content = getFormattedString({
 			formatValue: getUpdatedFormatValue(
 				formatValue,
 				createLinkAttribute(attributes)

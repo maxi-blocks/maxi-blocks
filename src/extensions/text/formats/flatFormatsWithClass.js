@@ -7,6 +7,7 @@ import { removeFormat, toHTMLString } from '@wordpress/rich-text';
  * Internal dependencies
  */
 import getMultiFormatObj from './getMultiFormatObj';
+import { styleObjectManipulator } from './updateCustomFormatStyle';
 
 /**
  * External dependencies
@@ -20,6 +21,7 @@ import {
 	isEmpty,
 	cloneDeep,
 } from 'lodash';
+import getIsFullFormat from './getIsFullFormat';
 
 /**
  * Get the classes from custom formats that shares the same
@@ -122,6 +124,9 @@ export const removeUnnecessaryFormats = ({
 	typography,
 	content,
 	isList,
+	value,
+	breakpoint,
+	textLevel,
 }) => {
 	const multiFormatObj = getMultiFormatObj({
 		...formatValue,
@@ -138,18 +143,21 @@ export const removeUnnecessaryFormats = ({
 				const format = find(multiFormatObj, {
 					className: target,
 				});
+				const cleanedStyle = styleObjectManipulator({
+					typography,
+					value,
+					breakpoint,
+					currentStyle: style,
+					textLevel,
+				});
+				const isFullFormat = getIsFullFormat(formatValue, target);
 
-				/**
-				 * Exist on typography, not in content
-				 * This action is working too late: after removing content,
-				 * this action is not called. Is necessary to modify custom format
-				 * again to make it work correctly.
-				 * */
+				// Exist on typography, not in content
 				if (!format) {
 					delete typography['custom-formats'][target];
 				}
-				// Same style than default
-				if (isEmpty(style)) {
+				// Style is empty
+				if (isFullFormat && isEmpty(cleanedStyle)) {
 					newFormatValue = removeFormat(
 						format
 							? {
@@ -200,7 +208,16 @@ export const removeUnnecessaryFormats = ({
  * @returns {Object} Cleaned RichText format value, content and Maxi typography
  */
 
-const flatFormatsWithClass = ({ formatValue, typography, content, isList }) => {
+const flatFormatsWithClass = ({
+	formatValue,
+	typography,
+	content,
+	isList,
+	value,
+	textLevel = 'p', // temporary
+	breakpoint,
+	returnFormatValue = false,
+}) => {
 	const { 'custom-formats': customFormats } = typography;
 
 	const repeatedClasses = getRepeatedClassNames(customFormats, formatValue);
@@ -234,12 +251,15 @@ const flatFormatsWithClass = ({ formatValue, typography, content, isList }) => {
 		typography: newTypography,
 		content: newContent,
 		isList,
+		value,
+		breakpoint,
+		textLevel,
 	});
 
 	return {
-		formatValue: cleanedFormatValue,
 		typography: cleanedTypography,
 		content: cleanedContent,
+		...(returnFormatValue && { formatValue: cleanedFormatValue }),
 	};
 };
 

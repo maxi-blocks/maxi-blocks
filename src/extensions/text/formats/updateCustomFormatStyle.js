@@ -35,7 +35,7 @@ export const styleObjectManipulator = ({
 	value,
 	breakpoint,
 	currentStyle,
-	textLevel = 'p', // temporary
+	textLevel,
 }) => {
 	const style = { ...currentStyle };
 

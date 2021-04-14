@@ -31,30 +31,22 @@ import getHasCustomFormat from './getHasCustomFormat';
  *
  * @returns {string} New format and unique className
  */
-const getFormatClassName = (formatValue, typography, isHover) => {
-	const multiFormatObj = getMultiFormatObj({
-		...formatValue,
-		start: 0,
-		end: formatValue.formats.length,
-	});
+export const getFormatClassName = (typography, isHover) => {
+	const customFormatsClasses = Object.keys(
+		typography[`custom-formats${isHover ? '-hover' : ''}`] || {}
+	);
 
-	const num =
-		(typography[`custom-formats${isHover ? '-hover' : ''}`] &&
-			Object.keys(typography[`custom-formats${isHover ? '-hover' : ''}`])
-				.length) ||
-		0;
+	let num = 0;
+	let currentClassName = `maxi-text-block__custom-format--${num}`;
 
-	let className = `maxi-text-block__custom-format--${num}`;
+	while (customFormatsClasses.includes(currentClassName)) {
+		num += 1;
+		currentClassName = `maxi-text-block__custom-format--${num}`;
+	}
 
-	const isRepeat = Object.values(multiFormatObj).some(value => {
-		return value.className === className;
-	});
+	if (isHover) currentClassName += '--hover';
 
-	// Should be improved vvv
-	if (isRepeat) className += num;
-	if (isHover) className += '--hover';
-
-	return className;
+	return currentClassName;
 };
 
 /**
@@ -283,6 +275,7 @@ const mergeNewFormat = ({
 		value,
 		breakpoint,
 		isHover,
+		textLevel,
 	});
 
 	let newTypography = { ...typography };
@@ -308,6 +301,7 @@ const mergeNewFormat = ({
 				value,
 				isHover,
 				isList,
+				textLevel,
 			});
 
 			newTypography = preformattedTypography;
@@ -431,11 +425,7 @@ const mergeMultipleFormats = ({
 
 		if (!Object.keys(newMultiFormatObj)[i]) return;
 
-		const formatClassName = getFormatClassName(
-			newFormatValue,
-			newTypography,
-			isHover
-		);
+		const formatClassName = getFormatClassName(newTypography, isHover);
 		const { className, start, end } = Object.values(newMultiFormatObj)[i];
 
 		newFormatValue = {
@@ -539,11 +529,7 @@ const setFormatWithClass = ({
 		isWholeContent
 	);
 	const currentClassName = getCurrentFormatClassName(formatValue, isHover);
-	const formatClassName = getFormatClassName(
-		formatValue,
-		typography,
-		isHover
-	);
+	const formatClassName = getFormatClassName(typography, isHover);
 	const hasCustomFormat = getHasCustomFormat(formatValue, isHover);
 	const hasMultiCustomFormat = Object.keys(multiFormatObj).length > 1;
 
@@ -588,6 +574,7 @@ const setFormatWithClass = ({
 				multiFormatObj,
 				isHover,
 				isWholeContent,
+				textLevel,
 			}));
 
 	const {

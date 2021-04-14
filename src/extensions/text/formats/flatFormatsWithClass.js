@@ -214,7 +214,7 @@ const flatFormatsWithClass = ({
 	content,
 	isList,
 	value,
-	textLevel = 'p', // temporary
+	textLevel,
 	breakpoint,
 	returnFormatValue = false,
 }) => {

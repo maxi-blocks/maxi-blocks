@@ -16,7 +16,6 @@ const getFormattedString = ({ formatValue, isList }) => {
 	const newContent = toHTMLString({
 		value: formatValue,
 		multilineTag: isList ? 'li' : null,
-		preserveWhiteSpace: true,
 	});
 
 	return newContent;

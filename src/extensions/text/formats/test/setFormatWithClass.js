@@ -3,6 +3,7 @@
  */
 import setFormatWithClass, {
 	checkFormatCoincidence,
+	getFormatClassName,
 } from '../setFormatWithClass';
 import formatValueCleaner from '../formatValueCleaner';
 
@@ -38,12 +39,14 @@ describe('setFormatWithClass', () => {
 			'font-weight': 800,
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 		const expectedResult = {
 			'custom-formats': {
@@ -125,12 +128,14 @@ describe('setFormatWithClass', () => {
 			'font-weight': 400,
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 		const expectedResult = {
 			'custom-formats': {},
@@ -194,12 +199,14 @@ describe('setFormatWithClass', () => {
 			'font-weight': 800,
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -290,12 +297,14 @@ describe('setFormatWithClass', () => {
 			'font-weight': 400,
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -380,12 +389,14 @@ describe('setFormatWithClass', () => {
 			'font-style': 'italic',
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -481,12 +492,14 @@ describe('setFormatWithClass', () => {
 			'font-style': '',
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -572,12 +585,14 @@ describe('setFormatWithClass', () => {
 			'font-weight': 800,
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -702,12 +717,14 @@ describe('setFormatWithClass', () => {
 			'font-weight': 400,
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -801,12 +818,14 @@ describe('setFormatWithClass', () => {
 			'font-style': 'italic',
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -927,12 +946,14 @@ describe('setFormatWithClass', () => {
 			color: 'rgba(58,22,237,1)',
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -1057,12 +1078,14 @@ describe('setFormatWithClass', () => {
 			'font-style': '',
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -1160,12 +1183,14 @@ describe('setFormatWithClass', () => {
 			'font-weight': 400,
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -1286,12 +1311,14 @@ describe('setFormatWithClass', () => {
 			'font-weight': 400,
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -1375,12 +1402,14 @@ describe('setFormatWithClass', () => {
 			color: 'rgba(52,17,228,1)',
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -1482,12 +1511,14 @@ describe('setFormatWithClass', () => {
 			'text-decoration': 'underline',
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -1597,12 +1628,14 @@ describe('setFormatWithClass', () => {
 			'text-decoration': '',
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -1749,12 +1782,14 @@ describe('setFormatWithClass', () => {
 			'font-style': 'italic',
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -1896,12 +1931,14 @@ describe('setFormatWithClass', () => {
 			'font-weight': 400,
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -2008,12 +2045,14 @@ describe('setFormatWithClass', () => {
 			'font-weight': 400,
 		};
 		const isList = false;
+		const textLevel = 'p';
 
 		const result = setFormatWithClass({
 			formatValue: formatValueCleaner(formatValue),
 			typography,
 			value,
 			isList,
+			textLevel,
 		});
 
 		const expectedResult = {
@@ -2023,12 +2062,12 @@ describe('setFormatWithClass', () => {
 					'font-style-general': 'italic',
 					'font-weight-general': 800,
 				},
-				'maxi-text-block__custom-format--11': {
+				'maxi-text-block__custom-format--0': {
 					'font-weight-general': 400,
 				},
 			},
 			content:
-				'Te<maxi-blocks/text-custom className="maxi-text-block__custom-format--11">sting</maxi-blocks/text-custom> T<maxi-blocks/text-custom className="maxi-text-block__custom-format--1">ex</maxi-blocks/text-custom>t M<maxi-blocks/text-custom className="maxi-text-block__custom-format--1">ax</maxi-blocks/text-custom>i',
+				'Te<maxi-blocks/text-custom className="maxi-text-block__custom-format--0">sting</maxi-blocks/text-custom> T<maxi-blocks/text-custom className="maxi-text-block__custom-format--1">ex</maxi-blocks/text-custom>t M<maxi-blocks/text-custom className="maxi-text-block__custom-format--1">ax</maxi-blocks/text-custom>i',
 		};
 
 		expect(JSON.stringify(result)).toStrictEqual(
@@ -2059,6 +2098,7 @@ describe('checkFormatCoincidence', () => {
 			'font-weight': 800,
 		};
 		const isHover = false;
+		const textLevel = 'p';
 
 		const result = checkFormatCoincidence({
 			typography,
@@ -2066,9 +2106,27 @@ describe('checkFormatCoincidence', () => {
 			value,
 			breakpoint,
 			isHover,
+			textLevel,
 		});
 		const expectedResult = 'maxi-text-block__custom-format--0';
 
 		expect(result).toStrictEqual(expectedResult);
+	});
+});
+
+describe('getFormatClassName', () => {
+	it('should return a non-existing class on custom formats object', () => {
+		const typography = {
+			'custom-formats': {
+				'maxi-text-block__custom-format--0': {},
+				'maxi-text-block__custom-format--1': {},
+				'maxi-text-block__custom-format--2': {},
+			},
+		};
+		const isHover = false;
+
+		const result = getFormatClassName(typography, isHover);
+
+		expect(result).toStrictEqual('maxi-text-block__custom-format--3');
 	});
 });

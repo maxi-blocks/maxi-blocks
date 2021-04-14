@@ -45,6 +45,7 @@ const ColorControl = props => {
 		colorPaletteType,
 		onChangePalette,
 		deviceType,
+		clientId,
 	} = props;
 
 	const classes = classnames('maxi-color-control', className);
@@ -114,7 +115,8 @@ const ColorControl = props => {
 					isHover={isHover}
 					colorPaletteType={colorPaletteType}
 					className={`maxi-color-palette--${getBlockStyle(
-						blockStyle
+						blockStyle,
+						clientId
 					)}`}
 					onChange={obj => onChangePalette(obj)}
 					deviceType={deviceType}

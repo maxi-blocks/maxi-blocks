@@ -34,6 +34,7 @@ const ColorLayer = props => {
 		blockStyle,
 		blockName,
 		useStyleCard,
+		clientId,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -91,12 +92,13 @@ const ColorLayer = props => {
 					onChange(colorOptions);
 				}}
 				showPalette
-				blockStyle={getBlockStyle()}
+				blockStyle={blockStyle}
 				blockName={blockName}
 				palette={{ ...getGroupAttributes(props, 'palette') }}
 				isHover={isHover}
 				colorPaletteType='background'
 				onChangePalette={val => onChange(val)}
+				clientId={clientId}
 			/>
 			{!disableClipPath && (
 				<ClipPath

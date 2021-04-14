@@ -55,6 +55,7 @@ const TypographyControl = props => {
 		styleCards = false,
 		noPalette = false,
 		blockStyle,
+		clientId,
 	} = props;
 
 	const [typography, setTypography] = useState(
@@ -277,6 +278,7 @@ const TypographyControl = props => {
 							colorPaletteType='typography'
 							onChangePalette={val => onChange(val)}
 							deviceType={breakpoint}
+							clientId={clientId}
 						/>
 					)}
 				</Fragment>

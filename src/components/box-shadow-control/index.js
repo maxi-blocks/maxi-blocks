@@ -46,6 +46,7 @@ const BoxShadowControl = props => {
 		disableAdvanced = false,
 		isHover = false,
 		blockStyle,
+		clientId,
 	} = props;
 
 	const classes = classnames('maxi-shadow-control', className);
@@ -172,6 +173,7 @@ const BoxShadowControl = props => {
 						colorPaletteType='box-shadow'
 						onChangePalette={val => onChange(val)}
 						deviceType={breakpoint}
+						clientId={clientId}
 					/>
 					{!disableAdvanced && (
 						<Fragment>

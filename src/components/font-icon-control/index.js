@@ -55,6 +55,7 @@ const FontIconControl = props => {
 		disableColor,
 		isHover = false,
 		blockStyle,
+		clientId,
 	} = props;
 
 	const [activeOption, setActiveOption] = useState('iconColor');
@@ -258,6 +259,7 @@ const FontIconControl = props => {
 							}}
 							colorPaletteType='icon'
 							onChangePalette={val => onChange(val)}
+							clientId={clientId}
 						/>
 					)}
 

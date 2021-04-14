@@ -12,6 +12,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../../../extensions/styles';
+import getBlockStyle from '../../../../extensions/styles/getBlockStyle';
 
 /**
  * Styles
@@ -22,7 +23,7 @@ import './editor.scss';
  * BackgroundColor
  */
 const BackgroundColor = props => {
-	const { blockName, onChange, blockStyle, breakpoint } = props;
+	const { blockName, onChange, blockStyle, breakpoint, clientId } = props;
 
 	if (
 		blockName === 'maxi-blocks/divider-maxi' ||
@@ -40,7 +41,14 @@ const BackgroundColor = props => {
 				<div
 					className='toolbar-item__icon'
 					style={{
-						background: props['background-color'],
+						background:
+							props['background-color'] ||
+							`var(--maxi-${getBlockStyle(
+								blockStyle,
+								clientId
+							)}-color-${
+								props['palette-preset-background-color']
+							})`,
 						border: '1px solid #fff',
 					}}
 				/>

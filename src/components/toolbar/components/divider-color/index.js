@@ -13,6 +13,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../../../extensions/styles';
+import getBlockStyle from '../../../../extensions/styles/getBlockStyle';
 
 /**
  * Styles & Icons
@@ -24,7 +25,7 @@ import { toolbarDividerSetting } from '../../../../icons';
  * DividerColor
  */
 const DividerColor = props => {
-	const { blockName, onChange, blockStyle, breakpoint } = props;
+	const { blockName, onChange, blockStyle, breakpoint, clientId } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
@@ -36,7 +37,12 @@ const DividerColor = props => {
 				<div
 					className='toolbar-item__text-options__icon'
 					style={{
-						background: props['divider-border-color'],
+						background:
+							props['divider-border-color'] ||
+							`var(--maxi-${getBlockStyle(
+								blockStyle,
+								clientId
+							)}-color-${props['palette-preset-divider-color']})`,
 						borderWidth: '1px',
 						borderColor: '#fff',
 						borderStyle: 'solid',

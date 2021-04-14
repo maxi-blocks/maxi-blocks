@@ -261,9 +261,9 @@ const TypographyControl = props => {
 							className='maxi-typography-control__color'
 							color={getValue(`${prefix}color`)}
 							defaultColor={getDefault(`${prefix}color`)}
-							onChange={val => {
-								onChangeFormat({ [`${prefix}color`]: val });
-							}}
+							onChange={val =>
+								onChangeFormat({ [`${prefix}color`]: val })
+							}
 							disableGradient
 							blockName={blockName}
 							textLevel={textLevel}
@@ -276,6 +276,7 @@ const TypographyControl = props => {
 							}}
 							colorPaletteType='typography'
 							onChangePalette={val => onChange(val)}
+							deviceType={breakpoint}
 						/>
 					)}
 				</Fragment>

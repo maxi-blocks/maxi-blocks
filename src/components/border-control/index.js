@@ -200,6 +200,7 @@ const BorderControl = props => {
 						palette={{ ...getGroupAttributes(props, 'palette') }}
 						colorPaletteType='border'
 						onChangePalette={val => onChange(val)}
+						deviceType={breakpoint}
 					/>
 				)}
 

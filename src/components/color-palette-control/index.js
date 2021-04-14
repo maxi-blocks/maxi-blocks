@@ -7,10 +7,7 @@ import { FancyRadioControl } from '..';
 /**
  * Internal dependencies
  */
-import {
-	getPaletteDefault,
-	getDefaultAttribute,
-} from '../../extensions/styles';
+import { getPaletteDefault } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -59,11 +56,11 @@ const ColorPaletteControl = props => {
 				}-color`
 			] && (
 				<div className='maxi-sc-color-palette'>
-					{['1', '2', '3', '4', '5', '6', '7'].map(item => (
+					{[1, 2, 3, 4, 5, 6, 7].map(item => (
 						<div
 							key={`maxi-sc-color-palette__box__${item}`}
 							className={`maxi-sc-color-palette__box ${
-								String(currentItem) === item
+								currentItem === item
 									? 'maxi-sc-color-palette__box__active'
 									: ''
 							}`}
@@ -72,7 +69,7 @@ const ColorPaletteControl = props => {
 								onChange({
 									[`palette-preset-${colorPaletteType}${
 										isHover ? '-hover' : ''
-									}-color`]: e.currentTarget.dataset.item,
+									}-color`]: +e.currentTarget.dataset.item,
 								})
 							}
 						>
@@ -109,14 +106,38 @@ const ColorPaletteControl = props => {
 							`palette-custom-${colorPaletteType}${
 								isHover ? '-hover' : ''
 							}-color`
-						] &&
-						colorPaletteType === 'box-shadow'
-					)
-						onChange({
-							[`box-shadow-color-${deviceType}`]: getDefaultAttribute(
-								`box-shadow-color-${deviceType}`
-							),
-						});
+						]
+					) {
+						colorPaletteType === 'box-shadow' &&
+							onChange({
+								[`box-shadow-color-${deviceType}`]: '',
+							});
+
+						colorPaletteType === 'border' &&
+							onChange({
+								[`border-color-${deviceType}`]: '',
+							});
+
+						colorPaletteType === 'typography' &&
+							onChange({
+								[`color-${deviceType}`]: '',
+							});
+
+						colorPaletteType === 'background' &&
+							onChange({
+								['background-color']: '',
+							});
+
+						colorPaletteType === 'divider' &&
+							onChange({
+								['divider-border-color']: '',
+							});
+
+						colorPaletteType === 'icon' &&
+							onChange({
+								['icon-color']: '',
+							});
+					}
 				}}
 			/>
 		</div>

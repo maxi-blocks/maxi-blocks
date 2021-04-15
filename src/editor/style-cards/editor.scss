@@ -36,6 +36,119 @@
 		.maxi-style-cards__sc {
 			padding: 10px;
 			background: #fff;
+
+			button {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				transition: all 0.5s;
+				border: 2px solid #dddfe1;
+				border-radius: 5px;
+				padding: 8px;
+				color: #232533;
+
+				&:last-of-type {
+					margin-right: 0;
+				}
+				&:hover {
+					background-color: #f2f2f2;
+				}
+			}
+
+			&__more-sc {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 8px;
+
+				.components-base-control {
+					margin-bottom: 0;
+
+					.components-base-control__field {
+						margin-bottom: 0 !important;
+					}
+				}
+
+				&--add-more {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					width: 40px;
+					border: 2px solid #dddfe1;
+					border-radius: 5px;
+					margin-right: 5px;
+					padding: 0;
+				}
+				&--select {
+					flex: 1;
+					margin-right: 5px;
+
+					.components-select-control__input {
+						height: 36px !important;
+					}
+				}
+				&--reset,
+				&--delete {
+					svg {
+						width: 20px;
+					}
+				}
+				&--reset[type='button'] {
+					position: relative;
+					right: -2px;
+					border-top-right-radius: 0;
+					border-bottom-right-radius: 0;
+				}
+				&--delete[type='button'] {
+					border-top-left-radius: 0;
+					border-bottom-left-radius: 0;
+				}
+			}
+			&__actions {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-bottom: 8px;
+
+				button {
+					flex: 1;
+					margin-right: 5px;
+
+					&:last-of-type {
+						margin-right: 0;
+					}
+				}
+			}
+			&__ie {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-bottom: 8px;
+
+				button {
+					flex: 1;
+					margin-right: 5px;
+
+					&:last-of-type {
+						margin-right: 0;
+					}
+				}
+			}
+			&__save {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-bottom: 8px;
+
+				button {
+					flex: 2;
+				}
+				input[type='text'] {
+					height: 36px !important;
+					margin-right: 5px;
+					flex: 7;
+				}
+			}
 		}
 		.components-popover__content {
 			max-height: 900px !important;

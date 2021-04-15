@@ -1780,7 +1780,7 @@ const MaxiStyleCardsEditor = () => {
 								saveImportedStyleCard(newStyleCard);
 							}}
 						>
-							{__('Save', 'maxi-blocks')}
+							{__('Add', 'maxi-blocks')}
 						</Button>
 					</div>
 					<div className='maxi-style-cards__sc__ie'>

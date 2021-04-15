@@ -5,7 +5,7 @@ import { Fragment, useState } from '@wordpress/element';
 import { Button, SelectControl, Popover, Icon } from '@wordpress/components';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { isEmpty, forIn, isNil } from 'lodash';
-import { styleCardBoat, reset, SCdelete } from '../../icons';
+import { styleCardBoat, reset, SCdelete, SCaddMore } from '../../icons';
 import './editor.scss';
 
 import {
@@ -577,7 +577,9 @@ const MaxiStyleCardsTab = ({
 											if (val)
 												onChangeValue(
 													'h1-color-general',
-													getColor('h1-color-general'),
+													getColor(
+														'h1-color-general'
+													),
 													SCStyle
 												);
 											onChangeValue(
@@ -667,7 +669,9 @@ const MaxiStyleCardsTab = ({
 											if (val)
 												onChangeValue(
 													'h2-color-general',
-													getColor('h2-color-general'),
+													getColor(
+														'h2-color-general'
+													),
 													SCStyle
 												);
 											onChangeValue(
@@ -757,7 +761,9 @@ const MaxiStyleCardsTab = ({
 											if (val)
 												onChangeValue(
 													'h3-color-general',
-													getColor('h3-color-general'),
+													getColor(
+														'h3-color-general'
+													),
 													SCStyle
 												);
 											onChangeValue(
@@ -847,7 +853,9 @@ const MaxiStyleCardsTab = ({
 											if (val)
 												onChangeValue(
 													'h4-color-general',
-													getColor('h4-color-general'),
+													getColor(
+														'h4-color-general'
+													),
 													SCStyle
 												);
 											onChangeValue(
@@ -937,7 +945,9 @@ const MaxiStyleCardsTab = ({
 											if (val)
 												onChangeValue(
 													'h5-color-general',
-													getColor('h5-color-general'),
+													getColor(
+														'h5-color-general'
+													),
 													SCStyle
 												);
 											onChangeValue(
@@ -1027,7 +1037,9 @@ const MaxiStyleCardsTab = ({
 											if (val)
 												onChangeValue(
 													'h6-color-general',
-													getColor('h6-color-general'),
+													getColor(
+														'h6-color-general'
+													),
 													SCStyle
 												);
 											onChangeValue(
@@ -1586,22 +1598,29 @@ const MaxiStyleCardsEditor = () => {
 				className='maxi-style-cards__popover maxi-sidebar'
 				focusOnMount
 			>
-				<h2>
+				<h2 className='maxi-style-cards__popover__title'>
 					<Icon icon={styleCardBoat} />
 					{__('Style Card Editor', 'maxi-blocks')}
 				</h2>
+				<hr />
+				<div className='maxi-style-cards__popover__sub-title'>
+					{__(
+						'Group of blocks composed with a similar style or layout',
+						'maxi-blocks'
+					)}
+				</div>
 				<div className='maxi-style-cards__sc'>
-					<Button
-						className='maxi-style-cards-control__sc--add-more'
-						onClick={() => {
-							// TO DO: add cloud modal for SCs here
-						}}
-					>
-						{__('Add More Style Cards', 'maxi-blocks')}
-					</Button>
-					<div className='maxi-style-cards__sc--three'>
+					<div className='maxi-style-cards__sc__more-sc'>
+						<Button
+							className='maxi-style-cards__sc__more-sc--add-more'
+							onClick={() => {
+								// TO DO: add cloud modal for SCs here
+							}}
+						>
+							<Icon icon={SCaddMore} />
+						</Button>
 						<SelectControl
-							className='maxi-style-cards__sc-select'
+							className='maxi-style-cards__sc__more-sc--select'
 							value={currentSCkey}
 							options={getStyleCardsOptions()}
 							onChange={val => {
@@ -1610,7 +1629,7 @@ const MaxiStyleCardsEditor = () => {
 						/>
 						<Button
 							disabled={!canBeResettedState}
-							className='maxi-style-cards-control__sc--reset'
+							className='maxi-style-cards__sc__more-sc--reset'
 							onClick={() => {
 								if (
 									window.confirm(
@@ -1631,7 +1650,7 @@ const MaxiStyleCardsEditor = () => {
 						</Button>
 						<Button
 							disabled={isDefaultOrActiveState}
-							className='maxi-style-cards-control__sc--delete'
+							className='maxi-style-cards__sc__more-sc--delete'
 							onClick={() => {
 								const newStyleCards = {
 									...allStyleCards,
@@ -1665,8 +1684,9 @@ const MaxiStyleCardsEditor = () => {
 							<Icon icon={SCdelete} />
 						</Button>
 					</div>
-					<div className='maxi-style-cards__sc--three'>
+					<div className='maxi-style-cards__sc__actions'>
 						<Button
+							className='maxi-style-cards__sc__actions--preview'
 							disabled={false}
 							onClick={() => {
 								const previewButton = document.querySelector(
@@ -1684,6 +1704,7 @@ const MaxiStyleCardsEditor = () => {
 							{__('Preview', 'maxi-blocks')}
 						</Button>
 						<Button
+							className='maxi-style-cards__sc__actions--save'
 							onClick={() => {
 								if (isActive(currentSCkey)) {
 									if (
@@ -1711,6 +1732,7 @@ const MaxiStyleCardsEditor = () => {
 							{__('Save', 'maxi-blocks')}
 						</Button>
 						<Button
+							className='maxi-style-cards__sc__actions--apply'
 							disabled={false}
 							onClick={() => {
 								if (
@@ -1734,8 +1756,37 @@ const MaxiStyleCardsEditor = () => {
 							{__('Apply', 'maxi-blocks')}
 						</Button>
 					</div>
-					<div className='maxi-style-cards__sc--two'>
+					<div className='maxi-style-cards__sc__save'>
+						<input
+							type='text'
+							placeholder={__(
+								'Add your Style Card Name here',
+								'maxi-blocks'
+							)}
+							value={styleCardName}
+							onChange={e => setStyleCardName(e.target.value)}
+						/>
 						<Button
+							disabled={isEmpty(styleCardName)}
+							onClick={() => {
+								const newStyleCard = {
+									name: styleCardName,
+									status: '',
+									styleCard: { dark: {}, light: {} },
+									styleCardDefaults: {
+										...stateSC.styleCard,
+										...stateSC.styleCardDefaults,
+									},
+								};
+								saveImportedStyleCard(newStyleCard);
+							}}
+						>
+							{__('Add', 'maxi-blocks')}
+						</Button>
+					</div>
+					<div className='maxi-style-cards__sc__ie'>
+						<Button
+							className='maxi-style-cards__sc__ie--export'
 							disabled={false}
 							onClick={() => {
 								const fileName = `${stateSC.name}.txt`;
@@ -1764,7 +1815,10 @@ const MaxiStyleCardsEditor = () => {
 								}}
 								allowedTypes='text'
 								render={({ open }) => (
-									<Button onClick={open}>
+									<Button
+										className='maxi-style-cards__sc__ie--import'
+										onClick={open}
+									>
 										{__('Import', 'maxi-blocks')}
 									</Button>
 								)}
@@ -1772,34 +1826,7 @@ const MaxiStyleCardsEditor = () => {
 						</MediaUploadCheck>
 					</div>
 				</div>
-				<div className='maxi-style-cards-control__sc__save'>
-					<input
-						type='text'
-						placeholder={__(
-							'Add your Style Card Name here',
-							'maxi-blocks'
-						)}
-						value={styleCardName}
-						onChange={e => setStyleCardName(e.target.value)}
-					/>
-					<Button
-						disabled={isEmpty(styleCardName)}
-						onClick={() => {
-							const newStyleCard = {
-								name: styleCardName,
-								status: '',
-								styleCard: { dark: {}, light: {} },
-								styleCardDefaults: {
-									...stateSC.styleCard,
-									...stateSC.styleCardDefaults,
-								},
-							};
-							saveImportedStyleCard(newStyleCard);
-						}}
-					>
-						{__('Add New Style Card', 'maxi-blocks')}
-					</Button>
-				</div>
+				<hr />
 				<SettingTabsControl
 					disablePadding
 					items={[

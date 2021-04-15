@@ -1358,7 +1358,8 @@ const MaxiStyleCardsEditor = () => {
 		const inlineStyles = document.getElementById(
 			'maxi-blocks-sc-vars-inline-css'
 		);
-		inlineStyles.parentNode.removeChild(inlineStyles);
+		if (!isNil(inlineStyles))
+			inlineStyles.parentNode.removeChild(inlineStyles);
 		document.documentElement.style.removeProperty(
 			`--maxi-${style}-${prop}`
 		);

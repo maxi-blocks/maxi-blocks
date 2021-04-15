@@ -1825,6 +1825,7 @@ const MaxiStyleCardsEditor = () => {
 						</MediaUploadCheck>
 					</div>
 				</div>
+				<hr />
 				<SettingTabsControl
 					disablePadding
 					items={[

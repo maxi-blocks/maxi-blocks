@@ -1874,7 +1874,7 @@ const MaxiStyleCardsEditorPopUp = () => {
 				onClick={() => setIsVisible(!isVisible)}
 			>
 				<Icon icon={styleCardBoat} />
-				{__('Style Card Editor', 'maxi-blocks')}
+				<span>{__('Style Card Editor', 'maxi-blocks')}</span>
 			</Button>
 			{isVisible && <MaxiStyleCardsEditor />}
 		</Fragment>

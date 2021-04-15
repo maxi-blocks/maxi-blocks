@@ -1,9 +1,9 @@
 .maxi-responsive-selector {
 	.maxi-style-cards__popover {
 		position: fixed;
-		left: 25px !important;
 		top: 109px !important;
-		z-index: 999;
+		left: 25px !important;
+		z-index: 98;
 
 		hr {
 			border: 0;
@@ -169,13 +169,22 @@
 			}
 		}
 		.components-popover__content {
-			max-height: 900px !important;
-			min-width: 350px !important;
-			background: #f1f1f1 !important;
+			max-height: 100vh !important;
+			min-width: 350px;
+			background: #f1f1f1;
 		}
 	}
 }
 
 body .maxi-current-option {
 	background-color: #ff4a16;
+}
+
+@media only screen and (max-width: 768px) {
+	.maxi-responsive-selector {
+		.maxi-style-cards__popover {
+			top: 95px !important;
+			left: 105px !important;
+		}
+	}
 }

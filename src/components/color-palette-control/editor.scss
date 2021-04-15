@@ -20,7 +20,7 @@
 			cursor: pointer;
 			transition: all 0.5s;
 
-			&__active,
+			&--active,
 			&:hover {
 				border: 2px solid #bdbdbd;
 			}

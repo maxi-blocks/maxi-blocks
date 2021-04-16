@@ -6,6 +6,11 @@ import { Fragment, useEffect, useState } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import getBlockStyle from '../../extensions/styles/getBlockStyle';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -172,6 +177,9 @@ const MaxiToolbar = props => {
 					<div className='toolbar-wrapper'>
 						<div className='toolbar-block-custom-label'>
 							{customLabel}
+							<span className='toolbar-block-custom-label__block-style'>
+								{` | ${getBlockStyle(blockStyle, clientId)}`}
+							</span>
 						</div>
 						<Mover clientId={clientId} blockName={name} />
 						<ReusableBlocks clientId={clientId} />

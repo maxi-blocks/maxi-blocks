@@ -6,6 +6,10 @@
 				top: -25px !important;
 				.toolbar-block-custom-label {
 					top: -25px !important;
+
+					&__block-style {
+						text-transform: capitalize;
+					}
 				}
 			}
 		}

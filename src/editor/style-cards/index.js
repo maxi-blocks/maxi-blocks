@@ -14,6 +14,7 @@ import {
 	ColorControl,
 	TypographyControl,
 	FancyRadioControl,
+	SizeControl,
 } from '../../components';
 
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
@@ -287,64 +288,74 @@ const MaxiStyleCardsTab = ({
 						label: __('Button', 'maxi-blocks'),
 						content: (
 							<Fragment>
-								<FancyRadioControl
-									label={__(
-										'Use Global Text Colour',
-										'maxi-blocks'
-									)}
-									selected={getColor(
-										'button-text-color-global'
-									)}
-									options={[
-										{
-											label: __('Yes', 'maxi-blocks'),
-											value: 1,
-										},
-										{
-											label: __('No', 'maxi-blocks'),
-											value: 0,
-										},
-									]}
-									onChange={val => {
-										if (!val)
-											onChangeDelete(
-												'button-text-color',
-												SCStyle
-											);
-										if (val)
-											onChangeValue(
-												'button-text-color',
-												getColor('button-text-color'),
-												SCStyle
-											);
-										onChangeValue(
-											'button-text-color-global',
-											val,
-											SCStyle
-										);
-									}}
-								/>
-								{getColor('button-text-color-global') && (
-									<ColorControl
-										label={__('Button Text', 'maxi-blocks')}
-										className={`maxi-style-cards-control__sc__button-text-color--${SCStyle}`}
-										color={getColor('button-text-color')}
-										defaultColor={getStyleCardAttr(
-											'button-text-color',
-											SCStyle,
-											true
+								{deviceType === 'general' && (
+									<FancyRadioControl
+										label={__(
+											'Use Global Text Colour',
+											'maxi-blocks'
 										)}
+										selected={getColor(
+											'button-text-color-global'
+										)}
+										options={[
+											{
+												label: __('Yes', 'maxi-blocks'),
+												value: 1,
+											},
+											{
+												label: __('No', 'maxi-blocks'),
+												value: 0,
+											},
+										]}
 										onChange={val => {
+											if (!val)
+												onChangeDelete(
+													'button-text-color',
+													SCStyle
+												);
+											if (val)
+												onChangeValue(
+													'button-text-color',
+													getColor(
+														'button-text-color'
+													),
+													SCStyle
+												);
 											onChangeValue(
-												'button-text-color',
+												'button-text-color-global',
 												val,
 												SCStyle
 											);
 										}}
-										disableGradient
-										noPalette
 									/>
 								)}
+								{deviceType === 'general' &&
+									getColor('button-text-color-global') && (
+										<ColorControl
+											label={__(
+												'Button Text',
+												'maxi-blocks'
+											)}
+											className={`maxi-style-cards-control__sc__button-text-color--${SCStyle}`}
+											color={getColor(
+												'button-text-color'
+											)}
+											defaultColor={getStyleCardAttr(
+												'button-text-color',
+												SCStyle,
+												true
+											)}
+											onChange={val => {
+												onChangeValue(
+													'button-text-color',
+													val,
+													SCStyle
+												);
+											}}
+											disableGradient
+											noPalette
+										/>
+									)}
 								<TypographyControl
 									typography={getTypographyGroup('button')}
 									prefix='button-'
@@ -366,71 +377,76 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 								/>
-								<FancyRadioControl
-									label={__(
-										'Use Global Background Colour',
-										'maxi-blocks'
-									)}
-									selected={getColor(
-										'button-background-color-global'
-									)}
-									options={[
-										{
-											label: __('Yes', 'maxi-blocks'),
-											value: 1,
-										},
-										{
-											label: __('No', 'maxi-blocks'),
-											value: 0,
-										},
-									]}
-									onChange={val => {
-										if (!val)
-											onChangeDelete(
-												'button-background-color',
-												SCStyle
-											);
-										if (val)
-											onChangeValue(
-												'button-background-color',
-												getColor(
-													'button-background-color'
-												),
-												SCStyle
-											);
-										onChangeValue(
-											'button-background-color-global',
-											val,
-											SCStyle
-										);
-									}}
-								/>
-								{getColor('button-background-color-global') && (
-									<ColorControl
+								{deviceType === 'general' && (
+									<FancyRadioControl
 										label={__(
-											'Button Background',
+											'Use Global Background Colour',
 											'maxi-blocks'
 										)}
-										className={`maxi-style-cards-control__sc__button-bg-color--${SCStyle}`}
-										color={getColor(
-											'button-background-color'
+										selected={getColor(
+											'button-background-color-global'
 										)}
-										defaultColor={getStyleCardAttr(
-											'button-background-color',
-											SCStyle,
-											true
-										)}
+										options={[
+											{
+												label: __('Yes', 'maxi-blocks'),
+												value: 1,
+											},
+											{
+												label: __('No', 'maxi-blocks'),
+												value: 0,
+											},
+										]}
 										onChange={val => {
+											if (!val)
+												onChangeDelete(
+													'button-background-color',
+													SCStyle
+												);
+											if (val)
+												onChangeValue(
+													'button-background-color',
+													getColor(
+														'button-background-color'
+													),
+													SCStyle
+												);
 											onChangeValue(
-												'button-background-color',
+												'button-background-color-global',
 												val,
 												SCStyle
 											);
 										}}
-										disableGradient
-										noPalette
 									/>
 								)}
+								{deviceType === 'general' &&
+									getColor(
+										'button-background-color-global'
+									) && (
+										<ColorControl
+											label={__(
+												'Button Background',
+												'maxi-blocks'
+											)}
+											className={`maxi-style-cards-control__sc__button-bg-color--${SCStyle}`}
+											color={getColor(
+												'button-background-color'
+											)}
+											defaultColor={getStyleCardAttr(
+												'button-background-color',
+												SCStyle,
+												true
+											)}
+											onChange={val => {
+												onChangeValue(
+													'button-background-color',
+													val,
+													SCStyle
+												);
+											}}
+											disableGradient
+											noPalette
+										/>
+									)}
 							</Fragment>
 						),
 					},
@@ -460,7 +476,7 @@ const MaxiStyleCardsTab = ({
 										onChange={val => {
 											if (!val)
 												onChangeDelete(
-													'p-text-color',
+													'p-color-general',
 													SCStyle
 												);
 											if (val)
@@ -517,7 +533,6 @@ const MaxiStyleCardsTab = ({
 										const parsedContent = parseSCtypography(
 											obj
 										);
-										// console.log('parsedContent p' + JSON.stringify(parsedContent));
 										onChangeValue(
 											'typography',
 											parsedContent,
@@ -526,22 +541,61 @@ const MaxiStyleCardsTab = ({
 									}}
 								/>
 								{deviceType === 'general' && (
-									<ColorControl
-										label={__('Link', 'maxi-blocks')}
-										className={`maxi-style-cards-control__sc__link-color-${SCStyle}`}
-										color={getColor('link')}
-										defaultColor={getStyleCardAttr(
-											'link',
-											SCStyle,
-											true
+									<FancyRadioControl
+										label={__(
+											'Use Global Link Colour',
+											'maxi-blocks'
 										)}
+										selected={getColor('link-global')}
+										options={[
+											{
+												label: __('Yes', 'maxi-blocks'),
+												value: 1,
+											},
+											{
+												label: __('No', 'maxi-blocks'),
+												value: 0,
+											},
+										]}
 										onChange={val => {
-											onChangeValue('link', val, SCStyle);
+											if (!val)
+												onChangeDelete('link', SCStyle);
+											if (val)
+												onChangeValue(
+													'link',
+													getColor('link'),
+													SCStyle
+												);
+											onChangeValue(
+												'link-global',
+												val,
+												SCStyle
+											);
 										}}
-										disableGradient
-										noPalette
 									/>
 								)}
+								{deviceType === 'general' &&
+									getColor('link-global') && (
+										<ColorControl
+											label={__('Link', 'maxi-blocks')}
+											className={`maxi-style-cards-control__sc__link-color-${SCStyle}`}
+											color={getColor('link')}
+											defaultColor={getStyleCardAttr(
+												'link',
+												SCStyle,
+												true
+											)}
+											onChange={val => {
+												onChangeValue(
+													'link',
+													val,
+													SCStyle
+												);
+											}}
+											disableGradient
+											noPalette
+										/>
+									)}
 							</Fragment>
 						),
 					},
@@ -571,7 +625,7 @@ const MaxiStyleCardsTab = ({
 										onChange={val => {
 											if (!val)
 												onChangeDelete(
-													'h1-text-color',
+													'h1-color-general',
 													SCStyle
 												);
 											if (val)
@@ -663,7 +717,7 @@ const MaxiStyleCardsTab = ({
 										onChange={val => {
 											if (!val)
 												onChangeDelete(
-													'h2-text-color',
+													'h2-color-general',
 													SCStyle
 												);
 											if (val)
@@ -755,7 +809,7 @@ const MaxiStyleCardsTab = ({
 										onChange={val => {
 											if (!val)
 												onChangeDelete(
-													'h3-text-color',
+													'h3-color-general',
 													SCStyle
 												);
 											if (val)
@@ -847,7 +901,7 @@ const MaxiStyleCardsTab = ({
 										onChange={val => {
 											if (!val)
 												onChangeDelete(
-													'h4-text-color',
+													'h4-color-general',
 													SCStyle
 												);
 											if (val)
@@ -939,7 +993,7 @@ const MaxiStyleCardsTab = ({
 										onChange={val => {
 											if (!val)
 												onChangeDelete(
-													'h5-text-color',
+													'h5-color-general',
 													SCStyle
 												);
 											if (val)
@@ -1031,7 +1085,7 @@ const MaxiStyleCardsTab = ({
 										onChange={val => {
 											if (!val)
 												onChangeDelete(
-													'h6-text-color',
+													'h6-color-general',
 													SCStyle
 												);
 											if (val)
@@ -1100,114 +1154,357 @@ const MaxiStyleCardsTab = ({
 					deviceType === 'general' && {
 						label: __('Hover', 'maxi-blocks'),
 						content: (
-							<ColorControl
-								label={__('Hover', 'maxi-blocks')}
-								className={`maxi-style-cards-control__sc__hover-color-${SCStyle}`}
-								color={getColor('hover')}
-								defaultColor={getStyleCardAttr(
-									'hover',
-									SCStyle,
-									true
+							<Fragment>
+								<FancyRadioControl
+									label={__(
+										'Use Global Hover Colour',
+										'maxi-blocks'
+									)}
+									selected={getColor('hover-global')}
+									options={[
+										{
+											label: __('Yes', 'maxi-blocks'),
+											value: 1,
+										},
+										{
+											label: __('No', 'maxi-blocks'),
+											value: 0,
+										},
+									]}
+									onChange={val => {
+										if (!val)
+											onChangeDelete('hover', SCStyle);
+										if (val)
+											onChangeValue(
+												'hover',
+												getColor('hover'),
+												SCStyle
+											);
+										onChangeValue(
+											'hover-global',
+											val,
+											SCStyle
+										);
+									}}
+								/>
+								{getColor('hover-global') && (
+									<ColorControl
+										label={__('Hover', 'maxi-blocks')}
+										className={`maxi-style-cards-control__sc__hover-color-${SCStyle}`}
+										color={getColor('hover')}
+										defaultColor={getStyleCardAttr(
+											'hover',
+											SCStyle,
+											true
+										)}
+										onChange={val => {
+											onChangeValue(
+												'hover',
+												val,
+												SCStyle
+											);
+										}}
+										disableGradient
+										noPalette
+									/>
 								)}
-								onChange={val => {
-									onChangeValue('hover', val, SCStyle);
-								}}
-								disableGradient
-								noPalette
-							/>
+							</Fragment>
 						),
 					},
 					deviceType === 'general' && {
 						label: __('SVG Icon', 'maxi-blocks'),
 						content: (
 							<Fragment>
-								<ColorControl
-									label={__('Line', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__icon-line-${SCStyle}`}
-									color={getColor('icon-line')}
-									defaultColor={getStyleCardAttr(
-										'icon-line',
-										SCStyle,
-										true
+								<FancyRadioControl
+									label={__(
+										'Use Global Line Colour',
+										'maxi-blocks'
 									)}
+									selected={getColor('icon-line-global')}
+									options={[
+										{
+											label: __('Yes', 'maxi-blocks'),
+											value: 1,
+										},
+										{
+											label: __('No', 'maxi-blocks'),
+											value: 0,
+										},
+									]}
 									onChange={val => {
+										if (!val)
+											onChangeDelete(
+												'icon-line',
+												SCStyle
+											);
+										if (val)
+											onChangeValue(
+												'icon-line',
+												getColor('icon-line'),
+												SCStyle
+											);
 										onChangeValue(
+											'icon-line-global',
+											val,
+											SCStyle
+										);
+									}}
+								/>
+								{getColor('icon-line-global') && (
+									<ColorControl
+										label={__('Line', 'maxi-blocks')}
+										className={`maxi-style-cards-control__sc__icon-line-${SCStyle}`}
+										color={getColor('icon-line')}
+										defaultColor={getStyleCardAttr(
 											'icon-line',
-											val,
-											SCStyle
-										);
-									}}
-									disableGradient
-									noPalette
-								/>
-								<ColorControl
-									label={__('Fill', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__icon-fill-${SCStyle}`}
-									color={getColor('icon-fill')}
-									defaultColor={getStyleCardAttr(
-										'icon-fill',
-										SCStyle,
-										true
+											SCStyle,
+											true
+										)}
+										onChange={val => {
+											onChangeValue(
+												'icon-line',
+												val,
+												SCStyle
+											);
+										}}
+										disableGradient
+										noPalette
+									/>
+								)}
+								<FancyRadioControl
+									label={__(
+										'Use Global Fill Colour',
+										'maxi-blocks'
 									)}
+									selected={getColor('icon-fill-global')}
+									options={[
+										{
+											label: __('Yes', 'maxi-blocks'),
+											value: 1,
+										},
+										{
+											label: __('No', 'maxi-blocks'),
+											value: 0,
+										},
+									]}
 									onChange={val => {
+										if (!val)
+											onChangeDelete(
+												'icon-fill',
+												SCStyle
+											);
+										if (val)
+											onChangeValue(
+												'icon-fill',
+												getColor('icon-fill'),
+												SCStyle
+											);
 										onChangeValue(
-											'icon-fill',
+											'icon-fill-global',
 											val,
 											SCStyle
 										);
 									}}
-									disableGradient
-									noPalette
 								/>
+								{getColor('icon-fill-global') && (
+									<ColorControl
+										label={__('Fill', 'maxi-blocks')}
+										className={`maxi-style-cards-control__sc__icon-fill-${SCStyle}`}
+										color={getColor('icon-fill')}
+										defaultColor={getStyleCardAttr(
+											'icon-fill',
+											SCStyle,
+											true
+										)}
+										onChange={val => {
+											onChangeValue(
+												'icon-fill',
+												val,
+												SCStyle
+											);
+										}}
+										disableGradient
+										noPalette
+									/>
+								)}
 							</Fragment>
 						),
 					},
-					deviceType === 'general' && {
+					{
 						label: __('Font Icon', 'maxi-blocks'),
 						content: (
-							<ColorControl
-								label={__('Font Icon', 'maxi-blocks')}
-								className={`maxi-style-cards-control__sc__font-icon-${SCStyle}`}
-								color={getColor('font-icon-color')}
-								defaultColor={getStyleCardAttr(
-									'font-icon-color',
-									SCStyle,
-									true
+							<Fragment>
+								{deviceType === 'general' && (
+									<FancyRadioControl
+										label={__(
+											'Use Global Colour',
+											'maxi-blocks'
+										)}
+										selected={getColor(
+											'font-icon-color-global'
+										)}
+										options={[
+											{
+												label: __('Yes', 'maxi-blocks'),
+												value: 1,
+											},
+											{
+												label: __('No', 'maxi-blocks'),
+												value: 0,
+											},
+										]}
+										onChange={val => {
+											if (!val)
+												onChangeDelete(
+													'font-icon-color',
+													SCStyle
+												);
+											if (val)
+												onChangeValue(
+													'font-icon-color',
+													getColor('font-icon-color'),
+													SCStyle
+												);
+											onChangeValue(
+												'font-icon-color-global',
+												val,
+												SCStyle
+											);
+										}}
+									/>
 								)}
-								onChange={val => {
-									onChangeValue(
-										'font-icon-color',
-										val,
-										SCStyle
-									);
-								}}
-								disableGradient
-								noPalette
-							/>
+								{deviceType === 'general' &&
+									getColor('font-icon-color-global') && (
+										<ColorControl
+											label={__(
+												'Font Icon',
+												'maxi-blocks'
+											)}
+											className={`maxi-style-cards-control__sc__font-icon-${SCStyle}`}
+											color={getColor('font-icon-color')}
+											defaultColor={getStyleCardAttr(
+												'font-icon-color',
+												SCStyle,
+												true
+											)}
+											onChange={val => {
+												onChangeValue(
+													'font-icon-color',
+													val,
+													SCStyle
+												);
+											}}
+											disableGradient
+											noPalette
+										/>
+									)}
+								{deviceType !== 'general' && (
+									<SizeControl
+										label={__('Icon Size', 'maxi-blocks')}
+										unit='px'
+										defaultUnit='px'
+										// onChangeUnit={val =>
+										// 	onChange({
+										// 		[`icon-size-unit-${breakpoint}`]: val,
+										// 	})
+										// }
+										// defaultValue={getDefaultAttribute(
+										// 	`icon-size-${breakpoint}`
+										// )}
+										// value={getLastBreakpointAttribute(
+										// 	'icon-size',
+										// 	breakpoint,
+										// 	props
+										// )}
+										// onChangeValue={val =>
+										// 	onChange({
+										// 		[`icon-size-${breakpoint}`]: val,
+										// 	})
+										// }
+										minMaxSettings={{
+											px: {
+												min: 0,
+												max: 300,
+											},
+											em: {
+												min: 0,
+												max: 300,
+											},
+											vw: {
+												min: 0,
+												max: 100,
+											},
+											'%': {
+												min: 0,
+												max: 100,
+											},
+										}}
+									/>
+								)}
+							</Fragment>
 						),
 					},
 					deviceType === 'general' && {
 						label: __('Divider', 'maxi-blocks'),
 						content: (
-							<ColorControl
-								label={__('Divider', 'maxi-blocks')}
-								className={`maxi-style-cards-control__sc__divider-color-${SCStyle}`}
-								color={getColor('divider-color')}
-								defaultColor={getStyleCardAttr(
-									'divider-color',
-									SCStyle,
-									true
+							<Fragment>
+								<FancyRadioControl
+									label={__(
+										'Use Global Colour',
+										'maxi-blocks'
+									)}
+									selected={getColor('divider-color-global')}
+									options={[
+										{
+											label: __('Yes', 'maxi-blocks'),
+											value: 1,
+										},
+										{
+											label: __('No', 'maxi-blocks'),
+											value: 0,
+										},
+									]}
+									onChange={val => {
+										if (!val)
+											onChangeDelete(
+												'divider-color',
+												SCStyle
+											);
+										if (val)
+											onChangeValue(
+												'divider-color',
+												getColor('divider-color'),
+												SCStyle
+											);
+										onChangeValue(
+											'divider-color-global',
+											val,
+											SCStyle
+										);
+									}}
+								/>
+								{getColor('divider-color-global') && (
+									<ColorControl
+										label={__('Divider', 'maxi-blocks')}
+										className={`maxi-style-cards-control__sc__divider-color-${SCStyle}`}
+										color={getColor('divider-color')}
+										defaultColor={getStyleCardAttr(
+											'divider-color',
+											SCStyle,
+											true
+										)}
+										onChange={val => {
+											onChangeValue(
+												'divider-color',
+												val,
+												SCStyle
+											);
+										}}
+										disableGradient
+										noPalette
+									/>
 								)}
-								onChange={val => {
-									onChangeValue(
-										'divider-color',
-										val,
-										SCStyle
-									);
-								}}
-								disableGradient
-								noPalette
-							/>
+							</Fragment>
 						),
 					},
 				]}
@@ -1367,6 +1664,14 @@ const MaxiStyleCardsEditor = () => {
 
 		delete newStateSC.styleCard[style][prop];
 
+		if (prop.includes('general')) {
+			const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+			breakpoints.forEach(breakpoint => {
+				const newProp = prop.replace('general', breakpoint);
+				delete newStateSC.styleCard[style][newProp];
+			});
+		}
+
 		const inlineStyles = document.getElementById(
 			'maxi-blocks-sc-vars-inline-css'
 		);
@@ -1400,8 +1705,6 @@ const MaxiStyleCardsEditor = () => {
 				},
 			};
 		}
-
-		console.log(prop + ': ' + value);
 
 		changeStateSC(newStateSC);
 		changeSConBackend(newStateSC);

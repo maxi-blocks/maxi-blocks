@@ -62,7 +62,7 @@ body.maxi-blocks--active {
 				&.maxi-sc-#{$style}-icon-color-#{$color_number},
 				.maxi-sc-#{$style}-icon-color-#{$color_number} {
 					.maxi-font-icon-block__icon i {
-						color: var(--maxi-#{$style}-color-#{$color_number});
+						--maxi-#{$style}-font-icon-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				&.maxi-sc-#{$style}-box-shadow-color-#{$color_number},
@@ -77,6 +77,12 @@ body.maxi-blocks--active {
 				.maxi-sc-#{$style}-divider-color-#{$color_number} {
 					hr.maxi-divider-block__divider {
 						--maxi-#{$style}-divider-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-link-color-#{$color_number},
+				.maxi-sc-#{$style}-link-color-#{$color_number} {
+					a:not(.maxi-button-block__button) {
+						--maxi-#{$style}-link-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 			}
@@ -123,20 +129,18 @@ body.maxi-blocks--active {
 			&.maxi-button-block {
 				@each $color_number in $color_set {
 					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
-						> .maxi-button-block__button:hover,
-						> .maxi-background-displayer .maxi-background-displayer__color {
-							background-color: var(--maxi-#{$style}-color-#{$color_number});
+						> .maxi-button-block__button:hover {
+							--maxi-#{$style}-button-background-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 						}
 					}
 					&.maxi-sc-#{$style}-border-hover-color-#{$color_number} {
 						> .maxi-button-block__button:hover {
-							border-color: var(--maxi-#{$style}-color-#{$color_number});
+							--maxi-#{$style}-button-border-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 						}
 					}
 					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
-						> .maxi-button-block:hover {
-							color: var(--maxi-#{$style}-color-#{$color_number});
-						}
+						.maxi-button-block:hover {
+							--maxi-#{$style}-button-text-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});						}
 					}
 					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {
 						> .maxi-button-block__button:hover {
@@ -162,11 +166,11 @@ body.maxi-blocks--active {
 			}
 
 			a:not(.maxi-button-block__button) {
-				// color: var(--maxi-#{$style}-link);
+				color: var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette));
 				&:visited, &:hover, &:active, &:focus {
-			       //  color: var(--maxi-#{$style}-hover);
+			        color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
 			        span {
-			        	//color: var(--maxi-#{$style}-hover);
+			        	color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
 			        }
 			    }
 			}
@@ -176,37 +180,41 @@ body.maxi-blocks--active {
 				border-color: var(--maxi-#{$style}-divider-color, var(--maxi-#{$style}-divider-color-palette));
 			}
 
+			&.maxi-font-icon-block__icon i,
 			.maxi-font-icon-block__icon i {
 				color: var(--maxi-#{$style}-font-icon-color);
+				color: var(--maxi-#{$style}-font-icon-color, var(--maxi-#{$style}-font-icon-color-palette));
 			}
 
 			&.maxi-button-block .maxi-button-block__button,
 			.maxi-button-block .maxi-button-block__button {
 				color: var(--maxi-#{$style}-button-text-color, var(--maxi-#{$style}-button-text-color-palette));
 				background-color: var(--maxi-#{$style}-button-background-color, var(--maxi-#{$style}-button-background-color-palette));
-				font-family: var(--maxi-#{$style}-button-font-family);
-				font-weight: var(--maxi-#{$style}-button-font-weight);
+				font-family: var(--maxi-#{$style}-button-font-family-general);
+				font-weight: var(--maxi-#{$style}-button-font-weight-general);
 				font-style: var(--maxi-#{$style}-button-font-style-general);
 				text-transform: var(--maxi-#{$style}-button-text-transform-general);
 				text-decoration: var(--maxi-#{$style}-button-text-decoration-general);
-				&:hover, &:active, &:focus {
-			        // background-color: var(--maxi-#{$style}-hover);
+				&:visited, &:hover, &:active, &:focus {
+					color: var(--maxi-#{$style}-button-text-hover-color, var(--maxi-#{$style}-button-text-hover-color-palette, var(--maxi-#{$style}-button-text-color, var(--maxi-#{$style}-button-text-color-palette))));
+					background-color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-button-background-hover-color-palette,  var(--maxi-#{$style}-button-background-color, var(--maxi-#{$style}-button-background-color-palette))));
+					border-color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-button-border-color-palette));
 			    }
 			}
 
-			&.maxi-svg-icon-block,
-			.maxi-svg-icon-block {
-				.maxi-svg-icon-block__icon {
-					svg path {
-						&.maxi-svg-color-icon-fill {
-							fill: var(--maxi-#{$style}-highlight-icon-fill);
-						}
-						&.maxi-svg-color-icon-line {
-							stroke: var(--maxi-#{$style}-highlight-icon-line);
-						}
-					}
-				}
-			}
+			// &.maxi-svg-icon-block,
+			// .maxi-svg-icon-block {
+			// 	.maxi-svg-icon-block__icon {
+			// 		svg path {
+			// 			&.maxi-svg-color-icon-fill {
+			// 				fill: var(--maxi-#{$style}-highlight-icon-fill);
+			// 			}
+			// 			&.maxi-svg-color-icon-line {
+			// 				stroke: var(--maxi-#{$style}-highlight-icon-line);
+			// 			}
+			// 		}
+			// 	}
+			// }
 		}
 	}
 }

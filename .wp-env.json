@@ -1,4 +1,11 @@
 {
 	"core": "WordPress/WordPress#5.5.3",
-	"plugins": ["."]
+	"plugins": ["."],
+	"env": {
+		"tests": {
+			"mappings": {
+				"wp-content/plugins/maxi-blocks": "./e2e-tests/blocks"
+			}
+		}
+	}
 }

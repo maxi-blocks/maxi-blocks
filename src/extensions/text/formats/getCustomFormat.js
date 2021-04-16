@@ -1,7 +1,9 @@
 const getCustomFormat = (typography, className, isHover = false) => {
-	return (
-		typography[`custom-formats${isHover ? '-hover' : ''}`][className] || {}
-	);
+	const customFormats =
+		typography[`custom-formats${isHover ? '-hover' : ''}`] || {};
+	const currentCustomFormat = customFormats[className] || {};
+
+	return currentCustomFormat;
 };
 
 export default getCustomFormat;

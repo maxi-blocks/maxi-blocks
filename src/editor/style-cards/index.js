@@ -1535,6 +1535,8 @@ const MaxiStyleCardsEditor = () => {
 
 	window.addEventListener('beforeunload', () => maxiWarnIfUnsavedChanges());
 
+	const [useCustomStyleCard, setUseCustomStyleCard] = useState(true);
+
 	return (
 		!isEmpty(currentSC) && (
 			<Popover
@@ -1701,108 +1703,130 @@ const MaxiStyleCardsEditor = () => {
 							{__('Apply', 'maxi-blocks')}
 						</Button>
 					</div>
-					<div className='maxi-style-cards__sc__save'>
-						<input
-							type='text'
-							placeholder={__(
-								'Add your Style Card Name here',
-								'maxi-blocks'
-							)}
-							value={styleCardName}
-							onChange={e => setStyleCardName(e.target.value)}
-						/>
-						<Button
-							disabled={isEmpty(styleCardName)}
-							onClick={() => {
-								const newStyleCard = {
-									name: styleCardName,
-									status: '',
-									styleCard: { dark: {}, light: {} },
-									styleCardDefaults: {
-										...stateSC.styleCard,
-										...stateSC.styleCardDefaults,
-									},
-								};
-								saveImportedStyleCard(newStyleCard);
-							}}
-						>
-							{__('Add', 'maxi-blocks')}
-						</Button>
-					</div>
-					<div className='maxi-style-cards__sc__ie'>
-						<Button
-							className='maxi-style-cards__sc__ie--export'
-							disabled={false}
-							onClick={() => {
-								const fileName = `${stateSC.name}.txt`;
-								exportStyleCard(
-									{
-										...stateSC,
-										status: '',
-									},
-									fileName
-								);
-							}}
-						>
-							{__('Export', 'maxi-blocks')}
-						</Button>
-						<MediaUploadCheck>
-							<MediaUpload
-								onSelect={media => {
-									fetch(media.url)
-										.then(response => response.json())
-										.then(jsonData => {
-											saveImportedStyleCard(jsonData);
-										})
-										.catch(error => {
-											console.error(error);
-										});
-								}}
-								allowedTypes='text'
-								render={({ open }) => (
-									<Button
-										className='maxi-style-cards__sc__ie--import'
-										onClick={open}
-									>
-										{__('Import', 'maxi-blocks')}
-									</Button>
-								)}
-							/>
-						</MediaUploadCheck>
-					</div>
+					<FancyRadioControl
+						label={__('Use Custom Style Card', 'maxi-blocks')}
+						className='maxi-sc-color-palette__custom'
+						selected={useCustomStyleCard}
+						options={[
+							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
+						]}
+						onChange={val => setUseCustomStyleCard(val)}
+					/>
+					{!useCustomStyleCard && (
+						<Fragment>
+							<div className='maxi-style-cards__sc__save'>
+								<input
+									type='text'
+									placeholder={__(
+										'Add your Style Card Name here',
+										'maxi-blocks'
+									)}
+									value={styleCardName}
+									onChange={e =>
+										setStyleCardName(e.target.value)
+									}
+								/>
+								<Button
+									disabled={isEmpty(styleCardName)}
+									onClick={() => {
+										const newStyleCard = {
+											name: styleCardName,
+											status: '',
+											styleCard: { dark: {}, light: {} },
+											styleCardDefaults: {
+												...stateSC.styleCard,
+												...stateSC.styleCardDefaults,
+											},
+										};
+										saveImportedStyleCard(newStyleCard);
+									}}
+								>
+									{__('Add', 'maxi-blocks')}
+								</Button>
+							</div>
+							<div className='maxi-style-cards__sc__ie'>
+								<Button
+									className='maxi-style-cards__sc__ie--export'
+									disabled={false}
+									onClick={() => {
+										const fileName = `${stateSC.name}.txt`;
+										exportStyleCard(
+											{
+												...stateSC,
+												status: '',
+											},
+											fileName
+										);
+									}}
+								>
+									{__('Export', 'maxi-blocks')}
+								</Button>
+								<MediaUploadCheck>
+									<MediaUpload
+										onSelect={media => {
+											fetch(media.url)
+												.then(response =>
+													response.json()
+												)
+												.then(jsonData => {
+													saveImportedStyleCard(
+														jsonData
+													);
+												})
+												.catch(error => {
+													console.error(error);
+												});
+										}}
+										allowedTypes='text'
+										render={({ open }) => (
+											<Button
+												className='maxi-style-cards__sc__ie--import'
+												onClick={open}
+											>
+												{__('Import', 'maxi-blocks')}
+											</Button>
+										)}
+									/>
+								</MediaUploadCheck>
+							</div>
+						</Fragment>
+					)}
 				</div>
 				<hr />
-				<SettingTabsControl
-					disablePadding
-					items={[
-						{
-							label: __('Light Style Preset', 'maxi-blocks'),
-							content: (
-								<MaxiStyleCardsTab
-									SC={stateSC}
-									SCStyle='light'
-									onChangeValue={onChangeValue}
-									onChangeDelete={onChangeDelete}
-									deviceType={deviceType}
-									currentKey={getStyleCardActiveKey()}
-								/>
-							),
-						},
-						{
-							label: __('Dark Style Preset', 'maxi-blocks'),
-							content: (
-								<MaxiStyleCardsTab
-									SC={stateSC}
-									SCStyle='dark'
-									onChangeValue={onChangeValue}
-									onChangeDelete={onChangeDelete}
-									deviceType={deviceType}
-									currentKey={getStyleCardActiveKey()}
-								/>
-							),
-						},
-					]}
-				/>
+				{useCustomStyleCard && (
+					<SettingTabsControl
+						disablePadding
+						items={[
+							{
+								label: __('Light Style Preset', 'maxi-blocks'),
+								content: (
+									<MaxiStyleCardsTab
+										SC={stateSC}
+										SCStyle='light'
+										onChangeValue={onChangeValue}
+										onChangeDelete={onChangeDelete}
+										deviceType={deviceType}
+										currentKey={getStyleCardActiveKey()}
+									/>
+								),
+							},
+							{
+								label: __('Dark Style Preset', 'maxi-blocks'),
+								content: (
+									<MaxiStyleCardsTab
+										SC={stateSC}
+										SCStyle='dark'
+										onChangeValue={onChangeValue}
+										onChangeDelete={onChangeDelete}
+										deviceType={deviceType}
+										currentKey={getStyleCardActiveKey()}
+									/>
+								),
+							},
+						]}
+					/>
+				)}
 			</Popover>
 		)
 	);

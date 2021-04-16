@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextMaxi Writes a sentence on Text Maxi 1`] = `
+"<!-- wp:maxi-blocks/text-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"text-maxi-12\\",\\"isFirstOnHierarchy\\":true,\\"content\\":\\"Testing Text Maxi\\"} -->
+<div class=\\"maxi-motion-effect maxi-block maxi-text-block maxi-text-block-wrap maxi-light text-maxi-12\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing Text Maxi</p></div>
+<!-- /wp:maxi-blocks/text-maxi -->"
+`;

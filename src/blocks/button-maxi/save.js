@@ -18,8 +18,9 @@ import { isNil, isEmpty } from 'lodash';
  * Save
  */
 const save = props => {
-	const { className, attributes, clientId } = props;
+	const { className, attributes } = props;
 	const {
+		clientId,
 		uniqueID,
 		blockStyle,
 		extraClassName,

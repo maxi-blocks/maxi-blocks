@@ -19,7 +19,7 @@ import { isEmpty } from 'lodash';
  * Save
  */
 const save = props => {
-	const { className, attributes, clientId } = props;
+	const { className, attributes } = props;
 	const {
 		uniqueID,
 		blockStyle,
@@ -37,6 +37,7 @@ const save = props => {
 		mediaAltTitle,
 		altSelector,
 		SVGElement,
+		clientId,
 	} = attributes;
 
 	const hoverClasses = classnames(

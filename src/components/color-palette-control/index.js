@@ -61,7 +61,7 @@ const ColorPaletteControl = props => {
 							key={`maxi-sc-color-palette__box__${item}`}
 							className={`maxi-sc-color-palette__box ${
 								currentItem === item
-									? 'maxi-sc-color-palette__box__active'
+									? 'maxi-sc-color-palette__box--active'
 									: ''
 							}`}
 							data-item={item}

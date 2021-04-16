@@ -1,11 +1,15 @@
 .maxi-toolbar__popover {
-	z-index: 999;
+	z-index: 29;
 	&--has-breadcrumb {
 		.components-popover__content {
 			.toolbar-wrapper {
 				top: -25px !important;
 				.toolbar-block-custom-label {
 					top: -25px !important;
+
+					&__block-style {
+						text-transform: capitalize;
+					}
 				}
 			}
 		}

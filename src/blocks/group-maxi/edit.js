@@ -60,6 +60,18 @@ class edit extends MaxiBlock {
 		};
 	}
 
+	componentDidMount() {
+		/*
+		we have not accessed to the clientId in the save the file,
+		so saved it in attributes, in future we should find a better solution :)
+		*/
+		const { setAttributes, clientId } = this.props;
+
+		setAttributes({
+			clientId,
+		});
+	}
+
 	render() {
 		const {
 			attributes,

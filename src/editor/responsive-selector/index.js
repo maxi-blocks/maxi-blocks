@@ -156,8 +156,8 @@ const ResponsiveSelector = props => {
 					<Icon icon={cloudLib} />
 					<span>{__('Cloud Library', 'maxi-blocks')}</span>
 				</Button>
-				<MaxiStyleCardsEditorPopUp />
 			</div>
+			<MaxiStyleCardsEditorPopUp />
 		</div>
 	);
 };

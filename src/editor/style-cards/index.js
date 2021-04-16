@@ -167,6 +167,8 @@ const MaxiStyleCardsTab = ({
 			addActiveSCdropdownStyle(currentKey);
 		}, 300);
 
+	const [quickColorPreset, setQuickColorPreset] = useState(1);
+
 	return (
 		<div className='maxi-tab-content__box'>
 			<AccordionControl
@@ -176,107 +178,50 @@ const MaxiStyleCardsTab = ({
 						label: __('Quick Pick Colour Presets', 'maxi-blocks'),
 						content: (
 							<Fragment>
+								<div className='maxi-style-cards__quick-color-presets'>
+									{[1, 2, 3, 4, 5, 6, 7].map(item => (
+										<div
+											key={`maxi-style-cards__quick-color-presets__box__${item}`}
+											className={`maxi-style-cards__quick-color-presets__box ${
+												quickColorPreset === item
+													? 'maxi-style-cards__quick-color-presets__box--active'
+													: ''
+											}`}
+											data-item={item}
+											onClick={e =>
+												setQuickColorPreset(
+													+e.currentTarget.dataset
+														.item
+												)
+											}
+										>
+											<span
+												className={`maxi-style-cards__quick-color-presets__box__item maxi-style-cards__quick-color-presets__box__item__${item}`}
+												style={{
+													background: getColor(
+														`color-${item}`
+													),
+												}}
+											></span>
+										</div>
+									))}
+								</div>
 								<ColorControl
-									label={__('1st ', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__color-1-${SCStyle}`}
-									color={getColor('color-1')}
-									defaultColor={getStyleCardAttr(
-										'color-1',
-										SCStyle,
-										true
+									disableColorDisplay
+									disableOpacity
+									className={`maxi-style-cards-control__sc__color-${quickColorPreset}-${SCStyle}`}
+									color={getColor(
+										`color-${quickColorPreset}`
+									)}
+									defaultColor={getColor(
+										`color-${quickColorPreset}`
 									)}
 									onChange={val => {
-										onChangeValue('color-1', val, SCStyle);
-									}}
-									disableGradient
-									noPalette
-								/>
-								<ColorControl
-									label={__('2nd ', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__color-2-${SCStyle}`}
-									color={getColor('color-2')}
-									defaultColor={getStyleCardAttr(
-										'color-2',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue('color-2', val, SCStyle);
-									}}
-									disableGradient
-									noPalette
-								/>
-								<ColorControl
-									label={__('3rd ', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__color-3-${SCStyle}`}
-									color={getColor('color-3')}
-									defaultColor={getStyleCardAttr(
-										'color-3',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue('color-3', val, SCStyle);
-									}}
-									disableGradient
-									noPalette
-								/>
-								<ColorControl
-									label={__('4th ', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__color-4-${SCStyle}`}
-									color={getColor('color-4')}
-									defaultColor={getStyleCardAttr(
-										'color-4',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue('color-4', val, SCStyle);
-									}}
-									disableGradient
-									noPalette
-								/>
-								<ColorControl
-									label={__('5th ', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__color-5-${SCStyle}`}
-									color={getColor('color-5')}
-									defaultColor={getStyleCardAttr(
-										'color-5',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue('color-5', val, SCStyle);
-									}}
-									disableGradient
-									noPalette
-								/>
-								<ColorControl
-									label={__('6th ', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__color-6-${SCStyle}`}
-									color={getColor('color-6')}
-									defaultColor={getStyleCardAttr(
-										'color-6',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue('color-6', val, SCStyle);
-									}}
-									disableGradient
-									noPalette
-								/>
-								<ColorControl
-									label={__('7th ', 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__color-7-${SCStyle}`}
-									color={getColor('color-7')}
-									defaultColor={getStyleCardAttr(
-										'color-7',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue('color-7', val, SCStyle);
+										onChangeValue(
+											`color-${quickColorPreset}`,
+											val,
+											SCStyle
+										);
 									}}
 									disableGradient
 									noPalette
@@ -1893,6 +1838,8 @@ const MaxiStyleCardsEditor = () => {
 
 	window.addEventListener('beforeunload', () => maxiWarnIfUnsavedChanges());
 
+	const [useCustomStyleCard, setUseCustomStyleCard] = useState(true);
+
 	return (
 		!isEmpty(currentSC) && (
 			<Popover
@@ -2059,108 +2006,130 @@ const MaxiStyleCardsEditor = () => {
 							{__('Apply', 'maxi-blocks')}
 						</Button>
 					</div>
-					<div className='maxi-style-cards__sc__save'>
-						<input
-							type='text'
-							placeholder={__(
-								'Add your Style Card Name here',
-								'maxi-blocks'
-							)}
-							value={styleCardName}
-							onChange={e => setStyleCardName(e.target.value)}
-						/>
-						<Button
-							disabled={isEmpty(styleCardName)}
-							onClick={() => {
-								const newStyleCard = {
-									name: styleCardName,
-									status: '',
-									styleCard: { dark: {}, light: {} },
-									styleCardDefaults: {
-										...stateSC.styleCard,
-										...stateSC.styleCardDefaults,
-									},
-								};
-								saveImportedStyleCard(newStyleCard);
-							}}
-						>
-							{__('Add', 'maxi-blocks')}
-						</Button>
-					</div>
-					<div className='maxi-style-cards__sc__ie'>
-						<Button
-							className='maxi-style-cards__sc__ie--export'
-							disabled={false}
-							onClick={() => {
-								const fileName = `${stateSC.name}.txt`;
-								exportStyleCard(
-									{
-										...stateSC,
-										status: '',
-									},
-									fileName
-								);
-							}}
-						>
-							{__('Export', 'maxi-blocks')}
-						</Button>
-						<MediaUploadCheck>
-							<MediaUpload
-								onSelect={media => {
-									fetch(media.url)
-										.then(response => response.json())
-										.then(jsonData => {
-											saveImportedStyleCard(jsonData);
-										})
-										.catch(error => {
-											console.error(error);
-										});
-								}}
-								allowedTypes='text'
-								render={({ open }) => (
-									<Button
-										className='maxi-style-cards__sc__ie--import'
-										onClick={open}
-									>
-										{__('Import', 'maxi-blocks')}
-									</Button>
-								)}
-							/>
-						</MediaUploadCheck>
-					</div>
+					<FancyRadioControl
+						label={__('Use Custom Style Card', 'maxi-blocks')}
+						className='maxi-sc-color-palette__custom'
+						selected={useCustomStyleCard}
+						options={[
+							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
+						]}
+						onChange={val => setUseCustomStyleCard(val)}
+					/>
+					{!useCustomStyleCard && (
+						<Fragment>
+							<div className='maxi-style-cards__sc__save'>
+								<input
+									type='text'
+									placeholder={__(
+										'Add your Style Card Name here',
+										'maxi-blocks'
+									)}
+									value={styleCardName}
+									onChange={e =>
+										setStyleCardName(e.target.value)
+									}
+								/>
+								<Button
+									disabled={isEmpty(styleCardName)}
+									onClick={() => {
+										const newStyleCard = {
+											name: styleCardName,
+											status: '',
+											styleCard: { dark: {}, light: {} },
+											styleCardDefaults: {
+												...stateSC.styleCard,
+												...stateSC.styleCardDefaults,
+											},
+										};
+										saveImportedStyleCard(newStyleCard);
+									}}
+								>
+									{__('Add', 'maxi-blocks')}
+								</Button>
+							</div>
+							<div className='maxi-style-cards__sc__ie'>
+								<Button
+									className='maxi-style-cards__sc__ie--export'
+									disabled={false}
+									onClick={() => {
+										const fileName = `${stateSC.name}.txt`;
+										exportStyleCard(
+											{
+												...stateSC,
+												status: '',
+											},
+											fileName
+										);
+									}}
+								>
+									{__('Export', 'maxi-blocks')}
+								</Button>
+								<MediaUploadCheck>
+									<MediaUpload
+										onSelect={media => {
+											fetch(media.url)
+												.then(response =>
+													response.json()
+												)
+												.then(jsonData => {
+													saveImportedStyleCard(
+														jsonData
+													);
+												})
+												.catch(error => {
+													console.error(error);
+												});
+										}}
+										allowedTypes='text'
+										render={({ open }) => (
+											<Button
+												className='maxi-style-cards__sc__ie--import'
+												onClick={open}
+											>
+												{__('Import', 'maxi-blocks')}
+											</Button>
+										)}
+									/>
+								</MediaUploadCheck>
+							</div>
+						</Fragment>
+					)}
 				</div>
 				<hr />
-				<SettingTabsControl
-					disablePadding
-					items={[
-						{
-							label: __('Light Style Preset', 'maxi-blocks'),
-							content: (
-								<MaxiStyleCardsTab
-									SC={stateSC}
-									SCStyle='light'
-									onChangeValue={onChangeValue}
-									onChangeDelete={onChangeDelete}
-									deviceType={deviceType}
-									currentKey={getStyleCardActiveKey()}
-								/>
-							),
-						},
-						{
-							label: __('Dark Style Preset', 'maxi-blocks'),
-							content: (
-								<MaxiStyleCardsTab
-									SC={stateSC}
-									SCStyle='dark'
-									onChangeValue={onChangeValue}
-									onChangeDelete={onChangeDelete}
-									deviceType={deviceType}
-									currentKey={getStyleCardActiveKey()}
-								/>
-							),
-						},
-					]}
-				/>
+				{useCustomStyleCard && (
+					<SettingTabsControl
+						disablePadding
+						items={[
+							{
+								label: __('Light Style Preset', 'maxi-blocks'),
+								content: (
+									<MaxiStyleCardsTab
+										SC={stateSC}
+										SCStyle='light'
+										onChangeValue={onChangeValue}
+										onChangeDelete={onChangeDelete}
+										deviceType={deviceType}
+										currentKey={getStyleCardActiveKey()}
+									/>
+								),
+							},
+							{
+								label: __('Dark Style Preset', 'maxi-blocks'),
+								content: (
+									<MaxiStyleCardsTab
+										SC={stateSC}
+										SCStyle='dark'
+										onChangeValue={onChangeValue}
+										onChangeDelete={onChangeDelete}
+										deviceType={deviceType}
+										currentKey={getStyleCardActiveKey()}
+									/>
+								),
+							},
+						]}
+					/>
+				)}
 			</Popover>
 		)
 	);
@@ -2178,7 +2147,7 @@ const MaxiStyleCardsEditorPopUp = () => {
 				onClick={() => setIsVisible(!isVisible)}
 			>
 				<Icon icon={styleCardBoat} />
-				{__('Style Card Editor', 'maxi-blocks')}
+				<span>{__('Style Card Editor', 'maxi-blocks')}</span>
 			</Button>
 			{isVisible && <MaxiStyleCardsEditor />}
 		</Fragment>

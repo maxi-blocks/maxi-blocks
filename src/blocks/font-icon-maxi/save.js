@@ -14,8 +14,8 @@ import { isEmpty } from 'lodash';
  * Save
  */
 const save = props => {
-	const { className, attributes, clientId } = props;
-	const { uniqueID, blockStyle, extraClassName } = attributes;
+	const { className, attributes } = props;
+	const { uniqueID, blockStyle, extraClassName, clientId } = attributes;
 
 	const classes = classnames(
 		'maxi-motion-effect',

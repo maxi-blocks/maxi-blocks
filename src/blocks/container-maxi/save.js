@@ -23,13 +23,14 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { attributes, className, clientId } = props;
+	const { attributes, className } = props;
 	const {
 		uniqueID,
 		blockStyle,
 		defaultBlockStyle,
 		fullWidth,
 		extraClassName,
+		clientId,
 	} = attributes;
 
 	const classes = classnames(

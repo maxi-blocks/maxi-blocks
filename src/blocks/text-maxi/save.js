@@ -19,7 +19,7 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { className, attributes, clientId } = props;
+	const { className, attributes } = props;
 	const {
 		uniqueID,
 		blockStyle,
@@ -30,6 +30,7 @@ const save = props => {
 		isList,
 		typeOfList,
 		content,
+		clientId,
 	} = attributes;
 
 	const classes = classnames(

@@ -18,8 +18,14 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { attributes, className, clientId } = props;
-	const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
+	const { attributes, className } = props;
+	const {
+		uniqueID,
+		blockStyle,
+		extraClassName,
+		fullWidth,
+		clientId,
+	} = attributes;
 
 	const classes = classnames(
 		'maxi-block maxi-row-block',

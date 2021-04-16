@@ -61,6 +61,7 @@ const setFormat = ({
 				value,
 				breakpoint,
 				textLevel,
+				isHover,
 			});
 
 			return { ...cleanedTypography, content: cleanedContent };

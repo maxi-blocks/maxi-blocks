@@ -37,14 +37,16 @@ export const getFormatClassName = (typography, isHover) => {
 	);
 
 	let num = 0;
-	let currentClassName = `maxi-text-block__custom-format--${num}`;
+	let currentClassName = `maxi-text-block__custom-format--${num}${
+		isHover ? '--hover' : ''
+	}`;
 
 	while (customFormatsClasses.includes(currentClassName)) {
 		num += 1;
-		currentClassName = `maxi-text-block__custom-format--${num}`;
+		currentClassName = `maxi-text-block__custom-format--${num}${
+			isHover ? '--hover' : ''
+		}`;
 	}
-
-	if (isHover) currentClassName += '--hover';
 
 	return currentClassName;
 };
@@ -590,6 +592,7 @@ const setFormatWithClass = ({
 		value,
 		breakpoint,
 		textLevel,
+		isHover,
 	});
 
 	return {

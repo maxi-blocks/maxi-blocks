@@ -62,7 +62,7 @@ exports[`ColorControl should render ColorControl 1`] = `
         className="components-range-control__root css-cnpwwj-Root exqw8y20"
       >
         <div
-          className="components-range-control__wrapper css-1yn9onp-Wrapper exqw8y21"
+          className="components-range-control__wrapper css-1rs6pu4-Wrapper exqw8y21"
           color="var( --wp-admin-theme-color, #00669b)"
         >
           <input
@@ -85,12 +85,12 @@ exports[`ColorControl should render ColorControl 1`] = `
           />
           <span
             aria-hidden={true}
-            className="css-6zw57b-Rail exqw8y24"
+            className="css-4yztef-Rail exqw8y24"
             disabled={false}
           />
           <span
             aria-hidden={true}
-            className="components-range-control__track css-8esixb-Track exqw8y25"
+            className="components-range-control__track css-1gor53g-Track exqw8y25"
             disabled={false}
             style={
               Object {
@@ -99,7 +99,7 @@ exports[`ColorControl should render ColorControl 1`] = `
             }
           />
           <span
-            className="css-18yj1rn-ThumbWrapper exqw8y29"
+            className="css-htzmwh-ThumbWrapper exqw8y29"
             style={
               Object {
                 "left": "100%",
@@ -108,12 +108,12 @@ exports[`ColorControl should render ColorControl 1`] = `
           >
             <span
               aria-hidden={true}
-              className="css-13qro67-Thumb exqw8y210"
+              className="css-1577tgr-Thumb exqw8y210"
             />
           </span>
           <span
             aria-hidden={false}
-            className="components-simple-tooltip components-range-control__tooltip css-lyfq97-Tooltip exqw8y212"
+            className="components-simple-tooltip components-range-control__tooltip css-npx1u7-Tooltip exqw8y212"
             role="tooltip"
             style={
               Object {
@@ -126,20 +126,19 @@ exports[`ColorControl should render ColorControl 1`] = `
           </span>
         </div>
         <div
-          className="components-flex components-input-control components-number-control components-range-control__number exqw8y213 ep48uk90 e1cr7zh10 css-1gezd1o-Flex-Root-Input-InputNumber eboqfv50"
-          direction="column"
+          className="components-flex components-input-control components-number-control components-range-control__number exqw8y213 ep48uk90 e1cr7zh10 css-pw0epp-Flex-Root-Input-InputNumber eboqfv50"
         >
           <div
             className="components-flex__item e1cr7zh14 css-d373l0-Item-LabelWrapper eboqfv51"
           />
           <div
-            className="components-input-control__container css-2epv2a-Container e1cr7zh11"
+            className="components-input-control__container css-1ih9r4d-Container e1cr7zh11"
             disabled={false}
           >
             <input
               aria-label="Colour Opacity"
               autoComplete="off"
-              className="components-input-control__input css-18r749p-Input e1cr7zh12"
+              className="components-input-control__input css-168xjos-Input e1cr7zh12"
               disabled={false}
               id="inspector-input-control-0"
               inputMode="decimal"
@@ -149,7 +148,6 @@ exports[`ColorControl should render ColorControl 1`] = `
               onChange={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}
-              onMouseDown={[Function]}
               onPointerCancel={[Function]}
               onPointerDown={[Function]}
               onPointerMove={[Function]}
@@ -161,7 +159,7 @@ exports[`ColorControl should render ColorControl 1`] = `
             />
             <div
               aria-hidden="true"
-              className="components-input-control__backdrop css-tekiis-BackdropUI e1cr7zh15"
+              className="components-input-control__backdrop css-1tedpmo-BackdropUI e1cr7zh15"
               disabled={false}
             />
           </div>

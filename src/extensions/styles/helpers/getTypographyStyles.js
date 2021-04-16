@@ -29,7 +29,9 @@ const getTypographyStyles = (
 	const isCustomFormat = !!customFormatTypography;
 
 	const getName = (target, breakpoint) =>
-		`${prefix}${target}-${breakpoint}${isHover ? '-hover' : ''}`;
+		`${prefix}${target}-${breakpoint}${
+			!isCustomFormat && isHover ? '-hover' : ''
+		}`;
 
 	breakpoints.forEach(breakpoint => {
 		const typography = {

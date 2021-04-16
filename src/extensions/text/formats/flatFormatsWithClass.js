@@ -75,7 +75,8 @@ export const getRepeatedClassNames = (customFormats, formatValue) => {
 export const flatRepeatedClassNames = (
 	repeatedClasses,
 	formatValue,
-	typography
+	typography,
+	isHover
 ) => {
 	const newClassName = repeatedClasses[0];
 	repeatedClasses.shift();
@@ -99,7 +100,9 @@ export const flatRepeatedClassNames = (
 	});
 
 	repeatedClasses.forEach(className => {
-		delete newTypography['custom-formats'][className];
+		delete newTypography[`custom-formats${isHover ? '-hover' : ''}`][
+			className
+		];
 	});
 
 	return {
@@ -127,13 +130,19 @@ export const removeUnnecessaryFormats = ({
 	value,
 	breakpoint,
 	textLevel,
+	isHover,
 }) => {
-	const multiFormatObj = getMultiFormatObj({
-		...formatValue,
-		start: 0,
-		end: formatValue.formats.length,
-	});
-	const { 'custom-formats': customFormats } = typography;
+	const multiFormatObj = getMultiFormatObj(
+		{
+			...formatValue,
+			start: 0,
+			end: formatValue.formats.length,
+		},
+		isHover
+	);
+	const {
+		[`custom-formats${isHover ? '-hover' : ''}`]: customFormats,
+	} = typography;
 	let newFormatValue = { ...formatValue };
 	let newContent = content;
 
@@ -154,7 +163,9 @@ export const removeUnnecessaryFormats = ({
 
 				// Exist on typography, not in content
 				if (!format) {
-					delete typography['custom-formats'][target];
+					delete typography[
+						`custom-formats${isHover ? '-hover' : ''}`
+					][target];
 				}
 				// Style is empty
 				if (isFullFormat && isEmpty(cleanedStyle)) {
@@ -169,7 +180,9 @@ export const removeUnnecessaryFormats = ({
 						'maxi-blocks/text-custom'
 					);
 
-					delete typography['custom-formats'][target];
+					delete typography[
+						`custom-formats${isHover ? '-hover' : ''}`
+					][target];
 
 					return true;
 				}
@@ -217,8 +230,11 @@ const flatFormatsWithClass = ({
 	textLevel,
 	breakpoint,
 	returnFormatValue = false,
+	isHover = false,
 }) => {
-	const { 'custom-formats': customFormats } = typography;
+	const {
+		[`custom-formats${isHover ? '-hover' : ''}`]: customFormats,
+	} = typography;
 
 	const repeatedClasses = getRepeatedClassNames(customFormats, formatValue);
 
@@ -230,7 +246,12 @@ const flatFormatsWithClass = ({
 		const {
 			formatValue: preformattedFormatValue,
 			typography: preformattedTypography,
-		} = flatRepeatedClassNames(repeatedClasses, formatValue, typography);
+		} = flatRepeatedClassNames(
+			repeatedClasses,
+			formatValue,
+			typography,
+			isHover
+		);
 
 		newContent = toHTMLString({
 			value: preformattedFormatValue,
@@ -254,6 +275,7 @@ const flatFormatsWithClass = ({
 		value,
 		breakpoint,
 		textLevel,
+		isHover,
 	});
 
 	return {

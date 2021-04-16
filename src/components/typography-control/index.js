@@ -152,6 +152,7 @@ const TypographyControl = withFormatValue(props => {
 				},
 			];
 		}
+
 		const weightOptions = {
 			100: 'Thin (Hairline)',
 			200: 'Extra Light (Ultra Light)',
@@ -164,10 +165,15 @@ const TypographyControl = withFormatValue(props => {
 			900: 'Black (Heavy)',
 			950: 'Extra Black (Ultra Black)',
 		};
+
 		const response = [];
 		if (!fontOptions.includes('900')) {
 			fontOptions.push('900');
 		}
+		if (!fontOptions.includes('800')) {
+			fontOptions.push('800');
+		}
+
 		fontOptions.forEach(weight => {
 			const weightOption = {};
 			if (weightOptions[weight]) {
@@ -176,6 +182,7 @@ const TypographyControl = withFormatValue(props => {
 				response.push(weightOption);
 			}
 		});
+
 		return response;
 	};
 

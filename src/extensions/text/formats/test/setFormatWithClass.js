@@ -899,25 +899,6 @@ describe('setFormatWithClass', () => {
 					},
 				],
 			],
-			replacements: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-			],
 			text: 'Testing Text Maxi',
 			start: 15,
 			end: 16,
@@ -1030,25 +1011,6 @@ describe('setFormatWithClass', () => {
 						unregisteredAttributes: {},
 					},
 				],
-			],
-			replacements: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
 			],
 			text: 'Testing Text Maxi',
 			start: 13,
@@ -1259,25 +1221,6 @@ describe('setFormatWithClass', () => {
 						unregisteredAttributes: {},
 					},
 				],
-			],
-			replacements: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
 			],
 			text: 'Testing Text Maxi',
 			start: 13,
@@ -2008,25 +1951,6 @@ describe('setFormatWithClass', () => {
 				],
 				null,
 			],
-			replacements: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-			],
 			text: 'Testing Text Maxi',
 			start: 2,
 			end: 7,
@@ -2074,10 +1998,263 @@ describe('setFormatWithClass', () => {
 			JSON.stringify(expectedResult)
 		);
 	});
-	/**
-	 * Test to do:
-	 * 1. Same than last, but removing the content global custom format
-	 */
+	it('Remove a segment with custom format with opposite format value of the global custom format of the content', () => {
+		const formatValue = {
+			formats: [
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				null,
+				null,
+				null,
+				null,
+				null,
+			],
+			text: 'Testing Text Maxi',
+			start: 8,
+			end: 12,
+			activeFormats: [
+				{
+					type: 'maxi-blocks/text-custom',
+					attributes: {
+						className: 'maxi-text-block__custom-format--0',
+					},
+					unregisteredAttributes: {},
+				},
+			],
+		};
+		const typography = {
+			'font-weight-general': 800,
+			'custom-formats': {
+				'maxi-text-block__custom-format--0': {
+					'font-weight-general': 400,
+				},
+			},
+		};
+		const value = {
+			'font-weight': 800,
+		};
+		const isList = false;
+		const textLevel = 'p';
+
+		const result = setFormatWithClass({
+			formatValue: formatValueCleaner(formatValue),
+			typography,
+			value,
+			isList,
+			textLevel,
+		});
+
+		const expectedResult = {
+			'font-weight-general': 800,
+			'custom-formats': {},
+			content: 'Testing Text Maxi',
+		};
+
+		expect(JSON.stringify(result)).toStrictEqual(
+			JSON.stringify(expectedResult)
+		);
+	});
+	it('Add simple hover custom format', () => {
+		const formatValue = {
+			formats: [
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+			],
+			text: 'Testing Text Maxi',
+			start: 8,
+			end: 12,
+			activeFormats: [],
+		};
+		const typography = {};
+		const value = {
+			color: 'rgba(221,31,31,1)',
+		};
+		const isList = false;
+		const textLevel = 'p';
+		const isHover = true;
+
+		const result = setFormatWithClass({
+			formatValue: formatValueCleaner(formatValue),
+			typography,
+			value,
+			isList,
+			textLevel,
+			isHover,
+		});
+
+		const expectedResult = {
+			'custom-formats-hover': {
+				'maxi-text-block__custom-format--0--hover': {
+					'color-general': 'rgba(221,31,31,1)',
+				},
+			},
+			content:
+				'Testing <maxi-blocks/text-custom-hover className="maxi-text-block__custom-format--0--hover">Text</maxi-blocks/text-custom-hover> Maxi',
+		};
+
+		expect(JSON.stringify(result)).toStrictEqual(
+			JSON.stringify(expectedResult)
+		);
+	});
+	it('Add second simple custom format in a non-hover custom format segment', () => {
+		const formatValue = {
+			formats: [
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				[
+					{
+						type: 'maxi-blocks/text-custom-hover',
+						attributes: {
+							className:
+								'maxi-text-block__custom-format--0--hover',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom-hover',
+						attributes: {
+							className:
+								'maxi-text-block__custom-format--0--hover',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom-hover',
+						attributes: {
+							className:
+								'maxi-text-block__custom-format--0--hover',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom-hover',
+						attributes: {
+							className:
+								'maxi-text-block__custom-format--0--hover',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				null,
+				null,
+				null,
+				null,
+				null,
+			],
+			text: 'Testing Text Maxi',
+			start: 13,
+			end: 17,
+			activeFormats: [],
+		};
+		const typography = {
+			'custom-formats-hover': {
+				'maxi-text-block__custom-format--0--hover': {
+					'color-general': 'rgba(220,34,34,1)',
+				},
+			},
+		};
+		const value = {
+			'font-weight': '800',
+		};
+		const textLevel = 'p';
+		const isHover = true;
+		const isList = false;
+
+		const result = setFormatWithClass({
+			formatValue: formatValueCleaner(formatValue),
+			typography,
+			value,
+			isList,
+			textLevel,
+			isHover,
+		});
+
+		const expectedResult = {
+			'custom-formats-hover': {
+				'maxi-text-block__custom-format--0--hover': {
+					'color-general': 'rgba(220,34,34,1)',
+				},
+				'maxi-text-block__custom-format--1--hover': {
+					'font-weight-general': '800',
+				},
+			},
+			content:
+				'Testing <maxi-blocks/text-custom-hover className="maxi-text-block__custom-format--0--hover">Text</maxi-blocks/text-custom-hover> <maxi-blocks/text-custom-hover className="maxi-text-block__custom-format--1--hover">Maxi</maxi-blocks/text-custom-hover>',
+		};
+
+		expect(JSON.stringify(result)).toStrictEqual(
+			JSON.stringify(expectedResult)
+		);
+	});
 });
 
 describe('checkFormatCoincidence', () => {

@@ -36,12 +36,14 @@ export const styleObjectManipulator = ({
 	breakpoint,
 	currentStyle,
 	textLevel,
+	isHover = false,
 }) => {
 	const style = { ...currentStyle };
 
 	const sameDefaultLevels = ['p', 'ul', 'ol'];
 
-	const getCurrentValue = target => typography[`${target}-${breakpoint}`];
+	const getCurrentValue = target =>
+		typography[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
 	const getDefaultValue = target =>
 		defaultTypography[
 			sameDefaultLevels.includes(textLevel) ? 'p' : textLevel
@@ -51,6 +53,7 @@ export const styleObjectManipulator = ({
 		if (getCurrentValue(target) === val)
 			delete style[`${target}-${breakpoint}`];
 		else if (
+			!isHover &&
 			(isNil(getCurrentValue(target)) ||
 				(isEmpty(getCurrentValue(target)) &&
 					!isNumber(getCurrentValue(target)))) &&

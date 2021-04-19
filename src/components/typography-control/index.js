@@ -16,13 +16,11 @@ import FontFamilySelector from '../font-family-selector';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
 import { setFormat, getCustomFormatValue } from '../../extensions/text/formats';
-// import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 } from '../../extensions/styles';
-import { getValueWithSC } from '../../extensions/style-cards';
 
 /**
  * External dependencies

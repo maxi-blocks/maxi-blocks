@@ -3,6 +3,8 @@
  */
 import { __experimentalBlock } from '@wordpress/block-editor';
 import { withSelect } from '@wordpress/data';
+import { Fragment } from '@wordpress/element';
+import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -19,11 +21,18 @@ import {
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
+import MaxiModalIcon from '../../components/font-icon-picker/modal';
+
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+
+/**
+ * Icons
+ */
+import { toolbarReplaceImage } from '../../icons';
 
 /**
  * Content
@@ -103,9 +112,24 @@ class edit extends MaxiBlock {
 					/>
 				)}
 				{(!isEmpty(attributes['icon-name']) && (
-					<span className='maxi-font-icon-block__icon'>
-						<i className={attributes['icon-name']} />
-					</span>
+					<Fragment>
+						<div className='maxi-font-icon-block__icon__replace'>
+							<MaxiModalIcon
+								icon={attributes['icon-name']}
+								onChange={val =>
+									setAttributes({
+										'icon-name': val,
+									})
+								}
+								btnText=''
+								btnIcon={toolbarReplaceImage}
+							/>
+						</div>
+
+						<span className='maxi-font-icon-block__icon'>
+							<i className={attributes['icon-name']} />
+						</span>
+					</Fragment>
 				)) || (
 					<FontIconPicker
 						onChange={val =>

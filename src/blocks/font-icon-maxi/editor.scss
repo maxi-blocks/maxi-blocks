@@ -1,4 +1,26 @@
 .maxi-font-icon-block__icon {
+	&__replace {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		top: 0;
+		right: 0;
+		background: #232533;
+		z-index: 1;
+		border-radius: 3px;
+
+		.components-button.has-icon {
+			min-width: 25px;
+			height: 25px;
+			padding: 0;
+
+			svg {
+				width: 15px;
+				height: 15px;
+			}
+		}
+	}
 	i {
 		font-style: normal !important;
 	}

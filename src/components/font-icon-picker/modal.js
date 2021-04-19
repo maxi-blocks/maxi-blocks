@@ -20,7 +20,11 @@ const MaxiModalIcon = props => {
 	// Number of icons to display per page
 	const perPage = 55;
 
-	const { onChange, btnText = __('Set Icon', 'maxi-blocks') } = props;
+	const {
+		onChange,
+		btnText = __('Set Icon', 'maxi-blocks'),
+		btnIcon = '',
+	} = props;
 
 	// Component State
 	const [open, setOpen] = useState(false);
@@ -182,7 +186,9 @@ const MaxiModalIcon = props => {
 
 	return (
 		<Fragment>
-			<Button onClick={onClick}>{btnText}</Button>
+			<Button icon={btnIcon} onClick={onClick}>
+				{btnText}
+			</Button>
 			{open && (
 				<Modal
 					className='maxi-font-icon-picker__modal'

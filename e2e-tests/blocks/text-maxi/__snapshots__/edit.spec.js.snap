@@ -13,11 +13,11 @@ exports[`TextMaxi test text maxi merge 1`] = `
 `;
 
 exports[`TextMaxi text maxi split 1`] = `
-"<!-- wp:maxi-blocks/text-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"text-maxi-3\\",\\"isFirstOnHierarchy\\":true,\\"content\\":\\"Testing Text Maxi...\\"} -->
-<div class=\\"maxi-motion-effect maxi-block maxi-text-block maxi-text-block-wrap maxi-light text-maxi-3\\" id=\\"text-maxi-3\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing Text Maxi...</p></div>
+"<!-- wp:maxi-blocks/text-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"text-maxi-3\\",\\"isFirstOnHierarchy\\":true,\\"content\\":\\"Testing Text Maxi......\\"} -->
+<div class=\\"maxi-motion-effect maxi-block maxi-text-block maxi-text-block-wrap maxi-light text-maxi-3\\" id=\\"text-maxi-3\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing Text Maxi......</p></div>
 <!-- /wp:maxi-blocks/text-maxi -->
 
-<!-- wp:maxi-blocks/text-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"text-maxi-4\\",\\"isFirstOnHierarchy\\":true,\\"content\\":\\"...onSplit\\"} -->
-<div class=\\"maxi-motion-effect maxi-block maxi-text-block maxi-text-block-wrap maxi-light text-maxi-4\\" id=\\"text-maxi-4\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">...onSplit</p></div>
+<!-- wp:maxi-blocks/text-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"text-maxi-4\\",\\"isFirstOnHierarchy\\":true,\\"content\\":\\"onSplit\\"} -->
+<div class=\\"maxi-motion-effect maxi-block maxi-text-block maxi-text-block-wrap maxi-light text-maxi-4\\" id=\\"text-maxi-4\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">onSplit</p></div>
 <!-- /wp:maxi-blocks/text-maxi -->"
 `;

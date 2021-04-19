@@ -3,8 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 
+import { Fragment } from '@wordpress/element';
 import { SelectControl } from '@wordpress/components';
-import { Fragment, useState } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
@@ -15,7 +15,11 @@ import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
-import { setFormat, getCustomFormatValue } from '../../extensions/text/formats';
+import {
+	setFormat,
+	getCustomFormatValue,
+	withFormatValue,
+} from '../../extensions/text/formats';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -26,7 +30,8 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, trim } from 'lodash';
+import { trim, isNil } from 'lodash';
+
 /**
  * Styles
  */
@@ -35,7 +40,7 @@ import './editor.scss';
 /**
  * Component
  */
-const TypographyControl = props => {
+const TypographyControl = withFormatValue(props => {
 	const {
 		className,
 		textLevel = 'p',
@@ -56,13 +61,12 @@ const TypographyControl = props => {
 		clientId,
 	} = props;
 
-	const [typography, setTypography] = useState(
+	const typography =
 		props.typography ||
-			getGroupAttributes(props, [
-				'typography',
-				// ...(isHover && ['typographyHover']),
-			])
-	);
+		getGroupAttributes(props, [
+			'typography',
+			...(isHover ? ['typographyHover'] : []),
+		]);
 
 	const classes = classnames('maxi-typography-control', className);
 
@@ -126,7 +130,7 @@ const TypographyControl = props => {
 	};
 
 	const getWeightOptions = () => {
-		const { getFont } = select('maxiBlocks/fonts');
+		const { getFont } = select('maxiBlocks/text');
 
 		if (!isNil(getValue(`${prefix}font-family`))) {
 			const fontFiles = getFont(getValue(`${prefix}font-family`)).files;
@@ -197,20 +201,6 @@ const TypographyControl = props => {
 		return getDefaultAttribute(
 			`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
 		);
-
-		// 	const sameDefaultLevels = ['p', 'ul', 'ol'];
-		// 	if (
-		// 		sameDefaultLevels.some(level => {
-		// 			return level === textLevel;
-		// 		})
-		// 	)
-		// 		return getDefaultAttribute(
-		// 			`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
-		// 		);
-
-		// 	return defaultTypography[textLevel][
-		// 		`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
-		// 	];
 	};
 
 	const onChangeFormat = value => {
@@ -222,8 +212,6 @@ const TypographyControl = props => {
 			breakpoint,
 			isHover,
 		});
-
-		setTypography(obj);
 
 		onChange(obj);
 	};
@@ -453,6 +441,6 @@ const TypographyControl = props => {
 			)}
 		</div>
 	);
-};
+});
 
 export default TypographyControl;

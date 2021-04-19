@@ -9,7 +9,10 @@ import { applyFormat, toHTMLString, removeFormat } from '@wordpress/rich-text';
 /**
  * Internal dependencies
  */
-import { formatActive } from '../../../../extensions/text/formats';
+import {
+	formatActive,
+	withFormatValue,
+} from '../../../../extensions/text/formats';
 /**
  * Styles and icons
  */
@@ -18,7 +21,7 @@ import { toolbarCode } from '../../../../icons';
 /**
  * TextFormatCode
  */
-const TextFormatCode = props => {
+const TextFormatCode = withFormatValue(props => {
 	const { onChange, isList, formatValue } = props;
 
 	const formatName = 'core/code';
@@ -58,6 +61,6 @@ const TextFormatCode = props => {
 			</Button>
 		</Tooltip>
 	);
-};
+});
 
 export default TextFormatCode;

@@ -3,6 +3,7 @@ import alignment from './alignment';
 export const typography = {
 	'font-family-general': {
 		type: 'string',
+		default: 'Roboto',
 	},
 	'color-general': {
 		type: 'string',
@@ -308,6 +309,9 @@ export const typography = {
 	},
 	'vertical-align-xs': {
 		type: 'string',
+	},
+	'custom-formats': {
+		type: 'object',
 	},
 };
 

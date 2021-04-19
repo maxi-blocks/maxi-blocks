@@ -3,20 +3,21 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Icon } from '@wordpress/components';
-import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-import { getCustomFormatValue } from '../../../../extensions/text/formats';
+import {
+	getCustomFormatValue,
+	withFormatValue,
+} from '../../../../extensions/text/formats';
 import {
 	getGroupAttributes,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../../../extensions/styles';
-import getBlockStyle from '../../../../extensions/styles/getBlockStyle';
 
 /**
  * Icons
@@ -27,29 +28,19 @@ import { toolbarType } from '../../../../icons';
 /**
  * TextColor
  */
-const TextColor = props => {
-	const {
-		blockName,
-		onChange,
-		breakpoint,
-		blockStyle,
-		formatValue,
-		clientId,
-	} = props;
+const TextColor = withFormatValue(props => {
+	const { blockName, onChange, breakpoint, formatValue } = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const [color, setColor] = useState(
-		getCustomFormatValue({
-			typography,
-			formatValue,
-			prop: 'color',
-			breakpoint,
-		})
-	);
+	const color = getCustomFormatValue({
+		typography,
+		formatValue,
+		prop: 'color',
+		breakpoint,
+	});
 
 	return (
 		<ToolbarPopover
@@ -62,18 +53,11 @@ const TextColor = props => {
 						(color && {
 							background: color,
 						}) || {
-							background:
-								getLastBreakpointAttribute(
-									typography,
-									'color',
-									breakpoint
-								) ||
-								`var(--maxi-${getBlockStyle(
-									blockStyle,
-									clientId
-								)}-color-${
-									props['palette-preset-typography-color']
-								})`,
+							background: getLastBreakpointAttribute(
+								typography,
+								'color',
+								breakpoint
+							),
 						}
 					}
 				>
@@ -84,34 +68,26 @@ const TextColor = props => {
 				</div>
 			}
 			content={
-				<div className='toolbar-item__text-color__popover'>
-					<ColorControl
-						label={__('Text', 'maxi-blocks')}
-						defaultColor={getDefaultAttribute('color')}
-						color={
-							color ||
-							getLastBreakpointAttribute(
-								'color',
-								breakpoint,
-								typography
-							)
-						}
-						onChange={val =>
-							onChange({
-								[`color-${breakpoint}`]: val,
-							})
-						}
-						showPalette
-						blockStyle={blockStyle}
-						palette={{ ...getGroupAttributes(props, 'palette') }}
-						colorPaletteType='typography'
-						onChangePalette={val => onChange(val)}
-						deviceType={breakpoint}
-					/>
-				</div>
+				<ColorControl
+					label={__('Text', 'maxi-blocks')}
+					defaultColor={getDefaultAttribute('color')}
+					color={
+						color ||
+						getLastBreakpointAttribute(
+							'color',
+							breakpoint,
+							typography
+						)
+					}
+					onChange={val =>
+						onChange({
+							[`color-${breakpoint}`]: val,
+						})
+					}
+				/>
 			}
 		/>
 	);
-};
+});
 
 export default TextColor;

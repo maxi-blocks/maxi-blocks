@@ -32,7 +32,6 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('ArrowLeft');
 		await page.keyboard.press('ArrowLeft');
 		await page.keyboard.press('Enter');
-		await browser.restart;
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});

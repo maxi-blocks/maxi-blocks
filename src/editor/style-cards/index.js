@@ -189,10 +189,10 @@ const MaxiStyleCardsTab = ({
 	/*
 	 * Generates main tabs.
 	 *
-	 * @param {string} firstColor First color attribute, example: h1-color-general
-	 * @param {string} firstLabel First color label, examples: H1, Button
+	 * @param {string} firstColor First color attribute, example: p-color-general
+	 * @param {string} firstLabel First color label, examples: Hover, Button
 	 * @param {string} firstColorDefault Default for the first color, example: color-3
-	 * @param {bool or string} typographyPrefix Disable typography or set a prefix for it, examples: p, button, h4
+	 * @param {bool or string} typographyPrefix Disable typography or set a prefix for it, examples: p, button
 	 * @param {bool or string} typographyPrefix Disable secondColor or set an attribute for it, example: button-background-color
 	 * @param {string} secondLabel Second color label, examples: Link, Button Background, Icon Fill
 	 * @param {string} secondColorDefault Default for the second color, example: color-4
@@ -328,6 +328,94 @@ const MaxiStyleCardsTab = ({
 		};
 	};
 
+	const headingItems = () => {
+		const resultItems = [];
+
+		[1, 2, 3, 4, 5, 6].forEach(item => {
+			resultItems.push({
+				label: __(`H${item}`, 'maxi-blocks'),
+				content: (
+					<Fragment>
+						{deviceType === 'general' && (
+							<FancyRadioControl
+								label={__(
+									`Use Global H${item} Colour`,
+									'maxi-blocks'
+								)}
+								selected={processAttribute(
+									`h${item}-color-general-global`
+								)}
+								options={options}
+								onChange={val => {
+									onChangeColor(
+										val,
+										`h${item}-color-general`,
+										'color-5'
+									);
+								}}
+							/>
+						)}
+						{deviceType === 'general' &&
+							processAttribute(
+								`h${item}-color-general-global`
+							) && (
+								<ColorControl
+									label={__(`H${item} Text`, 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__h${item}-text-color--${SCStyle}`}
+									color={
+										processAttribute(
+											`h${item}-color-general`
+										) ||
+										getStyleCardAttr(
+											'color-5',
+											SCStyle,
+											true
+										)
+									}
+									defaultColor={getStyleCardAttr(
+										'color-5',
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue(
+											`h${item}-color-general`,
+											val,
+											SCStyle
+										);
+									}}
+									disableGradient
+									noPalette
+								/>
+							)}
+						<TypographyControl
+							typography={getTypography(`h${item}`)}
+							prefix={`h${item}-`}
+							disableFormats
+							className={`maxi-style-cards-control__sc__h${item}-typography`}
+							textLevel={`h${item}`}
+							hideAlignment
+							hideTextShadow
+							breakpoint={deviceType}
+							noPalette
+							styleCards
+							onChange={obj => {
+								const parsedTypography = parseTypography(obj);
+								onChangeValue(
+									'typography',
+									parsedTypography,
+									SCStyle
+								);
+							}}
+						/>
+					</Fragment>
+				),
+			});
+		});
+
+		return resultItems;
+	};
+
 	const [quickColorPreset, setQuickColorPreset] = useState(1);
 
 	return (
@@ -408,48 +496,10 @@ const MaxiStyleCardsTab = ({
 						'Link',
 						'color-4'
 					),
-					generateTab(
-						'h1-color-general',
-						'H1',
-						'color-5',
-						'h1',
-						false
-					),
-					generateTab(
-						'h2-color-general',
-						'H2',
-						'color-5',
-						'h2',
-						false
-					),
-					generateTab(
-						'h3-color-general',
-						'H3',
-						'color-5',
-						'h3',
-						false
-					),
-					generateTab(
-						'h4-color-general',
-						'H4',
-						'color-5',
-						'h4',
-						false
-					),
-					generateTab(
-						'h5-color-general',
-						'H5',
-						'color-5',
-						'h5',
-						false
-					),
-					generateTab(
-						'h6-color-general',
-						'H6',
-						'color-5',
-						'h6',
-						false
-					),
+					{
+						label: __('Headings', 'maxi-blocks'),
+						content: <SettingTabsControl items={headingItems()} />,
+					},
 					generateTab('hover', 'Hover', 'color-6', false, false),
 					generateTab(
 						'icon-line',

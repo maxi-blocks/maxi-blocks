@@ -6,10 +6,6 @@
 				top: -25px !important;
 				.toolbar-block-custom-label {
 					top: -25px !important;
-
-					&__block-style {
-						text-transform: capitalize;
-					}
 				}
 			}
 		}
@@ -39,6 +35,10 @@
 				position: absolute;
 				top: -25px;
 				left: 0;
+
+				&__block-style {
+					text-transform: capitalize;
+				}
 			}
 			@at-root .rtl #{&} {
 				flex-direction: row-reverse;

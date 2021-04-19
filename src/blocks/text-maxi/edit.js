@@ -28,15 +28,11 @@ import {
 	MotionPreview,
 } from '../../components';
 import {
-	generateFormatValue,
-	setCustomFormatsWhenPaste,
-} from '../../extensions/text/formats';
-import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import getStyles from './styles';
-import { onReplace, onMerge, onSplit } from './utils';
+import { onMerge, onSplit } from './utils';
 
 /**
  * External dependencies
@@ -81,6 +77,7 @@ class edit extends MaxiBlock {
 			className,
 			isSelected,
 			setAttributes,
+			onReplace,
 			onRemove,
 			deviceType,
 			clientId,
@@ -159,49 +156,12 @@ class edit extends MaxiBlock {
 							ref={this.blockRef}
 							className='maxi-text-block__content'
 							value={content}
-							onChange={content => {
-								setAttributes({ content });
-
-								const formatElement = {
-									multilineTag: isList ? 'li' : undefined,
-									multilineWrapperTags: isList
-										? typeOfList
-										: undefined,
-								};
-
-								const formatValue = generateFormatValue(
-									formatElement,
-									this.blockRef ? this.blockRef.current : null
-								);
-
-								/**
-								 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-								 * and add some coding manually
-								 * This next script will check if there is any format directly related with
-								 * native format 'core/link' and if it's so, will format it in Maxi Blocks way
-								 */
-								const cleanCustomProps = setCustomFormatsWhenPaste(
-									{
-										formatValue,
-										typography: getGroupAttributes(
-											attributes,
-											'typography'
-										),
-										isList,
-										typeOfList,
-										content,
-										textLevel,
-									}
-								);
-
-								if (cleanCustomProps)
-									setAttributes(cleanCustomProps);
-							}}
+							onChange={content => setAttributes({ content })}
 							tagName={textLevel}
 							onSplit={value =>
 								onSplit(this.props.attributes, value)
 							}
-							onReplace={blocks => onReplace(this.props, blocks)}
+							onReplace={onReplace}
 							onMerge={forward => onMerge(this.props, forward)}
 							onRemove={onRemove}
 							placeholder={__(
@@ -212,9 +172,9 @@ class edit extends MaxiBlock {
 							__unstableEmbedURLOnPaste
 							__unstableAllowPrefixTransformations
 						>
-							{({ value }) => {
+							{({ value: formatValue }) => {
 								dispatch('maxiBlocks/text').sendFormatValue(
-									value,
+									formatValue,
 									clientId
 								);
 							}}
@@ -253,9 +213,9 @@ class edit extends MaxiBlock {
 							reversed={!!listReversed}
 							type={typeOfList}
 						>
-							{({ value, onChange }) => {
+							{({ value: formatValue, onChange }) => {
 								dispatch('maxiBlocks/text').sendFormatValue(
-									value,
+									formatValue,
 									clientId
 								);
 
@@ -268,7 +228,7 @@ class edit extends MaxiBlock {
 												onUse={() => {
 													onChange(
 														__unstableOutdentListItems(
-															value
+															formatValue
 														)
 													);
 												}}
@@ -279,7 +239,7 @@ class edit extends MaxiBlock {
 												onUse={() => {
 													onChange(
 														__unstableIndentListItems(
-															value,
+															formatValue,
 															{ type: typeOfList }
 														)
 													);
@@ -291,7 +251,7 @@ class edit extends MaxiBlock {
 												onUse={() => {
 													onChange(
 														__unstableIndentListItems(
-															value,
+															formatValue,
 															{ type: typeOfList }
 														)
 													);
@@ -303,7 +263,7 @@ class edit extends MaxiBlock {
 												onUse={() => {
 													onChange(
 														__unstableOutdentListItems(
-															value
+															formatValue
 														)
 													);
 												}}

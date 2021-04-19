@@ -1,7 +1,18 @@
 /**
  * WordPress dependencies
  */
-import { createBlock } from '@wordpress/blocks';
+import { createBlock, getBlockAttributes } from '@wordpress/blocks';
+
+/**
+ * Internal dependencies
+ */
+import {
+	generateFormatValue,
+	setCustomFormatsWhenPaste,
+} from '../../extensions/text/formats';
+import { getGroupAttributes } from '../../extensions/styles';
+
+const name = 'maxi-blocks/text-maxi';
 
 const transforms = {
 	from: [
@@ -9,7 +20,7 @@ const transforms = {
 			type: 'block',
 			blocks: ['core/paragraph'],
 			transform: ({ content }) => {
-				return createBlock('maxi-blocks/text-maxi', {
+				return createBlock(name, {
 					content,
 				});
 			},
@@ -18,11 +29,80 @@ const transforms = {
 			type: 'block',
 			blocks: ['core/heading'],
 			transform: ({ content, level }) => {
-				return createBlock('maxi-blocks/text-maxi', {
+				return createBlock(name, {
 					content,
 					textLevel: `h${level}`,
 				});
 			},
+		},
+		{
+			type: 'raw',
+			selectors: 'p,h1,h2,h3,h4,h5,h6',
+			schema: ({ phrasingContentSchema, isPaste }) => {
+				const schema = {
+					children: phrasingContentSchema,
+					attributes: isPaste ? [] : ['style', 'id'],
+				};
+				return {
+					p: schema,
+					h1: schema,
+					h2: schema,
+					h3: schema,
+					h4: schema,
+					h5: schema,
+					h6: schema,
+					ul: schema,
+					ol: schema,
+				};
+			},
+			isMatch: () => true,
+			transform: node => {
+				const attributes = getBlockAttributes(name);
+				const nodeName = node.nodeName.toLowerCase();
+				const isList = ['ul', 'ol'].includes(nodeName);
+				attributes.content = node.innerHTML;
+
+				if (isList) {
+					attributes.isList = true;
+					attributes.typeOfList = nodeName;
+				} else attributes.textLevel = nodeName;
+
+				const { textAlign } = node.style || {};
+
+				if (
+					textAlign === 'left' ||
+					textAlign === 'center' ||
+					textAlign === 'right'
+				) {
+					attributes['text-alignment-general'] = textAlign;
+				}
+
+				const formatElement = {
+					multilineTag: isList ? 'li' : undefined,
+					multilineWrapperTags: isList ? nodeName : undefined,
+				};
+
+				const formatValue = generateFormatValue(formatElement, node);
+
+				const { typeOfList, content, textLevel } = attributes;
+
+				const cleanCustomProps = setCustomFormatsWhenPaste({
+					formatValue,
+					typography: getGroupAttributes(attributes, 'typography'),
+					isList,
+					typeOfList,
+					content,
+					textLevel,
+				});
+
+				const newAttributes = {
+					...attributes,
+					...cleanCustomProps,
+				};
+
+				return createBlock(name, newAttributes);
+			},
+			priority: 1,
 		},
 	],
 };

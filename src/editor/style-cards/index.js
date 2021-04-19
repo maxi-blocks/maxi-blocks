@@ -168,6 +168,103 @@ const MaxiStyleCardsTab = ({
 
 	const [quickColorPreset, setQuickColorPreset] = useState(1);
 
+	const headingItems = () => {
+		let resultItems = [];
+
+		[1, 2, 3, 4, 5, 6].forEach(item => {
+			resultItems.push({
+				label: __(`H${item}`, 'maxi-blocks'),
+				content: (
+					<Fragment>
+						{deviceType === 'general' && (
+							<FancyRadioControl
+								label={__(
+									`Use Global H${item} Colour`,
+									'maxi-blocks'
+								)}
+								selected={getColor(
+									`h${item}-color-general-global`
+								)}
+								options={[
+									{
+										label: __('Yes', 'maxi-blocks'),
+										value: 1,
+									},
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 0,
+									},
+								]}
+								onChange={val => {
+									if (!val)
+										onChangeDelete(
+											`h${item}-text-color`,
+											SCStyle
+										);
+									if (val)
+										onChangeValue(
+											`h${item}-color-general`,
+											getColor(`h${item}-color-general`),
+											SCStyle
+										);
+									onChangeValue(
+										`h${item}-color-general-global`,
+										val,
+										SCStyle
+									);
+								}}
+							/>
+						)}
+						{deviceType === 'general' &&
+							getColor(`h${item}-color-general-global`) && (
+								<ColorControl
+									label={__(`H${item} Text`, 'maxi-blocks')}
+									className={`maxi-style-cards-control__sc__h${item}-text-color--${SCStyle}`}
+									color={getColor(`h${item}-color-general`)}
+									defaultColor={getStyleCardAttr(
+										`h${item}-color-general`,
+										SCStyle,
+										true
+									)}
+									onChange={val => {
+										onChangeValue(
+											`h${item}-color-general`,
+											val,
+											SCStyle
+										);
+									}}
+									disableGradient
+									noPalette
+								/>
+							)}
+						<TypographyControl
+							typography={getTypographyGroup(`h${item}`)}
+							prefix={`h${item}-`}
+							disableFormats
+							className={`maxi-style-cards-control__sc__h${item}-typography`}
+							textLevel={`h${item}`}
+							hideAlignment
+							hideTextShadow
+							breakpoint={deviceType}
+							noPalette
+							styleCards
+							onChange={obj => {
+								const parsedTypography = parseSCtypography(obj);
+								onChangeValue(
+									'typography',
+									parsedTypography,
+									SCStyle
+								);
+							}}
+						/>
+					</Fragment>
+				),
+			});
+		});
+
+		return resultItems;
+	};
+
 	return (
 		<div className='maxi-tab-content__box'>
 			<AccordionControl
@@ -491,556 +588,8 @@ const MaxiStyleCardsTab = ({
 						),
 					},
 					{
-						label: __('H1', 'maxi-blocks'),
-						content: (
-							<Fragment>
-								{deviceType === 'general' && (
-									<FancyRadioControl
-										label={__(
-											'Use Global H1 Colour',
-											'maxi-blocks'
-										)}
-										selected={getColor(
-											'h1-color-general-global'
-										)}
-										options={[
-											{
-												label: __('Yes', 'maxi-blocks'),
-												value: 1,
-											},
-											{
-												label: __('No', 'maxi-blocks'),
-												value: 0,
-											},
-										]}
-										onChange={val => {
-											if (!val)
-												onChangeDelete(
-													'h1-text-color',
-													SCStyle
-												);
-											if (val)
-												onChangeValue(
-													'h1-color-general',
-													getColor(
-														'h1-color-general'
-													),
-													SCStyle
-												);
-											onChangeValue(
-												'h1-color-general-global',
-												val,
-												SCStyle
-											);
-										}}
-									/>
-								)}
-								{deviceType === 'general' &&
-									getColor('h1-color-general-global') && (
-										<ColorControl
-											label={__('H1 Text', 'maxi-blocks')}
-											className={`maxi-style-cards-control__sc__h1-text-color--${SCStyle}`}
-											color={getColor('h1-color-general')}
-											defaultColor={getStyleCardAttr(
-												'h1-color-general',
-												SCStyle,
-												true
-											)}
-											onChange={val => {
-												onChangeValue(
-													'h1-color-general',
-													val,
-													SCStyle
-												);
-											}}
-											disableGradient
-											noPalette
-										/>
-									)}
-								<TypographyControl
-									typography={getTypographyGroup('h1')}
-									prefix='h1-'
-									disableFormats
-									className='maxi-style-cards-control__sc__h1-typography'
-									textLevel='h1'
-									hideAlignment
-									hideTextShadow
-									breakpoint={deviceType}
-									noPalette
-									styleCards
-									onChange={obj => {
-										const parsedTypography = parseSCtypography(
-											obj
-										);
-										onChangeValue(
-											'typography',
-											parsedTypography,
-											SCStyle
-										);
-									}}
-								/>
-							</Fragment>
-						),
-					},
-					{
-						label: __('H2', 'maxi-blocks'),
-						content: (
-							<Fragment>
-								{deviceType === 'general' && (
-									<FancyRadioControl
-										label={__(
-											'Use Global H2 Colour',
-											'maxi-blocks'
-										)}
-										selected={getColor(
-											'h2-color-general-global'
-										)}
-										options={[
-											{
-												label: __('Yes', 'maxi-blocks'),
-												value: 1,
-											},
-											{
-												label: __('No', 'maxi-blocks'),
-												value: 0,
-											},
-										]}
-										onChange={val => {
-											if (!val)
-												onChangeDelete(
-													'h2-text-color',
-													SCStyle
-												);
-											if (val)
-												onChangeValue(
-													'h2-color-general',
-													getColor(
-														'h2-color-general'
-													),
-													SCStyle
-												);
-											onChangeValue(
-												'h2-color-general-global',
-												val,
-												SCStyle
-											);
-										}}
-									/>
-								)}
-								{deviceType === 'general' &&
-									getColor('h2-color-general-global') && (
-										<ColorControl
-											label={__('H2 Text', 'maxi-blocks')}
-											className={`maxi-style-cards-control__sc__h2-text-color--${SCStyle}`}
-											color={getColor('h2-color-general')}
-											defaultColor={getStyleCardAttr(
-												'h2-color-general',
-												SCStyle,
-												true
-											)}
-											onChange={val => {
-												onChangeValue(
-													'h2-color-general',
-													val,
-													SCStyle
-												);
-											}}
-											disableGradient
-											noPalette
-										/>
-									)}
-								<TypographyControl
-									typography={getTypographyGroup('h2')}
-									prefix='h2-'
-									disableFormats
-									className='maxi-style-cards-control__sc__h2-typography'
-									textLevel='h2'
-									hideAlignment
-									hideTextShadow
-									breakpoint={deviceType}
-									noPalette
-									styleCards
-									onChange={obj => {
-										const parsedTypography = parseSCtypography(
-											obj
-										);
-										onChangeValue(
-											'typography',
-											parsedTypography,
-											SCStyle
-										);
-									}}
-								/>
-							</Fragment>
-						),
-					},
-					{
-						label: __('H3', 'maxi-blocks'),
-						content: (
-							<Fragment>
-								{deviceType === 'general' && (
-									<FancyRadioControl
-										label={__(
-											'Use Global H3 Colour',
-											'maxi-blocks'
-										)}
-										selected={getColor(
-											'h3-color-general-global'
-										)}
-										options={[
-											{
-												label: __('Yes', 'maxi-blocks'),
-												value: 1,
-											},
-											{
-												label: __('No', 'maxi-blocks'),
-												value: 0,
-											},
-										]}
-										onChange={val => {
-											if (!val)
-												onChangeDelete(
-													'h3-text-color',
-													SCStyle
-												);
-											if (val)
-												onChangeValue(
-													'h3-color-general',
-													getColor(
-														'h3-color-general'
-													),
-													SCStyle
-												);
-											onChangeValue(
-												'h3-color-general-global',
-												val,
-												SCStyle
-											);
-										}}
-									/>
-								)}
-								{deviceType === 'general' &&
-									getColor('h3-color-general-global') && (
-										<ColorControl
-											label={__('H3 Text', 'maxi-blocks')}
-											className={`maxi-style-cards-control__sc__h3-text-color--${SCStyle}`}
-											color={getColor('h3-color-general')}
-											defaultColor={getStyleCardAttr(
-												'h3-color-general',
-												SCStyle,
-												true
-											)}
-											onChange={val => {
-												onChangeValue(
-													'h3-color-general',
-													val,
-													SCStyle
-												);
-											}}
-											disableGradient
-											noPalette
-										/>
-									)}
-								<TypographyControl
-									typography={getTypographyGroup('h3')}
-									prefix='h3-'
-									disableFormats
-									className='maxi-style-cards-control__sc__h3-typography'
-									textLevel='h3'
-									hideAlignment
-									hideTextShadow
-									breakpoint={deviceType}
-									noPalette
-									styleCards
-									onChange={obj => {
-										const parsedTypography = parseSCtypography(
-											obj
-										);
-										onChangeValue(
-											'typography',
-											parsedTypography,
-											SCStyle
-										);
-									}}
-								/>
-							</Fragment>
-						),
-					},
-					{
-						label: __('H4', 'maxi-blocks'),
-						content: (
-							<Fragment>
-								{deviceType === 'general' && (
-									<FancyRadioControl
-										label={__(
-											'Use Global H4 Colour',
-											'maxi-blocks'
-										)}
-										selected={getColor(
-											'h4-color-general-global'
-										)}
-										options={[
-											{
-												label: __('Yes', 'maxi-blocks'),
-												value: 1,
-											},
-											{
-												label: __('No', 'maxi-blocks'),
-												value: 0,
-											},
-										]}
-										onChange={val => {
-											if (!val)
-												onChangeDelete(
-													'h4-text-color',
-													SCStyle
-												);
-											if (val)
-												onChangeValue(
-													'h4-color-general',
-													getColor(
-														'h4-color-general'
-													),
-													SCStyle
-												);
-											onChangeValue(
-												'h4-color-general-global',
-												val,
-												SCStyle
-											);
-										}}
-									/>
-								)}
-								{deviceType === 'general' &&
-									getColor('h4-color-general-global') && (
-										<ColorControl
-											label={__('H4 Text', 'maxi-blocks')}
-											className={`maxi-style-cards-control__sc__h4-text-color--${SCStyle}`}
-											color={getColor('h4-color-general')}
-											defaultColor={getStyleCardAttr(
-												'h4-color-general',
-												SCStyle,
-												true
-											)}
-											onChange={val => {
-												onChangeValue(
-													'h4-color-general',
-													val,
-													SCStyle
-												);
-											}}
-											disableGradient
-											noPalette
-										/>
-									)}
-								<TypographyControl
-									typography={getTypographyGroup('h4')}
-									prefix='h4-'
-									disableFormats
-									className='maxi-style-cards-control__sc__h4-typography'
-									textLevel='h4'
-									hideAlignment
-									hideTextShadow
-									breakpoint={deviceType}
-									noPalette
-									styleCards
-									onChange={obj => {
-										const parsedTypography = parseSCtypography(
-											obj
-										);
-										onChangeValue(
-											'typography',
-											parsedTypography,
-											SCStyle
-										);
-									}}
-								/>
-							</Fragment>
-						),
-					},
-					{
-						label: __('H5', 'maxi-blocks'),
-						content: (
-							<Fragment>
-								{deviceType === 'general' && (
-									<FancyRadioControl
-										label={__(
-											'Use Global H5 Colour',
-											'maxi-blocks'
-										)}
-										selected={getColor(
-											'h5-color-general-global'
-										)}
-										options={[
-											{
-												label: __('Yes', 'maxi-blocks'),
-												value: 1,
-											},
-											{
-												label: __('No', 'maxi-blocks'),
-												value: 0,
-											},
-										]}
-										onChange={val => {
-											if (!val)
-												onChangeDelete(
-													'h5-text-color',
-													SCStyle
-												);
-											if (val)
-												onChangeValue(
-													'h5-color-general',
-													getColor(
-														'h5-color-general'
-													),
-													SCStyle
-												);
-											onChangeValue(
-												'h5-color-general-global',
-												val,
-												SCStyle
-											);
-										}}
-									/>
-								)}
-								{deviceType === 'general' &&
-									getColor('h5-color-general-global') && (
-										<ColorControl
-											label={__('H5 Text', 'maxi-blocks')}
-											className={`maxi-style-cards-control__sc__h5-text-color--${SCStyle}`}
-											color={getColor('h5-color-general')}
-											defaultColor={getStyleCardAttr(
-												'h5-color-general',
-												SCStyle,
-												true
-											)}
-											onChange={val => {
-												onChangeValue(
-													'h5-color-general',
-													val,
-													SCStyle
-												);
-											}}
-											disableGradient
-											noPalette
-										/>
-									)}
-								<TypographyControl
-									typography={getTypographyGroup('h5')}
-									prefix='h5-'
-									disableFormats
-									className='maxi-style-cards-control__sc__h5-typography'
-									textLevel='h5'
-									hideAlignment
-									hideTextShadow
-									breakpoint={deviceType}
-									noPalette
-									styleCards
-									onChange={obj => {
-										const parsedTypography = parseSCtypography(
-											obj
-										);
-										onChangeValue(
-											'typography',
-											parsedTypography,
-											SCStyle
-										);
-									}}
-								/>
-							</Fragment>
-						),
-					},
-					{
-						label: __('H6', 'maxi-blocks'),
-						content: (
-							<Fragment>
-								{deviceType === 'general' && (
-									<FancyRadioControl
-										label={__(
-											'Use Global H6 Colour',
-											'maxi-blocks'
-										)}
-										selected={getColor(
-											'h6-color-general-global'
-										)}
-										options={[
-											{
-												label: __('Yes', 'maxi-blocks'),
-												value: 1,
-											},
-											{
-												label: __('No', 'maxi-blocks'),
-												value: 0,
-											},
-										]}
-										onChange={val => {
-											if (!val)
-												onChangeDelete(
-													'h6-text-color',
-													SCStyle
-												);
-											if (val)
-												onChangeValue(
-													'h6-color-general',
-													getColor(
-														'h6-color-general'
-													),
-													SCStyle
-												);
-											onChangeValue(
-												'h6-color-general-global',
-												val,
-												SCStyle
-											);
-										}}
-									/>
-								)}
-								{deviceType === 'general' &&
-									getColor('h6-color-general-global') && (
-										<ColorControl
-											label={__('H6 Text', 'maxi-blocks')}
-											className={`maxi-style-cards-control__sc__h6-text-color--${SCStyle}`}
-											color={getColor('h6-color-general')}
-											defaultColor={getStyleCardAttr(
-												'h6-color-general',
-												SCStyle,
-												true
-											)}
-											onChange={val => {
-												onChangeValue(
-													'h6-color-general',
-													val,
-													SCStyle
-												);
-											}}
-											disableGradient
-											noPalette
-										/>
-									)}
-								<TypographyControl
-									typography={getTypographyGroup('h6')}
-									prefix='h6-'
-									disableFormats
-									className='maxi-style-cards-control__sc__h6-typography'
-									textLevel='h6'
-									hideAlignment
-									hideTextShadow
-									breakpoint={deviceType}
-									noPalette
-									styleCards
-									onChange={obj => {
-										const parsedTypography = parseSCtypography(
-											obj
-										);
-										onChangeValue(
-											'typography',
-											parsedTypography,
-											SCStyle
-										);
-									}}
-								/>
-							</Fragment>
-						),
+						label: __('Headings', 'maxi-blocks'),
+						content: <SettingTabsControl items={headingItems()} />,
 					},
 					deviceType === 'general' && {
 						label: __('Hover', 'maxi-blocks'),

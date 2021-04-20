@@ -63,6 +63,7 @@ const AxisControl = props => {
 		auxTarget = false,
 		isHover = false,
 		inputsArray = ['top', 'right', 'bottom', 'left', 'unit', 'sync'],
+		optionType = 'number',
 	} = props;
 
 	const instanceId = useInstanceId(AxisControl);
@@ -135,7 +136,16 @@ const AxisControl = props => {
 			isHover
 		) || 'px';
 
-	const onChangeValue = (newValue, singleTarget) => {
+	const onChangeValue = (val, singleTarget) => {
+		const newValue = isEmpty(val)
+			? ''
+			: val === 'auto'
+			? 'auto'
+			: optionType === 'number'
+			? +val
+			: val;
+
+		console.log(typeof newValue, newValue);
 		if (
 			getLastBreakpointAttribute(
 				getKey('sync'),
@@ -209,15 +219,7 @@ const AxisControl = props => {
 						}
 						value={getDisplayValue(inputsArray[0])}
 						onChange={e =>
-							onChangeValue(
-								isEmpty(e.target.value)
-									? ''
-									: e.target.value === 'auto'
-									? 'auto'
-									: +e.target.value,
-
-								inputsArray[0]
-							)
+							onChangeValue(e.target.value, inputsArray[0])
 						}
 						aria-label={sprintf(__('%s Top', 'maxi-blocks'), label)}
 						min={minMaxSettings[currentUnit].min}
@@ -231,12 +233,12 @@ const AxisControl = props => {
 							<input
 								type='checkbox'
 								checked={getValue(inputsArray[0]) === 'auto'}
-								onChange={e => {
-									const newValue = e.target.checked
-										? 'auto'
-										: '';
-									onChangeValue(newValue, inputsArray[0]);
-								}}
+								onChange={e =>
+									onChangeValue(
+										e.target.checked ? 'auto' : '',
+										inputsArray[0]
+									)
+								}
 								id={`${instanceId}-top`}
 							/>
 							{__('auto', 'maxi-blocks')}
@@ -255,15 +257,7 @@ const AxisControl = props => {
 						}
 						value={getDisplayValue(inputsArray[1])}
 						onChange={e =>
-							onChangeValue(
-								isEmpty(e.target.value)
-									? ''
-									: e.target.value === 'auto'
-									? 'auto'
-									: +e.target.value,
-
-								inputsArray[1]
-							)
+							onChangeValue(e.target.value, inputsArray[1])
 						}
 						aria-label={sprintf(
 							__('%s Right', 'maxi-blocks'),
@@ -280,12 +274,12 @@ const AxisControl = props => {
 							<input
 								type='checkbox'
 								checked={getValue(inputsArray[1]) === 'auto'}
-								onChange={e => {
-									const newValue = e.target.checked
-										? 'auto'
-										: '';
-									onChangeValue(newValue, inputsArray[1]);
-								}}
+								onChange={e =>
+									onChangeValue(
+										e.target.checked ? 'auto' : '',
+										inputsArray[1]
+									)
+								}
 								id={`${instanceId}-right`}
 							/>
 							{__('auto', 'maxi-blocks')}
@@ -304,15 +298,7 @@ const AxisControl = props => {
 						}
 						value={getDisplayValue(inputsArray[2])}
 						onChange={e =>
-							onChangeValue(
-								isEmpty(e.target.value)
-									? ''
-									: e.target.value === 'auto'
-									? 'auto'
-									: +e.target.value,
-
-								inputsArray[2]
-							)
+							onChangeValue(e.target.value, inputsArray[2])
 						}
 						aria-label={sprintf(
 							__('%s Bottom', 'maxi-blocks'),
@@ -329,12 +315,12 @@ const AxisControl = props => {
 							<input
 								type='checkbox'
 								checked={getValue(inputsArray[2]) === 'auto'}
-								onChange={e => {
-									const newValue = e.target.checked
-										? 'auto'
-										: '';
-									onChangeValue(newValue, inputsArray[2]);
-								}}
+								onChange={e =>
+									onChangeValue(
+										e.target.checked ? 'auto' : '',
+										inputsArray[2]
+									)
+								}
 								id={`${instanceId}-bottom`}
 							/>
 							{__('auto', 'maxi-blocks')}
@@ -353,15 +339,7 @@ const AxisControl = props => {
 						}
 						value={getDisplayValue(inputsArray[3])}
 						onChange={e =>
-							onChangeValue(
-								isEmpty(e.target.value)
-									? ''
-									: e.target.value === 'auto'
-									? 'auto'
-									: +e.target.value,
-
-								inputsArray[3]
-							)
+							onChangeValue(e.target.value, inputsArray[3])
 						}
 						aria-label={sprintf(
 							__('%s Left', 'maxi-blocks'),
@@ -378,12 +356,12 @@ const AxisControl = props => {
 							<input
 								type='checkbox'
 								checked={getValue(inputsArray[3]) === 'auto'}
-								onChange={e => {
-									const newValue = e.target.checked
-										? 'auto'
-										: '';
-									onChangeValue(newValue, inputsArray[3]);
-								}}
+								onChange={e =>
+									onChangeValue(
+										e.target.checked ? 'auto' : '',
+										inputsArray[3]
+									)
+								}
 								id={`${instanceId}-left`}
 							/>
 							{__('auto', 'maxi-blocks')}

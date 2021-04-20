@@ -75,48 +75,48 @@ const Indicators = props => {
 
 	return (
 		<div className={classes}>
-			{marginTop ? (
+			{marginTop && marginTop !== 'auto' && marginTop > 19 ? (
 				<div
 					style={{
 						height: marginTop,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--top'
 				>
-					{marginTop > 19 && `${marginTop}${marginUnit}`}
+					{`${marginTop}${marginUnit}`}
 				</div>
 			) : null}
-			{marginRight ? (
+			{marginRight && marginRight !== 'auto' && marginRight > 35 ? (
 				<div
 					style={{
 						width: marginRight,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--right'
 				>
-					{marginRight > 35 && `${marginRight}${marginUnit}`}
+					{`${marginRight}${marginUnit}`}
 				</div>
 			) : null}
-			{marginBottom ? (
+			{marginBottom && marginBottom !== 'auto' && marginBottom > 19 ? (
 				<div
 					style={{
 						height: marginBottom,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--bottom'
 				>
-					{marginBottom > 19 && `${marginBottom}${marginUnit}`}
+					{`${marginBottom}${marginUnit}`}
 				</div>
 			) : null}
-			{marginLeft ? (
+			{marginLeft && marginLeft !== 'auto' && marginLeft > 35 ? (
 				<div
 					style={{
 						width: marginLeft,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--left'
 				>
-					{marginLeft > 35 && `${marginLeft}${marginUnit}`}
+					{`${marginLeft}${marginUnit}`}
 				</div>
 			) : null}
 			{children}
-			{paddingTop ? (
+			{paddingTop && paddingTop > 19 ? (
 				<div
 					style={{
 						height: paddingTop,
@@ -124,10 +124,10 @@ const Indicators = props => {
 					}}
 					className='maxi-indicators__padding maxi-indicators__padding--top'
 				>
-					{paddingTop > 19 && `${paddingTop}${paddingUnit}`}
+					{`${paddingTop}${paddingUnit}`}
 				</div>
 			) : null}
-			{paddingRight ? (
+			{paddingRight && paddingRight > 35 ? (
 				<div
 					style={{
 						width: paddingRight,
@@ -135,10 +135,10 @@ const Indicators = props => {
 					}}
 					className='maxi-indicators__padding maxi-indicators__padding--right'
 				>
-					{paddingRight > 35 && `${paddingRight}${paddingUnit}`}
+					{`${paddingRight}${paddingUnit}`}
 				</div>
 			) : null}
-			{paddingBottom ? (
+			{paddingBottom && paddingBottom > 19 ? (
 				<div
 					style={{
 						height: paddingBottom,
@@ -146,10 +146,10 @@ const Indicators = props => {
 					}}
 					className='maxi-indicators__padding maxi-indicators__padding--bottom'
 				>
-					{paddingBottom > 19 && `${paddingBottom}${paddingUnit}`}
+					{`${paddingBottom}${paddingUnit}`}
 				</div>
 			) : null}
-			{paddingLeft ? (
+			{paddingLeft && paddingLeft > 35 ? (
 				<div
 					style={{
 						width: paddingLeft,
@@ -157,7 +157,7 @@ const Indicators = props => {
 					}}
 					className='maxi-indicators__padding maxi-indicators__padding--left'
 				>
-					{paddingLeft > 35 && `${paddingLeft}${paddingUnit}`}
+					{`${paddingLeft}${paddingUnit}`}
 				</div>
 			) : null}
 		</div>

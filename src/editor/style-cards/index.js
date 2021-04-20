@@ -115,8 +115,6 @@ const MaxiStyleCardsTab = ({
 							const checkKey = key.replace('general', breakpoint);
 							if (isNil(SCstyle.checkKey)) {
 								if (checkKey.includes('font-size')) {
-									// console.log(checkKey);
-									// console.log(val);
 									const [num, unit] = val.match(
 										/[a-zA-Z]+|[0-9]+/g
 									);
@@ -739,9 +737,6 @@ const MaxiStyleCardsEditor = () => {
 	};
 
 	const onChangeValue = (prop, value, style) => {
-		console.log(prop);
-		console.log(value);
-		console.log(style);
 
 		let newStateSC = {};
 

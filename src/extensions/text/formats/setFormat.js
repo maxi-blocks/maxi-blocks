@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { isCollapsed } from '@wordpress/rich-text';
+import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -38,6 +39,11 @@ const setFormat = ({
 	isHover = false,
 	textLevel,
 }) => {
+	// eslint-disable-next-line @wordpress/no-unused-vars-before-return
+	const {
+		__unstableMarkLastChangeAsPersistent: markLastChangeAsPersistent,
+	} = dispatch('core/block-editor');
+
 	if (
 		isNil(formatValue.start) ||
 		isNil(formatValue.end || isCollapsed(formatValue))
@@ -87,8 +93,14 @@ const setFormat = ({
 			return { ...cleanedTypography, content: cleanedContent };
 		}
 
+		// Ensures the format changes are saved as undo entity on historical records
+		markLastChangeAsPersistent();
+
 		return newTypography;
 	}
+
+	// Ensures the format changes are saved as undo entity on historical records
+	markLastChangeAsPersistent();
 
 	return setFormatWithClass({
 		formatValue,

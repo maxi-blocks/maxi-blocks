@@ -3,8 +3,6 @@
  */
 import { __experimentalBlock } from '@wordpress/block-editor';
 import { withSelect } from '@wordpress/data';
-import { Fragment } from '@wordpress/element';
-import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -112,7 +110,7 @@ class edit extends MaxiBlock {
 					/>
 				)}
 				{(!isEmpty(attributes['icon-name']) && (
-					<Fragment>
+					<>
 						<div className='maxi-font-icon-block__icon__replace'>
 							<MaxiModalIcon
 								icon={attributes['icon-name']}
@@ -129,7 +127,7 @@ class edit extends MaxiBlock {
 						<span className='maxi-font-icon-block__icon'>
 							<i className={attributes['icon-name']} />
 						</span>
-					</Fragment>
+					</>
 				)) || (
 					<FontIconPicker
 						onChange={val =>

@@ -1,3 +1,4 @@
+/* eslint-disable no-sparse-arrays */
 /**
  * Internal dependencies
  */
@@ -5,7 +6,6 @@ import flatFormatsWithClass, {
 	getRepeatedClassNames,
 	flatRepeatedClassNames,
 } from '../flatFormatsWithClass';
-import formatValueCleaner from '../formatValueCleaner';
 
 describe('getRepeatedClassNames', () => {
 	it('Should return no repeated classNames', () => {
@@ -16,19 +16,19 @@ describe('getRepeatedClassNames', () => {
 		};
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -62,25 +62,7 @@ describe('getRepeatedClassNames', () => {
 					},
 				],
 			],
-			replacements: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-			],
+			replacements: [, , , , , , , , , , , , , , , , ,],
 			text: 'Testing Text Maxi',
 			start: 13,
 			end: 17,
@@ -165,12 +147,12 @@ describe('getRepeatedClassNames', () => {
 						},
 					},
 				],
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -221,10 +203,7 @@ describe('getRepeatedClassNames', () => {
 			],
 		};
 
-		const result = getRepeatedClassNames(
-			customFormats,
-			formatValueCleaner(formatValue)
-		);
+		const result = getRepeatedClassNames(customFormats, formatValue);
 		const expectResult = [
 			'maxi-text-block__custom-format--0',
 			'maxi-text-block__custom-format--1',
@@ -242,14 +221,14 @@ describe('flatRepeatedClassNames', () => {
 		];
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -282,7 +261,7 @@ describe('flatRepeatedClassNames', () => {
 						},
 					},
 				],
-				null,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -337,20 +316,20 @@ describe('flatRepeatedClassNames', () => {
 
 		const result = flatRepeatedClassNames(
 			repeatedClasses,
-			formatValueCleaner(formatValue),
+			formatValue,
 			typography
 		);
 		const expectResult = {
 			formatValue: {
 				formats: [
-					null,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null,
+					,
+					,
+					,
+					,
+					,
+					,
+					,
+					,
 					[
 						{
 							type: 'maxi-blocks/text-custom',
@@ -383,7 +362,7 @@ describe('flatRepeatedClassNames', () => {
 							},
 						},
 					],
-					null,
+					,
 					[
 						{
 							type: 'maxi-blocks/text-custom',
@@ -442,14 +421,14 @@ describe('flatFormatsWithClass', () => {
 	it('On a content with custom format with a segment with the opposite custom format, on removing the global format, should return a non-custom format content', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -486,11 +465,11 @@ describe('flatFormatsWithClass', () => {
 						unregisteredAttributes: {},
 					},
 				],
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
 			],
 			text: 'Testing Text Maxi',
 			start: 0,
@@ -515,7 +494,7 @@ describe('flatFormatsWithClass', () => {
 		const textLevel = 'p';
 
 		const result = flatFormatsWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			content,
 			isList,

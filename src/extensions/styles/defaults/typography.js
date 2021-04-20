@@ -3,7 +3,6 @@ import alignment from './alignment';
 export const typography = {
 	'font-family-general': {
 		type: 'string',
-		default: 'Roboto',
 	},
 	'color-general': {
 		type: 'string',

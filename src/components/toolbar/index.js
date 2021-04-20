@@ -304,7 +304,7 @@ const MaxiToolbar = props => {
 								setAttributes({ linkSettings })
 							}
 						/>
-						<TextLink
+						{/*<TextLink
 							{...getGroupAttributes(attributes, 'typography')}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
@@ -312,7 +312,7 @@ const MaxiToolbar = props => {
 							formatValue={formatValue}
 							linkSettings={linkSettings}
 							breakpoint={deviceType}
-						/>
+						/>*/}
 						<TextListOptions
 							blockName={name}
 							formatValue={formatValue}

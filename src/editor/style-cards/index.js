@@ -115,6 +115,36 @@ const MaxiStyleCardsTab = ({
 							const checkKey = key.replace('general', breakpoint);
 
 							if (isNil(SCstyle.checkKey)) {
+								if (checkKey.includes('font-size')) {
+									const [num, unit] = val.match(
+										/[a-zA-Z]+|[0-9]+/g
+									);
+									response[checkKey] = num;
+									const newUnitKey = checkKey.replace(
+										'font-size',
+										'font-size-unit'
+									);
+									response[newUnitKey] = unit;
+									return;
+								}
+								if (checkKey.includes('letter-spacing')) {
+									let newVal;
+									if (typeof val === 'number')
+										newVal = `${val}px`;
+									else newVal = val;
+
+									const [num, unit] = newVal.match(
+										/[a-zA-Z]+|[0-9\.]+/g
+									);
+									response[checkKey] = num;
+									const newUnitKey = checkKey.replace(
+										'letter-spacing',
+										'letter-spacing-unit'
+									);
+
+									response[newUnitKey] = unit;
+									return;
+								}
 								response[checkKey] = val;
 							}
 						});
@@ -219,7 +249,7 @@ const MaxiStyleCardsTab = ({
 					{deviceType === 'general' && (
 						<FancyRadioControl
 							label={__(
-								`Use Global ${firstLabel} Text Colour`,
+								`Use Global ${firstLabel} Colour`,
 								'maxi-blocks'
 							)}
 							selected={processAttribute(firstColorGlobal)}
@@ -283,7 +313,7 @@ const MaxiStyleCardsTab = ({
 					{!!secondColor && deviceType === 'general' && (
 						<FancyRadioControl
 							label={__(
-								`Use Global ${secondLabel}`,
+								`Use Global ${secondLabel} Colour`,
 								'maxi-blocks'
 							)}
 							selected={processAttribute(secondColorGlobal)}
@@ -500,30 +530,34 @@ const MaxiStyleCardsTab = ({
 						label: __('Headings', 'maxi-blocks'),
 						content: <SettingTabsControl items={headingItems()} />,
 					},
-					generateTab('hover', 'Hover', 'color-6', false, false),
-					generateTab(
-						'icon-line',
-						'SVG Icon',
-						'color-7',
-						'p',
-						'icon-fill',
-						'Fill',
-						'color-4'
-					),
-					generateTab(
-						'font-icon-color',
-						'Font Icon',
-						'color-7',
-						false,
-						false
-					),
-					generateTab(
-						'divider-color',
-						'Divider',
-						'color-4',
-						false,
-						false
-					),
+					deviceType === 'general' &&
+						generateTab('hover', 'Hover', 'color-6', false, false),
+					deviceType === 'general' &&
+						generateTab(
+							'icon-line',
+							'SVG Icon',
+							'color-7',
+							false,
+							'icon-fill',
+							'Fill',
+							'color-4'
+						),
+					deviceType === 'general' &&
+						generateTab(
+							'font-icon-color',
+							'Font Icon',
+							'color-7',
+							false,
+							false
+						),
+					deviceType === 'general' &&
+						generateTab(
+							'divider-color',
+							'Divider',
+							'color-4',
+							false,
+							false
+						),
 				]}
 			/>
 		</div>

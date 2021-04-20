@@ -11,6 +11,19 @@ const p = {
 	'line-height-l': '',
 };
 
+const button = {
+	'font-size-general': '',
+	'line-height-general': '',
+	'letter-spacing-general': '',
+	'font-weight-general': '',
+	'font-size-xxl': '',
+	'line-height-xxl': '',
+	'font-size-xl': '',
+	'line-height-xl': '',
+	'font-size-l': '',
+	'line-height-l': '',
+};
+
 const h1 = {
 	'font-size-general': '',
 	'line-height-general': '',
@@ -97,6 +110,7 @@ const h6 = {
 
 export default {
 	p,
+	button,
 	h1,
 	h2,
 	h3,

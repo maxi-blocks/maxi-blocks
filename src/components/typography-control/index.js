@@ -20,6 +20,7 @@ import {
 	getCustomFormatValue,
 	withFormatValue,
 } from '../../extensions/text/formats';
+import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -133,9 +134,10 @@ const TypographyControl = withFormatValue(props => {
 		const { getFont } = select('maxiBlocks/text');
 
 		if (!isNil(getValue(`${prefix}font-family`))) {
-			const fontFiles = getFont(getValue(`${prefix}font-family`)).files;
-			const fontOptions = Object.keys(fontFiles).map(key => key);
-
+			const fontFiles = getFont(getValue(`${prefix}font-family`))?.files;
+			const fontOptions = fontFiles
+				? Object.keys(fontFiles).map(key => key)
+				: [];
 			if (fontOptions.length === 0) {
 				return [
 					{ label: __('Thin (Hairline)', 'maxi-blocks'), value: 100 },
@@ -198,9 +200,18 @@ const TypographyControl = withFormatValue(props => {
 	};
 
 	const getDefault = prop => {
-		return getDefaultAttribute(
+		const sameDefaultLevels = ['p', 'ul', 'ol'];
+		if (
+			sameDefaultLevels.some(level => {
+				return level === textLevel;
+			})
+		)
+			return getDefaultAttribute(
+				`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
+			);
+		return defaultTypography[textLevel][
 			`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
-		);
+		];
 	};
 
 	const onChangeFormat = value => {

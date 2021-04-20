@@ -36,6 +36,7 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteClasses,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -87,11 +88,11 @@ class edit extends MaxiBlock {
 			onSplit,
 			onReplace,
 			deviceType,
+			clientId,
 		} = this.props;
 		const {
 			uniqueID,
 			blockStyle,
-			blockStyleBackground,
 			extraClassName,
 			textLevel,
 			content,
@@ -111,12 +112,23 @@ class edit extends MaxiBlock {
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
-			!!attributes['text-highlight'] && 'maxi-highlight--text',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
+			getPaletteClasses(
+				attributes,
+				blockStyle,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+					'typography',
+					'typography-hover',
+				],
+				'maxi-blocks/text-maxi',
+				clientId,
+				textLevel
+			),
 			extraClassName,
 			uniqueID,
 			className
@@ -134,25 +146,23 @@ class edit extends MaxiBlock {
 				{...getGroupAttributes(attributes, 'motion')}
 			>
 				<__experimentalBlock className={classes} data-align={fullWidth}>
-					{!attributes['background-highlight'] && (
-						<BackgroundDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'backgroundColor',
-								'backgroundImage',
-								'backgroundVideo',
-								'backgroundGradient',
-								'backgroundSVG',
-								'backgroundHover',
-								'backgroundColorHover',
-								'backgroundImageHover',
-								'backgroundVideoHover',
-								'backgroundGradientHover',
-								'backgroundSVGHover',
-							])}
-							blockClassName={uniqueID}
-						/>
-					)}
+					<BackgroundDisplayer
+						{...getGroupAttributes(attributes, [
+							'background',
+							'backgroundColor',
+							'backgroundImage',
+							'backgroundVideo',
+							'backgroundGradient',
+							'backgroundSVG',
+							'backgroundHover',
+							'backgroundColorHover',
+							'backgroundImageHover',
+							'backgroundVideoHover',
+							'backgroundGradientHover',
+							'backgroundSVGHover',
+						])}
+						blockClassName={uniqueID}
+					/>
 					{!isList && (
 						<RichText
 							ref={this.blockRef}

@@ -3,8 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 
-import { Fragment } from '@wordpress/element';
 import { SelectControl } from '@wordpress/components';
+import { Fragment, useState } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
@@ -15,11 +15,7 @@ import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
-import {
-	setFormat,
-	getCustomFormatValue,
-	withFormatValue,
-} from '../../extensions/text/formats';
+import { setFormat, getCustomFormatValue } from '../../extensions/text/formats';
 import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,
@@ -31,8 +27,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isNil } from 'lodash';
-
+import { isNil, trim } from 'lodash';
 /**
  * Styles
  */
@@ -41,7 +36,7 @@ import './editor.scss';
 /**
  * Component
  */
-const TypographyControl = withFormatValue(props => {
+const TypographyControl = props => {
 	const {
 		className,
 		textLevel = 'p',
@@ -62,12 +57,13 @@ const TypographyControl = withFormatValue(props => {
 		clientId,
 	} = props;
 
-	const typography =
+	const [typography, setTypography] = useState(
 		props.typography ||
-		getGroupAttributes(props, [
-			'typography',
-			...(isHover ? ['typographyHover'] : []),
-		]);
+			getGroupAttributes(props, [
+				'typography',
+				// ...(isHover && ['typographyHover']),
+			])
+	);
 
 	const classes = classnames('maxi-typography-control', className);
 
@@ -138,6 +134,7 @@ const TypographyControl = withFormatValue(props => {
 			const fontOptions = fontFiles
 				? Object.keys(fontFiles).map(key => key)
 				: [];
+
 			if (fontOptions.length === 0) {
 				return [
 					{ label: __('Thin (Hairline)', 'maxi-blocks'), value: 100 },
@@ -209,6 +206,7 @@ const TypographyControl = withFormatValue(props => {
 			return getDefaultAttribute(
 				`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
 			);
+
 		return defaultTypography[textLevel][
 			`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
 		];
@@ -223,6 +221,8 @@ const TypographyControl = withFormatValue(props => {
 			breakpoint,
 			isHover,
 		});
+
+		setTypography(obj);
 
 		onChange(obj);
 	};
@@ -452,6 +452,6 @@ const TypographyControl = withFormatValue(props => {
 			)}
 		</div>
 	);
-});
+};
 
 export default TypographyControl;

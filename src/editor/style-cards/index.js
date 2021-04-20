@@ -113,9 +113,10 @@ const MaxiStyleCardsTab = ({
 					if (key.includes('general')) {
 						breakpoints.forEach(breakpoint => {
 							const checkKey = key.replace('general', breakpoint);
-
 							if (isNil(SCstyle.checkKey)) {
 								if (checkKey.includes('font-size')) {
+									// console.log(checkKey);
+									// console.log(val);
 									const [num, unit] = val.match(
 										/[a-zA-Z]+|[0-9]+/g
 									);
@@ -302,6 +303,7 @@ const MaxiStyleCardsTab = ({
 							styleCards
 							onChange={obj => {
 								const parsedTypography = parseTypography(obj);
+
 								onChangeValue(
 									'typography',
 									parsedTypography,
@@ -737,6 +739,10 @@ const MaxiStyleCardsEditor = () => {
 	};
 
 	const onChangeValue = (prop, value, style) => {
+		console.log(prop);
+		console.log(value);
+		console.log(style);
+
 		let newStateSC = {};
 
 		if (prop === 'typography') {

@@ -75,7 +75,7 @@ const Indicators = props => {
 
 	return (
 		<div className={classes}>
-			{marginTop && (
+			{marginTop ? (
 				<div
 					style={{
 						height: marginTop,
@@ -84,8 +84,8 @@ const Indicators = props => {
 				>
 					{marginTop > 19 && `${marginTop}${marginUnit}`}
 				</div>
-			)}
-			{marginRight && (
+			) : null}
+			{marginRight ? (
 				<div
 					style={{
 						width: marginRight,
@@ -94,8 +94,8 @@ const Indicators = props => {
 				>
 					{marginRight > 35 && `${marginRight}${marginUnit}`}
 				</div>
-			)}
-			{marginBottom && (
+			) : null}
+			{marginBottom ? (
 				<div
 					style={{
 						height: marginBottom,
@@ -104,8 +104,8 @@ const Indicators = props => {
 				>
 					{marginBottom > 19 && `${marginBottom}${marginUnit}`}
 				</div>
-			)}
-			{marginLeft && (
+			) : null}
+			{marginLeft ? (
 				<div
 					style={{
 						width: marginLeft,
@@ -114,9 +114,9 @@ const Indicators = props => {
 				>
 					{marginLeft > 35 && `${marginLeft}${marginUnit}`}
 				</div>
-			)}
+			) : null}
 			{children}
-			{paddingTop && (
+			{paddingTop ? (
 				<div
 					style={{
 						height: paddingTop,
@@ -126,8 +126,8 @@ const Indicators = props => {
 				>
 					{paddingTop > 19 && `${paddingTop}${paddingUnit}`}
 				</div>
-			)}
-			{paddingRight && (
+			) : null}
+			{paddingRight ? (
 				<div
 					style={{
 						width: paddingRight,
@@ -137,8 +137,8 @@ const Indicators = props => {
 				>
 					{paddingRight > 35 && `${paddingRight}${paddingUnit}`}
 				</div>
-			)}
-			{paddingBottom && (
+			) : null}
+			{paddingBottom ? (
 				<div
 					style={{
 						height: paddingBottom,
@@ -148,8 +148,8 @@ const Indicators = props => {
 				>
 					{paddingBottom > 19 && `${paddingBottom}${paddingUnit}`}
 				</div>
-			)}
-			{paddingLeft && (
+			) : null}
+			{paddingLeft ? (
 				<div
 					style={{
 						width: paddingLeft,
@@ -159,7 +159,7 @@ const Indicators = props => {
 				>
 					{paddingLeft > 35 && `${paddingLeft}${paddingUnit}`}
 				</div>
-			)}
+			) : null}
 		</div>
 	);
 };

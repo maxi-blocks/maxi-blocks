@@ -1,9 +1,14 @@
 /**
  * WordPress dependencies
  */
-import { useInstanceId  } from '@wordpress/compose';
+import { useInstanceId } from '@wordpress/compose';
 import { __, sprintf } from '@wordpress/i18n';
-import { BaseControl, SelectControl, Button, Tooltip } from '@wordpress/components';
+import {
+	BaseControl,
+	SelectControl,
+	Button,
+	Tooltip,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -17,7 +22,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -204,7 +209,15 @@ const AxisControl = props => {
 						}
 						value={getDisplayValue(inputsArray[0])}
 						onChange={e =>
-							onChangeValue(e.target.value, inputsArray[0])
+							onChangeValue(
+								isEmpty(e.target.value)
+									? ''
+									: e.target.value === 'auto'
+									? 'auto'
+									: +e.target.value,
+
+								inputsArray[0]
+							)
 						}
 						aria-label={sprintf(__('%s Top', 'maxi-blocks'), label)}
 						min={minMaxSettings[currentUnit].min}
@@ -242,7 +255,15 @@ const AxisControl = props => {
 						}
 						value={getDisplayValue(inputsArray[1])}
 						onChange={e =>
-							onChangeValue(e.target.value, inputsArray[1])
+							onChangeValue(
+								isEmpty(e.target.value)
+									? ''
+									: e.target.value === 'auto'
+									? 'auto'
+									: +e.target.value,
+
+								inputsArray[1]
+							)
 						}
 						aria-label={sprintf(
 							__('%s Right', 'maxi-blocks'),
@@ -283,7 +304,15 @@ const AxisControl = props => {
 						}
 						value={getDisplayValue(inputsArray[2])}
 						onChange={e =>
-							onChangeValue(e.target.value, inputsArray[2])
+							onChangeValue(
+								isEmpty(e.target.value)
+									? ''
+									: e.target.value === 'auto'
+									? 'auto'
+									: +e.target.value,
+
+								inputsArray[2]
+							)
 						}
 						aria-label={sprintf(
 							__('%s Bottom', 'maxi-blocks'),
@@ -324,7 +353,15 @@ const AxisControl = props => {
 						}
 						value={getDisplayValue(inputsArray[3])}
 						onChange={e =>
-							onChangeValue(e.target.value, inputsArray[3])
+							onChangeValue(
+								isEmpty(e.target.value)
+									? ''
+									: e.target.value === 'auto'
+									? 'auto'
+									: +e.target.value,
+
+								inputsArray[3]
+							)
 						}
 						aria-label={sprintf(
 							__('%s Left', 'maxi-blocks'),

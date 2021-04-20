@@ -1,3 +1,4 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */
@@ -18,6 +19,7 @@ import ToolbarPopover from '../toolbar-popover';
 import {
 	fromListToText,
 	fromTextToList,
+	getFormattedString,
 	withFormatValue,
 } from '../../../../extensions/text/formats';
 
@@ -72,9 +74,9 @@ const TextListOptions = withFormatValue(props => {
 	};
 
 	const onChangeList = type => {
-		const { text: content } = formatValue;
+		const content = getFormattedString({ formatValue, isList });
 
-		if (typeOfList === type)
+		if (!isList || typeOfList === type)
 			onChange({
 				isList: !isList,
 				typeOfList: type,

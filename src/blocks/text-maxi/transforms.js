@@ -11,6 +11,7 @@ import {
 	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
 import { getGroupAttributes } from '../../extensions/styles';
+import { defaultTypography } from '../../extensions/text';
 
 const name = 'maxi-blocks/text-maxi';
 
@@ -37,7 +38,11 @@ const transforms = {
 		},
 		{
 			type: 'raw',
-			selectors: 'p,h1,h2,h3,h4,h5,h6',
+			selectors: 'p,h1,h2,h3,h4,h5,h6,ul,ol',
+			isMatch: node =>
+				['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol'].includes(
+					node.nodeName.toLowerCase()
+				),
 			schema: ({ phrasingContentSchema, isPaste }) => {
 				const schema = {
 					children: phrasingContentSchema,
@@ -55,10 +60,12 @@ const transforms = {
 					ol: schema,
 				};
 			},
-			isMatch: () => true,
 			transform: node => {
-				const attributes = getBlockAttributes(name);
 				const nodeName = node.nodeName.toLowerCase();
+				const attributes = {
+					...getBlockAttributes(name),
+					...defaultTypography[nodeName],
+				};
 				const isList = ['ul', 'ol'].includes(nodeName);
 				attributes.content = node.innerHTML;
 

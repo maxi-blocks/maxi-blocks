@@ -2,8 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
-import { Button, Dropdown, Spinner, Icon } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -21,7 +19,6 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { chevronDown } from '../../icons';
 
 /**
  * Component
@@ -45,14 +42,29 @@ const FontFamilySelector = props => {
 	const selectFontFamilyStyles = {
 		control: styles => ({
 			...styles,
-			minWidth: 240,
-			margin: 8,
+			width: '100%',
 			backgroundColor: theme === 'dark' ? '#232433' : '#fff',
 			border:
 				theme === 'dark' ? '2px solid #80828a' : '2px solid #dddfe2',
 			color: theme === 'dark' ? '#fff' : '#464a53',
+			outline: 'none',
+			boxShadow: 'none',
+			':hover': {
+				border:
+					theme === 'dark'
+						? '2px solid #80828a'
+						: '2px solid #dddfe2',
+			},
 		}),
 		input: styles => ({
+			...styles,
+			color: theme === 'dark' ? '#fff' : '#464a53',
+		}),
+		placeholder: styles => ({
+			...styles,
+			color: theme === 'dark' ? '#fff' : '#464a53',
+		}),
+		singleValue: styles => ({
 			...styles,
 			color: theme === 'dark' ? '#fff' : '#464a53',
 		}),
@@ -62,20 +74,32 @@ const FontFamilySelector = props => {
 				isFocused && (theme === 'dark' ? '#4f515c' : '#f2f2f2'),
 		}),
 		indicatorsContainer: () => ({
-			display: 'none',
+			border: 'none',
+		}),
+		loadingIndicator: () => ({
+			position: 'absolute',
+			top: '12px',
+			right: '40px',
 		}),
 		menu: () => ({
 			boxShadow: 'inset 0 1px 0 rgba(0, 0, 0, 0.1)',
 		}),
 		menuList: () => ({
+			color: theme === 'dark' ? '#fff' : '#464a53',
+			backgroundColor: theme === 'dark' ? '#464a53' : '#fff',
 			maxHeight: '300px',
 			overflowY: 'auto',
 			paddingBottom: '4px',
 			paddingTop: '4px',
-			position: 'relative',
+			position: 'absolute',
+			top: '45px',
+			left: 0,
 			webkitOverflowScrolling: 'touch',
 			boxSizing: 'border-box',
 			overflowX: 'hidden',
+			borderRadius: '5px',
+			width: '100%',
+			boxShadow: '0 2px 7px 0 rgba(0, 0, 0, 0.2)',
 		}),
 	};
 
@@ -87,54 +111,21 @@ const FontFamilySelector = props => {
 
 	const classes = classnames('maxi-font-family-selector', className);
 
-	const popoverClasses = classnames(
-		'maxi-font-family-selector__popover',
-		theme === 'dark' && 'maxi-font-family-selector__popover__dark'
-	);
-
 	return (
-		<Dropdown
-			className={classes}
-			renderToggle={({ isOpen, onToggle }) => (
-				<Button
-					className='maxi-font-family-selector__button'
-					onClick={onToggle}
-				>
-					{font}
-					<Icon
-						className='maxi-font-family-selector__button__icon'
-						icon={chevronDown}
-					/>
-				</Button>
-			)}
-			popoverProps={{
-				className: popoverClasses,
-				noArrow: true,
-				position: 'middle center right',
-			}}
-			renderContent={() => (
-				<Fragment>
-					{!isNil(options) && (
-						<Select
-							value={font}
-							options={options}
-							placeholder={__('Search…', 'maxi-blocks')}
-							onChange={value => onFontChange(value)}
-							controlShouldRenderValue={false}
-							hideSelectedOptions={false}
-							styles={selectFontFamilyStyles}
-							isClearable={false}
-							backspaceRemovesValue={false}
-							tabSelectsValue={false}
-							menuIsOpen
-							closeMenuOnSelect
-							autoFocus
-						/>
-					)}
-					{isNil(options) && <Spinner />}
-				</Fragment>
-			)}
-		/>
+		<>
+			<Select
+				styles={selectFontFamilyStyles}
+				className={classes}
+				value={{ label: font, value: font }}
+				options={options}
+				placeholder={__('Search…', 'maxi-blocks')}
+				onChange={value => {
+					onFontChange(value);
+					console.log(value);
+				}}
+				isLoading={isNil(options)}
+			/>
+		</>
 	);
 };
 

@@ -2,9 +2,34 @@
 	.chrome-picker {
 		width: 290px !important;
 		box-shadow: none !important;
+
 		& > div {
 			padding-left: 0 !important;
 			padding-right: 0 !important;
+
+			& > div {
+				&:last-of-type {
+					align-items: center;
+
+					&:last-of-type {
+						div:not(.saturation-white, .saturation-black) {
+							display: flex;
+							margin: 0 7px 0 0 !important;
+							padding-left: 0 !important;
+
+							label {
+								margin-right: 5px;
+								order: 1;
+								font-family: 'Roboto', sans-serif !important;
+							}
+							input {
+								order: 2;
+								font-family: 'Roboto', sans-serif !important;
+							}
+						}
+					}
+				}
+			}
 		}
 		input {
 			border-radius: 5px !important;

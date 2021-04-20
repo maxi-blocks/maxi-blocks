@@ -100,10 +100,13 @@
 			& > div:last-of-type {
 				padding-bottom: 0 !important;
 			}
+			label {
+				color: #fff !important;
+			}
 			input {
 				background-color: transparent !important;
 				color: #fff !important;
-				border-color: #dddfe1 !important;
+				border-color: #80828a !important;
 			}
 			svg path {
 				fill: #fff !important;

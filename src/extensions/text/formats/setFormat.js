@@ -1,10 +1,20 @@
 /**
+ * WordPress dependencies
+ */
+import { isCollapsed } from '@wordpress/rich-text';
+
+/**
  * Internal dependencies
  */
 import getFormattedString from './getFormattedString';
 import getHasCustomFormat from './getHasCustomFormat';
 import setFormatWithClass from './setFormatWithClass';
 import flatFormatsWithClass from './flatFormatsWithClass';
+
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
 
 /**
  *
@@ -28,6 +38,16 @@ const setFormat = ({
 	isHover = false,
 	textLevel,
 }) => {
+	if (
+		isNil(formatValue.start) ||
+		isNil(formatValue.end || isCollapsed(formatValue))
+	) {
+		// eslint-disable-next-line @wordpress/no-global-get-selection, @wordpress/no-unguarded-get-range-at
+		const { startOffset, endOffset } = window.getSelection().getRangeAt(0);
+
+		formatValue.start = startOffset;
+		formatValue.end = endOffset;
+	}
 	if (!formatValue || formatValue.start === formatValue.end) {
 		const newTypography = { ...typography };
 		const newFormatValue = {

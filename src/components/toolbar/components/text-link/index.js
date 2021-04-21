@@ -206,6 +206,7 @@ const Link = withFormatValue(props => {
 			ref={ref}
 			icon={toolbarLink}
 			tooltip={__('Link', 'maxi-blocks')}
+			className='toolbar-item__text-link'
 		>
 			<div>
 				<__experimentalLinkControl

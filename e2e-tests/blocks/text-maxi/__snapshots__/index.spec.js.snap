@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextMaxi Test Text Maxi toolbar Link 1`] = `
+"<!-- wp:maxi-blocks/text-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"text-maxi-12\\",\\"isFirstOnHierarchy\\":true,\\"linkSettings\\":{\\"url\\":\\"test.com\\"},\\"content\\":\\"Test Text Maxi\\",\\"color-general\\":\\"#ff4a17\\",\\"text-decoration-general\\":\\"underline\\"} -->
+<a class=\\"maxi-link-wrapper\\" href=\\"test.com\\" target=\\"_self\\" rel=\\"\\"><div class=\\"maxi-motion-effect maxi-block maxi-text-block maxi-text-block-wrap maxi-light text-maxi-12\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Test Text Maxi</p></div></a>
+<!-- /wp:maxi-blocks/text-maxi -->"
+`;
+
+exports[`TextMaxi Test Text Maxi toolbar Link in part of the content 1`] = `
+"<!-- wp:maxi-blocks/text-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"text-maxi-12\\",\\"isFirstOnHierarchy\\":true,\\"content\\":\\"Test Text \\\\u003ca href=\\\\u0022test.com\\\\u0022 rel=\\\\u0022\\\\u0022 class=\\\\u0022maxi-text-block\\\\u002d\\\\u002dlink\\\\u0022\\\\u003e\\\\u003cspan class=\\\\u0022maxi-text-block\\\\u002d\\\\u002dhas-custom-format maxi-text-block__custom-format\\\\u002d\\\\u002d0\\\\u0022\\\\u003eMaxi\\\\u003c/span\\\\u003e\\\\u003c/a\\\\u003e\\",\\"custom-formats\\":{\\"maxi-text-block__custom-format\\\\u002d\\\\u002d0\\":{\\"color-general\\":\\"#ff4a17\\",\\"text-decoration-general\\":\\"underline\\"}}} -->
+<div class=\\"maxi-motion-effect maxi-block maxi-text-block maxi-text-block-wrap maxi-light text-maxi-12\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Test Text <a href=\\"test.com\\" rel=\\"\\" class=\\"maxi-text-block--link\\"><span class=\\"maxi-text-block--has-custom-format maxi-text-block__custom-format--0\\">Maxi</span></a></p></div>
+<!-- /wp:maxi-blocks/text-maxi -->"
+`;

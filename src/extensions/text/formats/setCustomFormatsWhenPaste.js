@@ -160,6 +160,7 @@ const setFormat = ({
 			value,
 			isList,
 			textLevel,
+			returnFormatValue: true,
 		});
 
 		newTypography = getGroupAttributes(obj, 'typography');
@@ -295,7 +296,7 @@ const setCustomFormatsWhenPaste = ({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/strikethrough',
-			value: { 'font-decoration': 'strikethrough' },
+			value: { 'text-decoration': 'line-through' },
 			isList,
 			textLevel,
 		});

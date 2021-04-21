@@ -1,4 +1,7 @@
 .maxi-font-icon-block {
+	position: relative;
+	z-index: 2;
+
 	&.is-hovered {
 		.maxi-font-icon-block__icon__replace {
 			visibility: visible;

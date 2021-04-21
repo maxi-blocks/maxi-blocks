@@ -24,7 +24,7 @@ import './editor.scss';
  * Component
  */
 const FontFamilySelector = props => {
-	const { font, onChange, className, theme = 'light' } = props;
+	const { font, onChange, className, theme = 'light', defaultValue } = props;
 
 	const { options } = useSelect(select => {
 		const { getFonts } = select('maxiBlocks/text');
@@ -46,10 +46,10 @@ const FontFamilySelector = props => {
 			backgroundColor: theme === 'dark' ? '#232433' : '#fff',
 			border:
 				theme === 'dark' ? '2px solid #80828a' : '2px solid #dddfe2',
-			color: theme === 'dark' ? '#fff' : '#464a53',
 			outline: 'none',
 			boxShadow: 'none',
 			':hover': {
+				cursor: 'pointer',
 				border:
 					theme === 'dark'
 						? '2px solid #80828a'
@@ -62,7 +62,7 @@ const FontFamilySelector = props => {
 		}),
 		placeholder: styles => ({
 			...styles,
-			color: theme === 'dark' ? '#fff' : '#464a53',
+			color: '#bcbcbd',
 		}),
 		singleValue: styles => ({
 			...styles,
@@ -74,6 +74,7 @@ const FontFamilySelector = props => {
 				isFocused && (theme === 'dark' ? '#4f515c' : '#f2f2f2'),
 		}),
 		indicatorsContainer: () => ({
+			display: 'flex',
 			border: 'none',
 		}),
 		loadingIndicator: () => ({
@@ -112,20 +113,20 @@ const FontFamilySelector = props => {
 	const classes = classnames('maxi-font-family-selector', className);
 
 	return (
-		<>
-			<Select
-				styles={selectFontFamilyStyles}
-				className={classes}
-				value={{ label: font, value: font }}
-				options={options}
-				placeholder={__('Search…', 'maxi-blocks')}
-				onChange={value => {
-					onFontChange(value);
-					console.log(value);
-				}}
-				isLoading={isNil(options)}
-			/>
-		</>
+		<Select
+			styles={selectFontFamilyStyles}
+			className={classes}
+			options={options}
+			value={{ label: font, value: font }}
+			placeholder={__('Search…', 'maxi-blocks')}
+			onChange={(value, clear) =>
+				clear.action === 'select-option'
+					? onFontChange(value)
+					: onFontChange({ label: defaultValue, value: defaultValue })
+			}
+			isLoading={isNil(options)}
+			isClearable
+		/>
 	);
 };
 

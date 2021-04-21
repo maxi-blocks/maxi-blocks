@@ -22,7 +22,10 @@ import {
 	getCustomFormatValue,
 	withFormatValue,
 } from '../../../../extensions/text/formats';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import {
+	getGroupAttributes,
+	getDefaultAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -81,6 +84,9 @@ const TextOptions = withFormatValue(props => {
 					<div className='toolbar-item__popover__font-options__font'>
 						<FontFamilySelector
 							className='toolbar-item__popover__font-options__font__selector'
+							defaultValue={getDefaultAttribute(
+								`font-family-${breakpoint}`
+							)}
 							font={getValue('font-family')}
 							onChange={font => {
 								onChangeFormat({

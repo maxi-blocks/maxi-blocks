@@ -73,7 +73,6 @@ class edit extends MaxiBlock {
 		const {
 			uniqueID,
 			blockStyle,
-			blockStyleBackground,
 			extraClassName,
 			fullWidth,
 		} = attributes;
@@ -91,13 +90,6 @@ class edit extends MaxiBlock {
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
-			!!attributes['color1-highlight'] && 'maxi-highlight--color1',
-			!!attributes['color2-highlight'] && 'maxi-highlight--color2',
 			extraClassName,
 			uniqueID,
 			className
@@ -243,63 +235,10 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 			});
 	};
 
-	const changeSVGAnimationDuration = duration => {
-		const regexLineToChange = new RegExp('dur=".+?(?= )', 'g');
-		const changeTo = `dur="${duration}s"`;
-		const newContent = content.replace(regexLineToChange, changeTo);
-
-		if (!isEmpty(newContent))
-			setAttributes({
-				content: newContent,
-			});
-	};
-
-	const changeSVGAnimation = animation => {
-		let newContent = '';
-
-		switch (animation) {
-			case 'loop':
-				newContent = content.replace(
-					/repeatCount="1"/g,
-					'repeatCount="indefinite"'
-				);
-				newContent = newContent.replace(/dur="0"/g, 'dur="3.667s"');
-				break;
-			case 'load-once':
-				newContent = content.replace(
-					/repeatCount="indefinite"/g,
-					'repeatCount="1"'
-				);
-				newContent = newContent.replace(/dur="0"/g, 'dur="3.667s"');
-				break;
-			case 'hover-loop':
-				newContent = content.replace(
-					new RegExp('dur=".+?(?= )', 'g'),
-					'dur="0"'
-				);
-				break;
-			case 'off':
-				newContent = content.replace(
-					new RegExp('dur=".+?(?= )', 'g'),
-					'dur="0"'
-				);
-				break;
-			case 'hover-once':
-			case 'hover-off':
-			default:
-				return;
-		}
-
-		if (!isEmpty(newContent))
-			setAttributes({
-				content: newContent,
-			});
-	};
-
 	const changeSVGStrokeWidth = width => {
 		if (width) {
-			const regexLineToChange = new RegExp('stroke-width=".+?(?= )', 'g');
-			const changeTo = `stroke-width="${width}"`;
+			const regexLineToChange = new RegExp('stroke-width:.+?(?=;)', 'g');
+			const changeTo = `stroke-width:${width}`;
 			const newContent = content.replace(regexLineToChange, changeTo);
 
 			setAttributes({
@@ -309,46 +248,23 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const changeSVGContent = (color, colorNumber) => {
-		let colorClass = '';
-		switch (colorNumber) {
-			case 1:
-				colorClass = 'maxi-svg-color-first';
-				break;
-			case 2:
-				colorClass = 'maxi-svg-color-second';
-				break;
-			case 3:
-				colorClass = 'maxi-svg-color-third';
-				break;
-			default:
-				return;
+		let [regexLineToChange, changeTo] = '';
+
+		if (colorNumber === 1) {
+			regexLineToChange = new RegExp('fill:.+?(?=;)', 'g');
+			changeTo = `fill:${color}`;
+		}
+		if (colorNumber === 2) {
+			regexLineToChange = new RegExp('stroke:.+?(?=;)', 'g');
+			changeTo = `stroke:${color}`;
 		}
 
-		if (colorClass !== '') {
-			const regexLineToChange = new RegExp(
-				`${colorClass}" fill=".+?(?= )`,
-				'g'
-			);
-			const regexLineToChange2 = new RegExp(
-				`${colorClass}" stroke=".+?(?= )`,
-				'g'
-			);
-
-			/// ^rgba?\(|\s+|\)$/g
-			const changeTo = `${colorClass}" fill="${color}"`;
-			const changeTo2 = `${colorClass}" stroke="${color}"`;
-			const newContent = content
-				.replace(regexLineToChange, changeTo)
-				.replace(regexLineToChange2, changeTo2);
-
-			setAttributes({ content: newContent });
-		}
+		const newContent = content.replace(regexLineToChange, changeTo);
+		setAttributes({ content: newContent });
 	};
 
 	return {
 		changeSVGSize,
-		changeSVGAnimationDuration,
-		changeSVGAnimation,
 		changeSVGStrokeWidth,
 		changeSVGContent,
 	};

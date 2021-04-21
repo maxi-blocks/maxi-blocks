@@ -13,6 +13,7 @@ const SvgColor = props => {
 			label={label}
 			color={color}
 			defaultColor={defaultColor}
+			disableOpacity
 			onChange={val => {
 				onChange(val);
 			}}

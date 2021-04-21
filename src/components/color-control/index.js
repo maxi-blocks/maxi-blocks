@@ -27,7 +27,14 @@ import { reset } from '../../icons';
  * Component
  */
 const ColorControl = props => {
-	const { label, className, color, defaultColor = '', onChange } = props;
+	const {
+		label,
+		className,
+		color,
+		defaultColor = '',
+		onChange,
+		disableOpacity,
+	} = props;
 
 	const classes = classnames('maxi-color-control', className);
 
@@ -112,22 +119,24 @@ const ColorControl = props => {
 					</Button>
 				</div>
 			</BaseControl>
-			<RangeSliderControl
-				label={__('Colour Opacity', 'maxi-blocks')}
-				className='maxi-color-control__opacity'
-				value={+colorAlpha}
-				onChange={val => {
-					if (!isEmpty(color)) {
-						onChange(returnColor(getRGB(color), val));
-						setCurrentColor(returnColor(getRGB(color), val));
-					}
+			{!disableOpacity && (
+				<RangeSliderControl
+					label={__('Colour Opacity', 'maxi-blocks')}
+					className='maxi-color-control__opacity'
+					value={+colorAlpha}
+					onChange={val => {
+						if (!isEmpty(color)) {
+							onChange(returnColor(getRGB(color), val));
+							setCurrentColor(returnColor(getRGB(color), val));
+						}
 
-					setColorAlpha(val);
-				}}
-				min={0}
-				max={100}
-				initialPosition={100}
-			/>
+						setColorAlpha(val);
+					}}
+					min={0}
+					max={100}
+					initialPosition={100}
+				/>
+			)}
 			<div className='maxi-color-control__color'>
 				<ChromePicker
 					color={currentColor}

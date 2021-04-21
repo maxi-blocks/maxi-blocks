@@ -45,23 +45,17 @@ import {
 const Inspector = props => {
 	const {
 		attributes,
-		changeSVGAnimation,
-		changeSVGAnimationDuration,
 		changeSVGContent,
 		changeSVGSize,
 		changeSVGStrokeWidth,
 		clientId,
 		deviceType,
-		isAnimatedSVG,
 		setAttributes,
 	} = props;
 	const {
-		animation,
 		blockStyle,
-		blockStyleBackground,
 		customLabel,
 		defaultBlockStyle,
-		duration,
 		extraClassName,
 		isFirstOnHierarchy,
 		stroke,
@@ -89,17 +83,9 @@ const Inspector = props => {
 									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										blockStyleBackground={
-											blockStyleBackground
-										}
 										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
-										disableHighlightText
-										{...getGroupAttributes(attributes, [
-											'border',
-											'highlight',
-										])}
 									/>
 								</div>
 								<AccordionControl
@@ -170,22 +156,22 @@ const Inspector = props => {
 												<Fragment>
 													<SvgColor
 														label={__(
-															'SVG Primary',
+															'SVG Fill',
 															'maxi-blocks'
 														)}
 														color={
-															attributes.svgColorOrange
+															attributes.svgColorFill
 														}
 														defaultColor={getDefaultAttribute(
-															'svgColorOrange',
+															'svgColorFill',
 															clientId
 														)}
-														onChange={svgColorOrange => {
+														onChange={svgColorFill => {
 															setAttributes({
-																svgColorOrange,
+																svgColorFill,
 															});
 															changeSVGContent(
-																svgColorOrange,
+																svgColorFill,
 																1
 															);
 														}}
@@ -193,22 +179,22 @@ const Inspector = props => {
 													<hr />
 													<SvgColor
 														label={__(
-															'SVG Secondary',
+															'SVG Line',
 															'maxi-blocks'
 														)}
 														color={
-															attributes.svgColorBlack
+															attributes.svgColorLine
 														}
 														defaultColor={getDefaultAttribute(
-															'svgColorBlack',
+															'svgColorLine',
 															clientId
 														)}
-														onChange={svgColorBlack => {
+														onChange={svgColorLine => {
 															setAttributes({
-																svgColorBlack,
+																svgColorLine,
 															});
 															changeSVGContent(
-																svgColorBlack,
+																svgColorLine,
 																2
 															);
 														}}
@@ -216,48 +202,6 @@ const Inspector = props => {
 												</Fragment>
 											),
 										},
-										attributes.content &&
-											isAnimatedSVG && {
-												label: __(
-													'SVG Animation',
-													'maxi-blocks'
-												),
-												content: (
-													<Fragment>
-														<SvgAnimationControl
-															animation={
-																animation
-															}
-															onChange={animation => {
-																setAttributes({
-																	animation,
-																});
-																changeSVGAnimation(
-																	animation
-																);
-															}}
-														/>
-														{animation !==
-															'off' && (
-															<SvgAnimationDurationControl
-																duration={
-																	duration
-																}
-																onChange={duration => {
-																	setAttributes(
-																		{
-																			duration,
-																		}
-																	);
-																	changeSVGAnimationDuration(
-																		duration
-																	);
-																}}
-															/>
-														)}
-													</Fragment>
-												),
-											},
 										attributes.content && {
 											label: __(
 												'SVG Line Width',
@@ -453,11 +397,6 @@ const Inspector = props => {
 																	breakpoint={
 																		deviceType
 																	}
-																	disableColor={
-																		!!attributes[
-																			'border-highlight'
-																		]
-																	}
 																/>
 															),
 														},
@@ -521,11 +460,6 @@ const Inspector = props => {
 																			}
 																			breakpoint={
 																				deviceType
-																			}
-																			disableColor={
-																				!!attributes[
-																					'border-highlight'
-																				]
 																			}
 																			isHover
 																		/>

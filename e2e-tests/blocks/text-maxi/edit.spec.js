@@ -56,4 +56,14 @@ describe('TextMaxi', () => {
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
+
+	it('Testing the bold of Text Maxi', async () => {
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi Bold');
+
+		await openSidebarPanelWithTitle('Background Color');
+		await selectOption('Background Color', 'orange');
+
+		expect(await getEditedPostContent()).toMatchSnapshot();
+	});
 });

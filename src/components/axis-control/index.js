@@ -137,15 +137,24 @@ const AxisControl = props => {
 		) || 'px';
 
 	const onChangeValue = (val, singleTarget) => {
-		const newValue = isEmpty(val)
-			? ''
-			: val === 'auto'
-			? 'auto'
-			: optionType === 'number'
-			? +val
-			: val;
+		let newValue = '';
 
-		console.log(typeof newValue, newValue);
+		if (optionType === 'number') {
+			if (isEmpty(val)) {
+				newValue = val;
+			} else {
+				newValue = +val;
+			}
+		} else {
+			if (isEmpty(val)) {
+				newValue = '';
+			} else if (val === 'auto') {
+				newValue = 'auto';
+			} else {
+				newValue = val;
+			}
+		}
+
 		if (
 			getLastBreakpointAttribute(
 				getKey('sync'),

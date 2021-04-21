@@ -2,6 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Internal dependencies
@@ -75,40 +76,44 @@ const Indicators = props => {
 
 	return (
 		<div className={classes}>
-			{marginTop && marginTop !== 'auto' && marginTop > 19 ? (
+			{!isNil(marginTop) && marginTop !== 'auto' && +marginTop > 19 ? (
 				<div
 					style={{
-						height: marginTop,
+						height: +marginTop,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--top'
 				>
 					{`${marginTop}${marginUnit}`}
 				</div>
 			) : null}
-			{marginRight && marginRight !== 'auto' && marginRight > 35 ? (
+			{!isNil(marginRight) &&
+			marginRight !== 'auto' &&
+			+marginRight > 35 ? (
 				<div
 					style={{
-						width: marginRight,
+						width: +marginRight,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--right'
 				>
 					{`${marginRight}${marginUnit}`}
 				</div>
 			) : null}
-			{marginBottom && marginBottom !== 'auto' && marginBottom > 19 ? (
+			{!isNil(marginBottom) &&
+			marginBottom !== 'auto' &&
+			+marginBottom > 19 ? (
 				<div
 					style={{
-						height: marginBottom,
+						height: +marginBottom,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--bottom'
 				>
 					{`${marginBottom}${marginUnit}`}
 				</div>
 			) : null}
-			{marginLeft && marginLeft !== 'auto' && marginLeft > 35 ? (
+			{!isNil(marginLeft) && marginLeft !== 'auto' && +marginLeft > 35 ? (
 				<div
 					style={{
-						width: marginLeft,
+						width: +marginLeft,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--left'
 				>

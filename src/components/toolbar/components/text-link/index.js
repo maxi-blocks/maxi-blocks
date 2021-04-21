@@ -1,12 +1,13 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 import { __experimentalLinkControl } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';
 import { Button } from '@wordpress/components';
+import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -41,7 +42,6 @@ const Link = withFormatValue(props => {
 
 	const formatName = 'maxi-blocks/text-link';
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const { formatOptions } = useSelect(() => {
 		const formatOptions = getActiveFormat(formatValue, formatName);
 
@@ -51,6 +51,8 @@ const Link = withFormatValue(props => {
 	}, [getActiveFormat, formatValue, formatName]);
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
+
+	const ref = useRef();
 
 	const createLinkValue = formatOptions => {
 		if (!formatOptions || isEmpty(formatValue)) return {};
@@ -140,6 +142,8 @@ const Link = withFormatValue(props => {
 			textLevel,
 		});
 
+		if (ref.current) ref.current.node.state.isOpen = false;
+
 		onChange(obj);
 	};
 
@@ -157,49 +161,48 @@ const Link = withFormatValue(props => {
 
 	const onClick = attributes => {
 		if (!formatOptions) setLinkFormat(attributes);
-		else if (isEmpty(attributes.url)) removeLinkFormatHandle();
 		else updateLinkString(attributes);
 	};
 
 	return (
 		<ToolbarPopover
+			ref={ref}
 			icon={toolbarLink}
 			tooltip={__('Link', 'maxi-blocks')}
-			content={
-				<Fragment>
-					<__experimentalLinkControl
-						value={createLinkValue(formatOptions)}
-						onChange={onClick}
-						settings={[
-							{
-								id: 'opensInNewTab',
-								title: __('Open in new tab', 'maxi-blocks'),
-							},
-							{
-								id: 'noFollow',
-								title: __('Add "nofollow" rel', 'maxi-blocks'),
-							},
-							{
-								id: 'sponsored',
-								title: __('Add "sponsored" rel', 'maxi-blocks'),
-							},
-							{
-								id: 'ugc',
-								title: __('Add "UGC" rel', 'maxi-blocks'),
-							},
-						]}
-					/>
-					<Fragment>
-						<Button
-							className='toolbar-popover-link-destroyer'
-							onClick={() => onClick({ url: '' })}
-						>
-							Remove link
-						</Button>
-					</Fragment>
-				</Fragment>
-			}
-		/>
+		>
+			<div>
+				<__experimentalLinkControl
+					value={createLinkValue(formatOptions)}
+					onChange={onClick}
+					settings={[
+						{
+							id: 'opensInNewTab',
+							title: __('Open in new tab', 'maxi-blocks'),
+						},
+						{
+							id: 'noFollow',
+							title: __('Add "nofollow" rel', 'maxi-blocks'),
+						},
+						{
+							id: 'sponsored',
+							title: __('Add "sponsored" rel', 'maxi-blocks'),
+						},
+						{
+							id: 'ugc',
+							title: __('Add "UGC" rel', 'maxi-blocks'),
+						},
+					]}
+				/>
+				<Button
+					className='toolbar-popover-link-destroyer'
+					onClick={() => {
+						removeLinkFormatHandle();
+					}}
+				>
+					Remove link
+				</Button>
+			</div>
+		</ToolbarPopover>
 	);
 });
 

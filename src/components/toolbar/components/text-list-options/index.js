@@ -96,39 +96,38 @@ const TextListOptions = withFormatValue(props => {
 			tooltip={__('List options', 'maxi-blocks')}
 			icon={toolbarUnorderedList}
 			advancedOptions='list options'
-			content={
-				<div className='toolbar-item__popover__list-options'>
-					<Button
-						className='toolbar-item__popover__list-options__button'
-						icon={toolbarOrderedList}
-						onClick={() => onChangeList('ol')}
-						aria-pressed={isList && typeOfList === 'ol'}
-					/>
-					<Button
-						className='toolbar-item__popover__list-options__button'
-						icon={toolbarUnorderedList}
-						onClick={() => onChangeList('ul')}
-						aria-pressed={isList && typeOfList === 'ul'}
-					/>
-					{!isEmpty(formatValue) &&
-						__unstableCanOutdentListItems(formatValue) && (
-							<Button
-								className='toolbar-item__popover__list-options__button'
-								icon={toolbarOutdentList}
-								onClick={() => onChangeIndent('outdent')}
-							/>
-						)}
-					{!isEmpty(formatValue) &&
-						__unstableCanIndentListItems(formatValue) && (
-							<Button
-								className='toolbar-item__popover__list-options__button'
-								icon={toolbarIndentList}
-								onClick={() => onChangeIndent('indent')}
-							/>
-						)}
-				</div>
-			}
-		/>
+		>
+			<div className='toolbar-item__popover__list-options'>
+				<Button
+					className='toolbar-item__popover__list-options__button'
+					icon={toolbarOrderedList}
+					onClick={() => onChangeList('ol')}
+					aria-pressed={isList && typeOfList === 'ol'}
+				/>
+				<Button
+					className='toolbar-item__popover__list-options__button'
+					icon={toolbarUnorderedList}
+					onClick={() => onChangeList('ul')}
+					aria-pressed={isList && typeOfList === 'ul'}
+				/>
+				{!isEmpty(formatValue) &&
+					__unstableCanOutdentListItems(formatValue) && (
+						<Button
+							className='toolbar-item__popover__list-options__button'
+							icon={toolbarOutdentList}
+							onClick={() => onChangeIndent('outdent')}
+						/>
+					)}
+				{!isEmpty(formatValue) &&
+					__unstableCanIndentListItems(formatValue) && (
+						<Button
+							className='toolbar-item__popover__list-options__button'
+							icon={toolbarIndentList}
+							onClick={() => onChangeIndent('indent')}
+						/>
+					)}
+			</div>
+		</ToolbarPopover>
 	);
 });
 

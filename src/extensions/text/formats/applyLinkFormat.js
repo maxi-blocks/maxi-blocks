@@ -2,11 +2,7 @@
  * WordPress dependencies
  */
 import { applyFormat } from '@wordpress/rich-text';
-
-/**
- * Internal dependencies
- */
-import setFormatWithClass from './setFormatWithClass';
+import setFormat from './setFormat';
 
 /**
  * Generates formats for links
@@ -25,22 +21,25 @@ const applyLinkFormat = ({
 	linkAttributes = {},
 	isList,
 	textLevel,
+	breakpoint = 'general',
+	isHover = false,
 }) => {
 	const linkCustomFormatValue = applyFormat(formatValue, {
 		type: 'maxi-blocks/text-link',
 		attributes: linkAttributes,
 	});
 
-	return setFormatWithClass({
+	return setFormat({
 		formatValue: linkCustomFormatValue,
-		isList,
 		typography,
+		isList,
 		value: {
 			color: '#ff4a17',
 			'text-decoration': 'underline',
 		},
+		breakpoint,
+		isHover,
 		textLevel,
-		returnFormatValue: true,
 	});
 };
 

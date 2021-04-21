@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Image Maxi Image Maxi 1`] = `
+"<!-- wp:maxi-blocks/image-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"image-maxi-12\\",\\"isFirstOnHierarchy\\":true} -->
+<figure class=\\"wp-block-maxi-blocks-image-maxi maxi-motion-effect maxi-block maxi-image-block image-maxi-12 maxi-light\\" id=\\"image-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><div style=\\"width:100%\\" class=\\"maxi-block-hover-wrapper maxi-hover-effect__none__fade maxi-hover-effect__text\\"><img class=\\"wp-image-undefined\\"/></div></figure>
+<!-- /wp:maxi-blocks/image-maxi -->"
+`;

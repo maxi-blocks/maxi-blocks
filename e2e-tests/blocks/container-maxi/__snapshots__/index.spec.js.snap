@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Container Maxi Container Maxi 1`] = `
+"<!-- wp:maxi-blocks/container-maxi {\\"uniqueID\\":\\"container-maxi-12\\",\\"isFirstOnHierarchy\\":true} -->
+<section class=\\"maxi-motion-effect maxi-block maxi-container-block maxi-light maxi-background--1 container-maxi-12 alignfull\\" data-gx_initial_block_class=\\"maxi-def-light\\" id=\\"container-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><div class=\\"maxi-container-block__container\\"><!-- wp:maxi-blocks/row-maxi {\\"blockStyle\\":\\"maxi-parent\\",\\"uniqueID\\":\\"row-maxi-34\\",\\"isFirstOnHierarchy\\":false} -->
+<div class=\\"wp-block-maxi-blocks-row-maxi maxi-block maxi-row-block maxi-parent row-maxi-34\\" id=\\"row-maxi-34\\"><div class=\\"maxi-background-displayer\\"></div></div>
+<!-- /wp:maxi-blocks/row-maxi --></div></section>
+<!-- /wp:maxi-blocks/container-maxi -->"
+`;

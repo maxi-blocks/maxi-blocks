@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Group Maxi Group Maxi 1`] = `
+"<!-- wp:maxi-blocks/group-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"group-maxi-12\\",\\"isFirstOnHierarchy\\":true} -->
+<section class=\\"maxi-motion-effect maxi-block maxi-group-block maxi-light group-maxi-12\\" data-gx_initial_block_class=\\"maxi-def-light\\" id=\\"group-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><div class=\\"maxi-group-block__group\\"></div></section>
+<!-- /wp:maxi-blocks/group-maxi -->"
+`;

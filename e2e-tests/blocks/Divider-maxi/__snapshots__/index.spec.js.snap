@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Divider Maxi Divider Maxi 1`] = `
+"<!-- wp:maxi-blocks/divider-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"divider-maxi-12\\",\\"isFirstOnHierarchy\\":true} -->
+<div class=\\"wp-block-maxi-blocks-divider-maxi maxi-motion-effect maxi-block maxi-divider-block maxi-light divider-maxi-12 maxi-divider-block--horizontal\\" id=\\"divider-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><hr class=\\"maxi-divider-block__divider\\"/></div>
+<!-- /wp:maxi-blocks/divider-maxi -->"
+`;

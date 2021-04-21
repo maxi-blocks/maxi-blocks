@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Font Icon Maxi Font Icon Maxi 1`] = `
+exports[`Font Icon Maxi Font Icon Maxi does not break 1`] = `
 "<!-- wp:maxi-blocks/font-icon-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"font-icon-maxi-12\\",\\"isFirstOnHierarchy\\":true} -->
 <div class=\\"wp-block-maxi-blocks-font-icon-maxi maxi-motion-effect maxi-block maxi-font-icon-block maxi-light font-icon-maxi-12\\" id=\\"font-icon-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div></div>
 <!-- /wp:maxi-blocks/font-icon-maxi -->"

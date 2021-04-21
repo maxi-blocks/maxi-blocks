@@ -12,7 +12,7 @@ describe('Divider Maxi', () => {
 		await createNewPost();
 	});
 
-	it('Divider Maxi', async () => {
+	it('Divider Maxi does not break ', async () => {
 		await insertBlock('Divider Maxi');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

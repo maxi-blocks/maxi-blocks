@@ -7,13 +7,13 @@ import {
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
 
-describe('Image Maxi', () => {
+describe('Font Icon Maxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
 	});
 
-	it('Image Maxi', async () => {
-		await insertBlock('Image Maxi');
+	it('Font Icon Maxi does not break', async () => {
+		await insertBlock('Font Icon Maxi');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});

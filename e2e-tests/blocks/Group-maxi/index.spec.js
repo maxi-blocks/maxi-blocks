@@ -12,7 +12,7 @@ describe('Group Maxi', () => {
 		await createNewPost();
 	});
 
-	it('Group Maxi', async () => {
+	it('Group Maxi does not break', async () => {
 		await insertBlock('Group Maxi');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

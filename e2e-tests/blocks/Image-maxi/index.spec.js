@@ -7,14 +7,13 @@ import {
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
 
-describe('Button Maxi', () => {
+describe('Image Maxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
 	});
 
-	it('ButtonMaxi', async () => {
-		await insertBlock('Button Maxi');
-		await page.keyboard.type('Button Maxi');
+	it('Image Maxi does not break', async () => {
+		await insertBlock('Image Maxi');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});

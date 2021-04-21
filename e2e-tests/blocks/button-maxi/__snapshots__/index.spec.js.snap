@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`ButtonMaxi ButtonMaxi 1`] = `
-"<!-- wp:maxi-blocks/button-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"button-maxi-12\\",\\"isFirstOnHierarchy\\":true,\\"buttonContent\\":\\"Button Maxi\\"} -->
-<div class=\\"wp-block-maxi-blocks-button-maxi maxi-motion-effect maxi-block maxi-button-block maxi-light button-maxi-12\\" id=\\"button-maxi-12\\"><button type=\\"button\\" class=\\"components-button maxi-button-block__button maxi-button-block__button--icon-right\\"><span class=\\"maxi-button-block__content\\">Button Maxi</span></button></div>
-<!-- /wp:maxi-blocks/button-maxi -->"
-`;

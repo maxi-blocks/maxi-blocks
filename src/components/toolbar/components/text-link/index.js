@@ -17,6 +17,7 @@ import {
 	applyLinkFormat,
 	removeLinkFormat,
 	withFormatValue,
+	setFormat,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
@@ -36,7 +37,14 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = withFormatValue(props => {
-	const { blockName, onChange, isList, formatValue, textLevel } = props;
+	const {
+		blockName,
+		onChange,
+		isList,
+		formatValue,
+		textLevel,
+		linkSettings,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -55,6 +63,7 @@ const Link = withFormatValue(props => {
 	const ref = useRef();
 
 	const createLinkValue = formatOptions => {
+		if (!isEmpty(linkSettings)) return linkSettings;
 		if (!formatOptions || isEmpty(formatValue)) return {};
 
 		const {
@@ -118,33 +127,61 @@ const Link = withFormatValue(props => {
 	const setLinkFormat = attributes => {
 		const { start, end } = formatValue;
 
-		if (start === end) {
-			formatValue.start = 0;
-			formatValue.end = formatValue.formats.length;
+		const isWholeContent = start === end;
+
+		if (isWholeContent || !isEmpty(linkSettings)) {
+			const newTypography = setFormat({
+				formatValue,
+				typography,
+				isList,
+				value: {
+					color: '#ff4a17',
+					'text-decoration': 'underline',
+				},
+				textLevel,
+			});
+
+			onChange({ linkSettings: attributes, ...newTypography });
+		} else {
+			const obj = applyLinkFormat({
+				formatValue,
+				typography,
+				linkAttributes: createLinkAttribute(attributes),
+				isList,
+				textLevel,
+				linkSettings,
+			});
+
+			onChange(obj);
 		}
-
-		const obj = applyLinkFormat({
-			formatValue,
-			typography,
-			linkAttributes: createLinkAttribute(attributes),
-			isList,
-			textLevel,
-		});
-
-		onChange(obj);
 	};
 
 	const removeLinkFormatHandle = () => {
-		const obj = removeLinkFormat({
-			formatValue,
-			isList,
-			typography,
-			textLevel,
-		});
+		if (!isEmpty(linkSettings)) {
+			const newTypography = setFormat({
+				formatValue: { ...formatValue, start: 0, end: 0 },
+				typography,
+				isList,
+				value: {
+					color: '',
+					'text-decoration': '',
+				},
+				textLevel,
+			});
+
+			onChange({ linkSettings: null, ...newTypography });
+		} else {
+			const obj = removeLinkFormat({
+				formatValue,
+				isList,
+				typography,
+				textLevel,
+			});
+
+			onChange(obj);
+		}
 
 		if (ref.current) ref.current.node.state.isOpen = false;
-
-		onChange(obj);
 	};
 
 	const updateLinkString = attributes => {

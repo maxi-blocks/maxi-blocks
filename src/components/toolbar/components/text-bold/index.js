@@ -43,7 +43,7 @@ const TextBold = withFormatValue(props => {
 		getCustomFormatValue({
 			typography: { ...getGroupAttributes(props, 'typography') },
 			formatValue,
-			prop: 'font-style',
+			prop: 'font-weight',
 			breakpoint,
 		});
 

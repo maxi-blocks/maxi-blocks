@@ -17,6 +17,7 @@ import {
 	getGroupAttributes,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
+	getBlockStyle,
 } from '../../../../extensions/styles';
 
 /**
@@ -29,7 +30,14 @@ import { toolbarType } from '../../../../icons';
  * TextColor
  */
 const TextColor = withFormatValue(props => {
-	const { blockName, onChange, breakpoint, formatValue } = props;
+	const {
+		blockName,
+		onChange,
+		breakpoint,
+		formatValue,
+		blockStyle,
+		clientId,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
@@ -49,17 +57,16 @@ const TextColor = withFormatValue(props => {
 			icon={
 				<div
 					className='toolbar-item__text-options__icon'
-					style={
-						(color && {
-							background: color,
-						}) || {
-							background: getLastBreakpointAttribute(
-								typography,
-								'color',
-								breakpoint
-							),
-						}
-					}
+					style={{
+						background:
+							props['color'] ||
+							`var(--maxi-${getBlockStyle(
+								blockStyle,
+								clientId
+							)}-color-${
+								props['palette-preset-typography-color']
+							})`,
+					}}
 				>
 					<Icon
 						className='toolbar-item__text-options__inner-icon'
@@ -68,23 +75,31 @@ const TextColor = withFormatValue(props => {
 				</div>
 			}
 			content={
-				<ColorControl
-					label={__('Text', 'maxi-blocks')}
-					defaultColor={getDefaultAttribute('color')}
-					color={
-						color ||
-						getLastBreakpointAttribute(
-							'color',
-							breakpoint,
-							typography
-						)
-					}
-					onChange={val =>
-						onChange({
-							[`color-${breakpoint}`]: val,
-						})
-					}
-				/>
+				<div className='toolbar-item__text-color__popover'>
+					<ColorControl
+						label={__('Text', 'maxi-blocks')}
+						defaultColor={getDefaultAttribute('color')}
+						color={
+							color ||
+							getLastBreakpointAttribute(
+								'color',
+								breakpoint,
+								typography
+							)
+						}
+						onChange={val =>
+							onChange({
+								[`color-${breakpoint}`]: val,
+							})
+						}
+						showPalette
+						blockStyle={blockStyle}
+						palette={{ ...getGroupAttributes(props, 'palette') }}
+						colorPaletteType='typography'
+						onChangePalette={val => onChange(val)}
+						deviceType={breakpoint}
+					/>
+				</div>
 			}
 		/>
 	);

@@ -48,7 +48,7 @@ import { isEmpty, isEqual, cloneDeep } from 'lodash';
  */
 const Inspector = memo(
 	props => {
-		const { attributes, deviceType, setAttributes, clientId } = props;
+		const { attributes, deviceType, setAttributes, clientId, name } = props;
 		const {
 			customLabel,
 			isFirstOnHierarchy,
@@ -252,7 +252,10 @@ const Inspector = memo(
 																	<TypographyControl
 																		{...getGroupAttributes(
 																			attributes,
-																			'typography'
+																			[
+																				'typography',
+																				'palette',
+																			]
 																		)}
 																		textLevel={
 																			textLevel
@@ -265,6 +268,15 @@ const Inspector = memo(
 																		hideAlignment
 																		breakpoint={
 																			deviceType
+																		}
+																		blockName={
+																			name
+																		}
+																		blockStyle={
+																			blockStyle
+																		}
+																		clientId={
+																			clientId
 																		}
 																		isList={
 																			isList
@@ -327,6 +339,7 @@ const Inspector = memo(
 																					[
 																						'typography',
 																						'typographyHover',
+																						'palette',
 																					]
 																				)}
 																				textLevel={
@@ -340,6 +353,15 @@ const Inspector = memo(
 																				hideAlignment
 																				breakpoint={
 																					deviceType
+																				}
+																				blockName={
+																					name
+																				}
+																				blockStyle={
+																					blockStyle
+																				}
+																				clientId={
+																					clientId
 																				}
 																				isList={
 																					isList
@@ -385,6 +407,7 @@ const Inspector = memo(
 																					'backgroundVideo',
 																					'backgroundGradient',
 																					'backgroundSVG',
+																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -400,6 +423,12 @@ const Inspector = memo(
 																			disableImage
 																			disableVideo
 																			disableSVG
+																			blockStyle={
+																				blockStyle
+																			}
+																			clientId={
+																				clientId
+																			}
 																		/>
 																	</Fragment>
 																),
@@ -455,6 +484,7 @@ const Inspector = memo(
 																						'backgroundHover',
 																						'backgroundColorHover',
 																						'backgroundGradientHover',
+																						'palette',
 																					]
 																				)}
 																				onChange={obj =>
@@ -471,6 +501,12 @@ const Inspector = memo(
 																				disableVideo
 																				disableSVG
 																				isHover
+																				blockStyle={
+																					blockStyle
+																				}
+																				clientId={
+																					clientId
+																				}
 																			/>
 																		)}
 																	</Fragment>
@@ -502,6 +538,7 @@ const Inspector = memo(
 																				'border',
 																				'borderWidth',
 																				'borderRadius',
+																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -511,6 +548,12 @@ const Inspector = memo(
 																		}
 																		breakpoint={
 																			deviceType
+																		}
+																		blockStyle={
+																			blockStyle
+																		}
+																		clientId={
+																			clientId
 																		}
 																		disableColor={
 																			!!attributes[
@@ -571,6 +614,7 @@ const Inspector = memo(
 																						'borderHover',
 																						'borderWidthHover',
 																						'borderRadiusHover',
+																						'palette',
 																					]
 																				)}
 																				onChange={obj =>
@@ -580,6 +624,12 @@ const Inspector = memo(
 																				}
 																				breakpoint={
 																					deviceType
+																				}
+																				blockStyle={
+																					blockStyle
+																				}
+																				clientId={
+																					clientId
 																				}
 																				isHover
 																				disableColor={
@@ -676,15 +726,24 @@ const Inspector = memo(
 																	<BoxShadowControl
 																		{...getGroupAttributes(
 																			attributes,
-																			'boxShadow'
+																			[
+																				'boxShadow',
+																				'palette',
+																			]
 																		)}
 																		onChange={obj =>
 																			setAttributes(
 																				obj
 																			)
 																		}
+																		blockStyle={
+																			blockStyle
+																		}
 																		breakpoint={
 																			deviceType
+																		}
+																		clientId={
+																			clientId
 																		}
 																	/>
 																),
@@ -736,15 +795,24 @@ const Inspector = memo(
 																			<BoxShadowControl
 																				{...getGroupAttributes(
 																					attributes,
-																					'boxShadowHover'
+																					[
+																						'boxShadowHover',
+																						'palette',
+																					]
 																				)}
 																				onChange={obj =>
 																					setAttributes(
 																						obj
 																					)
 																				}
+																				blockStyle={
+																					blockStyle
+																				}
 																				breakpoint={
 																					deviceType
+																				}
+																				clientId={
+																					clientId
 																				}
 																				isHover
 																			/>

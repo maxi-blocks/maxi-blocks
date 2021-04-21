@@ -4,6 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Icon, Button, Tooltip } from '@wordpress/components';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -38,14 +39,25 @@ const TextBold = withFormatValue(props => {
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
-	const boldValue = getCustomFormatValue({
-		typography,
-		formatValue,
-		prop: 'font-weight',
-		breakpoint,
-	});
+	const getBoldValue = () =>
+		getCustomFormatValue({
+			typography: { ...getGroupAttributes(props, 'typography') },
+			formatValue,
+			prop: 'font-style',
+			breakpoint,
+		});
 
-	const isActive = (boldValue > 400 && true) || false;
+	const boldValue = getBoldValue();
+
+	const [isActive, setIsActive] = useState(
+		(boldValue > 400 && true) || false
+	);
+
+	useEffect(() => {
+		const boldValue = getBoldValue();
+
+		setIsActive((boldValue > 400 && true) || false);
+	});
 
 	const onClick = () => {
 		const obj = setFormat({
@@ -59,6 +71,8 @@ const TextBold = withFormatValue(props => {
 			breakpoint,
 			textLevel,
 		});
+
+		setIsActive(!isActive);
 
 		onChange(obj);
 	};

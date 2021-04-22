@@ -38,8 +38,9 @@ class edit extends MaxiBlock {
 	}
 
 	componentDidUpdate() {
-		const { setAttributes, clientId } = this.props;
+		this.displayStyles();
 
+		const { setAttributes, clientId } = this.props;
 		setAttributes({
 			parentBlockStyle: getBlockStyle(
 				this.props.attributes.blockStyle,

@@ -60,9 +60,15 @@ describe('TextMaxi', () => {
 	it('Testing the bold of Text Maxi', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi Bold');
-
-		await openSidebarPanelWithTitle('Background Color');
-		await selectOption('Background Color', 'orange');
+		pressKeyWithModifier('shift', 'ArrowLeft');
+		pressKeyWithModifier('shift', 'ArrowLeft');
+		pressKeyWithModifier('shift', 'ArrowLeft');
+		pressKeyWithModifier('shift', 'ArrowLeft');
+		await page.$eval('.toolbar-item__toolbar-item-bold', button =>
+			button.click()
+		);
+		await page.keyboard.press('ArrowLeft');
+		await page.keyboard.press('Enter');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});

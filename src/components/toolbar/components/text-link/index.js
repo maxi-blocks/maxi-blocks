@@ -7,7 +7,7 @@ import { __experimentalLinkControl } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';
 import { Button } from '@wordpress/components';
-import { useRef } from '@wordpress/element';
+import { useRef, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -25,7 +25,7 @@ import { getGroupAttributes } from '../../../../extensions/styles';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, trim, isEqual } from 'lodash';
 
 /**
  * Icons
@@ -82,7 +82,15 @@ const Link = withFormatValue(props => {
 		return value;
 	};
 
-	const createLinkAttribute = ({
+	const linkValue = useRef(createLinkValue(linkSettings || formatOptions));
+
+	useEffect(() => {
+		const newLinkValue = createLinkValue(linkSettings || formatOptions);
+
+		if (!isEqual(linkValue, newLinkValue)) linkValue.current = newLinkValue;
+	});
+
+	const createLinkAttributes = ({
 		url,
 		type,
 		id,
@@ -106,6 +114,14 @@ const Link = withFormatValue(props => {
 		if (noFollow) attributes.rel += ' nofollow';
 		if (sponsored) attributes.rel += ' sponsored';
 		if (ugc) attributes.rel += ' ugc';
+
+		// Clean empty attributes, as it returns error on RichText
+		// and trims the rest
+		Object.entries(attributes).forEach(([key, val]) => {
+			if (isEmpty(val)) delete attributes[key];
+
+			attributes[key] = trim(val);
+		});
 
 		return attributes;
 	};
@@ -146,7 +162,7 @@ const Link = withFormatValue(props => {
 			const obj = applyLinkFormat({
 				formatValue,
 				typography,
-				linkAttributes: createLinkAttribute(attributes),
+				linkAttributes: createLinkAttributes(attributes),
 				isList,
 				textLevel,
 				linkSettings,
@@ -181,6 +197,8 @@ const Link = withFormatValue(props => {
 			onChange(obj);
 		}
 
+		linkValue.current = createLinkValue({ url: '' });
+
 		if (ref.current) ref.current.node.state.isOpen = false;
 	};
 
@@ -188,7 +206,7 @@ const Link = withFormatValue(props => {
 		const content = getFormattedString({
 			formatValue: getUpdatedFormatValue(
 				formatValue,
-				createLinkAttribute(attributes)
+				createLinkAttributes(attributes)
 			),
 			isList,
 		});
@@ -199,6 +217,11 @@ const Link = withFormatValue(props => {
 	const onClick = attributes => {
 		if (!formatOptions) setLinkFormat(attributes);
 		else updateLinkString(attributes);
+
+		const newLinkAttributes = createLinkAttributes(attributes);
+		const newLinkValue = createLinkValue({ attributes: newLinkAttributes });
+
+		linkValue.current = newLinkValue;
 	};
 
 	return (
@@ -210,7 +233,7 @@ const Link = withFormatValue(props => {
 		>
 			<div>
 				<__experimentalLinkControl
-					value={createLinkValue(formatOptions)}
+					value={linkValue.current}
 					onChange={onClick}
 					settings={[
 						{

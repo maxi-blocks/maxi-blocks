@@ -1,5 +1,3 @@
-// Components
-// GX Block
 export { default as AccordionControl } from './accordion-control';
 export { default as AlignmentControl } from './alignment-control';
 export { default as ArrowControl } from './arrow-control';
@@ -32,6 +30,7 @@ export { default as HoverEffectControl } from './hover-effect-control';
 export { default as ImageAltControl } from './image-alt-control';
 export { default as ImageCropControl } from './image-crop-control';
 export { default as Indicators } from './indicators';
+export { default as LinkColor } from './link-color';
 export { default as MaxiBlock } from '../extensions/maxi-block';
 export { default as MotionControl } from './motion-control';
 export { default as MotionPreview } from './motion-preview';

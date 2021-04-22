@@ -44,6 +44,7 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
+	...attributesData.linkColor,
 	...attributesData.highlight,
 	...attributesData.background,
 	...attributesData.backgroundColor,

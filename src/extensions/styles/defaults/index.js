@@ -27,5 +27,4 @@ export { default as position } from './position';
 export { default as breakpoints } from './breakpoints';
 export { default as zIndex } from './zIndex';
 export { default as typographyHover } from './typographyHover';
-export { default as linkColorHover } from './linkColorHover';
 export { default as linkColor } from './linkColor';

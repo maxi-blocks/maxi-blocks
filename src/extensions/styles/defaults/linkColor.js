@@ -1,23 +1,16 @@
 const linkColor = {
-	'link-color-general': {
+	'link-color-normal': {
+		type: 'string',
+		default: '#ff4a17',
+	},
+	'link-color-hover': {
+		type: 'string',
+		default: '#c9340a',
+	},
+	'link-color-active': {
 		type: 'string',
 	},
-	'link-color-xxl': {
-		type: 'string',
-	},
-	'link-color-xl': {
-		type: 'string',
-	},
-	'link-color-l': {
-		type: 'string',
-	},
-	'link-color-m': {
-		type: 'string',
-	},
-	'link-color-s': {
-		type: 'string',
-	},
-	'link-color-xs': {
+	'link-color-visited': {
 		type: 'string',
 	},
 };

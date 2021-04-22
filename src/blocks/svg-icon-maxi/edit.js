@@ -70,12 +70,7 @@ class edit extends MaxiBlock {
 
 	render() {
 		const { className, attributes, clientId, deviceType } = this.props;
-		const {
-			uniqueID,
-			blockStyle,
-			extraClassName,
-			fullWidth,
-		} = attributes;
+		const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
 
 		const { isOpen } = this.state;
 
@@ -175,35 +170,11 @@ class edit extends MaxiBlock {
 	}
 }
 
-const editSelect = withSelect((select, ownProps) => {
-	const {
-		attributes: { content },
-		setAttributes,
-	} = ownProps;
-
+const editSelect = withSelect(select => {
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
-
-	const isAnimatedSVG = () => {
-		if (
-			content.indexOf('<animate') !== -1 ||
-			content.indexOf('<!--animate') !== -1
-		) {
-			if (content.indexOf('animateTransform') === -1) {
-				const newContent = content.replace(
-					/animateTransform'/g,
-					'animatetransform'
-				);
-
-				setAttributes({ content: newContent });
-			}
-			return true;
-		}
-		return false;
-	};
 
 	return {
 		deviceType,
-		isAnimatedSVG: isAnimatedSVG(),
 	};
 });
 
@@ -237,9 +208,18 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
 	const changeSVGStrokeWidth = width => {
 		if (width) {
-			const regexLineToChange = new RegExp('stroke-width:.+?(?=;)', 'g');
+			const regexLineToChange = new RegExp('stroke-width:.+?(?=})', 'g');
 			const changeTo = `stroke-width:${width}`;
-			const newContent = content.replace(regexLineToChange, changeTo);
+
+			const regexLineToChange2 = new RegExp(
+				'stroke-width=".+?(?=")',
+				'g'
+			);
+			const changeTo2 = `stroke-width="${width}`;
+
+			const newContent = content
+				.replace(regexLineToChange, changeTo)
+				.replace(regexLineToChange2, changeTo2);
 
 			setAttributes({
 				content: newContent,
@@ -248,18 +228,26 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const changeSVGContent = (color, colorNumber) => {
-		let [regexLineToChange, changeTo] = '';
+		let [regexLineToChange, changeTo, regexLineToChange2, changeTo2] = '';
 
 		if (colorNumber === 1) {
-			regexLineToChange = new RegExp('fill:[^n]+?(?=;)', 'g');
+			regexLineToChange = new RegExp('fill:[^n]+?(?=})', 'g');
 			changeTo = `fill:${color}`;
+
+			regexLineToChange2 = new RegExp('fill="[^n]+?(?=")', 'g');
+			changeTo2 = `fill="${color}`;
 		}
 		if (colorNumber === 2) {
-			regexLineToChange = new RegExp('stroke:[^n]+?(?=;)', 'g');
+			regexLineToChange = new RegExp('stroke:[^n]+?(?=})', 'g');
 			changeTo = `stroke:${color}`;
+
+			regexLineToChange2 = new RegExp('stroke="[^n]+?(?=")', 'g');
+			changeTo2 = `stroke="${color}`;
 		}
 
-		const newContent = content.replace(regexLineToChange, changeTo);
+		const newContent = content
+			.replace(regexLineToChange, changeTo)
+			.replace(regexLineToChange2, changeTo2);
 		setAttributes({ content: newContent });
 	};
 

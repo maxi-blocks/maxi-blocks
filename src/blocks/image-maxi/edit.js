@@ -64,6 +64,7 @@ class edit extends MaxiBlock {
 					...getGroupAttributes(this.props.attributes, [
 						'motion',
 						'entrance',
+						'hover',
 					]),
 				}),
 			},

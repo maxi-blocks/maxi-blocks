@@ -64,7 +64,7 @@ const TextOptions = withFormatValue(props => {
 		const obj = setFormat({
 			formatValue,
 			isList,
-			typography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			value,
 			breakpoint,
 			textLevel,

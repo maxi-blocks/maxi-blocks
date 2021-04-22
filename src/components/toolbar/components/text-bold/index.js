@@ -72,8 +72,6 @@ const TextBold = withFormatValue(props => {
 			textLevel,
 		});
 
-		setIsActive(!isActive);
-
 		onChange(obj);
 	};
 

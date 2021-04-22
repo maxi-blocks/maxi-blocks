@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { applyFormat } from '@wordpress/rich-text';
+import { applyFormat, toHTMLString } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies

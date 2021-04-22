@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	insertBlock,
 	getEditedPostContent,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 
 describe('TextMaxi', () => {
@@ -57,16 +58,14 @@ describe('TextMaxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
-	it('Testing the bold of Text Maxi', async () => {
+	it('Testing the split in a Text Maxi with bold', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi Bold');
 		pressKeyWithModifier('shift', 'ArrowLeft');
 		pressKeyWithModifier('shift', 'ArrowLeft');
 		pressKeyWithModifier('shift', 'ArrowLeft');
 		pressKeyWithModifier('shift', 'ArrowLeft');
-		await page.$eval('.toolbar-item__toolbar-item-bold', button =>
-			button.click()
-		);
+		await page.$eval('.toolbar-item__bold', button => button.click());
 		await page.keyboard.press('ArrowLeft');
 		await page.keyboard.press('Enter');
 

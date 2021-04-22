@@ -6,6 +6,7 @@ import {
 	insertBlock,
 	getEditedPostContent,
 	pressKeyWithModifier,
+	openPreviewPage,
 } from '@wordpress/e2e-test-utils';
 
 describe('TextMaxi', () => {
@@ -66,6 +67,16 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		// Check frontend
+		const editorPage = page;
+		const previewPage = await openPreviewPage(editorPage);
+		await previewPage.waitForSelector('.entry-content');
+		let content = await previewPage.$eval(
+			'.entry-content',
+			contentWrapper => contentWrapper.innerHTML.trim()
+		);
+		expect(content).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi toolbar Link in part of the content', async () => {
@@ -80,5 +91,15 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		// Check frontend
+		const editorPage = page;
+		const previewPage = await openPreviewPage(editorPage);
+		await previewPage.waitForSelector('.entry-content');
+		let content = await previewPage.$eval(
+			'.entry-content',
+			contentWrapper => contentWrapper.innerHTML.trim()
+		);
+		expect(content).toMatchSnapshot();
 	});
 });

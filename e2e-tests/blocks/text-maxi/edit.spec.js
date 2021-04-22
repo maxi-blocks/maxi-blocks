@@ -6,6 +6,7 @@ import {
 	insertBlock,
 	getEditedPostContent,
 	pressKeyWithModifier,
+	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
 
 describe('TextMaxi', () => {
@@ -68,6 +69,24 @@ describe('TextMaxi', () => {
 		await page.$eval('.toolbar-item__bold', button => button.click());
 		await page.keyboard.press('ArrowLeft');
 		await page.keyboard.press('Enter');
+
+		expect(await getEditedPostContent()).toMatchSnapshot();
+	});
+
+	it('Testing the Merge in a Text Maxi with bold', async () => {
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi.');
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('.Bold');
+		pressKeyWithModifier('shift', 'ArrowLeft');
+		pressKeyWithModifier('shift', 'ArrowLeft');
+		pressKeyWithModifier('shift', 'ArrowLeft');
+		pressKeyWithModifier('shift', 'ArrowLeft');
+		pressKeyWithModifier('shift', 'ArrowLeft');
+
+		await page.$eval('.toolbar-item__bold', button => button.click());
+		pressKeyTimes('ArrowLeft', '5');
+		await page.keyboard.press('Delete');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});

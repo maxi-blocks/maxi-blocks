@@ -15,7 +15,6 @@ import getFormatType from './getFormatType';
 import updateCustomFormatStyle from './updateCustomFormatStyle';
 import getCustomFormat from './getCustomFormat';
 import getIsFullFormat from './getIsFullFormat';
-import formatValueCleaner from './formatValueCleaner';
 
 /**
  * External dependencies
@@ -599,9 +598,7 @@ const setFormatWithClass = ({
 	return {
 		...newTypography,
 		content: newContent,
-		...(returnFormatValue
-			? { formatValue: formatValueCleaner(newFormatValue) }
-			: {}),
+		...(returnFormatValue ? { formatValue: newFormatValue } : {}),
 	};
 };
 

@@ -1,51 +1,14 @@
+/* eslint-disable no-sparse-arrays */
 /**
  * Internal dependencies
  */
 import getMultiFormatObj from '../getMultiFormatObj';
 
-import formatValueCleaner from '../formatValueCleaner';
-
 describe('getMultiFormatObj', () => {
 	it('getMultiFormatObj: simple object', () => {
 		const formatValue = {
-			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-			],
-			replacements: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-			],
+			formats: [, , , , , , , , , , , , , , , , ,],
+			replacements: [, , , , , , , , , , , , , , , , ,],
 			text: 'Testing Text Maxi',
 			start: 13,
 			end: 17,
@@ -65,19 +28,19 @@ describe('getMultiFormatObj', () => {
 	it('getMultiFormatObj: multiple object', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -87,7 +50,7 @@ describe('getMultiFormatObj', () => {
 						unregisteredAttributes: {},
 					},
 				],
-				null,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -97,27 +60,9 @@ describe('getMultiFormatObj', () => {
 						unregisteredAttributes: {},
 					},
 				],
-				null,
+				,
 			],
-			replacements: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-			],
+			replacements: [, , , , , , , , , , , , , , , , ,],
 			text: 'Testing Text Maxi',
 			start: 13,
 			end: 17,

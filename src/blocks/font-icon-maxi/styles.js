@@ -61,7 +61,6 @@ const getNormalObject = props => {
 
 	return response;
 };
-
 const getHoverObject = props => {
 	const response = {
 		border:
@@ -81,6 +80,21 @@ const getHoverObject = props => {
 			getBoxShadowStyles(
 				{
 					...getGroupAttributes(props, 'boxShadow', true),
+				},
+				true
+			),
+	};
+
+	return response;
+};
+
+const getHoverIconObject = props => {
+	const response = {
+		icon:
+			props['icon-status-hover'] &&
+			getIconStyles(
+				{
+					...getGroupAttributes(props, 'icon', true),
 				},
 				true
 			),
@@ -117,6 +131,9 @@ const getStyles = props => {
 		[`${uniqueID}:hover`]: getHoverObject(props),
 		[`${uniqueID} .maxi-font-icon-block__icon`]: getWrapperObject(props),
 		[`${uniqueID} .maxi-font-icon-block__icon i`]: getIconObject(props),
+		[`${uniqueID} .maxi-font-icon-block__icon:hover i`]: getHoverIconObject(
+			props
+		),
 	};
 
 	response = {

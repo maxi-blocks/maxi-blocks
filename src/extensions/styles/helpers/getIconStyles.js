@@ -8,7 +8,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 import { isEmpty, isNil } from 'lodash';
 
-const getIconStyles = obj => {
+const getIconStyles = (obj, isHover = false) => {
 	const response = {
 		general: {},
 	};
@@ -34,8 +34,9 @@ const getIconStyles = obj => {
 			};
 		}
 
-		if (!isEmpty(obj['icon-color'])) {
-			response.general.color = obj['icon-color'];
+		if (!isEmpty(obj[`icon-color${isHover ? '-hover' : ''}`])) {
+			response.general.color =
+				obj[`icon-color${isHover ? '-hover' : ''}`];
 		}
 
 		if (obj['icon-spacing']) {

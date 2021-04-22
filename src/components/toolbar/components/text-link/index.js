@@ -202,7 +202,10 @@ const Link = withFormatValue(props => {
 			onChange(obj);
 		}
 
-		setLinkValue(createLinkValue({ url: '' }));
+		const newLinkAttributes = createLinkAttributes({ url: '' });
+		const newLinkValue = createLinkValue({ attributes: newLinkAttributes });
+
+		setLinkValue(newLinkValue);
 
 		if (ref.current) ref.current.node.state.isOpen = false;
 	};
@@ -259,14 +262,16 @@ const Link = withFormatValue(props => {
 						},
 					]}
 				/>
-				<Button
-					className='toolbar-popover-link-destroyer'
-					onClick={() => {
-						removeLinkFormatHandle();
-					}}
-				>
-					Remove link
-				</Button>
+				{!isEmpty(linkValue.url) && (
+					<Button
+						className='toolbar-popover-link-destroyer'
+						onClick={() => {
+							removeLinkFormatHandle();
+						}}
+					>
+						Remove link
+					</Button>
+				)}
 			</div>
 		</ToolbarPopover>
 	);

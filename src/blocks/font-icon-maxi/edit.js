@@ -17,6 +17,7 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteClasses,
 } from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiModalIcon from '../../components/font-icon-picker/modal';
@@ -59,13 +60,30 @@ class edit extends MaxiBlock {
 		};
 	}
 
+	componentDidMount() {
+		/*
+		we have not accessed to the clientId in the save the file,
+		so saved it in attributes, in future we should find a better solution :)
+		*/
+		const { setAttributes, clientId } = this.props;
+
+		setAttributes({
+			clientId,
+		});
+	}
+
 	render() {
-		const { attributes, className, deviceType, setAttributes } = this.props;
+		const {
+			attributes,
+			className,
+			deviceType,
+			setAttributes,
+			clientId,
+		} = this.props;
 		const {
 			uniqueID,
 			blockStyle,
 			defaultBlockStyle,
-			blockStyleBackground,
 			extraClassName,
 			fullWidth,
 		} = attributes;
@@ -78,12 +96,21 @@ class edit extends MaxiBlock {
 				'none' && 'maxi-block-display-none',
 			defaultBlockStyle,
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
-			!!attributes['text-highlight'] && 'maxi-highlight--text',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
+			getPaletteClasses(
+				attributes,
+				blockStyle,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+					'icon',
+				],
+				'',
+				clientId
+			),
 			extraClassName,
 			uniqueID,
 			className
@@ -91,24 +118,26 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				blockStyle={blockStyle}
+				{...this.props}
+			/>,
 			<__experimentalBlock
 				key={`maxi-font-icon-block-${uniqueID}`}
 				className={classes}
 				data-align={fullWidth}
 			>
-				{!attributes['background-highlight'] && (
-					<BackgroundDisplayer
-						{...getGroupAttributes(attributes, [
-							'background',
-							'backgroundColor',
-							'backgroundGradient',
-							'backgroundHover',
-							'backgroundColorHover',
-							'backgroundGradientHover',
-						])}
-					/>
-				)}
+				<BackgroundDisplayer
+					{...getGroupAttributes(attributes, [
+						'background',
+						'backgroundColor',
+						'backgroundGradient',
+						'backgroundHover',
+						'backgroundColorHover',
+						'backgroundGradientHover',
+					])}
+				/>
 				{(!isEmpty(attributes['icon-name']) && (
 					<>
 						<div className='maxi-font-icon-block__icon__replace'>

@@ -12,6 +12,9 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  * Attributes
  */
 const attributes = {
+	clientId: {
+		type: 'string',
+	},
 	customLabel: {
 		type: 'string',
 		default: __('Image', 'maxi-blocks'),
@@ -83,6 +86,7 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
+	...attributesData.palette,
 	...attributesData.alignment,
 	...attributesData.background,
 	...attributesData.backgroundColor,

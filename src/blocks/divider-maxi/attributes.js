@@ -12,6 +12,9 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  * Attributes
  */
 const attributes = {
+	clientId: {
+		type: 'string',
+	},
 	customLabel: {
 		type: 'string',
 		default: __('Divider', 'maxi-blocks'),
@@ -45,6 +48,7 @@ const attributes = {
 			default: 'px',
 		},
 	},
+	...attributesData.palette,
 	...attributesData.background,
 	...attributesData.backgroundColor,
 	...attributesData.backgroundColorHover,
@@ -56,7 +60,6 @@ const attributes = {
 	...attributesData.display,
 	...attributesData.divider,
 	...attributesData.entrance,
-	...attributesData.highlight,
 	...attributesData.margin,
 	...attributesData.motion,
 	...attributesData.opacity,

@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __experimentalBlock } from '@wordpress/block-editor';
-import { createRef } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import { withSelect, withDispatch } from '@wordpress/data';
 
@@ -20,6 +19,7 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteClasses,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -56,6 +56,18 @@ class edit extends MaxiBlock {
 		};
 	}
 
+	componentDidMount() {
+		/*
+		we have not accessed to the clientId in the save the file,
+		so saved it in attributes, in future we should find a better solution :)
+		*/
+		const { setAttributes, clientId } = this.props;
+
+		setAttributes({
+			clientId,
+		});
+	}
+
 	render() {
 		const {
 			attributes,
@@ -64,11 +76,11 @@ class edit extends MaxiBlock {
 			isSelected,
 			onDeviceTypeChange,
 			setAttributes,
+			clientId,
 		} = this.props;
 		const {
 			uniqueID,
 			blockStyle,
-			blockStyleBackground,
 			lineOrientation,
 			extraClassName,
 			fullWidth,
@@ -83,9 +95,20 @@ class edit extends MaxiBlock {
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
+			getPaletteClasses(
+				attributes,
+				blockStyle,
+				[
+					'background',
+					'background-hover',
+					'divider',
+					'divider-hover',
+					'box-shadow',
+					'box-shadow-hover',
+				],
+				'',
+				clientId
+			),
 			extraClassName,
 			uniqueID,
 			className,
@@ -109,7 +132,11 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				{...this.props}
+				blockStyle={blockStyle}
+			/>,
 			<BlockResizer
 				key={uniqueID}
 				className={classnames(
@@ -144,18 +171,16 @@ class edit extends MaxiBlock {
 						className={classes}
 						data-align={fullWidth}
 					>
-						{!attributes['background-highlight'] && (
-							<BackgroundDisplayer
-								{...getGroupAttributes(attributes, [
-									'background',
-									'backgroundColor',
-									'backgroundGradient',
-									'backgroundHover',
-									'backgroundColorHover',
-									'backgroundGradientHover',
-								])}
-							/>
-						)}
+						<BackgroundDisplayer
+							{...getGroupAttributes(attributes, [
+								'background',
+								'backgroundColor',
+								'backgroundGradient',
+								'backgroundHover',
+								'backgroundColorHover',
+								'backgroundGradientHover',
+							])}
+						/>
 						{attributes['divider-border-style'] !== 'none' && (
 							<hr className='maxi-divider-block__divider' />
 						)}

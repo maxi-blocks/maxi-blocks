@@ -20,6 +20,7 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteClasses,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -59,6 +60,18 @@ class edit extends MaxiBlock {
 		};
 	}
 
+	componentDidMount() {
+		/*
+		we have not accessed to the clientId in the save the file,
+		so saved it in attributes, in future we should find a better solution :)
+		*/
+		const { setAttributes, clientId } = this.props;
+
+		setAttributes({
+			clientId,
+		});
+	}
+
 	render() {
 		const {
 			attributes,
@@ -67,13 +80,7 @@ class edit extends MaxiBlock {
 			hasInnerBlock,
 			deviceType,
 		} = this.props;
-		const {
-			uniqueID,
-			blockStyle,
-			blockStyleBackground,
-			extraClassName,
-			fullWidth,
-		} = attributes;
+		const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
 
 		const classes = classnames(
 			'maxi-block',
@@ -83,13 +90,22 @@ class edit extends MaxiBlock {
 			`maxi-motion-effect-${uniqueID}`,
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
 			uniqueID,
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
+			getPaletteClasses(
+				attributes,
+				blockStyle,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+				],
+				'',
+				clientId
+			),
 			extraClassName,
 			className
 		);
@@ -111,7 +127,11 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				blockStyle={blockStyle}
+				{...this.props}
+			/>,
 			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
 			<MotionPreview
 				key={`motion-preview-${uniqueID}`}
@@ -125,25 +145,23 @@ class edit extends MaxiBlock {
 						{...getGroupAttributes(attributes, 'arrow')}
 						breakpoint={deviceType}
 					/>
-					{!attributes['background-highlight'] && (
-						<BackgroundDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'backgroundColor',
-								'backgroundImage',
-								'backgroundVideo',
-								'backgroundGradient',
-								'backgroundSVG',
-								'backgroundHover',
-								'backgroundColorHover',
-								'backgroundImageHover',
-								'backgroundVideoHover',
-								'backgroundGradientHover',
-								'backgroundSVGHover',
-							])}
-							blockClassName={uniqueID}
-						/>
-					)}
+					<BackgroundDisplayer
+						{...getGroupAttributes(attributes, [
+							'background',
+							'backgroundColor',
+							'backgroundImage',
+							'backgroundVideo',
+							'backgroundGradient',
+							'backgroundSVG',
+							'backgroundHover',
+							'backgroundColorHover',
+							'backgroundImageHover',
+							'backgroundVideoHover',
+							'backgroundGradientHover',
+							'backgroundSVGHover',
+						])}
+						blockClassName={uniqueID}
+					/>
 					<InnerBlocks
 						allowedBlocks={ALLOWED_BLOCKS}
 						templateLock={false}

@@ -7,7 +7,7 @@ import { RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import { BackgroundDisplayer } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -37,6 +37,7 @@ const save = props => {
 		mediaAltTitle,
 		altSelector,
 		SVGElement,
+		clientId,
 	} = attributes;
 
 	const hoverClasses = classnames(
@@ -55,6 +56,22 @@ const save = props => {
 		fullWidth === 'full' ? 'alignfull' : null,
 		uniqueID,
 		blockStyle,
+		getPaletteClasses(
+			attributes,
+			blockStyle,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+			],
+			'',
+			clientId
+		),
 		extraClassName,
 		className
 	);
@@ -74,25 +91,23 @@ const save = props => {
 
 	return (
 		<figure className={classes} id={uniqueID}>
-			{!attributes['background-highlight'] && (
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundImage',
-						'backgroundVideo',
-						'backgroundGradient',
-						'backgroundSVG',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundImageHover',
-						'backgroundVideoHover',
-						'backgroundGradientHover',
-						'backgroundSVGHover',
-					])}
-					blockClassName={uniqueID}
-				/>
-			)}
+			<BackgroundDisplayer
+				{...getGroupAttributes(attributes, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundImageHover',
+					'backgroundVideoHover',
+					'backgroundGradientHover',
+					'backgroundSVGHover',
+				])}
+				blockClassName={uniqueID}
+			/>
 			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>
 				{(!SVGElement && (
 					<img

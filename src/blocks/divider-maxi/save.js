@@ -1,13 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { BackgroundDisplayer } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -25,13 +25,27 @@ const save = props => {
 		fullWidth,
 		extraClassName,
 		lineOrientation,
+		clientId,
 	} = attributes;
 
 	const classes = classnames(
 		'maxi-motion-effect',
 		'maxi-block maxi-divider-block',
 		blockStyle,
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
+		getPaletteClasses(
+			attributes,
+			blockStyle,
+			[
+				'background',
+				'background-hover',
+				'divider',
+				'divider-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'',
+			clientId
+		),
 		extraClassName,
 		uniqueID,
 		className,
@@ -43,19 +57,17 @@ const save = props => {
 
 	return (
 		<div className={classes} id={uniqueID}>
-			{!attributes['background-highlight'] && (
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundGradientHover',
-					])}
-					blockClassName={uniqueID}
-				/>
-			)}
+			<BackgroundDisplayer
+				{...getGroupAttributes(attributes, [
+					'background',
+					'backgroundColor',
+					'backgroundGradient',
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+				])}
+				blockClassName={uniqueID}
+			/>
 			{attributes['divider-border-style'] !== 'none' && (
 				<Fragment>
 					<hr className='maxi-divider-block__divider' />

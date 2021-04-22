@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Maxi Blocks - Last Github version
  * Plugin URI:
- * Description: MaxiBlocks — Last update: 20/01/21
+ * Description: MaxiBlocks — Last update: 08/03/21
  * Author: Gutenberg Den
  * Author URI:
  * Version: 0.1
@@ -15,6 +15,8 @@
 if (!defined('ABSPATH')) {
 	exit;
 }
+
+define( 'MAXI_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__ ) );
 
 function create_block_test_maxi_blocks_block_init() {
 	$dir = dirname(__FILE__);

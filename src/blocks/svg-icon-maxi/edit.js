@@ -251,11 +251,11 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		let [regexLineToChange, changeTo] = '';
 
 		if (colorNumber === 1) {
-			regexLineToChange = new RegExp('fill:.+?(?=;)', 'g');
+			regexLineToChange = new RegExp('fill:[^n]+?(?=;)', 'g');
 			changeTo = `fill:${color}`;
 		}
 		if (colorNumber === 2) {
-			regexLineToChange = new RegExp('stroke:.+?(?=;)', 'g');
+			regexLineToChange = new RegExp('stroke:[^n]+?(?=;)', 'g');
 			changeTo = `stroke:${color}`;
 		}
 

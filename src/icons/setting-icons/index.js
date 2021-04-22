@@ -8,6 +8,7 @@ export { default as colorWheel } from './color-wheel';
 export { default as colors } from './colors';
 export { default as content } from './content';
 export { default as cursor } from './cursor';
+export { default as SCdelete } from './delete';
 export { default as desktop } from './desktop';
 export { default as divider } from './divider';
 export { default as editTool } from './edit-tool';

@@ -7,7 +7,7 @@ import { InnerBlocks } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { BackgroundDisplayer } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -19,11 +19,31 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes, className } = props;
-	const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
+	const {
+		uniqueID,
+		blockStyle,
+		extraClassName,
+		fullWidth,
+		clientId,
+	} = attributes;
 
 	const classes = classnames(
 		'maxi-block maxi-row-block',
 		blockStyle,
+		getPaletteClasses(
+			attributes,
+			blockStyle,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'',
+			clientId
+		),
 		extraClassName,
 		className,
 		uniqueID,

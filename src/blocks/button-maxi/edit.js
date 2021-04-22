@@ -14,6 +14,7 @@ import { MaxiBlock, MotionPreview, Toolbar } from '../../components';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteClasses,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -32,6 +33,15 @@ class edit extends MaxiBlock {
 	}
 
 	componentDidMount() {
+		/*
+		we have not accessed to the clientId in the save the file,
+		so saved it in attributes, in future we should find a better solution :)
+		*/
+		const { setAttributes, clientId } = this.props;
+		setAttributes({
+			clientId,
+		});
+
 		this.blockRef.current.focus();
 	}
 
@@ -55,14 +65,14 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
-		const { attributes, className, deviceType, setAttributes } = this.props;
 		const {
-			uniqueID,
-			blockStyle,
-			blockStyleBackground,
-			extraClassName,
-			fullWidth,
-		} = attributes;
+			attributes,
+			className,
+			deviceType,
+			setAttributes,
+			clientId,
+		} = this.props;
+		const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
 
 		const classes = classnames(
 			'maxi-block',
@@ -71,12 +81,23 @@ class edit extends MaxiBlock {
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
-			!!attributes['text-highlight'] && 'maxi-highlight--text',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
+			getPaletteClasses(
+				attributes,
+				blockStyle,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+					'typography',
+					'typography-hover',
+					'icon',
+				],
+				'maxi-blocks/button-maxi',
+				clientId
+			),
 			extraClassName,
 			uniqueID,
 			className

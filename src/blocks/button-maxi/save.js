@@ -4,6 +4,11 @@
 import { Button } from '@wordpress/components';
 
 /**
+ * Internal dependencies
+ */
+import { getPaletteClasses } from '../../extensions/styles';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -15,9 +20,9 @@ import { isNil, isEmpty } from 'lodash';
 const save = props => {
 	const { className, attributes } = props;
 	const {
+		clientId,
 		uniqueID,
 		blockStyle,
-		defaultBlockStyle,
 		extraClassName,
 		linkSettings,
 		buttonContent,
@@ -27,9 +32,23 @@ const save = props => {
 		'maxi-motion-effect',
 		'maxi-block maxi-button-block',
 		blockStyle,
-		!!attributes['text-highlight'] && 'maxi-highlight--text',
-		!!attributes['background-highlight'] && 'maxi-highlight--background',
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
+		getPaletteClasses(
+			attributes,
+			blockStyle,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+				'icon',
+			],
+			'maxi-blocks/button-maxi',
+			clientId
+		),
 		extraClassName,
 		uniqueID,
 		className

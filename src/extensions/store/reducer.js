@@ -41,6 +41,17 @@ const reducer = (
 				...state,
 				copiedStyles: action.copiedStyles,
 			};
+		case 'SEND_STYLE_CARDS':
+			return {
+				...state,
+				styleCards: action.styleCards,
+			};
+		case 'SAVE_STYLE_CARDS':
+			controls.SAVE_STYLE_CARDS(action);
+			return {
+				...state,
+				styleCards: action.styleCards,
+			};
 		default:
 			return state;
 	}

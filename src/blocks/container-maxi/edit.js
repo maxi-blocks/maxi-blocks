@@ -23,6 +23,7 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteClasses,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -122,6 +123,18 @@ class edit extends MaxiBlock {
 		};
 	}
 
+	componentDidMount() {
+		/*
+		we have not accessed to the clientId in the save the file,
+		so saved it in attributes, in future we should find a better solution :)
+		*/
+		const { setAttributes, clientId } = this.props;
+
+		setAttributes({
+			clientId,
+		});
+	}
+
 	render() {
 		const {
 			attributes,
@@ -134,7 +147,6 @@ class edit extends MaxiBlock {
 			uniqueID,
 			isFirstOnHierarchy,
 			blockStyle,
-			blockStyleBackground,
 			fullWidth,
 			extraClassName,
 		} = attributes;
@@ -148,15 +160,31 @@ class edit extends MaxiBlock {
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
+			getPaletteClasses(
+				attributes,
+				blockStyle,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+				],
+				'',
+				clientId
+			),
 			extraClassName,
 			className
 		);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				{...this.props}
+				blockStyle={blockStyle}
+			/>,
 			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
 			<Fragment key={`container-content-${uniqueID}`}>
 				{isFirstOnHierarchy && fullWidth && (

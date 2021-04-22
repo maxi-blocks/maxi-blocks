@@ -2,13 +2,13 @@
  * WordPress dependencies
  */
 import { InnerBlocks } from '@wordpress/block-editor';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { ArrowDisplayer, BackgroundDisplayer } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -25,14 +25,27 @@ const save = props => {
 		blockStyle,
 		defaultBlockStyle,
 		extraClassName,
+		clientId,
 	} = attributes;
 
 	const classes = classnames(
 		'maxi-motion-effect',
 		'maxi-block maxi-group-block',
-		!!attributes['background-highlight'] && 'maxi-highlight--background',
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
 		blockStyle,
+		getPaletteClasses(
+			attributes,
+			blockStyle,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'',
+			clientId
+		),
 		extraClassName,
 		className,
 		uniqueID

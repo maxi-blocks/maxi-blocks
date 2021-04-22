@@ -22,6 +22,7 @@ import { getTemplates } from '../../extensions/defaults/column-templates';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteClasses,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -79,6 +80,18 @@ class edit extends MaxiBlock {
 		}
 	}
 
+	componentDidMount() {
+		/*
+		we have not accessed to the clientId in the save the file,
+		so saved it in attributes, in future we should find a better solution :)
+		*/
+		const { setAttributes, clientId } = this.props;
+
+		setAttributes({
+			clientId,
+		});
+	}
+
 	render() {
 		const {
 			attributes,
@@ -95,7 +108,6 @@ class edit extends MaxiBlock {
 			blockStyle,
 			extraClassName,
 			defaultBlockStyle,
-			blockStyleBackground,
 			fullWidth,
 		} = attributes;
 
@@ -107,8 +119,20 @@ class edit extends MaxiBlock {
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
+			getPaletteClasses(
+				attributes,
+				blockStyle,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+				],
+				'',
+				clientId
+			),
 			extraClassName,
 			className
 		);
@@ -117,6 +141,7 @@ class edit extends MaxiBlock {
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
+				blockStyle={blockStyle}
 				toggleHandlers={() => {
 					this.setState({
 						displayHandlers: !this.state.displayHandlers,

@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { BackgroundDisplayer } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -15,15 +15,27 @@ import { isEmpty } from 'lodash';
  */
 const save = props => {
 	const { className, attributes } = props;
-	const { uniqueID, blockStyle, extraClassName } = attributes;
+	const { uniqueID, blockStyle, extraClassName, clientId } = attributes;
 
 	const classes = classnames(
 		'maxi-motion-effect',
 		'maxi-block maxi-font-icon-block',
 		blockStyle,
-		!!attributes['text-highlight'] && 'maxi-highlight--text',
-		!!attributes['background-highlight'] && 'maxi-highlight--background',
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
+		getPaletteClasses(
+			attributes,
+			blockStyle,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'icon',
+			],
+			'',
+			clientId
+		),
 		extraClassName,
 		uniqueID,
 		className
@@ -31,19 +43,17 @@ const save = props => {
 
 	return (
 		<div className={classes} id={uniqueID}>
-			{!attributes['background-highlight'] && (
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundGradientHover',
-					])}
-					blockClassName={uniqueID}
-				/>
-			)}
+			<BackgroundDisplayer
+				{...getGroupAttributes(attributes, [
+					'background',
+					'backgroundColor',
+					'backgroundGradient',
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+				])}
+				blockClassName={uniqueID}
+			/>
 			{!isEmpty(attributes['icon-name']) && (
 				<span className='maxi-font-icon-block__icon'>
 					<i className={attributes['icon-name']} />

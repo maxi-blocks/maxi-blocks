@@ -22,6 +22,7 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteClasses,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -57,6 +58,18 @@ class edit extends MaxiBlock {
 		super(props);
 
 		this.resizableObject = createRef();
+	}
+
+	componentDidMount() {
+		/*
+		we have not accessed to the clientId in the save the file,
+		so saved it in attributes, in future we should find a better solution :)
+		*/
+		const { setAttributes, clientId } = this.props;
+
+		setAttributes({
+			clientId,
+		});
 	}
 
 	componentDidUpdate() {
@@ -99,7 +112,6 @@ class edit extends MaxiBlock {
 		} = this.props;
 		const {
 			blockStyle,
-			blockStyleBackground,
 			defaultBlockStyle,
 			extraClassName,
 			uniqueID,
@@ -113,8 +125,20 @@ class edit extends MaxiBlock {
 				'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
+			getPaletteClasses(
+				attributes,
+				blockStyle,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+				],
+				'',
+				clientId
+			),
 			extraClassName,
 			className
 		);
@@ -152,7 +176,11 @@ class edit extends MaxiBlock {
 				resizableObject={this.resizableObject.current}
 				{...this.props}
 			/>,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				{...this.props}
+				blockStyle={blockStyle}
+			/>,
 			<RowContext.Consumer key={`column-content-${uniqueID}`}>
 				{context => (
 					<Fragment>

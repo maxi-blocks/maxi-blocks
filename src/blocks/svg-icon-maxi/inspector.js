@@ -55,7 +55,6 @@ const Inspector = props => {
 	const {
 		blockStyle,
 		customLabel,
-		defaultBlockStyle,
 		extraClassName,
 		isFirstOnHierarchy,
 		stroke,
@@ -83,7 +82,6 @@ const Inspector = props => {
 									<hr />
 									<BlockStylesControl
 										blockStyle={blockStyle}
-										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
 									/>

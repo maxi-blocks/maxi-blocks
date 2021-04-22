@@ -51,10 +51,7 @@ const addAttributes = settings => {
 				type: 'string',
 				default: 'maxi-def-light',
 			},
-			blockStyleBackground: {
-				type: 'number',
-				default: 1,
-			},
+
 			uniqueID: {
 				type: 'string',
 			},

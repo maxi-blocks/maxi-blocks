@@ -12,6 +12,9 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  * Attributes
  */
 const attributes = {
+	clientId: {
+		type: 'string',
+	},
 	customLabel: {
 		type: 'string',
 		default: __('Font Icon', 'maxi-blocks'),
@@ -27,6 +30,7 @@ const attributes = {
 			default: 'center',
 		},
 	},
+	...attributesData.palette,
 	...attributesData.icon,
 	...attributesData.opacity,
 	...attributesData.background,
@@ -49,7 +53,6 @@ const attributes = {
 	...attributesData.position,
 	...attributesData.motion,
 	...attributesData.transform,
-	...attributesData.highlight,
 	...attributesData.entrance,
 };
 

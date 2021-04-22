@@ -12,6 +12,9 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  * Attributes
  */
 const attributes = {
+	clientId: {
+		type: 'string',
+	},
 	customLabel: {
 		type: 'string',
 		default: __('Text', 'maxi-blocks'),
@@ -44,7 +47,7 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	...attributesData.highlight,
+	...attributesData.palette,
 	...attributesData.background,
 	...attributesData.backgroundColor,
 	...attributesData.backgroundColorHover,

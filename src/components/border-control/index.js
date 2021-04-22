@@ -26,6 +26,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNumber } from 'lodash';
 
 /**
  * Icons
@@ -44,6 +45,8 @@ const BorderControl = props => {
 		disableColor = false,
 		isHover = false,
 		prefix = '',
+		blockStyle,
+		clientId,
 	} = props;
 
 	const classes = classnames('maxi-border-control', className);
@@ -58,20 +61,36 @@ const BorderControl = props => {
 		onChange(response);
 	};
 
-	const activeBorderStyle =
-		getLastBreakpointAttribute(
-			`${prefix}border-style`,
-			breakpoint,
-			props,
-			isHover
-		) || 'none';
+	const getIsActive = () => {
+		const items = [
+			`${prefix}border-top-width`,
+			`${prefix}border-right-width`,
+			`${prefix}border-bottom-width`,
+			`${prefix}border-left-width`,
+		];
+
+		const hasBorderWidth = items.some(item => {
+			return isNumber(
+				getLastBreakpointAttribute(item, breakpoint, props, isHover)
+			);
+		});
+
+		if (hasBorderWidth)
+			return getLastBreakpointAttribute(
+				`${prefix}border-style`,
+				breakpoint,
+				props,
+				isHover
+			);
+		return 'none';
+	};
 
 	return (
 		<div className={classes}>
 			<DefaultStylesControl
 				items={[
 					{
-						activeItem: activeBorderStyle === 'none',
+						activeItem: getIsActive(prefix) === 'none',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -81,7 +100,7 @@ const BorderControl = props => {
 						onChange: () => onChangeDefault(borderNone(prefix)),
 					},
 					{
-						activeItem: activeBorderStyle === 'solid',
+						activeItem: getIsActive(prefix) === 'solid',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -91,7 +110,7 @@ const BorderControl = props => {
 						onChange: () => onChangeDefault(borderSolid(prefix)),
 					},
 					{
-						activeItem: activeBorderStyle === 'dashed',
+						activeItem: getIsActive(prefix) === 'dashed',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -101,7 +120,7 @@ const BorderControl = props => {
 						onChange: () => onChangeDefault(borderDashed(prefix)),
 					},
 					{
-						activeItem: activeBorderStyle === 'dotted',
+						activeItem: getIsActive(prefix) === 'dotted',
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -135,72 +154,96 @@ const BorderControl = props => {
 					]}
 					onChange={val => {
 						onChange({
-							[`${prefix}border-style-${breakpoint}${
+							[`${
+								prefix ? prefix : ''
+							}border-style-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`]: val,
 						});
 					}}
 				/>
 			)}
-			{!disableAdvanced && activeBorderStyle !== 'none' && !disableColor && (
-				<ColorControl
-					label={__('Border', 'maxi-blocks')}
-					color={getLastBreakpointAttribute(
-						`${prefix}border-color`,
-						breakpoint,
-						props,
-						isHover
-					)}
-					defaultColor={getDefaultAttribute(
-						`${prefix}border-color-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
-					)}
-					onChange={val => {
-						onChange({
-							[`${prefix}border-color-${breakpoint}${
+			{!disableColor &&
+				getLastBreakpointAttribute(
+					`${prefix}border-style`,
+					breakpoint,
+					props,
+					isHover
+				) !== 'none' && (
+					<ColorControl
+						label={__('Border', 'maxi-blocks')}
+						color={getLastBreakpointAttribute(
+							`${prefix}border-color`,
+							breakpoint,
+							props,
+							isHover
+						)}
+						defaultColor={getDefaultAttribute(
+							`${prefix}border-color-${breakpoint}${
 								isHover ? '-hover' : ''
-							}`]: val,
-						});
-					}}
-					disableImage
-					disableVideo
-					disableGradient
-				/>
-			)}
+							}`
+						)}
+						onChange={val => {
+							onChange({
+								[`${
+									prefix ? prefix : ''
+								}border-color-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: val,
+							});
+						}}
+						disableImage
+						disableVideo
+						disableGradient
+						showPalette
+						blockStyle={blockStyle}
+						isHover={isHover}
+						palette={{ ...getGroupAttributes(props, 'palette') }}
+						colorPaletteType='border'
+						onChangePalette={val => onChange(val)}
+						deviceType={breakpoint}
+						clientId={clientId}
+					/>
+				)}
 
-			{!disableAdvanced && activeBorderStyle !== 'none' && (
-				<AxisControl
-					{...getGroupAttributes(
-						props,
-						'borderWidth',
-						isHover,
-						prefix
-					)}
-					target={`${prefix}border`}
-					auxTarget='width'
-					label={__('Border width', 'maxi-blocks')}
-					onChange={obj => onChange(obj)}
-					breakpoint={breakpoint}
-					allowedUnits={['px', 'em', 'vw']}
-					minMaxSettings={{
-						px: {
-							min: 0,
-							max: 99,
-						},
-						em: {
-							min: 0,
-							max: 10,
-						},
-						vw: {
-							min: 0,
-							max: 10,
-						},
-					}}
-					disableAuto
-					isHover={isHover}
-				/>
-			)}
+			{!disableAdvanced &&
+				getLastBreakpointAttribute(
+					`${prefix}border-style`,
+					breakpoint,
+					props,
+					isHover
+				) !== 'none' && (
+					<AxisControl
+						{...getGroupAttributes(
+							props,
+							'borderWidth',
+							isHover,
+							prefix
+						)}
+						target={`${prefix}border`}
+						auxTarget='width'
+						label={__('Border width', 'maxi-blocks')}
+						onChange={obj => onChange(obj)}
+						breakpoint={breakpoint}
+						allowedUnits={['px', 'em', 'vw']}
+						minMaxSettings={{
+							px: {
+								min: 0,
+								max: 99,
+							},
+							em: {
+								min: 0,
+								max: 10,
+							},
+							vw: {
+								min: 0,
+								max: 10,
+							},
+						}}
+						disableAuto
+						isHover={isHover}
+					/>
+				)}
 
 			{!disableAdvanced && (
 				<AxisControl

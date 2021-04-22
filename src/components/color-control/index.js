@@ -3,12 +3,14 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { BaseControl, Button } from '@wordpress/components';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import RangeSliderControl from '../range-slider-control';
+import ColorPaletteControl from '../color-palette-control';
+import { getBlockStyle } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -32,8 +34,20 @@ const ColorControl = props => {
 		className,
 		color,
 		defaultColor = '',
+		disableColorDisplay = false,
+		disableOpacity = false,
 		onChange,
-		disableOpacity,
+		isHover,
+		blockStyle,
+		noPalette,
+		blockName,
+		textLevel,
+		showPalette = false,
+		palette,
+		colorPaletteType,
+		onChangePalette,
+		deviceType,
+		clientId,
 	} = props;
 
 	const classes = classnames('maxi-color-control', className);
@@ -94,60 +108,95 @@ const ColorControl = props => {
 	}, [color, currentColor, setCurrentColor, setColorAlpha, getRGB]);
 
 	return (
-		<div className={classes}>
-			<BaseControl
-				className='maxi-color-control__display'
-				label={`${label} ${__('Colour', 'maxi-blocks')}`}
-			>
-				<div className='maxi-color-control__display__color'>
-					<span
-						style={{
-							background: color,
-						}}
-					/>
-					<Button
-						className='components-maxi-control__reset-button'
-						onClick={() => onReset()}
-						aria-label={sprintf(
-							/* translators: %s: a textual label  */
-							__('Reset %s settings', 'maxi-blocks'),
-							'font size'
-						)}
-						type='reset'
-					>
-						{reset}
-					</Button>
-				</div>
-			</BaseControl>
-			{!disableOpacity && (
-				<RangeSliderControl
-					label={__('Colour Opacity', 'maxi-blocks')}
-					className='maxi-color-control__opacity'
-					value={+colorAlpha}
-					onChange={val => {
-						if (!isEmpty(color)) {
-							onChange(returnColor(getRGB(color), val));
-							setCurrentColor(returnColor(getRGB(color), val));
-						}
-
-						setColorAlpha(val);
-					}}
-					min={0}
-					max={100}
-					initialPosition={100}
+		<Fragment>
+			{!noPalette && showPalette && (
+				<ColorPaletteControl
+					{...palette}
+					blockName={blockName}
+					textLevel={textLevel}
+					isHover={isHover}
+					colorPaletteType={colorPaletteType}
+					className={`maxi-color-palette--${getBlockStyle(
+						blockStyle,
+						clientId
+					)}`}
+					onChange={obj => onChangePalette(obj)}
+					deviceType={deviceType}
 				/>
 			)}
-			<div className='maxi-color-control__color'>
-				<ChromePicker
-					color={currentColor}
-					onChangeComplete={val => {
-						onChange(returnColor(val, colorAlpha));
-						setCurrentColor(returnColor(val, colorAlpha));
-					}}
-					disableAlpha
-				/>
-			</div>
-		</div>
+			{!showPalette ||
+			(palette &&
+				palette[
+					`palette-custom-${colorPaletteType}${
+						isHover ? '-hover' : ''
+					}-color`
+				]) ||
+			noPalette ? (
+				<div className={classes}>
+					{!disableColorDisplay && (
+						<BaseControl
+							className='maxi-color-control__display'
+							label={`${label} ${__('Colour', 'maxi-blocks')}`}
+						>
+							<div className='maxi-color-control__display__color'>
+								<span
+									style={{
+										background: color,
+									}}
+								/>
+								{!showPalette && (
+									<Button
+										className='components-maxi-control__reset-button'
+										onClick={() => onReset()}
+										aria-label={sprintf(
+											/* translators: %s: a textual label  */
+											__(
+												'Reset %s settings',
+												'maxi-blocks'
+											),
+											'font size'
+										)}
+										type='reset'
+									>
+										{reset}
+									</Button>
+								)}
+							</div>
+						</BaseControl>
+					)}
+					{!disableOpacity && (
+						<RangeSliderControl
+							label={__('Colour Opacity', 'maxi-blocks')}
+							className='maxi-color-control__opacity'
+							value={+colorAlpha}
+							onChange={val => {
+								if (!isEmpty(color)) {
+									onChange(returnColor(getRGB(color), val));
+									setCurrentColor(
+										returnColor(getRGB(color), val)
+									);
+								}
+
+								setColorAlpha(val);
+							}}
+							min={0}
+							max={100}
+							initialPosition={100}
+						/>
+					)}
+					<div className='maxi-color-control__color'>
+						<ChromePicker
+							color={currentColor}
+							onChangeComplete={val => {
+								onChange(returnColor(val, colorAlpha));
+								setCurrentColor(returnColor(val, colorAlpha));
+							}}
+							disableAlpha
+						/>
+					</div>
+				</div>
+			) : null}
+		</Fragment>
 	);
 };
 

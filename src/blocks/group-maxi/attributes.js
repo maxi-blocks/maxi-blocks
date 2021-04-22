@@ -12,6 +12,9 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  * Attributes
  */
 const attributes = {
+	clientId: {
+		type: 'string',
+	},
 	customLabel: {
 		type: 'string',
 		default: __('Group', 'maxi-blocks'),
@@ -20,6 +23,7 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
+	...attributesData.palette,
 	...attributesData.background,
 	...attributesData.backgroundColor,
 	...attributesData.backgroundImage,
@@ -42,7 +46,6 @@ const attributes = {
 	...attributesData.borderRadiusHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
-	...attributesData.highlight,
 	...attributesData.margin,
 	...attributesData.padding,
 	...attributesData.motion,

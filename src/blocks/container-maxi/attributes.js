@@ -12,6 +12,9 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  * Attributes
  */
 const attributes = {
+	clientId: {
+		type: 'string',
+	},
 	customLabel: {
 		type: 'string',
 		default: __('Container', 'maxi-blocks'),
@@ -24,9 +27,25 @@ const attributes = {
 		type: 'string',
 		default: 'maxi-light',
 	},
+	updateStyleCard: {
+		type: 'number',
+		default: 0,
+	},
+	...attributesData.palette,
 	...attributesData.container,
-	...attributesData.background,
-	...attributesData.backgroundColor,
+	...{
+		...attributesData.background,
+		'background-active-media': {
+			type: 'string',
+			default: 'color',
+		},
+	},
+	...{
+		...attributesData.backgroundColor,
+		'background-color': {
+			type: 'string',
+		},
+	},
 	...attributesData.backgroundImage,
 	...attributesData.backgroundVideo,
 	...attributesData.backgroundGradient,

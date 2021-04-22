@@ -1,14 +1,14 @@
 /**
  * WordPress dependencies
  */
-import { RichText  } from '@wordpress/block-editor';
-import { Fragment  } from '@wordpress/element';
+import { RichText } from '@wordpress/block-editor';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import { BackgroundDisplayer } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -30,6 +30,7 @@ const save = props => {
 		isList,
 		typeOfList,
 		content,
+		clientId,
 	} = attributes;
 
 	const classes = classnames(
@@ -37,9 +38,23 @@ const save = props => {
 		'maxi-block maxi-text-block',
 		'maxi-text-block-wrap',
 		blockStyle,
-		!!attributes['text-highlight'] && 'maxi-highlight--text',
-		!!attributes['background-highlight'] && 'maxi-highlight--background',
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
+		getPaletteClasses(
+			attributes,
+			blockStyle,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+			],
+			'maxi-blocks/text-maxi',
+			clientId,
+			textLevel
+		),
 		extraClassName,
 		uniqueID,
 		className,
@@ -49,25 +64,23 @@ const save = props => {
 	return (
 		<Fragment>
 			<div className={classes} id={uniqueID}>
-				{!attributes['background-highlight'] && (
-					<BackgroundDisplayer
-						{...getGroupAttributes(attributes, [
-							'background',
-							'backgroundColor',
-							'backgroundImage',
-							'backgroundVideo',
-							'backgroundGradient',
-							'backgroundSVG',
-							'backgroundHover',
-							'backgroundColorHover',
-							'backgroundImageHover',
-							'backgroundVideoHover',
-							'backgroundGradientHover',
-							'backgroundSVGHover',
-						])}
-						blockClassName={uniqueID}
-					/>
-				)}
+				<BackgroundDisplayer
+					{...getGroupAttributes(attributes, [
+						'background',
+						'backgroundColor',
+						'backgroundImage',
+						'backgroundVideo',
+						'backgroundGradient',
+						'backgroundSVG',
+						'backgroundHover',
+						'backgroundColorHover',
+						'backgroundImageHover',
+						'backgroundVideoHover',
+						'backgroundGradientHover',
+						'backgroundSVGHover',
+					])}
+					blockClassName={uniqueID}
+				/>
 				<RichText.Content
 					className='maxi-text-block__content'
 					value={content}

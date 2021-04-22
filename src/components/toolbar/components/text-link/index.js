@@ -7,7 +7,7 @@ import { __experimentalLinkControl } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';
 import { Button } from '@wordpress/components';
-import { useRef, useEffect } from '@wordpress/element';
+import { useRef, useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -67,7 +67,7 @@ const Link = withFormatValue(props => {
 		if (!formatOptions || isEmpty(formatValue)) return {};
 
 		const {
-			attributes: { url, target, id, rel },
+			attributes: { url, target, id, rel, title = '' },
 		} = formatOptions;
 
 		const value = {
@@ -77,17 +77,20 @@ const Link = withFormatValue(props => {
 			noFollow: rel && rel.indexOf('nofollow') >= 0,
 			sponsored: rel && rel.indexOf('sponsored') >= 0,
 			ugc: rel && rel.indexOf('ugc') >= 0,
+			title,
 		};
 
 		return value;
 	};
 
-	const linkValue = useRef(createLinkValue(linkSettings || formatOptions));
+	const [linkValue, setLinkValue] = useState(
+		createLinkValue(linkSettings || formatOptions)
+	);
 
 	useEffect(() => {
 		const newLinkValue = createLinkValue(linkSettings || formatOptions);
 
-		if (!isEqual(linkValue, newLinkValue)) linkValue.current = newLinkValue;
+		if (!isEqual(linkValue, newLinkValue)) setLinkValue(newLinkValue);
 	});
 
 	const createLinkAttributes = ({
@@ -98,10 +101,12 @@ const Link = withFormatValue(props => {
 		noFollow,
 		sponsored,
 		ugc,
+		title = '',
 	}) => {
 		const attributes = {
 			url,
 			rel: '',
+			title,
 		};
 
 		if (type) attributes.type = type;
@@ -197,7 +202,7 @@ const Link = withFormatValue(props => {
 			onChange(obj);
 		}
 
-		linkValue.current = createLinkValue({ url: '' });
+		setLinkValue(createLinkValue({ url: '' }));
 
 		if (ref.current) ref.current.node.state.isOpen = false;
 	};
@@ -221,7 +226,7 @@ const Link = withFormatValue(props => {
 		const newLinkAttributes = createLinkAttributes(attributes);
 		const newLinkValue = createLinkValue({ attributes: newLinkAttributes });
 
-		linkValue.current = newLinkValue;
+		setLinkValue(newLinkValue);
 	};
 
 	return (
@@ -233,7 +238,7 @@ const Link = withFormatValue(props => {
 		>
 			<div>
 				<__experimentalLinkControl
-					value={linkValue.current}
+					value={linkValue}
 					onChange={onClick}
 					settings={[
 						{

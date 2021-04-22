@@ -24,25 +24,15 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	svgColorOrange: {
+	svgColorFill: {
 		type: 'string',
-		default: '#FF4A17',
 	},
-	svgColorBlack: {
+	svgColorLine: {
 		type: 'string',
-		default: '#081219',
 	},
 	stroke: {
 		type: 'number',
-		default: 2.0,
-	},
-	animation: {
-		type: 'string',
-		default: 'loop',
-	},
-	duration: {
-		type: 'number',
-		default: 3.7,
+		default: 2,
 	},
 	width: {
 		type: 'number',

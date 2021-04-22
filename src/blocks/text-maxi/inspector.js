@@ -374,6 +374,81 @@ const Inspector = memo(
 													/>
 												),
 											},
+											{
+												label: __(
+													'Link Color',
+													'maxi-blocks'
+												),
+												disablePadding: true,
+												content: (
+													<SettingTabsControl
+														items={[
+															{
+																label: __(
+																	'Normal',
+																	'maxi-blocks'
+																),
+																content: (
+																	<h1>
+																		Normal
+																	</h1>
+																),
+															},
+															{
+																label: __(
+																	'Hover',
+																	'maxi-blocks'
+																),
+																content: (
+																	<Fragment>
+																		<FancyRadioControl
+																			label={__(
+																				'Enable link-color Hover',
+																				'maxi-blocks'
+																			)}
+																			selected={
+																				attributes[
+																					'link-color-status-hover'
+																				]
+																			}
+																			options={[
+																				{
+																					label: __(
+																						'Yes',
+																						'maxi-blocks'
+																					),
+																					value: 1,
+																				},
+																				{
+																					label: __(
+																						'No',
+																						'maxi-blocks'
+																					),
+																					value: 0,
+																				},
+																			]}
+																			onChange={val =>
+																				setAttributes(
+																					{
+																						'link-color-status-hover': val,
+																					}
+																				)
+																			}
+																		/>
+																		{attributes[
+																			'link-color-status-hover'
+																		] && (
+																			<h1>
+																				Hover
+																			</h1>
+																		)}
+																	</Fragment>
+																),
+															},
+														]}
+													/>
+												),
+											},
 											deviceType === 'general' && {
 												label: __(
 													'Background',

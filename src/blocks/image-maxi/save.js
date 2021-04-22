@@ -37,7 +37,7 @@ const save = props => {
 		mediaAltTitle,
 		altSelector,
 		SVGElement,
-		clientId,
+		parentBlockStyle,
 	} = attributes;
 
 	const hoverClasses = classnames(
@@ -58,7 +58,6 @@ const save = props => {
 		blockStyle,
 		getPaletteClasses(
 			attributes,
-			blockStyle,
 			[
 				'background',
 				'background-hover',
@@ -69,8 +68,8 @@ const save = props => {
 				'typography',
 				'typography-hover',
 			],
-			'',
-			clientId
+			'maxi-blocks/image-maxi',
+			parentBlockStyle
 		),
 		extraClassName,
 		className

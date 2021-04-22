@@ -21,6 +21,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteClasses,
+	getBlockStyle,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -60,15 +61,14 @@ class edit extends MaxiBlock {
 		};
 	}
 
-	componentDidMount() {
-		/*
-		we have not accessed to the clientId in the save the file,
-		so saved it in attributes, in future we should find a better solution :)
-		*/
+	componentDidUpdate() {
 		const { setAttributes, clientId } = this.props;
 
 		setAttributes({
-			clientId,
+			parentBlockStyle: getBlockStyle(
+				this.props.attributes.blockStyle,
+				clientId
+			),
 		});
 	}
 
@@ -80,7 +80,13 @@ class edit extends MaxiBlock {
 			hasInnerBlock,
 			deviceType,
 		} = this.props;
-		const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
+		const {
+			uniqueID,
+			blockStyle,
+			extraClassName,
+			fullWidth,
+			parentBlockStyle,
+		} = attributes;
 
 		const classes = classnames(
 			'maxi-block',
@@ -94,7 +100,6 @@ class edit extends MaxiBlock {
 			blockStyle,
 			getPaletteClasses(
 				attributes,
-				blockStyle,
 				[
 					'background',
 					'background-hover',
@@ -103,8 +108,8 @@ class edit extends MaxiBlock {
 					'box-shadow',
 					'box-shadow-hover',
 				],
-				'',
-				clientId
+				'maxi-blocks/group-maxi',
+				parentBlockStyle
 			),
 			extraClassName,
 			className

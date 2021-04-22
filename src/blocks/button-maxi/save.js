@@ -20,12 +20,12 @@ import { isNil, isEmpty } from 'lodash';
 const save = props => {
 	const { className, attributes } = props;
 	const {
-		clientId,
 		uniqueID,
 		blockStyle,
 		extraClassName,
 		linkSettings,
 		buttonContent,
+		parentBlockStyle,
 	} = attributes;
 
 	const classes = classnames(
@@ -34,7 +34,6 @@ const save = props => {
 		blockStyle,
 		getPaletteClasses(
 			attributes,
-			blockStyle,
 			[
 				'background',
 				'background-hover',
@@ -47,7 +46,7 @@ const save = props => {
 				'icon',
 			],
 			'maxi-blocks/button-maxi',
-			clientId
+			parentBlockStyle
 		),
 		extraClassName,
 		uniqueID,

@@ -15,7 +15,12 @@ import { isEmpty } from 'lodash';
  */
 const save = props => {
 	const { className, attributes } = props;
-	const { uniqueID, blockStyle, extraClassName, clientId } = attributes;
+	const {
+		uniqueID,
+		blockStyle,
+		extraClassName,
+		parentBlockStyle,
+	} = attributes;
 
 	const classes = classnames(
 		'maxi-motion-effect',
@@ -23,7 +28,6 @@ const save = props => {
 		blockStyle,
 		getPaletteClasses(
 			attributes,
-			blockStyle,
 			[
 				'background',
 				'background-hover',
@@ -33,8 +37,8 @@ const save = props => {
 				'box-shadow-hover',
 				'icon',
 			],
-			'',
-			clientId
+			'maxi-blocks/font-icon-maxi',
+			parentBlockStyle
 		),
 		extraClassName,
 		uniqueID,

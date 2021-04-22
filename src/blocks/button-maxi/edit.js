@@ -9,20 +9,21 @@ import { __experimentalBlock, RichText } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
+import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 import Inspector from './inspector';
 import { MaxiBlock, MotionPreview, Toolbar } from '../../components';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteClasses,
+	getBlockStyle,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
  * External dependencies
  */
-import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Content
@@ -33,16 +34,18 @@ class edit extends MaxiBlock {
 	}
 
 	componentDidMount() {
-		/*
-		we have not accessed to the clientId in the save the file,
-		so saved it in attributes, in future we should find a better solution :)
-		*/
-		const { setAttributes, clientId } = this.props;
-		setAttributes({
-			clientId,
-		});
-
 		this.blockRef.current.focus();
+	}
+
+	componentDidUpdate() {
+		const { setAttributes, clientId } = this.props;
+
+		setAttributes({
+			parentBlockStyle: getBlockStyle(
+				this.props.attributes.blockStyle,
+				clientId
+			),
+		});
 	}
 
 	get getCustomData() {
@@ -65,14 +68,14 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
+		const { attributes, className, deviceType, setAttributes } = this.props;
 		const {
-			attributes,
-			className,
-			deviceType,
-			setAttributes,
-			clientId,
-		} = this.props;
-		const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
+			uniqueID,
+			blockStyle,
+			extraClassName,
+			fullWidth,
+			parentBlockStyle,
+		} = attributes;
 
 		const classes = classnames(
 			'maxi-block',
@@ -83,7 +86,6 @@ class edit extends MaxiBlock {
 			blockStyle,
 			getPaletteClasses(
 				attributes,
-				blockStyle,
 				[
 					'background',
 					'background-hover',
@@ -96,7 +98,7 @@ class edit extends MaxiBlock {
 					'icon',
 				],
 				'maxi-blocks/button-maxi',
-				clientId
+				parentBlockStyle
 			),
 			extraClassName,
 			uniqueID,

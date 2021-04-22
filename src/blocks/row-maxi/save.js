@@ -24,7 +24,7 @@ const save = props => {
 		blockStyle,
 		extraClassName,
 		fullWidth,
-		clientId,
+		parentBlockStyle,
 	} = attributes;
 
 	const classes = classnames(
@@ -32,7 +32,6 @@ const save = props => {
 		blockStyle,
 		getPaletteClasses(
 			attributes,
-			blockStyle,
 			[
 				'background',
 				'background-hover',
@@ -41,8 +40,8 @@ const save = props => {
 				'box-shadow',
 				'box-shadow-hover',
 			],
-			'',
-			clientId
+			'maxi-blocks/row-maxi',
+			parentBlockStyle
 		),
 		extraClassName,
 		className,

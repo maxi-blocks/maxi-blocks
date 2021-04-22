@@ -12,7 +12,7 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  * Attributes
  */
 const attributes = {
-	clientId: {
+	parentBlockStyle: {
 		type: 'string',
 	},
 	customLabel: {

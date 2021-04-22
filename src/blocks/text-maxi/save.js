@@ -30,7 +30,7 @@ const save = props => {
 		isList,
 		typeOfList,
 		content,
-		clientId,
+		parentBlockStyle,
 	} = attributes;
 
 	const classes = classnames(
@@ -40,7 +40,6 @@ const save = props => {
 		blockStyle,
 		getPaletteClasses(
 			attributes,
-			blockStyle,
 			[
 				'background',
 				'background-hover',
@@ -52,7 +51,7 @@ const save = props => {
 				'typography-hover',
 			],
 			'maxi-blocks/text-maxi',
-			clientId,
+			parentBlockStyle,
 			textLevel
 		),
 		extraClassName,

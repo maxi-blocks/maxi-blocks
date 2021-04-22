@@ -19,14 +19,18 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes, className } = props;
-	const { uniqueID, blockStyle, extraClassName, clientId } = attributes;
+	const {
+		uniqueID,
+		blockStyle,
+		extraClassName,
+		parentBlockStyle,
+	} = attributes;
 
 	const classes = classnames(
 		'maxi-block maxi-column-block',
 		blockStyle,
 		getPaletteClasses(
 			attributes,
-			blockStyle,
 			[
 				'background',
 				'background-hover',
@@ -35,8 +39,8 @@ const save = props => {
 				'box-shadow',
 				'box-shadow-hover',
 			],
-			'',
-			clientId
+			'maxi-blocks/column-maxi',
+			parentBlockStyle
 		),
 		extraClassName,
 		className,

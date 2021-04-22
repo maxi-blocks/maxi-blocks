@@ -37,6 +37,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteClasses,
+	getBlockStyle,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -77,6 +78,17 @@ class edit extends MaxiBlock {
 		};
 	}
 
+	componentDidUpdate() {
+		const { setAttributes, clientId } = this.props;
+
+		setAttributes({
+			parentBlockStyle: getBlockStyle(
+				this.props.attributes.blockStyle,
+				clientId
+			),
+		});
+	}
+
 	render() {
 		const {
 			attributes,
@@ -88,7 +100,6 @@ class edit extends MaxiBlock {
 			onSplit,
 			onReplace,
 			deviceType,
-			clientId,
 		} = this.props;
 		const {
 			uniqueID,
@@ -101,6 +112,7 @@ class edit extends MaxiBlock {
 			listStart,
 			listReversed,
 			fullWidth,
+			parentBlockStyle,
 		} = attributes;
 
 		const name = 'maxi-blocks/text-maxi';
@@ -114,7 +126,6 @@ class edit extends MaxiBlock {
 			blockStyle,
 			getPaletteClasses(
 				attributes,
-				blockStyle,
 				[
 					'background',
 					'background-hover',
@@ -126,7 +137,7 @@ class edit extends MaxiBlock {
 					'typography-hover',
 				],
 				'maxi-blocks/text-maxi',
-				clientId,
+				parentBlockStyle,
 				textLevel
 			),
 			extraClassName,

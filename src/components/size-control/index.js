@@ -2,8 +2,7 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
-import { SelectControl, BaseControl, Button  } from '@wordpress/components';
+import { SelectControl, BaseControl, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -14,7 +13,7 @@ import RangeSliderControl from '../range-slider-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isNull } from 'lodash';
+import { trim, isNull, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -41,7 +40,7 @@ const SizeControl = props => {
 		defaultValue,
 		onChangeValue,
 		disableReset = false,
-		allowedUnits = ['px', 'em', 'vw', '%'],
+		allowedUnits = ['px', 'em', 'vw', '%', 'empty'],
 		minMaxSettings = {
 			px: {
 				min: 0,
@@ -58,6 +57,10 @@ const SizeControl = props => {
 			'%': {
 				min: 0,
 				max: 100,
+			},
+			empty: {
+				min: 0,
+				max: 999,
 			},
 		},
 	} = props;
@@ -78,7 +81,7 @@ const SizeControl = props => {
 
 		allowedUnits.includes('%') && options.push({ label: '%', value: '%' });
 
-		allowedUnits.includes('empty') &&
+		allowedUnits.includes('empty' || empty) &&
 			options.push({ label: '-', value: '' });
 
 		return options;
@@ -99,10 +102,20 @@ const SizeControl = props => {
 					onChange={e => {
 						let value = +e.target.value;
 
-						if (value > minMaxSettings[defaultUnit].max)
-							value = minMaxSettings[defaultUnit].max;
-						if (value < minMaxSettings[defaultUnit].min)
-							value = minMaxSettings[defaultUnit].min;
+						if (
+							value >
+							minMaxSettings[isEmpty(unit) ? 'empty' : unit].max
+						)
+							value =
+								minMaxSettings[isEmpty(unit) ? 'empty' : unit]
+									.max;
+						if (
+							value <
+							minMaxSettings[isEmpty(unit) ? 'empty' : unit].min
+						)
+							value =
+								minMaxSettings[isEmpty(unit) ? 'empty' : unit]
+									.min;
 
 						onChangeValue(value);
 					}}
@@ -112,7 +125,7 @@ const SizeControl = props => {
 					placeholder='auto'
 				/>
 			) : (
-				<Fragment>
+				<>
 					<input
 						type='number'
 						className='maxi-size-control__value'
@@ -120,15 +133,40 @@ const SizeControl = props => {
 						onChange={e => {
 							let value = +e.target.value;
 
-							if (value > minMaxSettings[unit].max)
-								value = minMaxSettings[unit].max;
-							if (value < minMaxSettings[unit].min)
-								value = minMaxSettings[unit].min;
+							if (
+								value >
+								minMaxSettings[isEmpty(unit) ? 'empty' : unit]
+									.max
+							)
+								value =
+									minMaxSettings[
+										isEmpty(unit) ? 'empty' : unit
+									].max;
+							if (
+								value <
+								minMaxSettings[isEmpty(unit) ? 'empty' : unit]
+									.min
+							)
+								value =
+									minMaxSettings[
+										isEmpty(unit) ? 'empty' : unit
+									].min;
 
 							onChangeValue(value);
 						}}
-						min={unit ? minMaxSettings[unit].min : null}
-						max={unit ? minMaxSettings[unit].max : null}
+						min={
+							unit
+								? minMaxSettings[isEmpty(unit) ? 'empty' : unit]
+										.min
+								: null
+						}
+						max={
+							isEmpty(unit)
+								? 'empty'
+								: unit
+								? minMaxSettings[unit].max
+								: null
+						}
 						step={step}
 						placeholder='auto'
 					/>
@@ -138,7 +176,7 @@ const SizeControl = props => {
 						value={unit}
 						onChange={val => onChangeUnit(val)}
 					/>
-				</Fragment>
+				</>
 			)}
 			{!disableReset && (
 				<Button

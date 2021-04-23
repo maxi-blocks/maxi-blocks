@@ -26,13 +26,7 @@ describe('TextMaxi', () => {
 
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi...onSplit');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
+		await pressKeyTimes('ArrowLeft', '7');
 		await page.keyboard.press('Enter');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
@@ -43,23 +37,13 @@ describe('TextMaxi', () => {
 		await page.keyboard.type('Test Text Maxi...');
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('...OnMerge');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
-		await page.keyboard.press('ArrowLeft');
+		await pressKeyTimes('ArrowLeft', '11');
 		await page.keyboard.press('Delete');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
-	it('Testing the split in a Text Maxi with bold', async () => {
+	it('Testing Text Maxi with custom formats when split', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi Bold');
 		pressKeyWithModifier('shift', 'ArrowLeft');
@@ -73,7 +57,7 @@ describe('TextMaxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
-	it('Testing the Merge in a Text Maxi with bold From Top to Bottom', async () => {
+	it(' Testing Text Maxi with custom formats when merge from top block to bottom one', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi.');
 		await insertBlock('Text Maxi');
@@ -83,19 +67,20 @@ describe('TextMaxi', () => {
 		pressKeyWithModifier('shift', 'ArrowLeft');
 		pressKeyWithModifier('shift', 'ArrowLeft');
 		pressKeyWithModifier('shift', 'ArrowLeft');
+
 		await page.$eval('.toolbar-item__bold', button => button.click());
-
-		const test = await page.$('.maxi-text-block');
-		const test2 = await test.$('.block-editor-rich-text__editable');
-		await test2.focus();
-
+		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const selectMaxiTextP = await selectMaxiTextDiv.$(
+			'.block-editor-rich-text__editable'
+		);
+		await selectMaxiTextP.focus();
 		await pressKeyTimes('ArrowRight', '18');
 		await page.keyboard.press('Delete');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
-	it('Testing the Merge in a Text Maxi with bold From Bottom to Top', async () => {
+	it('Testing Text Maxi with custom formats when merge from bottom block to top one', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi.');
 		await insertBlock('Text Maxi');
@@ -106,13 +91,13 @@ describe('TextMaxi', () => {
 		pressKeyWithModifier('shift', 'ArrowLeft');
 		pressKeyWithModifier('shift', 'ArrowLeft');
 		await page.$eval('.toolbar-item__bold', button => button.click());
-
-		const test = await page.$('.maxi-text-block');
-		const test2 = await test.$('.block-editor-rich-text__editable');
-		await test2.focus();
+		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const selectMaxiTextP = await selectMaxiTextDiv.$(
+			'.block-editor-rich-text__editable'
+		);
+		await selectMaxiTextP.focus();
 		await page.keyboard.press('ArrowDown');
 		await page.keyboard.press('Backspace');
-		//await pressKeyTimes('ArrowRight', '18');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});

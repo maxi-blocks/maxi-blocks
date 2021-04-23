@@ -2,6 +2,6 @@
 
 exports[`Image Maxi Image Maxi does not break 1`] = `
 "<!-- wp:maxi-blocks/image-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"image-maxi-12\\",\\"isFirstOnHierarchy\\":true} -->
-<figure class=\\"wp-block-maxi-blocks-image-maxi maxi-motion-effect maxi-block maxi-image-block image-maxi-12 maxi-light\\" id=\\"image-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><div style=\\"width:100%\\" class=\\"maxi-block-hover-wrapper maxi-hover-effect__none__fade maxi-hover-effect__text\\"><img class=\\"wp-image-undefined\\"/></div></figure>
+<figure class=\\"wp-block-maxi-blocks-image-maxi maxi-motion-effect maxi-block maxi-image-block image-maxi-12 maxi-light\\" id=\\"image-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><div style=\\"width:100%\\" class=\\"maxi-block-hover-wrapper maxi-hover-effect__none__fade maxi-hover-effect__text\\"><div class=\\"maxi-hover-preview\\"><img class=\\"maxi-image-block__image wp-image-undefined\\"/></div></div></figure>
 <!-- /wp:maxi-blocks/image-maxi -->"
 `;

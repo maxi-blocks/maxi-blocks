@@ -38,6 +38,7 @@ const setFormat = ({
 	breakpoint = 'general',
 	isHover = false,
 	textLevel,
+	returnFormatValue = false,
 }) => {
 	// eslint-disable-next-line @wordpress/no-unused-vars-before-return
 	const {
@@ -110,6 +111,7 @@ const setFormat = ({
 		breakpoint,
 		isHover,
 		textLevel,
+		returnFormatValue,
 	});
 };
 

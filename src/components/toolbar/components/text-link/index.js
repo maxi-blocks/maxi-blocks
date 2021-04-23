@@ -197,6 +197,7 @@ const Link = withFormatValue(props => {
 				isList,
 				typography,
 				textLevel,
+				attributes: linkValue,
 			});
 
 			onChange(obj);

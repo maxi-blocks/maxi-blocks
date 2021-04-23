@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { applyFormat, toHTMLString } from '@wordpress/rich-text';
+import { applyFormat } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
@@ -336,7 +336,7 @@ const mergeNewFormat = ({
 		} = removeCustomFormat({
 			formatValue,
 			className: useCurrent ? currentClassName : formatClassName,
-			isList: false,
+			isList,
 		});
 
 		newFormatValue = cleanedFormatValue;

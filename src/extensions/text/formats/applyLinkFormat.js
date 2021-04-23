@@ -23,6 +23,7 @@ const applyLinkFormat = ({
 	textLevel,
 	breakpoint = 'general',
 	isHover = false,
+	returnFormatValue = false,
 }) => {
 	const linkCustomFormatValue = applyFormat(formatValue, {
 		type: 'maxi-blocks/text-link',
@@ -40,6 +41,7 @@ const applyLinkFormat = ({
 		breakpoint,
 		isHover,
 		textLevel,
+		returnFormatValue,
 	});
 };
 

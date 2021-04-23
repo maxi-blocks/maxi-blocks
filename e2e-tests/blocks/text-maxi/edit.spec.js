@@ -83,9 +83,13 @@ describe('TextMaxi', () => {
 		pressKeyWithModifier('shift', 'ArrowLeft');
 		pressKeyWithModifier('shift', 'ArrowLeft');
 		pressKeyWithModifier('shift', 'ArrowLeft');
-
 		await page.$eval('.toolbar-item__bold', button => button.click());
-		pressKeyTimes('ArrowLeft', '5');
+
+		const test = await page.$('.maxi-text-block');
+		const test2 = await test.$('.block-editor-rich-text__editable');
+		await test2.focus();
+
+		await pressKeyTimes('ArrowRight', '18');
 		await page.keyboard.press('Delete');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

@@ -32,12 +32,12 @@ const LinkColor = props => {
 						content: (
 							<ColorControl
 								label=''
-								color={props['link-color-normal']}
+								color={props['link-color-link']}
 								defaultColor={getDefaultAttribute(
-									'link-color-normal'
+									'link-color-link'
 								)}
 								onChange={val => {
-									onChange(val);
+									onChange({ ['link-color-link']: val });
 								}}
 							/>
 						),
@@ -52,7 +52,7 @@ const LinkColor = props => {
 									'link-color-hover'
 								)}
 								onChange={val => {
-									onChange(val);
+									onChange({ ['link-color-hover']: val });
 								}}
 							/>
 						),
@@ -67,7 +67,7 @@ const LinkColor = props => {
 									'link-color-active'
 								)}
 								onChange={val => {
-									onChange(val);
+									onChange({ ['link-color-active']: val });
 								}}
 							/>
 						),
@@ -82,7 +82,7 @@ const LinkColor = props => {
 									'link-color-visited'
 								)}
 								onChange={val => {
-									onChange(val);
+									onChange({ ['link-color-visited']: val });
 								}}
 							/>
 						),

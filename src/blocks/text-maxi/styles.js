@@ -1,18 +1,19 @@
 import { getGroupAttributes } from '../../extensions/styles';
 import {
-	getBorderStyles,
-	getSizeStyles,
-	getBoxShadowStyles,
-	getOpacityStyles,
-	getZIndexStyles,
-	getPositionStyles,
-	getDisplayStyles,
-	getTransformStyles,
-	getBackgroundStyles,
-	getMarginPaddingStyles,
-	getTypographyStyles,
-	getCustomFormatsStyles,
 	getAlignmentTextStyles,
+	getBackgroundStyles,
+	getBorderStyles,
+	getBoxShadowStyles,
+	getCustomFormatsStyles,
+	getDisplayStyles,
+	getMarginPaddingStyles,
+	getOpacityStyles,
+	getPositionStyles,
+	getSizeStyles,
+	getTransformStyles,
+	getTypographyLinkStyles,
+	getTypographyStyles,
+	getZIndexStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -101,6 +102,21 @@ const getTypographyObject = props => {
 	return response;
 };
 
+const getTypographyLinkObject = (props, linkType) => {
+	const response = {
+		typography: {
+			general: getTypographyLinkStyles(
+				{
+					...getGroupAttributes(props, 'linkColor'),
+				},
+				linkType
+			),
+		},
+	};
+
+	return response;
+};
+
 const getTypographyHoverObject = props => {
 	const response = {
 		typography: getTypographyStyles(
@@ -130,9 +146,21 @@ const getStyles = props => {
 		[`${uniqueID} .maxi-text-block__content li:hover`]: getTypographyHoverObject(
 			props
 		),
-		[`${uniqueID} .maxi-text-block__content a`]: getTypographyObject(props),
-		[`${uniqueID} .maxi-text-block__content a:hover`]: getTypographyHoverObject(
-			props
+		[`${uniqueID} .maxi-text-block__content a`]: getTypographyLinkObject(
+			props,
+			'link'
+		),
+		[`${uniqueID} .maxi-text-block__content a:hover`]: getTypographyLinkObject(
+			props,
+			'hover'
+		),
+		[`${uniqueID} .maxi-text-block__content a:active`]: getTypographyLinkObject(
+			props,
+			'active'
+		),
+		[`${uniqueID} .maxi-text-block__content a:visited`]: getTypographyLinkObject(
+			props,
+			'visited'
 		),
 	};
 

@@ -1,5 +1,5 @@
 const linkColor = {
-	'link-color-normal': {
+	'link-color-link': {
 		type: 'string',
 		default: '#ff4a17',
 	},

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Icon, Button, Tooltip } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -12,6 +12,7 @@ import {
 	setFormat,
 	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -27,38 +28,52 @@ import { toolbarUnderline } from '../../../../icons';
  * TextFormatUnderline
  */
 const TextFormatUnderline = props => {
-	const { formatValue, onChange, isList, breakpoint, typography } = props;
+	const { formatValue, onChange, isList, breakpoint } = props;
 
-	const textDecorationValue =
-		getCustomFormatValue({
-			typography,
-			formatValue,
-			prop: 'text-decoration',
-			breakpoint,
-		}) || '';
-
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const [isActive, setIsActive] = useState(
-		textDecorationValue.indexOf('underline') >= 0
-	);
 	const getTextDecorationValue = () => {
-		if (textDecorationValue === 'none') return 'underline';
-
-		const response = isActive
-			? textDecorationValue.replace('underline', '')
-			: `${textDecorationValue} underline`;
-
-		return trim(response);
+		return (
+			getCustomFormatValue({
+				typography: { ...getGroupAttributes(props, 'typography') },
+				formatValue,
+				prop: 'text-decoration',
+				breakpoint,
+			}) || ''
+		);
 	};
 
+	const textDecorationValue = getTextDecorationValue();
+
+	const [isActive, setIsActive] = useState(
+		textDecorationValue.indexOf('overline') >= 0
+	);
+
+	useEffect(() => {
+		const textDecorationValue = getTextDecorationValue();
+
+		setIsActive(textDecorationValue.indexOf('underline') >= 0);
+	});
+
 	const onClick = () => {
+		const textDecorationValue = getTextDecorationValue();
+
+		let response;
+
+		if (textDecorationValue === 'none') response = 'underline';
+		else
+			response =
+				textDecorationValue.indexOf('underline') >= 0
+					? textDecorationValue.replace('underline', '')
+					: `${textDecorationValue} underline`;
+
+		response = trim(response);
+
 		const obj = setFormat({
 			formatValue,
-			isActive,
+			isActive: textDecorationValue.indexOf('underline') >= 0,
 			isList,
-			typography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			value: {
-				'text-decoration': getTextDecorationValue(),
+				'text-decoration': response,
 			},
 			breakpoint,
 		});

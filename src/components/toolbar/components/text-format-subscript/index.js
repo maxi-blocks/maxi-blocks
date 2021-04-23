@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Icon, Button, Tooltip } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -12,6 +12,7 @@ import {
 	setFormat,
 	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
+import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles and icons
@@ -22,27 +23,35 @@ import { toolbarSubScript } from '../../../../icons';
  * TextFormatSubscript
  */
 const TextFormatSubscript = props => {
-	const { formatValue, onChange, isList, breakpoint, typography } = props;
+	const { formatValue, onChange, isList, breakpoint } = props;
 
-	const superscriptValue =
+	const getSuperscriptValue = () =>
 		getCustomFormatValue({
-			typography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			formatValue,
 			prop: 'vertical-align',
 			breakpoint,
 		}) || '';
+
+	const superscriptValue = getSuperscriptValue();
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [isActive, setIsActive] = useState(
 		(superscriptValue === 'sub' && true) || false
 	);
 
+	useEffect(() => {
+		const superscriptValue = getSuperscriptValue();
+
+		setIsActive((superscriptValue === 'sub' && true) || false);
+	});
+
 	const onClick = () => {
 		const obj = setFormat({
 			formatValue,
 			isActive,
 			isList,
-			typography,
+			typography: { ...getGroupAttributes(props, 'typography') },
 			value: {
 				'vertical-align': isActive ? '' : 'sub',
 			},

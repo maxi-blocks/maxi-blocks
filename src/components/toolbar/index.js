@@ -36,9 +36,9 @@ import {
 	Size,
 	SvgColor,
 	TextBold,
-	TextColor,
 	TextItalic,
 	TextLevel,
+	TextColor,
 	TextLink,
 	TextListOptions,
 	TextOptions,
@@ -91,14 +91,12 @@ const MaxiToolbar = props => {
 		changeSVGContent,
 		clientId,
 		deviceType,
-		formatValue,
 		isSelected,
 		name,
 		setAttributes,
 		toggleHandlers,
 	} = props;
 	const {
-		content,
 		customLabel,
 		fullWidth,
 		imageSize,
@@ -146,6 +144,8 @@ const MaxiToolbar = props => {
 			rootBlock === 'maxi-blocks/column-maxi'
 		)
 			return true;
+
+		return false;
 	};
 
 	return (
@@ -208,11 +208,9 @@ const MaxiToolbar = props => {
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							node={anchorRef}
-							content={content}
 							breakpoint={deviceType}
 							isList={isList}
 							typeOfList={typeOfList}
-							formatValue={formatValue}
 							textLevel={textLevel}
 						/>
 						{!attributes['text-highlight'] && (
@@ -222,13 +220,11 @@ const MaxiToolbar = props => {
 									attributes,
 									'typography'
 								)}
-								content={content}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={deviceType}
 								node={anchorRef}
 								isList={isList}
 								typeOfList={typeOfList}
-								formatValue={formatValue}
 							/>
 						)}
 						<Alignment
@@ -252,7 +248,6 @@ const MaxiToolbar = props => {
 						/>
 						<TextBold
 							{...getGroupAttributes(attributes, 'typography')}
-							formatValue={formatValue}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
@@ -260,7 +255,6 @@ const MaxiToolbar = props => {
 						/>
 						<TextItalic
 							{...getGroupAttributes(attributes, 'typography')}
-							formatValue={formatValue}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
@@ -295,14 +289,11 @@ const MaxiToolbar = props => {
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
-							formatValue={formatValue}
 							linkSettings={linkSettings}
 							breakpoint={deviceType}
 						/>
 						<TextListOptions
 							blockName={name}
-							formatValue={formatValue}
-							content={content}
 							isList={isList}
 							typeOfList={typeOfList}
 							onChange={obj => setAttributes(obj)}

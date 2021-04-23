@@ -11,7 +11,7 @@ import { create } from '@wordpress/rich-text';
  *
  * @returns {Object} RichText format value
  */
-const getFormatValue = (formatElement, node) => {
+const generateFormatValue = (formatElement, node) => {
 	const selection = window.getSelection();
 
 	if (node) {
@@ -45,4 +45,4 @@ const getFormatValue = (formatElement, node) => {
 	return create(formatElement);
 };
 
-export default getFormatValue;
+export default generateFormatValue;

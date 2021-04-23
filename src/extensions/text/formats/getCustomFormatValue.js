@@ -3,6 +3,7 @@
  */
 import getLastBreakpointAttribute from '../../styles/getLastBreakpointAttribute';
 import getCurrentFormatClassName from './getCurrentFormatClassName';
+import defaultTypography from '../defaults';
 
 /**
  * Retrieve the property from typography object requested
@@ -22,6 +23,7 @@ const getCustomFormatValue = ({
 	prop,
 	breakpoint,
 	isHover = false,
+	textLevel = 'p',
 }) => {
 	if (formatValue) {
 		const currentClassName = getCurrentFormatClassName(
@@ -48,9 +50,25 @@ const getCustomFormatValue = ({
 		}
 	}
 
-	return typography
-		? getLastBreakpointAttribute(prop, breakpoint, typography, isHover)
-		: '';
+	const value = getLastBreakpointAttribute(
+		prop,
+		breakpoint,
+		typography,
+		isHover
+	);
+
+	if (value) return value;
+
+	const defaultValue = getLastBreakpointAttribute(
+		prop,
+		breakpoint,
+		defaultTypography[textLevel],
+		isHover
+	);
+
+	if (defaultValue) return defaultValue;
+
+	return '';
 };
 
 export default getCustomFormatValue;

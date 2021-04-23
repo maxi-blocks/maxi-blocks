@@ -2,11 +2,14 @@
  * Maxi Blocks Block component extension
  *
  * @todo Comment properly
+ * @todo Transform to functional component or HOC
+ * @todo Integrate `formatValue` into it
  */
 
 /**
  * Disabled some ESLint rules; this file needs to be cleaned
  */
+/* eslint-disable class-methods-use-this */
 
 /**
  * WordPress dependencies
@@ -24,12 +27,16 @@ import { loadFonts } from '../text/fonts';
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId } from 'lodash';
+import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
 
 /**
  * Class
  */
 class MaxiBlock extends Component {
+	propsToAvoidRendering = [];
+
+	propsToAvoidStyling = [];
+
 	constructor(...args) {
 		super(...args);
 
@@ -48,8 +55,74 @@ class MaxiBlock extends Component {
 		this.blockRef = createRef();
 	}
 
-	componentDidUpdate() {
-		this.displayStyles();
+	// Just for debugging!
+	// eslint-disable-next-line react/sort-comp
+	difference(obj1, obj2) {
+		Object.keys(obj1).forEach(key => {
+			if (obj1[key] !== obj2[key])
+				// eslint-disable-next-line no-console
+				console.log(
+					`The block is rendering due to changes on this prop: ${key}.`,
+					`Old prop was: ${obj1[key]}.`,
+					`New prop is: ${obj2[key]}`
+				);
+		});
+	}
+
+	/**
+	 * Prevents rendering
+	 */
+	shouldComponentUpdate(nextProps, nextState) {
+		// Ensures rendering when selecting or unselecting
+		if (
+			!this.props.isSelected ||
+			this.props.isSelected !== nextProps.isSelected
+		)
+			return true;
+
+		if (!isEmpty(this.propsToAvoidRendering)) {
+			const oldAttributes = cloneDeep(nextProps.attributes);
+			const newAttributes = cloneDeep(this.props.attributes);
+
+			this.propsToAvoidRendering.forEach(prop => {
+				delete oldAttributes[prop];
+				delete newAttributes[prop];
+			});
+
+			if (!isEqual(oldAttributes, newAttributes) && false)
+				// Just for debugging 👍
+				this.difference(oldAttributes, newAttributes);
+
+			return !isEqual(oldAttributes, newAttributes);
+		}
+
+		return !isEqual(nextProps.attributes, this.props.attributes);
+	}
+
+	/**
+	 * Prevents styling
+	 */
+	getSnapshotBeforeUpdate(prevProps) {
+		if (!isEmpty(this.propsToAvoidStyling)) {
+			const oldAttributes = cloneDeep(prevProps.attributes);
+			const newAttributes = cloneDeep(this.props.attributes);
+
+			this.propsToAvoidStyling.forEach(prop => {
+				delete oldAttributes[prop];
+				delete newAttributes[prop];
+			});
+
+			if (!isEqual(oldAttributes, newAttributes))
+				this.difference(oldAttributes, newAttributes);
+
+			return isEqual(oldAttributes, newAttributes);
+		}
+
+		return isEqual(prevProps.attributes, this.props.attributes);
+	}
+
+	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
+		if (!shouldDisplayStyles) this.displayStyles();
 	}
 
 	componentWillUnmount() {
@@ -60,6 +133,8 @@ class MaxiBlock extends Component {
 		dispatch('maxiBlocks/customData').removeCustomData(
 			this.props.attributes.uniqueID
 		);
+
+		dispatch('maxiBlocks/text').sendFormatValue({});
 	}
 
 	get getBreakpoints() {

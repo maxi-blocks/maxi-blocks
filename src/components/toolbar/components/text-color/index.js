@@ -88,26 +88,22 @@ const TextColor = withFormatValue(props => {
 					/>
 				</div>
 			}
-			content={
-				<ColorControl
-					label={__('Text', 'maxi-blocks')}
-					defaultColor={getDefaultAttribute('color')}
-					color={
-						color ||
-						getLastBreakpointAttribute(
-							'color',
-							breakpoint,
-							typography
-						)
-					}
-					onChange={val =>
-						onChangeFormat({
-							color: val,
-						})
-					}
-				/>
-			}
-		/>
+		>
+			{' '}
+			<ColorControl
+				label={__('Text', 'maxi-blocks')}
+				defaultColor={getDefaultAttribute('color')}
+				color={
+					color ||
+					getLastBreakpointAttribute('color', breakpoint, typography)
+				}
+				onChange={val =>
+					onChangeFormat({
+						color: val,
+					})
+				}
+			/>
+		</ToolbarPopover>
 	);
 });
 

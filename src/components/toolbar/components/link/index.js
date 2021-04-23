@@ -41,31 +41,30 @@ const Link = props => {
 			className={
 				!isEmpty(linkSettings.url) && 'toolbar-item__link--active'
 			}
-			content={
-				<__experimentalLinkControl
-					value={linkSettings}
-					onChange={value => onChange(value)}
-					settings={[
-						{
-							id: 'opensInNewTab',
-							title: __('Open in new tab', 'maxi-blocks'),
-						},
-						{
-							id: 'noFollow',
-							title: __('Add "nofollow" rel', 'maxi-blocks'),
-						},
-						{
-							id: 'sponsored',
-							title: __('Add "sponsored" rel', 'maxi-blocks'),
-						},
-						{
-							id: 'ugc',
-							title: __('Add "sponsored" rel', 'maxi-blocks'),
-						},
-					]}
-				/>
-			}
-		/>
+		>
+			<__experimentalLinkControl
+				value={linkSettings}
+				onChange={value => onChange(value)}
+				settings={[
+					{
+						id: 'opensInNewTab',
+						title: __('Open in new tab', 'maxi-blocks'),
+					},
+					{
+						id: 'noFollow',
+						title: __('Add "nofollow" rel', 'maxi-blocks'),
+					},
+					{
+						id: 'sponsored',
+						title: __('Add "sponsored" rel', 'maxi-blocks'),
+					},
+					{
+						id: 'ugc',
+						title: __('Add "sponsored" rel', 'maxi-blocks'),
+					},
+				]}
+			/>
+		</ToolbarPopover>
 	);
 };
 

@@ -2,8 +2,7 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
-import { SelectControl, BaseControl, Button  } from '@wordpress/components';
+import { SelectControl, BaseControl, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -99,10 +98,10 @@ const SizeControl = props => {
 					onChange={e => {
 						let value = +e.target.value;
 
-						if (value > minMaxSettings[defaultUnit].max)
-							value = minMaxSettings[defaultUnit].max;
-						if (value < minMaxSettings[defaultUnit].min)
-							value = minMaxSettings[defaultUnit].min;
+						if (value > minMaxSettings[unit].max)
+							value = minMaxSettings[unit].max;
+						if (value < minMaxSettings[unit].min)
+							value = minMaxSettings[unit].min;
 
 						onChangeValue(value);
 					}}
@@ -112,7 +111,7 @@ const SizeControl = props => {
 					placeholder='auto'
 				/>
 			) : (
-				<Fragment>
+				<>
 					<input
 						type='number'
 						className='maxi-size-control__value'
@@ -138,7 +137,7 @@ const SizeControl = props => {
 						value={unit}
 						onChange={val => onChangeUnit(val)}
 					/>
-				</Fragment>
+				</>
 			)}
 			{!disableReset && (
 				<Button

@@ -64,7 +64,7 @@ const Link = withFormatValue(props => {
 
 	const createLinkValue = formatOptions => {
 		if (!isEmpty(linkSettings)) return linkSettings;
-		if (!formatOptions || isEmpty(formatValue)) return {};
+		if (!formatOptions || isEmpty(formatValue)) return { url: '' };
 
 		const {
 			attributes: { url, target, id, rel, title = '' },
@@ -91,7 +91,7 @@ const Link = withFormatValue(props => {
 		const newLinkValue = createLinkValue(linkSettings || formatOptions);
 
 		if (!isEqual(linkValue, newLinkValue)) setLinkValue(newLinkValue);
-	});
+	}, [formatValue.start, formatValue.end]);
 
 	const createLinkAttributes = ({
 		url,

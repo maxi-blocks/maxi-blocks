@@ -79,6 +79,7 @@ const Indicators = props => {
 			{!isNil(marginTop) && marginTop !== 'auto' && +marginTop > 19 ? (
 				<div
 					style={{
+						top: -marginTop,
 						height: +marginTop,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--top'
@@ -91,6 +92,7 @@ const Indicators = props => {
 			+marginRight > 35 ? (
 				<div
 					style={{
+						right: -marginRight,
 						width: +marginRight,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--right'
@@ -103,6 +105,7 @@ const Indicators = props => {
 			+marginBottom > 19 ? (
 				<div
 					style={{
+						bottom: -marginBottom,
 						height: +marginBottom,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--bottom'
@@ -113,6 +116,7 @@ const Indicators = props => {
 			{!isNil(marginLeft) && marginLeft !== 'auto' && +marginLeft > 35 ? (
 				<div
 					style={{
+						left: -marginLeft,
 						width: +marginLeft,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--left'

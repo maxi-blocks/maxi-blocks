@@ -53,6 +53,9 @@ const getNormalObject = props => {
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
+		margin: getMarginPaddingStyles({
+			...getGroupAttributes(props, 'margin'),
+		}),
 	};
 
 	return response;
@@ -90,9 +93,6 @@ const getContainerObject = props => {
 	const { isFirstOnHierarchy, fullWidth } = props;
 
 	let response = {
-		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
-		}),
 		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),

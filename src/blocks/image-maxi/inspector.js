@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 const {
 	RangeControl,
 	SelectControl,
@@ -905,6 +905,7 @@ const Inspector = props => {
 											),
 											content: (
 												<HoverEffectControl
+													uniqueID={uniqueID}
 													{...getGroupAttributes(
 														attributes,
 														[

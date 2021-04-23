@@ -13,6 +13,13 @@ import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
 import AxisControl from '../axis-control';
 import FancyRadioControl from '../fancy-radio-control';
+import RangeSliderControl from '../range-slider-control';
+
+/**
+ * External dependencies
+ */
+import BezierEditor from 'bezier-easing-editor';
+
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -42,7 +49,7 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, uniqueID } = props;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
@@ -57,7 +64,15 @@ const HoverEffectControl = props => {
 					{ label: <Icon icon={hoverText} />, value: 'text' },
 				]}
 				optionType='string'
-				onChange={val => onChange({ 'hover-type': val })}
+				onChange={val => {
+					document.querySelector(
+						`.maxi-block[uniqueid="${uniqueID}"] img.maxi-image-block__image`
+					).style = '';
+					onChange({
+						'hover-type': val,
+						'hover-transition-duration': 0.3,
+					});
+				}}
 			/>
 			<FancyRadioControl
 				label={__('Preview', 'maxi-blocks')}
@@ -68,11 +83,103 @@ const HoverEffectControl = props => {
 				]}
 				onChange={val => onChange({ 'hover-preview': val })}
 			/>
+			{props['hover-type'] !== 'none' &&
+				(props['hover-type'] === 'text' ||
+					props['hover-basic-effect-type'] === 'zoom-in' ||
+					props['hover-basic-effect-type'] === 'zoom-out' ||
+					props['hover-basic-effect-type'] === 'slide' ||
+					props['hover-basic-effect-type'] === 'rotate' ||
+					props['hover-basic-effect-type'] === 'blur' ||
+					props['hover-basic-effect-type'] === 'sepia' ||
+					props['hover-basic-effect-type'] === 'clear-sepia' ||
+					props['hover-basic-effect-type'] === 'grey-scale' ||
+					props['hover-basic-effect-type'] ===
+						'clear-greay-scale') && (
+					<RangeSliderControl
+						label={__('Duration(s)', 'maxi-blocks')}
+						className={classes}
+						value={props['hover-transition-duration']}
+						defaultValue={getDefaultAttribute(
+							'hover-transition-duration'
+						)}
+						onChange={val =>
+							onChange({
+								'hover-transition-duration': val,
+							})
+						}
+						min={0}
+						step={0.1}
+						max={10}
+						allowReset
+						initialPosition={getDefaultAttribute(
+							'hover-basic-transition-duration'
+						)}
+					/>
+				)}
+			{props['hover-type'] !== 'none' &&
+				(props['hover-type'] === 'text' ||
+					props['hover-basic-effect-type'] === 'zoom-in' ||
+					props['hover-basic-effect-type'] === 'zoom-out' ||
+					props['hover-basic-effect-type'] === 'slide' ||
+					props['hover-basic-effect-type'] === 'rotate' ||
+					props['hover-basic-effect-type'] === 'blur' ||
+					props['hover-basic-effect-type'] === 'sepia' ||
+					props['hover-basic-effect-type'] === 'clear-sepia' ||
+					props['hover-basic-effect-type'] === 'grey-scale' ||
+					props['hover-basic-effect-type'] ===
+						'clear-greay-scale') && (
+					<SelectControl
+						label={__('Easing', 'maxi-blocks')}
+						value={props['hover-transition-easing']}
+						onChange={val =>
+							onChange({ 'hover-transition-easing': val })
+						}
+						options={[
+							{
+								label: __('ease', 'maxi-blocks'),
+								value: 'ease',
+							},
+							{
+								label: __('linear', 'maxi-blocks'),
+								value: 'linear',
+							},
+							{
+								label: __('ease-in', 'maxi-blocks'),
+								value: 'ease-in',
+							},
+							{
+								label: __('ease-out', 'maxi-blocks'),
+								value: 'ease-out',
+							},
+							{
+								label: __('ease-in-out', 'maxi-blocks'),
+								value: 'ease-in-out',
+							},
+							{
+								label: __('cubic-bezier', 'maxi-blocks'),
+								value: 'cubic-bezier',
+							},
+						]}
+					/>
+				)}
+			{props['hover-transition-easing'] === 'cubic-bezier' && (
+				<BezierEditor
+					value={props['hover-transition-easing-cubic-bezier']}
+					onChange={val =>
+						onChange({
+							'hover-transition-easing-cubic-bezier': val,
+						})
+					}
+				/>
+			)}
 			{props['hover-type'] === 'basic' && (
 				<Fragment>
 					<SelectControl
 						label={__('Effect Type', 'maxi-blocks')}
 						value={props['hover-basic-effect-type']}
+						onChange={val =>
+							onChange({ 'hover-basic-effect-type': val })
+						}
 						options={[
 							{
 								label: __('Zoom In', 'maxi-blocks'),
@@ -95,10 +202,6 @@ const HoverEffectControl = props => {
 								value: 'flashing',
 							},
 							{ label: __('Blur', 'maxi-blocks'), value: 'blur' },
-							{
-								label: __('Clear Blur', 'maxi-blocks'),
-								value: 'clear-blur',
-							},
 							{
 								label: __('Sepia', 'maxi-blocks'),
 								value: 'sepia',
@@ -124,10 +227,40 @@ const HoverEffectControl = props => {
 								value: 'circle-shine',
 							},
 						]}
-						onChange={val =>
-							onChange({ 'hover-basic-effect-type': val })
-						}
 					/>
+					{props['hover-type'] === 'basic' &&
+						(props['hover-basic-effect-type'] === 'zoom-in' ||
+							props['hover-basic-effect-type'] === 'zoom-out' ||
+							props['hover-basic-effect-type'] === 'rotate' ||
+							props['hover-basic-effect-type'] === 'blur' ||
+							props['hover-basic-effect-type'] === 'slide') && (
+							<Fragment>
+								<RangeSliderControl
+									label={__('Amount', 'maxi-blocks')}
+									className={classes}
+									value={
+										props[
+											`hover-basic-${props['hover-basic-effect-type']}-value`
+										]
+									}
+									defaultValue={getDefaultAttribute(
+										`hover-basic-${props['hover-basic-effect-type']}-value`
+									)}
+									onChange={val =>
+										onChange({
+											[`hover-basic-${props['hover-basic-effect-type']}-value`]: val,
+										})
+									}
+									min={0}
+									step={0.1}
+									max={100}
+									allowReset
+									initialPosition={getDefaultAttribute(
+										`hover-basic-${props['hover-basic-effect-type']}-value`
+									)}
+								/>
+							</Fragment>
+						)}
 				</Fragment>
 			)}
 			{props['hover-type'] === 'text' && (
@@ -170,84 +303,9 @@ const HoverEffectControl = props => {
 								value: 'slide-left',
 							},
 							{
-								label: __('Hinge Up', 'maxi-blocks'),
-								value: 'hinge-up',
-							},
-							{
-								label: __('Hinge Right', 'maxi-blocks'),
-								value: 'hinge-right',
-							},
-							{
-								label: __('Hinge Down', 'maxi-blocks'),
-								value: 'hinge-down',
-							},
-							{
-								label: __('Hinge Left', 'maxi-blocks'),
-								value: 'hinge-left',
-							},
-							{
 								label: __('Flip Horizontal', 'maxi-blocks'),
 								value: 'flip-horiz',
 							},
-							{
-								label: __('Flip Vertical', 'maxi-blocks'),
-								value: 'flip-vert',
-							},
-							{
-								label: __('Fold Up', 'maxi-blocks'),
-								value: 'fold-up',
-							},
-							{
-								label: __('Fold Right', 'maxi-blocks'),
-								value: 'fold-right',
-							},
-							{
-								label: __('Fold Down', 'maxi-blocks'),
-								value: 'fold-down',
-							},
-							{
-								label: __('Fold Left', 'maxi-blocks'),
-								value: 'fold-left',
-							},
-							{
-								label: __('Zoom In', 'maxi-blocks'),
-								value: 'zoom-in',
-							},
-							{
-								label: __('Zoom Out', 'maxi-blocks'),
-								value: 'zoom-out',
-							},
-							{
-								label: __('Zoom Out Up', 'maxi-blocks'),
-								value: 'zoom-out-up',
-							},
-							{
-								label: __('Zoom Out Down', 'maxi-blocks'),
-								value: 'zoom-out-down',
-							},
-							{
-								label: __('Zoom Out Right', 'maxi-blocks'),
-								value: 'zoom-out-right',
-							},
-							{
-								label: __('Zoom Out Left', 'maxi-blocks'),
-								value: 'zoom-out-left',
-							},
-							{
-								label: __(
-									'Zoom Out Flip Horizontal',
-									'maxi-blocks'
-								),
-								value: 'zoom-out-flip-horiz',
-							},
-							{
-								label: __(
-									'Zoom Out Flip Vertical',
-									'maxi-blocks'
-								),
-								value: 'zoom-out-flip-vert',
-							},
-							{ label: __('Blur', 'maxi-blocks'), value: 'blur' },
 						]}
 						onChange={val =>
 							onChange({ 'hover-text-effect-type': val })
@@ -256,6 +314,7 @@ const HoverEffectControl = props => {
 					<FancyRadioControl
 						type='classic-border'
 						selected={props['hover-text-preset']}
+						optionType='string'
 						options={[
 							{
 								label: <Icon icon={alignLeftTop} />,

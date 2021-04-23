@@ -2,6 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Internal dependencies
@@ -75,48 +76,56 @@ const Indicators = props => {
 
 	return (
 		<div className={classes}>
-			{marginTop && (
+			{!isNil(marginTop) && marginTop !== 'auto' && +marginTop > 19 ? (
 				<div
 					style={{
-						height: marginTop,
+						top: -marginTop,
+						height: +marginTop,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--top'
 				>
-					{marginTop > 19 && `${marginTop}${marginUnit}`}
+					{`${marginTop}${marginUnit}`}
 				</div>
-			)}
-			{marginRight && (
+			) : null}
+			{!isNil(marginRight) &&
+			marginRight !== 'auto' &&
+			+marginRight > 35 ? (
 				<div
 					style={{
-						width: marginRight,
+						right: -marginRight,
+						width: +marginRight,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--right'
 				>
-					{marginRight > 35 && `${marginRight}${marginUnit}`}
+					{`${marginRight}${marginUnit}`}
 				</div>
-			)}
-			{marginBottom && (
+			) : null}
+			{!isNil(marginBottom) &&
+			marginBottom !== 'auto' &&
+			+marginBottom > 19 ? (
 				<div
 					style={{
-						height: marginBottom,
+						bottom: -marginBottom,
+						height: +marginBottom,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--bottom'
 				>
-					{marginBottom > 19 && `${marginBottom}${marginUnit}`}
+					{`${marginBottom}${marginUnit}`}
 				</div>
-			)}
-			{marginLeft && (
+			) : null}
+			{!isNil(marginLeft) && marginLeft !== 'auto' && +marginLeft > 35 ? (
 				<div
 					style={{
-						width: marginLeft,
+						left: -marginLeft,
+						width: +marginLeft,
 					}}
 					className='maxi-indicators__margin maxi-indicators__margin--left'
 				>
-					{marginLeft > 35 && `${marginLeft}${marginUnit}`}
+					{`${marginLeft}${marginUnit}`}
 				</div>
-			)}
+			) : null}
 			{children}
-			{paddingTop && (
+			{paddingTop && paddingTop > 19 ? (
 				<div
 					style={{
 						height: paddingTop,
@@ -124,10 +133,10 @@ const Indicators = props => {
 					}}
 					className='maxi-indicators__padding maxi-indicators__padding--top'
 				>
-					{paddingTop > 19 && `${paddingTop}${paddingUnit}`}
+					{`${paddingTop}${paddingUnit}`}
 				</div>
-			)}
-			{paddingRight && (
+			) : null}
+			{paddingRight && paddingRight > 35 ? (
 				<div
 					style={{
 						width: paddingRight,
@@ -135,10 +144,10 @@ const Indicators = props => {
 					}}
 					className='maxi-indicators__padding maxi-indicators__padding--right'
 				>
-					{paddingRight > 35 && `${paddingRight}${paddingUnit}`}
+					{`${paddingRight}${paddingUnit}`}
 				</div>
-			)}
-			{paddingBottom && (
+			) : null}
+			{paddingBottom && paddingBottom > 19 ? (
 				<div
 					style={{
 						height: paddingBottom,
@@ -146,10 +155,10 @@ const Indicators = props => {
 					}}
 					className='maxi-indicators__padding maxi-indicators__padding--bottom'
 				>
-					{paddingBottom > 19 && `${paddingBottom}${paddingUnit}`}
+					{`${paddingBottom}${paddingUnit}`}
 				</div>
-			)}
-			{paddingLeft && (
+			) : null}
+			{paddingLeft && paddingLeft > 35 ? (
 				<div
 					style={{
 						width: paddingLeft,
@@ -157,9 +166,9 @@ const Indicators = props => {
 					}}
 					className='maxi-indicators__padding maxi-indicators__padding--left'
 				>
-					{paddingLeft > 35 && `${paddingLeft}${paddingUnit}`}
+					{`${paddingLeft}${paddingUnit}`}
 				</div>
-			)}
+			) : null}
 		</div>
 	);
 };

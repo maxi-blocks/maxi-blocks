@@ -21,6 +21,7 @@ import AxisControl from '../axis-control';
 import BorderControl from '../border-control';
 import GradientControl from '../gradient-control';
 import FancyRadioControl from '../fancy-radio-control';
+import SettingTabsControl from '../setting-tabs-control';
 import * as defaultPresets from './defaults';
 import {
 	getGroupAttributes,
@@ -243,11 +244,82 @@ const FontIconControl = props => {
 					)}
 
 					{activeOption === 'iconColor' && !disableColor && (
-						<ColorControl
-							label={__('Icon', 'maxi-blocks')}
-							color={props['icon-color']}
-							defaultColor={getDefaultAttribute('icon-color')}
-							onChange={val => onChange({ 'icon-color': val })}
+						<SettingTabsControl
+							items={[
+								{
+									label: __('Normal', 'maxi-blocks'),
+									content: (
+										<ColorControl
+											label={__('Icon', 'maxi-blocks')}
+											color={props['icon-color']}
+											defaultColor={getDefaultAttribute(
+												'icon-color'
+											)}
+											onChange={val =>
+												onChange({ 'icon-color': val })
+											}
+										/>
+									),
+								},
+								{
+									label: __('Hover', 'maxi-blocks'),
+									content: (
+										<>
+											<FancyRadioControl
+												label={__(
+													'Enable Icon Hover',
+													'maxi-blocks'
+												)}
+												selected={
+													props['icon-status-hover']
+												}
+												options={[
+													{
+														label: __(
+															'Yes',
+															'maxi-blocks'
+														),
+														value: 1,
+													},
+													{
+														label: __(
+															'No',
+															'maxi-blocks'
+														),
+														value: 0,
+													},
+												]}
+												onChange={val =>
+													onChange({
+														'icon-status-hover': val,
+													})
+												}
+											/>
+											{props['icon-status-hover'] && (
+												<ColorControl
+													label={__(
+														'Icon',
+														'maxi-blocks'
+													)}
+													color={
+														props[
+															'icon-color-hover'
+														]
+													}
+													defaultColor={getDefaultAttribute(
+														'icon-color-hover'
+													)}
+													onChange={val =>
+														onChange({
+															'icon-color-hover': val,
+														})
+													}
+												/>
+											)}
+										</>
+									),
+								},
+							]}
 						/>
 					)}
 

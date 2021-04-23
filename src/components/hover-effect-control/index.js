@@ -494,6 +494,7 @@ const HoverEffectControl = props => {
 							label={__('Margin', 'maxi-blocks')}
 							onChange={obj => onChange(obj)}
 							target='hover-margin'
+							optionType='string'
 						/>
 					)}
 				</Fragment>

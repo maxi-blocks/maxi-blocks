@@ -42,6 +42,7 @@ const PaddingMargin = props => {
 						onChange={obj => onChange(obj)}
 						breakpoint={breakpoint}
 						target='margin'
+						optionType='string'
 					/>
 				</div>
 			}

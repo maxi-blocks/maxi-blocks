@@ -165,7 +165,10 @@ const Inspector = props => {
 													<FontIconControl
 														{...getGroupAttributes(
 															attributes,
-															'icon'
+															[
+																'icon',
+																'iconHover',
+															]
 														)}
 														onChange={obj =>
 															setAttributes(obj)

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { SelectControl, TextareaControl, Icon } from '@wordpress/components';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -435,6 +435,7 @@ const HoverEffectControl = props => {
 							label={__('Margin', 'maxi-blocks')}
 							onChange={obj => onChange(obj)}
 							target='hover-margin'
+							optionType='string'
 						/>
 					)}
 				</Fragment>

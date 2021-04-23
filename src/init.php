@@ -87,6 +87,7 @@ function maxi_block_assets() { // phpcs:ignore
 
 function maxi_load_custom_wp_admin_script() {
 
+	// TODO: remove when Cloud API is ready
 	// Register block editor script for backend.
 	wp_enqueue_script(
 		'maxi-blocks-cloud-js', // Handle.

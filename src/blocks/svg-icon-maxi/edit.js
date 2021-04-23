@@ -46,7 +46,7 @@ class edit extends MaxiBlock {
 	}
 
 	state = {
-		isOpen: false,
+		isOpenSvgModal: false,
 	};
 
 	get getCustomData() {
@@ -72,12 +72,6 @@ class edit extends MaxiBlock {
 		const { className, attributes, clientId, deviceType } = this.props;
 		const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
 
-		const { isOpen } = this.state;
-
-		const onClick = () => {
-			this.setState({ isOpen: !isOpen });
-		};
-
 		const classes = classnames(
 			'maxi-block',
 			'maxi-block--backend',
@@ -90,9 +84,27 @@ class edit extends MaxiBlock {
 			className
 		);
 
+		const onClick = () => {
+			this.setState({
+				isOpenSvgModal: true,
+			});
+		};
+
+		const onClose = () => {
+			this.setState({
+				isOpenSvgModal: false,
+			});
+		};
+
+		const { isOpenSvgModal } = this.state;
+
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			!isEmpty(attributes.content) && (
+				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
+			),
+			!isEmpty(attributes.content) && (
+				<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />
+			),
 			<MotionPreview
 				key={`motion-preview-${uniqueID}`}
 				{...getGroupAttributes(attributes, 'motion')}
@@ -103,17 +115,32 @@ class edit extends MaxiBlock {
 					key={clientId}
 				>
 					<Fragment>
-						{isOpen && (
+						{isEmpty(attributes.content) && (
+							<Fragment>
+								<div className='maxi-svg-icon-block__placeholder'>
+									<Button
+										isPrimary
+										isLarge
+										key={`maxi-block-library__modal-button--${clientId}`}
+										className='maxi-block-library__modal-button'
+										onClick={onClick}
+									>
+										{__('Select SVG Icon', 'maxi-blocks')}
+									</Button>
+								</div>
+							</Fragment>
+						)}
+						{isOpenSvgModal && (
 							<Modal
 								key={`maxi-block-library__modal--${clientId}`}
-								className='maxi-block-library__modal'
+								className={`maxi-block-library__modal maxi-block-id-${clientId}`}
 								title={__(
 									'Maxi Cloud Icons Library',
 									'maxi-blocks'
 								)}
 								shouldCloseOnEsc
 								shouldCloseOnClickOutside={false}
-								onRequestClose={onClick}
+								onRequestClose={onClose}
 							>
 								<Iframe
 									url='https://ge-library.dev700.com/svg-search/'
@@ -129,19 +156,6 @@ class edit extends MaxiBlock {
 									<p>{__('Saving…', 'maxi-blocks')}</p>
 								</div>
 							</Modal>
-						)}
-						{isEmpty(attributes.content) && (
-							<Fragment>
-								<div className='maxi-svg-icon-block__placeholder'>
-									<Button
-										key={`maxi-block-library__modal-button--${clientId}`}
-										className='maxi-block-library__modal-button'
-										onClick={onClick}
-									>
-										{__('Select SVG Icon', 'maxi-blocks')}
-									</Button>
-								</div>
-							</Fragment>
 						)}
 						{!isEmpty(attributes.content) && (
 							<Fragment>

@@ -4,7 +4,7 @@ const getHasNativeFormat = (formatValue, isHover) => {
 	return formats.some((formatEl, i) => {
 		if (formatEl)
 			return formatEl.some(format => {
-				return format.type.includes('core') && i >= start && i <= end;
+				return format.type.includes('core') && i <= start && i <= end;
 			});
 
 		return formatEl;

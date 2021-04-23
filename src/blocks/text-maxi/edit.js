@@ -210,6 +210,7 @@ class edit extends MaxiBlock {
 
 									setAttributes(cleanCustomProps);
 								}
+
 								dispatch('maxiBlocks/text').sendFormatValue(
 									formatValue,
 									clientId

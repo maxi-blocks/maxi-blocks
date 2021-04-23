@@ -181,6 +181,7 @@ const updateCustomFormat = ({
 		formatValue,
 		className: currentClassName,
 		isList: false,
+		isHover,
 	});
 
 	return {

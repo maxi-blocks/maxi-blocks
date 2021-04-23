@@ -22,7 +22,6 @@ import {
 	cloneDeep,
 } from 'lodash';
 import getIsFullFormat from './getIsFullFormat';
-import formatValueCleaner from './formatValueCleaner';
 
 /**
  * Get the classes from custom formats that shares the same

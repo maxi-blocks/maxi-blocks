@@ -82,6 +82,7 @@ const Inspector = props => {
 		clipPath,
 		SVGData,
 		SVGCurrentElement,
+		imageRatio,
 	} = attributes;
 
 	const getSizeOptions = () => {
@@ -293,7 +294,7 @@ const Inspector = props => {
 															'Image Ratio',
 															'maxi-blocks'
 														)}
-														//value={}
+														value={imageRatio}
 														options={[
 															{
 																label: __(
@@ -351,16 +352,12 @@ const Inspector = props => {
 																),
 																value: 'square',
 															},
-															{
-																label: __(
-																	'Inherit',
-																	'maxi-blocks'
-																),
-																value:
-																	'inherit',
-															},
 														]}
-														//onChange={}
+														onChange={imageRatio =>
+															setAttributes({
+																imageRatio,
+															})
+														}
 													/>
 												</>
 											),

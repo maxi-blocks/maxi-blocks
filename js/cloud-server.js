@@ -298,15 +298,41 @@ jQuery(document).ready(function ($) {
 
 							let final_svg_content = JSON.parse(e.data.json);
 							jQuery('.maxi-block-library__modal__loading_message p').text('Done!');
-							//console.log(final_svg_content);
-							//console.log('before insert');
-							const insertedBlock = wp.blocks.createBlock('maxi-blocks/svg-icon-maxi', {
-								content: final_svg_content
-							});
-							wp.data.dispatch('core/block-editor').replaceBlocks(
+
+							let SVGclass = final_svg_content.match(/svg class=".+?(?=")/);
+							SVGclass = (SVGclass+'').replace('svg class="', '');
+
+							// let newSVGClass = SVGclass + '-' + Math.floor(Math.random() * (10000 - 100 + 1)) + 100;
+
+							// final_svg_content = final_svg_content.replaceAll(SVGclass, newSVGClass);
+
+							if (clientId) {
+								let uniqueID = wp.data.select('core/editor').getBlock(clientId).attributes.uniqueID;
+								console.log('uniqueID: ' + uniqueID);
+
+								let newSVGClass = '.' + uniqueID + ' .' + SVGclass;
+
+								let replaceIt = '.' + SVGclass;
+
+								final_svg_content = final_svg_content.replaceAll(replaceIt, newSVGClass);
+
+								console.log('final_svg_content: ' + final_svg_content);
+							}
+
+							wp.data.dispatch( 'core/editor' ).updateBlockAttributes(
 								clientId,
-								insertedBlock
+								{ content: final_svg_content }
 							);
+
+
+							// const insertedBlock = wp.blocks.createBlock('maxi-blocks/svg-icon-maxi', {
+							// 	content: final_svg_content
+							// });
+
+							// wp.data.dispatch('core/block-editor').replaceBlocks(
+							// 	clientId,
+							// 	insertedBlock
+							// );
 							//console.log('after insert');
 
 						}

@@ -22,6 +22,8 @@ import {
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getPaletteClasses,
+	getBlockStyle,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -68,9 +70,28 @@ class edit extends MaxiBlock {
 		};
 	}
 
+	componentDidUpdate() {
+		this.displayStyles();
+
+		const { setAttributes, clientId } = this.props;
+		setAttributes({
+			parentBlockStyle: getBlockStyle(
+				this.props.attributes.blockStyle,
+				clientId
+			),
+		});
+	}
+
 	render() {
 		const { className, attributes, clientId, deviceType } = this.props;
-		const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
+		const {
+			uniqueID,
+			blockStyle,
+			defaultBlockStyle,
+			extraClassName,
+			fullWidth,
+			parentBlockStyle,
+		} = attributes;
 
 		const classes = classnames(
 			'maxi-block',
@@ -78,7 +99,23 @@ class edit extends MaxiBlock {
 			'maxi-svg-icon-block',
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
+			defaultBlockStyle,
 			blockStyle,
+			getPaletteClasses(
+				attributes,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+					'svgColorFill',
+					'svgColorLine',
+				],
+				'maxi-blocks/svg-icon-maxi',
+				parentBlockStyle
+			),
 			extraClassName,
 			uniqueID,
 			className

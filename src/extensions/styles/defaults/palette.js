@@ -72,6 +72,22 @@ const palette = {
 		type: 'number',
 		default: 7,
 	},
+	'palette-custom-svgColorFill-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-svgColorFill': {
+		type: 'number',
+		default: 4,
+	},
+	'palette-custom-svgColorLine-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-svgColorLine': {
+		type: 'number',
+		default: 7,
+	},
 	'palette-preset-icon-hover-color': {
 		type: 'number',
 		default: 6,

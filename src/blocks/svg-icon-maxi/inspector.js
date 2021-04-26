@@ -26,8 +26,6 @@ import {
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
-	SvgAnimationControl,
-	SvgAnimationDurationControl,
 	SvgColor,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
@@ -57,6 +55,8 @@ const Inspector = props => {
 		customLabel,
 		extraClassName,
 		isFirstOnHierarchy,
+		svgColorFill,
+		svgColorLine,
 		stroke,
 		uniqueID,
 		width,
@@ -153,17 +153,18 @@ const Inspector = props => {
 											content: (
 												<Fragment>
 													<SvgColor
+														{...getGroupAttributes(
+															attributes,
+															[
+																'palette',
+															]
+														)}
+														color={svgColorFill}
 														label={__(
 															'SVG Fill',
 															'maxi-blocks'
 														)}
-														color={
-															attributes.svgColorFill
-														}
-														defaultColor={getDefaultAttribute(
-															'svgColorFill',
-															clientId
-														)}
+														type='svgColorFill'
 														onChange={svgColorFill => {
 															setAttributes({
 																svgColorFill,
@@ -173,20 +174,23 @@ const Inspector = props => {
 																1
 															);
 														}}
+														blockStyle={blockStyle}
+														clientId={clientId}
 													/>
 													<hr />
 													<SvgColor
+														{...getGroupAttributes(
+															attributes,
+															[
+																'palette',
+															]
+														)}
+														color={svgColorLine}
 														label={__(
 															'SVG Line',
 															'maxi-blocks'
 														)}
-														color={
-															attributes.svgColorLine
-														}
-														defaultColor={getDefaultAttribute(
-															'svgColorLine',
-															clientId
-														)}
+														type='svgColorLine'
 														onChange={svgColorLine => {
 															setAttributes({
 																svgColorLine,
@@ -196,6 +200,8 @@ const Inspector = props => {
 																2
 															);
 														}}
+														blockStyle={blockStyle}
+														clientId={clientId}
 													/>
 												</Fragment>
 											),
@@ -268,6 +274,7 @@ const Inspector = props => {
 																			[
 																				'background',
 																				'backgroundColor',
+																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -275,16 +282,17 @@ const Inspector = props => {
 																				obj
 																			)
 																		}
-																		disableColor={
-																			!!attributes[
-																				'background-Highlight'
-																			]
-																		}
 																		disableImage
 																		disableVideo
 																		disableGradient
 																		disableSVG
 																		disableClipPath
+																		blockStyle={
+																			blockStyle
+																		}
+																		clientId={
+																			clientId
+																		}
 																	/>
 																</Fragment>
 															),
@@ -339,6 +347,7 @@ const Inspector = props => {
 																				[
 																					'backgroundHover',
 																					'backgroundColorHover',
+																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -357,6 +366,12 @@ const Inspector = props => {
 																			disableSVG
 																			disableClipPath
 																			isHover
+																			blockStyle={
+																				blockStyle
+																			}
+																			clientId={
+																				clientId
+																			}
 																		/>
 																	)}
 																</Fragment>
@@ -385,6 +400,7 @@ const Inspector = props => {
 																			'border',
 																			'borderWidth',
 																			'borderRadius',
+																			'palette',
 																		]
 																	)}
 																	onChange={obj => {
@@ -394,6 +410,12 @@ const Inspector = props => {
 																	}}
 																	breakpoint={
 																		deviceType
+																	}
+																	blockStyle={
+																		blockStyle
+																	}
+																	clientId={
+																		clientId
 																	}
 																/>
 															),
@@ -449,6 +471,7 @@ const Inspector = props => {
 																					'borderHover',
 																					'borderWidthHover',
 																					'borderRadiusHover',
+																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -460,6 +483,12 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
+																			blockStyle={
+																				blockStyle
+																			}
+																			clientId={
+																				clientId
+																			}
 																		/>
 																	)}
 																</Fragment>
@@ -487,7 +516,10 @@ const Inspector = props => {
 																<BoxShadowControl
 																	{...getGroupAttributes(
 																		attributes,
-																		'boxShadow'
+																		[
+																			'boxShadow',
+																			'palette',
+																		]
 																	)}
 																	onChange={obj =>
 																		setAttributes(
@@ -496,6 +528,12 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
+																	}
+																	blockStyle={
+																		blockStyle
+																	}
+																	clientId={
+																		clientId
 																	}
 																/>
 															),
@@ -547,7 +585,10 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				'boxShadowHover'
+																				[
+																					'boxShadowHover',
+																					'palette',
+																				]
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -558,6 +599,12 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
+																			blockStyle={
+																				blockStyle
+																			}
+																			clientId={
+																				clientId
+																			}
 																		/>
 																	)}
 																</Fragment>

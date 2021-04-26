@@ -102,6 +102,22 @@ const getPaletteClasses = (
 				!isNil(attributes['palette-preset-divider-color'])
 					? attributes['palette-preset-divider-color']
 					: getPaletteDefault('divider', blockName, textLevel)
+			}`,
+		allowedPalettes.includes('svg-fill') &&
+			!isEmpty(attributes.content) &&
+			!attributes['palette-custom-svg-fill-color'] &&
+			`maxi-sc-${parentBlockStyle}-svg-fill-color-${
+				!isNil(attributes['palette-preset-svg-fill-color'])
+					? attributes['palette-preset-svg-fill-color']
+					: getPaletteDefault('svg-fill', blockName, textLevel)
+			}`,
+		allowedPalettes.includes('svg-line') &&
+			!isEmpty(attributes.content) &&
+			!attributes['palette-custom-svg-line-color'] &&
+			`maxi-sc-${parentBlockStyle}-svg-line-color-${
+				!isNil(attributes['palette-preset-svg-line-color'])
+					? attributes['palette-preset-svg-line-color']
+					: getPaletteDefault('svg-line', blockName, textLevel)
 			}`
 	);
 

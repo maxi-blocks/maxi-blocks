@@ -12,6 +12,9 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  * Attributes
  */
 const attributes = {
+	parentBlockStyle: {
+		type: 'string',
+	},
 	customLabel: {
 		type: 'string',
 		default: __('SVG Icon', 'maxi-blocks'),
@@ -26,9 +29,11 @@ const attributes = {
 	},
 	svgColorFill: {
 		type: 'string',
+		default: '',
 	},
 	svgColorLine: {
 		type: 'string',
+		default: '',
 	},
 	stroke: {
 		type: 'number',
@@ -45,6 +50,7 @@ const attributes = {
 			default: 'center',
 		},
 	},
+	...attributesData.palette,
 	...attributesData.opacity,
 	...attributesData.background,
 	...attributesData.backgroundColor,

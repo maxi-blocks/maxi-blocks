@@ -13,7 +13,6 @@ import { getGroupAttributes } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Save
@@ -106,7 +105,7 @@ const save = props => {
 						src={mediaURL}
 						width={mediaWidth}
 						height={mediaHeight}
-						alt={mediaAlt}
+						alt={imageAlt()}
 					/>
 				)) || (
 					<RawHTML className='maxi-image-block-shape-wrapper'>

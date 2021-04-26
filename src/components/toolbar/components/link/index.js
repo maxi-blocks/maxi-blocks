@@ -78,7 +78,7 @@ const Link = props => {
 							},
 						]}
 					/>
-					{!isNil(linkSettings) && !isEmpty(linkSettings) && (
+					{!isNil(linkSettings) && !isEmpty(linkSettings.url) && (
 						<Button
 							className='toolbar-popover-link-destroyer'
 							onClick={() => removeLinkHandle()}

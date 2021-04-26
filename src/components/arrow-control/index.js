@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -129,9 +129,6 @@ const ArrowControl = props => {
 							props
 						)}
 						disableUnit
-						defaultUnit={getDefaultAttribute(
-							`arrow-width-unit-${breakpoint}`
-						)}
 						onChangeUnit={val => {
 							onChangeValue('arrow-width-unit', val);
 						}}
@@ -139,9 +136,6 @@ const ArrowControl = props => {
 							'arrow-width',
 							breakpoint,
 							props
-						)}
-						defaultArrow={getDefaultAttribute(
-							`arrow-width-${breakpoint}`
 						)}
 						onChangeValue={val => {
 							const value = isNil(val)
@@ -152,6 +146,12 @@ const ArrowControl = props => {
 
 							onChangeValue('arrow-width', value);
 						}}
+						onReset={() =>
+							onChangeValue(
+								'arrow-width',
+								getDefaultAttribute(`arrow-width-${breakpoint}`)
+							)
+						}
 						minMaxSettings={minMaxSettings}
 					/>
 				</Fragment>

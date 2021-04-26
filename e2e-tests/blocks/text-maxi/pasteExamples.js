@@ -14,17 +14,9 @@ export const headings = `
 </html>
 `;
 
-export const lists = `<!DOCTYPE html>
+export const OrderedLists = `<!DOCTYPE html>
 <html>
 <body>
-
-<h2>An Unordered HTML List</h2>
-
-<ul>
-  <li>Coffee</li>
-  <li>Tea</li>
-  <li>Milk</li>
-</ul>
 
 <h2>An Ordered HTML List</h2>
 
@@ -38,8 +30,22 @@ export const lists = `<!DOCTYPE html>
 </html>
 `;
 
-export const paragraph = `
-<!DOCTYPE html>
+export const UnorderedList = `<!DOCTYPE html>
+<html>
+<body>
+
+<h2>An Unordered HTML List</h2>
+
+<ul>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
+
+</body>
+</html>
+`;
+export const paragraph = `<!DOCTYPE html>
 <html>
 <body>
 

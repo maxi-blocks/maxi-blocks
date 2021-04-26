@@ -112,17 +112,11 @@ const FontIconControl = props => {
 							breakpoint,
 							props
 						)}
-						defaultUnit={getDefaultAttribute(
-							`icon-size-unit-${breakpoint}`
-						)}
 						onChangeUnit={val =>
 							onChange({
 								[`icon-size-unit-${breakpoint}`]: val,
 							})
 						}
-						defaultValue={getDefaultAttribute(
-							`icon-size-${breakpoint}`
-						)}
 						value={getLastBreakpointAttribute(
 							'icon-size',
 							breakpoint,
@@ -131,6 +125,16 @@ const FontIconControl = props => {
 						onChangeValue={val =>
 							onChange({
 								[`icon-size-${breakpoint}`]: val,
+							})
+						}
+						onReset={() =>
+							onChange({
+								[`icon-size-${breakpoint}`]: getDefaultAttribute(
+									`icon-size-${breakpoint}`
+								),
+								[`icon-size-unit-${breakpoint}`]: getDefaultAttribute(
+									`icon-size-unit-${breakpoint}`
+								),
 							})
 						}
 						minMaxSettings={{
@@ -158,13 +162,17 @@ const FontIconControl = props => {
 							<SizeControl
 								label={__('Spacing', 'maxi-blocks')}
 								disableUnit
-								defaultValue={getDefaultAttribute(
-									'icon-spacing'
-								)}
 								value={props['icon-spacing']}
 								onChangeValue={val =>
 									onChange({
 										['icon-spacing']: val,
+									})
+								}
+								onReset={() =>
+									onChange({
+										['icon-spacing']: getDefaultAttribute(
+											'icon-spacing'
+										),
 									})
 								}
 								min={0}

@@ -309,22 +309,26 @@ const ShapeDividerControl = props => {
 							<SizeControl
 								label={__('Divider Height', 'maxi-blocks')}
 								unit={props['shape-divider-top-height-unit']}
-								defaultUnit={getDefaultAttribute(
-									'shape-divider-top-height-unit'
-								)}
 								allowedUnits={['px']}
-								onChangeUnit={heightUnit =>
+								onChangeUnit={val =>
 									onChange({
-										'shape-divider-top-height-unit': heightUnit,
+										'shape-divider-top-height-unit': val,
 									})
 								}
 								value={props['shape-divider-top-height']}
-								defaultValue={getDefaultAttribute(
-									'shape-divider-top-height'
-								)}
-								onChangeValue={height =>
+								onChangeValue={val =>
 									onChange({
-										'shape-divider-top-height': height,
+										'shape-divider-top-height': val,
+									})
+								}
+								onReset={() =>
+									onChange({
+										'shape-divider-top-height': getDefaultAttribute(
+											'shape-divider-top-height'
+										),
+										'shape-divider-top-height-unit': getDefaultAttribute(
+											'shape-divider-top-height-unit'
+										),
 									})
 								}
 							/>
@@ -425,22 +429,26 @@ const ShapeDividerControl = props => {
 							<SizeControl
 								label={__('Divider Height', 'maxi-blocks')}
 								unit={props['shape-divider-bottom-height-unit']}
-								defaultUnit={getDefaultAttribute(
-									'shape-divider-bottom-height-unit'
-								)}
 								allowedUnits={['px']}
-								onChangeUnit={heightUnit =>
+								onChangeUnit={val =>
 									onChange({
-										'shape-divider-bottom-height-unit': heightUnit,
+										'shape-divider-bottom-height-unit': val,
 									})
 								}
 								value={props['shape-divider-bottom-height']}
-								defaultValue={getDefaultAttribute(
-									'shape-divider-bottom-height'
-								)}
-								onChangeValue={height =>
+								onChangeValue={val =>
 									onChange({
-										'shape-divider-bottom-height': height,
+										'shape-divider-bottom-height': val,
+									})
+								}
+								onReset={() =>
+									onChange({
+										'shape-divider-bottom-height': getDefaultAttribute(
+											'shape-divider-bottom-height'
+										),
+										'shape-divider-bottom-height-unit': getDefaultAttribute(
+											'shape-divider-bottom-height-unit'
+										),
 									})
 								}
 							/>

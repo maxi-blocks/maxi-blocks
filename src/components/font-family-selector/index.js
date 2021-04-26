@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -38,6 +39,8 @@ const FontFamilySelector = props => {
 			options,
 		};
 	});
+
+	const [value, setValue] = useState({ label: font, value: font });
 
 	const selectFontFamilyStyles = {
 		control: styles => ({
@@ -108,6 +111,8 @@ const FontFamilySelector = props => {
 		onChange(newFont);
 
 		loadFonts(newFont.value, newFont.files);
+
+		setValue({ label: newFont.value, value: newFont.value });
 	};
 
 	const classes = classnames('maxi-font-family-selector', className);
@@ -117,7 +122,7 @@ const FontFamilySelector = props => {
 			styles={selectFontFamilyStyles}
 			className={classes}
 			options={options}
-			value={{ label: font, value: font }}
+			value={value}
 			placeholder={__('Search…', 'maxi-blocks')}
 			onChange={(value, clear) =>
 				clear.action === 'select-option'
@@ -126,6 +131,8 @@ const FontFamilySelector = props => {
 			}
 			isLoading={isNil(options)}
 			isClearable
+			onMenuOpen={() => setValue({})}
+			onMenuClose={e => setValue({ label: font, value: font })}
 		/>
 	);
 };

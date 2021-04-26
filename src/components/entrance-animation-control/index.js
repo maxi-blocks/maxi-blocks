@@ -158,8 +158,14 @@ const EntranceAnimationControl = props => {
 				initial={1}
 				step={0.1}
 				value={props['entrance-duration']}
-				defaultValue={getDefaultAttribute('entrance-duration')}
 				onChangeValue={val => onChange({ 'entrance-duration': val })}
+				onReset={() =>
+					onChange({
+						'entrance-duration': getDefaultAttribute(
+							'entrance-duration'
+						),
+					})
+				}
 			/>
 			<SizeControl
 				label={__('Delay (s)', 'maxi-blocks')}
@@ -169,8 +175,12 @@ const EntranceAnimationControl = props => {
 				initial={1}
 				step={0.1}
 				value={props['entrance-delay']}
-				defaultValue={getDefaultAttribute('entrance-delay')}
 				onChangeValue={val => onChange({ 'entrance-delay': val })}
+				onReset={() =>
+					onChange({
+						'entrance-delay': getDefaultAttribute('entrance-delay'),
+					})
+				}
 			/>
 		</div>
 	);

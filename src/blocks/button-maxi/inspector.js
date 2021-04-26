@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { TextControl, Icon } from '@wordpress/components';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -207,6 +207,7 @@ const Inspector = props => {
 														attributes,
 														[
 															'icon',
+															'iconHover',
 															'iconPadding',
 															'iconBorder',
 															'iconBorderWidth',

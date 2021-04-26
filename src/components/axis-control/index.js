@@ -1,9 +1,14 @@
 /**
  * WordPress dependencies
  */
-import { useInstanceId  } from '@wordpress/compose';
+import { useInstanceId } from '@wordpress/compose';
 import { __, sprintf } from '@wordpress/i18n';
-import { BaseControl, SelectControl, Button, Tooltip } from '@wordpress/components';
+import {
+	BaseControl,
+	SelectControl,
+	Button,
+	Tooltip,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -17,7 +22,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -58,6 +63,7 @@ const AxisControl = props => {
 		auxTarget = false,
 		isHover = false,
 		inputsArray = ['top', 'right', 'bottom', 'left', 'unit', 'sync'],
+		optionType = 'number',
 	} = props;
 
 	const instanceId = useInstanceId(AxisControl);
@@ -130,7 +136,25 @@ const AxisControl = props => {
 			isHover
 		) || 'px';
 
-	const onChangeValue = (newValue, singleTarget) => {
+	const onChangeValue = (val, singleTarget) => {
+		let newValue = '';
+
+		if (optionType === 'number') {
+			if (isEmpty(val)) {
+				newValue = val;
+			} else {
+				newValue = +val;
+			}
+		} else {
+			if (isEmpty(val)) {
+				newValue = '';
+			} else if (val === 'auto') {
+				newValue = 'auto';
+			} else {
+				newValue = val;
+			}
+		}
+
 		if (
 			getLastBreakpointAttribute(
 				getKey('sync'),
@@ -218,12 +242,12 @@ const AxisControl = props => {
 							<input
 								type='checkbox'
 								checked={getValue(inputsArray[0]) === 'auto'}
-								onChange={e => {
-									const newValue = e.target.checked
-										? 'auto'
-										: '';
-									onChangeValue(newValue, inputsArray[0]);
-								}}
+								onChange={e =>
+									onChangeValue(
+										e.target.checked ? 'auto' : '',
+										inputsArray[0]
+									)
+								}
 								id={`${instanceId}-top`}
 							/>
 							{__('auto', 'maxi-blocks')}
@@ -259,12 +283,12 @@ const AxisControl = props => {
 							<input
 								type='checkbox'
 								checked={getValue(inputsArray[1]) === 'auto'}
-								onChange={e => {
-									const newValue = e.target.checked
-										? 'auto'
-										: '';
-									onChangeValue(newValue, inputsArray[1]);
-								}}
+								onChange={e =>
+									onChangeValue(
+										e.target.checked ? 'auto' : '',
+										inputsArray[1]
+									)
+								}
 								id={`${instanceId}-right`}
 							/>
 							{__('auto', 'maxi-blocks')}
@@ -300,12 +324,12 @@ const AxisControl = props => {
 							<input
 								type='checkbox'
 								checked={getValue(inputsArray[2]) === 'auto'}
-								onChange={e => {
-									const newValue = e.target.checked
-										? 'auto'
-										: '';
-									onChangeValue(newValue, inputsArray[2]);
-								}}
+								onChange={e =>
+									onChangeValue(
+										e.target.checked ? 'auto' : '',
+										inputsArray[2]
+									)
+								}
 								id={`${instanceId}-bottom`}
 							/>
 							{__('auto', 'maxi-blocks')}
@@ -341,12 +365,12 @@ const AxisControl = props => {
 							<input
 								type='checkbox'
 								checked={getValue(inputsArray[3]) === 'auto'}
-								onChange={e => {
-									const newValue = e.target.checked
-										? 'auto'
-										: '';
-									onChangeValue(newValue, inputsArray[3]);
-								}}
+								onChange={e =>
+									onChangeValue(
+										e.target.checked ? 'auto' : '',
+										inputsArray[3]
+									)
+								}
 								id={`${instanceId}-left`}
 							/>
 							{__('auto', 'maxi-blocks')}

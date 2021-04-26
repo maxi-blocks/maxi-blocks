@@ -28,6 +28,7 @@ const attributes = {
 		},
 	},
 	...attributesData.icon,
+	...attributesData.iconHover,
 	...attributesData.opacity,
 	...attributesData.background,
 	...attributesData.backgroundColor,

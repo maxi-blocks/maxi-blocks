@@ -1,6 +1,6 @@
 /* eslint-disable no-return-await */
 /**
- * WordPress
+ * WordPress dependencies
  */
 import {
 	createNewPost,
@@ -8,7 +8,13 @@ import {
 	getEditedPostContent,
 	pressKeyWithModifier,
 	openPreviewPage,
+	setClipboardData,
 } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { headings } from './pasteExamples';
 
 const linkExample = 'test.com';
 describe('TextMaxi', () => {
@@ -139,5 +145,14 @@ describe('TextMaxi', () => {
 			contentWrapper => contentWrapper.innerHTML.trim()
 		);
 		expect(content).toMatchSnapshot();
+	});
+
+	it.only('Test Text Maxi when pasting headings', async () => {
+		await insertBlock('Text Maxi');
+
+		await setClipboardData({ html: headings });
+		await pressKeyWithModifier('primary', 'v');
+
+		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 });

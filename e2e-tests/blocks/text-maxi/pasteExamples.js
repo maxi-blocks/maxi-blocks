@@ -1,4 +1,4 @@
-const headings = `
+export const headings = `
 <!DOCTYPE html>
 <html>
 <body>
@@ -14,7 +14,7 @@ const headings = `
 </html>
 `;
 
-const lists = `<!DOCTYPE html>
+export const lists = `<!DOCTYPE html>
 <html>
 <body>
 
@@ -38,7 +38,7 @@ const lists = `<!DOCTYPE html>
 </html>
 `;
 
-const paragraph = `
+export const paragraph = `
 <!DOCTYPE html>
 <html>
 <body>
@@ -50,7 +50,7 @@ const paragraph = `
 </html>
 `;
 
-const formats = `
+export const formats = `
 <!DOCTYPE html>
 <html>
 <body>

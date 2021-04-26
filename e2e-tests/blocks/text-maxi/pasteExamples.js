@@ -1,4 +1,4 @@
-export const headings = `
+const pasteHTML = `
 <!DOCTYPE html>
 <html>
 <body>
@@ -10,59 +10,23 @@ export const headings = `
 <h5>This is heading 5</h5>
 <h6>This is heading 6</h6>
 
-</body>
-</html>
-`;
-
-export const OrderedLists = `<!DOCTYPE html>
-<html>
-<body>
-
-<h2>An Ordered HTML List</h2>
-
-<ol>
-  <li>Coffee</li>
-  <li>Tea</li>
-  <li>Milk</li>
-</ol>
-
-</body>
-</html>
-`;
-
-export const UnorderedList = `<!DOCTYPE html>
-<html>
-<body>
-
 <h2>An Unordered HTML List</h2>
-
 <ul>
-  <li>Coffee</li>
-  <li>Tea</li>
-  <li>Milk</li>
+    <li>Coffee</li>
+    <li>Tea</li>
+    <li>Milk</li>
 </ul>
-
-</body>
-</html>
-`;
-export const paragraph = `<!DOCTYPE html>
-<html>
-<body>
-
-<p>This is a paragraph.</p>
-<p>This is another paragraph.</p>
-
-</body>
-</html>
-`;
-
-export const formats = `
-<!DOCTYPE html>
-<html>
-<body>
+<h2>An Ordered HTML List</h2>
+<ol>
+    <li>Coffee</li>
+    <li>Tea</li>
+    <li>Milk</li>
+</ol>
 
 <p><strong>Bold. </strong> <em>Emphasized. </em><code>Code</code>.<s>Strikethrough. </s><sub>Subscript. </sub><sup>Superscript. </sup><span style="text-decoration: underline;">Underline.</span></p>
 
 </body>
 </html>
 `;
+
+export default pasteHTML;

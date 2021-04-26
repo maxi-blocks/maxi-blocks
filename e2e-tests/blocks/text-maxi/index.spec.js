@@ -14,9 +14,7 @@ import {
 /**
  * Internal dependencies
  */
-import { headings } from './pasteExamples';
-import { OrderedList } from './pasteExamples';
-import { paragraph } from './pasteExamples';
+import pasteHTML from './pasteExamples';
 
 const linkExample = 'test.com';
 describe('TextMaxi', () => {
@@ -152,25 +150,7 @@ describe('TextMaxi', () => {
 	it('Test Text Maxi when pasting headings', async () => {
 		await insertBlock('Text Maxi');
 
-		await setClipboardData({ html: headings });
-		await pressKeyWithModifier('primary', 'v');
-
-		expect(await getEditedPostContent()).toMatchSnapshot();
-	});
-
-	it('Test Text Maxi when pasting an Ordered HTML List', async () => {
-		await insertBlock('Text Maxi');
-
-		await setClipboardData({ html: OrderedList });
-		await pressKeyWithModifier('primary', 'v');
-
-		expect(await getEditedPostContent()).toMatchSnapshot();
-	});
-
-	it.only('Test Text Maxi when pasting an paragraph HTML', async () => {
-		//await insertBlock('Text Maxi');
-
-		await setClipboardData({ html: paragraph });
+		await setClipboardData({ html: pasteHTML });
 		await pressKeyWithModifier('primary', 'v');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

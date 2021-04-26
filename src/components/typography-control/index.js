@@ -52,6 +52,7 @@ const TypographyControl = withFormatValue(props => {
 		isHover = false,
 		disableColor = false,
 		prefix = '',
+		disableCustomFormats = false,
 	} = props;
 
 	const typography =
@@ -211,6 +212,7 @@ const TypographyControl = withFormatValue(props => {
 			breakpoint,
 			isHover,
 			textLevel,
+			disableCustomFormats,
 		});
 
 		onChange(obj);

@@ -127,6 +127,8 @@ const Link = withFormatValue(props => {
 
 			attributes[key] = trim(val);
 		});
+		if (url !== linkValue.url && title === linkValue.title)
+			attributes.title = '';
 
 		return attributes;
 	};
@@ -224,7 +226,8 @@ const Link = withFormatValue(props => {
 	};
 
 	const onClick = attributes => {
-		if (!formatOptions) setLinkFormat(attributes);
+		if (!formatOptions && !isEmpty(attributes.url))
+			setLinkFormat(attributes);
 		else updateLinkString(attributes);
 
 		const newLinkAttributes = createLinkAttributes(attributes);
@@ -270,7 +273,7 @@ const Link = withFormatValue(props => {
 							removeLinkFormatHandle();
 						}}
 					>
-						Remove link
+						{__('Remove link', 'maxi-blocks')}
 					</Button>
 				)}
 			</div>

@@ -35,13 +35,13 @@ const removeLinkFormat = ({
 	);
 
 	const [newStart, newEnd] = positions.filter(pos => {
-		if (pos[0] <= start && end <= pos[1]) return pos;
+		if (pos[0] <= start && end - 1 <= pos[1]) return pos;
 
 		return false;
 	})[0];
 
 	const removedLinkFormatValue = removeFormat(
-		{ ...formatValue, start: newStart, end: newEnd },
+		{ ...formatValue, start: newStart, end: newEnd + 1 },
 		'maxi-blocks/text-link'
 	);
 

@@ -39,11 +39,26 @@ const setFormat = ({
 	isHover = false,
 	textLevel,
 	returnFormatValue = false,
+	disableCustomFormats = false,
 }) => {
 	// eslint-disable-next-line @wordpress/no-unused-vars-before-return
 	const {
 		__unstableMarkLastChangeAsPersistent: markLastChangeAsPersistent,
 	} = dispatch('core/block-editor');
+
+	if (disableCustomFormats) {
+		const newTypography = { ...typography };
+
+		Object.entries(value).forEach(([key, val]) => {
+			newTypography[
+				`${key}-${breakpoint}${isHover ? '-hover' : ''}`
+			] = val;
+		});
+		// Ensures the format changes are saved as undo entity on historical records
+		markLastChangeAsPersistent();
+
+		return newTypography;
+	}
 
 	if (
 		isNil(formatValue.start) ||

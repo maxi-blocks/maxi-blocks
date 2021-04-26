@@ -313,6 +313,7 @@ const MaxiToolbar = memo(
 								isList={isList}
 								linkSettings={linkSettings}
 								breakpoint={deviceType}
+								textLevel={textLevel}
 							/>
 							<TextListOptions
 								blockName={name}

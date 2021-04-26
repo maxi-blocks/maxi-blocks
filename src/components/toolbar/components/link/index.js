@@ -3,6 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { __experimentalLinkControl } from '@wordpress/block-editor';
+import { Button } from '@wordpress/components';
+import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -12,7 +14,7 @@ import ToolbarPopover from '../toolbar-popover';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Icons
@@ -24,7 +26,7 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = props => {
-	const { blockName, onChange } = props;
+	const { blockName, onChange, linkSettings } = props;
 
 	if (
 		blockName === 'maxi-blocks/divider-maxi' ||
@@ -32,38 +34,59 @@ const Link = props => {
 	)
 		return null;
 
-	const linkSettings = { ...props.linkSettings };
+	const ref = useRef();
+
+	const removeLinkHandle = () => {
+		onChange({
+			url: '',
+		});
+
+		if (ref.current) ref.current.node.state.isOpen = false;
+	};
 
 	return (
 		<ToolbarPopover
+			ref={ref}
 			icon={toolbarLink}
 			tooltip={__('Link', 'maxi-blocks')}
 			className={
-				!isEmpty(linkSettings.url) && 'toolbar-item__link--active'
+				!isNil(linkSettings) &&
+				!isEmpty(linkSettings.url) &&
+				'toolbar-item__link--active'
 			}
 			content={
-				<__experimentalLinkControl
-					value={linkSettings}
-					onChange={value => onChange(value)}
-					settings={[
-						{
-							id: 'opensInNewTab',
-							title: __('Open in new tab', 'maxi-blocks'),
-						},
-						{
-							id: 'noFollow',
-							title: __('Add "nofollow" rel', 'maxi-blocks'),
-						},
-						{
-							id: 'sponsored',
-							title: __('Add "sponsored" rel', 'maxi-blocks'),
-						},
-						{
-							id: 'ugc',
-							title: __('Add "sponsored" rel', 'maxi-blocks'),
-						},
-					]}
-				/>
+				<>
+					<__experimentalLinkControl
+						value={linkSettings}
+						onChange={value => onChange(value)}
+						settings={[
+							{
+								id: 'opensInNewTab',
+								title: __('Open in new tab', 'maxi-blocks'),
+							},
+							{
+								id: 'noFollow',
+								title: __('Add "nofollow" rel', 'maxi-blocks'),
+							},
+							{
+								id: 'sponsored',
+								title: __('Add "sponsored" rel', 'maxi-blocks'),
+							},
+							{
+								id: 'ugc',
+								title: __('Add "sponsored" rel', 'maxi-blocks'),
+							},
+						]}
+					/>
+					{!isNil(linkSettings) && !isEmpty(linkSettings.url) && (
+						<Button
+							className='toolbar-popover-link-destroyer'
+							onClick={() => removeLinkHandle()}
+						>
+							{__('Remove link', 'maxi-blocks')}
+						</Button>
+					)}
+				</>
 			}
 		/>
 	);

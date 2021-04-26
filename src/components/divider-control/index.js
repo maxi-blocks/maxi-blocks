@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { SelectControl, Icon } from '@wordpress/components';
 
 /**
@@ -167,16 +167,22 @@ const DividerControl = props => {
 						<SizeControl
 							label={__('Line Size', 'maxi-blocks')}
 							unit={props['divider-width-unit']}
-							defaultUnit={getDefaultAttribute(
-								'divider-width-unit'
-							)}
 							onChangeUnit={val =>
 								onChange({ 'divider-width-unit': val })
 							}
 							value={props['divider-width']}
-							defaultValue={getDefaultAttribute('divider-width')}
 							onChangeValue={val =>
 								onChange({ 'divider-width': val })
+							}
+							onReset={() =>
+								onChange({
+									'divider-width': getDefaultAttribute(
+										'divider-width'
+									),
+									'divider-width-unit': getDefaultAttribute(
+										'divider-width-unit'
+									),
+								})
 							}
 							minMaxSettings={minMaxSettings}
 						/>
@@ -184,9 +190,6 @@ const DividerControl = props => {
 							label={__('Line Weight', 'maxi-blocks')}
 							allowedUnits={['px', 'em', 'vw']}
 							unit={props['divider-border-top-unit']}
-							defaultUnit={getDefaultAttribute(
-								'divider-border-top-unit'
-							)}
 							onChangeUnit={val =>
 								onChange({ 'divider-border-top-unit': val })
 							}
@@ -194,11 +197,18 @@ const DividerControl = props => {
 								onChange({ 'divider-border-top-width': val })
 							}
 							value={props['divider-border-top-width']}
-							defaultValue={getDefaultAttribute(
-								'divider-border-top-width'
-							)}
 							onChangeValue={val =>
 								onChange({ 'divider-border-top-width': val })
+							}
+							onReset={() =>
+								onChange({
+									'divider-border-top-width': getDefaultAttribute(
+										'divider-border-top-width'
+									),
+									'divider-border-top-unit': getDefaultAttribute(
+										'divider-border-top-unit'
+									),
+								})
 							}
 							minMaxSettings={minMaxSettings}
 						/>

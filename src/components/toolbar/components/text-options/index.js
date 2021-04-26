@@ -22,7 +22,10 @@ import {
 	getCustomFormatValue,
 	withFormatValue,
 } from '../../../../extensions/text/formats';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import {
+	getGroupAttributes,
+	getDefaultAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -81,7 +84,9 @@ const TextOptions = withFormatValue(props => {
 					<div className='toolbar-item__popover__font-options__font'>
 						<FontFamilySelector
 							className='toolbar-item__popover__font-options__font__selector'
-							theme='dark'
+							defaultValue={getDefaultAttribute(
+								`font-family-${breakpoint}`
+							)}
 							font={getValue('font-family')}
 							onChange={font => {
 								onChangeFormat({
@@ -89,27 +94,8 @@ const TextOptions = withFormatValue(props => {
 									'font-options': font.files,
 								});
 							}}
+							theme='dark'
 						/>
-						<Button
-							className='components-maxi-control__reset-button'
-							onClick={() => {
-								onChangeFormat({
-									'font-family':
-										defaultTypography[textLevel][
-											`font-family-${breakpoint}`
-										],
-								});
-							}}
-							isSmall
-							aria-label={sprintf(
-								/* translators: %s: a textual label  */
-								__('Reset %s settings', 'maxi-blocks'),
-								'font size'
-							)}
-							type='reset'
-						>
-							{reset}
-						</Button>
 					</div>
 					<Fragment>
 						<BaseControl

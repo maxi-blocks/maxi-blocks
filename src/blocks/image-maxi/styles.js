@@ -171,6 +171,8 @@ const getImageHoverObject = props => {
 };
 
 const getImageBackendObject = props => {
+	const { clipPath } = props;
+
 	const response = {
 		border: getBorderStyles({
 			...getGroupAttributes(props, [
@@ -185,15 +187,6 @@ const getImageBackendObject = props => {
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
-	};
-
-	return response;
-};
-
-const getImageBackendSVGObject = props => {
-	const { clipPath } = props;
-
-	const response = {
 		image: {
 			label: 'Image settings',
 			general: {},
@@ -243,9 +236,7 @@ const getStyles = props => {
 			props
 		),
 		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageBackendObject(props),
-		[`${uniqueID} .maxi-block-hover-wrapper svg`]: getImageBackendSVGObject(
-			props
-		),
+
 		[`${uniqueID} figcaption`]: getFigcaptionObject(props),
 		[`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: getHoverEffectTitleTextObject(
 			props

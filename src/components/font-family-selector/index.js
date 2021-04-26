@@ -119,6 +119,13 @@ const FontFamilySelector = props => {
 
 	return (
 		<Select
+			theme={theme => ({
+				...theme,
+				colors: {
+					...theme.colors,
+					primary50: '#ff4a17',
+				},
+			})}
 			styles={selectFontFamilyStyles}
 			className={classes}
 			options={options}

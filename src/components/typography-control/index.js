@@ -216,6 +216,7 @@ const TypographyControl = withFormatValue(props => {
 		<div className={classes}>
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
+				defaultValue={getDefaultAttribute(`font-family-${breakpoint}`)}
 				font={getValue(`${prefix}font-family`)}
 				onChange={font =>
 					onChangeFormat({

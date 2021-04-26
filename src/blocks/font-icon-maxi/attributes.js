@@ -32,6 +32,7 @@ const attributes = {
 	},
 	...attributesData.palette,
 	...attributesData.icon,
+	...attributesData.iconHover,
 	...attributesData.opacity,
 	...attributesData.background,
 	...attributesData.backgroundColor,

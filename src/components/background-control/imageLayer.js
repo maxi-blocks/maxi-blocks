@@ -534,13 +534,6 @@ const ImageLayer = props => {
 														)
 													]
 												}
-												defaultUnit={getDefaultAttribute(
-													getAttributeKey(
-														'background-image-position-width-unit',
-														isHover,
-														prefix
-													)
-												)}
 												onChangeUnit={val =>
 													onChange({
 														[getAttributeKey(
@@ -559,13 +552,6 @@ const ImageLayer = props => {
 														)
 													]
 												}
-												defaultValue={getDefaultAttribute(
-													getAttributeKey(
-														'background-image-position-width',
-														isHover,
-														prefix
-													)
-												)}
 												onChangeValue={val =>
 													onChange({
 														[getAttributeKey(
@@ -573,6 +559,32 @@ const ImageLayer = props => {
 															isHover,
 															prefix
 														)]: val,
+													})
+												}
+												onReset={() =>
+													onChange({
+														[getAttributeKey(
+															'background-image-position-width',
+															isHover,
+															prefix
+														)]: getDefaultAttribute(
+															getAttributeKey(
+																'background-image-position-width',
+																isHover,
+																prefix
+															)
+														),
+														[getAttributeKey(
+															'background-image-position-width-unit',
+															isHover,
+															prefix
+														)]: getDefaultAttribute(
+															getAttributeKey(
+																'background-image-position-width-unit',
+																isHover,
+																prefix
+															)
+														),
 													})
 												}
 											/>
@@ -590,13 +602,6 @@ const ImageLayer = props => {
 														)
 													]
 												}
-												defaultUnit={getDefaultAttribute(
-													getAttributeKey(
-														'background-image-position-height-unit',
-														isHover,
-														prefix
-													)
-												)}
 												onChangeUnit={val =>
 													onChange({
 														[getAttributeKey(
@@ -615,13 +620,6 @@ const ImageLayer = props => {
 														)
 													]
 												}
-												defaultValue={getDefaultAttribute(
-													getAttributeKey(
-														'background-image-position-height',
-														isHover,
-														prefix
-													)
-												)}
 												onChangeValue={val =>
 													onChange({
 														[getAttributeKey(
@@ -629,6 +627,32 @@ const ImageLayer = props => {
 															isHover,
 															prefix
 														)]: val,
+													})
+												}
+												onReset={() =>
+													onChange({
+														[getAttributeKey(
+															'background-image-position-height',
+															isHover,
+															prefix
+														)]: getDefaultAttribute(
+															getAttributeKey(
+																'background-image-position-height',
+																isHover,
+																prefix
+															)
+														),
+														[getAttributeKey(
+															'background-image-position-height-unit',
+															isHover,
+															prefix
+														)]: getDefaultAttribute(
+															getAttributeKey(
+																'background-image-position-height-unit',
+																isHover,
+																prefix
+															)
+														),
 													})
 												}
 											/>

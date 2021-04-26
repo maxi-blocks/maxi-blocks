@@ -15,7 +15,11 @@ import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
-import { setFormat, getCustomFormatValue } from '../../extensions/text/formats';
+import {
+	setFormat,
+	getCustomFormatValue,
+	withFormatValue,
+} from '../../extensions/text/formats';
 import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,
@@ -36,7 +40,7 @@ import './editor.scss';
 /**
  * Component
  */
-const TypographyControl = props => {
+const TypographyControl = withFormatValue(props => {
 	const {
 		className,
 		textLevel = 'p',
@@ -85,6 +89,10 @@ const TypographyControl = props => {
 		'%': {
 			min: 0,
 			max: 100,
+		},
+		empty: {
+			min: 0,
+			max: 999,
 		},
 	};
 
@@ -452,6 +460,6 @@ const TypographyControl = props => {
 			)}
 		</div>
 	);
-};
+});
 
 export default TypographyControl;

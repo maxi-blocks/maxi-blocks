@@ -14,6 +14,7 @@ import Inspector from './inspector';
 import {
 	BackgroundDisplayer,
 	BlockResizer,
+	HoverPreview,
 	MaxiBlock,
 	MotionPreview,
 	Toolbar,
@@ -65,6 +66,7 @@ class edit extends MaxiBlock {
 					...getGroupAttributes(this.props.attributes, [
 						'motion',
 						'entrance',
+						'hover',
 					]),
 				}),
 			},
@@ -263,8 +265,17 @@ class edit extends MaxiBlock {
 											</div>
 											<div className={hoverClasses}>
 												{(!SVGElement && (
-													<img
-														className={`maxi-image-block__image wp-image-${mediaID}`}
+													<HoverPreview
+														key={`hover-preview-${uniqueID}`}
+														{...getGroupAttributes(
+															attributes,
+															[
+																'hover',
+																'hoverTitleTypography',
+																'hoverContentTypography',
+															]
+														)}
+														mediaID={mediaID}
 														src={mediaURL}
 														width={mediaWidth}
 														height={mediaHeight}
@@ -275,46 +286,6 @@ class edit extends MaxiBlock {
 														{SVGElement}
 													</RawHTML>
 												)}
-												{attributes['hover-type'] !==
-													'none' &&
-													attributes['hover-type'] !==
-														'basic' &&
-													attributes[
-														'hover-preview'
-													] && (
-														<div className='maxi-hover-details'>
-															<div
-																className={`maxi-hover-details__content maxi-hover-details__content--${attributes['hover-text-preset']}`}
-															>
-																{!isEmpty(
-																	attributes[
-																		'hover-title-typography-content'
-																	]
-																) && (
-																	<h3>
-																		{
-																			attributes[
-																				'hover-title-typography-content'
-																			]
-																		}
-																	</h3>
-																)}
-																{!isEmpty(
-																	attributes[
-																		'hover-content-typography-content'
-																	]
-																) && (
-																	<p>
-																		{
-																			attributes[
-																				'hover-content-typography-content'
-																			]
-																		}
-																	</p>
-																)}
-															</div>
-														</div>
-													)}
 											</div>
 											{captionType !== 'none' && (
 												<figcaption className='maxi-image-block__caption'>

@@ -212,6 +212,7 @@ body .toolbar-item__popover {
 		border-color: #232533 !important;
 		border-left-color: transparent !important;
 		border-right-color: transparent !important;
+		z-index: -1;
 	}
 
 	.components-base-control {

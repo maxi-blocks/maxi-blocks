@@ -943,6 +943,7 @@ const Inspector = props => {
 											),
 											content: (
 												<HoverEffectControl
+													uniqueID={uniqueID}
 													{...getGroupAttributes(
 														attributes,
 														[

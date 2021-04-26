@@ -13,7 +13,7 @@ import RangeSliderControl from '../range-slider-control';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isNull, isEmpty } from 'lodash';
+import { trim, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -30,16 +30,15 @@ const SizeControl = props => {
 		className,
 		unit = 'px',
 		onChangeUnit,
-		defaultUnit,
 		disableUnit = false,
 		min = 0,
 		max = 999,
 		initial = 0,
 		step = 1,
 		value,
-		defaultValue,
 		onChangeValue,
 		disableReset = false,
+		onReset,
 		allowedUnits = ['px', 'em', 'vw', '%', 'empty'],
 		minMaxSettings = {
 			px: {
@@ -85,11 +84,6 @@ const SizeControl = props => {
 			options.push({ label: '-', value: '' });
 
 		return options;
-	};
-
-	const onReset = () => {
-		onChangeValue(defaultValue);
-		if (!isNull(defaultUnit) && !disableUnit) onChangeUnit(defaultUnit);
 	};
 
 	return (
@@ -181,7 +175,10 @@ const SizeControl = props => {
 			{!disableReset && (
 				<Button
 					className='components-maxi-control__reset-button'
-					onClick={onReset}
+					onClick={e => {
+						e.preventDefault();
+						onReset();
+					}}
 					isSmall
 					aria-label={sprintf(
 						/* translators: %s: a textual label  */

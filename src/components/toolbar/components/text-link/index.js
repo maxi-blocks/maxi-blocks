@@ -18,6 +18,7 @@ import {
 	removeLinkFormat,
 	withFormatValue,
 	setFormat,
+	getFormatPosition,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
@@ -134,17 +135,21 @@ const Link = withFormatValue(props => {
 	};
 
 	const getUpdatedFormatValue = (formatValue, attributes) => {
-		formatValue.formats = formatValue.formats.map(formatEl => {
-			return formatEl.map(format => {
-				const { type, attributes: formatAttr } = format;
-				const { url } = formatAttr;
+		const [posStart, posEnd] = getFormatPosition({
+			formatValue,
+			formatName: 'maxi-blocks/text-link',
+			formatClassName: null,
+			formatAttributes: linkSettings,
+		});
 
+		formatValue.formats = formatValue.formats.map((formatEl, i) => {
+			return formatEl.map(format => {
 				if (
-					type === 'maxi-blocks/text-link' &&
-					url === attributes.url
-				) {
+					format.type === 'maxi-blocks/text-link' &&
+					posStart <= i &&
+					i - 1 <= posEnd
+				)
 					format.attributes = attributes;
-				}
 
 				return format;
 			});
@@ -219,6 +224,14 @@ const Link = withFormatValue(props => {
 		if (ref.current) ref.current.node.state.isOpen = false;
 	};
 
+	const forceSSL = attributes => {
+		const { url } = attributes;
+
+		attributes.url = url.replace(/^http:\/\//i, 'https://');
+
+		return attributes;
+	};
+
 	const updateLinkString = attributes => {
 		const content = getFormattedString({
 			formatValue: getUpdatedFormatValue(
@@ -232,12 +245,16 @@ const Link = withFormatValue(props => {
 	};
 
 	const onClick = attributes => {
-		if (!formatOptions && !isEmpty(attributes.url))
-			setLinkFormat(attributes);
-		else updateLinkString(attributes);
+		const newAttributes = forceSSL(attributes);
 
-		const newLinkAttributes = createLinkAttributes(attributes);
-		const newLinkValue = createLinkValue({ attributes: newLinkAttributes });
+		if (!formatOptions && !isEmpty(newAttributes.url))
+			setLinkFormat(newAttributes);
+		else updateLinkString(newAttributes);
+
+		const newLinkAttributes = createLinkAttributes(newAttributes);
+		const newLinkValue = createLinkValue({
+			attributes: newLinkAttributes,
+		});
 
 		setLinkValue(newLinkValue);
 	};

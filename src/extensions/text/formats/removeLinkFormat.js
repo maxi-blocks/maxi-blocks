@@ -7,7 +7,7 @@ import { removeFormat } from '@wordpress/rich-text';
  * Internal dependencies
  */
 import setFormatWithClass from './setFormatWithClass';
-import getInstancePositions from './getInstancePositions';
+import getFormatPosition from './getFormatPosition';
 /**
  * Removes the link and custom formats
  *
@@ -25,20 +25,12 @@ const removeLinkFormat = ({
 	textLevel,
 	attributes,
 }) => {
-	const { start, end } = formatValue;
-
-	const positions = getInstancePositions(
+	const [newStart, newEnd] = getFormatPosition({
 		formatValue,
-		'maxi-blocks/text-link',
-		null,
-		attributes
-	);
-
-	const [newStart, newEnd] = positions.filter(pos => {
-		if (pos[0] <= start && end - 1 <= pos[1]) return pos;
-
-		return false;
-	})[0];
+		formatName: 'maxi-blocks/text-link',
+		formatClassName: null,
+		formatAttributes: attributes,
+	});
 
 	const removedLinkFormatValue = removeFormat(
 		{ ...formatValue, start: newStart, end: newEnd + 1 },

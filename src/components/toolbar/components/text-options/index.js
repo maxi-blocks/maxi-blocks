@@ -93,7 +93,7 @@ const TextOptions = withFormatValue(props => {
 						font={getValue('font-family')}
 						onChange={font => {
 							onChangeFormat({
-								'font-size': font,
+								'font-family': font.value,
 							});
 						}}
 						theme='dark'

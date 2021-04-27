@@ -125,10 +125,8 @@ const MaxiToolbar = props => {
 	if (!allowedBlocks.includes(name)) return null;
 
 	const breadcrumbStatus = () => {
-		const { getSelectedBlockClientId, getBlockParents } = select(
-			'core/block-editor'
-		);
-		const clientId = getSelectedBlockClientId();
+		const { getBlockParents } = select('core/block-editor');
+
 		const originalNestedBlocks = clientId ? getBlockParents(clientId) : [];
 
 		if (!originalNestedBlocks.includes(clientId))

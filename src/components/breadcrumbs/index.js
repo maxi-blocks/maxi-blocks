@@ -36,7 +36,7 @@ const MaxiBreadcrumbs = () => {
 
 	return (
 		<ul className='maxi-breadcrumbs'>
-			{originalNestedBlocks.map((blockId, i) => {
+			{originalNestedBlocks.map(blockId => {
 				const blockName = select('core/block-editor').getBlockName(
 					blockId
 				);
@@ -48,7 +48,7 @@ const MaxiBreadcrumbs = () => {
 
 					return (
 						<li
-							key={`maxi-breadcrumbs__item-${i}`}
+							key={`maxi-breadcrumbs__item-${blockId}`}
 							className='maxi-breadcrumbs__item'
 						>
 							<span

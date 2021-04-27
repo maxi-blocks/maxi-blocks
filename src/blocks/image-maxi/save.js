@@ -36,6 +36,7 @@ const save = props => {
 		mediaAltTitle,
 		altSelector,
 		SVGElement,
+		imageRatio,
 	} = attributes;
 
 	const hoverPreviewClasses = classnames(

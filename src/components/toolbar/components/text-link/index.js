@@ -136,7 +136,13 @@ const Link = withFormatValue(props => {
 	const getUpdatedFormatValue = (formatValue, attributes) => {
 		formatValue.formats = formatValue.formats.map(formatEl => {
 			return formatEl.map(format => {
-				if (format.type === 'maxi-blocks/text-link') {
+				const { type, attributes: formatAttr } = format;
+				const { url } = formatAttr;
+
+				if (
+					type === 'maxi-blocks/text-link' &&
+					url === attributes.url
+				) {
 					format.attributes = attributes;
 				}
 

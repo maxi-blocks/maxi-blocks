@@ -1,6 +1,6 @@
 /* eslint-disable no-return-await */
 /**
- * WordPress
+ * WordPress dependencies
  */
 import {
 	createNewPost,
@@ -9,7 +9,13 @@ import {
 	pressKeyWithModifier,
 	openPreviewPage,
 	pressKeyTimes,
+	setClipboardData,
 } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import pasteHTML from './pasteExamples';
 
 const linkExample = 'test.com';
 describe('TextMaxi', () => {
@@ -140,7 +146,7 @@ describe('TextMaxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
-	it(' Testing Text Maxi with custom formats when merge from top block to bottom one', async () => {
+	it('Testing Text Maxi with custom formats when merge from top block to bottom one', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi.');
 		await insertBlock('Text Maxi');
@@ -181,6 +187,14 @@ describe('TextMaxi', () => {
 		await selectMaxiTextP.focus();
 		await page.keyboard.press('ArrowDown');
 		await page.keyboard.press('Backspace');
+
+		expect(await getEditedPostContent()).toMatchSnapshot();
+	});
+	it('Test Text Maxi when pasting headings', async () => {
+		await insertBlock('Text Maxi');
+
+		await setClipboardData({ html: pasteHTML });
+		await pressKeyWithModifier('primary', 'v');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});

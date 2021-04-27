@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 
 import { SelectControl } from '@wordpress/components';
-import { Fragment, useState } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
@@ -61,13 +61,12 @@ const TypographyControl = withFormatValue(props => {
 		clientId,
 	} = props;
 
-	const [typography, setTypography] = useState(
+	const typography =
 		props.typography ||
-			getGroupAttributes(props, [
-				'typography',
-				// ...(isHover && ['typographyHover']),
-			])
-	);
+		getGroupAttributes(props, [
+			'typography',
+			...(isHover ? ['typographyHover'] : []),
+		]);
 
 	const classes = classnames('maxi-typography-control', className);
 
@@ -230,7 +229,7 @@ const TypographyControl = withFormatValue(props => {
 			isHover,
 		});
 
-		setTypography(obj);
+		// setTypography(obj);
 
 		onChange(obj);
 	};

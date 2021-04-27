@@ -19,6 +19,10 @@ const attributes = {
 		type: 'string',
 		default: __('Image', 'maxi-blocks'),
 	},
+	imageRatio: {
+		type: 'string',
+		default: 'land32',
+	},
 	SVGCurrentElement: {
 		type: 'number',
 	},

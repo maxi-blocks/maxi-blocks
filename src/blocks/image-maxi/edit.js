@@ -110,7 +110,13 @@ class edit extends MaxiBlock {
 			SVGElement,
 			imgWidth,
 			parentBlockStyle,
+			imageRatio,
 		} = attributes;
+
+		const hoverPreviewClasses = classnames(
+			'maxi-image-ratio',
+			`maxi-image-ratio__${imageRatio}`
+		);
 
 		const hoverClasses = classnames(
 			'maxi-block-hover-wrapper',
@@ -266,6 +272,9 @@ class edit extends MaxiBlock {
 											<div className={hoverClasses}>
 												{(!SVGElement && (
 													<HoverPreview
+														className={
+															hoverPreviewClasses
+														}
 														key={`hover-preview-${uniqueID}`}
 														{...getGroupAttributes(
 															attributes,

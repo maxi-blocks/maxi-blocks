@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Fragment } from '@wordpress/element';
 const {
 	RangeControl,
 	SelectControl,
@@ -83,6 +82,7 @@ const Inspector = props => {
 		clipPath,
 		SVGData,
 		SVGCurrentElement,
+		imageRatio,
 	} = attributes;
 
 	const getSizeOptions = () => {
@@ -153,7 +153,7 @@ const Inspector = props => {
 					{
 						label: __('Style', 'maxi-blocks'),
 						content: (
-							<Fragment>
+							<>
 								<div className='maxi-tab-content__box'>
 									<CustomLabel
 										customLabel={customLabel}
@@ -206,7 +206,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<Fragment>
+												<>
 													<SelectControl
 														label={__(
 															'Image Size',
@@ -289,7 +289,77 @@ const Inspector = props => {
 															clientId
 														)}
 													/>
-												</Fragment>
+													<SelectControl
+														label={__(
+															'Image Ratio',
+															'maxi-blocks'
+														)}
+														value={imageRatio}
+														options={[
+															{
+																label: __(
+																	'Landscape 4:3',
+																	'maxi-blocks'
+																),
+																value: 'land43',
+															},
+															{
+																label: __(
+																	'Landscape 3:2',
+																	'maxi-blocks'
+																),
+																value: 'land32',
+															},
+															{
+																label: __(
+																	'Landscape 2:1',
+																	'maxi-blocks'
+																),
+																value: 'land21',
+															},
+															{
+																label: __(
+																	'Landscape 3:1',
+																	'maxi-blocks'
+																),
+																value: 'land31',
+															},
+															{
+																label: __(
+																	'Landscape 4:1',
+																	'maxi-blocks'
+																),
+																value: 'land41',
+															},
+															{
+																label: __(
+																	'Portrait 3:4',
+																	'maxi-blocks'
+																),
+																value: 'port34',
+															},
+															{
+																label: __(
+																	'Portrait 2:3',
+																	'maxi-blocks'
+																),
+																value: 'port23',
+															},
+															{
+																label: __(
+																	'Square 1:1',
+																	'maxi-blocks'
+																),
+																value: 'square',
+															},
+														]}
+														onChange={imageRatio =>
+															setAttributes({
+																imageRatio,
+															})
+														}
+													/>
+												</>
 											),
 										},
 										deviceType === 'general' && {
@@ -317,7 +387,7 @@ const Inspector = props => {
 										deviceType === 'general' && {
 											label: __('Caption', 'maxi-blocks'),
 											content: (
-												<Fragment>
+												<>
 													<SelectControl
 														value={captionType}
 														options={getCaptionOptions()}
@@ -376,7 +446,7 @@ const Inspector = props => {
 															}
 														/>
 													)}
-												</Fragment>
+												</>
 											),
 										},
 										deviceType === 'general' && {
@@ -394,7 +464,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<BackgroundControl
 																		{...getGroupAttributes(
 																			attributes,
@@ -413,7 +483,7 @@ const Inspector = props => {
 																			)
 																		}
 																	/>
-																</Fragment>
+																</>
 															),
 														},
 														{
@@ -422,7 +492,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Background Hover',
@@ -480,7 +550,7 @@ const Inspector = props => {
 																			isHover
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -525,7 +595,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
@@ -583,7 +653,7 @@ const Inspector = props => {
 																			isHover
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -596,7 +666,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<Fragment>
+												<>
 													{isFirstOnHierarchy && (
 														<FancyRadioControl
 															label={__(
@@ -641,7 +711,7 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														hideWith
 													/>
-												</Fragment>
+												</>
 											),
 										},
 										{
@@ -681,7 +751,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Box Shadow Hover',
@@ -735,7 +805,7 @@ const Inspector = props => {
 																			isHover
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -748,7 +818,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<Fragment>
+												<>
 													<AxisControl
 														{...getGroupAttributes(
 															attributes,
@@ -780,18 +850,18 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														target='margin'
 													/>
-												</Fragment>
+												</>
 											),
 										},
 									]}
 								/>
-							</Fragment>
+							</>
 						),
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
-							<Fragment>
+							<>
 								<AccordionControl
 									isPrimary
 									items={[
@@ -1050,7 +1120,7 @@ const Inspector = props => {
 										},
 									]}
 								/>
-							</Fragment>
+							</>
 						),
 					},
 				]}

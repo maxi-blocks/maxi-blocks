@@ -3,6 +3,42 @@ body.maxi-blocks--active figure.maxi-image-block {
 	justify-content: center;
 	flex-direction: column;
 
+	.maxi-hover-preview {
+		&.maxi-image-ratio {
+			&__land43 {
+				padding-bottom: 75%;
+			}
+			&__land32 {
+				padding-bottom: 66.67%;
+			}
+			&__land21 {
+				padding-bottom: 50%;
+			}
+			&__land31 {
+				padding-bottom: 33%;
+			}
+			&__land41 {
+				padding-bottom: 25%;
+			}
+			&__port34 {
+				padding-bottom: 133.33%;
+			}
+			&__port23 {
+				padding-bottom: 150%;
+			}
+			&__square {
+				padding-bottom: 100%;
+			}
+		}
+		img {
+			height: 100% !important;
+			max-height: initial !important;
+			object-fit: cover;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	}
 	.maxi-image-block-shape-wrapper {
 		display: flex;
 		width: 100%;

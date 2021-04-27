@@ -66,6 +66,8 @@ const SizeControl = props => {
 
 	const classes = classnames('maxi-size-control', className);
 
+	const stepValue = unit === 'empty' || isEmpty(unit) ? 0.01 : step;
+
 	const getOptions = () => {
 		const options = [];
 
@@ -115,7 +117,7 @@ const SizeControl = props => {
 					}}
 					min={min}
 					max={max}
-					step={step}
+					step={stepValue}
 					placeholder='auto'
 				/>
 			) : (
@@ -161,7 +163,7 @@ const SizeControl = props => {
 								? minMaxSettings[unit].max
 								: null
 						}
-						step={step}
+						step={stepValue}
 						placeholder='auto'
 					/>
 					<SelectControl
@@ -196,7 +198,7 @@ const SizeControl = props => {
 					onChange={val => onChangeValue(+val)}
 					min={min}
 					max={max}
-					step={step}
+					step={stepValue}
 					withInputField={false}
 					initialPosition={value || initial}
 				/>
@@ -206,7 +208,7 @@ const SizeControl = props => {
 					onChange={val => onChangeValue(+val)}
 					min={unit ? minMaxSettings[unit].min : 0}
 					max={unit ? minMaxSettings[unit].max : 999}
-					step={step}
+					step={stepValue}
 					withInputField={false}
 					initialPosition={value || initial}
 				/>

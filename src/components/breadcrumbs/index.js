@@ -51,7 +51,6 @@ const MaxiBreadcrumbs = () => {
 							key={`maxi-breadcrumbs__item-${i}`}
 							className='maxi-breadcrumbs__item'
 						>
-							{i !== 0 && <span>{' > '}</span>}
 							<span
 								className='maxi-breadcrumbs__item__content'
 								target={blockId}

@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { RadioControl } from '@wordpress/components';
-import { Fragment } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
@@ -58,94 +57,131 @@ const Size = props => {
 			tooltip={__('Size', 'maxi-blocks')}
 			icon={toolbarSizing}
 			advancedOptions='width height'
-			content={
-				<div className='toolbar-item__size__popover'>
-					{(isFirstOnHierarchy ||
-						blockName === 'maxi-blocks/row-maxi') && (
-						<RadioControl
-							className='toolbar-item__popover__toggle-btn'
-							label={__('Full Width', 'maxi-blocks')}
-							selected={fullWidth}
-							options={[
-								{
-									label: __('No', 'maxi-blocks'),
-									value: 'normal',
-								},
-								{
-									label: __('Yes', 'maxi-blocks'),
-									value: 'full',
-								},
-							]}
-							onChange={fullWidth => onChange({ fullWidth })}
-						/>
-					)}
-					{!EXCLUDED_BLOCKS_SIZE.includes(blockName) && (
-						<Fragment>
-							{currentBlockRoot && (
-								<SizeControl
-									label={__('Width', 'maxi-blocks')}
-									unit={getLastBreakpointAttribute(
-										'width-unit',
-										breakpoint,
-										props
-									)}
-									onChangeUnit={val =>
-										onChange({
-											[`width-unit-${breakpoint}`]: val,
-										})
-									}
-									defaultValue={getDefaultAttribute(
-										`width-${breakpoint}`
-									)}
-									defaultUnit={getDefaultAttribute(
-										`width-unit-${breakpoint}`
-									)}
-									value={getLastBreakpointAttribute(
-										'width',
-										breakpoint,
-										props
-									)}
-									onChangeValue={val =>
-										onChange({
-											[`width-${breakpoint}`]: val,
-										})
-									}
-								/>
-							)}
+		>
+			<div className='toolbar-item__size__popover'>
+				{(isFirstOnHierarchy ||
+					blockName === 'maxi-blocks/row-maxi') && (
+					<RadioControl
+						className='toolbar-item__popover__toggle-btn'
+						label={__('Full Width', 'maxi-blocks')}
+						selected={fullWidth}
+						options={[
+							{
+								label: __('No', 'maxi-blocks'),
+								value: 'normal',
+							},
+							{
+								label: __('Yes', 'maxi-blocks'),
+								value: 'full',
+							},
+						]}
+						onChange={fullWidth => onChange({ fullWidth })}
+					/>
+				)}
+				{!EXCLUDED_BLOCKS_SIZE.includes(blockName) && (
+					<>
+						{currentBlockRoot && (
 							<SizeControl
-								label={__('Max Width', 'maxi-blocks')}
+								label={__('Width', 'maxi-blocks')}
 								unit={getLastBreakpointAttribute(
-									'max-width-unit',
+									'width-unit',
 									breakpoint,
 									props
 								)}
 								onChangeUnit={val =>
 									onChange({
-										[`max-width-unit-${breakpoint}`]: val,
+										[`width-unit-${breakpoint}`]: val,
 									})
 								}
-								defaultValue={getDefaultAttribute(
-									`max-width-${breakpoint}`
-								)}
-								defaultUnit={getDefaultAttribute(
-									`max-width-unit-${breakpoint}`
-								)}
 								value={getLastBreakpointAttribute(
-									'max-width',
+									'width',
 									breakpoint,
 									props
 								)}
 								onChangeValue={val =>
 									onChange({
-										[`max-width-${breakpoint}`]: val,
+										[`width-${breakpoint}`]: val,
+									})
+								}
+								onReset={() =>
+									onChange({
+										[`width-${breakpoint}`]: getDefaultAttribute(
+											`width-${breakpoint}`
+										),
+										[`width-unit-${breakpoint}`]: getDefaultAttribute(
+											`width-unit-${breakpoint}`
+										),
 									})
 								}
 							/>
-						</Fragment>
-					)}
-				</div>
-			}
-		/>
+						)}
+						<SizeControl
+							label={__('Width', 'maxi-blocks')}
+							unit={getLastBreakpointAttribute(
+								'width-unit',
+								breakpoint,
+								props
+							)}
+							onChangeUnit={val =>
+								onChange({
+									[`width-unit-${breakpoint}`]: val,
+								})
+							}
+							value={getLastBreakpointAttribute(
+								'width',
+								breakpoint,
+								props
+							)}
+							onChangeValue={val =>
+								onChange({
+									[`width-${breakpoint}`]: val,
+								})
+							}
+							onReset={() =>
+								onChange({
+									[`max-width-${breakpoint}`]: getDefaultAttribute(
+										`max-width-${breakpoint}`
+									),
+									[`max-width-unit-${breakpoint}`]: getDefaultAttribute(
+										`max-width-unit-${breakpoint}`
+									),
+								})
+							}
+						/>
+						)
+						<SizeControl
+							label={__('Max Width', 'maxi-blocks')}
+							unit={getLastBreakpointAttribute(
+								'max-width-unit',
+								breakpoint,
+								props
+							)}
+							onChangeUnit={val =>
+								onChange({
+									[`max-width-unit-${breakpoint}`]: val,
+								})
+							}
+							defaultValue={getDefaultAttribute(
+								`max-width-${breakpoint}`
+							)}
+							defaultUnit={getDefaultAttribute(
+								`max-width-unit-${breakpoint}`
+							)}
+							value={getLastBreakpointAttribute(
+								'max-width',
+								breakpoint,
+								props
+							)}
+							onChangeValue={val =>
+								onChange({
+									[`max-width-${breakpoint}`]: val,
+								})
+							}
+						/>
+					</>
+				)}
+			</div>
+		</ToolbarPopover>
 	);
 };
 

@@ -25,6 +25,7 @@ const attributes = {
 		default: '',
 	},
 	...attributesData.icon,
+	...attributesData.iconHover,
 	...attributesData.iconPadding,
 	...attributesData.iconBorder,
 	...attributesData.iconBorderRadius,

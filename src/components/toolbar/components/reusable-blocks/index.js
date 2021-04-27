@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { TextControl, Button } from '@wordpress/components';
 import { useCallback, useState } from '@wordpress/element';
-import { useDispatch  } from '@wordpress/data';
+import { useDispatch } from '@wordpress/data';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -30,7 +30,7 @@ const ReusableBlocks = props => {
 			try {
 				await convertBlocksToReusable(clientId, reusableBlockTitle);
 			} catch (error) {
-				console.log(error.message);
+				console.error(error.message);
 			}
 		},
 		[clientId]
@@ -41,27 +41,24 @@ const ReusableBlocks = props => {
 			className='toolbar-item__reusable-blocks'
 			tooltip={__('Reusable Blocks', 'maxi-blocks')}
 			icon={toolbarReusableBlock}
-			content={
-				<div className='toolbar-item__reusable-blocks__popover'>
-					<form
-						onSubmit={e => {
-							e.preventDefault();
-							onConvert(title);
-							setTitle('');
-						}}
-					>
-						<TextControl
-							label={__('Name', 'maxi-blocks')}
-							value={title}
-							onChange={setTitle}
-						/>
-						<Button type='submit'>
-							{__('Save', 'maxi-blocks')}
-						</Button>
-					</form>
-				</div>
-			}
-		/>
+		>
+			<div className='toolbar-item__reusable-blocks__popover'>
+				<form
+					onSubmit={e => {
+						e.preventDefault();
+						onConvert(title);
+						setTitle('');
+					}}
+				>
+					<TextControl
+						label={__('Name', 'maxi-blocks')}
+						value={title}
+						onChange={setTitle}
+					/>
+					<Button type='submit'>{__('Save', 'maxi-blocks')}</Button>
+				</form>
+			</div>
+		</ToolbarPopover>
 	);
 };
 

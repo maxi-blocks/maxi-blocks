@@ -1,3 +1,4 @@
+/* eslint-disable no-sparse-arrays */
 /**
  * Internal dependencies
  */
@@ -5,30 +6,11 @@ import setFormatWithClass, {
 	checkFormatCoincidence,
 	getFormatClassName,
 } from '../setFormatWithClass';
-import formatValueCleaner from '../formatValueCleaner';
 
 describe('setFormatWithClass', () => {
 	it('Add simple custom format', () => {
 		const formatValue = {
-			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-			],
+			formats: [, , , , , , , , , , , , , , , , ,],
 			text: 'Testing Text Maxi',
 			start: 13,
 			end: 17,
@@ -42,7 +24,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -63,19 +45,19 @@ describe('setFormatWithClass', () => {
 	it('Remove simple custom format', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -131,7 +113,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -149,21 +131,21 @@ describe('setFormatWithClass', () => {
 	it('Add second simple custom format on the content', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -202,7 +184,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -229,19 +211,19 @@ describe('setFormatWithClass', () => {
 	it('Remove second simple custom format on the content', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -300,7 +282,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -324,19 +306,19 @@ describe('setFormatWithClass', () => {
 	it('Add second simple custom format over other simple custom format', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -392,7 +374,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -417,19 +399,19 @@ describe('setFormatWithClass', () => {
 	it('Remove second simple custom format over other simple custom format', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -495,7 +477,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -519,19 +501,19 @@ describe('setFormatWithClass', () => {
 	it('Add second segment of format with same format than first', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -588,7 +570,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -612,14 +594,14 @@ describe('setFormatWithClass', () => {
 	it('Remove a segment of format part', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -720,7 +702,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -744,19 +726,19 @@ describe('setFormatWithClass', () => {
 	it('Add a segment with new format above other format part', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -821,7 +803,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -849,19 +831,19 @@ describe('setFormatWithClass', () => {
 	it('Add a segment with new format above other formats parts', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -930,7 +912,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -962,19 +944,19 @@ describe('setFormatWithClass', () => {
 	it('Remove a segment with format above other different format part, and the result is same format for both', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -1043,7 +1025,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -1067,19 +1049,19 @@ describe('setFormatWithClass', () => {
 	it('Remove whole custom format segment above other different and single format part', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -1148,7 +1130,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -1172,19 +1154,19 @@ describe('setFormatWithClass', () => {
 	it('Remove whole custom format segment above other different and multiple format parts', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -1257,7 +1239,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -1284,19 +1266,19 @@ describe('setFormatWithClass', () => {
 	it('Add whole custom format segment above other different and multiple format parts', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -1306,7 +1288,7 @@ describe('setFormatWithClass', () => {
 						unregisteredAttributes: {},
 					},
 				],
-				null,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -1316,7 +1298,7 @@ describe('setFormatWithClass', () => {
 						unregisteredAttributes: {},
 					},
 				],
-				null,
+				,
 			],
 			text: 'Testing Text Maxi',
 			start: 13,
@@ -1348,7 +1330,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -1380,19 +1362,19 @@ describe('setFormatWithClass', () => {
 	it('Add whole custom format segment that selects all the content above other different and multiple format parts', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -1457,7 +1439,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -1493,19 +1475,19 @@ describe('setFormatWithClass', () => {
 	it('Remove whole custom format segment that selects all the content above other different and multiple format parts', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -1574,7 +1556,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -1607,14 +1589,14 @@ describe('setFormatWithClass', () => {
 	it('Add second custom format over simple custom format in multiple and separated segments', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -1728,7 +1710,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -1756,14 +1738,14 @@ describe('setFormatWithClass', () => {
 	it('Remove simple custom format of whole segment in content with multiple and separated custom formats segments', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -1877,7 +1859,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -1901,15 +1883,15 @@ describe('setFormatWithClass', () => {
 	it('Set a segment with custom format with default format value for a content that has a global different custom format', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -1928,9 +1910,9 @@ describe('setFormatWithClass', () => {
 						unregisteredAttributes: {},
 					},
 				],
-				null,
-				null,
-				null,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -1949,7 +1931,7 @@ describe('setFormatWithClass', () => {
 						unregisteredAttributes: {},
 					},
 				],
-				null,
+				,
 			],
 			text: 'Testing Text Maxi',
 			start: 2,
@@ -1972,7 +1954,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -2001,14 +1983,14 @@ describe('setFormatWithClass', () => {
 	it('Remove a segment with custom format with opposite format value of the global custom format of the content', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom',
@@ -2045,11 +2027,11 @@ describe('setFormatWithClass', () => {
 						unregisteredAttributes: {},
 					},
 				],
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
 			],
 			text: 'Testing Text Maxi',
 			start: 8,
@@ -2079,7 +2061,7 @@ describe('setFormatWithClass', () => {
 		const textLevel = 'p';
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -2098,25 +2080,7 @@ describe('setFormatWithClass', () => {
 	});
 	it('Add simple hover custom format', () => {
 		const formatValue = {
-			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-			],
+			formats: [, , , , , , , , , , , , , , , , ,],
 			text: 'Testing Text Maxi',
 			start: 8,
 			end: 12,
@@ -2131,7 +2095,7 @@ describe('setFormatWithClass', () => {
 		const isHover = true;
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,
@@ -2156,14 +2120,14 @@ describe('setFormatWithClass', () => {
 	it('Add second simple custom format in a non-hover custom format segment', () => {
 		const formatValue = {
 			formats: [
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
+				,
 				[
 					{
 						type: 'maxi-blocks/text-custom-hover',
@@ -2204,11 +2168,11 @@ describe('setFormatWithClass', () => {
 						unregisteredAttributes: {},
 					},
 				],
-				null,
-				null,
-				null,
-				null,
-				null,
+				,
+				,
+				,
+				,
+				,
 			],
 			text: 'Testing Text Maxi',
 			start: 13,
@@ -2230,7 +2194,7 @@ describe('setFormatWithClass', () => {
 		const isList = false;
 
 		const result = setFormatWithClass({
-			formatValue: formatValueCleaner(formatValue),
+			formatValue,
 			typography,
 			value,
 			isList,

@@ -1,12 +1,13 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 import { __experimentalLinkControl } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';
 import { Button } from '@wordpress/components';
+import { useRef, useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -16,6 +17,7 @@ import {
 	applyLinkFormat,
 	removeLinkFormat,
 	withFormatValue,
+	setFormat,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
 import { getGroupAttributes } from '../../../../extensions/styles';
@@ -23,7 +25,7 @@ import { getGroupAttributes } from '../../../../extensions/styles';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, trim, isEqual } from 'lodash';
 
 /**
  * Icons
@@ -35,13 +37,19 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const Link = withFormatValue(props => {
-	const { blockName, onChange, isList, formatValue, textLevel } = props;
+	const {
+		blockName,
+		onChange,
+		isList,
+		formatValue,
+		textLevel,
+		linkSettings,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const formatName = 'maxi-blocks/text-link';
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const { formatOptions } = useSelect(() => {
 		const formatOptions = getActiveFormat(formatValue, formatName);
 
@@ -52,11 +60,14 @@ const Link = withFormatValue(props => {
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
+	const ref = useRef();
+
 	const createLinkValue = formatOptions => {
-		if (!formatOptions || isEmpty(formatValue)) return {};
+		if (!isEmpty(linkSettings)) return linkSettings;
+		if (!formatOptions || isEmpty(formatValue)) return { url: '' };
 
 		const {
-			attributes: { url, target, id, rel },
+			attributes: { url, target, id, rel, title = '' },
 		} = formatOptions;
 
 		const value = {
@@ -66,12 +77,23 @@ const Link = withFormatValue(props => {
 			noFollow: rel && rel.indexOf('nofollow') >= 0,
 			sponsored: rel && rel.indexOf('sponsored') >= 0,
 			ugc: rel && rel.indexOf('ugc') >= 0,
+			title,
 		};
 
 		return value;
 	};
 
-	const createLinkAttribute = ({
+	const [linkValue, setLinkValue] = useState(
+		createLinkValue(linkSettings || formatOptions)
+	);
+
+	useEffect(() => {
+		const newLinkValue = createLinkValue(linkSettings || formatOptions);
+
+		if (!isEqual(linkValue, newLinkValue)) setLinkValue(newLinkValue);
+	}, [formatValue.start, formatValue.end]);
+
+	const createLinkAttributes = ({
 		url,
 		type,
 		id,
@@ -79,10 +101,12 @@ const Link = withFormatValue(props => {
 		noFollow,
 		sponsored,
 		ugc,
+		title = '',
 	}) => {
 		const attributes = {
 			url,
 			rel: '',
+			title,
 		};
 
 		if (type) attributes.type = type;
@@ -95,6 +119,16 @@ const Link = withFormatValue(props => {
 		if (noFollow) attributes.rel += ' nofollow';
 		if (sponsored) attributes.rel += ' sponsored';
 		if (ugc) attributes.rel += ' ugc';
+
+		// Clean empty attributes, as it returns error on RichText
+		// and trims the rest
+		Object.entries(attributes).forEach(([key, val]) => {
+			if (isEmpty(val)) delete attributes[key];
+
+			attributes[key] = trim(val);
+		});
+		if (url !== linkValue.url && title === linkValue.title)
+			attributes.title = '';
 
 		return attributes;
 	};
@@ -116,38 +150,74 @@ const Link = withFormatValue(props => {
 	const setLinkFormat = attributes => {
 		const { start, end } = formatValue;
 
-		if (start === end) {
-			formatValue.start = 0;
-			formatValue.end = formatValue.formats.length;
+		const isWholeContent = start === end;
+
+		if (isWholeContent || !isEmpty(linkSettings)) {
+			const newTypography = setFormat({
+				formatValue,
+				typography,
+				isList,
+				value: {
+					color: '#ff4a17',
+					'text-decoration': 'underline',
+				},
+				textLevel,
+			});
+
+			onChange({ linkSettings: attributes, ...newTypography });
+		} else {
+			const obj = applyLinkFormat({
+				formatValue,
+				typography,
+				linkAttributes: createLinkAttributes(attributes),
+				isList,
+				textLevel,
+				linkSettings,
+			});
+
+			onChange(obj);
 		}
-
-		const obj = applyLinkFormat({
-			formatValue,
-			typography,
-			linkAttributes: createLinkAttribute(attributes),
-			isList,
-			textLevel,
-		});
-
-		onChange(obj);
 	};
 
 	const removeLinkFormatHandle = () => {
-		const obj = removeLinkFormat({
-			formatValue,
-			isList,
-			typography,
-			textLevel,
-		});
+		if (!isEmpty(linkSettings)) {
+			const newTypography = setFormat({
+				formatValue: { ...formatValue, start: 0, end: 0 },
+				typography,
+				isList,
+				value: {
+					color: '',
+					'text-decoration': '',
+				},
+				textLevel,
+			});
 
-		onChange(obj);
+			onChange({ linkSettings: null, ...newTypography });
+		} else {
+			const obj = removeLinkFormat({
+				formatValue,
+				isList,
+				typography,
+				textLevel,
+				attributes: linkValue,
+			});
+
+			onChange(obj);
+		}
+
+		const newLinkAttributes = createLinkAttributes({ url: '' });
+		const newLinkValue = createLinkValue({ attributes: newLinkAttributes });
+
+		setLinkValue(newLinkValue);
+
+		if (ref.current) ref.current.node.state.isOpen = false;
 	};
 
 	const updateLinkString = attributes => {
 		const content = getFormattedString({
 			formatValue: getUpdatedFormatValue(
 				formatValue,
-				createLinkAttribute(attributes)
+				createLinkAttributes(attributes)
 			),
 			isList,
 		});
@@ -156,50 +226,58 @@ const Link = withFormatValue(props => {
 	};
 
 	const onClick = attributes => {
-		if (!formatOptions) setLinkFormat(attributes);
-		else if (isEmpty(attributes.url)) removeLinkFormatHandle();
+		if (!formatOptions && !isEmpty(attributes.url))
+			setLinkFormat(attributes);
 		else updateLinkString(attributes);
+
+		const newLinkAttributes = createLinkAttributes(attributes);
+		const newLinkValue = createLinkValue({ attributes: newLinkAttributes });
+
+		setLinkValue(newLinkValue);
 	};
 
 	return (
 		<ToolbarPopover
+			ref={ref}
 			icon={toolbarLink}
 			tooltip={__('Link', 'maxi-blocks')}
-			content={
-				<Fragment>
-					<__experimentalLinkControl
-						value={createLinkValue(formatOptions)}
-						onChange={onClick}
-						settings={[
-							{
-								id: 'opensInNewTab',
-								title: __('Open in new tab', 'maxi-blocks'),
-							},
-							{
-								id: 'noFollow',
-								title: __('Add "nofollow" rel', 'maxi-blocks'),
-							},
-							{
-								id: 'sponsored',
-								title: __('Add "sponsored" rel', 'maxi-blocks'),
-							},
-							{
-								id: 'ugc',
-								title: __('Add "UGC" rel', 'maxi-blocks'),
-							},
-						]}
-					/>
-					<Fragment>
-						<Button
-							className='toolbar-popover-link-destroyer'
-							onClick={() => onClick({ url: '' })}
-						>
-							Remove link
-						</Button>
-					</Fragment>
-				</Fragment>
-			}
-		/>
+			className='toolbar-item__text-link'
+		>
+			<div>
+				<__experimentalLinkControl
+					value={linkValue}
+					onChange={onClick}
+					settings={[
+						{
+							id: 'opensInNewTab',
+							title: __('Open in new tab', 'maxi-blocks'),
+						},
+						{
+							id: 'noFollow',
+							title: __('Add "nofollow" rel', 'maxi-blocks'),
+						},
+						{
+							id: 'sponsored',
+							title: __('Add "sponsored" rel', 'maxi-blocks'),
+						},
+						{
+							id: 'ugc',
+							title: __('Add "UGC" rel', 'maxi-blocks'),
+						},
+					]}
+				/>
+				{!isEmpty(linkValue.url) && (
+					<Button
+						className='toolbar-popover-link-destroyer'
+						onClick={() => {
+							removeLinkFormatHandle();
+						}}
+					>
+						{__('Remove link', 'maxi-blocks')}
+					</Button>
+				)}
+			</div>
+		</ToolbarPopover>
 	);
 });
 

@@ -29,6 +29,7 @@ export { default as FontIconPicker } from './font-icon-picker';
 export { default as FontLevelControl } from './font-level-control';
 export { default as FullSizeControl } from './full-size-control';
 export { default as HoverEffectControl } from './hover-effect-control';
+export { default as HoverPreview } from './hover-preview';
 export { default as ImageAltControl } from './image-alt-control';
 export { default as ImageCropControl } from './image-crop-control';
 export { default as Indicators } from './indicators';

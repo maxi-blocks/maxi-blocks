@@ -8,11 +8,11 @@ import { removeFormat } from '@wordpress/rich-text';
  */
 import applyLinkFormat from './applyLinkFormat';
 import setFormatWithClass from './setFormatWithClass';
+import getInstancePositions from './getInstancePositions';
 
 /**
  * External dependencies
  */
-import { isNil, chunk } from 'lodash';
 import getGroupAttributes from '../../styles/getGroupAttributes';
 
 /**
@@ -29,41 +29,6 @@ const isFormattedWithType = (formatValue, formatName) => {
 			return format.type === formatName;
 		});
 	});
-};
-
-/**
- * Check for the requested format type positions
- *
- * @param {Object} formatValue 			RichText format value
- * @param {string} formatName 			RichText format type
- *
- * @returns {Array} Array with pairs of position for start and end
- */
-const getInstancePositions = (formatValue, formatName) => {
-	const locatedInstances = formatValue.formats.map((formatEl, i) => {
-		if (
-			formatEl.some(format => {
-				return format.type === formatName;
-			})
-		)
-			return i;
-
-		return null;
-	});
-
-	const filteredLocatedInstances = locatedInstances.filter(
-		(current, i, array) => {
-			const prev = array[i - 1];
-			const next = array[i + 1];
-
-			return (
-				(isNil(prev) && current + 1 === next) ||
-				(isNil(next) && current - 1 === prev)
-			);
-		}
-	);
-
-	return chunk(filteredLocatedInstances, 2);
 };
 
 /**
@@ -104,6 +69,7 @@ const setLinkFormats = ({ formatValue, typography, isList, textLevel }) => {
 			linkAttributes: newAttributes,
 			isList,
 			textLevel,
+			returnFormatValue: true,
 		});
 
 		newTypography = getGroupAttributes(linkObj, 'typography');

@@ -21,6 +21,7 @@ import AxisControl from '../axis-control';
 import BorderControl from '../border-control';
 import GradientControl from '../gradient-control';
 import FancyRadioControl from '../fancy-radio-control';
+import SettingTabsControl from '../setting-tabs-control';
 import * as defaultPresets from './defaults';
 import {
 	getGroupAttributes,
@@ -111,17 +112,11 @@ const FontIconControl = props => {
 							breakpoint,
 							props
 						)}
-						defaultUnit={getDefaultAttribute(
-							`icon-size-unit-${breakpoint}`
-						)}
 						onChangeUnit={val =>
 							onChange({
 								[`icon-size-unit-${breakpoint}`]: val,
 							})
 						}
-						defaultValue={getDefaultAttribute(
-							`icon-size-${breakpoint}`
-						)}
 						value={getLastBreakpointAttribute(
 							'icon-size',
 							breakpoint,
@@ -130,6 +125,16 @@ const FontIconControl = props => {
 						onChangeValue={val =>
 							onChange({
 								[`icon-size-${breakpoint}`]: val,
+							})
+						}
+						onReset={() =>
+							onChange({
+								[`icon-size-${breakpoint}`]: getDefaultAttribute(
+									`icon-size-${breakpoint}`
+								),
+								[`icon-size-unit-${breakpoint}`]: getDefaultAttribute(
+									`icon-size-unit-${breakpoint}`
+								),
 							})
 						}
 						minMaxSettings={{
@@ -157,13 +162,17 @@ const FontIconControl = props => {
 							<SizeControl
 								label={__('Spacing', 'maxi-blocks')}
 								disableUnit
-								defaultValue={getDefaultAttribute(
-									'icon-spacing'
-								)}
 								value={props['icon-spacing']}
 								onChangeValue={val =>
 									onChange({
 										['icon-spacing']: val,
+									})
+								}
+								onReset={() =>
+									onChange({
+										['icon-spacing']: getDefaultAttribute(
+											'icon-spacing'
+										),
 									})
 								}
 								min={0}
@@ -243,11 +252,82 @@ const FontIconControl = props => {
 					)}
 
 					{activeOption === 'iconColor' && !disableColor && (
-						<ColorControl
-							label={__('Icon', 'maxi-blocks')}
-							color={props['icon-color']}
-							defaultColor={getDefaultAttribute('icon-color')}
-							onChange={val => onChange({ 'icon-color': val })}
+						<SettingTabsControl
+							items={[
+								{
+									label: __('Normal', 'maxi-blocks'),
+									content: (
+										<ColorControl
+											label={__('Icon', 'maxi-blocks')}
+											color={props['icon-color']}
+											defaultColor={getDefaultAttribute(
+												'icon-color'
+											)}
+											onChange={val =>
+												onChange({ 'icon-color': val })
+											}
+										/>
+									),
+								},
+								{
+									label: __('Hover', 'maxi-blocks'),
+									content: (
+										<>
+											<FancyRadioControl
+												label={__(
+													'Enable Icon Hover',
+													'maxi-blocks'
+												)}
+												selected={
+													props['icon-status-hover']
+												}
+												options={[
+													{
+														label: __(
+															'Yes',
+															'maxi-blocks'
+														),
+														value: 1,
+													},
+													{
+														label: __(
+															'No',
+															'maxi-blocks'
+														),
+														value: 0,
+													},
+												]}
+												onChange={val =>
+													onChange({
+														'icon-status-hover': val,
+													})
+												}
+											/>
+											{props['icon-status-hover'] && (
+												<ColorControl
+													label={__(
+														'Icon',
+														'maxi-blocks'
+													)}
+													color={
+														props[
+															'icon-color-hover'
+														]
+													}
+													defaultColor={getDefaultAttribute(
+														'icon-color-hover'
+													)}
+													onChange={val =>
+														onChange({
+															'icon-color-hover': val,
+														})
+													}
+												/>
+											)}
+										</>
+									),
+								},
+							]}
 						/>
 					)}
 

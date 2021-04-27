@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 
 /**
  *
@@ -153,20 +153,6 @@ const SVGLayer = props => {
 											)
 										]
 									}
-									defaultValue={getDefaultAttribute(
-										getAttributeKey(
-											'background-svg-top',
-											isHover,
-											prefix
-										)
-									)}
-									defaultUnit={getDefaultAttribute(
-										getAttributeKey(
-											'background-svg-top--unit',
-											isHover,
-											prefix
-										)
-									)}
 									unit={
 										SVGOptions[
 											getAttributeKey(
@@ -194,6 +180,32 @@ const SVGLayer = props => {
 											)]: val,
 										})
 									}
+									onReset={() =>
+										onChange({
+											[getAttributeKey(
+												'background-svg-top',
+												isHover,
+												prefix
+											)]: getDefaultAttribute(
+												getAttributeKey(
+													'background-svg-top',
+													isHover,
+													prefix
+												)
+											),
+											[getAttributeKey(
+												'background-svg-top--unit',
+												isHover,
+												prefix
+											)]: getDefaultAttribute(
+												getAttributeKey(
+													'background-svg-top--unit',
+													isHover,
+													prefix
+												)
+											),
+										})
+									}
 									min={0}
 								/>
 								<SizeControl
@@ -207,20 +219,6 @@ const SVGLayer = props => {
 											)
 										]
 									}
-									defaultValue={getDefaultAttribute(
-										getAttributeKey(
-											'background-svg-left',
-											isHover,
-											prefix
-										)
-									)}
-									defaultUnit={getDefaultAttribute(
-										getAttributeKey(
-											'background-svg-left--unit',
-											isHover,
-											prefix
-										)
-									)}
 									unit={
 										SVGOptions[
 											getAttributeKey(
@@ -248,6 +246,32 @@ const SVGLayer = props => {
 											)]: val,
 										})
 									}
+									onReset={() =>
+										onChange({
+											[getAttributeKey(
+												'background-svg-left',
+												isHover,
+												prefix
+											)]: getDefaultAttribute(
+												getAttributeKey(
+													'background-svg-left',
+													isHover,
+													prefix
+												)
+											),
+											[getAttributeKey(
+												'background-svg-left--unit',
+												isHover,
+												prefix
+											)]: getDefaultAttribute(
+												getAttributeKey(
+													'background-svg-left--unit',
+													isHover,
+													prefix
+												)
+											),
+										})
+									}
 									min={0}
 								/>
 							</Fragment>
@@ -267,20 +291,6 @@ const SVGLayer = props => {
 										)
 									]
 								}
-								defaultValue={getDefaultAttribute(
-									getAttributeKey(
-										'background-svg-size',
-										isHover,
-										prefix
-									)
-								)}
-								defaultUnit={getDefaultAttribute(
-									getAttributeKey(
-										'background-svg-size--unit',
-										isHover,
-										prefix
-									)
-								)}
 								unit={
 									SVGOptions[
 										getAttributeKey(
@@ -306,6 +316,32 @@ const SVGLayer = props => {
 											isHover,
 											prefix
 										)]: val,
+									})
+								}
+								onReset={() =>
+									onChange({
+										[getAttributeKey(
+											'background-svg-size',
+											isHover,
+											prefix
+										)]: getDefaultAttribute(
+											getAttributeKey(
+												'background-svg-size',
+												isHover,
+												prefix
+											)
+										),
+										[getAttributeKey(
+											'background-svg-size--unit',
+											isHover,
+											prefix
+										)]: getDefaultAttribute(
+											getAttributeKey(
+												'background-svg-size--unit',
+												isHover,
+												prefix
+											)
+										),
 									})
 								}
 								min={0}

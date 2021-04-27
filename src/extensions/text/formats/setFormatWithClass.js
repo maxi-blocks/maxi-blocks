@@ -15,7 +15,6 @@ import getFormatType from './getFormatType';
 import updateCustomFormatStyle from './updateCustomFormatStyle';
 import getCustomFormat from './getCustomFormat';
 import getIsFullFormat from './getIsFullFormat';
-import formatValueCleaner from './formatValueCleaner';
 
 /**
  * External dependencies
@@ -182,6 +181,7 @@ const updateCustomFormat = ({
 		formatValue,
 		className: currentClassName,
 		isList: false,
+		isHover,
 	});
 
 	return {
@@ -337,7 +337,7 @@ const mergeNewFormat = ({
 		} = removeCustomFormat({
 			formatValue,
 			className: useCurrent ? currentClassName : formatClassName,
-			isList: false,
+			isList,
 		});
 
 		newFormatValue = cleanedFormatValue;
@@ -599,9 +599,7 @@ const setFormatWithClass = ({
 	return {
 		...newTypography,
 		content: newContent,
-		...(returnFormatValue
-			? { formatValue: formatValueCleaner(newFormatValue) }
-			: {}),
+		...(returnFormatValue ? { formatValue: newFormatValue } : {}),
 	};
 };
 

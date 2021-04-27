@@ -27,25 +27,25 @@ const PaddingMargin = props => {
 			className='toolbar-item__padding-margin'
 			tooltip={__('Padding & Margin', 'maxi-blocks')}
 			icon={toolbarPadding}
-			content={
-				<div className='toolbar-item__padding-margin__popover'>
-					<AxisControl
-						{...getGroupAttributes(props, 'padding')}
-						label={__('Padding', 'maxi-blocks')}
-						onChange={obj => onChange(obj)}
-						breakpoint={breakpoint}
-						target='padding'
-					/>
-					<AxisControl
-						{...getGroupAttributes(props, 'margin')}
-						label={__('Margin', 'maxi-blocks')}
-						onChange={obj => onChange(obj)}
-						breakpoint={breakpoint}
-						target='margin'
-					/>
-				</div>
-			}
-		/>
+		>
+			<div className='toolbar-item__padding-margin__popover'>
+				<AxisControl
+					{...getGroupAttributes(props, 'padding')}
+					label={__('Padding', 'maxi-blocks')}
+					onChange={obj => onChange(obj)}
+					breakpoint={breakpoint}
+					target='padding'
+				/>
+				<AxisControl
+					{...getGroupAttributes(props, 'margin')}
+					label={__('Margin', 'maxi-blocks')}
+					onChange={obj => onChange(obj)}
+					breakpoint={breakpoint}
+					target='margin'
+					optionType='string'
+				/>
+			</div>
+		</ToolbarPopover>
 	);
 };
 

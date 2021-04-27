@@ -4,35 +4,34 @@
 import { toHTMLString } from '@wordpress/rich-text';
 
 /**
- * Internal dependencies
- */
-import formatValueCleaner from './formatValueCleaner';
-
-/**
  * External dependencies
  */
 import { inRange } from 'lodash';
+import getFormatType from './getFormatType';
 
-const removeCustomFormat = ({ formatValue, className, isList }) => {
+const removeCustomFormat = ({ formatValue, className, isList, isHover }) => {
 	const newFormatValue = { ...formatValue };
 	const { start, end, formats } = newFormatValue;
 
 	Object.entries(formats).forEach(([key, value], i) => {
+		const format = value.filter(
+			val => val.type === getFormatType(isHover)
+		)[0];
 		if (
 			inRange(+key, start, end) &&
-			value &&
-			value[0].attributes.className === className
+			format &&
+			format.attributes.className === className
 		)
-			newFormatValue.formats[key] = null;
+			delete newFormatValue.formats[key];
 	});
 
 	const newContent = toHTMLString({
-		value: formatValueCleaner(newFormatValue),
+		value: newFormatValue,
 		multilineTag: isList ? 'li' : null,
 	});
 
 	return {
-		formatValue: formatValueCleaner(newFormatValue),
+		formatValue: newFormatValue,
 		content: newContent,
 	};
 };

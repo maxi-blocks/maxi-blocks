@@ -56,42 +56,41 @@ const DividerAlignment = props => {
 			tooltip={__('Divider aligment', 'maxi-blocks')}
 			icon={toolbarDividerAlign}
 			advancedOptions='line'
-			content={
-				<div className='toolbar-item__divider-alignment__popover'>
+		>
+			<div className='toolbar-item__divider-alignment__popover'>
+				<SelectControl
+					label={__('Line Orientation', 'maxi-blocks')}
+					options={[
+						{
+							label: __('Horizontal', 'maxi-blocks'),
+							value: 'horizontal',
+						},
+						{
+							label: __('Vertical', 'maxi-blocks'),
+							value: 'vertical',
+						},
+					]}
+					value={lineOrientation}
+					onChange={value => onChangeOrientation(value)}
+				/>
+				{lineOrientation === 'vertical' && (
 					<SelectControl
-						label={__('Line Orientation', 'maxi-blocks')}
-						options={[
-							{
-								label: __('Horizontal', 'maxi-blocks'),
-								value: 'horizontal',
-							},
-							{
-								label: __('Vertical', 'maxi-blocks'),
-								value: 'vertical',
-							},
-						]}
-						value={lineOrientation}
-						onChange={value => onChangeOrientation(value)}
+						label={__('Vertical Position', 'maxi-blocks')}
+						options={getVerticalOptions()}
+						value={lineVertical}
+						onChange={value => onChangeVertical(value)}
 					/>
-					{lineOrientation === 'vertical' && (
-						<SelectControl
-							label={__('Vertical Position', 'maxi-blocks')}
-							options={getVerticalOptions()}
-							value={lineVertical}
-							onChange={value => onChangeVertical(value)}
-						/>
-					)}
-					{lineOrientation === 'horizontal' && (
-						<RadioControl
-							className='maxi-alignment-control'
-							selected={lineHorizontal}
-							options={getHorizontalOptions()}
-							onChange={value => onChangeHorizontal(value)}
-						/>
-					)}
-				</div>
-			}
-		/>
+				)}
+				{lineOrientation === 'horizontal' && (
+					<RadioControl
+						className='maxi-alignment-control'
+						selected={lineHorizontal}
+						options={getHorizontalOptions()}
+						onChange={value => onChangeHorizontal(value)}
+					/>
+				)}
+			</div>
+		</ToolbarPopover>
 	);
 };
 

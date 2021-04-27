@@ -33,6 +33,10 @@ import {
 } from '../../extensions/styles';
 import getStyles from './styles';
 import { onMerge, onSplit } from './utils';
+import {
+	getHasNativeFormat,
+	setCustomFormatsWhenPaste,
+} from '../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -173,6 +177,40 @@ class edit extends MaxiBlock {
 							__unstableAllowPrefixTransformations
 						>
 							{({ value: formatValue }) => {
+								/**
+								 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+								 * and add some coding manually
+								 * This next script will check if there is any format directly related with
+								 * any native format and if it's so, will format it in Maxi Blocks way
+								 */
+								const hasNativeFormat = getHasNativeFormat(
+									formatValue
+								);
+
+								if (hasNativeFormat) {
+									const {
+										typeOfList,
+										content,
+										textLevel,
+									} = attributes;
+
+									const cleanCustomProps = setCustomFormatsWhenPaste(
+										{
+											formatValue,
+											typography: getGroupAttributes(
+												attributes,
+												'typography'
+											),
+											isList,
+											typeOfList,
+											content,
+											textLevel,
+										}
+									);
+
+									setAttributes(cleanCustomProps);
+								}
+
 								dispatch('maxiBlocks/text').sendFormatValue(
 									formatValue,
 									clientId
@@ -214,6 +252,39 @@ class edit extends MaxiBlock {
 							type={typeOfList}
 						>
 							{({ value: formatValue, onChange }) => {
+								/**
+								 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+								 * and add some coding manually
+								 * This next script will check if there is any format directly related with
+								 * any native format and if it's so, will format it in Maxi Blocks way
+								 */
+								const hasNativeFormat = getHasNativeFormat(
+									formatValue
+								);
+
+								if (hasNativeFormat) {
+									const {
+										typeOfList,
+										content,
+										textLevel,
+									} = attributes;
+
+									const cleanCustomProps = setCustomFormatsWhenPaste(
+										{
+											formatValue,
+											typography: getGroupAttributes(
+												attributes,
+												'typography'
+											),
+											isList,
+											typeOfList,
+											content,
+											textLevel,
+										}
+									);
+
+									setAttributes(cleanCustomProps);
+								}
 								dispatch('maxiBlocks/text').sendFormatValue(
 									formatValue,
 									clientId

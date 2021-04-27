@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { TextControl, Icon } from '@wordpress/components';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -51,7 +51,7 @@ import {
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, formatValue } = props;
+	const { attributes, deviceType, setAttributes } = props;
 	const {
 		customLabel,
 		uniqueID,
@@ -207,6 +207,7 @@ const Inspector = props => {
 														attributes,
 														[
 															'icon',
+															'iconHover',
 															'iconPadding',
 															'iconBorder',
 															'iconBorderWidth',
@@ -290,9 +291,7 @@ const Inspector = props => {
 																	breakpoint={
 																		deviceType
 																	}
-																	formatValue={
-																		formatValue
-																	}
+																	disableCustomFormats
 																/>
 															),
 														},
@@ -357,10 +356,8 @@ const Inspector = props => {
 																			breakpoint={
 																				deviceType
 																			}
-																			formatValue={
-																				formatValue
-																			}
 																			isHover
+																			disableCustomFormats
 																		/>
 																	)}
 																</Fragment>

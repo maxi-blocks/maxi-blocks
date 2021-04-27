@@ -3,13 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Fragment  } from '@wordpress/element';
-const {
+import { Fragment } from '@wordpress/element';
+import {
 	RangeControl,
 	SelectControl,
 	TextareaControl,
 	TextControl,
-} = wp.components;
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -374,6 +374,7 @@ const Inspector = props => {
 															breakpoint={
 																deviceType
 															}
+															disableCustomFormats
 														/>
 													)}
 												</Fragment>
@@ -905,6 +906,7 @@ const Inspector = props => {
 											),
 											content: (
 												<HoverEffectControl
+													uniqueID={uniqueID}
 													{...getGroupAttributes(
 														attributes,
 														[

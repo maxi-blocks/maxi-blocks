@@ -12,17 +12,8 @@ import { styleObjectManipulator } from './updateCustomFormatStyle';
 /**
  * External dependencies
  */
-import {
-	isEqual,
-	compact,
-	uniq,
-	flattenDeep,
-	find,
-	isEmpty,
-	cloneDeep,
-} from 'lodash';
+import { isEqual, compact, uniq, flattenDeep, find, isEmpty } from 'lodash';
 import getIsFullFormat from './getIsFullFormat';
-import formatValueCleaner from './formatValueCleaner';
 
 /**
  * Get the classes from custom formats that shares the same
@@ -82,8 +73,8 @@ export const flatRepeatedClassNames = (
 	const newClassName = repeatedClasses[0];
 	repeatedClasses.shift();
 
-	const newFormatValue = cloneDeep(formatValue);
-	const newTypography = cloneDeep(typography);
+	const newFormatValue = { ...formatValue };
+	const newTypography = { ...typography };
 
 	newFormatValue.formats = newFormatValue.formats.map(formatEl => {
 		if (formatEl)
@@ -283,7 +274,7 @@ const flatFormatsWithClass = ({
 		typography: cleanedTypography,
 		content: cleanedContent,
 		...(returnFormatValue && {
-			formatValue: formatValueCleaner(cleanedFormatValue),
+			formatValue: cleanedFormatValue,
 		}),
 	};
 };

@@ -12,6 +12,7 @@ import {
  */
 const SvgColor = props => {
 	const { type, blockStyle, label, onChange, clientId } = props;
+
 	return (
 		<ColorControl
 			label={label}

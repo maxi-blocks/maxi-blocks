@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { TextControl } from '@wordpress/components';
 
 /**
@@ -155,9 +155,7 @@ const Inspector = props => {
 													<SvgColor
 														{...getGroupAttributes(
 															attributes,
-															[
-																'palette',
-															]
+															'palette'
 														)}
 														color={svgColorFill}
 														label={__(
@@ -166,9 +164,9 @@ const Inspector = props => {
 														)}
 														type='svgColorFill'
 														onChange={svgColorFill => {
-															setAttributes({
-																svgColorFill,
-															});
+															setAttributes(
+																svgColorFill
+															);
 															changeSVGContent(
 																svgColorFill,
 																1
@@ -181,9 +179,7 @@ const Inspector = props => {
 													<SvgColor
 														{...getGroupAttributes(
 															attributes,
-															[
-																'palette',
-															]
+															'palette'
 														)}
 														color={svgColorLine}
 														label={__(
@@ -192,9 +188,9 @@ const Inspector = props => {
 														)}
 														type='svgColorLine'
 														onChange={svgColorLine => {
-															setAttributes({
-																svgColorLine,
-															});
+															setAttributes(
+																svgColorLine
+															);
 															changeSVGContent(
 																svgColorLine,
 																2

@@ -76,7 +76,7 @@ const palette = {
 		type: 'boolean',
 		default: false,
 	},
-	'palette-preset-svgColorFill': {
+	'palette-preset-svgColorFill-color': {
 		type: 'number',
 		default: 4,
 	},
@@ -84,7 +84,7 @@ const palette = {
 		type: 'boolean',
 		default: false,
 	},
-	'palette-preset-svgColorLine': {
+	'palette-preset-svgColorLine-color': {
 		type: 'number',
 		default: 7,
 	},

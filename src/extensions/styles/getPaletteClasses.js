@@ -103,21 +103,19 @@ const getPaletteClasses = (
 					? attributes['palette-preset-divider-color']
 					: getPaletteDefault('divider', blockName, textLevel)
 			}`,
-		allowedPalettes.includes('svg-fill') &&
-			!isEmpty(attributes.content) &&
-			!attributes['palette-custom-svg-fill-color'] &&
-			`maxi-sc-${parentBlockStyle}-svg-fill-color-${
-				!isNil(attributes['palette-preset-svg-fill-color'])
-					? attributes['palette-preset-svg-fill-color']
-					: getPaletteDefault('svg-fill', blockName, textLevel)
+		allowedPalettes.includes('svgColorFill') &&
+			!attributes['palette-custom-svgColorFill-color'] &&
+			`maxi-sc-${parentBlockStyle}-svgColorFill-color-${
+				!isNil(attributes['palette-preset-svgColorFill-color'])
+					? attributes['palette-preset-svgColorFill-color']
+					: getPaletteDefault('svgColorFill', blockName, textLevel)
 			}`,
-		allowedPalettes.includes('svg-line') &&
-			!isEmpty(attributes.content) &&
-			!attributes['palette-custom-svg-line-color'] &&
-			`maxi-sc-${parentBlockStyle}-svg-line-color-${
-				!isNil(attributes['palette-preset-svg-line-color'])
-					? attributes['palette-preset-svg-line-color']
-					: getPaletteDefault('svg-line', blockName, textLevel)
+		allowedPalettes.includes('svgColorLine') &&
+			!attributes['palette-custom-svgColorLine-color'] &&
+			`maxi-sc-${parentBlockStyle}-svgColorLine-color-${
+				!isNil(attributes['palette-preset-svgColorLine-color'])
+					? attributes['palette-preset-svgColorLine-color']
+					: getPaletteDefault('svgColorLine', blockName, textLevel)
 			}`
 	);
 

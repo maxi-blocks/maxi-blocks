@@ -335,32 +335,44 @@ const MaxiToolbar = props => {
 						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<Fragment>
 								<SvgColor
+									{...getGroupAttributes(
+										attributes,
+										'palette'
+									)}
 									blockName={name}
 									svgColorDefault={getDefaultAttribute(
-										'svgColorOrange',
+										'svgColorFill',
 										clientId
 									)}
-									svgColor={attributes.svgColorOrange}
-									onChange={svgColorOrange => {
-										setAttributes({
-											svgColorOrange,
-										});
-										changeSVGContent(svgColorOrange, 1);
+									svgColor={attributes.svgColorFill}
+									onChange={svgColorFill => {
+										setAttributes(svgColorFill);
+										changeSVGContent(svgColorFill, 1);
 									}}
+									blockStyle={blockStyle}
+									clientId={clientId}
+									type={'svgColorFill'}
+									breakpoint={deviceType}
 								/>
 								<SvgColor
+									{...getGroupAttributes(
+										attributes,
+										'palette'
+									)}
 									blockName={name}
 									svgColorDefault={getDefaultAttribute(
-										'svgColorBlack',
+										'svgColorLine',
 										clientId
 									)}
-									svgColor={attributes.svgColorBlack}
-									onChange={svgColorBlack => {
-										setAttributes({
-											svgColorBlack,
-										});
-										changeSVGContent(svgColorBlack, 2);
+									svgColor={attributes.svgColorLine}
+									onChange={svgColorLine => {
+										setAttributes(svgColorLine);
+										changeSVGContent(svgColorLine, 2);
 									}}
+									blockStyle={blockStyle}
+									clientId={clientId}
+									type={'svgColorLine'}
+									breakpoint={deviceType}
 								/>
 							</Fragment>
 						)}

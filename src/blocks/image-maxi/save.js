@@ -36,7 +36,13 @@ const save = props => {
 		mediaAltTitle,
 		altSelector,
 		SVGElement,
+		imageRatio,
 	} = attributes;
+
+	const hoverPreviewClasses = classnames(
+		'maxi-image-ratio',
+		`maxi-image-ratio__${imageRatio}`
+	);
 
 	const hoverClasses = classnames(
 		'maxi-block-hover-wrapper',
@@ -95,6 +101,7 @@ const save = props => {
 			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>
 				{(!SVGElement && (
 					<HoverPreview
+						className={hoverPreviewClasses}
 						key={`hover-preview-${uniqueID}`}
 						{...getGroupAttributes(attributes, [
 							'hover',

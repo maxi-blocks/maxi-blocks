@@ -124,7 +124,6 @@ class edit extends MaxiBlock {
 				}}
 				{...this.props}
 			/>,
-			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
 			<RowContext.Provider
 				key={`row-content-${uniqueID}`}
 				value={{

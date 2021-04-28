@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getPositionStyles Get a correct Position style 1`] = `
+Object {
+  "general": Object {
+    "bottom": "3top",
+    "left": "4top",
+    "position": "top",
+    "right": "2top",
+    "top": "1top",
+  },
+  "l": Object {
+    "bottom": "3bottom",
+    "left": "4bottom",
+    "position": "bottom",
+    "right": "2bottom",
+    "top": "1bottom",
+  },
+  "m": Object {
+    "bottom": "3top",
+    "left": "4top",
+    "position": "top",
+    "right": "2top",
+    "top": "1top",
+  },
+  "s": Object {
+    "bottom": "3bottom",
+    "left": "4bottom",
+    "position": "bottom",
+    "right": "2bottom",
+    "top": "1bottom",
+  },
+  "xl": Object {
+    "bottom": "3top",
+    "left": "4top",
+    "position": "top",
+    "right": "2top",
+    "top": "1top",
+  },
+  "xs": Object {
+    "bottom": "3top",
+    "left": "4top",
+    "position": "top",
+    "right": "2top",
+    "top": "1top",
+  },
+  "xxl": Object {
+    "bottom": "3bottom",
+    "left": "4bottom",
+    "position": "bottom",
+    "right": "2bottom",
+    "top": "1bottom",
+  },
+}
+`;

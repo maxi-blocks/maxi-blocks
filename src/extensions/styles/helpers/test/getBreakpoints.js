@@ -1,4 +1,5 @@
 import getBreakpoints from '../getBreakpoints';
+import '@wordpress/block-editor';
 
 describe('getBeakpoints', () => {
 	it('Get a correct beakpoint', () => {

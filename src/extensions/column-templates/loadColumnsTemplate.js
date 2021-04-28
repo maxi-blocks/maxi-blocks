@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 import { synchronizeBlocksWithTemplate } from '@wordpress/blocks';
 
 /**
@@ -48,8 +48,15 @@ const updateTemplate = (template, columnsBlockObjects, clientId) => {
 		newAttributes
 	);
 
-	const newTemplate = synchronizeBlocksWithTemplate(
+	// Manage the content of the store
+	dispatch('maxiBlocks/columns').sendContentBackup(
 		columnsBlockObjects,
+		clientId
+	);
+	const content = select('maxiBlocks/columns').getContentBackup(clientId);
+
+	const newTemplate = synchronizeBlocksWithTemplate(
+		content,
 		template.content
 	);
 	dispatch('core/block-editor').replaceInnerBlocks(

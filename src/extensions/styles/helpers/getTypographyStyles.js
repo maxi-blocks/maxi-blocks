@@ -18,11 +18,20 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block size properties
  */
-const getTypographyStyles = (obj, isHover = false, prefix = '') => {
+const getTypographyStyles = (
+	obj,
+	isHover = false,
+	prefix = '',
+	customFormatTypography = false
+) => {
 	const response = {};
 
+	const isCustomFormat = !!customFormatTypography;
+
 	const getName = (target, breakpoint) =>
-		`${prefix}${target}-${breakpoint}${isHover ? '-hover' : ''}`;
+		`${prefix}${target}-${breakpoint}${
+			!isCustomFormat && isHover ? '-hover' : ''
+		}`;
 
 	breakpoints.forEach(breakpoint => {
 		const typography = {
@@ -38,7 +47,7 @@ const getTypographyStyles = (obj, isHover = false, prefix = '') => {
 				}${getLastBreakpointAttribute(
 					`${prefix}font-size-unit`,
 					breakpoint,
-					obj
+					isCustomFormat ? customFormatTypography : obj
 				)}`,
 			}),
 			...(obj[getName('line-height', breakpoint)] && {
@@ -46,7 +55,7 @@ const getTypographyStyles = (obj, isHover = false, prefix = '') => {
 					getLastBreakpointAttribute(
 						`${prefix}line-height-unit`,
 						breakpoint,
-						obj
+						isCustomFormat ? customFormatTypography : obj
 					) || ''
 				}`,
 			}),
@@ -56,7 +65,7 @@ const getTypographyStyles = (obj, isHover = false, prefix = '') => {
 				}${getLastBreakpointAttribute(
 					`${prefix}letter-spacing-unit`,
 					breakpoint,
-					obj
+					isCustomFormat ? customFormatTypography : obj
 				)}`,
 			}),
 			...(obj[getName('font-weight', breakpoint)] && {

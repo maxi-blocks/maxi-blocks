@@ -30,16 +30,15 @@ const SvgColor = props => {
 					}}
 				/>
 			}
-			content={
-				<ColorControl
-					label={__('SVG', 'maxi-blocks')}
-					color={svgColor}
-					defaultColor={svgColorDefault}
-					onChange={val => onChange({ [svgColor]: val })}
-					disableGradient
-				/>
-			}
-		/>
+		>
+			<ColorControl
+				label={__('SVG', 'maxi-blocks')}
+				color={svgColor}
+				defaultColor={svgColorDefault}
+				onChange={val => onChange({ [svgColor]: val })}
+				disableGradient
+			/>
+		</ToolbarPopover>
 	);
 };
 

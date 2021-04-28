@@ -7,19 +7,13 @@ import { removeFormat, toHTMLString } from '@wordpress/rich-text';
  * Internal dependencies
  */
 import getMultiFormatObj from './getMultiFormatObj';
+import { styleObjectManipulator } from './updateCustomFormatStyle';
 
 /**
  * External dependencies
  */
-import {
-	isEqual,
-	compact,
-	uniq,
-	flattenDeep,
-	find,
-	isEmpty,
-	cloneDeep,
-} from 'lodash';
+import { isEqual, compact, uniq, flattenDeep, find, isEmpty } from 'lodash';
+import getIsFullFormat from './getIsFullFormat';
 
 /**
  * Get the classes from custom formats that shares the same
@@ -73,13 +67,14 @@ export const getRepeatedClassNames = (customFormats, formatValue) => {
 export const flatRepeatedClassNames = (
 	repeatedClasses,
 	formatValue,
-	typography
+	typography,
+	isHover
 ) => {
 	const newClassName = repeatedClasses[0];
 	repeatedClasses.shift();
 
-	const newFormatValue = cloneDeep(formatValue);
-	const newTypography = cloneDeep(typography);
+	const newFormatValue = { ...formatValue };
+	const newTypography = { ...typography };
 
 	newFormatValue.formats = newFormatValue.formats.map(formatEl => {
 		if (formatEl)
@@ -97,7 +92,9 @@ export const flatRepeatedClassNames = (
 	});
 
 	repeatedClasses.forEach(className => {
-		delete newTypography['custom-formats'][className];
+		delete newTypography[`custom-formats${isHover ? '-hover' : ''}`][
+			className
+		];
 	});
 
 	return {
@@ -122,13 +119,22 @@ export const removeUnnecessaryFormats = ({
 	typography,
 	content,
 	isList,
+	value,
+	breakpoint,
+	textLevel,
+	isHover,
 }) => {
-	const multiFormatObj = getMultiFormatObj({
-		...formatValue,
-		start: 0,
-		end: formatValue.formats.length,
-	});
-	const { 'custom-formats': customFormats } = typography;
+	const multiFormatObj = getMultiFormatObj(
+		{
+			...formatValue,
+			start: 0,
+			end: formatValue.formats.length,
+		},
+		isHover
+	);
+	const {
+		[`custom-formats${isHover ? '-hover' : ''}`]: customFormats,
+	} = typography;
 	let newFormatValue = { ...formatValue };
 	let newContent = content;
 
@@ -138,18 +144,23 @@ export const removeUnnecessaryFormats = ({
 				const format = find(multiFormatObj, {
 					className: target,
 				});
+				const cleanedStyle = styleObjectManipulator({
+					typography,
+					value,
+					breakpoint,
+					currentStyle: style,
+					textLevel,
+				});
+				const isFullFormat = getIsFullFormat(formatValue, target);
 
-				/**
-				 * Exist on typography, not in content
-				 * This action is working too late: after removing content,
-				 * this action is not called. Is necessary to modify custom format
-				 * again to make it work correctly.
-				 * */
+				// Exist on typography, not in content
 				if (!format) {
-					delete typography['custom-formats'][target];
+					delete typography[
+						`custom-formats${isHover ? '-hover' : ''}`
+					][target];
 				}
-				// Same style than default
-				if (isEmpty(style)) {
+				// Style is empty
+				if (isFullFormat && isEmpty(cleanedStyle)) {
 					newFormatValue = removeFormat(
 						format
 							? {
@@ -161,7 +172,9 @@ export const removeUnnecessaryFormats = ({
 						'maxi-blocks/text-custom'
 					);
 
-					delete typography['custom-formats'][target];
+					delete typography[
+						`custom-formats${isHover ? '-hover' : ''}`
+					][target];
 
 					return true;
 				}
@@ -177,7 +190,8 @@ export const removeUnnecessaryFormats = ({
 				start: formatValue.start,
 				end: formatValue.end,
 			},
-			multilineTag: (isList && 'li') || null,
+			multilineTag: isList ? 'li' : null,
+			preserveWhiteSpace: true,
 		});
 
 	return {
@@ -199,8 +213,20 @@ export const removeUnnecessaryFormats = ({
  * @returns {Object} Cleaned RichText format value, content and Maxi typography
  */
 
-const flatFormatsWithClass = ({ formatValue, typography, content, isList }) => {
-	const { 'custom-formats': customFormats } = typography;
+const flatFormatsWithClass = ({
+	formatValue,
+	typography,
+	content,
+	isList,
+	value,
+	textLevel,
+	breakpoint,
+	returnFormatValue = false,
+	isHover = false,
+}) => {
+	const {
+		[`custom-formats${isHover ? '-hover' : ''}`]: customFormats,
+	} = typography;
 
 	const repeatedClasses = getRepeatedClassNames(customFormats, formatValue);
 
@@ -212,11 +238,17 @@ const flatFormatsWithClass = ({ formatValue, typography, content, isList }) => {
 		const {
 			formatValue: preformattedFormatValue,
 			typography: preformattedTypography,
-		} = flatRepeatedClassNames(repeatedClasses, formatValue, typography);
+		} = flatRepeatedClassNames(
+			repeatedClasses,
+			formatValue,
+			typography,
+			isHover
+		);
 
 		newContent = toHTMLString({
 			value: preformattedFormatValue,
-			multilineTag: (isList && 'li') || null,
+			multilineTag: isList ? 'li' : null,
+			preserveWhiteSpace: true,
 		});
 
 		newFormatValue = preformattedFormatValue;
@@ -232,12 +264,18 @@ const flatFormatsWithClass = ({ formatValue, typography, content, isList }) => {
 		typography: newTypography,
 		content: newContent,
 		isList,
+		value,
+		breakpoint,
+		textLevel,
+		isHover,
 	});
 
 	return {
-		formatValue: cleanedFormatValue,
 		typography: cleanedTypography,
 		content: cleanedContent,
+		...(returnFormatValue && {
+			formatValue: cleanedFormatValue,
+		}),
 	};
 };
 

@@ -2,7 +2,14 @@
  * WordPress dependencies
  */
 import { dispatch } from '@wordpress/data';
-import { Fragment, Component } from '@wordpress/element';import { Icon, Button, Popover, withFocusOutside, Tooltip } from '@wordpress/components';
+import { Component, createRef } from '@wordpress/element';
+import {
+	Icon,
+	Button,
+	Popover,
+	withFocusOutside,
+	Tooltip,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -47,9 +54,11 @@ class ToolbarPopover extends Component {
 			className,
 			tooltip,
 			icon,
-			content,
+			children,
 			advancedOptions = false,
 		} = this.props;
+
+		const ref = createRef();
 
 		const { isOpen } = this.state;
 
@@ -62,9 +71,10 @@ class ToolbarPopover extends Component {
 		);
 
 		return (
-			<Fragment>
+			<>
 				<Tooltip text={tooltip} position='bottom center'>
 					<Button
+						ref={ref}
 						className={classes}
 						onClick={() => this.onToggle()}
 						aria-expanded={isOpen}
@@ -73,7 +83,7 @@ class ToolbarPopover extends Component {
 						<Icon className='toolbar-item__icon' icon={icon} />
 					</Button>
 				</Tooltip>
-				{isOpen && content && (
+				{isOpen && children && (
 					<Popover
 						className='toolbar-item__popover'
 						noArrow={false}
@@ -82,7 +92,7 @@ class ToolbarPopover extends Component {
 						isAlternate
 						shouldAnchorIncludePadding
 					>
-						{content}
+						{children}
 						{!!advancedOptions && (
 							<Button
 								className='toolbar-item__popover__advanced-button'
@@ -96,7 +106,7 @@ class ToolbarPopover extends Component {
 						)}
 					</Popover>
 				)}
-			</Fragment>
+			</>
 		);
 	}
 }

@@ -41,13 +41,4 @@ describe('ColorControl', () => {
 			renderer.find('.components-base-control__label').html()
 		).toBe('Font Colour');
 	});
-
-	test('Javad test', () => {
-		// return true/false
-		const isNumeric = string => {
-			return !Number.isNaN(string);
-		};
-
-		expect(isNumeric('Is not going to pass')).toBe(true);
-	});
 });

@@ -1,3 +1,10 @@
+/**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+const { getSelectedBlockClientId } = select('core/block-editor');
+
 export const getFonts = state => {
 	if (state.fonts) return state.fonts;
 	return state;
@@ -8,7 +15,10 @@ export const getFont = (state, font) => {
 	return state;
 };
 
-export const getFormatValue = state => {
-	if (state.formatValue) return state.formatValue;
+export const getFormatValue = (state, clientId) => {
+	const selectedClientId = clientId || getSelectedBlockClientId();
+
+	if (state.formatValues && state.formatValues[selectedClientId])
+		return state.formatValues[selectedClientId];
 	return {};
 };

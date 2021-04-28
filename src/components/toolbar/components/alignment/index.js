@@ -70,19 +70,18 @@ const Alignment = props => {
 					props
 				)
 			)}
-			content={
-				<AlignmentControl
-					{...getGroupAttributes(
-						props,
-						isText ? 'textAlignment' : 'alignment'
-					)}
-					onChange={obj => onChange(obj)}
-					disableJustify={!isText}
-					breakpoint={breakpoint}
-					type={isText && 'text'}
-				/>
-			}
-		/>
+		>
+			<AlignmentControl
+				{...getGroupAttributes(
+					props,
+					isText ? 'textAlignment' : 'alignment'
+				)}
+				onChange={obj => onChange(obj)}
+				disableJustify={!isText}
+				breakpoint={breakpoint}
+				type={isText && 'text'}
+			/>
+		</ToolbarPopover>
 	);
 };
 

@@ -51,7 +51,7 @@ import {
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, formatValue } = props;
+	const { attributes, deviceType, setAttributes } = props;
 	const {
 		customLabel,
 		uniqueID,
@@ -291,9 +291,7 @@ const Inspector = props => {
 																	breakpoint={
 																		deviceType
 																	}
-																	formatValue={
-																		formatValue
-																	}
+																	disableCustomFormats
 																/>
 															),
 														},
@@ -358,10 +356,8 @@ const Inspector = props => {
 																			breakpoint={
 																				deviceType
 																			}
-																			formatValue={
-																				formatValue
-																			}
 																			isHover
+																			disableCustomFormats
 																		/>
 																	)}
 																</Fragment>

@@ -116,40 +116,6 @@ const Size = props => {
 							/>
 						)}
 						<SizeControl
-							label={__('Width', 'maxi-blocks')}
-							unit={getLastBreakpointAttribute(
-								'width-unit',
-								breakpoint,
-								props
-							)}
-							onChangeUnit={val =>
-								onChange({
-									[`width-unit-${breakpoint}`]: val,
-								})
-							}
-							value={getLastBreakpointAttribute(
-								'width',
-								breakpoint,
-								props
-							)}
-							onChangeValue={val =>
-								onChange({
-									[`width-${breakpoint}`]: val,
-								})
-							}
-							onReset={() =>
-								onChange({
-									[`max-width-${breakpoint}`]: getDefaultAttribute(
-										`max-width-${breakpoint}`
-									),
-									[`max-width-unit-${breakpoint}`]: getDefaultAttribute(
-										`max-width-unit-${breakpoint}`
-									),
-								})
-							}
-						/>
-						)
-						<SizeControl
 							label={__('Max Width', 'maxi-blocks')}
 							unit={getLastBreakpointAttribute(
 								'max-width-unit',

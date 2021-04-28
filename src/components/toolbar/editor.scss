@@ -3,7 +3,7 @@
 	&--has-breadcrumb {
 		.components-popover__content {
 			.toolbar-wrapper {
-				top: -25px !important;
+				top: -35px !important;
 				.toolbar-block-custom-label {
 					top: -25px !important;
 				}
@@ -24,9 +24,11 @@
 			transform: translateX(-50%);
 			box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
 			border-radius: 5px;
+
 			.toolbar-block-custom-label {
 				font-size: 13px;
-				background: #000;
+				font-weight: bold;
+				background: #232533;
 				color: #fff;
 				width: auto;
 				display: inline-block;

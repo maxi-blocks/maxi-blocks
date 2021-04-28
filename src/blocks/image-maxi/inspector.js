@@ -286,59 +286,46 @@ const Inspector = props => {
 														options={[
 															{
 																label: __(
-																	'Landscape 4:3',
+																	'Original Size',
 																	'maxi-blocks'
 																),
-																value: 'land43',
+																value:
+																	'original',
 															},
 															{
 																label: __(
-																	'Landscape 3:2',
+																	'1:1 spect Ratio',
 																	'maxi-blocks'
 																),
-																value: 'land32',
+																value: 'ar11',
 															},
 															{
 																label: __(
-																	'Landscape 2:1',
+																	'2:3 spect Ratio',
 																	'maxi-blocks'
 																),
-																value: 'land21',
+																value: 'ar23',
 															},
 															{
 																label: __(
-																	'Landscape 3:1',
+																	'3:2 spect Ratio',
 																	'maxi-blocks'
 																),
-																value: 'land31',
+																value: 'ar32',
 															},
 															{
 																label: __(
-																	'Landscape 4:1',
+																	'4:3 spect Ratio',
 																	'maxi-blocks'
 																),
-																value: 'land41',
+																value: 'ar43',
 															},
 															{
 																label: __(
-																	'Portrait 3:4',
+																	'16:9 spect Ratio',
 																	'maxi-blocks'
 																),
-																value: 'port34',
-															},
-															{
-																label: __(
-																	'Portrait 2:3',
-																	'maxi-blocks'
-																),
-																value: 'port23',
-															},
-															{
-																label: __(
-																	'Square 1:1',
-																	'maxi-blocks'
-																),
-																value: 'square',
+																value: 'ar169',
 															},
 														]}
 														onChange={imageRatio =>

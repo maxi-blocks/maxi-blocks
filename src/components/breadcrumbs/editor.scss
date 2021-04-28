@@ -3,32 +3,38 @@
 }
 
 .maxi-breadcrumbs {
-	width: max-content;
+	font-family: 'Roboto', sans-serif !important;
+	display: flex;
+	position: absolute;
+	bottom: -28px;
+	left: 0;
+	border-radius: 5px;
 	margin: 0 !important;
-	padding: 0 0.5rem !important;
-	line-height: 1.2rem;
+	padding: 3px 8px !important;
 	background: #232533;
-	z-index: 2;
-	&__popover {
-		.components-popover__content {
-			background: transparent;
-			border: none;
-			box-shadow: none;
-			margin-left: 0 !important;
-			border-radius: 0;
-			padding: 0;
-		}
-	}
+
 	&__item {
 		display: inline;
+		min-width: max-content;
 		list-style: none;
 		font-size: 13px;
-		span {
+		font-weight: bold;
+
+		&:not(:last-child):after {
+			content: '>';
+			padding: 0 4px;
 			color: #fff;
 		}
 		&__content {
 			text-decoration: underline;
 			cursor: pointer;
+			color: #fff;
+			text-decoration: none;
+			transition: all 0.5s;
+
+			&:hover {
+				opacity: 0.7;
+			}
 		}
 	}
 }

@@ -12,7 +12,6 @@ import {
 	ArrowDisplayer,
 	BackgroundDisplayer,
 	BlockPlaceholder,
-	Breadcrumbs,
 	MaxiBlock,
 	MotionPreview,
 	Toolbar,
@@ -138,7 +137,6 @@ class edit extends MaxiBlock {
 				blockStyle={blockStyle}
 				{...this.props}
 			/>,
-			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
 			<MotionPreview
 				key={`motion-preview-${uniqueID}`}
 				{...getGroupAttributes(attributes, 'motion')}

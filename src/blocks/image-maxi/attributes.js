@@ -21,7 +21,7 @@ const attributes = {
 	},
 	imageRatio: {
 		type: 'string',
-		default: 'land32',
+		default: 'original',
 	},
 	SVGCurrentElement: {
 		type: 'number',

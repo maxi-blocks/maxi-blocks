@@ -186,7 +186,6 @@ class edit extends MaxiBlock {
 				{...this.props}
 				blockStyle={blockStyle}
 			/>,
-			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
 			<Fragment key={`container-content-${uniqueID}`}>
 				{isFirstOnHierarchy && fullWidth && (
 					<MotionPreview

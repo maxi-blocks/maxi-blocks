@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import { Fragment, useEffect, useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
@@ -51,6 +51,8 @@ import {
 	ToolbarColumnPattern,
 } from './components';
 
+import { Breadcrumbs } from '../../components';
+
 /**
  * Styles
  */
@@ -96,7 +98,6 @@ const MaxiToolbar = props => {
 		changeSVGContent,
 		clientId,
 		deviceType,
-		formatValue,
 		isSelected,
 		name,
 		setAttributes,
@@ -133,30 +134,15 @@ const MaxiToolbar = props => {
 	if (!allowedBlocks.includes(name)) return null;
 
 	const breadcrumbStatus = () => {
-		const rootBlock = select('core/block-editor').getBlockName(
-			select('core/block-editor').getBlockRootClientId(
-				select('core/block-editor').getSelectedBlockClientId()
-			)
-		);
-		const currentBlock = select('core/block-editor').getBlockName(
-			select('core/block-editor').getSelectedBlockClientId()
-		);
-
-		if (
-			currentBlock === 'maxi-blocks/container-maxi' ||
-			currentBlock === 'maxi-blocks/group-maxi' ||
-			currentBlock === 'maxi-blocks/row-maxi' ||
-			currentBlock === 'maxi-blocks/column-maxi' ||
-			rootBlock === 'maxi-blocks/container-maxi' ||
-			rootBlock === 'maxi-blocks/group-maxi' ||
-			rootBlock === 'maxi-blocks/row-maxi' ||
-			rootBlock === 'maxi-blocks/column-maxi'
-		)
-			return true;
+		const { getBlockParents } = select('core/block-editor');
+		const originalNestedBlocks = clientId ? getBlockParents(clientId) : [];
+		if (!originalNestedBlocks.includes(clientId))
+			originalNestedBlocks.push(clientId);
+		return originalNestedBlocks.length > 1;
 	};
 
 	return (
-		<Fragment>
+		<>
 			{isSelected && anchorRef && (
 				<Popover
 					noArrow
@@ -175,6 +161,7 @@ const MaxiToolbar = props => {
 					shouldAnchorIncludePadding
 				>
 					<div className='toolbar-wrapper'>
+						<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
 						<div className='toolbar-block-custom-label'>
 							{customLabel}
 							<span className='toolbar-block-custom-label__block-style'>
@@ -226,7 +213,6 @@ const MaxiToolbar = props => {
 							breakpoint={deviceType}
 							isList={isList}
 							typeOfList={typeOfList}
-							formatValue={formatValue}
 							textLevel={textLevel}
 						/>
 						<TextColor
@@ -242,7 +228,6 @@ const MaxiToolbar = props => {
 							node={anchorRef}
 							isList={isList}
 							typeOfList={typeOfList}
-							formatValue={formatValue}
 							clientId={clientId}
 						/>
 						<Alignment
@@ -266,7 +251,6 @@ const MaxiToolbar = props => {
 						/>
 						<TextBold
 							{...getGroupAttributes(attributes, 'typography')}
-							formatValue={formatValue}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
@@ -274,7 +258,6 @@ const MaxiToolbar = props => {
 						/>
 						<TextItalic
 							{...getGroupAttributes(attributes, 'typography')}
-							formatValue={formatValue}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
@@ -304,19 +287,16 @@ const MaxiToolbar = props => {
 								setAttributes({ linkSettings })
 							}
 						/>
-						{/*<TextLink
+						{<TextLink
 							{...getGroupAttributes(attributes, 'typography')}
 							blockName={name}
 							onChange={obj => setAttributes(obj)}
 							isList={isList}
-							formatValue={formatValue}
 							linkSettings={linkSettings}
 							breakpoint={deviceType}
-						/>*/}
+						/>}
 						<TextListOptions
 							blockName={name}
-							formatValue={formatValue}
-							content={content}
 							isList={isList}
 							typeOfList={typeOfList}
 							onChange={obj => setAttributes(obj)}
@@ -333,7 +313,7 @@ const MaxiToolbar = props => {
 							clientId={clientId}
 						/>
 						{name === 'maxi-blocks/svg-icon-maxi' && (
-							<Fragment>
+							<>
 								<SvgColor
 									{...getGroupAttributes(
 										attributes,
@@ -374,7 +354,7 @@ const MaxiToolbar = props => {
 									type={'svgColorLine'}
 									breakpoint={deviceType}
 								/>
-							</Fragment>
+							</>
 						)}
 						<Border
 							blockName={name}
@@ -458,7 +438,7 @@ const MaxiToolbar = props => {
 					</div>
 				</Popover>
 			)}
-		</Fragment>
+		</>
 	);
 };
 

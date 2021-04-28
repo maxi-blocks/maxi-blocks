@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getAlignmentTextStyles Get a correct alignment 1`] = `Object {}`;

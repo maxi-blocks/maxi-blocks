@@ -1,8 +1,8 @@
 import getBreakpoints from '../getBreakpoints';
-import '@wordpress/block-editor';
+import '@wordpress/data';
 
-describe('getBeakpoints', () => {
-	it('Get a correct beakpoint', () => {
+describe('getBreakpoints', () => {
+	it('Get a correct breakpoint', () => {
 		const object = {
 			'breakpoints-general': '1',
 			'breakpoints-xl': '2',

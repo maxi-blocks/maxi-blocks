@@ -65,9 +65,11 @@ const HoverEffectControl = props => {
 				]}
 				optionType='string'
 				onChange={val => {
-					document.querySelector(
+					{
+						/* document.querySelector(
 						`.maxi-block[uniqueid="${uniqueID}"] img.maxi-image-block__image`
-					).style = '';
+					).style = ''; */
+					}
 					onChange({
 						'hover-type': val,
 						'hover-transition-duration': 0.3,

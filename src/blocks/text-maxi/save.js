@@ -36,7 +36,6 @@ const save = props => {
 		'maxi-motion-effect',
 		'maxi-block maxi-text-block',
 		'maxi-text-block-wrap',
-		`maxi-text-align-${attributes[`text-alignment-${deviceType}`]}`,
 		blockStyle,
 		!!attributes['text-highlight'] && 'maxi-highlight--text',
 		!!attributes['background-highlight'] && 'maxi-highlight--background',

@@ -1,12 +1,6 @@
 body.maxi-blocks--active .maxi-text-block {
 	overflow: hidden;
 
-	&:not(.maxi-text-align-left, .maxi-text-align-justify) {
-		ul,
-		ol {
-			list-style-position: inside;
-		}
-	}
 	&__content {
 		position: relative;
 		display: inline-block;

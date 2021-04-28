@@ -106,7 +106,6 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-text-block',
-			`maxi-text-align-${attributes[`text-alignment-${deviceType}`]}`,
 			getLastBreakpointAttribute('display', deviceType, attributes) ===
 				'none' && 'maxi-block-display-none',
 			blockStyle,

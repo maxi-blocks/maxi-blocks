@@ -62,7 +62,8 @@ const setFormat = ({
 
 	if (
 		isNil(formatValue.start) ||
-		isNil(formatValue.end || isCollapsed(formatValue))
+		isNil(formatValue.end) ||
+		isCollapsed(formatValue)
 	) {
 		// eslint-disable-next-line @wordpress/no-global-get-selection, @wordpress/no-unguarded-get-range-at
 		const { startOffset, endOffset } = window.getSelection().getRangeAt(0);

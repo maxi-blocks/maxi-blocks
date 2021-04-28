@@ -13,8 +13,8 @@ import { useState, useEffect } from '@wordpress/element';
 import {
 	getNumCol,
 	getTemplates,
-} from '../../extensions/defaults/column-templates';
-
+	loadColumnsTemplate,
+} from '../../extensions/column-templates';
 import SizeControl from '../size-control';
 import FancyRadioControl from '../fancy-radio-control';
 
@@ -28,7 +28,6 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTemplate';
 
 /**
  * Column patterns

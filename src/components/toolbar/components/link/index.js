@@ -1,3 +1,5 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
@@ -54,41 +56,40 @@ const Link = props => {
 				!isEmpty(linkSettings.url) &&
 				'toolbar-item__link--active'
 			}
-			content={
-				<>
-					<__experimentalLinkControl
-						value={linkSettings}
-						onChange={value => onChange(value)}
-						settings={[
-							{
-								id: 'opensInNewTab',
-								title: __('Open in new tab', 'maxi-blocks'),
-							},
-							{
-								id: 'noFollow',
-								title: __('Add "nofollow" rel', 'maxi-blocks'),
-							},
-							{
-								id: 'sponsored',
-								title: __('Add "sponsored" rel', 'maxi-blocks'),
-							},
-							{
-								id: 'ugc',
-								title: __('Add "sponsored" rel', 'maxi-blocks'),
-							},
-						]}
-					/>
-					{!isNil(linkSettings) && !isEmpty(linkSettings.url) && (
-						<Button
-							className='toolbar-popover-link-destroyer'
-							onClick={() => removeLinkHandle()}
-						>
-							{__('Remove link', 'maxi-blocks')}
-						</Button>
-					)}
-				</>
-			}
-		/>
+		>
+			<>
+				<__experimentalLinkControl
+					value={linkSettings}
+					onChange={value => onChange(value)}
+					settings={[
+						{
+							id: 'opensInNewTab',
+							title: __('Open in new tab', 'maxi-blocks'),
+						},
+						{
+							id: 'noFollow',
+							title: __('Add "nofollow" rel', 'maxi-blocks'),
+						},
+						{
+							id: 'sponsored',
+							title: __('Add "sponsored" rel', 'maxi-blocks'),
+						},
+						{
+							id: 'ugc',
+							title: __('Add "sponsored" rel', 'maxi-blocks'),
+						},
+					]}
+				/>
+				{!isNil(linkSettings) && !isEmpty(linkSettings.url) && (
+					<Button
+						className='toolbar-popover-link-destroyer'
+						onClick={() => removeLinkHandle()}
+					>
+						{__('Remove link', 'maxi-blocks')}
+					</Button>
+				)}
+			</>
+		</ToolbarPopover>
 	);
 };
 

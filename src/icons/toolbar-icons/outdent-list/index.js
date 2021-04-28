@@ -16,7 +16,6 @@ const toolbarOutdentList = (
 			strokeLinejoin='round'
 			strokeWidth='1.5'
 			d='M3.87 14.61L1.2 17.28l2.67 2.67m4.32-3.36h10.44M.75 8.67h17.88M.75.75h17.88'
-			dataName='Layer0 2 1 STROKES'
 		/>
 	</SVG>
 );

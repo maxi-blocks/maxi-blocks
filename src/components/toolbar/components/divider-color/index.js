@@ -44,16 +44,15 @@ const DividerColor = props => {
 					/>
 				</div>
 			}
-			content={
-				<ColorControl
-					label={__('Divider', 'maxi-blocks')}
-					color={props['divider-border-color']}
-					defaultColor={getDefaultAttribute('border-color')}
-					onChange={val => onChange({ 'divider-border-color': val })}
-					disableGradient
-				/>
-			}
-		/>
+		>
+			<ColorControl
+				label={__('Divider', 'maxi-blocks')}
+				color={props['divider-border-color']}
+				defaultColor={getDefaultAttribute('border-color')}
+				onChange={val => onChange({ 'divider-border-color': val })}
+				disableGradient
+			/>
+		</ToolbarPopover>
 	);
 };
 

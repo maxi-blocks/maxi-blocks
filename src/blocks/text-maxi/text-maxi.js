@@ -9,7 +9,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType  } from '@wordpress/blocks';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Block dependencies
@@ -17,6 +17,7 @@ import { registerBlockType  } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import transforms from './transforms';
 
 /**
  * Styles and icons
@@ -48,4 +49,5 @@ registerBlockType('maxi-blocks/text-maxi', {
 	},
 	edit,
 	save,
+	transforms,
 });

@@ -11,7 +11,7 @@ import fonts from '../fonts/fonts';
  *
  * @return {Object} Updated state.
  */
-function reducer(state = { fonts: { ...fonts }, formatValue: {} }, action) {
+function reducer(state = { fonts: { ...fonts }, formatValues: {} }, action) {
 	switch (action.type) {
 		case 'RECEIVE_FONTS':
 			return {
@@ -20,12 +20,19 @@ function reducer(state = { fonts: { ...fonts }, formatValue: {} }, action) {
 		case 'RECEIVE_FORMAT_VALUE':
 			return {
 				...state,
+				clientId: action.clientId,
 			};
 		case 'SEND_FORMAT_VALUE':
 			return {
 				...state,
-				formatValue: action.formatValue,
+				formatValues: {
+					...state.formatValues,
+					[action.clientId]: action.formatValue,
+				},
 			};
+		case 'REMOVE_FORMAT_VALUE':
+			delete state.formatValues[action.clientId];
+			return state;
 		default:
 			return state;
 	}

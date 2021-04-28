@@ -28,7 +28,7 @@ import { getGroupAttributes } from '../../../../extensions/styles';
  * TextFormatOverline
  */
 const TextFormatOverline = props => {
-	const { formatValue, onChange, isList, breakpoint } = props;
+	const { formatValue, onChange, isList, breakpoint, textLevel } = props;
 
 	const getTextDecorationValue = () => {
 		return (
@@ -76,6 +76,7 @@ const TextFormatOverline = props => {
 				'text-decoration': response,
 			},
 			breakpoint,
+			textLevel,
 		});
 
 		setIsActive(!isActive);

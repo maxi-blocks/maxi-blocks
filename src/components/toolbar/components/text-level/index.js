@@ -58,17 +58,16 @@ const TextLevel = props => {
 			className='toolbar-item__text-level'
 			tooltip={__('Text level', 'maxi-blocks')}
 			icon={levelIcon(textLevel)}
-			content={
-				<FontLevelControl
-					{...getGroupAttributes(props, [
-						'typography',
-						'typographyHover',
-					])}
-					value={textLevel}
-					onChange={obj => onChange(obj)}
-				/>
-			}
-		/>
+		>
+			<FontLevelControl
+				{...getGroupAttributes(props, [
+					'typography',
+					'typographyHover',
+				])}
+				value={textLevel}
+				onChange={obj => onChange(obj)}
+			/>
+		</ToolbarPopover>
 	);
 };
 

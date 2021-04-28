@@ -1,13 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/rich-text';
+import { removeFormat } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
  */
 import setFormatWithClass from './setFormatWithClass';
-
+import getFormatPosition from './getFormatPosition';
 /**
  * Removes the link and custom formats
  *
@@ -18,9 +18,22 @@ import setFormatWithClass from './setFormatWithClass';
  *
  * @returns {Object} Returns cleaned and formatted typography and content
  */
-const removeLinkFormat = ({ formatValue, typography, isList }) => {
-	const removedLinkFormatValue = removeFormat(
+const removeLinkFormat = ({
+	formatValue,
+	typography,
+	isList,
+	textLevel,
+	attributes,
+}) => {
+	const [newStart, newEnd] = getFormatPosition({
 		formatValue,
+		formatName: 'maxi-blocks/text-link',
+		formatClassName: null,
+		formatAttributes: attributes,
+	});
+
+	const removedLinkFormatValue = removeFormat(
+		{ ...formatValue, start: newStart, end: newEnd + 1 },
 		'maxi-blocks/text-link'
 	);
 
@@ -35,6 +48,7 @@ const removeLinkFormat = ({ formatValue, typography, isList }) => {
 			color: '',
 			'text-decoration': '',
 		},
+		textLevel,
 	});
 
 	return {

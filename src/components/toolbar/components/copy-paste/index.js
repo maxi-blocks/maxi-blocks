@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Button } from '@wordpress/components';
-import { useState, Fragment } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { useSelect, useDispatch, dispatch } from '@wordpress/data';
 
 /**
@@ -158,78 +158,74 @@ const CopyPaste = props => {
 			className='toolbar-item__copy-paste'
 			tooltip={__('Copy / Paste Style', 'maxi-blocks')}
 			icon={toolbarCopyPaste}
-			content={
-				<div className='toolbar-item__copy-paste__popover'>
-					<Button
-						className='toolbar-item__copy-paste__popover__button'
-						icon={toolbarCopy}
-						onClick={onCopy}
-					>
-						{__('Copy Style', 'maxi-blocks')}
-					</Button>
-					<Button
-						className='toolbar-item__copy-paste__popover__button'
-						icon={toolbarPaste}
-						onClick={onPaste}
-						disabled={isEmpty(copiedStyles)}
-					>
-						{__('Paste Style', 'maxi-blocks')}
-					</Button>
-					{!isEmpty(organizedAttributes) && (
-						<Fragment>
-							<Button
-								className='toolbar-item__copy-paste__popover__button'
-								icon={toolbarSpecialPaste}
-								onClick={() => setIsOpen(!isOpen)}
-							>
-								{__('Special Paste', 'maxi-blocks')}
-							</Button>
-							{isOpen && (
-								<form>
-									{!isEmpty(organizedAttributes) &&
-										Object.keys(organizedAttributes).map(
-											attr => {
-												return (
-													<div
-														className='toolbar-item__copy-paste__popover__item'
-														key={`copy-paste-${attr}`}
+		>
+			<div className='toolbar-item__copy-paste__popover'>
+				<Button
+					className='toolbar-item__copy-paste__popover__button'
+					icon={toolbarCopy}
+					onClick={onCopy}
+				>
+					{__('Copy Style', 'maxi-blocks')}
+				</Button>
+				<Button
+					className='toolbar-item__copy-paste__popover__button'
+					icon={toolbarPaste}
+					onClick={onPaste}
+					disabled={isEmpty(copiedStyles)}
+				>
+					{__('Paste Style', 'maxi-blocks')}
+				</Button>
+				{!isEmpty(organizedAttributes) && (
+					<>
+						<Button
+							className='toolbar-item__copy-paste__popover__button'
+							icon={toolbarSpecialPaste}
+							onClick={() => setIsOpen(!isOpen)}
+						>
+							{__('Special Paste', 'maxi-blocks')}
+						</Button>
+						{isOpen && (
+							<form>
+								{!isEmpty(organizedAttributes) &&
+									Object.keys(organizedAttributes).map(
+										attr => {
+											return (
+												<div
+													className='toolbar-item__copy-paste__popover__item'
+													key={`copy-paste-${attr}`}
+												>
+													<label
+														htmlFor={attr}
+														className='maxi-axis-control__content__item__checkbox'
 													>
-														<label
-															htmlFor={attr}
-															className='maxi-axis-control__content__item__checkbox'
-														>
-															<input
-																type='checkbox'
-																name={attr}
-																id={attr}
-																onClick={() =>
-																	handleSpecialPaste(
-																		attr
-																	)
-																}
-															/>
-															<span>{attr}</span>
-														</label>
-													</div>
-												);
-											}
-										)}
-									<Button
-										className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
-										onClick={onSpecialPaste}
-									>
-										{__(
-											'Paste Special Style',
-											'maxi-blocks'
-										)}
-									</Button>
-								</form>
-							)}
-						</Fragment>
-					)}
-				</div>
-			}
-		/>
+														<input
+															type='checkbox'
+															name={attr}
+															id={attr}
+															onClick={() =>
+																handleSpecialPaste(
+																	attr
+																)
+															}
+														/>
+														<span>{attr}</span>
+													</label>
+												</div>
+											);
+										}
+									)}
+								<Button
+									className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
+									onClick={onSpecialPaste}
+								>
+									{__('Paste Special Style', 'maxi-blocks')}
+								</Button>
+							</form>
+						)}
+					</>
+				)}
+			</div>
+		</ToolbarPopover>
 	);
 };
 

@@ -28,7 +28,7 @@ import { toolbarStrikethrough } from '../../../../icons';
  * TextFormatStrikethrough
  */
 const TextFormatStrikethrough = props => {
-	const { formatValue, onChange, isList, breakpoint } = props;
+	const { formatValue, onChange, isList, breakpoint, textLevel } = props;
 
 	const getTextDecorationValue = () => {
 		return (
@@ -58,12 +58,12 @@ const TextFormatStrikethrough = props => {
 
 		let response;
 
-		if (textDecorationValue === 'none') response = 'overline';
+		if (textDecorationValue === 'none') response = 'line-through';
 		else
 			response =
-				textDecorationValue.indexOf('overline') >= 0
-					? textDecorationValue.replace('overline', '')
-					: `${textDecorationValue} overline`;
+				textDecorationValue.indexOf('line-through') >= 0
+					? textDecorationValue.replace('line-through', '')
+					: `${textDecorationValue} line-through`;
 
 		response = trim(response);
 
@@ -76,6 +76,7 @@ const TextFormatStrikethrough = props => {
 				'text-decoration': response,
 			},
 			breakpoint,
+			textLevel,
 		});
 
 		setIsActive(!isActive);

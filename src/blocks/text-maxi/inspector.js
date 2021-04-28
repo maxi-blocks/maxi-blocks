@@ -281,11 +281,6 @@ const Inspector = memo(
 																		isList={
 																			isList
 																		}
-																		disableColor={
-																			!!attributes[
-																				'text-highlight'
-																			]
-																		}
 																	/>
 																),
 															},
@@ -366,11 +361,6 @@ const Inspector = memo(
 																				isList={
 																					isList
 																				}
-																				disableColor={
-																					!!attributes[
-																						'text-highlight'
-																					]
-																				}
 																				isHover
 																			/>
 																		)}
@@ -414,11 +404,6 @@ const Inspector = memo(
 																				setAttributes(
 																					obj
 																				)
-																			}
-																			disableColor={
-																				!!attributes[
-																					'background-highlight'
-																				]
 																			}
 																			disableImage
 																			disableVideo
@@ -492,11 +477,6 @@ const Inspector = memo(
 																						obj
 																					)
 																				}
-																				disableColor={
-																					!!attributes[
-																						'background-highlight'
-																					]
-																				}
 																				disableImage
 																				disableVideo
 																				disableSVG
@@ -554,11 +534,6 @@ const Inspector = memo(
 																		}
 																		clientId={
 																			clientId
-																		}
-																		disableColor={
-																			!!attributes[
-																				'border-highlight'
-																			]
 																		}
 																	/>
 																),
@@ -632,11 +607,6 @@ const Inspector = memo(
 																					clientId
 																				}
 																				isHover
-																				disableColor={
-																					!!attributes[
-																						'border-highlight'
-																					]
-																				}
 																			/>
 																		)}
 																	</Fragment>
@@ -869,6 +839,7 @@ const Inspector = memo(
 																deviceType
 															}
 															target='margin'
+															optionType='string'
 														/>
 													</Fragment>
 												),
@@ -1067,7 +1038,12 @@ const Inspector = memo(
 		);
 	},
 	// Avoids non-necessary renderings
-	({ attributes: oldAttr, propsToAvoid }, { attributes: newAttr }) => {
+	(
+		{ attributes: oldAttr, propsToAvoid, isSelected: wasSelected },
+		{ attributes: newAttr, isSelected }
+	) => {
+		if (!wasSelected || wasSelected !== isSelected) return false;
+
 		const oldAttributes = cloneDeep(oldAttr);
 		const newAttributes = cloneDeep(newAttr);
 

@@ -1,3 +1,4 @@
+/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */
@@ -69,7 +70,13 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
-		const { attributes, className, deviceType, setAttributes } = this.props;
+		const {
+			attributes,
+			className,
+			deviceType,
+			setAttributes,
+			clientId,
+		} = this.props;
 		const {
 			uniqueID,
 			blockStyle,
@@ -139,7 +146,8 @@ class edit extends MaxiBlock {
 						>
 							{({ value }) => {
 								dispatch('maxiBlocks/text').sendFormatValue(
-									value
+									value,
+									clientId
 								);
 							}}
 						</RichText>

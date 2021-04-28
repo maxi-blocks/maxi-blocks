@@ -20,6 +20,7 @@ const link = {
 		id: 'data-id',
 		target: 'target',
 		rel: 'rel',
+		title: 'title',
 	},
 };
 

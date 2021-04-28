@@ -1,8 +1,7 @@
-import getAlignmentTextStyles from '../getAlignmentTextStyles';
-import '@wordpress/block-editor';
+import getBoxShadowStyles from '../getBoxShadowStyles';
 
-describe('getAlignmentTextStyles', () => {
-	it('Get a correct alignment', () => {
+describe('getBoxShadowStyles', () => {
+	it('Get a correct BoxShadowStyles', () => {
 		const object = {
 			'box-shadow-color-general': 'red',
 			'box-shadow-horizontal-general': 1,
@@ -41,7 +40,7 @@ describe('getAlignmentTextStyles', () => {
 			'box-shadow-spread-xs': 4,
 		};
 
-		const result = getAlignmentTextStyles(object);
+		const result = getBoxShadowStyles(object);
 		expect(result).toMatchSnapshot();
 	});
 });

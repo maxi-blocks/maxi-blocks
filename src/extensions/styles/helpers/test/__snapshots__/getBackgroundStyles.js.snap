@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getBackgroundStyles Get a correct Background Styles 1`] = `
+Object {
+  "undefined > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+}
+`;

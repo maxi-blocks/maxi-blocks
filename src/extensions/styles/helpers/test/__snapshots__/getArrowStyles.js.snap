@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getArrowStyles Get a correct ArrowStyles 1`] = `
+Object {
+  "undefined .maxi-container-arrow": Object {
+    "arrow": Object {
+      "general": Object {
+        "display": "block",
+        "height": "2top",
+        "left": "1%",
+        "top": "-1.4142135623730951top",
+        "width": "2top",
+      },
+      "l": Object {
+        "display": "block",
+        "height": "1bottom",
+        "left": "4%",
+        "top": "-0.7071067811865476bottom",
+        "width": "1bottom",
+      },
+      "m": Object {
+        "display": "block",
+        "height": "3bottom",
+        "left": "2%",
+        "top": "calc(100% + 2bottom)",
+        "width": "3bottom",
+      },
+      "s": Object {
+        "display": "block",
+        "height": "1bottom",
+        "left": "4%",
+        "top": "calc(100% + 0bottom)",
+        "width": "1bottom",
+      },
+      "xl": Object {
+        "display": "block",
+        "height": "3top",
+        "left": "2%",
+        "top": "-2.121320343559643top",
+        "width": "3top",
+      },
+      "xs": Object {
+        "display": "block",
+        "height": "3bottom",
+        "left": "2%",
+        "top": "calc(100% + 2bottom)",
+        "width": "3bottom",
+      },
+      "xxl": Object {
+        "display": "block",
+        "height": "1top",
+        "left": "4%",
+        "top": "-0.7071067811865476top",
+        "width": "1top",
+      },
+    },
+    "shadow": Object {
+      "general": Object {
+        "filter": "drop-shadow(0px 0px 0px 0px rgb(236, 241, 246))",
+      },
+    },
+  },
+  "undefined .maxi-container-arrow:after": Object {
+    "background": Object {
+      "general": Object {
+        "background": undefined,
+      },
+      "label": "Arrow Color",
+    },
+  },
+  "undefined .maxi-container-arrow:before": Object {
+    "border": Object {
+      "general": Object {},
+      "label": "Arrow Border",
+    },
+  },
+}
+`;

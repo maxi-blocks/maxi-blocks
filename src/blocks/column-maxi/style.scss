@@ -7,5 +7,6 @@ body.maxi-blocks--active div.maxi-column-block {
 
 	& > *:not(.maxi-background-displayer) {
 		position: relative;
+		z-index: 1;
 	}
 }

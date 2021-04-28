@@ -138,14 +138,14 @@ const ColorPaletteControl = props => {
 								['icon-color']: '',
 							});
 
-						colorPaletteType === 'svg-fill' &&
+						colorPaletteType === 'svgColorFill' &&
 							onChange({
-								['svg-fill']: '',
+								svgColorFill: '',
 							});
 
-						colorPaletteType === 'svg-line' &&
+						colorPaletteType === 'svgColorLine' &&
 							onChange({
-								['svg-line']: '',
+								svgColorLine: '',
 							});
 					}
 				}}

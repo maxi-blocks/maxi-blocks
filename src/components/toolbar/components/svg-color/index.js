@@ -8,19 +8,36 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
+import { getGroupAttributes } from '../../../../extensions/styles';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
  * SvgColor
  */
 const SvgColor = props => {
-	const { blockName, svgColor, svgColorDefault, onChange } = props;
+	const {
+		type,
+		blockName,
+		svgColor,
+		svgColorDefault,
+		onChange,
+		blockStyle,
+		breakpoint,
+	} = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
 	return (
 		<ToolbarPopover
 			className='toolbar-item__background'
-			tooltip={__('SVG color', 'maxi-blocks')}
+			tooltip={__(
+				`SVG ${type === 'svgColorFill' ? 'Fill' : 'Line'} Colour`,
+				'maxi-blocks'
+			)}
 			icon={
 				<div
 					className='toolbar-item__icon'
@@ -31,13 +48,21 @@ const SvgColor = props => {
 				/>
 			}
 			content={
-				<ColorControl
-					label={__('SVG', 'maxi-blocks')}
-					color={svgColor}
-					defaultColor={svgColorDefault}
-					onChange={val => onChange({ [svgColor]: val })}
-					disableGradient
-				/>
+				<div className='toolbar-item__svg-color__popover'>
+					<ColorControl
+						label={__('SVG', 'maxi-blocks')}
+						color={svgColor}
+						defaultColor={svgColorDefault}
+						onChange={val => onChange({ [`${type}`]: val })}
+						disableGradient
+						showPalette
+						blockStyle={blockStyle}
+						palette={{ ...getGroupAttributes(props, 'palette') }}
+						colorPaletteType={type}
+						onChangePalette={val => onChange(val)}
+						deviceType={breakpoint}
+					/>
+				</div>
 			}
 		/>
 	);

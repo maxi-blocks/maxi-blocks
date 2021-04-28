@@ -11,14 +11,15 @@ import {
  * SvgColor
  */
 const SvgColor = props => {
-	const { type, blockStyle, label, onChange, clientId } = props;
+	const { type, color, blockStyle, label, onChange, clientId } = props;
+
 	return (
 		<ColorControl
 			label={label}
-			color={type}
+			color={color}
 			defaultColor={getDefaultAttribute(type)}
 			disableOpacity
-			onChange={val => onChange({ type: val })}
+			onChange={val => onChange({ [`${type}`]: val })}
 			showPalette
 			blockStyle={blockStyle}
 			palette={{

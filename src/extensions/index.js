@@ -8,3 +8,4 @@ import './save';
 import './styles';
 import './text';
 import './style-cards';
+import './column-templates';

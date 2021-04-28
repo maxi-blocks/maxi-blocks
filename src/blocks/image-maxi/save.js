@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { RawHTML } from '@wordpress/element';
-
-/**
  * Internal dependencies
  */
 import { BackgroundDisplayer, HoverPreview } from '../../components';
@@ -113,26 +108,21 @@ const save = props => {
 				blockClassName={uniqueID}
 			/>
 			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>
-				{(!SVGElement && (
-					<HoverPreview
-						className={hoverPreviewClasses}
-						key={`hover-preview-${uniqueID}`}
-						{...getGroupAttributes(attributes, [
-							'hover',
-							'hoverTitleTypography',
-							'hoverContentTypography',
-						])}
-						mediaID={mediaID}
-						src={mediaURL}
-						width={mediaWidth}
-						height={mediaHeight}
-						alt={imageAlt()}
-					/>
-				)) || (
-					<RawHTML className='maxi-image-block-shape-wrapper'>
-						{SVGElement}
-					</RawHTML>
-				)}
+				<HoverPreview
+					className={!SVGElement ? hoverPreviewClasses : null}
+					key={`hover-preview-${uniqueID}`}
+					{...getGroupAttributes(attributes, [
+						'hover',
+						'hoverTitleTypography',
+						'hoverContentTypography',
+					])}
+					SVGElement={SVGElement}
+					mediaID={mediaID}
+					src={mediaURL}
+					width={mediaWidth}
+					height={mediaHeight}
+					alt={mediaAlt}
+				/>
 				{captionType !== 'none' && (
 					<figcaption className='maxi-image-block__caption'>
 						{captionContent}

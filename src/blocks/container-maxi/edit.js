@@ -157,7 +157,6 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
-			<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />,
 			<Fragment key={`container-content-${uniqueID}`}>
 				{isFirstOnHierarchy && fullWidth && (
 					<MotionPreview

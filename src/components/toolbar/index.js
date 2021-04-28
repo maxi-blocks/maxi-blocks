@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import { Fragment, useEffect, useState, memo } from '@wordpress/element';
+import { useEffect, useState, memo } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
@@ -46,6 +46,7 @@ import {
 	ToggleBlock,
 	ToolbarColumnPattern,
 } from './components';
+import { Breadcrumbs } from '../../components';
 
 /**
  * Styles
@@ -126,32 +127,20 @@ const MaxiToolbar = memo(
 		if (!allowedBlocks.includes(name)) return null;
 
 		const breadcrumbStatus = () => {
-			const rootBlock = select('core/block-editor').getBlockName(
-				select('core/block-editor').getBlockRootClientId(
-					select('core/block-editor').getSelectedBlockClientId()
-				)
-			);
-			const currentBlock = select('core/block-editor').getBlockName(
-				select('core/block-editor').getSelectedBlockClientId()
-			);
+			const { getBlockParents } = select('core/block-editor');
 
-			if (
-				currentBlock === 'maxi-blocks/container-maxi' ||
-				currentBlock === 'maxi-blocks/group-maxi' ||
-				currentBlock === 'maxi-blocks/row-maxi' ||
-				currentBlock === 'maxi-blocks/column-maxi' ||
-				rootBlock === 'maxi-blocks/container-maxi' ||
-				rootBlock === 'maxi-blocks/group-maxi' ||
-				rootBlock === 'maxi-blocks/row-maxi' ||
-				rootBlock === 'maxi-blocks/column-maxi'
-			)
-				return true;
+			const originalNestedBlocks = clientId
+				? getBlockParents(clientId)
+				: [];
 
-			return false;
+			if (!originalNestedBlocks.includes(clientId))
+				originalNestedBlocks.push(clientId);
+
+			return originalNestedBlocks.length > 1;
 		};
 
 		return (
-			<Fragment>
+			<>
 				{isSelected && anchorRef && (
 					<Popover
 						noArrow
@@ -170,6 +159,7 @@ const MaxiToolbar = memo(
 						shouldAnchorIncludePadding
 					>
 						<div className='toolbar-wrapper'>
+							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
 							<div className='toolbar-block-custom-label'>
 								{customLabel}
 							</div>
@@ -332,7 +322,7 @@ const MaxiToolbar = memo(
 								/>
 							)}
 							{name === 'maxi-blocks/svg-icon-maxi' && (
-								<Fragment>
+								<>
 									{!attributes['color1-highlight'] && (
 										<SvgColor
 											blockName={name}
@@ -371,7 +361,7 @@ const MaxiToolbar = memo(
 											}}
 										/>
 									)}
-								</Fragment>
+								</>
 							)}
 							<Border
 								blockName={name}
@@ -455,7 +445,7 @@ const MaxiToolbar = memo(
 						</div>
 					</Popover>
 				)}
-			</Fragment>
+			</>
 		);
 	},
 	// Avoids non-necessary renderings

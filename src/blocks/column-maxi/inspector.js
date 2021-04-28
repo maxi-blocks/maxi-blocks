@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { SelectControl, TextControl } from '@wordpress/components';
 
 /**
@@ -30,6 +30,7 @@ import {
 	getGroupAttributes,
 	getDefaultAttribute,
 } from '../../extensions/styles';
+import { getColumnDefaultValue } from '../../extensions/column-templates';
 
 /**
  * Inspector
@@ -41,6 +42,7 @@ const Inspector = props => {
 		setAttributes,
 		clientId,
 		resizableObject,
+		rowPattern,
 	} = props;
 	const {
 		customLabel,
@@ -125,6 +127,11 @@ const Inspector = props => {
 														max={100}
 														step={0.1}
 														allowReset
+														defaultValue={getColumnDefaultValue(
+															rowPattern,
+															clientId,
+															deviceType
+														)}
 														initialPosition={getDefaultAttribute(
 															`column-size-${deviceType}`,
 															clientId

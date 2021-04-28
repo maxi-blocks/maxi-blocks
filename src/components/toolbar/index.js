@@ -98,6 +98,7 @@ const MaxiToolbar = memo(
 			name,
 			setAttributes,
 			toggleHandlers,
+			rowPattern,
 		} = props;
 		const {
 			customLabel,
@@ -114,6 +115,7 @@ const MaxiToolbar = memo(
 			textLevel,
 			typeOfList,
 			uniqueID,
+			resizableObject,
 		} = attributes;
 
 		const [anchorRef, setAnchorRef] = useState(
@@ -413,6 +415,8 @@ const MaxiToolbar = memo(
 								uniqueID={uniqueID}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={deviceType}
+								resizableObject={resizableObject}
+								rowPattern={rowPattern}
 							/>
 							<BoxShadow
 								blockName={name}

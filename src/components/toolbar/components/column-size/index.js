@@ -13,6 +13,7 @@ import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
 } from '../../../../extensions/styles';
+import { getColumnDefaultValue } from '../../../../extensions/column-templates';
 
 /**
  * External dependencies
@@ -33,10 +34,11 @@ const ColumnSize = props => {
 		clientId,
 		blockName,
 		verticalAlign,
-		uniqueID,
 		onChange,
 		breakpoint,
 		attributes,
+		resizableObject,
+		rowPattern,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
@@ -51,10 +53,6 @@ const ColumnSize = props => {
 			<div className='toolbar-item__column-size__popover'>
 				<RangeSliderControl
 					label={__('Column Size', 'maxi-blocks')}
-					defaultValue={getDefaultAttribute(
-						`column-size-${breakpoint}`,
-						clientId
-					)}
 					value={round(
 						getLastBreakpointAttribute(
 							'column-size',
@@ -64,9 +62,9 @@ const ColumnSize = props => {
 						2
 					)}
 					onChange={val => {
-						document.querySelector(
-							`.maxi-column-block__resizer__${uniqueID}`
-						).style.width = `${val}%`;
+						resizableObject.updateSize({
+							width: `${val}%`,
+						});
 
 						onChange({
 							[`column-size-${breakpoint}`]: val,
@@ -77,6 +75,11 @@ const ColumnSize = props => {
 					max={100}
 					step={0.1}
 					allowReset
+					defaultValue={getColumnDefaultValue(
+						rowPattern,
+						clientId,
+						breakpoint
+					)}
 					initialPosition={getDefaultAttribute(
 						`column-size-${breakpoint}`,
 						clientId

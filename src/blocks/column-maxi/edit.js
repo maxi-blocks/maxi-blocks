@@ -147,15 +147,20 @@ class edit extends MaxiBlock {
 			);
 
 		return [
-			<Inspector
-				key={`block-settings-${uniqueID}`}
-				resizableObject={this.resizableObject.current}
-				{...this.props}
-			/>,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<RowContext.Consumer key={`column-content-${uniqueID}`}>
 				{context => (
 					<Fragment>
+						<Inspector
+							key={`block-settings-${uniqueID}`}
+							rowPattern={context.rowPattern}
+							{...this.props}
+						/>
+						<Toolbar
+							key={`toolbar-${uniqueID}`}
+							rowPattern={context.rowPattern}
+							propsToAvoid={['resizableObject']}
+							{...this.props}
+						/>
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
 							<BlockResizer
@@ -171,7 +176,9 @@ class edit extends MaxiBlock {
 										attributes
 									) === 'none' && 'maxi-block-display-none'
 								)}
-								defaultSize={{ width: getColumnWidthDefault() }}
+								defaultSize={{
+									width: getColumnWidthDefault(),
+								}}
 								enable={{
 									right: true,
 									left: true,

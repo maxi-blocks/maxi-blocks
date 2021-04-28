@@ -7,3 +7,4 @@ import './reusable-blocks';
 import './save';
 import './styles';
 import './text';
+import './column-templates';

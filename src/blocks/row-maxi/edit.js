@@ -12,13 +12,8 @@ import { InnerBlocks, __experimentalBlock } from '@wordpress/block-editor';
  */
 import Inspector from './inspector';
 import RowContext from './context';
-import {
-	BackgroundDisplayer,
-	Breadcrumbs,
-	MaxiBlock,
-	Toolbar,
-} from '../../components';
-import { getTemplates } from '../../extensions/defaults/column-templates';
+import { BackgroundDisplayer, MaxiBlock, Toolbar } from '../../components';
+import { getTemplates } from '../../extensions/column-templates';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,

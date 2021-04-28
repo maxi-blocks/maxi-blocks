@@ -1,10 +1,10 @@
 /**
  * External dependencies
  */
-import { inRange, compact } from 'lodash';
+import { inRange, compact, cloneDeep } from 'lodash';
 
 /**
- * Generates an object with the Maxi Custom format and its different classes
+ * Generates an object with the Maxi Custom formats and its different classes
  * and the positions for every one of each
  *
  * @param {Object} formatValue 			RichText format value
@@ -12,14 +12,19 @@ import { inRange, compact } from 'lodash';
  *
  * @returns {Object} Classes with its positions
  */
-const getMultiFormatObj = (formatValue, isHover = false) => {
-	const { start, end } = formatValue;
-	const formatArray = new Array([...formatValue.formats])[0];
+const getMultiFormatObj = (formatValue, isHover = false, withEmptySpaces) => {
+	// formatValue has some arrays, like 'formats', that contain 'empty' slots on the array.
+	// When cloning by spread operator, we keep that 'empty' slots; cloning with 'cloneDeep'
+	// changes that 'empty' for 'null'. Depending the situation, we need one or the other.
+	const newFormatValue = withEmptySpaces
+		? { ...formatValue }
+		: cloneDeep(formatValue);
+	const { start, end, formats } = newFormatValue;
 	const formatType = !isHover
 		? 'maxi-blocks/text-custom'
 		: 'maxi-blocks/text-custom-hover';
 
-	const response = formatArray.map((formatEl, i) => {
+	const response = formats.map((formatEl, i) => {
 		if (formatEl)
 			return compact(
 				formatEl.map(format => {
@@ -30,13 +35,13 @@ const getMultiFormatObj = (formatValue, isHover = false) => {
 				})
 			);
 
-		return [null];
+		return formatEl;
 	});
 
 	const obj = {};
 	let array = [];
 	response.forEach((format, i) => {
-		if (!inRange(i, start, end)) return true;
+		if (!inRange(i, start, end)) return;
 
 		const prev = response[i - 1] ? response[i - 1][0] : null;
 		const next = response[i + 1] ? response[i + 1][0] : null;
@@ -44,7 +49,7 @@ const getMultiFormatObj = (formatValue, isHover = false) => {
 
 		if (current === null && i === start) {
 			array.push(i);
-			return true;
+			return;
 		}
 		if (current === null && i + 1 === end) {
 			array.push(i);
@@ -67,9 +72,9 @@ const getMultiFormatObj = (formatValue, isHover = false) => {
 			};
 			array = [];
 
-			return true;
+			return;
 		}
-		if (prev === current && current === next) return true;
+		if (prev === current && current === next) return;
 		if (prev !== current && !array.includes(i)) {
 			array.push(i);
 			if (current !== next && array.length !== 2) array.push(i + 1);
@@ -81,7 +86,7 @@ const getMultiFormatObj = (formatValue, isHover = false) => {
 				};
 				array = [];
 			}
-			return true;
+			return;
 		}
 		if (prev === current && current !== next) {
 			array.push(i + 1);
@@ -93,10 +98,7 @@ const getMultiFormatObj = (formatValue, isHover = false) => {
 				};
 				array = [];
 			}
-			return true;
 		}
-
-		return false;
 	});
 
 	return obj;

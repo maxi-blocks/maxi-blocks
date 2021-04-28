@@ -30,16 +30,15 @@ const TextShadow = props => {
 			className='toolbar-item__box-shadow'
 			tooltip={__('Text shadow', 'maxi-blocks')}
 			icon={toolbarDropShadow}
-			content={
-				<TextShadowControl
-					boxShadowOptions={typography.desktop['text-shadow']}
-					onChange={boxShadow => {
-						typography.desktop['text-shadow'] = boxShadow;
-						onChange(typography);
-					}}
-				/>
-			}
-		/>
+		>
+			<TextShadowControl
+				boxShadowOptions={typography.desktop['text-shadow']}
+				onChange={boxShadow => {
+					typography.desktop['text-shadow'] = boxShadow;
+					onChange(typography);
+				}}
+			/>
+		</ToolbarPopover>
 	);
 };
 

@@ -164,14 +164,17 @@ const getStyles = props => {
 			!isList
 				? `${uniqueID} .maxi-text-block__content`
 				: `${uniqueID} .maxi-text-block__content li`,
-			props['custom-formats']
+			props['custom-formats'],
+			false,
+			{ ...getGroupAttributes(props, 'typography') }
 		),
 		...getCustomFormatsStyles(
 			!isList
 				? `${uniqueID}:hover .maxi-text-block__content`
 				: `${uniqueID}:hover .maxi-text-block__content li`,
 			props['custom-formats-hover'],
-			true
+			true,
+			getGroupAttributes(props, 'typographyHover')
 		),
 	};
 

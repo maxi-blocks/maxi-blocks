@@ -31,21 +31,20 @@ const Divider = props => {
 			tooltip={__('Divider', 'maxi-blocks')}
 			icon={toolbarDividerSetting}
 			advancedOptions='line'
-			content={
-				<div className='toolbar-item__divider-line__popover'>
-					<DividerControl
-						{...getGroupAttributes(props, ['divider', 'size'])}
-						onChange={obj => {
-							onChange(obj);
-						}}
-						lineOrientation={lineOrientation}
-						disableColor
-						disableLineStyle
-						disableBorderRadius
-					/>
-				</div>
-			}
-		/>
+		>
+			<div className='toolbar-item__divider-line__popover'>
+				<DividerControl
+					{...getGroupAttributes(props, ['divider', 'size'])}
+					onChange={obj => {
+						onChange(obj);
+					}}
+					lineOrientation={lineOrientation}
+					disableColor
+					disableLineStyle
+					disableBorderRadius
+				/>
+			</div>
+		</ToolbarPopover>
 	);
 };
 

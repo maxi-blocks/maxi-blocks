@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { RichText  } from '@wordpress/block-editor';
-import { Fragment  } from '@wordpress/element';
+import { RichText } from '@wordpress/block-editor';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies

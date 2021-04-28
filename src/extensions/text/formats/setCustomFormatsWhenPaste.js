@@ -1,18 +1,18 @@
 /**
  * WordPress dependencies
  */
-import { select } from '@wordpress/rich-text';
+import { removeFormat } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
  */
 import applyLinkFormat from './applyLinkFormat';
 import setFormatWithClass from './setFormatWithClass';
+import getInstancePositions from './getInstancePositions';
 
 /**
  * External dependencies
  */
-import { isNil, chunk } from 'lodash';
 import getGroupAttributes from '../../styles/getGroupAttributes';
 
 /**
@@ -32,41 +32,6 @@ const isFormattedWithType = (formatValue, formatName) => {
 };
 
 /**
- * Check for the requested format type positions
- *
- * @param {Object} formatValue 			RichText format value
- * @param {string} formatName 			RichText format type
- *
- * @returns {Array} Array with pairs of position for start and end
- */
-const getInstancePositions = (formatValue, formatName) => {
-	const locatedInstances = formatValue.formats.map((formatEl, i) => {
-		if (
-			formatEl.some(format => {
-				return format.type === formatName;
-			})
-		)
-			return i;
-
-		return null;
-	});
-
-	const filteredLocatedInstances = locatedInstances.filter(
-		(current, i, array) => {
-			const prev = array[i - 1];
-			const next = array[i + 1];
-
-			return (
-				(isNil(prev) && current + 1 === next) ||
-				(isNil(next) && current - 1 === prev)
-			);
-		}
-	);
-
-	return chunk(filteredLocatedInstances, 2);
-};
-
-/**
  * Formats the link instances
  *
  * @param {Object} 	[$0]					Optional named arguments.
@@ -76,7 +41,7 @@ const getInstancePositions = (formatValue, formatName) => {
  *
  * @returns {Object} Formatted typography, content and RichText format
  */
-const setLinkFormats = ({ formatValue, typography, isList }) => {
+const setLinkFormats = ({ formatValue, typography, isList, textLevel }) => {
 	const linkInstancePositions = getInstancePositions(
 		formatValue,
 		'core/link'
@@ -103,6 +68,8 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
 			typography: newTypography,
 			linkAttributes: newAttributes,
 			isList,
+			textLevel,
+			returnFormatValue: true,
 		});
 
 		newTypography = getGroupAttributes(linkObj, 'typography');
@@ -130,7 +97,14 @@ const setLinkFormats = ({ formatValue, typography, isList }) => {
  *
  * @returns {Object} Formatted typography, content and RichText format
  */
-const setFormat = ({ formatValue, typography, oldFormat, value, isList }) => {
+const setFormat = ({
+	formatValue,
+	typography,
+	oldFormat,
+	value,
+	isList,
+	textLevel,
+}) => {
 	const instancePositions = getInstancePositions(formatValue, oldFormat);
 
 	let newContent = formatValue.html;
@@ -151,6 +125,8 @@ const setFormat = ({ formatValue, typography, oldFormat, value, isList }) => {
 			typography: newTypography,
 			value,
 			isList,
+			textLevel,
+			returnFormatValue: true,
 		});
 
 		newTypography = getGroupAttributes(obj, 'typography');
@@ -201,6 +177,7 @@ const setCustomFormatsWhenPaste = ({
 	isList,
 	typeOfList,
 	content,
+	textLevel,
 }) => {
 	const isLinkUnformatted = isFormattedWithType(formatValue, 'core/link');
 	const isBoldUnformatted = isFormattedWithType(formatValue, 'core/bold');
@@ -231,6 +208,7 @@ const setCustomFormatsWhenPaste = ({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			isList,
+			textLevel,
 		});
 
 		newTypography = getGroupAttributes(linkObj, 'typography');
@@ -244,6 +222,7 @@ const setCustomFormatsWhenPaste = ({
 			oldFormat: 'core/bold',
 			value: { 'font-weight': 800 },
 			isList,
+			textLevel,
 		});
 
 		newTypography = getGroupAttributes(boldObj, 'typography');
@@ -257,6 +236,7 @@ const setCustomFormatsWhenPaste = ({
 			oldFormat: 'core/italic',
 			value: { 'font-style': 'italic' },
 			isList,
+			textLevel,
 		});
 
 		newTypography = getGroupAttributes(italicObj, 'typography');
@@ -270,6 +250,7 @@ const setCustomFormatsWhenPaste = ({
 			oldFormat: 'core/underline',
 			value: { 'font-decoration': 'underline' },
 			isList,
+			textLevel,
 		});
 
 		newTypography = getGroupAttributes(underlineObj, 'typography');
@@ -281,8 +262,9 @@ const setCustomFormatsWhenPaste = ({
 			formatValue: newFormatValue,
 			typography: newTypography,
 			oldFormat: 'core/strikethrough',
-			value: { 'font-decoration': 'strikethrough' },
+			value: { 'text-decoration': 'line-through' },
 			isList,
+			textLevel,
 		});
 
 		newTypography = getGroupAttributes(strikethoughObj, 'typography');
@@ -296,6 +278,7 @@ const setCustomFormatsWhenPaste = ({
 			oldFormat: 'core/subscript',
 			value: { 'vertical-align': 'sub' },
 			isList,
+			textLevel,
 		});
 
 		newTypography = getGroupAttributes(subscriptObj, 'typography');
@@ -309,6 +292,7 @@ const setCustomFormatsWhenPaste = ({
 			oldFormat: 'core/superscript',
 			value: { 'vertical-align': 'super' },
 			isList,
+			textLevel,
 		});
 
 		newTypography = getGroupAttributes(superscriptObj, 'typography');

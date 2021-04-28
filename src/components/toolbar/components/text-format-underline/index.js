@@ -28,7 +28,7 @@ import { toolbarUnderline } from '../../../../icons';
  * TextFormatUnderline
  */
 const TextFormatUnderline = props => {
-	const { formatValue, onChange, isList, breakpoint } = props;
+	const { formatValue, onChange, isList, breakpoint, textLevel } = props;
 
 	const getTextDecorationValue = () => {
 		return (
@@ -76,6 +76,7 @@ const TextFormatUnderline = props => {
 				'text-decoration': response,
 			},
 			breakpoint,
+			textLevel,
 		});
 
 		setIsActive(!isActive);

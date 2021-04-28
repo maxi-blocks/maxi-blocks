@@ -6,11 +6,6 @@ import { useEffect, useState } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
- * Internal dependencies
- */
-import getBlockStyle from '../../extensions/styles/getBlockStyle';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -121,6 +116,7 @@ const MaxiToolbar = props => {
 		textLevel,
 		typeOfList,
 		uniqueID,
+		parentBlockStyle,
 	} = attributes;
 
 	const [anchorRef, setAnchorRef] = useState(
@@ -165,7 +161,7 @@ const MaxiToolbar = props => {
 						<div className='toolbar-block-custom-label'>
 							{customLabel}
 							<span className='toolbar-block-custom-label__block-style'>
-								{` | ${getBlockStyle(blockStyle, clientId)}`}
+								{` | ${parentBlockStyle}`}
 							</span>
 						</div>
 						<Mover clientId={clientId} blockName={name} />
@@ -287,14 +283,19 @@ const MaxiToolbar = props => {
 								setAttributes({ linkSettings })
 							}
 						/>
-						{<TextLink
-							{...getGroupAttributes(attributes, 'typography')}
-							blockName={name}
-							onChange={obj => setAttributes(obj)}
-							isList={isList}
-							linkSettings={linkSettings}
-							breakpoint={deviceType}
-						/>}
+						{
+							<TextLink
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
+								blockName={name}
+								onChange={obj => setAttributes(obj)}
+								isList={isList}
+								linkSettings={linkSettings}
+								breakpoint={deviceType}
+							/>
+						}
 						<TextListOptions
 							blockName={name}
 							isList={isList}

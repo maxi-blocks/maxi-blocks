@@ -94,6 +94,28 @@ exports[`TextMaxi Test Text Maxi when pasting headings 1`] = `
 <!-- /wp:maxi-blocks/text-maxi -->"
 `;
 
+exports[`TextMaxi Testing Text Maxi with custom formats when merge from bottom block to top one 1`] = `
+"<!-- wp:maxi-blocks/text-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"text-maxi-12\\",\\"isFirstOnHierarchy\\":true,\\"content\\":\\"Testing Text Maxi.\\\\u003cspan class=\\\\u0022maxi-text-block\\\\u002d\\\\u002dhas-custom-format maxi-text-block__custom-format\\\\u002d\\\\u002d0\\\\u0022\\\\u003e.Bold\\\\u003c/span\\\\u003e\\"} -->
+<div class=\\"maxi-motion-effect maxi-block maxi-text-block maxi-text-block-wrap maxi-light text-maxi-12\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing Text Maxi.<span class=\\"maxi-text-block--has-custom-format maxi-text-block__custom-format--0\\">.Bold</span></p></div>
+<!-- /wp:maxi-blocks/text-maxi -->"
+`;
+
+exports[`TextMaxi Testing Text Maxi with custom formats when merge from top block to bottom one 1`] = `
+"<!-- wp:maxi-blocks/text-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"text-maxi-12\\",\\"isFirstOnHierarchy\\":true,\\"content\\":\\"Testing Text Maxi.\\\\u003cspan class=\\\\u0022maxi-text-block\\\\u002d\\\\u002dhas-custom-format maxi-text-block__custom-format\\\\u002d\\\\u002d0\\\\u0022\\\\u003e.Bold\\\\u003c/span\\\\u003e\\"} -->
+<div class=\\"maxi-motion-effect maxi-block maxi-text-block maxi-text-block-wrap maxi-light text-maxi-12\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing Text Maxi.<span class=\\"maxi-text-block--has-custom-format maxi-text-block__custom-format--0\\">.Bold</span></p></div>
+<!-- /wp:maxi-blocks/text-maxi -->"
+`;
+
+exports[`TextMaxi Testing Text Maxi with custom formats when split 1`] = `
+"<!-- wp:maxi-blocks/text-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"text-maxi-3\\",\\"isFirstOnHierarchy\\":true,\\"content\\":\\"Testing Text Maxi \\",\\"custom-formats\\":{\\"maxi-text-block__custom-format\\\\u002d\\\\u002d0\\":{\\"font-weight-general\\":800}}} -->
+<div class=\\"maxi-motion-effect maxi-block maxi-text-block maxi-text-block-wrap maxi-light text-maxi-3\\" id=\\"text-maxi-3\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing Text Maxi </p></div>
+<!-- /wp:maxi-blocks/text-maxi -->
+
+<!-- wp:maxi-blocks/text-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"text-maxi-4\\",\\"isFirstOnHierarchy\\":true,\\"content\\":\\"\\\\u003cspan class=\\\\u0022maxi-text-block\\\\u002d\\\\u002dhas-custom-format maxi-text-block__custom-format\\\\u002d\\\\u002d0\\\\u0022\\\\u003eBold\\\\u003c/span\\\\u003e\\",\\"custom-formats\\":{\\"maxi-text-block__custom-format\\\\u002d\\\\u002d0\\":{\\"font-weight-general\\":800}}} -->
+<div class=\\"maxi-motion-effect maxi-block maxi-text-block maxi-text-block-wrap maxi-light text-maxi-4\\" id=\\"text-maxi-4\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\"><span class=\\"maxi-text-block--has-custom-format maxi-text-block__custom-format--0\\">Bold</span></p></div>
+<!-- /wp:maxi-blocks/text-maxi -->"
+`;
+
 exports[`TextMaxi Writes a sentence on Text Maxi 1`] = `
 "<!-- wp:maxi-blocks/text-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"text-maxi-12\\",\\"isFirstOnHierarchy\\":true,\\"content\\":\\"Testing Text Maxi\\"} -->
 <div class=\\"maxi-motion-effect maxi-block maxi-text-block maxi-text-block-wrap maxi-light text-maxi-12\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing Text Maxi</p></div>

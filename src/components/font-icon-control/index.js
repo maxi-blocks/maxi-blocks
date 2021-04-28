@@ -54,7 +54,6 @@ const FontIconControl = props => {
 		breakpoint,
 		simpleMode = false,
 		disableColor,
-		isHover = false,
 		blockStyle,
 		clientId,
 	} = props;
@@ -263,16 +262,24 @@ const FontIconControl = props => {
 										<ColorControl
 											label={__('Icon', 'maxi-blocks')}
 											color={props['icon-color']}
-											defaultColor={getDefaultAttribute('icon-color')}
-											onChange={val => onChange({ 'icon-color': val })}
+											defaultColor={getDefaultAttribute(
+												'icon-color'
+											)}
+											onChange={val =>
+												onChange({ 'icon-color': val })
+											}
 											showPalette
 											blockStyle={blockStyle}
-											isHover={isHover}
 											palette={{
-												...getGroupAttributes(props, 'palette'),
+												...getGroupAttributes(
+													props,
+													'palette'
+												),
 											}}
 											colorPaletteType='icon'
-											onChangePalette={val => onChange(val)}
+											onChangePalette={val =>
+												onChange(val)
+											}
 											clientId={clientId}
 										/>
 									),
@@ -313,18 +320,36 @@ const FontIconControl = props => {
 											/>
 											{props['icon-status-hover'] && (
 												<ColorControl
-													label={__('Icon Hover', 'maxi-blocks')}
-													color={props['icon-color-hover']}
-													defaultColor={getDefaultAttribute('icon-color-hover')}
-													onChange={val => onChange({ 'icon-color-hover': val })}
+													label={__(
+														'Icon Hover',
+														'maxi-blocks'
+													)}
+													color={
+														props[
+															'icon-color-hover'
+														]
+													}
+													defaultColor={getDefaultAttribute(
+														'icon-color-hover'
+													)}
+													onChange={val =>
+														onChange({
+															'icon-color-hover': val,
+														})
+													}
 													showPalette
 													blockStyle={blockStyle}
-													isHover={isHover}
+													isHover
 													palette={{
-														...getGroupAttributes(props, 'palette'),
+														...getGroupAttributes(
+															props,
+															'palette'
+														),
 													}}
 													colorPaletteType='icon'
-													onChangePalette={val => onChange(val)}
+													onChangePalette={val =>
+														onChange(val)
+													}
 													clientId={clientId}
 												/>
 											)}

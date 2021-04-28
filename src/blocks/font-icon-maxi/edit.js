@@ -102,6 +102,7 @@ class edit extends MaxiBlock {
 					'box-shadow',
 					'box-shadow-hover',
 					'icon',
+					'icon-hover',
 				],
 				'maxi-blocks/font-icon-maxi',
 				parentBlockStyle

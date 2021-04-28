@@ -94,6 +94,14 @@ const getPaletteClasses = (
 					? attributes['palette-preset-icon-color']
 					: getPaletteDefault('icon', blockName, textLevel)
 			}`,
+		allowedPalettes.includes('icon-hover') &&
+			!attributes['palette-custom-icon-hover-color'] &&
+			attributes['icon-status-hover'] &&
+			`maxi-sc-${parentBlockStyle}-icon-hover-color-${
+				!isNil(attributes['palette-preset-icon-hover-color'])
+					? attributes['palette-preset-icon-hover-color']
+					: getPaletteDefault('icon', blockName, textLevel)
+			}`,
 		allowedPalettes.includes('divider') &&
 			!isEmpty(attributes['divider-border-style']) &&
 			attributes['divider-border-style'] !== 'none' &&

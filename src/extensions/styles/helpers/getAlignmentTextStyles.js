@@ -8,7 +8,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 import { isEmpty } from 'lodash';
 
-const getAlignmentTextStyles = obj => {
+const getAlignmentTextStyles = (obj, type = 'text') => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
@@ -20,9 +20,14 @@ const getAlignmentTextStyles = obj => {
 					};
 					break;
 				case 'center':
-					response[breakpoint] = {
-						'text-align': 'center',
-					};
+					type === 'list'
+						? (response[breakpoint] = {
+								'list-style-position':
+									type === 'list' ? 'inside' : 'initial',
+						  })
+						: (response[breakpoint] = {
+								'text-align': 'center',
+						  });
 					break;
 				case 'justify':
 					response[breakpoint] = {
@@ -30,9 +35,14 @@ const getAlignmentTextStyles = obj => {
 					};
 					break;
 				case 'right':
-					response[breakpoint] = {
-						'text-align': 'right',
-					};
+					type === 'list'
+						? (response[breakpoint] = {
+								'list-style-position':
+									type === 'list' ? 'inside' : 'initial',
+						  })
+						: (response[breakpoint] = {
+								'text-align': 'right',
+						  });
 					break;
 				default:
 					return false;

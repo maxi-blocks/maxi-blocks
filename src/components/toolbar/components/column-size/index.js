@@ -39,6 +39,7 @@ const ColumnSize = props => {
 		attributes,
 		resizableObject,
 		rowPattern,
+		columnSize,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
@@ -62,14 +63,15 @@ const ColumnSize = props => {
 						2
 					)}
 					onChange={val => {
-						resizableObject.updateSize({
-							width: `${val}%`,
-						});
-
 						onChange({
 							[`column-size-${breakpoint}`]: val,
 							verticalAlign,
 						});
+
+						if (resizableObject)
+							resizableObject.updateSize({
+								width: `${val}%`,
+							});
 					}}
 					min={0}
 					max={100}
@@ -77,6 +79,7 @@ const ColumnSize = props => {
 					allowReset
 					defaultValue={getColumnDefaultValue(
 						rowPattern,
+						columnSize,
 						clientId,
 						breakpoint
 					)}

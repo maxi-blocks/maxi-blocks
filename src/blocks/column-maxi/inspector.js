@@ -129,6 +129,12 @@ const Inspector = props => {
 														allowReset
 														defaultValue={getColumnDefaultValue(
 															rowPattern,
+															{
+																...getGroupAttributes(
+																	attributes,
+																	'columnSize'
+																),
+															},
 															clientId,
 															deviceType
 														)}

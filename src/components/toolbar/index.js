@@ -417,6 +417,12 @@ const MaxiToolbar = memo(
 								breakpoint={deviceType}
 								resizableObject={resizableObject}
 								rowPattern={rowPattern}
+								columnSize={{
+									...getGroupAttributes(
+										attributes,
+										'columnSize'
+									),
+								}}
 							/>
 							<BoxShadow
 								blockName={name}

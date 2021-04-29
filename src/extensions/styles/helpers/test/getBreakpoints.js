@@ -1,5 +1,5 @@
 import getBreakpoints from '../getBreakpoints';
-import '@wordpress/data';
+import '../../../store';
 
 describe('getBreakpoints', () => {
 	it('Get a correct breakpoint', () => {

@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getShapeDividerStyles Get a correct Shape Divider 1`] = `
+Object {
+  "general": Object {
+    "height": "1px",
+    "opacity": 2,
+  },
+  "label": "Shape Divider",
+}
+`;
+
+exports[`getShapeDividerStyles Get a correct Shape Divider 2`] = `
+Object {
+  "general": Object {
+    "fill": "red",
+  },
+  "label": "Shape Divider SVG",
+}
+`;

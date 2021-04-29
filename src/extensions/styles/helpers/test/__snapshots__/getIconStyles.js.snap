@@ -11,5 +11,41 @@ Object {
     "opacity": 2,
     "width": "4.5test",
   },
+  "l": Object {
+    "font-size": "3test",
+    "height": "4.5test",
+    "min-width": "4.5test",
+    "width": "4.5test",
+  },
+  "m": Object {
+    "font-size": "3test",
+    "height": "4.5test",
+    "min-width": "4.5test",
+    "width": "4.5test",
+  },
+  "s": Object {
+    "font-size": "3test",
+    "height": "4.5test",
+    "min-width": "4.5test",
+    "width": "4.5test",
+  },
+  "xl": Object {
+    "font-size": "3test",
+    "height": "4.5test",
+    "min-width": "4.5test",
+    "width": "4.5test",
+  },
+  "xs": Object {
+    "font-size": "3test",
+    "height": "4.5test",
+    "min-width": "4.5test",
+    "width": "4.5test",
+  },
+  "xxl": Object {
+    "font-size": "3test",
+    "height": "4.5test",
+    "min-width": "4.5test",
+    "width": "4.5test",
+  },
 }
 `;

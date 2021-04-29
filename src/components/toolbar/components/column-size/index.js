@@ -37,7 +37,6 @@ const ColumnSize = props => {
 		onChange,
 		breakpoint,
 		attributes,
-		resizableObject,
 		rowPattern,
 		columnSize,
 	} = props;
@@ -62,17 +61,12 @@ const ColumnSize = props => {
 						),
 						2
 					)}
-					onChange={val => {
+					onChange={val =>
 						onChange({
 							[`column-size-${breakpoint}`]: val,
 							verticalAlign,
-						});
-
-						if (resizableObject)
-							resizableObject.updateSize({
-								width: `${val}%`,
-							});
-					}}
+						})
+					}
 					min={0}
 					max={100}
 					step={0.1}

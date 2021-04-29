@@ -63,12 +63,6 @@ class edit extends MaxiBlock {
 		this.displayStyles();
 
 		if (this.resizableObject.current) {
-			// Cheating to make appear 'resizableObject' as an attribute 👍
-			if (!this.props.attributes.resizableObject)
-				this.props.setAttributes({
-					resizableObject: this.resizableObject.current,
-				});
-
 			const columnWidth = getLastBreakpointAttribute(
 				'column-size',
 				this.props.deviceType || 'general',

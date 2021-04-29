@@ -29,6 +29,7 @@ import {
 import {
 	getGroupAttributes,
 	getDefaultAttribute,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import { getColumnDefaultValue } from '../../extensions/column-templates';
 
@@ -41,7 +42,6 @@ const Inspector = props => {
 		deviceType,
 		setAttributes,
 		clientId,
-		resizableObject,
 		rowPattern,
 	} = props;
 	const {
@@ -106,22 +106,15 @@ const Inspector = props => {
 															'Column Size (%)',
 															'maxi-blocks'
 														)}
-														value={
-															attributes[
-																`column-size-${deviceType}`
-															]
-														}
+														value={getLastBreakpointAttribute(
+															'column-size',
+															deviceType,
+															attributes
+														)}
 														onChange={val => {
 															setAttributes({
 																[`column-size-${deviceType}`]: val,
 															});
-
-															if (resizableObject)
-																resizableObject.updateSize(
-																	{
-																		width: `${val}%`,
-																	}
-																);
 														}}
 														min={0}
 														max={100}

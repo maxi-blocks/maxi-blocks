@@ -175,7 +175,8 @@ class MaxiBlock extends Component {
 			res = 'maxi-light';
 		}
 
-		this.props.setAttributes({ blockStyle: res });
+		if (this.props.attributes.blockStyle !== 'maxi-light')
+			this.props.setAttributes({ blockStyle: res });
 	}
 
 	uniqueIDChecker(idToCheck) {

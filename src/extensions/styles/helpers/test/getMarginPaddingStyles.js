@@ -1,4 +1,5 @@
 import getMarginPaddingStyles from '../getMarginPaddingStyles';
+import '@wordpress/block-editor';
 
 describe('getMarginPaddingStyles', () => {
 	it('Get a correct Margin', () => {

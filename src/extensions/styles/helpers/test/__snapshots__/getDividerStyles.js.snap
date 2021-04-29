@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getDividerStyles Get a correct Divider Styles 1`] = `
+Object {
+  "general": Object {
+    "border-color": "test",
+    "border-radius": "20px",
+    "border-right": "none",
+    "border-style": "test",
+    "border-top-width": "1test",
+    "width": "3test",
+  },
+  "label": "Divider",
+}
+`;
+
+exports[`getDividerStyles Get a correct Divider Styles 2`] = `
+Object {
+  "general": Object {
+    "border-color": "test",
+    "border-radius": "20px",
+    "border-right-width": "2test",
+    "border-style": "test",
+    "border-top": "none",
+    "height": "4%}",
+  },
+  "label": "Divider",
+}
+`;
+
+exports[`getDividerStyles Get a correct Divider Styles 3`] = `
+Object {
+  "general": Object {
+    "align-items": "center",
+    "flex-direction": "row",
+    "justify-content": "flex-start",
+  },
+  "label": "Divider",
+}
+`;
+
+exports[`getDividerStyles Get a correct Divider Styles 4`] = `
+Object {
+  "general": Object {
+    "align-items": "flex-start",
+    "flex-direction": "",
+    "justify-content": "center",
+  },
+  "label": "Divider",
+}
+`;

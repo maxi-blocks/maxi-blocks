@@ -1,7 +1,7 @@
 import getShapeDividerStyles from '../getShapeDividerStyles';
 
 describe('getShapeDividerStyles', () => {
-	it('Get a correct alignment', () => {
+	it('Get a correct Shape Divider', () => {
 		const object = {
 			'divider-border-color': 'test',
 			'divider-border-style': 'test',
@@ -13,6 +13,11 @@ describe('getShapeDividerStyles', () => {
 			'divider-width': 3,
 			'divider-width-unit': 'test',
 			'divider-height': 4,
+			'shape-divider-background-active-media': 'test',
+			'shape-divider-background-layers': 'array',
+			'shape-divider-background-layers-status': 'true',
+			'shape-divider-background-color': 'test',
+			'shape-divider-background-color-clip-path': 'test',
 		};
 
 		const result = getShapeDividerStyles(object);

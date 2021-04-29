@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getMarginPaddingStyles Get a correct Margin 1`] = `
+Object {
+  "general": Object {
+    "margin-bottom": "testtest",
+    "margin-left": "testtest",
+    "margin-right": "testtest",
+    "margin-top": "testtest",
+  },
+  "l": Object {
+    "margin-bottom": "testtest",
+    "margin-left": "testtest",
+    "margin-right": "testtest",
+    "margin-top": "testtest",
+  },
+  "m": Object {
+    "margin-bottom": "testtest",
+    "margin-left": "testtest",
+    "margin-right": "testtest",
+    "margin-top": "testtest",
+  },
+  "s": Object {
+    "margin-bottom": "testtest",
+    "margin-left": "testtest",
+    "margin-right": "testtest",
+    "margin-top": "testtest",
+  },
+  "xl": Object {
+    "margin-bottom": "testtest",
+    "margin-left": "testtest",
+    "margin-right": "testtest",
+    "margin-top": "testtest",
+  },
+  "xs": Object {
+    "margin-bottom": "testtest",
+    "margin-left": "testtest",
+    "margin-right": "testtest",
+    "margin-top": "testtest",
+  },
+  "xxl": Object {
+    "margin-bottom": "testtest",
+    "margin-left": "testtest",
+    "margin-right": "testtest",
+    "margin-top": "testtest",
+  },
+}
+`;

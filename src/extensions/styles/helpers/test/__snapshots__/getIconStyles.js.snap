@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getIconStyles Get a correct Icon Styles 1`] = `
+Object {
+  "general": Object {
+    "background": "black",
+    "color": "red",
+    "font-size": "3test",
+    "height": "4.5test",
+    "min-width": "4.5test",
+    "opacity": 2,
+    "width": "4.5test",
+  },
+}
+`;

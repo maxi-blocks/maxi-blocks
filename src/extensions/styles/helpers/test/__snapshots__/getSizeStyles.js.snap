@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getSizeStyles Get a correct alignment 1`] = `
+Object {
+  "general": Object {
+    "height": "4test",
+    "max-height": "3test",
+    "max-width": "2test",
+    "min-height": "1test",
+    "min-width": "2test",
+    "width": "1test",
+  },
+  "l": Object {
+    "height": "1test",
+    "max-height": "2test",
+    "max-width": "2test",
+    "min-height": "1test",
+    "min-width": "3test",
+    "width": "1test",
+  },
+  "m": Object {
+    "height": "2test",
+    "max-height": "1test",
+    "max-width": "2test",
+    "min-height": "2test",
+    "min-width": "4test",
+    "width": "3test",
+  },
+  "s": Object {
+    "height": "1test",
+    "max-height": "1test",
+    "max-width": "3test",
+    "min-height": "2test",
+    "min-width": "1test",
+    "width": "4test",
+  },
+  "xl": Object {
+    "height": "3test",
+    "max-height": "2test",
+    "max-width": "3test",
+    "min-height": "4test",
+    "min-width": "1test",
+    "width": "4test",
+  },
+  "xs": Object {
+    "height": "3test",
+    "max-height": "2test",
+    "max-width": "3test",
+    "min-height": "4test",
+    "min-width": "1test",
+    "width": "4test",
+  },
+  "xxl": Object {
+    "height": "2test",
+    "max-height": "1test",
+    "max-width": "2test",
+    "min-height": "2test",
+    "min-width": "4test",
+    "width": "3test",
+  },
+}
+`;

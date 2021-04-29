@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getTransformStyles Get a correct alignment 1`] = `
+Object {
+  "general": Object {
+    "transform": "scaleX(0.01) scaleY(0.02) translateX(3test) translateY(4test) rotateX(1deg) rotateY(2deg) rotateZ(3deg) ",
+    "transform-origin": "false% false% ;",
+  },
+  "l": Object {
+    "transform": "scaleX(0.02) scaleY(0.03) translateX(4test) translateY(1test) rotateX(2deg) rotateY(3deg) rotateZ(4deg) ",
+    "transform-origin": "false% false% ;",
+  },
+  "m": Object {
+    "transform": "scaleX(0.01) scaleY(0.02) translateX(3test) translateY(4test) rotateX(1deg) rotateY(2deg) rotateZ(3deg) ",
+    "transform-origin": "false% false% ;",
+  },
+  "s": Object {
+    "transform": "scaleX(0.04) scaleY(0.01) translateX(2test) translateY(3test) rotateX(4deg) rotateY(1deg) rotateZ(2deg) ",
+    "transform-origin": "false% false% ;",
+  },
+  "xl": Object {
+    "transform": "scaleX(0.03) scaleY(0.04) translateX(1test) translateY(2test) rotateX(3deg) rotateY(4deg) rotateZ(1deg) ",
+    "transform-origin": "false% false% ;",
+  },
+  "xs": Object {
+    "transform": "scaleX(0.04) scaleY(0.02) translateX(1test) translateY(2test) rotateX(3deg) rotateY(4deg) rotateZ(1deg) ",
+    "transform-origin": "false% false% ;",
+  },
+  "xxl": Object {
+    "transform": "scaleX(0.04) scaleY(0.01) translateX(2test) translateY(3test) rotateX(4deg) rotateY(1deg) rotateZ(2deg) ",
+    "transform-origin": "false% false% ;",
+  },
+}
+`;

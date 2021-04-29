@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getOpacityStyles Get a correct alignment 1`] = `
+Object {
+  "general": Object {
+    "opacity": 1,
+  },
+  "l": Object {
+    "opacity": 4,
+  },
+  "m": Object {
+    "opacity": 1,
+  },
+  "s": Object {
+    "opacity": 2,
+  },
+  "xl": Object {
+    "opacity": 3,
+  },
+  "xs": Object {
+    "opacity": 3,
+  },
+  "xxl": Object {
+    "opacity": 2,
+  },
+}
+`;

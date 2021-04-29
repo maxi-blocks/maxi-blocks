@@ -76,7 +76,8 @@ class MaxiBlock extends Component {
 		// Ensures rendering when selecting or unselecting
 		if (
 			!this.props.isSelected ||
-			this.props.isSelected !== nextProps.isSelected
+			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
+			this.props.deviceType !== nextProps.deviceType // In case of breakpoint change
 		)
 			return true;
 

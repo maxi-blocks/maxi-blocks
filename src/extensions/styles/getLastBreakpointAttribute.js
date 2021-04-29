@@ -57,16 +57,19 @@ const getLastBreakpointAttributeSingle = (
 	return currentAttr;
 };
 
-const getLastBreakpointAttributeGroup = (target, breakpoint, isHover) => {
+const getLastBreakpointAttributeGroup = (
+	target,
+	breakpoint,
+	attributes,
+	isHover
+) => {
 	const { getSelectedBlockClientIds, getBlockAttributes } = select(
 		'core/block-editor'
 	);
 
 	const clientIds = getSelectedBlockClientIds();
 
-	const values = clientIds.map(clientId => {
-		const attributes = getBlockAttributes(clientId);
-
+	const values = clientIds.map(() => {
 		return getLastBreakpointAttributeSingle(
 			target,
 			breakpoint,
@@ -90,7 +93,12 @@ const getLastBreakpointAttribute = (
 	const { getSelectedBlockCount } = select('core/block-editor');
 
 	if (getSelectedBlockCount() > 1)
-		return getLastBreakpointAttributeGroup(target, breakpoint, isHover);
+		return getLastBreakpointAttributeGroup(
+			target,
+			breakpoint,
+			attributes,
+			isHover
+		);
 	return getLastBreakpointAttributeSingle(
 		target,
 		breakpoint,

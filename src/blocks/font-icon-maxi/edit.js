@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { __experimentalBlock } from '@wordpress/block-editor';
 import { withSelect } from '@wordpress/data';
 
 /**
@@ -11,13 +10,13 @@ import Inspector from './inspector';
 import {
 	BackgroundDisplayer,
 	FontIconPicker,
-	MaxiBlock,
+	MaxiBlockComponent,
 	Toolbar,
 } from '../../components';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiModalIcon from '../../components/font-icon-picker/modal';
 
@@ -35,7 +34,7 @@ import { toolbarReplaceImage } from '../../icons';
 /**
  * Content
  */
-class edit extends MaxiBlock {
+class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -60,42 +59,24 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
-		const { attributes, className, deviceType, setAttributes } = this.props;
-		const {
-			uniqueID,
-			blockStyle,
-			defaultBlockStyle,
-			blockStyleBackground,
-			extraClassName,
-			fullWidth,
-		} = attributes;
+		const { attributes, setAttributes } = this.props;
+		const { uniqueID } = attributes;
 
 		const classes = classnames(
-			'maxi-block',
-			'maxi-block--backend',
 			'maxi-font-icon-block',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
-			defaultBlockStyle,
-			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
 			!!attributes['text-highlight'] && 'maxi-highlight--text',
 			!!attributes['background-highlight'] &&
 				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
-			extraClassName,
-			uniqueID,
-			className
+			!!attributes['border-highlight'] && 'maxi-highlight--border'
 		);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
-			<__experimentalBlock
-				key={`maxi-font-icon-block-${uniqueID}`}
+			<MaxiBlock
 				className={classes}
-				data-align={fullWidth}
+				{...getMaxiBlockBlockAttributes(this.props)}
+				disableMotion
 			>
 				{!attributes['background-highlight'] && (
 					<BackgroundDisplayer
@@ -137,7 +118,7 @@ class edit extends MaxiBlock {
 						}
 					/>
 				)}
-			</__experimentalBlock>,
+			</MaxiBlock>,
 		];
 	}
 }

@@ -5,25 +5,28 @@ import { forwardRef } from '@wordpress/element';
 import { compose, withInstanceId } from '@wordpress/compose';
 import { withSelect, withDispatch } from '@wordpress/data';
 import { Button, Icon, withFocusOutside } from '@wordpress/components';
-import { InnerBlocks, __experimentalBlock } from '@wordpress/block-editor';
+import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import RowContext from './context';
-import { BackgroundDisplayer, MaxiBlock, Toolbar } from '../../components';
-import { getTemplates } from '../../extensions/column-templates';
 import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+	BackgroundDisplayer,
+	MaxiBlockComponent,
+	Toolbar,
+} from '../../components';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
+import { getTemplates } from '../../extensions/column-templates';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty, uniqueId } from 'lodash';
 import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTemplate';
 
@@ -31,24 +34,33 @@ import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTe
  * InnerBlocks version
  */
 const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const {
-		children,
-		className,
-		maxiBlockClass,
-		dataAlign,
-		background,
-	} = props;
+	const { children, className, attributes } = props;
 
 	return (
-		<__experimentalBlock.div
+		<MaxiBlock
 			ref={ref}
 			className={className}
-			data-align={dataAlign}
-			data-gx_initial_block_class={maxiBlockClass}
+			{...getMaxiBlockBlockAttributes(this.props)}
+			disableMotion
 		>
-			<BackgroundDisplayer {...background} />
+			<BackgroundDisplayer
+				{...getGroupAttributes(attributes, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundImageHover',
+					'backgroundVideoHover',
+					'backgroundGradientHover',
+					'backgroundSVGHover',
+				])}
+			/>
 			{children}
-		</__experimentalBlock.div>
+		</MaxiBlock>
 	);
 });
 
@@ -57,7 +69,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
  */
 const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
-class edit extends MaxiBlock {
+class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -80,33 +92,13 @@ class edit extends MaxiBlock {
 			clientId,
 			selectOnClick,
 			hasInnerBlock,
-			className,
 			instanceId,
 			setAttributes,
 			deviceType,
 		} = this.props;
-		const {
-			uniqueID,
-			blockStyle,
-			extraClassName,
-			defaultBlockStyle,
-			blockStyleBackground,
-			fullWidth,
-		} = attributes;
+		const { uniqueID } = attributes;
 
-		const classes = classnames(
-			'maxi-block',
-			'maxi-block--backend',
-			'maxi-row-block',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
-			uniqueID,
-			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
-			extraClassName,
-			className
-		);
+		const classes = 'maxi-row-block';
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -130,24 +122,7 @@ class edit extends MaxiBlock {
 					__experimentalTagName={ContainerInnerBlocks}
 					__experimentalPassedProps={{
 						className: classes,
-						dataAlign: fullWidth,
-						maxiBlockClass: defaultBlockStyle,
-						background: {
-							...getGroupAttributes(attributes, [
-								'background',
-								'backgroundColor',
-								'backgroundImage',
-								'backgroundVideo',
-								'backgroundGradient',
-								'backgroundSVG',
-								'backgroundHover',
-								'backgroundColorHover',
-								'backgroundImageHover',
-								'backgroundVideoHover',
-								'backgroundGradientHover',
-								'backgroundSVGHover',
-							]),
-						},
+						...this.props,
 					}}
 					allowedBlocks={ALLOWED_BLOCKS}
 					orientation='horizontal'

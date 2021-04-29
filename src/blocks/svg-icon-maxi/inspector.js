@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { Fragment } from '@wordpress/element';
 import { TextControl } from '@wordpress/components';
+import { isNil } from 'lodash';
 
 /**
  * Internal dependencies
@@ -167,10 +168,13 @@ const Inspector = props => {
 															setAttributes(
 																svgColorFill
 															);
-															changeSVGContent(
-																svgColorFill,
-																1
-															);
+															const color =
+																svgColorFill.svgColorFill;
+															if (!isNil(color))
+																changeSVGContent(
+																	color,
+																	1
+																);
 														}}
 														blockStyle={blockStyle}
 														clientId={clientId}
@@ -191,10 +195,13 @@ const Inspector = props => {
 															setAttributes(
 																svgColorLine
 															);
-															changeSVGContent(
-																svgColorLine,
-																2
-															);
+															const color =
+																svgColorLine.svgColorLine;
+															if (!isNil(color))
+																changeSVGContent(
+																	color,
+																	2
+																);
 														}}
 														blockStyle={blockStyle}
 														clientId={clientId}

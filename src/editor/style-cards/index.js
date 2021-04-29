@@ -292,6 +292,7 @@ const MaxiStyleCardsTab = ({
 							typography={getTypography(`${typographyPrefix}`)}
 							prefix={`${typographyPrefix}-`}
 							disableFormats
+							disableCustomFormats
 							className={`maxi-style-cards-control__sc__${typographyPrefix}-typography`}
 							textLevel={`${typographyPrefix}`}
 							hideAlignment
@@ -422,6 +423,7 @@ const MaxiStyleCardsTab = ({
 							typography={getTypography(`h${item}`)}
 							prefix={`h${item}-`}
 							disableFormats
+							disableCustomFormats
 							className={`maxi-style-cards-control__sc__h${item}-typography`}
 							textLevel={`h${item}`}
 							hideAlignment

@@ -7,48 +7,12 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
-import { getGlobalAttributes } from '../../extensions/attributes/getGlobalAttributes';
 
 /**
  * Attributes
  */
 const attributes = {
-	...{
-		...getGlobalAttributes([
-			'background',
-			'backgroundColor',
-			'backgroundColorHover',
-			'backgroundGradient',
-			'backgroundGradientHover',
-			'backgroundHover',
-			'border',
-			'borderHover',
-			'borderRadiusHover',
-			'borderWidth',
-			'borderWidthHover',
-			'boxShadow',
-			'boxShadowHover',
-			'display',
-			'entrance',
-			'highlight',
-			'icon',
-			'iconBorder',
-			'iconBorderRadius',
-			'iconBorderWidth',
-			'iconHover',
-			'iconPadding',
-			'margin',
-			'motion',
-			'opacity',
-			'position',
-			'size',
-			'textAlignment',
-			'transform',
-			'typography',
-			'typographyHover',
-			'zIndex',
-		]),
-	},
+	...attributesData.global,
 	customLabel: {
 		type: 'string',
 		default: __('Button', 'maxi-blocks'),
@@ -61,6 +25,13 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
+	...attributesData.icon,
+	...attributesData.iconHover,
+	...attributesData.iconPadding,
+	...attributesData.iconBorder,
+	...attributesData.iconBorderRadius,
+	...attributesData.iconBorderWidth,
+	...attributesData.highlight,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {
@@ -68,6 +39,18 @@ const attributes = {
 			default: 'center',
 		},
 	},
+	...attributesData.textAlignment,
+	...attributesData.typography,
+	...attributesData.typographyHover,
+	...attributesData.background,
+	...attributesData.backgroundColor,
+	...attributesData.backgroundGradient,
+	...attributesData.backgroundHover,
+	...attributesData.backgroundColorHover,
+	...attributesData.backgroundGradientHover,
+	...attributesData.opacity,
+	...attributesData.border,
+	...attributesData.borderWidth,
 	...{
 		...attributesData.borderRadius,
 		'border-top-left-radius-general': {
@@ -87,6 +70,13 @@ const attributes = {
 			default: 10,
 		},
 	},
+	...attributesData.borderHover,
+	...attributesData.borderWidthHover,
+	...attributesData.borderRadiusHover,
+	...attributesData.size,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.margin,
 	...{
 		...attributesData.padding,
 		'padding-top-general': {
@@ -106,6 +96,12 @@ const attributes = {
 			default: 20,
 		},
 	},
+	...attributesData.display,
+	...attributesData.position,
+	...attributesData.motion,
+	...attributesData.entrance,
+	...attributesData.transform,
+	...attributesData.zIndex,
 };
 
 export default attributes;

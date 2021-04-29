@@ -1,9 +1,10 @@
-import { breakpoints } from './';
+import { breakpoints } from '.';
 
 const global = {
 	...breakpoints,
 	blockStyle: {
 		type: 'string',
+		default: 'maxi-light',
 	},
 	blockStyleBackground: {
 		type: 'number',

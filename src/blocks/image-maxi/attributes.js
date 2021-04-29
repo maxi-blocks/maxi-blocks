@@ -12,6 +12,7 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  * Attributes
  */
 const attributes = {
+	...attributesData.global,
 	customLabel: {
 		type: 'string',
 		default: __('Image', 'maxi-blocks'),

@@ -47,24 +47,23 @@ const SvgColor = props => {
 					}}
 				/>
 			}
-			content={
-				<div className='toolbar-item__svg-color__popover'>
-					<ColorControl
-						label={__('SVG', 'maxi-blocks')}
-						color={svgColor}
-						defaultColor={svgColorDefault}
-						onChange={val => onChange({ [`${type}`]: val })}
-						disableGradient
-						showPalette
-						blockStyle={blockStyle}
-						palette={{ ...getGroupAttributes(props, 'palette') }}
-						colorPaletteType={type}
-						onChangePalette={val => onChange(val)}
-						deviceType={breakpoint}
-					/>
-				</div>
-			}
-		/>
+		>
+			<div className='toolbar-item__svg-color__popover'>
+				<ColorControl
+					label={__('SVG', 'maxi-blocks')}
+					color={svgColor}
+					defaultColor={svgColorDefault}
+					onChange={val => onChange({ [`${type}`]: val })}
+					disableGradient
+					showPalette
+					blockStyle={blockStyle}
+					palette={{ ...getGroupAttributes(props, 'palette') }}
+					colorPaletteType={type}
+					onChangePalette={val => onChange(val)}
+					deviceType={breakpoint}
+				/>
+			</div>
+		</ToolbarPopover>
 	);
 };
 

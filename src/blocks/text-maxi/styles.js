@@ -91,10 +91,18 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getTypographyObject = props => {
+const getTypographyObject = (props, isList = false) => {
 	const response = {
 		typography: getTypographyStyles({
 			...getGroupAttributes(props, 'typography'),
+		}),
+		...(isList && {
+			listAlignment: getAlignmentTextStyles(
+				{
+					...getGroupAttributes(props, 'textAlignment'),
+				},
+				'list'
+			),
 		}),
 	};
 
@@ -120,7 +128,10 @@ const getStyles = props => {
 	let response = {
 		[uniqueID]: getNormalObject(props),
 		[`${uniqueID}:hover`]: getHoverObject(props),
-		[`${uniqueID} .maxi-text-block__content`]: getTypographyObject(props),
+		[`${uniqueID} .maxi-text-block__content`]: getTypographyObject(
+			props,
+			isList
+		),
 		[`${uniqueID} .maxi-text-block__content:hover`]: getTypographyHoverObject(
 			props
 		),

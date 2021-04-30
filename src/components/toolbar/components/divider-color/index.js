@@ -54,26 +54,23 @@ const DividerColor = props => {
 					/>
 				</div>
 			}
-			content={
-				<div className='toolbar-item__divider-color__popover'>
-					<ColorControl
-						label={__('Divider', 'maxi-blocks')}
-						color={props['divider-border-color']}
-						defaultColor={getDefaultAttribute('border-color')}
-						onChange={val =>
-							onChange({ 'divider-border-color': val })
-						}
-						disableGradient
-						showPalette
-						blockStyle={blockStyle}
-						palette={{ ...getGroupAttributes(props, 'palette') }}
-						colorPaletteType='divider'
-						onChangePalette={val => onChange(val)}
-						deviceType={breakpoint}
-					/>
-				</div>
-			}
-		/>
+		>
+			<div className='toolbar-item__divider-color__popover'>
+				<ColorControl
+					label={__('Divider', 'maxi-blocks')}
+					color={props['divider-border-color']}
+					defaultColor={getDefaultAttribute('border-color')}
+					onChange={val => onChange({ 'divider-border-color': val })}
+					disableGradient
+					showPalette
+					blockStyle={blockStyle}
+					palette={{ ...getGroupAttributes(props, 'palette') }}
+					colorPaletteType='divider'
+					onChangePalette={val => onChange(val)}
+					deviceType={breakpoint}
+				/>
+			</div>
+		</ToolbarPopover>
 	);
 };
 

@@ -53,28 +53,27 @@ const BackgroundColor = props => {
 					}}
 				/>
 			}
-			content={
-				<div className='toolbar-item__background__popover'>
-					<ColorControl
-						label={__('Background', 'maxi-blocks')}
-						color={props['background-color']}
-						defaultColor={getDefaultAttribute('background-color')}
-						onChange={val =>
-							onChange({
-								'background-color': val,
-								'background-active-media': 'color',
-							})
-						}
-						showPalette
-						blockStyle={blockStyle}
-						palette={{ ...getGroupAttributes(props, 'palette') }}
-						colorPaletteType='background'
-						onChangePalette={val => onChange(val)}
-						deviceType={breakpoint}
-					/>
-				</div>
-			}
-		/>
+		>
+			<div className='toolbar-item__background__popover'>
+				<ColorControl
+					label={__('Background', 'maxi-blocks')}
+					color={props['background-color']}
+					defaultColor={getDefaultAttribute('background-color')}
+					onChange={val =>
+						onChange({
+							'background-color': val,
+							'background-active-media': 'color',
+						})
+					}
+					showPalette
+					blockStyle={blockStyle}
+					palette={{ ...getGroupAttributes(props, 'palette') }}
+					colorPaletteType='background'
+					onChangePalette={val => onChange(val)}
+					deviceType={breakpoint}
+				/>
+			</div>
+		</ToolbarPopover>
 	);
 };
 

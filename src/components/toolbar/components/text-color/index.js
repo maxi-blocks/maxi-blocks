@@ -90,34 +90,33 @@ const TextColor = withFormatValue(props => {
 					/>
 				</div>
 			}
-			content={
-				<div className='toolbar-item__text-color__popover'>
-					<ColorControl
-						label={__('Text', 'maxi-blocks')}
-						defaultColor={getDefaultAttribute('color')}
-						color={
-							color ||
-							getLastBreakpointAttribute(
-								'color',
-								breakpoint,
-								typography
-							)
-						}
-						onChange={val =>
-							onChangeFormat({
-								color: val,
-							})
-						}
-						showPalette
-						blockStyle={blockStyle}
-						palette={{ ...getGroupAttributes(props, 'palette') }}
-						colorPaletteType='typography'
-						onChangePalette={val => onChange(val)}
-						deviceType={breakpoint}
-					/>
-				</div>
-			}
-		/>
+		>
+			<div className='toolbar-item__text-color__popover'>
+				<ColorControl
+					label={__('Text', 'maxi-blocks')}
+					defaultColor={getDefaultAttribute('color')}
+					color={
+						color ||
+						getLastBreakpointAttribute(
+							'color',
+							breakpoint,
+							typography
+						)
+					}
+					onChange={val =>
+						onChangeFormat({
+							color: val,
+						})
+					}
+					showPalette
+					blockStyle={blockStyle}
+					palette={{ ...getGroupAttributes(props, 'palette') }}
+					colorPaletteType='typography'
+					onChangePalette={val => onChange(val)}
+					deviceType={breakpoint}
+				/>
+			</div>
+		</ToolbarPopover>
 	);
 });
 

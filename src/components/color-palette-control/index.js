@@ -48,6 +48,61 @@ const ColorPaletteControl = props => {
 		  ]
 		: getPaletteDefault(colorPaletteType, blockName, textLevel);
 
+	const onChangePaletteWithType = colorPaletteType => {
+		switch (colorPaletteType) {
+			case 'box-shadow':
+				onChange({
+					[`box-shadow-color-${deviceType}`]: '',
+				});
+				break;
+
+			case 'border':
+				onChange({
+					[`border-color-${deviceType}`]: '',
+				});
+				break;
+
+			case 'typography':
+				onChange({
+					[`color-${deviceType}`]: '',
+				});
+				break;
+
+			case 'background':
+				onChange({
+					['background-color']: '',
+				});
+				break;
+
+			case 'divider':
+				onChange({
+					['divider-border-color']: '',
+				});
+				break;
+
+			case 'icon':
+				onChange({
+					['icon-color']: '',
+				});
+				break;
+
+			case 'svgColorFill':
+				onChange({
+					svgColorFill: '',
+				});
+				break;
+
+			case 'svgColorLine':
+				onChange({
+					svgColorLine: '',
+				});
+				break;
+
+			default:
+				return null;
+		}
+	};
+
 	return (
 		<div className={classes}>
 			{!props[
@@ -107,47 +162,8 @@ const ColorPaletteControl = props => {
 								isHover ? '-hover' : ''
 							}-color`
 						]
-					) {
-						colorPaletteType === 'box-shadow' &&
-							onChange({
-								[`box-shadow-color-${deviceType}`]: '',
-							});
-
-						colorPaletteType === 'border' &&
-							onChange({
-								[`border-color-${deviceType}`]: '',
-							});
-
-						colorPaletteType === 'typography' &&
-							onChange({
-								[`color-${deviceType}`]: '',
-							});
-
-						colorPaletteType === 'background' &&
-							onChange({
-								['background-color']: '',
-							});
-
-						colorPaletteType === 'divider' &&
-							onChange({
-								['divider-border-color']: '',
-							});
-
-						colorPaletteType === 'icon' &&
-							onChange({
-								['icon-color']: '',
-							});
-
-						colorPaletteType === 'svgColorFill' &&
-							onChange({
-								svgColorFill: '',
-							});
-
-						colorPaletteType === 'svgColorLine' &&
-							onChange({
-								svgColorLine: '',
-							});
-					}
+					)
+						onChangePaletteWithType(colorPaletteType);
 				}}
 			/>
 		</div>

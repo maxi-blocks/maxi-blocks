@@ -88,8 +88,13 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-svg-icon-block',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointAttribute(
+				'display',
+				deviceType,
+				attributes,
+				false,
+				true
+			) === 'none' && 'maxi-block-display-none',
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
 				`maxi-background--${blockStyleBackground}`,

@@ -178,7 +178,9 @@ export const getMaxiBlockBlockAttributes = props => {
 	const displayValue = getLastBreakpointAttribute(
 		'display',
 		deviceType,
-		attributes
+		attributes,
+		false,
+		true
 	);
 	const motion = { ...getGroupAttributes(attributes, 'motion') };
 	const background = {

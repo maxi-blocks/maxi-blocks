@@ -1,7 +1,7 @@
 import { __, sprintf } from '@wordpress/i18n';
 
 import { select, dispatch, useSelect, useDispatch } from '@wordpress/data';
-import { Fragment, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { Button, SelectControl, Popover, Icon } from '@wordpress/components';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { isEmpty, forIn, isNil } from 'lodash';
@@ -244,7 +244,7 @@ const MaxiStyleCardsTab = ({
 		return {
 			label: __(firstLabel, 'maxi-blocks'),
 			content: (
-				<Fragment>
+				<>
 					{deviceType === 'general' && (
 						<FancyRadioControl
 							label={__(
@@ -353,19 +353,17 @@ const MaxiStyleCardsTab = ({
 								noPalette
 							/>
 						)}
-				</Fragment>
+				</>
 			),
 		};
 	};
 
 	const headingItems = () => {
-		const resultItems = [];
-
-		[1, 2, 3, 4, 5, 6].forEach(item => {
-			resultItems.push({
+		return [1, 2, 3, 4, 5, 6].map(item => {
+			return {
 				label: __(`H${item}`, 'maxi-blocks'),
 				content: (
-					<Fragment>
+					<>
 						{deviceType === 'general' && (
 							<FancyRadioControl
 								label={__(
@@ -438,12 +436,10 @@ const MaxiStyleCardsTab = ({
 								);
 							}}
 						/>
-					</Fragment>
+					</>
 				),
-			});
+			};
 		});
-
-		return resultItems;
 	};
 
 	const [quickColorPreset, setQuickColorPreset] = useState(1);
@@ -456,7 +452,7 @@ const MaxiStyleCardsTab = ({
 					deviceType === 'general' && {
 						label: __('Quick Pick Colour Presets', 'maxi-blocks'),
 						content: (
-							<Fragment>
+							<>
 								<div className='maxi-style-cards__quick-color-presets'>
 									{[1, 2, 3, 4, 5, 6, 7].map(item => (
 										<div
@@ -505,7 +501,7 @@ const MaxiStyleCardsTab = ({
 									disableGradient
 									noPalette
 								/>
-							</Fragment>
+							</>
 						),
 					},
 					generateTab(
@@ -737,7 +733,6 @@ const MaxiStyleCardsEditor = () => {
 	};
 
 	const onChangeValue = (prop, value, style) => {
-
 		let newStateSC = {};
 
 		if (prop === 'typography') {
@@ -1124,7 +1119,7 @@ const MaxiStyleCardsEditor = () => {
 						onChange={val => setUseCustomStyleCard(val)}
 					/>
 					{!useCustomStyleCard && (
-						<Fragment>
+						<>
 							<div className='maxi-style-cards__sc__save'>
 								<input
 									type='text'
@@ -1200,7 +1195,7 @@ const MaxiStyleCardsEditor = () => {
 									/>
 								</MediaUploadCheck>
 							</div>
-						</Fragment>
+						</>
 					)}
 				</div>
 				<hr />
@@ -1246,7 +1241,7 @@ const MaxiStyleCardsEditorPopUp = () => {
 	const [isVisible, setIsVisible] = useState(false);
 
 	return (
-		<Fragment>
+		<>
 			<Button
 				id='maxi-button__go-to-customizer'
 				className='action-buttons__button'
@@ -1257,7 +1252,7 @@ const MaxiStyleCardsEditorPopUp = () => {
 				<span>{__('Style Card Editor', 'maxi-blocks')}</span>
 			</Button>
 			{isVisible && <MaxiStyleCardsEditor />}
-		</Fragment>
+		</>
 	);
 };
 

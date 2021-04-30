@@ -20,7 +20,12 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { styleResolver, styleGenerator, getGroupAttributes } from '../styles';
+import {
+	styleResolver,
+	styleGenerator,
+	getGroupAttributes,
+	getBlockStyle,
+} from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import { loadFonts } from '../text/fonts';
 
@@ -51,6 +56,8 @@ class MaxiBlock extends Component {
 		if (!isEmpty(this.typography)) this.loadFonts();
 
 		this.displayStyles();
+
+		this.getParentStyle();
 
 		this.blockRef = createRef();
 	}
@@ -124,6 +131,8 @@ class MaxiBlock extends Component {
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		if (!shouldDisplayStyles) this.displayStyles();
+
+		this.getParentStyle();
 	}
 
 	componentWillUnmount() {
@@ -195,6 +204,17 @@ class MaxiBlock extends Component {
 	loadFonts() {
 		Object.entries(this.typography).forEach(([key, val]) => {
 			if (key.includes('font-family')) loadFonts(val);
+		});
+	}
+
+	getParentStyle() {
+		const { setAttributes, clientId } = this.props;
+
+		setAttributes({
+			parentBlockStyle: getBlockStyle(
+				this.props.attributes.blockStyle,
+				clientId
+			),
 		});
 	}
 

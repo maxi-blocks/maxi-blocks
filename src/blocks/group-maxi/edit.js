@@ -20,7 +20,6 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteClasses,
-	getBlockStyle,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -58,28 +57,6 @@ class edit extends MaxiBlock {
 				}),
 			},
 		};
-	}
-
-	componentDidMount() {
-		const { setAttributes, clientId } = this.props;
-		setAttributes({
-			parentBlockStyle: getBlockStyle(
-				this.props.attributes.blockStyle,
-				clientId
-			),
-		});
-	}
-
-	componentDidUpdate() {
-		this.displayStyles();
-
-		const { setAttributes, clientId } = this.props;
-		setAttributes({
-			parentBlockStyle: getBlockStyle(
-				this.props.attributes.blockStyle,
-				clientId
-			),
-		});
 	}
 
 	render() {

@@ -94,8 +94,16 @@ class edit extends MaxiBlock {
 			'maxi-group-block',
 			'maxi-motion-effect',
 			`maxi-motion-effect-${uniqueID}`,
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointAttribute(
+				'display',
+				deviceType,
+				attributes,
+				false,
+				true
+			) === 'none' && 'maxi-block-display-none',
+			!!attributes['background-highlight'] &&
+				'maxi-highlight--background',
+			!!attributes['border-highlight'] && 'maxi-highlight--border',
 			uniqueID,
 			blockStyle,
 			getPaletteClasses(

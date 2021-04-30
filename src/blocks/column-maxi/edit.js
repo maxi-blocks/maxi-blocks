@@ -73,20 +73,16 @@ class edit extends MaxiBlock {
 		});
 
 		if (this.resizableObject.current) {
-			// Cheating to make appear 'resizableObject' as an attribute 👍
-			this.props.setAttributes({
-				resizableObject: this.resizableObject.current,
-			});
-
 			const columnWidth = getLastBreakpointAttribute(
 				'column-size',
 				this.props.deviceType || 'general',
 				this.props.attributes
 			);
 
-			this.resizableObject.current.updateSize({
-				width: `${columnWidth}%`,
-			});
+			if (this.resizableObject.current.state.width !== `${columnWidth}%`)
+				this.resizableObject.current.updateSize({
+					width: `${columnWidth}%`,
+				});
 		}
 	}
 
@@ -119,8 +115,13 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-column-block',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointAttribute(
+				'display',
+				deviceType,
+				attributes,
+				false,
+				true
+			) === 'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			getPaletteClasses(
@@ -168,19 +169,20 @@ class edit extends MaxiBlock {
 			);
 
 		return [
-			<Inspector
-				key={`block-settings-${uniqueID}`}
-				resizableObject={this.resizableObject.current}
-				{...this.props}
-			/>,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				{...this.props}
-				blockStyle={blockStyle}
-			/>,
 			<RowContext.Consumer key={`column-content-${uniqueID}`}>
 				{context => (
 					<Fragment>
+						<Inspector
+							key={`block-settings-${uniqueID}`}
+							rowPattern={context.rowPattern}
+							{...this.props}
+						/>
+						<Toolbar
+							key={`toolbar-${uniqueID}`}
+							rowPattern={context.rowPattern}
+							propsToAvoid={['resizableObject']}
+							{...this.props}
+						/>
 						{rowBlockWidth === 0 && <Spinner />}
 						{rowBlockWidth !== 0 && (
 							<BlockResizer
@@ -193,10 +195,14 @@ class edit extends MaxiBlock {
 									getLastBreakpointAttribute(
 										'display',
 										deviceType,
-										attributes
+										attributes,
+										false,
+										true
 									) === 'none' && 'maxi-block-display-none'
 								)}
-								defaultSize={{ width: getColumnWidthDefault() }}
+								defaultSize={{
+									width: getColumnWidthDefault(),
+								}}
 								enable={{
 									right: true,
 									left: true,

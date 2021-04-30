@@ -15,6 +15,7 @@ const attributes = {
 	parentBlockStyle: {
 		type: 'string',
 	},
+	...attributesData.global,
 	customLabel: {
 		type: 'string',
 		default: __('Divider', 'maxi-blocks'),

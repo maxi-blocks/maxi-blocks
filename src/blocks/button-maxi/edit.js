@@ -73,8 +73,10 @@ class edit extends MaxiBlockComponent {
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<MaxiBlock
+				key={`maxi-button--${uniqueID}`}
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
+				disableBackground
 			>
 				<div className={buttonClasses}>
 					{!isEmpty(attributes['icon-name']) && (

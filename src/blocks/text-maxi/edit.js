@@ -99,6 +99,7 @@ class edit extends MaxiBlockComponent {
 				propsToAvoid={['content', 'formatValue']}
 			/>,
 			<MaxiBlock
+				key={`maxi-text--${uniqueID}`}
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>

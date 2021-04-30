@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { withSelect } from '@wordpress/data';
-import { Fragment, forwardRef } from '@wordpress/element';
+import { Fragment, useRef } from '@wordpress/element';
 import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
@@ -31,14 +31,21 @@ import { isEmpty } from 'lodash';
 /**
  * InnerBlocks version
  */
-const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const { children, className } = props;
+const ContainerInnerBlocks = props => {
+	const {
+		children,
+		className,
+		attributes: { uniqueID },
+	} = props;
+
+	const ref = useRef();
 
 	return (
 		<MaxiBlock
+			key={`maxi-container--${uniqueID}`}
 			ref={ref}
 			className={className}
-			{...getMaxiBlockBlockAttributes(this.props)}
+			{...getMaxiBlockBlockAttributes(props)}
 			disableMotion
 		>
 			{props['shape-divider-top-status'] && (
@@ -56,7 +63,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			)}
 		</MaxiBlock>
 	);
-});
+};
 
 /**
  * Edit
@@ -113,6 +120,8 @@ class edit extends MaxiBlockComponent {
 			<Fragment key={`container-content-${uniqueID}`}>
 				{isFirstOnHierarchy && fullWidth && (
 					<MaxiBlock
+						key={`maxi-container--${uniqueID}`}
+						ref={this.blockRef}
 						className={classes}
 						{...getMaxiBlockBlockAttributes(this.props)}
 					>

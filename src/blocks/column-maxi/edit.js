@@ -34,10 +34,15 @@ import { isNil, round } from 'lodash';
  * InnerBlocks version
  */
 const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const { children, className } = props;
+	const {
+		children,
+		className,
+		attributes: { uniqueID },
+	} = props;
 
 	return (
 		<MaxiBlock
+			key={`maxi-container--${uniqueID}`}
 			ref={ref}
 			className={className}
 			{...getMaxiBlockBlockAttributes(props)}

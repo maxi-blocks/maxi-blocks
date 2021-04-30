@@ -30,10 +30,15 @@ import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTe
  * InnerBlocks version
  */
 const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const { children, className } = props;
+	const {
+		children,
+		className,
+		attributes: { uniqueID },
+	} = props;
 
 	return (
 		<MaxiBlock
+			key={`maxi-row--${uniqueID}`}
 			ref={ref}
 			className={className}
 			{...getMaxiBlockBlockAttributes(props)}

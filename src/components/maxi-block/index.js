@@ -7,6 +7,7 @@ import {
 	__experimentalBlock as Block,
 	useBlockProps,
 } from '@wordpress/block-editor';
+import { forwardRef, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -23,34 +24,48 @@ import MotionPreview from '../motion-preview';
  */
 import classnames from 'classnames';
 
-const MainBlock = ({
-	tagName: TagName = 'div',
-	children,
-	background,
-	disableBackground,
-	uniqueID,
-	...props
-}) => {
-	if (!useBlockProps)
+const MainBlock = forwardRef(
+	(
+		{
+			tagName: TagName = 'div',
+			children,
+			background,
+			disableBackground,
+			uniqueID,
+			...props
+		},
+		ref
+	) => {
+		if (!useBlockProps)
+			return (
+				<Block ref={ref} tagName={TagName} {...props}>
+					{disableBackground && (
+						<BackgroundDisplayer
+							{...background}
+							blockClassName={uniqueID}
+						/>
+					)}
+					{children}
+				</Block>
+			);
+
+		const blockRef = useRef();
+
 		return (
-			<Block tagName={TagName} {...props}>
-				<BackgroundDisplayer
-					{...background}
-					blockClassName={uniqueID}
-				/>
+			<TagName ref={blockRef} {...useBlockProps(props)}>
+				{disableBackground && (
+					<BackgroundDisplayer
+						{...background}
+						blockClassName={uniqueID}
+					/>
+				)}
 				{children}
-			</Block>
+			</TagName>
 		);
+	}
+);
 
-	return (
-		<TagName {...useBlockProps(props)}>
-			<BackgroundDisplayer {...background} blockClassName={uniqueID} />
-			{children}
-		</TagName>
-	);
-};
-
-const MaxiBlock = props => {
+const MaxiBlock = forwardRef((props, ref) => {
 	const {
 		tagName = 'div',
 		children,
@@ -102,7 +117,9 @@ const MaxiBlock = props => {
 						{...motion}
 					>
 						<MainBlock
+							ref={ref}
 							{...blockProps}
+							key={`maxi-block-${uniqueID}`}
 							background={background}
 							disableBackground={
 								disableBackground ||
@@ -116,6 +133,8 @@ const MaxiBlock = props => {
 			)}
 			{disableMotion && (
 				<MainBlock
+					ref={ref}
+					key={`maxi-block-${uniqueID}`}
 					{...blockProps}
 					background={background}
 					disableBackground={
@@ -127,7 +146,7 @@ const MaxiBlock = props => {
 			)}
 		</>
 	);
-};
+});
 
 export const getMaxiBlockBlockAttributes = props => {
 	const { deviceType, attributes } = props;

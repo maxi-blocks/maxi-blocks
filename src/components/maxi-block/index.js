@@ -7,7 +7,7 @@ import {
 	__experimentalBlock as Block,
 	useBlockProps,
 } from '@wordpress/block-editor';
-import { forwardRef, useRef } from '@wordpress/element';
+import { forwardRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -62,10 +62,21 @@ const MainBlock = forwardRef(
 				</TagName>
 			);
 
-		const blockRef = useRef();
+		if (isSave)
+			return (
+				<TagName ref={ref} {...useBlockProps.save(props)}>
+					{disableBackground && (
+						<BackgroundDisplayer
+							{...background}
+							blockClassName={uniqueID}
+						/>
+					)}
+					{children}
+				</TagName>
+			);
 
 		return (
-			<TagName ref={blockRef} {...useBlockProps(props)}>
+			<TagName ref={ref} {...useBlockProps(props)}>
 				{disableBackground && (
 					<BackgroundDisplayer
 						{...background}

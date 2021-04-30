@@ -13,9 +13,6 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  */
 const attributes = {
 	...attributesData.global,
-	parentBlockStyle: {
-		type: 'string',
-	},
 	customLabel: {
 		type: 'string',
 		default: __('SVG Icon', 'maxi-blocks'),

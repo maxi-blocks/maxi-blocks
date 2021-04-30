@@ -14,7 +14,6 @@ import {
 	getAttributeKey,
 	getGroupAttributes,
 } from '../../extensions/styles';
-import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
 
 /**
  * External dependencies
@@ -30,47 +29,12 @@ const ColorLayer = props => {
 		disableClipPath,
 		isHover,
 		prefix,
-		scAtt,
 		blockStyle,
 		blockName,
-		useStyleCard,
 		clientId,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
-
-	const getBlockStyle = () => {
-		switch (blockStyle) {
-			case 'maxi-light':
-				return 'light';
-			case 'maxi-dark':
-				return 'dark';
-			case 'maxi-parent': {
-				// return getBlockAttributes(
-				// 	getBlockParents(clientId)[0]
-				// ).blockStyle.replace('maxi-', '');
-				return 'light';
-			}
-			default:
-				return 'light';
-		}
-	};
-
-	const getColor = () => {
-		const color =
-			colorOptions[getAttributeKey('background-color', isHover, prefix)];
-		if (color === 'styleCard')
-			return getStyleCardAttr(scAtt, getBlockStyle(), false);
-		return color;
-	};
-
-	const getDefaultColor = () => {
-		if (useStyleCard)
-			return getStyleCardAttr(scAtt, getBlockStyle(), false);
-		return getDefaultAttribute(
-			getAttributeKey('background-color', isHover, prefix)
-		);
-	};
 
 	return (
 		<Fragment>

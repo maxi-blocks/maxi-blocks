@@ -23,11 +23,13 @@ const getStyleCardAttr = (
 		}
 	};
 
-	if (typeof getStyleCards() === 'object') {
-		const activeStyleCard = Object.keys(getStyleCards()).map(key => {
+	const allStyleCards = getStyleCards();
+
+	if (typeof allStyleCards === 'object') {
+		const activeStyleCard = Object.keys(allStyleCards).map(key => {
 			let activeSC;
-			if (getStyleCards()[key].status === 'active') {
-				activeSC = getStyleCards()[key];
+			if (allStyleCards[key].status === 'active') {
+				activeSC = allStyleCards[key];
 			}
 
 			if (!isNil(activeSC)) return activeSC;

@@ -54,7 +54,7 @@ const BackgroundControl = props => {
 		prefix = '',
 		blockStyle,
 		blockName,
-		noPalette,
+		disablePalette,
 		clientId,
 	} = props;
 
@@ -162,7 +162,7 @@ const BackgroundControl = props => {
 							prefix={prefix}
 							blockStyle={blockStyle}
 							blockName={blockName}
-							noPalette={noPalette}
+							disablePalette={disablePalette}
 							clientId={clientId}
 						/>
 					)}

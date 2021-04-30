@@ -25,10 +25,6 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	updateStyleCard: {
-		type: 'number',
-		default: 0,
-	},
 	...attributesData.palette,
 	...attributesData.icon,
 	...attributesData.iconHover,
@@ -53,7 +49,6 @@ const attributes = {
 			default: 'color',
 		},
 	},
-	...attributesData.backgroundColor,
 	...{
 		...attributesData.backgroundColor,
 		'background-color': {

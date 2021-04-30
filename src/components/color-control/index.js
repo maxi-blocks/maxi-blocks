@@ -39,7 +39,7 @@ const ColorControl = props => {
 		onChange,
 		isHover,
 		blockStyle,
-		noPalette,
+		disablePalette,
 		blockName,
 		textLevel,
 		showPalette = false,
@@ -109,7 +109,7 @@ const ColorControl = props => {
 
 	return (
 		<Fragment>
-			{!noPalette && showPalette && (
+			{!disablePalette && showPalette && (
 				<ColorPaletteControl
 					{...palette}
 					blockName={blockName}
@@ -131,7 +131,7 @@ const ColorControl = props => {
 						isHover ? '-hover' : ''
 					}-color`
 				]) ||
-			noPalette ? (
+			disablePalette ? (
 				<div className={classes}>
 					{!disableColorDisplay && (
 						<BaseControl

@@ -1,13 +1,21 @@
+/**
+ * WordPress dependencies
+ */
 import { __, sprintf } from '@wordpress/i18n';
-
 import { select, dispatch, useSelect, useDispatch } from '@wordpress/data';
 import { Fragment, useState } from '@wordpress/element';
 import { Button, SelectControl, Popover, Icon } from '@wordpress/components';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { isEmpty, forIn, isNil } from 'lodash';
-import { styleCardBoat, reset, SCdelete, SCaddMore } from '../../icons';
-import './editor.scss';
 
+/**
+ * External dependencies
+ */
+import { isEmpty, forIn, isNil } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
+import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
 import {
 	SettingTabsControl,
 	AccordionControl,
@@ -16,7 +24,11 @@ import {
 	FancyRadioControl,
 } from '../../components';
 
-import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
+/**
+ * Styles and icons
+ */
+import './editor.scss';
+import { styleCardBoat, reset, SCdelete, SCaddMore } from '../../icons';
 
 const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
 
@@ -32,18 +44,6 @@ function maxiClick(element) {
 		)
 	);
 }
-
-const exportStyleCard = (data, fileName) => {
-	const a = document.createElement('a');
-	document.body.appendChild(a);
-	a.style = 'display: none';
-	const json = JSON.stringify(data);
-	const blob = new Blob([json], { type: 'text/plain' });
-	const url = window.URL.createObjectURL(blob);
-	a.href = url;
-	a.download = fileName;
-	a.click();
-};
 
 const addActiveSCclass = keySC => {
 	const selectArr = document.querySelectorAll(
@@ -85,11 +85,7 @@ const MaxiStyleCardsTab = ({
 	const parseTypography = newSC => {
 		const parsedTypography = {};
 		Object.entries(newSC).forEach(([key, val]) => {
-			if (
-				key.includes('font-size') ||
-				key.includes('line-height') ||
-				key.includes('letter-spacing')
-			) {
+			if (['font-size', 'line-height', 'letter-spacing'].includes(key)) {
 				const isUnit = key.includes('-unit');
 				if (isUnit) {
 					const newKey = key.replaceAll('-unit', '');
@@ -284,7 +280,7 @@ const MaxiStyleCardsTab = ({
 									onChangeValue(firstColor, val, SCStyle);
 								}}
 								disableGradient
-								noPalette
+								disablePalette
 							/>
 						)}
 					{!!typographyPrefix && (
@@ -298,7 +294,7 @@ const MaxiStyleCardsTab = ({
 							hideAlignment
 							hideTextShadow
 							breakpoint={deviceType}
-							noPalette
+							disablePalette
 							styleCards
 							onChange={obj => {
 								const parsedTypography = parseTypography(obj);
@@ -351,7 +347,7 @@ const MaxiStyleCardsTab = ({
 									onChangeValue(secondColor, val, SCStyle);
 								}}
 								disableGradient
-								noPalette
+								disablePalette
 							/>
 						)}
 				</Fragment>
@@ -416,7 +412,7 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 									disableGradient
-									noPalette
+									disablePalette
 								/>
 							)}
 						<TypographyControl
@@ -429,7 +425,7 @@ const MaxiStyleCardsTab = ({
 							hideAlignment
 							hideTextShadow
 							breakpoint={deviceType}
-							noPalette
+							disablePalette
 							styleCards
 							onChange={obj => {
 								const parsedTypography = parseTypography(obj);
@@ -505,7 +501,7 @@ const MaxiStyleCardsTab = ({
 										);
 									}}
 									disableGradient
-									noPalette
+									disablePalette
 								/>
 							</Fragment>
 						),
@@ -739,7 +735,6 @@ const MaxiStyleCardsEditor = () => {
 	};
 
 	const onChangeValue = (prop, value, style) => {
-
 		let newStateSC = {};
 
 		if (prop === 'typography') {
@@ -943,6 +938,21 @@ const MaxiStyleCardsEditor = () => {
 				],
 			}
 		);
+	};
+
+	const exportStyleCard = (data, fileName) => {
+		const a = document.createElement('a');
+		document.body.appendChild(a);
+		a.style = 'display: none';
+
+		const json = JSON.stringify(data);
+		const blob = new Blob([json], { type: 'text/plain' });
+		const url = window.URL.createObjectURL(blob);
+
+		a.href = url;
+		a.download = fileName;
+		a.click();
+		document.body.removeChild(a);
 	};
 
 	window.addEventListener('beforeunload', () => maxiWarnIfUnsavedChanges());

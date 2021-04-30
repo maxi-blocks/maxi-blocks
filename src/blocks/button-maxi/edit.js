@@ -10,8 +10,6 @@ import { __experimentalBlock, RichText } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 import Inspector from './inspector';
 import { MaxiBlock, MotionPreview, Toolbar } from '../../components';
 import {
@@ -25,6 +23,8 @@ import getStyles from './styles';
 /**
  * External dependencies
  */
+import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Content

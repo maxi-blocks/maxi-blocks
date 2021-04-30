@@ -416,14 +416,12 @@ const Inspector = props => {
 																		disableClipPath
 																		disableSVG
 																		disableLayers
-																		scAtt='button-background-color'
 																		blockName={
 																			name
 																		}
 																		blockStyle={
 																			blockStyle
 																		}
-																		useStyleCard
 																		clientId={
 																			clientId
 																		}

@@ -47,7 +47,7 @@ const exportStyleCard = (data, fileName) => {
 
 const addActiveSCclass = keySC => {
 	const selectArr = document.querySelectorAll(
-		'.maxi-style-cards__sc-select option'
+		'.maxi-style-cards__sc__more-sc--select option'
 	);
 	if (!isNil(selectArr)) {
 		selectArr.forEach(option => {

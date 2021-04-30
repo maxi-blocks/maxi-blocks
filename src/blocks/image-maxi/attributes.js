@@ -12,9 +12,6 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  * Attributes
  */
 const attributes = {
-	parentBlockStyle: {
-		type: 'string',
-	},
 	...attributesData.global,
 	customLabel: {
 		type: 'string',

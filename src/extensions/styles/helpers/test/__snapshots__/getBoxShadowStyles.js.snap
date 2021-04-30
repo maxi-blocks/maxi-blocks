@@ -21,7 +21,7 @@ Object {
     "box-shadow": "1px 2px 3px 4px red",
   },
   "xxl": Object {
-    "box-shadow": "1px 2px 3px 4px test",
+    "box-shadow": "1px 2px 3px 4px red",
   },
 }
 `;

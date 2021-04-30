@@ -12,7 +12,7 @@ describe('getCustomFormatsStyles', () => {
 				'text-decoration-general': 'underline',
 			},
 		};
-		const objectT = {
+		const objectTypography = {
 			'font-family-general': 'roboto',
 			'color-general': 'blue',
 			'font-size-unit-general': 'px',
@@ -115,7 +115,12 @@ describe('getCustomFormatsStyles', () => {
 		};
 		const target = 'test';
 		const isHover = true;
-		const result = getCustomFormatsStyles(target, object, isHover, objectT);
+		const result = getCustomFormatsStyles(
+			target,
+			object,
+			isHover,
+			objectTypography
+		);
 		expect(result).toMatchSnapshot();
 	});
 });

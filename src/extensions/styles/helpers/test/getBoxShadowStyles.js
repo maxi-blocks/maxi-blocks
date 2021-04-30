@@ -8,7 +8,7 @@ describe('getBoxShadowStyles', () => {
 			'box-shadow-vertical-general': 2,
 			'box-shadow-blur-general': 3,
 			'box-shadow-spread-general': 4,
-			'box-shadow-color-xxl': 'test',
+			'box-shadow-color-xxl': 'red',
 			'box-shadow-horizontal-xxl': 1,
 			'box-shadow-vertical-xxl': 2,
 			'box-shadow-blur-xxl': 3,

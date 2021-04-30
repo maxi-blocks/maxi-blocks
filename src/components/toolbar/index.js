@@ -224,7 +224,6 @@ const MaxiToolbar = memo(
 									'typography',
 									'palette',
 								])}
-								content={content}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={deviceType}
 								node={anchorRef}

@@ -86,23 +86,22 @@ const Border = props => {
 					/>
 				</div>
 			}
-			content={
-				<div className='toolbar-item__border__popover'>
-					<BorderControl
-						{...getGroupAttributes(props, [
-							'border',
-							'borderWidth',
-							'borderRadius',
-							'palette',
-						])}
-						onChange={value => onChange(value)}
-						breakpoint={breakpoint}
-						disableAdvanced
-						disableColor={disableColor}
-					/>
-				</div>
-			}
-		/>
+		>
+			<div className='toolbar-item__border__popover'>
+				<BorderControl
+					{...getGroupAttributes(props, [
+						'border',
+						'borderWidth',
+						'borderRadius',
+						'palette',
+					])}
+					onChange={value => onChange(value)}
+					breakpoint={breakpoint}
+					disableAdvanced
+					disableColor={disableColor}
+				/>
+			</div>
+		</ToolbarPopover>
 	);
 };
 

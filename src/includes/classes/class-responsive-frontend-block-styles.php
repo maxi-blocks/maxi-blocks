@@ -1,5 +1,4 @@
 <?php
-
 class ResponsiveFrontendStyles {
 	/**
 	 * This plugin's instance.

@@ -45,12 +45,12 @@ describe('getBackgroundStyles', () => {
 			'background-svg-SVGData': 'object',
 			'background-svg-SVGMediaID': 3,
 			'background-svg-SVGMediaURL': 'test',
-			'background-svg-top--unit': 'test',
+			'background-svg-top--unit': '%',
 			'background-svg-top': 4,
-			'background-svg-left--unit': 'test',
+			'background-svg-left--unit': '%',
 			'background-svg-left': 1,
 			'background-svg-size': 2,
-			'background-svg-size--unit': 'test',
+			'background-svg-size--unit': '%',
 		};
 
 		const result = getBackgroundStyles(object);

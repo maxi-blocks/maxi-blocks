@@ -162,7 +162,6 @@ describe('getIconStyles', () => {
 			'icon-border-color-xs': 'test',
 			'icon-border-style-xs': 'test',
 		};
-		debugger;
 		const result = getIconStyles(object);
 		expect(result).toMatchSnapshot();
 	});

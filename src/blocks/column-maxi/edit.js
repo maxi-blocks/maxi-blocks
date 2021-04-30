@@ -61,6 +61,16 @@ class edit extends MaxiBlock {
 		this.resizableObject = createRef();
 	}
 
+	componentDidMount() {
+		const { setAttributes, clientId } = this.props;
+		setAttributes({
+			parentBlockStyle: getBlockStyle(
+				this.props.attributes.blockStyle,
+				clientId
+			),
+		});
+	}
+
 	componentDidUpdate() {
 		this.displayStyles();
 

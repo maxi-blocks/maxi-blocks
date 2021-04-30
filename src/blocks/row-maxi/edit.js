@@ -78,6 +78,16 @@ class edit extends MaxiBlock {
 
 	componentDidMount() {
 		const { setAttributes, clientId } = this.props;
+		setAttributes({
+			parentBlockStyle: getBlockStyle(
+				this.props.attributes.blockStyle,
+				clientId
+			),
+		});
+	}
+
+	componentDidMount() {
+		const { setAttributes, clientId } = this.props;
 
 		setAttributes({
 			parentBlockStyle: getBlockStyle(

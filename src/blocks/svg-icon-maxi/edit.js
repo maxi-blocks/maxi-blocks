@@ -280,26 +280,28 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
 	const changeSVGContent = (color, colorNumber) => {
 		let [regexLineToChange, changeTo, regexLineToChange2, changeTo2] = '';
-
+		console.log(color);
 		if (colorNumber === 1) {
 			regexLineToChange = new RegExp('fill:[^n]+?(?=})', 'g');
 			changeTo = `fill:${color}`;
 
-			regexLineToChange2 = new RegExp('fill="[^n]+?(?=")', 'g');
-			changeTo2 = `fill="${color}`;
+			regexLineToChange2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
+			changeTo2 = ` fill="${color}`;
 		}
 		if (colorNumber === 2) {
 			regexLineToChange = new RegExp('stroke:[^n]+?(?=})', 'g');
 			changeTo = `stroke:${color}`;
 
-			regexLineToChange2 = new RegExp('stroke="[^n]+?(?=")', 'g');
-			changeTo2 = `stroke="${color}`;
+			regexLineToChange2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
+			changeTo2 = ` stroke="${color}`;
 		}
 
 		const newContent = content
 			.replace(regexLineToChange, changeTo)
 			.replace(regexLineToChange2, changeTo2);
 		setAttributes({ content: newContent });
+
+		console.log(newContent);
 	};
 
 	return {

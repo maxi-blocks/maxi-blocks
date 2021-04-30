@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment, RawHTML } from '@wordpress/element';
 import { withSelect } from '@wordpress/data';
 import { Spinner, Button, Placeholder } from '@wordpress/components';
 import { __experimentalBlock, MediaUpload } from '@wordpress/block-editor';
@@ -212,9 +211,9 @@ class edit extends MaxiBlock {
 						allowedTypes='image'
 						value={mediaID}
 						render={({ open }) => (
-							<Fragment>
+							<>
 								{(!isNil(mediaID) && imageData) || mediaURL ? (
-									<Fragment>
+									<>
 										<BackgroundDisplayer
 											{...getGroupAttributes(attributes, [
 												'background',
@@ -270,31 +269,28 @@ class edit extends MaxiBlock {
 												/>
 											</div>
 											<div className={hoverClasses}>
-												{(!SVGElement && (
-													<HoverPreview
-														className={
-															hoverPreviewClasses
-														}
-														key={`hover-preview-${uniqueID}`}
-														{...getGroupAttributes(
-															attributes,
-															[
-																'hover',
-																'hoverTitleTypography',
-																'hoverContentTypography',
-															]
-														)}
-														mediaID={mediaID}
-														src={mediaURL}
-														width={mediaWidth}
-														height={mediaHeight}
-														alt={mediaAlt}
-													/>
-												)) || (
-													<RawHTML className='maxi-image-block-shape-wrapper'>
-														{SVGElement}
-													</RawHTML>
-												)}
+												<HoverPreview
+													className={
+														!SVGElement
+															? hoverPreviewClasses
+															: null
+													}
+													key={`hover-preview-${uniqueID}`}
+													{...getGroupAttributes(
+														attributes,
+														[
+															'hover',
+															'hoverTitleTypography',
+															'hoverContentTypography',
+														]
+													)}
+													SVGElement={SVGElement}
+													mediaID={mediaID}
+													src={mediaURL}
+													width={mediaWidth}
+													height={mediaHeight}
+													alt={mediaAlt}
+												/>
 											</div>
 											{captionType !== 'none' && (
 												<figcaption className='maxi-image-block__caption'>
@@ -302,12 +298,12 @@ class edit extends MaxiBlock {
 												</figcaption>
 											)}
 										</BlockResizer>
-									</Fragment>
+									</>
 								) : mediaID ? (
-									<Fragment>
+									<>
 										<Spinner />
 										<p>{__('Loading…', 'maxi-blocks')}</p>
-									</Fragment>
+									</>
 								) : (
 									<div className='maxi-image-block__placeholder'>
 										<Placeholder
@@ -322,7 +318,7 @@ class edit extends MaxiBlock {
 										/>
 									</div>
 								)}
-							</Fragment>
+							</>
 						)}
 					/>
 				</__experimentalBlock.figure>

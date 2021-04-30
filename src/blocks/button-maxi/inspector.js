@@ -51,14 +51,8 @@ import {
  * Inspector
  */
 const Inspector = props => {
-	const {
-		attributes,
-		deviceType,
-		setAttributes,
-		formatValue,
-		name,
-		clientId,
-	} = props;
+	const { attributes, deviceType, setAttributes, name, clientId } = props;
+
 	const {
 		customLabel,
 		uniqueID,
@@ -291,9 +285,6 @@ const Inspector = props => {
 																	breakpoint={
 																		deviceType
 																	}
-																	formatValue={
-																		formatValue
-																	}
 																	blockName={
 																		name
 																	}
@@ -303,6 +294,7 @@ const Inspector = props => {
 																	clientId={
 																		clientId
 																	}
+																	disableCustomFormats
 																/>
 															),
 														},
@@ -368,9 +360,6 @@ const Inspector = props => {
 																			breakpoint={
 																				deviceType
 																			}
-																			formatValue={
-																				formatValue
-																			}
 																			isHover
 																			blockName={
 																				name
@@ -381,6 +370,7 @@ const Inspector = props => {
 																			clientId={
 																				clientId
 																			}
+																			disableCustomFormats
 																		/>
 																	)}
 																</Fragment>

@@ -3,12 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-const {
+import {
 	RangeControl,
 	SelectControl,
 	TextareaControl,
 	TextControl,
-} = wp.components;
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -423,6 +423,7 @@ const Inspector = props => {
 															blockStyle={
 																blockStyle
 															}
+															disableCustomFormats
 														/>
 													)}
 												</>

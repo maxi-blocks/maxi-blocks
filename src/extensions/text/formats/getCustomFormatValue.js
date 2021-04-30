@@ -4,6 +4,7 @@
 import getLastBreakpointAttribute from '../../styles/getLastBreakpointAttribute';
 import getCurrentFormatClassName from './getCurrentFormatClassName';
 import defaultTypography from '../defaults';
+import getCustomFormat from './getCustomFormat';
 
 /**
  * Retrieve the property from typography object requested
@@ -32,17 +33,16 @@ const getCustomFormatValue = ({
 		);
 
 		if (currentClassName) {
-			if (
-				typography[`custom-formats${isHover ? '-hover' : ''}`][
-					currentClassName
-				]
-			) {
+			const customFormat = getCustomFormat(
+				typography,
+				currentClassName,
+				isHover
+			);
+			if (customFormat) {
 				const responsiveValue = getLastBreakpointAttribute(
 					prop,
 					breakpoint,
-					typography[`custom-formats${isHover ? '-hover' : ''}`][
-						currentClassName
-					]
+					customFormat
 				);
 
 				if (responsiveValue) return responsiveValue;

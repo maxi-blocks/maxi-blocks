@@ -54,6 +54,7 @@ const TypographyControl = withFormatValue(props => {
 		disableColor = false,
 		prefix = '',
 		disableFormats = false,
+		disableCustomFormats = false,
 		hideTextShadow = false,
 		styleCards = false,
 		noPalette = false,
@@ -227,6 +228,8 @@ const TypographyControl = withFormatValue(props => {
 			value,
 			breakpoint,
 			isHover,
+			textLevel,
+			disableCustomFormats,
 		});
 
 		// setTypography(obj);

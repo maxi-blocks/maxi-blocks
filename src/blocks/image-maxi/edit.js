@@ -11,7 +11,6 @@ import { MediaUpload } from '@wordpress/block-editor';
  */
 import Inspector from './inspector';
 import {
-	BackgroundDisplayer,
 	BlockResizer,
 	HoverPreview,
 	MaxiBlockComponent,
@@ -160,25 +159,6 @@ class edit extends MaxiBlockComponent {
 						<>
 							{(!isNil(mediaID) && imageData) || mediaURL ? (
 								<>
-									{!attributes['background-highlight'] && (
-										<BackgroundDisplayer
-											{...getGroupAttributes(attributes, [
-												'background',
-												'backgroundColor',
-												'backgroundImage',
-												'backgroundVideo',
-												'backgroundGradient',
-												'backgroundSVG',
-												'backgroundHover',
-												'backgroundColorHover',
-												'backgroundImageHover',
-												'backgroundVideoHover',
-												'backgroundGradientHover',
-												'backgroundSVGHover',
-											])}
-											blockClassName={uniqueID}
-										/>
-									)}
 									<BlockResizer
 										key={uniqueID}
 										className='maxi-block__resizer maxi-image-block__resizer'

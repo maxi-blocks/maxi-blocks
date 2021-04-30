@@ -12,11 +12,7 @@ import { InnerBlocks } from '@wordpress/block-editor';
  */
 import Inspector from './inspector';
 import RowContext from './context';
-import {
-	BackgroundDisplayer,
-	MaxiBlockComponent,
-	Toolbar,
-} from '../../components';
+import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -34,31 +30,15 @@ import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTe
  * InnerBlocks version
  */
 const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const { children, className, attributes } = props;
+	const { children, className } = props;
 
 	return (
 		<MaxiBlock
 			ref={ref}
 			className={className}
-			{...getMaxiBlockBlockAttributes(this.props)}
+			{...getMaxiBlockBlockAttributes(props)}
 			disableMotion
 		>
-			<BackgroundDisplayer
-				{...getGroupAttributes(attributes, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundImageHover',
-					'backgroundVideoHover',
-					'backgroundGradientHover',
-					'backgroundSVGHover',
-				])}
-			/>
 			{children}
 		</MaxiBlock>
 	);

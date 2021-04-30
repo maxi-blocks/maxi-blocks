@@ -17,11 +17,7 @@ import {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	MaxiBlockComponent,
-	Toolbar,
-	BackgroundDisplayer,
-} from '../../components';
+import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -36,7 +32,6 @@ import {
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
@@ -78,6 +73,7 @@ class edit extends MaxiBlockComponent {
 			onReplace,
 			onRemove,
 			clientId,
+			name,
 		} = this.props;
 		const {
 			uniqueID,
@@ -89,15 +85,7 @@ class edit extends MaxiBlockComponent {
 			listReversed,
 		} = attributes;
 
-		const name = 'maxi-blocks/text-maxi';
-
-		const classes = classnames(
-			'maxi-text-block',
-			!!attributes['text-highlight'] && 'maxi-highlight--text',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border'
-		);
+		const classes = 'maxi-text-block';
 
 		return [
 			<Inspector
@@ -114,25 +102,6 @@ class edit extends MaxiBlockComponent {
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
-				{!attributes['background-highlight'] && (
-					<BackgroundDisplayer
-						{...getGroupAttributes(attributes, [
-							'background',
-							'backgroundColor',
-							'backgroundImage',
-							'backgroundVideo',
-							'backgroundGradient',
-							'backgroundSVG',
-							'backgroundHover',
-							'backgroundColorHover',
-							'backgroundImageHover',
-							'backgroundVideoHover',
-							'backgroundGradientHover',
-							'backgroundSVGHover',
-						])}
-						blockClassName={uniqueID}
-					/>
-				)}
 				{!isList && (
 					<RichText
 						ref={this.blockRef}

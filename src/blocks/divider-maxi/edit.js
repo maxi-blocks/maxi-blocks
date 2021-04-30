@@ -8,12 +8,7 @@ import { withSelect, withDispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	BackgroundDisplayer,
-	BlockResizer,
-	MaxiBlockComponent,
-	Toolbar,
-} from '../../components';
+import { BlockResizer, MaxiBlockComponent, Toolbar } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiBlock, {
@@ -69,8 +64,7 @@ class edit extends MaxiBlockComponent {
 			'maxi-divider-block',
 			lineOrientation === 'vertical'
 				? 'maxi-divider-block--vertical'
-				: 'maxi-divider-block--horizontal',
-			!!attributes['border-highlight'] && 'maxi-highlight--border'
+				: 'maxi-divider-block--horizontal'
 		);
 
 		const handleOnResizeStart = event => {
@@ -122,18 +116,6 @@ class edit extends MaxiBlockComponent {
 					className={classes}
 					{...getMaxiBlockBlockAttributes(this.props)}
 				>
-					{!attributes['background-highlight'] && (
-						<BackgroundDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'backgroundColor',
-								'backgroundGradient',
-								'backgroundHover',
-								'backgroundColorHover',
-								'backgroundGradientHover',
-							])}
-						/>
-					)}
 					{attributes['divider-border-style'] !== 'none' && (
 						<hr className='maxi-divider-block__divider' />
 					)}

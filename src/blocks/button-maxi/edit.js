@@ -59,13 +59,7 @@ class edit extends MaxiBlockComponent {
 		const { attributes, setAttributes, clientId } = this.props;
 		const { uniqueID } = attributes;
 
-		const classes = classnames(
-			'maxi-button-block',
-			!!attributes['text-highlight'] && 'maxi-highlight--text',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border'
-		);
+		const classes = 'maxi-button-block';
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',

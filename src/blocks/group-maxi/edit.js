@@ -10,7 +10,6 @@ import { InnerBlocks } from '@wordpress/block-editor';
 import Inspector from './inspector';
 import {
 	ArrowDisplayer,
-	BackgroundDisplayer,
 	BlockPlaceholder,
 	MaxiBlockComponent,
 	Toolbar,
@@ -24,7 +23,6 @@ import getStyles from './styles';
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
@@ -61,12 +59,7 @@ class edit extends MaxiBlockComponent {
 		const { attributes, clientId, hasInnerBlock, deviceType } = this.props;
 		const { uniqueID } = attributes;
 
-		const classes = classnames(
-			'maxi-group-block',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border'
-		);
+		const classes = 'maxi-group-block';
 
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
@@ -94,25 +87,6 @@ class edit extends MaxiBlockComponent {
 					{...getGroupAttributes(attributes, 'arrow')}
 					breakpoint={deviceType}
 				/>
-				{!attributes['background-highlight'] && (
-					<BackgroundDisplayer
-						{...getGroupAttributes(attributes, [
-							'background',
-							'backgroundColor',
-							'backgroundImage',
-							'backgroundVideo',
-							'backgroundGradient',
-							'backgroundSVG',
-							'backgroundHover',
-							'backgroundColorHover',
-							'backgroundImageHover',
-							'backgroundVideoHover',
-							'backgroundGradientHover',
-							'backgroundSVGHover',
-						])}
-						blockClassName={uniqueID}
-					/>
-				)}
 				<InnerBlocks
 					allowedBlocks={ALLOWED_BLOCKS}
 					templateLock={false}

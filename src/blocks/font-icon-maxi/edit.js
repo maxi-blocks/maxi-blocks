@@ -7,12 +7,7 @@ import { withSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	BackgroundDisplayer,
-	FontIconPicker,
-	MaxiBlockComponent,
-	Toolbar,
-} from '../../components';
+import { FontIconPicker, MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -23,7 +18,6 @@ import MaxiModalIcon from '../../components/font-icon-picker/modal';
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
@@ -62,13 +56,7 @@ class edit extends MaxiBlockComponent {
 		const { attributes, setAttributes } = this.props;
 		const { uniqueID } = attributes;
 
-		const classes = classnames(
-			'maxi-font-icon-block',
-			!!attributes['text-highlight'] && 'maxi-highlight--text',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border'
-		);
+		const classes = 'maxi-font-icon-block';
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -78,18 +66,6 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockBlockAttributes(this.props)}
 				disableMotion
 			>
-				{!attributes['background-highlight'] && (
-					<BackgroundDisplayer
-						{...getGroupAttributes(attributes, [
-							'background',
-							'backgroundColor',
-							'backgroundGradient',
-							'backgroundHover',
-							'backgroundColorHover',
-							'backgroundGradientHover',
-						])}
-					/>
-				)}
 				{(!isEmpty(attributes['icon-name']) && (
 					<>
 						<div className='maxi-font-icon-block__icon__replace'>

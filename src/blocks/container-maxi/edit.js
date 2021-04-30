@@ -11,7 +11,6 @@ import { InnerBlocks } from '@wordpress/block-editor';
 import Inspector from './inspector';
 import {
 	ArrowDisplayer,
-	BackgroundDisplayer,
 	BlockPlaceholder,
 	Indicators,
 	MaxiBlockComponent,
@@ -33,8 +32,7 @@ import { isEmpty } from 'lodash';
  * InnerBlocks version
  */
 const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const { children, className, attributes } = props;
-	const { uniqueID } = attributes;
+	const { children, className } = props;
 
 	return (
 		<MaxiBlock
@@ -43,17 +41,6 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 			{...getMaxiBlockBlockAttributes(this.props)}
 			disableMotion
 		>
-			<BackgroundDisplayer
-				{...getGroupAttributes(attributes, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
-				])}
-				blockClassName={uniqueID}
-			/>
 			{props['shape-divider-top-status'] && (
 				<ShapeDivider
 					{...getGroupAttributes(props, 'shapeDivider')}
@@ -140,23 +127,6 @@ class edit extends MaxiBlockComponent {
 								'padding',
 								'margin',
 							])}
-						/>
-						<BackgroundDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'backgroundColor',
-								'backgroundImage',
-								'backgroundVideo',
-								'backgroundGradient',
-								'backgroundSVG',
-								'backgroundHover',
-								'backgroundColorHover',
-								'backgroundImageHover',
-								'backgroundVideoHover',
-								'backgroundGradientHover',
-								'backgroundSVGHover',
-							])}
-							blockClassName={uniqueID}
 						/>
 						{attributes['shape-divider-top-status'] && (
 							<ShapeDivider

@@ -105,8 +105,13 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-column-block',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointAttribute(
+				'display',
+				deviceType,
+				attributes,
+				false,
+				true
+			) === 'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&
@@ -169,7 +174,9 @@ class edit extends MaxiBlock {
 									getLastBreakpointAttribute(
 										'display',
 										deviceType,
-										attributes
+										attributes,
+										false,
+										true
 									) === 'none' && 'maxi-block-display-none'
 								)}
 								defaultSize={{

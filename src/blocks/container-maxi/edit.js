@@ -144,8 +144,13 @@ class edit extends MaxiBlock {
 			'maxi-block--backend',
 			'maxi-container-block',
 			'maxi-motion-effect',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointAttribute(
+				'display',
+				deviceType,
+				attributes,
+				false,
+				true
+			) === 'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			blockStyle !== 'maxi-custom' &&

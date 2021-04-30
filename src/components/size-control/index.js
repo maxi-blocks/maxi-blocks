@@ -148,6 +148,8 @@ const SizeControl = props => {
 										isEmpty(unit) ? 'empty' : unit
 									].min;
 
+							if (value > 100 && unit === '%') value = 100;
+
 							onChangeValue(value);
 						}}
 						min={
@@ -170,7 +172,11 @@ const SizeControl = props => {
 						className='components-maxi-dimensions-control__units'
 						options={getOptions()}
 						value={unit}
-						onChange={val => onChangeUnit(val)}
+						onChange={val => {
+							onChangeUnit(val);
+
+							if (value > 100 && val === '%') onChangeValue(100);
+						}}
 					/>
 				</>
 			)}

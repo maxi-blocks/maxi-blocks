@@ -6,11 +6,6 @@ import { createHigherOrderComponent } from '@wordpress/compose';
 import { select } from '@wordpress/data';
 
 /**
- * Internal dependencies
- */
-import * as attributes from '../styles/defaults/index';
-
-/**
  * External Dependencies
  */
 import { uniqueId, isEmpty, isNil } from 'lodash';
@@ -33,52 +28,6 @@ const allowedBlocks = [
 	'maxi-blocks/font-icon-maxi',
 	'maxi-blocks/test-maxi',
 ];
-
-/**
- * Filters registered block settings, extending attributes with settings
- *
- * @param {Object} settings Original block settings.
- * @return {Object} Filtered block settings.
- */
-const addAttributes = settings => {
-	// Add custom selector/id
-	if (allowedBlocks.includes(settings.name) && !isNil(settings.attributes)) {
-		settings.attributes = {
-			blockStyle: {
-				type: 'string',
-			},
-			defaultBlockStyle: {
-				type: 'string',
-				default: 'maxi-def-light',
-			},
-
-			uniqueID: {
-				type: 'string',
-			},
-			isFirstOnHierarchy: {
-				type: 'boolean',
-			},
-			linkSettings: {
-				type: 'object',
-			},
-			extraClassName: {
-				type: 'string',
-				default: '',
-			},
-			...attributes.zIndex,
-			...attributes.breakpoints,
-			...settings.attributes,
-		};
-	}
-
-	if (allowedBlocks.includes(settings.name) && !isNil(settings.support)) {
-		settings.support = Object.assign(settings.support, {
-			customClassName: false,
-		});
-	}
-
-	return settings;
-};
 
 /**
  * Add custom Maxi Blocks attributes to selected blocks
@@ -127,12 +76,6 @@ const withAttributes = createHigherOrderComponent(
 		return <BlockEdit {...props} />;
 	},
 	'withAttributes'
-);
-
-addFilter(
-	'blocks.registerBlockType',
-	'maxi-blocks/custom/attributes',
-	addAttributes
 );
 
 addFilter('editor.BlockEdit', 'maxi-blocks/attributes', withAttributes);

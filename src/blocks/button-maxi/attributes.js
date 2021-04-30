@@ -12,6 +12,7 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  * Attributes
  */
 const attributes = {
+	...attributesData.global,
 	parentBlockStyle: {
 		type: 'string',
 	},

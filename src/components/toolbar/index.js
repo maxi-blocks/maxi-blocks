@@ -99,6 +99,7 @@ const MaxiToolbar = memo(
 			setAttributes,
 			toggleHandlers,
 			blockStyle,
+			rowPattern,
 		} = props;
 
 		const {
@@ -118,6 +119,7 @@ const MaxiToolbar = memo(
 			typeOfList,
 			uniqueID,
 			parentBlockStyle,
+			resizableObject,
 		} = attributes;
 
 		const [anchorRef, setAnchorRef] = useState(
@@ -424,6 +426,14 @@ const MaxiToolbar = memo(
 								uniqueID={uniqueID}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={deviceType}
+								resizableObject={resizableObject}
+								rowPattern={rowPattern}
+								columnSize={{
+									...getGroupAttributes(
+										attributes,
+										'columnSize'
+									),
+								}}
 							/>
 							<BoxShadow
 								blockName={name}

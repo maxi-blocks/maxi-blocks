@@ -4,6 +4,7 @@ exports[`getContainerStyles Get a correct Container Styles 1`] = `
 Object {
   "general": Object {
     "max-width": "1170px",
+    "width": "1170px",
   },
   "l": Object {
     "max-width": "90%",
@@ -19,6 +20,7 @@ Object {
   },
   "xl": Object {
     "max-width": "1170px",
+    "width": "1170px",
   },
   "xs": Object {
     "max-width": "90%",
@@ -26,6 +28,7 @@ Object {
   },
   "xxl": Object {
     "max-width": "1790px",
+    "width": "1170px",
   },
 }
 `;

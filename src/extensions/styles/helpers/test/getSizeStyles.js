@@ -4,7 +4,7 @@ import '@wordpress/block-editor';
 describe('getSizeStyles', () => {
 	it('Get a correct alignment', () => {
 		const object = {
-			'size-advanced-options': 'true',
+			'size-advanced-options': true,
 			'max-width-unit-general': 'px',
 			'max-width-general': 2,
 			'width-unit-general': 'px',

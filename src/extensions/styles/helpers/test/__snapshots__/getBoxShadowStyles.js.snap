@@ -1,34 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getAlignmentTextStyles Get a correct alignment 1`] = `Object {}`;
-
 exports[`getBoxShadowStyles Get a correct BoxShadowStyles 1`] = `
-Object {
-  "general": Object {
-    "box-shadow": "1px 2px 3px 4px red",
-  },
-  "l": Object {
-    "box-shadow": "1px 2px 3px 4px red",
-  },
-  "m": Object {
-    "box-shadow": "1px 2px 3px 4px red",
-  },
-  "s": Object {
-    "box-shadow": "1px 2px 3px 4px red",
-  },
-  "xl": Object {
-    "box-shadow": "1px 2px 3px 4px red",
-  },
-  "xs": Object {
-    "box-shadow": "1px 2px 3px 4px red",
-  },
-  "xxl": Object {
-    "box-shadow": "1px 2px 3px 4px test",
-  },
-}
-`;
-
-exports[`getBoxShadowStyles Get a correct alignment 1`] = `
 Object {
   "general": Object {
     "box-shadow": "1px 2px 3px 4px red",

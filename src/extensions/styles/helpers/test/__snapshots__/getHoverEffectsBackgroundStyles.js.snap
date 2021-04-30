@@ -2,6 +2,16 @@
 
 exports[`getHoverEffectsBackgroundStyles Get a correct Hover Effects 1`] = `
 Object {
-  "general": Object {},
+  "general": Object {
+    "background-color": "red",
+  },
+}
+`;
+
+exports[`getHoverEffectsBackgroundStyles Get a correct Hover Effects 2`] = `
+Object {
+  "general": Object {
+    "background": "red",
+  },
 }
 `;

@@ -3,25 +3,25 @@
 exports[`getDisplayStyles Get a correct Display Styles 1`] = `
 Object {
   "general": Object {
-    "display": "test",
+    "display": "styles",
   },
   "l": Object {
-    "display": "test",
+    "display": "styles",
   },
   "m": Object {
-    "display": "test",
+    "display": "styles",
   },
   "s": Object {
-    "display": "test",
+    "display": "styles",
   },
   "xl": Object {
-    "display": "test",
+    "display": "styles",
   },
   "xs": Object {
-    "display": "test",
+    "display": "styles",
   },
   "xxl": Object {
-    "display": "test",
+    "display": "styles",
   },
 }
 `;

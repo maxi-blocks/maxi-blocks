@@ -3,12 +3,12 @@
 exports[`getDividerStyles Get a correct Divider Styles 1`] = `
 Object {
   "general": Object {
-    "border-color": "test",
+    "border-color": "red",
     "border-radius": "20px",
     "border-right": "none",
-    "border-style": "test",
-    "border-top-width": "1test",
-    "width": "3test",
+    "border-style": "none",
+    "border-top-width": "1px",
+    "width": "3px",
   },
   "label": "Divider",
 }
@@ -17,10 +17,10 @@ Object {
 exports[`getDividerStyles Get a correct Divider Styles 2`] = `
 Object {
   "general": Object {
-    "border-color": "test",
+    "border-color": "red",
     "border-radius": "20px",
-    "border-right-width": "2test",
-    "border-style": "test",
+    "border-right-width": "2px",
+    "border-style": "none",
     "border-top": "none",
     "height": "4%}",
   },

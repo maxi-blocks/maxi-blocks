@@ -62,6 +62,7 @@ class edit extends MaxiBlockComponent {
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<MaxiBlock
+				key={`maxi-font-icon--${uniqueID}`}
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 				disableMotion

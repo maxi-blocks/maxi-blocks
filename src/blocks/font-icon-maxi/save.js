@@ -1,55 +1,37 @@
 /**
  * Internal dependencies
  */
-import { BackgroundDisplayer } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
 
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
  * Save
  */
 const save = props => {
-	const { className, attributes } = props;
-	const { uniqueID, blockStyle, extraClassName } = attributes;
+	const { attributes } = props;
+	const { uniqueID } = attributes;
 
-	const classes = classnames(
-		'maxi-motion-effect',
-		'maxi-block maxi-font-icon-block',
-		blockStyle,
-		!!attributes['text-highlight'] && 'maxi-highlight--text',
-		!!attributes['background-highlight'] && 'maxi-highlight--background',
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
-		extraClassName,
-		uniqueID,
-		className
-	);
+	const classes = 'maxi-font-icon-block';
 
 	return (
-		<div className={classes} id={uniqueID}>
-			{!attributes['background-highlight'] && (
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundGradientHover',
-					])}
-					blockClassName={uniqueID}
-				/>
-			)}
+		<MaxiBlock
+			className={classes}
+			id={uniqueID}
+			{...getMaxiBlockBlockAttributes(props)}
+			isSave
+		>
 			{!isEmpty(attributes['icon-name']) && (
 				<span className='maxi-font-icon-block__icon'>
 					<i className={attributes['icon-name']} />
 				</span>
 			)}
-		</div>
+		</MaxiBlock>
 	);
 };
 

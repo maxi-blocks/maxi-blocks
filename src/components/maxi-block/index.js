@@ -32,11 +32,12 @@ const MainBlock = forwardRef(
 			background,
 			disableBackground,
 			uniqueID,
+			isSave,
 			...props
 		},
 		ref
 	) => {
-		if (!useBlockProps)
+		if (!useBlockProps && !isSave)
 			return (
 				<Block ref={ref} tagName={TagName} {...props}>
 					{disableBackground && (
@@ -47,6 +48,18 @@ const MainBlock = forwardRef(
 					)}
 					{children}
 				</Block>
+			);
+		if (!useBlockProps)
+			return (
+				<TagName ref={ref} {...props}>
+					{disableBackground && (
+						<BackgroundDisplayer
+							{...background}
+							blockClassName={uniqueID}
+						/>
+					)}
+					{children}
+				</TagName>
 			);
 
 		const blockRef = useRef();
@@ -81,6 +94,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		highlights,
 		disableMotion = false,
 		disableBackground = false,
+		isSave = false,
 		...extraProps
 	} = props;
 
@@ -110,7 +124,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 
 	return (
 		<>
-			{!disableMotion && (
+			{!disableMotion && !isSave && (
 				<>
 					<MotionPreview
 						key={`motion-preview-${uniqueID}`}
@@ -118,28 +132,32 @@ const MaxiBlock = forwardRef((props, ref) => {
 					>
 						<MainBlock
 							ref={ref}
-							{...blockProps}
 							key={`maxi-block-${uniqueID}`}
+							uniqueID={uniqueID}
 							background={background}
 							disableBackground={
 								disableBackground ||
 								!highlights['background-highlight']
 							}
+							isSave={isSave}
+							{...blockProps}
 						>
 							{children}
 						</MainBlock>
 					</MotionPreview>
 				</>
 			)}
-			{disableMotion && (
+			{(disableMotion || isSave) && (
 				<MainBlock
 					ref={ref}
 					key={`maxi-block-${uniqueID}`}
-					{...blockProps}
+					uniqueID={uniqueID}
 					background={background}
 					disableBackground={
 						disableBackground || !highlights['background-highlight']
 					}
+					isSave={isSave}
+					{...blockProps}
 				>
 					{children}
 				</MainBlock>

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { withSelect } from '@wordpress/data';
-import { Fragment, useRef } from '@wordpress/element';
+import { forwardRef, Fragment } from '@wordpress/element';
 import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
@@ -31,14 +31,12 @@ import { isEmpty } from 'lodash';
 /**
  * InnerBlocks version
  */
-const ContainerInnerBlocks = props => {
+const ContainerInnerBlocks = forwardRef((props, ref) => {
 	const {
 		children,
 		className,
 		attributes: { uniqueID },
 	} = props;
-
-	const ref = useRef();
 
 	return (
 		<MaxiBlock
@@ -63,7 +61,7 @@ const ContainerInnerBlocks = props => {
 			)}
 		</MaxiBlock>
 	);
-};
+});
 
 /**
  * Edit
@@ -161,9 +159,7 @@ class edit extends MaxiBlockComponent {
 												clientId={clientId}
 											/>
 									  )
-									: true
-									? () => <InnerBlocks.ButtonBlockAppender />
-									: false
+									: () => <InnerBlocks.ButtonBlockAppender />
 							}
 						/>
 						{attributes['shape-divider-bottom-status'] && (

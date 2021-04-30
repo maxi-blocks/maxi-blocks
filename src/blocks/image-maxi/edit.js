@@ -140,6 +140,7 @@ class edit extends MaxiBlockComponent {
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<MaxiBlock
+				key={`maxi-image--${uniqueID}`}
 				tagName='figure'
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}

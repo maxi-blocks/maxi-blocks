@@ -113,6 +113,7 @@ class edit extends MaxiBlockComponent {
 				onResizeStop={handleOnResizeStop}
 			>
 				<MaxiBlock
+					key={`maxi-divider--${uniqueID}`}
 					className={classes}
 					{...getMaxiBlockBlockAttributes(this.props)}
 				>

@@ -42,7 +42,7 @@ const ContainerInnerBlocks = forwardRef((props, ref) => {
 
 	return (
 		<MaxiBlock
-			key={`maxi-container--${uniqueID}`}
+			key={`maxi-column--${uniqueID}`}
 			ref={ref}
 			className={className}
 			{...getMaxiBlockBlockAttributes(props)}

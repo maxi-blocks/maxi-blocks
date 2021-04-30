@@ -6,8 +6,9 @@ import { InnerBlocks } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { BackgroundDisplayer } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -18,38 +19,24 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { attributes, className } = props;
-	const { uniqueID, blockStyle, extraClassName, fullWidth } = attributes;
+	const { attributes } = props;
+	const { uniqueID, fullWidth } = attributes;
 
 	const classes = classnames(
-		'maxi-block maxi-row-block',
-		blockStyle,
-		extraClassName,
-		className,
-		uniqueID,
+		'maxi-row-block',
 		fullWidth === 'full' ? 'alignfull' : null
 	);
 
 	return (
-		<div className={classes} id={uniqueID}>
-			<BackgroundDisplayer
-				{...getGroupAttributes(attributes, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundImageHover',
-					'backgroundVideoHover',
-					'backgroundGradientHover',
-					'backgroundSVGHover',
-				])}
-			/>
+		<MaxiBlock
+			className={classes}
+			id={uniqueID}
+			tagName='figure'
+			{...getMaxiBlockBlockAttributes(props)}
+			isSave
+		>
 			<InnerBlocks.Content />
-		</div>
+		</MaxiBlock>
 	);
 };
 

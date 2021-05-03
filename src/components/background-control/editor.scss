@@ -4,17 +4,12 @@
 		padding-left: 0 !important;
 	}
 
-	& .maxi-mediauploader-control .maxi-mediauploader-control__toggle,
-	&
-		.maxi-mediauploader-control.maxi-mediauploader-control__video-fallback
-		.maxi-mediauploader-control__remove {
-		margin-right: 0;
-	}
-
-	& .maxi-mediauploader-control &__image-edit,
-	& .maxi-mediauploader-control &__video-edit,
-	& .maxi-mediauploader-control &__done-edition {
-		margin-right: 0;
+	.maxi-mediauploader-control {
+		&__image {
+			.maxi-mediauploader-control__remove {
+				margin-right: 0;
+			}
+		}
 	}
 
 	.maxi-background-layers {

@@ -1,3 +1,29 @@
+// Parallax
+const Parallax = {
+	init(el, displace) {
+		this.animateItem(el, displace);
+	},
+	setPosition() {
+		if (window.pageYOffset !== undefined) {
+			return window.pageYOffset;
+		} else {
+			return (
+				document.documentElement ||
+				document.body.parentNode ||
+				document.body
+			).scrollTop;
+		}
+	},
+	animateItem(el, displace) {
+		if (typeof window.orientation !== 'undefined') {
+			return;
+		}
+		const scrollPosition = this.setPosition();
+		el.style.transform =
+			'translate3d(0px, ' + scrollPosition / displace + 'px, 0px)';
+	},
+};
+
 // GSAP PLugins
 gsap.registerPlugin(ScrollTrigger);
 
@@ -151,21 +177,14 @@ motionElems.forEach(function (elem) {
 			const parallaxSpeed = motionData['parallax-speed'];
 			const parallaxDirection = motionData['parallax-direction'];
 
-			const getBackgroundPosition = () => {
-				if (parallaxDirection === 'up')
-					return '50% ' + -window.innerHeight / parallaxSpeed + 'px';
-				if (parallaxDirection === 'down')
-					return '50% ' + -window.innerHeight * parallaxSpeed + 'px';
-			};
-
 			if (parallaxStatus) {
-				gsap.to(parallaxElem, {
-					backgroundPosition: getBackgroundPosition(),
-					ease: 'none',
-					scrollTrigger: {
-						trigger: parallaxElem,
-						scrub: true,
-					},
+				window.addEventListener('scroll', () => {
+					Parallax.init(
+						parallaxElem,
+						parallaxDirection === 'up'
+							? -parallaxSpeed
+							: parallaxSpeed
+					);
 				});
 			}
 		}

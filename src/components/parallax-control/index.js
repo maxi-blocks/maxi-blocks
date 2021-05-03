@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -15,7 +14,6 @@ import { getDefaultAttribute } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Component
@@ -34,10 +32,17 @@ const ParallaxControl = props => {
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => onChange({ 'parallax-status': val })}
+				onChange={val =>
+					onChange({
+						'parallax-status': val,
+						'background-image-size': !props['parallax-status']
+							? 'cover'
+							: 'auto',
+					})
+				}
 			/>
 			{props['parallax-status'] && (
-				<Fragment>
+				<>
 					<FancyRadioControl
 						label={__('Direction', 'maxi-blocks')}
 						selected={props['parallax-direction']}
@@ -58,12 +63,13 @@ const ParallaxControl = props => {
 						value={props['parallax-speed']}
 						defaultValue={getDefaultAttribute('parallax-speed')}
 						onChange={val => onChange({ 'parallax-speed': +val })}
-						min={1}
+						min={0.1}
 						max={10}
+						step={0.1}
 						allowReset
 						initialPosition={getDefaultAttribute('parallax-speed')}
 					/>
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

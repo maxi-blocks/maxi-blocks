@@ -4,6 +4,13 @@
 import { Button } from '@wordpress/components';
 
 /**
+ * Internal dependencies
+ */
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -13,27 +20,10 @@ import { isNil, isEmpty } from 'lodash';
  * Save
  */
 const save = props => {
-	const { className, attributes } = props;
-	const {
-		uniqueID,
-		blockStyle,
-		defaultBlockStyle,
-		extraClassName,
-		linkSettings,
-		buttonContent,
-	} = attributes;
+	const { attributes } = props;
+	const { uniqueID, linkSettings, buttonContent } = attributes;
 
-	const classes = classnames(
-		'maxi-motion-effect',
-		'maxi-block maxi-button-block',
-		blockStyle,
-		!!attributes['text-highlight'] && 'maxi-highlight--text',
-		!!attributes['background-highlight'] && 'maxi-highlight--background',
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
-		extraClassName,
-		uniqueID,
-		className
-	);
+	const classes = 'maxi-button-block';
 
 	const linkOpt = !isNil(linkSettings) && linkSettings;
 
@@ -52,7 +42,13 @@ const save = props => {
 	);
 
 	return (
-		<div className={classes} id={uniqueID}>
+		<MaxiBlock
+			className={classes}
+			id={uniqueID}
+			{...getMaxiBlockBlockAttributes(props)}
+			isSave
+			disableBackground
+		>
 			<Button
 				className={buttonClasses}
 				{...(!isEmpty(linkProps.href) && linkProps)}
@@ -64,7 +60,7 @@ const save = props => {
 					{buttonContent}
 				</span>
 			</Button>
-		</div>
+		</MaxiBlock>
 	);
 };
 

@@ -24,9 +24,6 @@ const Parallax = {
 	},
 };
 
-// GSAP PLugins
-gsap.registerPlugin(ScrollTrigger);
-
 const getDeviceType = () => {
 	const ua = navigator.userAgent;
 	if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
@@ -136,6 +133,7 @@ motionElems.forEach(function (elem) {
 		}
 
 		// Shape Divider
+		/*
 		const shapeDividerTimeline = gsap.timeline({
 			scrollTrigger: {
 				trigger: `#${motionID} > .maxi-shape-divider`,
@@ -167,6 +165,7 @@ motionElems.forEach(function (elem) {
 				}
 			);
 		}
+		*/
 
 		// Parallax Effect
 		if ('parallax-status' in motionData) {
@@ -238,6 +237,7 @@ motionElems.forEach(function (elem) {
 		const xAxis = motionData['motion-transform-origin-x'];
 		const yAxis = motionData['motion-transform-origin-y'];
 
+		/*
 		if (
 			!!interactionStatus &&
 			((!!motionMobileStatus && getDeviceType() === 'mobile') ||
@@ -341,6 +341,7 @@ motionElems.forEach(function (elem) {
 				}
 			);
 		}
+		*/
 	}
 });
 

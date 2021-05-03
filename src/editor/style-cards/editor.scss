@@ -87,7 +87,8 @@ body {
 			padding: 10px;
 			background: #fff;
 
-			button {
+			button,
+			a.components-button {
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -97,12 +98,18 @@ body {
 				padding: 8px;
 				color: #232533;
 
-				&:last-of-type {
-					margin-right: 0;
-				}
 				&:hover {
 					background-color: #f2f2f2;
 				}
+			}
+
+			button:last-of-type {
+				margin-right: 0;
+			}
+
+			a.components-button {
+				margin-right: 5px;
+				flex: 1;
 			}
 
 			&__more-sc {

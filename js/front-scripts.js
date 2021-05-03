@@ -1,8 +1,9 @@
 // Parallax
-const Parallax = {
-	init(el, displace) {
+class Parallax {
+	constructor(el, displace) {
 		this.animateItem(el, displace);
-	},
+	}
+
 	setPosition() {
 		if (window.pageYOffset !== undefined) {
 			return window.pageYOffset;
@@ -13,7 +14,7 @@ const Parallax = {
 				document.body
 			).scrollTop;
 		}
-	},
+	}
 	animateItem(el, displace) {
 		if (typeof window.orientation !== 'undefined') {
 			return;
@@ -21,8 +22,8 @@ const Parallax = {
 		const scrollPosition = this.setPosition();
 		el.style.transform =
 			'translate3d(0px, ' + scrollPosition / displace + 'px, 0px)';
-	},
-};
+	}
+}
 
 const getDeviceType = () => {
 	const ua = navigator.userAgent;
@@ -179,7 +180,7 @@ motionElems.forEach(function (elem) {
 
 			if (parallaxStatus) {
 				window.addEventListener('scroll', () => {
-					Parallax.init(
+					new Parallax(
 						parallaxElem,
 						parallaxDirection === 'up'
 							? -parallaxSpeed

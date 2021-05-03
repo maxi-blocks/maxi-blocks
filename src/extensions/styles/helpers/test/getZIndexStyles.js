@@ -1,7 +1,7 @@
 import getZIndexStyles from '../getZIndexStyles';
 
 describe('getZIndexStyle', () => {
-	it('Get a correct style', () => {
+	it('Get a correct z-index style', () => {
 		const object = {
 			'z-index-general': 1,
 			'z-index-xxl': 2,

@@ -1,7 +1,7 @@
 import getArrowStyles from '../getArrowStyles';
 
 describe('getArrowStyles', () => {
-	it('Get a correct ArrowStyles', () => {
+	it('Get a correct arrow styles', () => {
 		const object = {
 			'arrow-status': true,
 			'arrow-side-general': 'top',
@@ -32,6 +32,11 @@ describe('getArrowStyles', () => {
 			'arrow-position-xs': 2,
 			'arrow-width-xs': 3,
 			'arrow-width-unit-xs': 'px',
+			'border-color-general': 'rgb(255, 99, 71)',
+			'background-color': 'rgb(255, 99, 71)',
+			'background-gradient': 'test',
+			/// ///////////////////////////////////////////////////////////////
+			'arrow-width-${breakpoint}': '',
 		};
 
 		const result = getArrowStyles(object);

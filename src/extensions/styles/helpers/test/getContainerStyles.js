@@ -2,7 +2,7 @@ import getContainerStyles from '../getContainerStyles';
 import '@wordpress/block-editor';
 
 describe('getContainerStyles', () => {
-	it('Get a correct Container Styles', () => {
+	it('Get a correct container styles', () => {
 		const object = {
 			'container-size-advanced-options': false,
 			'container-max-width-general': 1170,

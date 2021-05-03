@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getArrowStyles Get a correct ArrowStyles 1`] = `
+exports[`getArrowStyles Get a correct arrow styles 1`] = `
 Object {
   "undefined .maxi-container-arrow": Object {
     "arrow": Object {
@@ -70,7 +70,9 @@ Object {
   },
   "undefined .maxi-container-arrow:before": Object {
     "border": Object {
-      "general": Object {},
+      "general": Object {
+        "background": "rgb(255, 99, 71)",
+      },
       "label": "Arrow Border",
     },
   },

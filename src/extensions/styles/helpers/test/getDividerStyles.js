@@ -2,13 +2,13 @@ import getDividerStyles from '../getDividerStyles';
 import '@wordpress/block-editor';
 
 describe('getDividerStyles', () => {
-	it('Get a correct Divider Styles', () => {
+	it('Get a correct divider styles', () => {
 		const object = {
 			lineVertical: 'center',
 			lineHorizontal: 'flex-start',
 			lineAlign: 'row',
 			lineOrientation: 'horizontal',
-			'divider-border-color': 'red',
+			'divider-border-color': 'rgb(255, 99, 71)',
 			'divider-border-style': 'none',
 			'divider-border-top-width': 1,
 			'divider-border-top-unit': 'px',
@@ -25,7 +25,7 @@ describe('getDividerStyles', () => {
 			lineHorizontal: 'flex-start',
 			lineAlign: '',
 			lineOrientation: 'vertical',
-			'divider-border-color': 'red',
+			'divider-border-color': 'rgb(255, 99, 71)',
 			'divider-border-style': 'none',
 			'divider-border-top-width': 1,
 			'divider-border-top-unit': 'px',

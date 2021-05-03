@@ -2,7 +2,7 @@ import getTransformStyles from '../getTransformStyles';
 import '@wordpress/block-editor';
 
 describe('getTransformStyles', () => {
-	it('Get a correct alignment', () => {
+	it('Get a correct transform styles', () => {
 		const object = {
 			'transform-scale-x-general': 1,
 			'transform-scale-y-general': 2,

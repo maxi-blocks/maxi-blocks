@@ -2,7 +2,7 @@ import getSizeStyles from '../getSizeStyles';
 import '@wordpress/block-editor';
 
 describe('getSizeStyles', () => {
-	it('Get a correct alignment', () => {
+	it('Get a correct size styles', () => {
 		const object = {
 			'size-advanced-options': true,
 			'max-width-unit-general': 'px',

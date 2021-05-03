@@ -1,7 +1,7 @@
 import getAlignmentFlexStyles from '../getAlignmentFlexStyles';
 
 describe('getAlignmentFlexStyles', () => {
-	it('Get a correct alignment', () => {
+	it('Get a correct alignment flex styles', () => {
 		const object = {
 			'alignment-general': 'right',
 			'alignment-xxl': 'left',

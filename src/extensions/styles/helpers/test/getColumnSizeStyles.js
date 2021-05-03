@@ -1,7 +1,7 @@
 import getColumnSizeStyles from '../getColumnSizeStyles';
 
 describe('getColumnSizeStyles', () => {
-	it('Get a correct Column Size Styles', () => {
+	it('Get a correct column size styles', () => {
 		const object = {
 			'column-size-general': 1,
 			'column-size-xxl': 2,

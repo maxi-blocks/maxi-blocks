@@ -2,10 +2,10 @@ import getTypographyStyles from '../getTypographyStyles';
 import '@wordpress/block-editor';
 
 describe('getTypographyStyles', () => {
-	it('Get a correct TypographyStyles', () => {
+	it('Get a correct typography styles', () => {
 		const object = {
 			'font-family-general': 'roboto',
-			'color-general': 'blue',
+			'color-general': 'rgb(255, 99, 71)',
 			'font-size-unit-general': 'px',
 			'font-size-general': 1,
 			'line-height-unit-general': 'px',
@@ -19,7 +19,7 @@ describe('getTypographyStyles', () => {
 			'text-shadow-general': 'none',
 			'vertical-align-general': 'none',
 			'font-family-xxl': 'roboto',
-			'color-xxl': 'red',
+			'color-xxl': 'rgb(255, 99, 71)',
 			'font-size-unit-xxl': 'px',
 			'font-size-xxl': 1,
 			'line-height-unit-xxl': 'px',
@@ -33,7 +33,7 @@ describe('getTypographyStyles', () => {
 			'text-shadow-xxl': 'none',
 			'vertical-align-xxl': 'none',
 			'font-family-xl': 'roboto',
-			'color-xl': 'red',
+			'color-xl': 'rgb(255, 99, 71)',
 			'font-size-unit-xl': 'px',
 			'font-size-xl': 1,
 			'line-height-unit-xl': 'px',
@@ -47,7 +47,7 @@ describe('getTypographyStyles', () => {
 			'text-shadow-xl': 'none',
 			'vertical-align-xl': 'none',
 			'font-family-l': 'roboto',
-			'color-l': 'red',
+			'color-l': 'rgb(255, 99, 71)',
 			'font-size-unit-l': 'px',
 			'font-size-l': 1,
 			'line-height-unit-l': 'px',
@@ -61,7 +61,7 @@ describe('getTypographyStyles', () => {
 			'text-shadow-l': 'none',
 			'vertical-align-l': 'none',
 			'font-family-m': 'roboto',
-			'color-m': 'red',
+			'color-m': 'rgb(255, 99, 71)',
 			'font-size-unit-m': 'px',
 			'font-size-m': 1,
 			'line-height-unit-m': 'px',
@@ -75,7 +75,7 @@ describe('getTypographyStyles', () => {
 			'text-shadow-m': 'none',
 			'vertical-align-m': 'none',
 			'font-family-s': 'roboto',
-			'color-s': 'red',
+			'color-s': 'rgb(255, 99, 71)',
 			'font-size-unit-s': 'px',
 			'font-size-s': 1,
 			'line-height-unit-s': 'px',
@@ -89,7 +89,7 @@ describe('getTypographyStyles', () => {
 			'text-shadow-s': 'none',
 			'vertical-align-s': 'none',
 			'font-family-xs': 'roboto',
-			'color-xs': 'red',
+			'color-xs': 'rgb(255, 99, 71)',
 			'font-size-unit-xs': 'px',
 			'font-size-xs': 1,
 			'line-height-unit-xs': 'px',

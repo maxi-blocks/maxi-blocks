@@ -1,7 +1,7 @@
 import getCustomFormatsStyles from '../getCustomFormatsStyles';
 
 describe('getCustomFormatsStyles', () => {
-	it('Get a correct Custom formats', () => {
+	it('Get a correct custom formats styles', () => {
 		const object = {
 			'maxi-text-block__custom-format--0': {
 				'color-general': 'rgba(57,28,202,1)',
@@ -14,7 +14,7 @@ describe('getCustomFormatsStyles', () => {
 		};
 		const objectTypography = {
 			'font-family-general': 'roboto',
-			'color-general': 'blue',
+			'color-general': 'rgb(255, 99, 71)',
 			'font-size-unit-general': 'px',
 			'font-size-general': 1,
 			'line-height-unit-general': 'px',

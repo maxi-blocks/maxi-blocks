@@ -2,15 +2,15 @@ import getPositionStyles from '../getPositionStyles';
 import '@wordpress/block-editor';
 
 describe('getPositionStyles', () => {
-	it('Get a correct Position style', () => {
+	it('Get a correct position styles', () => {
 		const object = {
-			'position-general': 'top',
-			'position-xxl': 'bottom',
-			'position-xl': 'top',
-			'position-l': 'bottom',
-			'position-m': 'top',
-			'position-s': 'bottom',
-			'position-xs': 'top',
+			'position-general': 'relative',
+			'position-xxl': 'absolute',
+			'position-xl': 'relative',
+			'position-l': 'absolute',
+			'position-m': 'relative',
+			'position-s': 'absolute',
+			'position-xs': 'relative',
 			'position-top-general': 1,
 			'position-right-general': 2,
 			'position-bottom-general': 3,

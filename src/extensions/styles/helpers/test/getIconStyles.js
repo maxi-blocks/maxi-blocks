@@ -1,15 +1,15 @@
 import getIconStyles from '../getIconStyles';
 
 describe('getIconStyles', () => {
-	it('Get a correct Icon Styles', () => {
+	it('Get a correct icon styles', () => {
 		const object = {
 			'icon-name': 'icon',
 			'icon-spacing': 1,
-			'icon-color': 'red',
-			'icon-background-color': 'black',
+			'icon-color': 'rgb(255, 99, 71)',
+			'icon-background-color': 'rgb(255, 99, 71)',
 			'icon-background-active-media': 'none',
 			'icon-background-gradient': 'none',
-			'icon-background-gradient-opacity': 2,
+			'icon-background-gradient-opacity': 0.99,
 			'icon-position': 'top',
 			'icon-custom-padding': true,
 			'icon-size-general': 3,
@@ -138,19 +138,19 @@ describe('getIconStyles', () => {
 			'icon-border-left-width-xs': 4,
 			'icon-border-sync-width-xs': true,
 			'icon-border-unit-width-xs': 'px',
-			'icon-border-color-general': 'none',
+			'icon-border-color-general': 'rgb(255, 99, 71)',
 			'icon-border-style-general': 'none',
-			'icon-border-color-xxl': 'none',
+			'icon-border-color-xxl': 'rgb(255, 99, 71)',
 			'icon-border-style-xxl': 'none',
-			'icon-border-color-xl': 'none',
+			'icon-border-color-xl': 'rgb(255, 99, 71)',
 			'icon-border-style-xl': 'none',
-			'icon-border-color-l': 'none',
+			'icon-border-color-l': 'rgb(255, 99, 71)',
 			'icon-border-style-l': 'none',
-			'icon-border-color-m': 'none',
+			'icon-border-color-m': 'rgb(255, 99, 71)',
 			'icon-border-style-m': 'none',
-			'icon-border-color-s': 'none',
+			'icon-border-color-s': 'rgb(255, 99, 71)',
 			'icon-border-style-s': 'none',
-			'icon-border-color-xs': 'none',
+			'icon-border-color-xs': 'rgb(255, 99, 71)',
 			'icon-border-style-xs': 'none',
 		};
 		const result = getIconStyles(object);

@@ -1,7 +1,7 @@
 import getAlignmentTextStyles from '../getAlignmentTextStyles';
 
 describe('getAlignmentTextStyles', () => {
-	it('Get a correct alignment', () => {
+	it('Get a correct alignment text styles', () => {
 		const object = {
 			'text-alignment-general': 'right',
 			'text-alignment-xxl': 'left',

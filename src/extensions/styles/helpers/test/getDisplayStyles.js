@@ -1,15 +1,15 @@
 import getDisplayStyles from '../getDisplayStyles';
 
 describe('getDisplayStyles', () => {
-	it('Get a correct Display Styles', () => {
+	it('Get a correct display styles', () => {
 		const object = {
-			'display-general': 'styles',
-			'display-xxl': 'styles',
-			'display-xl': 'styles',
-			'display-l': 'styles',
-			'display-m': 'styles',
-			'display-s': 'styles',
-			'display-xs': 'styles',
+			'display-general': 'block',
+			'display-xxl': 'block',
+			'display-xl': 'block',
+			'display-l': 'block',
+			'display-m': 'flex',
+			'display-s': 'flex',
+			'display-xs': 'flex',
 		};
 
 		const result = getDisplayStyles(object);

@@ -4,18 +4,18 @@ import {
 } from '../getShapeDividerStyles';
 
 describe('getShapeDividerStyles', () => {
-	it('Get a correct Shape Divider', () => {
+	it('Get a correct shape divider styles', () => {
 		const object = {
 			'shape-divider-top-status': true,
 			'shape-divider-top-height': 1,
 			'shape-divider-top-height-unit': 'px',
-			'shape-divider-top-opacity': 2,
+			'shape-divider-top-opacity': 1,
 			'shape-divider-top-shape-style': 'default',
 			'shape-divider-top-effects-status': true,
 			'shape-divider-bottom-status': true,
 			'shape-divider-bottom-height': 3,
 			'shape-divider-bottom-height-unit': 'px',
-			'shape-divider-bottom-opacity': 4,
+			'shape-divider-bottom-opacity': 0.51,
 			'shape-divider-bottom-shape-style': 'default',
 			'shape-divider-bottom-effects-status': true,
 		};
@@ -24,17 +24,17 @@ describe('getShapeDividerStyles', () => {
 			'shape-divider-bottom-status': true,
 			'shape-divider-bottom-height': 1,
 			'shape-divider-bottom-height-unit': 'px',
-			'shape-divider-bottom-opacity': 2,
+			'shape-divider-bottom-opacity': 1,
 			'shape-divider-bottom-shape-style': 'default',
 			'shape-divider-bottom-effects-status': true,
-			'shape-divider-bottom-background-color': 'red',
+			'shape-divider-bottom-background-color': 'rgb(255, 99, 71)',
 			'shape-divider-top-status': true,
 			'shape-divider-top-height': 3,
 			'shape-divider-top-height-unit': 'px',
-			'shape-divider-top-opacity': 4,
+			'shape-divider-top-opacity': 0,98,
 			'shape-divider-top-shape-style': 'default',
 			'shape-divider-top-effects-status': true,
-			'shape-divider-top-background-color': 'red',
+			'shape-divider-top-background-color': 'rgb(255, 99, 71)',
 		};
 
 		const result = getShapeDividerStyles(object, 'top');

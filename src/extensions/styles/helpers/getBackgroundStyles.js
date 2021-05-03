@@ -49,7 +49,7 @@ export const getGradientBackgroundObject = ({
 	...props
 }) => {
 	const response = {
-		label: 'Background Color',
+		label: 'Background Gradient',
 		general: {},
 	};
 

@@ -32,7 +32,7 @@ import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
 /**
  * Class
  */
-class MaxiBlock extends Component {
+class MaxiBlockComponent extends Component {
 	propsToAvoidRendering = [];
 
 	propsToAvoidStyling = [];
@@ -225,4 +225,4 @@ class MaxiBlock extends Component {
 	}
 }
 
-export default MaxiBlock;
+export default MaxiBlockComponent;

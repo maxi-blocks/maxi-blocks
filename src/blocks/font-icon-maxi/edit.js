@@ -1,30 +1,23 @@
 /**
  * WordPress dependencies
  */
-import { __experimentalBlock } from '@wordpress/block-editor';
 import { withSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	BackgroundDisplayer,
-	FontIconPicker,
-	MaxiBlock,
-	Toolbar,
-} from '../../components';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { FontIconPicker, MaxiBlockComponent, Toolbar } from '../../components';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiModalIcon from '../../components/font-icon-picker/modal';
 
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
@@ -35,7 +28,7 @@ import { toolbarReplaceImage } from '../../icons';
 /**
  * Content
  */
-class edit extends MaxiBlock {
+class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -60,60 +53,20 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
-		const { attributes, className, deviceType, setAttributes } = this.props;
-		const {
-			uniqueID,
-			blockStyle,
-			defaultBlockStyle,
-			blockStyleBackground,
-			extraClassName,
-			fullWidth,
-		} = attributes;
+		const { attributes, setAttributes } = this.props;
+		const { uniqueID } = attributes;
 
-		const classes = classnames(
-			'maxi-block',
-			'maxi-block--backend',
-			'maxi-font-icon-block',
-			getLastBreakpointAttribute(
-				'display',
-				deviceType,
-				attributes,
-				false,
-				true
-			) === 'none' && 'maxi-block-display-none',
-			defaultBlockStyle,
-			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
-			!!attributes['text-highlight'] && 'maxi-highlight--text',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
-			extraClassName,
-			uniqueID,
-			className
-		);
+		const classes = 'maxi-font-icon-block';
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
-			<__experimentalBlock
-				key={`maxi-font-icon-block-${uniqueID}`}
+			<MaxiBlock
+				key={`maxi-font-icon--${uniqueID}`}
 				className={classes}
-				data-align={fullWidth}
+				{...getMaxiBlockBlockAttributes(this.props)}
+				disableMotion
 			>
-				{!attributes['background-highlight'] && (
-					<BackgroundDisplayer
-						{...getGroupAttributes(attributes, [
-							'background',
-							'backgroundColor',
-							'backgroundGradient',
-							'backgroundHover',
-							'backgroundColorHover',
-							'backgroundGradientHover',
-						])}
-					/>
-				)}
 				{(!isEmpty(attributes['icon-name']) && (
 					<>
 						<div className='maxi-font-icon-block__icon__replace'>
@@ -142,7 +95,7 @@ class edit extends MaxiBlock {
 						}
 					/>
 				)}
-			</__experimentalBlock>,
+			</MaxiBlock>,
 		];
 	}
 }

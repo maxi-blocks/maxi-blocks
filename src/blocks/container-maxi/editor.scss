@@ -15,6 +15,10 @@
 }
 
 html body.maxi-blocks--active .maxi-container-block {
+	&.wp-block.maxi-block.maxi-block--backend[data-align='full'] {
+		margin: 0 auto;
+	}
+
 	&[data-align='full'],
 	&[data-align='full'] > .maxi-container-block__container {
 		max-width: 100% !important;

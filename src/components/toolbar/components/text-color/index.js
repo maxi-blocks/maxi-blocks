@@ -89,7 +89,6 @@ const TextColor = withFormatValue(props => {
 				</div>
 			}
 		>
-			{' '}
 			<ColorControl
 				label={__('Text', 'maxi-blocks')}
 				defaultColor={getDefaultAttribute('color')}

@@ -36,7 +36,6 @@ const TextColor = withFormatValue(props => {
 		onChange,
 		breakpoint,
 		formatValue,
-		blockStyle,
 		clientId,
 		isList,
 		textLevel,
@@ -76,10 +75,7 @@ const TextColor = withFormatValue(props => {
 					style={{
 						background:
 							props['color'] ||
-							`var(--maxi-${getBlockStyle(
-								blockStyle,
-								clientId
-							)}-color-${
+							`var(--maxi-${getBlockStyle(clientId)}-color-${
 								props['palette-preset-typography-color']
 							})`,
 					}}
@@ -109,11 +105,11 @@ const TextColor = withFormatValue(props => {
 						})
 					}
 					showPalette
-					blockStyle={blockStyle}
 					palette={{ ...getGroupAttributes(props, 'palette') }}
 					colorPaletteType='typography'
 					onChangePalette={val => onChange(val)}
 					deviceType={breakpoint}
+					clientId={clientId}
 				/>
 			</div>
 		</ToolbarPopover>

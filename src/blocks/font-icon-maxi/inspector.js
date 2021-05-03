@@ -162,7 +162,6 @@ const Inspector = props => {
 														}
 														breakpoint={deviceType}
 														simpleMode
-														blockStyle={blockStyle}
 														clientId={clientId}
 													/>
 												),
@@ -202,9 +201,6 @@ const Inspector = props => {
 																			disableVideo
 																			disableSVG
 																			disableImage
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -277,9 +273,6 @@ const Inspector = props => {
 																				disableSVG
 																				disableLayers
 																				isHover
-																				blockStyle={
-																					blockStyle
-																				}
 																				clientId={
 																					clientId
 																				}
@@ -324,9 +317,6 @@ const Inspector = props => {
 																		}}
 																		breakpoint={
 																			deviceType
-																		}
-																		blockStyle={
-																			blockStyle
 																		}
 																		clientId={
 																			clientId
@@ -397,9 +387,6 @@ const Inspector = props => {
 																					deviceType
 																				}
 																				isHover
-																				blockStyle={
-																					blockStyle
-																				}
 																				clientId={
 																					clientId
 																				}
@@ -442,9 +429,6 @@ const Inspector = props => {
 																		}
 																		breakpoint={
 																			deviceType
-																		}
-																		blockStyle={
-																			blockStyle
 																		}
 																		clientId={
 																			clientId
@@ -513,9 +497,6 @@ const Inspector = props => {
 																					deviceType
 																				}
 																				isHover
-																				blockStyle={
-																					blockStyle
-																				}
 																				clientId={
 																					clientId
 																				}

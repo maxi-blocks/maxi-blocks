@@ -3,11 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { FancyRadioControl } from '..';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import { getPaletteDefault } from '../../extensions/styles';
+import { getPaletteDefault, getBlockStyle } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -29,12 +30,19 @@ const ColorPaletteControl = props => {
 		onChange,
 		colorPaletteType = 'background',
 		isHover,
-		blockName,
 		textLevel,
 		deviceType,
+		clientId,
 	} = props;
 
-	const classes = classnames('maxi-color-palette-control', className);
+	const classes = classnames(
+		`maxi-color-palette-control maxi-color-palette--${getBlockStyle(
+			clientId
+		)}`,
+		className
+	);
+
+	const currentBlockName = select('core/block-editor').getBlockName(clientId);
 
 	const currentItem = !isNil(
 		props[
@@ -46,7 +54,7 @@ const ColorPaletteControl = props => {
 					isHover ? '-hover' : ''
 				}-color`
 		  ]
-		: getPaletteDefault(colorPaletteType, blockName, textLevel);
+		: getPaletteDefault(colorPaletteType, currentBlockName, textLevel);
 
 	const onChangePaletteWithType = colorPaletteType => {
 		switch (colorPaletteType) {

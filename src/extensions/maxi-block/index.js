@@ -214,10 +214,7 @@ class MaxiBlock extends Component {
 		const { setAttributes, clientId } = this.props;
 
 		setAttributes({
-			parentBlockStyle: getBlockStyle(
-				this.props.attributes.blockStyle,
-				clientId
-			),
+			parentBlockStyle: getBlockStyle(clientId),
 		});
 	}
 

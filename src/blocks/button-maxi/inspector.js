@@ -208,7 +208,6 @@ const Inspector = props => {
 														setAttributes(obj)
 													}
 													breakpoint={deviceType}
-													blockStyle={blockStyle}
 												/>
 											),
 										},
@@ -285,12 +284,6 @@ const Inspector = props => {
 																	breakpoint={
 																		deviceType
 																	}
-																	blockName={
-																		name
-																	}
-																	blockStyle={
-																		blockStyle
-																	}
 																	clientId={
 																		clientId
 																	}
@@ -361,12 +354,6 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
-																			blockName={
-																				name
-																			}
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -416,14 +403,6 @@ const Inspector = props => {
 																		disableClipPath
 																		disableSVG
 																		disableLayers
-																		scAtt='button-background-color'
-																		blockName={
-																			name
-																		}
-																		blockStyle={
-																			blockStyle
-																		}
-																		useStyleCard
 																		clientId={
 																			clientId
 																		}
@@ -496,12 +475,6 @@ const Inspector = props => {
 																			disableSVG
 																			disableLayers
 																			isHover
-																			blockName={
-																				name
-																			}
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -543,9 +516,6 @@ const Inspector = props => {
 																	}}
 																	breakpoint={
 																		deviceType
-																	}
-																	blockStyle={
-																		blockStyle
 																	}
 																	clientId={
 																		clientId
@@ -616,9 +586,6 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -715,9 +682,6 @@ const Inspector = props => {
 																	breakpoint={
 																		deviceType
 																	}
-																	blockStyle={
-																		blockStyle
-																	}
 																	clientId={
 																		clientId
 																	}
@@ -785,9 +749,6 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}

@@ -211,7 +211,6 @@ const Inspector = props => {
 															lineOrientation
 														}
 														breakpoint={deviceType}
-														blockStyle={blockStyle}
 														clientId={clientId}
 													/>
 												</Fragment>
@@ -304,9 +303,6 @@ const Inspector = props => {
 																		disableImage
 																		disableVideo
 																		disableSVG
-																		blockStyle={
-																			blockStyle
-																		}
 																		clientId={
 																			clientId
 																		}
@@ -377,9 +373,6 @@ const Inspector = props => {
 																			disableVideo
 																			disableSVG
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -422,9 +415,6 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
-																	}
-																	blockStyle={
-																		blockStyle
 																	}
 																	clientId={
 																		clientId
@@ -493,9 +483,6 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}

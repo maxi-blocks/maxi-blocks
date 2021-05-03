@@ -9,7 +9,6 @@ import { Icon } from '@wordpress/components';
  */
 import BorderControl from '../../../border-control';
 import ToolbarPopover from '../toolbar-popover';
-import getBlockStyle from '../../../../extensions/styles/getBlockStyle';
 
 /**
  * Styles & Icons
@@ -19,6 +18,7 @@ import { toolbarBorder } from '../../../../icons';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getBlockStyle,
 } from '../../../../extensions/styles';
 
 /**
@@ -35,7 +35,6 @@ const Border = props => {
 		onChange,
 		breakpoint,
 		disableColor = false,
-		blockStyle,
 		clientId,
 	} = props;
 
@@ -74,10 +73,9 @@ const Border = props => {
 								breakpoint,
 								props
 							) ||
-							`var(--maxi-${getBlockStyle(
-								blockStyle,
-								clientId
-							)}-color-${props['palette-preset-border-color']})`,
+							`var(--maxi-${getBlockStyle(clientId)}-color-${
+								props['palette-preset-border-color']
+							})`,
 					}}
 				>
 					<Icon

@@ -8,7 +8,10 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import {
+	getGroupAttributes,
+	getBlockStyle,
+} from '../../../../extensions/styles';
 
 /**
  * Styles
@@ -27,6 +30,7 @@ const SvgColor = props => {
 		onChange,
 		blockStyle,
 		breakpoint,
+		clientId,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
@@ -42,7 +46,11 @@ const SvgColor = props => {
 				<div
 					className='toolbar-item__icon'
 					style={{
-						background: svgColor,
+						background:
+							props[`${type}`] ||
+							`var(--maxi-${getBlockStyle(clientId)}-color-${
+								props[`palette-preset-${type}-color`]
+							})`,
 						border: '1px solid #fff',
 					}}
 				/>
@@ -61,6 +69,7 @@ const SvgColor = props => {
 					colorPaletteType={type}
 					onChangePalette={val => onChange(val)}
 					deviceType={breakpoint}
+					clientId={clientId}
 				/>
 			</div>
 		</ToolbarPopover>

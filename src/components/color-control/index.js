@@ -10,7 +10,6 @@ import { useState, useEffect, Fragment } from '@wordpress/element';
  */
 import RangeSliderControl from '../range-slider-control';
 import ColorPaletteControl from '../color-palette-control';
-import { getBlockStyle } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -38,9 +37,7 @@ const ColorControl = props => {
 		disableOpacity = false,
 		onChange,
 		isHover,
-		blockStyle,
 		noPalette,
-		blockName,
 		textLevel,
 		showPalette = false,
 		palette,
@@ -112,16 +109,12 @@ const ColorControl = props => {
 			{!noPalette && showPalette && (
 				<ColorPaletteControl
 					{...palette}
-					blockName={blockName}
 					textLevel={textLevel}
 					isHover={isHover}
 					colorPaletteType={colorPaletteType}
-					className={`maxi-color-palette--${getBlockStyle(
-						blockStyle,
-						clientId
-					)}`}
 					onChange={obj => onChangePalette(obj)}
 					deviceType={deviceType}
+					clientId={clientId}
 				/>
 			)}
 			{!showPalette ||

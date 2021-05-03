@@ -11,8 +11,8 @@ import ColorControl from '../../../color-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
+	getBlockStyle,
 } from '../../../../extensions/styles';
-import getBlockStyle from '../../../../extensions/styles/getBlockStyle';
 
 /**
  * Styles
@@ -23,7 +23,7 @@ import './editor.scss';
  * BackgroundColor
  */
 const BackgroundColor = props => {
-	const { blockName, onChange, blockStyle, breakpoint, clientId } = props;
+	const { blockName, onChange, breakpoint, clientId } = props;
 
 	if (
 		blockName === 'maxi-blocks/divider-maxi' ||
@@ -43,10 +43,7 @@ const BackgroundColor = props => {
 					style={{
 						background:
 							props['background-color'] ||
-							`var(--maxi-${getBlockStyle(
-								blockStyle,
-								clientId
-							)}-color-${
+							`var(--maxi-${getBlockStyle(clientId)}-color-${
 								props['palette-preset-background-color']
 							})`,
 						border: '1px solid #fff',
@@ -66,11 +63,11 @@ const BackgroundColor = props => {
 						})
 					}
 					showPalette
-					blockStyle={blockStyle}
 					palette={{ ...getGroupAttributes(props, 'palette') }}
 					colorPaletteType='background'
 					onChangePalette={val => onChange(val)}
 					deviceType={breakpoint}
+					clientId={clientId}
 				/>
 			</div>
 		</ToolbarPopover>

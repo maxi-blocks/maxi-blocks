@@ -269,12 +269,6 @@ const Inspector = memo(
 																		breakpoint={
 																			deviceType
 																		}
-																		blockName={
-																			name
-																		}
-																		blockStyle={
-																			blockStyle
-																		}
 																		clientId={
 																			clientId
 																		}
@@ -349,12 +343,6 @@ const Inspector = memo(
 																				breakpoint={
 																					deviceType
 																				}
-																				blockName={
-																					name
-																				}
-																				blockStyle={
-																					blockStyle
-																				}
 																				clientId={
 																					clientId
 																				}
@@ -408,9 +396,6 @@ const Inspector = memo(
 																			disableImage
 																			disableVideo
 																			disableSVG
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -481,9 +466,6 @@ const Inspector = memo(
 																				disableVideo
 																				disableSVG
 																				isHover
-																				blockStyle={
-																					blockStyle
-																				}
 																				clientId={
 																					clientId
 																				}
@@ -528,9 +510,6 @@ const Inspector = memo(
 																		}
 																		breakpoint={
 																			deviceType
-																		}
-																		blockStyle={
-																			blockStyle
 																		}
 																		clientId={
 																			clientId
@@ -599,9 +578,6 @@ const Inspector = memo(
 																				}
 																				breakpoint={
 																					deviceType
-																				}
-																				blockStyle={
-																					blockStyle
 																				}
 																				clientId={
 																					clientId
@@ -706,9 +682,6 @@ const Inspector = memo(
 																				obj
 																			)
 																		}
-																		blockStyle={
-																			blockStyle
-																		}
 																		breakpoint={
 																			deviceType
 																		}
@@ -774,9 +747,6 @@ const Inspector = memo(
 																					setAttributes(
 																						obj
 																					)
-																				}
-																				blockStyle={
-																					blockStyle
 																				}
 																				breakpoint={
 																					deviceType

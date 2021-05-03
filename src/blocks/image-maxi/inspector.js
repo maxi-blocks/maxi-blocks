@@ -420,9 +420,6 @@ const Inspector = props => {
 															breakpoint={
 																deviceType
 															}
-															blockStyle={
-																blockStyle
-															}
 															disableCustomFormats
 														/>
 													)}
@@ -462,9 +459,6 @@ const Inspector = props => {
 																			setAttributes(
 																				obj
 																			)
-																		}
-																		blockStyle={
-																			blockStyle
 																		}
 																		clientId={
 																			clientId
@@ -536,9 +530,6 @@ const Inspector = props => {
 																			disableVideo
 																			disableSVG
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -580,9 +571,6 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
-																	}
-																	blockStyle={
-																		blockStyle
 																	}
 																	clientId={
 																		clientId
@@ -653,9 +641,6 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -753,9 +738,6 @@ const Inspector = props => {
 																	breakpoint={
 																		deviceType
 																	}
-																	blockStyle={
-																		blockStyle
-																	}
 																	clientId={
 																		clientId
 																	}
@@ -823,9 +805,6 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}

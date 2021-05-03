@@ -185,8 +185,11 @@ class MaxiBlock extends Component {
 			res = 'maxi-light';
 		}
 
-		if (this.props.attributes.blockStyle !== 'maxi-light')
-			this.props.setAttributes({ blockStyle: res });
+		// Kind of cheat. What it seeks is to don't generate an historical entity in the registry
+		// that transforms in the necessity of clicking more than onces on undo button after pasting
+		// any content on Text Maxi due to the `setAttributes` action that creates a record entity
+		// on the historical registry 👍
+		this.props.attributes.blockStyle = res;
 	}
 
 	uniqueIDChecker(idToCheck) {

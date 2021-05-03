@@ -2,7 +2,7 @@
 
 exports[`getArrowStyles Get a correct arrow styles 1`] = `
 Object {
-  "undefined .maxi-container-arrow": Object {
+  " .maxi-container-arrow": Object {
     "arrow": Object {
       "general": Object {
         "display": "block",
@@ -60,15 +60,15 @@ Object {
       },
     },
   },
-  "undefined .maxi-container-arrow:after": Object {
+  " .maxi-container-arrow:after": Object {
     "background": Object {
       "general": Object {
-        "background": undefined,
+        "background": "test",
       },
       "label": "Arrow Color",
     },
   },
-  "undefined .maxi-container-arrow:before": Object {
+  " .maxi-container-arrow:before": Object {
     "border": Object {
       "general": Object {
         "background": "rgb(255, 99, 71)",

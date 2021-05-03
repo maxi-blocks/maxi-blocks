@@ -1,8 +1,68 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getBackgroundStyles Get a correct Background Styles 1`] = `
+exports[`getBackgroundStyles Get a correct background styles 1`] = `
 Object {
-  "undefined > .maxi-background-displayer": Object {
+  "maxi test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {
+        "border-bottom-left-radius": "4px",
+        "border-bottom-right-radius": "3px",
+        "border-top-left-radius": "1px",
+        "border-top-right-radius": "2px",
+      },
+      "l": Object {
+        "border-bottom-left-radius": "4px",
+        "border-bottom-right-radius": "3px",
+        "border-top-left-radius": "1px",
+        "border-top-right-radius": "2px",
+      },
+      "m": Object {
+        "border-bottom-left-radius": "4px",
+        "border-bottom-right-radius": "3px",
+        "border-top-left-radius": "1px",
+        "border-top-right-radius": "2px",
+      },
+      "s": Object {
+        "border-bottom-left-radius": "4px",
+        "border-bottom-right-radius": "3px",
+        "border-top-left-radius": "1px",
+        "border-top-right-radius": "2px",
+      },
+      "xl": Object {
+        "border-bottom-left-radius": "4px",
+        "border-bottom-right-radius": "3px",
+        "border-top-left-radius": "1px",
+        "border-top-right-radius": "2px",
+      },
+      "xs": Object {
+        "border-bottom-left-radius": "4px",
+        "border-bottom-right-radius": "3px",
+        "border-top-left-radius": "1px",
+        "border-top-right-radius": "2px",
+      },
+      "xxl": Object {
+        "border-bottom-left-radius": "4px",
+        "border-bottom-right-radius": "3px",
+        "border-top-left-radius": "1px",
+        "border-top-right-radius": "2px",
+      },
+    },
+  },
+  "maxi test > .maxi-background-displayer .maxi-background-displayer__color": Object {
+    "background": Object {
+      "general": Object {
+        "background-color": "rgba(2,0,36,1)",
+        "clip-path": "rgba(2,0,36,1)",
+      },
+      "label": "Background Color",
+    },
+  },
+}
+`;
+
+exports[`getBackgroundStyles Get a correct background styles 2`] = `
+Object {
+  "maxi test > .maxi-background-displayer": Object {
     "border": Object {
       "general": Object {},
       "l": Object {},
@@ -11,6 +71,187 @@ Object {
       "xl": Object {},
       "xs": Object {},
       "xxl": Object {},
+    },
+  },
+  "maxi test > .maxi-background-displayer .maxi-background-displayer__images": Object {
+    "imageBackground": Object {
+      "general": Object {
+        "background-attachment": "test",
+        "background-clip": "test",
+        "background-image": "url('test')",
+        "background-origin": "test",
+        "background-position": "relative",
+        "background-repeat": "no-repeat",
+        "background-size": "test",
+        "clip-path": "test",
+        "opacity": 0.3,
+      },
+      "label": "Background Image",
+    },
+  },
+}
+`;
+
+exports[`getBackgroundStyles Get a correct background styles 3`] = `
+Object {
+  "maxi test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  "maxi test > .maxi-background-displayer .maxi-background-displayer__video-player": Object {
+    "videoBackground": Object {
+      "general": Object {
+        "background": "url(test)",
+        "background-size": "cover",
+        "clip-path": "test",
+        "opacity": 1,
+      },
+      "label": "Video Background",
+    },
+  },
+}
+`;
+
+exports[`getBackgroundStyles Get a correct background styles 4`] = `
+Object {
+  "maxi test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  "maxi test > .maxi-background-displayer .maxi-background-displayer__svg": Object {
+    "SVGBackground": Object {
+      "general": Object {
+        "height": "2%",
+        "left": "1%",
+        "top": "4%",
+      },
+      "label": "SVG Wrapper Background",
+    },
+  },
+  "maxi test > .maxi-background-displayer .maxi-background-displayer__svg svg": Object {
+    "SVGBackground": Object {
+      "general": Object {
+        "height": "2%",
+      },
+      "label": "SVG Background",
+    },
+  },
+}
+`;
+
+exports[`getBackgroundStyles Get a correct background styles 5`] = `
+Object {
+  "maxi test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  "maxi test > .maxi-background-displayer .maxi-background-displayer__color": Object {
+    "background": Object {
+      "general": Object {
+        "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
+        "clip-path": "test",
+        "opacity": 0.66,
+      },
+      "label": "Background Color",
+    },
+  },
+}
+`;
+
+exports[`getBackgroundStyles Get a correct background styles 6`] = `
+Object {
+  "maxi test > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  "maxi test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+    "backgroundColor": Object {
+      "general": Object {
+        "background-color": "rgba(12,233,75,1)",
+      },
+      "label": "Background Color",
+      "prefix": "",
+    },
+  },
+  "maxi test > .maxi-background-displayer .maxi-background-displayer__1": Object {
+    "backgroundImage": Object {
+      "general": Object {
+        "background-attachment": "scroll",
+        "background-clip": "border-box",
+        "background-image": "url('https://learndd.dev600.com/wp-content/uploads/2021/04/512.png')",
+        "background-origin": "padding-box",
+        "background-position": "center center",
+        "background-repeat": "no-repeat",
+        "background-size": "",
+        "opacity": 1,
+      },
+      "label": "Background Image",
+      "prefix": "",
+    },
+  },
+  "maxi test > .maxi-background-displayer .maxi-background-displayer__2": Object {
+    "backgroundVideo": Object {
+      "general": Object {
+        "opacity": 0.72,
+      },
+      "label": "Video Background",
+      "prefix": "",
+    },
+  },
+  "maxi test > .maxi-background-displayer .maxi-background-displayer__3": Object {
+    "backgroundGradient": Object {
+      "general": Object {
+        "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(62,102,120) 40%,rgb(155,81,224) 100%)",
+        "opacity": 0.51,
+      },
+      "label": "Background Color",
+      "prefix": "",
+    },
+  },
+  "maxi test > .maxi-background-displayer .maxi-background-displayer__4": Object {
+    "backgroundSVG": Object {
+      "general": Object {
+        "height": "100%",
+      },
+      "label": "SVG Wrapper Background",
+      "prefix": "",
+    },
+  },
+  "maxi test > .maxi-background-displayer .maxi-background-displayer__4 svg": Object {
+    "backgroundSVG": Object {
+      "general": Object {
+        "height": "100%",
+      },
+      "label": "SVG Background",
+      "prefix": "",
     },
   },
 }

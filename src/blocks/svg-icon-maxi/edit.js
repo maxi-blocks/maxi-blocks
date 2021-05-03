@@ -23,7 +23,6 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteClasses,
-	getBlockStyle,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -70,24 +69,11 @@ class edit extends MaxiBlock {
 		};
 	}
 
-	componentDidUpdate() {
-		this.displayStyles();
-
-		const { setAttributes, clientId } = this.props;
-		setAttributes({
-			parentBlockStyle: getBlockStyle(
-				this.props.attributes.blockStyle,
-				clientId
-			),
-		});
-	}
-
 	render() {
 		const { className, attributes, clientId, deviceType } = this.props;
 		const {
 			uniqueID,
 			blockStyle,
-			defaultBlockStyle,
 			extraClassName,
 			fullWidth,
 			parentBlockStyle,
@@ -97,9 +83,13 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-svg-icon-block',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
-			defaultBlockStyle,
+			getLastBreakpointAttribute(
+				'display',
+				deviceType,
+				attributes,
+				false,
+				true
+			) === 'none' && 'maxi-block-display-none',
 			blockStyle,
 			getPaletteClasses(
 				attributes,
@@ -280,6 +270,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 
 	const changeSVGContent = (color, colorNumber) => {
 		let [regexLineToChange, changeTo, regexLineToChange2, changeTo2] = '';
+
 		if (colorNumber === 1) {
 			regexLineToChange = new RegExp('fill:[^n]+?(?=})', 'g');
 			changeTo = `fill:${color}`;

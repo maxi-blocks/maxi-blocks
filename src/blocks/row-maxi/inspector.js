@@ -247,9 +247,6 @@ const Inspector = props => {
 																			)
 																		}
 																		disableVideo
-																		blockStyle={
-																			blockStyle
-																		}
 																		clientId={
 																			clientId
 																		}
@@ -320,9 +317,6 @@ const Inspector = props => {
 																			disableImage
 																			disableSVG
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -364,9 +358,6 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
-																	}
-																	blockStyle={
-																		blockStyle
 																	}
 																	clientId={
 																		clientId
@@ -437,9 +428,6 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -555,9 +543,6 @@ const Inspector = props => {
 																	breakpoint={
 																		deviceType
 																	}
-																	blockStyle={
-																		blockStyle
-																	}
 																	clientId={
 																		clientId
 																	}
@@ -623,9 +608,6 @@ const Inspector = props => {
 																			}
 																			breakpoint={
 																				deviceType
-																			}
-																			blockStyle={
-																				blockStyle
 																			}
 																			clientId={
 																				clientId

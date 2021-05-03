@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { SelectControl } from '@wordpress/components';
-import { useState } from '@wordpress/element';
 
 /**
  * Component
@@ -20,17 +19,12 @@ const BlockStylesControl = props => {
 		return [{ label: __('Parent', 'maxi-blocks'), value: 'maxi-parent' }];
 	};
 
-	const [, setColorPaletteClass] = useState(blockStyle);
-
 	return (
 		<SelectControl
 			label={__('Block Style', 'maxi-blocks')}
 			value={blockStyle}
 			options={getSelectorOptions()}
-			onChange={blockStyle => {
-				onChange({ blockStyle });
-				setColorPaletteClass(blockStyle);
-			}}
+			onChange={blockStyle => onChange({ blockStyle })}
 		/>
 	);
 };

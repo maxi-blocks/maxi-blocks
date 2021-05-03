@@ -12,8 +12,8 @@ import ColorControl from '../../../color-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
+	getBlockStyle,
 } from '../../../../extensions/styles';
-import getBlockStyle from '../../../../extensions/styles/getBlockStyle';
 
 /**
  * Styles & Icons
@@ -25,7 +25,7 @@ import { toolbarDividerSetting } from '../../../../icons';
  * DividerColor
  */
 const DividerColor = props => {
-	const { blockName, onChange, blockStyle, breakpoint, clientId } = props;
+	const { blockName, onChange, breakpoint, clientId } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
@@ -39,10 +39,9 @@ const DividerColor = props => {
 					style={{
 						background:
 							props['divider-border-color'] ||
-							`var(--maxi-${getBlockStyle(
-								blockStyle,
-								clientId
-							)}-color-${props['palette-preset-divider-color']})`,
+							`var(--maxi-${getBlockStyle(clientId)}-color-${
+								props['palette-preset-divider-color']
+							})`,
 						borderWidth: '1px',
 						borderColor: '#fff',
 						borderStyle: 'solid',
@@ -63,11 +62,11 @@ const DividerColor = props => {
 					onChange={val => onChange({ 'divider-border-color': val })}
 					disableGradient
 					showPalette
-					blockStyle={blockStyle}
 					palette={{ ...getGroupAttributes(props, 'palette') }}
 					colorPaletteType='divider'
 					onChangePalette={val => onChange(val)}
 					deviceType={breakpoint}
+					clientId={clientId}
 				/>
 			</div>
 		</ToolbarPopover>

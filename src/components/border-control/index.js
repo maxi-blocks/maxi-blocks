@@ -61,6 +61,13 @@ const BorderControl = props => {
 		onChange(response);
 	};
 
+	const borderStyleValue = getLastBreakpointAttribute(
+		`${prefix}border-style`,
+		breakpoint,
+		props,
+		isHover
+	);
+
 	const getIsActive = () => {
 		const items = [
 			`${prefix}border-top-width`,
@@ -75,13 +82,7 @@ const BorderControl = props => {
 			);
 		});
 
-		if (hasBorderWidth)
-			return getLastBreakpointAttribute(
-				`${prefix}border-style`,
-				breakpoint,
-				props,
-				isHover
-			);
+		if (hasBorderWidth) return borderStyleValue;
 		return 'none';
 	};
 
@@ -135,12 +136,7 @@ const BorderControl = props => {
 				<SelectControl
 					label={__('Border Type', 'maxi-blocks')}
 					className='maxi-border-control__type'
-					value={getLastBreakpointAttribute(
-						`${prefix}border-style`,
-						breakpoint,
-						props,
-						isHover
-					)}
+					value={borderStyleValue}
 					options={[
 						{ label: 'None', value: 'none' },
 						{ label: 'Dotted', value: 'dotted' },
@@ -163,56 +159,46 @@ const BorderControl = props => {
 					}}
 				/>
 			)}
-			{!disableColor &&
-				getLastBreakpointAttribute(
-					`${prefix}border-style`,
-					breakpoint,
-					props,
-					isHover
-				) !== 'none' && (
-					<ColorControl
-						label={__('Border', 'maxi-blocks')}
-						color={getLastBreakpointAttribute(
-							`${prefix}border-color`,
-							breakpoint,
-							props,
-							isHover
-						)}
-						defaultColor={getDefaultAttribute(
-							`${prefix}border-color-${breakpoint}${
+			{!disableColor && borderStyleValue && borderStyleValue !== 'none' && (
+				<ColorControl
+					label={__('Border', 'maxi-blocks')}
+					color={getLastBreakpointAttribute(
+						`${prefix}border-color`,
+						breakpoint,
+						props,
+						isHover
+					)}
+					defaultColor={getDefaultAttribute(
+						`${prefix}border-color-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+					)}
+					onChange={val => {
+						onChange({
+							[`${
+								prefix ? prefix : ''
+							}border-color-${breakpoint}${
 								isHover ? '-hover' : ''
-							}`
-						)}
-						onChange={val => {
-							onChange({
-								[`${
-									prefix ? prefix : ''
-								}border-color-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: val,
-							});
-						}}
-						disableImage
-						disableVideo
-						disableGradient
-						showPalette
-						blockStyle={blockStyle}
-						isHover={isHover}
-						palette={{ ...getGroupAttributes(props, 'palette') }}
-						colorPaletteType='border'
-						onChangePalette={val => onChange(val)}
-						deviceType={breakpoint}
-						clientId={clientId}
-					/>
-				)}
+							}`]: val,
+						});
+					}}
+					disableImage
+					disableVideo
+					disableGradient
+					showPalette
+					blockStyle={blockStyle}
+					isHover={isHover}
+					palette={{ ...getGroupAttributes(props, 'palette') }}
+					colorPaletteType='border'
+					onChangePalette={val => onChange(val)}
+					deviceType={breakpoint}
+					clientId={clientId}
+				/>
+			)}
 
 			{!disableAdvanced &&
-				getLastBreakpointAttribute(
-					`${prefix}border-style`,
-					breakpoint,
-					props,
-					isHover
-				) !== 'none' && (
+				borderStyleValue &&
+				borderStyleValue !== 'none' && (
 					<AxisControl
 						{...getGroupAttributes(
 							props,
@@ -246,47 +232,50 @@ const BorderControl = props => {
 				)}
 
 			{!disableAdvanced && (
-				<AxisControl
-					{...getGroupAttributes(
-						props,
-						'borderRadius',
-						isHover,
-						prefix
-					)}
-					target={`${prefix}border`}
-					auxTarget='radius'
-					label={__('Border radius', 'maxi-blocks')}
-					onChange={obj => onChange(obj)}
-					breakpoint={breakpoint}
-					minMaxSettings={{
-						px: {
-							min: 0,
-							max: 999,
-						},
-						em: {
-							min: 0,
-							max: 999,
-						},
-						vw: {
-							min: 0,
-							max: 999,
-						},
-						'%': {
-							min: 0,
-							max: 100,
-						},
-					}}
-					disableAuto
-					isHover={isHover}
-					inputsArray={[
-						'top-left',
-						'top-right',
-						'bottom-right',
-						'bottom-left',
-						'unit',
-						'sync',
-					]}
-				/>
+				<>
+					<hr />
+					<AxisControl
+						{...getGroupAttributes(
+							props,
+							'borderRadius',
+							isHover,
+							prefix
+						)}
+						target={`${prefix}border`}
+						auxTarget='radius'
+						label={__('Border radius', 'maxi-blocks')}
+						onChange={obj => onChange(obj)}
+						breakpoint={breakpoint}
+						minMaxSettings={{
+							px: {
+								min: 0,
+								max: 999,
+							},
+							em: {
+								min: 0,
+								max: 999,
+							},
+							vw: {
+								min: 0,
+								max: 999,
+							},
+							'%': {
+								min: 0,
+								max: 100,
+							},
+						}}
+						disableAuto
+						isHover={isHover}
+						inputsArray={[
+							'top-left',
+							'top-right',
+							'bottom-right',
+							'bottom-left',
+							'unit',
+							'sync',
+						]}
+					/>
+				</>
 			)}
 		</div>
 	);

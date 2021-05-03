@@ -31,7 +31,6 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteClasses,
-	getBlockStyle,
 } from '../../extensions/styles';
 import getStyles from './styles';
 import { onMerge, onSplit } from './utils';
@@ -77,18 +76,6 @@ class edit extends MaxiBlock {
 		};
 	}
 
-	componentDidUpdate() {
-		this.displayStyles();
-
-		const { setAttributes, clientId } = this.props;
-		setAttributes({
-			parentBlockStyle: getBlockStyle(
-				this.props.attributes.blockStyle,
-				clientId
-			),
-		});
-	}
-
 	render() {
 		const {
 			attributes,
@@ -120,8 +107,13 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-text-block',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointAttribute(
+				'display',
+				deviceType,
+				attributes,
+				false,
+				true
+			) === 'none' && 'maxi-block-display-none',
 			blockStyle,
 			getPaletteClasses(
 				attributes,

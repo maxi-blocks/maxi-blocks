@@ -8,12 +8,13 @@ import { select } from '@wordpress/data';
  */
 import { isNull } from 'lodash';
 
-const getBlockStyle = (blockStyle, clientId) => {
+const getBlockStyle = clientId => {
 	const { getBlockAttributes, getBlockParents } = select('core/block-editor');
 
 	const parentStyles = getBlockAttributes(getBlockParents(clientId)[0]);
+	const currentBlockStyle = getBlockAttributes(clientId).blockStyle;
 
-	switch (blockStyle) {
+	switch (currentBlockStyle) {
 		case 'maxi-light':
 		case 'light':
 			return 'light';

@@ -44,7 +44,6 @@ const TypographyControl = withFormatValue(props => {
 	const {
 		className,
 		textLevel = 'p',
-		blockName,
 		hideAlignment = false,
 		onChange,
 		breakpoint = 'general',
@@ -261,7 +260,6 @@ const TypographyControl = withFormatValue(props => {
 								onChangeFormat({ [`${prefix}color`]: val })
 							}
 							disableGradient
-							blockName={blockName}
 							textLevel={textLevel}
 							showPalette
 							disablePalette={disablePalette}

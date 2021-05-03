@@ -3,11 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { FancyRadioControl } from '..';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import { getPaletteDefault } from '../../extensions/styles';
+import { getPaletteDefault, getBlockStyle } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -29,12 +30,19 @@ const ColorPaletteControl = props => {
 		onChange,
 		colorPaletteType = 'background',
 		isHover,
-		blockName,
 		textLevel,
 		deviceType,
+		clientId,
 	} = props;
 
-	const classes = classnames('maxi-color-palette-control', className);
+	const classes = classnames(
+		`maxi-color-palette-control maxi-color-palette--${getBlockStyle(
+			clientId
+		)}`,
+		className
+	);
+
+	const currentBlockName = select('core/block-editor').getBlockName(clientId);
 
 	const currentItem = !isNil(
 		props[
@@ -46,7 +54,62 @@ const ColorPaletteControl = props => {
 					isHover ? '-hover' : ''
 				}-color`
 		  ]
-		: getPaletteDefault(colorPaletteType, blockName, textLevel);
+		: getPaletteDefault(colorPaletteType, currentBlockName, textLevel);
+
+	const onChangePaletteWithType = colorPaletteType => {
+		switch (colorPaletteType) {
+			case 'box-shadow':
+				onChange({
+					[`box-shadow-color-${deviceType}`]: '',
+				});
+				break;
+
+			case 'border':
+				onChange({
+					[`border-color-${deviceType}`]: '',
+				});
+				break;
+
+			case 'typography':
+				onChange({
+					[`color-${deviceType}`]: '',
+				});
+				break;
+
+			case 'background':
+				onChange({
+					['background-color']: '',
+				});
+				break;
+
+			case 'divider':
+				onChange({
+					['divider-border-color']: '',
+				});
+				break;
+
+			case 'icon':
+				onChange({
+					['icon-color']: '',
+				});
+				break;
+
+			case 'svgColorFill':
+				onChange({
+					svgColorFill: '',
+				});
+				break;
+
+			case 'svgColorLine':
+				onChange({
+					svgColorLine: '',
+				});
+				break;
+
+			default:
+				return null;
+		}
+	};
 
 	return (
 		<div className={classes}>
@@ -107,47 +170,8 @@ const ColorPaletteControl = props => {
 								isHover ? '-hover' : ''
 							}-color`
 						]
-					) {
-						colorPaletteType === 'box-shadow' &&
-							onChange({
-								[`box-shadow-color-${deviceType}`]: '',
-							});
-
-						colorPaletteType === 'border' &&
-							onChange({
-								[`border-color-${deviceType}`]: '',
-							});
-
-						colorPaletteType === 'typography' &&
-							onChange({
-								[`color-${deviceType}`]: '',
-							});
-
-						colorPaletteType === 'background' &&
-							onChange({
-								['background-color']: '',
-							});
-
-						colorPaletteType === 'divider' &&
-							onChange({
-								['divider-border-color']: '',
-							});
-
-						colorPaletteType === 'icon' &&
-							onChange({
-								['icon-color']: '',
-							});
-
-						colorPaletteType === 'svgColorFill' &&
-							onChange({
-								svgColorFill: '',
-							});
-
-						colorPaletteType === 'svgColorLine' &&
-							onChange({
-								svgColorLine: '',
-							});
-					}
+					)
+						onChangePaletteWithType(colorPaletteType);
 				}}
 			/>
 		</div>

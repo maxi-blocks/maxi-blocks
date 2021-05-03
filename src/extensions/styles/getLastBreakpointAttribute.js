@@ -88,12 +88,14 @@ const getLastBreakpointAttribute = (
 	target,
 	breakpoint,
 	attributes = null,
-	isHover = false
+	isHover = false,
+	forceSingle = false
 ) => {
 	const { getSelectedBlockCount } = select('core/block-editor');
 
-	if (getSelectedBlockCount() > 1)
+	if (getSelectedBlockCount() > 1 && !forceSingle)
 		return getLastBreakpointAttributeGroup(target, breakpoint, isHover);
+
 	return getLastBreakpointAttributeSingle(
 		target,
 		breakpoint,

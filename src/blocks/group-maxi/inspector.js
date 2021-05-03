@@ -141,9 +141,6 @@ const Inspector = props => {
 																				'palette',
 																			]
 																		)}
-																		blockStyle={
-																			blockStyle
-																		}
 																		onChange={obj =>
 																			setAttributes(
 																				obj
@@ -235,9 +232,6 @@ const Inspector = props => {
 																			disableVideo
 																			disableSVG
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -279,9 +273,6 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
-																	}
-																	blockStyle={
-																		blockStyle
 																	}
 																	clientId={
 																		clientId
@@ -352,9 +343,6 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -397,9 +385,6 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
-																	}
-																	blockStyle={
-																		blockStyle
 																	}
 																	clientId={
 																		clientId
@@ -468,9 +453,6 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}

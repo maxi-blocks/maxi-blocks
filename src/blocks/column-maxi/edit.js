@@ -23,7 +23,6 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteClasses,
-	getBlockStyle,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -62,16 +61,6 @@ class edit extends MaxiBlock {
 	}
 
 	componentDidUpdate() {
-		this.displayStyles();
-
-		const { setAttributes, clientId } = this.props;
-		setAttributes({
-			parentBlockStyle: getBlockStyle(
-				this.props.attributes.blockStyle,
-				clientId
-			),
-		});
-
 		if (this.resizableObject.current) {
 			const columnWidth = getLastBreakpointAttribute(
 				'column-size',
@@ -115,8 +104,13 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-column-block',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointAttribute(
+				'display',
+				deviceType,
+				attributes,
+				false,
+				true
+			) === 'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			getPaletteClasses(
@@ -190,7 +184,9 @@ class edit extends MaxiBlock {
 									getLastBreakpointAttribute(
 										'display',
 										deviceType,
-										attributes
+										attributes,
+										false,
+										true
 									) === 'none' && 'maxi-block-display-none'
 								)}
 								defaultSize={{

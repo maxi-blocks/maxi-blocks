@@ -52,8 +52,6 @@ const BackgroundControl = props => {
 		onChange,
 		isHover = false,
 		prefix = '',
-		blockStyle,
-		blockName,
 		disablePalette,
 		clientId,
 	} = props;
@@ -160,8 +158,6 @@ const BackgroundControl = props => {
 							disableClipPath={disableClipPath}
 							isHover={isHover}
 							prefix={prefix}
-							blockStyle={blockStyle}
-							blockName={blockName}
 							disablePalette={disablePalette}
 							clientId={clientId}
 						/>

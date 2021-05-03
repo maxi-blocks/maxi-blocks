@@ -7,7 +7,6 @@ const global = {
 	},
 	blockStyle: {
 		type: 'string',
-		default: 'maxi-light',
 	},
 	blockStyleBackground: {
 		type: 'number',

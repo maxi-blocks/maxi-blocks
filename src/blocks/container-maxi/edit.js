@@ -13,7 +13,6 @@ import {
 	ArrowDisplayer,
 	BackgroundDisplayer,
 	BlockPlaceholder,
-	Breadcrumbs,
 	Indicators,
 	MaxiBlock,
 	MotionPreview,
@@ -24,7 +23,6 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteClasses,
-	getBlockStyle,
 } from '../../extensions/styles';
 import getStyles from './styles';
 
@@ -124,18 +122,6 @@ class edit extends MaxiBlock {
 		};
 	}
 
-	componentDidUpdate() {
-		this.displayStyles();
-
-		const { setAttributes, clientId } = this.props;
-		setAttributes({
-			parentBlockStyle: getBlockStyle(
-				this.props.attributes.blockStyle,
-				clientId
-			),
-		});
-	}
-
 	render() {
 		const {
 			attributes,
@@ -158,8 +144,13 @@ class edit extends MaxiBlock {
 			'maxi-block--backend',
 			'maxi-container-block',
 			'maxi-motion-effect',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointAttribute(
+				'display',
+				deviceType,
+				attributes,
+				false,
+				true
+			) === 'none' && 'maxi-block-display-none',
 			uniqueID,
 			blockStyle,
 			getPaletteClasses(

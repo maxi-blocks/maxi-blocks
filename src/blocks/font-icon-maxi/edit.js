@@ -18,7 +18,6 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteClasses,
-	getBlockStyle,
 } from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiModalIcon from '../../components/font-icon-picker/modal';
@@ -61,18 +60,6 @@ class edit extends MaxiBlock {
 		};
 	}
 
-	componentDidUpdate() {
-		this.displayStyles();
-
-		const { setAttributes, clientId } = this.props;
-		setAttributes({
-			parentBlockStyle: getBlockStyle(
-				this.props.attributes.blockStyle,
-				clientId
-			),
-		});
-	}
-
 	render() {
 		const { attributes, className, deviceType, setAttributes } = this.props;
 		const {
@@ -88,8 +75,13 @@ class edit extends MaxiBlock {
 			'maxi-block',
 			'maxi-block--backend',
 			'maxi-font-icon-block',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
+			getLastBreakpointAttribute(
+				'display',
+				deviceType,
+				attributes,
+				false,
+				true
+			) === 'none' && 'maxi-block-display-none',
 			defaultBlockStyle,
 			blockStyle,
 			getPaletteClasses(

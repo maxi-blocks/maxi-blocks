@@ -20,7 +20,12 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { styleResolver, styleGenerator, getGroupAttributes } from '../styles';
+import {
+	styleResolver,
+	styleGenerator,
+	getGroupAttributes,
+	getBlockStyle,
+} from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import { loadFonts } from '../text/fonts';
 
@@ -51,6 +56,8 @@ class MaxiBlock extends Component {
 		if (!isEmpty(this.typography)) this.loadFonts();
 
 		this.displayStyles();
+
+		this.getParentStyle();
 
 		this.blockRef = createRef();
 	}
@@ -124,6 +131,8 @@ class MaxiBlock extends Component {
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		if (!shouldDisplayStyles) this.displayStyles();
+
+		this.getParentStyle();
 	}
 
 	componentWillUnmount() {
@@ -176,8 +185,11 @@ class MaxiBlock extends Component {
 			res = 'maxi-light';
 		}
 
-		if (this.props.attributes.blockStyle !== 'maxi-light')
-			this.props.setAttributes({ blockStyle: res });
+		// Kind of cheat. What it seeks is to don't generate an historical entity in the registry
+		// that transforms in the necessity of clicking more than onces on undo button after pasting
+		// any content on Text Maxi due to the `setAttributes` action that creates a record entity
+		// on the historical registry 👍
+		this.props.attributes.blockStyle = res;
 	}
 
 	uniqueIDChecker(idToCheck) {
@@ -195,6 +207,14 @@ class MaxiBlock extends Component {
 	loadFonts() {
 		Object.entries(this.typography).forEach(([key, val]) => {
 			if (key.includes('font-family')) loadFonts(val);
+		});
+	}
+
+	getParentStyle() {
+		const { setAttributes, clientId } = this.props;
+
+		setAttributes({
+			parentBlockStyle: getBlockStyle(clientId),
 		});
 	}
 

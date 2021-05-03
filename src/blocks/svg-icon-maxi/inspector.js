@@ -176,7 +176,6 @@ const Inspector = props => {
 																	1
 																);
 														}}
-														blockStyle={blockStyle}
 														clientId={clientId}
 													/>
 													<hr />
@@ -203,7 +202,6 @@ const Inspector = props => {
 																	2
 																);
 														}}
-														blockStyle={blockStyle}
 														clientId={clientId}
 													/>
 												</Fragment>
@@ -290,9 +288,6 @@ const Inspector = props => {
 																		disableGradient
 																		disableSVG
 																		disableClipPath
-																		blockStyle={
-																			blockStyle
-																		}
 																		clientId={
 																			clientId
 																		}
@@ -369,9 +364,6 @@ const Inspector = props => {
 																			disableSVG
 																			disableClipPath
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -413,9 +405,6 @@ const Inspector = props => {
 																	}}
 																	breakpoint={
 																		deviceType
-																	}
-																	blockStyle={
-																		blockStyle
 																	}
 																	clientId={
 																		clientId
@@ -486,9 +475,6 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}
@@ -531,9 +517,6 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
-																	}
-																	blockStyle={
-																		blockStyle
 																	}
 																	clientId={
 																		clientId
@@ -602,9 +585,6 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
-																			blockStyle={
-																				blockStyle
-																			}
 																			clientId={
 																				clientId
 																			}

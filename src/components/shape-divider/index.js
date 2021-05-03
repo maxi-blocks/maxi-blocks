@@ -7,7 +7,6 @@ import { isEmpty } from 'lodash';
 /**
  * Styles and icons
  */
-import './editor.scss';
 import './style.scss';
 import {
 	wavesTop,

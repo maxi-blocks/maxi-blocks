@@ -13,7 +13,6 @@ import {
 	ArrowDisplayer,
 	BackgroundDisplayer,
 	BlockPlaceholder,
-	Breadcrumbs,
 	Indicators,
 	MaxiBlock,
 	MotionPreview,

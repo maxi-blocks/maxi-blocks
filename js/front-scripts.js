@@ -133,39 +133,40 @@ motionElems.forEach(function (elem) {
 		}
 
 		// Shape Divider
-		/*
-		const shapeDividerTimeline = gsap.timeline({
-			scrollTrigger: {
-				trigger: `#${motionID} > .maxi-shape-divider`,
-				start: '-150',
-				scrub: true,
-				markers: false,
-				onEnter: self => {
-					self.trigger = elem;
-				},
-			},
-		});
-		if (motionData['shape-divider-top-effects-status']) {
-			shapeDividerTimeline.to(
-				`#${motionID} > .maxi-shape-divider.maxi-shape-divider__top`,
-				{
-					height: 0,
-					duration: 1,
-					ease: 'power1.out',
-				}
+		if (motionData['shape-divider-top-status']) {
+			const shapeDividerTopHeight =
+				motionData['shape-divider-bottom-height'];
+			const shapeDividerTopHeightUnit =
+				motionData['shape-divider-top-height-unit'];
+			const target = document.querySelector(
+				`#${motionID} > .maxi-shape-divider.maxi-shape-divider__top`
 			);
-		}
-		if (motionData['shape-divider-bottom-effects-status']) {
-			shapeDividerTimeline.to(
-				`#${motionID} > .maxi-shape-divider.maxi-shape-divider__bottom`,
-				{
-					height: 0,
-					duration: 1,
-					ease: 'power1.out',
+
+			window.addEventListener('scroll', () => {
+				if (target.getBoundingClientRect().top < 100) {
+					target.style.height = 0;
+				} else {
+					target.style.height = `${shapeDividerTopHeight}${shapeDividerTopHeightUnit}`;
 				}
-			);
+			});
 		}
-		*/
+
+		if (motionData['shape-divider-bottom-status']) {
+			const shapeDividerBottomHeight =
+				motionData['shape-divider-bottom-height'];
+			const shapeDividerBottomHeightUnit =
+				motionData['shape-divider-bottom-height-unit'];
+			const target = document.querySelector(
+				`#${motionID} > .maxi-shape-divider.maxi-shape-divider__bottom`
+			);
+			window.addEventListener('scroll', () => {
+				if (target.getBoundingClientRect().top < 100) {
+					target.style.height = 0;
+				} else {
+					target.style.height = `${shapeDividerBottomHeight}${shapeDividerBottomHeightUnit}`;
+				}
+			});
+		}
 
 		// Parallax Effect
 		if ('parallax-status' in motionData) {

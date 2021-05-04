@@ -57,7 +57,9 @@ class edit extends MaxiBlockComponent {
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
-				<NumberCounter />
+				<NumberCounter
+					{...getGroupAttributes(attributes, 'numberCounter')}
+				/>
 			</MaxiBlock>,
 		];
 	}

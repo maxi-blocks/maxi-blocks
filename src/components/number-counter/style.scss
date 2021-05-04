@@ -1,10 +1,21 @@
 .maxi-number-counter {
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	position: relative;
 	z-index: 1;
 
+	&__replay {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		top: 0;
+		right: 0;
+		background: #232533;
+		z-index: 2;
+		border-radius: 3px;
+	}
 	&__circle {
 		transform: rotate(-90deg);
 		transform-origin: center;

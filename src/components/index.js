@@ -1,5 +1,3 @@
-// Components
-// GX Block
 export { default as AccordionControl } from './accordion-control';
 export { default as AlignmentControl } from './alignment-control';
 export { default as ArrowControl } from './arrow-control';
@@ -38,6 +36,7 @@ export { default as MotionControl } from './motion-control';
 export { default as MotionPreview } from './motion-preview';
 export { default as NumberControl } from './number-control';
 export { default as NumberCounter } from './number-counter';
+export { default as NumberCounterControl } from './number-counter-control';
 export { default as OpacityControl } from './opacity-control';
 export { default as ParallaxControl } from './parallax-control';
 export { default as PositionControl } from './position-control';

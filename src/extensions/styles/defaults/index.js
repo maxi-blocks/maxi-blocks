@@ -19,6 +19,7 @@ export { default as divider } from './divider';
 export { default as global } from './global';
 export { default as highlight } from './highlight';
 export { default as margin } from './margin';
+export { default as numberCounter } from './numberCounter';
 export { default as opacity } from './opacity';
 export { default as padding } from './padding';
 export { default as position } from './position';

@@ -15,6 +15,7 @@ import {
 	CustomLabel,
 	DisplayControl,
 	EntranceAnimationControl,
+	NumberCounterControl,
 	OpacityControl,
 	PositionControl,
 	ResponsiveControl,
@@ -79,6 +80,20 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
+										{
+											label: __('Number', 'maxi-blocks'),
+											content: (
+												<NumberCounterControl
+													{...getGroupAttributes(
+														attributes,
+														'numberCounter'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+												/>
+											),
+										},
 										{
 											label: __(
 												'Padding & Margin',

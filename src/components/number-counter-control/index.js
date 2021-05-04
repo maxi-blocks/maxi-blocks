@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { FancyRadioControl, SizeControl } from '../';
+import { FancyRadioControl, SizeControl, ColorControl } from '../';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
@@ -108,6 +108,33 @@ const NumberCounterControl = props => {
 				]}
 				onChange={val =>
 					onChange({ 'number-counter-circle-status': val })
+				}
+			/>
+			<hr />
+			<ColorControl
+				label={__('Text', 'maxi-blocks')}
+				color={props['number-counter-text-color']}
+				defaultColor={getDefaultAttribute('number-counter-text-color')}
+				onChange={val => onChange({ 'number-counter-text-color': val })}
+			/>
+			<ColorControl
+				label={__('Circle Background', 'maxi-blocks')}
+				color={props['number-counter-circle-background-color']}
+				defaultColor={getDefaultAttribute(
+					'number-counter-circle-background-color'
+				)}
+				onChange={val =>
+					onChange({ 'number-counter-circle-background-color': val })
+				}
+			/>
+			<ColorControl
+				label={__('Circle Bar', 'maxi-blocks')}
+				color={props['number-counter-circle-bar-color']}
+				defaultColor={getDefaultAttribute(
+					'number-counter-circle-bar-color'
+				)}
+				onChange={val =>
+					onChange({ 'number-counter-circle-bar-color': val })
 				}
 			/>
 		</div>

@@ -23,6 +23,18 @@ const numberCounter = {
 		type: 'number',
 		default: 10,
 	},
+	'number-counter-text-color': {
+		type: 'string',
+		default: '#000',
+	},
+	'number-counter-circle-background-color': {
+		type: 'string',
+		default: '#f2f9fd',
+	},
+	'number-counter-circle-bar-color': {
+		type: 'string',
+		default: '#ff4a17',
+	},
 };
 
 export default numberCounter;

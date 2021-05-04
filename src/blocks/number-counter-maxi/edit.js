@@ -9,7 +9,7 @@ import { withSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent, Toolbar } from '../../components';
+import { MaxiBlockComponent, Toolbar, NumberCounter } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -57,7 +57,7 @@ class edit extends MaxiBlockComponent {
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
-				<h1>Hello Number Counter</h1>
+				<NumberCounter />
 			</MaxiBlock>,
 		];
 	}

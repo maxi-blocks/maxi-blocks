@@ -15,6 +15,10 @@ const numberCounter = {
 		type: 'number',
 		default: 100,
 	},
+	'number-counter-duration': {
+		type: 'number',
+		default: 10,
+	},
 };
 
 export default numberCounter;

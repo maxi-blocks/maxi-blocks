@@ -39,7 +39,7 @@ const NumberCounter = props => {
 
 		countRef.current = setInterval(() => {
 			setCount(count + 1);
-		}, 10);
+		}, props['number-counter-duration']);
 
 		return () => clearInterval(countRef.current);
 	}, [count]);

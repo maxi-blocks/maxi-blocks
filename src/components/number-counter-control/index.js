@@ -58,6 +58,25 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
+			<SizeControl
+				label={__('Duration (ms)', 'maxi-blocks')}
+				disableUnit
+				min={1}
+				max={10000}
+				initial={1}
+				step={1}
+				value={props['number-counter-duration']}
+				onChangeValue={val =>
+					onChange({ 'number-counter-duration': val })
+				}
+				onReset={() =>
+					onChange({
+						'number-counter-duration': getDefaultAttribute(
+							'number-counter-duration'
+						),
+					})
+				}
+			/>
 			<FancyRadioControl
 				label={__('Show Percentage Sign', 'maxi-block')}
 				selected={props['number-counter-percentage-sign-status']}

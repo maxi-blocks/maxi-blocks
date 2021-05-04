@@ -55,30 +55,37 @@ const NumberCounter = props => {
 				icon={toolbarReplaceImage}
 			/>
 			<svg viewBox='0 0 180 180' width='180' height='180'>
-				<circle
-					className='maxi-number-counter__background'
-					stroke='#f2f9fd'
-					strokeWidth={stroke}
-					fill='none'
-					cx='90'
-					cy='90'
-					r={radius}
-				/>
-				<circle
-					className='maxi-number-counter__circle'
-					stroke='#ff4a17'
-					strokeWidth={stroke}
-					fill='none'
-					cx='90'
-					cy='90'
-					r={radius}
-					strokeLinecap={
-						props['number-counter-rounded-status'] ? 'round' : ''
-					}
-					strokeDasharray={`${parseInt(
-						(count / 360) * circumference
-					)} ${circumference}`}
-				/>
+				{!props['number-counter-circle-status'] && (
+					<>
+						<circle
+							className='maxi-number-counter__background'
+							stroke='#f2f9fd'
+							strokeWidth={stroke}
+							fill='none'
+							cx='90'
+							cy='90'
+							r={radius}
+						/>
+						<circle
+							className='maxi-number-counter__circle'
+							stroke='#ff4a17'
+							strokeWidth={stroke}
+							fill='none'
+							cx='90'
+							cy='90'
+							r={radius}
+							strokeLinecap={
+								props['number-counter-rounded-status']
+									? 'round'
+									: ''
+							}
+							strokeDasharray={`${parseInt(
+								(count / 360) * circumference
+							)} ${circumference}`}
+						/>
+					</>
+				)}
+
 				<text
 					className='maxi-number-counter__text'
 					x='50%'

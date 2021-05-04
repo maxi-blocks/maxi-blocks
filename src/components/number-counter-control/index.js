@@ -99,6 +99,17 @@ const NumberCounterControl = props => {
 					onChange({ 'number-counter-rounded-status': val })
 				}
 			/>
+			<FancyRadioControl
+				label={__('Hide Circle', 'maxi-block')}
+				selected={props['number-counter-circle-status']}
+				options={[
+					{ label: __('No', 'maxi-block'), value: 0 },
+					{ label: __('Yes', 'maxi-block'), value: 1 },
+				]}
+				onChange={val =>
+					onChange({ 'number-counter-circle-status': val })
+				}
+			/>
 		</div>
 	);
 };

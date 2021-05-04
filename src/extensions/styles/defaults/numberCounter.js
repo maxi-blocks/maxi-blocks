@@ -7,6 +7,10 @@ const numberCounter = {
 		type: 'boolean',
 		default: false,
 	},
+	'number-counter-circle-status': {
+		type: 'boolean',
+		default: false,
+	},
 	'number-counter-start': {
 		type: 'number',
 		default: 0,

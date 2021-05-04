@@ -72,6 +72,9 @@ const NumberCounter = props => {
 					cx='90'
 					cy='90'
 					r={radius}
+					strokeLinecap={
+						props['number-counter-rounded-status'] ? 'round' : ''
+					}
 					strokeDasharray={`${parseInt(
 						(count / 360) * circumference
 					)} ${circumference}`}

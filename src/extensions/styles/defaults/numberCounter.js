@@ -3,6 +3,10 @@ const numberCounter = {
 		type: 'boolean',
 		default: false,
 	},
+	'number-counter-rounded-status': {
+		type: 'boolean',
+		default: false,
+	},
 	'number-counter-start': {
 		type: 'number',
 		default: 0,

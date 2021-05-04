@@ -69,6 +69,17 @@ const NumberCounterControl = props => {
 					onChange({ 'number-counter-percentage-sign-status': val })
 				}
 			/>
+			<FancyRadioControl
+				label={__('Rounded Bar', 'maxi-block')}
+				selected={props['number-counter-rounded-status']}
+				options={[
+					{ label: __('No', 'maxi-block'), value: 0 },
+					{ label: __('Yes', 'maxi-block'), value: 1 },
+				]}
+				onChange={val =>
+					onChange({ 'number-counter-rounded-status': val })
+				}
+			/>
 		</div>
 	);
 };

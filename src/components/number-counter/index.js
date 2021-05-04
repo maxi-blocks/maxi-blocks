@@ -25,14 +25,17 @@ const NumberCounter = props => {
 
 	const countRef = useRef(null);
 
-	const StartCountValue = (props['number-counter-start'] * 360) / 100;
+	const StartCountValue = Math.ceil(
+		(props['number-counter-start'] * 360) / 100
+	);
+	const endCountValue = Math.ceil((props['number-counter-end'] * 360) / 100);
 
 	const [count, setCount] = useState(StartCountValue);
 
 	const circumference = 2 * Math.PI * radius;
 
 	useEffect(() => {
-		if (count === 360) return;
+		if (count === endCountValue) return;
 
 		countRef.current = setInterval(() => {
 			setCount(count + 1);

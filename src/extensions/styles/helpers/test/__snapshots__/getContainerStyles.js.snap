@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getContainerStyles Get a correct Container Styles 1`] = `
+exports[`getContainerStyles Get a correct container styles 1`] = `
 Object {
   "general": Object {
     "max-width": "1170px",

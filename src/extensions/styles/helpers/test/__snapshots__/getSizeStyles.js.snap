@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getSizeStyles Get a correct alignment 1`] = `
+exports[`getSizeStyles Get a correct size styles 1`] = `
 Object {
   "general": Object {
     "height": "4px",

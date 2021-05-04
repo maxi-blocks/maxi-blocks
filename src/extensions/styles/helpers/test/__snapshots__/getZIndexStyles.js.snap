@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getZIndexStyle Get a correct style 1`] = `
+exports[`getZIndexStyle Get a correct z-index style 1`] = `
 Object {
   "general": Object {
     "z-index": 1,

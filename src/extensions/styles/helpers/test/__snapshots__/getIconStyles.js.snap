@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getIconStyles Get a correct Icon Styles 1`] = `
+exports[`getIconStyles Get a correct icon styles 1`] = `
 Object {
   "general": Object {
-    "background": "black",
-    "color": "red",
+    "background": "rgb(255, 99, 71)",
+    "color": "rgb(255, 99, 71)",
     "font-size": "3px",
     "height": "4.5px",
     "min-width": "4.5px",
-    "opacity": 2,
+    "opacity": 0.99,
     "width": "4.5px",
   },
   "l": Object {

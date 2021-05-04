@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getTypographyStyles Get a correct TypographyStyles 1`] = `
+exports[`getTypographyStyles Get a correct typography styles 1`] = `
 Object {
   "general": Object {
-    "color": "blue",
+    "color": "rgb(255, 99, 71)",
     "font-family": "roboto",
     "font-size": "1px",
     "font-style": "bold",
@@ -16,7 +16,7 @@ Object {
     "vertical-align": "none",
   },
   "l": Object {
-    "color": "red",
+    "color": "rgb(255, 99, 71)",
     "font-family": "roboto",
     "font-size": "1px",
     "font-style": "bold",
@@ -29,7 +29,7 @@ Object {
     "vertical-align": "none",
   },
   "m": Object {
-    "color": "red",
+    "color": "rgb(255, 99, 71)",
     "font-family": "roboto",
     "font-size": "1px",
     "font-style": "bold",
@@ -42,7 +42,7 @@ Object {
     "vertical-align": "none",
   },
   "s": Object {
-    "color": "red",
+    "color": "rgb(255, 99, 71)",
     "font-family": "roboto",
     "font-size": "1px",
     "font-style": "bold",
@@ -55,7 +55,7 @@ Object {
     "vertical-align": "none",
   },
   "xl": Object {
-    "color": "red",
+    "color": "rgb(255, 99, 71)",
     "font-family": "roboto",
     "font-size": "1px",
     "font-style": "bold",
@@ -68,7 +68,7 @@ Object {
     "vertical-align": "none",
   },
   "xs": Object {
-    "color": "red",
+    "color": "rgb(255, 99, 71)",
     "font-family": "roboto",
     "font-size": "1px",
     "font-style": "bold",
@@ -81,7 +81,7 @@ Object {
     "vertical-align": "none",
   },
   "xxl": Object {
-    "color": "red",
+    "color": "rgb(255, 99, 71)",
     "font-family": "roboto",
     "font-size": "1px",
     "font-style": "bold",

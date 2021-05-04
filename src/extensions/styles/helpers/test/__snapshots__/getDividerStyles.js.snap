@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getDividerStyles Get a correct Divider Styles 1`] = `
+exports[`getDividerStyles Get a correct divider styles 1`] = `
 Object {
   "general": Object {
-    "border-color": "red",
+    "border-color": "rgb(255, 99, 71)",
     "border-radius": "20px",
     "border-right": "none",
     "border-style": "none",
@@ -14,10 +14,10 @@ Object {
 }
 `;
 
-exports[`getDividerStyles Get a correct Divider Styles 2`] = `
+exports[`getDividerStyles Get a correct divider styles 2`] = `
 Object {
   "general": Object {
-    "border-color": "red",
+    "border-color": "rgb(255, 99, 71)",
     "border-radius": "20px",
     "border-right-width": "2px",
     "border-style": "none",
@@ -28,7 +28,7 @@ Object {
 }
 `;
 
-exports[`getDividerStyles Get a correct Divider Styles 3`] = `
+exports[`getDividerStyles Get a correct divider styles 3`] = `
 Object {
   "general": Object {
     "align-items": "center",
@@ -39,7 +39,7 @@ Object {
 }
 `;
 
-exports[`getDividerStyles Get a correct Divider Styles 4`] = `
+exports[`getDividerStyles Get a correct divider styles 4`] = `
 Object {
   "general": Object {
     "align-items": "flex-start",

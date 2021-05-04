@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getAlignmentFlexStyles Get a correct alignment 1`] = `
+exports[`getAlignmentFlexStyles Get a correct alignment flex styles 1`] = `
 Object {
   "general": Object {
     "align-items": "flex-end",

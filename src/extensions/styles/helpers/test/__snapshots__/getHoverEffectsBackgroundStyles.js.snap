@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getHoverEffectsBackgroundStyles Get a correct Hover Effects 1`] = `
+exports[`getHoverEffectsBackgroundStyles Get a correct hover effects background style 1`] = `
 Object {
   "general": Object {
-    "background-color": "red",
+    "background-color": "rgb(255, 99, 71)",
   },
 }
 `;
 
-exports[`getHoverEffectsBackgroundStyles Get a correct Hover Effects 2`] = `
+exports[`getHoverEffectsBackgroundStyles Get a correct hover effects background style 2`] = `
 Object {
   "general": Object {
-    "background": "red",
+    "background": "rgb(255, 99, 71)",
   },
 }
 `;

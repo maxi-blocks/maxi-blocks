@@ -31,7 +31,7 @@ describe('getShapeDividerStyles', () => {
 			'shape-divider-top-status': true,
 			'shape-divider-top-height': 3,
 			'shape-divider-top-height-unit': 'px',
-			'shape-divider-top-opacity': 0,98,
+			'shape-divider-top-opacity': 0.98,
 			'shape-divider-top-shape-style': 'default',
 			'shape-divider-top-effects-status': true,
 			'shape-divider-top-background-color': 'rgb(255, 99, 71)',

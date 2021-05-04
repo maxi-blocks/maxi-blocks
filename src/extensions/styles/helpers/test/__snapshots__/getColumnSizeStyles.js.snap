@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getColumnSizeStyles Get a correct Column Size Styles 1`] = `
+exports[`getColumnSizeStyles Get a correct column size styles 1`] = `
 Object {
   "general": Object {
     "flex-basis": "1%",

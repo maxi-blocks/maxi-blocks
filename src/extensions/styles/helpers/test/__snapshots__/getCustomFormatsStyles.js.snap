@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getCustomFormatsStyles Get a correct Custom formats 1`] = `
+exports[`getCustomFormatsStyles Get a correct custom formats styles 1`] = `
 Object {
   "test .maxi-text-block__custom-format--0": Object {
     "typography": Object {

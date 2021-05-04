@@ -2,11 +2,11 @@
 
 exports[`getBreakpoints Get a correct breakpoint 1`] = `
 Object {
-  "l": 3,
-  "m": 4,
-  "s": 5,
-  "xl": 2,
-  "xs": 6,
-  "xxl": 2,
+  "l": 1300,
+  "m": 1000,
+  "s": 800,
+  "xl": 2000,
+  "xs": 500,
+  "xxl": 2000,
 }
 `;

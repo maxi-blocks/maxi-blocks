@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getShapeDividerStyles Get a correct Shape Divider 1`] = `
+exports[`getShapeDividerStyles Get a correct shape divider styles 1`] = `
 Object {
   "general": Object {
     "height": "1px",
-    "opacity": 2,
+    "opacity": 1,
   },
   "label": "Shape Divider",
 }
 `;
 
-exports[`getShapeDividerStyles Get a correct Shape Divider 2`] = `
+exports[`getShapeDividerStyles Get a correct shape divider styles 2`] = `
 Object {
   "general": Object {
-    "fill": "red",
+    "fill": "rgb(255, 99, 71)",
   },
   "label": "Shape Divider SVG",
 }

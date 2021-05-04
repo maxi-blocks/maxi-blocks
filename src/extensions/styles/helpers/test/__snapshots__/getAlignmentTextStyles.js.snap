@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getAlignmentTextStyles Get a correct alignment 1`] = `
+exports[`getAlignmentTextStyles Get a correct alignment text styles 1`] = `
 Object {
   "general": Object {
     "text-align": "right",

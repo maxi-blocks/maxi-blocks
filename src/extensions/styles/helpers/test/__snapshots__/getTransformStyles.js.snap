@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getTransformStyles Get a correct alignment 1`] = `
+exports[`getTransformStyles Get a correct transform styles 1`] = `
 Object {
   "general": Object {
     "transform": "scaleX(0.01) scaleY(0.02) translateX(3px) translateY(4px) rotateX(1deg) rotateY(2deg) rotateZ(3deg) ",

@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getDisplayStyles Get a correct Display Styles 1`] = `
+exports[`getDisplayStyles Get a correct display styles 1`] = `
 Object {
   "general": Object {
-    "display": "styles",
+    "display": "block",
   },
   "l": Object {
-    "display": "styles",
+    "display": "block",
   },
   "m": Object {
-    "display": "styles",
+    "display": "flex",
   },
   "s": Object {
-    "display": "styles",
+    "display": "flex",
   },
   "xl": Object {
-    "display": "styles",
+    "display": "block",
   },
   "xs": Object {
-    "display": "styles",
+    "display": "flex",
   },
   "xxl": Object {
-    "display": "styles",
+    "display": "block",
   },
 }
 `;

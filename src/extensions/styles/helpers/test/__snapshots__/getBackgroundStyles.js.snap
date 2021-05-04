@@ -76,14 +76,14 @@ Object {
   "maxi test > .maxi-background-displayer .maxi-background-displayer__images": Object {
     "imageBackground": Object {
       "general": Object {
-        "background-attachment": "test",
-        "background-clip": "test",
-        "background-image": "url('test')",
-        "background-origin": "test",
+        "background-attachment": "scroll",
+        "background-clip": "border-box",
+        "background-image": "url('/test/')",
+        "background-origin": "padding-box",
         "background-position": "relative",
         "background-repeat": "no-repeat",
-        "background-size": "test",
-        "clip-path": "test",
+        "background-size": "auto",
+        "clip-path": "none",
         "opacity": 0.3,
       },
       "label": "Background Image",
@@ -108,9 +108,6 @@ Object {
   "maxi test > .maxi-background-displayer .maxi-background-displayer__video-player": Object {
     "videoBackground": Object {
       "general": Object {
-        "background": "url(test)",
-        "background-size": "cover",
-        "clip-path": "test",
         "opacity": 1,
       },
       "label": "Video Background",
@@ -173,7 +170,7 @@ Object {
         "clip-path": "test",
         "opacity": 0.66,
       },
-      "label": "Background Color",
+      "label": "Background Gradient",
     },
   },
 }
@@ -198,7 +195,6 @@ Object {
         "background-color": "rgba(12,233,75,1)",
       },
       "label": "Background Color",
-      "prefix": "",
     },
   },
   "maxi test > .maxi-background-displayer .maxi-background-displayer__1": Object {
@@ -214,7 +210,6 @@ Object {
         "opacity": 1,
       },
       "label": "Background Image",
-      "prefix": "",
     },
   },
   "maxi test > .maxi-background-displayer .maxi-background-displayer__2": Object {
@@ -223,7 +218,6 @@ Object {
         "opacity": 0.72,
       },
       "label": "Video Background",
-      "prefix": "",
     },
   },
   "maxi test > .maxi-background-displayer .maxi-background-displayer__3": Object {
@@ -232,8 +226,7 @@ Object {
         "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(62,102,120) 40%,rgb(155,81,224) 100%)",
         "opacity": 0.51,
       },
-      "label": "Background Color",
-      "prefix": "",
+      "label": "Background Gradient",
     },
   },
   "maxi test > .maxi-background-displayer .maxi-background-displayer__4": Object {
@@ -242,7 +235,6 @@ Object {
         "height": "100%",
       },
       "label": "SVG Wrapper Background",
-      "prefix": "",
     },
   },
   "maxi test > .maxi-background-displayer .maxi-background-displayer__4 svg": Object {
@@ -251,7 +243,6 @@ Object {
         "height": "100%",
       },
       "label": "SVG Background",
-      "prefix": "",
     },
   },
 }

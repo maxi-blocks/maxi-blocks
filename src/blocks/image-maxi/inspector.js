@@ -306,35 +306,35 @@ const Inspector = props => {
 															},
 															{
 																label: __(
-																	'1:1 spect Ratio',
+																	'1:1 Aspect Ratio',
 																	'maxi-blocks'
 																),
 																value: 'ar11',
 															},
 															{
 																label: __(
-																	'2:3 spect Ratio',
+																	'2:3 Aspect Ratio',
 																	'maxi-blocks'
 																),
 																value: 'ar23',
 															},
 															{
 																label: __(
-																	'3:2 spect Ratio',
+																	'3:2 Aspect Ratio',
 																	'maxi-blocks'
 																),
 																value: 'ar32',
 															},
 															{
 																label: __(
-																	'4:3 spect Ratio',
+																	'4:3 Aspect Ratio',
 																	'maxi-blocks'
 																),
 																value: 'ar43',
 															},
 															{
 																label: __(
-																	'16:9 spect Ratio',
+																	'16:9 Aspect Ratio',
 																	'maxi-blocks'
 																),
 																value: 'ar169',

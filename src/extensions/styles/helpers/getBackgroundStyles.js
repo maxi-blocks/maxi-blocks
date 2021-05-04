@@ -49,7 +49,7 @@ export const getGradientBackgroundObject = ({
 	...props
 }) => {
 	const response = {
-		label: 'Background Color',
+		label: 'Background Gradient',
 		general: {},
 	};
 
@@ -340,13 +340,7 @@ const getSVGBackgroundObject = SVGOptions => {
 	return response;
 };
 
-const setBackgroundLayers = ({
-	response,
-	layers,
-	target,
-	isHover = false,
-	prefix = '',
-}) => {
+const setBackgroundLayers = ({ response, layers, target, isHover = false }) => {
 	layers.forEach(layer => {
 		const layerTarget = `${target}${
 			isHover ? ':hover' : ''
@@ -360,7 +354,6 @@ const setBackgroundLayers = ({
 							...getColorBackgroundObject(
 								getGroupAttributes(layer, 'backgroundColor')
 							),
-							prefix,
 						},
 					},
 				});
@@ -372,7 +365,6 @@ const setBackgroundLayers = ({
 							...getGradientBackgroundObject(
 								getGroupAttributes(layer, 'backgroundGradient')
 							),
-							prefix,
 						},
 					},
 				});
@@ -384,7 +376,6 @@ const setBackgroundLayers = ({
 							...getImageBackgroundObject(
 								getGroupAttributes(layer, 'backgroundImage')
 							),
-							prefix,
 						},
 					},
 				});
@@ -396,7 +387,6 @@ const setBackgroundLayers = ({
 							...getVideoBackgroundObject(
 								getGroupAttributes(layer, 'backgroundVideo')
 							),
-							prefix,
 						},
 					},
 				});
@@ -408,7 +398,6 @@ const setBackgroundLayers = ({
 							...getSVGWrapperBackgroundObject(
 								getGroupAttributes(layer, 'backgroundSVG')
 							),
-							prefix,
 						},
 					},
 					[`${layerTarget} svg`]: {
@@ -416,7 +405,6 @@ const setBackgroundLayers = ({
 							...getSVGBackgroundObject(
 								getGroupAttributes(layer, 'backgroundSVG')
 							),
-							prefix,
 						},
 					},
 				});
@@ -477,7 +465,6 @@ const getBackgroundStyles = ({
 						],
 					target,
 					isHover,
-					prefix,
 				});
 			}
 			break;

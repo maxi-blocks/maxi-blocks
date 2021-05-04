@@ -4,7 +4,12 @@
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { Icon, Button, Tooltip } from '@wordpress/components';
-import { applyFormat, toHTMLString, removeFormat } from '@wordpress/rich-text';
+import {
+	applyFormat,
+	toHTMLString,
+	removeFormat,
+	isCollapsed,
+} from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
@@ -13,6 +18,12 @@ import {
 	formatActive,
 	withFormatValue,
 } from '../../../../extensions/text/formats';
+
+/**
+ * External dependencies
+ */
+import { isNil } from 'lodash';
+
 /**
  * Styles and icons
  */
@@ -35,9 +46,27 @@ const TextFormatCode = withFormatValue(props => {
 	}, [formatActive, formatValue, formatName]);
 
 	const onClick = () => {
+		const { start, end } = formatValue;
+		const newFormatValue = { ...formatValue };
+
+		if (isNil(start) || isNil(end) || isCollapsed(formatValue)) {
+			// eslint-disable-next-line @wordpress/no-global-get-selection, @wordpress/no-unguarded-get-range-at
+			const { startOffset, endOffset } = window
+				.getSelection()
+				.getRangeAt(0);
+
+			newFormatValue.start = startOffset;
+			newFormatValue.end = endOffset;
+		}
+
+		if (start === end) {
+			newFormatValue.start = 0;
+			newFormatValue.end = formatValue.formats.length;
+		}
+
 		const newFormat = isActive
-			? removeFormat(formatValue, formatName)
-			: applyFormat(formatValue, {
+			? removeFormat(newFormatValue, formatName)
+			: applyFormat(newFormatValue, {
 					type: formatName,
 					isActive,
 			  });

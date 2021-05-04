@@ -2,72 +2,38 @@
  * WordPress dependencies
  */
 import { InnerBlocks } from '@wordpress/block-editor';
-import { Fragment  } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import { ArrowDisplayer, BackgroundDisplayer } from '../../components';
+import { ArrowDisplayer } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
-
-/**
- * External dependencies
- */
-import classnames from 'classnames';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
 
 /**
  * Save
  */
 const save = props => {
-	const { attributes, className } = props;
-	const {
-		uniqueID,
-		blockStyle,
-		defaultBlockStyle,
-		extraClassName,
-	} = attributes;
+	const { attributes } = props;
+	const { uniqueID } = attributes;
 
-	const classes = classnames(
-		'maxi-motion-effect',
-		'maxi-block maxi-group-block',
-		!!attributes['background-highlight'] && 'maxi-highlight--background',
-		!!attributes['border-highlight'] && 'maxi-highlight--border',
-		blockStyle,
-		extraClassName,
-		className,
-		uniqueID
-	);
+	const classes = 'maxi-group-block';
 
 	return (
-		<Fragment>
-			<section
-				className={classes}
-				data-gx_initial_block_class={defaultBlockStyle}
-				id={uniqueID}
-			>
-				<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundImage',
-						'backgroundVideo',
-						'backgroundGradient',
-						'backgroundSVG',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundImageHover',
-						'backgroundVideoHover',
-						'backgroundGradientHover',
-						'backgroundSVGHover',
-					])}
-					blockClassName={uniqueID}
-				/>
-				<div className='maxi-group-block__group'>
-					<InnerBlocks.Content />
-				</div>
-			</section>
-		</Fragment>
+		<MaxiBlock
+			className={classes}
+			id={uniqueID}
+			tagName='section'
+			{...getMaxiBlockBlockAttributes(props)}
+			isSave
+		>
+			<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />
+			<div className='maxi-group-block__group'>
+				<InnerBlocks.Content />
+			</div>
+		</MaxiBlock>
 	);
 };
 

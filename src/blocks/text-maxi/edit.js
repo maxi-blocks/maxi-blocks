@@ -7,11 +7,7 @@ import { compose } from '@wordpress/compose';
 import { Fragment } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
 import { withSelect, dispatch } from '@wordpress/data';
-import {
-	__experimentalBlock,
-	RichText,
-	RichTextShortcut,
-} from '@wordpress/block-editor';
+import { RichText, RichTextShortcut } from '@wordpress/block-editor';
 import {
 	__unstableIndentListItems,
 	__unstableOutdentListItems,
@@ -21,16 +17,11 @@ import {
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	MaxiBlock,
-	Toolbar,
-	BackgroundDisplayer,
-	MotionPreview,
-} from '../../components';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { MaxiBlockComponent, Toolbar } from '../../components';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { onMerge, onSplit } from './utils';
 import {
@@ -41,13 +32,12 @@ import {
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
  * Content
  */
-class edit extends MaxiBlock {
+class edit extends MaxiBlockComponent {
 	propsToAvoidRendering = ['formatValue'];
 
 	get getStylesObject() {
@@ -78,47 +68,24 @@ class edit extends MaxiBlock {
 	render() {
 		const {
 			attributes,
-			className,
 			isSelected,
 			setAttributes,
 			onReplace,
 			onRemove,
-			deviceType,
 			clientId,
+			name,
 		} = this.props;
 		const {
 			uniqueID,
-			blockStyle,
-			blockStyleBackground,
-			extraClassName,
 			textLevel,
 			content,
 			isList,
 			typeOfList,
 			listStart,
 			listReversed,
-			fullWidth,
 		} = attributes;
 
-		const name = 'maxi-blocks/text-maxi';
-
-		const classes = classnames(
-			'maxi-block',
-			'maxi-block--backend',
-			'maxi-text-block',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
-			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
-			!!attributes['text-highlight'] && 'maxi-highlight--text',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
-			extraClassName,
-			uniqueID,
-			className
-		);
+		const classes = 'maxi-text-block';
 
 		return [
 			<Inspector
@@ -131,223 +98,201 @@ class edit extends MaxiBlock {
 				{...this.props}
 				propsToAvoid={['content', 'formatValue']}
 			/>,
-			<MotionPreview
-				key={`motion-preview-${uniqueID}`}
-				{...getGroupAttributes(attributes, 'motion')}
+			<MaxiBlock
+				key={`maxi-text--${uniqueID}`}
+				className={classes}
+				{...getMaxiBlockBlockAttributes(this.props)}
 			>
-				<__experimentalBlock className={classes} data-align={fullWidth}>
-					{!attributes['background-highlight'] && (
-						<BackgroundDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'backgroundColor',
-								'backgroundImage',
-								'backgroundVideo',
-								'backgroundGradient',
-								'backgroundSVG',
-								'backgroundHover',
-								'backgroundColorHover',
-								'backgroundImageHover',
-								'backgroundVideoHover',
-								'backgroundGradientHover',
-								'backgroundSVGHover',
-							])}
-							blockClassName={uniqueID}
-						/>
-					)}
-					{!isList && (
-						<RichText
-							ref={this.blockRef}
-							className='maxi-text-block__content'
-							value={content}
-							onChange={content => setAttributes({ content })}
-							tagName={textLevel}
-							onSplit={value =>
-								onSplit(this.props.attributes, value)
-							}
-							onReplace={onReplace}
-							onMerge={forward => onMerge(this.props, forward)}
-							onRemove={onRemove}
-							placeholder={__(
-								'Set your Maxi Text here…',
-								'maxi-blocks'
-							)}
-							keepPlaceholderOnFocus
-							__unstableEmbedURLOnPaste
-							__unstableAllowPrefixTransformations
-						>
-							{({ value: formatValue }) => {
-								/**
-								 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-								 * and add some coding manually
-								 * This next script will check if there is any format directly related with
-								 * any native format and if it's so, will format it in Maxi Blocks way
-								 */
-								const hasNativeFormat = getHasNativeFormat(
-									formatValue
-								);
+				{!isList && (
+					<RichText
+						ref={this.blockRef}
+						className='maxi-text-block__content'
+						value={content}
+						onChange={content => setAttributes({ content })}
+						tagName={textLevel}
+						onSplit={value => onSplit(this.props.attributes, value)}
+						onReplace={onReplace}
+						onMerge={forward => onMerge(this.props, forward)}
+						onRemove={onRemove}
+						placeholder={__(
+							'Set your Maxi Text here…',
+							'maxi-blocks'
+						)}
+						keepPlaceholderOnFocus
+						__unstableEmbedURLOnPaste
+						__unstableAllowPrefixTransformations
+					>
+						{({ value: formatValue }) => {
+							/**
+							 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+							 * and add some coding manually
+							 * This next script will check if there is any format directly related with
+							 * any native format and if it's so, will format it in Maxi Blocks way
+							 */
+							const hasNativeFormat = getHasNativeFormat(
+								formatValue
+							);
 
-								if (hasNativeFormat) {
-									const {
+							if (hasNativeFormat) {
+								const {
+									typeOfList,
+									content,
+									textLevel,
+								} = attributes;
+
+								const cleanCustomProps = setCustomFormatsWhenPaste(
+									{
+										formatValue,
+										typography: getGroupAttributes(
+											attributes,
+											'typography'
+										),
+										isList,
 										typeOfList,
 										content,
 										textLevel,
-									} = attributes;
-
-									const cleanCustomProps = setCustomFormatsWhenPaste(
-										{
-											formatValue,
-											typography: getGroupAttributes(
-												attributes,
-												'typography'
-											),
-											isList,
-											typeOfList,
-											content,
-											textLevel,
-										}
-									);
-
-									setAttributes(cleanCustomProps);
-								}
-
-								dispatch('maxiBlocks/text').sendFormatValue(
-									formatValue,
-									clientId
+									}
 								);
-							}}
-						</RichText>
-					)}
-					{isList && (
-						<RichText
-							className='maxi-text-block__content'
-							identifier='content'
-							multiline='li'
-							__unstableMultilineRootTag={typeOfList}
-							tagName={typeOfList}
-							onChange={content => setAttributes({ content })}
-							value={content}
-							placeholder={__('Write list…', 'maxi-blocks')}
-							onSplit={value => {
-								if (!value) {
-									return createBlock(name, {
-										...this.props.attributes,
-										isList: false,
-									});
-								}
 
+								setAttributes(cleanCustomProps);
+							}
+
+							dispatch('maxiBlocks/text').sendFormatValue(
+								formatValue,
+								clientId
+							);
+						}}
+					</RichText>
+				)}
+				{isList && (
+					<RichText
+						className='maxi-text-block__content'
+						identifier='content'
+						multiline='li'
+						__unstableMultilineRootTag={typeOfList}
+						tagName={typeOfList}
+						onChange={content => setAttributes({ content })}
+						value={content}
+						placeholder={__('Write list…', 'maxi-blocks')}
+						onSplit={value => {
+							if (!value) {
 								return createBlock(name, {
 									...this.props.attributes,
-									content: value,
+									isList: false,
 								});
-							}}
-							__unstableOnSplitMiddle={() =>
-								createBlock('maxi-blocks/text-maxi')
 							}
-							onReplace={blocks => onReplace(this.props, blocks)}
-							onMerge={forward => onMerge(this.props, forward)}
-							onRemove={onRemove}
-							start={listStart}
-							reversed={!!listReversed}
-							type={typeOfList}
-						>
-							{({ value: formatValue, onChange }) => {
-								/**
-								 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-								 * and add some coding manually
-								 * This next script will check if there is any format directly related with
-								 * any native format and if it's so, will format it in Maxi Blocks way
-								 */
-								const hasNativeFormat = getHasNativeFormat(
-									formatValue
-								);
 
-								if (hasNativeFormat) {
-									const {
+							return createBlock(name, {
+								...this.props.attributes,
+								content: value,
+							});
+						}}
+						__unstableOnSplitMiddle={() =>
+							createBlock('maxi-blocks/text-maxi')
+						}
+						onReplace={blocks => onReplace(this.props, blocks)}
+						onMerge={forward => onMerge(this.props, forward)}
+						onRemove={onRemove}
+						start={listStart}
+						reversed={!!listReversed}
+						type={typeOfList}
+					>
+						{({ value: formatValue, onChange }) => {
+							/**
+							 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+							 * and add some coding manually
+							 * This next script will check if there is any format directly related with
+							 * any native format and if it's so, will format it in Maxi Blocks way
+							 */
+							const hasNativeFormat = getHasNativeFormat(
+								formatValue
+							);
+
+							if (hasNativeFormat) {
+								const {
+									typeOfList,
+									content,
+									textLevel,
+								} = attributes;
+
+								const cleanCustomProps = setCustomFormatsWhenPaste(
+									{
+										formatValue,
+										typography: getGroupAttributes(
+											attributes,
+											'typography'
+										),
+										isList,
 										typeOfList,
 										content,
 										textLevel,
-									} = attributes;
-
-									const cleanCustomProps = setCustomFormatsWhenPaste(
-										{
-											formatValue,
-											typography: getGroupAttributes(
-												attributes,
-												'typography'
-											),
-											isList,
-											typeOfList,
-											content,
-											textLevel,
-										}
-									);
-
-									setAttributes(cleanCustomProps);
-								}
-								dispatch('maxiBlocks/text').sendFormatValue(
-									formatValue,
-									clientId
+									}
 								);
 
-								if (isSelected)
-									return (
-										<Fragment>
-											<RichTextShortcut
-												type='primary'
-												character='['
-												onUse={() => {
-													onChange(
-														__unstableOutdentListItems(
-															formatValue
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primary'
-												character=']'
-												onUse={() => {
-													onChange(
-														__unstableIndentListItems(
-															formatValue,
-															{ type: typeOfList }
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primary'
-												character='m'
-												onUse={() => {
-													onChange(
-														__unstableIndentListItems(
-															formatValue,
-															{ type: typeOfList }
-														)
-													);
-												}}
-											/>
-											<RichTextShortcut
-												type='primaryShift'
-												character='m'
-												onUse={() => {
-													onChange(
-														__unstableOutdentListItems(
-															formatValue
-														)
-													);
-												}}
-											/>
-										</Fragment>
-									);
+								setAttributes(cleanCustomProps);
+							}
+							dispatch('maxiBlocks/text').sendFormatValue(
+								formatValue,
+								clientId
+							);
 
-								return null;
-							}}
-						</RichText>
-					)}
-				</__experimentalBlock>
-			</MotionPreview>,
+							if (isSelected)
+								return (
+									<Fragment>
+										<RichTextShortcut
+											type='primary'
+											character='['
+											onUse={() => {
+												onChange(
+													__unstableOutdentListItems(
+														formatValue
+													)
+												);
+											}}
+										/>
+										<RichTextShortcut
+											type='primary'
+											character=']'
+											onUse={() => {
+												onChange(
+													__unstableIndentListItems(
+														formatValue,
+														{ type: typeOfList }
+													)
+												);
+											}}
+										/>
+										<RichTextShortcut
+											type='primary'
+											character='m'
+											onUse={() => {
+												onChange(
+													__unstableIndentListItems(
+														formatValue,
+														{ type: typeOfList }
+													)
+												);
+											}}
+										/>
+										<RichTextShortcut
+											type='primaryShift'
+											character='m'
+											onUse={() => {
+												onChange(
+													__unstableOutdentListItems(
+														formatValue
+													)
+												);
+											}}
+										/>
+									</Fragment>
+								);
+
+							return null;
+						}}
+					</RichText>
+				)}
+			</MaxiBlock>,
 		];
 	}
 }

@@ -32,7 +32,7 @@ import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
 /**
  * Class
  */
-class MaxiBlock extends Component {
+class MaxiBlockComponent extends Component {
 	propsToAvoidRendering = [];
 
 	propsToAvoidStyling = [];
@@ -76,7 +76,8 @@ class MaxiBlock extends Component {
 		// Ensures rendering when selecting or unselecting
 		if (
 			!this.props.isSelected ||
-			this.props.isSelected !== nextProps.isSelected
+			this.props.isSelected !== nextProps.isSelected || // In case selecting/unselecting the block
+			this.props.deviceType !== nextProps.deviceType // In case of breakpoint change
 		)
 			return true;
 
@@ -175,7 +176,8 @@ class MaxiBlock extends Component {
 			res = 'maxi-light';
 		}
 
-		this.props.setAttributes({ blockStyle: res });
+		if (this.props.attributes.blockStyle !== 'maxi-light')
+			this.props.setAttributes({ blockStyle: res });
 	}
 
 	uniqueIDChecker(idToCheck) {
@@ -223,4 +225,4 @@ class MaxiBlock extends Component {
 	}
 }
 
-export default MaxiBlock;
+export default MaxiBlockComponent;

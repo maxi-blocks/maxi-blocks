@@ -15,6 +15,8 @@ import './editor.scss';
 const MotionPreview = props => {
 	const { className, children } = props;
 
+	if (!props['motion-preview-status']) return <>{children}</>;
+
 	let motionPreview = {};
 
 	if (!isEmpty(props['motion-time-line'])) {

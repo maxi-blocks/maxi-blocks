@@ -12,13 +12,14 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  * Attributes
  */
 const attributes = {
+	...attributesData.global,
 	customLabel: {
 		type: 'string',
 		default: __('Image', 'maxi-blocks'),
 	},
 	imageRatio: {
 		type: 'string',
-		default: 'land32',
+		default: 'original',
 	},
 	SVGCurrentElement: {
 		type: 'number',

@@ -816,6 +816,7 @@ const Inspector = memo(
 																deviceType
 															}
 															target='margin'
+															optionType='string'
 														/>
 													</Fragment>
 												),

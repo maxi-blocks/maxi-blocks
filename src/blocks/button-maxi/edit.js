@@ -5,17 +5,17 @@
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { withSelect, dispatch } from '@wordpress/data';
-import { __experimentalBlock, RichText } from '@wordpress/block-editor';
+import { RichText } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlock, MotionPreview, Toolbar } from '../../components';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '../../extensions/styles';
+import { MaxiBlockComponent, Toolbar } from '../../components';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -27,7 +27,7 @@ import { isEmpty } from 'lodash';
 /**
  * Content
  */
-class edit extends MaxiBlock {
+class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -56,38 +56,10 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
-		const {
-			attributes,
-			className,
-			deviceType,
-			setAttributes,
-			clientId,
-		} = this.props;
-		const {
-			uniqueID,
-			blockStyle,
-			blockStyleBackground,
-			extraClassName,
-			fullWidth,
-		} = attributes;
+		const { attributes, setAttributes, clientId } = this.props;
+		const { uniqueID } = attributes;
 
-		const classes = classnames(
-			'maxi-block',
-			'maxi-block--backend',
-			'maxi-button-block',
-			getLastBreakpointAttribute('display', deviceType, attributes) ===
-				'none' && 'maxi-block-display-none',
-			blockStyle,
-			blockStyle !== 'maxi-custom' &&
-				`maxi-background--${blockStyleBackground}`,
-			!!attributes['text-highlight'] && 'maxi-highlight--text',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
-			extraClassName,
-			uniqueID,
-			className
-		);
+		const classes = 'maxi-button-block';
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
@@ -100,36 +72,36 @@ class edit extends MaxiBlock {
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
-			<MotionPreview
-				key={`motion-preview-${uniqueID}`}
-				{...getGroupAttributes(attributes, 'motion')}
+			<MaxiBlock
+				key={`maxi-button--${uniqueID}`}
+				className={classes}
+				{...getMaxiBlockBlockAttributes(this.props)}
+				disableBackground
 			>
-				<__experimentalBlock className={classes} data-align={fullWidth}>
-					<div className={buttonClasses}>
-						{!isEmpty(attributes['icon-name']) && (
-							<i className={attributes['icon-name']} />
-						)}
-						<RichText
-							ref={this.blockRef}
-							withoutInteractiveFormatting
-							className='maxi-button-block__content'
-							value={attributes.buttonContent}
-							identifier='content'
-							onChange={buttonContent =>
-								setAttributes({ buttonContent })
-							}
-							placeholder={__('Set some text…', 'maxi-blocks')}
-						>
-							{({ value }) => {
-								dispatch('maxiBlocks/text').sendFormatValue(
-									value,
-									clientId
-								);
-							}}
-						</RichText>
-					</div>
-				</__experimentalBlock>
-			</MotionPreview>,
+				<div className={buttonClasses}>
+					{!isEmpty(attributes['icon-name']) && (
+						<i className={attributes['icon-name']} />
+					)}
+					<RichText
+						ref={this.blockRef}
+						withoutInteractiveFormatting
+						className='maxi-button-block__content'
+						value={attributes.buttonContent}
+						identifier='content'
+						onChange={buttonContent =>
+							setAttributes({ buttonContent })
+						}
+						placeholder={__('Set some text…', 'maxi-blocks')}
+					>
+						{({ value }) => {
+							dispatch('maxiBlocks/text').sendFormatValue(
+								value,
+								clientId
+							);
+						}}
+					</RichText>
+				</div>
+			</MaxiBlock>,
 		];
 	}
 }

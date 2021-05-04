@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { createBlock, getBlockAttributes } from '@wordpress/blocks';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -39,10 +40,30 @@ const transforms = {
 		{
 			type: 'raw',
 			selectors: 'p,h1,h2,h3,h4,h5,h6,ul,ol',
-			isMatch: node =>
-				['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol'].includes(
-					node.nodeName.toLowerCase()
-				),
+			isMatch: node => {
+				const { getSelectedBlockClientId, getBlockName } = select(
+					'core/block-editor'
+				);
+
+				const currentBlockName = getBlockName(
+					getSelectedBlockClientId()
+				);
+
+				if (currentBlockName === 'maxi-blocks/text-maxi')
+					return [
+						'p',
+						'h1',
+						'h2',
+						'h3',
+						'h4',
+						'h5',
+						'h6',
+						'ul',
+						'ol',
+					].includes(node.nodeName.toLowerCase());
+
+				return false;
+			},
 			schema: ({ phrasingContentSchema, isPaste }) => {
 				const schema = {
 					children: phrasingContentSchema,

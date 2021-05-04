@@ -1,13 +1,11 @@
 /**
- * WordPress dependencies
- */
-import { RawHTML } from '@wordpress/element';
-
-/**
  * Internal dependencies
  */
-import { BackgroundDisplayer, HoverPreview } from '../../components';
+import { HoverPreview } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -18,12 +16,9 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { className, attributes } = props;
+	const { attributes } = props;
 	const {
 		uniqueID,
-		blockStyle,
-		fullWidth,
-		extraClassName,
 		captionType,
 		captionContent,
 		mediaID,
@@ -54,15 +49,7 @@ const save = props => {
 		}`
 	);
 
-	const classes = classnames(
-		'maxi-motion-effect',
-		'maxi-block maxi-image-block',
-		fullWidth === 'full' ? 'alignfull' : null,
-		uniqueID,
-		blockStyle,
-		extraClassName,
-		className
-	);
+	const classes = 'maxi-image-block';
 
 	const imageAlt = () => {
 		switch (altSelector) {
@@ -78,54 +65,36 @@ const save = props => {
 	};
 
 	return (
-		<figure className={classes} id={uniqueID}>
-			{!attributes['background-highlight'] && (
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundImage',
-						'backgroundVideo',
-						'backgroundGradient',
-						'backgroundSVG',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundImageHover',
-						'backgroundVideoHover',
-						'backgroundGradientHover',
-						'backgroundSVGHover',
-					])}
-					blockClassName={uniqueID}
-				/>
-			)}
+		<MaxiBlock
+			className={classes}
+			id={uniqueID}
+			tagName='figure'
+			{...getMaxiBlockBlockAttributes(props)}
+			isSave
+		>
 			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>
-				{(!SVGElement && (
-					<HoverPreview
-						className={hoverPreviewClasses}
-						key={`hover-preview-${uniqueID}`}
-						{...getGroupAttributes(attributes, [
-							'hover',
-							'hoverTitleTypography',
-							'hoverContentTypography',
-						])}
-						mediaID={mediaID}
-						src={mediaURL}
-						width={mediaWidth}
-						height={mediaHeight}
-						alt={imageAlt()}
-					/>
-				)) || (
-					<RawHTML className='maxi-image-block-shape-wrapper'>
-						{SVGElement}
-					</RawHTML>
-				)}
+				<HoverPreview
+					className={!SVGElement ? hoverPreviewClasses : null}
+					key={`hover-preview-${uniqueID}`}
+					{...getGroupAttributes(attributes, [
+						'hover',
+						'hoverTitleTypography',
+						'hoverContentTypography',
+					])}
+					SVGElement={SVGElement}
+					mediaID={mediaID}
+					src={mediaURL}
+					width={mediaWidth}
+					height={mediaHeight}
+					alt={imageAlt()}
+				/>
 				{captionType !== 'none' && (
 					<figcaption className='maxi-image-block__caption'>
 						{captionContent}
 					</figcaption>
 				)}
 			</div>
-		</figure>
+		</MaxiBlock>
 	);
 };
 

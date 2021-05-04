@@ -7,6 +7,10 @@ const numberCounter = {
 		type: 'number',
 		default: 0,
 	},
+	'number-counter-end': {
+		type: 'number',
+		default: 100,
+	},
 };
 
 export default numberCounter;

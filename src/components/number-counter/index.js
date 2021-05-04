@@ -25,7 +25,9 @@ const NumberCounter = props => {
 
 	const countRef = useRef(null);
 
-	const [count, setCount] = useState(props['number-counter-start']);
+	const StartCountValue = (props['number-counter-start'] * 360) / 100;
+
+	const [count, setCount] = useState(StartCountValue);
 
 	const circumference = 2 * Math.PI * radius;
 
@@ -44,7 +46,7 @@ const NumberCounter = props => {
 			<Button
 				className='maxi-number-counter__replay'
 				onClick={() => {
-					setCount(props['number-counter-start']);
+					setCount(StartCountValue);
 					clearInterval(countRef.current);
 				}}
 				icon={toolbarReplaceImage}

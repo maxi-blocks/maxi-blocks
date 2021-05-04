@@ -28,7 +28,7 @@ const NumberCounterControl = props => {
 				label={__('Start Number', 'maxi-blocks')}
 				disableUnit
 				min={0}
-				max={360}
+				max={100}
 				initial={0}
 				step={1}
 				value={props['number-counter-start']}
@@ -37,6 +37,23 @@ const NumberCounterControl = props => {
 					onChange({
 						'number-counter-start': getDefaultAttribute(
 							'number-counter-start'
+						),
+					})
+				}
+			/>
+			<SizeControl
+				label={__('End Number', 'maxi-blocks')}
+				disableUnit
+				min={1}
+				max={100}
+				initial={100}
+				step={1}
+				value={props['number-counter-end']}
+				onChangeValue={val => onChange({ 'number-counter-end': val })}
+				onReset={() =>
+					onChange({
+						'number-counter-end': getDefaultAttribute(
+							'number-counter-end'
 						),
 					})
 				}

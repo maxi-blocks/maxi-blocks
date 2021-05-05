@@ -32,6 +32,7 @@ const NumberCounter = props => {
 	const countDuration = props['number-counter-duration'];
 	const radius = props['number-counter-radius'];
 	const stroke = props['number-counter-stroke'];
+	const circleStatus = props['number-counter-circle-status'];
 
 	const [count, setCount] = useState(startCountValue);
 
@@ -58,7 +59,7 @@ const NumberCounter = props => {
 				icon={replay}
 			/>
 			<div className='maxi-number-counter__box'>
-				{!props['number-counter-circle-status'] && (
+				{!circleStatus && (
 					<svg viewBox='0 0 180 180'>
 						<circle
 							className='maxi-number-counter__box__background'

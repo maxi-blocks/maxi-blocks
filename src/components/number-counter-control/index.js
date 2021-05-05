@@ -63,7 +63,7 @@ const NumberCounterControl = props => {
 				label={__('End Number', 'maxi-blocks')}
 				disableUnit
 				min={1}
-				max={100}
+				max={props['number-counter-circle-status'] ? 99999 : 100}
 				initial={100}
 				step={1}
 				value={props['number-counter-end']}
@@ -181,9 +181,12 @@ const NumberCounterControl = props => {
 					{ label: __('No', 'maxi-block'), value: 0 },
 					{ label: __('Yes', 'maxi-block'), value: 1 },
 				]}
-				onChange={val =>
-					onChange({ 'number-counter-circle-status': val })
-				}
+				onChange={val => {
+					onChange({ 'number-counter-circle-status': val });
+
+					if (!val && props['number-counter-end'] > 100)
+						onChange({ 'number-counter-end': 100 });
+				}}
 			/>
 			<hr />
 			<ColorControl

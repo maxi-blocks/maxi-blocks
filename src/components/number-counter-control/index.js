@@ -115,6 +115,25 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
+			<SizeControl
+				label={__('Title Font Size', 'maxi-blocks')}
+				disableUnit
+				min={32}
+				max={999}
+				initial={32}
+				step={1}
+				value={props['number-counter-title-font-size']}
+				onChangeValue={val =>
+					onChange({ 'number-counter-title-font-size': val })
+				}
+				onReset={() =>
+					onChange({
+						'number-counter-title-font-size': getDefaultAttribute(
+							'number-counter-title-font-size'
+						),
+					})
+				}
+			/>
 			<FancyRadioControl
 				label={__('Show Percentage Sign', 'maxi-block')}
 				selected={props['number-counter-percentage-sign-status']}

@@ -43,6 +43,10 @@ const numberCounter = {
 		type: 'string',
 		default: '#ff4a17',
 	},
+	'number-counter-title-font-size': {
+		type: 'number',
+		default: 32,
+	},
 };
 
 export default numberCounter;

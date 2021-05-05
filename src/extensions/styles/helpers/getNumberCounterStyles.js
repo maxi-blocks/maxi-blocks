@@ -25,6 +25,11 @@ const getNumberCounterStyles = (obj, target) => {
 	if (target === 'text' && !isNil(obj['number-counter-text-color']))
 		response.general['fill'] = obj['number-counter-text-color'];
 
+	if (target === 'text' && !isNil(obj['number-counter-title-font-size']))
+		response.general[
+			'font-size'
+		] = `${obj['number-counter-title-font-size']}px`;
+
 	return response;
 };
 

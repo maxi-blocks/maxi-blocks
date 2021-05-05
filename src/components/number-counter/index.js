@@ -25,14 +25,15 @@ const NumberCounter = props => {
 
 	const countRef = useRef(null);
 
-	const StartCountValue = Math.ceil(
+	const startCountValue = Math.ceil(
 		(props['number-counter-start'] * 360) / 100
 	);
 	const endCountValue = Math.ceil((props['number-counter-end'] * 360) / 100);
+	const countDuration = props['number-counter-duration'];
 	const radius = props['number-counter-radius'];
 	const stroke = props['number-counter-stroke'];
 
-	const [count, setCount] = useState(StartCountValue);
+	const [count, setCount] = useState(startCountValue);
 
 	const circumference = 2 * Math.PI * radius;
 
@@ -41,7 +42,7 @@ const NumberCounter = props => {
 
 		countRef.current = setInterval(() => {
 			setCount(count + 1);
-		}, props['number-counter-duration']);
+		}, countDuration);
 
 		return () => clearInterval(countRef.current);
 	}, [count]);
@@ -51,7 +52,7 @@ const NumberCounter = props => {
 			<Button
 				className='maxi-number-counter__replay'
 				onClick={() => {
-					setCount(StartCountValue);
+					setCount(startCountValue);
 					clearInterval(countRef.current);
 				}}
 				icon={replay}

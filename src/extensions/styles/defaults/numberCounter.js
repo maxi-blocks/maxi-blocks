@@ -1,4 +1,8 @@
 const numberCounter = {
+	'number-counter-status': {
+		type: 'boolean',
+		default: true,
+	},
 	'number-counter-percentage-sign-status': {
 		type: 'boolean',
 		default: false,

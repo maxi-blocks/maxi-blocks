@@ -28,6 +28,50 @@ motionElems.forEach(function (elem) {
 			: null;
 
 	if (motionData !== null) {
+		// Number Counter
+		if ('number-counter-status' in motionData) {
+			const numberCounterElemText = document.querySelector(
+				`#${motionID} .maxi-number-counter .maxi-number-counter__text`
+			);
+			const numberCounterElemCircle = document.querySelector(
+				`#${motionID} .maxi-number-counter .maxi-number-counter__circle`
+			);
+
+			const circumference =
+				2 * Math.PI * motionData['number-counter-radius'];
+			const startCountValue = Math.ceil(
+				(motionData['number-counter-start'] * 360) / 100
+			);
+			const endCountValue = Math.ceil(
+				(motionData['number-counter-end'] * 360) / 100
+			);
+			const countDuration = motionData['number-counter-duration'];
+			const countPercentageSign =
+				motionData['number-counter-percentage-sign-status'];
+			const radius = motionData['number-counter-radius'];
+
+			let count = startCountValue;
+
+			function startCounter() {
+				const interval = setInterval(() => {
+					count = count + 1;
+					numberCounterElemText.innerHTML = `${parseInt(
+						(count / 360) * 100
+					)}${countPercentageSign ? '%' : ''}`;
+					numberCounterElemCircle.setAttribute(
+						'stroke-dasharray',
+						`${parseInt(
+							(count / 360) * circumference
+						)} ${circumference}`
+					);
+
+					if (count === endCountValue) clearInterval(interval);
+				}, countDuration);
+			}
+
+			setTimeout(() => startCounter(), 0);
+		}
+
 		// Hover
 		if (
 			'hover-basic-effect-type' in motionData &&

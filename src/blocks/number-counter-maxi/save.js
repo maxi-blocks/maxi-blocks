@@ -63,13 +63,7 @@ const save = props => {
 						y='50%'
 						dominant-baseline='middle'
 						text-anchor='middle'
-					>
-						{`0${
-							props['number-counter-percentage-sign-status']
-								? '%'
-								: ''
-						}`}
-					</text>
+					></text>
 				</svg>
 			</div>
 		</MaxiBlock>

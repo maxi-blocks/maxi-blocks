@@ -35,6 +35,10 @@ const numberCounter = {
 		type: 'number',
 		default: 10,
 	},
+	'number-counter-start-animation': {
+		type: 'string',
+		default: 'page-load',
+	},
 	'number-counter-text-color': {
 		type: 'string',
 		default: '#000',

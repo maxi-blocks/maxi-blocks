@@ -30,6 +30,9 @@ motionElems.forEach(function (elem) {
 	if (motionData !== null) {
 		// Number Counter
 		if ('number-counter-status' in motionData) {
+			const numberCounterElem = document.querySelector(
+				`#${motionID} .maxi-number-counter`
+			);
 			const numberCounterElemText = document.querySelector(
 				`#${motionID} .maxi-number-counter .maxi-number-counter__text`
 			);
@@ -37,8 +40,8 @@ motionElems.forEach(function (elem) {
 				`#${motionID} .maxi-number-counter .maxi-number-counter__circle`
 			);
 
-			const circumference =
-				2 * Math.PI * motionData['number-counter-radius'];
+			const radius = motionData['number-counter-radius'];
+			const circumference = 2 * Math.PI * radius;
 			const startCountValue = Math.ceil(
 				(motionData['number-counter-start'] * 360) / 100
 			);
@@ -48,7 +51,7 @@ motionElems.forEach(function (elem) {
 			const countDuration = motionData['number-counter-duration'];
 			const countPercentageSign =
 				motionData['number-counter-percentage-sign-status'];
-			const radius = motionData['number-counter-radius'];
+			const startAnimation = motionData['number-counter-start-animation'];
 
 			let count = startCountValue;
 
@@ -69,7 +72,17 @@ motionElems.forEach(function (elem) {
 				}, countDuration);
 			}
 
-			setTimeout(() => startCounter(), 0);
+			if (startAnimation === 'view-scroll') {
+				let waypoint = new Waypoint({
+					element: numberCounterElem,
+					handler: function () {
+						setTimeout(() => startCounter(), 0);
+					},
+					offset: '100%',
+				});
+			} else {
+				setTimeout(() => startCounter(), 0);
+			}
 		}
 
 		// Hover
@@ -234,7 +247,7 @@ motionElems.forEach(function (elem) {
 			if (entranceType !== '') {
 				entranceElem.style.opacity = '0';
 
-				var waypoint = new Waypoint({
+				let waypoint = new Waypoint({
 					element: entranceElem,
 					handler: function () {
 						entranceElem.style.opacity = '1';

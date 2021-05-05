@@ -2,11 +2,12 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import { FancyRadioControl, SizeControl, ColorControl } from '../';
+import { ColorControl, FancyRadioControl, SizeControl } from '../';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
@@ -24,6 +25,23 @@ const NumberCounterControl = props => {
 
 	return (
 		<div className={classes}>
+			<SelectControl
+				label={__('Start Animation', 'maxi-blocks')}
+				value={props['number-counter-start-animation']}
+				options={[
+					{
+						label: __('Page Load', 'maxi-blocks'),
+						value: 'page-load',
+					},
+					{
+						label: __('View On Scroll', 'maxi-blocks'),
+						value: 'view-scroll',
+					},
+				]}
+				onChange={val =>
+					onChange({ 'number-counter-start-animation': val })
+				}
+			/>
 			<SizeControl
 				label={__('Start Number', 'maxi-blocks')}
 				disableUnit

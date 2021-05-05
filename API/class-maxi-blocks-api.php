@@ -47,6 +47,24 @@ if (!class_exists('MaxiBlocksAPI')) :
 		public function mb_register_routes() {
 			register_rest_route(
 				$this->namespace,
+				'/settings',
+				array(
+					'methods'             => 'GET',
+					'callback'            => array($this, 'get_maxi_blocks_options'),
+					'args' => array(
+						'id' => array(
+							'validate_callback' => function ($param) {
+								return is_numeric($param);
+							}
+						),
+					),
+					'permission_callback' => function () {
+						return current_user_can('edit_posts');
+					},
+				)
+			);
+			register_rest_route(
+				$this->namespace,
 				'/post/(?P<id>\d+)',
 				array(
 					'methods'             => 'GET',
@@ -194,6 +212,47 @@ if (!class_exists('MaxiBlocksAPI')) :
 					},
 				)
 			);
+		}
+
+
+		/**
+		 * Returns Maxi Blocks general settings
+		 */
+		public function get_maxi_blocks_options() {
+			global $wp_version;
+
+			$version = '';
+			$is_core = true;
+
+			// In case Gutenberg plugin has been installed
+			if (defined('GUTENBERG_VERSION')) {
+				$version = GUTENBERG_VERSION;
+				$is_core = false;
+			} else {
+				// Versions based on initial compatibility with WP 5.5.3
+				if (version_compare($wp_version, '5.5') >= 0 && version_compare($wp_version, '5.5.3') <= 0) {
+					$version = '8.5';
+				} elseif (version_compare($wp_version, '5.6') >= 0 && version_compare($wp_version, '5.6.1') <= 0) {
+					$version = '9.2';
+				} elseif (version_compare($wp_version, '5.7') >= 0 && version_compare($wp_version, '5.7.1') >= 0) {
+					$version = '9.9';
+				} elseif (version_compare($wp_version, '5.8') >= 0 && floatval($wp_version) >= floatval('5.8')) {
+					$version = '10.7';
+				}
+			}
+
+
+			$response = array(
+				'core'     => array(
+					'version' => $wp_version,
+				),
+				'editor'   => array(
+					'version' => $version,
+					'is_core' => $is_core,
+				),
+			);
+
+			return $response;
 		}
 
 		/**

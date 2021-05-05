@@ -4,6 +4,11 @@
 import { dispatch } from '@wordpress/data';
 
 const actions = {
+	receiveMaxiSettings() {
+		return {
+			type: 'RECEIVE_GENERAL_SETTINGS',
+		};
+	},
 	receiveMaxiBreakpoints() {
 		return {
 			type: 'RECEIVE_BREAKPOINTS',
@@ -24,6 +29,12 @@ const actions = {
 		return {
 			type: 'SAVE_MOTION_PRESETS',
 			presets,
+		};
+	},
+	sendMaxiSettings(settings) {
+		return {
+			type: 'SEND_GLOBAL_SETTINGS',
+			settings,
 		};
 	},
 	sendMaxiBreakpoints(breakpoints) {

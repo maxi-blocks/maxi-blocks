@@ -2,8 +2,9 @@
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import { useEffect, useState, memo } from '@wordpress/element';
-import { select } from '@wordpress/data';
+import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
+import { select, useSelect } from '@wordpress/data';
+import { getScrollContainer } from '@wordpress/dom';
 
 /**
  * External dependencies
@@ -88,7 +89,7 @@ const flexBlocks = [
  * Component
  */
 const MaxiToolbar = memo(
-	props => {
+	forwardRef((props, ref) => {
 		const {
 			attributes,
 			changeSVGContent,
@@ -118,12 +119,23 @@ const MaxiToolbar = memo(
 			resizableObject,
 		} = attributes;
 
-		const [anchorRef, setAnchorRef] = useState(
-			document.getElementById(`block-${clientId}`)
-		);
+		const { editorVersion } = useSelect(select => {
+			const { receiveMaxiSettings } = select('maxiBlocks');
+
+			const maxiSettings = receiveMaxiSettings();
+			const version = !isEmpty(maxiSettings)
+				? maxiSettings.editor.version
+				: null;
+
+			return {
+				editorVersion: version,
+			};
+		});
+
+		const [anchorRef, setAnchorRef] = useState(ref.current);
 
 		useEffect(() => {
-			setAnchorRef(document.getElementById(`block-${clientId}`));
+			setAnchorRef(ref.current);
 		});
 
 		if (!allowedBlocks.includes(name)) return null;
@@ -141,6 +153,21 @@ const MaxiToolbar = memo(
 			return originalNestedBlocks.length > 1;
 		};
 
+		const boundaryElement =
+			document.defaultView.frameElement ||
+			getScrollContainer(anchorRef) ||
+			document.body;
+
+		// Different from > WP 5.5.3
+		const stickyProps = {
+			...((parseFloat(editorVersion) <= 9.2 && {
+				__unstableSticky: true,
+			}) ||
+				(anchorRef && {
+					__unstableStickyBoundaryElement: boundaryElement,
+				})),
+		};
+
 		return (
 			<>
 				{isSelected && anchorRef && (
@@ -156,9 +183,9 @@ const MaxiToolbar = memo(
 								'maxi-toolbar__popover--has-breadcrumb'
 						)}
 						uniqueid={uniqueID}
-						__unstableSticky
 						__unstableSlotName='block-toolbar'
 						shouldAnchorIncludePadding
+						{...stickyProps}
 					>
 						<div className='toolbar-wrapper'>
 							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
@@ -457,7 +484,7 @@ const MaxiToolbar = memo(
 				)}
 			</>
 		);
-	},
+	}),
 	// Avoids non-necessary renderings
 	(
 		{ attributes: oldAttr, propsToAvoid, isSelected: wasSelected },

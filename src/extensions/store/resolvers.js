@@ -1,6 +1,10 @@
 import actions from './actions';
 
 const resolvers = {
+	*receiveMaxiSettings() {
+		const maxiSettings = yield actions.receiveMaxiSettings();
+		return actions.sendMaxiSettings(maxiSettings);
+	},
 	*receiveMaxiBreakpoints() {
 		const maxiBreakpoints = yield actions.receiveMaxiBreakpoints();
 		return actions.sendMaxiBreakpoints(maxiBreakpoints);

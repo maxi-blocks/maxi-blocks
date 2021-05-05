@@ -24,6 +24,18 @@ import MotionPreview from '../motion-preview';
  */
 import classnames from 'classnames';
 
+const WRAPPER_BLOCKS = [
+	'maxi-blocks/container-maxi',
+	'maxi-blocks/row-maxi',
+	'maxi-blocks/group-maxi',
+];
+
+const getBlockClassName = blockName => {
+	return `maxi-${blockName
+		.replace('maxi-blocks/', '')
+		.replace('-maxi', '')}-block`;
+};
+
 const MainBlock = forwardRef(
 	(
 		{
@@ -76,7 +88,7 @@ const MainBlock = forwardRef(
 			);
 
 		return (
-			<TagName ref={ref} {...useBlockProps(props)}>
+			<TagName {...useBlockProps({ ...props, ref })}>
 				{disableBackground && (
 					<BackgroundDisplayer
 						{...background}
@@ -91,6 +103,7 @@ const MainBlock = forwardRef(
 
 const MaxiBlock = forwardRef((props, ref) => {
 	const {
+		blockName,
 		tagName = 'div',
 		children,
 		blockStyle,
@@ -106,12 +119,35 @@ const MaxiBlock = forwardRef((props, ref) => {
 		disableMotion = false,
 		disableBackground = false,
 		isSave = false,
+		classes: customClasses,
 		...extraProps
 	} = props;
 
+	// Adds hover class to show the appender on wrapper blocks
+	if (WRAPPER_BLOCKS.includes(blockName) && ref?.current) {
+		const el = ref.current;
+		const appenders = Array.from(
+			el.querySelectorAll('.block-list-appender')
+		);
+		const appender = appenders[appenders.length - 1];
+
+		if (appender) {
+			el.addEventListener('mouseover', () => {
+				el.classList.add('maxi-block--hovered');
+				appender.classList.add('block-list-appender--show');
+			});
+
+			el.addEventListener('mouseout', () => {
+				el.classList.remove('maxi-block--hovered');
+				appender.classList.remove('block-list-appender--show');
+			});
+		}
+	}
+
 	const classes = classnames(
 		'maxi-block',
-		'maxi-block--backend',
+		blockName && getBlockClassName(blockName),
+		!isSave && 'maxi-block--backend',
 		'maxi-motion-effect',
 		`maxi-motion-effect-${uniqueID}`,
 		blockStyle,
@@ -123,7 +159,8 @@ const MaxiBlock = forwardRef((props, ref) => {
 			`maxi-background--${blockStyleBackground}`,
 		!!highlights['border-highlight'] && 'maxi-highlight--border',
 		!!highlights['text-highlight'] && 'maxi-highlight--text',
-		!!highlights['background-highlight'] && 'maxi-highlight--background'
+		!!highlights['background-highlight'] && 'maxi-highlight--background',
+		customClasses
 	);
 
 	const blockProps = {
@@ -133,32 +170,9 @@ const MaxiBlock = forwardRef((props, ref) => {
 		...extraProps,
 	};
 
-	return (
-		<>
-			{!disableMotion && !isSave && (
-				<>
-					<MotionPreview
-						key={`motion-preview-${uniqueID}`}
-						{...motion}
-					>
-						<MainBlock
-							ref={ref}
-							key={`maxi-block-${uniqueID}`}
-							uniqueID={uniqueID}
-							background={background}
-							disableBackground={
-								disableBackground ||
-								!highlights['background-highlight']
-							}
-							isSave={isSave}
-							{...blockProps}
-						>
-							{children}
-						</MainBlock>
-					</MotionPreview>
-				</>
-			)}
-			{(disableMotion || isSave) && (
+	if (!disableMotion && !isSave)
+		return (
+			<MotionPreview key={`motion-preview-${uniqueID}`} {...motion}>
 				<MainBlock
 					ref={ref}
 					key={`maxi-block-${uniqueID}`}
@@ -172,13 +186,28 @@ const MaxiBlock = forwardRef((props, ref) => {
 				>
 					{children}
 				</MainBlock>
-			)}
-		</>
+			</MotionPreview>
+		);
+
+	return (
+		<MainBlock
+			ref={ref}
+			key={`maxi-block-${uniqueID}`}
+			uniqueID={uniqueID}
+			background={background}
+			disableBackground={
+				disableBackground || !highlights['background-highlight']
+			}
+			isSave={isSave}
+			{...blockProps}
+		>
+			{children}
+		</MainBlock>
 	);
 });
 
 export const getMaxiBlockBlockAttributes = props => {
-	const { deviceType, attributes } = props;
+	const { name, deviceType, attributes } = props;
 	const {
 		blockStyle,
 		blockStyleBackground,
@@ -213,6 +242,7 @@ export const getMaxiBlockBlockAttributes = props => {
 	const highlights = { ...getGroupAttributes(attributes, 'highlight') };
 
 	return {
+		blockName: name,
 		blockStyle,
 		blockStyleBackground,
 		extraClassName,

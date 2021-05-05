@@ -85,6 +85,8 @@ body {
 		}
 	}
 	.block-list-appender {
+		max-width: none;
+
 		.block-editor-button-block-appender {
 			visibility: hidden;
 			position: absolute;

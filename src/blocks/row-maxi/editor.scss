@@ -4,16 +4,25 @@
 	margin: auto;
 	padding: 0;
 	outline: 1px solid #81bdda !important;
+
 	&[data-align='full'] {
 		width: auto;
 		max-width: 100% !important;
 	}
+
+	&__container {
+		display: flex;
+		width: 100%;
+	}
+
 	.block-list-appender {
+		width: 100%;
+		max-width: none;
 		margin: 0;
 		padding: 0;
-		width: 100%;
 		z-index: 1;
 	}
+
 	&__template {
 		display: flex;
 		flex-wrap: wrap;
@@ -21,10 +30,12 @@
 		width: 100%;
 		padding: 2rem 1rem;
 		margin: 0 auto;
+
 		&__button {
 			width: 20%;
 			height: 50px;
 			display: inline-block;
+
 			&:hover {
 				svg {
 					stroke: #ff4a17;
@@ -32,6 +43,7 @@
 					filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
 				}
 			}
+
 			svg {
 				width: 100%;
 				height: 100%;

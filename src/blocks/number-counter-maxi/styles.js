@@ -5,6 +5,7 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
+	getNumberCounterStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -29,11 +30,36 @@ const getNormalObject = props => {
 	return response;
 };
 
+const getCircleObject = (props, target) => {
+	const response = {
+		numberCounter: getNumberCounterStyles(
+			{
+				...getGroupAttributes(props, 'numberCounter'),
+			},
+			target
+		),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
 	let response = {
 		[uniqueID]: getNormalObject(props),
+		[`${uniqueID} .maxi-number-counter .maxi-number-counter__circle`]: getCircleObject(
+			props,
+			'circle-bar'
+		),
+		[`${uniqueID} .maxi-number-counter .maxi-number-counter__background`]: getCircleObject(
+			props,
+			'circle-background'
+		),
+		[`${uniqueID} .maxi-number-counter .maxi-number-counter__text`]: getCircleObject(
+			props,
+			'text'
+		),
 	};
 
 	return response;

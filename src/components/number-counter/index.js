@@ -70,7 +70,6 @@ const NumberCounter = props => {
 						/>
 						<circle
 							className='maxi-number-counter__circle'
-							stroke='#ff4a17'
 							strokeWidth={stroke}
 							fill='none'
 							cx='90'

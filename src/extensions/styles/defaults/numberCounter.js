@@ -41,7 +41,7 @@ const numberCounter = {
 	},
 	'number-counter-text-color': {
 		type: 'string',
-		default: '#000',
+		default: '#ff4a17',
 	},
 	'number-counter-circle-background-color': {
 		type: 'string',
@@ -53,7 +53,7 @@ const numberCounter = {
 	},
 	'number-counter-title-font-size': {
 		type: 'number',
-		default: 32,
+		default: 64,
 	},
 };
 

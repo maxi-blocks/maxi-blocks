@@ -23,12 +23,17 @@ const getNumberCounterStyles = (obj, target) => {
 			obj['number-counter-circle-background-color'];
 
 	if (target === 'text' && !isNil(obj['number-counter-text-color']))
-		response.general['fill'] = obj['number-counter-text-color'];
+		response.general['color'] = obj['number-counter-text-color'];
 
 	if (target === 'text' && !isNil(obj['number-counter-title-font-size']))
 		response.general[
 			'font-size'
 		] = `${obj['number-counter-title-font-size']}px`;
+
+	if (target === 'sup' && !isNil(obj['number-counter-title-font-size']))
+		response.general['font-size'] = `calc(${
+			obj['number-counter-title-font-size'] / 1.5
+		}px)`;
 
 	return response;
 };

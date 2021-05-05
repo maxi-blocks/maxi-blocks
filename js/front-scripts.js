@@ -31,13 +31,13 @@ motionElems.forEach(function (elem) {
 		// Number Counter
 		if ('number-counter-status' in motionData) {
 			const numberCounterElem = document.querySelector(
-				`#${motionID} .maxi-number-counter`
+				`#${motionID} .maxi-number-counter__box`
 			);
 			const numberCounterElemText = document.querySelector(
-				`#${motionID} .maxi-number-counter .maxi-number-counter__text`
+				`#${motionID} .maxi-number-counter__box .maxi-number-counter__box__text`
 			);
 			const numberCounterElemCircle = document.querySelector(
-				`#${motionID} .maxi-number-counter .maxi-number-counter__circle`
+				`#${motionID} .maxi-number-counter__box .maxi-number-counter__box__circle`
 			);
 
 			const radius = motionData['number-counter-radius'];
@@ -58,9 +58,11 @@ motionElems.forEach(function (elem) {
 			function startCounter() {
 				const interval = setInterval(() => {
 					count = count + 1;
+
 					numberCounterElemText.innerHTML = `${parseInt(
 						(count / 360) * 100
-					)}${countPercentageSign ? '%' : ''}`;
+					)}<sup>${countPercentageSign ? '%' : ''}</sup>`;
+
 					numberCounterElemCircle &&
 						numberCounterElemCircle.setAttribute(
 							'stroke-dasharray',

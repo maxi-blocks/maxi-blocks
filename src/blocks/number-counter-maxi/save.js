@@ -21,50 +21,38 @@ const save = props => {
 			{...getMaxiBlockBlockAttributes(props)}
 			isSave
 		>
-			<div className='maxi-number-counter'>
-				<svg viewBox='0 0 180 180'>
-					{!attributes['number-counter-circle-status'] && (
-						<>
-							<circle
-								className='maxi-number-counter__background'
-								stroke-width={
-									attributes['number-counter-stroke']
-								}
-								fill='none'
-								cx='90'
-								cy='90'
-								r={attributes['number-counter-radius']}
-							/>
-							<circle
-								className='maxi-number-counter__circle'
-								stroke-width={
-									attributes['number-counter-stroke']
-								}
-								fill='none'
-								cx='90'
-								cy='90'
-								r={attributes['number-counter-radius']}
-								stroke-linecap={
-									attributes['number-counter-rounded-status']
-										? 'round'
-										: ''
-								}
-								stroke-dasharray={`0 ${
-									2 *
-									Math.PI *
-									attributes['number-counter-radius']
-								}`}
-							/>
-						</>
-					)}
-					<text
-						className='maxi-number-counter__text'
-						x='50%'
-						y='50%'
-						dominant-baseline='middle'
-						text-anchor='middle'
-					></text>
-				</svg>
+			<div className='maxi-number-counter__box'>
+				{!attributes['number-counter-circle-status'] && (
+					<svg viewBox='0 0 180 180'>
+						<circle
+							className='maxi-number-counter__box__background'
+							stroke-width={attributes['number-counter-stroke']}
+							fill='none'
+							cx='90'
+							cy='90'
+							r={attributes['number-counter-radius']}
+						/>
+						<circle
+							className='maxi-number-counter__box__circle'
+							stroke-width={attributes['number-counter-stroke']}
+							fill='none'
+							cx='90'
+							cy='90'
+							r={attributes['number-counter-radius']}
+							stroke-linecap={
+								attributes['number-counter-rounded-status']
+									? 'round'
+									: ''
+							}
+							stroke-dasharray={`0 ${
+								2 *
+								Math.PI *
+								attributes['number-counter-radius']
+							}`}
+						/>
+					</svg>
+				)}
+				<span className='maxi-number-counter__box__text'></span>
 			</div>
 		</MaxiBlock>
 	);

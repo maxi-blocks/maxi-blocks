@@ -1,7 +1,12 @@
 body.maxi-blocks--active .maxi-number-counter-block {
 	.maxi-number-counter {
-		position: relative;
-		z-index: 2;
-		font-family: 'Roboto', sans-serif !important;
+		&__box {
+			position: relative;
+			z-index: 2;
+
+			&__text {
+				font-family: 'Roboto', sans-serif !important;
+			}
+		}
 	}
 }

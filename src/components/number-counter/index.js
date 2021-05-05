@@ -57,11 +57,11 @@ const NumberCounter = props => {
 				}}
 				icon={replay}
 			/>
-			<svg viewBox='0 0 180 180'>
+			<div className='maxi-number-counter__box'>
 				{!props['number-counter-circle-status'] && (
-					<>
+					<svg viewBox='0 0 180 180'>
 						<circle
-							className='maxi-number-counter__background'
+							className='maxi-number-counter__box__background'
 							strokeWidth={stroke}
 							fill='none'
 							cx='90'
@@ -69,7 +69,7 @@ const NumberCounter = props => {
 							r={radius}
 						/>
 						<circle
-							className='maxi-number-counter__circle'
+							className='maxi-number-counter__box__circle'
 							strokeWidth={stroke}
 							fill='none'
 							cx='90'
@@ -84,23 +84,17 @@ const NumberCounter = props => {
 								(count / 360) * circumference
 							)} ${circumference}`}
 						/>
-					</>
+					</svg>
 				)}
-
-				<text
-					className='maxi-number-counter__text'
-					x='50%'
-					y='50%'
-					dominantBaseline='middle'
-					textAnchor='middle'
-				>
-					{`${parseInt((count / 360) * 100)}${
-						props['number-counter-percentage-sign-status']
+				<span className='maxi-number-counter__box__text'>
+					{`${parseInt((count / 360) * 100)}`}
+					<sup>
+						{props['number-counter-percentage-sign-status']
 							? '%'
-							: ''
-					}`}
-				</text>
-			</svg>
+							: ''}
+					</sup>
+				</span>
+			</div>
 		</div>
 	);
 };

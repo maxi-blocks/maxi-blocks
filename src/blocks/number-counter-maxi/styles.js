@@ -48,17 +48,21 @@ const getStyles = props => {
 
 	let response = {
 		[uniqueID]: getNormalObject(props),
-		[`${uniqueID} .maxi-number-counter .maxi-number-counter__circle`]: getCircleObject(
+		[`${uniqueID} .maxi-number-counter__box .maxi-number-counter__box__circle`]: getCircleObject(
 			props,
 			'circle-bar'
 		),
-		[`${uniqueID} .maxi-number-counter .maxi-number-counter__background`]: getCircleObject(
+		[`${uniqueID} .maxi-number-counter__box .maxi-number-counter__box__background`]: getCircleObject(
 			props,
 			'circle-background'
 		),
-		[`${uniqueID} .maxi-number-counter .maxi-number-counter__text`]: getCircleObject(
+		[`${uniqueID} .maxi-number-counter__box .maxi-number-counter__box__text`]: getCircleObject(
 			props,
 			'text'
+		),
+		[`${uniqueID} .maxi-number-counter__box .maxi-number-counter__box__text sup`]: getCircleObject(
+			props,
+			'sup'
 		),
 	};
 

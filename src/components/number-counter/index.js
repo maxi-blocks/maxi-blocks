@@ -13,7 +13,7 @@ import classnames from 'classnames';
  * Styles
  */
 import './style.scss';
-import { toolbarReplaceImage } from '../../icons';
+import { replay } from '../../icons';
 
 /**
  * Component
@@ -54,7 +54,7 @@ const NumberCounter = props => {
 					setCount(StartCountValue);
 					clearInterval(countRef.current);
 				}}
-				icon={toolbarReplaceImage}
+				icon={replay}
 			/>
 			<svg viewBox='0 0 180 180'>
 				{!props['number-counter-circle-status'] && (

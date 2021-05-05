@@ -38,7 +38,7 @@ const NumberCounter = props => {
 	const circumference = 2 * Math.PI * radius;
 
 	useEffect(() => {
-		if (count === endCountValue) return;
+		if (count >= endCountValue) return;
 
 		countRef.current = setInterval(() => {
 			setCount(count + 1);

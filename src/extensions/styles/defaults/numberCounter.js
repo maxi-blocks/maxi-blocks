@@ -19,6 +19,14 @@ const numberCounter = {
 		type: 'number',
 		default: 100,
 	},
+	'number-counter-radius': {
+		type: 'number',
+		default: 85,
+	},
+	'number-counter-stroke': {
+		type: 'number',
+		default: 8,
+	},
 	'number-counter-duration': {
 		type: 'number',
 		default: 10,

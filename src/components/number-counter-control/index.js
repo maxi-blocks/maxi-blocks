@@ -77,6 +77,44 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
+			<SizeControl
+				label={__('Radius', 'maxi-blocks')}
+				disableUnit
+				min={1}
+				max={999}
+				initial={85}
+				step={1}
+				value={props['number-counter-radius']}
+				onChangeValue={val =>
+					onChange({ 'number-counter-radius': val })
+				}
+				onReset={() =>
+					onChange({
+						'number-counter-radius': getDefaultAttribute(
+							'number-counter-radius'
+						),
+					})
+				}
+			/>
+			<SizeControl
+				label={__('Stroke', 'maxi-blocks')}
+				disableUnit
+				min={1}
+				max={99}
+				initial={8}
+				step={1}
+				value={props['number-counter-stroke']}
+				onChangeValue={val =>
+					onChange({ 'number-counter-stroke': val })
+				}
+				onReset={() =>
+					onChange({
+						'number-counter-stroke': getDefaultAttribute(
+							'number-counter-stroke'
+						),
+					})
+				}
+			/>
 			<FancyRadioControl
 				label={__('Show Percentage Sign', 'maxi-block')}
 				selected={props['number-counter-percentage-sign-status']}

@@ -16,6 +16,7 @@
 		z-index: 2;
 		border-radius: 3px;
 	}
+	&__background,
 	&__circle {
 		transform: rotate(-90deg);
 		transform-origin: center;

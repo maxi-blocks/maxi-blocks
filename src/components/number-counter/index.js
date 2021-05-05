@@ -19,7 +19,7 @@ import { toolbarReplaceImage } from '../../icons';
  * Component
  */
 const NumberCounter = props => {
-	const { className, radius = 85, stroke = 8 } = props;
+	const { className } = props;
 
 	const classes = classnames('maxi-number-counter', className);
 
@@ -29,6 +29,8 @@ const NumberCounter = props => {
 		(props['number-counter-start'] * 360) / 100
 	);
 	const endCountValue = Math.ceil((props['number-counter-end'] * 360) / 100);
+	const radius = props['number-counter-radius'];
+	const stroke = props['number-counter-stroke'];
 
 	const [count, setCount] = useState(StartCountValue);
 
@@ -54,7 +56,7 @@ const NumberCounter = props => {
 				}}
 				icon={toolbarReplaceImage}
 			/>
-			<svg viewBox='0 0 180 180' width='180' height='180'>
+			<svg viewBox='0 0 180 180'>
 				{!props['number-counter-circle-status'] && (
 					<>
 						<circle

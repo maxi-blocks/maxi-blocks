@@ -61,12 +61,13 @@ motionElems.forEach(function (elem) {
 					numberCounterElemText.innerHTML = `${parseInt(
 						(count / 360) * 100
 					)}${countPercentageSign ? '%' : ''}`;
-					numberCounterElemCircle.setAttribute(
-						'stroke-dasharray',
-						`${parseInt(
-							(count / 360) * circumference
-						)} ${circumference}`
-					);
+					numberCounterElemCircle &&
+						numberCounterElemCircle.setAttribute(
+							'stroke-dasharray',
+							`${parseInt(
+								(count / 360) * circumference
+							)} ${circumference}`
+						);
 
 					if (count === endCountValue) clearInterval(interval);
 				}, countDuration);

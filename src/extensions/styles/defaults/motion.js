@@ -62,7 +62,7 @@ export const parallax = {
 	},
 	'parallax-speed': {
 		type: 'number',
-		default: 2,
+		default: 4,
 	},
 	'parallax-direction': {
 		type: 'string',

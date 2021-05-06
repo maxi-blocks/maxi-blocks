@@ -2,11 +2,12 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { SelectControl, BaseControl, Button } from '@wordpress/components';
+import { SelectControl, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import BaseControl from '../base-control';
 import RangeSliderControl from '../range-slider-control';
 
 /**

@@ -272,7 +272,7 @@ body .toolbar-item__popover {
 * Unit Select
 ************/
 
-.components-base-control {
+.maxi-base-control {
 	.components-maxi-dimensions-control__units {
 		margin-bottom: 0 !important;
 		.components-base-control__field {
@@ -289,7 +289,7 @@ body .toolbar-item__popover {
 * Reset Button
 *************/
 
-.components-maxi-control__reset-button {
+.maxi-base-control .components-maxi-control__reset-button {
 	display: inline-flex;
 	width: 31px;
 	min-width: 31px;

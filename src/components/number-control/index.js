@@ -1,11 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { BaseControl, Button } from '@wordpress/components';
+import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import BaseControl from '../base-control';
 import { reset } from '../../icons';
 
 /**

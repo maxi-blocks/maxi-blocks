@@ -1,8 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { BaseControl } from '@wordpress/components';
-import { useInstanceId  } from '@wordpress/compose';
+import { useInstanceId } from '@wordpress/compose';
+
+/**
+ * Internal dependencies
+ */
+import BaseControl from '../base-control';
 
 /**
  * External dependencies

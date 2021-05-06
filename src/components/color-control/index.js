@@ -2,12 +2,13 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { BaseControl, Button } from '@wordpress/components';
+import { Button } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import BaseControl from '../base-control';
 import RangeSliderControl from '../range-slider-control';
 
 /**

@@ -7,6 +7,9 @@ body.maxi-blocks--active .maxi-text-block {
 		margin: 0;
 		width: 100%;
 	}
+	p:not(&__content) {
+		margin: 32px auto;
+	}
 	a {
 		text-decoration: none;
 	}

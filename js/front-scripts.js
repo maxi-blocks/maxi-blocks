@@ -40,6 +40,7 @@ motionElems.forEach(function (elem) {
 				`#${motionID} .maxi-number-counter__box .maxi-number-counter__box__circle`
 			);
 
+			const durationSteps = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45];
 			const radius = motionData['number-counter-radius'];
 			const circumference = 2 * Math.PI * radius;
 			const startCountValue = Math.ceil(
@@ -57,7 +58,12 @@ motionElems.forEach(function (elem) {
 
 			function startCounter() {
 				const interval = setInterval(() => {
-					count = count + 1;
+					count = count + durationSteps[countDuration - 1];
+
+					if (count >= endCountValue) {
+						count = endCountValue;
+						clearInterval(interval);
+					}
 
 					numberCounterElemText.innerHTML = `${parseInt(
 						(count / 360) * 100
@@ -70,8 +76,6 @@ motionElems.forEach(function (elem) {
 								(count / 360) * circumference
 							)} ${circumference}`
 						);
-
-					if (count === endCountValue) clearInterval(interval);
 				}, countDuration);
 			}
 

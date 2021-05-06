@@ -77,10 +77,10 @@ const NumberCounterControl = props => {
 				}
 			/>
 			<SizeControl
-				label={__('Duration (ms)', 'maxi-blocks')}
+				label={__('Duration', 'maxi-blocks')}
 				disableUnit
 				min={1}
-				max={10000}
+				max={10}
 				initial={1}
 				step={1}
 				value={props['number-counter-duration']}

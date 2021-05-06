@@ -25,6 +25,7 @@ const NumberCounter = props => {
 
 	const countRef = useRef(null);
 
+	const durationSteps = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45];
 	const startCountValue = Math.ceil(
 		(props['number-counter-start'] * 360) / 100
 	);
@@ -39,10 +40,13 @@ const NumberCounter = props => {
 	const circumference = 2 * Math.PI * radius;
 
 	useEffect(() => {
-		if (count >= endCountValue) return;
+		if (count >= endCountValue) {
+			setCount(endCountValue);
+			return;
+		}
 
 		countRef.current = setInterval(() => {
-			setCount(count + 1);
+			setCount(count + durationSteps[countDuration - 1]);
 		}, countDuration);
 
 		return () => clearInterval(countRef.current);

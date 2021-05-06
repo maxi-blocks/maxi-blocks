@@ -63,7 +63,7 @@ Object {
   " .maxi-container-arrow:after": Object {
     "background": Object {
       "general": Object {
-        "background": "test",
+        "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
       },
       "label": "Arrow Color",
     },

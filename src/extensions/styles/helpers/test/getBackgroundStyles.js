@@ -3,13 +3,11 @@ import '@wordpress/block-editor';
 
 describe('getBackgroundStyles', () => {
 	it('Get a correct background styles', () => {
-		const object = {
-			target: 'maxi test',
+		const color = {
+			target: 'maxi-test',
 			isHover: false,
 			prefix: '',
 			'background-active-media': 'color',
-			'background-layers': 'array',
-			'background-layers-status': true,
 			'background-color': 'rgba(2,0,36,1)',
 			'background-color-clip-path': 'rgba(2,0,36,1)',
 			'border-top-left-radius-general': 1,
@@ -57,12 +55,10 @@ describe('getBackgroundStyles', () => {
 		};
 
 		const img = {
-			target: 'maxi test',
+			target: 'maxi-test',
 			isHover: false,
 			prefix: '',
 			'background-active-media': 'image',
-			'background-layers': 'array',
-			'background-layers-status': true,
 			'background-image-mediaID': 1,
 			'background-image-mediaURL': '/test/',
 			'background-image-size': 'auto',
@@ -85,14 +81,12 @@ describe('getBackgroundStyles', () => {
 		};
 
 		const video = {
-			target: 'maxi test',
+			target: 'maxi-test',
 			isHover: false,
 			prefix: '',
 			'background-active-media': 'video',
-			'background-layers': 'array',
-			'background-layers-status': true,
 			'background-video-mediaID': 3,
-			'background-video-mediaURL': '/test/',
+			'background-video-mediaURL': 'test.com',
 			'background-video-startTime': '',
 			'background-video-endTime': '',
 			'background-video-loop': true,
@@ -104,12 +98,10 @@ describe('getBackgroundStyles', () => {
 		};
 
 		const svg = {
-			target: 'maxi test',
+			target: 'maxi-test',
 			isHover: false,
 			prefix: '',
 			'background-active-media': 'svg',
-			'background-layers': 'array',
-			'background-layers-status': true,
 			'background-svg-SVGCurrentElement': '',
 			'background-svg-SVGElement': '',
 			'background-svg-SVGData': 'object',
@@ -124,20 +116,19 @@ describe('getBackgroundStyles', () => {
 		};
 
 		const gradient = {
-			target: 'maxi test',
+			target: 'maxi-test',
 			isHover: false,
 			prefix: '',
 			'background-active-media': 'gradient',
-			'background-layers': 'array',
-			'background-layers-status': true,
 			'background-gradient':
 				'linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)',
 			'background-gradient-opacity': 0.66,
-			'background-gradient-clip-path': 'test',
+			'background-gradient-clip-path':
+				'clip-path: polygon(50% 0%, 0% 100%, 100% 100%);',
 		};
 
 		const layers = {
-			target: 'maxi test',
+			target: 'maxi-test',
 			isHover: false,
 			prefix: '',
 			'background-active-media': 'layers',
@@ -152,7 +143,7 @@ describe('getBackgroundStyles', () => {
 					type: 'image',
 					'background-image-mediaID': 265399,
 					'background-image-mediaURL':
-						'https://learndd.dev600.com/wp-content/uploads/2021/04/512.png',
+						'https://test.img.com/uploads.png',
 					'background-image-size': '',
 					'background-image-width': 512,
 					'background-image-width-unit': '%',
@@ -220,8 +211,8 @@ describe('getBackgroundStyles', () => {
 			'background-layers-status': true,
 		};
 
-		const result = getBackgroundStyles(object);
-		expect(result).toMatchSnapshot();
+		const resultColor = getBackgroundStyles(color);
+		expect(resultColor).toMatchSnapshot();
 
 		const resultImg = getBackgroundStyles(img);
 		expect(resultImg).toMatchSnapshot();

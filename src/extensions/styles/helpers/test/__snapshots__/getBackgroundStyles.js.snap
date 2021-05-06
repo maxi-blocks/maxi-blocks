@@ -2,7 +2,7 @@
 
 exports[`getBackgroundStyles Get a correct background styles 1`] = `
 Object {
-  "maxi test > .maxi-background-displayer": Object {
+  "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
       "general": Object {
         "border-bottom-left-radius": "4px",
@@ -48,7 +48,7 @@ Object {
       },
     },
   },
-  "maxi test > .maxi-background-displayer .maxi-background-displayer__color": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__color": Object {
     "background": Object {
       "general": Object {
         "background-color": "rgba(2,0,36,1)",
@@ -62,7 +62,7 @@ Object {
 
 exports[`getBackgroundStyles Get a correct background styles 2`] = `
 Object {
-  "maxi test > .maxi-background-displayer": Object {
+  "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
       "general": Object {},
       "l": Object {},
@@ -73,7 +73,7 @@ Object {
       "xxl": Object {},
     },
   },
-  "maxi test > .maxi-background-displayer .maxi-background-displayer__images": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__images": Object {
     "imageBackground": Object {
       "general": Object {
         "background-attachment": "scroll",
@@ -94,7 +94,7 @@ Object {
 
 exports[`getBackgroundStyles Get a correct background styles 3`] = `
 Object {
-  "maxi test > .maxi-background-displayer": Object {
+  "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
       "general": Object {},
       "l": Object {},
@@ -105,7 +105,7 @@ Object {
       "xxl": Object {},
     },
   },
-  "maxi test > .maxi-background-displayer .maxi-background-displayer__video-player": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__video-player": Object {
     "videoBackground": Object {
       "general": Object {
         "opacity": 1,
@@ -118,7 +118,7 @@ Object {
 
 exports[`getBackgroundStyles Get a correct background styles 4`] = `
 Object {
-  "maxi test > .maxi-background-displayer": Object {
+  "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
       "general": Object {},
       "l": Object {},
@@ -129,7 +129,7 @@ Object {
       "xxl": Object {},
     },
   },
-  "maxi test > .maxi-background-displayer .maxi-background-displayer__svg": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg": Object {
     "SVGBackground": Object {
       "general": Object {
         "height": "2%",
@@ -139,7 +139,7 @@ Object {
       "label": "SVG Wrapper Background",
     },
   },
-  "maxi test > .maxi-background-displayer .maxi-background-displayer__svg svg": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg svg": Object {
     "SVGBackground": Object {
       "general": Object {
         "height": "2%",
@@ -152,7 +152,7 @@ Object {
 
 exports[`getBackgroundStyles Get a correct background styles 5`] = `
 Object {
-  "maxi test > .maxi-background-displayer": Object {
+  "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
       "general": Object {},
       "l": Object {},
@@ -163,11 +163,11 @@ Object {
       "xxl": Object {},
     },
   },
-  "maxi test > .maxi-background-displayer .maxi-background-displayer__color": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__color": Object {
     "background": Object {
       "general": Object {
         "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
-        "clip-path": "test",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
         "opacity": 0.66,
       },
       "label": "Background Gradient",
@@ -178,7 +178,7 @@ Object {
 
 exports[`getBackgroundStyles Get a correct background styles 6`] = `
 Object {
-  "maxi test > .maxi-background-displayer": Object {
+  "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
       "general": Object {},
       "l": Object {},
@@ -189,7 +189,7 @@ Object {
       "xxl": Object {},
     },
   },
-  "maxi test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "backgroundColor": Object {
       "general": Object {
         "background-color": "rgba(12,233,75,1)",
@@ -197,12 +197,12 @@ Object {
       "label": "Background Color",
     },
   },
-  "maxi test > .maxi-background-displayer .maxi-background-displayer__1": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
     "backgroundImage": Object {
       "general": Object {
         "background-attachment": "scroll",
         "background-clip": "border-box",
-        "background-image": "url('https://learndd.dev600.com/wp-content/uploads/2021/04/512.png')",
+        "background-image": "url('https://test.img.com/uploads.png')",
         "background-origin": "padding-box",
         "background-position": "center center",
         "background-repeat": "no-repeat",
@@ -212,7 +212,7 @@ Object {
       "label": "Background Image",
     },
   },
-  "maxi test > .maxi-background-displayer .maxi-background-displayer__2": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
     "backgroundVideo": Object {
       "general": Object {
         "opacity": 0.72,
@@ -220,7 +220,7 @@ Object {
       "label": "Video Background",
     },
   },
-  "maxi test > .maxi-background-displayer .maxi-background-displayer__3": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
     "backgroundGradient": Object {
       "general": Object {
         "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(62,102,120) 40%,rgb(155,81,224) 100%)",
@@ -229,7 +229,7 @@ Object {
       "label": "Background Gradient",
     },
   },
-  "maxi test > .maxi-background-displayer .maxi-background-displayer__4": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
     "backgroundSVG": Object {
       "general": Object {
         "height": "100%",
@@ -237,7 +237,7 @@ Object {
       "label": "SVG Wrapper Background",
     },
   },
-  "maxi test > .maxi-background-displayer .maxi-background-displayer__4 svg": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg": Object {
     "backgroundSVG": Object {
       "general": Object {
         "height": "100%",

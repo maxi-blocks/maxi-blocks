@@ -35,7 +35,8 @@ describe('getArrowStyles', () => {
 			'arrow-width-unit-xs': 'px',
 			'border-color-general': 'rgb(255, 99, 71)',
 			'background-color': 'rgb(255, 99, 71)',
-			'background-gradient': 'test',
+			'background-gradient':
+				'linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)',
 		};
 
 		const result = getArrowStyles(object);

@@ -2,11 +2,11 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import SelectControl from '../select-control';
 import AxisControl from '../axis-control';
 import { getLastBreakpointAttribute } from '../../extensions/styles';
 

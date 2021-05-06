@@ -5,7 +5,6 @@ import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import {
 	RangeControl,
-	SelectControl,
 	TextareaControl,
 	TextControl,
 } from '@wordpress/components';
@@ -34,6 +33,7 @@ import {
 	OpacityControl,
 	PositionControl,
 	ResponsiveControl,
+	SelectControl,
 	SettingTabsControl,
 	SVGDefaultsDisplayer,
 	TransformControl,

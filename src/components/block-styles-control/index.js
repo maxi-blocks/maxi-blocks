@@ -1,11 +1,14 @@
-import { FancyRadioControl } from '..';
-
 /**
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl } from '@wordpress/components';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+import SelectControl from '../select-control';
+import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * Component

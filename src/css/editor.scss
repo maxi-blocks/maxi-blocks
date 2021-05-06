@@ -273,11 +273,11 @@ body .toolbar-item__popover {
 ************/
 
 .maxi-base-control {
-	.components-maxi-dimensions-control__units {
+	.maxi-dimensions-control__units {
 		margin-bottom: 0 !important;
-		.components-base-control__field {
+		.maxi-base-control__field {
 			margin-bottom: 0;
-			.components-select-control__input {
+			.maxi-select-control__input {
 				min-width: 3.2rem;
 				max-width: 100%;
 			}

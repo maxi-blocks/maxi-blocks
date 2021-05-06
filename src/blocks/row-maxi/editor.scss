@@ -4,6 +4,7 @@
 	margin: auto;
 	padding: 0;
 	outline: 1px solid #81bdda !important;
+	z-index: 2;
 
 	&[data-align='full'] {
 		width: auto;

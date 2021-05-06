@@ -84,7 +84,6 @@ class edit extends MaxiBlockComponent {
 						<i className={attributes['icon-name']} />
 					)}
 					<RichText
-						ref={this.blockRef}
 						withoutInteractiveFormatting
 						className='maxi-button-block__content'
 						value={attributes.buttonContent}

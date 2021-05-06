@@ -32,11 +32,11 @@ import {
 const ResponsiveSelector = props => {
 	const { className, isOpen, onClose } = props;
 
+	const { insertBlock } = useDispatch('core/block-editor');
+
 	const addCloudLibrary = () => {
 		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
 	};
-
-	const { insertBlock } = useDispatch('core/block-editor');
 
 	const { deviceType, breakpoints } = useSelect(select => {
 		const { receiveMaxiDeviceType, receiveMaxiBreakpoints } = select(
@@ -54,9 +54,7 @@ const ResponsiveSelector = props => {
 	const classes = classnames('maxi-responsive-selector', className);
 
 	const setScreenSize = size => {
-		const editorWrapper = document.querySelector(
-			'.edit-post-visual-editor.editor-styles-wrapper'
-		);
+		const editorWrapper = document.querySelector('.editor-styles-wrapper');
 		const winHeight = window.outerWidth;
 		const responsiveWidth =
 			(size === 'general' && 'none') ||

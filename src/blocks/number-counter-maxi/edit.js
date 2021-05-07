@@ -101,7 +101,7 @@ class edit extends MaxiBlockComponent {
 						className='maxi-number-counter__replay'
 						onClick={() => {
 							setCount(startCountValue);
-							setReplyStatus(!replyStatus);
+							setReplyStatus(true);
 							clearInterval(countRef.current);
 						}}
 						icon={replay}

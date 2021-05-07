@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Alignment checking the operation of alignment-contorl 1`] = `
+"<!-- wp:maxi-blocks/text-maxi {\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-12\\",\\"content\\":\\"Testing Alignment\\",\\"text-alignment-general\\":\\"center\\"} -->
+<div class=\\"maxi-block maxi-block--backend maxi-motion-effect maxi-motion-effect-text-maxi-12 maxi-light text-maxi-12 wp-block-maxi-blocks-text-maxi maxi-text-block maxi-background--1\\" data-align=\\"normal\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing Alignment</p></div>
+<!-- /wp:maxi-blocks/text-maxi -->"
+`;
+
+exports[`Alignment checking the operation of alignment-contorl 2`] = `
+"<!-- wp:maxi-blocks/text-maxi {\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-12\\",\\"content\\":\\"Testing Alignment\\",\\"text-alignment-general\\":\\"left\\"} -->
+<div class=\\"maxi-block maxi-block--backend maxi-motion-effect maxi-motion-effect-text-maxi-12 maxi-light text-maxi-12 wp-block-maxi-blocks-text-maxi maxi-text-block maxi-background--1\\" data-align=\\"normal\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing Alignment</p></div>
+<!-- /wp:maxi-blocks/text-maxi -->"
+`;
+
+exports[`Alignment checking the operation of alignment-contorl 3`] = `
+"<!-- wp:maxi-blocks/text-maxi {\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-12\\",\\"content\\":\\"Testing Alignment\\",\\"text-alignment-general\\":\\"right\\"} -->
+<div class=\\"maxi-block maxi-block--backend maxi-motion-effect maxi-motion-effect-text-maxi-12 maxi-light text-maxi-12 wp-block-maxi-blocks-text-maxi maxi-text-block maxi-background--1\\" data-align=\\"normal\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing Alignment</p></div>
+<!-- /wp:maxi-blocks/text-maxi -->"
+`;
+
+exports[`Alignment checking the operation of alignment-contorl 4`] = `
+"<!-- wp:maxi-blocks/text-maxi {\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-12\\",\\"content\\":\\"Testing Alignment\\",\\"text-alignment-general\\":\\"justify\\"} -->
+<div class=\\"maxi-block maxi-block--backend maxi-motion-effect maxi-motion-effect-text-maxi-12 maxi-light text-maxi-12 wp-block-maxi-blocks-text-maxi maxi-text-block maxi-background--1\\" data-align=\\"normal\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing Alignment</p></div>
+<!-- /wp:maxi-blocks/text-maxi -->"
+`;

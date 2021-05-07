@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`font level checking the font level control 1`] = `
-"<!-- wp:maxi-blocks/text-maxi {\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-12\\",\\"content\\":\\"Testing level\\"} -->
-<div class=\\"maxi-block maxi-block--backend maxi-motion-effect maxi-motion-effect-text-maxi-12 maxi-light text-maxi-12 wp-block-maxi-blocks-text-maxi maxi-text-block maxi-background--1\\" data-align=\\"normal\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing level</p></div>
+"<!-- wp:maxi-blocks/text-maxi {\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-12\\",\\"textLevel\\":\\"h1\\",\\"content\\":\\"Testing level\\",\\"font-size-general\\":45,\\"line-height-general\\":1.22,\\"font-weight-general\\":500,\\"font-size-xxl\\":55,\\"line-height-xxl\\":1.18,\\"font-size-xl\\":50,\\"line-height-xl\\":1.1,\\"font-size-l\\":45,\\"line-height-l\\":1.22,\\"font-size-m\\":36,\\"line-height-m\\":1.27} -->
+<div class=\\"maxi-block maxi-block--backend maxi-motion-effect maxi-motion-effect-text-maxi-12 maxi-light text-maxi-12 wp-block-maxi-blocks-text-maxi maxi-text-block maxi-background--1\\" data-align=\\"normal\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><h1 class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\">Testing level</h1></div>
 <!-- /wp:maxi-blocks/text-maxi -->"
 `;

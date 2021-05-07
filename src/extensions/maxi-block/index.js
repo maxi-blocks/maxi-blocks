@@ -94,7 +94,7 @@ class MaxiBlockComponent extends Component {
 				delete newAttributes[prop];
 			});
 
-			if (!isEqual(oldAttributes, newAttributes))
+			if (!isEqual(oldAttributes, newAttributes) && false)
 				// Just for debugging 👍
 				this.difference(oldAttributes, newAttributes);
 

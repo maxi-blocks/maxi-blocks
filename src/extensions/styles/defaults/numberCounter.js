@@ -33,7 +33,7 @@ const numberCounter = {
 	},
 	'number-counter-duration': {
 		type: 'number',
-		default: 10,
+		default: 1,
 	},
 	'number-counter-start-animation': {
 		type: 'string',

@@ -212,7 +212,7 @@ body .toolbar-item__popover {
 		border-right-color: transparent !important;
 		z-index: -1;
 	}
-
+	.maxi-base-control,
 	.components-base-control {
 		&__field {
 			color: #fff;
@@ -245,7 +245,7 @@ body .toolbar-item__popover {
 				color: #fff;
 				border-color: #80828a !important;
 			}
-			.components-select-control__input {
+			.maxi-select-control__input {
 				background-color: transparent !important;
 				color: #fff !important;
 				border: 2px solid #80828a !important;

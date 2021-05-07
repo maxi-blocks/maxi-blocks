@@ -133,13 +133,18 @@ class edit extends MaxiBlockComponent {
 						)}
 						<span className='maxi-number-counter__box__text'>
 							{`${parseInt((count / 360) * 100)}`}
-							<sup>
-								{attributes[
-									'number-counter-percentage-sign-status'
-								]
-									? '%'
-									: ''}
-							</sup>
+
+							{attributes[
+								'number-counter-percentage-sign-status'
+							] && (
+								<sup>
+									{attributes[
+										'number-counter-percentage-sign-status'
+									]
+										? '%'
+										: ''}
+								</sup>
+							)}
 						</span>
 					</div>
 				</div>

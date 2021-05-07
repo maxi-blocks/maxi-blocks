@@ -81,6 +81,10 @@ class MaxiBlockComponent extends Component {
 		)
 			return true;
 
+		// Check changes on states
+		if (!isEqual(this.state, nextState)) return true;
+
+		// Check changes on props
 		if (!isEmpty(this.propsToAvoidRendering)) {
 			const oldAttributes = cloneDeep(nextProps.attributes);
 			const newAttributes = cloneDeep(this.props.attributes);

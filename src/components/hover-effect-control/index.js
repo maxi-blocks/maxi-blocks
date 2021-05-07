@@ -416,6 +416,7 @@ const HoverEffectControl = props => {
 							hideAlignment
 							onChange={obj => onChange(obj)}
 							prefix='hover-content-'
+							disableCustomFormats
 						/>
 					)}
 					<hr />

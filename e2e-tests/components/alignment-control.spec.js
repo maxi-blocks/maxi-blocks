@@ -27,7 +27,19 @@ describe('Alignment', () => {
 			'.components-popover__content .maxi-alignment-control__no-label .components-radio-control__option'
 		);
 		await alignmentSettings[1].$eval('label', setting => setting.click());
+		// Check alignment center
+		expect(await getEditedPostContent()).toMatchSnapshot();
 
+		await alignmentSettings[0].$eval('label', setting => setting.click());
+		// Check alignment left
+		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		await alignmentSettings[2].$eval('label', setting => setting.click());
+		// Check alignment right
+		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		await alignmentSettings[3].$eval('label', setting => setting.click());
+		// Check alignment justify
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 });

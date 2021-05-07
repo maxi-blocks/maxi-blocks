@@ -20,7 +20,6 @@ import {
 	TypographyControl,
 	FancyRadioControl,
 } from '../../components';
-
 /**
  * Component
  */
@@ -35,16 +34,20 @@ const MaxiStyleCardsTab = ({
 	currentKey,
 }) => {
 	const processAttribute = attr => {
-		const value = SC.styleCard[SCStyle][attr];
-		if (!isNil(value)) return value;
+		if (!isEmpty(SC)) {
+			const value = SC.styleCard[SCStyle][attr];
+			if (!isNil(value)) return value;
 
-		const defaultValue = SC.styleCardDefaults[SCStyle][attr];
-		if (!isNil(defaultValue)) {
-			if (defaultValue.includes('var')) {
-				const colorNumber = defaultValue.match(/color-\d/);
-				const colorValue = SC.styleCardDefaults[SCStyle][colorNumber];
-				if (!isNil(colorValue)) return colorValue;
-			} else return defaultValue;
+			const defaultValue = SC.styleCardDefaults[SCStyle][attr];
+			if (!isNil(defaultValue)) {
+				if (defaultValue.includes('var')) {
+					const colorNumber = defaultValue.match(/color-\d/);
+					const colorValue =
+						SC.styleCardDefaults[SCStyle][colorNumber];
+					if (!isNil(colorValue)) return colorValue;
+				} else return defaultValue;
+			}
+			return false;
 		}
 		return false;
 	};
@@ -69,26 +72,6 @@ const MaxiStyleCardsTab = ({
 		return parsedTypography;
 	};
 
-	const getLevelBreakpointsValues = () => {
-	};
-
-	const prosessKey = (key, val, attr) => {
-		const response = {};
-		if (key.includes(attr)) {
-			let newVal;
-			if (typeof val === 'number') newVal = `${val}px`;
-			else newVal = val;
-
-			const [num, unit] = newVal.match(/[a-zA-Z]+|[0-9\.]+/g);
-			response[key] = num;
-			const newUnitKey = key.replace(attr, `${attr}-unit`);
-
-			response[newUnitKey] = unit;
-			return response;
-		}
-		return null;
-	};
-
 	const styleCardDefaultsTypography = (level, SCstyle) => {
 		const response = {};
 		const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -99,9 +82,6 @@ const MaxiStyleCardsTab = ({
 					breakpoints.forEach(breakpoint => {
 						const checkKey = key.replace('general', breakpoint);
 						if (isNil(SCstyle.checkKey)) {
-							// console.log(JSON.stringify(prosessKey(checkKey, val, 'font-size')));
-							// console.log(JSON.stringify(prosessKey(checkKey, val, 'letter-spacing')));
-
 							if (checkKey.includes('font-size')) {
 								const [num, unit] = val.match(
 									/[a-zA-Z]+|[0-9]+/g
@@ -300,7 +280,6 @@ const MaxiStyleCardsTab = ({
 							styleCards
 							onChange={obj => {
 								const parsedTypography = parseTypography(obj);
-								console.log(JSON.stringify(parsedTypography));
 								onChangeValue(
 									'typography',
 									parsedTypography,

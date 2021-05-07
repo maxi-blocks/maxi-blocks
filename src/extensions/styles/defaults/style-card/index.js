@@ -1,4 +1,12 @@
+/**
+ * External dependencies
+ */
 import { isEmpty, isNil } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
+import getStyleCards from './getStyleCards';
 
 const { select } = wp.data;
 
@@ -9,21 +17,7 @@ const getStyleCardAttr = (
 ) => {
 	const styleCards = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 
-	const getStyleCards = () => {
-		switch (typeof styleCards) {
-			case 'string':
-				if (!isEmpty(styleCards)) return JSON.parse(styleCards);
-				return false;
-			case 'object':
-				return styleCards;
-			case 'undefined':
-				return false;
-			default:
-				return false;
-		}
-	};
-
-	const allStyleCards = getStyleCards();
+	const allStyleCards = getStyleCards(styleCards);
 
 	if (typeof allStyleCards === 'object') {
 		const activeStyleCard = Object.keys(allStyleCards).map(key => {

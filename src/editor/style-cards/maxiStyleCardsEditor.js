@@ -12,12 +12,14 @@ import { Button, SelectControl, Popover, Icon } from '@wordpress/components';
  * External dependencies
  */
 import { isEmpty, isNil, forIn } from 'lodash';
+import { React } from 'react';
 
 /**
  * Internal dependencies
  */
 import { SettingTabsControl, FancyRadioControl } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
+import getStyleCards from '../../extensions/styles/defaults/style-card/getStyleCards';
 
 /**
  * Icons
@@ -44,27 +46,9 @@ const MaxiStyleCardsEditor = () => {
 
 	const [currentSC, changeCurrentSC] = useState(receiveMaxiStyleCards());
 
-	console.log('currentSC: ' + JSON.stringify(currentSC));
-
 	const [styleCardName, setStyleCardName] = useState('');
 
-	const getStyleCards = () => {
-		if (!isNil(currentSC)) {
-			switch (typeof currentSC) {
-				case 'string':
-					if (!isEmpty(currentSC)) return JSON.parse(currentSC);
-					return {};
-				case 'object':
-					return currentSC;
-				case 'undefined':
-					return {};
-				default:
-					return {};
-			}
-		} else return false;
-	};
-
-	const allStyleCards = getStyleCards();
+	const allStyleCards = getStyleCards(currentSC);
 
 	const getStyleCardActiveKey = () => {
 		let styleCardActive = '';
@@ -357,13 +341,6 @@ const MaxiStyleCardsEditor = () => {
 		changeIsDefaultOrActiveState(isDefaultOrActive(keySC));
 	};
 
-	const maxiWarnIfUnsavedChanges = () => {
-		return __(
-			'You have unsaved changes in Style Cards Editor. If you proceed, they will be lost.',
-			'maxi-blocks'
-		);
-	};
-
 	const showMaxiSCSavedActiveSnackbar = nameSC => {
 		dispatch('core/notices').createNotice(
 			'info',
@@ -431,8 +408,6 @@ const MaxiStyleCardsEditor = () => {
 		a.click();
 		document.body.removeChild(a);
 	};
-
-	window.addEventListener('beforeunload', () => maxiWarnIfUnsavedChanges());
 
 	const [useCustomStyleCard, setUseCustomStyleCard] = useState(true);
 

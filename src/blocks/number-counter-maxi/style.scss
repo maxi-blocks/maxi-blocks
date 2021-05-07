@@ -1,10 +1,36 @@
 body.maxi-blocks--active .maxi-number-counter-block {
 	.maxi-number-counter {
+		position: relative;
+
+		&__replay {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			top: 0;
+			right: 0;
+			background: #232533;
+			z-index: 3;
+			border-radius: 3px;
+		}
 		&__box {
 			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 100px;
 			z-index: 2;
 
+			&__background,
+			&__circle {
+				transform: rotate(-90deg);
+				transform-origin: center;
+			}
 			&__text {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
 				font-family: 'Roboto', sans-serif !important;
 			}
 		}

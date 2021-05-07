@@ -2,8 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { BaseControl } from '@wordpress/components';
 import { useState } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+import BaseControl from '../base-control';
 
 /**
  * External dependencies

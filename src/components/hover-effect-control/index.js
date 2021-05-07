@@ -2,12 +2,13 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl, TextareaControl, Icon } from '@wordpress/components';
+import { TextareaControl, Icon } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import SelectControl from '../select-control';
 import TypographyControl from '../typography-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';

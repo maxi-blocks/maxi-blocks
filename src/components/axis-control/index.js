@@ -3,16 +3,13 @@
  */
 import { useInstanceId } from '@wordpress/compose';
 import { __, sprintf } from '@wordpress/i18n';
-import {
-	BaseControl,
-	SelectControl,
-	Button,
-	Tooltip,
-} from '@wordpress/components';
+import { Button, Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import BaseControl from '../base-control';
+import SelectControl from '../select-control';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
@@ -145,14 +142,12 @@ const AxisControl = props => {
 			} else {
 				newValue = +val;
 			}
+		} else if (isEmpty(val)) {
+			newValue = '';
+		} else if (val === 'auto') {
+			newValue = 'auto';
 		} else {
-			if (isEmpty(val)) {
-				newValue = '';
-			} else if (val === 'auto') {
-				newValue = 'auto';
-			} else {
-				newValue = val;
-			}
+			newValue = val;
 		}
 
 		if (

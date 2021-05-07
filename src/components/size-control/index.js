@@ -2,11 +2,13 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { SelectControl, BaseControl, Button } from '@wordpress/components';
+import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import SelectControl from '../select-control';
+import BaseControl from '../base-control';
 import RangeSliderControl from '../range-slider-control';
 
 /**
@@ -169,7 +171,7 @@ const SizeControl = props => {
 						placeholder='auto'
 					/>
 					<SelectControl
-						className='components-maxi-dimensions-control__units'
+						className='maxi-dimensions-control__units'
 						options={getOptions()}
 						value={unit}
 						onChange={val => {

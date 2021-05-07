@@ -3,11 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect, Fragment } from '@wordpress/element';
-import { SelectControl, BaseControl, Button, Tooltip } from '@wordpress/components';
+import { Button, Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import SelectControl from '../select-control';
+import BaseControl from '../base-control';
 import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
 import FancyRadioControl from '../fancy-radio-control';

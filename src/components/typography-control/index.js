@@ -3,12 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 
-import { SelectControl } from '@wordpress/components';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import SelectControl from '../select-control';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';

@@ -3,11 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useRef, useCallback, useEffect } from '@wordpress/element';
-import { Tooltip, Button, SelectControl } from '@wordpress/components';
+import { Tooltip, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import SelectControl from '../select-control';
 import BlockResizer from '../block-resizer';
 
 /**

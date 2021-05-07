@@ -2,12 +2,13 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { BaseControl, Button, __experimentalGradientPicker } from '@wordpress/components';
+import { Button, __experimentalGradientPicker } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import BaseControl from '../base-control';
 import OpacityControl from '../opacity-control';
 
 /**

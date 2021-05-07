@@ -3,18 +3,17 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import { SelectControl, Icon } from '@wordpress/components';
+import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import {
-	ColorControl,
-	DefaultStylesControl,
-	FancyRadioControl,
-	RangeSliderControl,
-	SizeControl,
-} from '../../components';
+import ColorControl from '../color-control';
+import DefaultStylesControl from '../default-styles-control';
+import FancyRadioControl from '../fancy-radio-control';
+import RangeSliderControl from '../range-slider-control';
+import SizeControl from '../size-control';
+import SelectControl from '../select-control';
 import { getDefaultAttribute } from '../../extensions/styles';
 import {
 	dividerSolidHorizontal,

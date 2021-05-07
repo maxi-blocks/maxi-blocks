@@ -20,7 +20,13 @@ const getColumnDefaultValue = (
 	const colPosition = columns.indexOf(clientId);
 
 	const template = getColumnTemplate(
-		getLastBreakpointAttribute('row-pattern', breakpoint, rowPattern),
+		getLastBreakpointAttribute(
+			'row-pattern',
+			breakpoint,
+			rowPattern,
+			false,
+			true
+		),
 		false,
 		breakpoint
 	);

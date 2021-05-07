@@ -40,7 +40,6 @@ motionElems.forEach(function (elem) {
 				`#${motionID} .maxi-number-counter__box .maxi-number-counter__box__circle`
 			);
 
-			const durationSteps = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45];
 			const radius = motionData['number-counter-radius'];
 			const circumference = 2 * Math.PI * radius;
 			const startCountValue = Math.ceil(
@@ -54,11 +53,14 @@ motionElems.forEach(function (elem) {
 				motionData['number-counter-percentage-sign-status'];
 			const startAnimation = motionData['number-counter-start-animation'];
 
+			const frameDuration = countDuration / 60;
+
 			let count = startCountValue;
 
 			function startCounter() {
 				const interval = setInterval(() => {
-					count = count + durationSteps[countDuration - 1];
+					count = count + 1;
+					console.log(count);
 
 					if (count >= endCountValue) {
 						count = endCountValue;
@@ -76,19 +78,19 @@ motionElems.forEach(function (elem) {
 								(count / 360) * circumference
 							)} ${circumference}`
 						);
-				}, countDuration);
+				}, frameDuration);
 			}
 
 			if (startAnimation === 'view-scroll') {
 				let waypoint = new Waypoint({
 					element: numberCounterElem,
 					handler: function () {
-						setTimeout(() => startCounter(), 0);
+						startCounter();
 					},
 					offset: '100%',
 				});
 			} else {
-				setTimeout(() => startCounter(), 0);
+				startCounter();
 			}
 		}
 

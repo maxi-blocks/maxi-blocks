@@ -61,7 +61,6 @@ class edit extends MaxiBlockComponent {
 		const NumberCounter = attributes => {
 			const countRef = useRef(null);
 
-			const durationSteps = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45];
 			const startCountValue = Math.ceil(
 				(attributes['number-counter-start'] * 360) / 100
 			);
@@ -79,6 +78,8 @@ class edit extends MaxiBlockComponent {
 
 			const circumference = 2 * Math.PI * radius;
 
+			const frameDuration = countDuration / 60;
+
 			useEffect(() => {
 				if (autoReproduce || replyStatus) {
 					if (count >= endCountValue) {
@@ -87,8 +88,8 @@ class edit extends MaxiBlockComponent {
 					}
 
 					countRef.current = setInterval(() => {
-						setCount(count + durationSteps[countDuration - 1]);
-					}, countDuration);
+						setCount(count + 1);
+					}, frameDuration);
 
 					return () => clearInterval(countRef.current);
 				}

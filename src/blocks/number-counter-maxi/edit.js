@@ -106,23 +106,30 @@ class edit extends MaxiBlockComponent {
 						}}
 						icon={replay}
 					/>
-					<div className='maxi-number-counter__box'>
+					<div
+						className='maxi-number-counter__box'
+						style={{ width: `${radius + stroke / 2}px` }}
+					>
 						{!circleStatus && (
-							<svg viewBox='0 0 180 180'>
+							<svg
+								viewBox={`0 0 ${radius * 2 + stroke} ${
+									radius * 2 + stroke
+								}`}
+							>
 								<circle
 									className='maxi-number-counter__box__background'
 									strokeWidth={stroke}
 									fill='none'
-									cx='90'
-									cy='90'
+									cx={radius + stroke / 2}
+									cy={radius + stroke / 2}
 									r={radius}
 								/>
 								<circle
 									className='maxi-number-counter__box__circle'
 									strokeWidth={stroke}
 									fill='none'
-									cx='90'
-									cy='90'
+									cx={radius + stroke / 2}
+									cy={radius + stroke / 2}
 									r={radius}
 									strokeLinecap={
 										attributes[

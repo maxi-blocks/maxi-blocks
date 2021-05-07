@@ -1,6 +1,9 @@
 body.maxi-blocks--active .maxi-number-counter-block {
 	.maxi-number-counter {
 		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
 		&__replay {
 			display: flex;
@@ -15,9 +18,7 @@ body.maxi-blocks--active .maxi-number-counter-block {
 		}
 		&__box {
 			position: relative;
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			margin: 0 auto;
 			min-height: 100px;
 			z-index: 2;
 

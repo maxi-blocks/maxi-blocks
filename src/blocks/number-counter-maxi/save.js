@@ -14,6 +14,11 @@ const save = props => {
 
 	const classes = 'maxi-number-counter-block';
 
+	const radius = attributes['number-counter-radius'];
+	const stroke = attributes['number-counter-stroke'];
+	const circleStatus = attributes['number-counter-circle-status'];
+	const roundedStatus = attributes['number-counter-rounded-status'];
+
 	return (
 		<MaxiBlock
 			className={classes}
@@ -21,34 +26,35 @@ const save = props => {
 			{...getMaxiBlockBlockAttributes(props)}
 			isSave
 		>
-			<div className='maxi-number-counter__box'>
-				{!attributes['number-counter-circle-status'] && (
-					<svg viewBox='0 0 180 180'>
+			<div
+				className='maxi-number-counter__box'
+				style={{
+					width: `${radius + stroke / 2}px`,
+				}}
+			>
+				{!circleStatus && (
+					<svg
+						viewBox={`0 0 ${radius * 2 + stroke} ${
+							radius * 2 + stroke
+						}`}
+					>
 						<circle
 							className='maxi-number-counter__box__background'
-							stroke-width={attributes['number-counter-stroke']}
+							stroke-width={stroke}
 							fill='none'
-							cx='90'
-							cy='90'
-							r={attributes['number-counter-radius']}
+							cx={radius + stroke / 2}
+							cy={radius + stroke / 2}
+							r={radius}
 						/>
 						<circle
 							className='maxi-number-counter__box__circle'
-							stroke-width={attributes['number-counter-stroke']}
+							stroke-width={stroke}
 							fill='none'
-							cx='90'
-							cy='90'
-							r={attributes['number-counter-radius']}
-							stroke-linecap={
-								attributes['number-counter-rounded-status']
-									? 'round'
-									: ''
-							}
-							stroke-dasharray={`0 ${
-								2 *
-								Math.PI *
-								attributes['number-counter-radius']
-							}`}
+							cx={radius + stroke / 2}
+							cy={radius + stroke / 2}
+							r={radius}
+							stroke-linecap={roundedStatus ? 'round' : ''}
+							stroke-dasharray={`0 ${2 * Math.PI * radius}`}
 						/>
 					</svg>
 				)}

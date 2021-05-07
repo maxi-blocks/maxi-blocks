@@ -29,11 +29,11 @@ const numberCounter = {
 	},
 	'number-counter-radius': {
 		type: 'number',
-		default: 85,
+		default: 200,
 	},
 	'number-counter-stroke': {
 		type: 'number',
-		default: 8,
+		default: 20,
 	},
 	'number-counter-duration': {
 		type: 'number',
@@ -57,7 +57,7 @@ const numberCounter = {
 	},
 	'number-counter-title-font-size': {
 		type: 'number',
-		default: 64,
+		default: 40,
 	},
 	'number-counter-title-font-family': {
 		type: 'string',

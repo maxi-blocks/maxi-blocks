@@ -1,5 +1,29 @@
-// GSAP PLugins
-gsap.registerPlugin(ScrollTrigger);
+// Parallax
+class Parallax {
+	constructor(el, displace) {
+		this.animateItem(el, displace);
+	}
+
+	setPosition() {
+		if (window.pageYOffset !== undefined) {
+			return window.pageYOffset;
+		} else {
+			return (
+				document.documentElement ||
+				document.body.parentNode ||
+				document.body
+			).scrollTop;
+		}
+	}
+	animateItem(el, displace) {
+		if (typeof window.orientation !== 'undefined') {
+			return;
+		}
+		const scrollPosition = this.setPosition();
+		el.style.transform =
+			'translate3d(0px, ' + scrollPosition / displace + 'px, 0px)';
+	}
+}
 
 const getDeviceType = () => {
 	const ua = navigator.userAgent;
@@ -176,36 +200,39 @@ motionElems.forEach(function (elem) {
 		}
 
 		// Shape Divider
-		const shapeDividerTimeline = gsap.timeline({
-			scrollTrigger: {
-				trigger: `#${motionID} > .maxi-shape-divider`,
-				start: '-150',
-				scrub: true,
-				markers: false,
-				onEnter: self => {
-					self.trigger = elem;
-				},
-			},
-		});
-		if (motionData['shape-divider-top-effects-status']) {
-			shapeDividerTimeline.to(
-				`#${motionID} > .maxi-shape-divider.maxi-shape-divider__top`,
-				{
-					height: 0,
-					duration: 1,
-					ease: 'power1.out',
-				}
+		if (motionData['shape-divider-top-status']) {
+			const shapeDividerTopHeight =
+				motionData['shape-divider-bottom-height'];
+			const shapeDividerTopHeightUnit =
+				motionData['shape-divider-top-height-unit'];
+			const target = document.querySelector(
+				`#${motionID} > .maxi-shape-divider.maxi-shape-divider__top`
 			);
+
+			window.addEventListener('scroll', () => {
+				if (target.getBoundingClientRect().top < 100) {
+					target.style.height = 0;
+				} else {
+					target.style.height = `${shapeDividerTopHeight}${shapeDividerTopHeightUnit}`;
+				}
+			});
 		}
-		if (motionData['shape-divider-bottom-effects-status']) {
-			shapeDividerTimeline.to(
-				`#${motionID} > .maxi-shape-divider.maxi-shape-divider__bottom`,
-				{
-					height: 0,
-					duration: 1,
-					ease: 'power1.out',
-				}
+
+		if (motionData['shape-divider-bottom-status']) {
+			const shapeDividerBottomHeight =
+				motionData['shape-divider-bottom-height'];
+			const shapeDividerBottomHeightUnit =
+				motionData['shape-divider-bottom-height-unit'];
+			const target = document.querySelector(
+				`#${motionID} > .maxi-shape-divider.maxi-shape-divider__bottom`
 			);
+			window.addEventListener('scroll', () => {
+				if (target.getBoundingClientRect().top < 100) {
+					target.style.height = 0;
+				} else {
+					target.style.height = `${shapeDividerBottomHeight}${shapeDividerBottomHeightUnit}`;
+				}
+			});
 		}
 
 		// Parallax Effect
@@ -217,21 +244,14 @@ motionElems.forEach(function (elem) {
 			const parallaxSpeed = motionData['parallax-speed'];
 			const parallaxDirection = motionData['parallax-direction'];
 
-			const getBackgroundPosition = () => {
-				if (parallaxDirection === 'up')
-					return '50% ' + -window.innerHeight / parallaxSpeed + 'px';
-				if (parallaxDirection === 'down')
-					return '50% ' + -window.innerHeight * parallaxSpeed + 'px';
-			};
-
 			if (parallaxStatus) {
-				gsap.to(parallaxElem, {
-					backgroundPosition: getBackgroundPosition(),
-					ease: 'none',
-					scrollTrigger: {
-						trigger: parallaxElem,
-						scrub: true,
-					},
+				window.addEventListener('scroll', () => {
+					new Parallax(
+						parallaxElem,
+						parallaxDirection === 'up'
+							? -parallaxSpeed
+							: parallaxSpeed
+					);
 				});
 			}
 		}
@@ -285,6 +305,7 @@ motionElems.forEach(function (elem) {
 		const xAxis = motionData['motion-transform-origin-x'];
 		const yAxis = motionData['motion-transform-origin-y'];
 
+		/*
 		if (
 			!!interactionStatus &&
 			((!!motionMobileStatus && getDeviceType() === 'mobile') ||
@@ -388,6 +409,7 @@ motionElems.forEach(function (elem) {
 				}
 			);
 		}
+		*/
 	}
 });
 

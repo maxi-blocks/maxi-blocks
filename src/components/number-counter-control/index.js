@@ -7,8 +7,14 @@ import { SelectControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { ColorControl, FancyRadioControl, SizeControl } from '../';
+import {
+	ColorControl,
+	FancyRadioControl,
+	SizeControl,
+	FontFamilySelector,
+} from '../';
 import { getDefaultAttribute } from '../../extensions/styles';
+import { setFormat } from '../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -130,6 +136,18 @@ const NumberCounterControl = props => {
 						'number-counter-stroke': getDefaultAttribute(
 							'number-counter-stroke'
 						),
+					})
+				}
+			/>
+			<FontFamilySelector
+				className='maxi-typography-control__font-family'
+				defaultValue={getDefaultAttribute(
+					'number-counter-title-font-family'
+				)}
+				font={props['number-counter-title-font-family']}
+				onChange={font =>
+					onChange({
+						['number-counter-title-font-family']: font.value,
 					})
 				}
 			/>

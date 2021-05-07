@@ -55,6 +55,10 @@ const numberCounter = {
 		type: 'number',
 		default: 64,
 	},
+	'number-counter-title-font-family': {
+		type: 'string',
+		default: 'Roboto',
+	},
 };
 
 export default numberCounter;

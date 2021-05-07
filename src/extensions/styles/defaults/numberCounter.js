@@ -3,6 +3,10 @@ const numberCounter = {
 		type: 'boolean',
 		default: true,
 	},
+	'number-counter-auto-reproduce': {
+		type: 'boolean',
+		default: false,
+	},
 	'number-counter-percentage-sign-status': {
 		type: 'boolean',
 		default: false,

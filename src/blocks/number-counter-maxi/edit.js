@@ -72,23 +72,27 @@ class edit extends MaxiBlockComponent {
 			const radius = attributes['number-counter-radius'];
 			const stroke = attributes['number-counter-stroke'];
 			const circleStatus = attributes['number-counter-circle-status'];
+			const autoReproduce = attributes['number-counter-auto-reproduce'];
 
 			const [count, setCount] = useState(startCountValue);
+			const [replyStatus, setReplyStatus] = useState(false);
 
 			const circumference = 2 * Math.PI * radius;
 
 			useEffect(() => {
-				if (count >= endCountValue) {
-					setCount(endCountValue);
-					return;
+				if (autoReproduce || replyStatus) {
+					if (count >= endCountValue) {
+						setCount(endCountValue);
+						return;
+					}
+
+					countRef.current = setInterval(() => {
+						setCount(count + durationSteps[countDuration - 1]);
+					}, countDuration);
+
+					return () => clearInterval(countRef.current);
 				}
-
-				countRef.current = setInterval(() => {
-					setCount(count + durationSteps[countDuration - 1]);
-				}, countDuration);
-
-				return () => clearInterval(countRef.current);
-			}, [count]);
+			}, [count, replyStatus, autoReproduce]);
 
 			return (
 				<div className='maxi-number-counter'>
@@ -96,6 +100,7 @@ class edit extends MaxiBlockComponent {
 						className='maxi-number-counter__replay'
 						onClick={() => {
 							setCount(startCountValue);
+							setReplyStatus(!replyStatus);
 							clearInterval(countRef.current);
 						}}
 						icon={replay}

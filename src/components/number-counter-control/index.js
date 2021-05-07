@@ -14,7 +14,6 @@ import {
 	FontFamilySelector,
 } from '../';
 import { getDefaultAttribute } from '../../extensions/styles';
-import { setFormat } from '../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -31,6 +30,17 @@ const NumberCounterControl = props => {
 
 	return (
 		<div className={classes}>
+			<FancyRadioControl
+				label={__('Auto Reproduce', 'maxi-block')}
+				selected={props['number-counter-auto-reproduce']}
+				options={[
+					{ label: __('No', 'maxi-block'), value: 0 },
+					{ label: __('Yes', 'maxi-block'), value: 1 },
+				]}
+				onChange={val =>
+					onChange({ 'number-counter-auto-reproduce': val })
+				}
+			/>
 			<SelectControl
 				label={__('Start Animation', 'maxi-blocks')}
 				value={props['number-counter-start-animation']}

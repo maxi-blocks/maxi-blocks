@@ -6,17 +6,13 @@ import {
 	createNewPost,
 	insertBlock,
 	getEditedPostContent,
-	// pressKeyWithModifier,
-	// openPreviewPage,
-	// pressKeyTimes,
-	// setClipboardData,
 } from '@wordpress/e2e-test-utils';
 
 describe('Alignment', () => {
 	beforeEach(async () => {
 		await createNewPost();
 	});
-	it.only('write a sentence in text maxi and use alignment', async () => {
+	it('checking the operation of alignment-contorl', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Alignment');
 		await page.$eval('.toolbar-item__alignment', button => button.click());
@@ -43,9 +39,3 @@ describe('Alignment', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 });
-
-// const popover = await page.$('.components-popover__content');
-// const alignmentWrapper = popover.$('.maxi-alignment-control__no-label');
-// const alignmentSettings = await alignmentWrapper.$$(
-// 	'.components-radio-control__option'
-// );

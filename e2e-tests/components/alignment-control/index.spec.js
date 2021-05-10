@@ -2,19 +2,17 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+
+import { getBlockAttributes } from '../../utils';
 
 describe('Alignment', () => {
 	beforeEach(async () => {
 		await createNewPost();
 	});
-	it('checking the operation of alignment-contorl', async () => {
+	it('checking the operation of alignment-control', async () => {
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Alignment');
+		await page.keyboard.type('Testing test maxi');
 		await page.$eval('.toolbar-item__alignment', button => button.click());
 		await page.waitForSelector(
 			'.components-popover__content .maxi-alignment-control__no-label'
@@ -22,20 +20,21 @@ describe('Alignment', () => {
 		const alignmentSettings = await page.$$(
 			'.components-popover__content .maxi-alignment-control__no-label .components-radio-control__option'
 		);
-		await alignmentSettings[1].$eval('label', setting => setting.click());
-		// Check alignment center
-		expect(await getEditedPostContent()).toMatchSnapshot();
 
-		await alignmentSettings[0].$eval('label', setting => setting.click());
-		// Check alignment left
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		const alignments = ['left', 'center', 'right', 'justify'];
 
-		await alignmentSettings[2].$eval('label', setting => setting.click());
-		// Check alignment right
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		for (let i = 0; i < alignmentSettings.length; i++) {
+			const setting = alignmentSettings[i];
 
-		await alignmentSettings[3].$eval('label', setting => setting.click());
-		// Check alignment justify
-		expect(await getEditedPostContent()).toMatchSnapshot();
+			await setting.click();
+
+			const attributes = await getBlockAttributes();
+
+			debugger;
+
+			expect(attributes['text-alignment-general']).toStrictEqual(
+				alignments[i]
+			);
+		}
 	});
 });

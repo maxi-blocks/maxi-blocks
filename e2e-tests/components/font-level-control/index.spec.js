@@ -19,12 +19,15 @@ describe('font level', () => {
 		await page.waitForSelector(
 			'.components-popover__content .maxi-font-level-control'
 		);
-		await page.$$eval(
-			'.components-popover__content .maxi-font-level-control .components-button.maxi-font-level-control__button',
-			settings => settings[1].click()
+		const fontLevelControl = await page.$$(
+			'.components-popover__content .maxi-font-level-control .components-button.maxi-font-level-control__button'
 		);
-		/** await levelSettings[1].evaluate(setting => setting.click()); */
-		/** await alignmentSettings[1].$eval('label', setting => setting.click()); */
-		expect(await getEditedPostContent()).toMatchSnapshot();
+
+		for (let i = 0; i < fontLevelControl.length; i++) {
+			const setting = fontLevelControl[i];
+
+			await setting.click();
+			expect(await getEditedPostContent()).toMatchSnapshot();
+		}
 	});
 });

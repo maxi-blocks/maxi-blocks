@@ -1,7 +1,7 @@
 /**
  * WordPress Dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { SelectControl } from '@wordpress/components';
 
 /**
@@ -19,6 +19,11 @@ import { getDefaultAttribute } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
+
+/**
+ * Styles
+ */
+import './editor.scss';
 
 /**
  * Component
@@ -58,6 +63,13 @@ const NumberCounterControl = props => {
 					onChange({ 'number-counter-start-animation': val })
 				}
 			/>
+			{props['number-counter-start'] >= props['number-counter-end'] && (
+				<div className='maxi-number-counter-control__alert-warning'>
+					<i>{__('Start Number ', 'maxi-blocks')}</i>
+					{__('can not be grater than ', 'maxi-blocks')}
+					<i>{__('End Number ', 'maxi-blocks')}</i>
+				</div>
+			)}
 			<SizeControl
 				label={__('Start Number', 'maxi-blocks')}
 				disableUnit

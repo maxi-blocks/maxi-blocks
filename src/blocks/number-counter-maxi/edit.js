@@ -54,7 +54,7 @@ const NumberCounter = attributes => {
 	const frameDuration = countDuration / 60;
 
 	useEffect(() => {
-		if (autoReproduce || replyStatus) {
+		if ((startCountValue < endCountValue && autoReproduce) || replyStatus) {
 			if (count >= endCountValue) {
 				setCount(endCountValue);
 				return;
@@ -69,7 +69,7 @@ const NumberCounter = attributes => {
 	}, [count, replyStatus, autoReproduce, endCountValue]);
 
 	useEffect(() => {
-		if (autoReproduce || replyStatus) {
+		if ((startCountValue < endCountValue && autoReproduce) || replyStatus) {
 			if (count >= endCountValue) {
 				setCount(startCountValue);
 				clearInterval(countRef.current);

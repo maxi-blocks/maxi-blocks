@@ -6,6 +6,9 @@ import { Button } from '@wordpress/components';
 /**
  * Internal dependencies
  */
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
 import { getPaletteClasses } from '../../extensions/styles';
 
 /**
@@ -18,20 +21,16 @@ import { isNil, isEmpty } from 'lodash';
  * Save
  */
 const save = props => {
-	const { className, attributes } = props;
+	const { attributes } = props;
 	const {
 		uniqueID,
-		blockStyle,
-		extraClassName,
 		linkSettings,
 		buttonContent,
 		parentBlockStyle,
 	} = attributes;
 
 	const classes = classnames(
-		'maxi-motion-effect',
-		'maxi-block maxi-button-block',
-		blockStyle,
+		'maxi-button-block',
 		getPaletteClasses(
 			attributes,
 			[
@@ -47,10 +46,7 @@ const save = props => {
 			],
 			'maxi-blocks/button-maxi',
 			parentBlockStyle
-		),
-		extraClassName,
-		uniqueID,
-		className
+		)
 	);
 
 	const linkOpt = !isNil(linkSettings) && linkSettings;
@@ -70,7 +66,13 @@ const save = props => {
 	);
 
 	return (
-		<div className={classes} id={uniqueID}>
+		<MaxiBlock
+			className={classes}
+			id={uniqueID}
+			{...getMaxiBlockBlockAttributes(props)}
+			isSave
+			disableBackground
+		>
 			<Button
 				className={buttonClasses}
 				{...(!isEmpty(linkProps.href) && linkProps)}
@@ -82,7 +84,7 @@ const save = props => {
 					{buttonContent}
 				</span>
 			</Button>
-		</div>
+		</MaxiBlock>
 	);
 };
 

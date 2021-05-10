@@ -123,16 +123,6 @@ function maxi_load_custom_wp_front_script() {
 	);
 
 	wp_enqueue_script(
-		'maxi-gsap-lib-js',
-		plugins_url('/js/gsap.min.js', dirname(__FILE__))
-	);
-
-	wp_enqueue_script(
-		'maxi-gsap-scroll-trigger-js',
-		plugins_url('/js/scroll-trigger.min.js', dirname(__FILE__))
-	);
-
-	wp_enqueue_script(
 		'maxi-waypoints-js',
 		plugins_url('/js/waypoints.min.js', dirname(__FILE__))
 	);

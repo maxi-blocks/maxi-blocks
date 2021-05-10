@@ -15,7 +15,7 @@ import { __experimentalBlock } from '@wordpress/block-editor';
 import Inspector from './inspector';
 import {
 	BackgroundDisplayer,
-	MaxiBlock,
+	MaxiBlockComponent,
 	MotionPreview,
 	Toolbar,
 } from '../../components';
@@ -41,7 +41,7 @@ import { toolbarReplaceImage } from '../../icons';
 /**
  * Content
  */
-class edit extends MaxiBlock {
+class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}

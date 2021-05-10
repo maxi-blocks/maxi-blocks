@@ -6,8 +6,10 @@ import { InnerBlocks } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { BackgroundDisplayer } from '../../components';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
+import { getPaletteClasses } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -18,19 +20,12 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { attributes, className } = props;
-	const {
-		uniqueID,
-		blockStyle,
-		extraClassName,
-		parentBlockStyle,
-	} = attributes;
+	const { uniqueID, parentBlockStyle } = props.attributes;
 
 	const classes = classnames(
-		'maxi-block maxi-column-block',
-		blockStyle,
+		'maxi-column-block',
 		getPaletteClasses(
-			attributes,
+			props.attributes,
 			[
 				'background',
 				'background-hover',
@@ -41,32 +36,18 @@ const save = props => {
 			],
 			'maxi-blocks/column-maxi',
 			parentBlockStyle
-		),
-		extraClassName,
-		className,
-		uniqueID
+		)
 	);
 
 	return (
-		<div className={classes} id={uniqueID}>
-			<BackgroundDisplayer
-				{...getGroupAttributes(attributes, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundImageHover',
-					'backgroundVideoHover',
-					'backgroundGradientHover',
-					'backgroundSVGHover',
-				])}
-			/>
+		<MaxiBlock
+			className={classes}
+			id={uniqueID}
+			{...getMaxiBlockBlockAttributes(props)}
+			isSave
+		>
 			<InnerBlocks.Content />
-		</div>
+		</MaxiBlock>
 	);
 };
 

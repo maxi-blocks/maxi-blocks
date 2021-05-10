@@ -2,17 +2,15 @@
  * WordPress dependencies
  */
 import { InnerBlocks } from '@wordpress/block-editor';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import {
-	ArrowDisplayer,
-	BackgroundDisplayer,
-	ShapeDivider,
-} from '../../components';
+import { ArrowDisplayer, ShapeDivider } from '../../components';
 import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -23,20 +21,12 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { attributes, className } = props;
-	const {
-		uniqueID,
-		blockStyle,
-		defaultBlockStyle,
-		fullWidth,
-		extraClassName,
-		parentBlockStyle,
-	} = attributes;
+	const { attributes } = props;
+	const { uniqueID, fullWidth, parentBlockStyle } = attributes;
 
 	const classes = classnames(
-		'maxi-motion-effect',
-		'maxi-block maxi-container-block',
-		blockStyle,
+		'maxi-container-block',
+		fullWidth === 'full' ? 'alignfull' : null,
 		getPaletteClasses(
 			attributes,
 			[
@@ -49,59 +39,34 @@ const save = props => {
 			],
 			'maxi-blocks/container-maxi',
 			parentBlockStyle
-		),
-		extraClassName,
-		className,
-		uniqueID,
-		fullWidth === 'full' ? 'alignfull' : null
+		)
 	);
 
 	return (
-		<Fragment>
-			<section
-				className={classes}
-				data-gx_initial_block_class={defaultBlockStyle}
-				id={uniqueID}
-			>
-				<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />
-
-				<BackgroundDisplayer
-					{...getGroupAttributes(attributes, [
-						'background',
-						'backgroundColor',
-						'backgroundImage',
-						'backgroundVideo',
-						'backgroundGradient',
-						'backgroundSVG',
-						'backgroundHover',
-						'backgroundColorHover',
-						'backgroundImageHover',
-						'backgroundVideoHover',
-						'backgroundGradientHover',
-						'backgroundSVGHover',
-					])}
-					blockClassName={uniqueID}
+		<MaxiBlock
+			className={classes}
+			id={uniqueID}
+			tagName='section'
+			{...getMaxiBlockBlockAttributes(props)}
+			isSave
+		>
+			<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />
+			{attributes['shape-divider-top-status'] && (
+				<ShapeDivider
+					{...getGroupAttributes(attributes, 'shapeDivider')}
+					location='top'
 				/>
-
-				{attributes['shape-divider-top-status'] && (
-					<ShapeDivider
-						{...getGroupAttributes(attributes, 'shapeDivider')}
-						location='top'
-					/>
-				)}
-
-				<div className='maxi-container-block__container'>
-					<InnerBlocks.Content />
-				</div>
-
-				{attributes['shape-divider-bottom-status'] && (
-					<ShapeDivider
-						{...getGroupAttributes(attributes, 'shapeDivider')}
-						location='bottom'
-					/>
-				)}
-			</section>
-		</Fragment>
+			)}
+			<div className='maxi-container-block__container'>
+				<InnerBlocks.Content />
+			</div>
+			{attributes['shape-divider-bottom-status'] && (
+				<ShapeDivider
+					{...getGroupAttributes(attributes, 'shapeDivider')}
+					location='bottom'
+				/>
+			)}
+		</MaxiBlock>
 	);
 };
 

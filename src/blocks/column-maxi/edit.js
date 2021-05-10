@@ -5,7 +5,7 @@ import { compose } from '@wordpress/compose';
 import { Fragment, forwardRef, createRef } from '@wordpress/element';
 import { Spinner } from '@wordpress/components';
 import { withSelect, withDispatch } from '@wordpress/data';
-import { InnerBlocks, __experimentalBlock } from '@wordpress/block-editor';
+import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -13,14 +13,15 @@ import { InnerBlocks, __experimentalBlock } from '@wordpress/block-editor';
 import Inspector from './inspector';
 import RowContext from '../row-maxi/context';
 import {
-	BackgroundDisplayer,
 	BlockPlaceholder,
 	BlockResizer,
-	MaxiBlock,
+	MaxiBlockComponent,
 	Toolbar,
 } from '../../components';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
 import {
-	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getPaletteClasses,
 } from '../../extensions/styles';
@@ -36,24 +37,29 @@ import { isNil, round } from 'lodash';
  * InnerBlocks version
  */
 const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const { children, background, className, maxiBlockClass } = props;
+	const {
+		children,
+		className,
+		attributes: { uniqueID },
+	} = props;
 
 	return (
-		<__experimentalBlock.div
+		<MaxiBlock
+			key={`maxi-column--${uniqueID}`}
 			ref={ref}
 			className={className}
-			data-gx_initial_block_class={maxiBlockClass}
+			{...getMaxiBlockBlockAttributes(props)}
+			disableMotion
 		>
-			<BackgroundDisplayer {...background} />
 			{children}
-		</__experimentalBlock.div>
+		</MaxiBlock>
 	);
 });
 
 /**
  * Editor
  */
-class edit extends MaxiBlock {
+class edit extends MaxiBlockComponent {
 	constructor(props) {
 		super(props);
 
@@ -61,6 +67,8 @@ class edit extends MaxiBlock {
 	}
 
 	componentDidUpdate() {
+		this.displayStyles();
+
 		if (this.resizableObject.current) {
 			const columnWidth = getLastBreakpointAttribute(
 				'column-size',
@@ -82,7 +90,6 @@ class edit extends MaxiBlock {
 	render() {
 		const {
 			attributes,
-			className,
 			clientId,
 			deviceType,
 			hasInnerBlock,
@@ -92,27 +99,10 @@ class edit extends MaxiBlock {
 			setAttributes,
 			updateRowPattern,
 		} = this.props;
-		const {
-			blockStyle,
-			defaultBlockStyle,
-			extraClassName,
-			uniqueID,
-			parentBlockStyle,
-		} = attributes;
+		const { uniqueID, parentBlockStyle } = attributes;
 
 		const classes = classnames(
-			'maxi-block',
-			'maxi-block--backend',
 			'maxi-column-block',
-			getLastBreakpointAttribute(
-				'display',
-				deviceType,
-				attributes,
-				false,
-				true
-			) === 'none' && 'maxi-block-display-none',
-			uniqueID,
-			blockStyle,
 			getPaletteClasses(
 				attributes,
 				[
@@ -125,9 +115,7 @@ class edit extends MaxiBlock {
 				],
 				'maxi-blocks/column-maxi',
 				parentBlockStyle
-			),
-			extraClassName,
-			className
+			)
 		);
 
 		const getColumnWidthDefault = () => {
@@ -219,23 +207,7 @@ class edit extends MaxiBlock {
 									__experimentalTagName={ContainerInnerBlocks}
 									__experimentalPassedProps={{
 										className: classes,
-										maxiBlockClass: defaultBlockStyle,
-										background: {
-											...getGroupAttributes(attributes, [
-												'background',
-												'backgroundColor',
-												'backgroundImage',
-												'backgroundVideo',
-												'backgroundGradient',
-												'backgroundSVG',
-												'backgroundHover',
-												'backgroundColorHover',
-												'backgroundImageHover',
-												'backgroundVideoHover',
-												'backgroundGradientHover',
-												'backgroundSVGHover',
-											]),
-										},
+										...this.props,
 									}}
 									renderAppender={
 										!hasInnerBlock

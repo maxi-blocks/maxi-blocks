@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { withSelect } from '@wordpress/data';
-import { InnerBlocks, __experimentalBlock } from '@wordpress/block-editor';
+import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -10,17 +10,14 @@ import { InnerBlocks, __experimentalBlock } from '@wordpress/block-editor';
 import Inspector from './inspector';
 import {
 	ArrowDisplayer,
-	BackgroundDisplayer,
 	BlockPlaceholder,
-	MaxiBlock,
-	MotionPreview,
+	MaxiBlockComponent,
 	Toolbar,
 } from '../../components';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-	getPaletteClasses,
-} from '../../extensions/styles';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -33,7 +30,7 @@ import { isEmpty } from 'lodash';
  * Edit
  */
 
-class edit extends MaxiBlock {
+class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -60,39 +57,11 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
-		const {
-			attributes,
-			className,
-			clientId,
-			hasInnerBlock,
-			deviceType,
-		} = this.props;
-		const {
-			uniqueID,
-			blockStyle,
-			extraClassName,
-			fullWidth,
-			parentBlockStyle,
-		} = attributes;
+		const { attributes, clientId, hasInnerBlock, deviceType } = this.props;
+		const { uniqueID, parentBlockStyle } = attributes;
 
 		const classes = classnames(
-			'maxi-block',
-			'maxi-block--backend',
 			'maxi-group-block',
-			'maxi-motion-effect',
-			`maxi-motion-effect-${uniqueID}`,
-			getLastBreakpointAttribute(
-				'display',
-				deviceType,
-				attributes,
-				false,
-				true
-			) === 'none' && 'maxi-block-display-none',
-			!!attributes['background-highlight'] &&
-				'maxi-highlight--background',
-			!!attributes['border-highlight'] && 'maxi-highlight--border',
-			uniqueID,
-			blockStyle,
 			getPaletteClasses(
 				attributes,
 				[
@@ -105,9 +74,7 @@ class edit extends MaxiBlock {
 				],
 				'maxi-blocks/group-maxi',
 				parentBlockStyle
-			),
-			extraClassName,
-			className
+			)
 		);
 
 		/**
@@ -127,55 +94,30 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				blockStyle={blockStyle}
-				{...this.props}
-			/>,
-			<MotionPreview
-				key={`motion-preview-${uniqueID}`}
-				{...getGroupAttributes(attributes, 'motion')}
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<MaxiBlock
+				key={`maxi-group--${uniqueID}`}
+				className={classes}
+				{...getMaxiBlockBlockAttributes(this.props)}
 			>
-				<__experimentalBlock.section
-					className={classes}
-					data-align={fullWidth}
-				>
-					<ArrowDisplayer
-						{...getGroupAttributes(attributes, 'arrow')}
-						breakpoint={deviceType}
-					/>
-					<BackgroundDisplayer
-						{...getGroupAttributes(attributes, [
-							'background',
-							'backgroundColor',
-							'backgroundImage',
-							'backgroundVideo',
-							'backgroundGradient',
-							'backgroundSVG',
-							'backgroundHover',
-							'backgroundColorHover',
-							'backgroundImageHover',
-							'backgroundVideoHover',
-							'backgroundGradientHover',
-							'backgroundSVGHover',
-						])}
-						blockClassName={uniqueID}
-					/>
-					<InnerBlocks
-						allowedBlocks={ALLOWED_BLOCKS}
-						templateLock={false}
-						__experimentalTagName='div'
-						__experimentalPassedProps={{
-							className: 'maxi-group-block__group',
-						}}
-						renderAppender={
-							!hasInnerBlock
-								? () => <BlockPlaceholder clientId={clientId} />
-								: () => <InnerBlocks.ButtonBlockAppender />
-						}
-					/>
-				</__experimentalBlock.section>
-			</MotionPreview>,
+				<ArrowDisplayer
+					{...getGroupAttributes(attributes, 'arrow')}
+					breakpoint={deviceType}
+				/>
+				<InnerBlocks
+					allowedBlocks={ALLOWED_BLOCKS}
+					templateLock={false}
+					__experimentalTagName='div'
+					__experimentalPassedProps={{
+						className: 'maxi-group-block__group',
+					}}
+					renderAppender={
+						!hasInnerBlock
+							? () => <BlockPlaceholder clientId={clientId} />
+							: () => <InnerBlocks.ButtonBlockAppender />
+					}
+				/>
+			</MaxiBlock>,
 		];
 	}
 }

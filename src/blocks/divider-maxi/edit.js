@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { __experimentalBlock } from '@wordpress/block-editor';
 import { compose } from '@wordpress/compose';
 import { withSelect, withDispatch } from '@wordpress/data';
 
@@ -9,19 +8,12 @@ import { withSelect, withDispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import {
-	BackgroundDisplayer,
-	BlockResizer,
-	MaxiBlock,
-	MotionPreview,
-	Toolbar,
-} from '../../components';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-	getPaletteClasses,
-} from '../../extensions/styles';
+import { BlockResizer, MaxiBlockComponent, Toolbar } from '../../components';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -32,7 +24,7 @@ import { isNil, isEmpty } from 'lodash';
 /**
  * Content
  */
-class edit extends MaxiBlock {
+class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -59,35 +51,20 @@ class edit extends MaxiBlock {
 	render() {
 		const {
 			attributes,
-			className,
 			deviceType,
 			isSelected,
 			onDeviceTypeChange,
 			setAttributes,
 		} = this.props;
-		const {
-			uniqueID,
-			blockStyle,
-			lineOrientation,
-			extraClassName,
-			fullWidth,
-			parentBlockStyle,
-		} = attributes;
+		const { uniqueID, lineOrientation, parentBlockStyle } = attributes;
 
 		onDeviceTypeChange();
 
 		const classes = classnames(
-			'maxi-block',
-			'maxi-block--backend',
 			'maxi-divider-block',
-			getLastBreakpointAttribute(
-				'display',
-				deviceType,
-				attributes,
-				false,
-				true
-			) === 'none' && 'maxi-block-display-none',
-			blockStyle,
+			lineOrientation === 'vertical'
+				? 'maxi-divider-block--vertical'
+				: 'maxi-divider-block--horizontal',
 			getPaletteClasses(
 				attributes,
 				[
@@ -100,13 +77,7 @@ class edit extends MaxiBlock {
 				],
 				'maxi-blocks/divider-maxi',
 				parentBlockStyle
-			),
-			extraClassName,
-			uniqueID,
-			className,
-			lineOrientation === 'vertical'
-				? 'maxi-divider-block--vertical'
-				: 'maxi-divider-block--horizontal'
+			)
 		);
 
 		const handleOnResizeStart = event => {
@@ -124,11 +95,7 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				{...this.props}
-				blockStyle={blockStyle}
-			/>,
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
 			<BlockResizer
 				key={uniqueID}
 				className={classnames(
@@ -158,26 +125,15 @@ class edit extends MaxiBlock {
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}
 			>
-				<MotionPreview {...getGroupAttributes(attributes, 'motion')}>
-					<__experimentalBlock
-						className={classes}
-						data-align={fullWidth}
-					>
-						<BackgroundDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'backgroundColor',
-								'backgroundGradient',
-								'backgroundHover',
-								'backgroundColorHover',
-								'backgroundGradientHover',
-							])}
-						/>
-						{attributes['divider-border-style'] !== 'none' && (
-							<hr className='maxi-divider-block__divider' />
-						)}
-					</__experimentalBlock>
-				</MotionPreview>
+				<MaxiBlock
+					key={`maxi-divider--${uniqueID}`}
+					className={classes}
+					{...getMaxiBlockBlockAttributes(this.props)}
+				>
+					{attributes['divider-border-style'] !== 'none' && (
+						<hr className='maxi-divider-block__divider' />
+					)}
+				</MaxiBlock>
 			</BlockResizer>,
 		];
 	}

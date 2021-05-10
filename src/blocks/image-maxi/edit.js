@@ -4,25 +4,22 @@
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
 import { Spinner, Button, Placeholder } from '@wordpress/components';
-import { __experimentalBlock, MediaUpload } from '@wordpress/block-editor';
+import { MediaUpload } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import {
-	BackgroundDisplayer,
 	BlockResizer,
 	HoverPreview,
-	MaxiBlock,
-	MotionPreview,
+	MaxiBlockComponent,
 	Toolbar,
 } from '../../components';
-import {
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-	getPaletteClasses,
-} from '../../extensions/styles';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -39,7 +36,7 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
 /**
  * Content
  */
-class edit extends MaxiBlock {
+class edit extends MaxiBlockComponent {
 	get getWrapperWidth() {
 		const target = document.getElementById(`block-${this.props.clientId}`);
 		if (target) return target.getBoundingClientRect().width;
@@ -72,17 +69,9 @@ class edit extends MaxiBlock {
 	}
 
 	render() {
-		const {
-			className,
-			attributes,
-			imageData,
-			setAttributes,
-			deviceType,
-		} = this.props;
+		const { attributes, imageData, setAttributes } = this.props;
 		const {
 			uniqueID,
-			blockStyle,
-			extraClassName,
 			fullWidth,
 			cropOptions,
 			captionType,
@@ -95,13 +84,28 @@ class edit extends MaxiBlock {
 			mediaHeight,
 			SVGElement,
 			imgWidth,
-			parentBlockStyle,
 			imageRatio,
+			parentBlockStyle,
 		} = attributes;
 
 		const hoverPreviewClasses = classnames(
 			'maxi-image-ratio',
-			`maxi-image-ratio__${imageRatio}`
+			`maxi-image-ratio__${imageRatio}`,
+			getPaletteClasses(
+				attributes,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+					'typography',
+					'typography-hover',
+				],
+				'maxi-blocks/image-maxi',
+				parentBlockStyle
+			)
 		);
 
 		const hoverClasses = classnames(
@@ -119,35 +123,7 @@ class edit extends MaxiBlock {
 		);
 
 		const classes = classnames(
-			'maxi-block maxi-image-block',
-			`maxi-motion-effect maxi-motion-effect-${uniqueID}`,
-			'maxi-block--backend',
-			getLastBreakpointAttribute(
-				'display',
-				deviceType,
-				attributes,
-				false,
-				true
-			) === 'none' && 'maxi-block-display-none',
-			blockStyle,
-			getPaletteClasses(
-				attributes,
-				[
-					'background',
-					'background-hover',
-					'border',
-					'border-hover',
-					'box-shadow',
-					'box-shadow-hover',
-					'typography',
-					'typography-hover',
-				],
-				'maxi-blocks/image-maxi',
-				parentBlockStyle
-			),
-			extraClassName,
-			uniqueID,
-			className,
+			'maxi-image-block',
 			fullWidth === 'full' && 'alignfull'
 		);
 
@@ -178,143 +154,119 @@ class edit extends MaxiBlock {
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				blockStyle={blockStyle}
-				{...this.props}
-			/>,
-			<MotionPreview
-				key={`motion-preview-${uniqueID}`}
-				{...getGroupAttributes(attributes, 'motion')}
+			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<MaxiBlock
+				key={`maxi-image--${uniqueID}`}
+				tagName='figure'
+				className={classes}
+				{...getMaxiBlockBlockAttributes(this.props)}
 			>
-				<__experimentalBlock.figure
-					className={classes}
-					data-align={fullWidth}
-				>
-					<MediaUpload
-						onSelect={media =>
-							setAttributes({
-								mediaID: media.id,
-								mediaURL: media.url,
-								mediaWidth: media.width,
-								mediaHeight: media.height,
-							})
-						}
-						allowedTypes='image'
-						value={mediaID}
-						render={({ open }) => (
-							<>
-								{(!isNil(mediaID) && imageData) || mediaURL ? (
-									<>
-										<BackgroundDisplayer
-											{...getGroupAttributes(attributes, [
-												'background',
-												'backgroundColor',
-												'backgroundImage',
-												'backgroundVideo',
-												'backgroundGradient',
-												'backgroundSVG',
-												'backgroundHover',
-												'backgroundColorHover',
-												'backgroundImageHover',
-												'backgroundVideoHover',
-												'backgroundGradientHover',
-												'backgroundSVGHover',
-											])}
-											blockClassName={uniqueID}
-										/>
-										<BlockResizer
-											key={uniqueID}
-											className='maxi-block__resizer maxi-image-block__resizer'
-											size={{ width: `${imgWidth}%` }}
-											showHandle
-											maxWidth='100%'
-											enable={{
-												topRight: true,
-												bottomRight: true,
-												bottomLeft: true,
-												topLeft: true,
-											}}
-											onResizeStop={(
-												event,
-												direction,
-												elt,
-												delta
-											) => {
-												setAttributes({
-													imgWidth: +round(
-														elt.style.width.replace(
-															/[^0-9.]/g,
-															''
-														),
-														1
+				<MediaUpload
+					onSelect={media =>
+						setAttributes({
+							mediaID: media.id,
+							mediaURL: media.url,
+							mediaWidth: media.width,
+							mediaHeight: media.height,
+						})
+					}
+					allowedTypes='image'
+					value={mediaID}
+					render={({ open }) => (
+						<>
+							{(!isNil(mediaID) && imageData) || mediaURL ? (
+								<>
+									<BlockResizer
+										key={uniqueID}
+										className='maxi-block__resizer maxi-image-block__resizer'
+										size={{ width: `${imgWidth}%` }}
+										showHandle
+										maxWidth='100%'
+										enable={{
+											topRight: true,
+											bottomRight: true,
+											bottomLeft: true,
+											topLeft: true,
+										}}
+										onResizeStop={(
+											event,
+											direction,
+											elt,
+											delta
+										) => {
+											setAttributes({
+												imgWidth: +round(
+													elt.style.width.replace(
+														/[^0-9.]/g,
+														''
 													),
-												});
-											}}
-										>
-											<div className='maxi-image-block__settings'>
-												<Button
-													className='maxi-image-block__settings__upload-button'
-													showTooltip='true'
-													onClick={open}
-													icon={toolbarReplaceImage}
-												/>
-											</div>
-											<div className={hoverClasses}>
-												<HoverPreview
-													className={
-														!SVGElement
-															? hoverPreviewClasses
-															: null
-													}
-													key={`hover-preview-${uniqueID}`}
-													{...getGroupAttributes(
-														attributes,
-														[
-															'hover',
-															'hoverTitleTypography',
-															'hoverContentTypography',
-														]
-													)}
-													SVGElement={SVGElement}
-													mediaID={mediaID}
-													src={mediaURL}
-													width={mediaWidth}
-													height={mediaHeight}
-													alt={mediaAlt}
-												/>
-											</div>
-											{captionType !== 'none' && (
-												<figcaption className='maxi-image-block__caption'>
-													{captionContent}
-												</figcaption>
-											)}
-										</BlockResizer>
-									</>
-								) : mediaID ? (
-									<>
-										<Spinner />
-										<p>{__('Loading…', 'maxi-blocks')}</p>
-									</>
-								) : (
-									<div className='maxi-image-block__placeholder'>
-										<Placeholder
-											icon={placeholderImage}
-											label=''
-										/>
-										<Button
-											className='maxi-image-block__settings__upload-button'
-											showTooltip='true'
-											onClick={open}
-											icon={toolbarReplaceImage}
-										/>
-									</div>
-								)}
-							</>
-						)}
-					/>
-				</__experimentalBlock.figure>
-			</MotionPreview>,
+													1
+												),
+											});
+										}}
+									>
+										<div className='maxi-image-block__settings'>
+											<Button
+												className='maxi-image-block__settings__upload-button'
+												showTooltip='true'
+												onClick={open}
+												icon={toolbarReplaceImage}
+											/>
+										</div>
+										<div className={hoverClasses}>
+											<HoverPreview
+												className={
+													!SVGElement
+														? hoverPreviewClasses
+														: null
+												}
+												key={`hover-preview-${uniqueID}`}
+												{...getGroupAttributes(
+													attributes,
+													[
+														'hover',
+														'hoverTitleTypography',
+														'hoverContentTypography',
+													]
+												)}
+												SVGElement={SVGElement}
+												mediaID={mediaID}
+												src={mediaURL}
+												width={mediaWidth}
+												height={mediaHeight}
+												alt={mediaAlt}
+											/>
+										</div>
+										{captionType !== 'none' && (
+											<figcaption className='maxi-image-block__caption'>
+												{captionContent}
+											</figcaption>
+										)}
+									</BlockResizer>
+								</>
+							) : mediaID ? (
+								<>
+									<Spinner />
+									<p>{__('Loading…', 'maxi-blocks')}</p>
+								</>
+							) : (
+								<div className='maxi-image-block__placeholder'>
+									<Placeholder
+										icon={placeholderImage}
+										label=''
+									/>
+									<Button
+										className='maxi-image-block__settings__upload-button'
+										showTooltip='true'
+										onClick={open}
+										icon={toolbarReplaceImage}
+									/>
+								</div>
+							)}
+						</>
+					)}
+				/>
+			</MaxiBlock>,
 		];
 	}
 }

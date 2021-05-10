@@ -1,8 +1,11 @@
 /**
  * Internal dependencies
  */
-import { BackgroundDisplayer, HoverPreview } from '../../components';
+import { HoverPreview } from '../../components';
 import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -13,12 +16,9 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { className, attributes } = props;
+	const { attributes } = props;
 	const {
 		uniqueID,
-		blockStyle,
-		fullWidth,
-		extraClassName,
 		captionType,
 		captionContent,
 		mediaID,
@@ -31,31 +31,13 @@ const save = props => {
 		mediaAltTitle,
 		altSelector,
 		SVGElement,
-		parentBlockStyle,
 		imageRatio,
+		parentBlockStyle,
 	} = attributes;
 
 	const hoverPreviewClasses = classnames(
 		'maxi-image-ratio',
-		`maxi-image-ratio__${imageRatio}`
-	);
-
-	const hoverClasses = classnames(
-		'maxi-block-hover-wrapper',
-		attributes['hover-type'] === 'basic'
-			? `maxi-hover-effect__${attributes['hover-type']}__${attributes['hover-basic-effect-type']}`
-			: `maxi-hover-effect__${attributes['hover-type']}__${attributes['hover-text-effect-type']}`,
-		`maxi-hover-effect__${
-			attributes['hover-type'] === 'basic' ? 'basic' : 'text'
-		}`
-	);
-
-	const classes = classnames(
-		'maxi-motion-effect',
-		'maxi-block maxi-image-block',
-		fullWidth === 'full' ? 'alignfull' : null,
-		uniqueID,
-		blockStyle,
+		`maxi-image-ratio__${imageRatio}`,
 		getPaletteClasses(
 			attributes,
 			[
@@ -70,10 +52,20 @@ const save = props => {
 			],
 			'maxi-blocks/image-maxi',
 			parentBlockStyle
-		),
-		extraClassName,
-		className
+		)
 	);
+
+	const hoverClasses = classnames(
+		'maxi-block-hover-wrapper',
+		attributes['hover-type'] === 'basic'
+			? `maxi-hover-effect__${attributes['hover-type']}__${attributes['hover-basic-effect-type']}`
+			: `maxi-hover-effect__${attributes['hover-type']}__${attributes['hover-text-effect-type']}`,
+		`maxi-hover-effect__${
+			attributes['hover-type'] === 'basic' ? 'basic' : 'text'
+		}`
+	);
+
+	const classes = 'maxi-image-block';
 
 	const imageAlt = () => {
 		switch (altSelector) {
@@ -89,24 +81,13 @@ const save = props => {
 	};
 
 	return (
-		<figure className={classes} id={uniqueID}>
-			<BackgroundDisplayer
-				{...getGroupAttributes(attributes, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundImageHover',
-					'backgroundVideoHover',
-					'backgroundGradientHover',
-					'backgroundSVGHover',
-				])}
-				blockClassName={uniqueID}
-			/>
+		<MaxiBlock
+			className={classes}
+			id={uniqueID}
+			tagName='figure'
+			{...getMaxiBlockBlockAttributes(props)}
+			isSave
+		>
 			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>
 				<HoverPreview
 					className={!SVGElement ? hoverPreviewClasses : null}
@@ -121,7 +102,7 @@ const save = props => {
 					src={mediaURL}
 					width={mediaWidth}
 					height={mediaHeight}
-					alt={mediaAlt}
+					alt={imageAlt()}
 				/>
 				{captionType !== 'none' && (
 					<figcaption className='maxi-image-block__caption'>
@@ -129,7 +110,7 @@ const save = props => {
 					</figcaption>
 				)}
 			</div>
-		</figure>
+		</MaxiBlock>
 	);
 };
 

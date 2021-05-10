@@ -19,11 +19,25 @@ import classnames from 'classnames';
 const MapControl = props => {
 	const { className, onChange } = props;
 
-	const classes = classnames('maxi-number-counter-control', className);
+	const classes = classnames('maxi-map-control', className);
 
 	return (
 		<div className={classes}>
-			<p>Settings goes here :)</p>
+			<TextControl
+				label={__('API Key', 'maxi-blocks')}
+				value={props['map-api-key']}
+				onChange={value => onChange(value)}
+			/>
+			<TextControl
+				label={__('Latitude', 'maxi-blocks')}
+				value={props['map-Latitude']}
+				onChange={value => onChange(value)}
+			/>
+			<TextControl
+				label={__('Longitude', 'maxi-blocks')}
+				value={props['map-longitude']}
+				onChange={value => onChange(value)}
+			/>
 		</div>
 	);
 };

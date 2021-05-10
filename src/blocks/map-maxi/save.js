@@ -21,7 +21,7 @@ const save = props => {
 			{...getMaxiBlockBlockAttributes(props)}
 			isSave
 		>
-			<div className='maxi-map-container'>
+			<div className='maxi-map-container' id='map'>
 				<h1>Map</h1>
 			</div>
 		</MaxiBlock>

@@ -19,6 +19,7 @@ import getStyles from './styles';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import GoogleMapReact from 'google-map-react';
 
 /**
  * Content
@@ -56,8 +57,19 @@ class edit extends MaxiBlockComponent {
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
-				<div className='maxi-map-container'>
-					<h1>Map</h1>
+				<div className='maxi-map-container' style={{ height: '300px' }}>
+					<GoogleMapReact
+						bootstrapURLKeys={{
+							key: attributes['map-api-key'],
+							language: 'en',
+							region: 'US',
+						}}
+						defaultCenter={{
+							lat: attributes['map-Latitude'],
+							lng: attributes['map-longitude'],
+						}}
+						defaultZoom={4}
+					></GoogleMapReact>
 				</div>
 			</MaxiBlock>,
 		];

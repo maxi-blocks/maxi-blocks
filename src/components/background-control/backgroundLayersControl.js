@@ -3,20 +3,20 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, RawHTML } from '@wordpress/element';
+import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, getAttributeKey } from '../../extensions/styles';
+import FancyRadioControl from '../fancy-radio-control';
+import LoaderControl from '../loader-control';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
-import FancyRadioControl from '../fancy-radio-control';
-import GradientLayer from './gradientLayer';
-import Icon from '../icon';
 import ImageLayer from './imageLayer';
-import LoaderControl from '../loader-control';
-import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
+import GradientLayer from './gradientLayer';
+import SVGLayer from './svgLayer';
+import { getGroupAttributes, getAttributeKey } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -284,7 +284,7 @@ const BackgroundLayersControl = ({
 							'background-active-media',
 							isHover,
 							prefix
-						)]: +val ? 'layers' : '',
+						)]: !!+val ? 'layers' : '',
 					})
 				}
 			/>

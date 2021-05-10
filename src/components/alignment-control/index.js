@@ -7,7 +7,8 @@ import { RadioControl } from '@wordpress/components';
  * Internal dependencies
  */
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import Icon from '../icon';
+
+import { Icon } from '@wordpress/components';
 
 /**
  * External dependencies

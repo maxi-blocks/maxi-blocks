@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Fragment, useState } from '@wordpress/element';
+import { Icon } from '@wordpress/components';
 
 /**
  * External dependencies
@@ -13,16 +14,15 @@ import { isEmpty } from 'lodash';
 /**
  * Internal dependencies
  */
-import * as defaultPresets from './defaults';
+import SizeControl from '../size-control';
+import ColorControl from '../color-control';
+import FontIconPicker from '../font-icon-picker';
 import AxisControl from '../axis-control';
 import BorderControl from '../border-control';
-import ColorControl from '../color-control';
-import FancyRadioControl from '../fancy-radio-control';
-import FontIconPicker from '../font-icon-picker';
 import GradientControl from '../gradient-control';
-import Icon from '../icon';
+import FancyRadioControl from '../fancy-radio-control';
 import SettingTabsControl from '../setting-tabs-control';
-import SizeControl from '../size-control';
+import * as defaultPresets from './defaults';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -165,12 +165,12 @@ const FontIconControl = props => {
 								value={props['icon-spacing']}
 								onChangeValue={val =>
 									onChange({
-										'icon-spacing': val,
+										['icon-spacing']: val,
 									})
 								}
 								onReset={() =>
 									onChange({
-										'icon-spacing': getDefaultAttribute(
+										['icon-spacing']: getDefaultAttribute(
 											'icon-spacing'
 										),
 									})

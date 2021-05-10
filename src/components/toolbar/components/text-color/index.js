@@ -2,13 +2,13 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import ColorControl from '../../../color-control';
-import Icon from '../../../icon';
 import ToolbarPopover from '../toolbar-popover';
+import ColorControl from '../../../color-control';
 import {
 	getCustomFormatValue,
 	withFormatValue,

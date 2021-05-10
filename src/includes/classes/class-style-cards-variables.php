@@ -1,5 +1,7 @@
 <?php
 
+use function PHPSTORM_META\type;
+
 class StyleCardsVariables {
 	/**
 	 * This plugin's instance.
@@ -29,11 +31,13 @@ class StyleCardsVariables {
 	 * Enqueuing styles
 	 */
 	public function enqueue_styles() {
+		$vars = $this->sc_vars();
+
 		// Inline styles
-		if($this->sc_vars()) {
+		if ($vars) {
 			wp_register_style('maxi-blocks-sc-vars', false);
 			wp_enqueue_style('maxi-blocks-sc-vars');
-			wp_add_inline_style('maxi-blocks-sc-vars', $this->sc_vars());
+			wp_add_inline_style('maxi-blocks-sc-vars', $vars);
 		}
 	}
 
@@ -45,7 +49,7 @@ class StyleCardsVariables {
 		if ($maxi_blocks_style_cards_current && !empty($maxi_blocks_style_cards_current))
 			return $maxi_blocks_style_cards_current;
 		else {
-			require_once ( MAXI_PLUGIN_DIR_PATH . 'API/style-cards/default-style-card-maxi.php');
+			require_once(MAXI_PLUGIN_DIR_PATH . 'API/style-cards/default-style-card-maxi.php');
 			$defaultStyleCard = getDefaultStyleCard();
 
 			$wpdb->replace($table_name, array(
@@ -55,7 +59,6 @@ class StyleCardsVariables {
 			$maxi_blocks_style_cards_current = $wpdb->get_var($query);
 			return $maxi_blocks_style_cards_current;
 		}
-
 	}
 
 	public function get_maxi_blocks_active_style_card() {
@@ -64,7 +67,7 @@ class StyleCardsVariables {
 		$maxi_blocks_style_cards_array = json_decode($maxi_blocks_style_cards, true);
 
 		foreach ($maxi_blocks_style_cards_array as $key => $sc) {
-			if($sc['status'] === 'active')
+			if ($sc['status'] === 'active')
 				return $sc;
 		}
 		return false;
@@ -79,22 +82,42 @@ class StyleCardsVariables {
 
 		$response = ':root{';
 
-		if($maxi_blocks_active_style_card_array) {
+		$fonts = [];
+
+		if ($maxi_blocks_active_style_card_array) {
 			$final_sc_array = array_replace_recursive($maxi_blocks_active_style_card_array['styleCardDefaults'], $maxi_blocks_active_style_card_array['styleCard']);
 
 			foreach ($final_sc_array['light'] as $css_rule => $style_value) {
-				$response .= '--maxi-light-'.$css_rule.':'.$style_value.';';
+				$response .= '--maxi-light-' . $css_rule . ':' . $style_value . ';';
+
+				if (strpos($css_rule, 'font-family') && !in_array($style_value, $fonts))
+					array_push($fonts, $style_value);
 			}
 
 			foreach ($final_sc_array['dark'] as $css_rule => $style_value) {
-				$response .= '--maxi-dark-'.$css_rule.':'.$style_value.';';
+				$response .= '--maxi-dark-' . $css_rule . ':' . $style_value . ';';
+
+				if (strpos($css_rule, 'font-family') && !in_array($style_value, $fonts))
+					array_push($fonts, $style_value);
 			}
 		}
 
 		$response .= '}';
 
-		if($response !== ':root{}') return wp_strip_all_tags($response);
-		else return false;
+		if ($response !== ':root{}') {
+			$this->load_fonts($fonts);
+
+			return wp_strip_all_tags($response);
+		} else return false;
+	}
+
+	public function load_fonts($fonts) {
+		foreach ($fonts as $font) {
+			wp_enqueue_style(
+				"{$font}",
+				"https://fonts.googleapis.com/css2?family={$font}"
+			);
+		}
 	}
 }
 

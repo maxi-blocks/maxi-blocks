@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
  * External dependencies
  */
 import { isEmpty, isNil } from 'lodash';
@@ -7,8 +12,6 @@ import { isEmpty, isNil } from 'lodash';
  * Internal dependencies
  */
 import getStyleCards from './getStyleCards';
-
-const { select } = wp.data;
 
 const getStyleCardAttr = (
 	attribute = null,

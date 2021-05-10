@@ -2,7 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button, Icon, Tooltip } from '@wordpress/components';
+import { Button, Tooltip } from '@wordpress/components';
+
+/**
+ * Internal dependencies
+ */
+import Icon from '../../../icon';
 
 /**
  * External dependencies

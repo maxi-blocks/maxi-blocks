@@ -13,10 +13,10 @@ export const icon = (() => {
 			...response,
 			[`icon-size-${breakpoint}`]: {
 				type: 'number',
-				default: 0,
 			},
 			[`icon-size-unit-${breakpoint}`]: {
 				type: 'string',
+				default: 'px',
 			},
 		};
 	});
@@ -31,7 +31,6 @@ export const icon = (() => {
 		},
 		'icon-color': {
 			type: 'string',
-			default: '#000',
 		},
 		'icon-background-color': {
 			type: 'string',
@@ -52,7 +51,6 @@ export const icon = (() => {
 		},
 		'icon-size-general': {
 			type: 'number',
-			default: 21,
 		},
 		'icon-size-unit-general': {
 			type: 'string',

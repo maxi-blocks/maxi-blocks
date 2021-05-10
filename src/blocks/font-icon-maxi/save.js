@@ -4,10 +4,12 @@
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
+import { getPaletteClasses } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
@@ -15,9 +17,26 @@ import { isEmpty } from 'lodash';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID } = attributes;
+	const { uniqueID, parentBlockStyle } = attributes;
 
-	const classes = 'maxi-font-icon-block';
+	const classes = classnames(
+		'maxi-font-icon-block',
+		getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'icon',
+				'icon-hover',
+			],
+			'maxi-blocks/font-icon-maxi',
+			parentBlockStyle
+		)
+	);
 
 	return (
 		<MaxiBlock

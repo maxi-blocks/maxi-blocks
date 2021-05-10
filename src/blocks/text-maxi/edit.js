@@ -21,7 +21,7 @@ import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 import { onMerge, onSplit } from './utils';
 import {
@@ -32,6 +32,7 @@ import {
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
@@ -83,9 +84,28 @@ class edit extends MaxiBlockComponent {
 			typeOfList,
 			listStart,
 			listReversed,
+			parentBlockStyle,
 		} = attributes;
 
-		const classes = 'maxi-text-block';
+		const classes = classnames(
+			'maxi-text-block',
+			getPaletteClasses(
+				attributes,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+					'typography',
+					'typography-hover',
+				],
+				'maxi-blocks/text-maxi',
+				parentBlockStyle,
+				textLevel
+			)
+		);
 
 		return [
 			<Inspector

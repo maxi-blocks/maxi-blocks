@@ -32,7 +32,6 @@ const ToolbarColumnPattern = props => {
 					<div className='toolbar-item__column-pattern__popover'>
 						<ColumnPattern
 							clientId={clientId}
-							blockName={blockName}
 							{...getGroupAttributes(props, 'rowPattern')}
 							onChange={rowPattern => {
 								onChange(rowPattern);

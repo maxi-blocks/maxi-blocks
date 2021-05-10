@@ -9,6 +9,7 @@ import { Button } from '@wordpress/components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
+import { getPaletteClasses } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -21,9 +22,32 @@ import { isNil, isEmpty } from 'lodash';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID, linkSettings, buttonContent } = attributes;
+	const {
+		uniqueID,
+		linkSettings,
+		buttonContent,
+		parentBlockStyle,
+	} = attributes;
 
-	const classes = 'maxi-button-block';
+	const classes = classnames(
+		'maxi-button-block',
+		getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+				'icon',
+			],
+			'maxi-blocks/button-maxi',
+			parentBlockStyle
+		)
+	);
 
 	const linkOpt = !isNil(linkSettings) && linkSettings;
 

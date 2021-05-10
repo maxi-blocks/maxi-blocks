@@ -15,7 +15,7 @@ const SvgStrokeWidthControl = props => {
 			defaultValue={defaultStroke}
 			onChange={val => onChange(val)}
 			min={0.1}
-			max={10}
+			max={5}
 			step={0.1}
 			withInputField
 			initialPosition={defaultStroke}

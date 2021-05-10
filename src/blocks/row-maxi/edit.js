@@ -17,12 +17,13 @@ import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
 import { getTemplates } from '../../extensions/column-templates';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { isEmpty, uniqueId } from 'lodash';
 import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTemplate';
 
@@ -81,9 +82,24 @@ class edit extends MaxiBlockComponent {
 			setAttributes,
 			deviceType,
 		} = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, parentBlockStyle } = attributes;
 
-		const classes = 'maxi-row-block';
+		const classes = classnames(
+			'maxi-row-block',
+			getPaletteClasses(
+				attributes,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+				],
+				'maxi-blocks/row-maxi',
+				parentBlockStyle
+			)
+		);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

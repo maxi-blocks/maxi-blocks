@@ -9,6 +9,7 @@ import { InnerBlocks } from '@wordpress/block-editor';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
+import { getPaletteClasses } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -20,11 +21,24 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID, fullWidth } = attributes;
+	const { uniqueID, fullWidth, parentBlockStyle } = attributes;
 
 	const classes = classnames(
 		'maxi-row-block',
-		fullWidth === 'full' ? 'alignfull' : null
+		fullWidth === 'full' ? 'alignfull' : null,
+		getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'maxi-blocks/row-maxi',
+			parentBlockStyle
+		)
 	);
 
 	return (

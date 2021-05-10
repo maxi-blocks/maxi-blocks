@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { Icon } from '@wordpress/components';
 
 /**
@@ -52,6 +52,8 @@ const BackgroundControl = props => {
 		onChange,
 		isHover = false,
 		prefix = '',
+		disablePalette,
+		clientId,
 	} = props;
 
 	const backgroundActiveMedia =
@@ -143,6 +145,7 @@ const BackgroundControl = props => {
 				<Fragment>
 					{!disableColor && backgroundActiveMedia === 'color' && (
 						<ColorLayer
+							{...getGroupAttributes(props, 'palette')}
 							colorOptions={{
 								...getGroupAttributes(
 									props,
@@ -155,6 +158,8 @@ const BackgroundControl = props => {
 							disableClipPath={disableClipPath}
 							isHover={isHover}
 							prefix={prefix}
+							disablePalette={disablePalette}
+							clientId={clientId}
 						/>
 					)}
 					{!disableImage && backgroundActiveMedia === 'image' && (

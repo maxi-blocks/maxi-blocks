@@ -16,6 +16,7 @@ export { default as Breadcrumbs } from './breadcrumbs';
 export { default as CheckBoxControl } from './checkbox-control';
 export { default as ClipPath } from './clip-path-control';
 export { default as ColorControl } from './color-control';
+export { default as ColorPaletteControl } from './color-palette-control';
 export { default as ColumnPattern } from './column-pattern';
 export { default as CustomLabel } from './custom-label';
 export { default as DefaultStylesControl } from './default-styles-control';

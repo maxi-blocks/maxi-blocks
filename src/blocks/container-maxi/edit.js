@@ -20,12 +20,13 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
@@ -108,9 +109,29 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, clientId, hasInnerBlock, deviceType } = this.props;
-		const { uniqueID, isFirstOnHierarchy, fullWidth } = attributes;
+		const {
+			uniqueID,
+			isFirstOnHierarchy,
+			fullWidth,
+			parentBlockStyle,
+		} = attributes;
 
-		const classes = 'maxi-container-block';
+		const classes = classnames(
+			'maxi-container-block',
+			getPaletteClasses(
+				attributes,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+				],
+				'maxi-blocks/container-maxi',
+				parentBlockStyle
+			)
+		);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

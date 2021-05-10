@@ -9,7 +9,7 @@ import { withSelect, withDispatch } from '@wordpress/data';
  */
 import Inspector from './inspector';
 import { BlockResizer, MaxiBlockComponent, Toolbar } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
@@ -56,7 +56,7 @@ class edit extends MaxiBlockComponent {
 			onDeviceTypeChange,
 			setAttributes,
 		} = this.props;
-		const { uniqueID, lineOrientation } = attributes;
+		const { uniqueID, lineOrientation, parentBlockStyle } = attributes;
 
 		onDeviceTypeChange();
 
@@ -64,7 +64,20 @@ class edit extends MaxiBlockComponent {
 			'maxi-divider-block',
 			lineOrientation === 'vertical'
 				? 'maxi-divider-block--vertical'
-				: 'maxi-divider-block--horizontal'
+				: 'maxi-divider-block--horizontal',
+			getPaletteClasses(
+				attributes,
+				[
+					'background',
+					'background-hover',
+					'divider',
+					'divider-hover',
+					'box-shadow',
+					'box-shadow-hover',
+				],
+				'maxi-blocks/divider-maxi',
+				parentBlockStyle
+			)
 		);
 
 		const handleOnResizeStart = event => {

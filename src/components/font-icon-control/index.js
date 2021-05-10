@@ -54,6 +54,8 @@ const FontIconControl = props => {
 		breakpoint,
 		simpleMode = false,
 		disableColor,
+		blockStyle,
+		clientId,
 	} = props;
 
 	const [activeOption, setActiveOption] = useState('iconColor');
@@ -266,6 +268,19 @@ const FontIconControl = props => {
 											onChange={val =>
 												onChange({ 'icon-color': val })
 											}
+											showPalette
+											blockStyle={blockStyle}
+											palette={{
+												...getGroupAttributes(
+													props,
+													'palette'
+												),
+											}}
+											colorPaletteType='icon'
+											onChangePalette={val =>
+												onChange(val)
+											}
+											clientId={clientId}
 										/>
 									),
 								},
@@ -306,7 +321,7 @@ const FontIconControl = props => {
 											{props['icon-status-hover'] && (
 												<ColorControl
 													label={__(
-														'Icon',
+														'Icon Hover',
 														'maxi-blocks'
 													)}
 													color={
@@ -322,6 +337,20 @@ const FontIconControl = props => {
 															'icon-color-hover': val,
 														})
 													}
+													showPalette
+													blockStyle={blockStyle}
+													isHover
+													palette={{
+														...getGroupAttributes(
+															props,
+															'palette'
+														),
+													}}
+													colorPaletteType='icon'
+													onChangePalette={val =>
+														onChange(val)
+													}
+													clientId={clientId}
 												/>
 											)}
 										</>

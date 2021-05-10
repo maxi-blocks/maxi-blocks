@@ -37,7 +37,7 @@ export const borderNone = (prefix = '') => {
 export const borderSolid = prefix => {
 	let response = {};
 	response = {
-		[`${prefix}border-color`]: '#000',
+		[`${prefix}border-color`]: '',
 		[`${prefix}border-style`]: 'solid',
 		[`${prefix}border-top-width`]: 2,
 		[`${prefix}border-right-width`]: 2,
@@ -52,7 +52,7 @@ export const borderSolid = prefix => {
 export const borderDashed = prefix => {
 	let response = {};
 	response = {
-		[`${prefix}border-color`]: '#000',
+		[`${prefix}border-color`]: '',
 		[`${prefix}border-style`]: 'dashed',
 		[`${prefix}border-top-width`]: 2,
 		[`${prefix}border-right-width`]: 2,
@@ -67,7 +67,7 @@ export const borderDashed = prefix => {
 export const borderDotted = prefix => {
 	let response = {};
 	response = {
-		[`${prefix}border-color`]: '#000',
+		[`${prefix}border-color`]: '',
 		[`${prefix}border-style`]: 'dotted',
 		[`${prefix}border-top-width`]: 2,
 		[`${prefix}border-right-width`]: 2,

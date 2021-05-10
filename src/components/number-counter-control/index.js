@@ -1,7 +1,7 @@
 /**
  * WordPress Dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { SelectControl } from '@wordpress/components';
 
 /**
@@ -126,7 +126,7 @@ const NumberCounterControl = props => {
 			<SizeControl
 				label={__('Radius', 'maxi-blocks')}
 				disableUnit
-				min={1}
+				min={90}
 				max={999}
 				initial={85}
 				step={1}

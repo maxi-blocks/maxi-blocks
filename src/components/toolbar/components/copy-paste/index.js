@@ -50,7 +50,6 @@ const ATTRIBUTES = [
 	'breakpoints',
 	'display',
 	'entrance',
-	'highlight',
 	'icon',
 	'iconBorder',
 	'iconBorderRadius',

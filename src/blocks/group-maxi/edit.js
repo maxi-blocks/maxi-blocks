@@ -17,12 +17,13 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
@@ -57,9 +58,24 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, clientId, hasInnerBlock, deviceType } = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, parentBlockStyle } = attributes;
 
-		const classes = 'maxi-group-block';
+		const classes = classnames(
+			'maxi-group-block',
+			getPaletteClasses(
+				attributes,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+				],
+				'maxi-blocks/group-maxi',
+				parentBlockStyle
+			)
+		);
 
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature

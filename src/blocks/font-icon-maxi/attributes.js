@@ -28,6 +28,7 @@ const attributes = {
 			default: 'center',
 		},
 	},
+	...attributesData.palette,
 	...attributesData.icon,
 	...attributesData.iconHover,
 	...attributesData.opacity,
@@ -51,7 +52,6 @@ const attributes = {
 	...attributesData.position,
 	...attributesData.motion,
 	...attributesData.transform,
-	...attributesData.highlight,
 	...attributesData.entrance,
 };
 

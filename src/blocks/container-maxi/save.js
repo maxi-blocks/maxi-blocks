@@ -7,7 +7,7 @@ import { InnerBlocks } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { ArrowDisplayer, ShapeDivider } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -22,11 +22,24 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID, fullWidth } = attributes;
+	const { uniqueID, fullWidth, parentBlockStyle } = attributes;
 
 	const classes = classnames(
 		'maxi-container-block',
-		fullWidth === 'full' ? 'alignfull' : null
+		fullWidth === 'full' ? 'alignfull' : null,
+		getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'maxi-blocks/container-maxi',
+			parentBlockStyle
+		)
 	);
 
 	return (

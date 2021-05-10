@@ -94,7 +94,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		tagName = 'div',
 		children,
 		blockStyle,
-		blockStyleBackground,
 		extraClassName,
 		uniqueID,
 		className,
@@ -102,7 +101,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		fullWidth,
 		motion,
 		background,
-		highlights,
 		disableMotion = false,
 		disableBackground = false,
 		isSave = false,
@@ -118,12 +116,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		extraClassName,
 		uniqueID,
 		className,
-		displayValue === 'none' && 'maxi-block-display-none',
-		blockStyle !== 'maxi-custom' &&
-			`maxi-background--${blockStyleBackground}`,
-		!!highlights['border-highlight'] && 'maxi-highlight--border',
-		!!highlights['text-highlight'] && 'maxi-highlight--text',
-		!!highlights['background-highlight'] && 'maxi-highlight--background'
+		displayValue === 'none' && 'maxi-block-display-none'
 	);
 
 	const blockProps = {
@@ -146,10 +139,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 							key={`maxi-block-${uniqueID}`}
 							uniqueID={uniqueID}
 							background={background}
-							disableBackground={
-								disableBackground ||
-								!highlights['background-highlight']
-							}
+							disableBackground={!disableBackground}
 							isSave={isSave}
 							{...blockProps}
 						>
@@ -164,9 +154,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 					key={`maxi-block-${uniqueID}`}
 					uniqueID={uniqueID}
 					background={background}
-					disableBackground={
-						disableBackground || !highlights['background-highlight']
-					}
+					disableBackground={disableBackground}
 					isSave={isSave}
 					{...blockProps}
 				>
@@ -179,13 +167,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 
 export const getMaxiBlockBlockAttributes = props => {
 	const { deviceType, attributes } = props;
-	const {
-		blockStyle,
-		blockStyleBackground,
-		extraClassName,
-		uniqueID,
-		fullWidth,
-	} = attributes;
+	const { blockStyle, extraClassName, uniqueID, fullWidth } = attributes;
 	const displayValue = getLastBreakpointAttribute(
 		'display',
 		deviceType,
@@ -210,18 +192,14 @@ export const getMaxiBlockBlockAttributes = props => {
 			'backgroundSVGHover',
 		]),
 	};
-	const highlights = { ...getGroupAttributes(attributes, 'highlight') };
-
 	return {
 		blockStyle,
-		blockStyleBackground,
 		extraClassName,
 		uniqueID,
 		fullWidth,
 		displayValue,
 		motion,
 		background,
-		highlights,
 	};
 };
 

@@ -15,7 +15,8 @@ import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+
 import getStyles from './styles';
 
 /**
@@ -57,9 +58,27 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, setAttributes, clientId } = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, parentBlockStyle } = attributes;
 
-		const classes = 'maxi-button-block';
+		const classes = classnames(
+			'maxi-button-block',
+			getPaletteClasses(
+				attributes,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+					'typography',
+					'typography-hover',
+					'icon',
+				],
+				'maxi-blocks/button-maxi',
+				parentBlockStyle
+			)
+		);
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',

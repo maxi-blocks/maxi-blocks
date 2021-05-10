@@ -105,10 +105,10 @@ if (!class_exists('MaxiBlocksAPI')) :
 			);
 			register_rest_route(
 				$this->namespace,
-				'/global-styles',
+				'/style-cards',
 				array(
 					'methods'             => 'GET',
-					'callback'            => array($this, 'get_maxi_blocks_current_global_styles'),
+					'callback'            => array($this, 'get_maxi_blocks_current_style_cards'),
 					'permission_callback' => function () {
 						return current_user_can('edit_posts');
 					},
@@ -116,10 +116,10 @@ if (!class_exists('MaxiBlocksAPI')) :
 			);
 			register_rest_route(
 				$this->namespace,
-				'/global-styles',
+				'/style-cards',
 				array(
 					'methods'             => 'POST',
-					'callback'            => array($this, 'set_maxi_blocks_current_global_styles'),
+					'callback'            => array($this, 'set_maxi_blocks_current_style_cards'),
 					'permission_callback' => function () {
 						return current_user_can('edit_posts');
 					},
@@ -246,22 +246,36 @@ if (!class_exists('MaxiBlocksAPI')) :
 			delete_option("mb_post_api$postId");
 		}
 
-		public function get_maxi_blocks_current_global_styles() {
+		public function get_maxi_blocks_current_style_cards() {
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'maxi_blocks_general';  // table name
-			$query = "SELECT object FROM " . $table_name . " where id = style_cards_current_global_styles";
-			$maxi_blocks_current_global_styles = $wpdb->get_var($query);
-			if ($maxi_blocks_current_global_styles) {
-				return $maxi_blocks_current_global_styles;
+			$query = 'SELECT object FROM ' . $table_name . ' where id = "style_cards_current"';
+			$style_cards = $wpdb->get_var($query);
+			if ($style_cards && !empty($style_cards))
+				return $style_cards;
+			else {
+				require_once (dirname(__FILE__) . '/style-cards/default-style-card-maxi.php');
+				$defaultStyleCard = getDefaultStyleCard();
+
+				$wpdb->replace($table_name, array(
+					'id' => 'style_cards_current',
+					'object' => $defaultStyleCard,
+				));
+				$style_cards = $wpdb->get_var($query);
+				return $style_cards;
 			}
+
 		}
 
-		public function set_maxi_blocks_current_global_styles($styles) {
+		public function set_maxi_blocks_current_style_cards($request) {
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'maxi_blocks_general';  // table name
+
+			$request_result = $request->get_json_params();
+
 			$wpdb->replace($table_name, array(
-				'id' => 'style_cards_current_global_styles',
-				'object' => $styles,
+				'id' => 'style_cards_current',
+				'object' => $request_result['styleCards'],
 			));
 		}
 

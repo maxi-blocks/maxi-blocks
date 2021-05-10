@@ -3,8 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Fragment  } from '@wordpress/element';
-import { TextControl } from '@wordpress/components';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -26,6 +25,7 @@ import {
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
+	TextControl,
 	TransformControl,
 	ZIndexControl,
 } from '../../components';

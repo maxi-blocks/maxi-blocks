@@ -3,18 +3,19 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Icon, Button, Tooltip } from '@wordpress/components';
+import { Button, Tooltip } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Icon from '../../../icon';
+import { getGroupAttributes } from '../../../../extensions/styles';
 import {
 	getCustomFormatValue,
 	setFormat,
 	withFormatValue,
 } from '../../../../extensions/text/formats';
-import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles and icons

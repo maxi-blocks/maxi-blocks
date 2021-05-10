@@ -2,8 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment, useState, useEffect } from '@wordpress/element';
-import { Icon } from '@wordpress/components';
+import { Fragment, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -11,6 +10,7 @@ import { Icon } from '@wordpress/components';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import FancyRadioControl from '../fancy-radio-control';
+import Icon from '../icon';
 import RangeSliderControl from '../range-slider-control';
 
 /**

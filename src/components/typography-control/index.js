@@ -24,7 +24,6 @@ import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getDefaultAttribute,
 } from '../../extensions/styles';
 
 /**
@@ -210,9 +209,9 @@ const TypographyControl = withFormatValue(props => {
 				return level === textLevel;
 			})
 		)
-			return getDefaultAttribute(
+			return defaultTypography.p[
 				`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
-			);
+			];
 
 		return defaultTypography[textLevel][
 			`${prop}-${breakpoint}${isHover ? '-hover' : ''}`
@@ -303,6 +302,16 @@ const TypographyControl = withFormatValue(props => {
 						onChangeValue={val => {
 							onChangeFormat({ [`${prefix}font-size`]: val });
 						}}
+						onReset={() =>
+							onChangeFormat({
+								[`${prefix}font-size-unit`]: getDefault(
+									`${prefix}font-size-unit`
+								),
+								[`${prefix}font-size`]: getDefault(
+									`${prefix}font-size`
+								),
+							})
+						}
 						minMaxSettings={minMaxSettings}
 					/>
 					<SizeControl
@@ -320,6 +329,16 @@ const TypographyControl = withFormatValue(props => {
 						onChangeValue={val => {
 							onChangeFormat({ [`${prefix}line-height`]: val });
 						}}
+						onReset={() =>
+							onChangeFormat({
+								[`${prefix}line-height-unit`]: getDefault(
+									`${prefix}line-height-unit`
+								),
+								[`${prefix}line-height`]: getDefault(
+									`${prefix}line-height`
+								),
+							})
+						}
 						minMaxSettings={minMaxSettings}
 						allowedUnits={['px', 'em', 'vw', '%', 'empty']}
 					/>
@@ -341,6 +360,16 @@ const TypographyControl = withFormatValue(props => {
 								[`${prefix}letter-spacing`]: val,
 							});
 						}}
+						onReset={() =>
+							onChangeFormat({
+								[`${prefix}letter-spacing-unit`]: getDefault(
+									`${prefix}letter-spacing-unit`
+								),
+								[`${prefix}letter-spacing`]: getDefault(
+									`${prefix}letter-spacing`
+								),
+							})
+						}
 						minMaxSettings={minMaxSettingsLetterSpacing}
 						step={0.1}
 					/>

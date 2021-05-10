@@ -132,6 +132,13 @@ const MaxiStyleCardsTab = ({
 	const parseTypography = newSC => {
 		const parsedTypography = {};
 		Object.entries(newSC).forEach(([key, val]) => {
+			if (isEmpty(val)) {
+				if (!key.includes('-unit'))
+					parsedTypography[key] = SC.styleCardDefaults[SCStyle][key];
+
+				return;
+			}
+
 			if (
 				key.includes('font-size') ||
 				key.includes('line-height') ||

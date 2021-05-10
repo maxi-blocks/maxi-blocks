@@ -66,7 +66,16 @@ const NumberCounter = attributes => {
 
 			return () => clearInterval(countRef.current);
 		}
-	}, [count, replyStatus, autoReproduce]);
+	}, [count, replyStatus, autoReproduce, endCountValue]);
+
+	useEffect(() => {
+		if (autoReproduce || replyStatus) {
+			if (count >= endCountValue) {
+				setCount(startCountValue);
+				clearInterval(countRef.current);
+			}
+		}
+	}, [startCountValue, endCountValue, countDuration, radius, stroke]);
 
 	return (
 		<div className='maxi-number-counter'>

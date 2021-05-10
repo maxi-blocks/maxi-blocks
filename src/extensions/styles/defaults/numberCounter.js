@@ -5,7 +5,7 @@ const numberCounter = {
 	},
 	'number-counter-auto-reproduce': {
 		type: 'boolean',
-		default: false,
+		default: true,
 	},
 	'number-counter-percentage-sign-status': {
 		type: 'boolean',

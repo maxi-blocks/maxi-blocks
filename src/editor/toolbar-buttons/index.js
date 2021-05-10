@@ -9,7 +9,6 @@ import { useState, render, Fragment } from '@wordpress/element';
  * Internal dependencies
  */
 import ResponsiveSelector from '../responsive-selector';
-
 /**
  * Styles
  */
@@ -65,6 +64,9 @@ wp.domReady(() => {
 			render(<ToolbarButtons />, toolbarButtonsWrapper);
 
 			unsubscribe();
+
+			// Initialize SCs
+			wp.data.select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 		}
 	});
 });

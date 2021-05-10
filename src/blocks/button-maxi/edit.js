@@ -15,6 +15,7 @@ import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
+
 import getStyles from './styles';
 
 /**

@@ -9,6 +9,12 @@ import { RichText } from '@wordpress/block-editor';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
+import { getPaletteClasses } from '../../extensions/styles';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
 
 /**
  * Save
@@ -21,9 +27,28 @@ const save = props => {
 		isList,
 		typeOfList,
 		content,
+		parentBlockStyle,
 	} = props.attributes;
 
-	const classes = 'maxi-text-block';
+	const classes = classnames(
+		'maxi-text-block',
+		getPaletteClasses(
+			props.attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+			],
+			'maxi-blocks/text-maxi',
+			parentBlockStyle,
+			textLevel
+		)
+	);
 
 	return (
 		<MaxiBlock

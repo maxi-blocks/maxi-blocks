@@ -322,3 +322,15 @@ body .toolbar-item__popover {
 		margin: auto;
 	}
 }
+
+/*******************************
+* Style Card Editor Boat Icon
+*******************************/
+
+svg path#styleCardBoat_a {
+	fill: var(--maxi-light-color-4);
+}
+
+svg path#styleCardBoat_b {
+	stroke: var(--maxi-light-color-7);
+}

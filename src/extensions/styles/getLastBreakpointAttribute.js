@@ -28,6 +28,9 @@ const getLastBreakpointAttributeSingle = (
 	);
 
 	const attr = attributes || getBlockAttributes(getSelectedBlockClientId());
+
+	if (isNil(attr)) return false;
+
 	let currentAttr = attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
 
 	if (

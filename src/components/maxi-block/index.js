@@ -15,6 +15,7 @@ import { forwardRef } from '@wordpress/element';
 import {
 	getLastBreakpointAttribute,
 	getGroupAttributes,
+	getPaletteClasses,
 } from '../../extensions/styles';
 import BackgroundDisplayer from '../background-displayer';
 import MotionPreview from '../motion-preview';
@@ -107,7 +108,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		tagName = 'div',
 		children,
 		blockStyle,
-		blockStyleBackground,
 		extraClassName,
 		uniqueID,
 		className,
@@ -115,7 +115,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		fullWidth,
 		motion,
 		background,
-		highlights,
 		disableMotion = false,
 		disableBackground = false,
 		isSave = false,
@@ -155,11 +154,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		uniqueID,
 		className,
 		displayValue === 'none' && 'maxi-block-display-none',
-		blockStyle !== 'maxi-custom' &&
-			`maxi-background--${blockStyleBackground}`,
-		!!highlights['border-highlight'] && 'maxi-highlight--border',
-		!!highlights['text-highlight'] && 'maxi-highlight--text',
-		!!highlights['background-highlight'] && 'maxi-highlight--background',
 		customClasses
 	);
 
@@ -178,9 +172,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 					key={`maxi-block-${uniqueID}`}
 					uniqueID={uniqueID}
 					background={background}
-					disableBackground={
-						disableBackground || !highlights['background-highlight']
-					}
+					disableBackground={disableBackground}
 					isSave={isSave}
 					{...blockProps}
 				>
@@ -195,9 +187,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 			key={`maxi-block-${uniqueID}`}
 			uniqueID={uniqueID}
 			background={background}
-			disableBackground={
-				disableBackground || !highlights['background-highlight']
-			}
+			disableBackground={!disableBackground}
 			isSave={isSave}
 			{...blockProps}
 		>
@@ -210,10 +200,10 @@ export const getMaxiBlockBlockAttributes = props => {
 	const { name, deviceType, attributes } = props;
 	const {
 		blockStyle,
-		blockStyleBackground,
 		extraClassName,
 		uniqueID,
 		fullWidth,
+		parentBlockStyle,
 	} = attributes;
 	const displayValue = getLastBreakpointAttribute(
 		'display',
@@ -239,19 +229,34 @@ export const getMaxiBlockBlockAttributes = props => {
 			'backgroundSVGHover',
 		]),
 	};
-	const highlights = { ...getGroupAttributes(attributes, 'highlight') };
+
+	const paletteClasses = getPaletteClasses(
+		attributes,
+		[
+			'background',
+			'background-hover',
+			'border',
+			'border-hover',
+			'box-shadow',
+			'box-shadow-hover',
+			'typography',
+			'typography-hover',
+			'icon',
+		],
+		'maxi-blocks/button-maxi',
+		parentBlockStyle
+	);
 
 	return {
 		blockName: name,
 		blockStyle,
-		blockStyleBackground,
 		extraClassName,
 		uniqueID,
 		fullWidth,
 		displayValue,
 		motion,
 		background,
-		highlights,
+		paletteClasses,
 	};
 };
 

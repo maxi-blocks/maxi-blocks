@@ -11,7 +11,6 @@ import { getScrollContainer } from '@wordpress/dom';
  */
 import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual } from 'lodash';
-
 /**
  * Utils
  */
@@ -38,15 +37,16 @@ import {
 	Size,
 	SvgColor,
 	TextBold,
+	TextColor,
 	TextItalic,
 	TextLevel,
-	TextColor,
 	TextLink,
 	TextListOptions,
 	TextOptions,
 	ToggleBlock,
 	ToolbarColumnPattern,
 } from './components';
+
 import { Breadcrumbs } from '../../components';
 
 /**
@@ -99,9 +99,12 @@ const MaxiToolbar = memo(
 			name,
 			setAttributes,
 			toggleHandlers,
+			blockStyle,
 			rowPattern,
 		} = props;
+
 		const {
+			content,
 			customLabel,
 			fullWidth,
 			imageSize,
@@ -116,6 +119,7 @@ const MaxiToolbar = memo(
 			textLevel,
 			typeOfList,
 			uniqueID,
+			parentBlockStyle,
 			resizableObject,
 		} = attributes;
 
@@ -142,14 +146,11 @@ const MaxiToolbar = memo(
 
 		const breadcrumbStatus = () => {
 			const { getBlockParents } = select('core/block-editor');
-
 			const originalNestedBlocks = clientId
 				? getBlockParents(clientId)
 				: [];
-
 			if (!originalNestedBlocks.includes(clientId))
 				originalNestedBlocks.push(clientId);
-
 			return originalNestedBlocks.length > 1;
 		};
 
@@ -191,20 +192,24 @@ const MaxiToolbar = memo(
 							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
 							<div className='toolbar-block-custom-label'>
 								{customLabel}
+								<span className='toolbar-block-custom-label__block-style'>
+									{` | ${parentBlockStyle}`}
+								</span>
 							</div>
 							<Mover clientId={clientId} blockName={name} />
 							<ReusableBlocks clientId={clientId} />
 							<ColumnMover clientId={clientId} blockName={name} />
-							{!attributes['border-highlight'] && (
-								<DividerColor
-									{...getGroupAttributes(
-										attributes,
-										'divider'
-									)}
-									blockName={name}
-									onChange={obj => setAttributes(obj)}
-								/>
-							)}
+							<DividerColor
+								{...getGroupAttributes(attributes, [
+									'divider',
+									'palette',
+								])}
+								blockName={name}
+								blockStyle={blockStyle}
+								breakpoint={deviceType}
+								onChange={obj => setAttributes(obj)}
+								clientId={clientId}
+							/>
 							<Divider
 								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
@@ -235,25 +240,26 @@ const MaxiToolbar = memo(
 								blockName={name}
 								onChange={obj => setAttributes(obj)}
 								node={anchorRef}
+								content={content}
 								breakpoint={deviceType}
 								isList={isList}
 								typeOfList={typeOfList}
 								textLevel={textLevel}
 							/>
-							{!attributes['text-highlight'] && (
-								<TextColor
-									blockName={name}
-									{...getGroupAttributes(
-										attributes,
-										'typography'
-									)}
-									onChange={obj => setAttributes(obj)}
-									breakpoint={deviceType}
-									node={anchorRef}
-									isList={isList}
-									textLevel={textLevel}
-								/>
-							)}
+							<TextColor
+								blockName={name}
+								blockStyle={blockStyle}
+								{...getGroupAttributes(attributes, [
+									'typography',
+									'palette',
+								])}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+								node={anchorRef}
+								isList={isList}
+								typeOfList={typeOfList}
+								clientId={clientId}
+							/>
 							<Alignment
 								blockName={name}
 								{...getGroupAttributes(attributes, [
@@ -340,56 +346,59 @@ const MaxiToolbar = memo(
 								typeOfList={typeOfList}
 								onChange={obj => setAttributes(obj)}
 							/>
-							{!attributes['background-highlight'] && (
-								<BackgroundColor
-									{...getGroupAttributes(
-										attributes,
-										'backgroundColor'
-									)}
-									blockName={name}
-									onChange={obj => setAttributes(obj)}
-								/>
-							)}
+							<BackgroundColor
+								{...getGroupAttributes(attributes, [
+									'backgroundColor',
+									'palette',
+								])}
+								blockName={name}
+								blockStyle={blockStyle}
+								breakpoint={deviceType}
+								onChange={obj => setAttributes(obj)}
+								clientId={clientId}
+							/>
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
-									{!attributes['color1-highlight'] && (
-										<SvgColor
-											blockName={name}
-											svgColorDefault={getDefaultAttribute(
-												'svgColorOrange',
-												clientId
-											)}
-											svgColor={attributes.svgColorOrange}
-											onChange={svgColorOrange => {
-												setAttributes({
-													svgColorOrange,
-												});
-												changeSVGContent(
-													svgColorOrange,
-													1
-												);
-											}}
-										/>
-									)}
-									{!attributes['color2-highlight'] && (
-										<SvgColor
-											blockName={name}
-											svgColorDefault={getDefaultAttribute(
-												'svgColorBlack',
-												clientId
-											)}
-											svgColor={attributes.svgColorBlack}
-											onChange={svgColorBlack => {
-												setAttributes({
-													svgColorBlack,
-												});
-												changeSVGContent(
-													svgColorBlack,
-													2
-												);
-											}}
-										/>
-									)}
+									<SvgColor
+										{...getGroupAttributes(
+											attributes,
+											'palette'
+										)}
+										blockName={name}
+										svgColorDefault={getDefaultAttribute(
+											'svgColorFill',
+											clientId
+										)}
+										svgColor={attributes.svgColorFill}
+										onChange={svgColorFill => {
+											setAttributes(svgColorFill);
+											changeSVGContent(svgColorFill, 1);
+										}}
+										blockStyle={blockStyle}
+										clientId={clientId}
+										type='svgColorFill'
+										breakpoint={deviceType}
+									/>
+									<SvgColor
+										{...getGroupAttributes(
+											attributes,
+											'palette'
+										)}
+										blockName={name}
+										svgColorDefault={getDefaultAttribute(
+											'svgColorLine',
+											clientId
+										)}
+										svgColor={attributes.svgColorLine}
+										onChange={svgColorLine => {
+											setAttributes(svgColorLine);
+											changeSVGContent(svgColorLine, 2);
+										}}
+										blockStyle={blockStyle}
+										clientId={clientId}
+										type='svgColorLine'
+										breakpoint={deviceType}
+									/>
 								</>
 							)}
 							<Border
@@ -398,10 +407,12 @@ const MaxiToolbar = memo(
 									'border',
 									'borderWidth',
 									'borderRadius',
+									'palette',
 								])}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={deviceType}
-								disableColor={!attributes['border-highlight']}
+								blockStyle={blockStyle}
+								clientId={clientId}
 							/>
 							{deviceType === 'general' && (
 								<ImageSize
@@ -453,7 +464,10 @@ const MaxiToolbar = memo(
 							/>
 							<BoxShadow
 								blockName={name}
-								{...getGroupAttributes(attributes, 'boxShadow')}
+								{...getGroupAttributes(attributes, [
+									'boxShadow',
+									'palette',
+								])}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={deviceType}
 							/>

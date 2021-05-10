@@ -4,6 +4,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+
 import { __experimentalLinkControl } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';

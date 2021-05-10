@@ -15,7 +15,7 @@ const SvgWidthControl = props => {
 			defaultValue={defaultWidth}
 			onChange={val => onChange(val)}
 			min={10}
-			max={250}
+			max={500}
 			step={1}
 			withInputField
 			initialPosition={defaultWidth}

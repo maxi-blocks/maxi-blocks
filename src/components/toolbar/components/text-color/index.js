@@ -18,6 +18,7 @@ import {
 	getGroupAttributes,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
+	getBlockStyle,
 } from '../../../../extensions/styles';
 
 /**
@@ -35,6 +36,7 @@ const TextColor = withFormatValue(props => {
 		onChange,
 		breakpoint,
 		formatValue,
+		clientId,
 		isList,
 		textLevel,
 	} = props;
@@ -70,17 +72,13 @@ const TextColor = withFormatValue(props => {
 			icon={
 				<div
 					className='toolbar-item__text-options__icon'
-					style={
-						(color && {
-							background: color,
-						}) || {
-							background: getLastBreakpointAttribute(
-								typography,
-								'color',
-								breakpoint
-							),
-						}
-					}
+					style={{
+						background:
+							props['color'] ||
+							`var(--maxi-${getBlockStyle(clientId)}-color-${
+								props['palette-preset-typography-color']
+							})`,
+					}}
 				>
 					<Icon
 						className='toolbar-item__text-options__inner-icon'
@@ -89,19 +87,31 @@ const TextColor = withFormatValue(props => {
 				</div>
 			}
 		>
-			<ColorControl
-				label={__('Text', 'maxi-blocks')}
-				defaultColor={getDefaultAttribute('color')}
-				color={
-					color ||
-					getLastBreakpointAttribute('color', breakpoint, typography)
-				}
-				onChange={val =>
-					onChangeFormat({
-						color: val,
-					})
-				}
-			/>
+			<div className='toolbar-item__text-color__popover'>
+				<ColorControl
+					label={__('Text', 'maxi-blocks')}
+					defaultColor={getDefaultAttribute('color')}
+					color={
+						color ||
+						getLastBreakpointAttribute(
+							'color',
+							breakpoint,
+							typography
+						)
+					}
+					onChange={val =>
+						onChangeFormat({
+							color: val,
+						})
+					}
+					showPalette
+					palette={{ ...getGroupAttributes(props, 'palette') }}
+					colorPaletteType='typography'
+					onChangePalette={val => onChange(val)}
+					deviceType={breakpoint}
+					clientId={clientId}
+				/>
+			</div>
 		</ToolbarPopover>
 	);
 });

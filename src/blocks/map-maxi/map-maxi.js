@@ -22,7 +22,7 @@ import save from './save';
  */
 import './style.scss';
 import './editor.scss';
-import { buttonIcon } from '../../icons';
+import { mapIcon } from '../../icons';
 
 /**
  * Block
@@ -30,7 +30,7 @@ import { buttonIcon } from '../../icons';
 
 registerBlockType('maxi-blocks/map-maxi', {
 	title: __('Map Maxi', 'maxi-blocks'),
-	icon: buttonIcon,
+	icon: mapIcon,
 	description: __('Show Google Map', 'maxi-blocks'),
 	category: 'maxi-blocks',
 	supports: {

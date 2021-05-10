@@ -3,11 +3,11 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import Button from '../../../button';
 import { defaultTypography } from '../../../../extensions/text';
 import BaseControl from '../../../base-control';
 import FontFamilySelector from '../../../font-family-selector';

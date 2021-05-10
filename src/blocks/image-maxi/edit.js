@@ -3,15 +3,18 @@
  */
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
-import { Spinner, Button, Placeholder } from '@wordpress/components';
+import { Spinner, Placeholder } from '@wordpress/components';
 import { MediaUpload } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
+import { getGroupAttributes } from '../../extensions/styles';
+import getStyles from './styles';
 import Inspector from './inspector';
 import {
 	BlockResizer,
+	Button,
 	HoverPreview,
 	MaxiBlockComponent,
 	Toolbar,
@@ -19,8 +22,6 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
-import getStyles from './styles';
 
 /**
  * External dependencies

@@ -2,9 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button, Icon } from '@wordpress/components';
+import { Icon } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
+
+/**
+ * Internal dependencies
+ */
+import Button from '../../components/button';
 
 /**
  * External dependencies

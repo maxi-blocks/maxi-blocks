@@ -4,7 +4,7 @@
 import { forwardRef } from '@wordpress/element';
 import { compose, withInstanceId } from '@wordpress/compose';
 import { withSelect, withDispatch } from '@wordpress/data';
-import { Button, Icon, withFocusOutside } from '@wordpress/components';
+import { Icon, withFocusOutside } from '@wordpress/components';
 import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
@@ -12,7 +12,7 @@ import { InnerBlocks } from '@wordpress/block-editor';
  */
 import Inspector from './inspector';
 import RowContext from './context';
-import { MaxiBlockComponent, Toolbar } from '../../components';
+import { MaxiBlockComponent, Toolbar, Button } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';

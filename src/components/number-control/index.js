@@ -1,18 +1,18 @@
 /**
- * WordPress dependencies
- */
-import { Button } from '@wordpress/components';
-
-/**
  * Internal dependencies
  */
 import BaseControl from '../base-control';
-import { reset } from '../../icons';
+import Button from '../button';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+
+/**
+ * Icons
+ */
+import { reset } from '../../icons';
 
 /**
  * Component

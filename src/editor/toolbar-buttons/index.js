@@ -1,12 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { Button, Icon } from '@wordpress/components';
+import { Icon } from '@wordpress/components';
 import { useState, render, Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../../components/button';
 import ResponsiveSelector from '../responsive-selector';
 
 /**

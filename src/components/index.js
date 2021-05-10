@@ -33,6 +33,7 @@ export { default as HoverPreview } from './hover-preview';
 export { default as ImageAltControl } from './image-alt-control';
 export { default as ImageCropControl } from './image-crop-control';
 export { default as Indicators } from './indicators';
+export { default as MapControl } from './map-control';
 export { default as MaxiBlockComponent } from '../extensions/maxi-block';
 export { default as MotionControl } from './motion-control';
 export { default as MotionPreview } from './motion-preview';

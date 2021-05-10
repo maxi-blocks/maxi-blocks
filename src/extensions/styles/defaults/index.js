@@ -18,6 +18,7 @@ export { default as display } from './display';
 export { default as divider } from './divider';
 export { default as global } from './global';
 export { default as highlight } from './highlight';
+export { default as map } from './map';
 export { default as margin } from './margin';
 export { default as opacity } from './opacity';
 export { default as padding } from './padding';

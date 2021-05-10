@@ -28,6 +28,110 @@ import { isEmpty } from 'lodash';
 import { replay } from '../../icons';
 
 /**
+ * NumberCounter
+ */
+
+const NumberCounter = attributes => {
+	const countRef = useRef(null);
+
+	const startCountValue = Math.ceil(
+		(attributes['number-counter-start'] * 360) / 100
+	);
+	const endCountValue = Math.ceil(
+		(attributes['number-counter-end'] * 360) / 100
+	);
+	const countDuration = attributes['number-counter-duration'];
+	const radius = attributes['number-counter-radius'];
+	const stroke = attributes['number-counter-stroke'];
+	const circleStatus = attributes['number-counter-circle-status'];
+	const autoReproduce = attributes['number-counter-auto-reproduce'];
+
+	const [count, setCount] = useState(startCountValue);
+	const [replyStatus, setReplyStatus] = useState(false);
+
+	const circumference = 2 * Math.PI * radius;
+
+	const frameDuration = countDuration / 60;
+
+	useEffect(() => {
+		if (autoReproduce || replyStatus) {
+			if (count >= endCountValue) {
+				setCount(endCountValue);
+				return;
+			}
+
+			countRef.current = setInterval(() => {
+				setCount(count + 1);
+			}, frameDuration);
+
+			return () => clearInterval(countRef.current);
+		}
+	}, [count, replyStatus, autoReproduce]);
+
+	return (
+		<div className='maxi-number-counter'>
+			<Button
+				className='maxi-number-counter__replay'
+				onClick={() => {
+					setCount(startCountValue);
+					setReplyStatus(true);
+					clearInterval(countRef.current);
+				}}
+				icon={replay}
+			/>
+			<div
+				className='maxi-number-counter__box'
+				style={{ width: `${radius + stroke / 2}px` }}
+			>
+				{!circleStatus && (
+					<svg
+						viewBox={`0 0 ${radius * 2 + stroke} ${
+							radius * 2 + stroke
+						}`}
+					>
+						<circle
+							className='maxi-number-counter__box__background'
+							strokeWidth={stroke}
+							fill='none'
+							cx={radius + stroke / 2}
+							cy={radius + stroke / 2}
+							r={radius}
+						/>
+						<circle
+							className='maxi-number-counter__box__circle'
+							strokeWidth={stroke}
+							fill='none'
+							cx={radius + stroke / 2}
+							cy={radius + stroke / 2}
+							r={radius}
+							strokeLinecap={
+								attributes['number-counter-rounded-status']
+									? 'round'
+									: ''
+							}
+							strokeDasharray={`${parseInt(
+								(count / 360) * circumference
+							)} ${circumference}`}
+						/>
+					</svg>
+				)}
+				<span className='maxi-number-counter__box__text'>
+					{`${parseInt((count / 360) * 100)}`}
+
+					{attributes['number-counter-percentage-sign-status'] && (
+						<sup>
+							{attributes['number-counter-percentage-sign-status']
+								? '%'
+								: ''}
+						</sup>
+					)}
+				</span>
+			</div>
+		</div>
+	);
+};
+
+/**
  * Content
  */
 class edit extends MaxiBlockComponent {
@@ -57,112 +161,6 @@ class edit extends MaxiBlockComponent {
 		const { uniqueID } = attributes;
 
 		const classes = 'maxi-number-counter-block';
-
-		const NumberCounter = attributes => {
-			const countRef = useRef(null);
-
-			const startCountValue = Math.ceil(
-				(attributes['number-counter-start'] * 360) / 100
-			);
-			const endCountValue = Math.ceil(
-				(attributes['number-counter-end'] * 360) / 100
-			);
-			const countDuration = attributes['number-counter-duration'];
-			const radius = attributes['number-counter-radius'];
-			const stroke = attributes['number-counter-stroke'];
-			const circleStatus = attributes['number-counter-circle-status'];
-			const autoReproduce = attributes['number-counter-auto-reproduce'];
-
-			const [count, setCount] = useState(startCountValue);
-			const [replyStatus, setReplyStatus] = useState(false);
-
-			const circumference = 2 * Math.PI * radius;
-
-			const frameDuration = countDuration / 60;
-
-			useEffect(() => {
-				if (autoReproduce || replyStatus) {
-					if (count >= endCountValue) {
-						setCount(endCountValue);
-						return;
-					}
-
-					countRef.current = setInterval(() => {
-						setCount(count + 1);
-					}, frameDuration);
-
-					return () => clearInterval(countRef.current);
-				}
-			}, [count, replyStatus, autoReproduce]);
-
-			return (
-				<div className='maxi-number-counter'>
-					<Button
-						className='maxi-number-counter__replay'
-						onClick={() => {
-							setCount(startCountValue);
-							setReplyStatus(true);
-							clearInterval(countRef.current);
-						}}
-						icon={replay}
-					/>
-					<div
-						className='maxi-number-counter__box'
-						style={{ width: `${radius + stroke / 2}px` }}
-					>
-						{!circleStatus && (
-							<svg
-								viewBox={`0 0 ${radius * 2 + stroke} ${
-									radius * 2 + stroke
-								}`}
-							>
-								<circle
-									className='maxi-number-counter__box__background'
-									strokeWidth={stroke}
-									fill='none'
-									cx={radius + stroke / 2}
-									cy={radius + stroke / 2}
-									r={radius}
-								/>
-								<circle
-									className='maxi-number-counter__box__circle'
-									strokeWidth={stroke}
-									fill='none'
-									cx={radius + stroke / 2}
-									cy={radius + stroke / 2}
-									r={radius}
-									strokeLinecap={
-										attributes[
-											'number-counter-rounded-status'
-										]
-											? 'round'
-											: ''
-									}
-									strokeDasharray={`${parseInt(
-										(count / 360) * circumference
-									)} ${circumference}`}
-								/>
-							</svg>
-						)}
-						<span className='maxi-number-counter__box__text'>
-							{`${parseInt((count / 360) * 100)}`}
-
-							{attributes[
-								'number-counter-percentage-sign-status'
-							] && (
-								<sup>
-									{attributes[
-										'number-counter-percentage-sign-status'
-									]
-										? '%'
-										: ''}
-								</sup>
-							)}
-						</span>
-					</div>
-				</div>
-			);
-		};
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

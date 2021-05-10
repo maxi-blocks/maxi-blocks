@@ -84,7 +84,6 @@ motionElems.forEach(function (elem) {
 			function startCounter() {
 				const interval = setInterval(() => {
 					count = count + 1;
-					console.log(count);
 
 					if (count >= endCountValue) {
 						count = endCountValue;

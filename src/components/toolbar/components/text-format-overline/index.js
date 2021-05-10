@@ -2,13 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button, Tooltip } from '@wordpress/components';
+import { Icon, Button, Tooltip } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import Icon from '../../../icon';
 import {
 	setFormat,
 	getCustomFormatValue,

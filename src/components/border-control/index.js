@@ -2,15 +2,15 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import AxisControl from '../axis-control';
+import SelectControl from '../select-control';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import Icon from '../icon';
-import SelectControl from '../select-control';
+import AxisControl from '../axis-control';
 import {
 	borderNone,
 	borderSolid,

@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
+import { Icon } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 
 /**
@@ -23,7 +24,6 @@ import {
 	FancyRadioControl,
 	FontIconControl,
 	FullSizeControl,
-	Icon,
 	MotionControl,
 	PositionControl,
 	ResponsiveControl,

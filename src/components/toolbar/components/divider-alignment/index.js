@@ -8,7 +8,6 @@ import ToolbarPopover from '../toolbar-popover';
 /**
  * Internal dependencies
  */
-import Icon from '../../../icon';
 import SelectControl from '../../../select-control';
 
 /**
@@ -21,6 +20,7 @@ import {
 	alignRight,
 	toolbarDividerAlign,
 } from '../../../../icons';
+import { Icon } from '@wordpress/icons';
 
 /**
  * DividerAlignment

@@ -19,7 +19,7 @@ import getStyles from './styles';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
-import GoogleMapReact from 'google-map-react';
+import { Loader } from '@googlemaps/js-api-loader';
 
 /**
  * Content
@@ -49,6 +49,45 @@ class edit extends MaxiBlockComponent {
 
 		const classes = 'maxi-map-block';
 
+		const mapApiKey = attributes['map-api-key'];
+		const mapLatitude = +attributes['map-latitude'];
+		const mapLongitude = +attributes['map-longitude'];
+
+		const loader = new Loader({
+			apiKey: mapApiKey,
+			version: 'weekly',
+			libraries: ['places'],
+		});
+
+		loader
+			.load()
+			.then(() => {
+				return new google.maps.Map(document.getElementById('map'), {
+					center: {
+						lat: mapLatitude,
+						lng: mapLongitude,
+					},
+					zoom: 4,
+				});
+			})
+			.then(map => {
+				const contentString = '<h3>Hello</h3>';
+				const infowindow = new google.maps.InfoWindow({
+					content: contentString,
+				});
+				const marker = new google.maps.Marker({
+					position: { lat: mapLatitude, lng: mapLongitude },
+					map,
+					title: 'Uluru (Ayers Rock)',
+				});
+				marker.addListener('click', () => {
+					infowindow.open(map, marker);
+				});
+			})
+			.catch(ex => {
+				console.error('outer', ex.message);
+			});
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
@@ -57,20 +96,11 @@ class edit extends MaxiBlockComponent {
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
-				<div className='maxi-map-container' style={{ height: '300px' }}>
-					<GoogleMapReact
-						bootstrapURLKeys={{
-							key: attributes['map-api-key'],
-							language: 'en',
-							region: 'US',
-						}}
-						defaultCenter={{
-							lat: attributes['map-Latitude'],
-							lng: attributes['map-longitude'],
-						}}
-						defaultZoom={4}
-					></GoogleMapReact>
-				</div>
+				<div
+					className='maxi-map-container'
+					id='map'
+					style={{ height: '300px' }}
+				></div>
 			</MaxiBlock>,
 		];
 	}

@@ -3,7 +3,7 @@ const map = {
 		type: 'string',
 		default: 'AIzaSyBW3BXol38RXkWnc49Zrgvw0pVZA9ISC1E',
 	},
-	'map-Latitude': {
+	'map-latitude': {
 		type: 'number',
 		default: -25.363,
 	},

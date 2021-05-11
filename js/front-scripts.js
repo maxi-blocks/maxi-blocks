@@ -46,9 +46,9 @@ script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=ini
 script.async = true;
 
 window.initMap = function () {
-	const uluru = { lat: -25.363, lng: 131.044 };
+	const uluru = { lat: 51.506, lng: -0.184 };
 	const map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 4,
+		zoom: 15,
 		center: uluru,
 	});
 	const contentString =

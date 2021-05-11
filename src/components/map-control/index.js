@@ -26,17 +26,17 @@ const MapControl = props => {
 			<TextControl
 				label={__('API Key', 'maxi-blocks')}
 				value={props['map-api-key']}
-				onChange={value => onChange(value)}
+				onChange={val => onChange({ ['map-api-key']: val })}
 			/>
 			<TextControl
 				label={__('Latitude', 'maxi-blocks')}
 				value={props['map-Latitude']}
-				onChange={value => onChange(value)}
+				onChange={val => onChange({ ['map-Latitude']: val })}
 			/>
 			<TextControl
 				label={__('Longitude', 'maxi-blocks')}
 				value={props['map-longitude']}
-				onChange={value => onChange(value)}
+				onChange={val => onChange({ ['map-longitude']: val })}
 			/>
 		</div>
 	);

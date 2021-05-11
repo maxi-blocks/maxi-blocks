@@ -2,14 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import ToolbarPopover from '../toolbar-popover';
-import ColorControl from '../../../color-control';
+import Icon from '../../../icon';
 import { getDefaultAttribute } from '../../../../extensions/styles';
+import ColorControl from '../../../color-control';
+import ToolbarPopover from '../toolbar-popover';
 
 /**
  * Icons

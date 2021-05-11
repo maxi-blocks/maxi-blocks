@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-import { Icon, Tooltip } from '@wordpress/components';
+import { Tooltip } from '@wordpress/components';
 import {
 	applyFormat,
 	toHTMLString,
@@ -15,6 +15,7 @@ import {
  * Internal dependencies
  */
 import Button from '../../../button';
+import Icon from '../../../icon';
 import {
 	formatActive,
 	withFormatValue,

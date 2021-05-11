@@ -3,26 +3,26 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import { getDefaultAttribute } from '../../extensions/styles';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import FancyRadioControl from '../fancy-radio-control';
+import Icon from '../icon';
 import RangeSliderControl from '../range-slider-control';
-import SizeControl from '../size-control';
 import SelectControl from '../select-control';
-import { getDefaultAttribute } from '../../extensions/styles';
+import SizeControl from '../size-control';
 import {
-	dividerSolidHorizontal,
-	dividerDottedHorizontal,
 	dividerDashedHorizontal,
-	dividerSolidVertical,
-	dividerDottedVertical,
 	dividerDashedVertical,
+	dividerDottedHorizontal,
+	dividerDottedVertical,
 	dividerNone,
+	dividerSolidHorizontal,
+	dividerSolidVertical,
 } from './defaults';
 
 /**

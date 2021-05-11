@@ -3,7 +3,12 @@
  */
 import deprecated from '@wordpress/deprecated';
 import { forwardRef } from '@wordpress/element';
-import { Icon, Tooltip } from '@wordpress/components'; // Should be replaced for the new components
+import { Tooltip } from '@wordpress/components'; // Should be replaced for the new components
+
+/**
+ * Internal dependencies
+ */
+import Icon from '../icon';
 
 /**
  * External dependencies

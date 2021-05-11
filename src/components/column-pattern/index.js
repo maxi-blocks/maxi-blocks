@@ -3,21 +3,21 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useInstanceId } from '@wordpress/compose';
-import { Icon } from '@wordpress/components';
 import { select } from '@wordpress/data';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../button';
+import FancyRadioControl from '../fancy-radio-control';
+import Icon from '../icon';
+import SizeControl from '../size-control';
 import {
 	getNumCol,
 	getTemplates,
 	loadColumnsTemplate,
 } from '../../extensions/column-templates';
-import Button from '../button';
-import SizeControl from '../size-control';
-import FancyRadioControl from '../fancy-radio-control';
 
 /**
  * External dependencies

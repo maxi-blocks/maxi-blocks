@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Icon } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 
@@ -10,6 +9,7 @@ import { createBlock } from '@wordpress/blocks';
  * Internal dependencies
  */
 import Button from '../../components/button';
+import Icon from '../../components/icon';
 
 /**
  * External dependencies
@@ -37,11 +37,11 @@ import {
 const ResponsiveSelector = props => {
 	const { className, isOpen, onClose } = props;
 
+	const { insertBlock } = useDispatch('core/block-editor');
+
 	const addCloudLibrary = () => {
 		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
 	};
-
-	const { insertBlock } = useDispatch('core/block-editor');
 
 	const { deviceType, breakpoints } = useSelect(select => {
 		const { receiveMaxiDeviceType, receiveMaxiBreakpoints } = select(

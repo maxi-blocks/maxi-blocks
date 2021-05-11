@@ -16,6 +16,7 @@ import {
  */
 import openSidebar from '../../../../extensions/dom';
 import { toolbarAdvancedSettings } from '../../../../icons';
+import ToolbarContext from './toolbarContext';
 
 /**
  * External dependencies
@@ -33,7 +34,16 @@ import './editor.scss';
 class ToolbarPopover extends Component {
 	state = {
 		isOpen: false,
+		onClose: () => {
+			this.setState({ isOpen: false });
+		},
 	};
+
+	constructor(...args) {
+		super(...args);
+
+		this.ref = createRef();
+	}
 
 	handleFocusOutside() {
 		this.setState({
@@ -58,9 +68,7 @@ class ToolbarPopover extends Component {
 			advancedOptions = false,
 		} = this.props;
 
-		const ref = createRef();
-
-		const { isOpen } = this.state;
+		const { isOpen, onClose } = this.state;
 
 		const { openGeneralSidebar } = dispatch('core/edit-post');
 
@@ -71,10 +79,9 @@ class ToolbarPopover extends Component {
 		);
 
 		return (
-			<>
+			<ToolbarContext.Provider value={{ isOpen, onClose }}>
 				<Tooltip text={tooltip} position='bottom center'>
 					<Button
-						ref={ref}
 						className={classes}
 						onClick={() => this.onToggle()}
 						aria-expanded={isOpen}
@@ -106,7 +113,7 @@ class ToolbarPopover extends Component {
 						)}
 					</Popover>
 				)}
-			</>
+			</ToolbarContext.Provider>
 		);
 	}
 }

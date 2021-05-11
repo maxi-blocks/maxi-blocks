@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { withSelect } from '@wordpress/data';
-import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -13,17 +12,17 @@ import {
 	BlockPlaceholder,
 	MaxiBlockComponent,
 	Toolbar,
+	InnerBlocks,
 } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
@@ -57,25 +56,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, clientId, hasInnerBlock, deviceType } = this.props;
-		const { uniqueID, parentBlockStyle } = attributes;
-
-		const classes = classnames(
-			'maxi-group-block',
-			getPaletteClasses(
-				attributes,
-				[
-					'background',
-					'background-hover',
-					'border',
-					'border-hover',
-					'box-shadow',
-					'box-shadow-hover',
-				],
-				'maxi-blocks/group-maxi',
-				parentBlockStyle
-			)
-		);
+		const { attributes, deviceType, hasInnerBlock, clientId } = this.props;
+		const { uniqueID } = attributes;
 
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
@@ -94,10 +76,14 @@ class edit extends MaxiBlockComponent {
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+			/>,
 			<MaxiBlock
 				key={`maxi-group--${uniqueID}`}
-				className={classes}
+				ref={this.blockRef}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<ArrowDisplayer
@@ -107,10 +93,8 @@ class edit extends MaxiBlockComponent {
 				<InnerBlocks
 					allowedBlocks={ALLOWED_BLOCKS}
 					templateLock={false}
-					__experimentalTagName='div'
-					__experimentalPassedProps={{
-						className: 'maxi-group-block__group',
-					}}
+					tagName='div'
+					className='maxi-group-block__group'
 					renderAppender={
 						!hasInnerBlock
 							? () => <BlockPlaceholder clientId={clientId} />

@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+import { subscribe } from '@wordpress/data';
 import { Button, Icon } from '@wordpress/components';
 import { useState, render, Fragment } from '@wordpress/element';
 
@@ -41,21 +42,31 @@ const ToolbarButtons = () => {
 
 // export default ToolbarButtons;
 
-document.addEventListener('readystatechange', () => {
-	if (document.readyState === 'complete') {
+wp.domReady(() => {
+	/**
+	 * Mutation Observer for:
+	 * - Add special classes on Settings Sidebar
+	 * - Hide original WP toolbar on selected Maxi Blocks
+	 */
+	const unsubscribe = subscribe(() => {
+		const maxiToolbar = document.querySelector(
+			'#maxi-blocks__toolbar-buttons'
+		);
+		const parentNode = document.querySelector('.edit-post-header__toolbar');
+
 		// Insert Maxi buttons on Gutenberg topbar
-		if (!document.querySelector('#maxi-blocks__toolbar-buttons')) {
+		if (!maxiToolbar && parentNode) {
 			const toolbarButtonsWrapper = document.createElement('div');
 			toolbarButtonsWrapper.id = 'maxi-blocks__toolbar-buttons';
 
-			document
-				.querySelector('.edit-post-header__toolbar')
-				.appendChild(toolbarButtonsWrapper);
+			parentNode.appendChild(toolbarButtonsWrapper);
 
 			render(<ToolbarButtons />, toolbarButtonsWrapper);
+
+			unsubscribe();
 
 			// Initialize SCs
 			wp.data.select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 		}
-	}
+	});
 });

@@ -61,7 +61,6 @@ class edit extends MaxiBlockComponent {
 		onDeviceTypeChange();
 
 		const classes = classnames(
-			'maxi-divider-block',
 			lineOrientation === 'vertical'
 				? 'maxi-divider-block--vertical'
 				: 'maxi-divider-block--horizontal',
@@ -95,7 +94,11 @@ class edit extends MaxiBlockComponent {
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+			/>,
 			<BlockResizer
 				key={uniqueID}
 				className={classnames(
@@ -127,7 +130,8 @@ class edit extends MaxiBlockComponent {
 			>
 				<MaxiBlock
 					key={`maxi-divider--${uniqueID}`}
-					className={classes}
+					ref={this.blockRef}
+					classes={classes}
 					{...getMaxiBlockBlockAttributes(this.props)}
 				>
 					{attributes['divider-border-style'] !== 'none' && (

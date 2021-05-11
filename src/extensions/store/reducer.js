@@ -2,6 +2,7 @@ import controls from './controls';
 
 const reducer = (
 	state = {
+		settings: {},
 		breakpoints: {},
 		deviceType: 'general',
 		presets: '',
@@ -10,6 +11,11 @@ const reducer = (
 	action
 ) => {
 	switch (action.type) {
+		case 'SEND_GLOBAL_SETTINGS':
+			return {
+				...state,
+				settings: action.settings,
+			};
 		case 'SEND_MOTION_PRESETS':
 			return {
 				...state,

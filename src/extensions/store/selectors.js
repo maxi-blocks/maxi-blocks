@@ -1,4 +1,8 @@
 const selectors = {
+	receiveMaxiSettings(state) {
+		if (state) return state.settings;
+		return false;
+	},
 	receiveMaxiBreakpoints(state) {
 		if (state) return state.breakpoints;
 		return false;

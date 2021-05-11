@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
@@ -8,7 +9,7 @@ import { __experimentalLinkControl } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';
 import { Button } from '@wordpress/components';
-import { useRef, useEffect, useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,6 +23,7 @@ import {
 	getFormatPosition,
 } from '../../../../extensions/text/formats';
 import ToolbarPopover from '../toolbar-popover';
+import ToolbarContext from '../toolbar-popover/toolbarContext';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
@@ -38,17 +40,15 @@ import { toolbarLink } from '../../../../icons';
 /**
  * Link
  */
-const Link = withFormatValue(props => {
+const LinkContent = withFormatValue(props => {
 	const {
-		blockName,
 		onChange,
 		isList,
 		formatValue,
 		textLevel,
 		linkSettings,
+		onClose,
 	} = props;
-
-	if (blockName !== 'maxi-blocks/text-maxi') return null;
 
 	const formatName = 'maxi-blocks/text-link';
 
@@ -61,8 +61,6 @@ const Link = withFormatValue(props => {
 	}, [getActiveFormat, formatValue, formatName]);
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
-
-	const ref = useRef();
 
 	const createLinkValue = formatOptions => {
 		if (!isEmpty(linkSettings)) return linkSettings;
@@ -218,11 +216,13 @@ const Link = withFormatValue(props => {
 		}
 
 		const newLinkAttributes = createLinkAttributes({ url: '' });
-		const newLinkValue = createLinkValue({ attributes: newLinkAttributes });
+		const newLinkValue = createLinkValue({
+			attributes: newLinkAttributes,
+		});
 
 		setLinkValue(newLinkValue);
 
-		if (ref.current) ref.current.node.state.isOpen = false;
+		onClose();
 	};
 
 	const forceSSL = attributes => {
@@ -261,48 +261,68 @@ const Link = withFormatValue(props => {
 	};
 
 	return (
+		<>
+			<__experimentalLinkControl
+				value={linkValue}
+				onChange={onClick}
+				settings={[
+					{
+						id: 'opensInNewTab',
+						title: __('Open in new tab', 'maxi-blocks'),
+					},
+					{
+						id: 'noFollow',
+						title: __('Add "nofollow" rel', 'maxi-blocks'),
+					},
+					{
+						id: 'sponsored',
+						title: __('Add "sponsored" rel', 'maxi-blocks'),
+					},
+					{
+						id: 'ugc',
+						title: __('Add "UGC" rel', 'maxi-blocks'),
+					},
+				]}
+			/>
+			{!isEmpty(linkValue.url) && (
+				<Button
+					className='toolbar-popover-link-destroyer'
+					onClick={removeLinkFormatHandle}
+				>
+					{__('Remove link', 'maxi-blocks')}
+				</Button>
+			)}
+		</>
+	);
+});
+
+const Link = props => {
+	const { blockName } = props;
+
+	if (blockName !== 'maxi-blocks/text-maxi') return null;
+
+	return (
 		<ToolbarPopover
-			ref={ref}
 			icon={toolbarLink}
 			tooltip={__('Link', 'maxi-blocks')}
 			className='toolbar-item__text-link'
 		>
-			<div>
-				<__experimentalLinkControl
-					value={linkValue}
-					onChange={onClick}
-					settings={[
-						{
-							id: 'opensInNewTab',
-							title: __('Open in new tab', 'maxi-blocks'),
-						},
-						{
-							id: 'noFollow',
-							title: __('Add "nofollow" rel', 'maxi-blocks'),
-						},
-						{
-							id: 'sponsored',
-							title: __('Add "sponsored" rel', 'maxi-blocks'),
-						},
-						{
-							id: 'ugc',
-							title: __('Add "UGC" rel', 'maxi-blocks'),
-						},
-					]}
-				/>
-				{!isEmpty(linkValue.url) && (
-					<Button
-						className='toolbar-popover-link-destroyer'
-						onClick={() => {
-							removeLinkFormatHandle();
-						}}
-					>
-						{__('Remove link', 'maxi-blocks')}
-					</Button>
-				)}
-			</div>
+			<ToolbarContext.Consumer>
+				{({ isOpen, onClose }) => {
+					if (isOpen)
+						return (
+							<LinkContent
+								isOpen={isOpen}
+								onClose={onClose}
+								{...props}
+							/>
+						);
+
+					return null;
+				}}
+			</ToolbarContext.Consumer>
 		</ToolbarPopover>
 	);
-});
+};
 
 export default Link;

@@ -5,12 +5,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { __experimentalLinkControl } from '@wordpress/block-editor';
-import { Button } from '@wordpress/components';
 import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../../../button';
 import ToolbarPopover from '../toolbar-popover';
 
 /**

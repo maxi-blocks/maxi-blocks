@@ -1,11 +1,7 @@
 /**
- * WordPress dependencies
- */
-import { Button } from '@wordpress/components';
-
-/**
  * Internal dependencies
  */
+import { Button } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';

@@ -2,13 +2,13 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import BaseControl from '../base-control';
+import Button from '../button';
 
 /**
  * External dependencies

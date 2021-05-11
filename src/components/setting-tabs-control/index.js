@@ -2,8 +2,11 @@
  * WordPress dependencies
  */
 import { useState } from '@wordpress/element';
-import { Button } from '@wordpress/components';
 
+/**
+ * Internal dependencies
+ */
+import Button from '../button';
 /**
  * External dependencies
  */

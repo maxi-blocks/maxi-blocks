@@ -3,13 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useInstanceId } from '@wordpress/compose';
-import { Button } from '@wordpress/components';
 import { select } from '@wordpress/data';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../button';
 import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
 import SizeControl from '../size-control';

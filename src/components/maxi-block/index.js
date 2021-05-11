@@ -174,7 +174,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 					key={`maxi-block-${uniqueID}`}
 					uniqueID={uniqueID}
 					background={background}
-					disableBackground={disableBackground}
+					disableBackground={!disableBackground}
 					isSave={isSave}
 					{...blockProps}
 				>

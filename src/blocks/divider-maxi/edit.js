@@ -63,20 +63,7 @@ class edit extends MaxiBlockComponent {
 		const classes = classnames(
 			lineOrientation === 'vertical'
 				? 'maxi-divider-block--vertical'
-				: 'maxi-divider-block--horizontal',
-			getPaletteClasses(
-				attributes,
-				[
-					'background',
-					'background-hover',
-					'divider',
-					'divider-hover',
-					'box-shadow',
-					'box-shadow-hover',
-				],
-				'maxi-blocks/divider-maxi',
-				parentBlockStyle
-			)
+				: 'maxi-divider-block--horizontal'
 		);
 
 		const handleOnResizeStart = event => {
@@ -91,6 +78,20 @@ class edit extends MaxiBlockComponent {
 				[`height-${deviceType}`]: elt.getBoundingClientRect().height,
 			});
 		};
+
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'divider',
+				'divider-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'maxi-blocks/divider-maxi',
+			parentBlockStyle
+		);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -132,6 +133,7 @@ class edit extends MaxiBlockComponent {
 					key={`maxi-divider--${uniqueID}`}
 					ref={this.blockRef}
 					classes={classes}
+					paletteClasses={paletteClasses}
 					{...getMaxiBlockBlockAttributes(this.props)}
 				>
 					{attributes['divider-border-style'] !== 'none' && (

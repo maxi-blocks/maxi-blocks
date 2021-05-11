@@ -15,7 +15,6 @@ import { forwardRef } from '@wordpress/element';
 import {
 	getLastBreakpointAttribute,
 	getGroupAttributes,
-	getPaletteClasses,
 } from '../../extensions/styles';
 import BackgroundDisplayer from '../background-displayer';
 import MotionPreview from '../motion-preview';
@@ -119,6 +118,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		disableBackground = false,
 		isSave = false,
 		classes: customClasses,
+		paletteClasses,
 		...extraProps
 	} = props;
 
@@ -154,7 +154,8 @@ const MaxiBlock = forwardRef((props, ref) => {
 		uniqueID,
 		className,
 		displayValue === 'none' && 'maxi-block-display-none',
-		customClasses
+		customClasses,
+		paletteClasses
 	);
 
 	const blockProps = {
@@ -169,10 +170,11 @@ const MaxiBlock = forwardRef((props, ref) => {
 			<MotionPreview key={`motion-preview-${uniqueID}`} {...motion}>
 				<MainBlock
 					ref={ref}
+					id={uniqueID}
 					key={`maxi-block-${uniqueID}`}
 					uniqueID={uniqueID}
 					background={background}
-					disableBackground={disableBackground}
+					disableBackground={!disableBackground}
 					isSave={isSave}
 					{...blockProps}
 				>
@@ -184,6 +186,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 	return (
 		<MainBlock
 			ref={ref}
+			id={uniqueID}
 			key={`maxi-block-${uniqueID}`}
 			uniqueID={uniqueID}
 			background={background}
@@ -198,13 +201,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 
 export const getMaxiBlockBlockAttributes = props => {
 	const { name, deviceType, attributes } = props;
-	const {
-		blockStyle,
-		extraClassName,
-		uniqueID,
-		fullWidth,
-		parentBlockStyle,
-	} = attributes;
+	const { blockStyle, extraClassName, uniqueID, fullWidth } = attributes;
 	const displayValue = getLastBreakpointAttribute(
 		'display',
 		deviceType,
@@ -230,23 +227,6 @@ export const getMaxiBlockBlockAttributes = props => {
 		]),
 	};
 
-	const paletteClasses = getPaletteClasses(
-		attributes,
-		[
-			'background',
-			'background-hover',
-			'border',
-			'border-hover',
-			'box-shadow',
-			'box-shadow-hover',
-			'typography',
-			'typography-hover',
-			'icon',
-		],
-		'maxi-blocks/button-maxi',
-		parentBlockStyle
-	);
-
 	return {
 		blockName: name,
 		blockStyle,
@@ -256,7 +236,6 @@ export const getMaxiBlockBlockAttributes = props => {
 		displayValue,
 		motion,
 		background,
-		paletteClasses,
 	};
 };
 

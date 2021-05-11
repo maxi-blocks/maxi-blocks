@@ -35,6 +35,8 @@ const save = props => {
 		parentBlockStyle,
 	} = attributes;
 
+	const name = 'maxi-blocks/image-maxi';
+
 	const hoverPreviewClasses = classnames(
 		'maxi-image-ratio',
 		`maxi-image-ratio__${imageRatio}`,
@@ -50,7 +52,7 @@ const save = props => {
 				'typography',
 				'typography-hover',
 			],
-			'maxi-blocks/image-maxi',
+			name,
 			parentBlockStyle
 		)
 	);
@@ -64,8 +66,6 @@ const save = props => {
 			attributes['hover-type'] === 'basic' ? 'basic' : 'text'
 		}`
 	);
-
-	const classes = 'maxi-image-block';
 
 	const imageAlt = () => {
 		switch (altSelector) {
@@ -82,10 +82,8 @@ const save = props => {
 
 	return (
 		<MaxiBlock
-			className={classes}
-			id={uniqueID}
 			tagName='figure'
-			{...getMaxiBlockBlockAttributes(props)}
+			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
 			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>

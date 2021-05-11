@@ -15,33 +15,35 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID, lineOrientation, parentBlockStyle } = attributes;
+	const { lineOrientation, parentBlockStyle } = attributes;
+
+	const name = 'maxi-blocks/divider-maxi';
 
 	const classes = classnames(
-		'maxi-divider-block',
 		lineOrientation === 'vertical'
 			? 'maxi-divider-block--vertical'
-			: 'maxi-divider-block--horizontal',
-		getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'divider',
-				'divider-hover',
-				'box-shadow',
-				'box-shadow-hover',
-			],
-			'maxi-blocks/divider-maxi',
-			parentBlockStyle
-		)
+			: 'maxi-divider-block--horizontal'
+	);
+
+	const paletteClasses = getPaletteClasses(
+		attributes,
+		[
+			'background',
+			'background-hover',
+			'divider',
+			'divider-hover',
+			'box-shadow',
+			'box-shadow-hover',
+		],
+		name,
+		parentBlockStyle
 	);
 
 	return (
 		<MaxiBlock
-			className={classes}
-			id={uniqueID}
-			{...getMaxiBlockBlockAttributes(props)}
+			classes={classes}
+			paletteClasses={paletteClasses}
+			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
 			{attributes['divider-border-style'] !== 'none' && (

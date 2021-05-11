@@ -18,6 +18,7 @@ import { toolbarBorder } from '../../../../icons';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getBlockStyle,
 } from '../../../../extensions/styles';
 
 /**
@@ -29,7 +30,13 @@ const ALLOWED_BLOCKS = ['maxi-blocks/button-maxi', 'maxi-blocks/image-maxi'];
  * Component
  */
 const Border = props => {
-	const { blockName, onChange, breakpoint, disableColor = false } = props;
+	const {
+		blockName,
+		onChange,
+		breakpoint,
+		disableColor = false,
+		clientId,
+	} = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
@@ -60,11 +67,15 @@ const Border = props => {
 										props
 								  ),
 						borderWidth: '1px',
-						borderColor: getLastBreakpointAttribute(
-							'border-color',
-							breakpoint,
-							props
-						),
+						borderColor:
+							getLastBreakpointAttribute(
+								'border-color',
+								breakpoint,
+								props
+							) ||
+							`var(--maxi-${getBlockStyle(clientId)}-color-${
+								props['palette-preset-border-color']
+							})`,
 					}}
 				>
 					<Icon
@@ -80,6 +91,7 @@ const Border = props => {
 						'border',
 						'borderWidth',
 						'borderRadius',
+						'palette',
 					])}
 					onChange={value => onChange(value)}
 					breakpoint={breakpoint}

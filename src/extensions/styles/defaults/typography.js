@@ -3,7 +3,6 @@ import alignment from './alignment';
 export const typography = {
 	'font-family-general': {
 		type: 'string',
-		default: 'Roboto',
 	},
 	'color-general': {
 		type: 'string',
@@ -14,14 +13,12 @@ export const typography = {
 	},
 	'font-size-general': {
 		type: 'number',
-		default: 16,
 	},
 	'line-height-unit-general': {
 		type: 'string',
 	},
 	'line-height-general': {
 		type: 'number',
-		default: 1.625,
 	},
 	'letter-spacing-unit-general': {
 		type: 'string',
@@ -29,7 +26,6 @@ export const typography = {
 	},
 	'letter-spacing-general': {
 		type: 'number',
-		default: 0,
 	},
 	'font-weight-general': {
 		type: 'number',

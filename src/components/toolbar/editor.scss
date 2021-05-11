@@ -1,5 +1,5 @@
 .maxi-toolbar__popover {
-	z-index: 999;
+	z-index: 29;
 	&--has-breadcrumb {
 		.components-popover__content {
 			.toolbar-wrapper {
@@ -37,6 +37,10 @@
 				position: absolute;
 				top: -25px;
 				left: 0;
+
+				&__block-style {
+					text-transform: capitalize;
+				}
 			}
 			@at-root .rtl #{&} {
 				flex-direction: row-reverse;

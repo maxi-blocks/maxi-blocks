@@ -44,8 +44,6 @@ const Inspector = props => {
 		uniqueID,
 		isFirstOnHierarchy,
 		blockStyle,
-		defaultBlockStyle,
-		blockStyleBackground,
 		fullWidth,
 		extraClassName,
 		lineOrientation,
@@ -71,21 +69,9 @@ const Inspector = props => {
 									/>
 									<hr />
 									<BlockStylesControl
-										{...getGroupAttributes(attributes, [
-											'border',
-											'highlight',
-										])}
 										blockStyle={blockStyle}
-										blockStyleBackground={
-											blockStyleBackground
-										}
-										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
-										disableHighlightText
-										disableHighlightBackground
-										disableHighlightColor1
-										disableHighlightColor2
 									/>
 								</div>
 								<AccordionControl
@@ -212,7 +198,11 @@ const Inspector = props => {
 													<DividerControl
 														{...getGroupAttributes(
 															attributes,
-															['divider', 'size']
+															[
+																'divider',
+																'size',
+																'palette',
+															]
 														)}
 														onChange={obj =>
 															setAttributes(obj)
@@ -221,11 +211,7 @@ const Inspector = props => {
 															lineOrientation
 														}
 														breakpoint={deviceType}
-														disableColor={
-															!!attributes[
-																'border-highlight'
-															]
-														}
+														clientId={clientId}
 													/>
 												</Fragment>
 											),
@@ -306,6 +292,7 @@ const Inspector = props => {
 																				'background',
 																				'backgroundColor',
 																				'backgroundGradient',
+																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -316,6 +303,9 @@ const Inspector = props => {
 																		disableImage
 																		disableVideo
 																		disableSVG
+																		clientId={
+																			clientId
+																		}
 																	/>
 																</Fragment>
 															),
@@ -371,6 +361,7 @@ const Inspector = props => {
 																					'backgroundHover',
 																					'backgroundColorHover',
 																					'backgroundGradientHover',
+																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -382,6 +373,9 @@ const Inspector = props => {
 																			disableVideo
 																			disableSVG
 																			isHover
+																			clientId={
+																				clientId
+																			}
 																		/>
 																	)}
 																</Fragment>
@@ -409,7 +403,10 @@ const Inspector = props => {
 																<BoxShadowControl
 																	{...getGroupAttributes(
 																		attributes,
-																		'boxShadow'
+																		[
+																			'boxShadow',
+																			'palette',
+																		]
 																	)}
 																	onChange={obj =>
 																		setAttributes(
@@ -418,6 +415,9 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
+																	}
+																	clientId={
+																		clientId
 																	}
 																/>
 															),
@@ -469,7 +469,10 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				'boxShadowHover'
+																				[
+																					'boxShadowHover',
+																					'palette',
+																				]
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -480,6 +483,9 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
+																			clientId={
+																				clientId
+																			}
 																		/>
 																	)}
 																</Fragment>

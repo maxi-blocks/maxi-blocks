@@ -7,7 +7,6 @@ import { Fragment } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { getDefaultAttribute } from '../../extensions/styles';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import FancyRadioControl from '../fancy-radio-control';
@@ -15,6 +14,10 @@ import Icon from '../icon';
 import RangeSliderControl from '../range-slider-control';
 import SelectControl from '../select-control';
 import SizeControl from '../size-control';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import {
 	dividerDashedHorizontal,
 	dividerDashedVertical,
@@ -40,6 +43,9 @@ const DividerControl = props => {
 		disableColor = false,
 		disableLineStyle = false,
 		disableBorderRadius = false,
+		blockStyle,
+		isHover = false,
+		clientId,
 	} = props;
 
 	const minMaxSettings = {
@@ -126,6 +132,13 @@ const DividerControl = props => {
 					defaultColor={getDefaultAttribute('border-color')}
 					onChange={val => onChange({ 'divider-border-color': val })}
 					disableGradient
+					showPalette
+					blockStyle={blockStyle}
+					palette={{ ...getGroupAttributes(props, 'palette') }}
+					isHover={isHover}
+					colorPaletteType='divider'
+					onChangePalette={val => onChange(val)}
+					clientId={clientId}
 				/>
 			)}
 			{!disableLineStyle && (

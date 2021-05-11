@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { withSelect } from '@wordpress/data';
-import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -13,6 +12,7 @@ import {
 	BlockPlaceholder,
 	MaxiBlockComponent,
 	Toolbar,
+	InnerBlocks,
 } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
@@ -56,10 +56,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, clientId, hasInnerBlock, deviceType } = this.props;
+		const { attributes, deviceType, hasInnerBlock, clientId } = this.props;
 		const { uniqueID } = attributes;
-
-		const classes = 'maxi-group-block';
 
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
@@ -78,10 +76,14 @@ class edit extends MaxiBlockComponent {
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+			/>,
 			<MaxiBlock
 				key={`maxi-group--${uniqueID}`}
-				className={classes}
+				ref={this.blockRef}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<ArrowDisplayer
@@ -91,10 +93,8 @@ class edit extends MaxiBlockComponent {
 				<InnerBlocks
 					allowedBlocks={ALLOWED_BLOCKS}
 					templateLock={false}
-					__experimentalTagName='div'
-					__experimentalPassedProps={{
-						className: 'maxi-group-block__group',
-					}}
+					tagName='div'
+					className='maxi-group-block__group'
 					renderAppender={
 						!hasInnerBlock
 							? () => <BlockPlaceholder clientId={clientId} />

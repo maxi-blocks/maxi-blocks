@@ -51,7 +51,7 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { className, onChange, uniqueID } = props;
+	const { className, onChange } = props;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
@@ -67,11 +67,6 @@ const HoverEffectControl = props => {
 				]}
 				optionType='string'
 				onChange={val => {
-					{
-						/* document.querySelector(
-						`.maxi-block[uniqueid="${uniqueID}"] img.maxi-image-block__image`
-					).style = ''; */
-					}
 					onChange({
 						'hover-type': val,
 						'hover-transition-duration': 0.3,
@@ -381,6 +376,7 @@ const HoverEffectControl = props => {
 							hideAlignment
 							onChange={obj => onChange(obj)}
 							prefix='hover-title-'
+							disableCustomFormats
 						/>
 					)}
 					<hr />
@@ -422,6 +418,7 @@ const HoverEffectControl = props => {
 							hideAlignment
 							onChange={obj => onChange(obj)}
 							prefix='hover-content-'
+							disableCustomFormats
 						/>
 					)}
 					<hr />

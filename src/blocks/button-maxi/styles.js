@@ -21,6 +21,9 @@ const getWrapperObject = props => {
 		zIndex: getZIndexStyles({
 			...getGroupAttributes(props, 'zIndex'),
 		}),
+		margin: getMarginPaddingStyles({
+			...getGroupAttributes(props, 'margin'),
+		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
@@ -56,9 +59,6 @@ const getNormalObject = props => {
 		),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
-		}),
-		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
 		}),
 		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),

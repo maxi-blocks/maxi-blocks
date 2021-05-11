@@ -20,6 +20,7 @@ import {
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 
 /**
@@ -44,6 +45,8 @@ const BoxShadowControl = props => {
 		breakpoint,
 		disableAdvanced = false,
 		isHover = false,
+		blockStyle,
+		clientId,
 	} = props;
 
 	const classes = classnames('maxi-shadow-control', className);
@@ -163,6 +166,14 @@ const BoxShadowControl = props => {
 						disableGradient
 						disableImage
 						disableVideo
+						showPalette
+						blockStyle={blockStyle}
+						isHover={isHover}
+						palette={{ ...getGroupAttributes(props, 'palette') }}
+						colorPaletteType='box-shadow'
+						onChangePalette={val => onChange(val)}
+						deviceType={breakpoint}
+						clientId={clientId}
 					/>
 					{!disableAdvanced && (
 						<Fragment>

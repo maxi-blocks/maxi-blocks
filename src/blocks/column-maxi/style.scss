@@ -4,9 +4,4 @@ body.maxi-blocks--active div.maxi-column-block {
 	flex-direction: column;
 	height: auto;
 	margin: 0;
-
-	& > *:not(.maxi-background-displayer) {
-		position: relative;
-		z-index: 1;
-	}
 }

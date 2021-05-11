@@ -35,7 +35,6 @@ const applyLinkFormat = ({
 		typography,
 		isList,
 		value: {
-			color: '#ff4a17',
 			'text-decoration': 'underline',
 		},
 		breakpoint,

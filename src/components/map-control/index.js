@@ -5,6 +5,12 @@ import { __ } from '@wordpress/i18n';
 import { TextControl } from '@wordpress/components';
 
 /**
+ * Internal dependencies
+ */
+import { SizeControl, ColorControl } from '../../components';
+import { getDefaultAttribute } from '../../extensions/styles';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -61,6 +67,54 @@ const MapControl = props => {
 					</div>
 				))}
 			</div>
+			<SizeControl
+				label={__('Marker Opacity', 'maxi-blocks')}
+				disableUnit
+				min={0.1}
+				max={1}
+				initial={1}
+				step={0.1}
+				value={props['map-marker-opacity']}
+				onChangeValue={val => onChange({ 'map-marker-opacity': val })}
+				onReset={() =>
+					onChange({
+						'map-marker-opacity': getDefaultAttribute(
+							'map-marker-opacity'
+						),
+					})
+				}
+			/>
+			<SizeControl
+				label={__('Marker Scale', 'maxi-blocks')}
+				disableUnit
+				min={1}
+				max={10}
+				initial={1}
+				step={1}
+				value={props['map-marker-scale']}
+				onChangeValue={val => onChange({ 'map-marker-scale': val })}
+				onReset={() =>
+					onChange({
+						'map-marker-scale': getDefaultAttribute(
+							'map-marker-scale'
+						),
+					})
+				}
+			/>
+			<ColorControl
+				label={__('Marker Fill', 'maxi-blocks')}
+				disableOpacity
+				color={props['map-marker-fill-color']}
+				defaultColor={getDefaultAttribute('map-marker-fill-color')}
+				onChange={val => onChange({ 'map-marker-fill-color': val })}
+			/>
+			<ColorControl
+				label={__('Marker Stroke', 'maxi-blocks')}
+				disableOpacity
+				color={props['map-marker-stroke-color']}
+				defaultColor={getDefaultAttribute('map-marker-stroke-color')}
+				onChange={val => onChange({ 'map-marker-stroke-color': val })}
+			/>
 		</div>
 	);
 };

@@ -54,6 +54,10 @@ class edit extends MaxiBlockComponent {
 		const mapLatitude = +attributes['map-latitude'];
 		const mapLongitude = +attributes['map-longitude'];
 		const mapMarker = attributes['map-marker'];
+		const mapMarkerOpacity = attributes['map-marker-opacity'];
+		const mapMarkerScale = attributes['map-marker-scale'];
+		const mapMarkerFillColor = attributes['map-marker-fill-color'];
+		const mapMarkerStrokeColor = attributes['map-marker-stroke-color'];
 
 		const loader = new Loader({
 			apiKey: mapApiKey,
@@ -81,7 +85,15 @@ class edit extends MaxiBlockComponent {
 					position: { lat: mapLatitude, lng: mapLongitude },
 					map,
 					title: 'Uluru (Ayers Rock)',
-					icon: defaultMarkers[`marker-icon-${mapMarker}`],
+					icon: {
+						...defaultMarkers[`marker-icon-${mapMarker}`],
+						fillColor: mapMarkerFillColor,
+						fillOpacity: mapMarkerOpacity,
+						strokeWeight: 2,
+						strokeColor: mapMarkerStrokeColor,
+						rotation: 0,
+						scale: mapMarkerScale,
+					},
 				});
 				marker.addListener('click', () => {
 					infowindow.open(map, marker);

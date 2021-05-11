@@ -15,6 +15,22 @@ const map = {
 		type: 'number',
 		default: 1,
 	},
+	'map-marker-opacity': {
+		type: 'number',
+		default: 1,
+	},
+	'map-marker-scale': {
+		type: 'number',
+		default: 1,
+	},
+	'map-marker-fill-color': {
+		type: 'string',
+		default: '#FF4A17',
+	},
+	'map-marker-stroke-color': {
+		type: 'string',
+		default: '#081219',
+	},
 };
 
 export default map;

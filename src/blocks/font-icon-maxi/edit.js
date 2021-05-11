@@ -11,7 +11,7 @@ import { FontIconPicker, MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiModalIcon from '../../components/font-icon-picker/modal';
 
@@ -54,7 +54,23 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, setAttributes } = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, parentBlockStyle } = attributes;
+
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'icon',
+				'icon-hover',
+			],
+			'maxi-blocks/font-icon-maxi',
+			parentBlockStyle
+		);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -66,6 +82,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-font-icon--${uniqueID}`}
 				ref={this.blockRef}
+				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 				disableMotion
 			>

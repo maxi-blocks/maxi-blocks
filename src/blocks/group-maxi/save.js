@@ -13,40 +13,33 @@ import MaxiBlock, {
 } from '../../components/maxi-block';
 
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-
-/**
  * Save
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID, parentBlockStyle } = attributes;
+	const { parentBlockStyle } = attributes;
 
-	const classes = classnames(
-		'maxi-group-block',
-		getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-			],
-			'maxi-blocks/group-maxi',
-			parentBlockStyle
-		)
+	const name = 'maxi-blocks/group-maxi';
+
+	const paletteClasses = getPaletteClasses(
+		attributes,
+		[
+			'background',
+			'background-hover',
+			'border',
+			'border-hover',
+			'box-shadow',
+			'box-shadow-hover',
+		],
+		name,
+		parentBlockStyle
 	);
 
 	return (
 		<MaxiBlock
-			className={classes}
-			id={uniqueID}
 			tagName='section'
-			{...getMaxiBlockBlockAttributes(props)}
+			paletteClasses={paletteClasses}
+			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
 			<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />

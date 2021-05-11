@@ -35,6 +35,20 @@ const map = {
 		type: 'string',
 		default: '#081219',
 	},
+	'map-marker-text': {
+		type: 'string',
+	},
+	'map-marker-text-color': {
+		type: 'string',
+		default: '#FF4A17',
+	},
+	'map-marker-address': {
+		type: 'string',
+	},
+	'map-marker-address-color': {
+		type: 'string',
+		default: '#081219',
+	},
 };
 
 export default map;

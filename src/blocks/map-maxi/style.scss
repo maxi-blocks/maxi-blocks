@@ -2,6 +2,21 @@ body.maxi-blocks--active .maxi-map-block {
 	#map {
 		background-color: green;
 		height: 300px;
+
+		.map-marker-info-window {
+			text-align: center;
+			width: 150px;
+
+			&__title {
+				color: #d83b01;
+				font-size: 1.2rem;
+				margin: 0 0 10px;
+			}
+			address {
+				font-style: normal;
+				font-size: 14px;
+			}
+		}
 	}
 }
 .circle {

@@ -78,7 +78,8 @@ class edit extends MaxiBlockComponent {
 				});
 			})
 			.then(map => {
-				const contentString = '<h3>Hello</h3>';
+				const contentString =
+					'<div class="map-marker-info-window"><h3 class="map-marker-info-window__title">Head Office</h3><address>1.5 Road Name Berlin Germany</address></div>';
 				const infowindow = new google.maps.InfoWindow({
 					content: contentString,
 				});

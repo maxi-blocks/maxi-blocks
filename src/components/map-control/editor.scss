@@ -1,4 +1,26 @@
 .maxi-map-control {
+	&__full-width-text {
+		.components-base-control {
+			&__field {
+				flex-direction: column;
+			}
+			&__label {
+				width: 100% !important;
+				margin: 0 0 5px !important;
+			}
+		}
+	}
+	&__help {
+		font-style: italic;
+		font-size: 11px !important;
+
+		a,
+		a:hover {
+			font-size: 11px !important;
+			text-decoration: none;
+			color: #ff4a17 !important;
+		}
+	}
 	&__markers {
 		display: flex;
 		width: 100%;

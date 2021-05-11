@@ -33,10 +33,18 @@ const MapControl = props => {
 	return (
 		<div className={classes}>
 			<TextControl
+				className='maxi-map-control__full-width-text'
 				label={__('API Key', 'maxi-blocks')}
 				value={props['map-api-key']}
 				onChange={val => onChange({ ['map-api-key']: val })}
 			/>
+			<p className='maxi-map-control__help'>
+				{__('Please create your own API key on the ', 'maxi-blocks')}
+				<a href='https://console.developers.google.com' target='_blank'>
+					{__('Google Console ', 'maxi-blocks')}
+				</a>
+				{__('This is a requirement enforced by Google.', 'maxi-blocks')}
+			</p>
 			<TextControl
 				label={__('Latitude', 'maxi-blocks')}
 				value={props['map-latitude']}
@@ -129,6 +137,19 @@ const MapControl = props => {
 				color={props['map-marker-stroke-color']}
 				defaultColor={getDefaultAttribute('map-marker-stroke-color')}
 				onChange={val => onChange({ 'map-marker-stroke-color': val })}
+			/>
+			<TextControl
+				className='maxi-map-control__full-width-text'
+				label={__('Marker Text', 'maxi-blocks')}
+				value={props['map-marker-text']}
+				onChange={val => onChange({ ['map-marker-text']: val })}
+			/>
+			<ColorControl
+				label={__('Marker Text', 'maxi-blocks')}
+				disableOpacity
+				color={props['map-marker-text-color']}
+				defaultColor={getDefaultAttribute('map-marker-text-color')}
+				onChange={val => onChange({ 'map-marker-text-color': val })}
 			/>
 		</div>
 	);

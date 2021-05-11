@@ -119,6 +119,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		disableBackground = false,
 		isSave = false,
 		classes: customClasses,
+		paletteClasses,
 		...extraProps
 	} = props;
 
@@ -154,7 +155,8 @@ const MaxiBlock = forwardRef((props, ref) => {
 		uniqueID,
 		className,
 		displayValue === 'none' && 'maxi-block-display-none',
-		customClasses
+		customClasses,
+		paletteClasses
 	);
 
 	const blockProps = {
@@ -172,7 +174,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 					key={`maxi-block-${uniqueID}`}
 					uniqueID={uniqueID}
 					background={background}
-					disableBackground={disableBackground}
+					disableBackground={!disableBackground}
 					isSave={isSave}
 					{...blockProps}
 				>

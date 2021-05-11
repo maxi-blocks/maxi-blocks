@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 
 /**
@@ -13,6 +12,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import Button from '../button';
 import MaxiModalIcon from './modal';
 
 /**

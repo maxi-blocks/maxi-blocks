@@ -1,7 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { Button, Icon } from '@wordpress/components';
+import { Icon } from '@wordpress/components';
+
+/**
+ * Internal dependencies
+ */
+import Button from '../../../button';
 
 /**
  * Icons

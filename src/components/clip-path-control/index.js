@@ -3,11 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect, Fragment } from '@wordpress/element';
-import { Button, Tooltip } from '@wordpress/components';
+import { Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import Button from '../button';
 import SelectControl from '../select-control';
 import BaseControl from '../base-control';
 import clipPathDefaults from './defaults';

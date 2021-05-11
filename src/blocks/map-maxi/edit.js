@@ -14,6 +14,7 @@ import MaxiBlock, {
 } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
+import { defaultMarkers } from './defaultMarkers';
 
 /**
  * External dependencies
@@ -52,6 +53,7 @@ class edit extends MaxiBlockComponent {
 		const mapApiKey = attributes['map-api-key'];
 		const mapLatitude = +attributes['map-latitude'];
 		const mapLongitude = +attributes['map-longitude'];
+		const mapMarker = attributes['map-marker'];
 
 		const loader = new Loader({
 			apiKey: mapApiKey,
@@ -79,6 +81,7 @@ class edit extends MaxiBlockComponent {
 					position: { lat: mapLatitude, lng: mapLongitude },
 					map,
 					title: 'Uluru (Ayers Rock)',
+					icon: defaultMarkers[`marker-icon-${mapMarker}`],
 				});
 				marker.addListener('click', () => {
 					infowindow.open(map, marker);

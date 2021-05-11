@@ -11,6 +11,10 @@ const map = {
 		type: 'number',
 		default: 131.044,
 	},
+	'map-marker': {
+		type: 'number',
+		default: 1,
+	},
 };
 
 export default map;

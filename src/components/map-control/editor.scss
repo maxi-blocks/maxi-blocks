@@ -1,0 +1,31 @@
+.maxi-map-control {
+	&__markers {
+		display: flex;
+		width: 100%;
+
+		&__item {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex: 1;
+			background: #f8f8f8;
+			padding: 3px;
+			margin-right: 5px;
+			border: 2px solid transparent;
+			transition: all 0.5s ease;
+			cursor: pointer;
+
+			&:hover,
+			&--active {
+				border: 2px solid #acacac;
+			}
+			&:last-child {
+				margin-right: 0;
+			}
+			svg {
+				width: 75%;
+				height: 75%;
+			}
+		}
+	}
+}

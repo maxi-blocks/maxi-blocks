@@ -19,12 +19,8 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { className, attributes } = props;
-	const {
-		uniqueID,
-		blockStyle,
-		extraClassName,
-		parentBlockStyle,
-	} = attributes;
+	const { uniqueID, blockStyle, extraClassName, parentBlockStyle } =
+		attributes;
 
 	const classes = classnames(
 		'maxi-motion-effect',

@@ -9,7 +9,6 @@ import { getPaletteClasses } from '../../extensions/styles';
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
@@ -17,32 +16,30 @@ import { isEmpty } from 'lodash';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID, parentBlockStyle } = attributes;
+	const { parentBlockStyle } = attributes;
 
-	const classes = classnames(
-		'maxi-font-icon-block',
-		getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-				'icon',
-				'icon-hover',
-			],
-			'maxi-blocks/font-icon-maxi',
-			parentBlockStyle
-		)
+	const name = 'maxi-blocks/font-icon-maxi';
+
+	const paletteClasses = getPaletteClasses(
+		attributes,
+		[
+			'background',
+			'background-hover',
+			'border',
+			'border-hover',
+			'box-shadow',
+			'box-shadow-hover',
+			'icon',
+			'icon-hover',
+		],
+		name,
+		parentBlockStyle
 	);
 
 	return (
 		<MaxiBlock
-			className={classes}
-			id={uniqueID}
-			{...getMaxiBlockBlockAttributes(props)}
+			paletteClasses={paletteClasses}
+			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
 			{!isEmpty(attributes['icon-name']) && (

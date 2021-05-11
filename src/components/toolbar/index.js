@@ -10,7 +10,7 @@ import { getScrollContainer } from '@wordpress/dom';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual } from 'lodash';
+import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
 /**
  * Utils
  */
@@ -164,9 +164,10 @@ const MaxiToolbar = memo(
 			...((parseFloat(editorVersion) <= 9.2 && {
 				__unstableSticky: true,
 			}) ||
-				(anchorRef && {
-					__unstableStickyBoundaryElement: boundaryElement,
-				})),
+				(anchorRef &&
+					!isNaN(parseFloat(editorVersion)) && {
+						__unstableStickyBoundaryElement: boundaryElement,
+					})),
 		};
 
 		return (

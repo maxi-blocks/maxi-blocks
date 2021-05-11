@@ -15,7 +15,7 @@ import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
 import { getTemplates } from '../../extensions/column-templates';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -55,7 +55,7 @@ class edit extends MaxiBlockComponent {
 			selectOnClick,
 			setAttributes,
 		} = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, parentBlockStyle } = attributes;
 
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
@@ -71,6 +71,20 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/row-maxi',
 					].indexOf(blockName) === -1
 			);
+
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'maxi-blocks/row-maxi',
+			parentBlockStyle
+		);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -94,6 +108,7 @@ class edit extends MaxiBlockComponent {
 				<MaxiBlock
 					key={`maxi-row--${uniqueID}`}
 					ref={this.blockRef}
+					paletteClasses={paletteClasses}
 					{...getMaxiBlockBlockAttributes(this.props)}
 					disableMotion
 				>
@@ -154,9 +169,8 @@ class edit extends MaxiBlockComponent {
 const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
-	const { getSelectedBlockClientId, getBlockParents, getBlockOrder } = select(
-		'core/block-editor'
-	);
+	const { getSelectedBlockClientId, getBlockParents, getBlockOrder } =
+		select('core/block-editor');
 
 	const selectedBlockId = getSelectedBlockClientId();
 	const originalNestedBlocks = getBlockParents(selectedBlockId);

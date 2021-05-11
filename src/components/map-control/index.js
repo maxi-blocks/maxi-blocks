@@ -47,6 +47,21 @@ const MapControl = props => {
 				value={props['map-longitude']}
 				onChange={val => onChange({ ['map-longitude']: val })}
 			/>
+			<SizeControl
+				label={__('Zoom', 'maxi-blocks')}
+				disableUnit
+				min={1}
+				max={999}
+				initial={1}
+				step={1}
+				value={props['map-zoom']}
+				onChangeValue={val => onChange({ 'map-zoom': val })}
+				onReset={() =>
+					onChange({
+						'map-zoom': getDefaultAttribute('map-zoom'),
+					})
+				}
+			/>
 			<div className='maxi-map-control__markers'>
 				{Object.keys(mapMarkers).map((item, index) => (
 					<div

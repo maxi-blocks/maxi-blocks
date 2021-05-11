@@ -53,6 +53,7 @@ class edit extends MaxiBlockComponent {
 		const mapApiKey = attributes['map-api-key'];
 		const mapLatitude = +attributes['map-latitude'];
 		const mapLongitude = +attributes['map-longitude'];
+		const mapZoom = +attributes['map-zoom'];
 		const mapMarker = attributes['map-marker'];
 		const mapMarkerOpacity = attributes['map-marker-opacity'];
 		const mapMarkerScale = attributes['map-marker-scale'];
@@ -73,7 +74,7 @@ class edit extends MaxiBlockComponent {
 						lat: mapLatitude,
 						lng: mapLongitude,
 					},
-					zoom: 4,
+					zoom: mapZoom,
 				});
 			})
 			.then(map => {

@@ -11,6 +11,10 @@ const map = {
 		type: 'number',
 		default: 131.044,
 	},
+	'map-zoom': {
+		type: 'number',
+		default: 4,
+	},
 	'map-marker': {
 		type: 'number',
 		default: 1,

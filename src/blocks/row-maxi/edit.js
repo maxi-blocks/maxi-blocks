@@ -114,7 +114,7 @@ class edit extends MaxiBlockComponent {
 				>
 					<InnerBlocks
 						className='maxi-row-block__container'
-						templateLock='insert'
+						{...(hasInnerBlocks && { templateLock: 'insert' })}
 						allowedBlocks={ALLOWED_BLOCKS}
 						orientation='horizontal'
 						renderAppender={

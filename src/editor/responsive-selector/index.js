@@ -35,14 +35,9 @@ const ResponsiveSelector = props => {
 
 	const { insertBlock } = useDispatch('core/block-editor');
 
-	const addCloudLibrary = () => {
-		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
-	};
-
 	const { deviceType, breakpoints } = useSelect(select => {
-		const { receiveMaxiDeviceType, receiveMaxiBreakpoints } = select(
-			'maxiBlocks'
-		);
+		const { receiveMaxiDeviceType, receiveMaxiBreakpoints } =
+			select('maxiBlocks');
 
 		return {
 			deviceType: receiveMaxiDeviceType(),
@@ -51,6 +46,10 @@ const ResponsiveSelector = props => {
 	});
 
 	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
+
+	const addCloudLibrary = () => {
+		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
+	};
 
 	const classes = classnames('maxi-responsive-selector', className);
 

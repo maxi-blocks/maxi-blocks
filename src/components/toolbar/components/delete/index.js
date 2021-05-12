@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { Icon, Button, Tooltip } from '@wordpress/components';
-import { useDispatch  } from '@wordpress/data';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * Icons
@@ -14,7 +15,9 @@ import { toolbarDelete } from '../../../../icons';
  * Delete
  */
 const Delete = props => {
-	const { clientId } = props;
+	const { clientId, blockName } = props;
+
+	if (blockName === 'maxi-blocks/column-maxi') return null;
 
 	const { removeBlock } = useDispatch('core/block-editor');
 

@@ -17,6 +17,13 @@ const getDividerStyles = (obj, target) => {
 
 		if (obj.lineOrientation === 'horizontal') {
 			response.general['border-right'] = 'none';
+
+			if (
+				obj['divider-border-radius'] &&
+				obj['divider-border-style'] === 'solid'
+			)
+				response.general['border-radius'] = '20px';
+
 			if (!isNil(obj['divider-width']))
 				response.general.width = `${obj['divider-width']}${obj['divider-width-unit']}`;
 			if (!isNil(obj['divider-border-top-width']))
@@ -27,6 +34,13 @@ const getDividerStyles = (obj, target) => {
 
 		if (obj.lineOrientation === 'vertical') {
 			response.general['border-top'] = 'none';
+
+			if (
+				obj['divider-border-radius'] &&
+				obj['divider-border-style'] === 'solid'
+			)
+				response.general['border-radius'] = '20px';
+
 			if (!isNil(obj['divider-border-right-width']))
 				response.general[
 					'border-right-width'
@@ -34,12 +48,6 @@ const getDividerStyles = (obj, target) => {
 			if (!isNil(obj['divider-height']))
 				response.general.height = `${obj['divider-height']}%}`;
 		}
-
-		if (
-			obj['divider-border-radius'] &&
-			obj['divider-border-style'] !== 'dotted'
-		)
-			response.general['border-radius'] = '20px';
 	} else if (!isNil(obj.lineAlign)) {
 		response.general['flex-direction'] = obj.lineAlign;
 

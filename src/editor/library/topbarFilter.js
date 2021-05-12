@@ -1,7 +1,7 @@
 /**
- * WordPress dependencies
+ * Internal dependencies
  */
-import { Button } from '@wordpress/components';
+import Button from '../../components/button';
 
 /**
  * External dependencies

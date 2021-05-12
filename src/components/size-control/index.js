@@ -98,20 +98,8 @@ const SizeControl = props => {
 					onChange={e => {
 						let value = +e.target.value;
 
-						if (
-							value >
-							minMaxSettings[isEmpty(unit) ? 'empty' : unit].max
-						)
-							value =
-								minMaxSettings[isEmpty(unit) ? 'empty' : unit]
-									.max;
-						if (
-							value <
-							minMaxSettings[isEmpty(unit) ? 'empty' : unit].min
-						)
-							value =
-								minMaxSettings[isEmpty(unit) ? 'empty' : unit]
-									.min;
+						if (value > max) value = max;
+						if (value < min) value = min;
 
 						onChangeValue(value);
 					}}

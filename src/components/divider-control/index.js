@@ -162,10 +162,10 @@ const DividerControl = props => {
 						label={__('Line Radius', 'maxi-blocks')}
 						selected={props['divider-border-radius']}
 						options={[
-							{ label: __('No', 'maxi-blocks'), value: '' },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
 							{
 								label: __('Yes', 'maxi-blocks'),
-								value: '20px',
+								value: 1,
 							},
 						]}
 						onChange={val =>

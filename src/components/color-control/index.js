@@ -2,12 +2,13 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { BaseControl, Button } from '@wordpress/components';
-import { useState, useEffect, Fragment } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../button';
+import BaseControl from '../base-control';
 import RangeSliderControl from '../range-slider-control';
 import ColorPaletteControl from '../color-palette-control';
 
@@ -105,7 +106,7 @@ const ColorControl = props => {
 	}, [color, currentColor, setCurrentColor, setColorAlpha, getRGB]);
 
 	return (
-		<Fragment>
+		<>
 			{!disablePalette && showPalette && (
 				<ColorPaletteControl
 					{...palette}
@@ -189,7 +190,7 @@ const ColorControl = props => {
 					</div>
 				</div>
 			) : null}
-		</Fragment>
+		</>
 	);
 };
 

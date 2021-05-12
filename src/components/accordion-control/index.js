@@ -1,8 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { Icon } from '@wordpress/components';
 import { useState } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+import Icon from '../icon';
 
 /**
  * External dependencies

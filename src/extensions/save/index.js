@@ -15,6 +15,7 @@ const allowedBlocks = [
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/group-maxi',
+	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/font-icon-maxi',
 ];

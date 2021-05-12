@@ -5,7 +5,6 @@ import { dispatch } from '@wordpress/data';
 import { Component, createRef } from '@wordpress/element';
 import {
 	Icon,
-	Button,
 	Popover,
 	withFocusOutside,
 	Tooltip,
@@ -14,6 +13,7 @@ import {
 /**
  * Internal dependencies
  */
+import Button from '../../../button';
 import openSidebar from '../../../../extensions/dom';
 import { toolbarAdvancedSettings } from '../../../../icons';
 import ToolbarContext from './toolbarContext';

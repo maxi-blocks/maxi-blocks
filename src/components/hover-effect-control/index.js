@@ -2,18 +2,20 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl, TextareaControl, Icon } from '@wordpress/components';
+import { TextareaControl } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import TypographyControl from '../typography-control';
+import AxisControl from '../axis-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
-import AxisControl from '../axis-control';
 import FancyRadioControl from '../fancy-radio-control';
+import Icon from '../icon';
 import RangeSliderControl from '../range-slider-control';
+import SelectControl from '../select-control';
+import TypographyControl from '../typography-control';
 
 /**
  * External dependencies

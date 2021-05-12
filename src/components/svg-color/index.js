@@ -11,7 +11,7 @@ import {
  * SvgColor
  */
 const SvgColor = props => {
-	const { type, color, blockStyle, label, onChange, clientId } = props;
+	const { type, color, label, onChange, clientId } = props;
 
 	return (
 		<ColorControl
@@ -21,7 +21,6 @@ const SvgColor = props => {
 			disableOpacity
 			onChange={val => onChange({ [`${type}`]: val })}
 			showPalette
-			blockStyle={blockStyle}
 			palette={{
 				...getGroupAttributes(props, 'palette'),
 			}}

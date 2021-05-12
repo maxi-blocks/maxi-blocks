@@ -2,12 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
-import { SelectControl } from '@wordpress/components';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import SelectControl from '../select-control';
 import FancyRadioControl from '../fancy-radio-control';
 import RangeSliderControl from '../range-slider-control';
 
@@ -147,7 +147,7 @@ const TimelineSettings = props => {
 								max={500}
 							/>
 							<SelectControl
-								className='components-maxi-dimensions-control__units'
+								className='maxi-dimensions-control__units'
 								options={[
 									{
 										label: __('PX', 'maxi-blocks'),
@@ -190,7 +190,7 @@ const TimelineSettings = props => {
 								max={500}
 							/>
 							<SelectControl
-								className='components-maxi-dimensions-control__units'
+								className='maxi-dimensions-control__units'
 								options={[
 									{
 										label: __('PX', 'maxi-blocks'),
@@ -233,7 +233,7 @@ const TimelineSettings = props => {
 								max={500}
 							/>
 							<SelectControl
-								className='components-maxi-dimensions-control__units'
+								className='maxi-dimensions-control__units'
 								options={[
 									{
 										label: __('PX', 'maxi-blocks'),

@@ -2,11 +2,11 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import SelectControl from '../select-control';
 import MediaUploaderControl from '../media-uploader-control';
 import ClipPath from '../clip-path-control';
 import OpacityControl from '../opacity-control';

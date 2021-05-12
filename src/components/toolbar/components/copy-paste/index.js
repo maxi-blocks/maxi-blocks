@@ -2,13 +2,13 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { useSelect, useDispatch, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import Button from '../../../button';
 import ToolbarPopover from '../toolbar-popover';
 
 /**

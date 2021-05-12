@@ -2,14 +2,15 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl, Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import AxisControl from '../axis-control';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import AxisControl from '../axis-control';
+import Icon from '../icon';
+import SelectControl from '../select-control';
 import {
 	borderNone,
 	borderSolid,
@@ -45,7 +46,6 @@ const BorderControl = props => {
 		disableColor = false,
 		isHover = false,
 		prefix = '',
-		blockStyle,
 		clientId,
 	} = props;
 
@@ -186,7 +186,6 @@ const BorderControl = props => {
 					disableVideo
 					disableGradient
 					showPalette
-					blockStyle={blockStyle}
 					isHover={isHover}
 					palette={{ ...getGroupAttributes(props, 'palette') }}
 					colorPaletteType='border'

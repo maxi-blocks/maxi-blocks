@@ -1,6 +1,18 @@
-.maxi-input-control {
-	.components-base-control__field {
+.maxi-text-control {
+	.maxi-base-control__field {
 		flex-wrap: wrap;
+	}
+
+	&__input {
+		min-height: unset;
+		max-height: unset !important;
+		border-radius: 5px;
+		background-color: rgba(33, 141, 250, 0);
+		border: 2px solid #dddfe1;
+		font-size: 13px;
+		color: #464a53;
+		font-weight: 500;
+		flex: 1;
 	}
 
 	&__validation-text {

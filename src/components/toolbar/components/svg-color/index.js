@@ -28,7 +28,6 @@ const SvgColor = props => {
 		svgColor,
 		svgColorDefault,
 		onChange,
-		blockStyle,
 		breakpoint,
 		clientId,
 	} = props;
@@ -64,7 +63,6 @@ const SvgColor = props => {
 					onChange={val => onChange({ [`${type}`]: val })}
 					disableGradient
 					showPalette
-					blockStyle={blockStyle}
 					palette={{ ...getGroupAttributes(props, 'palette') }}
 					colorPaletteType={type}
 					onChangePalette={val => onChange(val)}

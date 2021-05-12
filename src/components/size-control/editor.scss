@@ -1,5 +1,5 @@
 .maxi-size-control {
-	.components-base-control {
+	.maxi-base-control {
 		margin-bottom: 0;
 	}
 	.maxi-size-control__value {
@@ -12,15 +12,17 @@
 		flex: 100% !important;
 		margin-left: 0 !important;
 	}
-	.components-base-control__label {
+	.maxi-base-control__label {
 		flex: 2 !important;
 	}
+	.maxi-base-control__field,
 	.components-base-control__field {
 		flex-wrap: wrap;
 
 		& > * {
 			margin-left: 4px;
 		}
+		.maxi-base-control__label,
 		.components-base-control__label,
 		.components-range-control {
 			margin-left: 0 !important;

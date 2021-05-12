@@ -17,6 +17,7 @@ export { default as container } from './container';
 export { default as display } from './display';
 export { default as divider } from './divider';
 export { default as margin } from './margin';
+export { default as numberCounter } from './numberCounter';
 export { default as opacity } from './opacity';
 export { default as palette } from './palette';
 export { default as global } from './global';

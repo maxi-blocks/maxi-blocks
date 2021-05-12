@@ -54,7 +54,6 @@ const TypographyControl = withFormatValue(props => {
 		hideTextShadow = false,
 		styleCards = false,
 		disablePalette = false,
-		blockStyle,
 		clientId,
 	} = props;
 
@@ -260,7 +259,6 @@ const TypographyControl = withFormatValue(props => {
 							textLevel={textLevel}
 							showPalette
 							disablePalette={disablePalette}
-							blockStyle={blockStyle}
 							isHover={isHover}
 							palette={{
 								...getGroupAttributes(props, 'palette'),

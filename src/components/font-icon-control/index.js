@@ -54,7 +54,6 @@ const FontIconControl = props => {
 		breakpoint,
 		simpleMode = false,
 		disableColor,
-		blockStyle,
 		clientId,
 	} = props;
 
@@ -269,7 +268,6 @@ const FontIconControl = props => {
 												onChange({ 'icon-color': val })
 											}
 											showPalette
-											blockStyle={blockStyle}
 											palette={{
 												...getGroupAttributes(
 													props,
@@ -338,7 +336,6 @@ const FontIconControl = props => {
 														})
 													}
 													showPalette
-													blockStyle={blockStyle}
 													isHover
 													palette={{
 														...getGroupAttributes(

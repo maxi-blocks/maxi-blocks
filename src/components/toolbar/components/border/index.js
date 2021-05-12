@@ -97,6 +97,7 @@ const Border = props => {
 					breakpoint={breakpoint}
 					disableAdvanced
 					disableColor={disableColor}
+					clientId={clientId}
 				/>
 			</div>
 		</ToolbarPopover>

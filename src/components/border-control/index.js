@@ -46,7 +46,6 @@ const BorderControl = props => {
 		disableColor = false,
 		isHover = false,
 		prefix = '',
-		blockStyle,
 		clientId,
 	} = props;
 
@@ -187,7 +186,6 @@ const BorderControl = props => {
 					disableVideo
 					disableGradient
 					showPalette
-					blockStyle={blockStyle}
 					isHover={isHover}
 					palette={{ ...getGroupAttributes(props, 'palette') }}
 					colorPaletteType='border'

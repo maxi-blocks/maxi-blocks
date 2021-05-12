@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import Icon from '../../../icon';
 import BorderControl from '../../../border-control';
+import Icon from '../../../icon';
 import ToolbarPopover from '../toolbar-popover';
 
 /**

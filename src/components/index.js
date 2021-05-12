@@ -25,8 +25,6 @@ export { default as DividerControl } from './divider-control';
 export { default as EntranceAnimationControl } from './entrance-animation-control';
 export { default as FancyRadioControl } from './fancy-radio-control';
 export { default as FontFamilySelector } from './font-family-selector';
-export { default as FontIconControl } from './font-icon-control';
-export { default as FontIconPicker } from './font-icon-picker';
 export { default as FontLevelControl } from './font-level-control';
 export { default as FullSizeControl } from './full-size-control';
 export { default as HoverEffectControl } from './hover-effect-control';

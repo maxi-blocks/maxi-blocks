@@ -1,5 +1,3 @@
-export * from './icon';
-export * from './iconHover';
 export * from './background';
 export * from './backgroundHover';
 export * from './border';

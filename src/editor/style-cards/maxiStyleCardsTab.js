@@ -531,14 +531,6 @@ const MaxiStyleCardsTab = ({
 						),
 					deviceType === 'general' &&
 						generateTab(
-							'font-icon-color',
-							'Font Icon',
-							'color-7',
-							false,
-							false
-						),
-					deviceType === 'general' &&
-						generateTab(
 							'divider-color',
 							'Divider',
 							'color-4',

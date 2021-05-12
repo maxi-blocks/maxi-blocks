@@ -39,14 +39,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Icons
  */
-import {
-	presetOne,
-	presetTwo,
-	presetThree,
-	presetFour,
-	presetFive,
-	presetSix,
-} from '../../icons';
+import { presetOne, presetTwo, presetThree } from '../../icons';
 
 /**
  * Inspector
@@ -143,72 +136,7 @@ const Inspector = props => {
 																	3
 																),
 														},
-														{
-															activeItem: 0,
-															content: (
-																<Icon
-																	icon={
-																		presetFour
-																	}
-																/>
-															),
-															onChange: () =>
-																onChangePreset(
-																	4
-																),
-														},
-														{
-															activeItem: 0,
-															content: (
-																<Icon
-																	icon={
-																		presetFive
-																	}
-																/>
-															),
-															onChange: () =>
-																onChangePreset(
-																	5
-																),
-														},
-														{
-															activeItem: 0,
-															content: (
-																<Icon
-																	icon={
-																		presetSix
-																	}
-																/>
-															),
-															onChange: () =>
-																onChangePreset(
-																	6
-																),
-														},
 													]}
-												/>
-											),
-										},
-										{
-											label: __('Icon', 'maxi-blocks'),
-											content: (
-												<FontIconControl
-													{...getGroupAttributes(
-														attributes,
-														[
-															'icon',
-															'iconHover',
-															'iconPadding',
-															'iconBorder',
-															'iconBorderWidth',
-															'iconBorderRadius',
-															'palette',
-														]
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													breakpoint={deviceType}
 												/>
 											),
 										},

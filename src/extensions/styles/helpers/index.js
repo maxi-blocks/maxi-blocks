@@ -11,7 +11,6 @@ export { default as getCustomFormatsStyles } from './getCustomFormatsStyles';
 export { default as getDisplayStyles } from './getDisplayStyles';
 export { default as getDividerStyles } from './getDividerStyles';
 export { default as getHoverEffectsBackgroundStyles } from './getHoverEffectsBackgroundStyles';
-export { default as getIconStyles } from './getIconStyles';
 export { default as getMarginPaddingStyles } from './getMarginPaddingStyles';
 export { default as getNumberCounterStyles } from './getNumberCounterStyles';
 export { default as getOpacityStyles } from './getOpacityStyles';

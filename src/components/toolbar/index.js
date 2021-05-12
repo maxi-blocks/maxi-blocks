@@ -477,8 +477,8 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								breakpoint={deviceType}
 							/>
-							<Duplicate clientId={clientId} />
-							<Delete clientId={clientId} />
+							<Duplicate clientId={clientId} blockName={name} />
+							<Delete clientId={clientId} blockName={name} />
 							<ToggleBlock
 								{...getGroupAttributes(attributes, 'display')}
 								onChange={obj => setAttributes(obj)}

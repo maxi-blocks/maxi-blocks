@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
@@ -20,7 +21,9 @@ import { toolbarDelete } from '../../../../icons';
  * Delete
  */
 const Delete = props => {
-	const { clientId } = props;
+	const { clientId, blockName } = props;
+
+	if (blockName === 'maxi-blocks/column-maxi') return null;
 
 	const { removeBlock } = useDispatch('core/block-editor');
 

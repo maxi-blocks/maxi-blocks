@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
@@ -20,7 +21,9 @@ import { toolbarDuplicate } from '../../../../icons';
  * Duplicate
  */
 const Duplicate = props => {
-	const { clientId } = props;
+	const { clientId, blockName } = props;
+
+	if (blockName === 'maxi-blocks/column-maxi') return null;
 
 	const { duplicateBlocks } = useDispatch('core/block-editor');
 

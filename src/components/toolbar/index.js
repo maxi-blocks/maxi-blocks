@@ -101,7 +101,6 @@ const MaxiToolbar = memo(
 			name,
 			setAttributes,
 			toggleHandlers,
-			blockStyle,
 			rowPattern,
 		} = props;
 
@@ -208,7 +207,6 @@ const MaxiToolbar = memo(
 									'palette',
 								])}
 								blockName={name}
-								blockStyle={blockStyle}
 								breakpoint={deviceType}
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
@@ -251,7 +249,6 @@ const MaxiToolbar = memo(
 							/>
 							<TextColor
 								blockName={name}
-								blockStyle={blockStyle}
 								{...getGroupAttributes(attributes, [
 									'typography',
 									'palette',
@@ -355,7 +352,6 @@ const MaxiToolbar = memo(
 									'palette',
 								])}
 								blockName={name}
-								blockStyle={blockStyle}
 								breakpoint={deviceType}
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
@@ -377,7 +373,6 @@ const MaxiToolbar = memo(
 											setAttributes(svgColorFill);
 											changeSVGContent(svgColorFill, 1);
 										}}
-										blockStyle={blockStyle}
 										clientId={clientId}
 										type='svgColorFill'
 										breakpoint={deviceType}
@@ -397,7 +392,6 @@ const MaxiToolbar = memo(
 											setAttributes(svgColorLine);
 											changeSVGContent(svgColorLine, 2);
 										}}
-										blockStyle={blockStyle}
 										clientId={clientId}
 										type='svgColorLine'
 										breakpoint={deviceType}
@@ -414,7 +408,6 @@ const MaxiToolbar = memo(
 								])}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={deviceType}
-								blockStyle={blockStyle}
 								clientId={clientId}
 							/>
 							{deviceType === 'general' && (
@@ -472,6 +465,7 @@ const MaxiToolbar = memo(
 									'palette',
 								])}
 								onChange={obj => setAttributes(obj)}
+								clientId={clientId}
 								breakpoint={deviceType}
 							/>
 							<PaddingMargin

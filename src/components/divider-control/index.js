@@ -43,7 +43,6 @@ const DividerControl = props => {
 		disableColor = false,
 		disableLineStyle = false,
 		disableBorderRadius = false,
-		blockStyle,
 		isHover = false,
 		clientId,
 	} = props;
@@ -133,7 +132,6 @@ const DividerControl = props => {
 					onChange={val => onChange({ 'divider-border-color': val })}
 					disableGradient
 					showPalette
-					blockStyle={blockStyle}
 					palette={{ ...getGroupAttributes(props, 'palette') }}
 					isHover={isHover}
 					colorPaletteType='divider'

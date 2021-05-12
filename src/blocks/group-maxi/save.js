@@ -7,7 +7,7 @@ import { InnerBlocks } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { ArrowDisplayer } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -17,16 +17,29 @@ import MaxiBlock, {
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID } = attributes;
+	const { parentBlockStyle } = attributes;
 
-	const classes = 'maxi-group-block';
+	const name = 'maxi-blocks/group-maxi';
+
+	const paletteClasses = getPaletteClasses(
+		attributes,
+		[
+			'background',
+			'background-hover',
+			'border',
+			'border-hover',
+			'box-shadow',
+			'box-shadow-hover',
+		],
+		name,
+		parentBlockStyle
+	);
 
 	return (
 		<MaxiBlock
-			className={classes}
-			id={uniqueID}
 			tagName='section'
-			{...getMaxiBlockBlockAttributes(props)}
+			paletteClasses={paletteClasses}
+			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
 			<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />

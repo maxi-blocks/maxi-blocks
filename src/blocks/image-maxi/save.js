@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { HoverPreview } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -32,11 +32,29 @@ const save = props => {
 		altSelector,
 		SVGElement,
 		imageRatio,
+		parentBlockStyle,
 	} = attributes;
+
+	const name = 'maxi-blocks/image-maxi';
 
 	const hoverPreviewClasses = classnames(
 		'maxi-image-ratio',
-		`maxi-image-ratio__${imageRatio}`
+		`maxi-image-ratio__${imageRatio}`,
+		getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+			],
+			name,
+			parentBlockStyle
+		)
 	);
 
 	const hoverClasses = classnames(
@@ -48,8 +66,6 @@ const save = props => {
 			attributes['hover-type'] === 'basic' ? 'basic' : 'text'
 		}`
 	);
-
-	const classes = 'maxi-image-block';
 
 	const imageAlt = () => {
 		switch (altSelector) {
@@ -66,10 +82,8 @@ const save = props => {
 
 	return (
 		<MaxiBlock
-			className={classes}
-			id={uniqueID}
 			tagName='figure'
-			{...getMaxiBlockBlockAttributes(props)}
+			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
 			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>

@@ -21,7 +21,7 @@ import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 import { onMerge, onSplit } from './utils';
 import {
@@ -74,6 +74,7 @@ class edit extends MaxiBlockComponent {
 			onRemove,
 			clientId,
 			name,
+			parentBlockStyle,
 		} = this.props;
 		const {
 			uniqueID,
@@ -85,7 +86,67 @@ class edit extends MaxiBlockComponent {
 			listReversed,
 		} = attributes;
 
-		const classes = 'maxi-text-block';
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+			],
+			'maxi-blocks/text-maxi',
+			parentBlockStyle,
+			textLevel
+		);
+
+		const onChangeRichText = ({ value: formatValue }) => {
+			/**
+			 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+			 * and add some coding manually
+			 * This next script will check if there is any format directly related with
+			 * any native format and if it's so, will format it in Maxi Blocks way
+			 */
+			const hasNativeFormat = getHasNativeFormat(formatValue);
+
+			if (hasNativeFormat) {
+				const { typeOfList, content, textLevel } = attributes;
+
+				const cleanCustomProps = setCustomFormatsWhenPaste({
+					formatValue,
+					typography: getGroupAttributes(attributes, 'typography'),
+					isList,
+					typeOfList,
+					content,
+					textLevel,
+				});
+
+				delete cleanCustomProps.formatValue;
+
+				setAttributes(cleanCustomProps);
+			}
+
+			// Well, how to explain this... lol
+			// React 16.13.0 introduced a warning for when a function component is updated during another component's
+			// render phase (facebook/react#17099). In version 16.13.1 the warning was adjusted to be more
+			// specific (facebook/react#18330). The warning look like:
+			// Warning: Cannot update a component (Foo) while rendering a different component (Bar).
+			// To locate the bad setState() call inside Bar, follow the stack trace as described in https://fb.me/setstate-in-render
+			//
+			// In this case the error comes from a `forceUpdate` that '@wordpress/data' triggers when updating an store.
+			// This error is not related with Maxi, but appears on our blocks. So, a way to avoid it is to set a `setTimeOut`
+			// that delays a bit the dispatch action of the store and prevents the rendering of some components while RichText
+			// is rendering. Sad but true.
+			setTimeout(() => {
+				dispatch('maxiBlocks/text').sendFormatValue(
+					formatValue,
+					clientId
+				);
+			});
+		};
 
 		return [
 			<Inspector
@@ -95,17 +156,18 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
 				{...this.props}
 				propsToAvoid={['content', 'formatValue']}
 			/>,
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}
-				className={classes}
+				ref={this.blockRef}
+				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				{!isList && (
 					<RichText
-						ref={this.blockRef}
 						className='maxi-text-block__content'
 						value={content}
 						onChange={content => setAttributes({ content })}
@@ -122,46 +184,7 @@ class edit extends MaxiBlockComponent {
 						__unstableEmbedURLOnPaste
 						__unstableAllowPrefixTransformations
 					>
-						{({ value: formatValue }) => {
-							/**
-							 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-							 * and add some coding manually
-							 * This next script will check if there is any format directly related with
-							 * any native format and if it's so, will format it in Maxi Blocks way
-							 */
-							const hasNativeFormat = getHasNativeFormat(
-								formatValue
-							);
-
-							if (hasNativeFormat) {
-								const {
-									typeOfList,
-									content,
-									textLevel,
-								} = attributes;
-
-								const cleanCustomProps = setCustomFormatsWhenPaste(
-									{
-										formatValue,
-										typography: getGroupAttributes(
-											attributes,
-											'typography'
-										),
-										isList,
-										typeOfList,
-										content,
-										textLevel,
-									}
-								);
-
-								setAttributes(cleanCustomProps);
-							}
-
-							dispatch('maxiBlocks/text').sendFormatValue(
-								formatValue,
-								clientId
-							);
-						}}
+						{onChangeRichText}
 					</RichText>
 				)}
 				{isList && (
@@ -198,43 +221,7 @@ class edit extends MaxiBlockComponent {
 						type={typeOfList}
 					>
 						{({ value: formatValue, onChange }) => {
-							/**
-							 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
-							 * and add some coding manually
-							 * This next script will check if there is any format directly related with
-							 * any native format and if it's so, will format it in Maxi Blocks way
-							 */
-							const hasNativeFormat = getHasNativeFormat(
-								formatValue
-							);
-
-							if (hasNativeFormat) {
-								const {
-									typeOfList,
-									content,
-									textLevel,
-								} = attributes;
-
-								const cleanCustomProps = setCustomFormatsWhenPaste(
-									{
-										formatValue,
-										typography: getGroupAttributes(
-											attributes,
-											'typography'
-										),
-										isList,
-										typeOfList,
-										content,
-										textLevel,
-									}
-								);
-
-								setAttributes(cleanCustomProps);
-							}
-							dispatch('maxiBlocks/text').sendFormatValue(
-								formatValue,
-								clientId
-							);
+							onChangeRichText({ value: formatValue });
 
 							if (isSelected)
 								return (

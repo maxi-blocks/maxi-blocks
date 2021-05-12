@@ -1,0 +1,35 @@
+.maxi-color-palette-control {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+
+	.maxi-sc-color-palette {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 10px;
+
+		&__box {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 13%;
+			height: 35px;
+			background-color: #eee;
+			border: 2px solid transparent;
+			cursor: pointer;
+			transition: all 0.5s;
+
+			&--active,
+			&:hover {
+				border: 2px solid #bdbdbd;
+			}
+			&__item {
+				width: 20px;
+				height: 20px;
+				border: 1px solid #dfe2e4;
+				border-radius: 3px;
+			}
+		}
+	}
+}

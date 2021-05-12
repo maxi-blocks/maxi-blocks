@@ -1,5 +1,4 @@
 <?php
-
 class ResponsiveFrontendStyles {
 	/**
 	 * This plugin's instance.
@@ -224,6 +223,7 @@ class ResponsiveFrontendStyles {
 
 		foreach ($fontOptions as $font => $value) {
 			$font_name = substr($font, 0, strpos($font, '-'));
+			$font_name = str_replace(',', '', $font_name);
 			wp_enqueue_style(
 				"{$font}",
 				"https://fonts.googleapis.com/css2?family={$font_name}"

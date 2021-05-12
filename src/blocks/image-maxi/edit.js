@@ -19,7 +19,7 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -85,11 +85,27 @@ class edit extends MaxiBlockComponent {
 			SVGElement,
 			imgWidth,
 			imageRatio,
+			parentBlockStyle,
 		} = attributes;
 
 		const hoverPreviewClasses = classnames(
 			'maxi-image-ratio',
-			`maxi-image-ratio__${imageRatio}`
+			`maxi-image-ratio__${imageRatio}`,
+			getPaletteClasses(
+				attributes,
+				[
+					'background',
+					'background-hover',
+					'border',
+					'border-hover',
+					'box-shadow',
+					'box-shadow-hover',
+					'typography',
+					'typography-hover',
+				],
+				'maxi-blocks/image-maxi',
+				parentBlockStyle
+			)
 		);
 
 		const hoverClasses = classnames(
@@ -126,21 +142,45 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const image = getImage();
+
+		// Well, how to explain this... lol
+		// React 16.13.0 introduced a warning for when a function component is updated during another component's
+		// render phase (facebook/react#17099). In version 16.13.1 the warning was adjusted to be more
+		// specific (facebook/react#18330). The warning look like:
+		// Warning: Cannot update a component (Foo) while rendering a different component (Bar).
+		// To locate the bad setState() call inside Bar, follow the stack trace as described in https://fb.me/setstate-in-render
+		//
+		// In this case the error comes from a `forceUpdate` that '@wordpress/data' triggers when updating an store.
+		// This error is not related with Maxi, but appears on our blocks. So, a way to avoid it is to set a `setTimeOut`
+		// that delays a bit the dispatch action of the store and prevents the rendering of some components while RichText
+		// is rendering. Sad but true.
 		if (image && imageData) {
 			if (imageData.alt_text)
-				setAttributes({ mediaAltWp: imageData.alt_text });
+				setTimeout(() => {
+					setAttributes({ mediaAltWp: imageData.alt_text });
+				});
 
-			if (mediaAlt) setAttributes({ mediaAlt });
+			if (mediaAlt)
+				setTimeout(() => {
+					setAttributes({ mediaAlt });
+				});
 
 			if (imageData.title.rendered)
-				setAttributes({ mediaAltTitle: imageData.title.rendered });
+				setTimeout(() => {
+					setAttributes({ mediaAltTitle: imageData.title.rendered });
+				});
 		}
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+			/>,
 			<MaxiBlock
 				key={`maxi-image--${uniqueID}`}
+				ref={this.blockRef}
 				tagName='figure'
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}

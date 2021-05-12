@@ -29,9 +29,6 @@ import './blocks/row-maxi/row-maxi';
 import './blocks/svg-icon-maxi/svg-icon-maxi';
 import './blocks/text-maxi/text-maxi';
 
-// Sidebar
-// import './blocks/customizer-maxi/index';
-
 // Editor
 import './editor/saver';
 import './editor/toolbar-buttons';

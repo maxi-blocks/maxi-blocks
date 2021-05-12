@@ -85,6 +85,8 @@ body {
 		}
 	}
 	.block-list-appender {
+		max-width: none;
+
 		.block-editor-button-block-appender {
 			visibility: hidden;
 			position: absolute;
@@ -319,4 +321,16 @@ body .toolbar-item__popover {
 		fill: #464a53;
 		margin: auto;
 	}
+}
+
+/*******************************
+* Style Card Editor Boat Icon
+*******************************/
+
+svg path#styleCardBoat_a {
+	fill: var(--maxi-light-color-4);
+}
+
+svg path#styleCardBoat_b {
+	stroke: var(--maxi-light-color-7);
 }

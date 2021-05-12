@@ -2,9 +2,11 @@ import { breakpoints } from '.';
 
 const global = {
 	...breakpoints,
+	parentBlockStyle: {
+		type: 'string',
+	},
 	blockStyle: {
 		type: 'string',
-		default: 'maxi-light',
 	},
 	blockStyleBackground: {
 		type: 'number',

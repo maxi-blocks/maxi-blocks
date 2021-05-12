@@ -15,7 +15,10 @@ import {
 	RangeSliderControl,
 	SizeControl,
 } from '../../components';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import {
 	dividerSolidHorizontal,
 	dividerDottedHorizontal,
@@ -41,6 +44,9 @@ const DividerControl = props => {
 		disableColor = false,
 		disableLineStyle = false,
 		disableBorderRadius = false,
+		blockStyle,
+		isHover = false,
+		clientId,
 	} = props;
 
 	const minMaxSettings = {
@@ -127,6 +133,13 @@ const DividerControl = props => {
 					defaultColor={getDefaultAttribute('border-color')}
 					onChange={val => onChange({ 'divider-border-color': val })}
 					disableGradient
+					showPalette
+					blockStyle={blockStyle}
+					palette={{ ...getGroupAttributes(props, 'palette') }}
+					isHover={isHover}
+					colorPaletteType='divider'
+					onChangePalette={val => onChange(val)}
+					clientId={clientId}
 				/>
 			)}
 			{!disableLineStyle && (

@@ -21,12 +21,15 @@ import MaxiBlock, {
 } from '../../components/maxi-block';
 import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
+import * as SVGShapes from '../../icons/shape-icons';
+import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty, isNil, round } from 'lodash';
+import DOMPurify from 'dompurify';
 
 /**
  * Icons
@@ -186,14 +189,47 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<MediaUpload
-					onSelect={media =>
+					onSelect={media => {
 						setAttributes({
 							mediaID: media.id,
 							mediaURL: media.url,
 							mediaWidth: media.width,
 							mediaHeight: media.height,
-						})
-					}
+						});
+
+						if (!isEmpty(attributes.SVGData)) {
+							const currentElem =
+								SVGShapes[
+									Object.keys(SVGShapes)[
+										attributes.SVGCurrentElement
+									]
+								];
+							const cleanedContent = DOMPurify.sanitize(
+								currentElem
+							);
+							const svg = document
+								.createRange()
+								.createContextualFragment(cleanedContent)
+								.firstElementChild;
+
+							const resData = generateDataObject('', svg);
+
+							const SVGValue = resData;
+							const el = Object.keys(SVGValue)[0];
+
+							SVGValue[el].imageID = media.id;
+							SVGValue[el].imageURL = media.url;
+
+							const resEl = injectImgSVG(svg, resData);
+							setAttributes({
+								SVGCurrentElement: attributes.SVGCurrentElement,
+								SVGElement: resEl.outerHTML,
+								SVGMediaID: null,
+								SVGMediaURL: null,
+								SVGData: SVGValue,
+							});
+						}
+					}}
 					allowedTypes='image'
 					value={mediaID}
 					render={({ open }) => (

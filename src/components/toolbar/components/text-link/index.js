@@ -8,12 +8,15 @@ import { __ } from '@wordpress/i18n';
 import { __experimentalLinkControl } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { getActiveFormat } from '@wordpress/rich-text';
-import { Button } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import { getGroupAttributes } from '../../../../extensions/styles';
+import Button from '../../../button';
+import ToolbarContext from '../toolbar-popover/toolbarContext';
+import ToolbarPopover from '../toolbar-popover';
 import {
 	getFormattedString,
 	applyLinkFormat,
@@ -22,9 +25,6 @@ import {
 	setFormat,
 	getFormatPosition,
 } from '../../../../extensions/text/formats';
-import ToolbarPopover from '../toolbar-popover';
-import ToolbarContext from '../toolbar-popover/toolbarContext';
-import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * External dependencies

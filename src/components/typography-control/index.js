@@ -2,17 +2,16 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-
-import { SelectControl } from '@wordpress/components';
-import { Fragment } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import { defaultTypography } from '../../extensions/text';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
+import SelectControl from '../select-control';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
 import {
@@ -20,7 +19,6 @@ import {
 	getCustomFormatValue,
 	withFormatValue,
 } from '../../extensions/text/formats';
-import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -238,7 +236,7 @@ const TypographyControl = withFormatValue(props => {
 	return (
 		<div className={classes}>
 			{(!styleCards || breakpoint === 'general') && (
-				<Fragment>
+				<>
 					<FontFamilySelector
 						className='maxi-typography-control__font-family'
 						font={getValue(`${prefix}font-family`)}
@@ -273,7 +271,7 @@ const TypographyControl = withFormatValue(props => {
 							clientId={clientId}
 						/>
 					)}
-				</Fragment>
+				</>
 			)}
 			{!hideAlignment && (
 				<AlignmentControl
@@ -286,7 +284,7 @@ const TypographyControl = withFormatValue(props => {
 				/>
 			)}
 			{(!styleCards || breakpoint !== 'general') && (
-				<Fragment>
+				<>
 					<SizeControl
 						className='maxi-typography-control__size'
 						label={__('Size', 'maxi-blocks')}
@@ -373,10 +371,10 @@ const TypographyControl = withFormatValue(props => {
 						minMaxSettings={minMaxSettingsLetterSpacing}
 						step={0.1}
 					/>
-				</Fragment>
+				</>
 			)}
 			{(!styleCards || breakpoint === 'general') && (
-				<Fragment>
+				<>
 					<Divider />
 					<SelectControl
 						label={__('Weight', 'maxi-blocks')}
@@ -485,7 +483,7 @@ const TypographyControl = withFormatValue(props => {
 							)}
 						/>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

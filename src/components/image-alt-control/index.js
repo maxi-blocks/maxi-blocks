@@ -2,7 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl, TextControl } from '@wordpress/components';
+
+/**
+ * Internal dependencies
+ */
+import TextControl from '../text-control';
+import SelectControl from '../select-control';
 
 /**
  * External dependencies

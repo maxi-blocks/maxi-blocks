@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect, Fragment } from '@wordpress/element';
-import { Button, Modal, TextControl } from '@wordpress/components';
+import { Modal } from '@wordpress/components';
 
 /**
  * External dependencies.
@@ -14,7 +14,9 @@ import ReactPaginate from 'react-paginate';
 /**
  * Internal dependencies.
  */
+import TextControl from '../text-control';
 import jsonData from './fa-icons.json';
+import Button from '../button';
 
 const MaxiModalIcon = props => {
 	// Number of icons to display per page
@@ -363,7 +365,7 @@ const MaxiModalIcon = props => {
 								</div>
 							</Fragment>
 						) : (
-							<span>{__('Loading...', 'maxi-blocks')}</span>
+							<span>{__('Loading…', 'maxi-blocks')}</span>
 						)}
 					</div>
 				</Modal>

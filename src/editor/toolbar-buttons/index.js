@@ -2,12 +2,13 @@
  * WordPress dependencies
  */
 import { subscribe } from '@wordpress/data';
-import { Button, Icon } from '@wordpress/components';
-import { useState, render, Fragment } from '@wordpress/element';
+import { useState, render } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../../components/button';
+import Icon from '../../components/icon';
 import ResponsiveSelector from '../responsive-selector';
 /**
  * Styles
@@ -22,7 +23,7 @@ const ToolbarButtons = () => {
 	const [isResponsiveOpen, setIsResponsiveOpen] = useState(false);
 
 	return (
-		<Fragment>
+		<>
 			<div className='maxi-toolbar-layout'>
 				<Button
 					className='maxi-toolbar-layout__button'
@@ -36,7 +37,7 @@ const ToolbarButtons = () => {
 				isOpen={isResponsiveOpen}
 				onClose={() => setIsResponsiveOpen(false)}
 			/>
-		</Fragment>
+		</>
 	);
 };
 

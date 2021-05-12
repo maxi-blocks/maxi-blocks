@@ -45,7 +45,7 @@
 		}
 	}
 	&__opacity {
-		.components-base-control__field {
+		.maxi-base-control__field {
 			flex-direction: column;
 			align-items: flex-start !important;
 			&__label {
@@ -58,9 +58,10 @@
 		justify-content: space-between;
 		align-items: center;
 
-		.components-base-control__field {
+		.maxi-base-control__field {
 			width: 100%;
 		}
+
 		&__color {
 			display: flex;
 			align-items: center;

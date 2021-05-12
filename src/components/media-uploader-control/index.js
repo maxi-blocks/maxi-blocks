@@ -2,10 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-
 import { withSelect } from '@wordpress/data';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { Button, ResponsiveWrapper, Spinner } from '@wordpress/components';
+import { ResponsiveWrapper, Spinner } from '@wordpress/components';
+
+/**
+ * Internal dependencies
+ */
+import Button from '../button';
 
 /**
  * External dependencies

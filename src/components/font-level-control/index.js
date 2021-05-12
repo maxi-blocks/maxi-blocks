@@ -2,12 +2,12 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../button';
 import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,

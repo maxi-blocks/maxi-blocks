@@ -1,13 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { Button } from '@wordpress/components';
 import { useDispatch, select } from '@wordpress/data';
 import { parse } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
+import Button from '../../components/button';
 
 /**
  * External dependencies

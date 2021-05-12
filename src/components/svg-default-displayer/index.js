@@ -1,12 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { Button } from '@wordpress/components';
 import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../button';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 import * as SVGShapes from '../../icons/shape-icons';
 
@@ -41,7 +41,7 @@ const SVGDefaultsDisplayer = props => {
 		<div className={classes}>
 			<Button
 				icon={styleNone}
-				key={`maxi-svg-defaults__item-none`}
+				key='maxi-svg-defaults__item-none'
 				className={`maxi-svg-defaults__item ${
 					isNil(SVGCurrentElement) &&
 					'maxi-svg-defaults__item--active'

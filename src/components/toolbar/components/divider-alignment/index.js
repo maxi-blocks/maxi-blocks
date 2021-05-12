@@ -2,8 +2,14 @@
  * Internal dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl, RadioControl } from '@wordpress/components';
+import { RadioControl } from '@wordpress/components';
 import ToolbarPopover from '../toolbar-popover';
+
+/**
+ * Internal dependencies
+ */
+import Icon from '../../../icon';
+import SelectControl from '../../../select-control';
 
 /**
  * Styles & Icons
@@ -15,7 +21,6 @@ import {
 	alignRight,
 	toolbarDividerAlign,
 } from '../../../../icons';
-import { Icon } from '@wordpress/icons';
 
 /**
  * DividerAlignment

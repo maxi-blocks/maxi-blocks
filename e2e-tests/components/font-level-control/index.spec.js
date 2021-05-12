@@ -8,6 +8,8 @@ import {
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
 
+import { getBlockAttributes } from '../../utils';
+
 describe('font level', () => {
 	beforeEach(async () => {
 		await createNewPost();
@@ -23,11 +25,16 @@ describe('font level', () => {
 			'.components-popover__content .maxi-font-level-control .components-button.maxi-font-level-control__button'
 		);
 
+		const fontLevel = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'];
+
 		for (let i = 0; i < fontLevelControl.length; i++) {
-			const setting = fontLevelControl[i];
+			const setting = fontLevelControl[i !== 6 ? i + 1 : 0];
 
 			await setting.click();
-			expect(await getEditedPostContent()).toMatchSnapshot();
+
+			const attributes = await getBlockAttributes();
+
+			expect(attributes.textLevel).toStrictEqual(fontLevel[i]);
 		}
 	});
 });

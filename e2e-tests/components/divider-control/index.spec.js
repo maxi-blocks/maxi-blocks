@@ -9,6 +9,7 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
+import { getBlockAttributes } from '../../utils';
 
 describe('divider control', () => {
 	beforeEach(async () => {
@@ -22,12 +23,23 @@ describe('divider control', () => {
 		await page.waitForSelector(
 			'.components-popover__content .toolbar-item__divider-line__popover .maxi-default-styles-control'
 		);
-		await page.$$eval(
-			'.components-popover__content .toolbar-item__divider-line__popover .maxi-default-styles-control .components-button.maxi-default-styles-control__button',
-			settings => settings[2].click()
+		const dividerStyleControl = await page.$$eval(
+			'.components-popover__content .toolbar-item__divider-line__popover .maxi-default-styles-control .components-button.maxi-default-styles-control__button'
+			// settings => settings[2].click()
 		);
+		const DividerStyle = ['dashed', 'dotted', 'solid' /* 'none' */];
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		for (let i = 0; i < dividerStyleControl.length; i++) {
+			const setting = dividerStyleControl[i !== 2 ? i + 1 : 0];
+
+			await setting.click();
+
+			const attributes = await getBlockAttributes();
+
+			expect(attributes['divider-border-style']).toStrictEqual(
+				DividerStyle[i]
+			);
+		}
 	});
 	it('checking the line size', async () => {
 		await insertBlock('Divider Maxi');

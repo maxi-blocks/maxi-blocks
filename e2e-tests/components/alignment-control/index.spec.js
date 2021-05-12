@@ -21,16 +21,14 @@ describe('Alignment', () => {
 			'.components-popover__content .maxi-alignment-control__no-label .components-radio-control__option'
 		);
 
-		const alignments = ['left', 'center', 'right', 'justify'];
+		const alignments = ['center', 'right', 'justify', 'left'];
 
 		for (let i = 0; i < alignmentSettings.length; i++) {
-			const setting = alignmentSettings[i];
+			const setting = alignmentSettings[i !== 3 ? i + 1 : 0];
 
 			await setting.click();
 
 			const attributes = await getBlockAttributes();
-
-			debugger;
 
 			expect(attributes['text-alignment-general']).toStrictEqual(
 				alignments[i]

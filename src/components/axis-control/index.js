@@ -145,14 +145,12 @@ const AxisControl = props => {
 			} else {
 				newValue = +val;
 			}
+		} else if (isEmpty(val)) {
+			newValue = '';
+		} else if (val === 'auto') {
+			newValue = 'auto';
 		} else {
-			if (isEmpty(val)) {
-				newValue = '';
-			} else if (val === 'auto') {
-				newValue = 'auto';
-			} else {
-				newValue = val;
-			}
+			newValue = val;
 		}
 
 		if (

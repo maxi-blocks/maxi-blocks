@@ -21,7 +21,7 @@ describe('font level', () => {
 			'.components-popover__content .maxi-font-options .toolbar-item__popover__font-options__font'
 		);
 		await fontFamilySelector.focus();
-		await page.keyboard.type('Lato');
+		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

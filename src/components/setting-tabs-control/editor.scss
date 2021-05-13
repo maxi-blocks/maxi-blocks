@@ -7,6 +7,7 @@
 			margin-bottom: 10px;
 		}
 		&__button {
+			position: relative;
 			display: flex;
 			flex-direction: column;
 			width: 100%;
@@ -37,6 +38,17 @@
 				background-color: #f2f2f2;
 				border-bottom: 2px solid #ff4a17;
 			}
+		}
+
+		&__notification {
+			position: absolute;
+			top: 0;
+			left: 100%;
+			transform: translate(-50%, -50%);
+			width: 1rem;
+			height: 1rem;
+			background: red;
+			border-radius: 50%;
 		}
 	}
 	.maxi-tabs-content {

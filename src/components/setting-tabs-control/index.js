@@ -50,6 +50,9 @@ const SettingTabsControl = props => {
 								aria-pressed={tab === i}
 							>
 								{item.label}
+								{item.showNotification && (
+									<span className='maxi-tabs-control__notification' />
+								)}
 							</Button>
 						);
 
@@ -58,7 +61,7 @@ const SettingTabsControl = props => {
 			</div>
 			<div className={classesContent}>
 				{items.map((item, i) => {
-					if (item) {
+					if (item && i === tab) {
 						const classesItemContent = classnames(
 							'maxi-tab-content',
 							tab === i ? 'maxi-tab-content--selected' : ''

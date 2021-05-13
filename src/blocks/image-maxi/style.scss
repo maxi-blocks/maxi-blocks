@@ -192,13 +192,38 @@ body.maxi-blocks--active figure.maxi-image-block {
 				}
 			}
 			&__fade {
+				.maxi-hover-preview {
+					&:hover {
+						img {
+							transform: scale(1.1);
+						}
+					}
+					img {
+						transform: scale(1);
+						transition-duration: 0.4s;
+					}
+				}
 				.maxi-hover-details {
 					opacity: 0;
+					&__content {
+						transition-duration: inherit;
+					}
+					h3,
+					p {
+						opacity: 0;
+						transition-duration: inherit;
+						transition-delay: 0s;
+					}
 				}
 				&:hover {
 					.maxi-hover-details {
+						transition-delay: 0s !important;
 						opacity: 1;
-						transition-delay: 0.21s;
+						h3,
+						p {
+							transition-delay: 0.2s;
+							opacity: 1;
+						}
 					}
 				}
 			}

@@ -98,7 +98,7 @@ body {
 				padding: 8px;
 				color: #232533;
 
-				&:hover {
+				&:not(:disabled):hover {
 					background-color: #f2f2f2;
 				}
 			}

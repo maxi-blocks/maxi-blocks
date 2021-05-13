@@ -8,7 +8,6 @@ export { default as callToAction } from './call-to-action';
 export { default as container } from './container';
 export { default as containerIcon } from './container-icon';
 export { default as dividerIcon } from './divider-icon';
-export { default as fontIcon } from './font-icon';
 export { default as footer } from './footer';
 export { default as form } from './form';
 export { default as googleMap } from './google-map';

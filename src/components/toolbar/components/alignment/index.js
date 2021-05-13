@@ -32,10 +32,9 @@ const ALLOWED_BLOCKS = [
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/svg-icon-maxi',
-	'maxi-blocks/font-icon-maxi',
 ];
 
-const TEXT_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/font-icon-maxi'];
+const TEXT_BLOCKS = ['maxi-blocks/text-maxi'];
 
 const Alignment = props => {
 	const { blockName, onChange, breakpoint } = props;

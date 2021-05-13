@@ -2,11 +2,13 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { SelectControl, BaseControl, Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import SelectControl from '../select-control';
+import BaseControl from '../base-control';
+import Button from '../button';
 import RangeSliderControl from '../range-slider-control';
 
 /**
@@ -98,20 +100,8 @@ const SizeControl = props => {
 					onChange={e => {
 						let value = +e.target.value;
 
-						if (
-							value >
-							minMaxSettings[isEmpty(unit) ? 'empty' : unit].max
-						)
-							value =
-								minMaxSettings[isEmpty(unit) ? 'empty' : unit]
-									.max;
-						if (
-							value <
-							minMaxSettings[isEmpty(unit) ? 'empty' : unit].min
-						)
-							value =
-								minMaxSettings[isEmpty(unit) ? 'empty' : unit]
-									.min;
+						if (value > max) value = max;
+						if (value < min) value = min;
 
 						onChangeValue(value);
 					}}
@@ -169,7 +159,7 @@ const SizeControl = props => {
 						placeholder='auto'
 					/>
 					<SelectControl
-						className='components-maxi-dimensions-control__units'
+						className='maxi-dimensions-control__units'
 						options={getOptions()}
 						value={unit}
 						onChange={val => {

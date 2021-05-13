@@ -1,9 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { BaseControl } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import { useInstanceId } from '@wordpress/compose';
+
+/**
+ * Internal dependencies
+ */
+import BaseControl from '../base-control';
 
 /**
  * External dependencies
@@ -18,48 +21,45 @@ import './editor.scss';
 /**
  * Component
  */
-const TextControl = props => {
-	const {
-		label = '',
-		className = '',
-		value,
-		onChange,
-		type,
-		placeholder,
-	} = props;
-	const [validationText, setValidationText] = useState(null);
+export default function TextControl({
+	label,
+	hideLabelFromVision,
+	value,
+	help,
+	className,
+	onChange,
+	type = 'text',
+	validationText,
+	...props
+}) {
+	const instanceId = useInstanceId(TextControl);
+	const id = `inspector-text-control-${instanceId}`;
+	const onChangeValue = event => onChange(event.target.value);
 
-	const classes = classnames('maxi-input-control', className);
-
-	const videoUrlRegex = /(https?:\/\/)www.(youtube.com\/watch[?]v=([a-zA-Z0-9_-]{11}))|https?:\/\/(www.)?vimeo.com\/([0-9]{9})|https?:\/\/.*\.(?:mp4|webm|ogg)$/g;
+	const classes = classnames('maxi-text-control', className);
 
 	return (
-		<BaseControl label={label} className={classes}>
+		<BaseControl
+			label={label}
+			hideLabelFromVision={hideLabelFromVision}
+			id={id}
+			help={help}
+			className={classes}
+		>
 			<input
-				type={type === 'video-url' ? 'url' : 'text'}
-				value={value || ''}
-				onChange={e => {
-					const textValue = e.target.value;
-					if (type === 'video-url') {
-						if (textValue && !videoUrlRegex.test(textValue)) {
-							setValidationText(
-								__('Invalid video URL', 'maxi-blocks')
-							);
-						} else {
-							setValidationText(null);
-						}
-					}
-					onChange(textValue);
-				}}
-				placeholder={placeholder}
+				className='maxi-text-control__input'
+				type={type}
+				id={id}
+				value={value}
+				onChange={onChangeValue}
+				aria-describedby={help ? `${id}__help` : undefined}
+				{...props}
 			/>
-			{type === 'video-url' && !!validationText && (
-				<div className='maxi-input-control__validation-text'>
+			{validationText && (
+				<div className='maxi-text-control__validation-text'>
 					{validationText}
 				</div>
 			)}
 		</BaseControl>
 	);
-};
-
-export default TextControl;
+}

@@ -26,12 +26,6 @@ const attributes = {
 		default: '',
 	},
 	...attributesData.palette,
-	...attributesData.icon,
-	...attributesData.iconHover,
-	...attributesData.iconPadding,
-	...attributesData.iconBorder,
-	...attributesData.iconBorderRadius,
-	...attributesData.iconBorderWidth,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {

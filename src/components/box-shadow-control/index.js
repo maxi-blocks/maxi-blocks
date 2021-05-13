@@ -3,13 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Fragment } from '@wordpress/element';
-import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
+import Icon from '../icon';
 import RangeSliderControl from '../range-slider-control';
 import {
 	boxShadowNone,
@@ -45,7 +45,6 @@ const BoxShadowControl = props => {
 		breakpoint,
 		disableAdvanced = false,
 		isHover = false,
-		blockStyle,
 		clientId,
 	} = props;
 
@@ -167,7 +166,6 @@ const BoxShadowControl = props => {
 						disableImage
 						disableVideo
 						showPalette
-						blockStyle={blockStyle}
 						isHover={isHover}
 						palette={{ ...getGroupAttributes(props, 'palette') }}
 						colorPaletteType='box-shadow'

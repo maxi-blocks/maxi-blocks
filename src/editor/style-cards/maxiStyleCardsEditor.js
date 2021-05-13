@@ -199,6 +199,10 @@ const MaxiStyleCardsEditor = () => {
 		let newStateSC = {};
 
 		if (prop === 'typography') {
+			Object.entries(value).forEach(([key, val]) => {
+				if (isNil(val)) delete value[key];
+			});
+
 			newStateSC = {
 				...stateSC,
 				styleCard: {

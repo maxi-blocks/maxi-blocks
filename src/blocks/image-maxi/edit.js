@@ -3,24 +3,25 @@
  */
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
-import { Spinner, Button, Placeholder } from '@wordpress/components';
+import { Spinner, Placeholder } from '@wordpress/components';
 import { MediaUpload } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
+import getStyles from './styles';
 import Inspector from './inspector';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
 import {
 	BlockResizer,
+	Button,
 	HoverPreview,
 	MaxiBlockComponent,
 	Toolbar,
 } from '../../components';
-import MaxiBlock, {
-	getMaxiBlockBlockAttributes,
-} from '../../components/maxi-block';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
-import getStyles from './styles';
 import * as SVGShapes from '../../icons/shape-icons';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 

@@ -1000,6 +1000,7 @@ const Inspector = props => {
 													onChange={obj =>
 														setAttributes(obj)
 													}
+													clientId={clientId}
 												/>
 											),
 										},

@@ -22,7 +22,6 @@ export { default as divider } from './divider';
 export { default as dotted } from './dotted';
 export { default as editTool } from './edit-tool';
 export { default as fill } from './fill';
-export { default as fontIconSettings } from './font-icon';
 export { default as gear } from './gear';
 export { default as gradient } from './gradient';
 export { default as image } from './image';

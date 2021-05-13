@@ -66,7 +66,6 @@ const allowedBlocks = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/divider-maxi',
-	'maxi-blocks/font-icon-maxi',
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/image-maxi',

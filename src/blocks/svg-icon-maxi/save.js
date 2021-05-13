@@ -6,8 +6,10 @@ import { RawHTML } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { BackgroundDisplayer } from '../../components';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import { getPaletteClasses } from '../../extensions/styles';
+import MaxiBlock, {
+	getMaxiBlockBlockAttributes,
+} from '../../components/maxi-block';
 
 /**
  * External dependencies
@@ -18,14 +20,12 @@ import classnames from 'classnames';
  * Save
  */
 const save = props => {
-	const { className, attributes } = props;
-	const { uniqueID, blockStyle, extraClassName, parentBlockStyle } =
-		attributes;
+	const { attributes } = props;
+	const { parentBlockStyle } = attributes;
 
-	const classes = classnames(
-		'maxi-motion-effect',
-		'maxi-block maxi-svg-icon-block',
-		blockStyle,
+	const name = 'maxi-blocks/svg-icon-maxi';
+
+	const paletteClasses = classnames(
 		getPaletteClasses(
 			attributes,
 			[
@@ -38,29 +38,21 @@ const save = props => {
 				'svgColorFill',
 				'svgColorLine',
 			],
-			'maxi-blocks/svg-icon-maxi',
+			name,
 			parentBlockStyle
-		),
-		extraClassName,
-		uniqueID,
-		className
+		)
 	);
 
 	return (
-		<div className={classes} id={uniqueID}>
+		<MaxiBlock
+			paletteClasses={paletteClasses}
+			{...getMaxiBlockBlockAttributes({ ...props, name })}
+			isSave
+		>
 			<RawHTML className='maxi-svg-icon-block__icon'>
 				{attributes.content}
 			</RawHTML>
-			<BackgroundDisplayer
-				{...getGroupAttributes(attributes, [
-					'background',
-					'backgroundColor',
-					'backgroundHover',
-					'backgroundColorHover',
-				])}
-				blockClassName={uniqueID}
-			/>
-		</div>
+		</MaxiBlock>
 	);
 };
 

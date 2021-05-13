@@ -114,6 +114,7 @@ const TypographyControl = withFormatValue(props => {
 			formatValue,
 			prop,
 			breakpoint,
+			blockStyle,
 		});
 
 		if (!isHover) return nonHoverValue;
@@ -125,6 +126,7 @@ const TypographyControl = withFormatValue(props => {
 				prop,
 				breakpoint,
 				isHover,
+				blockStyle,
 			}) || nonHoverValue
 		);
 	};
@@ -226,8 +228,6 @@ const TypographyControl = withFormatValue(props => {
 			textLevel,
 			disableCustomFormats,
 		});
-
-		// setTypography(obj);
 
 		onChange(obj);
 	};

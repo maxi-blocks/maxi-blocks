@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /**
  * WordPress dependencies
  */
@@ -19,7 +20,7 @@ import { React } from 'react';
  */
 import { SettingTabsControl, FancyRadioControl } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
-import getStyleCards from '../../extensions/styles/defaults/style-card/getStyleCards';
+import { getActiveStyleCard } from '../../extensions/style-cards';
 
 /**
  * Icons
@@ -45,44 +46,17 @@ const MaxiStyleCardsEditor = () => {
 	const { saveMaxiStyleCards } = useDispatch('maxiBlocks/style-cards');
 
 	const [currentSC, changeCurrentSC] = useState(receiveMaxiStyleCards());
-
 	const [styleCardName, setStyleCardName] = useState('');
-
-	const allStyleCards = getStyleCards(currentSC);
-
-	const getStyleCardActiveKey = () => {
-		let styleCardActive = '';
-		if (allStyleCards) {
-			forIn(allStyleCards, function get(value, key) {
-				if (value.status === 'active') styleCardActive = key;
-			});
-
-			return styleCardActive;
-		}
-		return false;
-	};
-
-	const getStyleCardActiveValue = () => {
-		let styleCardActiveValue = {};
-		if (!isNil(allStyleCards)) {
-			forIn(allStyleCards, function get(value, key) {
-				if (value.status === 'active') styleCardActiveValue = value;
-			});
-			if (!isNil(styleCardActiveValue)) return styleCardActiveValue;
-			return false;
-		}
-		return false;
-	};
-
-	const [stateSC, changeStateSC] = useState(getStyleCardActiveValue());
-
-	const [currentSCkey, changeCurrentSCkey] = useState(
-		getStyleCardActiveKey()
+	const [stateSC, changeStateSC] = useState(
+		getActiveStyleCard(currentSC).value
+	);
+	const [currentSCKey, changeCurrentSCKey] = useState(
+		getActiveStyleCard(currentSC).key
 	);
 
 	const getStyleCardsOptions = () => {
 		const styleCardsArr = [];
-		forIn(allStyleCards, (value, key) =>
+		forIn(currentSC, (value, key) =>
 			styleCardsArr.push({
 				label: value.name,
 				value: key,
@@ -134,19 +108,19 @@ const MaxiStyleCardsEditor = () => {
 	};
 
 	const setStyleCardActive = cardKey => {
-		forIn(allStyleCards, function get(value, key) {
+		forIn(currentSC, function get(value, key) {
 			if (value.status === 'active' && cardKey !== key) value.status = '';
 			if (cardKey === key) value.status = 'active';
 		});
-		changeCurrentSC(allStyleCards);
-		changeStateSC(getStyleCardActiveValue());
-		changeSConBackend(getStyleCardActiveValue());
+		changeCurrentSC(currentSC);
+		changeStateSC(getActiveStyleCard(currentSC).value);
+		changeSConBackend(getActiveStyleCard(currentSC).value);
 	};
 
 	const getStyleCardCurrentValue = cardKey => {
 		let styleCardCurrentValue = {};
-		if (!isNil(allStyleCards)) {
-			forIn(allStyleCards, function get(value, key) {
+		if (!isNil(currentSC)) {
+			forIn(currentSC, function get(value, key) {
 				if (key === cardKey) styleCardCurrentValue = value;
 			});
 			if (!isNil(styleCardCurrentValue)) return styleCardCurrentValue;
@@ -157,16 +131,16 @@ const MaxiStyleCardsEditor = () => {
 
 	const canBeResetted = keySC => {
 		if (
-			!isNil(allStyleCards[keySC]) &&
-			(!isEmpty(allStyleCards[keySC].styleCard.light) ||
-				!isEmpty(allStyleCards[keySC].styleCard.dark))
+			!isNil(currentSC[keySC]) &&
+			(!isEmpty(currentSC[keySC].styleCard.light) ||
+				!isEmpty(currentSC[keySC].styleCard.dark))
 		)
 			return true;
 		return false;
 	};
 
 	const [canBeResettedState, changeCanBeResettedState] = useState(
-		canBeResetted(currentSCkey)
+		canBeResetted(currentSCKey)
 	);
 
 	const [isSaveDisabled, setIsSaveDisabled] = useState(true);
@@ -195,7 +169,7 @@ const MaxiStyleCardsEditor = () => {
 		);
 
 		changeStateSC(newStateSC);
-		changeCanBeResettedState(canBeResetted(currentSCkey));
+		changeCanBeResettedState(canBeResetted(currentSCKey));
 		setIsApplyDisabled(false);
 	};
 
@@ -226,7 +200,7 @@ const MaxiStyleCardsEditor = () => {
 
 		changeStateSC(newStateSC);
 		changeSConBackend(newStateSC);
-		changeCanBeResettedState(canBeResetted(currentSCkey));
+		changeCanBeResettedState(canBeResetted(currentSCKey));
 		setIsSaveDisabled(false);
 		setIsApplyDisabled(false);
 	};
@@ -241,36 +215,30 @@ const MaxiStyleCardsEditor = () => {
 	const isDefaultOrActive = keySC => {
 		if (keySC === 'sc_maxi') return true;
 
-		if (
-			!isNil(allStyleCards[keySC]) &&
-			allStyleCards[keySC].status === 'active'
-		)
+		if (!isNil(currentSC[keySC]) && currentSC[keySC].status === 'active')
 			return true;
 
 		return false;
 	};
 
 	const [isDefaultOrActiveState, changeIsDefaultOrActiveState] = useState(
-		isDefaultOrActive(currentSCkey)
+		isDefaultOrActive(currentSCKey)
 	);
 
 	const isActive = keySC => {
-		if (
-			!isNil(allStyleCards[keySC]) &&
-			allStyleCards[keySC].status === 'active'
-		)
+		if (!isNil(currentSC[keySC]) && currentSC[keySC].status === 'active')
 			return true;
 
 		return false;
 	};
 
 	const applyCurrentSCglobally = () => {
-		changeIsDefaultOrActiveState(isDefaultOrActive(currentSCkey));
-		setStyleCardActive(currentSCkey);
+		changeIsDefaultOrActiveState(isDefaultOrActive(currentSCKey));
+		setStyleCardActive(currentSCKey);
 
 		const newStyleCards = {
-			...allStyleCards,
-			[currentSCkey]: {
+			...currentSC,
+			[currentSCKey]: {
 				...stateSC,
 				status: 'active',
 			},
@@ -279,8 +247,8 @@ const MaxiStyleCardsEditor = () => {
 		changeStateSC(stateSC);
 		changeSConBackend(stateSC);
 
-		addActiveSCclass(currentSCkey);
-		changeCanBeResettedState(canBeResetted(currentSCkey));
+		addActiveSCclass(currentSCKey);
+		changeCanBeResettedState(canBeResetted(currentSCKey));
 
 		saveMaxiStyleCards(newStyleCards);
 		setIsApplyDisabled(true);
@@ -289,8 +257,8 @@ const MaxiStyleCardsEditor = () => {
 
 	const saveCurrentSC = () => {
 		const newStyleCards = {
-			...allStyleCards,
-			[currentSCkey]: {
+			...currentSC,
+			[currentSCKey]: {
 				name: stateSC.name,
 				status: stateSC.status,
 				styleCard: stateSC.styleCard,
@@ -298,7 +266,7 @@ const MaxiStyleCardsEditor = () => {
 			},
 		};
 
-		changeCanBeResettedState(canBeResetted(currentSCkey));
+		changeCanBeResettedState(canBeResetted(currentSCKey));
 		changeCurrentSC(newStyleCards);
 		saveMaxiStyleCards(newStyleCards);
 		setIsSaveDisabled(true);
@@ -306,7 +274,7 @@ const MaxiStyleCardsEditor = () => {
 
 	const resetCurrentSC = () => {
 		const resetStyleCard = {
-			...allStyleCards[currentSCkey],
+			...currentSC[currentSCKey],
 			styleCard: {
 				light: {},
 				dark: {},
@@ -314,9 +282,9 @@ const MaxiStyleCardsEditor = () => {
 		};
 
 		const resetStyleCards = {
-			...allStyleCards,
-			[currentSCkey]: {
-				...allStyleCards[currentSCkey],
+			...currentSC,
+			[currentSCKey]: {
+				...currentSC[currentSCKey],
 				styleCard: {
 					light: {},
 					dark: {},
@@ -339,12 +307,12 @@ const MaxiStyleCardsEditor = () => {
 		const newId = `sc_${new Date().getTime()}`;
 
 		const newAllSCs = {
-			...allStyleCards,
+			...currentSC,
 			[newId]: card,
 		};
 
 		saveMaxiStyleCards(newAllSCs);
-		changeCurrentSCkey(newId);
+		changeCurrentSCKey(newId);
 		changeCurrentSC(newAllSCs);
 		changeIsDefaultOrActiveState(false);
 
@@ -353,8 +321,8 @@ const MaxiStyleCardsEditor = () => {
 	};
 
 	const switchCurrentSC = keySC => {
-		saveCurrentSC(currentSCkey);
-		changeCurrentSCkey(keySC);
+		saveCurrentSC(currentSCKey);
+		changeCurrentSCKey(keySC);
 		changeStateSC(getStyleCardCurrentValue(keySC));
 		changeSConBackend(getStyleCardCurrentValue(keySC));
 		changeIsDefaultOrActiveState(isDefaultOrActive(keySC));
@@ -463,7 +431,7 @@ const MaxiStyleCardsEditor = () => {
 						</Button>
 						<SelectControl
 							className='maxi-style-cards__sc__more-sc--select'
-							value={currentSCkey}
+							value={currentSCKey}
 							options={getStyleCardsOptions()}
 							onChange={val => {
 								switchCurrentSC(val);
@@ -495,7 +463,7 @@ const MaxiStyleCardsEditor = () => {
 							className='maxi-style-cards__sc__more-sc--delete'
 							onClick={() => {
 								const newStyleCards = {
-									...allStyleCards,
+									...currentSC,
 								};
 
 								if (
@@ -505,12 +473,12 @@ const MaxiStyleCardsEditor = () => {
 												'Are you sure you want to delete "%s" style card? You cannot undo it',
 												'maxi-blocks'
 											),
-											allStyleCards[currentSCkey].name
+											currentSC[currentSCKey].name
 										)
 									)
 								) {
-									delete newStyleCards[currentSCkey];
-									changeCurrentSCkey('sc_maxi');
+									delete newStyleCards[currentSCKey];
+									changeCurrentSCKey('sc_maxi');
 									changeCurrentSC(newStyleCards);
 									changeIsDefaultOrActiveState(true);
 									changeStateSC(
@@ -535,7 +503,7 @@ const MaxiStyleCardsEditor = () => {
 							className='maxi-style-cards__sc__actions--save'
 							disabled={isSaveDisabled}
 							onClick={() => {
-								if (isActive(currentSCkey)) {
+								if (isActive(currentSCKey)) {
 									if (
 										window.confirm(
 											sprintf(
@@ -690,7 +658,7 @@ const MaxiStyleCardsEditor = () => {
 										onChangeDelete={onChangeDelete}
 										addActiveSCclass={addActiveSCclass}
 										deviceType={deviceType}
-										currentKey={getStyleCardActiveKey()}
+										currentKey={currentSCKey}
 									/>
 								),
 							},
@@ -704,7 +672,7 @@ const MaxiStyleCardsEditor = () => {
 										onChangeDelete={onChangeDelete}
 										addActiveSCclass={addActiveSCclass}
 										deviceType={deviceType}
-										currentKey={getStyleCardActiveKey()}
+										currentKey={currentSCKey}
 									/>
 								),
 							},

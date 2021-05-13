@@ -1,6 +1,6 @@
-import { styleCardDefaultsTypography } from '../maxiStyleCardsTab';
+import { SCToTypographyParser } from '../getTypographyFromSC';
 
-describe('styleCardDefaultsTypography', () => {
+describe('SCToTypographyParser', () => {
 	it('Returns typography object different from default', () => {
 		const level = 'p';
 		const SCStyle = {
@@ -61,7 +61,7 @@ describe('styleCardDefaultsTypography', () => {
 			'p-text-decoration-general': 'unset',
 		};
 
-		const result = styleCardDefaultsTypography(level, SCStyle);
+		const result = SCToTypographyParser(level, SCStyle);
 
 		expect(result['p-font-size-xxl']).toBe('42'); // 101010
 	});

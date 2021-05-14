@@ -501,10 +501,11 @@ body.maxi-blocks--active figure.maxi-image-block {
 			}
 			&__flip-horiz {
 				display: flex;
-				perspective: 1000;
+				perspective: 1000px;
+				overflow: visible;
+
 				.maxi-hover-details,
 				img {
-					position: relative;
 					display: flex;
 					justify-content: center;
 					align-content: center;
@@ -524,6 +525,8 @@ body.maxi-blocks--active figure.maxi-image-block {
 					width: 100%;
 					z-index: -1;
 					transform: rotateY(-180deg);
+					backface-visibility: hidden;
+					z-index: auto;
 				}
 				img {
 					z-index: 10;

@@ -49,7 +49,7 @@ import { isEmpty, isEqual, cloneDeep } from 'lodash';
  */
 const Inspector = memo(
 	props => {
-		const { attributes, deviceType, setAttributes, clientId, name } = props;
+		const { attributes, deviceType, setAttributes, clientId } = props;
 		const {
 			customLabel,
 			isFirstOnHierarchy,
@@ -157,14 +157,16 @@ const Inspector = memo(
 																			'Unorganized',
 																			'maxi-blocks'
 																		),
-																		value: 'ul',
+																		value:
+																			'ul',
 																	},
 																	{
 																		label: __(
 																			'Organized',
 																			'maxi-blocks'
 																		),
-																		value: 'ol',
+																		value:
+																			'ol',
 																	},
 																]}
 																onChange={typeOfList =>
@@ -221,10 +223,9 @@ const Inspector = memo(
 																		onChange={value => {
 																			setAttributes(
 																				{
-																					listReversed:
-																						Number(
-																							value
-																						),
+																					listReversed: Number(
+																						value
+																					),
 																				}
 																			);
 																		}}
@@ -275,6 +276,9 @@ const Inspector = memo(
 																		isList={
 																			isList
 																		}
+																		blockStyle={
+																			blockStyle
+																		}
 																	/>
 																),
 															},
@@ -314,8 +318,7 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
-																						'typography-status-hover':
-																							val,
+																						'typography-status-hover': val,
 																					}
 																				)
 																			}
@@ -351,6 +354,9 @@ const Inspector = memo(
 																					isList
 																				}
 																				isHover
+																				blockStyle={
+																					blockStyle
+																				}
 																			/>
 																		)}
 																	</Fragment>
@@ -440,8 +446,7 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
-																						'background-status-hover':
-																							val,
+																						'background-status-hover': val,
 																					}
 																				)
 																			}
@@ -555,8 +560,7 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
-																						'border-status-hover':
-																							val,
+																						'border-status-hover': val,
 																					}
 																				)
 																			}
@@ -617,14 +621,16 @@ const Inspector = memo(
 																			'No',
 																			'maxi-blocks'
 																		),
-																		value: 'normal',
+																		value:
+																			'normal',
 																	},
 																	{
 																		label: __(
 																			'Yes',
 																			'maxi-blocks'
 																		),
-																		value: 'full',
+																		value:
+																			'full',
 																	},
 																]}
 																optionType='string'
@@ -728,8 +734,7 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
-																						'box-shadow-status-hover':
-																							val,
+																						'box-shadow-status-hover': val,
 																					}
 																				)
 																			}
@@ -992,8 +997,7 @@ const Inspector = memo(
 														)}
 														onChange={val =>
 															setAttributes({
-																[`opacity-${deviceType}`]:
-																	val,
+																[`opacity-${deviceType}`]: val,
 															})
 														}
 														breakpoint={deviceType}

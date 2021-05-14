@@ -332,10 +332,27 @@ if (!class_exists('MaxiBlocksAPI')) :
 
 			$request_result = $request->get_json_params();
 
-			$wpdb->replace($table_name, array(
+			$response = $wpdb->replace($table_name, array(
 				'id' => 'style_cards_current',
 				'object' => $request_result['styleCards'],
 			));
+
+			// Retrieve information
+			$response_code = wp_remote_retrieve_response_code($response);
+			$response_message = wp_remote_retrieve_response_message($response);
+			$response_body = wp_remote_retrieve_body($response);
+
+			if (!is_wp_error($response) ) {
+				return new WP_REST_Response(
+				  array(
+					'status' => $response_code,
+					'response' => $response_message,
+					'body_response' => $response_body,
+				  )
+				);
+			  } else {
+				return new WP_Error($response_code, $response_message, $response_body);
+			  }
 		}
 
 		public function get_maxi_blocks_current_global_motion_presets() {

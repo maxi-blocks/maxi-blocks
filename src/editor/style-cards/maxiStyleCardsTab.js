@@ -29,7 +29,6 @@ const MaxiStyleCardsTab = ({
 	SC,
 	SCStyle,
 	deviceType,
-	onChange,
 	onChangeValue,
 	onChangeDelete,
 	addActiveSCclass,
@@ -207,6 +206,7 @@ const MaxiStyleCardsTab = ({
 									SCStyle
 								);
 							}}
+							blockStyle={SCStyle}
 						/>
 					)}
 					{!!secondColor && deviceType === 'general' && (
@@ -341,6 +341,7 @@ const MaxiStyleCardsTab = ({
 									SCStyle
 								);
 							}}
+							blockStyle={SCStyle}
 						/>
 					</>
 				),
@@ -357,7 +358,7 @@ const MaxiStyleCardsTab = ({
 			<AccordionControl
 				isSecondary
 				items={[
-					deviceType === 'general' && {
+					{
 						label: __('Quick Pick Colour Presets', 'maxi-blocks'),
 						content: (
 							<>
@@ -435,26 +436,23 @@ const MaxiStyleCardsTab = ({
 						label: __('Headings', 'maxi-blocks'),
 						content: <SettingTabsControl items={headingItems()} />,
 					},
-					deviceType === 'general' &&
-						generateTab('hover', 'Hover', 'color-6', false, false),
-					deviceType === 'general' &&
-						generateTab(
-							'icon-line',
-							'SVG Icon',
-							'color-7',
-							false,
-							'icon-fill',
-							'Fill',
-							'color-4'
-						),
-					deviceType === 'general' &&
-						generateTab(
-							'divider-color',
-							'Divider',
-							'color-4',
-							false,
-							false
-						),
+					generateTab('hover', 'Hover', 'color-6', false, false),
+					generateTab(
+						'icon-line',
+						'SVG Icon',
+						'color-7',
+						false,
+						'icon-fill',
+						'Fill',
+						'color-4'
+					),
+					generateTab(
+						'divider-color',
+						'Divider',
+						'color-4',
+						false,
+						false
+					),
 				]}
 			/>
 		</div>

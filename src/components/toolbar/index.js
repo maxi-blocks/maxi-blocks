@@ -127,7 +127,7 @@ const MaxiToolbar = memo(
 			const { receiveMaxiSettings } = select('maxiBlocks');
 
 			const maxiSettings = receiveMaxiSettings();
-			const version = !isEmpty(maxiSettings)
+			const version = !isEmpty(maxiSettings.editor)
 				? maxiSettings.editor.version
 				: null;
 

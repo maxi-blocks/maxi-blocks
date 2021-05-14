@@ -19,9 +19,9 @@ const controls = {
 			data: {
 				styleCards: JSON.stringify(action.styleCards),
 			},
-		}).catch(err =>
-			console.error(`Error saving Style Card. Code error:${err}`)
-		);
+		}).catch(err => {
+			console.error('Error saving Style Card. Code error: ', err);
+		});
 	},
 };
 

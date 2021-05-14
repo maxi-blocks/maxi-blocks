@@ -14,7 +14,10 @@ const reducer = (
 		case 'SEND_GLOBAL_SETTINGS':
 			return {
 				...state,
-				settings: action.settings,
+				settings: {
+					...state.settings,
+					...action.settings,
+				},
 			};
 		case 'SEND_MOTION_PRESETS':
 			return {
@@ -41,6 +44,14 @@ const reducer = (
 			return {
 				...state,
 				deviceType: action.deviceType,
+			};
+		case 'SET_WINDOW_SIZE':
+			return {
+				...state,
+				settings: {
+					...state.settings,
+					window: action.winSize,
+				},
 			};
 		case 'COPY_STYLES':
 			return {

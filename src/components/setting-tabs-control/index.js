@@ -44,7 +44,7 @@ const SettingTabsControl = props => {
 					if (item)
 						return (
 							<Button
-								key={`maxi-tabs-control__button-${i}`}
+								key={`maxi-tabs-control__button-${item.label}`}
 								className='maxi-tabs-control__button'
 								onClick={() => setTab(i)}
 								aria-pressed={tab === i}
@@ -69,7 +69,7 @@ const SettingTabsControl = props => {
 
 						return (
 							<div
-								key={`maxi-tab-content-${i}`}
+								key={`maxi-tab-content-${item.label}`}
 								className={classesItemContent}
 							>
 								{item.content}

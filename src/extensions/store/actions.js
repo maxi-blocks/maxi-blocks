@@ -55,9 +55,8 @@ const actions = {
 		};
 	},
 	setMaxiDeviceType(deviceType, width) {
-		const {
-			__experimentalSetPreviewDeviceType: setPreviewDeviceType,
-		} = dispatch('core/edit-post');
+		const { __experimentalSetPreviewDeviceType: setPreviewDeviceType } =
+			dispatch('core/edit-post');
 
 		const gutenbergDeviceType =
 			(deviceType === 'general' && 'Desktop') ||
@@ -70,6 +69,12 @@ const actions = {
 		return {
 			type: 'SET_DEVICE_TYPE',
 			deviceType,
+		};
+	},
+	setWindowSize(winSize) {
+		return {
+			type: 'SET_WINDOW_SIZE',
+			winSize,
 		};
 	},
 	copyStyles(copiedStyles) {

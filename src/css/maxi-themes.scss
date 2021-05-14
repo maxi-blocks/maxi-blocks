@@ -1,8 +1,6 @@
 /**
 * Default and variables
 */
-// @import './maxi-themes-default.scss';
-
 $styles: 'dark', 'light';
 $levels: 'p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6';
 $responsive_sizes: 'general', 'xxl', 'xl', 'l', 'm', 's', 'xs';
@@ -23,7 +21,7 @@ body.maxi-blocks--active {
 			@each $color_number in $color_set {
 				&.maxi-sc-#{$style}-background-color-#{$color_number},
 				.maxi-sc-#{$style}-background-color-#{$color_number} {
-					&.maxi-button-block .maxi-button-block__button, {
+					&.maxi-button-block .maxi-button-block__button {
 						--maxi-#{$style}-button-background-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 					> .maxi-background-displayer .maxi-background-displayer__color {

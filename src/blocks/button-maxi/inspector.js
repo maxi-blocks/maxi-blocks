@@ -217,6 +217,10 @@ const Inspector = props => {
 																		clientId
 																	}
 																	disableCustomFormats
+																	blockStyle={
+																		blockStyle
+																	}
+																	styleCardPrefix='button'
 																/>
 															),
 														},
@@ -287,6 +291,10 @@ const Inspector = props => {
 																				clientId
 																			}
 																			disableCustomFormats
+																			blockStyle={
+																				blockStyle
+																			}
+																			styleCardPrefix='button'
 																		/>
 																	)}
 																</Fragment>

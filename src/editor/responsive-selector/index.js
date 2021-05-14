@@ -66,7 +66,10 @@ const ResponsiveSelector = props => {
 			(size === 'xxl' && 2000) ||
 			breakpoints[size];
 
-		editorWrapper.setAttribute('maxi-blocks-responsive', size);
+		editorWrapper.setAttribute(
+			'maxi-blocks-responsive',
+			size !== 'general' ? size : ''
+		);
 		editorWrapper.setAttribute(
 			'maxi-blocks-responsive-width',
 			responsiveWidth

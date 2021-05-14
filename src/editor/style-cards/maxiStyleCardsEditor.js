@@ -3,7 +3,7 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { select, dispatch, useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { PostPreviewButton } from '@wordpress/editor';
@@ -18,6 +18,12 @@ import { React } from 'react';
 /**
  * Internal dependencies
  */
+import {
+	showMaxiSCSavedActiveSnackbar,
+	showMaxiSCSavedSnackbar,
+	showMaxiSCAppliedActiveSnackbar,
+	exportStyleCard,
+} from './utils';
 import { SettingTabsControl, FancyRadioControl } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { getActiveStyleCard } from '../../extensions/style-cards';
@@ -328,74 +334,6 @@ const MaxiStyleCardsEditor = () => {
 		changeIsDefaultOrActiveState(isDefaultOrActive(keySC));
 
 		setIsApplyDisabled(false);
-	};
-
-	const showMaxiSCSavedActiveSnackbar = nameSC => {
-		dispatch('core/notices').createNotice(
-			'info',
-			__(`${nameSC} saved`, 'maxi-blocks'),
-			{
-				isDismissible: true,
-				type: 'snackbar',
-				actions: [
-					{
-						onClick: () =>
-							window.open(
-								select('core/editor').getPermalink(),
-								'_blank'
-							),
-						label: __('View', 'maxi-blocks'),
-					},
-				],
-			}
-		);
-	};
-
-	const showMaxiSCSavedSnackbar = nameSC => {
-		dispatch('core/notices').createNotice(
-			'info',
-			__(`${nameSC} saved`, 'maxi-blocks'),
-			{
-				isDismissible: true,
-				type: 'snackbar',
-			}
-		);
-	};
-
-	const showMaxiSCAppliedActiveSnackbar = nameSC => {
-		dispatch('core/notices').createNotice(
-			'info',
-			__(`${nameSC} applied`, 'maxi-blocks'),
-			{
-				isDismissible: true,
-				type: 'snackbar',
-				actions: [
-					{
-						onClick: () =>
-							window.open(
-								select('core/editor').getPermalink(),
-								'_blank'
-							),
-						label: __('View', 'maxi-blocks'),
-					},
-				],
-			}
-		);
-	};
-
-	const exportStyleCard = (data, fileName) => {
-		const a = document.createElement('a');
-		document.body.appendChild(a);
-		a.style = 'display: none';
-
-		const json = JSON.stringify(data);
-		const blob = new Blob([json], { type: 'text/plain' });
-		const url = window.URL.createObjectURL(blob);
-
-		a.href = url;
-		a.download = fileName;
-		a.click();
-		document.body.removeChild(a);
 	};
 
 	const [useCustomStyleCard, setUseCustomStyleCard] = useState(true);

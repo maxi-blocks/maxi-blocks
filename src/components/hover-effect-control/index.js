@@ -431,6 +431,7 @@ const HoverEffectControl = props => {
 							'hoverBackground',
 							'hoverBackgroundColor',
 							'hoverBackgroundGradient',
+							'palette',
 						])}
 						onChange={obj => onChange(obj)}
 						disableLayers
@@ -439,7 +440,6 @@ const HoverEffectControl = props => {
 						disableVideo
 						disableSVG
 						prefix='hover-'
-						disablePalette
 						clientId={clientId}
 					/>
 					<FancyRadioControl

@@ -94,22 +94,24 @@ class edit extends MaxiBlockComponent {
 
 		const hoverPreviewClasses = classnames(
 			'maxi-image-ratio',
-			`maxi-image-ratio__${imageRatio}`,
-			getPaletteClasses(
-				attributes,
-				[
-					'background',
-					'background-hover',
-					'border',
-					'border-hover',
-					'box-shadow',
-					'box-shadow-hover',
-					'typography',
-					'typography-hover',
-				],
-				'maxi-blocks/image-maxi',
-				parentBlockStyle
-			)
+			`maxi-image-ratio__${imageRatio}`
+		);
+
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'hover-background',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+			],
+			'maxi-blocks/image-maxi',
+			parentBlockStyle
 		);
 
 		const hoverClasses = classnames(
@@ -184,6 +186,7 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-image--${uniqueID}`}
+				paletteClasses={paletteClasses}
 				ref={this.blockRef}
 				tagName='figure'
 				className={classes}

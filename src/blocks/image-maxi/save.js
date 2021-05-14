@@ -39,22 +39,24 @@ const save = props => {
 
 	const hoverPreviewClasses = classnames(
 		'maxi-image-ratio',
-		`maxi-image-ratio__${imageRatio}`,
-		getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-				'typography',
-				'typography-hover',
-			],
-			name,
-			parentBlockStyle
-		)
+		`maxi-image-ratio__${imageRatio}`
+	);
+
+	const paletteClasses = getPaletteClasses(
+		attributes,
+		[
+			'background',
+			'background-hover',
+			'hover-background',
+			'border',
+			'border-hover',
+			'box-shadow',
+			'box-shadow-hover',
+			'typography',
+			'typography-hover',
+		],
+		'maxi-blocks/image-maxi',
+		parentBlockStyle
 	);
 
 	const hoverClasses = classnames(
@@ -83,6 +85,7 @@ const save = props => {
 	return (
 		<MaxiBlock
 			tagName='figure'
+			paletteClasses={paletteClasses}
 			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>

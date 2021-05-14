@@ -50,6 +50,8 @@ body.maxi-blocks--active figure.maxi-image-block {
 		}
 	}
 	.maxi-hover-details {
+		background-color: #000;
+
 		&:not(.maxi-hover-effect__text__flip-horiz) {
 			position: absolute;
 			top: 0;
@@ -477,6 +479,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 				}
 				.maxi-hover-details {
 					opacity: 0;
+
 					&__content {
 						transition-duration: inherit;
 					}

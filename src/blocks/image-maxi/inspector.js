@@ -420,6 +420,7 @@ const Inspector = props => {
 															breakpoint={
 																deviceType
 															}
+															clientId={clientId}
 															disableCustomFormats
 														/>
 													)}
@@ -995,6 +996,7 @@ const Inspector = props => {
 															'hoverPadding',
 															'hoverTitleTypography',
 															'hoverContentTypography',
+															'palette',
 														]
 													)}
 													onChange={obj =>

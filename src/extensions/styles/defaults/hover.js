@@ -36,7 +36,7 @@ export const hover = {
 	},
 	'hover-transition-duration': {
 		type: 'number',
-		default: 0.3,
+		default: 0.5,
 	},
 	'hover-basic-zoom-in-value': {
 		type: 'number',
@@ -130,8 +130,6 @@ export const hoverBackgroundColor = (() => {
 	Object.keys(backgroundColor).forEach(key => {
 		const newKey = `hover-${key}`;
 		const value = { ...backgroundColor[key] };
-
-		if (key === 'background-color') value.default = 'rgba(0,0,0, 0.6)';
 
 		response[newKey] = value;
 	});

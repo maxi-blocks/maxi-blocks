@@ -1,4 +1,12 @@
 const palette = {
+	'palette-custom-hover-background-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-hover-background-color': {
+		type: 'number',
+		default: 5,
+	},
 	'palette-custom-background-color': {
 		type: 'boolean',
 		default: false,

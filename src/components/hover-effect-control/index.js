@@ -69,7 +69,7 @@ const HoverEffectControl = props => {
 				onChange={val => {
 					onChange({
 						'hover-type': val,
-						'hover-transition-duration': 0.3,
+						'hover-transition-duration': 0.5,
 					});
 				}}
 			/>

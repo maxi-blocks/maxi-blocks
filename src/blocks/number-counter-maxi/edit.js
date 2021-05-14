@@ -180,6 +180,7 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}
+				ref={this.blockRef}
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>

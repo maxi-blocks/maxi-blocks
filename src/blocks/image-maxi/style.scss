@@ -146,10 +146,41 @@ body.maxi-blocks--active figure.maxi-image-block {
 			&__push-down {
 				.maxi-hover-details {
 					transform: translateY(-100%);
+					transition-duration: inherit;
+
+					&__content {
+						transition-duration: inherit;
+
+						h3 {
+							transition-delay: 0.4s;
+						}
+						p {
+							transition-delay: 0.2s;
+						}
+						h3,
+						p {
+							transform: translateY(-400px);
+							transition-duration: inherit;
+						}
+					}
 				}
 				&:hover {
 					.maxi-hover-details {
 						transform: translateY(0);
+
+						&__content {
+							h3 {
+								transition-delay: 0.4s;
+							}
+							p {
+								transition-delay: 0.2s;
+							}
+							h3,
+							p {
+								transform: translateY(0);
+								transition-duration: inherit;
+							}
+						}
 					}
 					img {
 						transform: translateY(100%);
@@ -159,10 +190,41 @@ body.maxi-blocks--active figure.maxi-image-block {
 			&__push-right {
 				.maxi-hover-details {
 					transform: translateX(-100%);
+					transition-duration: inherit;
+
+					&__content {
+						transition-duration: inherit;
+
+						h3 {
+							transition-delay: 0.2s;
+						}
+						p {
+							transition-delay: 0.4s;
+						}
+						h3,
+						p {
+							transform: translateX(-100%);
+							transition-duration: inherit;
+						}
+					}
 				}
 				&:hover {
 					.maxi-hover-details {
 						transform: translateX(0);
+
+						&__content {
+							h3 {
+								transition-delay: 0.2s;
+							}
+							p {
+								transition-delay: 0.4s;
+							}
+							h3,
+							p {
+								transform: translateX(0);
+								transition-duration: inherit;
+							}
+						}
 					}
 					img {
 						transform: translateX(100%);
@@ -172,10 +234,41 @@ body.maxi-blocks--active figure.maxi-image-block {
 			&__push-left {
 				.maxi-hover-details {
 					transform: translateX(100%);
+					transition-duration: inherit;
+
+					&__content {
+						transition-duration: inherit;
+
+						h3 {
+							transition-delay: 0.2s;
+						}
+						p {
+							transition-delay: 0.4s;
+						}
+						h3,
+						p {
+							transform: translateX(100%);
+							transition-duration: inherit;
+						}
+					}
 				}
 				&:hover {
 					.maxi-hover-details {
 						transform: translateX(0);
+
+						&__content {
+							h3 {
+								transition-delay: 0.4s;
+							}
+							p {
+								transition-delay: 0.2s;
+							}
+							h3,
+							p {
+								transform: translateX(0);
+								transition-duration: inherit;
+							}
+						}
 					}
 					img {
 						transform: translateX(-100%);

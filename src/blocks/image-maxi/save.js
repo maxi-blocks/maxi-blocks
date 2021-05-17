@@ -48,6 +48,7 @@ const save = props => {
 			'background',
 			'background-hover',
 			'hover-background',
+			'svg-background',
 			'border',
 			'border-hover',
 			'box-shadow',
@@ -84,6 +85,7 @@ const save = props => {
 
 	return (
 		<MaxiBlock
+			paletteClasses={paletteClasses}
 			tagName='figure'
 			paletteClasses={paletteClasses}
 			{...getMaxiBlockBlockAttributes({ ...props, name })}

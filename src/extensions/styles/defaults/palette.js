@@ -1,11 +1,19 @@
 const palette = {
-	'palette-custom-hover-background-color': {
+	'palette-custom-svg-background-color': {
 		type: 'boolean',
 		default: false,
 	},
-	'palette-preset-hover-background-color': {
+	'palette-preset-svg-background-color': {
 		type: 'number',
 		default: 5,
+	},
+	'palette-custom-background-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-custom-background-hover-color': {
+		type: 'boolean',
+		default: 6,
 	},
 	'palette-custom-background-color': {
 		type: 'boolean',

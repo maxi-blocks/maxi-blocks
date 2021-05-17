@@ -103,6 +103,7 @@ class edit extends MaxiBlockComponent {
 				'background',
 				'background-hover',
 				'hover-background',
+				'svg-background',
 				'border',
 				'border-hover',
 				'box-shadow',
@@ -190,6 +191,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				tagName='figure'
 				className={classes}
+				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<MediaUpload

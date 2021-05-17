@@ -1,4 +1,12 @@
 const palette = {
+	'palette-custom-svg-background-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-svg-background-color': {
+		type: 'number',
+		default: 5,
+	},
 	'palette-custom-background-color': {
 		type: 'boolean',
 		default: false,

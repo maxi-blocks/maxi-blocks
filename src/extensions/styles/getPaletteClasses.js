@@ -17,6 +17,14 @@ const getPaletteClasses = (
 	textLevel
 ) => {
 	const paletteClasses = classnames(
+		allowedPalettes.includes('svg-background') &&
+			attributes['background-active-media'] === 'svg' &&
+			!attributes['palette-custom-svg-background-color'] &&
+			`maxi-sc-${parentBlockStyle}-svg-background-color-${
+				!isNil(attributes['palette-preset-svg-background-color'])
+					? attributes['palette-preset-svg-background-color']
+					: getPaletteDefault('svg-background', blockName, textLevel)
+			}`,
 		allowedPalettes.includes('background') &&
 			attributes['background-active-media'] === 'color' &&
 			!attributes['palette-custom-background-color'] &&

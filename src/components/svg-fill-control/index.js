@@ -10,6 +10,7 @@ import ColorControl from '../color-control';
 import MediaUploaderControl from '../media-uploader-control';
 import SettingTabsControl from '../setting-tabs-control';
 import { injectImgSVG } from '../../extensions/svg/utils';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -21,7 +22,14 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const SVGFillControl = props => {
-	const { SVGElement, onChange, className } = props;
+	const {
+		SVGElement,
+		onChange,
+		onChangePalette,
+		className,
+		clientId,
+		isHover,
+	} = props;
 
 	const classes = classnames('maxi-svg-fill-control', className);
 
@@ -50,6 +58,14 @@ const SVGFillControl = props => {
 										SVGData,
 									});
 								}}
+								showPalette
+								palette={{
+									...getGroupAttributes(props, 'palette'),
+								}}
+								isHover={isHover}
+								colorPaletteType='svg-background'
+								onChangePalette={val => onChangePalette(val)}
+								clientId={clientId}
 							/>
 						),
 					},

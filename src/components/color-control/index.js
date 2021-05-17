@@ -110,6 +110,7 @@ const ColorControl = props => {
 			{!disablePalette && showPalette && (
 				<ColorPaletteControl
 					{...palette}
+					paletteLabel={label}
 					textLevel={textLevel}
 					isHover={isHover}
 					colorPaletteType={colorPaletteType}

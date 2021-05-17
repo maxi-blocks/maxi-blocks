@@ -13,7 +13,10 @@ import {
 	SizeControl,
 	FontFamilySelector,
 } from '../';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -29,7 +32,7 @@ import './editor.scss';
  * Component
  */
 const NumberCounterControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, clientId } = props;
 
 	const classes = classnames('maxi-number-counter-control', className);
 
@@ -234,7 +237,14 @@ const NumberCounterControl = props => {
 				color={props['number-counter-text-color']}
 				defaultColor={getDefaultAttribute('number-counter-text-color')}
 				onChange={val => onChange({ 'number-counter-text-color': val })}
+				showPalette
+				palette={{ ...getGroupAttributes(props, 'palette') }}
+				isHover={false}
+				colorPaletteType='typography'
+				onChangePalette={val => onChange(val)}
+				clientId={clientId}
 			/>
+			<hr />
 			<ColorControl
 				label={__('Circle Background', 'maxi-blocks')}
 				color={props['number-counter-circle-background-color']}
@@ -244,7 +254,14 @@ const NumberCounterControl = props => {
 				onChange={val =>
 					onChange({ 'number-counter-circle-background-color': val })
 				}
+				showPalette
+				palette={{ ...getGroupAttributes(props, 'palette') }}
+				isHover={false}
+				colorPaletteType='background'
+				onChangePalette={val => onChange(val)}
+				clientId={clientId}
 			/>
+			<hr />
 			<ColorControl
 				label={__('Circle Bar', 'maxi-blocks')}
 				color={props['number-counter-circle-bar-color']}
@@ -254,6 +271,12 @@ const NumberCounterControl = props => {
 				onChange={val =>
 					onChange({ 'number-counter-circle-bar-color': val })
 				}
+				showPalette
+				palette={{ ...getGroupAttributes(props, 'palette') }}
+				isHover={false}
+				colorPaletteType='background'
+				onChangePalette={val => onChange(val)}
+				clientId={clientId}
 			/>
 		</div>
 	);

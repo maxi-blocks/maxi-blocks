@@ -36,15 +36,13 @@ const NumberCounterControl = props => {
 	return (
 		<div className={classes}>
 			<FancyRadioControl
-				label={__('Auto Reproduce', 'maxi-block')}
-				selected={props['number-counter-auto-reproduce']}
+				label={__('Preview', 'maxi-block')}
+				selected={props['number-counter-preview']}
 				options={[
 					{ label: __('No', 'maxi-block'), value: 0 },
 					{ label: __('Yes', 'maxi-block'), value: 1 },
 				]}
-				onChange={val =>
-					onChange({ 'number-counter-auto-reproduce': val })
-				}
+				onChange={val => onChange({ 'number-counter-preview': val })}
 			/>
 			<SelectControl
 				label={__('Start Animation', 'maxi-blocks')}

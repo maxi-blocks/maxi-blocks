@@ -15,12 +15,10 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+import { isEmpty } from 'lodash';
 
 const getNormalObject = props => {
 	const response = {
-		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
-		}),
 		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
@@ -132,6 +130,9 @@ const getHoverEffectContentTextObject = props => {
 
 const getImageFrontendObject = props => {
 	const response = {
+		boxShadow: getBoxShadowStyles({
+			...getGroupAttributes(props, 'boxShadow'),
+		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -157,14 +158,20 @@ const getImageHoverObject = props => {
 				true
 			),
 		}),
+		...(props['box-shadow-status-hover'] && {
+			boxShadow: getBoxShadowStyles(
+				{
+					...getGroupAttributes(props, 'boxShadow', true),
+				},
+				true
+			),
+		}),
 	};
 
 	return response;
 };
 
 const getImageBackendObject = props => {
-	const { clipPath } = props;
-
 	const response = {
 		border: getBorderStyles({
 			...getGroupAttributes(props, [
@@ -173,19 +180,17 @@ const getImageBackendObject = props => {
 				'borderRadius',
 			]),
 		}),
-		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
-		}),
+		boxShadow: getBoxShadowStyles(
+			{
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			false,
+			!isEmpty(props.clipPath)
+		),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
-		image: {
-			label: 'Image settings',
-			general: {},
-		},
 	};
-
-	if (clipPath) response.image.general['clip-path'] = clipPath;
 
 	return response;
 };
@@ -215,17 +220,17 @@ const getResizeObject = props => {
 	return response;
 };
 
-const getNormalHoverObject = props => {
+const getImageHoverPreviewObject = props => {
+	const { clipPath } = props;
+
 	const response = {
-		...(props['box-shadow-status-hover'] && {
-			boxShadow: getBoxShadowStyles(
-				{
-					...getGroupAttributes(props, 'boxShadow', true),
-				},
-				true
-			),
-		}),
+		image: {
+			label: 'Image settings',
+			general: {},
+		},
 	};
+
+	if (clipPath) response.image.general['clip-path'] = clipPath;
 
 	return response;
 };
@@ -235,7 +240,6 @@ const getStyles = props => {
 
 	let response = {
 		[uniqueID]: getNormalObject(props),
-		[`${uniqueID}:hover`]: getNormalHoverObject(props),
 		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageFrontendObject(
 			props
 		),
@@ -244,7 +248,9 @@ const getStyles = props => {
 			props
 		),
 		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageBackendObject(props),
-
+		[`${uniqueID} .maxi-block-hover-wrapper .maxi-hover-preview`]: getImageHoverPreviewObject(
+			props
+		),
 		[`${uniqueID} figcaption`]: getFigcaptionObject(props),
 		[`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: getHoverEffectTitleTextObject(
 			props

@@ -3,6 +3,8 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
+import { getBlockAttributes } from '../../utils';
+import openSidebar from '../../utils/openSidebar';
 
 describe('font level', () => {
 	beforeEach(async () => {
@@ -10,20 +12,17 @@ describe('font level', () => {
 	});
 	it('checking the font family selector', async () => {
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing font family selector');
-		await page.$eval('.toolbar-item__text-options', button =>
-			button.click()
+		const accordionPanel = await openSidebar(page, 'typography');
+		const fontFamilySelector = await accordionPanel.$(
+			'.maxi-typography-control .maxi-typography-control__font-family'
 		);
-		await page.waitForSelector(
-			'.components-popover__content .maxi-font-options'
-		);
-		const fontFamilySelector = await page.$(
-			'.components-popover__content .maxi-font-options .toolbar-item__popover__font-options__font'
-		);
-		await fontFamilySelector.focus();
+		await fontFamilySelector.click();
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		const expectedResult = 'Montserrat';
+		const attributes = await getBlockAttributes();
+
+		expect(attributes['font-family-general']).toStrictEqual(expectedResult);
 	});
 });

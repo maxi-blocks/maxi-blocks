@@ -16,7 +16,6 @@ const getPaletteClasses = (
 	parentBlockStyle,
 	textLevel
 ) => {
-	console.log(attributes);
 	const paletteClasses = classnames(
 		allowedPalettes.includes('svg-background') &&
 			attributes['background-active-media'] === 'svg' &&

@@ -212,6 +212,7 @@ const BackgroundControl = props => {
 					)}
 					{!disableSVG && backgroundActiveMedia === 'svg' && (
 						<SVGLayer
+							{...getGroupAttributes(props, 'palette')}
 							SVGOptions={{
 								...getGroupAttributes(
 									props,
@@ -223,6 +224,7 @@ const BackgroundControl = props => {
 							onChange={obj => onChange(obj)}
 							isHover={isHover}
 							prefix={prefix}
+							clientId={clientId}
 						/>
 					)}
 				</Fragment>

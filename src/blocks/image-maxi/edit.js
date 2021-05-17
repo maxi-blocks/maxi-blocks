@@ -102,6 +102,7 @@ class edit extends MaxiBlockComponent {
 			[
 				'background',
 				'background-hover',
+				'svg-background',
 				'border',
 				'border-hover',
 				'box-shadow',

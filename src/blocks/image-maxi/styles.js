@@ -18,6 +18,9 @@ import {
 
 const getNormalObject = props => {
 	const response = {
+		boxShadow: getBoxShadowStyles({
+			...getGroupAttributes(props, 'boxShadow'),
+		}),
 		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
@@ -129,9 +132,6 @@ const getHoverEffectContentTextObject = props => {
 
 const getImageFrontendObject = props => {
 	const response = {
-		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
-		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -153,14 +153,6 @@ const getImageHoverObject = props => {
 						['border', 'borderWidth', 'borderRadius'],
 						true
 					),
-				},
-				true
-			),
-		}),
-		...(props['box-shadow-status-hover'] && {
-			boxShadow: getBoxShadowStyles(
-				{
-					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				true
 			),
@@ -223,11 +215,27 @@ const getResizeObject = props => {
 	return response;
 };
 
+const getNormalHoverObject = props => {
+	const response = {
+		...(props['box-shadow-status-hover'] && {
+			boxShadow: getBoxShadowStyles(
+				{
+					...getGroupAttributes(props, 'boxShadow', true),
+				},
+				true
+			),
+		}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
 	let response = {
 		[uniqueID]: getNormalObject(props),
+		[`${uniqueID}:hover`]: getNormalHoverObject(props),
 		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageFrontendObject(
 			props
 		),

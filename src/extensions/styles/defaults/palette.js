@@ -7,11 +7,11 @@ const palette = {
 		type: 'number',
 		default: 5,
 	},
-	'palette-custom-background-color': {
+	'palette-custom-hover-background-color': {
 		type: 'boolean',
 		default: false,
 	},
-	'palette-custom-background-hover-color': {
+	'palette-preset-hover-background-color': {
 		type: 'boolean',
 		default: 6,
 	},

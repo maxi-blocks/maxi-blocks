@@ -79,15 +79,17 @@ const getHoverEffectDetailsBoxObject = props => {
 			},
 			'hover-'
 		),
-		background: {
-			...getHoverEffectsBackgroundStyles({
-				...getGroupAttributes(props, [
-					'hoverBackground',
-					'hoverBackgroundColor',
-					'hoverBackgroundGradient',
-				]),
-			}),
-		},
+		...(props['palette-custom-hover-background-color'] && {
+			background: {
+				...getHoverEffectsBackgroundStyles({
+					...getGroupAttributes(props, [
+						'hoverBackground',
+						'hoverBackgroundColor',
+						'hoverBackgroundGradient',
+					]),
+				}),
+			},
+		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),

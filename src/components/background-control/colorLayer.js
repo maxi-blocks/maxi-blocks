@@ -50,7 +50,7 @@ const ColorLayer = props => {
 				showPalette
 				palette={{ ...getGroupAttributes(props, 'palette') }}
 				isHover={isHover}
-				colorPaletteType='background'
+				colorPaletteType={`${prefix}background`}
 				onChangePalette={val => onChange(val)}
 				clientId={clientId}
 			/>

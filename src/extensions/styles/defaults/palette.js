@@ -23,6 +23,14 @@ const palette = {
 		type: 'number',
 		default: 5,
 	},
+	'palette-custom-hover-background-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-hover-background-color': {
+		type: 'boolean',
+		default: 6,
+	},
 	'palette-custom-background-color': {
 		type: 'boolean',
 		default: false,

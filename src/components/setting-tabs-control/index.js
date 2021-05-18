@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -21,9 +21,15 @@ import './editor.scss';
  * Component
  */
 const SettingTabsControl = props => {
-	const { items, disablePadding = false, className } = props;
+	const { items, disablePadding = false, className, forceTab } = props;
 
 	const [tab, setTab] = useState(0);
+
+	useEffect(() => {
+		if (forceTab || forceTab === 0) {
+			setTab(forceTab);
+		}
+	}, [forceTab]);
 
 	const classes = classnames('maxi-settingstab-control', className);
 

@@ -31,8 +31,9 @@ export const SCToTypographyParser = (level, SCStyle) => {
 							if (typeof val === 'number') newVal = `${val}px`;
 							else newVal = val;
 
-							const [num, unit] =
-								newVal.match(/[a-zA-Z]+|[0-9\.]+/g);
+							const [num, unit] = newVal.match(
+								/[a-zA-Z]+|[0-9\.]+/g
+							);
 							response[checkKey] = num;
 							const newUnitKey = checkKey.replace(
 								'letter-spacing',
@@ -78,8 +79,11 @@ export const SCToTypographyParser = (level, SCStyle) => {
 const getTypographyFromSC = (level, SCStyle, styleCards) => {
 	let SC;
 
-	if (!styleCards) SC = getActiveStyleCard().value;
+	if (isNil(styleCards) || isEmpty(styleCards))
+		SC = getActiveStyleCard().value;
 	else SC = styleCards;
+
+	if (isNil(SC) || isEmpty(SC)) return {};
 
 	const defaultTypography = SCToTypographyParser(
 		level,

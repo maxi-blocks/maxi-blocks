@@ -23,6 +23,7 @@ import {
 	withFormatValue,
 } from '../../extensions/text/formats';
 import {
+	getBlockStyle,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -200,7 +201,6 @@ const TypographyControl = withFormatValue(props => {
 		styleCards = false,
 		disablePalette = false,
 		clientId,
-		blockStyle = 'maxi-light',
 		styleCardPrefix,
 	} = props;
 
@@ -215,9 +215,9 @@ const TypographyControl = withFormatValue(props => {
 		const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
 		const { receiveMaxiSettings } = select('maxiBlocks');
 
-		const activeSC = receiveMaxiActiveStyleCard().value;
+		const activeSC = receiveMaxiActiveStyleCard()?.value || {};
 
-		const winWidth = receiveMaxiSettings().window.width;
+		const winWidth = receiveMaxiSettings().window?.width || null;
 
 		return {
 			activeSC,
@@ -292,6 +292,8 @@ const TypographyControl = withFormatValue(props => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
 		if (disableFormats) return typography[`${prop}-${currentBreakpoint}`];
+
+		const blockStyle = getBlockStyle(clientId);
 
 		const nonHoverValue = getCustomFormatValue({
 			typography,
@@ -424,7 +426,7 @@ const TypographyControl = withFormatValue(props => {
 		onChange(obj);
 	};
 
-	const showNotification = breakpoint => {
+	const getWinBreakpoint = () => {
 		const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 
 		let response;
@@ -433,7 +435,21 @@ const TypographyControl = withFormatValue(props => {
 			if (value <= winWidth) response = key;
 		});
 
-		return response.toLowerCase() === breakpoint.toLowerCase();
+		return response.toLowerCase();
+	};
+
+	const showNotification = customBreakpoint => {
+		if (breakpoint !== 'general')
+			return breakpoint === customBreakpoint.toLowerCase();
+
+		return getWinBreakpoint() === customBreakpoint.toLowerCase();
+	};
+
+	const getTextOptionsTab = () => {
+		if (breakpoint !== 'general')
+			return breakpoints.indexOf(breakpoint.toUpperCase());
+
+		return breakpoints.indexOf(getWinBreakpoint().toUpperCase());
 	};
 
 	return (
@@ -622,6 +638,7 @@ const TypographyControl = withFormatValue(props => {
 								showNotification: showNotification(breakpoint),
 							};
 						})}
+						forceTab={getTextOptionsTab()}
 					/>
 				)}
 			</div>

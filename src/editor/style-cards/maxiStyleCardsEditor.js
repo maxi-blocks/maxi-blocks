@@ -33,12 +33,10 @@ import { getActiveStyleCard } from '../../extensions/style-cards';
  */
 import { styleCardBoat, reset, SCdelete, SCaddMore } from '../../icons';
 
-const MaxiStyleCardsEditor = () => {
-	const { isRTL, deviceType, receiveMaxiStyleCards } = useSelect(select => {
+const MaxiStyleCardsEditor = ({ styleCards }) => {
+	const { isRTL, deviceType } = useSelect(select => {
 		const { getEditorSettings } = select('core/editor');
 		const { isRTL } = getEditorSettings();
-
-		const { receiveMaxiStyleCards } = select('maxiBlocks/style-cards');
 
 		const { receiveMaxiDeviceType } = select('maxiBlocks');
 		const deviceType = receiveMaxiDeviceType();
@@ -46,12 +44,11 @@ const MaxiStyleCardsEditor = () => {
 		return {
 			isRTL,
 			deviceType,
-			receiveMaxiStyleCards,
 		};
 	});
 	const { saveMaxiStyleCards } = useDispatch('maxiBlocks/style-cards');
 
-	const [currentSC, changeCurrentSC] = useState(receiveMaxiStyleCards());
+	const [currentSC, changeCurrentSC] = useState(styleCards);
 	const [styleCardName, setStyleCardName] = useState('');
 	const [stateSC, changeStateSC] = useState(
 		getActiveStyleCard(currentSC).value

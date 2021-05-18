@@ -41,8 +41,6 @@ const ToolbarButtons = () => {
 	);
 };
 
-// export default ToolbarButtons;
-
 wp.domReady(() => {
 	/**
 	 * Mutation Observer for:
@@ -65,9 +63,6 @@ wp.domReady(() => {
 			render(<ToolbarButtons />, toolbarButtonsWrapper);
 
 			unsubscribe();
-
-			// Initialize SCs
-			wp.data.select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 		}
 	});
 });

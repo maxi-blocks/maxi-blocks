@@ -9,6 +9,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import { getPaletteDefault, getBlockStyle } from '../../extensions/styles';
+import BaseControl from '../base-control';
 
 /**
  * External dependencies
@@ -27,6 +28,7 @@ import './editor.scss';
 const ColorPaletteControl = props => {
 	const {
 		className,
+		paletteLabel = '',
 		onChange,
 		colorPaletteType = 'background',
 		isHover,
@@ -118,30 +120,36 @@ const ColorPaletteControl = props => {
 					isHover ? '-hover' : ''
 				}-color`
 			] && (
-				<div className='maxi-sc-color-palette'>
-					{[1, 2, 3, 4, 5, 6, 7].map(item => (
-						<div
-							key={`maxi-sc-color-palette__box__${item}`}
-							className={`maxi-sc-color-palette__box ${
-								currentItem === item
-									? 'maxi-sc-color-palette__box--active'
-									: ''
-							}`}
-							data-item={item}
-							onClick={e =>
-								onChange({
-									[`palette-preset-${colorPaletteType}${
-										isHover ? '-hover' : ''
-									}-color`]: +e.currentTarget.dataset.item,
-								})
-							}
-						>
-							<span
-								className={`maxi-sc-color-palette__box__item maxi-sc-color-palette__box__item__${item}`}
-							></span>
-						</div>
-					))}
-				</div>
+				<BaseControl
+					className='maxi-color-palette-control__palette-label'
+					label={paletteLabel ? `${paletteLabel} Colour` : ''}
+				>
+					<div className='maxi-sc-color-palette'>
+						{[1, 2, 3, 4, 5, 6, 7].map(item => (
+							<div
+								key={`maxi-sc-color-palette__box__${item}`}
+								className={`maxi-sc-color-palette__box ${
+									currentItem === item
+										? 'maxi-sc-color-palette__box--active'
+										: ''
+								}`}
+								data-item={item}
+								onClick={e =>
+									onChange({
+										[`palette-preset-${colorPaletteType}${
+											isHover ? '-hover' : ''
+										}-color`]: +e.currentTarget.dataset
+											.item,
+									})
+								}
+							>
+								<span
+									className={`maxi-sc-color-palette__box__item maxi-sc-color-palette__box__item__${item}`}
+								></span>
+							</div>
+						))}
+					</div>
+				</BaseControl>
 			)}
 			<FancyRadioControl
 				label={__('Custom Colour', 'maxi-blocks')}

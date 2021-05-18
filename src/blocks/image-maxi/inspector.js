@@ -417,6 +417,7 @@ const Inspector = props => {
 															breakpoint={
 																deviceType
 															}
+															clientId={clientId}
 															disableCustomFormats
 															blockStyle={
 																blockStyle

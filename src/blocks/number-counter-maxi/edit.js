@@ -14,7 +14,7 @@ import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -44,7 +44,7 @@ const NumberCounter = attributes => {
 	const radius = attributes['number-counter-radius'];
 	const stroke = attributes['number-counter-stroke'];
 	const circleStatus = attributes['number-counter-circle-status'];
-	const autoReproduce = attributes['number-counter-auto-reproduce'];
+	const preview = attributes['number-counter-preview'];
 
 	const [count, setCount] = useState(startCountValue);
 	const [replyStatus, setReplyStatus] = useState(false);
@@ -54,7 +54,7 @@ const NumberCounter = attributes => {
 	const frameDuration = countDuration / 60;
 
 	useEffect(() => {
-		if ((startCountValue < endCountValue && autoReproduce) || replyStatus) {
+		if ((startCountValue < endCountValue && preview) || replyStatus) {
 			if (count >= endCountValue) {
 				setCount(endCountValue);
 				return;
@@ -66,16 +66,24 @@ const NumberCounter = attributes => {
 
 			return () => clearInterval(countRef.current);
 		}
-	}, [count, replyStatus, autoReproduce, endCountValue]);
+	}, [count, replyStatus, preview, endCountValue]);
 
 	useEffect(() => {
-		if ((startCountValue < endCountValue && autoReproduce) || replyStatus) {
+		if ((startCountValue < endCountValue && preview) || replyStatus) {
 			if (count >= endCountValue) {
 				setCount(startCountValue);
+				setReplyStatus(false);
 				clearInterval(countRef.current);
 			}
 		}
-	}, [startCountValue, endCountValue, countDuration, radius, stroke]);
+	}, [
+		startCountValue,
+		replyStatus,
+		endCountValue,
+		countDuration,
+		radius,
+		stroke,
+	]);
 
 	return (
 		<div className='maxi-number-counter'>
@@ -167,15 +175,28 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes } = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, parentBlockStyle } = attributes;
 
 		const classes = 'maxi-number-counter-block';
 
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			['typography', 'circle-background', 'circle-bar-background'],
+			'maxi-blocks/number-counter-maxi',
+			parentBlockStyle
+		);
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+			/>,
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}
+				ref={this.blockRef}
+				paletteClasses={paletteClasses}
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>

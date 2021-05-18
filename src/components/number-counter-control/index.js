@@ -257,7 +257,7 @@ const NumberCounterControl = props => {
 				showPalette
 				palette={{ ...getGroupAttributes(props, 'palette') }}
 				isHover={false}
-				colorPaletteType='background'
+				colorPaletteType='circle-background'
 				onChangePalette={val => onChange(val)}
 				clientId={clientId}
 			/>
@@ -274,7 +274,7 @@ const NumberCounterControl = props => {
 				showPalette
 				palette={{ ...getGroupAttributes(props, 'palette') }}
 				isHover={false}
-				colorPaletteType='background'
+				colorPaletteType='circle-bar-background'
 				onChangePalette={val => onChange(val)}
 				clientId={clientId}
 			/>

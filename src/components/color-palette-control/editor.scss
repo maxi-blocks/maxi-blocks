@@ -3,6 +3,18 @@
 	flex-wrap: wrap;
 	flex-direction: column;
 
+	&__palette-label {
+		.maxi-base-control__field {
+			flex-direction: column;
+
+			& > * {
+				width: 100%;
+			}
+			.maxi-base-control__label {
+				margin-bottom: 8px;
+			}
+		}
+	}
 	.maxi-sc-color-palette {
 		display: flex;
 		justify-content: space-between;

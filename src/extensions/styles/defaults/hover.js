@@ -131,6 +131,8 @@ export const hoverBackgroundColor = (() => {
 		const newKey = `hover-${key}`;
 		const value = { ...backgroundColor[key] };
 
+		if (key === 'background-color') value.default = '#000';
+
 		response[newKey] = value;
 	});
 

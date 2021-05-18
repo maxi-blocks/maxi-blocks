@@ -102,6 +102,7 @@ class edit extends MaxiBlockComponent {
 			[
 				'background',
 				'background-hover',
+				'hover-background',
 				'svg-background',
 				'border',
 				'border-hover',
@@ -186,6 +187,7 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-image--${uniqueID}`}
+				paletteClasses={paletteClasses}
 				ref={this.blockRef}
 				tagName='figure'
 				className={classes}

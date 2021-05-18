@@ -169,6 +169,9 @@ const MaxiStyleCardsEditor = () => {
 		canBeResetted(currentSCkey)
 	);
 
+	const [isSaveDisabled, setIsSaveDisabled] = useState(true);
+	const [isApplyDisabled, setIsApplyDisabled] = useState(true);
+
 	const onChangeDelete = (prop, style) => {
 		const newStateSC = stateSC;
 
@@ -193,6 +196,7 @@ const MaxiStyleCardsEditor = () => {
 
 		changeStateSC(newStateSC);
 		changeCanBeResettedState(canBeResetted(currentSCkey));
+		setIsApplyDisabled(false);
 	};
 
 	const onChangeValue = (prop, value, style) => {
@@ -223,6 +227,8 @@ const MaxiStyleCardsEditor = () => {
 		changeStateSC(newStateSC);
 		changeSConBackend(newStateSC);
 		changeCanBeResettedState(canBeResetted(currentSCkey));
+		setIsSaveDisabled(false);
+		setIsApplyDisabled(false);
 	};
 
 	const currentSCname = () => {
@@ -277,6 +283,8 @@ const MaxiStyleCardsEditor = () => {
 		changeCanBeResettedState(canBeResetted(currentSCkey));
 
 		saveMaxiStyleCards(newStyleCards);
+		setIsApplyDisabled(true);
+		setIsSaveDisabled(true);
 	};
 
 	const saveCurrentSC = () => {
@@ -293,6 +301,7 @@ const MaxiStyleCardsEditor = () => {
 		changeCanBeResettedState(canBeResetted(currentSCkey));
 		changeCurrentSC(newStyleCards);
 		saveMaxiStyleCards(newStyleCards);
+		setIsSaveDisabled(true);
 	};
 
 	const resetCurrentSC = () => {
@@ -318,6 +327,9 @@ const MaxiStyleCardsEditor = () => {
 		changeStateSC(resetStyleCard);
 		changeSConBackend(resetStyleCard);
 		changeCurrentSC(resetStyleCards);
+
+		setIsApplyDisabled(false);
+		setIsSaveDisabled(false);
 	};
 
 	const saveImportedStyleCard = card => {
@@ -335,6 +347,9 @@ const MaxiStyleCardsEditor = () => {
 		changeCurrentSCkey(newId);
 		changeCurrentSC(newAllSCs);
 		changeIsDefaultOrActiveState(false);
+
+		setIsSaveDisabled(true);
+		setIsApplyDisabled(false);
 	};
 
 	const switchCurrentSC = keySC => {
@@ -343,6 +358,8 @@ const MaxiStyleCardsEditor = () => {
 		changeStateSC(getStyleCardCurrentValue(keySC));
 		changeSConBackend(getStyleCardCurrentValue(keySC));
 		changeIsDefaultOrActiveState(isDefaultOrActive(keySC));
+
+		setIsApplyDisabled(false);
 	};
 
 	const showMaxiSCSavedActiveSnackbar = nameSC => {
@@ -516,6 +533,7 @@ const MaxiStyleCardsEditor = () => {
 						/>
 						<Button
 							className='maxi-style-cards__sc__actions--save'
+							disabled={isSaveDisabled}
 							onClick={() => {
 								if (isActive(currentSCkey)) {
 									if (
@@ -544,7 +562,7 @@ const MaxiStyleCardsEditor = () => {
 						</Button>
 						<Button
 							className='maxi-style-cards__sc__actions--apply'
-							disabled={false}
+							disabled={isApplyDisabled}
 							onClick={() => {
 								if (
 									window.confirm(

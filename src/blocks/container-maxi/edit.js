@@ -74,8 +74,12 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
-		const { uniqueID, isFirstOnHierarchy, fullWidth, parentBlockStyle } =
-			attributes;
+		const {
+			uniqueID,
+			isFirstOnHierarchy,
+			fullWidth,
+			parentBlockStyle,
+		} = attributes;
 
 		const paletteClasses = getPaletteClasses(
 			attributes,

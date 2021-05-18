@@ -13,7 +13,10 @@ import {
 	SizeControl,
 	FontFamilySelector,
 } from '../';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -29,22 +32,20 @@ import './editor.scss';
  * Component
  */
 const NumberCounterControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, clientId } = props;
 
 	const classes = classnames('maxi-number-counter-control', className);
 
 	return (
 		<div className={classes}>
 			<FancyRadioControl
-				label={__('Auto Reproduce', 'maxi-block')}
-				selected={props['number-counter-auto-reproduce']}
+				label={__('Preview', 'maxi-block')}
+				selected={props['number-counter-preview']}
 				options={[
 					{ label: __('No', 'maxi-block'), value: 0 },
 					{ label: __('Yes', 'maxi-block'), value: 1 },
 				]}
-				onChange={val =>
-					onChange({ 'number-counter-auto-reproduce': val })
-				}
+				onChange={val => onChange({ 'number-counter-preview': val })}
 			/>
 			<SelectControl
 				label={__('Start Animation', 'maxi-blocks')}
@@ -204,17 +205,6 @@ const NumberCounterControl = props => {
 				}
 			/>
 			<FancyRadioControl
-				label={__('Rounded Bar', 'maxi-block')}
-				selected={props['number-counter-rounded-status']}
-				options={[
-					{ label: __('No', 'maxi-block'), value: 0 },
-					{ label: __('Yes', 'maxi-block'), value: 1 },
-				]}
-				onChange={val =>
-					onChange({ 'number-counter-rounded-status': val })
-				}
-			/>
-			<FancyRadioControl
 				label={__('Hide Circle', 'maxi-block')}
 				selected={props['number-counter-circle-status']}
 				options={[
@@ -228,13 +218,33 @@ const NumberCounterControl = props => {
 						onChange({ 'number-counter-end': 100 });
 				}}
 			/>
+			{!props['number-counter-circle-status'] && (
+				<FancyRadioControl
+					label={__('Rounded Bar', 'maxi-block')}
+					selected={props['number-counter-rounded-status']}
+					options={[
+						{ label: __('No', 'maxi-block'), value: 0 },
+						{ label: __('Yes', 'maxi-block'), value: 1 },
+					]}
+					onChange={val =>
+						onChange({ 'number-counter-rounded-status': val })
+					}
+				/>
+			)}
 			<hr />
 			<ColorControl
 				label={__('Text', 'maxi-blocks')}
 				color={props['number-counter-text-color']}
 				defaultColor={getDefaultAttribute('number-counter-text-color')}
 				onChange={val => onChange({ 'number-counter-text-color': val })}
+				showPalette
+				palette={{ ...getGroupAttributes(props, 'palette') }}
+				isHover={false}
+				colorPaletteType='typography'
+				onChangePalette={val => onChange(val)}
+				clientId={clientId}
 			/>
+			<hr />
 			<ColorControl
 				label={__('Circle Background', 'maxi-blocks')}
 				color={props['number-counter-circle-background-color']}
@@ -244,7 +254,14 @@ const NumberCounterControl = props => {
 				onChange={val =>
 					onChange({ 'number-counter-circle-background-color': val })
 				}
+				showPalette
+				palette={{ ...getGroupAttributes(props, 'palette') }}
+				isHover={false}
+				colorPaletteType='circle-background'
+				onChangePalette={val => onChange(val)}
+				clientId={clientId}
 			/>
+			<hr />
 			<ColorControl
 				label={__('Circle Bar', 'maxi-blocks')}
 				color={props['number-counter-circle-bar-color']}
@@ -254,6 +271,12 @@ const NumberCounterControl = props => {
 				onChange={val =>
 					onChange({ 'number-counter-circle-bar-color': val })
 				}
+				showPalette
+				palette={{ ...getGroupAttributes(props, 'palette') }}
+				isHover={false}
+				colorPaletteType='circle-bar-background'
+				onChangePalette={val => onChange(val)}
+				clientId={clientId}
 			/>
 		</div>
 	);

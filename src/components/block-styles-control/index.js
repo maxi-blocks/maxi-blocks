@@ -28,7 +28,15 @@ const BlockStylesControl = props => {
 			label={__('Block Style', 'maxi-blocks')}
 			value={blockStyle}
 			options={getSelectorOptions()}
-			onChange={blockStyle => onChange({ blockStyle })}
+			onChange={blockStyle => {
+				const dependsOnParent = blockStyle.includes('parent');
+				const parentBlockStyle = blockStyle.replace('maxi-', '');
+
+				onChange({
+					blockStyle,
+					...(!dependsOnParent && { parentBlockStyle }),
+				});
+			}}
 		/>
 	);
 };

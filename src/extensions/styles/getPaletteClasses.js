@@ -17,6 +17,28 @@ const getPaletteClasses = (
 	textLevel
 ) => {
 	const paletteClasses = classnames(
+		allowedPalettes.includes('circle-background') &&
+			!attributes['palette-custom-circle-background-color'] &&
+			`maxi-sc-${parentBlockStyle}-circle-background-color-${
+				!isNil(attributes['palette-preset-circle-background-color'])
+					? attributes['palette-preset-circle-background-color']
+					: getPaletteDefault(
+							'circle-background',
+							blockName,
+							textLevel
+					  )
+			}`,
+		allowedPalettes.includes('circle-bar-background') &&
+			!attributes['palette-custom-circle-bar-background-color'] &&
+			`maxi-sc-${parentBlockStyle}-circle-bar-background-color-${
+				!isNil(attributes['palette-preset-circle-bar-background-color'])
+					? attributes['palette-preset-circle-bar-background-color']
+					: getPaletteDefault(
+							'circle-bar-background',
+							blockName,
+							textLevel
+					  )
+			}`,
 		allowedPalettes.includes('svg-background') &&
 			attributes['background-active-media'] === 'svg' &&
 			!attributes['palette-custom-svg-background-color'] &&

@@ -15,6 +15,7 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+import { isEmpty } from 'lodash';
 
 const getNormalObject = props => {
 	const response = {
@@ -173,8 +174,6 @@ const getImageHoverObject = props => {
 };
 
 const getImageBackendObject = props => {
-	const { clipPath } = props;
-
 	const response = {
 		border: getBorderStyles({
 			...getGroupAttributes(props, [
@@ -183,19 +182,17 @@ const getImageBackendObject = props => {
 				'borderRadius',
 			]),
 		}),
-		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
-		}),
+		boxShadow: getBoxShadowStyles(
+			{
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			false,
+			!isEmpty(props.clipPath)
+		),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
-		image: {
-			label: 'Image settings',
-			general: {},
-		},
 	};
-
-	if (clipPath) response.image.general['clip-path'] = clipPath;
 
 	return response;
 };
@@ -225,6 +222,21 @@ const getResizeObject = props => {
 	return response;
 };
 
+const getImageHoverPreviewObject = props => {
+	const { clipPath } = props;
+
+	const response = {
+		image: {
+			label: 'Image settings',
+			general: {},
+		},
+	};
+
+	if (clipPath) response.image.general['clip-path'] = clipPath;
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -238,7 +250,9 @@ const getStyles = props => {
 			props
 		),
 		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageBackendObject(props),
-
+		[`${uniqueID} .maxi-block-hover-wrapper .maxi-hover-preview`]: getImageHoverPreviewObject(
+			props
+		),
 		[`${uniqueID} figcaption`]: getFigcaptionObject(props),
 		[`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: getHoverEffectTitleTextObject(
 			props

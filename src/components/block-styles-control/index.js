@@ -29,9 +29,13 @@ const BlockStylesControl = props => {
 			value={blockStyle}
 			options={getSelectorOptions()}
 			onChange={blockStyle => {
+				const dependsOnParent = blockStyle.includes('parent');
 				const parentBlockStyle = blockStyle.replace('maxi-', '');
 
-				onChange({ blockStyle, parentBlockStyle });
+				onChange({
+					blockStyle,
+					...(!dependsOnParent && { parentBlockStyle }),
+				});
 			}}
 		/>
 	);

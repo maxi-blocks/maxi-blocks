@@ -57,7 +57,7 @@ class MaxiBlockComponent extends Component {
 
 		this.displayStyles();
 
-		if (blockStyle === 'maxi-parent') this.getParentStyle();
+		this.getParentStyle();
 
 		this.blockRef = createRef();
 	}

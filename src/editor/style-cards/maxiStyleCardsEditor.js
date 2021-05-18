@@ -174,17 +174,23 @@ const MaxiStyleCardsEditor = () => {
 
 	const onChangeDelete = (prop, style) => {
 		const newStateSC = stateSC;
+		const currentPropVal = newStateSC.styleCard[style][prop];
 
-		newStateSC.styleCard[style][`${prop}-old`] =
-			newStateSC.styleCard[style][prop];
+		if (!isNil(currentPropVal))
+			newStateSC.styleCard[style][`${prop}-old`] = currentPropVal;
+
 		delete newStateSC.styleCard[style][prop];
 
 		if (prop.includes('general')) {
 			const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 			breakpoints.forEach(breakpoint => {
 				const newProp = prop.replace('general', breakpoint);
-				newStateSC.styleCard[style][`${newProp}-old`] =
-					newStateSC.styleCard[style][newProp];
+				const currentPropVal = newStateSC.styleCard[style][newProp];
+
+				if (!isNil(currentPropVal))
+					newStateSC.styleCard[style][
+						`${newProp}-old`
+					] = currentPropVal;
 				delete newStateSC.styleCard[style][newProp];
 			});
 		}

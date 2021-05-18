@@ -174,6 +174,9 @@ const MaxiStyleCardsTab = ({
 	const onChangeColor = (val, attr, defaultColor) => {
 		if (!val) onChangeDelete(attr, SCStyle);
 		if (val) {
+			console.log(processAttribute(attr));
+			console.log(processAttribute(`${attr}-old`));
+			console.log(getStyleCardAttr(defaultColor, SCStyle, true));
 			onChangeValue(
 				attr,
 				processAttribute(attr) ||

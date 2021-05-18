@@ -34,7 +34,7 @@ const getCircleObject = (props, target) => {
 	const response = {
 		numberCounter: getNumberCounterStyles(
 			{
-				...getGroupAttributes(props, 'numberCounter'),
+				...getGroupAttributes(props, ['numberCounter', 'palette']),
 			},
 			target
 		),

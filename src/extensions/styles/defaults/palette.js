@@ -1,4 +1,20 @@
 const palette = {
+	'palette-custom-circle-background-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-circle-background-color': {
+		type: 'number',
+		default: 2,
+	},
+	'palette-custom-circle-bar-background-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-circle-bar-background-color': {
+		type: 'number',
+		default: 4,
+	},
 	'palette-custom-svg-background-color': {
 		type: 'boolean',
 		default: false,

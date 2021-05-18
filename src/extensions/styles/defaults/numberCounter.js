@@ -3,7 +3,7 @@ const numberCounter = {
 		type: 'boolean',
 		default: true,
 	},
-	'number-counter-auto-reproduce': {
+	'number-counter-preview': {
 		type: 'boolean',
 		default: true,
 	},

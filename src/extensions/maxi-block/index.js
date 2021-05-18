@@ -80,6 +80,15 @@ class MaxiBlockComponent extends Component {
 	 * Prevents rendering
 	 */
 	shouldComponentUpdate(nextProps, nextState) {
+		// Change `parentBlockStyle` before updating
+		const { blockStyle } = this.props.attributes;
+
+		if (blockStyle === 'maxi-parent') {
+			const changedStyle = this.getParentStyle();
+
+			if (changedStyle) return true;
+		}
+
 		// Ensures rendering when selecting or unselecting
 		if (
 			!this.props.isSelected ||
@@ -135,8 +144,6 @@ class MaxiBlockComponent extends Component {
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		if (!shouldDisplayStyles) this.displayStyles();
-
-		this.getParentStyle();
 	}
 
 	componentWillUnmount() {
@@ -215,11 +222,19 @@ class MaxiBlockComponent extends Component {
 	}
 
 	getParentStyle() {
-		const { setAttributes, clientId } = this.props;
+		const {
+			clientId,
+			attributes: { parentBlockStyle },
+		} = this.props;
 
-		setAttributes({
-			parentBlockStyle: getBlockStyle(clientId),
-		});
+		const newParentStyle = getBlockStyle(clientId);
+		if (parentBlockStyle !== newParentStyle) {
+			this.props.attributes.parentBlockStyle = newParentStyle;
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

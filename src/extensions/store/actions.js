@@ -55,8 +55,9 @@ const actions = {
 		};
 	},
 	setMaxiDeviceType(deviceType, width) {
-		const { __experimentalSetPreviewDeviceType: setPreviewDeviceType } =
-			dispatch('core/edit-post');
+		const {
+			__experimentalSetPreviewDeviceType: setPreviewDeviceType,
+		} = dispatch('core/edit-post');
 
 		const gutenbergDeviceType =
 			(deviceType === 'general' && 'Desktop') ||

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useSelect } from '@wordpress/data';
+import { select, useSelect, useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
 /**
@@ -224,6 +224,8 @@ const TypographyControl = withFormatValue(props => {
 			winWidth,
 		};
 	});
+
+	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
 
 	const getIsTextOptionsOpen = () => {
 		const settings = ['font-size', 'line-height', 'letter-spacing'];
@@ -636,6 +638,12 @@ const TypographyControl = withFormatValue(props => {
 									/>
 								),
 								showNotification: showNotification(breakpoint),
+								callback: () =>
+									styleCards
+										? setMaxiDeviceType(
+												breakpoint.toLowerCase()
+										  )
+										: null,
 							};
 						})}
 						forceTab={getTextOptionsTab()}

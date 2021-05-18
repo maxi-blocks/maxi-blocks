@@ -52,7 +52,11 @@ const SettingTabsControl = props => {
 							<Button
 								key={`maxi-tabs-control__button-${item.label}`}
 								className='maxi-tabs-control__button'
-								onClick={() => setTab(i)}
+								onClick={() => {
+									setTab(i);
+
+									if (item.callback) item.callback();
+								}}
 								aria-pressed={tab === i}
 							>
 								{item.label}

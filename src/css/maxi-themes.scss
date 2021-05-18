@@ -69,12 +69,6 @@ body.maxi-blocks--active {
 							color: var(--maxi-#{$style}-color-#{$color_number});
 						}
 				}
-				&.maxi-sc-#{$style}-typography-color-#{$color_number},
-					.maxi-sc-#{$style}-typography-color-#{$color_number} {
-						.maxi-image-block__caption {
-							color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-				}
 				@each $level in $levels {
 					&.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content,
 					.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content {

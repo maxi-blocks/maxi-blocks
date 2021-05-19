@@ -386,6 +386,9 @@ const MaxiStyleCardsTab = ({
 										processAttribute(
 											`h${item}-color-general`
 										) ||
+										processAttribute(
+											`h${item}-color-general-old`
+										) ||
 										getStyleCardAttr(
 											'color-5',
 											SCStyle,

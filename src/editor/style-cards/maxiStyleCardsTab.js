@@ -172,8 +172,11 @@ const MaxiStyleCardsTab = ({
 	};
 
 	const onChangeColor = (val, attr, defaultColor) => {
-		if (!val) onChangeDelete(attr, SCStyle);
-		if (val) {
+		onChangeValue(`${attr}-global`, val, SCStyle);
+
+		if (!val) {
+			onChangeDelete(attr, SCStyle);
+		} else {
 			console.log('===============================');
 			console.log(attr);
 			console.log(processAttribute(attr));
@@ -181,14 +184,11 @@ const MaxiStyleCardsTab = ({
 			console.log(getStyleCardAttr(defaultColor, SCStyle, true));
 			onChangeValue(
 				attr,
-				!(isNil(processAttribute(attr))) ||
-					processAttribute(`${attr}-old`) ||
+				processAttribute(`${attr}-old`) ||
 					getStyleCardAttr(defaultColor, SCStyle, true),
 				SCStyle
 			);
 		}
-
-		onChangeValue(`${attr}-global`, val, SCStyle);
 	};
 
 	if (document.querySelectorAll('.maxi-style-cards__sc-select option'))

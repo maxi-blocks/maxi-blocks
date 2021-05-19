@@ -20,7 +20,10 @@ import {
 	TypographyControl,
 	FancyRadioControl,
 } from '../../components';
-import { getTypographyFromSC } from '../../extensions/style-cards';
+import {
+	getSCFromTypography,
+	getTypographyFromSC,
+} from '../../extensions/style-cards';
 
 /**
  * Component
@@ -51,33 +54,6 @@ const MaxiStyleCardsTab = ({
 			return false;
 		}
 		return false;
-	};
-
-	const parseTypography = newSC => {
-		const parsedTypography = {};
-		Object.entries(newSC).forEach(([key, val]) => {
-			if (isEmpty(val)) {
-				if (!key.includes('-unit'))
-					parsedTypography[key] = SC.styleCardDefaults[SCStyle][key];
-
-				return;
-			}
-
-			if (
-				key.includes('font-size') ||
-				key.includes('line-height') ||
-				key.includes('letter-spacing')
-			) {
-				const isUnit = key.includes('-unit');
-				if (isUnit) {
-					const newKey = key.replaceAll('-unit', '');
-					if (!isNil(newSC[newKey]) && !isEmpty(val))
-						parsedTypography[newKey] = newSC[newKey] + val;
-				}
-			}
-			if (!key.includes('-unit')) parsedTypography[key] = val;
-		});
-		return parsedTypography;
 	};
 
 	const onChangeColor = (val, attr, defaultColor) => {
@@ -199,7 +175,11 @@ const MaxiStyleCardsTab = ({
 							disablePalette
 							styleCards
 							onChange={obj => {
-								const parsedTypography = parseTypography(obj);
+								const parsedTypography = getSCFromTypography(
+									SC,
+									SCStyle,
+									obj
+								);
 								onChangeValue(
 									'typography',
 									parsedTypography,
@@ -334,7 +314,11 @@ const MaxiStyleCardsTab = ({
 							disablePalette
 							styleCards
 							onChange={obj => {
-								const parsedTypography = parseTypography(obj);
+								const parsedTypography = getSCFromTypography(
+									SC,
+									SCStyle,
+									obj
+								);
 								onChangeValue(
 									'typography',
 									parsedTypography,
@@ -382,10 +366,9 @@ const MaxiStyleCardsTab = ({
 											<span
 												className={`maxi-style-cards__quick-color-presets__box__item maxi-style-cards__quick-color-presets__box__item__${item}`}
 												style={{
-													background:
-														processAttribute(
-															`color-${item}`
-														),
+													background: processAttribute(
+														`color-${item}`
+													),
 												}}
 											/>
 										</div>

@@ -434,7 +434,7 @@ const TypographyControl = withFormatValue(props => {
 	};
 
 	const getWinBreakpoint = () => {
-		let response;
+		let response = 'xxl';
 
 		Object.entries(maxiBreakpoints).forEach(([key, value]) => {
 			if (value >= winWidth) response = key;

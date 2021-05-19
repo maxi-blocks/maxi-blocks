@@ -52,8 +52,9 @@ export const styleCardDefaultsTypography = (level, SCstyle) => {
 							if (typeof val === 'number') newVal = `${val}px`;
 							else newVal = val;
 
-							const [num, unit] =
-								newVal.match(/[a-zA-Z]+|[0-9\.]+/g);
+							const [num, unit] = newVal.match(
+								/[a-zA-Z]+|[0-9\.]+/g
+							);
 							response[checkKey] = num;
 							const newUnitKey = checkKey.replace(
 								'letter-spacing',
@@ -463,10 +464,9 @@ const MaxiStyleCardsTab = ({
 											<span
 												className={`maxi-style-cards__quick-color-presets__box__item maxi-style-cards__quick-color-presets__box__item__${item}`}
 												style={{
-													background:
-														processAttribute(
-															`color-${item}`
-														),
+													background: processAttribute(
+														`color-${item}`
+													),
 												}}
 											/>
 										</div>

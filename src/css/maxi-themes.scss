@@ -172,7 +172,8 @@ body.maxi-blocks--active {
 				}
 			}
 			/* Color Presets on button hover */
-			&.maxi-button-block {
+			&.maxi-button-block,
+			.maxi-parent.maxi-button-block {
 				@each $color_number in $color_set {
 					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
 						> .maxi-button-block__button:hover {

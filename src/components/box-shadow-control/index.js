@@ -188,7 +188,17 @@ const BoxShadowControl = props => {
 									isHover
 								)}
 								onChange={val =>
-									onChangeValue('box-shadow-horizontal', val)
+									!isNil(val)
+										? onChangeValue(
+												'box-shadow-horizontal',
+												val
+										  )
+										: onChangeValue(
+												'box-shadow-horizontal',
+												getDefaultAttribute(
+													`box-shadow-horizontal-${breakpoint}`
+												) || 0
+										  )
 								}
 								min={-100}
 								max={100}
@@ -211,9 +221,19 @@ const BoxShadowControl = props => {
 									props,
 									isHover
 								)}
-								onChange={val =>
-									onChangeValue('box-shadow-vertical', val)
-								}
+								onChange={val => {
+									!isNil(val)
+										? onChangeValue(
+												'box-shadow-vertical',
+												val
+										  )
+										: onChangeValue(
+												'box-shadow-vertical',
+												getDefaultAttribute(
+													`box-shadow-vertical-${breakpoint}`
+												) || 0
+										  );
+								}}
 								min={-100}
 								max={100}
 								allowReset
@@ -234,9 +254,16 @@ const BoxShadowControl = props => {
 									breakpoint
 								)}
 								props
-								onChange={val =>
-									onChangeValue('box-shadow-blur', val)
-								}
+								onChange={val => {
+									!isNil(val)
+										? onChangeValue('box-shadow-blur', val)
+										: onChangeValue(
+												'box-shadow-blur',
+												getDefaultAttribute(
+													`box-shadow-blur-${breakpoint}`
+												) || 0
+										  );
+								}}
 								min={0}
 								max={100}
 								allowReset
@@ -258,9 +285,19 @@ const BoxShadowControl = props => {
 									props,
 									isHover
 								)}
-								onChange={val =>
-									onChangeValue('box-shadow-spread', val)
-								}
+								onChange={val => {
+									!isNil(val)
+										? onChangeValue(
+												'box-shadow-spread',
+												val
+										  )
+										: onChangeValue(
+												'box-shadow-spread',
+												getDefaultAttribute(
+													`box-shadow-spread-${breakpoint}`
+												) || 0
+										  );
+								}}
 								min={-100}
 								max={100}
 								allowReset

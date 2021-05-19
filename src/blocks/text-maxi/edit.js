@@ -74,7 +74,6 @@ class edit extends MaxiBlockComponent {
 			onRemove,
 			clientId,
 			name,
-			parentBlockStyle,
 		} = this.props;
 		const {
 			uniqueID,
@@ -84,6 +83,7 @@ class edit extends MaxiBlockComponent {
 			typeOfList,
 			listStart,
 			listReversed,
+			parentBlockStyle,
 		} = attributes;
 
 		const paletteClasses = getPaletteClasses(

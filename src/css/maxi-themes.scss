@@ -137,7 +137,7 @@ body.maxi-blocks--active {
 				}
 			}
 			/* Color Presets on hover */
-			&:not(.maxi-button-block):hover {
+			:not(.maxi-button-block):hover {
 				@each $color_number in $color_set {
 					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
 						> .maxi-background-displayer .maxi-background-displayer__color {

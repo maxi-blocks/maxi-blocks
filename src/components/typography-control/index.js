@@ -211,17 +211,22 @@ const TypographyControl = withFormatValue(props => {
 			...(isHover ? ['typographyHover'] : []),
 		]);
 
-	const { activeSC, winWidth } = useSelect(select => {
+	const { activeSC, winWidth, maxiBreakpoints } = useSelect(select => {
 		const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
-		const { receiveMaxiSettings } = select('maxiBlocks');
+		const { receiveMaxiSettings, receiveMaxiBreakpoints } = select(
+			'maxiBlocks'
+		);
 
 		const activeSC = receiveMaxiActiveStyleCard()?.value || {};
 
 		const winWidth = receiveMaxiSettings().window?.width || null;
 
+		const maxiBreakpoints = receiveMaxiBreakpoints();
+
 		return {
 			activeSC,
 			winWidth,
+			maxiBreakpoints,
 		};
 	});
 
@@ -429,12 +434,10 @@ const TypographyControl = withFormatValue(props => {
 	};
 
 	const getWinBreakpoint = () => {
-		const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
-
 		let response;
 
-		Object.entries(breakpoints).forEach(([key, value]) => {
-			if (value <= winWidth) response = key;
+		Object.entries(maxiBreakpoints).forEach(([key, value]) => {
+			if (value >= winWidth) response = key;
 		});
 
 		return response.toLowerCase();

@@ -434,11 +434,19 @@ const TypographyControl = withFormatValue(props => {
 	};
 
 	const getWinBreakpoint = () => {
-		let response = 'xxl';
+		const xxlSize = 2000; // Temporary value, needs to be fixed
 
-		Object.entries(maxiBreakpoints).forEach(([key, value]) => {
-			if (value >= winWidth) response = key;
-		});
+		if (winWidth >= xxlSize) return 'xxl';
+
+		const response = Object.entries(maxiBreakpoints).reduce(
+			([prevKey, prevValue], [currKey, currValue]) => {
+				return !prevValue ||
+					Math.abs(currValue - winWidth) <
+						Math.abs(prevValue - winWidth)
+					? [currKey, currValue]
+					: [prevKey, prevValue];
+			}
+		)[0];
 
 		return response.toLowerCase();
 	};

@@ -297,7 +297,7 @@ if (!class_exists('MaxiBlocksAPI')) :
 				's'     => 768,
 				'm'     => 1024,
 				'l'     => 1366,
-				'xl'    => 1920
+				'xl'    => 1920,
 			];
 		}
 

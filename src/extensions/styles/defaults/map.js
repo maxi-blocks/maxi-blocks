@@ -5,11 +5,11 @@ const map = {
 	},
 	'map-latitude': {
 		type: 'number',
-		default: -25.363,
+		default: 52.514477,
 	},
 	'map-longitude': {
 		type: 'number',
-		default: 131.044,
+		default: 13.350174,
 	},
 	'map-zoom': {
 		type: 'number',

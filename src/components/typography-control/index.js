@@ -134,7 +134,7 @@ const TextOptions = props => {
 					)
 				}
 				minMaxSettings={minMaxSettings}
-				allowedUnits={['px', 'em', 'vw', '%', 'empty']}
+				allowedUnits={['px', 'em', 'vw', '%', '-']}
 			/>
 			<SizeControl
 				className='maxi-typography-control__letter-spacing'

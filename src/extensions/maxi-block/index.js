@@ -20,7 +20,12 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { styleResolver, styleGenerator, getGroupAttributes } from '../styles';
+import {
+	styleResolver,
+	styleGenerator,
+	getGroupAttributes,
+	getBlockStyle,
+} from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import { loadFonts } from '../text/fonts';
 
@@ -52,6 +57,8 @@ class MaxiBlockComponent extends Component {
 
 		this.displayStyles();
 
+		this.getParentStyle();
+
 		this.blockRef = createRef();
 	}
 
@@ -73,6 +80,15 @@ class MaxiBlockComponent extends Component {
 	 * Prevents rendering
 	 */
 	shouldComponentUpdate(nextProps, nextState) {
+		// Change `parentBlockStyle` before updating
+		const { blockStyle } = this.props.attributes;
+
+		if (blockStyle === 'maxi-parent') {
+			const changedStyle = this.getParentStyle();
+
+			if (changedStyle) return true;
+		}
+
 		// Ensures rendering when selecting or unselecting
 		if (
 			!this.props.isSelected ||
@@ -180,8 +196,11 @@ class MaxiBlockComponent extends Component {
 			res = 'maxi-light';
 		}
 
-		if (this.props.attributes.blockStyle !== 'maxi-light')
-			this.props.setAttributes({ blockStyle: res });
+		// Kind of cheat. What it seeks is to don't generate an historical entity in the registry
+		// that transforms in the necessity of clicking more than onces on undo button after pasting
+		// any content on Text Maxi due to the `setAttributes` action that creates a record entity
+		// on the historical registry 👍
+		this.props.attributes.blockStyle = res;
 	}
 
 	uniqueIDChecker(idToCheck) {
@@ -200,6 +219,22 @@ class MaxiBlockComponent extends Component {
 		Object.entries(this.typography).forEach(([key, val]) => {
 			if (key.includes('font-family')) loadFonts(val);
 		});
+	}
+
+	getParentStyle() {
+		const {
+			clientId,
+			attributes: { parentBlockStyle },
+		} = this.props;
+
+		const newParentStyle = getBlockStyle(clientId);
+		if (parentBlockStyle !== newParentStyle) {
+			this.props.attributes.parentBlockStyle = newParentStyle;
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

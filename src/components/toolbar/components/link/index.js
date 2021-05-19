@@ -5,13 +5,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { __experimentalLinkControl } from '@wordpress/block-editor';
-import { Button } from '@wordpress/components';
-import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../../../button';
 import ToolbarPopover from '../toolbar-popover';
+import ToolbarContext from '../toolbar-popover/toolbarContext';
 
 /**
  * External dependencies
@@ -36,19 +36,14 @@ const Link = props => {
 	)
 		return null;
 
-	const ref = useRef();
-
 	const removeLinkHandle = () => {
 		onChange({
 			url: '',
 		});
-
-		if (ref.current) ref.current.node.state.isOpen = false;
 	};
 
 	return (
 		<ToolbarPopover
-			ref={ref}
 			icon={toolbarLink}
 			tooltip={__('Link', 'maxi-blocks')}
 			className={
@@ -81,12 +76,19 @@ const Link = props => {
 					]}
 				/>
 				{!isNil(linkSettings) && !isEmpty(linkSettings.url) && (
-					<Button
-						className='toolbar-popover-link-destroyer'
-						onClick={() => removeLinkHandle()}
-					>
-						{__('Remove link', 'maxi-blocks')}
-					</Button>
+					<ToolbarContext.Consumer>
+						{context => (
+							<Button
+								className='toolbar-popover-link-destroyer'
+								onClick={() => {
+									removeLinkHandle();
+									context.onClose();
+								}}
+							>
+								{__('Remove link', 'maxi-blocks')}
+							</Button>
+						)}
+					</ToolbarContext.Consumer>
 				)}
 			</>
 		</ToolbarPopover>

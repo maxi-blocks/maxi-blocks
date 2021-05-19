@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getContainerStyles Get a correct container styles 1`] = `
+Object {
+  "general": Object {
+    "max-width": "1170px",
+    "width": "1170px",
+  },
+  "l": Object {
+    "max-width": "90%",
+    "width": "1170px",
+  },
+  "m": Object {
+    "max-width": "90%",
+    "width": "1000px",
+  },
+  "s": Object {
+    "max-width": "90%",
+    "width": "700px",
+  },
+  "xl": Object {
+    "max-width": "1170px",
+    "width": "1170px",
+  },
+  "xs": Object {
+    "max-width": "90%",
+    "width": "460px",
+  },
+  "xxl": Object {
+    "max-width": "1790px",
+    "width": "1170px",
+  },
+}
+`;

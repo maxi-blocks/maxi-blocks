@@ -24,10 +24,13 @@ import { toolbarSizing } from '../../../../icons';
 /**
  * General
  */
-const EXCLUDED_BLOCKS = ['maxi-blocks/column-maxi', 'maxi-blocks/image-maxi'];
+const EXCLUDED_BLOCKS = [
+	'maxi-blocks/column-maxi',
+	'maxi-blocks/image-maxi',
+	'maxi-blocks/number-counter-maxi',
+];
 const EXCLUDED_BLOCKS_SIZE = [
 	'maxi-blocks/group-maxi',
-	'maxi-blocks/font-icon-maxi',
 	'maxi-blocks/svg-icon-maxi',
 ];
 

@@ -1,5 +1,5 @@
 .maxi-toolbar__popover {
-	z-index: 999;
+	z-index: 29;
 	&--has-breadcrumb {
 		.components-popover__content {
 			.toolbar-wrapper {
@@ -37,6 +37,10 @@
 				position: absolute;
 				top: -25px;
 				left: 0;
+
+				&__block-style {
+					text-transform: capitalize;
+				}
 			}
 			@at-root .rtl #{&} {
 				flex-direction: row-reverse;
@@ -212,7 +216,7 @@ body .toolbar-item__popover {
 		border-right-color: transparent !important;
 		z-index: -1;
 	}
-
+	.maxi-base-control,
 	.components-base-control {
 		&__field {
 			color: #fff;
@@ -245,7 +249,7 @@ body .toolbar-item__popover {
 				color: #fff;
 				border-color: #80828a !important;
 			}
-			.components-select-control__input {
+			.maxi-select-control__input {
 				background-color: transparent !important;
 				color: #fff !important;
 				border: 2px solid #80828a !important;
@@ -369,7 +373,7 @@ body .toolbar-item__popover {
 		}
 	}
 
-	.components-maxi-dimensions-control {
+	.maxi-dimensions-control {
 		color: #fff;
 		&_sync {
 			border-color: #80828a !important;

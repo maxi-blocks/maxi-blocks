@@ -101,6 +101,71 @@ motionElems.forEach(function (elem) {
 			: null;
 
 	if (motionData !== null) {
+		// Number Counter
+		if ('number-counter-status' in motionData) {
+			const numberCounterElem = document.querySelector(
+				`#${motionID} .maxi-number-counter__box`
+			);
+			const numberCounterElemText = document.querySelector(
+				`#${motionID} .maxi-number-counter__box .maxi-number-counter__box__text`
+			);
+			const numberCounterElemCircle = document.querySelector(
+				`#${motionID} .maxi-number-counter__box .maxi-number-counter__box__circle`
+			);
+
+			const radius = motionData['number-counter-radius'];
+			const circumference = 2 * Math.PI * radius;
+			const startCountValue = Math.ceil(
+				(motionData['number-counter-start'] * 360) / 100
+			);
+			const endCountValue = Math.ceil(
+				(motionData['number-counter-end'] * 360) / 100
+			);
+			const countDuration = motionData['number-counter-duration'];
+			const countPercentageSign =
+				motionData['number-counter-percentage-sign-status'];
+			const startAnimation = motionData['number-counter-start-animation'];
+
+			const frameDuration = countDuration / 60;
+
+			let count = startCountValue;
+
+			function startCounter() {
+				const interval = setInterval(() => {
+					count = count + 1;
+
+					if (count >= endCountValue) {
+						count = endCountValue;
+						clearInterval(interval);
+					}
+
+					numberCounterElemText.innerHTML = `${parseInt(
+						(count / 360) * 100
+					)}<sup>${countPercentageSign ? '%' : ''}</sup>`;
+
+					numberCounterElemCircle &&
+						numberCounterElemCircle.setAttribute(
+							'stroke-dasharray',
+							`${parseInt(
+								(count / 360) * circumference
+							)} ${circumference}`
+						);
+				}, frameDuration);
+			}
+
+			if (startAnimation === 'view-scroll') {
+				let waypoint = new Waypoint({
+					element: numberCounterElem,
+					handler: function () {
+						startCounter();
+					},
+					offset: '100%',
+				});
+			} else {
+				startCounter();
+			}
+		}
+
 		// Hover
 		if (
 			'hover-basic-effect-type' in motionData &&
@@ -259,7 +324,7 @@ motionElems.forEach(function (elem) {
 			if (entranceType !== '') {
 				entranceElem.style.opacity = '0';
 
-				var waypoint = new Waypoint({
+				let waypoint = new Waypoint({
 					element: entranceElem,
 					handler: function () {
 						entranceElem.style.opacity = '1';

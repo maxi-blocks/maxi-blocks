@@ -1,14 +1,15 @@
 /**
  * WordPress dependencies
  */
-import { Button, Icon } from '@wordpress/components';
-import { useState, render, Fragment } from '@wordpress/element';
+import { subscribe } from '@wordpress/data';
+import { useState, render } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../../components/button';
+import Icon from '../../components/icon';
 import ResponsiveSelector from '../responsive-selector';
-
 /**
  * Styles
  */
@@ -22,7 +23,7 @@ const ToolbarButtons = () => {
 	const [isResponsiveOpen, setIsResponsiveOpen] = useState(false);
 
 	return (
-		<Fragment>
+		<>
 			<div className='maxi-toolbar-layout'>
 				<Button
 					className='maxi-toolbar-layout__button'
@@ -36,24 +37,37 @@ const ToolbarButtons = () => {
 				isOpen={isResponsiveOpen}
 				onClose={() => setIsResponsiveOpen(false)}
 			/>
-		</Fragment>
+		</>
 	);
 };
 
 // export default ToolbarButtons;
 
-document.addEventListener('readystatechange', () => {
-	if (document.readyState === 'complete') {
+wp.domReady(() => {
+	/**
+	 * Mutation Observer for:
+	 * - Add special classes on Settings Sidebar
+	 * - Hide original WP toolbar on selected Maxi Blocks
+	 */
+	const unsubscribe = subscribe(() => {
+		const maxiToolbar = document.querySelector(
+			'#maxi-blocks__toolbar-buttons'
+		);
+		const parentNode = document.querySelector('.edit-post-header__toolbar');
+
 		// Insert Maxi buttons on Gutenberg topbar
-		if (!document.querySelector('#maxi-blocks__toolbar-buttons')) {
+		if (!maxiToolbar && parentNode) {
 			const toolbarButtonsWrapper = document.createElement('div');
 			toolbarButtonsWrapper.id = 'maxi-blocks__toolbar-buttons';
 
-			document
-				.querySelector('.edit-post-header__toolbar')
-				.appendChild(toolbarButtonsWrapper);
+			parentNode.appendChild(toolbarButtonsWrapper);
 
 			render(<ToolbarButtons />, toolbarButtonsWrapper);
+
+			unsubscribe();
+
+			// Initialize SCs
+			wp.data.select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 		}
-	}
+	});
 });

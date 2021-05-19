@@ -71,7 +71,6 @@ const getBoxShadowStyles = (obj, isHover = false, dropShadow = false) => {
 			boxShadowString += `${horizontal || 0}px `;
 			boxShadowString += `${vertical || 0}px `;
 			boxShadowString += `${blur || 0}px `;
-			boxShadowString += `${spread || 0}px `;
 			boxShadowString += color || defaultColor;
 
 			response[breakpoint] = dropShadow

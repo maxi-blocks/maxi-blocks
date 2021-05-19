@@ -2,10 +2,8 @@
  * WordPress dependencies
  */
 import { compose } from '@wordpress/compose';
-import { Fragment, forwardRef, createRef } from '@wordpress/element';
-import { Spinner } from '@wordpress/components';
+import { Fragment, createRef } from '@wordpress/element';
 import { withSelect, withDispatch } from '@wordpress/data';
-import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -17,41 +15,22 @@ import {
 	BlockResizer,
 	MaxiBlockComponent,
 	Toolbar,
+	InnerBlocks,
 } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getLastBreakpointAttribute,
+	getPaletteClasses,
+} from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, round } from 'lodash';
-
-/**
- * InnerBlocks version
- */
-const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const {
-		children,
-		className,
-		attributes: { uniqueID },
-	} = props;
-
-	return (
-		<MaxiBlock
-			key={`maxi-column--${uniqueID}`}
-			ref={ref}
-			className={className}
-			{...getMaxiBlockBlockAttributes(props)}
-			disableMotion
-		>
-			{children}
-		</MaxiBlock>
-	);
-});
+import { round, isEmpty } from 'lodash';
 
 /**
  * Editor
@@ -87,18 +66,15 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const {
 			attributes,
-			clientId,
 			deviceType,
-			hasInnerBlock,
 			originalNestedColumns,
 			rowBlockId,
-			rowBlockWidth,
 			setAttributes,
 			updateRowPattern,
+			hasInnerBlocks,
+			clientId,
 		} = this.props;
-		const { uniqueID } = attributes;
-
-		const classes = 'maxi-column-block';
+		const { uniqueID, parentBlockStyle } = attributes;
 
 		const getColumnWidthDefault = () => {
 			const columnWidth = getLastBreakpointAttribute(
@@ -112,9 +88,6 @@ class edit extends MaxiBlockComponent {
 			return `${100 / originalNestedColumns.length}%`;
 		};
 
-		/**
-		 * TODO: Gutenberg still does not have the disallowedBlocks feature
-		 */
 		const ALLOWED_BLOCKS = wp.blocks
 			.getBlockTypes()
 			.map(block => block.name)
@@ -127,23 +100,37 @@ class edit extends MaxiBlockComponent {
 					].indexOf(blockName) === -1
 			);
 
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'maxi-blocks/column-maxi',
+			parentBlockStyle
+		);
+
 		return [
 			<RowContext.Consumer key={`column-content-${uniqueID}`}>
-				{context => (
-					<Fragment>
-						<Inspector
-							key={`block-settings-${uniqueID}`}
-							rowPattern={context.rowPattern}
-							{...this.props}
-						/>
-						<Toolbar
-							key={`toolbar-${uniqueID}`}
-							rowPattern={context.rowPattern}
-							propsToAvoid={['resizableObject']}
-							{...this.props}
-						/>
-						{rowBlockWidth === 0 && <Spinner />}
-						{rowBlockWidth !== 0 && (
+				{context => {
+					return (
+						<Fragment>
+							<Inspector
+								key={`block-settings-${uniqueID}`}
+								rowPattern={context.rowPattern}
+								{...this.props}
+							/>
+							<Toolbar
+								key={`toolbar-${uniqueID}`}
+								ref={this.blockRef}
+								rowPattern={context.rowPattern}
+								propsToAvoid={['resizableObject']}
+								{...this.props}
+							/>
 							<BlockResizer
 								resizableObject={this.resizableObject}
 								className={classnames(
@@ -183,30 +170,33 @@ class edit extends MaxiBlockComponent {
 									});
 								}}
 							>
-								<InnerBlocks
-									allowedBlocks={ALLOWED_BLOCKS}
-									templateLock={false}
-									__experimentalTagName={ContainerInnerBlocks}
-									__experimentalPassedProps={{
-										className: classes,
-										...this.props,
-									}}
-									renderAppender={
-										!hasInnerBlock
-											? () => (
-													<BlockPlaceholder
-														clientId={clientId}
-													/>
-											  )
-											: () => (
-													<InnerBlocks.ButtonBlockAppender />
-											  )
-									}
-								/>
+								<MaxiBlock
+									key={`maxi-column--${uniqueID}`}
+									ref={this.blockRef}
+									paletteClasses={paletteClasses}
+									{...getMaxiBlockBlockAttributes(this.props)}
+									disableMotion
+								>
+									<InnerBlocks
+										allowedBlocks={ALLOWED_BLOCKS}
+										orientation='horizontal'
+										renderAppender={
+											!hasInnerBlocks
+												? () => (
+														<BlockPlaceholder
+															clientId={clientId}
+														/>
+												  )
+												: () => (
+														<InnerBlocks.ButtonBlockAppender />
+												  )
+										}
+									/>
+								</MaxiBlock>
 							</BlockResizer>
-						)}
-					</Fragment>
-				)}
+						</Fragment>
+					);
+				}}
 			</RowContext.Consumer>,
 		];
 	}
@@ -215,28 +205,19 @@ class edit extends MaxiBlockComponent {
 const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
-	const rowBlockId = select('core/block-editor').getBlockRootClientId(
-		clientId
-	); // getBlockHierarchyRootClientId
-	const rowBlockNode = document.querySelector(
-		`div[data-block="${rowBlockId}"]`
-	);
-	const rowBlockWidth = !isNil(rowBlockNode)
-		? rowBlockNode.getBoundingClientRect().width
-		: 0;
-	const hasInnerBlock =
-		select('core/block-editor').getBlockOrder(clientId).length >= 1;
-	const originalNestedColumns = select('core/block-editor').getBlockOrder(
-		rowBlockId
-	);
+	const { getBlockRootClientId, getBlockOrder } = select('core/block-editor');
+
+	const rowBlockId = getBlockRootClientId(clientId);
+	const originalNestedColumns = getBlockOrder(rowBlockId);
+	const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
+
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		rowBlockId,
-		rowBlockWidth,
-		hasInnerBlock,
 		originalNestedColumns,
 		deviceType,
+		hasInnerBlocks,
 	};
 });
 

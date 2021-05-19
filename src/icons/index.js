@@ -5,6 +5,7 @@ export * from './hover-icons';
 export * from './map-icons';
 export * from './move-icons';
 export * from './responsive-icons';
+export * from './sc-icons';
 export * from './setting-icons';
 export * from './shape-divider';
 export * from './template-icons';

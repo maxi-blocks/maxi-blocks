@@ -1,13 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { Button } from '@wordpress/components';
 import { useDispatch, select } from '@wordpress/data';
 import { parse } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
+import Button from '../../components/button';
 
 /**
  * External dependencies
@@ -67,7 +67,7 @@ const LibraryMasonry = props => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
 
 		await fetch(
-			`http://localhost:8080/maxiblocks/wp-json/maxi-blocks-API/v0.1/${type}/content/${id}`
+			`https://ge-library.dev700.com/wp-json/maxi-blocks-API/v0.1/${type}/content/${id}`
 		)
 			.then(response => response.json())
 			.then(data => {

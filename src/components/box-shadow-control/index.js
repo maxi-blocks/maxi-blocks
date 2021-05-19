@@ -2,14 +2,14 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
-import { Icon } from '@wordpress/components';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
+import Icon from '../icon';
 import RangeSliderControl from '../range-slider-control';
 import {
 	boxShadowNone,
@@ -20,6 +20,7 @@ import {
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getGroupAttributes,
 } from '../../extensions/styles';
 
 /**
@@ -44,6 +45,7 @@ const BoxShadowControl = props => {
 		breakpoint,
 		disableAdvanced = false,
 		isHover = false,
+		clientId,
 	} = props;
 
 	const classes = classnames('maxi-shadow-control', className);
@@ -163,6 +165,13 @@ const BoxShadowControl = props => {
 						disableGradient
 						disableImage
 						disableVideo
+						showPalette
+						isHover={isHover}
+						palette={{ ...getGroupAttributes(props, 'palette') }}
+						colorPaletteType='box-shadow'
+						onChangePalette={val => onChange(val)}
+						deviceType={breakpoint}
+						clientId={clientId}
 					/>
 					{!disableAdvanced && (
 						<Fragment>

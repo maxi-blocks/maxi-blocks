@@ -25,13 +25,7 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	...attributesData.icon,
-	...attributesData.iconHover,
-	...attributesData.iconPadding,
-	...attributesData.iconBorder,
-	...attributesData.iconBorderRadius,
-	...attributesData.iconBorderWidth,
-	...attributesData.highlight,
+	...attributesData.palette,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {
@@ -42,8 +36,19 @@ const attributes = {
 	...attributesData.textAlignment,
 	...attributesData.typography,
 	...attributesData.typographyHover,
-	...attributesData.background,
-	...attributesData.backgroundColor,
+	...{
+		...attributesData.background,
+		'background-active-media': {
+			type: 'string',
+			default: 'color',
+		},
+	},
+	...{
+		...attributesData.backgroundColor,
+		'background-color': {
+			type: 'string',
+		},
+	},
 	...attributesData.backgroundGradient,
 	...attributesData.backgroundHover,
 	...attributesData.backgroundColorHover,

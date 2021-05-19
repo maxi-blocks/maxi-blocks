@@ -85,6 +85,8 @@ body {
 		}
 	}
 	.block-list-appender {
+		max-width: none;
+
 		.block-editor-button-block-appender {
 			visibility: hidden;
 			position: absolute;
@@ -272,12 +274,12 @@ body .toolbar-item__popover {
 * Unit Select
 ************/
 
-.components-base-control {
-	.components-maxi-dimensions-control__units {
+.maxi-base-control {
+	.maxi-dimensions-control__units {
 		margin-bottom: 0 !important;
-		.components-base-control__field {
+		.maxi-base-control__field {
 			margin-bottom: 0;
-			.components-select-control__input {
+			.maxi-select-control__input {
 				min-width: 3.2rem;
 				max-width: 100%;
 			}
@@ -289,7 +291,7 @@ body .toolbar-item__popover {
 * Reset Button
 *************/
 
-.components-maxi-control__reset-button {
+.maxi-base-control .components-maxi-control__reset-button {
 	display: inline-flex;
 	width: 31px;
 	min-width: 31px;
@@ -319,4 +321,16 @@ body .toolbar-item__popover {
 		fill: #464a53;
 		margin: auto;
 	}
+}
+
+/*******************************
+* Style Card Editor Boat Icon
+*******************************/
+
+svg path#styleCardBoat_a {
+	fill: var(--maxi-light-color-4);
+}
+
+svg path#styleCardBoat_b {
+	stroke: var(--maxi-light-color-7);
 }

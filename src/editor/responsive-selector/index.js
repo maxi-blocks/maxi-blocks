@@ -2,9 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button, Icon } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
+
+/**
+ * Internal dependencies
+ */
+import Button from '../../components/button';
+import Icon from '../../components/icon';
 
 /**
  * External dependencies
@@ -23,8 +28,9 @@ import {
 	mediumMode,
 	smallMode,
 	cloudLib,
-	globalOptions,
 } from '../../icons';
+
+import MaxiStyleCardsEditorPopUp from '../style-cards';
 
 /**
  * Components
@@ -32,11 +38,11 @@ import {
 const ResponsiveSelector = props => {
 	const { className, isOpen, onClose } = props;
 
+	const { insertBlock } = useDispatch('core/block-editor');
+
 	const addCloudLibrary = () => {
 		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
 	};
-
-	const { insertBlock } = useDispatch('core/block-editor');
 
 	const { deviceType, breakpoints } = useSelect(select => {
 		const { receiveMaxiDeviceType, receiveMaxiBreakpoints } = select(
@@ -54,9 +60,7 @@ const ResponsiveSelector = props => {
 	const classes = classnames('maxi-responsive-selector', className);
 
 	const setScreenSize = size => {
-		const editorWrapper = document.querySelector(
-			'.edit-post-visual-editor.editor-styles-wrapper'
-		);
+		const editorWrapper = document.querySelector('.editor-styles-wrapper');
 		const winHeight = window.outerWidth;
 		const responsiveWidth =
 			(size === 'general' && 'none') ||
@@ -155,14 +159,8 @@ const ResponsiveSelector = props => {
 					<Icon icon={cloudLib} />
 					<span>{__('Cloud Library', 'maxi-blocks')}</span>
 				</Button>
-				<Button
-					className='action-buttons__button'
-					aria-label='Global Styles'
-				>
-					<Icon icon={globalOptions} />
-					<span>{__('Global Styles', 'maxi-blocks')}</span>
-				</Button>
 			</div>
+			<MaxiStyleCardsEditorPopUp />
 		</div>
 	);
 };

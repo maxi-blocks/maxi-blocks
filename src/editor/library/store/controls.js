@@ -4,7 +4,7 @@
 const controls = {
 	async RECEIVE_CLOUD_LIBRARY({ objType }) {
 		return fetch(
-			`http://localhost:8080/maxiblocks/wp-json/maxi-blocks-API/v0.1/${objType}/simple`
+			`https://ge-library.dev700.com/wp-json/maxi-blocks-API/v0.1/${objType}/simple`
 		)
 			.then(response => response.json())
 			.then(data => data)

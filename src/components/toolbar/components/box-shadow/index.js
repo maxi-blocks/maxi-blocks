@@ -28,7 +28,7 @@ const ALLOWED_BLOCKS = [
 ];
 
 const BoxShadow = props => {
-	const { blockName, onChange, breakpoint } = props;
+	const { blockName, onChange, breakpoint, clientId } = props;
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
@@ -41,9 +41,10 @@ const BoxShadow = props => {
 		>
 			<div className='toolbar-item__box-shadow__popover'>
 				<BoxShadowControl
-					{...getGroupAttributes(props, 'boxShadow')}
+					{...getGroupAttributes(props, ['boxShadow', 'palette'])}
 					onChange={obj => onChange(obj)}
 					breakpoint={breakpoint}
+					clientId={clientId}
 					disableAdvanced
 				/>
 			</div>

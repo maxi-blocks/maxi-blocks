@@ -2,18 +2,20 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl, TextareaControl, Icon } from '@wordpress/components';
+import { TextareaControl } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import TypographyControl from '../typography-control';
+import AxisControl from '../axis-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
-import AxisControl from '../axis-control';
 import FancyRadioControl from '../fancy-radio-control';
+import Icon from '../icon';
 import RangeSliderControl from '../range-slider-control';
+import SelectControl from '../select-control';
+import TypographyControl from '../typography-control';
 
 /**
  * External dependencies
@@ -49,7 +51,7 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, clientId } = props;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
@@ -67,7 +69,7 @@ const HoverEffectControl = props => {
 				onChange={val => {
 					onChange({
 						'hover-type': val,
-						'hover-transition-duration': 0.3,
+						'hover-transition-duration': 0.5,
 					});
 				}}
 			/>
@@ -375,6 +377,8 @@ const HoverEffectControl = props => {
 							onChange={obj => onChange(obj)}
 							prefix='hover-title-'
 							disableCustomFormats
+							disablePalette
+							clientId={clientId}
 						/>
 					)}
 					<hr />
@@ -417,6 +421,8 @@ const HoverEffectControl = props => {
 							onChange={obj => onChange(obj)}
 							prefix='hover-content-'
 							disableCustomFormats
+							disablePalette
+							clientId={clientId}
 						/>
 					)}
 					<hr />
@@ -425,6 +431,7 @@ const HoverEffectControl = props => {
 							'hoverBackground',
 							'hoverBackgroundColor',
 							'hoverBackgroundGradient',
+							'palette',
 						])}
 						onChange={obj => onChange(obj)}
 						disableLayers
@@ -433,6 +440,7 @@ const HoverEffectControl = props => {
 						disableVideo
 						disableSVG
 						prefix='hover-'
+						clientId={clientId}
 					/>
 					<FancyRadioControl
 						label={__('Custom Border', 'maxi-block')}
@@ -454,6 +462,8 @@ const HoverEffectControl = props => {
 							])}
 							onChange={obj => onChange(obj)}
 							prefix='hover-'
+							disablePalette
+							clientId={clientId}
 						/>
 					)}
 					<FancyRadioControl

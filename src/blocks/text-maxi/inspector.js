@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { Fragment, memo } from '@wordpress/element';
-import { TextControl, SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -28,7 +27,9 @@ import {
 	OpacityControl,
 	PositionControl,
 	ResponsiveControl,
+	SelectControl,
 	SettingTabsControl,
+	TextControl,
 	TransformControl,
 	TypographyControl,
 	ZIndexControl,
@@ -48,14 +49,12 @@ import { isEmpty, isEqual, cloneDeep } from 'lodash';
  */
 const Inspector = memo(
 	props => {
-		const { attributes, deviceType, setAttributes, clientId } = props;
+		const { attributes, deviceType, setAttributes, clientId, name } = props;
 		const {
 			customLabel,
 			isFirstOnHierarchy,
 			uniqueID,
 			blockStyle,
-			defaultBlockStyle,
-			blockStyleBackground,
 			fullWidth,
 			extraClassName,
 			textLevel,
@@ -84,23 +83,10 @@ const Inspector = memo(
 										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
-											breakpoint={deviceType}
-											blockStyleBackground={
-												blockStyleBackground
-											}
-											defaultBlockStyle={
-												defaultBlockStyle
-											}
 											isFirstOnHierarchy={
 												isFirstOnHierarchy
 											}
 											onChange={obj => setAttributes(obj)}
-											disableHighlightColor1
-											disableHighlightColor2
-											{...getGroupAttributes(attributes, [
-												'border',
-												'highlight',
-											])}
 										/>
 									</div>
 									<AccordionControl
@@ -267,7 +253,10 @@ const Inspector = memo(
 																	<TypographyControl
 																		{...getGroupAttributes(
 																			attributes,
-																			'typography'
+																			[
+																				'typography',
+																				'palette',
+																			]
 																		)}
 																		textLevel={
 																			textLevel
@@ -281,13 +270,11 @@ const Inspector = memo(
 																		breakpoint={
 																			deviceType
 																		}
+																		clientId={
+																			clientId
+																		}
 																		isList={
 																			isList
-																		}
-																		disableColor={
-																			!!attributes[
-																				'text-highlight'
-																			]
 																		}
 																	/>
 																),
@@ -342,6 +329,7 @@ const Inspector = memo(
 																					[
 																						'typography',
 																						'typographyHover',
+																						'palette',
 																					]
 																				)}
 																				textLevel={
@@ -356,13 +344,11 @@ const Inspector = memo(
 																				breakpoint={
 																					deviceType
 																				}
+																				clientId={
+																					clientId
+																				}
 																				isList={
 																					isList
-																				}
-																				disableColor={
-																					!!attributes[
-																						'text-highlight'
-																					]
 																				}
 																				isHover
 																			/>
@@ -400,6 +386,7 @@ const Inspector = memo(
 																					'backgroundVideo',
 																					'backgroundGradient',
 																					'backgroundSVG',
+																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -407,14 +394,12 @@ const Inspector = memo(
 																					obj
 																				)
 																			}
-																			disableColor={
-																				!!attributes[
-																					'background-highlight'
-																				]
-																			}
 																			disableImage
 																			disableVideo
 																			disableSVG
+																			clientId={
+																				clientId
+																			}
 																		/>
 																	</Fragment>
 																),
@@ -470,6 +455,7 @@ const Inspector = memo(
 																						'backgroundHover',
 																						'backgroundColorHover',
 																						'backgroundGradientHover',
+																						'palette',
 																					]
 																				)}
 																				onChange={obj =>
@@ -477,15 +463,13 @@ const Inspector = memo(
 																						obj
 																					)
 																				}
-																				disableColor={
-																					!!attributes[
-																						'background-highlight'
-																					]
-																				}
 																				disableImage
 																				disableVideo
 																				disableSVG
 																				isHover
+																				clientId={
+																					clientId
+																				}
 																			/>
 																		)}
 																	</Fragment>
@@ -517,6 +501,7 @@ const Inspector = memo(
 																				'border',
 																				'borderWidth',
 																				'borderRadius',
+																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -527,10 +512,8 @@ const Inspector = memo(
 																		breakpoint={
 																			deviceType
 																		}
-																		disableColor={
-																			!!attributes[
-																				'border-highlight'
-																			]
+																		clientId={
+																			clientId
 																		}
 																	/>
 																),
@@ -586,6 +569,7 @@ const Inspector = memo(
 																						'borderHover',
 																						'borderWidthHover',
 																						'borderRadiusHover',
+																						'palette',
 																					]
 																				)}
 																				onChange={obj =>
@@ -596,12 +580,10 @@ const Inspector = memo(
 																				breakpoint={
 																					deviceType
 																				}
-																				isHover
-																				disableColor={
-																					!!attributes[
-																						'border-highlight'
-																					]
+																				clientId={
+																					clientId
 																				}
+																				isHover
 																			/>
 																		)}
 																	</Fragment>
@@ -691,7 +673,10 @@ const Inspector = memo(
 																	<BoxShadowControl
 																		{...getGroupAttributes(
 																			attributes,
-																			'boxShadow'
+																			[
+																				'boxShadow',
+																				'palette',
+																			]
 																		)}
 																		onChange={obj =>
 																			setAttributes(
@@ -700,6 +685,9 @@ const Inspector = memo(
 																		}
 																		breakpoint={
 																			deviceType
+																		}
+																		clientId={
+																			clientId
 																		}
 																	/>
 																),
@@ -751,7 +739,10 @@ const Inspector = memo(
 																			<BoxShadowControl
 																				{...getGroupAttributes(
 																					attributes,
-																					'boxShadowHover'
+																					[
+																						'boxShadowHover',
+																						'palette',
+																					]
 																				)}
 																				onChange={obj =>
 																					setAttributes(
@@ -760,6 +751,9 @@ const Inspector = memo(
 																				}
 																				breakpoint={
 																					deviceType
+																				}
+																				clientId={
+																					clientId
 																				}
 																				isHover
 																			/>

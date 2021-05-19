@@ -2,12 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
+import SelectControl from '../../../select-control';
 
 /**
  * Styles & Icons

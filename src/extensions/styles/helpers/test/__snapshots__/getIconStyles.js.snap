@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getIconStyles Get a correct icon styles 1`] = `
+Object {
+  "general": Object {
+    "background": "rgb(255, 99, 71)",
+    "color": "rgb(255, 99, 71)",
+    "font-size": "3px",
+    "height": "4.5px",
+    "min-width": "4.5px",
+    "opacity": 0.99,
+    "width": "4.5px",
+  },
+  "l": Object {
+    "font-size": "3px",
+    "height": "4.5px",
+    "min-width": "4.5px",
+    "width": "4.5px",
+  },
+  "m": Object {
+    "font-size": "3px",
+    "height": "4.5px",
+    "min-width": "4.5px",
+    "width": "4.5px",
+  },
+  "s": Object {
+    "font-size": "3px",
+    "height": "4.5px",
+    "min-width": "4.5px",
+    "width": "4.5px",
+  },
+  "xl": Object {
+    "font-size": "3px",
+    "height": "4.5px",
+    "min-width": "4.5px",
+    "width": "4.5px",
+  },
+  "xs": Object {
+    "font-size": "3px",
+    "height": "4.5px",
+    "min-width": "4.5px",
+    "width": "4.5px",
+  },
+  "xxl": Object {
+    "font-size": "3px",
+    "height": "4.5px",
+    "min-width": "4.5px",
+    "width": "4.5px",
+  },
+}
+`;

@@ -11,6 +11,8 @@ const getPaletteDefault = (
 			['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(textLevel)
 		) {
 			defaultValue = 5;
+		} else if (blockName === 'maxi-blocks/number-counter-maxi') {
+			defaultValue = 4;
 		} else {
 			defaultValue = 3;
 		}

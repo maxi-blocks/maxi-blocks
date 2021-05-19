@@ -1,4 +1,20 @@
 const palette = {
+	'palette-custom-circle-background-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-circle-background-color': {
+		type: 'number',
+		default: 2,
+	},
+	'palette-custom-circle-bar-background-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-circle-bar-background-color': {
+		type: 'number',
+		default: 4,
+	},
 	'palette-custom-svg-background-color': {
 		type: 'boolean',
 		default: false,
@@ -6,6 +22,14 @@ const palette = {
 	'palette-preset-svg-background-color': {
 		type: 'number',
 		default: 5,
+	},
+	'palette-custom-hover-background-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-hover-background-color': {
+		type: 'boolean',
+		default: 6,
 	},
 	'palette-custom-background-color': {
 		type: 'boolean',

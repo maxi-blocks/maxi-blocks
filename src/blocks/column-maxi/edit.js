@@ -73,9 +73,8 @@ class edit extends MaxiBlockComponent {
 			updateRowPattern,
 			hasInnerBlocks,
 			clientId,
-			parentBlockStyle,
 		} = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, parentBlockStyle } = attributes;
 
 		const getColumnWidthDefault = () => {
 			const columnWidth = getLastBreakpointAttribute(

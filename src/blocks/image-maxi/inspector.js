@@ -996,11 +996,13 @@ const Inspector = props => {
 															'hoverPadding',
 															'hoverTitleTypography',
 															'hoverContentTypography',
+															'palette',
 														]
 													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}
+													clientId={clientId}
 												/>
 											),
 										},

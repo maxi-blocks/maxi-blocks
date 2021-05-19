@@ -16,7 +16,7 @@ import ColorPaletteControl from '../color-palette-control';
  * External dependencies
  */
 import ChromePicker from 'react-color';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -110,6 +110,7 @@ const ColorControl = props => {
 			{!disablePalette && showPalette && (
 				<ColorPaletteControl
 					{...palette}
+					paletteLabel={label}
 					textLevel={textLevel}
 					isHover={isHover}
 					colorPaletteType={colorPaletteType}
@@ -164,14 +165,16 @@ const ColorControl = props => {
 							className='maxi-color-control__opacity'
 							value={+colorAlpha}
 							onChange={val => {
+								const value = !isNil(val) ? +val : 0;
+
 								if (!isEmpty(color)) {
-									onChange(returnColor(getRGB(color), val));
+									onChange(returnColor(getRGB(color), value));
 									setCurrentColor(
-										returnColor(getRGB(color), val)
+										returnColor(getRGB(color), value)
 									);
 								}
 
-								setColorAlpha(val);
+								setColorAlpha(value);
 							}}
 							min={0}
 							max={100}

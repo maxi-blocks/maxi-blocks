@@ -38,8 +38,6 @@ const Inspector = props => {
 		uniqueID,
 		isFirstOnHierarchy,
 		blockStyle,
-		defaultBlockStyle,
-		blockStyleBackground,
 		extraClassName,
 	} = attributes;
 
@@ -75,11 +73,15 @@ const Inspector = props => {
 												<NumberCounterControl
 													{...getGroupAttributes(
 														attributes,
-														'numberCounter'
+														[
+															'numberCounter',
+															'palette',
+														]
 													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}
+													clientId={clientId}
 												/>
 											),
 										},

@@ -212,6 +212,10 @@ const MaxiStyleCardsEditor = () => {
 	};
 
 	const onChangeValue = (prop, value, style) => {
+		console.log('onChangeValue');
+		console.log(prop);
+		console.log(value);
+		console.log('=======================');
 		let newStateSC = {};
 
 		if (prop === 'typography') {
@@ -241,6 +245,7 @@ const MaxiStyleCardsEditor = () => {
 		changeCanBeResettedState(canBeResetted(currentSCkey));
 		setIsSaveDisabled(false);
 		setIsApplyDisabled(false);
+		console.log(newStateSC);
 	};
 
 	const currentSCname = () => {

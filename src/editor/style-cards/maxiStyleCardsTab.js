@@ -123,9 +123,9 @@ const MaxiStyleCardsTab = ({
 					if (!isNil(colorValue)) return colorValue;
 				} else return defaultValue;
 			}
-			return false;
+			return null;
 		}
-		return false;
+		return null;
 	};
 
 	const parseTypography = newSC => {
@@ -174,12 +174,14 @@ const MaxiStyleCardsTab = ({
 	const onChangeColor = (val, attr, defaultColor) => {
 		if (!val) onChangeDelete(attr, SCStyle);
 		if (val) {
+			console.log('===============================');
+			console.log(attr);
 			console.log(processAttribute(attr));
 			console.log(processAttribute(`${attr}-old`));
 			console.log(getStyleCardAttr(defaultColor, SCStyle, true));
 			onChangeValue(
 				attr,
-				processAttribute(attr) ||
+				!(isNil(processAttribute(attr))) ||
 					processAttribute(`${attr}-old`) ||
 					getStyleCardAttr(defaultColor, SCStyle, true),
 				SCStyle

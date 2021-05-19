@@ -137,7 +137,8 @@ body.maxi-blocks--active {
 				}
 			}
 			/* Color Presets on hover */
-			&:not(.maxi-button-block):hover {
+			&:not(.maxi-button-block):hover,
+			.maxi-parent:not(.maxi-button-block):hover {
 				@each $color_number in $color_set {
 					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
 						> .maxi-background-displayer .maxi-background-displayer__color {
@@ -171,7 +172,8 @@ body.maxi-blocks--active {
 				}
 			}
 			/* Color Presets on button hover */
-			&.maxi-button-block {
+			&.maxi-button-block,
+			.maxi-parent.maxi-button-block {
 				@each $color_number in $color_set {
 					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
 						> .maxi-button-block__button:hover {
@@ -184,7 +186,7 @@ body.maxi-blocks--active {
 						}
 					}
 					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
-						.maxi-button-block:hover {
+						> .maxi-button-block__button:hover {
 							--maxi-#{$style}-button-text-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});						}
 					}
 					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {

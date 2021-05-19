@@ -209,7 +209,13 @@ const MaxiStyleCardsEditor = () => {
 		setIsApplyDisabled(false);
 	};
 
-	const onChangeValue = (prop, value, style) => {
+	const onChangeValue = (
+		prop,
+		value,
+		style,
+		globalAttr = false,
+		globalVal
+	) => {
 		let newStateSC = {};
 
 		if (prop === 'typography') {
@@ -224,12 +230,24 @@ const MaxiStyleCardsEditor = () => {
 					[style]: { ...stateSC.styleCard[style], ...value },
 				},
 			};
-		} else {
+		} else if (!globalAttr) {
 			newStateSC = {
 				...stateSC,
 				styleCard: {
 					...stateSC.styleCard,
 					[style]: { ...stateSC.styleCard[style], [prop]: value },
+				},
+			};
+		} else {
+			newStateSC = {
+				...stateSC,
+				styleCard: {
+					...stateSC.styleCard,
+					[style]: {
+						...stateSC.styleCard[style],
+						[prop]: value,
+						[`${prop}-global`]: globalVal,
+					},
 				},
 			};
 		}
@@ -239,8 +257,6 @@ const MaxiStyleCardsEditor = () => {
 		changeCanBeResettedState(canBeResetted(currentSCkey));
 		setIsSaveDisabled(false);
 		setIsApplyDisabled(false);
-
-		console.log(newStateSC);
 	};
 
 	const currentSCname = () => {

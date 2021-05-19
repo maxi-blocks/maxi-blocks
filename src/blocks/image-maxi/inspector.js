@@ -55,8 +55,13 @@ import { capitalize, isEmpty, isNil, isObject } from 'lodash';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, imageData, clientId, deviceType, setAttributes } =
-		props;
+	const {
+		attributes,
+		imageData,
+		clientId,
+		deviceType,
+		setAttributes,
+	} = props;
 	const {
 		customLabel,
 		uniqueID,
@@ -208,10 +213,9 @@ const Inspector = props => {
 																mediaURL,
 																mediaWidth,
 																mediaHeight,
-															} =
-																getSizeResponse(
-																	imageSize
-																);
+															} = getSizeResponse(
+																imageSize
+															);
 															setAttributes({
 																imageSize,
 																mediaURL,
@@ -256,16 +260,14 @@ const Inspector = props => {
 														onChange={val => {
 															if (!isNil(val))
 																setAttributes({
-																	imgWidth:
-																		val,
+																	imgWidth: val,
 																});
 															else
 																setAttributes({
-																	imgWidth:
-																		getDefaultAttribute(
-																			'imgWidth',
-																			clientId
-																		),
+																	imgWidth: getDefaultAttribute(
+																		'imgWidth',
+																		clientId
+																	),
 																});
 														}}
 														max={100}
@@ -287,7 +289,8 @@ const Inspector = props => {
 																	'Original Size',
 																	'maxi-blocks'
 																),
-																value: 'original',
+																value:
+																	'original',
 															},
 															{
 																label: __(
@@ -504,8 +507,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover':
-																						val,
+																					'background-status-hover': val,
 																				}
 																			)
 																		}
@@ -616,8 +618,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'border-status-hover':
-																						val,
+																					'border-status-hover': val,
 																				}
 																			)
 																		}
@@ -676,14 +677,16 @@ const Inspector = props => {
 																		'No',
 																		'maxi-blocks'
 																	),
-																	value: 'normal',
+																	value:
+																		'normal',
 																},
 																{
 																	label: __(
 																		'Yes',
 																		'maxi-blocks'
 																	),
-																	value: 'full',
+																	value:
+																		'full',
 																},
 															]}
 															optionType='string'
@@ -781,8 +784,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover':
-																						!!+val,
+																					'box-shadow-status-hover': !!+val,
 																				}
 																			)
 																		}
@@ -921,17 +923,15 @@ const Inspector = props => {
 														if (
 															!isEmpty(SVGOptions)
 														) {
-															const SVGValue =
-																!isObject(
-																	SVGOptions.SVGData
-																)
-																	? SVGOptions.SVGData
-																	: SVGOptions.SVGData;
+															const SVGValue = !isObject(
+																SVGOptions.SVGData
+															)
+																? SVGOptions.SVGData
+																: SVGOptions.SVGData;
 
-															const el =
-																Object.keys(
-																	SVGValue
-																)[0];
+															const el = Object.keys(
+																SVGValue
+															)[0];
 
 															SVGValue[
 																el
@@ -944,11 +944,10 @@ const Inspector = props => {
 																...SVGOptions,
 																SVGCurrentElement:
 																	SVGOptions.SVGCurrentElement,
-																SVGElement:
-																	injectImgSVG(
-																		SVGOptions.SVGElement,
-																		SVGValue
-																	).outerHTML,
+																SVGElement: injectImgSVG(
+																	SVGOptions.SVGElement,
+																	SVGValue
+																).outerHTML,
 															});
 														} else {
 															setAttributes({
@@ -1000,12 +999,14 @@ const Inspector = props => {
 															'hoverPadding',
 															'hoverTitleTypography',
 															'hoverContentTypography',
+															'palette',
 														]
 													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}
 													blockStyle={blockStyle}
+													clientId={clientId}
 												/>
 											),
 										},
@@ -1122,8 +1123,7 @@ const Inspector = props => {
 													}
 													onChange={val =>
 														setAttributes({
-															[`opacity-${deviceType}`]:
-																val,
+															[`opacity-${deviceType}`]: val,
 														})
 													}
 													breakpoint={deviceType}

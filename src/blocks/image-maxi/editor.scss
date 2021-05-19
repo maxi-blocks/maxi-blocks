@@ -1,4 +1,17 @@
 .maxi-image-block {
+	.maxi-hover-effect__text {
+		.maxi-hover-details {
+			visibility: hidden;
+		}
+	}
+	&:hover {
+		.maxi-hover-effect__text {
+			.maxi-hover-details {
+				visibility: visible;
+			}
+		}
+	}
+
 	&:focus:after {
 		box-shadow: none !important;
 	}

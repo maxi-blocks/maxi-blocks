@@ -41,7 +41,7 @@ const SizeControl = props => {
 		onChangeValue,
 		disableReset = false,
 		onReset,
-		allowedUnits = ['px', 'em', 'vw', '%', 'empty'],
+		allowedUnits = ['px', 'em', 'vw', '%', '-'],
 		minMaxSettings = {
 			px: {
 				min: 0,
@@ -59,16 +59,16 @@ const SizeControl = props => {
 				min: 0,
 				max: 100,
 			},
-			empty: {
+			'-': {
 				min: 0,
-				max: 999,
+				max: 16,
 			},
 		},
 	} = props;
 
 	const classes = classnames('maxi-size-control', className);
 
-	const stepValue = unit === 'empty' || isEmpty(unit) ? 0.01 : step;
+	const stepValue = unit === '-' || isEmpty(unit) ? 0.01 : step;
 
 	const getOptions = () => {
 		const options = [];
@@ -84,8 +84,7 @@ const SizeControl = props => {
 
 		allowedUnits.includes('%') && options.push({ label: '%', value: '%' });
 
-		allowedUnits.includes('empty' || empty) &&
-			options.push({ label: '-', value: '' });
+		allowedUnits.includes('-') && options.push({ label: '-', value: '' });
 
 		return options;
 	};
@@ -121,22 +120,18 @@ const SizeControl = props => {
 
 							if (
 								value >
-								minMaxSettings[isEmpty(unit) ? 'empty' : unit]
-									.max
+								minMaxSettings[isEmpty(unit) ? '-' : unit].max
 							)
 								value =
-									minMaxSettings[
-										isEmpty(unit) ? 'empty' : unit
-									].max;
+									minMaxSettings[isEmpty(unit) ? '-' : unit]
+										.max;
 							if (
 								value <
-								minMaxSettings[isEmpty(unit) ? 'empty' : unit]
-									.min
+								minMaxSettings[isEmpty(unit) ? '-' : unit].min
 							)
 								value =
-									minMaxSettings[
-										isEmpty(unit) ? 'empty' : unit
-									].min;
+									minMaxSettings[isEmpty(unit) ? '-' : unit]
+										.min;
 
 							if (value > 100 && unit === '%') value = 100;
 
@@ -144,13 +139,12 @@ const SizeControl = props => {
 						}}
 						min={
 							unit
-								? minMaxSettings[isEmpty(unit) ? 'empty' : unit]
-										.min
+								? minMaxSettings[isEmpty(unit) ? '-' : unit].min
 								: null
 						}
 						max={
 							isEmpty(unit)
-								? 'empty'
+								? '-'
 								: unit
 								? minMaxSettings[unit].max
 								: null
@@ -202,8 +196,8 @@ const SizeControl = props => {
 				<RangeSliderControl
 					value={+value === '' || +value === 0 ? 0 : +trim(value)}
 					onChange={val => onChangeValue(+val)}
-					min={unit ? minMaxSettings[unit].min : 0}
-					max={unit ? minMaxSettings[unit].max : 999}
+					min={minMaxSettings[isEmpty(unit) ? '-' : unit].min}
+					max={minMaxSettings[isEmpty(unit) ? '-' : unit].max}
 					step={stepValue}
 					withInputField={false}
 					initialPosition={value || initial}

@@ -19,6 +19,12 @@ body.maxi-blocks--active {
 		.maxi-#{$style} {
 			/* Color Presets */
 			@each $color_number in $color_set {
+				&.maxi-sc-#{$style}-hover-background-color-#{$color_number},
+				.maxi-sc-#{$style}-hover-background-color-#{$color_number} {
+					&.maxi-image-block .maxi-hover-details {
+						background: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
 				&.maxi-sc-#{$style}-circle-bar-background-color-#{$color_number},
 				.maxi-sc-#{$style}-circle-bar-background-color-#{$color_number} {
 					.maxi-number-counter__box .maxi-number-counter__box__circle {

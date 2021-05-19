@@ -274,9 +274,9 @@ const TypographyControl = withFormatValue(props => {
 			min: 0,
 			max: 100,
 		},
-		empty: {
+		'-': {
 			min: 0,
-			max: 999,
+			max: 16,
 		},
 	};
 

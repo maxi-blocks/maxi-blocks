@@ -51,7 +51,7 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { className, onChange, blockStyle } = props;
+	const { className, onChange, blockStyle, clientId } = props;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
@@ -69,7 +69,7 @@ const HoverEffectControl = props => {
 				onChange={val => {
 					onChange({
 						'hover-type': val,
-						'hover-transition-duration': 0.3,
+						'hover-transition-duration': 0.5,
 					});
 				}}
 			/>
@@ -247,8 +247,7 @@ const HoverEffectControl = props => {
 									)}
 									onChange={val =>
 										onChange({
-											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
-												val,
+											[`hover-basic-${props['hover-basic-effect-type']}-value`]: val,
 										})
 									}
 									min={0}
@@ -379,6 +378,8 @@ const HoverEffectControl = props => {
 							prefix='hover-title-'
 							disableCustomFormats
 							blockStyle={blockStyle}
+							disablePalette
+							clientId={clientId}
 						/>
 					)}
 					<hr />
@@ -422,6 +423,8 @@ const HoverEffectControl = props => {
 							prefix='hover-content-'
 							disableCustomFormats
 							blockStyle={blockStyle}
+							disablePalette
+							clientId={clientId}
 						/>
 					)}
 					<hr />
@@ -430,6 +433,7 @@ const HoverEffectControl = props => {
 							'hoverBackground',
 							'hoverBackgroundColor',
 							'hoverBackgroundGradient',
+							'palette',
 						])}
 						onChange={obj => onChange(obj)}
 						disableLayers
@@ -438,6 +442,7 @@ const HoverEffectControl = props => {
 						disableVideo
 						disableSVG
 						prefix='hover-'
+						clientId={clientId}
 					/>
 					<FancyRadioControl
 						label={__('Custom Border', 'maxi-block')}
@@ -459,6 +464,8 @@ const HoverEffectControl = props => {
 							])}
 							onChange={obj => onChange(obj)}
 							prefix='hover-'
+							disablePalette
+							clientId={clientId}
 						/>
 					)}
 					<FancyRadioControl

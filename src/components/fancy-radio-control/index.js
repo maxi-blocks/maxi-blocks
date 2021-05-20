@@ -1,7 +1,7 @@
 /**
- * WordPress dependencies
+ * Internal dependencies
  */
-import { RadioControl } from '@wordpress/components';
+import { RadioControl } from '../../components';
 
 /**
  * External dependencies

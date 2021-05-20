@@ -101,9 +101,8 @@ const MapControl = props => {
 				onChangeValue={val => onChange({ 'map-marker-opacity': val })}
 				onReset={() =>
 					onChange({
-						'map-marker-opacity': getDefaultAttribute(
-							'map-marker-opacity'
-						),
+						'map-marker-opacity':
+							getDefaultAttribute('map-marker-opacity'),
 					})
 				}
 			/>
@@ -118,9 +117,8 @@ const MapControl = props => {
 				onChangeValue={val => onChange({ 'map-marker-scale': val })}
 				onReset={() =>
 					onChange({
-						'map-marker-scale': getDefaultAttribute(
-							'map-marker-scale'
-						),
+						'map-marker-scale':
+							getDefaultAttribute('map-marker-scale'),
 					})
 				}
 			/>
@@ -150,6 +148,19 @@ const MapControl = props => {
 				color={props['map-marker-text-color']}
 				defaultColor={getDefaultAttribute('map-marker-text-color')}
 				onChange={val => onChange({ 'map-marker-text-color': val })}
+			/>
+			<TextControl
+				className='maxi-map-control__full-width-text'
+				label={__('Marker Address', 'maxi-blocks')}
+				value={props['map-marker-address']}
+				onChange={val => onChange({ ['map-marker-address']: val })}
+			/>
+			<ColorControl
+				label={__('Marker Address', 'maxi-blocks')}
+				disableOpacity
+				color={props['map-marker-address-color']}
+				defaultColor={getDefaultAttribute('map-marker-address-color')}
+				onChange={val => onChange({ 'map-marker-address-color': val })}
 			/>
 		</div>
 	);

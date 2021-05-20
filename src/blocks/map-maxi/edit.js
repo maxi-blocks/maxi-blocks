@@ -59,6 +59,8 @@ class edit extends MaxiBlockComponent {
 		const mapMarkerScale = attributes['map-marker-scale'];
 		const mapMarkerFillColor = attributes['map-marker-fill-color'];
 		const mapMarkerStrokeColor = attributes['map-marker-stroke-color'];
+		const mapMarkerText = attributes['map-marker-text'];
+		const mapMarkerAddress = attributes['map-marker-address'];
 
 		const loader = new Loader({
 			apiKey: mapApiKey,
@@ -78,8 +80,13 @@ class edit extends MaxiBlockComponent {
 				});
 			})
 			.then(map => {
-				const contentString =
-					'<div class="map-marker-info-window"><h3 class="map-marker-info-window__title">Head Office</h3><address>1.5 Road Name Berlin Germany</address></div>';
+				const contentTitleString = `<h3 class="map-marker-info-window__title">${mapMarkerText}</h3>`;
+				const contentAddressString = `<address>${mapMarkerAddress}</address>`;
+				const contentString = `<div class="map-marker-info-window">${
+					!isEmpty(mapMarkerText) ? contentTitleString : ''
+				}${
+					!isEmpty(mapMarkerAddress) ? contentAddressString : ''
+				}</div>`;
 				const infowindow = new google.maps.InfoWindow({
 					content: contentString,
 				});
@@ -97,8 +104,10 @@ class edit extends MaxiBlockComponent {
 						scale: mapMarkerScale,
 					},
 				});
+
 				marker.addListener('click', () => {
-					infowindow.open(map, marker);
+					(!isEmpty(mapMarkerText) || !isEmpty(mapMarkerAddress)) &&
+						infowindow.open(map, marker);
 				});
 			})
 			.catch(ex => {

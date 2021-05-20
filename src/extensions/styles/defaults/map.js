@@ -1,3 +1,5 @@
+import { __ } from '@wordpress/i18n';
+
 const map = {
 	'map-api-key': {
 		type: 'string',
@@ -37,6 +39,7 @@ const map = {
 	},
 	'map-marker-text': {
 		type: 'string',
+		default: __('Marker Title', 'maxi-blocks'),
 	},
 	'map-marker-text-color': {
 		type: 'string',
@@ -44,6 +47,7 @@ const map = {
 	},
 	'map-marker-address': {
 		type: 'string',
+		default: __('Marker Address', 'maxi-blocks'),
 	},
 	'map-marker-address-color': {
 		type: 'string',

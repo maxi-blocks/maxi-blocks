@@ -74,11 +74,12 @@ const Inspector = props => {
 												<MapControl
 													{...getGroupAttributes(
 														attributes,
-														'map'
+														['map', 'palette']
 													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}
+													clientId={clientId}
 												/>
 											),
 										},
@@ -246,7 +247,8 @@ const Inspector = props => {
 												)}
 												onChange={val =>
 													setAttributes({
-														[`opacity-${deviceType}`]: val,
+														[`opacity-${deviceType}`]:
+															val,
 													})
 												}
 												breakpoint={deviceType}

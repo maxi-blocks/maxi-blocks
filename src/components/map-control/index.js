@@ -8,7 +8,10 @@ import { TextControl } from '@wordpress/components';
  * Internal dependencies
  */
 import { SizeControl, ColorControl } from '../../components';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -26,7 +29,7 @@ import * as mapMarkers from '../../icons/map-icons';
  * Component
  */
 const MapControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, clientId } = props;
 
 	const classes = classnames('maxi-map-control', className);
 
@@ -148,6 +151,12 @@ const MapControl = props => {
 				color={props['map-marker-text-color']}
 				defaultColor={getDefaultAttribute('map-marker-text-color')}
 				onChange={val => onChange({ 'map-marker-text-color': val })}
+				showPalette
+				palette={{ ...getGroupAttributes(props, 'palette') }}
+				isHover={false}
+				colorPaletteType='marker-title'
+				onChangePalette={val => onChange(val)}
+				clientId={clientId}
 			/>
 			<TextControl
 				className='maxi-map-control__full-width-text'
@@ -161,6 +170,12 @@ const MapControl = props => {
 				color={props['map-marker-address-color']}
 				defaultColor={getDefaultAttribute('map-marker-address-color')}
 				onChange={val => onChange({ 'map-marker-address-color': val })}
+				showPalette
+				palette={{ ...getGroupAttributes(props, 'palette') }}
+				isHover={false}
+				colorPaletteType='marker-address'
+				onChangePalette={val => onChange(val)}
+				clientId={clientId}
 			/>
 		</div>
 	);

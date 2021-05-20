@@ -18,6 +18,7 @@ const attributes = {
 		default: __('Map', 'maxi-blocks'),
 	},
 	...attributesData.map,
+	...attributesData.palette,
 	...attributesData.margin,
 	...attributesData.padding,
 	...attributesData.opacity,

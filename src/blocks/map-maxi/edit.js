@@ -12,7 +12,7 @@ import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 import { defaultMarkers } from './defaultMarkers';
 
@@ -46,9 +46,14 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes } = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, parentBlockStyle } = attributes;
 
-		const classes = 'maxi-map-block';
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			['marker-title', 'marker-address'],
+			'maxi-blocks/map-maxi',
+			parentBlockStyle
+		);
 
 		const mapApiKey = attributes['map-api-key'];
 		const mapLatitude = +attributes['map-latitude'];
@@ -71,7 +76,7 @@ class edit extends MaxiBlockComponent {
 		loader
 			.load()
 			.then(() => {
-				return new google.maps.Map(document.getElementById('map'), {
+				return new google.maps.Map(document.getElementById(uniqueID), {
 					center: {
 						lat: mapLatitude,
 						lng: mapLongitude,
@@ -81,7 +86,7 @@ class edit extends MaxiBlockComponent {
 			})
 			.then(map => {
 				const contentTitleString = `<h3 class="map-marker-info-window__title">${mapMarkerText}</h3>`;
-				const contentAddressString = `<address>${mapMarkerAddress}</address>`;
+				const contentAddressString = `<address class="map-marker-info-window__address">${mapMarkerAddress}</address>`;
 				const contentString = `<div class="map-marker-info-window">${
 					!isEmpty(mapMarkerText) ? contentTitleString : ''
 				}${
@@ -124,12 +129,13 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-map--${uniqueID}`}
 				ref={this.blockRef}
-				className={classes}
+				className='maxi-map-block'
+				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<div
 					className='maxi-map-container'
-					id='map'
+					id={uniqueID}
 					style={{ height: '300px' }}
 				></div>
 			</MaxiBlock>,

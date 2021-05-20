@@ -5,6 +5,7 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
+	getMapStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -29,11 +30,32 @@ const getNormalObject = props => {
 	return response;
 };
 
+const getMapObject = (props, target) => {
+	const response = {
+		map: getMapStyles(
+			{
+				...getGroupAttributes(props, ['map','palette']),
+			},
+			target
+		),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
 	let response = {
 		[uniqueID]: getNormalObject(props),
+		[`${uniqueID} .map-marker-info-window__title`]: getMapObject(
+			props,
+			'title'
+		),
+		[`${uniqueID} .map-marker-info-window__address`]: getMapObject(
+			props,
+			'address'
+		),
 	};
 
 	return response;

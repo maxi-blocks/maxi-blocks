@@ -99,7 +99,6 @@ class edit extends MaxiBlockComponent {
 				const marker = new google.maps.Marker({
 					position: { lat: mapLatitude, lng: mapLongitude },
 					map,
-					title: 'Maxi Map',
 					icon: {
 						...defaultMarkers[`marker-icon-${mapMarker}`],
 						fillColor: mapMarkerFillColor,

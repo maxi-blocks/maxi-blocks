@@ -97,7 +97,6 @@ if (maxi_custom_data.custom_data) {
 			const marker = new google.maps.Marker({
 				position: mapCordinate,
 				map,
-				title: 'Maxi Map',
 				icon: {
 					...defaultMarkers[`marker-icon-${mapData['map-marker']}`],
 					fillColor: mapData['map-marker-fill-color'],
@@ -110,7 +109,8 @@ if (maxi_custom_data.custom_data) {
 			});
 
 			marker.addListener('click', () => {
-				(mapMarkerText !== '' || mapMarkerAddress !== '') &&
+				(mapData['map-marker-text'] !== '' ||
+					mapData['map-marker-address'] !== '') &&
 					infowindow.open(map, marker);
 			});
 		};

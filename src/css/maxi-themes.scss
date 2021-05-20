@@ -218,7 +218,7 @@ body.maxi-blocks--active {
 				}
 			}
 
-			&zli, li {
+			li {
 				color: var(--maxi-#{$style}-p-color-general, var(--maxi-#{$style}-li-color-general-palette));
 				font-family: var(--maxi-#{$style}-p-font-family-general);
 				font-weight: var(--maxi-#{$style}-p-font-weight-general);

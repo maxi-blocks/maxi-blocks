@@ -3,9 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 
-import { Spinner } from '@wordpress/components';
 import { Fragment, useState, useEffect, useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import { Spinner } from '../../components';
 
 /**
  * External dependencies

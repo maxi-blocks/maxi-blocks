@@ -1,3 +1,22 @@
+// Default Map Markers
+const defaultMarkers = {
+	'marker-icon-1': {
+		path: 'M 20.20,9.70 C 20.20,5.20 16.50,1.50 12.00,1.50 7.50,1.50 3.80,5.10 3.80,9.70 3.80,16.70 12.00,22.60 12.00,22.60 12.00,22.60 20.20,16.70 20.20,9.70 Z M 12.00,6.10 C 13.90,6.10 15.50,7.70 15.50,9.60 15.50,11.50 13.90,13.10 12.00,13.10 10.10,13.10 8.50,11.50 8.50,9.60 8.50,7.70 10.10,6.10 12.00,6.10 Z',
+	},
+	'marker-icon-2': {
+		path: 'M18.1,16.2l-5.5,5.5c-0.3,0.3-0.9,0.3-1.2,0l-5.5-5.5C2.6,12.8,2.6,7.4,5.9,4l0,0C9.3,0.6,14.7,0.6,18,4l0,0C21.4,7.4,21.4,12.8,18.1,16.2z',
+	},
+	'marker-icon-3': {
+		path: 'M20,10c0,3.5-2.2,6.5-5.4,7.6L12,22l-2.6-4.4C6.2,16.5,4,13.4,4,10c0-4.4,3.6-8,8-8S20,5.6,20,10z M12,7 c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S13.7,7,12,7z',
+	},
+	'marker-icon-4': {
+		path: 'M4.9,12.6c0,0,1.8,0,2.4,0c3.2,0.1,2.9,1.2,5.9,1.2s2.9-1.2,5.9-1.2V2c-2.9,0-2.9,1.2-5.9,1.2S10.2,2,7.3,2H4.9v20',
+	},
+	'marker-icon-5': {
+		path: 'M 4.00,22.30 C 4.00,22.30 4.00,22.30 4.00,22.30 4.00,22.30 9.20,22.30 9.20,22.30 9.20,22.30 9.20,22.30 9.20,22.30M 20.00,1.70 C 20.00,1.70 6.60,1.70 6.60,1.70 6.60,1.70 6.70,13.10 6.70,13.10 6.70,13.10 20.00,13.10 20.00,13.10 20.00,13.10 15.10,7.40 15.10,7.40 15.10,7.40 20.00,1.70 20.00,1.70 Z M 6.60,1.70 C 6.60,1.70 6.60,22.30 6.60,22.30',
+	},
+};
+
 // Parallax
 class Parallax {
 	constructor(el, displace) {
@@ -40,53 +59,65 @@ const getDeviceType = () => {
 	return 'desktop';
 };
 
-var script = document.createElement('script');
-const apiKey = 'AIzaSyBW3BXol38RXkWnc49Zrgvw0pVZA9ISC1E';
-script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
-script.async = true;
+// Map
+if (maxi_custom_data.custom_data) {
+	const mapElems = document.querySelectorAll('.maxi-map-container');
 
-window.initMap = function () {
-	const uluru = { lat: 51.506, lng: -0.184 };
-	const map = new google.maps.Map(document.getElementById('map'), {
-		zoom: 15,
-		center: uluru,
-	});
-	const contentString =
-		'<div id="content">' +
-		'<div id="siteNotice">' +
-		'</div>' +
-		'<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
-		'<div id="bodyContent">' +
-		'<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-		'sandstone rock formation in the southern part of the ' +
-		'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) ' +
-		'south west of the nearest large town, Alice Springs; 450&#160;km ' +
-		'(280&#160;mi) by road. Kata Tjuta and Uluru are the two major ' +
-		'features of the Uluru - Kata Tjuta National Park. Uluru is ' +
-		'sacred to the Pitjantjatjara and Yankunytjatjara, the ' +
-		'Aboriginal people of the area. It has many springs, waterholes, ' +
-		'rock caves and ancient paintings. Uluru is listed as a World ' +
-		'Heritage Site.</p>' +
-		'<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-		'https://en.wikipedia.org/w/index.php?title=Uluru</a> ' +
-		'(last visited June 22, 2009).</p>' +
-		'</div>' +
-		'</div>';
-	const infowindow = new google.maps.InfoWindow({
-		content: contentString,
-	});
-	const marker = new google.maps.Marker({
-		position: uluru,
-		map,
-		title: 'Uluru (Ayers Rock)',
-	});
-	marker.addListener('click', () => {
-		infowindow.open(map, marker);
-	});
-};
+	mapElems.forEach(function (elem, id) {
+		const mapID = Object.keys(maxi_custom_data.custom_data)[id];
+		const mapData = maxi_custom_data.custom_data[mapID];
 
-// Append the 'script' element to 'head'
-document.head.appendChild(script);
+		var script = document.createElement('script');
+		script.src = `https://maps.googleapis.com/maps/api/js?key=${mapData['map-api-key']}&callback=initMap`;
+		script.async = true;
+
+		window.initMap = function () {
+			const mapCordinate = {
+				lat: +mapData['map-latitude'],
+				lng: +mapData['map-longitude'],
+			};
+
+			const map = new google.maps.Map(document.getElementById(elem.id), {
+				zoom: mapData['map-zoom'],
+				center: mapCordinate,
+			});
+
+			const contentTitleString = `<h3 class="map-marker-info-window__title">${mapData['map-marker-text']}</h3>`;
+			const contentAddressString = `<address class="map-marker-info-window__address">${mapData['map-marker-address']}</address>`;
+			const contentString = `<div class="map-marker-info-window">${
+				mapData['map-marker-text'] !== '' ? contentTitleString : ''
+			}${
+				mapData['map-marker-address'] !== '' ? contentAddressString : ''
+			}</div>`;
+
+			const infowindow = new google.maps.InfoWindow({
+				content: contentString,
+			});
+
+			const marker = new google.maps.Marker({
+				position: mapCordinate,
+				map,
+				title: 'Maxi Map',
+				icon: {
+					...defaultMarkers[`marker-icon-${mapData['map-marker']}`],
+					fillColor: mapData['map-marker-fill-color'],
+					fillOpacity: mapData['map-marker-opacity'],
+					strokeWeight: 2,
+					strokeColor: mapData['map-marker-stroke-color'],
+					rotation: 0,
+					scale: mapData['map-marker-scale'],
+				},
+			});
+
+			marker.addListener('click', () => {
+				(mapMarkerText !== '' || mapMarkerAddress !== '') &&
+					infowindow.open(map, marker);
+			});
+		};
+
+		document.head.appendChild(script);
+	});
+}
 
 // Motion Effects
 const motionElems = document.querySelectorAll('.maxi-motion-effect');
@@ -500,12 +531,10 @@ containerElems.forEach(function (elem) {
 						const videoPlayerElement = elem.querySelector(
 							'.maxi-background-displayer__video-player'
 						);
-						const videoEnd = videoPlayerElement.getAttribute(
-							'data-end'
-						);
-						const videoType = videoPlayerElement.getAttribute(
-							'data-type'
-						);
+						const videoEnd =
+							videoPlayerElement.getAttribute('data-end');
+						const videoType =
+							videoPlayerElement.getAttribute('data-type');
 
 						if (videoType === 'vimeo' && videoEnd) {
 							const player = new Vimeo.Player(

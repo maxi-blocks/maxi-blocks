@@ -33,13 +33,9 @@ class edit extends MaxiBlockComponent {
 	get getCustomData() {
 		const { uniqueID } = this.props.attributes;
 
-		const motionStatus = !isEmpty(this.props.attributes['entrance-type']);
-
 		return {
 			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, 'map'),
-				}),
+				...getGroupAttributes(this.props.attributes, 'map'),
 			},
 		};
 	}
@@ -76,13 +72,16 @@ class edit extends MaxiBlockComponent {
 		loader
 			.load()
 			.then(() => {
-				return new google.maps.Map(document.getElementById(uniqueID), {
-					center: {
-						lat: mapLatitude,
-						lng: mapLongitude,
-					},
-					zoom: mapZoom,
-				});
+				return new google.maps.Map(
+					document.getElementById(`map-container-${uniqueID}`),
+					{
+						center: {
+							lat: mapLatitude,
+							lng: mapLongitude,
+						},
+						zoom: mapZoom,
+					}
+				);
 			})
 			.then(map => {
 				const contentTitleString = `<h3 class="map-marker-info-window__title">${mapMarkerText}</h3>`;
@@ -92,13 +91,15 @@ class edit extends MaxiBlockComponent {
 				}${
 					!isEmpty(mapMarkerAddress) ? contentAddressString : ''
 				}</div>`;
+
 				const infowindow = new google.maps.InfoWindow({
 					content: contentString,
 				});
+
 				const marker = new google.maps.Marker({
 					position: { lat: mapLatitude, lng: mapLongitude },
 					map,
-					title: 'Uluru (Ayers Rock)',
+					title: 'Maxi Map',
 					icon: {
 						...defaultMarkers[`marker-icon-${mapMarker}`],
 						fillColor: mapMarkerFillColor,
@@ -135,7 +136,7 @@ class edit extends MaxiBlockComponent {
 			>
 				<div
 					className='maxi-map-container'
-					id={uniqueID}
+					id={`map-container-${uniqueID}`}
 					style={{ height: '300px' }}
 				></div>
 			</MaxiBlock>,

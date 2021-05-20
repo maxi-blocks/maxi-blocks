@@ -17,8 +17,21 @@ const attributes = {
 		type: 'string',
 		default: __('Map', 'maxi-blocks'),
 	},
+	fullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
 	...attributesData.map,
 	...attributesData.palette,
+	...{
+		...attributesData.size,
+		'height-general': {
+			default: 300,
+		},
+		'height-unit-general': {
+			default: 'px',
+		},
+	},
 	...attributesData.margin,
 	...attributesData.padding,
 	...attributesData.opacity,

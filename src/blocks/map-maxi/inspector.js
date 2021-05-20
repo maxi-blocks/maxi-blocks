@@ -14,6 +14,8 @@ import {
 	BlockStylesControl,
 	CustomLabel,
 	DisplayControl,
+	FancyRadioControl,
+	FullSizeControl,
 	MapControl,
 	OpacityControl,
 	PositionControl,
@@ -37,9 +39,8 @@ const Inspector = props => {
 		uniqueID,
 		isFirstOnHierarchy,
 		blockStyle,
-		defaultBlockStyle,
-		blockStyleBackground,
 		extraClassName,
+		fullWidth,
 	} = attributes;
 
 	return (
@@ -68,6 +69,57 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
+										{
+											label: __(
+												'Width / Height',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													{isFirstOnHierarchy && (
+														<FancyRadioControl
+															label={__(
+																'Full Width',
+																'maxi-blocks'
+															)}
+															selected={fullWidth}
+															options={[
+																{
+																	label: __(
+																		'Yes',
+																		'maxi-blocks'
+																	),
+																	value: 'full',
+																},
+																{
+																	label: __(
+																		'No',
+																		'maxi-blocks'
+																	),
+																	value: 'normal',
+																},
+															]}
+															optionType='string'
+															onChange={fullWidth =>
+																setAttributes({
+																	fullWidth,
+																})
+															}
+														/>
+													)}
+													<FullSizeControl
+														{...getGroupAttributes(
+															attributes,
+															'size'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												</>
+											),
+										},
 										{
 											label: __('Map', 'maxi-blocks'),
 											content: (

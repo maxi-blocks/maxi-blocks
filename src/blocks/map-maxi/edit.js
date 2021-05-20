@@ -136,7 +136,6 @@ class edit extends MaxiBlockComponent {
 				<div
 					className='maxi-map-container'
 					id={`map-container-${uniqueID}`}
-					style={{ height: '300px' }}
 				></div>
 			</MaxiBlock>,
 		];

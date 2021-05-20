@@ -6,10 +6,14 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getMapStyles,
+	getSizeStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
 	const response = {
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -34,7 +38,7 @@ const getMapObject = (props, target) => {
 	const response = {
 		map: getMapStyles(
 			{
-				...getGroupAttributes(props, ['map','palette']),
+				...getGroupAttributes(props, ['map', 'palette']),
 			},
 			target
 		),

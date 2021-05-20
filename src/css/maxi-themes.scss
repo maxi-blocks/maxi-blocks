@@ -201,18 +201,24 @@ body.maxi-blocks--active {
 
 		/* Individual settings per a block type */
 		.maxi-#{$style}[class*='maxi-sc'] {
-			@each $level in $levels {
-				#{$level} {
-					color: var(--maxi-#{$style}-#{$level}-color-general, var(--maxi-#{$style}-#{$level}-color-general-palette));
-					font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
-					font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
-					font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
-					text-transform: var(--maxi-#{$style}-#{$level}-text-transform-general);
-					text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-general);
+			&.maxi-text-block,
+			&.maxi-button-block,
+			.maxi-text-block,
+			.maxi-button-block {
+				@each $level in $levels {
+					#{$level} {
+						color: var(--maxi-#{$style}-#{$level}-color-general, var(--maxi-#{$style}-#{$level}-color-general-palette));
+						font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
+						font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
+						font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
+						text-transform: var(--maxi-#{$style}-#{$level}-text-transform-general);
+						text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-general);
+					}
 				}
 			}
 
-			a:not(.maxi-button-block__button) {
+			&.maxi-text-block a,
+			.maxi-text-block a {
 				color: var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette));
 				&:visited, &:hover, &:active, &:focus {
 			        color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
@@ -332,11 +338,16 @@ body.maxi-blocks--active {
 		body.maxi-blocks--active {
 			@each $style in $styles {
 				.maxi-#{$style} {
-					@each $level in $levels {
-						#{$level} {
-							font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage});
-							line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage});
-							letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$current_responsive_stage});
+					&.maxi-text-block,
+					&.maxi-button-block,
+					.maxi-text-block,
+					.maxi-button-block {
+						@each $level in $levels {
+							#{$level} {
+								font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage});
+								line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage});
+								letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$current_responsive_stage});
+							}
 						}
 					}
 				}

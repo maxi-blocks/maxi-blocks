@@ -2,16 +2,19 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { RadioControl, Dropdown } from '@wordpress/components';
+import { Dropdown } from '@wordpress/components';
 import { Fragment, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import OpacityControl from '../opacity-control';
-import FancyRadioControl from '../fancy-radio-control';
-import BackgroundControl from '../background-control';
-import SizeControl from '../size-control';
+import {
+	RadioControl,
+	OpacityControl,
+	FancyRadioControl,
+	BackgroundControl,
+	SizeControl,
+} from '../../components';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**

@@ -123,9 +123,9 @@ const MaxiStyleCardsTab = ({
 					if (!isNil(colorValue)) return colorValue;
 				} else return defaultValue;
 			}
-			return false;
+			return null;
 		}
-		return false;
+		return null;
 	};
 
 	const parseTypography = newSC => {
@@ -172,16 +172,19 @@ const MaxiStyleCardsTab = ({
 	};
 
 	const onChangeColor = (val, attr, defaultColor) => {
-		if (!val) onChangeDelete(attr, SCStyle);
-		if (val)
+		if (!val) {
+			onChangeDelete(attr, SCStyle);
+			onChangeValue(`${attr}-global`, val, SCStyle);
+		} else {
 			onChangeValue(
 				attr,
-				processAttribute(attr) ||
+				processAttribute(`${attr}-old`) ||
 					getStyleCardAttr(defaultColor, SCStyle, true),
-				SCStyle
+				SCStyle,
+				true,
+				val
 			);
-
-		onChangeValue(`${attr}-global`, val, SCStyle);
+		}
 	};
 
 	if (document.querySelectorAll('.maxi-style-cards__sc-select option'))
@@ -254,6 +257,7 @@ const MaxiStyleCardsTab = ({
 								className={`maxi-style-cards-control__sc__${firstColor}--${SCStyle}`}
 								color={
 									processAttribute(firstColor) ||
+									processAttribute(`${firstColor}-old`) ||
 									getStyleCardAttr(
 										firstColorDefault,
 										SCStyle,
@@ -320,6 +324,7 @@ const MaxiStyleCardsTab = ({
 								className={`maxi-style-cards-control__sc__${secondColor}--${SCStyle}`}
 								color={
 									processAttribute(secondColor) ||
+									processAttribute(`${secondColor}-old`) ||
 									getStyleCardAttr(
 										secondColorDefault,
 										SCStyle,
@@ -380,6 +385,9 @@ const MaxiStyleCardsTab = ({
 									color={
 										processAttribute(
 											`h${item}-color-general`
+										) ||
+										processAttribute(
+											`h${item}-color-general-old`
 										) ||
 										getStyleCardAttr(
 											'color-5',

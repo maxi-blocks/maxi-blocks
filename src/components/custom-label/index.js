@@ -14,11 +14,6 @@ import TextControl from '../text-control';
 import classnames from 'classnames';
 
 /**
- * Styles
- */
-import './editor.scss';
-
-/**
  * Component
  */
 const CustomLabel = props => {

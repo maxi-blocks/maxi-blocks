@@ -15,6 +15,7 @@ const {
 	getNextBlockClientId,
 	getPreviousBlockClientId,
 	getBlockAttributes,
+	getBlock,
 } = select('core/block-editor');
 
 const { removeBlock, updateBlockAttributes } = dispatch('core/block-editor');
@@ -25,8 +26,9 @@ export const onMerge = (props, forward) => {
 
 	if (forward) {
 		const nextBlockClientId = getNextBlockClientId(clientId);
+		const blockName = getBlock(nextBlockClientId)?.name;
 
-		if (nextBlockClientId) {
+		if (nextBlockClientId && blockName === 'maxi-blocks/text-maxi') {
 			const nextBlockAttributes = getBlockAttributes(nextBlockClientId);
 			const nextBlockContent = nextBlockAttributes.content;
 			const newBlockIsList = nextBlockAttributes.isList;
@@ -46,8 +48,9 @@ export const onMerge = (props, forward) => {
 		}
 	} else {
 		const previousBlockClientId = getPreviousBlockClientId(clientId);
+		const blockName = getBlock(previousBlockClientId)?.name;
 
-		if (!previousBlockClientId) {
+		if (!previousBlockClientId || blockName !== 'maxi-blocks/text-maxi') {
 			removeBlock(clientId);
 		} else {
 			const previousBlockAttributes = getBlockAttributes(

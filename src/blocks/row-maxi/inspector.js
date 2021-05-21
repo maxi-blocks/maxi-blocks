@@ -604,6 +604,7 @@ const Inspector = props => {
 																			breakpoint={
 																				deviceType
 																			}
+																			isHover
 																			clientId={
 																				clientId
 																			}

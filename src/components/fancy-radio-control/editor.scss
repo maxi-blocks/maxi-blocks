@@ -6,7 +6,7 @@
 	margin-bottom: 10px;
 
 	&--full-width {
-		.components-base-control {
+		.maxi-base-control {
 			&__field {
 				flex-wrap: wrap;
 			}
@@ -22,14 +22,14 @@
 	.maxi-display-control {
 		width: 100%;
 	}
-	.components-base-control {
-		.components-base-control__field {
-			.components-base-control__label {
+	.maxi-base-control {
+		.maxi-base-control__field {
+			.maxi-base-control__label {
 				flex: 2;
 			}
 		}
 	}
-	.components-radio-control {
+	.maxi-radio-control {
 		width: 100%;
 
 		&__option {
@@ -43,6 +43,8 @@
 			flex: 1;
 			border: 2px solid #dddfe1;
 			border-right: 0;
+			margin-bottom: 0;
+
 			@at-root .rtl #{&} {
 				border-right: 2px solid #dddfe1;
 				border-left: 0;
@@ -102,7 +104,7 @@
 	margin-bottom: 5px;
 
 	&__border {
-		.components-radio-control {
+		.maxi-radio-control {
 			&__option {
 				label {
 					border: 2px solid #dddfe1;
@@ -112,10 +114,10 @@
 			}
 		}
 	}
-	.components-radio-control {
+	.maxi-radio-control {
 		width: 100%;
 
-		.components-base-control__field {
+		.maxi-base-control__field {
 			flex-wrap: wrap;
 		}
 		&__option {

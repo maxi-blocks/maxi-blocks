@@ -4,12 +4,12 @@
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { ResponsiveWrapper, Spinner } from '@wordpress/components';
+import { ResponsiveWrapper } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import Button from '../button';
+import { Spinner, Button } from '../../components';
 
 /**
  * External dependencies

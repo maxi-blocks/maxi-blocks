@@ -35,6 +35,7 @@ class edit extends MaxiBlockComponent {
 
 		return {
 			[uniqueID]: {
+				uniqueID,
 				...getGroupAttributes(this.props.attributes, 'map'),
 			},
 		};
@@ -42,7 +43,21 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes } = this.props;
-		const { uniqueID, parentBlockStyle } = attributes;
+		const {
+			uniqueID,
+			parentBlockStyle,
+			'map-api-key': mapApiKey,
+			'map-latitude': mapLatitude,
+			'map-longitude': mapLongitude,
+			'map-zoom': mapZoom,
+			'map-marker': mapMarker,
+			'map-marker-opacity': mapMarkerOpacity,
+			'map-marker-scale': mapMarkerScale,
+			'map-marker-fill-color': mapMarkerFillColor,
+			'map-marker-stroke-color': mapMarkerStrokeColor,
+			'map-marker-text': mapMarkerText,
+			'map-marker-address': mapMarkerAddress,
+		} = attributes;
 
 		const paletteClasses = getPaletteClasses(
 			attributes,
@@ -50,18 +65,6 @@ class edit extends MaxiBlockComponent {
 			'maxi-blocks/map-maxi',
 			parentBlockStyle
 		);
-
-		const mapApiKey = attributes['map-api-key'];
-		const mapLatitude = +attributes['map-latitude'];
-		const mapLongitude = +attributes['map-longitude'];
-		const mapZoom = +attributes['map-zoom'];
-		const mapMarker = attributes['map-marker'];
-		const mapMarkerOpacity = attributes['map-marker-opacity'];
-		const mapMarkerScale = attributes['map-marker-scale'];
-		const mapMarkerFillColor = attributes['map-marker-fill-color'];
-		const mapMarkerStrokeColor = attributes['map-marker-stroke-color'];
-		const mapMarkerText = attributes['map-marker-text'];
-		const mapMarkerAddress = attributes['map-marker-address'];
 
 		const loader = new Loader({
 			apiKey: mapApiKey,
@@ -72,16 +75,13 @@ class edit extends MaxiBlockComponent {
 		loader
 			.load()
 			.then(() => {
-				return new google.maps.Map(
-					document.getElementById(`map-container-${uniqueID}`),
-					{
-						center: {
-							lat: mapLatitude,
-							lng: mapLongitude,
-						},
-						zoom: mapZoom,
-					}
-				);
+				return new google.maps.Map(this.blockRef.current, {
+					center: {
+						lat: +mapLatitude,
+						lng: +mapLongitude,
+					},
+					zoom: mapZoom,
+				});
 			})
 			.then(map => {
 				const contentTitleString = `<h3 class="map-marker-info-window__title">${mapMarkerText}</h3>`;
@@ -97,7 +97,7 @@ class edit extends MaxiBlockComponent {
 				});
 
 				const marker = new google.maps.Marker({
-					position: { lat: mapLatitude, lng: mapLongitude },
+					position: { lat: +mapLatitude, lng: +mapLongitude },
 					map,
 					icon: {
 						...defaultMarkers[`marker-icon-${mapMarker}`],

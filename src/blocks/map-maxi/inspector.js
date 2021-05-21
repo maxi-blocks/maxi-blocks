@@ -303,7 +303,6 @@ const Inspector = props => {
 															val,
 													})
 												}
-												breakpoint={deviceType}
 											/>
 										),
 									},

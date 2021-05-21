@@ -7,7 +7,7 @@ import { TextControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { SizeControl, ColorControl } from '../../components';
+import { SizeControl, ColorControl, OpacityControl } from '../../components';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -93,19 +93,13 @@ const MapControl = props => {
 					</div>
 				))}
 			</div>
-			<SizeControl
+			<OpacityControl
 				label={__('Marker Opacity', 'maxi-blocks')}
-				disableUnit
-				min={0.1}
-				max={1}
-				initial={1}
-				step={0.1}
-				value={props['map-marker-opacity']}
-				onChangeValue={val => onChange({ 'map-marker-opacity': val })}
-				onReset={() =>
+				opacity={props['map-marker-opacity']}
+				defaultOpacity={getDefaultAttribute('map-marker-opacity')}
+				onChange={val =>
 					onChange({
-						'map-marker-opacity':
-							getDefaultAttribute('map-marker-opacity'),
+						['map-marker-opacity']: val,
 					})
 				}
 			/>

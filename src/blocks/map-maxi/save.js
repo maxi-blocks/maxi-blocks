@@ -33,7 +33,7 @@ const save = props => {
 			<div
 				className='maxi-map-container'
 				id={`map-container-${uniqueID}`}
-			></div>
+			/>
 		</MaxiBlock>
 	);
 };

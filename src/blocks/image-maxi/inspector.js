@@ -1122,7 +1122,6 @@ const Inspector = props => {
 															[`opacity-${deviceType}`]: val,
 														})
 													}
-													breakpoint={deviceType}
 												/>
 											),
 										},

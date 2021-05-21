@@ -60,64 +60,60 @@ const getDeviceType = () => {
 };
 
 // Map
-if (maxi_custom_data.custom_data) {
-	const mapElems = document.querySelectorAll('.maxi-map-container');
+Object.values(maxi_custom_data.custom_data).map(item => {
+	const script = document.createElement('script');
+	script.src = `https://maps.googleapis.com/maps/api/js?key=${item['map-api-key']}&callback=initMap`;
+	script.async = true;
 
-	mapElems.forEach(function (elem, id) {
-		const mapID = Object.keys(maxi_custom_data.custom_data)[id];
-		const mapData = maxi_custom_data.custom_data[mapID];
-
-		var script = document.createElement('script');
-		script.src = `https://maps.googleapis.com/maps/api/js?key=${mapData['map-api-key']}&callback=initMap`;
-		script.async = true;
-
-		window.initMap = function () {
-			const mapCordinate = {
-				lat: +mapData['map-latitude'],
-				lng: +mapData['map-longitude'],
-			};
-
-			const map = new google.maps.Map(document.getElementById(elem.id), {
-				zoom: mapData['map-zoom'],
-				center: mapCordinate,
-			});
-
-			const contentTitleString = `<h3 class="map-marker-info-window__title">${mapData['map-marker-text']}</h3>`;
-			const contentAddressString = `<address class="map-marker-info-window__address">${mapData['map-marker-address']}</address>`;
-			const contentString = `<div class="map-marker-info-window">${
-				mapData['map-marker-text'] !== '' ? contentTitleString : ''
-			}${
-				mapData['map-marker-address'] !== '' ? contentAddressString : ''
-			}</div>`;
-
-			const infowindow = new google.maps.InfoWindow({
-				content: contentString,
-			});
-
-			const marker = new google.maps.Marker({
-				position: mapCordinate,
-				map,
-				icon: {
-					...defaultMarkers[`marker-icon-${mapData['map-marker']}`],
-					fillColor: mapData['map-marker-fill-color'],
-					fillOpacity: mapData['map-marker-opacity'],
-					strokeWeight: 2,
-					strokeColor: mapData['map-marker-stroke-color'],
-					rotation: 0,
-					scale: mapData['map-marker-scale'],
-				},
-			});
-
-			marker.addListener('click', () => {
-				(mapData['map-marker-text'] !== '' ||
-					mapData['map-marker-address'] !== '') &&
-					infowindow.open(map, marker);
-			});
+	window.initMap = function () {
+		const mapCordinate = {
+			lat: +item['map-latitude'],
+			lng: +item['map-longitude'],
 		};
 
-		document.head.appendChild(script);
-	});
-}
+		const map = new google.maps.Map(
+			document.getElementById(`map-container-${item.uniqueID}`),
+			{
+				zoom: item['map-zoom'],
+				center: mapCordinate,
+			}
+		);
+
+		const contentTitleString = `<h3 class="map-marker-info-window__title">${item['map-marker-text']}</h3>`;
+		const contentAddressString = `<address class="map-marker-info-window__address">${item['map-marker-address']}</address>`;
+		const contentString = `<div class="map-marker-info-window">${
+			item['map-marker-text'] !== '' ? contentTitleString : ''
+		}${
+			item['map-marker-address'] !== '' ? contentAddressString : ''
+		}</div>`;
+
+		const infowindow = new google.maps.InfoWindow({
+			content: contentString,
+		});
+
+		const marker = new google.maps.Marker({
+			position: mapCordinate,
+			map,
+			icon: {
+				...defaultMarkers[`marker-icon-${item['map-marker']}`],
+				fillColor: item['map-marker-fill-color'],
+				fillOpacity: item['map-marker-opacity'],
+				strokeWeight: 2,
+				strokeColor: item['map-marker-stroke-color'],
+				rotation: 0,
+				scale: item['map-marker-scale'],
+			},
+		});
+
+		marker.addListener('click', () => {
+			(item['map-marker-text'] !== '' ||
+				item['map-marker-address'] !== '') &&
+				infowindow.open(map, marker);
+		});
+	};
+
+	document.head.appendChild(script);
+});
 
 // Motion Effects
 const motionElems = document.querySelectorAll('.maxi-motion-effect');

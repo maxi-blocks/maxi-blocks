@@ -23,7 +23,7 @@ const map = {
 	},
 	'map-marker-opacity': {
 		type: 'number',
-		default: 1,
+		default: 100,
 	},
 	'map-marker-scale': {
 		type: 'number',

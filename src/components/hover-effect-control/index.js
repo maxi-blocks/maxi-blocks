@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { TextareaControl } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
 
 /**
@@ -16,6 +15,7 @@ import Icon from '../icon';
 import RangeSliderControl from '../range-slider-control';
 import SelectControl from '../select-control';
 import TypographyControl from '../typography-control';
+import TextareaControl from '../textarea-control';
 
 /**
  * External dependencies
@@ -247,7 +247,8 @@ const HoverEffectControl = props => {
 									)}
 									onChange={val =>
 										onChange({
-											[`hover-basic-${props['hover-basic-effect-type']}-value`]: val,
+											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
+												val,
 										})
 									}
 									min={0}

@@ -84,6 +84,14 @@ body {
 			box-shadow: none !important;
 		}
 	}
+	&:hover {
+		.block-list-appender {
+			.block-editor-button-block-appender {
+				visibility: visible !important;
+				opacity: 1 !important;
+			}
+		}
+	}
 	.block-list-appender {
 		max-width: none;
 
@@ -102,11 +110,6 @@ body {
 			padding: 0;
 			background: #1e1e1e;
 			z-index: 9;
-
-			&:hover {
-				visibility: visible;
-				opacity: 1;
-			}
 
 			&:hover,
 			&:focus {

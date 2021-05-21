@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -59,7 +58,7 @@ const Inspector = props => {
 					{
 						label: __('Style', 'maxi-blocks'),
 						content: (
-							<Fragment>
+							<>
 								<div className='maxi-tab-content__box'>
 									<CustomLabel
 										customLabel={customLabel}
@@ -80,7 +79,7 @@ const Inspector = props => {
 										deviceType === 'general' && {
 											label: __('Line', 'maxi-blocks'),
 											content: (
-												<Fragment>
+												<>
 													<FancyRadioControl
 														fullWidthMode
 														label={__(
@@ -213,7 +212,7 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														clientId={clientId}
 													/>
-												</Fragment>
+												</>
 											),
 										},
 										{
@@ -222,7 +221,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<Fragment>
+												<>
 													{isFirstOnHierarchy && (
 														<FancyRadioControl
 															label={__(
@@ -266,7 +265,7 @@ const Inspector = props => {
 														}
 														breakpoint={deviceType}
 													/>
-												</Fragment>
+												</>
 											),
 										},
 										deviceType === 'general' && {
@@ -284,7 +283,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<BackgroundControl
 																		{...getGroupAttributes(
 																			attributes,
@@ -307,7 +306,7 @@ const Inspector = props => {
 																			clientId
 																		}
 																	/>
-																</Fragment>
+																</>
 															),
 														},
 														{
@@ -316,7 +315,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Background Hover',
@@ -378,7 +377,7 @@ const Inspector = props => {
 																			}
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -428,7 +427,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Box Shadow Hover',
@@ -488,7 +487,7 @@ const Inspector = props => {
 																			}
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -501,7 +500,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<Fragment>
+												<>
 													<AxisControl
 														{...getGroupAttributes(
 															attributes,
@@ -533,18 +532,18 @@ const Inspector = props => {
 														target='margin'
 														breakpoint={deviceType}
 													/>
-												</Fragment>
+												</>
 											),
 										},
 									]}
 								/>
-							</Fragment>
+							</>
 						),
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
-							<Fragment>
+							<>
 								<AccordionControl
 									isPrimary
 									items={[
@@ -714,7 +713,7 @@ const Inspector = props => {
 										},
 									]}
 								/>
-							</Fragment>
+							</>
 						),
 					},
 				]}

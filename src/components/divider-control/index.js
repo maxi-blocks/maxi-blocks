@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -67,7 +66,7 @@ const DividerControl = props => {
 	};
 
 	return (
-		<Fragment>
+		<>
 			<DefaultStylesControl
 				items={[
 					{
@@ -173,7 +172,7 @@ const DividerControl = props => {
 				)}
 			{props['divider-border-style'] !== 'none' &&
 				lineOrientation === 'horizontal' && (
-					<Fragment>
+					<>
 						<SizeControl
 							label={__('Line Size', 'maxi-blocks')}
 							unit={props['divider-width-unit']}
@@ -222,11 +221,11 @@ const DividerControl = props => {
 							}
 							minMaxSettings={minMaxSettings}
 						/>
-					</Fragment>
+					</>
 				)}
 			{props['divider-border-style'] !== 'none' &&
 				lineOrientation === 'vertical' && (
-					<Fragment>
+					<>
 						<RangeSliderControl
 							label={__('Size', 'maxi-blocks')}
 							defaultValue={getDefaultAttribute('height')}
@@ -255,9 +254,9 @@ const DividerControl = props => {
 								'border-right-width'
 							)}
 						/>
-					</Fragment>
+					</>
 				)}
-		</Fragment>
+		</>
 	);
 };
 

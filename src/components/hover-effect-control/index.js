@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { TextareaControl } from '@wordpress/components';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -172,7 +171,7 @@ const HoverEffectControl = props => {
 				/>
 			)}
 			{props['hover-type'] === 'basic' && (
-				<Fragment>
+				<>
 					<SelectControl
 						label={__('Effect Type', 'maxi-blocks')}
 						value={props['hover-basic-effect-type']}
@@ -233,7 +232,7 @@ const HoverEffectControl = props => {
 							props['hover-basic-effect-type'] === 'rotate' ||
 							props['hover-basic-effect-type'] === 'blur' ||
 							props['hover-basic-effect-type'] === 'slide') && (
-							<Fragment>
+							<>
 								<RangeSliderControl
 									label={__('Amount', 'maxi-blocks')}
 									className={classes}
@@ -258,12 +257,12 @@ const HoverEffectControl = props => {
 										`hover-basic-${props['hover-basic-effect-type']}-value`
 									)}
 								/>
-							</Fragment>
+							</>
 						)}
-				</Fragment>
+				</>
 			)}
 			{props['hover-type'] === 'text' && (
-				<Fragment>
+				<>
 					<SelectControl
 						label={__('Animation Type', 'maxi-blocks')}
 						value={props['hover-text-effect-type']}
@@ -506,7 +505,7 @@ const HoverEffectControl = props => {
 							optionType='string'
 						/>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { RawHTML, Fragment } from '@wordpress/element';
+import { RawHTML } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -33,9 +33,9 @@ const BackgroundContent = props => {
 	if (layers) layers.sort((a, b) => a.id - b.id);
 
 	return (
-		<Fragment>
+	>
 			{!props[`background-layers-status${isHover ? '-hover' : ''}`] ? (
-				<Fragment>
+			>
 					{(props[
 						`background-active-media${isHover ? '-hover' : ''}`
 					] === 'color' ||
@@ -94,7 +94,7 @@ const BackgroundContent = props => {
 								}
 							</RawHTML>
 						)}
-				</Fragment>
+				>
 			) : (
 				layers &&
 				layers.length > 0 &&
@@ -147,7 +147,7 @@ const BackgroundContent = props => {
 					return null;
 				})
 			)}
-		</Fragment>
+		>
 	);
 };
 

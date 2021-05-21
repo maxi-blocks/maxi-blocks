@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -24,7 +23,7 @@ const GradientLayer = props => {
 	const gradientOptions = cloneDeep(props.gradientOptions);
 
 	return (
-		<Fragment>
+		<>
 			<GradientControl
 				label={__('Background', 'maxi-blocks')}
 				gradient={
@@ -85,7 +84,7 @@ const GradientLayer = props => {
 					}
 				/>
 			)}
-		</Fragment>
+		</>
 	);
 };
 

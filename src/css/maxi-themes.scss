@@ -4,7 +4,7 @@
 // @import './maxi-themes-default.scss';
 
 $styles: 'dark', 'light';
-$levels: 'p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6';
+$levels: 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6';
 $responsive_sizes: 'general', 'xxl', 'xl', 'l', 'm', 's', 'xs';
 $responsive_breakpoints: 1921, 1920, 1366, 1024, 768, 480;
 $responsive_width: '';
@@ -97,6 +97,12 @@ body.maxi-blocks--active {
 					&.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content,
 					.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content {
 						--maxi-#{$style}-#{$level}-color-general-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				li {
+					&.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content,
+					.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content {
+						--maxi-#{$style}-p-color-general-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				&.maxi-sc-#{$style}-svgColorFill-color-#{$color_number},
@@ -201,18 +207,34 @@ body.maxi-blocks--active {
 
 		/* Individual settings per a block type */
 		.maxi-#{$style}[class*='maxi-sc'] {
-			@each $level in $levels {
-				#{$level} {
-					color: var(--maxi-#{$style}-#{$level}-color-general, var(--maxi-#{$style}-#{$level}-color-general-palette));
-					font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
-					font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
-					font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
-					text-transform: var(--maxi-#{$style}-#{$level}-text-transform-general);
-					text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-general);
+			&.maxi-text-block,
+			&.maxi-button-block,
+			.maxi-text-block,
+			.maxi-button-block {
+				@each $level in $levels {
+					#{$level} {
+						color: var(--maxi-#{$style}-#{$level}-color-general, var(--maxi-#{$style}-#{$level}-color-general-palette));
+						font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
+						font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
+						font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
+						text-transform: var(--maxi-#{$style}-#{$level}-text-transform-general);
+						text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-general);
+					}
 				}
 			}
 
-			a:not(.maxi-button-block__button) {
+			&.maxi-text-block li,
+			.maxi-text-block li {
+				color: var(--maxi-#{$style}-p-color-general, var(--maxi-#{$style}-p-color-general-palette));
+				font-family: var(--maxi-#{$style}-p-font-family-general);
+				font-weight: var(--maxi-#{$style}-p-font-weight-general);
+				font-style: var(--maxi-#{$style}-p-font-style-general);
+				text-transform: var(--maxi-#{$style}-p-text-transform-general);
+				text-decoration: var(--maxi-#{$style}-p-text-decoration-general);
+			}
+
+			&.maxi-text-block a,
+			.maxi-text-block a {
 				color: var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette));
 				&:visited, &:hover, &:active, &:focus {
 			        color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
@@ -281,13 +303,27 @@ body.maxi-blocks--active {
 			.edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="#{$responsive_size}"] {
 				.maxi-block--backend {
 					&.maxi-#{$style} {
-						@each $level in $levels {
-							#{$level} {
-								&.maxi-text-block__content {
-									font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size});
-									line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size});
-									letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$responsive_size});
+						&.maxi-text-block,
+						&.maxi-button-block,
+						.maxi-text-block,
+						.maxi-button-block {
+							@each $level in $levels {
+								#{$level} {
+									&.maxi-text-block__content {
+										font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size});
+										line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size});
+										letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$responsive_size});
+									}
 								}
+							}
+						}
+
+						&.maxi-text-block li,
+						.maxi-text-block li {
+							&.maxi-text-block__content {
+								font-size: var(--maxi-#{$style}-p-font-size-#{$responsive_size});
+								line-height: var(--maxi-#{$style}-p-line-height-#{$responsive_size});
+								letter-spacing: var(--maxi-#{$style}-p-letter-spacing-#{$responsive_size});
 							}
 						}
 					}
@@ -332,12 +368,23 @@ body.maxi-blocks--active {
 		body.maxi-blocks--active {
 			@each $style in $styles {
 				.maxi-#{$style} {
-					@each $level in $levels {
-						#{$level} {
-							font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage});
-							line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage});
-							letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$current_responsive_stage});
+					&.maxi-text-block,
+					&.maxi-button-block,
+					.maxi-text-block,
+					.maxi-button-block {
+						@each $level in $levels {
+							#{$level} {
+								font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage});
+								line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage});
+								letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$current_responsive_stage});
+							}
 						}
+					}
+					&.maxi-text-block li,
+					.maxi-text-block li {
+						font-size: var(--maxi-#{$style}-p-font-size-#{$current_responsive_stage});
+						line-height: var(--maxi-#{$style}-p-line-height-#{$current_responsive_stage});
+						letter-spacing: var(--maxi-#{$style}-p-letter-spacing-#{$current_responsive_stage});
 					}
 				}
 				.maxi-button-block__button {

@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { RadioControl } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
@@ -12,6 +11,7 @@ import Button from '../../../button';
 import openSidebar from '../../../../extensions/dom';
 import RangeSliderControl from '../../../range-slider-control';
 import SelectControl from '../../../select-control';
+import RadioControl from '../../../radio-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**

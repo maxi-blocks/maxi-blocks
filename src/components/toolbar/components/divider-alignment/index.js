@@ -2,7 +2,6 @@
  * Internal dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { RadioControl } from '@wordpress/components';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -10,6 +9,7 @@ import ToolbarPopover from '../toolbar-popover';
  */
 import Icon from '../../../icon';
 import SelectControl from '../../../select-control';
+import RadioControl from '../../../radio-control';
 
 /**
  * Styles & Icons

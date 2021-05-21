@@ -21,7 +21,6 @@ import {
 	DisplayControl,
 	EntranceAnimationControl,
 	FancyRadioControl,
-	FontIconControl,
 	FullSizeControl,
 	Icon,
 	MotionControl,
@@ -256,7 +255,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'typography-status-hover': val,
+																					'typography-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -375,7 +375,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover': val,
+																					'background-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -488,7 +489,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'border-status-hover': val,
+																					'border-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -547,16 +549,14 @@ const Inspector = props => {
 																		'No',
 																		'maxi-blocks'
 																	),
-																	value:
-																		'normal',
+																	value: 'normal',
 																},
 																{
 																	label: __(
 																		'Yes',
 																		'maxi-blocks'
 																	),
-																	value:
-																		'full',
+																	value: 'full',
 																},
 															]}
 															optionType='string'
@@ -653,7 +653,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': val,
+																					'box-shadow-status-hover':
+																						val,
 																				}
 																			)
 																		}

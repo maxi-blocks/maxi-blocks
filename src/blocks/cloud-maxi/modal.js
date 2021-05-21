@@ -12,7 +12,8 @@ import CloudLibrary from '../../editor/library';
  */
 import { __ } from '@wordpress/i18n';
 
-import { Component, Fragment } from '@wordpress/element';import { Button, Modal } from '@wordpress/components';
+import { Component } from '@wordpress/element';
+import { Button, Modal } from '@wordpress/components';
 
 class MaxiModal extends Component {
 	state = {
@@ -31,9 +32,7 @@ class MaxiModal extends Component {
 		};
 
 		return (
-			<Fragment
-				key={`maxi-block-library__fragment--${this.props.clientId}`}
-			>
+			<div key={`maxi-block-library__fragment--${this.props.clientId}`}>
 				{/* Launch the layout modal window */}
 				{/* <Button
 					 key={`maxi-block-library__modal-button--${this.props.clientId}`}
@@ -75,7 +74,7 @@ class MaxiModal extends Component {
 						 )}
 					 </MaxiContext.Consumer>
 				 ) : null} */}
-				<Fragment
+				<div
 					key={`maxi-block-library__fragment--${this.props.clientId}`}
 				>
 					{/* Launch the layout modal window */}
@@ -95,8 +94,8 @@ class MaxiModal extends Component {
 							onClose={() => this.setState({ isOpen2: !isOpen2 })}
 						/>
 					)}
-				</Fragment>
-			</Fragment>
+				</div>
+			</div>
 		);
 	}
 }

@@ -33,7 +33,7 @@ const BackgroundContent = props => {
 	if (layers) layers.sort((a, b) => a.id - b.id);
 
 	return (
-	>
+		<>
 			{!props[`background-layers-status${isHover ? '-hover' : ''}`] ? (
 			>
 					{(props[

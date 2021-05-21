@@ -253,7 +253,6 @@ const BoxShadowControl = props => {
 									'box-shadow-blur',
 									breakpoint
 								)}
-								props
 								onChange={val => {
 									!isNil(val)
 										? onChangeValue('box-shadow-blur', val)

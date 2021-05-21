@@ -5,13 +5,14 @@ import { __ } from '@wordpress/i18n';
 
 import { compose } from '@wordpress/compose';
 import { RawHTML } from '@wordpress/element';
-import { Button, Modal } from '@wordpress/components';
+import { Button } from '@wordpress/components';
 import { withSelect, withDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
+import CloudLibrary from '../../editor/library';
 import { MaxiBlockComponent, Toolbar } from '../../components';
 import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import MaxiBlock, {
@@ -24,7 +25,6 @@ import getStyles from './styles';
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import Iframe from 'react-iframe';
 
 /**
  * Icons
@@ -91,12 +91,6 @@ class edit extends MaxiBlockComponent {
 			});
 		};
 
-		const onClose = () => {
-			this.setState({
-				isOpenSvgModal: false,
-			});
-		};
-
 		const { isOpenSvgModal } = this.state;
 
 		return [
@@ -133,31 +127,13 @@ class edit extends MaxiBlockComponent {
 						</>
 					)}
 					{isOpenSvgModal && (
-						<Modal
-							key={`maxi-block-library__modal--${clientId}`}
-							className={`maxi-block-library__modal maxi-block-id-${clientId}`}
-							title={__(
-								'Maxi Cloud Icons Library',
-								'maxi-blocks'
-							)}
-							shouldCloseOnEsc
-							shouldCloseOnClickOutside={false}
-							onRequestClose={onClose}
-						>
-							<Iframe
-								url='https://ge-library.dev700.com/svg-search/'
-								width='100%'
-								height='90%'
-								id='maxi-block-library__modal-iframe'
-								className='maxi-block-library__modal-iframe'
-								display='initial'
-								position='relative'
-							/>
-
-							<div className='maxi-block-library__modal__loading_message maxi-block__item--hidden'>
-								<p>{__('Saving…', 'maxi-blocks')}</p>
-							</div>
-						</Modal>
+						<CloudLibrary
+							onClose={() =>
+								this.setState({
+									isOpenSvgModal: !isOpenSvgModal,
+								})
+							}
+						/>
 					)}
 					{!isEmpty(attributes.content) && (
 						<>

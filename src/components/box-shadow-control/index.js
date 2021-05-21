@@ -2,7 +2,6 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -140,7 +139,7 @@ const BoxShadowControl = props => {
 				]}
 			/>
 			{!getIsActive(boxShadowNone, 'none') && (
-				<Fragment>
+				<>
 					<ColorControl
 						label={__('Box Shadow', 'maxi-blocks')}
 						className='maxi-shadow-control__color'
@@ -174,7 +173,7 @@ const BoxShadowControl = props => {
 						clientId={clientId}
 					/>
 					{!disableAdvanced && (
-						<Fragment>
+						<>
 							<RangeSliderControl
 								label={__('Horizontal', 'maxi-blocks')}
 								className='maxi-shadow-control__horizontal'
@@ -306,9 +305,9 @@ const BoxShadowControl = props => {
 									}`
 								)}
 							/>
-						</Fragment>
+						</>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

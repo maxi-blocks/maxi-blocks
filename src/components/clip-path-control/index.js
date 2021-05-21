@@ -86,7 +86,7 @@ const ClipPathOption = props => {
 			<BaseControl
 				label={getLabel()}
 				className='maxi-clip-path-controller__item'
-			<>
+			>
 				<div className='maxi-clip-path-controller__settings'>
 					<input
 						type='number'
@@ -320,7 +320,7 @@ const ClipPathControl = props => {
 				}}
 			/>
 			{!!hasClipPath && (
-			<>
+				<>
 					<FancyRadioControl
 						label={__('Use Custom', 'maxi-blocks')}
 						selected={isCustom}
@@ -413,7 +413,7 @@ const ClipPathControl = props => {
 								/>
 							)}
 							{customMode === 'data' && (
-							<>
+								<>
 									{Object.entries(
 										clipPathOptions.content
 									).map(([key, handle]) => {

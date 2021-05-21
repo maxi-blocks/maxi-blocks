@@ -35,7 +35,7 @@ const BackgroundContent = props => {
 	return (
 		<>
 			{!props[`background-layers-status${isHover ? '-hover' : ''}`] ? (
-			>
+				<>
 					{(props[
 						`background-active-media${isHover ? '-hover' : ''}`
 					] === 'color' ||
@@ -94,7 +94,7 @@ const BackgroundContent = props => {
 								}
 							</RawHTML>
 						)}
-				>
+				</>
 			) : (
 				layers &&
 				layers.length > 0 &&
@@ -147,7 +147,7 @@ const BackgroundContent = props => {
 					return null;
 				})
 			)}
-		>
+		</>
 	);
 };
 

@@ -42,6 +42,7 @@ export { default as NumberCounterControl } from './number-counter-control';
 export { default as OpacityControl } from './opacity-control';
 export { default as ParallaxControl } from './parallax-control';
 export { default as PositionControl } from './position-control';
+export { default as RadioControl } from './radio-control';
 export { default as RangeSliderControl } from './range-slider-control';
 export { default as ResponsiveControl } from './responsive-control';
 export { default as SelectControl } from './select-control';

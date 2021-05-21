@@ -8,7 +8,8 @@ import ToolbarPopover from '../toolbar-popover';
  * Internal dependencies
  */
 import Icon from '../../../icon';
-import { SelectControl, RadioControl } from '../../../../components';
+import SelectControl from '../../../select-control';
+import RadioControl from '../../../radio-control';
 
 /**
  * Styles & Icons

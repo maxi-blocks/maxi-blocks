@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { RadioControl } from '../../components';
+import RadioControl from '../radio-control';
 
 /**
  * External dependencies

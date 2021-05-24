@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Dropdown } from '@wordpress/components';
 import { Fragment, useState } from '@wordpress/element';
 
 /**
@@ -14,6 +13,7 @@ import {
 	FancyRadioControl,
 	BackgroundControl,
 	SizeControl,
+	Dropdown,
 } from '../../components';
 import { getDefaultAttribute } from '../../extensions/styles';
 

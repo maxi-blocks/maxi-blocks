@@ -18,6 +18,7 @@ const allowedBlocks = [
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/text-maxi',
 	'maxi-blocks/divider-maxi',
+	'maxi-blocks/map-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',

@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { Modal } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { useState, Fragment } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -53,7 +53,7 @@ const CloudLibrary = props => {
 			onRequestClose={onClose}
 		>
 			{(isEmpty(cloudData) && <LibrarySpinner />) || (
-				<Fragment>
+				<>
 					<LibraryToolbar
 						type={type}
 						onChange={type => setType(type)}
@@ -63,7 +63,7 @@ const CloudLibrary = props => {
 						type={type}
 						onRequestClose={onClose}
 					/>
-				</Fragment>
+				</>
 			)}
 		</Modal>
 	);

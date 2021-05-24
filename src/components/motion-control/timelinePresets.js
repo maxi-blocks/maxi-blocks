@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { Fragment, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
@@ -78,7 +78,7 @@ const TimelinePresets = props => {
 				onChange={val => onChange({ 'motion-preset-status': val })}
 			/>
 			{props['motion-preset-status'] && (
-				<Fragment>
+				
 					{getPresetsOptions().length > 1 && (
 						<div className='maxi-motion-control__preset__load'>
 							<SelectControl
@@ -172,7 +172,7 @@ const TimelinePresets = props => {
 							{__('Save Preset', 'maxi-blocks')}
 						</Button>
 					</div>
-				</Fragment>
+				<
 			)}
 			<hr />
 		</div>

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { compose } from '@wordpress/compose';
-import { Fragment, createRef } from '@wordpress/element';
+import { createRef } from '@wordpress/element';
 import { withSelect, withDispatch } from '@wordpress/data';
 
 /**
@@ -118,7 +118,7 @@ class edit extends MaxiBlockComponent {
 			<RowContext.Consumer key={`column-content-${uniqueID}`}>
 				{context => {
 					return (
-						<Fragment>
+						<>
 							<Inspector
 								key={`block-settings-${uniqueID}`}
 								rowPattern={context.rowPattern}
@@ -194,7 +194,7 @@ class edit extends MaxiBlockComponent {
 									/>
 								</MaxiBlock>
 							</BlockResizer>
-						</Fragment>
+						</>
 					);
 				}}
 			</RowContext.Consumer>,

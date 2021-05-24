@@ -12,6 +12,7 @@ describe('font level', () => {
 	});
 	it('checking the font family selector', async () => {
 		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing font family');
 		const accordionPanel = await openSidebar(page, 'typography');
 		const fontFamilySelector = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__font-family'

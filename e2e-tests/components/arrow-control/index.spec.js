@@ -6,9 +6,8 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
-// import { getBlockAttributes } from '../../utils';
-import openSidebar from '../../utils/openSidebar';
 import { getBlockAttributes } from '../../utils';
+import openSidebar from '../../utils/openSidebar';
 
 describe('arrow control', () => {
 	beforeEach(async () => {
@@ -23,24 +22,19 @@ describe('arrow control', () => {
 		const accordionPanel = await openSidebar(page, 'arrow');
 
 		// Show arrow settings
-		await accordionPanel.$eval(
-			'.maxi-fancy-radio-control .components-radio-control__option input',
-			button => button.click()
+		const showArrow = await accordionPanel.$$eval(
+			'.maxi-accordion-control__item__panel .maxi-arrow-control .components-base-control__field label',
+			button => button[0].click()
 		);
 		// Click on arrow position
-		const positionWrapper = Array.from(
-			await accordionPanel.$$('.maxi-fancy-radio-control')
-		)[1];
-		debugger;
+		const positionWrapper = showArrow.$$('.maxi-fancy-radio-control input');
 
-		const valuesSettings = await positionWrapper.$$(
-			'.components-radio-control__option'
-		);
+		debugger;
 
 		const values = ['top', 'bottom', 'right', 'left'];
 
-		for (let i = 0; i < valuesSettings.length; i++) {
-			const setting = valuesSettings[i];
+		for (let i = 0; i < positionWrapper.length; i++) {
+			const setting = positionWrapper[i];
 
 			await setting.click();
 

@@ -20,11 +20,11 @@ describe('block styles control', () => {
 			select => select.click()
 		);
 
-		await accordionPanel.$$eval(
-			'.maxi-tab-content__box .components-base-control__field',
-			selectorOptions =>
-				selectorOptions[1].querySelectorAll('select').select('Dark')
+		const input = await accordionPanel.$$(
+			'.maxi-tab-content__box .components-base-control .components-select-control__input'
 		);
+		const styleOptions = await input.$$('option');
+		await input.select('Dark');
 
 		await expect(await getEditedPostContent()).toMatchSnapshot();
 	});

@@ -20,24 +20,26 @@ describe('divider control', () => {
 		await page.$eval('.toolbar-item__divider-line', button =>
 			button.click()
 		);
+		debugger;
 		await page.waitForSelector(
 			'.components-popover__content .toolbar-item__divider-line__popover .maxi-default-styles-control'
 		);
-		const dividerStyleControl = await page.$$eval(
-			'.components-popover__content .toolbar-item__divider-line__popover .maxi-default-styles-control .components-button.maxi-default-styles-control__button'
-			// settings => settings[2].click()
-		);
-		const DividerStyle = ['dashed', 'dotted', 'solid' /* 'none' */];
 
-		for (let i = 0; i < dividerStyleControl.length; i++) {
-			const setting = dividerStyleControl[i !== 2 ? i + 1 : 0];
+		const dividerStyles = ['none', 'solid', 'dashed', 'dotted'];
 
-			await setting.click();
+		for (let i = 0; i < dividerStyles.length; i++) {
+			const dividerStyle = dividerStyles[i];
+
+			await page.$$eval(
+				'.components-popover__content .toolbar-item__divider-line__popover .maxi-default-styles-control button',
+				(buttons, i) => buttons[i].click(),
+				i
+			);
 
 			const attributes = await getBlockAttributes();
 
 			expect(attributes['divider-border-style']).toStrictEqual(
-				DividerStyle[i]
+				dividerStyle
 			);
 		}
 	});

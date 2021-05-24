@@ -14,7 +14,7 @@ describe('opacity control', () => {
 		await createNewPost();
 	});
 	it('checking the opacity control', async () => {
-		await insertBlock('Text Maxi');
+		await insertBlock('Button Maxi');
 
 		await openSidebar(page, 'background');
 
@@ -37,9 +37,11 @@ describe('opacity control', () => {
 
 		const expectedResult = 'rgba(250,250,3,1)';
 
-		const attributes = await getBlockAttributes();
+		const attributesFirst = await getBlockAttributes();
 
-		expect(attributes['background-color']).toStrictEqual(expectedResult);
+		expect(attributesFirst['background-color']).toStrictEqual(
+			expectedResult
+		);
 
 		await page.$eval(
 			'.maxi-background-control .components-input-control__container input',
@@ -48,9 +50,11 @@ describe('opacity control', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type(50);
 		await page.keyboard.press('Enter');
-		const attributes = await getBlockAttributes();
-		const expectedResult = 'rgba(250,250,3,0.50)';
+		const attributesSecond = await getBlockAttributes();
+		const expectedResultSecond = 'rgba(250,250,3,0.50)';
 
-		expect(attributes['background-color']).toStrictEqual(expectedResult);
+		expect(attributesSecond['background-color']).toStrictEqual(
+			expectedResultSecond
+		);
 	}, 30000);
 });

@@ -40,9 +40,11 @@ const attributes = {
 	...{
 		...attributesData.size,
 		'height-general': {
+			type: 'number',
 			default: 100,
 		},
 		'height-unit-general': {
+			type: 'string',
 			default: 'px',
 		},
 	},

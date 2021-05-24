@@ -1,0 +1,54 @@
+.maxi-map-control {
+	&__full-width-text {
+		.components-base-control {
+			&__field {
+				flex-direction: column;
+			}
+			&__label {
+				width: 100% !important;
+				margin: 0 0 5px !important;
+			}
+		}
+	}
+	&__help {
+		font-style: italic;
+		font-size: 11px !important;
+
+		a,
+		a:hover {
+			font-size: 11px !important;
+			text-decoration: none;
+			color: #ff4a17 !important;
+		}
+	}
+	&__markers {
+		display: flex;
+		width: 100%;
+		margin-bottom: 8px;
+
+		&__item {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex: 1;
+			background: #f8f8f8;
+			padding: 3px;
+			margin-right: 5px;
+			border: 2px solid transparent;
+			transition: all 0.5s ease;
+			cursor: pointer;
+
+			&:hover,
+			&--active {
+				border: 2px solid #acacac;
+			}
+			&:last-child {
+				margin-right: 0;
+			}
+			svg {
+				width: 75%;
+				height: 75%;
+			}
+		}
+	}
+}

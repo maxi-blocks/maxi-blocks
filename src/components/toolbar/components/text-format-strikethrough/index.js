@@ -39,6 +39,7 @@ const TextFormatStrikethrough = props => {
 				formatValue,
 				prop: 'text-decoration',
 				breakpoint,
+				textLevel,
 			}) || ''
 		);
 	};

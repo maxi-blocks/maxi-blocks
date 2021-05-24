@@ -62,6 +62,7 @@ const TextOptions = withFormatValue(props => {
 			formatValue,
 			prop,
 			breakpoint,
+			textLevel,
 		});
 
 	const onChangeFormat = value => {

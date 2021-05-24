@@ -39,6 +39,7 @@ const TextFormatUnderline = props => {
 				formatValue,
 				prop: 'text-decoration',
 				breakpoint,
+				textLevel,
 			}) || ''
 		);
 	};

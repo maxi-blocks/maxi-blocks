@@ -50,6 +50,7 @@ const TextColor = withFormatValue(props => {
 		formatValue,
 		prop: 'color',
 		breakpoint,
+		textLevel,
 	});
 
 	const onChangeFormat = value => {

@@ -45,6 +45,7 @@ const TextItalic = withFormatValue(props => {
 			formatValue,
 			prop: 'font-style',
 			breakpoint,
+			textLevel,
 		});
 
 	const italicValue = getItalicValue();

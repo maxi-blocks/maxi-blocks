@@ -39,6 +39,7 @@ const TextFormatOverline = props => {
 				formatValue,
 				prop: 'text-decoration',
 				breakpoint,
+				textLevel,
 			}) || ''
 		);
 	};

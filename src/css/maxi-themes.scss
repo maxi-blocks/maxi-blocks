@@ -92,8 +92,8 @@ body.maxi-blocks--active {
 						}
 				}
 				@each $level in $levels {
-					&.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content,
-					.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content {
+					&.maxi-sc-#{$style}-typography-color-#{$color_number} > #{$level}.maxi-text-block__content,
+					.maxi-sc-#{$style}-typography-color-#{$color_number} > #{$level}.maxi-text-block__content {
 						--maxi-#{$style}-#{$level}-color-general-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}

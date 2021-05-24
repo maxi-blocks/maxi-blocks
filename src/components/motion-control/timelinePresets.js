@@ -79,7 +79,7 @@ const TimelinePresets = props => {
 			/>
 			{props['motion-preset-status'] && (
 				
-					{getPresetsOptions().length > 1 && (
+					getPresetsOptions().length > 1 && (
 						<div className='maxi-motion-control__preset__load'>
 							<SelectControl
 								value={presetLoad}

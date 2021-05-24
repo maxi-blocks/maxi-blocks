@@ -15,7 +15,7 @@ export const SCToTypographyParser = (level, SCStyle) => {
 				breakpoints.forEach(breakpoint => {
 					if (response[key.replace('general', breakpoint)]) return;
 
-					const checkKey = key.replace('general', breakpoint);
+					const checkKey = key; // .replace('general', breakpoint);
 					if (isNil(SCStyle.checkKey)) {
 						if (checkKey.includes('font-size')) {
 							const [num, unit] = val.match(/[a-zA-Z]+|[0-9]+/g);
@@ -33,7 +33,7 @@ export const SCToTypographyParser = (level, SCStyle) => {
 							else newVal = val;
 
 							const [num, unit] = newVal.match(
-								/[a-zA-Z]+|[0-9\.]+/g
+								/[a-zA-Z]+|[0-9]+/g
 							);
 							response[checkKey] = num;
 							const newUnitKey = checkKey.replace(
@@ -66,7 +66,7 @@ export const SCToTypographyParser = (level, SCStyle) => {
 				if (typeof val === 'number') newVal = `${val}px`;
 				else newVal = val;
 
-				const [num, unit] = newVal.match(/[a-zA-Z]+|[0-9\.]+/g);
+				const [num, unit] = newVal.match(/[a-zA-Z]+|[0-9]+/g);
 				response[key] = +num;
 				const newUnitKey = key.replace(
 					'letter-spacing',

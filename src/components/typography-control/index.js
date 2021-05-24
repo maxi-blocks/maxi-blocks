@@ -298,7 +298,12 @@ const TypographyControl = withFormatValue(props => {
 	const getValue = (prop, customBreakpoint) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
-		if (disableFormats) return typography[`${prop}-${currentBreakpoint}`];
+		if (disableFormats)
+			return getLastBreakpointAttribute(
+				prop,
+				currentBreakpoint,
+				typography
+			);
 
 		const blockStyle = getBlockStyle(clientId);
 

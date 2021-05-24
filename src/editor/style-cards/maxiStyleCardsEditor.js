@@ -26,7 +26,10 @@ import {
 } from './utils';
 import { SettingTabsControl, FancyRadioControl } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
-import { getActiveStyleCard } from '../../extensions/style-cards';
+import {
+	getActiveStyleCard,
+	updateSCOnEditor,
+} from '../../extensions/style-cards';
 
 /**
  * Icons
@@ -81,35 +84,6 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		}
 	};
 
-	const changeSConBackend = SC => {
-		// Light
-		Object.entries(SC.styleCardDefaults.light).forEach(([key, val]) => {
-			document.documentElement.style.setProperty(
-				`--maxi-light-${key}`,
-				val
-			);
-		});
-		Object.entries(SC.styleCard.light).forEach(([key, val]) => {
-			document.documentElement.style.setProperty(
-				`--maxi-light-${key}`,
-				val
-			);
-		});
-		// Dark
-		Object.entries(SC.styleCardDefaults.dark).forEach(([key, val]) => {
-			document.documentElement.style.setProperty(
-				`--maxi-dark-${key}`,
-				val
-			);
-		});
-		Object.entries(SC.styleCard.dark).forEach(([key, val]) => {
-			document.documentElement.style.setProperty(
-				`--maxi-dark-${key}`,
-				val
-			);
-		});
-	};
-
 	const setStyleCardActive = cardKey => {
 		forIn(currentSC, function get(value, key) {
 			if (value.status === 'active' && cardKey !== key) value.status = '';
@@ -117,7 +91,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		});
 		changeCurrentSC(currentSC);
 		changeStateSC(getActiveStyleCard(currentSC).value);
-		changeSConBackend(getActiveStyleCard(currentSC).value);
+		updateSCOnEditor(getActiveStyleCard(currentSC).value);
 	};
 
 	const getStyleCardCurrentValue = cardKey => {
@@ -202,7 +176,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		}
 
 		changeStateSC(newStateSC);
-		changeSConBackend(newStateSC);
+		updateSCOnEditor(newStateSC);
 		changeCanBeResettedState(canBeResetted(currentSCKey));
 		setIsSaveDisabled(false);
 		setIsApplyDisabled(false);
@@ -248,7 +222,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		};
 
 		changeStateSC(stateSC);
-		changeSConBackend(stateSC);
+		updateSCOnEditor(stateSC);
 
 		addActiveSCclass(currentSCKey);
 		changeCanBeResettedState(canBeResetted(currentSCKey));
@@ -296,7 +270,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		};
 
 		changeStateSC(resetStyleCard);
-		changeSConBackend(resetStyleCard);
+		updateSCOnEditor(resetStyleCard);
 		changeCurrentSC(resetStyleCards);
 
 		setIsApplyDisabled(false);
@@ -305,7 +279,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 
 	const saveImportedStyleCard = card => {
 		changeStateSC(card);
-		changeSConBackend(card);
+		updateSCOnEditor(card);
 
 		const newId = `sc_${new Date().getTime()}`;
 
@@ -327,7 +301,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		saveCurrentSC(currentSCKey);
 		changeCurrentSCKey(keySC);
 		changeStateSC(getStyleCardCurrentValue(keySC));
-		changeSConBackend(getStyleCardCurrentValue(keySC));
+		updateSCOnEditor(getStyleCardCurrentValue(keySC));
 		changeIsDefaultOrActiveState(isDefaultOrActive(keySC));
 
 		setIsApplyDisabled(false);
@@ -419,7 +393,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 									changeStateSC(
 										getStyleCardCurrentValue('sc_maxi')
 									);
-									changeSConBackend(
+									updateSCOnEditor(
 										getStyleCardCurrentValue('sc_maxi')
 									);
 									saveMaxiStyleCards(newStyleCards);

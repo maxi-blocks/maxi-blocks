@@ -63,6 +63,6 @@ describe('SCToTypographyParser', () => {
 
 		const result = SCToTypographyParser(level, SCStyle);
 
-		expect(result['p-font-size-xxl']).toBe('42'); // 101010
+		expect(result['p-font-size-xxl']).toBe(42); // 101010
 	});
 });

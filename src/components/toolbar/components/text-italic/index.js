@@ -66,7 +66,7 @@ const TextItalic = withFormatValue(props => {
 			isList,
 			typography: { ...getGroupAttributes(props, 'typography') },
 			value: {
-				'font-style': isActive ? '' : 'italic',
+				'font-style': isActive ? 'normal' : 'italic',
 			},
 			breakpoint,
 			textLevel,

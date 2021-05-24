@@ -39,13 +39,17 @@ const styleGenerator = styles => {
 				if (isEmpty(content)) return;
 
 				if (breakpoint === 'general') {
-					response += `body.maxi-blocks--active .maxi-block.maxi-block--backend.${target}{`;
+					response += `
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{
+					`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}
 				if (breakpoint === 'xxl') {
 					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{`;
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{
+					`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}
@@ -55,7 +59,8 @@ const styleGenerator = styles => {
 						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block.maxi-block--backend.${target},
 						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.maxi-block--backend.${target},
 						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{`;
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{
+					`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}
@@ -64,7 +69,8 @@ const styleGenerator = styles => {
 						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block.maxi-block--backend.${target},
 						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.maxi-block--backend.${target},
 						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{`;
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{
+					`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}
@@ -72,20 +78,23 @@ const styleGenerator = styles => {
 					response += `
 						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.maxi-block--backend.${target},
 						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{`;
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{
+					`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}
 				if (breakpoint === 's') {
 					response += `
 						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{`;
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{
+					`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}
 				if (breakpoint === 'xs') {
 					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{`;
+						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{
+					`;
 					response += getResponsiveStyles(content);
 					response += '}';
 				}

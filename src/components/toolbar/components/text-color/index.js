@@ -74,7 +74,7 @@ const TextColor = withFormatValue(props => {
 					className='toolbar-item__text-options__icon'
 					style={{
 						background:
-							props['color'] ||
+							props.color ||
 							`var(--maxi-${getBlockStyle(clientId)}-color-${
 								props['palette-preset-typography-color']
 							})`,

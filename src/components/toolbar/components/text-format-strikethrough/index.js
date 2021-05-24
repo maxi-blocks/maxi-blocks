@@ -19,7 +19,7 @@ import {
 /**
  * External dependencies
  */
-import { trim } from 'lodash';
+import { trim, isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -60,7 +60,7 @@ const TextFormatStrikethrough = props => {
 
 		let response;
 
-		if (textDecorationValue === 'none') response = 'line-through';
+		if (textDecorationValue === 'unset') response = 'line-through';
 		else
 			response =
 				textDecorationValue.indexOf('line-through') >= 0
@@ -68,6 +68,7 @@ const TextFormatStrikethrough = props => {
 					: `${textDecorationValue} line-through`;
 
 		response = trim(response);
+		if (isEmpty(response)) response = 'unset';
 
 		const obj = setFormat({
 			formatValue,

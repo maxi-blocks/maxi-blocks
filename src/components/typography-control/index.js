@@ -32,7 +32,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty, isNumber, trim } from 'lodash';
+import { isNil, isEmpty, isNumber, trim, inRange } from 'lodash';
 /**
  * Styles
  */
@@ -428,23 +428,22 @@ const TypographyControl = withFormatValue(props => {
 			isHover,
 			textLevel,
 			disableCustomFormats,
+			styleCardPrefix,
 		});
 
 		onChange(obj);
 	};
 
 	const getWinBreakpoint = () => {
-		const xxlSize = 2000; // Temporary value, needs to be fixed
-
-		if (winWidth >= xxlSize) return 'xxl';
+		if (winWidth > maxiBreakpoints.xl) return 'xxl';
 
 		const response = Object.entries(maxiBreakpoints).reduce(
 			([prevKey, prevValue], [currKey, currValue]) => {
-				return !prevValue ||
-					Math.abs(currValue - winWidth) <
-						Math.abs(prevValue - winWidth)
-					? [currKey, currValue]
-					: [prevKey, prevValue];
+				if (!prevValue) return [prevKey];
+				if (inRange(winWidth, prevValue, currValue + 1))
+					return [currKey];
+
+				return [prevKey, prevValue];
 			}
 		)[0];
 

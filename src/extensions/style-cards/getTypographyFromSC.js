@@ -7,6 +7,7 @@ import getActiveStyleCard from './getActiveStyleCard';
 export const SCToTypographyParser = (level, SCStyle) => {
 	const response = {};
 	const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const numberSettings = ['font-weight'];
 
 	Object.entries(SCStyle).forEach(([key, val]) => {
 		if (key.includes(`${level}-`)) {
@@ -43,7 +44,13 @@ export const SCToTypographyParser = (level, SCStyle) => {
 							response[newUnitKey] = unit;
 							return;
 						}
-						response[checkKey] = val;
+						if (
+							numberSettings.some(setting =>
+								checkKey.includes(setting)
+							)
+						)
+							response[checkKey] = +val;
+						else response[checkKey] = val;
 					}
 				});
 			}
@@ -69,7 +76,9 @@ export const SCToTypographyParser = (level, SCStyle) => {
 				response[newUnitKey] = unit;
 				return;
 			}
-			response[key] = val;
+			if (numberSettings.some(setting => key.includes(setting)))
+				response[key] = +val;
+			else response[key] = val;
 		}
 	});
 

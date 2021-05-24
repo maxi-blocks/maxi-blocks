@@ -283,6 +283,10 @@ body.maxi-blocks--active {
 									font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size});
 									line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size});
 									letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$responsive_size});
+									font-weight: var(--maxi-#{$style}-#{$level}-font-weight-#{$responsive_size});
+									text-transform: var(--maxi-#{$style}-#{$level}-text-transform-#{$responsive_size});
+									font-style: var(--maxi-#{$style}-#{$level}-font-style-#{$responsive_size});
+									text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-#{$responsive_size});
 								}
 							}
 						}
@@ -291,6 +295,10 @@ body.maxi-blocks--active {
 						font-size: var(--maxi-#{$style}-button-font-size-#{$responsive_size});
 						line-height: var(--maxi-#{$style}-button-line-height-#{$responsive_size});
 						letter-spacing: var(--maxi-#{$style}-button-letter-spacing-#{$responsive_size});
+						font-weight: var(--maxi-#{$style}-button-font-weight-#{$responsive_size});
+						text-transform: var(--maxi-#{$style}-button-text-transform-#{$responsive_size});
+						font-style: var(--maxi-#{$style}-button-font-style-#{$responsive_size});
+						text-decoration: var(--maxi-#{$style}-button-text-decoration-#{$responsive_size});
 					}
 				}
 			}
@@ -333,6 +341,10 @@ body.maxi-blocks--active {
 							font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage});
 							line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage});
 							letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$current_responsive_stage});
+							font-weight: var(--maxi-#{$style}-#{$level}-font-weight-#{$current_responsive_stage});
+							text-transform: var(--maxi-#{$style}-#{$level}-text-transform-#{$current_responsive_stage});
+							font-style: var(--maxi-#{$style}-#{$level}-font-style-#{$current_responsive_stage});
+							text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-#{$current_responsive_stage});
 						}
 					}
 				}
@@ -340,6 +352,10 @@ body.maxi-blocks--active {
 					font-size: var(--maxi-#{$style}-button-font-size-#{$current_responsive_stage});
 					line-height: var(--maxi-#{$style}-button-line-height-#{$current_responsive_stage});
 					letter-spacing: var(--maxi-#{$style}-button-letter-spacing-#{$current_responsive_stage});
+					font-weight: var(--maxi-#{$style}-button-font-weight-#{$current_responsive_stage});
+					text-transform: var(--maxi-#{$style}-button-text-transform-#{$current_responsive_stage});
+					font-style: var(--maxi-#{$style}-button-font-style-#{$current_responsive_stage});
+					text-decoration: var(--maxi-#{$style}-button-text-decoration-#{$current_responsive_stage});
 				}
 			}
 		}

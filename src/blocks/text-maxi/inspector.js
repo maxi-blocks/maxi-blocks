@@ -996,7 +996,6 @@ const Inspector = memo(
 																	val,
 															})
 														}
-														breakpoint={deviceType}
 													/>
 												),
 											},

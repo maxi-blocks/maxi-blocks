@@ -21,6 +21,7 @@ import './blocks/cloud-maxi/cloud-maxi';
 import './blocks/column-maxi/column-maxi';
 import './blocks/container-maxi/container-maxi';
 import './blocks/divider-maxi/divider-maxi';
+import './blocks/map-maxi/map-maxi';
 import './blocks/group-maxi/group-maxi';
 import './blocks/image-maxi/image-maxi';
 import './blocks/number-counter-maxi/number-counter-maxi';

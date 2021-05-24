@@ -134,12 +134,12 @@ const VideoLayer = props => {
 				}
 				options={[
 					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-					{
 						label: __('Yes', 'maxi-blocks'),
 						value: 1,
+					},
+					{
+						label: __('No', 'maxi-blocks'),
+						value: 0,
 					},
 				]}
 				disabled={
@@ -174,12 +174,12 @@ const VideoLayer = props => {
 				}
 				options={[
 					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-					{
 						label: __('Yes', 'maxi-blocks'),
 						value: 1,
+					},
+					{
+						label: __('No', 'maxi-blocks'),
+						value: 0,
 					},
 				]}
 				onChange={val =>

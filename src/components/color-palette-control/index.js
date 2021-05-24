@@ -108,6 +108,18 @@ const ColorPaletteControl = props => {
 				});
 				break;
 
+			case 'marker-text':
+				onChange({
+					['marker-text']: '',
+				});
+				break;
+
+			case 'marker-address':
+				onChange({
+					['marker-address']: '',
+				});
+				break;
+
 			default:
 				return null;
 		}
@@ -138,8 +150,8 @@ const ColorPaletteControl = props => {
 									onChange({
 										[`palette-preset-${colorPaletteType}${
 											isHover ? '-hover' : ''
-										}-color`]: +e.currentTarget.dataset
-											.item,
+										}-color`]:
+											+e.currentTarget.dataset.item,
 									})
 								}
 							>

@@ -14,8 +14,9 @@ import {
 	BlockStylesControl,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
-	NumberCounterControl,
+	FancyRadioControl,
+	FullSizeControl,
+	MapControl,
 	OpacityControl,
 	PositionControl,
 	ResponsiveControl,
@@ -39,6 +40,7 @@ const Inspector = props => {
 		isFirstOnHierarchy,
 		blockStyle,
 		extraClassName,
+		fullWidth,
 	} = attributes;
 
 	return (
@@ -68,15 +70,63 @@ const Inspector = props => {
 									isPrimary
 									items={[
 										{
-											label: __('Number', 'maxi-blocks'),
+											label: __(
+												'Width / Height',
+												'maxi-blocks'
+											),
 											content: (
-												<NumberCounterControl
+												<>
+													{isFirstOnHierarchy && (
+														<FancyRadioControl
+															label={__(
+																'Full Width',
+																'maxi-blocks'
+															)}
+															selected={fullWidth}
+															options={[
+																{
+																	label: __(
+																		'Yes',
+																		'maxi-blocks'
+																	),
+																	value: 'full',
+																},
+																{
+																	label: __(
+																		'No',
+																		'maxi-blocks'
+																	),
+																	value: 'normal',
+																},
+															]}
+															optionType='string'
+															onChange={fullWidth =>
+																setAttributes({
+																	fullWidth,
+																})
+															}
+														/>
+													)}
+													<FullSizeControl
+														{...getGroupAttributes(
+															attributes,
+															'size'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												</>
+											),
+										},
+										{
+											label: __('Map', 'maxi-blocks'),
+											content: (
+												<MapControl
 													{...getGroupAttributes(
 														attributes,
-														[
-															'numberCounter',
-															'palette',
-														]
+														['map', 'palette']
 													)}
 													onChange={obj =>
 														setAttributes(obj)
@@ -154,23 +204,6 @@ const Inspector = props => {
 													setAttributes({
 														extraClassName,
 													})
-												}
-											/>
-										),
-									},
-									{
-										label: __(
-											'Entrance Animation',
-											'maxi-blocks'
-										),
-										content: (
-											<EntranceAnimationControl
-												{...getGroupAttributes(
-													attributes,
-													'entrance'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
 												}
 											/>
 										),

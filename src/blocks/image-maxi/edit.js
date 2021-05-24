@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
-import { Placeholder } from '@wordpress/components';
 import { MediaUpload } from '@wordpress/block-editor';
 
 /**
@@ -22,6 +21,7 @@ import {
 	MaxiBlockComponent,
 	Toolbar,
 	Spinner,
+	Placeholder,
 } from '../../components';
 import * as SVGShapes from '../../icons/shape-icons';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';

@@ -177,8 +177,8 @@ const TextShadowControl = props => {
 				label={__('Text Shadow', 'maxi-blocks')}
 				selected={showOptions}
 				options={[
-					{ label: __('No', 'maxi-blocks'), value: 0 },
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
+					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
 				onChange={() => {
 					changeShowOptions(!showOptions);

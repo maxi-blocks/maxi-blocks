@@ -2,13 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { RadioControl } from '@wordpress/components';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import SizeControl from '../../../size-control';
+import { SizeControl, RadioControl } from '../../../../components';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	getLastBreakpointAttribute,
@@ -38,13 +37,8 @@ const EXCLUDED_BLOCKS_SIZE = [
  * Size
  */
 const Size = props => {
-	const {
-		blockName,
-		fullWidth,
-		onChange,
-		isFirstOnHierarchy,
-		breakpoint,
-	} = props;
+	const { blockName, fullWidth, onChange, isFirstOnHierarchy, breakpoint } =
+		props;
 
 	if (EXCLUDED_BLOCKS.includes(blockName)) return null;
 	if (!isFirstOnHierarchy && EXCLUDED_BLOCKS_SIZE.includes(blockName))
@@ -108,12 +102,14 @@ const Size = props => {
 								}
 								onReset={() =>
 									onChange({
-										[`width-${breakpoint}`]: getDefaultAttribute(
-											`width-${breakpoint}`
-										),
-										[`width-unit-${breakpoint}`]: getDefaultAttribute(
-											`width-unit-${breakpoint}`
-										),
+										[`width-${breakpoint}`]:
+											getDefaultAttribute(
+												`width-${breakpoint}`
+											),
+										[`width-unit-${breakpoint}`]:
+											getDefaultAttribute(
+												`width-unit-${breakpoint}`
+											),
 									})
 								}
 							/>

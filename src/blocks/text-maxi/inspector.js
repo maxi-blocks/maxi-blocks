@@ -157,16 +157,14 @@ const Inspector = memo(
 																			'Unorganized',
 																			'maxi-blocks'
 																		),
-																		value:
-																			'ul',
+																		value: 'ul',
 																	},
 																	{
 																		label: __(
 																			'Organized',
 																			'maxi-blocks'
 																		),
-																		value:
-																			'ol',
+																		value: 'ol',
 																	},
 																]}
 																onChange={typeOfList =>
@@ -223,9 +221,10 @@ const Inspector = memo(
 																		onChange={value => {
 																			setAttributes(
 																				{
-																					listReversed: Number(
-																						value
-																					),
+																					listReversed:
+																						Number(
+																							value
+																						),
 																				}
 																			);
 																		}}
@@ -318,7 +317,8 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
-																						'typography-status-hover': val,
+																						'typography-status-hover':
+																							val,
 																					}
 																				)
 																			}
@@ -446,7 +446,8 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
-																						'background-status-hover': val,
+																						'background-status-hover':
+																							val,
 																					}
 																				)
 																			}
@@ -560,7 +561,8 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
-																						'border-status-hover': val,
+																						'border-status-hover':
+																							val,
 																					}
 																				)
 																			}
@@ -618,19 +620,17 @@ const Inspector = memo(
 																options={[
 																	{
 																		label: __(
-																			'No',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'normal',
-																	},
-																	{
-																		label: __(
 																			'Yes',
 																			'maxi-blocks'
 																		),
-																		value:
-																			'full',
+																		value: 'full',
+																	},
+																	{
+																		label: __(
+																			'No',
+																			'maxi-blocks'
+																		),
+																		value: 'normal',
 																	},
 																]}
 																optionType='string'
@@ -734,7 +734,8 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
-																						'box-shadow-status-hover': val,
+																						'box-shadow-status-hover':
+																							val,
 																					}
 																				)
 																			}
@@ -997,10 +998,10 @@ const Inspector = memo(
 														)}
 														onChange={val =>
 															setAttributes({
-																[`opacity-${deviceType}`]: val,
+																[`opacity-${deviceType}`]:
+																	val,
 															})
 														}
-														breakpoint={deviceType}
 													/>
 												),
 											},

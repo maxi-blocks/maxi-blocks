@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
-import { Spinner, Placeholder } from '@wordpress/components';
 import { MediaUpload } from '@wordpress/block-editor';
 
 /**
@@ -21,6 +20,8 @@ import {
 	HoverPreview,
 	MaxiBlockComponent,
 	Toolbar,
+	Spinner,
+	Placeholder,
 } from '../../components';
 import * as SVGShapes from '../../icons/shape-icons';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
@@ -210,13 +211,13 @@ class edit extends MaxiBlockComponent {
 										attributes.SVGCurrentElement
 									]
 								];
-							const cleanedContent = DOMPurify.sanitize(
-								currentElem
-							);
+							const cleanedContent =
+								DOMPurify.sanitize(currentElem);
 							const svg = document
 								.createRange()
-								.createContextualFragment(cleanedContent)
-								.firstElementChild;
+								.createContextualFragment(
+									cleanedContent
+								).firstElementChild;
 
 							const resData = generateDataObject('', svg);
 

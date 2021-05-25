@@ -12,9 +12,9 @@ import { library } from '../../icons';
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { Placeholder } from '@wordpress/components';
 import { Component, Fragment } from '@wordpress/element';
 import { BlockControls, BlockAlignmentToolbar } from '@wordpress/editor';
+import { Placeholder } from '../../components';
 
 export default class Edit extends Component {
 	render() {

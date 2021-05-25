@@ -42,8 +42,8 @@ const NumberCounterControl = props => {
 				label={__('Preview', 'maxi-block')}
 				selected={props['number-counter-preview']}
 				options={[
-					{ label: __('No', 'maxi-block'), value: 0 },
 					{ label: __('Yes', 'maxi-block'), value: 1 },
+					{ label: __('No', 'maxi-block'), value: 0 },
 				]}
 				onChange={val => onChange({ 'number-counter-preview': val })}
 			/>
@@ -197,8 +197,8 @@ const NumberCounterControl = props => {
 				label={__('Show Percentage Sign', 'maxi-block')}
 				selected={props['number-counter-percentage-sign-status']}
 				options={[
-					{ label: __('No', 'maxi-block'), value: 0 },
 					{ label: __('Yes', 'maxi-block'), value: 1 },
+					{ label: __('No', 'maxi-block'), value: 0 },
 				]}
 				onChange={val =>
 					onChange({ 'number-counter-percentage-sign-status': val })
@@ -208,8 +208,8 @@ const NumberCounterControl = props => {
 				label={__('Hide Circle', 'maxi-block')}
 				selected={props['number-counter-circle-status']}
 				options={[
-					{ label: __('No', 'maxi-block'), value: 0 },
 					{ label: __('Yes', 'maxi-block'), value: 1 },
+					{ label: __('No', 'maxi-block'), value: 0 },
 				]}
 				onChange={val => {
 					onChange({ 'number-counter-circle-status': val });
@@ -223,8 +223,8 @@ const NumberCounterControl = props => {
 					label={__('Rounded Bar', 'maxi-block')}
 					selected={props['number-counter-rounded-status']}
 					options={[
-						{ label: __('No', 'maxi-block'), value: 0 },
 						{ label: __('Yes', 'maxi-block'), value: 1 },
+						{ label: __('No', 'maxi-block'), value: 0 },
 					]}
 					onChange={val =>
 						onChange({ 'number-counter-rounded-status': val })

@@ -2,16 +2,19 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { RadioControl, Dropdown } from '@wordpress/components';
+import { Dropdown } from '@wordpress/components';
 import { Fragment, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import OpacityControl from '../opacity-control';
-import FancyRadioControl from '../fancy-radio-control';
-import BackgroundControl from '../background-control';
-import SizeControl from '../size-control';
+import {
+	RadioControl,
+	OpacityControl,
+	FancyRadioControl,
+	BackgroundControl,
+	SizeControl,
+} from '../../components';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
@@ -222,8 +225,8 @@ const ShapeDividerControl = props => {
 						label={__('Enable Top Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-top-status']}
 						options={[
-							{ label: __('No', 'maxi-blocks'), value: 0 },
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'shape-divider-top-status': val })
@@ -241,12 +244,12 @@ const ShapeDividerControl = props => {
 								}
 								options={[
 									{
-										label: __('No', 'maxi-blocks'),
-										value: 0,
-									},
-									{
 										label: __('Yes', 'maxi-blocks'),
 										value: 1,
+									},
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 0,
 									},
 								]}
 								onChange={val =>
@@ -278,7 +281,8 @@ const ShapeDividerControl = props => {
 										options={shapeItems}
 										onChange={shapeStyle =>
 											onChange({
-												'shape-divider-top-shape-style': shapeStyle,
+												'shape-divider-top-shape-style':
+													shapeStyle,
 											})
 										}
 									/>
@@ -323,12 +327,14 @@ const ShapeDividerControl = props => {
 								}
 								onReset={() =>
 									onChange({
-										'shape-divider-top-height': getDefaultAttribute(
-											'shape-divider-top-height'
-										),
-										'shape-divider-top-height-unit': getDefaultAttribute(
-											'shape-divider-top-height-unit'
-										),
+										'shape-divider-top-height':
+											getDefaultAttribute(
+												'shape-divider-top-height'
+											),
+										'shape-divider-top-height-unit':
+											getDefaultAttribute(
+												'shape-divider-top-height-unit'
+											),
 									})
 								}
 							/>
@@ -342,8 +348,8 @@ const ShapeDividerControl = props => {
 						label={__('Enable Bottom Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-bottom-status']}
 						options={[
-							{ label: __('No', 'maxi-blocks'), value: 0 },
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'shape-divider-bottom-status': val })
@@ -361,17 +367,18 @@ const ShapeDividerControl = props => {
 								}
 								options={[
 									{
-										label: __('No', 'maxi-blocks'),
-										value: 0,
-									},
-									{
 										label: __('Yes', 'maxi-blocks'),
 										value: 1,
+									},
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 0,
 									},
 								]}
 								onChange={val =>
 									onChange({
-										'shape-divider-bottom-effects-status': val,
+										'shape-divider-bottom-effects-status':
+											val,
 									})
 								}
 							/>
@@ -398,7 +405,8 @@ const ShapeDividerControl = props => {
 										options={shapeItems}
 										onChange={shapeStyle =>
 											onChange({
-												'shape-divider-bottom-shape-style': shapeStyle,
+												'shape-divider-bottom-shape-style':
+													shapeStyle,
 											})
 										}
 									/>
@@ -443,12 +451,14 @@ const ShapeDividerControl = props => {
 								}
 								onReset={() =>
 									onChange({
-										'shape-divider-bottom-height': getDefaultAttribute(
-											'shape-divider-bottom-height'
-										),
-										'shape-divider-bottom-height-unit': getDefaultAttribute(
-											'shape-divider-bottom-height-unit'
-										),
+										'shape-divider-bottom-height':
+											getDefaultAttribute(
+												'shape-divider-bottom-height'
+											),
+										'shape-divider-bottom-height-unit':
+											getDefaultAttribute(
+												'shape-divider-bottom-height-unit'
+											),
 									})
 								}
 							/>

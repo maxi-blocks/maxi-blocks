@@ -271,7 +271,7 @@ const ImageCropControl = props => {
 	return (
 		<div className={classes}>
 			{imageData && (
-				
+				<>
 					<ReactCrop
 						src={imageData.media_details.sizes.full.source_url}
 						crop={crop.crop}
@@ -340,7 +340,7 @@ const ImageCropControl = props => {
 							/>
 						</div>
 					)}
-				<
+				</>
 			)}
 			{!imageData && <Spinner />}
 		</div>

@@ -7,7 +7,12 @@ import { TextControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { SizeControl, ColorControl, OpacityControl } from '../../components';
+import {
+	SizeControl,
+	ColorControl,
+	OpacityControl,
+	FancyRadioControl,
+} from '../../components';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -119,20 +124,44 @@ const MapControl = props => {
 					})
 				}
 			/>
-			<ColorControl
-				label={__('Marker Fill', 'maxi-blocks')}
-				disableOpacity
-				color={props['map-marker-fill-color']}
-				defaultColor={getDefaultAttribute('map-marker-fill-color')}
-				onChange={val => onChange({ 'map-marker-fill-color': val })}
+			<FancyRadioControl
+				label={__('Custom Maker Colours', 'maxi-block')}
+				selected={props['map-marker-custom-color-status']}
+				options={[
+					{ label: __('Yes', 'maxi-block'), value: 1 },
+					{ label: __('No', 'maxi-block'), value: 0 },
+				]}
+				onChange={val =>
+					onChange({ 'map-marker-custom-color-status': val })
+				}
 			/>
-			<ColorControl
-				label={__('Marker Stroke', 'maxi-blocks')}
-				disableOpacity
-				color={props['map-marker-stroke-color']}
-				defaultColor={getDefaultAttribute('map-marker-stroke-color')}
-				onChange={val => onChange({ 'map-marker-stroke-color': val })}
-			/>
+			{props['map-marker-custom-color-status'] && (
+				<>
+					<ColorControl
+						label={__('Marker Fill', 'maxi-blocks')}
+						disableOpacity
+						color={props['map-marker-fill-color']}
+						defaultColor={getDefaultAttribute(
+							'map-marker-fill-color'
+						)}
+						onChange={val =>
+							onChange({ 'map-marker-fill-color': val })
+						}
+					/>
+					<ColorControl
+						label={__('Marker Stroke', 'maxi-blocks')}
+						disableOpacity
+						color={props['map-marker-stroke-color']}
+						defaultColor={getDefaultAttribute(
+							'map-marker-stroke-color'
+						)}
+						onChange={val =>
+							onChange({ 'map-marker-stroke-color': val })
+						}
+					/>
+				</>
+			)}
+
 			<TextControl
 				className='maxi-map-control__full-width-text'
 				label={__('Marker Text', 'maxi-blocks')}

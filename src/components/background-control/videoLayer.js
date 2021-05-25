@@ -29,7 +29,8 @@ const VideoLayer = props => {
 
 	const [validationText, setValidationText] = useState(null);
 
-	const videoUrlRegex = /(https?:\/\/)www.(youtube.com\/watch[?]v=([a-zA-Z0-9_-]{11}))|https?:\/\/(www.)?vimeo.com\/([0-9]{9})|https?:\/\/.*\.(?:mp4|webm|ogg)$/g;
+	const videoUrlRegex =
+		/(https?:\/\/)www.(youtube.com\/watch[?]v=([a-zA-Z0-9_-]{11}))|https?:\/\/(www.)?vimeo.com\/([0-9]{9})|https?:\/\/.*\.(?:mp4|webm|ogg)$/g;
 
 	return (
 		<div className='maxi-background-control__video'>
@@ -194,7 +195,6 @@ const VideoLayer = props => {
 			/>
 			<OpacityControl
 				label={__('Video Opacity', 'maxi-blocks')}
-				fullWidthMode
 				opacity={
 					videoOptions[
 						getAttributeKey(
@@ -204,9 +204,6 @@ const VideoLayer = props => {
 						)
 					]
 				}
-				defaultOpacity={getDefaultAttribute(
-					getAttributeKey('background-video-opacity', isHover, prefix)
-				)}
 				onChange={opacity => {
 					videoOptions[
 						getAttributeKey(

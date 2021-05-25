@@ -290,9 +290,6 @@ const ShapeDividerControl = props => {
 							/>
 							<OpacityControl
 								opacity={props['shape-divider-top-opacity']}
-								defaultOpacity={getDefaultAttribute(
-									'shape-divider-top-opacity'
-								)}
 								onChange={opacity =>
 									onChange({
 										'shape-divider-top-opacity': opacity,
@@ -414,9 +411,6 @@ const ShapeDividerControl = props => {
 							/>
 							<OpacityControl
 								opacity={props['shape-divider-bottom-opacity']}
-								defaultOpacity={getDefaultAttribute(
-									'shape-divider-bottom-opacity'
-								)}
 								onChange={opacity =>
 									onChange({
 										'shape-divider-bottom-opacity': opacity,

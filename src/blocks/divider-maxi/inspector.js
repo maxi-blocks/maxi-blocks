@@ -96,16 +96,14 @@ const Inspector = props => {
 																	'Horizontal',
 																	'maxi-blocks'
 																),
-																value:
-																	'horizontal',
+																value: 'horizontal',
 															},
 															{
 																label: __(
 																	'Vertical',
 																	'maxi-blocks'
 																),
-																value:
-																	'vertical',
+																value: 'vertical',
 															},
 														]}
 														optionType='string'
@@ -128,8 +126,7 @@ const Inspector = props => {
 																	'Top',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-start',
+																value: 'flex-start',
 															},
 															{
 																label: __(
@@ -143,8 +140,7 @@ const Inspector = props => {
 																	'Bottom',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-end',
+																value: 'flex-end',
 															},
 														]}
 														optionType='string'
@@ -169,8 +165,7 @@ const Inspector = props => {
 																	'Left',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-start',
+																value: 'flex-start',
 															},
 															{
 																label: __(
@@ -184,8 +179,7 @@ const Inspector = props => {
 																	'Right',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-end',
+																value: 'flex-end',
 															},
 														]}
 														optionType='string'
@@ -236,16 +230,14 @@ const Inspector = props => {
 																		'Yes',
 																		'maxi-blocks'
 																	),
-																	value:
-																		'full',
+																	value: 'full',
 																},
 																{
 																	label: __(
 																		'No',
 																		'maxi-blocks'
 																	),
-																	value:
-																		'normal',
+																	value: 'normal',
 																},
 															]}
 															optionType='string'
@@ -346,7 +338,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover': val,
+																					'background-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -458,7 +451,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': val,
+																					'box-shadow-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -699,13 +693,10 @@ const Inspector = props => {
 															`opacity-${deviceType}`
 														]
 													}
-													defaultOpacity={getDefaultAttribute(
-														`opacity-${deviceType}`,
-														clientId
-													)}
 													onChange={val =>
 														setAttributes({
-															[`opacity-${deviceType}`]: val,
+															[`opacity-${deviceType}`]:
+																val,
 														})
 													}
 												/>

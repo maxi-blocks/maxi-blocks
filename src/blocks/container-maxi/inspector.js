@@ -738,10 +738,6 @@ const Inspector = props => {
 														`opacity-${deviceType}`
 													]
 												}
-												defaultOpacity={getDefaultAttribute(
-													`opacity-${deviceType}`,
-													clientId
-												)}
 												onChange={val =>
 													setAttributes({
 														[`opacity-${deviceType}`]:

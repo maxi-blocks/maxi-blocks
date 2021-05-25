@@ -29,6 +29,9 @@ const LibraryContainer = props => {
 	const [sidebarFilter, setSidebarFilter] = useState('');
 	const [topbarFilter, setTopbarFilter] = useState([]);
 
+	console.log('cloudData');
+	console.log(cloudData);
+
 	useEffect(() => {
 		setFilteredData(
 			cloudData.filter(el => {

@@ -71,7 +71,7 @@ const LibraryMasonry = props => {
 		)
 			.then(response => response.json())
 			.then(data => {
-				const parsedContent = parse(data[0].content);
+				const parsedContent = parse(data);
 				const isValid = select('core/block-editor').isValidTemplate(
 					parsedContent
 				);

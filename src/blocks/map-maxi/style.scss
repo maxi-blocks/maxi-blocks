@@ -5,19 +5,20 @@ body.maxi-blocks--active {
 	.maxi-map-block {
 		.maxi-map-container {
 			height: 100%;
+		}
+		.map-marker-info-window {
+			text-align: center;
+			width: 150px;
+			padding: 8px;
 
-			.map-marker-info-window {
-				text-align: center;
-				width: 150px;
-
-				&__title {
-					font-size: 20px;
-					margin: 0 0 10px;
-				}
-				address {
-					font-style: normal;
-					font-size: 14px;
-				}
+			&__title {
+				font-family: 'Roboto', sans-serif !important;
+				margin: 0 0 10px;
+			}
+			&__address {
+				font-family: 'Roboto', sans-serif !important;
+				font-style: normal;
+				margin: 0;
 			}
 		}
 	}

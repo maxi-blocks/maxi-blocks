@@ -77,32 +77,68 @@ class StyleCardsVariables {
 	 * Create variables
 	 */
 	public function sc_vars() {
-
 		$maxi_blocks_active_style_card_array = $this->get_maxi_blocks_active_style_card();
-
 		$response = ':root{';
-
+		$styles = ['light', 'dark'];
+		$elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+		$breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+		$settings = [
+			'font-family',
+			'font-size',
+			'font-style',
+			'font-weight',
+			'line-height',
+			'text-decoration',
+			'text-transform',
+			'letter-spacing',
+		];
+		$settingToAvoidInGeneral = [
+			'font-size',
+			'line-height',
+			'letter-spacing',
+		];
 		$fonts = [];
 
+		$dark = array_merge(
+			$maxi_blocks_active_style_card_array["styleCardDefaults"]["dark"],
+			$maxi_blocks_active_style_card_array["styleCard"]["dark"]
+		);
+		$light = array_merge(
+			$maxi_blocks_active_style_card_array["styleCardDefaults"]["light"],
+			$maxi_blocks_active_style_card_array["styleCard"]["light"]
+		);
+		$SC = [
+			'dark' 	=> $dark,
+			'light' => $light
+		];
+
 		if ($maxi_blocks_active_style_card_array) {
-			$final_sc_array = array_replace_recursive($maxi_blocks_active_style_card_array['styleCardDefaults'], $maxi_blocks_active_style_card_array['styleCard']);
+			foreach ($styles as $style ) {
+				foreach ($elements as $element) {
+					foreach ($settings as $setting) {
+						foreach ($breakpoints as $breakpoint ) {
+							if(!($breakpoint === 'general' && in_array($setting, $settingToAvoidInGeneral))){
+								$response .= "--maxi-$style-$element-$setting-$breakpoint: " . get_last_breakpoint_attribute(
+									"$element-$setting",
+									$breakpoint,
+									$SC[$style]
+								) . ';';
+							}
+							if($setting === 'font-family'){
+								$font = $SC[$style]["$element-$setting-$breakpoint"] ?? null;
 
-			foreach ($final_sc_array['light'] as $css_rule => $style_value) {
-				$response .= '--maxi-light-' . $css_rule . ':' . $style_value . ';';
+								if(!is_null($font) && !in_array($font, $fonts))
+									array_push($fonts, $font);
+							}
+						}
+					}
+				}
 
-				if (strpos($css_rule, 'font-family') && !in_array($style_value, $fonts))
-					array_push($fonts, $style_value);
-			}
-
-			foreach ($final_sc_array['dark'] as $css_rule => $style_value) {
-				$response .= '--maxi-dark-' . $css_rule . ':' . $style_value . ';';
-
-				if (strpos($css_rule, 'font-family') && !in_array($style_value, $fonts))
-					array_push($fonts, $style_value);
+				for ($i=1; $i <= 7; $i++) {
+					$response .= "--maxi-$style-color-$i: " . $SC[$style]["color-$i"] . ';';
+				}
 			}
 		}
-
-		$response .= '}';
 
 		if ($response !== ':root{}') {
 			$this->load_fonts($fonts);

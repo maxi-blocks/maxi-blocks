@@ -8,7 +8,6 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { defaultTypography } from '../../extensions/text';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FancyRadioControl from '../fancy-radio-control';
@@ -24,6 +23,7 @@ import {
 } from '../../extensions/text/formats';
 import {
 	getBlockStyle,
+	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -407,20 +407,12 @@ const TypographyControl = withFormatValue(props => {
 
 	const getDefault = (prop, customBreakpoint) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
+		const defaultAttribute = getDefaultAttribute(
+			`${prop}-${currentBreakpoint}`,
+			clientId
+		);
 
-		const sameDefaultLevels = ['p', 'ul', 'ol'];
-		if (
-			sameDefaultLevels.some(level => {
-				return level === textLevel;
-			})
-		)
-			return defaultTypography.p[
-				`${prop}-${currentBreakpoint}${isHover ? '-hover' : ''}`
-			];
-
-		return defaultTypography[textLevel][
-			`${prop}-${currentBreakpoint}${isHover ? '-hover' : ''}`
-		];
+		return defaultAttribute;
 	};
 
 	const onChangeFormat = (value, customBreakpoint) => {

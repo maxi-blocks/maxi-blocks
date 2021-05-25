@@ -1,4 +1,12 @@
+/**
+ * Internal dependencies
+ */
 import { getLastBreakpointAttribute } from '../styles';
+
+/**
+ * External dependencies
+ */
+import { times } from 'lodash';
 
 export const getSCVariablesObject = styleCards => {
 	const response = {};
@@ -50,6 +58,11 @@ export const getSCVariablesObject = styleCards => {
 						);
 				});
 			});
+		});
+
+		times(7, n => {
+			response[`--maxi-${style}-color-${n + 1}`] =
+				SC[style][`color-${n + 1}`];
 		});
 	});
 

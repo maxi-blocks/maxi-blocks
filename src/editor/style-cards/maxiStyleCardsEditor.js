@@ -162,7 +162,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 				...stateSC,
 				styleCard: {
 					...stateSC.styleCard,
-					[style]: { ...stateSC.styleCard[style], ...value },
+					[style]: { ...value },
 				},
 			};
 		} else {

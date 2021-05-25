@@ -171,14 +171,17 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 
 		if (prop === 'typography') {
 			Object.entries(value).forEach(([key, val]) => {
-				if (isNil(val)) delete value[key];
+				if (isNil(val)) {
+					delete value[key];
+					delete stateSC.styleCard[style][key];
+				}
 			});
 
 			newStateSC = {
 				...stateSC,
 				styleCard: {
 					...stateSC.styleCard,
-					[style]: { ...value },
+					[style]: { ...stateSC.styleCard[style], ...value },
 				},
 			};
 		} else if (!globalAttr) {

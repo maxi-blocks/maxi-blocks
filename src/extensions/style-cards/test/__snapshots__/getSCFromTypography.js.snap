@@ -19,6 +19,26 @@ Object {
 }
 `;
 
+exports[`getSCFromTypography Returns a SC object using decimal number for \`letter-spacing\` 1`] = `
+Object {
+  "p-font-family-general": "Roboto",
+  "p-font-family-xxl": "Roboto",
+  "p-font-size-s": "42px",
+  "p-font-size-xl": "16px",
+  "p-font-size-xxl": "20px",
+  "p-font-style-general": "normal",
+  "p-font-weight-xxl": 400,
+  "p-letter-spacing-general": "19.2px",
+  "p-letter-spacing-xl": "0px",
+  "p-letter-spacing-xxl": "0px",
+  "p-line-height-l": "1.625",
+  "p-line-height-xl": "418.27",
+  "p-line-height-xxl": "1.5",
+  "p-text-decoration-general": "unset",
+  "p-text-transform-general": "none",
+}
+`;
+
 exports[`getSCFromTypography Returns a SC object using others responsive stage unit for \`font-size\` 1`] = `
 Object {
   "p-font-family-general": "Roboto",

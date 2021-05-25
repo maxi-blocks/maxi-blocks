@@ -15,9 +15,10 @@ const getSCFromTypography = (styleCards, SCStyle, typographyObj) => {
 
 	Object.entries(typographyObj).forEach(([key, val]) => {
 		if (isEmpty(val) && !isNumber(val)) {
-			const newValue = styleCards.styleCardDefaults[SCStyle][key];
-			if (!key.includes('-unit') && newValue)
+			if (!key.includes('-unit')) {
+				const newValue = styleCards.styleCardDefaults[SCStyle][key];
 				parsedTypography[key] = newValue;
+			}
 
 			return;
 		}

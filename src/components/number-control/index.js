@@ -34,7 +34,7 @@ const NumberControl = props => {
 		<BaseControl label={label} className={classes}>
 			<input
 				type='number'
-				value={value || ''}
+				value={value === '' || value === undefined ? '' : +value}
 				onChange={e => {
 					let value = +e.target.value;
 

@@ -24,7 +24,8 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const ColorLayer = props => {
-	const { onChange, disableClipPath, isHover, prefix, clientId } = props;
+	const { onChange, disableClipPath, isHover, prefix, clientId, type } =
+		props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
 
@@ -47,6 +48,7 @@ const ColorLayer = props => {
 
 					onChange(colorOptions);
 				}}
+				disablePalette={type === 'layer'}
 				showPalette
 				palette={{ ...getGroupAttributes(props, 'palette') }}
 				isHover={isHover}

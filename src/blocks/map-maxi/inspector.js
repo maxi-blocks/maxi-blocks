@@ -76,37 +76,35 @@ const Inspector = props => {
 											),
 											content: (
 												<>
-													{isFirstOnHierarchy && (
-														<FancyRadioControl
-															label={__(
-																'Full Width',
-																'maxi-blocks'
-															)}
-															selected={fullWidth}
-															options={[
-																{
-																	label: __(
-																		'Yes',
-																		'maxi-blocks'
-																	),
-																	value: 'full',
-																},
-																{
-																	label: __(
-																		'No',
-																		'maxi-blocks'
-																	),
-																	value: 'normal',
-																},
-															]}
-															optionType='string'
-															onChange={fullWidth =>
-																setAttributes({
-																	fullWidth,
-																})
-															}
-														/>
-													)}
+													<FancyRadioControl
+														label={__(
+															'Full Width',
+															'maxi-blocks'
+														)}
+														selected={fullWidth}
+														options={[
+															{
+																label: __(
+																	'Yes',
+																	'maxi-blocks'
+																),
+																value: 'full',
+															},
+															{
+																label: __(
+																	'No',
+																	'maxi-blocks'
+																),
+																value: 'normal',
+															},
+														]}
+														optionType='string'
+														onChange={fullWidth =>
+															setAttributes({
+																fullWidth,
+															})
+														}
+													/>
 													<FullSizeControl
 														{...getGroupAttributes(
 															attributes,

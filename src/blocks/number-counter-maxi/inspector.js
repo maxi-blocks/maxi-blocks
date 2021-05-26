@@ -266,10 +266,10 @@ const Inspector = props => {
 												)}
 												onChange={val =>
 													setAttributes({
-														[`opacity-${deviceType}`]: val,
+														[`opacity-${deviceType}`]:
+															val,
 													})
 												}
-												breakpoint={deviceType}
 											/>
 										),
 									},

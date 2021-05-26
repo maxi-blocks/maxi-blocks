@@ -19,6 +19,7 @@ export { default as iconList } from './icon-list';
 export { default as imageBox } from './image-box';
 export { default as library } from './library';
 export { default as logoWhite } from './logo-white';
+export { default as mapIcon } from './map-icon';
 export { default as numberCounterIcon } from './number-counter-icon';
 export { default as orderedList } from './ordered-list';
 export { default as priceList } from './price-list';

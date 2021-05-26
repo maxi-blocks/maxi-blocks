@@ -671,19 +671,19 @@ const Inspector = props => {
 															options={[
 																{
 																	label: __(
-																		'No',
-																		'maxi-blocks'
-																	),
-																	value:
-																		'normal',
-																},
-																{
-																	label: __(
 																		'Yes',
 																		'maxi-blocks'
 																	),
 																	value:
 																		'full',
+																},
+																{
+																	label: __(
+																		'No',
+																		'maxi-blocks'
+																	),
+																	value:
+																		'normal',
 																},
 															]}
 															optionType='string'
@@ -1122,7 +1122,6 @@ const Inspector = props => {
 															[`opacity-${deviceType}`]: val,
 														})
 													}
-													breakpoint={deviceType}
 												/>
 											),
 										},

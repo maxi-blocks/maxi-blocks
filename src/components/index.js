@@ -60,6 +60,7 @@ export { default as SVGDefaultsDisplayer } from './svg-default-displayer';
 export { default as SVGFillControl } from './svg-fill-control';
 export { default as SvgStrokeWidthControl } from './svg-stroke-width-control';
 export { default as SvgWidthControl } from './svg-width-control';
+export { default as TextareaControl } from './textarea-control';
 export { default as TextControl } from './text-control';
 export { default as TextShadowControl } from './text-shadow-control';
 export { default as Toolbar } from './toolbar';

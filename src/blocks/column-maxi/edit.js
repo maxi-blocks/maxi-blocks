@@ -42,7 +42,7 @@ class edit extends MaxiBlockComponent {
 		this.resizableObject = createRef();
 	}
 
-	componentDidUpdate() {
+	maxiBlockDidUpdate() {
 		this.displayStyles();
 
 		if (this.resizableObject.current) {

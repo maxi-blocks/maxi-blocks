@@ -1,7 +1,7 @@
 /**
  * General
  */
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const container = (() => {
 	let response = {};
@@ -10,28 +10,24 @@ const container = (() => {
 			...response,
 			[`container-min-width-unit-${breakpoint}`]: {
 				type: 'string',
-				default: 'px',
 			},
 			[`container-min-width-${breakpoint}`]: {
 				type: 'number',
 			},
 			[`container-max-height-unit-${breakpoint}`]: {
 				type: 'string',
-				default: 'px',
 			},
 			[`container-max-height-${breakpoint}`]: {
 				type: 'number',
 			},
 			[`container-height-unit-${breakpoint}`]: {
 				type: 'string',
-				default: 'px',
 			},
 			[`container-height-${breakpoint}`]: {
 				type: 'number',
 			},
 			[`container-min-height-unit-${breakpoint}`]: {
 				type: 'string',
-				default: 'px',
 			},
 			[`container-min-height-${breakpoint}`]: {
 				type: 'number',
@@ -44,6 +40,34 @@ const container = (() => {
 		'container-size-advanced-options': {
 			type: 'boolean',
 			default: false,
+		},
+		['container-min-width-unit-general']: {
+			type: 'string',
+			default: 'px',
+		},
+		['container-min-width-general']: {
+			type: 'number',
+		},
+		['container-max-height-unit-general']: {
+			type: 'string',
+			default: 'px',
+		},
+		['container-max-height-general']: {
+			type: 'number',
+		},
+		['container-height-unit-general']: {
+			type: 'string',
+			default: 'px',
+		},
+		['container-height-general']: {
+			type: 'number',
+		},
+		['container-min-height-unit-general']: {
+			type: 'string',
+			default: 'px',
+		},
+		['container-min-height-general']: {
+			type: 'number',
 		},
 		'container-max-width-general': {
 			type: 'number',

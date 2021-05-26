@@ -31,7 +31,6 @@ const attributes = {
 	},
 	listStart: {
 		type: 'number',
-		default: 1,
 	},
 	listReversed: {
 		type: 'number',

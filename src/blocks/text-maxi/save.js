@@ -22,6 +22,8 @@ const save = props => {
 		typeOfList,
 		content,
 		parentBlockStyle,
+		listReversed,
+		listStart,
 	} = props.attributes;
 
 	const name = 'maxi-blocks/text-maxi';
@@ -46,7 +48,7 @@ const save = props => {
 	return (
 		<MaxiBlock
 			paletteClasses={paletteClasses}
-			classes='maxi-text-block'
+			classes={`${isList ? 'maxi-list-block' : ''}`}
 			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
@@ -55,6 +57,8 @@ const save = props => {
 				value={content}
 				tagName={isList ? typeOfList : textLevel}
 				data-gx_initial_block_class={defaultBlockStyle}
+				reversed={!!listReversed}
+				start={listStart}
 			/>
 		</MaxiBlock>
 	);

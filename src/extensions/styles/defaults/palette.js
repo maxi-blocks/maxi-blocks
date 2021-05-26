@@ -1,4 +1,20 @@
 const palette = {
+	'palette-custom-marker-title-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-marker-title-color': {
+		type: 'number',
+		default: 4,
+	},
+	'palette-custom-marker-address-color': {
+		type: 'boolean',
+		default: false,
+	},
+	'palette-preset-marker-address-color': {
+		type: 'number',
+		default: 5,
+	},
 	'palette-custom-circle-background-color': {
 		type: 'boolean',
 		default: false,

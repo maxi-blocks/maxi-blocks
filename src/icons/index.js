@@ -2,6 +2,7 @@ export * from './block-icons';
 export * from './button-presets';
 export * from './general-icons';
 export * from './hover-icons';
+export * from './map-icons';
 export * from './move-icons';
 export * from './responsive-icons';
 export * from './sc-icons';

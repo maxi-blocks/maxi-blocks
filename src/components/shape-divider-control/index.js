@@ -8,13 +8,11 @@ import { Fragment, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import {
-	RadioControl,
-	OpacityControl,
-	FancyRadioControl,
-	BackgroundControl,
-	SizeControl,
-} from '../../components';
+import RadioControl from '../radio-control';
+import OpacityControl from '../opacity-control';
+import FancyRadioControl from '../fancy-radio-control';
+import BackgroundControl from '../background-control';
+import SizeControl from '../size-control';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**

@@ -7,7 +7,9 @@ import { TextControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { SizeControl, ColorControl, OpacityControl } from '../../components';
+import SizeControl from '../size-control';
+import ColorControl from '../color-control';
+import OpacityControl from '../opacity-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,

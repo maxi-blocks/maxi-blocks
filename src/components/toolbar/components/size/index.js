@@ -7,7 +7,8 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { SizeControl, RadioControl } from '../../../../components';
+import RadioControl from '../../../radio-control';
+import SizeControl from '../../../size-control';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	getLastBreakpointAttribute,

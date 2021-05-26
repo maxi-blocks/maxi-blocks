@@ -424,9 +424,8 @@ const ClipPathControl = props => {
 												key={`maxi-clip-path-control-${i}`}
 												values={handle}
 												onChange={value => {
-													clipPathOptions.content[
-														i
-													] = value;
+													clipPathOptions.content[i] =
+														value;
 													generateCP(clipPathOptions);
 												}}
 												onRemove={number => {

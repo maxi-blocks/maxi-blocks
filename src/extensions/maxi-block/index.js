@@ -15,7 +15,7 @@
  * WordPress dependencies
  */
 import { Component, render, createRef } from '@wordpress/element';
-import { select, dispatch } from '@wordpress/data';
+import { select, dispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -35,6 +35,27 @@ import { loadFonts } from '../text/fonts';
 import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
 
 /**
+ * Style Component
+ */
+const StyleComponent = ({ styles, currentBreakpoint, blockBreakpoints }) => {
+	const { breakpoints } = useSelect(select => {
+		const { receiveMaxiBreakpoints } = select('maxiBlocks');
+
+		const breakpoints = receiveMaxiBreakpoints();
+
+		return { breakpoints };
+	});
+
+	const styleContent = styleGenerator(
+		styles,
+		breakpoints && isEmpty(breakpoints) ? blockBreakpoints : breakpoints,
+		currentBreakpoint
+	);
+
+	return <style>{styleContent}</style>;
+};
+
+/**
  * Class
  */
 class MaxiBlockComponent extends Component {
@@ -49,19 +70,15 @@ class MaxiBlockComponent extends Component {
 		const { uniqueID, blockStyle } = attributes;
 
 		this.currentBreakpoint = 'general';
+		this.blockRef = createRef();
+		this.typography = getGroupAttributes(attributes, 'typography');
 
+		// Init
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
-
-		// Font loader
-		this.typography = getGroupAttributes(attributes, 'typography');
 		if (!isEmpty(this.typography)) this.loadFonts();
-
-		this.displayStyles();
-
 		this.getParentStyle();
-
-		this.blockRef = createRef();
+		this.displayStyles();
 	}
 
 	// Just for debugging!
@@ -271,13 +288,11 @@ class MaxiBlockComponent extends Component {
 			}
 
 			render(
-				<style>
-					{styleGenerator(
-						styles,
-						breakpoints,
-						this.currentBreakpoint
-					)}
-				</style>,
+				<StyleComponent
+					styles={styles}
+					currentBreakpoint={this.currentBreakpoint}
+					blockBreakpoints={breakpoints}
+				/>,
 				wrapper
 			);
 		}

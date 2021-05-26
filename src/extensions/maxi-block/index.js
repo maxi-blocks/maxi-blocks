@@ -48,6 +48,8 @@ class MaxiBlockComponent extends Component {
 		const { attributes, clientId } = this.props;
 		const { uniqueID, blockStyle } = attributes;
 
+		this.currentBreakpoint = 'general';
+
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
 
@@ -80,6 +82,15 @@ class MaxiBlockComponent extends Component {
 	 * Prevents rendering
 	 */
 	shouldComponentUpdate(nextProps, nextState) {
+		// Even when not rendering, on breakpoint stage change
+		// re-render the styles
+		const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
+
+		if (breakpoint !== this.currentBreakpoint) {
+			this.currentBreakpoint = breakpoint;
+			this.displayStyles();
+		}
+
 		// Change `parentBlockStyle` before updating
 		const { blockStyle } = this.props.attributes;
 
@@ -259,7 +270,16 @@ class MaxiBlockComponent extends Component {
 				document.head.appendChild(wrapper);
 			}
 
-			render(<style>{styleGenerator(styles)}</style>, wrapper);
+			render(
+				<style>
+					{styleGenerator(
+						styles,
+						breakpoints,
+						this.currentBreakpoint
+					)}
+				</style>,
+				wrapper
+			);
 		}
 	}
 }

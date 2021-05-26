@@ -123,43 +123,6 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 	const [isSaveDisabled, setIsSaveDisabled] = useState(true);
 	const [isApplyDisabled, setIsApplyDisabled] = useState(true);
 
-	const onChangeDelete = (prop, style) => {
-		const newStateSC = stateSC;
-		const currentPropVal = newStateSC.styleCard[style][prop];
-
-		if (!isNil(currentPropVal))
-			newStateSC.styleCard[style][`${prop}-old`] = currentPropVal;
-
-		delete newStateSC.styleCard[style][prop];
-
-		if (prop.includes('general')) {
-			const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
-			breakpoints.forEach(breakpoint => {
-				const newProp = prop.replace('general', breakpoint);
-				const currentPropVal = newStateSC.styleCard[style][newProp];
-
-				if (!isNil(currentPropVal))
-					newStateSC.styleCard[style][
-						`${newProp}-old`
-					] = currentPropVal;
-				delete newStateSC.styleCard[style][newProp];
-			});
-		}
-
-		const inlineStyles = document.getElementById(
-			'maxi-blocks-sc-vars-inline-css'
-		);
-		if (!isNil(inlineStyles))
-			inlineStyles.parentNode.removeChild(inlineStyles);
-		document.documentElement.style.removeProperty(
-			`--maxi-${style}-${prop}`
-		);
-
-		changeStateSC(newStateSC);
-		changeCanBeResettedState(canBeResetted(currentSCKey));
-		setIsApplyDisabled(false);
-	};
-
 	const onChangeValue = (
 		prop,
 		value,
@@ -595,7 +558,6 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 										SC={stateSC}
 										SCStyle='light'
 										onChangeValue={onChangeValue}
-										onChangeDelete={onChangeDelete}
 										addActiveSCclass={addActiveSCclass}
 										deviceType={deviceType}
 										currentKey={currentSCKey}
@@ -609,7 +571,6 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 										SC={stateSC}
 										SCStyle='dark'
 										onChangeValue={onChangeValue}
-										onChangeDelete={onChangeDelete}
 										addActiveSCclass={addActiveSCclass}
 										deviceType={deviceType}
 										currentKey={currentSCKey}

@@ -11,7 +11,17 @@ import { times } from 'lodash';
 export const getSCVariablesObject = styleCards => {
 	const response = {};
 	const styles = ['light', 'dark'];
-	const elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+	const elements = [
+		'button',
+		'p',
+		'h1',
+		'h2',
+		'h3',
+		'h4',
+		'h5',
+		'h6',
+		'divider',
+	];
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const settings = [
 		'font-family',
@@ -41,23 +51,28 @@ export const getSCVariablesObject = styleCards => {
 
 	styles.forEach(style => {
 		elements.forEach(element => {
-			settings.forEach(setting => {
-				breakpoints.forEach(breakpoint => {
-					if (
-						!(
-							breakpoint === 'general' &&
-							settingToAvoidInGeneral.includes(setting)
+			if (element !== 'divider')
+				settings.forEach(setting => {
+					breakpoints.forEach(breakpoint => {
+						if (
+							!(
+								breakpoint === 'general' &&
+								settingToAvoidInGeneral.includes(setting)
+							)
 						)
-					)
-						response[
-							`--maxi-${style}-${element}-${setting}-${breakpoint}`
-						] = getLastBreakpointAttribute(
-							`${element}-${setting}`,
-							breakpoint,
-							SC[style]
-						);
+							response[
+								`--maxi-${style}-${element}-${setting}-${breakpoint}`
+							] = getLastBreakpointAttribute(
+								`${element}-${setting}`,
+								breakpoint,
+								SC[style]
+							);
+					});
 				});
-			});
+
+			if (SC[style][`${element}-color-global`])
+				response[`--maxi-${style}-${element}-color`] =
+					SC[style][`${element}-color`];
 		});
 
 		times(7, n => {
@@ -69,12 +84,28 @@ export const getSCVariablesObject = styleCards => {
 	return response;
 };
 
+const createSCStyleString = SCObject => {
+	let response = ':root{';
+
+	Object.entries(SCObject).forEach(([key, val]) => {
+		response += `${key}:${val};`;
+	});
+
+	response += '}';
+
+	return response;
+};
+
 const updateSCOnEditor = styleCards => {
 	const SCObject = getSCVariablesObject(styleCards);
+	let SCStyle = document.getElementById('maxi-blocks-sc-styles');
 
-	Object.entries(SCObject).forEach(([key, val]) =>
-		document.documentElement.style.setProperty(key, val)
-	);
+	if (!SCStyle) {
+		SCStyle = document.createElement('style');
+		SCStyle.id = 'maxi-blocks-sc-styles';
+		SCStyle.innerHTML = createSCStyleString(SCObject);
+		document.head.appendChild(SCStyle);
+	} else SCStyle.innerHTML = createSCStyleString(SCObject);
 };
 
 export default updateSCOnEditor;

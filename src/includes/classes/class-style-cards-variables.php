@@ -80,7 +80,7 @@ class StyleCardsVariables {
 		$maxi_blocks_active_style_card_array = $this->get_maxi_blocks_active_style_card();
 		$response = ':root{';
 		$styles = ['light', 'dark'];
-		$elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+		$elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'divider'];
 		$breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 		$settings = [
 			'font-family',
@@ -115,24 +115,29 @@ class StyleCardsVariables {
 		if ($maxi_blocks_active_style_card_array) {
 			foreach ($styles as $style ) {
 				foreach ($elements as $element) {
-					foreach ($settings as $setting) {
-						foreach ($breakpoints as $breakpoint ) {
-							if(!($breakpoint === 'general' && in_array($setting, $settingToAvoidInGeneral))){
-								$response .= "--maxi-$style-$element-$setting-$breakpoint: " . get_last_breakpoint_attribute(
-									"$element-$setting",
-									$breakpoint,
-									$SC[$style]
-								) . ';';
-							}
-							if($setting === 'font-family'){
-								$font = $SC[$style]["$element-$setting-$breakpoint"] ?? null;
+					if ($element !== 'divider') {
+						foreach ($settings as $setting) {
+							foreach ($breakpoints as $breakpoint ) {
+								if(!($breakpoint === 'general' && in_array($setting, $settingToAvoidInGeneral))){
+									$response .= "--maxi-$style-$element-$setting-$breakpoint: " . get_last_breakpoint_attribute(
+										"$element-$setting",
+										$breakpoint,
+										$SC[$style]
+									) . ';';
+								}
+								if($setting === 'font-family'){
+									$font = $SC[$style]["$element-$setting-$breakpoint"] ?? null;
 
-								if(!is_null($font) && !in_array($font, $fonts))
-									array_push($fonts, $font);
+									if(!is_null($font) && !in_array($font, $fonts))
+										array_push($fonts, $font);
+								}
 							}
 						}
 					}
 				}
+
+				if ($SC[$style]["$element-color-global"])
+					$response .= "--maxi-$style-$element-color: " . $SC[$style]["$element-color"] . ';';
 
 				for ($i=1; $i <= 7; $i++) {
 					$response .= "--maxi-$style-color-$i: " . $SC[$style]["color-$i"] . ';';

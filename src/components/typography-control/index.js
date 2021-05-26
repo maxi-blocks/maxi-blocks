@@ -52,6 +52,7 @@ const TextOptions = props => {
 		minMaxSettings,
 		minMaxSettingsLetterSpacing,
 		breakpoint,
+		avoidXXL,
 	} = props;
 
 	return (
@@ -59,7 +60,7 @@ const TextOptions = props => {
 			<SizeControl
 				className='maxi-typography-control__size'
 				label={__('Size', 'maxi-blocks')}
-				unit={getValue(`${prefix}font-size-unit`, breakpoint)}
+				unit={getValue(`${prefix}font-size-unit`, breakpoint, avoidXXL)}
 				defaultUnit={getDefault(`${prefix}font-size-unit`, breakpoint)}
 				onChangeUnit={val => {
 					onChangeFormat(
@@ -69,7 +70,9 @@ const TextOptions = props => {
 						breakpoint
 					);
 				}}
-				value={trim(getValue(`${prefix}font-size`, breakpoint))}
+				value={trim(
+					getValue(`${prefix}font-size`, breakpoint, avoidXXL)
+				)}
 				defaultValue={getDefault(`${prefix}font-size`, breakpoint)}
 				onChangeValue={val => {
 					onChangeFormat(
@@ -97,7 +100,13 @@ const TextOptions = props => {
 			<SizeControl
 				className='maxi-typography-control__line-height'
 				label={__('Line Height', 'maxi-blocks')}
-				unit={getValue(`${prefix}line-height-unit`, breakpoint) || ''}
+				unit={
+					getValue(
+						`${prefix}line-height-unit`,
+						breakpoint,
+						avoidXXL
+					) || ''
+				}
 				defaultUnit={getDefault(
 					`${prefix}line-height-unit`,
 					breakpoint
@@ -110,7 +119,7 @@ const TextOptions = props => {
 						breakpoint
 					);
 				}}
-				value={getValue(`${prefix}line-height`, breakpoint)}
+				value={getValue(`${prefix}line-height`, breakpoint, avoidXXL)}
 				defaultValue={getDefault(`${prefix}line-height`, breakpoint)}
 				onChangeValue={val => {
 					onChangeFormat(
@@ -140,7 +149,11 @@ const TextOptions = props => {
 				className='maxi-typography-control__letter-spacing'
 				label={__('Letter Spacing', 'maxi-blocks')}
 				allowedUnits={['px', 'em', 'vw']}
-				unit={getValue(`${prefix}letter-spacing-unit`, breakpoint)}
+				unit={getValue(
+					`${prefix}letter-spacing-unit`,
+					breakpoint,
+					avoidXXL
+				)}
 				defaultUnit={getDefault(
 					`${prefix}letter-spacing-unit`,
 					breakpoint
@@ -153,7 +166,11 @@ const TextOptions = props => {
 						breakpoint
 					);
 				}}
-				value={getValue(`${prefix}letter-spacing`, breakpoint)}
+				value={getValue(
+					`${prefix}letter-spacing`,
+					breakpoint,
+					avoidXXL
+				)}
 				defaultValue={getDefault(`${prefix}letter-spacing`, breakpoint)}
 				onChangeValue={val => {
 					onChangeFormat(
@@ -200,6 +217,7 @@ const TypographyControl = withFormatValue(props => {
 		hideTextShadow = false,
 		styleCards = false,
 		disablePalette = false,
+		disableFontFamily = false,
 		clientId,
 		styleCardPrefix,
 	} = props;
@@ -295,14 +313,17 @@ const TypographyControl = withFormatValue(props => {
 		},
 	};
 
-	const getValue = (prop, customBreakpoint) => {
+	const getValue = (prop, customBreakpoint, avoidXXL) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 
 		if (disableFormats)
 			return getLastBreakpointAttribute(
 				prop,
 				currentBreakpoint,
-				typography
+				typography,
+				isHover,
+				false,
+				avoidXXL
 			);
 
 		const blockStyle = getBlockStyle(clientId);
@@ -316,6 +337,7 @@ const TypographyControl = withFormatValue(props => {
 			textLevel,
 			styleCard: activeSC,
 			styleCardPrefix,
+			avoidXXL,
 		});
 
 		if (!isHover) return nonHoverValue;
@@ -463,16 +485,18 @@ const TypographyControl = withFormatValue(props => {
 
 	return (
 		<div className={classes}>
-			<FontFamilySelector
-				className='maxi-typography-control__font-family'
-				font={getValue(`${prefix}font-family`)}
-				onChange={font => {
-					onChangeFormat({
-						[`${prefix}font-family`]: font.value,
-						[`${prefix}font-options`]: font.files,
-					});
-				}}
-			/>
+			{!disableFontFamily && (
+				<FontFamilySelector
+					className='maxi-typography-control__font-family'
+					font={getValue(`${prefix}font-family`)}
+					onChange={font => {
+						onChangeFormat({
+							[`${prefix}font-family`]: font.value,
+							[`${prefix}font-options`]: font.files,
+						});
+					}}
+				/>
+			)}
 			{!disableColor && !styleCards && (
 				<ColorControl
 					label={__('Font', 'maxi-blocks')}
@@ -506,7 +530,10 @@ const TypographyControl = withFormatValue(props => {
 					type='text'
 				/>
 			)}
-			<Divider />
+			{!disableFontFamily &&
+				!disableColor &&
+				!styleCards &&
+				!hideAlignment && <Divider />}
 			<SelectControl
 				label={__('Weight', 'maxi-blocks')}
 				className='maxi-typography-control__weight'
@@ -642,6 +669,7 @@ const TypographyControl = withFormatValue(props => {
 											minMaxSettingsLetterSpacing
 										}
 										breakpoint={breakpoint.toLowerCase()}
+										avoidXXL={!styleCards}
 									/>
 								),
 								showNotification: showNotification(breakpoint),

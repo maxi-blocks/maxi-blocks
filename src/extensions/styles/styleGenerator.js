@@ -3,6 +3,8 @@
  */
 import { isEmpty } from 'lodash';
 
+const BREAKPOINTS = ['xs', 's', 'm', 'l', 'xl'];
+
 /**
  * Retrieve cleaned target
  *
@@ -12,6 +14,7 @@ const getTarget = target => {
 	if (target.indexOf('__$:') !== -1) return target.replace('__$', '');
 	if (target.indexOf('__$>') !== -1) return target.replace('__$', '');
 	if (target.indexOf('__$#') !== -1) return target.replace('__$', '');
+
 	return target.replace('__$', ' .');
 };
 
@@ -28,7 +31,55 @@ const getResponsiveStyles = styles => {
 	return responsiveStyles;
 };
 
-const styleGenerator = styles => {
+const styleStringGenerator = (target, content, breakpoint) => {
+	let string = '';
+	let generalString = '';
+
+	generalString += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},`;
+	generalString += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+
+	if (breakpoint === 'general') {
+		string += generalString;
+	} else if (breakpoint === 'xxl') {
+		string += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{`;
+	} else {
+		let breakpointPos = BREAKPOINTS.indexOf(breakpoint);
+
+		do {
+			string += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="${
+				BREAKPOINTS[breakpointPos]
+			}"] .maxi-block.maxi-block--backend.${target}${
+				breakpointPos ? ',' : '{'
+			}`;
+			breakpointPos -= 1;
+		} while (breakpointPos >= 0);
+	}
+
+	string += content;
+	string += '}';
+
+	return string;
+};
+
+const mediaStylesGenerator = (target, content, breakpoint, media) => {
+	let string = '';
+	let generalString = '';
+
+	generalString += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},`;
+	generalString += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+
+	// Media
+	if (breakpoint !== 'general')
+		string += `@media only screen and (${
+			breakpoint !== 'xxl' ? 'max-width' : 'min-width'
+		}: ${
+			breakpoint !== 'xxl' ? media : media + 1 // Ensures XXl doesn't affect XL
+		}px){${generalString}${content}}}`;
+
+	return string;
+};
+
+const styleGenerator = (styles, breakpoints, currentBreakpoint) => {
 	let response = '';
 
 	Object.entries(styles).forEach(([key, prop]) => {
@@ -36,68 +87,27 @@ const styleGenerator = styles => {
 
 		Object.values(prop.content).forEach(value => {
 			Object.entries(value).forEach(([breakpoint, content]) => {
-				if (isEmpty(content)) return;
+				if (isEmpty(content) || breakpoint === 'label') return;
 
-				if (breakpoint === 'general') {
-					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{
-					`;
-					response += getResponsiveStyles(content);
-					response += '}';
-				}
-				if (breakpoint === 'xxl') {
-					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{
-					`;
-					response += getResponsiveStyles(content);
-					response += '}';
-				}
-				if (breakpoint === 'xl') {
-					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xl"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{
-					`;
-					response += getResponsiveStyles(content);
-					response += '}';
-				}
-				if (breakpoint === 'l') {
-					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="l"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{
-					`;
-					response += getResponsiveStyles(content);
-					response += '}';
-				}
-				if (breakpoint === 'm') {
-					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="m"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{
-					`;
-					response += getResponsiveStyles(content);
-					response += '}';
-				}
-				if (breakpoint === 's') {
-					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="s"] .maxi-block.maxi-block--backend.${target},
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{
-					`;
-					response += getResponsiveStyles(content);
-					response += '}';
-				}
-				if (breakpoint === 'xs') {
-					response += `
-						body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xs"] .maxi-block.maxi-block--backend.${target}{
-					`;
-					response += getResponsiveStyles(content);
-					response += '}';
-				}
+				if (currentBreakpoint === 'general') {
+					response += mediaStylesGenerator(
+						target,
+						getResponsiveStyles(content),
+						breakpoint,
+						breakpoints[breakpoint]
+					);
+					if (breakpoint === 'general')
+						response += styleStringGenerator(
+							target,
+							getResponsiveStyles(content),
+							breakpoint
+						);
+				} else
+					response += styleStringGenerator(
+						target,
+						getResponsiveStyles(content),
+						breakpoint
+					);
 			});
 		});
 	});

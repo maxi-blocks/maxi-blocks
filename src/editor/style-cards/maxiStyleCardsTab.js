@@ -1,3 +1,4 @@
+/* eslint-disable @wordpress/i18n-no-collapsible-whitespace */
 /**
  * WordPress dependencies
  */
@@ -33,7 +34,6 @@ const MaxiStyleCardsTab = ({
 	SCStyle,
 	deviceType,
 	onChangeValue,
-	onChangeDelete,
 	addActiveSCclass,
 	currentKey,
 }) => {
@@ -44,7 +44,7 @@ const MaxiStyleCardsTab = ({
 
 			const defaultValue = SC.styleCardDefaults[SCStyle][attr];
 			if (!isNil(defaultValue)) {
-				if (defaultValue.includes('var')) {
+				if (defaultValue && defaultValue.includes('var')) {
 					const colorNumber = defaultValue.match(/color-\d/);
 					const colorValue =
 						SC.styleCardDefaults[SCStyle][colorNumber];
@@ -54,22 +54,6 @@ const MaxiStyleCardsTab = ({
 			return null;
 		}
 		return null;
-	};
-
-	const onChangeColor = (val, attr, defaultColor) => {
-		if (!val) {
-			onChangeDelete(attr, SCStyle);
-			onChangeValue(`${attr}-global`, val, SCStyle);
-		} else {
-			onChangeValue(
-				attr,
-				processAttribute(`${attr}-old`) ||
-					getStyleCardAttr(defaultColor, SCStyle, true),
-				SCStyle,
-				true,
-				val
-			);
-		}
 	};
 
 	if (document.querySelectorAll('.maxi-style-cards__sc-select option'))
@@ -91,7 +75,7 @@ const MaxiStyleCardsTab = ({
 	/*
 	 * Generates main tabs.
 	 *
-	 * @param {string} firstColor First color attribute, example: p-color-general
+	 * @param {string} firstColor First color attribute, example: p-color
 	 * @param {string} firstLabel First color label, examples: Hover, Button
 	 * @param {string} firstColorDefault Default for the first color, example: color-3
 	 * @param {bool or string} typographyPrefix Disable typography or set a prefix for it, examples: p, button
@@ -127,11 +111,7 @@ const MaxiStyleCardsTab = ({
 							selected={processAttribute(firstColorGlobal)}
 							options={options}
 							onChange={val => {
-								onChangeColor(
-									val,
-									firstColor,
-									firstColorDefault
-								);
+								onChangeValue(firstColorGlobal, val, SCStyle);
 							}}
 						/>
 					)}
@@ -191,6 +171,7 @@ const MaxiStyleCardsTab = ({
 								);
 							}}
 							blockStyle={SCStyle}
+							disableFontFamily={deviceType !== 'general'}
 						/>
 					)}
 					{!!secondColor && deviceType === 'general' && (
@@ -202,11 +183,7 @@ const MaxiStyleCardsTab = ({
 							selected={processAttribute(secondColorGlobal)}
 							options={options}
 							onChange={val => {
-								onChangeColor(
-									val,
-									secondColor,
-									secondColorDefault
-								);
+								onChangeValue(secondColorGlobal, val, SCStyle);
 							}}
 						/>
 					)}
@@ -257,31 +234,27 @@ const MaxiStyleCardsTab = ({
 									'maxi-blocks'
 								)}
 								selected={processAttribute(
-									`h${item}-color-general-global`
+									`h${item}-color-global`
 								)}
 								options={options}
 								onChange={val => {
-									onChangeColor(
+									onChangeValue(
+										`h${item}-color-global`,
 										val,
-										`h${item}-color-general`,
-										'color-5'
+										SCStyle
 									);
 								}}
 							/>
 						)}
 						{deviceType === 'general' &&
-							processAttribute(
-								`h${item}-color-general-global`
-							) && (
+							processAttribute(`h${item}-color-global`) && (
 								<ColorControl
 									label={__(`H${item} Text`, 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__h${item}-text-color--${SCStyle}`}
+									className={`maxi-style-cards-control__sc__h${item}-color--${SCStyle}`}
 									color={
+										processAttribute(`h${item}-color`) ||
 										processAttribute(
-											`h${item}-color-general`
-										) ||
-										processAttribute(
-											`h${item}-color-general-old`
+											`h${item}-color-old`
 										) ||
 										getStyleCardAttr(
 											'color-5',
@@ -296,7 +269,7 @@ const MaxiStyleCardsTab = ({
 									)}
 									onChange={val => {
 										onChangeValue(
-											`h${item}-color-general`,
+											`h${item}-color`,
 											val,
 											SCStyle
 										);
@@ -406,7 +379,7 @@ const MaxiStyleCardsTab = ({
 						),
 					},
 					generateTab(
-						'button-text-color',
+						'button-color',
 						'Button',
 						'color-1',
 						'button',
@@ -415,7 +388,7 @@ const MaxiStyleCardsTab = ({
 						'color-4'
 					),
 					generateTab(
-						'p-color-general',
+						'p-color',
 						'Paragraph',
 						'color-3',
 						'p',

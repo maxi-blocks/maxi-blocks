@@ -29,6 +29,7 @@ const getCustomFormatValue = ({
 	blockStyle = 'light',
 	styleCard = null,
 	styleCardPrefix,
+	avoidXXL = false,
 }) => {
 	// Custom format value
 	if (formatValue) {
@@ -60,7 +61,9 @@ const getCustomFormatValue = ({
 		prop,
 		breakpoint,
 		typography,
-		isHover
+		isHover,
+		false,
+		avoidXXL
 	);
 
 	if (value) return value;
@@ -74,7 +77,9 @@ const getCustomFormatValue = ({
 		`${SCLevel}-${prop}`,
 		breakpoint,
 		currentSC,
-		isHover
+		isHover,
+		false,
+		avoidXXL
 	);
 
 	if (currentSCValue) return currentSCValue;
@@ -85,7 +90,9 @@ const getCustomFormatValue = ({
 		`${SCLevel}-${prop}`,
 		breakpoint,
 		defaultSC,
-		isHover
+		isHover,
+		false,
+		avoidXXL
 	);
 
 	if (defaultSCValue) return defaultSCValue;
@@ -95,7 +102,9 @@ const getCustomFormatValue = ({
 		prop,
 		breakpoint,
 		defaultTypography[textLevel],
-		isHover
+		isHover,
+		false,
+		avoidXXL
 	);
 
 	if (defaultValue) return defaultValue;

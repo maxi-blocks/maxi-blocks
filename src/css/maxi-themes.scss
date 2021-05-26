@@ -82,13 +82,13 @@ body.maxi-blocks--active {
 				&.maxi-sc-#{$style}-typography-color-#{$color_number},
 				.maxi-sc-#{$style}-typography-color-#{$color_number} {
 					&.maxi-button-block {
-						--maxi-#{$style}-button-text-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+						--maxi-#{$style}-button-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				&.maxi-sc-#{$style}-typography-color-#{$color_number},
 				.maxi-sc-#{$style}-typography-color-#{$color_number} {
 					&.maxi-button-block {
-						--maxi-#{$style}-button-text-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+						--maxi-#{$style}-button-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				&.maxi-sc-#{$style}-typography-color-#{$color_number},
@@ -203,7 +203,7 @@ body.maxi-blocks--active {
 					}
 					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
 						> .maxi-button-block__button:hover {
-							--maxi-#{$style}-button-text-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});						}
+							--maxi-#{$style}-button-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});						}
 					}
 					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {
 						> .maxi-button-block__button:hover {
@@ -218,12 +218,10 @@ body.maxi-blocks--active {
 		/* Individual settings per a block type */
 		.maxi-#{$style}[class*='maxi-sc'] {
 			&.maxi-text-block,
-			&.maxi-button-block,
-			.maxi-text-block,
-			.maxi-button-block {
+			.maxi-text-block {
 				@each $level in $levels {
 					#{$level} {
-						color: var(--maxi-#{$style}-#{$level}-color-general, var(--maxi-#{$style}-#{$level}-color-general-palette));
+						color: var(--maxi-#{$style}-#{$level}-color, var(--maxi-#{$style}-#{$level}-colo-palette));
 						font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
 						font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
 						font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
@@ -235,7 +233,7 @@ body.maxi-blocks--active {
 
 			&.maxi-text-block li,
 			.maxi-text-block li {
-				color: var(--maxi-#{$style}-p-color-general, var(--maxi-#{$style}-p-color-general-palette));
+				color: var(--maxi-#{$style}-p-color, var(--maxi-#{$style}-p-color-palette));
 				font-family: var(--maxi-#{$style}-p-font-family-general);
 				font-weight: var(--maxi-#{$style}-p-font-weight-general);
 				font-style: var(--maxi-#{$style}-p-font-style-general);
@@ -271,15 +269,15 @@ body.maxi-blocks--active {
 
 			&.maxi-button-block .maxi-button-block__button,
 			.maxi-button-block .maxi-button-block__button {
-				color: var(--maxi-#{$style}-button-text-color, var(--maxi-#{$style}-button-text-color-palette));
+				color: var(--maxi-#{$style}-button-color, var(--maxi-#{$style}-button-color-palette));
 				background-color: var(--maxi-#{$style}-button-background-color, var(--maxi-#{$style}-button-background-color-palette));
 				font-family: var(--maxi-#{$style}-button-font-family-general);
 				font-weight: var(--maxi-#{$style}-button-font-weight-general);
 				font-style: var(--maxi-#{$style}-button-font-style-general);
-				text-transform: var(--maxi-#{$style}-button-text-transform-general);
-				text-decoration: var(--maxi-#{$style}-button-text-decoration-general);
+				text-transform: var(--maxi-#{$style}-button-transform-general);
+				text-decoration: var(--maxi-#{$style}-button-decoration-general);
 				&:visited, &:hover, &:active, &:focus {
-					color: var(--maxi-#{$style}-button-text-hover-color, var(--maxi-#{$style}-button-text-hover-color-palette, var(--maxi-#{$style}-button-text-color, var(--maxi-#{$style}-button-text-color-palette))));
+					color: var(--maxi-#{$style}-button-hover-color, var(--maxi-#{$style}-button-hover-color-palette, var(--maxi-#{$style}-button-color, var(--maxi-#{$style}-button-color-palette))));
 					background-color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-button-background-hover-color-palette,  var(--maxi-#{$style}-button-background-color, var(--maxi-#{$style}-button-background-color-palette))));
 					border-color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-button-border-color-palette));
 			    }
@@ -346,9 +344,9 @@ body.maxi-blocks--active {
 						line-height: var(--maxi-#{$style}-button-line-height-#{$responsive_size});
 						letter-spacing: var(--maxi-#{$style}-button-letter-spacing-#{$responsive_size});
 						font-weight: var(--maxi-#{$style}-button-font-weight-#{$responsive_size});
-						text-transform: var(--maxi-#{$style}-button-text-transform-#{$responsive_size});
+						text-transform: var(--maxi-#{$style}-button-transform-#{$responsive_size});
 						font-style: var(--maxi-#{$style}-button-font-style-#{$responsive_size});
-						text-decoration: var(--maxi-#{$style}-button-text-decoration-#{$responsive_size});
+						text-decoration: var(--maxi-#{$style}-button-decoration-#{$responsive_size});
 					}
 				}
 			}
@@ -414,9 +412,9 @@ body.maxi-blocks--active {
 					line-height: var(--maxi-#{$style}-button-line-height-#{$current_responsive_stage});
 					letter-spacing: var(--maxi-#{$style}-button-letter-spacing-#{$current_responsive_stage});
 					font-weight: var(--maxi-#{$style}-button-font-weight-#{$current_responsive_stage});
-					text-transform: var(--maxi-#{$style}-button-text-transform-#{$current_responsive_stage});
+					text-transform: var(--maxi-#{$style}-button-transform-#{$current_responsive_stage});
 					font-style: var(--maxi-#{$style}-button-font-style-#{$current_responsive_stage});
-					text-decoration: var(--maxi-#{$style}-button-text-decoration-#{$current_responsive_stage});
+					text-decoration: var(--maxi-#{$style}-button-decoration-#{$current_responsive_stage});
 				}
 			}
 		}

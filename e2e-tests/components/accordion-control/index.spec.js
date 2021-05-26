@@ -15,16 +15,21 @@ describe('accordion control', () => {
 	});
 	it('checking the accordion control', async () => {
 		await insertBlock('Text Maxi');
+		const accordionNames = [
+			'alignment',
+			'level',
+			'typography',
+			'background',
+			'border',
+			'width height',
+			'box shadow',
+			'padding margin',
+		];
 
-		const accordionPanel = await openSidebar(page);
+		for (const accordionItem of accordionNames) {
+			const accordionPanel = await openSidebar(page, `${accordionItem}`);
 
-		for (let j = 0; j < accordionPanel.7; j++) {
-			const input = accordionPanel[j];
-
-			await input.focus();
-			await page.keyboard.press((j + 1).toString());
+			expect(accordionPanel).toBeTruthy();
 		}
-
-		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 });

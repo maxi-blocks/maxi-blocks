@@ -12,7 +12,7 @@ const openAdvancedSidebar = async (page, item) => {
 
 	const sidebar = await page.$('.maxi-sidebar');
 
-	const advancedOptions = sidebar.$('.maxi-tabs-control');
+	const advancedOptions = await sidebar.$('.maxi-tabs-control');
 	await advancedOptions.$$eval('button', advancedButtons =>
 		advancedButtons[1].click()
 	);

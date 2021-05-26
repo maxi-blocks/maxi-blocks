@@ -6,8 +6,8 @@ import {
 	insertBlock,
 	// pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
-// import openSidebar from '../../utils/openSidebar';
-import { getBlockAttributes } from '../../utils';
+import openSidebar from '../../utils/openSidebar';
+import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
 describe('display control', () => {
 	beforeEach(async () => {
@@ -15,16 +15,14 @@ describe('display control', () => {
 	});
 	it('checking the display control', async () => {
 		await insertBlock('Text Maxi');
-		const settings = await page.$$(
-			'.interface-pinned-items .components-button'
+		await page.keyboard.type('Testing display');
+		const accordionPanel = await openAdvancedSidebar(page, 'display');
+		await accordionPanel.$$eval(
+			'.components-base-control__field .components-radio-control__option label',
+			button => button[1].click()
 		);
-		await settings.click();
-
-		const open = await settings.$('.maxi-tabs-control');
-		await open.$$eval('button', advancedSettings =>
-			advancedSettings[1].click()
-		);
-
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		const expectResult = 'none';
+		const attributes = await getBlockAttributes();
+		expect(attributes['display-general']).toStrictEqual(expectResult);
 	});
 });

@@ -27,11 +27,12 @@ import './editor.scss';
 
 /**
  * Component
+ * @param {string} cloudType Type of the data to get from the Cloud, values: patterns, svg, sc
  */
 const CloudLibrary = props => {
-	const { onClose, className } = props;
+	const { onClose, className, cloudType } = props;
 
-	const [type, setType] = useState('patterns');
+	const [type, setType] = useState(cloudType);
 
 	const { cloudData } = useSelect(select => {
 		const { receiveMaxiCloudLibrary } = select('maxiBlocks/cloudLibrary');

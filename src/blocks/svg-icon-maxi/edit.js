@@ -128,6 +128,7 @@ class edit extends MaxiBlockComponent {
 					)}
 					{isOpenSvgModal && (
 						<CloudLibrary
+							cloudType='svg'
 							onClose={() =>
 								this.setState({
 									isOpenSvgModal: !isOpenSvgModal,

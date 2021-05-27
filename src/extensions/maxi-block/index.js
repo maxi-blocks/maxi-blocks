@@ -76,10 +76,23 @@ class MaxiBlockComponent extends Component {
 		});
 	}
 
+	componentDidMount() {
+		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
+	}
+
 	/**
 	 * Prevents rendering
 	 */
 	shouldComponentUpdate(nextProps, nextState) {
+		// Change `parentBlockStyle` before updating
+		const { blockStyle } = this.props.attributes;
+
+		if (blockStyle === 'maxi-parent') {
+			const changedStyle = this.getParentStyle();
+
+			if (changedStyle) return true;
+		}
+
 		// Ensures rendering when selecting or unselecting
 		if (
 			!this.props.isSelected ||
@@ -108,6 +121,8 @@ class MaxiBlockComponent extends Component {
 			return !isEqual(oldAttributes, newAttributes);
 		}
 
+		if (this.shouldMaxiBlockUpdate) this.shouldMaxiBlockUpdate();
+
 		return !isEqual(nextProps.attributes, this.props.attributes);
 	}
 
@@ -127,8 +142,14 @@ class MaxiBlockComponent extends Component {
 			if (!isEqual(oldAttributes, newAttributes))
 				this.difference(oldAttributes, newAttributes);
 
+			if (this.maxiBlockGetSnapshotBeforeUpdate)
+				this.maxiBlockGetSnapshotBeforeUpdate();
+
 			return isEqual(oldAttributes, newAttributes);
 		}
+
+		if (this.maxiBlockGetSnapshotBeforeUpdate)
+			this.maxiBlockGetSnapshotBeforeUpdate();
 
 		return isEqual(prevProps.attributes, this.props.attributes);
 	}
@@ -136,7 +157,7 @@ class MaxiBlockComponent extends Component {
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		if (!shouldDisplayStyles) this.displayStyles();
 
-		this.getParentStyle();
+		if (this.maxiBlockDidUpdate) this.maxiBlockDidUpdate();
 	}
 
 	componentWillUnmount() {
@@ -149,6 +170,8 @@ class MaxiBlockComponent extends Component {
 		);
 
 		dispatch('maxiBlocks/text').removeFormatValue(this.props.clientId);
+
+		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
 	}
 
 	get getBreakpoints() {
@@ -170,9 +193,8 @@ class MaxiBlockComponent extends Component {
 
 		let res;
 
-		const blockRootClientId = select(
-			'core/block-editor'
-		).getBlockRootClientId(clientId);
+		const blockRootClientId =
+			select('core/block-editor').getBlockRootClientId(clientId);
 
 		if (!blockRootClientId) {
 			res = 'maxi-light';
@@ -215,11 +237,19 @@ class MaxiBlockComponent extends Component {
 	}
 
 	getParentStyle() {
-		const { setAttributes, clientId } = this.props;
+		const {
+			clientId,
+			attributes: { parentBlockStyle },
+		} = this.props;
 
-		setAttributes({
-			parentBlockStyle: getBlockStyle(clientId),
-		});
+		const newParentStyle = getBlockStyle(clientId);
+		if (parentBlockStyle !== newParentStyle) {
+			this.props.attributes.parentBlockStyle = newParentStyle;
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

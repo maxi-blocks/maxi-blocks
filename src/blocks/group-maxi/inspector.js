@@ -2,9 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/blockEditor';
-import { Fragment } from '@wordpress/element';
-import { TextControl } from '@wordpress/components';
+import { InspectorControls } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -27,6 +25,7 @@ import {
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
+	TextControl,
 	TransformControl,
 	ZIndexControl,
 } from '../../components';
@@ -57,7 +56,7 @@ const Inspector = props => {
 					{
 						label: __('Style', 'maxi-blocks'),
 						content: (
-							<Fragment>
+							<>
 								<div className='maxi-tab-content__box'>
 									<CustomLabel
 										customLabel={customLabel}
@@ -127,7 +126,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<BackgroundControl
 																		{...getGroupAttributes(
 																			attributes,
@@ -166,7 +165,7 @@ const Inspector = props => {
 																			}
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 														{
@@ -175,7 +174,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Background Hover',
@@ -205,7 +204,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover': val,
+																					'background-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -237,7 +237,7 @@ const Inspector = props => {
 																			}
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -286,7 +286,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
@@ -316,7 +316,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'border-status-hover': val,
+																					'border-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -348,7 +349,7 @@ const Inspector = props => {
 																			}
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -398,7 +399,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Box Shadow Hover',
@@ -428,7 +429,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': val,
+																					'box-shadow-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -458,7 +460,7 @@ const Inspector = props => {
 																			}
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -471,7 +473,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<Fragment>
+												<>
 													<AxisControl
 														{...getGroupAttributes(
 															attributes,
@@ -503,7 +505,7 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														target='margin'
 													/>
-												</Fragment>
+												</>
 											),
 										},
 										{
@@ -524,7 +526,7 @@ const Inspector = props => {
 										},
 									]}
 								/>
-							</Fragment>
+							</>
 						),
 					},
 					{
@@ -673,16 +675,12 @@ const Inspector = props => {
 														`opacity-${deviceType}`
 													]
 												}
-												defaultOpacity={getDefaultAttribute(
-													`opacity-${deviceType}`,
-													clientId
-												)}
 												onChange={val =>
 													setAttributes({
-														[`opacity-${deviceType}`]: val,
+														[`opacity-${deviceType}`]:
+															val,
 													})
 												}
-												breakpoint={deviceType}
 											/>
 										),
 									},

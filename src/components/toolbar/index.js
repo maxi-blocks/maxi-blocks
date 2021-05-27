@@ -10,44 +10,41 @@ import { getScrollContainer } from '@wordpress/dom';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual } from 'lodash';
+import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
 /**
  * Utils
  */
-import {
-	Alignment,
-	BackgroundColor,
-	Border,
-	BoxShadow,
-	ColumnMover,
-	ColumnsHandlers,
-	ColumnSize,
-	CopyPaste,
-	Delete,
-	Divider,
-	DividerAlignment,
-	DividerColor,
-	Duplicate,
-	ImageSize,
-	Link,
-	Mover,
-	PaddingMargin,
-	ReusableBlocks,
-	RowSettings,
-	Size,
-	SvgColor,
-	TextBold,
-	TextColor,
-	TextItalic,
-	TextLevel,
-	TextLink,
-	TextListOptions,
-	TextOptions,
-	ToggleBlock,
-	ToolbarColumnPattern,
-} from './components';
-
-import { Breadcrumbs } from '../../components';
+import Alignment from './components/alignment';
+import BackgroundColor from './components/background-color';
+import Border from './components/border';
+import BoxShadow from './components/box-shadow';
+import ColumnMover from './components/column-mover';
+import ColumnsHandlers from './components/columns-handlers';
+import ColumnSize from './components/column-size';
+import CopyPaste from './components/copy-paste';
+import Delete from './components/delete';
+import Divider from './components/divider-line';
+import DividerAlignment from './components/divider-alignment';
+import DividerColor from './components/divider-color';
+import Duplicate from './components/duplicate';
+import ImageSize from './components/image-size';
+import Link from './components/link';
+import Mover from './components/mover';
+import PaddingMargin from './components/padding-margin';
+import ReusableBlocks from './components/reusable-blocks';
+import RowSettings from './components/row-settings';
+import Size from './components/size';
+import SvgColor from './components/svg-color';
+import TextBold from './components/text-bold';
+import TextColor from './components/text-color';
+import TextItalic from './components/text-italic';
+import TextLevel from './components/text-level';
+import TextLink from './components/text-link';
+import TextListOptions from './components/text-list-options';
+import TextOptions from './components/text-options';
+import ToggleBlock from './components/toggle-block';
+import ToolbarColumnPattern from './components/column-pattern';
+import Breadcrumbs from '../breadcrumbs';
 
 /**
  * Styles
@@ -66,8 +63,9 @@ const allowedBlocks = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/divider-maxi',
-	'maxi-blocks/font-icon-maxi',
+	'maxi-blocks/map-maxi',
 	'maxi-blocks/group-maxi',
+	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/svg-icon-maxi',
@@ -79,7 +77,9 @@ const flexBlocks = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/divider-maxi',
+	'maxi-blocks/map-maxi',
 	'maxi-blocks/group-maxi',
+	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/svg-icon-maxi',
@@ -99,7 +99,6 @@ const MaxiToolbar = memo(
 			name,
 			setAttributes,
 			toggleHandlers,
-			blockStyle,
 			rowPattern,
 		} = props;
 
@@ -164,9 +163,10 @@ const MaxiToolbar = memo(
 			...((parseFloat(editorVersion) <= 9.2 && {
 				__unstableSticky: true,
 			}) ||
-				(anchorRef && {
-					__unstableStickyBoundaryElement: boundaryElement,
-				})),
+				(anchorRef &&
+					!isNaN(parseFloat(editorVersion)) && {
+						__unstableStickyBoundaryElement: boundaryElement,
+					})),
 		};
 
 		return (
@@ -205,7 +205,6 @@ const MaxiToolbar = memo(
 									'palette',
 								])}
 								blockName={name}
-								blockStyle={blockStyle}
 								breakpoint={deviceType}
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
@@ -248,7 +247,6 @@ const MaxiToolbar = memo(
 							/>
 							<TextColor
 								blockName={name}
-								blockStyle={blockStyle}
 								{...getGroupAttributes(attributes, [
 									'typography',
 									'palette',
@@ -352,7 +350,6 @@ const MaxiToolbar = memo(
 									'palette',
 								])}
 								blockName={name}
-								blockStyle={blockStyle}
 								breakpoint={deviceType}
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
@@ -374,7 +371,6 @@ const MaxiToolbar = memo(
 											setAttributes(svgColorFill);
 											changeSVGContent(svgColorFill, 1);
 										}}
-										blockStyle={blockStyle}
 										clientId={clientId}
 										type='svgColorFill'
 										breakpoint={deviceType}
@@ -394,7 +390,6 @@ const MaxiToolbar = memo(
 											setAttributes(svgColorLine);
 											changeSVGContent(svgColorLine, 2);
 										}}
-										blockStyle={blockStyle}
 										clientId={clientId}
 										type='svgColorLine'
 										breakpoint={deviceType}
@@ -411,7 +406,6 @@ const MaxiToolbar = memo(
 								])}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={deviceType}
-								blockStyle={blockStyle}
 								clientId={clientId}
 							/>
 							{deviceType === 'general' && (
@@ -469,6 +463,7 @@ const MaxiToolbar = memo(
 									'palette',
 								])}
 								onChange={obj => setAttributes(obj)}
+								clientId={clientId}
 								breakpoint={deviceType}
 							/>
 							<PaddingMargin
@@ -480,8 +475,8 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								breakpoint={deviceType}
 							/>
-							<Duplicate clientId={clientId} />
-							<Delete clientId={clientId} />
+							<Duplicate clientId={clientId} blockName={name} />
+							<Delete clientId={clientId} blockName={name} />
 							<ToggleBlock
 								{...getGroupAttributes(attributes, 'display')}
 								onChange={obj => setAttributes(obj)}

@@ -4,7 +4,7 @@
 // @import './maxi-themes-default.scss';
 
 $styles: 'dark', 'light';
-$levels: 'p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6';
+$levels: 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6';
 $responsive_sizes: 'general', 'xxl', 'xl', 'l', 'm', 's', 'xs';
 $responsive_breakpoints: 1921, 1920, 1366, 1024, 768, 480;
 $responsive_width: '';
@@ -21,12 +21,52 @@ body.maxi-blocks--active {
 		.maxi-#{$style} {
 			/* Color Presets */
 			@each $color_number in $color_set {
+				&.maxi-sc-#{$style}-marker-address-color-#{$color_number},
+				.maxi-sc-#{$style}-marker-address-color-#{$color_number} {
+					.map-marker-info-window__address {
+						color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-marker-title-color-#{$color_number},
+				.maxi-sc-#{$style}-marker-title-color-#{$color_number} {
+					.map-marker-info-window__title {
+						color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-hover-background-color-#{$color_number},
+				.maxi-sc-#{$style}-hover-background-color-#{$color_number} {
+					&.maxi-image-block .maxi-hover-details {
+						background: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-circle-bar-background-color-#{$color_number},
+				.maxi-sc-#{$style}-circle-bar-background-color-#{$color_number} {
+					.maxi-number-counter__box .maxi-number-counter__box__circle {
+						stroke: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-circle-background-color-#{$color_number},
+				.maxi-sc-#{$style}-circle-background-color-#{$color_number} {
+					.maxi-number-counter__box .maxi-number-counter__box__background {
+						stroke: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-svg-background-color-#{$color_number},
+				.maxi-sc-#{$style}-svg-background-color-#{$color_number} {
+					> .maxi-background-displayer .maxi-background-displayer__svg svg path {
+						fill: var(--maxi-#{$style}-color-#{$color_number}) !important;
+					}
+				}
 				&.maxi-sc-#{$style}-background-color-#{$color_number},
 				.maxi-sc-#{$style}-background-color-#{$color_number} {
 					&.maxi-button-block .maxi-button-block__button, {
 						--maxi-#{$style}-button-background-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 					> .maxi-background-displayer .maxi-background-displayer__color {
+						background: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					> .maxi-container-arrow:before,
+					> .maxi-container-arrow:after {
 						background: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
@@ -40,18 +80,30 @@ body.maxi-blocks--active {
 					> .maxi-button-block__button {
 						border-color: var(--maxi-#{$style}-color-#{$color_number});
 					}
-					> .maxi-container-arrow:before,
-					> .maxi-container-arrow:after {
-						background: var(--maxi-#{$style}-color-#{$color_number});
+				}
+				&.maxi-sc-#{$style}-typography-color-#{$color_number},
+				.maxi-sc-#{$style}-typography-color-#{$color_number} {
+					&.maxi-button-block {
+						--maxi-#{$style}-button-text-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				&.maxi-sc-#{$style}-typography-color-#{$color_number},
 				.maxi-sc-#{$style}-typography-color-#{$color_number} {
-					&.maxi-button-block,
-					.maxi-image-block__caption {
+					&.maxi-button-block {
 						--maxi-#{$style}-button-text-color-palette: var(--maxi-#{$style}-color-#{$color_number});
-
 					}
+				}
+				&.maxi-sc-#{$style}-typography-color-#{$color_number},
+					.maxi-sc-#{$style}-typography-color-#{$color_number} {
+						.maxi-number-counter__box .maxi-number-counter__box__text {
+							color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+				}
+				&.maxi-sc-#{$style}-typography-color-#{$color_number},
+					.maxi-sc-#{$style}-typography-color-#{$color_number} {
+						.maxi-image-block__caption {
+							color: var(--maxi-#{$style}-color-#{$color_number});
+						}
 				}
 				@each $level in $levels {
 					&.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content,
@@ -59,14 +111,15 @@ body.maxi-blocks--active {
 						--maxi-#{$style}-#{$level}-color-general-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
-				&.maxi-sc-#{$style}-icon-color-#{$color_number},
-				.maxi-sc-#{$style}-icon-color-#{$color_number} {
-					.maxi-font-icon-block__icon i {
-						--maxi-#{$style}-font-icon-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+				li {
+					&.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content,
+					.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content {
+						--maxi-#{$style}-p-color-general-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				&.maxi-sc-#{$style}-svgColorFill-color-#{$color_number},
 				.maxi-sc-#{$style}-svgColorFill-color-#{$color_number} {
+					.maxi-svg-icon-block__icon svg[data-fill],
 					.maxi-svg-icon-block__icon svg *[data-fill] {
 						fill: var(--maxi-light-icon-fill, var(--maxi-light-icon-fill-palette));
 						--maxi-#{$style}-icon-fill-palette: var(--maxi-#{$style}-color-#{$color_number});
@@ -74,6 +127,7 @@ body.maxi-blocks--active {
 				}
 				&.maxi-sc-#{$style}-svgColorLine-color-#{$color_number},
 				.maxi-sc-#{$style}-svgColorLine-color-#{$color_number} {
+					.maxi-svg-icon-block__icon svg[data-stroke],
 					.maxi-svg-icon-block__icon svg *[data-stroke] {
 						stroke: var(--maxi-light-icon-line, var(--maxi-light-icon-line-palette));
 						--maxi-#{$style}-icon-line-palette: var(--maxi-#{$style}-color-#{$color_number});
@@ -101,11 +155,16 @@ body.maxi-blocks--active {
 				}
 			}
 			/* Color Presets on hover */
-			&:not(.maxi-button-block):hover {
+			&:not(.maxi-button-block):hover,
+			.maxi-parent:not(.maxi-button-block):hover {
 				@each $color_number in $color_set {
 					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
 						> .maxi-background-displayer .maxi-background-displayer__color {
 							background-color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+						> .maxi-container-arrow:before,
+						> .maxi-container-arrow:after {
+							background: var(--maxi-#{$style}-color-#{$color_number});
 						}
 					}
 					&.maxi-sc-#{$style}-border-hover-color-#{$color_number} {
@@ -114,21 +173,11 @@ body.maxi-blocks--active {
 						> .maxi-block__resizer .maxi-block-hover-wrapper {
 							border-color: var(--maxi-#{$style}-color-#{$color_number});
 						}
-						> .maxi-container-arrow:before,
-						> .maxi-container-arrow:after {
-							background: var(--maxi-#{$style}-color-#{$color_number});
-						}
 					}
 					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
 						> .maxi-text-block__content,
 						.maxi-image-block__caption {
 							color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-					}
-					&.maxi-sc-#{$style}-icon-hover-color-#{$color_number} {
-						.maxi-font-icon-block__icon i,
-						.maxi-font-icon-block__icon:hover i {
-							color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-color-#{$color_number}));
 						}
 					}
 					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {
@@ -141,7 +190,8 @@ body.maxi-blocks--active {
 				}
 			}
 			/* Color Presets on button hover */
-			&.maxi-button-block {
+			&.maxi-button-block,
+			.maxi-parent.maxi-button-block {
 				@each $color_number in $color_set {
 					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
 						> .maxi-button-block__button:hover {
@@ -154,7 +204,7 @@ body.maxi-blocks--active {
 						}
 					}
 					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
-						.maxi-button-block:hover {
+						> .maxi-button-block__button:hover {
 							--maxi-#{$style}-button-text-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});						}
 					}
 					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {
@@ -169,18 +219,34 @@ body.maxi-blocks--active {
 
 		/* Individual settings per a block type */
 		.maxi-#{$style}[class*='maxi-sc'] {
-			@each $level in $levels {
-				#{$level} {
-					color: var(--maxi-#{$style}-#{$level}-color-general, var(--maxi-#{$style}-#{$level}-color-general-palette));
-					font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
-					font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
-					font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
-					text-transform: var(--maxi-#{$style}-#{$level}-text-transform-general);
-					text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-general);
+			&.maxi-text-block,
+			&.maxi-button-block,
+			.maxi-text-block,
+			.maxi-button-block {
+				@each $level in $levels {
+					#{$level} {
+						color: var(--maxi-#{$style}-#{$level}-color-general, var(--maxi-#{$style}-#{$level}-color-general-palette));
+						font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
+						font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
+						font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
+						text-transform: var(--maxi-#{$style}-#{$level}-text-transform-general);
+						text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-general);
+					}
 				}
 			}
 
-			a:not(.maxi-button-block__button) {
+			&.maxi-text-block li,
+			.maxi-text-block li {
+				color: var(--maxi-#{$style}-p-color-general, var(--maxi-#{$style}-p-color-general-palette));
+				font-family: var(--maxi-#{$style}-p-font-family-general);
+				font-weight: var(--maxi-#{$style}-p-font-weight-general);
+				font-style: var(--maxi-#{$style}-p-font-style-general);
+				text-transform: var(--maxi-#{$style}-p-text-transform-general);
+				text-decoration: var(--maxi-#{$style}-p-text-decoration-general);
+			}
+
+			&.maxi-text-block a,
+			.maxi-text-block a {
 				color: var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette));
 				&:visited, &:hover, &:active, &:focus {
 			        color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
@@ -195,16 +261,12 @@ body.maxi-blocks--active {
 				border-color: var(--maxi-#{$style}-divider-color, var(--maxi-#{$style}-divider-color-palette));
 			}
 
-			&.maxi-font-icon-block__icon i,
-			.maxi-font-icon-block__icon i {
-				color: var(--maxi-#{$style}-font-icon-color);
-				color: var(--maxi-#{$style}-font-icon-color, var(--maxi-#{$style}-font-icon-color-palette));
-			}
-
+			&.maxi-svg-icon-block__icon svg[data-fill],
 			&.maxi-svg-icon-block__icon svg *[data-fill] {
 				fill: var(--maxi-#{$style}-icon-fill, var(--maxi-#{$style}-icon-fill-palette));
 			}
 
+			&.maxi-svg-icon-block__icon svg[data-stroke],
 			&.maxi-svg-icon-block__icon svg *[data-stroke] {
 				stroke: var(--maxi-#{$style}-icon-line, var(--maxi-#{$style}-icon-line-palette));
 			}
@@ -253,13 +315,27 @@ body.maxi-blocks--active {
 			.edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="#{$responsive_size}"] {
 				.maxi-block--backend {
 					&.maxi-#{$style} {
-						@each $level in $levels {
-							#{$level} {
-								&.maxi-text-block__content {
-									font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size});
-									line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size});
-									letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$responsive_size});
+						&.maxi-text-block,
+						&.maxi-button-block,
+						.maxi-text-block,
+						.maxi-button-block {
+							@each $level in $levels {
+								#{$level} {
+									&.maxi-text-block__content {
+										font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size});
+										line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size});
+										letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$responsive_size});
+									}
 								}
+							}
+						}
+
+						&.maxi-text-block li,
+						.maxi-text-block li {
+							&.maxi-text-block__content {
+								font-size: var(--maxi-#{$style}-p-font-size-#{$responsive_size});
+								line-height: var(--maxi-#{$style}-p-line-height-#{$responsive_size});
+								letter-spacing: var(--maxi-#{$style}-p-letter-spacing-#{$responsive_size});
 							}
 						}
 					}
@@ -267,9 +343,6 @@ body.maxi-blocks--active {
 						font-size: var(--maxi-#{$style}-button-font-size-#{$responsive_size});
 						line-height: var(--maxi-#{$style}-button-line-height-#{$responsive_size});
 						letter-spacing: var(--maxi-#{$style}-button-letter-spacing-#{$responsive_size});
-					}
-					.maxi-font-icon-block__icon i {
-						font-size: var(--maxi-#{$style}-font-icon-font-size-#{$responsive_size});
 					}
 				}
 			}
@@ -307,21 +380,29 @@ body.maxi-blocks--active {
 		body.maxi-blocks--active {
 			@each $style in $styles {
 				.maxi-#{$style} {
-					@each $level in $levels {
-						#{$level} {
-							font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage});
-							line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage});
-							letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$current_responsive_stage});
+					&.maxi-text-block,
+					&.maxi-button-block,
+					.maxi-text-block,
+					.maxi-button-block {
+						@each $level in $levels {
+							#{$level} {
+								font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage});
+								line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage});
+								letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$current_responsive_stage});
+							}
 						}
+					}
+					&.maxi-text-block li,
+					.maxi-text-block li {
+						font-size: var(--maxi-#{$style}-p-font-size-#{$current_responsive_stage});
+						line-height: var(--maxi-#{$style}-p-line-height-#{$current_responsive_stage});
+						letter-spacing: var(--maxi-#{$style}-p-letter-spacing-#{$current_responsive_stage});
 					}
 				}
 				.maxi-button-block__button {
 					font-size: var(--maxi-#{$style}-button-font-size-#{$current_responsive_stage});
 					line-height: var(--maxi-#{$style}-button-line-height-#{$current_responsive_stage});
 					letter-spacing: var(--maxi-#{$style}-button-letter-spacing-#{$current_responsive_stage});
-				}
-				.maxi-font-icon-block__icon i {
-					font-size: var(--maxi-#{$style}-font-icon-font-size-#{$current_responsive_stage});
 				}
 			}
 		}

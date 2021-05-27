@@ -3,20 +3,20 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, RawHTML } from '@wordpress/element';
-import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import FancyRadioControl from '../fancy-radio-control';
-import LoaderControl from '../loader-control';
+import { getGroupAttributes, getAttributeKey } from '../../extensions/styles';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
-import ImageLayer from './imageLayer';
-import VideoLayer from './videoLayer';
+import FancyRadioControl from '../fancy-radio-control';
 import GradientLayer from './gradientLayer';
+import Icon from '../icon';
+import ImageLayer from './imageLayer';
+import LoaderControl from '../loader-control';
 import SVGLayer from './svgLayer';
-import { getGroupAttributes, getAttributeKey } from '../../extensions/styles';
+import VideoLayer from './videoLayer';
 
 /**
  * External dependencies
@@ -125,6 +125,7 @@ const LayerCard = props => {
 								...getGroupAttributes(layer, 'backgroundColor'),
 							}}
 							onChange={obj => onChange({ ...layer, ...obj })}
+							type='layer'
 						/>
 					)) ||
 						(type === 'image' && (
@@ -284,7 +285,7 @@ const BackgroundLayersControl = ({
 							'background-active-media',
 							isHover,
 							prefix
-						)]: !!+val ? 'layers' : '',
+						)]: +val ? 'layers' : '',
 					})
 				}
 			/>

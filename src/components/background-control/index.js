@@ -2,20 +2,19 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
-import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import BackgroundLayersControl from './backgroundLayersControl';
-import FancyRadioControl from '../fancy-radio-control';
-import ColorLayer from './colorLayer';
-import ImageLayer from './imageLayer';
-import VideoLayer from './videoLayer';
-import GradientLayer from './gradientLayer';
-import SVGLayer from './svgLayer';
 import { getGroupAttributes, getAttributeKey } from '../../extensions/styles';
+import BackgroundLayersControl from './backgroundLayersControl';
+import ColorLayer from './colorLayer';
+import FancyRadioControl from '../fancy-radio-control';
+import GradientLayer from './gradientLayer';
+import Icon from '../icon';
+import ImageLayer from './imageLayer';
+import SVGLayer from './svgLayer';
+import VideoLayer from './videoLayer';
 
 /**
  * External dependencies
@@ -142,7 +141,7 @@ const BackgroundControl = props => {
 				/>
 			)}
 			{!layersStatus && (
-				<Fragment>
+				<>
 					{!disableColor && backgroundActiveMedia === 'color' && (
 						<ColorLayer
 							{...getGroupAttributes(props, 'palette')}
@@ -212,6 +211,7 @@ const BackgroundControl = props => {
 					)}
 					{!disableSVG && backgroundActiveMedia === 'svg' && (
 						<SVGLayer
+							{...getGroupAttributes(props, 'palette')}
 							SVGOptions={{
 								...getGroupAttributes(
 									props,
@@ -223,9 +223,10 @@ const BackgroundControl = props => {
 							onChange={obj => onChange(obj)}
 							isHover={isHover}
 							prefix={prefix}
+							clientId={clientId}
 						/>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

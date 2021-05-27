@@ -2,14 +2,13 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
-import { Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
+import Icon from '../icon';
 import RangeSliderControl from '../range-slider-control';
 import {
 	boxShadowNone,
@@ -45,7 +44,6 @@ const BoxShadowControl = props => {
 		breakpoint,
 		disableAdvanced = false,
 		isHover = false,
-		blockStyle,
 		clientId,
 	} = props;
 
@@ -141,7 +139,7 @@ const BoxShadowControl = props => {
 				]}
 			/>
 			{!getIsActive(boxShadowNone, 'none') && (
-				<Fragment>
+				<>
 					<ColorControl
 						label={__('Box Shadow', 'maxi-blocks')}
 						className='maxi-shadow-control__color'
@@ -167,7 +165,6 @@ const BoxShadowControl = props => {
 						disableImage
 						disableVideo
 						showPalette
-						blockStyle={blockStyle}
 						isHover={isHover}
 						palette={{ ...getGroupAttributes(props, 'palette') }}
 						colorPaletteType='box-shadow'
@@ -176,7 +173,7 @@ const BoxShadowControl = props => {
 						clientId={clientId}
 					/>
 					{!disableAdvanced && (
-						<Fragment>
+						<>
 							<RangeSliderControl
 								label={__('Horizontal', 'maxi-blocks')}
 								className='maxi-shadow-control__horizontal'
@@ -190,7 +187,17 @@ const BoxShadowControl = props => {
 									isHover
 								)}
 								onChange={val =>
-									onChangeValue('box-shadow-horizontal', val)
+									!isNil(val)
+										? onChangeValue(
+												'box-shadow-horizontal',
+												val
+										  )
+										: onChangeValue(
+												'box-shadow-horizontal',
+												getDefaultAttribute(
+													`box-shadow-horizontal-${breakpoint}`
+												) || 0
+										  )
 								}
 								min={-100}
 								max={100}
@@ -213,9 +220,19 @@ const BoxShadowControl = props => {
 									props,
 									isHover
 								)}
-								onChange={val =>
-									onChangeValue('box-shadow-vertical', val)
-								}
+								onChange={val => {
+									!isNil(val)
+										? onChangeValue(
+												'box-shadow-vertical',
+												val
+										  )
+										: onChangeValue(
+												'box-shadow-vertical',
+												getDefaultAttribute(
+													`box-shadow-vertical-${breakpoint}`
+												) || 0
+										  );
+								}}
 								min={-100}
 								max={100}
 								allowReset
@@ -235,10 +252,16 @@ const BoxShadowControl = props => {
 									'box-shadow-blur',
 									breakpoint
 								)}
-								props
-								onChange={val =>
-									onChangeValue('box-shadow-blur', val)
-								}
+								onChange={val => {
+									!isNil(val)
+										? onChangeValue('box-shadow-blur', val)
+										: onChangeValue(
+												'box-shadow-blur',
+												getDefaultAttribute(
+													`box-shadow-blur-${breakpoint}`
+												) || 0
+										  );
+								}}
 								min={0}
 								max={100}
 								allowReset
@@ -260,9 +283,19 @@ const BoxShadowControl = props => {
 									props,
 									isHover
 								)}
-								onChange={val =>
-									onChangeValue('box-shadow-spread', val)
-								}
+								onChange={val => {
+									!isNil(val)
+										? onChangeValue(
+												'box-shadow-spread',
+												val
+										  )
+										: onChangeValue(
+												'box-shadow-spread',
+												getDefaultAttribute(
+													`box-shadow-spread-${breakpoint}`
+												) || 0
+										  );
+								}}
 								min={-100}
 								max={100}
 								allowReset
@@ -272,9 +305,9 @@ const BoxShadowControl = props => {
 									}`
 								)}
 							/>
-						</Fragment>
+						</>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

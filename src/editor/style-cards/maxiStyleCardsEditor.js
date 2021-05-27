@@ -169,8 +169,15 @@ const MaxiStyleCardsEditor = () => {
 		canBeResetted(currentSCkey)
 	);
 
+	const [isSaveDisabled, setIsSaveDisabled] = useState(true);
+	const [isApplyDisabled, setIsApplyDisabled] = useState(true);
+
 	const onChangeDelete = (prop, style) => {
 		const newStateSC = stateSC;
+		const currentPropVal = newStateSC.styleCard[style][prop];
+
+		if (!isNil(currentPropVal))
+			newStateSC.styleCard[style][`${prop}-old`] = currentPropVal;
 
 		delete newStateSC.styleCard[style][prop];
 
@@ -178,6 +185,12 @@ const MaxiStyleCardsEditor = () => {
 			const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 			breakpoints.forEach(breakpoint => {
 				const newProp = prop.replace('general', breakpoint);
+				const currentPropVal = newStateSC.styleCard[style][newProp];
+
+				if (!isNil(currentPropVal))
+					newStateSC.styleCard[style][
+						`${newProp}-old`
+					] = currentPropVal;
 				delete newStateSC.styleCard[style][newProp];
 			});
 		}
@@ -193,12 +206,23 @@ const MaxiStyleCardsEditor = () => {
 
 		changeStateSC(newStateSC);
 		changeCanBeResettedState(canBeResetted(currentSCkey));
+		setIsApplyDisabled(false);
 	};
 
-	const onChangeValue = (prop, value, style) => {
+	const onChangeValue = (
+		prop,
+		value,
+		style,
+		globalAttr = false,
+		globalVal
+	) => {
 		let newStateSC = {};
 
 		if (prop === 'typography') {
+			Object.entries(value).forEach(([key, val]) => {
+				if (isNil(val)) delete value[key];
+			});
+
 			newStateSC = {
 				...stateSC,
 				styleCard: {
@@ -206,7 +230,7 @@ const MaxiStyleCardsEditor = () => {
 					[style]: { ...stateSC.styleCard[style], ...value },
 				},
 			};
-		} else {
+		} else if (!globalAttr) {
 			newStateSC = {
 				...stateSC,
 				styleCard: {
@@ -214,11 +238,25 @@ const MaxiStyleCardsEditor = () => {
 					[style]: { ...stateSC.styleCard[style], [prop]: value },
 				},
 			};
+		} else {
+			newStateSC = {
+				...stateSC,
+				styleCard: {
+					...stateSC.styleCard,
+					[style]: {
+						...stateSC.styleCard[style],
+						[prop]: value,
+						[`${prop}-global`]: globalVal,
+					},
+				},
+			};
 		}
 
 		changeStateSC(newStateSC);
 		changeSConBackend(newStateSC);
 		changeCanBeResettedState(canBeResetted(currentSCkey));
+		setIsSaveDisabled(false);
+		setIsApplyDisabled(false);
 	};
 
 	const currentSCname = () => {
@@ -273,6 +311,8 @@ const MaxiStyleCardsEditor = () => {
 		changeCanBeResettedState(canBeResetted(currentSCkey));
 
 		saveMaxiStyleCards(newStyleCards);
+		setIsApplyDisabled(true);
+		setIsSaveDisabled(true);
 	};
 
 	const saveCurrentSC = () => {
@@ -289,6 +329,7 @@ const MaxiStyleCardsEditor = () => {
 		changeCanBeResettedState(canBeResetted(currentSCkey));
 		changeCurrentSC(newStyleCards);
 		saveMaxiStyleCards(newStyleCards);
+		setIsSaveDisabled(true);
 	};
 
 	const resetCurrentSC = () => {
@@ -314,6 +355,9 @@ const MaxiStyleCardsEditor = () => {
 		changeStateSC(resetStyleCard);
 		changeSConBackend(resetStyleCard);
 		changeCurrentSC(resetStyleCards);
+
+		setIsApplyDisabled(false);
+		setIsSaveDisabled(false);
 	};
 
 	const saveImportedStyleCard = card => {
@@ -331,6 +375,9 @@ const MaxiStyleCardsEditor = () => {
 		changeCurrentSCkey(newId);
 		changeCurrentSC(newAllSCs);
 		changeIsDefaultOrActiveState(false);
+
+		setIsSaveDisabled(true);
+		setIsApplyDisabled(false);
 	};
 
 	const switchCurrentSC = keySC => {
@@ -339,6 +386,8 @@ const MaxiStyleCardsEditor = () => {
 		changeStateSC(getStyleCardCurrentValue(keySC));
 		changeSConBackend(getStyleCardCurrentValue(keySC));
 		changeIsDefaultOrActiveState(isDefaultOrActive(keySC));
+
+		setIsApplyDisabled(false);
 	};
 
 	const showMaxiSCSavedActiveSnackbar = nameSC => {
@@ -512,6 +561,7 @@ const MaxiStyleCardsEditor = () => {
 						/>
 						<Button
 							className='maxi-style-cards__sc__actions--save'
+							disabled={isSaveDisabled}
 							onClick={() => {
 								if (isActive(currentSCkey)) {
 									if (
@@ -540,7 +590,7 @@ const MaxiStyleCardsEditor = () => {
 						</Button>
 						<Button
 							className='maxi-style-cards__sc__actions--apply'
-							disabled={false}
+							disabled={isApplyDisabled}
 							onClick={() => {
 								if (
 									window.confirm(

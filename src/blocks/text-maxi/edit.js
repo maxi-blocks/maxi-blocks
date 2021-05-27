@@ -4,7 +4,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
-import { Fragment } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
 import { withSelect, dispatch } from '@wordpress/data';
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
@@ -21,7 +20,7 @@ import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 import { onMerge, onSplit } from './utils';
 import {
@@ -83,7 +82,25 @@ class edit extends MaxiBlockComponent {
 			typeOfList,
 			listStart,
 			listReversed,
+			parentBlockStyle,
 		} = attributes;
+
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+			],
+			'maxi-blocks/text-maxi',
+			parentBlockStyle,
+			textLevel
+		);
 
 		const onChangeRichText = ({ value: formatValue }) => {
 			/**
@@ -144,7 +161,9 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}
+				classes={`${isList ? 'maxi-list-block' : ''}`}
 				ref={this.blockRef}
+				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				{!isList && (
@@ -206,7 +225,7 @@ class edit extends MaxiBlockComponent {
 
 							if (isSelected)
 								return (
-									<Fragment>
+									<>
 										<RichTextShortcut
 											type='primary'
 											character='['
@@ -253,7 +272,7 @@ class edit extends MaxiBlockComponent {
 												);
 											}}
 										/>
-									</Fragment>
+									</>
 								);
 
 							return null;

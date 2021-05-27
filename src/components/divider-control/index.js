@@ -2,31 +2,29 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
-import { SelectControl, Icon } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import {
-	ColorControl,
-	DefaultStylesControl,
-	FancyRadioControl,
-	RangeSliderControl,
-	SizeControl,
-} from '../../components';
+import ColorControl from '../color-control';
+import DefaultStylesControl from '../default-styles-control';
+import FancyRadioControl from '../fancy-radio-control';
+import Icon from '../icon';
+import RangeSliderControl from '../range-slider-control';
+import SelectControl from '../select-control';
+import SizeControl from '../size-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
 import {
-	dividerSolidHorizontal,
-	dividerDottedHorizontal,
 	dividerDashedHorizontal,
-	dividerSolidVertical,
-	dividerDottedVertical,
 	dividerDashedVertical,
+	dividerDottedHorizontal,
+	dividerDottedVertical,
 	dividerNone,
+	dividerSolidHorizontal,
+	dividerSolidVertical,
 } from './defaults';
 
 /**
@@ -44,7 +42,6 @@ const DividerControl = props => {
 		disableColor = false,
 		disableLineStyle = false,
 		disableBorderRadius = false,
-		blockStyle,
 		isHover = false,
 		clientId,
 	} = props;
@@ -69,7 +66,7 @@ const DividerControl = props => {
 	};
 
 	return (
-		<Fragment>
+		<>
 			<DefaultStylesControl
 				items={[
 					{
@@ -134,7 +131,6 @@ const DividerControl = props => {
 					onChange={val => onChange({ 'divider-border-color': val })}
 					disableGradient
 					showPalette
-					blockStyle={blockStyle}
 					palette={{ ...getGroupAttributes(props, 'palette') }}
 					isHover={isHover}
 					colorPaletteType='divider'
@@ -163,11 +159,11 @@ const DividerControl = props => {
 						label={__('Line Radius', 'maxi-blocks')}
 						selected={props['divider-border-radius']}
 						options={[
-							{ label: __('No', 'maxi-blocks'), value: '' },
 							{
 								label: __('Yes', 'maxi-blocks'),
-								value: '20px',
+								value: 1,
 							},
+							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'divider-border-radius': val })
@@ -176,7 +172,7 @@ const DividerControl = props => {
 				)}
 			{props['divider-border-style'] !== 'none' &&
 				lineOrientation === 'horizontal' && (
-					<Fragment>
+					<>
 						<SizeControl
 							label={__('Line Size', 'maxi-blocks')}
 							unit={props['divider-width-unit']}
@@ -225,11 +221,11 @@ const DividerControl = props => {
 							}
 							minMaxSettings={minMaxSettings}
 						/>
-					</Fragment>
+					</>
 				)}
 			{props['divider-border-style'] !== 'none' &&
 				lineOrientation === 'vertical' && (
-					<Fragment>
+					<>
 						<RangeSliderControl
 							label={__('Size', 'maxi-blocks')}
 							defaultValue={getDefaultAttribute('height')}
@@ -258,9 +254,9 @@ const DividerControl = props => {
 								'border-right-width'
 							)}
 						/>
-					</Fragment>
+					</>
 				)}
-		</Fragment>
+		</>
 	);
 };
 

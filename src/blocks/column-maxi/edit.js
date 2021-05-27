@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { compose } from '@wordpress/compose';
-import { Fragment, createRef } from '@wordpress/element';
+import { createRef } from '@wordpress/element';
 import { withSelect, withDispatch } from '@wordpress/data';
 
 /**
@@ -20,7 +20,10 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getLastBreakpointAttribute,
+	getPaletteClasses,
+} from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -39,9 +42,7 @@ class edit extends MaxiBlockComponent {
 		this.resizableObject = createRef();
 	}
 
-	componentDidUpdate() {
-		this.displayStyles();
-
+	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
 			const columnWidth = getLastBreakpointAttribute(
 				'column-size',
@@ -71,7 +72,7 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			clientId,
 		} = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, parentBlockStyle } = attributes;
 
 		const getColumnWidthDefault = () => {
 			const columnWidth = getLastBreakpointAttribute(
@@ -97,11 +98,25 @@ class edit extends MaxiBlockComponent {
 					].indexOf(blockName) === -1
 			);
 
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'maxi-blocks/column-maxi',
+			parentBlockStyle
+		);
+
 		return [
 			<RowContext.Consumer key={`column-content-${uniqueID}`}>
 				{context => {
 					return (
-						<Fragment>
+						<>
 							<Inspector
 								key={`block-settings-${uniqueID}`}
 								rowPattern={context.rowPattern}
@@ -156,6 +171,7 @@ class edit extends MaxiBlockComponent {
 								<MaxiBlock
 									key={`maxi-column--${uniqueID}`}
 									ref={this.blockRef}
+									paletteClasses={paletteClasses}
 									{...getMaxiBlockBlockAttributes(this.props)}
 									disableMotion
 								>
@@ -176,7 +192,7 @@ class edit extends MaxiBlockComponent {
 									/>
 								</MaxiBlock>
 							</BlockResizer>
-						</Fragment>
+						</>
 					);
 				}}
 			</RowContext.Consumer>,

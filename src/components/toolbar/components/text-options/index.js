@@ -2,13 +2,13 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
-import { Button, BaseControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import Button from '../../../button';
 import { defaultTypography } from '../../../../extensions/text';
+import BaseControl from '../../../base-control';
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
 import TextFormatStrikethrough from '../text-format-strikethrough';
@@ -99,7 +99,7 @@ const TextOptions = withFormatValue(props => {
 						theme='dark'
 					/>
 				</div>
-				<Fragment>
+				<>
 					<BaseControl
 						label={__('Size', 'maxi-blocks')}
 						className='toolbar-item__popover__font-options__number-control'
@@ -261,7 +261,7 @@ const TextOptions = withFormatValue(props => {
 							textLevel={textLevel}
 						/>
 					</div>
-				</Fragment>
+				</>
 			</div>
 		</ToolbarPopover>
 	);

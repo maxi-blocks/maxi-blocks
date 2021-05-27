@@ -2,12 +2,13 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { BaseControl, Button } from '@wordpress/components';
-import { useState, useEffect, Fragment } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../button';
+import BaseControl from '../base-control';
 import RangeSliderControl from '../range-slider-control';
 import ColorPaletteControl from '../color-palette-control';
 
@@ -15,7 +16,7 @@ import ColorPaletteControl from '../color-palette-control';
  * External dependencies
  */
 import ChromePicker from 'react-color';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -105,10 +106,11 @@ const ColorControl = props => {
 	}, [color, currentColor, setCurrentColor, setColorAlpha, getRGB]);
 
 	return (
-		<Fragment>
+		<>
 			{!disablePalette && showPalette && (
 				<ColorPaletteControl
 					{...palette}
+					paletteLabel={label}
 					textLevel={textLevel}
 					isHover={isHover}
 					colorPaletteType={colorPaletteType}
@@ -163,14 +165,16 @@ const ColorControl = props => {
 							className='maxi-color-control__opacity'
 							value={+colorAlpha}
 							onChange={val => {
+								const value = !isNil(val) ? +val : 0;
+
 								if (!isEmpty(color)) {
-									onChange(returnColor(getRGB(color), val));
+									onChange(returnColor(getRGB(color), value));
 									setCurrentColor(
-										returnColor(getRGB(color), val)
+										returnColor(getRGB(color), value)
 									);
 								}
 
-								setColorAlpha(val);
+								setColorAlpha(value);
 							}}
 							min={0}
 							max={100}
@@ -189,7 +193,7 @@ const ColorControl = props => {
 					</div>
 				</div>
 			) : null}
-		</Fragment>
+		</>
 	);
 };
 

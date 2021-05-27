@@ -2,12 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { RadioControl } from '@wordpress/components';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import RadioControl from '../../../radio-control';
 import SizeControl from '../../../size-control';
 import ToolbarPopover from '../toolbar-popover';
 import {
@@ -24,10 +24,13 @@ import { toolbarSizing } from '../../../../icons';
 /**
  * General
  */
-const EXCLUDED_BLOCKS = ['maxi-blocks/column-maxi', 'maxi-blocks/image-maxi'];
+const EXCLUDED_BLOCKS = [
+	'maxi-blocks/column-maxi',
+	'maxi-blocks/image-maxi',
+	'maxi-blocks/number-counter-maxi',
+];
 const EXCLUDED_BLOCKS_SIZE = [
 	'maxi-blocks/group-maxi',
-	'maxi-blocks/font-icon-maxi',
 	'maxi-blocks/svg-icon-maxi',
 ];
 
@@ -35,13 +38,8 @@ const EXCLUDED_BLOCKS_SIZE = [
  * Size
  */
 const Size = props => {
-	const {
-		blockName,
-		fullWidth,
-		onChange,
-		isFirstOnHierarchy,
-		breakpoint,
-	} = props;
+	const { blockName, fullWidth, onChange, isFirstOnHierarchy, breakpoint } =
+		props;
 
 	if (EXCLUDED_BLOCKS.includes(blockName)) return null;
 	if (!isFirstOnHierarchy && EXCLUDED_BLOCKS_SIZE.includes(blockName))
@@ -105,12 +103,14 @@ const Size = props => {
 								}
 								onReset={() =>
 									onChange({
-										[`width-${breakpoint}`]: getDefaultAttribute(
-											`width-${breakpoint}`
-										),
-										[`width-unit-${breakpoint}`]: getDefaultAttribute(
-											`width-unit-${breakpoint}`
-										),
+										[`width-${breakpoint}`]:
+											getDefaultAttribute(
+												`width-${breakpoint}`
+											),
+										[`width-unit-${breakpoint}`]:
+											getDefaultAttribute(
+												`width-unit-${breakpoint}`
+											),
 									})
 								}
 							/>

@@ -2,12 +2,14 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { BaseControl, Button, __experimentalGradientPicker } from '@wordpress/components';
+import { __experimentalGradientPicker } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import BaseControl from '../base-control';
+import Button from '../button';
 import OpacityControl from '../opacity-control';
 
 /**
@@ -68,9 +70,7 @@ const GradientControl = props => {
 			</BaseControl>
 			<OpacityControl
 				label={__('Gradient Opacity', 'maxi-blocks')}
-				fullWidthMode
 				opacity={gradientOpacity}
-				defaultOpacity={defaultOpacity}
 				onChange={val => onChangeOpacity(val)}
 			/>
 			<div className='maxi-gradient-control__gradient'>

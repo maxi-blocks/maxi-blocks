@@ -35,24 +35,29 @@ const save = props => {
 		parentBlockStyle,
 	} = attributes;
 
+	const name = 'maxi-blocks/image-maxi';
+
 	const hoverPreviewClasses = classnames(
 		'maxi-image-ratio',
-		`maxi-image-ratio__${imageRatio}`,
-		getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-				'typography',
-				'typography-hover',
-			],
-			'maxi-blocks/image-maxi',
-			parentBlockStyle
-		)
+		`maxi-image-ratio__${imageRatio}`
+	);
+
+	const paletteClasses = getPaletteClasses(
+		attributes,
+		[
+			'background',
+			'background-hover',
+			'hover-background',
+			'svg-background',
+			'border',
+			'border-hover',
+			'box-shadow',
+			'box-shadow-hover',
+			'typography',
+			'typography-hover',
+		],
+		'maxi-blocks/image-maxi',
+		parentBlockStyle
 	);
 
 	const hoverClasses = classnames(
@@ -64,8 +69,6 @@ const save = props => {
 			attributes['hover-type'] === 'basic' ? 'basic' : 'text'
 		}`
 	);
-
-	const classes = 'maxi-image-block';
 
 	const imageAlt = () => {
 		switch (altSelector) {
@@ -82,10 +85,10 @@ const save = props => {
 
 	return (
 		<MaxiBlock
-			className={classes}
-			id={uniqueID}
+			paletteClasses={paletteClasses}
 			tagName='figure'
-			{...getMaxiBlockBlockAttributes(props)}
+			paletteClasses={paletteClasses}
+			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
 			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>

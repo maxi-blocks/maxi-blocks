@@ -2,11 +2,11 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import SelectControl from '../select-control';
 import MediaUploaderControl from '../media-uploader-control';
 import ClipPath from '../clip-path-control';
 import OpacityControl from '../opacity-control';
@@ -96,7 +96,6 @@ const ImageLayer = props => {
 			/>
 			<OpacityControl
 				label={__('Background Opacity', 'maxi-blocks')}
-				fullWidthMode
 				opacity={
 					imageOptions[
 						getAttributeKey(
@@ -106,9 +105,6 @@ const ImageLayer = props => {
 						)
 					]
 				}
-				defaultOpacity={getDefaultAttribute(
-					getAttributeKey('background-image-opacity', isHover, prefix)
-				)}
 				onChange={val =>
 					onChange({
 						[getAttributeKey(

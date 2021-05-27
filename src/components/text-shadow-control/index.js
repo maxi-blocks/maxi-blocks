@@ -2,8 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment, useState, useEffect } from '@wordpress/element';
-import { Icon } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -11,6 +10,7 @@ import { Icon } from '@wordpress/components';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import FancyRadioControl from '../fancy-radio-control';
+import Icon from '../icon';
 import RangeSliderControl from '../range-slider-control';
 
 /**
@@ -70,7 +70,7 @@ const TextShadow = props => {
 	};
 
 	return (
-		<Fragment>
+		<>
 			<DefaultStylesControl
 				items={[
 					{
@@ -119,7 +119,7 @@ const TextShadow = props => {
 				]}
 			/>
 			{value !== 'none' && !isEmpty(value) && (
-				<Fragment>
+				<>
 					<ColorControl
 						label={__('Color', 'maxi-blocks')}
 						color={color}
@@ -152,9 +152,9 @@ const TextShadow = props => {
 						max={100}
 						allowReset
 					/>
-				</Fragment>
+				</>
 			)}
-		</Fragment>
+		</>
 	);
 };
 
@@ -177,8 +177,8 @@ const TextShadowControl = props => {
 				label={__('Text Shadow', 'maxi-blocks')}
 				selected={showOptions}
 				options={[
-					{ label: __('No', 'maxi-blocks'), value: 0 },
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
+					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
 				onChange={() => {
 					changeShowOptions(!showOptions);

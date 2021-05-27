@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
@@ -32,7 +31,7 @@ const ClipPathRadiusPoint = props => {
 	);
 
 	return (
-		<Fragment>
+		<>
 			<span
 				className={classes}
 				onMouseDown={e => {
@@ -67,7 +66,7 @@ const ClipPathRadiusPoint = props => {
 					height: `calc(${radius * 2}% - 1rem)`,
 				}}
 			/>
-		</Fragment>
+		</>
 	);
 };
 

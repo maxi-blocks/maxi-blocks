@@ -2,12 +2,13 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { FancyRadioControl } from '..';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import BaseControl from '../base-control';
+import FancyRadioControl from '../fancy-radio-control';
 import { getPaletteDefault, getBlockStyle } from '../../extensions/styles';
 
 /**
@@ -27,6 +28,7 @@ import './editor.scss';
 const ColorPaletteControl = props => {
 	const {
 		className,
+		paletteLabel = '',
 		onChange,
 		colorPaletteType = 'background',
 		isHover,
@@ -78,19 +80,19 @@ const ColorPaletteControl = props => {
 
 			case 'background':
 				onChange({
-					['background-color']: '',
+					'background-color': '',
 				});
 				break;
 
 			case 'divider':
 				onChange({
-					['divider-border-color']: '',
+					'divider-border-color': '',
 				});
 				break;
 
 			case 'icon':
 				onChange({
-					['icon-color']: '',
+					'icon-color': '',
 				});
 				break;
 
@@ -106,9 +108,22 @@ const ColorPaletteControl = props => {
 				});
 				break;
 
+			case 'marker-text':
+				onChange({
+					'marker-text': '',
+				});
+				break;
+
+			case 'marker-address':
+				onChange({
+					'marker-address': '',
+				});
+				break;
+
 			default:
 				return null;
 		}
+		return null;
 	};
 
 	return (
@@ -118,30 +133,36 @@ const ColorPaletteControl = props => {
 					isHover ? '-hover' : ''
 				}-color`
 			] && (
-				<div className='maxi-sc-color-palette'>
-					{[1, 2, 3, 4, 5, 6, 7].map(item => (
-						<div
-							key={`maxi-sc-color-palette__box__${item}`}
-							className={`maxi-sc-color-palette__box ${
-								currentItem === item
-									? 'maxi-sc-color-palette__box--active'
-									: ''
-							}`}
-							data-item={item}
-							onClick={e =>
-								onChange({
-									[`palette-preset-${colorPaletteType}${
-										isHover ? '-hover' : ''
-									}-color`]: +e.currentTarget.dataset.item,
-								})
-							}
-						>
-							<span
-								className={`maxi-sc-color-palette__box__item maxi-sc-color-palette__box__item__${item}`}
-							></span>
-						</div>
-					))}
-				</div>
+				<BaseControl
+					className='maxi-color-palette-control__palette-label'
+					label={paletteLabel ? `${paletteLabel} Colour` : ''}
+				>
+					<div className='maxi-sc-color-palette'>
+						{[1, 2, 3, 4, 5, 6, 7].map(item => (
+							<div
+								key={`maxi-sc-color-palette__box__${item}`}
+								className={`maxi-sc-color-palette__box ${
+									currentItem === item
+										? 'maxi-sc-color-palette__box--active'
+										: ''
+								}`}
+								data-item={item}
+								onClick={e =>
+									onChange({
+										[`palette-preset-${colorPaletteType}${
+											isHover ? '-hover' : ''
+										}-color`]:
+											+e.currentTarget.dataset.item,
+									})
+								}
+							>
+								<span
+									className={`maxi-sc-color-palette__box__item maxi-sc-color-palette__box__item__${item}`}
+								/>
+							</div>
+						))}
+					</div>
+				</BaseControl>
 			)}
 			<FancyRadioControl
 				label={__('Custom Colour', 'maxi-blocks')}
@@ -165,7 +186,7 @@ const ColorPaletteControl = props => {
 					});
 
 					if (
-						!!props[
+						props[
 							`palette-custom-${colorPaletteType}${
 								isHover ? '-hover' : ''
 							}-color`

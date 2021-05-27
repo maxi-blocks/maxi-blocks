@@ -24,7 +24,7 @@ const divider = {
 	},
 	'divider-border-radius': {
 		type: 'string',
-		default: '',
+		default: false,
 	},
 	'divider-width': {
 		type: 'number',

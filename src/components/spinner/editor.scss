@@ -1,0 +1,32 @@
+.maxi-spinner {
+	display: inline-block;
+	background-color: #a2a9b0;
+	width: 20px;
+	height: 20px;
+	opacity: 0.7;
+	margin: 5px 11px 0;
+	border-radius: 100%;
+	position: relative;
+
+	&::before {
+		content: '';
+		position: absolute;
+		background-color: #fff;
+		top: 3px;
+		left: 3px;
+		width: 4px;
+		height: 4px;
+		border-radius: 100%;
+		transform-origin: 6px 6px;
+		animation: maxi-spinner__animation 1s infinite linear;
+	}
+}
+
+@keyframes maxi-spinner__animation {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}

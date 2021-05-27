@@ -1,7 +1,6 @@
 /**
  * WordPress dependencies
  */
-import { Fragment  } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -143,7 +142,7 @@ const VideoLayer = props => {
 	}
 
 	return (
-		<Fragment>
+		<>
 			{!isNil(videoUrl) &&
 				videoUrl.match(
 					/https?:\/\/.*\.(?:mp4|webm|ogg)|(http:|https:|)\/\/(player.|www.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(&\S+)?/
@@ -178,7 +177,7 @@ const VideoLayer = props => {
 						)}
 					</div>
 				)}
-		</Fragment>
+		</>
 	);
 };
 

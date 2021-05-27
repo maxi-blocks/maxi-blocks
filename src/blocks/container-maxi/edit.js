@@ -19,7 +19,7 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -71,10 +71,24 @@ class edit extends MaxiBlockComponent {
 			},
 		};
 	}
-
 	render() {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
-		const { uniqueID, isFirstOnHierarchy, fullWidth } = attributes;
+		const { uniqueID, isFirstOnHierarchy, fullWidth, parentBlockStyle } =
+			attributes;
+
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'maxi-blocks/container-maxi',
+			parentBlockStyle
+		);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -86,12 +100,13 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-container--${uniqueID}`}
 				ref={this.blockRef}
+				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 				disableMotion
 			>
-				{this.props['shape-divider-top-status'] && (
+				{attributes['shape-divider-top-status'] && (
 					<ShapeDivider
-						{...getGroupAttributes(this.props, 'shapeDivider')}
+						{...getGroupAttributes(attributes, 'shapeDivider')}
 						location='top'
 					/>
 				)}
@@ -124,9 +139,9 @@ class edit extends MaxiBlockComponent {
 							: () => <InnerBlocks.ButtonBlockAppender />
 					}
 				/>
-				{this.props['shape-divider-bottom-status'] && (
+				{attributes['shape-divider-bottom-status'] && (
 					<ShapeDivider
-						{...getGroupAttributes(this.props, 'shapeDivider')}
+						{...getGroupAttributes(attributes, 'shapeDivider')}
 						location='bottom'
 					/>
 				)}

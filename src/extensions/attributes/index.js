@@ -20,12 +20,13 @@ const allowedBlocks = [
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/text-maxi',
 	'maxi-blocks/divider-maxi',
+	'maxi-blocks/map-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/group-maxi',
+	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/svg-icon-maxi',
-	'maxi-blocks/font-icon-maxi',
 	'maxi-blocks/test-maxi',
 ];
 

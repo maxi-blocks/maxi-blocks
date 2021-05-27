@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -24,12 +23,13 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const ColorLayer = props => {
-	const { onChange, disableClipPath, isHover, prefix, clientId } = props;
+	const { onChange, disableClipPath, isHover, prefix, clientId, type } =
+		props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
 
 	return (
-		<Fragment>
+		<>
 			<ColorControl
 				label={__('Background', 'maxi-blocks')}
 				color={
@@ -47,10 +47,11 @@ const ColorLayer = props => {
 
 					onChange(colorOptions);
 				}}
+				disablePalette={type === 'layer'}
 				showPalette
 				palette={{ ...getGroupAttributes(props, 'palette') }}
 				isHover={isHover}
-				colorPaletteType='background'
+				colorPaletteType={`${prefix}background`}
 				onChangePalette={val => onChange(val)}
 				clientId={clientId}
 			/>
@@ -78,7 +79,7 @@ const ColorLayer = props => {
 					}}
 				/>
 			)}
-		</Fragment>
+		</>
 	);
 };
 

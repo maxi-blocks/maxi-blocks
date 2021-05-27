@@ -3,30 +3,35 @@
  */
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
-import { Spinner, Button, Placeholder } from '@wordpress/components';
 import { MediaUpload } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
+import getStyles from './styles';
 import Inspector from './inspector';
-import {
-	BlockResizer,
-	HoverPreview,
-	MaxiBlockComponent,
-	Toolbar,
-} from '../../components';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
-import getStyles from './styles';
+import {
+	BlockResizer,
+	Button,
+	HoverPreview,
+	MaxiBlockComponent,
+	Toolbar,
+	Spinner,
+	Placeholder,
+} from '../../components';
+import * as SVGShapes from '../../icons/shape-icons';
+import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty, isNil, round } from 'lodash';
+import DOMPurify from 'dompurify';
 
 /**
  * Icons
@@ -90,22 +95,25 @@ class edit extends MaxiBlockComponent {
 
 		const hoverPreviewClasses = classnames(
 			'maxi-image-ratio',
-			`maxi-image-ratio__${imageRatio}`,
-			getPaletteClasses(
-				attributes,
-				[
-					'background',
-					'background-hover',
-					'border',
-					'border-hover',
-					'box-shadow',
-					'box-shadow-hover',
-					'typography',
-					'typography-hover',
-				],
-				'maxi-blocks/image-maxi',
-				parentBlockStyle
-			)
+			`maxi-image-ratio__${imageRatio}`
+		);
+
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'hover-background',
+				'svg-background',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+			],
+			'maxi-blocks/image-maxi',
+			parentBlockStyle
 		);
 
 		const hoverClasses = classnames(
@@ -180,20 +188,55 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-image--${uniqueID}`}
+				paletteClasses={paletteClasses}
 				ref={this.blockRef}
 				tagName='figure'
 				className={classes}
+				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<MediaUpload
-					onSelect={media =>
+					onSelect={media => {
 						setAttributes({
 							mediaID: media.id,
 							mediaURL: media.url,
 							mediaWidth: media.width,
 							mediaHeight: media.height,
-						})
-					}
+						});
+
+						if (!isEmpty(attributes.SVGData)) {
+							const currentElem =
+								SVGShapes[
+									Object.keys(SVGShapes)[
+										attributes.SVGCurrentElement
+									]
+								];
+							const cleanedContent = DOMPurify.sanitize(
+								currentElem
+							);
+							const svg = document
+								.createRange()
+								.createContextual(cleanedContent)
+								.firstElementChild;
+
+							const resData = generateDataObject('', svg);
+
+							const SVGValue = resData;
+							const el = Object.keys(SVGValue)[0];
+
+							SVGValue[el].imageID = media.id;
+							SVGValue[el].imageURL = media.url;
+
+							const resEl = injectImgSVG(svg, resData);
+							setAttributes({
+								SVGCurrentElement: attributes.SVGCurrentElement,
+								SVGElement: resEl.outerHTML,
+								SVGMediaID: null,
+								SVGMediaURL: null,
+								SVGData: SVGValue,
+							});
+						}
+					}}
 					allowedTypes='image'
 					value={mediaID}
 					render={({ open }) => (

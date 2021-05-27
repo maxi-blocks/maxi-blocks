@@ -2,17 +2,16 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-
-import { SelectControl } from '@wordpress/components';
-import { Fragment } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import { defaultTypography } from '../../extensions/text';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
+import SelectControl from '../select-control';
 import SizeControl from '../size-control';
 import TextShadowControl from '../text-shadow-control';
 import {
@@ -20,7 +19,6 @@ import {
 	getCustomFormatValue,
 	withFormatValue,
 } from '../../extensions/text/formats';
-import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -56,7 +54,6 @@ const TypographyControl = withFormatValue(props => {
 		hideTextShadow = false,
 		styleCards = false,
 		disablePalette = false,
-		blockStyle,
 		clientId,
 	} = props;
 
@@ -88,9 +85,9 @@ const TypographyControl = withFormatValue(props => {
 			min: 0,
 			max: 100,
 		},
-		empty: {
+		'-': {
 			min: 0,
-			max: 999,
+			max: 16,
 		},
 	};
 
@@ -238,7 +235,7 @@ const TypographyControl = withFormatValue(props => {
 	return (
 		<div className={classes}>
 			{(!styleCards || breakpoint === 'general') && (
-				<Fragment>
+				<>
 					<FontFamilySelector
 						className='maxi-typography-control__font-family'
 						font={getValue(`${prefix}font-family`)}
@@ -262,7 +259,6 @@ const TypographyControl = withFormatValue(props => {
 							textLevel={textLevel}
 							showPalette
 							disablePalette={disablePalette}
-							blockStyle={blockStyle}
 							isHover={isHover}
 							palette={{
 								...getGroupAttributes(props, 'palette'),
@@ -273,7 +269,7 @@ const TypographyControl = withFormatValue(props => {
 							clientId={clientId}
 						/>
 					)}
-				</Fragment>
+				</>
 			)}
 			{!hideAlignment && (
 				<AlignmentControl
@@ -286,22 +282,22 @@ const TypographyControl = withFormatValue(props => {
 				/>
 			)}
 			{(!styleCards || breakpoint !== 'general') && (
-				<Fragment>
+				<>
 					<SizeControl
 						className='maxi-typography-control__size'
 						label={__('Size', 'maxi-blocks')}
 						unit={getValue(`${prefix}font-size-unit`)}
 						defaultUnit={getDefault(`${prefix}font-size-unit`)}
-						onChangeUnit={val => {
+						onChangeUnit={val =>
 							onChangeFormat({
 								[`${prefix}font-size-unit`]: val,
-							});
-						}}
+							})
+						}
 						value={trim(getValue(`${prefix}font-size`))}
 						defaultValue={getDefault(`${prefix}font-size`)}
-						onChangeValue={val => {
-							onChangeFormat({ [`${prefix}font-size`]: val });
-						}}
+						onChangeValue={val =>
+							onChangeFormat({ [`${prefix}font-size`]: val })
+						}
 						onReset={() =>
 							onChangeFormat({
 								[`${prefix}font-size-unit`]: getDefault(
@@ -319,16 +315,16 @@ const TypographyControl = withFormatValue(props => {
 						label={__('Line Height', 'maxi-blocks')}
 						unit={getValue(`${prefix}line-height-unit`) || ''}
 						defaultUnit={getDefault(`${prefix}line-height-unit`)}
-						onChangeUnit={val => {
+						onChangeUnit={val =>
 							onChangeFormat({
 								[`${prefix}line-height-unit`]: val,
-							});
-						}}
+							})
+						}
 						value={getValue(`${prefix}line-height`)}
 						defaultValue={getDefault(`${prefix}line-height`)}
-						onChangeValue={val => {
-							onChangeFormat({ [`${prefix}line-height`]: val });
-						}}
+						onChangeValue={val =>
+							onChangeFormat({ [`${prefix}line-height`]: val })
+						}
 						onReset={() =>
 							onChangeFormat({
 								[`${prefix}line-height-unit`]: getDefault(
@@ -340,7 +336,7 @@ const TypographyControl = withFormatValue(props => {
 							})
 						}
 						minMaxSettings={minMaxSettings}
-						allowedUnits={['px', 'em', 'vw', '%', 'empty']}
+						allowedUnits={['px', 'em', 'vw', '%', '-']}
 					/>
 					<SizeControl
 						className='maxi-typography-control__letter-spacing'
@@ -348,18 +344,18 @@ const TypographyControl = withFormatValue(props => {
 						allowedUnits={['px', 'em', 'vw']}
 						unit={getValue(`${prefix}letter-spacing-unit`)}
 						defaultUnit={getDefault(`${prefix}letter-spacing-unit`)}
-						onChangeUnit={val => {
+						onChangeUnit={val =>
 							onChangeFormat({
 								[`${prefix}letter-spacing-unit`]: val,
-							});
-						}}
+							})
+						}
 						value={getValue(`${prefix}letter-spacing`)}
 						defaultValue={getDefault(`${prefix}letter-spacing`)}
-						onChangeValue={val => {
+						onChangeValue={val =>
 							onChangeFormat({
 								[`${prefix}letter-spacing`]: val,
-							});
-						}}
+							})
+						}
 						onReset={() =>
 							onChangeFormat({
 								[`${prefix}letter-spacing-unit`]: getDefault(
@@ -373,10 +369,10 @@ const TypographyControl = withFormatValue(props => {
 						minMaxSettings={minMaxSettingsLetterSpacing}
 						step={0.1}
 					/>
-				</Fragment>
+				</>
 			)}
 			{(!styleCards || breakpoint === 'general') && (
-				<Fragment>
+				<>
 					<Divider />
 					<SelectControl
 						label={__('Weight', 'maxi-blocks')}
@@ -485,7 +481,7 @@ const TypographyControl = withFormatValue(props => {
 							)}
 						/>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

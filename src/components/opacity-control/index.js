@@ -6,7 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import RangeSliderControl from '../range-slider-control';
+import SizeControl from '../size-control';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -15,42 +16,31 @@ import classnames from 'classnames';
 import { isEmpty, round } from 'lodash';
 
 /**
- * Styles
- */
-import './editor.scss';
-
-/**
  * Component
  */
 const OpacityControl = props => {
-	const {
-		label,
-		opacity = 1,
-		defaultOpacity = 1,
-		fullWidthMode = false,
-		className,
-		onChange,
-	} = props;
+	const { className, onChange, label, opacity } = props;
 
-	const classes = classnames(
-		'maxi-opacity-control',
-		fullWidthMode && 'maxi-opacity-control--full-width',
-		className
-	);
+	const classes = classnames('maxi-opacity-control', className);
 
 	return (
-		<RangeSliderControl
-			label={isEmpty(label) ? __('Opacity', 'maxi-blocks') : label}
+		<SizeControl
 			className={classes}
-			value={round(opacity * 100, 2)}
-			defaultValue={defaultOpacity}
-			onChange={val => {
-				onChange(round(val / 100, 2));
+			label={`${!isEmpty(label) ? label : __('Opacity', 'maxi-blocks')}`}
+			disableUnit
+			value={
+				opacity !== undefined && opacity !== ''
+					? round(opacity * 100, 2)
+					: ''
+			}
+			onChangeValue={val => {
+				onChange(
+					val !== undefined && val !== '' ? round(val / 100, 2) : ''
+				);
 			}}
 			min={0}
 			max={100}
-			allowReset
-			initialPosition={defaultOpacity}
+			onReset={() => onChange('')}
 		/>
 	);
 };

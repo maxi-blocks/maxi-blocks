@@ -17,6 +17,62 @@ const getPaletteClasses = (
 	textLevel
 ) => {
 	const paletteClasses = classnames(
+		allowedPalettes.includes('marker-title') &&
+			!attributes['palette-custom-marker-title-color'] &&
+			`maxi-sc-${parentBlockStyle}-marker-title-color-${
+				!isNil(attributes['palette-preset-marker-title-color'])
+					? attributes['palette-preset-marker-title-color']
+					: getPaletteDefault('marker-title', blockName, textLevel)
+			}`,
+		allowedPalettes.includes('marker-address') &&
+			!attributes['palette-custom-marker-address-color'] &&
+			`maxi-sc-${parentBlockStyle}-marker-address-color-${
+				!isNil(attributes['palette-preset-marker-address-color'])
+					? attributes['palette-preset-marker-address-color']
+					: getPaletteDefault('marker-address', blockName, textLevel)
+			}`,
+		allowedPalettes.includes('circle-background') &&
+			!attributes['palette-custom-circle-background-color'] &&
+			`maxi-sc-${parentBlockStyle}-circle-background-color-${
+				!isNil(attributes['palette-preset-circle-background-color'])
+					? attributes['palette-preset-circle-background-color']
+					: getPaletteDefault(
+							'circle-background',
+							blockName,
+							textLevel
+					  )
+			}`,
+		allowedPalettes.includes('circle-bar-background') &&
+			!attributes['palette-custom-circle-bar-background-color'] &&
+			`maxi-sc-${parentBlockStyle}-circle-bar-background-color-${
+				!isNil(attributes['palette-preset-circle-bar-background-color'])
+					? attributes['palette-preset-circle-bar-background-color']
+					: getPaletteDefault(
+							'circle-bar-background',
+							blockName,
+							textLevel
+					  )
+			}`,
+		allowedPalettes.includes('svg-background') &&
+			attributes['background-active-media'] === 'svg' &&
+			!attributes['palette-custom-svg-background-color'] &&
+			`maxi-sc-${parentBlockStyle}-svg-background-color-${
+				!isNil(attributes['palette-preset-svg-background-color'])
+					? attributes['palette-preset-svg-background-color']
+					: getPaletteDefault('svg-background', blockName, textLevel)
+			}`,
+		allowedPalettes.includes('hover-background') &&
+			attributes['hover-background-active-media'] === 'color' &&
+			!attributes['palette-custom-hover-background-color'] &&
+			`maxi-sc-${parentBlockStyle}-hover-background-color-${
+				!isNil(attributes['palette-preset-hover-background-color'])
+					? attributes['palette-preset-hover-background-color']
+					: getPaletteDefault(
+							'hover-background',
+							blockName,
+							textLevel
+					  )
+			}`,
 		allowedPalettes.includes('background') &&
 			attributes['background-active-media'] === 'color' &&
 			!attributes['palette-custom-background-color'] &&

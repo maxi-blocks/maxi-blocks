@@ -22,32 +22,32 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID, fullWidth, parentBlockStyle } = attributes;
+	const { fullWidth, parentBlockStyle } = attributes;
 
-	const classes = classnames(
-		'maxi-container-block',
-		fullWidth === 'full' ? 'alignfull' : null,
-		getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-			],
-			'maxi-blocks/container-maxi',
-			parentBlockStyle
-		)
+	const name = 'maxi-blocks/container-maxi';
+
+	const classes = classnames(fullWidth === 'full' ? 'alignfull' : null);
+
+	const paletteClasses = getPaletteClasses(
+		attributes,
+		[
+			'background',
+			'background-hover',
+			'border',
+			'border-hover',
+			'box-shadow',
+			'box-shadow-hover',
+		],
+		name,
+		parentBlockStyle
 	);
 
 	return (
 		<MaxiBlock
-			className={classes}
-			id={uniqueID}
 			tagName='section'
-			{...getMaxiBlockBlockAttributes(props)}
+			classes={classes}
+			paletteClasses={paletteClasses}
+			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
 			<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />

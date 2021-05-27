@@ -54,11 +54,12 @@ export const getGradientBackgroundObject = ({
 	};
 
 	if (
-		!isNil(
-			props[
-				`${prefix}background-gradient-opacity${isHover ? '-hover' : ''}`
-			]
-		)
+		props[
+			`${prefix}background-gradient-opacity${isHover ? '-hover' : ''}`
+		] !== undefined &&
+		props[
+			`${prefix}background-gradient-opacity${isHover ? '-hover' : ''}`
+		] !== ''
 	)
 		response.general.opacity =
 			props[
@@ -232,9 +233,10 @@ export const getImageBackgroundObject = ({
 				];
 	}
 	if (
-		!isNil(
-			props[`${prefix}background-image-opacity${isHover ? '-hover' : ''}`]
-		)
+		props[`${prefix}background-image-opacity${isHover ? '-hover' : ''}`] !==
+			undefined &&
+		props[`${prefix}background-image-opacity${isHover ? '-hover' : ''}`] !==
+			''
 	)
 		response.general.opacity =
 			props[
@@ -267,9 +269,10 @@ export const getVideoBackgroundObject = ({
 	};
 
 	if (
-		!isNil(
-			props[`${prefix}background-video-opacity${isHover ? '-hover' : ''}`]
-		)
+		props[`${prefix}background-video-opacity${isHover ? '-hover' : ''}`] !==
+			undefined &&
+		props[`${prefix}background-video-opacity${isHover ? '-hover' : ''}`] !==
+			''
 	)
 		response.general.opacity =
 			props[
@@ -457,12 +460,9 @@ const getBackgroundStyles = ({
 			) {
 				response = setBackgroundLayers({
 					response,
-					layers:
-						props[
-							`${prefix}background-layers${
-								isHover ? '-hover' : ''
-							}`
-						],
+					layers: props[
+						`${prefix}background-layers${isHover ? '-hover' : ''}`
+					],
 					target,
 					isHover,
 				});

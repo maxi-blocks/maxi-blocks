@@ -275,7 +275,7 @@ body.maxi-blocks--active {
 				font-weight: var(--maxi-#{$style}-button-font-weight-general);
 				font-style: var(--maxi-#{$style}-button-font-style-general);
 				text-transform: var(--maxi-#{$style}-button-transform-general);
-				text-decoration: var(--maxi-#{$style}-button-decoration-general);
+				text-decoration: var(--maxi-#{$style}-button-text-decoration-general);
 				&:visited, &:hover, &:active, &:focus {
 					color: var(--maxi-#{$style}-button-hover-color, var(--maxi-#{$style}-button-hover-color-palette, var(--maxi-#{$style}-button-color, var(--maxi-#{$style}-button-color-palette))));
 					background-color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-button-background-hover-color-palette,  var(--maxi-#{$style}-button-background-color, var(--maxi-#{$style}-button-background-color-palette))));
@@ -346,7 +346,7 @@ body.maxi-blocks--active {
 						font-weight: var(--maxi-#{$style}-button-font-weight-#{$responsive_size});
 						text-transform: var(--maxi-#{$style}-button-transform-#{$responsive_size});
 						font-style: var(--maxi-#{$style}-button-font-style-#{$responsive_size});
-						text-decoration: var(--maxi-#{$style}-button-decoration-#{$responsive_size});
+						text-decoration: var(--maxi-#{$style}-button-text-decoration-#{$responsive_size});
 					}
 				}
 			}
@@ -414,7 +414,7 @@ body.maxi-blocks--active {
 					font-weight: var(--maxi-#{$style}-button-font-weight-#{$current_responsive_stage});
 					text-transform: var(--maxi-#{$style}-button-transform-#{$current_responsive_stage});
 					font-style: var(--maxi-#{$style}-button-font-style-#{$current_responsive_stage});
-					text-decoration: var(--maxi-#{$style}-button-decoration-#{$current_responsive_stage});
+					text-decoration: var(--maxi-#{$style}-button-text-decoration-#{$current_responsive_stage});
 				}
 			}
 		}

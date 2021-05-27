@@ -98,11 +98,11 @@ const createSCStyleString = SCObject => {
 
 const updateSCOnEditor = styleCards => {
 	const SCObject = getSCVariablesObject(styleCards);
-	let SCStyle = document.getElementById('maxi-blocks-sc-styles');
+	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
 
 	if (!SCStyle) {
 		SCStyle = document.createElement('style');
-		SCStyle.id = 'maxi-blocks-sc-styles';
+		SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
 		SCStyle.innerHTML = createSCStyleString(SCObject);
 		document.head.appendChild(SCStyle);
 	} else SCStyle.innerHTML = createSCStyleString(SCObject);

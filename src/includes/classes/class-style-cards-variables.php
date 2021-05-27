@@ -134,10 +134,10 @@ class StyleCardsVariables {
 							}
 						}
 					}
-				}
 
-				if ($SC[$style]["$element-color-global"])
+					if ($SC[$style]["$element-color-global"])
 					$response .= "--maxi-$style-$element-color: " . $SC[$style]["$element-color"] . ';';
+				}
 
 				for ($i=1; $i <= 7; $i++) {
 					$response .= "--maxi-$style-color-$i: " . $SC[$style]["color-$i"] . ';';

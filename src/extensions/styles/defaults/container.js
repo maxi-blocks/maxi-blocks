@@ -41,32 +41,32 @@ const container = (() => {
 			type: 'boolean',
 			default: false,
 		},
-		['container-min-width-unit-general']: {
+		'container-min-width-unit-general': {
 			type: 'string',
 			default: 'px',
 		},
-		['container-min-width-general']: {
+		'container-min-width-general': {
 			type: 'number',
 		},
-		['container-max-height-unit-general']: {
+		'container-max-height-unit-general': {
 			type: 'string',
 			default: 'px',
 		},
-		['container-max-height-general']: {
+		'container-max-height-general': {
 			type: 'number',
 		},
-		['container-height-unit-general']: {
+		'container-height-unit-general': {
 			type: 'string',
 			default: 'px',
 		},
-		['container-height-general']: {
+		'container-height-general': {
 			type: 'number',
 		},
-		['container-min-height-unit-general']: {
+		'container-min-height-unit-general': {
 			type: 'string',
 			default: 'px',
 		},
-		['container-min-height-general']: {
+		'container-min-height-general': {
 			type: 'number',
 		},
 		'container-max-width-general': {

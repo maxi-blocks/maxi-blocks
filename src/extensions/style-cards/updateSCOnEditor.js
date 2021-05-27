@@ -73,6 +73,13 @@ export const getSCVariablesObject = styleCards => {
 			if (SC[style][`${element}-color-global`])
 				response[`--maxi-${style}-${element}-color`] =
 					SC[style][`${element}-color`];
+
+			if (
+				element === 'button' &&
+				SC[style][`${element}-background-color-global`]
+			)
+				response[`--maxi-${style}-${element}-background-color`] =
+					SC[style][`${element}-background-color`];
 		});
 
 		times(7, n => {

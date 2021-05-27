@@ -274,7 +274,7 @@ body.maxi-blocks--active {
 				font-family: var(--maxi-#{$style}-button-font-family-general);
 				font-weight: var(--maxi-#{$style}-button-font-weight-general);
 				font-style: var(--maxi-#{$style}-button-font-style-general);
-				text-transform: var(--maxi-#{$style}-button-transform-general);
+				text-transform: var(--maxi-#{$style}-button-text-transform-general);
 				text-decoration: var(--maxi-#{$style}-button-text-decoration-general);
 				&:visited, &:hover, &:active, &:focus {
 					color: var(--maxi-#{$style}-button-hover-color, var(--maxi-#{$style}-button-hover-color-palette, var(--maxi-#{$style}-button-color, var(--maxi-#{$style}-button-color-palette))));
@@ -344,7 +344,7 @@ body.maxi-blocks--active {
 						line-height: var(--maxi-#{$style}-button-line-height-#{$responsive_size});
 						letter-spacing: var(--maxi-#{$style}-button-letter-spacing-#{$responsive_size});
 						font-weight: var(--maxi-#{$style}-button-font-weight-#{$responsive_size});
-						text-transform: var(--maxi-#{$style}-button-transform-#{$responsive_size});
+						text-transform: var(--maxi-#{$style}-button-text-transform-#{$responsive_size});
 						font-style: var(--maxi-#{$style}-button-font-style-#{$responsive_size});
 						text-decoration: var(--maxi-#{$style}-button-text-decoration-#{$responsive_size});
 					}
@@ -412,7 +412,7 @@ body.maxi-blocks--active {
 					line-height: var(--maxi-#{$style}-button-line-height-#{$current_responsive_stage});
 					letter-spacing: var(--maxi-#{$style}-button-letter-spacing-#{$current_responsive_stage});
 					font-weight: var(--maxi-#{$style}-button-font-weight-#{$current_responsive_stage});
-					text-transform: var(--maxi-#{$style}-button-transform-#{$current_responsive_stage});
+					text-transform: var(--maxi-#{$style}-button-text-transform-#{$current_responsive_stage});
 					font-style: var(--maxi-#{$style}-button-font-style-#{$current_responsive_stage});
 					text-decoration: var(--maxi-#{$style}-button-text-decoration-#{$current_responsive_stage});
 				}

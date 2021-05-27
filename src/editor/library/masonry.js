@@ -118,12 +118,25 @@ const LibraryMasonry = props => {
 	const onRequestInsertSVG = svgCodeToInsert => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
 
+		let SvgClass = svgCodeToInsert.match(/svg class=".+?(?=")/);
+		SvgClass = (SvgClass+'').replace('svg class="', '');
+
+		const uniqueID = select('core/editor').getBlock(clientId).attributes.uniqueID;
+
+		console.log('uniqueID: ' + uniqueID);
+
+		const newSVGClass = '.' + uniqueID + ' .' + SvgClass;
+
+		const replaceIt = '.' + SvgClass;
+
+		const finalSvgContent = svgCodeToInsert.replaceAll(replaceIt, newSVGClass);
+
 		const isValid = select('core/block-editor').isValidTemplate(
-			svgCodeToInsert
+			finalSvgContent
 		);
 
 		if (isValid) {
-			updateBlockAttributes(clientId, { content: svgCodeToInsert });
+			updateBlockAttributes(clientId, { content: finalSvgContent });
 			onRequestClose();
 		}
 	};

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Dropdown } from '@wordpress/components';
-import { Fragment, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -220,7 +220,7 @@ const ShapeDividerControl = props => {
 				onChange={val => setShapeDividerStatus(val)}
 			/>
 			{shapeDividerStatus === 'top' && (
-				<Fragment>
+				<>
 					<FancyRadioControl
 						label={__('Enable Top Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-top-status']}
@@ -233,7 +233,7 @@ const ShapeDividerControl = props => {
 						}
 					/>
 					{!!props['shape-divider-top-status'] && (
-						<Fragment>
+						<>
 							<FancyRadioControl
 								label={__(
 									'Enable Scroll Effect',
@@ -281,8 +281,7 @@ const ShapeDividerControl = props => {
 										options={shapeItems}
 										onChange={shapeStyle =>
 											onChange({
-												'shape-divider-top-shape-style':
-													shapeStyle,
+												'shape-divider-top-shape-style': shapeStyle,
 											})
 										}
 									/>
@@ -290,9 +289,6 @@ const ShapeDividerControl = props => {
 							/>
 							<OpacityControl
 								opacity={props['shape-divider-top-opacity']}
-								defaultOpacity={getDefaultAttribute(
-									'shape-divider-top-opacity'
-								)}
 								onChange={opacity =>
 									onChange({
 										'shape-divider-top-opacity': opacity,
@@ -327,23 +323,21 @@ const ShapeDividerControl = props => {
 								}
 								onReset={() =>
 									onChange({
-										'shape-divider-top-height':
-											getDefaultAttribute(
-												'shape-divider-top-height'
-											),
-										'shape-divider-top-height-unit':
-											getDefaultAttribute(
-												'shape-divider-top-height-unit'
-											),
+										'shape-divider-top-height': getDefaultAttribute(
+											'shape-divider-top-height'
+										),
+										'shape-divider-top-height-unit': getDefaultAttribute(
+											'shape-divider-top-height-unit'
+										),
 									})
 								}
 							/>
-						</Fragment>
+						</>
 					)}
-				</Fragment>
+				</>
 			)}
 			{shapeDividerStatus === 'bottom' && (
-				<Fragment>
+				<>
 					<FancyRadioControl
 						label={__('Enable Bottom Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-bottom-status']}
@@ -356,7 +350,7 @@ const ShapeDividerControl = props => {
 						}
 					/>
 					{!!props['shape-divider-bottom-status'] && (
-						<Fragment>
+						<>
 							<FancyRadioControl
 								label={__(
 									'Enable Scroll Effect',
@@ -377,8 +371,7 @@ const ShapeDividerControl = props => {
 								]}
 								onChange={val =>
 									onChange({
-										'shape-divider-bottom-effects-status':
-											val,
+										'shape-divider-bottom-effects-status': val,
 									})
 								}
 							/>
@@ -405,8 +398,7 @@ const ShapeDividerControl = props => {
 										options={shapeItems}
 										onChange={shapeStyle =>
 											onChange({
-												'shape-divider-bottom-shape-style':
-													shapeStyle,
+												'shape-divider-bottom-shape-style': shapeStyle,
 											})
 										}
 									/>
@@ -414,9 +406,6 @@ const ShapeDividerControl = props => {
 							/>
 							<OpacityControl
 								opacity={props['shape-divider-bottom-opacity']}
-								defaultOpacity={getDefaultAttribute(
-									'shape-divider-bottom-opacity'
-								)}
 								onChange={opacity =>
 									onChange({
 										'shape-divider-bottom-opacity': opacity,
@@ -451,20 +440,18 @@ const ShapeDividerControl = props => {
 								}
 								onReset={() =>
 									onChange({
-										'shape-divider-bottom-height':
-											getDefaultAttribute(
-												'shape-divider-bottom-height'
-											),
-										'shape-divider-bottom-height-unit':
-											getDefaultAttribute(
-												'shape-divider-bottom-height-unit'
-											),
+										'shape-divider-bottom-height': getDefaultAttribute(
+											'shape-divider-bottom-height'
+										),
+										'shape-divider-bottom-height-unit': getDefaultAttribute(
+											'shape-divider-bottom-height-unit'
+										),
 									})
 								}
 							/>
-						</Fragment>
+						</>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

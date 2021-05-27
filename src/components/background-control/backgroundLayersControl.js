@@ -125,6 +125,7 @@ const LayerCard = props => {
 								...getGroupAttributes(layer, 'backgroundColor'),
 							}}
 							onChange={obj => onChange({ ...layer, ...obj })}
+							type='layer'
 						/>
 					)) ||
 						(type === 'image' && (

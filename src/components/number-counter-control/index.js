@@ -7,12 +7,11 @@ import { SelectControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import {
-	ColorControl,
-	FancyRadioControl,
-	SizeControl,
-	FontFamilySelector,
-} from '../';
+import ColorControl from '../color-control';
+import FancyRadioControl from '../fancy-radio-control';
+import SizeControl from '../size-control';
+import FontFamilySelector from '../font-family-selector';
+
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -99,9 +98,8 @@ const NumberCounterControl = props => {
 				onChangeValue={val => onChange({ 'number-counter-end': val })}
 				onReset={() =>
 					onChange({
-						'number-counter-end': getDefaultAttribute(
-							'number-counter-end'
-						),
+						'number-counter-end':
+							getDefaultAttribute('number-counter-end'),
 					})
 				}
 			/>

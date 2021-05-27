@@ -14,40 +14,37 @@ import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
 /**
  * Utils
  */
-import {
-	Alignment,
-	BackgroundColor,
-	Border,
-	BoxShadow,
-	ColumnMover,
-	ColumnsHandlers,
-	ColumnSize,
-	CopyPaste,
-	Delete,
-	Divider,
-	DividerAlignment,
-	DividerColor,
-	Duplicate,
-	ImageSize,
-	Link,
-	Mover,
-	PaddingMargin,
-	ReusableBlocks,
-	RowSettings,
-	Size,
-	SvgColor,
-	TextBold,
-	TextColor,
-	TextItalic,
-	TextLevel,
-	TextLink,
-	TextListOptions,
-	TextOptions,
-	ToggleBlock,
-	ToolbarColumnPattern,
-} from './components';
-
-import { Breadcrumbs } from '../../components';
+import Alignment from './components/alignment';
+import BackgroundColor from './components/background-color';
+import Border from './components/border';
+import BoxShadow from './components/box-shadow';
+import ColumnMover from './components/column-mover';
+import ColumnsHandlers from './components/columns-handlers';
+import ColumnSize from './components/column-size';
+import CopyPaste from './components/copy-paste';
+import Delete from './components/delete';
+import Divider from './components/divider-line';
+import DividerAlignment from './components/divider-alignment';
+import DividerColor from './components/divider-color';
+import Duplicate from './components/duplicate';
+import ImageSize from './components/image-size';
+import Link from './components/link';
+import Mover from './components/mover';
+import PaddingMargin from './components/padding-margin';
+import ReusableBlocks from './components/reusable-blocks';
+import RowSettings from './components/row-settings';
+import Size from './components/size';
+import SvgColor from './components/svg-color';
+import TextBold from './components/text-bold';
+import TextColor from './components/text-color';
+import TextItalic from './components/text-italic';
+import TextLevel from './components/text-level';
+import TextLink from './components/text-link';
+import TextListOptions from './components/text-list-options';
+import TextOptions from './components/text-options';
+import ToggleBlock from './components/toggle-block';
+import ToolbarColumnPattern from './components/column-pattern';
+import Breadcrumbs from '../breadcrumbs';
 
 /**
  * Styles

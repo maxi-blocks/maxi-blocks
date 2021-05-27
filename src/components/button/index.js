@@ -18,7 +18,7 @@ import { isArray } from 'lodash';
 
 const disabledEventsOnDisabledButton = ['onMouseDown', 'onClick'];
 
-export function SimpleButton(props, ref) {
+export function Button(props, ref) {
 	const {
 		href,
 		target,
@@ -125,4 +125,4 @@ export function SimpleButton(props, ref) {
 	);
 }
 
-export default forwardRef(SimpleButton);
+export default forwardRef(Button);

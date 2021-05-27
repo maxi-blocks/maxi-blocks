@@ -29,6 +29,10 @@ const map = {
 		type: 'number',
 		default: 1,
 	},
+	'map-marker-custom-color-status': {
+		type: 'boolean',
+		default: false,
+	},
 	'map-marker-fill-color': {
 		type: 'string',
 		default: '#FF4A17',

@@ -29,15 +29,27 @@ const allowedBlocks = [
 ];
 
 wp.domReady(() => {
-	/**
-	 * Mutation Observer for:
-	 * - Add special classes on Settings Sidebar
-	 * - Hide original WP toolbar on selected Maxi Blocks
-	 */
+	// Window size
+	const setWindowSize = e => {
+		const { innerWidth: width, innerHeight: height } = e.target;
+
+		dispatch('maxiBlocks').setWindowSize({ width, height });
+	};
+
+	setWindowSize({ target: window });
+
+	// eslint-disable-next-line @wordpress/no-global-event-listener
+	window.addEventListener('resize', e => setWindowSize(e));
+
 	const unsubscribe = subscribe(() => {
 		const targetNode = document.querySelector('.edit-post-layout');
 
 		if (targetNode) {
+			/**
+			 * Mutation Observer for:
+			 * - Add special classes on Settings Sidebar
+			 * - Hide original WP toolbar on selected Maxi Blocks
+			 */
 			const config = {
 				attributes: true,
 				childList: true,
@@ -51,9 +63,10 @@ wp.domReady(() => {
 						mutation.type === 'childList' &&
 						!!mutation.target.classList
 					) {
-						const blockNames = select(
-							'core/block-editor'
-						).getMultiSelectedBlocks();
+						const blockNames =
+							select(
+								'core/block-editor'
+							).getMultiSelectedBlocks();
 
 						const selectedBlocks =
 							!isEmpty(blockNames) &&
@@ -68,12 +81,12 @@ wp.domReady(() => {
 								'core/block-editor'
 							).getSelectedBlockClientId()
 						);
-						const editPostSidebarNode = document.querySelector(
-							'.edit-post-sidebar'
-						);
-						const blockEditorBlockInspectorNode = document.querySelector(
-							'.block-editor-block-inspector'
-						);
+						const editPostSidebarNode =
+							document.querySelector('.edit-post-sidebar');
+						const blockEditorBlockInspectorNode =
+							document.querySelector(
+								'.block-editor-block-inspector'
+							);
 						const blockToolbarUniversal = document.querySelector(
 							'.block-editor-block-toolbar'
 						);
@@ -185,9 +198,8 @@ wp.domReady(() => {
 									)
 								);
 
-								const { setMaxiDeviceType } = dispatch(
-									'maxiBlocks'
-								);
+								const { setMaxiDeviceType } =
+									dispatch('maxiBlocks');
 
 								responsiveButtons.forEach(button => {
 									button.addEventListener('click', e => {
@@ -199,9 +211,10 @@ wp.domReady(() => {
 											(value === 'Tablet' && 's') ||
 											(value === 'Mobile' && 'xs');
 
-										const editorWrapper = document.querySelector(
-											'.edit-post-visual-editor.editor-styles-wrapper'
-										);
+										const editorWrapper =
+											document.querySelector(
+												'.edit-post-visual-editor.editor-styles-wrapper'
+											);
 										editorWrapper.setAttribute(
 											'maxi-blocks-responsive',
 											maxiValue

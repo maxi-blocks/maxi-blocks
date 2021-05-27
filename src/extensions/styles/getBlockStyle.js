@@ -16,15 +16,20 @@ const blockSwitcher = style => {
 };
 
 const getBlockStyle = clientId => {
-	const { getBlockHierarchyRootClientId, getBlockAttributes } = select(
-		'core/block-editor'
-	);
-	const { blockStyle: currentBlockStyle } = getBlockAttributes(clientId);
+	const {
+		getBlockHierarchyRootClientId,
+		getBlockAttributes,
+		getSelectedBlockClientId,
+	} = select('core/block-editor');
+
+	const id = clientId || getSelectedBlockClientId();
+
+	const { blockStyle: currentBlockStyle } = getBlockAttributes(id);
 
 	if (currentBlockStyle !== 'maxi-parent')
 		return blockSwitcher(currentBlockStyle);
 
-	const rootClientId = getBlockHierarchyRootClientId(clientId);
+	const rootClientId = getBlockHierarchyRootClientId(id);
 	const rootAttributes = getBlockAttributes(rootClientId);
 	const { blockStyle: parentBlockStyle } = rootAttributes;
 

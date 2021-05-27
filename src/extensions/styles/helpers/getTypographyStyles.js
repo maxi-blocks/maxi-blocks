@@ -6,7 +6,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  * General
@@ -35,13 +35,13 @@ const getTypographyStyles = (
 
 	breakpoints.forEach(breakpoint => {
 		const typography = {
-			...(obj[getName('font-family', breakpoint)] && {
+			...(!isNil(obj[getName('font-family', breakpoint)]) && {
 				'font-family': obj[getName('font-family', breakpoint)],
 			}),
-			...(obj[getName('color', breakpoint)] && {
+			...(!isNil(obj[getName('color', breakpoint)]) && {
 				color: obj[getName('color', breakpoint)],
 			}),
-			...(obj[getName('font-size', breakpoint)] && {
+			...(!isNil(obj[getName('font-size', breakpoint)]) && {
 				'font-size': `${
 					obj[getName('font-size', breakpoint)]
 				}${getLastBreakpointAttribute(
@@ -50,7 +50,7 @@ const getTypographyStyles = (
 					isCustomFormat ? customFormatTypography : obj
 				)}`,
 			}),
-			...(obj[getName('line-height', breakpoint)] && {
+			...(!isNil(obj[getName('line-height', breakpoint)]) && {
 				'line-height': `${obj[getName('line-height', breakpoint)]}${
 					getLastBreakpointAttribute(
 						`${prefix}line-height-unit`,
@@ -59,7 +59,7 @@ const getTypographyStyles = (
 					) || ''
 				}`,
 			}),
-			...(obj[getName('letter-spacing', breakpoint)] && {
+			...(!isNil(obj[getName('letter-spacing', breakpoint)]) && {
 				'letter-spacing': `${
 					obj[getName('letter-spacing', breakpoint)]
 				}${getLastBreakpointAttribute(
@@ -68,22 +68,22 @@ const getTypographyStyles = (
 					isCustomFormat ? customFormatTypography : obj
 				)}`,
 			}),
-			...(obj[getName('font-weight', breakpoint)] && {
+			...(!isNil(obj[getName('font-weight', breakpoint)]) && {
 				'font-weight': obj[getName('font-weight', breakpoint)],
 			}),
-			...(obj[getName('text-transform', breakpoint)] && {
+			...(!isNil(obj[getName('text-transform', breakpoint)]) && {
 				'text-transform': obj[getName('text-transform', breakpoint)],
 			}),
-			...(obj[getName('font-style', breakpoint)] && {
+			...(!isNil(obj[getName('font-style', breakpoint)]) && {
 				'font-style': obj[getName('font-style', breakpoint)],
 			}),
-			...(obj[getName('text-decoration', breakpoint)] && {
+			...(!isNil(obj[getName('text-decoration', breakpoint)]) && {
 				'text-decoration': obj[getName('text-decoration', breakpoint)],
 			}),
-			...(obj[getName('text-shadow', breakpoint)] && {
+			...(!isNil(obj[getName('text-shadow', breakpoint)]) && {
 				'text-shadow': obj[getName('text-shadow', breakpoint)],
 			}),
-			...(obj[getName('vertical-align', breakpoint)] && {
+			...(!isNil(obj[getName('vertical-align', breakpoint)]) && {
 				'vertical-align': obj[getName('vertical-align', breakpoint)],
 			}),
 		};

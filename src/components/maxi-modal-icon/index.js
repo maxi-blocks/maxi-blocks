@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { Button, Modal } from '@wordpress/components';
 
 /**
@@ -17,7 +17,7 @@ const MaxiModalIcon = props => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
-		<Fragment key={`maxi-block-library__fragment--${clientId}`}>
+		<div key={`maxi-block-library__fragment--${clientId}`}>
 			<Button
 				key={`maxi-block-library__modal-button--${clientId}`}
 				isPrimary
@@ -52,16 +52,16 @@ const MaxiModalIcon = props => {
 								display='initial'
 								position='relative'
 							/>
-							<Fragment>
+							<>
 								<div className='maxi-block-library__modal__loading_message maxi-block__item--hidden'>
-									<p>{__('Saving...', 'maxi-blocks')}</p>
+									<p>{__('Saving…', 'maxi-blocks')}</p>
 								</div>
-							</Fragment>
+							</>
 						</Modal>
 					)}
 				</MaxiContext.Consumer>
 			) : null}
-		</Fragment>
+		</div>
 	);
 };
 

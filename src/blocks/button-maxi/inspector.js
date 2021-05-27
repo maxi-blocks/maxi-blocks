@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -44,7 +43,7 @@ import { presetOne, presetTwo, presetThree } from '../../icons';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, name, clientId } = props;
+	const { attributes, deviceType, setAttributes, clientId } = props;
 
 	const {
 		customLabel,
@@ -67,7 +66,7 @@ const Inspector = props => {
 					{
 						label: __('Style', 'maxi-blocks'),
 						content: (
-							<Fragment>
+							<>
 								<div className='maxi-tab-content__box'>
 									<CustomLabel
 										customLabel={customLabel}
@@ -145,7 +144,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<Fragment>
+												<>
 													<AlignmentControl
 														label={__(
 															'Button',
@@ -176,7 +175,7 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														type='text'
 													/>
-												</Fragment>
+												</>
 											),
 										},
 
@@ -216,6 +215,10 @@ const Inspector = props => {
 																		clientId
 																	}
 																	disableCustomFormats
+																	blockStyle={
+																		blockStyle
+																	}
+																	styleCardPrefix='button'
 																/>
 															),
 														},
@@ -225,7 +228,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Typography Hover',
@@ -255,8 +258,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'typography-status-hover':
-																						val,
+																					'typography-status-hover': val,
 																				}
 																			)
 																		}
@@ -287,9 +289,13 @@ const Inspector = props => {
 																				clientId
 																			}
 																			disableCustomFormats
+																			blockStyle={
+																				blockStyle
+																			}
+																			styleCardPrefix='button'
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -311,7 +317,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<BackgroundControl
 																		{...getGroupAttributes(
 																			attributes,
@@ -336,7 +342,7 @@ const Inspector = props => {
 																			clientId
 																		}
 																	/>
-																</Fragment>
+																</>
 															),
 														},
 														{
@@ -345,7 +351,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Background Hover',
@@ -375,8 +381,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover':
-																						val,
+																					'background-status-hover': val,
 																				}
 																			)
 																		}
@@ -410,7 +415,7 @@ const Inspector = props => {
 																			}
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -459,7 +464,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Border Hover',
@@ -489,8 +494,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'border-status-hover':
-																						val,
+																					'border-status-hover': val,
 																				}
 																			)
 																		}
@@ -522,7 +526,7 @@ const Inspector = props => {
 																			}
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -535,7 +539,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<Fragment>
+												<>
 													{isFirstOnHierarchy && (
 														<FancyRadioControl
 															label={__(
@@ -549,14 +553,16 @@ const Inspector = props => {
 																		'Yes',
 																		'maxi-blocks'
 																	),
-																	value: 'full',
+																	value:
+																		'normal',
 																},
 																{
 																	label: __(
 																		'No',
 																		'maxi-blocks'
 																	),
-																	value: 'normal',
+																	value:
+																		'full',
 																},
 															]}
 															optionType='string'
@@ -577,7 +583,7 @@ const Inspector = props => {
 														}
 														breakpoint={deviceType}
 													/>
-												</Fragment>
+												</>
 											),
 										},
 										{
@@ -623,7 +629,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Box Shadow Hover',
@@ -653,8 +659,7 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover':
-																						val,
+																					'box-shadow-status-hover': val,
 																				}
 																			)
 																		}
@@ -684,7 +689,7 @@ const Inspector = props => {
 																			}
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -697,7 +702,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<Fragment>
+												<>
 													<AxisControl
 														{...getGroupAttributes(
 															attributes,
@@ -729,18 +734,18 @@ const Inspector = props => {
 														breakpoint={deviceType}
 														target='margin'
 													/>
-												</Fragment>
+												</>
 											),
 										},
 									]}
 								/>
-							</Fragment>
+							</>
 						),
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
-							<Fragment>
+							<>
 								<AccordionControl
 									isPrimary
 									items={[
@@ -887,7 +892,7 @@ const Inspector = props => {
 										},
 									]}
 								/>
-							</Fragment>
+							</>
 						),
 					},
 				]}

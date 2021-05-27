@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -51,7 +50,7 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { className, onChange, clientId } = props;
+	const { className, onChange, blockStyle, clientId } = props;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
@@ -172,7 +171,7 @@ const HoverEffectControl = props => {
 				/>
 			)}
 			{props['hover-type'] === 'basic' && (
-				<Fragment>
+				<>
 					<SelectControl
 						label={__('Effect Type', 'maxi-blocks')}
 						value={props['hover-basic-effect-type']}
@@ -233,7 +232,7 @@ const HoverEffectControl = props => {
 							props['hover-basic-effect-type'] === 'rotate' ||
 							props['hover-basic-effect-type'] === 'blur' ||
 							props['hover-basic-effect-type'] === 'slide') && (
-							<Fragment>
+							<>
 								<RangeSliderControl
 									label={__('Amount', 'maxi-blocks')}
 									className={classes}
@@ -259,12 +258,12 @@ const HoverEffectControl = props => {
 										`hover-basic-${props['hover-basic-effect-type']}-value`
 									)}
 								/>
-							</Fragment>
+							</>
 						)}
-				</Fragment>
+				</>
 			)}
 			{props['hover-type'] === 'text' && (
-				<Fragment>
+				<>
 					<SelectControl
 						label={__('Animation Type', 'maxi-blocks')}
 						value={props['hover-text-effect-type']}
@@ -378,6 +377,7 @@ const HoverEffectControl = props => {
 							onChange={obj => onChange(obj)}
 							prefix='hover-title-'
 							disableCustomFormats
+							blockStyle={blockStyle}
 							disablePalette
 							clientId={clientId}
 						/>
@@ -422,6 +422,7 @@ const HoverEffectControl = props => {
 							onChange={obj => onChange(obj)}
 							prefix='hover-content-'
 							disableCustomFormats
+							blockStyle={blockStyle}
 							disablePalette
 							clientId={clientId}
 						/>
@@ -507,7 +508,7 @@ const HoverEffectControl = props => {
 							optionType='string'
 						/>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

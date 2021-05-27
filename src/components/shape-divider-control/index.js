@@ -2,19 +2,17 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Dropdown } from '@wordpress/components';
-import { Fragment, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import {
-	RadioControl,
-	OpacityControl,
-	FancyRadioControl,
-	BackgroundControl,
-	SizeControl,
-} from '../../components';
+import RadioControl from '../radio-control';
+import OpacityControl from '../opacity-control';
+import FancyRadioControl from '../fancy-radio-control';
+import BackgroundControl from '../background-control';
+import SizeControl from '../size-control';
+import Dropdown from '../dropdown';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
@@ -220,7 +218,7 @@ const ShapeDividerControl = props => {
 				onChange={val => setShapeDividerStatus(val)}
 			/>
 			{shapeDividerStatus === 'top' && (
-				<Fragment>
+				<>
 					<FancyRadioControl
 						label={__('Enable Top Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-top-status']}
@@ -233,7 +231,7 @@ const ShapeDividerControl = props => {
 						}
 					/>
 					{!!props['shape-divider-top-status'] && (
-						<Fragment>
+						<>
 							<FancyRadioControl
 								label={__(
 									'Enable Scroll Effect',
@@ -290,9 +288,6 @@ const ShapeDividerControl = props => {
 							/>
 							<OpacityControl
 								opacity={props['shape-divider-top-opacity']}
-								defaultOpacity={getDefaultAttribute(
-									'shape-divider-top-opacity'
-								)}
 								onChange={opacity =>
 									onChange({
 										'shape-divider-top-opacity': opacity,
@@ -338,12 +333,12 @@ const ShapeDividerControl = props => {
 									})
 								}
 							/>
-						</Fragment>
+						</>
 					)}
-				</Fragment>
+				</>
 			)}
 			{shapeDividerStatus === 'bottom' && (
-				<Fragment>
+				<>
 					<FancyRadioControl
 						label={__('Enable Bottom Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-bottom-status']}
@@ -356,7 +351,7 @@ const ShapeDividerControl = props => {
 						}
 					/>
 					{!!props['shape-divider-bottom-status'] && (
-						<Fragment>
+						<>
 							<FancyRadioControl
 								label={__(
 									'Enable Scroll Effect',
@@ -414,9 +409,6 @@ const ShapeDividerControl = props => {
 							/>
 							<OpacityControl
 								opacity={props['shape-divider-bottom-opacity']}
-								defaultOpacity={getDefaultAttribute(
-									'shape-divider-bottom-opacity'
-								)}
 								onChange={opacity =>
 									onChange({
 										'shape-divider-bottom-opacity': opacity,
@@ -462,9 +454,9 @@ const ShapeDividerControl = props => {
 									})
 								}
 							/>
-						</Fragment>
+						</>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

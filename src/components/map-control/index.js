@@ -7,7 +7,10 @@ import { TextControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { SizeControl, ColorControl, OpacityControl } from '../../components';
+import SizeControl from '../size-control';
+import ColorControl from '../color-control';
+import OpacityControl from '../opacity-control';
+import FancyRadioControl from '../fancy-radio-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -39,11 +42,15 @@ const MapControl = props => {
 				className='maxi-map-control__full-width-text'
 				label={__('API Key', 'maxi-blocks')}
 				value={props['map-api-key']}
-				onChange={val => onChange({ ['map-api-key']: val })}
+				onChange={val => onChange({ 'map-api-key': val })}
 			/>
 			<p className='maxi-map-control__help'>
 				{__('Please create your own API key on the ', 'maxi-blocks')}
-				<a href='https://console.developers.google.com' target='_blank'>
+				<a
+					href='https://console.developers.google.com'
+					target='_blank'
+					rel='noreferrer'
+				>
 					{__('Google Console ', 'maxi-blocks')}
 				</a>
 				{__('This is a requirement enforced by Google.', 'maxi-blocks')}
@@ -51,12 +58,12 @@ const MapControl = props => {
 			<TextControl
 				label={__('Latitude', 'maxi-blocks')}
 				value={props['map-latitude']}
-				onChange={val => onChange({ ['map-latitude']: val })}
+				onChange={val => onChange({ 'map-latitude': val })}
 			/>
 			<TextControl
 				label={__('Longitude', 'maxi-blocks')}
 				value={props['map-longitude']}
-				onChange={val => onChange({ ['map-longitude']: val })}
+				onChange={val => onChange({ 'map-longitude': val })}
 			/>
 			<SizeControl
 				label={__('Zoom', 'maxi-blocks')}
@@ -80,7 +87,7 @@ const MapControl = props => {
 						data-item={index + 1}
 						onClick={e =>
 							onChange({
-								['map-marker']: +e.currentTarget.dataset.item,
+								'map-marker': +e.currentTarget.dataset.item,
 							})
 						}
 						className={`maxi-map-control__markers__item ${
@@ -96,10 +103,9 @@ const MapControl = props => {
 			<OpacityControl
 				label={__('Marker Opacity', 'maxi-blocks')}
 				opacity={props['map-marker-opacity']}
-				defaultOpacity={getDefaultAttribute('map-marker-opacity')}
 				onChange={val =>
 					onChange({
-						['map-marker-opacity']: val,
+						'map-marker-opacity': val,
 					})
 				}
 			/>
@@ -119,25 +125,49 @@ const MapControl = props => {
 					})
 				}
 			/>
-			<ColorControl
-				label={__('Marker Fill', 'maxi-blocks')}
-				disableOpacity
-				color={props['map-marker-fill-color']}
-				defaultColor={getDefaultAttribute('map-marker-fill-color')}
-				onChange={val => onChange({ 'map-marker-fill-color': val })}
+			<FancyRadioControl
+				label={__('Custom Maker Colours', 'maxi-block')}
+				selected={props['map-marker-custom-color-status']}
+				options={[
+					{ label: __('Yes', 'maxi-block'), value: 1 },
+					{ label: __('No', 'maxi-block'), value: 0 },
+				]}
+				onChange={val =>
+					onChange({ 'map-marker-custom-color-status': val })
+				}
 			/>
-			<ColorControl
-				label={__('Marker Stroke', 'maxi-blocks')}
-				disableOpacity
-				color={props['map-marker-stroke-color']}
-				defaultColor={getDefaultAttribute('map-marker-stroke-color')}
-				onChange={val => onChange({ 'map-marker-stroke-color': val })}
-			/>
+			{props['map-marker-custom-color-status'] && (
+				<>
+					<ColorControl
+						label={__('Marker Fill', 'maxi-blocks')}
+						disableOpacity
+						color={props['map-marker-fill-color']}
+						defaultColor={getDefaultAttribute(
+							'map-marker-fill-color'
+						)}
+						onChange={val =>
+							onChange({ 'map-marker-fill-color': val })
+						}
+					/>
+					<ColorControl
+						label={__('Marker Stroke', 'maxi-blocks')}
+						disableOpacity
+						color={props['map-marker-stroke-color']}
+						defaultColor={getDefaultAttribute(
+							'map-marker-stroke-color'
+						)}
+						onChange={val =>
+							onChange({ 'map-marker-stroke-color': val })
+						}
+					/>
+				</>
+			)}
+
 			<TextControl
 				className='maxi-map-control__full-width-text'
 				label={__('Marker Text', 'maxi-blocks')}
 				value={props['map-marker-text']}
-				onChange={val => onChange({ ['map-marker-text']: val })}
+				onChange={val => onChange({ 'map-marker-text': val })}
 			/>
 			<ColorControl
 				label={__('Marker Text', 'maxi-blocks')}
@@ -156,7 +186,7 @@ const MapControl = props => {
 				className='maxi-map-control__full-width-text'
 				label={__('Marker Address', 'maxi-blocks')}
 				value={props['map-marker-address']}
-				onChange={val => onChange({ ['map-marker-address']: val })}
+				onChange={val => onChange({ 'map-marker-address': val })}
 			/>
 			<ColorControl
 				label={__('Marker Address', 'maxi-blocks')}

@@ -21,9 +21,8 @@ const ResponsiveControl = props => {
 	const { onChange, className, breakpoint } = props;
 
 	const { defaultBreakpoints } = useSelect(select => {
-		const defaultBreakpoints = select(
-			'maxiBlocks'
-		).receiveMaxiBreakpoints();
+		const defaultBreakpoints =
+			select('maxiBlocks').receiveMaxiBreakpoints();
 
 		return {
 			defaultBreakpoints,

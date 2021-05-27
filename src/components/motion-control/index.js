@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -44,7 +43,7 @@ const MotionControl = props => {
 				onChange={val => onChange({ 'motion-status': val })}
 			/>
 			{props['motion-status'] && (
-				<Fragment>
+				<>
 					<FancyRadioControl
 						label={__('Preview', 'maxi-blocks')}
 						selected={props['motion-preview-status']}
@@ -74,7 +73,7 @@ const MotionControl = props => {
 							onChange(obj);
 						}}
 					/>
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

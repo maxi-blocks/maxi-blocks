@@ -40,6 +40,7 @@ const setFormat = ({
 	textLevel,
 	returnFormatValue = false,
 	disableCustomFormats = false,
+	styleCardPrefix = '',
 }) => {
 	// eslint-disable-next-line @wordpress/no-unused-vars-before-return
 	const {
@@ -105,6 +106,7 @@ const setFormat = ({
 				breakpoint,
 				textLevel,
 				isHover,
+				styleCardPrefix,
 			});
 
 			return { ...cleanedTypography, content: cleanedContent };
@@ -128,6 +130,7 @@ const setFormat = ({
 		isHover,
 		textLevel,
 		returnFormatValue,
+		styleCardPrefix,
 	});
 };
 

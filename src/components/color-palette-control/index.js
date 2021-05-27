@@ -2,14 +2,14 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { FancyRadioControl } from '..';
 import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import { getPaletteDefault, getBlockStyle } from '../../extensions/styles';
 import BaseControl from '../base-control';
+import FancyRadioControl from '../fancy-radio-control';
+import { getPaletteDefault, getBlockStyle } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -80,19 +80,19 @@ const ColorPaletteControl = props => {
 
 			case 'background':
 				onChange({
-					['background-color']: '',
+					'background-color': '',
 				});
 				break;
 
 			case 'divider':
 				onChange({
-					['divider-border-color']: '',
+					'divider-border-color': '',
 				});
 				break;
 
 			case 'icon':
 				onChange({
-					['icon-color']: '',
+					'icon-color': '',
 				});
 				break;
 
@@ -110,19 +110,20 @@ const ColorPaletteControl = props => {
 
 			case 'marker-text':
 				onChange({
-					['marker-text']: '',
+					'marker-text': '',
 				});
 				break;
 
 			case 'marker-address':
 				onChange({
-					['marker-address']: '',
+					'marker-address': '',
 				});
 				break;
 
 			default:
 				return null;
 		}
+		return null;
 	};
 
 	return (
@@ -157,7 +158,7 @@ const ColorPaletteControl = props => {
 							>
 								<span
 									className={`maxi-sc-color-palette__box__item maxi-sc-color-palette__box__item__${item}`}
-								></span>
+								/>
 							</div>
 						))}
 					</div>
@@ -185,7 +186,7 @@ const ColorPaletteControl = props => {
 					});
 
 					if (
-						!!props[
+						props[
 							`palette-custom-${colorPaletteType}${
 								isHover ? '-hover' : ''
 							}-color`

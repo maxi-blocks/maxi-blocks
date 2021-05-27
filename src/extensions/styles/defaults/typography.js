@@ -53,7 +53,6 @@ export const typography = {
 	},
 	'font-size-unit-xxl': {
 		type: 'string',
-		default: 'px',
 	},
 	'font-size-xxl': {
 		type: 'number',
@@ -66,7 +65,6 @@ export const typography = {
 	},
 	'letter-spacing-unit-xxl': {
 		type: 'string',
-		default: 'px',
 	},
 	'letter-spacing-xxl': {
 		type: 'number',
@@ -97,7 +95,6 @@ export const typography = {
 	},
 	'font-size-unit-xl': {
 		type: 'string',
-		default: 'px',
 	},
 	'font-size-xl': {
 		type: 'number',
@@ -110,7 +107,6 @@ export const typography = {
 	},
 	'letter-spacing-unit-xl': {
 		type: 'string',
-		default: 'px',
 	},
 	'letter-spacing-xl': {
 		type: 'number',
@@ -141,7 +137,6 @@ export const typography = {
 	},
 	'font-size-unit-l': {
 		type: 'string',
-		default: 'px',
 	},
 	'font-size-l': {
 		type: 'number',
@@ -154,7 +149,6 @@ export const typography = {
 	},
 	'letter-spacing-unit-l': {
 		type: 'string',
-		default: 'px',
 	},
 	'letter-spacing-l': {
 		type: 'number',
@@ -185,7 +179,6 @@ export const typography = {
 	},
 	'font-size-unit-m': {
 		type: 'string',
-		default: 'px',
 	},
 	'font-size-m': {
 		type: 'number',
@@ -198,7 +191,6 @@ export const typography = {
 	},
 	'letter-spacing-unit-m': {
 		type: 'string',
-		default: 'px',
 	},
 	'letter-spacing-m': {
 		type: 'number',
@@ -229,7 +221,6 @@ export const typography = {
 	},
 	'font-size-unit-s': {
 		type: 'string',
-		default: 'px',
 	},
 	'font-size-s': {
 		type: 'number',
@@ -242,7 +233,6 @@ export const typography = {
 	},
 	'letter-spacing-unit-s': {
 		type: 'string',
-		default: 'px',
 	},
 	'letter-spacing-s': {
 		type: 'number',
@@ -273,7 +263,6 @@ export const typography = {
 	},
 	'font-size-unit-xs': {
 		type: 'string',
-		default: 'px',
 	},
 	'font-size-xs': {
 		type: 'number',
@@ -286,7 +275,6 @@ export const typography = {
 	},
 	'letter-spacing-unit-xs': {
 		type: 'string',
-		default: 'px',
 	},
 	'letter-spacing-xs': {
 		type: 'number',

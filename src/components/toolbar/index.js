@@ -14,40 +14,37 @@ import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
 /**
  * Utils
  */
-import {
-	Alignment,
-	BackgroundColor,
-	Border,
-	BoxShadow,
-	ColumnMover,
-	ColumnsHandlers,
-	ColumnSize,
-	CopyPaste,
-	Delete,
-	Divider,
-	DividerAlignment,
-	DividerColor,
-	Duplicate,
-	ImageSize,
-	Link,
-	Mover,
-	PaddingMargin,
-	ReusableBlocks,
-	RowSettings,
-	Size,
-	SvgColor,
-	TextBold,
-	TextColor,
-	TextItalic,
-	TextLevel,
-	TextLink,
-	TextListOptions,
-	TextOptions,
-	ToggleBlock,
-	ToolbarColumnPattern,
-} from './components';
-
-import { Breadcrumbs } from '../../components';
+import Alignment from './components/alignment';
+import BackgroundColor from './components/background-color';
+import Border from './components/border';
+import BoxShadow from './components/box-shadow';
+import ColumnMover from './components/column-mover';
+import ColumnsHandlers from './components/columns-handlers';
+import ColumnSize from './components/column-size';
+import CopyPaste from './components/copy-paste';
+import Delete from './components/delete';
+import Divider from './components/divider-line';
+import DividerAlignment from './components/divider-alignment';
+import DividerColor from './components/divider-color';
+import Duplicate from './components/duplicate';
+import ImageSize from './components/image-size';
+import Link from './components/link';
+import Mover from './components/mover';
+import PaddingMargin from './components/padding-margin';
+import ReusableBlocks from './components/reusable-blocks';
+import RowSettings from './components/row-settings';
+import Size from './components/size';
+import SvgColor from './components/svg-color';
+import TextBold from './components/text-bold';
+import TextColor from './components/text-color';
+import TextItalic from './components/text-italic';
+import TextLevel from './components/text-level';
+import TextLink from './components/text-link';
+import TextListOptions from './components/text-list-options';
+import TextOptions from './components/text-options';
+import ToggleBlock from './components/toggle-block';
+import ToolbarColumnPattern from './components/column-pattern';
+import Breadcrumbs from '../breadcrumbs';
 
 /**
  * Styles
@@ -97,14 +94,12 @@ const MaxiToolbar = memo(
 			attributes,
 			changeSVGContent,
 			clientId,
-			deviceType,
 			isSelected,
 			name,
 			setAttributes,
 			toggleHandlers,
 			rowPattern,
 		} = props;
-
 		const {
 			content,
 			customLabel,
@@ -125,16 +120,21 @@ const MaxiToolbar = memo(
 			resizableObject,
 		} = attributes;
 
-		const { editorVersion } = useSelect(select => {
-			const { receiveMaxiSettings } = select('maxiBlocks');
+		const { editorVersion, breakpoint } = useSelect(select => {
+			const { receiveMaxiSettings, receiveMaxiDeviceType } = select(
+				'maxiBlocks'
+			);
 
 			const maxiSettings = receiveMaxiSettings();
-			const version = !isEmpty(maxiSettings)
+			const version = !isEmpty(maxiSettings.editor)
 				? maxiSettings.editor.version
 				: null;
 
+			const breakpoint = receiveMaxiDeviceType();
+
 			return {
 				editorVersion: version,
+				breakpoint,
 			};
 		});
 
@@ -208,7 +208,7 @@ const MaxiToolbar = memo(
 									'palette',
 								])}
 								blockName={name}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
 							/>
@@ -243,7 +243,7 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								node={anchorRef}
 								content={content}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								isList={isList}
 								typeOfList={typeOfList}
 								textLevel={textLevel}
@@ -255,7 +255,7 @@ const MaxiToolbar = memo(
 									'palette',
 								])}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								node={anchorRef}
 								isList={isList}
 								typeOfList={typeOfList}
@@ -268,7 +268,7 @@ const MaxiToolbar = memo(
 									'textAlignment',
 								])}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 							/>
 							<TextLevel
 								{...getGroupAttributes(attributes, [
@@ -288,7 +288,7 @@ const MaxiToolbar = memo(
 								blockName={name}
 								onChange={obj => setAttributes(obj)}
 								isList={isList}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								textLevel={textLevel}
 							/>
 							<TextItalic
@@ -299,7 +299,7 @@ const MaxiToolbar = memo(
 								blockName={name}
 								onChange={obj => setAttributes(obj)}
 								isList={isList}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 							/>
 							<RowSettings
 								blockName={name}
@@ -315,7 +315,7 @@ const MaxiToolbar = memo(
 									'rowPattern'
 								)}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 							/>
 							<ColumnsHandlers
 								toggleHandlers={toggleHandlers}
@@ -338,7 +338,7 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								isList={isList}
 								linkSettings={linkSettings}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								textLevel={textLevel}
 							/>
 							<TextListOptions
@@ -353,7 +353,7 @@ const MaxiToolbar = memo(
 									'palette',
 								])}
 								blockName={name}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
 							/>
@@ -376,7 +376,7 @@ const MaxiToolbar = memo(
 										}}
 										clientId={clientId}
 										type='svgColorFill'
-										breakpoint={deviceType}
+										breakpoint={breakpoint}
 									/>
 									<SvgColor
 										{...getGroupAttributes(
@@ -395,7 +395,7 @@ const MaxiToolbar = memo(
 										}}
 										clientId={clientId}
 										type='svgColorLine'
-										breakpoint={deviceType}
+										breakpoint={breakpoint}
 									/>
 								</>
 							)}
@@ -408,10 +408,10 @@ const MaxiToolbar = memo(
 									'palette',
 								])}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								clientId={clientId}
 							/>
-							{deviceType === 'general' && (
+							{breakpoint === 'general' && (
 								<ImageSize
 									blockName={name}
 									imgWidth={imgWidth}
@@ -436,7 +436,7 @@ const MaxiToolbar = memo(
 								{...getGroupAttributes(attributes, 'size')}
 								fullWidth={fullWidth}
 								isFirstOnHierarchy={isFirstOnHierarchy}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								onChange={obj => setAttributes(obj)}
 							/>
 							<ColumnSize
@@ -449,7 +449,7 @@ const MaxiToolbar = memo(
 								verticalAlign={attributes.verticalAlign}
 								uniqueID={uniqueID}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								resizableObject={resizableObject}
 								rowPattern={rowPattern}
 								columnSize={{
@@ -467,7 +467,7 @@ const MaxiToolbar = memo(
 								])}
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 							/>
 							<PaddingMargin
 								blockName={name}
@@ -476,14 +476,14 @@ const MaxiToolbar = memo(
 									'padding',
 								])}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 							/>
 							<Duplicate clientId={clientId} blockName={name} />
 							<Delete clientId={clientId} blockName={name} />
 							<ToggleBlock
 								{...getGroupAttributes(attributes, 'display')}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								defaultDisplay={
 									flexBlocks.includes(name)
 										? 'flex'

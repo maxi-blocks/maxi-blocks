@@ -501,6 +501,7 @@ const Inspector = props => {
 															breakpoint={
 																deviceType
 															}
+															hideMaxWidth
 														/>
 													)}
 												</Fragment>

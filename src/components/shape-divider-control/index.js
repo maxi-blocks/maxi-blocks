@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Dropdown } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 /**
@@ -14,6 +13,7 @@ import {
 	FancyRadioControl,
 	BackgroundControl,
 	SizeControl,
+	Dropdown,
 } from '../../components';
 import { getDefaultAttribute } from '../../extensions/styles';
 
@@ -281,7 +281,8 @@ const ShapeDividerControl = props => {
 										options={shapeItems}
 										onChange={shapeStyle =>
 											onChange({
-												'shape-divider-top-shape-style': shapeStyle,
+												'shape-divider-top-shape-style':
+													shapeStyle,
 											})
 										}
 									/>
@@ -323,12 +324,14 @@ const ShapeDividerControl = props => {
 								}
 								onReset={() =>
 									onChange({
-										'shape-divider-top-height': getDefaultAttribute(
-											'shape-divider-top-height'
-										),
-										'shape-divider-top-height-unit': getDefaultAttribute(
-											'shape-divider-top-height-unit'
-										),
+										'shape-divider-top-height':
+											getDefaultAttribute(
+												'shape-divider-top-height'
+											),
+										'shape-divider-top-height-unit':
+											getDefaultAttribute(
+												'shape-divider-top-height-unit'
+											),
 									})
 								}
 							/>
@@ -371,7 +374,8 @@ const ShapeDividerControl = props => {
 								]}
 								onChange={val =>
 									onChange({
-										'shape-divider-bottom-effects-status': val,
+										'shape-divider-bottom-effects-status':
+											val,
 									})
 								}
 							/>
@@ -398,7 +402,8 @@ const ShapeDividerControl = props => {
 										options={shapeItems}
 										onChange={shapeStyle =>
 											onChange({
-												'shape-divider-bottom-shape-style': shapeStyle,
+												'shape-divider-bottom-shape-style':
+													shapeStyle,
 											})
 										}
 									/>
@@ -440,12 +445,14 @@ const ShapeDividerControl = props => {
 								}
 								onReset={() =>
 									onChange({
-										'shape-divider-bottom-height': getDefaultAttribute(
-											'shape-divider-bottom-height'
-										),
-										'shape-divider-bottom-height-unit': getDefaultAttribute(
-											'shape-divider-bottom-height-unit'
-										),
+										'shape-divider-bottom-height':
+											getDefaultAttribute(
+												'shape-divider-bottom-height'
+											),
+										'shape-divider-bottom-height-unit':
+											getDefaultAttribute(
+												'shape-divider-bottom-height-unit'
+											),
 									})
 								}
 							/>

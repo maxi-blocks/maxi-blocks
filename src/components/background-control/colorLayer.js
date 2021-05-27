@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -29,7 +28,7 @@ const ColorLayer = props => {
 	const colorOptions = cloneDeep(props.colorOptions);
 
 	return (
-		<Fragment>
+		<>
 			<ColorControl
 				label={__('Background', 'maxi-blocks')}
 				color={
@@ -78,7 +77,7 @@ const ColorLayer = props => {
 					}}
 				/>
 			)}
-		</Fragment>
+		</>
 	);
 };
 

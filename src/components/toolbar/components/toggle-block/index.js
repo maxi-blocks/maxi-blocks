@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
@@ -82,7 +81,7 @@ const ToggleBlock = props => {
 	};
 
 	return (
-		<Fragment>
+		<>
 			<Tooltip
 				text={
 					getValue() === 'none'
@@ -120,7 +119,7 @@ const ToggleBlock = props => {
 					)}
 				</Button>
 			</Tooltip>
-		</Fragment>
+		</>
 	);
 };
 

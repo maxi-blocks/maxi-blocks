@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect, Fragment } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
@@ -320,7 +320,7 @@ const ClipPathControl = props => {
 				}}
 			/>
 			{!!hasClipPath && (
-				<Fragment>
+				<>
 					<FancyRadioControl
 						label={__('Use Custom', 'maxi-blocks')}
 						selected={isCustom}
@@ -413,7 +413,7 @@ const ClipPathControl = props => {
 								/>
 							)}
 							{customMode === 'data' && (
-								<Fragment>
+								<>
 									{Object.entries(
 										clipPathOptions.content
 									).map(([key, handle]) => {
@@ -455,11 +455,11 @@ const ClipPathControl = props => {
 												)}
 											</Button>
 										)}
-								</Fragment>
+								</>
 							)}
 						</div>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -142,7 +141,7 @@ const BackgroundControl = props => {
 				/>
 			)}
 			{!layersStatus && (
-				<Fragment>
+				<>
 					{!disableColor && backgroundActiveMedia === 'color' && (
 						<ColorLayer
 							{...getGroupAttributes(props, 'palette')}
@@ -227,7 +226,7 @@ const BackgroundControl = props => {
 							clientId={clientId}
 						/>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

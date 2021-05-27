@@ -3,6 +3,7 @@
  */
 import { useDispatch, select } from '@wordpress/data';
 import { parse } from '@wordpress/blocks';
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -51,6 +52,34 @@ const MasonryItem = props => {
 	);
 };
 
+const MasonryItemSVG = props => {
+	const { svgCode, isPro, serial, onRequestInsert } = props;
+
+	return (
+		<div className='maxi-cloud-masonry-card'>
+			<div className='maxi-cloud-masonry-card__image'>
+				<RawHTML>{svgCode}</RawHTML>
+			</div>
+			<div className='maxi-cloud-masonry-card__container'>
+				<div className='maxi-cloud-masonry-card__buttons'>
+					<Button
+						className='maxi-cloud-masonry-card__button'
+						onClick={onRequestInsert}
+					>
+						Insert
+					</Button>
+				</div>
+				<div className='maxi-cloud-masonry-card__tags'>
+					{isPro && (
+						<span className='maxi-cloud-masonry__pro-tag'>PRO</span>
+					)}
+					<p className='maxi-cloud-masonry__serial-tag'>{serial}</p>
+				</div>
+			</div>
+		</div>
+	);
+};
+
 const LibraryMasonry = props => {
 	const { elements, type, onRequestClose } = props;
 
@@ -61,7 +90,9 @@ const LibraryMasonry = props => {
 		700: 1,
 	};
 
-	const { replaceBlocks } = useDispatch('core/block-editor');
+	const { replaceBlocks, updateBlockAttributes } = useDispatch(
+		'core/block-editor'
+	);
 
 	const onRequestInsert = async id => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
@@ -84,22 +115,48 @@ const LibraryMasonry = props => {
 			.catch(err => console.error(err));
 	};
 
+	const onRequestInsertSVG = svgCodeToInsert => {
+		const clientId = select('core/block-editor').getSelectedBlockClientId();
+
+		const isValid = select('core/block-editor').isValidTemplate(
+			svgCodeToInsert
+		);
+
+		if (isValid) {
+			updateBlockAttributes(clientId, { content: svgCodeToInsert });
+			onRequestClose();
+		}
+	};
+
 	return (
 		<Masonry
 			className='maxi-cloud-masonry'
 			breakpointCols={breakpointColumnsObj}
 			columnClassName='maxi-cloud-masonry__column'
 		>
-			{Object.values(elements).map(element => (
-				<MasonryItem
-					key={`maxi-cloud-masonry__item-${element.id}`}
-					demoUrl={element.demo_url}
-					previewIMG={element.preview_image_url}
-					isPro={element.cost === 'pro'}
-					serial={element.title}
-					onRequestInsert={() => onRequestInsert(element.id)}
-				/>
-			))}
+			{type === 'svg' &&
+				Object.values(elements).map(element => (
+					<MasonryItemSVG
+						key={`maxi-cloud-masonry__item-${element.id}`}
+						svgCode={element.svg_code}
+						isPro={element.cost === 'pro'}
+						serial={element.title}
+						onRequestInsert={() =>
+							onRequestInsertSVG(element.svg_code)
+						}
+					/>
+				))}
+			{type === 'patterns' &&
+				Object.values(elements).map(element => (
+					<MasonryItem
+						key={`maxi-cloud-masonry__item-${element.id}`}
+						demoUrl={element.demo_url}
+						previewIMG={element.preview_image_url}
+						isPro={element.cost === 'pro'}
+						serial={element.title}
+						onRequestInsert={() => onRequestInsert(element.id)}
+					/>
+				))}
 		</Masonry>
 	);
 };

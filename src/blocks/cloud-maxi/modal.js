@@ -40,6 +40,7 @@ class MaxiModal extends Component {
 					</Button>
 					{isOpen && (
 						<CloudLibrary
+							cloudType='patterns'
 							onClose={() => this.setState({ isOpen: !isOpen })}
 						/>
 					)}

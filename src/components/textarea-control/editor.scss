@@ -1,0 +1,36 @@
+.maxi-textarea-control__input {
+	width: 100%;
+	padding: 6px 8px;
+
+	box-shadow: 0 0 0 transparent;
+	transition: box-shadow 0.1s linear;
+	border-radius: 2px;
+	border: 1px solid #757575;
+	transition-duration: 0ms;
+
+	/* Fonts smaller than 16px causes mobile safari to zoom. */
+	font-size: 16px;
+	/* Override core line-height. To be reviewed. */
+	line-height: normal;
+
+	@media (min-width: 600px) {
+		font-size: 13px;
+		/* Override core line-height. To be reviewed. */
+		line-height: normal;
+	}
+
+	&:focus {
+		border-color: #cbcdcf;
+	}
+	// Use opacity to work in various editor styles.
+	&::-webkit-input-placeholder {
+		color: rgba(#1e1e1e, 0.62);
+	}
+	&::-moz-placeholder {
+		opacity: 1; // Necessary because Firefox reduces this from 1.
+		color: rgba(#1e1e1e, 0.62);
+	}
+	&:-ms-input-placeholder {
+		color: rgba(#1e1e1e, 0.62);
+	}
+}

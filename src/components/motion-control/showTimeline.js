@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
@@ -92,7 +91,7 @@ const ShowTimeline = props => {
 							? arr[i - 1][0]
 							: 0;
 						return (
-							<Fragment key={`maxi-motion-time-line-${i}`}>
+							<div key={`maxi-motion-time-line-${i}`}>
 								<div
 									className='maxi-motion-control__timeline__space'
 									style={{
@@ -165,7 +164,7 @@ const ShowTimeline = props => {
 										{key}%
 									</div>
 								</div>
-							</Fragment>
+							</div>
 						);
 					}
 				)}

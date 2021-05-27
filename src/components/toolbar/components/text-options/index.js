@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -100,7 +99,7 @@ const TextOptions = withFormatValue(props => {
 						theme='dark'
 					/>
 				</div>
-				<Fragment>
+				<>
 					<BaseControl
 						label={__('Size', 'maxi-blocks')}
 						className='toolbar-item__popover__font-options__number-control'
@@ -262,7 +261,7 @@ const TextOptions = withFormatValue(props => {
 							textLevel={textLevel}
 						/>
 					</div>
-				</Fragment>
+				</>
 			</div>
 		</ToolbarPopover>
 	);

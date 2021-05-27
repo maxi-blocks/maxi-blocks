@@ -4,7 +4,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
-import { Fragment } from '@wordpress/element';
 import { createBlock } from '@wordpress/blocks';
 import { withSelect, dispatch } from '@wordpress/data';
 import { RichText, RichTextShortcut } from '@wordpress/block-editor';
@@ -162,6 +161,7 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}
+				classes={`${isList ? 'maxi-list-block' : ''}`}
 				ref={this.blockRef}
 				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
@@ -225,7 +225,7 @@ class edit extends MaxiBlockComponent {
 
 							if (isSelected)
 								return (
-									<Fragment>
+									<>
 										<RichTextShortcut
 											type='primary'
 											character='['
@@ -272,7 +272,7 @@ class edit extends MaxiBlockComponent {
 												);
 											}}
 										/>
-									</Fragment>
+									</>
 								);
 
 							return null;

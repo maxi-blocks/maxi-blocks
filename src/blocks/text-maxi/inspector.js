@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Fragment, memo } from '@wordpress/element';
+import { memo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -34,10 +34,7 @@ import {
 	TypographyControl,
 	ZIndexControl,
 } from '../../components';
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -72,7 +69,7 @@ const Inspector = memo(
 						{
 							label: __('Style', 'maxi-blocks'),
 							content: (
-								<Fragment>
+								<>
 									<div className='maxi-tab-content__box'>
 										<CustomLabel
 											customLabel={customLabel}
@@ -142,7 +139,7 @@ const Inspector = memo(
 														'maxi-blocks'
 													),
 													content: (
-														<Fragment>
+														<>
 															<SelectControl
 																label={__(
 																	'Type of list',
@@ -177,7 +174,7 @@ const Inspector = memo(
 															/>
 															{typeOfList ===
 																'ol' && (
-																<Fragment>
+																<>
 																	<NumberControl
 																		label={__(
 																			'Start from',
@@ -229,9 +226,9 @@ const Inspector = memo(
 																			);
 																		}}
 																	/>
-																</Fragment>
+																</>
 															)}
-														</Fragment>
+														</>
 													),
 												},
 											{
@@ -284,7 +281,7 @@ const Inspector = memo(
 																	'maxi-blocks'
 																),
 																content: (
-																	<Fragment>
+																	<>
 																		<FancyRadioControl
 																			label={__(
 																				'Enable Typography Hover',
@@ -353,7 +350,7 @@ const Inspector = memo(
 																				isHover
 																			/>
 																		)}
-																	</Fragment>
+																	</>
 																),
 															},
 														]}
@@ -375,7 +372,7 @@ const Inspector = memo(
 																	'maxi-blocks'
 																),
 																content: (
-																	<Fragment>
+																	<>
 																		<BackgroundControl
 																			{...getGroupAttributes(
 																				attributes,
@@ -401,7 +398,7 @@ const Inspector = memo(
 																				clientId
 																			}
 																		/>
-																	</Fragment>
+																	</>
 																),
 															},
 															{
@@ -410,7 +407,7 @@ const Inspector = memo(
 																	'maxi-blocks'
 																),
 																content: (
-																	<Fragment>
+																	<>
 																		<FancyRadioControl
 																			label={__(
 																				'Enable Background Hover',
@@ -473,7 +470,7 @@ const Inspector = memo(
 																				}
 																			/>
 																		)}
-																	</Fragment>
+																	</>
 																),
 															},
 														]}
@@ -525,7 +522,7 @@ const Inspector = memo(
 																	'maxi-blocks'
 																),
 																content: (
-																	<Fragment>
+																	<>
 																		<FancyRadioControl
 																			label={__(
 																				'Enable Border Hover',
@@ -588,7 +585,7 @@ const Inspector = memo(
 																				isHover
 																			/>
 																		)}
-																	</Fragment>
+																	</>
 																),
 															},
 														]}
@@ -601,7 +598,7 @@ const Inspector = memo(
 													'maxi-blocks'
 												),
 												content: (
-													<Fragment>
+													<>
 														{isFirstOnHierarchy && (
 															<FancyRadioControl
 																label={__(
@@ -652,7 +649,7 @@ const Inspector = memo(
 																deviceType
 															}
 														/>
-													</Fragment>
+													</>
 												),
 											},
 											{
@@ -698,7 +695,7 @@ const Inspector = memo(
 																	'maxi-blocks'
 																),
 																content: (
-																	<Fragment>
+																	<>
 																		<FancyRadioControl
 																			label={__(
 																				'Enable Box Shadow Hover',
@@ -759,7 +756,7 @@ const Inspector = memo(
 																				isHover
 																			/>
 																		)}
-																	</Fragment>
+																	</>
 																),
 															},
 														]}
@@ -772,7 +769,7 @@ const Inspector = memo(
 													'maxi-blocks'
 												),
 												content: (
-													<Fragment>
+													<>
 														<AxisControl
 															{...getGroupAttributes(
 																attributes,
@@ -813,18 +810,18 @@ const Inspector = memo(
 															target='margin'
 															optionType='string'
 														/>
-													</Fragment>
+													</>
 												),
 											},
 										]}
 									/>
-								</Fragment>
+								</>
 							),
 						},
 						{
 							label: __('Advanced', 'maxi-blocks'),
 							content: (
-								<Fragment>
+								<>
 									<AccordionControl
 										isPrimary
 										items={[
@@ -986,10 +983,6 @@ const Inspector = memo(
 																`opacity-${deviceType}`
 															]
 														}
-														defaultOpacity={getDefaultAttribute(
-															`opacity-${deviceType}`,
-															clientId
-														)}
 														onChange={val =>
 															setAttributes({
 																[`opacity-${deviceType}`]:
@@ -1001,7 +994,7 @@ const Inspector = memo(
 											},
 										]}
 									/>
-								</Fragment>
+								</>
 							),
 						},
 					]}

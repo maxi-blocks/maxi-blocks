@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -87,7 +86,7 @@ const ArrowControl = props => {
 				/>
 			}
 			{props['arrow-status'] && (
-				<Fragment>
+				<>
 					<FancyRadioControl
 						label=''
 						selected={getLastBreakpointAttribute(
@@ -154,7 +153,7 @@ const ArrowControl = props => {
 						}
 						minMaxSettings={minMaxSettings}
 					/>
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

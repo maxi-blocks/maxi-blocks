@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 import { select } from '@wordpress/data';
 
 /**
@@ -174,7 +173,7 @@ const FullSizeControl = props => {
 				}}
 			/>
 			{props[`${prefix}size-advanced-options`] && (
-				<Fragment>
+				<>
 					{!hideMaxWidth && (
 						<SizeControl
 							label={__('Max Width', 'maxi-blocks')}
@@ -313,7 +312,7 @@ const FullSizeControl = props => {
 						}}
 						minMaxSettings={minMaxSettings}
 					/>
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

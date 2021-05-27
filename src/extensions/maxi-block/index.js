@@ -76,6 +76,10 @@ class MaxiBlockComponent extends Component {
 		});
 	}
 
+	componentDidMount() {
+		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
+	}
+
 	/**
 	 * Prevents rendering
 	 */
@@ -117,6 +121,8 @@ class MaxiBlockComponent extends Component {
 			return !isEqual(oldAttributes, newAttributes);
 		}
 
+		if (this.shouldMaxiBlockUpdate) this.shouldMaxiBlockUpdate();
+
 		return !isEqual(nextProps.attributes, this.props.attributes);
 	}
 
@@ -136,14 +142,22 @@ class MaxiBlockComponent extends Component {
 			if (!isEqual(oldAttributes, newAttributes))
 				this.difference(oldAttributes, newAttributes);
 
+			if (this.maxiBlockGetSnapshotBeforeUpdate)
+				this.maxiBlockGetSnapshotBeforeUpdate();
+
 			return isEqual(oldAttributes, newAttributes);
 		}
+
+		if (this.maxiBlockGetSnapshotBeforeUpdate)
+			this.maxiBlockGetSnapshotBeforeUpdate();
 
 		return isEqual(prevProps.attributes, this.props.attributes);
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		if (!shouldDisplayStyles) this.displayStyles();
+
+		if (this.maxiBlockDidUpdate) this.maxiBlockDidUpdate();
 	}
 
 	componentWillUnmount() {
@@ -156,6 +170,8 @@ class MaxiBlockComponent extends Component {
 		);
 
 		dispatch('maxiBlocks/text').removeFormatValue(this.props.clientId);
+
+		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
 	}
 
 	get getBreakpoints() {
@@ -177,9 +193,8 @@ class MaxiBlockComponent extends Component {
 
 		let res;
 
-		const blockRootClientId = select(
-			'core/block-editor'
-		).getBlockRootClientId(clientId);
+		const blockRootClientId =
+			select('core/block-editor').getBlockRootClientId(clientId);
 
 		if (!blockRootClientId) {
 			res = 'maxi-light';

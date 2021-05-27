@@ -8,9 +8,27 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-if (!class_exists('MaxiBlocksAPI')) :
-	class MaxiBlocksAPI {
+if (!class_exists('MaxiBlocks_API')) :
+	class MaxiBlocks_API {
+		/**
+		 * This plugin's instance.
+		 *
+		 * @var MaxiBlocks_API
+		 */
+		private static $instance;
 
+		/**
+		 * Registers the plugin.
+		 */
+		public static function register() {
+			if (null === self::$instance) {
+				self::$instance = new MaxiBlocks_API();
+			}
+		}
+
+		/**
+		 * Variables
+		 */
 		private $version;
 		private $namespace;
 
@@ -313,8 +331,10 @@ if (!class_exists('MaxiBlocksAPI')) :
 			if ($style_cards && !empty($style_cards))
 				return $style_cards;
 			else {
-				require_once (dirname(__FILE__) . '/style-cards/default-style-card-maxi.php');
-				$defaultStyleCard = getDefaultStyleCard();
+				if(class_exists('MaxiBlocks_StyleCards'))
+					$defaultStyleCard = MaxiBlocks_StyleCards::getDefaultStyleCard();
+				else
+					return false; // Should return an error
 
 				$wpdb->replace($table_name, array(
 					'id' => 'style_cards_current',
@@ -397,9 +417,4 @@ if (!class_exists('MaxiBlocksAPI')) :
 		}
 	}
 
-
 endif;
-
-// Caller
-
-return new MaxiBlocksAPI();

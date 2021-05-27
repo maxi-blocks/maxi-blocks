@@ -55,7 +55,7 @@ const TextFormatSubscript = props => {
 			isList,
 			typography: { ...getGroupAttributes(props, 'typography') },
 			value: {
-				'vertical-align': isActive ? '' : 'sub',
+				'vertical-align': isActive ? 'unset' : 'sub',
 			},
 			breakpoint,
 			textLevel,

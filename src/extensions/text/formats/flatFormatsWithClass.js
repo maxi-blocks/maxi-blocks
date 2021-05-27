@@ -123,6 +123,7 @@ export const removeUnnecessaryFormats = ({
 	breakpoint,
 	textLevel,
 	isHover,
+	styleCardPrefix,
 }) => {
 	const multiFormatObj = getMultiFormatObj(
 		{
@@ -150,6 +151,7 @@ export const removeUnnecessaryFormats = ({
 					breakpoint,
 					currentStyle: style,
 					textLevel,
+					styleCardPrefix,
 				});
 				const isFullFormat = getIsFullFormat(formatValue, target);
 
@@ -223,6 +225,7 @@ const flatFormatsWithClass = ({
 	breakpoint,
 	returnFormatValue = false,
 	isHover = false,
+	styleCardPrefix = '',
 }) => {
 	const {
 		[`custom-formats${isHover ? '-hover' : ''}`]: customFormats,
@@ -268,6 +271,7 @@ const flatFormatsWithClass = ({
 		breakpoint,
 		textLevel,
 		isHover,
+		styleCardPrefix,
 	});
 
 	return {

@@ -5,6 +5,7 @@ import getLastBreakpointAttribute from '../../styles/getLastBreakpointAttribute'
 import getCurrentFormatClassName from './getCurrentFormatClassName';
 import defaultTypography from '../defaults';
 import getCustomFormat from './getCustomFormat';
+import { getTypographyFromSC } from '../../style-cards';
 
 /**
  * Retrieve the property from typography object requested
@@ -25,7 +26,12 @@ const getCustomFormatValue = ({
 	breakpoint,
 	isHover = false,
 	textLevel = 'p',
+	blockStyle = 'light',
+	styleCard = null,
+	styleCardPrefix,
+	avoidXXL = false,
 }) => {
+	// Custom format value
 	if (formatValue) {
 		const currentClassName = getCurrentFormatClassName(
 			formatValue,
@@ -50,20 +56,55 @@ const getCustomFormatValue = ({
 		}
 	}
 
+	// General format value
 	const value = getLastBreakpointAttribute(
 		prop,
 		breakpoint,
 		typography,
-		isHover
+		isHover,
+		false,
+		avoidXXL
 	);
 
 	if (value) return value;
 
+	// Style Cards value
+	const SCStyle = blockStyle.replace('maxi-', '');
+	const SCLevel = styleCardPrefix || textLevel;
+	const currentSC = getTypographyFromSC(SCLevel, SCStyle, styleCard);
+
+	const currentSCValue = getLastBreakpointAttribute(
+		`${SCLevel}-${prop}`,
+		breakpoint,
+		currentSC,
+		isHover,
+		false,
+		avoidXXL
+	);
+
+	if (currentSCValue) return currentSCValue;
+
+	const defaultSC = getTypographyFromSC(textLevel, SCStyle, styleCard);
+
+	const defaultSCValue = getLastBreakpointAttribute(
+		`${SCLevel}-${prop}`,
+		breakpoint,
+		defaultSC,
+		isHover,
+		false,
+		avoidXXL
+	);
+
+	if (defaultSCValue) return defaultSCValue;
+
+	// Default value
 	const defaultValue = getLastBreakpointAttribute(
 		prop,
 		breakpoint,
 		defaultTypography[textLevel],
-		isHover
+		isHover,
+		false,
+		avoidXXL
 	);
 
 	if (defaultValue) return defaultValue;

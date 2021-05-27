@@ -9,7 +9,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType  } from '@wordpress/blocks';
+import { registerBlockType, createBlock } from '@wordpress/blocks';
 
 /**
  * Block dependencies
@@ -39,6 +39,21 @@ registerBlockType('maxi-blocks/image-maxi', {
 	},
 	attributes: {
 		...attributes,
+	},
+	transforms: {
+		from: [
+			{
+				type: 'block',
+				blocks: ['core/image'],
+				transform({ id, url }) {
+					return createBlock('maxi-blocks/image-maxi', {
+						mediaID: id,
+						mediaURL: url,
+					});
+				},
+			},
+		],
+		to: [],
 	},
 	getEditWrapperProps(attributes) {
 		const { uniqueID } = attributes;

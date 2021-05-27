@@ -58,7 +58,6 @@ const getDeviceType = () => {
 	}
 	return 'desktop';
 };
-
 // Map
 Object.values(maxi_custom_data.custom_data).map(item => {
 	const script = document.createElement('script');
@@ -79,8 +78,8 @@ Object.values(maxi_custom_data.custom_data).map(item => {
 			}
 		);
 
-		const contentTitleString = `<h3 class="map-marker-info-window__title">${item['map-marker-text']}</h3>`;
-		const contentAddressString = `<address class="map-marker-info-window__address">${item['map-marker-address']}</address>`;
+		const contentTitleString = `<h6 class="map-marker-info-window__title">${item['map-marker-text']}</h6>`;
+		const contentAddressString = `<p class="map-marker-info-window__address">${item['map-marker-address']}</p>`;
 		const contentString = `<div class="map-marker-info-window">${
 			item['map-marker-text'] !== '' ? contentTitleString : ''
 		}${

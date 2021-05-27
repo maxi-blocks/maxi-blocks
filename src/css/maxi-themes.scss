@@ -23,13 +23,13 @@ body.maxi-blocks--active {
 			@each $color_number in $color_set {
 				&.maxi-sc-#{$style}-marker-address-color-#{$color_number},
 				.maxi-sc-#{$style}-marker-address-color-#{$color_number} {
-					.maxi-map-container .map-marker-info-window__address {
+					.map-marker-info-window__address {
 						color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				&.maxi-sc-#{$style}-marker-title-color-#{$color_number},
 				.maxi-sc-#{$style}-marker-title-color-#{$color_number} {
-					.maxi-map-container .map-marker-info-window__title {
+					.map-marker-info-window__title {
 						color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}

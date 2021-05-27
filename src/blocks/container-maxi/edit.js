@@ -71,15 +71,10 @@ class edit extends MaxiBlockComponent {
 			},
 		};
 	}
-
 	render() {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
-		const {
-			uniqueID,
-			isFirstOnHierarchy,
-			fullWidth,
-			parentBlockStyle,
-		} = attributes;
+		const { uniqueID, isFirstOnHierarchy, fullWidth, parentBlockStyle } =
+			attributes;
 
 		const paletteClasses = getPaletteClasses(
 			attributes,
@@ -109,9 +104,9 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockBlockAttributes(this.props)}
 				disableMotion
 			>
-				{this.props['shape-divider-top-status'] && (
+				{attributes['shape-divider-top-status'] && (
 					<ShapeDivider
-						{...getGroupAttributes(this.props, 'shapeDivider')}
+						{...getGroupAttributes(attributes, 'shapeDivider')}
 						location='top'
 					/>
 				)}
@@ -144,9 +139,9 @@ class edit extends MaxiBlockComponent {
 							: () => <InnerBlocks.ButtonBlockAppender />
 					}
 				/>
-				{this.props['shape-divider-bottom-status'] && (
+				{attributes['shape-divider-bottom-status'] && (
 					<ShapeDivider
-						{...getGroupAttributes(this.props, 'shapeDivider')}
+						{...getGroupAttributes(attributes, 'shapeDivider')}
 						location='bottom'
 					/>
 				)}

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
+import {} from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -104,7 +104,7 @@ const TimelineSettings = props => {
 	return (
 		<div className='maxi-motion-control__timeline-item-settings'>
 			{!isNil(getCurrentTimelineItem()) && (
-				<Fragment>
+				<>
 					<hr />
 					<RangeSliderControl
 						label={__('Position', 'maxi-blocks')}
@@ -124,11 +124,11 @@ const TimelineSettings = props => {
 						max={100}
 					/>
 					<hr />
-				</Fragment>
+				</>
 			)}
 			{!isNil(getCurrentTimelineItem()) &&
 				getCurrentTimelineItem().type === 'move' && (
-					<Fragment>
+					<>
 						<div className='maxi-motion-control__timeline-item-settings__setting'>
 							<RangeSliderControl
 								label={__('X', 'maxi-blocks')}
@@ -258,11 +258,11 @@ const TimelineSettings = props => {
 								}
 							/>
 						</div>
-					</Fragment>
+					</>
 				)}
 			{!isNil(getCurrentTimelineItem()) &&
 				getCurrentTimelineItem().type === 'rotate' && (
-					<Fragment>
+					<>
 						<RangeSliderControl
 							label={__('X', 'maxi-blocks')}
 							help='deg'
@@ -293,11 +293,11 @@ const TimelineSettings = props => {
 							min={-180}
 							max={180}
 						/>
-					</Fragment>
+					</>
 				)}
 			{!isNil(getCurrentTimelineItem()) &&
 				getCurrentTimelineItem().type === 'skew' && (
-					<Fragment>
+					<>
 						<RangeSliderControl
 							label={__('X', 'maxi-blocks')}
 							help='deg'
@@ -318,11 +318,11 @@ const TimelineSettings = props => {
 							min={-80}
 							max={80}
 						/>
-					</Fragment>
+					</>
 				)}
 			{!isNil(getCurrentTimelineItem()) &&
 				getCurrentTimelineItem().type === 'scale' && (
-					<Fragment>
+					<>
 						<RangeSliderControl
 							label={__('X', 'maxi-blocks')}
 							value={getTimelineItemSettingValue('x')}
@@ -353,11 +353,11 @@ const TimelineSettings = props => {
 							max={2}
 							step={0.1}
 						/>
-					</Fragment>
+					</>
 				)}
 			{!isNil(getCurrentTimelineItem()) &&
 				getCurrentTimelineItem().type === 'opacity' && (
-					<Fragment>
+					<>
 						<RangeSliderControl
 							label={__('Opacity', 'maxi-blocks')}
 							help='%'
@@ -370,11 +370,11 @@ const TimelineSettings = props => {
 							max={1}
 							step={0.1}
 						/>
-					</Fragment>
+					</>
 				)}
 			{!isNil(getCurrentTimelineItem()) &&
 				getCurrentTimelineItem().type === 'blur' && (
-					<Fragment>
+					<>
 						<RangeSliderControl
 							label={__('Blur', 'maxi-blocks')}
 							help='px'
@@ -387,10 +387,10 @@ const TimelineSettings = props => {
 							max={100}
 							step={1}
 						/>
-					</Fragment>
+					</>
 				)}
 			{!isNil(getCurrentTimelineItem()) && (
-				<Fragment>
+				<>
 					<hr />
 					<FancyRadioControl
 						label={__('X-Axis', 'maxi-blocks')}
@@ -471,7 +471,7 @@ const TimelineSettings = props => {
 							onChange({ 'motion-mobile-status': val })
 						}
 					/>
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

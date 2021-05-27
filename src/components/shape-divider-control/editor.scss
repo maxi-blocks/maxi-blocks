@@ -1,5 +1,8 @@
 .maxi-shapedividercontrol {
 	&__shape-list {
+		.maxi-base-control__field {
+			flex-wrap: wrap;
+		}
 		.maxi-radio-control {
 			&__input {
 				display: none;
@@ -7,6 +10,7 @@
 			&__option {
 				margin-bottom: 0;
 				display: block;
+				width: 100%;
 
 				label {
 					display: block;

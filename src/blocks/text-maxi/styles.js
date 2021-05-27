@@ -123,26 +123,29 @@ const getTypographyHoverObject = props => {
 };
 
 const getStyles = props => {
-	const { uniqueID, isList } = props;
+	const { uniqueID, isList, textLevel, typeOfList } = props;
+	const element = isList ? typeOfList : textLevel;
 
 	let response = {
 		[uniqueID]: getNormalObject(props),
 		[`${uniqueID}:hover`]: getHoverObject(props),
-		[`${uniqueID} .maxi-text-block__content`]: getTypographyObject(
+		[`${uniqueID} ${element}.maxi-text-block__content`]: getTypographyObject(
 			props,
 			isList
 		),
-		[`${uniqueID} .maxi-text-block__content:hover`]: getTypographyHoverObject(
+		[`${uniqueID} ${element}.maxi-text-block__content:hover`]: getTypographyHoverObject(
 			props
 		),
-		[`${uniqueID} .maxi-text-block__content li`]: getTypographyObject(
+		[`${uniqueID} ${element}.maxi-text-block__content li`]: getTypographyObject(
 			props
 		),
-		[`${uniqueID} .maxi-text-block__content li:hover`]: getTypographyHoverObject(
+		[`${uniqueID} ${element}.maxi-text-block__content li:hover`]: getTypographyHoverObject(
 			props
 		),
-		[`${uniqueID} .maxi-text-block__content a`]: getTypographyObject(props),
-		[`${uniqueID} .maxi-text-block__content a:hover`]: getTypographyHoverObject(
+		[`${uniqueID} ${element}.maxi-text-block__content a`]: getTypographyObject(
+			props
+		),
+		[`${uniqueID} ${element}.maxi-text-block__content a:hover`]: getTypographyHoverObject(
 			props
 		),
 	};

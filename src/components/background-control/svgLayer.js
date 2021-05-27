@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 
 /**
  *
@@ -30,7 +29,7 @@ const SVGLayer = props => {
 	const SVGOptions = cloneDeep(props.SVGOptions);
 
 	return (
-		<Fragment>
+		<>
 			<SettingTabsControl
 				disablePadding
 				items={[
@@ -149,7 +148,7 @@ const SVGLayer = props => {
 					) && {
 						label: __('Position', 'maxi-blocks'),
 						content: (
-							<Fragment>
+							<>
 								<SizeControl
 									label={__('Y-axis', 'maxi-blocks')}
 									value={
@@ -282,7 +281,7 @@ const SVGLayer = props => {
 									}
 									min={0}
 								/>
-							</Fragment>
+							</>
 						),
 					},
 					!isEmpty(SVGOptions['background-svg-SVGElement']) && {
@@ -358,7 +357,7 @@ const SVGLayer = props => {
 					},
 				]}
 			/>
-		</Fragment>
+		</>
 	);
 };
 

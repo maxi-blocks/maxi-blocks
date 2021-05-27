@@ -47,6 +47,7 @@ const TextBold = withFormatValue(props => {
 			formatValue,
 			prop: 'font-weight',
 			breakpoint,
+			textLevel,
 		});
 
 	const boldValue = getBoldValue();

@@ -84,8 +84,8 @@ class edit extends MaxiBlockComponent {
 				});
 			})
 			.then(map => {
-				const contentTitleString = `<h3 class="map-marker-info-window__title">${mapMarkerText}</h3>`;
-				const contentAddressString = `<address class="map-marker-info-window__address">${mapMarkerAddress}</address>`;
+				const contentTitleString = `<h6 class="map-marker-info-window__title">${mapMarkerText}</h6>`;
+				const contentAddressString = `<p class="map-marker-info-window__address">${mapMarkerAddress}</p>`;
 				const contentString = `<div class="map-marker-info-window">${
 					!isEmpty(mapMarkerText) ? contentTitleString : ''
 				}${

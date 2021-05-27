@@ -96,7 +96,6 @@ const ImageLayer = props => {
 			/>
 			<OpacityControl
 				label={__('Background Opacity', 'maxi-blocks')}
-				fullWidthMode
 				opacity={
 					imageOptions[
 						getAttributeKey(
@@ -106,9 +105,6 @@ const ImageLayer = props => {
 						)
 					]
 				}
-				defaultOpacity={getDefaultAttribute(
-					getAttributeKey('background-image-opacity', isHover, prefix)
-				)}
 				onChange={val =>
 					onChange({
 						[getAttributeKey(

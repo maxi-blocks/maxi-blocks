@@ -96,7 +96,6 @@ const MapControl = props => {
 			<OpacityControl
 				label={__('Marker Opacity', 'maxi-blocks')}
 				opacity={props['map-marker-opacity']}
-				defaultOpacity={getDefaultAttribute('map-marker-opacity')}
 				onChange={val =>
 					onChange({
 						['map-marker-opacity']: val,

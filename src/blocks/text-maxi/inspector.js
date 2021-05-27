@@ -34,10 +34,7 @@ import {
 	TypographyControl,
 	ZIndexControl,
 } from '../../components';
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -986,10 +983,6 @@ const Inspector = memo(
 																`opacity-${deviceType}`
 															]
 														}
-														defaultOpacity={getDefaultAttribute(
-															`opacity-${deviceType}`,
-															clientId
-														)}
 														onChange={val =>
 															setAttributes({
 																[`opacity-${deviceType}`]:

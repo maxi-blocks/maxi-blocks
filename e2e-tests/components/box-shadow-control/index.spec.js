@@ -21,28 +21,34 @@ describe('boxShadow control', () => {
 			'.maxi-shadow-control button',
 			click => click[1].click()
 		);
+
 		const expectAttributes = {
 			'box-shadow-blur-general': 87,
 			'box-shadow-color-general': 'rgb(236, 241, 246)',
-			'box-shadow-color-general-hover': '',
 			'box-shadow-horizontal-general': 0,
 			'box-shadow-spread-general': 10,
 			'box-shadow-status-hover': false,
 			'box-shadow-vertical-general': 0,
 		};
+
 		const attributes = await getBlockAttributes();
 
-		expect(attributes).toStrictEqual(expectAttributes);
+		const typographyAttributes = (({
+			'box-shadow-blur-general': boxShadowBlur,
+			'box-shadow-color-general': boxShadowColor,
+			'box-shadow-horizontal-general': boxShadowHorizontal,
+			'box-shadow-spread-general': boxShadowSpread,
+			'box-shadow-status-hover': boxShadowStatus,
+			'box-shadow-vertical-general': boxShadowVertical,
+		}) => ({
+			'box-shadow-blur-general': boxShadowBlur,
+			'box-shadow-color-general': boxShadowColor,
+			'box-shadow-horizontal-general': boxShadowHorizontal,
+			'box-shadow-spread-general': boxShadowSpread,
+			'box-shadow-status-hover': boxShadowStatus,
+			'box-shadow-vertical-general': boxShadowVertical,
+		}))(attributes);
 
-		/* for (let i = 0; i < boxShadowControls.length; i++) {
-			const boxShadowControl = await boxShadowControls[i];
-
-			await boxShadowControl.click();
-			const attributes = await getBlockAttributes();
-
-			Object.entries(expectedAttributes).forEach(([key, value]) => {
-				expect(attributes[key].toString()).toBe(value);
-			});
-		} */
+		expect(typographyAttributes).toStrictEqual(expectAttributes);
 	});
 });

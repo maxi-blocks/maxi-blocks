@@ -35,7 +35,6 @@ describe('checkbox control', () => {
 			'margin-top-general',
 		];
 
-		debugger;
 		const fourthAttributes = await getBlockAttributes();
 
 		const areAllAuto = marginKeys.every(key => {

@@ -57,6 +57,7 @@ describe('typography control', () => {
 		);
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('9');
+
 		// line-height
 		await accordionPanel.$eval(
 			'.maxi-typography-control__line-height input',
@@ -64,6 +65,7 @@ describe('typography control', () => {
 		);
 		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type('40');
+
 		// letter-spacing
 		await accordionPanel.$eval(
 			'.maxi-typography-control__letter-spacing input',
@@ -89,38 +91,47 @@ describe('typography control', () => {
 		expect(expectedResult).toStrictEqual(expectedAttributes);
 
 		// Weight, Transform, Style, Decoration
-		const weightSelector = await accordionPanel.$eval(
-			'.maxi-typography-control .components-base-control__weight select',
-			select => select.focus()
+		const weightSelector = await accordionPanel.$(
+			'.maxi-typography-control__weight .components-select-control__input'
 		);
 		await weightSelector.select('300');
 
-		const transformSelector = await accordionPanel.$eval(
-			'.maxi-typography-control .components-base-control__transform select',
-			select => select.focus()
+		const transformSelector = await accordionPanel.$(
+			'.maxi-typography-control__transform .components-select-control__input'
 		);
 		await transformSelector.select('capitalize');
 
-		const fontStyleSelector = await accordionPanel.$eval(
-			'.maxi-typography-control .components-base-control__font-style select',
-			select => select.focus()
+		const fontStyleSelector = await accordionPanel.$(
+			'.maxi-typography-control__font-style .components-select-control__input'
 		);
 		await fontStyleSelector.select('italic');
 
-		const decorationSelector = await accordionPanel.$eval(
-			'.maxi-typography-control .components-base-control__decoratio select',
-			select => select.focus()
+		const decorationSelector = await accordionPanel.$(
+			'.maxi-typography-control__decoration .components-select-control__input'
 		);
 		await decorationSelector.select('overline');
 
 		const styleAttributes = await getBlockAttributes();
+
+		const typographyAttributes = (({
+			'font-style-general': fontStyle,
+			'font-weight-general': fontWeight,
+			'text-decoration-general': textDecoration,
+			'text-transform-general': textTransform,
+		}) => ({
+			'font-style-general': fontStyle,
+			'font-weight-general': fontWeight,
+			'text-decoration-general': textDecoration,
+			'text-transform-general': textTransform,
+		}))(styleAttributes);
+
 		const expectedAttributesTwo = {
 			'font-style-general': 'italic',
 			'font-weight-general': '300',
 			'text-decoration-general': 'overline',
 			'text-transform-general': 'capitalize',
 		};
-		expect(styleAttributes).toStrictEqual(expectedAttributesTwo);
+		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
 
 		// Text shadow
 		await accordionPanel.$$eval(

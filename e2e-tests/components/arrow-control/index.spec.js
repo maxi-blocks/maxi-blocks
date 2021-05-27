@@ -26,15 +26,19 @@ describe('arrow control', () => {
 			'.maxi-accordion-control__item__panel .maxi-arrow-control .components-base-control__field label',
 			button => button[0].click()
 		);
-		// Click on arrow position
-		const positionWrapper = showArrow.$$('.maxi-fancy-radio-control input');
 
-		debugger;
+		const positionButtons = await page.$$eval(
+			'.maxi-arrow-control .maxi-fancy-radio-control',
+			fancyButtons =>
+				fancyButtons[1].querySelectorAll(
+					'.components-radio-control__option label'
+				)
+		);
 
 		const values = ['top', 'bottom', 'right', 'left'];
 
-		for (let i = 0; i < positionWrapper.length; i++) {
-			const setting = positionWrapper[i];
+		for (let i = 0; i < positionButtons.length; i++) {
+			const setting = positionButtons[i];
 
 			await setting.click();
 
@@ -58,12 +62,9 @@ describe('arrow control', () => {
 				'arrow-width-general': 30,
 			};
 
-			/* await rangeInput.focus();
-			await pressKeyTimes('Backspace', '2');
-			await await page.keyboard.type('30'); */
 			const attributes = await getBlockAttributes();
 
-			Object.entries(expectedAttributes).forEach(([key, value]) => {
+			Object.entries(expectAttributes).forEach(([key, value]) => {
 				expect(attributes[key].toString()).toBe(value);
 			});
 		}

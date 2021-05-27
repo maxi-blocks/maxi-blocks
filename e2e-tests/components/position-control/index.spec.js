@@ -17,11 +17,11 @@ describe('position control', () => {
 		await page.keyboard.type('Testing position');
 		const accordionPanel = await openAdvancedSidebar(page, 'position');
 		debugger;
-		// position selector
+		// Prueba
+		// perf ahora el expect y listo
 		const selectPosition = await accordionPanel.$(
-			'.components-position-control .components-base-control__field .components-select-control__input select'
+			'.maxi-position-control .components-select-control__input'
 		);
-		await selectPosition.$$('option');
 		await selectPosition.select('relative');
 
 		const expectSelectPosition = 'relative';
@@ -43,19 +43,30 @@ describe('position control', () => {
 
 			await input.focus();
 			await page.keyboard.press((j + 1).toString());
-
-			const expectPosition = {
-				'position-bottom-general': 3,
-				'position-left-general': 4,
-				'position-right-general': 2,
-				'position-top-general': 1,
-				// 'position-unit-general': '%',
-			};
-
-			const positionAttributes = await getBlockAttributes();
-
-			expect(positionAttributes).toStrictEqual(expectPosition);
 		}
+		const expectPosition = {
+			'position-bottom-general': 3,
+			'position-left-general': 4,
+			'position-right-general': 2,
+			'position-top-general': 1,
+			// 'position-unit-general': '%',
+		};
+
+		const pageAttributes = await getBlockAttributes();
+
+		const positionAttributes = (({
+			'position-bottom-general': positionBottom,
+			'position-left-general': positionLeft,
+			'position-right-general': positionRight,
+			'position-top-general': positionTop,
+		}) => ({
+			'position-bottom-general': positionBottom,
+			'position-left-general': positionLeft,
+			'position-right-general': positionRight,
+			'position-top-general': positionTop,
+		}))(pageAttributes);
+
+		expect(positionAttributes).toStrictEqual(expectPosition);
 		// unit selector
 		const unitSelector = await accordionPanel.$(
 			'.components-base-control.maxi-axis-control__header .maxi-axis-control__units select'

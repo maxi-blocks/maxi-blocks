@@ -1,11 +1,19 @@
-import { FancyRadioControl } from '..';
-
 /**
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { SelectControl } from '@wordpress/components';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+import FancyRadioControl from '../fancy-radio-control';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
 
 /**
  * Component
@@ -22,7 +30,10 @@ const BlockStylesControl = props => {
 		disableHighlightBorder = false,
 		disableHighlightColor1 = false,
 		disableHighlightColor2 = false,
+		className,
 	} = props;
+
+	const classes = classnames('maxi-block-style-control', className);
 
 	const getSelectorOptions = () => {
 		if (isFirstOnHierarchy)
@@ -37,6 +48,7 @@ const BlockStylesControl = props => {
 		<Fragment>
 			<SelectControl
 				label={__('Block Style', 'maxi-blocks')}
+				className={classes}
 				value={blockStyle}
 				options={getSelectorOptions()}
 				onChange={blockStyle => onChange({ blockStyle })}

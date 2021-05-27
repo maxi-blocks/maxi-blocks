@@ -20,11 +20,10 @@ if (!class_exists('MaxiBlocks_PageTemplate')) :
 		/**
 		 * Registers the plugin.
 		 */
-		public static function get_instance() {
+		public static function register() {
 			if ( null == self::$instance ) {
 				self::$instance = new MaxiBlocks_PageTemplate();
 			}
-			return self::$instance;
 		}
 		/**
 		 * Variables

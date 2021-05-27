@@ -80,7 +80,7 @@ if (class_exists('MaxiBlocks_API')) {
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-page-template.php';
 if (class_exists('MaxiBlocks_PageTemplate')) {
-	add_action( 'plugins_loaded', array( 'MaxiBlocks_PageTemplate', 'get_instance' ) );
+	add_action( 'plugins_loaded', array( 'MaxiBlocks_PageTemplate', 'register' ) );
 }
 
 /**

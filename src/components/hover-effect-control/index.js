@@ -246,7 +246,8 @@ const HoverEffectControl = props => {
 									)}
 									onChange={val =>
 										onChange({
-											[`hover-basic-${props['hover-basic-effect-type']}-value`]: val,
+											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
+												val,
 										})
 									}
 									min={0}

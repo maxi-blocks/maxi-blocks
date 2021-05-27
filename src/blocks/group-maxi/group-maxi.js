@@ -45,7 +45,7 @@ registerBlockType('maxi-blocks/group-maxi', {
 			{
 				type: 'block',
 				blocks: ['core/group'],
-				transform(attributes, innerBlocks) {
+				transform() {
 					return createBlock('maxi-blocks/group-maxi', {});
 				},
 			},

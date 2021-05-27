@@ -29,6 +29,27 @@ const transforms = {
 		},
 		{
 			type: 'block',
+			blocks: ['core/list'],
+			transform: ({ values, ordered, reversed }) => {
+				return createBlock(name, {
+					content: values,
+					isList: true,
+					typeOfList: ordered ? 'ol' : 'ul',
+					listReversed: reversed,
+				});
+			},
+		},
+		{
+			type: 'block',
+			blocks: ['core/code'],
+			transform: ({ content }) => {
+				return createBlock(name, {
+					content,
+				});
+			},
+		},
+		{
+			type: 'block',
 			blocks: ['core/heading'],
 			transform: ({ content, level }) => {
 				return createBlock(name, {
@@ -41,9 +62,8 @@ const transforms = {
 			type: 'raw',
 			selectors: 'p,h1,h2,h3,h4,h5,h6,ul,ol',
 			isMatch: node => {
-				const { getSelectedBlockClientId, getBlockName } = select(
-					'core/block-editor'
-				);
+				const { getSelectedBlockClientId, getBlockName } =
+					select('core/block-editor');
 
 				const currentBlockName = getBlockName(
 					getSelectedBlockClientId()

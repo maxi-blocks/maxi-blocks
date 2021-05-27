@@ -9,6 +9,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import { loadFonts } from '../../extensions/text/fonts';
+
 /**
  * External dependencies
  */

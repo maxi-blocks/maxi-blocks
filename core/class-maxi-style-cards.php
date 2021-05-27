@@ -53,9 +53,7 @@ class MaxiBlocks_StyleCards {
 		) {
 			return $maxi_blocks_style_cards_current;
 		} else {
-			require_once MAXI_PLUGIN_DIR_PATH .
-				'API/style-cards/default-style-card-maxi.php';
-			$defaultStyleCard = getDefaultStyleCard();
+			$defaultStyleCard = $this->getDefaultStyleCard();
 
 			$wpdb->replace($table_name, [
 				'id' => 'style_cards_current',

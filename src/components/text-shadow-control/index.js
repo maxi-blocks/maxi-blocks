@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -70,7 +70,7 @@ const TextShadow = props => {
 	};
 
 	return (
-		<Fragment>
+		<>
 			<DefaultStylesControl
 				items={[
 					{
@@ -119,7 +119,7 @@ const TextShadow = props => {
 				]}
 			/>
 			{value !== 'none' && !isEmpty(value) && (
-				<Fragment>
+				<>
 					<ColorControl
 						label={__('Color', 'maxi-blocks')}
 						color={color}
@@ -152,9 +152,9 @@ const TextShadow = props => {
 						max={100}
 						allowReset
 					/>
-				</Fragment>
+				</>
 			)}
-		</Fragment>
+		</>
 	);
 };
 

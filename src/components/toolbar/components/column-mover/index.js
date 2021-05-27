@@ -3,7 +3,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { Tooltip } from '@wordpress/components';
 
@@ -64,7 +63,7 @@ const ColumnMover = props => {
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
 
 	return (
-		<Fragment>
+		<>
 			<div className='toolbar-item-move__horizontally'>
 				<Tooltip
 					text={__('Move left', 'maxi-blocks')}
@@ -89,7 +88,7 @@ const ColumnMover = props => {
 					</Button>
 				</Tooltip>
 			</div>
-		</Fragment>
+		</>
 	);
 };
 

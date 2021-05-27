@@ -1,13 +1,15 @@
 /**
- * Internal dependencies
+ * WordPress dependencies
  */
-import defaultTypography from '../defaults';
+import { select } from '@wordpress/data';
 
 /**
  * External dependencies
  */
 import { isEmpty, isNil, isNumber } from 'lodash';
 import getCustomFormat from './getCustomFormat';
+import { getBlockStyle } from '../../styles';
+import { getTypographyFromSC } from '../../style-cards';
 
 /**
  * Ensures that custom formats on typography is an object
@@ -37,17 +39,32 @@ export const styleObjectManipulator = ({
 	currentStyle,
 	textLevel,
 	isHover = false,
+	styleCardPrefix = '',
 }) => {
 	const style = { ...currentStyle };
+	const blockStyle = getBlockStyle();
+
+	const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
+	const styleCard = receiveMaxiActiveStyleCard().value;
 
 	const sameDefaultLevels = ['p', 'ul', 'ol'];
+
+	const prefix =
+		styleCardPrefix || sameDefaultLevels.includes(textLevel)
+			? 'p'
+			: textLevel;
+
+	const defaultTypography = getTypographyFromSC(
+		prefix,
+		blockStyle,
+		styleCard
+	);
+	// .styleCard.value.styleCardDefaults[blockStyle];
 
 	const getCurrentValue = target =>
 		typography[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
 	const getDefaultValue = target =>
-		defaultTypography[
-			sameDefaultLevels.includes(textLevel) ? 'p' : textLevel
-		][`${target}-${breakpoint}`];
+		defaultTypography[`${prefix}-${target}-${breakpoint}`];
 
 	Object.entries(value).forEach(([target, val]) => {
 		if (getCurrentValue(target) === val)

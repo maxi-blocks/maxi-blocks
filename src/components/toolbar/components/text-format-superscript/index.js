@@ -33,6 +33,7 @@ const TextFormatSuperscript = props => {
 			formatValue,
 			prop: 'vertical-align',
 			breakpoint,
+			textLevel,
 		}) || '';
 
 	const superscriptValue = getSuperscriptValue();
@@ -54,7 +55,7 @@ const TextFormatSuperscript = props => {
 			isList,
 			typography: { ...getGroupAttributes(props, 'typography') },
 			value: {
-				'vertical-align': isActive ? '' : 'super',
+				'vertical-align': isActive ? 'unset' : 'super',
 			},
 			breakpoint,
 			textLevel,

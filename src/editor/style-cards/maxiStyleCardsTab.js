@@ -1,3 +1,4 @@
+/* eslint-disable @wordpress/i18n-no-collapsible-whitespace */
 /**
  * WordPress dependencies
  */
@@ -20,82 +21,10 @@ import {
 	TypographyControl,
 	FancyRadioControl,
 } from '../../components';
-
-/**
- * Utils
- */
-
-export const styleCardDefaultsTypography = (level, SCstyle) => {
-	const response = {};
-	const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
-
-	Object.entries(SCstyle).forEach(([key, val]) => {
-		if (key.includes(`${level}-`)) {
-			if (key.includes('general')) {
-				breakpoints.forEach(breakpoint => {
-					if (response[key.replace('general', breakpoint)]) return;
-
-					const checkKey = key.replace('general', breakpoint);
-					if (isNil(SCstyle.checkKey)) {
-						if (checkKey.includes('font-size')) {
-							const [num, unit] = val.match(/[a-zA-Z]+|[0-9]+/g);
-							response[checkKey] = num;
-							const newUnitKey = checkKey.replace(
-								'font-size',
-								'font-size-unit'
-							);
-							response[newUnitKey] = unit;
-							return;
-						}
-						if (checkKey.includes('letter-spacing')) {
-							let newVal;
-							if (typeof val === 'number') newVal = `${val}px`;
-							else newVal = val;
-
-							const [num, unit] = newVal.match(
-								/[a-zA-Z]+|[0-9\.]+/g
-							);
-							response[checkKey] = num;
-							const newUnitKey = checkKey.replace(
-								'letter-spacing',
-								'letter-spacing-unit'
-							);
-
-							response[newUnitKey] = unit;
-							return;
-						}
-						response[checkKey] = val;
-					}
-				});
-			}
-			if (key.includes('font-size')) {
-				const [num, unit] = val.match(/[a-zA-Z]+|[0-9]+/g);
-				response[key] = num;
-				const newUnitKey = key.replace('font-size', 'font-size-unit');
-				response[newUnitKey] = unit;
-				return;
-			}
-			if (key.includes('letter-spacing')) {
-				let newVal;
-				if (typeof val === 'number') newVal = `${val}px`;
-				else newVal = val;
-
-				const [num, unit] = newVal.match(/[a-zA-Z]+|[0-9\.]+/g);
-				response[key] = num;
-				const newUnitKey = key.replace(
-					'letter-spacing',
-					'letter-spacing-unit'
-				);
-
-				response[newUnitKey] = unit;
-				return;
-			}
-			response[key] = val;
-		}
-	});
-
-	return response;
-};
+import {
+	getSCFromTypography,
+	getTypographyFromSC,
+} from '../../extensions/style-cards';
 
 /**
  * Component
@@ -104,9 +33,7 @@ const MaxiStyleCardsTab = ({
 	SC,
 	SCStyle,
 	deviceType,
-	onChange,
 	onChangeValue,
-	onChangeDelete,
 	addActiveSCclass,
 	currentKey,
 }) => {
@@ -117,7 +44,7 @@ const MaxiStyleCardsTab = ({
 
 			const defaultValue = SC.styleCardDefaults[SCStyle][attr];
 			if (!isNil(defaultValue)) {
-				if (defaultValue.includes('var')) {
+				if (defaultValue && defaultValue.includes('var')) {
 					const colorNumber = defaultValue.match(/color-\d/);
 					const colorValue =
 						SC.styleCardDefaults[SCStyle][colorNumber];
@@ -127,65 +54,6 @@ const MaxiStyleCardsTab = ({
 			return null;
 		}
 		return null;
-	};
-
-	const parseTypography = newSC => {
-		const parsedTypography = {};
-		Object.entries(newSC).forEach(([key, val]) => {
-			if (isEmpty(val)) {
-				if (!key.includes('-unit'))
-					parsedTypography[key] = SC.styleCardDefaults[SCStyle][key];
-
-				return;
-			}
-
-			if (
-				key.includes('font-size') ||
-				key.includes('line-height') ||
-				key.includes('letter-spacing')
-			) {
-				const isUnit = key.includes('-unit');
-				if (isUnit) {
-					const newKey = key.replaceAll('-unit', '');
-					if (!isNil(newSC[newKey]) && !isEmpty(val))
-						parsedTypography[newKey] = newSC[newKey] + val;
-				}
-			}
-			if (!key.includes('-unit')) parsedTypography[key] = val;
-		});
-		return parsedTypography;
-	};
-
-	const getTypography = level => {
-		const defaultTypography = styleCardDefaultsTypography(
-			level,
-			SC.styleCardDefaults[SCStyle]
-		);
-
-		if (!isEmpty(SC.styleCard[SCStyle])) {
-			const typography = styleCardDefaultsTypography(
-				level,
-				SC.styleCard[SCStyle]
-			);
-			return { ...defaultTypography, ...typography };
-		}
-		return defaultTypography;
-	};
-
-	const onChangeColor = (val, attr, defaultColor) => {
-		if (!val) {
-			onChangeDelete(attr, SCStyle);
-			onChangeValue(`${attr}-global`, val, SCStyle);
-		} else {
-			onChangeValue(
-				attr,
-				processAttribute(`${attr}-old`) ||
-					getStyleCardAttr(defaultColor, SCStyle, true),
-				SCStyle,
-				true,
-				val
-			);
-		}
 	};
 
 	if (document.querySelectorAll('.maxi-style-cards__sc-select option'))
@@ -207,7 +75,7 @@ const MaxiStyleCardsTab = ({
 	/*
 	 * Generates main tabs.
 	 *
-	 * @param {string} firstColor First color attribute, example: p-color-general
+	 * @param {string} firstColor First color attribute, example: p-color
 	 * @param {string} firstLabel First color label, examples: Hover, Button
 	 * @param {string} firstColorDefault Default for the first color, example: color-3
 	 * @param {bool or string} typographyPrefix Disable typography or set a prefix for it, examples: p, button
@@ -243,11 +111,7 @@ const MaxiStyleCardsTab = ({
 							selected={processAttribute(firstColorGlobal)}
 							options={options}
 							onChange={val => {
-								onChangeColor(
-									val,
-									firstColor,
-									firstColorDefault
-								);
+								onChangeValue(firstColorGlobal, val, SCStyle);
 							}}
 						/>
 					)}
@@ -279,25 +143,35 @@ const MaxiStyleCardsTab = ({
 						)}
 					{!!typographyPrefix && (
 						<TypographyControl
-							typography={getTypography(`${typographyPrefix}`)}
+							typography={getTypographyFromSC(
+								typographyPrefix,
+								SCStyle,
+								SC
+							)}
 							prefix={`${typographyPrefix}-`}
 							disableFormats
 							disableCustomFormats
 							className={`maxi-style-cards-control__sc__${typographyPrefix}-typography`}
-							textLevel={`${typographyPrefix}`}
+							textLevel={typographyPrefix}
 							hideAlignment
 							hideTextShadow
 							breakpoint={deviceType}
 							disablePalette
 							styleCards
 							onChange={obj => {
-								const parsedTypography = parseTypography(obj);
+								const parsedTypography = getSCFromTypography(
+									SC,
+									SCStyle,
+									obj
+								);
 								onChangeValue(
 									'typography',
 									parsedTypography,
 									SCStyle
 								);
 							}}
+							blockStyle={SCStyle}
+							disableFontFamily={deviceType !== 'general'}
 						/>
 					)}
 					{!!secondColor && deviceType === 'general' && (
@@ -309,11 +183,7 @@ const MaxiStyleCardsTab = ({
 							selected={processAttribute(secondColorGlobal)}
 							options={options}
 							onChange={val => {
-								onChangeColor(
-									val,
-									secondColor,
-									secondColorDefault
-								);
+								onChangeValue(secondColorGlobal, val, SCStyle);
 							}}
 						/>
 					)}
@@ -364,31 +234,27 @@ const MaxiStyleCardsTab = ({
 									'maxi-blocks'
 								)}
 								selected={processAttribute(
-									`h${item}-color-general-global`
+									`h${item}-color-global`
 								)}
 								options={options}
 								onChange={val => {
-									onChangeColor(
+									onChangeValue(
+										`h${item}-color-global`,
 										val,
-										`h${item}-color-general`,
-										'color-5'
+										SCStyle
 									);
 								}}
 							/>
 						)}
 						{deviceType === 'general' &&
-							processAttribute(
-								`h${item}-color-general-global`
-							) && (
+							processAttribute(`h${item}-color-global`) && (
 								<ColorControl
 									label={__(`H${item} Text`, 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__h${item}-text-color--${SCStyle}`}
+									className={`maxi-style-cards-control__sc__h${item}-color--${SCStyle}`}
 									color={
+										processAttribute(`h${item}-color`) ||
 										processAttribute(
-											`h${item}-color-general`
-										) ||
-										processAttribute(
-											`h${item}-color-general-old`
+											`h${item}-color-old`
 										) ||
 										getStyleCardAttr(
 											'color-5',
@@ -403,7 +269,7 @@ const MaxiStyleCardsTab = ({
 									)}
 									onChange={val => {
 										onChangeValue(
-											`h${item}-color-general`,
+											`h${item}-color`,
 											val,
 											SCStyle
 										);
@@ -413,7 +279,11 @@ const MaxiStyleCardsTab = ({
 								/>
 							)}
 						<TypographyControl
-							typography={getTypography(`h${item}`)}
+							typography={getTypographyFromSC(
+								`h${item}`,
+								SCStyle,
+								SC
+							)}
 							prefix={`h${item}-`}
 							disableFormats
 							disableCustomFormats
@@ -425,13 +295,18 @@ const MaxiStyleCardsTab = ({
 							disablePalette
 							styleCards
 							onChange={obj => {
-								const parsedTypography = parseTypography(obj);
+								const parsedTypography = getSCFromTypography(
+									SC,
+									SCStyle,
+									obj
+								);
 								onChangeValue(
 									'typography',
 									parsedTypography,
 									SCStyle
 								);
 							}}
+							blockStyle={SCStyle}
 						/>
 					</>
 				),
@@ -448,7 +323,7 @@ const MaxiStyleCardsTab = ({
 			<AccordionControl
 				isSecondary
 				items={[
-					deviceType === 'general' && {
+					{
 						label: __('Quick Pick Colour Presets', 'maxi-blocks'),
 						content: (
 							<>
@@ -504,7 +379,7 @@ const MaxiStyleCardsTab = ({
 						),
 					},
 					generateTab(
-						'button-text-color',
+						'button-color',
 						'Button',
 						'color-1',
 						'button',
@@ -513,7 +388,7 @@ const MaxiStyleCardsTab = ({
 						'color-4'
 					),
 					generateTab(
-						'p-color-general',
+						'p-color',
 						'Paragraph',
 						'color-3',
 						'p',
@@ -525,26 +400,23 @@ const MaxiStyleCardsTab = ({
 						label: __('Headings', 'maxi-blocks'),
 						content: <SettingTabsControl items={headingItems()} />,
 					},
-					deviceType === 'general' &&
-						generateTab('hover', 'Hover', 'color-6', false, false),
-					deviceType === 'general' &&
-						generateTab(
-							'icon-line',
-							'SVG Icon',
-							'color-7',
-							false,
-							'icon-fill',
-							'Fill',
-							'color-4'
-						),
-					deviceType === 'general' &&
-						generateTab(
-							'divider-color',
-							'Divider',
-							'color-4',
-							false,
-							false
-						),
+					generateTab('hover', 'Hover', 'color-6', false, false),
+					generateTab(
+						'icon-line',
+						'SVG Icon',
+						'color-7',
+						false,
+						'icon-fill',
+						'Fill',
+						'color-4'
+					),
+					generateTab(
+						'divider-color',
+						'Divider',
+						'color-4',
+						false,
+						false
+					),
 				]}
 			/>
 		</div>

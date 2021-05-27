@@ -416,6 +416,9 @@ const Inspector = props => {
 															}
 															clientId={clientId}
 															disableCustomFormats
+															blockStyle={
+																blockStyle
+															}
 														/>
 													)}
 												</>
@@ -1000,6 +1003,7 @@ const Inspector = props => {
 													onChange={obj =>
 														setAttributes(obj)
 													}
+													blockStyle={blockStyle}
 													clientId={clientId}
 												/>
 											),

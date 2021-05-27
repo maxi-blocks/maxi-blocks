@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,9 +22,15 @@ import './editor.scss';
  * Component
  */
 const SettingTabsControl = props => {
-	const { items, disablePadding = false, className } = props;
+	const { items, disablePadding = false, className, forceTab } = props;
 
 	const [tab, setTab] = useState(0);
+
+	useEffect(() => {
+		if (forceTab || forceTab === 0) {
+			setTab(forceTab);
+		}
+	}, [forceTab]);
 
 	const classes = classnames('maxi-settingstab-control', className);
 
@@ -45,12 +51,19 @@ const SettingTabsControl = props => {
 					if (item)
 						return (
 							<Button
-								key={`maxi-tabs-control__button-${i}`}
+								key={`maxi-tabs-control__button-${item.label}`}
 								className='maxi-tabs-control__button'
-								onClick={() => setTab(i)}
+								onClick={() => {
+									setTab(i);
+
+									if (item.callback) item.callback();
+								}}
 								aria-pressed={tab === i}
 							>
 								{item.label}
+								{item.showNotification && (
+									<span className='maxi-tabs-control__notification' />
+								)}
 							</Button>
 						);
 
@@ -59,7 +72,7 @@ const SettingTabsControl = props => {
 			</div>
 			<div className={classesContent}>
 				{items.map((item, i) => {
-					if (item) {
+					if (item && i === tab) {
 						const classesItemContent = classnames(
 							'maxi-tab-content',
 							tab === i ? 'maxi-tab-content--selected' : ''
@@ -67,7 +80,7 @@ const SettingTabsControl = props => {
 
 						return (
 							<div
-								key={`maxi-tab-content-${i}`}
+								key={`maxi-tab-content-${item.label}`}
 								className={classesItemContent}
 							>
 								{item.content}

@@ -225,8 +225,8 @@ const ShapeDividerControl = props => {
 						label={__('Enable Top Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-top-status']}
 						options={[
-							{ label: __('No', 'maxi-blocks'), value: 0 },
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'shape-divider-top-status': val })
@@ -244,12 +244,12 @@ const ShapeDividerControl = props => {
 								}
 								options={[
 									{
-										label: __('No', 'maxi-blocks'),
-										value: 0,
-									},
-									{
 										label: __('Yes', 'maxi-blocks'),
 										value: 1,
+									},
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 0,
 									},
 								]}
 								onChange={val =>
@@ -345,8 +345,8 @@ const ShapeDividerControl = props => {
 						label={__('Enable Bottom Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-bottom-status']}
 						options={[
-							{ label: __('No', 'maxi-blocks'), value: 0 },
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'shape-divider-bottom-status': val })
@@ -364,12 +364,12 @@ const ShapeDividerControl = props => {
 								}
 								options={[
 									{
-										label: __('No', 'maxi-blocks'),
-										value: 0,
-									},
-									{
 										label: __('Yes', 'maxi-blocks'),
 										value: 1,
+									},
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 0,
 									},
 								]}
 								onChange={val =>

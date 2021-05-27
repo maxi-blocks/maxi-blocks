@@ -107,16 +107,14 @@ const Inspector = props => {
 																	'Flex-start',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-start',
+																value: 'flex-start',
 															},
 															{
 																label: __(
 																	'Flex-end',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-end',
+																value: 'flex-end',
 															},
 															{
 																label: __(
@@ -130,16 +128,14 @@ const Inspector = props => {
 																	'Space between',
 																	'maxi-blocks'
 																),
-																value:
-																	'space-between',
+																value: 'space-between',
 															},
 															{
 																label: __(
 																	'Space around',
 																	'maxi-blocks'
 																),
-																value:
-																	'space-around',
+																value: 'space-around',
 															},
 														]}
 														onChange={horizontalAlign =>
@@ -160,24 +156,21 @@ const Inspector = props => {
 																	'Stretch',
 																	'maxi-blocks'
 																),
-																value:
-																	'stretch',
+																value: 'stretch',
 															},
 															{
 																label: __(
 																	'Flex-start',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-start',
+																value: 'flex-start',
 															},
 															{
 																label: __(
 																	'Flex-end',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-end',
+																value: 'flex-end',
 															},
 															{
 																label: __(
@@ -191,16 +184,14 @@ const Inspector = props => {
 																	'Space between',
 																	'maxi-blocks'
 																),
-																value:
-																	'space-between',
+																value: 'space-between',
 															},
 															{
 																label: __(
 																	'Space around',
 																	'maxi-blocks'
 																),
-																value:
-																	'space-around',
+																value: 'space-around',
 															},
 														]}
 														onChange={verticalAlign =>
@@ -289,7 +280,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover': val,
+																					'background-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -400,7 +392,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'border-status-hover': val,
+																					'border-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -455,17 +448,17 @@ const Inspector = props => {
 														options={[
 															{
 																label: __(
-																	'No',
-																	'maxi-blocks'
-																),
-																value: 'normal',
-															},
-															{
-																label: __(
 																	'Yes',
 																	'maxi-blocks'
 																),
 																value: 'full',
+															},
+															{
+																label: __(
+																	'No',
+																	'maxi-blocks'
+																),
+																value: 'normal',
 															},
 														]}
 														optionType='string'
@@ -584,7 +577,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': val,
+																					'box-shadow-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -785,10 +779,10 @@ const Inspector = props => {
 												)}
 												onChange={val =>
 													setAttributes({
-														[`opacity-${deviceType}`]: val,
+														[`opacity-${deviceType}`]:
+															val,
 													})
 												}
-												breakpoint={deviceType}
 											/>
 										),
 									},

@@ -18,7 +18,7 @@ import Masonry from 'react-masonry-css';
  * Component
  */
 const MasonryItem = props => {
-	const { demoUrl, previewIMG, isPro, serial, onRequestInsert } = props;
+	const { previewIMG, isPro, serial, onRequestInsert } = props;
 
 	return (
 		<div className='maxi-cloud-masonry-card'>
@@ -61,7 +61,7 @@ const LibraryMasonry = props => {
 		700: 1,
 	};
 
-	const { replaceBlocks } = useDispatch('core/editor');
+	const { replaceBlocks } = useDispatch('core/block-editor');
 
 	const onRequestInsert = async id => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
@@ -71,7 +71,7 @@ const LibraryMasonry = props => {
 		)
 			.then(response => response.json())
 			.then(data => {
-				const parsedContent = parse(JSON.parse(data[0].content));
+				const parsedContent = parse(data[0].content);
 				const isValid = select('core/block-editor').isValidTemplate(
 					parsedContent
 				);
@@ -94,7 +94,7 @@ const LibraryMasonry = props => {
 				<MasonryItem
 					key={`maxi-cloud-masonry__item-${element.id}`}
 					demoUrl={element.demo_url}
-					previewIMG={JSON.parse(element.preview_image_url)}
+					previewIMG={element.preview_image_url}
 					isPro={element.cost === 'pro'}
 					serial={element.title}
 					onRequestInsert={() => onRequestInsert(element.id)}

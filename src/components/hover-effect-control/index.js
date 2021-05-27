@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { TextareaControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -15,6 +14,7 @@ import Icon from '../icon';
 import RangeSliderControl from '../range-slider-control';
 import SelectControl from '../select-control';
 import TypographyControl from '../typography-control';
+import TextareaControl from '../textarea-control';
 
 /**
  * External dependencies
@@ -357,8 +357,8 @@ const HoverEffectControl = props => {
 						label={__('Custom Hover Text', 'maxi-block')}
 						selected={props['hover-title-typography-status']}
 						options={[
-							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
+							{ label: __('No', 'maxi-block'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'hover-title-typography-status': val })
@@ -401,8 +401,8 @@ const HoverEffectControl = props => {
 						label={__('Custom Content Text', 'maxi-block')}
 						selected={props['hover-content-typography-status']}
 						options={[
-							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
+							{ label: __('No', 'maxi-block'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'hover-content-typography-status': val })
@@ -445,8 +445,8 @@ const HoverEffectControl = props => {
 						label={__('Custom Border', 'maxi-block')}
 						selected={props['hover-border-status']}
 						options={[
-							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
+							{ label: __('No', 'maxi-block'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'hover-border-status': val })
@@ -469,8 +469,8 @@ const HoverEffectControl = props => {
 						label={__('Custom Padding', 'maxi-block')}
 						selected={props['hover-padding-status']}
 						options={[
-							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
+							{ label: __('No', 'maxi-block'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'hover-padding-status': val })
@@ -489,8 +489,8 @@ const HoverEffectControl = props => {
 						label={__('Custom Margin', 'maxi-block')}
 						selected={props['hover-margin-status']}
 						options={[
-							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
+							{ label: __('No', 'maxi-block'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'hover-margin-status': val })

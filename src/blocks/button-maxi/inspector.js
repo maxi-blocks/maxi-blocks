@@ -43,7 +43,7 @@ import { presetOne, presetTwo, presetThree } from '../../icons';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, name, clientId } = props;
+	const { attributes, deviceType, setAttributes, clientId } = props;
 
 	const {
 		customLabel,
@@ -542,7 +542,7 @@ const Inspector = props => {
 															options={[
 																{
 																	label: __(
-																		'No',
+																		'Yes',
 																		'maxi-blocks'
 																	),
 																	value:
@@ -550,7 +550,7 @@ const Inspector = props => {
 																},
 																{
 																	label: __(
-																		'Yes',
+																		'No',
 																		'maxi-blocks'
 																	),
 																	value:

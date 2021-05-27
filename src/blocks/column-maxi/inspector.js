@@ -37,13 +37,8 @@ import { getColumnDefaultValue } from '../../extensions/column-templates';
  * Inspector
  */
 const Inspector = props => {
-	const {
-		attributes,
-		deviceType,
-		setAttributes,
-		clientId,
-		rowPattern,
-	} = props;
+	const { attributes, deviceType, setAttributes, clientId, rowPattern } =
+		props;
 	const {
 		customLabel,
 		uniqueID,
@@ -98,7 +93,8 @@ const Inspector = props => {
 														)}
 														onChange={val => {
 															setAttributes({
-																[`column-size-${deviceType}`]: val,
+																[`column-size-${deviceType}`]:
+																	val,
 															});
 														}}
 														min={0}
@@ -135,8 +131,7 @@ const Inspector = props => {
 																	'Top',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-start',
+																value: 'flex-start',
 															},
 															{
 																label: __(
@@ -150,24 +145,21 @@ const Inspector = props => {
 																	'Bottom',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-end',
+																value: 'flex-end',
 															},
 															{
 																label: __(
 																	'Space between',
 																	'maxi-blocks'
 																),
-																value:
-																	'space-between',
+																value: 'space-between',
 															},
 															{
 																label: __(
 																	'Space around',
 																	'maxi-blocks'
 																),
-																value:
-																	'space-around',
+																value: 'space-around',
 															},
 														]}
 														onChange={verticalAlign =>
@@ -257,7 +249,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover': val,
+																					'background-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -368,7 +361,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'border-status-hover': val,
+																					'border-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -480,7 +474,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': val,
+																					'box-shadow-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -666,10 +661,10 @@ const Inspector = props => {
 												)}
 												onChange={val =>
 													setAttributes({
-														[`opacity-${deviceType}`]: val,
+														[`opacity-${deviceType}`]:
+															val,
 													})
 												}
-												breakpoint={deviceType}
 											/>
 										),
 									},

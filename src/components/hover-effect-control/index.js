@@ -50,7 +50,7 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { className, onChange, clientId } = props;
+	const { className, onChange, blockStyle, clientId } = props;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
@@ -377,6 +377,7 @@ const HoverEffectControl = props => {
 							onChange={obj => onChange(obj)}
 							prefix='hover-title-'
 							disableCustomFormats
+							blockStyle={blockStyle}
 							disablePalette
 							clientId={clientId}
 						/>
@@ -421,6 +422,7 @@ const HoverEffectControl = props => {
 							onChange={obj => onChange(obj)}
 							prefix='hover-content-'
 							disableCustomFormats
+							blockStyle={blockStyle}
 							disablePalette
 							clientId={clientId}
 						/>

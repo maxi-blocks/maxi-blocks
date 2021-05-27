@@ -511,3 +511,35 @@ if (!function_exists('fa_custom_setup_kit')) {
 fa_custom_setup_kit(
 	'https://kit.fontawesome.com/edb89ea43a.js'
 );
+
+if(!function_exists('get_last_breakpoint_attribute')) {
+	function get_last_breakpoint_attribute($target, $breakpoint, $attributes) {
+		$breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+		$current_attr = $attributes["$target-$breakpoint"] ?? null;
+
+		if (
+			!is_null($current_attr) &&
+			(is_numeric($current_attr) ||
+				is_bool($current_attr) ||
+				!empty($current_attr))
+		)
+			return $current_attr;
+
+		$breakpoint_pos = array_search($breakpoint, $breakpoints);
+
+		do {
+			$breakpoint_pos -= 1;
+
+			$current_attr =
+				$attributes[
+					"$target-$breakpoints[$breakpoint_pos]"
+				] ?? null;
+		} while (
+			$breakpoint_pos > 0 &&
+			!is_numeric($current_attr) &&
+			(empty($current_attr) || is_null($current_attr))
+		);
+
+		return $current_attr;
+	}
+}

@@ -21,7 +21,8 @@ const getLastBreakpointAttributeSingle = (
 	target,
 	breakpoint,
 	attributes,
-	isHover
+	isHover,
+	avoidXXL
 ) => {
 	const { getBlockAttributes, getSelectedBlockClientId } = select(
 		'core/block-editor'
@@ -45,12 +46,13 @@ const getLastBreakpointAttributeSingle = (
 
 	do {
 		breakpointPosition -= 1;
-		currentAttr =
-			attr[
-				`${target}-${breakpoints[breakpointPosition]}${
-					isHover ? '-hover' : ''
-				}`
-			];
+		if (!(avoidXXL && breakpoints[breakpointPosition] === 'xxl'))
+			currentAttr =
+				attr[
+					`${target}-${breakpoints[breakpointPosition]}${
+						isHover ? '-hover' : ''
+					}`
+				];
 	} while (
 		breakpointPosition > 0 &&
 		!isNumber(currentAttr) &&
@@ -60,7 +62,12 @@ const getLastBreakpointAttributeSingle = (
 	return currentAttr;
 };
 
-const getLastBreakpointAttributeGroup = (target, breakpoint, isHover) => {
+const getLastBreakpointAttributeGroup = (
+	target,
+	breakpoint,
+	isHover,
+	avoidXXL
+) => {
 	const { getSelectedBlockClientIds, getBlockAttributes } = select(
 		'core/block-editor'
 	);
@@ -74,7 +81,8 @@ const getLastBreakpointAttributeGroup = (target, breakpoint, isHover) => {
 			target,
 			breakpoint,
 			attributes,
-			isHover
+			isHover,
+			avoidXXL
 		);
 	});
 
@@ -89,18 +97,25 @@ const getLastBreakpointAttribute = (
 	breakpoint,
 	attributes = null,
 	isHover = false,
-	forceSingle = false
+	forceSingle = false,
+	avoidXXL = false
 ) => {
 	const { getSelectedBlockCount } = select('core/block-editor');
 
 	if (getSelectedBlockCount() > 1 && !forceSingle)
-		return getLastBreakpointAttributeGroup(target, breakpoint, isHover);
+		return getLastBreakpointAttributeGroup(
+			target,
+			breakpoint,
+			isHover,
+			avoidXXL
+		);
 
 	return getLastBreakpointAttributeSingle(
 		target,
 		breakpoint,
 		attributes,
-		isHover
+		isHover,
+		avoidXXL
 	);
 };
 

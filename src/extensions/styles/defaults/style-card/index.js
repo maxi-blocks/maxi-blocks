@@ -8,11 +8,6 @@ import { select } from '@wordpress/data';
  */
 import { isEmpty, isNil } from 'lodash';
 
-/**
- * Internal dependencies
- */
-import getStyleCards from './getStyleCards';
-
 const getStyleCardAttr = (
 	attribute = null,
 	style = 'light',
@@ -20,13 +15,11 @@ const getStyleCardAttr = (
 ) => {
 	const styleCards = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 
-	const allStyleCards = getStyleCards(styleCards);
-
-	if (typeof allStyleCards === 'object') {
-		const activeStyleCard = Object.keys(allStyleCards).map(key => {
+	if (typeof styleCards === 'object') {
+		const activeStyleCard = Object.keys(styleCards).map(key => {
 			let activeSC;
-			if (allStyleCards[key].status === 'active') {
-				activeSC = allStyleCards[key];
+			if (styleCards[key].status === 'active') {
+				activeSC = styleCards[key];
 			}
 
 			if (!isNil(activeSC)) return activeSC;
@@ -61,9 +54,8 @@ const getStyleCardAttr = (
 
 				if (!isNil(styleCardsDefaultArrToCheck)) {
 					if (styleCardsDefaultArrToCheck.includes('var')) {
-						const styleCardsDefaultArrVar = styleCardsDefaultArrToCheck.match(
-							/color-\d/
-						);
+						const styleCardsDefaultArrVar =
+							styleCardsDefaultArrToCheck.match(/color-\d/);
 						const styleCardsDefaultArrVarColor =
 							activeStyleCardFiltered.styleCardDefaults[style][
 								styleCardsDefaultArrVar

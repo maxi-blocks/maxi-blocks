@@ -46,7 +46,7 @@ import { isEmpty, isEqual, cloneDeep } from 'lodash';
  */
 const Inspector = memo(
 	props => {
-		const { attributes, deviceType, setAttributes, clientId, name } = props;
+		const { attributes, deviceType, setAttributes, clientId } = props;
 		const {
 			customLabel,
 			isFirstOnHierarchy,
@@ -272,6 +272,9 @@ const Inspector = memo(
 																		isList={
 																			isList
 																		}
+																		blockStyle={
+																			blockStyle
+																		}
 																	/>
 																),
 															},
@@ -348,6 +351,9 @@ const Inspector = memo(
 																					isList
 																				}
 																				isHover
+																				blockStyle={
+																					blockStyle
+																				}
 																			/>
 																		)}
 																	</>

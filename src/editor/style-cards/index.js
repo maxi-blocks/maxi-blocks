@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { Button, Icon } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -17,6 +18,14 @@ import './editor.scss';
 import { styleCardBoat } from '../../icons';
 
 const MaxiStyleCardsEditorPopUp = () => {
+	const { styleCards } = useSelect(select => {
+		const { receiveMaxiStyleCards } = select('maxiBlocks/style-cards');
+
+		const styleCards = receiveMaxiStyleCards();
+
+		return { styleCards };
+	});
+
 	const [isVisible, setIsVisible] = useState(false);
 
 	return (
@@ -30,7 +39,7 @@ const MaxiStyleCardsEditorPopUp = () => {
 				<Icon icon={styleCardBoat} />
 				<span>{__('Style Card Editor', 'maxi-blocks')}</span>
 			</Button>
-			{isVisible && <MaxiStyleCardsEditor />}
+			{isVisible && <MaxiStyleCardsEditor styleCards={styleCards} />}
 		</>
 	);
 };

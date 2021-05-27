@@ -15,7 +15,7 @@
  * WordPress dependencies
  */
 import { Component, render, createRef } from '@wordpress/element';
-import { select, dispatch } from '@wordpress/data';
+import { select, dispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -35,6 +35,27 @@ import { loadFonts } from '../text/fonts';
 import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
 
 /**
+ * Style Component
+ */
+const StyleComponent = ({ styles, currentBreakpoint, blockBreakpoints }) => {
+	const { breakpoints } = useSelect(select => {
+		const { receiveMaxiBreakpoints } = select('maxiBlocks');
+
+		const breakpoints = receiveMaxiBreakpoints();
+
+		return { breakpoints };
+	});
+
+	const styleContent = styleGenerator(
+		styles,
+		breakpoints && isEmpty(breakpoints) ? blockBreakpoints : breakpoints,
+		currentBreakpoint
+	);
+
+	return <style>{styleContent}</style>;
+};
+
+/**
  * Class
  */
 class MaxiBlockComponent extends Component {
@@ -48,18 +69,16 @@ class MaxiBlockComponent extends Component {
 		const { attributes, clientId } = this.props;
 		const { uniqueID, blockStyle } = attributes;
 
+		this.currentBreakpoint = 'general';
+		this.blockRef = createRef();
+		this.typography = getGroupAttributes(attributes, 'typography');
+
+		// Init
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
-
-		// Font loader
-		this.typography = getGroupAttributes(attributes, 'typography');
 		if (!isEmpty(this.typography)) this.loadFonts();
-
-		this.displayStyles();
-
 		this.getParentStyle();
-
-		this.blockRef = createRef();
+		this.displayStyles();
 	}
 
 	// Just for debugging!
@@ -84,6 +103,15 @@ class MaxiBlockComponent extends Component {
 	 * Prevents rendering
 	 */
 	shouldComponentUpdate(nextProps, nextState) {
+		// Even when not rendering, on breakpoint stage change
+		// re-render the styles
+		const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
+
+		if (breakpoint !== this.currentBreakpoint) {
+			this.currentBreakpoint = breakpoint;
+			this.displayStyles();
+		}
+
 		// Change `parentBlockStyle` before updating
 		const { blockStyle } = this.props.attributes;
 
@@ -274,7 +302,14 @@ class MaxiBlockComponent extends Component {
 				document.head.appendChild(wrapper);
 			}
 
-			render(<style>{styleGenerator(styles)}</style>, wrapper);
+			render(
+				<StyleComponent
+					styles={styles}
+					currentBreakpoint={this.currentBreakpoint}
+					blockBreakpoints={breakpoints}
+				/>,
+				wrapper
+			);
 		}
 	}
 }

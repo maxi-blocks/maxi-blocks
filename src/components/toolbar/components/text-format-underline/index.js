@@ -19,7 +19,7 @@ import {
 /**
  * External dependencies
  */
-import { trim } from 'lodash';
+import { trim, isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -39,6 +39,7 @@ const TextFormatUnderline = props => {
 				formatValue,
 				prop: 'text-decoration',
 				breakpoint,
+				textLevel,
 			}) || ''
 		);
 	};
@@ -60,7 +61,7 @@ const TextFormatUnderline = props => {
 
 		let response;
 
-		if (textDecorationValue === 'none') response = 'underline';
+		if (textDecorationValue === 'unset') response = 'underline';
 		else
 			response =
 				textDecorationValue.indexOf('underline') >= 0
@@ -68,6 +69,7 @@ const TextFormatUnderline = props => {
 					: `${textDecorationValue} underline`;
 
 		response = trim(response);
+		if (isEmpty(response)) response = 'unset';
 
 		const obj = setFormat({
 			formatValue,

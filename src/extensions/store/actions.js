@@ -72,6 +72,12 @@ const actions = {
 			deviceType,
 		};
 	},
+	setWindowSize(winSize) {
+		return {
+			type: 'SET_WINDOW_SIZE',
+			winSize,
+		};
+	},
 	copyStyles(copiedStyles) {
 		return {
 			type: 'COPY_STYLES',

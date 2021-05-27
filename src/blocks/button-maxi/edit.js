@@ -32,7 +32,7 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	componentDidMount() {
+	maxiBlockDidMount() {
 		this.blockRef.current.focus();
 	}
 

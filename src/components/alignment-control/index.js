@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { getLastBreakpointAttribute } from '../../extensions/styles';
-import { RadioControl } from '../../components';
+import RadioControl from '../radio-control';
 import Icon from '../icon';
 
 /**

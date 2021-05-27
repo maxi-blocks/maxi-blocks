@@ -7,14 +7,12 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import {
-	RadioControl,
-	OpacityControl,
-	FancyRadioControl,
-	BackgroundControl,
-	SizeControl,
-	Dropdown,
-} from '../../components';
+import RadioControl from '../radio-control';
+import OpacityControl from '../opacity-control';
+import FancyRadioControl from '../fancy-radio-control';
+import BackgroundControl from '../background-control';
+import SizeControl from '../size-control';
+import Dropdown from '../dropdown';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**

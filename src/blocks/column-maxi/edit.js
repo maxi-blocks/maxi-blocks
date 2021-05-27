@@ -43,8 +43,6 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
-		this.displayStyles();
-
 		if (this.resizableObject.current) {
 			const columnWidth = getLastBreakpointAttribute(
 				'column-size',

@@ -437,9 +437,6 @@ const LibraryContainer = props => {
 		'maxiBlocks/style-cards'
 	);
 
-	console.log('cloudData');
-	console.log(cloudData);
-
 	useEffect(() => {
 		if (selectedSCValue) updateSCOnEditor(selectedSCValue);
 	}, [selectedSCKey]);

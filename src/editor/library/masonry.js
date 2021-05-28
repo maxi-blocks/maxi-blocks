@@ -90,9 +90,8 @@ const LibraryMasonry = props => {
 		700: 1,
 	};
 
-	const { replaceBlocks, updateBlockAttributes } = useDispatch(
-		'core/block-editor'
-	);
+	const { replaceBlocks, updateBlockAttributes } =
+		useDispatch('core/block-editor');
 
 	const onRequestInsert = async id => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
@@ -103,9 +102,8 @@ const LibraryMasonry = props => {
 			.then(response => response.json())
 			.then(data => {
 				const parsedContent = parse(data);
-				const isValid = select('core/block-editor').isValidTemplate(
-					parsedContent
-				);
+				const isValid =
+					select('core/block-editor').isValidTemplate(parsedContent);
 
 				if (isValid) {
 					replaceBlocks(clientId, parsedContent);
@@ -115,28 +113,23 @@ const LibraryMasonry = props => {
 			.catch(err => console.error(err));
 	};
 
-	const onRequestInsertSVG = svgCodeToInsert => {
+	const onRequestInsertSVG = svgCode => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
+		const { uniqueID } =
+			select('core/editor').getBlock(clientId).attributes;
 
-		let SvgClass = svgCodeToInsert.match(/svg class=".+?(?=")/);
-		SvgClass = (SvgClass+'').replace('svg class="', '');
+		const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
 
-		const uniqueID = select('core/editor').getBlock(clientId).attributes.uniqueID;
+		const newSvgClass = `.${uniqueID} .${svgClass}`;
+		const replaceIt = `.${svgClass}`;
 
-		console.log('uniqueID: ' + uniqueID);
+		const finalSvgCode = svgCode.replaceAll(replaceIt, newSvgClass);
 
-		const newSVGClass = '.' + uniqueID + ' .' + SvgClass;
-
-		const replaceIt = '.' + SvgClass;
-
-		const finalSvgContent = svgCodeToInsert.replaceAll(replaceIt, newSVGClass);
-
-		const isValid = select('core/block-editor').isValidTemplate(
-			finalSvgContent
-		);
+		const isValid =
+			select('core/block-editor').isValidTemplate(finalSvgCode);
 
 		if (isValid) {
-			updateBlockAttributes(clientId, { content: finalSvgContent });
+			updateBlockAttributes(clientId, { content: finalSvgCode });
 			onRequestClose();
 		}
 	};

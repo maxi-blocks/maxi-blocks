@@ -9,7 +9,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType, createBlock } from '@wordpress/blocks';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Block dependencies
@@ -17,6 +17,7 @@ import { registerBlockType, createBlock } from '@wordpress/blocks';
 import attributes from './attributes';
 import edit from './edit';
 import save from './save';
+import transforms from './transforms';
 
 /**
  * Styles and icons
@@ -40,21 +41,6 @@ registerBlockType('maxi-blocks/image-maxi', {
 	attributes: {
 		...attributes,
 	},
-	transforms: {
-		from: [
-			{
-				type: 'block',
-				blocks: ['core/image'],
-				transform({ id, url }) {
-					return createBlock('maxi-blocks/image-maxi', {
-						mediaID: id,
-						mediaURL: url,
-					});
-				},
-			},
-		],
-		to: [],
-	},
 	getEditWrapperProps(attributes) {
 		const { uniqueID } = attributes;
 
@@ -64,4 +50,5 @@ registerBlockType('maxi-blocks/image-maxi', {
 	},
 	edit,
 	save,
+	transforms,
 });

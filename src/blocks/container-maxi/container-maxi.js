@@ -8,7 +8,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType  } from '@wordpress/blocks';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Block dependencies
@@ -23,6 +23,7 @@ import save from './save';
 import './style.scss';
 import './editor.scss';
 import { containerIcon } from '../../icons';
+import transforms from './transforms';
 
 /**
  * Block
@@ -49,4 +50,5 @@ registerBlockType('maxi-blocks/container-maxi', {
 	},
 	edit,
 	save,
+	transforms,
 });

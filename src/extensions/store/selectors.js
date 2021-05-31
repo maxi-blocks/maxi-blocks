@@ -15,6 +15,15 @@ const selectors = {
 		if (state) return state.deviceType;
 		return false;
 	},
+	receiveXXLSize(state) {
+		if (state && state.settings?.window?.width) {
+			const { width: winWidth } = state.settings.window;
+
+			return winWidth >= 2000 ? winWidth : 2000;
+		}
+
+		return false;
+	},
 	receiveCopiedStyles(state) {
 		if (state) return state.copiedStyles;
 		return false;

@@ -8,7 +8,7 @@ import { useState } from '@wordpress/element';
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, isString } from 'lodash';
 
 /**
  * Internal dependencies
@@ -34,7 +34,7 @@ const MaxiStyleCardsTab = ({
 	SCStyle,
 	deviceType,
 	onChangeValue,
-	addActiveSCclass,
+	addActiveSCClass,
 	currentKey,
 }) => {
 	const processAttribute = attr => {
@@ -44,7 +44,11 @@ const MaxiStyleCardsTab = ({
 
 			const defaultValue = SC.styleCardDefaults[SCStyle][attr];
 			if (!isNil(defaultValue)) {
-				if (defaultValue && defaultValue.includes('var')) {
+				if (
+					defaultValue &&
+					isString(defaultValue) &&
+					defaultValue.includes('var')
+				) {
 					const colorNumber = defaultValue.match(/color-\d/);
 					const colorValue =
 						SC.styleCardDefaults[SCStyle][colorNumber];
@@ -58,7 +62,7 @@ const MaxiStyleCardsTab = ({
 
 	if (document.querySelectorAll('.maxi-style-cards__sc-select option'))
 		setTimeout(function scSelect() {
-			addActiveSCclass(currentKey);
+			addActiveSCClass(currentKey);
 		}, 300);
 
 	const options = [

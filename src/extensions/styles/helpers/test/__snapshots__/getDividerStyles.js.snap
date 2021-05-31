@@ -4,7 +4,6 @@ exports[`getDividerStyles Get a correct divider styles 1`] = `
 Object {
   "general": Object {
     "border-color": "rgb(255, 99, 71)",
-    "border-radius": "20px",
     "border-right": "none",
     "border-style": "null",
     "border-top-width": "1px",
@@ -18,7 +17,6 @@ exports[`getDividerStyles Get a correct divider styles 2`] = `
 Object {
   "general": Object {
     "border-color": "rgb(255, 99, 71)",
-    "border-radius": "20px",
     "border-right-width": "2px",
     "border-style": "null",
     "border-top": "none",

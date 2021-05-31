@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch, select } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 
 /**
@@ -59,7 +59,8 @@ const ResponsiveSelector = props => {
 	const classes = classnames('maxi-responsive-selector', className);
 
 	const setScreenSize = size => {
-		const xxlSize = 2000; // Temporary value, needs to be fixed
+		const xxlSize = select('maxiBlocks').receiveXXLSize();
+
 		if (size === 'general') setMaxiDeviceType('general');
 		else
 			setMaxiDeviceType(

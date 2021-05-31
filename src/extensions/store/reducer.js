@@ -1,11 +1,11 @@
 import controls from './controls';
 
-const breakpointResizer = (size, breakpoints) => {
+const breakpointResizer = (size, breakpoints, xxlSize = 2000) => {
 	const editorWrapper = document.querySelector('.editor-styles-wrapper');
 	const winHeight = window.outerWidth;
 	const responsiveWidth =
 		(size === 'general' && 'none') ||
-		(size === 'xxl' && 2000) ||
+		(size === 'xxl' && xxlSize) ||
 		breakpoints[size];
 
 	editorWrapper.setAttribute(
@@ -18,8 +18,6 @@ const breakpointResizer = (size, breakpoints) => {
 		editorWrapper.style.width = '';
 		editorWrapper.style.margin = '';
 	} else {
-		const xxlSize = 2000; // Temporary value, needs to be fixed
-
 		if (size !== 'xxl')
 			editorWrapper.style.width = `${breakpoints[size]}px`;
 		else editorWrapper.style.width = `${xxlSize}px`;
@@ -71,7 +69,11 @@ const reducer = (
 				deviceType: action.deviceType,
 			};
 		case 'SET_DEVICE_TYPE':
-			breakpointResizer(action.deviceType, state.breakpoints);
+			breakpointResizer(
+				action.deviceType,
+				state.breakpoints,
+				state.settings.window.width
+			);
 			return {
 				...state,
 				deviceType: action.deviceType,

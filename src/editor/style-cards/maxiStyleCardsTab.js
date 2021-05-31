@@ -351,9 +351,10 @@ const MaxiStyleCardsTab = ({
 											<span
 												className={`maxi-style-cards__quick-color-presets__box__item maxi-style-cards__quick-color-presets__box__item__${item}`}
 												style={{
-													background: processAttribute(
-														`color-${item}`
-													),
+													background:
+														processAttribute(
+															`color-${item}`
+														),
 												}}
 											/>
 										</div>

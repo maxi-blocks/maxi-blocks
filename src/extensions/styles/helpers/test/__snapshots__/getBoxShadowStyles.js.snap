@@ -3,25 +3,25 @@
 exports[`getBoxShadowStyles Get a correct box shadow styles 1`] = `
 Object {
   "general": Object {
-    "box-shadow": "1px 2px 3px 4px rgb(255, 99, 71)",
+    "box-shadow": "1px 2px 3px rgb(255, 99, 71)",
   },
   "l": Object {
-    "box-shadow": "1px 2px 3px 4px rgb(255, 99, 71)",
+    "box-shadow": "1px 2px 3px rgb(255, 99, 71)",
   },
   "m": Object {
-    "box-shadow": "1px 2px 3px 4px rgb(255, 99, 71)",
+    "box-shadow": "1px 2px 3px rgb(255, 99, 71)",
   },
   "s": Object {
-    "box-shadow": "1px 2px 3px 4px rgb(255, 99, 71)",
+    "box-shadow": "1px 2px 3px rgb(255, 99, 71)",
   },
   "xl": Object {
-    "box-shadow": "1px 2px 3px 4px rgb(255, 99, 71)",
+    "box-shadow": "1px 2px 3px rgb(255, 99, 71)",
   },
   "xs": Object {
-    "box-shadow": "1px 2px 3px 4px rgb(255, 99, 71)",
+    "box-shadow": "1px 2px 3px rgb(255, 99, 71)",
   },
   "xxl": Object {
-    "box-shadow": "1px 2px 3px 4px rgb(255, 99, 71)",
+    "box-shadow": "1px 2px 3px rgb(255, 99, 71)",
   },
 }
 `;

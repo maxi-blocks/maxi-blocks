@@ -57,20 +57,7 @@ class edit extends MaxiBlockComponent {
 		} = this.props;
 		const { uniqueID, parentBlockStyle } = attributes;
 
-		/**
-		 * TODO: Gutenberg still does not have the disallowedBlocks feature
-		 */
-		const ALLOWED_BLOCKS = wp.blocks
-			.getBlockTypes()
-			.map(block => block.name)
-			.filter(
-				blockName =>
-					[
-						'maxi-blocks/column-maxi',
-						'maxi-blocks/container-maxi',
-						'maxi-blocks/row-maxi',
-					].indexOf(blockName) === -1
-			);
+		const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 		const paletteClasses = getPaletteClasses(
 			attributes,
@@ -170,8 +157,9 @@ class edit extends MaxiBlockComponent {
 const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
-	const { getSelectedBlockClientId, getBlockParents, getBlockOrder } =
-		select('core/block-editor');
+	const { getSelectedBlockClientId, getBlockParents, getBlockOrder } = select(
+		'core/block-editor'
+	);
 
 	const selectedBlockId = getSelectedBlockClientId();
 	const originalNestedBlocks = getBlockParents(selectedBlockId);

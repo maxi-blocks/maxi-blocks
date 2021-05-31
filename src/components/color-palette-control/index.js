@@ -2,7 +2,7 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select } from '@wordpress/data';
+import { select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -15,7 +15,7 @@ import { getPaletteDefault, getBlockStyle } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, find } from 'lodash';
 
 /**
  * Styles
@@ -39,8 +39,16 @@ const ColorPaletteControl = props => {
 
 	const currentBlockName = select('core/block-editor').getBlockName(clientId);
 
-	const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
-	const activeSC = receiveMaxiActiveStyleCard()?.value || {};
+	const { activeSC } = useSelect(select => {
+		const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
+
+		const activeSC = receiveMaxiActiveStyleCard()?.value || {};
+
+		return {
+			activeSC,
+		};
+	});
+
 	const currentShortBlockName = currentBlockName.substring(
 		12,
 		currentBlockName.lastIndexOf('-maxi')

@@ -2,8 +2,6 @@
  * WordPress dependencies
  */
 import { withSelect } from '@wordpress/data';
-import { forwardRef, Fragment } from '@wordpress/element';
-import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -16,11 +14,12 @@ import {
 	MaxiBlockComponent,
 	ShapeDivider,
 	Toolbar,
+	InnerBlocks,
 } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -29,47 +28,14 @@ import getStyles from './styles';
 import { isEmpty } from 'lodash';
 
 /**
- * InnerBlocks version
+ * General
  */
-const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const {
-		children,
-		className,
-		attributes: { uniqueID },
-	} = props;
-
-	return (
-		<MaxiBlock
-			key={`maxi-container--${uniqueID}`}
-			ref={ref}
-			className={className}
-			{...getMaxiBlockBlockAttributes(props)}
-			disableMotion
-		>
-			{props['shape-divider-top-status'] && (
-				<ShapeDivider
-					{...getGroupAttributes(props, 'shapeDivider')}
-					location='top'
-				/>
-			)}
-			<div className='maxi-container-block__container'>{children}</div>
-			{props['shape-divider-bottom-status'] && (
-				<ShapeDivider
-					{...getGroupAttributes(props, 'shapeDivider')}
-					location='bottom'
-				/>
-			)}
-		</MaxiBlock>
-	);
-});
+const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
+const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
 
 /**
  * Edit
  */
-
-const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
-const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
-
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
@@ -105,24 +71,47 @@ class edit extends MaxiBlockComponent {
 			},
 		};
 	}
-
 	render() {
-		const { attributes, clientId, hasInnerBlock, deviceType } = this.props;
-		const { uniqueID, isFirstOnHierarchy, fullWidth } = attributes;
+		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
+		const { uniqueID, isFirstOnHierarchy, fullWidth, parentBlockStyle } =
+			attributes;
 
-		const classes = 'maxi-container-block';
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'maxi-blocks/container-maxi',
+			parentBlockStyle
+		);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
-			<Fragment key={`container-content-${uniqueID}`}>
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+			/>,
+			<MaxiBlock
+				key={`maxi-container--${uniqueID}`}
+				ref={this.blockRef}
+				paletteClasses={paletteClasses}
+				{...getMaxiBlockBlockAttributes(this.props)}
+				disableMotion
+			>
+				{attributes['shape-divider-top-status'] && (
+					<ShapeDivider
+						{...getGroupAttributes(attributes, 'shapeDivider')}
+						location='top'
+					/>
+				)}
 				{isFirstOnHierarchy && fullWidth && (
-					<MaxiBlock
-						key={`maxi-container--${uniqueID}`}
-						ref={this.blockRef}
-						className={classes}
-						{...getMaxiBlockBlockAttributes(this.props)}
-					>
+					<>
 						<ArrowDisplayer
 							{...getGroupAttributes(attributes, 'arrow')}
 							breakpoint={deviceType}
@@ -135,60 +124,28 @@ class edit extends MaxiBlockComponent {
 								'margin',
 							])}
 						/>
-						{attributes['shape-divider-top-status'] && (
-							<ShapeDivider
-								{...getGroupAttributes(
-									attributes,
-									'shapeDivider'
-								)}
-								location='top'
-							/>
-						)}
-						<InnerBlocks
-							allowedBlocks={ALLOWED_BLOCKS}
-							template={ROW_TEMPLATE}
-							templateLock={false}
-							__experimentalTagName='div'
-							__experimentalPassedProps={{
-								className: 'maxi-container-block__container',
-							}}
-							renderAppender={
-								!hasInnerBlock
-									? () => (
-											<BlockPlaceholder
-												clientId={clientId}
-											/>
-									  )
-									: () => <InnerBlocks.ButtonBlockAppender />
-							}
-						/>
-						{attributes['shape-divider-bottom-status'] && (
-							<ShapeDivider
-								{...getGroupAttributes(
-									attributes,
-									'shapeDivider'
-								)}
-								location='bottom'
-							/>
-						)}
-					</MaxiBlock>
+					</>
 				)}
-				{!fullWidth && (
-					<InnerBlocks
-						templateLock={false}
-						__experimentalTagName={ContainerInnerBlocks}
-						__experimentalPassedProps={{
-							className: classes,
-							...this.props,
-						}}
-						renderAppender={
-							!hasInnerBlock
-								? () => <BlockPlaceholder clientId={clientId} />
-								: () => <InnerBlocks.ButtonBlockAppender />
-						}
+				<InnerBlocks
+					ref={this.blockRef}
+					className='maxi-container-block__container'
+					allowedBlocks={ALLOWED_BLOCKS}
+					template={ROW_TEMPLATE}
+					templateLock={false}
+					orientation='horizontal'
+					renderAppender={
+						!hasInnerBlocks
+							? () => <BlockPlaceholder clientId={clientId} />
+							: () => <InnerBlocks.ButtonBlockAppender />
+					}
+				/>
+				{attributes['shape-divider-bottom-status'] && (
+					<ShapeDivider
+						{...getGroupAttributes(attributes, 'shapeDivider')}
+						location='bottom'
 					/>
 				)}
-			</Fragment>,
+			</MaxiBlock>,
 		];
 	}
 }
@@ -196,13 +153,13 @@ class edit extends MaxiBlockComponent {
 export default withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
-	const hasInnerBlock = !isEmpty(
+	const hasInnerBlocks = !isEmpty(
 		select('core/block-editor').getBlockOrder(clientId)
 	);
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
-		hasInnerBlock,
+		hasInnerBlocks,
 		deviceType,
 	};
 })(edit);

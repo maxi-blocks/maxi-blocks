@@ -1,58 +1,32 @@
 /**
  * WordPress dependencies
  */
-import { forwardRef } from '@wordpress/element';
 import { compose, withInstanceId } from '@wordpress/compose';
 import { withSelect, withDispatch } from '@wordpress/data';
 import { Button, Icon, withFocusOutside } from '@wordpress/components';
-import { InnerBlocks } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import RowContext from './context';
-import { MaxiBlockComponent, Toolbar } from '../../components';
+import { MaxiBlockComponent, Toolbar, InnerBlocks } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
 import { getTemplates } from '../../extensions/column-templates';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
  * External dependencies
  */
-import { isEmpty, uniqueId } from 'lodash';
+import { uniqueId, isEmpty } from 'lodash';
 import loadColumnsTemplate from '../../extensions/column-templates/loadColumnsTemplate';
-
-/**
- * InnerBlocks version
- */
-const ContainerInnerBlocks = forwardRef((props, ref) => {
-	const {
-		children,
-		className,
-		attributes: { uniqueID },
-	} = props;
-
-	return (
-		<MaxiBlock
-			key={`maxi-row--${uniqueID}`}
-			ref={ref}
-			className={className}
-			{...getMaxiBlockBlockAttributes(props)}
-			disableMotion
-		>
-			{children}
-		</MaxiBlock>
-	);
-});
 
 /**
  * Edit
  */
-const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
@@ -75,20 +49,48 @@ class edit extends MaxiBlockComponent {
 		const {
 			attributes,
 			clientId,
-			selectOnClick,
-			hasInnerBlock,
-			instanceId,
-			setAttributes,
 			deviceType,
+			hasInnerBlocks,
+			instanceId,
+			selectOnClick,
+			setAttributes,
 		} = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, parentBlockStyle } = attributes;
 
-		const classes = 'maxi-row-block';
+		/**
+		 * TODO: Gutenberg still does not have the disallowedBlocks feature
+		 */
+		const ALLOWED_BLOCKS = wp.blocks
+			.getBlockTypes()
+			.map(block => block.name)
+			.filter(
+				blockName =>
+					[
+						'maxi-blocks/column-maxi',
+						'maxi-blocks/container-maxi',
+						'maxi-blocks/row-maxi',
+					].indexOf(blockName) === -1
+			);
+
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+			],
+			'maxi-blocks/row-maxi',
+			parentBlockStyle
+		);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
 				toggleHandlers={() => {
 					this.setState({
 						displayHandlers: !this.state.displayHandlers,
@@ -103,56 +105,63 @@ class edit extends MaxiBlockComponent {
 					rowPattern: getGroupAttributes(attributes, 'rowPattern'),
 				}}
 			>
-				<InnerBlocks
-					__experimentalTagName={ContainerInnerBlocks}
-					__experimentalPassedProps={{
-						className: classes,
-						...this.props,
-					}}
-					allowedBlocks={ALLOWED_BLOCKS}
-					orientation='horizontal'
-					renderAppender={
-						!hasInnerBlock
-							? () => (
-									<div
-										className='maxi-row-block__template'
-										onClick={() => selectOnClick(clientId)}
-										key={`maxi-row-block--${instanceId}`}
-									>
-										{getTemplates().map(template => {
-											return (
-												<Button
-													key={uniqueId(
-														`maxi-row-block--${instanceId}--`
-													)}
-													className='maxi-row-block__template__button'
-													onClick={() => {
-														setAttributes({
-															'row-pattern-general':
+				<MaxiBlock
+					key={`maxi-row--${uniqueID}`}
+					ref={this.blockRef}
+					paletteClasses={paletteClasses}
+					{...getMaxiBlockBlockAttributes(this.props)}
+					disableMotion
+				>
+					<InnerBlocks
+						className='maxi-row-block__container'
+						{...(hasInnerBlocks && { templateLock: 'insert' })}
+						allowedBlocks={ALLOWED_BLOCKS}
+						orientation='horizontal'
+						renderAppender={
+							!hasInnerBlocks
+								? () => (
+										<div
+											className='maxi-row-block__template'
+											onClick={() =>
+												selectOnClick(clientId)
+											}
+											key={`maxi-row-block--${instanceId}`}
+										>
+											{getTemplates().map(template => {
+												return (
+													<Button
+														key={uniqueId(
+															`maxi-row-block--${instanceId}--`
+														)}
+														className='maxi-row-block__template__button'
+														onClick={() => {
+															setAttributes({
+																'row-pattern-general':
+																	template.name,
+																'row-pattern-m':
+																	template.responsiveLayout,
+															});
+															loadColumnsTemplate(
 																template.name,
-															'row-pattern-m':
-																template.responsiveLayout,
-														});
-														loadColumnsTemplate(
-															template.name,
-															attributes.removeColumnGap,
-															clientId,
-															deviceType
-														);
-													}}
-												>
-													<Icon
-														className='maxi-row-block__template__icon'
-														icon={template.icon}
-													/>
-												</Button>
-											);
-										})}
-									</div>
-							  )
-							: false
-					}
-				/>
+																attributes.removeColumnGap,
+																clientId,
+																deviceType
+															);
+														}}
+													>
+														<Icon
+															className='maxi-row-block__template__icon'
+															icon={template.icon}
+														/>
+													</Button>
+												);
+											})}
+										</div>
+								  )
+								: false
+						}
+					/>
+				</MaxiBlock>
 			</RowContext.Provider>,
 		];
 	}
@@ -161,22 +170,20 @@ class edit extends MaxiBlockComponent {
 const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
-	const selectedBlockId = select(
-		'core/block-editor'
-	).getSelectedBlockClientId();
-	const originalNestedBlocks = select('core/block-editor').getBlockParents(
-		selectedBlockId
-	);
-	const hasInnerBlock = !isEmpty(
-		select('core/block-editor').getBlockOrder(clientId)
-	);
+	const { getSelectedBlockClientId, getBlockParents, getBlockOrder } =
+		select('core/block-editor');
+
+	const selectedBlockId = getSelectedBlockClientId();
+	const originalNestedBlocks = getBlockParents(selectedBlockId);
+	const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
+
 	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
 
 	return {
 		selectedBlockId,
 		originalNestedBlocks,
-		hasInnerBlock,
 		deviceType,
+		hasInnerBlocks,
 	};
 });
 

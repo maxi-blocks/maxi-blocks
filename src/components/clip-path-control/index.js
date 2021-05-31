@@ -2,12 +2,15 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect, Fragment } from '@wordpress/element';
-import { SelectControl, BaseControl, Button, Tooltip } from '@wordpress/components';
+import { useState, useEffect } from '@wordpress/element';
+import { Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import Button from '../button';
+import SelectControl from '../select-control';
+import BaseControl from '../base-control';
 import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
 import FancyRadioControl from '../fancy-radio-control';
@@ -317,7 +320,7 @@ const ClipPathControl = props => {
 				}}
 			/>
 			{!!hasClipPath && (
-				<Fragment>
+				<>
 					<FancyRadioControl
 						label={__('Use Custom', 'maxi-blocks')}
 						selected={isCustom}
@@ -410,7 +413,7 @@ const ClipPathControl = props => {
 								/>
 							)}
 							{customMode === 'data' && (
-								<Fragment>
+								<>
 									{Object.entries(
 										clipPathOptions.content
 									).map(([key, handle]) => {
@@ -421,9 +424,8 @@ const ClipPathControl = props => {
 												key={`maxi-clip-path-control-${i}`}
 												values={handle}
 												onChange={value => {
-													clipPathOptions.content[
-														i
-													] = value;
+													clipPathOptions.content[i] =
+														value;
 													generateCP(clipPathOptions);
 												}}
 												onRemove={number => {
@@ -453,11 +455,11 @@ const ClipPathControl = props => {
 												)}
 											</Button>
 										)}
-								</Fragment>
+								</>
 							)}
 						</div>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

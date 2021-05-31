@@ -2,17 +2,16 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { TextControl } from '@wordpress/components';
+
+/**
+ * Internal dependencies
+ */
+import TextControl from '../text-control';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-
-/**
- * Styles
- */
-import './editor.scss';
 
 /**
  * Component

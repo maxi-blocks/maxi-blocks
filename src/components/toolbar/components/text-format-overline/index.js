@@ -2,12 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Icon, Button, Tooltip } from '@wordpress/components';
+import { Tooltip } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../../../button';
+import Icon from '../../../icon';
 import {
 	setFormat,
 	getCustomFormatValue,
@@ -16,7 +18,7 @@ import {
 /**
  * External dependencies
  */
-import { trim } from 'lodash';
+import { trim, isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -37,6 +39,7 @@ const TextFormatOverline = props => {
 				formatValue,
 				prop: 'text-decoration',
 				breakpoint,
+				textLevel,
 			}) || ''
 		);
 	};
@@ -58,7 +61,7 @@ const TextFormatOverline = props => {
 
 		let response;
 
-		if (textDecorationValue === 'none') response = 'overline';
+		if (textDecorationValue === 'unset') response = 'overline';
 		else
 			response =
 				textDecorationValue.indexOf('overline') >= 0
@@ -66,6 +69,7 @@ const TextFormatOverline = props => {
 					: `${textDecorationValue} overline`;
 
 		response = trim(response);
+		if (isEmpty(response)) response = 'unset';
 
 		const obj = setFormat({
 			formatValue,

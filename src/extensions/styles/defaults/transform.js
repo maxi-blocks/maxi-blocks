@@ -42,14 +42,12 @@ const transform = {
 	},
 	'transform-translate-x-unit-xxl': {
 		type: 'string',
-		default: '%',
 	},
 	'transform-translate-x-xxl': {
 		type: 'number',
 	},
 	'transform-translate-y-unit-xxl': {
 		type: 'string',
-		default: '%',
 	},
 	'transform-translate-y-xxl': {
 		type: 'number',
@@ -77,14 +75,12 @@ const transform = {
 	},
 	'transform-translate-x-unit-xl': {
 		type: 'string',
-		default: '%',
 	},
 	'transform-translate-x-xl': {
 		type: 'number',
 	},
 	'transform-translate-y-unit-xl': {
 		type: 'string',
-		default: '%',
 	},
 	'transform-translate-y-xl': {
 		type: 'number',
@@ -112,14 +108,12 @@ const transform = {
 	},
 	'transform-translate-x-unit-l': {
 		type: 'string',
-		default: '%',
 	},
 	'transform-translate-x-l': {
 		type: 'number',
 	},
 	'transform-translate-y-unit-l': {
 		type: 'string',
-		default: '%',
 	},
 	'transform-translate-y-l': {
 		type: 'number',
@@ -147,14 +141,12 @@ const transform = {
 	},
 	'transform-translate-x-unit-m': {
 		type: 'string',
-		default: '%',
 	},
 	'transform-translate-x-m': {
 		type: 'number',
 	},
 	'transform-translate-y-unit-m': {
 		type: 'string',
-		default: '%',
 	},
 	'transform-translate-y-m': {
 		type: 'number',
@@ -182,14 +174,12 @@ const transform = {
 	},
 	'transform-translate-x-unit-s': {
 		type: 'string',
-		default: '%',
 	},
 	'transform-translate-x-s': {
 		type: 'number',
 	},
 	'transform-translate-y-unit-s': {
 		type: 'string',
-		default: '%',
 	},
 	'transform-translate-y-s': {
 		type: 'number',
@@ -217,14 +207,12 @@ const transform = {
 	},
 	'transform-translate-x-unit-xs': {
 		type: 'string',
-		default: '%',
 	},
 	'transform-translate-x-xs': {
 		type: 'number',
 	},
 	'transform-translate-y-unit-xs': {
 		type: 'string',
-		default: '%',
 	},
 	'transform-translate-y-xs': {
 		type: 'number',

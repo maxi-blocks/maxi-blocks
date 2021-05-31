@@ -1,14 +1,11 @@
 /**
- * WordPress dependencies
- */
-import { Button } from '@wordpress/components';
-
-/**
  * Internal dependencies
  */
+import { Button } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
+import { getPaletteClasses } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -21,9 +18,26 @@ import { isNil, isEmpty } from 'lodash';
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID, linkSettings, buttonContent } = attributes;
+	const { linkSettings, buttonContent, parentBlockStyle } = attributes;
 
-	const classes = 'maxi-button-block';
+	const name = 'maxi-blocks/button-maxi';
+
+	const paletteClasses = getPaletteClasses(
+		attributes,
+		[
+			'background',
+			'background-hover',
+			'border',
+			'border-hover',
+			'box-shadow',
+			'box-shadow-hover',
+			'typography',
+			'typography-hover',
+			'icon',
+		],
+		name,
+		parentBlockStyle
+	);
 
 	const linkOpt = !isNil(linkSettings) && linkSettings;
 
@@ -43,9 +57,8 @@ const save = props => {
 
 	return (
 		<MaxiBlock
-			className={classes}
-			id={uniqueID}
-			{...getMaxiBlockBlockAttributes(props)}
+			paletteClasses={paletteClasses}
+			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 			disableBackground
 		>

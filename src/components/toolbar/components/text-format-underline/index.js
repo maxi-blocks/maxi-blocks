@@ -2,22 +2,24 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Icon, Button, Tooltip } from '@wordpress/components';
+import { Tooltip } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../../../button';
+import Icon from '../../../icon';
+import { getGroupAttributes } from '../../../../extensions/styles';
 import {
 	setFormat,
 	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
-import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * External dependencies
  */
-import { trim } from 'lodash';
+import { trim, isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -37,6 +39,7 @@ const TextFormatUnderline = props => {
 				formatValue,
 				prop: 'text-decoration',
 				breakpoint,
+				textLevel,
 			}) || ''
 		);
 	};
@@ -58,7 +61,7 @@ const TextFormatUnderline = props => {
 
 		let response;
 
-		if (textDecorationValue === 'none') response = 'underline';
+		if (textDecorationValue === 'unset') response = 'underline';
 		else
 			response =
 				textDecorationValue.indexOf('underline') >= 0
@@ -66,6 +69,7 @@ const TextFormatUnderline = props => {
 					: `${textDecorationValue} underline`;
 
 		response = trim(response);
+		if (isEmpty(response)) response = 'unset';
 
 		const obj = setFormat({
 			formatValue,

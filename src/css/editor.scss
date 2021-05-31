@@ -84,7 +84,17 @@ body {
 			box-shadow: none !important;
 		}
 	}
+	&:hover {
+		.block-list-appender {
+			.block-editor-button-block-appender {
+				visibility: visible !important;
+				opacity: 1 !important;
+			}
+		}
+	}
 	.block-list-appender {
+		max-width: none;
+
 		.block-editor-button-block-appender {
 			visibility: hidden;
 			position: absolute;
@@ -100,11 +110,6 @@ body {
 			padding: 0;
 			background: #1e1e1e;
 			z-index: 9;
-
-			&:hover {
-				visibility: visible;
-				opacity: 1;
-			}
 
 			&:hover,
 			&:focus {
@@ -272,12 +277,12 @@ body .toolbar-item__popover {
 * Unit Select
 ************/
 
-.components-base-control {
-	.components-maxi-dimensions-control__units {
+.maxi-base-control {
+	.maxi-dimensions-control__units {
 		margin-bottom: 0 !important;
-		.components-base-control__field {
+		.maxi-base-control__field {
 			margin-bottom: 0;
-			.components-select-control__input {
+			.maxi-select-control__input {
 				min-width: 3.2rem;
 				max-width: 100%;
 			}
@@ -289,7 +294,7 @@ body .toolbar-item__popover {
 * Reset Button
 *************/
 
-.components-maxi-control__reset-button {
+.maxi-base-control .components-maxi-control__reset-button {
 	display: inline-flex;
 	width: 31px;
 	min-width: 31px;
@@ -319,4 +324,16 @@ body .toolbar-item__popover {
 		fill: #464a53;
 		margin: auto;
 	}
+}
+
+/*******************************
+* Style Card Editor Boat Icon
+*******************************/
+
+svg path#styleCardBoat_a {
+	fill: var(--maxi-light-color-4);
+}
+
+svg path#styleCardBoat_b {
+	stroke: var(--maxi-light-color-7);
 }

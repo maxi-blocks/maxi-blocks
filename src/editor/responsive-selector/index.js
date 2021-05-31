@@ -2,9 +2,15 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button, Icon } from '@wordpress/components';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch, select } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
+
+/**
+ * Internal dependencies
+ */
+import Button from '../../components/button';
+import Icon from '../../components/icon';
+import MaxiStyleCardsEditorPopUp from '../style-cards';
 
 /**
  * External dependencies
@@ -23,7 +29,6 @@ import {
 	mediumMode,
 	smallMode,
 	cloudLib,
-	globalOptions,
 } from '../../icons';
 
 /**
@@ -31,10 +36,6 @@ import {
  */
 const ResponsiveSelector = props => {
 	const { className, isOpen, onClose } = props;
-
-	const addCloudLibrary = () => {
-		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
-	};
 
 	const { insertBlock } = useDispatch('core/block-editor');
 
@@ -51,45 +52,21 @@ const ResponsiveSelector = props => {
 
 	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
 
+	const addCloudLibrary = () => {
+		insertBlock(createBlock('maxi-blocks/maxi-cloud'));
+	};
+
 	const classes = classnames('maxi-responsive-selector', className);
 
 	const setScreenSize = size => {
-		const editorWrapper = document.querySelector(
-			'.edit-post-visual-editor.editor-styles-wrapper'
-		);
-		const winHeight = window.outerWidth;
-		const responsiveWidth =
-			(size === 'general' && 'none') ||
-			(size === 'xxl' && 2000) ||
-			breakpoints[size];
+		const xxlSize = select('maxiBlocks').receiveXXLSize();
 
-		editorWrapper.setAttribute('maxi-blocks-responsive', size);
-		editorWrapper.setAttribute(
-			'maxi-blocks-responsive-width',
-			responsiveWidth
-		);
-
-		if (size === 'general') {
-			editorWrapper.style.width = '';
-			editorWrapper.style.margin = '';
-
-			setMaxiDeviceType('general');
-		} else {
-			const xxlSize = 2000; // Temporary value, needs to be fixed
-
+		if (size === 'general') setMaxiDeviceType('general');
+		else
 			setMaxiDeviceType(
 				size,
 				size !== 'xxl' ? breakpoints[size] : xxlSize
 			);
-
-			if (size !== 'xxl')
-				editorWrapper.style.width = `${breakpoints[size]}px`;
-			else editorWrapper.style.width = `${xxlSize}px`;
-
-			if (winHeight > breakpoints[size])
-				editorWrapper.style.margin = '36px auto';
-			else editorWrapper.style.margin = '';
-		}
 	};
 
 	return (
@@ -155,14 +132,8 @@ const ResponsiveSelector = props => {
 					<Icon icon={cloudLib} />
 					<span>{__('Cloud Library', 'maxi-blocks')}</span>
 				</Button>
-				<Button
-					className='action-buttons__button'
-					aria-label='Global Styles'
-				>
-					<Icon icon={globalOptions} />
-					<span>{__('Global Styles', 'maxi-blocks')}</span>
-				</Button>
 			</div>
+			<MaxiStyleCardsEditorPopUp />
 		</div>
 	);
 };

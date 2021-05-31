@@ -3,8 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Fragment, memo } from '@wordpress/element';
-import { TextControl, SelectControl } from '@wordpress/components';
+import { memo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -28,15 +27,14 @@ import {
 	OpacityControl,
 	PositionControl,
 	ResponsiveControl,
+	SelectControl,
 	SettingTabsControl,
+	TextControl,
 	TransformControl,
 	TypographyControl,
 	ZIndexControl,
 } from '../../components';
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -54,8 +52,6 @@ const Inspector = memo(
 			isFirstOnHierarchy,
 			uniqueID,
 			blockStyle,
-			defaultBlockStyle,
-			blockStyleBackground,
 			fullWidth,
 			extraClassName,
 			textLevel,
@@ -73,7 +69,7 @@ const Inspector = memo(
 						{
 							label: __('Style', 'maxi-blocks'),
 							content: (
-								<Fragment>
+								<>
 									<div className='maxi-tab-content__box'>
 										<CustomLabel
 											customLabel={customLabel}
@@ -84,23 +80,10 @@ const Inspector = memo(
 										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
-											breakpoint={deviceType}
-											blockStyleBackground={
-												blockStyleBackground
-											}
-											defaultBlockStyle={
-												defaultBlockStyle
-											}
 											isFirstOnHierarchy={
 												isFirstOnHierarchy
 											}
 											onChange={obj => setAttributes(obj)}
-											disableHighlightColor1
-											disableHighlightColor2
-											{...getGroupAttributes(attributes, [
-												'border',
-												'highlight',
-											])}
 										/>
 									</div>
 									<AccordionControl
@@ -156,7 +139,7 @@ const Inspector = memo(
 														'maxi-blocks'
 													),
 													content: (
-														<Fragment>
+														<>
 															<SelectControl
 																label={__(
 																	'Type of list',
@@ -171,16 +154,14 @@ const Inspector = memo(
 																			'Unorganized',
 																			'maxi-blocks'
 																		),
-																		value:
-																			'ul',
+																		value: 'ul',
 																	},
 																	{
 																		label: __(
 																			'Organized',
 																			'maxi-blocks'
 																		),
-																		value:
-																			'ol',
+																		value: 'ol',
 																	},
 																]}
 																onChange={typeOfList =>
@@ -193,7 +174,7 @@ const Inspector = memo(
 															/>
 															{typeOfList ===
 																'ol' && (
-																<Fragment>
+																<>
 																	<NumberControl
 																		label={__(
 																			'Start from',
@@ -237,16 +218,17 @@ const Inspector = memo(
 																		onChange={value => {
 																			setAttributes(
 																				{
-																					listReversed: Number(
-																						value
-																					),
+																					listReversed:
+																						Number(
+																							value
+																						),
 																				}
 																			);
 																		}}
 																	/>
-																</Fragment>
+																</>
 															)}
-														</Fragment>
+														</>
 													),
 												},
 											{
@@ -267,7 +249,10 @@ const Inspector = memo(
 																	<TypographyControl
 																		{...getGroupAttributes(
 																			attributes,
-																			'typography'
+																			[
+																				'typography',
+																				'palette',
+																			]
 																		)}
 																		textLevel={
 																			textLevel
@@ -281,13 +266,14 @@ const Inspector = memo(
 																		breakpoint={
 																			deviceType
 																		}
+																		clientId={
+																			clientId
+																		}
 																		isList={
 																			isList
 																		}
-																		disableColor={
-																			!!attributes[
-																				'text-highlight'
-																			]
+																		blockStyle={
+																			blockStyle
 																		}
 																	/>
 																),
@@ -298,7 +284,7 @@ const Inspector = memo(
 																	'maxi-blocks'
 																),
 																content: (
-																	<Fragment>
+																	<>
 																		<FancyRadioControl
 																			label={__(
 																				'Enable Typography Hover',
@@ -328,7 +314,8 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
-																						'typography-status-hover': val,
+																						'typography-status-hover':
+																							val,
 																					}
 																				)
 																			}
@@ -342,6 +329,7 @@ const Inspector = memo(
 																					[
 																						'typography',
 																						'typographyHover',
+																						'palette',
 																					]
 																				)}
 																				textLevel={
@@ -356,18 +344,19 @@ const Inspector = memo(
 																				breakpoint={
 																					deviceType
 																				}
+																				clientId={
+																					clientId
+																				}
 																				isList={
 																					isList
 																				}
-																				disableColor={
-																					!!attributes[
-																						'text-highlight'
-																					]
-																				}
 																				isHover
+																				blockStyle={
+																					blockStyle
+																				}
 																			/>
 																		)}
-																	</Fragment>
+																	</>
 																),
 															},
 														]}
@@ -389,7 +378,7 @@ const Inspector = memo(
 																	'maxi-blocks'
 																),
 																content: (
-																	<Fragment>
+																	<>
 																		<BackgroundControl
 																			{...getGroupAttributes(
 																				attributes,
@@ -400,6 +389,7 @@ const Inspector = memo(
 																					'backgroundVideo',
 																					'backgroundGradient',
 																					'backgroundSVG',
+																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -407,16 +397,14 @@ const Inspector = memo(
 																					obj
 																				)
 																			}
-																			disableColor={
-																				!!attributes[
-																					'background-highlight'
-																				]
-																			}
 																			disableImage
 																			disableVideo
 																			disableSVG
+																			clientId={
+																				clientId
+																			}
 																		/>
-																	</Fragment>
+																	</>
 																),
 															},
 															{
@@ -425,7 +413,7 @@ const Inspector = memo(
 																	'maxi-blocks'
 																),
 																content: (
-																	<Fragment>
+																	<>
 																		<FancyRadioControl
 																			label={__(
 																				'Enable Background Hover',
@@ -455,7 +443,8 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
-																						'background-status-hover': val,
+																						'background-status-hover':
+																							val,
 																					}
 																				)
 																			}
@@ -470,6 +459,7 @@ const Inspector = memo(
 																						'backgroundHover',
 																						'backgroundColorHover',
 																						'backgroundGradientHover',
+																						'palette',
 																					]
 																				)}
 																				onChange={obj =>
@@ -477,18 +467,16 @@ const Inspector = memo(
 																						obj
 																					)
 																				}
-																				disableColor={
-																					!!attributes[
-																						'background-highlight'
-																					]
-																				}
 																				disableImage
 																				disableVideo
 																				disableSVG
 																				isHover
+																				clientId={
+																					clientId
+																				}
 																			/>
 																		)}
-																	</Fragment>
+																	</>
 																),
 															},
 														]}
@@ -517,6 +505,7 @@ const Inspector = memo(
 																				'border',
 																				'borderWidth',
 																				'borderRadius',
+																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -527,10 +516,8 @@ const Inspector = memo(
 																		breakpoint={
 																			deviceType
 																		}
-																		disableColor={
-																			!!attributes[
-																				'border-highlight'
-																			]
+																		clientId={
+																			clientId
 																		}
 																	/>
 																),
@@ -541,7 +528,7 @@ const Inspector = memo(
 																	'maxi-blocks'
 																),
 																content: (
-																	<Fragment>
+																	<>
 																		<FancyRadioControl
 																			label={__(
 																				'Enable Border Hover',
@@ -571,7 +558,8 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
-																						'border-status-hover': val,
+																						'border-status-hover':
+																							val,
 																					}
 																				)
 																			}
@@ -586,6 +574,7 @@ const Inspector = memo(
 																						'borderHover',
 																						'borderWidthHover',
 																						'borderRadiusHover',
+																						'palette',
 																					]
 																				)}
 																				onChange={obj =>
@@ -596,15 +585,13 @@ const Inspector = memo(
 																				breakpoint={
 																					deviceType
 																				}
-																				isHover
-																				disableColor={
-																					!!attributes[
-																						'border-highlight'
-																					]
+																				clientId={
+																					clientId
 																				}
+																				isHover
 																			/>
 																		)}
-																	</Fragment>
+																	</>
 																),
 															},
 														]}
@@ -617,7 +604,7 @@ const Inspector = memo(
 													'maxi-blocks'
 												),
 												content: (
-													<Fragment>
+													<>
 														{isFirstOnHierarchy && (
 															<FancyRadioControl
 																label={__(
@@ -630,19 +617,17 @@ const Inspector = memo(
 																options={[
 																	{
 																		label: __(
-																			'No',
-																			'maxi-blocks'
-																		),
-																		value:
-																			'normal',
-																	},
-																	{
-																		label: __(
 																			'Yes',
 																			'maxi-blocks'
 																		),
-																		value:
-																			'full',
+																		value: 'full',
+																	},
+																	{
+																		label: __(
+																			'No',
+																			'maxi-blocks'
+																		),
+																		value: 'normal',
 																	},
 																]}
 																optionType='string'
@@ -670,7 +655,7 @@ const Inspector = memo(
 																deviceType
 															}
 														/>
-													</Fragment>
+													</>
 												),
 											},
 											{
@@ -691,7 +676,10 @@ const Inspector = memo(
 																	<BoxShadowControl
 																		{...getGroupAttributes(
 																			attributes,
-																			'boxShadow'
+																			[
+																				'boxShadow',
+																				'palette',
+																			]
 																		)}
 																		onChange={obj =>
 																			setAttributes(
@@ -700,6 +688,9 @@ const Inspector = memo(
 																		}
 																		breakpoint={
 																			deviceType
+																		}
+																		clientId={
+																			clientId
 																		}
 																	/>
 																),
@@ -710,7 +701,7 @@ const Inspector = memo(
 																	'maxi-blocks'
 																),
 																content: (
-																	<Fragment>
+																	<>
 																		<FancyRadioControl
 																			label={__(
 																				'Enable Box Shadow Hover',
@@ -740,7 +731,8 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
-																						'box-shadow-status-hover': val,
+																						'box-shadow-status-hover':
+																							val,
 																					}
 																				)
 																			}
@@ -751,7 +743,10 @@ const Inspector = memo(
 																			<BoxShadowControl
 																				{...getGroupAttributes(
 																					attributes,
-																					'boxShadowHover'
+																					[
+																						'boxShadowHover',
+																						'palette',
+																					]
 																				)}
 																				onChange={obj =>
 																					setAttributes(
@@ -761,10 +756,13 @@ const Inspector = memo(
 																				breakpoint={
 																					deviceType
 																				}
+																				clientId={
+																					clientId
+																				}
 																				isHover
 																			/>
 																		)}
-																	</Fragment>
+																	</>
 																),
 															},
 														]}
@@ -777,7 +775,7 @@ const Inspector = memo(
 													'maxi-blocks'
 												),
 												content: (
-													<Fragment>
+													<>
 														<AxisControl
 															{...getGroupAttributes(
 																attributes,
@@ -818,18 +816,18 @@ const Inspector = memo(
 															target='margin'
 															optionType='string'
 														/>
-													</Fragment>
+													</>
 												),
 											},
 										]}
 									/>
-								</Fragment>
+								</>
 							),
 						},
 						{
 							label: __('Advanced', 'maxi-blocks'),
 							content: (
-								<Fragment>
+								<>
 									<AccordionControl
 										isPrimary
 										items={[
@@ -991,22 +989,18 @@ const Inspector = memo(
 																`opacity-${deviceType}`
 															]
 														}
-														defaultOpacity={getDefaultAttribute(
-															`opacity-${deviceType}`,
-															clientId
-														)}
 														onChange={val =>
 															setAttributes({
-																[`opacity-${deviceType}`]: val,
+																[`opacity-${deviceType}`]:
+																	val,
 															})
 														}
-														breakpoint={deviceType}
 													/>
 												),
 											},
 										]}
 									/>
-								</Fragment>
+								</>
 							),
 						},
 					]}

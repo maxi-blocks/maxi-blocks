@@ -40,12 +40,15 @@ const attributes = {
 	...{
 		...attributesData.size,
 		'height-general': {
+			type: 'number',
 			default: 100,
 		},
 		'height-unit-general': {
+			type: 'string',
 			default: 'px',
 		},
 	},
+	...attributesData.palette,
 	...attributesData.background,
 	...attributesData.backgroundColor,
 	...attributesData.backgroundColorHover,
@@ -57,7 +60,6 @@ const attributes = {
 	...attributesData.display,
 	...attributesData.divider,
 	...attributesData.entrance,
-	...attributesData.highlight,
 	...attributesData.margin,
 	...attributesData.motion,
 	...attributesData.opacity,

@@ -7,7 +7,6 @@ import {
 	getColorBackgroundObject,
 	getDisplayStyles,
 	getGradientBackgroundObject,
-	getIconStyles,
 	getMarginPaddingStyles,
 	getPositionStyles,
 	getSizeStyles,
@@ -130,49 +129,6 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getIconObject = props => {
-	const response = {
-		icon: getIconStyles({
-			...getGroupAttributes(props, 'icon'),
-			...getGroupAttributes(props, 'iconPadding'),
-		}),
-		padding: getMarginPaddingStyles(
-			{
-				...getGroupAttributes(props, 'iconPadding'),
-			},
-			'icon-'
-		),
-		border: getBorderStyles(
-			{
-				...getGroupAttributes(props, [
-					'iconBorder',
-					'iconBorderWidth',
-					'iconBorderRadius',
-				]),
-			},
-			false,
-			'icon-'
-		),
-	};
-
-	return response;
-};
-
-const getHoverIconObject = props => {
-	const response = {
-		icon:
-			props['icon-status-hover'] &&
-			getIconStyles(
-				{
-					...getGroupAttributes(props, 'icon', true),
-				},
-				true
-			),
-	};
-
-	return response;
-};
-
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -187,10 +143,6 @@ const getStyles = props => {
 			uniqueID
 		),
 		[`${uniqueID} .maxi-button-block__button:hover`]: getHoverObject(props),
-		[`${uniqueID} .maxi-button-block__button i`]: getIconObject(props),
-		[`${uniqueID} .maxi-button-block__button:hover i`]: getHoverIconObject(
-			props
-		),
 	};
 
 	return response;

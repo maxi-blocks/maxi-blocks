@@ -2,18 +2,19 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl, TextareaControl, Icon } from '@wordpress/components';
-import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import TypographyControl from '../typography-control';
+import AxisControl from '../axis-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
-import AxisControl from '../axis-control';
 import FancyRadioControl from '../fancy-radio-control';
+import Icon from '../icon';
 import RangeSliderControl from '../range-slider-control';
+import SelectControl from '../select-control';
+import TypographyControl from '../typography-control';
+import TextareaControl from '../textarea-control';
 
 /**
  * External dependencies
@@ -49,7 +50,7 @@ import {
  * Component
  */
 const HoverEffectControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, blockStyle, clientId } = props;
 
 	const classes = classnames('maxi-hover-effect-control', className);
 
@@ -67,7 +68,7 @@ const HoverEffectControl = props => {
 				onChange={val => {
 					onChange({
 						'hover-type': val,
-						'hover-transition-duration': 0.3,
+						'hover-transition-duration': 0.5,
 					});
 				}}
 			/>
@@ -170,7 +171,7 @@ const HoverEffectControl = props => {
 				/>
 			)}
 			{props['hover-type'] === 'basic' && (
-				<Fragment>
+				<>
 					<SelectControl
 						label={__('Effect Type', 'maxi-blocks')}
 						value={props['hover-basic-effect-type']}
@@ -231,7 +232,7 @@ const HoverEffectControl = props => {
 							props['hover-basic-effect-type'] === 'rotate' ||
 							props['hover-basic-effect-type'] === 'blur' ||
 							props['hover-basic-effect-type'] === 'slide') && (
-							<Fragment>
+							<>
 								<RangeSliderControl
 									label={__('Amount', 'maxi-blocks')}
 									className={classes}
@@ -245,7 +246,8 @@ const HoverEffectControl = props => {
 									)}
 									onChange={val =>
 										onChange({
-											[`hover-basic-${props['hover-basic-effect-type']}-value`]: val,
+											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
+												val,
 										})
 									}
 									min={0}
@@ -256,12 +258,12 @@ const HoverEffectControl = props => {
 										`hover-basic-${props['hover-basic-effect-type']}-value`
 									)}
 								/>
-							</Fragment>
+							</>
 						)}
-				</Fragment>
+				</>
 			)}
 			{props['hover-type'] === 'text' && (
-				<Fragment>
+				<>
 					<SelectControl
 						label={__('Animation Type', 'maxi-blocks')}
 						value={props['hover-text-effect-type']}
@@ -356,8 +358,8 @@ const HoverEffectControl = props => {
 						label={__('Custom Hover Text', 'maxi-block')}
 						selected={props['hover-title-typography-status']}
 						options={[
-							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
+							{ label: __('No', 'maxi-block'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'hover-title-typography-status': val })
@@ -375,6 +377,9 @@ const HoverEffectControl = props => {
 							onChange={obj => onChange(obj)}
 							prefix='hover-title-'
 							disableCustomFormats
+							blockStyle={blockStyle}
+							disablePalette
+							clientId={clientId}
 						/>
 					)}
 					<hr />
@@ -398,8 +403,8 @@ const HoverEffectControl = props => {
 						label={__('Custom Content Text', 'maxi-block')}
 						selected={props['hover-content-typography-status']}
 						options={[
-							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
+							{ label: __('No', 'maxi-block'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'hover-content-typography-status': val })
@@ -417,6 +422,9 @@ const HoverEffectControl = props => {
 							onChange={obj => onChange(obj)}
 							prefix='hover-content-'
 							disableCustomFormats
+							blockStyle={blockStyle}
+							disablePalette
+							clientId={clientId}
 						/>
 					)}
 					<hr />
@@ -425,6 +433,7 @@ const HoverEffectControl = props => {
 							'hoverBackground',
 							'hoverBackgroundColor',
 							'hoverBackgroundGradient',
+							'palette',
 						])}
 						onChange={obj => onChange(obj)}
 						disableLayers
@@ -433,13 +442,14 @@ const HoverEffectControl = props => {
 						disableVideo
 						disableSVG
 						prefix='hover-'
+						clientId={clientId}
 					/>
 					<FancyRadioControl
 						label={__('Custom Border', 'maxi-block')}
 						selected={props['hover-border-status']}
 						options={[
-							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
+							{ label: __('No', 'maxi-block'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'hover-border-status': val })
@@ -454,14 +464,16 @@ const HoverEffectControl = props => {
 							])}
 							onChange={obj => onChange(obj)}
 							prefix='hover-'
+							disablePalette
+							clientId={clientId}
 						/>
 					)}
 					<FancyRadioControl
 						label={__('Custom Padding', 'maxi-block')}
 						selected={props['hover-padding-status']}
 						options={[
-							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
+							{ label: __('No', 'maxi-block'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'hover-padding-status': val })
@@ -480,8 +492,8 @@ const HoverEffectControl = props => {
 						label={__('Custom Margin', 'maxi-block')}
 						selected={props['hover-margin-status']}
 						options={[
-							{ label: __('No', 'maxi-block'), value: 0 },
 							{ label: __('Yes', 'maxi-block'), value: 1 },
+							{ label: __('No', 'maxi-block'), value: 0 },
 						]}
 						onChange={val =>
 							onChange({ 'hover-margin-status': val })
@@ -496,7 +508,7 @@ const HoverEffectControl = props => {
 							optionType='string'
 						/>
 					)}
-				</Fragment>
+				</>
 			)}
 		</div>
 	);

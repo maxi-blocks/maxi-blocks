@@ -15,12 +15,17 @@
  * WordPress dependencies
  */
 import { Component, render, createRef } from '@wordpress/element';
-import { select, dispatch } from '@wordpress/data';
+import { select, dispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import { styleResolver, styleGenerator, getGroupAttributes } from '../styles';
+import {
+	styleResolver,
+	styleGenerator,
+	getGroupAttributes,
+	getBlockStyle,
+} from '../styles';
 import getBreakpoints from '../styles/helpers/getBreakpoints';
 import { loadFonts } from '../text/fonts';
 
@@ -28,6 +33,27 @@ import { loadFonts } from '../text/fonts';
  * External dependencies
  */
 import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
+
+/**
+ * Style Component
+ */
+const StyleComponent = ({ styles, currentBreakpoint, blockBreakpoints }) => {
+	const { breakpoints } = useSelect(select => {
+		const { receiveMaxiBreakpoints } = select('maxiBlocks');
+
+		const breakpoints = receiveMaxiBreakpoints();
+
+		return { breakpoints };
+	});
+
+	const styleContent = styleGenerator(
+		styles,
+		breakpoints && isEmpty(breakpoints) ? blockBreakpoints : breakpoints,
+		currentBreakpoint
+	);
+
+	return <style>{styleContent}</style>;
+};
 
 /**
  * Class
@@ -43,16 +69,16 @@ class MaxiBlockComponent extends Component {
 		const { attributes, clientId } = this.props;
 		const { uniqueID, blockStyle } = attributes;
 
+		this.currentBreakpoint = 'general';
+		this.blockRef = createRef();
+		this.typography = getGroupAttributes(attributes, 'typography');
+
+		// Init
 		this.uniqueIDChecker(uniqueID);
 		this.getDefaultBlockStyle(blockStyle, clientId);
-
-		// Font loader
-		this.typography = getGroupAttributes(attributes, 'typography');
 		if (!isEmpty(this.typography)) this.loadFonts();
-
+		this.getParentStyle();
 		this.displayStyles();
-
-		this.blockRef = createRef();
 	}
 
 	// Just for debugging!
@@ -69,10 +95,32 @@ class MaxiBlockComponent extends Component {
 		});
 	}
 
+	componentDidMount() {
+		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
+	}
+
 	/**
 	 * Prevents rendering
 	 */
 	shouldComponentUpdate(nextProps, nextState) {
+		// Even when not rendering, on breakpoint stage change
+		// re-render the styles
+		const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
+
+		if (breakpoint !== this.currentBreakpoint) {
+			this.currentBreakpoint = breakpoint;
+			this.displayStyles();
+		}
+
+		// Change `parentBlockStyle` before updating
+		const { blockStyle } = this.props.attributes;
+
+		if (blockStyle === 'maxi-parent') {
+			const changedStyle = this.getParentStyle();
+
+			if (changedStyle) return true;
+		}
+
 		// Ensures rendering when selecting or unselecting
 		if (
 			!this.props.isSelected ||
@@ -101,6 +149,8 @@ class MaxiBlockComponent extends Component {
 			return !isEqual(oldAttributes, newAttributes);
 		}
 
+		if (this.shouldMaxiBlockUpdate) this.shouldMaxiBlockUpdate();
+
 		return !isEqual(nextProps.attributes, this.props.attributes);
 	}
 
@@ -120,14 +170,22 @@ class MaxiBlockComponent extends Component {
 			if (!isEqual(oldAttributes, newAttributes))
 				this.difference(oldAttributes, newAttributes);
 
+			if (this.maxiBlockGetSnapshotBeforeUpdate)
+				this.maxiBlockGetSnapshotBeforeUpdate();
+
 			return isEqual(oldAttributes, newAttributes);
 		}
+
+		if (this.maxiBlockGetSnapshotBeforeUpdate)
+			this.maxiBlockGetSnapshotBeforeUpdate();
 
 		return isEqual(prevProps.attributes, this.props.attributes);
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		if (!shouldDisplayStyles) this.displayStyles();
+
+		if (this.maxiBlockDidUpdate) this.maxiBlockDidUpdate();
 	}
 
 	componentWillUnmount() {
@@ -140,6 +198,8 @@ class MaxiBlockComponent extends Component {
 		);
 
 		dispatch('maxiBlocks/text').removeFormatValue(this.props.clientId);
+
+		if (this.maxiBlockWillUnmount) this.maxiBlockWillUnmount();
 	}
 
 	get getBreakpoints() {
@@ -161,9 +221,8 @@ class MaxiBlockComponent extends Component {
 
 		let res;
 
-		const blockRootClientId = select(
-			'core/block-editor'
-		).getBlockRootClientId(clientId);
+		const blockRootClientId =
+			select('core/block-editor').getBlockRootClientId(clientId);
 
 		if (!blockRootClientId) {
 			res = 'maxi-light';
@@ -180,8 +239,11 @@ class MaxiBlockComponent extends Component {
 			res = 'maxi-light';
 		}
 
-		if (this.props.attributes.blockStyle !== 'maxi-light')
-			this.props.setAttributes({ blockStyle: res });
+		// Kind of cheat. What it seeks is to don't generate an historical entity in the registry
+		// that transforms in the necessity of clicking more than onces on undo button after pasting
+		// any content on Text Maxi due to the `setAttributes` action that creates a record entity
+		// on the historical registry 👍
+		this.props.attributes.blockStyle = res;
 	}
 
 	uniqueIDChecker(idToCheck) {
@@ -200,6 +262,22 @@ class MaxiBlockComponent extends Component {
 		Object.entries(this.typography).forEach(([key, val]) => {
 			if (key.includes('font-family')) loadFonts(val);
 		});
+	}
+
+	getParentStyle() {
+		const {
+			clientId,
+			attributes: { parentBlockStyle },
+		} = this.props;
+
+		const newParentStyle = getBlockStyle(clientId);
+		if (parentBlockStyle !== newParentStyle) {
+			this.props.attributes.parentBlockStyle = newParentStyle;
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -224,7 +302,14 @@ class MaxiBlockComponent extends Component {
 				document.head.appendChild(wrapper);
 			}
 
-			render(<style>{styleGenerator(styles)}</style>, wrapper);
+			render(
+				<StyleComponent
+					styles={styles}
+					currentBreakpoint={this.currentBreakpoint}
+					blockBreakpoints={breakpoints}
+				/>,
+				wrapper
+			);
 		}
 	}
 }

@@ -2,12 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import MediaUploaderControl from '../media-uploader-control';
-import ClipPath from '../clip-path-control';
 import OpacityControl from '../opacity-control';
 import NumberControl from '../number-control';
 import TextControl from '../text-control';
@@ -23,16 +23,21 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const VideoLayer = props => {
-	const { onChange, disableClipPath, isHover, prefix } = props;
+	const { onChange, isHover, prefix } = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
+
+	const [validationText, setValidationText] = useState(null);
+
+	const videoUrlRegex =
+		/(https?:\/\/)www.(youtube.com\/watch[?]v=([a-zA-Z0-9_-]{11}))|https?:\/\/(www.)?vimeo.com\/([0-9]{9})|https?:\/\/.*\.(?:mp4|webm|ogg)$/g;
 
 	return (
 		<div className='maxi-background-control__video'>
 			<TextControl
 				label='URL'
-				type='video-url'
-				help={__('Add Video', 'maxi-blocks')}
+				type='url'
+				// help={__('Add Video', 'maxi-blocks')}
 				value={
 					videoOptions[
 						getAttributeKey(
@@ -43,15 +48,24 @@ const VideoLayer = props => {
 					]
 				}
 				placeholder='Youtube, Vimeo, or Direct Link'
-				onChange={val =>
+				onChange={val => {
+					if (val && !videoUrlRegex.test(val)) {
+						setValidationText(
+							__('Invalid video URL', 'maxi-blocks')
+						);
+					} else {
+						setValidationText(null);
+					}
+
 					onChange({
 						[getAttributeKey(
 							'background-video-mediaURL',
 							isHover,
 							prefix
 						)]: val,
-					})
-				}
+					});
+				}}
+				validationText={validationText}
 			/>
 			<NumberControl
 				label={__('Start Time (s)', 'maxi-blocks')}
@@ -121,12 +135,12 @@ const VideoLayer = props => {
 				}
 				options={[
 					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-					{
 						label: __('Yes', 'maxi-blocks'),
 						value: 1,
+					},
+					{
+						label: __('No', 'maxi-blocks'),
+						value: 0,
 					},
 				]}
 				disabled={
@@ -161,12 +175,12 @@ const VideoLayer = props => {
 				}
 				options={[
 					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-					{
 						label: __('Yes', 'maxi-blocks'),
 						value: 1,
+					},
+					{
+						label: __('No', 'maxi-blocks'),
+						value: 0,
 					},
 				]}
 				onChange={val =>
@@ -181,7 +195,6 @@ const VideoLayer = props => {
 			/>
 			<OpacityControl
 				label={__('Video Opacity', 'maxi-blocks')}
-				fullWidthMode
 				opacity={
 					videoOptions[
 						getAttributeKey(
@@ -191,9 +204,6 @@ const VideoLayer = props => {
 						)
 					]
 				}
-				defaultOpacity={getDefaultAttribute(
-					getAttributeKey('background-video-opacity', isHover, prefix)
-				)}
 				onChange={opacity => {
 					videoOptions[
 						getAttributeKey(

@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment } from '@wordpress/element';
 
 /**
  *
@@ -11,7 +10,11 @@ import SettingTabsControl from '../setting-tabs-control';
 import SVGDefaultsDisplayer from '../svg-default-displayer';
 import SVGFillControl from '../svg-fill-control';
 import SizeControl from '../size-control';
-import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getAttributeKey,
+	getGroupAttributes,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -22,11 +25,11 @@ import { isEmpty, cloneDeep } from 'lodash';
  * Component
  */
 const SVGLayer = props => {
-	const { onChange, isHover, prefix } = props;
+	const { onChange, isHover, prefix, clientId } = props;
 	const SVGOptions = cloneDeep(props.SVGOptions);
 
 	return (
-		<Fragment>
+		<>
 			<SettingTabsControl
 				disablePadding
 				items={[
@@ -95,6 +98,7 @@ const SVGLayer = props => {
 						label: __('Fill', 'maxi-blocks'),
 						content: (
 							<SVGFillControl
+								{...getGroupAttributes(props, 'palette')}
 								SVGData={
 									SVGOptions[
 										getAttributeKey(
@@ -127,6 +131,9 @@ const SVGLayer = props => {
 										)]: obj.SVGElement,
 									});
 								}}
+								onChangePalette={obj => onChange(obj)}
+								clientId={clientId}
+								isHover={isHover}
 							/>
 						),
 					},
@@ -141,7 +148,7 @@ const SVGLayer = props => {
 					) && {
 						label: __('Position', 'maxi-blocks'),
 						content: (
-							<Fragment>
+							<>
 								<SizeControl
 									label={__('Y-axis', 'maxi-blocks')}
 									value={
@@ -274,7 +281,7 @@ const SVGLayer = props => {
 									}
 									min={0}
 								/>
-							</Fragment>
+							</>
 						),
 					},
 					!isEmpty(SVGOptions['background-svg-SVGElement']) && {
@@ -350,7 +357,7 @@ const SVGLayer = props => {
 					},
 				]}
 			/>
-		</Fragment>
+		</>
 	);
 };
 

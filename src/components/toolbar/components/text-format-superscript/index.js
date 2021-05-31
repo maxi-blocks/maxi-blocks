@@ -2,17 +2,19 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Icon, Button, Tooltip } from '@wordpress/components';
+import { Tooltip } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
+import Button from '../../../button';
+import Icon from '../../../icon';
+import { getGroupAttributes } from '../../../../extensions/styles';
 import {
 	setFormat,
 	getCustomFormatValue,
 } from '../../../../extensions/text/formats';
-import { getGroupAttributes } from '../../../../extensions/styles';
 
 /**
  * Styles and icons
@@ -31,6 +33,7 @@ const TextFormatSuperscript = props => {
 			formatValue,
 			prop: 'vertical-align',
 			breakpoint,
+			textLevel,
 		}) || '';
 
 	const superscriptValue = getSuperscriptValue();
@@ -52,7 +55,7 @@ const TextFormatSuperscript = props => {
 			isList,
 			typography: { ...getGroupAttributes(props, 'typography') },
 			value: {
-				'vertical-align': isActive ? '' : 'super',
+				'vertical-align': isActive ? 'unset' : 'super',
 			},
 			breakpoint,
 			textLevel,

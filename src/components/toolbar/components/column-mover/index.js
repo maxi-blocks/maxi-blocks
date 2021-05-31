@@ -1,10 +1,16 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { Icon, Button, Tooltip } from '@wordpress/components';
+import { Tooltip } from '@wordpress/components';
+
+/**
+ * Internal dependencies
+ */
+import Icon from '../../../icon';
+import Button from '../../../button';
 
 /**
  * External dependencies
@@ -57,7 +63,7 @@ const ColumnMover = props => {
 	if (blockName !== 'maxi-blocks/column-maxi') return null;
 
 	return (
-		<Fragment>
+		<>
 			<div className='toolbar-item-move__horizontally'>
 				<Tooltip
 					text={__('Move left', 'maxi-blocks')}
@@ -82,7 +88,7 @@ const ColumnMover = props => {
 					</Button>
 				</Tooltip>
 			</div>
-		</Fragment>
+		</>
 	);
 };
 

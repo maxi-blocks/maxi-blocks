@@ -6,7 +6,7 @@
 
 		.maxi-accordion-tab {
 			&:after {
-				content: "";
+				content: '';
 				position: absolute;
 				width: 100%;
 				height: 1px;
@@ -39,6 +39,7 @@
 			height: 45px;
 			padding: 10px 12px;
 			border-top: 2px solid #e8eaeb;
+			margin-bottom: 0;
 			z-index: 2;
 
 			&:before {
@@ -49,20 +50,23 @@
 				cursor: pointer;
 			}
 
-			&[aria-expanded="true"] {
-				margin-bottom: 0;
+			&:after {
+				content: url(../../../img/arrow-right.svg);
+				width: 6px;
+				position: absolute;
+				top: 50%;
+				right: 12px;
+				transform: translateY(-50%) rotate(0);
+				transform-origin: center;
+				transition: transform 0.3s linear;
+				@at-root .rtl #{&} {
+					right: unset;
+					left: 12px;
+				}
+			}
+			&[aria-expanded='true'] {
 				&:after {
-					content: url(../../../img/arrow-right.svg);
-					width: 6px;
-					position: absolute;
-					top: 10px;
-					right: 12px;
-					transform: rotate(90deg);
-					transition: transform 0.3s linear;
-					@at-root .rtl #{&} {
-						right: unset;
-						left: 12px;
-					}
+					transform: translateY(-50%) rotate(90deg);
 				}
 			}
 		}

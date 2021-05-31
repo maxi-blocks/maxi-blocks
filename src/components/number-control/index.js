@@ -1,17 +1,18 @@
 /**
- * WordPress dependencies
- */
-import { BaseControl, Button } from '@wordpress/components';
-
-/**
  * Internal dependencies
  */
-import { reset } from '../../icons';
+import BaseControl from '../base-control';
+import Button from '../button';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+
+/**
+ * Icons
+ */
+import { reset } from '../../icons';
 
 /**
  * Component
@@ -33,7 +34,7 @@ const NumberControl = props => {
 		<BaseControl label={label} className={classes}>
 			<input
 				type='number'
-				value={value || ''}
+				value={value === '' || value === undefined ? '' : +value}
 				onChange={e => {
 					let value = +e.target.value;
 

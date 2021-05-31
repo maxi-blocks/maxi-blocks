@@ -1,10 +1,9 @@
-/* eslint-disable @wordpress/no-unsafe-wp-apis */
 /**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
-import { withSelect, dispatch } from '@wordpress/data';
+import { withSelect } from '@wordpress/data';
 import { RichText } from '@wordpress/block-editor';
 
 /**
@@ -15,7 +14,8 @@ import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+
 import getStyles from './styles';
 
 /**
@@ -32,7 +32,7 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	componentDidMount() {
+	maxiBlockDidMount() {
 		this.blockRef.current.focus();
 	}
 
@@ -56,10 +56,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, setAttributes, clientId } = this.props;
-		const { uniqueID } = attributes;
-
-		const classes = 'maxi-button-block';
+		const { attributes, setAttributes } = this.props;
+		const { uniqueID, parentBlockStyle } = attributes;
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
@@ -69,12 +67,34 @@ class edit extends MaxiBlockComponent {
 				'maxi-button-block__button--icon-right'
 		);
 
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+				'icon',
+			],
+			'maxi-blocks/button-maxi',
+			parentBlockStyle
+		);
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+			/>,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
-				className={classes}
+				ref={this.blockRef}
+				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 				disableBackground
 			>
@@ -83,7 +103,6 @@ class edit extends MaxiBlockComponent {
 						<i className={attributes['icon-name']} />
 					)}
 					<RichText
-						ref={this.blockRef}
 						withoutInteractiveFormatting
 						className='maxi-button-block__content'
 						value={attributes.buttonContent}
@@ -92,14 +111,7 @@ class edit extends MaxiBlockComponent {
 							setAttributes({ buttonContent })
 						}
 						placeholder={__('Set some text…', 'maxi-blocks')}
-					>
-						{({ value }) => {
-							dispatch('maxiBlocks/text').sendFormatValue(
-								value,
-								clientId
-							);
-						}}
-					</RichText>
+					/>
 				</div>
 			</MaxiBlock>,
 		];

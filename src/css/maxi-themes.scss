@@ -1,151 +1,301 @@
 /**
 * Default and variables
 */
-@import './maxi-themes-default.scss';
-
 $styles: 'dark', 'light';
-$levels: 'p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6';
+$levels: 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6';
 $responsive_sizes: 'general', 'xxl', 'xl', 'l', 'm', 's', 'xs';
 $responsive_breakpoints: 1921, 1920, 1366, 1024, 768, 480;
 $responsive_width: '';
 $current_responsive_stage: 'general';
+$color_set: '1', '2', '3', '4', '5', '6', '7';
 
 /**
 * Styles
 */
+
+/* Frontend */
 body.maxi-blocks--active {
 	@each $style in $styles {
 		.maxi-#{$style} {
-			&.maxi-background-- {
-				&1 {
-					&.maxi-button-block,
-					> .maxi-background-displayer {
-						background-color: var(--maxi-#{$style}-background-1);
+			/* Color Presets */
+			@each $color_number in $color_set {
+				&.maxi-sc-#{$style}-marker-address-color-#{$color_number},
+				.maxi-sc-#{$style}-marker-address-color-#{$color_number} {
+					.map-marker-info-window__address {
+						color: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
+				&.maxi-sc-#{$style}-marker-title-color-#{$color_number},
+				.maxi-sc-#{$style}-marker-title-color-#{$color_number} {
+					.map-marker-info-window__title {
+						color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-hover-background-color-#{$color_number},
+				.maxi-sc-#{$style}-hover-background-color-#{$color_number} {
+					&.maxi-image-block .maxi-hover-details {
+						background: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-circle-bar-background-color-#{$color_number},
+				.maxi-sc-#{$style}-circle-bar-background-color-#{$color_number} {
+					.maxi-number-counter__box .maxi-number-counter__box__circle {
+						stroke: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-circle-background-color-#{$color_number},
+				.maxi-sc-#{$style}-circle-background-color-#{$color_number} {
+					.maxi-number-counter__box .maxi-number-counter__box__background {
+						stroke: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-svg-background-color-#{$color_number},
+				.maxi-sc-#{$style}-svg-background-color-#{$color_number} {
+					> .maxi-background-displayer .maxi-background-displayer__svg svg path {
+						fill: var(--maxi-#{$style}-color-#{$color_number}) !important;
+					}
+				}
+				&.maxi-sc-#{$style}-background-color-#{$color_number},
+				.maxi-sc-#{$style}-background-color-#{$color_number} {
+					&.maxi-button-block .maxi-button-block__button {
+						--maxi-#{$style}-button-background-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					> .maxi-background-displayer .maxi-background-displayer__color {
+						background: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					> .maxi-container-arrow:before,
+					> .maxi-container-arrow:after {
+						background: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-border-color-#{$color_number},
+				.maxi-sc-#{$style}-border-color-#{$color_number} {
+					&:not(.maxi-button-block) {
+						border-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					> .maxi-block__resizer .maxi-block-hover-wrapper,
+					> .maxi-block-hover-wrapper,
+					> .maxi-button-block__button {
+						border-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-typography-color-#{$color_number},
+				.maxi-sc-#{$style}-typography-color-#{$color_number} {
+					&.maxi-button-block {
+						--maxi-#{$style}-button-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-typography-color-#{$color_number},
+				.maxi-sc-#{$style}-typography-color-#{$color_number} {
+					&.maxi-button-block {
+						--maxi-#{$style}-button-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-typography-color-#{$color_number},
+					.maxi-sc-#{$style}-typography-color-#{$color_number} {
+						.maxi-number-counter__box .maxi-number-counter__box__text {
+							color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+				}
+				&.maxi-sc-#{$style}-typography-color-#{$color_number},
+					.maxi-sc-#{$style}-typography-color-#{$color_number} {
+						.maxi-image-block__caption {
+							color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+				}
+				@each $level in $levels {
+					&.maxi-sc-#{$style}-typography-color-#{$color_number} > #{$level}.maxi-text-block__content,
+					.maxi-sc-#{$style}-typography-color-#{$color_number} > #{$level}.maxi-text-block__content {
+						--maxi-#{$style}-#{$level}-color-general-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				li {
+					&.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content,
+					.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content {
+						--maxi-#{$style}-p-color-general-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-svgColorFill-color-#{$color_number},
+				.maxi-sc-#{$style}-svgColorFill-color-#{$color_number} {
+					.maxi-svg-icon-block__icon svg[data-fill],
+					.maxi-svg-icon-block__icon svg *[data-fill] {
+						fill: var(--maxi-light-icon-fill, var(--maxi-light-icon-fill-palette));
+						--maxi-#{$style}-icon-fill-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-svgColorLine-color-#{$color_number},
+				.maxi-sc-#{$style}-svgColorLine-color-#{$color_number} {
+					.maxi-svg-icon-block__icon svg[data-stroke],
+					.maxi-svg-icon-block__icon svg *[data-stroke] {
+						stroke: var(--maxi-light-icon-line, var(--maxi-light-icon-line-palette));
+						--maxi-#{$style}-icon-line-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-box-shadow-color-#{$color_number},
+				.maxi-sc-#{$style}-box-shadow-color-#{$color_number} {
+					&,
+					> .maxi-block-hover-wrapper,
+					> .maxi-block__resizer .maxi-block-hover-wrapper {
+						--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-divider-color-#{$color_number},
+				.maxi-sc-#{$style}-divider-color-#{$color_number} {
+					hr.maxi-divider-block__divider {
+						--maxi-#{$style}-divider-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-link-color-#{$color_number},
+				.maxi-sc-#{$style}-link-color-#{$color_number} {
+					a:not(.maxi-button-block__button) {
+						--maxi-#{$style}-link-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+			}
+			/* Color Presets on hover */
+			&:not(.maxi-button-block):hover,
+			.maxi-parent:not(.maxi-button-block):hover {
+				@each $color_number in $color_set {
+					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
+						> .maxi-background-displayer .maxi-background-displayer__color {
+							background-color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+						> .maxi-container-arrow:before,
+						> .maxi-container-arrow:after {
+							background: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-border-hover-color-#{$color_number} {
+							border-color: var(--maxi-#{$style}-color-#{$color_number});
+						> .maxi-block-hover-wrapper,
+						> .maxi-block__resizer .maxi-block-hover-wrapper {
+							border-color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
+						> .maxi-text-block__content,
+						.maxi-image-block__caption {
+							color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {
+						&,
+						> .maxi-block-hover-wrapper,
+						> .maxi-block__resizer .maxi-block-hover-wrapper {
+							--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+				}
+			}
+			/* Color Presets on button hover */
+			&.maxi-button-block,
+			.maxi-parent.maxi-button-block {
+				@each $color_number in $color_set {
+					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
+						> .maxi-button-block__button:hover {
+							--maxi-#{$style}-button-background-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-border-hover-color-#{$color_number} {
+						> .maxi-button-block__button:hover {
+							--maxi-#{$style}-button-border-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
+						> .maxi-button-block__button:hover {
+							--maxi-#{$style}-button-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});						}
+					}
+					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {
+						> .maxi-button-block__button:hover {
+							--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
+						}
+					}
+				}
+			}
+		}
+		/* End of Color Presets */
 
-				&2 {
-					&.maxi-button-block,
-					> .maxi-background-displayer {
-						background-color: var(--maxi-#{$style}-background-2);
+		/* Individual settings per a block type */
+		.maxi-#{$style}[class*='maxi-sc'] {
+			&.maxi-text-block,
+			.maxi-text-block {
+				@each $level in $levels {
+					#{$level} {
+						color: var(--maxi-#{$style}-#{$level}-color, var(--maxi-#{$style}-#{$level}-colo-palette));
+						font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
+						font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
+						font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
+						text-transform: var(--maxi-#{$style}-#{$level}-text-transform-general);
+						text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-general);
 					}
 				}
 			}
 
-			@each $level in $levels {
-				#{$level} {
-					font-size: var(--maxi-#{$style}-#{$level}-font-size-general);
-					line-height: var(--maxi-#{$style}-#{$level}-line-height-general);
-					color: var(--maxi-#{$style}-#{$level}-color);
-					font-family: var(--maxi-#{$style}-#{$level}-font-family);
-					font-weight: var(--maxi-#{$style}-#{$level}-font-weight);
-					font-style: var(--maxi-#{$style}-#{$level}-style);
-					text-transform: var(--maxi-#{$style}-#{$level}-transform);
-					text-decoration-style: var(--maxi-#{$style}-#{$level}-decoration);
-					text-decoration-line: var(--maxi-#{$style}-#{$level}-decoration-line);
-				}
+			&.maxi-text-block li,
+			.maxi-text-block li {
+				color: var(--maxi-#{$style}-p-color, var(--maxi-#{$style}-p-color-palette));
+				font-family: var(--maxi-#{$style}-p-font-family-general);
+				font-weight: var(--maxi-#{$style}-p-font-weight-general);
+				font-style: var(--maxi-#{$style}-p-font-style-general);
+				text-transform: var(--maxi-#{$style}-p-text-transform-general);
+				text-decoration: var(--maxi-#{$style}-p-text-decoration-general);
 			}
 
-			a:not(.maxi-button-block__button) {
-				color: var(--maxi-#{$style}-link);
-				&:hover, &:active, &:focus {
-			        color: var(--maxi-#{$style}-hover);
+			&.maxi-text-block a,
+			.maxi-text-block a {
+				color: var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette));
+				&:visited, &:hover, &:active, &:focus {
+			        color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
 			        span {
-			        	color: var(--maxi-#{$style}-hover);
+			        	color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
 			        }
 			    }
 			}
 
+			&.maxi-divider-block__divider,
 			hr.maxi-divider-block__divider {
-				border-color: var(--maxi-#{$style}-link);
+				border-color: var(--maxi-#{$style}-divider-color, var(--maxi-#{$style}-divider-color-palette));
 			}
 
-			.maxi-button-block__button {
-				color: var(--maxi-#{$style}-button-text-color);
-				background-color: var(--maxi-#{$style}-button-background-color);
-				font-size: var(--maxi-#{$style}-p-font-size-general);
-				font-family: var(--maxi-#{$style}-p-font-family);
-				font-weight: var(--maxi-#{$style}-p-font-weight);
-				font-style: var(--maxi-#{$style}-p-style);
-				text-transform: var(--maxi-#{$style}-p-transform);
-				text-decoration-style: var(--maxi-#{$style}-p-decoration);
-				text-decoration-line: var(--maxi-#{$style}-p-decoration-line);
-				&:hover, &:active, &:focus {
-			        background-color: var(--maxi-#{$style}-hover);
+			&.maxi-svg-icon-block__icon svg[data-fill],
+			&.maxi-svg-icon-block__icon svg *[data-fill] {
+				fill: var(--maxi-#{$style}-icon-fill, var(--maxi-#{$style}-icon-fill-palette));
+			}
+
+			&.maxi-svg-icon-block__icon svg[data-stroke],
+			&.maxi-svg-icon-block__icon svg *[data-stroke] {
+				stroke: var(--maxi-#{$style}-icon-line, var(--maxi-#{$style}-icon-line-palette));
+			}
+
+			&.maxi-button-block .maxi-button-block__button,
+			.maxi-button-block .maxi-button-block__button {
+				color: var(--maxi-#{$style}-button-color, var(--maxi-#{$style}-button-color-palette));
+				background-color: var(--maxi-#{$style}-button-background-color, var(--maxi-#{$style}-button-background-color-palette));
+				font-family: var(--maxi-#{$style}-button-font-family-general);
+				font-weight: var(--maxi-#{$style}-button-font-weight-general);
+				font-style: var(--maxi-#{$style}-button-font-style-general);
+				text-transform: var(--maxi-#{$style}-button-text-transform-general);
+				text-decoration: var(--maxi-#{$style}-button-text-decoration-general);
+				&:visited, &:hover, &:active, &:focus {
+					color: var(--maxi-#{$style}-button-hover-color, var(--maxi-#{$style}-button-hover-color-palette, var(--maxi-#{$style}-button-color, var(--maxi-#{$style}-button-color-palette))));
+					background-color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-button-background-hover-color-palette,  var(--maxi-#{$style}-button-background-color, var(--maxi-#{$style}-button-background-color-palette))));
+					border-color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-button-border-color-palette));
 			    }
 			}
+		}
+	}
+}
 
-			&.maxi-highlight,
-			.maxi-highlight {
-				&--text {
-					.maxi-text-block__content,
-					.maxi-button-block__button,
-					.maxi-font-icon-block__icon i {
-						color: var(--maxi-#{$style}-highlight-text) !important;
-					}
-
-					.maxi-font-icon-block__icon i {
-						color: var(--maxi-#{$style}-highlight-text) !important;
-					}
-				}
-
-				&--background {
-					&.maxi-text-block,
-					.maxi-button-block__button {
-						background-color: var(--maxi-#{$style}-highlight-background) !important;
-					}
-
-					&.maxi-group-block,
-					.maxi-container-arrow:after,
-					.maxi-font-icon-block__icon {
-						background-color: var(--maxi-#{$style}-highlight-background) !important;
-					}
-
-					&.maxi-svg-icon-block {
-						> .maxi-background-displayer {
-							background-color: var(--maxi-light-highlight-background);
-						}
-					}
-				}
-
-				&--border {
-					&.maxi-text-block,
-					.maxi-button-block__button {
-						border-color: var(--maxi-#{$style}-highlight-border) !important;
-						border-style: solid !important;
-						border-width: 2px !important;
-					}
-
-					&.maxi-group-block,
-					.maxi-divider-block__divider,
-					&.maxi-font-icon-block,
-					&.maxi-svg-icon-block{
-						border-color: var(--maxi-#{$style}-highlight-border) !important;
-						border-style: solid !important;
-						border-width: 2px !important;
-					}
-				}
-
-				&--color1 {
-					> &.maxi-svg-icon-block {
-						.maxi-svg-icon-block__icon {
-							svg path {
-								&.maxi-svg-color-first {
-									fill: var(--maxi-light-highlight-color1);
-								}
-							}
-						}
-					}
-				}
-
-				&--color2 {
-					> &.maxi-svg-icon-block {
-						.maxi-svg-icon-block__icon {
-							svg path {
-								stroke: var(--maxi-light-highlight-color2);
-							}
-						}
-					}
+/**
+* Backend
+*/
+body.maxi-blocks--active {
+	@each $style in $styles {
+		/* Palette */
+		div#editor .maxi-color-palette--#{$style} {
+			@each $color_number in $color_set {
+				.maxi-sc-color-palette .maxi-sc-color-palette__box .maxi-sc-color-palette__box__item__#{$color_number} {
+					background-color: var(--maxi-#{$style}-color-#{$color_number});
 				}
 			}
 		}
@@ -160,19 +310,48 @@ body.maxi-blocks--active {
 		@each $style in $styles {
 			.edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="#{$responsive_size}"] {
 				.maxi-block--backend {
-					&.maxi-#{$style} .maxi-parent {
-						@each $level in $levels {
-							#{$level} {
-								&.maxi-text-block__content {
-									font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size});
-									line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size});
+					&.maxi-#{$style} {
+						&.maxi-text-block,
+						&.maxi-button-block,
+						.maxi-text-block,
+						.maxi-button-block {
+							@each $level in $levels {
+								#{$level} {
+									&.maxi-text-block__content {
+										font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$responsive_size});
+										line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$responsive_size});
+										letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$responsive_size});
+										font-weight: var(--maxi-#{$style}-#{$level}-font-weight-#{$responsive_size});
+										text-transform: var(--maxi-#{$style}-#{$level}-text-transform-#{$responsive_size});
+										font-style: var(--maxi-#{$style}-#{$level}-font-style-#{$responsive_size});
+										text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-#{$responsive_size});
+									}
 								}
 							}
 						}
+
+						&.maxi-text-block li,
+						.maxi-text-block li {
+							&.maxi-text-block__content {
+								font-size: var(--maxi-#{$style}-p-font-size-#{$responsive_size});
+								line-height: var(--maxi-#{$style}-p-line-height-#{$responsive_size});
+								letter-spacing: var(--maxi-#{$style}-p-letter-spacing-#{$responsive_size});
+							}
+						}
+					}
+					.maxi-button-block__button {
+						font-size: var(--maxi-#{$style}-button-font-size-#{$responsive_size});
+						line-height: var(--maxi-#{$style}-button-line-height-#{$responsive_size});
+						letter-spacing: var(--maxi-#{$style}-button-letter-spacing-#{$responsive_size});
+						font-weight: var(--maxi-#{$style}-button-font-weight-#{$responsive_size});
+						text-transform: var(--maxi-#{$style}-button-text-transform-#{$responsive_size});
+						font-style: var(--maxi-#{$style}-button-font-style-#{$responsive_size});
+						text-decoration: var(--maxi-#{$style}-button-text-decoration-#{$responsive_size});
 					}
 				}
 			}
 		}
+
 	}
 }
 
@@ -205,15 +384,37 @@ body.maxi-blocks--active {
 		body.maxi-blocks--active {
 			@each $style in $styles {
 				.maxi-#{$style} {
-					@each $level in $levels {
-						#{$level} {
-							font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage});
-							line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage});
+					&.maxi-text-block,
+					&.maxi-button-block,
+					.maxi-text-block,
+					.maxi-button-block {
+						@each $level in $levels {
+							#{$level} {
+								font-size: var(--maxi-#{$style}-#{$level}-font-size-#{$current_responsive_stage});
+								line-height: var(--maxi-#{$style}-#{$level}-line-height-#{$current_responsive_stage});
+								letter-spacing: var(--maxi-#{$style}-#{$level}-letter-spacing-#{$current_responsive_stage});
+								font-weight: var(--maxi-#{$style}-#{$level}-font-weight-#{$current_responsive_stage});
+								text-transform: var(--maxi-#{$style}-#{$level}-text-transform-#{$current_responsive_stage});
+								font-style: var(--maxi-#{$style}-#{$level}-font-style-#{$current_responsive_stage});
+								text-decoration: var(--maxi-#{$style}-#{$level}-text-decoration-#{$current_responsive_stage});
+							}
 						}
+					}
+					&.maxi-text-block li,
+					.maxi-text-block li {
+						font-size: var(--maxi-#{$style}-p-font-size-#{$current_responsive_stage});
+						line-height: var(--maxi-#{$style}-p-line-height-#{$current_responsive_stage});
+						letter-spacing: var(--maxi-#{$style}-p-letter-spacing-#{$current_responsive_stage});
 					}
 				}
 				.maxi-button-block__button {
-					font-size: var(--maxi-#{$style}-p-font-size-#{$current_responsive_stage});
+					font-size: var(--maxi-#{$style}-button-font-size-#{$current_responsive_stage});
+					line-height: var(--maxi-#{$style}-button-line-height-#{$current_responsive_stage});
+					letter-spacing: var(--maxi-#{$style}-button-letter-spacing-#{$current_responsive_stage});
+					font-weight: var(--maxi-#{$style}-button-font-weight-#{$current_responsive_stage});
+					text-transform: var(--maxi-#{$style}-button-text-transform-#{$current_responsive_stage});
+					font-style: var(--maxi-#{$style}-button-font-style-#{$current_responsive_stage});
+					text-decoration: var(--maxi-#{$style}-button-text-decoration-#{$current_responsive_stage});
 				}
 			}
 		}

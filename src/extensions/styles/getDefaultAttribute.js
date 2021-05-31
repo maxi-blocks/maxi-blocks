@@ -44,7 +44,8 @@ const getDefaultAttribute = (prop, clientIds = null) => {
 	else if (isNil(clientIds))
 		blockName = getBlocksName(getSelectedBlockClientIds());
 
-	if (blockName) return getBlockAttributes(blockName)[prop];
+	if (blockName && blockName.includes('maxi-blocks'))
+		return getBlockAttributes(blockName)[prop];
 
 	return null;
 };

@@ -3,9 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 
-import { Spinner } from '@wordpress/components';
-import { Fragment, useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
+
+/**
+ * Internal dependencies
+ */
+import Spinner from '../spinner';
 
 /**
  * External dependencies
@@ -267,7 +271,7 @@ const ImageCropControl = props => {
 	return (
 		<div className={classes}>
 			{imageData && (
-				<Fragment>
+				<>
 					<ReactCrop
 						src={imageData.media_details.sizes.full.source_url}
 						crop={crop.crop}
@@ -336,7 +340,7 @@ const ImageCropControl = props => {
 							/>
 						</div>
 					)}
-				</Fragment>
+				</>
 			)}
 			{!imageData && <Spinner />}
 		</div>

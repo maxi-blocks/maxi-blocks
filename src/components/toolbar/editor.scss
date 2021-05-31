@@ -1,5 +1,5 @@
 .maxi-toolbar__popover {
-	z-index: 999;
+	z-index: 29;
 	&--has-breadcrumb {
 		.components-popover__content {
 			.toolbar-wrapper {
@@ -37,6 +37,10 @@
 				position: absolute;
 				top: -25px;
 				left: 0;
+
+				&__block-style {
+					text-transform: capitalize;
+				}
 			}
 			@at-root .rtl #{&} {
 				flex-direction: row-reverse;
@@ -138,14 +142,14 @@ body .toolbar-item__popover {
 	}
 
 	&__toggle-btn {
-		.components-base-control__field {
+		.maxi-base-control__field {
 			justify-content: space-between;
 			border-radius: 5px;
-			.components-base-control__label {
+			.maxi-base-control__label {
 				flex: 3 !important;
 			}
 		}
-		.components-radio-control__option {
+		.maxi-radio-control__option {
 			opacity: 1 !important;
 			min-width: 40px;
 			height: 30px;
@@ -212,7 +216,7 @@ body .toolbar-item__popover {
 		border-right-color: transparent !important;
 		z-index: -1;
 	}
-
+	.maxi-base-control,
 	.components-base-control {
 		&__field {
 			color: #fff;
@@ -245,7 +249,7 @@ body .toolbar-item__popover {
 				color: #fff;
 				border-color: #80828a !important;
 			}
-			.components-select-control__input {
+			.maxi-select-control__input {
 				background-color: transparent !important;
 				color: #fff !important;
 				border: 2px solid #80828a !important;
@@ -308,7 +312,7 @@ body .toolbar-item__popover {
 			}
 			&__items {
 				color: #fff;
-				.components-radio-control__option {
+				.maxi-radio-control__option {
 					border-color: #80828a;
 					background-color: #242433;
 				}
@@ -369,7 +373,7 @@ body .toolbar-item__popover {
 		}
 	}
 
-	.components-maxi-dimensions-control {
+	.maxi-dimensions-control {
 		color: #fff;
 		&_sync {
 			border-color: #80828a !important;
@@ -470,7 +474,7 @@ body .toolbar-item__popover {
 }
 
 body.rtl .toolbar-item__popover {
-	.components-radio-control__option {
+	.maxi-radio-control__option {
 		&:first-of-type {
 			input {
 				& ~ label {

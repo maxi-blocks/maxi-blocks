@@ -3,7 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { SelectControl, Button } from '@wordpress/components';
+
+/**
+ * Internal dependencies
+ */
+import SelectControl from '../select-control';
+import Button from '../button';
 
 /**
  * External dependencies

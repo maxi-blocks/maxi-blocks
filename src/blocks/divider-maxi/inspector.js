@@ -3,8 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { Fragment  } from '@wordpress/element';
-import { TextControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -26,6 +24,7 @@ import {
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
+	TextControl,
 	TransformControl,
 	ZIndexControl,
 } from '../../components';
@@ -44,8 +43,6 @@ const Inspector = props => {
 		uniqueID,
 		isFirstOnHierarchy,
 		blockStyle,
-		defaultBlockStyle,
-		blockStyleBackground,
 		fullWidth,
 		extraClassName,
 		lineOrientation,
@@ -61,7 +58,7 @@ const Inspector = props => {
 					{
 						label: __('Style', 'maxi-blocks'),
 						content: (
-							<Fragment>
+							<>
 								<div className='maxi-tab-content__box'>
 									<CustomLabel
 										customLabel={customLabel}
@@ -71,21 +68,9 @@ const Inspector = props => {
 									/>
 									<hr />
 									<BlockStylesControl
-										{...getGroupAttributes(attributes, [
-											'border',
-											'highlight',
-										])}
 										blockStyle={blockStyle}
-										blockStyleBackground={
-											blockStyleBackground
-										}
-										defaultBlockStyle={defaultBlockStyle}
 										isFirstOnHierarchy={isFirstOnHierarchy}
 										onChange={obj => setAttributes(obj)}
-										disableHighlightText
-										disableHighlightBackground
-										disableHighlightColor1
-										disableHighlightColor2
 									/>
 								</div>
 								<AccordionControl
@@ -94,7 +79,7 @@ const Inspector = props => {
 										deviceType === 'general' && {
 											label: __('Line', 'maxi-blocks'),
 											content: (
-												<Fragment>
+												<>
 													<FancyRadioControl
 														fullWidthMode
 														label={__(
@@ -110,16 +95,14 @@ const Inspector = props => {
 																	'Horizontal',
 																	'maxi-blocks'
 																),
-																value:
-																	'horizontal',
+																value: 'horizontal',
 															},
 															{
 																label: __(
 																	'Vertical',
 																	'maxi-blocks'
 																),
-																value:
-																	'vertical',
+																value: 'vertical',
 															},
 														]}
 														optionType='string'
@@ -142,8 +125,7 @@ const Inspector = props => {
 																	'Top',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-start',
+																value: 'flex-start',
 															},
 															{
 																label: __(
@@ -157,8 +139,7 @@ const Inspector = props => {
 																	'Bottom',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-end',
+																value: 'flex-end',
 															},
 														]}
 														optionType='string'
@@ -183,8 +164,7 @@ const Inspector = props => {
 																	'Left',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-start',
+																value: 'flex-start',
 															},
 															{
 																label: __(
@@ -198,8 +178,7 @@ const Inspector = props => {
 																	'Right',
 																	'maxi-blocks'
 																),
-																value:
-																	'flex-end',
+																value: 'flex-end',
 															},
 														]}
 														optionType='string'
@@ -212,7 +191,11 @@ const Inspector = props => {
 													<DividerControl
 														{...getGroupAttributes(
 															attributes,
-															['divider', 'size']
+															[
+																'divider',
+																'size',
+																'palette',
+															]
 														)}
 														onChange={obj =>
 															setAttributes(obj)
@@ -221,13 +204,9 @@ const Inspector = props => {
 															lineOrientation
 														}
 														breakpoint={deviceType}
-														disableColor={
-															!!attributes[
-																'border-highlight'
-															]
-														}
+														clientId={clientId}
 													/>
-												</Fragment>
+												</>
 											),
 										},
 										{
@@ -236,7 +215,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<Fragment>
+												<>
 													{isFirstOnHierarchy && (
 														<FancyRadioControl
 															label={__(
@@ -247,19 +226,17 @@ const Inspector = props => {
 															options={[
 																{
 																	label: __(
-																		'No',
-																		'maxi-blocks'
-																	),
-																	value:
-																		'normal',
-																},
-																{
-																	label: __(
 																		'Yes',
 																		'maxi-blocks'
 																	),
-																	value:
-																		'full',
+																	value: 'full',
+																},
+																{
+																	label: __(
+																		'No',
+																		'maxi-blocks'
+																	),
+																	value: 'normal',
 																},
 															]}
 															optionType='string'
@@ -280,7 +257,7 @@ const Inspector = props => {
 														}
 														breakpoint={deviceType}
 													/>
-												</Fragment>
+												</>
 											),
 										},
 										deviceType === 'general' && {
@@ -298,7 +275,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<BackgroundControl
 																		{...getGroupAttributes(
 																			attributes,
@@ -306,6 +283,7 @@ const Inspector = props => {
 																				'background',
 																				'backgroundColor',
 																				'backgroundGradient',
+																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -316,8 +294,11 @@ const Inspector = props => {
 																		disableImage
 																		disableVideo
 																		disableSVG
+																		clientId={
+																			clientId
+																		}
 																	/>
-																</Fragment>
+																</>
 															),
 														},
 														{
@@ -326,7 +307,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Background Hover',
@@ -356,7 +337,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover': val,
+																					'background-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -371,6 +353,7 @@ const Inspector = props => {
 																					'backgroundHover',
 																					'backgroundColorHover',
 																					'backgroundGradientHover',
+																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -382,9 +365,12 @@ const Inspector = props => {
 																			disableVideo
 																			disableSVG
 																			isHover
+																			clientId={
+																				clientId
+																			}
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -409,7 +395,10 @@ const Inspector = props => {
 																<BoxShadowControl
 																	{...getGroupAttributes(
 																		attributes,
-																		'boxShadow'
+																		[
+																			'boxShadow',
+																			'palette',
+																		]
 																	)}
 																	onChange={obj =>
 																		setAttributes(
@@ -418,6 +407,9 @@ const Inspector = props => {
 																	}
 																	breakpoint={
 																		deviceType
+																	}
+																	clientId={
+																		clientId
 																	}
 																/>
 															),
@@ -428,7 +420,7 @@ const Inspector = props => {
 																'maxi-blocks'
 															),
 															content: (
-																<Fragment>
+																<>
 																	<FancyRadioControl
 																		label={__(
 																			'Enable Box Shadow Hover',
@@ -458,7 +450,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': val,
+																					'box-shadow-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -469,7 +462,10 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				'boxShadowHover'
+																				[
+																					'boxShadowHover',
+																					'palette',
+																				]
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -480,9 +476,12 @@ const Inspector = props => {
 																				deviceType
 																			}
 																			isHover
+																			clientId={
+																				clientId
+																			}
 																		/>
 																	)}
-																</Fragment>
+																</>
 															),
 														},
 													]}
@@ -495,7 +494,7 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<Fragment>
+												<>
 													<AxisControl
 														{...getGroupAttributes(
 															attributes,
@@ -527,18 +526,18 @@ const Inspector = props => {
 														target='margin'
 														breakpoint={deviceType}
 													/>
-												</Fragment>
+												</>
 											),
 										},
 									]}
 								/>
-							</Fragment>
+							</>
 						),
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
-							<Fragment>
+							<>
 								<AccordionControl
 									isPrimary
 									items={[
@@ -693,22 +692,18 @@ const Inspector = props => {
 															`opacity-${deviceType}`
 														]
 													}
-													defaultOpacity={getDefaultAttribute(
-														`opacity-${deviceType}`,
-														clientId
-													)}
 													onChange={val =>
 														setAttributes({
-															[`opacity-${deviceType}`]: val,
+															[`opacity-${deviceType}`]:
+																val,
 														})
 													}
-													breakpoint={deviceType}
 												/>
 											),
 										},
 									]}
 								/>
-							</Fragment>
+							</>
 						),
 					},
 				]}

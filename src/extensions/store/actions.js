@@ -4,6 +4,11 @@
 import { dispatch } from '@wordpress/data';
 
 const actions = {
+	receiveMaxiSettings() {
+		return {
+			type: 'RECEIVE_GENERAL_SETTINGS',
+		};
+	},
 	receiveMaxiBreakpoints() {
 		return {
 			type: 'RECEIVE_BREAKPOINTS',
@@ -24,6 +29,12 @@ const actions = {
 		return {
 			type: 'SAVE_MOTION_PRESETS',
 			presets,
+		};
+	},
+	sendMaxiSettings(settings) {
+		return {
+			type: 'SEND_GLOBAL_SETTINGS',
+			settings,
 		};
 	},
 	sendMaxiBreakpoints(breakpoints) {
@@ -59,6 +70,12 @@ const actions = {
 		return {
 			type: 'SET_DEVICE_TYPE',
 			deviceType,
+		};
+	},
+	setWindowSize(winSize) {
+		return {
+			type: 'SET_WINDOW_SIZE',
+			winSize,
 		};
 	},
 	copyStyles(copiedStyles) {

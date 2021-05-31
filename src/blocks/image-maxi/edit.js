@@ -3,30 +3,35 @@
  */
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
-import { Spinner, Button, Placeholder } from '@wordpress/components';
 import { MediaUpload } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
+import getStyles from './styles';
 import Inspector from './inspector';
-import {
-	BlockResizer,
-	HoverPreview,
-	MaxiBlockComponent,
-	Toolbar,
-} from '../../components';
+import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
-import getStyles from './styles';
+import {
+	BlockResizer,
+	Button,
+	HoverPreview,
+	MaxiBlockComponent,
+	Toolbar,
+	Spinner,
+	Placeholder,
+} from '../../components';
+import * as SVGShapes from '../../icons/shape-icons';
+import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty, isNil, round } from 'lodash';
+import DOMPurify from 'dompurify';
 
 /**
  * Icons
@@ -85,11 +90,30 @@ class edit extends MaxiBlockComponent {
 			SVGElement,
 			imgWidth,
 			imageRatio,
+			parentBlockStyle,
 		} = attributes;
 
 		const hoverPreviewClasses = classnames(
 			'maxi-image-ratio',
 			`maxi-image-ratio__${imageRatio}`
+		);
+
+		const paletteClasses = getPaletteClasses(
+			attributes,
+			[
+				'background',
+				'background-hover',
+				'hover-background',
+				'svg-background',
+				'border',
+				'border-hover',
+				'box-shadow',
+				'box-shadow-hover',
+				'typography',
+				'typography-hover',
+			],
+			'maxi-blocks/image-maxi',
+			parentBlockStyle
 		);
 
 		const hoverClasses = classnames(
@@ -126,34 +150,93 @@ class edit extends MaxiBlockComponent {
 		};
 
 		const image = getImage();
+
+		// Well, how to explain this... lol
+		// React 16.13.0 introduced a warning for when a function component is updated during another component's
+		// render phase (facebook/react#17099). In version 16.13.1 the warning was adjusted to be more
+		// specific (facebook/react#18330). The warning look like:
+		// Warning: Cannot update a component (Foo) while rendering a different component (Bar).
+		// To locate the bad setState() call inside Bar, follow the stack trace as described in https://fb.me/setstate-in-render
+		//
+		// In this case the error comes from a `forceUpdate` that '@wordpress/data' triggers when updating an store.
+		// This error is not related with Maxi, but appears on our blocks. So, a way to avoid it is to set a `setTimeOut`
+		// that delays a bit the dispatch action of the store and prevents the rendering of some components while RichText
+		// is rendering. Sad but true.
 		if (image && imageData) {
 			if (imageData.alt_text)
-				setAttributes({ mediaAltWp: imageData.alt_text });
+				setTimeout(() => {
+					setAttributes({ mediaAltWp: imageData.alt_text });
+				});
 
-			if (mediaAlt) setAttributes({ mediaAlt });
+			if (mediaAlt)
+				setTimeout(() => {
+					setAttributes({ mediaAlt });
+				});
 
 			if (imageData.title.rendered)
-				setAttributes({ mediaAltTitle: imageData.title.rendered });
+				setTimeout(() => {
+					setAttributes({ mediaAltTitle: imageData.title.rendered });
+				});
 		}
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar key={`toolbar-${uniqueID}`} {...this.props} />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+			/>,
 			<MaxiBlock
 				key={`maxi-image--${uniqueID}`}
+				paletteClasses={paletteClasses}
+				ref={this.blockRef}
 				tagName='figure'
 				className={classes}
+				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<MediaUpload
-					onSelect={media =>
+					onSelect={media => {
 						setAttributes({
 							mediaID: media.id,
 							mediaURL: media.url,
 							mediaWidth: media.width,
 							mediaHeight: media.height,
-						})
-					}
+						});
+
+						if (!isEmpty(attributes.SVGData)) {
+							const currentElem =
+								SVGShapes[
+									Object.keys(SVGShapes)[
+										attributes.SVGCurrentElement
+									]
+								];
+							const cleanedContent = DOMPurify.sanitize(
+								currentElem
+							);
+							const svg = document
+								.createRange()
+								.createContextual(cleanedContent)
+								.firstElementChild;
+
+							const resData = generateDataObject('', svg);
+
+							const SVGValue = resData;
+							const el = Object.keys(SVGValue)[0];
+
+							SVGValue[el].imageID = media.id;
+							SVGValue[el].imageURL = media.url;
+
+							const resEl = injectImgSVG(svg, resData);
+							setAttributes({
+								SVGCurrentElement: attributes.SVGCurrentElement,
+								SVGElement: resEl.outerHTML,
+								SVGMediaID: null,
+								SVGMediaURL: null,
+								SVGData: SVGValue,
+							});
+						}
+					}}
 					allowedTypes='image'
 					value={mediaID}
 					render={({ open }) => (

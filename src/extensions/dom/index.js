@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select, dispatch } from '@wordpress/data';
+import { select, dispatch, subscribe } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -18,25 +18,38 @@ const allowedBlocks = [
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/text-maxi',
 	'maxi-blocks/divider-maxi',
+	'maxi-blocks/map-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/group-maxi',
+	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/svg-icon-maxi',
-	'maxi-blocks/font-icon-maxi',
 	'maxi-blocks/test-maxi',
 ];
 
-document.addEventListener('readystatechange', () => {
-	if (document.readyState === 'complete') {
-		/**
-		 * Mutation Observer for:
-		 * - Add special classes on Settings Sidebar
-		 * - Hide original WP toolbar on selected Maxi Blocks
-		 * - Add Maxi responsive toolbar on Preview drop-down menu
-		 */
-		if (document.getElementsByClassName('edit-post-layout')) {
-			const targetNode = document.querySelector('.edit-post-layout');
+wp.domReady(() => {
+	// Window size
+	const setWindowSize = e => {
+		const { innerWidth: width, innerHeight: height } = e.target;
+
+		dispatch('maxiBlocks').setWindowSize({ width, height });
+	};
+
+	setWindowSize({ target: window });
+
+	// eslint-disable-next-line @wordpress/no-global-event-listener
+	window.addEventListener('resize', e => setWindowSize(e));
+
+	const unsubscribe = subscribe(() => {
+		const targetNode = document.querySelector('.edit-post-layout');
+
+		if (targetNode) {
+			/**
+			 * Mutation Observer for:
+			 * - Add special classes on Settings Sidebar
+			 * - Hide original WP toolbar on selected Maxi Blocks
+			 */
 			const config = {
 				attributes: true,
 				childList: true,
@@ -50,9 +63,10 @@ document.addEventListener('readystatechange', () => {
 						mutation.type === 'childList' &&
 						!!mutation.target.classList
 					) {
-						const blockNames = select(
-							'core/block-editor'
-						).getMultiSelectedBlocks();
+						const blockNames =
+							select(
+								'core/block-editor'
+							).getMultiSelectedBlocks();
 
 						const selectedBlocks =
 							!isEmpty(blockNames) &&
@@ -67,12 +81,12 @@ document.addEventListener('readystatechange', () => {
 								'core/block-editor'
 							).getSelectedBlockClientId()
 						);
-						const editPostSidebarNode = document.querySelector(
-							'.edit-post-sidebar'
-						);
-						const blockEditorBlockInspectorNode = document.querySelector(
-							'.block-editor-block-inspector'
-						);
+						const editPostSidebarNode =
+							document.querySelector('.edit-post-sidebar');
+						const blockEditorBlockInspectorNode =
+							document.querySelector(
+								'.block-editor-block-inspector'
+							);
 						const blockToolbarUniversal = document.querySelector(
 							'.block-editor-block-toolbar'
 						);
@@ -184,9 +198,8 @@ document.addEventListener('readystatechange', () => {
 									)
 								);
 
-								const { setMaxiDeviceType } = dispatch(
-									'maxiBlocks'
-								);
+								const { setMaxiDeviceType } =
+									dispatch('maxiBlocks');
 
 								responsiveButtons.forEach(button => {
 									button.addEventListener('click', e => {
@@ -198,9 +211,10 @@ document.addEventListener('readystatechange', () => {
 											(value === 'Tablet' && 's') ||
 											(value === 'Mobile' && 'xs');
 
-										const editorWrapper = document.querySelector(
-											'.edit-post-visual-editor.editor-styles-wrapper'
-										);
+										const editorWrapper =
+											document.querySelector(
+												'.edit-post-visual-editor.editor-styles-wrapper'
+											);
 										editorWrapper.setAttribute(
 											'maxi-blocks-responsive',
 											maxiValue
@@ -221,88 +235,11 @@ document.addEventListener('readystatechange', () => {
 				}
 			});
 			observer.observe(targetNode, config);
+
+			// Dismantling the bomb
+			unsubscribe();
 		}
-		/**
-		 * Hover classes
-		 */
-		window.addEventListener('mouseover', e => {
-			let pathItem = null;
-			const ev = window.event || e;
-			const paths = ev.path || (ev.composedPath && ev.composedPath());
-			const hasPath =
-				!!paths &&
-				Array.from(paths).some((path, i) => {
-					if (path && path.classList)
-						try {
-							if (
-								path.classList.contains('maxi-column-block') ||
-								path.classList.contains(
-									'maxi-container-block'
-								) ||
-								path.classList.contains('maxi-group-block')
-							) {
-								pathItem = i;
-								return true;
-							}
-						} catch (error) {
-							pathItem = null;
-							return false;
-						}
-
-					return false;
-				});
-
-			if (hasPath) {
-				paths[pathItem].classList.add('maxi-block--hovered');
-				const blockListAppenders = Array.from(
-					paths[pathItem].getElementsByClassName(
-						'block-list-appender'
-					)
-				);
-				blockListAppenders[blockListAppenders.length - 1].classList.add(
-					'block-list-appender--show'
-				);
-			}
-		});
-		window.addEventListener('mouseout', e => {
-			let pathItem = null;
-			const ev = window.event || e;
-			const paths = ev.path || (ev.composedPath && ev.composedPath());
-			const hasPath =
-				!!paths &&
-				Array.from(paths).some((path, i) => {
-					if (path && path.classList)
-						try {
-							if (
-								path.classList.contains('maxi-column-block') ||
-								path.classList.contains(
-									'maxi-container-block'
-								) ||
-								path.classList.contains('maxi-group-block')
-							) {
-								pathItem = i;
-								return true;
-							}
-						} catch (error) {
-							pathItem = null;
-							return false;
-						}
-					return false;
-				});
-
-			if (hasPath) {
-				paths[pathItem].classList.remove('maxi-block--hovered');
-				const blockListAppenders = Array.from(
-					paths[pathItem].getElementsByClassName(
-						'block-list-appender'
-					)
-				);
-				blockListAppenders[
-					blockListAppenders.length - 1
-				].classList.remove('block-list-appender--show');
-			}
-		});
-	}
+	});
 });
 
 const openSidebar = item => {

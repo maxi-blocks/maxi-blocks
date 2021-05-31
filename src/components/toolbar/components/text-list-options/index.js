@@ -3,7 +3,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
 import {
 	__unstableIndentListItems,
 	__unstableCanIndentListItems,
@@ -15,6 +14,7 @@ import {
 /**
  * Internal dependencies
  */
+import Button from '../../../button';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	fromListToText,

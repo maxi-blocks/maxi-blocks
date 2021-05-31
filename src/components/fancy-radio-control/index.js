@@ -1,12 +1,11 @@
 /**
- * WordPress dependencies
+ * Internal dependencies
  */
-import { RadioControl } from '@wordpress/components';
+import RadioControl from '../radio-control';
 
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
 import classnames from 'classnames';
 
 /**

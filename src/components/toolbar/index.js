@@ -2,51 +2,49 @@
  * WordPress dependencies
  */
 import { Popover } from '@wordpress/components';
-import { useEffect, useState, memo } from '@wordpress/element';
-import { select } from '@wordpress/data';
+import { useEffect, useState, memo, forwardRef } from '@wordpress/element';
+import { select, useSelect } from '@wordpress/data';
+import { getScrollContainer } from '@wordpress/dom';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, isEqual } from 'lodash';
-
+import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
 /**
  * Utils
  */
-import {
-	Alignment,
-	BackgroundColor,
-	Border,
-	BoxShadow,
-	ColumnMover,
-	ColumnsHandlers,
-	ColumnSize,
-	CopyPaste,
-	Delete,
-	Divider,
-	DividerAlignment,
-	DividerColor,
-	Duplicate,
-	ImageSize,
-	Link,
-	Mover,
-	PaddingMargin,
-	ReusableBlocks,
-	RowSettings,
-	Size,
-	SvgColor,
-	TextBold,
-	TextItalic,
-	TextLevel,
-	TextColor,
-	TextLink,
-	TextListOptions,
-	TextOptions,
-	ToggleBlock,
-	ToolbarColumnPattern,
-} from './components';
-import { Breadcrumbs } from '../../components';
+import Alignment from './components/alignment';
+import BackgroundColor from './components/background-color';
+import Border from './components/border';
+import BoxShadow from './components/box-shadow';
+import ColumnMover from './components/column-mover';
+import ColumnsHandlers from './components/columns-handlers';
+import ColumnSize from './components/column-size';
+import CopyPaste from './components/copy-paste';
+import Delete from './components/delete';
+import Divider from './components/divider-line';
+import DividerAlignment from './components/divider-alignment';
+import DividerColor from './components/divider-color';
+import Duplicate from './components/duplicate';
+import ImageSize from './components/image-size';
+import Link from './components/link';
+import Mover from './components/mover';
+import PaddingMargin from './components/padding-margin';
+import ReusableBlocks from './components/reusable-blocks';
+import RowSettings from './components/row-settings';
+import Size from './components/size';
+import SvgColor from './components/svg-color';
+import TextBold from './components/text-bold';
+import TextColor from './components/text-color';
+import TextItalic from './components/text-italic';
+import TextLevel from './components/text-level';
+import TextLink from './components/text-link';
+import TextListOptions from './components/text-list-options';
+import TextOptions from './components/text-options';
+import ToggleBlock from './components/toggle-block';
+import ToolbarColumnPattern from './components/column-pattern';
+import Breadcrumbs from '../breadcrumbs';
 
 /**
  * Styles
@@ -65,8 +63,9 @@ const allowedBlocks = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/divider-maxi',
-	'maxi-blocks/font-icon-maxi',
+	'maxi-blocks/map-maxi',
 	'maxi-blocks/group-maxi',
+	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/svg-icon-maxi',
@@ -78,7 +77,9 @@ const flexBlocks = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/divider-maxi',
+	'maxi-blocks/map-maxi',
 	'maxi-blocks/group-maxi',
+	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/svg-icon-maxi',
@@ -88,12 +89,11 @@ const flexBlocks = [
  * Component
  */
 const MaxiToolbar = memo(
-	props => {
+	forwardRef((props, ref) => {
 		const {
 			attributes,
 			changeSVGContent,
 			clientId,
-			deviceType,
 			isSelected,
 			name,
 			setAttributes,
@@ -101,6 +101,7 @@ const MaxiToolbar = memo(
 			rowPattern,
 		} = props;
 		const {
+			content,
 			customLabel,
 			fullWidth,
 			imageSize,
@@ -115,30 +116,60 @@ const MaxiToolbar = memo(
 			textLevel,
 			typeOfList,
 			uniqueID,
+			parentBlockStyle,
 			resizableObject,
 		} = attributes;
 
-		const [anchorRef, setAnchorRef] = useState(
-			document.getElementById(`block-${clientId}`)
-		);
+		const { editorVersion, breakpoint } = useSelect(select => {
+			const { receiveMaxiSettings, receiveMaxiDeviceType } = select(
+				'maxiBlocks'
+			);
+
+			const maxiSettings = receiveMaxiSettings();
+			const version = !isEmpty(maxiSettings.editor)
+				? maxiSettings.editor.version
+				: null;
+
+			const breakpoint = receiveMaxiDeviceType();
+
+			return {
+				editorVersion: version,
+				breakpoint,
+			};
+		});
+
+		const [anchorRef, setAnchorRef] = useState(ref.current);
 
 		useEffect(() => {
-			setAnchorRef(document.getElementById(`block-${clientId}`));
+			setAnchorRef(ref.current);
 		});
 
 		if (!allowedBlocks.includes(name)) return null;
 
 		const breadcrumbStatus = () => {
 			const { getBlockParents } = select('core/block-editor');
-
 			const originalNestedBlocks = clientId
 				? getBlockParents(clientId)
 				: [];
-
 			if (!originalNestedBlocks.includes(clientId))
 				originalNestedBlocks.push(clientId);
-
 			return originalNestedBlocks.length > 1;
+		};
+
+		const boundaryElement =
+			document.defaultView.frameElement ||
+			getScrollContainer(anchorRef) ||
+			document.body;
+
+		// Different from > WP 5.5.3
+		const stickyProps = {
+			...((parseFloat(editorVersion) <= 9.2 && {
+				__unstableSticky: true,
+			}) ||
+				(anchorRef &&
+					!isNaN(parseFloat(editorVersion)) && {
+						__unstableStickyBoundaryElement: boundaryElement,
+					})),
 		};
 
 		return (
@@ -156,28 +187,31 @@ const MaxiToolbar = memo(
 								'maxi-toolbar__popover--has-breadcrumb'
 						)}
 						uniqueid={uniqueID}
-						__unstableSticky
 						__unstableSlotName='block-toolbar'
 						shouldAnchorIncludePadding
+						{...stickyProps}
 					>
 						<div className='toolbar-wrapper'>
 							<Breadcrumbs key={`breadcrumbs-${uniqueID}`} />
 							<div className='toolbar-block-custom-label'>
 								{customLabel}
+								<span className='toolbar-block-custom-label__block-style'>
+									{` | ${parentBlockStyle}`}
+								</span>
 							</div>
 							<Mover clientId={clientId} blockName={name} />
 							<ReusableBlocks clientId={clientId} />
 							<ColumnMover clientId={clientId} blockName={name} />
-							{!attributes['border-highlight'] && (
-								<DividerColor
-									{...getGroupAttributes(
-										attributes,
-										'divider'
-									)}
-									blockName={name}
-									onChange={obj => setAttributes(obj)}
-								/>
-							)}
+							<DividerColor
+								{...getGroupAttributes(attributes, [
+									'divider',
+									'palette',
+								])}
+								blockName={name}
+								breakpoint={breakpoint}
+								onChange={obj => setAttributes(obj)}
+								clientId={clientId}
+							/>
 							<Divider
 								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
@@ -208,25 +242,25 @@ const MaxiToolbar = memo(
 								blockName={name}
 								onChange={obj => setAttributes(obj)}
 								node={anchorRef}
-								breakpoint={deviceType}
+								content={content}
+								breakpoint={breakpoint}
 								isList={isList}
 								typeOfList={typeOfList}
 								textLevel={textLevel}
 							/>
-							{!attributes['text-highlight'] && (
-								<TextColor
-									blockName={name}
-									{...getGroupAttributes(
-										attributes,
-										'typography'
-									)}
-									onChange={obj => setAttributes(obj)}
-									breakpoint={deviceType}
-									node={anchorRef}
-									isList={isList}
-									textLevel={textLevel}
-								/>
-							)}
+							<TextColor
+								blockName={name}
+								{...getGroupAttributes(attributes, [
+									'typography',
+									'palette',
+								])}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={breakpoint}
+								node={anchorRef}
+								isList={isList}
+								typeOfList={typeOfList}
+								clientId={clientId}
+							/>
 							<Alignment
 								blockName={name}
 								{...getGroupAttributes(attributes, [
@@ -234,7 +268,7 @@ const MaxiToolbar = memo(
 									'textAlignment',
 								])}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 							/>
 							<TextLevel
 								{...getGroupAttributes(attributes, [
@@ -254,7 +288,7 @@ const MaxiToolbar = memo(
 								blockName={name}
 								onChange={obj => setAttributes(obj)}
 								isList={isList}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								textLevel={textLevel}
 							/>
 							<TextItalic
@@ -265,7 +299,7 @@ const MaxiToolbar = memo(
 								blockName={name}
 								onChange={obj => setAttributes(obj)}
 								isList={isList}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 							/>
 							<RowSettings
 								blockName={name}
@@ -281,7 +315,7 @@ const MaxiToolbar = memo(
 									'rowPattern'
 								)}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 							/>
 							<ColumnsHandlers
 								toggleHandlers={toggleHandlers}
@@ -304,7 +338,7 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								isList={isList}
 								linkSettings={linkSettings}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								textLevel={textLevel}
 							/>
 							<TextListOptions
@@ -313,56 +347,56 @@ const MaxiToolbar = memo(
 								typeOfList={typeOfList}
 								onChange={obj => setAttributes(obj)}
 							/>
-							{!attributes['background-highlight'] && (
-								<BackgroundColor
-									{...getGroupAttributes(
-										attributes,
-										'backgroundColor'
-									)}
-									blockName={name}
-									onChange={obj => setAttributes(obj)}
-								/>
-							)}
+							<BackgroundColor
+								{...getGroupAttributes(attributes, [
+									'backgroundColor',
+									'palette',
+								])}
+								blockName={name}
+								breakpoint={breakpoint}
+								onChange={obj => setAttributes(obj)}
+								clientId={clientId}
+							/>
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
-									{!attributes['color1-highlight'] && (
-										<SvgColor
-											blockName={name}
-											svgColorDefault={getDefaultAttribute(
-												'svgColorOrange',
-												clientId
-											)}
-											svgColor={attributes.svgColorOrange}
-											onChange={svgColorOrange => {
-												setAttributes({
-													svgColorOrange,
-												});
-												changeSVGContent(
-													svgColorOrange,
-													1
-												);
-											}}
-										/>
-									)}
-									{!attributes['color2-highlight'] && (
-										<SvgColor
-											blockName={name}
-											svgColorDefault={getDefaultAttribute(
-												'svgColorBlack',
-												clientId
-											)}
-											svgColor={attributes.svgColorBlack}
-											onChange={svgColorBlack => {
-												setAttributes({
-													svgColorBlack,
-												});
-												changeSVGContent(
-													svgColorBlack,
-													2
-												);
-											}}
-										/>
-									)}
+									<SvgColor
+										{...getGroupAttributes(
+											attributes,
+											'palette'
+										)}
+										blockName={name}
+										svgColorDefault={getDefaultAttribute(
+											'svgColorFill',
+											clientId
+										)}
+										svgColor={attributes.svgColorFill}
+										onChange={svgColorFill => {
+											setAttributes(svgColorFill);
+											changeSVGContent(svgColorFill, 1);
+										}}
+										clientId={clientId}
+										type='svgColorFill'
+										breakpoint={breakpoint}
+									/>
+									<SvgColor
+										{...getGroupAttributes(
+											attributes,
+											'palette'
+										)}
+										blockName={name}
+										svgColorDefault={getDefaultAttribute(
+											'svgColorLine',
+											clientId
+										)}
+										svgColor={attributes.svgColorLine}
+										onChange={svgColorLine => {
+											setAttributes(svgColorLine);
+											changeSVGContent(svgColorLine, 2);
+										}}
+										clientId={clientId}
+										type='svgColorLine'
+										breakpoint={breakpoint}
+									/>
 								</>
 							)}
 							<Border
@@ -371,12 +405,13 @@ const MaxiToolbar = memo(
 									'border',
 									'borderWidth',
 									'borderRadius',
+									'palette',
 								])}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
-								disableColor={!attributes['border-highlight']}
+								breakpoint={breakpoint}
+								clientId={clientId}
 							/>
-							{deviceType === 'general' && (
+							{breakpoint === 'general' && (
 								<ImageSize
 									blockName={name}
 									imgWidth={imgWidth}
@@ -401,7 +436,7 @@ const MaxiToolbar = memo(
 								{...getGroupAttributes(attributes, 'size')}
 								fullWidth={fullWidth}
 								isFirstOnHierarchy={isFirstOnHierarchy}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								onChange={obj => setAttributes(obj)}
 							/>
 							<ColumnSize
@@ -414,7 +449,7 @@ const MaxiToolbar = memo(
 								verticalAlign={attributes.verticalAlign}
 								uniqueID={uniqueID}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								resizableObject={resizableObject}
 								rowPattern={rowPattern}
 								columnSize={{
@@ -426,9 +461,13 @@ const MaxiToolbar = memo(
 							/>
 							<BoxShadow
 								blockName={name}
-								{...getGroupAttributes(attributes, 'boxShadow')}
+								{...getGroupAttributes(attributes, [
+									'boxShadow',
+									'palette',
+								])}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								clientId={clientId}
+								breakpoint={breakpoint}
 							/>
 							<PaddingMargin
 								blockName={name}
@@ -437,14 +476,14 @@ const MaxiToolbar = memo(
 									'padding',
 								])}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 							/>
-							<Duplicate clientId={clientId} />
-							<Delete clientId={clientId} />
+							<Duplicate clientId={clientId} blockName={name} />
+							<Delete clientId={clientId} blockName={name} />
 							<ToggleBlock
 								{...getGroupAttributes(attributes, 'display')}
 								onChange={obj => setAttributes(obj)}
-								breakpoint={deviceType}
+								breakpoint={breakpoint}
 								defaultDisplay={
 									flexBlocks.includes(name)
 										? 'flex'
@@ -457,7 +496,7 @@ const MaxiToolbar = memo(
 				)}
 			</>
 		);
-	},
+	}),
 	// Avoids non-necessary renderings
 	(
 		{ attributes: oldAttr, propsToAvoid, isSelected: wasSelected },

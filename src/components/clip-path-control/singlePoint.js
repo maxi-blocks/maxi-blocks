@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { Fragment  } from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
@@ -38,7 +37,7 @@ const ClipPathSinglePoint = props => {
 	);
 
 	return (
-		<Fragment>
+		<>
 			<span
 				className={classes}
 				onMouseDown={e => {
@@ -93,7 +92,7 @@ const ClipPathSinglePoint = props => {
 					)}
 				</span>
 			)}
-		</Fragment>
+		</>
 	);
 };
 export default ClipPathSinglePoint;

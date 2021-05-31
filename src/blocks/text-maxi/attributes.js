@@ -31,7 +31,6 @@ const attributes = {
 	},
 	listStart: {
 		type: 'number',
-		default: 1,
 	},
 	listReversed: {
 		type: 'number',
@@ -45,6 +44,7 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
+	...attributesData.palette,
 	...attributesData.background,
 	...attributesData.backgroundColor,
 	...attributesData.backgroundColorHover,
@@ -68,7 +68,6 @@ const attributes = {
 	...attributesData.container,
 	...attributesData.display,
 	...attributesData.entrance,
-	...attributesData.highlight,
 	...attributesData.margin,
 	...attributesData.motion,
 	...attributesData.opacity,

@@ -1,0 +1,25 @@
+body.maxi-blocks--active {
+	.maxi-block[data-align='full'] {
+		width: auto !important;
+	}
+	.maxi-map-block {
+		.maxi-map-container {
+			height: 100%;
+		}
+		.map-marker-info-window {
+			text-align: center;
+			width: 150px;
+			padding: 8px;
+
+			&__title {
+				font-family: 'Roboto', sans-serif !important;
+				margin: 0 0 10px;
+			}
+			&__address {
+				font-family: 'Roboto', sans-serif !important;
+				font-style: normal;
+				margin: 0;
+			}
+		}
+	}
+}

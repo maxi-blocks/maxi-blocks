@@ -2,10 +2,15 @@
  * Internal dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { TextControl, Button } from '@wordpress/components';
 import { useCallback, useState } from '@wordpress/element';
 import { useDispatch } from '@wordpress/data';
 import ToolbarPopover from '../toolbar-popover';
+
+/**
+ * Internal dependencies
+ */
+import Button from '../../../button';
+import TextControl from '../../../text-control';
 
 /**
  * Styles & Icons

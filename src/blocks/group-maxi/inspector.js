@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/blockEditor';
-import { Fragment  } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { TextControl } from '@wordpress/components';
 
 /**
@@ -60,7 +60,7 @@ const Inspector = props => {
 						label: __('Style', 'maxi-blocks'),
 						content: (
 							<Fragment>
-								<div className='maxi-tab-content__box'>
+								{/* <div className='maxi-tab-content__box'>
 									<CustomLabel
 										customLabel={customLabel}
 										onChange={customLabel =>
@@ -84,7 +84,7 @@ const Inspector = props => {
 											'highlight'
 										)}
 									/>
-								</div>
+								</div> */}
 								<AccordionControl
 									isPrimary
 									items={[

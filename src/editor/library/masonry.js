@@ -53,7 +53,7 @@ const MasonryItem = props => {
 };
 
 const MasonryItemSVG = props => {
-	const { svgCode, isPro, serial, onRequestInsert } = props;
+	const { svgCode, isPro, serial, onRequestInsert, categories, tags } = props;
 
 	return (
 		<div className='maxi-cloud-masonry-card'>
@@ -74,6 +74,8 @@ const MasonryItemSVG = props => {
 						<span className='maxi-cloud-masonry__pro-tag'>PRO</span>
 					)}
 					<p className='maxi-cloud-masonry__serial-tag'>{serial}</p>
+					<p className='maxi-cloud-masonry__categories'>{categories}</p>
+					<p className='maxi-cloud-masonry__tags'>{tags}</p>
 				</div>
 			</div>
 		</div>
@@ -147,6 +149,8 @@ const LibraryMasonry = props => {
 						svgCode={element.svg_code}
 						isPro={element.cost === 'pro'}
 						serial={element.title}
+						categories={element.post_categories}
+						tags={element.post_tags}
 						onRequestInsert={() =>
 							onRequestInsertSVG(element.svg_code)
 						}

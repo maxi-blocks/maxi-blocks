@@ -12,7 +12,7 @@ import { pull } from 'lodash';
  * Component
  */
 const TopbarFilter = props => {
-	const { onChange } = props;
+	const { onChange, type } = props;
 
 	const filters = [...props.filters];
 
@@ -25,25 +25,52 @@ const TopbarFilter = props => {
 	return (
 		<div className='maxi-cloud-topbar'>
 			<div className='maxi-cloud-topbar__styles'>
-				<Button
-					className='maxi-cloud-topbar__button'
-					onClick={() => {
-						handleOnChange('light');
-					}}
-					aria-pressed={filters.includes('light')}
-				>
-					Light
-				</Button>
-				<Button
-					className='maxi-cloud-topbar__button'
-					onClick={() => {
-						handleOnChange('dark');
-					}}
-					aria-pressed={filters.includes('dark')}
-				>
-					Dark
-				</Button>
+				{type === 'patterns' && (
+					<>
+						<Button
+							className='maxi-cloud-topbar__button'
+							onClick={() => {
+								handleOnChange('light');
+							}}
+							aria-pressed={filters.includes('light')}
+						>
+							Light
+						</Button>
+						<Button
+							className='maxi-cloud-topbar__button'
+							onClick={() => {
+								handleOnChange('dark');
+							}}
+							aria-pressed={filters.includes('dark')}
+						>
+							Dark
+						</Button>
+					</>
+				)}
+				{type === 'svg' && (
+					<>
+						<Button
+							className='maxi-cloud-topbar__button'
+							onClick={() => {
+								handleOnChange('filled');
+							}}
+							aria-pressed={filters.includes('filled')}
+						>
+							Filled
+						</Button>
+						<Button
+							className='maxi-cloud-topbar__button'
+							onClick={() => {
+								handleOnChange('line');
+							}}
+							aria-pressed={filters.includes('line')}
+						>
+							Line
+						</Button>
+					</>
+				)}
 			</div>
+
 			<div className='maxi-cloud-topbar__cost'>
 				<Button
 					className='maxi-cloud-topbar__button'

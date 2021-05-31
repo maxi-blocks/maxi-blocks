@@ -12,7 +12,6 @@ import {
 	setCustomFormatsWhenPaste,
 } from '../../extensions/text/formats';
 import { getGroupAttributes } from '../../extensions/styles';
-import { defaultTypography } from '../../extensions/text';
 
 const name = 'maxi-blocks/text-maxi';
 
@@ -85,7 +84,6 @@ const transforms = {
 				const nodeName = node.nodeName.toLowerCase();
 				const attributes = {
 					...getBlockAttributes(name),
-					...defaultTypography[nodeName],
 				};
 				const isList = ['ul', 'ol'].includes(nodeName);
 				attributes.content = node.innerHTML;

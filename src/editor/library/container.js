@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
@@ -77,18 +78,51 @@ const LibraryContainer = props => {
 		{ label: __('Style'), value: 'style' },
 	];
 
+	const { svgTags } = useSelect(select => {
+		const { receiveMaxiCloudLibrary } = select('maxiBlocks/cloudLibrary');
+		const svgTags = receiveMaxiCloudLibrary('svg-tags');
+
+		return {
+			svgTags,
+		};
+	});
+
+	const sidebarFiltersSvg = () => {
+		const options = [];
+
+		if (svgTags) {
+			svgTags.forEach(tag =>
+				options.push({ label: tag.name, value: tag.id })
+			);
+			return options;
+		}
+		return null;
+	};
+
 	return (
 		<div className='maxi-cloud-container'>
 			<div className='maxi-cloud-container__sidebar'>
-				<SidebarFilter
-					options={sidebarFilters}
-					filters={sidebarFilter}
-					onChange={filters => setSidebarFilter(filters)}
-					onReset={() => setSidebarFilter('')}
-				/>
+				{type === 'svg' && (
+					<SidebarFilter
+						options={sidebarFiltersSvg()}
+						filters={sidebarFilter}
+						onChange={filters => setSidebarFilter(filters)}
+						onReset={() => setSidebarFilter('')}
+					/>
+				)}
+
+				{type === 'patterns' && (
+					<SidebarFilter
+						options={sidebarFilters}
+						filters={sidebarFilter}
+						onChange={filters => setSidebarFilter(filters)}
+						onReset={() => setSidebarFilter('')}
+					/>
+				)}
 			</div>
 			<div className='maxi-cloud-container__content'>
 				<TopbarFilter
+					type={type}
 					filters={topbarFilter}
 					onChange={filters => setTopbarFilter(filters)}
 				/>

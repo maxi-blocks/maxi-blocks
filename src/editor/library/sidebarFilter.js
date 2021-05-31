@@ -11,6 +11,8 @@ import Button from '../../components/button';
 /**
  * Component
  */
+import { isNil } from 'lodash';
+
 const SidebarFilterButton = props => {
 	const { label, onClick } = props;
 
@@ -26,13 +28,14 @@ const SidebarFilter = props => {
 
 	return (
 		<div className='maxi-cloud-sidebar'>
-			{options.map(option => (
-				<SidebarFilterButton
-					key={`maxi-cloud-sidebar--${option.value}`}
-					label={option.label}
-					onClick={() => onChange(option.value)}
-				/>
-			))}
+			{!isNil(options) &&
+				options.map(option => (
+					<SidebarFilterButton
+						key={`maxi-cloud-sidebar--${option.value}`}
+						label={option.label}
+						onClick={() => onChange(option.value)}
+					/>
+				))}
 			<Button className='maxi-cloud-sidebar__remover' onClick={onReset}>
 				{__('CLEAR ALL FILTERS', 'maxi-blocks')}
 			</Button>

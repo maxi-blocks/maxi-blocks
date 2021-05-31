@@ -9,7 +9,7 @@ import { ResponsiveWrapper } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import { Button } from '../button';
+import Button from '../button';
 import Spinner from '../spinner';
 
 /**

@@ -7,7 +7,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { PostPreviewButton } from '@wordpress/editor';
-import { Button, SelectControl, Popover, Icon } from '@wordpress/components';
+import { Popover } from '@wordpress/components';
 
 /**
  * External dependencies
@@ -24,7 +24,13 @@ import {
 	showMaxiSCAppliedActiveSnackbar,
 	exportStyleCard,
 } from './utils';
-import { SettingTabsControl, FancyRadioControl } from '../../components';
+import {
+	SettingTabsControl,
+	FancyRadioControl,
+	SelectControl,
+	Button,
+	Icon,
+} from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import {
 	getActiveStyleCard,
@@ -34,7 +40,7 @@ import {
 /**
  * Icons
  */
-import { styleCardBoat, reset, SCdelete, SCaddMore } from '../../icons';
+import { styleCardBoat, reset, SCDelete, SCaddMore } from '../../icons';
 
 const MaxiStyleCardsEditor = ({ styleCards }) => {
 	const { isRTL, deviceType } = useSelect(select => {
@@ -71,7 +77,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		return styleCardsArr;
 	};
 
-	const addActiveSCclass = keySC => {
+	const addActiveSCClass = keySC => {
 		const selectArr = document.querySelectorAll(
 			'.maxi-style-cards__sc__more-sc--select option'
 		);
@@ -106,7 +112,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		return false;
 	};
 
-	const canBeResetted = keySC => {
+	const canBeReset = keySC => {
 		if (
 			!isNil(currentSC[keySC]) &&
 			(!isEmpty(currentSC[keySC].styleCard.light) ||
@@ -116,8 +122,8 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		return false;
 	};
 
-	const [canBeResettedState, changeCanBeResettedState] = useState(
-		canBeResetted(currentSCKey)
+	const [canBeResetState, changeCanBeResetState] = useState(
+		canBeReset(currentSCKey)
 	);
 
 	const [isSaveDisabled, setIsSaveDisabled] = useState(true);
@@ -171,7 +177,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 
 		changeStateSC(newStateSC);
 		updateSCOnEditor(newStateSC);
-		changeCanBeResettedState(canBeResetted(currentSCKey));
+		changeCanBeResetState(canBeReset(currentSCKey));
 		setIsSaveDisabled(false);
 		setIsApplyDisabled(false);
 	};
@@ -203,7 +209,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		return false;
 	};
 
-	const applyCurrentSCglobally = () => {
+	const applyCurrentSCGlobally = () => {
 		changeIsDefaultOrActiveState(isDefaultOrActive(currentSCKey));
 		setStyleCardActive(currentSCKey);
 
@@ -218,8 +224,8 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		changeStateSC(stateSC);
 		updateSCOnEditor(stateSC);
 
-		addActiveSCclass(currentSCKey);
-		changeCanBeResettedState(canBeResetted(currentSCKey));
+		addActiveSCClass(currentSCKey);
+		changeCanBeResetState(canBeReset(currentSCKey));
 
 		saveMaxiStyleCards(newStyleCards);
 		setIsApplyDisabled(true);
@@ -237,7 +243,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 			},
 		};
 
-		changeCanBeResettedState(canBeResetted(currentSCKey));
+		changeCanBeResetState(canBeReset(currentSCKey));
 		changeCurrentSC(newStyleCards);
 		saveMaxiStyleCards(newStyleCards);
 		setIsSaveDisabled(true);
@@ -341,7 +347,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 							}}
 						/>
 						<Button
-							disabled={!canBeResettedState}
+							disabled={!canBeResetState}
 							className='maxi-style-cards__sc__more-sc--reset'
 							onClick={() => {
 								if (
@@ -394,7 +400,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 								}
 							}}
 						>
-							<Icon icon={SCdelete} />
+							<Icon icon={SCDelete} />
 						</Button>
 					</div>
 					<div className='maxi-style-cards__sc__actions'>
@@ -446,7 +452,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 										)
 									)
 								) {
-									applyCurrentSCglobally();
+									applyCurrentSCGlobally();
 									showMaxiSCAppliedActiveSnackbar(
 										stateSC.name
 									);
@@ -488,8 +494,16 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 											status: '',
 											styleCard: { dark: {}, light: {} },
 											styleCardDefaults: {
-												...stateSC.styleCard,
-												...stateSC.styleCardDefaults,
+												dark: {
+													...stateSC.styleCardDefaults
+														.dark,
+													...stateSC.styleCard.dark,
+												},
+												light: {
+													...stateSC.styleCardDefaults
+														.light,
+													...stateSC.styleCard.light,
+												},
 											},
 										};
 										saveImportedStyleCard(newStyleCard);
@@ -558,7 +572,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 										SC={stateSC}
 										SCStyle='light'
 										onChangeValue={onChangeValue}
-										addActiveSCclass={addActiveSCclass}
+										addActiveSCClass={addActiveSCClass}
 										deviceType={deviceType}
 										currentKey={currentSCKey}
 									/>
@@ -571,7 +585,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 										SC={stateSC}
 										SCStyle='dark'
 										onChangeValue={onChangeValue}
-										addActiveSCclass={addActiveSCclass}
+										addActiveSCClass={addActiveSCClass}
 										deviceType={deviceType}
 										currentKey={currentSCKey}
 									/>

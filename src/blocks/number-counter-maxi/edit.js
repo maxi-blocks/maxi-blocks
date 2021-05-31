@@ -4,13 +4,12 @@
 import { compose } from '@wordpress/compose';
 import { withSelect } from '@wordpress/data';
 import { useState, useEffect, useRef } from '@wordpress/element';
-import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent, Toolbar } from '../../components';
+import { MaxiBlockComponent, Toolbar, Button } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';

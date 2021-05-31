@@ -231,9 +231,8 @@ const TypographyControl = withFormatValue(props => {
 
 	const { activeSC, winWidth, maxiBreakpoints } = useSelect(select => {
 		const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
-		const { receiveMaxiSettings, receiveMaxiBreakpoints } = select(
-			'maxiBlocks'
-		);
+		const { receiveMaxiSettings, receiveMaxiBreakpoints } =
+			select('maxiBlocks');
 
 		const activeSC = receiveMaxiActiveStyleCard()?.value || {};
 
@@ -646,8 +645,8 @@ const TypographyControl = withFormatValue(props => {
 					label={__('Text Advanced Options', 'maxi-blocks')}
 					selected={showTextOptions}
 					options={[
-						{ label: __('No', 'maxi-blocks'), value: 0 },
 						{ label: __('Yes', 'maxi-blocks'), value: 1 },
+						{ label: __('No', 'maxi-blocks'), value: 0 },
 					]}
 					onChange={() => {
 						changeShowTextOptions(!showTextOptions);

@@ -16,7 +16,7 @@ export { default as colorWheel } from './color-wheel';
 export { default as content } from './content';
 export { default as cursor } from './cursor';
 export { default as dashed } from './dashed';
-export { default as SCdelete } from './delete';
+export { default as SCDelete } from './delete';
 export { default as desktop } from './desktop';
 export { default as divider } from './divider';
 export { default as dotted } from './dotted';

@@ -3,12 +3,7 @@
  */
 import { dispatch } from '@wordpress/data';
 import { Component, createRef } from '@wordpress/element';
-import {
-	Icon,
-	Popover,
-	withFocusOutside,
-	Tooltip,
-} from '@wordpress/components';
+import { Icon, Popover, Tooltip } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -45,14 +40,34 @@ class ToolbarPopover extends Component {
 		this.ref = createRef();
 	}
 
-	handleFocusOutside() {
-		this.setState({
-			isOpen: false,
-		});
+	/**
+	 * Ensures the popover closes when clicking outside
+	 */
+	onClickOutside() {
+		if (
+			this.ref.current.ownerDocument.querySelectorAll(
+				'.toolbar-item__popover'
+			).length >= 2
+		)
+			this.state.onClose();
 	}
 
 	onToggle() {
 		const { isOpen } = this.state;
+		const { defaultView: win } = this.ref.current.ownerDocument;
+
+		if (!isOpen)
+			win.addEventListener(
+				'click',
+				this.onClickOutside.bind(this),
+				false
+			);
+		else
+			win.removeEventListener(
+				'click',
+				this.onClickOutside.bind(this),
+				false
+			);
 
 		this.setState({
 			isOpen: !isOpen,
@@ -79,43 +94,48 @@ class ToolbarPopover extends Component {
 		);
 
 		return (
-			<ToolbarContext.Provider value={{ isOpen, onClose }}>
-				<Tooltip text={tooltip} position='bottom center'>
-					<Button
-						className={classes}
-						onClick={() => this.onToggle()}
-						aria-expanded={isOpen}
-						action='popup'
-					>
-						<Icon className='toolbar-item__icon' icon={icon} />
-					</Button>
-				</Tooltip>
-				{isOpen && children && (
-					<Popover
-						className='toolbar-item__popover'
-						noArrow={false}
-						onFocusOutside={() => this.handleFocusOutside()}
-						position='top center'
-						isAlternate
-						shouldAnchorIncludePadding
-					>
-						{children}
-						{!!advancedOptions && (
-							<Button
-								className='toolbar-item__popover__advanced-button'
-								icon={toolbarAdvancedSettings}
-								onClick={() =>
-									openGeneralSidebar(
-										'edit-post/block'
-									).then(() => openSidebar(advancedOptions))
-								}
-							/>
-						)}
-					</Popover>
-				)}
-			</ToolbarContext.Provider>
+			<div ref={this.ref}>
+				<ToolbarContext.Provider value={{ isOpen, onClose }}>
+					<Tooltip text={tooltip} position='bottom center'>
+						<Button
+							className={classes}
+							onClick={() => this.onToggle()}
+							aria-expanded={isOpen}
+							action='popup'
+						>
+							<Icon className='toolbar-item__icon' icon={icon} />
+						</Button>
+					</Tooltip>
+					{isOpen && children && (
+						<Popover
+							className='toolbar-item__popover'
+							noArrow={false}
+							anchorRef={this.ref.current}
+							onClose={onClose}
+							position='top center'
+							isAlternate
+							shouldAnchorIncludePadding
+						>
+							<div>{children}</div>
+							{!!advancedOptions && (
+								<Button
+									className='toolbar-item__popover__advanced-button'
+									icon={toolbarAdvancedSettings}
+									onClick={() =>
+										openGeneralSidebar(
+											'edit-post/block'
+										).then(() =>
+											openSidebar(advancedOptions)
+										)
+									}
+								/>
+							)}
+						</Popover>
+					)}
+				</ToolbarContext.Provider>
+			</div>
 		);
 	}
 }
 
-export default withFocusOutside(ToolbarPopover);
+export default ToolbarPopover;

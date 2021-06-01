@@ -94,7 +94,7 @@ const styleGenerator = (styles, breakpoints, currentBreakpoint) => {
 						target,
 						getResponsiveStyles(content),
 						breakpoint,
-						breakpoints[breakpoint]
+						breakpoints[breakpoint !== 'xxl' ? breakpoint : 'xl']
 					);
 					if (breakpoint === 'general')
 						response += styleStringGenerator(

@@ -142,12 +142,13 @@ class MaxiBlocks_StyleCards {
 						}
 					}
 
-					if ($SC[$style]["$element-color-global"])
+					if ($SC[$style]["$element-color-global"] && !empty($SC[$style]["$element-color"]))
 						$response .= "--maxi-$style-$element-color: " . $SC[$style]["$element-color"] . ';';
 
 					if (
 						$element === 'button' &&
-						$SC[$style]["$element-background-color-global"]
+						$SC[$style]["$element-background-color-global"] &&
+						!empty($SC[$style]["$element-background-color"])
 					)
 						$response .= "--maxi-$style-$element-background-color: " . $SC[$style]["$element-background-color"] . ';';
 				}

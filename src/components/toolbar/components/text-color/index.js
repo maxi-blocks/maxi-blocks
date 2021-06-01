@@ -111,6 +111,7 @@ const TextColor = withFormatValue(props => {
 					onChangePalette={val => onChange(val)}
 					deviceType={breakpoint}
 					clientId={clientId}
+					textLevel={textLevel}
 				/>
 			</div>
 		</ToolbarPopover>

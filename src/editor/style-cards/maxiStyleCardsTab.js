@@ -116,6 +116,13 @@ const MaxiStyleCardsTab = ({
 							options={options}
 							onChange={val => {
 								onChangeValue(firstColorGlobal, val, SCStyle);
+
+								if (isEmpty(processAttribute(firstColor)))
+									onChangeValue(
+										firstColor,
+										processAttribute('color-3'),
+										SCStyle
+									);
 							}}
 						/>
 					)}
@@ -126,7 +133,6 @@ const MaxiStyleCardsTab = ({
 								className={`maxi-style-cards-control__sc__${firstColor}--${SCStyle}`}
 								color={
 									processAttribute(firstColor) ||
-									processAttribute(`${firstColor}-old`) ||
 									getStyleCardAttr(
 										firstColorDefault,
 										SCStyle,
@@ -188,6 +194,13 @@ const MaxiStyleCardsTab = ({
 							options={options}
 							onChange={val => {
 								onChangeValue(secondColorGlobal, val, SCStyle);
+
+								if (isEmpty(processAttribute(secondColor)))
+									onChangeValue(
+										secondColor,
+										processAttribute('color-4'),
+										SCStyle
+									);
 							}}
 						/>
 					)}
@@ -199,7 +212,6 @@ const MaxiStyleCardsTab = ({
 								className={`maxi-style-cards-control__sc__${secondColor}--${SCStyle}`}
 								color={
 									processAttribute(secondColor) ||
-									processAttribute(`${secondColor}-old`) ||
 									getStyleCardAttr(
 										secondColorDefault,
 										SCStyle,
@@ -257,9 +269,7 @@ const MaxiStyleCardsTab = ({
 									className={`maxi-style-cards-control__sc__h${item}-color--${SCStyle}`}
 									color={
 										processAttribute(`h${item}-color`) ||
-										processAttribute(
-											`h${item}-color-old`
-										) ||
+										processAttribute() ||
 										getStyleCardAttr(
 											'color-5',
 											SCStyle,

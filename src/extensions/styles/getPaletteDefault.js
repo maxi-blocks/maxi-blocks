@@ -3,7 +3,7 @@ const getPaletteDefault = (
 	blockName = '',
 	textLevel = 'p'
 ) => {
-	let defaultValue = '';
+	let defaultValue = 1;
 
 	if (colorPaletteType === 'typography') {
 		if (

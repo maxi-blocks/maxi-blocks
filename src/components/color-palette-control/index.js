@@ -2,7 +2,7 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select } from '@wordpress/data';
+import { select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -15,7 +15,7 @@ import { getPaletteDefault, getBlockStyle } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -37,6 +37,38 @@ const ColorPaletteControl = props => {
 		clientId,
 	} = props;
 
+	const currentBlockName = select('core/block-editor').getBlockName(clientId);
+
+	const { activeSC } = useSelect(select => {
+		const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
+
+		const activeSC = receiveMaxiActiveStyleCard()?.value || {};
+
+		return {
+			activeSC,
+		};
+	});
+
+	const currentShortBlockName = currentBlockName.substring(
+		12,
+		currentBlockName.lastIndexOf('-maxi')
+	);
+
+	const paletteStatus = !isEmpty(activeSC)
+		? activeSC.styleCard[`${getBlockStyle(clientId)}`][
+				`${
+					currentShortBlockName === 'text'
+						? textLevel
+						: currentShortBlockName
+				}-${
+					colorPaletteType === 'typography' ||
+					colorPaletteType === 'divider'
+						? 'color'
+						: `${colorPaletteType}-color`
+				}-global`
+		  ]
+		: false;
+
 	const classes = classnames(
 		`maxi-color-palette-control maxi-color-palette--${getBlockStyle(
 			clientId
@@ -44,7 +76,10 @@ const ColorPaletteControl = props => {
 		className
 	);
 
-	const currentBlockName = select('core/block-editor').getBlockName(clientId);
+	const paletteClasses = classnames(
+		'maxi-sc-color-palette',
+		paletteStatus && 'palette-disabled'
+	);
 
 	const currentItem = !isNil(
 		props[
@@ -137,7 +172,7 @@ const ColorPaletteControl = props => {
 					className='maxi-color-palette-control__palette-label'
 					label={paletteLabel ? `${paletteLabel} Colour` : ''}
 				>
-					<div className='maxi-sc-color-palette'>
+					<div className={paletteClasses}>
 						{[1, 2, 3, 4, 5, 6, 7].map(item => (
 							<div
 								key={`maxi-sc-color-palette__box__${item}`}

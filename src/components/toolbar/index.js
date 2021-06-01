@@ -260,6 +260,7 @@ const MaxiToolbar = memo(
 								isList={isList}
 								typeOfList={typeOfList}
 								clientId={clientId}
+								textLevel={textLevel}
 							/>
 							<Alignment
 								blockName={name}

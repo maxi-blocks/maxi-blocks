@@ -151,7 +151,7 @@
 					left: -85px;
 					right: unset;
 				}
-				.components-base-control {
+				.maxi-base-control {
 					width: 60px;
 					margin-top: 5px;
 				}
@@ -173,7 +173,7 @@
 				display: flex;
 				flex-direction: column;
 				align-items: flex-end;
-				.components-base-control {
+				.maxi-base-control {
 					width: 61px;
 					margin: 5px 0 0 !important;
 					&__field {
@@ -202,12 +202,8 @@
 				left: 0;
 			}
 
-			.components-maxi-control__reset-button {
-				width: 31px;
-				height: 31px;
-				margin: 0;
-			}
-			button[type='button'] {
+			button[type='button'],
+			button[type='reset'] {
 				border: 2px solid #dddfe1;
 				border-radius: 5px;
 				width: 31px;
@@ -225,6 +221,9 @@
 					height: 18px;
 				}
 			}
+			button[type='reset'] {
+				margin-right: 0;
+			}
 		}
 	}
 	&__rotate-control {
@@ -236,12 +235,12 @@
 			margin-bottom: 15px;
 			&:last-child {
 				margin: 0;
-				.components-base-control__field {
+				.maxi-base-control__field {
 					margin-bottom: 0;
 				}
 			}
 			&__label,
-			.components-base-control__field {
+			.maxi-base-control__field {
 				width: 100%;
 			}
 			&__range {
@@ -256,7 +255,7 @@
 					padding-right: 8px !important;
 				}
 			}
-			& .components-maxi-control__reset-button {
+			& .maxi-maxi-control__reset-button {
 				margin-left: 5px;
 			}
 		}

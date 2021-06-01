@@ -8,10 +8,10 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 
-const WarningBox = ({ className, message }) => {
+const InfoBox = ({ className, message }) => {
 	const classes = classnames('maxi-warning-box', className);
 
 	return <div className={classes}>{message}</div>;
 };
 
-export default WarningBox;
+export default InfoBox;

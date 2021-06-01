@@ -29,7 +29,7 @@ import {
 	TextControl,
 	TransformControl,
 	TypographyControl,
-	WarningBox,
+	InfoBox,
 	ZIndexControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
@@ -62,7 +62,7 @@ const Inspector = props => {
 	return (
 		<InspectorControls>
 			{deviceType !== 'general' && (
-				<WarningBox
+				<InfoBox
 					message={__(
 						'You are currently in responsive editing mode. Select Base to continue editing general settings.',
 						'maxi-blocks'

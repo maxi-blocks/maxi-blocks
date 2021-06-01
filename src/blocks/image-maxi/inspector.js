@@ -34,7 +34,7 @@ import {
 	SVGDefaultsDisplayer,
 	TransformControl,
 	TypographyControl,
-	WarningBox,
+	InfoBox,
 	ZIndexControl,
 	TextareaControl,
 } from '../../components';
@@ -139,7 +139,7 @@ const Inspector = props => {
 	return (
 		<InspectorControls>
 			{deviceType !== 'general' && (
-				<WarningBox
+				<InfoBox
 					message={__(
 						'You are currently in responsive editing mode. Select Base to continue editing general settings.',
 						'maxi-blocks'

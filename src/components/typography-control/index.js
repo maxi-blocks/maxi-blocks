@@ -231,8 +231,9 @@ const TypographyControl = withFormatValue(props => {
 
 	const { activeSC, winWidth, maxiBreakpoints } = useSelect(select => {
 		const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
-		const { receiveMaxiSettings, receiveMaxiBreakpoints } =
-			select('maxiBlocks');
+		const { receiveMaxiSettings, receiveMaxiBreakpoints } = select(
+			'maxiBlocks'
+		);
 
 		const activeSC = receiveMaxiActiveStyleCard()?.value || {};
 

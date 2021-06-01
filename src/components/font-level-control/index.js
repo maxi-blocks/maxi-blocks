@@ -8,7 +8,6 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '../button';
-import { defaultTypography } from '../../extensions/text';
 import {
 	getGroupAttributes,
 	getDefaultAttribute,
@@ -71,12 +70,7 @@ const FontLevelControl = props => {
 			fontOptResponse = state[value];
 			fontOptResponseHover = state[`${value}Hover`];
 		} else if (!isNil(fontOptions)) {
-			const oldFontOptions = { ...fontOptions };
-
-			fontOptResponse = {
-				...oldFontOptions,
-				...defaultTypography[value],
-			};
+			fontOptResponse = { ...fontOptions };
 			fontOptResponseHover = getDefaultAttribute('typographyHover');
 		}
 

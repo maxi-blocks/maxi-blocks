@@ -3,7 +3,6 @@
  */
 import getLastBreakpointAttribute from '../../styles/getLastBreakpointAttribute';
 import getCurrentFormatClassName from './getCurrentFormatClassName';
-import defaultTypography from '../defaults';
 import getCustomFormat from './getCustomFormat';
 import { getTypographyFromSC } from '../../style-cards';
 
@@ -96,18 +95,6 @@ const getCustomFormatValue = ({
 	);
 
 	if (defaultSCValue) return defaultSCValue;
-
-	// Default value
-	const defaultValue = getLastBreakpointAttribute(
-		prop,
-		breakpoint,
-		defaultTypography[textLevel],
-		isHover,
-		false,
-		avoidXXL
-	);
-
-	if (defaultValue) return defaultValue;
 
 	return '';
 };

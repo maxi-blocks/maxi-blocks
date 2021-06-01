@@ -15,7 +15,7 @@ import { getPaletteDefault, getBlockStyle } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, find } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -53,19 +53,21 @@ const ColorPaletteControl = props => {
 		12,
 		currentBlockName.lastIndexOf('-maxi')
 	);
-	const paletteStatus =
-		activeSC.styleCard[`${getBlockStyle(clientId)}`][
-			`${
-				currentShortBlockName === 'text'
-					? textLevel
-					: currentShortBlockName
-			}-${
-				colorPaletteType === 'typography' ||
-				colorPaletteType === 'divider'
-					? 'color'
-					: `${colorPaletteType}-color`
-			}-global`
-		];
+
+	const paletteStatus = !isEmpty(activeSC)
+		? activeSC.styleCard[`${getBlockStyle(clientId)}`][
+				`${
+					currentShortBlockName === 'text'
+						? textLevel
+						: currentShortBlockName
+				}-${
+					colorPaletteType === 'typography' ||
+					colorPaletteType === 'divider'
+						? 'color'
+						: `${colorPaletteType}-color`
+				}-global`
+		  ]
+		: false;
 
 	const classes = classnames(
 		`maxi-color-palette-control maxi-color-palette--${getBlockStyle(

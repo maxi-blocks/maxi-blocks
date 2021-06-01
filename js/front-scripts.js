@@ -58,8 +58,12 @@ const getDeviceType = () => {
 	}
 	return 'desktop';
 };
+
 // Map
 Object.values(maxi_custom_data.custom_data).map(item => {
+	if (item['map-api-key'] === '' || !item.hasOwnProperty('map-api-key'))
+		return;
+
 	const script = document.createElement('script');
 	script.src = `https://maps.googleapis.com/maps/api/js?key=${item['map-api-key']}&callback=initMap`;
 	script.async = true;

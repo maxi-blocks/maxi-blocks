@@ -7,7 +7,6 @@ import { __, sprintf } from '@wordpress/i18n';
  * Internal dependencies
  */
 import Button from '../../../button';
-import { defaultTypography } from '../../../../extensions/text';
 import BaseControl from '../../../base-control';
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
@@ -121,10 +120,9 @@ const TextOptions = withFormatValue(props => {
 							className='components-maxi-control__reset-button'
 							onClick={() => {
 								onChangeFormat({
-									'font-size':
-										defaultTypography[textLevel][
-											`font-size-${breakpoint}`
-										],
+									'font-size': getDefaultAttribute(
+										`'font-size'-${breakpoint}`
+									),
 								});
 							}}
 							isSmall
@@ -159,10 +157,9 @@ const TextOptions = withFormatValue(props => {
 							className='components-maxi-control__reset-button'
 							onClick={() => {
 								onChangeFormat({
-									'line-height':
-										defaultTypography[textLevel][
-											`line-height-${breakpoint}`
-										],
+									'line-height': getDefaultAttribute(
+										`'line-height'-${breakpoint}`
+									),
 								});
 							}}
 							isSmall
@@ -197,10 +194,9 @@ const TextOptions = withFormatValue(props => {
 							className='components-maxi-control__reset-button'
 							onClick={() => {
 								onChangeFormat({
-									'letter-spacing':
-										defaultTypography[textLevel][
-											`letter-spacing-${breakpoint}`
-										],
+									'letter-spacing': getDefaultAttribute(
+										`'letter-spacing'-${breakpoint}`
+									),
 								});
 							}}
 							isSmall

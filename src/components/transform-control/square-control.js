@@ -547,14 +547,13 @@ const SquareControl = props => {
 							isPrimary={sync}
 							aria-pressed={sync}
 							onClick={() => changeSync(!sync)}
-							isSmall
 						>
 							{syncIcon}
 						</Button>
 					</Tooltip>
 				)}
 				<Button
-					className='components-maxi-control__reset-button'
+					aria-label={__('Reset', 'maxi-blocks')}
 					onClick={onReset}
 					action='reset'
 					type='reset'

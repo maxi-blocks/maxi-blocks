@@ -31,10 +31,7 @@ import {
 	TransformControl,
 	ZIndexControl,
 } from '../../components';
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Inspector

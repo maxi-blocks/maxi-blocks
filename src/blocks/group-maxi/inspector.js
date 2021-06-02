@@ -19,6 +19,7 @@ import {
 	DisplayControl,
 	EntranceAnimationControl,
 	FancyRadioControl,
+	FullSizeControl,
 	MotionControl,
 	OpacityControl,
 	ParallaxControl,
@@ -29,10 +30,7 @@ import {
 	TransformControl,
 	ZIndexControl,
 } from '../../components';
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Inspector
@@ -80,35 +78,47 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<FancyRadioControl
-													label={__(
-														'Full Width',
-														'maxi-blocks'
-													)}
-													selected={fullWidth}
-													options={[
-														{
-															label: __(
-																'No',
-																'maxi-blocks'
-															),
-															value: 'normal',
-														},
-														{
-															label: __(
-																'Yes',
-																'maxi-blocks'
-															),
-															value: 'full',
-														},
-													]}
-													optionType='string'
-													onChange={fullWidth =>
-														setAttributes({
-															fullWidth,
-														})
-													}
-												/>
+												<>
+													<FancyRadioControl
+														label={__(
+															'Full Width',
+															'maxi-blocks'
+														)}
+														selected={fullWidth}
+														options={[
+															{
+																label: __(
+																	'No',
+																	'maxi-blocks'
+																),
+																value: 'normal',
+															},
+															{
+																label: __(
+																	'Yes',
+																	'maxi-blocks'
+																),
+																value: 'full',
+															},
+														]}
+														optionType='string'
+														onChange={fullWidth =>
+															setAttributes({
+																fullWidth,
+															})
+														}
+													/>
+													<FullSizeControl
+														{...getGroupAttributes(
+															attributes,
+															'size'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												</>
 											),
 										},
 										deviceType === 'general' && {

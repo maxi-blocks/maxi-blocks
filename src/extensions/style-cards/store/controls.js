@@ -12,12 +12,12 @@ const controls = {
 			JSON.parse(sc)
 		);
 	},
-	async SAVE_STYLE_CARDS(action) {
+	async SAVE_STYLE_CARDS(styleCards) {
 		await apiFetch({
 			path: '/maxi-blocks/v1.0/style-cards/',
 			method: 'POST',
 			data: {
-				styleCards: JSON.stringify(action.styleCards),
+				styleCards: JSON.stringify(styleCards),
 			},
 		}).catch(err => {
 			console.error('Error saving Style Card. Code error: ', err);

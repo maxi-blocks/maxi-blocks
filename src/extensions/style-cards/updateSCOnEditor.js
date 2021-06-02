@@ -6,8 +6,7 @@ import { getLastBreakpointAttribute } from '../styles';
 /**
  * External dependencies
  */
-import { times } from 'lodash';
-import { isEmpty } from '@wordpress/rich-text';
+import { times, isEmpty } from 'lodash';
 
 export const getSCVariablesObject = styleCards => {
 	const response = {};

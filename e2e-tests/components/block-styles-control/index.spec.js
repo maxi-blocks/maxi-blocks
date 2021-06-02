@@ -22,7 +22,7 @@ describe('block styles control', () => {
 		await ensureSidebarOpened();
 
 		const input = await page.$(
-			'.maxi-block-style-control .components-select-control__input'
+			'.maxi-tab-content__box .maxi-block-style-control select'
 		);
 		await input.select('maxi-dark');
 

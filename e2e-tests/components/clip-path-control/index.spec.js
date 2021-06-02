@@ -52,14 +52,14 @@ describe('clip-path control', () => {
 			use => use[1].click()
 		);
 
-		const editPoints = accordionPanel.$$(
+		const editPoints = await accordionPanel.$$(
 			'.maxi-clip-path-control__handles .maxi-clip-path-controller .maxi-clip-path-controller__settings input'
 		);
 
-		const top = await editPoints[0];
-		const right = await editPoints[1];
-		const bottom = await editPoints[2];
-		const left = await editPoints[3];
+		const top = editPoints[0];
+		const right = editPoints[1];
+		const bottom = editPoints[2];
+		const left = editPoints[3];
 
 		await top.focus();
 		await pressKeyTimes('Backspace', '2');

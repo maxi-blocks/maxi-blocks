@@ -77,7 +77,7 @@ describe('axis control', () => {
 
 			// Resetting values
 			const resetButton = await axisControl.$(
-				'.components-base-control__field button'
+				'.maxi-axis-control .maxi-axis-control__header button'
 			);
 			await resetButton.click();
 
@@ -116,3 +116,5 @@ describe('axis control', () => {
 		expect(areAllAuto).toStrictEqual(true);
 	});
 });
+// puedes ver la consola? si, es el mismo error que ayer con el checkbox => yep pues esta repe era solo enseñartelo si quieres lo miramos ahora o mas tarde
+// Este error me lo miraré yo desde mi local porque es muuuuu raro => okay esta en axis y en checkbox => coool!

@@ -1,13 +1,8 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
-import openSidebar from '../../utils/openSidebar';
-import { getBlockAttributes } from '../../utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('border control', () => {
 	beforeEach(async () => {
@@ -15,27 +10,33 @@ describe('border control', () => {
 	});
 	it('checking the border control', async () => {
 		await insertBlock('Text Maxi');
+
 		const borderAccordion = await openSidebar(page, 'border');
-		await borderAccordion.$$(
-			'.maxi-border-control .maxi-default-styles-control button'
-			// button => button.click()
+		const borderButton = await borderAccordion.$$(
+			'.maxi-tabs-content .maxi-default-styles-control button'
 		);
 
 		const expectAttributes = ['solid', 'dashed', 'dotted', undefined];
 
-		for (let i = 0; i < borderAccordion.length; i++) {
-			const borderStyle = await borderAccordion[i !== 3 ? i + 1 : 0];
+		for (let i = 0; i < expectAttributes.length; i++) {
+			const expectResult = expectAttributes[i];
 
-			await borderStyle.click();
+			await page.$$eval(
+				'.maxi-border-control .maxi-default-styles-control button', // AHORA!!!1 :D
+				(buttons, i) => buttons[i].click(),
+				i // mea culpa.... hahahahahaha
+			);
+
 			const attributes = await getBlockAttributes();
 
 			expect(attributes['border-style-general']).toStrictEqual(
+				// no debería... pero ya lo revisarás. Eso es más facil. Seguimos!
 				expectAttributes[i]
 			);
 		}
 
 		const borderType = await borderAccordion.$(
-			'.maxi-border-control .maxi-border-control__type .maxi-base-control__field'
+			'.maxi-tabs-content .maxi-border-control__type .maxi-base-control__field select'
 		);
 		await borderType.select('groove');
 		const expectBorderType = 'groove';
@@ -46,23 +47,21 @@ describe('border control', () => {
 		);
 
 		// color
-
-		await page.$$eval('.maxi-color-control__color input', select =>
-			select[1].focus()
+		await page.$$eval(
+			'.maxi-border-control .maxi-color-palette-control .maxi-base-control__field .maxi-sc-color-palette div',
+			clickDiv => clickDiv[4].click()
 		);
 
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('FAFA03');
-		await page.keyboard.press('Enter');
+		// await page.waitForTimeout(1000);
 
-		await page.waitForTimeout(1000);
-
-		const expectedColorResult = 'rgba(250,250,3,1)';
+		const expectedColorResult = '4';
 
 		const colorAttributes = await getBlockAttributes();
 
-		expect(colorAttributes['border-color-general']).toStrictEqual(
+		expect(colorAttributes['palette-preset-border-color']).toStrictEqual(
 			expectedColorResult
 		);
+
+		// sin problema!
 	});
 });

@@ -54,22 +54,22 @@ describe('typography control', () => {
 
 		// Weight, Transform, Style, Decoration
 		const weightSelector = await accordionPanel.$(
-			'.maxi-typography-control__weight .maxi-base-control__field'
+			'.maxi-typography-control__weight .maxi-base-control__field select'
 		);
 		await weightSelector.select('300');
 
 		const transformSelector = await accordionPanel.$(
-			'.maxi-typography-control__transform .maxi-base-control__field'
+			'.maxi-typography-control__transform .maxi-base-control__field select'
 		);
 		await transformSelector.select('capitalize');
 
 		const fontStyleSelector = await accordionPanel.$(
-			'.maxi-typography-control__font-style .maxi-base-control__field'
+			'.maxi-typography-control__font-style .maxi-base-control__field select'
 		);
 		await fontStyleSelector.select('italic');
 
 		const decorationSelector = await accordionPanel.$(
-			'.maxi-typography-control__decoration .maxi-base-control__field'
+			'.maxi-typography-control__decoration .maxi-base-control__field select'
 		);
 		await decorationSelector.select('overline');
 
@@ -97,7 +97,7 @@ describe('typography control', () => {
 
 		// Text shadow
 		await accordionPanel.$$eval(
-			'.maxi-textshadow-control .components-base-control__field .components-radio-control__option label',
+			'.maxi-typography-control .maxi-textshadow-control .maxi-base-control__field label',
 			select => select[1].click()
 		);
 
@@ -129,6 +129,11 @@ describe('typography control', () => {
 		}
 		// size, Line height and Letter spacing
 
+		await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-fancy-radio-control .maxi-base-control__field label',
+			select => select[7].click() // holaaaa
+		);
+
 		// size
 		await accordionPanel.$eval(
 			'.maxi-typography-control__size input',
@@ -143,7 +148,7 @@ describe('typography control', () => {
 			select => select.focus()
 		);
 		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('40');
+		await page.keyboard.type('4');
 
 		// letter-spacing
 		await accordionPanel.$eval(
@@ -153,19 +158,20 @@ describe('typography control', () => {
 		await page.keyboard.type('10');
 
 		const stylesAttributes = await getBlockAttributes();
+		debugger;
 		const expectedResult = (({
-			'line-height-general': lineHeight,
-			'letter-spacing-general': letterSpacing,
-			'font-size-general': fontSize,
+			'line-height-m': lineHeight,
+			'letter-spacing-m': letterSpacing,
+			'font-size-m': fontSize,
 		}) => ({
-			'line-height-general': lineHeight,
-			'letter-spacing-general': letterSpacing,
-			'font-size-general': fontSize,
+			'line-height-m': lineHeight,
+			'letter-spacing-m': letterSpacing,
+			'font-size-m': fontSize,
 		}))(stylesAttributes);
 		const expectedAttributes = {
-			'line-height-general': 140,
-			'letter-spacing-general': 10,
-			'font-size-general': 19,
+			'line-height-m': 14,
+			'letter-spacing-m': 10,
+			'font-size-m': 19,
 		};
 		expect(expectedResult).toStrictEqual(expectedAttributes);
 	});

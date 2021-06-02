@@ -22,7 +22,7 @@ const attributes = {
 		default: 'normal',
 	},
 	...attributesData.map,
-	...attributesData.palette.marker,
+	...attributesData.palette,
 	...{
 		...attributesData.size,
 		'height-general': {

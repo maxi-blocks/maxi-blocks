@@ -3,14 +3,12 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select, useSelect, useDispatch } from '@wordpress/data';
-import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
-import FancyRadioControl from '../fancy-radio-control';
 import FontFamilySelector from '../font-family-selector';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
@@ -231,9 +229,8 @@ const TypographyControl = withFormatValue(props => {
 
 	const { activeSC, winWidth, maxiBreakpoints } = useSelect(select => {
 		const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
-		const { receiveMaxiSettings, receiveMaxiBreakpoints } = select(
-			'maxiBlocks'
-		);
+		const { receiveMaxiSettings, receiveMaxiBreakpoints } =
+			select('maxiBlocks');
 
 		const activeSC = receiveMaxiActiveStyleCard()?.value || {};
 
@@ -249,27 +246,6 @@ const TypographyControl = withFormatValue(props => {
 	});
 
 	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
-
-	const getIsTextOptionsOpen = () => {
-		const settings = ['font-size', 'line-height', 'letter-spacing'];
-
-		return breakpoints.some(breakpoint => {
-			return settings.some(setting => {
-				const value = getLastBreakpointAttribute(
-					`${prefix}${setting}`,
-					breakpoint.toLowerCase(),
-					typography,
-					isHover
-				);
-
-				return (!isNil(value) && !isEmpty(value)) || isNumber(value);
-			});
-		});
-	};
-
-	const [showTextOptions, changeShowTextOptions] = useState(
-		getIsTextOptionsOpen()
-	);
 
 	const classes = classnames('maxi-typography-control', className);
 
@@ -530,6 +506,35 @@ const TypographyControl = withFormatValue(props => {
 					type='text'
 				/>
 			)}
+			<SettingTabsControl
+				className='maxi-typography-control__text-options-tabs'
+				items={breakpoints.map(breakpoint => {
+					return {
+						label: breakpoint,
+						content: (
+							<TextOptions
+								getValue={getValue}
+								getDefault={getDefault}
+								onChangeFormat={onChangeFormat}
+								prefix={prefix}
+								minMaxSettings={minMaxSettings}
+								minMaxSettingsLetterSpacing={
+									minMaxSettingsLetterSpacing
+								}
+								breakpoint={breakpoint.toLowerCase()}
+								avoidXXL={!styleCards}
+							/>
+						),
+						showNotification: showNotification(breakpoint),
+						callback: () =>
+							styleCards
+								? setMaxiDeviceType(breakpoint.toLowerCase())
+								: null,
+					};
+				})}
+				forceTab={getTextOptionsTab()}
+			/>
+			<hr />
 			{!disableFontFamily &&
 				!disableColor &&
 				!styleCards &&
@@ -590,7 +595,9 @@ const TypographyControl = withFormatValue(props => {
 					},
 				]}
 				onChange={val => {
-					onChangeFormat({ [`${prefix}font-style`]: val });
+					onChangeFormat({
+						[`${prefix}font-style`]: val,
+					});
 				}}
 			/>
 			<SelectControl
@@ -625,6 +632,7 @@ const TypographyControl = withFormatValue(props => {
 					});
 				}}
 			/>
+			<hr />
 			{!hideTextShadow && (
 				<TextShadowControl
 					className='maxi-typography-control__text-shadow'
@@ -641,50 +649,6 @@ const TypographyControl = withFormatValue(props => {
 					)}
 				/>
 			)}
-			<div>
-				<FancyRadioControl
-					label={__('Text Advanced Options', 'maxi-blocks')}
-					selected={showTextOptions}
-					options={[
-						{ label: __('Yes', 'maxi-blocks'), value: 1 },
-						{ label: __('No', 'maxi-blocks'), value: 0 },
-					]}
-					onChange={() => {
-						changeShowTextOptions(!showTextOptions);
-					}}
-				/>
-				{showTextOptions && (
-					<SettingTabsControl
-						items={breakpoints.map(breakpoint => {
-							return {
-								label: breakpoint,
-								content: (
-									<TextOptions
-										getValue={getValue}
-										getDefault={getDefault}
-										onChangeFormat={onChangeFormat}
-										prefix={prefix}
-										minMaxSettings={minMaxSettings}
-										minMaxSettingsLetterSpacing={
-											minMaxSettingsLetterSpacing
-										}
-										breakpoint={breakpoint.toLowerCase()}
-										avoidXXL={!styleCards}
-									/>
-								),
-								showNotification: showNotification(breakpoint),
-								callback: () =>
-									styleCards
-										? setMaxiDeviceType(
-												breakpoint.toLowerCase()
-										  )
-										: null,
-							};
-						})}
-						forceTab={getTextOptionsTab()}
-					/>
-				)}
-			</div>
 		</div>
 	);
 });

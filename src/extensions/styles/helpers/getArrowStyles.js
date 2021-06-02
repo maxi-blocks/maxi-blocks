@@ -3,6 +3,7 @@
  */
 import getBoxShadowStyles from './getBoxShadowStyles';
 import getGroupAttributes from '../getGroupAttributes';
+import { getPaletteDefault } from '..';
 
 /**
  * External dependencies
@@ -15,7 +16,12 @@ export const getArrowBorderObject = props => {
 		general: {},
 	};
 
-	if (!isEmpty(props['border-color-general']))
+	if (!props['palette-custom-border-color']) {
+		const paletteColor =
+			props['palette-preset-border-color'] || getPaletteDefault('border');
+
+		response.general.background = `var(--maxi-light-color-${paletteColor})`;
+	} else if (!isEmpty(props['border-color-general']))
 		response.general.background = props['border-color-general'];
 
 	if (props['border-bottom-width-general']) {
@@ -100,9 +106,17 @@ export const getArrowColorObject = props => {
 		general: {},
 	};
 
-	if (props['background-active-media'] === 'color')
-		response.general['background-color'] = props['background-color'];
-	else response.general.background = props['background-gradient'];
+	if (props['background-active-media'] === 'color') {
+		if (!props['palette-custom-background-color']) {
+			const paletteColor =
+				props['palette-preset-background-color'] ||
+				getPaletteDefault('background');
+
+			response.general[
+				'background-color'
+			] = `var(--maxi-light-color-${paletteColor})`;
+		} else response.general['background-color'] = props['background-color'];
+	} else response.general.background = props['background-gradient'];
 
 	return response;
 };
@@ -128,6 +142,7 @@ const getArrowStyles = props => {
 						'background',
 						'backgroundColor',
 						'backgroundGradient',
+						'palette',
 					])
 				),
 			},
@@ -139,6 +154,7 @@ const getArrowStyles = props => {
 						'border',
 						'borderWidth',
 						'borderRadius',
+						'palette',
 					])
 				),
 			},

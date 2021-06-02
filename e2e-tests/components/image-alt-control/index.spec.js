@@ -18,7 +18,7 @@ describe('image alt', () => {
 		await insertBlock('Image Maxi');
 		const accordionPanel = await openSidebar(page, 'image alt tag');
 		const selector = await accordionPanel.$(
-			'.maxi-image-alt-control .components-select-control__input'
+			'.maxi-image-alt-control .maxi-base-control__field select'
 		);
 		await selector.select('custom');
 
@@ -28,7 +28,7 @@ describe('image alt', () => {
 		expect(attributes.altSelector).toStrictEqual(expectAttributes);
 
 		const insertText = await accordionPanel.$eval(
-			'.maxi-image-alt-control .components-base-control .components-text-control__input',
+			'.maxi-image-alt-control maxi-text-control .maxi-text-control__input',
 			select => select.focus()
 		);
 		await page.keyboard.type('testing alt tag');

@@ -20,7 +20,7 @@ describe('divider control', () => {
 		await page.$eval('.toolbar-item__divider-line', button =>
 			button.click()
 		);
-		debugger;
+
 		await page.waitForSelector(
 			'.components-popover__content .toolbar-item__divider-line__popover .maxi-default-styles-control'
 		);

@@ -20,10 +20,10 @@ describe('animation control', () => {
 		);
 
 		const animationType = await accordionPanel.$(
-			'.maxi-entrance-animation-control .components-select-control__input'
+			'.maxi-entrance-animation-control .maxi-base-control__field select'
 		);
 		await animationType.select('bounce');
-
+		// este select supongo
 		const animationExpect = 'bounce';
 		const animationAttributes = await getBlockAttributes();
 
@@ -32,20 +32,22 @@ describe('animation control', () => {
 		);
 		// duration and delay
 		const animationSettings = await accordionPanel.$$(
-			'.maxi-entrance-animation-control .maxi-size-control input'
+			'.maxi-base-control.maxi-size-control .maxi-base-control__field input'
 		);
 		const duration = await animationSettings[0];
 		const delay = await animationSettings[2];
 
 		await duration.focus();
-		await page.keyboard.press('1');
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.press('7');
 
 		await delay.focus();
-		await page.keyboard.press('3');
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.press('5');
 
 		const expectedSettings = {
-			'entrance-delay': 13,
-			'entrance-duration': 11,
+			'entrance-delay': 5,
+			'entrance-duration': 7,
 		};
 		const animationSettingsAttributes = await getBlockAttributes();
 		const pageSettings = (({
@@ -59,3 +61,4 @@ describe('animation control', () => {
 		expect(pageSettings).toStrictEqual(expectedSettings);
 	});
 });
+// consola 👍

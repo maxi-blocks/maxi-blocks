@@ -16,12 +16,18 @@ describe('color control', () => {
 	it('checking the color control', async () => {
 		await insertBlock('Text Maxi');
 
-		await openSidebar(page, 'background');
+		const accordionPanel = await openSidebar(page, 'background');
 
-		await page.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control',
-			fancyRadioControls =>
-				fancyRadioControls[1].querySelectorAll('input')[1].click()
+		await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-fancy-radio-control .maxi-base-control__field label',
+			fancyRadioControls => fancyRadioControls[14].click()
+			/* fancyRadioControls =>
+				fancyRadioControls[1].querySelectorAll('input')[1].click() */
+		);
+
+		await accordionPanel.$$eval(
+			'.maxi-color-palette-control .maxi-fancy-radio-control label',
+			select => select[4].click()
 		);
 
 		await page.$eval(

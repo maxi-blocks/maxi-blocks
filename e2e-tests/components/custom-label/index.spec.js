@@ -20,7 +20,7 @@ describe('position control', () => {
 			'custom classes'
 		);
 		await accordionPanel.$eval(
-			'.maxi-accordion-control__item__panel .components-base-control__field .components-text-control__input',
+			'.maxi-additional__css-classes .maxi-base-control__field input',
 			select => select.focus()
 		);
 		await page.keyboard.type('Column');

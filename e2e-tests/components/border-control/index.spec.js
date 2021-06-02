@@ -35,7 +35,7 @@ describe('border control', () => {
 		}
 
 		const borderType = await borderAccordion.$(
-			'.components-base-control.maxi-border-control__type .components-select-control__input'
+			'.maxi-border-control .maxi-border-control__type .maxi-base-control__field'
 		);
 		await borderType.select('groove');
 		const expectBorderType = 'groove';
@@ -64,66 +64,5 @@ describe('border control', () => {
 		expect(colorAttributes['border-color-general']).toStrictEqual(
 			expectedColorResult
 		);
-		/*	
-		// axis panel
-		const axisControls = await accordionPanel.$$(
-			'.maxi-tabs-content .maxi-border-control .maxi-axis-control'
-		);
-
-		for (let i = 0; i < axisControls.length; i++) {
-			const axisControl = await axisControls[i];
-
-			const inputs = await axisControl.$$(
-				'.maxi-axis-control__content__item__input'
-			);
-
-			// Set value to inputs
-			for (let j = 0; j < inputs.length; j++) {
-				const input = inputs[j];
-
-				await input.focus();
-				await page.keyboard.press((j + 1).toString());
-			}
-			
-			// Change unit selector
-			const unitSelector = await axisControl.$(
-				'.maxi-axis-control__units select'
-			);
-			const unitOptions = await unitSelector.$$('options');
-			await unitSelector.select('%');
-
-			const firstAttributes = await getBlockAttributes();
-
-			const expectedAttributes = {
-				'border-bottom-left-radius-general': 4,
-				'border-bottom-right-radius-general': 3,
-				'border-bottom-width-general': 3,
-				'border-left-width-general': 4,
-				'border-right-width-general': 2,
-				'border-top-left-radius-general': 1,
-				'border-top-right-radius-general': 2,
-				'border-top-width-general': 1,
-				'border-unit-radius-general': '%',
-				'border-unit-radius-general-hover': '%',
-			};
-
-			Object.entries(expectedAttributes).forEach(([key, value]) => {
-				expect(firstAttributes[key].toString()).toBe(value);
-			});
-
-			// Resetting values
-			const resetButton = await axisControl.$(
-				'.components-base-control__field button'
-			);
-			await resetButton.click();
-
-			const thirdAttributes = await getBlockAttributes();
-
-			Object.keys(expectedAttributes).forEach(key => {
-				if (key !== `${instances[i]}-unit-general`)
-					expect(thirdAttributes[key]).toBe(undefined);
-				else expect(thirdAttributes[key]).toBe('px');
-			}); */
-		// }
 	});
 });

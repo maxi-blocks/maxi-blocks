@@ -27,7 +27,7 @@ describe('checkbox control', () => {
 		for (const checkBox of checkBoxes) {
 			await checkBox.click();
 		}
-
+		// estas? si => consola
 		const marginKeys = [
 			'margin-bottom-general',
 			'margin-left-general',
@@ -40,7 +40,7 @@ describe('checkbox control', () => {
 		const areAllAuto = marginKeys.every(key => {
 			return fourthAttributes[key] === 'auto';
 		});
-
+		// ["The specified value \"auto\" cannot be parsed, or is out of range."] => ni idea colega lol => es rarismo => siguiente, ya lo miraremos
 		expect(areAllAuto).toStrictEqual(true);
 	});
 });

@@ -20,19 +20,15 @@ describe('gradient control', () => {
 		await insertBlock('Group Maxi');
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--full-width .components-base-control__field input',
-			select => select[4].click()
+			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
+			select => select[1].click()
 		);
 
 		const { x, y } = await page.$eval(
-			'.maxi-background-control .components-custom-gradient-picker__gradient-bar',
+			'.maxi-gradient-control .maxi-gradient-control__gradient .components-custom-gradient-picker__markers-container',
 			gradientBar => {
-				const {
-					x,
-					y,
-					width,
-					height,
-				} = gradientBar.getBoundingClientRect();
+				const { x, y, width, height } =
+					gradientBar.getBoundingClientRect();
 
 				const xPos = x + width / 2;
 				const yPos = y + height / 2;

@@ -24,7 +24,7 @@ describe('boxShadow control', () => {
 
 		const expectAttributes = {
 			'box-shadow-blur-general': 87,
-			'box-shadow-color-general': 'rgb(236, 241, 246)',
+			'box-shadow-color-general': 'var(--maxi-shadow-color)',
 			'box-shadow-horizontal-general': 0,
 			'box-shadow-spread-general': 10,
 			'box-shadow-status-hover': false,

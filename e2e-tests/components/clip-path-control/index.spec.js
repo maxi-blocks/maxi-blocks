@@ -18,12 +18,11 @@ describe('clip-path control', () => {
 		// Use clip-path to create a triangle
 
 		const useClipPath = await accordionPanel.$eval(
-			'.maxi-clip-path-control .components-base-control__field .components-radio-control__option label',
+			'.maxi-clip-path-control .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
 			use => use.click()
 		);
-		await accordionPanel.$$eval(
-			'.maxi-clip-path-control .clip-path-defaults button',
-			click => click[0].click()
+		await accordionPanel.$$eval('.clip-path-defaults button', click =>
+			click[0].click()
 		);
 
 		const triangleExpect = 'polygon(50% 0%, 0% 100%, 100% 100%)';
@@ -33,12 +32,12 @@ describe('clip-path control', () => {
 		// Transform the triangle into a square
 
 		await accordionPanel.$$eval(
-			'.maxi-clip-path-control .components-base-control__field .components-radio-control__option label',
+			'.maxi-base-control__field .maxi-radio-control__option label',
 			use => use[2].click()
 		);
 
 		const selectType = await accordionPanel.$(
-			'.maxi-clip-path-control .maxi-clip-path-control__handles .components-select-control__input'
+			'.maxi-clip-path-control__handles .maxi-base-control__field select'
 		);
 		await selectType.select('inset');
 
@@ -49,18 +48,13 @@ describe('clip-path control', () => {
 		// Edit the square
 
 		await accordionPanel.$$eval(
-			'.maxi-clip-path-control .components-base-control__field .components-radio-control__option label',
-			use => use[5].click()
+			'.maxi-clip-path-control__handles .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
+			use => use[1].click()
 		);
 
 		const editPoints = accordionPanel.$$(
-			'.maxi-clip-path-control .maxi-clip-path-controller input'
+			'.maxi-clip-path-control__handles .maxi-clip-path-controller .maxi-clip-path-controller__settings input'
 		);
-
-		/* for (const editpoint of editPoints) {
-			await editpoint.focus();
-			await page.keyboard.type('1');
-		} */
 
 		const top = await editPoints[0];
 		const right = await editPoints[1];

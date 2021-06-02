@@ -18,8 +18,8 @@ describe('full size control', () => {
 
 		const accordionPanel = await openSidebar(page, 'width height');
 		await accordionPanel.$$eval(
-			'.maxi-accordion-control__item__panel .maxi-fancy-radio-control label',
-			click => click[2].click()
+			'.maxi-fancy-radio-control .maxi-base-control__field label',
+			click => click[1].click()
 		);
 
 		const expectResult = 'full';

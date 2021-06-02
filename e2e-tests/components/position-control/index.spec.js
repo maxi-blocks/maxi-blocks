@@ -16,11 +16,9 @@ describe('position control', () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing position');
 		const accordionPanel = await openAdvancedSidebar(page, 'position');
-		debugger;
-		// Prueba
-		// perf ahora el expect y listo
+
 		const selectPosition = await accordionPanel.$(
-			'.maxi-position-control .components-select-control__input'
+			'.maxi-position-control .maxi-base-control__field select'
 		);
 		await selectPosition.select('relative');
 
@@ -69,10 +67,9 @@ describe('position control', () => {
 		expect(positionAttributes).toStrictEqual(expectPosition);
 		// unit selector
 		const unitSelector = await accordionPanel.$(
-			'.components-base-control.maxi-axis-control__header .maxi-axis-control__units select'
+			'.maxi-axis-control .maxi-axis-control__header .maxi-axis-control__units select'
 		);
 
-		const unitOptions = await unitSelector.$$('options');
 		await unitSelector.select('%');
 
 		const firstAttributes = await getBlockAttributes();

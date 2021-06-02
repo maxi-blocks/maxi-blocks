@@ -19,7 +19,7 @@ describe('typography control', () => {
 		const accordionPanel = await openAdvancedSidebar(page, 'z index');
 
 		await accordionPanel.$eval(
-			'.maxi-zIndex-control .components-base-control__field input',
+			'.maxi-zIndex-control .maxi-base-control__field input',
 			input => input.focus()
 		);
 

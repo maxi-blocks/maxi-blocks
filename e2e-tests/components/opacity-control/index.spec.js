@@ -18,7 +18,7 @@ describe('opacity control', () => {
 		const accordionPanel = await openAdvancedSidebar(page, 'opacity');
 
 		await accordionPanel.$eval(
-			'.maxi-accordion-control__item__panel .components-base-control__field .components-input-control__container input',
+			'.maxi-opacity-control .maxi-base-control__field input',
 			input => input.focus()
 		);
 		await pressKeyTimes('Backspace', '3');

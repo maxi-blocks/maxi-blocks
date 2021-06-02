@@ -30,6 +30,10 @@ describe('typography control', () => {
 			expectedFontFamily
 		);
 		// fontColor
+		await accordionPanel.$eval(
+			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			select => select.click()
+		);
 
 		await accordionPanel.$eval(
 			'.maxi-color-control .maxi-color-control__color input',
@@ -48,66 +52,24 @@ describe('typography control', () => {
 
 		expect(colorAttributes['color-general']).toStrictEqual(expectedColor);
 
-		// size, Line height and Letter spacing
-
-		// size
-		await accordionPanel.$eval(
-			'.maxi-typography-control__size input',
-			select => select.focus()
-		);
-		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('9');
-
-		// line-height
-		await accordionPanel.$eval(
-			'.maxi-typography-control__line-height input',
-			select => select.focus()
-		);
-		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('40');
-
-		// letter-spacing
-		await accordionPanel.$eval(
-			'.maxi-typography-control__letter-spacing input',
-			select => select.focus()
-		);
-		await page.keyboard.type('10');
-
-		const stylesAttributes = await getBlockAttributes();
-		const expectedResult = (({
-			'line-height-general': lineHeight,
-			'letter-spacing-general': letterSpacing,
-			'font-size-general': fontSize,
-		}) => ({
-			'line-height-general': lineHeight,
-			'letter-spacing-general': letterSpacing,
-			'font-size-general': fontSize,
-		}))(stylesAttributes);
-		const expectedAttributes = {
-			'line-height-general': 140,
-			'letter-spacing-general': 10,
-			'font-size-general': 19,
-		};
-		expect(expectedResult).toStrictEqual(expectedAttributes);
-
 		// Weight, Transform, Style, Decoration
 		const weightSelector = await accordionPanel.$(
-			'.maxi-typography-control__weight .components-select-control__input'
+			'.maxi-typography-control__weight .maxi-base-control__field'
 		);
 		await weightSelector.select('300');
 
 		const transformSelector = await accordionPanel.$(
-			'.maxi-typography-control__transform .components-select-control__input'
+			'.maxi-typography-control__transform .maxi-base-control__field'
 		);
 		await transformSelector.select('capitalize');
 
 		const fontStyleSelector = await accordionPanel.$(
-			'.maxi-typography-control__font-style .components-select-control__input'
+			'.maxi-typography-control__font-style .maxi-base-control__field'
 		);
 		await fontStyleSelector.select('italic');
 
 		const decorationSelector = await accordionPanel.$(
-			'.maxi-typography-control__decoration .components-select-control__input'
+			'.maxi-typography-control__decoration .maxi-base-control__field'
 		);
 		await decorationSelector.select('overline');
 
@@ -165,5 +127,46 @@ describe('typography control', () => {
 				setting
 			);
 		}
+		// size, Line height and Letter spacing
+
+		// size
+		await accordionPanel.$eval(
+			'.maxi-typography-control__size input',
+			select => select.focus()
+		);
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('9');
+
+		// line-height
+		await accordionPanel.$eval(
+			'.maxi-typography-control__line-height input',
+			select => select.focus()
+		);
+		await pressKeyTimes('Backspace', '4');
+		await page.keyboard.type('40');
+
+		// letter-spacing
+		await accordionPanel.$eval(
+			'.maxi-typography-control__letter-spacing input',
+			select => select.focus()
+		);
+		await page.keyboard.type('10');
+
+		const stylesAttributes = await getBlockAttributes();
+		const expectedResult = (({
+			'line-height-general': lineHeight,
+			'letter-spacing-general': letterSpacing,
+			'font-size-general': fontSize,
+		}) => ({
+			'line-height-general': lineHeight,
+			'letter-spacing-general': letterSpacing,
+			'font-size-general': fontSize,
+		}))(stylesAttributes);
+		const expectedAttributes = {
+			'line-height-general': 140,
+			'letter-spacing-general': 10,
+			'font-size-general': 19,
+		};
+		expect(expectedResult).toStrictEqual(expectedAttributes);
 	});
 });

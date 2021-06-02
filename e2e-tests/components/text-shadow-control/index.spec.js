@@ -18,7 +18,7 @@ describe('text shadow control', () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 
 		await accordionPanel.$$eval(
-			'.maxi-textshadow-control .components-base-control__field .components-radio-control__option label',
+			'.maxi-tabs-content .maxi-typography-control .maxi-textshadow-control label',
 			select => select[1].click()
 		);
 

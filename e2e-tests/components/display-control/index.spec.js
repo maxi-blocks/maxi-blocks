@@ -18,8 +18,8 @@ describe('display control', () => {
 		await page.keyboard.type('Testing display');
 		const accordionPanel = await openAdvancedSidebar(page, 'display');
 		await accordionPanel.$$eval(
-			'.components-base-control__field .components-radio-control__option label',
-			button => button[1].click()
+			'.maxi-display-control .maxi-base-control__field label',
+			button => button[2].click()
 		);
 		const expectResult = 'none';
 		const attributes = await getBlockAttributes();

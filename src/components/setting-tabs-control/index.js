@@ -22,7 +22,13 @@ import './editor.scss';
  * Component
  */
 const SettingTabsControl = props => {
-	const { items, disablePadding = false, className, forceTab } = props;
+	const {
+		items,
+		disablePadding = false,
+		className,
+		forceTab,
+		returnValue,
+	} = props;
 
 	const [tab, setTab] = useState(0);
 
@@ -31,6 +37,10 @@ const SettingTabsControl = props => {
 			setTab(forceTab);
 		}
 	}, [forceTab]);
+
+	useEffect(() => {
+		if (returnValue) returnValue(items[tab]);
+	}, [tab]);
 
 	const classes = classnames('maxi-settingstab-control', className);
 

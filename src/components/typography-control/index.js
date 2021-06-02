@@ -229,20 +229,21 @@ const TypographyControl = withFormatValue(props => {
 			...(isHover ? ['typographyHover'] : []),
 		]);
 
-	const { activeSC, winWidth, maxiBreakpoints } = useSelect(select => {
-		const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
-		const { receiveMaxiSettings, receiveMaxiBreakpoints } = select(
-			'maxiBlocks'
+	const { styleCard, winWidth, maxiBreakpoints } = useSelect(select => {
+		const { receiveMaxiSelectedStyleCard } = select(
+			'maxiBlocks/style-cards'
 		);
+		const { receiveMaxiSettings, receiveMaxiBreakpoints } =
+			select('maxiBlocks');
 
-		const activeSC = receiveMaxiActiveStyleCard()?.value || {};
+		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
 		const winWidth = receiveMaxiSettings().window?.width || null;
 
 		const maxiBreakpoints = receiveMaxiBreakpoints();
 
 		return {
-			activeSC,
+			styleCard,
 			winWidth,
 			maxiBreakpoints,
 		};
@@ -335,7 +336,7 @@ const TypographyControl = withFormatValue(props => {
 			breakpoint: currentBreakpoint,
 			blockStyle,
 			textLevel,
-			styleCard: activeSC,
+			styleCard,
 			styleCardPrefix,
 			avoidXXL,
 		});
@@ -351,7 +352,7 @@ const TypographyControl = withFormatValue(props => {
 				isHover,
 				blockStyle,
 				textLevel,
-				styleCard: activeSC,
+				styleCard,
 				styleCardPrefix,
 			}) || nonHoverValue
 		);

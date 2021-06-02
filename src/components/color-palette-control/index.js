@@ -40,9 +40,11 @@ const ColorPaletteControl = props => {
 	const currentBlockName = select('core/block-editor').getBlockName(clientId);
 
 	const { activeSC } = useSelect(select => {
-		const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
+		const { receiveMaxiSelectedStyleCard } = select(
+			'maxiBlocks/style-cards'
+		);
 
-		const activeSC = receiveMaxiActiveStyleCard()?.value || {};
+		const activeSC = receiveMaxiSelectedStyleCard()?.value || {};
 
 		return {
 			activeSC,

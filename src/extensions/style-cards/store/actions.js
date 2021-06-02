@@ -11,9 +11,31 @@ export function receiveMaxiStyleCards() {
 	};
 }
 
-export function saveMaxiStyleCards(styleCards) {
+export function saveMaxiStyleCards(styleCards, isUpdate = false) {
 	return {
 		type: 'SAVE_STYLE_CARDS',
 		styleCards,
+		isUpdate,
+	};
+}
+
+export function setActiveStyleCard(cardKey) {
+	return {
+		type: 'SET_ACTIVE_STYLE_CARD',
+		cardKey,
+	};
+}
+
+export function setSelectedStyleCard(cardKey) {
+	return {
+		type: 'SET_SELECTED_STYLE_CARD',
+		cardKey,
+	};
+}
+
+export function removeStyleCard(cardKey) {
+	return {
+		type: 'REMOVE_STYLE_CARD',
+		cardKey,
 	};
 }

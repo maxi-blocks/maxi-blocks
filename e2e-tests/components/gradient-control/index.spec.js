@@ -24,6 +24,10 @@ describe('gradient control', () => {
 			select => select[4].click()
 		);
 
+		await page.$eval('.maxi-sidebar', sideBar =>
+			sideBar.scrollTo(0, sideBar.scrollHeight)
+		);
+
 		const { x, y } = await page.$eval(
 			'.maxi-background-control .maxi-gradient-control .maxi-gradient-control__gradient .components-custom-gradient-picker__markers-container',
 			gradientBar => {
@@ -38,12 +42,9 @@ describe('gradient control', () => {
 		);
 
 		await page.mouse.click(x, y, { delay: 1000 });
-		debugger;
 		await page.waitForSelector(
 			'.components-dropdown__content.components-custom-gradient-picker__color-picker-popover'
 		);
-
-		// ...
 
 		const colorPickerPopover = await page.$(
 			'.components-dropdown__content.components-custom-gradient-picker__color-picker-popover'

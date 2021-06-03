@@ -74,7 +74,9 @@ const MasonryItemSVG = props => {
 						<span className='maxi-cloud-masonry__pro-tag'>PRO</span>
 					)}
 					<p className='maxi-cloud-masonry__serial-tag'>{serial}</p>
-					<p className='maxi-cloud-masonry__categories'>{categories}</p>
+					<p className='maxi-cloud-masonry__categories'>
+						{categories}
+					</p>
 					<p className='maxi-cloud-masonry__tags'>{tags}</p>
 				</div>
 			</div>

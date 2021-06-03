@@ -27,6 +27,7 @@ import './editor.scss';
 
 /**
  * Component
+ *
  * @param {string} cloudType Type of the data to get from the Cloud, values: patterns, svg, sc
  */
 const CloudLibrary = props => {
@@ -53,19 +54,10 @@ const CloudLibrary = props => {
 			shouldCloseOnClickOutside={false}
 			onRequestClose={onClose}
 		>
-			{(isEmpty(cloudData) && <LibrarySpinner />) || (
-				<>
-					<LibraryToolbar
-						type={type}
-						onChange={type => setType(type)}
-					/>
-					<LibraryContainer
-						cloudData={cloudData}
-						type={type}
-						onRequestClose={onClose}
-					/>
-				</>
-			)}
+			<>
+				<LibraryToolbar type={type} onChange={type => setType(type)} />
+				<LibraryContainer type={type} onRequestClose={onClose} />
+			</>
 		</Modal>
 	);
 };

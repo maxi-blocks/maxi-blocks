@@ -26,7 +26,6 @@ class MaxiModal extends Component {
 				<Button
 					key={`maxi-block-library__modal-button--${this.props.clientId}`}
 					isPrimary
-					isLarge
 					className='maxi-block-library__modal-button'
 					onClick={() => this.setState({ isOpen: !isOpen })}
 				>

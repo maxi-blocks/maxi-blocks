@@ -2,140 +2,131 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
-import { useState, useEffect } from '@wordpress/element';
+import { useSelect, useDispatch, select } from '@wordpress/data';
+import { useState, useEffect, RawHTML } from '@wordpress/element';
+
+import { parse } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
  */
-import SidebarFilter from './sidebarFilter';
 import TopbarFilter from './topbarFilter';
-import Searcher from './searcher';
 import Masonry from './masonry';
-import Pagination from './pagination';
+import Button from '../../components/button';
 
 /**
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import algoliasearch from 'algoliasearch/lite';
+import {
+	InstantSearch,
+	SearchBox,
+	Hits,
+	Pagination,
+	RefinementList,
+} from 'react-instantsearch-dom';
 
 /**
  * Component
  */
 const LibraryContainer = props => {
-	const { cloudData, type, onRequestClose } = props;
+	const { type, onRequestClose } = props;
 
-	const [filteredData, setFilteredData] = useState(cloudData);
-	const [searchFilter, setSearchFilter] = useState('');
-	const [sidebarFilter, setSidebarFilter] = useState('');
-	const [topbarFilter, setTopbarFilter] = useState([]);
+	const searchClient = algoliasearch(
+		'39ZZ3SLI6Z',
+		'6ed8ae6d1c430c6a76e0720f74eab91c'
+	);
 
-	useEffect(() => {
-		setFilteredData(
-			cloudData.filter(el => {
-				return Object.values(el).some(val => {
-					if (val) {
-						let res = false;
-						// returns all elements when there's no search or filter
-						if (
-							isEmpty(searchFilter) &&
-							isEmpty(sidebarFilter) &&
-							isEmpty(topbarFilter)
-						)
-							res = true;
+	const { replaceBlocks, updateBlockAttributes } =
+		useDispatch('core/block-editor');
 
-						if (
-							!isEmpty(searchFilter) &&
-							val.includes(searchFilter)
-						)
-							res = true;
+	const MasonryItemSVG = props => {
+		const { svgCode, isPro, serial, onRequestInsert, categories, tags } =
+			props;
 
-						if (
-							!isEmpty(sidebarFilter) &&
-							val.includes(sidebarFilter)
-						)
-							res = true;
-
-						if (
-							!isEmpty(topbarFilter) &&
-							topbarFilter.includes(val)
-						)
-							res = true;
-
-						return res;
-					}
-
-					return false;
-				});
-			})
+		return (
+			<div className='maxi-cloud-masonry-card'>
+				<div className='maxi-cloud-masonry-card__image'>
+					<RawHTML>{svgCode}</RawHTML>
+				</div>
+				<div className='maxi-cloud-masonry-card__container'>
+					<div className='maxi-cloud-masonry-card__buttons'>
+						<Button
+							className='maxi-cloud-masonry-card__button'
+							onClick={onRequestInsert}
+						>
+							Insert
+						</Button>
+					</div>
+					<div className='maxi-cloud-masonry-card__tags'>
+						{isPro && (
+							<span className='maxi-cloud-masonry__pro-tag'>
+								PRO
+							</span>
+						)}
+						<p className='maxi-cloud-masonry__serial-tag'>
+							{serial}
+						</p>
+					</div>
+				</div>
+			</div>
 		);
-	}, [searchFilter, sidebarFilter, topbarFilter]);
+	};
 
-	const sidebarFilters = [
-		{ label: __('Hero'), value: 'hero' },
-		{ label: __('Testimonial'), value: 'testimonial' },
-		{ label: __('Text Content'), value: 'text-content' },
-		{ label: __('Style'), value: 'style' },
-	];
+	const onRequestInsertSVG = svgCode => {
+		const clientId = select('core/block-editor').getSelectedBlockClientId();
+		const { uniqueID } =
+			select('core/editor').getBlock(clientId).attributes;
 
-	const { svgTags } = useSelect(select => {
-		const { receiveMaxiCloudLibrary } = select('maxiBlocks/cloudLibrary');
-		const svgTags = receiveMaxiCloudLibrary('svg-tags');
+		const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
 
-		return {
-			svgTags,
-		};
-	});
+		const newSvgClass = `.${uniqueID} .${svgClass}`;
+		const replaceIt = `.${svgClass}`;
 
-	const sidebarFiltersSvg = () => {
-		const options = [];
+		const finalSvgCode = svgCode.replaceAll(replaceIt, newSvgClass);
 
-		if (svgTags) {
-			svgTags.forEach(tag =>
-				options.push({ label: tag.name, value: tag.id })
-			);
-			return options;
+		const isValid =
+			select('core/block-editor').isValidTemplate(finalSvgCode);
+
+		if (isValid) {
+			updateBlockAttributes(clientId, { content: finalSvgCode });
+			onRequestClose();
 		}
-		return null;
+	};
+
+	const results = ({ hit }) => {
+		return (
+			<MasonryItemSVG
+				key={`maxi-cloud-masonry__item-${hit.post_id}`}
+				svgCode={hit.svg_code}
+				isPro={hit.taxonomies.cost === 'pro'}
+				serial={hit.post_title}
+				onRequestInsert={() => onRequestInsertSVG(hit.svg_code)}
+			/>
+		);
 	};
 
 	return (
 		<div className='maxi-cloud-container'>
 			<div className='maxi-cloud-container__sidebar'>
 				{type === 'svg' && (
-					<SidebarFilter
-						options={sidebarFiltersSvg()}
-						filters={sidebarFilter}
-						onChange={filters => setSidebarFilter(filters)}
-						onReset={() => setSidebarFilter('')}
-					/>
+					<InstantSearch
+						indexName='maxi_posts_svg_icon'
+						searchClient={searchClient}
+					>
+						<SearchBox />
+						<RefinementList attribute='taxonomies.svg_tag' />
+						<div className='maxi-cloud-container__content'>
+							<Hits hitComponent={results} />
+							<Pagination />
+						</div>
+					</InstantSearch>
 				)}
 
-				{type === 'patterns' && (
-					<SidebarFilter
-						options={sidebarFilters}
-						filters={sidebarFilter}
-						onChange={filters => setSidebarFilter(filters)}
-						onReset={() => setSidebarFilter('')}
-					/>
-				)}
-			</div>
-			<div className='maxi-cloud-container__content'>
-				<TopbarFilter
-					type={type}
-					filters={topbarFilter}
-					onChange={filters => setTopbarFilter(filters)}
-				/>
-				<Searcher
-					value={searchFilter}
-					onChange={value => setSearchFilter(value)}
-				/>
-				<Masonry
-					elements={filteredData}
-					type={type}
-					onRequestClose={onRequestClose}
-				/>
-				<Pagination />
+				{/* {type === 'patterns' && (
+				
+				)} */}
 			</div>
 		</div>
 	);

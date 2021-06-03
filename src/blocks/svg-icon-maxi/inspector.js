@@ -167,7 +167,6 @@ const Inspector = props => {
 															setAttributes(
 																svgColorFill
 															);
-															console.log('svgColorFill: ' + JSON.stringify(svgColorFill));
 															const color =
 																svgColorFill.svgColorFill;
 															if (!isNil(color))

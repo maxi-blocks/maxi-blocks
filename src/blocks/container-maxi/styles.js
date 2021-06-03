@@ -195,6 +195,7 @@ const getStyles = props => {
 				'backgroundColor',
 				'backgroundGradient',
 				'boxShadow',
+				'palette',
 			]),
 		}),
 	};

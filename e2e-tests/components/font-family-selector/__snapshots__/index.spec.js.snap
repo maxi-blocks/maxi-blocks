@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`font level checking the font family selector 1`] = `
-"<!-- wp:maxi-blocks/text-maxi {\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-12\\"} -->
-<div class=\\"maxi-block maxi-block--backend maxi-motion-effect maxi-motion-effect-text-maxi-12 maxi-light text-maxi-12 wp-block-maxi-blocks-text-maxi maxi-text-block maxi-background--1\\" data-align=\\"normal\\" id=\\"text-maxi-12\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\"></p></div>
-<!-- /wp:maxi-blocks/text-maxi -->"
-`;

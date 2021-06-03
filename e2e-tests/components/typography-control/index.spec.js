@@ -1,20 +1,17 @@
 import {
 	createNewPost,
 	insertBlock,
-	getEditedPostContent,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
-import { getBlockAttributes } from '../../utils';
-import openSidebar from '../../utils/openSidebar';
+import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('typography control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the typography control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing font family');
 		const accordionPanel = await openSidebar(page, 'typography');
+
 		// fontFamily
 		const fontFamilySelector = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__font-family'
@@ -23,12 +20,12 @@ describe('typography control', () => {
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
 
-		const expectedFontFamily = 'Montserrat';
 		const attributes = await getBlockAttributes();
+		const fontFamily = attributes['font-family-general'];
+		const expectedFontFamily = 'Montserrat';
 
-		expect(attributes['font-family-general']).toStrictEqual(
-			expectedFontFamily
-		);
+		expect(fontFamily).toStrictEqual(expectedFontFamily);
+
 		// fontColor
 		await accordionPanel.$eval(
 			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
@@ -44,13 +41,13 @@ describe('typography control', () => {
 		await page.keyboard.type('FAFA03');
 		await page.keyboard.press('Enter');
 
-		await page.waitForTimeout(1000);
-
-		const expectedColor = 'rgba(250,250,3,1)';
+		await page.waitForTimeout(500);
 
 		const colorAttributes = await getBlockAttributes();
+		const color = colorAttributes['color-general'];
+		const expectedColor = 'rgba(250,250,3,1)';
 
-		expect(colorAttributes['color-general']).toStrictEqual(expectedColor);
+		expect(color).toStrictEqual(expectedColor);
 
 		// Weight, Transform, Style, Decoration
 		const weightSelector = await accordionPanel.$(
@@ -74,7 +71,6 @@ describe('typography control', () => {
 		await decorationSelector.select('overline');
 
 		const styleAttributes = await getBlockAttributes();
-
 		const typographyAttributes = (({
 			'font-style-general': fontStyle,
 			'font-weight-general': fontWeight,
@@ -93,6 +89,7 @@ describe('typography control', () => {
 			'text-decoration-general': 'overline',
 			'text-transform-general': 'capitalize',
 		};
+
 		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
 
 		// Text shadow
@@ -122,16 +119,14 @@ describe('typography control', () => {
 			);
 
 			const shadowAttributes = await getBlockAttributes();
-
-			expect(shadowAttributes['text-shadow-general']).toStrictEqual(
-				setting
-			);
+			const textShadow = shadowAttributes['text-shadow-general'];
+			expect(textShadow).toStrictEqual(setting);
 		}
-		// size, Line height and Letter spacing
 
+		// size, Line height and Letter spacing
 		await accordionPanel.$$eval(
 			'.maxi-typography-control .maxi-fancy-radio-control .maxi-base-control__field label',
-			select => select[7].click() // holaaaa
+			select => select[7].click()
 		);
 
 		// size
@@ -158,7 +153,7 @@ describe('typography control', () => {
 		await page.keyboard.type('10');
 
 		const stylesAttributes = await getBlockAttributes();
-		debugger;
+
 		const expectedResult = (({
 			'line-height-m': lineHeight,
 			'letter-spacing-m': letterSpacing,
@@ -168,11 +163,13 @@ describe('typography control', () => {
 			'letter-spacing-m': letterSpacing,
 			'font-size-m': fontSize,
 		}))(stylesAttributes);
+
 		const expectedAttributes = {
 			'line-height-m': 14,
 			'letter-spacing-m': 10,
 			'font-size-m': 19,
 		};
+
 		expect(expectedResult).toStrictEqual(expectedAttributes);
 	});
 });

@@ -17,9 +17,7 @@ describe('axis control', () => {
 		await insertBlock('Text Maxi');
 
 		const accordionPanel = await openSidebar(page, 'padding margin');
-
 		const axisControls = await accordionPanel.$$('.maxi-axis-control');
-
 		const instances = ['padding', 'margin'];
 
 		for (let i = 0; i < axisControls.length; i++) {
@@ -106,7 +104,6 @@ describe('axis control', () => {
 			'margin-top-general',
 		];
 
-		debugger;
 		const fourthAttributes = await getBlockAttributes();
 
 		const areAllAuto = marginKeys.every(key => {
@@ -116,5 +113,3 @@ describe('axis control', () => {
 		expect(areAllAuto).toStrictEqual(true);
 	});
 });
-// puedes ver la consola? si, es el mismo error que ayer con el checkbox => yep pues esta repe era solo enseñartelo si quieres lo miramos ahora o mas tarde
-// Este error me lo miraré yo desde mi local porque es muuuuu raro => okay esta en axis y en checkbox => coool!

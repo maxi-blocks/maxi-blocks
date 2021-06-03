@@ -9,15 +9,13 @@ import {
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
 describe('clip-path control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the clip-path control', async () => {
+		await createNewPost();
 		await insertBlock('Image Maxi');
 		const accordionPanel = await openAdvancedSidebar(page, 'clip path');
 		// Use clip-path to create a triangle
 
-		const useClipPath = await accordionPanel.$eval(
+		await accordionPanel.$eval(
 			'.maxi-clip-path-control .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
 			use => use.click()
 		);
@@ -27,10 +25,11 @@ describe('clip-path control', () => {
 
 		const triangleExpect = 'polygon(50% 0%, 0% 100%, 100% 100%)';
 		const triangleAttributes = await getBlockAttributes();
+		const triangleClipPath = triangleAttributes.clipPath;
 
-		expect(triangleAttributes.clipPath).toStrictEqual(triangleExpect);
+		expect(triangleClipPath).toStrictEqual(triangleExpect);
+
 		// Transform the triangle into a square
-
 		await accordionPanel.$$eval(
 			'.maxi-base-control__field .maxi-radio-control__option label',
 			use => use[2].click()
@@ -43,10 +42,11 @@ describe('clip-path control', () => {
 
 		const squareExpect = 'inset(15% 5% 15% 5%)';
 		const squareAttributes = await getBlockAttributes();
+		const squareClipPath = squareAttributes.clipPath;
 
-		expect(squareAttributes.clipPath).toStrictEqual(squareExpect);
+		expect(squareClipPath).toStrictEqual(squareExpect);
+
 		// Edit the square
-
 		await accordionPanel.$$eval(
 			'.maxi-clip-path-control__handles .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
 			use => use[1].click()
@@ -56,10 +56,7 @@ describe('clip-path control', () => {
 			'.maxi-clip-path-control__handles .maxi-clip-path-controller .maxi-clip-path-controller__settings input'
 		);
 
-		const top = editPoints[0];
-		const right = editPoints[1];
-		const bottom = editPoints[2];
-		const left = editPoints[3];
+		const [top, right, bottom, left] = editPoints;
 
 		await top.focus();
 		await pressKeyTimes('Backspace', '2');
@@ -77,9 +74,10 @@ describe('clip-path control', () => {
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('64');
 
-		const customExpect = 'inset(100% 51% 100% 51%)';
 		const customAttributes = await getBlockAttributes();
+		const customClipPath = customAttributes.clipPath;
+		const customExpect = 'inset(28% 5% 15% 64%)';
 
-		expect(customAttributes.clipPath).toStrictEqual(customExpect);
+		expect(customClipPath).toStrictEqual(customExpect);
 	});
 });

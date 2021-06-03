@@ -1,25 +1,17 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	// getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
-import { getBlockAttributes } from '../../utils';
-import openSidebar from '../../utils/openSidebar';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('boxShadow control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the boxShadow control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebar(page, 'box shadow');
 
-		const boxShadowControls = await accordionPanel.$$eval(
-			'.maxi-shadow-control button',
-			click => click[1].click()
+		await accordionPanel.$$eval('.maxi-shadow-control button', click =>
+			click[1].click()
 		);
 
 		const expectAttributes = {

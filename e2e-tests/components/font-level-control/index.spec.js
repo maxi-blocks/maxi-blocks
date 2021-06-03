@@ -2,22 +2,16 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
-
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes } from '../../utils';
 
 describe('font level', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the font level control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing level');
 		await page.$eval('.toolbar-item__text-level', button => button.click());
+
 		await page.waitForSelector(
 			'.components-popover__content .maxi-font-level-control'
 		);
@@ -33,8 +27,9 @@ describe('font level', () => {
 			await setting.click();
 
 			const attributes = await getBlockAttributes();
+			const text = attributes.textLevel;
 
-			expect(attributes.textLevel).toStrictEqual(fontLevel[i]);
+			expect(text).toStrictEqual(fontLevel[i]);
 		}
 	});
 });

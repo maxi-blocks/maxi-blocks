@@ -1,12 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	// pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
-// import openSidebar from '../../utils/openSidebar';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes } from '../../utils';
 
 describe('default styles control', () => {

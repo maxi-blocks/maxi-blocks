@@ -7,13 +7,12 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes } from '../../utils';
 
 describe('Alignment', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the operation of alignment-control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing test maxi');
 		await page.$eval('.toolbar-item__alignment', button => button.click());
+
 		await page.waitForSelector(
 			'.components-popover__content .maxi-alignment-control__no-label'
 		);
@@ -28,11 +27,10 @@ describe('Alignment', () => {
 
 			await setting.click();
 
+			const attribute = attributes['text-alignment-general'];
 			const attributes = await getBlockAttributes();
 
-			expect(attributes['text-alignment-general']).toStrictEqual(
-				alignments[i]
-			);
+			expect(attribute).toStrictEqual(alignments[i]);
 		}
 	});
 });

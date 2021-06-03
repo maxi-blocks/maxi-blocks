@@ -4,20 +4,15 @@
 import {
 	createNewPost,
 	insertBlock,
-	getEditedPostContent,
 	openDocumentSettingsSidebar,
 	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes } from '../../utils';
-import openSidebar from '../../utils/openSidebar';
 
 describe('block styles control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('cheking the block styles control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
-
 		await openDocumentSettingsSidebar();
 		await ensureSidebarOpened();
 
@@ -27,8 +22,9 @@ describe('block styles control', () => {
 		await input.select('maxi-dark');
 
 		const expectAttribute = 'maxi-dark';
-		const styleAttributes = await getBlockAttributes();
+		const attributes = await getBlockAttributes();
+		const styleAttributes = attributes.blockStyle;
 
-		expect(styleAttributes.blockStyle).toStrictEqual(expectAttribute);
+		expect(styleAttributes).toStrictEqual(expectAttribute);
 	});
 });

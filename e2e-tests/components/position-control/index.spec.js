@@ -1,18 +1,12 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
 describe('position control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the position control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing position');
 		const accordionPanel = await openAdvancedSidebar(page, 'position');
@@ -22,16 +16,17 @@ describe('position control', () => {
 		);
 		await selectPosition.select('relative');
 
-		const expectSelectPosition = 'relative';
 		const attributes = await getBlockAttributes();
+		const position = attributes['position-general'];
+		const expectSelectPosition = 'relative';
 
-		expect(attributes['position-general']).toStrictEqual(
-			expectSelectPosition
-		);
+		expect(position).toStrictEqual(expectSelectPosition);
+
 		// Set value to inputs
 		const positionAxis = await accordionPanel.$(
 			'.maxi-axis-control .maxi-axis-control__content'
 		);
+
 		const inputs = await positionAxis.$$(
 			'.maxi-axis-control__content__item__input'
 		);
@@ -47,11 +42,9 @@ describe('position control', () => {
 			'position-left-general': 4,
 			'position-right-general': 2,
 			'position-top-general': 1,
-			// 'position-unit-general': '%',
 		};
 
 		const pageAttributes = await getBlockAttributes();
-
 		const positionAttributes = (({
 			'position-bottom-general': positionBottom,
 			'position-left-general': positionLeft,
@@ -65,6 +58,7 @@ describe('position control', () => {
 		}))(pageAttributes);
 
 		expect(positionAttributes).toStrictEqual(expectPosition);
+
 		// unit selector
 		const unitSelector = await accordionPanel.$(
 			'.maxi-axis-control .maxi-axis-control__header .maxi-axis-control__units select'
@@ -72,6 +66,10 @@ describe('position control', () => {
 
 		await unitSelector.select('%');
 
-		const firstAttributes = await getBlockAttributes();
+		const unitAttributes = await getBlockAttributes();
+		const unit = unitAttributes['position-unit-general'];
+		const expectUnit = '%';
+
+		expect(unit).toStrictEqual(expectUnit);
 	});
 });

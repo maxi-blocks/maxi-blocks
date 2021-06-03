@@ -9,10 +9,8 @@ import {
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
 describe('opacity control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the opacity control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing opacity');
 		const accordionPanel = await openAdvancedSidebar(page, 'opacity');
@@ -21,11 +19,14 @@ describe('opacity control', () => {
 			'.maxi-opacity-control .maxi-base-control__field input',
 			input => input.focus()
 		);
+
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('19');
 
-		const expectResult = 0.19;
 		const attributes = await getBlockAttributes();
-		expect(attributes['opacity-general']).toStrictEqual(expectResult);
+		const opacity = attributes['opacity-general'];
+		const expectResult = 0.19;
+
+		expect(opacity).toStrictEqual(expectResult);
 	});
 });

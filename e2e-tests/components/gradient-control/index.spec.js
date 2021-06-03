@@ -6,19 +6,16 @@ import {
 	insertBlock,
 	pressKeyTimes,
 	setBrowserViewport,
-	// pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('gradient control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the gradient control', async () => {
+		await createNewPost();
 		await setBrowserViewport('large');
-
 		await insertBlock('Group Maxi');
 		const accordionPanel = await openSidebar(page, 'background');
+
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
 			select => select[4].click()
@@ -42,6 +39,7 @@ describe('gradient control', () => {
 		);
 
 		await page.mouse.click(x, y, { delay: 1000 });
+
 		await page.waitForSelector(
 			'.components-dropdown__content.components-custom-gradient-picker__color-picker-popover'
 		);
@@ -58,14 +56,13 @@ describe('gradient control', () => {
 		await page.keyboard.type('24a319');
 		await page.keyboard.press('Enter');
 
-		await page.waitForTimeout(1000);
+		await page.waitForTimeout(500);
+
+		const expectAttribute = await getBlockAttributes();
+		const gradient = expectAttribute['background-gradient'];
 		const expectGradient =
 			'linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(36,163,25) 46%,rgb(155,81,224) 100%)';
 
-		const expectAttribute = await getBlockAttributes();
-
-		expect(expectAttribute['background-gradient']).toStrictEqual(
-			expectGradient
-		);
+		expect(gradient).toStrictEqual(expectGradient);
 	});
 });

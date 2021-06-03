@@ -4,18 +4,12 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes } from '../../utils';
 
 describe('divider control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the style selector', async () => {
+		await createNewPost();
 		await insertBlock('Divider Maxi');
 		await page.$eval('.toolbar-item__divider-line', button =>
 			button.click()
@@ -37,10 +31,9 @@ describe('divider control', () => {
 			);
 
 			const attributes = await getBlockAttributes();
+			const borderStyle = attributes['divider-border-style'];
 
-			expect(attributes['divider-border-style']).toStrictEqual(
-				dividerStyle
-			);
+			expect(borderStyle).toStrictEqual(dividerStyle);
 		}
 	});
 });

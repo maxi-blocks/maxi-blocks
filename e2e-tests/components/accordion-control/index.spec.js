@@ -1,20 +1,14 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	// getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
-import { getBlockAttributes } from '../../utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import openSidebar from '../../utils/openSidebar';
 
 describe('accordion control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the accordion control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
+
 		const accordionNames = [
 			'alignment',
 			'level',

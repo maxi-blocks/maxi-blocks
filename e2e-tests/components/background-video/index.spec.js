@@ -1,19 +1,12 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-	setBrowserViewport,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('background displayer video', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('Checks background video', async () => {
+		await createNewPost();
 		await insertBlock('Group Maxi');
 		const accordionPanel = await openSidebar(page, 'background');
 
@@ -26,13 +19,12 @@ describe('background displayer video', () => {
 			'.maxi-background-control__video .components-base-control__field input'
 		);
 
-		const insertUrl = await inputs[0];
-		const startTime = await inputs[1];
-		const endTime = await inputs[2];
+		const [insertUrl, startTime, endTime] = inputs;
+		const VideoUrl = 'https://youtu.be/hM7Eh0gGNKA';
 
 		// insert URL
 		await insertUrl.focus();
-		await page.keyboard.type('https://youtu.be/hM7Eh0gGNKA');
+		await page.keyboard.type(VideoUrl);
 		await page.keyboard.press('Enter');
 
 		// start Time
@@ -45,18 +37,17 @@ describe('background displayer video', () => {
 		await page.keyboard.type('3');
 		await page.keyboard.press('Enter');
 
-		const VideoUrl = 'https://youtu.be/hM7Eh0gGNKA';
-		const expectVideo = await getBlockAttributes();
+		const expectAttribute = await getBlockAttributes();
+		const expectVideo = expectAttribute['background-video-mediaURL'];
 
-		expect(expectVideo['background-video-mediaURL']).toStrictEqual(
-			VideoUrl
-		);
+		expect(expectVideo).toStrictEqual(VideoUrl);
 
 		// loop
 		await accordionPanel.$$eval(
 			'.maxi-background-control__video .maxi-fancy-radio-control label',
 			select => select[2].click()
 		);
+
 		// Play on mobile
 		await accordionPanel.$$eval(
 			'.maxi-background-control__video .maxi-fancy-radio-control label',
@@ -64,10 +55,9 @@ describe('background displayer video', () => {
 		);
 
 		const backgroundSettings = 'video';
-		const expectAttribute = await getBlockAttributes();
+		const expectMediaAttribute = await getBlockAttributes();
+		const expectMedia = expectMediaAttribute['background-active-media'];
 
-		expect(expectAttribute['background-active-media']).toStrictEqual(
-			backgroundSettings
-		);
+		expect(expectMedia).toStrictEqual(backgroundSettings);
 	});
 });

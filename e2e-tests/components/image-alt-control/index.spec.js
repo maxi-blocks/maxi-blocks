@@ -2,40 +2,36 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
-import openSidebar from '../../utils/openSidebar';
-import { getBlockAttributes } from '../../utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('image alt', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the image alt control', async () => {
+		await createNewPost();
 		await insertBlock('Image Maxi');
 		const accordionPanel = await openSidebar(page, 'image alt tag');
+
 		const selector = await accordionPanel.$(
 			'.maxi-image-alt-control .maxi-base-control__field select'
 		);
 		await selector.select('custom');
 
 		const attributes = await getBlockAttributes();
+		const expectSelector = attributes.altSelector;
 		const expectAttributes = 'custom';
 
-		expect(attributes.altSelector).toStrictEqual(expectAttributes);
+		expect(expectSelector).toStrictEqual(expectAttributes);
 
-		const insertText = await accordionPanel.$eval(
-			'.maxi-image-alt-control maxi-text-control .maxi-text-control__input',
+		await accordionPanel.$eval(
+			'.maxi-image-alt-control .maxi-text-control .maxi-text-control__input',
 			select => select.focus()
 		);
 		await page.keyboard.type('testing alt tag');
 
 		const altTagAttributes = await getBlockAttributes();
+		const altMedia = altTagAttributes.mediaAlt;
 		const altTag = 'testing alt tag';
 
-		expect(altTagAttributes.mediaAlt).toStrictEqual(altTag);
+		expect(altMedia).toStrictEqual(altTag);
 	});
 });

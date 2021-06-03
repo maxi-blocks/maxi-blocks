@@ -1,20 +1,14 @@
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
-import { getBlockAttributes } from '../../utils';
-import openSidebar from '../../utils/openSidebar';
+/**
+ * WordPress dependencies
+ */
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('text shadow control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the text shadow control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing shadow control');
-
 		const accordionPanel = await openSidebar(page, 'typography');
 
 		await accordionPanel.$$eval(
@@ -43,10 +37,9 @@ describe('text shadow control', () => {
 			);
 
 			const shadowAttributes = await getBlockAttributes();
+			const textShadow = shadowAttributes['text-shadow-general'];
 
-			expect(shadowAttributes['text-shadow-general']).toStrictEqual(
-				setting
-			);
+			expect(textShadow).toStrictEqual(setting);
 		}
 	});
 });

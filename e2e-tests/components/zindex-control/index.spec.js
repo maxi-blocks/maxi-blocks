@@ -1,21 +1,11 @@
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-	pressKeyTimes,
-	// getBlockAttributes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
 describe('typography control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
-
 	it('checking the z-index control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing z-index');
-
 		const accordionPanel = await openAdvancedSidebar(page, 'z index');
 
 		await accordionPanel.$eval(
@@ -25,9 +15,10 @@ describe('typography control', () => {
 
 		await page.keyboard.type('2');
 
-		const expectResult = 2;
 		const attributes = await getBlockAttributes();
+		const zIndex = attributes['z-index-general'];
+		const expectResult = 2;
 
-		expect(attributes['z-index-general']).toStrictEqual(expectResult);
+		expect(zIndex).toStrictEqual(expectResult);
 	});
 });

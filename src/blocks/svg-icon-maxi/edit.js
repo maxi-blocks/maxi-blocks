@@ -116,7 +116,6 @@ class edit extends MaxiBlockComponent {
 							<div className='maxi-svg-icon-block__placeholder'>
 								<Button
 									isPrimary
-									isLarge
 									key={`maxi-block-library__modal-button--${clientId}`}
 									className='maxi-block-library__modal-button'
 									onClick={onClick}
@@ -212,7 +211,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const changeSVGContent = (color, colorNumber) => {
-		console.log(colorNumber + color);
 		let [regexLineToChange, changeTo, regexLineToChange2, changeTo2] = '';
 
 		if (colorNumber === 1) {

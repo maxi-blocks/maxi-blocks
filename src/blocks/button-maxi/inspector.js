@@ -29,6 +29,7 @@ import {
 	TextControl,
 	TransformControl,
 	TypographyControl,
+	InfoBox,
 	ZIndexControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
@@ -60,29 +61,42 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
+			{deviceType !== 'general' && (
+				<InfoBox
+					message={__(
+						'You are currently in responsive editing mode. Select Base to continue editing general settings.',
+						'maxi-blocks'
+					)}
+				/>
+			)}
 			<SettingTabsControl
 				disablePadding
+				deviceType={deviceType}
 				items={[
 					{
 						label: __('Style', 'maxi-blocks'),
 						content: (
 							<>
-								<div className='maxi-tab-content__box'>
-									<CustomLabel
-										customLabel={customLabel}
-										onChange={customLabel =>
-											setAttributes({
-												customLabel,
-											})
-										}
-									/>
-									<hr />
-									<BlockStylesControl
-										blockStyle={blockStyle}
-										isFirstOnHierarchy={isFirstOnHierarchy}
-										onChange={obj => setAttributes(obj)}
-									/>
-								</div>
+								{deviceType === 'general' && (
+									<div className='maxi-tab-content__box'>
+										<CustomLabel
+											customLabel={customLabel}
+											onChange={customLabel =>
+												setAttributes({
+													customLabel,
+												})
+											}
+										/>
+										<hr />
+										<BlockStylesControl
+											blockStyle={blockStyle}
+											isFirstOnHierarchy={
+												isFirstOnHierarchy
+											}
+											onChange={obj => setAttributes(obj)}
+										/>
+									</div>
+								)}
 								<AccordionControl
 									isSecondary
 									items={[
@@ -178,7 +192,6 @@ const Inspector = props => {
 												</>
 											),
 										},
-
 										{
 											label: __(
 												'Typography',
@@ -258,7 +271,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'typography-status-hover': val,
+																					'typography-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -381,7 +395,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'background-status-hover': val,
+																					'background-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -494,7 +509,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'border-status-hover': val,
+																					'border-status-hover':
+																						val,
 																				}
 																			)
 																		}
@@ -553,16 +569,14 @@ const Inspector = props => {
 																		'Yes',
 																		'maxi-blocks'
 																	),
-																	value:
-																		'normal',
+																	value: 'normal',
 																},
 																{
 																	label: __(
 																		'No',
 																		'maxi-blocks'
 																	),
-																	value:
-																		'full',
+																	value: 'full',
 																},
 															]}
 															optionType='string'
@@ -659,7 +673,8 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
-																					'box-shadow-status-hover': val,
+																					'box-shadow-status-hover':
+																						val,
 																				}
 																			)
 																		}

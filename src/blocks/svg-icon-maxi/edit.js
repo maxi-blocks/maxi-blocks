@@ -211,7 +211,10 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const changeSVGContent = (color, colorNumber) => {
-		let [regexLineToChange, changeTo, regexLineToChange2, changeTo2] = '';
+		let regexLineToChange = '';
+		let changeTo = '';
+		let regexLineToChange2 = '';
+		let changeTo2 = '';
 
 		if (colorNumber === 1) {
 			regexLineToChange = new RegExp('fill:[^n]+?(?=})', 'g');

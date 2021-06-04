@@ -457,6 +457,7 @@
 		margin: 0;
 		overflow: hidden;
 
+<<<<<<< HEAD
 		&__hide-categories {
 			.maxi-cloud-container__content__svg-categories,
 			.top-Menu {
@@ -466,6 +467,14 @@
 
 		.ais-ClearRefinements {
 			margin: 0 8px;
+=======
+		&__sidebar {
+			width: calc(15% - 0.5rem);
+		}
+
+		&__content-patterns {
+			width: calc(85% - 0.5rem);
+>>>>>>> Patterns modal
 		}
 		.ais-InfiniteHits-loadMore,
 		.ais-ClearRefinements-button {
@@ -488,6 +497,7 @@
 				}
 			}
 
+<<<<<<< HEAD
 			&--disabled {
 				background-color: #e7e7e7;
 				color: #b8b8b8;
@@ -496,6 +506,28 @@
 		}
 		.ais-ClearRefinements-button {
 			width: calc(100% - 16px);
+=======
+		&__content-svg,
+		&__top-menu,
+		&__top {
+			width: 100%;
+			.ais-RefinementList-list,
+			.ais-Menu-list {
+				display: flex;
+			}
+		}
+
+		.maxi-cloud-container__patterns {
+			display: flex;
+			flex-wrap: wrap;
+			.ais-InfiniteHits-item {
+				width: 32%;
+			}
+		}
+
+		.maxi-cloud-container__content-svg .ais-InfiniteHits-item {
+			width: 8%;
+>>>>>>> Patterns modal
 		}
 
 		.ais-InfiniteHits-sentinel {
@@ -577,6 +609,7 @@
 							font-size: 12px;
 						}
 
+<<<<<<< HEAD
 						&__input-container {
 							margin-right: 5px;
 						}
@@ -610,6 +643,13 @@
 							color: #444;
 							font-weight: bold;
 							transition: color 0.5s;
+=======
+		.ais-InfiniteHits-item {
+			margin: 0 1rem 1rem 0;
+			padding: 1rem;
+			box-shadow: 0px 5px 1rem 0px rgba(119, 119, 119, 0.1);
+			background-color: #fff;
+>>>>>>> Patterns modal
 
 							&:hover {
 								border-bottom: 2px solid #ff4a17;

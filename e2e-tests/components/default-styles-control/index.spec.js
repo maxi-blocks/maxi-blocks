@@ -164,6 +164,6 @@ describe('default styles control', () => {
 		};
 		const attributes = await getBlockAttributes();
 
-		expect(attributes).toStrictEqual(expectAttributes);
+		expect(attributes).toEqual(expectAttributes);
 	});
 });

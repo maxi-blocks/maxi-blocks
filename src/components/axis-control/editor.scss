@@ -1,4 +1,4 @@
-.maxi-axis-control {
+body.maxi-blocks--active .maxi-sidebar .maxi-axis-control {
 	margin-bottom: 8px;
 
 	input[type='checkbox'] {
@@ -28,6 +28,7 @@
 		align-items: flex-start;
 
 		&__item {
+			max-width: 58.25px;
 			margin-right: 5px;
 
 			@at-root .rtl #{&} {
@@ -55,7 +56,19 @@
 			}
 
 			&__input {
-				padding-right: 0 !important;
+				flex: 1;
+				height: auto;
+				min-height: 30px;
+				max-height: unset !important;
+				font-size: 13px;
+				border: 2px solid #dddfe1;
+				border-radius: 5px;
+				background-color: rgba(33, 141, 250, 0);
+				color: #464a53;
+				font-weight: 500;
+				padding: 0 8px;
+				line-height: 2;
+
 				@at-root .rtl #{&} {
 					padding-right: 8px !important;
 				}

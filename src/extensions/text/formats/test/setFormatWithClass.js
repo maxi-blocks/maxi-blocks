@@ -25,7 +25,7 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 					dark: {},
 					light: {},
 				},
-				styleCardDefaults: {
+				defaultStyleCard: {
 					dark: {},
 					light: {
 						'color-1': '#ffffff',

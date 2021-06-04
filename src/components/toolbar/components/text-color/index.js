@@ -39,6 +39,7 @@ const TextColor = withFormatValue(props => {
 		clientId,
 		isList,
 		textLevel,
+		styleCard,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
@@ -51,6 +52,7 @@ const TextColor = withFormatValue(props => {
 		prop: 'color',
 		breakpoint,
 		textLevel,
+		styleCard,
 	});
 
 	const onChangeFormat = value => {

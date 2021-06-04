@@ -14,7 +14,7 @@ describe('getSCVariablesObject', () => {
 				dark: {},
 				light: {},
 			},
-			styleCardDefaults: {
+			defaultStyleCard: {
 				dark: {
 					'color-1': '#081219',
 					'color-2': '#007cba',

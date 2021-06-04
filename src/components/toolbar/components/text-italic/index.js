@@ -35,6 +35,7 @@ const TextItalic = withFormatValue(props => {
 		isList,
 		breakpoint,
 		textLevel,
+		styleCard,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
@@ -46,6 +47,7 @@ const TextItalic = withFormatValue(props => {
 			prop: 'font-style',
 			breakpoint,
 			textLevel,
+			styleCard,
 		});
 
 	const italicValue = getItalicValue();

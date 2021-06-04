@@ -59,7 +59,7 @@ export const styleObjectManipulator = ({
 		blockStyle,
 		styleCard
 	);
-	// .styleCard.value.styleCardDefaults[blockStyle];
+	// .styleCard.value.defaultStyleCard[blockStyle];
 
 	const getCurrentValue = target =>
 		typography[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
@@ -108,9 +108,8 @@ const updateCustomFormatStyle = ({
 }) => {
 	const newTypography = { ...typography };
 
-	newTypography[
-		`custom-formats${isHover ? '-hover' : ''}`
-	] = cleanCustomFormats(newTypography, isHover);
+	newTypography[`custom-formats${isHover ? '-hover' : ''}`] =
+		cleanCustomFormats(newTypography, isHover);
 
 	newTypography[`custom-formats${isHover ? '-hover' : ''}`][
 		currentClassName

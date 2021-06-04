@@ -6,7 +6,7 @@ import { getLastBreakpointAttribute } from '../styles';
 /**
  * External dependencies
  */
-import { times, isEmpty } from 'lodash';
+import { times, isEmpty, merge } from 'lodash';
 
 export const getSCVariablesObject = styleCards => {
 	const response = {};
@@ -35,12 +35,16 @@ export const getSCVariablesObject = styleCards => {
 	];
 	const SC = {
 		dark: {
-			...styleCards.styleCardDefaults.dark,
-			...styleCards.styleCard.dark,
+			...merge(
+				styleCards.dark.defaultStyleCard,
+				styleCards.dark.styleCard
+			),
 		},
 		light: {
-			...styleCards.styleCardDefaults.light,
-			...styleCards.styleCard.light,
+			...merge(
+				styleCards.light.defaultStyleCard,
+				styleCards.light.styleCard
+			),
 		},
 	};
 	const settingToAvoidInGeneral = [
@@ -63,32 +67,31 @@ export const getSCVariablesObject = styleCards => {
 							response[
 								`--maxi-${style}-${element}-${setting}-${breakpoint}`
 							] = getLastBreakpointAttribute(
-								`${element}-${setting}`,
+								setting,
 								breakpoint,
-								SC[style]
+								SC[style][element]
 							);
 					});
 				});
 
 			if (
-				SC[style][`${element}-color-global`] &&
-				!isEmpty(SC[style][`${element}-color`])
+				SC[style][element]['color-global'] &&
+				!isEmpty(SC[style][element].color)
 			)
 				response[`--maxi-${style}-${element}-color`] =
-					SC[style][`${element}-color`];
+					SC[style][element].color;
 
 			if (
 				element === 'button' &&
-				SC[style][`${element}-background-color-global`] &&
-				!isEmpty(SC[style][`${element}-background-color`])
+				SC[style][element]['background-color-global'] &&
+				!isEmpty(SC[style][element]['background-color'])
 			)
 				response[`--maxi-${style}-${element}-background-color`] =
-					SC[style][`${element}-background-color`];
+					SC[style][element]['background-color'];
 		});
 
 		times(7, n => {
-			response[`--maxi-${style}-color-${n + 1}`] =
-				SC[style][`color-${n + 1}`];
+			response[`--maxi-${style}-color-${n + 1}`] = SC[style].color[n + 1];
 		});
 	});
 

@@ -10,13 +10,13 @@ import { isEmpty, isNumber, isBoolean } from 'lodash';
 
 const unitSettings = ['font-size', 'line-height', 'letter-spacing'];
 
-const getSCFromTypography = (styleCards, SCStyle, typographyObj) => {
+const getSCFromTypography = (styleCards, typographyObj) => {
 	const parsedTypography = {};
 
 	Object.entries(typographyObj).forEach(([key, val]) => {
 		if (isEmpty(val) && !isNumber(val) && !isBoolean(val)) {
 			if (!key.includes('-unit')) {
-				const newValue = styleCards.styleCardDefaults[SCStyle][key];
+				const newValue = styleCards.defaultStyleCard[key];
 				parsedTypography[key] = newValue;
 			}
 

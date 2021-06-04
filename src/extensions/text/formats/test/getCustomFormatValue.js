@@ -9,7 +9,7 @@ jest.mock('../../../style-cards/getActiveStyleCard', () => {
 					light: {},
 					dark: {},
 				},
-				styleCardDefaults: {
+				defaultStyleCard: {
 					dark: {},
 					light: {
 						'p-font-size-general': '16px',

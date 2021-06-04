@@ -14,6 +14,7 @@ export { default as googleMap } from './google-map';
 export { default as groupIcon } from './group-icon';
 export { default as headings } from './headings';
 export { default as hero } from './hero';
+export { default as help } from './help';
 export { default as iconBox } from './icon-box';
 export { default as iconList } from './icon-list';
 export { default as imageBox } from './image-box';

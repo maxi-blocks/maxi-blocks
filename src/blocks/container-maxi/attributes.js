@@ -29,7 +29,9 @@ const attributes = {
 		type: 'number',
 		default: 0,
 	},
-	...attributesData.palette,
+	...attributesData.palette.background,
+	...attributesData.palette.border,
+	...attributesData.palette.boxShadow,
 	...attributesData.container,
 	...{
 		...attributesData.background,

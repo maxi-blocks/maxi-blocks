@@ -150,9 +150,7 @@ const BorderControl = props => {
 					]}
 					onChange={val => {
 						onChange({
-							[`${
-								prefix ? prefix : ''
-							}border-style-${breakpoint}${
+							[`${prefix || ''}border-style-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`]: val,
 						});
@@ -175,9 +173,7 @@ const BorderControl = props => {
 					)}
 					onChange={val => {
 						onChange({
-							[`${
-								prefix ? prefix : ''
-							}border-color-${breakpoint}${
+							[`${prefix || ''}border-color-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`]: val,
 						});

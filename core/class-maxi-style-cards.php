@@ -142,12 +142,13 @@ class MaxiBlocks_StyleCards {
 						}
 					}
 
-					if ($SC[$style]["$element-color-global"])
+					if ($SC[$style]["$element-color-global"] && !empty($SC[$style]["$element-color"]))
 						$response .= "--maxi-$style-$element-color: " . $SC[$style]["$element-color"] . ';';
 
 					if (
 						$element === 'button' &&
-						$SC[$style]["$element-background-color-global"]
+						$SC[$style]["$element-background-color-global"] &&
+						!empty($SC[$style]["$element-background-color"])
 					)
 						$response .= "--maxi-$style-$element-background-color: " . $SC[$style]["$element-background-color"] . ';';
 				}
@@ -241,7 +242,7 @@ class MaxiBlocks_StyleCards {
 						"divider-color": "",
 						"divider-color-global": false,
 						"p-font-family-general": "Roboto",
-						"p-font-size-xxl": "20px",
+						"p-font-size-xxl": "18px",
 						"p-font-size-xl": "16px",
 						"p-line-height-xxl": "1.5",
 						"p-font-weight-general": "400",
@@ -377,7 +378,7 @@ class MaxiBlocks_StyleCards {
 						"divider-color": "",
 						"divider-color-global": false,
 						"p-font-family-general": "Roboto",
-						"p-font-size-xxl": "20px",
+						"p-font-size-xxl": "18px",
 						"p-font-size-xl": "16px",
 						"p-line-height-xxl": 1.5,
 						"p-line-height-xl": 1.625,

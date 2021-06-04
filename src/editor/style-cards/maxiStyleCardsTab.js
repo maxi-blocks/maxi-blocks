@@ -34,7 +34,7 @@ const MaxiStyleCardsTab = ({
 	SCStyle,
 	deviceType,
 	onChangeValue,
-	addActiveSCClass,
+
 	currentKey,
 }) => {
 	const processAttribute = attr => {
@@ -59,11 +59,6 @@ const MaxiStyleCardsTab = ({
 		}
 		return null;
 	};
-
-	if (document.querySelectorAll('.maxi-style-cards__sc-select option'))
-		setTimeout(function scSelect() {
-			addActiveSCClass(currentKey);
-		}, 300);
 
 	const options = [
 		{
@@ -115,7 +110,15 @@ const MaxiStyleCardsTab = ({
 							selected={processAttribute(firstColorGlobal)}
 							options={options}
 							onChange={val => {
-								onChangeValue(firstColorGlobal, val, SCStyle);
+								onChangeValue({
+									[firstColorGlobal]: val,
+									...(isEmpty(
+										processAttribute(firstColor)
+									) && {
+										[firstColor]:
+											processAttribute('color-3'),
+									}),
+								});
 							}}
 						/>
 					)}
@@ -126,7 +129,6 @@ const MaxiStyleCardsTab = ({
 								className={`maxi-style-cards-control__sc__${firstColor}--${SCStyle}`}
 								color={
 									processAttribute(firstColor) ||
-									processAttribute(`${firstColor}-old`) ||
 									getStyleCardAttr(
 										firstColorDefault,
 										SCStyle,
@@ -139,7 +141,7 @@ const MaxiStyleCardsTab = ({
 									true
 								)}
 								onChange={val => {
-									onChangeValue(firstColor, val, SCStyle);
+									onChangeValue({ [firstColor]: val });
 								}}
 								disableGradient
 								disablePalette
@@ -168,11 +170,7 @@ const MaxiStyleCardsTab = ({
 									SCStyle,
 									obj
 								);
-								onChangeValue(
-									'typography',
-									parsedTypography,
-									SCStyle
-								);
+								onChangeValue({ typography: parsedTypography });
 							}}
 							blockStyle={SCStyle}
 							disableFontFamily={deviceType !== 'general'}
@@ -187,7 +185,15 @@ const MaxiStyleCardsTab = ({
 							selected={processAttribute(secondColorGlobal)}
 							options={options}
 							onChange={val => {
-								onChangeValue(secondColorGlobal, val, SCStyle);
+								onChangeValue({
+									[secondColorGlobal]: val,
+									...(isEmpty(
+										processAttribute(secondColor)
+									) && {
+										[secondColor]:
+											processAttribute('color-4'),
+									}),
+								});
 							}}
 						/>
 					)}
@@ -199,7 +205,6 @@ const MaxiStyleCardsTab = ({
 								className={`maxi-style-cards-control__sc__${secondColor}--${SCStyle}`}
 								color={
 									processAttribute(secondColor) ||
-									processAttribute(`${secondColor}-old`) ||
 									getStyleCardAttr(
 										secondColorDefault,
 										SCStyle,
@@ -212,7 +217,7 @@ const MaxiStyleCardsTab = ({
 									true
 								)}
 								onChange={val => {
-									onChangeValue(secondColor, val, SCStyle);
+									onChangeValue({ [secondColor]: val });
 								}}
 								disableGradient
 								disablePalette
@@ -242,11 +247,15 @@ const MaxiStyleCardsTab = ({
 								)}
 								options={options}
 								onChange={val => {
-									onChangeValue(
-										`h${item}-color-global`,
-										val,
-										SCStyle
-									);
+									onChangeValue({
+										[`h${item}-color-global`]: val,
+										...(isEmpty(
+											processAttribute(`h${item}-color`)
+										) && {
+											[`h${item}-color`]:
+												processAttribute('color-5'),
+										}),
+									});
 								}}
 							/>
 						)}
@@ -257,9 +266,6 @@ const MaxiStyleCardsTab = ({
 									className={`maxi-style-cards-control__sc__h${item}-color--${SCStyle}`}
 									color={
 										processAttribute(`h${item}-color`) ||
-										processAttribute(
-											`h${item}-color-old`
-										) ||
 										getStyleCardAttr(
 											'color-5',
 											SCStyle,
@@ -272,11 +278,9 @@ const MaxiStyleCardsTab = ({
 										true
 									)}
 									onChange={val => {
-										onChangeValue(
-											`h${item}-color`,
-											val,
-											SCStyle
-										);
+										onChangeValue({
+											[`h${item}-color`]: val,
+										});
 									}}
 									disableGradient
 									disablePalette
@@ -304,11 +308,7 @@ const MaxiStyleCardsTab = ({
 									SCStyle,
 									obj
 								);
-								onChangeValue(
-									'typography',
-									parsedTypography,
-									SCStyle
-								);
+								onChangeValue({ typography: parsedTypography });
 							}}
 							blockStyle={SCStyle}
 						/>
@@ -351,9 +351,10 @@ const MaxiStyleCardsTab = ({
 											<span
 												className={`maxi-style-cards__quick-color-presets__box__item maxi-style-cards__quick-color-presets__box__item__${item}`}
 												style={{
-													background: processAttribute(
-														`color-${item}`
-													),
+													background:
+														processAttribute(
+															`color-${item}`
+														),
 												}}
 											/>
 										</div>
@@ -370,11 +371,9 @@ const MaxiStyleCardsTab = ({
 										`color-${quickColorPreset}`
 									)}
 									onChange={val => {
-										onChangeValue(
-											`color-${quickColorPreset}`,
-											val,
-											SCStyle
-										);
+										onChangeValue({
+											[`color-${quickColorPreset}`]: val,
+										});
 									}}
 									disableGradient
 									disablePalette

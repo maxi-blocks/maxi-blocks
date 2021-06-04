@@ -6,7 +6,7 @@ import { getLastBreakpointAttribute } from '../styles';
 /**
  * External dependencies
  */
-import { times } from 'lodash';
+import { times, isEmpty } from 'lodash';
 
 export const getSCVariablesObject = styleCards => {
 	const response = {};
@@ -70,13 +70,17 @@ export const getSCVariablesObject = styleCards => {
 					});
 				});
 
-			if (SC[style][`${element}-color-global`])
+			if (
+				SC[style][`${element}-color-global`] &&
+				!isEmpty(SC[style][`${element}-color`])
+			)
 				response[`--maxi-${style}-${element}-color`] =
 					SC[style][`${element}-color`];
 
 			if (
 				element === 'button' &&
-				SC[style][`${element}-background-color-global`]
+				SC[style][`${element}-background-color-global`] &&
+				!isEmpty(SC[style][`${element}-background-color`])
 			)
 				response[`--maxi-${style}-${element}-background-color`] =
 					SC[style][`${element}-background-color`];

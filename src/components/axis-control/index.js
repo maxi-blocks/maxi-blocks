@@ -20,7 +20,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, capitalize } from 'lodash';
 
 /**
  * Styles and icons
@@ -31,6 +31,55 @@ import { reset, sync } from '../../icons';
 /**
  * Component
  */
+const AxisInput = props => {
+	const {
+		placeholder,
+		value,
+		onChange,
+		label,
+		ariaLabel,
+		min,
+		max,
+		disableAuto,
+		checked,
+		onChangeCheckbox,
+	} = props;
+
+	const instanceId = useInstanceId(AxisInput);
+
+	return (
+		<div className='maxi-axis-control__content__item maxi-axis-control__content__item__top'>
+			<p className='maxi-axis-control__content__item__label'>
+				{__(capitalize(label), 'maxi-blocks')}
+			</p>
+			<input
+				className='maxi-axis-control__content__item__input'
+				type={disableAuto || value !== 'auto' ? 'number' : null}
+				placeholder={placeholder}
+				value={value}
+				onChange={onChange}
+				aria-label={ariaLabel}
+				min={min}
+				max={max}
+			/>
+			{!disableAuto && (
+				<label
+					className='maxi-axis-control__content__item__checkbox'
+					htmlFor={`${instanceId}-${label.toLowerCase()}`}
+				>
+					<input
+						type='checkbox'
+						checked={checked}
+						onChange={onChangeCheckbox}
+						id={`${instanceId}-${label.toLowerCase()}`}
+					/>
+					{__('auto', 'maxi-blocks')}
+				</label>
+			)}
+		</div>
+	);
+};
+
 const AxisControl = props => {
 	const {
 		label = '',
@@ -63,8 +112,6 @@ const AxisControl = props => {
 		inputsArray = ['top', 'right', 'bottom', 'left', 'unit', 'sync'],
 		optionType = 'number',
 	} = props;
-
-	const instanceId = useInstanceId(AxisControl);
 
 	const classes = classnames('maxi-axis-control', className);
 
@@ -99,11 +146,10 @@ const AxisControl = props => {
 		const response = {};
 
 		inputsArray.forEach(key => {
-			response[
-				`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
-			] = getDefaultAttribute(
-				`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
-			);
+			response[`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`] =
+				getDefaultAttribute(
+					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
+				);
 		});
 
 		onChange(response);
@@ -111,14 +157,13 @@ const AxisControl = props => {
 
 	const onChangeSync = () => {
 		onChange({
-			[`${getKey('sync')}-${breakpoint}${
-				isHover ? '-hover' : ''
-			}`]: !getLastBreakpointAttribute(
-				getKey('sync'),
-				breakpoint,
-				props,
-				isHover
-			),
+			[`${getKey('sync')}-${breakpoint}${isHover ? '-hover' : ''}`]:
+				!getLastBreakpointAttribute(
+					getKey('sync'),
+					breakpoint,
+					props,
+					isHover
+				),
 		});
 	};
 
@@ -212,167 +257,90 @@ const AxisControl = props => {
 				</Button>
 			</BaseControl>
 			<div className='maxi-axis-control__content'>
-				<div className='maxi-axis-control__content__item maxi-axis-control__content__item__top'>
-					<p className='maxi-axis-control__content__item__label'>
-						{__('Top', 'maxi-blocks')}
-					</p>
-					<input
-						className='maxi-axis-control__content__item__input'
-						type='number'
-						placeholder={
-							getValue(inputsArray[0]) === 'auto' ? 'auto' : ''
-						}
-						value={getDisplayValue(inputsArray[0])}
-						onChange={e =>
-							onChangeValue(e.target.value, inputsArray[0])
-						}
-						aria-label={sprintf(__('%s Top', 'maxi-blocks'), label)}
-						min={minMaxSettings[currentUnit].min}
-						max={minMaxSettings[currentUnit].max}
-					/>
-					{!disableAuto && (
-						<label
-							className='maxi-axis-control__content__item__checkbox'
-							htmlFor={`${instanceId}-top`}
-						>
-							<input
-								type='checkbox'
-								checked={getValue(inputsArray[0]) === 'auto'}
-								onChange={e =>
-									onChangeValue(
-										e.target.checked ? 'auto' : '',
-										inputsArray[0]
-									)
-								}
-								id={`${instanceId}-top`}
-							/>
-							{__('auto', 'maxi-blocks')}
-						</label>
-					)}
-				</div>
-				<div className='maxi-axis-control__content__item maxi-axis-control__content__item__right'>
-					<p className='maxi-axis-control__content__item__label'>
-						{__('Right', 'maxi-blocks')}
-					</p>
-					<input
-						className='maxi-axis-control__content__item__input'
-						type='number'
-						placeholder={
-							getValue(inputsArray[1]) === 'auto' ? 'auto' : ''
-						}
-						value={getDisplayValue(inputsArray[1])}
-						onChange={e =>
-							onChangeValue(e.target.value, inputsArray[1])
-						}
-						aria-label={sprintf(
-							__('%s Right', 'maxi-blocks'),
-							label
-						)}
-						min={minMaxSettings[currentUnit].min}
-						max={minMaxSettings[currentUnit].max}
-					/>
-					{!disableAuto && (
-						<label
-							className='maxi-axis-control__content__item__checkbox'
-							htmlFor={`${instanceId}-right`}
-						>
-							<input
-								type='checkbox'
-								checked={getValue(inputsArray[1]) === 'auto'}
-								onChange={e =>
-									onChangeValue(
-										e.target.checked ? 'auto' : '',
-										inputsArray[1]
-									)
-								}
-								id={`${instanceId}-right`}
-							/>
-							{__('auto', 'maxi-blocks')}
-						</label>
-					)}
-				</div>
-				<div className='maxi-axis-control__content__item maxi-axis-control__content__item__bottom'>
-					<p className='maxi-axis-control__content__item__label'>
-						{__('Bottom', 'maxi-blocks')}
-					</p>
-					<input
-						className='maxi-axis-control__content__item__input'
-						type='number'
-						placeholder={
-							getValue(inputsArray[2]) === 'auto' ? 'auto' : ''
-						}
-						value={getDisplayValue(inputsArray[2])}
-						onChange={e =>
-							onChangeValue(e.target.value, inputsArray[2])
-						}
-						aria-label={sprintf(
-							__('%s Bottom', 'maxi-blocks'),
-							label
-						)}
-						min={minMaxSettings[currentUnit].min}
-						max={minMaxSettings[currentUnit].max}
-					/>
-					{!disableAuto && (
-						<label
-							className='maxi-axis-control__content__item__checkbox'
-							htmlFor={`${instanceId}-bottom`}
-						>
-							<input
-								type='checkbox'
-								checked={getValue(inputsArray[2]) === 'auto'}
-								onChange={e =>
-									onChangeValue(
-										e.target.checked ? 'auto' : '',
-										inputsArray[2]
-									)
-								}
-								id={`${instanceId}-bottom`}
-							/>
-							{__('auto', 'maxi-blocks')}
-						</label>
-					)}
-				</div>
-				<div className='maxi-axis-control__content__item maxi-axis-control__content__item__left'>
-					<p className='maxi-axis-control__content__item__label'>
-						{__('Left', 'maxi-blocks')}
-					</p>
-					<input
-						className='maxi-axis-control__content__item__input'
-						type='number'
-						placeholder={
-							getValue(inputsArray[3]) === 'auto' ? 'auto' : ''
-						}
-						value={getDisplayValue(inputsArray[3])}
-						onChange={e =>
-							onChangeValue(e.target.value, inputsArray[3])
-						}
-						aria-label={sprintf(
-							__('%s Left', 'maxi-blocks'),
-							label
-						)}
-						min={minMaxSettings[currentUnit].min}
-						max={minMaxSettings[currentUnit].max}
-					/>
-					{!disableAuto && (
-						<label
-							className='maxi-axis-control__content__item__checkbox'
-							htmlFor={`${instanceId}-left`}
-						>
-							<input
-								type='checkbox'
-								checked={getValue(inputsArray[3]) === 'auto'}
-								onChange={e =>
-									onChangeValue(
-										e.target.checked ? 'auto' : '',
-										inputsArray[3]
-									)
-								}
-								id={`${instanceId}-left`}
-							/>
-							{__('auto', 'maxi-blocks')}
-						</label>
-					)}
-				</div>
+				<AxisInput
+					label='top'
+					placeholder={
+						getValue(inputsArray[0]) === 'auto' ? 'auto' : ''
+					}
+					value={getDisplayValue(inputsArray[0])}
+					onChange={e =>
+						onChangeValue(e.target.value, inputsArray[0])
+					}
+					ariaLabel={sprintf(__('%s Top', 'maxi-blocks'), label)}
+					min={minMaxSettings[currentUnit].min}
+					max={minMaxSettings[currentUnit].max}
+					disableAuto={disableAuto}
+					checked={getValue(inputsArray[0]) === 'auto'}
+					onChangeCheckbox={e =>
+						onChangeValue(
+							e.target.checked ? 'auto' : '',
+							inputsArray[0]
+						)
+					}
+				/>
+				<AxisInput
+					label='right'
+					placeholder={
+						getValue(inputsArray[1]) === 'auto' ? 'auto' : ''
+					}
+					value={getDisplayValue(inputsArray[1])}
+					onChange={e =>
+						onChangeValue(e.target.value, inputsArray[1])
+					}
+					ariaLabel={sprintf(__('%s Right', 'maxi-blocks'), label)}
+					min={minMaxSettings[currentUnit].min}
+					max={minMaxSettings[currentUnit].max}
+					disableAuto={disableAuto}
+					checked={getValue(inputsArray[1]) === 'auto'}
+					onChangeCheckbox={e =>
+						onChangeValue(
+							e.target.checked ? 'auto' : '',
+							inputsArray[1]
+						)
+					}
+				/>
+				<AxisInput
+					label='bottom'
+					placeholder={
+						getValue(inputsArray[2]) === 'auto' ? 'auto' : ''
+					}
+					value={getDisplayValue(inputsArray[2])}
+					onChange={e =>
+						onChangeValue(e.target.value, inputsArray[2])
+					}
+					ariaLabel={sprintf(__('%s Bottom', 'maxi-blocks'), label)}
+					min={minMaxSettings[currentUnit].min}
+					max={minMaxSettings[currentUnit].max}
+					disableAuto={disableAuto}
+					checked={getValue(inputsArray[2]) === 'auto'}
+					onChangeCheckbox={e =>
+						onChangeValue(
+							e.target.checked ? 'auto' : '',
+							inputsArray[2]
+						)
+					}
+				/>
+				<AxisInput
+					label='left'
+					placeholder={
+						getValue(inputsArray[3]) === 'auto' ? 'auto' : ''
+					}
+					value={getDisplayValue(inputsArray[3])}
+					onChange={e =>
+						onChangeValue(e.target.value, inputsArray[3])
+					}
+					ariaLabel={sprintf(__('%s Left', 'maxi-blocks'), label)}
+					min={minMaxSettings[currentUnit].min}
+					max={minMaxSettings[currentUnit].max}
+					disableAuto={disableAuto}
+					checked={getValue(inputsArray[3]) === 'auto'}
+					onChangeCheckbox={e =>
+						onChangeValue(
+							e.target.checked ? 'auto' : '',
+							inputsArray[3]
+						)
+					}
+				/>
 				<div className='maxi-axis-control__content__item maxi-axis-control__content__item__sync'>
 					<Tooltip
 						text={

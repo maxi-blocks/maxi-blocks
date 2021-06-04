@@ -8,9 +8,13 @@ import { useState, useEffect, RawHTML } from '@wordpress/element';
 import { parse } from '@wordpress/blocks';
 
 /**
- * Internal dependencies
+ * Internal dependencies searchState={{
+    query: 'iphone',
+    refinementList: {
+      brand: ['Apple'],
+    },
+  }}
  */
-import TopbarFilter from './topbarFilter';
 import Masonry from './masonry';
 import Button from '../../components/button';
 
@@ -22,8 +26,7 @@ import algoliasearch from 'algoliasearch/lite';
 import {
 	InstantSearch,
 	SearchBox,
-	Hits,
-	Pagination,
+	InfiniteHits,
 	RefinementList,
 } from 'react-instantsearch-dom';
 
@@ -41,17 +44,23 @@ const LibraryContainer = props => {
 	const { replaceBlocks, updateBlockAttributes } =
 		useDispatch('core/block-editor');
 
-	const MasonryItemSVG = props => {
-		const { svgCode, isPro, serial, onRequestInsert, categories, tags } =
-			props;
+	/** Patterns / Blocks */
+	const MasonryItem = props => {
+		const { previewIMG, isPro, serial, onRequestInsert } = props;
 
 		return (
 			<div className='maxi-cloud-masonry-card'>
 				<div className='maxi-cloud-masonry-card__image'>
-					<RawHTML>{svgCode}</RawHTML>
+					<img src={previewIMG} alt={`Preview for ${serial}`} />
 				</div>
 				<div className='maxi-cloud-masonry-card__container'>
 					<div className='maxi-cloud-masonry-card__buttons'>
+						<Button className='maxi-cloud-masonry-card__button'>
+							Preview
+						</Button>
+						<Button className='maxi-cloud-masonry-card__button'>
+							Update
+						</Button>
 						<Button
 							className='maxi-cloud-masonry-card__button'
 							onClick={onRequestInsert}
@@ -68,6 +77,49 @@ const LibraryContainer = props => {
 						<p className='maxi-cloud-masonry__serial-tag'>
 							{serial}
 						</p>
+					</div>
+				</div>
+			</div>
+		);
+	};
+
+	const onRequestInsert = parsedContent => {
+		const clientId = select('core/block-editor').getSelectedBlockClientId();
+
+		const isValid =
+			select('core/block-editor').isValidTemplate(parsedContent);
+
+		if (isValid) {
+			replaceBlocks(clientId, parsedContent);
+			onRequestClose();
+		}
+	};
+
+	/** SVGs */
+	const MasonryItemSVG = props => {
+		const { svgCode, isPro, serial, onRequestInsert } = props;
+
+		return (
+			<div className='maxi-cloud-masonry-card'>
+				<div className='maxi-cloud-masonry-card__image'>
+					<RawHTML>{svgCode}</RawHTML>
+				</div>
+				<div className='maxi-cloud-masonry-card__container'>
+					<p className='maxi-cloud-masonry__serial-tag'>{serial}</p>
+					<div className='maxi-cloud-masonry-card__buttons'>
+						<Button
+							className='maxi-cloud-masonry-card__button'
+							onClick={onRequestInsert}
+						>
+							Insert
+						</Button>
+					</div>
+					<div className='maxi-cloud-masonry-card__tags'>
+						{isPro && (
+							<span className='maxi-cloud-masonry__pro-tag'>
+								PRO
+							</span>
+						)}
 					</div>
 				</div>
 			</div>
@@ -95,7 +147,7 @@ const LibraryContainer = props => {
 		}
 	};
 
-	const results = ({ hit }) => {
+	const svgResults = ({ hit }) => {
 		return (
 			<MasonryItemSVG
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
@@ -109,25 +161,32 @@ const LibraryContainer = props => {
 
 	return (
 		<div className='maxi-cloud-container'>
-			<div className='maxi-cloud-container__sidebar'>
-				{type === 'svg' && (
-					<InstantSearch
-						indexName='maxi_posts_svg_icon'
-						searchClient={searchClient}
-					>
-						<SearchBox />
-						<RefinementList attribute='taxonomies.svg_tag' />
-						<div className='maxi-cloud-container__content'>
-							<Hits hitComponent={results} />
-							<Pagination />
-						</div>
-					</InstantSearch>
-				)}
+			{type === 'svg' && (
+				<InstantSearch
+					indexName='maxi_posts_svg_icon'
+					searchClient={searchClient}
+				>
+					<div className='maxi-cloud-container__content-svg'>
+						<SearchBox
+							submit={__('Find', 'maxi-blocks')}
+							autoFocus
+							searchAsYouType
+							showLoadingIndicator
+						/>
+						<RefinementList
+							className='hidden'
+							attribute='taxonomies.attachmentcategory'
+							defaultRefinement={['Filled']}
+							showLoadingIndicator
+						/>
+						<InfiniteHits hitComponent={svgResults} />
+					</div>
+				</InstantSearch>
+			)}
 
-				{/* {type === 'patterns' && (
+			{/* {type === 'patterns' && (
 				
 				)} */}
-			</div>
 		</div>
 	);
 };

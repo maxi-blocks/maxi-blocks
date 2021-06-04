@@ -8,14 +8,8 @@ import { useState, useEffect, RawHTML } from '@wordpress/element';
 import { parse } from '@wordpress/blocks';
 
 /**
- * Internal dependencies searchState={{
-    query: 'iphone',
-    refinementList: {
-      brand: ['Apple'],
-    },
-  }}
+ * Internal dependencies
  */
-import Masonry from './masonry';
 import Button from '../../components/button';
 
 /**
@@ -28,6 +22,9 @@ import {
 	SearchBox,
 	InfiniteHits,
 	RefinementList,
+	ClearRefinements,
+	Menu,
+	HierarchicalMenu,
 } from 'react-instantsearch-dom';
 
 /**
@@ -59,7 +56,7 @@ const LibraryContainer = props => {
 							Preview
 						</Button>
 						<Button className='maxi-cloud-masonry-card__button'>
-							Update
+							Import
 						</Button>
 						<Button
 							className='maxi-cloud-masonry-card__button'
@@ -159,6 +156,19 @@ const LibraryContainer = props => {
 		);
 	};
 
+	const patternsResults = ({ hit }) => {
+		return (
+			<MasonryItem
+				key={`maxi-cloud-masonry__item-${hit.post_id}`}
+				demoUrl={hit.demo_url}
+				previewIMG={hit.preview_image_url}
+				isPro={hit.taxonomies.cost === 'pro'}
+				serial={hit.post_number}
+				onRequestInsert={() => onRequestInsert(hit.gutenberg_code)}
+			/>
+		);
+	};
+
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
@@ -184,9 +194,45 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
-			{/* {type === 'patterns' && (
-				
-				)} */}
+			{type === 'patterns' && (
+				<div className='maxi-cloud-container__patterns'>
+					<InstantSearch
+						indexName='maxi_posts_post'
+						searchClient={searchClient}
+					>
+						<div className='maxi-cloud-container__top-menu'>
+							<Menu
+								attribute='taxonomies.gutenberg_type'
+								defaultRefinement='Block Patterns'
+							/>
+						</div>
+						<div className='maxi-cloud-container__top'>
+							<RefinementList attribute='taxonomies.cost' />
+						</div>
+						<div className='maxi-cloud-container__sidebar'>
+							<RefinementList attribute='taxonomies.light_or_dark' />
+							<SearchBox
+								submit={false}
+								autoFocus
+								searchAsYouType
+								showLoadingIndicator
+							/>
+							<HierarchicalMenu
+								attributes={[
+									'taxonomies_hierarchical.category.lvl0',
+									'taxonomies_hierarchical.category.lvl1',
+									'taxonomies_hierarchical.category.lvl2',
+									'taxonomies_hierarchical.category.lvl3',
+								]}
+							/>
+							<ClearRefinements />
+						</div>
+						<div className='maxi-cloud-container__content-patterns'>
+							<InfiniteHits hitComponent={patternsResults} />
+						</div>
+					</InstantSearch>
+				</div>
+			)}
 		</div>
 	);
 };

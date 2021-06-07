@@ -22,9 +22,8 @@ describe('arrow control', () => {
 		const accordionPanel = await openSidebar(page, 'arrow');
 
 		// Show arrow settings
-		await accordionPanel.$$eval(
-			'.maxi-accordion-control__item__panel .maxi-arrow-control .components-base-control__field label',
-			button => button[0].click()
+		await accordionPanel.$$eval('.maxi-arrow-control label', button =>
+			button[1].click()
 		);
 
 		const positionButtons = await page.$$eval(

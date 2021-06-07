@@ -1,21 +1,13 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	// getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
-import { getBlockAttributes } from '../../utils';
-import openSidebar from '../../utils/openSidebar';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('axis control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the axis control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
-
 		const accordionPanel = await openSidebar(page, 'padding margin');
 		const axisControls = await accordionPanel.$$('.maxi-axis-control');
 		const instances = ['padding', 'margin'];
@@ -39,11 +31,10 @@ describe('axis control', () => {
 			const unitSelector = await axisControl.$(
 				'.maxi-axis-control__units select'
 			);
-			const unitOptions = await unitSelector.$$('options');
+			await unitSelector.$$('options');
 			await unitSelector.select('%');
 
 			const firstAttributes = await getBlockAttributes();
-
 			const expectedAttributes = {
 				[`${instances[i]}-bottom-general`]: '3',
 				[`${instances[i]}-left-general`]: '4',

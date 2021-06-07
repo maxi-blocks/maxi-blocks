@@ -206,7 +206,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 			},
 		};
 
-		saveMaxiStyleCards(selectedSCValue); // ???
+		saveMaxiStyleCards(selectedSCValue);
 		updateSCOnEditor(selectedSCValue);
 
 		saveMaxiStyleCards(newStyleCards, true);

@@ -22,11 +22,7 @@ import {
 	TypographyControl,
 	FancyRadioControl,
 } from '../../components';
-import {
-	getSCFromTypography,
-	getTypographyFromSC,
-} from '../../extensions/style-cards';
-import { getTypographyStyles } from '../../extensions/styles/helpers';
+import { getTypographyFromSC } from '../../extensions/style-cards';
 
 /**
  * Component
@@ -47,6 +43,7 @@ const SCTab = props => {
 		onChangeValue,
 	} = props;
 
+	const firstColorGlobal = `${firstColor}-global`;
 	const secondColorGlobal = `${secondColor}-global`;
 
 	const options = [
@@ -65,18 +62,22 @@ const SCTab = props => {
 			{breakpoint === 'general' && (
 				<FancyRadioControl
 					label={__(`Use Global ${firstLabel} Colour`, 'maxi-blocks')}
-					selected={processSCAttribute(SC, 'color-global', type)}
+					selected={processSCAttribute(SC, firstColorGlobal, type)}
 					options={options}
 					onChange={val => {
 						onChangeValue(
 							{
-								'color-global': val,
+								[firstColorGlobal]: val,
 								...(isEmpty(
-									processSCAttribute(SC, 'color-global', type)
+									processSCAttribute(
+										SC,
+										firstColorGlobal,
+										type
+									)
 								) && {
 									[firstColor]: processSCAttribute(
 										SC,
-										'3',
+										firstColorDefault,
 										'color'
 									),
 								}),
@@ -87,7 +88,7 @@ const SCTab = props => {
 				/>
 			)}
 			{breakpoint === 'general' &&
-				processSCAttribute(SC, 'color-global', type) && (
+				processSCAttribute(SC, firstColorGlobal, type) && (
 					<ColorControl
 						label={__(`${firstLabel} Text`, 'maxi-blocks')}
 						className={`maxi-style-cards-control__sc__color--${SCStyle}`}
@@ -120,8 +121,8 @@ const SCTab = props => {
 					disablePalette
 					styleCards
 					onChange={obj => {
-						const parsedTypography = getSCFromTypography(SC, obj);
-						onChangeValue({ typography: parsedTypography }, type);
+						// const parsedTypography = getSCFromTypography(SC, obj);
+						onChangeValue({ typography: obj }, type);
 					}}
 					blockStyle={SCStyle}
 					disableFontFamily={breakpoint !== 'general'}
@@ -144,7 +145,7 @@ const SCTab = props => {
 								) && {
 									[secondColor]: processSCAttribute(
 										SC,
-										'4',
+										secondColorDefault,
 										'color'
 									),
 								}),
@@ -215,8 +216,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				),
 			};
 		});
-
-	console.log(getTypographyStyles(getTypographyFromSC(SC, 'p')));
 
 	return (
 		<div className='maxi-tab-content__box'>
@@ -315,9 +314,9 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					generateTab({
 						type: 'icon',
 						firstLabel: 'SVG Icon',
-						firstColor: 'icon-line',
+						firstColor: 'line',
 						firstColorDefault: 7,
-						secondColor: 'icon-fill',
+						secondColor: 'fill',
 						secondLabel: 'Fill',
 						secondColorDefault: 4,
 						disableTypography: true,

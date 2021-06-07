@@ -1,25 +1,6 @@
 import getCustomFormatValue from '../getCustomFormatValue';
 import '@wordpress/block-editor';
 
-jest.mock('../../../style-cards/getActiveStyleCard', () => {
-	return jest.fn(() => {
-		return {
-			value: {
-				styleCard: {
-					light: {},
-					dark: {},
-				},
-				defaultStyleCard: {
-					dark: {},
-					light: {
-						'p-font-size-general': '16px',
-					},
-				},
-			},
-		};
-	});
-});
-
 describe('getCustomFormatValue', () => {
 	it('Returns SC value', () => {
 		const formatValue = {
@@ -31,8 +12,6 @@ describe('getCustomFormatValue', () => {
 			activeFormats: [],
 		};
 		const typography = {
-			'font-size-unit-general': 'px',
-			'letter-spacing-unit-general': 'px',
 			'font-size-unit-xxl': 'px',
 			'letter-spacing-unit-xxl': 'px',
 			'font-size-unit-xl': 'px',
@@ -46,8 +25,21 @@ describe('getCustomFormatValue', () => {
 			'font-size-unit-xs': 'px',
 			'letter-spacing-unit-xs': 'px',
 		};
+		const styleCard = {
+			light: {
+				defaultStyleCard: {
+					p: {},
+				},
+				styleCard: {
+					p: {
+						'font-size-xl': '16',
+						'font-size-unit-xl': 'px',
+					},
+				},
+			},
+		};
 		const prop = 'font-size';
-		const breakpoint = 'general';
+		const breakpoint = 'xl';
 		const textLevel = 'p';
 		const blockStyle = 'maxi-light';
 
@@ -58,8 +50,9 @@ describe('getCustomFormatValue', () => {
 			breakpoint,
 			textLevel,
 			blockStyle,
+			styleCard,
 		});
 
-		expect(result).toStrictEqual(16);
+		expect(result).toStrictEqual('16');
 	});
 });

@@ -424,20 +424,23 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 										const newStyleCard = {
 											name: styleCardName,
 											status: '',
-											styleCard: { dark: {}, light: {} },
-											defaultStyleCard: {
-												dark: {
-													...selectedSCValue
-														.defaultStyleCard.dark,
-													...selectedSCValue.styleCard
-														.dark,
+											dark: {
+												defaultStyleCard: {
+													...selectedSCValue.dark
+														.defaultStyleCard,
+													...selectedSCValue.dark
+														.styleCard,
 												},
-												light: {
-													...selectedSCValue
-														.defaultStyleCard.light,
-													...selectedSCValue.styleCard
-														.light,
+												styleCard: {},
+											},
+											light: {
+												defaultStyleCard: {
+													...selectedSCValue.light
+														.defaultStyleCard,
+													...selectedSCValue.light
+														.styleCard,
 												},
+												styleCard: {},
 											},
 										};
 										saveImportedStyleCard(newStyleCard);

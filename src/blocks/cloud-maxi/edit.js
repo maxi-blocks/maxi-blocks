@@ -13,7 +13,7 @@ import { library } from '../../icons';
  */
 import { __ } from '@wordpress/i18n';
 import { Component, Fragment } from '@wordpress/element';
-import { BlockControls, BlockAlignmentToolbar } from '@wordpress/editor';
+import { BlockControls, BlockAlignmentToolbar } from '@wordpress/block-editor';
 import { Placeholder } from '../../components';
 
 export default class Edit extends Component {

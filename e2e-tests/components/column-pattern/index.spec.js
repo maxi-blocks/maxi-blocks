@@ -15,9 +15,6 @@ describe('arrow control', () => {
 
 	it('test column pattern', async () => {
 		await insertBlock('Container Maxi');
-		await page.$eval('.maxi-container-block', container =>
-			container.focus()
-		);
 		const accordionPanel = await openSidebar(page, 'row settings');
 
 		// Show arrow settings
@@ -32,6 +29,8 @@ describe('arrow control', () => {
 			'.components-column-pattern .components-column-pattern__templates button',
 			click => click.click()
 		);
+
+		await page.$eval('.maxi-row-block', row => row.focus());
 
 		const attributes = await getBlockAttributes();
 		const rowNumber = attributes['row-pattern-general'];

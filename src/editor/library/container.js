@@ -2,10 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch, select } from '@wordpress/data';
-import { useState, useEffect, RawHTML } from '@wordpress/element';
-
-import { parse } from '@wordpress/blocks';
+import { useDispatch, select } from '@wordpress/data';
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -15,7 +13,6 @@ import Button from '../../components/button';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
 import algoliasearch from 'algoliasearch/lite';
 import {
 	InstantSearch,
@@ -25,6 +22,7 @@ import {
 	ClearRefinements,
 	Menu,
 	HierarchicalMenu,
+	Stats,
 } from 'react-instantsearch-dom';
 
 /**
@@ -80,7 +78,7 @@ const LibraryContainer = props => {
 		);
 	};
 
-	const onRequestInsert = parsedContent => {
+	const onRequestInsertPattern = parsedContent => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
 
 		const isValid =
@@ -92,7 +90,7 @@ const LibraryContainer = props => {
 		}
 	};
 
-	/** SVGs */
+	/** SVG Icons */
 	const MasonryItemSVG = props => {
 		const { svgCode, isPro, serial, onRequestInsert } = props;
 
@@ -164,7 +162,9 @@ const LibraryContainer = props => {
 				previewIMG={hit.preview_image_url}
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_number}
-				onRequestInsert={() => onRequestInsert(hit.gutenberg_code)}
+				onRequestInsert={() =>
+					onRequestInsertPattern(hit.gutenberg_code)
+				}
 			/>
 		);
 	};
@@ -189,6 +189,16 @@ const LibraryContainer = props => {
 							defaultRefinement={['Filled']}
 							showLoadingIndicator
 						/>
+						<Stats
+							translations={{
+								stats(nbHits, nbSortedHits, areHitsSorted) {
+									return areHitsSorted &&
+										nbHits !== nbSortedHits
+										? `Returned: ${nbSortedHits.toLocaleString()} results of ${nbHits.toLocaleString()}`
+										: `Returned: ${nbHits.toLocaleString()} results`;
+								},
+							}}
+						/>
 						<InfiniteHits hitComponent={svgResults} />
 					</div>
 				</InstantSearch>
@@ -210,9 +220,11 @@ const LibraryContainer = props => {
 							<RefinementList attribute='taxonomies.cost' />
 						</div>
 						<div className='maxi-cloud-container__sidebar'>
-							<RefinementList attribute='taxonomies.light_or_dark' />
+							<RefinementList
+								attribute='taxonomies.light_or_dark'
+								defaultRefinement='Dark'
+							/>
 							<SearchBox
-								submit={false}
 								autoFocus
 								searchAsYouType
 								showLoadingIndicator
@@ -228,6 +240,16 @@ const LibraryContainer = props => {
 							<ClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__content-patterns'>
+							<Stats
+								translations={{
+									stats(nbHits, nbSortedHits, areHitsSorted) {
+										return areHitsSorted &&
+											nbHits !== nbSortedHits
+											? `Returned: ${nbSortedHits.toLocaleString()} results of ${nbHits.toLocaleString()}`
+											: `Returned: ${nbHits.toLocaleString()} results`;
+									},
+								}}
+							/>
 							<InfiniteHits hitComponent={patternsResults} />
 						</div>
 					</InstantSearch>

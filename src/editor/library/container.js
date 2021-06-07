@@ -36,7 +36,7 @@ const LibraryContainer = props => {
 		'6ed8ae6d1c430c6a76e0720f74eab91c'
 	);
 
-	const { replaceBlocks, updateBlockAttributes } =
+	const { replaceBlock, updateBlockAttributes } =
 		useDispatch('core/block-editor');
 
 	/** Patterns / Blocks */
@@ -85,7 +85,13 @@ const LibraryContainer = props => {
 			select('core/block-editor').isValidTemplate(parsedContent);
 
 		if (isValid) {
-			replaceBlocks(clientId, parsedContent);
+			replaceBlock(
+				clientId,
+				wp.blocks.rawHandler({
+					HTML: parsedContent,
+					mode: 'BLOCKS',
+				})
+			);
 			onRequestClose();
 		}
 	};
@@ -222,7 +228,7 @@ const LibraryContainer = props => {
 						<div className='maxi-cloud-container__sidebar'>
 							<RefinementList
 								attribute='taxonomies.light_or_dark'
-								defaultRefinement='Dark'
+								defaultRefinement={['Dark']}
 							/>
 							<SearchBox
 								autoFocus

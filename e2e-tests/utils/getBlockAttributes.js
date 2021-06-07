@@ -1,23 +1,26 @@
+/**
+ * WordPress dependencies
+ */
 import { getAllBlocks } from '@wordpress/e2e-test-utils';
 import getClientId from './getClientId';
 
-import { find, isEmpty } from 'lodash';
+/**
+ * Internal dependencies
+ */
+import { isEmpty } from 'lodash';
 
 export const getAttributes = (blocks, clientId) => {
 	let attributes = false;
 
-	for (const block of blocks) {
-		debugger;
+	blocks.forEach(block => {
 		if (block.clientId === clientId) attributes = block.attributes;
 
 		if (!isEmpty(block.innerBlocks)) {
-			for (const innerBlock of block.innerBlock) {
-				const res = getAttributes(innerBlock, clientId);
+			const res = getAttributes(block.innerBlocks, clientId);
 
-				if (res) attributes = res;
-			}
+			if (res) attributes = res;
 		}
-	}
+	});
 
 	return attributes;
 };
@@ -26,9 +29,7 @@ const getBlockAttributes = async () => {
 	const clientId = await getClientId();
 	const blocks = await getAllBlocks();
 
-	// a ver, que esto tiene miga...
-
-	const { attributes } = find(blocks, { clientId });
+	const attributes = getAttributes(blocks, clientId);
 
 	return attributes;
 };

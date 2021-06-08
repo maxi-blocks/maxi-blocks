@@ -211,13 +211,14 @@ class edit extends MaxiBlockComponent {
 										attributes.SVGCurrentElement
 									]
 								];
-							const cleanedContent = DOMPurify.sanitize(
-								currentElem
-							);
+
+							const cleanedContent =
+								DOMPurify.sanitize(currentElem);
 							const svg = document
 								.createRange()
-								.createContextual(cleanedContent)
-								.firstElementChild;
+								.createContextualFragment(
+									cleanedContent
+								).firstElementChild;
 
 							const resData = generateDataObject('', svg);
 

@@ -40,7 +40,7 @@ const LibraryContainer = props => {
 		useDispatch('core/block-editor');
 
 	/** Patterns / Blocks */
-	const MasonryItem = props => {
+	const MasonryItemPatterns = props => {
 		const { previewIMG, isPro, serial, onRequestInsert } = props;
 
 		return (
@@ -94,6 +94,21 @@ const LibraryContainer = props => {
 			);
 			onRequestClose();
 		}
+	};
+
+	const patternsResults = ({ hit }) => {
+		return (
+			<MasonryItemPatterns
+				key={`maxi-cloud-masonry__item-${hit.post_id}`}
+				demoUrl={hit.demo_url}
+				previewIMG={hit.preview_image_url}
+				isPro={hit.taxonomies.cost === 'pro'}
+				serial={hit.post_number}
+				onRequestInsert={() =>
+					onRequestInsertPattern(hit.gutenberg_code)
+				}
+			/>
+		);
 	};
 
 	/** SVG Icons */
@@ -160,17 +175,69 @@ const LibraryContainer = props => {
 		);
 	};
 
-	const patternsResults = ({ hit }) => {
+	/** Style Cards */
+
+	const MasonryItemSC = props => {
+		const { previewIMG, isPro, serial, onRequestInsert } = props;
+
 		return (
-			<MasonryItem
+			<div className='maxi-cloud-masonry-card'>
+				<div className='maxi-cloud-masonry-card__container'>
+					<div className='maxi-cloud-masonry-card__buttons'>
+						<p className='maxi-cloud-masonry__serial-tag'>
+							{serial}
+						</p>
+						<Button
+							className='maxi-cloud-masonry-card__button'
+							onClick={onRequestInsert}
+						>
+							Load
+						</Button>
+						<Button className='maxi-cloud-masonry-card__button'>
+							Save
+						</Button>
+					</div>
+					<div className='maxi-cloud-masonry-card__image'>
+						<img src={previewIMG} alt={`Preview for ${serial}`} />
+					</div>
+					<div className='maxi-cloud-masonry-card__tags'>
+						{isPro && (
+							<span className='maxi-cloud-masonry__pro-tag'>
+								PRO
+							</span>
+						)}
+					</div>
+				</div>
+			</div>
+		);
+	};
+
+	const onRequestInsertSC = parsedContent => {
+		const clientId = select('core/block-editor').getSelectedBlockClientId();
+
+		const isValid =
+			select('core/block-editor').isValidTemplate(parsedContent);
+
+		if (isValid) {
+			replaceBlock(
+				clientId,
+				wp.blocks.rawHandler({
+					HTML: parsedContent,
+					mode: 'BLOCKS',
+				})
+			);
+			onRequestClose();
+		}
+	};
+
+	const scResults = ({ hit }) => {
+		return (
+			<MasonryItemSC
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
-				demoUrl={hit.demo_url}
-				previewIMG={hit.preview_image_url}
+				previewIMG={hit.images.thumbnail.url}
 				isPro={hit.taxonomies.cost === 'pro'}
-				serial={hit.post_number}
-				onRequestInsert={() =>
-					onRequestInsertPattern(hit.gutenberg_code)
-				}
+				serial={hit.post_title}
+				onRequestInsert={() => onRequestInsertSC(hit.sc_code)}
 			/>
 		);
 	};
@@ -257,6 +324,41 @@ const LibraryContainer = props => {
 								}}
 							/>
 							<InfiniteHits hitComponent={patternsResults} />
+						</div>
+					</InstantSearch>
+				</div>
+			)}
+
+			{type === 'sc' && (
+				<div className='maxi-cloud-container__sc'>
+					<InstantSearch
+						indexName='maxi_posts_style_card'
+						searchClient={searchClient}
+					>
+						<div className='maxi-cloud-container__sidebar'>
+							<SearchBox
+								autoFocus
+								searchAsYouType
+								showLoadingIndicator
+							/>
+							<div>Colour</div>
+							<RefinementList attribute='taxonomies.sc_color' />
+							<div>Style</div>
+							<RefinementList attribute='taxonomies.sc_style' />
+							<ClearRefinements />
+						</div>
+						<div className='maxi-cloud-container__content-sc'>
+							<Stats
+								translations={{
+									stats(nbHits, nbSortedHits, areHitsSorted) {
+										return areHitsSorted &&
+											nbHits !== nbSortedHits
+											? `Returned: ${nbSortedHits.toLocaleString()} results of ${nbHits.toLocaleString()}`
+											: `Returned: ${nbHits.toLocaleString()} results`;
+									},
+								}}
+							/>
+							<InfiniteHits hitComponent={scResults} />
 						</div>
 					</InstantSearch>
 				</div>

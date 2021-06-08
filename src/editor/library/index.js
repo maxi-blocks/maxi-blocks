@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Modal } from '@wordpress/components';
-import { useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
 /**
@@ -18,7 +17,6 @@ import LibrarySpinner from './spinner';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -34,15 +32,6 @@ const CloudLibrary = props => {
 	const { onClose, className, cloudType } = props;
 
 	const [type, setType] = useState(cloudType);
-
-	const { cloudData } = useSelect(select => {
-		const { receiveMaxiCloudLibrary } = select('maxiBlocks/cloudLibrary');
-		const cloudData = receiveMaxiCloudLibrary(type);
-
-		return {
-			cloudData,
-		};
-	});
 
 	const classes = classnames('maxi-library-modal', className);
 

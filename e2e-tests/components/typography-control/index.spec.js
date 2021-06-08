@@ -1,15 +1,21 @@
+/**
+ * WordPress dependencies
+ */
 import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('typography control', () => {
-	it('checking the typography control', async () => {
+describe('Typography Control', () => {
+	it('Checking the typography control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing font family');
+		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openSidebar(page, 'typography');
 
 		// fontFamily

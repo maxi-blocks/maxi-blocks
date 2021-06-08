@@ -6,10 +6,13 @@ import {
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('animation control', () => {
-	it('checking the animation control', async () => {
+describe('Entrance Animation Control', () => {
+	it('Checking the animation control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
 		const accordionPanel = await openAdvancedSidebar(

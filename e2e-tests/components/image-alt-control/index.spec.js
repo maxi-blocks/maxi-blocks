@@ -3,10 +3,13 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('image alt', () => {
-	it('checking the image alt control', async () => {
+describe('Image Alt Control', () => {
+	it('Checking the image alt control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
 		const accordionPanel = await openSidebar(page, 'image alt tag');

@@ -6,13 +6,16 @@ import {
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('opacity control', () => {
-	it('checking the opacity control', async () => {
+describe('Opacity Control', () => {
+	it('Checking the opacity control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing opacity');
+		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openAdvancedSidebar(page, 'opacity');
 
 		await accordionPanel.$eval(

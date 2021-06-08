@@ -2,10 +2,13 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('shape divider control', () => {
-	it('checking the shape divider control', async () => {
+describe('Shape Divider Control', () => {
+	it('Checking the shape divider control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
 		const accordionPanel = await openAdvancedSidebar(page, 'shape');

@@ -2,10 +2,13 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('boxShadow control', () => {
-	it('checking the boxShadow control', async () => {
+describe('Box Shadow Control', () => {
+	it('Checking the boxShadow control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebar(page, 'box shadow');

@@ -2,13 +2,16 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('fancy radio control', () => {
-	it('checking the fancy radio control', async () => {
+describe('Fancy Radio Control', () => {
+	it('Checking the fancy radio control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing display');
+		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openAdvancedSidebar(page, 'display');
 
 		await accordionPanel.$$eval(

@@ -6,15 +6,18 @@ import {
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('clip-path control', () => {
-	it('checking the clip-path control', async () => {
+describe('Clip-Path Control', () => {
+	it('Checking the clip-path control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
 		const accordionPanel = await openAdvancedSidebar(page, 'clip path');
-		// Use clip-path to create a triangle
 
+		// Use clip-path to create a triangle
 		await accordionPanel.$eval(
 			'.maxi-clip-path-control .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
 			use => use.click()

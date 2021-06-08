@@ -5,7 +5,7 @@
 /**
  * Import dependencies.
  */
-import MaxiModal from './modal';
+import MaxiModal from '../../editor/library/modal';
 import { library } from '../../icons';
 
 /**
@@ -40,7 +40,7 @@ export default class Edit extends Component {
 					className='maxi-block-library__placeholder'
 					icon={library}
 				>
-					<MaxiModal clientId={clientId} />
+					<MaxiModal clientId={clientId} type='patterns' />
 				</Placeholder>
 			</Fragment>,
 		];

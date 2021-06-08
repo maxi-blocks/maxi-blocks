@@ -1,3 +1,4 @@
+import '@wordpress/block-editor';
 import getArrowStyles from '../getArrowStyles';
 
 describe('getArrowStyles', () => {

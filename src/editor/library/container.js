@@ -191,7 +191,7 @@ const LibraryContainer = props => {
 						/>
 						<RefinementList
 							className='hidden'
-							attribute='taxonomies.attachmentcategory'
+							attribute='taxonomies.svg_category'
 							defaultRefinement={['Filled']}
 							showLoadingIndicator
 						/>

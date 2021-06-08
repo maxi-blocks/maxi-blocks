@@ -27,6 +27,7 @@ import {
 } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
+import MaxiModal from '../library/modal';
 
 /**
  * External dependencies
@@ -36,7 +37,7 @@ import { isEmpty, isNil, isEqual } from 'lodash';
 /**
  * Icons
  */
-import { styleCardBoat, reset, SCDelete, SCaddMore } from '../../icons';
+import { styleCardBoat, reset, SCDelete } from '../../icons';
 
 const MaxiStyleCardsEditor = ({ styleCards }) => {
 	const {
@@ -257,14 +258,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 				</div>
 				<div className='maxi-style-cards__sc'>
 					<div className='maxi-style-cards__sc__more-sc'>
-						<Button
-							className='maxi-style-cards__sc__more-sc--add-more'
-							onClick={() => {
-								// TO DO: add cloud modal for SCs here
-							}}
-						>
-							<Icon icon={SCaddMore} />
-						</Button>
+						<MaxiModal type='sc' />
 						<SelectControl
 							className='maxi-style-cards__sc__more-sc--select'
 							value={selectedSCKey}

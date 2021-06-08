@@ -10,7 +10,6 @@ import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
-import RangeSliderControl from '../range-slider-control';
 import SelectControl from '../select-control';
 import SizeControl from '../size-control';
 import {
@@ -185,12 +184,12 @@ const DividerControl = props => {
 							}
 							onReset={() =>
 								onChange({
-									'divider-width': getDefaultAttribute(
-										'divider-width'
-									),
-									'divider-width-unit': getDefaultAttribute(
-										'divider-width-unit'
-									),
+									'divider-width':
+										getDefaultAttribute('divider-width'),
+									'divider-width-unit':
+										getDefaultAttribute(
+											'divider-width-unit'
+										),
 								})
 							}
 							minMaxSettings={minMaxSettings}
@@ -211,12 +210,14 @@ const DividerControl = props => {
 							}
 							onReset={() =>
 								onChange({
-									'divider-border-top-width': getDefaultAttribute(
-										'divider-border-top-width'
-									),
-									'divider-border-top-unit': getDefaultAttribute(
-										'divider-border-top-unit'
-									),
+									'divider-border-top-width':
+										getDefaultAttribute(
+											'divider-border-top-width'
+										),
+									'divider-border-top-unit':
+										getDefaultAttribute(
+											'divider-border-top-unit'
+										),
 								})
 							}
 							minMaxSettings={minMaxSettings}
@@ -226,32 +227,67 @@ const DividerControl = props => {
 			{props['divider-border-style'] !== 'none' &&
 				lineOrientation === 'vertical' && (
 					<>
-						<RangeSliderControl
+						<SizeControl
 							label={__('Size', 'maxi-blocks')}
-							defaultValue={getDefaultAttribute('height')}
-							value={props['divider-height']}
-							onChange={val => {
-								onChange({ 'divider-height': val });
+							placeholder=''
+							disableUnit
+							value={
+								props['divider-height'] !== undefined &&
+								props['divider-height'] !== ''
+									? props['divider-height']
+									: ''
+							}
+							onChangeValue={val => {
+								onChange({
+									'divider-height':
+										val !== undefined && val !== ''
+											? val
+											: '',
+								});
 							}}
 							min={0}
 							max={100}
-							allowReset
-							initialPosition={getDefaultAttribute('height')}
-						/>
-						<RangeSliderControl
-							label={__('Weight', 'maxi-blocks')}
-							defaultValue={getDefaultAttribute(
-								'border-right-width'
-							)}
-							value={props['divider-border-right-width']}
-							onChange={val => {
-								onChange({ 'divider-border-right-width': val });
-							}}
-							min={0}
-							max={100}
-							allowReset
+							onReset={() =>
+								onChange({
+									'divider-height':
+										getDefaultAttribute('divider-height'),
+								})
+							}
 							initialPosition={getDefaultAttribute(
-								'border-right-width'
+								'divider-height'
+							)}
+						/>
+						<SizeControl
+							label={__('Weight', 'maxi-blocks')}
+							placeholder=''
+							disableUnit
+							value={
+								props['divider-border-right-width'] !==
+									undefined &&
+								props['divider-border-right-width'] !== ''
+									? props['divider-border-right-width']
+									: ''
+							}
+							onChangeValue={val => {
+								onChange({
+									'divider-border-right-width':
+										val !== undefined && val !== ''
+											? val
+											: '',
+								});
+							}}
+							min={0}
+							max={100}
+							onReset={() =>
+								onChange({
+									'divider-border-right-width':
+										getDefaultAttribute(
+											'divider-border-right-width'
+										),
+								})
+							}
+							initialPosition={getDefaultAttribute(
+								'divider-border-right-width'
 							)}
 						/>
 					</>

@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import FancyRadioControl from '../fancy-radio-control';
-import RangeSliderControl from '../range-slider-control';
 import SizeControl from '../size-control';
 import { getDefaultAttribute } from '../../extensions/styles';
 
@@ -60,7 +59,6 @@ const ParallaxControl = props => {
 						}
 					/>
 					<SizeControl
-						className={classes}
 						label={__('Speed', 'maxi-blocks')}
 						placeholder=''
 						disableUnit

@@ -31,6 +31,7 @@ const SizeControl = props => {
 		label,
 		className,
 		unit = 'px',
+		placeholder = 'auto',
 		onChangeUnit,
 		disableUnit = false,
 		min = 0,
@@ -97,17 +98,18 @@ const SizeControl = props => {
 					className='maxi-size-control__value'
 					value={trim(value)}
 					onChange={e => {
-						let value = +e.target.value;
+						let { value } = e.target;
 
-						if (value > max) value = max;
-						if (value < min) value = min;
+						if (value !== '' && +value > max) value = max;
+						if (value !== '' && +value !== 0 && +value < min)
+							value = min;
 
 						onChangeValue(value);
 					}}
 					min={min}
 					max={max}
 					step={stepValue}
-					placeholder='auto'
+					placeholder={placeholder}
 				/>
 			) : (
 				<>
@@ -150,7 +152,7 @@ const SizeControl = props => {
 								: null
 						}
 						step={stepValue}
-						placeholder='auto'
+						placeholder={placeholder}
 					/>
 					<SelectControl
 						className='maxi-dimensions-control__units'

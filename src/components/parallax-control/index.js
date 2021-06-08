@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import FancyRadioControl from '../fancy-radio-control';
 import RangeSliderControl from '../range-slider-control';
+import SizeControl from '../size-control';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
@@ -58,15 +59,32 @@ const ParallaxControl = props => {
 							onChange({ 'parallax-direction': val })
 						}
 					/>
-					<RangeSliderControl
+					<SizeControl
+						className={classes}
 						label={__('Speed', 'maxi-blocks')}
-						value={props['parallax-speed']}
-						defaultValue={getDefaultAttribute('parallax-speed')}
-						onChange={val => onChange({ 'parallax-speed': +val })}
-						min={0.1}
+						placeholder=''
+						disableUnit
+						value={
+							props['parallax-speed'] !== undefined &&
+							props['parallax-speed'] !== ''
+								? props['parallax-speed']
+								: ''
+						}
+						onChangeValue={val => {
+							onChange({
+								'parallax-speed':
+									val !== undefined && val !== '' ? val : '',
+							});
+						}}
+						min={0.2}
 						max={10}
 						step={0.1}
-						allowReset
+						onReset={() =>
+							onChange({
+								'parallax-speed':
+									getDefaultAttribute('parallax-speed'),
+							})
+						}
 						initialPosition={getDefaultAttribute('parallax-speed')}
 					/>
 				</>

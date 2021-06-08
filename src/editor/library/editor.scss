@@ -472,7 +472,8 @@
 			width: calc(15% - 0.5rem);
 		}
 
-		&__content-patterns {
+		&__content-patterns,
+		&__content-sc {
 			width: calc(85% - 0.5rem);
 >>>>>>> Patterns modal
 		}
@@ -517,9 +518,11 @@
 			}
 		}
 
-		.maxi-cloud-container__patterns {
+		.maxi-cloud-container__patterns,
+		.maxi-cloud-container__sc {
 			display: flex;
 			flex-wrap: wrap;
+			width: 100%;
 			.ais-InfiniteHits-item {
 				width: 32%;
 			}

@@ -2,13 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch, select } from '@wordpress/data';
-import { RawHTML } from '@wordpress/element';
+import { useDispatch, select, useSelect } from '@wordpress/data';
+import { RawHTML, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import Button from '../../components/button';
+import { updateSCOnEditor } from '../../extensions/style-cards';
 // import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 
 /**
@@ -39,6 +40,28 @@ const LibraryContainer = props => {
 
 	const { replaceBlock, updateBlockAttributes } =
 		useDispatch('core/block-editor');
+
+	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
+
+	const selectedStyleCard = receiveMaxiSelectedStyleCard();
+
+	const { key: selectedSCKey, value: selectedSCValue } = selectedStyleCard;
+
+	const { styleCards } = useSelect(select => {
+		const { receiveMaxiStyleCards } = select('maxiBlocks/style-cards');
+
+		const styleCards = receiveMaxiStyleCards();
+
+		return { styleCards };
+	});
+
+	const { saveMaxiStyleCards, setSelectedStyleCard } = useDispatch(
+		'maxiBlocks/style-cards'
+	);
+
+	useEffect(() => {
+		updateSCOnEditor(selectedSCValue);
+	}, [selectedSCKey]);
 
 	/** Patterns / Blocks */
 	const MasonryItemPatterns = props => {
@@ -177,6 +200,7 @@ const LibraryContainer = props => {
 
 	const onRequestInsertShape = svgCode => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
+		// Add code to process the svg shape here
 
 		// const SVGOptions = {};
 		// const prefix = '';
@@ -250,22 +274,21 @@ const LibraryContainer = props => {
 		);
 	};
 
-	const onRequestInsertSC = parsedContent => {
-		const clientId = select('core/block-editor').getSelectedBlockClientId();
+	const onRequestInsertSC = card => {
+		const parsedCard = JSON.parse(card);
 
-		const isValid =
-			select('core/block-editor').isValidTemplate(parsedContent);
+		const newId = `sc_${new Date().getTime()}`;
 
-		if (isValid) {
-			replaceBlock(
-				clientId,
-				wp.blocks.rawHandler({
-					HTML: parsedContent,
-					mode: 'BLOCKS',
-				})
-			);
-			onRequestClose();
-		}
+		const newAllSCs = {
+			...styleCards,
+			[newId]: parsedCard,
+		};
+
+		saveMaxiStyleCards(newAllSCs);
+		updateSCOnEditor(parsedCard);
+		setSelectedStyleCard(newId);
+
+		onRequestClose();
 	};
 
 	const scResults = ({ hit }) => {

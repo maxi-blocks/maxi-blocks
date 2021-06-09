@@ -17,6 +17,7 @@ import { getGroupAttributes } from '../../../../extensions/styles';
 import Button from '../../../button';
 import ToolbarContext from '../toolbar-popover/toolbarContext';
 import ToolbarPopover from '../toolbar-popover';
+import { createLinkAttributes, createLinkValue } from './utils';
 import {
 	getFormattedString,
 	applyLinkFormat,
@@ -29,7 +30,7 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty, trim, isEqual } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 
 /**
  * Icons
@@ -41,14 +42,8 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const LinkContent = withFormatValue(props => {
-	const {
-		onChange,
-		isList,
-		formatValue,
-		textLevel,
-		linkSettings,
-		onClose,
-	} = props;
+	const { onChange, isList, formatValue, textLevel, linkSettings, onClose } =
+		props;
 
 	const formatName = 'maxi-blocks/text-link';
 
@@ -62,76 +57,29 @@ const LinkContent = withFormatValue(props => {
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
-	const createLinkValue = formatOptions => {
-		if (!isEmpty(linkSettings)) return linkSettings;
-		if (!formatOptions || isEmpty(formatValue)) return { url: '' };
-
-		const {
-			attributes: { url, target, id, rel, title = '' },
-		} = formatOptions;
-
-		const value = {
-			url,
-			opensInNewTab: target === '_blank',
-			id,
-			noFollow: rel && rel.indexOf('nofollow') >= 0,
-			sponsored: rel && rel.indexOf('sponsored') >= 0,
-			ugc: rel && rel.indexOf('ugc') >= 0,
-			title,
-		};
-
-		return value;
-	};
-
 	const [linkValue, setLinkValue] = useState(
-		createLinkValue(linkSettings || formatOptions)
+		createLinkValue({
+			formatOptions: linkSettings
+				? { attributes: linkSettings }
+				: formatOptions,
+			linkSettings,
+			formatValue,
+			linkValue: {},
+		})
 	);
 
 	useEffect(() => {
-		const newLinkValue = createLinkValue(linkSettings || formatOptions);
+		if (formatOptions) {
+			const newLinkValue = createLinkValue({
+				formatOptions,
+				linkSettings,
+				formatValue,
+				linkValue,
+			});
 
-		if (!isEqual(linkValue, newLinkValue)) setLinkValue(newLinkValue);
-	}, [formatValue.start, formatValue.end]);
-
-	const createLinkAttributes = ({
-		url,
-		type,
-		id,
-		opensInNewTab,
-		noFollow,
-		sponsored,
-		ugc,
-		title = '',
-	}) => {
-		const attributes = {
-			url,
-			rel: '',
-			title,
-		};
-
-		if (type) attributes.type = type;
-		if (id) attributes.id = id;
-
-		if (opensInNewTab) {
-			attributes.target = '_blank';
-			attributes.rel += 'noreferrer noopener';
+			if (!isEqual(linkValue, newLinkValue)) setLinkValue(newLinkValue);
 		}
-		if (noFollow) attributes.rel += ' nofollow';
-		if (sponsored) attributes.rel += ' sponsored';
-		if (ugc) attributes.rel += ' ugc';
-
-		// Clean empty attributes, as it returns error on RichText
-		// and trims the rest
-		Object.entries(attributes).forEach(([key, val]) => {
-			if (isEmpty(val)) delete attributes[key];
-
-			attributes[key] = trim(val);
-		});
-		if (url !== linkValue.url && title === linkValue.title)
-			attributes.title = '';
-
-		return attributes;
-	};
+	}, [formatValue.start, formatValue.end]);
 
 	const getUpdatedFormatValue = (formatValue, attributes) => {
 		const [posStart, posEnd] = getFormatPosition({
@@ -139,7 +87,7 @@ const LinkContent = withFormatValue(props => {
 			formatName: 'maxi-blocks/text-link',
 			formatClassName: null,
 			formatAttributes: linkSettings,
-		});
+		}) || [0, 0];
 
 		formatValue.formats = formatValue.formats.map((formatEl, i) => {
 			return formatEl.map(format => {
@@ -179,7 +127,10 @@ const LinkContent = withFormatValue(props => {
 			const obj = applyLinkFormat({
 				formatValue,
 				typography,
-				linkAttributes: createLinkAttributes(attributes),
+				linkAttributes: createLinkAttributes({
+					...attributes,
+					linkValue,
+				}),
 				isList,
 				textLevel,
 				linkSettings,
@@ -215,9 +166,12 @@ const LinkContent = withFormatValue(props => {
 			onChange(obj);
 		}
 
-		const newLinkAttributes = createLinkAttributes({ url: '' });
+		const newLinkAttributes = createLinkAttributes({ url: '', linkValue });
 		const newLinkValue = createLinkValue({
-			attributes: newLinkAttributes,
+			formatOptions: { attributes: newLinkAttributes },
+			linkSettings,
+			formatValue,
+			linkValue,
 		});
 
 		setLinkValue(newLinkValue);
@@ -237,7 +191,7 @@ const LinkContent = withFormatValue(props => {
 		const content = getFormattedString({
 			formatValue: getUpdatedFormatValue(
 				formatValue,
-				createLinkAttributes(attributes)
+				createLinkAttributes({ ...attributes, linkValue })
 			),
 			isList,
 		});
@@ -252,9 +206,15 @@ const LinkContent = withFormatValue(props => {
 			setLinkFormat(newAttributes);
 		else updateLinkString(newAttributes);
 
-		const newLinkAttributes = createLinkAttributes(newAttributes);
+		const newLinkAttributes = createLinkAttributes({
+			...newAttributes,
+			linkValue,
+		});
 		const newLinkValue = createLinkValue({
-			attributes: newLinkAttributes,
+			formatOptions: { attributes: newLinkAttributes },
+			linkSettings,
+			formatValue,
+			linkValue,
 		});
 
 		setLinkValue(newLinkValue);

@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
+import { RangeControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -9,13 +10,12 @@ import { __, sprintf } from '@wordpress/i18n';
 import SelectControl from '../select-control';
 import BaseControl from '../base-control';
 import Button from '../button';
-import RangeSliderControl from '../range-slider-control';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isEmpty } from 'lodash';
+import { trim, isEmpty, isNil } from 'lodash';
 
 /**
  * Styles
@@ -184,27 +184,30 @@ const SizeControl = props => {
 					{reset}
 				</Button>
 			)}
-			{disableUnit ? (
-				<RangeSliderControl
-					value={+value === '' || +value === 0 ? 0 : +trim(value)}
-					onChange={val => onChangeValue(+val)}
-					min={min}
-					max={max}
-					step={stepValue}
-					withInputField={false}
-					initialPosition={value || initial}
-				/>
-			) : (
-				<RangeSliderControl
-					value={+value === '' || +value === 0 ? 0 : +trim(value)}
-					onChange={val => onChangeValue(+val)}
-					min={minMaxSettings[isEmpty(unit) ? '-' : unit].min}
-					max={minMaxSettings[isEmpty(unit) ? '-' : unit].max}
-					step={stepValue}
-					withInputField={false}
-					initialPosition={value || initial}
-				/>
-			)}
+			<RangeControl
+				value={+value === '' || +value === 0 ? 0 : +trim(value)}
+				onChange={val => {
+					let value = isNil(val) ? '' : val;
+
+					if (value > max) value = max;
+					if (value < min) value = min;
+
+					onChangeValue(value);
+				}}
+				min={
+					disableUnit
+						? min
+						: minMaxSettings[isEmpty(unit) ? '-' : unit].min
+				}
+				max={
+					disableUnit
+						? max
+						: minMaxSettings[isEmpty(unit) ? '-' : unit].max
+				}
+				step={stepValue}
+				withInputField={false}
+				initialPosition={value || initial}
+			/>
 		</BaseControl>
 	);
 };

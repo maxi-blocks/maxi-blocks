@@ -175,6 +175,33 @@ const LibraryContainer = props => {
 		);
 	};
 
+	/** Shapes */
+
+	const onRequestInsertShape = svgCode => {
+		const clientId = select('core/block-editor').getSelectedBlockClientId();
+
+		const isValid = select('core/block-editor').isValidTemplate(svgCode);
+
+		if (isValid) {
+			updateBlockAttributes(clientId, {
+				'background-svg-SVGElement': svgCode,
+			});
+			onRequestClose();
+		}
+	};
+
+	const svgShapeResults = ({ hit }) => {
+		return (
+			<MasonryItemSVG
+				key={`maxi-cloud-masonry__item-${hit.post_id}`}
+				svgCode={hit.svg_code}
+				isPro={hit.taxonomies.cost === 'pro'}
+				serial={hit.post_title}
+				onRequestInsert={() => onRequestInsertShape(hit.svg_code)}
+			/>
+		);
+	};
+
 	/** Style Cards */
 
 	const MasonryItemSC = props => {
@@ -242,6 +269,14 @@ const LibraryContainer = props => {
 		);
 	};
 
+	const resultsCount = {
+		stats(nbHits, nbSortedHits, areHitsSorted) {
+			return areHitsSorted && nbHits !== nbSortedHits
+				? `Returned: ${nbSortedHits.toLocaleString()} results of ${nbHits.toLocaleString()}`
+				: `Returned: ${nbHits.toLocaleString()} results`;
+		},
+	};
+
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
@@ -262,17 +297,32 @@ const LibraryContainer = props => {
 							defaultRefinement={['Filled']}
 							showLoadingIndicator
 						/>
-						<Stats
-							translations={{
-								stats(nbHits, nbSortedHits, areHitsSorted) {
-									return areHitsSorted &&
-										nbHits !== nbSortedHits
-										? `Returned: ${nbSortedHits.toLocaleString()} results of ${nbHits.toLocaleString()}`
-										: `Returned: ${nbHits.toLocaleString()} results`;
-								},
-							}}
-						/>
+						<Stats translations={resultsCount} />
 						<InfiniteHits hitComponent={svgResults} />
+					</div>
+				</InstantSearch>
+			)}
+
+			{type === 'shape' && (
+				<InstantSearch
+					indexName='maxi_posts_svg_icon'
+					searchClient={searchClient}
+				>
+					<div className='maxi-cloud-container__content-svg-shape'>
+						<SearchBox
+							submit={__('Find', 'maxi-blocks')}
+							autoFocus
+							searchAsYouType
+							showLoadingIndicator
+						/>
+						<RefinementList
+							className='hidden'
+							attribute='taxonomies.svg_category'
+							defaultRefinement={['Shape']}
+							showLoadingIndicator
+						/>
+						<Stats translations={resultsCount} />
+						<InfiniteHits hitComponent={svgShapeResults} />
 					</div>
 				</InstantSearch>
 			)}
@@ -313,16 +363,7 @@ const LibraryContainer = props => {
 							<ClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__content-patterns'>
-							<Stats
-								translations={{
-									stats(nbHits, nbSortedHits, areHitsSorted) {
-										return areHitsSorted &&
-											nbHits !== nbSortedHits
-											? `Returned: ${nbSortedHits.toLocaleString()} results of ${nbHits.toLocaleString()}`
-											: `Returned: ${nbHits.toLocaleString()} results`;
-									},
-								}}
-							/>
+							<Stats translations={resultsCount} />
 							<InfiniteHits hitComponent={patternsResults} />
 						</div>
 					</InstantSearch>
@@ -348,16 +389,7 @@ const LibraryContainer = props => {
 							<ClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__content-sc'>
-							<Stats
-								translations={{
-									stats(nbHits, nbSortedHits, areHitsSorted) {
-										return areHitsSorted &&
-											nbHits !== nbSortedHits
-											? `Returned: ${nbSortedHits.toLocaleString()} results of ${nbHits.toLocaleString()}`
-											: `Returned: ${nbHits.toLocaleString()} results`;
-									},
-								}}
-							/>
+							<Stats translations={resultsCount} />
 							<InfiniteHits hitComponent={scResults} />
 						</div>
 					</InstantSearch>

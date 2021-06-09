@@ -32,6 +32,12 @@ class MaxiModal extends Component {
 
 		const { type, clientId, empty } = this.props;
 
+		const onClick = () => {
+			this.setState({
+				isOpen: !isOpen,
+			});
+		};
+
 		return (
 			<>
 				{/* Launch the layout modal window */}
@@ -40,7 +46,7 @@ class MaxiModal extends Component {
 						key={`maxi-block-library__modal-button--${clientId}`}
 						isPrimary
 						className='maxi-block-library__modal-button'
-						onClick={() => this.setState({ isOpen: !isOpen })}
+						onClick={onClick}
 					>
 						{__('Launch the Library', 'maxi-blocks')}
 					</Button>
@@ -48,7 +54,7 @@ class MaxiModal extends Component {
 				{type === 'sc' && (
 					<Button
 						className='maxi-style-cards__sc__more-sc--add-more'
-						onClick={() => this.setState({ isOpen: !isOpen })}
+						onClick={onClick}
 					>
 						<Icon icon={SCaddMore} />
 					</Button>
@@ -60,9 +66,7 @@ class MaxiModal extends Component {
 								isPrimary
 								key={`maxi-block-library__modal-button--${clientId}`}
 								className='maxi-block-library__modal-button'
-								onClick={() =>
-									this.setState({ isOpen: !isOpen })
-								}
+								onClick={onClick}
 							>
 								{__('Select SVG Icon', 'maxi-blocks')}
 							</Button>
@@ -72,16 +76,19 @@ class MaxiModal extends Component {
 				{type === 'svg' && !empty && (
 					<Button
 						className='maxi-svg-icon-block__replace-icon'
-						onClick={() => this.setState({ isOpen: !isOpen })}
+						onClick={onClick}
 						icon={toolbarReplaceImage}
 					/>
 				)}
-				{isOpen && (
-					<CloudLibrary
-						cloudType={type}
-						onClose={() => this.setState({ isOpen: !isOpen })}
-					/>
+				{type === 'shape' && (
+					<Button
+						className='maxi-svg-defaults__load-library'
+						onClick={onClick}
+					>
+						{__('Load Shape Library', 'maxi-blocks')}
+					</Button>
 				)}
+				{isOpen && <CloudLibrary cloudType={type} onClose={onClick} />}
 			</>
 		);
 	}

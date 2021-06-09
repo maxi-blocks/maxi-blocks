@@ -47,6 +47,7 @@ const LibraryToolbar = props => {
 				{type === 'svg' && __('Maxi SVG Icons', 'maxi-blocks')}
 				{type === 'patterns' && __('Maxi Cloud Library', 'maxi-blocks')}
 				{type === 'sc' && __('Maxi Style Cards', 'maxi-blocks')}
+				{type === 'shape' && __('Maxi Shapes', 'maxi-blocks')}
 			</a>
 			{type === 'all' && (
 				<div>

@@ -31,16 +31,18 @@ const BlockStylesSaver = () => {
 			saveStyles(false);
 			saveCustomData(true);
 		}
-	}, [isSaving]);
+	});
 
 	return null;
 };
 
-// if (document.body.classList.contains('maxi-blocks--active')) {
-const wrapper = document.createElement('div');
-wrapper.id = 'maxi-blocks__saver';
+wp.domReady(() => {
+	if (document.body.classList.contains('maxi-blocks--active')) {
+		const wrapper = document.createElement('div');
+		wrapper.id = 'maxi-blocks__saver';
 
-document.head.appendChild(wrapper);
+		document.head.appendChild(wrapper);
 
-wp.element.render(<BlockStylesSaver />, wrapper);
-// }
+		wp.element.render(<BlockStylesSaver />, wrapper);
+	}
+});

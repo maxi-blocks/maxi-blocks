@@ -9,10 +9,10 @@ import { useState } from '@wordpress/element';
  */
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
-import NumberControl from '../number-control';
+import SizeControl from '../size-control';
 import TextControl from '../text-control';
 import FancyRadioControl from '../fancy-radio-control';
-import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
+import { getAttributeKey } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -67,11 +67,10 @@ const VideoLayer = props => {
 				}}
 				validationText={validationText}
 			/>
-			<NumberControl
+			<SizeControl
 				label={__('Start Time (s)', 'maxi-blocks')}
-				min={0}
-				max={999}
-				defaultValue=''
+				placeholder=''
+				disableUnit
 				value={
 					videoOptions[
 						getAttributeKey(
@@ -81,21 +80,31 @@ const VideoLayer = props => {
 						)
 					]
 				}
-				onChange={val =>
+				onChangeValue={val => {
 					onChange({
 						[getAttributeKey(
 							'background-video-startTime',
 							isHover,
 							prefix
-						)]: val,
+						)]: val !== undefined && val !== '' ? val : '',
+					});
+				}}
+				min={0}
+				max={999}
+				onReset={() =>
+					onChange({
+						[getAttributeKey(
+							'background-video-startTime',
+							isHover,
+							prefix
+						)]: '',
 					})
 				}
 			/>
-			<NumberControl
+			<SizeControl
 				label={__('End Time (s)', 'maxi-blocks')}
-				min={0}
-				max={999}
-				defaultValue=''
+				placeholder=''
+				disableUnit
 				value={
 					videoOptions[
 						getAttributeKey(
@@ -105,13 +114,13 @@ const VideoLayer = props => {
 						)
 					]
 				}
-				onChange={val =>
+				onChangeValue={val => {
 					onChange({
 						[getAttributeKey(
 							'background-video-endTime',
 							isHover,
 							prefix
-						)]: val,
+						)]: val !== undefined && val !== '' ? val : '',
 						...(!!val && {
 							[getAttributeKey(
 								'background-video-loop',
@@ -119,6 +128,17 @@ const VideoLayer = props => {
 								prefix
 							)]: 0,
 						}),
+					});
+				}}
+				min={0}
+				max={999}
+				onReset={() =>
+					onChange({
+						[getAttributeKey(
+							'background-video-endTime',
+							isHover,
+							prefix
+						)]: '',
 					})
 				}
 			/>

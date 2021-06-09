@@ -39,7 +39,6 @@ export { default as MapControl } from './map-control';
 export { default as MaxiBlockComponent } from '../extensions/maxi-block';
 export { default as MotionControl } from './motion-control';
 export { default as MotionPreview } from './motion-preview';
-export { default as NumberControl } from './number-control';
 export { default as NumberCounterControl } from './number-counter-control';
 export { default as OpacityControl } from './opacity-control';
 export { default as ParallaxControl } from './parallax-control';

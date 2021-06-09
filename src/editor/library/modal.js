@@ -8,13 +8,13 @@ import CloudLibrary from '.';
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { Component, useState, useEffect, useRef } from '@wordpress/element';
+import { Component } from '@wordpress/element';
 import { Button } from '@wordpress/components';
 
 /**
  * Icons.
  */
-import { SCaddMore } from '../../icons';
+import { SCaddMore, toolbarReplaceImage } from '../../icons';
 
 /**
  * Internal dependencies
@@ -30,12 +30,14 @@ class MaxiModal extends Component {
 	render() {
 		const { isOpen } = this.state;
 
+		const { type, clientId, empty } = this.props;
+
 		return (
 			<>
 				{/* Launch the layout modal window */}
-				{this.props.type === 'patterns' && (
+				{type === 'patterns' && (
 					<Button
-						key={`maxi-block-library__modal-button--${this.props.clientId}`}
+						key={`maxi-block-library__modal-button--${clientId}`}
 						isPrimary
 						className='maxi-block-library__modal-button'
 						onClick={() => this.setState({ isOpen: !isOpen })}
@@ -43,7 +45,7 @@ class MaxiModal extends Component {
 						{__('Launch the Library', 'maxi-blocks')}
 					</Button>
 				)}
-				{this.props.type === 'sc' && (
+				{type === 'sc' && (
 					<Button
 						className='maxi-style-cards__sc__more-sc--add-more'
 						onClick={() => this.setState({ isOpen: !isOpen })}
@@ -51,9 +53,32 @@ class MaxiModal extends Component {
 						<Icon icon={SCaddMore} />
 					</Button>
 				)}
+				{type === 'svg' && empty && (
+					<>
+						<div className='maxi-svg-icon-block__placeholder'>
+							<Button
+								isPrimary
+								key={`maxi-block-library__modal-button--${clientId}`}
+								className='maxi-block-library__modal-button'
+								onClick={() =>
+									this.setState({ isOpen: !isOpen })
+								}
+							>
+								{__('Select SVG Icon', 'maxi-blocks')}
+							</Button>
+						</div>
+					</>
+				)}
+				{type === 'svg' && !empty && (
+					<Button
+						className='maxi-svg-icon-block__replace-icon'
+						onClick={() => this.setState({ isOpen: !isOpen })}
+						icon={toolbarReplaceImage}
+					/>
+				)}
 				{isOpen && (
 					<CloudLibrary
-						cloudType={this.props.type}
+						cloudType={type}
 						onClose={() => this.setState({ isOpen: !isOpen })}
 					/>
 				)}

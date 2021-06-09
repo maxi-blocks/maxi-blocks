@@ -1,23 +1,20 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
-
 import { compose } from '@wordpress/compose';
 import { RawHTML } from '@wordpress/element';
-import { Button } from '@wordpress/components';
 import { withSelect, withDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import CloudLibrary from '../../editor/library';
 import { MaxiBlockComponent, Toolbar } from '../../components';
 import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
+import MaxiModal from '../../editor/library/modal';
 import getStyles from './styles';
 
 /**
@@ -25,11 +22,6 @@ import getStyles from './styles';
  */
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-
-/**
- * Icons
- */
-import { toolbarReplaceImage } from '../../icons';
 
 /**
  * Content
@@ -40,7 +32,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	state = {
-		isOpenSvgModal: false,
+		isOpen: false,
 	};
 
 	get getCustomData() {
@@ -85,13 +77,7 @@ class edit extends MaxiBlockComponent {
 			)
 		);
 
-		const onClick = () => {
-			this.setState({
-				isOpenSvgModal: true,
-			});
-		};
-
-		const { isOpenSvgModal } = this.state;
+		const isEmptyContent = isEmpty(attributes.content);
 
 		return [
 			!isEmpty(attributes.content) && (
@@ -111,41 +97,15 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<>
-					{isEmpty(attributes.content) && (
-						<>
-							<div className='maxi-svg-icon-block__placeholder'>
-								<Button
-									isPrimary
-									key={`maxi-block-library__modal-button--${clientId}`}
-									className='maxi-block-library__modal-button'
-									onClick={onClick}
-								>
-									{__('Select SVG Icon', 'maxi-blocks')}
-								</Button>
-							</div>
-						</>
-					)}
-					{isOpenSvgModal && (
-						<CloudLibrary
-							cloudType='svg'
-							onClose={() =>
-								this.setState({
-									isOpenSvgModal: !isOpenSvgModal,
-								})
-							}
-						/>
-					)}
-					{!isEmpty(attributes.content) && (
-						<>
-							<Button
-								className='maxi-svg-icon-block__replace-icon'
-								onClick={onClick}
-								icon={toolbarReplaceImage}
-							/>
-							<RawHTML className='maxi-svg-icon-block__icon'>
-								{attributes.content}
-							</RawHTML>
-						</>
+					<MaxiModal
+						clientId={clientId}
+						type='svg'
+						empty={isEmptyContent}
+					/>
+					{!isEmptyContent && (
+						<RawHTML className='maxi-svg-icon-block__icon'>
+							{attributes.content}
+						</RawHTML>
 					)}
 				</>
 			</MaxiBlock>,

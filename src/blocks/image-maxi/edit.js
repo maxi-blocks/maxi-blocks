@@ -192,7 +192,6 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				tagName='figure'
 				className={classes}
-				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<MediaUpload

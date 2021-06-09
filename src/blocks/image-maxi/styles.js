@@ -130,22 +130,6 @@ const getHoverEffectContentTextObject = props => {
 	return response;
 };
 
-const getImageFrontendObject = props => {
-	const response = {
-		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
-		}),
-		opacity: getOpacityStyles({
-			...getGroupAttributes(props, 'opacity'),
-		}),
-		alignment: getAlignmentFlexStyles({
-			...getGroupAttributes(props, 'alignment'),
-		}),
-	};
-
-	return response;
-};
-
 const getImageHoverObject = props => {
 	const response = {
 		...(props['border-status-hover'] && {
@@ -242,12 +226,10 @@ const getStyles = props => {
 
 	let response = {
 		[uniqueID]: getNormalObject(props),
-		[`${uniqueID} .maxi-block-hover-wrapper`]:
-			getImageFrontendObject(props),
+		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageBackendObject(props),
 		[`${uniqueID} .maxi-image-block__resizer`]: getResizeObject(props),
 		[`${uniqueID}:hover .maxi-block-hover-wrapper`]:
 			getImageHoverObject(props),
-		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageBackendObject(props),
 		[`${uniqueID} .maxi-block-hover-wrapper .maxi-hover-preview`]:
 			getImageHoverPreviewObject(props),
 		[`${uniqueID} figcaption`]: getFigcaptionObject(props),

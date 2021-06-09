@@ -123,36 +123,32 @@ const getHoverObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	let response = {
-		[uniqueID]: getNormalObject(props),
-		[`${uniqueID} .maxi-row-block__container`]: getContainerObject(props),
-		[`${uniqueID}:hover`]: getHoverObject(props),
-	};
-
-	response = {
-		...response,
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'backgroundHover',
-				'backgroundColorHover',
-				'backgroundGradientHover',
-				'borderRadiusHover',
-			]),
-			isHover: true,
-		}),
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'background',
-				'backgroundColor',
-				'backgroundImage',
-				'backgroundVideo',
-				'backgroundGradient',
-				'backgroundSVG',
-				'borderRadius',
-			]),
-		}),
+	const response = {
+		[uniqueID]: {
+			'': getNormalObject(props),
+			' .maxi-row-block__container': getContainerObject(props),
+			':hover': getHoverObject(props),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+					'borderRadiusHover',
+				]),
+				isHover: true,
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+					'borderRadius',
+				]),
+			}),
+		},
 	};
 
 	return response;

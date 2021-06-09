@@ -421,7 +421,7 @@ const setBackgroundLayers = ({ response, layers, target, isHover = false }) => {
 };
 
 const getBackgroundStyles = ({
-	target,
+	target = '',
 	isHover = false,
 	prefix = '',
 	groupAttrNames = {

@@ -129,7 +129,7 @@ export const getSCVariablesObject = styleCards => {
 	return response;
 };
 
-const createSCStyleString = SCObject => {
+export const createSCStyleString = SCObject => {
 	let response = ':root{';
 
 	Object.entries(SCObject).forEach(([key, val]) => {

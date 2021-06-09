@@ -11,8 +11,6 @@ import { useState } from '@wordpress/element';
 import './store';
 import LibraryToolbar from './toolbar';
 import LibraryContainer from './container';
-import LibrarySpinner from './spinner';
-
 /**
  * External dependencies
  */

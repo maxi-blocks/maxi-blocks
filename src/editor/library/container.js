@@ -9,6 +9,7 @@ import { RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '../../components/button';
+// import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 
 /**
  * External dependencies
@@ -52,9 +53,6 @@ const LibraryContainer = props => {
 					<div className='maxi-cloud-masonry-card__buttons'>
 						<Button className='maxi-cloud-masonry-card__button'>
 							Preview
-						</Button>
-						<Button className='maxi-cloud-masonry-card__button'>
-							Import
 						</Button>
 						<Button
 							className='maxi-cloud-masonry-card__button'
@@ -180,11 +178,24 @@ const LibraryContainer = props => {
 	const onRequestInsertShape = svgCode => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
 
+		// const SVGOptions = {};
+		// const prefix = '';
+
+		// const resData = generateDataObject(
+		// 	SVGOptions[`${prefix}SVGData`],
+		// 	svgCode
+		// );
+		// const resEl = injectImgSVG(svgCode, resData);
+
 		const isValid = select('core/block-editor').isValidTemplate(svgCode);
 
 		if (isValid) {
 			updateBlockAttributes(clientId, {
+				'background-svg-SVGCurrentElement': '',
 				'background-svg-SVGElement': svgCode,
+				'background-svg-SVGMediaID': null,
+				'background-svg-SVGMediaURL': null,
+				// 'background-svg-SVGData': resData,
 			});
 			onRequestClose();
 		}

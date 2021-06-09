@@ -101,24 +101,11 @@ const Inspector = props => {
 														)}
 														placeholder=''
 														disableUnit
-														value={
-															getLastBreakpointAttribute(
-																'column-size',
-																deviceType,
-																attributes
-															) !== undefined &&
-															getLastBreakpointAttribute(
-																'column-size',
-																deviceType,
-																attributes
-															) !== ''
-																? getLastBreakpointAttribute(
-																		'column-size',
-																		deviceType,
-																		attributes
-																  )
-																: ''
-														}
+														value={getLastBreakpointAttribute(
+															'column-size',
+															deviceType,
+															attributes
+														)}
 														onChangeValue={val => {
 															setAttributes({
 																[`column-size-${deviceType}`]:

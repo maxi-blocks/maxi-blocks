@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`styleResolver Returns a clean style object 1`] = `
+Object {
+  "test-target": Object {
+    "breakpoints": Object {
+      "l": 1366,
+      "m": 1024,
+      "s": 768,
+      "xl": 1920,
+      "xs": 480,
+      "xxl": 1920,
+    },
+    "content": Object {
+      " > .maxi-background-displayer .maxi-background-displayer__color": Object {
+        "general": Object {
+          "background-color": "rgba(56,25,212,1)",
+        },
+      },
+      " p.maxi-text-block__content": Object {
+        "general": Object {
+          "font-style": "italic",
+        },
+      },
+      " p.maxi-text-block__content a": Object {
+        "general": Object {
+          "font-style": "italic",
+        },
+      },
+      " p.maxi-text-block__content li": Object {
+        "general": Object {
+          "font-style": "italic",
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`styleResolver Returns a clean style object for Row 1`] = `
+Object {
+  "test-target": Object {
+    "breakpoints": Object {
+      "l": 1366,
+      "m": 1024,
+      "s": 768,
+      "xl": 1920,
+      "xs": 480,
+      "xxl": 1920,
+    },
+    "content": Object {
+      "content": Object {
+        "general": Object {
+          "align-items": "stretch",
+          "border-bottom-left-radius": "20px",
+          "border-bottom-right-radius": "20px",
+          "border-bottom-width": "2px",
+          "border-color": "rgba(61,32,205,1)",
+          "border-left-width": "2px",
+          "border-right-width": "2px",
+          "border-style": "solid",
+          "border-top-left-radius": "20px",
+          "border-top-right-radius": "20px",
+          "border-top-width": "2px",
+          "justify-content": "space-between",
+          "max-width": "1170px",
+        },
+        "l": Object {
+          "max-width": "90%",
+          "width": "1170px",
+        },
+        "m": Object {
+          "max-width": "90%",
+          "width": "1000px",
+        },
+        "s": Object {
+          "max-width": "90%",
+          "width": "700px",
+        },
+        "xl": Object {
+          "max-width": "1170px",
+        },
+        "xs": Object {
+          "max-width": "90%",
+          "width": "460px",
+        },
+        "xxl": Object {
+          "max-width": "1790px",
+        },
+      },
+    },
+  },
+}
+`;

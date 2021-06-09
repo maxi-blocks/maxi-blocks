@@ -17,7 +17,7 @@ const attributes = {
 		type: 'string',
 		default: __('Number Counter', 'maxi-blocks'),
 	},
-	...attributesData.palette,
+	...attributesData.palette.circle,
 	...attributesData.numberCounter,
 	...attributesData.margin,
 	...attributesData.padding,

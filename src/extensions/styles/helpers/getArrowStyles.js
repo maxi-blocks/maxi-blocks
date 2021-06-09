@@ -122,7 +122,7 @@ export const getArrowColorObject = props => {
 };
 
 const getArrowStyles = props => {
-	const { target } = props;
+	const { target = '' } = props;
 
 	return {
 		[`${target} .maxi-container-arrow`]: {

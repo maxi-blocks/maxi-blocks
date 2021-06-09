@@ -35,6 +35,7 @@ const TextBold = withFormatValue(props => {
 		breakpoint,
 		formatValue,
 		textLevel,
+		styleCard,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
@@ -48,6 +49,7 @@ const TextBold = withFormatValue(props => {
 			prop: 'font-weight',
 			breakpoint,
 			textLevel,
+			styleCard,
 		});
 
 	const boldValue = getBoldValue();

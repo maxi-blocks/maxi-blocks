@@ -41,7 +41,7 @@ import { styleCardBoat, reset, SCDelete } from '../../icons';
 const MaxiStyleCardsEditor = ({ styleCards }) => {
 	const {
 		isRTL,
-		deviceType,
+		breakpoint,
 		SCList,
 		activeSCKey,
 		savedStyleCards,
@@ -52,7 +52,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		const { isRTL } = getEditorSettings();
 
 		const { receiveMaxiDeviceType } = select('maxiBlocks');
-		const deviceType = receiveMaxiDeviceType();
+		const breakpoint = receiveMaxiDeviceType();
 
 		const {
 			receiveStyleCardsList,
@@ -71,7 +71,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 
 		return {
 			isRTL,
-			deviceType,
+			breakpoint,
 			SCList,
 			activeSCKey,
 			savedStyleCards,
@@ -97,8 +97,8 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 	const canBeReset = keySC => {
 		if (
 			!isNil(styleCards[keySC]) &&
-			(!isEmpty(styleCards[keySC].styleCard.light) ||
-				!isEmpty(styleCards[keySC].styleCard.dark))
+			(!isEmpty(styleCards[keySC].light.styleCard) ||
+				!isEmpty(styleCards[keySC].dark.styleCard))
 		)
 			return true;
 
@@ -106,8 +106,14 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 	};
 
 	const canBeSaved = keySC => {
-		const currentSC = styleCards[keySC].styleCard;
-		const savedSC = savedStyleCards[keySC]?.styleCard;
+		const currentSC = {
+			...styleCards[keySC].light.styleCard,
+			...styleCards[keySC].dark.styleCard,
+		};
+		const savedSC = {
+			...savedStyleCards[keySC]?.light.styleCard,
+			...savedStyleCards[keySC]?.dark.styleCard,
+		};
 
 		if (!isEqual(currentSC, savedSC)) return true;
 
@@ -126,7 +132,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		return true;
 	};
 
-	const onChangeValue = obj => {
+	const onChangeValue = (obj, type) => {
 		let newSC = { ...selectedSCValue };
 
 		Object.entries(obj).forEach(([prop, value]) => {
@@ -134,28 +140,36 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 				Object.entries(value).forEach(([key, val]) => {
 					if (isNil(val)) {
 						delete value[key];
-						delete selectedSCValue.styleCard[currentSCStyle][key];
+						delete selectedSCValue[currentSCStyle].styleCard?.[
+							type
+						]?.[key];
 					}
 				});
 
 				newSC = {
 					...newSC,
-					styleCard: {
-						...newSC.styleCard,
-						[currentSCStyle]: {
-							...newSC.styleCard[currentSCStyle],
-							...value,
+					[currentSCStyle]: {
+						...newSC[currentSCStyle],
+						styleCard: {
+							...newSC[currentSCStyle].styleCard,
+							[type]: {
+								...newSC[currentSCStyle].styleCard[type],
+								...value,
+							},
 						},
 					},
 				};
 			} else {
 				newSC = {
 					...newSC,
-					styleCard: {
-						...newSC.styleCard,
-						[currentSCStyle]: {
-							...newSC.styleCard[currentSCStyle],
-							[prop]: value,
+					[currentSCStyle]: {
+						...newSC[currentSCStyle],
+						styleCard: {
+							...newSC[currentSCStyle].styleCard,
+							[type]: {
+								...newSC[currentSCStyle].styleCard[type],
+								[prop]: value,
+							},
 						},
 					},
 				};
@@ -388,18 +402,21 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 								const newStyleCard = {
 									name: styleCardName,
 									status: '',
-									styleCard: { dark: {}, light: {} },
-									styleCardDefaults: {
-										dark: {
-											...selectedSCValue.styleCardDefaults
-												.dark,
-											...selectedSCValue.styleCard.dark,
+									dark: {
+										defaultStyleCard: {
+											...selectedSCValue.dark
+												.defaultStyleCard,
+											...selectedSCValue.dark.styleCard,
 										},
-										light: {
-											...selectedSCValue.styleCardDefaults
-												.light,
-											...selectedSCValue.styleCard.light,
+										styleCard: {},
+									},
+									light: {
+										defaultStyleCard: {
+											...selectedSCValue.light
+												.defaultStyleCard,
+											...selectedSCValue.light.styleCard,
 										},
+										styleCard: {},
 									},
 								};
 								saveImportedStyleCard(newStyleCard);
@@ -460,10 +477,10 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 							key: 'light',
 							content: (
 								<MaxiStyleCardsTab
-									SC={selectedSCValue}
+									SC={selectedSCValue.light}
 									SCStyle='light'
 									onChangeValue={onChangeValue}
-									deviceType={deviceType}
+									breakpoint={breakpoint}
 									currentKey={selectedSCKey}
 								/>
 							),
@@ -473,10 +490,10 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 							key: 'dark',
 							content: (
 								<MaxiStyleCardsTab
-									SC={selectedSCValue}
+									SC={selectedSCValue.dark}
 									SCStyle='dark'
 									onChangeValue={onChangeValue}
-									deviceType={deviceType}
+									breakpoint={breakpoint}
 									currentKey={selectedSCKey}
 								/>
 							),

@@ -133,16 +133,12 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: getWrapperObject(props),
-		[`${uniqueID} .maxi-button-block__button`]: getNormalObject(
-			props,
-			uniqueID
-		),
-		[`${uniqueID} .maxi-button-block__content`]: getContentObject(
-			props,
-			uniqueID
-		),
-		[`${uniqueID} .maxi-button-block__button:hover`]: getHoverObject(props),
+		[uniqueID]: {
+			'': getWrapperObject(props),
+			' .maxi-button-block__button': getNormalObject(props),
+			' .maxi-button-block__content': getContentObject(props),
+			' .maxi-button-block__button:hover': getHoverObject(props),
+		},
 	};
 
 	return response;

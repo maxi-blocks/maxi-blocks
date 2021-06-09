@@ -50,16 +50,12 @@ const getMapObject = (props, target) => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	let response = {
-		[uniqueID]: getNormalObject(props),
-		[`${uniqueID} .map-marker-info-window__title`]: getMapObject(
-			props,
-			'title'
-		),
-		[`${uniqueID} .map-marker-info-window__address`]: getMapObject(
-			props,
-			'address'
-		),
+	const response = {
+		[uniqueID]: {
+			'': getNormalObject(props),
+			' .map-marker-info-window__title': getMapObject(props, 'title'),
+			' .map-marker-info-window__address': getMapObject(props, 'address'),
+		},
 	};
 
 	return response;

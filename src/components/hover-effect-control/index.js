@@ -11,7 +11,6 @@ import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
 import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
-import RangeSliderControl from '../range-slider-control';
 import SizeControl from '../size-control';
 import SelectControl from '../select-control';
 import TypographyControl from '../typography-control';

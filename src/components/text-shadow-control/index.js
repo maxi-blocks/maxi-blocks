@@ -12,7 +12,6 @@ import DefaultStylesControl from '../default-styles-control';
 import FancyRadioControl from '../fancy-radio-control';
 import SizeControl from '../size-control';
 import Icon from '../icon';
-import RangeSliderControl from '../range-slider-control';
 
 /**
  * External dependencies

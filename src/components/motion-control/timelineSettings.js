@@ -7,9 +7,9 @@ import {} from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
-import FancyRadioControl from '../fancy-radio-control';
-import RangeSliderControl from '../range-slider-control';
+// import SelectControl from '../select-control';
+// import FancyRadioControl from '../fancy-radio-control';
+// import RangeSliderControl from '../range-slider-control';
 
 /**
  * External dependencies

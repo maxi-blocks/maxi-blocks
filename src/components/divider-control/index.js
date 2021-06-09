@@ -261,13 +261,7 @@ const DividerControl = props => {
 							label={__('Weight', 'maxi-blocks')}
 							placeholder=''
 							disableUnit
-							value={
-								props['divider-border-right-width'] !==
-									undefined &&
-								props['divider-border-right-width'] !== ''
-									? props['divider-border-right-width']
-									: ''
-							}
+							value={props['divider-border-right-width']}
 							onChangeValue={val => {
 								onChange({
 									'divider-border-right-width':

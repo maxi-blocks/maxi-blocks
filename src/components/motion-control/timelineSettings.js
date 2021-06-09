@@ -102,6 +102,10 @@ const TimelineSettings = props => {
 	};
 
 	return (
+		/*
+		RangeSliderControl should be replaced with SizeControl but we are working on the new version of Motions Effect maybe we will remove this component completely, so hold them for now and will get the correct decision future :)
+		*/
+		/*
 		<div className='maxi-motion-control__timeline-item-settings'>
 			{!isNil(getCurrentTimelineItem()) && (
 				<>
@@ -474,6 +478,7 @@ const TimelineSettings = props => {
 				</>
 			)}
 		</div>
+		*/
 	);
 };
 export default TimelineSettings;

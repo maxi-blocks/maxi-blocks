@@ -8,7 +8,6 @@ import { __ } from '@wordpress/i18n';
  */
 import SizeControl from '../size-control';
 import FancyRadioControl from '../fancy-radio-control';
-import RangeSliderControl from '../range-slider-control';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
@@ -100,22 +99,31 @@ const ArrowControl = props => {
 							onChange({ [`arrow-side-${breakpoint}`]: val })
 						}
 					/>
-					<RangeSliderControl
+					<SizeControl
 						label={__('Position', 'maxi-blocks')}
+						placeholder=''
+						disableUnit
 						value={getLastBreakpointAttribute(
 							'arrow-position',
 							breakpoint,
 							props
 						)}
-						defaultValue={getDefaultAttribute(
-							`arrow-position-${breakpoint}`
-						)}
+						onChangeValue={val => {
+							onChangeValue(
+								'arrow-position',
+								val !== undefined && val !== '' ? val : ''
+							);
+						}}
 						min={0}
 						max={100}
-						onChange={val => {
-							onChangeValue('arrow-position', val);
-						}}
-						allowReset
+						onReset={() =>
+							onChangeValue(
+								'arrow-position',
+								getDefaultAttribute(
+									`arrow-position-${breakpoint}`
+								)
+							)
+						}
 						initialPosition={getDefaultAttribute(
 							`arrow-position-${breakpoint}`
 						)}

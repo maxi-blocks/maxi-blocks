@@ -62,12 +62,7 @@ const ParallaxControl = props => {
 						label={__('Speed', 'maxi-blocks')}
 						placeholder=''
 						disableUnit
-						value={
-							props['parallax-speed'] !== undefined &&
-							props['parallax-speed'] !== ''
-								? props['parallax-speed']
-								: ''
-						}
+						value={props['parallax-speed']}
 						onChangeValue={val => {
 							onChange({
 								'parallax-speed':

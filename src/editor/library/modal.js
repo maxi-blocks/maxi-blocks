@@ -8,7 +8,7 @@ import CloudLibrary from '.';
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { Component, Fragment } from '@wordpress/element';
+import { Component, useState, useEffect, useRef } from '@wordpress/element';
 import { Button } from '@wordpress/components';
 
 /**

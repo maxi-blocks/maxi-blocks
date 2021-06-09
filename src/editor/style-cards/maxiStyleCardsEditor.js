@@ -20,7 +20,6 @@ import {
 } from './utils';
 import {
 	SettingTabsControl,
-	FancyRadioControl,
 	SelectControl,
 	Button,
 	Icon,
@@ -88,7 +87,6 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		setSelectedStyleCard,
 	} = useDispatch('maxiBlocks/style-cards');
 
-	const [useCustomStyleCard, setUseCustomStyleCard] = useState(true);
 	const [styleCardName, setStyleCardName] = useState('');
 	const [currentSCStyle, setCurrentSCStyle] = useState('light');
 
@@ -374,142 +372,117 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 							{__('Apply', 'maxi-blocks')}
 						</Button>
 					</div>
-					<FancyRadioControl
-						label={__('Use Custom Style Card', 'maxi-blocks')}
-						className='maxi-sc-color-palette__custom'
-						selected={useCustomStyleCard}
-						options={[
-							{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
-						onChange={val => setUseCustomStyleCard(val)}
-					/>
-					{!useCustomStyleCard && (
-						<>
-							<div className='maxi-style-cards__sc__save'>
-								<input
-									type='text'
-									placeholder={__(
-										'Add your Style Card Name here',
-										'maxi-blocks'
-									)}
-									value={styleCardName}
-									onChange={e =>
-										setStyleCardName(e.target.value)
-									}
-								/>
-								<Button
-									disabled={isEmpty(styleCardName)}
-									onClick={() => {
-										const newStyleCard = {
-											name: styleCardName,
-											status: '',
-											styleCard: { dark: {}, light: {} },
-											styleCardDefaults: {
-												dark: {
-													...selectedSCValue
-														.styleCardDefaults.dark,
-													...selectedSCValue.styleCard
-														.dark,
-												},
-												light: {
-													...selectedSCValue
-														.styleCardDefaults
-														.light,
-													...selectedSCValue.styleCard
-														.light,
-												},
-											},
-										};
-										saveImportedStyleCard(newStyleCard);
-									}}
-								>
-									{__('Add', 'maxi-blocks')}
-								</Button>
-							</div>
-							<div className='maxi-style-cards__sc__ie'>
-								<Button
-									className='maxi-style-cards__sc__ie--export'
-									disabled={false}
-									onClick={() => {
-										const fileName = `${selectedSCValue.name}.txt`;
-										exportStyleCard(
-											{
-												...selectedSCValue,
-												status: '',
-											},
-											fileName
-										);
-									}}
-								>
-									{__('Export', 'maxi-blocks')}
-								</Button>
-								<MediaUploadCheck>
-									<MediaUpload
-										onSelect={media => {
-											fetch(media.url)
-												.then(response =>
-													response.json()
-												)
-												.then(jsonData => {
-													saveImportedStyleCard(
-														jsonData
-													);
-												})
-												.catch(error => {
-													console.error(error);
-												});
-										}}
-										allowedTypes='text'
-										render={({ open }) => (
-											<Button
-												className='maxi-style-cards__sc__ie--import'
-												onClick={open}
-											>
-												{__('Import', 'maxi-blocks')}
-											</Button>
-										)}
-									/>
-								</MediaUploadCheck>
-							</div>
-						</>
-					)}
+					<div className='maxi-style-cards__sc__save'>
+						<input
+							type='text'
+							placeholder={__(
+								'Add your Style Card Name here',
+								'maxi-blocks'
+							)}
+							value={styleCardName}
+							onChange={e => setStyleCardName(e.target.value)}
+						/>
+						<Button
+							disabled={isEmpty(styleCardName)}
+							onClick={() => {
+								const newStyleCard = {
+									name: styleCardName,
+									status: '',
+									styleCard: { dark: {}, light: {} },
+									styleCardDefaults: {
+										dark: {
+											...selectedSCValue.styleCardDefaults
+												.dark,
+											...selectedSCValue.styleCard.dark,
+										},
+										light: {
+											...selectedSCValue.styleCardDefaults
+												.light,
+											...selectedSCValue.styleCard.light,
+										},
+									},
+								};
+								saveImportedStyleCard(newStyleCard);
+							}}
+						>
+							{__('Add', 'maxi-blocks')}
+						</Button>
+					</div>
+					<div className='maxi-style-cards__sc__ie'>
+						<Button
+							className='maxi-style-cards__sc__ie--export'
+							disabled={false}
+							onClick={() => {
+								const fileName = `${selectedSCValue.name}.txt`;
+								exportStyleCard(
+									{
+										...selectedSCValue,
+										status: '',
+									},
+									fileName
+								);
+							}}
+						>
+							{__('Export', 'maxi-blocks')}
+						</Button>
+						<MediaUploadCheck>
+							<MediaUpload
+								onSelect={media => {
+									fetch(media.url)
+										.then(response => response.json())
+										.then(jsonData => {
+											saveImportedStyleCard(jsonData);
+										})
+										.catch(error => {
+											console.error(error);
+										});
+								}}
+								allowedTypes='text'
+								render={({ open }) => (
+									<Button
+										className='maxi-style-cards__sc__ie--import'
+										onClick={open}
+									>
+										{__('Import', 'maxi-blocks')}
+									</Button>
+								)}
+							/>
+						</MediaUploadCheck>
+					</div>
 				</div>
 				<hr />
-				{useCustomStyleCard && (
-					<SettingTabsControl
-						disablePadding
-						returnValue={({ key }) => setCurrentSCStyle(key)}
-						items={[
-							{
-								label: __('Light Style Preset', 'maxi-blocks'),
-								key: 'light',
-								content: (
-									<MaxiStyleCardsTab
-										SC={selectedSCValue}
-										SCStyle='light'
-										onChangeValue={onChangeValue}
-										deviceType={deviceType}
-										currentKey={selectedSCKey}
-									/>
-								),
-							},
-							{
-								label: __('Dark Style Preset', 'maxi-blocks'),
-								key: 'dark',
-								content: (
-									<MaxiStyleCardsTab
-										SC={selectedSCValue}
-										SCStyle='dark'
-										onChangeValue={onChangeValue}
-										deviceType={deviceType}
-										currentKey={selectedSCKey}
-									/>
-								),
-							},
-						]}
-					/>
-				)}
+				<SettingTabsControl
+					disablePadding
+					returnValue={({ key }) => setCurrentSCStyle(key)}
+					items={[
+						{
+							label: __('Light Style Preset', 'maxi-blocks'),
+							key: 'light',
+							content: (
+								<MaxiStyleCardsTab
+									SC={selectedSCValue}
+									SCStyle='light'
+									onChangeValue={onChangeValue}
+									deviceType={deviceType}
+									currentKey={selectedSCKey}
+								/>
+							),
+						},
+						{
+							label: __('Dark Style Preset', 'maxi-blocks'),
+							key: 'dark',
+							content: (
+								<MaxiStyleCardsTab
+									SC={selectedSCValue}
+									SCStyle='dark'
+									onChangeValue={onChangeValue}
+									deviceType={deviceType}
+									currentKey={selectedSCKey}
+								/>
+							),
+						},
+					]}
+				/>
 			</Popover>
 		)
 	);

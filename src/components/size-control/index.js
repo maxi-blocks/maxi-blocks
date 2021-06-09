@@ -38,6 +38,7 @@ const SizeControl = props => {
 		max = 999,
 		initial = 0,
 		step = 1,
+		defaultValue = '',
 		value,
 		onChangeValue,
 		disableReset = false,
@@ -96,7 +97,7 @@ const SizeControl = props => {
 				<input
 					type='number'
 					className='maxi-size-control__value'
-					value={trim(value)}
+					value={value === undefined ? defaultValue : trim(value)}
 					onChange={e => {
 						let { value } = e.target;
 

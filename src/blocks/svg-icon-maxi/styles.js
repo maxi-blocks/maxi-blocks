@@ -90,25 +90,21 @@ const getHoverObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	let response = {
-		[uniqueID]: getNormalObject(props),
-		[`${uniqueID}:hover`]: getHoverObject(props),
-	};
-
-	response = {
-		...response,
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'backgroundHover',
-				'backgroundColorHover',
-			]),
-			isHover: true,
-		}),
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, ['background', 'backgroundColor']),
-		}),
+	const response = {
+		[uniqueID]: {
+			'': getNormalObject(props),
+			':hover': getHoverObject(props),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+				]),
+				isHover: true,
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, ['background', 'backgroundColor']),
+			}),
+		},
 	};
 
 	return response;

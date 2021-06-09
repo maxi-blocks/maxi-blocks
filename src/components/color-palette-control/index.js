@@ -39,15 +39,15 @@ const ColorPaletteControl = props => {
 
 	const currentBlockName = select('core/block-editor').getBlockName(clientId);
 
-	const { activeSC } = useSelect(select => {
+	const { selectedSC } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
 
-		const activeSC = receiveMaxiSelectedStyleCard()?.value || {};
+		const selectedSC = receiveMaxiSelectedStyleCard()?.value || {};
 
 		return {
-			activeSC,
+			selectedSC,
 		};
 	});
 
@@ -56,8 +56,8 @@ const ColorPaletteControl = props => {
 		currentBlockName.lastIndexOf('-maxi')
 	);
 
-	const paletteStatus = !isEmpty(activeSC)
-		? activeSC.styleCard[`${getBlockStyle(clientId)}`][
+	const paletteStatus = !isEmpty(selectedSC)
+		? selectedSC[`${getBlockStyle(clientId)}`].styleCard[
 				`${
 					currentShortBlockName === 'text'
 						? textLevel

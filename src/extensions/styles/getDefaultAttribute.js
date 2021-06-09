@@ -33,9 +33,8 @@ const getBlocksName = clientIds => {
  * @param {string} prop Claimed property to return
  */
 const getDefaultAttribute = (prop, clientIds = null) => {
-	const { getBlockName, getSelectedBlockClientIds } = select(
-		'core/block-editor'
-	);
+	const { getBlockName, getSelectedBlockClientIds } =
+		select('core/block-editor');
 
 	let blockName = '';
 

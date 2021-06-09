@@ -255,9 +255,6 @@ const LibraryContainer = props => {
 						>
 							Load
 						</Button>
-						<Button className='maxi-cloud-masonry-card__button'>
-							Save
-						</Button>
 					</div>
 					<div className='maxi-cloud-masonry-card__image'>
 						<img src={previewIMG} alt={`Preview for ${serial}`} />

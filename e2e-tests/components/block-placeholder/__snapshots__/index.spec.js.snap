@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Block Placeholder Checking the block placeholder 1`] = `
+"<!-- wp:maxi-blocks/text-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-12\\"} -->
+<div id=\\"text-maxi-12\\" class=\\"maxi-block maxi-text-block maxi-motion-effect maxi-motion-effect-text-maxi-12 maxi-light text-maxi-12 wp-block-maxi-blocks-text-maxi maxi-sc-light-typography-color-3\\" data-align=\\"normal\\"><div class=\\"maxi-background-displayer\\"></div><p class=\\"maxi-text-block__content\\" data-gx_initial_block_class=\\"maxi-def-light\\"></p></div>
+<!-- /wp:maxi-blocks/text-maxi -->"
+`;

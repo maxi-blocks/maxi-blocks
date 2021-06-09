@@ -13,30 +13,24 @@ describe('background displayer control', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
-		const accordionPanel = await openSidebar(page, 'background');
 	});
 	// background color
 	it('Checks Color background settings', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--full-width .components-base-control__field input',
+			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
 			select => select[1].click()
 		);
-		await accordionPanel.$eval(
-			'.maxi-color-control .maxi-color-control__color input',
-			select => select.focus()
+
+		const backgroundColor = await accordionPanel.$$(
+			'.maxi-settingstab-control .maxi-background-control .maxi-sc-color-palette div'
 		);
 
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('FAFA03');
-		await page.keyboard.press('Enter');
-
-		await page.waitForTimeout(1000);
-
+		await backgroundColor[3].click();
 		const colorAttributes = await getBlockAttributes();
-		const result = colorAttributes['background-color'];
-		const expectedColor = 'rgba(250,250,3,1)';
+		const result = colorAttributes['palette-preset-background-color'];
+		const expectedColor = 4;
 
 		expect(result).toStrictEqual(expectedColor);
 	});
@@ -48,29 +42,33 @@ describe('background displayer control', () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--full-width .components-base-control__field input',
+			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
 			select => select[3].click()
 		);
 
-		const inputs = await accordionPanel.$$(
-			'.maxi-background-control__video .components-base-control__field input'
-		);
-
-		const [insertUrl, startTime, endTime] = inputs;
 		const VideoUrl = 'https://youtu.be/hM7Eh0gGNKA';
 
 		// insert URL
-		await insertUrl.focus();
+		await accordionPanel.$eval(
+			'.maxi-background-control.maxi-background-control .maxi-base-control.maxi-text-control input',
+			select => select.focus()
+		);
 		await page.keyboard.type(VideoUrl);
 		await page.keyboard.press('Enter');
 
 		// start Time
-		await startTime.focus();
+		await accordionPanel.$$eval(
+			'.maxi-background-control.maxi-background-control .maxi-base-control.maxi-number-control input',
+			select => select[0].focus()
+		);
 		await page.keyboard.type('1');
 		await page.keyboard.press('Enter');
 
 		// end time
-		await endTime.focus();
+		await accordionPanel.$$eval(
+			'.maxi-background-control.maxi-background-control .maxi-base-control.maxi-number-control input',
+			select => select[1].focus()
+		);
 		await page.keyboard.type('3');
 		await page.keyboard.press('Enter');
 
@@ -96,17 +94,20 @@ describe('background displayer control', () => {
 	});
 	// Gradient background
 	it('Checks Gradient background settings', async () => {
+		await setBrowserViewport('large');
 		const accordionPanel = await openSidebar(page, 'background');
 
-		await setBrowserViewport('large');
-
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--full-width .components-base-control__field input',
+			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
 			select => select[4].click()
 		);
 
+		await page.$eval('.maxi-sidebar', sideBar =>
+			sideBar.scrollTo(0, sideBar.scrollHeight)
+		);
+
 		const { x, y } = await page.$eval(
-			'.maxi-background-control .components-custom-gradient-picker__gradient-bar',
+			'.maxi-background-control .maxi-gradient-control .maxi-gradient-control__gradient .components-custom-gradient-picker__markers-container',
 			gradientBar => {
 				const { x, y, width, height } =
 					gradientBar.getBoundingClientRect();
@@ -119,35 +120,38 @@ describe('background displayer control', () => {
 		);
 
 		await page.mouse.click(x, y, { delay: 1000 });
+
 		await page.waitForSelector(
 			'.components-dropdown__content.components-custom-gradient-picker__color-picker-popover'
 		);
 
-		// Revisar
-		await page.$eval(
-			'.components-dropdown__content.components-custom-gradient-picker__color-picker-popover .components-color-picker__inputs-fields input',
+		const colorPickerPopover = await page.$(
+			'.components-dropdown__content.components-custom-gradient-picker__color-picker-popover'
+		);
+
+		await colorPickerPopover.$eval(
+			'.components-color-picker__inputs-fields input',
 			select => select.focus()
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('24a319');
 		await page.keyboard.press('Enter');
 
-		await page.waitForTimeout(1000);
+		await page.waitForTimeout(500);
 
-		const expectGradient =
-			'linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(36,163,25) 49%,rgb(155,81,224) 100%)';
 		const expectAttribute = await getBlockAttributes();
+		const gradient = expectAttribute['background-gradient'];
+		const expectGradient =
+			'linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(36,163,25) 46%,rgb(155,81,224) 100%)';
 
-		expect(expectAttribute['background-gradient']).toStrictEqual(
-			expectGradient
-		);
+		expect(gradient).toStrictEqual(expectGradient);
 	});
 	// shape background
 	it('Checks Shape background settings', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--full-width .components-base-control__field input',
+			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
 			select => select[5].click()
 		);
 

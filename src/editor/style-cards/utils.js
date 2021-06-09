@@ -5,6 +5,11 @@ import { __ } from '@wordpress/i18n';
 import { dispatch, select } from '@wordpress/data';
 
 /**
+ * External dependencies
+ */
+import { isEmpty, isNil, isString } from 'lodash';
+
+/**
  * Utils
  */
 export const showMaxiSCSavedActiveSnackbar = nameSC => {
@@ -73,4 +78,22 @@ export const exportStyleCard = (data, fileName) => {
 	a.download = fileName;
 	a.click();
 	document.body.removeChild(a);
+};
+
+export const processSCAttribute = (SC, attr, type) => {
+	if (!isEmpty(SC)) {
+		const value = SC.styleCard?.[type]?.[attr];
+		if (!isNil(value)) return value;
+
+		const defaultValue = SC.defaultStyleCard?.[type]?.[attr];
+		if (!isNil(defaultValue)) {
+			if (isString(defaultValue) && defaultValue.includes('var')) {
+				const colorNumber = defaultValue.match(/color-\d/);
+				const colorValue = SC.defaultStyleCard[colorNumber];
+				if (!isNil(colorValue)) return colorValue;
+			} else return defaultValue;
+		}
+	}
+
+	return null;
 };

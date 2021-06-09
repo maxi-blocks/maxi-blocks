@@ -216,7 +216,7 @@ body.maxi-blocks--active {
 		/* End of Color Presets */
 
 		/* Individual settings per a block type */
-		.maxi-#{$style}[class*='maxi-sc'] {
+		.maxi-#{$style}.maxi-block {
 			&.maxi-text-block,
 			.maxi-text-block {
 				@each $level in $levels {

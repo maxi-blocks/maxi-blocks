@@ -85,6 +85,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		setActiveStyleCard,
 		removeStyleCard,
 		setSelectedStyleCard,
+		saveSCStyles,
 	} = useDispatch('maxiBlocks/style-cards');
 
 	const [useCustomStyleCard, setUseCustomStyleCard] = useState(true);
@@ -121,8 +122,8 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		return false;
 	};
 
-	const canBeApplied = keySC => {
-		if (canBeSaved(keySC) || keySC !== selectedSCKey) return true;
+	const canBeApplied = (keySC, activeSCKey) => {
+		if (canBeSaved(keySC) || keySC !== activeSCKey) return true;
 
 		return false;
 	};
@@ -210,6 +211,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		updateSCOnEditor(selectedSCValue);
 
 		saveMaxiStyleCards(newStyleCards, true);
+		saveSCStyles(true);
 	};
 
 	const saveCurrentSC = () => {
@@ -219,6 +221,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		};
 
 		saveMaxiStyleCards(newStyleCards, true);
+		saveSCStyles(true);
 	};
 
 	const resetCurrentSC = () => {
@@ -371,7 +374,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 						</Button>
 						<Button
 							className='maxi-style-cards__sc__actions--apply'
-							disabled={!canBeApplied(selectedSCKey)}
+							disabled={!canBeApplied(selectedSCKey, activeSCKey)}
 							onClick={() => {
 								if (
 									window.confirm(

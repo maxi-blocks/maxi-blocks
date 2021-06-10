@@ -40,12 +40,13 @@ export const styleObjectManipulator = ({
 	textLevel,
 	isHover = false,
 	styleCardPrefix = '',
+	styleCard,
 }) => {
 	const style = { ...currentStyle };
 	const blockStyle = getBlockStyle();
 
-	const { receiveMaxiActiveStyleCard } = select('maxiBlocks/style-cards');
-	const styleCard = receiveMaxiActiveStyleCard().value;
+	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
+	const SC = styleCard || receiveMaxiSelectedStyleCard().value;
 
 	const sameDefaultLevels = ['p', 'ul', 'ol'];
 
@@ -54,17 +55,12 @@ export const styleObjectManipulator = ({
 			? 'p'
 			: textLevel;
 
-	const defaultTypography = getTypographyFromSC(
-		prefix,
-		blockStyle,
-		styleCard
-	);
-	// .styleCard.value.styleCardDefaults[blockStyle];
+	const defaultTypography = getTypographyFromSC(SC[blockStyle], prefix);
 
 	const getCurrentValue = target =>
 		typography[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
 	const getDefaultValue = target =>
-		defaultTypography[`${prefix}-${target}-${breakpoint}`];
+		defaultTypography[`${target}-${breakpoint}`];
 
 	Object.entries(value).forEach(([target, val]) => {
 		if (getCurrentValue(target) === val)
@@ -105,12 +101,12 @@ const updateCustomFormatStyle = ({
 	value,
 	isHover,
 	textLevel,
+	styleCard,
 }) => {
 	const newTypography = { ...typography };
 
-	newTypography[
-		`custom-formats${isHover ? '-hover' : ''}`
-	] = cleanCustomFormats(newTypography, isHover);
+	newTypography[`custom-formats${isHover ? '-hover' : ''}`] =
+		cleanCustomFormats(newTypography, isHover);
 
 	newTypography[`custom-formats${isHover ? '-hover' : ''}`][
 		currentClassName
@@ -125,6 +121,7 @@ const updateCustomFormatStyle = ({
 				isHover
 			),
 			textLevel,
+			styleCard,
 		}),
 	};
 

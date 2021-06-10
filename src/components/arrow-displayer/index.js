@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import { getLastBreakpointAttribute } from '../../extensions/styles';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -16,7 +21,11 @@ const ArrowDisplayer = props => {
 
 	const arrowClasses = classnames(
 		'maxi-container-arrow',
-		`maxi-container-arrow__${props[`arrow-side-${breakpoint}`]}`,
+		`maxi-container-arrow__${getLastBreakpointAttribute(
+			'arrow-side',
+			breakpoint,
+			props
+		)}`,
 		className
 	);
 

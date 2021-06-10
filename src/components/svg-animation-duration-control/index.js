@@ -7,7 +7,7 @@ import {} from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import RangeSliderControl from '../range-slider-control';
+import SizeControl from '../size-control';
 
 /**
  * Component
@@ -17,14 +17,19 @@ const SvgAnimationDurationControl = props => {
 	return (
 		<>
 			{{ animation } !== 'off' && (
-				<RangeSliderControl
+				<SizeControl
 					label={__('Animation Duration', 'maxi-blocks')}
+					placeholder=''
+					disableUnit
 					value={duration}
+					onChangeValue={val => {
+						onChange(val !== undefined && val !== '' ? val : '');
+					}}
 					min={1.0}
 					max={5.0}
 					step={0.1}
+					onReset={() => onChange(3.7)}
 					initialPosition={3.7}
-					onChange={val => onChange(val)}
 				/>
 			)}
 		</>

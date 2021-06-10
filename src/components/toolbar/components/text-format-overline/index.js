@@ -30,7 +30,8 @@ import { getGroupAttributes } from '../../../../extensions/styles';
  * TextFormatOverline
  */
 const TextFormatOverline = props => {
-	const { formatValue, onChange, isList, breakpoint, textLevel } = props;
+	const { formatValue, onChange, isList, breakpoint, textLevel, styleCard } =
+		props;
 
 	const getTextDecorationValue = () => {
 		return (
@@ -40,6 +41,7 @@ const TextFormatOverline = props => {
 				prop: 'text-decoration',
 				breakpoint,
 				textLevel,
+				styleCard,
 			}) || ''
 		);
 	};

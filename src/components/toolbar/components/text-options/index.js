@@ -48,6 +48,7 @@ const TextOptions = withFormatValue(props => {
 		isList,
 		textLevel,
 		formatValue,
+		styleCard,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
@@ -61,6 +62,7 @@ const TextOptions = withFormatValue(props => {
 			prop,
 			breakpoint,
 			textLevel,
+			styleCard,
 		});
 
 	const onChangeFormat = value => {
@@ -218,6 +220,7 @@ const TextOptions = withFormatValue(props => {
 							isList={isList}
 							breakpoint={breakpoint}
 							textLevel={textLevel}
+							styleCard={styleCard}
 						/>
 						<TextFormatStrikethrough
 							{...getGroupAttributes(props, 'typography')}
@@ -226,6 +229,7 @@ const TextOptions = withFormatValue(props => {
 							isList={isList}
 							breakpoint={breakpoint}
 							textLevel={textLevel}
+							styleCard={styleCard}
 						/>
 						<TextFormatUnderline
 							{...getGroupAttributes(props, 'typography')}
@@ -234,6 +238,7 @@ const TextOptions = withFormatValue(props => {
 							isList={isList}
 							breakpoint={breakpoint}
 							textLevel={textLevel}
+							styleCard={styleCard}
 						/>
 						<TextFormatSubscript
 							{...getGroupAttributes(props, 'typography')}
@@ -242,6 +247,7 @@ const TextOptions = withFormatValue(props => {
 							isList={isList}
 							breakpoint={breakpoint}
 							textLevel={textLevel}
+							styleCard={styleCard}
 						/>
 						<TextFormatSuperscript
 							{...getGroupAttributes(props, 'typography')}
@@ -250,12 +256,14 @@ const TextOptions = withFormatValue(props => {
 							isList={isList}
 							breakpoint={breakpoint}
 							textLevel={textLevel}
+							styleCard={styleCard}
 						/>
 						<TextFormatCode
 							onChange={content => onChange({ content })}
 							isList={isList}
 							formatValue={formatValue}
 							textLevel={textLevel}
+							styleCard={styleCard}
 						/>
 					</div>
 				</>

@@ -6,8 +6,6 @@ describe('getStyleCardActive', () => {
 			sc_maxi: {
 				name: 'Maxi (Default)',
 				status: 'active',
-				styleCard: {},
-				styleCardDefaults: {},
 			},
 		};
 
@@ -20,8 +18,6 @@ describe('getStyleCardActive', () => {
 			sc_maxi: {
 				name: 'Maxi (Default)',
 				status: '',
-				styleCard: {},
-				styleCardDefaults: {},
 			},
 		};
 

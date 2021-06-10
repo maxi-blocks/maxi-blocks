@@ -1,4 +1,4 @@
-name: Unit Tests
+name: E2E Tests
 
 on:
     pull_request:
@@ -7,7 +7,7 @@ on:
         branches: [master]
 
 jobs:
-    unit-js:
+    e2e-js:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2

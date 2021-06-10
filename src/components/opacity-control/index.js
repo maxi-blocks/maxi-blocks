@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SizeControl from '../size-control';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies

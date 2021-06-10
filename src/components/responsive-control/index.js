@@ -7,7 +7,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import NumberControl from '../number-control';
+import SizeControl from '../size-control';
 
 /**
  * External dependencies
@@ -33,28 +33,36 @@ const ResponsiveControl = props => {
 
 	return (
 		<div className={classes}>
-			<NumberControl
+			<SizeControl
 				label={__('Breakpoint', 'maxi-blocks')}
-				className='maxi-responsive-control__breakpoint'
-				value={
-					props[`breakpoints-${breakpoint}`]
-						? props[`breakpoints-${breakpoint}`]
-						: defaultBreakpoints[
-								breakpoint === 'xxl' ? 'xl' : breakpoint
-						  ]
-				}
+				placeholder=''
+				disableUnit
 				defaultValue={
 					defaultBreakpoints[breakpoint === 'xxl' ? 'xl' : breakpoint]
 				}
-				onChange={val =>
+				value={props[`breakpoints-${breakpoint}`]}
+				onChangeValue={val => {
 					onChange({
 						[`breakpoints-${
 							breakpoint === 'xxl' ? 'xl' : breakpoint
-						}`]: val,
-					})
-				}
+						}`]: val !== undefined && val !== '' ? val : '',
+					});
+				}}
 				min={0}
 				max={9999}
+				onReset={() =>
+					onChange({
+						[`breakpoints-${
+							breakpoint === 'xxl' ? 'xl' : breakpoint
+						}`]:
+							defaultBreakpoints[
+								breakpoint === 'xxl' ? 'xl' : breakpoint
+							],
+					})
+				}
+				initialPosition={
+					defaultBreakpoints[breakpoint === 'xxl' ? 'xl' : breakpoint]
+				}
 			/>
 		</div>
 	);

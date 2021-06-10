@@ -106,31 +106,34 @@ describe('TextMaxi', () => {
 	it('Test Text Maxi toolbar Link with all option on frontend', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi');
+
 		await page.$eval('.toolbar-item__text-link', button => button.click());
 		await page.keyboard.type(linkExample);
 		await page.keyboard.press('Enter');
 
-		const linkSettings = await page.$$(
-			'.block-editor-link-control__setting'
-		);
-		linkSettings.forEach(
-			async linkSetting =>
-				await linkSetting.$eval(
-					'.components-form-toggle__input',
-					setting => setting.click()
-				)
+		await page.$$eval(
+			'.block-editor-link-control__setting',
+			linkSettings => {
+				linkSettings.forEach(linkSetting => {
+					linkSetting
+						.querySelector('.components-form-toggle__input')
+						.click();
+				});
+			}
 		);
 
 		// Check frontend
 		const editorPage = page;
 		const previewPage = await openPreviewPage(editorPage);
 		await previewPage.waitForSelector('.entry-content');
+
 		const content = await previewPage.$eval(
 			'.entry-content',
 			contentWrapper => contentWrapper.innerHTML.trim()
 		);
+
 		expect(content).toMatchSnapshot();
-	});
+	}, 30000);
 
 	it('Test Text Maxi toolbar Link with multiple instances', async () => {
 		await insertBlock('Text Maxi');

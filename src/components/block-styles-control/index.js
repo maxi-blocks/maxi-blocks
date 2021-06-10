@@ -9,10 +9,17 @@ import { __ } from '@wordpress/i18n';
 import SelectControl from '../select-control';
 
 /**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
  * Component
  */
 const BlockStylesControl = props => {
-	const { blockStyle, onChange, isFirstOnHierarchy } = props;
+	const { blockStyle, onChange, isFirstOnHierarchy, className } = props;
+
+	const classes = classnames('maxi-block-style-control', className);
 
 	const getSelectorOptions = () => {
 		if (isFirstOnHierarchy)
@@ -26,6 +33,7 @@ const BlockStylesControl = props => {
 	return (
 		<SelectControl
 			label={__('Block Style', 'maxi-blocks')}
+			className={classes}
 			value={blockStyle}
 			options={getSelectorOptions()}
 			onChange={blockStyle => {

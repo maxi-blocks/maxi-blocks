@@ -48,7 +48,9 @@ const AxisInput = props => {
 	const instanceId = useInstanceId(AxisInput);
 
 	return (
-		<div className='maxi-axis-control__content__item maxi-axis-control__content__item__top'>
+		<div
+			className={`maxi-axis-control__content__item maxi-axis-control__content__item__${label}`}
+		>
 			<p className='maxi-axis-control__content__item__label'>
 				{__(capitalize(label), 'maxi-blocks')}
 			</p>

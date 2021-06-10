@@ -381,7 +381,7 @@ const LibraryContainer = props => {
 						<div className='maxi-cloud-container__sidebar'>
 							<RefinementList
 								attribute='taxonomies.light_or_dark'
-								defaultRefinement={['Dark']}
+								defaultRefinement={['Light']}
 							/>
 							<SearchBox
 								autoFocus

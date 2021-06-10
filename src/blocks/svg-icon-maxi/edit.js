@@ -56,7 +56,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, clientId } = this.props;
-		const { uniqueID, parentBlockStyle } = attributes;
+		const { uniqueID, parentBlockStyle, content } = attributes;
 
 		const classes = classnames(
 			'maxi-svg-icon-block',
@@ -77,13 +77,13 @@ class edit extends MaxiBlockComponent {
 			)
 		);
 
-		const isEmptyContent = isEmpty(attributes.content);
+		const isEmptyContent = isEmpty(content);
 
 		return [
-			!isEmpty(attributes.content) && (
+			!isEmptyContent && (
 				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
 			),
-			!isEmpty(attributes.content) && (
+			!isEmptyContent && (
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}
@@ -104,7 +104,7 @@ class edit extends MaxiBlockComponent {
 					/>
 					{!isEmptyContent && (
 						<RawHTML className='maxi-svg-icon-block__icon'>
-							{attributes.content}
+							{content}
 						</RawHTML>
 					)}
 				</>

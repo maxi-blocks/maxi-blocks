@@ -106,13 +106,13 @@ body.maxi-blocks--active {
 				@each $level in $levels {
 					&.maxi-sc-#{$style}-typography-color-#{$color_number} > #{$level}.maxi-text-block__content,
 					.maxi-sc-#{$style}-typography-color-#{$color_number} > #{$level}.maxi-text-block__content {
-						--maxi-#{$style}-#{$level}-color-general-palette: var(--maxi-#{$style}-color-#{$color_number});
+						--maxi-#{$style}-#{$level}-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				li {
 					&.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content,
 					.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content {
-						--maxi-#{$style}-p-color-general-palette: var(--maxi-#{$style}-color-#{$color_number});
+						--maxi-#{$style}-p-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 				&.maxi-sc-#{$style}-svgColorFill-color-#{$color_number},
@@ -216,12 +216,12 @@ body.maxi-blocks--active {
 		/* End of Color Presets */
 
 		/* Individual settings per a block type */
-		.maxi-#{$style}[class*='maxi-sc'] {
+		.maxi-#{$style}.maxi-block {
 			&.maxi-text-block,
 			.maxi-text-block {
 				@each $level in $levels {
 					#{$level} {
-						color: var(--maxi-#{$style}-#{$level}-color, var(--maxi-#{$style}-#{$level}-colo-palette));
+						color: var(--maxi-#{$style}-#{$level}-color, var(--maxi-#{$style}-#{$level}-color-palette));
 						font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
 						font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
 						font-style: var(--maxi-#{$style}-#{$level}-font-style-general);

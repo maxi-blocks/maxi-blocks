@@ -1,12 +1,37 @@
 /**
  * Internal dependencies
  */
-import { getLastBreakpointAttribute } from '../styles';
+import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
 
 /**
  * External dependencies
  */
-import { times } from 'lodash';
+import { times, isEmpty, merge, cloneDeep } from 'lodash';
+import { getTypographyStyles } from '../styles/helpers';
+
+const getParsedObj = obj => {
+	const newObj = cloneDeep(obj);
+
+	const typographyObj = getGroupAttributes(
+		newObj,
+		'typography',
+		false,
+		'',
+		true
+	);
+
+	Object.keys(typographyObj).forEach(key => delete newObj[key]);
+
+	Object.entries(getTypographyStyles(typographyObj)).forEach(
+		([breakpoint, value]) => {
+			Object.entries(value).forEach(([key, val]) => {
+				newObj[`${key}-${breakpoint}`] = val;
+			});
+		}
+	);
+
+	return newObj;
+};
 
 export const getSCVariablesObject = styleCards => {
 	const response = {};
@@ -20,6 +45,8 @@ export const getSCVariablesObject = styleCards => {
 		'h4',
 		'h5',
 		'h6',
+		'hover',
+		'icon',
 		'divider',
 	];
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -35,56 +62,67 @@ export const getSCVariablesObject = styleCards => {
 	];
 	const SC = {
 		dark: {
-			...styleCards.styleCardDefaults.dark,
-			...styleCards.styleCard.dark,
+			...merge(
+				{ ...styleCards.dark.defaultStyleCard },
+				{ ...styleCards.dark.styleCard }
+			),
 		},
 		light: {
-			...styleCards.styleCardDefaults.light,
-			...styleCards.styleCard.light,
+			...merge(
+				{ ...styleCards.light.defaultStyleCard },
+				{ ...styleCards.light.styleCard }
+			),
 		},
 	};
-	const settingToAvoidInGeneral = [
+	const settingsToAvoidInGeneral = [
 		'font-size',
 		'line-height',
 		'letter-spacing',
 	];
+	const elementsForColor = ['divider', 'icon', 'hover'];
 
 	styles.forEach(style => {
 		elements.forEach(element => {
-			if (element !== 'divider')
+			const obj = getParsedObj(SC[style][element]);
+
+			if (!elementsForColor.includes(element))
 				settings.forEach(setting => {
 					breakpoints.forEach(breakpoint => {
 						if (
 							!(
 								breakpoint === 'general' &&
-								settingToAvoidInGeneral.includes(setting)
+								settingsToAvoidInGeneral.includes(setting)
 							)
 						)
 							response[
 								`--maxi-${style}-${element}-${setting}-${breakpoint}`
 							] = getLastBreakpointAttribute(
-								`${element}-${setting}`,
+								setting,
 								breakpoint,
-								SC[style]
+								obj
 							);
 					});
 				});
 
-			if (SC[style][`${element}-color-global`])
-				response[`--maxi-${style}-${element}-color`] =
-					SC[style][`${element}-color`];
+			if (obj['color-global'] && !isEmpty(obj.color))
+				response[`--maxi-${style}-${element}-color`] = obj.color;
 
 			if (
 				element === 'button' &&
-				SC[style][`${element}-background-color-global`]
+				obj['background-color-global'] &&
+				!isEmpty(obj['background-color'])
 			)
 				response[`--maxi-${style}-${element}-background-color`] =
-					SC[style][`${element}-background-color`];
+					obj['background-color'];
+
+			if (element === 'icon' && obj['line-global'] && !isEmpty(obj.line))
+				response[`--maxi-${style}-${element}-line`] = obj.line;
+			if (element === 'icon' && obj['fill-global'] && !isEmpty(obj.fill))
+				response[`--maxi-${style}-${element}-fill`] = obj.fill;
 		});
 
 		times(7, n => {
-			response[`--maxi-${style}-color-${n + 1}`] =
-				SC[style][`color-${n + 1}`];
+			response[`--maxi-${style}-color-${n + 1}`] = SC[style].color[n + 1];
 		});
 	});
 
@@ -104,7 +142,7 @@ const createSCStyleString = SCObject => {
 };
 
 const updateSCOnEditor = styleCards => {
-	const SCObject = getSCVariablesObject(styleCards);
+	const SCObject = getSCVariablesObject({ ...cloneDeep(styleCards) });
 	let SCStyle = document.getElementById('maxi-blocks-sc-vars-inline-css');
 
 	if (!SCStyle) {

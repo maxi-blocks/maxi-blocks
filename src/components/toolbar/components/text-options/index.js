@@ -7,7 +7,6 @@ import { __, sprintf } from '@wordpress/i18n';
  * Internal dependencies
  */
 import Button from '../../../button';
-import { defaultTypography } from '../../../../extensions/text';
 import BaseControl from '../../../base-control';
 import FontFamilySelector from '../../../font-family-selector';
 import ToolbarPopover from '../toolbar-popover';
@@ -49,6 +48,7 @@ const TextOptions = withFormatValue(props => {
 		isList,
 		textLevel,
 		formatValue,
+		styleCard,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
@@ -62,6 +62,7 @@ const TextOptions = withFormatValue(props => {
 			prop,
 			breakpoint,
 			textLevel,
+			styleCard,
 		});
 
 	const onChangeFormat = value => {
@@ -121,10 +122,9 @@ const TextOptions = withFormatValue(props => {
 							className='components-maxi-control__reset-button'
 							onClick={() => {
 								onChangeFormat({
-									'font-size':
-										defaultTypography[textLevel][
-											`font-size-${breakpoint}`
-										],
+									'font-size': getDefaultAttribute(
+										`'font-size'-${breakpoint}`
+									),
 								});
 							}}
 							isSmall
@@ -159,10 +159,9 @@ const TextOptions = withFormatValue(props => {
 							className='components-maxi-control__reset-button'
 							onClick={() => {
 								onChangeFormat({
-									'line-height':
-										defaultTypography[textLevel][
-											`line-height-${breakpoint}`
-										],
+									'line-height': getDefaultAttribute(
+										`'line-height'-${breakpoint}`
+									),
 								});
 							}}
 							isSmall
@@ -197,10 +196,9 @@ const TextOptions = withFormatValue(props => {
 							className='components-maxi-control__reset-button'
 							onClick={() => {
 								onChangeFormat({
-									'letter-spacing':
-										defaultTypography[textLevel][
-											`letter-spacing-${breakpoint}`
-										],
+									'letter-spacing': getDefaultAttribute(
+										`'letter-spacing'-${breakpoint}`
+									),
 								});
 							}}
 							isSmall
@@ -222,6 +220,7 @@ const TextOptions = withFormatValue(props => {
 							isList={isList}
 							breakpoint={breakpoint}
 							textLevel={textLevel}
+							styleCard={styleCard}
 						/>
 						<TextFormatStrikethrough
 							{...getGroupAttributes(props, 'typography')}
@@ -230,6 +229,7 @@ const TextOptions = withFormatValue(props => {
 							isList={isList}
 							breakpoint={breakpoint}
 							textLevel={textLevel}
+							styleCard={styleCard}
 						/>
 						<TextFormatUnderline
 							{...getGroupAttributes(props, 'typography')}
@@ -238,6 +238,7 @@ const TextOptions = withFormatValue(props => {
 							isList={isList}
 							breakpoint={breakpoint}
 							textLevel={textLevel}
+							styleCard={styleCard}
 						/>
 						<TextFormatSubscript
 							{...getGroupAttributes(props, 'typography')}
@@ -246,6 +247,7 @@ const TextOptions = withFormatValue(props => {
 							isList={isList}
 							breakpoint={breakpoint}
 							textLevel={textLevel}
+							styleCard={styleCard}
 						/>
 						<TextFormatSuperscript
 							{...getGroupAttributes(props, 'typography')}
@@ -254,12 +256,14 @@ const TextOptions = withFormatValue(props => {
 							isList={isList}
 							breakpoint={breakpoint}
 							textLevel={textLevel}
+							styleCard={styleCard}
 						/>
 						<TextFormatCode
 							onChange={content => onChange({ content })}
 							isList={isList}
 							formatValue={formatValue}
 							textLevel={textLevel}
+							styleCard={styleCard}
 						/>
 					</div>
 				</>

@@ -112,91 +112,85 @@ const getContainerObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	let response = {
-		[uniqueID]: getNormalObject(props),
-		[`${uniqueID}:hover`]: getHoverObject(props),
-		[`${uniqueID} > .maxi-container-block__container`]: getContainerObject(
-			props
-		),
-		[`${uniqueID} .maxi-shape-divider__top`]: {
-			shapeDivider: {
-				...getShapeDividerStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'top'
-				),
+	const response = {
+		[uniqueID]: {
+			'': getNormalObject(props),
+			':hover': getHoverObject(props),
+			' > .maxi-container-block__container': getContainerObject(props),
+			' .maxi-shape-divider__top': {
+				shapeDivider: {
+					...getShapeDividerStyles(
+						{
+							...getGroupAttributes(props, 'shapeDivider'),
+						},
+						'top'
+					),
+				},
 			},
-		},
-		[`${uniqueID} .maxi-shape-divider__top svg`]: {
-			shapeDivider: {
-				...getShapeDividerSVGStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'top'
-				),
+			' .maxi-shape-divider__top svg': {
+				shapeDivider: {
+					...getShapeDividerSVGStyles(
+						{
+							...getGroupAttributes(props, 'shapeDivider'),
+						},
+						'top'
+					),
+				},
 			},
-		},
-		[`${uniqueID} .maxi-shape-divider__bottom`]: {
-			shapeDivider: {
-				...getShapeDividerStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'bottom'
-				),
+			' .maxi-shape-divider__bottom': {
+				shapeDivider: {
+					...getShapeDividerStyles(
+						{
+							...getGroupAttributes(props, 'shapeDivider'),
+						},
+						'bottom'
+					),
+				},
 			},
-		},
-		[`${uniqueID} .maxi-shape-divider__bottom svg`]: {
-			shapeDivider: {
-				...getShapeDividerSVGStyles(
-					{
-						...getGroupAttributes(props, 'shapeDivider'),
-					},
-					'bottom'
-				),
+			' .maxi-shape-divider__bottom svg': {
+				shapeDivider: {
+					...getShapeDividerSVGStyles(
+						{
+							...getGroupAttributes(props, 'shapeDivider'),
+						},
+						'bottom'
+					),
+				},
 			},
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+					'borderRadius',
+				]),
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+					'borderRadiusHover',
+				]),
+				isHover: true,
+			}),
+			...getArrowStyles({
+				...getGroupAttributes(props, [
+					'arrow',
+					'border',
+					'borderWidth',
+					'borderRadius',
+					'background',
+					'backgroundColor',
+					'backgroundGradient',
+					'boxShadow',
+					'palette',
+				]),
+			}),
 		},
-	};
-
-	response = {
-		...response,
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'background',
-				'backgroundColor',
-				'backgroundImage',
-				'backgroundVideo',
-				'backgroundGradient',
-				'backgroundSVG',
-				'borderRadius',
-			]),
-		}),
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'backgroundHover',
-				'backgroundColorHover',
-				'backgroundGradientHover',
-				'borderRadiusHover',
-			]),
-			isHover: true,
-		}),
-		...getArrowStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'arrow',
-				'border',
-				'borderWidth',
-				'borderRadius',
-				'background',
-				'backgroundColor',
-				'backgroundGradient',
-				'boxShadow',
-			]),
-		}),
 	};
 
 	return response;

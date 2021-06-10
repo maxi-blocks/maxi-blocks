@@ -8,12 +8,13 @@ import { useState } from '@wordpress/element';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isString } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
+import { processSCAttribute } from './utils';
 import {
 	SettingTabsControl,
 	AccordionControl,
@@ -21,49 +22,29 @@ import {
 	TypographyControl,
 	FancyRadioControl,
 } from '../../components';
-import {
-	getSCFromTypography,
-	getTypographyFromSC,
-} from '../../extensions/style-cards';
+import { getTypographyFromSC } from '../../extensions/style-cards';
 
 /**
  * Component
  */
-const MaxiStyleCardsTab = ({
-	SC,
-	SCStyle,
-	deviceType,
-	onChangeValue,
-	addActiveSCClass,
-	currentKey,
-}) => {
-	const processAttribute = attr => {
-		if (!isEmpty(SC)) {
-			const value = SC.styleCard[SCStyle][attr];
-			if (!isNil(value)) return value;
+const SCTab = props => {
+	const {
+		type,
+		firstLabel,
+		firstColor = 'color',
+		firstColorDefault,
+		secondColor = false,
+		secondLabel,
+		secondColorDefault,
+		disableTypography = false,
+		breakpoint,
+		SC,
+		SCStyle,
+		onChangeValue,
+	} = props;
 
-			const defaultValue = SC.styleCardDefaults[SCStyle][attr];
-			if (!isNil(defaultValue)) {
-				if (
-					defaultValue &&
-					isString(defaultValue) &&
-					defaultValue.includes('var')
-				) {
-					const colorNumber = defaultValue.match(/color-\d/);
-					const colorValue =
-						SC.styleCardDefaults[SCStyle][colorNumber];
-					if (!isNil(colorValue)) return colorValue;
-				} else return defaultValue;
-			}
-			return null;
-		}
-		return null;
-	};
-
-	if (document.querySelectorAll('.maxi-style-cards__sc-select option'))
-		setTimeout(function scSelect() {
-			addActiveSCClass(currentKey);
-		}, 300);
+	const firstColorGlobal = `${firstColor}-global`;
+	const secondColorGlobal = `${secondColor}-global`;
 
 	const options = [
 		{
@@ -76,251 +57,165 @@ const MaxiStyleCardsTab = ({
 		},
 	];
 
-	/*
-	 * Generates main tabs.
-	 *
-	 * @param {string} firstColor First color attribute, example: p-color
-	 * @param {string} firstLabel First color label, examples: Hover, Button
-	 * @param {string} firstColorDefault Default for the first color, example: color-3
-	 * @param {bool or string} typographyPrefix Disable typography or set a prefix for it, examples: p, button
-	 * @param {bool or string} typographyPrefix Disable secondColor or set an attribute for it, example: button-background-color
-	 * @param {string} secondLabel Second color label, examples: Link, Button Background, Icon Fill
-	 * @param {string} secondColorDefault Default for the second color, example: color-4
-	 *
-	 * @return {object} An AccordionControl tab to render.
-	 */
-
-	const generateTab = (
-		firstColor,
-		firstLabel,
-		firstColorDefault,
-		typographyPrefix = false,
-		secondColor = false,
-		secondLabel,
-		secondColorDefault
-	) => {
-		const firstColorGlobal = `${firstColor}-global`;
-		const secondColorGlobal = `${secondColor}-global`;
-
-		return {
-			label: __(firstLabel, 'maxi-blocks'),
-			content: (
-				<>
-					{deviceType === 'general' && (
-						<FancyRadioControl
-							label={__(
-								`Use Global ${firstLabel} Colour`,
-								'maxi-blocks'
-							)}
-							selected={processAttribute(firstColorGlobal)}
-							options={options}
-							onChange={val => {
-								onChangeValue(firstColorGlobal, val, SCStyle);
-							}}
-						/>
-					)}
-					{deviceType === 'general' &&
-						processAttribute(firstColorGlobal) && (
-							<ColorControl
-								label={__(`${firstLabel} Text`, 'maxi-blocks')}
-								className={`maxi-style-cards-control__sc__${firstColor}--${SCStyle}`}
-								color={
-									processAttribute(firstColor) ||
-									processAttribute(`${firstColor}-old`) ||
-									getStyleCardAttr(
+	return (
+		<>
+			{breakpoint === 'general' && (
+				<FancyRadioControl
+					label={__(`Use Global ${firstLabel} Colour`, 'maxi-blocks')}
+					selected={processSCAttribute(SC, firstColorGlobal, type)}
+					options={options}
+					onChange={val => {
+						onChangeValue(
+							{
+								[firstColorGlobal]: val,
+								...(isEmpty(
+									processSCAttribute(
+										SC,
+										firstColorGlobal,
+										type
+									)
+								) && {
+									[firstColor]: processSCAttribute(
+										SC,
 										firstColorDefault,
-										SCStyle,
-										true
-									)
-								}
-								defaultColor={getStyleCardAttr(
-									firstColorDefault,
-									SCStyle,
-									true
-								)}
-								onChange={val => {
-									onChangeValue(firstColor, val, SCStyle);
-								}}
-								disableGradient
-								disablePalette
-							/>
+										'color'
+									),
+								}),
+							},
+							type
+						);
+					}}
+				/>
+			)}
+			{breakpoint === 'general' &&
+				processSCAttribute(SC, firstColorGlobal, type) && (
+					<ColorControl
+						label={__(`${firstLabel} Text`, 'maxi-blocks')}
+						className={`maxi-style-cards-control__sc__color--${SCStyle}`}
+						color={
+							processSCAttribute(SC, firstColor, type) ||
+							getStyleCardAttr(firstColorDefault, SCStyle, true)
+						}
+						defaultColor={getStyleCardAttr(
+							firstColorDefault,
+							SCStyle,
+							true
 						)}
-					{!!typographyPrefix && (
-						<TypographyControl
-							typography={getTypographyFromSC(
-								typographyPrefix,
-								SCStyle,
-								SC
-							)}
-							prefix={`${typographyPrefix}-`}
-							disableFormats
-							disableCustomFormats
-							className={`maxi-style-cards-control__sc__${typographyPrefix}-typography`}
-							textLevel={typographyPrefix}
-							hideAlignment
-							hideTextShadow
-							breakpoint={deviceType}
-							disablePalette
-							styleCards
-							onChange={obj => {
-								const parsedTypography = getSCFromTypography(
-									SC,
-									SCStyle,
-									obj
-								);
-								onChangeValue(
-									'typography',
-									parsedTypography,
-									SCStyle
-								);
-							}}
-							blockStyle={SCStyle}
-							disableFontFamily={deviceType !== 'general'}
-						/>
+						onChange={val => {
+							onChangeValue({ [firstColor]: val }, type);
+						}}
+						disableGradient
+						disablePalette
+					/>
+				)}
+			{!disableTypography && (
+				<TypographyControl
+					typography={getTypographyFromSC(SC, type)}
+					disableFormats
+					disableCustomFormats
+					className={`maxi-style-cards-control__sc__${type}-typography`}
+					textLevel={type}
+					hideAlignment
+					hideTextShadow
+					breakpoint={breakpoint}
+					disablePalette
+					styleCards
+					onChange={obj => {
+						// const parsedTypography = getSCFromTypography(SC, obj);
+						onChangeValue({ typography: obj }, type);
+					}}
+					blockStyle={SCStyle}
+					disableFontFamily={breakpoint !== 'general'}
+				/>
+			)}
+			{!!secondColor && breakpoint === 'general' && (
+				<FancyRadioControl
+					label={__(
+						`Use Global ${secondLabel} Colour`,
+						'maxi-blocks'
 					)}
-					{!!secondColor && deviceType === 'general' && (
-						<FancyRadioControl
-							label={__(
-								`Use Global ${secondLabel} Colour`,
-								'maxi-blocks'
-							)}
-							selected={processAttribute(secondColorGlobal)}
-							options={options}
-							onChange={val => {
-								onChangeValue(secondColorGlobal, val, SCStyle);
-							}}
-						/>
-					)}
-					{!!secondColor &&
-						deviceType === 'general' &&
-						processAttribute(secondColorGlobal) && (
-							<ColorControl
-								label={__(secondLabel, 'maxi-blocks')}
-								className={`maxi-style-cards-control__sc__${secondColor}--${SCStyle}`}
-								color={
-									processAttribute(secondColor) ||
-									processAttribute(`${secondColor}-old`) ||
-									getStyleCardAttr(
+					selected={processSCAttribute(SC, secondColorGlobal, type)}
+					options={options}
+					onChange={val => {
+						onChangeValue(
+							{
+								[secondColorGlobal]: val,
+								...(isEmpty(
+									processSCAttribute(SC, secondColor, type)
+								) && {
+									[secondColor]: processSCAttribute(
+										SC,
 										secondColorDefault,
-										SCStyle,
-										true
-									)
-								}
-								defaultColor={getStyleCardAttr(
-									secondColorDefault,
-									SCStyle,
-									true
-								)}
-								onChange={val => {
-									onChangeValue(secondColor, val, SCStyle);
-								}}
-								disableGradient
-								disablePalette
-							/>
+										'color'
+									),
+								}),
+							},
+							type
+						);
+					}}
+				/>
+			)}
+			{!!secondColor &&
+				breakpoint === 'general' &&
+				processSCAttribute(SC, secondColorGlobal, type) && (
+					<ColorControl
+						label={__(secondLabel, 'maxi-blocks')}
+						className={`maxi-style-cards-control__sc__${secondColor}--${SCStyle}`}
+						color={
+							processSCAttribute(SC, secondColor, type) ||
+							getStyleCardAttr(secondColorDefault, SCStyle, true)
+						}
+						defaultColor={getStyleCardAttr(
+							secondColorDefault,
+							SCStyle,
+							true
 						)}
-				</>
+						onChange={val => {
+							onChangeValue({ [secondColor]: val }, type);
+						}}
+						disableGradient
+						disablePalette
+					/>
+				)}
+		</>
+	);
+};
+
+const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
+	const [quickColorPreset, setQuickColorPreset] = useState(1);
+
+	const generateTab = props => {
+		return {
+			label: __(props.firstLabel, 'maxi-blocks'),
+			content: (
+				<SCTab
+					breakpoint={breakpoint}
+					SC={SC}
+					SCStyle={SCStyle}
+					onChangeValue={onChangeValue}
+					{...props}
+				/>
 			),
 		};
 	};
 
-	const headingItems = () => {
-		const resultItems = [];
-
-		[1, 2, 3, 4, 5, 6].forEach(item => {
-			resultItems.push({
+	const headingItems = () =>
+		[1, 2, 3, 4, 5, 6].map(item => {
+			return {
 				label: __(`H${item}`, 'maxi-blocks'),
 				content: (
-					<>
-						{deviceType === 'general' && (
-							<FancyRadioControl
-								label={__(
-									`Use Global H${item} Colour`,
-									'maxi-blocks'
-								)}
-								selected={processAttribute(
-									`h${item}-color-global`
-								)}
-								options={options}
-								onChange={val => {
-									onChangeValue(
-										`h${item}-color-global`,
-										val,
-										SCStyle
-									);
-								}}
-							/>
-						)}
-						{deviceType === 'general' &&
-							processAttribute(`h${item}-color-global`) && (
-								<ColorControl
-									label={__(`H${item} Text`, 'maxi-blocks')}
-									className={`maxi-style-cards-control__sc__h${item}-color--${SCStyle}`}
-									color={
-										processAttribute(`h${item}-color`) ||
-										processAttribute(
-											`h${item}-color-old`
-										) ||
-										getStyleCardAttr(
-											'color-5',
-											SCStyle,
-											true
-										)
-									}
-									defaultColor={getStyleCardAttr(
-										'color-5',
-										SCStyle,
-										true
-									)}
-									onChange={val => {
-										onChangeValue(
-											`h${item}-color`,
-											val,
-											SCStyle
-										);
-									}}
-									disableGradient
-									disablePalette
-								/>
-							)}
-						<TypographyControl
-							typography={getTypographyFromSC(
-								`h${item}`,
-								SCStyle,
-								SC
-							)}
-							prefix={`h${item}-`}
-							disableFormats
-							disableCustomFormats
-							className={`maxi-style-cards-control__sc__h${item}-typography`}
-							textLevel={`h${item}`}
-							hideAlignment
-							hideTextShadow
-							breakpoint={deviceType}
-							disablePalette
-							styleCards
-							onChange={obj => {
-								const parsedTypography = getSCFromTypography(
-									SC,
-									SCStyle,
-									obj
-								);
-								onChangeValue(
-									'typography',
-									parsedTypography,
-									SCStyle
-								);
-							}}
-							blockStyle={SCStyle}
-						/>
-					</>
+					<SCTab
+						breakpoint={breakpoint}
+						SC={SC}
+						SCStyle={SCStyle}
+						onChangeValue={onChangeValue}
+						type={`h${item}`}
+						firstLabel={`H${item}`}
+						firstColorDefault={5}
+					/>
 				),
-			});
+			};
 		});
-
-		return resultItems;
-	};
-
-	const [quickColorPreset, setQuickColorPreset] = useState(1);
 
 	return (
 		<div className='maxi-tab-content__box'>
@@ -351,9 +246,12 @@ const MaxiStyleCardsTab = ({
 											<span
 												className={`maxi-style-cards__quick-color-presets__box__item maxi-style-cards__quick-color-presets__box__item__${item}`}
 												style={{
-													background: processAttribute(
-														`color-${item}`
-													),
+													background:
+														processSCAttribute(
+															SC,
+															item,
+															'color'
+														),
 												}}
 											/>
 										</div>
@@ -363,17 +261,22 @@ const MaxiStyleCardsTab = ({
 									disableColorDisplay
 									disableOpacity
 									className={`maxi-style-cards-control__sc__color-${quickColorPreset}-${SCStyle}`}
-									color={processAttribute(
-										`color-${quickColorPreset}`
+									color={processSCAttribute(
+										SC,
+										quickColorPreset,
+										'color'
 									)}
-									defaultColor={processAttribute(
-										`color-${quickColorPreset}`
+									defaultColor={processSCAttribute(
+										SC,
+										quickColorPreset,
+										'color'
 									)}
 									onChange={val => {
 										onChangeValue(
-											`color-${quickColorPreset}`,
-											val,
-											SCStyle
+											{
+												[`${quickColorPreset}`]: val,
+											},
+											'color'
 										);
 									}}
 									disableGradient
@@ -382,45 +285,48 @@ const MaxiStyleCardsTab = ({
 							</>
 						),
 					},
-					generateTab(
-						'button-color',
-						'Button',
-						'color-1',
-						'button',
-						'button-background-color',
-						'Button Background',
-						'color-4'
-					),
-					generateTab(
-						'p-color',
-						'Paragraph',
-						'color-3',
-						'p',
-						'link',
-						'Link',
-						'color-4'
-					),
+					generateTab({
+						type: 'button',
+						firstLabel: 'Button',
+						firstColorDefault: 1,
+						secondColor: 'background-color',
+						secondLabel: 'Button Background',
+						secondColorDefault: 4,
+					}),
+					generateTab({
+						type: 'p',
+						firstLabel: 'Paragraph',
+						firstColorDefault: 3,
+						secondColor: 'link',
+						secondLabel: 'Link',
+						secondColorDefault: 4,
+					}),
 					{
 						label: __('Headings', 'maxi-blocks'),
 						content: <SettingTabsControl items={headingItems()} />,
 					},
-					generateTab('hover', 'Hover', 'color-6', false, false),
-					generateTab(
-						'icon-line',
-						'SVG Icon',
-						'color-7',
-						false,
-						'icon-fill',
-						'Fill',
-						'color-4'
-					),
-					generateTab(
-						'divider-color',
-						'Divider',
-						'color-4',
-						false,
-						false
-					),
+					generateTab({
+						type: 'hover',
+						firstLabel: 'Hover',
+						firstColorDefault: 6,
+						disableTypography: true,
+					}),
+					generateTab({
+						type: 'icon',
+						firstLabel: 'SVG Icon',
+						firstColor: 'line',
+						firstColorDefault: 7,
+						secondColor: 'fill',
+						secondLabel: 'Fill',
+						secondColorDefault: 4,
+						disableTypography: true,
+					}),
+					generateTab({
+						type: 'divider',
+						firstLabel: 'Divider',
+						firstColorDefault: 4,
+						disableTypography: true,
+					}),
 				]}
 			/>
 		</div>

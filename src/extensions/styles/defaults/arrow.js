@@ -15,10 +15,6 @@ const arrow = {
 		type: 'number',
 		default: 80,
 	},
-	'arrow-width-unit-general': {
-		type: 'string',
-		default: 'px',
-	},
 	'arrow-side-xxl': {
 		type: 'string',
 	},
@@ -27,9 +23,6 @@ const arrow = {
 	},
 	'arrow-width-xxl': {
 		type: 'number',
-	},
-	'arrow-width-unit-xxl': {
-		type: 'string',
 	},
 	'arrow-side-xl': {
 		type: 'string',
@@ -40,9 +33,6 @@ const arrow = {
 	'arrow-width-xl': {
 		type: 'number',
 	},
-	'arrow-width-unit-xl': {
-		type: 'string',
-	},
 	'arrow-side-l': {
 		type: 'string',
 	},
@@ -51,9 +41,6 @@ const arrow = {
 	},
 	'arrow-width-l': {
 		type: 'number',
-	},
-	'arrow-width-unit-l': {
-		type: 'string',
 	},
 	'arrow-side-m': {
 		type: 'string',
@@ -64,9 +51,6 @@ const arrow = {
 	'arrow-width-m': {
 		type: 'number',
 	},
-	'arrow-width-unit-m': {
-		type: 'string',
-	},
 	'arrow-side-s': {
 		type: 'string',
 	},
@@ -76,9 +60,6 @@ const arrow = {
 	'arrow-width-s': {
 		type: 'number',
 	},
-	'arrow-width-unit-s': {
-		type: 'string',
-	},
 	'arrow-side-xs': {
 		type: 'string',
 	},
@@ -87,9 +68,6 @@ const arrow = {
 	},
 	'arrow-width-xs': {
 		type: 'number',
-	},
-	'arrow-width-unit-xs': {
-		type: 'string',
 	},
 };
 

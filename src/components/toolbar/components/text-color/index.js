@@ -39,6 +39,7 @@ const TextColor = withFormatValue(props => {
 		clientId,
 		isList,
 		textLevel,
+		styleCard,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/text-maxi') return null;
@@ -51,6 +52,7 @@ const TextColor = withFormatValue(props => {
 		prop: 'color',
 		breakpoint,
 		textLevel,
+		styleCard,
 	});
 
 	const onChangeFormat = value => {
@@ -111,6 +113,7 @@ const TextColor = withFormatValue(props => {
 					onChangePalette={val => onChange(val)}
 					deviceType={breakpoint}
 					clientId={clientId}
+					textLevel={textLevel}
 				/>
 			</div>
 		</ToolbarPopover>

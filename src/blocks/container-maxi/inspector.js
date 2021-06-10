@@ -29,12 +29,10 @@ import {
 	ShapeDividerControl,
 	TextControl,
 	TransformControl,
+	InfoBox,
 	ZIndexControl,
 } from '../../components';
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Inspector
@@ -52,27 +50,40 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
+			{deviceType !== 'general' && (
+				<InfoBox
+					message={__(
+						'You are currently in responsive editing mode. Select Base to continue editing general settings.',
+						'maxi-blocks'
+					)}
+				/>
+			)}
 			<SettingTabsControl
 				disablePadding
+				deviceType={deviceType}
 				items={[
 					{
 						label: __('Style', 'maxi-blocks'),
 						content: (
 							<>
-								<div className='maxi-tab-content__box'>
-									<CustomLabel
-										customLabel={customLabel}
-										onChange={customLabel =>
-											setAttributes({ customLabel })
-										}
-									/>
-									<hr />
-									<BlockStylesControl
-										blockStyle={blockStyle}
-										isFirstOnHierarchy={isFirstOnHierarchy}
-										onChange={obj => setAttributes(obj)}
-									/>
-								</div>
+								{deviceType === 'general' && (
+									<div className='maxi-tab-content__box'>
+										<CustomLabel
+											customLabel={customLabel}
+											onChange={customLabel =>
+												setAttributes({ customLabel })
+											}
+										/>
+										<hr />
+										<BlockStylesControl
+											blockStyle={blockStyle}
+											isFirstOnHierarchy={
+												isFirstOnHierarchy
+											}
+											onChange={obj => setAttributes(obj)}
+										/>
+									</div>
+								)}
 								<AccordionControl
 									isPrimary
 									items={[

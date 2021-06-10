@@ -122,15 +122,7 @@ const ArrowControl = props => {
 					/>
 					<SizeControl
 						label={__('Arrow Size', 'maxi-blocks')}
-						unit={getLastBreakpointAttribute(
-							'arrow-width-unit',
-							breakpoint,
-							props
-						)}
 						disableUnit
-						onChangeUnit={val => {
-							onChangeValue('arrow-width-unit', val);
-						}}
 						value={getLastBreakpointAttribute(
 							'arrow-width',
 							breakpoint,

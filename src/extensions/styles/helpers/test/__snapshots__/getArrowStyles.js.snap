@@ -71,7 +71,7 @@ Object {
   " .maxi-container-arrow:before": Object {
     "border": Object {
       "general": Object {
-        "background": "rgb(255, 99, 71)",
+        "background": "var(--maxi-light-color-1)",
       },
       "label": "Arrow Border",
     },

@@ -87,48 +87,44 @@ const getHoverObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	let response = {
-		[uniqueID]: getNormalObject(props),
-		[`${uniqueID}:hover`]: getHoverObject(props),
-	};
-
-	response = {
-		...response,
-		...getBackgroundStyles({
-			target: [uniqueID],
-			...getGroupAttributes(props, [
-				'background',
-				'backgroundColor',
-				'backgroundImage',
-				'backgroundVideo',
-				'backgroundGradient',
-				'backgroundSVG',
-				'borderRadius',
-			]),
-		}),
-		...getBackgroundStyles({
-			target: [uniqueID],
-			...getGroupAttributes(props, [
-				'backgroundHover',
-				'backgroundColorHover',
-				'backgroundGradientHover',
-				'borderRadiusHover',
-			]),
-			isHover: true,
-		}),
-		...getArrowStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'arrow',
-				'border',
-				'borderWidth',
-				'borderRadius',
-				'background',
-				'backgroundColor',
-				'backgroundGradient',
-				'boxShadow',
-			]),
-		}),
+	const response = {
+		[uniqueID]: {
+			'': getNormalObject(props),
+			':hover': getHoverObject(props),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+					'borderRadius',
+				]),
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+					'borderRadiusHover',
+				]),
+				isHover: true,
+			}),
+			...getArrowStyles({
+				...getGroupAttributes(props, [
+					'arrow',
+					'border',
+					'borderWidth',
+					'borderRadius',
+					'background',
+					'backgroundColor',
+					'backgroundGradient',
+					'boxShadow',
+					'palette',
+				]),
+			}),
+		},
 	};
 
 	return response;

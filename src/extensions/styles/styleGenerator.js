@@ -1,9 +1,5 @@
-/**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
-const BREAKPOINTS = ['xs', 's', 'm', 'l', 'xl'];
+const ALLOWED_BREAKPOINTS = ['xs', 's', 'm', 'l', 'xl'];
+const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 /**
  * Retrieve cleaned target
@@ -43,11 +39,11 @@ const styleStringGenerator = (target, content, breakpoint) => {
 	} else if (breakpoint === 'xxl') {
 		string += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{`;
 	} else {
-		let breakpointPos = BREAKPOINTS.indexOf(breakpoint);
+		let breakpointPos = ALLOWED_BREAKPOINTS.indexOf(breakpoint);
 
 		do {
 			string += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="${
-				BREAKPOINTS[breakpointPos]
+				ALLOWED_BREAKPOINTS[breakpointPos]
 			}"] .maxi-block.maxi-block--backend.${target}${
 				breakpointPos ? ',' : '{'
 			}`;
@@ -82,30 +78,33 @@ const mediaStylesGenerator = (target, content, breakpoint, media) => {
 const styleGenerator = (styles, breakpoints, currentBreakpoint) => {
 	let response = '';
 
-	Object.entries(styles).forEach(([key, prop]) => {
-		const target = getTarget(key);
+	BREAKPOINTS.forEach(breakpoint => {
+		Object.entries(styles).forEach(([key, value]) => {
+			const target = getTarget(key);
+			const { content } = value;
 
-		Object.values(prop.content).forEach(value => {
-			Object.entries(value).forEach(([breakpoint, content]) => {
-				if (isEmpty(content) || breakpoint === 'label') return;
+			Object.entries(content).forEach(([suffix, props]) => {
+				if (!props[breakpoint]) return;
+
+				const style = getResponsiveStyles(props[breakpoint]);
 
 				if (currentBreakpoint === 'general') {
 					response += mediaStylesGenerator(
-						target,
-						getResponsiveStyles(content),
+						`${target}${suffix}`,
+						style,
 						breakpoint,
-						breakpoints[breakpoint]
+						breakpoints[breakpoint !== 'xxl' ? breakpoint : 'xl']
 					);
 					if (breakpoint === 'general')
 						response += styleStringGenerator(
-							target,
-							getResponsiveStyles(content),
+							`${target}${suffix}`,
+							style,
 							breakpoint
 						);
 				} else
 					response += styleStringGenerator(
-						target,
-						getResponsiveStyles(content),
+						`${target}${suffix}`,
+						style,
 						breakpoint
 					);
 			});

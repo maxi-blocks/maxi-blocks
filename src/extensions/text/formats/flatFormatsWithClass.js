@@ -124,6 +124,7 @@ export const removeUnnecessaryFormats = ({
 	textLevel,
 	isHover,
 	styleCardPrefix,
+	styleCard,
 }) => {
 	const multiFormatObj = getMultiFormatObj(
 		{
@@ -133,9 +134,8 @@ export const removeUnnecessaryFormats = ({
 		},
 		isHover
 	);
-	const {
-		[`custom-formats${isHover ? '-hover' : ''}`]: customFormats,
-	} = typography;
+	const { [`custom-formats${isHover ? '-hover' : ''}`]: customFormats } =
+		typography;
 	let newFormatValue = { ...formatValue };
 	let newContent = content;
 
@@ -152,6 +152,7 @@ export const removeUnnecessaryFormats = ({
 					currentStyle: style,
 					textLevel,
 					styleCardPrefix,
+					styleCard,
 				});
 				const isFullFormat = getIsFullFormat(formatValue, target);
 
@@ -226,10 +227,10 @@ const flatFormatsWithClass = ({
 	returnFormatValue = false,
 	isHover = false,
 	styleCardPrefix = '',
+	styleCard,
 }) => {
-	const {
-		[`custom-formats${isHover ? '-hover' : ''}`]: customFormats,
-	} = typography;
+	const { [`custom-formats${isHover ? '-hover' : ''}`]: customFormats } =
+		typography;
 
 	const repeatedClasses = getRepeatedClassNames(customFormats, formatValue);
 
@@ -272,6 +273,7 @@ const flatFormatsWithClass = ({
 		textLevel,
 		isHover,
 		styleCardPrefix,
+		styleCard,
 	});
 
 	return {

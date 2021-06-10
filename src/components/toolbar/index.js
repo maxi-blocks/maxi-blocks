@@ -119,10 +119,11 @@ const MaxiToolbar = memo(
 			parentBlockStyle,
 			resizableObject,
 		} = attributes;
-
-		const { editorVersion, breakpoint } = useSelect(select => {
-			const { receiveMaxiSettings, receiveMaxiDeviceType } = select(
-				'maxiBlocks'
+		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
+			const { receiveMaxiSettings, receiveMaxiDeviceType } =
+				select('maxiBlocks');
+			const { receiveMaxiSelectedStyleCard } = select(
+				'maxiBlocks/style-cards'
 			);
 
 			const maxiSettings = receiveMaxiSettings();
@@ -132,9 +133,12 @@ const MaxiToolbar = memo(
 
 			const breakpoint = receiveMaxiDeviceType();
 
+			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
+
 			return {
 				editorVersion: version,
 				breakpoint,
+				styleCard,
 			};
 		});
 
@@ -247,6 +251,7 @@ const MaxiToolbar = memo(
 								isList={isList}
 								typeOfList={typeOfList}
 								textLevel={textLevel}
+								styleCard={styleCard}
 							/>
 							<TextColor
 								blockName={name}
@@ -260,6 +265,8 @@ const MaxiToolbar = memo(
 								isList={isList}
 								typeOfList={typeOfList}
 								clientId={clientId}
+								textLevel={textLevel}
+								styleCard={styleCard}
 							/>
 							<Alignment
 								blockName={name}
@@ -290,6 +297,7 @@ const MaxiToolbar = memo(
 								isList={isList}
 								breakpoint={breakpoint}
 								textLevel={textLevel}
+								styleCard={styleCard}
 							/>
 							<TextItalic
 								{...getGroupAttributes(
@@ -300,6 +308,7 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								isList={isList}
 								breakpoint={breakpoint}
+								styleCard={styleCard}
 							/>
 							<RowSettings
 								blockName={name}

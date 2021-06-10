@@ -105,7 +105,7 @@ const SizeControl = props => {
 						if (value !== '' && +value !== 0 && +value < min)
 							value = min;
 
-						onChangeValue(value);
+						onChangeValue(value === '' ? value : +value);
 					}}
 					min={min}
 					max={max}
@@ -138,7 +138,7 @@ const SizeControl = props => {
 
 							if (value > 100 && unit === '%') value = 100;
 
-							onChangeValue(value);
+							onChangeValue(value === '' ? value : +value);
 						}}
 						min={
 							unit

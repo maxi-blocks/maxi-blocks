@@ -29,14 +29,38 @@ class MaxiBlocks_StyleCards {
 	 * Enqueuing styles
 	 */
 	public function enqueue_styles() {
-		$vars = $this->sc_vars();
+		$vars = $this->getStylesString();
 
 		// Inline styles
 		if ($vars) {
 			wp_register_style('maxi-blocks-sc-vars', false);
 			wp_enqueue_style('maxi-blocks-sc-vars');
 			wp_add_inline_style('maxi-blocks-sc-vars', $vars);
+
+			$this->enqueue_fonts($vars);
 		}
+	}
+
+	/**
+	 * Get SC
+	 */
+	public function getStylesString() {
+		$style_card = get_option('mb_sc_string');
+
+		if (!$style_card) {
+			return false;
+		}
+
+		$style =
+			is_preview() || is_admin()
+				? $style_card['_maxi_blocks_style_card_preview']
+				: $style_card['_maxi_blocks_style_card'];
+
+		if (!$style || empty($style)) {
+			return false;
+		}
+
+		return $style;
 	}
 
 	public function get_maxi_blocks_current_style_cards() {
@@ -80,175 +104,20 @@ class MaxiBlocks_StyleCards {
 		return false;
 	}
 
-	/**
-	 * Create variables
-	 */
-	public function sc_vars() {
-		$maxi_blocks_active_style_card_array = $this->get_maxi_blocks_active_style_card();
-		if (!$maxi_blocks_active_style_card_array) {
-			return false;
+	public function enqueue_fonts($vars) {
+		preg_match_all('/font-family-general:(\w+);/', $vars, $fonts);
+		$fonts = array_unique($fonts[1]);
+
+		if (empty($fonts)) {
+			return;
 		}
 
-		$response = ':root{';
-		$styles = ['light', 'dark'];
-		$elements = [
-			'button',
-			'p',
-			'h1',
-			'h2',
-			'h3',
-			'h4',
-			'h5',
-			'h6',
-			'divider',
-		];
-		$breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-		$settings = [
-			'font-family',
-			'font-size',
-			'font-style',
-			'font-weight',
-			'line-height',
-			'text-decoration',
-			'text-transform',
-			'letter-spacing',
-		];
-		$settingToAvoidInGeneral = [
-			'font-size',
-			'line-height',
-			'letter-spacing',
-		];
-		$fonts = [];
-
-		// var_dump($maxi_blocks_active_style_card_array['dark']);
-
-		$dark = array_merge(
-			$maxi_blocks_active_style_card_array['dark']['defaultStyleCard'],
-			$maxi_blocks_active_style_card_array['dark']['styleCard'],
-		);
-		$light = array_merge(
-			$maxi_blocks_active_style_card_array['light']['defaultStyleCard'],
-			$maxi_blocks_active_style_card_array['light']['styleCard'],
-		);
-		$SC = [
-			'dark' => $dark,
-			'light' => $light,
-		];
-
-		foreach ($styles as $style) {
-			foreach ($elements as $element) {
-				if ($element !== 'divider') {
-					foreach ($settings as $setting) {
-						foreach ($breakpoints as $breakpoint) {
-							if (
-								!(
-									$breakpoint === 'general' &&
-									in_array($setting, $settingToAvoidInGeneral)
-								)
-							) {
-								$response .=
-									"--maxi-$style-$element-$setting-$breakpoint: " .
-									$this->get_last_breakpoint_attribute(
-										$setting,
-										$breakpoint,
-										$SC[$style][$element],
-									) .
-									';';
-							}
-							if ($setting === 'font-family') {
-								$font =
-									$SC[$style][$element][
-										"$setting-$breakpoint"
-									] ?? null;
-
-								if (
-									!is_null($font) &&
-									!in_array($font, $fonts)
-								) {
-									array_push($fonts, $font);
-								}
-							}
-						}
-					}
-				}
-
-				if (
-					$SC[$style][$element]['color-global'] &&
-					!empty($SC[$style][$element]['color'])
-				) {
-					$response .=
-						"--maxi-$style-$element-color: " .
-						$SC[$style][$element]['color'] .
-						';';
-				}
-
-				if (
-					$element === 'button' &&
-					$SC[$style][$element]['background-color-global'] &&
-					!empty($SC[$style][$element]['background-color'])
-				) {
-					$response .=
-						"--maxi-$style-$element-background-color: " .
-						$SC[$style][$element]['background-color'] .
-						';';
-				}
-			}
-
-			for ($i = 1; $i <= 7; $i++) {
-				$response .=
-					"--maxi-$style-color-$i: " . $SC[$style]['color'][$i] . ';';
-			}
-		}
-
-		if ($response !== ':root{}') {
-			$this->load_fonts($fonts);
-
-			return wp_strip_all_tags($response);
-		} else {
-			return false;
-		}
-	}
-
-	public function load_fonts($fonts) {
 		foreach ($fonts as $font) {
 			wp_enqueue_style(
 				"{$font}",
 				"https://fonts.googleapis.com/css2?family={$font}",
 			);
 		}
-	}
-
-	public function get_last_breakpoint_attribute(
-		$target,
-		$breakpoint,
-		$attributes
-	) {
-		$breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-		$current_attr = $attributes["$target-$breakpoint"] ?? null;
-
-		if (
-			!is_null($current_attr) &&
-			(is_numeric($current_attr) ||
-				is_bool($current_attr) ||
-				!empty($current_attr))
-		) {
-			return $current_attr;
-		}
-
-		$breakpoint_pos = array_search($breakpoint, $breakpoints);
-
-		do {
-			$breakpoint_pos -= 1;
-
-			$current_attr =
-				$attributes["$target-$breakpoints[$breakpoint_pos]"] ?? null;
-		} while (
-			$breakpoint_pos > 0 &&
-			!is_numeric($current_attr) &&
-			(empty($current_attr) || is_null($current_attr))
-		);
-
-		return $current_attr;
 	}
 
 	public static function getDefaultStyleCard() {

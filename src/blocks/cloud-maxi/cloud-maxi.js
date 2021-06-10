@@ -33,8 +33,6 @@ registerBlockType('maxi-blocks/maxi-cloud', {
 		},
 	},
 	/* Save the block markup. */
-	save: () => {
-		return null;
-	},
 	edit,
+	save: () => null,
 });

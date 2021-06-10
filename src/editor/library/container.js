@@ -33,30 +33,31 @@ import {
 const LibraryContainer = props => {
 	const { type, onRequestClose } = props;
 
-	const searchClient = algoliasearch(
-		'39ZZ3SLI6Z',
-		'6ed8ae6d1c430c6a76e0720f74eab91c'
-	);
+	const { styleCards, selectedSCKey, selectedSCValue } = useSelect(select => {
+		const { receiveMaxiStyleCards, receiveMaxiSelectedStyleCard } = select(
+			'maxiBlocks/style-cards'
+		);
+
+		const styleCards = receiveMaxiStyleCards();
+		const { key: selectedSCKey, value: selectedSCValue } =
+			receiveMaxiSelectedStyleCard();
+
+		return { styleCards, selectedSCKey, selectedSCValue };
+	});
 
 	const { replaceBlock, updateBlockAttributes } =
 		useDispatch('core/block-editor');
-
-	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
-
-	const selectedStyleCard = receiveMaxiSelectedStyleCard();
-
-	const { key: selectedSCKey, value: selectedSCValue } = selectedStyleCard;
-
-	const { styleCards } = useSelect(select => {
-		const { receiveMaxiStyleCards } = select('maxiBlocks/style-cards');
-
-		const styleCards = receiveMaxiStyleCards();
-
-		return { styleCards };
-	});
-
 	const { saveMaxiStyleCards, setSelectedStyleCard } = useDispatch(
 		'maxiBlocks/style-cards'
+	);
+
+	useEffect(() => {
+		updateSCOnEditor(selectedSCValue);
+	}, [selectedSCKey]);
+
+	const searchClient = algoliasearch(
+		'39ZZ3SLI6Z',
+		'6ed8ae6d1c430c6a76e0720f74eab91c'
 	);
 
 	useEffect(() => {

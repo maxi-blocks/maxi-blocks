@@ -12,40 +12,67 @@ describe('Breadcrumbs', () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 		await page.$$eval('.maxi-row-block__template button', button =>
-			button[1].click()
+			button[0].click()
 		);
 
-		// select add block
-		await page.$$eval(
-			'.block-editor-block-list__layout .block-list-appender .components-dropdown.block-editor-inserter button',
-			button => button[0].click()
+		// Select column
+		await page.$eval('.maxi-column-block', column => column.focus());
+
+		// Open appender on Column Maxi
+		await page.$eval(
+			'.maxi-column-block .block-editor-button-block-appender',
+			button => button.click()
 		);
 
-		// select group
+		debugger;
+		// Add Group Maxi
 		await page.keyboard.type('group');
-		await page.$$eval(
-			'.block-editor-inserter__quick-inserter .block-editor-inserter__quick-inserter-results button',
-			button => button[0].click()
+		await page.waitForSelector(
+			'.editor-block-list-item-maxi-blocks-group-maxi'
+		);
+		await page.$eval(
+			'.editor-block-list-item-maxi-blocks-group-maxi',
+			button => button.click()
 		);
 
-		// select add block
-		await page.$$eval(
-			'.block-editor-block-list__layout .block-list-appender .components-dropdown.block-editor-inserter button',
-			button => button[0].click()
+		// Open appender on Group Maxi
+		await page.waitForSelector('.maxi-group-block');
+		await page.$eval(
+			'.maxi-group-block .block-editor-button-block-appender',
+			button => button.click()
 		);
 
-		// select row
+		// Add Row Maxi
 		await page.keyboard.type('row');
-		await page.$$eval(
-			'.block-editor-inserter__quick-inserter .block-editor-inserter__quick-inserter-results button',
-			button => button[0].click()
+		await page.waitForSelector(
+			'.editor-block-list-item-maxi-blocks-row-maxi'
+		);
+		await page.$eval(
+			'.editor-block-list-item-maxi-blocks-row-maxi',
+			button => button.click()
 		);
 
-		// select number/style of columns
-		await page.$$eval('.maxi-row-block__template button', button =>
-			button[1].click()
+		// Select Row and add Column
+		await page.waitForSelector('.maxi-row-block__template');
+		await page.$eval('.maxi-row-block__template button', button =>
+			button.click()
 		);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		// Select column
+		await page.$$eval('.maxi-column-block', columns =>
+			columns[columns.length - 1].focus()
+		);
+
+		const breadCrumbsHTML = await page.$eval(
+			'ul.maxi-breadcrumbs',
+			breadcrumbs => breadcrumbs.innerHTML.trim()
+		);
+
+		const regex = new RegExp(
+			/^<li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Container Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Row Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Column Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Group Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Row Maxi<\/span><\/li><li class="maxi-breadcrumbs__item"><span class="maxi-breadcrumbs__item__content" target="[^"]*">Column Maxi<\/span><\/li>$/gm
+		);
+		const result = regex.test(breadCrumbsHTML);
+
+		expect(result).toBeTruthy();
 	});
 });

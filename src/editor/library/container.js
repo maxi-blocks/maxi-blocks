@@ -26,6 +26,10 @@ import {
 	HierarchicalMenu,
 	Stats,
 } from 'react-instantsearch-dom';
+import {
+	REACT_APP_SECRET_ALGOLIA_ID,
+	REACT_APP_SECRET_ALGOLIA_KEY,
+} from '@env';
 
 /**
  * Component
@@ -56,8 +60,8 @@ const LibraryContainer = props => {
 	}, [selectedSCKey]);
 
 	const searchClient = algoliasearch(
-		'39ZZ3SLI6Z',
-		'6ed8ae6d1c430c6a76e0720f74eab91c'
+		REACT_APP_SECRET_ALGOLIA_ID,
+		REACT_APP_SECRET_ALGOLIA_KEY
 	);
 
 	useEffect(() => {

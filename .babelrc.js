@@ -53,6 +53,15 @@ module.exports = function (api) {
 				regenerator: true,
 			},
 		],
+		[
+			'module:react-native-dotenv',
+			{
+				moduleName: '@env',
+				safe: true,
+				path: '.env',
+				allowUndefined: true,
+			},
+		],
 	];
 
 	return {

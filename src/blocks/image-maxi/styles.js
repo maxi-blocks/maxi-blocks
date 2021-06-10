@@ -22,7 +22,7 @@ import {
 /**
  * External dependencies
  */
-import { isEmpty, isNil, merge } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 const getNormalObject = props => {
 	const response = {
@@ -137,22 +137,6 @@ const getHoverEffectContentTextObject = props => {
 	return response;
 };
 
-const getImageFrontendObject = props => {
-	const response = {
-		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
-		}),
-		opacity: getOpacityStyles({
-			...getGroupAttributes(props, 'opacity'),
-		}),
-		alignment: getAlignmentFlexStyles({
-			...getGroupAttributes(props, 'alignment'),
-		}),
-	};
-
-	return response;
-};
-
 const getImageHoverObject = props => {
 	const response = {
 		...(props['border-status-hover'] && {
@@ -250,11 +234,7 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: {
 			'': getNormalObject(props),
-			' .maxi-block-hover-wrapper': merge(
-				// Needs to be checked!
-				getImageFrontendObject(props),
-				getImageBackendObject(props)
-			),
+			' .maxi-block-hover-wrapper': getImageBackendObject(props),
 			' .maxi-image-block__resizer': getResizeObject(props),
 			':hover .maxi-block-hover-wrapper': getImageHoverObject(props),
 			' .maxi-block-hover-wrapper .maxi-hover-preview':

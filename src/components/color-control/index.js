@@ -9,7 +9,7 @@ import { useState, useEffect } from '@wordpress/element';
  */
 import Button from '../button';
 import BaseControl from '../base-control';
-import RangeSliderControl from '../range-slider-control';
+import SizeControl from '../size-control';
 import ColorPaletteControl from '../color-palette-control';
 
 /**
@@ -139,32 +139,16 @@ const ColorControl = props => {
 										background: color,
 									}}
 								/>
-								{!showPalette && (
-									<Button
-										className='components-maxi-control__reset-button'
-										onClick={() => onReset()}
-										aria-label={sprintf(
-											/* translators: %s: a textual label  */
-											__(
-												'Reset %s settings',
-												'maxi-blocks'
-											),
-											'font size'
-										)}
-										type='reset'
-									>
-										{reset}
-									</Button>
-								)}
 							</div>
 						</BaseControl>
 					)}
 					{!disableOpacity && (
-						<RangeSliderControl
+						<SizeControl
 							label={__('Colour Opacity', 'maxi-blocks')}
-							className='maxi-color-control__opacity'
+							placeholder=''
+							disableUnit
 							value={+colorAlpha}
-							onChange={val => {
+							onChangeValue={val => {
 								const value = !isNil(val) ? +val : 0;
 
 								if (!isEmpty(color)) {
@@ -178,7 +162,9 @@ const ColorControl = props => {
 							}}
 							min={0}
 							max={100}
+							disableReset={showPalette}
 							initialPosition={100}
+							onReset={() => onReset()}
 						/>
 					)}
 					<div className='maxi-color-control__color'>

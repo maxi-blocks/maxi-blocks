@@ -7,9 +7,9 @@ import {} from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
-import FancyRadioControl from '../fancy-radio-control';
-import RangeSliderControl from '../range-slider-control';
+// import SelectControl from '../select-control';
+// import FancyRadioControl from '../fancy-radio-control';
+// import RangeSliderControl from '../range-slider-control';
 
 /**
  * External dependencies
@@ -100,8 +100,12 @@ const TimelineSettings = props => {
 			][props['motion-active-time-line-index']].settings[name];
 		}
 	};
-
+	/*
+		RangeSliderControl should be replaced with SizeControl but we are working on the new version of Motions Effect maybe we will remove this component completely, so hold them for now and will get the correct decision future :)
+		*/
+	/*
 	return (
+
 		<div className='maxi-motion-control__timeline-item-settings'>
 			{!isNil(getCurrentTimelineItem()) && (
 				<>
@@ -474,6 +478,8 @@ const TimelineSettings = props => {
 				</>
 			)}
 		</div>
+
 	);
+	*/
 };
 export default TimelineSettings;

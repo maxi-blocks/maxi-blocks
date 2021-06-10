@@ -22,17 +22,17 @@ import {
 	FancyRadioControl,
 	FontLevelControl,
 	FullSizeControl,
+	InfoBox,
 	MotionControl,
-	NumberControl,
 	OpacityControl,
 	PositionControl,
 	ResponsiveControl,
 	SelectControl,
 	SettingTabsControl,
+	SizeControl,
 	TextControl,
 	TransformControl,
 	TypographyControl,
-	InfoBox,
 	ZIndexControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
@@ -191,18 +191,38 @@ const Inspector = memo(
 															{typeOfList ===
 																'ol' && (
 																<>
-																	<NumberControl
+																	<SizeControl
 																		label={__(
-																			'Start from',
+																			'Start From',
 																			'maxi-blocks'
 																		)}
+																		placeholder=''
+																		disableUnit
 																		value={
 																			listStart
 																		}
-																		onChange={listStart =>
+																		onChangeValue={val => {
 																			setAttributes(
 																				{
-																					listStart,
+																					listStart:
+																						val !==
+																							undefined &&
+																						val !==
+																							''
+																							? val
+																							: '',
+																				}
+																			);
+																		}}
+																		min={
+																			-99
+																		}
+																		max={99}
+																		onReset={() =>
+																			setAttributes(
+																				{
+																					listStart:
+																						'',
 																				}
 																			)
 																		}

@@ -65,7 +65,7 @@ const LibraryContainer = props => {
 
 	/** Patterns / Blocks */
 	const MasonryItemPatterns = props => {
-		const { previewIMG, isPro, serial, onRequestInsert } = props;
+		const { previewIMG, isPro, serial, onRequestInsert, demoUrl } = props;
 
 		return (
 			<div className='maxi-cloud-masonry-card'>
@@ -74,7 +74,11 @@ const LibraryContainer = props => {
 				</div>
 				<div className='maxi-cloud-masonry-card__container'>
 					<div className='maxi-cloud-masonry-card__buttons'>
-						<Button className='maxi-cloud-masonry-card__button'>
+						<Button
+							className='maxi-cloud-masonry-card__button'
+							href={demoUrl}
+							target='_blank'
+						>
 							Preview
 						</Button>
 						<Button

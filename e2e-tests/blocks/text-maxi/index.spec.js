@@ -135,7 +135,7 @@ describe('TextMaxi', () => {
 		expect(content).toMatchSnapshot();
 	}, 30000);
 
-	it('Test Text Maxi toolbar Link with multiple instances', async () => {
+	it.only('Test Text Maxi toolbar Link with multiple instances', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
@@ -179,7 +179,6 @@ describe('TextMaxi', () => {
 			'.block-editor-link-control__search-item-action',
 			button => button.click()
 		);
-		await pressKeyWithModifier('ctrl', 'a');
 		await pressKeyTimes('ArrowLeft', '4');
 		await page.keyboard.type('ing');
 		await page.keyboard.press('Enter');

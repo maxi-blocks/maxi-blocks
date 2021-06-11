@@ -40,9 +40,8 @@ const transforms = {
 			type: 'raw',
 			selectors: 'p,h1,h2,h3,h4,h5,h6,ul,ol',
 			isMatch: node => {
-				const { getSelectedBlockClientId, getBlockName } = select(
-					'core/block-editor'
-				);
+				const { getSelectedBlockClientId, getBlockName } =
+					select('core/block-editor');
 
 				const currentBlockName = getBlockName(
 					getSelectedBlockClientId()

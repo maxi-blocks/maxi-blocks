@@ -13,7 +13,7 @@
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
-	exit();
+    exit();
 }
 
 define('MAXI_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
@@ -24,7 +24,7 @@ define('MAXI_PLUGIN_DIR_FILE', __FILE__);
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-core.php';
 if (class_exists('MaxiBlocks_Core')) {
-	MaxiBlocks_Core::register();
+    MaxiBlocks_Core::register();
 }
 
 //======================================================================
@@ -32,7 +32,7 @@ if (class_exists('MaxiBlocks_Core')) {
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-db.php';
 if (class_exists('MaxiBlocks_DB')) {
-	MaxiBlocks_DB::register();
+    MaxiBlocks_DB::register();
 }
 
 //======================================================================
@@ -40,7 +40,7 @@ if (class_exists('MaxiBlocks_DB')) {
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-blocks.php';
 if (class_exists('MaxiBlocks_Blocks')) {
-	MaxiBlocks_Blocks::register();
+    MaxiBlocks_Blocks::register();
 }
 
 //======================================================================
@@ -48,7 +48,7 @@ if (class_exists('MaxiBlocks_Blocks')) {
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-styles.php';
 if (class_exists('MaxiBlocks_Styles')) {
-	MaxiBlocks_Styles::register();
+    MaxiBlocks_Styles::register();
 }
 
 //======================================================================
@@ -56,7 +56,7 @@ if (class_exists('MaxiBlocks_Styles')) {
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
 if (class_exists('MaxiBlocks_StyleCards')) {
-	MaxiBlocks_StyleCards::register();
+    MaxiBlocks_StyleCards::register();
 }
 
 //======================================================================
@@ -64,7 +64,7 @@ if (class_exists('MaxiBlocks_StyleCards')) {
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-image-crop.php';
 if (class_exists('MaxiBlocks_ImageCrop')) {
-	MaxiBlocks_ImageCrop::register();
+    MaxiBlocks_ImageCrop::register();
 }
 
 //======================================================================
@@ -72,7 +72,7 @@ if (class_exists('MaxiBlocks_ImageCrop')) {
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-api.php';
 if (class_exists('MaxiBlocks_API')) {
-	MaxiBlocks_API::register();
+    MaxiBlocks_API::register();
 }
 
 //======================================================================
@@ -80,8 +80,17 @@ if (class_exists('MaxiBlocks_API')) {
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-page-template.php';
 if (class_exists('MaxiBlocks_PageTemplate')) {
-	add_action( 'plugins_loaded', array( 'MaxiBlocks_PageTemplate', 'register' ) );
+    add_action('plugins_loaded', array( 'MaxiBlocks_PageTemplate', 'register' ));
 }
+
+//======================================================================
+// MaxiBlocks Image Upload
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-image-upload.php';
+if (class_exists('MaxiBlocks_ImageUpload')) {
+    MaxiBlocks_ImageUpload::register();
+}
+
 
 /**
  * TODO: Old init.php file. Please, delete these lines of comment and require onces this file has been removed

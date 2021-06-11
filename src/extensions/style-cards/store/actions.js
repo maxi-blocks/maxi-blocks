@@ -39,3 +39,10 @@ export function removeStyleCard(cardKey) {
 		cardKey,
 	};
 }
+
+export function saveSCStyles(isUpdate) {
+	return {
+		type: 'UPDATE_STYLE_CARD',
+		isUpdate,
+	};
+}

@@ -71,6 +71,15 @@ function reducer(state = { styleCards: {}, savedStyleCards: {} }, action) {
 				...state,
 				styleCards: removeStyleCard(state.styleCards, action.cardKey),
 			};
+		case 'UPDATE_STYLE_CARD':
+			controls.UPDATE_STYLE_CARD(
+				getActiveStyleCard(state.styleCards),
+				action.isUpdate
+			);
+
+			return {
+				...state,
+			};
 		default:
 			return state;
 	}

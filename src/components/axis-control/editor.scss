@@ -1,4 +1,4 @@
-body.maxi-blocks--active .maxi-sidebar .maxi-axis-control {
+.maxi-axis-control {
 	margin-bottom: 8px;
 
 	input[type='checkbox'] {
@@ -80,8 +80,9 @@ body.maxi-blocks--active .maxi-sidebar .maxi-axis-control {
 			}
 			&__checkbox {
 				input {
-					border: 2px solid #dddfe2;
-					box-shadow: none;
+					border: 2px solid #dddfe2 !important;
+					box-shadow: none !important;
+
 					&:checked {
 						border: 2px solid #dddfe2;
 						background-color: transparent;

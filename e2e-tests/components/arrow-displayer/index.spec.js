@@ -4,8 +4,8 @@
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('arrow control', () => {
-	it('cheking the arrow control', async () => {
+describe('arrow display', () => {
+	it('cheking the arrow display', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 		await page.$eval('.maxi-container-block', container =>

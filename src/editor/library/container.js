@@ -30,6 +30,7 @@ import {
 	REACT_APP_SECRET_ALGOLIA_ID,
 	REACT_APP_SECRET_ALGOLIA_KEY,
 } from '@env';
+import { uniq, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -71,27 +72,18 @@ const LibraryContainer = props => {
 	const ajaxurl = wp.ajax.settings.url;
 
 	const imageUploader = imageSrc => {
-		console.log(imageSrc);
-		console.log(
-			`${
-				window.location.origin + ajaxurl
-			}?action=maxi_upload_pattern_image&maxi_image_to_upload=${imageSrc}`
-		);
-
+		console.log(`imageSrc: ${imageSrc}`);
 		fetch(
 			`${
 				window.location.origin + ajaxurl
-			}?action=maxi_upload_pattern_image&maxi_image_to_upload=${imageSrc}`,
-			{
-				method: 'POST',
-			}
+			}?action=maxi_upload_pattern_image&maxi_image_to_upload=${imageSrc}`
 		)
 			.then(data => {
-				return data();
+				return data.text();
 			})
 			.catch(err => {
 				console.error(
-					__(`Error cropping the image: ${err}`, 'maxi-blocks')
+					__(`Error uploading the image: ${err}`, 'maxi-blocks')
 				);
 			});
 	};
@@ -116,10 +108,7 @@ const LibraryContainer = props => {
 						</Button>
 						<Button
 							className='maxi-cloud-masonry-card__button'
-							// onClick={onRequestInsert}
-							onClick={imageUploader(
-								'https://maxi-demo.dev200.com/wp-content/uploads/2021/03/PIL-16.jpg'
-							)}
+							onClick={onRequestInsert}
 						>
 							Insert
 						</Button>
@@ -146,6 +135,22 @@ const LibraryContainer = props => {
 			select('core/block-editor').isValidTemplate(parsedContent);
 
 		if (isValid) {
+			const imagesRegexp = new RegExp(
+				'(?=https).*?(?:jpeg|jpg|png|svg)',
+				'g'
+			);
+
+			const imagesLinks = parsedContent.match(imagesRegexp);
+
+			if (!isEmpty(imagesLinks)) {
+				console.log(uniq(imagesLinks));
+
+				imagesLinks.forEach(link => {
+					const newLink = imageUploader(link);
+					console.log(newLink);
+				});
+			}
+
 			replaceBlock(
 				clientId,
 				wp.blocks.rawHandler({

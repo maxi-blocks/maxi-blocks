@@ -96,7 +96,6 @@ const HoverEffectControl = props => {
 					<AdvancedNumberControl
 						label={__('Duration(s)', 'maxi-blocks')}
 						placeholder=''
-						disableUnit
 						value={props['hover-transition-duration']}
 						onChangeValue={val => {
 							onChange({
@@ -242,7 +241,6 @@ const HoverEffectControl = props => {
 								<AdvancedNumberControl
 									label={__('Amount', 'maxi-blocks')}
 									placeholder=''
-									disableUnit
 									value={
 										props[
 											`hover-basic-${props['hover-basic-effect-type']}-value`

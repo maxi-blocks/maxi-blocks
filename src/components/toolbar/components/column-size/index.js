@@ -51,7 +51,6 @@ const ColumnSize = props => {
 				<AdvancedNumberControl
 					label={__('Column Size (%)', 'maxi-blocks')}
 					placeholder=''
-					disableUnit
 					value={round(
 						getLastBreakpointAttribute(
 							'column-size',

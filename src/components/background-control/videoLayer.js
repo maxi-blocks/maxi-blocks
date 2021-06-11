@@ -70,7 +70,6 @@ const VideoLayer = props => {
 			<AdvancedNumberControl
 				label={__('Start Time (s)', 'maxi-blocks')}
 				placeholder=''
-				disableUnit
 				value={
 					videoOptions[
 						getAttributeKey(
@@ -104,7 +103,6 @@ const VideoLayer = props => {
 			<AdvancedNumberControl
 				label={__('End Time (s)', 'maxi-blocks')}
 				placeholder=''
-				disableUnit
 				value={
 					videoOptions[
 						getAttributeKey(

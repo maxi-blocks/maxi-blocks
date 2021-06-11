@@ -197,7 +197,6 @@ const Inspector = memo(
 																			'maxi-blocks'
 																		)}
 																		placeholder=''
-																		disableUnit
 																		value={
 																			listStart
 																		}

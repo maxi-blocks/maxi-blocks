@@ -161,7 +161,6 @@ const ColumnPatternsInspector = props => {
 			{!toolbar && breakpoint === 'general' && (
 				<AdvancedNumberControl
 					label={__('Columns', 'maxi-blocks')}
-					disableUnit
 					value={numCol}
 					defaultValue={numCol}
 					onChangeValue={numCol => setNumCol(numCol)}

@@ -61,7 +61,6 @@ const ParallaxControl = props => {
 					<AdvancedNumberControl
 						label={__('Speed', 'maxi-blocks')}
 						placeholder=''
-						disableUnit
 						value={props['parallax-speed']}
 						onChangeValue={val => {
 							onChange({

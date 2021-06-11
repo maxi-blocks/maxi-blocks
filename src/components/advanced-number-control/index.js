@@ -33,7 +33,7 @@ const AdvancedNumberControl = props => {
 		unit = 'px',
 		placeholder = 'auto',
 		onChangeUnit,
-		disableUnit = false,
+		enableUnit = false,
 		min = 0,
 		max = 999,
 		initial = 0,
@@ -93,7 +93,7 @@ const AdvancedNumberControl = props => {
 
 	return (
 		<BaseControl label={label} className={classes}>
-			{disableUnit ? (
+			{!enableUnit ? (
 				<input
 					type='number'
 					className='maxi-size-control__value'
@@ -181,12 +181,12 @@ const AdvancedNumberControl = props => {
 					onChangeValue(+val);
 				}}
 				min={
-					disableUnit
+					!enableUnit
 						? min
 						: minMaxSettings[isEmpty(unit) ? '-' : unit].min
 				}
 				max={
-					disableUnit
+					!enableUnit
 						? max
 						: minMaxSettings[isEmpty(unit) ? '-' : unit].max
 				}

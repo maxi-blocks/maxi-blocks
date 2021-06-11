@@ -67,7 +67,6 @@ const MapControl = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('Zoom', 'maxi-blocks')}
-				disableUnit
 				min={1}
 				max={999}
 				initial={1}
@@ -111,7 +110,6 @@ const MapControl = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('Marker Scale', 'maxi-blocks')}
-				disableUnit
 				min={1}
 				max={10}
 				initial={1}

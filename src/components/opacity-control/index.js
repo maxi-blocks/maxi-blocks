@@ -26,7 +26,6 @@ const OpacityControl = props => {
 		<AdvancedNumberControl
 			className={classes}
 			label={`${!isEmpty(label) ? label : __('Opacity', 'maxi-blocks')}`}
-			disableUnit
 			value={
 				opacity !== undefined && opacity !== ''
 					? round(opacity * 100, 2)

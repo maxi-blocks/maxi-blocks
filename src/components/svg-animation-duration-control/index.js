@@ -20,7 +20,6 @@ const SvgAnimationDurationControl = props => {
 				<AdvancedNumberControl
 					label={__('Animation Duration', 'maxi-blocks')}
 					placeholder=''
-					disableUnit
 					value={duration}
 					onChangeValue={val => {
 						onChange(val !== undefined && val !== '' ? val : '');

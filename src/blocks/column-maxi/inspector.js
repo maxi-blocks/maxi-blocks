@@ -100,7 +100,6 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														placeholder=''
-														disableUnit
 														value={getLastBreakpointAttribute(
 															'column-size',
 															deviceType,

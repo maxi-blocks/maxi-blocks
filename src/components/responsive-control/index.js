@@ -36,7 +36,6 @@ const ResponsiveControl = props => {
 			<AdvancedNumberControl
 				label={__('Breakpoint', 'maxi-blocks')}
 				placeholder=''
-				disableUnit
 				defaultValue={
 					defaultBreakpoints[breakpoint === 'xxl' ? 'xl' : breakpoint]
 				}

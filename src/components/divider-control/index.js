@@ -230,7 +230,6 @@ const DividerControl = props => {
 						<AdvancedNumberControl
 							label={__('Size', 'maxi-blocks')}
 							placeholder=''
-							disableUnit
 							value={
 								props['divider-height'] !== undefined &&
 								props['divider-height'] !== ''
@@ -260,7 +259,6 @@ const DividerControl = props => {
 						<AdvancedNumberControl
 							label={__('Weight', 'maxi-blocks')}
 							placeholder=''
-							disableUnit
 							value={props['divider-border-right-width']}
 							onChangeValue={val => {
 								onChange({

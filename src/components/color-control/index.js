@@ -146,7 +146,6 @@ const ColorControl = props => {
 						<AdvancedNumberControl
 							label={__('Colour Opacity', 'maxi-blocks')}
 							placeholder=''
-							disableUnit
 							value={+colorAlpha}
 							onChangeValue={val => {
 								const value = !isNil(val) ? +val : 0;

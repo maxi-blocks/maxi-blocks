@@ -30,7 +30,6 @@ const ZIndexControl = props => {
 			label={__('Z-index', 'maxi-blocks')}
 			className={classes}
 			placeholder=''
-			disableUnit
 			defaultValue={getDefaultAttribute(`z-index-${breakpoint}`)}
 			value={getLastBreakpointAttribute('z-index', breakpoint, props)}
 			onChangeValue={val => {

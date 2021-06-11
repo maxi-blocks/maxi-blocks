@@ -102,7 +102,6 @@ const ArrowControl = props => {
 					<AdvancedNumberControl
 						label={__('Position', 'maxi-blocks')}
 						placeholder=''
-						disableUnit
 						value={getLastBreakpointAttribute(
 							'arrow-position',
 							breakpoint,
@@ -130,7 +129,6 @@ const ArrowControl = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Arrow Size', 'maxi-blocks')}
-						disableUnit
 						value={getLastBreakpointAttribute(
 							'arrow-width',
 							breakpoint,

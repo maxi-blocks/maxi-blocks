@@ -152,7 +152,6 @@ const EntranceAnimationControl = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('Duration (s)', 'maxi-blocks')}
-				disableUnit
 				min={0}
 				max={10}
 				initial={1}
@@ -168,7 +167,6 @@ const EntranceAnimationControl = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('Delay (s)', 'maxi-blocks')}
-				disableUnit
 				min={0}
 				max={10}
 				initial={1}

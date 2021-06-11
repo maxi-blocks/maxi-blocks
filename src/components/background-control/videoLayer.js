@@ -69,7 +69,6 @@ const VideoLayer = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('Start Time (s)', 'maxi-blocks')}
-				placeholder=''
 				value={
 					videoOptions[
 						getAttributeKey(
@@ -102,7 +101,6 @@ const VideoLayer = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('End Time (s)', 'maxi-blocks')}
-				placeholder=''
 				value={
 					videoOptions[
 						getAttributeKey(

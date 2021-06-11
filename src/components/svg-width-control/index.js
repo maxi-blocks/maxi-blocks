@@ -17,7 +17,6 @@ const SvgWidthControl = props => {
 	return (
 		<AdvancedNumberControl
 			label={__('Stroke Width', 'maxi-blocks')}
-			placeholder=''
 			value={width}
 			onChangeValue={val => {
 				onChange(val !== undefined && val !== '' ? val : '');

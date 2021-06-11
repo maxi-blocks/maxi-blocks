@@ -130,7 +130,6 @@ const TextShadow = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('X', 'maxi-blocks')}
-						placeholder=''
 						value={+trim(x)}
 						onChangeValue={val => {
 							onChangeValue(
@@ -144,7 +143,6 @@ const TextShadow = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Y', 'maxi-blocks')}
-						placeholder=''
 						value={+trim(y)}
 						onChangeValue={val => {
 							onChangeValue(
@@ -158,7 +156,6 @@ const TextShadow = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Blur', 'maxi-blocks')}
-						placeholder=''
 						value={+trim(blur)}
 						onChangeValue={val => {
 							onChangeValue(

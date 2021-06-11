@@ -176,7 +176,6 @@ const BoxShadowControl = props => {
 						<>
 							<AdvancedNumberControl
 								label={__('Horizontal', 'maxi-blocks')}
-								placeholder=''
 								value={getLastBreakpointAttribute(
 									'box-shadow-horizontal',
 									breakpoint,
@@ -210,7 +209,6 @@ const BoxShadowControl = props => {
 							/>
 							<AdvancedNumberControl
 								label={__('Vertical', 'maxi-blocks')}
-								placeholder=''
 								value={getLastBreakpointAttribute(
 									'box-shadow-vertical',
 									breakpoint,
@@ -244,7 +242,6 @@ const BoxShadowControl = props => {
 							/>
 							<AdvancedNumberControl
 								label={__('Blur', 'maxi-blocks')}
-								placeholder=''
 								value={getLastBreakpointAttribute(
 									'box-shadow-blur',
 									breakpoint,
@@ -278,7 +275,6 @@ const BoxShadowControl = props => {
 							/>
 							<AdvancedNumberControl
 								label={__('Spread', 'maxi-blocks')}
-								placeholder=''
 								value={getLastBreakpointAttribute(
 									'box-shadow-spread',
 									breakpoint,

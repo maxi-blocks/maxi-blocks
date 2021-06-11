@@ -101,7 +101,6 @@ const ArrowControl = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Position', 'maxi-blocks')}
-						placeholder=''
 						value={getLastBreakpointAttribute(
 							'arrow-position',
 							breakpoint,

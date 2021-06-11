@@ -196,7 +196,6 @@ const Inspector = memo(
 																			'Start From',
 																			'maxi-blocks'
 																		)}
-																		placeholder=''
 																		value={
 																			listStart
 																		}

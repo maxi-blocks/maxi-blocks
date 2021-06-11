@@ -95,7 +95,6 @@ const HoverEffectControl = props => {
 						'clear-greay-scale') && (
 					<AdvancedNumberControl
 						label={__('Duration(s)', 'maxi-blocks')}
-						placeholder=''
 						value={props['hover-transition-duration']}
 						onChangeValue={val => {
 							onChange({
@@ -240,7 +239,6 @@ const HoverEffectControl = props => {
 							<>
 								<AdvancedNumberControl
 									label={__('Amount', 'maxi-blocks')}
-									placeholder=''
 									value={
 										props[
 											`hover-basic-${props['hover-basic-effect-type']}-value`

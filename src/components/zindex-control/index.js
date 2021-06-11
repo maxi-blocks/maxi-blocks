@@ -29,7 +29,6 @@ const ZIndexControl = props => {
 		<AdvancedNumberControl
 			label={__('Z-index', 'maxi-blocks')}
 			className={classes}
-			placeholder=''
 			defaultValue={getDefaultAttribute(`z-index-${breakpoint}`)}
 			value={getLastBreakpointAttribute('z-index', breakpoint, props)}
 			onChangeValue={val => {

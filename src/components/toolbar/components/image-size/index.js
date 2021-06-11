@@ -111,7 +111,6 @@ const ImageSize = props => {
 				)}
 				<AdvancedNumberControl
 					label={__('Width', 'maxi-blocks')}
-					placeholder=''
 					value={imgWidth}
 					onChangeValue={val => {
 						onChangeSize({

@@ -31,7 +31,7 @@ const AdvancedNumberControl = props => {
 		label,
 		className,
 		unit = 'px',
-		placeholder = 'auto',
+		placeholder = '',
 		onChangeUnit,
 		enableUnit = false,
 		min = 0,

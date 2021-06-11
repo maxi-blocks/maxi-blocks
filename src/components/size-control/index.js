@@ -15,7 +15,7 @@ import Button from '../button';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isEmpty, isNil } from 'lodash';
+import { trim, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -105,7 +105,7 @@ const SizeControl = props => {
 						if (value !== '' && +value !== 0 && +value < min)
 							value = min;
 
-						onChangeValue(value);
+						onChangeValue(value === '' ? value : +value);
 					}}
 					min={min}
 					max={max}
@@ -117,9 +117,9 @@ const SizeControl = props => {
 					<input
 						type='number'
 						className='maxi-size-control__value'
-						value={trim(value)}
+						value={value === undefined ? defaultValue : trim(value)}
 						onChange={e => {
-							let value = +e.target.value;
+							let { value } = e.target;
 
 							if (
 								value >
@@ -138,20 +138,10 @@ const SizeControl = props => {
 
 							if (value > 100 && unit === '%') value = 100;
 
-							onChangeValue(value);
+							onChangeValue(value === '' ? value : +value);
 						}}
-						min={
-							unit
-								? minMaxSettings[isEmpty(unit) ? '-' : unit].min
-								: null
-						}
-						max={
-							isEmpty(unit)
-								? '-'
-								: unit
-								? minMaxSettings[unit].max
-								: null
-						}
+						min={minMaxSettings[isEmpty(unit) ? '-' : unit].min}
+						max={minMaxSettings[isEmpty(unit) ? '-' : unit].max}
 						step={stepValue}
 						placeholder={placeholder}
 					/>
@@ -186,14 +176,9 @@ const SizeControl = props => {
 				</Button>
 			)}
 			<RangeControl
-				value={+value === '' || +value === 0 ? 0 : +trim(value)}
+				value={value}
 				onChange={val => {
-					let value = isNil(val) ? '' : val;
-
-					if (value > max) value = max;
-					if (value < min) value = min;
-
-					onChangeValue(value);
+					onChangeValue(+val);
 				}}
 				min={
 					disableUnit

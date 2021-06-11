@@ -45,7 +45,7 @@ class ToolbarPopover extends Component {
 	 */
 	onClickOutside() {
 		if (
-			this.ref.current.ownerDocument.querySelectorAll(
+			this.ref.current?.ownerDocument.querySelectorAll(
 				'.toolbar-item__popover'
 			).length >= 2
 		)

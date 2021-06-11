@@ -81,6 +81,7 @@ const FullSizeControl = props => {
 			{!hideWidth && currentBlockRoot && (
 				<AdvancedNumberControl
 					label={__('Width', 'maxi-blocks')}
+					enableUnit
 					unit={getLastBreakpointAttribute(
 						`${prefix}width-unit`,
 						breakpoint,
@@ -112,6 +113,7 @@ const FullSizeControl = props => {
 			)}
 			<AdvancedNumberControl
 				label={__('Height', 'maxi-blocks')}
+				enableUnit
 				unit={getLastBreakpointAttribute(
 					`${prefix}height-unit`,
 					breakpoint,
@@ -177,6 +179,7 @@ const FullSizeControl = props => {
 					{!hideMaxWidth && (
 						<AdvancedNumberControl
 							label={__('Max Width', 'maxi-blocks')}
+							enableUnit
 							unit={getLastBreakpointAttribute(
 								`${prefix}max-width-unit`,
 								breakpoint,
@@ -212,6 +215,7 @@ const FullSizeControl = props => {
 					)}
 					<AdvancedNumberControl
 						label={__('Min Width', 'maxi-blocks')}
+						enableUnit
 						unit={getLastBreakpointAttribute(
 							`${prefix}min-width-unit`,
 							breakpoint,
@@ -246,6 +250,7 @@ const FullSizeControl = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Max Height', 'maxi-blocks')}
+						enableUnit
 						unit={getLastBreakpointAttribute(
 							`${prefix}max-height-unit`,
 							breakpoint,
@@ -280,6 +285,7 @@ const FullSizeControl = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Min Height', 'maxi-blocks')}
+						enableUnit
 						unit={getLastBreakpointAttribute(
 							`${prefix}min-height-unit`,
 							breakpoint,

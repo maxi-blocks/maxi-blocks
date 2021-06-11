@@ -307,6 +307,7 @@ const ShapeDividerControl = props => {
 							/>
 							<AdvancedNumberControl
 								label={__('Divider Height', 'maxi-blocks')}
+								enableUnit
 								unit={props['shape-divider-top-height-unit']}
 								allowedUnits={['px']}
 								onChangeUnit={val =>
@@ -428,6 +429,7 @@ const ShapeDividerControl = props => {
 							/>
 							<AdvancedNumberControl
 								label={__('Divider Height', 'maxi-blocks')}
+								enableUnit
 								unit={props['shape-divider-bottom-height-unit']}
 								allowedUnits={['px']}
 								onChangeUnit={val =>

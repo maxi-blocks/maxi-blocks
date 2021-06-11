@@ -160,6 +160,7 @@ const SVGLayer = props => {
 											)
 										]
 									}
+									enableUnit
 									unit={
 										SVGOptions[
 											getAttributeKey(
@@ -226,6 +227,7 @@ const SVGLayer = props => {
 											)
 										]
 									}
+									enableUnit
 									unit={
 										SVGOptions[
 											getAttributeKey(
@@ -298,6 +300,7 @@ const SVGLayer = props => {
 										)
 									]
 								}
+								enableUnit
 								unit={
 									SVGOptions[
 										getAttributeKey(

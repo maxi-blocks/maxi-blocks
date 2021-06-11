@@ -81,6 +81,7 @@ const Size = props => {
 						{currentBlockRoot && (
 							<AdvancedNumberControl
 								label={__('Width', 'maxi-blocks')}
+								enableUnit
 								unit={getLastBreakpointAttribute(
 									'width-unit',
 									breakpoint,
@@ -117,6 +118,7 @@ const Size = props => {
 						)}
 						<AdvancedNumberControl
 							label={__('Max Width', 'maxi-blocks')}
+							enableUnit
 							unit={getLastBreakpointAttribute(
 								'max-width-unit',
 								breakpoint,

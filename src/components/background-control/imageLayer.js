@@ -303,6 +303,7 @@ const ImageLayer = props => {
 				<>
 					<AdvancedNumberControl
 						label={__('Y-axis', 'maxi-blocks')}
+						enableUnit
 						unit={
 							imageOptions[
 								getAttributeKey(
@@ -368,6 +369,7 @@ const ImageLayer = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('X-axis', 'maxi-blocks')}
+						enableUnit
 						unit={
 							imageOptions[
 								getAttributeKey(

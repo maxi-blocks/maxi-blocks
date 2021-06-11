@@ -174,6 +174,7 @@ const DividerControl = props => {
 					<>
 						<AdvancedNumberControl
 							label={__('Line Size', 'maxi-blocks')}
+							enableUnit
 							unit={props['divider-width-unit']}
 							onChangeUnit={val =>
 								onChange({ 'divider-width-unit': val })
@@ -196,6 +197,7 @@ const DividerControl = props => {
 						/>
 						<AdvancedNumberControl
 							label={__('Line Weight', 'maxi-blocks')}
+							enableUnit
 							allowedUnits={['px', 'em', 'vw']}
 							unit={props['divider-border-top-unit']}
 							onChangeUnit={val =>

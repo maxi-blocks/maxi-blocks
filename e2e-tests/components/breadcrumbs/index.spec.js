@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	getEditedPostContent,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 describe('Breadcrumbs', () => {
 	it('Test breadcrumbs', async () => {
@@ -24,7 +20,6 @@ describe('Breadcrumbs', () => {
 			button => button.click()
 		);
 
-		debugger;
 		// Add Group Maxi
 		await page.keyboard.type('group');
 		await page.waitForSelector(

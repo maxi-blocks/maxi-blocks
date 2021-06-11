@@ -1,15 +1,16 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-/**
- * WordPress dependencies
- */
 import {
 	getBlockAttributes,
 	openSidebar,
 	openAdvancedSidebar,
 } from '../../utils';
+
+/**
+ * Internal dependencies
+ */
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 
 describe('Settings Tabs Control', () => {
 	it('Checking the settings tabs control', async () => {

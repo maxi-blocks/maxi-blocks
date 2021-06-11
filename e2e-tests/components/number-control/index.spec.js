@@ -6,13 +6,14 @@ import {
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('number control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the number control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebar(page, 'width height');
 

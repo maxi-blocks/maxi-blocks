@@ -5,10 +5,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes } from '../../utils';
 
 describe('default styles control', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the default styles control', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('check default styles');
 

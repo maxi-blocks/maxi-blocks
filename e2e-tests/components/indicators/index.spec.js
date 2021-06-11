@@ -2,13 +2,14 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('indicators', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
 	it('checking the indicators', async () => {
+		await createNewPost();
 		await insertBlock('Text Maxi');
 
 		const accordionPanel = await openSidebar(page, 'padding margin');

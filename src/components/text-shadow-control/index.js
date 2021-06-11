@@ -10,8 +10,8 @@ import { useState } from '@wordpress/element';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import FancyRadioControl from '../fancy-radio-control';
+import SizeControl from '../size-control';
 import Icon from '../icon';
-import RangeSliderControl from '../range-slider-control';
 
 /**
  * External dependencies
@@ -128,29 +128,50 @@ const TextShadow = props => {
 						disableGradient
 						disableGradientAboveBackground
 					/>
-					<RangeSliderControl
+					<SizeControl
 						label={__('X', 'maxi-blocks')}
+						placeholder=''
+						disableUnit
 						value={+trim(x)}
-						onChange={val => onChangeValue(0, val)}
+						onChangeValue={val => {
+							onChangeValue(
+								0,
+								val !== undefined && val !== '' ? val : ''
+							);
+						}}
 						min={0}
 						max={100}
-						allowReset
+						onReset={() => onChangeValue(0, 0)}
 					/>
-					<RangeSliderControl
+					<SizeControl
 						label={__('Y', 'maxi-blocks')}
+						placeholder=''
+						disableUnit
 						value={+trim(y)}
-						onChange={val => onChangeValue(1, val)}
+						onChangeValue={val => {
+							onChangeValue(
+								1,
+								val !== undefined && val !== '' ? val : ''
+							);
+						}}
 						min={0}
 						max={100}
-						allowReset
+						onReset={() => onChangeValue(1, 0)}
 					/>
-					<RangeSliderControl
+					<SizeControl
 						label={__('Blur', 'maxi-blocks')}
+						placeholder=''
+						disableUnit
 						value={+trim(blur)}
-						onChange={val => onChangeValue(2, val)}
+						onChangeValue={val => {
+							onChangeValue(
+								2,
+								val !== undefined && val !== '' ? val : ''
+							);
+						}}
 						min={0}
 						max={100}
-						allowReset
+						onReset={() => onChangeValue(2, 0)}
 					/>
 				</>
 			)}

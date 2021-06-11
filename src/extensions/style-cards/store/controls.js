@@ -4,6 +4,11 @@
 import apiFetch from '@wordpress/api-fetch';
 
 /**
+ * Internal dependencies
+ */
+import { getSCVariablesObject, createSCStyleString } from '../updateSCOnEditor';
+
+/**
  * Controls
  */
 const controls = {
@@ -21,6 +26,19 @@ const controls = {
 			},
 		}).catch(err => {
 			console.error('Error saving Style Card. Code error: ', err);
+		});
+	},
+	async UPDATE_STYLE_CARD(styleCards, isUpdate) {
+		const varSC = getSCVariablesObject(styleCards.value);
+		const parsedSC = createSCStyleString(varSC);
+
+		await apiFetch({
+			path: '/maxi-blocks/v1.0/style-card',
+			method: 'POST',
+			data: {
+				meta: parsedSC,
+				update: isUpdate,
+			},
 		});
 	},
 };

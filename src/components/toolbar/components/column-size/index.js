@@ -8,11 +8,8 @@ import { __ } from '@wordpress/i18n';
  */
 import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
-import RangeSliderControl from '../../../range-slider-control';
-import {
-	getLastBreakpointAttribute,
-	getDefaultAttribute,
-} from '../../../../extensions/styles';
+import SizeControl from '../../../size-control';
+import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
 
 /**
@@ -51,8 +48,10 @@ const ColumnSize = props => {
 			advancedOptions='column settings'
 		>
 			<div className='toolbar-item__column-size__popover'>
-				<RangeSliderControl
-					label={__('Column Size', 'maxi-blocks')}
+				<SizeControl
+					label={__('Column Size (%)', 'maxi-blocks')}
+					placeholder=''
+					disableUnit
 					value={round(
 						getLastBreakpointAttribute(
 							'column-size',
@@ -61,25 +60,32 @@ const ColumnSize = props => {
 						),
 						2
 					)}
-					onChange={val =>
+					onChangeValue={val => {
 						onChange({
-							[`column-size-${breakpoint}`]: val,
+							[`column-size-${breakpoint}`]:
+								val !== undefined && val !== '' ? val : '',
 							verticalAlign,
-						})
-					}
+						});
+					}}
 					min={0}
 					max={100}
 					step={0.1}
-					allowReset
-					defaultValue={getColumnDefaultValue(
+					onReset={() =>
+						onChange({
+							[`column-size-${breakpoint}`]:
+								getColumnDefaultValue(
+									rowPattern,
+									columnSize,
+									clientId,
+									breakpoint
+								),
+						})
+					}
+					initialPosition={getColumnDefaultValue(
 						rowPattern,
 						columnSize,
 						clientId,
 						breakpoint
-					)}
-					initialPosition={getDefaultAttribute(
-						`column-size-${breakpoint}`,
-						clientId
 					)}
 				/>
 				<SelectControl

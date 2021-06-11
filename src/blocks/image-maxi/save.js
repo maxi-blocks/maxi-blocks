@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { HoverPreview } from '../../components';
+import { HoverPreview, RawHTML } from '../../components';
 import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
@@ -23,7 +23,6 @@ const save = props => {
 		captionContent,
 		mediaID,
 		mediaURL,
-		imgWidth,
 		mediaWidth,
 		mediaHeight,
 		mediaAlt,
@@ -33,11 +32,15 @@ const save = props => {
 		SVGElement,
 		imageRatio,
 		parentBlockStyle,
+		fullWidth,
+		'hover-type': hoverType,
+		'hover-preview': hoverPreview,
 	} = attributes;
 
 	const name = 'maxi-blocks/image-maxi';
 
-	const hoverPreviewClasses = classnames(
+	const wrapperClassName = classnames(
+		'maxi-image-block-wrapper',
 		'maxi-image-ratio',
 		`maxi-image-ratio__${imageRatio}`
 	);
@@ -61,13 +64,14 @@ const save = props => {
 	);
 
 	const hoverClasses = classnames(
-		'maxi-block-hover-wrapper',
-		attributes['hover-type'] === 'basic'
-			? `maxi-hover-effect__${attributes['hover-type']}__${attributes['hover-basic-effect-type']}`
-			: `maxi-hover-effect__${attributes['hover-type']}__${attributes['hover-text-effect-type']}`,
-		`maxi-hover-effect__${
-			attributes['hover-type'] === 'basic' ? 'basic' : 'text'
-		}`
+		hoverType === 'basic' &&
+			hoverPreview &&
+			`maxi-hover-effect__${hoverType}__${attributes['hover-basic-effect-type']}`,
+		hoverType === 'text' &&
+			hoverPreview &&
+			`maxi-hover-effect__${hoverType}__${attributes['hover-text-effect-type']}`,
+		hoverType !== 'none' &&
+			`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 	);
 
 	const imageAlt = () => {
@@ -85,34 +89,40 @@ const save = props => {
 
 	return (
 		<MaxiBlock
-			paletteClasses={paletteClasses}
 			tagName='figure'
 			paletteClasses={paletteClasses}
+			className={fullWidth === 'full' && 'alignfull'}
 			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
-			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>
-				<HoverPreview
-					className={!SVGElement ? hoverPreviewClasses : null}
-					key={`hover-preview-${uniqueID}`}
-					{...getGroupAttributes(attributes, [
-						'hover',
-						'hoverTitleTypography',
-						'hoverContentTypography',
-					])}
-					SVGElement={SVGElement}
-					mediaID={mediaID}
-					src={mediaURL}
-					width={mediaWidth}
-					height={mediaHeight}
-					alt={imageAlt()}
-				/>
-				{captionType !== 'none' && (
-					<figcaption className='maxi-image-block__caption'>
-						{captionContent}
-					</figcaption>
+			<HoverPreview
+				key={`hover-preview-${uniqueID}`}
+				wrapperClassName={wrapperClassName}
+				hoverClassName={!SVGElement ? hoverClasses : null}
+				isSVG={!!SVGElement}
+				{...getGroupAttributes(attributes, [
+					'hover',
+					'hoverTitleTypography',
+					'hoverContentTypography',
+				])}
+			>
+				{SVGElement ? (
+					<RawHTML>{SVGElement}</RawHTML>
+				) : (
+					<img
+						className={`maxi-image-block__image wp-image-${mediaID}`}
+						src={mediaURL}
+						width={mediaWidth}
+						height={mediaHeight}
+						alt={imageAlt()}
+					/>
 				)}
-			</div>
+			</HoverPreview>
+			{captionType !== 'none' && (
+				<figcaption className='maxi-image-block__caption'>
+					{captionContent}
+				</figcaption>
+			)}
 		</MaxiBlock>
 	);
 };

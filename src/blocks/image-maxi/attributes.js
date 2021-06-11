@@ -133,6 +133,7 @@ const attributes = {
 	...attributesData.padding,
 	...attributesData.parallax,
 	...attributesData.position,
+	...attributesData.size,
 	...attributesData.textAlignment,
 	...attributesData.transform,
 	...attributesData.typography,

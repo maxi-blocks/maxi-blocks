@@ -45,6 +45,7 @@ export { default as ParallaxControl } from './parallax-control';
 export { default as Placeholder } from './placeholder';
 export { default as PositionControl } from './position-control';
 export { default as RadioControl } from './radio-control';
+export { default as RawHTML } from './raw-html';
 export { default as ResponsiveControl } from './responsive-control';
 export { default as SelectControl } from './select-control';
 export { default as SettingTabsControl } from './setting-tabs-control';

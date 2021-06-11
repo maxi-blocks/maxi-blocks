@@ -1,15 +1,21 @@
+/**
+ * WordPress dependencies
+ */
 import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('typography control', () => {
-	it('checking the typography control', async () => {
+describe('Typography Control', () => {
+	it('Checking the typography control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing font family');
+		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openSidebar(page, 'typography');
 
 		// fontFamily
@@ -124,31 +130,27 @@ describe('typography control', () => {
 		}
 
 		// size, Line height and Letter spacing
-		await accordionPanel.$$eval(
-			'.maxi-typography-control .maxi-fancy-radio-control .maxi-base-control__field label',
-			select => select[7].click()
-		);
 
 		// size
-		await accordionPanel.$eval(
-			'.maxi-typography-control__size input',
-			select => select.focus()
+		await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
+			select => select[0].focus()
 		);
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('9');
 
 		// line-height
-		await accordionPanel.$eval(
-			'.maxi-typography-control__line-height input',
-			select => select.focus()
+		await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
+			select => select[2].focus()
 		);
 		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type('4');
 
 		// letter-spacing
-		await accordionPanel.$eval(
-			'.maxi-typography-control__letter-spacing input',
-			select => select.focus()
+		await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
+			select => select[4].focus()
 		);
 		await page.keyboard.type('10');
 

@@ -1,11 +1,17 @@
+/**
+ * WordPress dependencies
+ */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('typography control', () => {
-	it('checking the z-index control', async () => {
+describe('Z-Index Control', () => {
+	it('Checking the z-index control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing z-index');
+		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openAdvancedSidebar(page, 'z index');
 
 		await accordionPanel.$eval(

@@ -26,7 +26,7 @@ const getCustomFormatValue = ({
 	isHover = false,
 	textLevel = 'p',
 	blockStyle = 'light',
-	styleCard = null,
+	styleCard,
 	styleCardPrefix,
 	avoidXXL = false,
 }) => {
@@ -70,10 +70,10 @@ const getCustomFormatValue = ({
 	// Style Cards value
 	const SCStyle = blockStyle.replace('maxi-', '');
 	const SCLevel = styleCardPrefix || textLevel;
-	const currentSC = getTypographyFromSC(SCLevel, SCStyle, styleCard);
+	const currentSC = getTypographyFromSC(styleCard[SCStyle], SCLevel);
 
 	const currentSCValue = getLastBreakpointAttribute(
-		`${SCLevel}-${prop}`,
+		prop,
 		breakpoint,
 		currentSC,
 		isHover,
@@ -83,10 +83,10 @@ const getCustomFormatValue = ({
 
 	if (currentSCValue) return currentSCValue;
 
-	const defaultSC = getTypographyFromSC(textLevel, SCStyle, styleCard);
+	const defaultSC = getTypographyFromSC(styleCard[SCStyle], SCLevel);
 
 	const defaultSCValue = getLastBreakpointAttribute(
-		`${SCLevel}-${prop}`,
+		prop,
 		breakpoint,
 		defaultSC,
 		isHover,

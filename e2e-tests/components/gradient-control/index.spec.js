@@ -7,10 +7,13 @@ import {
 	pressKeyTimes,
 	setBrowserViewport,
 } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('gradient control', () => {
-	it('checking the gradient control', async () => {
+describe('Gradient Control', () => {
+	it('Checking the gradient control', async () => {
 		await createNewPost();
 		await setBrowserViewport('large');
 		await insertBlock('Group Maxi');

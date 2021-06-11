@@ -2,13 +2,16 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('position control', () => {
-	it('checking the position control', async () => {
+describe('Position Control', () => {
+	it('Checking the position control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing position');
+		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openAdvancedSidebar(page, 'position');
 
 		const selectPosition = await accordionPanel.$(

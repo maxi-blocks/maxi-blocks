@@ -1,18 +1,24 @@
+/**
+ * WordPress dependencies
+ */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('font level', () => {
-	it('checking the font family selector', async () => {
+describe('Font Family Selector', () => {
+	it('Checking the font family selector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing font family');
+		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openSidebar(page, 'typography');
 
-		const fontFamilySelector = await accordionPanel.$(
-			'.maxi-typography-control .maxi-typography-control__font-family'
+		await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-typography-control__font-family input',
+			button => button.focus()
 		);
 
-		await fontFamilySelector.click();
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
 

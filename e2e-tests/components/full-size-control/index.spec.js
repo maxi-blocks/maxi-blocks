@@ -2,10 +2,13 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('full size control', () => {
-	it('checking the full size control', async () => {
+describe('Full Size Control', () => {
+	it('Checking the full size control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebar(page, 'width height');

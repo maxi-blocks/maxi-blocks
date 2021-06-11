@@ -3,14 +3,16 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes } from '../../utils';
 
-describe('Alignment', () => {
-	it('checking the operation of alignment-control', async () => {
+describe('Alignment Control', () => {
+	it('Checking the operation of alignment-control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing test maxi');
+		await page.keyboard.type('Testing Text Maxi');
 		await page.$eval('.toolbar-item__alignment', button => button.click());
 
 		await page.waitForSelector(

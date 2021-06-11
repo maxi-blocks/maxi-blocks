@@ -3,13 +3,16 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes } from '../../utils';
 
-describe('font level', () => {
-	it('checking the font level control', async () => {
+describe('Font Level Control', () => {
+	it('Checking the font level control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing level');
+		await page.keyboard.type('Testing Text Maxi');
 		await page.$eval('.toolbar-item__text-level', button => button.click());
 
 		await page.waitForSelector(

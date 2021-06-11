@@ -108,34 +108,34 @@ const getStyles = props => {
 
 	let response = {
 		[`maxi-column-block__resizer__${uniqueID}`]: getResizerObject(props),
-		[uniqueID]: getNormalObject(props),
-		[`${uniqueID}:hover`]: getHoverObject(props),
+		[uniqueID]: {
+			'': getNormalObject(props),
+			':hover': getHoverObject(props),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+					'borderRadius',
+				]),
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+					'borderRadiusHover',
+				]),
+				isHover: true,
+			}),
+		},
 	};
 
 	response = {
 		...response,
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'background',
-				'backgroundColor',
-				'backgroundImage',
-				'backgroundVideo',
-				'backgroundGradient',
-				'backgroundSVG',
-				'borderRadius',
-			]),
-		}),
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'backgroundHover',
-				'backgroundColorHover',
-				'backgroundGradientHover',
-				'borderRadiusHover',
-			]),
-			isHover: true,
-		}),
 	};
 
 	return response;

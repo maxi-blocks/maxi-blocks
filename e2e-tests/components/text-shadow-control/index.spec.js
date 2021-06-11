@@ -2,13 +2,16 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('text shadow control', () => {
-	it('checking the text shadow control', async () => {
+describe('Text Shadow Control', () => {
+	it('Checking the text shadow control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing shadow control');
+		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openSidebar(page, 'typography');
 
 		await accordionPanel.$$eval(

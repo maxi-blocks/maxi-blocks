@@ -47,9 +47,13 @@ const SvgColor = props => {
 					style={{
 						background:
 							props[`${type}`] ||
-							`var(--maxi-${getBlockStyle(clientId)}-color-${
-								props[`palette-preset-${type}-color`]
-							})`,
+							props[`palette-custom-${type}-color`]
+								? svgColor
+								: `var(--maxi-${getBlockStyle(
+										clientId
+								  )}-color-${
+										props[`palette-preset-${type}-color`]
+								  })`,
 						border: '1px solid #fff',
 					}}
 				/>

@@ -27,44 +27,46 @@ class MaxiBlocks_Styles {
 	 * Enqueuing styles
 	 */
 	public function enqueue_styles() {
-		// Inline styles
-		wp_register_style('maxi-blocks', false);
-		wp_enqueue_style('maxi-blocks');
-		wp_add_inline_style('maxi-blocks', $this->styles());
+		$styles = $this->getStyles();
+		if ($styles) {
+			// Inline styles
+			wp_register_style('maxi-blocks', false);
+			wp_enqueue_style('maxi-blocks');
+			wp_add_inline_style('maxi-blocks', $styles);
+
+			$this->enqueue_fonts($styles);
+		}
 
 		wp_localize_script('maxi-front-scripts-js', 'maxi_custom_data', [
 			'custom_data' => $this->customMeta(),
 		]);
-
-		$this->fonts();
 	}
 
 	/**
 	 * Gets meta content
 	 */
-	public function getMeta() {
+	public function getStyles() {
 		global $post;
 		if (!$post || !isset($post->ID)) {
-			return;
+			return false;
 		}
 
 		$styles = get_option("mb_post_api_{$post->ID}");
 
 		if (!$styles) {
-			return;
+			return false;
 		}
 
-		$meta =
+		$style =
 			is_preview() || is_admin()
 				? $styles['_maxi_blocks_styles_preview']
 				: $styles['_maxi_blocks_styles'];
 
-		if (!$meta || empty($meta)) {
-			return;
+		if (!$style || empty($style)) {
+			return false;
 		}
 
-		$meta = json_decode($meta);
-		return $this->organizeMeta($meta);
+		return $style;
 	}
 
 	/**
@@ -86,161 +88,23 @@ class MaxiBlocks_Styles {
 	}
 
 	/**
-	 * Organizes meta in order to avoid duplicate selectors on style element
-	 */
-	public function organizeMeta($meta) {
-		$response = [];
-		foreach ($meta as $target => $fields) {
-			$response[$target] = [
-				'breakpoints' => $this->getBreakpoints($fields->breakpoints),
-				'content' => [],
-			];
-			foreach ($fields->content as $field => $props) {
-				if (!empty($props)) {
-					foreach ($props as $prop => $value) {
-						if (!isset($response[$target]['content'][$prop])) {
-							$response[$target]['content'][$prop] = [];
-						}
-
-						$response[$target]['content'][$prop] = array_merge(
-							$response[$target]['content'][$prop],
-							(array) $value,
-						);
-					}
-				}
-			}
-		}
-
-		return $response;
-	}
-
-	/**
-	 * Retrieve meta values for each device
-	 */
-	public function organizeResponsiveMeta($target, $deviceProps) {
-		$response = [];
-		foreach ($deviceProps as $prop => $value) {
-			$response[$target]['desktop'][$prop] = $value;
-		}
-		return $response;
-	}
-
-	/**
-	 * Create styles
-	 */
-	public function styles() {
-		$meta = $this->getMeta();
-		if (empty($meta)) {
-			return;
-		}
-		$response = '';
-
-		foreach ($meta as $target => $element) {
-			$target = $this->getTarget($target);
-			$breakpoints = $element['breakpoints'];
-			$content = $element['content'];
-
-			if (isset($content['general']) && !empty($content['general'])) {
-				$response .= "body.maxi-blocks--active #$target{";
-				$response .= $this->getStyles($content['general']);
-				$response .= '}';
-			}
-			if (isset($content['xxl']) && !empty($content['xxl'])) {
-				$xxl = intval($breakpoints->xl) + 1;
-				$response .= "@media only screen and (min-width: {$xxl}px) {body.maxi-blocks--active #$target{";
-				$response .= $this->getStyles($content['xxl']);
-				$response .= '}}';
-			}
-			if (isset($content['xl']) && !empty($content['xl'])) {
-				$response .= "@media only screen and (max-width: {$breakpoints->xl}px) {body.maxi-blocks--active #$target{";
-				$response .= $this->getStyles($content['xl']);
-				$response .= '}}';
-			}
-			if (isset($content['l']) && !empty($content['l'])) {
-				$response .= "@media only screen and (max-width: {$breakpoints->l}px) {body.maxi-blocks--active #$target{";
-				$response .= $this->getStyles($content['l']);
-				$response .= '}}';
-			}
-			if (isset($content['m']) && !empty($content['m'])) {
-				$response .= "@media only screen and (max-width: {$breakpoints->m}px) {body.maxi-blocks--active #$target{";
-				$response .= $this->getStyles($content['m']);
-				$response .= '}}';
-			}
-			if (isset($content['s']) && !empty($content['s'])) {
-				$response .= "@media only screen and (max-width: {$breakpoints->s}px) {body.maxi-blocks--active #$target{";
-				$response .= $this->getStyles($content['s']);
-				$response .= '}}';
-			}
-			if (isset($content['xs']) && !empty($content['xs'])) {
-				$response .= "@media only screen and (max-width: {$breakpoints->xs}px) {body.maxi-blocks--active #$target{";
-				$response .= $this->getStyles($content['xs']);
-				$response .= '}}';
-			}
-		}
-
-		return wp_strip_all_tags($response);
-	}
-
-	/**
-	 * Retrieve a cleaned target
-	 */
-	public function getTarget($target) {
-		if (strpos($target, '__$:')) {
-			return str_replace('__$', '', $target);
-		}
-		if (strpos($target, '__$>')) {
-			return str_replace('__$', '', $target);
-		}
-		if (strpos($target, '__$#')) {
-			return str_replace('__$', '', $target);
-		}
-		return str_replace('__$', ' .', $target);
-	}
-
-	/**
-	 * Responsive styles
-	 */
-	public function getStyles($styles) {
-		$response = '';
-		foreach ($styles as $property => $value) {
-			$response .= "{$property}: {$value};";
-		}
-		return $response;
-	}
-
-	/**
 	 * Post fonts
 	 *
 	 * @return object   Font name with font options
 	 */
 
-	public function fonts() {
-		$meta = $this->getMeta();
+	public function enqueue_fonts($styles) {
+		preg_match_all('/font-family:(\w+);/', $styles, $fonts);
+		$fonts = array_unique($fonts[1]);
 
-		if (empty($meta)) {
+		if (empty($fonts)) {
 			return;
 		}
 
-		$fontOptions = [];
-		foreach ($meta as $target) {
-			foreach ($target['content'] as $breakpoint) {
-				if (array_key_exists('font-family', $breakpoint)) {
-					$font_style = array_key_exists('font-style', $breakpoint)
-						? $breakpoint['font-style']
-						: 'normal';
-					$fontOptions[
-						$breakpoint['font-family'] . '-' . $font_style
-					] = $font_style;
-				}
-			}
-		}
-
-		foreach ($fontOptions as $font => $value) {
-			$font_name = substr($font, 0, strpos($font, '-'));
-			$font_name = str_replace(',', '', $font_name);
+		foreach ($fonts as $font) {
 			wp_enqueue_style(
 				"{$font}",
-				"https://fonts.googleapis.com/css2?family={$font_name}",
+				"https://fonts.googleapis.com/css2?family={$font}",
 			);
 		}
 	}

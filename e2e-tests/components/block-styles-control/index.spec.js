@@ -7,10 +7,13 @@ import {
 	openDocumentSettingsSidebar,
 	ensureSidebarOpened,
 } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes } from '../../utils';
 
-describe('block styles control', () => {
-	it('cheking the block styles control', async () => {
+describe('Block Styles Control', () => {
+	it('Checking the block styles control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await openDocumentSettingsSidebar();

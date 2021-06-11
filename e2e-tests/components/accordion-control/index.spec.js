@@ -2,10 +2,13 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import openSidebar from '../../utils/openSidebar';
 
-describe('accordion control', () => {
-	it('checking the accordion control', async () => {
+describe('Accordion Control', () => {
+	it('Checking the accordion control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 

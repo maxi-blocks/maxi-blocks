@@ -46,24 +46,18 @@ const getCircleObject = (props, target) => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	let response = {
-		[uniqueID]: getNormalObject(props),
-		[`${uniqueID} .maxi-number-counter__box .maxi-number-counter__box__circle`]: getCircleObject(
-			props,
-			'circle-bar'
-		),
-		[`${uniqueID} .maxi-number-counter__box .maxi-number-counter__box__background`]: getCircleObject(
-			props,
-			'circle-background'
-		),
-		[`${uniqueID} .maxi-number-counter__box .maxi-number-counter__box__text`]: getCircleObject(
-			props,
-			'text'
-		),
-		[`${uniqueID} .maxi-number-counter__box .maxi-number-counter__box__text sup`]: getCircleObject(
-			props,
-			'sup'
-		),
+	const response = {
+		[uniqueID]: {
+			'': getNormalObject(props),
+			' .maxi-number-counter__box .maxi-number-counter__box__circle':
+				getCircleObject(props, 'circle-bar'),
+			' .maxi-number-counter__box .maxi-number-counter__box__background':
+				getCircleObject(props, 'circle-background'),
+			' .maxi-number-counter__box .maxi-number-counter__box__text':
+				getCircleObject(props, 'text'),
+			' .maxi-number-counter__box .maxi-number-counter__box__text sup':
+				getCircleObject(props, 'sup'),
+		},
 	};
 
 	return response;

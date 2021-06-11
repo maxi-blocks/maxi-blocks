@@ -1,3 +1,6 @@
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
@@ -15,7 +18,11 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
-import { isEmpty } from 'lodash';
+
+/**
+ * External dependencies
+ */
+import { isEmpty, isNil, merge } from 'lodash';
 
 const getNormalObject = props => {
 	const response = {
@@ -187,7 +194,7 @@ const getImageBackendObject = props => {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
 			false,
-			!isEmpty(props.clipPath)
+			!isEmpty(props.clipPath) || !isNil(props.SVGCurrentElement)
 		),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -240,54 +247,44 @@ const getImageHoverPreviewObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	let response = {
-		[uniqueID]: getNormalObject(props),
-		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageFrontendObject(
-			props
-		),
-		[`${uniqueID} .maxi-image-block__resizer`]: getResizeObject(props),
-		[`${uniqueID}:hover .maxi-block-hover-wrapper`]: getImageHoverObject(
-			props
-		),
-		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageBackendObject(props),
-		[`${uniqueID} .maxi-block-hover-wrapper .maxi-hover-preview`]: getImageHoverPreviewObject(
-			props
-		),
-		[`${uniqueID} figcaption`]: getFigcaptionObject(props),
-		[`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]: getHoverEffectTitleTextObject(
-			props
-		),
-		[`${uniqueID} .maxi-hover-details .maxi-hover-details__content p`]: getHoverEffectContentTextObject(
-			props
-		),
-		[`${uniqueID} .maxi-hover-details`]: getHoverEffectDetailsBoxObject(
-			props
-		),
-	};
-
-	response = {
-		...response,
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'backgroundHover',
-				'backgroundColorHover',
-				'backgroundGradientHover',
-				'borderRadiusHover',
-			]),
-			isHover: true,
-		}),
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'background',
-				'backgroundColor',
-				'backgroundImage',
-				'backgroundVideo',
-				'backgroundGradient',
-				'backgroundSVG',
-			]),
-		}),
+	const response = {
+		[uniqueID]: {
+			'': getNormalObject(props),
+			' .maxi-block-hover-wrapper': merge(
+				// Needs to be checked!
+				getImageFrontendObject(props),
+				getImageBackendObject(props)
+			),
+			' .maxi-image-block__resizer': getResizeObject(props),
+			':hover .maxi-block-hover-wrapper': getImageHoverObject(props),
+			' .maxi-block-hover-wrapper .maxi-hover-preview':
+				getImageHoverPreviewObject(props),
+			' figcaption': getFigcaptionObject(props),
+			' .maxi-hover-details .maxi-hover-details__content h3':
+				getHoverEffectTitleTextObject(props),
+			' .maxi-hover-details .maxi-hover-details__content p':
+				getHoverEffectContentTextObject(props),
+			' .maxi-hover-details': getHoverEffectDetailsBoxObject(props),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+					'borderRadiusHover',
+				]),
+				isHover: true,
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+				]),
+			}),
+		},
 	};
 
 	return response;

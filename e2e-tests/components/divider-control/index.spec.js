@@ -5,10 +5,13 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes } from '../../utils';
 
-describe('divider control', () => {
-	it('checking the style selector', async () => {
+describe('Divider Control', () => {
+	it('Checking the style selector', async () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');
 		await page.$eval('.toolbar-item__divider-line', button =>

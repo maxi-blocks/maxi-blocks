@@ -47,7 +47,19 @@ class MaxiBlocks_ImageUpload
 
     public function maxi_upload_pattern_image($maxi_image_to_upload)
     {
+        if (! function_exists('write_log')) {
+            function write_log($log)
+            {
+                if (is_array($log) || is_object($log)) {
+                    error_log(print_r($log, true));
+                } else {
+                    error_log($log);
+                }
+            }
+        }
         global $wpdb;
+
+        write_log('========================');
 
         if (isset($_GET['maxi_image_to_upload'])) {
             $image_link = sanitize_text_field($_GET['maxi_image_to_upload']);
@@ -62,7 +74,12 @@ class MaxiBlocks_ImageUpload
         $image_name = sanitize_file_name(basename($image_link));
         $filename = 'maxi-'.$image_name;
 
-        $exists = maxi_media_file_already_exists($filename);
+        write_log('$image_name: '.$image_name);
+        write_log('$filename: '.$filename);
+
+        $exists = $this->maxi_media_file_already_exists($filename);
+
+        write_log('$exists: '.$exists);
 
         if (!$exists) {
             $upload_file = wp_upload_bits($filename, null, @file_get_contents($image_link));
@@ -84,12 +101,16 @@ class MaxiBlocks_ImageUpload
                 
                 $new_url = wp_get_attachment_image_url($attachment_id);
                 echo $new_url;
+                write_log('$new_url: '.$new_url);
+                write_log('==========+++==========');
 
                 die();
             }
         }
         $new_url = wp_get_attachment_image_url($exists);
         echo $new_url;
+        write_log('$new_url2: '.$new_url);
+        write_log('=========---==========');
         
         die();
     }

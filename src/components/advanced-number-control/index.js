@@ -93,69 +93,60 @@ const AdvancedNumberControl = props => {
 
 	return (
 		<BaseControl label={label} className={classes}>
-			{!enableUnit ? (
-				<input
-					type='number'
-					className='maxi-size-control__value'
-					value={value === undefined ? defaultValue : trim(value)}
-					onChange={e => {
-						let { value } = e.target;
+			<input
+				type='number'
+				className='maxi-advanced-number-control__value'
+				value={value === undefined ? defaultValue : trim(value)}
+				onChange={e => {
+					let { value } = e.target;
 
+					if (enableUnit) {
+						if (
+							value >
+							minMaxSettings[isEmpty(unit) ? '-' : unit].max
+						)
+							value =
+								minMaxSettings[isEmpty(unit) ? '-' : unit].max;
+						if (
+							value <
+							minMaxSettings[isEmpty(unit) ? '-' : unit].min
+						)
+							value =
+								minMaxSettings[isEmpty(unit) ? '-' : unit].min;
+
+						if (value > 100 && unit === '%') value = 100;
+					} else {
 						if (value !== '' && +value > max) value = max;
 						if (value !== '' && +value !== 0 && +value < min)
 							value = min;
+					}
 
-						onChangeValue(value === '' ? value : +value);
+					onChangeValue(value === '' ? value : +value);
+				}}
+				min={
+					enableUnit
+						? minMaxSettings[isEmpty(unit) ? '-' : unit].min
+						: min
+				}
+				max={
+					enableUnit
+						? minMaxSettings[isEmpty(unit) ? '-' : unit].max
+						: max
+				}
+				step={stepValue}
+				placeholder={placeholder}
+			/>
+			{enableUnit && (
+				<SelectControl
+					className='maxi-dimensions-control__units'
+					options={getOptions()}
+					value={unit}
+					onChange={val => {
+						onChangeUnit(val);
+
+						if (value > 100 && val === '%') onChangeValue(100);
 					}}
-					min={min}
-					max={max}
-					step={stepValue}
-					placeholder={placeholder}
 				/>
-			) : (
-				<>
-					<input
-						type='number'
-						className='maxi-size-control__value'
-						value={value === undefined ? defaultValue : trim(value)}
-						onChange={e => {
-							let { value } = e.target;
-
-							if (
-								value >
-								minMaxSettings[isEmpty(unit) ? '-' : unit].max
-							)
-								value =
-									minMaxSettings[isEmpty(unit) ? '-' : unit]
-										.max;
-							if (
-								value <
-								minMaxSettings[isEmpty(unit) ? '-' : unit].min
-							)
-								value =
-									minMaxSettings[isEmpty(unit) ? '-' : unit]
-										.min;
-
-							if (value > 100 && unit === '%') value = 100;
-
-							onChangeValue(value === '' ? value : +value);
-						}}
-						min={minMaxSettings[isEmpty(unit) ? '-' : unit].min}
-						max={minMaxSettings[isEmpty(unit) ? '-' : unit].max}
-						step={stepValue}
-						placeholder={placeholder}
-					/>
-					<SelectControl
-						className='maxi-dimensions-control__units'
-						options={getOptions()}
-						value={unit}
-						onChange={val => {
-							onChangeUnit(val);
-
-							if (value > 100 && val === '%') onChangeValue(100);
-						}}
-					/>
-				</>
 			)}
 			{!disableReset && (
 				<Button
@@ -181,14 +172,14 @@ const AdvancedNumberControl = props => {
 					onChangeValue(+val);
 				}}
 				min={
-					!enableUnit
-						? min
-						: minMaxSettings[isEmpty(unit) ? '-' : unit].min
+					enableUnit
+						? minMaxSettings[isEmpty(unit) ? '-' : unit].min
+						: min
 				}
 				max={
-					!enableUnit
-						? max
-						: minMaxSettings[isEmpty(unit) ? '-' : unit].max
+					enableUnit
+						? minMaxSettings[isEmpty(unit) ? '-' : unit].max
+						: max
 				}
 				step={stepValue}
 				withInputField={false}

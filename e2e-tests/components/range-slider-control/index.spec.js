@@ -21,45 +21,45 @@ describe('Range Slider Control', () => {
 
 		// Max value
 		await accordionPanel.$eval(
-			'.maxi-full-size-control .maxi-base-control__field input',
+			'.maxi-accordion-control__item__panel .maxi-opacity-control .maxi-base-control__field input',
 			select => select.focus()
 		);
-		await page.keyboard.type('4000');
+		await page.keyboard.type('400');
 
 		const attributes = await getBlockAttributes();
-		const heightAttribute = attributes['height-general'];
-		const expectNum = 3999;
+		const heightAttribute = attributes['opacity-general'];
+		const expectNum = 1;
 
 		expect(heightAttribute).toStrictEqual(expectNum);
 
 		// Min value
 		await accordionPanel.$eval(
-			'.maxi-full-size-control .maxi-base-control__field input',
+			'.maxi-accordion-control__item__panel .maxi-opacity-control .maxi-base-control__field input',
 			select => select.focus()
 		);
-		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('0');
+
+		await page.keyboard.type('0.1');
 
 		const numberAttributes = await getBlockAttributes();
-		const minHeightAttribute = numberAttributes['height-general'];
-		const expectMinNum = '';
+		const minHeightAttribute = numberAttributes['opacity-general'];
+		const expectMinNum = 0.01;
 
 		expect(minHeightAttribute).toStrictEqual(expectMinNum);
 
 		// reset value
 		await accordionPanel.$eval(
-			'.maxi-full-size-control .maxi-base-control__field input',
+			'.maxi-accordion-control__item__panel .maxi-opacity-control .maxi-base-control__field input',
 			select => select.focus()
 		);
 		await page.keyboard.type('40');
 
 		await accordionPanel.$eval(
-			'.maxi-full-size-control .maxi-base-control__field button',
+			'.maxi-accordion-control__item__panel .maxi-opacity-control .maxi-base-control__field button',
 			click => click.click()
 		);
 
 		const numbersAttributes = await getBlockAttributes();
-		const autoHeightAttribute = numbersAttributes['height-general'];
+		const autoHeightAttribute = numbersAttributes['opacity-general'];
 		const expectAuto = '';
 
 		expect(autoHeightAttribute).toStrictEqual(expectAuto);

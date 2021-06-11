@@ -11,7 +11,7 @@ import {
  */
 import { getBlockAttributes } from '../../utils';
 
-describe('Block Placeholder', () => {
+/* describe('Block Placeholder', () => {
 	it('Checking the block placeholder', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
@@ -21,4 +21,4 @@ describe('Block Placeholder', () => {
 
 		expect(paragraph).toMatchSnapshot();
 	});
-});
+}); */

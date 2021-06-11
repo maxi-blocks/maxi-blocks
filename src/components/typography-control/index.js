@@ -12,7 +12,7 @@ import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import TextShadowControl from '../text-shadow-control';
 import {
 	setFormat,
@@ -55,7 +55,7 @@ const TextOptions = props => {
 
 	return (
 		<>
-			<SizeControl
+			<AdvancedNumberControl
 				className='maxi-typography-control__size'
 				label={__('Size', 'maxi-blocks')}
 				unit={getValue(`${prefix}font-size-unit`, breakpoint, avoidXXL)}
@@ -94,7 +94,7 @@ const TextOptions = props => {
 				minMaxSettings={minMaxSettings}
 				allowedUnits={['px', 'em', 'vw', '%']}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				className='maxi-typography-control__line-height'
 				label={__('Line Height', 'maxi-blocks')}
 				unit={
@@ -142,7 +142,7 @@ const TextOptions = props => {
 				minMaxSettings={minMaxSettings}
 				allowedUnits={['px', 'em', 'vw', '%', '-']}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				className='maxi-typography-control__letter-spacing'
 				label={__('Letter Spacing', 'maxi-blocks')}
 				allowedUnits={['px', 'em', 'vw']}

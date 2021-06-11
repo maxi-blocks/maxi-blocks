@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import SVGDefaultsDisplayer from '../svg-default-displayer';
 import SVGFillControl from '../svg-fill-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import {
 	getDefaultAttribute,
 	getAttributeKey,
@@ -149,7 +149,7 @@ const SVGLayer = props => {
 						label: __('Position', 'maxi-blocks'),
 						content: (
 							<>
-								<SizeControl
+								<AdvancedNumberControl
 									label={__('Y-axis', 'maxi-blocks')}
 									value={
 										SVGOptions[
@@ -215,7 +215,7 @@ const SVGLayer = props => {
 									}
 									min={0}
 								/>
-								<SizeControl
+								<AdvancedNumberControl
 									label={__('X-axis', 'maxi-blocks')}
 									value={
 										SVGOptions[
@@ -287,7 +287,7 @@ const SVGLayer = props => {
 					!isEmpty(SVGOptions['background-svg-SVGElement']) && {
 						label: __('Size', 'maxi-blocks'),
 						content: (
-							<SizeControl
+							<AdvancedNumberControl
 								label={__('Size', 'maxi-blocks')}
 								value={
 									SVGOptions[

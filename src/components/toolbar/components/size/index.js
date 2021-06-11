@@ -8,7 +8,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import RadioControl from '../../../radio-control';
-import SizeControl from '../../../size-control';
+import AdvancedNumberControl from '../../../advanced-number-control';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	getLastBreakpointAttribute,
@@ -79,7 +79,7 @@ const Size = props => {
 				{!EXCLUDED_BLOCKS_SIZE.includes(blockName) && (
 					<>
 						{currentBlockRoot && (
-							<SizeControl
+							<AdvancedNumberControl
 								label={__('Width', 'maxi-blocks')}
 								unit={getLastBreakpointAttribute(
 									'width-unit',
@@ -115,7 +115,7 @@ const Size = props => {
 								}
 							/>
 						)}
-						<SizeControl
+						<AdvancedNumberControl
 							label={__('Max Width', 'maxi-blocks')}
 							unit={getLastBreakpointAttribute(
 								'max-width-unit',

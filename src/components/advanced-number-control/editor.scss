@@ -1,8 +1,8 @@
-.maxi-size-control {
+.maxi-advanced-number-control {
 	.maxi-base-control {
 		margin-bottom: 0;
 	}
-	.maxi-size-control__value {
+	&__value {
 		width: 20%;
 		height: 31px;
 		flex: none;

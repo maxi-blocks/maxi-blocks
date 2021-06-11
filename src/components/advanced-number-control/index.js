@@ -26,7 +26,7 @@ import { reset } from '../../icons';
 /**
  * Component
  */
-const SizeControl = props => {
+const AdvancedNumberControl = props => {
 	const {
 		label,
 		className,
@@ -68,7 +68,7 @@ const SizeControl = props => {
 		},
 	} = props;
 
-	const classes = classnames('maxi-size-control', className);
+	const classes = classnames('maxi-advanced-number-control', className);
 
 	const stepValue = unit === '-' || isEmpty(unit) ? 0.01 : step;
 
@@ -198,4 +198,4 @@ const SizeControl = props => {
 	);
 };
 
-export default SizeControl;
+export default AdvancedNumberControl;

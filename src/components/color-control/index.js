@@ -9,7 +9,7 @@ import { useState, useEffect } from '@wordpress/element';
  */
 import Button from '../button';
 import BaseControl from '../base-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import ColorPaletteControl from '../color-palette-control';
 
 /**
@@ -143,7 +143,7 @@ const ColorControl = props => {
 						</BaseControl>
 					)}
 					{!disableOpacity && (
-						<SizeControl
+						<AdvancedNumberControl
 							label={__('Colour Opacity', 'maxi-blocks')}
 							placeholder=''
 							disableUnit

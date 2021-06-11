@@ -10,7 +10,7 @@ import { useState } from '@wordpress/element';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import FancyRadioControl from '../fancy-radio-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import Icon from '../icon';
 
 /**
@@ -128,7 +128,7 @@ const TextShadow = props => {
 						disableGradient
 						disableGradientAboveBackground
 					/>
-					<SizeControl
+					<AdvancedNumberControl
 						label={__('X', 'maxi-blocks')}
 						placeholder=''
 						disableUnit
@@ -143,7 +143,7 @@ const TextShadow = props => {
 						max={100}
 						onReset={() => onChangeValue(0, 0)}
 					/>
-					<SizeControl
+					<AdvancedNumberControl
 						label={__('Y', 'maxi-blocks')}
 						placeholder=''
 						disableUnit
@@ -158,7 +158,7 @@ const TextShadow = props => {
 						max={100}
 						onReset={() => onChangeValue(1, 0)}
 					/>
-					<SizeControl
+					<AdvancedNumberControl
 						label={__('Blur', 'maxi-blocks')}
 						placeholder=''
 						disableUnit

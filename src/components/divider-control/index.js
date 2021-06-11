@@ -11,7 +11,7 @@ import DefaultStylesControl from '../default-styles-control';
 import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
 import SelectControl from '../select-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -172,7 +172,7 @@ const DividerControl = props => {
 			{props['divider-border-style'] !== 'none' &&
 				lineOrientation === 'horizontal' && (
 					<>
-						<SizeControl
+						<AdvancedNumberControl
 							label={__('Line Size', 'maxi-blocks')}
 							unit={props['divider-width-unit']}
 							onChangeUnit={val =>
@@ -194,7 +194,7 @@ const DividerControl = props => {
 							}
 							minMaxSettings={minMaxSettings}
 						/>
-						<SizeControl
+						<AdvancedNumberControl
 							label={__('Line Weight', 'maxi-blocks')}
 							allowedUnits={['px', 'em', 'vw']}
 							unit={props['divider-border-top-unit']}
@@ -227,7 +227,7 @@ const DividerControl = props => {
 			{props['divider-border-style'] !== 'none' &&
 				lineOrientation === 'vertical' && (
 					<>
-						<SizeControl
+						<AdvancedNumberControl
 							label={__('Size', 'maxi-blocks')}
 							placeholder=''
 							disableUnit
@@ -257,7 +257,7 @@ const DividerControl = props => {
 								'divider-height'
 							)}
 						/>
-						<SizeControl
+						<AdvancedNumberControl
 							label={__('Weight', 'maxi-blocks')}
 							placeholder=''
 							disableUnit

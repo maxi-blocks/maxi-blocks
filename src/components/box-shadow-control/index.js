@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import Icon from '../icon';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import {
 	boxShadowNone,
 	boxShadowTotal,
@@ -174,7 +174,7 @@ const BoxShadowControl = props => {
 					/>
 					{!disableAdvanced && (
 						<>
-							<SizeControl
+							<AdvancedNumberControl
 								label={__('Horizontal', 'maxi-blocks')}
 								placeholder=''
 								disableUnit
@@ -209,7 +209,7 @@ const BoxShadowControl = props => {
 									}`
 								)}
 							/>
-							<SizeControl
+							<AdvancedNumberControl
 								label={__('Vertical', 'maxi-blocks')}
 								placeholder=''
 								disableUnit
@@ -244,7 +244,7 @@ const BoxShadowControl = props => {
 									}`
 								)}
 							/>
-							<SizeControl
+							<AdvancedNumberControl
 								label={__('Blur', 'maxi-blocks')}
 								placeholder=''
 								disableUnit
@@ -279,7 +279,7 @@ const BoxShadowControl = props => {
 									}`
 								)}
 							/>
-							<SizeControl
+							<AdvancedNumberControl
 								label={__('Spread', 'maxi-blocks')}
 								placeholder=''
 								disableUnit

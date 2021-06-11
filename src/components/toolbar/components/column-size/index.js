@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import SelectControl from '../../../select-control';
 import ToolbarPopover from '../toolbar-popover';
-import SizeControl from '../../../size-control';
+import AdvancedNumberControl from '../../../advanced-number-control';
 import { getLastBreakpointAttribute } from '../../../../extensions/styles';
 import { getColumnDefaultValue } from '../../../../extensions/column-templates';
 
@@ -48,7 +48,7 @@ const ColumnSize = props => {
 			advancedOptions='column settings'
 		>
 			<div className='toolbar-item__column-size__popover'>
-				<SizeControl
+				<AdvancedNumberControl
 					label={__('Column Size (%)', 'maxi-blocks')}
 					placeholder=''
 					disableUnit

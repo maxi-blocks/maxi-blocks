@@ -29,7 +29,7 @@ import {
 	ResponsiveControl,
 	SelectControl,
 	SettingTabsControl,
-	SizeControl,
+	AdvancedNumberControl,
 	TextControl,
 	TransformControl,
 	TypographyControl,
@@ -191,7 +191,7 @@ const Inspector = memo(
 															{typeOfList ===
 																'ol' && (
 																<>
-																	<SizeControl
+																	<AdvancedNumberControl
 																		label={__(
 																			'Start From',
 																			'maxi-blocks'

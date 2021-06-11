@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import FancyRadioControl from '../fancy-radio-control';
 import {
 	getLastBreakpointAttribute,
@@ -79,7 +79,7 @@ const FullSizeControl = props => {
 	return (
 		<div className={classes}>
 			{!hideWidth && currentBlockRoot && (
-				<SizeControl
+				<AdvancedNumberControl
 					label={__('Width', 'maxi-blocks')}
 					unit={getLastBreakpointAttribute(
 						`${prefix}width-unit`,
@@ -110,7 +110,7 @@ const FullSizeControl = props => {
 					minMaxSettings={minMaxSettings}
 				/>
 			)}
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('Height', 'maxi-blocks')}
 				unit={getLastBreakpointAttribute(
 					`${prefix}height-unit`,
@@ -175,7 +175,7 @@ const FullSizeControl = props => {
 			{props[`${prefix}size-advanced-options`] && (
 				<>
 					{!hideMaxWidth && (
-						<SizeControl
+						<AdvancedNumberControl
 							label={__('Max Width', 'maxi-blocks')}
 							unit={getLastBreakpointAttribute(
 								`${prefix}max-width-unit`,
@@ -210,7 +210,7 @@ const FullSizeControl = props => {
 							minMaxSettings={minMaxSettings}
 						/>
 					)}
-					<SizeControl
+					<AdvancedNumberControl
 						label={__('Min Width', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(
 							`${prefix}min-width-unit`,
@@ -244,7 +244,7 @@ const FullSizeControl = props => {
 						}}
 						minMaxSettings={minMaxSettings}
 					/>
-					<SizeControl
+					<AdvancedNumberControl
 						label={__('Max Height', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(
 							`${prefix}max-height-unit`,
@@ -278,7 +278,7 @@ const FullSizeControl = props => {
 						}}
 						minMaxSettings={minMaxSettings}
 					/>
-					<SizeControl
+					<AdvancedNumberControl
 						label={__('Min Height', 'maxi-blocks')}
 						unit={getLastBreakpointAttribute(
 							`${prefix}min-height-unit`,

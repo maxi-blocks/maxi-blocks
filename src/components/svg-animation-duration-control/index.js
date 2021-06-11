@@ -7,7 +7,7 @@ import {} from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 
 /**
  * Component
@@ -17,7 +17,7 @@ const SvgAnimationDurationControl = props => {
 	return (
 		<>
 			{{ animation } !== 'off' && (
-				<SizeControl
+				<AdvancedNumberControl
 					label={__('Animation Duration', 'maxi-blocks')}
 					placeholder=''
 					disableUnit

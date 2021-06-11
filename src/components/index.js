@@ -50,7 +50,7 @@ export { default as SelectControl } from './select-control';
 export { default as SettingTabsControl } from './setting-tabs-control';
 export { default as ShapeDivider } from './shape-divider';
 export { default as ShapeDividerControl } from './shape-divider-control';
-export { default as SizeControl } from './size-control';
+export { default as AdvancedNumberControl } from './advanced-number-control';
 export { default as Spinner } from './spinner';
 export { default as SvgAnimationControl } from './svg-animation-control';
 export { default as SvgAnimationDurationControl } from './svg-animation-duration-control';

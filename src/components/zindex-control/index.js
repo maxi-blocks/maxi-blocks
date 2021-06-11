@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
@@ -26,7 +26,7 @@ const ZIndexControl = props => {
 	const classes = classnames('maxi-zIndex-control', className);
 
 	return (
-		<SizeControl
+		<AdvancedNumberControl
 			label={__('Z-index', 'maxi-blocks')}
 			className={classes}
 			placeholder=''

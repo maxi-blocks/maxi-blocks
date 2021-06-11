@@ -12,7 +12,7 @@ import { useState, useEffect } from '@wordpress/element';
 import Button from '../button';
 import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import {
 	getNumCol,
 	getTemplates,
@@ -159,7 +159,7 @@ const ColumnPatternsInspector = props => {
 	return (
 		<div className='components-column-pattern'>
 			{!toolbar && breakpoint === 'general' && (
-				<SizeControl
+				<AdvancedNumberControl
 					label={__('Columns', 'maxi-blocks')}
 					disableUnit
 					value={numCol}
@@ -191,7 +191,8 @@ const ColumnPatternsInspector = props => {
 								);
 
 								onChange({
-									[`row-pattern-${breakpoint}`]: template.name,
+									[`row-pattern-${breakpoint}`]:
+										template.name,
 								});
 							}}
 						>

@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 
 /**
  * External dependencies
@@ -23,7 +23,7 @@ const OpacityControl = props => {
 	const classes = classnames('maxi-opacity-control', className);
 
 	return (
-		<SizeControl
+		<AdvancedNumberControl
 			className={classes}
 			label={`${!isEmpty(label) ? label : __('Opacity', 'maxi-blocks')}`}
 			disableUnit

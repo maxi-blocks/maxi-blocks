@@ -7,7 +7,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 
 /**
  * External dependencies
@@ -33,7 +33,7 @@ const ResponsiveControl = props => {
 
 	return (
 		<div className={classes}>
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('Breakpoint', 'maxi-blocks')}
 				placeholder=''
 				disableUnit

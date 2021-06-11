@@ -11,7 +11,7 @@ import MediaUploaderControl from '../media-uploader-control';
 import ClipPath from '../clip-path-control';
 import OpacityControl from '../opacity-control';
 import ImageCropControl from '../image-crop-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
 
 /**
@@ -301,7 +301,7 @@ const ImageLayer = props => {
 				getAttributeKey('background-image-position', isHover, prefix)
 			] === 'custom' && (
 				<>
-					<SizeControl
+					<AdvancedNumberControl
 						label={__('Y-axis', 'maxi-blocks')}
 						unit={
 							imageOptions[
@@ -366,7 +366,7 @@ const ImageLayer = props => {
 							})
 						}
 					/>
-					<SizeControl
+					<AdvancedNumberControl
 						label={__('X-axis', 'maxi-blocks')}
 						unit={
 							imageOptions[

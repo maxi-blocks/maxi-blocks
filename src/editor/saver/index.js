@@ -28,7 +28,6 @@ const BlockStylesSaver = () => {
 		if (isSaving && !isPreviewing) {
 			saveStyles(true);
 			saveCustomData(true);
-			saveSCStyles(true);
 		} else if (isSaving && isPreviewing) {
 			saveStyles(false);
 			saveCustomData(true);

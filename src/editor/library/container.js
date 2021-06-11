@@ -68,6 +68,34 @@ const LibraryContainer = props => {
 		updateSCOnEditor(selectedSCValue);
 	}, [selectedSCKey]);
 
+	const ajaxurl = wp.ajax.settings.url;
+
+	const imageUploader = imageSrc => {
+		console.log(imageSrc);
+		console.log(
+			`${
+				window.location.origin + ajaxurl
+			}?action=maxi_upload_pattern_image&maxi_image_to_upload=${imageSrc}`
+		);
+
+		fetch(
+			`${
+				window.location.origin + ajaxurl
+			}?action=maxi_upload_pattern_image&maxi_image_to_upload=${imageSrc}`,
+			{
+				method: 'POST',
+			}
+		)
+			.then(data => {
+				return data();
+			})
+			.catch(err => {
+				console.error(
+					__(`Error cropping the image: ${err}`, 'maxi-blocks')
+				);
+			});
+	};
+
 	/** Patterns / Blocks */
 	const MasonryItemPatterns = props => {
 		const { previewIMG, isPro, serial, onRequestInsert, demoUrl } = props;
@@ -88,7 +116,10 @@ const LibraryContainer = props => {
 						</Button>
 						<Button
 							className='maxi-cloud-masonry-card__button'
-							onClick={onRequestInsert}
+							// onClick={onRequestInsert}
+							onClick={imageUploader(
+								'https://maxi-demo.dev200.com/wp-content/uploads/2021/03/PIL-16.jpg'
+							)}
 						>
 							Insert
 						</Button>

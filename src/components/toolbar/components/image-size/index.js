@@ -9,7 +9,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
  */
 import Button from '../../../button';
 import openSidebar from '../../../../extensions/dom';
-import RangeSliderControl from '../../../range-slider-control';
+import SizeControl from '../../../size-control';
 import SelectControl from '../../../select-control';
 import RadioControl from '../../../radio-control';
 import ToolbarPopover from '../toolbar-popover';
@@ -109,16 +109,25 @@ const ImageSize = props => {
 						onChange={fullWidth => onChangeFullWidth(fullWidth)}
 					/>
 				)}
-				<RangeSliderControl
+				<SizeControl
 					label={__('Width', 'maxi-blocks')}
+					placeholder=''
+					disableUnit
 					value={imgWidth}
-					defaultValue={getDefaultAttribute('imgWidth')}
-					onChange={val =>
+					onChangeValue={val => {
 						onChangeSize({
-							imgWidth: val,
+							imgWidth:
+								val !== undefined && val !== '' ? val : '',
+						});
+					}}
+					min={0}
+					max={100}
+					onReset={() =>
+						onChangeSize({
+							imgWidth: getDefaultAttribute('imgWidth'),
 						})
 					}
-					allowReset
+					initialPosition={getDefaultAttribute('imgWidth')}
 				/>
 				<div className='toolbar-image-size-buttons'>
 					<Button

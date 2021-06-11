@@ -189,6 +189,7 @@ function maxi_output_css() {
 	}
 
 	//wp_nonce_field( 'maxi_blocks_custom_ccs_page_nonce', 'maxi_blocks_custom_ccs_page_process' );
+<<<<<<< HEAD
 }
 
 /**
@@ -216,3 +217,6 @@ if (!function_exists('fa_custom_setup_kit')) {
 fa_custom_setup_kit(
 	'https://kit.fontawesome.com/edb89ea43a.js'
 );
+=======
+}
+>>>>>>> 1f645da845cdad66ceaac7c24818eb1896c47195

@@ -6,15 +6,21 @@ import {
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('responsive control', () => {
-	it('test the responsive control', async () => {
+describe('Responsive Control', () => {
+	it('Test the responsive control', async () => {
 		await createNewPost();
+
+		// open the responsive selector
 		await page.$eval('#maxi-blocks__toolbar-buttons button', responsive =>
 			responsive.click()
 		);
 
+		// select the responsive XL
 		await page.$$eval(
 			'#maxi-blocks__toolbar-buttons .maxi-responsive-selector button',
 			selector => selector[2].click()

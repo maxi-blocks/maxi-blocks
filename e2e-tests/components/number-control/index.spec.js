@@ -11,8 +11,8 @@ import {
  */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('number control', () => {
-	it('checking the number control', async () => {
+describe('Number Control', () => {
+	it('Checking the number control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebar(page, 'width height');

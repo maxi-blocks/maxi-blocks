@@ -59,7 +59,7 @@ module.exports = function (api) {
 				moduleName: '@env',
 				safe: true,
 				path: '.env',
-				allowUndefined: true,
+				allowUndefined: false,
 			},
 		],
 	];

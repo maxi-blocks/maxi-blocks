@@ -5,6 +5,11 @@ import defaultBoxShadow from '../defaults/boxShadow';
 import defaultBoxShadowHover from '../defaults/boxShadowHover';
 
 /**
+ * External dependencies
+ */
+import { round } from 'lodash';
+
+/**
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -67,19 +72,27 @@ const getBoxShadowStyles = (obj, isHover = false, dropShadow = false) => {
 			(spread !== defaultSpread && spread !== 0) ||
 			color !== defaultColor;
 
-		if (isNotDefault) {
+		if (isNotDefault && dropShadow) {
+			const blurValue = round(blur / 3);
+
+			boxShadowString += `${horizontal || 0}px `;
+			boxShadowString += `${vertical || 0}px `;
+			boxShadowString += `${blurValue || 0}px `;
+			boxShadowString += color || defaultColor;
+
+			response[breakpoint] = {
+				filter: `drop-shadow(${boxShadowString.trim()})`,
+			};
+		} else if (isNotDefault) {
 			boxShadowString += `${horizontal || 0}px `;
 			boxShadowString += `${vertical || 0}px `;
 			boxShadowString += `${blur || 0}px `;
+			boxShadowString += `${spread || 0}px `;
 			boxShadowString += color || defaultColor;
 
-			response[breakpoint] = dropShadow
-				? {
-						filter: `drop-shadow(${boxShadowString.trim()})`,
-				  }
-				: {
-						'box-shadow': `${boxShadowString.trim()}`,
-				  };
+			response[breakpoint] = {
+				'box-shadow': `${boxShadowString.trim()}`,
+			};
 		}
 	});
 

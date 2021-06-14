@@ -68,9 +68,7 @@ const TextOptions = props => {
 						breakpoint
 					);
 				}}
-				value={trim(
-					getValue(`${prefix}font-size`, breakpoint, avoidXXL)
-				)}
+				value={getValue(`${prefix}font-size`, breakpoint, avoidXXL)}
 				defaultValue={getDefault(`${prefix}font-size`, breakpoint)}
 				onChangeValue={val => {
 					onChangeFormat(
@@ -94,6 +92,7 @@ const TextOptions = props => {
 					)
 				}
 				minMaxSettings={minMaxSettings}
+				allowedUnits={['px', 'em', 'vw', '%']}
 			/>
 			<SizeControl
 				className='maxi-typography-control__line-height'

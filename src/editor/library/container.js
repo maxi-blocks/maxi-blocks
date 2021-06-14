@@ -167,7 +167,8 @@ const LibraryContainer = props => {
 
 	const patternsResults = ({ hit }) => {
 		return (
-			<MasonryItemPatterns
+			<MasonryItem
+				type='patterns'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				demoUrl={hit.demo_url}
 				previewIMG={hit.preview_image_url}
@@ -177,6 +178,80 @@ const LibraryContainer = props => {
 					onRequestInsertPattern(hit.gutenberg_code)
 				}
 			/>
+		);
+	};
+
+	const MasonryItem = props => {
+		const {
+			type,
+			svgCode,
+			isPro,
+			serial,
+			onRequestInsert,
+			previewIMG,
+			demoUrl,
+		} = props;
+
+		return (
+			<div className='maxi-cloud-masonry-card'>
+				{type !== 'sc' && (
+					<div className='maxi-cloud-masonry-card__image'>
+						{type === 'svg' && <RawHTML>{svgCode}</RawHTML>}
+						{type === 'patterns' && (
+							<img
+								src={previewIMG}
+								alt={`Preview for ${serial}`}
+							/>
+						)}
+						<div className='maxi-cloud-masonry-card__container'>
+							{type === 'svg' && (
+								<p className='maxi-cloud-masonry__serial-tag'>
+									{serial}
+								</p>
+							)}
+							<div className='maxi-cloud-masonry-card__buttons'>
+								{type === 'patterns' && (
+									<Button
+										className='maxi-cloud-masonry-card__button'
+										href={demoUrl}
+										target='_blank'
+									>
+										{__('Preview', 'maxi-blocks')}
+									</Button>
+								)}
+								<Button
+									className='maxi-cloud-masonry-card__button'
+									onClick={onRequestInsert}
+								>
+									{type !== 'sc' &&
+										__('Insert', 'maxi-blocks')}
+									{type === 'sc' && __('Load', 'maxi-blocks')}
+								</Button>
+							</div>
+							{type === 'sc' && (
+								<div className='maxi-cloud-masonry-card__image'>
+									<img
+										src={previewIMG}
+										alt={`Preview for ${serial}`}
+									/>
+								</div>
+							)}
+							<div className='maxi-cloud-masonry-card__tags'>
+								{isPro && (
+									<span className='maxi-cloud-masonry__pro-tag'>
+										PRO
+									</span>
+								)}
+								{type === 'patterns' && (
+									<p className='maxi-cloud-masonry__serial-tag'>
+										{serial}
+									</p>
+								)}
+							</div>
+						</div>
+					</div>
+				)}
+			</div>
 		);
 	};
 
@@ -234,7 +309,8 @@ const LibraryContainer = props => {
 
 	const svgResults = ({ hit }) => {
 		return (
-			<MasonryItemSVG
+			<MasonryItem
+				type='svg'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={hit.svg_code}
 				isPro={hit.taxonomies.cost === 'pro'}
@@ -249,15 +325,6 @@ const LibraryContainer = props => {
 	const onRequestInsertShape = svgCode => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
 		// Add code to process the svg shape here
-
-		// const SVGOptions = {};
-		// const prefix = '';
-
-		// const resData = generateDataObject(
-		// 	SVGOptions[`${prefix}SVGData`],
-		// 	svgCode
-		// );
-		// const resEl = injectImgSVG(svgCode, resData);
 
 		const isValid = select('core/block-editor').isValidTemplate(svgCode);
 
@@ -275,7 +342,8 @@ const LibraryContainer = props => {
 
 	const svgShapeResults = ({ hit }) => {
 		return (
-			<MasonryItemSVG
+			<MasonryItem
+				type='svg'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={hit.svg_code}
 				isPro={hit.taxonomies.cost === 'pro'}
@@ -338,7 +406,8 @@ const LibraryContainer = props => {
 
 	const scResults = ({ hit }) => {
 		return (
-			<MasonryItemSC
+			<MasonryItem
+				type='sc'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				previewIMG={hit.images.thumbnail.url}
 				isPro={hit.taxonomies.cost === 'pro'}
@@ -436,7 +505,6 @@ const LibraryContainer = props => {
 									'taxonomies_hierarchical.category.lvl0',
 									'taxonomies_hierarchical.category.lvl1',
 									'taxonomies_hierarchical.category.lvl2',
-									'taxonomies_hierarchical.category.lvl3',
 								]}
 							/>
 							<ClearRefinements />

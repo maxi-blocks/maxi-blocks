@@ -113,13 +113,13 @@ class edit extends MaxiBlockComponent {
 				size={{
 					width: '100%',
 					height: `${attributes[`height-${deviceType}`]}${
-						attributes[`-unit-${deviceType}`]
+						attributes[`height-unit-${deviceType}`]
 					}`,
 				}}
 				defaultSize={{
 					width: '100%',
 					height: `${attributes[`height-${deviceType}`]}${
-						attributes[`-unit-${deviceType}`]
+						attributes[`height-unit-${deviceType}`]
 					}`,
 				}}
 				showHandle={isSelected}

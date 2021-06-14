@@ -91,45 +91,80 @@ const LibraryContainer = props => {
 		}
 	};
 
-	/** Patterns / Blocks */
-	const MasonryItemPatterns = props => {
-		const { previewIMG, isPro, serial, onRequestInsert, demoUrl } = props;
+	const MasonryItem = props => {
+		const {
+			type,
+			svgCode,
+			isPro,
+			serial,
+			onRequestInsert,
+			previewIMG,
+			demoUrl,
+		} = props;
 
 		return (
 			<div className='maxi-cloud-masonry-card'>
-				<div className='maxi-cloud-masonry-card__image'>
-					<img src={previewIMG} alt={`Preview for ${serial}`} />
-				</div>
+				{type !== 'sc' && (
+					<div className='maxi-cloud-masonry-card__image'>
+						{type === 'svg' && <RawHTML>{svgCode}</RawHTML>}
+						{type === 'patterns' && (
+							<img
+								src={previewIMG}
+								alt={`Preview for ${serial}`}
+							/>
+						)}
+					</div>
+				)}
 				<div className='maxi-cloud-masonry-card__container'>
+					{type !== 'patterns' && (
+						<p className='maxi-cloud-masonry__serial-tag'>
+							{serial}
+						</p>
+					)}
 					<div className='maxi-cloud-masonry-card__buttons'>
-						<Button
-							className='maxi-cloud-masonry-card__button'
-							href={demoUrl}
-							target='_blank'
-						>
-							Preview
-						</Button>
+						{type === 'patterns' && (
+							<Button
+								className='maxi-cloud-masonry-card__button'
+								href={demoUrl}
+								target='_blank'
+							>
+								{__('Preview', 'maxi-blocks')}
+							</Button>
+						)}
 						<Button
 							className='maxi-cloud-masonry-card__button'
 							onClick={onRequestInsert}
 						>
-							Insert
+							{type !== 'sc' && __('Insert', 'maxi-blocks')}
+							{type === 'sc' && __('Load', 'maxi-blocks')}
 						</Button>
 					</div>
+					{type === 'sc' && (
+						<div className='maxi-cloud-masonry-card__image'>
+							<img
+								src={previewIMG}
+								alt={`Preview for ${serial}`}
+							/>
+						</div>
+					)}
 					<div className='maxi-cloud-masonry-card__tags'>
 						{isPro && (
 							<span className='maxi-cloud-masonry__pro-tag'>
 								PRO
 							</span>
 						)}
-						<p className='maxi-cloud-masonry__serial-tag'>
-							{serial}
-						</p>
+						{type === 'patterns' && (
+							<p className='maxi-cloud-masonry__serial-tag'>
+								{serial}
+							</p>
+						)}
 					</div>
 				</div>
 			</div>
 		);
 	};
+
+	/** Patterns / Blocks */
 
 	const onRequestInsertPattern = parsedContent => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
@@ -181,110 +216,7 @@ const LibraryContainer = props => {
 		);
 	};
 
-	const MasonryItem = props => {
-		const {
-			type,
-			svgCode,
-			isPro,
-			serial,
-			onRequestInsert,
-			previewIMG,
-			demoUrl,
-		} = props;
-
-		return (
-			<div className='maxi-cloud-masonry-card'>
-				{type !== 'sc' && (
-					<div className='maxi-cloud-masonry-card__image'>
-						{type === 'svg' && <RawHTML>{svgCode}</RawHTML>}
-						{type === 'patterns' && (
-							<img
-								src={previewIMG}
-								alt={`Preview for ${serial}`}
-							/>
-						)}
-						<div className='maxi-cloud-masonry-card__container'>
-							{type === 'svg' && (
-								<p className='maxi-cloud-masonry__serial-tag'>
-									{serial}
-								</p>
-							)}
-							<div className='maxi-cloud-masonry-card__buttons'>
-								{type === 'patterns' && (
-									<Button
-										className='maxi-cloud-masonry-card__button'
-										href={demoUrl}
-										target='_blank'
-									>
-										{__('Preview', 'maxi-blocks')}
-									</Button>
-								)}
-								<Button
-									className='maxi-cloud-masonry-card__button'
-									onClick={onRequestInsert}
-								>
-									{type !== 'sc' &&
-										__('Insert', 'maxi-blocks')}
-									{type === 'sc' && __('Load', 'maxi-blocks')}
-								</Button>
-							</div>
-							{type === 'sc' && (
-								<div className='maxi-cloud-masonry-card__image'>
-									<img
-										src={previewIMG}
-										alt={`Preview for ${serial}`}
-									/>
-								</div>
-							)}
-							<div className='maxi-cloud-masonry-card__tags'>
-								{isPro && (
-									<span className='maxi-cloud-masonry__pro-tag'>
-										PRO
-									</span>
-								)}
-								{type === 'patterns' && (
-									<p className='maxi-cloud-masonry__serial-tag'>
-										{serial}
-									</p>
-								)}
-							</div>
-						</div>
-					</div>
-				)}
-			</div>
-		);
-	};
-
 	/** SVG Icons */
-	const MasonryItemSVG = props => {
-		const { svgCode, isPro, serial, onRequestInsert } = props;
-
-		return (
-			<div className='maxi-cloud-masonry-card'>
-				<div className='maxi-cloud-masonry-card__image'>
-					<RawHTML>{svgCode}</RawHTML>
-				</div>
-				<div className='maxi-cloud-masonry-card__container'>
-					<p className='maxi-cloud-masonry__serial-tag'>{serial}</p>
-					<div className='maxi-cloud-masonry-card__buttons'>
-						<Button
-							className='maxi-cloud-masonry-card__button'
-							onClick={onRequestInsert}
-						>
-							Insert
-						</Button>
-					</div>
-					<div className='maxi-cloud-masonry-card__tags'>
-						{isPro && (
-							<span className='maxi-cloud-masonry__pro-tag'>
-								PRO
-							</span>
-						)}
-					</div>
-				</div>
-			</div>
-		);
-	};
 
 	const onRequestInsertSVG = svgCode => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
@@ -354,38 +286,6 @@ const LibraryContainer = props => {
 	};
 
 	/** Style Cards */
-
-	const MasonryItemSC = props => {
-		const { previewIMG, isPro, serial, onRequestInsert } = props;
-
-		return (
-			<div className='maxi-cloud-masonry-card'>
-				<div className='maxi-cloud-masonry-card__container'>
-					<div className='maxi-cloud-masonry-card__buttons'>
-						<p className='maxi-cloud-masonry__serial-tag'>
-							{serial}
-						</p>
-						<Button
-							className='maxi-cloud-masonry-card__button'
-							onClick={onRequestInsert}
-						>
-							Load
-						</Button>
-					</div>
-					<div className='maxi-cloud-masonry-card__image'>
-						<img src={previewIMG} alt={`Preview for ${serial}`} />
-					</div>
-					<div className='maxi-cloud-masonry-card__tags'>
-						{isPro && (
-							<span className='maxi-cloud-masonry__pro-tag'>
-								PRO
-							</span>
-						)}
-					</div>
-				</div>
-			</div>
-		);
-	};
 
 	const onRequestInsertSC = card => {
 		const parsedCard = JSON.parse(card);

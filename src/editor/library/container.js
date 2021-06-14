@@ -29,6 +29,7 @@ import {
 import {
 	REACT_APP_SECRET_ALGOLIA_ID,
 	REACT_APP_SECRET_ALGOLIA_KEY,
+	// eslint-disable-next-line import/no-unresolved
 } from '@env';
 import { uniq, isEmpty } from 'lodash';
 
@@ -71,21 +72,23 @@ const LibraryContainer = props => {
 
 	const ajaxurl = wp.ajax.settings.url;
 
-	const imageUploader = imageSrc => {
-		console.log(`imageSrc: ${imageSrc}`);
-		fetch(
-			`${
-				window.location.origin + ajaxurl
-			}?action=maxi_upload_pattern_image&maxi_image_to_upload=${imageSrc}`
-		)
-			.then(data => {
-				return data.text();
-			})
-			.catch(err => {
-				console.error(
-					__(`Error uploading the image: ${err}`, 'maxi-blocks')
-				);
-			});
+	const imageUploader = async imageSrc => {
+		try {
+			const response = await fetch(
+				`${
+					window.location.origin + ajaxurl
+				}?action=maxi_upload_pattern_image&maxi_image_to_upload=${imageSrc}`
+			);
+
+			if (response.ok) {
+				const imgUrl = response.url;
+				console.log(response);
+			}
+		} catch (err) {
+			console.error(
+				__(`Error uploading the image: ${err}`, 'maxi-blocks')
+			);
+		}
 	};
 
 	/** Patterns / Blocks */

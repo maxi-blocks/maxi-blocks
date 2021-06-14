@@ -64,12 +64,6 @@ const attributes = {
 	mediaAlt: {
 		type: 'string',
 	},
-	mediaAltWp: {
-		type: 'string',
-	},
-	mediaAltTitle: {
-		type: 'string',
-	},
 	altSelector: {
 		type: 'string',
 		default: 'wordpress',

@@ -26,9 +26,6 @@ const save = props => {
 		mediaWidth,
 		mediaHeight,
 		mediaAlt,
-		mediaAltWp,
-		mediaAltTitle,
-		altSelector,
 		SVGElement,
 		imageRatio,
 		parentBlockStyle,
@@ -74,19 +71,6 @@ const save = props => {
 			`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 	);
 
-	const imageAlt = () => {
-		switch (altSelector) {
-			case 'wordpress':
-				return mediaAltWp;
-			case 'title':
-				return mediaAltTitle;
-			case 'custom':
-				return mediaAlt;
-			default:
-				return '';
-		}
-	};
-
 	return (
 		<MaxiBlock
 			tagName='figure'
@@ -114,7 +98,7 @@ const save = props => {
 						src={mediaURL}
 						width={mediaWidth}
 						height={mediaHeight}
-						alt={imageAlt()}
+						alt={mediaAlt}
 					/>
 				)}
 			</HoverPreview>

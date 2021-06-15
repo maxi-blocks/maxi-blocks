@@ -107,7 +107,6 @@ class edit extends MaxiBlockComponent {
 				<InnerBlocks
 					allowedBlocks={ALLOWED_BLOCKS}
 					templateLock={false}
-					tagName='div'
 					className='maxi-group-block__group'
 					renderAppender={
 						!hasInnerBlock

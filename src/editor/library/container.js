@@ -27,7 +27,9 @@ import {
 	Stats,
 } from 'react-instantsearch-dom';
 import {
+	// eslint-disable-next-line
 	REACT_APP_SECRET_ALGOLIA_ID,
+	// eslint-disable-next-line
 	REACT_APP_SECRET_ALGOLIA_KEY,
 	// eslint-disable-next-line import/no-unresolved
 } from '@env';

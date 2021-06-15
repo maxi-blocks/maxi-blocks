@@ -82,7 +82,15 @@ class MaxiBlocks_ImageUpload
         write_log('$exists: '.$exists);
 
         if (!$exists) {
-            $upload_file = wp_upload_bits($filename, null, @file_get_contents($image_link));
+            $upload_content = @file_get_contents($image_link);
+
+            if (!$upload_content) {
+                write_log('ERROR 404');
+                echo '404';
+                die();
+            }
+
+            $upload_file = wp_upload_bits($filename, null, $upload_content);
             write_log('=====$upload_file====');
             write_log($upload_file);
 

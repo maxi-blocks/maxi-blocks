@@ -29,7 +29,13 @@ const ArrowDisplayer = props => {
 		className
 	);
 
-	return !!props['arrow-status'] && <div className={arrowClasses} />;
+	return (
+		!!props['arrow-status'] && (
+			<div className={arrowClasses}>
+				<div className='maxi-container-arrow--content' />
+			</div>
+		)
+	);
 };
 
 export default ArrowDisplayer;

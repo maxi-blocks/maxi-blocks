@@ -213,15 +213,10 @@ const LibraryContainer = props => {
 					return;
 				}
 
-				console.log(`imagesIdsU ${imagesIdsUniq}`);
-				console.log(`imagesLinksU ${imagesLinksUniq}`);
-
 				const imagesUniq = imagesIdsUniq.reduce(
 					(o, k, i) => ({ ...o, [k]: imagesLinksUniq[i] }),
 					{}
 				);
-
-				console.log(`imagesUniq ${JSON.stringify(imagesUniq)}`);
 
 				Object.entries(imagesUniq).map(image => {
 					const id = image[0];

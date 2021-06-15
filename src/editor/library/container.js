@@ -177,6 +177,15 @@ const LibraryContainer = props => {
 			const clientId =
 				select('core/block-editor').getSelectedBlockClientId();
 
+			const loadingMessage = `<h3>${__(
+				'LOADING…',
+				'maxi-blocks'
+			)}<span class="maxi-spinner"></span></h3>`;
+
+			updateBlockAttributes(clientId, { content: loadingMessage });
+
+			onRequestClose();
+
 			const imagesRegexp = new RegExp(
 				'(?=https).*?(?:jpeg|jpg|png|svg)',
 				'g'
@@ -201,7 +210,6 @@ const LibraryContainer = props => {
 							'maxi-blocks'
 						)
 					);
-					onRequestClose();
 					return;
 				}
 
@@ -220,12 +228,10 @@ const LibraryContainer = props => {
 					const url = image[1];
 
 					imageUploader(url).then(data => {
-						console.log(`data ${data}`);
 						tempContent = tempContent.replaceAll(url, data.url);
 						tempContent = tempContent.replaceAll(id, data.id);
 						counter -= 1;
 						if (counter === 0) {
-							onRequestClose();
 							replaceBlock(
 								clientId,
 								wp.blocks.rawHandler({
@@ -246,7 +252,6 @@ const LibraryContainer = props => {
 						mode: 'BLOCKS',
 					})
 				);
-				onRequestClose();
 			}
 		} else {
 			// not valid gutenberg code
@@ -258,17 +263,19 @@ const LibraryContainer = props => {
 
 	const patternsResults = ({ hit }) => {
 		return (
-			<MasonryItem
-				type='patterns'
-				key={`maxi-cloud-masonry__item-${hit.post_id}`}
-				demoUrl={hit.demo_url}
-				previewIMG={hit.preview_image_url}
-				isPro={hit.taxonomies.cost === 'pro'}
-				serial={hit.post_number}
-				onRequestInsert={() =>
-					onRequestInsertPattern(hit.gutenberg_code)
-				}
-			/>
+			<>
+				<MasonryItem
+					type='patterns'
+					key={`maxi-cloud-masonry__item-${hit.post_id}`}
+					demoUrl={hit.demo_url}
+					previewIMG={hit.preview_image_url}
+					isPro={hit.taxonomies.cost === 'pro'}
+					serial={hit.post_number}
+					onRequestInsert={() =>
+						onRequestInsertPattern(hit.gutenberg_code)
+					}
+				/>
+			</>
 		);
 	};
 

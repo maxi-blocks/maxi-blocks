@@ -130,16 +130,20 @@ const getStyles = props => {
 		[uniqueID]: {
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
-			[` ${element}.maxi-text-block__content`]: getTypographyObject(
-				props,
-				isList
-			),
-			[` ${element}.maxi-text-block__content:hover`]:
-				getTypographyHoverObject(props),
-			[` ${element}.maxi-text-block__content li`]:
-				getTypographyObject(props),
-			[` ${element}.maxi-text-block__content li:hover`]:
-				getTypographyHoverObject(props),
+			...(!isList && {
+				[` ${element}.maxi-text-block__content`]: getTypographyObject(
+					props,
+					isList
+				),
+				[` ${element}.maxi-text-block__content:hover`]:
+					getTypographyHoverObject(props),
+			}),
+			...(isList && {
+				[` ${element}.maxi-text-block__content li`]:
+					getTypographyObject(props),
+				[` ${element}.maxi-text-block__content li:hover`]:
+					getTypographyHoverObject(props),
+			}),
 			[` ${element}.maxi-text-block__content a`]:
 				getTypographyObject(props),
 			[` ${element}.maxi-text-block__content a:hover`]:

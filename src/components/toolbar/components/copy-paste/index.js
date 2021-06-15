@@ -52,6 +52,7 @@ const ATTRIBUTES = [
 	'entrance',
 	'margin',
 	'motion',
+	'padding',
 	'position',
 	'size',
 	'textAlignment',

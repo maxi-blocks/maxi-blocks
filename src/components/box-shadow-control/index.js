@@ -49,12 +49,6 @@ const BoxShadowControl = props => {
 
 	const classes = classnames('maxi-shadow-control', className);
 
-	const onChangeValue = (target, val) => {
-		onChange({
-			[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]: val,
-		});
-	};
-
 	const onChangeDefault = defaultProp => {
 		const response = {};
 

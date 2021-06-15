@@ -152,7 +152,10 @@ const BackgroundContent = props => {
 };
 
 const BackgroundDisplayer = props => {
-	const { className } = props;
+	const { className, 'background-active-media': backgroundActiveMedia } =
+		props;
+
+	if (!backgroundActiveMedia || backgroundActiveMedia === 'none') return null;
 
 	const classes = classnames('maxi-background-displayer', className);
 

@@ -187,9 +187,7 @@ const TextOptions = props => {
 							[`${prefix}letter-spacing-unit`]: getDefault(
 								`${prefix}letter-spacing-unit`
 							),
-							[`${prefix}letter-spacing`]: getDefault(
-								`${prefix}letter-spacing`
-							),
+							[`${prefix}letter-spacing`]: '',
 						},
 						breakpoint
 					)

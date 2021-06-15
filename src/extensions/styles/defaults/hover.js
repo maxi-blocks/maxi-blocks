@@ -15,6 +15,10 @@ export const hover = {
 		type: 'boolean',
 		default: true,
 	},
+	'hover-extension': {
+		type: 'boolean',
+		default: false,
+	},
 	'hover-basic-effect-type': {
 		type: 'string',
 		default: 'zoom-in',

@@ -86,7 +86,7 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
-										isFirstOnHierarchy && {
+										{
 											label: __(
 												'Width / Height',
 												'maxi-blocks'

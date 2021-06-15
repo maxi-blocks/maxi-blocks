@@ -92,7 +92,7 @@ export const getArrowObject = props => {
 		if (arrowSide === 'bottom') {
 			response[breakpoint].left = `${arrowPosition}%`;
 			response[breakpoint].top = `calc(100% + ${Math.floor(
-				(Math.sqrt(2) * arrowWidth) / 2
+				(Math.sqrt(2) * arrowWidth) / 2 + 1
 			)}px)`;
 		}
 
@@ -133,39 +133,43 @@ const getArrowStyles = props => {
 
 	return {
 		[`${target} .maxi-container-arrow`]: {
-			arrow: { ...getArrowObject(getGroupAttributes(props, 'arrow')) },
 			shadow: {
 				...getBoxShadowStyles(
 					getGroupAttributes(props, 'boxShadow'),
 					false,
-					props['arrow-status']
+					true
 				),
 			},
 		},
-		[`${target} .maxi-container-arrow:after`]: {
-			background: {
-				...getArrowColorObject(
-					getGroupAttributes(props, [
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
-						'palette',
-					])
-				),
-			},
+		[`${target} .maxi-container-arrow .maxi-container-arrow--content`]: {
+			arrow: { ...getArrowObject(getGroupAttributes(props, 'arrow')) },
 		},
-		[`${target} .maxi-container-arrow:before`]: {
-			border: {
-				...getArrowBorderObject(
-					getGroupAttributes(props, [
-						'border',
-						'borderWidth',
-						'borderRadius',
-						'palette',
-					])
-				),
+		[`${target} .maxi-container-arrow .maxi-container-arrow--content:after`]:
+			{
+				background: {
+					...getArrowColorObject(
+						getGroupAttributes(props, [
+							'background',
+							'backgroundColor',
+							'backgroundGradient',
+							'palette',
+						])
+					),
+				},
 			},
-		},
+		[`${target} .maxi-container-arrow .maxi-container-arrow--content:before`]:
+			{
+				border: {
+					...getArrowBorderObject(
+						getGroupAttributes(props, [
+							'border',
+							'borderWidth',
+							'borderRadius',
+							'palette',
+						])
+					),
+				},
+			},
 	};
 };
 

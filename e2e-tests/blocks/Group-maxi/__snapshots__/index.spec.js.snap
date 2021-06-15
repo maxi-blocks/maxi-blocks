@@ -2,6 +2,6 @@
 
 exports[`Group Maxi Group Maxi does not break 1`] = `
 "<!-- wp:maxi-blocks/group-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"group-maxi-12\\"} -->
-<div id=\\"group-maxi-12\\" class=\\"maxi-block maxi-group-block maxi-motion-effect maxi-motion-effect-group-maxi-12 maxi-light group-maxi-12 wp-block-maxi-blocks-group-maxi\\" data-align=\\"normal\\"><div class=\\"maxi-background-displayer\\"></div><div class=\\"maxi-group-block__group\\"></div></div>
+<div id=\\"group-maxi-12\\" class=\\"maxi-block maxi-group-block maxi-motion-effect maxi-motion-effect-group-maxi-12 maxi-light group-maxi-12 wp-block-maxi-blocks-group-maxi\\" data-align=\\"normal\\"><div class=\\"maxi-group-block__group\\"></div></div>
 <!-- /wp:maxi-blocks/group-maxi -->"
 `;

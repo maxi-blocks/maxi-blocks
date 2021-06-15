@@ -33,6 +33,107 @@ import {
 } from '@env';
 import { uniq, isEmpty } from 'lodash';
 
+const imageUploader = async imageSrc => {
+	try {
+		const ajaxurl = wp.ajax.settings.url;
+		const response = await fetch(
+			`${
+				window.location.origin + ajaxurl
+			}?action=maxi_upload_pattern_image&maxi_image_to_upload=${imageSrc}`
+		);
+
+		if (!response.ok) {
+			console.warn(
+				__(
+					'The Cloud server is down, using the placeholder image',
+					'maxi-blocks'
+				)
+			);
+			// TODO: return the placeholder image here
+			return null;
+		}
+
+		const imgUrl = await response.text();
+		if (imgUrl === '404') {
+			console.warn(
+				__(
+					'The original image not found (404) on the Cloud Site, using the placeholder image',
+					'maxi-blocks'
+				)
+			);
+			// TODO: return the placeholder image here
+			return null;
+		}
+		return imgUrl;
+	} catch (err) {
+		console.error(__(`Error uploading the image: ${err}`, 'maxi-blocks'));
+	}
+	return null;
+};
+
+const MasonryItem = props => {
+	const {
+		type,
+		svgCode,
+		isPro,
+		serial,
+		onRequestInsert,
+		previewIMG,
+		demoUrl,
+	} = props;
+
+	return (
+		<div className='maxi-cloud-masonry-card'>
+			{type !== 'sc' && (
+				<div className='maxi-cloud-masonry-card__image'>
+					{type === 'svg' && <RawHTML>{svgCode}</RawHTML>}
+					{type === 'patterns' && (
+						<img src={previewIMG} alt={`Preview for ${serial}`} />
+					)}
+				</div>
+			)}
+			<div className='maxi-cloud-masonry-card__container'>
+				{type !== 'patterns' && (
+					<p className='maxi-cloud-masonry__serial-tag'>{serial}</p>
+				)}
+				<div className='maxi-cloud-masonry-card__buttons'>
+					{type === 'patterns' && (
+						<Button
+							className='maxi-cloud-masonry-card__button'
+							href={demoUrl}
+							target='_blank'
+						>
+							{__('Preview', 'maxi-blocks')}
+						</Button>
+					)}
+					<Button
+						className='maxi-cloud-masonry-card__button'
+						onClick={onRequestInsert}
+					>
+						{type !== 'sc' && __('Insert', 'maxi-blocks')}
+						{type === 'sc' && __('Load', 'maxi-blocks')}
+					</Button>
+				</div>
+				{type === 'sc' && (
+					<div className='maxi-cloud-masonry-card__image'>
+						<img src={previewIMG} alt={`Preview for ${serial}`} />
+					</div>
+				)}
+				<div className='maxi-cloud-masonry-card__tags'>
+					{isPro && (
+						<span className='maxi-cloud-masonry__pro-tag'>PRO</span>
+					)}
+					{type === 'patterns' && (
+						<p className='maxi-cloud-masonry__serial-tag'>
+							{serial}
+						</p>
+					)}
+				</div>
+			</div>
+		</div>
+	);
+};
+
 /**
  * Component
  */
@@ -66,104 +167,6 @@ const LibraryContainer = props => {
 		REACT_APP_SECRET_ALGOLIA_KEY
 	);
 
-	useEffect(() => {
-		updateSCOnEditor(selectedSCValue);
-	}, [selectedSCKey]);
-
-	const ajaxurl = wp.ajax.settings.url;
-
-	const imageUploader = async imageSrc => {
-		try {
-			const response = await fetch(
-				`${
-					window.location.origin + ajaxurl
-				}?action=maxi_upload_pattern_image&maxi_image_to_upload=${imageSrc}`
-			);
-
-			if (response.ok) {
-				const imgUrl = response.url;
-				console.log(response);
-			}
-		} catch (err) {
-			console.error(
-				__(`Error uploading the image: ${err}`, 'maxi-blocks')
-			);
-		}
-	};
-
-	const MasonryItem = props => {
-		const {
-			type,
-			svgCode,
-			isPro,
-			serial,
-			onRequestInsert,
-			previewIMG,
-			demoUrl,
-		} = props;
-
-		return (
-			<div className='maxi-cloud-masonry-card'>
-				{type !== 'sc' && (
-					<div className='maxi-cloud-masonry-card__image'>
-						{type === 'svg' && <RawHTML>{svgCode}</RawHTML>}
-						{type === 'patterns' && (
-							<img
-								src={previewIMG}
-								alt={`Preview for ${serial}`}
-							/>
-						)}
-					</div>
-				)}
-				<div className='maxi-cloud-masonry-card__container'>
-					{type !== 'patterns' && (
-						<p className='maxi-cloud-masonry__serial-tag'>
-							{serial}
-						</p>
-					)}
-					<div className='maxi-cloud-masonry-card__buttons'>
-						{type === 'patterns' && (
-							<Button
-								className='maxi-cloud-masonry-card__button'
-								href={demoUrl}
-								target='_blank'
-							>
-								{__('Preview', 'maxi-blocks')}
-							</Button>
-						)}
-						<Button
-							className='maxi-cloud-masonry-card__button'
-							onClick={onRequestInsert}
-						>
-							{type !== 'sc' && __('Insert', 'maxi-blocks')}
-							{type === 'sc' && __('Load', 'maxi-blocks')}
-						</Button>
-					</div>
-					{type === 'sc' && (
-						<div className='maxi-cloud-masonry-card__image'>
-							<img
-								src={previewIMG}
-								alt={`Preview for ${serial}`}
-							/>
-						</div>
-					)}
-					<div className='maxi-cloud-masonry-card__tags'>
-						{isPro && (
-							<span className='maxi-cloud-masonry__pro-tag'>
-								PRO
-							</span>
-						)}
-						{type === 'patterns' && (
-							<p className='maxi-cloud-masonry__serial-tag'>
-								{serial}
-							</p>
-						)}
-					</div>
-				</div>
-			</div>
-		);
-	};
-
 	/** Patterns / Blocks */
 
 	const onRequestInsertPattern = parsedContent => {
@@ -181,22 +184,36 @@ const LibraryContainer = props => {
 			const imagesLinks = parsedContent.match(imagesRegexp);
 
 			if (!isEmpty(imagesLinks)) {
-				console.log(uniq(imagesLinks));
+				let tempContent = parsedContent;
+				const imagesLinksUniq = uniq(imagesLinks);
+				let counter = imagesLinksUniq.length;
 
-				imagesLinks.forEach(link => {
-					const newLink = imageUploader(link);
-					console.log(newLink);
+				imagesLinksUniq.forEach(link => {
+					imageUploader(link).then(newLink => {
+						tempContent = tempContent.replaceAll(link, newLink);
+						counter -= 1;
+						if (counter === 0) {
+							onRequestClose();
+							replaceBlock(
+								clientId,
+								wp.blocks.rawHandler({
+									HTML: tempContent,
+									mode: 'BLOCKS',
+								})
+							);
+						}
+					});
 				});
+			} else {
+				replaceBlock(
+					clientId,
+					wp.blocks.rawHandler({
+						HTML: parsedContent,
+						mode: 'BLOCKS',
+					})
+				);
+				onRequestClose();
 			}
-
-			replaceBlock(
-				clientId,
-				wp.blocks.rawHandler({
-					HTML: parsedContent,
-					mode: 'BLOCKS',
-				})
-			);
-			onRequestClose();
 		}
 	};
 

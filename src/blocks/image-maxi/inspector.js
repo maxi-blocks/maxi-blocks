@@ -23,7 +23,6 @@ import {
 	FancyRadioControl,
 	FullSizeControl,
 	HoverEffectControl,
-	ImageAltControl,
 	ImageCropControl,
 	MotionControl,
 	OpacityControl,
@@ -53,8 +52,14 @@ import { capitalize, isEmpty, isNil, isObject } from 'lodash';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, imageData, clientId, deviceType, setAttributes } =
-		props;
+	const {
+		attributes,
+		imageData,
+		clientId,
+		deviceType,
+		setAttributes,
+		altOptions,
+	} = props;
 	const {
 		customLabel,
 		uniqueID,
@@ -75,6 +80,32 @@ const Inspector = props => {
 		SVGCurrentElement,
 		imageRatio,
 	} = attributes;
+	const { wpAlt, titleAlt } = altOptions || {};
+
+	const getImageAltOptions = () => {
+		const response = [
+			{
+				label: __('WordPress Alt', 'maxi-blocks'),
+				value: 'wordpress',
+			},
+			{
+				label: __('Custom', 'maxi-blocks'),
+				value: 'custom',
+			},
+			{
+				label: __('None', 'maxi-blocks'),
+				value: 'none',
+			},
+		];
+
+		if (titleAlt)
+			response.unshift({
+				label: __('Image Title', 'maxi-blocks'),
+				value: 'title',
+			});
+
+		return response;
+	};
 
 	const getSizeOptions = () => {
 		const response = [];
@@ -351,20 +382,48 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<ImageAltControl
-													mediaAlt={mediaAlt}
-													altSelector={altSelector}
-													onChangeAltSelector={altSelector => {
-														setAttributes({
-															altSelector,
-														});
-													}}
-													onChangeMediaAlt={mediaAlt =>
-														setAttributes({
-															mediaAlt,
-														})
-													}
-												/>
+												<>
+													<SelectControl
+														label={__(
+															'Image Alt Tag',
+															'maxi-blocks'
+														)}
+														value={altSelector}
+														options={getImageAltOptions()}
+														onChange={altSelector =>
+															setAttributes({
+																altSelector,
+																...(altSelector ===
+																	'wordpress' && {
+																	mediaAlt:
+																		wpAlt,
+																}),
+																...(altSelector ===
+																	'title' && {
+																	mediaAlt:
+																		titleAlt,
+																}),
+															})
+														}
+													/>
+													{altSelector ===
+														'custom' && (
+														<TextControl
+															placeholder={__(
+																'Add Your Alt Tag Here',
+																'maxi-blocks'
+															)}
+															value={
+																mediaAlt || ''
+															}
+															onChange={mediaAlt =>
+																setAttributes({
+																	mediaAlt,
+																})
+															}
+														/>
+													)}
+												</>
 											),
 										},
 										deviceType === 'general' && {

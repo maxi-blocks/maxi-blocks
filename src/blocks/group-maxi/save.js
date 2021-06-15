@@ -37,7 +37,6 @@ const save = props => {
 
 	return (
 		<MaxiBlock
-			tagName='section'
 			paletteClasses={paletteClasses}
 			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave

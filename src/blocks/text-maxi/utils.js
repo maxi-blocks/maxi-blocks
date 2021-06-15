@@ -71,7 +71,7 @@ export const onMerge = (props, forward) => {
 
 export const onSplit = (attributes, value) => {
 	if (!value) {
-		return createBlock(name);
+		return createBlock(name, ...attributes);
 	}
 
 	return createBlock(name, {

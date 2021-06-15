@@ -25,7 +25,8 @@ import { toolbarSuperScript } from '../../../../icons';
  * TextFormatSuperscript
  */
 const TextFormatSuperscript = props => {
-	const { formatValue, onChange, isList, breakpoint, textLevel } = props;
+	const { formatValue, onChange, isList, breakpoint, textLevel, styleCard } =
+		props;
 
 	const getSuperscriptValue = () =>
 		getCustomFormatValue({
@@ -34,6 +35,7 @@ const TextFormatSuperscript = props => {
 			prop: 'vertical-align',
 			breakpoint,
 			textLevel,
+			styleCard,
 		}) || '';
 
 	const superscriptValue = getSuperscriptValue();

@@ -7,6 +7,7 @@ import { select, dispatch, subscribe } from '@wordpress/data';
  * External dependencies
  */
 import { isEmpty } from 'lodash';
+import { updateSCOnEditor } from '../style-cards';
 
 /**
  * General
@@ -41,7 +42,7 @@ wp.domReady(() => {
 	// eslint-disable-next-line @wordpress/no-global-event-listener
 	window.addEventListener('resize', e => setWindowSize(e));
 
-	const unsubscribe = subscribe(() => {
+	const observerSubscribe = subscribe(() => {
 		const targetNode = document.querySelector('.edit-post-layout');
 
 		if (targetNode) {
@@ -237,9 +238,23 @@ wp.domReady(() => {
 			observer.observe(targetNode, config);
 
 			// Dismantling the bomb
-			unsubscribe();
+			observerSubscribe();
 		}
 	});
+
+	const SCElement = document.querySelector('#maxi-blocks-sc-vars-inline-css');
+	if (!SCElement) {
+		const SCStylesSubscriber = subscribe(() => {
+			const SC = select(
+				'maxiBlocks/style-cards'
+			).receiveMaxiActiveStyleCard();
+
+			if (SC) {
+				updateSCOnEditor(SC.value);
+				SCStylesSubscriber();
+			}
+		});
+	}
 });
 
 const openSidebar = item => {

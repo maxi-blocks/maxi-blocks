@@ -119,6 +119,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		isSave = false,
 		classes: customClasses,
 		paletteClasses,
+		hasArrow,
 		...extraProps
 	} = props;
 
@@ -155,7 +156,8 @@ const MaxiBlock = forwardRef((props, ref) => {
 		className,
 		displayValue === 'none' && 'maxi-block-display-none',
 		customClasses,
-		paletteClasses
+		paletteClasses,
+		hasArrow && 'maxi-block--has-arrow'
 	);
 
 	const blockProps = {
@@ -226,6 +228,7 @@ export const getMaxiBlockBlockAttributes = props => {
 			'backgroundSVGHover',
 		]),
 	};
+	const hasArrow = props.attributes['arrow-status'] || false;
 
 	return {
 		blockName: name,
@@ -236,6 +239,7 @@ export const getMaxiBlockBlockAttributes = props => {
 		displayValue,
 		motion,
 		background,
+		hasArrow,
 	};
 };
 

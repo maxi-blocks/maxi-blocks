@@ -53,14 +53,18 @@ const TransformControl = props => {
 		);
 
 		if (node) {
+			const transformObj = getTransformStyles(
+				getGroupAttributes(transformOptions, 'transform')
+			);
+
+			if (!transformObj || !transformObj[breakpoint]) return;
+
 			const {
 				[breakpoint]: {
 					transform,
 					'transform-origin': transformOrigin,
 				},
-			} = getTransformStyles(
-				getGroupAttributes(transformOptions, 'transform')
-			);
+			} = transformObj;
 
 			if (transform) node.style.transform = transform;
 			if (transformOrigin) node.style.transformOrigin = transformOrigin;

@@ -45,19 +45,7 @@ class MaxiBlocks_ImageUpload
 
     public function maxi_upload_pattern_image($maxi_image_to_upload)
     {
-        if (! function_exists('write_log')) {
-            function write_log($log)
-            {
-                if (is_array($log) || is_object($log)) {
-                    error_log(print_r($log, true));
-                } else {
-                    error_log($log);
-                }
-            }
-        }
         global $wpdb;
-
-        write_log('========================');
 
         if (isset($_GET['maxi_image_to_upload'])) {
             $image_link = sanitize_text_field($_GET['maxi_image_to_upload']);
@@ -73,26 +61,20 @@ class MaxiBlocks_ImageUpload
         $filename = 'maxi-'.$image_name;
         $no_extension  = pathinfo($filename)['filename'];
 
-        write_log('$image_name: '.$image_name);
-        write_log('$filename: '.$filename);
-        write_log('$no_extension: '.$no_extension);
-
         $exists = $this->maxi_media_file_already_exists($no_extension);
 
-        write_log('$exists: '.$exists);
+        $data = [];
 
         if (!$exists) {
             $upload_content = @file_get_contents($image_link);
 
             if (!$upload_content) {
-                write_log('ERROR 404');
-                echo '404';
+                $data['error'] = '404';
+                echo json_encode($data);
                 die();
             }
 
             $upload_file = wp_upload_bits($filename, null, $upload_content);
-            write_log('=====$upload_file====');
-            write_log($upload_file);
 
             if (!$upload_file['error']) {
                 $wp_filetype = wp_check_filetype($filename, null);
@@ -110,24 +92,23 @@ class MaxiBlocks_ImageUpload
                 $attachment_url = $upload_file['url'];
                 $attachment_metadata = wp_generate_attachment_metadata($attachment_id, $attachment_path);
 
-                write_log('=====attachment_metadata====');
-                write_log($attachment_metadata);
                 wp_update_attachment_metadata($attachment_id, $attachment_metadata);
                 
-                echo $attachment_url;
-                write_log('$new_url: '.$attachment_url);
-                write_log('==========+++==========');
+                $data['id'] =  $attachment_id;
+                $data['url'] =  $attachment_url;
+
+                echo json_encode($data);
 
                 die();
             }
         }
         if (!!$exists) {
             $attachment_url = wp_get_attachment_image_url($exists, 'full');
+            $data['id'] =  $exists;
+            $data['url'] =  $attachment_url;
+            echo json_encode($data);
+            die();
         }
-
-        echo $attachment_url;
-        write_log('$new_url2: '.$attachment_url);
-        write_log('=========---==========');
         
         die();
     }

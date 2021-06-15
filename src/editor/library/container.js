@@ -53,8 +53,8 @@ const imageUploader = async imageSrc => {
 			return null;
 		}
 
-		const imgUrl = await response.text();
-		if (imgUrl === '404') {
+		const data = await response.json();
+		if (data.error === '404') {
 			console.warn(
 				__(
 					'The original image not found (404) on the Cloud Site, using the placeholder image',
@@ -64,7 +64,7 @@ const imageUploader = async imageSrc => {
 			// TODO: return the placeholder image here
 			return null;
 		}
-		return imgUrl;
+		return data;
 	} catch (err) {
 		console.error(__(`Error uploading the image: ${err}`, 'maxi-blocks'));
 	}
@@ -170,27 +170,59 @@ const LibraryContainer = props => {
 	/** Patterns / Blocks */
 
 	const onRequestInsertPattern = parsedContent => {
-		const clientId = select('core/block-editor').getSelectedBlockClientId();
-
 		const isValid =
 			select('core/block-editor').isValidTemplate(parsedContent);
 
 		if (isValid) {
+			const clientId =
+				select('core/block-editor').getSelectedBlockClientId();
+
 			const imagesRegexp = new RegExp(
 				'(?=https).*?(?:jpeg|jpg|png|svg)',
 				'g'
 			);
-
 			const imagesLinks = parsedContent.match(imagesRegexp);
+
+			const idsRegexp = new RegExp('(?<=mediaID":)(.*?)(?=,)', 'g');
+			const imagesIds = parsedContent.match(idsRegexp);
 
 			if (!isEmpty(imagesLinks)) {
 				let tempContent = parsedContent;
 				const imagesLinksUniq = uniq(imagesLinks);
+				const imagesIdsUniq = uniq(imagesIds);
 				let counter = imagesLinksUniq.length;
+				const checkCounter = imagesIdsUniq.length;
 
-				imagesLinksUniq.forEach(link => {
-					imageUploader(link).then(newLink => {
-						tempContent = tempContent.replaceAll(link, newLink);
+				if (counter !== checkCounter) {
+					// TODO: show a human-readable error here
+					console.error(
+						__(
+							"Error processing images' links and ids - counts do not match",
+							'maxi-blocks'
+						)
+					);
+					onRequestClose();
+					return;
+				}
+
+				console.log(`imagesIdsU ${imagesIdsUniq}`);
+				console.log(`imagesLinksU ${imagesLinksUniq}`);
+
+				const imagesUniq = imagesIdsUniq.reduce(
+					(o, k, i) => ({ ...o, [k]: imagesLinksUniq[i] }),
+					{}
+				);
+
+				console.log(`imagesUniq ${JSON.stringify(imagesUniq)}`);
+
+				Object.entries(imagesUniq).map(image => {
+					const id = image[0];
+					const url = image[1];
+
+					imageUploader(url).then(data => {
+						console.log(`data ${data}`);
+						tempContent = tempContent.replaceAll(url, data.url);
+						tempContent = tempContent.replaceAll(id, data.id);
 						counter -= 1;
 						if (counter === 0) {
 							onRequestClose();
@@ -203,8 +235,10 @@ const LibraryContainer = props => {
 							);
 						}
 					});
+					return null;
 				});
 			} else {
+				// no images to process
 				replaceBlock(
 					clientId,
 					wp.blocks.rawHandler({
@@ -214,6 +248,11 @@ const LibraryContainer = props => {
 				);
 				onRequestClose();
 			}
+		} else {
+			// not valid gutenberg code
+			// TODO: show a human-readable error here
+			console.error(__('The Code is not valid', 'maxi-blocks'));
+			onRequestClose();
 		}
 	};
 

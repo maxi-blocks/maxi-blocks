@@ -31,6 +31,10 @@ registerBlockType('maxi-blocks/maxi-cloud', {
 			type: 'string',
 			default: 'maxi-block maxi-block-library',
 		},
+		content: {
+			type: 'string',
+			default: '',
+		},
 	},
 	/* Save the block markup. */
 	edit,

@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
 import { MediaUpload } from '@wordpress/block-editor';
+import { createRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,6 +23,7 @@ import {
 	Toolbar,
 	Spinner,
 	Placeholder,
+	RawHTML,
 } from '../../components';
 import * as SVGShapes from '../../icons/shape-icons';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
@@ -42,6 +44,12 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlockComponent {
+	constructor(...args) {
+		super(...args);
+
+		this.imgRef = createRef();
+	}
+
 	get getWrapperWidth() {
 		const target = document.getElementById(`block-${this.props.clientId}`);
 		if (target) return target.getBoundingClientRect().width;
@@ -78,10 +86,8 @@ class edit extends MaxiBlockComponent {
 		const {
 			uniqueID,
 			fullWidth,
-			cropOptions,
 			captionType,
 			captionContent,
-			imageSize,
 			mediaID,
 			mediaAlt,
 			mediaURL,
@@ -91,9 +97,17 @@ class edit extends MaxiBlockComponent {
 			imgWidth,
 			imageRatio,
 			parentBlockStyle,
+			'hover-type': hoverType,
+			'hover-preview': hoverPreview,
 		} = attributes;
 
-		const hoverPreviewClasses = classnames(
+		const classes = classnames(
+			'maxi-image-block',
+			fullWidth === 'full' && 'alignfull'
+		);
+
+		const wrapperClassName = classnames(
+			'maxi-image-block-wrapper',
 			'maxi-image-ratio',
 			`maxi-image-ratio__${imageRatio}`
 		);
@@ -117,70 +131,27 @@ class edit extends MaxiBlockComponent {
 		);
 
 		const hoverClasses = classnames(
-			'maxi-block-hover-wrapper',
-			attributes['hover-type'] === 'basic' &&
-				attributes['hover-preview'] &&
-				`maxi-hover-effect__${attributes['hover-type']}__${attributes['hover-basic-effect-type']}`,
-			attributes['hover-type'] === 'text' &&
-				attributes['hover-preview'] &&
-				`maxi-hover-effect__${attributes['hover-type']}__${attributes['hover-text-effect-type']}`,
-			attributes['hover-type'] !== 'none' &&
-				`maxi-hover-effect__${
-					attributes['hover-type'] === 'basic' ? 'basic' : 'text'
-				}`
+			hoverType === 'basic' &&
+				hoverPreview &&
+				`maxi-hover-effect__${hoverType}__${attributes['hover-basic-effect-type']}`,
+			hoverType === 'text' &&
+				hoverPreview &&
+				`maxi-hover-effect__${hoverType}__${attributes['hover-text-effect-type']}`,
+			hoverType !== 'none' &&
+				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
-
-		const classes = classnames(
-			'maxi-image-block',
-			fullWidth === 'full' && 'alignfull'
-		);
-
-		const getImage = () => {
-			if (
-				imageSize === 'custom' &&
-				!!cropOptions &&
-				!isEmpty(cropOptions.image.source_url)
-			)
-				return { ...cropOptions.image };
-			if (imageData && imageSize && imageSize !== 'custom')
-				return { ...imageData.media_details.sizes[imageSize] };
-			if (imageData) return { ...imageData.media_details.sizes.full };
-
-			return false;
-		};
-
-		const image = getImage();
-
-		// Well, how to explain this... lol
-		// React 16.13.0 introduced a warning for when a function component is updated during another component's
-		// render phase (facebook/react#17099). In version 16.13.1 the warning was adjusted to be more
-		// specific (facebook/react#18330). The warning look like:
-		// Warning: Cannot update a component (Foo) while rendering a different component (Bar).
-		// To locate the bad setState() call inside Bar, follow the stack trace as described in https://fb.me/setstate-in-render
-		//
-		// In this case the error comes from a `forceUpdate` that '@wordpress/data' triggers when updating an store.
-		// This error is not related with Maxi, but appears on our blocks. So, a way to avoid it is to set a `setTimeOut`
-		// that delays a bit the dispatch action of the store and prevents the rendering of some components while RichText
-		// is rendering. Sad but true.
-		if (image && imageData) {
-			if (imageData.alt_text)
-				setTimeout(() => {
-					setAttributes({ mediaAltWp: imageData.alt_text });
-				});
-
-			if (mediaAlt)
-				setTimeout(() => {
-					setAttributes({ mediaAlt });
-				});
-
-			if (imageData.title.rendered)
-				setTimeout(() => {
-					setAttributes({ mediaAltTitle: imageData.title.rendered });
-				});
-		}
 
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...(imageData && {
+					altOptions: {
+						wpAlt: imageData.alt_text,
+						titleAlt: imageData.title.rendered,
+					},
+				})}
+				{...this.props}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
@@ -188,7 +159,6 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<MaxiBlock
 				key={`maxi-image--${uniqueID}`}
-				paletteClasses={paletteClasses}
 				ref={this.blockRef}
 				tagName='figure'
 				className={classes}
@@ -281,30 +251,37 @@ class edit extends MaxiBlockComponent {
 												icon={toolbarReplaceImage}
 											/>
 										</div>
-										<div className={hoverClasses}>
-											<HoverPreview
-												className={
-													!SVGElement
-														? hoverPreviewClasses
-														: null
-												}
-												key={`hover-preview-${uniqueID}`}
-												{...getGroupAttributes(
-													attributes,
-													[
-														'hover',
-														'hoverTitleTypography',
-														'hoverContentTypography',
-													]
-												)}
-												SVGElement={SVGElement}
-												mediaID={mediaID}
-												src={mediaURL}
-												width={mediaWidth}
-												height={mediaHeight}
-												alt={mediaAlt}
-											/>
-										</div>
+										<HoverPreview
+											key={`hover-preview-${uniqueID}`}
+											target={this.imgRef.current}
+											wrapperClassName={wrapperClassName}
+											hoverClassName={
+												!SVGElement
+													? hoverClasses
+													: null
+											}
+											isSVG={!!SVGElement}
+											{...getGroupAttributes(attributes, [
+												'hover',
+												'hoverTitleTypography',
+												'hoverContentTypography',
+											])}
+										>
+											{SVGElement ? (
+												<RawHTML ref={this.imgRef}>
+													{SVGElement}
+												</RawHTML>
+											) : (
+												<img
+													ref={this.imgRef}
+													className={`maxi-image-block__image wp-image-${mediaID}`}
+													src={mediaURL}
+													width={mediaWidth}
+													height={mediaHeight}
+													alt={mediaAlt}
+												/>
+											)}
+										</HoverPreview>
 										{captionType !== 'none' && (
 											<figcaption className='maxi-image-block__caption'>
 												{captionContent}

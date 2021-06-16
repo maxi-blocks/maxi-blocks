@@ -27,9 +27,36 @@ import {
 } from 'react-instantsearch-dom';
 import { uniq, isEmpty } from 'lodash';
 
-const imageUploader = async imageSrc => {
+const placeholderImage = async () => {
+	const ajaxurl = wp.ajax.settings.url;
 	try {
-		const ajaxurl = wp.ajax.settings.url;
+		const response = await fetch(
+			`${
+				window.location.origin + ajaxurl
+			}?action=maxi_upload_placeholder_image`
+		);
+		const data = await response.json();
+		if (data.error === '404') {
+			console.warn(
+				__(
+					"Can't upload the placeholder image, check directory's permissions",
+					'maxi-blocks'
+				)
+			);
+			return null;
+		}
+		return data;
+	} catch (err) {
+		console.error(
+			__(`Error uploading the placeholder image: ${err}`, 'maxi-blocks')
+		);
+	}
+	return null;
+};
+
+const imageUploader = async imageSrc => {
+	const ajaxurl = wp.ajax.settings.url;
+	try {
 		const response = await fetch(
 			`${
 				window.location.origin + ajaxurl
@@ -43,8 +70,7 @@ const imageUploader = async imageSrc => {
 					'maxi-blocks'
 				)
 			);
-			// TODO: return the placeholder image here
-			return null;
+			return placeholderImage();
 		}
 
 		const data = await response.json();
@@ -55,8 +81,7 @@ const imageUploader = async imageSrc => {
 					'maxi-blocks'
 				)
 			);
-			// TODO: return the placeholder image here
-			return null;
+			return placeholderImage();
 		}
 		return data;
 	} catch (err) {
@@ -197,12 +222,18 @@ const LibraryContainer = props => {
 				const checkCounter = imagesIdsUniq.length;
 
 				if (counter !== checkCounter) {
-					// TODO: show a human-readable error here
 					console.error(
 						__(
 							"Error processing images' links and ids - counts do not match",
 							'maxi-blocks'
 						)
+					);
+					replaceBlock(
+						clientId,
+						wp.blocks.rawHandler({
+							HTML: parsedContent,
+							mode: 'BLOCKS',
+						})
 					);
 					return;
 				}

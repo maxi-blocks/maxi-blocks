@@ -1,13 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import Button from '../button';
 import BaseControl from '../base-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import ColorPaletteControl from '../color-palette-control';
@@ -23,7 +22,6 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { reset } from '../../icons';
 
 /**
  * Component

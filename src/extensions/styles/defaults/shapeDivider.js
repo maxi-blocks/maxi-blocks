@@ -1,42 +1,3 @@
-import { background, backgroundColor } from './background';
-
-const shapeDividerBackground = location => {
-	const response = {};
-
-	Object.keys(background).forEach(key => {
-		const newKey = key.replace(
-			'background-',
-			`shape-divider-${location}-background-`
-		);
-		const value = { ...background[key] };
-
-		if (value.type === 'string' || value.type === 'number')
-			delete value.default;
-
-		response[newKey] = value;
-	});
-
-	return response;
-};
-
-const shapeDividerBackgroundColor = location => {
-	const response = {};
-
-	Object.keys(backgroundColor).forEach(key => {
-		const newKey = key.replace(
-			'background-',
-			`shape-divider-${location}-background-`
-		);
-		const value = { ...backgroundColor[key] };
-
-		delete value.default;
-
-		response[newKey] = value;
-	});
-
-	return response;
-};
-
 const shapeDivider = {
 	'shape-divider-top-status': {
 		type: 'boolean',
@@ -57,8 +18,9 @@ const shapeDivider = {
 	'shape-divider-top-shape-style': {
 		type: 'string',
 	},
-	...shapeDividerBackground('top'),
-	...shapeDividerBackgroundColor('top'),
+	'shape-divider-top-color': {
+		type: 'string',
+	},
 	'shape-divider-top-effects-status': {
 		type: 'boolean',
 		default: false,
@@ -82,8 +44,9 @@ const shapeDivider = {
 	'shape-divider-bottom-shape-style': {
 		type: 'string',
 	},
-	...shapeDividerBackground('bottom'),
-	...shapeDividerBackgroundColor('bottom'),
+	'shape-divider-bottom-color': {
+		type: 'string',
+	},
 	'shape-divider-bottom-effects-status': {
 		type: 'boolean',
 		default: false,

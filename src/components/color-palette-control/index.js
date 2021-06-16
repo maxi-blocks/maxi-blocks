@@ -97,6 +97,18 @@ const ColorPaletteControl = props => {
 
 	const onChangePaletteWithType = colorPaletteType => {
 		switch (colorPaletteType) {
+			case 'shape-divider-top':
+				onChange({
+					'shape-divider-top': '',
+				});
+				break;
+
+			case 'shape-divider-bottom':
+				onChange({
+					'shape-divider-bottom': '',
+				});
+				break;
+
 			case 'box-shadow':
 				onChange({
 					[`box-shadow-color-${deviceType}`]: '',

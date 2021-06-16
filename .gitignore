@@ -16,6 +16,3 @@ build
 
 # Ignore Mac DS_Store files
 **/.DS_Store
-
-# .env with secret keys
-.env

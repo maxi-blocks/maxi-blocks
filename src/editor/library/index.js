@@ -8,7 +8,6 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import './store';
 import LibraryToolbar from './toolbar';
 import LibraryContainer from './container';
 /**

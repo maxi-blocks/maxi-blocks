@@ -32,6 +32,11 @@ class MaxiBlocks_ImageUpload
             $this,
             'maxi_upload_pattern_image',
         ]);
+
+        add_action('wp_ajax_maxi_upload_placeholder_image', [
+            $this,
+            'maxi_upload_placeholder_image',
+        ]);
     }
 
     public function maxi_media_file_already_exists($no_extension)
@@ -41,6 +46,15 @@ class MaxiBlocks_ImageUpload
         $id = $wpdb->get_var($wpdb->prepare("SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value LIKE %s", '%/'.$no_extension.'%'));
 
         return $id ? $id : 0;
+    }
+
+    public function maxi_upload_placeholder_image()
+    {
+        $placeholder_image_url = plugin_dir_url(__DIR__) . 'img/patterns-placeholder.jpg';
+
+        $_GET['maxi_image_to_upload'] = $placeholder_image_url;
+
+        $this->maxi_upload_pattern_image($placeholder_image_url);
     }
 
     public function maxi_upload_pattern_image($maxi_image_to_upload)

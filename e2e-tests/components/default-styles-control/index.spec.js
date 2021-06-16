@@ -2,146 +2,36 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-import { getBlockAttributes } from '../../utils';
+/**
+ * Internal dependencies
+ */
+import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('default styles control', () => {
-	it('checking the default styles control', async () => {
+describe('DefaultStylesControl', () => {
+	it('Checking the default styles control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('check default styles');
+		const accordionPanel = await openSidebar(page, 'border');
+		await accordionPanel.$$(
+			'.maxi-tabs-content .maxi-default-styles-control button'
+		);
 
-		const expectAttributes = {
-			'background-gradient-opacity': 1,
-			'background-image-attachment': 'scroll',
-			'background-image-clip': 'border-box',
-			'background-image-height': 100,
-			'background-image-height-unit': '%',
-			'background-image-opacity': 1,
-			'background-image-origin': 'padding-box',
-			'background-image-position': 'center center',
-			'background-image-position-height': 0,
-			'background-image-position-height-unit': '%',
-			'background-image-position-width': 0,
-			'background-image-position-width-unit': '%',
-			'background-image-repeat': 'no-repeat',
-			'background-image-size': 'auto',
-			'background-image-width': 100,
-			'background-image-width-unit': '%',
-			'background-layers-status': false,
-			'background-layers-status-hover': false,
-			'background-status-hover': false,
-			'background-svg-left': 0,
-			'background-svg-left--unit': '%',
-			'background-svg-size': 100,
-			'background-svg-size--unit': '%',
-			'background-svg-top': 0,
-			'background-svg-top--unit': '%',
-			'background-video-loop': false,
-			'background-video-opacity': 100,
-			'background-video-playOnMobile': false,
-			blockStyle: 'maxi-light',
-			blockStyleBackground: 1,
-			'border-status-hover': false,
-			'border-sync-radius-general': true,
-			'border-sync-width-general': true,
-			'border-unit-radius-general': 'px',
-			'border-unit-radius-general-hover': 'px',
-			'border-unit-width-general': 'px',
-			'box-shadow-color-general': 'var(--maxi-shadow-color)',
-			'box-shadow-color-general-hover': '',
-			'box-shadow-status-hover': false,
-			'container-height-unit-general': 'px',
-			'container-max-height-unit-general': 'px',
-			'container-max-width-general': 1170,
-			'container-max-width-l': 90,
-			'container-max-width-m': 90,
-			'container-max-width-s': 90,
-			'container-max-width-unit-general': 'px',
-			'container-max-width-unit-l': '%',
-			'container-max-width-unit-m': '%',
-			'container-max-width-unit-s': '%',
-			'container-max-width-unit-xl': 'px',
-			'container-max-width-unit-xs': '%',
-			'container-max-width-unit-xxl': 'px',
-			'container-max-width-xl': 1170,
-			'container-max-width-xs': 90,
-			'container-max-width-xxl': 1790,
-			'container-min-height-unit-general': 'px',
-			'container-min-width-unit-general': 'px',
-			'container-size-advanced-options': false,
-			'container-width-l': 1170,
-			'container-width-m': 1000,
-			'container-width-s': 700,
-			'container-width-unit-l': 'px',
-			'container-width-unit-m': 'px',
-			'container-width-unit-s': 'px',
-			'container-width-unit-xs': 'px',
-			'container-width-xs': 460,
-			content: 'check default styles',
-			customLabel: 'Text',
-			defaultBlockStyle: 'maxi-def-light',
-			'entrance-delay': 1,
-			'entrance-duration': 1,
-			'entrance-type': 'none',
-			extraClassName: '',
-			'font-size-unit-general': 'px',
-			fullWidth: 'normal',
-			'height-unit-general': 'px',
-			isFirstOnHierarchy: true,
-			isList: false,
-			'letter-spacing-unit-general': 'px',
-			listReversed: 0,
-			'margin-sync-general': false,
-			'margin-unit-general': 'px',
-			'max-height-unit-general': 'px',
-			'max-width-unit-general': 'px',
-			'min-height-unit-general': 'px',
-			'min-width-unit-general': 'px',
-			'motion-active-time-line-index': 0,
-			'motion-active-time-line-time': 0,
-			'motion-mobile-status': true,
-			'motion-preset-status': false,
-			'motion-preview-status': false,
-			'motion-status': false,
-			'motion-tablet-status': true,
-			'motion-transform-origin-x': 'center',
-			'motion-transform-origin-y': 'center',
-			'padding-sync-general': false,
-			'padding-unit-general': 'px',
-			'palette-custom-background-color': false,
-			'palette-custom-background-hover-color': false,
-			'palette-custom-border-color': false,
-			'palette-custom-border-hover-color': false,
-			'palette-custom-box-shadow-color': false,
-			'palette-custom-box-shadow-hover-color': false,
-			'palette-custom-hover-background-color': false,
-			'palette-custom-svg-background-color': false,
-			'palette-custom-typography-color': false,
-			'palette-custom-typography-hover-color': false,
-			'palette-preset-background-hover-color': 6,
-			'palette-preset-border-color': 2,
-			'palette-preset-border-hover-color': 6,
-			'palette-preset-box-shadow-color': 1,
-			'palette-preset-box-shadow-hover-color': 6,
-			'palette-preset-hover-background-color': 6,
-			'palette-preset-svg-background-color': 5,
-			'parallax-direction': 'up',
-			'parallax-speed': 4,
-			'parallax-status': false,
-			parentBlockStyle: 'light',
-			'position-sync-general': false,
-			'position-unit-general': 'px',
-			'size-advanced-options': false,
-			textLevel: 'p',
-			'transform-translate-x-unit-general': '%',
-			'transform-translate-y-unit-general': '%',
-			typeOfList: 'ul',
-			'typography-status-hover': false,
-			uniqueID: 'text-maxi-12',
-			'width-unit-general': 'px',
-		};
-		const attributes = await getBlockAttributes();
+		const expectAttributes = [undefined, 'solid', 'dashed', 'dotted'];
 
-		expect(attributes).toEqual(expectAttributes);
+		for (let i = 0; i < expectAttributes.length; i++) {
+			expectAttributes[i];
+
+			await page.$$eval(
+				'.maxi-border-control .maxi-default-styles-control button',
+				(buttons, i) => buttons[i].click(),
+				i
+			);
+
+			const attributes = await getBlockAttributes();
+			const borderAttribute = attributes['border-style-general'];
+
+			expect(borderAttribute).toStrictEqual(expectAttributes[i]);
+		}
 	});
 });

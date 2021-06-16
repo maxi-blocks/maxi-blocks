@@ -11,21 +11,17 @@ import {
 	openAdvancedSidebar,
 } from '../../utils';
 
-describe('Settings Tabs Control', () => {
+describe('SettingsTabsControl', () => {
 	it('Checking the settings tabs control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		const stylePanel = await openSidebar(page, 'alignment');
-		await stylePanel.$$eval('.maxi-alignment-control label', button =>
-			button[1].click()
+		const accordionItem = await stylePanel.$$(
+			'.maxi-settingstab-control .maxi-accordion-control.is-secondary .maxi-accordion-control__item'
 		);
+		expect(accordionItem).toMatchSnapshot();
 
-		const attributes = await getBlockAttributes();
-		const expectSelector = attributes['text-alignment-general'];
-		const expectAttributes = 'center';
-		expect(expectSelector).toStrictEqual(expectAttributes);
-
-		const advanced = await openAdvancedSidebar(page, 'display');
+		/* const advanced = await openAdvancedSidebar(page, 'display');
 		await advanced.$$eval('.maxi-display-control label', button =>
 			button[2].click()
 		);
@@ -33,6 +29,6 @@ describe('Settings Tabs Control', () => {
 		const attribute = await getBlockAttributes();
 		const expectDisplay = attribute['display-general'];
 		const expectSelection = 'none';
-		expect(expectDisplay).toStrictEqual(expectSelection);
+		expect(expectDisplay).toStrictEqual(expectSelection); */
 	});
 });

@@ -13,7 +13,6 @@ const allowedBlocks = [
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/map-maxi',
 	'maxi-blocks/image-maxi',
-	'maxi-blocks/section-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/number-counter-maxi',

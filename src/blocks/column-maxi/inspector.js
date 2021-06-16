@@ -17,14 +17,14 @@ import {
 	CustomLabel,
 	DisplayControl,
 	FancyRadioControl,
+	InfoBox,
 	OpacityControl,
-	RangeSliderControl,
 	ResponsiveControl,
 	SelectControl,
 	SettingTabsControl,
+	SizeControl,
 	TextControl,
 	TransformControl,
-	InfoBox,
 	ZIndexControl,
 } from '../../components';
 import {
@@ -94,38 +94,47 @@ const Inspector = props => {
 											),
 											content: (
 												<>
-													<RangeSliderControl
-														className='maxi-column-size-control'
+													<SizeControl
 														label={__(
 															'Column Size (%)',
 															'maxi-blocks'
 														)}
+														placeholder=''
+														disableUnit
 														value={getLastBreakpointAttribute(
 															'column-size',
 															deviceType,
 															attributes
 														)}
-														onChange={val => {
+														onChangeValue={val => {
 															setAttributes({
 																[`column-size-${deviceType}`]:
-																	val,
+																	val !==
+																		undefined &&
+																	val !== ''
+																		? val
+																		: '',
 															});
 														}}
 														min={0}
 														max={100}
 														step={0.1}
-														allowReset
-														defaultValue={getColumnDefaultValue(
-															rowPattern,
-															{
-																...getGroupAttributes(
-																	attributes,
-																	'columnSize'
-																),
-															},
-															clientId,
-															deviceType
-														)}
+														onReset={() =>
+															setAttributes({
+																[`column-size-${deviceType}`]:
+																	getColumnDefaultValue(
+																		rowPattern,
+																		{
+																			...getGroupAttributes(
+																				attributes,
+																				'columnSize'
+																			),
+																		},
+																		clientId,
+																		deviceType
+																	),
+															})
+														}
 														initialPosition={getDefaultAttribute(
 															`column-size-${deviceType}`,
 															clientId

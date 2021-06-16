@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Button Maxi Button Maxi does not break  1`] = `
-"<!-- wp:maxi-blocks/button-maxi {\\"blockStyle\\":\\"maxi-light\\",\\"uniqueID\\":\\"button-maxi-12\\",\\"isFirstOnHierarchy\\":true} -->
-<div class=\\"wp-block-maxi-blocks-button-maxi maxi-motion-effect maxi-block maxi-button-block maxi-light button-maxi-12\\" id=\\"button-maxi-12\\"><button type=\\"button\\" class=\\"components-button maxi-button-block__button maxi-button-block__button--icon-right\\"><span class=\\"maxi-button-block__content\\"></span></button></div>
+"<!-- wp:maxi-blocks/button-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"button-maxi-12\\"} -->
+<div id=\\"button-maxi-12\\" class=\\"maxi-block maxi-button-block maxi-motion-effect maxi-motion-effect-button-maxi-12 maxi-light button-maxi-12 wp-block-maxi-blocks-button-maxi maxi-sc-light-background-color-4 maxi-sc-light-typography-color-1\\" data-align=\\"normal\\"><button type=\\"button\\" class=\\"components-button maxi-button-block__button\\"><span class=\\"maxi-button-block__content\\"></span></button></div>
 <!-- /wp:maxi-blocks/button-maxi -->"
 `;

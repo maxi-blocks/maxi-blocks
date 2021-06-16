@@ -126,73 +126,66 @@ const getStyles = props => {
 	const { uniqueID, isList, textLevel, typeOfList } = props;
 	const element = isList ? typeOfList : textLevel;
 
-	let response = {
-		[uniqueID]: getNormalObject(props),
-		[`${uniqueID}:hover`]: getHoverObject(props),
-		[`${uniqueID} ${element}.maxi-text-block__content`]: getTypographyObject(
-			props,
-			isList
-		),
-		[`${uniqueID} ${element}.maxi-text-block__content:hover`]: getTypographyHoverObject(
-			props
-		),
-		[`${uniqueID} ${element}.maxi-text-block__content li`]: getTypographyObject(
-			props
-		),
-		[`${uniqueID} ${element}.maxi-text-block__content li:hover`]: getTypographyHoverObject(
-			props
-		),
-		[`${uniqueID} ${element}.maxi-text-block__content a`]: getTypographyObject(
-			props
-		),
-		[`${uniqueID} ${element}.maxi-text-block__content a:hover`]: getTypographyHoverObject(
-			props
-		),
+	return {
+		[uniqueID]: {
+			'': getNormalObject(props),
+			':hover': getHoverObject(props),
+			...(!isList && {
+				[` ${element}.maxi-text-block__content`]: getTypographyObject(
+					props,
+					isList
+				),
+				[` ${element}.maxi-text-block__content:hover`]:
+					getTypographyHoverObject(props),
+			}),
+			...(isList && {
+				[` ${element}.maxi-text-block__content li`]:
+					getTypographyObject(props),
+				[` ${element}.maxi-text-block__content li:hover`]:
+					getTypographyHoverObject(props),
+			}),
+			[` ${element}.maxi-text-block__content a`]:
+				getTypographyObject(props),
+			[` ${element}.maxi-text-block__content a:hover`]:
+				getTypographyHoverObject(props),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+					'borderRadius',
+				]),
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+					'borderRadiusHover',
+				]),
+				isHover: true,
+			}),
+			...getCustomFormatsStyles(
+				!isList
+					? ' .maxi-text-block__content'
+					: ' .maxi-text-block__content li',
+				props['custom-formats'],
+				false,
+				{ ...getGroupAttributes(props, 'typography') }
+			),
+			...getCustomFormatsStyles(
+				!isList
+					? ':hover .maxi-text-block__content'
+					: ':hover .maxi-text-block__content li',
+				props['custom-formats-hover'],
+				true,
+				getGroupAttributes(props, 'typographyHover')
+			),
+		},
 	};
-
-	response = {
-		...response,
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'background',
-				'backgroundColor',
-				'backgroundImage',
-				'backgroundVideo',
-				'backgroundGradient',
-				'backgroundSVG',
-				'borderRadius',
-			]),
-		}),
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'backgroundHover',
-				'backgroundColorHover',
-				'backgroundGradientHover',
-				'borderRadiusHover',
-			]),
-			isHover: true,
-		}),
-		...getCustomFormatsStyles(
-			!isList
-				? `${uniqueID} .maxi-text-block__content`
-				: `${uniqueID} .maxi-text-block__content li`,
-			props['custom-formats'],
-			false,
-			{ ...getGroupAttributes(props, 'typography') }
-		),
-		...getCustomFormatsStyles(
-			!isList
-				? `${uniqueID}:hover .maxi-text-block__content`
-				: `${uniqueID}:hover .maxi-text-block__content li`,
-			props['custom-formats-hover'],
-			true,
-			getGroupAttributes(props, 'typographyHover')
-		),
-	};
-
-	return response;
 };
 
 export default getStyles;

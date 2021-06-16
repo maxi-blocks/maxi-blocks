@@ -14,7 +14,8 @@
 		"test:debug": "wp-scripts --inspect-brk test-unit-jest --runInBand --no-cache --verbose",
 		"test:e2e": "wp-scripts test-e2e -c ./e2e-tests/jest.config.js",
 		"test:e2e-interactive": "wp-scripts test-e2e -c ./e2e-tests/jest.config.js --puppeteer-interactive",
-		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e --runInBand --no-cache --verbose"
+		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose",
+		"test:e2e-interactive:debug": "wp-scripts --inspect-brk test-e2e -c ./e2e-tests/jest.config.js --runInBand --no-cache --verbose --puppeteer-interactive"
 	},
 	"dependencies": {
 		"@googlemaps/js-api-loader": "^1.11.4",
@@ -36,6 +37,7 @@
 		"classnames": "^2.3.1",
 		"css-to-react-native": "^3.0.0",
 		"dompurify": "^2.2.8",
+		"html-react-parser": "^1.2.6",
 		"re-resizable": "^6.9.0",
 		"react-accessible-accordion": "^3.3.4",
 		"react-color": "^2.19.3",

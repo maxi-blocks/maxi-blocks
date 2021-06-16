@@ -1,3 +1,6 @@
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
@@ -15,6 +18,10 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+
+/**
+ * External dependencies
+ */
 import { isEmpty, isNil } from 'lodash';
 
 const getNormalObject = props => {
@@ -130,22 +137,6 @@ const getHoverEffectContentTextObject = props => {
 	return response;
 };
 
-const getImageFrontendObject = props => {
-	const response = {
-		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
-		}),
-		opacity: getOpacityStyles({
-			...getGroupAttributes(props, 'opacity'),
-		}),
-		alignment: getAlignmentFlexStyles({
-			...getGroupAttributes(props, 'alignment'),
-		}),
-	};
-
-	return response;
-};
-
 const getImageHoverObject = props => {
 	const response = {
 		...(props['border-status-hover'] && {
@@ -173,7 +164,7 @@ const getImageHoverObject = props => {
 	return response;
 };
 
-const getImageBackendObject = props => {
+const getImageWrapperObject = props => {
 	const response = {
 		border: getBorderStyles({
 			...getGroupAttributes(props, [
@@ -192,6 +183,15 @@ const getImageBackendObject = props => {
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
+		...(props.clipPath && {
+			image: { general: { 'clip-path': props.clipPath } },
+		}),
+		...(props.imgWidth && {
+			imgWidth: { general: { width: `${props.imgWidth}%` } },
+		}),
+		...(props['hover-extension'] && {
+			hoverExtension: { general: { overflow: 'visible' } },
+		}),
 	};
 
 	return response;
@@ -207,32 +207,10 @@ const getFigcaptionObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-	};
-
-	return response;
-};
-
-const getResizeObject = props => {
-	const response = {
-		imageSize: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
+		...(props.imgWidth && {
+			imgWidth: { general: { width: `${props.imgWidth}%` } },
 		}),
 	};
-
-	return response;
-};
-
-const getImageHoverPreviewObject = props => {
-	const { clipPath } = props;
-
-	const response = {
-		image: {
-			label: 'Image settings',
-			general: {},
-		},
-	};
-
-	if (clipPath) response.image.general['clip-path'] = clipPath;
 
 	return response;
 };
@@ -240,48 +218,37 @@ const getImageHoverPreviewObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	let response = {
-		[uniqueID]: getNormalObject(props),
-		[`${uniqueID} .maxi-block-hover-wrapper`]:
-			getImageFrontendObject(props),
-		[`${uniqueID} .maxi-image-block__resizer`]: getResizeObject(props),
-		[`${uniqueID}:hover .maxi-block-hover-wrapper`]:
-			getImageHoverObject(props),
-		[`${uniqueID} .maxi-block-hover-wrapper`]: getImageBackendObject(props),
-		[`${uniqueID} .maxi-block-hover-wrapper .maxi-hover-preview`]:
-			getImageHoverPreviewObject(props),
-		[`${uniqueID} figcaption`]: getFigcaptionObject(props),
-		[`${uniqueID} .maxi-hover-details .maxi-hover-details__content h3`]:
-			getHoverEffectTitleTextObject(props),
-		[`${uniqueID} .maxi-hover-details .maxi-hover-details__content p`]:
-			getHoverEffectContentTextObject(props),
-		[`${uniqueID} .maxi-hover-details`]:
-			getHoverEffectDetailsBoxObject(props),
-	};
-
-	response = {
-		...response,
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'backgroundHover',
-				'backgroundColorHover',
-				'backgroundGradientHover',
-				'borderRadiusHover',
-			]),
-			isHover: true,
-		}),
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'background',
-				'backgroundColor',
-				'backgroundImage',
-				'backgroundVideo',
-				'backgroundGradient',
-				'backgroundSVG',
-			]),
-		}),
+	const response = {
+		[uniqueID]: {
+			'': getNormalObject(props),
+			' .maxi-image-block-wrapper': getImageWrapperObject(props),
+			':hover .maxi-image-block-wrapper': getImageHoverObject(props),
+			' figcaption': getFigcaptionObject(props),
+			' .maxi-hover-details .maxi-hover-details__content h3':
+				getHoverEffectTitleTextObject(props),
+			' .maxi-hover-details .maxi-hover-details__content p':
+				getHoverEffectContentTextObject(props),
+			' .maxi-hover-details': getHoverEffectDetailsBoxObject(props),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+					'borderRadiusHover',
+				]),
+				isHover: true,
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'background',
+					'backgroundColor',
+					'backgroundImage',
+					'backgroundVideo',
+					'backgroundGradient',
+					'backgroundSVG',
+				]),
+			}),
+		},
 	};
 
 	return response;

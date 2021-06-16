@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
 import Icon from '../icon';
-import RangeSliderControl from '../range-slider-control';
+import SizeControl from '../size-control';
 import {
 	boxShadowNone,
 	boxShadowTotal,
@@ -48,12 +48,6 @@ const BoxShadowControl = props => {
 	} = props;
 
 	const classes = classnames('maxi-shadow-control', className);
-
-	const onChangeValue = (target, val) => {
-		onChange({
-			[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]: val,
-		});
-	};
 
 	const onChangeDefault = defaultProp => {
 		const response = {};
@@ -174,131 +168,140 @@ const BoxShadowControl = props => {
 					/>
 					{!disableAdvanced && (
 						<>
-							<RangeSliderControl
+							<SizeControl
 								label={__('Horizontal', 'maxi-blocks')}
-								className='maxi-shadow-control__horizontal'
-								defaultValue={getDefaultAttribute(
-									`box-shadow-horizontal-${breakpoint}`
-								)}
+								placeholder=''
+								disableUnit
 								value={getLastBreakpointAttribute(
 									'box-shadow-horizontal',
 									breakpoint,
 									props,
 									isHover
 								)}
-								onChange={val =>
-									!isNil(val)
-										? onChangeValue(
-												'box-shadow-horizontal',
-												val
-										  )
-										: onChangeValue(
-												'box-shadow-horizontal',
-												getDefaultAttribute(
-													`box-shadow-horizontal-${breakpoint}`
-												) || 0
-										  )
-								}
+								onChangeValue={val => {
+									onChange({
+										[`box-shadow-horizontal-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]:
+											val !== undefined && val !== ''
+												? val
+												: '',
+									});
+								}}
 								min={-100}
 								max={100}
-								allowReset
+								onReset={() =>
+									onChange({
+										[`box-shadow-horizontal-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: 0,
+									})
+								}
 								initialPosition={getDefaultAttribute(
 									`box-shadow-horizontal-${breakpoint}${
 										isHover ? '-hover' : ''
 									}`
 								)}
 							/>
-							<RangeSliderControl
+							<SizeControl
 								label={__('Vertical', 'maxi-blocks')}
-								className='maxi-shadow-control__vertical'
-								defaultValue={getDefaultAttribute(
-									`box-shadow-vertical-${breakpoint}`
-								)}
+								placeholder=''
+								disableUnit
 								value={getLastBreakpointAttribute(
 									'box-shadow-vertical',
 									breakpoint,
 									props,
 									isHover
 								)}
-								onChange={val => {
-									!isNil(val)
-										? onChangeValue(
-												'box-shadow-vertical',
-												val
-										  )
-										: onChangeValue(
-												'box-shadow-vertical',
-												getDefaultAttribute(
-													`box-shadow-vertical-${breakpoint}`
-												) || 0
-										  );
+								onChangeValue={val => {
+									onChange({
+										[`box-shadow-vertical-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]:
+											val !== undefined && val !== ''
+												? val
+												: '',
+									});
 								}}
 								min={-100}
 								max={100}
-								allowReset
+								onReset={() =>
+									onChange({
+										[`box-shadow-vertical-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: 0,
+									})
+								}
 								initialPosition={getDefaultAttribute(
 									`box-shadow-vertical-${breakpoint}${
 										isHover ? '-hover' : ''
 									}`
 								)}
 							/>
-							<RangeSliderControl
+							<SizeControl
 								label={__('Blur', 'maxi-blocks')}
-								className='maxi-shadow-control__blur'
-								defaultValue={getDefaultAttribute(
-									`box-shadow-blur-${breakpoint}`
-								)}
+								placeholder=''
+								disableUnit
 								value={getLastBreakpointAttribute(
 									'box-shadow-blur',
-									breakpoint
+									breakpoint,
+									props,
+									isHover
 								)}
-								onChange={val => {
-									!isNil(val)
-										? onChangeValue('box-shadow-blur', val)
-										: onChangeValue(
-												'box-shadow-blur',
-												getDefaultAttribute(
-													`box-shadow-blur-${breakpoint}`
-												) || 0
-										  );
+								onChangeValue={val => {
+									onChange({
+										[`box-shadow-blur-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]:
+											val !== undefined && val !== ''
+												? val
+												: '',
+									});
 								}}
-								min={0}
+								min={-100}
 								max={100}
-								allowReset
+								onReset={() =>
+									onChange({
+										[`box-shadow-blur-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: 0,
+									})
+								}
 								initialPosition={getDefaultAttribute(
 									`box-shadow-blur-${breakpoint}${
 										isHover ? '-hover' : ''
 									}`
 								)}
 							/>
-							<RangeSliderControl
+							<SizeControl
 								label={__('Spread', 'maxi-blocks')}
-								className='maxi-shadow-control__spread-control'
-								defaultValue={getDefaultAttribute(
-									`box-shadow-spread-${breakpoint}`
-								)}
+								placeholder=''
+								disableUnit
 								value={getLastBreakpointAttribute(
 									'box-shadow-spread',
 									breakpoint,
 									props,
 									isHover
 								)}
-								onChange={val => {
-									!isNil(val)
-										? onChangeValue(
-												'box-shadow-spread',
-												val
-										  )
-										: onChangeValue(
-												'box-shadow-spread',
-												getDefaultAttribute(
-													`box-shadow-spread-${breakpoint}`
-												) || 0
-										  );
+								onChangeValue={val => {
+									onChange({
+										[`box-shadow-spread-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]:
+											val !== undefined && val !== ''
+												? val
+												: '',
+									});
 								}}
 								min={-100}
 								max={100}
-								allowReset
+								onReset={() =>
+									onChange({
+										[`box-shadow-spread-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`]: 0,
+									})
+								}
 								initialPosition={getDefaultAttribute(
 									`box-shadow-spread-${breakpoint}${
 										isHover ? '-hover' : ''

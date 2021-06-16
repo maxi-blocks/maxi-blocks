@@ -3,7 +3,6 @@
 	box-sizing: border-box;
 	position: relative;
 	padding: 1em;
-	min-height: 200px;
 	width: 100%;
 	text-align: left;
 	margin: 0;
@@ -24,8 +23,6 @@
 	// Block UI appearance.
 	border-radius: 2px;
 	background-color: #fff;
-	box-shadow: inset 0 0 0 1px #1e1e1e;
-	outline: 1px solid transparent;
 
 	.components-base-control__label {
 		font-size: 18pt;
@@ -44,18 +41,12 @@
 .maxi-placeholder__label {
 	display: flex;
 	font-weight: 600;
-	margin-bottom: 16px;
 	align-items: center;
 
 	svg {
 		width: 100%;
 		height: 100%;
-	}
-	> svg,
-	.dashicon,
-	.block-editor-block-icon {
-		fill: currentColor;
-		margin-right: 1ch;
+		margin: auto;
 	}
 
 	// Don't take up space if the label is empty.

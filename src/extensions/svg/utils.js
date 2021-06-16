@@ -12,9 +12,8 @@ import { uniqueId, isObject, isEmpty, isElement } from 'lodash';
  * Utils
  */
 export const injectImgSVG = (svg, SVGData = {}) => {
-	const { getBlockAttributes, getSelectedBlockClientId } = select(
-		'core/block-editor'
-	);
+	const { getBlockAttributes, getSelectedBlockClientId } =
+		select('core/block-editor');
 
 	const { uniqueID } = getBlockAttributes(getSelectedBlockClientId());
 
@@ -47,7 +46,8 @@ export const injectImgSVG = (svg, SVGData = {}) => {
 			image.setAttribute('height', '100%');
 			image.setAttribute('x', '0');
 			image.setAttribute('y', '0');
-			image.setAttribute('xlink:href', el.imageURL);
+			image.setAttribute('href', el.imageURL);
+			image.setAttribute('preserveAspectRatio', 'xMidYMid slice');
 
 			pattern.append(image);
 			SVGElement.prepend(pattern);
@@ -75,9 +75,8 @@ export const generateDataObject = (data, svg) => {
 		imageID: '',
 		imageURL: '',
 	};
-	const { getBlockAttributes, getSelectedBlockClientId } = select(
-		'core/block-editor'
-	);
+	const { getBlockAttributes, getSelectedBlockClientId } =
+		select('core/block-editor');
 	const { uniqueID } = getBlockAttributes(getSelectedBlockClientId());
 	const SVGLayers = Array.from(
 		svg.querySelectorAll('path, circle, rect, polygon, line, ellipse')

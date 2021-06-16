@@ -1,7 +1,12 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
-import RangeSliderControl from '../range-slider-control';
+import SizeControl from '../size-control';
 
 /**
  * Component
@@ -10,16 +15,19 @@ const SvgWidthControl = props => {
 	const { defaultWidth, width, onChange } = props;
 
 	return (
-		<RangeSliderControl
+		<SizeControl
+			label={__('Stroke Width', 'maxi-blocks')}
+			placeholder=''
+			disableUnit
 			value={width}
-			defaultValue={defaultWidth}
-			onChange={val => onChange(val)}
+			onChangeValue={val => {
+				onChange(val !== undefined && val !== '' ? val : '');
+			}}
 			min={10}
 			max={500}
 			step={1}
-			withInputField
+			onReset={() => onChange(defaultWidth)}
 			initialPosition={defaultWidth}
-			allowReset
 		/>
 	);
 };

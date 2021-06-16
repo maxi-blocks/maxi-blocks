@@ -105,7 +105,6 @@ describe('getTypographyStyles', () => {
 			'custom-formats': 'object',
 		};
 
-		debugger;
 		const result = getTypographyStyles(object);
 		expect(result).toMatchSnapshot();
 	});

@@ -19,6 +19,7 @@ import {
 	DisplayControl,
 	EntranceAnimationControl,
 	FancyRadioControl,
+	FullSizeControl,
 	MotionControl,
 	OpacityControl,
 	ParallaxControl,
@@ -85,41 +86,56 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
-										isFirstOnHierarchy && {
+										{
 											label: __(
 												'Width / Height',
 												'maxi-blocks'
 											),
 											content: (
-												<FancyRadioControl
-													label={__(
-														'Full Width',
-														'maxi-blocks'
-													)}
-													selected={fullWidth}
-													options={[
-														{
-															label: __(
-																'No',
-																'maxi-blocks'
-															),
-															value: 'normal',
-														},
-														{
-															label: __(
-																'Yes',
-																'maxi-blocks'
-															),
-															value: 'full',
-														},
-													]}
-													optionType='string'
-													onChange={fullWidth =>
-														setAttributes({
-															fullWidth,
-														})
-													}
-												/>
+												<>
+													<FancyRadioControl
+														label={__(
+															'Full Width',
+															'maxi-blocks'
+														)}
+														selected={fullWidth}
+														options={[
+															{
+																label: __(
+																	'Yes',
+																	'maxi-blocks'
+																),
+																value: 'full',
+															},
+															{
+																label: __(
+																	'No',
+																	'maxi-blocks'
+																),
+																value: 'normal',
+															},
+														]}
+														optionType='string'
+														onChange={fullWidth =>
+															setAttributes({
+																fullWidth,
+															})
+														}
+													/>
+													<FullSizeControl
+														{...getGroupAttributes(
+															attributes,
+															'size'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+														hideMaxWidth={
+															fullWidth === 'full'
+														}
+													/>
+												</>
 											),
 										},
 										deviceType === 'general' && {

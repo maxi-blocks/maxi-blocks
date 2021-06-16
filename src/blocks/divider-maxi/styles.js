@@ -89,33 +89,27 @@ const getHoverObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	let response = {
-		[uniqueID]: getNormalObject(props),
-		[`${uniqueID}:hover hr.maxi-divider-block__divider`]: getHoverObject(
-			props
-		),
-		[`${uniqueID} hr.maxi-divider-block__divider`]: getDividerObject(props),
-	};
-
-	response = {
-		...response,
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'background',
-				'backgroundColor',
-				'backgroundGradient',
-			]),
-		}),
-		...getBackgroundStyles({
-			target: uniqueID,
-			...getGroupAttributes(props, [
-				'backgroundHover',
-				'backgroundColorHover',
-				'backgroundGradientHover',
-			]),
-			isHover: true,
-		}),
+	const response = {
+		[uniqueID]: {
+			'': getNormalObject(props),
+			':hover hr.maxi-divider-block__divider': getHoverObject(props),
+			' hr.maxi-divider-block__divider': getDividerObject(props),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'background',
+					'backgroundColor',
+					'backgroundGradient',
+				]),
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+				]),
+				isHover: true,
+			}),
+		},
 	};
 
 	return response;

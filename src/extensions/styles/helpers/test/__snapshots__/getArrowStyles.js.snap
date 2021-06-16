@@ -3,6 +3,13 @@
 exports[`getArrowStyles Get a correct arrow styles 1`] = `
 Object {
   " .maxi-container-arrow": Object {
+    "shadow": Object {
+      "general": Object {
+        "filter": "drop-shadow(0px 0px 0px var(--maxi-shadow-color))",
+      },
+    },
+  },
+  " .maxi-container-arrow .maxi-container-arrow--content": Object {
     "arrow": Object {
       "general": Object {
         "display": "block",
@@ -22,14 +29,14 @@ Object {
         "display": "block",
         "height": "3px",
         "left": "2%",
-        "top": "calc(100% + 2px)",
+        "top": "calc(100% + 3px)",
         "width": "3px",
       },
       "s": Object {
         "display": "block",
         "height": "1px",
         "left": "4%",
-        "top": "calc(100% + 0px)",
+        "top": "calc(100% + 1px)",
         "width": "1px",
       },
       "xl": Object {
@@ -43,7 +50,7 @@ Object {
         "display": "block",
         "height": "3px",
         "left": "2%",
-        "top": "calc(100% + 2px)",
+        "top": "calc(100% + 3px)",
         "width": "3px",
       },
       "xxl": Object {
@@ -54,13 +61,8 @@ Object {
         "width": "1px",
       },
     },
-    "shadow": Object {
-      "general": Object {
-        "filter": "drop-shadow(0px 0px 0px var(--maxi-shadow-color))",
-      },
-    },
   },
-  " .maxi-container-arrow:after": Object {
+  " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
       "general": Object {
         "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
@@ -68,7 +70,7 @@ Object {
       "label": "Arrow Color",
     },
   },
-  " .maxi-container-arrow:before": Object {
+  " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
     "border": Object {
       "general": Object {
         "background": "var(--maxi-light-color-1)",

@@ -3,12 +3,13 @@
  */
 import getBoxShadowStyles from './getBoxShadowStyles';
 import getGroupAttributes from '../getGroupAttributes';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import { getPaletteDefault } from '..';
 
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 export const getArrowBorderObject = props => {
 	const response = {
@@ -53,47 +54,53 @@ export const getArrowObject = props => {
 
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
-		response[breakpoint].display = 'block';
 
-		const width = `${props[`arrow-width-${breakpoint}`]}${
-			props[`arrow-width-unit-${breakpoint}`]
-		}`;
+		const arrowWidth = getLastBreakpointAttribute(
+			'arrow-width',
+			breakpoint,
+			props
+		);
+		const arrowSide = getLastBreakpointAttribute(
+			'arrow-side',
+			breakpoint,
+			props
+		);
+		const arrowPosition = getLastBreakpointAttribute(
+			'arrow-position',
+			breakpoint,
+			props
+		);
 
-		response[breakpoint].display = 'block';
-		response[breakpoint].width = `${width}`;
-		response[breakpoint].height = `${width}`;
-
-		if (props[`arrow-side-${breakpoint}`] === 'top') {
-			response[breakpoint].left = `${
-				props[`arrow-position-${breakpoint}`]
-			}%`;
-			response[breakpoint].top = `-${
-				(Math.sqrt(2) * props[`arrow-width-${breakpoint}`]) / 2
-			}${props[`arrow-width-unit-${breakpoint}`]}`;
+		if (!isNil(arrowWidth)) {
+			response[breakpoint].display = 'block';
+			response[breakpoint].width = `${arrowWidth}px`;
+			response[breakpoint].height = `${arrowWidth}px`;
 		}
-		if (props[`arrow-side-${breakpoint}`] === 'right') {
-			response[breakpoint].top = `${
-				props[`arrow-position-${breakpoint}`]
-			}%`;
+
+		if (arrowSide === 'top') {
+			response[breakpoint].left = `${arrowPosition}%`;
+			response[breakpoint].top = `-${(Math.sqrt(2) * arrowWidth) / 2}px`;
+		}
+
+		if (arrowSide === 'right') {
+			response[breakpoint].top = `${arrowPosition}%`;
 			response[breakpoint].left = `calc(100% + ${Math.floor(
-				(Math.sqrt(2) * props[`arrow-width-${breakpoint}`]) / 2
-			)}${props[`arrow-width-unit-${breakpoint}`]})`;
+				(Math.sqrt(2) * arrowWidth) / 2
+			)}px)`;
 		}
-		if (props[`arrow-side-${breakpoint}`] === 'bottom') {
-			response[breakpoint].left = `${
-				props[`arrow-position-${breakpoint}`]
-			}%`;
+
+		if (arrowSide === 'bottom') {
+			response[breakpoint].left = `${arrowPosition}%`;
 			response[breakpoint].top = `calc(100% + ${Math.floor(
-				(Math.sqrt(2) * props[`arrow-width-${breakpoint}`]) / 2
-			)}${props[`arrow-width-unit-${breakpoint}`]})`;
+				(Math.sqrt(2) * arrowWidth) / 2 + 1
+			)}px)`;
 		}
-		if (props[`arrow-side-${breakpoint}`] === 'left') {
-			response[breakpoint].top = `${
-				props[`arrow-position-${breakpoint}`]
-			}%`;
+
+		if (arrowSide === 'left') {
+			response[breakpoint].top = `${arrowPosition}%`;
 			response[breakpoint].left = `-${Math.floor(
-				(Math.sqrt(2) * props[`arrow-width-${breakpoint}`]) / 2
-			)}${props[`arrow-width-unit-${breakpoint}`]}`;
+				(Math.sqrt(2) * arrowWidth) / 2
+			)}px`;
 		}
 	});
 
@@ -122,43 +129,47 @@ export const getArrowColorObject = props => {
 };
 
 const getArrowStyles = props => {
-	const { target } = props;
+	const { target = '' } = props;
 
 	return {
 		[`${target} .maxi-container-arrow`]: {
-			arrow: { ...getArrowObject(getGroupAttributes(props, 'arrow')) },
 			shadow: {
 				...getBoxShadowStyles(
 					getGroupAttributes(props, 'boxShadow'),
 					false,
-					props['arrow-status']
+					true
 				),
 			},
 		},
-		[`${target} .maxi-container-arrow:after`]: {
-			background: {
-				...getArrowColorObject(
-					getGroupAttributes(props, [
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
-						'palette',
-					])
-				),
-			},
+		[`${target} .maxi-container-arrow .maxi-container-arrow--content`]: {
+			arrow: { ...getArrowObject(getGroupAttributes(props, 'arrow')) },
 		},
-		[`${target} .maxi-container-arrow:before`]: {
-			border: {
-				...getArrowBorderObject(
-					getGroupAttributes(props, [
-						'border',
-						'borderWidth',
-						'borderRadius',
-						'palette',
-					])
-				),
+		[`${target} .maxi-container-arrow .maxi-container-arrow--content:after`]:
+			{
+				background: {
+					...getArrowColorObject(
+						getGroupAttributes(props, [
+							'background',
+							'backgroundColor',
+							'backgroundGradient',
+							'palette',
+						])
+					),
+				},
 			},
-		},
+		[`${target} .maxi-container-arrow .maxi-container-arrow--content:before`]:
+			{
+				border: {
+					...getArrowBorderObject(
+						getGroupAttributes(props, [
+							'border',
+							'borderWidth',
+							'borderRadius',
+							'palette',
+						])
+					),
+				},
+			},
 	};
 };
 

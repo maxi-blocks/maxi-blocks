@@ -11,7 +11,7 @@ import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
 import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
-import RangeSliderControl from '../range-slider-control';
+import SizeControl from '../size-control';
 import SelectControl from '../select-control';
 import TypographyControl from '../typography-control';
 import TextareaControl from '../textarea-control';
@@ -81,6 +81,15 @@ const HoverEffectControl = props => {
 				]}
 				onChange={val => onChange({ 'hover-preview': val })}
 			/>
+			<FancyRadioControl
+				label={__('Allow extension', 'maxi-blocks')}
+				selected={props['hover-extension']}
+				options={[
+					{ label: __('Yes', 'maxi-blocks'), value: 1 },
+					{ label: __('No', 'maxi-blocks'), value: 0 },
+				]}
+				onChange={val => onChange({ 'hover-extension': val })}
+			/>
 			{props['hover-type'] !== 'none' &&
 				(props['hover-type'] === 'text' ||
 					props['hover-basic-effect-type'] === 'zoom-in' ||
@@ -93,24 +102,30 @@ const HoverEffectControl = props => {
 					props['hover-basic-effect-type'] === 'grey-scale' ||
 					props['hover-basic-effect-type'] ===
 						'clear-greay-scale') && (
-					<RangeSliderControl
+					<SizeControl
 						label={__('Duration(s)', 'maxi-blocks')}
-						className={classes}
+						placeholder=''
+						disableUnit
 						value={props['hover-transition-duration']}
-						defaultValue={getDefaultAttribute(
-							'hover-transition-duration'
-						)}
-						onChange={val =>
+						onChangeValue={val => {
 							onChange({
-								'hover-transition-duration': val,
-							})
-						}
+								'hover-transition-duration':
+									val !== undefined && val !== '' ? val : '',
+							});
+						}}
 						min={0}
 						step={0.1}
 						max={10}
-						allowReset
+						onReset={() =>
+							onChange({
+								'hover-transition-duration':
+									getDefaultAttribute(
+										'hover-transition-duration'
+									),
+							})
+						}
 						initialPosition={getDefaultAttribute(
-							'hover-basic-transition-duration'
+							'hover-transition-duration'
 						)}
 					/>
 				)}
@@ -233,30 +248,37 @@ const HoverEffectControl = props => {
 							props['hover-basic-effect-type'] === 'blur' ||
 							props['hover-basic-effect-type'] === 'slide') && (
 							<>
-								<RangeSliderControl
+								<SizeControl
 									label={__('Amount', 'maxi-blocks')}
-									className={classes}
+									placeholder=''
+									disableUnit
 									value={
 										props[
 											`hover-basic-${props['hover-basic-effect-type']}-value`
 										]
 									}
-									defaultValue={getDefaultAttribute(
-										`hover-basic-${props['hover-basic-effect-type']}-value`
-									)}
-									onChange={val =>
+									onChangeValue={val => {
 										onChange({
 											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
-												val,
-										})
-									}
+												val !== undefined && val !== ''
+													? val
+													: '',
+										});
+									}}
 									min={0}
 									step={0.1}
 									max={100}
-									allowReset
-									initialPosition={getDefaultAttribute(
-										`hover-basic-${props['hover-basic-effect-type']}-value`
-									)}
+									onReset={() =>
+										onChange({
+											[`hover-basic-${props['hover-basic-effect-type']}-value`]:
+												getDefaultAttribute([
+													`hover-basic-${props['hover-basic-effect-type']}-value`,
+												]),
+										})
+									}
+									initialPosition={getDefaultAttribute([
+										`hover-basic-${props['hover-basic-effect-type']}-value`,
+									])}
 								/>
 							</>
 						)}

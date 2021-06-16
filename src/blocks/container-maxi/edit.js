@@ -71,6 +71,7 @@ class edit extends MaxiBlockComponent {
 			},
 		};
 	}
+
 	render() {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
 		const { uniqueID, isFirstOnHierarchy, fullWidth, parentBlockStyle } =

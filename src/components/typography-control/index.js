@@ -30,7 +30,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, trim, inRange } from 'lodash';
+import { isNil, inRange, isEmpty } from 'lodash';
 /**
  * Styles
  */
@@ -431,7 +431,7 @@ const TypographyControl = withFormatValue(props => {
 	};
 
 	const getWinBreakpoint = () => {
-		if (!maxiBreakpoints) return null;
+		if (!maxiBreakpoints || isEmpty(maxiBreakpoints)) return null;
 
 		if (winWidth > maxiBreakpoints.xl) return 'xxl';
 

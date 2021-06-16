@@ -119,7 +119,7 @@ const getTransformStyles = obj => {
 		const transformObj = {
 			...(!isEmpty(transformString) && { transform: transformString }),
 			...(!isEmpty(transformOriginString) && {
-				'transform-origin': `${transformOriginString};`,
+				'transform-origin': `${transformOriginString}`,
 			}),
 		};
 		if (!isEmpty(transformObj)) response[breakpoint] = transformObj;

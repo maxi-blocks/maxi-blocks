@@ -11,7 +11,7 @@ import RadioControl from '../radio-control';
 import OpacityControl from '../opacity-control';
 import FancyRadioControl from '../fancy-radio-control';
 import ColorControl from '../color-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import Dropdown from '../dropdown';
 import {
 	getDefaultAttribute,
@@ -316,8 +316,9 @@ const ShapeDividerControl = props => {
 								onChangePalette={val => onChange(val)}
 								clientId={clientId}
 							/>
-							<SizeControl
+							<AdvancedNumberControl
 								label={__('Divider Height', 'maxi-blocks')}
+								enableUnit
 								unit={props['shape-divider-top-height-unit']}
 								allowedUnits={['px']}
 								onChangeUnit={val =>
@@ -447,8 +448,9 @@ const ShapeDividerControl = props => {
 								onChangePalette={val => onChange(val)}
 								clientId={clientId}
 							/>
-							<SizeControl
+							<AdvancedNumberControl
 								label={__('Divider Height', 'maxi-blocks')}
+								enableUnit
 								unit={props['shape-divider-bottom-height-unit']}
 								allowedUnits={['px']}
 								onChangeUnit={val =>

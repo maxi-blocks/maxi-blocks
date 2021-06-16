@@ -23,6 +23,7 @@ const save = props => {
 		captionContent,
 		mediaID,
 		mediaURL,
+		imgWidth,
 		mediaWidth,
 		mediaHeight,
 		mediaAlt,
@@ -86,10 +87,11 @@ const save = props => {
 		<MaxiBlock
 			paletteClasses={paletteClasses}
 			tagName='figure'
+			paletteClasses={paletteClasses}
 			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
-			<div className={hoverClasses}>
+			<div style={{ width: `${imgWidth}%` }} className={hoverClasses}>
 				<HoverPreview
 					className={!SVGElement ? hoverPreviewClasses : null}
 					key={`hover-preview-${uniqueID}`}

@@ -5,44 +5,49 @@
 /**
  * Import dependencies.
  */
-import MaxiModal from './modal';
+import MaxiModal from '../../editor/library/modal';
 import { library } from '../../icons';
 
 /**
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { Component, Fragment } from '@wordpress/element';
-import { BlockControls, BlockAlignmentToolbar } from '@wordpress/editor';
+import { Component, RawHTML } from '@wordpress/element';
 import { Placeholder } from '../../components';
+
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
 
 export default class Edit extends Component {
 	render() {
-		const { attributes, setAttributes, clientId } = this.props;
+		const { attributes, clientId } = this.props;
+
+		const { content } = attributes;
 
 		/* Placeholder with layout modal */
 		return [
-			<Fragment key={this.props.clientId}>
-				<BlockControls key='controls'>
-					<BlockAlignmentToolbar
-						value={attributes.align}
-						onChange={align => setAttributes({ align })}
-						controls={[]}
-					/>
-				</BlockControls>
-				<Placeholder
-					key='placeholder'
-					label={__('Cloud Library Maxi', 'gutenberg-extra-blocks')}
-					instructions={__(
-						'Launch the library to browse pre-designed blocks and templates.',
-						'gutenberg-extra-blocks'
-					)}
-					className='maxi-block-library__placeholder'
-					icon={library}
-				>
-					<MaxiModal clientId={clientId} />
-				</Placeholder>
-			</Fragment>,
+			<div key={this.props.clientId}>
+				{isEmpty(content) && (
+					<Placeholder
+						key='placeholder'
+						label={__(
+							'Cloud Library Maxi',
+							'gutenberg-extra-blocks'
+						)}
+						instructions={__(
+							'Launch the library to browse pre-designed blocks and templates.',
+							'gutenberg-extra-blocks'
+						)}
+						className='maxi-block-library__placeholder'
+						icon={library}
+					>
+						<MaxiModal clientId={clientId} type='patterns' />
+					</Placeholder>
+				)}
+				{!isEmpty(content) && <RawHTML>{content}</RawHTML>}
+			</div>,
 		];
 	}
 }

@@ -82,6 +82,7 @@ const attributes = {
 	...attributesData.transform,
 	...attributesData.typography,
 	...attributesData.typographyHover,
+	...attributesData.zIndex,
 };
 
 export default attributes;

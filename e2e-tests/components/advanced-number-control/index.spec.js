@@ -24,11 +24,11 @@ describe('Advanced Number Control', () => {
 		);
 		await page.keyboard.type('31');
 
-		const MaxAttributes = await getBlockAttributes();
-		const MaxAttribute = MaxAttributes['letter-spacing-m'];
+		const maxAttributes = await getBlockAttributes();
+		const maxAttribute = maxAttributes['letter-spacing-m'];
 		const expectMaxNum = 30;
 
-		expect(MaxAttribute).toStrictEqual(expectMaxNum);
+		expect(maxAttribute).toStrictEqual(expectMaxNum);
 
 		// Min value
 		await accordionPanel.$eval(

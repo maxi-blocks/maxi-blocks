@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { openSidebar } from '../../utils';
 
 describe('ArrowDisplay', () => {
 	it('Cheking the arrow display', async () => {
@@ -17,9 +17,10 @@ describe('ArrowDisplay', () => {
 			button[1].click()
 		);
 
-		const attributes = await getBlockAttributes();
-		const arrowStatus = attributes['arrow-status'];
-		const expectStatus = true;
-		expect(arrowStatus).toStrictEqual(expectStatus);
+		const hasClass = page.$$eval('.maxi-container-block div', test =>
+			test[2].classList.contains('maxi-container-arrow__bottom')
+		);
+
+		expect(hasClass).toBeTruthy();
 	});
 });

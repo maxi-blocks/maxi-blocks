@@ -23,7 +23,7 @@ describe('Indicators', () => {
 		const accordionPanel = await openSidebar(page, 'padding margin');
 
 		const selectPadding = await accordionPanel.$$(
-			'.maxi-axis-control .maxi-axis-control__content' // colgamos! hatsa lueg
+			'.maxi-axis-control .maxi-axis-control__content'
 		);
 
 		await selectPadding[1].$$eval(

@@ -37,7 +37,12 @@ import { isEmpty, uniqueId, isEqual, cloneDeep } from 'lodash';
 /**
  * Style Component
  */
-const StyleComponent = ({ styles, currentBreakpoint, blockBreakpoints }) => {
+const StyleComponent = ({
+	uniqueID,
+	stylesObj,
+	currentBreakpoint,
+	blockBreakpoints,
+}) => {
 	const { breakpoints } = useSelect(select => {
 		const { receiveMaxiBreakpoints } = select('maxiBlocks');
 
@@ -45,6 +50,16 @@ const StyleComponent = ({ styles, currentBreakpoint, blockBreakpoints }) => {
 
 		return { breakpoints };
 	});
+
+	const getBreakpoints = () => {
+		const areBreakpointsLoaded =
+			!isEmpty(blockBreakpoints) &&
+			Object.values(blockBreakpoints).every(blockValue => !!blockValue);
+
+		return areBreakpointsLoaded ? blockBreakpoints : breakpoints;
+	};
+
+	const styles = styleResolver(uniqueID, stylesObj, false, getBreakpoints());
 
 	const styleContent = styleGenerator(
 		styles,
@@ -96,6 +111,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		if (!this.getBreakpoints.xxl) this.forceUpdate();
+
 		if (this.maxiBlockDidMount) this.maxiBlockDidMount();
 	}
 
@@ -286,10 +303,9 @@ class MaxiBlockComponent extends Component {
 	displayStyles() {
 		const obj = this.getStylesObject;
 		const breakpoints = this.getBreakpoints;
-		const customData = this.getCustomData;
 		const { uniqueID } = this.props.attributes;
 
-		const styles = styleResolver(uniqueID, obj, false, breakpoints);
+		const customData = this.getCustomData;
 		dispatch('maxiBlocks/customData').updateCustomData(customData);
 
 		if (document.body.classList.contains('maxi-blocks--active')) {
@@ -304,7 +320,8 @@ class MaxiBlockComponent extends Component {
 
 			render(
 				<StyleComponent
-					styles={styles}
+					uniqueID={uniqueID}
+					stylesObj={obj}
 					currentBreakpoint={this.currentBreakpoint}
 					blockBreakpoints={breakpoints}
 				/>,

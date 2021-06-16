@@ -148,8 +148,22 @@ const MaxiBlock = forwardRef((props, ref) => {
 		'maxi-block',
 		blockName && getBlockClassName(blockName),
 		!isSave && 'maxi-block--backend',
-		'maxi-motion-effect',
-		`maxi-motion-effect-${uniqueID}`,
+		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
+			motion['shape-divider-top-status'] ||
+			motion['shape-divider-bottom-status'] ||
+			motion['parallax-status'] ||
+			motion['number-counter-status'] ||
+			motion['motion-status'] ||
+			(motion['entrance-type'] && motion['entrance-type'] !== 'none')) &&
+			'maxi-motion-effect',
+		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
+			motion['shape-divider-top-status'] ||
+			motion['shape-divider-bottom-status'] ||
+			motion['parallax-status'] ||
+			motion['number-counter-status'] ||
+			motion['motion-status'] ||
+			(motion['entrance-type'] && motion['entrance-type'] !== 'none')) &&
+			`maxi-motion-effect-${uniqueID}`,
 		blockStyle,
 		extraClassName,
 		uniqueID,
@@ -159,7 +173,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 		paletteClasses,
 		hasArrow && 'maxi-block--has-arrow'
 	);
-
 	const blockProps = {
 		tagName,
 		className: classes,
@@ -211,7 +224,17 @@ export const getMaxiBlockBlockAttributes = props => {
 		false,
 		true
 	);
-	const motion = { ...getGroupAttributes(attributes, 'motion') };
+	const motion = {
+		...getGroupAttributes(attributes, [
+			'motion',
+			'entrance',
+			'numberCounter',
+			'parallax',
+			'shapeDivider',
+			'hover',
+		]),
+	};
+
 	const background = {
 		...getGroupAttributes(attributes, [
 			'background',

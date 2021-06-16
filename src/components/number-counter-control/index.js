@@ -9,7 +9,7 @@ import { SelectControl } from '@wordpress/components';
  */
 import ColorControl from '../color-control';
 import FancyRadioControl from '../fancy-radio-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import FontFamilySelector from '../font-family-selector';
 
 import {
@@ -70,9 +70,8 @@ const NumberCounterControl = props => {
 					<i>{__('End Number ', 'maxi-blocks')}</i>
 				</div>
 			)}
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('Start Number', 'maxi-blocks')}
-				disableUnit
 				min={0}
 				max={100}
 				initial={0}
@@ -87,9 +86,8 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('End Number', 'maxi-blocks')}
-				disableUnit
 				min={1}
 				max={props['number-counter-circle-status'] ? 9999 : 100}
 				initial={100}
@@ -103,9 +101,8 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('Duration', 'maxi-blocks')}
-				disableUnit
 				min={1}
 				max={9999}
 				initial={1}
@@ -122,9 +119,8 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('Radius', 'maxi-blocks')}
-				disableUnit
 				min={90}
 				max={999}
 				initial={85}
@@ -141,9 +137,8 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('Stroke', 'maxi-blocks')}
-				disableUnit
 				min={1}
 				max={99}
 				initial={8}
@@ -168,13 +163,12 @@ const NumberCounterControl = props => {
 				font={props['number-counter-title-font-family']}
 				onChange={font =>
 					onChange({
-						['number-counter-title-font-family']: font.value,
+						'number-counter-title-font-family': font.value,
 					})
 				}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('Title Font Size', 'maxi-blocks')}
-				disableUnit
 				min={32}
 				max={999}
 				initial={32}

@@ -101,7 +101,7 @@ const TimelineSettings = props => {
 		}
 	};
 	/*
-		RangeSliderControl should be replaced with SizeControl but we are working on the new version of Motions Effect maybe we will remove this component completely, so hold them for now and will get the correct decision future :)
+		RangeSliderControl should be replaced with AdvancedNumberControl but we are working on the new version of Motions Effect maybe we will remove this component completely, so hold them for now and will get the correct decision future :)
 		*/
 	/*
 	return (

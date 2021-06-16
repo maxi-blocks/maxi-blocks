@@ -12,7 +12,7 @@ describe('Container Maxi', () => {
 		await createNewPost();
 	});
 
-	it('Container Maxi does not break ', async () => {
+	it('Container Maxi does not break', async () => {
 		await insertBlock('Container Maxi');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

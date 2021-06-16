@@ -96,12 +96,10 @@ const ArrowControl = props => {
 							{
 								title: __('Background colour', 'maxi-blocks'),
 								panel: 'background',
-								href: '',
 							},
 							{
 								title: __('Border colour', 'maxi-blocks'),
 								panel: 'border',
-								href: '',
 							},
 						]}
 					/>

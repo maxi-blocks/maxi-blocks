@@ -15,12 +15,12 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getTransformStyles } from '../../extensions/styles/helpers';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNumber, isString } from 'lodash';
 
 /**
  * Styles and icons
@@ -51,80 +51,23 @@ const TransformControl = props => {
 		const node = document.querySelector(
 			`.maxi-block[uniqueid="${uniqueID}"]`
 		);
+
 		if (node) {
-			let transformString = '';
-			let transformOriginString = '';
-
-			const scaleX = getLastBreakpointAttribute(
-				'transform-scale-x',
-				breakpoint,
-				transformOptions
-			);
-			const scaleY = getLastBreakpointAttribute(
-				'transform-scale-y',
-				breakpoint,
-				transformOptions
-			);
-			const translateX = getLastBreakpointAttribute(
-				'transform-translate-x',
-				breakpoint,
-				transformOptions
-			);
-			const translateXUnit = getLastBreakpointAttribute(
-				'transform-translate-x-unit',
-				breakpoint,
-				transformOptions
-			);
-			const translateY = getLastBreakpointAttribute(
-				'transform-translate-y',
-				breakpoint,
-				transformOptions
-			);
-			const translateYUnit = getLastBreakpointAttribute(
-				'transform-translate-y-unit',
-				breakpoint,
-				transformOptions
-			);
-			const rotateX = getLastBreakpointAttribute(
-				'transform-rotate-x',
-				breakpoint,
-				transformOptions
-			);
-			const rotateY = getLastBreakpointAttribute(
-				'transform-rotate-y',
-				breakpoint,
-				transformOptions
-			);
-			const rotateZ = getLastBreakpointAttribute(
-				'transform-rotate-z',
-				breakpoint,
-				transformOptions
-			);
-			const originX = getLastBreakpointAttribute(
-				'transform-origin-x',
-				breakpoint,
-				transformOptions
-			);
-			const originY = getLastBreakpointAttribute(
-				'transform-origin-y',
-				breakpoint,
-				transformOptions
+			const transformObj = getTransformStyles(
+				getGroupAttributes(transformOptions, 'transform')
 			);
 
-			if (isNumber(scaleX)) transformString += `scaleX(${scaleX / 100}) `;
-			if (isNumber(scaleY)) transformString += `scaleY(${scaleY / 100}) `;
-			if (isNumber(translateX) && translateX > 0)
-				transformString += `translateX(${translateX}${translateXUnit}) `;
-			if (isNumber(translateY) && translateY > 0)
-				transformString += `translateY(${translateY}${translateYUnit}) `;
-			if (isNumber(rotateX)) transformString += `rotateX(${rotateX}deg) `;
-			if (isNumber(rotateY)) transformString += `rotateY(${rotateY}deg) `;
-			if (isNumber(rotateZ)) transformString += `rotateZ(${rotateZ}deg) `;
-			if (isString(originX)) transformOriginString += `${originX}% `;
-			if (isString(originY)) transformOriginString += `${originY}% `;
+			if (!transformObj || !transformObj[breakpoint]) return;
 
-			node.style.transform = transformString;
-			node.style.transformOrigin = transformOriginString;
+			const {
+				[breakpoint]: {
+					transform,
+					'transform-origin': transformOrigin,
+				},
+			} = transformObj;
+
+			if (transform) node.style.transform = transform;
+			if (transformOrigin) node.style.transformOrigin = transformOrigin;
 		}
 	};
 
@@ -219,10 +162,14 @@ const TransformControl = props => {
 										'transform-translate-y-unit': yUnit,
 									});
 									onChange({
-										[`transform-translate-x-${breakpoint}`]: x,
-										[`transform-translate-x-unit-${breakpoint}`]: xUnit,
-										[`transform-translate-y-${breakpoint}`]: y,
-										[`transform-translate-y-unit-${breakpoint}`]: yUnit,
+										[`transform-translate-x-${breakpoint}`]:
+											x,
+										[`transform-translate-x-unit-${breakpoint}`]:
+											xUnit,
+										[`transform-translate-y-${breakpoint}`]:
+											y,
+										[`transform-translate-y-unit-${breakpoint}`]:
+											yUnit,
 									});
 									forceStyles();
 								}}
@@ -234,10 +181,14 @@ const TransformControl = props => {
 										'transform-translate-y-unit': yUnit,
 									});
 									onChange({
-										[`transform-translate-x-${breakpoint}`]: x,
-										[`transform-translate-x-unit-${breakpoint}`]: xUnit,
-										[`transform-translate-y-${breakpoint}`]: y,
-										[`transform-translate-y-unit-${breakpoint}`]: yUnit,
+										[`transform-translate-x-${breakpoint}`]:
+											x,
+										[`transform-translate-x-unit-${breakpoint}`]:
+											xUnit,
+										[`transform-translate-y-${breakpoint}`]:
+											y,
+										[`transform-translate-y-unit-${breakpoint}`]:
+											yUnit,
 									});
 									forceStyles();
 								}}
@@ -310,6 +261,10 @@ const TransformControl = props => {
 									'transform-origin-y'
 								)}
 								onChange={(x, y) => {
+									onChangeTransform({
+										[`transform-origin-x-${breakpoint}`]: x,
+										[`transform-origin-y-${breakpoint}`]: y,
+									});
 									onChange({
 										[`transform-origin-x-${breakpoint}`]: x,
 										[`transform-origin-y-${breakpoint}`]: y,

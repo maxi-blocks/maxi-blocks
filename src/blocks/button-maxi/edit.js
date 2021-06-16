@@ -32,10 +32,6 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	maxiBlockDidMount() {
-		this.blockRef.current.focus();
-	}
-
 	get getCustomData() {
 		const { uniqueID } = this.props.attributes;
 

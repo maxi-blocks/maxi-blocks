@@ -22,7 +22,7 @@ import {
 	ResponsiveControl,
 	SelectControl,
 	SettingTabsControl,
-	SizeControl,
+	AdvancedNumberControl,
 	TextControl,
 	TransformControl,
 	ZIndexControl,
@@ -94,13 +94,11 @@ const Inspector = props => {
 											),
 											content: (
 												<>
-													<SizeControl
+													<AdvancedNumberControl
 														label={__(
 															'Column Size (%)',
 															'maxi-blocks'
 														)}
-														placeholder=''
-														disableUnit
 														value={getLastBreakpointAttribute(
 															'column-size',
 															deviceType,

@@ -10,10 +10,13 @@ import { useState } from '@wordpress/element';
 import RadioControl from '../radio-control';
 import OpacityControl from '../opacity-control';
 import FancyRadioControl from '../fancy-radio-control';
-import BackgroundControl from '../background-control';
-import SizeControl from '../size-control';
+import ColorControl from '../color-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import Dropdown from '../dropdown';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 
 /**
  * Styles and icons
@@ -66,7 +69,7 @@ import {
  * Component
  */
 const ShapeDividerControl = props => {
-	const { onChange } = props;
+	const { onChange, clientId } = props;
 
 	const shapeItems = [
 		{ label: __('None', 'max-block'), value: '' },
@@ -294,19 +297,28 @@ const ShapeDividerControl = props => {
 									})
 								}
 							/>
-							<BackgroundControl
-								{...props}
-								prefix='shape-divider-top-'
-								onChange={obj => onChange(obj)}
-								disableImage
-								disableGradient
-								disableVideo
-								disableClipPath
-								disableSVG
-								disableLayers
+							<ColorControl
+								label={__('Shape Top', 'maxi-blocks')}
+								disableOpacity
+								color={props['shape-divider-top-color']}
+								defaultColor={getDefaultAttribute(
+									'shape-divider-top-color'
+								)}
+								onChange={val =>
+									onChange({ 'shape-divider-top-color': val })
+								}
+								showPalette
+								palette={{
+									...getGroupAttributes(props, 'palette'),
+								}}
+								isHover={false}
+								colorPaletteType='shape-divider-top'
+								onChangePalette={val => onChange(val)}
+								clientId={clientId}
 							/>
-							<SizeControl
+							<AdvancedNumberControl
 								label={__('Divider Height', 'maxi-blocks')}
+								enableUnit
 								unit={props['shape-divider-top-height-unit']}
 								allowedUnits={['px']}
 								onChangeUnit={val =>
@@ -415,19 +427,30 @@ const ShapeDividerControl = props => {
 									})
 								}
 							/>
-							<BackgroundControl
-								{...props}
-								prefix='shape-divider-bottom-'
-								onChange={obj => onChange(obj)}
-								disableImage
-								disableGradient
-								disableVideo
-								disableClipPath
-								disableSVG
-								disableLayers
+							<ColorControl
+								label={__('Shape Bottom', 'maxi-blocks')}
+								disableOpacity
+								color={props['shape-divider-bottom-color']}
+								defaultColor={getDefaultAttribute(
+									'shape-divider-bottom-color'
+								)}
+								onChange={val =>
+									onChange({
+										'shape-divider-bottom-color': val,
+									})
+								}
+								showPalette
+								palette={{
+									...getGroupAttributes(props, 'palette'),
+								}}
+								isHover={false}
+								colorPaletteType='shape-divider-bottom'
+								onChangePalette={val => onChange(val)}
+								clientId={clientId}
 							/>
-							<SizeControl
+							<AdvancedNumberControl
 								label={__('Divider Height', 'maxi-blocks')}
+								enableUnit
 								unit={props['shape-divider-bottom-height-unit']}
 								allowedUnits={['px']}
 								onChangeUnit={val =>

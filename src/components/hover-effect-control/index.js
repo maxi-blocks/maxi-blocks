@@ -11,7 +11,7 @@ import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
 import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import TypographyControl from '../typography-control';
 import TextareaControl from '../textarea-control';
@@ -102,10 +102,8 @@ const HoverEffectControl = props => {
 					props['hover-basic-effect-type'] === 'grey-scale' ||
 					props['hover-basic-effect-type'] ===
 						'clear-greay-scale') && (
-					<SizeControl
+					<AdvancedNumberControl
 						label={__('Duration(s)', 'maxi-blocks')}
-						placeholder=''
-						disableUnit
 						value={props['hover-transition-duration']}
 						onChangeValue={val => {
 							onChange({
@@ -248,10 +246,8 @@ const HoverEffectControl = props => {
 							props['hover-basic-effect-type'] === 'blur' ||
 							props['hover-basic-effect-type'] === 'slide') && (
 							<>
-								<SizeControl
+								<AdvancedNumberControl
 									label={__('Amount', 'maxi-blocks')}
-									placeholder=''
-									disableUnit
 									value={
 										props[
 											`hover-basic-${props['hover-basic-effect-type']}-value`

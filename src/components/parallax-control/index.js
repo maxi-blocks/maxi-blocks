@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import FancyRadioControl from '../fancy-radio-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
@@ -58,10 +58,8 @@ const ParallaxControl = props => {
 							onChange({ 'parallax-direction': val })
 						}
 					/>
-					<SizeControl
+					<AdvancedNumberControl
 						label={__('Speed', 'maxi-blocks')}
-						placeholder=''
-						disableUnit
 						value={props['parallax-speed']}
 						onChangeValue={val => {
 							onChange({

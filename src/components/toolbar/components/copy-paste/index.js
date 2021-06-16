@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { useSelect, useDispatch, dispatch } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -53,6 +53,7 @@ const ATTRIBUTES = [
 	'margin',
 	'motion',
 	'padding',
+	'palette',
 	'position',
 	'size',
 	'textAlignment',
@@ -115,17 +116,10 @@ const CopyPaste = props => {
 	);
 
 	const { copyStyles } = useDispatch('maxiBlocks');
+	const { updateBlockAttributes } = useDispatch('core/block-editor');
 
-	const onCopy = () => {
-		copyStyles(blockAttributes);
-	};
-
-	const onPaste = () => {
-		dispatch('core/block-editor').updateBlockAttributes(
-			clientId,
-			copiedStyles
-		);
-	};
+	const onCopy = () => copyStyles(blockAttributes);
+	const onPaste = () => updateBlockAttributes(clientId, copiedStyles);
 
 	const handleSpecialPaste = attr => {
 		const newSpecialPaste = specialPaste.includes(attr)
@@ -146,7 +140,7 @@ const CopyPaste = props => {
 			if (isSelected) res = { ...res, ...val };
 		});
 
-		dispatch('core/block-editor').updateBlockAttributes(clientId, res);
+		onPaste(res);
 	};
 
 	return (

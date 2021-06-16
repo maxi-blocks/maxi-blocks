@@ -9,6 +9,7 @@ import { RawHTML } from '@wordpress/element';
 import Button from '../button';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 import * as SVGShapes from '../../icons/shape-icons';
+import MaxiModal from '../../editor/library/modal';
 
 /**
  * External dependencies
@@ -86,6 +87,7 @@ const SVGDefaultsDisplayer = props => {
 					</Button>
 				);
 			})}
+			<MaxiModal type='shape' />
 		</div>
 	);
 };

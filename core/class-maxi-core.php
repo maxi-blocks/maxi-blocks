@@ -79,14 +79,6 @@ if (!class_exists('MaxiBlocks_Core')):
 		}
 
 		public function enqueue_admin_scripts_styles() {
-			// TODO: remove when Cloud API is ready
-			// Register block editor script for backend.
-			wp_enqueue_script(
-				'maxi-blocks-cloud-js', // Handle.
-				plugins_url('/js/cloud-server.js', dirname(__FILE__)),
-				['jquery', 'wp-blocks', 'wp-edit-post', 'wp-api'],
-			);
-
 			// Register block editor script for backend.
 			wp_register_style(
 				'maxi-block-css-admin', // Handle.

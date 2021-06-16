@@ -32,6 +32,7 @@ const attributes = {
 	...attributesData.palette.background,
 	...attributesData.palette.border,
 	...attributesData.palette.boxShadow,
+	...attributesData.palette.shapeDivider,
 	...attributesData.container,
 	...{
 		...attributesData.background,

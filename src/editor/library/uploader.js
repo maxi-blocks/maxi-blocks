@@ -8,9 +8,11 @@ import { __ } from '@wordpress/i18n';
  */
 import placeholderImage from './placeholder';
 
-const imageUploader = async imageSrc => {
+const imageUploader = async (imageSrc, usePlaceholderImage) => {
 	const ajaxurl = wp.ajax.settings.url;
 	try {
+		if (usePlaceholderImage) return placeholderImage();
+
 		const response = await fetch(
 			`${
 				window.location.origin + ajaxurl

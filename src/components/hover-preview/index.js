@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { RawHTML } from '@wordpress/element';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -13,142 +8,157 @@ import { isEmpty, isNil } from 'lodash';
  * Component
  */
 const HoverPreview = props => {
-	const { className, SVGElement, mediaID, src, width, height, alt } = props;
+	const {
+		wrapperClassName,
+		hoverClassName,
+		target,
+		'hover-type': hoverType,
+		'hover-basic-effect-type': hoverBasicEffectType,
+		'hover-transition-duration': hoverTransitionDuration,
+		'hover-transition-easing': hoverTransitionEasing,
+		'hover-transition-easing-cubic-bezier': hoverTransitionEasingCB,
+	} = props;
 
-	const classes = classnames('maxi-hover-preview', className);
+	const transitionDurationEffects = [
+		'zoom-in',
+		'zoom-out',
+		'slide',
+		'rotate',
+		'blur',
+		'sepia',
+		'clear-sepia',
+		'grey-scale',
+		'clear-greay-scale',
+	];
 
-	const mouseHoverHandle = e => {
+	const classes = classnames(
+		'maxi-hover-preview',
+		wrapperClassName,
+		hoverType !== 'none' && hoverClassName
+	);
+
+	const mouseHoverHandle = () => {
 		if (
-			props['hover-type'] === 'text' ||
-			props['hover-basic-effect-type'] === 'zoom-in' ||
-			props['hover-basic-effect-type'] === 'zoom-out' ||
-			props['hover-basic-effect-type'] === 'slide' ||
-			props['hover-basic-effect-type'] === 'rotate' ||
-			props['hover-basic-effect-type'] === 'blur' ||
-			props['hover-basic-effect-type'] === 'sepia' ||
-			props['hover-basic-effect-type'] === 'clear-sepia' ||
-			props['hover-basic-effect-type'] === 'grey-scale' ||
-			props['hover-basic-effect-type'] === 'clear-greay-scale'
+			hoverType === 'text' ||
+			transitionDurationEffects.includes(hoverBasicEffectType)
 		) {
-			e.target.style.transitionDuration = `${props['hover-transition-duration']}s`;
-			e.target.style.transitionTimingFunction = `
+			target.style.transitionDuration = `${hoverTransitionDuration}s`;
+			target.style.transitionTimingFunction = `
 	${
-		props['hover-transition-easing'] !== 'cubic-bezier'
-			? props['hover-transition-easing']
-			: !isNil(props['hover-transition-easing-cubic-bezier'])
-			? `cubic-bezier(${props[
-					'hover-transition-easing-cubic-bezier'
-			  ].join()})`
+		hoverTransitionEasing !== 'cubic-bezier'
+			? hoverTransitionEasing
+			: !isNil(hoverTransitionEasingCB)
+			? `cubic-bezier(${hoverTransitionEasingCB.join()})`
 			: 'easing'
 	}
 	`;
 		}
 
-		if (props['hover-type'] === 'basic') {
-			if (props['hover-basic-effect-type'] === 'zoom-in')
-				e.target.style.transform = `scale(${props['hover-basic-zoom-in-value']})`;
-			else if (props['hover-basic-effect-type'] === 'rotate')
-				e.target.style.transform = `rotate(${props['hover-basic-rotate-value']}deg)`;
-			else if (props['hover-basic-effect-type'] === 'zoom-out')
-				e.target.style.transform = 'scale(1)';
-			else if (props['hover-basic-effect-type'] === 'slide')
-				e.target.style.marginLeft = `${props['hover-basic-slide-value']}px`;
-			else if (props['hover-basic-effect-type'] === 'blur')
-				e.target.style.filter = `blur(${props['hover-basic-blur-value']}px)`;
+		if (hoverType === 'basic') {
+			if (hoverBasicEffectType === 'zoom-in')
+				target.style.transform = `scale(${props['hover-basic-zoom-in-value']})`;
+			else if (hoverBasicEffectType === 'rotate')
+				target.style.transform = `rotate(${props['hover-basic-rotate-value']}deg)`;
+			else if (hoverBasicEffectType === 'zoom-out')
+				target.style.transform = 'scale(1)';
+			else if (hoverBasicEffectType === 'slide')
+				target.style.marginLeft = `${props['hover-basic-slide-value']}px`;
+			else if (hoverBasicEffectType === 'blur')
+				target.style.filter = `blur(${props['hover-basic-blur-value']}px)`;
 			else {
-				e.target.style.transform = '';
-				e.target.style.marginLeft = '';
-				e.target.style.filter = '';
+				target.style.transform = '';
+				target.style.marginLeft = '';
+				target.style.filter = '';
 			}
 		}
 	};
 
-	const mouseOutHandle = e => {
-		if (props['hover-type'] === 'basic') {
-			if (props['hover-basic-effect-type'] === 'zoom-in')
-				e.target.style.transform = 'scale(1)';
-			else if (props['hover-basic-effect-type'] === 'rotate')
-				e.target.style.transform = 'rotate(0)';
-			else if (props['hover-basic-effect-type'] === 'zoom-out')
-				e.target.style.transform = `scale(${props['hover-basic-zoom-out-value']})`;
-			else if (props['hover-basic-effect-type'] === 'slide')
-				e.target.style.marginLeft = 0;
-			else if (props['hover-basic-effect-type'] === 'blur')
-				e.target.style.filter = 'blur(0)';
+	const mouseOutHandle = () => {
+		if (hoverType === 'basic') {
+			if (hoverBasicEffectType === 'zoom-in')
+				target.style.transform = 'scale(1)';
+			else if (hoverBasicEffectType === 'rotate')
+				target.style.transform = 'rotate(0)';
+			else if (hoverBasicEffectType === 'zoom-out')
+				target.style.transform = `scale(${props['hover-basic-zoom-out-value']})`;
+			else if (hoverBasicEffectType === 'slide')
+				target.style.marginLeft = 0;
+			else if (hoverBasicEffectType === 'blur')
+				target.style.filter = 'blur(0)';
 			else {
-				e.target.style.transform = '';
-				e.target.style.marginLeft = '';
-				e.target.style.filter = '';
+				target.style.transform = '';
+				target.style.marginLeft = '';
+				target.style.filter = '';
 			}
 		}
 	};
 
 	return (
-		<div className={classes}>
-			{SVGElement ? (
-				<RawHTML
-					onMouseOver={e => mouseHoverHandle(e)}
-					onMouseOut={e => mouseOutHandle(e)}
-					className='maxi-image-block-shape-wrapper'
-				>
-					{SVGElement}
-				</RawHTML>
-			) : (
-				<img
-					onMouseOver={e => mouseHoverHandle(e)}
-					onMouseOut={e => mouseOutHandle(e)}
-					className={`maxi-image-block__image wp-image-${mediaID}`}
-					src={src}
-					width={width}
-					height={height}
-					alt={alt}
-				/>
+		<>
+			{hoverType === 'none' && (
+				<div className={classes}>{props.children}</div>
 			)}
-			{props['hover-type'] !== 'none' &&
-				props['hover-type'] !== 'basic' &&
-				props['hover-preview'] && (
-					<div
-						style={{
-							transitionDuration: `${props['hover-transition-duration']}s`,
-							transitionTimingFunction:
-								props['hover-transition-easing'],
-							transitionTimingFunction:
-								props['hover-transition-easing'] !==
-								'cubic-bezier'
-									? props['hover-transition-easing']
-									: !isNil(
-											props[
-												'hover-transition-easing-cubic-bezier'
-											]
-									  )
-									? `cubic-bezier(${props[
-											'hover-transition-easing-cubic-bezier'
-									  ].join()})`
-									: 'easing',
-						}}
-						className='maxi-hover-details'
-					>
-						<div
-							className={`maxi-hover-details__content maxi-hover-details__content--${props['hover-text-preset']}`}
-						>
-							{!isEmpty(
-								props['hover-title-typography-content']
-							) && (
-								<h3>
-									{props['hover-title-typography-content']}
-								</h3>
-							)}
-							{!isEmpty(
-								props['hover-content-typography-content']
-							) && (
-								<p>
-									{props['hover-content-typography-content']}
-								</p>
-							)}
-						</div>
-					</div>
-				)}
-		</div>
+			{hoverType !== 'none' && (
+				<div
+					className={classes}
+					onMouseOver={target ? mouseHoverHandle : null}
+					onMouseOut={target ? mouseOutHandle : null}
+				>
+					{props.children}
+					{hoverType !== 'none' &&
+						hoverType !== 'basic' &&
+						props['hover-preview'] && (
+							<div
+								style={{
+									transitionDuration: `${hoverTransitionDuration}s`,
+									transitionTimingFunction:
+										hoverTransitionEasing !== 'cubic-bezier'
+											? hoverTransitionEasing
+											: !isNil(
+													props[
+														'hover-transition-easing-cubic-bezier'
+													]
+											  )
+											? `cubic-bezier(${props[
+													'hover-transition-easing-cubic-bezier'
+											  ].join()})`
+											: 'easing',
+								}}
+								className='maxi-hover-details'
+							>
+								<div
+									className={`maxi-hover-details__content maxi-hover-details__content--${props['hover-text-preset']}`}
+								>
+									{!isEmpty(
+										props['hover-title-typography-content']
+									) && (
+										<h3>
+											{
+												props[
+													'hover-title-typography-content'
+												]
+											}
+										</h3>
+									)}
+									{!isEmpty(
+										props[
+											'hover-content-typography-content'
+										]
+									) && (
+										<p>
+											{
+												props[
+													'hover-content-typography-content'
+												]
+											}
+										</p>
+									)}
+								</div>
+							</div>
+						)}
+				</div>
+			)}
+		</>
 	);
 };
 

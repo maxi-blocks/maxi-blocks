@@ -81,6 +81,15 @@ const HoverEffectControl = props => {
 				]}
 				onChange={val => onChange({ 'hover-preview': val })}
 			/>
+			<FancyRadioControl
+				label={__('Allow extension', 'maxi-blocks')}
+				selected={props['hover-extension']}
+				options={[
+					{ label: __('Yes', 'maxi-blocks'), value: 1 },
+					{ label: __('No', 'maxi-blocks'), value: 0 },
+				]}
+				onChange={val => onChange({ 'hover-extension': val })}
+			/>
 			{props['hover-type'] !== 'none' &&
 				(props['hover-type'] === 'text' ||
 					props['hover-basic-effect-type'] === 'zoom-in' ||

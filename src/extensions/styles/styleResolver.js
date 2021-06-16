@@ -6,7 +6,7 @@ import { dispatch } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isEmpty, isObject, merge } from 'lodash';
+import { isEmpty, isNumber, isBoolean, isObject, merge } from 'lodash';
 
 /**
  * Styles resolver
@@ -17,7 +17,12 @@ const cleanContent = content => {
 	let newContent = { ...content };
 
 	for (const prop in newContent) {
-		if (isEmpty(newContent[prop]) || prop === 'label')
+		if (
+			(isEmpty(newContent[prop]) &&
+				!isNumber(newContent[prop]) &&
+				!isBoolean(newContent[prop])) ||
+			prop === 'label'
+		)
 			delete newContent[prop];
 		else if (isObject(newContent[prop])) {
 			if (BREAKPOINTS.includes(prop))

@@ -3,7 +3,8 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
-import { RawHTML, useEffect } from '@wordpress/element';
+import { RawHTML, useEffect, useState } from '@wordpress/element';
+import { CheckboxControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -95,7 +96,7 @@ const MasonryItem = props => {
  * Component
  */
 const LibraryContainer = props => {
-	const { type, onRequestClose } = props;
+	const { type, onRequestClose, usePlaceholderImage } = props;
 
 	const { styleCards, selectedSCKey, selectedSCValue } = useSelect(select => {
 		const { receiveMaxiStyleCards, receiveMaxiSelectedStyleCard } = select(
@@ -126,7 +127,7 @@ const LibraryContainer = props => {
 
 	/** Patterns / Blocks */
 
-	const onRequestInsertPattern = parsedContent => {
+	const onRequestInsertPattern = (parsedContent, usePlaceholderImage) => {
 		const isValid =
 			select('core/block-editor').isValidTemplate(parsedContent);
 
@@ -185,7 +186,7 @@ const LibraryContainer = props => {
 					const id = image[0];
 					const url = image[1];
 
-					imageUploader(url).then(data => {
+					imageUploader(url, usePlaceholderImage).then(data => {
 						tempContent = tempContent.replaceAll(url, data.url);
 						tempContent = tempContent.replaceAll(id, data.id);
 						counter -= 1;
@@ -219,6 +220,8 @@ const LibraryContainer = props => {
 		}
 	};
 
+	const [isChecked, setChecked] = useState(usePlaceholderImage || false);
+
 	const patternsResults = ({ hit }) => {
 		return (
 			<>
@@ -230,7 +233,7 @@ const LibraryContainer = props => {
 					isPro={hit.taxonomies.cost === 'pro'}
 					serial={hit.post_number}
 					onRequestInsert={() =>
-						onRequestInsertPattern(hit.gutenberg_code)
+						onRequestInsertPattern(hit.gutenberg_code, isChecked)
 					}
 				/>
 			</>
@@ -346,6 +349,17 @@ const LibraryContainer = props => {
 		},
 	};
 
+	const PlaceholderCheckboxControl = () => {
+		return (
+			<CheckboxControl
+				label='Use placeholder for all images'
+				help='(do not download any images to your media library, use a generic grey image)'
+				checked={isChecked}
+				onChange={setChecked}
+			/>
+		);
+	};
+
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
@@ -398,6 +412,7 @@ const LibraryContainer = props => {
 
 			{type === 'patterns' && (
 				<div className='maxi-cloud-container__patterns'>
+					<PlaceholderCheckboxControl />
 					<InstantSearch
 						indexName='maxi_posts_post'
 						searchClient={searchClient}

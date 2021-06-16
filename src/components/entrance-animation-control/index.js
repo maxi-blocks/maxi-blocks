@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SelectControl from '../select-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
@@ -150,9 +150,8 @@ const EntranceAnimationControl = props => {
 				]}
 				onChange={val => onChange({ 'entrance-type': val })}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('Duration (s)', 'maxi-blocks')}
-				disableUnit
 				min={0}
 				max={10}
 				initial={1}
@@ -161,15 +160,13 @@ const EntranceAnimationControl = props => {
 				onChangeValue={val => onChange({ 'entrance-duration': val })}
 				onReset={() =>
 					onChange({
-						'entrance-duration': getDefaultAttribute(
-							'entrance-duration'
-						),
+						'entrance-duration':
+							getDefaultAttribute('entrance-duration'),
 					})
 				}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('Delay (s)', 'maxi-blocks')}
-				disableUnit
 				min={0}
 				max={10}
 				initial={1}

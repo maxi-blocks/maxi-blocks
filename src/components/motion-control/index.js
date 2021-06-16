@@ -42,7 +42,7 @@ const MotionControl = props => {
 				]}
 				onChange={val => onChange({ 'motion-status': val })}
 			/>
-			{props['motion-status'] && (
+			{/* props['motion-status'] && (
 				<>
 					<FancyRadioControl
 						label={__('Preview', 'maxi-blocks')}
@@ -74,7 +74,7 @@ const MotionControl = props => {
 						}}
 					/>
 				</>
-			)}
+			) */}
 		</div>
 	);
 };

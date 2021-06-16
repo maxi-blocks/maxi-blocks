@@ -9,7 +9,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
  */
 import Button from '../../../button';
 import openSidebar from '../../../../extensions/dom';
-import SizeControl from '../../../size-control';
+import AdvancedNumberControl from '../../../advanced-number-control';
 import SelectControl from '../../../select-control';
 import RadioControl from '../../../radio-control';
 import ToolbarPopover from '../toolbar-popover';
@@ -109,10 +109,8 @@ const ImageSize = props => {
 						onChange={fullWidth => onChangeFullWidth(fullWidth)}
 					/>
 				)}
-				<SizeControl
+				<AdvancedNumberControl
 					label={__('Width', 'maxi-blocks')}
-					placeholder=''
-					disableUnit
 					value={imgWidth}
 					onChangeValue={val => {
 						onChangeSize({

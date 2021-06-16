@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import FancyRadioControl from '../fancy-radio-control';
 import InfoBox from '../info-box';
 import {
@@ -116,10 +116,8 @@ const ArrowControl = props => {
 							onChange({ [`arrow-side-${breakpoint}`]: val })
 						}
 					/>
-					<SizeControl
+					<AdvancedNumberControl
 						label={__('Position', 'maxi-blocks')}
-						placeholder=''
-						disableUnit
 						value={getLastBreakpointAttribute(
 							'arrow-position',
 							breakpoint,
@@ -145,9 +143,8 @@ const ArrowControl = props => {
 							`arrow-position-${breakpoint}`
 						)}
 					/>
-					<SizeControl
+					<AdvancedNumberControl
 						label={__('Arrow Size', 'maxi-blocks')}
-						disableUnit
 						value={getLastBreakpointAttribute(
 							'arrow-width',
 							breakpoint,

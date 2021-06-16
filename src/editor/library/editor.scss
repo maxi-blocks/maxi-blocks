@@ -126,11 +126,36 @@
 		margin: 1rem;
 
 		&__sidebar {
-			width: calc(25% - 0.5rem);
+			width: calc(15% - 0.5rem);
 		}
 
-		&__content {
-			width: calc(75% - 0.5rem);
+		&__content-patterns,
+		&__content-sc {
+			width: calc(85% - 0.5rem);
+		}
+
+		&__content-svg,
+		&__top-menu,
+		&__top {
+			width: 100%;
+			.ais-RefinementList-list,
+			.ais-Menu-list {
+				display: flex;
+			}
+		}
+
+		.maxi-cloud-container__patterns,
+		.maxi-cloud-container__sc {
+			display: flex;
+			flex-wrap: wrap;
+			width: 100%;
+			.ais-InfiniteHits-item {
+				width: 32%;
+			}
+		}
+
+		.maxi-cloud-container__content-svg .ais-InfiniteHits-item {
+			width: 8%;
 		}
 	}
 
@@ -178,64 +203,58 @@
 		}
 	}
 
-	.maxi-cloud-masonry {
+	.ais-InfiniteHits-list {
 		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
 		margin-top: 1rem;
 
-		&__column {
-			margin-left: 2.5%;
-			background-clip: padding-box;
-
-			&:first-of-type {
-				margin-left: 0;
-			}
-
-			&:last-of-type {
-				margin-right: 0;
-			}
-		}
-
-		.maxi-cloud-masonry-card {
+		.ais-InfiniteHits-item {
 			margin: 0 1rem 1rem 0;
 			padding: 1rem;
 			box-shadow: 0px 5px 1rem 0px rgba(119, 119, 119, 0.1);
 			background-color: #fff;
 
-			&__image {
-				img {
-					display: block;
-					width: 100%;
+			.maxi-cloud-masonry-card {
+				div {
+					text-align: center;
 				}
-			}
+				&__image {
+					img {
+						display: block;
+						width: 100%;
+					}
+				}
 
-			&__container {
-				margin-top: 1rem;
-				padding-top: 1rem;
-				border-top: 1px solid #e8eaeb;
-			}
+				&__container {
+					margin-top: 1rem;
+					padding-top: 1rem;
+					border-top: 1px solid #e8eaeb;
+				}
 
-			&__button {
-				display: inline-block;
-				margin: 0 5px 5px 0;
-				padding: 7px 16px;
-				border: 2px solid #e8eaeb;
-				color: #464a53;
-				font-size: 13px;
-				font-weight: 500;
-				line-height: 13px;
-				text-decoration: none;
-				background-color: #fff;
-				box-shadow: 0px 5px 15px 0px rgba(119, 119, 119, 0.1);
+				&__button {
+					display: inline-block;
+					margin: 0 5px 5px 0;
+					padding: 7px 16px;
+					border: 2px solid #e8eaeb;
+					color: #464a53;
+					font-size: 13px;
+					font-weight: 500;
+					line-height: 13px;
+					text-decoration: none;
+					background-color: #fff;
+					box-shadow: 0px 5px 15px 0px rgba(119, 119, 119, 0.1);
 
-				transition: all 0.15s linear;
-				transition-property: all;
-				transition-duration: 0.15s;
-				transition-timing-function: linear;
-				transition-delay: 0s;
+					transition: all 0.15s linear;
+					transition-property: all;
+					transition-duration: 0.15s;
+					transition-timing-function: linear;
+					transition-delay: 0s;
 
-				&:hover {
-					background-color: #ff4a17;
-					color: #fff;
+					&:hover {
+						background-color: #ff4a17;
+						color: #fff;
+					}
 				}
 			}
 

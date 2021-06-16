@@ -6,8 +6,7 @@
 /**
  * Import dependencies.
  */
-import Edit from './edit';
-import MaxiProvider from './provider';
+import edit from './edit';
 import { library } from '../../icons';
 import './style.scss';
 import './editor.scss';
@@ -16,7 +15,7 @@ import './editor.scss';
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType  } from '@wordpress/blocks';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Register the Layout block
@@ -32,19 +31,12 @@ registerBlockType('maxi-blocks/maxi-cloud', {
 			type: 'string',
 			default: 'maxi-block maxi-block-library',
 		},
+		content: {
+			type: 'string',
+			default: '',
+		},
 	},
-
-	/* Render the block components. */
-	edit: props => {
-		return (
-			<MaxiProvider>
-				<Edit {...props} />
-			</MaxiProvider>
-		);
-	},
-
 	/* Save the block markup. */
-	save: () => {
-		return null;
-	},
+	edit,
+	save: () => null,
 });

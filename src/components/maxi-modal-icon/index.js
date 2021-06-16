@@ -21,7 +21,6 @@ const MaxiModalIcon = props => {
 			<Button
 				key={`maxi-block-library__modal-button--${clientId}`}
 				isPrimary
-				isLarge
 				className='maxi-block-library__modal-button'
 				onClick={() => setIsOpen(!isOpen)}
 			>

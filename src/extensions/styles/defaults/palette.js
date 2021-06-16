@@ -1,4 +1,22 @@
 const palette = {
+	shapeDivider: {
+		'palette-custom-shape-divider-top-color': {
+			type: 'boolean',
+			default: false,
+		},
+		'palette-preset-shape-divider-top-color': {
+			type: 'number',
+			default: 5,
+		},
+		'palette-custom-shape-divider-bottom-color': {
+			type: 'boolean',
+			default: false,
+		},
+		'palette-preset-shape-divider-bottom-color': {
+			type: 'number',
+			default: 5,
+		},
+	},
 	marker: {
 		'palette-custom-marker-title-color': {
 			type: 'boolean',

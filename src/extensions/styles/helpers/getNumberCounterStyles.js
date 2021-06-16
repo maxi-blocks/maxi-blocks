@@ -14,22 +14,21 @@ const getNumberCounterStyles = (obj, target) => {
 		target === 'circle-bar' &&
 		!isNil(obj['number-counter-circle-bar-color'])
 	)
-		response.general['stroke'] = obj['number-counter-circle-bar-color'];
+		response.general.stroke = obj['number-counter-circle-bar-color'];
 
 	if (
 		obj['palette-custom-circle-background-color'] &&
 		target === 'circle-background' &&
 		!isNil(obj['number-counter-circle-background-color'])
 	)
-		response.general['stroke'] =
-			obj['number-counter-circle-background-color'];
+		response.general.stroke = obj['number-counter-circle-background-color'];
 
 	if (
 		obj['palette-custom-typography-color'] &&
 		target === 'text' &&
 		!isNil(obj['number-counter-text-color'])
 	)
-		response.general['color'] = obj['number-counter-text-color'];
+		response.general.color = obj['number-counter-text-color'];
 
 	if (target === 'text' && !isNil(obj['number-counter-title-font-family']))
 		response.general['font-family'] =

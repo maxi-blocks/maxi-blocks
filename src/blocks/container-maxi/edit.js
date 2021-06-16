@@ -86,6 +86,8 @@ class edit extends MaxiBlockComponent {
 				'border-hover',
 				'box-shadow',
 				'box-shadow-hover',
+				'shape-divider-top',
+				'shape-divider-bottom',
 			],
 			'maxi-blocks/container-maxi',
 			parentBlockStyle

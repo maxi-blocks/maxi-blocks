@@ -127,7 +127,10 @@ const getStyles = props => {
 				shapeDivider: {
 					...getShapeDividerSVGStyles(
 						{
-							...getGroupAttributes(props, 'shapeDivider'),
+							...getGroupAttributes(props, [
+								'shapeDivider',
+								'palette',
+							]),
 						},
 						'top'
 					),
@@ -147,7 +150,10 @@ const getStyles = props => {
 				shapeDivider: {
 					...getShapeDividerSVGStyles(
 						{
-							...getGroupAttributes(props, 'shapeDivider'),
+							...getGroupAttributes(props, [
+								'shapeDivider',
+								'palette',
+							]),
 						},
 						'bottom'
 					),

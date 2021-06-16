@@ -621,11 +621,12 @@ const Inspector = props => {
 											<ShapeDividerControl
 												{...getGroupAttributes(
 													attributes,
-													'shapeDivider'
+													['shapeDivider', 'palette']
 												)}
 												onChange={obj =>
 													setAttributes(obj)
 												}
+												clientId={clientId}
 											/>
 										),
 									},

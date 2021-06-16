@@ -19,9 +19,6 @@ jobs:
               run: npm install
             - name: Build
               run: npm run build
-              env:
-                  REACT_APP_SECRET_ALGOLIA_ID: ${{ secrets.REACT_APP_SECRET_ALGOLIA_ID }}
-                  REACT_APP_SECRET_ALGOLIA_KEY: ${{ secrets.REACT_APP_SECRET_ALGOLIA_KEY }}
             - name: reset package-lock.json
               run: git checkout package-lock.json
             - name: FTP-Deploy-Action

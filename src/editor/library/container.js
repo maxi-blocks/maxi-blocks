@@ -26,11 +26,6 @@ import {
 	HierarchicalMenu,
 	Stats,
 } from 'react-instantsearch-dom';
-import {
-	REACT_APP_SECRET_ALGOLIA_ID,
-	REACT_APP_SECRET_ALGOLIA_KEY,
-	// eslint-disable-next-line import/no-unresolved
-} from '@env';
 import { uniq, isEmpty } from 'lodash';
 
 const imageUploader = async imageSrc => {
@@ -163,8 +158,8 @@ const LibraryContainer = props => {
 	}, [selectedSCKey]);
 
 	const searchClient = algoliasearch(
-		REACT_APP_SECRET_ALGOLIA_ID,
-		REACT_APP_SECRET_ALGOLIA_KEY
+		'39ZZ3SLI6Z',
+		'6ed8ae6d1c430c6a76e0720f74eab91c'
 	);
 
 	/** Patterns / Blocks */

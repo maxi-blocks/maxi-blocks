@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import SizeControl from '../size-control';
 import FancyRadioControl from '../fancy-radio-control';
+import InfoBox from '../info-box';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
@@ -86,6 +87,24 @@ const ArrowControl = props => {
 			}
 			{props['arrow-status'] && (
 				<>
+					<InfoBox
+						message={__(
+							'Select a background colour or border colour to see the arrow.',
+							'maxi-blocks'
+						)}
+						links={[
+							{
+								title: __('Background colour', 'maxi-blocks'),
+								panel: 'background',
+								href: '',
+							},
+							{
+								title: __('Border colour', 'maxi-blocks'),
+								panel: 'border',
+								href: '',
+							},
+						]}
+					/>
 					<FancyRadioControl
 						label=''
 						selected={getLastBreakpointAttribute(

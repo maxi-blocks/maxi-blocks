@@ -11,7 +11,7 @@ import {
  */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('Hover Effect Control', () => {
+describe('HoverEffectControl', () => {
 	it('Checking the hover effect control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');

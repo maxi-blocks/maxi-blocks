@@ -8,7 +8,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('Image Alt Control', () => {
+describe('ImageAltControl', () => {
 	it('Checking the image alt control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');

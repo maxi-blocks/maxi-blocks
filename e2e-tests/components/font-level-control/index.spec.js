@@ -8,7 +8,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes } from '../../utils';
 
-describe('Font Level Control', () => {
+describe('FontLevelControl', () => {
 	it('Checking the font level control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

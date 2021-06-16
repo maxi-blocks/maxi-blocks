@@ -11,7 +11,7 @@ import {
  */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('Responsive Control', () => {
+describe('ResponsiveControl', () => {
 	it('Test the responsive control', async () => {
 		await createNewPost();
 

@@ -13,7 +13,6 @@ import { library } from '../../icons';
  */
 import { __ } from '@wordpress/i18n';
 import { Component, RawHTML } from '@wordpress/element';
-import { BlockControls, BlockAlignmentToolbar } from '@wordpress/block-editor';
 import { Placeholder } from '../../components';
 
 /**
@@ -23,20 +22,13 @@ import { isEmpty } from 'lodash';
 
 export default class Edit extends Component {
 	render() {
-		const { attributes, setAttributes, clientId } = this.props;
+		const { attributes, clientId } = this.props;
 
 		const { content } = attributes;
 
 		/* Placeholder with layout modal */
 		return [
 			<div key={this.props.clientId}>
-				<BlockControls key='controls'>
-					<BlockAlignmentToolbar
-						value={attributes.align}
-						onChange={align => setAttributes({ align })}
-						controls={[]}
-					/>
-				</BlockControls>
 				{isEmpty(content) && (
 					<Placeholder
 						key='placeholder'

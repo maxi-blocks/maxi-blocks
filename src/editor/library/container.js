@@ -10,7 +10,6 @@ import { RawHTML, useEffect } from '@wordpress/element';
  */
 import Button from '../../components/button';
 import { updateSCOnEditor } from '../../extensions/style-cards';
-// import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 
 /**
  * External dependencies

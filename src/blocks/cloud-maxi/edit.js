@@ -24,7 +24,7 @@ export default class Edit extends Component {
 	render() {
 		const { attributes, clientId } = this.props;
 
-		const { content } = attributes;
+		const { content, openFirstTime } = attributes;
 
 		/* Placeholder with layout modal */
 		return [
@@ -43,7 +43,11 @@ export default class Edit extends Component {
 						className='maxi-block-library__placeholder'
 						icon={library}
 					>
-						<MaxiModal clientId={clientId} type='patterns' />
+						<MaxiModal
+							clientId={clientId}
+							type='patterns'
+							openFirstTime={openFirstTime}
+						/>
 					</Placeholder>
 				)}
 				{!isEmpty(content) && <RawHTML>{content}</RawHTML>}

@@ -28,6 +28,16 @@ class MaxiBlocks_ImageUpload
      */
     public function __construct()
     {
+        add_action('init', [
+            $this,
+            'maxi_add_image_taxonomy',
+        ]);
+
+        add_action('init', [
+            $this,
+            'maxi_add_image_taxonomy_term',
+        ]);
+        
         add_action('wp_ajax_maxi_upload_pattern_image', [
             $this,
             'maxi_upload_pattern_image',
@@ -93,6 +103,10 @@ class MaxiBlocks_ImageUpload
                 $attachment_metadata = wp_generate_attachment_metadata($attachment_id, $attachment_path);
 
                 wp_update_attachment_metadata($attachment_id, $attachment_metadata);
+
+                // add to Maxi Image taxonomy
+                wp_set_object_terms($attachment_id, 'maxi-image', 'maxi-image-type');
+
                 
                 $data['id'] =  $attachment_id;
                 $data['url'] =  $attachment_url;
@@ -111,5 +125,44 @@ class MaxiBlocks_ImageUpload
         }
         
         die();
+    }
+
+    public function maxi_add_image_taxonomy()
+    {
+        $labels = array(
+        'name'              => __('Maxi Images', 'max-blocks'),
+        'singular_name'     => __('maxi-image-type', 'max-blocks'),
+        'search_items'      => __('Search Maxi Images', 'max-blocks'),
+        'all_items'         => __('All Maxi Images', 'max-blocks'),
+        'edit_item'         => __('Edit Maxi Image', 'max-blocks'),
+        'update_item'       => __('Update Maxi Image', 'max-blocks'),
+        'add_new_item'      => __('Add New Maxi Image', 'max-blocks'),
+        'new_item_name'     => __('New Maxi Image Name', 'max-blocks'),
+        'menu_name'         => __('Maxi Images', 'max-blocks'),
+    );
+
+        $args = array(
+        'labels' => $labels,
+        'hierarchical' => false,
+        'query_var' => 'true',
+        'rewrite' => 'true',
+        'show_admin_column' => 'true',
+    );
+
+        register_taxonomy('maxi-image-type', 'attachment', $args);
+    }
+
+    public function maxi_add_image_taxonomy_term()
+    {
+        if (!term_exists(__('Maxi Image', 'max-blocks'), 'maxi-image-type')) {
+            wp_insert_term(
+                __('Maxi Image', 'max-blocks'),
+                'maxi-image-type',
+                array(
+                  'description' => __('Images added by Maxi Blocks plugin', 'max-blocks'),
+                  'slug'        => 'maxi-image'
+                )
+            );
+        }
     }
 }

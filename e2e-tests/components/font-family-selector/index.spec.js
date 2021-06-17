@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('Font Family Selector', () => {
+describe('FontFamilySelector', () => {
 	it('Checking the font family selector', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

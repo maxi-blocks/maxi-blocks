@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('Custom Label', () => {
+describe('CustomLabel', () => {
 	it('Checking the custom label', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

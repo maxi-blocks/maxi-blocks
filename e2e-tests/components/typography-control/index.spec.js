@@ -11,7 +11,7 @@ import {
  */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('Typography Control', () => {
+describe('TypographyControl', () => {
 	it('Checking the typography control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

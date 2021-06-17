@@ -39,6 +39,7 @@ describe('ResponsiveControl', () => {
 		const attributes = await getBlockAttributes();
 		const breakpoint = attributes['breakpoints-xl'];
 		const expectValue = 1000;
+
 		expect(breakpoint).toStrictEqual(expectValue);
 	});
 });

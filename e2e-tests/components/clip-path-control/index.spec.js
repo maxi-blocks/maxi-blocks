@@ -11,7 +11,7 @@ import {
  */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('Clip-Path Control', () => {
+describe('ClipPathOption', () => {
 	it('Checking the clip-path control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');

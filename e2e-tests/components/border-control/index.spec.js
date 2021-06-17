@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('Border Control', () => {
+describe('BorderControl', () => {
 	it('Checking the border control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

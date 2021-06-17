@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('Box Shadow Control', () => {
+describe('BoxShadowControl', () => {
 	it('Checking the boxShadow control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

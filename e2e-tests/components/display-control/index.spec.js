@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('Display Control', () => {
+describe('DisplayControl', () => {
 	it('Checking the display control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

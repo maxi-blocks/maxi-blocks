@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import openSidebar from '../../utils/openSidebar';
 
-describe('Accordion Control', () => {
+describe('AccordionControl', () => {
 	it('Checking the accordion control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

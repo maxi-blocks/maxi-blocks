@@ -12,7 +12,7 @@ import {
  */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('Gradient Control', () => {
+describe('GradientControl', () => {
 	it('Checking the gradient control', async () => {
 		await createNewPost();
 		await setBrowserViewport('large');

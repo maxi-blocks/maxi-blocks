@@ -3,6 +3,21 @@
 	flex-wrap: wrap;
 	justify-content: flex-start;
 
+	&__load-library {
+		background: #edeff0;
+		border: 1px dashed #cfd3d7;
+		color: #464a53 !important;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		padding: 2rem;
+		transition: all 0.5s;
+
+		&:hover {
+			opacity: 0.8;
+		}
+	}
 	&__item {
 		cursor: pointer;
 		height: auto;

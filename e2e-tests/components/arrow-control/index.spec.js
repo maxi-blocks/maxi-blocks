@@ -6,6 +6,7 @@ import {
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
@@ -44,10 +45,11 @@ describe('ArrowControl', () => {
 		}
 
 		// Use Position
-		await accordionPanel.$eval(
-			'.components-base-control .components-input-control input',
-			select => select.focus()
+		const selectInput = await accordionPanel.$$(
+			'.maxi-advanced-number-control .maxi-base-control__field input'
 		);
+
+		await selectInput[0].focus();
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('9');
 
@@ -57,9 +59,7 @@ describe('ArrowControl', () => {
 		expect(arrowAttribute).toStrictEqual(expectPosition);
 
 		// Use Arrow Size
-		await accordionPanel.$eval('.maxi-size-control input', select =>
-			select.focus()
-		);
+		await selectInput[2].focus();
 		await pressKeyTimes('Backspace', '2');
 		await page.keyboard.type('120');
 

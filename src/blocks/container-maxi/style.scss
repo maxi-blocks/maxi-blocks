@@ -6,15 +6,6 @@ body.maxi-blocks--active .maxi-container-block {
 	flex-direction: column;
 	padding: 0;
 
-	&:before {
-		visibility: hidden;
-		content: '';
-		position: absolute;
-		transform: translateX(-50%);
-		border-style: solid;
-		width: 0;
-		height: 0;
-	}
 	&__container {
 		margin-right: auto;
 		margin-left: auto;

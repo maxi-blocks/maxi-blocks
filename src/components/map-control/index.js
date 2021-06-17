@@ -7,7 +7,7 @@ import { TextControl } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
 import OpacityControl from '../opacity-control';
 import FancyRadioControl from '../fancy-radio-control';
@@ -65,9 +65,8 @@ const MapControl = props => {
 				value={props['map-longitude']}
 				onChange={val => onChange({ 'map-longitude': val })}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('Zoom', 'maxi-blocks')}
-				disableUnit
 				min={1}
 				max={999}
 				initial={1}
@@ -109,9 +108,8 @@ const MapControl = props => {
 					})
 				}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('Marker Scale', 'maxi-blocks')}
-				disableUnit
 				min={1}
 				max={10}
 				initial={1}

@@ -201,9 +201,13 @@ motionElems.forEach(function (elem) {
 			'hover-basic-effect-type' in motionData &&
 			'hover-text-effect-type' in motionData
 		) {
-			const hoverElem = document.querySelector(
-				`#${motionID} .maxi-image-block__image`
-			);
+			const hoverElem =
+				document.querySelector(
+					`#${motionID} .maxi-image-block-wrapper .maxi-image-block__image`
+				) ||
+				document.querySelector(
+					`#${motionID} .maxi-image-block-wrapper svg`
+				);
 
 			hoverElem.addEventListener('mouseenter', e => {
 				if (

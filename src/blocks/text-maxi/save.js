@@ -56,7 +56,6 @@ const save = props => {
 				className='maxi-text-block__content'
 				value={content}
 				tagName={isList ? typeOfList : textLevel}
-				data-gx_initial_block_class={defaultBlockStyle}
 				reversed={!!listReversed}
 				start={listStart}
 			/>

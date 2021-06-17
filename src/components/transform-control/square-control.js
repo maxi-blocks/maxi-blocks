@@ -408,15 +408,16 @@ const SquareControl = props => {
 					className='maxi-transform-control__square-control__y-control__range'
 					value={yAxis || ''}
 					onChange={e => {
+						const value = Number(e.target.value);
 						type !== 'origin' && onSave(xAxis, yAxis, xUnit, yUnit);
+
 						if (!sync) {
-							changeYAxis(Number(e.target.value));
-							onChange(xAxis, Number(e.target.value));
+							changeYAxis(value);
+							onChange(xAxis, value, xUnit, yUnit);
 						} else {
-							changeYAxis(Number(e.target.value));
-							changeXAxis(Number(e.target.value));
-							onChange(xAxis, Number(e.target.value));
-							onChange(Number(e.target.value), yAxis);
+							changeYAxis(value);
+							changeXAxis(value);
+							onChange(value, value, xUnit, yUnit);
 						}
 					}}
 					min={getMinMax().min}
@@ -474,14 +475,16 @@ const SquareControl = props => {
 					value={xAxis || ''}
 					onChange={e => {
 						type !== 'origin' && onSave(xAxis, yAxis, xUnit, yUnit);
+
+						const value = Number(e.target.value);
+
 						if (!sync) {
-							changeXAxis(Number(e.target.value));
-							onChange(Number(e.target.value), yAxis);
+							changeXAxis(value);
+							onChange(value, yAxis, xUnit, yUnit);
 						} else {
-							changeYAxis(Number(e.target.value));
-							changeXAxis(Number(e.target.value));
-							onChange(xAxis, Number(e.target.value));
-							onChange(Number(e.target.value), yAxis);
+							changeYAxis(value);
+							changeXAxis(value);
+							onChange(value, value, xUnit, yUnit);
 						}
 					}}
 					min={getMinMax().min}

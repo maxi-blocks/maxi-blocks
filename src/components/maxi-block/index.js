@@ -119,6 +119,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		isSave = false,
 		classes: customClasses,
 		paletteClasses,
+		hasArrow,
 		...extraProps
 	} = props;
 
@@ -147,17 +148,31 @@ const MaxiBlock = forwardRef((props, ref) => {
 		'maxi-block',
 		blockName && getBlockClassName(blockName),
 		!isSave && 'maxi-block--backend',
-		'maxi-motion-effect',
-		`maxi-motion-effect-${uniqueID}`,
+		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
+			motion['shape-divider-top-status'] ||
+			motion['shape-divider-bottom-status'] ||
+			motion['parallax-status'] ||
+			motion['number-counter-status'] ||
+			motion['motion-status'] ||
+			(motion['entrance-type'] && motion['entrance-type'] !== 'none')) &&
+			'maxi-motion-effect',
+		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
+			motion['shape-divider-top-status'] ||
+			motion['shape-divider-bottom-status'] ||
+			motion['parallax-status'] ||
+			motion['number-counter-status'] ||
+			motion['motion-status'] ||
+			(motion['entrance-type'] && motion['entrance-type'] !== 'none')) &&
+			`maxi-motion-effect-${uniqueID}`,
 		blockStyle,
 		extraClassName,
 		uniqueID,
 		className,
 		displayValue === 'none' && 'maxi-block-display-none',
 		customClasses,
-		paletteClasses
+		paletteClasses,
+		hasArrow && 'maxi-block--has-arrow'
 	);
-
 	const blockProps = {
 		tagName,
 		className: classes,
@@ -209,7 +224,17 @@ export const getMaxiBlockBlockAttributes = props => {
 		false,
 		true
 	);
-	const motion = { ...getGroupAttributes(attributes, 'motion') };
+	const motion = {
+		...getGroupAttributes(attributes, [
+			'motion',
+			'entrance',
+			'numberCounter',
+			'parallax',
+			'shapeDivider',
+			'hover',
+		]),
+	};
+
 	const background = {
 		...getGroupAttributes(attributes, [
 			'background',
@@ -226,6 +251,7 @@ export const getMaxiBlockBlockAttributes = props => {
 			'backgroundSVGHover',
 		]),
 	};
+	const hasArrow = props.attributes['arrow-status'] || false;
 
 	return {
 		blockName: name,
@@ -236,6 +262,7 @@ export const getMaxiBlockBlockAttributes = props => {
 		displayValue,
 		motion,
 		background,
+		hasArrow,
 	};
 };
 

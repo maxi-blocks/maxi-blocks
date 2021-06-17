@@ -9,7 +9,7 @@ import { useState } from '@wordpress/element';
  */
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import TextControl from '../text-control';
 import FancyRadioControl from '../fancy-radio-control';
 import { getAttributeKey } from '../../extensions/styles';
@@ -67,10 +67,8 @@ const VideoLayer = props => {
 				}}
 				validationText={validationText}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('Start Time (s)', 'maxi-blocks')}
-				placeholder=''
-				disableUnit
 				value={
 					videoOptions[
 						getAttributeKey(
@@ -101,10 +99,8 @@ const VideoLayer = props => {
 					})
 				}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				label={__('End Time (s)', 'maxi-blocks')}
-				placeholder=''
-				disableUnit
 				value={
 					videoOptions[
 						getAttributeKey(

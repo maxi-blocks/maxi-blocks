@@ -1,15 +1,14 @@
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import Button from '../button';
 import BaseControl from '../base-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import ColorPaletteControl from '../color-palette-control';
 
 /**
@@ -23,7 +22,6 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { reset } from '../../icons';
 
 /**
  * Component
@@ -143,10 +141,8 @@ const ColorControl = props => {
 						</BaseControl>
 					)}
 					{!disableOpacity && (
-						<SizeControl
+						<AdvancedNumberControl
 							label={__('Colour Opacity', 'maxi-blocks')}
-							placeholder=''
-							disableUnit
 							value={+colorAlpha}
 							onChangeValue={val => {
 								const value = !isNil(val) ? +val : 0;

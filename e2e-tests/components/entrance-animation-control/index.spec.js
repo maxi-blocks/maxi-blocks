@@ -34,7 +34,7 @@ describe('EntranceAnimationControl', () => {
 
 		// duration and delay
 		const animationSettings = await accordionPanel.$$(
-			'.maxi-base-control.maxi-size-control .maxi-base-control__field input'
+			'.maxi-advanced-number-control .maxi-base-control__field input'
 		);
 
 		const duration = await animationSettings[0];

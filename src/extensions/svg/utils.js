@@ -46,7 +46,7 @@ export const injectImgSVG = (svg, SVGData = {}) => {
 			image.setAttribute('height', '100%');
 			image.setAttribute('x', '0');
 			image.setAttribute('y', '0');
-			image.setAttribute('xlink:href', el.imageURL);
+			image.setAttribute('href', el.imageURL);
 			image.setAttribute('preserveAspectRatio', 'xMidYMid slice');
 
 			pattern.append(image);

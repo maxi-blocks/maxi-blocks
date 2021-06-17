@@ -31,13 +31,9 @@ const getNormalObject = props => {
 			},
 			'container-'
 		),
-		boxShadow: getBoxShadowStyles(
-			{
-				...getGroupAttributes(props, 'boxShadow'),
-			},
-			false,
-			props['arrow-status']
-		),
+		boxShadow: getBoxShadowStyles({
+			...getGroupAttributes(props, 'boxShadow'),
+		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -131,7 +127,10 @@ const getStyles = props => {
 				shapeDivider: {
 					...getShapeDividerSVGStyles(
 						{
-							...getGroupAttributes(props, 'shapeDivider'),
+							...getGroupAttributes(props, [
+								'shapeDivider',
+								'palette',
+							]),
 						},
 						'top'
 					),
@@ -151,7 +150,10 @@ const getStyles = props => {
 				shapeDivider: {
 					...getShapeDividerSVGStyles(
 						{
-							...getGroupAttributes(props, 'shapeDivider'),
+							...getGroupAttributes(props, [
+								'shapeDivider',
+								'palette',
+							]),
 						},
 						'bottom'
 					),

@@ -17,6 +17,28 @@ const getPaletteClasses = (
 	textLevel
 ) => {
 	const paletteClasses = classnames(
+		allowedPalettes.includes('shape-divider-top') &&
+			!attributes['palette-custom-shape-divider-top-color'] &&
+			`maxi-sc-${parentBlockStyle}-shape-divider-top-color-${
+				!isNil(attributes['palette-preset-shape-divider-top-color'])
+					? attributes['palette-preset-shape-divider-top-color']
+					: getPaletteDefault(
+							'shape-divider-top',
+							blockName,
+							textLevel
+					  )
+			}`,
+		allowedPalettes.includes('shape-divider-bottom') &&
+			!attributes['palette-custom-shape-divider-bottom-color'] &&
+			`maxi-sc-${parentBlockStyle}-shape-divider-bottom-color-${
+				!isNil(attributes['palette-preset-shape-divider-bottom-color'])
+					? attributes['palette-preset-shape-divider-bottom-color']
+					: getPaletteDefault(
+							'shape-divider-bottom',
+							blockName,
+							textLevel
+					  )
+			}`,
 		allowedPalettes.includes('marker-title') &&
 			!attributes['palette-custom-marker-title-color'] &&
 			`maxi-sc-${parentBlockStyle}-marker-title-color-${

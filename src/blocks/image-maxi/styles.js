@@ -50,6 +50,9 @@ const getNormalObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
+		opacity: getOpacityStyles({
+			...getGroupAttributes(props, 'opacity'),
+		}),
 	};
 
 	return response;
@@ -164,14 +167,10 @@ const getImageHoverObject = props => {
 	return response;
 };
 
-const getImageBackendObject = props => {
+const getImageWrapperObject = props => {
 	const response = {
-		border: getBorderStyles({
-			...getGroupAttributes(props, [
-				'border',
-				'borderWidth',
-				'borderRadius',
-			]),
+		alignment: getAlignmentFlexStyles({
+			...getGroupAttributes(props, 'alignment'),
 		}),
 		boxShadow: getBoxShadowStyles(
 			{
@@ -180,12 +179,30 @@ const getImageBackendObject = props => {
 			false,
 			!isEmpty(props.clipPath) || !isNil(props.SVGCurrentElement)
 		),
-		opacity: getOpacityStyles({
-			...getGroupAttributes(props, 'opacity'),
+		...(props['hover-extension'] && {
+			hoverExtension: { general: { overflow: 'visible' } },
 		}),
 	};
 
 	return response;
+};
+
+const getImageObject = props => {
+	return {
+		border: getBorderStyles({
+			...getGroupAttributes(props, [
+				'border',
+				'borderWidth',
+				'borderRadius',
+			]),
+		}),
+		...(props.clipPath && {
+			image: { general: { 'clip-path': props.clipPath } },
+		}),
+		...(props.imgWidth && {
+			imgWidth: { general: { width: `${props.imgWidth}%` } },
+		}),
+	};
 };
 
 const getFigcaptionObject = props => {
@@ -198,32 +215,10 @@ const getFigcaptionObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-	};
-
-	return response;
-};
-
-const getResizeObject = props => {
-	const response = {
-		imageSize: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
+		...(props.imgWidth && {
+			imgWidth: { general: { width: `${props.imgWidth}%` } },
 		}),
 	};
-
-	return response;
-};
-
-const getImageHoverPreviewObject = props => {
-	const { clipPath } = props;
-
-	const response = {
-		image: {
-			label: 'Image settings',
-			general: {},
-		},
-	};
-
-	if (clipPath) response.image.general['clip-path'] = clipPath;
 
 	return response;
 };
@@ -234,11 +229,9 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: {
 			'': getNormalObject(props),
-			' .maxi-block-hover-wrapper': getImageBackendObject(props),
-			' .maxi-image-block__resizer': getResizeObject(props),
-			':hover .maxi-block-hover-wrapper': getImageHoverObject(props),
-			' .maxi-block-hover-wrapper .maxi-hover-preview':
-				getImageHoverPreviewObject(props),
+			' .maxi-image-block-wrapper': getImageWrapperObject(props),
+			':hover .maxi-image-block-wrapper': getImageHoverObject(props),
+			' .maxi-image-block-wrapper img': getImageObject(props),
 			' figcaption': getFigcaptionObject(props),
 			' .maxi-hover-details .maxi-hover-details__content h3':
 				getHoverEffectTitleTextObject(props),

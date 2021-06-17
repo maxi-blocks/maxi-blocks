@@ -37,6 +37,8 @@ const save = props => {
 			'border-hover',
 			'box-shadow',
 			'box-shadow-hover',
+			'shape-divider-top',
+			'shape-divider-bottom',
 		],
 		name,
 		parentBlockStyle

@@ -20,7 +20,7 @@
 	}
 
 	&__resizer {
-		height: auto !important;
+		height: inherit !important;
 		max-height: 100%;
 	}
 
@@ -76,8 +76,9 @@
 		}
 	}
 
-	.maxi-block-hover-wrapper {
+	.maxi-image-block-wrapper {
 		width: 100% !important;
+		height: inherit;
 		max-height: 100%;
 		margin: auto;
 	}

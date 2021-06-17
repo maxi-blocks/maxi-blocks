@@ -7,8 +7,8 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import RadioControl from '../../../radio-control';
-import SizeControl from '../../../size-control';
+import AdvancedNumberControl from '../../../advanced-number-control';
+import FancyRadioControl from '../../../fancy-radio-control';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	getLastBreakpointAttribute,
@@ -59,28 +59,29 @@ const Size = props => {
 			<div className='toolbar-item__size__popover'>
 				{(isFirstOnHierarchy ||
 					blockName === 'maxi-blocks/row-maxi') && (
-					<RadioControl
-						className='toolbar-item__popover__toggle-btn'
+					<FancyRadioControl
 						label={__('Full Width', 'maxi-blocks')}
 						selected={fullWidth}
 						options={[
 							{
-								label: __('No', 'maxi-blocks'),
-								value: 'normal',
-							},
-							{
 								label: __('Yes', 'maxi-blocks'),
 								value: 'full',
 							},
+							{
+								label: __('No', 'maxi-blocks'),
+								value: 'normal',
+							},
 						]}
+						optionType='string'
 						onChange={fullWidth => onChange({ fullWidth })}
 					/>
 				)}
 				{!EXCLUDED_BLOCKS_SIZE.includes(blockName) && (
 					<>
 						{currentBlockRoot && (
-							<SizeControl
+							<AdvancedNumberControl
 								label={__('Width', 'maxi-blocks')}
+								enableUnit
 								unit={getLastBreakpointAttribute(
 									'width-unit',
 									breakpoint,
@@ -115,8 +116,9 @@ const Size = props => {
 								}
 							/>
 						)}
-						<SizeControl
+						<AdvancedNumberControl
 							label={__('Max Width', 'maxi-blocks')}
+							enableUnit
 							unit={getLastBreakpointAttribute(
 								'max-width-unit',
 								breakpoint,

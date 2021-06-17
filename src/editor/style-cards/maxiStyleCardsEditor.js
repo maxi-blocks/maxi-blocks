@@ -20,13 +20,13 @@ import {
 } from './utils';
 import {
 	SettingTabsControl,
-	FancyRadioControl,
 	SelectControl,
 	Button,
 	Icon,
 } from '../../components';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import { updateSCOnEditor } from '../../extensions/style-cards';
+import MaxiModal from '../library/modal';
 
 /**
  * External dependencies
@@ -36,7 +36,7 @@ import { isEmpty, isNil, isEqual } from 'lodash';
 /**
  * Icons
  */
-import { styleCardBoat, reset, SCDelete, SCaddMore } from '../../icons';
+import { styleCardBoat, reset, SCDelete } from '../../icons';
 
 const MaxiStyleCardsEditor = ({ styleCards }) => {
 	const {
@@ -88,7 +88,6 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 		saveSCStyles,
 	} = useDispatch('maxiBlocks/style-cards');
 
-	const [useCustomStyleCard, setUseCustomStyleCard] = useState(true);
 	const [styleCardName, setStyleCardName] = useState('');
 	const [currentSCStyle, setCurrentSCStyle] = useState('light');
 
@@ -274,14 +273,7 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 				</div>
 				<div className='maxi-style-cards__sc'>
 					<div className='maxi-style-cards__sc__more-sc'>
-						<Button
-							className='maxi-style-cards__sc__more-sc--add-more'
-							onClick={() => {
-								// TO DO: add cloud modal for SCs here
-							}}
-						>
-							<Icon icon={SCaddMore} />
-						</Button>
+						<MaxiModal type='sc' />
 						<SelectControl
 							className='maxi-style-cards__sc__more-sc--select'
 							value={selectedSCKey}
@@ -397,144 +389,120 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 							{__('Apply', 'maxi-blocks')}
 						</Button>
 					</div>
-					<FancyRadioControl
-						label={__('Use Custom Style Card', 'maxi-blocks')}
-						className='maxi-sc-color-palette__custom'
-						selected={useCustomStyleCard}
-						options={[
-							{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
-						onChange={val => setUseCustomStyleCard(val)}
-					/>
-					{!useCustomStyleCard && (
-						<>
-							<div className='maxi-style-cards__sc__save'>
-								<input
-									type='text'
-									placeholder={__(
-										'Add your Style Card Name here',
-										'maxi-blocks'
-									)}
-									value={styleCardName}
-									onChange={e =>
-										setStyleCardName(e.target.value)
-									}
-								/>
-								<Button
-									disabled={isEmpty(styleCardName)}
-									onClick={() => {
-										const newStyleCard = {
-											name: styleCardName,
-											status: '',
-											dark: {
-												defaultStyleCard: {
-													...selectedSCValue.dark
-														.defaultStyleCard,
-													...selectedSCValue.dark
-														.styleCard,
-												},
-												styleCard: {},
-											},
-											light: {
-												defaultStyleCard: {
-													...selectedSCValue.light
-														.defaultStyleCard,
-													...selectedSCValue.light
-														.styleCard,
-												},
-												styleCard: {},
-											},
-										};
-										saveImportedStyleCard(newStyleCard);
-									}}
-								>
-									{__('Add', 'maxi-blocks')}
-								</Button>
-							</div>
-							<div className='maxi-style-cards__sc__ie'>
-								<Button
-									className='maxi-style-cards__sc__ie--export'
-									disabled={false}
-									onClick={() => {
-										const fileName = `${selectedSCValue.name}.txt`;
-										exportStyleCard(
-											{
-												...selectedSCValue,
-												status: '',
-											},
-											fileName
-										);
-									}}
-								>
-									{__('Export', 'maxi-blocks')}
-								</Button>
-								<MediaUploadCheck>
-									<MediaUpload
-										onSelect={media => {
-											fetch(media.url)
-												.then(response =>
-													response.json()
-												)
-												.then(jsonData => {
-													saveImportedStyleCard(
-														jsonData
-													);
-												})
-												.catch(error => {
-													console.error(error);
-												});
-										}}
-										allowedTypes='text'
-										render={({ open }) => (
-											<Button
-												className='maxi-style-cards__sc__ie--import'
-												onClick={open}
-											>
-												{__('Import', 'maxi-blocks')}
-											</Button>
-										)}
-									/>
-								</MediaUploadCheck>
-							</div>
-						</>
-					)}
+					<div className='maxi-style-cards__sc__save'>
+						<input
+							type='text'
+							placeholder={__(
+								'Add your Style Card Name here',
+								'maxi-blocks'
+							)}
+							value={styleCardName}
+							onChange={e => setStyleCardName(e.target.value)}
+						/>
+						<Button
+							disabled={isEmpty(styleCardName)}
+							onClick={() => {
+								const newStyleCard = {
+									name: styleCardName,
+									status: '',
+									dark: {
+										defaultStyleCard: {
+											...selectedSCValue.dark
+												.defaultStyleCard,
+											...selectedSCValue.dark.styleCard,
+										},
+										styleCard: {},
+									},
+									light: {
+										defaultStyleCard: {
+											...selectedSCValue.light
+												.defaultStyleCard,
+											...selectedSCValue.light.styleCard,
+										},
+										styleCard: {},
+									},
+								};
+								saveImportedStyleCard(newStyleCard);
+							}}
+						>
+							{__('Add', 'maxi-blocks')}
+						</Button>
+					</div>
+					<div className='maxi-style-cards__sc__ie'>
+						<Button
+							className='maxi-style-cards__sc__ie--export'
+							disabled={false}
+							onClick={() => {
+								const fileName = `${selectedSCValue.name}.txt`;
+								exportStyleCard(
+									{
+										...selectedSCValue,
+										status: '',
+									},
+									fileName
+								);
+							}}
+						>
+							{__('Export', 'maxi-blocks')}
+						</Button>
+						<MediaUploadCheck>
+							<MediaUpload
+								onSelect={media => {
+									fetch(media.url)
+										.then(response => response.json())
+										.then(jsonData => {
+											saveImportedStyleCard(jsonData);
+										})
+										.catch(error => {
+											console.error(error);
+										});
+								}}
+								allowedTypes='text'
+								render={({ open }) => (
+									<Button
+										className='maxi-style-cards__sc__ie--import'
+										onClick={open}
+									>
+										{__('Import', 'maxi-blocks')}
+									</Button>
+								)}
+							/>
+						</MediaUploadCheck>
+					</div>
 				</div>
 				<hr />
-				{useCustomStyleCard && (
-					<SettingTabsControl
-						disablePadding
-						returnValue={({ key }) => setCurrentSCStyle(key)}
-						items={[
-							{
-								label: __('Light Style Preset', 'maxi-blocks'),
-								key: 'light',
-								content: (
-									<MaxiStyleCardsTab
-										SC={selectedSCValue.light}
-										SCStyle='light'
-										onChangeValue={onChangeValue}
-										breakpoint={breakpoint}
-										currentKey={selectedSCKey}
-									/>
-								),
-							},
-							{
-								label: __('Dark Style Preset', 'maxi-blocks'),
-								key: 'dark',
-								content: (
-									<MaxiStyleCardsTab
-										SC={selectedSCValue.dark}
-										SCStyle='dark'
-										onChangeValue={onChangeValue}
-										breakpoint={breakpoint}
-										currentKey={selectedSCKey}
-									/>
-								),
-							},
-						]}
-					/>
-				)}
+				<SettingTabsControl
+					disablePadding
+					returnValue={({ key }) => setCurrentSCStyle(key)}
+					items={[
+						{
+							label: __('Light Style Preset', 'maxi-blocks'),
+							key: 'light',
+							content: (
+								<MaxiStyleCardsTab
+									SC={selectedSCValue.light}
+									SCStyle='light'
+									onChangeValue={onChangeValue}
+									breakpoint={breakpoint}
+									currentKey={selectedSCKey}
+								/>
+							),
+						},
+						{
+							label: __('Dark Style Preset', 'maxi-blocks'),
+							key: 'dark',
+							content: (
+								<MaxiStyleCardsTab
+									SC={selectedSCValue.dark}
+									SCStyle='dark'
+									onChangeValue={onChangeValue}
+									breakpoint={breakpoint}
+									currentKey={selectedSCKey}
+								/>
+							),
+						},
+					]}
+				/>
 			</Popover>
 		)
 	);

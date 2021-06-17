@@ -12,7 +12,7 @@ import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
 import SelectControl from '../select-control';
 import SettingTabsControl from '../setting-tabs-control';
-import SizeControl from '../size-control';
+import AdvancedNumberControl from '../advanced-number-control';
 import TextShadowControl from '../text-shadow-control';
 import {
 	setFormat,
@@ -30,7 +30,8 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, trim, inRange } from 'lodash';
+import { isNil, inRange, isEmpty } from 'lodash';
+
 /**
  * Styles
  */
@@ -55,9 +56,10 @@ const TextOptions = props => {
 
 	return (
 		<>
-			<SizeControl
+			<AdvancedNumberControl
 				className='maxi-typography-control__size'
 				label={__('Size', 'maxi-blocks')}
+				enableUnit
 				unit={getValue(`${prefix}font-size-unit`, breakpoint, avoidXXL)}
 				defaultUnit={getDefault(`${prefix}font-size-unit`, breakpoint)}
 				onChangeUnit={val => {
@@ -94,9 +96,10 @@ const TextOptions = props => {
 				minMaxSettings={minMaxSettings}
 				allowedUnits={['px', 'em', 'vw', '%']}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				className='maxi-typography-control__line-height'
 				label={__('Line Height', 'maxi-blocks')}
+				enableUnit
 				unit={
 					getValue(
 						`${prefix}line-height-unit`,
@@ -142,9 +145,10 @@ const TextOptions = props => {
 				minMaxSettings={minMaxSettings}
 				allowedUnits={['px', 'em', 'vw', '%', '-']}
 			/>
-			<SizeControl
+			<AdvancedNumberControl
 				className='maxi-typography-control__letter-spacing'
 				label={__('Letter Spacing', 'maxi-blocks')}
+				enableUnit
 				allowedUnits={['px', 'em', 'vw']}
 				unit={getValue(
 					`${prefix}letter-spacing-unit`,
@@ -183,9 +187,7 @@ const TextOptions = props => {
 							[`${prefix}letter-spacing-unit`]: getDefault(
 								`${prefix}letter-spacing-unit`
 							),
-							[`${prefix}letter-spacing`]: getDefault(
-								`${prefix}letter-spacing`
-							),
+							[`${prefix}letter-spacing`]: '',
 						},
 						breakpoint
 					)
@@ -431,7 +433,7 @@ const TypographyControl = withFormatValue(props => {
 	};
 
 	const getWinBreakpoint = () => {
-		if (!maxiBreakpoints) return null;
+		if (!maxiBreakpoints || isEmpty(maxiBreakpoints)) return null;
 
 		if (winWidth > maxiBreakpoints.xl) return 'xxl';
 

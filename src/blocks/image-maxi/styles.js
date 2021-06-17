@@ -50,6 +50,9 @@ const getNormalObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
+		opacity: getOpacityStyles({
+			...getGroupAttributes(props, 'opacity'),
+		}),
 	};
 
 	return response;
@@ -166,12 +169,8 @@ const getImageHoverObject = props => {
 
 const getImageWrapperObject = props => {
 	const response = {
-		border: getBorderStyles({
-			...getGroupAttributes(props, [
-				'border',
-				'borderWidth',
-				'borderRadius',
-			]),
+		alignment: getAlignmentFlexStyles({
+			...getGroupAttributes(props, 'alignment'),
 		}),
 		boxShadow: getBoxShadowStyles(
 			{
@@ -180,8 +179,22 @@ const getImageWrapperObject = props => {
 			false,
 			!isEmpty(props.clipPath) || !isNil(props.SVGCurrentElement)
 		),
-		opacity: getOpacityStyles({
-			...getGroupAttributes(props, 'opacity'),
+		...(props['hover-extension'] && {
+			hoverExtension: { general: { overflow: 'visible' } },
+		}),
+	};
+
+	return response;
+};
+
+const getImageObject = props => {
+	return {
+		border: getBorderStyles({
+			...getGroupAttributes(props, [
+				'border',
+				'borderWidth',
+				'borderRadius',
+			]),
 		}),
 		...(props.clipPath && {
 			image: { general: { 'clip-path': props.clipPath } },
@@ -189,12 +202,7 @@ const getImageWrapperObject = props => {
 		...(props.imgWidth && {
 			imgWidth: { general: { width: `${props.imgWidth}%` } },
 		}),
-		...(props['hover-extension'] && {
-			hoverExtension: { general: { overflow: 'visible' } },
-		}),
 	};
-
-	return response;
 };
 
 const getFigcaptionObject = props => {
@@ -223,6 +231,7 @@ const getStyles = props => {
 			'': getNormalObject(props),
 			' .maxi-image-block-wrapper': getImageWrapperObject(props),
 			':hover .maxi-image-block-wrapper': getImageHoverObject(props),
+			' .maxi-image-block-wrapper img': getImageObject(props),
 			' figcaption': getFigcaptionObject(props),
 			' .maxi-hover-details .maxi-hover-details__content h3':
 				getHoverEffectTitleTextObject(props),

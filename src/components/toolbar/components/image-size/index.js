@@ -11,7 +11,7 @@ import Button from '../../../button';
 import openSidebar from '../../../../extensions/dom';
 import AdvancedNumberControl from '../../../advanced-number-control';
 import SelectControl from '../../../select-control';
-import RadioControl from '../../../radio-control';
+import FancyRadioControl from '../../../fancy-radio-control';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
@@ -92,20 +92,20 @@ const ImageSize = props => {
 					onChange={imageSize => onChangeImageSize(imageSize)}
 				/>
 				{isFirstOnHierarchy && (
-					<RadioControl
-						className='toolbar-item__popover__toggle-btn'
+					<FancyRadioControl
 						label={__('Full Width', 'maxi-blocks')}
 						selected={fullWidth}
 						options={[
 							{
-								label: __('No', 'maxi-blocks'),
-								value: 'normal',
-							},
-							{
 								label: __('Yes', 'maxi-blocks'),
 								value: 'full',
 							},
+							{
+								label: __('No', 'maxi-blocks'),
+								value: 'normal',
+							},
 						]}
+						optionType='string'
 						onChange={fullWidth => onChangeFullWidth(fullWidth)}
 					/>
 				)}

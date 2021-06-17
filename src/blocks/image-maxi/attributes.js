@@ -131,6 +131,7 @@ const attributes = {
 	...attributesData.textAlignment,
 	...attributesData.transform,
 	...attributesData.typography,
+	...attributesData.zIndex,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {

@@ -43,21 +43,33 @@ const BackgroundColor = props => {
 		<ToolbarPopover
 			className='toolbar-item__background'
 			advancedOptions='background'
-			tooltip={__('Background color', 'maxi-blocks')}
+			tooltip={
+				!useColorBackground
+					? __('Background Colour Disabled', 'maxi-blocks')
+					: __('Background Colour', 'maxi-blocks')
+			}
 			icon={
 				<div
 					className='toolbar-item__icon'
 					style={{
-						background:
-							props['background-color'] ||
-							`var(--maxi-${getBlockStyle(clientId)}-color-${
-								props['palette-preset-background-color']
-							})`,
-						border: '1px solid #fff',
-						...(!useColorBackground && {
-							clipPath:
-								'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
-						}),
+						...(!useColorBackground
+							? {
+									background: '#fff',
+									clipPath:
+										'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
+							  }
+							: {
+									background:
+										props['background-color'] ||
+										`var(--maxi-${getBlockStyle(
+											clientId
+										)}-color-${
+											props[
+												'palette-preset-background-color'
+											]
+										})`,
+									border: '1px solid #fff',
+							  }),
 					}}
 				/>
 			}

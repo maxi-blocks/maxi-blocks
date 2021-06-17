@@ -152,15 +152,15 @@ class MaxiBlocks_ImageUpload
         'update_item'       => __('Update Maxi Image', 'max-blocks'),
         'add_new_item'      => __('Add New Maxi Image', 'max-blocks'),
         'new_item_name'     => __('New Maxi Image Name', 'max-blocks'),
-        'menu_name'         => __('Maxi Images', 'max-blocks'),
     );
 
         $args = array(
         'labels' => $labels,
         'hierarchical' => false,
-        'query_var' => 'true',
-        'rewrite' => 'true',
-        'show_admin_column' => 'true',
+        'query_var' => true,
+        'rewrite' => true,
+        'show_admin_column' => true,
+        'show_in_menu' => false,
     );
 
         register_taxonomy('maxi-image-type', 'attachment', $args);

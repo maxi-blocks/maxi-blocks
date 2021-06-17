@@ -149,7 +149,7 @@ describe('getBackgroundStyles', () => {
 					'background-image-width-unit': '%',
 					'background-image-height': 512,
 					'background-image-height-unit': '%',
-					'background-image-cropOptions': {},
+					'background-image-crop-options': {},
 					'background-image-repeat': 'no-repeat',
 					'background-image-position': 'center center',
 					'background-image-position-width-unit': '%',

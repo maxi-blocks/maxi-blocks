@@ -96,7 +96,7 @@ const MasonryItem = props => {
  * Component
  */
 const LibraryContainer = props => {
-	const { type, onRequestClose, usePlaceholderImage } = props;
+	const { type, onRequestClose } = props;
 
 	const { styleCards, selectedSCKey, selectedSCValue } = useSelect(select => {
 		const { receiveMaxiStyleCards, receiveMaxiSelectedStyleCard } = select(
@@ -220,7 +220,7 @@ const LibraryContainer = props => {
 		}
 	};
 
-	const [isChecked, setChecked] = useState(usePlaceholderImage || false);
+	const [isChecked, setChecked] = useState(false);
 
 	const patternsResults = ({ hit }) => {
 		return (

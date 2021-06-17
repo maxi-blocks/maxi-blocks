@@ -1,4 +1,12 @@
+/**
+ * Internal dependencies
+ */
 import * as defaults from './defaults/index';
+
+/**
+ * External dependencies
+ */
+import { isNumber, isBoolean, isEmpty } from 'lodash';
 
 const getPaletteObj = () => {
 	let palette = {};
@@ -9,6 +17,10 @@ const getPaletteObj = () => {
 
 	return palette;
 };
+
+const getIsValid = (cleaned, val) =>
+	(cleaned && (val || isNumber(val) || isBoolean(val) || isEmpty(val))) ||
+	!cleaned;
 
 const getGroupAttributes = (
 	attributes,
@@ -26,7 +38,7 @@ const getGroupAttributes = (
 				: getPaletteObj();
 
 		Object.keys(defaultAttributes).forEach(key => {
-			if ((cleaned && attributes[`${prefix}${key}`]) || !cleaned)
+			if (getIsValid(cleaned, attributes[`${prefix}${key}`]))
 				response[`${prefix}${key}`] = attributes[`${prefix}${key}`];
 		});
 	} else
@@ -37,7 +49,7 @@ const getGroupAttributes = (
 					: getPaletteObj();
 
 			Object.keys(defaultAttributes).forEach(key => {
-				if ((cleaned && attributes[`${prefix}${key}`]) || !cleaned)
+				if (getIsValid(cleaned, attributes[`${prefix}${key}`]))
 					response[`${prefix}${key}`] = attributes[`${prefix}${key}`];
 			});
 		});

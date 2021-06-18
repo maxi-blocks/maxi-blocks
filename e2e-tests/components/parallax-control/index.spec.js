@@ -29,8 +29,7 @@ describe('ParallaxControl', () => {
 
 		const attributes = await getBlockAttributes();
 		const parallaxStatus = attributes['parallax-status'];
-		const expectStatus = true;
-		expect(parallaxStatus).toStrictEqual(expectStatus);
+		expect(parallaxStatus).toBeTruthy();
 
 		// direction
 		await accordionPanel.$$eval('.maxi-parallax-control label', click =>

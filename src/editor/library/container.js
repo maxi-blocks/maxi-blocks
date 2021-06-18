@@ -132,7 +132,7 @@ const MasonryItem = props => {
  * Component
  */
 const LibraryContainer = props => {
-	const { type, onRequestClose } = props;
+	const { type, onRequestClose, blockStyle } = props;
 
 	const { styleCards, selectedSCKey, selectedSCValue } = useSelect(select => {
 		const { receiveMaxiStyleCards, receiveMaxiSelectedStyleCard } = select(
@@ -384,7 +384,9 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
-					<div className='maxi-cloud-container__content-svg'>
+					<div
+						className={`maxi-cloud-container__content-svg maxi-${blockStyle}`}
+					>
 						<SearchBox
 							submit={__('Find', 'maxi-blocks')}
 							autoFocus

@@ -101,6 +101,7 @@ class edit extends MaxiBlockComponent {
 						clientId={clientId}
 						type='svg'
 						empty={isEmptyContent}
+						style={parentBlockStyle}
 					/>
 					{!isEmptyContent && (
 						<RawHTML className='maxi-svg-icon-block__icon'>

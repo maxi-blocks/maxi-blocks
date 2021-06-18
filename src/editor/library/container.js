@@ -408,20 +408,22 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
-					<div className='maxi-cloud-container__content-svg-shape'>
-						<SearchBox
-							submit={__('Find', 'maxi-blocks')}
-							autoFocus
-							searchAsYouType
-							showLoadingIndicator
-						/>
-						<RefinementList
-							className='hidden'
-							attribute='taxonomies.svg_category'
-							defaultRefinement={['Shape']}
-							showLoadingIndicator
-						/>
-						<Stats translations={resultsCount} />
+					<div className='maxi-cloud-container__content maxi-cloud-container__content-svg-shape'>
+						<div className='maxi-cloud-container__content__search-bar'>
+							<SearchBox
+								submit={__('Find', 'maxi-blocks')}
+								autoFocus
+								searchAsYouType
+								showLoadingIndicator
+							/>
+							<RefinementList
+								className='hidden'
+								attribute='taxonomies.svg_category'
+								defaultRefinement={['Shape']}
+								showLoadingIndicator
+							/>
+							<Stats translations={resultsCount} />
+						</div>
 						<InfiniteHits hitComponent={svgShapeResults} />
 					</div>
 				</InstantSearch>

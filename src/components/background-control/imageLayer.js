@@ -87,11 +87,6 @@ const ImageLayer = props => {
 					})
 				}
 				placeholder={__('Set image', 'maxi-blocks')}
-				// alternativeImage={{
-				// 	source_url: props['background-image-mediaURL'],
-				// 	width: props['background-image-width'],
-				// 	height: props['background-image-height'],
-				// }}
 				removeButton={__('Remove', 'maxi-blocks')}
 			/>
 			<OpacityControl
@@ -170,7 +165,7 @@ const ImageLayer = props => {
 					cropOptions={
 						imageOptions[
 							getAttributeKey(
-								'background-image-cropOptions',
+								'background-image-crop-options',
 								isHover,
 								prefix
 							)
@@ -179,10 +174,15 @@ const ImageLayer = props => {
 					onChange={cropOptions =>
 						onChange({
 							[getAttributeKey(
-								'background-image-cropOptions',
+								'background-image-crop-options',
 								isHover,
 								prefix
 							)]: cropOptions,
+							[getAttributeKey(
+								'background-image-mediaURL',
+								isHover,
+								prefix
+							)]: cropOptions.image.source_url,
 						})
 					}
 				/>

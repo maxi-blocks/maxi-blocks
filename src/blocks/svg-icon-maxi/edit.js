@@ -56,7 +56,8 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, clientId } = this.props;
-		const { uniqueID, parentBlockStyle, content } = attributes;
+		const { uniqueID, parentBlockStyle, content, openFirstTime } =
+			attributes;
 
 		const classes = classnames(
 			'maxi-svg-icon-block',
@@ -102,6 +103,7 @@ class edit extends MaxiBlockComponent {
 						type='svg'
 						empty={isEmptyContent}
 						style={parentBlockStyle}
+						openFirstTime={openFirstTime}
 					/>
 					{!isEmptyContent && (
 						<RawHTML className='maxi-svg-icon-block__icon'>

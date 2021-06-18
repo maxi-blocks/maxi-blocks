@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('Fancy Radio Control', () => {
+describe('FancyRadioControl', () => {
 	it('Checking the fancy radio control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

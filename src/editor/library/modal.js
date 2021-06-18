@@ -24,7 +24,7 @@ import { Icon } from '../../components';
 
 class MaxiModal extends Component {
 	state = {
-		isOpen: false,
+		isOpen: this.props.openFirstTime,
 	};
 
 	render() {
@@ -36,6 +36,11 @@ class MaxiModal extends Component {
 			this.setState({
 				isOpen: !isOpen,
 			});
+			wp.data
+				.dispatch('core/block-editor')
+				.updateBlockAttributes(clientId, {
+					openFirstTime: !isOpen,
+				});
 		};
 
 		return (

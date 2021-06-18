@@ -1,32 +1,104 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyTimes,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('Shape Divider Control', () => {
+describe('ShapeDividerControl', () => {
 	it('Checking the shape divider control', async () => {
 		await createNewPost();
-		await insertBlock('Image Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'shape');
+		await insertBlock('Container Maxi');
+		await page.$eval('.maxi-container-block', select => select.focus());
+		const accordionPanel = await openAdvancedSidebar(page, 'shape divider');
 
 		await accordionPanel.$$eval(
-			'.maxi-accordion-control__item__panel .maxi-svg-defaults button',
+			'.maxi-shapedividercontrol .maxi-base-control label',
+			click => click[3].click()
+		);
+
+		const expectedTopStatus = true;
+		const attributes = await getBlockAttributes();
+		const shapeTopStatus = attributes['shape-divider-top-status'];
+
+		expect(shapeTopStatus).toStrictEqual(expectedTopStatus);
+
+		// effects
+		await accordionPanel.$$eval(
+			'.maxi-shapedividercontrol .maxi-base-control label',
+			click => click[6].click()
+		);
+
+		const expectedTopEffectStatus = true;
+		const shapeAttributes = await getBlockAttributes();
+		const effectTopStatus =
+			shapeAttributes['shape-divider-top-effects-status'];
+
+		expect(effectTopStatus).toStrictEqual(expectedTopEffectStatus);
+
+		// divider style
+		await accordionPanel.$eval(
+			'.maxi-dropdown.maxi-shapedividercontrol__shape-selector div',
+			modal => modal.click()
+		);
+
+		await page.$$eval(
+			'.maxi-shapedividercontrol__shape-list label',
 			click => click[1].click()
 		);
 
-		const expectShape =
-			'<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 36.1 36.1" version="1.1" y="0" x="0" data-item="image-maxi-12__svg"><g><path d="M24.5 7.8c-2.1-1.3-4.4-2.2-6.9-2.8-2.4-.6-4.8-.9-7.1-.7-2.4.1-4.4.7-6 1.6-1.8 1-3 2.4-3.7 4.1-.3.8-.4 1.7-.2 2.6.1.7.4 1.5.9 2.4.3.5.8 1.4 1.5 2.4.6 1 1 1.8 1.2 2.5.2.7.3 1.6.3 2.7 0 .6-.1 1.6-.1 2.9 0 1.1.2 2.1.5 2.8.4 1 1.1 1.8 2.1 2.4 1.2.8 2.4 1.1 3.7 1.1.9 0 2-.3 3.5-.8 1.8-.6 3-1 3.7-1.1 1.5-.3 2.9-.3 4.4.1 3.2.8 5.7 1.1 7.5.9 2.5-.2 4.2-1.2 5.1-3.1.7-1.3.9-2.8.7-4.6-.2-1.7-.8-3.6-1.7-5.5-1-2-2.2-3.8-3.8-5.5-1.7-1.8-3.6-3.2-5.6-4.4z" fill=""/></g></svg>';
+		const shapeStyle = 'waves-top';
+		const shapeStyleAttribute = await getBlockAttributes();
+		const style = shapeStyleAttribute['shape-divider-top-shape-style'];
 
-		const attributes = await getBlockAttributes();
-		expect(
-			attributes.SVGElement.replace(/(\r\n|\n|\r)/g, '').replace(
-				/\s/g,
-				''
-			)
-		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
+		expect(style).toStrictEqual(shapeStyle);
+
+		// opacity
+		await accordionPanel.$eval(
+			'.maxi-advanced-number-control input',
+			opacity => opacity.focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('50');
+
+		const expectedOpacity = 0.5;
+		const shapeOpacityAttribute = await getBlockAttributes();
+		const shapeOpacity = shapeOpacityAttribute['shape-divider-top-opacity'];
+
+		expect(shapeOpacity).toStrictEqual(expectedOpacity);
+
+		// color
+		await accordionPanel.$$eval(
+			'.maxi-color-palette-control .maxi-sc-color-palette div',
+			selectColor => selectColor[3].click()
+		);
+
+		const expectedShapeColor = 4;
+		const shapeColorAttribute = await getBlockAttributes();
+		const shapeColor =
+			shapeColorAttribute['palette-preset-shape-divider-top-color'];
+
+		expect(shapeColor).toStrictEqual(expectedShapeColor);
+
+		// divider height
+		await accordionPanel.$$eval(
+			'.maxi-shapedividercontrol .maxi-advanced-number-control input',
+			input => input[2].focus()
+		);
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('200');
+
+		const expectedTopHeight = 200;
+		const shapeHeightAttribute = await getBlockAttributes();
+		const shapeTopHeight = shapeHeightAttribute['shape-divider-top-height'];
+
+		expect(shapeTopHeight).toStrictEqual(expectedTopHeight);
 	});
 });

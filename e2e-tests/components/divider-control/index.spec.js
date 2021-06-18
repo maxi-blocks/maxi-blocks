@@ -10,7 +10,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes } from '../../utils';
 
-describe('Divider Control', () => {
+describe('DividerControl', () => {
 	it('Checking the style selector', async () => {
 		await createNewPost();
 		await insertBlock('Divider Maxi');

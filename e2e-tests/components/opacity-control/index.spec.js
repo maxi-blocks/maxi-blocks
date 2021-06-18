@@ -11,7 +11,7 @@ import {
  */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('Opacity Control', () => {
+describe('OpacityControl', () => {
 	it('Checking the opacity control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

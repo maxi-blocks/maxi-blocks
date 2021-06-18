@@ -8,7 +8,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes } from '../../utils';
 
-describe('Alignment Control', () => {
+describe('AlignmentControl', () => {
 	it('Checking the operation of alignment-control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

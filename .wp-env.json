@@ -1,4 +1,9 @@
 {
 	"core": "WordPress/WordPress#5.5.3",
-	"plugins": ["."]
+	"plugins": ["."],
+	"config": {
+		"WP_DEBUG": true,
+		"SCRIPT_DEBUG": true,
+		"WP_DEBUG_LOG": true
+	}
 }

@@ -11,7 +11,7 @@ import { CheckboxControl } from '@wordpress/components';
  */
 import Button from '../../components/button';
 import { updateSCOnEditor } from '../../extensions/style-cards';
-import imageUploader from './uploader';
+import imageUploader from './util';
 
 /**
  * External dependencies

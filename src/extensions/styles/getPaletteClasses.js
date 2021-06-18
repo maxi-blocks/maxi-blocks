@@ -9,7 +9,41 @@ import getPaletteDefault from './getPaletteDefault';
 import classnames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
 
-const getPaletteClasses = (
+const getPaletteClasses = (attributes, parentBlockStyle) => {
+	const typographyClass =
+		attributes['palette-color-status-general'] &&
+		attributes['palette-color-general']
+			? `maxi-sc-${parentBlockStyle}-typography-color-${attributes['palette-color-general']}`
+			: null;
+	const backgroundClass =
+		attributes['background-palette-color-status'] &&
+		attributes['background-palette-color']
+			? `maxi-sc-${parentBlockStyle}-background-color-${attributes['background-palette-color']}`
+			: null;
+	const borderClass =
+		attributes['border-palette-color-status-general'] &&
+		attributes['border-palette-color-general']
+			? `maxi-sc-${parentBlockStyle}-border-color-${attributes['border-palette-color-general']}`
+			: null;
+	const boxShadowClass =
+		!isNil(attributes['box-shadow-blur-general']) &&
+		!isNil(attributes['box-shadow-horizontal-general']) &&
+		!isNil(attributes['box-shadow-vertical-general']) &&
+		!isNil(attributes['box-shadow-spread-general']) &&
+		attributes['box-shadow-palette-color-status-general'] &&
+		attributes['box-shadow-palette-color-general']
+			? `maxi-sc-${parentBlockStyle}-box-shadow-color-${attributes['box-shadow-palette-color-general']}`
+			: null;
+
+	return classnames(
+		typographyClass,
+		backgroundClass,
+		borderClass,
+		boxShadowClass
+	);
+};
+
+const getPaletteClasses2 = (
 	attributes,
 	allowedPalettes,
 	blockName,

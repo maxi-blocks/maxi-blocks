@@ -84,22 +84,7 @@ class edit extends MaxiBlockComponent {
 			parentBlockStyle,
 		} = attributes;
 
-		const paletteClasses = getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-				'typography',
-				'typography-hover',
-			],
-			'maxi-blocks/text-maxi',
-			parentBlockStyle,
-			textLevel
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		const onChangeRichText = ({ value: formatValue }) => {
 			/**
@@ -152,12 +137,12 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 				propsToAvoid={['content', 'formatValue']}
 			/>,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				ref={this.blockRef}
-				{...this.props}
-				propsToAvoid={['content', 'formatValue']}
-			/>,
+			// <Toolbar
+			// 	key={`toolbar-${uniqueID}`}
+			// 	ref={this.blockRef}
+			// 	{...this.props}
+			// 	propsToAvoid={['content', 'formatValue']}
+			// />,
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}
 				classes={`${isList ? 'maxi-list-block' : ''}`}

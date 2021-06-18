@@ -19,7 +19,12 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block size properties
  */
-const getBoxShadowStyles = (obj, isHover = false, dropShadow = false) => {
+const getBoxShadowStyles = (
+	obj,
+	isHover = false,
+	dropShadow = false,
+	parentBlockStyle = 'light' // temporary
+) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
@@ -57,13 +62,45 @@ const getBoxShadowStyles = (obj, isHover = false, dropShadow = false) => {
 				defaultBoxShadow[`box-shadow-spread-${breakpoint}`].default) ||
 			defaultBoxShadowHover[[`box-shadow-spread-${breakpoint}-hover`]]
 				.default;
-		const color =
-			obj[`box-shadow-color-${breakpoint}${isHover ? '-hover' : ''}`];
 		const defaultColor =
 			(!isHover &&
 				defaultBoxShadow[`box-shadow-color-${breakpoint}`].default) ||
 			defaultBoxShadowHover[[`box-shadow-color-${breakpoint}-hover`]]
 				.default;
+
+		let color;
+
+		if (breakpoint === 'general') {
+			color = obj[
+				`box-shadow-palette-color-status-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`
+			]
+				? defaultColor
+				: obj[
+						`box-shadow-color-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+				  ];
+		} else {
+			color = obj[
+				`box-shadow-palette-color-status-${breakpoint}${
+					isHover ? '-hover' : ''
+				}`
+			]
+				? `var(--maxi-${parentBlockStyle}-color-${
+						obj[
+							`box-shadow-palette-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						]
+				  })`
+				: obj[
+						`box-shadow-color-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+				  ];
+		}
 
 		const isNotDefault =
 			(horizontal !== defaultHorizontal && horizontal !== 0) ||

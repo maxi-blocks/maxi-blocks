@@ -440,11 +440,13 @@ const getBackgroundStyles = ({
 	let response = {
 		[`${target}${isHover ? ':hover' : ''} > .maxi-background-displayer`]: {
 			border: getBorderStyles({
-				...getGroupAttributes(
-					props,
-					groupAttrNames.borderRadius,
-					isHover
-				),
+				obj: {
+					...getGroupAttributes(
+						props,
+						groupAttrNames.borderRadius,
+						isHover
+					),
+				},
 			}),
 		},
 	};

@@ -144,7 +144,6 @@ const BackgroundControl = props => {
 				<>
 					{!disableColor && backgroundActiveMedia === 'color' && (
 						<ColorLayer
-							{...getGroupAttributes(props, 'palette')}
 							colorOptions={{
 								...getGroupAttributes(
 									props,

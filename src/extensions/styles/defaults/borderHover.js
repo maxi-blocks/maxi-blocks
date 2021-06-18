@@ -13,6 +13,7 @@ export const borderHover = (() => {
 		const value = { ...border[key] };
 
 		if ('default' in value) delete value.default;
+		if (key === 'border-palette-color-general') value.default = 6;
 
 		response[newKey] = value;
 	});

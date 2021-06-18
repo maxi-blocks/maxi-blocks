@@ -12,6 +12,14 @@ export const background = {
 };
 
 export const backgroundColor = {
+	'background-palette-color-status': {
+		type: 'boolean',
+		default: true,
+	},
+	'background-palette-color': {
+		type: 'number',
+		default: 6,
+	},
 	'background-color': {
 		type: 'string',
 	},
@@ -145,6 +153,14 @@ export const backgroundGradient = {
 };
 
 export const backgroundSVG = {
+	'background-palette-svg-color-status': {
+		type: 'boolean',
+		default: true,
+	},
+	'background-palette-svg-color': {
+		type: 'number',
+		default: 5,
+	},
 	'background-svg-SVGCurrentElement': {
 		type: 'string',
 	},

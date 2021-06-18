@@ -129,7 +129,6 @@ class MaxiBlocks_StyleCards {
 					"styleCard": {},
 					"defaultStyleCard": {
 						"color": {
-							"global": false,
 							"1": "#081219",
 							"2": "#062739",
 							"3": "#9b9b9b",
@@ -137,7 +136,6 @@ class MaxiBlocks_StyleCards {
 							"5": "#ffffff",
 							"6": "#c9340a",
 							"7": "#f5f5f5",
-							"color": ""
 						},
 						"p": {
 							"color-global": false,

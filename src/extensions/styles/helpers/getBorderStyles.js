@@ -13,7 +13,12 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block border properties
  */
-const getBorderStyles = (obj, isHover = false, prefix = '') => {
+const getBorderStyles = ({
+	obj,
+	isHover = false,
+	prefix = '',
+	parentBlockStyle,
+}) => {
 	const keyWords = [
 		'top-left',
 		'top-right',
@@ -52,9 +57,29 @@ const getBorderStyles = (obj, isHover = false, prefix = '') => {
 				);
 				const newLabel = newKey.replace(replacer, '');
 
-				if (!keyWords.some(key => newLabel.includes(key)))
-					response[breakpoint][newLabel] = `${value}`;
-				else {
+				if (!keyWords.some(key => newLabel.includes(key))) {
+					if (key.includes('color')) {
+						if (
+							response[breakpoint]['border-color'] ||
+							breakpoint === 'general'
+						)
+							return;
+
+						if (
+							obj[
+								`${prefix}border-palette-color-status-${breakpoint}`
+							] &&
+							obj[`${prefix}border-palette-color-${breakpoint}`]
+						)
+							response[breakpoint][
+								'border-color'
+							] = `var(--maxi-${parentBlockStyle}-color-${
+								obj[
+									`${prefix}border-palette-color-${breakpoint}`
+								]
+							});`;
+					} else response[breakpoint][newLabel] = `${value}`;
+				} else {
 					const unitKey = keyWords.filter(key =>
 						newLabel.includes(key)
 					)[0];

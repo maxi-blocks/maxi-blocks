@@ -34,14 +34,13 @@ const ColorControl = props => {
 		defaultColor = '',
 		disableColorDisplay = false,
 		disableOpacity = false,
+		paletteColor,
+		paletteStatus,
 		onChange,
 		isHover,
 		disablePalette,
 		textLevel,
 		showPalette = false,
-		palette,
-		colorPaletteType,
-		onChangePalette,
 		deviceType,
 		clientId,
 	} = props;
@@ -82,6 +81,15 @@ const ColorControl = props => {
 			: '';
 	};
 
+	const onChangeValue = obj => {
+		onChange({
+			color,
+			paletteColor,
+			paletteStatus,
+			...obj,
+		});
+	};
+
 	const onReset = () => {
 		onChange(defaultColor);
 		setColorAlpha(100);
@@ -107,24 +115,17 @@ const ColorControl = props => {
 		<>
 			{!disablePalette && showPalette && (
 				<ColorPaletteControl
-					{...palette}
-					paletteLabel={label}
+					label={label}
+					value={paletteColor}
+					status={paletteStatus}
 					textLevel={textLevel}
 					isHover={isHover}
-					colorPaletteType={colorPaletteType}
-					onChange={obj => onChangePalette(obj)}
+					onChange={obj => onChangeValue(obj)}
 					deviceType={deviceType}
 					clientId={clientId}
 				/>
 			)}
-			{!showPalette ||
-			(palette &&
-				palette[
-					`palette-custom-${colorPaletteType}${
-						isHover ? '-hover' : ''
-					}-color`
-				]) ||
-			disablePalette ? (
+			{!showPalette || !paletteStatus || disablePalette ? (
 				<div className={classes}>
 					{!disableColorDisplay && (
 						<BaseControl
@@ -148,7 +149,12 @@ const ColorControl = props => {
 								const value = !isNil(val) ? +val : 0;
 
 								if (!isEmpty(color)) {
-									onChange(returnColor(getRGB(color), value));
+									onChangeValue({
+										color: returnColor(
+											getRGB(color),
+											value
+										),
+									});
 									setCurrentColor(
 										returnColor(getRGB(color), value)
 									);
@@ -167,7 +173,9 @@ const ColorControl = props => {
 						<ChromePicker
 							color={currentColor}
 							onChangeComplete={val => {
-								onChange(returnColor(val, colorAlpha));
+								onChangeValue({
+									color: returnColor(val, colorAlpha),
+								});
 								setCurrentColor(returnColor(val, colorAlpha));
 							}}
 							disableAlpha

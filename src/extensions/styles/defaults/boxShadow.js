@@ -1,4 +1,12 @@
 const boxShadow = {
+	'box-shadow-palette-color-status-general': {
+		type: 'boolean',
+		default: true,
+	},
+	'box-shadow-palette-color-general': {
+		type: 'number',
+		default: 1,
+	},
 	'box-shadow-color-general': {
 		type: 'string',
 		default: 'var(--maxi-shadow-color)',
@@ -13,6 +21,12 @@ const boxShadow = {
 		type: 'number',
 	},
 	'box-shadow-spread-general': {
+		type: 'number',
+	},
+	'box-shadow-palette-color-status-xxl': {
+		type: 'boolean',
+	},
+	'box-shadow-palette-color-xxl': {
 		type: 'number',
 	},
 	'box-shadow-color-xxl': {
@@ -30,6 +44,12 @@ const boxShadow = {
 	'box-shadow-spread-xxl': {
 		type: 'number',
 	},
+	'box-shadow-palette-color-status-xl': {
+		type: 'boolean',
+	},
+	'box-shadow-palette-color-xl': {
+		type: 'number',
+	},
 	'box-shadow-color-xl': {
 		type: 'string',
 	},
@@ -43,6 +63,12 @@ const boxShadow = {
 		type: 'number',
 	},
 	'box-shadow-spread-xl': {
+		type: 'number',
+	},
+	'box-shadow-palette-color-status-l': {
+		type: 'boolean',
+	},
+	'box-shadow-palette-color-l': {
 		type: 'number',
 	},
 	'box-shadow-color-l': {
@@ -60,6 +86,12 @@ const boxShadow = {
 	'box-shadow-spread-l': {
 		type: 'number',
 	},
+	'box-shadow-palette-color-status-m': {
+		type: 'boolean',
+	},
+	'box-shadow-palette-color-m': {
+		type: 'number',
+	},
 	'box-shadow-color-m': {
 		type: 'string',
 	},
@@ -75,6 +107,12 @@ const boxShadow = {
 	'box-shadow-spread-m': {
 		type: 'number',
 	},
+	'box-shadow-palette-color-status-s': {
+		type: 'boolean',
+	},
+	'box-shadow-palette-color-s': {
+		type: 'number',
+	},
 	'box-shadow-color-s': {
 		type: 'string',
 	},
@@ -88,6 +126,12 @@ const boxShadow = {
 		type: 'number',
 	},
 	'box-shadow-spread-s': {
+		type: 'number',
+	},
+	'box-shadow-palette-color-status-xs': {
+		type: 'boolean',
+	},
+	'box-shadow-palette-color-xs': {
 		type: 'number',
 	},
 	'box-shadow-color-xs': {

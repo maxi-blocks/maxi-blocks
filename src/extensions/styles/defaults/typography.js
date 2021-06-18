@@ -4,6 +4,14 @@ export const typography = {
 	'font-family-general': {
 		type: 'string',
 	},
+	'palette-color-status-general': {
+		type: 'boolean',
+		default: true,
+	},
+	'palette-color-general': {
+		type: 'number',
+		default: 3,
+	},
 	'color-general': {
 		type: 'string',
 	},
@@ -48,6 +56,12 @@ export const typography = {
 	'font-family-xxl': {
 		type: 'string',
 	},
+	'palette-color-status-xxl': {
+		type: 'boolean',
+	},
+	'palette-color-xxl': {
+		type: 'number',
+	},
 	'color-xxl': {
 		type: 'string',
 	},
@@ -89,6 +103,12 @@ export const typography = {
 	},
 	'font-family-xl': {
 		type: 'string',
+	},
+	'palette-color-status-xl': {
+		type: 'boolean',
+	},
+	'palette-color-xl': {
+		type: 'number',
 	},
 	'color-xl': {
 		type: 'string',
@@ -132,6 +152,12 @@ export const typography = {
 	'font-family-l': {
 		type: 'string',
 	},
+	'palette-color-status-l': {
+		type: 'boolean',
+	},
+	'palette-color-l': {
+		type: 'number',
+	},
 	'color-l': {
 		type: 'string',
 	},
@@ -173,6 +199,12 @@ export const typography = {
 	},
 	'font-family-m': {
 		type: 'string',
+	},
+	'palette-color-status-m': {
+		type: 'boolean',
+	},
+	'palette-color-m': {
+		type: 'number',
 	},
 	'color-m': {
 		type: 'string',
@@ -216,6 +248,12 @@ export const typography = {
 	'font-family-s': {
 		type: 'string',
 	},
+	'palette-color-status-s': {
+		type: 'boolean',
+	},
+	'palette-color-s': {
+		type: 'number',
+	},
 	'color-s': {
 		type: 'string',
 	},
@@ -257,6 +295,12 @@ export const typography = {
 	},
 	'font-family-xs': {
 		type: 'string',
+	},
+	'palette-color-status-xs': {
+		type: 'boolean',
+	},
+	'palette-color-xs': {
+		type: 'number',
 	},
 	'color-xs': {
 		type: 'string',

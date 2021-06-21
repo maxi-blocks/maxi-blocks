@@ -255,11 +255,7 @@ class edit extends MaxiBlockComponent {
 											key={`hover-preview-${uniqueID}`}
 											target={this.imgRef.current}
 											wrapperClassName={wrapperClassName}
-											hoverClassName={
-												!SVGElement
-													? hoverClasses
-													: null
-											}
+											hoverClassName={hoverClasses}
 											isSVG={!!SVGElement}
 											{...getGroupAttributes(attributes, [
 												'hover',

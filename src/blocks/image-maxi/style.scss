@@ -549,107 +549,126 @@ body.maxi-blocks--active figure.maxi-image-block {
 
 		&__basic {
 			&__zoom-in {
-				img {
+				img,
+				svg {
 					transform: scale(1);
 					transition: 0.3s ease-in-out;
 				}
 				&:hover {
-					img {
+					img,
+					svg {
 						transform: scale(1.3);
 					}
 				}
 			}
 			&__zoom-out {
-				img {
+				img,
+				svg {
 					transform: scale(1.5);
 					transition: 0.3s ease-in-out;
 				}
 				&:hover {
-					img {
+					img,
+					svg {
 						transform: scale(1);
 					}
 				}
 			}
 			&__slide {
-				img {
+				img,
+				svg {
 					margin-left: 0;
 					transition: 0.3s ease-in-out;
 				}
 				&:hover {
-					img {
+					img,
+					svg {
 						margin-left: 30px;
 					}
 				}
 			}
 			&__rotate {
-				img {
+				img,
+				svg {
 					transform: rotate(0);
 					transition: 0.3s ease-in-out;
 				}
 				&:hover {
-					img {
+					img,
+					svg {
 						transform: rotate(15deg);
 					}
 				}
 			}
 			&__blur {
-				img {
+				img,
+				svg {
 					filter: blur(0);
 					transition: 0.3s ease-in-out;
 				}
 				&:hover {
-					img {
+					img,
+					svg {
 						filter: blur(2px);
 					}
 				}
 			}
 			&__greay-scale {
-				img {
+				img,
+				svg {
 					filter: grayscale(0);
 					transition: 0.3s ease-in-out;
 				}
 				&:hover {
-					img {
+					img,
+					svg {
 						filter: grayscale(100%);
 					}
 				}
 			}
 			&__clear-greay-scale {
-				img {
+				img,
+				svg {
 					filter: grayscale(100%);
 					transition: 0.3s ease-in-out;
 				}
 				&:hover {
-					img {
+					img,
+					svg {
 						filter: grayscale(0);
 					}
 				}
 			}
 			&__sepia {
-				img {
+				img,
+				svg {
 					filter: sepia(0);
 					transition: 0.3s ease-in-out;
 				}
 				&:hover {
-					img {
+					img,
+					svg {
 						filter: sepia(100%);
 					}
 				}
 			}
 			&__clear-sepia {
-				img {
+				img,
+				svg {
 					filter: sepia(100%);
 					transition: 0.3s ease-in-out;
 				}
 				&:hover {
-					img {
+					img,
+					svg {
 						filter: sepia(0);
 					}
 				}
 			}
 			&__flashing {
 				&:hover {
-					img {
+					img,
+					svg {
 						opacity: 1;
 						animation: flash 1.5s;
 					}

@@ -63,16 +63,16 @@ class edit extends MaxiBlockComponent {
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			// <Toolbar
-			// 	key={`toolbar-${uniqueID}`}
-			// 	ref={this.blockRef}
-			// 	toggleHandlers={() => {
-			// 		this.setState({
-			// 			displayHandlers: !this.state.displayHandlers,
-			// 		});
-			// 	}}
-			// 	{...this.props}
-			// />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				toggleHandlers={() => {
+					this.setState({
+						displayHandlers: !this.state.displayHandlers,
+					});
+				}}
+				{...this.props}
+			/>,
 			<RowContext.Provider
 				key={`row-content-${uniqueID}`}
 				value={{

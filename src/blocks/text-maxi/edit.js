@@ -137,12 +137,12 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 				propsToAvoid={['content', 'formatValue']}
 			/>,
-			// <Toolbar
-			// 	key={`toolbar-${uniqueID}`}
-			// 	ref={this.blockRef}
-			// 	{...this.props}
-			// 	propsToAvoid={['content', 'formatValue']}
-			// />,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				{...this.props}
+				propsToAvoid={['content', 'formatValue']}
+			/>,
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}
 				classes={`${isList ? 'maxi-list-block' : ''}`}

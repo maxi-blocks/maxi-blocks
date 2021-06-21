@@ -8,10 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-import {
-	getGroupAttributes,
-	getBlockStyle,
-} from '../../../../extensions/styles';
+import { getBlockStyle } from '../../../../extensions/styles';
 
 /**
  * Styles
@@ -22,15 +19,8 @@ import './editor.scss';
  * SvgColor
  */
 const SvgColor = props => {
-	const {
-		type,
-		blockName,
-		svgColor,
-		svgColorDefault,
-		onChange,
-		breakpoint,
-		clientId,
-	} = props;
+	const { type, blockName, svgColor, svgColorDefault, onChange, clientId } =
+		props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
 
@@ -45,15 +35,11 @@ const SvgColor = props => {
 				<div
 					className='toolbar-item__icon'
 					style={{
-						background:
-							props[`${type}`] ||
-							props[`palette-custom-${type}-color`]
-								? svgColor
-								: `var(--maxi-${getBlockStyle(
-										clientId
-								  )}-color-${
-										props[`palette-preset-${type}-color`]
-								  })`,
+						background: props[`svg-palette-${type}-color-status`]
+							? `var(--maxi-${getBlockStyle(clientId)}-color-${
+									props[`svg-palette-${type}-color`]
+							  })`
+							: svgColor,
 						border: '1px solid #fff',
 					}}
 				/>
@@ -64,14 +50,17 @@ const SvgColor = props => {
 					label={__('SVG', 'maxi-blocks')}
 					color={svgColor}
 					defaultColor={svgColorDefault}
-					onChange={val => onChange({ [`${type}`]: val })}
+					paletteColor={props[`svg-palette-${type}-color`]}
+					paletteStatus={props[`svg-palette-${type}-color-status`]}
+					onChange={({ color, paletteColor, paletteStatus }) =>
+						onChange({
+							[`${type}`]: color,
+							[`svg-palette-${type}-color`]: paletteColor,
+							[`svg-palette-${type}-color-status`]: paletteStatus,
+						})
+					}
 					disableGradient
 					showPalette
-					palette={{ ...getGroupAttributes(props, 'palette') }}
-					colorPaletteType={type}
-					onChangePalette={val => onChange(val)}
-					deviceType={breakpoint}
-					clientId={clientId}
 				/>
 			</div>
 		</ToolbarPopover>

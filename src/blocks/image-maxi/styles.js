@@ -61,8 +61,8 @@ const getNormalObject = props => {
 const getHoverEffectDetailsBoxObject = props => {
 	const response = {
 		...(props['hover-border-status'] && {
-			border: getBorderStyles(
-				{
+			border: getBorderStyles({
+				obj: {
 					...getGroupAttributes(
 						props,
 						[
@@ -73,9 +73,9 @@ const getHoverEffectDetailsBoxObject = props => {
 						false
 					),
 				},
-				false,
-				'hover-'
-			),
+				prefix: 'hover-',
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 		}),
 		margin: getMarginPaddingStyles(
 			{
@@ -111,13 +111,13 @@ const getHoverEffectDetailsBoxObject = props => {
 const getHoverEffectTitleTextObject = props => {
 	const response = {
 		...(props['hover-title-typography-status'] && {
-			typography: getTypographyStyles(
-				{
+			typography: getTypographyStyles({
+				obj: {
 					...getGroupAttributes(props, 'hoverTitleTypography'),
 				},
-				false,
-				'hover-title-'
-			),
+				prefix: 'hover-title-',
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 		}),
 	};
 
@@ -127,13 +127,13 @@ const getHoverEffectTitleTextObject = props => {
 const getHoverEffectContentTextObject = props => {
 	const response = {
 		...(props['hover-content-typography-status'] && {
-			typography: getTypographyStyles(
-				{
+			typography: getTypographyStyles({
+				obj: {
 					...getGroupAttributes(props, 'hoverContentTypography'),
 				},
-				false,
-				'hover-content-'
-			),
+				prefix: 'hover-content-',
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 		}),
 	};
 
@@ -143,24 +143,26 @@ const getHoverEffectContentTextObject = props => {
 const getImageHoverObject = props => {
 	const response = {
 		...(props['border-status-hover'] && {
-			border: getBorderStyles(
-				{
+			border: getBorderStyles({
+				obj: {
 					...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
 						true
 					),
 				},
-				true
-			),
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 		}),
 		...(props['box-shadow-status-hover'] && {
-			boxShadow: getBoxShadowStyles(
-				{
+			boxShadow: getBoxShadowStyles({
+				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				true
-			),
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 		}),
 	};
 
@@ -172,13 +174,14 @@ const getImageWrapperObject = props => {
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
 		}),
-		boxShadow: getBoxShadowStyles(
-			{
+		boxShadow: getBoxShadowStyles({
+			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			false,
-			!isEmpty(props.clipPath) || !isNil(props.SVGCurrentElement)
-		),
+			dropShadow:
+				!isEmpty(props.clipPath) || !isNil(props.SVGCurrentElement),
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 		...(props['hover-extension'] && {
 			hoverExtension: { general: { overflow: 'visible' } },
 		}),
@@ -190,11 +193,14 @@ const getImageWrapperObject = props => {
 const getImageObject = props => {
 	return {
 		border: getBorderStyles({
-			...getGroupAttributes(props, [
-				'border',
-				'borderWidth',
-				'borderRadius',
-			]),
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 		...(props.clipPath && {
 			image: { general: { 'clip-path': props.clipPath } },
@@ -209,7 +215,10 @@ const getFigcaptionObject = props => {
 	const response = {
 		...(props.captionType !== 'none' && {
 			typography: getTypographyStyles({
-				...getGroupAttributes(props, 'typography'),
+				obj: {
+					...getGroupAttributes(props, 'typography'),
+				},
+				parentBlockStyle: props.parentBlockStyle,
 			}),
 		}),
 		textAlignment: getAlignmentTextStyles({

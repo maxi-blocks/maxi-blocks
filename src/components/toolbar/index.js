@@ -366,7 +366,10 @@ const MaxiToolbar = memo(
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
 									<SvgColor
-										{...getGroupAttributes(attributes)}
+										{...getGroupAttributes(
+											attributes,
+											'svg'
+										)}
 										blockName={name}
 										svgColorDefault={getDefaultAttribute(
 											'svgColorFill',
@@ -382,7 +385,10 @@ const MaxiToolbar = memo(
 										breakpoint={breakpoint}
 									/>
 									<SvgColor
-										{...getGroupAttributes(attributes)}
+										{...getGroupAttributes(
+											attributes,
+											'svg'
+										)}
 										blockName={name}
 										svgColorDefault={getDefaultAttribute(
 											'svgColorLine',

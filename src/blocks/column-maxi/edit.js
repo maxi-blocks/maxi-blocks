@@ -109,13 +109,13 @@ class edit extends MaxiBlockComponent {
 								rowPattern={context.rowPattern}
 								{...this.props}
 							/>
-							{/* <Toolbar
+							<Toolbar
 								key={`toolbar-${uniqueID}`}
 								ref={this.blockRef}
 								rowPattern={context.rowPattern}
 								propsToAvoid={['resizableObject']}
 								{...this.props}
-							/> */}
+							/>
 							<BlockResizer
 								resizableObject={this.resizableObject}
 								className={classnames(

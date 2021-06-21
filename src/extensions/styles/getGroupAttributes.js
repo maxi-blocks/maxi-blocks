@@ -19,6 +19,8 @@ const getGroupAttributes = (
 	prefix = '',
 	cleaned = false
 ) => {
+	if (!target) return null;
+
 	const response = {};
 
 	if (typeof target === 'string') {

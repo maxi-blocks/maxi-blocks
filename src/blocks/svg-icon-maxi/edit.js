@@ -66,13 +66,13 @@ class edit extends MaxiBlockComponent {
 			!isEmptyContent && (
 				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
 			),
-			// !isEmptyContent && (
-			// 	<Toolbar
-			// 		key={`toolbar-${uniqueID}`}
-			// 		ref={this.blockRef}
-			// 		{...this.props}
-			// 	/>
-			// ),
+			!isEmptyContent && (
+				<Toolbar
+					key={`toolbar-${uniqueID}`}
+					ref={this.blockRef}
+					{...this.props}
+				/>
+			),
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}

@@ -60,7 +60,7 @@ class MaxiBlocks_ImageUpload
 
     public function maxi_upload_placeholder_image()
     {
-        $placeholder_image_url = plugin_dir_url(__DIR__) . 'img/patterns-placeholder.jpg';
+        $placeholder_image_url = MAXI_PLUGIN_DIR_PATH  . 'img/patterns-placeholder.jpg';
 
         $this->maxi_upload_pattern_image($placeholder_image_url);
     }

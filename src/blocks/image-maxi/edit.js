@@ -48,6 +48,10 @@ class edit extends MaxiBlockComponent {
 		super(...args);
 
 		this.imgRef = createRef();
+		this.setImgRef = ref => {
+			this.imgRef.current = ref;
+			this.forceUpdate();
+		};
 	}
 
 	get getWrapperWidth() {
@@ -253,7 +257,7 @@ class edit extends MaxiBlockComponent {
 										</div>
 										<HoverPreview
 											key={`hover-preview-${uniqueID}`}
-											target={this.imgRef.current}
+											target={this.imgRef?.current}
 											wrapperClassName={wrapperClassName}
 											hoverClassName={hoverClasses}
 											isSVG={!!SVGElement}
@@ -264,12 +268,12 @@ class edit extends MaxiBlockComponent {
 											])}
 										>
 											{SVGElement ? (
-												<RawHTML ref={this.imgRef}>
+												<RawHTML ref={this.setImgRef}>
 													{SVGElement}
 												</RawHTML>
 											) : (
 												<img
-													ref={this.imgRef}
+													ref={this.setImgRef}
 													className={`maxi-image-block__image wp-image-${mediaID}`}
 													src={mediaURL}
 													width={mediaWidth}

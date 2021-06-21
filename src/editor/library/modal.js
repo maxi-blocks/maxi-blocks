@@ -30,7 +30,7 @@ class MaxiModal extends Component {
 	render() {
 		const { isOpen } = this.state;
 
-		const { type, clientId, empty } = this.props;
+		const { type, clientId, empty, style } = this.props;
 
 		const onClick = () => {
 			this.setState({
@@ -93,7 +93,13 @@ class MaxiModal extends Component {
 						{__('Load Shape Library', 'maxi-blocks')}
 					</Button>
 				)}
-				{isOpen && <CloudLibrary cloudType={type} onClose={onClick} />}
+				{isOpen && (
+					<CloudLibrary
+						cloudType={type}
+						onClose={onClick}
+						blockStyle={style}
+					/>
+				)}
 			</>
 		);
 	}

@@ -115,6 +115,7 @@ const BackgroundContent = props => {
 						case 'video':
 							return (
 								<VideoLayer
+									key={`maxi-background-displayer__${layer.type}__${layer.id}`}
 									videoOptions={getGroupAttributes(
 										layer,
 										'backgroundVideo',

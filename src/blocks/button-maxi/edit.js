@@ -63,30 +63,15 @@ class edit extends MaxiBlockComponent {
 				'maxi-button-block__button--icon-right'
 		);
 
-		const paletteClasses = getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-				'typography',
-				'typography-hover',
-				'icon',
-			],
-			'maxi-blocks/button-maxi',
-			parentBlockStyle
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				ref={this.blockRef}
-				{...this.props}
-			/>,
+			// <Toolbar
+			// 	key={`toolbar-${uniqueID}`}
+			// 	ref={this.blockRef}
+			// 	{...this.props}
+			// />,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}

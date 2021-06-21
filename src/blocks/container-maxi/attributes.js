@@ -29,10 +29,6 @@ const attributes = {
 		type: 'number',
 		default: 0,
 	},
-	...attributesData.palette.background,
-	...attributesData.palette.border,
-	...attributesData.palette.boxShadow,
-	...attributesData.palette.shapeDivider,
 	...attributesData.container,
 	...{
 		...attributesData.background,
@@ -41,12 +37,7 @@ const attributes = {
 			default: 'color',
 		},
 	},
-	...{
-		...attributesData.backgroundColor,
-		'background-color': {
-			type: 'string',
-		},
-	},
+	...attributesData.backgroundColor,
 	...attributesData.backgroundImage,
 	...attributesData.backgroundVideo,
 	...attributesData.backgroundGradient,

@@ -19,12 +19,12 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block size properties
  */
-const getBoxShadowStyles = (
+const getBoxShadowStyles = ({
 	obj,
 	isHover = false,
 	dropShadow = false,
-	parentBlockStyle = 'light' // temporary
-) => {
+	parentBlockStyle,
+}) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {

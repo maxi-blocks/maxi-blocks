@@ -58,24 +58,7 @@ class edit extends MaxiBlockComponent {
 		const { attributes, clientId } = this.props;
 		const { uniqueID, parentBlockStyle, content } = attributes;
 
-		const classes = classnames(
-			'maxi-svg-icon-block',
-			getPaletteClasses(
-				attributes,
-				[
-					'background',
-					'background-hover',
-					'border',
-					'border-hover',
-					'box-shadow',
-					'box-shadow-hover',
-					'svgColorFill',
-					'svgColorLine',
-				],
-				'maxi-blocks/svg-icon-maxi',
-				parentBlockStyle
-			)
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		const isEmptyContent = isEmpty(content);
 
@@ -83,17 +66,17 @@ class edit extends MaxiBlockComponent {
 			!isEmptyContent && (
 				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
 			),
-			!isEmptyContent && (
-				<Toolbar
-					key={`toolbar-${uniqueID}`}
-					ref={this.blockRef}
-					{...this.props}
-				/>
-			),
+			// !isEmptyContent && (
+			// 	<Toolbar
+			// 		key={`toolbar-${uniqueID}`}
+			// 		ref={this.blockRef}
+			// 		{...this.props}
+			// 	/>
+			// ),
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
-				className={classes}
+				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<>

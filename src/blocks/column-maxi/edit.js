@@ -97,19 +97,7 @@ class edit extends MaxiBlockComponent {
 					].indexOf(blockName) === -1
 			);
 
-		const paletteClasses = getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-			],
-			'maxi-blocks/column-maxi',
-			parentBlockStyle
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		return [
 			<RowContext.Consumer key={`column-content-${uniqueID}`}>
@@ -121,13 +109,13 @@ class edit extends MaxiBlockComponent {
 								rowPattern={context.rowPattern}
 								{...this.props}
 							/>
-							<Toolbar
+							{/* <Toolbar
 								key={`toolbar-${uniqueID}`}
 								ref={this.blockRef}
 								rowPattern={context.rowPattern}
 								propsToAvoid={['resizableObject']}
 								{...this.props}
-							/>
+							/> */}
 							<BlockResizer
 								resizableObject={this.resizableObject}
 								className={classnames(

@@ -4,7 +4,6 @@
 import getBoxShadowStyles from './getBoxShadowStyles';
 import getGroupAttributes from '../getGroupAttributes';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import { getPaletteDefault } from '..';
 
 /**
  * External dependencies
@@ -18,8 +17,7 @@ export const getArrowBorderObject = props => {
 	};
 
 	if (!props['palette-custom-border-color']) {
-		const paletteColor =
-			props['palette-preset-border-color'] || getPaletteDefault('border');
+		const paletteColor = props['palette-preset-border-color'];
 
 		response.general.background = `var(--maxi-light-color-${paletteColor})`;
 	} else if (!isEmpty(props['border-color-general']))
@@ -115,9 +113,7 @@ export const getArrowColorObject = props => {
 
 	if (props['background-active-media'] === 'color') {
 		if (!props['palette-custom-background-color']) {
-			const paletteColor =
-				props['palette-preset-background-color'] ||
-				getPaletteDefault('background');
+			const paletteColor = props['palette-preset-background-color'];
 
 			response.general[
 				'background-color'
@@ -134,11 +130,12 @@ const getArrowStyles = props => {
 	return {
 		[`${target} .maxi-container-arrow`]: {
 			shadow: {
-				...getBoxShadowStyles(
-					getGroupAttributes(props, 'boxShadow'),
-					false,
-					true
-				),
+				...getBoxShadowStyles({
+					obj: getGroupAttributes(props, 'boxShadow'),
+					isHover: false,
+					dropShadow: true,
+					parentBlockStyle: props.parentBlockStyle,
+				}),
 			},
 		},
 		[`${target} .maxi-container-arrow .maxi-container-arrow--content`]: {
@@ -152,7 +149,6 @@ const getArrowStyles = props => {
 							'background',
 							'backgroundColor',
 							'backgroundGradient',
-							'palette',
 						])
 					),
 				},
@@ -165,7 +161,6 @@ const getArrowStyles = props => {
 							'border',
 							'borderWidth',
 							'borderRadius',
-							'palette',
 						])
 					),
 				},

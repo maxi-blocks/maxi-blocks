@@ -22,7 +22,7 @@ const getParsedObj = obj => {
 
 	Object.keys(typographyObj).forEach(key => delete newObj[key]);
 
-	Object.entries(getTypographyStyles(typographyObj)).forEach(
+	Object.entries(getTypographyStyles({ obj: typographyObj })).forEach(
 		([breakpoint, value]) => {
 			Object.entries(value).forEach(([key, val]) => {
 				newObj[`${key}-${breakpoint}`] = val;

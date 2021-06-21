@@ -22,22 +22,7 @@ const save = props => {
 
 	const name = 'maxi-blocks/button-maxi';
 
-	const paletteClasses = getPaletteClasses(
-		attributes,
-		[
-			'background',
-			'background-hover',
-			'border',
-			'border-hover',
-			'box-shadow',
-			'box-shadow-hover',
-			'typography',
-			'typography-hover',
-			'icon',
-		],
-		name,
-		parentBlockStyle
-	);
+	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 	const linkOpt = !isNil(linkSettings) && linkSettings;
 

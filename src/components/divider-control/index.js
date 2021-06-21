@@ -12,10 +12,7 @@ import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getDefaultAttribute } from '../../extensions/styles';
 import {
 	dividerDashedHorizontal,
 	dividerDashedVertical,
@@ -42,7 +39,6 @@ const DividerControl = props => {
 		disableLineStyle = false,
 		disableBorderRadius = false,
 		isHover = false,
-		clientId,
 	} = props;
 
 	const minMaxSettings = {
@@ -127,14 +123,19 @@ const DividerControl = props => {
 					label={__('Color', 'maxi-blocks')}
 					color={props['divider-border-color']}
 					defaultColor={getDefaultAttribute('border-color')}
-					onChange={val => onChange({ 'divider-border-color': val })}
+					paletteColor={props['divider-palette-border-color']}
+					paletteStatus={props['divider-palette-border-color-status']}
+					onChange={({ color, paletteColor, paletteStatus }) =>
+						onChange({
+							'divider-border-color': color,
+							'divider-palette-border-color': paletteColor,
+							'divider-palette-border-color-status':
+								paletteStatus,
+						})
+					}
 					disableGradient
 					showPalette
-					palette={{ ...getGroupAttributes(props, 'palette') }}
 					isHover={isHover}
-					colorPaletteType='divider'
-					onChangePalette={val => onChange(val)}
-					clientId={clientId}
 				/>
 			)}
 			{!disableLineStyle && (

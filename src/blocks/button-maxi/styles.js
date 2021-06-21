@@ -40,7 +40,9 @@ const getWrapperObject = props => {
 const getContentObject = props => {
 	const response = {
 		typography: getTypographyStyles({
-			...getGroupAttributes(props, 'typography'),
+			obj: {
+				...getGroupAttributes(props, 'typography'),
+			},
 		}),
 	};
 
@@ -49,13 +51,11 @@ const getContentObject = props => {
 
 const getNormalObject = props => {
 	const response = {
-		boxShadow: getBoxShadowStyles(
-			{
+		boxShadow: getBoxShadowStyles({
+			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			false,
-			false
-		),
+		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
@@ -68,16 +68,15 @@ const getNormalObject = props => {
 		position: getPositionStyles({
 			...getGroupAttributes(props, 'position'),
 		}),
-		border: getBorderStyles(
-			{
+		border: getBorderStyles({
+			obj: {
 				...getGroupAttributes(props, [
 					'border',
 					'borderWidth',
 					'borderRadius',
 				]),
 			},
-			false
-		),
+		}),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
@@ -100,30 +99,30 @@ const getHoverObject = props => {
 	const response = {
 		border:
 			props['border-status-hover'] &&
-			getBorderStyles(
-				{
+			getBorderStyles({
+				obj: {
 					...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
 						true
 					),
 				},
-				true
-			),
+				isHover: true,
+			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
-			getBoxShadowStyles(
-				{
+			getBoxShadowStyles({
+				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				true
-			),
-		typography: getTypographyStyles(
-			{
+				isHover: true,
+			}),
+		typography: getTypographyStyles({
+			obj: {
 				...getGroupAttributes(props, 'typographyHover'),
 			},
-			true
-		),
+			isHover: true,
+		}),
 	};
 
 	return response;

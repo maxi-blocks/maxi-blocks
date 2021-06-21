@@ -8,16 +8,6 @@ import * as defaults from './defaults/index';
  */
 import { isNumber, isBoolean, isEmpty } from 'lodash';
 
-const getPaletteObj = () => {
-	let palette = {};
-
-	Object.values(defaults.palette).forEach(val => {
-		palette = { ...palette, ...val };
-	});
-
-	return palette;
-};
-
 const getIsValid = (cleaned, val) =>
 	(cleaned && (val || isNumber(val) || isBoolean(val) || isEmpty(val))) ||
 	!cleaned;
@@ -33,9 +23,7 @@ const getGroupAttributes = (
 
 	if (typeof target === 'string') {
 		const defaultAttributes =
-			target !== 'palette'
-				? defaults[`${target}${isHover ? 'Hover' : ''}`]
-				: getPaletteObj();
+			defaults[`${target}${isHover ? 'Hover' : ''}`];
 
 		Object.keys(defaultAttributes).forEach(key => {
 			if (getIsValid(cleaned, attributes[`${prefix}${key}`]))
@@ -44,9 +32,7 @@ const getGroupAttributes = (
 	} else
 		target.forEach(el => {
 			const defaultAttributes =
-				el !== 'palette'
-					? defaults[`${el}${isHover ? 'Hover' : ''}`]
-					: getPaletteObj();
+				defaults[`${el}${isHover ? 'Hover' : ''}`];
 
 			Object.keys(defaultAttributes).forEach(key => {
 				if (getIsValid(cleaned, attributes[`${prefix}${key}`]))

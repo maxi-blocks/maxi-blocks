@@ -73,27 +73,15 @@ class edit extends MaxiBlockComponent {
 					].indexOf(blockName) === -1
 			);
 
-		const paletteClasses = getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-			],
-			'maxi-blocks/group-maxi',
-			parentBlockStyle
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
-			<Toolbar
-				key={`toolbar-${uniqueID}`}
-				ref={this.blockRef}
-				{...this.props}
-			/>,
+			// <Toolbar
+			// 	key={`toolbar-${uniqueID}`}
+			// 	ref={this.blockRef}
+			// 	{...this.props}
+			// />,
 			<MaxiBlock
 				key={`maxi-group--${uniqueID}`}
 				ref={this.blockRef}

@@ -19,11 +19,13 @@ import {
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
-			...getGroupAttributes(props, [
-				'border',
-				'borderWidth',
-				'borderRadius',
-			]),
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
 		}),
 		size: getSizeStyles(
 			{
@@ -32,7 +34,9 @@ const getNormalObject = props => {
 			'container-'
 		),
 		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -61,25 +65,24 @@ const getHoverObject = props => {
 	const response = {
 		border:
 			props['border-status-hover'] &&
-			getBorderStyles(
-				{
+			getBorderStyles({
+				obj: {
 					...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
 						true
 					),
 				},
-				true
-			),
+				isHover: true,
+			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
-			getBoxShadowStyles(
-				{
+			getBoxShadowStyles({
+				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				true,
-				props['arrow-status']
-			),
+				isHover: true,
+			}),
 	};
 
 	return response;
@@ -127,10 +130,7 @@ const getStyles = props => {
 				shapeDivider: {
 					...getShapeDividerSVGStyles(
 						{
-							...getGroupAttributes(props, [
-								'shapeDivider',
-								'palette',
-							]),
+							...getGroupAttributes(props, ['shapeDivider']),
 						},
 						'top'
 					),
@@ -150,10 +150,7 @@ const getStyles = props => {
 				shapeDivider: {
 					...getShapeDividerSVGStyles(
 						{
-							...getGroupAttributes(props, [
-								'shapeDivider',
-								'palette',
-							]),
+							...getGroupAttributes(props, ['shapeDivider']),
 						},
 						'bottom'
 					),
@@ -189,7 +186,6 @@ const getStyles = props => {
 					'backgroundColor',
 					'backgroundGradient',
 					'boxShadow',
-					'palette',
 				]),
 			}),
 		},

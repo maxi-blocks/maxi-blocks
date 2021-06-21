@@ -29,13 +29,8 @@ const map = {
 		type: 'number',
 		default: 1,
 	},
-	'map-marker-custom-color-status': {
-		type: 'boolean',
-		default: false,
-	},
 	'map-marker-fill-color': {
 		type: 'string',
-		default: '#FF4A17',
 	},
 	'map-marker-stroke-color': {
 		type: 'string',
@@ -45,17 +40,31 @@ const map = {
 		type: 'string',
 		default: __('Marker Title', 'maxi-blocks'),
 	},
+	'map-marker-palette-text-color-status': {
+		type: 'boolean',
+		default: true,
+	},
+	'map-marker-palette-text-color': {
+		type: 'number',
+		default: 4,
+	},
 	'map-marker-text-color': {
 		type: 'string',
-		default: '#FF4A17',
 	},
 	'map-marker-address': {
 		type: 'string',
 		default: __('Marker Address', 'maxi-blocks'),
 	},
+	'map-marker-palette-address-color-status': {
+		type: 'boolean',
+		default: true,
+	},
+	'map-marker-palette-address-color': {
+		type: 'number',
+		default: 5,
+	},
 	'map-marker-address-color': {
 		type: 'string',
-		default: '#081219',
 	},
 };
 

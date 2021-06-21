@@ -31,7 +31,7 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId } = props;
+	const { attributes, deviceType, setAttributes } = props;
 	const {
 		customLabel,
 		uniqueID,
@@ -135,12 +135,11 @@ const Inspector = props => {
 												<MapControl
 													{...getGroupAttributes(
 														attributes,
-														['map', 'palette']
+														'map'
 													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}
-													clientId={clientId}
 												/>
 											),
 										},

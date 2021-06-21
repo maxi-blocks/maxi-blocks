@@ -61,7 +61,9 @@ const getDividerObject = props => {
 			'line'
 		),
 		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -75,12 +77,12 @@ const getHoverObject = props => {
 	const response = {
 		boxShadow:
 			props['box-shadow-status-hover'] &&
-			getBoxShadowStyles(
-				{
+			getBoxShadowStyles({
+				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				true
-			),
+				isHover: true,
+			}),
 	};
 
 	return response;

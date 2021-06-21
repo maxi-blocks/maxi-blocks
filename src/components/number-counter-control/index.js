@@ -12,10 +12,7 @@ import FancyRadioControl from '../fancy-radio-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import FontFamilySelector from '../font-family-selector';
 
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -31,7 +28,7 @@ import './editor.scss';
  * Component
  */
 const NumberCounterControl = props => {
-	const { className, onChange, clientId } = props;
+	const { className, onChange } = props;
 
 	const classes = classnames('maxi-number-counter-control', className);
 
@@ -228,13 +225,19 @@ const NumberCounterControl = props => {
 				label={__('Text', 'maxi-blocks')}
 				color={props['number-counter-text-color']}
 				defaultColor={getDefaultAttribute('number-counter-text-color')}
-				onChange={val => onChange({ 'number-counter-text-color': val })}
+				paletteColor={props['number-counter-palette-text-color']}
+				paletteStatus={
+					props['number-counter-palette-text-color-status']
+				}
+				onChange={({ color, paletteColor, paletteStatus }) =>
+					onChange({
+						'number-counter-text-color': color,
+						'number-counter-palette-text-color': paletteColor,
+						'number-counter-palette-text-color-status':
+							paletteStatus,
+					})
+				}
 				showPalette
-				palette={{ ...getGroupAttributes(props, 'palette') }}
-				isHover={false}
-				colorPaletteType='typography'
-				onChangePalette={val => onChange(val)}
-				clientId={clientId}
 			/>
 			<hr />
 			<ColorControl
@@ -243,15 +246,24 @@ const NumberCounterControl = props => {
 				defaultColor={getDefaultAttribute(
 					'number-counter-circle-background-color'
 				)}
-				onChange={val =>
-					onChange({ 'number-counter-circle-background-color': val })
+				paletteColor={
+					props['number-counter-palette-circle-background-color']
+				}
+				paletteStatus={
+					props[
+						'number-counter-palette-circle-background-color-status'
+					]
+				}
+				onChange={({ color, paletteColor, paletteStatus }) =>
+					onChange({
+						'number-counter-circle-background-color': color,
+						'number-counter-palette-circle-background-color':
+							paletteColor,
+						'number-counter-palette-circle-background-color-status':
+							paletteStatus,
+					})
 				}
 				showPalette
-				palette={{ ...getGroupAttributes(props, 'palette') }}
-				isHover={false}
-				colorPaletteType='circle-background'
-				onChangePalette={val => onChange(val)}
-				clientId={clientId}
 			/>
 			<hr />
 			<ColorControl
@@ -260,15 +272,19 @@ const NumberCounterControl = props => {
 				defaultColor={getDefaultAttribute(
 					'number-counter-circle-bar-color'
 				)}
-				onChange={val =>
-					onChange({ 'number-counter-circle-bar-color': val })
+				paletteColor={props['number-counter-palette-circle-bar-color']}
+				paletteStatus={
+					props['number-counter-palette-circle-bar-color-status']
+				}
+				onChange={({ color, paletteColor, paletteStatus }) =>
+					onChange({
+						'number-counter-circle-bar-color': color,
+						'number-counter-palette-circle-bar-color': paletteColor,
+						'number-counter-palette-circle-bar-color-status':
+							paletteStatus,
+					})
 				}
 				showPalette
-				palette={{ ...getGroupAttributes(props, 'palette') }}
-				isHover={false}
-				colorPaletteType='circle-bar-background'
-				onChangePalette={val => onChange(val)}
-				clientId={clientId}
 			/>
 		</div>
 	);

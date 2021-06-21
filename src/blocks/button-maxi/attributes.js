@@ -25,11 +25,6 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	...attributesData.palette.background,
-	...attributesData.palette.border,
-	...attributesData.palette.boxShadow,
-	...attributesData.palette.typography,
-	...attributesData.palette.icon,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {

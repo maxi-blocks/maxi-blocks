@@ -3,13 +3,15 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
-import { RawHTML, useEffect } from '@wordpress/element';
+import { RawHTML, useEffect, useState } from '@wordpress/element';
+import { CheckboxControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import Button from '../../components/button';
 import { updateSCOnEditor } from '../../extensions/style-cards';
+import imageUploader from './util';
 
 /**
  * External dependencies
@@ -26,44 +28,6 @@ import {
 	Stats,
 } from 'react-instantsearch-dom';
 import { uniq, isEmpty } from 'lodash';
-
-const imageUploader = async imageSrc => {
-	try {
-		const ajaxurl = wp.ajax.settings.url;
-		const response = await fetch(
-			`${
-				window.location.origin + ajaxurl
-			}?action=maxi_upload_pattern_image&maxi_image_to_upload=${imageSrc}`
-		);
-
-		if (!response.ok) {
-			console.warn(
-				__(
-					'The Cloud server is down, using the placeholder image',
-					'maxi-blocks'
-				)
-			);
-			// TODO: return the placeholder image here
-			return null;
-		}
-
-		const data = await response.json();
-		if (data.error === '404') {
-			console.warn(
-				__(
-					'The original image not found (404) on the Cloud Site, using the placeholder image',
-					'maxi-blocks'
-				)
-			);
-			// TODO: return the placeholder image here
-			return null;
-		}
-		return data;
-	} catch (err) {
-		console.error(__(`Error uploading the image: ${err}`, 'maxi-blocks'));
-	}
-	return null;
-};
 
 const MasonryItem = props => {
 	const {
@@ -163,7 +127,7 @@ const LibraryContainer = props => {
 
 	/** Patterns / Blocks */
 
-	const onRequestInsertPattern = parsedContent => {
+	const onRequestInsertPattern = (parsedContent, usePlaceholderImage) => {
 		const isValid =
 			select('core/block-editor').isValidTemplate(parsedContent);
 
@@ -197,12 +161,18 @@ const LibraryContainer = props => {
 				const checkCounter = imagesIdsUniq.length;
 
 				if (counter !== checkCounter) {
-					// TODO: show a human-readable error here
 					console.error(
 						__(
 							"Error processing images' links and ids - counts do not match",
 							'maxi-blocks'
 						)
+					);
+					replaceBlock(
+						clientId,
+						wp.blocks.rawHandler({
+							HTML: parsedContent,
+							mode: 'BLOCKS',
+						})
 					);
 					return;
 				}
@@ -216,7 +186,7 @@ const LibraryContainer = props => {
 					const id = image[0];
 					const url = image[1];
 
-					imageUploader(url).then(data => {
+					imageUploader(url, usePlaceholderImage).then(data => {
 						tempContent = tempContent.replaceAll(url, data.url);
 						tempContent = tempContent.replaceAll(id, data.id);
 						counter -= 1;
@@ -250,6 +220,8 @@ const LibraryContainer = props => {
 		}
 	};
 
+	const [isChecked, setChecked] = useState(false);
+
 	const patternsResults = ({ hit }) => {
 		return (
 			<>
@@ -261,7 +233,7 @@ const LibraryContainer = props => {
 					isPro={hit.taxonomies.cost === 'pro'}
 					serial={hit.post_number}
 					onRequestInsert={() =>
-						onRequestInsertPattern(hit.gutenberg_code)
+						onRequestInsertPattern(hit.gutenberg_code, isChecked)
 					}
 				/>
 			</>
@@ -377,6 +349,17 @@ const LibraryContainer = props => {
 		},
 	};
 
+	const PlaceholderCheckboxControl = () => {
+		return (
+			<CheckboxControl
+				label='Use placeholder for all images'
+				help='(do not download any images to your media library, use a generic grey image)'
+				checked={isChecked}
+				onChange={setChecked}
+			/>
+		);
+	};
+
 	return (
 		<div className='maxi-cloud-container'>
 			{type === 'svg' && (
@@ -431,6 +414,7 @@ const LibraryContainer = props => {
 
 			{type === 'patterns' && (
 				<div className='maxi-cloud-container__patterns'>
+					<PlaceholderCheckboxControl />
 					<InstantSearch
 						indexName='maxi_posts_post'
 						searchClient={searchClient}

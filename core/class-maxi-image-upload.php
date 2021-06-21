@@ -47,13 +47,6 @@ class MaxiBlocks_ImageUpload
             $this,
             'maxi_upload_placeholder_image',
         ]);
-        
-        add_action('wp_enqueue_media', function () {
-            wp_enqueue_script('maxi-media-images-filter', plugin_dir_url(__DIR__) . 'src/editor/library/mediaFilter.js', array( 'media-editor', 'media-views' ));
-            wp_localize_script('maxi-media-images-filter', 'maxiImagesFilterTerms', array(
-                'terms'     => get_terms('maxi-image-type', array( 'hide_empty' => true )),
-            ));
-        });
     }
 
     public function maxi_media_file_already_exists($no_extension)
@@ -168,6 +161,7 @@ class MaxiBlocks_ImageUpload
         'rewrite' => true,
         'show_admin_column' => true,
         'show_in_menu' => false,
+        'show_ui' => false,
     );
 
         register_taxonomy('maxi-image-type', 'attachment', $args);

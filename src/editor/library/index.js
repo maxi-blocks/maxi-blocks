@@ -26,7 +26,7 @@ import './editor.scss';
  * @param {string} cloudType Type of the data to get from the Cloud, values: patterns, svg, sc
  */
 const CloudLibrary = props => {
-	const { onClose, className, cloudType } = props;
+	const { onClose, className, cloudType, blockStyle } = props;
 
 	const [type, setType] = useState(cloudType);
 
@@ -42,7 +42,11 @@ const CloudLibrary = props => {
 		>
 			<>
 				<LibraryToolbar type={type} onChange={type => setType(type)} />
-				<LibraryContainer type={type} onRequestClose={onClose} />
+				<LibraryContainer
+					type={type}
+					onRequestClose={onClose}
+					blockStyle={blockStyle}
+				/>
 			</>
 		</Modal>
 	);

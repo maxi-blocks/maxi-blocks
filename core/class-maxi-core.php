@@ -56,7 +56,7 @@ if (!class_exists('MaxiBlocks_Core')):
                 if (term_exists('maxi-image', 'maxi-image-type')) {
                     wp_enqueue_script('maxi-media-images-filter', plugin_dir_url(__DIR__) . 'js/mediaFilter.js', array( 'media-editor', 'media-views' ));
                     wp_localize_script('maxi-media-images-filter', 'maxiImagesFilterTerms', array(
-                    'terms'     => get_terms('maxi-image-type', array( 'hide_empty' => true )),
+                    'terms'     => get_terms('maxi-image-type', array( 'hide_empty' => false )),
                 ));
                 }
             });

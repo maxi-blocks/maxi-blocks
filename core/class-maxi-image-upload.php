@@ -62,8 +62,6 @@ class MaxiBlocks_ImageUpload
     {
         $placeholder_image_url = plugin_dir_url(__DIR__) . 'img/patterns-placeholder.jpg';
 
-        $_GET['maxi_image_to_upload'] = $placeholder_image_url;
-
         $this->maxi_upload_pattern_image($placeholder_image_url);
     }
 
@@ -73,6 +71,8 @@ class MaxiBlocks_ImageUpload
 
         if (isset($_GET['maxi_image_to_upload'])) {
             $image_link = sanitize_text_field($_GET['maxi_image_to_upload']);
+        } elseif (!empty($maxi_image_to_upload)) {
+            $image_link = $maxi_image_to_upload;
         } else {
             return;
         }

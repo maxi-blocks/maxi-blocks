@@ -37,6 +37,7 @@ const SVGLayer = props => {
 						label: __('Shape', 'maxi-blocks'),
 						content: (
 							<SVGDefaultsDisplayer
+								usedPlace='bg-shape'
 								SVGOptions={SVGOptions}
 								prefix='background-svg-'
 								SVGCurrentElement={

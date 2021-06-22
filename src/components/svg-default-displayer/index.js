@@ -29,6 +29,7 @@ import { styleNone } from '../../icons';
  */
 const SVGDefaultsDisplayer = props => {
 	const {
+		usedPlace,
 		SVGOptions = {},
 		SVGCurrentElement,
 		onChange,
@@ -87,7 +88,7 @@ const SVGDefaultsDisplayer = props => {
 					</Button>
 				);
 			})}
-			<MaxiModal type='shape' />
+			<MaxiModal type={usedPlace} />
 		</div>
 	);
 };

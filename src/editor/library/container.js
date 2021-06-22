@@ -12,6 +12,8 @@ import { CheckboxControl } from '@wordpress/components';
 import Button from '../../components/button';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import imageUploader from './util';
+import { injectImgSVG, generateDataObject } from '../../extensions/svg/utils';
+import DOMPurify from 'dompurify';
 
 /**
  * External dependencies
@@ -283,10 +285,10 @@ const LibraryContainer = props => {
 
 		const isValid = select('core/block-editor').isValidTemplate(svgCode);
 
-		const { uniqueID } =
+		const { uniqueID, mediaID, mediaURL } =
 			select('core/block-editor').getBlockAttributes(clientId);
 
-		if (isValid) {
+		if (type === 'bg-shape' && isValid) {
 			updateBlockAttributes(clientId, {
 				'background-svg-SVGCurrentElement': '',
 				'background-svg-SVGElement': svgCode,
@@ -300,6 +302,32 @@ const LibraryContainer = props => {
 					},
 				},
 			});
+			onRequestClose();
+		}
+
+		if (type === 'image-shape' && isValid) {
+			const SVGData = {
+				[`${uniqueID}__${uniqueId()}`]: {
+					color: '',
+					imageID: mediaID,
+					imageURL: mediaURL,
+				},
+			};
+
+			const SVGOptions = {};
+			const cleanedContent = DOMPurify.sanitize(svgCode);
+			const svg = document
+				.createRange()
+				.createContextualFragment(cleanedContent).firstElementChild;
+			const resData = generateDataObject(SVGOptions[SVGData], svg);
+			const resEl = injectImgSVG(svg, resData);
+
+			updateBlockAttributes(clientId, {
+				SVGCurrentElement: '',
+				SVGElement: injectImgSVG(resEl, SVGData).outerHTML,
+				SVGData,
+			});
+
 			onRequestClose();
 		}
 	};
@@ -396,7 +424,7 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
-			{type === 'shape' && (
+			{(type === 'bg-shape' || type === 'image-shape') && (
 				<InstantSearch
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}

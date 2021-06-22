@@ -29,7 +29,7 @@ import {
 	HierarchicalMenu,
 	Stats,
 } from 'react-instantsearch-dom';
-import { uniq, isEmpty, uniqueId } from 'lodash';
+import { uniq, isEmpty, uniqueId, cloneDeep } from 'lodash';
 
 const MasonryItem = props => {
 	const {
@@ -98,7 +98,7 @@ const MasonryItem = props => {
  * Component
  */
 const LibraryContainer = props => {
-	const { type, onRequestClose, blockStyle } = props;
+	const { type, onRequestClose, blockStyle, layerId } = props;
 
 	const { styleCards, selectedSCKey, selectedSCValue } = useSelect(select => {
 		const { receiveMaxiStyleCards, receiveMaxiSelectedStyleCard } = select(
@@ -279,16 +279,33 @@ const LibraryContainer = props => {
 	};
 
 	/** Shapes */
-
 	const onRequestInsertShape = svgCode => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
 
 		const isValid = select('core/block-editor').isValidTemplate(svgCode);
 
-		const { uniqueID, mediaID, mediaURL } =
-			select('core/block-editor').getBlockAttributes(clientId);
+		const {
+			uniqueID,
+			mediaID,
+			mediaURL,
+			'background-layers': bgLayers,
+			'background-layers-status': bgLayersStatus,
+		} = select('core/block-editor').getBlockAttributes(clientId);
 
-		if (type === 'bg-shape' && isValid) {
+		if (type === 'bg-shape' && bgLayersStatus && isValid) {
+			const newBgLayers = cloneDeep(bgLayers);
+
+			newBgLayers[layerId]['background-svg-SVGCurrentElement'] = '';
+			newBgLayers[layerId]['background-svg-SVGElement'] = svgCode;
+
+			updateBlockAttributes(clientId, {
+				'background-layers': [...newBgLayers],
+			});
+
+			onRequestClose();
+		}
+
+		if (type === 'bg-shape' && !bgLayersStatus && isValid) {
 			updateBlockAttributes(clientId, {
 				'background-svg-SVGCurrentElement': '',
 				'background-svg-SVGElement': svgCode,

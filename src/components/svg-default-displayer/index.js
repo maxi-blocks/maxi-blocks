@@ -30,6 +30,7 @@ import { styleNone } from '../../icons';
 const SVGDefaultsDisplayer = props => {
 	const {
 		usedPlace,
+		layerId,
 		SVGOptions = {},
 		SVGCurrentElement,
 		onChange,
@@ -88,7 +89,7 @@ const SVGDefaultsDisplayer = props => {
 					</Button>
 				);
 			})}
-			<MaxiModal type={usedPlace} />
+			<MaxiModal type={usedPlace} layerId={layerId} />
 		</div>
 	);
 };

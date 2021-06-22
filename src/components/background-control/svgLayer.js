@@ -25,7 +25,7 @@ import { isEmpty, cloneDeep } from 'lodash';
  * Component
  */
 const SVGLayer = props => {
-	const { onChange, isHover, prefix, clientId } = props;
+	const { onChange, isHover, prefix, clientId, layerId } = props;
 	const SVGOptions = cloneDeep(props.SVGOptions);
 
 	return (
@@ -38,6 +38,7 @@ const SVGLayer = props => {
 						content: (
 							<SVGDefaultsDisplayer
 								usedPlace='bg-shape'
+								layerId={layerId}
 								SVGOptions={SVGOptions}
 								prefix='background-svg-'
 								SVGCurrentElement={

@@ -30,7 +30,7 @@ class MaxiModal extends Component {
 	render() {
 		const { isOpen } = this.state;
 
-		const { type, clientId, empty, style } = this.props;
+		const { type, clientId, empty, style, layerId } = this.props;
 
 		const onClick = () => {
 			this.setState({
@@ -95,6 +95,7 @@ class MaxiModal extends Component {
 				)}
 				{isOpen && (
 					<CloudLibrary
+						layerId={layerId}
 						cloudType={type}
 						onClose={onClick}
 						blockStyle={style}

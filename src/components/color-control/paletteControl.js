@@ -105,8 +105,8 @@ const ColorPaletteControl = props => {
 				className='maxi-sc-color-palette__custom'
 				selected={status}
 				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
+					{ label: __('Yes', 'maxi-blocks'), value: 0 },
+					{ label: __('No', 'maxi-blocks'), value: 1 },
 				]}
 				onChange={val => onChange({ paletteStatus: val })}
 			/>

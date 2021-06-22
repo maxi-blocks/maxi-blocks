@@ -31,6 +31,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),

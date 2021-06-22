@@ -9,7 +9,7 @@ import { useState, useEffect } from '@wordpress/element';
  */
 import BaseControl from '../base-control';
 import AdvancedNumberControl from '../advanced-number-control';
-import ColorPaletteControl from '../color-palette-control';
+import ColorPaletteControl from './paletteControl';
 
 /**
  * External dependencies

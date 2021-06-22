@@ -59,25 +59,27 @@ const getBorderStyles = ({
 
 				if (!keyWords.some(key => newLabel.includes(key))) {
 					if (key.includes('color')) {
+						const paletteStatus = getLastBreakpointAttribute(
+							`${prefix}border-palette-color-status`,
+							breakpoint,
+							obj
+						);
+						const paletteColor =
+							obj[`${prefix}border-palette-color-${breakpoint}`];
+
 						if (
 							response[breakpoint]['border-color'] ||
-							breakpoint === 'general'
+							(breakpoint === 'general' && paletteStatus)
 						)
 							return;
 
-						if (
-							obj[
-								`${prefix}border-palette-color-status-${breakpoint}`
-							] &&
-							obj[`${prefix}border-palette-color-${breakpoint}`]
-						)
+						if (paletteStatus && paletteColor)
 							response[breakpoint][
 								'border-color'
-							] = `var(--maxi-${parentBlockStyle}-color-${
-								obj[
-									`${prefix}border-palette-color-${breakpoint}`
-								]
-							});`;
+							] = `var(--maxi-${parentBlockStyle}-color-${paletteColor});`;
+						else
+							response[breakpoint]['border-color'] =
+								obj[`${prefix}border-color-${breakpoint}`];
 					} else response[breakpoint][newLabel] = `${value}`;
 				} else {
 					const unitKey = keyWords.filter(key =>

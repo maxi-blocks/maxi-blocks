@@ -26,6 +26,7 @@ const getNormalObject = props => {
 					'borderRadius',
 				]),
 			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 		size: getSizeStyles(
 			{

@@ -447,6 +447,7 @@ const getBackgroundStyles = ({
 						isHover
 					),
 				},
+				parentBlockStyle: props.parentBlockStyle,
 			}),
 		},
 	};

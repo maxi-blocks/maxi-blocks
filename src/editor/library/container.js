@@ -27,7 +27,7 @@ import {
 	HierarchicalMenu,
 	Stats,
 } from 'react-instantsearch-dom';
-import { uniq, isEmpty } from 'lodash';
+import { uniq, isEmpty, uniqueId } from 'lodash';
 
 const MasonryItem = props => {
 	const {
@@ -280,9 +280,11 @@ const LibraryContainer = props => {
 
 	const onRequestInsertShape = svgCode => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
-		// Add code to process the svg shape here
 
 		const isValid = select('core/block-editor').isValidTemplate(svgCode);
+
+		const { uniqueID } =
+			select('core/block-editor').getBlockAttributes(clientId);
 
 		if (isValid) {
 			updateBlockAttributes(clientId, {
@@ -290,7 +292,13 @@ const LibraryContainer = props => {
 				'background-svg-SVGElement': svgCode,
 				'background-svg-SVGMediaID': null,
 				'background-svg-SVGMediaURL': null,
-				// 'background-svg-SVGData': resData,
+				'background-svg-SVGData': {
+					[`${uniqueID}__${uniqueId()}`]: {
+						color: '',
+						imageID: '',
+						imageURL: '',
+					},
+				},
 			});
 			onRequestClose();
 		}

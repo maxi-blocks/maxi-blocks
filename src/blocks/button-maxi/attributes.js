@@ -44,8 +44,9 @@ const attributes = {
 	},
 	...{
 		...attributesData.backgroundColor,
-		'background-color': {
-			type: 'string',
+		'background-palette-color': {
+			type: 'number',
+			default: 4,
 		},
 	},
 	...attributesData.backgroundGradient,

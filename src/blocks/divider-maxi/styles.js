@@ -64,6 +64,7 @@ const getDividerObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -82,6 +83,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
 			}),
 	};
 

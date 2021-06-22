@@ -55,7 +55,7 @@ describe('Border Control', () => {
 		const expectedColorResult = 5;
 
 		const colorAttributes = await getBlockAttributes();
-		const borderColor = colorAttributes['palette-preset-border-color'];
+		const borderColor = colorAttributes['border-palette-color-general'];
 
 		expect(borderColor).toStrictEqual(expectedColorResult);
 	});

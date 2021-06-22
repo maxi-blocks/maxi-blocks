@@ -38,6 +38,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -75,6 +76,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -83,6 +85,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
 			}),
 	};
 

@@ -11,11 +11,14 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 			? `maxi-sc-${parentBlockStyle}-typography-color-${attributes['palette-color-general']}`
 			: null;
 	const backgroundClass =
+		attributes['background-active-media'] === 'color' &&
 		attributes['background-palette-color-status'] &&
 		attributes['background-palette-color']
 			? `maxi-sc-${parentBlockStyle}-background-color-${attributes['background-palette-color']}`
 			: null;
 	const borderClass =
+		attributes['border-style-general'] &&
+		attributes['border-style-general'] !== 'none' &&
 		attributes['border-palette-color-status-general'] &&
 		attributes['border-palette-color-general']
 			? `maxi-sc-${parentBlockStyle}-border-color-${attributes['border-palette-color-general']}`
@@ -30,16 +33,19 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 			? `maxi-sc-${parentBlockStyle}-box-shadow-color-${attributes['box-shadow-palette-color-general']}`
 			: null;
 	const shapeDividerTopClass =
+		attributes['shape-divider-top-status'] &&
 		attributes['shape-divider-palette-top-color-status'] &&
 		attributes['shape-divider-palette-top-color']
 			? `maxi-sc-${parentBlockStyle}-shape-divider-top-color-${attributes['shape-divider-palette-top-color']}`
 			: null;
 	const shapeDividerBottomClass =
+		attributes['shape-divider-bottom-status'] &&
 		attributes['shape-divider-palette-bottom-color-status'] &&
 		attributes['shape-divider-palette-bottom-color']
 			? `maxi-sc-${parentBlockStyle}-shape-divider-bottom-color-${attributes['shape-divider-palette-bottom-color']}`
 			: null;
 	const dividerClass =
+		attributes['divider-border-style'] !== 'none' &&
 		!isEmpty(attributes['divider-border-style']) &&
 		attributes['divider-border-style'] !== 'none' &&
 		attributes['divider-palette-border-color-status'] &&

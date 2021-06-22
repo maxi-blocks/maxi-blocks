@@ -135,7 +135,7 @@ class MaxiBlocks_StyleCards {
 							"4": "#ff4a17",
 							"5": "#ffffff",
 							"6": "#c9340a",
-							"7": "#f5f5f5",
+							"7": "#f5f5f5"
 						},
 						"p": {
 							"color-global": false,

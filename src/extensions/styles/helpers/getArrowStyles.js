@@ -16,8 +16,8 @@ export const getArrowBorderObject = props => {
 		general: {},
 	};
 
-	if (!props['palette-custom-border-color']) {
-		const paletteColor = props['palette-preset-border-color'];
+	if (props['border-palette-color-status-general']) {
+		const paletteColor = props['border-palette-color-general'];
 
 		response.general.background = `var(--maxi-light-color-${paletteColor})`;
 	} else if (!isEmpty(props['border-color-general']))
@@ -112,8 +112,8 @@ export const getArrowColorObject = props => {
 	};
 
 	if (props['background-active-media'] === 'color') {
-		if (!props['palette-custom-background-color']) {
-			const paletteColor = props['palette-preset-background-color'];
+		if (props['background-palette-color-status']) {
+			const paletteColor = props['background-palette-color'];
 
 			response.general[
 				'background-color'
@@ -132,7 +132,6 @@ const getArrowStyles = props => {
 			shadow: {
 				...getBoxShadowStyles({
 					obj: getGroupAttributes(props, 'boxShadow'),
-					isHover: false,
 					dropShadow: true,
 					parentBlockStyle: props.parentBlockStyle,
 				}),

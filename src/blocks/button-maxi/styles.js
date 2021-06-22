@@ -43,6 +43,7 @@ const getContentObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'typography'),
 			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 	};
 
@@ -54,6 +55,7 @@ const getNormalObject = props => {
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
+				parentBlockStyle: props.parentBlockStyle,
 			},
 		}),
 		size: getSizeStyles({
@@ -109,6 +111,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -117,12 +120,14 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
 			}),
 		typography: getTypographyStyles({
 			obj: {
 				...getGroupAttributes(props, 'typographyHover'),
 			},
 			isHover: true,
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 	};
 

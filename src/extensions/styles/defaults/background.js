@@ -18,7 +18,7 @@ export const backgroundColor = {
 	},
 	'background-palette-color': {
 		type: 'number',
-		default: 6,
+		default: 1,
 	},
 	'background-color': {
 		type: 'string',

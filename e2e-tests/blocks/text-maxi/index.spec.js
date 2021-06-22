@@ -135,7 +135,7 @@ describe('TextMaxi', () => {
 		expect(content).toMatchSnapshot();
 	}, 30000);
 
-	it.only('Test Text Maxi toolbar Link with multiple instances', async () => {
+	it('Test Text Maxi toolbar Link with multiple instances', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
 		await pressKeyWithModifier('shift', 'ArrowLeft');

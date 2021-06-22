@@ -22,6 +22,7 @@ const getNormalObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -81,6 +82,7 @@ const getHoverObject = props => {
 					),
 				},
 				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -89,6 +91,7 @@ const getHoverObject = props => {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
 				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
 			}),
 	};
 

@@ -8,16 +8,11 @@ describe('BlockPlaceholder', () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 
-		await page.$eval(
-			'.maxi-group-block__group .maxi-block-placeholder .components-dropdown button',
-			select => select.click()
-		);
-
-		const group = await page.$eval(
-			'.maxi-group-block__group .maxi-block-placeholder .components-dropdown.block-editor-inserter',
+		const groupPlaceholder = await page.$eval(
+			'.maxi-group-block__group .maxi-block-placeholder',
 			select => select.innerHTML
 		);
 
-		expect(group).toMatchSnapshot();
+		expect(groupPlaceholder).toMatchSnapshot();
 	});
 });

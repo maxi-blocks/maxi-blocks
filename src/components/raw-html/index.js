@@ -40,7 +40,7 @@ const RawHTML = forwardRef((props, ref) => {
 
 	const refTarget = getNodeOnDOM({ nodeType, className, dataItem });
 
-	if (ref && refTarget) ref.current = refTarget;
+	if (refTarget) ref(refTarget);
 
 	return parsedContent;
 });

@@ -48,6 +48,13 @@ class edit extends MaxiBlockComponent {
 		super(...args);
 
 		this.imgRef = createRef();
+		this.setImgRef = node => {
+			if (node && !node.isEqualNode(this.imgRef.current)) {
+				this.imgRef.current = node;
+				this.forceUpdate();
+			}
+			if (!node) this.forceUpdate();
+		};
 	}
 
 	get getWrapperWidth() {
@@ -140,6 +147,8 @@ class edit extends MaxiBlockComponent {
 			hoverType !== 'none' &&
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
+
+		// console.log(this.imgRef);
 
 		return [
 			<Inspector
@@ -264,12 +273,12 @@ class edit extends MaxiBlockComponent {
 											])}
 										>
 											{SVGElement ? (
-												<RawHTML ref={this.imgRef}>
+												<RawHTML ref={this.setImgRef}>
 													{SVGElement}
 												</RawHTML>
 											) : (
 												<img
-													ref={this.imgRef}
+													ref={this.setImgRef}
 													className={`maxi-image-block__image wp-image-${mediaID}`}
 													src={mediaURL}
 													width={mediaWidth}

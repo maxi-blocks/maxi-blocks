@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BackgroundControl Check Background Layers 1`] = `
+Array [
+  Object {
+    "background-color": "",
+    "background-color-clip-path": "",
+    "id": 0,
+    "type": "color",
+  },
+  Object {
+    "background-image-attachment": "scroll",
+    "background-image-clip": "border-box",
+    "background-image-clip-path": "",
+    "background-image-crop-options": null,
+    "background-image-height": 100,
+    "background-image-height-unit": "%",
+    "background-image-mediaID": "",
+    "background-image-mediaURL": "",
+    "background-image-opacity": 1,
+    "background-image-origin": "padding-box",
+    "background-image-position": "center center",
+    "background-image-position-height": 0,
+    "background-image-position-height-unit": "%",
+    "background-image-position-width": 0,
+    "background-image-position-width-unit": "%",
+    "background-image-repeat": "no-repeat",
+    "background-image-size": "",
+    "background-image-width": 100,
+    "background-image-width-unit": "%",
+    "id": 1,
+    "type": "image",
+  },
+  Object {
+    "background-video-clipPath": "",
+    "background-video-endTime": "",
+    "background-video-fallbackID": null,
+    "background-video-fallbackURL": "",
+    "background-video-loop": false,
+    "background-video-mediaID": null,
+    "background-video-mediaURL": "https://youtu.be/hM7Eh0gGNKA",
+    "background-video-opacity": 1,
+    "background-video-playOnMobile": false,
+    "background-video-startTime": "",
+    "id": 2,
+    "type": "video",
+  },
+  Object {
+    "background-gradient": "",
+    "background-gradient-clip-path": "",
+    "background-gradient-opacity": 1,
+    "id": 3,
+    "type": "gradient",
+  },
+  Object {
+    "background-svg-SVGCurrentElement": 1,
+    "background-svg-SVGData": Object {
+      "group-maxi-12__333": Object {
+        "color": "",
+        "imageID": "",
+        "imageURL": "",
+      },
+    },
+    "background-svg-SVGElement": "<svg xml:space=\\"preserve\\" viewBox=\\"0 0 36.1 36.1\\" version=\\"1.1\\" y=\\"0\\" x=\\"0\\" xmlns=\\"http://www.w3.org/2000/svg\\" data-item=\\"group-maxi-12__svg\\">
+	<g>
+		<path d=\\"M27.7 17.4c-1.1-.4-2-.8-2.7-1.3-.9-.7-1.8-1.7-2.8-3.1-.5-.8-.9-1.3-1.2-1.7-.5-.7-.9-1.2-1.2-1.6-1-1.2-2-2-3.2-2.6-1.4-.7-3.1-.9-5-.8-1.3.1-2.5.4-3.6.9S5.9 8.4 4.9 9.3c-1.1 1.1-2 2.3-2.5 3.7-.5 1.4-.8 2.8-.7 4.3 0 1.5.4 2.9 1 4.3s1.6 2.7 2.8 3.9c1.8 1.7 4 2.9 6.7 3.6 3 .8 6.4 1 10.1.6 1.4-.2 2.9-.5 4.4-.9 1.6-.5 2.9-1.1 4.1-1.7 2.8-1.7 4-3.6 3.5-5.7-.2-.8-.7-1.5-1.4-2-.5-.4-1.3-.7-2.4-1-1.3-.5-2.2-.8-2.8-1z\\" fill=\\"\\"></path>
+	</g>
+</svg>",
+    "background-svg-SVGMediaID": null,
+    "background-svg-SVGMediaURL": null,
+    "background-svg-left": null,
+    "background-svg-left--unit": "%",
+    "background-svg-size": 100,
+    "background-svg-size--unit": "%",
+    "background-svg-top": null,
+    "background-svg-top--unit": "%",
+    "id": 4,
+    "type": "shape",
+  },
+]
+`;

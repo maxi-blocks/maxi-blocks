@@ -35,6 +35,10 @@ registerBlockType('maxi-blocks/maxi-cloud', {
 			type: 'string',
 			default: '',
 		},
+		openFirstTime: {
+			type: 'boolean',
+			default: true,
+		},
 	},
 	/* Save the block markup. */
 	edit,

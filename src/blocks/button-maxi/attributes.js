@@ -33,7 +33,13 @@ const attributes = {
 		},
 	},
 	...attributesData.textAlignment,
-	...attributesData.typography,
+	...{
+		...attributesData.typography,
+		'palette-color-general': {
+			type: 'number',
+			default: 1,
+		},
+	},
 	...attributesData.typographyHover,
 	...{
 		...attributesData.background,

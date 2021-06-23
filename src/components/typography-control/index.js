@@ -24,6 +24,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getAttributeKey,
 } from '../../extensions/styles';
 
 /**
@@ -492,9 +493,14 @@ const TypographyControl = withFormatValue(props => {
 					paletteStatus={getValue(`${prefix}palette-color-status`)}
 					onChange={({ color, paletteColor, paletteStatus }) =>
 						onChangeFormat({
-							[`${prefix}color`]: color,
-							[`${prefix}palette-color`]: paletteColor,
-							[`${prefix}palette-color-status`]: paletteStatus,
+							[getAttributeKey('color', isHover, prefix)]: color,
+							[getAttributeKey('palette-color', isHover, prefix)]:
+								paletteColor,
+							[getAttributeKey(
+								'palette-color-status',
+								isHover,
+								prefix
+							)]: paletteStatus,
 						})
 					}
 					showPalette

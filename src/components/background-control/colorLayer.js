@@ -77,9 +77,18 @@ const ColorLayer = props => {
 						] = paletteColor;
 
 					onChange({
-						'background-color': color,
-						'background-palette-color': paletteColor,
-						'background-palette-color-status': paletteStatus,
+						[getAttributeKey('background-color', isHover, prefix)]:
+							color,
+						[getAttributeKey(
+							'background-palette-color',
+							isHover,
+							prefix
+						)]: paletteColor,
+						[getAttributeKey(
+							'background-palette-color-status',
+							isHover,
+							prefix
+						)]: paletteStatus,
 					});
 				}}
 				disablePalette={type === 'layer'}

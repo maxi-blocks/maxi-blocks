@@ -51,9 +51,6 @@ const save = props => {
 				className={buttonClasses}
 				{...(!isEmpty(linkProps.href) && linkProps)}
 			>
-				{!isEmpty(attributes['icon-name']) && (
-					<i className={attributes['icon-name']} />
-				)}
 				<span className='maxi-button-block__content'>
 					{buttonContent}
 				</span>

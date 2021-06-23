@@ -140,8 +140,8 @@ const MapControl = props => {
 						defaultColor={getDefaultAttribute(
 							'map-marker-fill-color'
 						)}
-						onChange={val =>
-							onChange({ 'map-marker-fill-color': val })
+						onChange={({ color }) =>
+							onChange({ 'map-marker-fill-color': color })
 						}
 					/>
 					<ColorControl
@@ -151,8 +151,8 @@ const MapControl = props => {
 						defaultColor={getDefaultAttribute(
 							'map-marker-stroke-color'
 						)}
-						onChange={val =>
-							onChange({ 'map-marker-stroke-color': val })
+						onChange={({ color }) =>
+							onChange({ 'map-marker-stroke-color': color })
 						}
 					/>
 				</>

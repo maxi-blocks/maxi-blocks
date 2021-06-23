@@ -191,6 +191,7 @@ const getStyles = props => {
 					'backgroundGradient',
 					'boxShadow',
 				]),
+				parentBlockStyle: props.parentBlockStyle,
 			}),
 		},
 	};

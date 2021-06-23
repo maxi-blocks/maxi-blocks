@@ -19,6 +19,7 @@ import {
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getAttributeKey,
 } from '../../extensions/styles';
 
 /**
@@ -161,15 +162,16 @@ const BoxShadowControl = props => {
 						)}
 						onChange={({ color, paletteColor, paletteStatus }) => {
 							onChange({
-								[`box-shadow-color-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: color,
-								[`box-shadow-palette-color-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: paletteColor,
-								[`box-shadow-palette-color-status-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: paletteStatus,
+								[getAttributeKey('box-shadow-color', isHover)]:
+									color,
+								[getAttributeKey(
+									'box-shadow-palette-color',
+									isHover
+								)]: paletteColor,
+								[getAttributeKey(
+									'box-shadow-palette-color-status',
+									isHover
+								)]: paletteStatus,
 							});
 						}}
 						disableGradient

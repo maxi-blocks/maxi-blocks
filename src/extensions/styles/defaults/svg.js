@@ -5,7 +5,7 @@ const svg = {
 	},
 	'svg-palette-fill-color': {
 		type: 'number',
-		default: 6,
+		default: 4,
 	},
 	'svg-fill-color': {
 		type: 'string',
@@ -16,7 +16,7 @@ const svg = {
 	},
 	'svg-palette-line-color': {
 		type: 'number',
-		default: 6,
+		default: 7,
 	},
 	'svg-line-color': {
 		type: 'string',

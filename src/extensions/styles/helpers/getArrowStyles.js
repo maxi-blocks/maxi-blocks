@@ -19,7 +19,7 @@ export const getArrowBorderObject = props => {
 	if (props['border-palette-color-status-general']) {
 		const paletteColor = props['border-palette-color-general'];
 
-		response.general.background = `var(--maxi-light-color-${paletteColor})`;
+		response.general.background = `var(--maxi-${props.parentBlockStyle}-color-${paletteColor})`;
 	} else if (!isEmpty(props['border-color-general']))
 		response.general.background = props['border-color-general'];
 
@@ -117,7 +117,7 @@ export const getArrowColorObject = props => {
 
 			response.general[
 				'background-color'
-			] = `var(--maxi-light-color-${paletteColor})`;
+			] = `var(--maxi-${props.parentBlockStyle}-color-${paletteColor})`;
 		} else response.general['background-color'] = props['background-color'];
 	} else response.general.background = props['background-gradient'];
 

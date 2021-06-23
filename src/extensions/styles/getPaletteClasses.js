@@ -16,6 +16,17 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 		attributes['background-palette-color']
 			? `maxi-sc-${parentBlockStyle}-background-color-${attributes['background-palette-color']}`
 			: null;
+	const backgroundHoverClass =
+		attributes['background-active-media-hover'] === 'color' &&
+		attributes['background-palette-color-status-hover'] &&
+		attributes['background-palette-color-hover']
+			? `maxi-sc-${parentBlockStyle}-background-hover-color-${attributes['background-palette-color-hover']}`
+			: null;
+	const svgBackgroundClass =
+		attributes['background-active-media'] === 'svg' &&
+		attributes['background-palette-svg-color-status'] &&
+		attributes['background-palette-svg-color'] &&
+		`maxi-sc-${parentBlockStyle}-svg-background-color-${attributes['background-palette-svg-color']}`;
 	const borderClass =
 		attributes['border-style-general'] &&
 		attributes['border-style-general'] !== 'none' &&
@@ -77,10 +88,30 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 		attributes['map-marker-palette-address-color']
 			? `maxi-sc-${parentBlockStyle}-marker-address-color-${attributes['map-marker-palette-address-color']}`
 			: null;
+	const hoverBackgroundClass =
+		attributes['hover-type'] !== 'none' &&
+		attributes['hover-background-palette-color-status'] &&
+		attributes['hover-background-palette-color']
+			? `maxi-sc-${parentBlockStyle}-hover-background-color-${attributes['hover-background-palette-color']}`
+			: null;
+	const svgFillClass =
+		attributes['svg-palette-fill-color-status'] &&
+		attributes['svg-palette-fill-color']
+			? `maxi-sc-${parentBlockStyle}-svgColorFill-color-${attributes['svg-palette-fill-color']}`
+			: null;
+	const svgLineClass =
+		attributes['svg-palette-line-color-status'] &&
+		attributes['svg-palette-line-color']
+			? `maxi-sc-${parentBlockStyle}-svgColorLine-color-${attributes['svg-palette-line-color']}`
+			: null;
+
+	// Faltan los hovers!
 
 	return classnames(
 		typographyClass,
 		backgroundClass,
+		backgroundHoverClass,
+		svgBackgroundClass,
 		borderClass,
 		boxShadowClass,
 		shapeDividerTopClass,
@@ -90,7 +121,10 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 		numberCounterCircleBackgroundClass,
 		numberCounterBarBackgroundClass,
 		markerTitleClass,
-		markerAddressClass
+		markerAddressClass,
+		hoverBackgroundClass,
+		svgFillClass,
+		svgLineClass
 	);
 };
 

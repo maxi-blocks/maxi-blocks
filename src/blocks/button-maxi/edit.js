@@ -80,9 +80,6 @@ class edit extends MaxiBlockComponent {
 				disableBackground
 			>
 				<div className={buttonClasses}>
-					{!isEmpty(attributes['icon-name']) && (
-						<i className={attributes['icon-name']} />
-					)}
 					<RichText
 						withoutInteractiveFormatting
 						className='maxi-button-block__content'

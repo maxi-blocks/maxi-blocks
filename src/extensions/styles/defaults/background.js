@@ -182,6 +182,6 @@ export const backgroundSVG = {
 	},
 	'background-svg-size--unit': {
 		type: 'string',
-		default: '%',
+		default: 'px',
 	},
 };

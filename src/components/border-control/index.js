@@ -21,7 +21,6 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
-	getAttributeKey,
 } from '../../extensions/styles';
 
 /**
@@ -186,18 +185,19 @@ const BorderControl = props => {
 					)}
 					onChange={({ color, paletteColor, paletteStatus }) => {
 						onChange({
-							[getAttributeKey('border-color', isHover, prefix)]:
-								color,
-							[getAttributeKey(
-								'border-palette-color',
-								isHover,
-								prefix
-							)]: paletteColor,
-							[getAttributeKey(
-								'border-palette-color-status',
-								isHover,
-								prefix
-							)]: paletteStatus,
+							[`${prefix || ''}border-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: color,
+							[`${
+								prefix || ''
+							}border-palette-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: paletteColor,
+							[`${
+								prefix || ''
+							}border-palette-color-status-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: paletteStatus,
 						});
 					}}
 					disableImage

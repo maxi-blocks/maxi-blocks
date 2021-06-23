@@ -24,14 +24,13 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
-	getAttributeKey,
 } from '../../extensions/styles';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, inRange, isEmpty } from 'lodash';
+import { isNil, inRange, isEmpty, isBoolean, isNumber } from 'lodash';
 
 /**
  * Styles
@@ -322,19 +321,22 @@ const TypographyControl = withFormatValue(props => {
 
 		if (!isHover) return nonHoverValue;
 
-		return (
-			getCustomFormatValue({
-				typography,
-				formatValue,
-				prop,
-				breakpoint: currentBreakpoint,
-				isHover,
-				blockStyle,
-				textLevel,
-				styleCard,
-				styleCardPrefix,
-			}) || nonHoverValue
-		);
+		const hoverValue = getCustomFormatValue({
+			typography,
+			formatValue,
+			prop,
+			breakpoint: currentBreakpoint,
+			isHover,
+			blockStyle,
+			textLevel,
+			styleCard,
+			styleCardPrefix,
+		});
+
+		if (hoverValue || isBoolean(hoverValue) || isNumber(hoverValue))
+			return hoverValue;
+
+		return nonHoverValue;
 	};
 
 	const getWeightOptions = () => {
@@ -493,14 +495,9 @@ const TypographyControl = withFormatValue(props => {
 					paletteStatus={getValue(`${prefix}palette-color-status`)}
 					onChange={({ color, paletteColor, paletteStatus }) =>
 						onChangeFormat({
-							[getAttributeKey('color', isHover, prefix)]: color,
-							[getAttributeKey('palette-color', isHover, prefix)]:
-								paletteColor,
-							[getAttributeKey(
-								'palette-color-status',
-								isHover,
-								prefix
-							)]: paletteStatus,
+							[`${prefix}color`]: color,
+							[`${prefix}palette-color`]: paletteColor,
+							[`${prefix}palette-color-status`]: paletteStatus,
 						})
 					}
 					showPalette

@@ -307,18 +307,28 @@ const LibraryContainer = props => {
 			}
 
 			if (type === 'bg-shape' && !bgLayersStatus) {
+				const cleanedContent = DOMPurify.sanitize(svgCode);
+				const svg = document
+					.createRange()
+					.createContextualFragment(cleanedContent).firstElementChild;
+
+				const SVGData = {
+					[`${uniqueID}__${uniqueId()}`]: {
+						color: '',
+						imageID: mediaID,
+						imageURL: mediaURL,
+					},
+				};
+				const SVGOptions = {};
+				const resData = generateDataObject(SVGOptions[SVGData], svg);
+				const resEl = injectImgSVG(svg, resData);
+
 				updateBlockAttributes(clientId, {
 					'background-svg-SVGCurrentElement': '',
-					'background-svg-SVGElement': svgCode,
+					'background-svg-SVGElement': resEl.outerHTML,
 					'background-svg-SVGMediaID': null,
 					'background-svg-SVGMediaURL': null,
-					'background-svg-SVGData': {
-						[`${uniqueID}__${uniqueId()}`]: {
-							color: '',
-							imageID: '',
-							imageURL: '',
-						},
-					},
+					'background-svg-SVGData': resData,
 				});
 				onRequestClose();
 			}

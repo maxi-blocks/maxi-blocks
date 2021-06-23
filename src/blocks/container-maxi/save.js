@@ -33,6 +33,7 @@ const save = props => {
 		[
 			'background',
 			'background-hover',
+			'svg-background',
 			'border',
 			'border-hover',
 			'box-shadow',

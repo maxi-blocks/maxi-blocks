@@ -133,7 +133,7 @@ const SVGLayer = props => {
 										)]: obj.SVGElement,
 									});
 								}}
-								onChangePalette={obj => onChange(obj)}
+								onChangePalette={val => onChange(val)}
 								clientId={clientId}
 								isHover={isHover}
 							/>

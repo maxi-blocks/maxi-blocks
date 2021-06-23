@@ -28,7 +28,6 @@ export const injectImgSVG = (svg, SVGData = {}) => {
 			'path, circle, rect, polygon, line, ellipse'
 		)
 	);
-
 	Object.entries(SVGValue).forEach(([id, el], i) => {
 		if (!isEmpty(el.imageURL)) {
 			const pattern = document.createElement('pattern');
@@ -55,15 +54,13 @@ export const injectImgSVG = (svg, SVGData = {}) => {
 			SVGLayers[i].style.fill = `url(#${id}__img)`;
 			SVGLayers[i].setAttribute('fill', `url(#${id}__img)`);
 		} else if (!isEmpty(el.color)) {
-			SVGLayers[i].style.fill = el.color;
 			SVGLayers[i].setAttribute('fill', el.color);
 		} else {
-			SVGLayers[i].style.fill = '';
 			SVGLayers[i].setAttribute('fill', '');
 		}
 	});
 
-	SVGElement.dataset.item = `${uniqueID}__svg`;
+	if (SVGElement.dataset) SVGElement.dataset.item = `${uniqueID}__svg`;
 
 	return SVGElement;
 };

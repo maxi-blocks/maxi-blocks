@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
 import { MediaUpload } from '@wordpress/block-editor';
-import { createRef } from '@wordpress/element';
+// import { createRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -44,18 +44,18 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlockComponent {
-	constructor(...args) {
-		super(...args);
+	// constructor(...args) {
+	// 	super(...args);
 
-		this.imgRef = createRef();
-		this.setImgRef = node => {
-			if (node && !node.isEqualNode(this.imgRef.current)) {
-				this.imgRef.current = node;
-				this.forceUpdate();
-			}
-			if (!node) this.forceUpdate();
-		};
-	}
+	// 	// this.imgRef = createRef();
+	// 	// this.setImgRef = node => {
+	// 	// 	if (node && !node.isEqualNode(this.imgRef.current)) {
+	// 	// 		this.imgRef.current = node;
+	// 	// 		this.forceUpdate();
+	// 	// 	}
+	// 	// 	if (!node) this.forceUpdate();
+	// 	// };
+	// }
 
 	get getWrapperWidth() {
 		const target = document.getElementById(`block-${this.props.clientId}`);
@@ -270,12 +270,10 @@ class edit extends MaxiBlockComponent {
 											])}
 										>
 											{SVGElement ? (
-												<RawHTML ref={this.setImgRef}>
-													{SVGElement}
-												</RawHTML>
+												<RawHTML>{SVGElement}</RawHTML>
 											) : (
 												<img
-													ref={this.setImgRef}
+													// ref={this.setImgRef}
 													className={`maxi-image-block__image wp-image-${mediaID}`}
 													src={mediaURL}
 													width={mediaWidth}

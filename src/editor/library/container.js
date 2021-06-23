@@ -292,60 +292,62 @@ const LibraryContainer = props => {
 			'background-layers-status': bgLayersStatus,
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
-		if (type === 'bg-shape' && bgLayersStatus && isValid) {
-			const newBgLayers = cloneDeep(bgLayers);
+		if (isValid) {
+			if (type === 'bg-shape' && bgLayersStatus) {
+				const newBgLayers = cloneDeep(bgLayers);
 
-			newBgLayers[layerId]['background-svg-SVGCurrentElement'] = '';
-			newBgLayers[layerId]['background-svg-SVGElement'] = svgCode;
+				newBgLayers[layerId]['background-svg-SVGCurrentElement'] = '';
+				newBgLayers[layerId]['background-svg-SVGElement'] = svgCode;
 
-			updateBlockAttributes(clientId, {
-				'background-layers': [...newBgLayers],
-			});
+				updateBlockAttributes(clientId, {
+					'background-layers': [...newBgLayers],
+				});
 
-			onRequestClose();
-		}
+				onRequestClose();
+			}
 
-		if (type === 'bg-shape' && !bgLayersStatus && isValid) {
-			updateBlockAttributes(clientId, {
-				'background-svg-SVGCurrentElement': '',
-				'background-svg-SVGElement': svgCode,
-				'background-svg-SVGMediaID': null,
-				'background-svg-SVGMediaURL': null,
-				'background-svg-SVGData': {
+			if (type === 'bg-shape' && !bgLayersStatus) {
+				updateBlockAttributes(clientId, {
+					'background-svg-SVGCurrentElement': '',
+					'background-svg-SVGElement': svgCode,
+					'background-svg-SVGMediaID': null,
+					'background-svg-SVGMediaURL': null,
+					'background-svg-SVGData': {
+						[`${uniqueID}__${uniqueId()}`]: {
+							color: '',
+							imageID: '',
+							imageURL: '',
+						},
+					},
+				});
+				onRequestClose();
+			}
+
+			if (type === 'image-shape') {
+				const SVGData = {
 					[`${uniqueID}__${uniqueId()}`]: {
 						color: '',
-						imageID: '',
-						imageURL: '',
+						imageID: mediaID,
+						imageURL: mediaURL,
 					},
-				},
-			});
-			onRequestClose();
-		}
+				};
 
-		if (type === 'image-shape' && isValid) {
-			const SVGData = {
-				[`${uniqueID}__${uniqueId()}`]: {
-					color: '',
-					imageID: mediaID,
-					imageURL: mediaURL,
-				},
-			};
+				const SVGOptions = {};
+				const cleanedContent = DOMPurify.sanitize(svgCode);
+				const svg = document
+					.createRange()
+					.createContextualFragment(cleanedContent).firstElementChild;
+				const resData = generateDataObject(SVGOptions[SVGData], svg);
+				const resEl = injectImgSVG(svg, resData);
 
-			const SVGOptions = {};
-			const cleanedContent = DOMPurify.sanitize(svgCode);
-			const svg = document
-				.createRange()
-				.createContextualFragment(cleanedContent).firstElementChild;
-			const resData = generateDataObject(SVGOptions[SVGData], svg);
-			const resEl = injectImgSVG(svg, resData);
+				updateBlockAttributes(clientId, {
+					SVGCurrentElement: '',
+					SVGElement: injectImgSVG(resEl, SVGData).outerHTML,
+					SVGData,
+				});
 
-			updateBlockAttributes(clientId, {
-				SVGCurrentElement: '',
-				SVGElement: injectImgSVG(resEl, SVGData).outerHTML,
-				SVGData,
-			});
-
-			onRequestClose();
+				onRequestClose();
+			}
 		}
 	};
 
@@ -441,7 +443,7 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
-			{(type === 'bg-shape' || type === 'image-shape') && (
+			{type.includes('shape') && (
 				<InstantSearch
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}

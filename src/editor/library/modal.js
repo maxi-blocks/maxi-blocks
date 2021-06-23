@@ -85,7 +85,7 @@ class MaxiModal extends Component {
 						icon={toolbarReplaceImage}
 					/>
 				)}
-				{(type === 'bg-shape' || type === 'image-shape') && (
+				{type.includes('shape') && (
 					<Button
 						className='maxi-svg-defaults__load-library'
 						onClick={onClick}

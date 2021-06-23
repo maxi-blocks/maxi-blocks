@@ -11,6 +11,7 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 			? `maxi-sc-${parentBlockStyle}-typography-color-${attributes['palette-color-general']}`
 			: null;
 	const typographyClassHover =
+		attributes['typography-status-hover'] &&
 		attributes['palette-color-status-general-hover'] &&
 		attributes['palette-color-general-hover']
 			? `maxi-sc-${parentBlockStyle}-typography-hover-color-${attributes['palette-color-general-hover']}`
@@ -22,6 +23,7 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 			? `maxi-sc-${parentBlockStyle}-background-color-${attributes['background-palette-color']}`
 			: null;
 	const backgroundHoverClass =
+		attributes['background-status-hover'] &&
 		attributes['background-active-media-hover'] === 'color' &&
 		attributes['background-palette-color-status-hover'] &&
 		attributes['background-palette-color-hover']
@@ -40,6 +42,7 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 			? `maxi-sc-${parentBlockStyle}-border-color-${attributes['border-palette-color-general']}`
 			: null;
 	const borderClassHover =
+		attributes['border-status-hover'] &&
 		attributes['border-style-general-hover'] &&
 		attributes['border-style-general-hover'] !== 'none' &&
 		attributes['border-palette-color-status-general-hover'] &&
@@ -56,6 +59,7 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 			? `maxi-sc-${parentBlockStyle}-box-shadow-color-${attributes['box-shadow-palette-color-general']}`
 			: null;
 	const boxShadowClassHover =
+		attributes['box-shadow-status-hover'] &&
 		!isNil(attributes['box-shadow-blur-general-hover']) &&
 		!isNil(attributes['box-shadow-horizontal-general-hover']) &&
 		!isNil(attributes['box-shadow-vertical-general-hover']) &&

@@ -19,6 +19,8 @@ export const block = {
 		fullWidth: 'full',
 		content:
 			'<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--2">Testing</span> <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--1">Copy</span> <span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Paste</span>',
+		'background-palette-svg-color-hover': 6,
+		'background-palette-svg-color-status-hover': true,
 		'background-palette-svg-color': 5,
 		'background-palette-svg-color-status': true,
 		'background-active-media': 'color',

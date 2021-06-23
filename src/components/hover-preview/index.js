@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { useRef } from '@wordpress/element';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -11,13 +16,16 @@ const HoverPreview = props => {
 	const {
 		wrapperClassName,
 		hoverClassName,
-		target,
 		'hover-type': hoverType,
 		'hover-basic-effect-type': hoverBasicEffectType,
 		'hover-transition-duration': hoverTransitionDuration,
 		'hover-transition-easing': hoverTransitionEasing,
 		'hover-transition-easing-cubic-bezier': hoverTransitionEasingCB,
 	} = props;
+
+	const ref = useRef(null);
+
+	const target = ref.current && ref.current.firstElementChild;
 
 	const transitionDurationEffects = [
 		'zoom-in',
@@ -104,6 +112,7 @@ const HoverPreview = props => {
 					className={classes}
 					onMouseOver={target ? mouseHoverHandle : null}
 					onMouseOut={target ? mouseOutHandle : null}
+					ref={ref}
 				>
 					{props.children}
 					{hoverType !== 'none' &&

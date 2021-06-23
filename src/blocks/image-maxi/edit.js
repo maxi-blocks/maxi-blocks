@@ -148,8 +148,6 @@ class edit extends MaxiBlockComponent {
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
 
-		// console.log(this.imgRef);
-
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -262,7 +260,6 @@ class edit extends MaxiBlockComponent {
 										</div>
 										<HoverPreview
 											key={`hover-preview-${uniqueID}`}
-											target={this.imgRef.current}
 											wrapperClassName={wrapperClassName}
 											hoverClassName={hoverClasses}
 											isSVG={!!SVGElement}

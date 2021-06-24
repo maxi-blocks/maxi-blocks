@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Spinner Check the spinner 1`] = `"<h2 class=\\"media-attachments-filter-heading\\">Filter media</h2><label for=\\"media-attachment-date-filters\\" class=\\"screen-reader-text\\">Filter by date</label><select id=\\"media-attachment-date-filters\\" class=\\"attachment-filters\\"><option value=\\"all\\">All dates</option></select><select id=\\"media-attachment-filters\\" class=\\"attachment-filters\\"><option value=\\"all\\">All Images</option><option value=\\"0\\">Maxi Image</option></select><span class=\\"spinner\\"></span>"`;

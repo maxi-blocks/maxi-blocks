@@ -11,10 +11,9 @@ import { uniqueId, isObject, isEmpty, isElement } from 'lodash';
 /**
  * Utils
  */
-export const injectImgSVG = (svg, SVGData = {}) => {
+export const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
 	const { getBlockAttributes, getSelectedBlockClientId } =
 		select('core/block-editor');
-
 	const { uniqueID } = getBlockAttributes(getSelectedBlockClientId());
 
 	const SVGValue = !isObject(SVGData) ? JSON.parse(SVGData) : SVGData;
@@ -29,6 +28,10 @@ export const injectImgSVG = (svg, SVGData = {}) => {
 		)
 	);
 	Object.entries(SVGValue).forEach(([id, el], i) => {
+		if (isEmpty(el.imageURL) && removeMode) {
+			SVGLayers[i].removeAttribute('style');
+			SVGElement.querySelector('.maxi-svg-block__pattern').remove();
+		}
 		if (!isEmpty(el.imageURL)) {
 			const pattern = document.createElement('pattern');
 			pattern.id = `${id}__img`;
@@ -51,7 +54,7 @@ export const injectImgSVG = (svg, SVGData = {}) => {
 			pattern.append(image);
 			SVGElement.prepend(pattern);
 
-			SVGLayers[i].style.fill = `url(#${id}__img)`;
+			SVGLayers[i].setAttribute('style', `fill: url(#${id}__img)`);
 			SVGLayers[i].setAttribute('fill', `url(#${id}__img)`);
 		} else if (!isEmpty(el.color)) {
 			SVGLayers[i].setAttribute('fill', el.color);

@@ -290,6 +290,7 @@ const LibraryContainer = props => {
 			mediaURL,
 			'background-layers': bgLayers,
 			'background-layers-status': bgLayersStatus,
+			'background-svg-SVGData': svgData,
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
 		if (isValid) {
@@ -321,6 +322,16 @@ const LibraryContainer = props => {
 				};
 				const SVGOptions = {};
 				const resData = generateDataObject(SVGOptions[SVGData], svg);
+				resData[Object.keys(resData)[0]].color = svgData
+					? svgData[Object.keys(svgData)[0]].color
+					: '';
+				resData[Object.keys(resData)[0]].imageID = svgData
+					? svgData[Object.keys(svgData)[0]].imageID
+					: '';
+				resData[Object.keys(resData)[0]].imageURL = svgData
+					? svgData[Object.keys(svgData)[0]].imageURL
+					: '';
+
 				const resEl = injectImgSVG(svg, resData);
 
 				updateBlockAttributes(clientId, {

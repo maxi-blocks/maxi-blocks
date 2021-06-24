@@ -102,6 +102,7 @@ class edit extends MaxiBlockComponent {
 						clientId={clientId}
 						type='svg'
 						empty={isEmptyContent}
+						style={parentBlockStyle}
 						openFirstTime={openFirstTime}
 					/>
 					{!isEmptyContent && (

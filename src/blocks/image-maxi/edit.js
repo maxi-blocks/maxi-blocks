@@ -173,14 +173,16 @@ class edit extends MaxiBlockComponent {
 							mediaWidth: media.width,
 							mediaHeight: media.height,
 						});
-
 						if (!isEmpty(attributes.SVGData)) {
-							const currentElem =
-								SVGShapes[
-									Object.keys(SVGShapes)[
-										attributes.SVGCurrentElement
-									]
-								];
+							const currentElem = !isEmpty(
+								attributes.SVGCurrentElement
+							)
+								? SVGShapes[
+										Object.keys(SVGShapes)[
+											attributes.SVGCurrentElement
+										]
+								  ]
+								: attributes.SVGElement;
 
 							const cleanedContent =
 								DOMPurify.sanitize(currentElem);

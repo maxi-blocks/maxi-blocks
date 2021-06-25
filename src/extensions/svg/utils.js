@@ -27,40 +27,43 @@ export const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
 			'path, circle, rect, polygon, line, ellipse'
 		)
 	);
-	Object.entries(SVGValue).forEach(([id, el], i) => {
-		if (isEmpty(el.imageURL) && removeMode) {
-			SVGLayers[i].removeAttribute('style');
-			SVGElement.querySelector('.maxi-svg-block__pattern').remove();
-		}
-		if (!isEmpty(el.imageURL)) {
-			const pattern = document.createElement('pattern');
-			pattern.id = `${id}__img`;
-			pattern.classList.add('maxi-svg-block__pattern');
-			pattern.setAttribute('width', '100%');
-			pattern.setAttribute('height', '100%');
-			pattern.setAttribute('x', '0');
-			pattern.setAttribute('y', '0');
-			pattern.setAttribute('patternUnits', 'userSpaceOnUse');
 
-			const image = document.createElement('image');
-			image.classList.add('maxi-svg-block__pattern__image');
-			image.setAttribute('width', '100%');
-			image.setAttribute('height', '100%');
-			image.setAttribute('x', '0');
-			image.setAttribute('y', '0');
-			image.setAttribute('href', el.imageURL);
-			image.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+	Object.entries(SVGValue).forEach(([id, el]) => {
+		SVGLayers.forEach((item, i) => {
+			if (isEmpty(el.imageURL) && removeMode) {
+				SVGLayers[i].removeAttribute('style');
+				SVGElement.querySelector('.maxi-svg-block__pattern').remove();
+			}
+			if (!isEmpty(el.imageURL)) {
+				const pattern = document.createElement('pattern');
+				pattern.id = `${id}__img`;
+				pattern.classList.add('maxi-svg-block__pattern');
+				pattern.setAttribute('width', '100%');
+				pattern.setAttribute('height', '100%');
+				pattern.setAttribute('x', '0');
+				pattern.setAttribute('y', '0');
+				pattern.setAttribute('patternUnits', 'userSpaceOnUse');
 
-			pattern.append(image);
-			SVGElement.prepend(pattern);
+				const image = document.createElement('image');
+				image.classList.add('maxi-svg-block__pattern__image');
+				image.setAttribute('width', '100%');
+				image.setAttribute('height', '100%');
+				image.setAttribute('x', '0');
+				image.setAttribute('y', '0');
+				image.setAttribute('href', el.imageURL);
+				image.setAttribute('preserveAspectRatio', 'xMidYMid slice');
 
-			SVGLayers[i].setAttribute('style', `fill: url(#${id}__img)`);
-			SVGLayers[i].setAttribute('fill', `url(#${id}__img)`);
-		} else if (!isEmpty(el.color)) {
-			SVGLayers[i].setAttribute('fill', el.color);
-		} else {
-			SVGLayers[i].setAttribute('fill', '');
-		}
+				pattern.append(image);
+				SVGElement.prepend(pattern);
+
+				SVGLayers[i].setAttribute('style', `fill: url(#${id}__img)`);
+				SVGLayers[i].setAttribute('fill', `url(#${id}__img)`);
+			} else if (!isEmpty(el.color)) {
+				SVGLayers[i].setAttribute('fill', el.color);
+			} else {
+				SVGLayers[i].setAttribute('fill', '');
+			}
+		});
 	});
 
 	if (SVGElement.dataset) SVGElement.dataset.item = `${uniqueID}__svg`;

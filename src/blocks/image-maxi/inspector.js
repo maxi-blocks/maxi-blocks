@@ -432,7 +432,7 @@ const Inspector = props => {
 												<>
 													<SelectControl
 														value={captionType}
-														className='maxi-caption-selector'
+														className='maxi-image-caption-type'
 														options={getCaptionOptions()}
 														onChange={captionType => {
 															setAttributes({

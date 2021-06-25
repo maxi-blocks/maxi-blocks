@@ -14,7 +14,7 @@ describe('TextareaControl', () => {
 		const accordionPanel = await openSidebar(page, 'caption');
 
 		const selectors = await accordionPanel.$(
-			'.maxi-caption-selector select'
+			'.maxi-image-caption-type select'
 		);
 		await selectors.select('custom');
 

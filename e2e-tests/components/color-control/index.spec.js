@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('Color Control', () => {
+describe('ColorControl', () => {
 	it('Checking the color control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

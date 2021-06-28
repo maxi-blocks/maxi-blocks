@@ -24,18 +24,23 @@ import { Icon } from '../../components';
 
 class MaxiModal extends Component {
 	state = {
-		isOpen: false,
+		isOpen: this.props.openFirstTime,
 	};
 
 	render() {
 		const { isOpen } = this.state;
 
-		const { type, clientId, empty } = this.props;
+		const { type, clientId, empty, style } = this.props;
 
 		const onClick = () => {
 			this.setState({
 				isOpen: !isOpen,
 			});
+			wp.data
+				.dispatch('core/block-editor')
+				.updateBlockAttributes(clientId, {
+					openFirstTime: !isOpen,
+				});
 		};
 
 		return (
@@ -88,7 +93,13 @@ class MaxiModal extends Component {
 						{__('Load Shape Library', 'maxi-blocks')}
 					</Button>
 				)}
-				{isOpen && <CloudLibrary cloudType={type} onClose={onClick} />}
+				{isOpen && (
+					<CloudLibrary
+						cloudType={type}
+						onClose={onClick}
+						blockStyle={style}
+					/>
+				)}
 			</>
 		);
 	}

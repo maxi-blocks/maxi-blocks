@@ -11,7 +11,7 @@ import {
  */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('Entrance Animation Control', () => {
+describe('EntranceAnimationControl', () => {
 	it('Checking the animation control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');

@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
 import { MediaUpload } from '@wordpress/block-editor';
-import { createRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -44,12 +43,6 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlockComponent {
-	constructor(...args) {
-		super(...args);
-
-		this.imgRef = createRef();
-	}
-
 	get getWrapperWidth() {
 		const target = document.getElementById(`block-${this.props.clientId}`);
 		if (target) return target.getBoundingClientRect().width;
@@ -237,13 +230,8 @@ class edit extends MaxiBlockComponent {
 										</div>
 										<HoverPreview
 											key={`hover-preview-${uniqueID}`}
-											target={this.imgRef.current}
 											wrapperClassName={wrapperClassName}
-											hoverClassName={
-												!SVGElement
-													? hoverClasses
-													: null
-											}
+											hoverClassName={hoverClasses}
 											isSVG={!!SVGElement}
 											{...getGroupAttributes(attributes, [
 												'hover',
@@ -252,12 +240,9 @@ class edit extends MaxiBlockComponent {
 											])}
 										>
 											{SVGElement ? (
-												<RawHTML ref={this.imgRef}>
-													{SVGElement}
-												</RawHTML>
+												<RawHTML>{SVGElement}</RawHTML>
 											) : (
 												<img
-													ref={this.imgRef}
 													className={`maxi-image-block__image wp-image-${mediaID}`}
 													src={mediaURL}
 													width={mediaWidth}

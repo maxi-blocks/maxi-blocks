@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
-describe('Z-Index Control', () => {
+describe('ZIndexControl', () => {
 	it('Checking the z-index control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

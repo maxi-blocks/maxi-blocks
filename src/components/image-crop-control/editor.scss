@@ -2,20 +2,29 @@
 
 .maxi-image-crop-control {
 	margin-bottom: 8px;
+
 	.ReactCrop__crop-selection {
 		background: transparent;
 	}
 	&__options {
 		display: flex;
 		margin: 10px 0;
+
 		label {
 			width: 20%;
 			margin-right: 5px;
+
 			&:last-child {
 				margin-right: 0;
 			}
 			input[type='number'] {
 				width: 100%;
+
+				&:disabled {
+					background-color: #e9ecef;
+					border: 1px solid #ced4da;
+					color: #495057 !important;
+				}
 			}
 		}
 	}

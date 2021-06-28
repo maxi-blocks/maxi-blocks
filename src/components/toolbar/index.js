@@ -41,7 +41,7 @@ import TextItalic from './components/text-italic';
 import TextLevel from './components/text-level';
 import TextLink from './components/text-link';
 import TextListOptions from './components/text-list-options';
-import TextOptions from './components/text-options';
+import TypographyControl from './components/typography-control';
 import ToggleBlock from './components/toggle-block';
 import ToolbarColumnPattern from './components/column-pattern';
 import Breadcrumbs from '../breadcrumbs';
@@ -238,7 +238,7 @@ const MaxiToolbar = memo(
 									setAttributes({ lineVertical })
 								}
 							/>
-							<TextOptions
+							<TypographyControl
 								{...getGroupAttributes(
 									attributes,
 									'typography'
@@ -252,6 +252,7 @@ const MaxiToolbar = memo(
 								typeOfList={typeOfList}
 								textLevel={textLevel}
 								styleCard={styleCard}
+								clientId={clientId}
 							/>
 							<TextColor
 								blockName={name}

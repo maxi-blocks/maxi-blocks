@@ -83,11 +83,12 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		...(props['background-active-media'] === 'color' && {
-			background: getColorBackgroundObject({
-				...getGroupAttributes(props, 'backgroundColor'),
+		...(props['background-active-media'] === 'color' &&
+			!props['background-palette-color-status'] && {
+				background: getColorBackgroundObject({
+					...getGroupAttributes(props, 'backgroundColor'),
+				}),
 			}),
-		}),
 		...(props['background-active-media'] === 'gradient' && {
 			background: getGradientBackgroundObject({
 				...getGroupAttributes(props, 'backgroundGradient'),

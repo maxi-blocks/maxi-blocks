@@ -22,6 +22,7 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
+import { getPaletteColor } from '../../extensions/style-cards';
 
 /**
  * Component
@@ -82,8 +83,16 @@ const ColorControl = props => {
 	};
 
 	const onChangeValue = obj => {
+		const newColor =
+			!isNil(obj.paletteStatus) &&
+			!obj.paletteStatus &&
+			obj.paletteStatus !== paletteStatus &&
+			isEmpty(color)
+				? getPaletteColor(clientId, paletteColor)
+				: color;
+
 		onChange({
-			color,
+			color: newColor,
 			paletteColor,
 			paletteStatus,
 			...obj,

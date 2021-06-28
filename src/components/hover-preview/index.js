@@ -1,8 +1,15 @@
 /**
+ * WordPress dependencies
+ */
+import { cloneElement } from '@wordpress/element';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
+import DOMPurify from 'dompurify';
+import parse from 'html-react-parser';
 
 /**
  * Component
@@ -11,7 +18,6 @@ const HoverPreview = props => {
 	const {
 		wrapperClassName,
 		hoverClassName,
-		target,
 		'hover-type': hoverType,
 		'hover-basic-effect-type': hoverBasicEffectType,
 		'hover-transition-duration': hoverTransitionDuration,
@@ -37,21 +43,22 @@ const HoverPreview = props => {
 		hoverType !== 'none' && hoverClassName
 	);
 
-	const mouseHoverHandle = () => {
+	const mouseHoverHandle = ({ target }) => {
 		if (
 			hoverType === 'text' ||
 			transitionDurationEffects.includes(hoverBasicEffectType)
 		) {
+			target.style.transform = '';
+			target.style.marginLeft = '';
+			target.style.filter = '';
 			target.style.transitionDuration = `${hoverTransitionDuration}s`;
-			target.style.transitionTimingFunction = `
-	${
-		hoverTransitionEasing !== 'cubic-bezier'
-			? hoverTransitionEasing
-			: !isNil(hoverTransitionEasingCB)
-			? `cubic-bezier(${hoverTransitionEasingCB.join()})`
-			: 'easing'
-	}
-	`;
+			target.style.transitionTimingFunction = `${
+				hoverTransitionEasing !== 'cubic-bezier'
+					? hoverTransitionEasing
+					: !isNil(hoverTransitionEasingCB)
+					? `cubic-bezier(${hoverTransitionEasingCB.join()})`
+					: 'easing'
+			}`;
 		}
 
 		if (hoverType === 'basic') {
@@ -73,7 +80,7 @@ const HoverPreview = props => {
 		}
 	};
 
-	const mouseOutHandle = () => {
+	const mouseOutHandle = ({ target }) => {
 		if (hoverType === 'basic') {
 			if (hoverBasicEffectType === 'zoom-in')
 				target.style.transform = 'scale(1)';
@@ -93,72 +100,84 @@ const HoverPreview = props => {
 		}
 	};
 
+	const getEnhancedChildren = children => {
+		if (children.type === 'img')
+			return cloneElement(children, {
+				onMouseOver: mouseHoverHandle,
+				onMouseOut: mouseOutHandle,
+			});
+
+		if (children?.props?.children) {
+			const cleanedChildren = DOMPurify.sanitize(children.props.children);
+			const parsedContent = parse(cleanedChildren, {
+				replace: domNode => {
+					hoverType === 'text'
+						? (domNode.attribs = {
+								...domNode.attribs,
+								onMouseOver: mouseHoverHandle,
+								onMouseOut: mouseOutHandle,
+						  })
+						: (domNode.attribs = {
+								...domNode.attribs,
+						  });
+
+					return domNode;
+				},
+			});
+
+			return parsedContent;
+		}
+
+		return children;
+	};
+
+	const enhancedChildren = getEnhancedChildren(props.children);
+
 	return (
-		<>
-			{hoverType === 'none' && (
-				<div className={classes}>{props.children}</div>
-			)}
-			{hoverType !== 'none' && (
-				<div
-					className={classes}
-					onMouseOver={target ? mouseHoverHandle : null}
-					onMouseOut={target ? mouseOutHandle : null}
-				>
-					{props.children}
-					{hoverType !== 'none' &&
-						hoverType !== 'basic' &&
-						props['hover-preview'] && (
-							<div
-								style={{
-									transitionDuration: `${hoverTransitionDuration}s`,
-									transitionTimingFunction:
-										hoverTransitionEasing !== 'cubic-bezier'
-											? hoverTransitionEasing
-											: !isNil(
-													props[
-														'hover-transition-easing-cubic-bezier'
-													]
-											  )
-											? `cubic-bezier(${props[
-													'hover-transition-easing-cubic-bezier'
-											  ].join()})`
-											: 'easing',
-								}}
-								className='maxi-hover-details'
-							>
-								<div
-									className={`maxi-hover-details__content maxi-hover-details__content--${props['hover-text-preset']}`}
-								>
-									{!isEmpty(
-										props['hover-title-typography-content']
-									) && (
-										<h3>
-											{
-												props[
-													'hover-title-typography-content'
-												]
-											}
-										</h3>
-									)}
-									{!isEmpty(
-										props[
-											'hover-content-typography-content'
-										]
-									) && (
-										<p>
-											{
-												props[
-													'hover-content-typography-content'
-												]
-											}
-										</p>
-									)}
-								</div>
-							</div>
-						)}
-				</div>
-			)}
-		</>
+		<div className={classes}>
+			{enhancedChildren}
+			{hoverType !== 'none' &&
+				hoverType !== 'basic' &&
+				props['hover-preview'] && (
+					<div
+						style={{
+							transitionDuration: `${hoverTransitionDuration}s`,
+							transitionTimingFunction:
+								hoverTransitionEasing !== 'cubic-bezier'
+									? hoverTransitionEasing
+									: !isNil(
+											props[
+												'hover-transition-easing-cubic-bezier'
+											]
+									  )
+									? `cubic-bezier(${props[
+											'hover-transition-easing-cubic-bezier'
+									  ].join()})`
+									: 'easing',
+						}}
+						className='maxi-hover-details'
+					>
+						<div
+							className={`maxi-hover-details__content maxi-hover-details__content--${props['hover-text-preset']}`}
+						>
+							{!isEmpty(
+								props['hover-title-typography-content']
+							) && (
+								<h3>
+									{props['hover-title-typography-content']}
+								</h3>
+							)}
+							{!isEmpty(
+								props['hover-content-typography-content']
+							) && (
+								<p>
+									{props['hover-content-typography-content']}
+								</p>
+							)}
+						</div>
+					</div>
+				)}
+		</div>
 	);
 };
 

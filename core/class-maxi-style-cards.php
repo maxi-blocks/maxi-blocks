@@ -334,13 +334,7 @@ class MaxiBlocks_StyleCards {
 						},
 						"hover": {
 							"color-global": false,
-							"color": ""
-						},
-						"icon": {
-							"line-global": false,
-							"line": "",
-							"fill-global": false,
-							"fill": ""
+							"color": "#c9340a"
 						},
 						"divider": {
 							"color-global": false,
@@ -561,13 +555,7 @@ class MaxiBlocks_StyleCards {
 						},
 						"hover": {
 							"color-global": false,
-							"color": ""
-						},
-						"icon": {
-							"line-global": false,
-							"line": "",
-							"fill-global": false,
-							"fill": ""
+							"color": "#c9340a"
 						},
 						"divider": {
 							"color-global": false,

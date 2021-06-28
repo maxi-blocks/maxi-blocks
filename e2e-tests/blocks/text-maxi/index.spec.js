@@ -189,6 +189,7 @@ describe('TextMaxi', () => {
 		// Check frontend
 		const editorPage = page;
 		const previewPage = await openPreviewPage(editorPage);
+		await editorPage.waitForTimeout(1000);
 		await previewPage.waitForSelector('.entry-content');
 		const content = await previewPage.$eval(
 			'.entry-content',

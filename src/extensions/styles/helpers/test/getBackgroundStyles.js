@@ -112,7 +112,7 @@ describe('getBackgroundStyles', () => {
 			'background-svg-left--unit': '%',
 			'background-svg-left': 1,
 			'background-svg-size': 2,
-			'background-svg-size--unit': 'px',
+			'background-svg-size--unit': '%',
 		};
 
 		const gradient = {
@@ -204,7 +204,7 @@ describe('getBackgroundStyles', () => {
 					'background-svg-left--unit': '%',
 					'background-svg-left': null,
 					'background-svg-size': 100,
-					'background-svg-size--unit': 'px',
+					'background-svg-size--unit': '%',
 					id: 4,
 				},
 			],

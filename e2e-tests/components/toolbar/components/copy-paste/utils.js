@@ -65,7 +65,7 @@ export const block = {
 		'background-svg-left--unit': '%',
 		'background-svg-left': 0,
 		'background-svg-size': 100,
-		'background-svg-size--unit': 'px',
+		'background-svg-size--unit': '%',
 		'background-video-loop': false,
 		'background-video-playOnMobile': false,
 		'background-video-opacity': 100,

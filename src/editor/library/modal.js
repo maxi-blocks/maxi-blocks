@@ -101,6 +101,14 @@ class MaxiModal extends Component {
 								: __('Load Shape Library', 'maxi-blocks')}
 						</Button>
 					)}
+					{type === 'button-icon' && (
+						<Button
+							className='maxi-svg-defaults__load-library'
+							onClick={onClick}
+						>
+							{__('Replace Icon', 'maxi-blocks')}
+						</Button>
+					)}
 					{isOpen && (
 						<CloudLibrary
 							layerId={layerId}

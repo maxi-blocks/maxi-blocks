@@ -488,6 +488,30 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
+			{type === 'button-icon' && (
+				<InstantSearch
+					indexName='maxi_posts_svg_icon'
+					searchClient={searchClient}
+				>
+					<div className='maxi-cloud-container__content-svg-line'>
+						<SearchBox
+							submit={__('Find', 'maxi-blocks')}
+							autoFocus
+							searchAsYouType
+							showLoadingIndicator
+						/>
+						<RefinementList
+							className='hidden'
+							attribute='taxonomies.svg_category'
+							defaultRefinement={['Line']}
+							showLoadingIndicator
+						/>
+						<Stats translations={resultsCount} />
+						<InfiniteHits hitComponent={svgShapeResults} />
+					</div>
+				</InstantSearch>
+			)}
+
 			{type === 'patterns' && (
 				<div className='maxi-cloud-container__patterns'>
 					<PlaceholderCheckboxControl />

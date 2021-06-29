@@ -42,53 +42,56 @@ const SVGDefaultsDisplayer = props => {
 
 	return (
 		<div className={classes}>
-			<Button
-				icon={styleNone}
-				key='maxi-svg-defaults__item-none'
-				className={`maxi-svg-defaults__item ${
-					isNil(SVGCurrentElement) &&
-					'maxi-svg-defaults__item--active'
-				}`}
-				onClick={() => {
-					onChange();
-				}}
-			/>
-			{Object.values(SVGShapes).map((svgEl, i) => {
-				const cleanedContent = DOMPurify.sanitize(svgEl);
-				return (
-					<Button
-						key={uniqueId('maxi-svg-defaults__item-')}
-						className={`maxi-svg-defaults__item ${
-							SVGCurrentElement === i &&
-							'maxi-svg-defaults__item--active'
-						}
+			{usedPlace !== 'button-icon' && (
+				<Button
+					icon={styleNone}
+					key='maxi-svg-defaults__item-none'
+					className={`maxi-svg-defaults__item ${
+						isNil(SVGCurrentElement) &&
+						'maxi-svg-defaults__item--active'
+					}`}
+					onClick={() => {
+						onChange();
+					}}
+				/>
+			)}
+			{usedPlace !== 'button-icon' &&
+				Object.values(SVGShapes).map((svgEl, i) => {
+					const cleanedContent = DOMPurify.sanitize(svgEl);
+					return (
+						<Button
+							key={uniqueId('maxi-svg-defaults__item-')}
+							className={`maxi-svg-defaults__item ${
+								SVGCurrentElement === i &&
+								'maxi-svg-defaults__item--active'
+							}
 						`}
-						onClick={() => {
-							const svg = document
-								.createRange()
-								.createContextualFragment(
-									cleanedContent
-								).firstElementChild;
+							onClick={() => {
+								const svg = document
+									.createRange()
+									.createContextualFragment(
+										cleanedContent
+									).firstElementChild;
 
-							const resData = generateDataObject(
-								SVGOptions[`${prefix}SVGData`],
-								svg
-							);
-							const resEl = injectImgSVG(svg, resData);
+								const resData = generateDataObject(
+									SVGOptions[`${prefix}SVGData`],
+									svg
+								);
+								const resEl = injectImgSVG(svg, resData);
 
-							onChange({
-								SVGCurrentElement: i,
-								SVGElement: resEl.outerHTML,
-								SVGMediaID: null,
-								SVGMediaURL: null,
-								SVGData: resData,
-							});
-						}}
-					>
-						<RawHTML>{cleanedContent}</RawHTML>
-					</Button>
-				);
-			})}
+								onChange({
+									SVGCurrentElement: i,
+									SVGElement: resEl.outerHTML,
+									SVGMediaID: null,
+									SVGMediaURL: null,
+									SVGData: resData,
+								});
+							}}
+						>
+							<RawHTML>{cleanedContent}</RawHTML>
+						</Button>
+					);
+				})}
 			<MaxiModal type={usedPlace} layerId={layerId} />
 		</div>
 	);

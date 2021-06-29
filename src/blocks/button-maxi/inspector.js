@@ -17,6 +17,7 @@ import {
 	BoxShadowControl,
 	CustomLabel,
 	DefaultStylesControl,
+	SVGDefaultsDisplayer,
 	DisplayControl,
 	EntranceAnimationControl,
 	FancyRadioControl,
@@ -150,6 +151,12 @@ const Inspector = props => {
 														},
 													]}
 												/>
+											),
+										},
+										deviceType === 'general' && {
+											label: __('Icon', 'maxi-blocks'),
+											content: (
+												<SVGDefaultsDisplayer usedPlace='button-icon' />
 											),
 										},
 										{

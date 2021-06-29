@@ -27,6 +27,24 @@ import { isEmpty, cloneDeep } from 'lodash';
 const SVGLayer = props => {
 	const { onChange, isHover, prefix, clientId, layerId } = props;
 	const SVGOptions = cloneDeep(props.SVGOptions);
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 3999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 999,
+		},
+		'%': {
+			min: 0,
+			max: 999,
+		},
+	};
 
 	return (
 		<>
@@ -302,6 +320,7 @@ const SVGLayer = props => {
 										)
 									]
 								}
+								allowedUnits={['px', 'em', 'vw', '%']}
 								enableUnit
 								unit={
 									SVGOptions[
@@ -356,7 +375,7 @@ const SVGLayer = props => {
 										),
 									})
 								}
-								min={0}
+								minMaxSettings={minMaxSettings}
 							/>
 						),
 					},

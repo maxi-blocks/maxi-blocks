@@ -65,7 +65,7 @@ const MapControl = props => {
 			<AdvancedNumberControl
 				label={__('Zoom', 'maxi-blocks')}
 				min={1}
-				max={999}
+				max={22}
 				initial={1}
 				step={1}
 				value={props['map-zoom']}

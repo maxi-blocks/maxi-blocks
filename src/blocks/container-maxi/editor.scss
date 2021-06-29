@@ -1,5 +1,11 @@
 .maxi-container-block {
 	margin: auto;
+
+	.block-list-appender
+		.block-editor-button-block-appender[aria-label='Add Row Maxi'] {
+		left: calc(50% - 48px);
+		border-radius: 50%;
+	}
 	&__container {
 		border: 1px solid #7fbddc;
 		width: 100%;

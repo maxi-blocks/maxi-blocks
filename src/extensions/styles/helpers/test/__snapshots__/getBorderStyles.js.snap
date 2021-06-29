@@ -1,6 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getZIndexStyle Get a correct index style 1`] = `
+exports[`getBorderStyles Return a border styles object with changes on custom color 1`] = `
+Object {
+  "general": Object {
+    "border-bottom-left-radius": "4px",
+    "border-bottom-right-radius": "3px",
+    "border-bottom-width": "3px",
+    "border-left-width": "4px",
+    "border-right-width": "2px",
+    "border-style": "solid",
+    "border-top-left-radius": "1px",
+    "border-top-right-radius": "2px",
+    "border-top-width": "1px",
+  },
+  "l": Object {
+    "border-color": "rgb(255, 99, 71)",
+  },
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;
+
+exports[`getBorderStyles Return a border styles object with changes on palette color 1`] = `
+Object {
+  "general": Object {
+    "border-bottom-left-radius": "4px",
+    "border-bottom-right-radius": "3px",
+    "border-bottom-width": "3px",
+    "border-left-width": "4px",
+    "border-right-width": "2px",
+    "border-style": "solid",
+    "border-top-left-radius": "1px",
+    "border-top-right-radius": "2px",
+    "border-top-width": "1px",
+  },
+  "l": Object {
+    "border-color": "var(--maxi-light-color-1);",
+  },
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;
+
+exports[`getBorderStyles Return border styles object with all the settings 1`] = `
 Object {
   "general": Object {
     "border-bottom-left-radius": "4px",
@@ -9,7 +57,7 @@ Object {
     "border-color": "rgb(255, 99, 71)",
     "border-left-width": "4px",
     "border-right-width": "2px",
-    "border-style": "rgb(0, 0, 255)",
+    "border-style": "solid",
     "border-top-left-radius": "1px",
     "border-top-right-radius": "2px",
     "border-top-width": "1px",
@@ -21,7 +69,7 @@ Object {
     "border-color": "rgb(255, 99, 71)",
     "border-left-width": "4px",
     "border-right-width": "2px",
-    "border-style": "rgb(0, 0, 255)",
+    "border-style": "solid",
     "border-top-left-radius": "1px",
     "border-top-right-radius": "2px",
     "border-top-width": "1px",
@@ -33,7 +81,7 @@ Object {
     "border-color": "rgb(255, 99, 71)",
     "border-left-width": "4px",
     "border-right-width": "2px",
-    "border-style": "rgb(0, 0, 255)",
+    "border-style": "solid",
     "border-top-left-radius": "1px",
     "border-top-right-radius": "2px",
     "border-top-width": "1px",
@@ -45,7 +93,7 @@ Object {
     "border-color": "rgb(255, 99, 71)",
     "border-left-width": "4px",
     "border-right-width": "2px",
-    "border-style": "rgb(0, 0, 255)",
+    "border-style": "solid",
     "border-top-left-radius": "1px",
     "border-top-right-radius": "2px",
     "border-top-width": "1px",
@@ -57,7 +105,7 @@ Object {
     "border-color": "rgb(255, 99, 71)",
     "border-left-width": "4px",
     "border-right-width": "2px",
-    "border-style": "rgb(0, 0, 255)",
+    "border-style": "solid",
     "border-top-left-radius": "1px",
     "border-top-right-radius": "2px",
     "border-top-width": "1px",
@@ -69,7 +117,7 @@ Object {
     "border-color": "rgb(255, 99, 71)",
     "border-left-width": "4px",
     "border-right-width": "2px",
-    "border-style": "rgb(0, 0, 255)",
+    "border-style": "solid",
     "border-top-left-radius": "1px",
     "border-top-right-radius": "2px",
     "border-top-width": "1px",
@@ -81,7 +129,7 @@ Object {
     "border-color": "rgb(255, 99, 71)",
     "border-left-width": "4px",
     "border-right-width": "2px",
-    "border-style": "rgb(0, 0, 255)",
+    "border-style": "solid",
     "border-top-left-radius": "1px",
     "border-top-right-radius": "2px",
     "border-top-width": "1px",

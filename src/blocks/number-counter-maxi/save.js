@@ -15,12 +15,7 @@ const save = props => {
 
 	const classes = 'maxi-number-counter-block';
 
-	const paletteClasses = getPaletteClasses(
-		attributes,
-		['typography', 'circle-background', 'circle-bar-background'],
-		'maxi-blocks/number-counter-maxi',
-		parentBlockStyle
-	);
+	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 	const radius = attributes['number-counter-radius'];
 	const stroke = attributes['number-counter-stroke'];
@@ -49,7 +44,7 @@ const save = props => {
 					>
 						<circle
 							className='maxi-number-counter__box__background'
-							stroke-width={stroke}
+							strokeWidth={stroke}
 							fill='none'
 							cx={radius + stroke / 2}
 							cy={radius + stroke / 2}
@@ -57,17 +52,17 @@ const save = props => {
 						/>
 						<circle
 							className='maxi-number-counter__box__circle'
-							stroke-width={stroke}
+							strokeWidth={stroke}
 							fill='none'
 							cx={radius + stroke / 2}
 							cy={radius + stroke / 2}
 							r={radius}
-							stroke-linecap={roundedStatus ? 'round' : ''}
-							stroke-dasharray={`0 ${2 * Math.PI * radius}`}
+							strokeLinecap={roundedStatus ? 'round' : ''}
+							strokeDasharray={`0 ${2 * Math.PI * radius}`}
 						/>
 					</svg>
 				)}
-				<span className='maxi-number-counter__box__text'></span>
+				<span className='maxi-number-counter__box__text' />
 			</div>
 		</MaxiBlock>
 	);

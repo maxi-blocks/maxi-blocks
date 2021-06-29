@@ -207,10 +207,7 @@ const MaxiToolbar = memo(
 							<ReusableBlocks clientId={clientId} />
 							<ColumnMover clientId={clientId} blockName={name} />
 							<DividerColor
-								{...getGroupAttributes(attributes, [
-									'divider',
-									'palette',
-								])}
+								{...getGroupAttributes(attributes, 'divider')}
 								blockName={name}
 								breakpoint={breakpoint}
 								onChange={obj => setAttributes(obj)}
@@ -255,10 +252,10 @@ const MaxiToolbar = memo(
 							/>
 							<TextColor
 								blockName={name}
-								{...getGroupAttributes(attributes, [
-									'typography',
-									'palette',
-								])}
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
 								node={anchorRef}
@@ -357,10 +354,10 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 							/>
 							<BackgroundColor
-								{...getGroupAttributes(attributes, [
-									'backgroundColor',
-									'palette',
-								])}
+								{...getGroupAttributes(
+									attributes,
+									'backgroundColor'
+								)}
 								blockName={name}
 								breakpoint={breakpoint}
 								onChange={obj => setAttributes(obj)}
@@ -371,7 +368,7 @@ const MaxiToolbar = memo(
 									<SvgColor
 										{...getGroupAttributes(
 											attributes,
-											'palette'
+											'svg'
 										)}
 										blockName={name}
 										svgColorDefault={getDefaultAttribute(
@@ -390,7 +387,7 @@ const MaxiToolbar = memo(
 									<SvgColor
 										{...getGroupAttributes(
 											attributes,
-											'palette'
+											'svg'
 										)}
 										blockName={name}
 										svgColorDefault={getDefaultAttribute(
@@ -414,7 +411,6 @@ const MaxiToolbar = memo(
 									'border',
 									'borderWidth',
 									'borderRadius',
-									'palette',
 								])}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
@@ -472,7 +468,6 @@ const MaxiToolbar = memo(
 								blockName={name}
 								{...getGroupAttributes(attributes, [
 									'boxShadow',
-									'palette',
 								])}
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}

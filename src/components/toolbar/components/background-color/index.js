@@ -12,7 +12,6 @@ import ColorControl from '../../../color-control';
 import FancyRadioControl from '../../../fancy-radio-control';
 import {
 	getDefaultAttribute,
-	getGroupAttributes,
 	getBlockStyle,
 } from '../../../../extensions/styles';
 
@@ -25,7 +24,7 @@ import './editor.scss';
  * BackgroundColor
  */
 const BackgroundColor = props => {
-	const { blockName, onChange, breakpoint, clientId } = props;
+	const { blockName, onChange, clientId } = props;
 
 	if (
 		blockName === 'maxi-blocks/divider-maxi' ||
@@ -59,15 +58,17 @@ const BackgroundColor = props => {
 										'polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%)',
 							  }
 							: {
-									background:
-										props['background-color'] ||
-										`var(--maxi-${getBlockStyle(
-											clientId
-										)}-color-${
-											props[
-												'palette-preset-background-color'
-											]
-										})`,
+									background: props[
+										'background-palette-color-status'
+									]
+										? `var(--maxi-${getBlockStyle(
+												clientId
+										  )}-color-${
+												props[
+													'background-palette-color'
+												]
+										  })`
+										: props['background-color'],
 									border: '1px solid #fff',
 							  }),
 					}}
@@ -100,18 +101,18 @@ const BackgroundColor = props => {
 						label={__('Background', 'maxi-blocks')}
 						color={props['background-color']}
 						defaultColor={getDefaultAttribute('background-color')}
-						onChange={val =>
+						paletteColor={props['background-palette-color']}
+						paletteStatus={props['background-palette-color-status']}
+						onChange={({ color, paletteColor, paletteStatus }) =>
 							onChange({
-								'background-color': val,
 								'background-active-media': 'color',
+								'background-color': color,
+								'background-palette-color': paletteColor,
+								'background-palette-color-status':
+									paletteStatus,
 							})
 						}
 						showPalette
-						palette={{ ...getGroupAttributes(props, 'palette') }}
-						colorPaletteType='background'
-						onChangePalette={val => onChange(val)}
-						deviceType={breakpoint}
-						clientId={clientId}
 					/>
 				)}
 			</div>

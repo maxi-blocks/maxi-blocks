@@ -10,21 +10,21 @@ const getNumberCounterStyles = (obj, target) => {
 	};
 
 	if (
-		obj['palette-custom-circle-bar-background-color'] &&
+		!obj['number-counter-palette-circle-bar-color-status'] &&
 		target === 'circle-bar' &&
 		!isNil(obj['number-counter-circle-bar-color'])
 	)
 		response.general.stroke = obj['number-counter-circle-bar-color'];
 
 	if (
-		obj['palette-custom-circle-background-color'] &&
+		!obj['number-counter-palette-circle-background-color-status'] &&
 		target === 'circle-background' &&
 		!isNil(obj['number-counter-circle-background-color'])
 	)
 		response.general.stroke = obj['number-counter-circle-background-color'];
 
 	if (
-		obj['palette-custom-typography-color'] &&
+		!obj['number-counter-palette-text-color-status'] &&
 		target === 'text' &&
 		!isNil(obj['number-counter-text-color'])
 	)

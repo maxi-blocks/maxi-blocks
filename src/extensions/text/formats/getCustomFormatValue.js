@@ -7,6 +7,11 @@ import getCustomFormat from './getCustomFormat';
 import { getTypographyFromSC } from '../../style-cards';
 
 /**
+ * External dependencies
+ */
+import { isBoolean, isNumber } from 'lodash';
+
+/**
  * Retrieve the property from typography object requested
  *
  * @param {Object} 	[$0]					Optional named arguments.
@@ -65,7 +70,7 @@ const getCustomFormatValue = ({
 		avoidXXL
 	);
 
-	if (value) return value;
+	if (value || isBoolean(value) || isNumber(value)) return value;
 
 	// Style Cards value
 	const SCStyle = blockStyle.replace('maxi-', '');

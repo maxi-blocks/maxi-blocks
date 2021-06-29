@@ -43,17 +43,38 @@ const numberCounter = {
 		type: 'string',
 		default: 'page-load',
 	},
+	'number-counter-palette-text-color-status': {
+		type: 'boolean',
+		default: true,
+	},
+	'number-counter-palette-text-color': {
+		type: 'number',
+		default: 4,
+	},
 	'number-counter-text-color': {
 		type: 'string',
-		default: '#ff4a17',
+	},
+	'number-counter-palette-circle-background-color-status': {
+		type: 'boolean',
+		default: true,
+	},
+	'number-counter-palette-circle-background-color': {
+		type: 'number',
+		default: 2,
 	},
 	'number-counter-circle-background-color': {
 		type: 'string',
-		default: '#f2f9fd',
+	},
+	'number-counter-palette-circle-bar-color-status': {
+		type: 'boolean',
+		default: true,
+	},
+	'number-counter-palette-circle-bar-color': {
+		type: 'number',
+		default: 4,
 	},
 	'number-counter-circle-bar-color': {
 		type: 'string',
-		default: '#ff4a17',
 	},
 	'number-counter-title-font-size': {
 		type: 'number',

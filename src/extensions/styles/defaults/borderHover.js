@@ -12,7 +12,9 @@ export const borderHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...border[key] };
 
-		if ('default' in value) delete value.default;
+		if (key !== 'border-palette-color-status-general' && 'default' in value)
+			delete value.default;
+		if (key === 'border-palette-color-general') value.default = 6;
 
 		response[newKey] = value;
 	});

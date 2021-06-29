@@ -19,14 +19,20 @@ import { isEmpty } from 'lodash';
 const getNormalObject = props => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
-			...getGroupAttributes(props, 'boxShadow'),
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 		border: getBorderStyles({
-			...getGroupAttributes(props, [
-				'border',
-				'borderWidth',
-				'borderRadius',
-			]),
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
@@ -67,24 +73,26 @@ const getHoverObject = props => {
 	const response = {
 		border:
 			props['border-status-hover'] &&
-			getBorderStyles(
-				{
+			getBorderStyles({
+				obj: {
 					...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
 						true
 					),
 				},
-				true
-			),
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
-			getBoxShadowStyles(
-				{
+			getBoxShadowStyles({
+				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				true
-			),
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 	};
 
 	return response;

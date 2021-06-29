@@ -129,15 +129,13 @@ class MaxiBlocks_StyleCards {
 					"styleCard": {},
 					"defaultStyleCard": {
 						"color": {
-							"global": false,
 							"1": "#081219",
 							"2": "#062739",
 							"3": "#9b9b9b",
 							"4": "#ff4a17",
 							"5": "#ffffff",
 							"6": "#c9340a",
-							"7": "#f5f5f5",
-							"color": ""
+							"7": "#f5f5f5"
 						},
 						"p": {
 							"color-global": false,
@@ -336,13 +334,7 @@ class MaxiBlocks_StyleCards {
 						},
 						"hover": {
 							"color-global": false,
-							"color": ""
-						},
-						"icon": {
-							"line-global": false,
-							"line": "",
-							"fill-global": false,
-							"fill": ""
+							"color": "#c9340a"
 						},
 						"divider": {
 							"color-global": false,
@@ -563,13 +555,7 @@ class MaxiBlocks_StyleCards {
 						},
 						"hover": {
 							"color-global": false,
-							"color": ""
-						},
-						"icon": {
-							"line-global": false,
-							"line": "",
-							"fill-global": false,
-							"fill": ""
+							"color": "#c9340a"
 						},
 						"divider": {
 							"color-global": false,

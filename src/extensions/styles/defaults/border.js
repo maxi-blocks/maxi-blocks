@@ -1,9 +1,23 @@
 export const border = {
+	'border-palette-color-status-general': {
+		type: 'boolean',
+		default: true,
+	},
+	'border-palette-color-general': {
+		type: 'number',
+		default: 2,
+	},
 	'border-color-general': {
 		type: 'string',
 	},
 	'border-style-general': {
 		type: 'string',
+	},
+	'border-palette-color-status-xxl': {
+		type: 'boolean',
+	},
+	'border-palette-color-xxl': {
+		type: 'number',
 	},
 	'border-color-xxl': {
 		type: 'string',
@@ -11,11 +25,23 @@ export const border = {
 	'border-style-xxl': {
 		type: 'string',
 	},
+	'border-palette-color-status-xl': {
+		type: 'boolean',
+	},
+	'border-palette-color-xl': {
+		type: 'number',
+	},
 	'border-color-xl': {
 		type: 'string',
 	},
 	'border-style-xl': {
 		type: 'string',
+	},
+	'border-palette-color-status-l': {
+		type: 'boolean',
+	},
+	'border-palette-color-l': {
+		type: 'number',
 	},
 	'border-color-l': {
 		type: 'string',
@@ -23,17 +49,35 @@ export const border = {
 	'border-style-l': {
 		type: 'string',
 	},
+	'border-palette-color-status-m': {
+		type: 'boolean',
+	},
+	'border-palette-color-m': {
+		type: 'number',
+	},
 	'border-color-m': {
 		type: 'string',
 	},
 	'border-style-m': {
 		type: 'string',
 	},
+	'border-palette-color-status-s': {
+		type: 'boolean',
+	},
+	'border-palette-color-s': {
+		type: 'number',
+	},
 	'border-color-s': {
 		type: 'string',
 	},
 	'border-style-s': {
 		type: 'string',
+	},
+	'border-palette-color-status-xs': {
+		type: 'boolean',
+	},
+	'border-palette-color-xs': {
+		type: 'number',
 	},
 	'border-color-xs': {
 		type: 'string',

@@ -4,6 +4,10 @@
 	&__group {
 		border: 1px solid #7fbddc;
 		width: 100%;
+
+		.maxi-row-block {
+			z-index: 1;
+		}
 	}
 	.block-list-appender {
 		margin: 0;

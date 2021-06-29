@@ -464,9 +464,9 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											SCStyle,
 											true
 										)}
-										onChange={val => {
+										onChange={({ color }) => {
 											onChangeValue(
-												{ 'hover-color': val },
+												{ 'hover-color': color },
 												'link'
 											);
 										}}

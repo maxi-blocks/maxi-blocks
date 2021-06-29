@@ -117,8 +117,15 @@ export const getSCVariablesObject = styleCards => {
 
 			if (element === 'link') {
 				if (obj['link-color-global'])
-					response[`--maxi-${style}-link-palette`] =
-						obj['link-color'];
+					response[`--maxi-${style}-link`] = obj['link-color'];
+				if (obj['hover-color-global'])
+					response[`--maxi-${style}-link-hover`] = obj['hover-color'];
+				if (obj['active-color-global'])
+					response[`--maxi-${style}-link-active`] =
+						obj['active-color'];
+				if (obj['visited-color-global'])
+					response[`--maxi-${style}-link-visited`] =
+						obj['visited-color'];
 			}
 		});
 

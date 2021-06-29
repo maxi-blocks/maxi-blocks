@@ -286,21 +286,21 @@ body.maxi-blocks--active {
 			.maxi-text-block a.maxi-text-block--link {
 				color: var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette));
 				&:hover, &:focus {
-			        color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
+			        color: var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette));
 			        span {
-			        	color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
+			        	color: var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette));
 			        }
 			    }
 				&:active {
-					color: var(--maxi-#{$style}-active, var(--maxi-#{$style}-link-active-palette));
+					color: var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette));
 			        span {
-			        	color: var(--maxi-#{$style}-active, var(--maxi-#{$style}-link-active-palette));
+			        	color: var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette));
 			        }
 				}
 				&:visited {
-					color: var(--maxi-#{$style}-visited, var(--maxi-#{$style}-link-visited-palette));
+					color: var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette));
 			        span {
-			        	color: var(--maxi-#{$style}-visited, var(--maxi-#{$style}-link-visited-palette));
+			        	color: var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette));
 			        }
 				}
 			}

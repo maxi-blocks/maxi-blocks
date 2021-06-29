@@ -77,22 +77,7 @@ class edit extends MaxiBlockComponent {
 		const { uniqueID, isFirstOnHierarchy, fullWidth, parentBlockStyle } =
 			attributes;
 
-		const paletteClasses = getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'svg-background',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-				'shape-divider-top',
-				'shape-divider-bottom',
-			],
-			'maxi-blocks/container-maxi',
-			parentBlockStyle
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

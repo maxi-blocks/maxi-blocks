@@ -42,23 +42,7 @@ const save = props => {
 		`maxi-image-ratio__${imageRatio}`
 	);
 
-	const paletteClasses = getPaletteClasses(
-		attributes,
-		[
-			'background',
-			'background-hover',
-			'hover-background',
-			'svg-background',
-			'border',
-			'border-hover',
-			'box-shadow',
-			'box-shadow-hover',
-			'typography',
-			'typography-hover',
-		],
-		'maxi-blocks/image-maxi',
-		parentBlockStyle
-	);
+	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 	const hoverClasses = classnames(
 		hoverType === 'basic' &&

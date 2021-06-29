@@ -28,22 +28,7 @@ const save = props => {
 
 	const classes = classnames(fullWidth === 'full' ? 'alignfull' : null);
 
-	const paletteClasses = getPaletteClasses(
-		attributes,
-		[
-			'background',
-			'background-hover',
-			'svg-background',
-			'border',
-			'border-hover',
-			'box-shadow',
-			'box-shadow-hover',
-			'shape-divider-top',
-			'shape-divider-bottom',
-		],
-		name,
-		parentBlockStyle
-	);
+	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 	return (
 		<MaxiBlock

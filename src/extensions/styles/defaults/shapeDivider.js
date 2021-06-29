@@ -18,6 +18,14 @@ const shapeDivider = {
 	'shape-divider-top-shape-style': {
 		type: 'string',
 	},
+	'shape-divider-palette-top-color-status': {
+		type: 'boolean',
+		default: true,
+	},
+	'shape-divider-palette-top-color': {
+		type: 'number',
+		default: 5,
+	},
 	'shape-divider-top-color': {
 		type: 'string',
 	},
@@ -43,6 +51,14 @@ const shapeDivider = {
 	},
 	'shape-divider-bottom-shape-style': {
 		type: 'string',
+	},
+	'shape-divider-palette-bottom-color-status': {
+		type: 'boolean',
+		default: true,
+	},
+	'shape-divider-palette-bottom-color': {
+		type: 'number',
+		default: 5,
 	},
 	'shape-divider-bottom-color': {
 		type: 'string',

@@ -105,7 +105,10 @@ describe('getTypographyStyles', () => {
 			'custom-formats': 'object',
 		};
 
-		const result = getTypographyStyles(object);
+		const result = getTypographyStyles({
+			obj: object,
+			parentBlockStyle: 'light',
+		});
 		expect(result).toMatchSnapshot();
 	});
 });

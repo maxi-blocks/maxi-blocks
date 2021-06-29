@@ -247,7 +247,7 @@ wp.domReady(() => {
 				'maxiBlocks/style-cards'
 			).receiveMaxiActiveStyleCard();
 
-			if (SC) {
+			if (SC && !isEmpty(SC)) {
 				updateSCOnEditor(SC.value);
 				SCStylesSubscriber();
 			}

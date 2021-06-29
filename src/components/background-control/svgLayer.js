@@ -118,7 +118,7 @@ const SVGLayer = props => {
 						label: __('Fill', 'maxi-blocks'),
 						content: (
 							<SVGFillControl
-								{...getGroupAttributes(props, 'palette')}
+								{...getGroupAttributes(props, 'svg')}
 								SVGData={
 									SVGOptions[
 										getAttributeKey(

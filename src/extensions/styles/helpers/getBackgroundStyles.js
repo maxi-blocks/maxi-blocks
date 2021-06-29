@@ -25,9 +25,15 @@ export const getColorBackgroundObject = ({
 		general: {},
 	};
 
-	if (!isEmpty(props[`${prefix}background-color${isHover ? '-hover' : ''}`]))
-		response.general['background-color'] =
-			props[`${prefix}background-color${isHover ? '-hover' : ''}`];
+	const bgStatus =
+		props[
+			`${prefix}background-palette-color-status${isHover ? '-hover' : ''}`
+		];
+	const bgColor =
+		props[`${prefix}background-color${isHover ? '-hover' : ''}`];
+
+	if (!bgStatus && !isEmpty(bgColor))
+		response.general['background-color'] = bgColor;
 	if (
 		!isEmpty(
 			props[
@@ -440,11 +446,14 @@ const getBackgroundStyles = ({
 	let response = {
 		[`${target}${isHover ? ':hover' : ''} > .maxi-background-displayer`]: {
 			border: getBorderStyles({
-				...getGroupAttributes(
-					props,
-					groupAttrNames.borderRadius,
-					isHover
-				),
+				obj: {
+					...getGroupAttributes(
+						props,
+						groupAttrNames.borderRadius,
+						isHover
+					),
+				},
+				parentBlockStyle: props.parentBlockStyle,
 			}),
 		},
 	};

@@ -41,7 +41,12 @@ export const backgroundColorHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...backgroundColor[key] };
 
-		if ('default' in value) delete value.default;
+		if (key === 'background-palette-color') value.default = 6;
+		else if (
+			key !== 'background-palette-color-status' &&
+			'default' in value
+		)
+			delete value.default;
 
 		response[newKey] = value;
 	});
@@ -101,7 +106,12 @@ export const backgroundSVGHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...backgroundSVG[key] };
 
-		if ('default' in value) delete value.default;
+		if (key === 'background-palette-svg-color') value.default = 6;
+		else if (
+			key !== 'background-palette-svg-color-status' &&
+			'default' in value
+		)
+			delete value.default;
 
 		response[newKey] = value;
 	});

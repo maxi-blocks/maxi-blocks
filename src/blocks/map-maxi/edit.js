@@ -59,12 +59,7 @@ class edit extends MaxiBlockComponent {
 			'map-marker-address': mapMarkerAddress,
 		} = attributes;
 
-		const paletteClasses = getPaletteClasses(
-			attributes,
-			['marker-title', 'marker-address'],
-			'maxi-blocks/map-maxi',
-			parentBlockStyle
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		const loader = new Loader({
 			apiKey: mapApiKey,
@@ -136,7 +131,7 @@ class edit extends MaxiBlockComponent {
 				<div
 					className='maxi-map-container'
 					id={`map-container-${uniqueID}`}
-				></div>
+				/>
 			</MaxiBlock>,
 		];
 	}

@@ -33,7 +33,7 @@ describe('BackgroundControl', () => {
 		await page.waitForTimeout(1000);
 
 		const colorAttributes = await getBlockAttributes();
-		const result = colorAttributes['palette-preset-background-color'];
+		const result = colorAttributes['background-palette-color'];
 		const expectedColor = 4;
 
 		expect(result).toStrictEqual(expectedColor);

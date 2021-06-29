@@ -152,10 +152,6 @@ const getStyles = props => {
 				[` ${element}.maxi-text-block__content li:hover`]:
 					getTypographyHoverObject(props),
 			}),
-			// [` ${element}.maxi-text-block__content a`]:
-			// 	getTypographyObject(props),
-			// [` ${element}.maxi-text-block__content a:hover`]:
-			// 	getTypographyHoverObject(props),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',

@@ -362,7 +362,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 													color: processSCAttribute(
 														SC,
 														4,
-														'link-color'
+														'color'
 													),
 												}),
 											},

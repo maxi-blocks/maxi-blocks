@@ -79,19 +79,7 @@ class edit extends MaxiBlockComponent {
 			});
 		};
 
-		const paletteClasses = getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'divider',
-				'divider-hover',
-				'box-shadow',
-				'box-shadow-hover',
-			],
-			'maxi-blocks/divider-maxi',
-			parentBlockStyle
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

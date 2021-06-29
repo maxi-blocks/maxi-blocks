@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * Internal dependencies
@@ -12,14 +13,19 @@ import AdvancedNumberControl from '../advanced-number-control';
  * Component
  */
 const SvgWidthControl = props => {
-	const { defaultWidth, width, onChange } = props;
+	const { onChange } = props;
+
+	const width = props['svg-width'];
+	const defaultWidth = getDefaultAttribute('svg-width');
 
 	return (
 		<AdvancedNumberControl
 			label={__('Stroke Width', 'maxi-blocks')}
 			value={width}
 			onChangeValue={val => {
-				onChange(val !== undefined && val !== '' ? val : '');
+				onChange({
+					'svg-width': val !== undefined && val !== '' ? val : '',
+				});
 			}}
 			min={10}
 			max={500}

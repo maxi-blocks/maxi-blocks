@@ -135,7 +135,7 @@ describe('TextMaxi', () => {
 		expect(content).toMatchSnapshot();
 	}, 30000);
 
-	it.only('Test Text Maxi toolbar Link with multiple instances', async () => {
+	it('Test Text Maxi toolbar Link with multiple instances', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
@@ -189,6 +189,7 @@ describe('TextMaxi', () => {
 		// Check frontend
 		const editorPage = page;
 		const previewPage = await openPreviewPage(editorPage);
+		await editorPage.waitForTimeout(1000);
 		await previewPage.waitForSelector('.entry-content');
 		const content = await previewPage.$eval(
 			'.entry-content',

@@ -178,12 +178,7 @@ class edit extends MaxiBlockComponent {
 
 		const classes = 'maxi-number-counter-block';
 
-		const paletteClasses = getPaletteClasses(
-			attributes,
-			['typography', 'circle-background', 'circle-bar-background'],
-			'maxi-blocks/number-counter-maxi',
-			parentBlockStyle
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

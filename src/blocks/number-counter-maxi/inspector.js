@@ -84,15 +84,11 @@ const Inspector = props => {
 												<NumberCounterControl
 													{...getGroupAttributes(
 														attributes,
-														[
-															'numberCounter',
-															'palette',
-														]
+														['numberCounter']
 													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}
-													clientId={clientId}
 												/>
 											),
 										},

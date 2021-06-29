@@ -30,7 +30,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, inRange, isEmpty } from 'lodash';
+import { isNil, inRange, isEmpty, isBoolean, isNumber } from 'lodash';
 
 /**
  * Styles
@@ -321,19 +321,22 @@ const TypographyControl = withFormatValue(props => {
 
 		if (!isHover) return nonHoverValue;
 
-		return (
-			getCustomFormatValue({
-				typography,
-				formatValue,
-				prop,
-				breakpoint: currentBreakpoint,
-				isHover,
-				blockStyle,
-				textLevel,
-				styleCard,
-				styleCardPrefix,
-			}) || nonHoverValue
-		);
+		const hoverValue = getCustomFormatValue({
+			typography,
+			formatValue,
+			prop,
+			breakpoint: currentBreakpoint,
+			isHover,
+			blockStyle,
+			textLevel,
+			styleCard,
+			styleCardPrefix,
+		});
+
+		if (hoverValue || isBoolean(hoverValue) || isNumber(hoverValue))
+			return hoverValue;
+
+		return nonHoverValue;
 	};
 
 	const getWeightOptions = () => {
@@ -488,21 +491,22 @@ const TypographyControl = withFormatValue(props => {
 					className='maxi-typography-control__color'
 					color={getValue(`${prefix}color`)}
 					defaultColor={getDefault(`${prefix}color`)}
-					onChange={val =>
-						onChangeFormat({ [`${prefix}color`]: val })
+					paletteColor={getValue(`${prefix}palette-color`)}
+					paletteStatus={getValue(`${prefix}palette-color-status`)}
+					onChange={({ color, paletteColor, paletteStatus }) =>
+						onChangeFormat({
+							[`${prefix}color`]: color,
+							[`${prefix}palette-color`]: paletteColor,
+							[`${prefix}palette-color-status`]: paletteStatus,
+						})
 					}
-					disableGradient
-					textLevel={textLevel}
 					showPalette
-					disablePalette={disablePalette}
+					textLevel={textLevel}
 					isHover={isHover}
-					palette={{
-						...getGroupAttributes(props, 'palette'),
-					}}
-					colorPaletteType='typography'
-					onChangePalette={val => onChange(val)}
 					deviceType={breakpoint}
 					clientId={clientId}
+					disableGradient
+					disablePalette={disablePalette}
 				/>
 			)}
 			{!hideAlignment && (

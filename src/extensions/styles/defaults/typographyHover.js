@@ -12,7 +12,8 @@ const typographyHover = (function backgroundHoverGenerator() {
 		const newKey = `${key}-hover`;
 		const value = { ...val };
 
-		delete value.default;
+		if (key !== 'palette-color-status-general') delete value.default;
+		if (key === 'palette-color-general') value.default = 5;
 
 		response[newKey] = value;
 	});

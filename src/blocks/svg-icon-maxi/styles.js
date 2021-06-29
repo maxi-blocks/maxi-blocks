@@ -14,29 +14,28 @@ import {
 
 const getNormalObject = props => {
 	const response = {
-		boxShadow: getBoxShadowStyles(
-			{
+		boxShadow: getBoxShadowStyles({
+			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			false,
-			false
-		),
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
 		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
-		border: getBorderStyles(
-			{
+		border: getBorderStyles({
+			obj: {
 				...getGroupAttributes(props, [
 					'border',
 					'borderWidth',
 					'borderRadius',
 				]),
 			},
-			false
-		),
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -64,24 +63,26 @@ const getHoverObject = props => {
 	const response = {
 		border:
 			props['border-status-hover'] &&
-			getBorderStyles(
-				{
+			getBorderStyles({
+				obj: {
 					...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
 						true
 					),
 				},
-				true
-			),
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
-			getBoxShadowStyles(
-				{
+			getBoxShadowStyles({
+				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				true
-			),
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 	};
 
 	return response;

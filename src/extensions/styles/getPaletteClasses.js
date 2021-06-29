@@ -1,211 +1,157 @@
 /**
- * Internal dependencies
- */
-import getPaletteDefault from './getPaletteDefault';
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
 import { isEmpty, isNil } from 'lodash';
 
-const getPaletteClasses = (
-	attributes,
-	allowedPalettes,
-	blockName,
-	parentBlockStyle,
-	textLevel
-) => {
-	const paletteClasses = classnames(
-		allowedPalettes.includes('shape-divider-top') &&
-			!attributes['palette-custom-shape-divider-top-color'] &&
-			`maxi-sc-${parentBlockStyle}-shape-divider-top-color-${
-				!isNil(attributes['palette-preset-shape-divider-top-color'])
-					? attributes['palette-preset-shape-divider-top-color']
-					: getPaletteDefault(
-							'shape-divider-top',
-							blockName,
-							textLevel
-					  )
-			}`,
-		allowedPalettes.includes('shape-divider-bottom') &&
-			!attributes['palette-custom-shape-divider-bottom-color'] &&
-			`maxi-sc-${parentBlockStyle}-shape-divider-bottom-color-${
-				!isNil(attributes['palette-preset-shape-divider-bottom-color'])
-					? attributes['palette-preset-shape-divider-bottom-color']
-					: getPaletteDefault(
-							'shape-divider-bottom',
-							blockName,
-							textLevel
-					  )
-			}`,
-		allowedPalettes.includes('marker-title') &&
-			!attributes['palette-custom-marker-title-color'] &&
-			`maxi-sc-${parentBlockStyle}-marker-title-color-${
-				!isNil(attributes['palette-preset-marker-title-color'])
-					? attributes['palette-preset-marker-title-color']
-					: getPaletteDefault('marker-title', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('marker-address') &&
-			!attributes['palette-custom-marker-address-color'] &&
-			`maxi-sc-${parentBlockStyle}-marker-address-color-${
-				!isNil(attributes['palette-preset-marker-address-color'])
-					? attributes['palette-preset-marker-address-color']
-					: getPaletteDefault('marker-address', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('circle-background') &&
-			!attributes['palette-custom-circle-background-color'] &&
-			`maxi-sc-${parentBlockStyle}-circle-background-color-${
-				!isNil(attributes['palette-preset-circle-background-color'])
-					? attributes['palette-preset-circle-background-color']
-					: getPaletteDefault(
-							'circle-background',
-							blockName,
-							textLevel
-					  )
-			}`,
-		allowedPalettes.includes('circle-bar-background') &&
-			!attributes['palette-custom-circle-bar-background-color'] &&
-			`maxi-sc-${parentBlockStyle}-circle-bar-background-color-${
-				!isNil(attributes['palette-preset-circle-bar-background-color'])
-					? attributes['palette-preset-circle-bar-background-color']
-					: getPaletteDefault(
-							'circle-bar-background',
-							blockName,
-							textLevel
-					  )
-			}`,
-		allowedPalettes.includes('svg-background') &&
-			attributes['background-active-media'] === 'svg' &&
-			!attributes['palette-custom-svg-background-color'] &&
-			`maxi-sc-${parentBlockStyle}-svg-background-color-${
-				!isNil(attributes['palette-preset-svg-background-color'])
-					? attributes['palette-preset-svg-background-color']
-					: getPaletteDefault('svg-background', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('hover-background') &&
-			attributes['hover-background-active-media'] === 'color' &&
-			!attributes['palette-custom-hover-background-color'] &&
-			`maxi-sc-${parentBlockStyle}-hover-background-color-${
-				!isNil(attributes['palette-preset-hover-background-color'])
-					? attributes['palette-preset-hover-background-color']
-					: getPaletteDefault(
-							'hover-background',
-							blockName,
-							textLevel
-					  )
-			}`,
-		allowedPalettes.includes('background') &&
-			attributes['background-active-media'] === 'color' &&
-			!attributes['palette-custom-background-color'] &&
-			`maxi-sc-${parentBlockStyle}-background-color-${
-				!isNil(attributes['palette-preset-background-color'])
-					? attributes['palette-preset-background-color']
-					: getPaletteDefault('background', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('background-hover') &&
-			attributes['background-active-media-hover'] === 'color' &&
-			!attributes['palette-custom-background-hover-color'] &&
-			attributes['background-status-hover'] &&
-			`maxi-sc-${parentBlockStyle}-background-hover-color-${
-				!isNil(attributes['palette-preset-background-hover-color'])
-					? attributes['palette-preset-background-hover-color']
-					: getPaletteDefault('background', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('border') &&
-			!isEmpty(attributes['border-style-general']) &&
-			attributes['border-style-general'] !== 'none' &&
-			!attributes['palette-custom-border-color'] &&
-			`maxi-sc-${parentBlockStyle}-border-color-${
-				!isNil(attributes['palette-preset-border-color'])
-					? attributes['palette-preset-border-color']
-					: getPaletteDefault('border', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('border-hover') &&
-			attributes['border-style-general-hover'] !== 'none' &&
-			!attributes['palette-custom-border-hover-color'] &&
-			attributes['border-status-hover'] &&
-			`maxi-sc-${parentBlockStyle}-border-hover-color-${
-				!isNil(attributes['palette-preset-border-hover-color'])
-					? attributes['palette-preset-border-hover-color']
-					: getPaletteDefault('border', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('box-shadow') &&
-			!isNil(attributes['box-shadow-blur-general']) &&
-			!isNil(attributes['box-shadow-horizontal-general']) &&
-			!isNil(attributes['box-shadow-vertical-general']) &&
-			!isNil(attributes['box-shadow-spread-general']) &&
-			!attributes['palette-custom-box-shadow-color'] &&
-			`maxi-sc-${parentBlockStyle}-box-shadow-color-${
-				!isNil(attributes['palette-preset-box-shadow-color'])
-					? attributes['palette-preset-box-shadow-color']
-					: getPaletteDefault('box-shadow', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('box-shadow-hover') &&
-			!attributes['palette-custom-box-shadow-hover-color'] &&
-			attributes['box-shadow-status-hover'] &&
-			`maxi-sc-${parentBlockStyle}-box-shadow-hover-color-${
-				!isNil(attributes['palette-preset-box-shadow-hover-color'])
-					? attributes['palette-preset-box-shadow-hover-color']
-					: getPaletteDefault('box-shadow', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('typography') &&
-			!attributes['palette-custom-typography-color'] &&
-			`maxi-sc-${parentBlockStyle}-typography-color-${
-				!isNil(attributes['palette-preset-typography-color'])
-					? attributes['palette-preset-typography-color']
-					: getPaletteDefault('typography', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('typography-hover') &&
-			!attributes['palette-custom-typography-hover-color'] &&
-			attributes['typography-status-hover'] &&
-			`maxi-sc-${parentBlockStyle}-typography-hover-color-${
-				!isNil(attributes['palette-preset-typography-hover-color'])
-					? attributes['palette-preset-typography-hover-color']
-					: getPaletteDefault('typography', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('icon') &&
-			!isEmpty(attributes['icon-name']) &&
-			!attributes['palette-custom-icon-color'] &&
-			`maxi-sc-${parentBlockStyle}-icon-color-${
-				!isNil(attributes['palette-preset-icon-color'])
-					? attributes['palette-preset-icon-color']
-					: getPaletteDefault('icon', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('icon-hover') &&
-			!attributes['palette-custom-icon-hover-color'] &&
-			attributes['icon-status-hover'] &&
-			`maxi-sc-${parentBlockStyle}-icon-hover-color-${
-				!isNil(attributes['palette-preset-icon-hover-color'])
-					? attributes['palette-preset-icon-hover-color']
-					: getPaletteDefault('icon', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('divider') &&
-			!isEmpty(attributes['divider-border-style']) &&
-			attributes['divider-border-style'] !== 'none' &&
-			!attributes['palette-custom-divider-color'] &&
-			`maxi-sc-${parentBlockStyle}-divider-color-${
-				!isNil(attributes['palette-preset-divider-color'])
-					? attributes['palette-preset-divider-color']
-					: getPaletteDefault('divider', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('svgColorFill') &&
-			!attributes['palette-custom-svgColorFill-color'] &&
-			`maxi-sc-${parentBlockStyle}-svgColorFill-color-${
-				!isNil(attributes['palette-preset-svgColorFill-color'])
-					? attributes['palette-preset-svgColorFill-color']
-					: getPaletteDefault('svgColorFill', blockName, textLevel)
-			}`,
-		allowedPalettes.includes('svgColorLine') &&
-			!attributes['palette-custom-svgColorLine-color'] &&
-			`maxi-sc-${parentBlockStyle}-svgColorLine-color-${
-				!isNil(attributes['palette-preset-svgColorLine-color'])
-					? attributes['palette-preset-svgColorLine-color']
-					: getPaletteDefault('svgColorLine', blockName, textLevel)
-			}`
-	);
+const getPaletteClasses = (attributes, parentBlockStyle) => {
+	const typographyClass =
+		attributes['palette-color-status-general'] &&
+		attributes['palette-color-general']
+			? `maxi-sc-${parentBlockStyle}-typography-color-${attributes['palette-color-general']}`
+			: null;
+	const typographyClassHover =
+		attributes['typography-status-hover'] &&
+		attributes['palette-color-status-general-hover'] &&
+		attributes['palette-color-general-hover']
+			? `maxi-sc-${parentBlockStyle}-typography-hover-color-${attributes['palette-color-general-hover']}`
+			: null;
+	const backgroundClass =
+		attributes['background-active-media'] === 'color' &&
+		attributes['background-palette-color-status'] &&
+		attributes['background-palette-color']
+			? `maxi-sc-${parentBlockStyle}-background-color-${attributes['background-palette-color']}`
+			: null;
+	const backgroundHoverClass =
+		attributes['background-status-hover'] &&
+		attributes['background-active-media-hover'] === 'color' &&
+		attributes['background-palette-color-status-hover'] &&
+		attributes['background-palette-color-hover']
+			? `maxi-sc-${parentBlockStyle}-background-hover-color-${attributes['background-palette-color-hover']}`
+			: null;
+	const svgBackgroundClass =
+		attributes['background-active-media'] === 'svg' &&
+		attributes['background-palette-svg-color-status'] &&
+		attributes['background-palette-svg-color'] &&
+		`maxi-sc-${parentBlockStyle}-svg-background-color-${attributes['background-palette-svg-color']}`;
+	const borderClass =
+		attributes['border-style-general'] &&
+		attributes['border-style-general'] !== 'none' &&
+		attributes['border-palette-color-status-general'] &&
+		attributes['border-palette-color-general']
+			? `maxi-sc-${parentBlockStyle}-border-color-${attributes['border-palette-color-general']}`
+			: null;
+	const borderClassHover =
+		attributes['border-status-hover'] &&
+		attributes['border-style-general-hover'] &&
+		attributes['border-style-general-hover'] !== 'none' &&
+		attributes['border-palette-color-status-general-hover'] &&
+		attributes['border-palette-color-general-hover']
+			? `maxi-sc-${parentBlockStyle}-border-hover-color-${attributes['border-palette-color-general-hover']}`
+			: null;
+	const boxShadowClass =
+		!isNil(attributes['box-shadow-blur-general']) &&
+		!isNil(attributes['box-shadow-horizontal-general']) &&
+		!isNil(attributes['box-shadow-vertical-general']) &&
+		!isNil(attributes['box-shadow-spread-general']) &&
+		attributes['box-shadow-palette-color-status-general'] &&
+		attributes['box-shadow-palette-color-general']
+			? `maxi-sc-${parentBlockStyle}-box-shadow-color-${attributes['box-shadow-palette-color-general']}`
+			: null;
+	const boxShadowClassHover =
+		attributes['box-shadow-status-hover'] &&
+		!isNil(attributes['box-shadow-blur-general-hover']) &&
+		!isNil(attributes['box-shadow-horizontal-general-hover']) &&
+		!isNil(attributes['box-shadow-vertical-general-hover']) &&
+		!isNil(attributes['box-shadow-spread-general-hover']) &&
+		attributes['box-shadow-palette-color-status-general-hover'] &&
+		attributes['box-shadow-palette-color-general-hover']
+			? `maxi-sc-${parentBlockStyle}-box-shadow-hover-color-${attributes['box-shadow-palette-color-general-hover']}`
+			: null;
+	const shapeDividerTopClass =
+		attributes['shape-divider-top-status'] &&
+		attributes['shape-divider-palette-top-color-status'] &&
+		attributes['shape-divider-palette-top-color']
+			? `maxi-sc-${parentBlockStyle}-shape-divider-top-color-${attributes['shape-divider-palette-top-color']}`
+			: null;
+	const shapeDividerBottomClass =
+		attributes['shape-divider-bottom-status'] &&
+		attributes['shape-divider-palette-bottom-color-status'] &&
+		attributes['shape-divider-palette-bottom-color']
+			? `maxi-sc-${parentBlockStyle}-shape-divider-bottom-color-${attributes['shape-divider-palette-bottom-color']}`
+			: null;
+	const dividerClass =
+		attributes['divider-border-style'] !== 'none' &&
+		!isEmpty(attributes['divider-border-style']) &&
+		attributes['divider-border-style'] !== 'none' &&
+		attributes['divider-palette-border-color-status'] &&
+		attributes['divider-palette-border-color']
+			? `maxi-sc-${parentBlockStyle}-divider-color-${attributes['divider-palette-border-color']}`
+			: null;
+	const numberCounterTextClass =
+		attributes['number-counter-palette-text-color-status'] &&
+		attributes['number-counter-palette-text-color']
+			? `maxi-sc-${parentBlockStyle}-typography-color-${attributes['number-counter-palette-text-color']}`
+			: null;
+	const numberCounterCircleBackgroundClass =
+		attributes['number-counter-palette-circle-background-color-status'] &&
+		attributes['number-counter-palette-circle-background-color']
+			? `maxi-sc-${parentBlockStyle}-circle-background-color-${attributes['number-counter-palette-circle-background-color']}`
+			: null;
+	const numberCounterBarBackgroundClass =
+		attributes['number-counter-palette-circle-bar-color-status'] &&
+		attributes['number-counter-palette-circle-bar-color']
+			? `maxi-sc-${parentBlockStyle}-circle-bar-background-color-${attributes['number-counter-palette-circle-bar-color']}`
+			: null;
+	const markerTitleClass =
+		attributes['map-marker-palette-text-color-status'] &&
+		attributes['map-marker-palette-text-color']
+			? `maxi-sc-${parentBlockStyle}-marker-title-color-${attributes['map-marker-palette-text-color']}`
+			: null;
+	const markerAddressClass =
+		attributes['map-marker-palette-address-color-status'] &&
+		attributes['map-marker-palette-address-color']
+			? `maxi-sc-${parentBlockStyle}-marker-address-color-${attributes['map-marker-palette-address-color']}`
+			: null;
+	const hoverBackgroundClass =
+		attributes['hover-type'] !== 'none' &&
+		attributes['hover-background-palette-color-status'] &&
+		attributes['hover-background-palette-color']
+			? `maxi-sc-${parentBlockStyle}-hover-background-color-${attributes['hover-background-palette-color']}`
+			: null;
+	const svgFillClass =
+		attributes['svg-palette-fill-color-status'] &&
+		attributes['svg-palette-fill-color']
+			? `maxi-sc-${parentBlockStyle}-svgColorFill-color-${attributes['svg-palette-fill-color']}`
+			: null;
+	const svgLineClass =
+		attributes['svg-palette-line-color-status'] &&
+		attributes['svg-palette-line-color']
+			? `maxi-sc-${parentBlockStyle}-svgColorLine-color-${attributes['svg-palette-line-color']}`
+			: null;
 
-	return paletteClasses;
+	return classnames(
+		typographyClass,
+		typographyClassHover,
+		backgroundClass,
+		backgroundHoverClass,
+		svgBackgroundClass,
+		borderClass,
+		borderClassHover,
+		boxShadowClass,
+		boxShadowClassHover,
+		shapeDividerTopClass,
+		shapeDividerBottomClass,
+		dividerClass,
+		numberCounterTextClass,
+		numberCounterCircleBackgroundClass,
+		numberCounterBarBackgroundClass,
+		markerTitleClass,
+		markerAddressClass,
+		hoverBackgroundClass,
+		svgFillClass,
+		svgLineClass
+	);
 };
 
 export default getPaletteClasses;

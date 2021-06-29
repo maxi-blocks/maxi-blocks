@@ -297,9 +297,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						type: 'p',
 						firstLabel: 'Paragraph',
 						firstColorDefault: 3,
-						secondColor: 'link',
-						secondLabel: 'Link',
-						secondColorDefault: 4,
 					}),
 					{
 						label: __('Headings', 'maxi-blocks'),
@@ -327,6 +324,308 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						firstColorDefault: 4,
 						disableTypography: true,
 					}),
+					{
+						label: __('Link', 'maxi-blocks'),
+						content: (
+							<>
+								<FancyRadioControl
+									label={__(
+										'Use Global Link Colour',
+										'maxi-blocks'
+									)}
+									selected={processSCAttribute(
+										SC,
+										'link-color-global',
+										'link'
+									)}
+									options={[
+										{
+											label: __('Yes', 'maxi-blocks'),
+											value: 1,
+										},
+										{
+											label: __('No', 'maxi-blocks'),
+											value: 0,
+										},
+									]}
+									onChange={val => {
+										onChangeValue(
+											{
+												'link-color-global': val,
+												...(isEmpty(
+													processSCAttribute(
+														SC,
+														'link-color',
+														'link'
+													)
+												) && {
+													color: processSCAttribute(
+														SC,
+														4,
+														'link-color'
+													),
+												}),
+											},
+											'link'
+										);
+									}}
+								/>
+								{processSCAttribute(
+									SC,
+									'link-color-global',
+									'link'
+								) && (
+									<ColorControl
+										label={__('Link', 'maxi-blocks')}
+										className={`maxi-style-cards-control__sc__link--${SCStyle}`}
+										color={
+											processSCAttribute(
+												SC,
+												'link-color',
+												'link'
+											) ||
+											getStyleCardAttr(4, SCStyle, true)
+										}
+										defaultColor={getStyleCardAttr(
+											4,
+											SCStyle,
+											true
+										)}
+										onChange={({ color }) => {
+											onChangeValue(
+												{ 'link-color': color },
+												'link'
+											);
+										}}
+										disableGradient
+										disablePalette
+									/>
+								)}
+								<FancyRadioControl
+									label={__(
+										'Use Global Link Hover Colour',
+										'maxi-blocks'
+									)}
+									selected={processSCAttribute(
+										SC,
+										'hover-color-global',
+										'link'
+									)}
+									options={[
+										{
+											label: __('Yes', 'maxi-blocks'),
+											value: 1,
+										},
+										{
+											label: __('No', 'maxi-blocks'),
+											value: 0,
+										},
+									]}
+									onChange={val => {
+										onChangeValue(
+											{
+												'hover-color-global': val,
+												...(isEmpty(
+													processSCAttribute(
+														SC,
+														'hover-color',
+														'link'
+													)
+												) && {
+													color: processSCAttribute(
+														SC,
+														1,
+														'color'
+													),
+												}),
+											},
+											'link'
+										);
+									}}
+								/>
+								{processSCAttribute(
+									SC,
+									'hover-color-global',
+									'link'
+								) && (
+									<ColorControl
+										label={__('Link Hover', 'maxi-blocks')}
+										className={`maxi-style-cards-control__sc__link--${SCStyle}`}
+										color={
+											processSCAttribute(
+												SC,
+												'hover-color',
+												'link'
+											) ||
+											getStyleCardAttr(1, SCStyle, true)
+										}
+										defaultColor={getStyleCardAttr(
+											4,
+											SCStyle,
+											true
+										)}
+										onChange={val => {
+											onChangeValue(
+												{ 'hover-color': val },
+												'link'
+											);
+										}}
+										disableGradient
+										disablePalette
+									/>
+								)}
+								<FancyRadioControl
+									label={__(
+										'Use Global Link Active Colour',
+										'maxi-blocks'
+									)}
+									selected={processSCAttribute(
+										SC,
+										'active-color-global',
+										'link'
+									)}
+									options={[
+										{
+											label: __('Yes', 'maxi-blocks'),
+											value: 1,
+										},
+										{
+											label: __('No', 'maxi-blocks'),
+											value: 0,
+										},
+									]}
+									onChange={val => {
+										onChangeValue(
+											{
+												'active-color-global': val,
+												...(isEmpty(
+													processSCAttribute(
+														SC,
+														'active-color',
+														'link'
+													)
+												) && {
+													color: processSCAttribute(
+														SC,
+														2,
+														'color'
+													),
+												}),
+											},
+											'link'
+										);
+									}}
+								/>
+								{processSCAttribute(
+									SC,
+									'active-color-global',
+									'link'
+								) && (
+									<ColorControl
+										label={__('Link Active', 'maxi-blocks')}
+										className={`maxi-style-cards-control__sc__link--${SCStyle}`}
+										color={
+											processSCAttribute(
+												SC,
+												'active-color',
+												'link'
+											) ||
+											getStyleCardAttr(1, SCStyle, true)
+										}
+										defaultColor={getStyleCardAttr(
+											4,
+											SCStyle,
+											true
+										)}
+										onChange={({ color }) => {
+											onChangeValue(
+												{ 'active-color': color },
+												'link'
+											);
+										}}
+										disableGradient
+										disablePalette
+									/>
+								)}
+								<FancyRadioControl
+									label={__(
+										'Use Global Link Visited Colour',
+										'maxi-blocks'
+									)}
+									selected={processSCAttribute(
+										SC,
+										'visited-color-global',
+										'link'
+									)}
+									options={[
+										{
+											label: __('Yes', 'maxi-blocks'),
+											value: 1,
+										},
+										{
+											label: __('No', 'maxi-blocks'),
+											value: 0,
+										},
+									]}
+									onChange={val => {
+										onChangeValue(
+											{
+												'visited-color-global': val,
+												...(isEmpty(
+													processSCAttribute(
+														SC,
+														'visited-color',
+														'link'
+													)
+												) && {
+													color: processSCAttribute(
+														SC,
+														2,
+														'color'
+													),
+												}),
+											},
+											'link'
+										);
+									}}
+								/>
+								{processSCAttribute(
+									SC,
+									'visited-color-global',
+									'link'
+								) && (
+									<ColorControl
+										label={__(
+											'Link Visited',
+											'maxi-blocks'
+										)}
+										className={`maxi-style-cards-control__sc__link--${SCStyle}`}
+										color={
+											processSCAttribute(
+												SC,
+												'visited-color',
+												'link'
+											) ||
+											getStyleCardAttr(1, SCStyle, true)
+										}
+										defaultColor={getStyleCardAttr(
+											4,
+											SCStyle,
+											true
+										)}
+										onChange={({ color }) => {
+											onChangeValue(
+												{ 'visited-color': color },
+												'link'
+											);
+										}}
+										disableGradient
+										disablePalette
+									/>
+								)}
+							</>
+						),
+					},
 				]}
 			/>
 		</div>

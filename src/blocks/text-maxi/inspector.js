@@ -285,6 +285,7 @@ const Inspector = memo(
 																			attributes,
 																			[
 																				'typography',
+																				'link',
 																			]
 																		)}
 																		textLevel={
@@ -308,6 +309,7 @@ const Inspector = memo(
 																		blockStyle={
 																			blockStyle
 																		}
+																		allowLink
 																	/>
 																),
 															},

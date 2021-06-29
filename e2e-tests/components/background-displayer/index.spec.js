@@ -1,21 +1,18 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Interactive dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { openSidebar } from '../../utils';
 
 describe('BackgroundControl', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 	});
+
 	it('Check Background Color', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
@@ -92,6 +89,7 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundVideo).toMatchSnapshot();
 	});
+
 	it('Check Background Gradient', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
@@ -106,6 +104,7 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundGradient).toMatchSnapshot();
 	});
+
 	it('Check BackgroundShape', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
@@ -125,6 +124,7 @@ describe('BackgroundControl', () => {
 
 		expect(backgroundShape).toMatchSnapshot();
 	});
+
 	it('Check Background Layers', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 

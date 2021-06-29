@@ -973,6 +973,7 @@ const Inspector = props => {
 											label: __('Shape', 'maxi-blocks'),
 											content: (
 												<SVGDefaultsDisplayer
+													usedPlace='image-shape'
 													SVGOptions={SVGData}
 													SVGCurrentElement={
 														SVGCurrentElement

@@ -17,6 +17,7 @@ describe('BackgroundControl', () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 	});
+
 	it('Check Background Color', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
@@ -140,6 +141,7 @@ describe('BackgroundControl', () => {
 			backgroundSettings
 		);
 	});
+
 	it('Check Background Gradient', async () => {
 		await setBrowserViewport('large');
 		const accordionPanel = await openSidebar(page, 'background');
@@ -192,7 +194,10 @@ describe('BackgroundControl', () => {
 
 		expect(gradient).toStrictEqual(expectGradient);
 	});
+
 	it('Check BackgroundShape', async () => {
+		const { uniqueID } = await getBlockAttributes();
+
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
@@ -204,8 +209,7 @@ describe('BackgroundControl', () => {
 			click => click[1].click()
 		);
 
-		const expectShape =
-			'<svg xml:space="preserve" viewBox="0 0 36.1 36.1" version="1.1" y="0" x="0" xmlns="http://www.w3.org/2000/svg" data-item="group-maxi-12__svg"><g><path d="M24.5 7.8c-2.1-1.3-4.4-2.2-6.9-2.8-2.4-.6-4.8-.9-7.1-.7-2.4.1-4.4.7-6 1.6-1.8 1-3 2.4-3.7 4.1-.3.8-.4 1.7-.2 2.6.1.7.4 1.5.9 2.4.3.5.8 1.4 1.5 2.4.6 1 1 1.8 1.2 2.5.2.7.3 1.6.3 2.7 0 .6-.1 1.6-.1 2.9 0 1.1.2 2.1.5 2.8.4 1 1.1 1.8 2.1 2.4 1.2.8 2.4 1.1 3.7 1.1.9 0 2-.3 3.5-.8 1.8-.6 3-1 3.7-1.1 1.5-.3 2.9-.3 4.4.1 3.2.8 5.7 1.1 7.5.9 2.5-.2 4.2-1.2 5.1-3.1.7-1.3.9-2.8.7-4.6-.2-1.7-.8-3.6-1.7-5.5-1-2-2.2-3.8-3.8-5.5-1.7-1.8-3.6-3.2-5.6-4.4z" fill=""></path></g></svg>';
+		const expectShape = `<svg viewBox="0 0 36.1 36.1" xmlns="http://www.w3.org/2000/svg" data-item="${uniqueID}__svg"><circle fill="" r="17.2" cy="18" cx="18"></circle></svg>`;
 		const attributes = await getBlockAttributes();
 
 		expect(
@@ -214,6 +218,7 @@ describe('BackgroundControl', () => {
 				.replace(/\s/g, '')
 		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
 	});
+
 	it('Check Background Layers', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 

@@ -27,7 +27,7 @@ import { shapeIcon } from '../../icons';
 /**
  * Block
  */
-registerBlockType('maxi-blocks/svg-icon-maxi', {
+registerBlockType('maxi-blocks/shape-maxi', {
 	title: __('Shape Maxi', 'maxi-blocks'),
 	icon: shapeIcon,
 	description: __('Insert, modify or style Shapes', 'maxi-blocks'),

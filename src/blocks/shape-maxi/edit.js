@@ -82,7 +82,7 @@ class edit extends MaxiBlockComponent {
 				<>
 					<MaxiModal
 						clientId={clientId}
-						type='svg'
+						type='block-shape'
 						empty={isEmptyContent}
 						style={parentBlockStyle}
 						openFirstTime={openFirstTime}

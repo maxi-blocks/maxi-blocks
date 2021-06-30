@@ -70,6 +70,7 @@ const DividerColor = props => {
 					}
 					disableGradient
 					showPalette
+					allowedGlobalTypes={['divider-color']}
 				/>
 			</div>
 		</ToolbarPopover>

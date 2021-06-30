@@ -113,6 +113,7 @@ const BackgroundColor = props => {
 							})
 						}
 						showPalette
+						allowedGlobalTypes={['button-background-color']}
 					/>
 				)}
 			</div>

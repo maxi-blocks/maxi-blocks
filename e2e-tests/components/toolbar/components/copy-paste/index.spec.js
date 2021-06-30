@@ -54,8 +54,6 @@ describe('CopyPaste from Toolbar', () => {
 			delete firstBlockAttr[attr];
 		});
 
-		debugger;
-
 		await expect(isEqual(firstBlockAttr, secondBlockAttr)).toBeTruthy();
 	});
 	it('Should copy and paste styles with special paste', async () => {

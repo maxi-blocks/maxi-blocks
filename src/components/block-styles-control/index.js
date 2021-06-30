@@ -2,12 +2,12 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import SelectControl from '../select-control';
+import { getBlockStyle } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -23,20 +23,10 @@ import './editor.scss';
  * Component
  */
 const BlockStylesControl = props => {
-	const { blockStyle, onChange, isFirstOnHierarchy, className } = props;
+	const { blockStyle, onChange, isFirstOnHierarchy, className, clientId } =
+		props;
 
 	const classes = classnames('maxi-block-style-control', className);
-
-	const { parentBlockStyle } = useSelect(select => {
-		const { getSelectedBlockClientId, getBlockAttributes } =
-			select('core/block-editor');
-
-		const { parentBlockStyle } = getBlockAttributes(
-			getSelectedBlockClientId()
-		);
-
-		return { parentBlockStyle };
-	});
 
 	const getSelectorOptions = () => {
 		if (isFirstOnHierarchy)
@@ -72,9 +62,12 @@ const BlockStylesControl = props => {
 				<div className='maxi-block-style-preview'>
 					{__('Block Style: ', 'maxi-blocks')}
 					<span
-						className={`maxi-block-style-preview__${parentBlockStyle}`}
+						className={`maxi-block-style-preview__${getBlockStyle(
+							clientId
+						)}`}
 					>
-						{__('Parent', 'maxi-blocks')} | {parentBlockStyle}
+						{__('Parent', 'maxi-blocks')} |{' '}
+						{getBlockStyle(clientId)}
 					</span>
 				</div>
 			)}

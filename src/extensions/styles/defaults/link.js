@@ -5,7 +5,7 @@ const link = {
 	},
 	'link-palette-color-general': {
 		type: 'number',
-		default: 3,
+		default: 4,
 	},
 	'link-color-general': {
 		type: 'string',
@@ -16,7 +16,7 @@ const link = {
 	},
 	'link-hover-palette-color-general': {
 		type: 'number',
-		default: 3,
+		default: 6,
 	},
 	'link-hover-color-general': {
 		type: 'string',
@@ -27,7 +27,7 @@ const link = {
 	},
 	'link-active-palette-color-general': {
 		type: 'number',
-		default: 3,
+		default: 6,
 	},
 	'link-active-color-general': {
 		type: 'string',
@@ -38,7 +38,7 @@ const link = {
 	},
 	'link-visited-palette-color-general': {
 		type: 'number',
-		default: 3,
+		default: 6,
 	},
 	'link-visited-color-general': {
 		type: 'string',

@@ -31,7 +31,7 @@ h2.gx_error {
 	color: #fff !important;
 	&__toggle {
 		svg {
-			fill: #fff !important;
+			fill: rgb(59, 28, 28) !important;
 		}
 	}
 }
@@ -130,6 +130,10 @@ body {
 			visibility: visible !important;
 			opacity: 1 !important;
 		}
+	}
+
+	&.maxi-block--has-link .maxi-text-block__content{
+		transition: color .3s ease;
 	}
 }
 

@@ -141,6 +141,7 @@ const DividerControl = props => {
 					}
 					disableGradient
 					showPalette
+					allowedGlobalTypes={['divider-color']}
 					isHover={isHover}
 				/>
 			)}

@@ -501,6 +501,7 @@ const TypographyControl = withFormatValue(props => {
 						})
 					}
 					showPalette
+					allowedGlobalTypes={['button-color', 'text-color']}
 					textLevel={textLevel}
 					isHover={isHover}
 					deviceType={breakpoint}

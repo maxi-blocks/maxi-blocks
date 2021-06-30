@@ -15,13 +15,12 @@ import { getBlockStyle } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { has } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { getTypographyFromSC } from '../../extensions/style-cards';
 
 /**
  * Component
@@ -33,39 +32,66 @@ const ColorPaletteControl = props => {
 		status,
 		onChange,
 		textLevel,
+		allowedGlobalTypes,
 		clientId,
 		className,
 	} = props;
 
-	const { selectedSC } = useSelect(select => {
+	const { selectedSC, currentBlockName } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
 
 		const selectedSC = receiveMaxiSelectedStyleCard()?.value || {};
 
+		const { getSelectedBlockClientId, getBlockName } =
+			select('core/block-editor');
+
+		const currentBlockName = getBlockName(getSelectedBlockClientId());
+
 		return {
 			selectedSC,
+			currentBlockName,
 		};
 	});
 
-	const SCPaletteStatus = !isEmpty(selectedSC)
-		? getTypographyFromSC(
-				selectedSC[`${getBlockStyle(clientId)}`],
-				textLevel
-		  )['color-global']
-		: false;
+	const currentSC = selectedSC[`${getBlockStyle(clientId)}`].styleCard;
+
+	const paletteClasses = classnames(
+		'maxi-sc-color-palette',
+		(currentBlockName === 'maxi-blocks/svg-icon-maxi' &&
+			allowedGlobalTypes.includes('icon-line-color') &&
+			has(currentSC.icon, 'line-global') &&
+			currentSC.icon['line-global']) ||
+			(currentBlockName === 'maxi-blocks/svg-icon-maxi' &&
+				allowedGlobalTypes.includes('icon-fill-color') &&
+				has(currentSC.icon, 'fill-global') &&
+				currentSC.icon['fill-global']) ||
+			(currentBlockName === 'maxi-blocks/divider-maxi' &&
+				allowedGlobalTypes.includes('divider-color') &&
+				has(currentSC, 'divider') &&
+				currentSC.divider['color-global']) ||
+			(currentBlockName === 'maxi-blocks/text-maxi' &&
+				allowedGlobalTypes.includes('text-color') &&
+				has(currentSC, textLevel) &&
+				currentSC[textLevel]['color-global']) ||
+			(currentBlockName === 'maxi-blocks/button-maxi' &&
+				allowedGlobalTypes.includes('button-background-color') &&
+				has(currentSC, 'button') &&
+				currentSC.button['background-color-global']) ||
+			(currentBlockName === 'maxi-blocks/button-maxi' &&
+				allowedGlobalTypes.includes('button-color') &&
+				has(currentSC, 'button') &&
+				currentSC.button['color-global'])
+			? 'palette-disabled'
+			: null
+	);
 
 	const classes = classnames(
 		`maxi-color-palette-control maxi-color-palette--${getBlockStyle(
 			clientId
 		)}`,
 		className
-	);
-
-	const paletteClasses = classnames(
-		'maxi-sc-color-palette',
-		SCPaletteStatus && 'palette-disabled'
 	);
 
 	return (

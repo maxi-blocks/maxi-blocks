@@ -42,6 +42,7 @@ const ColorControl = props => {
 		disablePalette,
 		textLevel,
 		showPalette = false,
+		allowedGlobalTypes,
 		deviceType,
 		clientId,
 	} = props;
@@ -128,6 +129,7 @@ const ColorControl = props => {
 					value={paletteColor}
 					status={paletteStatus}
 					textLevel={textLevel}
+					allowedGlobalTypes={allowedGlobalTypes}
 					isHover={isHover}
 					onChange={obj => onChangeValue(obj)}
 					deviceType={deviceType}

@@ -92,6 +92,7 @@ const ColorLayer = props => {
 					});
 				}}
 				disablePalette={type === 'layer'}
+				allowedGlobalTypes={['button-background-color']}
 				showPalette
 				isHover={isHover}
 				clientId={clientId}

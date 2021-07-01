@@ -18,22 +18,24 @@ import {
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
-			...getGroupAttributes(props, [
-				'border',
-				'borderWidth',
-				'borderRadius',
-			]),
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		boxShadow: getBoxShadowStyles(
-			{
+		boxShadow: getBoxShadowStyles({
+			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			false,
-			props['arrow-status']
-		),
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -67,25 +69,26 @@ const getHoverObject = props => {
 	const response = {
 		border:
 			props['border-status-hover'] &&
-			getBorderStyles(
-				{
+			getBorderStyles({
+				obj: {
 					...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
 						true
 					),
 				},
-				true
-			),
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
-			getBoxShadowStyles(
-				{
+			getBoxShadowStyles({
+				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				true,
-				props['arrow-status']
-			),
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 	};
 
 	return response;
@@ -94,7 +97,10 @@ const getHoverObject = props => {
 const getTypographyObject = (props, isList = false) => {
 	const response = {
 		typography: getTypographyStyles({
-			...getGroupAttributes(props, 'typography'),
+			obj: {
+				...getGroupAttributes(props, 'typography'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 		...(isList && {
 			listAlignment: getAlignmentTextStyles(
@@ -111,12 +117,13 @@ const getTypographyObject = (props, isList = false) => {
 
 const getTypographyHoverObject = props => {
 	const response = {
-		typography: getTypographyStyles(
-			{
+		typography: getTypographyStyles({
+			obj: {
 				...getGroupAttributes(props, 'typographyHover'),
 			},
-			true
-		),
+			isHover: true,
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 	};
 
 	return response;

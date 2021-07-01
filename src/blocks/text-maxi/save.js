@@ -16,7 +16,6 @@ import { getPaletteClasses } from '../../extensions/styles';
  */
 const save = props => {
 	const {
-		defaultBlockStyle,
 		textLevel,
 		isList,
 		typeOfList,
@@ -30,19 +29,7 @@ const save = props => {
 
 	const paletteClasses = getPaletteClasses(
 		props.attributes,
-		[
-			'background',
-			'background-hover',
-			'border',
-			'border-hover',
-			'box-shadow',
-			'box-shadow-hover',
-			'typography',
-			'typography-hover',
-		],
-		name,
-		parentBlockStyle,
-		textLevel
+		parentBlockStyle
 	);
 
 	return (

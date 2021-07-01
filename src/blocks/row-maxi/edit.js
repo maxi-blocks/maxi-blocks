@@ -59,19 +59,7 @@ class edit extends MaxiBlockComponent {
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
 
-		const paletteClasses = getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-			],
-			'maxi-blocks/row-maxi',
-			parentBlockStyle
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -157,9 +145,8 @@ class edit extends MaxiBlockComponent {
 const editSelect = withSelect((select, ownProps) => {
 	const { clientId } = ownProps;
 
-	const { getSelectedBlockClientId, getBlockParents, getBlockOrder } = select(
-		'core/block-editor'
-	);
+	const { getSelectedBlockClientId, getBlockParents, getBlockOrder } =
+		select('core/block-editor');
 
 	const selectedBlockId = getSelectedBlockClientId();
 	const originalNestedBlocks = getBlockParents(selectedBlockId);

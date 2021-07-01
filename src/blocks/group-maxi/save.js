@@ -21,19 +21,7 @@ const save = props => {
 
 	const name = 'maxi-blocks/group-maxi';
 
-	const paletteClasses = getPaletteClasses(
-		attributes,
-		[
-			'background',
-			'background-hover',
-			'border',
-			'border-hover',
-			'box-shadow',
-			'box-shadow-hover',
-		],
-		name,
-		parentBlockStyle
-	);
+	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 	return (
 		<MaxiBlock

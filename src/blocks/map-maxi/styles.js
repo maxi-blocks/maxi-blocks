@@ -38,7 +38,7 @@ const getMapObject = (props, target) => {
 	const response = {
 		map: getMapStyles(
 			{
-				...getGroupAttributes(props, ['map', 'palette']),
+				...getGroupAttributes(props, 'map'),
 			},
 			target
 		),

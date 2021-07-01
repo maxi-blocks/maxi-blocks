@@ -11,10 +11,7 @@ import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
 import OpacityControl from '../opacity-control';
 import FancyRadioControl from '../fancy-radio-control';
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -32,7 +29,7 @@ import * as mapMarkers from '../../icons/map-icons';
  * Component
  */
 const MapControl = props => {
-	const { className, onChange, clientId } = props;
+	const { className, onChange } = props;
 
 	const classes = classnames('maxi-map-control', className);
 
@@ -68,7 +65,7 @@ const MapControl = props => {
 			<AdvancedNumberControl
 				label={__('Zoom', 'maxi-blocks')}
 				min={1}
-				max={999}
+				max={22}
 				initial={1}
 				step={1}
 				value={props['map-zoom']}
@@ -143,8 +140,8 @@ const MapControl = props => {
 						defaultColor={getDefaultAttribute(
 							'map-marker-fill-color'
 						)}
-						onChange={val =>
-							onChange({ 'map-marker-fill-color': val })
+						onChange={({ color }) =>
+							onChange({ 'map-marker-fill-color': color })
 						}
 					/>
 					<ColorControl
@@ -154,8 +151,8 @@ const MapControl = props => {
 						defaultColor={getDefaultAttribute(
 							'map-marker-stroke-color'
 						)}
-						onChange={val =>
-							onChange({ 'map-marker-stroke-color': val })
+						onChange={({ color }) =>
+							onChange({ 'map-marker-stroke-color': color })
 						}
 					/>
 				</>
@@ -169,16 +166,19 @@ const MapControl = props => {
 			/>
 			<ColorControl
 				label={__('Marker Text', 'maxi-blocks')}
-				disableOpacity
 				color={props['map-marker-text-color']}
 				defaultColor={getDefaultAttribute('map-marker-text-color')}
-				onChange={val => onChange({ 'map-marker-text-color': val })}
+				paletteColor={props['map-marker-palette-text-color']}
+				paletteStatus={props['map-marker-palette-text-color-status']}
+				onChange={({ color, paletteColor, paletteStatus }) =>
+					onChange({
+						'map-marker-text-color': color,
+						'map-marker-palette-text-color': paletteColor,
+						'map-marker-palette-text-color-status': paletteStatus,
+					})
+				}
 				showPalette
-				palette={{ ...getGroupAttributes(props, 'palette') }}
-				isHover={false}
-				colorPaletteType='marker-title'
-				onChangePalette={val => onChange(val)}
-				clientId={clientId}
+				disableOpacity
 			/>
 			<TextControl
 				className='maxi-map-control__full-width-text'
@@ -188,16 +188,20 @@ const MapControl = props => {
 			/>
 			<ColorControl
 				label={__('Marker Address', 'maxi-blocks')}
-				disableOpacity
 				color={props['map-marker-address-color']}
 				defaultColor={getDefaultAttribute('map-marker-address-color')}
-				onChange={val => onChange({ 'map-marker-address-color': val })}
+				paletteColor={props['map-marker-palette-address-color']}
+				paletteStatus={props['map-marker-palette-address-color-status']}
+				onChange={({ color, paletteColor, paletteStatus }) =>
+					onChange({
+						'map-marker-address-color': color,
+						'map-marker-palette-address-color': paletteColor,
+						'map-marker-palette-address-color-status':
+							paletteStatus,
+					})
+				}
 				showPalette
-				palette={{ ...getGroupAttributes(props, 'palette') }}
-				isHover={false}
-				colorPaletteType='marker-address'
-				onChangePalette={val => onChange(val)}
-				clientId={clientId}
+				disableOpacity
 			/>
 		</div>
 	);

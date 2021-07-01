@@ -144,7 +144,6 @@ const BackgroundControl = props => {
 				<>
 					{!disableColor && backgroundActiveMedia === 'color' && (
 						<ColorLayer
-							{...getGroupAttributes(props, 'palette')}
 							colorOptions={{
 								...getGroupAttributes(
 									props,
@@ -211,7 +210,7 @@ const BackgroundControl = props => {
 					)}
 					{!disableSVG && backgroundActiveMedia === 'svg' && (
 						<SVGLayer
-							{...getGroupAttributes(props, 'palette')}
+							{...getGroupAttributes(props, 'svg')}
 							SVGOptions={{
 								...getGroupAttributes(
 									props,

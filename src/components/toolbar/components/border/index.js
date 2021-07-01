@@ -67,15 +67,13 @@ const Border = props => {
 										props
 								  ),
 						borderWidth: '1px',
-						borderColor:
-							getLastBreakpointAttribute(
-								'border-color',
-								breakpoint,
-								props
-							) ||
-							`var(--maxi-${getBlockStyle(clientId)}-color-${
-								props['palette-preset-border-color']
-							})`,
+						borderColor: props[
+							`border-palette-color-status-${breakpoint}`
+						]
+							? `var(--maxi-${getBlockStyle(clientId)}-color-${
+									props[`border-palette-color-${breakpoint}`]
+							  })`
+							: props[`border-color-${breakpoint}`],
 					}}
 				>
 					<Icon
@@ -91,7 +89,6 @@ const Border = props => {
 						'border',
 						'borderWidth',
 						'borderRadius',
-						'palette',
 					])}
 					onChange={value => onChange(value)}
 					breakpoint={breakpoint}

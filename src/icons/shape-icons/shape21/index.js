@@ -1,9 +1,5 @@
 const shape21 = `
-<svg xmlns="http://www.w3.org/2000/svg" x="0" y="0" version="1.1" viewBox="0 0 36.1 36.1" xml:space="preserve">
-	<g>
-		<path d="M34.8 34.5L27 1.5H9.1l-7.8 33h33.5z" />
-	</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36.1 36.1"><path d="M35.2 8.7L16.5 27.4H.9V8.7h34.3z" fill="#081219"/></svg>
 `;
 
 export default shape21;

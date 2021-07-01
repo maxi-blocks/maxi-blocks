@@ -19,6 +19,7 @@ export const getShapeDividerStyles = (obj, location) => {
 
 	return response;
 };
+
 export const getShapeDividerSVGStyles = (obj, location) => {
 	const response = {
 		label: 'Shape Divider SVG',
@@ -26,7 +27,7 @@ export const getShapeDividerSVGStyles = (obj, location) => {
 	};
 
 	if (
-		obj[`palette-custom-shape-divider-${location}-color`] &&
+		!obj[`shape-divider-palette-${location}-color-status`] &&
 		!isEmpty(obj[`shape-divider-${location}-color`])
 	)
 		response.general.fill = obj[`shape-divider-${location}-color`];

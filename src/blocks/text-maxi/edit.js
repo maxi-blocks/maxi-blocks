@@ -84,22 +84,7 @@ class edit extends MaxiBlockComponent {
 			parentBlockStyle,
 		} = attributes;
 
-		const paletteClasses = getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-				'typography',
-				'typography-hover',
-			],
-			'maxi-blocks/text-maxi',
-			parentBlockStyle,
-			textLevel
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		const onChangeRichText = ({ value: formatValue }) => {
 			/**

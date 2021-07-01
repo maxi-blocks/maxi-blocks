@@ -5,6 +5,7 @@ import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
 import { getPaletteClasses } from '../../extensions/styles';
+
 /**
  * External dependencies
  */
@@ -25,19 +26,7 @@ const save = props => {
 			: 'maxi-divider-block--horizontal'
 	);
 
-	const paletteClasses = getPaletteClasses(
-		attributes,
-		[
-			'background',
-			'background-hover',
-			'divider',
-			'divider-hover',
-			'box-shadow',
-			'box-shadow-hover',
-		],
-		name,
-		parentBlockStyle
-	);
+	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 	return (
 		<MaxiBlock

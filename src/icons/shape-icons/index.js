@@ -27,6 +27,3 @@ export { default as shape26 } from './shape26';
 export { default as shape27 } from './shape27';
 export { default as shape28 } from './shape28';
 export { default as shape29 } from './shape29';
-export { default as shape30 } from './shape30';
-export { default as shape31 } from './shape31';
-export { default as shape32 } from './shape32';

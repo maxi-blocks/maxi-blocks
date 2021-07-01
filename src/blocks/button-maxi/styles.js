@@ -40,7 +40,10 @@ const getWrapperObject = props => {
 const getContentObject = props => {
 	const response = {
 		typography: getTypographyStyles({
-			...getGroupAttributes(props, 'typography'),
+			obj: {
+				...getGroupAttributes(props, 'typography'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 	};
 
@@ -49,13 +52,12 @@ const getContentObject = props => {
 
 const getNormalObject = props => {
 	const response = {
-		boxShadow: getBoxShadowStyles(
-			{
+		boxShadow: getBoxShadowStyles({
+			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
+				parentBlockStyle: props.parentBlockStyle,
 			},
-			false,
-			false
-		),
+		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
@@ -68,24 +70,25 @@ const getNormalObject = props => {
 		position: getPositionStyles({
 			...getGroupAttributes(props, 'position'),
 		}),
-		border: getBorderStyles(
-			{
+		border: getBorderStyles({
+			obj: {
 				...getGroupAttributes(props, [
 					'border',
 					'borderWidth',
 					'borderRadius',
 				]),
 			},
-			false
-		),
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		...(props['background-active-media'] === 'color' && {
-			background: getColorBackgroundObject({
-				...getGroupAttributes(props, 'backgroundColor'),
+		...(props['background-active-media'] === 'color' &&
+			!props['background-palette-color-status'] && {
+				background: getColorBackgroundObject({
+					...getGroupAttributes(props, 'backgroundColor'),
+				}),
 			}),
-		}),
 		...(props['background-active-media'] === 'gradient' && {
 			background: getGradientBackgroundObject({
 				...getGroupAttributes(props, 'backgroundGradient'),
@@ -100,30 +103,33 @@ const getHoverObject = props => {
 	const response = {
 		border:
 			props['border-status-hover'] &&
-			getBorderStyles(
-				{
+			getBorderStyles({
+				obj: {
 					...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
 						true
 					),
 				},
-				true
-			),
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
-			getBoxShadowStyles(
-				{
+			getBoxShadowStyles({
+				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				true
-			),
-		typography: getTypographyStyles(
-			{
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
+		typography: getTypographyStyles({
+			obj: {
 				...getGroupAttributes(props, 'typographyHover'),
 			},
-			true
-		),
+			isHover: true,
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 	};
 
 	return response;

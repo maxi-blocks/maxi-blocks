@@ -99,6 +99,7 @@ const Inspector = memo(
 												onChange={obj =>
 													setAttributes(obj)
 												}
+												clientId={clientId}
 											/>
 										</div>
 									)}

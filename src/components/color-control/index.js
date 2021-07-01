@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -22,7 +23,8 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { getPaletteColor } from '../../extensions/style-cards';
+import { getPaletteColor, getSCPropValue } from '../../extensions/style-cards';
+import { getBlockStyle } from '../../extensions/styles';
 
 /**
  * Component
@@ -42,12 +44,25 @@ const ColorControl = props => {
 		disablePalette,
 		textLevel,
 		showPalette = false,
-		globalStatus,
+		globalProps,
 		deviceType,
 		clientId,
 	} = props;
 
 	const classes = classnames('maxi-color-control', className);
+
+	const { globalStatus } = useSelect(() => {
+		const globalStatus =
+			(globalProps?.target &&
+				getSCPropValue(
+					globalProps.target,
+					getBlockStyle(clientId),
+					globalProps.type
+				)) ||
+			false;
+
+		return { globalStatus };
+	});
 
 	const getRGB = colorString => {
 		if (!colorString) return { rgb: { r: 1, g: 1, b: 1, a: 1 } };

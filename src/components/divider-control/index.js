@@ -147,12 +147,9 @@ const DividerControl = props => {
 					}
 					disableGradient
 					showPalette
-					globalStatus={getSCPropValue(
-						'color-global',
-						getBlockStyle(clientId),
-						'divider'
-					)}
+					globalProps={{ target: 'color-global', type: 'divider' }}
 					isHover={isHover}
+					clienId={clientId}
 				/>
 			)}
 			{!disableLineStyle && (

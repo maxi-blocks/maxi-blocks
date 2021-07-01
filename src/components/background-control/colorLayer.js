@@ -8,12 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ColorControl from '../color-control';
 import ClipPath from '../clip-path-control';
-import {
-	getDefaultAttribute,
-	getAttributeKey,
-	getBlockStyle,
-} from '../../extensions/styles';
-import { getSCPropValue } from '../../extensions/style-cards';
+import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -97,11 +92,10 @@ const ColorLayer = props => {
 					});
 				}}
 				disablePalette={type === 'layer'}
-				globalStatus={getSCPropValue(
-					'background-color-global',
-					getBlockStyle(clientId),
-					'button'
-				)}
+				globalProps={{
+					target: 'background-color-global',
+					type: 'button',
+				}}
 				showPalette
 				isHover={isHover}
 				clientId={clientId}

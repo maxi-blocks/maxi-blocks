@@ -13,7 +13,6 @@ import {
 	getDefaultAttribute,
 	getBlockStyle,
 } from '../../../../extensions/styles';
-import { getSCPropValue } from '../../../../extensions/style-cards';
 
 /**
  * Styles & Icons
@@ -71,11 +70,7 @@ const DividerColor = props => {
 					}
 					disableGradient
 					showPalette
-					globalStatus={getSCPropValue(
-						'color-global',
-						getBlockStyle(clientId),
-						'divider'
-					)}
+					globalProps={{ target: 'color-global', type: 'divider' }}
 				/>
 			</div>
 		</ToolbarPopover>

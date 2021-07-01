@@ -184,7 +184,6 @@ const Inspector = props => {
 																	1
 																);
 														}}
-														clientId={clientId}
 													/>
 													<hr />
 													<SvgColor
@@ -213,7 +212,6 @@ const Inspector = props => {
 																	1
 																);
 														}}
-														clientId={clientId}
 													/>
 												</>
 											),

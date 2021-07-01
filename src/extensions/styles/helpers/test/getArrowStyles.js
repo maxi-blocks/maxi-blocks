@@ -28,6 +28,8 @@ describe('getArrowStyles', () => {
 			'arrow-position-xs': 2,
 			'arrow-width-xs': 3,
 			'border-color-general': 'rgb(255, 99, 71)',
+			'background-active-media': 'color',
+			'background-palette-color-status': false,
 			'background-color': 'rgb(255, 99, 71)',
 			'background-gradient':
 				'linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)',

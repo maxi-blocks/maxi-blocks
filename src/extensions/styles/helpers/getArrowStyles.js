@@ -4,7 +4,6 @@
 import getBoxShadowStyles from './getBoxShadowStyles';
 import getGroupAttributes from '../getGroupAttributes';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import { getPaletteDefault } from '..';
 
 /**
  * External dependencies
@@ -17,11 +16,10 @@ export const getArrowBorderObject = props => {
 		general: {},
 	};
 
-	if (!props['palette-custom-border-color']) {
-		const paletteColor =
-			props['palette-preset-border-color'] || getPaletteDefault('border');
+	if (props['border-palette-color-status-general']) {
+		const paletteColor = props['border-palette-color-general'];
 
-		response.general.background = `var(--maxi-light-color-${paletteColor})`;
+		response.general.background = `var(--maxi-${props.parentBlockStyle}-color-${paletteColor})`;
 	} else if (!isEmpty(props['border-color-general']))
 		response.general.background = props['border-color-general'];
 
@@ -114,14 +112,12 @@ export const getArrowColorObject = props => {
 	};
 
 	if (props['background-active-media'] === 'color') {
-		if (!props['palette-custom-background-color']) {
-			const paletteColor =
-				props['palette-preset-background-color'] ||
-				getPaletteDefault('background');
+		if (props['background-palette-color-status']) {
+			const paletteColor = props['background-palette-color'];
 
 			response.general[
 				'background-color'
-			] = `var(--maxi-light-color-${paletteColor})`;
+			] = `var(--maxi-${props.parentBlockStyle}-color-${paletteColor})`;
 		} else response.general['background-color'] = props['background-color'];
 	} else response.general.background = props['background-gradient'];
 
@@ -134,11 +130,11 @@ const getArrowStyles = props => {
 	return {
 		[`${target} .maxi-container-arrow`]: {
 			shadow: {
-				...getBoxShadowStyles(
-					getGroupAttributes(props, 'boxShadow'),
-					false,
-					true
-				),
+				...getBoxShadowStyles({
+					obj: getGroupAttributes(props, 'boxShadow'),
+					dropShadow: true,
+					parentBlockStyle: props.parentBlockStyle,
+				}),
 			},
 		},
 		[`${target} .maxi-container-arrow .maxi-container-arrow--content`]: {
@@ -152,7 +148,6 @@ const getArrowStyles = props => {
 							'background',
 							'backgroundColor',
 							'backgroundGradient',
-							'palette',
 						])
 					),
 				},
@@ -165,7 +160,6 @@ const getArrowStyles = props => {
 							'border',
 							'borderWidth',
 							'borderRadius',
-							'palette',
 						])
 					),
 				},

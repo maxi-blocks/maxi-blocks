@@ -22,6 +22,12 @@ body {
 		left: 0 !important;
 		z-index: 98;
 
+		.maxi-accordion-control__item {
+			hr {
+				margin: 15px 0;
+			}
+		}
+
 		.maxi-color-control .chrome-picker {
 			width: 100% !important;
 		}

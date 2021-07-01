@@ -13,10 +13,7 @@ import FancyRadioControl from '../fancy-radio-control';
 import ColorControl from '../color-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import Dropdown from '../dropdown';
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
  * Styles and icons
@@ -69,7 +66,7 @@ import {
  * Component
  */
 const ShapeDividerControl = props => {
-	const { onChange, clientId } = props;
+	const { onChange } = props;
 
 	const shapeItems = [
 		{ label: __('None', 'max-block'), value: '' },
@@ -299,22 +296,33 @@ const ShapeDividerControl = props => {
 							/>
 							<ColorControl
 								label={__('Shape Top', 'maxi-blocks')}
-								disableOpacity
 								color={props['shape-divider-top-color']}
 								defaultColor={getDefaultAttribute(
 									'shape-divider-top-color'
 								)}
-								onChange={val =>
-									onChange({ 'shape-divider-top-color': val })
+								paletteColor={
+									props['shape-divider-palette-top-color']
+								}
+								paletteStatus={
+									props[
+										'shape-divider-palette-top-color-status'
+									]
+								}
+								onChange={({
+									color,
+									paletteColor,
+									paletteStatus,
+								}) =>
+									onChange({
+										'shape-divider-top-color': color,
+										'shape-divider-palette-top-color':
+											paletteColor,
+										'shape-divider-palette-top-color-status':
+											paletteStatus,
+									})
 								}
 								showPalette
-								palette={{
-									...getGroupAttributes(props, 'palette'),
-								}}
-								isHover={false}
-								colorPaletteType='shape-divider-top'
-								onChangePalette={val => onChange(val)}
-								clientId={clientId}
+								disableOpacity
 							/>
 							<AdvancedNumberControl
 								label={__('Divider Height', 'maxi-blocks')}
@@ -429,24 +437,33 @@ const ShapeDividerControl = props => {
 							/>
 							<ColorControl
 								label={__('Shape Bottom', 'maxi-blocks')}
-								disableOpacity
 								color={props['shape-divider-bottom-color']}
 								defaultColor={getDefaultAttribute(
 									'shape-divider-bottom-color'
 								)}
-								onChange={val =>
+								paletteColor={
+									props['shape-divider-palette-bottom-color']
+								}
+								paletteStatus={
+									props[
+										'shape-divider-palette-bottom-color-status'
+									]
+								}
+								onChange={({
+									color,
+									paletteColor,
+									paletteStatus,
+								}) =>
 									onChange({
-										'shape-divider-bottom-color': val,
+										'shape-divider-bottom-color': color,
+										'shape-divider-palette-bottom-color':
+											paletteColor,
+										'shape-divider-palette-bottom-color-status':
+											paletteStatus,
 									})
 								}
 								showPalette
-								palette={{
-									...getGroupAttributes(props, 'palette'),
-								}}
-								isHover={false}
-								colorPaletteType='shape-divider-bottom'
-								onChangePalette={val => onChange(val)}
-								clientId={clientId}
+								disableOpacity
 							/>
 							<AdvancedNumberControl
 								label={__('Divider Height', 'maxi-blocks')}

@@ -72,6 +72,7 @@ const Inspector = props => {
 												isFirstOnHierarchy
 											}
 											onChange={obj => setAttributes(obj)}
+											clientId={clientId}
 										/>
 									</div>
 								)}
@@ -84,15 +85,11 @@ const Inspector = props => {
 												<NumberCounterControl
 													{...getGroupAttributes(
 														attributes,
-														[
-															'numberCounter',
-															'palette',
-														]
+														['numberCounter']
 													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}
-													clientId={clientId}
 												/>
 											),
 										},

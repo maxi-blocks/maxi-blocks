@@ -1,4 +1,12 @@
 const divider = {
+	'divider-palette-border-color-status': {
+		type: 'boolean',
+		default: true,
+	},
+	'divider-palette-border-color': {
+		type: 'number',
+		default: 4,
+	},
 	'divider-border-color': {
 		type: 'string',
 	},

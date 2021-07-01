@@ -83,7 +83,7 @@ describe('ShapeDividerControl', () => {
 		const expectedShapeColor = 4;
 		const shapeColorAttribute = await getBlockAttributes();
 		const shapeColor =
-			shapeColorAttribute['palette-preset-shape-divider-top-color'];
+			shapeColorAttribute['shape-divider-palette-top-color'];
 
 		expect(shapeColor).toStrictEqual(expectedShapeColor);
 

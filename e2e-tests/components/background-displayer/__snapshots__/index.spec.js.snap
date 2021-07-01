@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BackgroundControl Check Background Color 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__color\\"></div>"`;
+
+exports[`BackgroundControl Check Background Gradient 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__color\\"></div>"`;
+
+exports[`BackgroundControl Check Background Image 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__images\\"></div>"`;
+
+exports[`BackgroundControl Check Background Layers 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__0\\"></div><div class=\\"maxi-background-displayer__layer maxi-background-displayer__1\\"></div><div class=\\"maxi-background-displayer__layer maxi-background-displayer__video-player maxi-background-displayer__video-player--mobile-hidden maxi-background-displayer__2\\" data-start=\\"\\" data-end=\\"\\" data-type=\\"youtube\\"><div class=\\"maxi-background-displayer__video-player__iframe-wrapper\\"><iframe title=\\"youtube video\\" src=\\"https://www.youtube.com/embed/hM7Eh0gGNKA?controls=0&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;mute=1\\" frameborder=\\"0\\" allow=\\"autoplay\\" allowfullscreen=\\"\\" style=\\"height: 323.729px;\\"></iframe></div></div><div class=\\"maxi-background-displayer__layer maxi-background-displayer__3\\"></div><div class=\\"maxi-background-displayer__layer maxi-background-displayer__svg maxi-background-displayer__4\\"><svg viewBox=\\"0 0 36.1 36.1\\" xmlns=\\"http://www.w3.org/2000/svg\\" data-item=\\"group-maxi-12__svg\\"><path fill=\\"\\" d=\\"M23.9 30c1.6-3.3 2.5-7.3 2.5-12s-.8-8.7-2.5-12c-1.6-3.3-3.6-4.9-5.9-4.9S13.7 2.7 12.1 6s-2.4 7.3-2.4 12 .8 8.7 2.4 12 3.6 5 5.9 5 4.3-1.7 5.9-5z\\"></path></svg></div>"`;
+
+exports[`BackgroundControl Check Background Video 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__video-player maxi-background-displayer__video-player--mobile-hidden\\" data-type=\\"youtube\\" data-end=\\"1\\"><div class=\\"maxi-background-displayer__video-player__iframe-wrapper\\"><iframe title=\\"youtube video\\" src=\\"https://www.youtube.com/embed/hM7Eh0gGNKA?controls=0&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;end=1\\" frameborder=\\"0\\" allow=\\"autoplay\\" allowfullscreen=\\"\\" style=\\"height: 323.729px;\\"></iframe></div></div>"`;
+
+exports[`BackgroundControl Check BackgroundShape 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__svg\\"><svg viewBox=\\"0 0 36.1 36.1\\" xmlns=\\"http://www.w3.org/2000/svg\\" data-item=\\"group-maxi-12__svg\\"><circle fill=\\"\\" r=\\"17.2\\" cy=\\"18\\" cx=\\"18\\"></circle></svg></div>"`;

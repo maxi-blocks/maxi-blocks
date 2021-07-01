@@ -451,7 +451,6 @@ const HoverEffectControl = props => {
 							'hoverBackground',
 							'hoverBackgroundColor',
 							'hoverBackgroundGradient',
-							'palette',
 						])}
 						onChange={obj => onChange(obj)}
 						disableLayers

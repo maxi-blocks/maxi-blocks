@@ -8,11 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ColorControl from '../color-control';
 import ClipPath from '../clip-path-control';
-import {
-	getDefaultAttribute,
-	getAttributeKey,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -40,19 +36,64 @@ const ColorLayer = props => {
 				defaultColor={getDefaultAttribute(
 					getAttributeKey('background-color', isHover, prefix)
 				)}
-				onChange={val => {
+				paletteColor={
 					colorOptions[
-						getAttributeKey('background-color', isHover, prefix)
-					] = val;
+						getAttributeKey(
+							'background-palette-color',
+							isHover,
+							prefix
+						)
+					]
+				}
+				paletteStatus={
+					colorOptions[
+						getAttributeKey(
+							'background-palette-color-status',
+							isHover,
+							prefix
+						)
+					]
+				}
+				onChange={({ color, paletteColor, paletteStatus }) => {
+					if (color)
+						colorOptions[
+							getAttributeKey('background-color', isHover, prefix)
+						] = color;
+					if (paletteColor)
+						colorOptions[
+							getAttributeKey(
+								'background-palette-color',
+								isHover,
+								prefix
+							)
+						] = paletteColor;
+					if (paletteStatus)
+						colorOptions[
+							getAttributeKey(
+								'background-palette-color-status',
+								isHover,
+								prefix
+							)
+						] = paletteColor;
 
-					onChange(colorOptions);
+					onChange({
+						[getAttributeKey('background-color', isHover, prefix)]:
+							color,
+						[getAttributeKey(
+							'background-palette-color',
+							isHover,
+							prefix
+						)]: paletteColor,
+						[getAttributeKey(
+							'background-palette-color-status',
+							isHover,
+							prefix
+						)]: paletteStatus,
+					});
 				}}
 				disablePalette={type === 'layer'}
 				showPalette
-				palette={{ ...getGroupAttributes(props, 'palette') }}
 				isHover={isHover}
-				colorPaletteType={`${prefix}background`}
-				onChangePalette={val => onChange(val)}
 				clientId={clientId}
 			/>
 			{!disableClipPath && (

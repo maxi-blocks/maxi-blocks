@@ -25,11 +25,6 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
-	...attributesData.palette.background,
-	...attributesData.palette.border,
-	...attributesData.palette.boxShadow,
-	...attributesData.palette.typography,
-	...attributesData.palette.icon,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {
@@ -38,7 +33,13 @@ const attributes = {
 		},
 	},
 	...attributesData.textAlignment,
-	...attributesData.typography,
+	...{
+		...attributesData.typography,
+		'palette-color-general': {
+			type: 'number',
+			default: 1,
+		},
+	},
 	...attributesData.typographyHover,
 	...{
 		...attributesData.background,
@@ -49,8 +50,9 @@ const attributes = {
 	},
 	...{
 		...attributesData.backgroundColor,
-		'background-color': {
-			type: 'string',
+		'background-palette-color': {
+			type: 'number',
+			default: 4,
 		},
 	},
 	...attributesData.backgroundGradient,

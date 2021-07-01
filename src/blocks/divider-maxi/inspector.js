@@ -81,6 +81,7 @@ const Inspector = props => {
 												isFirstOnHierarchy
 											}
 											onChange={obj => setAttributes(obj)}
+											clientId={clientId}
 										/>
 									</div>
 								)}
@@ -202,11 +203,7 @@ const Inspector = props => {
 													<DividerControl
 														{...getGroupAttributes(
 															attributes,
-															[
-																'divider',
-																'size',
-																'palette',
-															]
+															['divider', 'size']
 														)}
 														onChange={obj =>
 															setAttributes(obj)
@@ -215,7 +212,6 @@ const Inspector = props => {
 															lineOrientation
 														}
 														breakpoint={deviceType}
-														clientId={clientId}
 													/>
 												</>
 											),
@@ -294,7 +290,6 @@ const Inspector = props => {
 																				'background',
 																				'backgroundColor',
 																				'backgroundGradient',
-																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -364,7 +359,6 @@ const Inspector = props => {
 																					'backgroundHover',
 																					'backgroundColorHover',
 																					'backgroundGradientHover',
-																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -406,10 +400,7 @@ const Inspector = props => {
 																<BoxShadowControl
 																	{...getGroupAttributes(
 																		attributes,
-																		[
-																			'boxShadow',
-																			'palette',
-																		]
+																		'boxShadow'
 																	)}
 																	onChange={obj =>
 																		setAttributes(
@@ -473,10 +464,7 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				[
-																					'boxShadowHover',
-																					'palette',
-																				]
+																				'boxShadowHover'
 																			)}
 																			onChange={obj =>
 																				setAttributes(

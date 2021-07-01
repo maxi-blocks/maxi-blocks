@@ -101,8 +101,8 @@ const SCTab = props => {
 							SCStyle,
 							true
 						)}
-						onChange={val => {
-							onChangeValue({ [firstColor]: val }, type);
+						onChange={({ color }) => {
+							onChangeValue({ [firstColor]: color }, type);
 						}}
 						disableGradient
 						disablePalette
@@ -170,8 +170,8 @@ const SCTab = props => {
 							SCStyle,
 							true
 						)}
-						onChange={val => {
-							onChangeValue({ [secondColor]: val }, type);
+						onChange={({ color }) => {
+							onChangeValue({ [secondColor]: color }, type);
 						}}
 						disableGradient
 						disablePalette
@@ -271,10 +271,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 										quickColorPreset,
 										'color'
 									)}
-									onChange={val => {
+									onChange={({ color }) => {
 										onChangeValue(
 											{
-												[`${quickColorPreset}`]: val,
+												[`${quickColorPreset}`]: color,
 											},
 											'color'
 										);

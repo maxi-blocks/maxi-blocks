@@ -11,10 +11,9 @@ import { uniqueId, isObject, isEmpty, isElement } from 'lodash';
 /**
  * Utils
  */
-export const injectImgSVG = (svg, SVGData = {}) => {
+export const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
 	const { getBlockAttributes, getSelectedBlockClientId } =
 		select('core/block-editor');
-
 	const { uniqueID } = getBlockAttributes(getSelectedBlockClientId());
 
 	const SVGValue = !isObject(SVGData) ? JSON.parse(SVGData) : SVGData;
@@ -29,41 +28,45 @@ export const injectImgSVG = (svg, SVGData = {}) => {
 		)
 	);
 
-	Object.entries(SVGValue).forEach(([id, el], i) => {
-		if (!isEmpty(el.imageURL)) {
-			const pattern = document.createElement('pattern');
-			pattern.id = `${id}__img`;
-			pattern.classList.add('maxi-svg-block__pattern');
-			pattern.setAttribute('width', '100%');
-			pattern.setAttribute('height', '100%');
-			pattern.setAttribute('x', '0');
-			pattern.setAttribute('y', '0');
-			pattern.setAttribute('patternUnits', 'userSpaceOnUse');
+	Object.entries(SVGValue).forEach(([id, el]) => {
+		SVGLayers.forEach((item, i) => {
+			if (isEmpty(el.imageURL) && removeMode) {
+				SVGLayers[i].removeAttribute('style');
+				SVGElement.querySelector('.maxi-svg-block__pattern').remove();
+			}
+			if (!isEmpty(el.imageURL)) {
+				const pattern = document.createElement('pattern');
+				pattern.id = `${id}__img`;
+				pattern.classList.add('maxi-svg-block__pattern');
+				pattern.setAttribute('width', '100%');
+				pattern.setAttribute('height', '100%');
+				pattern.setAttribute('x', '0');
+				pattern.setAttribute('y', '0');
+				pattern.setAttribute('patternUnits', 'userSpaceOnUse');
 
-			const image = document.createElement('image');
-			image.classList.add('maxi-svg-block__pattern__image');
-			image.setAttribute('width', '100%');
-			image.setAttribute('height', '100%');
-			image.setAttribute('x', '0');
-			image.setAttribute('y', '0');
-			image.setAttribute('href', el.imageURL);
-			image.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+				const image = document.createElement('image');
+				image.classList.add('maxi-svg-block__pattern__image');
+				image.setAttribute('width', '100%');
+				image.setAttribute('height', '100%');
+				image.setAttribute('x', '0');
+				image.setAttribute('y', '0');
+				image.setAttribute('href', el.imageURL);
+				image.setAttribute('preserveAspectRatio', 'xMidYMid slice');
 
-			pattern.append(image);
-			SVGElement.prepend(pattern);
+				pattern.append(image);
+				SVGElement.prepend(pattern);
 
-			SVGLayers[i].style.fill = `url(#${id}__img)`;
-			SVGLayers[i].setAttribute('fill', `url(#${id}__img)`);
-		} else if (!isEmpty(el.color)) {
-			SVGLayers[i].style.fill = el.color;
-			SVGLayers[i].setAttribute('fill', el.color);
-		} else {
-			SVGLayers[i].style.fill = '';
-			SVGLayers[i].setAttribute('fill', '');
-		}
+				SVGLayers[i].setAttribute('style', `fill: url(#${id}__img)`);
+				SVGLayers[i].setAttribute('fill', `url(#${id}__img)`);
+			} else if (!isEmpty(el.color)) {
+				SVGLayers[i].setAttribute('fill', el.color);
+			} else {
+				SVGLayers[i].setAttribute('fill', '');
+			}
+		});
 	});
 
-	SVGElement.dataset.item = `${uniqueID}__svg`;
+	if (SVGElement.dataset) SVGElement.dataset.item = `${uniqueID}__svg`;
 
 	return SVGElement;
 };

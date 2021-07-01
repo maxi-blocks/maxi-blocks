@@ -21,15 +21,6 @@ const save = props => {
 
 	const paletteClasses = getPaletteClasses(
 		props.attributes,
-		[
-			'background',
-			'background-hover',
-			'border',
-			'border-hover',
-			'box-shadow',
-			'box-shadow-hover',
-		],
-		name,
 		parentBlockStyle
 	);
 

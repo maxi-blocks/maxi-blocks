@@ -27,7 +27,7 @@ import './editor.scss';
  * Component
  */
 const GeneralInput = props => {
-	const { target, value, onChange } = props;
+	const { target, value, onChange, inputState } = props;
 
 	return (
 		<label htmlFor={`maxi-image-crop-${target}-control`}>
@@ -38,6 +38,7 @@ const GeneralInput = props => {
 				name={`maxi-image-crop-${target}-control`}
 				value={isNumber(value) ? +value.toFixed() : ''}
 				onChange={e => onChange(+e.target.value)}
+				disabled={!inputState}
 			/>
 		</label>
 	);
@@ -79,6 +80,18 @@ const ImageCropControl = props => {
 	const [crop, setCrop] = useState(cropOptions || defaultCropOptions);
 	const [isFirstRender, changeIsFirstRender] = useState(true);
 	const [imageID, setImageId] = useState(mediaID);
+
+	const getInputState = cropValue => {
+		const elements = ['height', 'width', 'x', 'y', 'scale'];
+
+		const val = cropValue || crop.crop;
+
+		return elements.every(el => !!val[el]);
+	};
+	const [inputState, setInputState] = useState(getInputState());
+	useEffect(() => {
+		setInputState(getInputState());
+	});
 
 	const ajaxurl = wp.ajax.settings.url;
 
@@ -173,6 +186,7 @@ const ImageCropControl = props => {
 				};
 
 				setCrop(newCropOptions);
+				setInputState(getInputState(newCropOptions));
 				onChange(newCropOptions);
 			})
 			.catch(err => {
@@ -185,6 +199,7 @@ const ImageCropControl = props => {
 	useEffect(() => {
 		if (mediaID !== imageID) {
 			setCrop(defaultCropOptions);
+			setInputState(getInputState(defaultCropOptions));
 			deleteFile();
 			onChange(defaultCropOptions);
 		} else setImageId(mediaID);
@@ -210,7 +225,7 @@ const ImageCropControl = props => {
 		};
 
 		setCrop(newCropOptions);
-		// onChange(newCropOptions);
+		setInputState(getInputState(newCropOptions));
 	};
 
 	const onImageLoad = newImage => {
@@ -233,6 +248,7 @@ const ImageCropControl = props => {
 		};
 
 		setCrop(newCropOptions);
+		setInputState(getInputState(newCropOptions));
 		onChange(newCropOptions);
 	};
 
@@ -247,6 +263,7 @@ const ImageCropControl = props => {
 
 		if (!isEqual(newCropOptions.crop, crop.crop)) {
 			onChange(newCropOptions);
+			crop.crop = newCropOptions.crop;
 
 			cropper();
 		}
@@ -276,14 +293,20 @@ const ImageCropControl = props => {
 						src={imageData.media_details.sizes.full.source_url}
 						crop={crop.crop}
 						onImageLoaded={image => onImageLoad(image)}
-						onChange={newCrop =>
+						onChange={newCrop => {
 							!!newCrop.height &&
-							!!newCrop.width &&
-							setCrop({
-								...crop,
-								crop: { ...crop.crop, ...newCrop },
-							})
-						}
+								!!newCrop.width &&
+								setCrop({
+									...crop,
+									crop: { ...crop.crop, ...newCrop },
+								}) &&
+								setInputState(
+									getInputState({
+										...crop,
+										crop: { ...crop.crop, ...newCrop },
+									})
+								);
+						}}
 						onComplete={crop => onCropComplete(crop)}
 						keepSelection={false}
 					/>
@@ -304,6 +327,7 @@ const ImageCropControl = props => {
 										value / scaleX() / getScale()
 									)
 								}
+								inputState={inputState}
 							/>
 							<GeneralInput
 								target='height'
@@ -320,16 +344,19 @@ const ImageCropControl = props => {
 										value / scaleY() / getScale()
 									)
 								}
+								inputState={inputState}
 							/>
 							<GeneralInput
 								target='x'
 								value={crop.crop.x}
 								onChange={value => onInputChange('x', value)}
+								inputState={inputState}
 							/>
 							<GeneralInput
 								target='y'
 								value={crop.crop.y}
 								onChange={value => onInputChange('y', value)}
+								inputState={inputState}
 							/>
 							<GeneralInput
 								target='scale'
@@ -337,6 +364,7 @@ const ImageCropControl = props => {
 								onChange={scale =>
 									onInputChange('scale', scale)
 								}
+								inputState={inputState}
 							/>
 						</div>
 					)}

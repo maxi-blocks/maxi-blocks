@@ -11,7 +11,11 @@ const getCustomFormatsStyles = (
 	if (customFormats)
 		Object.entries(customFormats).forEach(([key, val]) => {
 			response[`${target} .${key}`] = {
-				typography: getTypographyStyles(val, isHover, '', typography),
+				typography: getTypographyStyles({
+					obj: val,
+					isHover,
+					customFormatTypography: typography,
+				}),
 			};
 		});
 

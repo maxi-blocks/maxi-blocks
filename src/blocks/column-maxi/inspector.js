@@ -81,6 +81,7 @@ const Inspector = props => {
 												isFirstOnHierarchy
 											}
 											onChange={obj => setAttributes(obj)}
+											clientId={clientId}
 										/>
 									</div>
 								)}
@@ -218,7 +219,6 @@ const Inspector = props => {
 																				'backgroundVideo',
 																				'backgroundGradient',
 																				'backgroundSVG',
-																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -286,7 +286,6 @@ const Inspector = props => {
 																					'backgroundHover',
 																					'backgroundColorHover',
 																					'backgroundGradientHover',
-																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -329,7 +328,6 @@ const Inspector = props => {
 																			'border',
 																			'borderWidth',
 																			'borderRadius',
-																			'palette',
 																		]
 																	)}
 																	onChange={obj =>
@@ -398,7 +396,6 @@ const Inspector = props => {
 																					'borderHover',
 																					'borderWidthHover',
 																					'borderRadiusHover',
-																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -440,10 +437,7 @@ const Inspector = props => {
 																<BoxShadowControl
 																	{...getGroupAttributes(
 																		attributes,
-																		[
-																			'boxShadow',
-																			'palette',
-																		]
+																		'boxShadow'
 																	)}
 																	onChange={obj =>
 																		setAttributes(
@@ -507,10 +501,7 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				[
-																					'boxShadowHover',
-																					'palette',
-																				]
+																				'boxShadowHover'
 																			)}
 																			onChange={obj =>
 																				setAttributes(

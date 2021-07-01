@@ -99,6 +99,7 @@ const Inspector = memo(
 												onChange={obj =>
 													setAttributes(obj)
 												}
+												clientId={clientId}
 											/>
 										</div>
 									)}
@@ -285,7 +286,6 @@ const Inspector = memo(
 																			attributes,
 																			[
 																				'typography',
-																				'palette',
 																			]
 																		)}
 																		textLevel={
@@ -363,7 +363,6 @@ const Inspector = memo(
 																					[
 																						'typography',
 																						'typographyHover',
-																						'palette',
 																					]
 																				)}
 																				textLevel={
@@ -423,7 +422,6 @@ const Inspector = memo(
 																					'backgroundVideo',
 																					'backgroundGradient',
 																					'backgroundSVG',
-																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -493,7 +491,6 @@ const Inspector = memo(
 																						'backgroundHover',
 																						'backgroundColorHover',
 																						'backgroundGradientHover',
-																						'palette',
 																					]
 																				)}
 																				onChange={obj =>
@@ -539,7 +536,6 @@ const Inspector = memo(
 																				'border',
 																				'borderWidth',
 																				'borderRadius',
-																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -608,7 +604,6 @@ const Inspector = memo(
 																						'borderHover',
 																						'borderWidthHover',
 																						'borderRadiusHover',
-																						'palette',
 																					]
 																				)}
 																				onChange={obj =>
@@ -712,7 +707,6 @@ const Inspector = memo(
 																			attributes,
 																			[
 																				'boxShadow',
-																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -779,7 +773,6 @@ const Inspector = memo(
 																					attributes,
 																					[
 																						'boxShadowHover',
-																						'palette',
 																					]
 																				)}
 																				onChange={obj =>
@@ -1044,10 +1037,20 @@ const Inspector = memo(
 	},
 	// Avoids non-necessary renderings
 	(
-		{ attributes: oldAttr, propsToAvoid, isSelected: wasSelected },
-		{ attributes: newAttr, isSelected }
+		{
+			attributes: oldAttr,
+			propsToAvoid,
+			isSelected: wasSelected,
+			deviceType: oldBreakpoint,
+		},
+		{ attributes: newAttr, isSelected, deviceType: breakpoint }
 	) => {
-		if (!wasSelected || wasSelected !== isSelected) return false;
+		if (
+			!wasSelected ||
+			wasSelected !== isSelected ||
+			oldBreakpoint !== breakpoint
+		)
+			return false;
 
 		const oldAttributes = cloneDeep(oldAttr);
 		const newAttributes = cloneDeep(newAttr);

@@ -97,6 +97,7 @@ const Inspector = props => {
 												isFirstOnHierarchy
 											}
 											onChange={obj => setAttributes(obj)}
+											clientId={clientId}
 										/>
 									</div>
 								)}
@@ -169,53 +170,57 @@ const Inspector = props => {
 													<SvgColor
 														{...getGroupAttributes(
 															attributes,
-															'palette'
+															'svg'
 														)}
-														color={svgColorFill}
+														type='fill'
 														label={__(
 															'SVG Fill',
 															'maxi-blocks'
 														)}
-														type='svgColorFill'
-														onChange={svgColorFill => {
-															setAttributes(
-																svgColorFill
-															);
-															const color =
-																svgColorFill.svgColorFill;
-															if (!isNil(color))
+														onChange={obj => {
+															setAttributes(obj);
+
+															const paletteStatus =
+																obj[
+																	'svg-palette-fill-color-status'
+																];
+
+															if (!paletteStatus)
 																changeSVGContent(
-																	color,
+																	obj[
+																		'svg-fill-color'
+																	],
 																	1
 																);
 														}}
-														clientId={clientId}
 													/>
 													<hr />
 													<SvgColor
 														{...getGroupAttributes(
 															attributes,
-															'palette'
+															'svg'
 														)}
-														color={svgColorLine}
+														type='line'
 														label={__(
 															'SVG Line',
 															'maxi-blocks'
 														)}
-														type='svgColorLine'
-														onChange={svgColorLine => {
-															setAttributes(
-																svgColorLine
-															);
-															const color =
-																svgColorLine.svgColorLine;
-															if (!isNil(color))
+														onChange={obj => {
+															setAttributes(obj);
+
+															const paletteStatus =
+																obj[
+																	'svg-palette-line-color-status'
+																];
+
+															if (!paletteStatus)
 																changeSVGContent(
-																	color,
-																	2
+																	obj[
+																		'svg-line-color'
+																	],
+																	1
 																);
 														}}
-														clientId={clientId}
 													/>
 												</>
 											),
@@ -227,20 +232,16 @@ const Inspector = props => {
 											),
 											content: (
 												<SvgStrokeWidthControl
-													stroke={stroke}
-													defaultStroke={getDefaultAttribute(
-														'stroke',
-														clientId
+													{...getGroupAttributes(
+														attributes,
+														'svg'
 													)}
-													onChange={stroke => {
-														setAttributes({
-															stroke,
-														});
+													onChange={obj => {
+														setAttributes(obj);
 														changeSVGStrokeWidth(
-															stroke
+															obj['svg-stroke']
 														);
 													}}
-													breakpoint={deviceType}
 												/>
 											),
 										},
@@ -251,18 +252,16 @@ const Inspector = props => {
 											),
 											content: (
 												<SvgWidthControl
-													width={width}
-													defaultWidth={getDefaultAttribute(
-														'width',
-														clientId
+													{...getGroupAttributes(
+														attributes,
+														'svg'
 													)}
-													onChange={width => {
-														setAttributes({
-															width,
-														});
-														changeSVGSize(width);
+													onChange={obj => {
+														setAttributes(obj);
+														changeSVGSize(
+															obj['svg-width']
+														);
 													}}
-													breakpoint={deviceType}
 												/>
 											),
 										},
@@ -288,7 +287,6 @@ const Inspector = props => {
 																			[
 																				'background',
 																				'backgroundColor',
-																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -359,7 +357,6 @@ const Inspector = props => {
 																				[
 																					'backgroundHover',
 																					'backgroundColorHover',
-																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -409,7 +406,6 @@ const Inspector = props => {
 																			'border',
 																			'borderWidth',
 																			'borderRadius',
-																			'palette',
 																		]
 																	)}
 																	onChange={obj => {
@@ -478,7 +474,6 @@ const Inspector = props => {
 																					'borderHover',
 																					'borderWidthHover',
 																					'borderRadiusHover',
-																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -520,10 +515,7 @@ const Inspector = props => {
 																<BoxShadowControl
 																	{...getGroupAttributes(
 																		attributes,
-																		[
-																			'boxShadow',
-																			'palette',
-																		]
+																		'boxShadow'
 																	)}
 																	onChange={obj =>
 																		setAttributes(
@@ -587,10 +579,7 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				[
-																					'boxShadowHover',
-																					'palette',
-																				]
+																				'boxShadowHover'
 																			)}
 																			onChange={obj =>
 																				setAttributes(

@@ -22,21 +22,24 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'padding'),
 		}),
 		border: getBorderStyles({
-			...getGroupAttributes(props, [
-				'border',
-				'borderWidth',
-				'borderRadius',
-			]),
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		boxShadow: getBoxShadowStyles(
-			{
+		boxShadow: getBoxShadowStyles({
+			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			false
-		),
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -61,24 +64,26 @@ const getHoverObject = props => {
 	const response = {
 		border:
 			props['border-status-hover'] &&
-			getBorderStyles(
-				{
+			getBorderStyles({
+				obj: {
 					...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
 						true
 					),
 				},
-				true
-			),
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
-			getBoxShadowStyles(
-				{
+			getBoxShadowStyles({
+				obj: {
 					...getGroupAttributes(props, 'boxShadow', true),
 				},
-				true
-			),
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 	};
 
 	return response;
@@ -121,8 +126,8 @@ const getStyles = props => {
 					'backgroundColor',
 					'backgroundGradient',
 					'boxShadow',
-					'palette',
 				]),
+				parentBlockStyle: props.parentBlockStyle,
 			}),
 		},
 	};

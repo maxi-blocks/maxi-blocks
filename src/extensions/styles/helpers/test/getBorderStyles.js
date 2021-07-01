@@ -1,23 +1,30 @@
 import getBorderStyles from '../getBorderStyles';
 import '@wordpress/block-editor';
 
-describe('getZIndexStyle', () => {
-	it('Get a correct index style', () => {
+describe('getBorderStyles', () => {
+	it('Return border styles object with all the settings', () => {
 		const object = {
+			'border-palette-color-status-general': false,
 			'border-color-general': 'rgb(255, 99, 71)',
-			'border-style-general': 'rgb(0, 0, 255)',
+			'border-style-general': 'solid',
+			'border-palette-color-status-xxl': false,
 			'border-color-xxl': 'rgb(255, 99, 71)',
-			'border-style-xxl': 'rgb(0, 0, 255)',
+			'border-style-xxl': 'solid',
+			'border-palette-color-status-xl': false,
 			'border-color-xl': 'rgb(255, 99, 71)',
-			'border-style-xl': 'rgb(0, 0, 255)',
+			'border-style-xl': 'solid',
+			'border-palette-color-status-l': false,
 			'border-color-l': 'rgb(255, 99, 71)',
-			'border-style-l': 'rgb(0, 0, 255)',
+			'border-style-l': 'solid',
+			'border-palette-color-status-m': false,
 			'border-color-m': 'rgb(255, 99, 71)',
-			'border-style-m': 'rgb(0, 0, 255)',
+			'border-style-m': 'solid',
+			'border-palette-color-status-s': false,
 			'border-color-s': 'rgb(255, 99, 71)',
-			'border-style-s': 'rgb(0, 0, 255)',
+			'border-style-s': 'solid',
+			'border-palette-color-status-xs': false,
 			'border-color-xs': 'rgb(255, 99, 71)',
-			'border-style-xs': 'rgb(0, 0, 255)',
+			'border-style-xs': 'solid',
 			'border-top-width-general': 1,
 			'border-right-width-general': 2,
 			'border-bottom-width-general': 3,
@@ -104,7 +111,63 @@ describe('getZIndexStyle', () => {
 			'border-unit-radius-xs': 'px',
 		};
 
-		const result = getBorderStyles(object);
+		const result = getBorderStyles({
+			obj: object,
+			parentBlockStyle: 'light',
+		});
+		expect(result).toMatchSnapshot();
+	});
+	it('Return a border styles object with changes on palette color', () => {
+		const object = {
+			'border-palette-color-status-general': true,
+			'border-palette-color-general': 1,
+			'border-style-general': 'solid',
+			'border-top-width-general': 1,
+			'border-right-width-general': 2,
+			'border-bottom-width-general': 3,
+			'border-left-width-general': 4,
+			'border-sync-width-general': true,
+			'border-unit-width-general': 'px',
+			'border-top-left-radius-general': 1,
+			'border-top-right-radius-general': 2,
+			'border-bottom-right-radius-general': 3,
+			'border-bottom-left-radius-general': 4,
+			'border-sync-radius-general': true,
+			'border-unit-radius-general': 'px',
+			'border-palette-color-l': 1,
+		};
+
+		const result = getBorderStyles({
+			obj: object,
+			parentBlockStyle: 'light',
+		});
+		expect(result).toMatchSnapshot();
+	});
+	it('Return a border styles object with changes on custom color', () => {
+		const object = {
+			'border-palette-color-status-general': true,
+			'border-palette-color-general': 1,
+			'border-style-general': 'solid',
+			'border-top-width-general': 1,
+			'border-right-width-general': 2,
+			'border-bottom-width-general': 3,
+			'border-left-width-general': 4,
+			'border-sync-width-general': true,
+			'border-unit-width-general': 'px',
+			'border-top-left-radius-general': 1,
+			'border-top-right-radius-general': 2,
+			'border-bottom-right-radius-general': 3,
+			'border-bottom-left-radius-general': 4,
+			'border-sync-radius-general': true,
+			'border-unit-radius-general': 'px',
+			'border-palette-color-status-l': false,
+			'border-color-l': 'rgb(255, 99, 71)',
+		};
+
+		const result = getBorderStyles({
+			obj: object,
+			parentBlockStyle: 'light',
+		});
 		expect(result).toMatchSnapshot();
 	});
 });

@@ -12,7 +12,7 @@ describe('Button Maxi', () => {
 		await createNewPost();
 	});
 
-	it('Button Maxi does not break ', async () => {
+	it('Button Maxi does not break', async () => {
 		await insertBlock('Button Maxi');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

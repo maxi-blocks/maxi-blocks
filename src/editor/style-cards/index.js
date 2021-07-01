@@ -21,7 +21,7 @@ const MaxiStyleCardsEditorPopUp = () => {
 	const { styleCards } = useSelect(select => {
 		const { receiveMaxiStyleCards } = select('maxiBlocks/style-cards');
 
-		const styleCards = receiveMaxiStyleCards();
+		const styleCards = receiveMaxiStyleCards() || {};
 
 		return { styleCards };
 	});

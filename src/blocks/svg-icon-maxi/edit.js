@@ -20,7 +20,6 @@ import getStyles from './styles';
 /**
  * External dependencies
  */
-import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
@@ -59,24 +58,7 @@ class edit extends MaxiBlockComponent {
 		const { uniqueID, parentBlockStyle, content, openFirstTime } =
 			attributes;
 
-		const classes = classnames(
-			'maxi-svg-icon-block',
-			getPaletteClasses(
-				attributes,
-				[
-					'background',
-					'background-hover',
-					'border',
-					'border-hover',
-					'box-shadow',
-					'box-shadow-hover',
-					'svgColorFill',
-					'svgColorLine',
-				],
-				'maxi-blocks/svg-icon-maxi',
-				parentBlockStyle
-			)
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		const isEmptyContent = isEmpty(content);
 
@@ -94,7 +76,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
-				className={classes}
+				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<>

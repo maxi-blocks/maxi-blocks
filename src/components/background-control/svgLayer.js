@@ -25,8 +25,26 @@ import { isEmpty, cloneDeep } from 'lodash';
  * Component
  */
 const SVGLayer = props => {
-	const { onChange, isHover, prefix, clientId } = props;
+	const { onChange, isHover, prefix, clientId, layerId } = props;
 	const SVGOptions = cloneDeep(props.SVGOptions);
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 3999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 999,
+		},
+		'%': {
+			min: 0,
+			max: 999,
+		},
+	};
 
 	return (
 		<>
@@ -37,6 +55,8 @@ const SVGLayer = props => {
 						label: __('Shape', 'maxi-blocks'),
 						content: (
 							<SVGDefaultsDisplayer
+								usedPlace='bg-shape'
+								layerId={layerId}
 								SVGOptions={SVGOptions}
 								prefix='background-svg-'
 								SVGCurrentElement={
@@ -98,7 +118,7 @@ const SVGLayer = props => {
 						label: __('Fill', 'maxi-blocks'),
 						content: (
 							<SVGFillControl
-								{...getGroupAttributes(props, 'palette')}
+								{...getGroupAttributes(props, 'svg')}
 								SVGData={
 									SVGOptions[
 										getAttributeKey(
@@ -131,7 +151,7 @@ const SVGLayer = props => {
 										)]: obj.SVGElement,
 									});
 								}}
-								onChangePalette={obj => onChange(obj)}
+								onChangePalette={val => onChange(val)}
 								clientId={clientId}
 								isHover={isHover}
 							/>
@@ -300,6 +320,7 @@ const SVGLayer = props => {
 										)
 									]
 								}
+								allowedUnits={['px', 'em', 'vw', '%']}
 								enableUnit
 								unit={
 									SVGOptions[
@@ -354,7 +375,7 @@ const SVGLayer = props => {
 										),
 									})
 								}
-								min={0}
+								minMaxSettings={minMaxSettings}
 							/>
 						),
 					},

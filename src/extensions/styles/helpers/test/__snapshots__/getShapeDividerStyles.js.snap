@@ -12,7 +12,9 @@ Object {
 
 exports[`getShapeDividerStyles Get a correct shape divider styles 2`] = `
 Object {
-  "general": Object {},
+  "general": Object {
+    "fill": "rgb(255, 99, 71)",
+  },
   "label": "Shape Divider SVG",
 }
 `;

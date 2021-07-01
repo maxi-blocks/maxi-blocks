@@ -12,6 +12,8 @@ import { CheckboxControl } from '@wordpress/components';
 import Button from '../../components/button';
 import { updateSCOnEditor } from '../../extensions/style-cards';
 import imageUploader from './util';
+import { injectImgSVG, generateDataObject } from '../../extensions/svg/utils';
+import DOMPurify from 'dompurify';
 
 /**
  * External dependencies
@@ -27,7 +29,7 @@ import {
 	HierarchicalMenu,
 	Stats,
 } from 'react-instantsearch-dom';
-import { uniq, isEmpty } from 'lodash';
+import { uniq, isEmpty, uniqueId, cloneDeep } from 'lodash';
 
 const MasonryItem = props => {
 	const {
@@ -96,7 +98,7 @@ const MasonryItem = props => {
  * Component
  */
 const LibraryContainer = props => {
-	const { type, onRequestClose, blockStyle } = props;
+	const { type, onRequestClose, blockStyle, layerId } = props;
 
 	const { styleCards, selectedSCKey, selectedSCValue } = useSelect(select => {
 		const { receiveMaxiStyleCards, receiveMaxiSelectedStyleCard } = select(
@@ -277,22 +279,96 @@ const LibraryContainer = props => {
 	};
 
 	/** Shapes */
-
 	const onRequestInsertShape = svgCode => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
-		// Add code to process the svg shape here
 
 		const isValid = select('core/block-editor').isValidTemplate(svgCode);
 
+		const {
+			uniqueID,
+			mediaID,
+			mediaURL,
+			'background-layers': bgLayers,
+			'background-layers-status': bgLayersStatus,
+			'background-svg-SVGData': svgData,
+		} = select('core/block-editor').getBlockAttributes(clientId);
+
 		if (isValid) {
-			updateBlockAttributes(clientId, {
-				'background-svg-SVGCurrentElement': '',
-				'background-svg-SVGElement': svgCode,
-				'background-svg-SVGMediaID': null,
-				'background-svg-SVGMediaURL': null,
-				// 'background-svg-SVGData': resData,
-			});
-			onRequestClose();
+			if (type === 'bg-shape' && bgLayersStatus) {
+				const newBgLayers = cloneDeep(bgLayers);
+
+				newBgLayers[layerId]['background-svg-SVGCurrentElement'] = '';
+				newBgLayers[layerId]['background-svg-SVGElement'] = svgCode;
+
+				updateBlockAttributes(clientId, {
+					'background-layers': [...newBgLayers],
+				});
+
+				onRequestClose();
+			}
+
+			if (type === 'bg-shape' && !bgLayersStatus) {
+				const cleanedContent = DOMPurify.sanitize(svgCode);
+				const svg = document
+					.createRange()
+					.createContextualFragment(cleanedContent).firstElementChild;
+
+				const SVGData = {
+					[`${uniqueID}__${uniqueId()}`]: {
+						color: '',
+						imageID: mediaID,
+						imageURL: mediaURL,
+					},
+				};
+				const SVGOptions = {};
+				const resData = generateDataObject(SVGOptions[SVGData], svg);
+				resData[Object.keys(resData)[0]].color = svgData
+					? svgData[Object.keys(svgData)[0]].color
+					: '';
+				resData[Object.keys(resData)[0]].imageID = svgData
+					? svgData[Object.keys(svgData)[0]].imageID
+					: '';
+				resData[Object.keys(resData)[0]].imageURL = svgData
+					? svgData[Object.keys(svgData)[0]].imageURL
+					: '';
+
+				const resEl = injectImgSVG(svg, resData);
+
+				updateBlockAttributes(clientId, {
+					'background-svg-SVGCurrentElement': '',
+					'background-svg-SVGElement': resEl.outerHTML,
+					'background-svg-SVGMediaID': null,
+					'background-svg-SVGMediaURL': null,
+					'background-svg-SVGData': resData,
+				});
+				onRequestClose();
+			}
+
+			if (type === 'image-shape') {
+				const SVGData = {
+					[`${uniqueID}__${uniqueId()}`]: {
+						color: '',
+						imageID: mediaID,
+						imageURL: mediaURL,
+					},
+				};
+
+				const SVGOptions = {};
+				const cleanedContent = DOMPurify.sanitize(svgCode);
+				const svg = document
+					.createRange()
+					.createContextualFragment(cleanedContent).firstElementChild;
+				const resData = generateDataObject(SVGOptions[SVGData], svg);
+				const resEl = injectImgSVG(svg, resData);
+
+				updateBlockAttributes(clientId, {
+					SVGCurrentElement: '',
+					SVGElement: injectImgSVG(resEl, SVGData).outerHTML,
+					SVGData,
+				});
+
+				onRequestClose();
+			}
 		}
 	};
 
@@ -388,7 +464,7 @@ const LibraryContainer = props => {
 				</InstantSearch>
 			)}
 
-			{type === 'shape' && (
+			{type.includes('shape') && (
 				<InstantSearch
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}

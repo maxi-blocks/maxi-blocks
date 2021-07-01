@@ -94,6 +94,7 @@ const Inspector = props => {
 												isFirstOnHierarchy
 											}
 											onChange={obj => setAttributes(obj)}
+											clientId={clientId}
 										/>
 									</div>
 								)}
@@ -210,10 +211,7 @@ const Inspector = props => {
 																<TypographyControl
 																	{...getGroupAttributes(
 																		attributes,
-																		[
-																			'typography',
-																			'palette',
-																		]
+																		'typography'
 																	)}
 																	onChange={obj =>
 																		setAttributes(
@@ -286,7 +284,6 @@ const Inspector = props => {
 																				[
 																					'typography',
 																					'typographyHover',
-																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -339,7 +336,6 @@ const Inspector = props => {
 																				'background',
 																				'backgroundColor',
 																				'backgroundGradient',
-																				'palette',
 																			]
 																		)}
 																		onChange={obj =>
@@ -411,7 +407,6 @@ const Inspector = props => {
 																					'backgroundHover',
 																					'backgroundColorHover',
 																					'backgroundGradientHover',
-																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -456,7 +451,6 @@ const Inspector = props => {
 																			'border',
 																			'borderWidth',
 																			'borderRadius',
-																			'palette',
 																		]
 																	)}
 																	onChange={obj => {
@@ -525,7 +519,6 @@ const Inspector = props => {
 																					'borderHover',
 																					'borderWidthHover',
 																					'borderRadiusHover',
-																					'palette',
 																				]
 																			)}
 																			onChange={obj =>
@@ -618,10 +611,7 @@ const Inspector = props => {
 																<BoxShadowControl
 																	{...getGroupAttributes(
 																		attributes,
-																		[
-																			'boxShadow',
-																			'palette',
-																		]
+																		'boxShadow'
 																	)}
 																	onChange={obj =>
 																		setAttributes(
@@ -685,10 +675,7 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				[
-																					'boxShadowHover',
-																					'palette',
-																				]
+																				'boxShadowHover'
 																			)}
 																			onChange={obj =>
 																				setAttributes(

@@ -11,7 +11,6 @@ import Icon from '../../../icon';
 import ToolbarPopover from '../toolbar-popover';
 import {
 	getDefaultAttribute,
-	getGroupAttributes,
 	getBlockStyle,
 } from '../../../../extensions/styles';
 
@@ -25,7 +24,7 @@ import { toolbarDividerSetting } from '../../../../icons';
  * DividerColor
  */
 const DividerColor = props => {
-	const { blockName, onChange, breakpoint, clientId } = props;
+	const { blockName, onChange, clientId } = props;
 
 	if (blockName !== 'maxi-blocks/divider-maxi') return null;
 
@@ -37,11 +36,11 @@ const DividerColor = props => {
 				<div
 					className='toolbar-item__text-options__icon'
 					style={{
-						background:
-							props['divider-border-color'] ||
-							`var(--maxi-${getBlockStyle(clientId)}-color-${
-								props['palette-preset-divider-color']
-							})`,
+						background: props['divider-palette-border-color-status']
+							? `var(--maxi-${getBlockStyle(clientId)}-color-${
+									props['divider-palette-border-color']
+							  })`
+							: props['divider-color'],
 						borderWidth: '1px',
 						borderColor: '#fff',
 						borderStyle: 'solid',
@@ -59,14 +58,18 @@ const DividerColor = props => {
 					label={__('Divider', 'maxi-blocks')}
 					color={props['divider-border-color']}
 					defaultColor={getDefaultAttribute('border-color')}
-					onChange={val => onChange({ 'divider-border-color': val })}
+					paletteColor={props['divider-palette-border-color']}
+					paletteStatus={props['divider-palette-border-color-status']}
+					onChange={({ color, paletteColor, paletteStatus }) =>
+						onChange({
+							'divider-border-color': color,
+							'divider-palette-border-color': paletteColor,
+							'divider-palette-border-color-status':
+								paletteStatus,
+						})
+					}
 					disableGradient
 					showPalette
-					palette={{ ...getGroupAttributes(props, 'palette') }}
-					colorPaletteType='divider'
-					onChangePalette={val => onChange(val)}
-					deviceType={breakpoint}
-					clientId={clientId}
 				/>
 			</div>
 		</ToolbarPopover>

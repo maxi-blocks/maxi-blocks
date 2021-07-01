@@ -4,7 +4,8 @@ const getCustomFormatsStyles = (
 	target,
 	customFormats,
 	isHover = false,
-	typography
+	typography,
+	textLevel
 ) => {
 	const response = {};
 
@@ -15,6 +16,7 @@ const getCustomFormatsStyles = (
 					obj: val,
 					isHover,
 					customFormatTypography: typography,
+					textLevel,
 				}),
 			};
 		});

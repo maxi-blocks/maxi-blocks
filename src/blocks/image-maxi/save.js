@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import { HoverPreview, RawHTML } from '../../components';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -28,7 +28,6 @@ const save = props => {
 		mediaAlt,
 		SVGElement,
 		imageRatio,
-		parentBlockStyle,
 		fullWidth,
 		'hover-type': hoverType,
 		'hover-preview': hoverPreview,
@@ -41,8 +40,6 @@ const save = props => {
 		'maxi-image-ratio',
 		`maxi-image-ratio__${imageRatio}`
 	);
-
-	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 	const hoverClasses = classnames(
 		hoverType === 'basic' &&
@@ -58,7 +55,6 @@ const save = props => {
 	return (
 		<MaxiBlock
 			tagName='figure'
-			paletteClasses={paletteClasses}
 			className={fullWidth === 'full' && 'alignfull'}
 			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave

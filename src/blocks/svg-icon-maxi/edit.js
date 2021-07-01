@@ -10,7 +10,7 @@ import { withSelect, withDispatch } from '@wordpress/data';
  */
 import Inspector from './inspector';
 import { MaxiBlockComponent, Toolbar } from '../../components';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -58,8 +58,6 @@ class edit extends MaxiBlockComponent {
 		const { uniqueID, parentBlockStyle, content, openFirstTime } =
 			attributes;
 
-		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
-
 		const isEmptyContent = isEmpty(content);
 
 		return [
@@ -76,7 +74,6 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
-				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<>

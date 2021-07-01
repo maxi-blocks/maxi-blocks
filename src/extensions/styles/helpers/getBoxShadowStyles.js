@@ -87,22 +87,9 @@ const getBoxShadowStyles = ({
 		const { value: paletteColor, defaultValue: defaultColor } =
 			paletteStatus ? getValue('palette-color') : getValue('color');
 
-		let color;
-
-		if (breakpoint === 'general') {
-			color =
-				paletteStatus && paletteColor
-					? 'var(--maxi-shadow-color)'
-					: obj[
-							`box-shadow-color-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`
-					  ];
-		} else {
-			color = paletteStatus
-				? `var(--maxi-${parentBlockStyle}-color-${paletteColor})`
-				: paletteColor;
-		}
+		const color = paletteStatus
+			? `var(--maxi-${parentBlockStyle}-color-${paletteColor})`
+			: paletteColor;
 
 		const isNotDefault =
 			(isNumber(horizontal) && horizontal !== defaultHorizontal) ||

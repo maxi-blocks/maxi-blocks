@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { isNil } from 'lodash';
 
 /**
  * Internal dependencies
@@ -33,10 +32,7 @@ import {
 	InfoBox,
 	ZIndexControl,
 } from '../../components';
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Inspector
@@ -56,12 +52,9 @@ const Inspector = props => {
 		customLabel,
 		extraClassName,
 		isFirstOnHierarchy,
-		svgColorFill,
-		svgColorLine,
-		stroke,
 		uniqueID,
-		width,
 		fullWidth,
+		parentBlockStyle,
 	} = attributes;
 
 	return (
@@ -179,18 +172,16 @@ const Inspector = props => {
 														onChange={obj => {
 															setAttributes(obj);
 
-															const paletteStatus =
+															changeSVGContent(
 																obj[
 																	'svg-palette-fill-color-status'
-																];
-
-															if (!paletteStatus)
-																changeSVGContent(
-																	obj[
-																		'svg-fill-color'
-																	],
-																	1
-																);
+																]
+																	? `var(--maxi-${parentBlockStyle}-icon-fill, var(--maxi-${parentBlockStyle}-color-${obj['svg-palette-fill-color']}))`
+																	: obj[
+																			'svg-fill-color'
+																	  ],
+																1
+															);
 														}}
 													/>
 													<hr />
@@ -207,18 +198,16 @@ const Inspector = props => {
 														onChange={obj => {
 															setAttributes(obj);
 
-															const paletteStatus =
+															changeSVGContent(
 																obj[
 																	'svg-palette-line-color-status'
-																];
-
-															if (!paletteStatus)
-																changeSVGContent(
-																	obj[
-																		'svg-line-color'
-																	],
-																	1
-																);
+																]
+																	? `var(--maxi-${parentBlockStyle}-icon-line, var(--maxi-${parentBlockStyle}-color-${obj['svg-palette-line-color']}))`
+																	: obj[
+																			'svg-line-color'
+																	  ],
+																2
+															);
 														}}
 													/>
 												</>

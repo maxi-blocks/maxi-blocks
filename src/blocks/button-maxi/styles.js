@@ -44,6 +44,7 @@ const getContentObject = props => {
 				...getGroupAttributes(props, 'typography'),
 			},
 			parentBlockStyle: props.parentBlockStyle,
+			textLevel: 'button',
 		}),
 	};
 
@@ -55,8 +56,8 @@ const getNormalObject = props => {
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
-				parentBlockStyle: props.parentBlockStyle,
 			},
+			parentBlockStyle: props.parentBlockStyle,
 		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -83,12 +84,13 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		...(props['background-active-media'] === 'color' &&
-			!props['background-palette-color-status'] && {
-				background: getColorBackgroundObject({
-					...getGroupAttributes(props, 'backgroundColor'),
-				}),
+		...(props['background-active-media'] === 'color' && {
+			background: getColorBackgroundObject({
+				...getGroupAttributes(props, 'backgroundColor'),
+				blockStyle: props.parentBlockStyle,
+				isButton: true,
 			}),
+		}),
 		...(props['background-active-media'] === 'gradient' && {
 			background: getGradientBackgroundObject({
 				...getGroupAttributes(props, 'backgroundGradient'),
@@ -123,12 +125,34 @@ const getHoverObject = props => {
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
 			}),
+		...(props['background-active-media-hover'] === 'color' && {
+			background: getColorBackgroundObject({
+				...getGroupAttributes(props, 'backgroundColor', true),
+				blockStyle: props.parentBlockStyle,
+				isHover: true,
+				isButton: true,
+			}),
+		}),
+		...(props['background-active-media-hover'] === 'gradient' && {
+			background: getGradientBackgroundObject({
+				...getGroupAttributes(props, 'backgroundGradient', true),
+				isHover: true,
+			}),
+		}),
+	};
+
+	return response;
+};
+
+const getHoverContentObject = props => {
+	const response = {
 		typography: getTypographyStyles({
 			obj: {
 				...getGroupAttributes(props, 'typographyHover'),
 			},
 			isHover: true,
 			parentBlockStyle: props.parentBlockStyle,
+			textLevel: 'button',
 		}),
 	};
 
@@ -144,6 +168,8 @@ const getStyles = props => {
 			' .maxi-button-block__button': getNormalObject(props),
 			' .maxi-button-block__content': getContentObject(props),
 			' .maxi-button-block__button:hover': getHoverObject(props),
+			' .maxi-button-block__button:hover .maxi-button-block__content':
+				getHoverContentObject(props),
 		},
 	};
 

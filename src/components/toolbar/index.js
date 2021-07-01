@@ -50,10 +50,7 @@ import Breadcrumbs from '../breadcrumbs';
  * Styles
  */
 import './editor.scss';
-import {
-	getGroupAttributes,
-	getDefaultAttribute,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * General
@@ -372,18 +369,12 @@ const MaxiToolbar = memo(
 											'svg'
 										)}
 										blockName={name}
-										svgColorDefault={getDefaultAttribute(
-											'svgColorFill',
-											clientId
-										)}
-										svgColor={attributes.svgColorFill}
-										onChange={svgColorFill => {
-											setAttributes(svgColorFill);
-											changeSVGContent(svgColorFill, 1);
+										onChange={obj => {
+											setAttributes(obj);
 										}}
-										clientId={clientId}
-										type='svgColorFill'
-										breakpoint={breakpoint}
+										changeSVGContent={changeSVGContent}
+										type='fill'
+										parentBlockStyle={parentBlockStyle}
 									/>
 									<SvgColor
 										{...getGroupAttributes(
@@ -391,18 +382,12 @@ const MaxiToolbar = memo(
 											'svg'
 										)}
 										blockName={name}
-										svgColorDefault={getDefaultAttribute(
-											'svgColorLine',
-											clientId
-										)}
-										svgColor={attributes.svgColorLine}
 										onChange={svgColorLine => {
 											setAttributes(svgColorLine);
-											changeSVGContent(svgColorLine, 2);
 										}}
-										clientId={clientId}
-										type='svgColorLine'
-										breakpoint={breakpoint}
+										changeSVGContent={changeSVGContent}
+										type='line'
+										parentBlockStyle={parentBlockStyle}
 									/>
 								</>
 							)}

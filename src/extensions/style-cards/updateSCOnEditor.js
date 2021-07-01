@@ -46,6 +46,7 @@ export const getSCVariablesObject = styleCards => {
 		'h5',
 		'h6',
 		'hover',
+		'icon',
 		'divider',
 	];
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -78,7 +79,7 @@ export const getSCVariablesObject = styleCards => {
 		'line-height',
 		'letter-spacing',
 	];
-	const elementsForColor = ['divider', 'hover'];
+	const elementsForColor = ['divider', 'icon', 'hover'];
 
 	styles.forEach(style => {
 		elements.forEach(element => {
@@ -113,6 +114,11 @@ export const getSCVariablesObject = styleCards => {
 			)
 				response[`--maxi-${style}-${element}-background-color`] =
 					obj['background-color'];
+
+			if (element === 'icon' && obj['line-global'] && !isEmpty(obj.line))
+				response[`--maxi-${style}-${element}-line`] = obj.line;
+			if (element === 'icon' && obj['fill-global'] && !isEmpty(obj.fill))
+				response[`--maxi-${style}-${element}-fill`] = obj.fill;
 		});
 
 		times(7, n => {

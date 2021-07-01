@@ -12,7 +12,7 @@ import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
-import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
+import { getDefaultAttribute } from '../../extensions/styles';
 import {
 	dividerDashedHorizontal,
 	dividerDashedVertical,
@@ -122,21 +122,15 @@ const DividerControl = props => {
 				<ColorControl
 					label={__('Color', 'maxi-blocks')}
 					color={props['divider-border-color']}
-					defaultColor={getDefaultAttribute('border-color')}
+					defaultColor={getDefaultAttribute('divider-border-color')}
 					paletteColor={props['divider-palette-border-color']}
 					paletteStatus={props['divider-palette-border-color-status']}
 					onChange={({ color, paletteColor, paletteStatus }) =>
 						onChange({
-							[getAttributeKey('divider-border-color', isHover)]:
-								color,
-							[getAttributeKey(
-								'divider-border-palette-color',
-								isHover
-							)]: paletteColor,
-							[getAttributeKey(
-								'divider-border-palette-color-status',
-								isHover
-							)]: paletteStatus,
+							'divider-border-color': color,
+							'divider-palette-border-color': paletteColor,
+							'divider-palette-border-color-status':
+								paletteStatus,
 						})
 					}
 					disableGradient

@@ -48,6 +48,7 @@ export const getSCVariablesObject = styleCards => {
 		'hover',
 		'icon',
 		'divider',
+		'link',
 	];
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const settings = [
@@ -79,7 +80,7 @@ export const getSCVariablesObject = styleCards => {
 		'line-height',
 		'letter-spacing',
 	];
-	const elementsForColor = ['divider', 'icon', 'hover'];
+	const elementsForColor = ['divider', 'icon', 'hover', 'link'];
 
 	styles.forEach(style => {
 		elements.forEach(element => {
@@ -119,6 +120,19 @@ export const getSCVariablesObject = styleCards => {
 				response[`--maxi-${style}-${element}-line`] = obj.line;
 			if (element === 'icon' && obj['fill-global'] && !isEmpty(obj.fill))
 				response[`--maxi-${style}-${element}-fill`] = obj.fill;
+
+			if (element === 'link') {
+				if (obj['link-color-global'])
+					response[`--maxi-${style}-link`] = obj['link-color'];
+				if (obj['hover-color-global'])
+					response[`--maxi-${style}-link-hover`] = obj['hover-color'];
+				if (obj['active-color-global'])
+					response[`--maxi-${style}-link-active`] =
+						obj['active-color'];
+				if (obj['visited-color-global'])
+					response[`--maxi-${style}-link-visited`] =
+						obj['visited-color'];
+			}
 		});
 
 		times(7, n => {

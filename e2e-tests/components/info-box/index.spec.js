@@ -2,10 +2,6 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-/**
- * Internal dependencies
- */
-import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('InfoBox', () => {
 	it('Check Infobox', async () => {
@@ -20,7 +16,10 @@ describe('InfoBox', () => {
 		);
 
 		await insertBlock('Text Maxi');
-		await openSidebar(page, 'alignment');
+		await page.$eval(
+			'.interface-interface-skeleton__header .edit-post-header__settings .interface-pinned-items button',
+			click => click.click()
+		);
 
 		const warningBox = await page.$eval(
 			'.components-panel .maxi-warning-box',

@@ -15,12 +15,7 @@ const save = props => {
 
 	const classes = 'maxi-map-block';
 
-	const paletteClasses = getPaletteClasses(
-		attributes,
-		['marker-title', 'marker-address'],
-		'maxi-blocks/map-maxi',
-		parentBlockStyle
-	);
+	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 	return (
 		<MaxiBlock

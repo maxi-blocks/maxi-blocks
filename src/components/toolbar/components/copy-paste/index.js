@@ -57,7 +57,6 @@ const ATTRIBUTES = [
 	'motion',
 	'opacity',
 	'padding',
-	'palette',
 	'position',
 	'shapeDivider',
 	'size',

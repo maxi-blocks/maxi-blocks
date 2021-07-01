@@ -18,12 +18,13 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block size properties
  */
-const getTypographyStyles = (
+const getTypographyStyles = ({
 	obj,
 	isHover = false,
 	prefix = '',
-	customFormatTypography = false
-) => {
+	customFormatTypography = false,
+	parentBlockStyle,
+}) => {
 	const response = {};
 
 	const isCustomFormat = !!customFormatTypography;
@@ -38,9 +39,20 @@ const getTypographyStyles = (
 			...(!isNil(obj[getName('font-family', breakpoint)]) && {
 				'font-family': obj[getName('font-family', breakpoint)],
 			}),
-			...(!isNil(obj[getName('color', breakpoint)]) && {
-				color: obj[getName('color', breakpoint)],
-			}),
+			...(obj[getName('palette-color-status', breakpoint)]
+				? {
+						...(!isNil(obj[getName('palette-color', breakpoint)]) &&
+							breakpoint !== 'general' && {
+								color: `var(--maxi-${parentBlockStyle}-color-${
+									obj[getName('palette-color', breakpoint)]
+								})`,
+							}),
+				  }
+				: {
+						...(!isNil(obj[getName('color', breakpoint)]) && {
+							color: obj[getName('color', breakpoint)],
+						}),
+				  }),
 			...(!isNil(obj[getName('font-size', breakpoint)]) && {
 				'font-size': `${
 					obj[getName('font-size', breakpoint)]

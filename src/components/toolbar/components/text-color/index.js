@@ -76,11 +76,11 @@ const TextColor = withFormatValue(props => {
 				<div
 					className='toolbar-item__text-options__icon'
 					style={{
-						background:
-							props.color ||
-							`var(--maxi-${getBlockStyle(clientId)}-color-${
-								props['palette-preset-typography-color']
-							})`,
+						background: props[`palette-color-status-${breakpoint}`]
+							? `var(--maxi-${getBlockStyle(clientId)}-color-${
+									props[`palette-color-${breakpoint}`]
+							  })`
+							: props[`color-${breakpoint}`],
 					}}
 				>
 					<Icon
@@ -102,17 +102,24 @@ const TextColor = withFormatValue(props => {
 							typography
 						)
 					}
-					onChange={val =>
+					paletteColor={getLastBreakpointAttribute(
+						'palette-color',
+						breakpoint,
+						typography
+					)}
+					paletteStatus={getLastBreakpointAttribute(
+						'palette-color-status',
+						breakpoint,
+						typography
+					)}
+					onChange={({ color, paletteColor, paletteStatus }) =>
 						onChangeFormat({
-							color: val,
+							color,
+							'palette-color': paletteColor,
+							'palette-color-status': paletteStatus,
 						})
 					}
 					showPalette
-					palette={{ ...getGroupAttributes(props, 'palette') }}
-					colorPaletteType='typography'
-					onChangePalette={val => onChange(val)}
-					deviceType={breakpoint}
-					clientId={clientId}
 					textLevel={textLevel}
 				/>
 			</div>

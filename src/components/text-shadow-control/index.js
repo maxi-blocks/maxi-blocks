@@ -123,7 +123,7 @@ const TextShadow = props => {
 					<ColorControl
 						label={__('Color', 'maxi-blocks')}
 						color={color}
-						onChange={val => onChangeValue(3, val)}
+						onChange={({ color }) => onChangeValue(3, color)}
 						onReset={() => onChangeValue(3, defaultColor)}
 						disableGradient
 						disableGradientAboveBackground

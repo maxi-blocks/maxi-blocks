@@ -171,11 +171,33 @@ const BorderControl = props => {
 							isHover ? '-hover' : ''
 						}`
 					)}
-					onChange={val => {
+					paletteColor={getLastBreakpointAttribute(
+						`${prefix}border-palette-color`,
+						breakpoint,
+						props,
+						isHover
+					)}
+					paletteStatus={getLastBreakpointAttribute(
+						`${prefix}border-palette-color-status`,
+						breakpoint,
+						props,
+						isHover
+					)}
+					onChange={({ color, paletteColor, paletteStatus }) => {
 						onChange({
 							[`${prefix || ''}border-color-${breakpoint}${
 								isHover ? '-hover' : ''
-							}`]: val,
+							}`]: color,
+							[`${
+								prefix || ''
+							}border-palette-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: paletteColor,
+							[`${
+								prefix || ''
+							}border-palette-color-status-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: paletteStatus,
 						});
 					}}
 					disableImage
@@ -183,9 +205,6 @@ const BorderControl = props => {
 					disableGradient
 					showPalette
 					isHover={isHover}
-					palette={{ ...getGroupAttributes(props, 'palette') }}
-					colorPaletteType='border'
-					onChangePalette={val => onChange(val)}
 					deviceType={breakpoint}
 					clientId={clientId}
 				/>

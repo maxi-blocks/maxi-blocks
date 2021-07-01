@@ -19,7 +19,6 @@ import {
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
-	getGroupAttributes,
 } from '../../extensions/styles';
 
 /**
@@ -148,11 +147,29 @@ const BoxShadowControl = props => {
 								isHover ? '-hover' : ''
 							}`
 						)}
-						onChange={val => {
+						paletteColor={getLastBreakpointAttribute(
+							'box-shadow-palette-color',
+							breakpoint,
+							props,
+							isHover
+						)}
+						paletteStatus={getLastBreakpointAttribute(
+							'box-shadow-palette-color-status',
+							breakpoint,
+							props,
+							isHover
+						)}
+						onChange={({ color, paletteColor, paletteStatus }) => {
 							onChange({
 								[`box-shadow-color-${breakpoint}${
 									isHover ? '-hover' : ''
-								}`]: val,
+								}`]: color,
+								[`box-shadow-palette-color-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: paletteColor,
+								[`box-shadow-palette-color-status-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: paletteStatus,
 							});
 						}}
 						disableGradient
@@ -160,9 +177,6 @@ const BoxShadowControl = props => {
 						disableVideo
 						showPalette
 						isHover={isHover}
-						palette={{ ...getGroupAttributes(props, 'palette') }}
-						colorPaletteType='box-shadow'
-						onChangePalette={val => onChange(val)}
 						deviceType={breakpoint}
 						clientId={clientId}
 					/>

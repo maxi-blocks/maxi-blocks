@@ -102,7 +102,7 @@ class MaxiBlockComponent extends Component {
 		Object.keys(obj1).forEach(key => {
 			if (obj1[key] !== obj2[key])
 				// eslint-disable-next-line no-console
-				console.log(
+				console.warn(
 					`The block is rendering due to changes on this prop: ${key}.`,
 					`Old prop was: ${obj1[key]}.`,
 					`New prop is: ${obj2[key]}`

@@ -113,8 +113,6 @@ const AdvancedNumberControl = props => {
 						)
 							value =
 								minMaxSettings[isEmpty(unit) ? '-' : unit].min;
-
-						if (value > 100 && unit === '%') value = 100;
 					} else {
 						if (value !== '' && +value > max) value = max;
 						if (value !== '' && +value !== 0 && +value < min)

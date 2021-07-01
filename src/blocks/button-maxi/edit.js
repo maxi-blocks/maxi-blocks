@@ -63,22 +63,7 @@ class edit extends MaxiBlockComponent {
 				'maxi-button-block__button--icon-right'
 		);
 
-		const paletteClasses = getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-				'typography',
-				'typography-hover',
-				'icon',
-			],
-			'maxi-blocks/button-maxi',
-			parentBlockStyle
-		);
+		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -95,9 +80,6 @@ class edit extends MaxiBlockComponent {
 				disableBackground
 			>
 				<div className={buttonClasses}>
-					{!isEmpty(attributes['icon-name']) && (
-						<i className={attributes['icon-name']} />
-					)}
 					<RichText
 						withoutInteractiveFormatting
 						className='maxi-button-block__content'

@@ -2,13 +2,14 @@
  * Internal dependencies
  */
 import ColorControl from '../color-control';
-import { getDefaultAttribute } from '../../extensions/styles';
+import { getDefaultAttribute, getBlockStyle } from '../../extensions/styles';
+import { getSCPropValue } from '../../extensions/style-cards';
 
 /**
  * SvgColor
  */
 const SvgColor = props => {
-	const { type, label, onChange } = props;
+	const { type, label, onChange, clientId } = props;
 
 	return (
 		<>
@@ -27,7 +28,11 @@ const SvgColor = props => {
 						});
 					}}
 					showPalette
-					allowedGlobalTypes={['icon-line-color']}
+					globalStatus={getSCPropValue(
+						'line-global',
+						getBlockStyle(clientId),
+						'icon'
+					)}
 					disableOpacity
 				/>
 			) : (
@@ -45,7 +50,11 @@ const SvgColor = props => {
 						});
 					}}
 					showPalette
-					allowedGlobalTypes={['icon-fill-color']}
+					globalStatus={getSCPropValue(
+						'fill-global',
+						getBlockStyle(clientId),
+						'icon'
+					)}
 					disableOpacity
 				/>
 			)}

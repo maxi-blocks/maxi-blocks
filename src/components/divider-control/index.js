@@ -12,7 +12,12 @@ import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
-import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getAttributeKey,
+	getBlockStyle,
+} from '../../extensions/styles';
+import { getSCPropValue } from '../../extensions/style-cards';
 import {
 	dividerDashedHorizontal,
 	dividerDashedVertical,
@@ -39,6 +44,7 @@ const DividerControl = props => {
 		disableLineStyle = false,
 		disableBorderRadius = false,
 		isHover = false,
+		clientId,
 	} = props;
 
 	const minMaxSettings = {
@@ -141,7 +147,11 @@ const DividerControl = props => {
 					}
 					disableGradient
 					showPalette
-					allowedGlobalTypes={['divider-color']}
+					globalStatus={getSCPropValue(
+						'color-global',
+						getBlockStyle(clientId),
+						'divider'
+					)}
 					isHover={isHover}
 				/>
 			)}

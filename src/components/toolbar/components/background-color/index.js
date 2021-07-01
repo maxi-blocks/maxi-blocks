@@ -14,6 +14,7 @@ import {
 	getDefaultAttribute,
 	getBlockStyle,
 } from '../../../../extensions/styles';
+import { getSCPropValue } from '../../../../extensions/style-cards';
 
 /**
  * Styles
@@ -113,7 +114,11 @@ const BackgroundColor = props => {
 							})
 						}
 						showPalette
-						allowedGlobalTypes={['button-background-color']}
+						globalStatus={getSCPropValue(
+							'background-color-global',
+							getBlockStyle(clientId),
+							'button'
+						)}
 					/>
 				)}
 			</div>

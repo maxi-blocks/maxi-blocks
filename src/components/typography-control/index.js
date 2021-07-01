@@ -25,6 +25,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getSCPropValue } from '../../extensions/style-cards';
 
 /**
  * External dependencies
@@ -501,7 +502,14 @@ const TypographyControl = withFormatValue(props => {
 						})
 					}
 					showPalette
-					allowedGlobalTypes={['button-color', 'text-color']}
+					globalStatus={getSCPropValue(
+						'color-global',
+						getBlockStyle(clientId),
+						select('core/block-editor').getBlockName(clientId) ===
+							'maxi-blocks/button-maxi'
+							? 'button'
+							: textLevel
+					)}
 					textLevel={textLevel}
 					isHover={isHover}
 					deviceType={breakpoint}

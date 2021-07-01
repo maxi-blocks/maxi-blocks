@@ -20,6 +20,7 @@ import {
 	getLastBreakpointAttribute,
 	getBlockStyle,
 } from '../../../../extensions/styles';
+import { getSCPropValue } from '../../../../extensions/style-cards';
 
 /**
  * Icons
@@ -120,7 +121,11 @@ const TextColor = withFormatValue(props => {
 						})
 					}
 					showPalette
-					allowedGlobalTypes={['text-color']}
+					globalStatus={getSCPropValue(
+						'color-global',
+						getBlockStyle(clientId),
+						textLevel
+					)}
 					textLevel={textLevel}
 				/>
 			</div>

@@ -211,6 +211,7 @@ const Inspector = props => {
 															lineOrientation
 														}
 														breakpoint={deviceType}
+														clientId={clientId}
 													/>
 												</>
 											),

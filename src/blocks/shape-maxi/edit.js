@@ -74,7 +74,7 @@ class edit extends MaxiBlockComponent {
 				/>
 			),
 			<MaxiBlock
-				key={`maxi-svg-icon--${uniqueID}`}
+				key={`maxi-shape--${uniqueID}`}
 				ref={this.blockRef}
 				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
@@ -88,7 +88,7 @@ class edit extends MaxiBlockComponent {
 						openFirstTime={openFirstTime}
 					/>
 					{!isEmptyContent && (
-						<RawHTML className='maxi-svg-icon-block__icon'>
+						<RawHTML className='maxi-shape-block__icon'>
 							{content}
 						</RawHTML>
 					)}
@@ -106,87 +106,4 @@ const editSelect = withSelect(select => {
 	};
 });
 
-const editDispatch = withDispatch((dispatch, ownProps) => {
-	const {
-		attributes: { content },
-		setAttributes,
-	} = ownProps;
-
-	const changeSVGSize = width => {
-		const regexLineToChange = new RegExp('width=".+?(?=")');
-		const changeTo = `width="${width}`;
-
-		const regexLineToChange2 = new RegExp('height=".+?(?=")');
-		const changeTo2 = `height="${width}`;
-
-		let newContent = content
-			.replace(regexLineToChange, changeTo)
-			.replace(regexLineToChange2, changeTo2);
-
-		if (newContent.indexOf('viewBox') === -1) {
-			const changeTo3 = ' viewBox="0 0 64 64"><defs>';
-			newContent = newContent.replace(/><defs>/, changeTo3);
-		}
-
-		if (!isEmpty(newContent))
-			setAttributes({
-				content: newContent,
-			});
-	};
-
-	const changeSVGStrokeWidth = width => {
-		if (width) {
-			const regexLineToChange = new RegExp('stroke-width:.+?(?=})', 'g');
-			const changeTo = `stroke-width:${width}`;
-
-			const regexLineToChange2 = new RegExp(
-				'stroke-width=".+?(?=")',
-				'g'
-			);
-			const changeTo2 = `stroke-width="${width}`;
-
-			const newContent = content
-				.replace(regexLineToChange, changeTo)
-				.replace(regexLineToChange2, changeTo2);
-
-			setAttributes({
-				content: newContent,
-			});
-		}
-	};
-
-	const changeSVGContent = (color, colorNumber) => {
-		let regexLineToChange = '';
-		let changeTo = '';
-		let regexLineToChange2 = '';
-		let changeTo2 = '';
-
-		if (colorNumber === 1) {
-			regexLineToChange = new RegExp('fill:[^n]+?(?=})', 'g');
-			changeTo = `fill:${color}`;
-
-			regexLineToChange2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
-			changeTo2 = ` fill="${color}`;
-		}
-		if (colorNumber === 2) {
-			regexLineToChange = new RegExp('stroke:[^n]+?(?=})', 'g');
-			changeTo = `stroke:${color}`;
-
-			regexLineToChange2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
-			changeTo2 = ` stroke="${color}`;
-		}
-
-		const newContent = content
-			.replace(regexLineToChange, changeTo)
-			.replace(regexLineToChange2, changeTo2);
-		setAttributes({ content: newContent });
-	};
-
-	return {
-		changeSVGSize,
-		changeSVGStrokeWidth,
-		changeSVGContent,
-	};
-});
-
-export default compose(editSelect, editDispatch)(edit);
+export default compose(editSelect)(edit);

@@ -15,7 +15,7 @@ const attributes = {
 	...attributesData.global,
 	customLabel: {
 		type: 'string',
-		default: __('SVG Icon', 'maxi-blocks'),
+		default: __('Shape Icon', 'maxi-blocks'),
 	},
 	openFirstTime: {
 		type: 'boolean',

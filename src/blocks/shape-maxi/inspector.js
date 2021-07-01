@@ -56,11 +56,7 @@ const Inspector = props => {
 		customLabel,
 		extraClassName,
 		isFirstOnHierarchy,
-		svgColorFill,
-		svgColorLine,
-		stroke,
 		uniqueID,
-		width,
 		fullWidth,
 	} = attributes;
 
@@ -156,111 +152,6 @@ const Inspector = props => {
 													}
 													breakpoint={deviceType}
 													disableJustify
-												/>
-											),
-										},
-										attributes.content && {
-											label: __(
-												'SVG Colors',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													<SvgColor
-														{...getGroupAttributes(
-															attributes,
-															'svg'
-														)}
-														type='fill'
-														label={__(
-															'SVG Fill',
-															'maxi-blocks'
-														)}
-														onChange={obj => {
-															setAttributes(obj);
-
-															const paletteStatus =
-																obj[
-																	'svg-palette-fill-color-status'
-																];
-
-															if (!paletteStatus)
-																changeSVGContent(
-																	obj[
-																		'svg-fill-color'
-																	],
-																	1
-																);
-														}}
-													/>
-													<hr />
-													<SvgColor
-														{...getGroupAttributes(
-															attributes,
-															'svg'
-														)}
-														type='line'
-														label={__(
-															'SVG Line',
-															'maxi-blocks'
-														)}
-														onChange={obj => {
-															setAttributes(obj);
-
-															const paletteStatus =
-																obj[
-																	'svg-palette-line-color-status'
-																];
-
-															if (!paletteStatus)
-																changeSVGContent(
-																	obj[
-																		'svg-line-color'
-																	],
-																	1
-																);
-														}}
-													/>
-												</>
-											),
-										},
-										attributes.content && {
-											label: __(
-												'SVG Line Width',
-												'maxi-blocks'
-											),
-											content: (
-												<SvgStrokeWidthControl
-													{...getGroupAttributes(
-														attributes,
-														'svg'
-													)}
-													onChange={obj => {
-														setAttributes(obj);
-														changeSVGStrokeWidth(
-															obj['svg-stroke']
-														);
-													}}
-												/>
-											),
-										},
-										attributes.content && {
-											label: __(
-												'SVG Width',
-												'maxi-blocks'
-											),
-											content: (
-												<SvgWidthControl
-													{...getGroupAttributes(
-														attributes,
-														'svg'
-													)}
-													onChange={obj => {
-														setAttributes(obj);
-														changeSVGSize(
-															obj['svg-width']
-														);
-													}}
 												/>
 											),
 										},

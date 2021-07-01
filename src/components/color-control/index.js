@@ -23,7 +23,7 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { getPaletteColor, getSCPropValue } from '../../extensions/style-cards';
+import { getPaletteColor } from '../../extensions/style-cards';
 import { getBlockStyle } from '../../extensions/styles';
 
 /**
@@ -51,15 +51,14 @@ const ColorControl = props => {
 
 	const classes = classnames('maxi-color-control', className);
 
-	const { globalStatus } = useSelect(() => {
-		const globalStatus =
-			(globalProps?.target &&
-				getSCPropValue(
-					globalProps.target,
-					getBlockStyle(clientId),
-					globalProps.type
-				)) ||
-			false;
+	const { globalStatus } = useSelect(select => {
+		const globalStatus = select(
+			'maxiBlocks/style-cards'
+		).receiveStyleCardGlobalValue(
+			globalProps?.target,
+			getBlockStyle(clientId),
+			globalProps?.type
+		);
 
 		return { globalStatus };
 	});

@@ -25,7 +25,6 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
-import { getSCPropValue } from '../../extensions/style-cards';
 
 /**
  * External dependencies

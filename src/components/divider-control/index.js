@@ -12,12 +12,7 @@ import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
-import {
-	getDefaultAttribute,
-	getAttributeKey,
-	getBlockStyle,
-} from '../../extensions/styles';
-import { getSCPropValue } from '../../extensions/style-cards';
+import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
 import {
 	dividerDashedHorizontal,
 	dividerDashedVertical,

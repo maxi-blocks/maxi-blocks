@@ -97,7 +97,7 @@ class edit extends MaxiBlockComponent {
 					icon: {
 						...defaultMarkers[`marker-icon-${mapMarker}`],
 						fillColor: mapMarkerFillColor,
-						fillOpacity: mapMarkerOpacity,
+						fillOpacity: mapMarkerOpacity || 1,
 						strokeWeight: 2,
 						strokeColor: mapMarkerStrokeColor,
 						rotation: 0,

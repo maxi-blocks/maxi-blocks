@@ -16,9 +16,9 @@ import MaxiBlock, {
  */
 const save = props => {
 	const { attributes } = props;
-	const { parentBlockStyle } = attributes;
+	const { parentBlockStyle, shapeSVGElement } = attributes;
 
-	const name = 'maxi-blocks/svg-icon-maxi';
+	const name = 'maxi-blocks/shape-maxi';
 
 	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
@@ -29,7 +29,7 @@ const save = props => {
 			isSave
 		>
 			<RawHTML className='maxi-shape-block__icon'>
-				{attributes.content}
+				{shapeSVGElement}
 			</RawHTML>
 		</MaxiBlock>
 	);

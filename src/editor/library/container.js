@@ -298,23 +298,21 @@ const LibraryContainer = props => {
 				const clientId =
 					select('core/block-editor').getSelectedBlockClientId();
 
-				if (isValid) {
-					const SVGData = {
-						[`${uniqueID}__${uniqueId()}`]: {
-							color: '',
-							imageID: mediaID,
-							imageURL: mediaURL,
-						},
-					};
+				const SVGData = {
+					[`${uniqueID}__${uniqueId()}`]: {
+						color: '',
+						imageID: mediaID,
+						imageURL: mediaURL,
+					},
+				};
 
-					updateBlockAttributes(clientId, {
-						shapeSVGCurrentElement: '',
-						shapeSVGElement: svgCode,
-						shapeSVGData: SVGData,
-					});
+				updateBlockAttributes(clientId, {
+					shapeSVGCurrentElement: '',
+					shapeSVGElement: svgCode,
+					shapeSVGData: SVGData,
+				});
 
-					onRequestClose();
-				}
+				onRequestClose();
 			}
 
 			if (type === 'bg-shape' && bgLayersStatus) {

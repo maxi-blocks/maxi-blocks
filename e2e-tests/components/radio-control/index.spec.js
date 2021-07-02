@@ -14,14 +14,14 @@ describe('RadioControl', () => {
 		await insertBlock('Text Maxi');
 		await openSidebar(page, 'alignment');
 
-		const alignmentSettings = await page.$$(
+		const radioOptions = await page.$$(
 			'.components-popover__content .maxi-alignment-control__no-label .components-radio-control__option'
 		);
 
 		const alignments = ['center', 'right', 'justify', 'left'];
 
-		for (let i = 0; i < alignmentSettings.length; i++) {
-			const setting = alignmentSettings[i !== 3 ? i + 1 : 0];
+		for (let i = 0; i < radioOptions.length; i++) {
+			const setting = radioOptions[i !== 3 ? i + 1 : 0];
 
 			await setting.click();
 

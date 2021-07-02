@@ -63,13 +63,13 @@ const allowedBlocks = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/divider-maxi',
-	'maxi-blocks/map-maxi',
 	'maxi-blocks/group-maxi',
-	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/image-maxi',
+	'maxi-blocks/map-maxi',
+	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/row-maxi',
-	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/shape-maxi',
+	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/text-maxi',
 ];
 
@@ -78,11 +78,12 @@ const flexBlocks = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/divider-maxi',
-	'maxi-blocks/map-maxi',
 	'maxi-blocks/group-maxi',
-	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/image-maxi',
+	'maxi-blocks/map-maxi',
+	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/row-maxi',
+	'maxi-blocks/shape-maxi',
 	'maxi-blocks/svg-icon-maxi',
 ];
 

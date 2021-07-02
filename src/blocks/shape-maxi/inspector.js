@@ -16,7 +16,6 @@ import {
 	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
-	ColorControl,
 	CustomLabel,
 	DisplayControl,
 	EntranceAnimationControl,
@@ -27,6 +26,7 @@ import {
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
+	ShapeColor,
 	SVGDefaultsDisplayer,
 	TextControl,
 	TransformControl,
@@ -188,6 +188,15 @@ const Inspector = props => {
 														}
 													/>
 													<hr />
+													<ShapeColor
+														{...getGroupAttributes(
+															attributes,
+															'shape'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+													/>
 													<AdvancedNumberControl
 														label={__(
 															'Shape Width',
@@ -238,43 +247,6 @@ const Inspector = props => {
 														initialPosition={getDefaultAttribute(
 															'shape-width'
 														)}
-													/>
-													<ColorControl
-														label={__('Shape')}
-														color={
-															attributes[
-																'shape-fill-color'
-															]
-														}
-														defaultColor={getDefaultAttribute(
-															'shape-fill-color'
-														)}
-														paletteColor={
-															attributes[
-																'shape-palette-fill-color'
-															]
-														}
-														paletteStatus={
-															attributes[
-																'shape-palette-fill-color-status'
-															]
-														}
-														onChange={({
-															color,
-															paletteColor,
-															paletteStatus,
-														}) => {
-															setAttributes({
-																'shape-fill-color':
-																	color,
-																'shape-palette-fill-color':
-																	paletteColor,
-																'shape-palette-fill-color-status':
-																	paletteStatus,
-															});
-														}}
-														showPalette
-														disableOpacity
 													/>
 												</>
 											),

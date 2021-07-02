@@ -56,11 +56,7 @@ const Inspector = props => {
 		customLabel,
 		extraClassName,
 		isFirstOnHierarchy,
-		svgColorFill,
-		svgColorLine,
-		stroke,
 		uniqueID,
-		width,
 		fullWidth,
 	} = attributes;
 

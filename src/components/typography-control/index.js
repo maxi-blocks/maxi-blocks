@@ -609,6 +609,15 @@ const TypographyControl = withFormatValue(props => {
 						})
 					}
 					showPalette
+					globalProps={{
+						target: 'color-global',
+						type:
+							select('core/block-editor').getBlockName(
+								clientId
+							) === 'maxi-blocks/button-maxi'
+								? 'button'
+								: textLevel,
+					}}
 					textLevel={textLevel}
 					isHover={isHover}
 					deviceType={breakpoint}

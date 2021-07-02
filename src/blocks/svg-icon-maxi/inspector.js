@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { isNil } from 'lodash';
 
 /**
  * Internal dependencies
@@ -33,10 +32,7 @@ import {
 	InfoBox,
 	ZIndexControl,
 } from '../../components';
-import {
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Inspector

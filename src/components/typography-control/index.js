@@ -199,6 +199,112 @@ const TextOptions = props => {
 	);
 };
 
+const LinkOptions = props => {
+	const {
+		getValue,
+		getDefault,
+		onChangeFormat,
+		prefix,
+		breakpoint,
+		textLevel,
+		clientId,
+	} = props;
+
+	return (
+		<>
+			<ColorControl
+				label={__('Link', 'maxi-blocks')}
+				className='maxi-typography-control__color'
+				color={getValue(`${prefix}link-color`)}
+				defaultColor={getDefault(`${prefix}link-color`)}
+				paletteColor={getValue(`${prefix}link-palette-color`)}
+				paletteStatus={getValue(`${prefix}link-palette-color-status`)}
+				onChange={({ color, paletteColor, paletteStatus }) =>
+					onChangeFormat({
+						[`${prefix}link-color`]: color,
+						[`${prefix}link-palette-color`]: paletteColor,
+						[`${prefix}link-palette-color-status`]: paletteStatus,
+					})
+				}
+				showPalette
+				textLevel={textLevel}
+				deviceType={breakpoint}
+				clientId={clientId}
+				disableGradient
+			/>
+			<ColorControl
+				label={__('Link Hover', 'maxi-blocks')}
+				className='maxi-typography-control__color'
+				color={getValue(`${prefix}link-hover-color`)}
+				defaultColor={getDefault(`${prefix}link-hover-color`)}
+				paletteColor={getValue(`${prefix}link-hover-palette-color`)}
+				paletteStatus={getValue(
+					`${prefix}link-hover-palette-color-status`
+				)}
+				onChange={({ color, paletteColor, paletteStatus }) =>
+					onChangeFormat({
+						[`${prefix}link-hover-color`]: color,
+						[`${prefix}link-hover-palette-color`]: paletteColor,
+						[`${prefix}link-hover-palette-color-status`]:
+							paletteStatus,
+					})
+				}
+				showPalette
+				textLevel={textLevel}
+				deviceType={breakpoint}
+				clientId={clientId}
+				disableGradient
+			/>
+			<ColorControl
+				label={__('Link Active', 'maxi-blocks')}
+				className='maxi-typography-control__color'
+				color={getValue(`${prefix}link-active-color`)}
+				defaultColor={getDefault(`${prefix}link-active-color`)}
+				paletteColor={getValue(`${prefix}link-active-palette-color`)}
+				paletteStatus={getValue(
+					`${prefix}link-active-palette-color-status`
+				)}
+				onChange={({ color, paletteColor, paletteStatus }) =>
+					onChangeFormat({
+						[`${prefix}link-active-color`]: color,
+						[`${prefix}link-active-palette-color`]: paletteColor,
+						[`${prefix}link-active-palette-color-status`]:
+							paletteStatus,
+					})
+				}
+				showPalette
+				textLevel={textLevel}
+				deviceType={breakpoint}
+				clientId={clientId}
+				disableGradient
+			/>
+			<ColorControl
+				label={__('Link Visited', 'maxi-blocks')}
+				className='maxi-typography-control__color'
+				color={getValue(`${prefix}link-visited-color`)}
+				defaultColor={getDefault(`${prefix}link-visited-color`)}
+				paletteColor={getValue(`${prefix}link-visited-palette-color`)}
+				paletteStatus={getValue(
+					`${prefix}link-visited-palette-color-status`
+				)}
+				onChange={({ color, paletteColor, paletteStatus }) =>
+					onChangeFormat({
+						[`${prefix}link-visited-color`]: color,
+						[`${prefix}link-visited-palette-color`]: paletteColor,
+						[`${prefix}link-visited-palette-color-status`]:
+							paletteStatus,
+					})
+				}
+				showPalette
+				textLevel={textLevel}
+				deviceType={breakpoint}
+				clientId={clientId}
+				disableGradient
+			/>
+		</>
+	);
+};
+
 const TypographyControl = withFormatValue(props => {
 	const {
 		className,
@@ -219,12 +325,14 @@ const TypographyControl = withFormatValue(props => {
 		disableFontFamily = false,
 		clientId,
 		styleCardPrefix,
+		allowLink = false,
 	} = props;
 
 	const typography =
 		props.typography ||
 		getGroupAttributes(props, [
 			'typography',
+			...(allowLink ? ['link'] : []),
 			...(isHover ? ['typographyHover'] : []),
 		]);
 
@@ -660,6 +768,18 @@ const TypographyControl = withFormatValue(props => {
 						breakpoint,
 						typography
 					)}
+				/>
+			)}
+			{allowLink && (
+				<LinkOptions
+					getValue={getValue}
+					getDefault={getDefault}
+					onChangeFormat={onChangeFormat}
+					prefix={prefix}
+					breakpoint={breakpoint}
+					textLevel={textLevel}
+					isHover={isHover}
+					clientId={clientId}
 				/>
 			)}
 		</div>

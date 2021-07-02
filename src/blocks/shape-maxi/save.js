@@ -12,11 +12,6 @@ import MaxiBlock, {
 } from '../../components/maxi-block';
 
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-
-/**
  * Save
  */
 const save = props => {
@@ -25,23 +20,7 @@ const save = props => {
 
 	const name = 'maxi-blocks/svg-icon-maxi';
 
-	const paletteClasses = classnames(
-		getPaletteClasses(
-			attributes,
-			[
-				'background',
-				'background-hover',
-				'border',
-				'border-hover',
-				'box-shadow',
-				'box-shadow-hover',
-				'svgColorFill',
-				'svgColorLine',
-			],
-			name,
-			parentBlockStyle
-		)
-	);
+	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 	return (
 		<MaxiBlock
@@ -49,7 +28,7 @@ const save = props => {
 			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
-			<RawHTML className='maxi-svg-icon-block__icon'>
+			<RawHTML className='maxi-shape-block__icon'>
 				{attributes.content}
 			</RawHTML>
 		</MaxiBlock>

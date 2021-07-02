@@ -3,7 +3,7 @@
  */
 import { compose } from '@wordpress/compose';
 import { RawHTML } from '@wordpress/element';
-import { withSelect, withDispatch } from '@wordpress/data';
+import { withSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies

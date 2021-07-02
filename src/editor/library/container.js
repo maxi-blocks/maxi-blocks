@@ -294,12 +294,25 @@ const LibraryContainer = props => {
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
 		if (isValid) {
-			if (type === 'block-shape') {
+			if (type === 'block-shape' || type === 'sidebar-block-shape') {
 				const clientId =
 					select('core/block-editor').getSelectedBlockClientId();
 
 				if (isValid) {
-					updateBlockAttributes(clientId, { content: svgCode });
+					const SVGData = {
+						[`${uniqueID}__${uniqueId()}`]: {
+							color: '',
+							imageID: mediaID,
+							imageURL: mediaURL,
+						},
+					};
+
+					updateBlockAttributes(clientId, {
+						shapeSVGCurrentElement: '',
+						shapeSVGElement: svgCode,
+						shapeSVGData: SVGData,
+					});
+
 					onRequestClose();
 				}
 			}

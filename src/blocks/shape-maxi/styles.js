@@ -110,10 +110,7 @@ const getStyles = props => {
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
 			' .maxi-shape-block__icon svg': getShapeObject(props, 'svg'),
-			' .maxi-shape-block__icon svg *[data-fill]': getShapeObject(
-				props,
-				'path'
-			),
+			' .maxi-shape-block__icon svg > *': getShapeObject(props, 'path'),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
 					'backgroundHover',

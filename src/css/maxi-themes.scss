@@ -135,8 +135,7 @@ body.maxi-blocks--active {
 				}
 				&.maxi-sc-#{$style}-shapeColorFill-color-#{$color_number},
 				.maxi-sc-#{$style}-shapeColorFill-color-#{$color_number} {
-					.maxi-shape-block__icon svg[data-fill],
-					.maxi-shape-block__icon svg *[data-fill] {
+					.maxi-shape-block__icon svg > * {
 						fill: var(--maxi-#{$style}-icon-fill, var(--maxi-#{$style}-icon-fill-palette));
 						--maxi-#{$style}-icon-fill-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}

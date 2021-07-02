@@ -55,18 +55,16 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, clientId } = this.props;
-		const { uniqueID, parentBlockStyle, content, openFirstTime } =
+		const { uniqueID, parentBlockStyle, openFirstTime, shapeSVGElement } =
 			attributes;
 
 		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
-		const isEmptyContent = isEmpty(content);
-
 		return [
-			!isEmptyContent && (
+			!isEmpty(shapeSVGElement) && (
 				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
 			),
-			!isEmptyContent && (
+			!isEmpty(shapeSVGElement) && (
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}
@@ -83,13 +81,13 @@ class edit extends MaxiBlockComponent {
 					<MaxiModal
 						clientId={clientId}
 						type='block-shape'
-						empty={isEmptyContent}
+						empty={isEmpty(shapeSVGElement)}
 						style={parentBlockStyle}
 						openFirstTime={openFirstTime}
 					/>
-					{!isEmptyContent && (
+					{!isEmpty(shapeSVGElement) && (
 						<RawHTML className='maxi-shape-block__icon'>
-							{content}
+							{shapeSVGElement}
 						</RawHTML>
 					)}
 				</>

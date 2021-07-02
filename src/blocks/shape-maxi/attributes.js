@@ -25,9 +25,14 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
-	content: {
+	shapeSVGCurrentElement: {
+		type: 'number',
+	},
+	shapeSVGElement: {
 		type: 'string',
-		default: '',
+	},
+	shapeSVGData: {
+		type: 'object',
 	},
 	...{
 		...attributesData.alignment,

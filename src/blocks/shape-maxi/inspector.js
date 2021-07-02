@@ -27,6 +27,7 @@ import {
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
+	SVGDefaultsDisplayer,
 	TextControl,
 	TransformControl,
 	ZIndexControl,
@@ -164,10 +165,29 @@ const Inspector = props => {
 												/>
 											),
 										},
-										attributes.content && {
+										attributes.shapeSVGElement && {
 											label: __('Shape', 'maxi-blocks'),
 											content: (
 												<>
+													<SVGDefaultsDisplayer
+														usedPlace='sidebar-block-shape'
+														SVGOptions={
+															attributes.SVGData
+														}
+														SVGCurrentElement={
+															attributes.shapeSVGCurrentElement
+														}
+														onChange={SVGOptions =>
+															setAttributes({
+																...SVGOptions,
+																shapeSVGCurrentElement:
+																	SVGOptions.SVGCurrentElement,
+																shapeSVGElement:
+																	SVGOptions.SVGElement,
+															})
+														}
+													/>
+													<hr />
 													<AdvancedNumberControl
 														label={__(
 															'Shape Width',

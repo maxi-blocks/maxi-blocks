@@ -129,6 +129,11 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 		attributes['svg-palette-line-color']
 			? `maxi-sc-${parentBlockStyle}-svgColorLine-color-${attributes['svg-palette-line-color']}`
 			: null;
+	const shapeFillClass =
+		attributes['shape-palette-fill-color-status'] &&
+		attributes['shape-palette-fill-color']
+			? `maxi-sc-${parentBlockStyle}-shapeColorFill-color-${attributes['shape-palette-fill-color']}`
+			: null;
 
 	return classnames(
 		typographyClass,
@@ -150,7 +155,8 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 		markerAddressClass,
 		hoverBackgroundClass,
 		svgFillClass,
-		svgLineClass
+		svgLineClass,
+		shapeFillClass
 	);
 };
 

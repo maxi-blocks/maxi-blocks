@@ -89,11 +89,14 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getShapeIconObject = props => {
+const getShapeObject = (props, target) => {
 	const response = {
-		shape: getShapeStyles({
-			...getGroupAttributes(props, 'shape'),
-		}),
+		shape: getShapeStyles(
+			{
+				...getGroupAttributes(props, 'shape'),
+			},
+			target
+		),
 	};
 
 	return response;
@@ -106,7 +109,11 @@ const getStyles = props => {
 		[uniqueID]: {
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
-			' .maxi-shape-block__icon svg': getShapeIconObject(props),
+			' .maxi-shape-block__icon svg': getShapeObject(props, 'svg'),
+			' .maxi-shape-block__icon svg *[data-fill]': getShapeObject(
+				props,
+				'path'
+			),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
 					'backgroundHover',

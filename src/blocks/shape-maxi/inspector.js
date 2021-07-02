@@ -16,6 +16,7 @@ import {
 	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
+	ColorControl,
 	CustomLabel,
 	DisplayControl,
 	EntranceAnimationControl,
@@ -166,57 +167,96 @@ const Inspector = props => {
 										attributes.content && {
 											label: __('Shape', 'maxi-blocks'),
 											content: (
-												<AdvancedNumberControl
-													label={__(
-														'Shape Width',
-														'maxi-blocks'
-													)}
-													enableUnit
-													unit={
-														attributes[
-															'shape-width-unit'
-														]
-													}
-													onChangeUnit={val =>
-														setAttributes({
-															'shape-width-unit':
-																val,
-														})
-													}
-													value={
-														attributes[
+												<>
+													<AdvancedNumberControl
+														label={__(
+															'Shape Width',
+															'maxi-blocks'
+														)}
+														enableUnit
+														unit={
+															attributes[
+																'shape-width-unit'
+															]
+														}
+														onChangeUnit={val =>
+															setAttributes({
+																'shape-width-unit':
+																	val,
+															})
+														}
+														value={
+															attributes[
+																'shape-width'
+															]
+														}
+														onChangeValue={val => {
+															setAttributes({
+																'shape-width':
+																	val !==
+																		undefined &&
+																	val !== ''
+																		? val
+																		: '',
+															});
+														}}
+														minMaxSettings={
+															shapeWidthMinMaxSettings
+														}
+														onReset={() =>
+															setAttributes({
+																'shape-width':
+																	getDefaultAttribute(
+																		'shape-width'
+																	),
+																'shape-width-unit':
+																	getDefaultAttribute(
+																		'shape-width-unit'
+																	),
+															})
+														}
+														initialPosition={getDefaultAttribute(
 															'shape-width'
-														]
-													}
-													onChangeValue={val => {
-														setAttributes({
-															'shape-width':
-																val !==
-																	undefined &&
-																val !== ''
-																	? val
-																	: '',
-														});
-													}}
-													minMaxSettings={
-														shapeWidthMinMaxSettings
-													}
-													onReset={() =>
-														setAttributes({
-															'shape-width':
-																getDefaultAttribute(
-																	'shape-width'
-																),
-															'shape-width-unit':
-																getDefaultAttribute(
-																	'shape-width-unit'
-																),
-														})
-													}
-													initialPosition={getDefaultAttribute(
-														'shape-width'
-													)}
-												/>
+														)}
+													/>
+													<ColorControl
+														label={__('Shape')}
+														color={
+															attributes[
+																'shape-fill-color'
+															]
+														}
+														defaultColor={getDefaultAttribute(
+															'shape-fill-color'
+														)}
+														paletteColor={
+															attributes[
+																'shape-palette-fill-color'
+															]
+														}
+														paletteStatus={
+															attributes[
+																'shape-palette-fill-color-status'
+															]
+														}
+														onChange={({
+															color,
+															paletteColor,
+															paletteStatus,
+														}) => {
+															setAttributes({
+																'shape-fill-color':
+																	color,
+																'shape-palette-fill-color':
+																	paletteColor,
+																'shape-palette-fill-color-status':
+																	paletteStatus,
+															});
+														}}
+														showPalette
+														disableOpacity
+													/>
+												</>
 											),
 										},
 										{

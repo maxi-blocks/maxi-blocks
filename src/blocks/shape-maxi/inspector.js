@@ -3,13 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { isNil } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import {
 	AccordionControl,
+	AdvancedNumberControl,
 	AlignmentControl,
 	AxisControl,
 	BackgroundControl,
@@ -20,17 +20,14 @@ import {
 	DisplayControl,
 	EntranceAnimationControl,
 	FancyRadioControl,
+	InfoBox,
 	MotionControl,
 	OpacityControl,
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
-	SvgColor,
-	SvgStrokeWidthControl,
-	SvgWidthControl,
 	TextControl,
 	TransformControl,
-	InfoBox,
 	ZIndexControl,
 } from '../../components';
 import {
@@ -42,15 +39,7 @@ import {
  * Inspector
  */
 const Inspector = props => {
-	const {
-		attributes,
-		changeSVGContent,
-		changeSVGSize,
-		changeSVGStrokeWidth,
-		clientId,
-		deviceType,
-		setAttributes,
-	} = props;
+	const { attributes, clientId, deviceType, setAttributes } = props;
 	const {
 		blockStyle,
 		customLabel,
@@ -59,6 +48,25 @@ const Inspector = props => {
 		uniqueID,
 		fullWidth,
 	} = attributes;
+
+	const shapeWidthMinMaxSettings = {
+		px: {
+			min: 0,
+			max: 999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 100,
+		},
+		'%': {
+			min: 0,
+			max: 100,
+		},
+	};
 
 	return (
 		<InspectorControls>
@@ -152,6 +160,62 @@ const Inspector = props => {
 													}
 													breakpoint={deviceType}
 													disableJustify
+												/>
+											),
+										},
+										attributes.content && {
+											label: __('Shape', 'maxi-blocks'),
+											content: (
+												<AdvancedNumberControl
+													label={__(
+														'Shape Width',
+														'maxi-blocks'
+													)}
+													enableUnit
+													unit={
+														attributes[
+															'shape-width-unit'
+														]
+													}
+													onChangeUnit={val =>
+														setAttributes({
+															'shape-width-unit':
+																val,
+														})
+													}
+													value={
+														attributes[
+															'shape-width'
+														]
+													}
+													onChangeValue={val => {
+														setAttributes({
+															'shape-width':
+																val !==
+																	undefined &&
+																val !== ''
+																	? val
+																	: '',
+														});
+													}}
+													minMaxSettings={
+														shapeWidthMinMaxSettings
+													}
+													onReset={() =>
+														setAttributes({
+															'shape-width':
+																getDefaultAttribute(
+																	'shape-width'
+																),
+															'shape-width-unit':
+																getDefaultAttribute(
+																	'shape-width-unit'
+																),
+														})
+													}
+													initialPosition={getDefaultAttribute(
+														'shape-width'
+													)}
 												/>
 											),
 										},

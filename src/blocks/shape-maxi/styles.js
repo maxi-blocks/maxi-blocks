@@ -10,6 +10,7 @@ import {
 	getBorderStyles,
 	getAlignmentFlexStyles,
 	getOpacityStyles,
+	getShapeStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -88,6 +89,16 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getShapeIconObject = props => {
+	const response = {
+		shape: getShapeStyles({
+			...getGroupAttributes(props, 'shape'),
+		}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -95,6 +106,7 @@ const getStyles = props => {
 		[uniqueID]: {
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
+			' .maxi-shape-block__icon svg': getShapeIconObject(props),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
 					'backgroundHover',

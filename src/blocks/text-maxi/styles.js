@@ -204,6 +204,11 @@ const getStyles = props => {
 				[` ${element}.maxi-text-block__content a`],
 				props.parentBlockStyle
 			),
+			...getLinkStyles(
+				{ ...getGroupAttributes(props, 'link') },
+				[` ${element}.maxi-text-block__content a`],
+				props.parentBlockStyle
+			),
 		},
 	};
 };

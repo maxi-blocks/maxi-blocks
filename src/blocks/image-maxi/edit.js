@@ -24,7 +24,6 @@ import {
 	Placeholder,
 	RawHTML,
 } from '../../components';
-import * as SVGShapes from '../../icons/shape-icons';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 
 /**
@@ -151,18 +150,9 @@ class edit extends MaxiBlockComponent {
 							mediaHeight: media.height,
 						});
 						if (!isEmpty(attributes.SVGData)) {
-							const currentElem = !isEmpty(
-								attributes.SVGCurrentElement
-							)
-								? SVGShapes[
-										Object.keys(SVGShapes)[
-											attributes.SVGCurrentElement
-										]
-								  ]
-								: attributes.SVGElement;
-
-							const cleanedContent =
-								DOMPurify.sanitize(currentElem);
+							const cleanedContent = DOMPurify.sanitize(
+								attributes.SVGElement
+							);
 							const svg = document
 								.createRange()
 								.createContextualFragment(
@@ -179,7 +169,6 @@ class edit extends MaxiBlockComponent {
 
 							const resEl = injectImgSVG(svg, resData);
 							setAttributes({
-								SVGCurrentElement: attributes.SVGCurrentElement,
 								SVGElement: resEl.outerHTML,
 								SVGMediaID: null,
 								SVGMediaURL: null,

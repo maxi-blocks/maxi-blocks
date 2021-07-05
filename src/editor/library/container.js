@@ -307,7 +307,6 @@ const LibraryContainer = props => {
 				};
 
 				updateBlockAttributes(clientId, {
-					shapeSVGCurrentElement: '',
 					shapeSVGElement: svgCode,
 					shapeSVGData: SVGData,
 				});
@@ -318,7 +317,6 @@ const LibraryContainer = props => {
 			if (type === 'bg-shape' && bgLayersStatus) {
 				const newBgLayers = cloneDeep(bgLayers);
 
-				newBgLayers[layerId]['background-svg-SVGCurrentElement'] = '';
 				newBgLayers[layerId]['background-svg-SVGElement'] = svgCode;
 
 				updateBlockAttributes(clientId, {
@@ -356,7 +354,6 @@ const LibraryContainer = props => {
 				const resEl = injectImgSVG(svg, resData);
 
 				updateBlockAttributes(clientId, {
-					'background-svg-SVGCurrentElement': '',
 					'background-svg-SVGElement': resEl.outerHTML,
 					'background-svg-SVGMediaID': null,
 					'background-svg-SVGMediaURL': null,
@@ -383,7 +380,6 @@ const LibraryContainer = props => {
 				const resEl = injectImgSVG(svg, resData);
 
 				updateBlockAttributes(clientId, {
-					SVGCurrentElement: '',
 					SVGElement: injectImgSVG(resEl, SVGData).outerHTML,
 					SVGData,
 				});

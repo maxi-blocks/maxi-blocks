@@ -35,7 +35,7 @@ const SVGFillControl = props => {
 
 	const SVGData = cloneDeep(props.SVGData);
 
-	const getFillItem = ([id, value], i = 0) => {
+	const getFillItem = ([id, value]) => {
 		return (
 			<SettingTabsControl
 				disablePadding
@@ -47,7 +47,6 @@ const SVGFillControl = props => {
 								label={__('Fill', 'maxi-blocks')}
 								color={value.color}
 								onChange={val => {
-									SVGData[id].color = val;
 									const resEl = injectImgSVG(
 										SVGElement,
 										SVGData
@@ -59,9 +58,6 @@ const SVGFillControl = props => {
 									});
 								}}
 								showPalette
-								palette={{
-									...getGroupAttributes(props, 'palette'),
-								}}
 								isHover={isHover}
 								colorPaletteType='svg-background'
 								onChangePalette={val => onChangePalette(val)}

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BackgroundControl Check Background Layers 1`] = `
+exports[`LoaderControl Check loader control 1`] = `
 Array [
   Object {
     "background-color": "",

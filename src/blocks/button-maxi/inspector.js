@@ -17,20 +17,21 @@ import {
 	BoxShadowControl,
 	CustomLabel,
 	DefaultStylesControl,
-	SVGDefaultsDisplayer,
 	DisplayControl,
 	EntranceAnimationControl,
 	FancyRadioControl,
 	FullSizeControl,
 	Icon,
+	IconControl,
+	InfoBox,
 	MotionControl,
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
+	SVGDefaultsDisplayer,
 	TextControl,
 	TransformControl,
 	TypographyControl,
-	InfoBox,
 	ZIndexControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
@@ -157,7 +158,12 @@ const Inspector = props => {
 										deviceType === 'general' && {
 											label: __('Icon', 'maxi-blocks'),
 											content: (
-												<SVGDefaultsDisplayer usedPlace='button-icon' />
+												// <SVGDefaultsDisplayer usedPlace='button-icon' />
+												<IconControl
+													onChange={obj =>
+														setAttributes(obj)
+													}
+												/>
 											),
 										},
 										{

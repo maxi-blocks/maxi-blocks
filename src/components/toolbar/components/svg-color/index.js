@@ -37,8 +37,8 @@ const SvgColorToolbar = props => {
 			: attr[`svg-${type}-color`];
 
 	const typeNumber = {
-		fill: 1,
-		line: 2,
+		fill: 'fill',
+		line: 'stroke',
 	};
 
 	return (

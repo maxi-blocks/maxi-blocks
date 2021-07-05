@@ -181,7 +181,7 @@ const Inspector = props => {
 																	: obj[
 																			'svg-fill-color'
 																	  ],
-																1
+																'fill'
 															);
 														}}
 													/>
@@ -207,7 +207,7 @@ const Inspector = props => {
 																	: obj[
 																			'svg-line-color'
 																	  ],
-																2
+																'stroke'
 															);
 														}}
 													/>

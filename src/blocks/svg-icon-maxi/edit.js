@@ -152,30 +152,19 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		}
 	};
 
-	const changeSVGContent = (color, colorNumber) => {
-		let regexLineToChange = '';
-		let changeTo = '';
-		let regexLineToChange2 = '';
-		let changeTo2 = '';
+	const changeSVGContent = (color, type) => {
+		// eslint-disable-next-line no-useless-escape
+		const replaceString1 = `${type}:(.*?)\}`;
+		const regExp1 = new RegExp(replaceString1, 'g');
 
-		if (colorNumber === 1) {
-			regexLineToChange = new RegExp('fill:[^n]+?(?=})', 'g');
-			changeTo = `fill:${color}`;
-
-			regexLineToChange2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
-			changeTo2 = ` fill="${color}`;
-		}
-		if (colorNumber === 2) {
-			regexLineToChange = new RegExp('stroke:[^n]+?(?=})', 'g');
-			changeTo = `stroke:${color}`;
-
-			regexLineToChange2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
-			changeTo2 = ` stroke="${color}`;
-		}
+		// eslint-disable-next-line no-useless-escape
+		const replaceString2 = `${type}="(.*?)\"`;
+		const regExp2 = new RegExp(replaceString2, 'g');
 
 		const newContent = content
-			.replace(regexLineToChange, changeTo)
-			.replace(regexLineToChange2, changeTo2);
+			.replaceAll(regExp1, `${type}:${color}}`)
+			.replaceAll(regExp2, `${type}="${color}"`);
+
 		setAttributes({ content: newContent });
 	};
 

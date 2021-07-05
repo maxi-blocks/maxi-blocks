@@ -1,0 +1,9 @@
+body.maxi-blocks--active .maxi-shape-block {
+	display: flex;
+	flex-direction: column;
+
+	svg {
+		z-index: 20;
+		position: relative;
+	}
+}

@@ -10,28 +10,46 @@ import { getDefaultAttribute } from '../../extensions/styles';
 const SvgColor = props => {
 	const { type, label, onChange } = props;
 
-	const color = props[`svg-${type}-color`];
-	const defaultColor = getDefaultAttribute(`svg-${type}-color`);
-	const paletteColor = props[`svg-palette-${type}-color`];
-	const paletteStatus = props[`svg-palette-${type}-color-status`];
-
 	return (
-		<ColorControl
-			label={label}
-			color={color}
-			defaultColor={defaultColor}
-			paletteColor={paletteColor}
-			paletteStatus={paletteStatus}
-			onChange={({ color, paletteColor, paletteStatus }) => {
-				onChange({
-					[`svg-${type}-color`]: color,
-					[`svg-palette-${type}-color`]: paletteColor,
-					[`svg-palette-${type}-color-status`]: paletteStatus,
-				});
-			}}
-			showPalette
-			disableOpacity
-		/>
+		<>
+			{type === 'line' ? (
+				<ColorControl
+					label={label}
+					color={props['svg-line-color']}
+					defaultColor={getDefaultAttribute('svg-line-color')}
+					paletteColor={props['svg-palette-line-color']}
+					paletteStatus={props['svg-palette-line-color-status']}
+					onChange={({ color, paletteColor, paletteStatus }) => {
+						onChange({
+							'svg-line-color': color,
+							'svg-palette-line-color': paletteColor,
+							'svg-palette-line-color-status': paletteStatus,
+						});
+					}}
+					showPalette
+					globalProps={{ target: 'line-global', type: 'icon' }}
+					disableOpacity
+				/>
+			) : (
+				<ColorControl
+					label={label}
+					color={props['svg-fill-color']}
+					defaultColor={getDefaultAttribute('svg-fill-color')}
+					paletteColor={props['svg-palette-fill-color']}
+					paletteStatus={props['svg-palette-fill-color-status']}
+					onChange={({ color, paletteColor, paletteStatus }) => {
+						onChange({
+							'svg-fill-color': color,
+							'svg-palette-fill-color': paletteColor,
+							'svg-palette-fill-color-status': paletteStatus,
+						});
+					}}
+					showPalette
+					globalProps={{ target: 'fill-global', type: 'icon' }}
+					disableOpacity
+				/>
+			)}
+		</>
 	);
 };
 

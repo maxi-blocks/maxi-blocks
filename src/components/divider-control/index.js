@@ -39,6 +39,7 @@ const DividerControl = props => {
 		disableLineStyle = false,
 		disableBorderRadius = false,
 		isHover = false,
+		clientId,
 	} = props;
 
 	const minMaxSettings = {
@@ -135,7 +136,9 @@ const DividerControl = props => {
 					}
 					disableGradient
 					showPalette
+					globalProps={{ target: 'color-global', type: 'divider' }}
 					isHover={isHover}
+					clienId={clientId}
 				/>
 			)}
 			{!disableLineStyle && (

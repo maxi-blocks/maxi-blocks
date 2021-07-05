@@ -53,6 +53,7 @@ export { default as AdvancedNumberControl } from './advanced-number-control';
 export { default as Spinner } from './spinner';
 export { default as SvgAnimationControl } from './svg-animation-control';
 export { default as SvgAnimationDurationControl } from './svg-animation-duration-control';
+export { default as ShapeColor } from './shape-color';
 export { default as SvgColor } from './svg-color';
 export { default as SVGDefaultsDisplayer } from './svg-default-displayer';
 export { default as SVGFillControl } from './svg-fill-control';

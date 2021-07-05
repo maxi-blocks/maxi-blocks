@@ -1,0 +1,19 @@
+body.maxi-blocks--active .maxi-shape-block {
+	&__replace-icon {
+		opacity: 1;
+		visibility: visible;
+		width: 40px;
+		height: 40px;
+		position: absolute;
+		top: 0;
+		right: 0;
+		background: #232533;
+		z-index: 25;
+
+		svg {
+			fill: #fff;
+			width: 20px;
+			height: 20px;
+		}
+	}
+}

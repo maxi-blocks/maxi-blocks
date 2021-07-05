@@ -19,8 +19,7 @@ const getNumberCounterStyles = (obj, target, parentBlockStyle) => {
 			obj['number-counter-palette-circle-bar-color-status'] &&
 			obj['number-counter-palette-circle-bar-color']
 		)
-			response.general.stroke =
-				obj['number-counter-palette-circle-bar-color'];
+			response.general.stroke = `var(--maxi-${parentBlockStyle}-color-${obj['number-counter-palette-circle-bar-color']})`;
 	}
 
 	if (target === 'circle-background') {
@@ -34,8 +33,7 @@ const getNumberCounterStyles = (obj, target, parentBlockStyle) => {
 			obj['number-counter-palette-circle-background-color-status'] &&
 			obj['number-counter-palette-circle-background-color']
 		)
-			response.general.stroke =
-				obj['number-counter-palette-circle-background-color'];
+			response.general.stroke = `var(--maxi-${parentBlockStyle}-color-${obj['number-counter-palette-circle-background-color']})`;
 	}
 
 	if (target === 'text') {
@@ -48,7 +46,7 @@ const getNumberCounterStyles = (obj, target, parentBlockStyle) => {
 			obj['number-counter-palette-text-color-status'] &&
 			obj['number-counter-palette-text-color']
 		)
-			response.general.stroke = obj['number-counter-palette-text-color'];
+			response.general.color = `var(--maxi-${parentBlockStyle}-color-${obj['number-counter-palette-text-color']})`;
 	}
 
 	if (target === 'text' && !isNil(obj['number-counter-title-font-family']))

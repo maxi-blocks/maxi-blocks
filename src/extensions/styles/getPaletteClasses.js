@@ -129,6 +129,11 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 		attributes['svg-palette-line-color']
 			? `maxi-sc-${parentBlockStyle}-svgColorLine-color-${attributes['svg-palette-line-color']}`
 			: null;
+	const shapeFillClass =
+		attributes['shape-palette-fill-color-status'] &&
+		attributes['shape-palette-fill-color']
+			? `maxi-sc-${parentBlockStyle}-shapeColorFill-color-${attributes['shape-palette-fill-color']}`
+			: null;
 	const linkColorClass =
 		attributes['link-palette-color-status-general'] &&
 		attributes['link-palette-color-general']
@@ -171,6 +176,7 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 		hoverBackgroundClass,
 		svgFillClass,
 		svgLineClass,
+		shapeFillClass,
 		linkColorClass,
 		linkHoverColorClass,
 		linkActiveColorClass,

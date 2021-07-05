@@ -89,7 +89,25 @@ class MaxiModal extends Component {
 							icon={toolbarReplaceImage}
 						/>
 					)}
-					{type.includes('shape') && (
+					{type === 'block-shape' && (
+						<Button
+							className='maxi-shape-block__replace-icon'
+							onClick={onClick}
+							icon={toolbarReplaceImage}
+						/>
+					)}
+					{type === 'sidebar-block-shape' && (
+						<Button
+							className='maxi-svg-defaults__load-library'
+							onClick={onClick}
+						>
+							{attributes.shapeSVGElement &&
+							attributes.shapeSVGCurrentElement === ''
+								? __('Replace Shape From Cloud', 'maxi-blocks')
+								: __('Load Shape Library', 'maxi-blocks')}
+						</Button>
+					)}
+					{(type === 'bg-shape' || type === 'image-shape') && (
 						<Button
 							className='maxi-svg-defaults__load-library'
 							onClick={onClick}
@@ -110,6 +128,14 @@ class MaxiModal extends Component {
 						/>
 					)}
 				</div>
+				{attributes &&
+					type === 'sidebar-block-shape' &&
+					attributes.shapeSVGElement &&
+					attributes.shapeSVGCurrentElement === '' && (
+						<div className='maxi-library-modal__action-section__preview'>
+							<RawHTML>{attributes.shapeSVGElement}</RawHTML>
+						</div>
+					)}
 				{attributes &&
 					type === 'bg-shape' &&
 					attributes['background-svg-SVGElement'] &&

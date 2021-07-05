@@ -2,7 +2,6 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -15,13 +14,11 @@ import { getBlockStyle } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Styles
  */
 import './editor.scss';
-import { getTypographyFromSC } from '../../extensions/style-cards';
 
 /**
  * Component
@@ -32,40 +29,21 @@ const ColorPaletteControl = props => {
 		value,
 		status,
 		onChange,
-		textLevel,
 		clientId,
 		className,
+		globalStatus,
 	} = props;
 
-	const { selectedSC } = useSelect(select => {
-		const { receiveMaxiSelectedStyleCard } = select(
-			'maxiBlocks/style-cards'
-		);
-
-		const selectedSC = receiveMaxiSelectedStyleCard()?.value || {};
-
-		return {
-			selectedSC,
-		};
-	});
-
-	const SCPaletteStatus = !isEmpty(selectedSC)
-		? getTypographyFromSC(
-				selectedSC[`${getBlockStyle(clientId)}`],
-				textLevel
-		  )['color-global']
-		: false;
+	const paletteClasses = classnames(
+		'maxi-sc-color-palette',
+		globalStatus && 'palette-disabled'
+	);
 
 	const classes = classnames(
 		`maxi-color-palette-control maxi-color-palette--${getBlockStyle(
 			clientId
 		)}`,
 		className
-	);
-
-	const paletteClasses = classnames(
-		'maxi-sc-color-palette',
-		SCPaletteStatus && 'palette-disabled'
 	);
 
 	return (

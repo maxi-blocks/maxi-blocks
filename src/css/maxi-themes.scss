@@ -133,6 +133,13 @@ body.maxi-blocks--active {
 						--maxi-#{$style}-p-color-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
+				&.maxi-sc-#{$style}-shapeColorFill-color-#{$color_number},
+				.maxi-sc-#{$style}-shapeColorFill-color-#{$color_number} {
+					.maxi-shape-block__icon svg > * {
+						fill: var(--maxi-#{$style}-icon-fill, var(--maxi-#{$style}-icon-fill-palette));
+						--maxi-#{$style}-icon-fill-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
 				&.maxi-sc-#{$style}-svgColorFill-color-#{$color_number},
 				.maxi-sc-#{$style}-svgColorFill-color-#{$color_number} {
 					.maxi-svg-icon-block__icon svg[data-fill],
@@ -165,8 +172,38 @@ body.maxi-blocks--active {
 				}
 				&.maxi-sc-#{$style}-link-color-#{$color_number},
 				.maxi-sc-#{$style}-link-color-#{$color_number} {
-					a:not(.maxi-button-block__button) {
-						--maxi-#{$style}-link-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+					&.maxi-block--has-link {
+						--maxi-#{$style}-link-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					a.maxi-text-block--link {
+						--maxi-#{$style}-link-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-link-hover-color-#{$color_number},
+				.maxi-sc-#{$style}-link-hover-color-#{$color_number} {
+					&.maxi-block--has-link {
+						--maxi-#{$style}-link-hover-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					a.maxi-text-block--link {
+						--maxi-#{$style}-link-hover-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-link-active-color-#{$color_number},
+				.maxi-sc-#{$style}-link-active-color-#{$color_number} {
+					&.maxi-block--has-link {
+						--maxi-#{$style}-link-active-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					a.maxi-text-block--link {
+						--maxi-#{$style}-link-active-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-link-visited-color-#{$color_number},
+				.maxi-sc-#{$style}-link-visited-color-#{$color_number} {
+					&.maxi-block--has-link {
+						--maxi-#{$style}-link-visited-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					a.maxi-text-block--link {
+						--maxi-#{$style}-link-visited-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 			}
@@ -270,15 +307,39 @@ body.maxi-blocks--active {
 				text-decoration: var(--maxi-#{$style}-p-text-decoration-general);
 			}
 
-			&.maxi-text-block a,
-			.maxi-text-block a {
+			&.maxi-block--has-link .maxi-text-block__content {
 				color: var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette));
-				&:visited, &:hover, &:active, &:focus {
-			        color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
+				&:hover, &:focus {
+			        color: var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette));
+			    }
+				&:active {
+					color: var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette));
+				}
+				&:visited {
+					color: var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette));
+				}
+			}
+			&.maxi-text-block a.maxi-text-block--link,
+			.maxi-text-block a.maxi-text-block--link {
+				color: var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette));
+				&:hover, &:focus {
+			        color: var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette));
 			        span {
-			        	color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
+			        	color: var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette));
 			        }
 			    }
+				&:active {
+					color: var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette));
+			        span {
+			        	color: var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette));
+			        }
+				}
+				&:visited {
+					color: var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette));
+			        span {
+			        	color: var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette));
+			        }
+				}
 			}
 
 			&.maxi-divider-block__divider,

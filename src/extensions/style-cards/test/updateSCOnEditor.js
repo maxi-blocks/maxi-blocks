@@ -233,6 +233,16 @@ describe('getSCVariablesObject', () => {
 						'color-global': false,
 						color: '',
 					},
+					link: {
+						'link-color-global': false,
+						'link-color': '',
+						'hover-color-global': false,
+						'hover-color': '',
+						'active-color-global': false,
+						'active-color': '',
+						'visited-color-global': false,
+						'visited-color': '',
+					},
 				},
 			},
 			light: {
@@ -478,6 +488,16 @@ describe('getSCVariablesObject', () => {
 					divider: {
 						'color-global': false,
 						color: '',
+					},
+					link: {
+						'link-color-global': false,
+						'link-color': '',
+						'hover-color-global': false,
+						'hover-color': '',
+						'active-color-global': false,
+						'active-color': '',
+						'visited-color-global': false,
+						'visited-color': '',
 					},
 				},
 			},

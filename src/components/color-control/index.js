@@ -56,7 +56,7 @@ const ColorControl = props => {
 			'maxiBlocks/style-cards'
 		).receiveStyleCardGlobalValue(
 			globalProps?.target,
-			getBlockStyle(clientId),
+			globalProps ? getBlockStyle(clientId) : null,
 			globalProps?.type
 		);
 

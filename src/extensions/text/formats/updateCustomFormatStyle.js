@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isNumber } from 'lodash';
+import { isEmpty, isNil, isNumber, isBoolean } from 'lodash';
 import getCustomFormat from './getCustomFormat';
 import { getBlockStyle } from '../../styles';
 import { getTypographyFromSC } from '../../style-cards';
@@ -63,13 +63,15 @@ export const styleObjectManipulator = ({
 		defaultTypography[`${target}-${breakpoint}`];
 
 	Object.entries(value).forEach(([target, val]) => {
+		if (isNil(val)) return;
 		if (getCurrentValue(target) === val)
 			delete style[`${target}-${breakpoint}`];
 		else if (
 			!isHover &&
 			(isNil(getCurrentValue(target)) ||
 				(isEmpty(getCurrentValue(target)) &&
-					!isNumber(getCurrentValue(target)))) &&
+					!isNumber(getCurrentValue(target)) &&
+					!isBoolean(getCurrentValue(target)))) &&
 			getDefaultValue(target) === val
 		)
 			delete style[`${target}-${breakpoint}`];

@@ -110,34 +110,25 @@ const LinkContent = withFormatValue(props => {
 
 		const isWholeContent = start === end;
 
-		if (isWholeContent || !isEmpty(linkSettings)) {
-			const newTypography = setFormat({
-				formatValue,
-				typography,
-				isList,
-				value: {
-					color: '#ff4a17',
-					'text-decoration': 'underline',
-				},
-				textLevel,
-			});
+		const obj = applyLinkFormat({
+			formatValue: isWholeContent
+				? {
+						...formatValue,
+						start: 0,
+						end: formatValue.formats.length,
+				  }
+				: formatValue,
+			typography,
+			linkAttributes: createLinkAttributes({
+				...attributes,
+				linkValue,
+			}),
+			isList,
+			textLevel,
+			linkSettings,
+		});
 
-			onChange({ linkSettings: attributes, ...newTypography });
-		} else {
-			const obj = applyLinkFormat({
-				formatValue,
-				typography,
-				linkAttributes: createLinkAttributes({
-					...attributes,
-					linkValue,
-				}),
-				isList,
-				textLevel,
-				linkSettings,
-			});
-
-			onChange(obj);
-		}
+		onChange(obj);
 	};
 
 	const removeLinkFormatHandle = () => {

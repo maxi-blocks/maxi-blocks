@@ -9,7 +9,6 @@ import { addFilter } from '@wordpress/hooks';
 const allowedBlocks = [
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/column-maxi',
-	'maxi-blocks/text-maxi',
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/map-maxi',
 	'maxi-blocks/image-maxi',
@@ -40,6 +39,7 @@ const withSave = (element, blockType, attributes) => {
 		if (linkSettings.ugc) rel += ' ugc';
 
 		return (
+			// eslint-disable-next-line react/jsx-no-target-blank
 			<a
 				className='maxi-link-wrapper'
 				href={linkSettings.url}

@@ -2,6 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -9,6 +10,7 @@ import { __ } from '@wordpress/i18n';
 import AdvancedNumberControl from '../advanced-number-control';
 import FancyRadioControl from '../fancy-radio-control';
 import { getDefaultAttribute } from '../../extensions/styles';
+import Icon from '../icon';
 
 /**
  * External dependencies
@@ -19,6 +21,12 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
+import {
+	smileIcon,
+	backgroundColor,
+	backgroundGradient,
+	solid,
+} from '../../icons';
 
 /**
  * Component
@@ -27,6 +35,34 @@ const IconControl = props => {
 	const { className, onChange } = props;
 
 	const classes = classnames('maxi-icon-control', className);
+
+	const [iconStyle, setIconStyle] = useState('color');
+
+	const getOptions = () => {
+		const options = [];
+
+		options.push({
+			label: <Icon icon={smileIcon} />,
+			value: 'color',
+		});
+
+		options.push({
+			label: <Icon icon={backgroundColor} />,
+			value: 'background-color',
+		});
+
+		options.push({
+			label: <Icon icon={backgroundGradient} />,
+			value: 'gradient',
+		});
+
+		options.push({
+			label: <Icon icon={solid} />,
+			value: 'border',
+		});
+
+		return options;
+	};
 
 	return (
 		<div className={classes}>
@@ -69,6 +105,14 @@ const IconControl = props => {
 						'icon-position': val,
 					})
 				}
+			/>
+			<FancyRadioControl
+				label=''
+				fullWidthMode
+				selected={iconStyle}
+				options={getOptions()}
+				optionType='string'
+				onChange={val => setIconStyle(val)}
 			/>
 		</div>
 	);

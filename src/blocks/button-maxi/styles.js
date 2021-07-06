@@ -144,6 +144,17 @@ const getIconObject = (props, target) => {
 			},
 			target
 		),
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'iconBorder',
+					'iconBorderWidth',
+					'iconBorderRadius',
+				]),
+			},
+			prefix: 'icon-',
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 	};
 
 	return response;

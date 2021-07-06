@@ -10,7 +10,11 @@ import { useState } from '@wordpress/element';
 import AdvancedNumberControl from '../advanced-number-control';
 import FancyRadioControl from '../fancy-radio-control';
 import ColorControl from '../color-control';
-import { getDefaultAttribute } from '../../extensions/styles';
+import BorderControl from '../border-control';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 import Icon from '../icon';
 
 /**
@@ -33,7 +37,7 @@ import {
  * Component
  */
 const IconControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, clientId, deviceType } = props;
 
 	const classes = classnames('maxi-icon-control', className);
 
@@ -131,6 +135,19 @@ const IconControl = props => {
 					}}
 					showPalette
 					disableOpacity
+				/>
+			)}
+			{iconStyle === 'border' && (
+				<BorderControl
+					{...getGroupAttributes(props, [
+						'iconBorder',
+						'iconBorderWidth',
+						'iconBorderRadius',
+					])}
+					prefix='icon-'
+					onChange={obj => onChange(obj)}
+					breakpoint={deviceType}
+					clientId={clientId}
 				/>
 			)}
 		</div>

@@ -82,6 +82,7 @@ const attributes = {
 		},
 	},
 	...attributesData.icon,
+	...attributesData.iconBorder,
 	...attributesData.borderHover,
 	...attributesData.borderWidthHover,
 	...attributesData.borderRadiusHover,

@@ -162,11 +162,18 @@ const Inspector = props => {
 												<IconControl
 													{...getGroupAttributes(
 														attributes,
-														'icon'
+														[
+															'icon',
+															'iconBorder',
+															'iconBorderWidth',
+															'iconBorderRadius',
+														]
 													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}
+													deviceType={deviceType}
+													clientId={clientId}
 												/>
 											),
 										},

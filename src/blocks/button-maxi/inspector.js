@@ -164,6 +164,8 @@ const Inspector = props => {
 														attributes,
 														[
 															'icon',
+															'iconGradient',
+															'iconBackgroundColor',
 															'iconBorder',
 															'iconBorderWidth',
 															'iconBorderRadius',

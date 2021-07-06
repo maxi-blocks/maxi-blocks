@@ -1,4 +1,4 @@
-const icon = {
+export const icon = {
 	'icon-content': {
 		type: 'string',
 		default: '',
@@ -28,4 +28,26 @@ const icon = {
 	},
 };
 
-export default icon;
+export const iconBackgroundColor = {
+	'icon-background-palette-color-status': {
+		type: 'boolean',
+		default: true,
+	},
+	'icon-background-palette-color': {
+		type: 'number',
+		default: 4,
+	},
+	'icon-background-color': {
+		type: 'string',
+	},
+};
+
+export const iconGradient = {
+	'icon-background-gradient': {
+		type: 'string',
+	},
+	'icon-background-gradient-opacity': {
+		type: 'number',
+		default: 1,
+	},
+};

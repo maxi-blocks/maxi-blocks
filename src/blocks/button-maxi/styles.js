@@ -144,17 +144,32 @@ const getIconObject = (props, target) => {
 			},
 			target
 		),
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(props, [
-					'iconBorder',
-					'iconBorderWidth',
-					'iconBorderRadius',
-				]),
-			},
-			prefix: 'icon-',
-			parentBlockStyle: props.parentBlockStyle,
-		}),
+		background: target === 'icon' && {
+			...getColorBackgroundObject({
+				...getGroupAttributes(props, 'iconBackgroundColor'),
+				prefix: 'icon-',
+				parentBlockStyle: props.parentBlockStyle,
+			}),
+		},
+		gradient: target === 'icon' && {
+			...getGradientBackgroundObject({
+				...getGroupAttributes(props, 'iconGradient'),
+				prefix: 'icon-',
+			}),
+		},
+		border:
+			target === 'icon' &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(props, [
+						'iconBorder',
+						'iconBorderWidth',
+						'iconBorderRadius',
+					]),
+				},
+				prefix: 'icon-',
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 	};
 
 	return response;

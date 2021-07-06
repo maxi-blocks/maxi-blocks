@@ -10,6 +10,7 @@ import { useState } from '@wordpress/element';
 import AdvancedNumberControl from '../advanced-number-control';
 import FancyRadioControl from '../fancy-radio-control';
 import ColorControl from '../color-control';
+import GradientControl from '../gradient-control';
 import BorderControl from '../border-control';
 import {
 	getDefaultAttribute,
@@ -135,6 +136,46 @@ const IconControl = props => {
 					}}
 					showPalette
 					disableOpacity
+				/>
+			)}
+			{iconStyle === 'background-color' && (
+				<ColorControl
+					label={__('Icon background', 'maxi-blocks')}
+					color={props['icon-background-color']}
+					defaultColor={getDefaultAttribute('icon-background-color')}
+					paletteColor={props['icon-background-palette-color']}
+					paletteStatus={
+						props['icon-background-palette-color-status']
+					}
+					onChange={({ color, paletteColor, paletteStatus }) => {
+						onChange({
+							'icon-background-color': color,
+							'icon-background-palette-color': paletteColor,
+							'icon-background-palette-color-status':
+								paletteStatus,
+						});
+					}}
+					showPalette
+				/>
+			)}
+			{iconStyle === 'gradient' && (
+				<GradientControl
+					label={__('Background', 'maxi-blocks')}
+					gradient={props['icon-background-gradient']}
+					gradientOpacity={props['icon-background-gradient-opacity']}
+					defaultGradient={getDefaultAttribute(
+						'icon-background-gradient'
+					)}
+					onChange={val =>
+						onChange({
+							'icon-background-gradient': val,
+						})
+					}
+					onChangeOpacity={val =>
+						onChange({
+							'icon-background-gradient-opacity': val,
+						})
+					}
 				/>
 			)}
 			{iconStyle === 'border' && (

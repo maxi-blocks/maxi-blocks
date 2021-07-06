@@ -18,16 +18,18 @@ describe('NumberCounterControl', () => {
 		const accordionPanel = await openSidebar(page, 'number');
 
 		// Start Animation
-		/* await accordionPanel.$eval(
-			'.maxi-number-counter-control .components-base-control__field select',
-			select => select.select('view-scroll')
+		const animation = await accordionPanel.$(
+			'.maxi-number-counter-control .components-base-control__field select'
 		);
+
+		await animation.select('view-scroll');
 
 		const expectAnimation = 'view-scroll';
 		const animationAttributes = await getBlockAttributes();
-		const styleAttribute = animationAttributes[''];
+		const styleAttribute =
+			animationAttributes['number-counter-start-animation'];
 
-		expect(styleAttribute).toStrictEqual(expectAnimation); */
+		expect(styleAttribute).toStrictEqual(expectAnimation);
 
 		// Start Number, End Number, Duration, Radius, Stroke, Title Font Size
 		const inputs = await accordionPanel.$$(
@@ -90,6 +92,7 @@ describe('NumberCounterControl', () => {
 		};
 
 		expect(numberCounterAttributes).toStrictEqual(expectedAttributes);
+
 		// buttons
 		const buttons = await accordionPanel.$$(
 			'.maxi-fancy-radio-control .maxi-base-control__field label'
@@ -105,6 +108,16 @@ describe('NumberCounterControl', () => {
 
 		expect(showPercentageAttribute).toStrictEqual(showPercentage);
 
+		// Rounded Bar
+		await buttons[10].click();
+
+		const roundedBar = true;
+		const roundedAttributes = await getBlockAttributes();
+		const roundedBarAttribute =
+			roundedAttributes['number-counter-rounded-status'];
+
+		expect(roundedBarAttribute).toStrictEqual(roundedBar);
+
 		// Hide Circle
 		await buttons[7].click();
 
@@ -114,17 +127,6 @@ describe('NumberCounterControl', () => {
 			circleAttributes['number-counter-circle-status'];
 
 		expect(hideCircleAttribute).toStrictEqual(hideCircle);
-
-		// Rounded Bar
-		await buttons[8].click();
-		await buttons[10].click();
-
-		const roundedBar = true;
-		const roundedAttributes = await getBlockAttributes();
-		const roundedBarAttribute =
-			roundedAttributes['number-counter-rounded-status'];
-
-		expect(roundedBarAttribute).toStrictEqual(roundedBar);
 
 		// Text colour, Circle Background Colour, Circle Bar Colour
 
@@ -160,5 +162,19 @@ describe('NumberCounterControl', () => {
 		};
 
 		expect(colorsAttributes).toStrictEqual(expectedColorAttributes);
+
+		// font family
+		const fontFamilySelector = await accordionPanel.$(
+			'.maxi-number-counter-control .maxi-typography-control__font-family'
+		);
+		await fontFamilySelector.click();
+		await page.keyboard.type('Montserrat');
+		await page.keyboard.press('Enter');
+
+		const attributes = await getBlockAttributes();
+		const fontFamily = attributes['number-counter-title-font-family'];
+		const expectedFontFamily = 'Montserrat';
+
+		expect(fontFamily).toStrictEqual(expectedFontFamily);
 	});
 });

@@ -160,6 +160,10 @@ const Inspector = props => {
 											content: (
 												// <SVGDefaultsDisplayer usedPlace='button-icon' />
 												<IconControl
+													{...getGroupAttributes(
+														attributes,
+														'icon'
+													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}

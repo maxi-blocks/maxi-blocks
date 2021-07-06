@@ -26,7 +26,7 @@ import './editor.scss';
 const IconControl = props => {
 	const { className, onChange } = props;
 
-	const classes = classnames('maxi-map-control', className);
+	const classes = classnames('maxi-icon-control', className);
 
 	return (
 		<div className={classes}>
@@ -36,9 +36,11 @@ const IconControl = props => {
 				max={999}
 				initial={1}
 				step={1}
-				// value={props['map-zoom']}
-				// onChangeValue={val => onChange({ 'map-zoom': val })}
-				// onReset={() =>}
+				value={props['icon-size']}
+				onChangeValue={val => onChange({ 'icon-size': val })}
+				onReset={() =>
+					onChange({ 'icon-size': getDefaultAttribute('icon-size') })
+				}
 			/>
 			<AdvancedNumberControl
 				label={__('Spacing', 'maxi-blocks')}
@@ -46,18 +48,27 @@ const IconControl = props => {
 				max={999}
 				initial={1}
 				step={1}
-				// value={props['map-zoom']}
-				// onChangeValue={val => onChange({ 'map-zoom': val })}
-				// onReset={() =>}
+				value={props['icon-spacing']}
+				onChangeValue={val => onChange({ 'icon-spacing': val })}
+				onReset={() =>
+					onChange({
+						'icon-size': getDefaultAttribute('icon-spacing'),
+					})
+				}
 			/>
 			<FancyRadioControl
 				label={__('Icon Position', 'maxi-block')}
-				// selected={props['map-marker-custom-color-status']}
+				selected={props['icon-position']}
 				options={[
 					{ label: __('Right', 'maxi-block'), value: 'right' },
 					{ label: __('Left', 'maxi-block'), value: 'left' },
 				]}
-				// onChange={val =>}
+				optionType='string'
+				onChange={val =>
+					onChange({
+						'icon-position': val,
+					})
+				}
 			/>
 		</div>
 	);

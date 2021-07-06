@@ -81,6 +81,7 @@ const attributes = {
 			default: 10,
 		},
 	},
+	...attributesData.icon,
 	...attributesData.borderHover,
 	...attributesData.borderWidthHover,
 	...attributesData.borderRadiusHover,

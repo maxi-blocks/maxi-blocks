@@ -52,7 +52,7 @@ const IconControl = props => {
 				onChangeValue={val => onChange({ 'icon-spacing': val })}
 				onReset={() =>
 					onChange({
-						'icon-size': getDefaultAttribute('icon-spacing'),
+						'icon-spacing': getDefaultAttribute('icon-spacing'),
 					})
 				}
 			/>

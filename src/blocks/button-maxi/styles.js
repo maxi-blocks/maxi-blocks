@@ -7,6 +7,7 @@ import {
 	getColorBackgroundObject,
 	getDisplayStyles,
 	getGradientBackgroundObject,
+	getIconStyles,
 	getMarginPaddingStyles,
 	getPositionStyles,
 	getSizeStyles,
@@ -135,6 +136,16 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getIconObject = props => {
+	const response = {
+		icon: getIconStyles({
+			...getGroupAttributes(props, 'icon'),
+		}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -142,6 +153,7 @@ const getStyles = props => {
 		[uniqueID]: {
 			'': getWrapperObject(props),
 			' .maxi-button-block__button': getNormalObject(props),
+			' .maxi-button-block__icon': getIconObject(props),
 			' .maxi-button-block__content': getContentObject(props),
 			' .maxi-button-block__button:hover': getHoverObject(props),
 		},

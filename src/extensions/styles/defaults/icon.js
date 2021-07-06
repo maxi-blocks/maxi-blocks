@@ -15,6 +15,17 @@ const icon = {
 		type: 'number',
 		default: 5,
 	},
+	'icon-palette-color-status': {
+		type: 'boolean',
+		default: true,
+	},
+	'icon-palette-color': {
+		type: 'number',
+		default: 4,
+	},
+	'icon-color': {
+		type: 'string',
+	},
 };
 
 export default icon;

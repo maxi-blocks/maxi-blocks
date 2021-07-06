@@ -9,6 +9,7 @@ import { useState } from '@wordpress/element';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import FancyRadioControl from '../fancy-radio-control';
+import ColorControl from '../color-control';
 import { getDefaultAttribute } from '../../extensions/styles';
 import Icon from '../icon';
 
@@ -114,6 +115,24 @@ const IconControl = props => {
 				optionType='string'
 				onChange={val => setIconStyle(val)}
 			/>
+			{iconStyle === 'color' && (
+				<ColorControl
+					label={__('Icon', 'maxi-blocks')}
+					color={props['icon-color']}
+					defaultColor={getDefaultAttribute('icon-color')}
+					paletteColor={props['icon-palette-color']}
+					paletteStatus={props['icon-palette-color-status']}
+					onChange={({ color, paletteColor, paletteStatus }) => {
+						onChange({
+							'icon-color': color,
+							'icon-palette-color': paletteColor,
+							'icon-palette-color-status': paletteStatus,
+						});
+					}}
+					showPalette
+					disableOpacity
+				/>
+			)}
 		</div>
 	);
 };

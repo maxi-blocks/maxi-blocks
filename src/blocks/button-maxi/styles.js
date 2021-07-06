@@ -136,11 +136,14 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getIconObject = props => {
+const getIconObject = (props, target) => {
 	const response = {
-		icon: getIconStyles({
-			...getGroupAttributes(props, 'icon'),
-		}),
+		icon: getIconStyles(
+			{
+				...getGroupAttributes(props, 'icon'),
+			},
+			target
+		),
 	};
 
 	return response;
@@ -153,7 +156,8 @@ const getStyles = props => {
 		[uniqueID]: {
 			'': getWrapperObject(props),
 			' .maxi-button-block__button': getNormalObject(props),
-			' .maxi-button-block__icon': getIconObject(props),
+			' .maxi-button-block__icon': getIconObject(props, 'icon'),
+			' .maxi-button-block__icon svg > *': getIconObject(props, 'svg'),
 			' .maxi-button-block__content': getContentObject(props),
 			' .maxi-button-block__button:hover': getHoverObject(props),
 		},

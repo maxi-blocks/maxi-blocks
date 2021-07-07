@@ -39,12 +39,16 @@ const getNormalObject = props => {
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
-		divider: getDividerStyles({
-			...getGroupAttributes(props, 'divider'),
-			lineAlign,
-			lineVertical,
-			lineHorizontal,
-		}),
+		divider: getDividerStyles(
+			{
+				...getGroupAttributes(props, 'divider'),
+				lineAlign,
+				lineVertical,
+				lineHorizontal,
+			},
+			null,
+			props.parentBlockStyle
+		),
 	};
 
 	return response;
@@ -58,7 +62,8 @@ const getDividerObject = props => {
 				...getGroupAttributes(props, 'divider'),
 				lineOrientation,
 			},
-			'line'
+			'line',
+			props.parentBlockStyle
 		),
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -104,6 +109,7 @@ const getStyles = props => {
 					'backgroundColor',
 					'backgroundGradient',
 				]),
+				blockStyle: props.parentBlockStyle,
 			}),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
@@ -112,6 +118,7 @@ const getStyles = props => {
 					'backgroundGradientHover',
 				]),
 				isHover: true,
+				blockStyle: props.parentBlockStyle,
 			}),
 		},
 	};

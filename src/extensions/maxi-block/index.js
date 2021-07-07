@@ -135,7 +135,10 @@ class MaxiBlockComponent extends Component {
 		if (blockStyle === 'maxi-parent') {
 			const changedStyle = this.getParentStyle();
 
-			if (changedStyle) return true;
+			if (changedStyle) {
+				this.displayStyles(); // force rendering styles after changing parentBlockStyle
+				return true;
+			}
 		}
 
 		// Ensures rendering when selecting or unselecting

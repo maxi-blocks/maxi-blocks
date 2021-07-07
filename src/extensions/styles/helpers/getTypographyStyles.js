@@ -24,7 +24,10 @@ const getTypographyStyles = ({
 	prefix = '',
 	customFormatTypography = false,
 	parentBlockStyle,
+	textLevel = 'p',
 }) => {
+	if (isHover && !obj[`${prefix}typography-status-hover`]) return {};
+
 	const response = {};
 
 	const isCustomFormat = !!customFormatTypography;
@@ -41,12 +44,13 @@ const getTypographyStyles = ({
 			}),
 			...(obj[getName('palette-color-status', breakpoint)]
 				? {
-						...(!isNil(obj[getName('palette-color', breakpoint)]) &&
-							breakpoint !== 'general' && {
-								color: `var(--maxi-${parentBlockStyle}-color-${
-									obj[getName('palette-color', breakpoint)]
-								})`,
-							}),
+						...(!isNil(
+							obj[getName('palette-color', breakpoint)]
+						) && {
+							color: `var(--maxi-light-${textLevel}-color, var(--maxi-${parentBlockStyle}-color-${
+								obj[getName('palette-color', breakpoint)]
+							}))`,
+						}),
 				  }
 				: {
 						...(!isNil(obj[getName('color', breakpoint)]) && {

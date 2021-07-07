@@ -3,32 +3,51 @@
  */
 import { isNil } from 'lodash';
 
-const getNumberCounterStyles = (obj, target) => {
+const getNumberCounterStyles = (obj, target, parentBlockStyle) => {
 	const response = {
 		label: 'Number Counter',
 		general: {},
 	};
 
-	if (
-		!obj['number-counter-palette-circle-bar-color-status'] &&
-		target === 'circle-bar' &&
-		!isNil(obj['number-counter-circle-bar-color'])
-	)
-		response.general.stroke = obj['number-counter-circle-bar-color'];
+	if (target === 'circle-bar') {
+		if (
+			!obj['number-counter-palette-circle-bar-color-status'] &&
+			!isNil(obj['number-counter-circle-bar-color'])
+		)
+			response.general.stroke = obj['number-counter-circle-bar-color'];
+		else if (
+			obj['number-counter-palette-circle-bar-color-status'] &&
+			obj['number-counter-palette-circle-bar-color']
+		)
+			response.general.stroke = `var(--maxi-${parentBlockStyle}-color-${obj['number-counter-palette-circle-bar-color']})`;
+	}
 
-	if (
-		!obj['number-counter-palette-circle-background-color-status'] &&
-		target === 'circle-background' &&
-		!isNil(obj['number-counter-circle-background-color'])
-	)
-		response.general.stroke = obj['number-counter-circle-background-color'];
+	if (target === 'circle-background') {
+		if (
+			!obj['number-counter-palette-circle-background-color-status'] &&
+			!isNil(obj['number-counter-circle-background-color'])
+		)
+			response.general.stroke =
+				obj['number-counter-circle-background-color'];
+		else if (
+			obj['number-counter-palette-circle-background-color-status'] &&
+			obj['number-counter-palette-circle-background-color']
+		)
+			response.general.stroke = `var(--maxi-${parentBlockStyle}-color-${obj['number-counter-palette-circle-background-color']})`;
+	}
 
-	if (
-		!obj['number-counter-palette-text-color-status'] &&
-		target === 'text' &&
-		!isNil(obj['number-counter-text-color'])
-	)
-		response.general.color = obj['number-counter-text-color'];
+	if (target === 'text') {
+		if (
+			!obj['number-counter-palette-text-color-status'] &&
+			!isNil(obj['number-counter-text-color'])
+		)
+			response.general.stroke = obj['number-counter-text-color'];
+		else if (
+			obj['number-counter-palette-text-color-status'] &&
+			obj['number-counter-palette-text-color']
+		)
+			response.general.color = `var(--maxi-${parentBlockStyle}-color-${obj['number-counter-palette-text-color']})`;
+	}
 
 	if (target === 'text' && !isNil(obj['number-counter-title-font-family']))
 		response.general['font-family'] =

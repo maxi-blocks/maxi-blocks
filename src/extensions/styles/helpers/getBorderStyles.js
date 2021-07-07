@@ -62,16 +62,15 @@ const getBorderStyles = ({
 						const paletteStatus = getLastBreakpointAttribute(
 							`${prefix}border-palette-color-status`,
 							breakpoint,
-							obj
+							obj,
+							isHover
 						);
 						const paletteColor =
-							obj[`${prefix}border-palette-color-${breakpoint}`];
-
-						if (
-							response[breakpoint]['border-color'] ||
-							(breakpoint === 'general' && paletteStatus)
-						)
-							return;
+							obj[
+								`${prefix}border-palette-color-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`
+							];
 
 						if (paletteStatus && paletteColor)
 							response[breakpoint][

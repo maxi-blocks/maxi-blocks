@@ -10,7 +10,7 @@ import { MediaUpload } from '@wordpress/block-editor';
  */
 import getStyles from './styles';
 import Inspector from './inspector';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -89,7 +89,6 @@ class edit extends MaxiBlockComponent {
 			SVGElement,
 			imgWidth,
 			imageRatio,
-			parentBlockStyle,
 			'hover-type': hoverType,
 			'hover-preview': hoverPreview,
 		} = attributes;
@@ -104,8 +103,6 @@ class edit extends MaxiBlockComponent {
 			'maxi-image-ratio',
 			`maxi-image-ratio__${imageRatio}`
 		);
-
-		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		const hoverClasses = classnames(
 			hoverType === 'basic' &&
@@ -139,7 +136,6 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				tagName='figure'
 				className={classes}
-				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<MediaUpload

@@ -314,19 +314,7 @@ const LibraryContainer = props => {
 				onRequestClose();
 			}
 
-			if (type === 'bg-shape' && bgLayersStatus) {
-				const newBgLayers = cloneDeep(bgLayers);
-
-				newBgLayers[layerId]['background-svg-SVGElement'] = svgCode;
-
-				updateBlockAttributes(clientId, {
-					'background-layers': [...newBgLayers],
-				});
-
-				onRequestClose();
-			}
-
-			if (type === 'bg-shape' && !bgLayersStatus) {
+			if (type === 'bg-shape') {
 				const cleanedContent = DOMPurify.sanitize(svgCode);
 				const svg = document
 					.createRange()
@@ -353,12 +341,27 @@ const LibraryContainer = props => {
 
 				const resEl = injectImgSVG(svg, resData);
 
-				updateBlockAttributes(clientId, {
-					'background-svg-SVGElement': resEl.outerHTML,
-					'background-svg-SVGMediaID': null,
-					'background-svg-SVGMediaURL': null,
-					'background-svg-SVGData': resData,
-				});
+				if (!bgLayersStatus) {
+					updateBlockAttributes(clientId, {
+						'background-svg-SVGElement': resEl.outerHTML,
+						'background-svg-SVGMediaID': null,
+						'background-svg-SVGMediaURL': null,
+						'background-svg-SVGData': resData,
+					});
+				} else {
+					const newBgLayers = cloneDeep(bgLayers);
+
+					newBgLayers[layerId]['background-svg-SVGElement'] =
+						resEl.outerHTML;
+					newBgLayers[layerId]['background-svg-SVGMediaID'] = '';
+					newBgLayers[layerId]['background-svg-SVGMediaURL'] = '';
+					newBgLayers[layerId]['background-svg-SVGData'] = resData;
+
+					updateBlockAttributes(clientId, {
+						'background-layers': [...newBgLayers],
+					});
+				}
+
 				onRequestClose();
 			}
 

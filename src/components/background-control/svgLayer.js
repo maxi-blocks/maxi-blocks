@@ -61,28 +61,7 @@ const SVGLayer = props => {
 						label: __('Fill', 'maxi-blocks'),
 						content: (
 							<SVGFillControl
-								{...getGroupAttributes(props, [
-									'svg',
-									'backgroundSVG',
-								])}
-								SVGData={
-									SVGOptions[
-										getAttributeKey(
-											'background-svg-SVGData',
-											isHover,
-											prefix
-										)
-									]
-								}
-								SVGElement={
-									SVGOptions[
-										getAttributeKey(
-											'background-svg-SVGElement',
-											isHover,
-											prefix
-										)
-									]
-								}
+								SVGOptions={SVGOptions}
 								onChange={obj =>
 									onChange({
 										'background-palette-svg-color':

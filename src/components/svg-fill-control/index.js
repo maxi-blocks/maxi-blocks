@@ -21,11 +21,11 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const SVGFillControl = props => {
-	const { SVGElement, onChange, className, clientId, isHover } = props;
+	const { onChange, className, clientId, isHover, SVGOptions } = props;
 
 	const classes = classnames('maxi-svg-fill-control', className);
 
-	const SVGData = cloneDeep(props.SVGData);
+	const SVGData = cloneDeep(SVGOptions['background-svg-SVGData']);
 
 	const getFillItem = ([id, value]) => {
 		return (
@@ -47,7 +47,9 @@ const SVGFillControl = props => {
 
 									onChange({
 										SVGElement: injectImgSVG(
-											SVGElement,
+											SVGOptions[
+												'background-svg-SVGElement'
+											],
 											SVGData
 										).outerHTML,
 										SVGData,
@@ -59,10 +61,12 @@ const SVGFillControl = props => {
 								}}
 								showPalette
 								paletteColor={
-									props['background-palette-svg-color']
+									SVGOptions['background-palette-svg-color']
 								}
 								paletteStatus={
-									props['background-palette-svg-color-status']
+									SVGOptions[
+										'background-palette-svg-color-status'
+									]
 								}
 								isHover={isHover}
 								clientId={clientId}
@@ -79,7 +83,7 @@ const SVGFillControl = props => {
 									SVGData[id].imageID = imageData.id;
 									SVGData[id].imageURL = imageData.url;
 									const resEl = injectImgSVG(
-										SVGElement,
+										SVGOptions['background-svg-SVGElement'],
 										SVGData
 									);
 
@@ -93,7 +97,7 @@ const SVGFillControl = props => {
 									SVGData[id].imageURL = '';
 
 									const resEl = injectImgSVG(
-										SVGElement,
+										SVGOptions['background-svg-SVGElement'],
 										SVGData,
 										true
 									);

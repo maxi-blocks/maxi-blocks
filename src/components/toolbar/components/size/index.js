@@ -32,6 +32,7 @@ const EXCLUDED_BLOCKS = [
 const EXCLUDED_BLOCKS_SIZE = [
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/svg-icon-maxi',
+	'maxi-blocks/shape-maxi',
 ];
 
 /**

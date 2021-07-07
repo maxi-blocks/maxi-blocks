@@ -131,6 +131,10 @@ body {
 			opacity: 1 !important;
 		}
 	}
+
+	&.maxi-block--has-link .maxi-text-block__content{
+		transition: color .3s ease;
+	}
 }
 
 /****************

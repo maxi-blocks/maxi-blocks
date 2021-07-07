@@ -129,6 +129,31 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 		attributes['svg-palette-line-color']
 			? `maxi-sc-${parentBlockStyle}-svgColorLine-color-${attributes['svg-palette-line-color']}`
 			: null;
+	const shapeFillClass =
+		attributes['shape-palette-fill-color-status'] &&
+		attributes['shape-palette-fill-color']
+			? `maxi-sc-${parentBlockStyle}-shapeColorFill-color-${attributes['shape-palette-fill-color']}`
+			: null;
+	const linkColorClass =
+		attributes['link-palette-color-status-general'] &&
+		attributes['link-palette-color-general']
+			? `maxi-sc-${parentBlockStyle}-link-color-${attributes['link-palette-color-general']}`
+			: null;
+	const linkHoverColorClass =
+		attributes['link-hover-palette-color-status-general'] &&
+		attributes['link-hover-palette-color-general']
+			? `maxi-sc-${parentBlockStyle}-link-hover-color-${attributes['link-hover-palette-color-general']}`
+			: null;
+	const linkActiveColorClass =
+		attributes['link-active-palette-color-status-general'] &&
+		attributes['link-active-palette-color-general']
+			? `maxi-sc-${parentBlockStyle}-link-active-color-${attributes['link-active-palette-color-general']}`
+			: null;
+	const linkVisitedColorClass =
+		attributes['link-visited-palette-color-status-general'] &&
+		attributes['link-visited-palette-color-general']
+			? `maxi-sc-${parentBlockStyle}-link-visited-color-${attributes['link-visited-palette-color-general']}`
+			: null;
 
 	return classnames(
 		typographyClass,
@@ -150,7 +175,12 @@ const getPaletteClasses = (attributes, parentBlockStyle) => {
 		markerAddressClass,
 		hoverBackgroundClass,
 		svgFillClass,
-		svgLineClass
+		svgLineClass,
+		shapeFillClass,
+		linkColorClass,
+		linkHoverColorClass,
+		linkActiveColorClass,
+		linkVisitedColorClass
 	);
 };
 

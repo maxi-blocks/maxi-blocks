@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -23,6 +24,7 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 import { getPaletteColor } from '../../extensions/style-cards';
+import { getBlockStyle } from '../../extensions/styles';
 
 /**
  * Component
@@ -42,11 +44,24 @@ const ColorControl = props => {
 		disablePalette,
 		textLevel,
 		showPalette = false,
+		globalProps,
 		deviceType,
 		clientId,
 	} = props;
 
 	const classes = classnames('maxi-color-control', className);
+
+	const { globalStatus } = useSelect(select => {
+		const globalStatus = globalProps
+			? select('maxiBlocks/style-cards').receiveStyleCardGlobalValue(
+					globalProps?.target,
+					globalProps ? getBlockStyle(clientId) : null,
+					globalProps?.type
+			  )
+			: false;
+
+		return { globalStatus };
+	});
 
 	const getRGB = colorString => {
 		if (!colorString) return { rgb: { r: 1, g: 1, b: 1, a: 1 } };
@@ -128,6 +143,7 @@ const ColorControl = props => {
 					value={paletteColor}
 					status={paletteStatus}
 					textLevel={textLevel}
+					globalStatus={globalStatus}
 					isHover={isHover}
 					onChange={obj => onChangeValue(obj)}
 					deviceType={deviceType}

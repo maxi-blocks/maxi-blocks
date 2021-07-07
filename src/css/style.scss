@@ -10,8 +10,16 @@
 }
 .maxi-block {
     position: relative;
+
+	.maxi-text-block--link span {
+		transition: color .3s ease;
+	}
 }
 
 .maxi-link-wrapper {
     display: block;
+
+	.maxi-text-block__content{
+		transition: color .3s ease;
+	}
 }

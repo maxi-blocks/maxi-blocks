@@ -332,6 +332,16 @@ class MaxiBlocks_StyleCards {
 							"background-color-global": false,
 							"background-color": ""
 						},
+						"link": {
+							"link-color-global": false,
+							"link-color": "",
+							"hover-color-global": false,
+							"hover-color": "",
+							"active-color-global": false,
+							"active-color": "",
+							"visited-color-global": false,
+							"visited-color": ""
+						},
 						"hover": {
 							"color-global": false,
 							"color": "#c9340a"
@@ -552,6 +562,16 @@ class MaxiBlocks_StyleCards {
 							"text-decoration-general": "unset",
 							"background-color-global": false,
 							"background-color": ""
+						},
+						"link": {
+							"link-color-global": false,
+							"link-color": "",
+							"hover-color-global": false,
+							"hover-color": "",
+							"active-color-global": false,
+							"active-color": "",
+							"visited-color-global": false,
+							"visited-color": ""
 						},
 						"hover": {
 							"color-global": false,

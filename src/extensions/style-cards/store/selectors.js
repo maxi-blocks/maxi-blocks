@@ -1,3 +1,4 @@
+import { isEmpty, has } from 'lodash';
 import getActiveStyleCard from '../getActiveStyleCard';
 
 export const receiveMaxiStyleCards = state => {
@@ -32,5 +33,23 @@ export const receiveStyleCardsList = state => {
 			return { label: value.name, value: key };
 		});
 
+	return false;
+};
+
+export const receiveStyleCardGlobalValue = (
+	state,
+	target,
+	blockStyle,
+	SCEntry
+) => {
+	if (state.styleCards) {
+		const selectedSCStyleCard =
+			state.styleCards.sc_maxi?.[blockStyle]?.styleCard;
+
+		return !isEmpty(selectedSCStyleCard) &&
+			has(selectedSCStyleCard[SCEntry], target)
+			? selectedSCStyleCard[SCEntry][target]
+			: false;
+	}
 	return false;
 };

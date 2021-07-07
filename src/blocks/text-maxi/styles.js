@@ -13,6 +13,7 @@ import {
 	getTypographyStyles,
 	getCustomFormatsStyles,
 	getAlignmentTextStyles,
+	getLinkStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -151,10 +152,6 @@ const getStyles = props => {
 				[` ${element}.maxi-text-block__content li:hover`]:
 					getTypographyHoverObject(props),
 			}),
-			[` ${element}.maxi-text-block__content a`]:
-				getTypographyObject(props),
-			[` ${element}.maxi-text-block__content a:hover`]:
-				getTypographyHoverObject(props),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',
@@ -190,6 +187,11 @@ const getStyles = props => {
 				props['custom-formats-hover'],
 				true,
 				getGroupAttributes(props, 'typographyHover')
+			),
+			...getLinkStyles(
+				{ ...getGroupAttributes(props, 'link') },
+				[` ${element}.maxi-text-block__content a`],
+				props.parentBlockStyle
 			),
 		},
 	};

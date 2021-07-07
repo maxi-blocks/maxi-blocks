@@ -54,6 +54,7 @@ const Inspector = props => {
 		isFirstOnHierarchy,
 		uniqueID,
 		fullWidth,
+		parentBlockStyle,
 	} = attributes;
 
 	return (
@@ -172,18 +173,16 @@ const Inspector = props => {
 														onChange={obj => {
 															setAttributes(obj);
 
-															const paletteStatus =
+															changeSVGContent(
 																obj[
 																	'svg-palette-fill-color-status'
-																];
-
-															if (!paletteStatus)
-																changeSVGContent(
-																	obj[
-																		'svg-fill-color'
-																	],
-																	1
-																);
+																]
+																	? `var(--maxi-${parentBlockStyle}-icon-fill, var(--maxi-${parentBlockStyle}-color-${obj['svg-palette-fill-color']}))`
+																	: obj[
+																			'svg-fill-color'
+																	  ],
+																'fill'
+															);
 														}}
 													/>
 													<hr />
@@ -200,18 +199,16 @@ const Inspector = props => {
 														onChange={obj => {
 															setAttributes(obj);
 
-															const paletteStatus =
+															changeSVGContent(
 																obj[
 																	'svg-palette-line-color-status'
-																];
-
-															if (!paletteStatus)
-																changeSVGContent(
-																	obj[
-																		'svg-line-color'
-																	],
-																	1
-																);
+																]
+																	? `var(--maxi-${parentBlockStyle}-icon-line, var(--maxi-${parentBlockStyle}-color-${obj['svg-palette-line-color']}))`
+																	: obj[
+																			'svg-line-color'
+																	  ],
+																'stroke'
+															);
 														}}
 													/>
 												</>

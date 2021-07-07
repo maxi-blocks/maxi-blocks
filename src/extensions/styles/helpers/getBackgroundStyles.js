@@ -18,6 +18,8 @@ import { isEmpty, isNil } from 'lodash';
 export const getColorBackgroundObject = ({
 	isHover = false,
 	prefix = '',
+	blockStyle,
+	isButton = false,
 	...props
 }) => {
 	const response = {
@@ -34,6 +36,19 @@ export const getColorBackgroundObject = ({
 
 	if (!bgStatus && !isEmpty(bgColor))
 		response.general['background-color'] = bgColor;
+	else if (bgStatus && !isButton)
+		response.general[
+			'background-color'
+		] = `var(--maxi-${blockStyle}-color-${
+			props[`${prefix}background-palette-color${isHover ? '-hover' : ''}`]
+		})`;
+	else if (bgStatus && isButton) {
+		response.general[
+			'background-color'
+		] = `var(--maxi-${blockStyle}-button-background-color, var(--maxi-${blockStyle}-color-${
+			props[`${prefix}background-palette-color${isHover ? '-hover' : ''}`]
+		}))`;
+	}
 	if (
 		!isEmpty(
 			props[
@@ -349,7 +364,13 @@ const getSVGBackgroundObject = SVGOptions => {
 	return response;
 };
 
-const setBackgroundLayers = ({ response, layers, target, isHover = false }) => {
+const setBackgroundLayers = ({
+	response,
+	layers,
+	target,
+	isHover = false,
+	blockStyle,
+}) => {
 	layers.forEach(layer => {
 		const layerTarget = `${target}${
 			isHover ? ':hover' : ''
@@ -360,9 +381,10 @@ const setBackgroundLayers = ({ response, layers, target, isHover = false }) => {
 				Object.assign(response, {
 					[layerTarget]: {
 						backgroundColor: {
-							...getColorBackgroundObject(
-								getGroupAttributes(layer, 'backgroundColor')
-							),
+							...getColorBackgroundObject({
+								...getGroupAttributes(layer, 'backgroundColor'),
+								blockStyle,
+							}),
 						},
 					},
 				});
@@ -439,6 +461,7 @@ const getBackgroundStyles = ({
 		backgroundSVG: 'backgroundSVG',
 		borderRadius: 'borderRadius',
 	},
+	blockStyle,
 	...props
 }) => {
 	if (isHover && !props[`${prefix}background-status-hover`]) return {};
@@ -474,6 +497,7 @@ const getBackgroundStyles = ({
 					],
 					target,
 					isHover,
+					blockStyle,
 				});
 			}
 			break;
@@ -492,6 +516,7 @@ const getBackgroundStyles = ({
 						),
 						isHover,
 						prefix,
+						blockStyle,
 					}),
 				},
 			};

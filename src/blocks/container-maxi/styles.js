@@ -136,7 +136,8 @@ const getStyles = props => {
 						{
 							...getGroupAttributes(props, ['shapeDivider']),
 						},
-						'top'
+						'top',
+						props.parentBlockStyle
 					),
 				},
 			},
@@ -146,7 +147,8 @@ const getStyles = props => {
 						{
 							...getGroupAttributes(props, 'shapeDivider'),
 						},
-						'bottom'
+						'bottom',
+						props.parentBlockStyle
 					),
 				},
 			},
@@ -170,6 +172,7 @@ const getStyles = props => {
 					'backgroundSVG',
 					'borderRadius',
 				]),
+				blockStyle: props.parentBlockStyle,
 			}),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
@@ -179,6 +182,7 @@ const getStyles = props => {
 					'borderRadiusHover',
 				]),
 				isHover: true,
+				blockStyle: props.parentBlockStyle,
 			}),
 			...getArrowStyles({
 				...getGroupAttributes(props, [
@@ -191,7 +195,7 @@ const getStyles = props => {
 					'backgroundGradient',
 					'boxShadow',
 				]),
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.parentBlockStyle,
 			}),
 		},
 	};

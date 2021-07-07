@@ -4,18 +4,15 @@
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getPaletteClasses } from '../../extensions/styles';
 
 /**
  * Save
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID, parentBlockStyle } = attributes;
+	const { uniqueID } = attributes;
 
 	const classes = 'maxi-number-counter-block';
-
-	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 	const radius = attributes['number-counter-radius'];
 	const stroke = attributes['number-counter-stroke'];
@@ -25,7 +22,6 @@ const save = props => {
 	return (
 		<MaxiBlock
 			className={classes}
-			paletteClasses={paletteClasses}
 			id={uniqueID}
 			{...getMaxiBlockBlockAttributes(props)}
 			isSave

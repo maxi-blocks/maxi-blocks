@@ -3,7 +3,7 @@
  */
 import { isNil } from 'lodash';
 
-const getShapeStyles = (obj, target) => {
+const getShapeStyles = (obj, target, parentBlockStyle) => {
 	const response = {
 		label: 'Shape',
 		general: {},
@@ -12,12 +12,18 @@ const getShapeStyles = (obj, target) => {
 	if (target === 'svg' && !isNil(obj['shape-width']))
 		response.general.width = `${obj['shape-width']}${obj['shape-width-unit']}`;
 
-	if (
-		!obj['shape-palette-fill-color-status'] &&
-		target === 'path' &&
-		!isNil(obj['shape-fill-color'])
-	)
-		response.general.fill = obj['shape-fill-color'];
+	if (target === 'path') {
+		if (
+			obj['shape-palette-fill-color-status'] &&
+			obj['shape-palette-fill-color']
+		)
+			response.general.fill = `var(--maxi-${parentBlockStyle}-icon-fill, var(--maxi-${parentBlockStyle}-color-${obj['shape-palette-fill-color']}))`;
+		else if (
+			!obj['shape-palette-fill-color-status'] &&
+			!isNil(obj['shape-fill-color'])
+		)
+			response.general.fill = obj['shape-fill-color'];
+	}
 
 	return response;
 };

@@ -15,7 +15,7 @@ import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
 import { getTemplates } from '../../extensions/column-templates';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -55,11 +55,9 @@ class edit extends MaxiBlockComponent {
 			selectOnClick,
 			setAttributes,
 		} = this.props;
-		const { uniqueID, parentBlockStyle } = attributes;
+		const { uniqueID } = attributes;
 
 		const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
-
-		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -83,7 +81,6 @@ class edit extends MaxiBlockComponent {
 				<MaxiBlock
 					key={`maxi-row--${uniqueID}`}
 					ref={this.blockRef}
-					paletteClasses={paletteClasses}
 					{...getMaxiBlockBlockAttributes(this.props)}
 					disableMotion
 				>

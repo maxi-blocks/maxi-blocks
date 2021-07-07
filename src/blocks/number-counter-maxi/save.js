@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { SVG, Circle } from '@wordpress/primitives';
+
+/**
  * Internal dependencies
  */
 import MaxiBlock, {
@@ -37,30 +42,30 @@ const save = props => {
 				}}
 			>
 				{!circleStatus && (
-					<svg
+					<SVG
 						viewBox={`0 0 ${radius * 2 + stroke} ${
 							radius * 2 + stroke
 						}`}
 					>
-						<circle
+						<Circle
 							className='maxi-number-counter__box__background'
-							strokeWidth={stroke}
+							stroke-width={stroke}
 							fill='none'
 							cx={radius + stroke / 2}
 							cy={radius + stroke / 2}
 							r={radius}
 						/>
-						<circle
+						<Circle
 							className='maxi-number-counter__box__circle'
-							strokeWidth={stroke}
+							stroke-width={stroke}
 							fill='none'
 							cx={radius + stroke / 2}
 							cy={radius + stroke / 2}
 							r={radius}
-							strokeLinecap={roundedStatus ? 'round' : ''}
-							strokeDasharray={`0 ${2 * Math.PI * radius}`}
+							stroke-linecap={roundedStatus ? 'round' : ''}
+							stroke-dasharray={`0 ${2 * Math.PI * radius}`}
 						/>
-					</svg>
+					</SVG>
 				)}
 				<span className='maxi-number-counter__box__text' />
 			</div>

@@ -135,7 +135,7 @@ describe('MapControl', () => {
 		const expectColorText = 5;
 		const mapColorTextAttribute = await getBlockAttributes();
 		const mapColorText =
-			mapColorTextAttribute['palette-preset-marker-title-color'];
+			mapColorTextAttribute['map-marker-palette-text-color'];
 		expect(mapColorText).toStrictEqual(expectColorText);
 	});
 });

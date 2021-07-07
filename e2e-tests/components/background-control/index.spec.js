@@ -17,7 +17,7 @@ describe('BackgroundControl', () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
 	});
-	/*
+
 	it('Check Background Color', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
@@ -231,7 +231,7 @@ describe('BackgroundControl', () => {
 				.replace(/\s/g, '')
 		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
 	});
-*/
+
 	it('Check Background Layers', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 

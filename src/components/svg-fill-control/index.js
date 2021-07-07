@@ -10,7 +10,6 @@ import ColorControl from '../color-control';
 import MediaUploaderControl from '../media-uploader-control';
 import SettingTabsControl from '../setting-tabs-control';
 import { injectImgSVG } from '../../extensions/svg/utils';
-import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -22,14 +21,7 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const SVGFillControl = props => {
-	const {
-		SVGElement,
-		onChange,
-		onChangePalette,
-		className,
-		clientId,
-		isHover,
-	} = props;
+	const { SVGElement, onChange, className, clientId, isHover } = props;
 
 	const classes = classnames('maxi-svg-fill-control', className);
 
@@ -46,21 +38,33 @@ const SVGFillControl = props => {
 							<ColorControl
 								label={__('Fill', 'maxi-blocks')}
 								color={value.color}
-								onChange={val => {
-									const resEl = injectImgSVG(
-										SVGElement,
-										SVGData
-									);
+								onChange={({
+									color,
+									paletteColor,
+									paletteStatus,
+								}) => {
+									SVGData[id].color = color;
 
 									onChange({
-										SVGElement: resEl.outerHTML,
+										SVGElement: injectImgSVG(
+											SVGElement,
+											SVGData
+										).outerHTML,
 										SVGData,
+										'background-palette-svg-color':
+											paletteColor,
+										'background-palette-svg-color-status':
+											paletteStatus,
 									});
 								}}
 								showPalette
+								paletteColor={
+									props['background-palette-svg-color']
+								}
+								paletteStatus={
+									props['background-palette-svg-color-status']
+								}
 								isHover={isHover}
-								colorPaletteType='svg-background'
-								onChangePalette={val => onChangePalette(val)}
 								clientId={clientId}
 							/>
 						),

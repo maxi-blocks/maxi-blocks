@@ -61,7 +61,10 @@ const SVGLayer = props => {
 						label: __('Fill', 'maxi-blocks'),
 						content: (
 							<SVGFillControl
-								{...getGroupAttributes(props, 'svg')}
+								{...getGroupAttributes(props, [
+									'svg',
+									'backgroundSVG',
+								])}
 								SVGData={
 									SVGOptions[
 										getAttributeKey(
@@ -80,8 +83,14 @@ const SVGLayer = props => {
 										)
 									]
 								}
-								onChange={obj => {
+								onChange={obj =>
 									onChange({
+										'background-palette-svg-color':
+											obj['background-palette-svg-color'],
+										'background-palette-svg-color-status':
+											obj[
+												'background-palette-svg-color-status'
+											],
 										[getAttributeKey(
 											'background-svg-SVGData',
 											isHover,
@@ -92,9 +101,8 @@ const SVGLayer = props => {
 											isHover,
 											prefix
 										)]: obj.SVGElement,
-									});
-								}}
-								onChangePalette={val => onChange(val)}
+									})
+								}
 								clientId={clientId}
 								isHover={isHover}
 							/>

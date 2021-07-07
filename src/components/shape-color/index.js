@@ -12,7 +12,7 @@ import { getDefaultAttribute } from '../../extensions/styles';
 /**
  * ShapeColor
  */
-const ShpaeColor = props => {
+const ShapeColor = props => {
 	const { onChange } = props;
 
 	return (
@@ -35,4 +35,4 @@ const ShpaeColor = props => {
 	);
 };
 
-export default ShpaeColor;
+export default ShapeColor;

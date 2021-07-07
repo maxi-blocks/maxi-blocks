@@ -10,6 +10,7 @@ import { useState } from '@wordpress/element';
 import AdvancedNumberControl from '../advanced-number-control';
 import FancyRadioControl from '../fancy-radio-control';
 import ColorControl from '../color-control';
+import AxisControl from '../axis-control';
 import GradientControl from '../gradient-control';
 import BorderControl from '../border-control';
 import {
@@ -189,6 +190,35 @@ const IconControl = props => {
 					onChange={obj => onChange(obj)}
 					breakpoint={deviceType}
 					clientId={clientId}
+				/>
+			)}
+			<FancyRadioControl
+				label={__('Custom Padding', 'maxi-blocks')}
+				selected={props['icon-custom-padding']}
+				options={[
+					{
+						label: __('Yes', 'maxi-blocks'),
+						value: 1,
+					},
+					{
+						label: __('No', 'maxi-blocks'),
+						value: 0,
+					},
+				]}
+				onChange={val =>
+					onChange({
+						'icon-custom-padding': val,
+					})
+				}
+			/>
+			{props['icon-custom-padding'] && (
+				<AxisControl
+					{...getGroupAttributes(props, 'iconPadding')}
+					label={__('Icon Padding', 'maxi-blocks')}
+					onChange={obj => onChange(obj)}
+					breakpoint={deviceType}
+					target='icon-padding'
+					disableAuto
 				/>
 			)}
 		</div>

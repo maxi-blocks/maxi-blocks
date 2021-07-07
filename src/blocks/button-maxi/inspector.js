@@ -169,6 +169,7 @@ const Inspector = props => {
 															'iconBorder',
 															'iconBorderWidth',
 															'iconBorderRadius',
+															'iconPadding',
 														]
 													)}
 													onChange={obj =>

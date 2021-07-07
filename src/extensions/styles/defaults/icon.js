@@ -1,4 +1,10 @@
+import padding from './padding';
+
 export const icon = {
+	'icon-custom-padding': {
+		type: 'boolean',
+		default: false,
+	},
 	'icon-content': {
 		type: 'string',
 		default: '',
@@ -27,6 +33,19 @@ export const icon = {
 		type: 'string',
 	},
 };
+
+export const iconPadding = (() => {
+	const response = {};
+
+	Object.keys(padding).forEach(key => {
+		const newKey = `icon-${key}`;
+		const value = { ...padding[key] };
+
+		response[newKey] = value;
+	});
+
+	return response;
+})();
 
 export const iconBackgroundColor = {
 	'icon-background-palette-color-status': {

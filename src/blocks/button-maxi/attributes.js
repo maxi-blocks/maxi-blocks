@@ -82,6 +82,7 @@ const attributes = {
 		},
 	},
 	...attributesData.icon,
+	...attributesData.iconPadding,
 	...attributesData.iconBackgroundColor,
 	...attributesData.iconGradient,
 	...attributesData.iconBorder,

@@ -157,6 +157,15 @@ const getIconObject = (props, target) => {
 				prefix: 'icon-',
 			}),
 		},
+		padding:
+			target === 'icon' &&
+			props['icon-custom-padding'] &&
+			getMarginPaddingStyles(
+				{
+					...getGroupAttributes(props, 'iconPadding'),
+				},
+				'icon-'
+			),
 		border:
 			target === 'icon' &&
 			getBorderStyles({

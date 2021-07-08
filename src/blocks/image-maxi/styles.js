@@ -182,8 +182,7 @@ const getImageWrapperObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			dropShadow:
-				!isEmpty(props.clipPath) || !isNil(props.SVGCurrentElement),
+			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
 			parentBlockStyle: props.parentBlockStyle,
 		}),
 		...(props['hover-extension'] && {

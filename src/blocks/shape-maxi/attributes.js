@@ -25,9 +25,6 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
-	shapeSVGCurrentElement: {
-		type: 'number',
-	},
 	shapeSVGElement: {
 		type: 'string',
 	},

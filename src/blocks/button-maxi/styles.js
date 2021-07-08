@@ -166,7 +166,8 @@ const getIconObject = (props, target) => {
 			{
 				...getGroupAttributes(props, 'icon'),
 			},
-			target
+			target,
+			props.parentBlockStyle
 		),
 		background: target === 'icon' && {
 			...getColorBackgroundObject({

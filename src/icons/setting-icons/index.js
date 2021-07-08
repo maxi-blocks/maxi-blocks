@@ -30,6 +30,7 @@ export { default as notSync } from './not-sync';
 export { default as padding } from './padding';
 export { default as permanent } from './permanent';
 export { default as placeholderImage } from './placeholder-image';
+export { default as remove } from './remove';
 export { default as replay } from './replay';
 export { default as reset } from './reset';
 export { default as scale } from './scale';

@@ -25,7 +25,7 @@ import { isEmpty } from 'lodash';
 /**
  * Icons
  */
-import { SCaddMore, toolbarReplaceImage } from '../../icons';
+import { SCaddMore, toolbarReplaceImage, remove } from '../../icons';
 
 class MaxiModal extends Component {
 	state = {
@@ -142,6 +142,20 @@ class MaxiModal extends Component {
 					type === 'button-icon' &&
 					attributes['icon-content'] && (
 						<div className='maxi-library-modal__action-section__preview'>
+							<Icon
+								className='maxi-library-modal__action-section__preview--remove'
+								icon={remove}
+								onClick={() =>
+									dispatch(
+										'core/block-editor'
+									).updateBlockAttributes(
+										getSelectedBlockClientId(),
+										{
+											'icon-content': '',
+										}
+									)
+								}
+							/>
 							<RawHTML>{attributes['icon-content']}</RawHTML>
 						</div>
 					)}

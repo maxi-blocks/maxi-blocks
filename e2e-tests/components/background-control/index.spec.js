@@ -205,11 +205,24 @@ describe('BackgroundControl', () => {
 		);
 
 		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-svg-defaults button',
-			click => click[1].click()
+			'.maxi-settingstab-control .maxi-library-modal__action-section__buttons button',
+			click => click[0].click()
 		);
 
-		const expectShape = `<svg viewBox="0 0 36.1 36.1" xmlns="http://www.w3.org/2000/svg" data-item="${uniqueID}__svg"><circle fill="" r="17.2" cy="18" cx="18"></circle></svg>`;
+		await page.waitForSelector('.maxi-library-modal');
+		const modal = await page.$('.maxi-library-modal');
+		await page.waitForSelector('.ais-SearchBox-input');
+		const modalSearcher = await modal.$('.ais-SearchBox-input');
+		await modalSearcher.focus();
+		await page.keyboard.type('angle 10');
+		await page.waitForTimeout(1000);
+		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
+			button.click()
+		);
+
+		const expectShape = `
+		<svg viewBox="0 0 36.1 36.1" class="angle-10-maxi-svg" data-stroke="" data-item="${uniqueID}__svg"><path fill="" data-fill="" d="M29.837 9.563L18.05 1 6.263 9.563l3.071 9.45-3.071 2.231L10.766 35.1h14.569l4.502-13.856-3.071-2.231 3.071-9.45zm-22.774.26L18.05 1.84l10.987 7.983-2.85 8.77-8.138-5.912-8.137 5.912-2.85-8.77zm18.904 9.45l-1.126 3.466H11.26l-1.126-3.466 7.917-5.752 7.917 5.752zm3.071 2.231L24.84 34.42H11.26L7.063 21.504l2.492-1.811 1.211 3.726h14.569l1.211-3.726 2.492 1.811z"></path></svg>`;
+
 		const attributes = await getBlockAttributes();
 
 		expect(
@@ -299,8 +312,20 @@ describe('BackgroundControl', () => {
 			select => select[50].click()
 		);
 
-		await accordionPanel.$$eval('.maxi-svg-defaults button', select =>
-			select[2].click()
+		await accordionPanel.$$eval(
+			'.maxi-settingstab-control .maxi-library-modal__action-section__buttons button',
+			click => click[0].click()
+		);
+
+		await page.waitForSelector('.maxi-library-modal');
+		const modal = await page.$('.maxi-library-modal');
+		await page.waitForSelector('.ais-SearchBox-input');
+		const modalSearcher = await modal.$('.ais-SearchBox-input');
+		await modalSearcher.focus();
+		await page.keyboard.type('angle 10');
+		await page.waitForTimeout(1000);
+		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
+			button.click()
 		);
 
 		const expectBackgroundLayers = await getBlockAttributes();

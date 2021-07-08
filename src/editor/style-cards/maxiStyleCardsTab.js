@@ -406,6 +406,7 @@ const LinkTab = props => {
 				)}
 			</>
 		),
+		classNameItem: 'maxi-blocks-sc__type--link',
 	};
 };
 
@@ -424,6 +425,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					{...props}
 				/>
 			),
+			classNameItem: `maxi-blocks-sc__type--${props.type}`,
 		};
 	};
 
@@ -442,6 +444,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						firstColorDefault={5}
 					/>
 				),
+				classNameItem: `maxi-blocks-sc__type--h${item}`,
 			};
 		});
 
@@ -512,6 +515,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 								/>
 							</>
 						),
+						classNameItem: 'maxi-blocks-sc__type--quick-color',
 					},
 					generateTab({
 						type: 'button',
@@ -530,6 +534,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					{
 						label: __('Headings', 'maxi-blocks'),
 						content: <SettingTabsControl items={headingItems()} />,
+						classNameItem: 'maxi-blocks-sc__type--heading',
 					},
 					generateTab({
 						type: 'hover',

@@ -1,4 +1,29 @@
 body.maxi-blocks--active .maxi-shape-block {
+	&__placeholder {
+		z-index: 100;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: none !important;
+		border: 1px dashed #b4bbc1;
+		border-radius: 3px;
+		color: #464a53;
+		width: 100%;
+		min-height: 100px;
+		background-color: #edeff0;
+		font-size: 13px;
+
+		.maxi-block-library__modal-button {
+			background: #232533;
+			color: #fff;
+			transition: all 0.5s;
+
+			&:hover {
+				background: #232533;
+				opacity: 0.8;
+			}
+		}
+	}
 	&__replace-icon {
 		opacity: 1;
 		visibility: visible;

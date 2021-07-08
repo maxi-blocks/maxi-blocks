@@ -27,7 +27,6 @@ import {
 	ResponsiveControl,
 	SettingTabsControl,
 	ShapeColor,
-	SVGDefaultsDisplayer,
 	TextControl,
 	TransformControl,
 	ZIndexControl,
@@ -36,6 +35,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
+import MaxiModal from '../../editor/library/modal';
 
 /**
  * Inspector
@@ -169,24 +169,7 @@ const Inspector = props => {
 											label: __('Shape', 'maxi-blocks'),
 											content: (
 												<>
-													<SVGDefaultsDisplayer
-														usedPlace='sidebar-block-shape'
-														SVGOptions={
-															attributes.SVGData
-														}
-														SVGCurrentElement={
-															attributes.shapeSVGCurrentElement
-														}
-														onChange={SVGOptions =>
-															setAttributes({
-																...SVGOptions,
-																shapeSVGCurrentElement:
-																	SVGOptions.SVGCurrentElement,
-																shapeSVGElement:
-																	SVGOptions.SVGElement,
-															})
-														}
-													/>
+													<MaxiModal type='sidebar-block-shape' />
 													<hr />
 													<ShapeColor
 														{...getGroupAttributes(

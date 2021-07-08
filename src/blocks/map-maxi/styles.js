@@ -40,7 +40,8 @@ const getMapObject = (props, target) => {
 			{
 				...getGroupAttributes(props, 'map'),
 			},
-			target
+			target,
+			props.parentBlockStyle
 		),
 	};
 

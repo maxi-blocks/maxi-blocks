@@ -346,6 +346,12 @@ class MaxiBlocks_StyleCards {
 							"color-global": false,
 							"color": "#c9340a"
 						},
+						"icon": {
+							"line-global": false,
+							"line": "",
+							"fill-global": false,
+							"fill": ""
+						},
 						"divider": {
 							"color-global": false,
 							"color": ""
@@ -576,6 +582,12 @@ class MaxiBlocks_StyleCards {
 						"hover": {
 							"color-global": false,
 							"color": "#c9340a"
+						},
+						"icon": {
+							"line-global": false,
+							"line": "",
+							"fill-global": false,
+							"fill": ""
 						},
 						"divider": {
 							"color-global": false,

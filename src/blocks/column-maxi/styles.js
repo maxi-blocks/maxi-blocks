@@ -129,6 +129,7 @@ const getStyles = props => {
 					'backgroundSVG',
 					'borderRadius',
 				]),
+				blockStyle: props.parentBlockStyle,
 			}),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
@@ -138,6 +139,7 @@ const getStyles = props => {
 					'borderRadiusHover',
 				]),
 				isHover: true,
+				blockStyle: props.parentBlockStyle,
 			}),
 		},
 	};

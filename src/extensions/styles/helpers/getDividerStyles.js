@@ -1,18 +1,29 @@
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isNumber } from 'lodash';
 
-const getDividerStyles = (obj, target) => {
+const getDividerStyles = (obj, target, parentBlockStyle) => {
 	const response = {
 		label: 'Divider',
 		general: {},
 	};
+
 	if (target === 'line') {
 		if (!isNil(obj['divider-border-style']))
 			response.general['border-style'] = obj['divider-border-style'];
 
-		if (!isNil(obj['divider-border-color']))
+		if (
+			obj['divider-palette-border-color-status'] &&
+			isNumber(obj['divider-palette-border-color'])
+		)
+			response.general[
+				'border-color'
+			] = `var(--maxi-${parentBlockStyle}-divider-color, var(--maxi-${parentBlockStyle}-color-${obj['divider-palette-border-color']}))`;
+		else if (
+			!obj['divider-palette-border-color-status'] &&
+			!isNil(obj['divider-border-color'])
+		)
 			response.general['border-color'] = obj['divider-border-color'];
 
 		if (obj.lineOrientation === 'horizontal') {

@@ -166,14 +166,13 @@ const getIconObject = (props, target) => {
 			{
 				...getGroupAttributes(props, 'icon'),
 			},
-			target,
-			props.parentBlockStyle
+			target
 		),
 		background: target === 'icon' && {
 			...getColorBackgroundObject({
 				...getGroupAttributes(props, 'iconBackgroundColor'),
 				prefix: 'icon-',
-				parentBlockStyle: props.parentBlockStyle,
+				blockStyle: props.parentBlockStyle,
 			}),
 		},
 		gradient: target === 'icon' && {

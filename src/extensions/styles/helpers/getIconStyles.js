@@ -3,7 +3,7 @@
  */
 import { isNil } from 'lodash';
 
-const getIconStyles = (obj, target) => {
+const getIconStyles = (obj, target, parentBlockStyle) => {
 	const response = {
 		label: 'Icon',
 		general: {},
@@ -23,9 +23,12 @@ const getIconStyles = (obj, target) => {
 			response.general.width = `${obj['icon-size']}px`;
 	}
 
-	if (target === 'svg' && !obj['icon-palette-color-status'])
-		if (!isNil(obj['icon-color']))
-			response.general.fill = obj['icon-color'];
+	if (target === 'svg') {
+		if (!obj['icon-palette-color-status'] && !isNil(obj['icon-color']))
+			response.general.stroke = obj['icon-color'];
+		else if (obj['icon-palette-color-status'] && obj['icon-palette-color'])
+			response.general.stroke = `var(--maxi-${parentBlockStyle}-color-${obj['icon-palette-color']})`;
+	}
 
 	return response;
 };

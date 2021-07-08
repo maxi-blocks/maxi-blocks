@@ -407,6 +407,16 @@ const LibraryContainer = props => {
 
 				onRequestClose();
 			}
+
+			if (type === 'button-icon') {
+				const cleanedContent = DOMPurify.sanitize(svgCode);
+
+				updateBlockAttributes(clientId, {
+					'icon-content': cleanedContent,
+				});
+
+				onRequestClose();
+			}
 		}
 	};
 

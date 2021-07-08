@@ -9,6 +9,11 @@ body.maxi-blocks--active .maxi-button-block {
 		justify-content: center;
 		box-sizing: content-box;
 		width: 32px;
+
+		svg {
+			width: 100%;
+			height: 100%;
+		}
 	}
 	&__content {
 		z-index: 1;

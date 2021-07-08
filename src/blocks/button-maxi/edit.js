@@ -5,12 +5,13 @@ import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { withSelect } from '@wordpress/data';
 import { RichText } from '@wordpress/block-editor';
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent, Toolbar, RawHTML } from '../../components';
+import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -87,11 +88,11 @@ class edit extends MaxiBlockComponent {
 						}
 						placeholder={__('Set some text…', 'maxi-blocks')}
 					/>
-					<span className='maxi-button-block__icon'>
-						<svg viewBox='0 0 36.1 36.1'>
-							<circle fill='' r='17.2' cy='18' cx='18' />
-						</svg>
-					</span>
+					{attributes['icon-content'] && (
+						<RawHTML className='maxi-button-block__icon'>
+							{attributes['icon-content']}
+						</RawHTML>
+					)}
 				</div>
 			</MaxiBlock>,
 		];

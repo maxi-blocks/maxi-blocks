@@ -17,6 +17,7 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
+import MaxiModal from '../../editor/library/modal';
 import Icon from '../icon';
 
 /**
@@ -73,6 +74,8 @@ const IconControl = props => {
 
 	return (
 		<div className={classes}>
+			<MaxiModal type='button-icon' />
+			<hr />
 			<AdvancedNumberControl
 				label={__('Size', 'maxi-blocks')}
 				min={1}

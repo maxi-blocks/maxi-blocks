@@ -27,7 +27,7 @@ export const icon = {
 	},
 	'icon-palette-color': {
 		type: 'number',
-		default: 4,
+		default: 1,
 	},
 	'icon-color': {
 		type: 'string',

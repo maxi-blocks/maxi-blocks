@@ -28,7 +28,6 @@ import {
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
-	SVGDefaultsDisplayer,
 	TextControl,
 	TransformControl,
 	TypographyControl,
@@ -158,7 +157,6 @@ const Inspector = props => {
 										deviceType === 'general' && {
 											label: __('Icon', 'maxi-blocks'),
 											content: (
-												// <SVGDefaultsDisplayer usedPlace='button-icon' />
 												<IconControl
 													{...getGroupAttributes(
 														attributes,

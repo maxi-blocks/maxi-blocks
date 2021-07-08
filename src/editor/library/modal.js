@@ -123,7 +123,7 @@ class MaxiModal extends Component {
 					)}
 					{type === 'button-icon' && (
 						<Button
-							className='maxi-svg-defaults__load-library'
+							className='maxi-library-modal__action-section__buttons__load-library'
 							onClick={onClick}
 						>
 							{__('Replace Icon', 'maxi-blocks')}
@@ -138,6 +138,13 @@ class MaxiModal extends Component {
 						/>
 					)}
 				</div>
+				{attributes &&
+					type === 'button-icon' &&
+					attributes['icon-content'] && (
+						<div className='maxi-library-modal__action-section__preview'>
+							<RawHTML>{attributes['icon-content']}</RawHTML>
+						</div>
+					)}
 				{attributes &&
 					type === 'sidebar-block-shape' &&
 					attributes.shapeSVGElement && (

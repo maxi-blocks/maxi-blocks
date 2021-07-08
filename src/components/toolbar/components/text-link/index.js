@@ -23,7 +23,6 @@ import {
 	applyLinkFormat,
 	removeLinkFormat,
 	withFormatValue,
-	setFormat,
 	getFormatPosition,
 } from '../../../../extensions/text/formats';
 
@@ -42,13 +41,24 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const LinkContent = withFormatValue(props => {
-	const { onChange, isList, formatValue, textLevel, linkSettings, onClose } =
-		props;
+	const { onChange, isList, formatValue, textLevel, onClose } = props;
 
 	const formatName = 'maxi-blocks/text-link';
 
 	const { formatOptions } = useSelect(() => {
-		const formatOptions = getActiveFormat(formatValue, formatName);
+		const { start, end } = formatValue;
+		const isWholeContent = start === end;
+
+		const formatOptions = getActiveFormat(
+			isWholeContent
+				? {
+						...formatValue,
+						start: 0,
+						end: formatValue.formats.length,
+				  }
+				: formatValue,
+			formatName
+		);
 
 		return {
 			formatOptions,
@@ -59,12 +69,8 @@ const LinkContent = withFormatValue(props => {
 
 	const [linkValue, setLinkValue] = useState(
 		createLinkValue({
-			formatOptions: linkSettings
-				? { attributes: linkSettings }
-				: formatOptions,
-			linkSettings,
+			formatOptions,
 			formatValue,
-			linkValue: {},
 		})
 	);
 
@@ -72,21 +78,23 @@ const LinkContent = withFormatValue(props => {
 		if (formatOptions) {
 			const newLinkValue = createLinkValue({
 				formatOptions,
-				linkSettings,
 				formatValue,
-				linkValue,
 			});
 
 			if (!isEqual(linkValue, newLinkValue)) setLinkValue(newLinkValue);
 		}
 	}, [formatValue.start, formatValue.end]);
 
+	useEffect(() => {
+		if (isEmpty(linkValue.url) && Object.keys(linkValue).length > 1)
+			onClose();
+	}, [linkValue.url]);
+
 	const getUpdatedFormatValue = (formatValue, attributes) => {
 		const [posStart, posEnd] = getFormatPosition({
 			formatValue,
 			formatName: 'maxi-blocks/text-link',
 			formatClassName: null,
-			formatAttributes: linkSettings,
 		}) || [0, 0];
 
 		formatValue.formats = formatValue.formats.map((formatEl, i) => {
@@ -110,14 +118,19 @@ const LinkContent = withFormatValue(props => {
 
 		const isWholeContent = start === end;
 
+		const updatedFormatValue = getUpdatedFormatValue(
+			formatValue,
+			attributes
+		);
+
 		const obj = applyLinkFormat({
 			formatValue: isWholeContent
 				? {
-						...formatValue,
+						...updatedFormatValue,
 						start: 0,
-						end: formatValue.formats.length,
+						end: updatedFormatValue.formats.length,
 				  }
-				: formatValue,
+				: updatedFormatValue,
 			typography,
 			linkAttributes: createLinkAttributes({
 				...attributes,
@@ -125,49 +138,33 @@ const LinkContent = withFormatValue(props => {
 			}),
 			isList,
 			textLevel,
-			linkSettings,
 		});
 
 		onChange(obj);
 	};
 
 	const removeLinkFormatHandle = () => {
-		if (!isEmpty(linkSettings)) {
-			const newTypography = setFormat({
-				formatValue: { ...formatValue, start: 0, end: 0 },
-				typography,
-				isList,
-				value: {
-					color: '',
-					'text-decoration': '',
-				},
-				textLevel,
-			});
+		const obj = removeLinkFormat({
+			formatValue: getUpdatedFormatValue(formatValue, linkValue),
+			isList,
+			typography,
+			textLevel,
+			attributes: linkValue,
+		});
 
-			onChange({ linkSettings: null, ...newTypography });
-		} else {
-			const obj = removeLinkFormat({
-				formatValue,
-				isList,
-				typography,
-				textLevel,
-				attributes: linkValue,
-			});
+		onChange(obj);
 
-			onChange(obj);
-		}
-
-		const newLinkAttributes = createLinkAttributes({ url: '', linkValue });
-		const newLinkValue = createLinkValue({
-			formatOptions: { attributes: newLinkAttributes },
-			linkSettings,
-			formatValue,
+		const newLinkAttributes = createLinkAttributes({
+			url: '',
 			linkValue,
 		});
 
-		setLinkValue(newLinkValue);
+		const newLinkValue = createLinkValue({
+			formatOptions: { attributes: newLinkAttributes },
+			formatValue,
+		});
 
-		onClose();
+		setLinkValue(newLinkValue);
 	};
 
 	const forceSSL = attributes => {
@@ -203,9 +200,7 @@ const LinkContent = withFormatValue(props => {
 		});
 		const newLinkValue = createLinkValue({
 			formatOptions: { attributes: newLinkAttributes },
-			linkSettings,
 			formatValue,
-			linkValue,
 		});
 
 		setLinkValue(newLinkValue);

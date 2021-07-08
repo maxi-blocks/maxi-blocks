@@ -13,7 +13,7 @@ import { MaxiBlockComponent, Toolbar, Button } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -174,11 +174,9 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes } = this.props;
-		const { uniqueID, parentBlockStyle } = attributes;
+		const { uniqueID } = attributes;
 
 		const classes = 'maxi-number-counter-block';
-
-		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -190,7 +188,6 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-number-counter--${uniqueID}`}
 				ref={this.blockRef}
-				paletteClasses={paletteClasses}
 				className={classes}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>

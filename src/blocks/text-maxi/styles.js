@@ -102,6 +102,7 @@ const getTypographyObject = (props, isList = false) => {
 				...getGroupAttributes(props, 'typography'),
 			},
 			parentBlockStyle: props.parentBlockStyle,
+			textLevel: props.textLevel,
 		}),
 		...(isList && {
 			listAlignment: getAlignmentTextStyles(
@@ -124,6 +125,7 @@ const getTypographyHoverObject = props => {
 			},
 			isHover: true,
 			parentBlockStyle: props.parentBlockStyle,
+			textLevel: props.textLevel,
 		}),
 	};
 
@@ -162,6 +164,7 @@ const getStyles = props => {
 					'backgroundSVG',
 					'borderRadius',
 				]),
+				blockStyle: props.parentBlockStyle,
 			}),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
@@ -171,6 +174,7 @@ const getStyles = props => {
 					'borderRadiusHover',
 				]),
 				isHover: true,
+				blockStyle: props.parentBlockStyle,
 			}),
 			...getCustomFormatsStyles(
 				!isList
@@ -178,7 +182,8 @@ const getStyles = props => {
 					: ' .maxi-text-block__content li',
 				props['custom-formats'],
 				false,
-				{ ...getGroupAttributes(props, 'typography') }
+				{ ...getGroupAttributes(props, 'typography') },
+				props.textLevel
 			),
 			...getCustomFormatsStyles(
 				!isList
@@ -186,7 +191,23 @@ const getStyles = props => {
 					: ':hover .maxi-text-block__content li',
 				props['custom-formats-hover'],
 				true,
-				getGroupAttributes(props, 'typographyHover')
+				getGroupAttributes(props, 'typographyHover'),
+				props.textLevel
+			),
+			...getLinkStyles(
+				{ ...getGroupAttributes(props, 'link') },
+				[` ${element}.maxi-text-block__content a`],
+				props.parentBlockStyle
+			),
+			...getLinkStyles(
+				{ ...getGroupAttributes(props, 'link') },
+				[` ${element}.maxi-text-block__content a`],
+				props.parentBlockStyle
+			),
+			...getLinkStyles(
+				{ ...getGroupAttributes(props, 'link') },
+				[` ${element}.maxi-text-block__content a`],
+				props.parentBlockStyle
 			),
 			...getLinkStyles(
 				{ ...getGroupAttributes(props, 'link') },

@@ -4,23 +4,19 @@
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getPaletteClasses } from '../../extensions/styles';
 
 /**
  * Save
  */
 const save = props => {
 	const { attributes } = props;
-	const { uniqueID, parentBlockStyle } = attributes;
+	const { uniqueID } = attributes;
 
 	const classes = 'maxi-map-block';
-
-	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 	return (
 		<MaxiBlock
 			className={classes}
-			paletteClasses={paletteClasses}
 			id={uniqueID}
 			{...getMaxiBlockBlockAttributes(props)}
 			isSave

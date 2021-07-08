@@ -1,7 +1,7 @@
-/**
- * WordPress dependencies
- */
-import { SVG, Circle } from '@wordpress/primitives';
+// Related to the gutenberg issue for SVG https://github.com/WordPress/gutenberg/issues/30241
+/*
+eslint-disable react/no-unknown-property
+*/
 
 /**
  * Internal dependencies
@@ -38,12 +38,12 @@ const save = props => {
 				}}
 			>
 				{!circleStatus && (
-					<SVG
+					<svg
 						viewBox={`0 0 ${radius * 2 + stroke} ${
 							radius * 2 + stroke
 						}`}
 					>
-						<Circle
+						<circle
 							className='maxi-number-counter__box__background'
 							stroke-width={stroke}
 							fill='none'
@@ -51,7 +51,7 @@ const save = props => {
 							cy={radius + stroke / 2}
 							r={radius}
 						/>
-						<Circle
+						<circle
 							className='maxi-number-counter__box__circle'
 							stroke-width={stroke}
 							fill='none'
@@ -61,7 +61,7 @@ const save = props => {
 							stroke-linecap={roundedStatus ? 'round' : ''}
 							stroke-dasharray={`0 ${2 * Math.PI * radius}`}
 						/>
-					</SVG>
+					</svg>
 				)}
 				<span className='maxi-number-counter__box__text' />
 			</div>

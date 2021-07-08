@@ -89,17 +89,21 @@ const getHoverEffectDetailsBoxObject = props => {
 			},
 			'hover-'
 		),
-		...(!props['hover-background-palette-color-status'] && {
+		// ...(!props['hover-background-palette-color-status'] && {
+		...{
 			background: {
-				...getHoverEffectsBackgroundStyles({
-					...getGroupAttributes(props, [
-						'hoverBackground',
-						'hoverBackgroundColor',
-						'hoverBackgroundGradient',
-					]),
-				}),
+				...getHoverEffectsBackgroundStyles(
+					{
+						...getGroupAttributes(props, [
+							'hoverBackground',
+							'hoverBackgroundColor',
+							'hoverBackgroundGradient',
+						]),
+					},
+					props.parentBlockStyle
+				),
 			},
-		}),
+		},
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
@@ -255,6 +259,7 @@ const getStyles = props => {
 					'borderRadiusHover',
 				]),
 				isHover: true,
+				blockStyle: props.parentBlockStyle,
 			}),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
@@ -265,6 +270,7 @@ const getStyles = props => {
 					'backgroundGradient',
 					'backgroundSVG',
 				]),
+				blockStyle: props.parentBlockStyle,
 			}),
 		},
 	};

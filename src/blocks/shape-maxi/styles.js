@@ -95,7 +95,8 @@ const getShapeObject = (props, target) => {
 			{
 				...getGroupAttributes(props, 'shape'),
 			},
-			target
+			target,
+			props.parentBlockStyle
 		),
 	};
 

@@ -5,7 +5,6 @@ import { Button } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getPaletteClasses } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -18,11 +17,9 @@ import { isNil, isEmpty } from 'lodash';
  */
 const save = props => {
 	const { attributes } = props;
-	const { linkSettings, buttonContent, parentBlockStyle } = attributes;
+	const { linkSettings, buttonContent } = attributes;
 
 	const name = 'maxi-blocks/button-maxi';
-
-	const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 	const linkOpt = !isNil(linkSettings) && linkSettings;
 
@@ -42,7 +39,6 @@ const save = props => {
 
 	return (
 		<MaxiBlock
-			paletteClasses={paletteClasses}
 			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 			disableBackground

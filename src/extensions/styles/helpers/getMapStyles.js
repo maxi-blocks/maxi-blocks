@@ -3,25 +3,37 @@
  */
 import { isNil } from 'lodash';
 
-const getMapStyles = (obj, target) => {
+const getMapStyles = (obj, target, parentBlockStyle) => {
 	const response = {
 		label: 'Map',
 		general: {},
 	};
 
-	if (
-		!obj['map-marker-palette-text-color-status'] &&
-		!isNil(obj['map-marker-text-color']) &&
-		target === 'title'
-	)
-		response.general.color = obj['map-marker-text-color'];
+	if (target === 'title') {
+		if (
+			!obj['map-marker-palette-text-color-status'] &&
+			!isNil(obj['map-marker-text-color'])
+		)
+			response.general.color = obj['map-marker-text-color'];
+		else if (
+			obj['map-marker-palette-text-color-status'] &&
+			obj['map-marker-palette-text-color']
+		)
+			response.general.color = `var(--maxi-${parentBlockStyle}-color-${obj['map-marker-palette-text-color']})`;
+	}
 
-	if (
-		!obj['map-marker-palette-address-color-status'] &&
-		!isNil(obj['map-marker-address-color']) &&
-		target === 'address'
-	)
-		response.general.color = obj['map-marker-address-color'];
+	if (target === 'address') {
+		if (
+			!obj['map-marker-palette-address-color-status'] &&
+			!isNil(obj['map-marker-address-color'])
+		)
+			response.general.color = obj['map-marker-address-color'];
+		else if (
+			obj['map-marker-palette-address-color-status'] &&
+			obj['map-marker-palette-address-color']
+		)
+			response.general.color = `var(--maxi-${parentBlockStyle}-color-${obj['map-marker-palette-address-color']})`;
+	}
 
 	return response;
 };

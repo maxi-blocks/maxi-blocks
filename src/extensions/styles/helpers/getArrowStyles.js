@@ -105,7 +105,7 @@ export const getArrowObject = props => {
 	return response;
 };
 
-export const getArrowColorObject = props => {
+export const getArrowColorObject = (props, blockStyle) => {
 	const response = {
 		label: 'Arrow Color',
 		general: {},
@@ -117,7 +117,7 @@ export const getArrowColorObject = props => {
 
 			response.general[
 				'background-color'
-			] = `var(--maxi-${props.parentBlockStyle}-color-${paletteColor})`;
+			] = `var(--maxi-${blockStyle}-color-${paletteColor})`;
 		} else response.general['background-color'] = props['background-color'];
 	} else response.general.background = props['background-gradient'];
 
@@ -125,7 +125,7 @@ export const getArrowColorObject = props => {
 };
 
 const getArrowStyles = props => {
-	const { target = '' } = props;
+	const { target = '', blockStyle } = props;
 
 	return {
 		[`${target} .maxi-container-arrow`]: {
@@ -133,7 +133,7 @@ const getArrowStyles = props => {
 				...getBoxShadowStyles({
 					obj: getGroupAttributes(props, 'boxShadow'),
 					dropShadow: true,
-					parentBlockStyle: props.parentBlockStyle,
+					parentBlockStyle: blockStyle,
 				}),
 			},
 		},
@@ -148,7 +148,8 @@ const getArrowStyles = props => {
 							'background',
 							'backgroundColor',
 							'backgroundGradient',
-						])
+						]),
+						blockStyle
 					),
 				},
 			},

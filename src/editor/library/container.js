@@ -254,7 +254,25 @@ const LibraryContainer = props => {
 		const newSvgClass = `.${uniqueID} .${svgClass}`;
 		const replaceIt = `.${svgClass}`;
 
-		const finalSvgCode = svgCode.replaceAll(replaceIt, newSvgClass);
+		const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
+		const fillStr = `fill:var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-4))`;
+
+		const fillRegExp2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
+		const fillStr2 = ` fill="var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-4))`;
+
+		const strokeRegExp = new RegExp('stroke:[^n]+?(?=})', 'g');
+		const strokeStr = `stroke:var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-7))`;
+
+		const strokeRegExp2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
+		const strokeStr2 = ` stroke="var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-7))`;
+
+		const newContent = svgCode
+			.replace(fillRegExp, fillStr)
+			.replace(fillRegExp2, fillStr2)
+			.replace(strokeRegExp, strokeStr)
+			.replace(strokeRegExp2, strokeStr2);
+
+		const finalSvgCode = newContent.replaceAll(replaceIt, newSvgClass);
 
 		const isValid =
 			select('core/block-editor').isValidTemplate(finalSvgCode);

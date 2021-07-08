@@ -20,10 +20,7 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import {
-	getLastBreakpointAttribute,
-	getPaletteClasses,
-} from '../../extensions/styles';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -72,7 +69,7 @@ class edit extends MaxiBlockComponent {
 			hasInnerBlocks,
 			clientId,
 		} = this.props;
-		const { uniqueID, parentBlockStyle } = attributes;
+		const { uniqueID } = attributes;
 
 		const getColumnWidthDefault = () => {
 			const columnWidth = getLastBreakpointAttribute(
@@ -96,8 +93,6 @@ class edit extends MaxiBlockComponent {
 						'maxi-blocks/column-maxi',
 					].indexOf(blockName) === -1
 			);
-
-		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		return [
 			<RowContext.Consumer key={`column-content-${uniqueID}`}>
@@ -158,7 +153,6 @@ class edit extends MaxiBlockComponent {
 								<MaxiBlock
 									key={`maxi-column--${uniqueID}`}
 									ref={this.blockRef}
-									paletteClasses={paletteClasses}
 									{...getMaxiBlockBlockAttributes(this.props)}
 									disableMotion
 								>

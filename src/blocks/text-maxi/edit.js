@@ -20,7 +20,7 @@ import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { onMerge, onSplit } from './utils';
 import {
@@ -81,10 +81,7 @@ class edit extends MaxiBlockComponent {
 			typeOfList,
 			listStart,
 			listReversed,
-			parentBlockStyle,
 		} = attributes;
-
-		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		const onChangeRichText = ({ value: formatValue }) => {
 			/**
@@ -147,7 +144,6 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-text--${uniqueID}`}
 				classes={`${isList ? 'maxi-list-block' : ''}`}
 				ref={this.blockRef}
-				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				{!isList && (

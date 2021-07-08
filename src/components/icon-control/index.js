@@ -75,154 +75,182 @@ const IconControl = props => {
 	return (
 		<div className={classes}>
 			<MaxiModal type='button-icon' />
-			<hr />
-			<AdvancedNumberControl
-				label={__('Size', 'maxi-blocks')}
-				min={1}
-				max={999}
-				initial={1}
-				step={1}
-				value={props['icon-size']}
-				onChangeValue={val => onChange({ 'icon-size': val })}
-				onReset={() =>
-					onChange({ 'icon-size': getDefaultAttribute('icon-size') })
-				}
-			/>
-			<AdvancedNumberControl
-				label={__('Spacing', 'maxi-blocks')}
-				min={1}
-				max={999}
-				initial={1}
-				step={1}
-				value={props['icon-spacing']}
-				onChangeValue={val => onChange({ 'icon-spacing': val })}
-				onReset={() =>
-					onChange({
-						'icon-spacing': getDefaultAttribute('icon-spacing'),
-					})
-				}
-			/>
-			<FancyRadioControl
-				label={__('Icon Position', 'maxi-block')}
-				selected={props['icon-position']}
-				options={[
-					{ label: __('Right', 'maxi-block'), value: 'right' },
-					{ label: __('Left', 'maxi-block'), value: 'left' },
-				]}
-				optionType='string'
-				onChange={val =>
-					onChange({
-						'icon-position': val,
-					})
-				}
-			/>
-			<FancyRadioControl
-				label=''
-				fullWidthMode
-				selected={iconStyle}
-				options={getOptions()}
-				optionType='string'
-				onChange={val => setIconStyle(val)}
-			/>
-			{iconStyle === 'color' && (
-				<ColorControl
-					label={__('Icon', 'maxi-blocks')}
-					color={props['icon-color']}
-					defaultColor={getDefaultAttribute('icon-color')}
-					paletteColor={props['icon-palette-color']}
-					paletteStatus={props['icon-palette-color-status']}
-					onChange={({ color, paletteColor, paletteStatus }) => {
-						onChange({
-							'icon-color': color,
-							'icon-palette-color': paletteColor,
-							'icon-palette-color-status': paletteStatus,
-						});
-					}}
-					showPalette
-					disableOpacity
-				/>
-			)}
-			{iconStyle === 'background-color' && (
-				<ColorControl
-					label={__('Icon background', 'maxi-blocks')}
-					color={props['icon-background-color']}
-					defaultColor={getDefaultAttribute('icon-background-color')}
-					paletteColor={props['icon-background-palette-color']}
-					paletteStatus={
-						props['icon-background-palette-color-status']
-					}
-					onChange={({ color, paletteColor, paletteStatus }) => {
-						onChange({
-							'icon-background-color': color,
-							'icon-background-palette-color': paletteColor,
-							'icon-background-palette-color-status':
+			{props['icon-content'] && (
+				<>
+					<hr />
+					<AdvancedNumberControl
+						label={__('Size', 'maxi-blocks')}
+						min={1}
+						max={999}
+						initial={1}
+						step={1}
+						value={props['icon-size']}
+						onChangeValue={val => onChange({ 'icon-size': val })}
+						onReset={() =>
+							onChange({
+								'icon-size': getDefaultAttribute('icon-size'),
+							})
+						}
+					/>
+					<AdvancedNumberControl
+						label={__('Spacing', 'maxi-blocks')}
+						min={1}
+						max={999}
+						initial={1}
+						step={1}
+						value={props['icon-spacing']}
+						onChangeValue={val => onChange({ 'icon-spacing': val })}
+						onReset={() =>
+							onChange({
+								'icon-spacing':
+									getDefaultAttribute('icon-spacing'),
+							})
+						}
+					/>
+					<FancyRadioControl
+						label={__('Icon Position', 'maxi-block')}
+						selected={props['icon-position']}
+						options={[
+							{
+								label: __('Right', 'maxi-block'),
+								value: 'right',
+							},
+							{ label: __('Left', 'maxi-block'), value: 'left' },
+						]}
+						optionType='string'
+						onChange={val =>
+							onChange({
+								'icon-position': val,
+							})
+						}
+					/>
+					<FancyRadioControl
+						label=''
+						fullWidthMode
+						selected={iconStyle}
+						options={getOptions()}
+						optionType='string'
+						onChange={val => setIconStyle(val)}
+					/>
+					{iconStyle === 'color' && (
+						<ColorControl
+							label={__('Icon', 'maxi-blocks')}
+							color={props['icon-color']}
+							defaultColor={getDefaultAttribute('icon-color')}
+							paletteColor={props['icon-palette-color']}
+							paletteStatus={props['icon-palette-color-status']}
+							onChange={({
+								color,
+								paletteColor,
 								paletteStatus,
-						});
-					}}
-					showPalette
-				/>
-			)}
-			{iconStyle === 'gradient' && (
-				<GradientControl
-					label={__('Icon Background Gradient', 'maxi-blocks')}
-					gradient={props['icon-background-gradient']}
-					gradientOpacity={props['icon-background-gradient-opacity']}
-					defaultGradient={getDefaultAttribute(
-						'icon-background-gradient'
+							}) => {
+								onChange({
+									'icon-color': color,
+									'icon-palette-color': paletteColor,
+									'icon-palette-color-status': paletteStatus,
+								});
+							}}
+							showPalette
+							disableOpacity
+						/>
 					)}
-					onChange={val =>
-						onChange({
-							'icon-background-gradient': val,
-						})
-					}
-					onChangeOpacity={val =>
-						onChange({
-							'icon-background-gradient-opacity': val,
-						})
-					}
-				/>
-			)}
-			{iconStyle === 'border' && (
-				<BorderControl
-					{...getGroupAttributes(props, [
-						'iconBorder',
-						'iconBorderWidth',
-						'iconBorderRadius',
-					])}
-					prefix='icon-'
-					onChange={obj => onChange(obj)}
-					breakpoint={deviceType}
-					clientId={clientId}
-				/>
-			)}
-			<FancyRadioControl
-				label={__('Custom Padding', 'maxi-blocks')}
-				selected={props['icon-custom-padding']}
-				options={[
-					{
-						label: __('Yes', 'maxi-blocks'),
-						value: 1,
-					},
-					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-				]}
-				onChange={val =>
-					onChange({
-						'icon-custom-padding': val,
-					})
-				}
-			/>
-			{props['icon-custom-padding'] && (
-				<AxisControl
-					{...getGroupAttributes(props, 'iconPadding')}
-					label={__('Icon Padding', 'maxi-blocks')}
-					onChange={obj => onChange(obj)}
-					breakpoint={deviceType}
-					target='icon-padding'
-					disableAuto
-				/>
+					{iconStyle === 'background-color' && (
+						<ColorControl
+							label={__('Icon background', 'maxi-blocks')}
+							color={props['icon-background-color']}
+							defaultColor={getDefaultAttribute(
+								'icon-background-color'
+							)}
+							paletteColor={
+								props['icon-background-palette-color']
+							}
+							paletteStatus={
+								props['icon-background-palette-color-status']
+							}
+							onChange={({
+								color,
+								paletteColor,
+								paletteStatus,
+							}) => {
+								onChange({
+									'icon-background-color': color,
+									'icon-background-palette-color':
+										paletteColor,
+									'icon-background-palette-color-status':
+										paletteStatus,
+								});
+							}}
+							showPalette
+						/>
+					)}
+					{iconStyle === 'gradient' && (
+						<GradientControl
+							label={__(
+								'Icon Background Gradient',
+								'maxi-blocks'
+							)}
+							gradient={props['icon-background-gradient']}
+							gradientOpacity={
+								props['icon-background-gradient-opacity']
+							}
+							defaultGradient={getDefaultAttribute(
+								'icon-background-gradient'
+							)}
+							onChange={val =>
+								onChange({
+									'icon-background-gradient': val,
+								})
+							}
+							onChangeOpacity={val =>
+								onChange({
+									'icon-background-gradient-opacity': val,
+								})
+							}
+						/>
+					)}
+					{iconStyle === 'border' && (
+						<BorderControl
+							{...getGroupAttributes(props, [
+								'iconBorder',
+								'iconBorderWidth',
+								'iconBorderRadius',
+							])}
+							prefix='icon-'
+							onChange={obj => onChange(obj)}
+							breakpoint={deviceType}
+							clientId={clientId}
+						/>
+					)}
+					<FancyRadioControl
+						label={__('Custom Padding', 'maxi-blocks')}
+						selected={props['icon-custom-padding']}
+						options={[
+							{
+								label: __('Yes', 'maxi-blocks'),
+								value: 1,
+							},
+							{
+								label: __('No', 'maxi-blocks'),
+								value: 0,
+							},
+						]}
+						onChange={val =>
+							onChange({
+								'icon-custom-padding': val,
+							})
+						}
+					/>
+					{props['icon-custom-padding'] && (
+						<AxisControl
+							{...getGroupAttributes(props, 'iconPadding')}
+							label={__('Icon Padding', 'maxi-blocks')}
+							onChange={obj => onChange(obj)}
+							breakpoint={deviceType}
+							target='icon-padding'
+							disableAuto
+						/>
+					)}
+				</>
 			)}
 		</div>
 	);

@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { RawHTML } from '@wordpress/element';
+
+/**
  * Internal dependencies
  */
 import { Button } from '../../components';
@@ -50,6 +55,11 @@ const save = props => {
 				<span className='maxi-button-block__content'>
 					{buttonContent}
 				</span>
+				{attributes['icon-content'] && (
+					<RawHTML className='maxi-button-block__icon'>
+						{attributes['icon-content']}
+					</RawHTML>
+				)}
 			</Button>
 		</MaxiBlock>
 	);

@@ -53,17 +53,18 @@ Array [
     "type": "gradient",
   },
   Object {
-    "background-svg-SVGCurrentElement": 1,
+    "background-palette-svg-color": 5,
+    "background-palette-svg-color-status": true,
     "background-svg-SVGData": Object {
-      "group-maxi-12__330": Object {
+      "group-maxi-12__302": Object {
         "color": "",
         "imageID": "",
         "imageURL": "",
       },
     },
-    "background-svg-SVGElement": "<svg viewBox=\\"0 0 36.1 36.1\\" xmlns=\\"http://www.w3.org/2000/svg\\" data-item=\\"group-maxi-12__svg\\"><path fill=\\"\\" d=\\"M23.9 30c1.6-3.3 2.5-7.3 2.5-12s-.8-8.7-2.5-12c-1.6-3.3-3.6-4.9-5.9-4.9S13.7 2.7 12.1 6s-2.4 7.3-2.4 12 .8 8.7 2.4 12 3.6 5 5.9 5 4.3-1.7 5.9-5z\\"></path></svg>",
-    "background-svg-SVGMediaID": null,
-    "background-svg-SVGMediaURL": null,
+    "background-svg-SVGElement": "<svg viewBox=\\"0 0 36.1 36.1\\" class=\\"angle-10-maxi-svg\\" data-stroke=\\"\\" data-item=\\"group-maxi-12__svg\\"><path fill=\\"\\" data-fill=\\"\\" d=\\"M29.837 9.563L18.05 1 6.263 9.563l3.071 9.45-3.071 2.231L10.766 35.1h14.569l4.502-13.856-3.071-2.231 3.071-9.45zm-22.774.26L18.05 1.84l10.987 7.983-2.85 8.77-8.138-5.912-8.137 5.912-2.85-8.77zm18.904 9.45l-1.126 3.466H11.26l-1.126-3.466 7.917-5.752 7.917 5.752zm3.071 2.231L24.84 34.42H11.26L7.063 21.504l2.492-1.811 1.211 3.726h14.569l1.211-3.726 2.492 1.811z\\"></path></svg>",
+    "background-svg-SVGMediaID": "",
+    "background-svg-SVGMediaURL": "",
     "background-svg-left": null,
     "background-svg-left--unit": "%",
     "background-svg-size": 100,

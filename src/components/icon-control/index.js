@@ -161,7 +161,7 @@ const IconControl = props => {
 			)}
 			{iconStyle === 'gradient' && (
 				<GradientControl
-					label={__('Background', 'maxi-blocks')}
+					label={__('Icon Background Gradient', 'maxi-blocks')}
 					gradient={props['icon-background-gradient']}
 					gradientOpacity={props['icon-background-gradient-opacity']}
 					defaultGradient={getDefaultAttribute(

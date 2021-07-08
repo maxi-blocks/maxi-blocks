@@ -126,7 +126,9 @@ class MaxiModal extends Component {
 							className='maxi-library-modal__action-section__buttons__load-library'
 							onClick={onClick}
 						>
-							{__('Replace Icon', 'maxi-blocks')}
+							{isEmpty(attributes['icon-content'])
+								? __('Add Icon', 'maxi-blocks')
+								: __('Replace Icon', 'maxi-blocks')}
 						</Button>
 					)}
 					{isOpen && (

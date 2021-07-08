@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
  *
  */
 import SettingTabsControl from '../setting-tabs-control';
-import SVGDefaultsDisplayer from '../svg-default-displayer';
 import SVGFillControl from '../svg-fill-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import {
@@ -15,6 +14,7 @@ import {
 	getAttributeKey,
 	getGroupAttributes,
 } from '../../extensions/styles';
+import MaxiModal from '../../editor/library/modal';
 
 /**
  * External dependencies
@@ -54,91 +54,22 @@ const SVGLayer = props => {
 					{
 						label: __('Shape', 'maxi-blocks'),
 						content: (
-							<SVGDefaultsDisplayer
-								usedPlace='bg-shape'
-								layerId={layerId}
-								SVGOptions={SVGOptions}
-								prefix='background-svg-'
-								SVGCurrentElement={
-									SVGOptions[
-										getAttributeKey(
-											'background-svg-SVGCurrentElement',
-											isHover,
-											prefix
-										)
-									]
-								}
-								onChange={obj => {
-									if (!isEmpty(obj))
-										onChange({
-											[getAttributeKey(
-												'background-svg-SVGCurrentElement',
-												isHover,
-												prefix
-											)]: obj.SVGCurrentElement,
-											[getAttributeKey(
-												'background-svg-SVGElement',
-												isHover,
-												prefix
-											)]: obj.SVGElement,
-											[getAttributeKey(
-												'background-svg-SVGMediaID',
-												isHover,
-												prefix
-											)]: obj.SVGMediaID,
-											[getAttributeKey(
-												'background-svg-SVGMediaURL',
-												isHover,
-												prefix
-											)]: obj.SVGMediaURL,
-											[getAttributeKey(
-												'background-svg-SVGData',
-												isHover,
-												prefix
-											)]: obj.SVGData,
-										});
-									else
-										onChange({
-											[getAttributeKey(
-												'background-svg-SVGCurrentElement',
-												isHover,
-												prefix
-											)]: '',
-											[getAttributeKey(
-												'background-svg-SVGElement',
-												isHover,
-												prefix
-											)]: '',
-										});
-								}}
-							/>
+							<MaxiModal type='bg-shape' layerId={layerId} />
 						),
 					},
 					!isEmpty(SVGOptions['background-svg-SVGElement']) && {
 						label: __('Fill', 'maxi-blocks'),
 						content: (
 							<SVGFillControl
-								{...getGroupAttributes(props, 'svg')}
-								SVGData={
-									SVGOptions[
-										getAttributeKey(
-											'background-svg-SVGData',
-											isHover,
-											prefix
-										)
-									]
-								}
-								SVGElement={
-									SVGOptions[
-										getAttributeKey(
-											'background-svg-SVGElement',
-											isHover,
-											prefix
-										)
-									]
-								}
-								onChange={obj => {
+								SVGOptions={SVGOptions}
+								onChange={obj =>
 									onChange({
+										'background-palette-svg-color':
+											obj['background-palette-svg-color'],
+										'background-palette-svg-color-status':
+											obj[
+												'background-palette-svg-color-status'
+											],
 										[getAttributeKey(
 											'background-svg-SVGData',
 											isHover,
@@ -149,9 +80,8 @@ const SVGLayer = props => {
 											isHover,
 											prefix
 										)]: obj.SVGElement,
-									});
-								}}
-								onChangePalette={val => onChange(val)}
+									})
+								}
 								clientId={clientId}
 								isHover={isHover}
 							/>

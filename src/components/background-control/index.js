@@ -210,7 +210,6 @@ const BackgroundControl = props => {
 					)}
 					{!disableSVG && backgroundActiveMedia === 'svg' && (
 						<SVGLayer
-							{...getGroupAttributes(props, 'svg')}
 							SVGOptions={{
 								...getGroupAttributes(
 									props,

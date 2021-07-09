@@ -312,6 +312,7 @@
 			}
 		}
 		&__preview {
+			position: relative;
 			width: 100%;
 			flex: 1;
 			background: #edeff0;
@@ -322,6 +323,13 @@
 			margin-right: 5px;
 			height: 66px;
 
+			&--remove {
+				width: 20px;
+				position: absolute;
+				top: -12px;
+				right: -8px;
+				cursor: pointer;
+			}
 			& > div {
 				display: flex;
 				align-items: center;

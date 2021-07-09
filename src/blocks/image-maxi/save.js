@@ -74,7 +74,11 @@ const save = props => {
 					<RawHTML>{SVGElement}</RawHTML>
 				) : (
 					<img
-						className={`maxi-image-block__image wp-image-${mediaID}`}
+						className={
+							mediaID
+								? `maxi-image-block__image wp-image-${mediaID}`
+								: 'maxi-image-block__image wp-image-external'
+						}
 						src={mediaURL}
 						width={mediaWidth}
 						height={mediaHeight}

@@ -45,8 +45,28 @@
 			}
 		}
 	}
+	.maxi-blocks-url__button {
+		position: absolute;
+		top: 43px;
+		right: 0;
+		width: 40px;
+		height: 40px;
+		background: #232533;
+		button {
+			width: 40px;
+			height: 40px;
+		}
+		form {
+			background: #232533;
+		}
+		svg {
+			width: 20px;
+			height: 20px;
+			fill: #fff;
+		}
+	}
 	.maxi-imageupload-button {
-		z-index: 1;
+		z-index: 100;
 		svg {
 			max-width: 100%;
 			height: auto;

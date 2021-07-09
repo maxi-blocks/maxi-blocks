@@ -23,6 +23,7 @@ import {
 	Spinner,
 	Placeholder,
 	RawHTML,
+	ImageURL,
 } from '../../components';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 
@@ -90,6 +91,7 @@ class edit extends MaxiBlockComponent {
 			imageRatio,
 			'hover-type': hoverType,
 			'hover-preview': hoverPreview,
+			isUrl,
 		} = attributes;
 
 		const classes = classnames(
@@ -113,6 +115,33 @@ class edit extends MaxiBlockComponent {
 			hoverType !== 'none' &&
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
+
+		const ImageUpload = props => {
+			const { open } = props;
+			return (
+				<>
+					<Button
+						className='maxi-image-block__settings__upload-button'
+						label={__(
+							'Upload / Add from Media Library',
+							'maxi-blocks'
+						)}
+						showTooltip='true'
+						onClick={open}
+						icon={toolbarReplaceImage}
+					/>
+					<ImageURL
+						url={isUrl ? mediaURL : null}
+						onChange={url =>
+							setAttributes({
+								isUrl: true,
+								mediaURL: url,
+							})
+						}
+					/>
+				</>
+			);
+		};
 
 		return [
 			<Inspector
@@ -144,6 +173,7 @@ class edit extends MaxiBlockComponent {
 							mediaURL: media.url,
 							mediaWidth: media.width,
 							mediaHeight: media.height,
+							isUrl: false,
 						});
 						if (!isEmpty(attributes.SVGData)) {
 							const cleanedContent = DOMPurify.sanitize(
@@ -208,12 +238,7 @@ class edit extends MaxiBlockComponent {
 										}}
 									>
 										<div className='maxi-image-block__settings'>
-											<Button
-												className='maxi-image-block__settings__upload-button'
-												showTooltip='true'
-												onClick={open}
-												icon={toolbarReplaceImage}
-											/>
+											<ImageUpload open={open} />
 										</div>
 										<HoverPreview
 											key={`hover-preview-${uniqueID}`}
@@ -230,7 +255,11 @@ class edit extends MaxiBlockComponent {
 												<RawHTML>{SVGElement}</RawHTML>
 											) : (
 												<img
-													className={`maxi-image-block__image wp-image-${mediaID}`}
+													className={
+														mediaID
+															? `maxi-image-block__image wp-image-${mediaID}`
+															: 'maxi-image-block__image wp-image-external'
+													}
 													src={mediaURL}
 													width={mediaWidth}
 													height={mediaHeight}
@@ -256,12 +285,7 @@ class edit extends MaxiBlockComponent {
 										icon={placeholderImage}
 										label=''
 									/>
-									<Button
-										className='maxi-image-block__settings__upload-button'
-										showTooltip='true'
-										onClick={open}
-										icon={toolbarReplaceImage}
-									/>
+									<ImageUpload open={open} />
 								</div>
 							)}
 						</>

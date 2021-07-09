@@ -91,7 +91,6 @@ const ColorLayer = props => {
 						)]: paletteStatus,
 					});
 				}}
-				disablePalette={type === 'layer'}
 				globalProps={{
 					target: 'background-color-global',
 					type: 'button',

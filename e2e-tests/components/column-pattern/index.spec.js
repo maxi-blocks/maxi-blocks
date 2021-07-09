@@ -12,7 +12,6 @@ describe('ColumnPattern', () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 		const accordionControl = await openSidebar(page, 'row settings');
-		debugger;
 
 		// select column
 		await accordionControl.$eval(

@@ -30,9 +30,15 @@ describe('TextMaxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
-	it('Test Text Maxi split', async () => {
-		await createNewPost();
+	it('Test Text Maxi on pressing enter', async () => {
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi');
+		await page.keyboard.press('Enter');
 
+		expect(await getEditedPostContent()).toMatchSnapshot();
+	});
+
+	it('Test Text Maxi split', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi...onSplit');
 		await pressKeyTimes('ArrowLeft', '7');
@@ -215,9 +221,8 @@ describe('TextMaxi', () => {
 	it('Testing Text Maxi with custom formats when merge from top block to bottom one', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi.');
-		await insertBlock('Text Maxi');
+		await page.keyboard.press('Enter');
 		await page.keyboard.type('.Bold');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
@@ -238,9 +243,8 @@ describe('TextMaxi', () => {
 	it('Testing Text Maxi with custom formats when merge from bottom block to top one', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi.');
-		await insertBlock('Text Maxi');
+		await page.keyboard.press('Enter');
 		await page.keyboard.type('.Bold');
-		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await pressKeyWithModifier('shift', 'ArrowLeft');

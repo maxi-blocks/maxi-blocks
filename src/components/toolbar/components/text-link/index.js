@@ -46,19 +46,7 @@ const LinkContent = withFormatValue(props => {
 	const formatName = 'maxi-blocks/text-link';
 
 	const { formatOptions } = useSelect(() => {
-		const { start, end } = formatValue;
-		const isWholeContent = start === end;
-
-		const formatOptions = getActiveFormat(
-			isWholeContent
-				? {
-						...formatValue,
-						start: 0,
-						end: formatValue.formats.length,
-				  }
-				: formatValue,
-			formatName
-		);
+		const formatOptions = getActiveFormat(formatValue, formatName);
 
 		return {
 			formatOptions,

@@ -9,6 +9,11 @@ import { select, dispatch } from '@wordpress/data';
  */
 import { fromListToText, fromTextToList } from '../../extensions/text/formats';
 
+/**
+ * External dependencies
+ */
+import { isEmpty, merge } from 'lodash';
+
 const name = 'maxi-blocks/text-maxi';
 
 const {
@@ -22,7 +27,7 @@ const { removeBlock, updateBlockAttributes } = dispatch('core/block-editor');
 
 export const onMerge = (props, forward) => {
 	const { attributes, clientId, setAttributes } = props;
-	const { isList, content } = attributes;
+	const { isList, content, 'custom-formats': customFormats } = attributes;
 
 	if (forward) {
 		const nextBlockClientId = getNextBlockClientId(clientId);
@@ -30,18 +35,27 @@ export const onMerge = (props, forward) => {
 
 		if (nextBlockClientId && blockName === 'maxi-blocks/text-maxi') {
 			const nextBlockAttributes = getBlockAttributes(nextBlockClientId);
-			const nextBlockContent = nextBlockAttributes.content;
-			const newBlockIsList = nextBlockAttributes.isList;
+			const {
+				content: nextBlockContent,
+				isList: nextBlockIsList,
+				'custom-formats': nextBlockCustomFormats,
+			} = nextBlockAttributes;
 
-			const nextBlockContentNeedsTransform = isList !== newBlockIsList;
+			const nextBlockContentNeedsTransform = isList !== nextBlockIsList;
 			const newNextBlockContent = nextBlockContentNeedsTransform
-				? newBlockIsList
+				? nextBlockIsList
 					? fromListToText(nextBlockContent)
 					: fromTextToList(nextBlockContent)
 				: nextBlockContent;
 
 			setAttributes({
 				content: content.concat(newNextBlockContent),
+				...(!isEmpty(nextBlockCustomFormats) && {
+					'custom-formats': merge(
+						customFormats,
+						nextBlockCustomFormats
+					),
+				}),
 			});
 
 			removeBlock(nextBlockClientId);
@@ -56,12 +70,21 @@ export const onMerge = (props, forward) => {
 			const previousBlockAttributes = getBlockAttributes(
 				previousBlockClientId
 			);
-			const previousBlockContent = previousBlockAttributes.content;
+			const {
+				content: previousBlockContent,
+				'custom-formats': previousBlockCustomFormats,
+			} = previousBlockAttributes;
 
 			updateBlockAttributes(previousBlockClientId, {
 				content: previousBlockContent.concat(
 					attributes.isList ? fromListToText(content) : content
 				),
+				...(!isEmpty(attributes['custom-formats']) && {
+					'custom-formats': merge(
+						attributes['custom-formats'],
+						previousBlockCustomFormats
+					),
+				}),
 			});
 
 			removeBlock(clientId);
@@ -69,13 +92,8 @@ export const onMerge = (props, forward) => {
 	}
 };
 
-export const onSplit = (attributes, value) => {
-	if (!value) {
-		return createBlock(name, ...attributes);
-	}
-
-	return createBlock(name, {
+export const onSplit = (attributes, value) =>
+	createBlock(name, {
 		...attributes,
 		content: value,
 	});
-};

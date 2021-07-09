@@ -161,9 +161,6 @@ export const backgroundSVG = {
 		type: 'number',
 		default: 5,
 	},
-	'background-svg-SVGCurrentElement': {
-		type: 'string',
-	},
 	'background-svg-SVGElement': {
 		type: 'string',
 	},

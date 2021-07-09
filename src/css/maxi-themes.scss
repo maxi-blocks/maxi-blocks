@@ -16,157 +16,44 @@ $color_set: '1', '2', '3', '4', '5', '6', '7';
 /* Frontend */
 body.maxi-blocks--active {
 	@each $style in $styles {
+		/* Color Presets */
 		.maxi-#{$style} {
 			/* Color Presets */
 			@each $color_number in $color_set {
-				&.maxi-sc-#{$style}-shape-divider-top-color-#{$color_number},
-				.maxi-sc-#{$style}-shape-divider-top-color-#{$color_number} {
-					.maxi-shape-divider.maxi-shape-divider__top svg {
-						fill: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-shape-divider-bottom-color-#{$color_number},
-				.maxi-sc-#{$style}-shape-divider-bottom-color-#{$color_number} {
-					.maxi-shape-divider.maxi-shape-divider__bottom svg {
-						fill: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-marker-address-color-#{$color_number},
-				.maxi-sc-#{$style}-marker-address-color-#{$color_number} {
-					.map-marker-info-window__address {
-						color: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-marker-title-color-#{$color_number},
-				.maxi-sc-#{$style}-marker-title-color-#{$color_number} {
-					.map-marker-info-window__title {
-						color: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-hover-background-color-#{$color_number},
-				.maxi-sc-#{$style}-hover-background-color-#{$color_number} {
-					&.maxi-image-block .maxi-hover-details {
-						background: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-circle-bar-background-color-#{$color_number},
-				.maxi-sc-#{$style}-circle-bar-background-color-#{$color_number} {
-					.maxi-number-counter__box .maxi-number-counter__box__circle {
-						stroke: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-circle-background-color-#{$color_number},
-				.maxi-sc-#{$style}-circle-background-color-#{$color_number} {
-					.maxi-number-counter__box .maxi-number-counter__box__background {
-						stroke: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-svg-background-color-#{$color_number},
-				.maxi-sc-#{$style}-svg-background-color-#{$color_number} {
-					> .maxi-background-displayer .maxi-background-displayer__svg svg path,
-					> .maxi-background-displayer .maxi-background-displayer__svg svg circle,
-					> .maxi-background-displayer .maxi-background-displayer__svg svg rect,
-					> .maxi-background-displayer .maxi-background-displayer__svg svg polygon,
-					> .maxi-background-displayer .maxi-background-displayer__svg svg line,
-					> .maxi-background-displayer .maxi-background-displayer__svg svg ellipse
-					{
-						fill: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-background-color-#{$color_number},
-				.maxi-sc-#{$style}-background-color-#{$color_number} {
-					&.maxi-button-block .maxi-button-block__button {
-						--maxi-#{$style}-button-background-color-palette: var(--maxi-#{$style}-color-#{$color_number});
-					}
-					> .maxi-background-displayer .maxi-background-displayer__color {
-						background: var(--maxi-#{$style}-color-#{$color_number});
-					}
-					> .maxi-container-arrow:before,
-					> .maxi-container-arrow:after {
-						background: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-border-color-#{$color_number},
-				.maxi-sc-#{$style}-border-color-#{$color_number} {
-					&:not(.maxi-button-block) {
-						border-color: var(--maxi-#{$style}-color-#{$color_number});
-					}
-					> .maxi-block__resizer .maxi-image-block-wrapper,
-					> .maxi-image-block-wrapper,
-					> .maxi-button-block__button {
-						border-color: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-typography-color-#{$color_number},
-				.maxi-sc-#{$style}-typography-color-#{$color_number} {
-					&.maxi-button-block {
-						--maxi-#{$style}-button-color-palette: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-typography-color-#{$color_number},
-				.maxi-sc-#{$style}-typography-color-#{$color_number} {
-					&.maxi-button-block {
-						--maxi-#{$style}-button-color-palette: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-typography-color-#{$color_number},
-					.maxi-sc-#{$style}-typography-color-#{$color_number} {
-						.maxi-number-counter__box .maxi-number-counter__box__text {
-							color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-				}
-				&.maxi-sc-#{$style}-typography-color-#{$color_number},
-					.maxi-sc-#{$style}-typography-color-#{$color_number} {
-						.maxi-image-block__caption {
-							color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-				}
-				@each $level in $levels {
-					&.maxi-sc-#{$style}-typography-color-#{$color_number} > #{$level}.maxi-text-block__content,
-					.maxi-sc-#{$style}-typography-color-#{$color_number} > #{$level}.maxi-text-block__content {
-						--maxi-#{$style}-#{$level}-color-palette: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				li {
-					&.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content,
-					.maxi-sc-#{$style}-typography-color-#{$color_number} > .maxi-text-block__content {
-						--maxi-#{$style}-p-color-palette: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-svgColorFill-color-#{$color_number},
-				.maxi-sc-#{$style}-svgColorFill-color-#{$color_number} {
-					.maxi-svg-icon-block__icon svg[data-fill],
-					.maxi-svg-icon-block__icon svg *[data-fill] {
-						fill: var(--maxi-#{$style}-icon-fill, var(--maxi-#{$style}-icon-fill-palette));
-						--maxi-#{$style}-icon-fill-palette: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-svgColorLine-color-#{$color_number},
-				.maxi-sc-#{$style}-svgColorLine-color-#{$color_number} {
-					.maxi-svg-icon-block__icon svg[data-stroke],
-					.maxi-svg-icon-block__icon svg *[data-stroke] {
-						stroke: var(--maxi-#{$style}-icon-line, var(--maxi-#{$style}-icon-line-palette));
-						--maxi-#{$style}-icon-line-palette: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-box-shadow-color-#{$color_number},
-				.maxi-sc-#{$style}-box-shadow-color-#{$color_number} {
-					&,
-					> .maxi-image-block-wrapper,
-					> .maxi-block__resizer .maxi-image-block-wrapper {
-						--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
-				&.maxi-sc-#{$style}-divider-color-#{$color_number},
-				.maxi-sc-#{$style}-divider-color-#{$color_number} {
-					hr.maxi-divider-block__divider {
-						--maxi-#{$style}-divider-color-palette: var(--maxi-#{$style}-color-#{$color_number});
-					}
-				}
 				&.maxi-sc-#{$style}-link-color-#{$color_number},
 				.maxi-sc-#{$style}-link-color-#{$color_number} {
-					a:not(.maxi-button-block__button) {
-						--maxi-#{$style}-link-color-palette: var(--maxi-#{$style}-color-#{$color_number});
+					&.maxi-block--has-link {
+						--maxi-#{$style}-link-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					a.maxi-text-block--link {
+						--maxi-#{$style}-link-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-link-hover-color-#{$color_number},
+				.maxi-sc-#{$style}-link-hover-color-#{$color_number} {
+					&.maxi-block--has-link {
+						--maxi-#{$style}-link-hover-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					a.maxi-text-block--link {
+						--maxi-#{$style}-link-hover-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-link-active-color-#{$color_number},
+				.maxi-sc-#{$style}-link-active-color-#{$color_number} {
+					&.maxi-block--has-link {
+						--maxi-#{$style}-link-active-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					a.maxi-text-block--link {
+						--maxi-#{$style}-link-active-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+				}
+				&.maxi-sc-#{$style}-link-visited-color-#{$color_number},
+				.maxi-sc-#{$style}-link-visited-color-#{$color_number} {
+					&.maxi-block--has-link {
+						--maxi-#{$style}-link-visited-palette: var(--maxi-#{$style}-color-#{$color_number});
+					}
+					a.maxi-text-block--link {
+						--maxi-#{$style}-link-visited-palette: var(--maxi-#{$style}-color-#{$color_number});
 					}
 				}
 			}
@@ -181,68 +68,7 @@ body.maxi-blocks--active {
 					fill: var(--maxi-#{$style}-icon-fill, #ff4a17);
 				}
 			}
-			/* Color Presets on hover */
-			&:not(.maxi-button-block):hover,
-			.maxi-parent:not(.maxi-button-block):hover {
-				@each $color_number in $color_set {
-					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
-						> .maxi-background-displayer .maxi-background-displayer__color {
-							background-color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-						> .maxi-container-arrow:before,
-						> .maxi-container-arrow:after {
-							background: var(--maxi-#{$style}-color-#{$color_number});
-						}
-					}
-					&.maxi-sc-#{$style}-border-hover-color-#{$color_number} {
-							border-color: var(--maxi-#{$style}-color-#{$color_number});
-						> .maxi-image-block-wrapper,
-						> .maxi-block__resizer .maxi-image-block-wrapper {
-							border-color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-					}
-					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
-						> .maxi-text-block__content,
-						.maxi-image-block__caption {
-							color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-					}
-					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {
-						&,
-						> .maxi-image-block-wrapper,
-						> .maxi-block__resizer .maxi-image-block-wrapper {
-							--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-					}
-				}
-			}
-			/* Color Presets on button hover */
-			&.maxi-button-block,
-			.maxi-parent.maxi-button-block {
-				@each $color_number in $color_set {
-					&.maxi-sc-#{$style}-background-hover-color-#{$color_number} {
-						> .maxi-button-block__button:hover {
-							--maxi-#{$style}-button-background-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});
-						}
-					}
-					&.maxi-sc-#{$style}-border-hover-color-#{$color_number} {
-						> .maxi-button-block__button:hover {
-							--maxi-#{$style}-button-border-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});
-						}
-					}
-					&.maxi-sc-#{$style}-typography-hover-color-#{$color_number} {
-						> .maxi-button-block__button:hover {
-							--maxi-#{$style}-button-hover-color-palette: var(--maxi-#{$style}-color-#{$color_number});						}
-					}
-					&.maxi-sc-#{$style}-box-shadow-hover-color-#{$color_number} {
-						> .maxi-button-block__button:hover {
-							--maxi-shadow-color: var(--maxi-#{$style}-color-#{$color_number});
-						}
-					}
-				}
-			}
 		}
-		/* End of Color Presets */
 
 		/* Individual settings per a block type */
 		.maxi-#{$style}.maxi-block {
@@ -250,7 +76,6 @@ body.maxi-blocks--active {
 			.maxi-text-block {
 				@each $level in $levels {
 					#{$level} {
-						color: var(--maxi-#{$style}-#{$level}-color, var(--maxi-#{$style}-#{$level}-color-palette));
 						font-family: var(--maxi-#{$style}-#{$level}-font-family-general);
 						font-weight: var(--maxi-#{$style}-#{$level}-font-weight-general);
 						font-style: var(--maxi-#{$style}-#{$level}-font-style-general);
@@ -262,7 +87,6 @@ body.maxi-blocks--active {
 
 			&.maxi-text-block li,
 			.maxi-text-block li {
-				color: var(--maxi-#{$style}-p-color, var(--maxi-#{$style}-p-color-palette));
 				font-family: var(--maxi-#{$style}-p-font-family-general);
 				font-weight: var(--maxi-#{$style}-p-font-weight-general);
 				font-style: var(--maxi-#{$style}-p-font-style-general);
@@ -270,36 +94,43 @@ body.maxi-blocks--active {
 				text-decoration: var(--maxi-#{$style}-p-text-decoration-general);
 			}
 
-			&.maxi-text-block a,
-			.maxi-text-block a {
+			&.maxi-block--has-link .maxi-text-block__content {
 				color: var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette));
-				&:visited, &:hover, &:active, &:focus {
-			        color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
+				&:hover, &:focus {
+			        color: var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette));
+			    }
+				&:active {
+					color: var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette));
+				}
+				&:visited {
+					color: var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette));
+				}
+			}
+			&.maxi-text-block a.maxi-text-block--link,
+			.maxi-text-block a.maxi-text-block--link {
+				color: var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette));
+				&:hover, &:focus {
+			        color: var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette));
 			        span {
-			        	color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-link-hover-palette));
+			        	color: var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette));
 			        }
 			    }
-			}
-
-			&.maxi-divider-block__divider,
-			hr.maxi-divider-block__divider {
-				border-color: var(--maxi-#{$style}-divider-color, var(--maxi-#{$style}-divider-color-palette));
-			}
-
-			&.maxi-svg-icon-block__icon svg[data-fill],
-			&.maxi-svg-icon-block__icon svg *[data-fill] {
-				fill: var(--maxi-#{$style}-icon-fill, var(--maxi-#{$style}-icon-fill-palette));
-			}
-
-			&.maxi-svg-icon-block__icon svg[data-stroke],
-			&.maxi-svg-icon-block__icon svg *[data-stroke] {
-				stroke: var(--maxi-#{$style}-icon-line, var(--maxi-#{$style}-icon-line-palette));
+				&:active {
+					color: var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette));
+			        span {
+			        	color: var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette));
+			        }
+				}
+				&:visited {
+					color: var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette));
+			        span {
+			        	color: var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette));
+			        }
+				}
 			}
 
 			&.maxi-button-block .maxi-button-block__button,
 			.maxi-button-block .maxi-button-block__button {
-				color: var(--maxi-#{$style}-button-color, var(--maxi-#{$style}-button-color-palette));
-				background-color: var(--maxi-#{$style}-button-background-color, var(--maxi-#{$style}-button-background-color-palette));
 				font-family: var(--maxi-#{$style}-button-font-family-general);
 				font-weight: var(--maxi-#{$style}-button-font-weight-general);
 				font-style: var(--maxi-#{$style}-button-font-style-general);

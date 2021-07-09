@@ -10,7 +10,7 @@ import { MediaUpload } from '@wordpress/block-editor';
  */
 import getStyles from './styles';
 import Inspector from './inspector';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -24,7 +24,6 @@ import {
 	Placeholder,
 	RawHTML,
 } from '../../components';
-import * as SVGShapes from '../../icons/shape-icons';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 
 /**
@@ -89,7 +88,6 @@ class edit extends MaxiBlockComponent {
 			SVGElement,
 			imgWidth,
 			imageRatio,
-			parentBlockStyle,
 			'hover-type': hoverType,
 			'hover-preview': hoverPreview,
 		} = attributes;
@@ -104,8 +102,6 @@ class edit extends MaxiBlockComponent {
 			'maxi-image-ratio',
 			`maxi-image-ratio__${imageRatio}`
 		);
-
-		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		const hoverClasses = classnames(
 			hoverType === 'basic' &&
@@ -139,7 +135,6 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				tagName='figure'
 				className={classes}
-				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<MediaUpload
@@ -151,18 +146,9 @@ class edit extends MaxiBlockComponent {
 							mediaHeight: media.height,
 						});
 						if (!isEmpty(attributes.SVGData)) {
-							const currentElem = !isEmpty(
-								attributes.SVGCurrentElement
-							)
-								? SVGShapes[
-										Object.keys(SVGShapes)[
-											attributes.SVGCurrentElement
-										]
-								  ]
-								: attributes.SVGElement;
-
-							const cleanedContent =
-								DOMPurify.sanitize(currentElem);
+							const cleanedContent = DOMPurify.sanitize(
+								attributes.SVGElement
+							);
 							const svg = document
 								.createRange()
 								.createContextualFragment(
@@ -179,7 +165,6 @@ class edit extends MaxiBlockComponent {
 
 							const resEl = injectImgSVG(svg, resData);
 							setAttributes({
-								SVGCurrentElement: attributes.SVGCurrentElement,
 								SVGElement: resEl.outerHTML,
 								SVGMediaID: null,
 								SVGMediaURL: null,

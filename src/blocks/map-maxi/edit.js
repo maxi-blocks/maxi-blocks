@@ -12,7 +12,7 @@ import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 import { defaultMarkers } from './defaultMarkers';
 
@@ -45,7 +45,6 @@ class edit extends MaxiBlockComponent {
 		const { attributes } = this.props;
 		const {
 			uniqueID,
-			parentBlockStyle,
 			'map-api-key': mapApiKey,
 			'map-latitude': mapLatitude,
 			'map-longitude': mapLongitude,
@@ -58,8 +57,6 @@ class edit extends MaxiBlockComponent {
 			'map-marker-text': mapMarkerText,
 			'map-marker-address': mapMarkerAddress,
 		} = attributes;
-
-		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		const loader = new Loader({
 			apiKey: mapApiKey,
@@ -97,7 +94,7 @@ class edit extends MaxiBlockComponent {
 					icon: {
 						...defaultMarkers[`marker-icon-${mapMarker}`],
 						fillColor: mapMarkerFillColor,
-						fillOpacity: mapMarkerOpacity,
+						fillOpacity: mapMarkerOpacity || 1,
 						strokeWeight: 2,
 						strokeColor: mapMarkerStrokeColor,
 						rotation: 0,
@@ -125,7 +122,6 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-map--${uniqueID}`}
 				ref={this.blockRef}
 				className='maxi-map-block'
-				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<div

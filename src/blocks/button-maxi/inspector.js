@@ -22,6 +22,8 @@ import {
 	FancyRadioControl,
 	FullSizeControl,
 	Icon,
+	IconControl,
+	InfoBox,
 	MotionControl,
 	PositionControl,
 	ResponsiveControl,
@@ -29,7 +31,6 @@ import {
 	TextControl,
 	TransformControl,
 	TypographyControl,
-	InfoBox,
 	ZIndexControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
@@ -94,6 +95,7 @@ const Inspector = props => {
 												isFirstOnHierarchy
 											}
 											onChange={obj => setAttributes(obj)}
+											clientId={clientId}
 										/>
 									</div>
 								)}
@@ -149,6 +151,30 @@ const Inspector = props => {
 																),
 														},
 													]}
+												/>
+											),
+										},
+										deviceType === 'general' && {
+											label: __('Icon', 'maxi-blocks'),
+											content: (
+												<IconControl
+													{...getGroupAttributes(
+														attributes,
+														[
+															'icon',
+															'iconGradient',
+															'iconBackgroundColor',
+															'iconBorder',
+															'iconBorderWidth',
+															'iconBorderRadius',
+															'iconPadding',
+														]
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													deviceType={deviceType}
+													clientId={clientId}
 												/>
 											),
 										},

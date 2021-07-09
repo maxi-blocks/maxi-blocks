@@ -18,6 +18,7 @@ import Alignment from './components/alignment';
 import BackgroundColor from './components/background-color';
 import Border from './components/border';
 import BoxShadow from './components/box-shadow';
+import Breadcrumbs from '../breadcrumbs';
 import ColumnMover from './components/column-mover';
 import ColumnsHandlers from './components/columns-handlers';
 import ColumnSize from './components/column-size';
@@ -33,6 +34,7 @@ import Mover from './components/mover';
 import PaddingMargin from './components/padding-margin';
 import ReusableBlocks from './components/reusable-blocks';
 import RowSettings from './components/row-settings';
+import ShapeColor from './components/shape-color';
 import Size from './components/size';
 import SvgColor from './components/svg-color';
 import TextBold from './components/text-bold';
@@ -41,19 +43,15 @@ import TextItalic from './components/text-italic';
 import TextLevel from './components/text-level';
 import TextLink from './components/text-link';
 import TextListOptions from './components/text-list-options';
-import TypographyControl from './components/typography-control';
 import ToggleBlock from './components/toggle-block';
 import ToolbarColumnPattern from './components/column-pattern';
-import Breadcrumbs from '../breadcrumbs';
+import TypographyControl from './components/typography-control';
 
 /**
  * Styles
  */
 import './editor.scss';
-import {
-	getGroupAttributes,
-	getDefaultAttribute,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * General
@@ -63,11 +61,12 @@ const allowedBlocks = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/divider-maxi',
-	'maxi-blocks/map-maxi',
 	'maxi-blocks/group-maxi',
-	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/image-maxi',
+	'maxi-blocks/map-maxi',
+	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/row-maxi',
+	'maxi-blocks/shape-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/text-maxi',
 ];
@@ -77,11 +76,12 @@ const flexBlocks = [
 	'maxi-blocks/column-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/divider-maxi',
-	'maxi-blocks/map-maxi',
 	'maxi-blocks/group-maxi',
-	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/image-maxi',
+	'maxi-blocks/map-maxi',
+	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/row-maxi',
+	'maxi-blocks/shape-maxi',
 	'maxi-blocks/svg-icon-maxi',
 ];
 
@@ -364,6 +364,14 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
 							/>
+							{name === 'maxi-blocks/shape-maxi' && (
+								<ShapeColor
+									{...getGroupAttributes(attributes, 'shape')}
+									blockName={name}
+									onChange={obj => setAttributes(obj)}
+									clientId={clientId}
+								/>
+							)}
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
 									<SvgColor
@@ -372,18 +380,12 @@ const MaxiToolbar = memo(
 											'svg'
 										)}
 										blockName={name}
-										svgColorDefault={getDefaultAttribute(
-											'svgColorFill',
-											clientId
-										)}
-										svgColor={attributes.svgColorFill}
-										onChange={svgColorFill => {
-											setAttributes(svgColorFill);
-											changeSVGContent(svgColorFill, 1);
+										onChange={obj => {
+											setAttributes(obj);
 										}}
-										clientId={clientId}
-										type='svgColorFill'
-										breakpoint={breakpoint}
+										changeSVGContent={changeSVGContent}
+										type='fill'
+										parentBlockStyle={parentBlockStyle}
 									/>
 									<SvgColor
 										{...getGroupAttributes(
@@ -391,18 +393,12 @@ const MaxiToolbar = memo(
 											'svg'
 										)}
 										blockName={name}
-										svgColorDefault={getDefaultAttribute(
-											'svgColorLine',
-											clientId
-										)}
-										svgColor={attributes.svgColorLine}
 										onChange={svgColorLine => {
 											setAttributes(svgColorLine);
-											changeSVGContent(svgColorLine, 2);
 										}}
-										clientId={clientId}
-										type='svgColorLine'
-										breakpoint={breakpoint}
+										changeSVGContent={changeSVGContent}
+										type='line'
+										parentBlockStyle={parentBlockStyle}
 									/>
 								</>
 							)}

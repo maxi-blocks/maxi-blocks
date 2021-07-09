@@ -23,6 +23,7 @@ import MotionPreview from '../motion-preview';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 const WRAPPER_BLOCKS = [
 	'maxi-blocks/container-maxi',
@@ -120,6 +121,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		classes: customClasses,
 		paletteClasses,
 		hasArrow,
+		hasLink,
 		...extraProps
 	} = props;
 
@@ -171,7 +173,8 @@ const MaxiBlock = forwardRef((props, ref) => {
 		displayValue === 'none' && 'maxi-block-display-none',
 		customClasses,
 		paletteClasses,
-		hasArrow && 'maxi-block--has-arrow'
+		hasArrow && 'maxi-block--has-arrow',
+		hasLink && 'maxi-block--has-link'
 	);
 	const blockProps = {
 		tagName,
@@ -216,7 +219,8 @@ const MaxiBlock = forwardRef((props, ref) => {
 
 export const getMaxiBlockBlockAttributes = props => {
 	const { name, deviceType, attributes } = props;
-	const { blockStyle, extraClassName, uniqueID, fullWidth } = attributes;
+	const { blockStyle, extraClassName, uniqueID, fullWidth, linkSettings } =
+		attributes;
 	const displayValue = getLastBreakpointAttribute(
 		'display',
 		deviceType,
@@ -252,6 +256,8 @@ export const getMaxiBlockBlockAttributes = props => {
 		]),
 	};
 	const hasArrow = props.attributes['arrow-status'] || false;
+	const hasLink =
+		linkSettings && !isEmpty(linkSettings) && !isEmpty(linkSettings.url);
 
 	return {
 		blockName: name,
@@ -263,6 +269,7 @@ export const getMaxiBlockBlockAttributes = props => {
 		motion,
 		background,
 		hasArrow,
+		hasLink,
 	};
 };
 

@@ -254,7 +254,25 @@ const LibraryContainer = props => {
 		const newSvgClass = `.${uniqueID} .${svgClass}`;
 		const replaceIt = `.${svgClass}`;
 
-		const finalSvgCode = svgCode.replaceAll(replaceIt, newSvgClass);
+		const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
+		const fillStr = `fill:var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-4))`;
+
+		const fillRegExp2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
+		const fillStr2 = ` fill="var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-4))`;
+
+		const strokeRegExp = new RegExp('stroke:[^n]+?(?=})', 'g');
+		const strokeStr = `stroke:var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-7))`;
+
+		const strokeRegExp2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
+		const strokeStr2 = ` stroke="var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-7))`;
+
+		const newContent = svgCode
+			.replace(fillRegExp, fillStr)
+			.replace(fillRegExp2, fillStr2)
+			.replace(strokeRegExp, strokeStr)
+			.replace(strokeRegExp2, strokeStr2);
+
+		const finalSvgCode = newContent.replaceAll(replaceIt, newSvgClass);
 
 		const isValid =
 			select('core/block-editor').isValidTemplate(finalSvgCode);
@@ -294,20 +312,27 @@ const LibraryContainer = props => {
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
 		if (isValid) {
-			if (type === 'bg-shape' && bgLayersStatus) {
-				const newBgLayers = cloneDeep(bgLayers);
+			if (type === 'block-shape' || type === 'sidebar-block-shape') {
+				const clientId =
+					select('core/block-editor').getSelectedBlockClientId();
 
-				newBgLayers[layerId]['background-svg-SVGCurrentElement'] = '';
-				newBgLayers[layerId]['background-svg-SVGElement'] = svgCode;
+				const SVGData = {
+					[`${uniqueID}__${uniqueId()}`]: {
+						color: '',
+						imageID: mediaID,
+						imageURL: mediaURL,
+					},
+				};
 
 				updateBlockAttributes(clientId, {
-					'background-layers': [...newBgLayers],
+					shapeSVGElement: svgCode,
+					shapeSVGData: SVGData,
 				});
 
 				onRequestClose();
 			}
 
-			if (type === 'bg-shape' && !bgLayersStatus) {
+			if (type === 'bg-shape') {
 				const cleanedContent = DOMPurify.sanitize(svgCode);
 				const svg = document
 					.createRange()
@@ -334,13 +359,27 @@ const LibraryContainer = props => {
 
 				const resEl = injectImgSVG(svg, resData);
 
-				updateBlockAttributes(clientId, {
-					'background-svg-SVGCurrentElement': '',
-					'background-svg-SVGElement': resEl.outerHTML,
-					'background-svg-SVGMediaID': null,
-					'background-svg-SVGMediaURL': null,
-					'background-svg-SVGData': resData,
-				});
+				if (!bgLayersStatus) {
+					updateBlockAttributes(clientId, {
+						'background-svg-SVGElement': resEl.outerHTML,
+						'background-svg-SVGMediaID': null,
+						'background-svg-SVGMediaURL': null,
+						'background-svg-SVGData': resData,
+					});
+				} else {
+					const newBgLayers = cloneDeep(bgLayers);
+
+					newBgLayers[layerId]['background-svg-SVGElement'] =
+						resEl.outerHTML;
+					newBgLayers[layerId]['background-svg-SVGMediaID'] = '';
+					newBgLayers[layerId]['background-svg-SVGMediaURL'] = '';
+					newBgLayers[layerId]['background-svg-SVGData'] = resData;
+
+					updateBlockAttributes(clientId, {
+						'background-layers': [...newBgLayers],
+					});
+				}
+
 				onRequestClose();
 			}
 
@@ -362,9 +401,18 @@ const LibraryContainer = props => {
 				const resEl = injectImgSVG(svg, resData);
 
 				updateBlockAttributes(clientId, {
-					SVGCurrentElement: '',
 					SVGElement: injectImgSVG(resEl, SVGData).outerHTML,
 					SVGData,
+				});
+
+				onRequestClose();
+			}
+
+			if (type === 'button-icon') {
+				const cleanedContent = DOMPurify.sanitize(svgCode);
+
+				updateBlockAttributes(clientId, {
+					'icon-content': cleanedContent,
 				});
 
 				onRequestClose();
@@ -480,6 +528,30 @@ const LibraryContainer = props => {
 							className='hidden'
 							attribute='taxonomies.svg_category'
 							defaultRefinement={['Shape']}
+							showLoadingIndicator
+						/>
+						<Stats translations={resultsCount} />
+						<InfiniteHits hitComponent={svgShapeResults} />
+					</div>
+				</InstantSearch>
+			)}
+
+			{type === 'button-icon' && (
+				<InstantSearch
+					indexName='maxi_posts_svg_icon'
+					searchClient={searchClient}
+				>
+					<div className='maxi-cloud-container__content-svg-line'>
+						<SearchBox
+							submit={__('Find', 'maxi-blocks')}
+							autoFocus
+							searchAsYouType
+							showLoadingIndicator
+						/>
+						<RefinementList
+							className='hidden'
+							attribute='taxonomies.svg_category'
+							defaultRefinement={['Line']}
 							showLoadingIndicator
 						/>
 						<Stats translations={resultsCount} />

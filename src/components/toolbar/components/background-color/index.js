@@ -113,6 +113,10 @@ const BackgroundColor = props => {
 							})
 						}
 						showPalette
+						globalProps={{
+							target: 'background-color-global',
+							type: 'button',
+						}}
 					/>
 				)}
 			</div>

@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { withSelect } from '@wordpress/data';
 import { RichText } from '@wordpress/block-editor';
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -14,7 +15,7 @@ import { MaxiBlockComponent, Toolbar } from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes, getPaletteClasses } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 
 import getStyles from './styles';
 
@@ -53,17 +54,17 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, setAttributes } = this.props;
-		const { uniqueID, parentBlockStyle } = attributes;
+		const { uniqueID } = attributes;
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
-			attributes['icon-position'] === 'left' &&
+			attributes['icon-content'] &&
+				attributes['icon-position'] === 'left' &&
 				'maxi-button-block__button--icon-left',
-			attributes['icon-position'] === 'right' &&
+			attributes['icon-content'] &&
+				attributes['icon-position'] === 'right' &&
 				'maxi-button-block__button--icon-right'
 		);
-
-		const paletteClasses = getPaletteClasses(attributes, parentBlockStyle);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -75,7 +76,6 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
-				paletteClasses={paletteClasses}
 				{...getMaxiBlockBlockAttributes(this.props)}
 				disableBackground
 			>
@@ -90,6 +90,11 @@ class edit extends MaxiBlockComponent {
 						}
 						placeholder={__('Set some text…', 'maxi-blocks')}
 					/>
+					{attributes['icon-content'] && (
+						<RawHTML className='maxi-button-block__icon'>
+							{attributes['icon-content']}
+						</RawHTML>
+					)}
 				</div>
 			</MaxiBlock>,
 		];

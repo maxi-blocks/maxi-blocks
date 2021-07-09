@@ -99,6 +99,7 @@ const Inspector = memo(
 												onChange={obj =>
 													setAttributes(obj)
 												}
+												clientId={clientId}
 											/>
 										</div>
 									)}
@@ -285,6 +286,7 @@ const Inspector = memo(
 																			attributes,
 																			[
 																				'typography',
+																				'link',
 																			]
 																		)}
 																		textLevel={
@@ -308,6 +310,7 @@ const Inspector = memo(
 																		blockStyle={
 																			blockStyle
 																		}
+																		allowLink
 																	/>
 																),
 															},

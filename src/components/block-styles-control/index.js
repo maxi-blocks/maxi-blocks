@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SelectControl from '../select-control';
+import { getBlockStyle } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -14,10 +15,16 @@ import SelectControl from '../select-control';
 import classnames from 'classnames';
 
 /**
+ * Styles and icons
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const BlockStylesControl = props => {
-	const { blockStyle, onChange, isFirstOnHierarchy, className } = props;
+	const { blockStyle, onChange, isFirstOnHierarchy, className, clientId } =
+		props;
 
 	const classes = classnames('maxi-block-style-control', className);
 
@@ -31,21 +38,40 @@ const BlockStylesControl = props => {
 	};
 
 	return (
-		<SelectControl
-			label={__('Block Style', 'maxi-blocks')}
-			className={classes}
-			value={blockStyle}
-			options={getSelectorOptions()}
-			onChange={blockStyle => {
-				const dependsOnParent = blockStyle.includes('parent');
-				const parentBlockStyle = blockStyle.replace('maxi-', '');
+		<>
+			{isFirstOnHierarchy ? (
+				<SelectControl
+					label={__('Block Style', 'maxi-blocks')}
+					className={classes}
+					value={blockStyle}
+					options={getSelectorOptions()}
+					onChange={blockStyle => {
+						const dependsOnParent = blockStyle.includes('parent');
+						const parentBlockStyle = blockStyle.replace(
+							'maxi-',
+							''
+						);
 
-				onChange({
-					blockStyle,
-					...(!dependsOnParent && { parentBlockStyle }),
-				});
-			}}
-		/>
+						onChange({
+							blockStyle,
+							...(!dependsOnParent && { parentBlockStyle }),
+						});
+					}}
+				/>
+			) : (
+				<div className='maxi-block-style-preview'>
+					{__('Block Style: ', 'maxi-blocks')}
+					<span
+						className={`maxi-block-style-preview__${getBlockStyle(
+							clientId
+						)}`}
+					>
+						{__('Parent', 'maxi-blocks')} |{' '}
+						{getBlockStyle(clientId)}
+					</span>
+				</div>
+			)}
+		</>
 	);
 };
 

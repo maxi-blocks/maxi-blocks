@@ -81,6 +81,7 @@ const Inspector = props => {
 												isFirstOnHierarchy
 											}
 											onChange={obj => setAttributes(obj)}
+											clientId={clientId}
 										/>
 									</div>
 								)}
@@ -211,6 +212,7 @@ const Inspector = props => {
 															lineOrientation
 														}
 														breakpoint={deviceType}
+														clientId={clientId}
 													/>
 												</>
 											),

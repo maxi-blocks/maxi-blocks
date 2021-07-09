@@ -352,14 +352,19 @@ const getSVGWrapperBackgroundObject = SVGOptions => {
 	return response;
 };
 
-const getSVGBackgroundObject = SVGOptions => {
+const getSVGBackgroundObject = ({ blockStyle, ...props }) => {
 	const response = {
 		label: 'SVG Background',
 		general: {},
 	};
 
-	if (SVGOptions['background-svg-size'])
-		response.general.height = `${SVGOptions['background-svg-size']}${SVGOptions['background-svg-size--unit']}`;
+	if (props['background-svg-size'])
+		response.general.height = `${props['background-svg-size']}${props['background-svg-size--unit']}`;
+
+	const bgSvgStatus = props['background-palette-svg-color-status'];
+
+	if (bgSvgStatus)
+		response.general.fill = `var(--maxi-${blockStyle}-color-${props['background-palette-svg-color']})`;
 
 	return response;
 };
@@ -431,11 +436,12 @@ const setBackgroundLayers = ({
 							),
 						},
 					},
-					[`${layerTarget} svg`]: {
+					[`${layerTarget} svg *`]: {
 						backgroundSVG: {
-							...getSVGBackgroundObject(
-								getGroupAttributes(layer, 'backgroundSVG')
-							),
+							...getSVGBackgroundObject({
+								...getGroupAttributes(layer, 'backgroundSVG'),
+								blockStyle,
+							}),
 						},
 					},
 				});
@@ -599,7 +605,7 @@ const getBackgroundStyles = ({
 			response[
 				`${target}${
 					isHover ? ':hover' : ''
-				} > .maxi-background-displayer .maxi-background-displayer__svg svg`
+				} > .maxi-background-displayer .maxi-background-displayer__svg svg *`
 			] = {
 				SVGBackground: {
 					...getSVGBackgroundObject({
@@ -608,8 +614,7 @@ const getBackgroundStyles = ({
 							groupAttrNames.backgroundSVG,
 							isHover
 						),
-						isHover,
-						prefix,
+						blockStyle,
 					}),
 				},
 			};

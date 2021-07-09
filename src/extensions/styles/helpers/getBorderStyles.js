@@ -84,12 +84,14 @@ const getBorderStyles = ({
 					const unitKey = keyWords.filter(key =>
 						newLabel.includes(key)
 					)[0];
-					const unit = getLastBreakpointAttribute(
-						`${prefix}${newLabel.replace(unitKey, 'unit')}`,
-						breakpoint,
-						obj,
-						isHover
-					);
+
+					const unit =
+						getLastBreakpointAttribute(
+							`${prefix}${newLabel.replace(unitKey, 'unit')}`,
+							breakpoint,
+							obj,
+							isHover
+						) || 'px';
 
 					response[breakpoint][newLabel] = `${value}${unit}`;
 				}

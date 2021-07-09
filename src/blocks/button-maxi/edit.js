@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { withSelect } from '@wordpress/data';
 import { RichText } from '@wordpress/block-editor';
+import { RawHTML } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -57,9 +58,11 @@ class edit extends MaxiBlockComponent {
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
-			attributes['icon-position'] === 'left' &&
+			attributes['icon-content'] &&
+				attributes['icon-position'] === 'left' &&
 				'maxi-button-block__button--icon-left',
-			attributes['icon-position'] === 'right' &&
+			attributes['icon-content'] &&
+				attributes['icon-position'] === 'right' &&
 				'maxi-button-block__button--icon-right'
 		);
 
@@ -87,6 +90,11 @@ class edit extends MaxiBlockComponent {
 						}
 						placeholder={__('Set some text…', 'maxi-blocks')}
 					/>
+					{attributes['icon-content'] && (
+						<RawHTML className='maxi-button-block__icon'>
+							{attributes['icon-content']}
+						</RawHTML>
+					)}
 				</div>
 			</MaxiBlock>,
 		];

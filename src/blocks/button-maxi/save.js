@@ -36,9 +36,11 @@ const save = props => {
 
 	const buttonClasses = classnames(
 		'maxi-button-block__button',
-		attributes['icon-position'] === 'left' &&
+		attributes['icon-content'] &&
+			attributes['icon-position'] === 'left' &&
 			'maxi-button-block__button--icon-left',
-		attributes['icon-position'] === 'right' &&
+		attributes['icon-content'] &&
+			attributes['icon-position'] === 'right' &&
 			'maxi-button-block__button--icon-right'
 	);
 

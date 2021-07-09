@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { RawHTML } from '@wordpress/element';
+
+/**
  * Internal dependencies
  */
 import { Button } from '../../components';
@@ -31,9 +36,11 @@ const save = props => {
 
 	const buttonClasses = classnames(
 		'maxi-button-block__button',
-		attributes['icon-position'] === 'left' &&
+		attributes['icon-content'] &&
+			attributes['icon-position'] === 'left' &&
 			'maxi-button-block__button--icon-left',
-		attributes['icon-position'] === 'right' &&
+		attributes['icon-content'] &&
+			attributes['icon-position'] === 'right' &&
 			'maxi-button-block__button--icon-right'
 	);
 
@@ -50,6 +57,11 @@ const save = props => {
 				<span className='maxi-button-block__content'>
 					{buttonContent}
 				</span>
+				{attributes['icon-content'] && (
+					<RawHTML className='maxi-button-block__icon'>
+						{attributes['icon-content']}
+					</RawHTML>
+				)}
 			</Button>
 		</MaxiBlock>
 	);

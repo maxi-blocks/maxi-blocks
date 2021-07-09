@@ -7,6 +7,7 @@ import {
 	getColorBackgroundObject,
 	getDisplayStyles,
 	getGradientBackgroundObject,
+	getIconStyles,
 	getMarginPaddingStyles,
 	getPositionStyles,
 	getSizeStyles,
@@ -159,6 +160,55 @@ const getHoverContentObject = props => {
 	return response;
 };
 
+const getIconObject = (props, target) => {
+	const response = {
+		icon: getIconStyles(
+			{
+				...getGroupAttributes(props, 'icon'),
+			},
+			target,
+			props.parentBlockStyle
+		),
+		background: target === 'icon' && {
+			...getColorBackgroundObject({
+				...getGroupAttributes(props, 'iconBackgroundColor'),
+				prefix: 'icon-',
+				blockStyle: props.parentBlockStyle,
+			}),
+		},
+		gradient: target === 'icon' && {
+			...getGradientBackgroundObject({
+				...getGroupAttributes(props, 'iconGradient'),
+				prefix: 'icon-',
+			}),
+		},
+		padding:
+			target === 'icon' &&
+			props['icon-custom-padding'] &&
+			getMarginPaddingStyles(
+				{
+					...getGroupAttributes(props, 'iconPadding'),
+				},
+				'icon-'
+			),
+		border:
+			target === 'icon' &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(props, [
+						'iconBorder',
+						'iconBorderWidth',
+						'iconBorderRadius',
+					]),
+				},
+				prefix: 'icon-',
+				parentBlockStyle: props.parentBlockStyle,
+			}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -166,6 +216,8 @@ const getStyles = props => {
 		[uniqueID]: {
 			'': getWrapperObject(props),
 			' .maxi-button-block__button': getNormalObject(props),
+			' .maxi-button-block__icon': getIconObject(props, 'icon'),
+			' .maxi-button-block__icon svg > *': getIconObject(props, 'svg'),
 			' .maxi-button-block__content': getContentObject(props),
 			' .maxi-button-block__button:hover': getHoverObject(props),
 			' .maxi-button-block__button:hover .maxi-button-block__content':

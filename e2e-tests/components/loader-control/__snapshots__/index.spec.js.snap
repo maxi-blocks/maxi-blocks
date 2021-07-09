@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BackgroundControl Check Background Layers 1`] = `
+exports[`LoaderControl Check loader control 1`] = `
 Array [
   Object {
     "background-color": "",
@@ -56,7 +56,7 @@ Array [
     "background-palette-svg-color": 5,
     "background-palette-svg-color-status": true,
     "background-svg-SVGData": Object {
-      "group-maxi-12__302": Object {
+      "group-maxi-12__286": Object {
         "color": "",
         "imageID": "",
         "imageURL": "",

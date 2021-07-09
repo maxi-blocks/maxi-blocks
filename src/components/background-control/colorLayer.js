@@ -19,8 +19,7 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const ColorLayer = props => {
-	const { onChange, disableClipPath, isHover, prefix, clientId, type } =
-		props;
+	const { onChange, disableClipPath, isHover, prefix, clientId } = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
 

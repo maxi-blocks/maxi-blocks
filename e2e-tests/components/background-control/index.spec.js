@@ -7,6 +7,7 @@ import {
 	pressKeyTimes,
 	setBrowserViewport,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Interactive dependencies
  */

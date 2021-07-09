@@ -136,6 +136,7 @@ class edit extends MaxiBlockComponent {
 							setAttributes({
 								isUrl: true,
 								mediaURL: url,
+								mediaID: '',
 							})
 						}
 					/>
@@ -256,9 +257,9 @@ class edit extends MaxiBlockComponent {
 											) : (
 												<img
 													className={
-														mediaID
-															? `maxi-image-block__image wp-image-${mediaID}`
-															: 'maxi-image-block__image wp-image-external'
+														isUrl
+															? 'maxi-image-block__image wp-image-external'
+															: `maxi-image-block__image wp-image-${mediaID}`
 													}
 													src={mediaURL}
 													width={mediaWidth}

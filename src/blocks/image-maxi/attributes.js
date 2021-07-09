@@ -56,9 +56,6 @@ const attributes = {
 		type: 'boolean',
 		default: false,
 	},
-	externalURL: {
-		type: 'string',
-	},
 	mediaID: {
 		type: 'number',
 	},

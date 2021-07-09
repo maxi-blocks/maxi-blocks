@@ -75,6 +75,7 @@ const Inspector = props => {
 		altSelector,
 		clipPath,
 		imageRatio,
+		isUrl,
 	} = attributes;
 	const { wpAlt, titleAlt } = altOptions || {};
 
@@ -229,61 +230,69 @@ const Inspector = props => {
 											),
 											content: (
 												<>
-													<SelectControl
-														label={__(
-															'Image Size',
-															'maxi-blocks'
-														)}
-														value={
-															imageSize ||
-															imageSize ===
-																'custom'
-																? imageSize
-																: 'full'
-														} // is still necessary?
-														options={getSizeOptions()}
-														onChange={imageSize => {
-															const {
-																mediaURL,
-																mediaWidth,
-																mediaHeight,
-															} =
-																getSizeResponse(
-																	imageSize
-																);
-															setAttributes({
-																imageSize,
-																mediaURL,
-																mediaWidth,
-																mediaHeight,
-															});
-														}}
-													/>
-													{imageSize === 'custom' && (
-														<ImageCropControl
-															mediaID={mediaID}
-															cropOptions={
-																cropOptions
-															}
-															onChange={cropOptions => {
+													{!isUrl && (
+														<SelectControl
+															label={__(
+																'Image Size',
+																'maxi-blocks'
+															)}
+															value={
+																imageSize ||
+																imageSize ===
+																	'custom'
+																	? imageSize
+																	: 'full'
+															} // is still necessary?
+															options={getSizeOptions()}
+															onChange={imageSize => {
+																const {
+																	mediaURL,
+																	mediaWidth,
+																	mediaHeight,
+																} =
+																	getSizeResponse(
+																		imageSize
+																	);
 																setAttributes({
-																	cropOptions,
-																	mediaURL:
-																		cropOptions
-																			.image
-																			.source_url,
-																	mediaHeight:
-																		cropOptions
-																			.image
-																			.height,
-																	mediaWidth:
-																		cropOptions
-																			.image
-																			.width,
+																	imageSize,
+																	mediaURL,
+																	mediaWidth,
+																	mediaHeight,
 																});
 															}}
 														/>
 													)}
+													{!isUrl &&
+														imageSize ===
+															'custom' && (
+															<ImageCropControl
+																mediaID={
+																	mediaID
+																}
+																cropOptions={
+																	cropOptions
+																}
+																onChange={cropOptions => {
+																	setAttributes(
+																		{
+																			cropOptions,
+																			mediaURL:
+																				cropOptions
+																					.image
+																					.source_url,
+																			mediaHeight:
+																				cropOptions
+																					.image
+																					.height,
+																			mediaWidth:
+																				cropOptions
+																					.image
+																					.width,
+																		}
+																	);
+																}}
+															/>
+														)}
 													<RangeControl
 														label={__(
 															'Width',

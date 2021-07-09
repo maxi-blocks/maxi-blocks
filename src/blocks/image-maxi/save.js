@@ -31,7 +31,7 @@ const save = props => {
 		fullWidth,
 		'hover-type': hoverType,
 		'hover-preview': hoverPreview,
-		isUrl,
+		isImageUrl,
 	} = attributes;
 
 	const name = 'maxi-blocks/image-maxi';
@@ -76,7 +76,7 @@ const save = props => {
 				) : (
 					<img
 						className={
-							isUrl
+							isImageUrl
 								? 'maxi-image-block__image wp-image-external'
 								: `maxi-image-block__image wp-image-${mediaID}`
 						}

@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
 import { MediaUpload } from '@wordpress/block-editor';
+import { isURL } from '@wordpress/url';
 
 /**
  * Internal dependencies
@@ -91,7 +92,7 @@ class edit extends MaxiBlockComponent {
 			imageRatio,
 			'hover-type': hoverType,
 			'hover-preview': hoverPreview,
-			isUrl,
+			isImageUrl,
 		} = attributes;
 
 		const classes = classnames(
@@ -131,14 +132,15 @@ class edit extends MaxiBlockComponent {
 						icon={toolbarReplaceImage}
 					/>
 					<ImageURL
-						url={isUrl ? mediaURL : null}
-						onChange={url =>
-							setAttributes({
-								isUrl: true,
-								mediaURL: url,
-								mediaID: '',
-							})
-						}
+						url={isImageUrl ? mediaURL : null}
+						onChange={url => {
+							if (isURL(url))
+								setAttributes({
+									isImageUrl: true,
+									mediaURL: url,
+									mediaID: '',
+								});
+						}}
 					/>
 				</>
 			);
@@ -174,7 +176,7 @@ class edit extends MaxiBlockComponent {
 							mediaURL: media.url,
 							mediaWidth: media.width,
 							mediaHeight: media.height,
-							isUrl: false,
+							isImageUrl: false,
 						});
 						if (!isEmpty(attributes.SVGData)) {
 							const cleanedContent = DOMPurify.sanitize(
@@ -257,7 +259,7 @@ class edit extends MaxiBlockComponent {
 											) : (
 												<img
 													className={
-														isUrl
+														isImageUrl
 															? 'maxi-image-block__image wp-image-external'
 															: `maxi-image-block__image wp-image-${mediaID}`
 													}

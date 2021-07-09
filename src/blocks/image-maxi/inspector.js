@@ -75,7 +75,7 @@ const Inspector = props => {
 		altSelector,
 		clipPath,
 		imageRatio,
-		isUrl,
+		isImageUrl,
 	} = attributes;
 	const { wpAlt, titleAlt } = altOptions || {};
 
@@ -230,7 +230,7 @@ const Inspector = props => {
 											),
 											content: (
 												<>
-													{!isUrl && (
+													{!isImageUrl && (
 														<SelectControl
 															label={__(
 																'Image Size',
@@ -262,7 +262,7 @@ const Inspector = props => {
 															}}
 														/>
 													)}
-													{!isUrl &&
+													{!isImageUrl &&
 														imageSize ===
 															'custom' && (
 															<ImageCropControl

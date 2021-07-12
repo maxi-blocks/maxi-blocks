@@ -8,9 +8,8 @@ import { link, keyboardReturn, arrowLeft } from '@wordpress/icons';
 import { URLInput } from '@wordpress/block-editor';
 
 class ImageURL extends Component {
-	constructor() {
-		// eslint-disable-next-line prefer-rest-params
-		super(...arguments);
+	constructor(...args) {
+		super(...args);
 		this.toggle = this.toggle.bind(this);
 		this.submitLink = this.submitLink.bind(this);
 		this.state = {
@@ -30,6 +29,7 @@ class ImageURL extends Component {
 	render() {
 		const { url, onChange } = this.props;
 		const { expanded } = this.state;
+
 		const buttonLabel = url
 			? __('Change image URL', 'maxi-blocks')
 			: __('Insert image from URL', 'maxi-blocks');
@@ -59,7 +59,7 @@ class ImageURL extends Component {
 								value={url || ''}
 								onChange={onChange}
 								placeholder={__(
-									'Paste a direct URL to the Image',
+									'Paste or input a direct URL to the Image',
 									'maxi-blocks'
 								)}
 								disableSuggestions

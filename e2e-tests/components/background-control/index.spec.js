@@ -256,13 +256,11 @@ describe('BackgroundControl', () => {
 			'.maxi-background-layers_options .maxi-background-layer span',
 			select => select[0].click()
 		);
-		await accordionPanel.$eval(
-			'.maxi-background-layer__content .maxi-color-control__color input',
-			colorInput => colorInput.focus()
+		await accordionPanel.$$eval(
+			'.maxi-color-palette-control .maxi-sc-color-palette div',
+			select => select[3].click()
 		);
-
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('555');
+		await page.waitForTimeout(1000);
 
 		const expectAttribute = await getBlockAttributes();
 		const layers = expectAttribute['background-active-media'];

@@ -5,6 +5,8 @@ Array [
   Object {
     "background-color": "",
     "background-color-clip-path": "",
+    "background-palette-color": 1,
+    "background-palette-color-status": true,
     "id": 0,
     "type": "color",
   },
@@ -56,7 +58,7 @@ Array [
     "background-palette-svg-color": 5,
     "background-palette-svg-color-status": true,
     "background-svg-SVGData": Object {
-      "group-maxi-12__302": Object {
+      "group-maxi-12__310": Object {
         "color": "",
         "imageID": "",
         "imageURL": "",

@@ -6,11 +6,11 @@ import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import { getBlockAttributes } from '../../utils';
-const receiveMaxiStyle = await page.evaluate(() => {
+/* const receiveMaxiStyle = await page.evaluate(() => {
 	return wp.data
 		.select('maxiBlocks/style-cards')
 		.receiveMaxiSelectedStyleCard();
-});
+}); */
 describe('StyleCards', () => {
 	beforeEach(async () => {
 		await createNewPost();
@@ -40,7 +40,9 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
-		expect(className).toStrictEqual(additionalClass);
+		expect(className).toStrictEqual();
+		// const expectPresets = receiveMaxiStyle;
+		// expect(expectPresets).toMatchSnapshot();
 	});
 	/// //////////////////////////////////////////////////////////////////////////
 	it('Check Button', async () => {

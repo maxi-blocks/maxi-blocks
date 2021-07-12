@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`StyleCards Check Divider 1`] = `Promise {}`;
-
-exports[`StyleCards Check Hover 1`] = `Promise {}`;
-
-exports[`StyleCards Check Quick Pick Colour Presets 1`] = `Promise {}`;
-
-exports[`StyleCards Check SVG Icon 1`] = `Promise {}`;

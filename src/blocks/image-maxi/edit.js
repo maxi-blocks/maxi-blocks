@@ -286,32 +286,21 @@ class edit extends MaxiBlockComponent {
 									<ImageURL
 										url={externalUrl}
 										onChange={url => {
+											setAttributes({
+												externalUrl: url,
+											});
+										}}
+										onSubmit={url => {
 											if (isURL(url)) {
+												// TODO: fetch url and check for the code and type
 												setAttributes({
 													isImageUrl: true,
 													externalUrl: url,
+													mediaURL: url,
 												});
 												this.setState({
 													isExternalClass: true,
 												});
-											} else {
-												setAttributes({
-													externalUrl: url,
-												});
-												console.warn(
-													'Input a valid url please'
-												);
-											}
-										}}
-										onSubmit={url => {
-											if (isURL(url))
-												setAttributes({
-													mediaURL: url,
-												});
-											else {
-												console.warn(
-													'Input a valid url please'
-												);
 											}
 										}}
 									/>
@@ -326,22 +315,16 @@ class edit extends MaxiBlockComponent {
 						setAttributes({
 							externalUrl: url,
 						});
-						if (!isURL(url)) {
-							// TODO: add a warning for creators
-							console.warn('Input a valid url please');
-						}
 					}}
 					onSubmit={url => {
 						if (isURL(url)) {
+							// TODO: fetch url and check for the code and type
 							setAttributes({
 								isImageUrl: true,
 								externalUrl: url,
 								mediaURL: url,
 							});
 							this.setState({ isExternalClass: true });
-						} else {
-							// TODO: add a warning for creators
-							console.warn('Input a valid url please');
 						}
 					}}
 				/>

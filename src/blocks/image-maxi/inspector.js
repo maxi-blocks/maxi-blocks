@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
 import { RangeControl, TextControl } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -164,6 +165,10 @@ const Inspector = props => {
 		return { mediaURL: null, mediaWidth: null, mediaHeight: null };
 	};
 
+	const [showSize, setShowSize] = useState(isImageUrl);
+
+	// console.log(`showSize ${showSize}`);
+
 	return (
 		<InspectorControls>
 			{deviceType !== 'general' && (
@@ -230,7 +235,7 @@ const Inspector = props => {
 											),
 											content: (
 												<>
-													{!isImageUrl && (
+													{showSize && (
 														<SelectControl
 															label={__(
 																'Image Size',
@@ -262,7 +267,7 @@ const Inspector = props => {
 															}}
 														/>
 													)}
-													{!isImageUrl &&
+													{showSize &&
 														imageSize ===
 															'custom' && (
 															<ImageCropControl

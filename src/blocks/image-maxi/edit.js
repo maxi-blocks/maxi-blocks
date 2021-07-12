@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
 import { MediaUpload } from '@wordpress/block-editor';
+import { isURL } from '@wordpress/url';
 
 /**
  * Internal dependencies
@@ -117,8 +118,11 @@ class edit extends MaxiBlockComponent {
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
 
-		const urlRegex =
-			/^((http(s?)?):\/\/)?([wW]{3}\.)?[a-zA-Z0-9\-.]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/g;
+		this.state = { isExternalClass: isImageUrl };
+
+		const { isExternalClass } = this.state;
+
+		console.log(`isExternalClass: ${isExternalClass}`);
 
 		return [
 			<Inspector
@@ -150,8 +154,9 @@ class edit extends MaxiBlockComponent {
 							mediaURL: media.url,
 							mediaWidth: media.width,
 							mediaHeight: media.height,
-							isImageUrl,
+							isImageUrl: false,
 						});
+						this.setState({ isExternalClass: false });
 						if (!isEmpty(attributes.SVGData)) {
 							const cleanedContent = DOMPurify.sanitize(
 								attributes.SVGElement
@@ -242,7 +247,7 @@ class edit extends MaxiBlockComponent {
 											) : (
 												<img
 													className={
-														isImageUrl
+														isExternalClass
 															? 'maxi-image-block__image wp-image-external'
 															: `maxi-image-block__image wp-image-${mediaID}`
 													}
@@ -282,18 +287,36 @@ class edit extends MaxiBlockComponent {
 										icon={toolbarReplaceImage}
 									/>
 									<ImageURL
-										url={isImageUrl ? externalUrl : ''}
-										onChange={url =>
-											setAttributes({
-												isImageUrl: true,
-												externalUrl: url,
-											})
-										}
-										onSubmit={url =>
-											setAttributes({
-												mediaURL: url,
-											})
-										}
+										url={externalUrl}
+										onChange={url => {
+											if (isURL(url)) {
+												setAttributes({
+													isImageUrl: true,
+													externalUrl: url,
+												});
+												this.setState({
+													isExternalClass: true,
+												});
+											} else {
+												setAttributes({
+													externalUrl: url,
+												});
+												console.warn(
+													'Input a valid url please'
+												);
+											}
+										}}
+										onSubmit={url => {
+											if (isURL(url))
+												setAttributes({
+													mediaURL: url,
+												});
+											else {
+												console.warn(
+													'Input a valid url please'
+												);
+											}
+										}}
 									/>
 								</div>
 							)}
@@ -301,19 +324,26 @@ class edit extends MaxiBlockComponent {
 					)}
 				/>
 				<ImageURL
-					url={isImageUrl ? externalUrl : ''}
+					url={externalUrl}
 					onChange={url => {
-						if (!isNil(url.match(urlRegex)))
+						setAttributes({
+							externalUrl: url,
+						});
+						if (!isURL(url)) {
+							// TODO: add a warning for creators
+							console.warn('Input a valid url please');
+						}
+					}}
+					onSubmit={url => {
+						if (isURL(url)) {
 							setAttributes({
 								isImageUrl: true,
 								externalUrl: url,
 								mediaURL: url,
 							});
-						else {
-							setAttributes({
-								isImageUrl: true,
-								externalUrl: url,
-							});
+							this.setState({ isExternalClass: true });
+						} else {
+							// TODO: add a warning for creators
 							console.warn('Input a valid url please');
 						}
 					}}

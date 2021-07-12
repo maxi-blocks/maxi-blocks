@@ -27,7 +27,7 @@ class ImageURL extends Component {
 	}
 
 	render() {
-		const { url, onChange } = this.props;
+		const { url, onChange, onSubmit } = this.props;
 		const { expanded } = this.state;
 
 		const buttonLabel = url
@@ -46,7 +46,11 @@ class ImageURL extends Component {
 				{expanded && (
 					<form
 						className='block-editor-url-input__button-modal'
-						onSubmit={this.submitLink}
+						value={url || ''}
+						onSubmit={event => {
+							this.submitLink(event);
+							onSubmit(url);
+						}}
 					>
 						<div className='block-editor-url-input__button-modal-line'>
 							<Button

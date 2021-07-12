@@ -4,8 +4,9 @@
 import { __ } from '@wordpress/i18n';
 import { Component } from '@wordpress/element';
 import { Button } from '@wordpress/components';
-import { link, keyboardReturn, arrowLeft } from '@wordpress/icons';
+import { link, check, arrowLeft } from '@wordpress/icons';
 import { URLInput } from '@wordpress/block-editor';
+import { isURL } from '@wordpress/url';
 
 class ImageURL extends Component {
 	constructor(...args) {
@@ -14,6 +15,7 @@ class ImageURL extends Component {
 		this.submitLink = this.submitLink.bind(this);
 		this.state = {
 			expanded: false,
+			hideWarning: true,
 		};
 	}
 
@@ -28,7 +30,7 @@ class ImageURL extends Component {
 
 	render() {
 		const { url, onChange, onSubmit } = this.props;
-		const { expanded } = this.state;
+		const { expanded, hideWarning } = this.state;
 
 		const buttonLabel = url
 			? __('Change image URL', 'maxi-blocks')
@@ -48,8 +50,14 @@ class ImageURL extends Component {
 						className='block-editor-url-input__button-modal'
 						value={url || ''}
 						onSubmit={event => {
-							this.submitLink(event);
-							onSubmit(url);
+							if (isURL(url)) {
+								this.submitLink(event);
+								this.setState({ hideWarning: true });
+								onSubmit(url);
+							} else {
+								event.preventDefault();
+								this.setState({ hideWarning: false });
+							}
 						}}
 					>
 						<div className='block-editor-url-input__button-modal-line'>
@@ -70,13 +78,19 @@ class ImageURL extends Component {
 								disableSuggestions
 							/>
 							<Button
-								icon={keyboardReturn}
+								icon={check}
 								label={__('Submit')}
 								type='submit'
 							/>
 						</div>
 					</form>
 				)}
+				<p
+					className='block-editor-url-input__warning'
+					hidden={hideWarning}
+				>
+					{__('Please input a valid URL', 'maxi-blocks')}
+				</p>
 			</div>
 		);
 	}

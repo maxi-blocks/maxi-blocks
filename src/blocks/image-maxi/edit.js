@@ -119,10 +119,7 @@ class edit extends MaxiBlockComponent {
 		);
 
 		this.state = { isExternalClass: isImageUrl };
-
 		const { isExternalClass } = this.state;
-
-		console.log(`isExternalClass: ${isExternalClass}`);
 
 		return [
 			<Inspector

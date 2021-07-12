@@ -70,7 +70,10 @@ const FontLevelControl = props => {
 			fontOptResponse = state[value];
 			fontOptResponseHover = state[`${value}Hover`];
 		} else if (!isNil(fontOptions)) {
-			fontOptResponse = { ...fontOptions };
+			fontOptResponse = {
+				...fontOptions,
+				'palette-color-general': state === 'p' ? 3 : 5,
+			};
 			fontOptResponseHover = getDefaultAttribute('typographyHover');
 		}
 

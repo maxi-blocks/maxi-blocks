@@ -31,8 +31,10 @@ describe('FontLevelControl', () => {
 
 			const attributes = await getBlockAttributes();
 			const text = attributes.textLevel;
+			const paletteColor = attributes['palette-color-general'];
 
 			expect(text).toStrictEqual(fontLevel[i]);
+			expect(paletteColor).toStrictEqual(5);
 		}
 	});
 });

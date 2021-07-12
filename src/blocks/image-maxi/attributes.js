@@ -21,9 +21,6 @@ const attributes = {
 		type: 'string',
 		default: 'original',
 	},
-	SVGCurrentElement: {
-		type: 'number',
-	},
 	SVGElement: {
 		type: 'string',
 	},

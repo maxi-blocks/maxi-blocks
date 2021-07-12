@@ -89,17 +89,21 @@ const getHoverEffectDetailsBoxObject = props => {
 			},
 			'hover-'
 		),
-		...(!props['hover-background-palette-color-status'] && {
+		// ...(!props['hover-background-palette-color-status'] && {
+		...{
 			background: {
-				...getHoverEffectsBackgroundStyles({
-					...getGroupAttributes(props, [
-						'hoverBackground',
-						'hoverBackgroundColor',
-						'hoverBackgroundGradient',
-					]),
-				}),
+				...getHoverEffectsBackgroundStyles(
+					{
+						...getGroupAttributes(props, [
+							'hoverBackground',
+							'hoverBackgroundColor',
+							'hoverBackgroundGradient',
+						]),
+					},
+					props.parentBlockStyle
+				),
 			},
-		}),
+		},
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
@@ -178,8 +182,7 @@ const getImageWrapperObject = props => {
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
-			dropShadow:
-				!isEmpty(props.clipPath) || !isNil(props.SVGCurrentElement),
+			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
 			parentBlockStyle: props.parentBlockStyle,
 		}),
 		...(props['hover-extension'] && {
@@ -255,6 +258,7 @@ const getStyles = props => {
 					'borderRadiusHover',
 				]),
 				isHover: true,
+				blockStyle: props.parentBlockStyle,
 			}),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
@@ -265,6 +269,7 @@ const getStyles = props => {
 					'backgroundGradient',
 					'backgroundSVG',
 				]),
+				blockStyle: props.parentBlockStyle,
 			}),
 		},
 	};

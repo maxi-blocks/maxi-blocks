@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { isNil, isEmpty } from 'lodash';
+import { isNil, isEmpty, isNumber } from 'lodash';
 
 export const getShapeDividerStyles = (obj, location) => {
 	const response = {
@@ -20,7 +20,7 @@ export const getShapeDividerStyles = (obj, location) => {
 	return response;
 };
 
-export const getShapeDividerSVGStyles = (obj, location) => {
+export const getShapeDividerSVGStyles = (obj, location, parentBlockStyle) => {
 	const response = {
 		label: 'Shape Divider SVG',
 		general: {},
@@ -31,6 +31,14 @@ export const getShapeDividerSVGStyles = (obj, location) => {
 		!isEmpty(obj[`shape-divider-${location}-color`])
 	)
 		response.general.fill = obj[`shape-divider-${location}-color`];
+	else if (
+		obj[`shape-divider-palette-${location}-color-status`] &&
+		isNumber(obj[`shape-divider-palette-${location}-color`])
+	) {
+		response.general.fill = `var(--maxi-${parentBlockStyle}-color-${
+			obj[`shape-divider-palette-${location}-color`]
+		})`;
+	}
 
 	return response;
 };

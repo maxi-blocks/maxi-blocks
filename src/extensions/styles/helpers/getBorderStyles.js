@@ -62,16 +62,15 @@ const getBorderStyles = ({
 						const paletteStatus = getLastBreakpointAttribute(
 							`${prefix}border-palette-color-status`,
 							breakpoint,
-							obj
+							obj,
+							isHover
 						);
 						const paletteColor =
-							obj[`${prefix}border-palette-color-${breakpoint}`];
-
-						if (
-							response[breakpoint]['border-color'] ||
-							(breakpoint === 'general' && paletteStatus)
-						)
-							return;
+							obj[
+								`${prefix}border-palette-color-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`
+							];
 
 						if (paletteStatus && paletteColor)
 							response[breakpoint][
@@ -85,12 +84,14 @@ const getBorderStyles = ({
 					const unitKey = keyWords.filter(key =>
 						newLabel.includes(key)
 					)[0];
-					const unit = getLastBreakpointAttribute(
-						`${prefix}${newLabel.replace(unitKey, 'unit')}`,
-						breakpoint,
-						obj,
-						isHover
-					);
+
+					const unit =
+						getLastBreakpointAttribute(
+							`${prefix}${newLabel.replace(unitKey, 'unit')}`,
+							breakpoint,
+							obj,
+							isHover
+						) || 'px';
 
 					response[breakpoint][newLabel] = `${value}${unit}`;
 				}

@@ -36,7 +36,8 @@ const getCircleObject = (props, target) => {
 			{
 				...getGroupAttributes(props, 'numberCounter'),
 			},
-			target
+			target,
+			props.parentBlockStyle
 		),
 	};
 

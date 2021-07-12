@@ -52,13 +52,13 @@ const ColorControl = props => {
 	const classes = classnames('maxi-color-control', className);
 
 	const { globalStatus } = useSelect(select => {
-		const globalStatus = select(
-			'maxiBlocks/style-cards'
-		).receiveStyleCardGlobalValue(
-			globalProps?.target,
-			getBlockStyle(clientId),
-			globalProps?.type
-		);
+		const globalStatus = globalProps
+			? select('maxiBlocks/style-cards').receiveStyleCardGlobalValue(
+					globalProps?.target,
+					globalProps ? getBlockStyle(clientId) : null,
+					globalProps?.type
+			  )
+			: false;
 
 		return { globalStatus };
 	});

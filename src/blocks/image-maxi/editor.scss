@@ -65,9 +65,14 @@
 			height: 20px;
 			fill: #fff;
 		}
+		.components-base-control__field {
+			margin-bottom: 0;
+			input {
+				padding: 12px;
+			}
+		}
 	}
 	.maxi-imageupload-button {
-		z-index: 100;
 		svg {
 			max-width: 100%;
 			height: auto;

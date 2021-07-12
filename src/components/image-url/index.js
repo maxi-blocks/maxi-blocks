@@ -62,6 +62,7 @@ class ImageURL extends Component {
 									'Paste or input a direct URL to the Image',
 									'maxi-blocks'
 								)}
+								type='url'
 								disableSuggestions
 							/>
 							<Button

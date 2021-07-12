@@ -117,6 +117,9 @@ class edit extends MaxiBlockComponent {
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
 
+		const urlRegex =
+			/^((http(s?)?):\/\/)?([wW]{3}\.)?[a-zA-Z0-9\-.]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/g;
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -299,13 +302,21 @@ class edit extends MaxiBlockComponent {
 				/>
 				<ImageURL
 					url={isImageUrl ? externalUrl : ''}
-					onChange={url =>
-						setAttributes({
-							isImageUrl: true,
-							externalUrl: url,
-							mediaURL: url,
-						})
-					}
+					onChange={url => {
+						if (!isNil(url.match(urlRegex)))
+							setAttributes({
+								isImageUrl: true,
+								externalUrl: url,
+								mediaURL: url,
+							});
+						else {
+							setAttributes({
+								isImageUrl: true,
+								externalUrl: url,
+							});
+							console.warn('Input a valid url please');
+						}
+					}}
 				/>
 			</MaxiBlock>,
 		];

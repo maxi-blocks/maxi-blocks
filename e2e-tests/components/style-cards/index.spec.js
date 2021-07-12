@@ -6,57 +6,33 @@ import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import { getBlockAttributes } from '../../utils';
-
+const receiveMaxiStyle = await page.evaluate(() => {
+	return wp.data
+		.select('maxiBlocks/style-cards')
+		.receiveMaxiSelectedStyleCard();
+});
 describe('StyleCards', () => {
-	it.only('Check link', async () => {
+	beforeEach(async () => {
 		await createNewPost();
-		debugger;
-		await page.$$eval(
-			'.maxi-accordion-control__item .maxi-accordion-tab div',
-			accordion => accordion[3].click()
-		);
-		const linkAccordion = await page.$('.maxi-blocks-sc__type--link');
-		const linkButtons = await page.$$(
-			'.maxi-blocks-sc__type--link .maxi-fancy-radio-control .maxi-radio-control__option label'
-		);
-
-		// Use Global Link Colour
-		await linkButtons[0].click();
-
-		await linkAccordion.$eval('.maxi-color-control__color input', input =>
-			input.click()
-		);
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('106D3C');
-
-		// Use Global Link Hover Colour
-
-		// Use Global Link Active Colour
-
-		// Use Global Link Visited Colour
-
-		expect(className).toStrictEqual(additionalClass);
-	});
-	it('Check style cards', async () => {
-		await createNewPost();
-
-		// Style Card Editor
 		await page.$eval('.maxi-toolbar-layout button', button =>
 			button.click()
 		);
+
 		await page.$$eval(
 			'.maxi-responsive-selector .action-buttons__button',
 			button => button[1].click()
 		);
-		const styleCard = await page.$('.components-popover__content');
-
-		const styleCardAccordion = await page.$$(
+	});
+	it('Check Quick Pick Colour Presets', async () => {
+		const styleCardAccordions = await page.$$(
 			'.maxi-accordion-control__item .maxi-accordion-tab div'
 		);
+		await styleCardAccordions[0].click();
+		const styleCard = await page.$(
+			'.components-popover__content .maxi-blocks-sc__type--quick-color'
+		);
 
-		// Quick Pick Colour Presets
-		await styleCardAccordion[0].click();
-
+		// ColorControl
 		await styleCard.$eval(
 			'.maxi-color-control .maxi-color-control__color input',
 			input => input.focus()
@@ -64,136 +40,465 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
-		// Button
-		debugger;
-		await styleCardAccordion[1].click();
-
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-font-family-selector span',
-			input => input.click()
+		expect(className).toStrictEqual(additionalClass);
+	});
+	/// //////////////////////////////////////////////////////////////////////////
+	it('Check Button', async () => {
+		const styleCardAccordions = await page.$$(
+			'.maxi-accordion-control__item .maxi-accordion-tab div'
 		);
-		await page.keyboard.type('Montserrat');
-		await page.keyboard.press('Enter');
+		await styleCardAccordions[2].click();
+		const styleCard = await page.$(
+			'.components-popover__content .maxi-blocks-sc__type--button'
+		);
+		const buttons = await styleCard.$$('.maxi-radio-control__option label');
 
-		// size
+		// ColorControl
+		await buttons[0].click();
+		await styleCard.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.focus()
+		);
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('106D3C');
+
+		// Opacity
+		await styleCard.$eval('.maxi-color-control input', input =>
+			input.focus()
+		);
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('50');
+		await buttons[1];
+
+		// screen size L
 		await styleCard.$$eval(
-			'.maxi-blocks-sc__type--button .maxi-base-control__field input',
-			select => select[2].focus()
+			'.maxi-typography-control .maxi-settingstab-control .maxi-tabs-control button',
+			screenSize => screenSize[1].click()
+		);
+		// Size
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__size input',
+			size => size.focus()
 		);
 		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('10');
+		await page.keyboard.type('20');
 
-		// line-height
-		await styleCard.$$eval(
-			'.maxi-blocks-sc__type--button .maxi-base-control__field input',
-			select => select[4].focus()
+		// Line Height
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__height input',
+			size => size.focus()
 		);
 		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('4');
+		await page.keyboard.type('0');
 
-		// letter-spacing
-		await styleCard.$$eval(
-			'.maxi-blocks-sc__type--button .maxi-base-control__field input',
-			select => select[6].focus()
-		);
-		await page.keyboard.type('10');
-
-		// Paragraph
-
-		// Link
-
-		// Headings
-
-		// Hover
-		await styleCardAccordion[5].click();
+		// Letter Spacing
 		await styleCard.$eval(
-			'.maxi-blocks-sc__type--hover .maxi-radio-control__option label',
-			button => button.click()
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__letter-spacing input',
+			size => size.focus()
+		);
+		await page.keyboard.type('5');
+
+		// Selectors
+		// Weight
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__weight select',
+			selector => selector.select('300')
 		);
 
-		await styleCard.$$eval(
+		// Transform
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__transform select',
+			selector => selector.select('capitalize')
+		);
+
+		// Style
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__style select',
+			selector => selector.select('italic')
+		);
+
+		// Decoration
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__decoration select',
+			selector => selector.select('overline')
+		);
+
+		await expect(className).toStrictEqual(additionalClass);
+	});
+	/// ///////////////////////////////////////////////////////////
+	it('Check Paragraph', async () => {
+		const styleCardAccordions = await page.$$(
+			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		);
+		await styleCardAccordions[2].click();
+		const styleCard = await page.$(
+			'.components-popover__content .maxi-blocks-sc__type--p'
+		);
+		const buttons = await styleCard.$$('.maxi-radio-control__option label');
+
+		// ColorControl
+		await buttons[0].click();
+		await styleCard.$eval(
 			'.maxi-color-control .maxi-color-control__color input',
-			input => input[1].focus()
+			input => input.focus()
 		);
 		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('320AC9');
+		await page.keyboard.type('106D3C');
 
+		// Opacity
+		await styleCard.$eval('.maxi-color-control input', input =>
+			input.focus()
+		);
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('50');
+		await buttons[1];
+
+		// screen size L
+		await styleCard.$$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-tabs-control button',
+			screenSize => screenSize[1].click()
+		);
+		// Size
 		await styleCard.$eval(
-			'.maxi-blocks-sc__type--hover .maxi-advanced-number-control input',
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__size input',
+			size => size.focus()
+		);
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('20');
+
+		// Line Height
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__height input',
+			size => size.focus()
+		);
+		await pressKeyTimes('Backspace', '4');
+		await page.keyboard.type('0');
+
+		// Letter Spacing
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__letter-spacing input',
+			size => size.focus()
+		);
+		await page.keyboard.type('5');
+
+		// Selectors
+		// Weight
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__weight select',
+			selector => selector.select('300')
+		);
+
+		// Transform
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__transform select',
+			selector => selector.select('capitalize')
+		);
+
+		// Style
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__style select',
+			selector => selector.select('italic')
+		);
+
+		// Decoration
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__decoration select',
+			selector => selector.select('overline')
+		);
+
+		await expect(className).toStrictEqual(additionalClass);
+	});
+	/// ///////////////////////////////////////////////////////////
+
+	it('Check Link', async () => {
+		const styleCardAccordions = await page.$$(
+			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		);
+		await styleCardAccordions[3].click();
+		const styleCard = await page.$(
+			'.components-popover__content .maxi-blocks-sc__type--link'
+		);
+
+		const buttons = await styleCard.$$('.maxi-radio-control__option label');
+		// Use Global Link Colour
+		// button
+		await buttons[0].click();
+		// ColorControl
+		await styleCard.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
 			input => input.focus()
+		);
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('106D3C');
+
+		// Opacity
+		await styleCard.$eval('.maxi-color-control input', input =>
+			input.focus()
 		);
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		// SVG Icon
-		await styleCardAccordion[6].click();
+		// Use Global Link Hover Colour
+		// button
+		await buttons[1].click();
+		await buttons[2].click();
 
+		// ColorControl
+		await styleCard.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.focus()
+		);
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('106D3C');
+
+		// Opacity
+		await styleCard.$eval('.maxi-color-control input', input =>
+			input.focus()
+		);
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('50');
+
+		// Use Global Link Active Colour
+		// button
+		await buttons[3].click();
+		await buttons[4].click();
+
+		// ColorControl
+		await styleCard.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.focus()
+		);
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('106D3C');
+
+		// Opacity
+		await styleCard.$eval('.maxi-color-control input', input =>
+			input.focus()
+		);
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('50');
+
+		// Use Global Link Visited Colour
+		// button
+		await buttons[4].click();
+		await buttons[5].click();
+
+		// ColorControl
+		await styleCard.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.focus()
+		);
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('106D3C');
+
+		// Opacity
+		await styleCard.$eval('.maxi-color-control input', input =>
+			input.focus()
+		);
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('50');
+
+		await expect(className).toStrictEqual(additionalClass);
+	});
+	/// ///////////////////////////////////////////////////////////
+
+	it('Check Headings', async () => {
+		const styleCardAccordions = await page.$$(
+			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		);
+		await styleCardAccordions[2].click();
+		const styleCard = await page.$(
+			'.components-popover__content .maxi-blocks-sc__type--headings'
+		);
+		const buttons = await styleCard.$$('.maxi-radio-control__option label');
+
+		// ColorControl
+		await buttons[0].click();
+		await styleCard.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.focus()
+		);
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('106D3C');
+
+		// Opacity
+		await styleCard.$eval('.maxi-color-control input', input =>
+			input.focus()
+		);
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('50');
+		await buttons[1];
+
+		// screen size L
+		await styleCard.$$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-tabs-control button',
+			screenSize => screenSize[1].click()
+		);
+		// Size
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__size input',
+			size => size.focus()
+		);
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('20');
+
+		// Line Height
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__height input',
+			size => size.focus()
+		);
+		await pressKeyTimes('Backspace', '4');
+		await page.keyboard.type('0');
+
+		// Letter Spacing
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__letter-spacing input',
+			size => size.focus()
+		);
+		await page.keyboard.type('5');
+
+		// Selectors
+		// Weight
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__weight select',
+			selector => selector.select('300')
+		);
+
+		// Transform
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__transform select',
+			selector => selector.select('capitalize')
+		);
+
+		// Style
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__style select',
+			selector => selector.select('italic')
+		);
+
+		// Decoration
+		await styleCard.$eval(
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__decoration select',
+			selector => selector.select('overline')
+		);
+
+		await expect(className).toStrictEqual(additionalClass);
+	});
+	/// ///////////////////////////////////////////////////////////
+
+	it('Check Hover', async () => {
+		const styleCardAccordions = await page.$$(
+			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		);
+		await styleCardAccordions[5].click();
+		const styleCard = await page.$(
+			'.components-popover__content .maxi-blocks-sc__type--hover'
+		);
+
+		// button
+		await styleCard.$eval('.maxi-radio-control__option label', button =>
+			button.click()
+		);
+
+		// ColorControl
+		await styleCard.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.focus()
+		);
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('106D3C');
+
+		// Opacity
+		await styleCard.$eval('.maxi-color-control input', input =>
+			input.focus()
+		);
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('50');
+		expect(className).toStrictEqual(additionalClass);
+	});
+	/// ///////////////////////////////////////////////////////////
+
+	it('Check SVG Icon', async () => {
+		const styleCardAccordions = await page.$$(
+			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		);
+		await styleCardAccordions[6].click();
+		const styleCard = await page.$(
+			'.components-popover__content .maxi-blocks-sc__type--icon'
+		);
+
+		const buttons = await styleCard.$$('.maxi-radio-control__option label');
 		// Use Global SVG Icon Colour
+		// button
+		await buttons[0].click();
+		// ColorControl
 		await styleCard.$eval(
-			'.maxi-blocks-sc__type--icon .maxi-radio-control__option label',
-			button => button.click()
-		);
-
-		await styleCard.$$eval(
 			'.maxi-color-control .maxi-color-control__color input',
-			input => input[2].focus()
+			input => input.focus()
 		);
 		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('320AC9');
+		await page.keyboard.type('106D3C');
 
-		await styleCard.$eval(
-			'.maxi-blocks-sc__type--icon .maxi-advanced-number-control input',
-			input => input.focus()
+		// Opacity
+		await styleCard.$eval('.maxi-color-control input', input =>
+			input.focus()
 		);
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
-
-		await styleCard.$$eval(
-			'.maxi-blocks-sc__type--icon .maxi-radio-control__option label',
-			button => button[1].click()
-		);
 
 		// Use Global Fill Colour
-		await styleCard.$$eval(
-			'.maxi-blocks-sc__type--icon .maxi-radio-control__option label',
-			button => button[2].click()
-		);
+		// button
+		await buttons[1].click();
+		await buttons[2].click();
 
-		await styleCard.$$eval(
+		// ColorControl
+		await styleCard.$eval(
 			'.maxi-color-control .maxi-color-control__color input',
-			input => input[6].focus()
+			input => input.focus()
 		);
 		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('320AC9');
+		await page.keyboard.type('106D3C');
 
-		await styleCard.$eval(
-			'.maxi-blocks-sc__type--icon .maxi-advanced-number-control input',
-			input => input.focus()
+		// Opacity
+		await styleCard.$eval('.maxi-color-control input', input =>
+			input.focus()
 		);
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		// Divider
-		await styleCardAccordion[7].click();
-		await styleCard.$eval(
-			'.maxi-blocks-sc__type--divider .maxi-radio-control__option label',
-			button => button.click()
+		await expect(className).toStrictEqual(additionalClass);
+	});
+	/// ///////////////////////////////////////////////////////////
+
+	it('Check Divider', async () => {
+		const styleCardAccordions = await page.$$(
+			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		);
+		await styleCardAccordions[7].click();
+		const styleCard = await page.$(
+			'.components-popover__content .maxi-blocks-sc__type--divider'
 		);
 
-		await styleCard.$$eval(
+		// button
+		await styleCard.$eval('.maxi-radio-control__option label', button =>
+			button.click()
+		);
+
+		// ColorControl
+		await styleCard.$eval(
 			'.maxi-color-control .maxi-color-control__color input',
-			input => input[2].focus()
+			input => input.focus()
 		);
 		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('320AC9');
+		await page.keyboard.type('106D3C');
 
-		await styleCard.$eval(
-			'.maxi-blocks-sc__type--divider .maxi-advanced-number-control input',
-			input => input.focus()
+		// Opacity
+		await styleCard.$eval('.maxi-color-control input', input =>
+			input.focus()
 		);
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		expect(className).toStrictEqual(additionalClass);
+		await expect(className).toStrictEqual(additionalClass);
 	});
 });

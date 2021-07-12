@@ -361,9 +361,7 @@ const getSVGBackgroundObject = ({ blockStyle, ...props }) => {
 	if (props['background-svg-size'])
 		response.general.height = `${props['background-svg-size']}${props['background-svg-size--unit']}`;
 
-	const bgSvgStatus = props['background-palette-svg-color-status'];
-
-	if (bgSvgStatus)
+	if (props['background-palette-svg-color-status'])
 		response.general.fill = `var(--maxi-${blockStyle}-color-${props['background-palette-svg-color']})`;
 
 	return response;

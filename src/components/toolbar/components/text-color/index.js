@@ -17,7 +17,6 @@ import {
 import {
 	getGroupAttributes,
 	getDefaultAttribute,
-	getLastBreakpointAttribute,
 	getBlockStyle,
 } from '../../../../extensions/styles';
 
@@ -110,30 +109,9 @@ const TextColor = withFormatValue(props => {
 				<ColorControl
 					label={__('Text', 'maxi-blocks')}
 					defaultColor={getDefaultAttribute('color')}
-					color={
-						color ||
-						getLastBreakpointAttribute(
-							'color',
-							breakpoint,
-							typography
-						)
-					}
-					paletteColor={
-						colorPalette ||
-						getLastBreakpointAttribute(
-							'palette-color',
-							breakpoint,
-							typography
-						)
-					}
-					paletteStatus={
-						colorPaletteStatus ||
-						getLastBreakpointAttribute(
-							'palette-color-status',
-							breakpoint,
-							typography
-						)
-					}
+					color={color}
+					paletteColor={colorPalette}
+					paletteStatus={colorPaletteStatus}
 					onChange={({ color, paletteColor, paletteStatus }) =>
 						onChangeFormat({
 							color,

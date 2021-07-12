@@ -6,7 +6,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, isBoolean } from 'lodash';
 
 /**
  * General
@@ -40,15 +40,16 @@ const getTypographyStyles = ({
 	const getPaletteColorStatus = breakpoint => {
 		const propName = getName('palette-color-status', breakpoint);
 
+		if (isBoolean(obj[propName])) return obj[propName];
+
 		return (
-			obj[propName] ||
-			(isCustomFormat &&
-				getLastBreakpointAttribute(
-					'palette-color-status',
-					breakpoint,
-					customFormatTypography,
-					isHover
-				))
+			isCustomFormat &&
+			getLastBreakpointAttribute(
+				'palette-color-status',
+				breakpoint,
+				customFormatTypography,
+				isHover
+			)
 		);
 	};
 

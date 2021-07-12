@@ -75,10 +75,20 @@ export const styleObjectManipulator = ({
 			getDefaultValue(target) === val
 		)
 			delete style[`${target}-${breakpoint}`];
-		else if (isNil(val) || (isEmpty(val) && !isNumber(val)))
+		else if (
+			isNil(val) ||
+			(isEmpty(val) && !isNumber(val) && !isBoolean(val))
+		)
 			delete style[`${target}-${breakpoint}`];
 		else style[`${target}-${breakpoint}`] = val;
 	});
+
+	// Ensures palette color is cleaned to avoid unnecessary Custom Formats
+	if (
+		isNil(style[`palette-color-status-${breakpoint}`]) &&
+		!isEmpty(style[`color-${breakpoint}`])
+	)
+		delete style[`color-${breakpoint}`];
 
 	return style;
 };

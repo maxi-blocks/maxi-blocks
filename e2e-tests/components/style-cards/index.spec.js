@@ -170,7 +170,7 @@ describe('StyleCards', () => {
 
 		// Line Height
 		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__height input',
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__line-height input',
 			size => size.focus()
 		);
 		await pressKeyTimes('Backspace', '4');
@@ -186,25 +186,25 @@ describe('StyleCards', () => {
 		// Selectors
 		// Weight
 		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__weight select',
+			'.maxi-typography-control .maxi-typography-control__weight select',
 			selector => selector.select('300')
 		);
 
 		// Transform
 		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__transform select',
+			'.maxi-typography-control .maxi-typography-control__transform select',
 			selector => selector.select('capitalize')
 		);
 
 		// Style
 		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__style select',
+			'.maxi-typography-control .maxi-typography-control__style select',
 			selector => selector.select('italic')
 		);
 
 		// Decoration
 		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__decoration select',
+			'.maxi-typography-control .maxi-typography-control__decoration select',
 			selector => selector.select('overline')
 		);
 
@@ -308,9 +308,9 @@ describe('StyleCards', () => {
 		const styleCardAccordions = await page.$$(
 			'.maxi-accordion-control__item .maxi-accordion-tab div'
 		);
-		await styleCardAccordions[2].click();
+		await styleCardAccordions[4].click();
 		const styleCard = await page.$(
-			'.components-popover__content .maxi-blocks-sc__type--headings'
+			'.components-popover__content .maxi-blocks-sc__type--heading'
 		);
 		const buttons = await styleCard.$$('.maxi-radio-control__option label');
 
@@ -346,7 +346,7 @@ describe('StyleCards', () => {
 
 		// Line Height
 		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__height input',
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__line-height input',
 			size => size.focus()
 		);
 		await pressKeyTimes('Backspace', '4');
@@ -361,28 +361,29 @@ describe('StyleCards', () => {
 
 		// Selectors
 		// Weight
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__weight select',
-			selector => selector.select('300')
+		const weightSelector = await styleCard.$(
+			'.maxi-typography-control .maxi-typography-control__weight select'
 		);
 
 		// Transform
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__transform select',
-			selector => selector.select('capitalize')
+		const transformSelector = await styleCard.$(
+			'.maxi-typography-control .maxi-typography-control__transform select'
 		);
 
 		// Style
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__style select',
-			selector => selector.select('italic')
+		const styleSelector = await styleCard.$(
+			'.maxi-typography-control .maxi-typography-control__font-style select'
 		);
 
 		// Decoration
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__decoration select',
-			selector => selector.select('overline')
+		const decorationSelector = await styleCard.$(
+			'.maxi-typography-control .maxi-typography-control__decoration select'
 		);
+
+		await weightSelector.select('300');
+		await transformSelector.select('capitalize');
+		await styleSelector.select('italic');
+		await decorationSelector.select('overline');
 
 		await expect(className).toStrictEqual(additionalClass);
 	});
@@ -416,6 +417,7 @@ describe('StyleCards', () => {
 		);
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
+
 		expect(className).toStrictEqual(additionalClass);
 	});
 	/// ///////////////////////////////////////////////////////////

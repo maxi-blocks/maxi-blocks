@@ -2,17 +2,14 @@
  * WordPress dependencies
  */
 import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
-/**
- * Internal dependencies
- */
-import { getBlockAttributes } from '../../utils';
 
-const receiveMaxiStyle = async () =>
-	page.evaluate(() => {
+const receiveMaxiStyle = async () => {
+	return page.evaluate(() => {
 		return wp.data
 			.select('maxiBlocks/style-cards')
 			.receiveMaxiSelectedStyleCard();
 	});
+};
 describe('StyleCards', () => {
 	beforeEach(async () => {
 		await createNewPost();
@@ -25,7 +22,7 @@ describe('StyleCards', () => {
 			button => button[1].click()
 		);
 	});
-	it('Check Quick Pick Colour Presets', async () => {
+	it.only('Check Quick Pick Colour Presets', async () => {
 		const styleCardAccordions = await page.$$(
 			'.maxi-accordion-control__item .maxi-accordion-tab div'
 		);
@@ -42,7 +39,8 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
-		const expectPresets = receiveMaxiStyle();
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const expectPresets = await receiveMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
@@ -229,21 +227,21 @@ describe('StyleCards', () => {
 		);
 
 		const buttons = await styleCard.$$('.maxi-radio-control__option label');
+
 		// Use Global Link Colour
 		// button
 		await buttons[0].click();
+
 		// ColorControl
-		await styleCard.$$eval(
-			'.maxi-color-control .maxi-color-control__color input',
-			input => input[2].focus()
+		await styleCard.$eval('.maxi-color-control__color input', input =>
+			input.focus()
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
 		// Opacity
-		await styleCard.$eval('.maxi-color-control input', input =>
-			input.focus()
-		);
+		const opacity = await styleCard.$('.maxi-color-control input');
+		await opacity.focus();
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
@@ -253,17 +251,14 @@ describe('StyleCards', () => {
 		await buttons[2].click();
 
 		// ColorControl
-		await styleCard.$$eval(
-			'.maxi-color-control .maxi-color-control__color input',
-			input => input[2].focus()
+		await styleCard.$eval('.maxi-color-control__color input', input =>
+			input.focus()
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
 		// Opacity
-		await styleCard.$eval('.maxi-color-control input', input =>
-			input.focus()
-		);
+		await opacity.focus();
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
@@ -273,17 +268,14 @@ describe('StyleCards', () => {
 		await buttons[4].click();
 
 		// ColorControl
-		await styleCard.$$eval(
-			'.maxi-color-control .maxi-color-control__color input',
-			input => input[2].focus()
+		await styleCard.$eval('.maxi-color-control__color input', input =>
+			input.focus()
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
 		// Opacity
-		await styleCard.$eval('.maxi-color-control input', input =>
-			input.focus()
-		);
+		await opacity.focus();
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
@@ -293,17 +285,14 @@ describe('StyleCards', () => {
 		await buttons[5].click();
 
 		// ColorControl
-		await styleCard.$$eval(
-			'.maxi-color-control .maxi-color-control__color input',
-			input => input[2].focus()
+		await styleCard.$eval('.maxi-color-control__color input', input =>
+			input.focus()
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
 		// Opacity
-		await styleCard.$eval('.maxi-color-control input', input =>
-			input.focus()
-		);
+		await opacity.focus();
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 

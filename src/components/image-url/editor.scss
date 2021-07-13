@@ -35,10 +35,12 @@
 		.maxi-editor-url-input__warning {
 			width: 300px;
 			font-size: 13px;
-			margin-top: 0;
+			margin-top: 0px;
 			margin-bottom: 3px;
-			margin-left: 57px;
-			color: rgb(255, 74, 23);
+			margin-left: -301px;
+			color: #ff4a17;
+			padding-left: 8px;
+			background: #fff;
 		}
 		.maxi-editor-url-input__button-modal-line {
 			display: flex;
@@ -54,6 +56,9 @@
 				.maxi-editor-url-input__button-modal-line {
 					flex-direction: row;
 				}
+				.maxi-editor-url-input__warning {
+					margin-left: 57px;
+				}
 			}
 		}
 	}
@@ -62,6 +67,9 @@
 			.maxi-block--backend {
 				.maxi-editor-url-input__button-modal-line {
 					flex-direction: row;
+				}
+				.maxi-editor-url-input__warning {
+					margin-left: 57px;
 				}
 			}
 		}

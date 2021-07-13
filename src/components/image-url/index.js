@@ -21,6 +21,23 @@ const ImageURL = props => {
 	const buttonLabel = url
 		? __('Change image URL', 'maxi-blocks')
 		: __('Insert image from URL', 'maxi-blocks');
+
+	function checkImageUrl(url) {
+		const urlPromise = new Promise(function urlPromise(resolve, reject) {
+			const img = new Image();
+			img.src = url;
+
+			img.addEventListener('load', function onLoad() {
+				resolve(this);
+			});
+
+			img.addEventListener('error', function onError() {
+				reject();
+			});
+		});
+		return urlPromise;
+	}
+
 	return (
 		<div className='maxi-editor-url-input__button'>
 			<Button
@@ -40,9 +57,13 @@ const ImageURL = props => {
 					onSubmit={event => {
 						event.preventDefault();
 						if (isURL(url)) {
-							setExpanded(!expanded);
-							setHideWarning(true);
-							onSubmit(url);
+							checkImageUrl(url)
+								.then(response => {
+									setExpanded(!expanded);
+									setHideWarning(true);
+									onSubmit(url);
+								})
+								.catch(err => setHideWarning(false));
 						} else {
 							setHideWarning(false);
 						}
@@ -70,6 +91,7 @@ const ImageURL = props => {
 							label={__('Close')}
 							onClick={event => {
 								event.preventDefault();
+								setHideWarning(true);
 								setExpanded(!expanded);
 							}}
 						/>
@@ -77,7 +99,10 @@ const ImageURL = props => {
 				</form>
 			)}
 			<p className='maxi-editor-url-input__warning' hidden={hideWarning}>
-				{__('Please input a valid URL', 'maxi-blocks')}
+				{__(
+					'Please input a valid URL to an image that exists',
+					'maxi-blocks'
+				)}
 			</p>
 		</div>
 	);

@@ -1,4 +1,5 @@
 import getCustomFormatsStyles from '../getCustomFormatsStyles';
+import '@wordpress/block-editor';
 
 describe('getCustomFormatsStyles', () => {
 	it('Get a correct custom formats styles', () => {

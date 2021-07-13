@@ -407,6 +407,16 @@ const LibraryContainer = props => {
 
 				onRequestClose();
 			}
+
+			if (type === 'button-icon') {
+				const cleanedContent = DOMPurify.sanitize(svgCode);
+
+				updateBlockAttributes(clientId, {
+					'icon-content': cleanedContent,
+				});
+
+				onRequestClose();
+			}
 		}
 	};
 
@@ -518,6 +528,30 @@ const LibraryContainer = props => {
 							className='hidden'
 							attribute='taxonomies.svg_category'
 							defaultRefinement={['Shape']}
+							showLoadingIndicator
+						/>
+						<Stats translations={resultsCount} />
+						<InfiniteHits hitComponent={svgShapeResults} />
+					</div>
+				</InstantSearch>
+			)}
+
+			{type === 'button-icon' && (
+				<InstantSearch
+					indexName='maxi_posts_svg_icon'
+					searchClient={searchClient}
+				>
+					<div className='maxi-cloud-container__content-svg-line'>
+						<SearchBox
+							submit={__('Find', 'maxi-blocks')}
+							autoFocus
+							searchAsYouType
+							showLoadingIndicator
+						/>
+						<RefinementList
+							className='hidden'
+							attribute='taxonomies.svg_category'
+							defaultRefinement={['Line']}
 							showLoadingIndicator
 						/>
 						<Stats translations={resultsCount} />

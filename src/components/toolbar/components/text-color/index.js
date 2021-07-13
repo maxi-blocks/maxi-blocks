@@ -17,7 +17,6 @@ import {
 import {
 	getGroupAttributes,
 	getDefaultAttribute,
-	getLastBreakpointAttribute,
 	getBlockStyle,
 } from '../../../../extensions/styles';
 
@@ -54,6 +53,22 @@ const TextColor = withFormatValue(props => {
 		textLevel,
 		styleCard,
 	});
+	const colorPalette = getCustomFormatValue({
+		typography,
+		formatValue,
+		prop: 'palette-color',
+		breakpoint,
+		textLevel,
+		styleCard,
+	});
+	const colorPaletteStatus = getCustomFormatValue({
+		typography,
+		formatValue,
+		prop: 'palette-color-status',
+		breakpoint,
+		textLevel,
+		styleCard,
+	});
 
 	const onChangeFormat = value => {
 		const obj = setFormat({
@@ -76,11 +91,11 @@ const TextColor = withFormatValue(props => {
 				<div
 					className='toolbar-item__text-options__icon'
 					style={{
-						background: props[`palette-color-status-${breakpoint}`]
-							? `var(--maxi-${getBlockStyle(clientId)}-color-${
-									props[`palette-color-${breakpoint}`]
-							  })`
-							: props[`color-${breakpoint}`],
+						background: colorPaletteStatus
+							? `var(--maxi-${getBlockStyle(
+									clientId
+							  )}-color-${colorPalette})`
+							: color,
 					}}
 				>
 					<Icon
@@ -94,24 +109,9 @@ const TextColor = withFormatValue(props => {
 				<ColorControl
 					label={__('Text', 'maxi-blocks')}
 					defaultColor={getDefaultAttribute('color')}
-					color={
-						color ||
-						getLastBreakpointAttribute(
-							'color',
-							breakpoint,
-							typography
-						)
-					}
-					paletteColor={getLastBreakpointAttribute(
-						'palette-color',
-						breakpoint,
-						typography
-					)}
-					paletteStatus={getLastBreakpointAttribute(
-						'palette-color-status',
-						breakpoint,
-						typography
-					)}
+					color={color}
+					paletteColor={colorPalette}
+					paletteStatus={colorPaletteStatus}
 					onChange={({ color, paletteColor, paletteStatus }) =>
 						onChangeFormat({
 							color,

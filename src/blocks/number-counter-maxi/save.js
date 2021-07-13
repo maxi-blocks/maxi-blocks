@@ -1,3 +1,8 @@
+// Related to the gutenberg issue for SVG https://github.com/WordPress/gutenberg/issues/30241
+/*
+eslint-disable react/no-unknown-property
+*/
+
 /**
  * Internal dependencies
  */
@@ -40,7 +45,7 @@ const save = props => {
 					>
 						<circle
 							className='maxi-number-counter__box__background'
-							strokeWidth={stroke}
+							stroke-width={stroke}
 							fill='none'
 							cx={radius + stroke / 2}
 							cy={radius + stroke / 2}
@@ -48,13 +53,13 @@ const save = props => {
 						/>
 						<circle
 							className='maxi-number-counter__box__circle'
-							strokeWidth={stroke}
+							stroke-width={stroke}
 							fill='none'
 							cx={radius + stroke / 2}
 							cy={radius + stroke / 2}
 							r={radius}
-							strokeLinecap={roundedStatus ? 'round' : ''}
-							strokeDasharray={`0 ${2 * Math.PI * radius}`}
+							stroke-linecap={roundedStatus ? 'round' : ''}
+							stroke-dasharray={`0 ${2 * Math.PI * radius}`}
 						/>
 					</svg>
 				)}

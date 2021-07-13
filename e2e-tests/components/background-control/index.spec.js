@@ -57,12 +57,15 @@ describe('BackgroundControl', () => {
 			colorInput => colorInput.focus()
 		);
 
-		await pressKeyTimes('Backspace', '7');
-		await page.keyboard.type('#ffffff');
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('000000');
+		await page.keyboard.press('Enter');
+
+		await page.waitForTimeout(500);
 
 		const colorAttributes = await getBlockAttributes();
 		const result = colorAttributes['background-color'];
-		const expectedColor = '#ffffff';
+		const expectedColor = 'rgba(0,0,0,1)';
 
 		expect(result).toStrictEqual(expectedColor);
 	});
@@ -249,7 +252,7 @@ describe('BackgroundControl', () => {
 		);
 
 		const expectShape = `
-    <svg viewBox="0 0 36.1 36.1" class="angle-10-maxi-svg" data-stroke="" data-item="${uniqueID}__svg"><path fill="" data-fill="" d="M29.837 9.563L18.05 1 6.263 9.563l3.071 9.45-3.071 2.231L10.766 35.1h14.569l4.502-13.856-3.071-2.231 3.071-9.45zm-22.774.26L18.05 1.84l10.987 7.983-2.85 8.77-8.138-5.912-8.137 5.912-2.85-8.77zm18.904 9.45l-1.126 3.466H11.26l-1.126-3.466 7.917-5.752 7.917 5.752zm3.071 2.231L24.84 34.42H11.26L7.063 21.504l2.492-1.811 1.211 3.726h14.569l1.211-3.726 2.492 1.811z"></path></svg>`;
+	<svg viewBox="0 0 36.1 36.1" class="angle-10-maxi-svg" data-stroke="" data-item="${uniqueID}__svg"><path fill="" data-fill="" d="M29.837 9.563L18.05 1 6.263 9.563l3.071 9.45-3.071 2.231L10.766 35.1h14.569l4.502-13.856-3.071-2.231 3.071-9.45zm-22.774.26L18.05 1.84l10.987 7.983-2.85 8.77-8.138-5.912-8.137 5.912-2.85-8.77zm18.904 9.45l-1.126 3.466H11.26l-1.126-3.466 7.917-5.752 7.917 5.752zm3.071 2.231L24.84 34.42H11.26L7.063 21.504l2.492-1.811 1.211 3.726h14.569l1.211-3.726 2.492 1.811z"></path></svg>`;
 
 		const attributes = await getBlockAttributes();
 
@@ -261,8 +264,6 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background Shape Custom Color', async () => {
-		const { uniqueID } = await getBlockAttributes();
-
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
@@ -299,14 +300,20 @@ describe('BackgroundControl', () => {
 			colorInput => colorInput.focus()
 		);
 
-		await pressKeyTimes('Backspace', '7');
-		await page.keyboard.type('#000000');
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('000000');
+		await page.keyboard.press('Enter');
+
+		await page.waitForTimeout(500);
 
 		const colorAttributes = await getBlockAttributes();
 
 		const result =
-			colorAttributes['background-svg-SVGData'][`${uniqueID}__24`].color;
-		const expectedColor = '#000000';
+			colorAttributes['background-svg-SVGData'][
+				`${Object.keys(colorAttributes['background-svg-SVGData'])[0]}`
+			].color;
+
+		const expectedColor = 'rgba(0,0,0,1)';
 
 		expect(result).toStrictEqual(expectedColor);
 	});
@@ -343,9 +350,36 @@ describe('BackgroundControl', () => {
 
 		const expectAttribute = await getBlockAttributes();
 		const layers = expectAttribute['background-active-media'];
+		const BgLayerPaletteColor =
+			expectAttribute['background-layers'][0]['background-palette-color'];
 		const expectLayers = 'layers';
+		const expectedColor = 4;
 
 		expect(layers).toStrictEqual(expectLayers);
+		expect(BgLayerPaletteColor).toStrictEqual(expectedColor);
+
+		await accordionPanel.$eval(
+			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			select => select.click()
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-color-control__color input',
+			colorInput => colorInput.focus()
+		);
+
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('000000');
+		await page.keyboard.press('Enter');
+
+		await page.waitForTimeout(500);
+
+		const colorAttributes = await getBlockAttributes();
+		const BgLayerCustomColor =
+			colorAttributes['background-layers'][0]['background-color'];
+		const expectedBackgroundCustomColor = 'rgba(0,0,0,1)';
+
+		expect(BgLayerCustomColor).toStrictEqual(expectedBackgroundCustomColor);
 
 		// remove layer test
 		await accordionPanel.$$eval(
@@ -384,6 +418,7 @@ describe('BackgroundControl', () => {
 
 		await selectLayer.select('shape');
 		await addNewLayer.click();
+
 		await accordionPanel.$$eval(
 			'.maxi-background-layers_options .maxi-background-layer span',
 			select => select[50].click()
@@ -403,6 +438,64 @@ describe('BackgroundControl', () => {
 		await page.waitForTimeout(1000);
 		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
 			button.click()
+		);
+
+		await accordionPanel.$$eval(
+			'.maxi-background-control .maxi-settingstab-control .maxi-tabs-control button',
+			click => click[1].click()
+		);
+		await accordionPanel.$$eval(
+			'.maxi-color-palette-control .maxi-sc-color-palette div',
+			select => select[3].click()
+		);
+		await page.waitForTimeout(1000);
+
+		const expectShapeLayerAttribute = await getBlockAttributes();
+
+		const BgShapeLayerPaletteColor =
+			expectShapeLayerAttribute['background-layers'][4][
+				'background-palette-svg-color'
+			];
+		const expectedShapePaletteColor = 4;
+
+		expect(BgShapeLayerPaletteColor).toStrictEqual(
+			expectedShapePaletteColor
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			select => select.click()
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-color-control__color input',
+			colorInput => colorInput.focus()
+		);
+
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('000000');
+		await page.keyboard.press('Enter');
+
+		await page.waitForTimeout(500);
+
+		const shapeColorAttributes = await getBlockAttributes();
+		const BgShapeLayerCustomColor =
+			shapeColorAttributes['background-layers'][4][
+				'background-svg-SVGData'
+			][
+				`${
+					Object.keys(
+						shapeColorAttributes['background-layers'][4][
+							'background-svg-SVGData'
+						]
+					)[0]
+				}`
+			].color;
+
+		const expectedShapeBackgroundCustomColor = 'rgba(0,0,0,1)';
+
+		expect(BgShapeLayerCustomColor).toStrictEqual(
+			expectedShapeBackgroundCustomColor
 		);
 
 		const expectBackgroundLayers = await getBlockAttributes();

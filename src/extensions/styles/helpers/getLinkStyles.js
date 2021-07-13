@@ -24,11 +24,10 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 
 			response[target].link[breakpoint].color =
 				obj[`link-color-${breakpoint}`];
-		} else if (
-			breakpoint !== 'general' &&
-			obj[`link-palette-color-${breakpoint}`]
-		) {
-			response[target][
+		} else if (obj[`link-palette-color-${breakpoint}`]) {
+			response[target].link[breakpoint] = {};
+
+			response[target].link[
 				breakpoint
 			].color = `var(--maxi-${parentBlockStyle}-color-${
 				obj[`link-palette-color-${breakpoint}`]
@@ -45,16 +44,16 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 				obj[`link-hover-color-${breakpoint}`];
 			response[`${target}:hover span`].link[breakpoint].color =
 				obj[`link-hover-color-${breakpoint}`];
-		} else if (
-			breakpoint !== 'general' &&
-			obj[`link-hover-palette-color-${breakpoint}`]
-		) {
-			response[`${target}:hover`][
+		} else if (obj[`link-hover-palette-color-${breakpoint}`]) {
+			response[`${target}:hover`].link[breakpoint] = {};
+			response[`${target}:hover span`].link[breakpoint] = {};
+
+			response[`${target}:hover`].link[
 				breakpoint
 			].color = `var(--maxi-${parentBlockStyle}-color-${
 				obj[`link-hover-palette-color-${breakpoint}`]
 			})`;
-			response[`${target}:hover span`][
+			response[`${target}:hover span`].link[
 				breakpoint
 			].color = `var(--maxi-${parentBlockStyle}-color-${
 				obj[`link-hover-palette-color-${breakpoint}`]
@@ -71,16 +70,16 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 				obj[`link-active-color-${breakpoint}`];
 			response[`${target}:active span`].link[breakpoint].color =
 				obj[`link-active-color-${breakpoint}`];
-		} else if (
-			breakpoint !== 'general' &&
-			obj[`link-active-palette-color-${breakpoint}`]
-		) {
-			response[`${target}:active`][
+		} else if (obj[`link-active-palette-color-${breakpoint}`]) {
+			response[`${target}:active span`].link[breakpoint] = {};
+			response[`${target}:active`].link[breakpoint] = {};
+
+			response[`${target}:active`].link[
 				breakpoint
 			].color = `var(--maxi-${parentBlockStyle}-color-${
 				obj[`link-active-palette-color-${breakpoint}`]
 			})`;
-			response[`${target}:active span`][
+			response[`${target}:active span`].link[
 				breakpoint
 			].color = `var(--maxi-${parentBlockStyle}-color-${
 				obj[`link-active-palette-color-${breakpoint}`]
@@ -97,16 +96,16 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 				obj[`link-visited-color-${breakpoint}`];
 			response[`${target}:visited span`].link[breakpoint].color =
 				obj[`link-visited-color-${breakpoint}`];
-		} else if (
-			breakpoint !== 'general' &&
-			obj[`link-visited-palette-color-${breakpoint}`]
-		) {
-			response[`${target}:visited`][
+		} else if (obj[`link-visited-palette-color-${breakpoint}`]) {
+			response[`${target}:visited`].link[breakpoint] = {};
+			response[`${target}:visited span`].link[breakpoint] = {};
+
+			response[`${target}:visited`].link[
 				breakpoint
 			].color = `var(--maxi-${parentBlockStyle}-color-${
 				obj[`link-visited-palette-color-${breakpoint}`]
 			})`;
-			response[`${target}:visited span`][
+			response[`${target}:visited span`].link[
 				breakpoint
 			].color = `var(--maxi-${parentBlockStyle}-color-${
 				obj[`link-visited-palette-color-${breakpoint}`]

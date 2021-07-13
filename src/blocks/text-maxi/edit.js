@@ -128,6 +128,24 @@ class edit extends MaxiBlockComponent {
 			});
 		};
 
+		/**
+		 * Prevents losing general link format when the link is affecting whole content
+		 *
+		 * In case we add a whole link format, Gutenberg doesn't keep it when creators write new content.
+		 * This method fixes it
+		 */
+		const processContent = content => {
+			const isWholeLink =
+				content.split('</a>').length === 2 &&
+				content.startsWith('<a') &&
+				content.indexOf('</a>') === content.length - 5;
+
+			if (isWholeLink) {
+				const newContent = content.replace('</a>', '');
+				setAttributes({ content: `${newContent}</a>` });
+			} else setAttributes({ content });
+		};
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -150,7 +168,7 @@ class edit extends MaxiBlockComponent {
 					<RichText
 						className='maxi-text-block__content'
 						value={content}
-						onChange={content => setAttributes({ content })}
+						onChange={processContent}
 						tagName={textLevel}
 						onSplit={value => onSplit(this.props.attributes, value)}
 						onReplace={onReplace}
@@ -174,7 +192,7 @@ class edit extends MaxiBlockComponent {
 						multiline='li'
 						__unstableMultilineRootTag={typeOfList}
 						tagName={typeOfList}
-						onChange={content => setAttributes({ content })}
+						onChange={processContent}
 						value={content}
 						placeholder={__('Write list…', 'maxi-blocks')}
 						onSplit={value => {

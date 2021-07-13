@@ -217,6 +217,8 @@ describe('BackgroundControl', () => {
 		await modalSearcher.focus();
 		await page.keyboard.type('angle 10');
 		await page.waitForTimeout(1000);
+		await page.waitForSelector('.angle-10-maxi-svg');
+		await page.waitForSelector('.maxi-cloud-masonry-card__button');
 		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
 			button.click()
 		);
@@ -325,6 +327,8 @@ describe('BackgroundControl', () => {
 		await modalSearcher.focus();
 		await page.keyboard.type('angle 10');
 		await page.waitForTimeout(1000);
+		await page.waitForSelector('.angle-10-maxi-svg');
+		await page.waitForSelector('.maxi-cloud-masonry-card__button');
 		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
 			button.click()
 		);

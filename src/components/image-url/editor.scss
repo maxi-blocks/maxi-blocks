@@ -1,0 +1,44 @@
+.maxi-block--backend {
+	.maxi-editor-url-input__button {
+		position: absolute;
+		top: 43px;
+		right: 0;
+		width: 40px;
+		height: 40px;
+		background: #232533;
+
+		.components-button.has-icon {
+			min-width: 40px;
+		}
+		button {
+			width: 40px;
+			height: 40px;
+		}
+		form,
+		button {
+			background: #232533;
+		}
+		svg {
+			width: 20px;
+			height: 20px;
+			fill: #fff;
+		}
+		.components-base-control__field {
+			margin-bottom: 0;
+			input {
+				padding: 12px;
+			}
+		}
+		.maxi-editor-url-input__warning {
+			width: 300px;
+			font-size: 13px;
+			margin-top: 0;
+			margin-bottom: 3px;
+			margin-left: 57px;
+			color: rgb(255, 74, 23);
+		}
+		.maxi-editor-url-input__button-modal-line {
+			display: flex;
+		}
+	}
+}

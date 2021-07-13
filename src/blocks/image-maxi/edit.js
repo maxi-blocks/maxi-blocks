@@ -21,7 +21,6 @@ import {
 	HoverPreview,
 	MaxiBlockComponent,
 	Toolbar,
-	Spinner,
 	Placeholder,
 	RawHTML,
 	ImageURL,
@@ -227,6 +226,27 @@ class edit extends MaxiBlockComponent {
 												onClick={open}
 												icon={toolbarReplaceImage}
 											/>
+											<ImageURL
+												url={externalUrl}
+												onChange={url => {
+													setAttributes({
+														externalUrl: url,
+													});
+												}}
+												onSubmit={url => {
+													if (isURL(url)) {
+														// TODO: fetch url and check for the code and type
+														setAttributes({
+															isImageUrl: true,
+															externalUrl: url,
+															mediaURL: url,
+														});
+														this.setState({
+															isExternalClass: true,
+														});
+													}
+												}}
+											/>
 										</div>
 										<HoverPreview
 											key={`hover-preview-${uniqueID}`}
@@ -261,11 +281,6 @@ class edit extends MaxiBlockComponent {
 											</figcaption>
 										)}
 									</BlockResizer>
-								</>
-							) : mediaID ? (
-								<>
-									<Spinner />
-									<p>{__('Loading…', 'maxi-blocks')}</p>
 								</>
 							) : (
 								<div className='maxi-image-block__placeholder'>
@@ -308,25 +323,6 @@ class edit extends MaxiBlockComponent {
 							)}
 						</>
 					)}
-				/>
-				<ImageURL
-					url={externalUrl}
-					onChange={url => {
-						setAttributes({
-							externalUrl: url,
-						});
-					}}
-					onSubmit={url => {
-						if (isURL(url)) {
-							// TODO: fetch url and check for the code and type
-							setAttributes({
-								isImageUrl: true,
-								externalUrl: url,
-								mediaURL: url,
-							});
-							this.setState({ isExternalClass: true });
-						}
-					}}
 				/>
 			</MaxiBlock>,
 		];

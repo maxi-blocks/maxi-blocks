@@ -8,6 +8,11 @@ import { link, check, arrowLeft } from '@wordpress/icons';
 import { URLInput } from '@wordpress/block-editor';
 import { isURL } from '@wordpress/url';
 
+/**
+ * Styles and icons
+ */
+import './editor.scss';
+
 class ImageURL extends Component {
 	constructor(...args) {
 		super(...args);
@@ -37,17 +42,17 @@ class ImageURL extends Component {
 			: __('Insert image from URL', 'maxi-blocks');
 
 		return (
-			<div className='block-editor-url-input__button maxi-blocks-url__button'>
+			<div className='maxi-editor-url-input__button'>
 				<Button
 					icon={link}
 					label={buttonLabel}
 					onClick={this.toggle}
-					className='components-toolbar__control'
+					className='maxi-editor-components-toolbar__control'
 					isPressed={!!url}
 				/>
 				{expanded && (
 					<form
-						className='block-editor-url-input__button-modal'
+						className='maxi-editor-url-input__button-modal'
 						value={url || ''}
 						onSubmit={event => {
 							if (isURL(url)) {
@@ -60,9 +65,9 @@ class ImageURL extends Component {
 							}
 						}}
 					>
-						<div className='block-editor-url-input__button-modal-line'>
+						<div className='maxi-editor-url-input__button-modal-line'>
 							<Button
-								className='block-editor-url-input__back'
+								className='maxi-editor-url-input__back'
 								icon={arrowLeft}
 								label={__('Close')}
 								onClick={this.toggle}
@@ -86,7 +91,7 @@ class ImageURL extends Component {
 					</form>
 				)}
 				<p
-					className='block-editor-url-input__warning'
+					className='maxi-editor-url-input__warning'
 					hidden={hideWarning}
 				>
 					{__('Please input a valid URL', 'maxi-blocks')}

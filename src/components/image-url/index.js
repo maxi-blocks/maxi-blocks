@@ -4,7 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { Button } from '@wordpress/components';
-import { link, check, arrowLeft } from '@wordpress/icons';
+import { link, check, close } from '@wordpress/icons';
 import { URLInput } from '@wordpress/block-editor';
 import { isURL } from '@wordpress/url';
 
@@ -50,13 +50,9 @@ const ImageURL = props => {
 				>
 					<div className='maxi-editor-url-input__button-modal-line'>
 						<Button
-							className='maxi-editor-url-input__back'
-							icon={arrowLeft}
-							label={__('Close')}
-							onClick={event => {
-								event.preventDefault();
-								setExpanded(!expanded);
-							}}
+							icon={check}
+							label={__('Submit')}
+							type='submit'
 						/>
 						<URLInput
 							value={url || ''}
@@ -69,9 +65,13 @@ const ImageURL = props => {
 							disableSuggestions
 						/>
 						<Button
-							icon={check}
-							label={__('Submit')}
-							type='submit'
+							className='maxi-editor-url-input__back'
+							icon={close}
+							label={__('Close')}
+							onClick={event => {
+								event.preventDefault();
+								setExpanded(!expanded);
+							}}
 						/>
 					</div>
 				</form>

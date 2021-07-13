@@ -26,7 +26,10 @@
 		.components-base-control__field {
 			margin-bottom: 0;
 			input {
-				padding: 12px;
+				padding-top: 11px;
+				padding-bottom: 12px;
+				width: 300px;
+				font-size: 14px;
 			}
 		}
 		.maxi-editor-url-input__warning {
@@ -39,6 +42,28 @@
 		}
 		.maxi-editor-url-input__button-modal-line {
 			display: flex;
+			flex-direction: row-reverse;
+		}
+	}
+}
+
+.maxi-row-block__container {
+	@for $i from 3 through 8 {
+		.maxi-block__resizer:first-child:nth-last-child(#{$i}) {
+			.maxi-block--backend {
+				.maxi-editor-url-input__button-modal-line {
+					flex-direction: row;
+				}
+			}
+		}
+	}
+	@for $i from 6 through 8 {
+		.maxi-block__resizer:nth-child(2):nth-last-child(#{$i}) {
+			.maxi-block--backend {
+				.maxi-editor-url-input__button-modal-line {
+					flex-direction: row;
+				}
+			}
 		}
 	}
 }

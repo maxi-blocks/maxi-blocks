@@ -58,7 +58,6 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, deviceType, hasInnerBlock, clientId } = this.props;
 		const { uniqueID } = attributes;
-
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
 		 */

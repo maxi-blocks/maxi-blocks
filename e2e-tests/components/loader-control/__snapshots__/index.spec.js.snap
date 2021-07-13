@@ -5,6 +5,8 @@ Array [
   Object {
     "background-color": "",
     "background-color-clip-path": "",
+    "background-palette-color": 1,
+    "background-palette-color-status": true,
     "id": 0,
     "type": "color",
   },

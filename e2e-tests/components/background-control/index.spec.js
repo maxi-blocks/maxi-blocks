@@ -353,13 +353,13 @@ describe('BackgroundControl', () => {
 
 		const expectAttribute = await getBlockAttributes();
 		const layers = expectAttribute['background-active-media'];
-		const BgLayerPaletteColor =
+		const bgLayerPaletteColor =
 			expectAttribute['background-layers'][0]['background-palette-color'];
 		const expectLayers = 'layers';
 		const expectedColor = 4;
 
 		expect(layers).toStrictEqual(expectLayers);
-		expect(BgLayerPaletteColor).toStrictEqual(expectedColor);
+		expect(bgLayerPaletteColor).toStrictEqual(expectedColor);
 
 		await accordionPanel.$eval(
 			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
@@ -378,11 +378,11 @@ describe('BackgroundControl', () => {
 		await page.waitForTimeout(500);
 
 		const colorAttributes = await getBlockAttributes();
-		const BgLayerCustomColor =
+		const bgLayerCustomColor =
 			colorAttributes['background-layers'][0]['background-color'];
 		const expectedBackgroundCustomColor = 'rgba(0,0,0,1)';
 
-		expect(BgLayerCustomColor).toStrictEqual(expectedBackgroundCustomColor);
+		expect(bgLayerCustomColor).toStrictEqual(expectedBackgroundCustomColor);
 
 		// remove layer test
 		await accordionPanel.$$eval(
@@ -457,13 +457,13 @@ describe('BackgroundControl', () => {
 
 		const expectShapeLayerAttribute = await getBlockAttributes();
 
-		const BgShapeLayerPaletteColor =
+		const bgShapeLayerPaletteColor =
 			expectShapeLayerAttribute['background-layers'][4][
 				'background-palette-svg-color'
 			];
 		const expectedShapePaletteColor = 4;
 
-		expect(BgShapeLayerPaletteColor).toStrictEqual(
+		expect(bgShapeLayerPaletteColor).toStrictEqual(
 			expectedShapePaletteColor
 		);
 
@@ -484,7 +484,7 @@ describe('BackgroundControl', () => {
 		await page.waitForTimeout(500);
 
 		const shapeColorAttributes = await getBlockAttributes();
-		const BgShapeLayerCustomColor =
+		const bgShapeLayerCustomColor =
 			shapeColorAttributes['background-layers'][4][
 				'background-svg-SVGData'
 			][
@@ -499,7 +499,7 @@ describe('BackgroundControl', () => {
 
 		const expectedShapeBackgroundCustomColor = 'rgba(0,0,0,1)';
 
-		expect(BgShapeLayerCustomColor).toStrictEqual(
+		expect(bgShapeLayerCustomColor).toStrictEqual(
 			expectedShapeBackgroundCustomColor
 		);
 

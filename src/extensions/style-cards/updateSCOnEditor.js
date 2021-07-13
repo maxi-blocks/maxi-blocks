@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { dispatch } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
@@ -164,6 +169,9 @@ const updateSCOnEditor = styleCards => {
 		SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
 		SCStyle.innerHTML = createSCStyleString(SCObject);
 		document.head.appendChild(SCStyle);
+
+		const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
+		saveSCStyles(false);
 	} else SCStyle.innerHTML = createSCStyleString(SCObject);
 };
 

@@ -12,7 +12,7 @@ import { toHTMLString } from '@wordpress/rich-text';
  *
  * @returns {string} New formatted format content
  */
-const getFormattedString = ({ formatValue, isList }) => {
+const getFormattedString = ({ formatValue, isList = false }) => {
 	const newContent = toHTMLString({
 		value: formatValue,
 		multilineTag: isList ? 'li' : null,

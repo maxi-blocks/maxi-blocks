@@ -183,7 +183,8 @@ const getStyles = props => {
 				props['custom-formats'],
 				false,
 				{ ...getGroupAttributes(props, 'typography') },
-				props.textLevel
+				props.textLevel,
+				props.parentBlockStyle
 			),
 			...getCustomFormatsStyles(
 				!isList
@@ -192,21 +193,12 @@ const getStyles = props => {
 				props['custom-formats-hover'],
 				true,
 				getGroupAttributes(props, 'typographyHover'),
-				props.textLevel
-			),
-			...getLinkStyles(
-				{ ...getGroupAttributes(props, 'link') },
-				[` ${element}.maxi-text-block__content a`],
+				props.textLevel,
 				props.parentBlockStyle
 			),
 			...getLinkStyles(
 				{ ...getGroupAttributes(props, 'link') },
-				[` ${element}.maxi-text-block__content a`],
-				props.parentBlockStyle
-			),
-			...getLinkStyles(
-				{ ...getGroupAttributes(props, 'link') },
-				[` ${element}.maxi-text-block__content a`],
+				[` a ${element}.maxi-text-block__content`],
 				props.parentBlockStyle
 			),
 			...getLinkStyles(

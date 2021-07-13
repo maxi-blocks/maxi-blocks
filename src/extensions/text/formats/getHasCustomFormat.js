@@ -3,7 +3,7 @@
  */
 import getFormatType from './getFormatType';
 
-const getHasCustomFormat = (formatValue, isHover) => {
+const getHasCustomFormat = (formatValue, isHover = false) => {
 	const { formats, start, end } = formatValue;
 
 	return formats.some((formatEl, i) => {

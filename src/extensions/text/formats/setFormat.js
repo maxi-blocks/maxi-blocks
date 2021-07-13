@@ -43,17 +43,15 @@ const setFormat = ({
 	styleCardPrefix = '',
 }) => {
 	// eslint-disable-next-line @wordpress/no-unused-vars-before-return
-	const {
-		__unstableMarkLastChangeAsPersistent: markLastChangeAsPersistent,
-	} = dispatch('core/block-editor');
+	const { __unstableMarkLastChangeAsPersistent: markLastChangeAsPersistent } =
+		dispatch('core/block-editor');
 
 	if (disableCustomFormats) {
 		const newTypography = { ...typography };
 
 		Object.entries(value).forEach(([key, val]) => {
-			newTypography[
-				`${key}-${breakpoint}${isHover ? '-hover' : ''}`
-			] = val;
+			newTypography[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] =
+				val;
 		});
 		// Ensures the format changes are saved as undo entity on historical records
 		markLastChangeAsPersistent();
@@ -72,7 +70,12 @@ const setFormat = ({
 		formatValue.start = startOffset;
 		formatValue.end = endOffset;
 	}
-	if (!formatValue || formatValue.start === formatValue.end) {
+	if (
+		!formatValue ||
+		formatValue.start === formatValue.end ||
+		(formatValue.start === 0 &&
+			formatValue.end === formatValue.formats.length)
+	) {
 		const newTypography = { ...typography };
 		const newFormatValue = {
 			...formatValue,
@@ -81,9 +84,8 @@ const setFormat = ({
 		};
 
 		Object.entries(value).forEach(([key, val]) => {
-			newTypography[
-				`${key}-${breakpoint}${isHover ? '-hover' : ''}`
-			] = val;
+			newTypography[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] =
+				val;
 		});
 
 		const hasCustomFormat = getHasCustomFormat(newFormatValue, isHover);
@@ -94,20 +96,18 @@ const setFormat = ({
 				isList,
 			});
 
-			const {
-				typography: cleanedTypography,
-				content: cleanedContent,
-			} = flatFormatsWithClass({
-				formatValue: newFormatValue,
-				typography: newTypography,
-				content,
-				isList,
-				value,
-				breakpoint,
-				textLevel,
-				isHover,
-				styleCardPrefix,
-			});
+			const { typography: cleanedTypography, content: cleanedContent } =
+				flatFormatsWithClass({
+					formatValue: newFormatValue,
+					typography: newTypography,
+					content,
+					isList,
+					value,
+					breakpoint,
+					textLevel,
+					isHover,
+					styleCardPrefix,
+				});
 
 			return { ...cleanedTypography, content: cleanedContent };
 		}
@@ -115,7 +115,9 @@ const setFormat = ({
 		// Ensures the format changes are saved as undo entity on historical records
 		markLastChangeAsPersistent();
 
-		return newTypography;
+		const newContent = getFormattedString({ formatValue: newFormatValue });
+
+		return { ...newTypography, content: newContent };
 	}
 
 	// Ensures the format changes are saved as undo entity on historical records

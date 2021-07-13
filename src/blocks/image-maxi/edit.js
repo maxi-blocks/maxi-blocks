@@ -43,6 +43,14 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlockComponent {
+	constructor(...args) {
+		super(...args);
+		const isImageUrl = this.props.attributes;
+		this.state = {
+			isExternalClass: isImageUrl,
+		};
+	}
+
 	get getWrapperWidth() {
 		const target = document.getElementById(`block-${this.props.clientId}`);
 		if (target) return target.getBoundingClientRect().width;
@@ -91,7 +99,6 @@ class edit extends MaxiBlockComponent {
 			imageRatio,
 			'hover-type': hoverType,
 			'hover-preview': hoverPreview,
-			isImageUrl,
 			externalUrl,
 		} = attributes;
 
@@ -117,7 +124,6 @@ class edit extends MaxiBlockComponent {
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
 
-		this.state = { isExternalClass: isImageUrl };
 		const { isExternalClass } = this.state;
 
 		return [

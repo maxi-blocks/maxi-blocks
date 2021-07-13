@@ -6,11 +6,13 @@ import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
  * Internal dependencies
  */
 import { getBlockAttributes } from '../../utils';
-/* const receiveMaxiStyle = await page.evaluate(() => {
-	return wp.data
-		.select('maxiBlocks/style-cards')
-		.receiveMaxiSelectedStyleCard();
-}); */
+
+const receiveMaxiStyle = async () =>
+	page.evaluate(() => {
+		return wp.data
+			.select('maxiBlocks/style-cards')
+			.receiveMaxiSelectedStyleCard();
+	});
 describe('StyleCards', () => {
 	beforeEach(async () => {
 		await createNewPost();
@@ -40,9 +42,9 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
-		expect(className).toStrictEqual();
-		// const expectPresets = receiveMaxiStyle;
-		// expect(expectPresets).toMatchSnapshot();
+		const expectPresets = receiveMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
 	});
 	/// //////////////////////////////////////////////////////////////////////////
 	it('Check Button', async () => {
@@ -125,7 +127,9 @@ describe('StyleCards', () => {
 			selector => selector.select('overline')
 		);
 
-		await expect(className).toStrictEqual(additionalClass);
+		const expectPresets = receiveMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
 	});
 	/// ///////////////////////////////////////////////////////////
 	it('Check Paragraph', async () => {
@@ -185,30 +189,33 @@ describe('StyleCards', () => {
 
 		// Selectors
 		// Weight
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-typography-control__weight select',
-			selector => selector.select('300')
+		const weightOptions = await styleCard.$(
+			'.maxi-typography-control .maxi-typography-control__weight select'
 		);
 
 		// Transform
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-typography-control__transform select',
-			selector => selector.select('capitalize')
+		const transformOptions = await styleCard.$(
+			'.maxi-typography-control .maxi-typography-control__transform select'
 		);
 
 		// Style
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-typography-control__style select',
-			selector => selector.select('italic')
+		const styleOptions = await styleCard.$(
+			'.maxi-typography-control .maxi-typography-control__font-style select'
 		);
 
 		// Decoration
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-typography-control__decoration select',
-			selector => selector.select('overline')
+		const decorationOptions = await styleCard.$(
+			'.maxi-typography-control .maxi-typography-control__decoration select'
 		);
 
-		await expect(className).toStrictEqual(additionalClass);
+		await weightOptions.select('300');
+		await transformOptions.select('capitalize');
+		await styleOptions.select('italic');
+		await decorationOptions.select('overline');
+
+		const expectPresets = receiveMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
 	});
 	/// ///////////////////////////////////////////////////////////
 
@@ -226,9 +233,9 @@ describe('StyleCards', () => {
 		// button
 		await buttons[0].click();
 		// ColorControl
-		await styleCard.$eval(
+		await styleCard.$$eval(
 			'.maxi-color-control .maxi-color-control__color input',
-			input => input.focus()
+			input => input[2].focus()
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
@@ -246,9 +253,9 @@ describe('StyleCards', () => {
 		await buttons[2].click();
 
 		// ColorControl
-		await styleCard.$eval(
+		await styleCard.$$eval(
 			'.maxi-color-control .maxi-color-control__color input',
-			input => input.focus()
+			input => input[2].focus()
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
@@ -266,9 +273,9 @@ describe('StyleCards', () => {
 		await buttons[4].click();
 
 		// ColorControl
-		await styleCard.$eval(
+		await styleCard.$$eval(
 			'.maxi-color-control .maxi-color-control__color input',
-			input => input.focus()
+			input => input[2].focus()
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
@@ -286,9 +293,9 @@ describe('StyleCards', () => {
 		await buttons[5].click();
 
 		// ColorControl
-		await styleCard.$eval(
+		await styleCard.$$eval(
 			'.maxi-color-control .maxi-color-control__color input',
-			input => input.focus()
+			input => input[2].focus()
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
@@ -300,7 +307,9 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		await expect(className).toStrictEqual(additionalClass);
+		const expectPresets = receiveMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
 	});
 	/// ///////////////////////////////////////////////////////////
 
@@ -385,7 +394,9 @@ describe('StyleCards', () => {
 		await styleSelector.select('italic');
 		await decorationSelector.select('overline');
 
-		await expect(className).toStrictEqual(additionalClass);
+		const expectPresets = receiveMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
 	});
 	/// ///////////////////////////////////////////////////////////
 
@@ -418,7 +429,9 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		expect(className).toStrictEqual(additionalClass);
+		const expectPresets = receiveMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
 	});
 	/// ///////////////////////////////////////////////////////////
 
@@ -470,7 +483,9 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		await expect(className).toStrictEqual(additionalClass);
+		const expectPresets = receiveMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
 	});
 	/// ///////////////////////////////////////////////////////////
 
@@ -503,6 +518,8 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		await expect(className).toStrictEqual(additionalClass);
+		const expectPresets = receiveMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
 	});
 });

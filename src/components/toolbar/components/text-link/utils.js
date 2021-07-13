@@ -44,13 +44,7 @@ export const createLinkAttributes = ({
 	return attributes;
 };
 
-export const createLinkValue = ({
-	formatOptions,
-	linkSettings,
-	formatValue,
-	linkValue,
-}) => {
-	if (!isEmpty(linkSettings) && isEmpty(linkValue)) return linkSettings;
+export const createLinkValue = ({ formatOptions, formatValue }) => {
 	if (!formatOptions || isEmpty(formatValue)) return { url: '' };
 
 	const {

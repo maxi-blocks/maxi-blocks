@@ -120,6 +120,7 @@ const BackgroundControl = props => {
 					disableGradient={disableGradient}
 					disableColor={disableColor}
 					disableSVG={disableSVG}
+					clientId={clientId}
 				/>
 			)}
 			{!layersStatus && getOptions().length > 1 && (

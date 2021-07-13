@@ -6,7 +6,7 @@ import { select } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isNumber } from 'lodash';
+import { isEmpty, isNil, isNumber, isBoolean } from 'lodash';
 import getCustomFormat from './getCustomFormat';
 import { getBlockStyle } from '../../styles';
 import { getTypographyFromSC } from '../../style-cards';
@@ -63,20 +63,32 @@ export const styleObjectManipulator = ({
 		defaultTypography[`${target}-${breakpoint}`];
 
 	Object.entries(value).forEach(([target, val]) => {
+		if (isNil(val)) return;
 		if (getCurrentValue(target) === val)
 			delete style[`${target}-${breakpoint}`];
 		else if (
 			!isHover &&
 			(isNil(getCurrentValue(target)) ||
 				(isEmpty(getCurrentValue(target)) &&
-					!isNumber(getCurrentValue(target)))) &&
+					!isNumber(getCurrentValue(target)) &&
+					!isBoolean(getCurrentValue(target)))) &&
 			getDefaultValue(target) === val
 		)
 			delete style[`${target}-${breakpoint}`];
-		else if (isNil(val) || (isEmpty(val) && !isNumber(val)))
+		else if (
+			isNil(val) ||
+			(isEmpty(val) && !isNumber(val) && !isBoolean(val))
+		)
 			delete style[`${target}-${breakpoint}`];
 		else style[`${target}-${breakpoint}`] = val;
 	});
+
+	// Ensures palette color is cleaned to avoid unnecessary Custom Formats
+	if (
+		isNil(style[`palette-color-status-${breakpoint}`]) &&
+		!isEmpty(style[`color-${breakpoint}`])
+	)
+		delete style[`color-${breakpoint}`];
 
 	return style;
 };

@@ -9,6 +9,8 @@ describe('getBackgroundStyles', () => {
 			prefix: '',
 			'background-active-media': 'color',
 			'background-color': 'rgba(2,0,36,1)',
+			'background-palette-color': 1,
+			'background-palette-color-status': true,
 			'background-color-clip-path': 'rgba(2,0,36,1)',
 			'border-top-left-radius-general': 1,
 			'border-top-right-radius-general': 2,

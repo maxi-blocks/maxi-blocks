@@ -1384,6 +1384,7 @@ describe('setFormatWithClass', () => {
 		};
 		const value = {
 			color: 'rgba(58,22,237,1)',
+			'palette-color-status': false,
 		};
 		const isList = false;
 		const textLevel = 'p';
@@ -1409,6 +1410,7 @@ describe('setFormatWithClass', () => {
 				'maxi-text-block__custom-format--2': {
 					'font-weight-general': 800,
 					'color-general': 'rgba(58,22,237,1)',
+					'palette-color-status-general': false,
 				},
 			},
 			content:
@@ -1708,6 +1710,7 @@ describe('setFormatWithClass', () => {
 				},
 				'maxi-text-block__custom-format--2': {
 					'font-weight-general': 800,
+					'palette-color-status-general': false,
 					'color-general': 'rgba(51,12,247,1)',
 				},
 			},
@@ -1733,6 +1736,7 @@ describe('setFormatWithClass', () => {
 					'font-style-general': 'italic',
 				},
 				'maxi-text-block__custom-format--2': {
+					'palette-color-status-general': false,
 					'color-general': 'rgba(51,12,247,1)',
 				},
 			},
@@ -1805,6 +1809,7 @@ describe('setFormatWithClass', () => {
 			},
 		};
 		const value = {
+			'palette-color-status': false,
 			color: 'rgba(52,17,228,1)',
 		};
 		const isList = false;
@@ -1823,13 +1828,16 @@ describe('setFormatWithClass', () => {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
 					'font-weight-general': 800,
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
 				'maxi-text-block__custom-format--1': {
 					'font-style-general': 'italic',
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
 				'maxi-text-block__custom-format--3': {
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
 			},
@@ -1903,13 +1911,16 @@ describe('setFormatWithClass', () => {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
 					'font-weight-general': 800,
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
 				'maxi-text-block__custom-format--1': {
 					'font-style-general': 'italic',
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
 				'maxi-text-block__custom-format--3': {
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
 			},
@@ -1933,15 +1944,18 @@ describe('setFormatWithClass', () => {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
 					'font-weight-general': 800,
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 					'text-decoration-general': 'underline',
 				},
 				'maxi-text-block__custom-format--1': {
 					'font-style-general': 'italic',
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 					'text-decoration-general': 'underline',
 				},
 				'maxi-text-block__custom-format--3': {
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 					'text-decoration-general': 'underline',
 				},
@@ -2018,15 +2032,18 @@ describe('setFormatWithClass', () => {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
 					'font-weight-general': 800,
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 					'text-decoration-general': 'underline',
 				},
 				'maxi-text-block__custom-format--1': {
 					'font-style-general': 'italic',
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 					'text-decoration-general': 'underline',
 				},
 				'maxi-text-block__custom-format--3': {
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 					'text-decoration-general': 'underline',
 				},
@@ -2052,13 +2069,16 @@ describe('setFormatWithClass', () => {
 			'custom-formats': {
 				'maxi-text-block__custom-format--0': {
 					'font-weight-general': 800,
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
 				'maxi-text-block__custom-format--1': {
 					'font-style-general': 'italic',
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
 				'maxi-text-block__custom-format--3': {
+					'palette-color-status-general': false,
 					'color-general': 'rgba(52,17,228,1)',
 				},
 			},
@@ -2576,6 +2596,7 @@ describe('setFormatWithClass', () => {
 		};
 		const typography = {};
 		const value = {
+			'palette-color-status': false,
 			color: 'rgba(221,31,31,1)',
 		};
 		const isList = false;
@@ -2595,6 +2616,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats-hover': {
 				'maxi-text-block__custom-format--0--hover': {
+					'palette-color-status-general': false,
 					'color-general': 'rgba(221,31,31,1)',
 				},
 			},
@@ -2671,6 +2693,7 @@ describe('setFormatWithClass', () => {
 		const typography = {
 			'custom-formats-hover': {
 				'maxi-text-block__custom-format--0--hover': {
+					'palette-color-status-general': false,
 					'color-general': 'rgba(220,34,34,1)',
 				},
 			},
@@ -2695,6 +2718,7 @@ describe('setFormatWithClass', () => {
 		const expectedResult = {
 			'custom-formats-hover': {
 				'maxi-text-block__custom-format--0--hover': {
+					'palette-color-status-general': false,
 					'color-general': 'rgba(220,34,34,1)',
 				},
 				'maxi-text-block__custom-format--1--hover': {

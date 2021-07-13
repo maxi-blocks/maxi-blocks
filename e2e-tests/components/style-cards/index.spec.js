@@ -22,11 +22,11 @@ describe('StyleCards', () => {
 			button => button[1].click()
 		);
 	});
-	it.only('Check Quick Pick Colour Presets', async () => {
-		const styleCardAccordions = await page.$$(
-			'.maxi-accordion-control__item .maxi-accordion-tab div'
+	it('Check Quick Pick Colour Presets', async () => {
+		await page.$$eval(
+			'.maxi-accordion-control__item .maxi-accordion-tab div',
+			accordion => accordion[0].click()
 		);
-		await styleCardAccordions[0].click();
 		const styleCard = await page.$(
 			'.components-popover__content .maxi-blocks-sc__type--quick-color'
 		);
@@ -44,12 +44,11 @@ describe('StyleCards', () => {
 
 		expect(expectPresets).toMatchSnapshot();
 	});
-	/// //////////////////////////////////////////////////////////////////////////
 	it('Check Button', async () => {
-		const styleCardAccordions = await page.$$(
-			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		await page.$$eval(
+			'.maxi-accordion-control__item .maxi-accordion-tab div',
+			accordion => accordion[1].click()
 		);
-		await styleCardAccordions[2].click();
 		const styleCard = await page.$(
 			'.components-popover__content .maxi-blocks-sc__type--button'
 		);
@@ -87,7 +86,7 @@ describe('StyleCards', () => {
 
 		// Line Height
 		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__height input',
+			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__line-height input',
 			size => size.focus()
 		);
 		await pressKeyTimes('Backspace', '4');
@@ -102,39 +101,41 @@ describe('StyleCards', () => {
 
 		// Selectors
 		// Weight
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__weight select',
-			selector => selector.select('300')
+		const weightOptions = await styleCard.$(
+			'.maxi-typography-control .maxi-typography-control__weight select'
 		);
 
 		// Transform
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__transform select',
-			selector => selector.select('capitalize')
+		const transformOptions = await styleCard.$(
+			'.maxi-typography-control .maxi-typography-control__transform select'
 		);
 
 		// Style
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__style select',
-			selector => selector.select('italic')
+		const styleOptions = await styleCard.$(
+			'.maxi-typography-control .maxi-typography-control__font-style select'
 		);
 
 		// Decoration
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__decoration select',
-			selector => selector.select('overline')
+		const decorationOptions = await styleCard.$(
+			'.maxi-typography-control .maxi-typography-control__decoration select'
 		);
 
-		const expectPresets = receiveMaxiStyle();
+		await weightOptions.select('300');
+		await transformOptions.select('capitalize');
+		await styleOptions.select('italic');
+		await decorationOptions.select('overline');
+
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const expectPresets = await receiveMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
 	/// ///////////////////////////////////////////////////////////
 	it('Check Paragraph', async () => {
-		const styleCardAccordions = await page.$$(
-			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		await page.$$eval(
+			'.maxi-accordion-control__item .maxi-accordion-tab div',
+			accordion => accordion[2].click()
 		);
-		await styleCardAccordions[2].click();
 		const styleCard = await page.$(
 			'.components-popover__content .maxi-blocks-sc__type--p'
 		);
@@ -211,23 +212,24 @@ describe('StyleCards', () => {
 		await styleOptions.select('italic');
 		await decorationOptions.select('overline');
 
-		const expectPresets = receiveMaxiStyle();
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const expectPresets = await receiveMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
 	/// ///////////////////////////////////////////////////////////
 
 	it('Check Link', async () => {
-		const styleCardAccordions = await page.$$(
-			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		await page.$$eval(
+			'.maxi-accordion-control__item .maxi-accordion-tab div',
+			accordion => accordion[3].click()
 		);
-		await styleCardAccordions[3].click();
+
 		const styleCard = await page.$(
 			'.components-popover__content .maxi-blocks-sc__type--link'
 		);
 
 		const buttons = await styleCard.$$('.maxi-radio-control__option label');
-
 		// Use Global Link Colour
 		// button
 		await buttons[0].click();
@@ -240,8 +242,9 @@ describe('StyleCards', () => {
 		await page.keyboard.type('106D3C');
 
 		// Opacity
-		const opacity = await styleCard.$('.maxi-color-control input');
-		await opacity.focus();
+		const opacity = await styleCard.$$('.maxi-color-control input');
+		debugger;
+		await opacity[0].focus();
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
@@ -257,11 +260,6 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
-		// Opacity
-		await opacity.focus();
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
-
 		// Use Global Link Active Colour
 		// button
 		await buttons[3].click();
@@ -274,15 +272,10 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
-		// Opacity
-		await opacity.focus();
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
-
 		// Use Global Link Visited Colour
 		// button
-		await buttons[4].click();
 		await buttons[5].click();
+		await buttons[6].click();
 
 		// ColorControl
 		await styleCard.$eval('.maxi-color-control__color input', input =>
@@ -291,22 +284,20 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
-		// Opacity
-		await opacity.focus();
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
+		await buttons[7].click();
 
-		const expectPresets = receiveMaxiStyle();
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const expectPresets = await receiveMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
 	/// ///////////////////////////////////////////////////////////
 
 	it('Check Headings', async () => {
-		const styleCardAccordions = await page.$$(
-			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		await page.$$eval(
+			'.maxi-accordion-control__item .maxi-accordion-tab div',
+			accordion => accordion[4].click()
 		);
-		await styleCardAccordions[4].click();
 		const styleCard = await page.$(
 			'.components-popover__content .maxi-blocks-sc__type--heading'
 		);
@@ -383,17 +374,18 @@ describe('StyleCards', () => {
 		await styleSelector.select('italic');
 		await decorationSelector.select('overline');
 
-		const expectPresets = receiveMaxiStyle();
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const expectPresets = await receiveMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
 	/// ///////////////////////////////////////////////////////////
 
 	it('Check Hover', async () => {
-		const styleCardAccordions = await page.$$(
-			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		await page.$$eval(
+			'.maxi-accordion-control__item .maxi-accordion-tab div',
+			accordion => accordion[5].click()
 		);
-		await styleCardAccordions[5].click();
 		const styleCard = await page.$(
 			'.components-popover__content .maxi-blocks-sc__type--hover'
 		);
@@ -418,17 +410,18 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		const expectPresets = receiveMaxiStyle();
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const expectPresets = await receiveMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
 	/// ///////////////////////////////////////////////////////////
 
 	it('Check SVG Icon', async () => {
-		const styleCardAccordions = await page.$$(
-			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		await page.$$eval(
+			'.maxi-accordion-control__item .maxi-accordion-tab div',
+			accordion => accordion[6].click()
 		);
-		await styleCardAccordions[6].click();
 		const styleCard = await page.$(
 			'.components-popover__content .maxi-blocks-sc__type--icon'
 		);
@@ -472,17 +465,18 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		const expectPresets = receiveMaxiStyle();
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const expectPresets = await receiveMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
 	/// ///////////////////////////////////////////////////////////
 
 	it('Check Divider', async () => {
-		const styleCardAccordions = await page.$$(
-			'.maxi-accordion-control__item .maxi-accordion-tab div'
+		await page.$$eval(
+			'.maxi-accordion-control__item .maxi-accordion-tab div',
+			accordion => accordion[7].click()
 		);
-		await styleCardAccordions[7].click();
 		const styleCard = await page.$(
 			'.components-popover__content .maxi-blocks-sc__type--divider'
 		);
@@ -507,7 +501,8 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
-		const expectPresets = receiveMaxiStyle();
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const expectPresets = await receiveMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});

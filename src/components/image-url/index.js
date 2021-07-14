@@ -23,7 +23,7 @@ const ImageURL = props => {
 		: __('Insert image from URL', 'maxi-blocks');
 
 	function checkImageUrl(url) {
-		const urlPromise = new Promise(function urlPromise(resolve, reject) {
+		const urlPromise = new Promise((resolve, reject) => {
 			const img = new Image();
 			img.src = url;
 

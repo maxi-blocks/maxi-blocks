@@ -124,7 +124,11 @@ class edit extends MaxiBlockComponent {
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
 
-		const { isExternalClass } = this.state;
+		let { isExternalClass } = this.state;
+
+		if (typeof isExternalClass !== 'boolean') isExternalClass = false;
+
+		console.log(`isExternalClass) ${isExternalClass}`);
 
 		return [
 			<Inspector
@@ -241,7 +245,6 @@ class edit extends MaxiBlockComponent {
 												}}
 												onSubmit={url => {
 													if (isURL(url)) {
-														// TODO: fetch url and check for the code and type
 														setAttributes({
 															isImageUrl: true,
 															externalUrl: url,

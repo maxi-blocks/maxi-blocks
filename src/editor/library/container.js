@@ -146,34 +146,43 @@ const LibraryContainer = props => {
 
 			onRequestClose();
 
-			const imagesRegexp = new RegExp(
-				'(?=https).*?(?:jpeg|jpg|png|svg)',
-				'g'
-			);
-			const imagesLinks = parsedContent.match(imagesRegexp);
+			// const imagesRegexp = new RegExp(
+			// 	'(?=https).*?(?:jpeg|jpg|png|svg)',
+			// 	'g'
+			// );
+			// const imagesLinks = parsedContent.match(imagesRegexp);
+
+			// const idsRegexp = new RegExp('(?<=mediaID":)(.*?)(?=,)', 'g');
+			// const imagesIds = parsedContent.match(idsRegexp);
+
+			const imagesLinks = [];
+			const imagesIds = [];
 
 			const allImagesRegexp = new RegExp('mediaID":(.*)",', 'g');
 
 			const allImagesLinks = parsedContent.match(allImagesRegexp);
 
-			console.log(allImagesLinks);
-
 			const allImagesLinksParsed = allImagesLinks.map(image => {
 				const parsed = image.replace(/\\/g, '');
-				// const idRegexp = new RegExp('mediaID\\":(.*),\\', 'g');
-				console.log(`parsed ${parsed}`);
-				// const id = image.match(idRegexp);
-				// console.log(`id ${id}`);
 
-				// const urlRegexp = new RegExp('":(.*)","');
-				// const url = image.match(idRegexp);
-				// console.log(`url ${url}`);
+				const idRegexp = new RegExp('(?<=":)(.*?)(?=,")', 'g');
+				const id = parsed.match(idRegexp);
+				imagesIds.push(id);
+
+				const urlRegexp = new RegExp(
+					'(?<="mediaURL":")(.*?)(?=",)',
+					'g'
+				);
+				const url = parsed.match(urlRegexp);
+				imagesLinks.push(url);
+
+				return null;
 			});
 
-			const idsRegexp = new RegExp('(?<=mediaID":)(.*?)(?=,)', 'g');
-			const imagesIds = parsedContent.match(idsRegexp);
+			console.log(`imagesLinks ${imagesLinks}`);
+			console.log(`imagesIds ${imagesIds}`);
 
-			if (!isEmpty(imagesLinks)) {
+			if (!isEmpty(allImagesLinksParsed)) {
 				let tempContent = parsedContent;
 				const imagesLinksUniq = uniq(imagesLinks);
 				const imagesIdsUniq = uniq(imagesIds);
@@ -202,6 +211,8 @@ const LibraryContainer = props => {
 					{}
 				);
 
+				console.log(`imagesUniq: ${JSON.stringify(imagesUniq)}`);
+
 				Object.entries(imagesUniq).map(image => {
 					const id = image[0];
 					const url = image[1];
@@ -211,6 +222,7 @@ const LibraryContainer = props => {
 						tempContent = tempContent.replaceAll(id, data.id);
 						counter -= 1;
 						if (counter === 0) {
+							console.log(`content replace ${tempContent}`);
 							replaceBlock(
 								clientId,
 								wp.blocks.rawHandler({

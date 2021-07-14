@@ -39,6 +39,7 @@ const getParsedObj = obj => {
 };
 
 export const getSCVariablesObject = styleCards => {
+	if (isEmpty(styleCards)) return false;
 	const response = {};
 	const styles = ['light', 'dark'];
 	const elements = [
@@ -169,10 +170,9 @@ const updateSCOnEditor = styleCards => {
 		SCStyle.id = 'maxi-blocks-sc-vars-inline-css';
 		SCStyle.innerHTML = createSCStyleString(SCObject);
 		document.head.appendChild(SCStyle);
-
 		const { saveSCStyles } = dispatch('maxiBlocks/style-cards');
 		saveSCStyles(false);
-	} else SCStyle.innerHTML = createSCStyleString(SCObject);
+	} else if (SCObject) SCStyle.innerHTML = createSCStyleString(SCObject);
 };
 
 export default updateSCOnEditor;

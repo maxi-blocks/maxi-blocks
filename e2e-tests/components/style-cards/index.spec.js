@@ -563,22 +563,4 @@ describe('StyleCards', () => {
 
 		expect(expectPresets).toMatchSnapshot();
 	});
-	// Maxi Cloud Library
-	/* it('Check Maxi Cloud Library', async () => {
-		await page.waitForTimeout(500);
-		await page.$eval(
-			'.maxi-library-modal__action-section__buttons button',
-			library => library.click()
-		);
-
-		await page.$$eval(
-			'.components-modal__frame .maxi-cloud-container .ais-InfiniteHits .maxi-cloud-masonry-card button',
-			libraryStyles => libraryStyles[0].click()
-		);
-
-		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const expectPresets = await receiveSavedMaxiStyle();
-
-		expect(expectPresets).toMatchSnapshot();
-	}); */
 });

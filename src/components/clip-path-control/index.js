@@ -342,6 +342,7 @@ const ClipPathControl = props => {
 											}
 											className='clip-path-defaults__items'
 											onClick={() =>
+												newClipPath !== clipPath &&
 												onChange(newClipPath)
 											}
 										>

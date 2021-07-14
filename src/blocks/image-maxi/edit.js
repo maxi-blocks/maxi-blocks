@@ -45,7 +45,7 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
 class edit extends MaxiBlockComponent {
 	constructor(...args) {
 		super(...args);
-		const isImageUrl = this.props.attributes;
+		const { isImageUrl } = this.props.attributes;
 		this.state = {
 			isExternalClass: isImageUrl,
 		};
@@ -124,9 +124,9 @@ class edit extends MaxiBlockComponent {
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
 
-		let { isExternalClass } = this.state;
+		const { isExternalClass } = this.state;
 
-		if (typeof isExternalClass !== 'boolean') isExternalClass = false;
+		// if (typeof isExternalClass !== 'boolean') isExternalClass = false;
 
 		console.log(`isExternalClass) ${isExternalClass}`);
 

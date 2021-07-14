@@ -179,9 +179,6 @@ const LibraryContainer = props => {
 				return null;
 			});
 
-			console.log(`imagesLinks ${imagesLinks}`);
-			console.log(`imagesIds ${imagesIds}`);
-
 			if (!isEmpty(allImagesLinksParsed)) {
 				let tempContent = parsedContent;
 				const imagesLinksUniq = uniq(imagesLinks);

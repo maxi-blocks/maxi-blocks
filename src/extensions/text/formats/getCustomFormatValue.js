@@ -55,7 +55,12 @@ const getCustomFormatValue = ({
 					customFormat
 				);
 
-				if (responsiveValue) return responsiveValue;
+				if (
+					responsiveValue ||
+					isBoolean(responsiveValue) ||
+					isNumber(responsiveValue)
+				)
+					return responsiveValue;
 			}
 		}
 	}

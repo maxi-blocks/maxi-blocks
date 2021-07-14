@@ -6,8 +6,9 @@ import { removeFormat } from '@wordpress/rich-text';
 /**
  * Internal dependencies
  */
-import setFormatWithClass from './setFormatWithClass';
 import getFormatPosition from './getFormatPosition';
+import setFormat from './setFormat';
+
 /**
  * Removes the link and custom formats
  *
@@ -30,31 +31,25 @@ const removeLinkFormat = ({
 		formatName: 'maxi-blocks/text-link',
 		formatClassName: null,
 		formatAttributes: attributes,
-	});
+	}) || [0, formatValue.formats.length];
 
 	const removedLinkFormatValue = removeFormat(
 		{ ...formatValue, start: newStart, end: newEnd + 1 },
 		'maxi-blocks/text-link'
 	);
 
-	const {
-		typography: newTypography,
-		content: newContent,
-	} = setFormatWithClass({
-		formatValue: removedLinkFormatValue,
+	return setFormat({
+		formatValue: {
+			...removedLinkFormatValue,
+			end: removedLinkFormatValue.end - 1,
+		},
 		isList,
 		typography,
 		value: {
-			color: '',
 			'text-decoration': '',
 		},
 		textLevel,
 	});
-
-	return {
-		typography: newTypography,
-		content: newContent,
-	};
 };
 
 export default removeLinkFormat;

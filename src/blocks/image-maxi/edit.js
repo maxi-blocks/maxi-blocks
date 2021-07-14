@@ -126,10 +126,6 @@ class edit extends MaxiBlockComponent {
 
 		const { isExternalClass } = this.state;
 
-		// if (typeof isExternalClass !== 'boolean') isExternalClass = false;
-
-		console.log(`isExternalClass) ${isExternalClass}`);
-
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}

@@ -146,15 +146,6 @@ const LibraryContainer = props => {
 
 			onRequestClose();
 
-			// const imagesRegexp = new RegExp(
-			// 	'(?=https).*?(?:jpeg|jpg|png|svg)',
-			// 	'g'
-			// );
-			// const imagesLinks = parsedContent.match(imagesRegexp);
-
-			// const idsRegexp = new RegExp('(?<=mediaID":)(.*?)(?=,)', 'g');
-			// const imagesIds = parsedContent.match(idsRegexp);
-
 			const imagesLinks = [];
 			const imagesIds = [];
 
@@ -170,7 +161,7 @@ const LibraryContainer = props => {
 				imagesIds.push(id);
 
 				const urlRegexp = new RegExp(
-					'(?<="mediaURL":")(.*?)(?=",)',
+					'(?<=mediaURL":")(.*?)(?=",)',
 					'g'
 				);
 				const url = parsed.match(urlRegexp);
@@ -208,8 +199,6 @@ const LibraryContainer = props => {
 					{}
 				);
 
-				console.log(`imagesUniq: ${JSON.stringify(imagesUniq)}`);
-
 				Object.entries(imagesUniq).map(image => {
 					const id = image[0];
 					const url = image[1];
@@ -219,7 +208,6 @@ const LibraryContainer = props => {
 						tempContent = tempContent.replaceAll(id, data.id);
 						counter -= 1;
 						if (counter === 0) {
-							console.log(`content replace ${tempContent}`);
 							replaceBlock(
 								clientId,
 								wp.blocks.rawHandler({

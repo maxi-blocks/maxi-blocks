@@ -152,6 +152,24 @@ const LibraryContainer = props => {
 			);
 			const imagesLinks = parsedContent.match(imagesRegexp);
 
+			const allImagesRegexp = new RegExp('mediaID":(.*)",', 'g');
+
+			const allImagesLinks = parsedContent.match(allImagesRegexp);
+
+			console.log(allImagesLinks);
+
+			const allImagesLinksParsed = allImagesLinks.map(image => {
+				const parsed = image.replace(/\\/g, '');
+				// const idRegexp = new RegExp('mediaID\\":(.*),\\', 'g');
+				console.log(`parsed ${parsed}`);
+				// const id = image.match(idRegexp);
+				// console.log(`id ${id}`);
+
+				// const urlRegexp = new RegExp('":(.*)","');
+				// const url = image.match(idRegexp);
+				// console.log(`url ${url}`);
+			});
+
 			const idsRegexp = new RegExp('(?<=mediaID":)(.*?)(?=,)', 'g');
 			const imagesIds = parsedContent.match(idsRegexp);
 

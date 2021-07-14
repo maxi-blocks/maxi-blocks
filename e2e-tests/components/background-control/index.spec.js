@@ -19,6 +19,78 @@ describe('BackgroundControl', () => {
 		await insertBlock('Group Maxi');
 	});
 
+	it('Check Background Color Clip Path', async () => {
+		const accordionPanel = await openSidebar(page, 'background');
+
+		await accordionPanel.$$eval(
+			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
+			select => select[5].click()
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-clip-path-control .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
+			use => use.click()
+		);
+
+		await accordionPanel.$$eval('.clip-path-defaults button', click =>
+			click[0].click()
+		);
+
+		await page.waitForTimeout(1000);
+
+		const bgColorClipPathAttributes = await getBlockAttributes();
+		const bgColorClipPathResult =
+			bgColorClipPathAttributes['background-color-clip-path'];
+		const expectedBgColorClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+
+		expect(bgColorClipPathResult).toStrictEqual(expectedBgColorClipPath);
+	});
+
+	it('Check Background Color Layer Clip Path', async () => {
+		const accordionPanel = await openSidebar(page, 'background');
+
+		await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-background-control .maxi-base-control label',
+			selectLayers => selectLayers[1].click()
+		);
+
+		const selectLayer = await accordionPanel.$(
+			'.maxi-tabs-content .maxi-background-control .maxi-loader-control .maxi-base-control__field select'
+		);
+
+		const addNewLayer = await accordionPanel.$(
+			'.maxi-tabs-content .maxi-background-control .maxi-loader-control button'
+		);
+
+		await selectLayer.select('color');
+		await addNewLayer.click();
+
+		await accordionPanel.$$eval(
+			'.maxi-background-layers_options .maxi-background-layer span',
+			select => select[0].click()
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-clip-path-control .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
+			use => use.click()
+		);
+
+		await accordionPanel.$$eval('.clip-path-defaults button', click =>
+			click[0].click()
+		);
+
+		await page.waitForTimeout(1000);
+
+		const bgColorClipPathAttributes = await getBlockAttributes();
+		const bgColorClipPathResult =
+			bgColorClipPathAttributes['background-layers'][0][
+				'background-color-clip-path'
+			];
+		const expectedBgColorClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+
+		expect(bgColorClipPathResult).toStrictEqual(expectedBgColorClipPath);
+	});
+
 	it('Check Background Color', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 

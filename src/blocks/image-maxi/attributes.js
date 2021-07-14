@@ -52,6 +52,13 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
+	isImageUrl: {
+		type: 'boolean',
+		default: false,
+	},
+	externalUrl: {
+		type: 'string',
+	},
 	mediaID: {
 		type: 'number',
 	},

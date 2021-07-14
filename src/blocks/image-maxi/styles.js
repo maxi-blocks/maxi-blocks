@@ -268,6 +268,7 @@ const getStyles = props => {
 					'backgroundVideo',
 					'backgroundGradient',
 					'backgroundSVG',
+					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),

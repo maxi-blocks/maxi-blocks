@@ -1,0 +1,77 @@
+.maxi-block--backend {
+	.maxi-editor-url-input__button {
+		position: absolute;
+		top: 43px;
+		right: 0;
+		width: 40px;
+		height: 40px;
+		background: #232533;
+
+		.components-button.has-icon {
+			min-width: 40px;
+		}
+		button {
+			width: 40px;
+			height: 40px;
+		}
+		form,
+		button {
+			background: #232533;
+		}
+		svg {
+			width: 20px;
+			height: 20px;
+			fill: #fff;
+		}
+		.components-base-control__field {
+			margin-bottom: 0;
+			input {
+				padding-top: 11px;
+				padding-bottom: 12px;
+				width: 300px;
+				font-size: 14px;
+			}
+		}
+		.maxi-editor-url-input__warning {
+			width: 300px;
+			font-size: 13px;
+			margin-top: 0px;
+			margin-bottom: 3px;
+			margin-left: -301px;
+			color: #ff4a17;
+			padding-left: 8px;
+			background: #fff;
+		}
+		.maxi-editor-url-input__button-modal-line {
+			display: flex;
+			flex-direction: row-reverse;
+		}
+	}
+}
+
+.maxi-row-block__container {
+	@for $i from 3 through 8 {
+		.maxi-block__resizer:first-child:nth-last-child(#{$i}) {
+			.maxi-block--backend {
+				.maxi-editor-url-input__button-modal-line {
+					flex-direction: row;
+				}
+				.maxi-editor-url-input__warning {
+					margin-left: 57px;
+				}
+			}
+		}
+	}
+	@for $i from 6 through 8 {
+		.maxi-block__resizer:nth-child(2):nth-last-child(#{$i}) {
+			.maxi-block--backend {
+				.maxi-editor-url-input__button-modal-line {
+					flex-direction: row;
+				}
+				.maxi-editor-url-input__warning {
+					margin-left: 57px;
+				}
+			}
+		}
+	}
+}

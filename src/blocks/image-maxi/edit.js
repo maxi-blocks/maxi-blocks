@@ -241,7 +241,6 @@ class edit extends MaxiBlockComponent {
 												}}
 												onSubmit={url => {
 													if (isURL(url)) {
-														// TODO: fetch url and check for the code and type
 														setAttributes({
 															isImageUrl: true,
 															externalUrl: url,

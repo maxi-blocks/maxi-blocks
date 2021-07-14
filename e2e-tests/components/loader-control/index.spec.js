@@ -57,8 +57,22 @@ describe('LoaderControl', () => {
 			select => select[50].click()
 		);
 
-		await accordionPanel.$$eval('.maxi-svg-defaults button', select =>
-			select[2].click()
+		await accordionPanel.$$eval(
+			'.maxi-settingstab-control .maxi-library-modal__action-section__buttons button',
+			click => click[0].click()
+		);
+
+		await page.waitForSelector('.maxi-library-modal');
+		const modal = await page.$('.maxi-library-modal');
+		await page.waitForSelector('.ais-SearchBox-input');
+		const modalSearcher = await modal.$('.ais-SearchBox-input');
+		await modalSearcher.focus();
+		await page.keyboard.type('angle 10');
+		await page.waitForTimeout(1000);
+		await page.waitForSelector('.angle-10-maxi-svg');
+		await page.waitForSelector('.maxi-cloud-masonry-card__button');
+		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
+			button.click()
 		);
 
 		const expectBackgroundLayers = await getBlockAttributes();

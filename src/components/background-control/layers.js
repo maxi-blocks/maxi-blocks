@@ -3,6 +3,8 @@
  */
 export const colorOptions = {
 	type: 'color',
+	'background-palette-color-status': true,
+	'background-palette-color': 1,
 	'background-color': '',
 	'background-color-clip-path': '',
 };
@@ -53,7 +55,8 @@ export const gradientOptions = {
 
 export const SVGOptions = {
 	type: 'shape',
-	'background-svg-SVGCurrentElement': '',
+	'background-palette-svg-color-status': true,
+	'background-palette-svg-color': 5,
 	'background-svg-SVGElement': '',
 	'background-svg-SVGData': {},
 	'background-svg-SVGMediaID': null,

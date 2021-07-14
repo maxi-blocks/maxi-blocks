@@ -30,7 +30,6 @@ import {
 	ResponsiveControl,
 	SelectControl,
 	SettingTabsControl,
-	SVGDefaultsDisplayer,
 	TransformControl,
 	TypographyControl,
 	InfoBox,
@@ -41,12 +40,12 @@ import {
 	getDefaultAttribute,
 	getGroupAttributes,
 } from '../../extensions/styles';
-import { injectImgSVG } from '../../extensions/svg/utils';
+import MaxiModal from '../../editor/library/modal';
 
 /**
  * External dependencies
  */
-import { capitalize, isEmpty, isNil, isObject } from 'lodash';
+import { capitalize, isEmpty, isNil } from 'lodash';
 
 /**
  * Inspector
@@ -71,13 +70,10 @@ const Inspector = props => {
 		captionType,
 		captionContent,
 		mediaID,
-		mediaURL,
 		extraClassName,
 		mediaAlt,
 		altSelector,
 		clipPath,
-		SVGData,
-		SVGCurrentElement,
 		imageRatio,
 	} = attributes;
 	const { wpAlt, titleAlt } = altOptions || {};
@@ -973,54 +969,7 @@ const Inspector = props => {
 										{
 											label: __('Shape', 'maxi-blocks'),
 											content: (
-												<SVGDefaultsDisplayer
-													usedPlace='image-shape'
-													SVGOptions={SVGData}
-													SVGCurrentElement={
-														SVGCurrentElement
-													}
-													onChange={SVGOptions => {
-														if (
-															!isEmpty(SVGOptions)
-														) {
-															const SVGValue =
-																!isObject(
-																	SVGOptions.SVGData
-																)
-																	? SVGOptions.SVGData
-																	: SVGOptions.SVGData;
-
-															const el =
-																Object.keys(
-																	SVGValue
-																)[0];
-
-															SVGValue[
-																el
-															].imageID = mediaID;
-															SVGValue[
-																el
-															].imageURL = mediaURL;
-
-															setAttributes({
-																...SVGOptions,
-																SVGCurrentElement:
-																	SVGOptions.SVGCurrentElement,
-																SVGElement:
-																	injectImgSVG(
-																		SVGOptions.SVGElement,
-																		SVGValue
-																	).outerHTML,
-															});
-														} else {
-															setAttributes({
-																SVGCurrentElement:
-																	'',
-																SVGElement: '',
-															});
-														}
-													}}
-												/>
+												<MaxiModal type='image-shape' />
 											),
 										},
 										{

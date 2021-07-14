@@ -120,6 +120,7 @@ const BackgroundControl = props => {
 					disableGradient={disableGradient}
 					disableColor={disableColor}
 					disableSVG={disableSVG}
+					clientId={clientId}
 				/>
 			)}
 			{!layersStatus && getOptions().length > 1 && (
@@ -210,7 +211,6 @@ const BackgroundControl = props => {
 					)}
 					{!disableSVG && backgroundActiveMedia === 'svg' && (
 						<SVGLayer
-							{...getGroupAttributes(props, 'svg')}
 							SVGOptions={{
 								...getGroupAttributes(
 									props,

@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
 import { MediaUpload } from '@wordpress/block-editor';
+import { isURL } from '@wordpress/url';
 
 /**
  * Internal dependencies
@@ -20,9 +21,9 @@ import {
 	HoverPreview,
 	MaxiBlockComponent,
 	Toolbar,
-	Spinner,
 	Placeholder,
 	RawHTML,
+	ImageURL,
 } from '../../components';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
 
@@ -42,6 +43,14 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
  * Content
  */
 class edit extends MaxiBlockComponent {
+	constructor(...args) {
+		super(...args);
+		const { isImageUrl } = this.props.attributes;
+		this.state = {
+			isExternalClass: isImageUrl,
+		};
+	}
+
 	get getWrapperWidth() {
 		const target = document.getElementById(`block-${this.props.clientId}`);
 		if (target) return target.getBoundingClientRect().width;
@@ -90,6 +99,7 @@ class edit extends MaxiBlockComponent {
 			imageRatio,
 			'hover-type': hoverType,
 			'hover-preview': hoverPreview,
+			externalUrl,
 		} = attributes;
 
 		const classes = classnames(
@@ -113,6 +123,8 @@ class edit extends MaxiBlockComponent {
 			hoverType !== 'none' &&
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
+
+		const { isExternalClass } = this.state;
 
 		return [
 			<Inspector
@@ -144,7 +156,9 @@ class edit extends MaxiBlockComponent {
 							mediaURL: media.url,
 							mediaWidth: media.width,
 							mediaHeight: media.height,
+							isImageUrl: false,
 						});
+						this.setState({ isExternalClass: false });
 						if (!isEmpty(attributes.SVGData)) {
 							const cleanedContent = DOMPurify.sanitize(
 								attributes.SVGElement
@@ -210,9 +224,33 @@ class edit extends MaxiBlockComponent {
 										<div className='maxi-image-block__settings'>
 											<Button
 												className='maxi-image-block__settings__upload-button'
+												label={__(
+													'Upload / Add from Media Library',
+													'maxi-blocks'
+												)}
 												showTooltip='true'
 												onClick={open}
 												icon={toolbarReplaceImage}
+											/>
+											<ImageURL
+												url={externalUrl}
+												onChange={url => {
+													setAttributes({
+														externalUrl: url,
+													});
+												}}
+												onSubmit={url => {
+													if (isURL(url)) {
+														setAttributes({
+															isImageUrl: true,
+															externalUrl: url,
+															mediaURL: url,
+														});
+														this.setState({
+															isExternalClass: true,
+														});
+													}
+												}}
 											/>
 										</div>
 										<HoverPreview
@@ -230,7 +268,11 @@ class edit extends MaxiBlockComponent {
 												<RawHTML>{SVGElement}</RawHTML>
 											) : (
 												<img
-													className={`maxi-image-block__image wp-image-${mediaID}`}
+													className={
+														isExternalClass
+															? 'maxi-image-block__image wp-image-external'
+															: `maxi-image-block__image wp-image-${mediaID}`
+													}
 													src={mediaURL}
 													width={mediaWidth}
 													height={mediaHeight}
@@ -245,11 +287,6 @@ class edit extends MaxiBlockComponent {
 										)}
 									</BlockResizer>
 								</>
-							) : mediaID ? (
-								<>
-									<Spinner />
-									<p>{__('Loading…', 'maxi-blocks')}</p>
-								</>
 							) : (
 								<div className='maxi-image-block__placeholder'>
 									<Placeholder
@@ -258,9 +295,34 @@ class edit extends MaxiBlockComponent {
 									/>
 									<Button
 										className='maxi-image-block__settings__upload-button'
+										label={__(
+											'Upload / Add from Media Library',
+											'maxi-blocks'
+										)}
 										showTooltip='true'
 										onClick={open}
 										icon={toolbarReplaceImage}
+									/>
+									<ImageURL
+										url={externalUrl}
+										onChange={url => {
+											setAttributes({
+												externalUrl: url,
+											});
+										}}
+										onSubmit={url => {
+											if (isURL(url)) {
+												// TODO: fetch url and check for the code and type
+												setAttributes({
+													isImageUrl: true,
+													externalUrl: url,
+													mediaURL: url,
+												});
+												this.setState({
+													isExternalClass: true,
+												});
+											}
+										}}
 									/>
 								</div>
 							)}

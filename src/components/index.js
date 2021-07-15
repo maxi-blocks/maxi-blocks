@@ -67,3 +67,4 @@ export { default as Toolbar } from './toolbar';
 export { default as TransformControl } from './transform-control';
 export { default as TypographyControl } from './typography-control';
 export { default as ZIndexControl } from './zindex-control';
+export { default as ImageURL } from './image-url';

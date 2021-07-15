@@ -128,3 +128,20 @@
 		}
 	}
 }
+.maxi-background-control__layers {
+	.maxi-clip-path-control {
+		.clip-path-defaults {
+			&__items {
+				height: calc(48px - 1px);
+				width: calc(48px - 1px);
+
+				&:nth-child(5n) {
+					margin-right: 0;
+				}
+				&:nth-child(6n) {
+					margin-right: 5px;
+				}
+			}
+		}
+	}
+}

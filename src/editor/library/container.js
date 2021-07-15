@@ -146,16 +146,31 @@ const LibraryContainer = props => {
 
 			onRequestClose();
 
-			const imagesRegexp = new RegExp(
-				'(?=https).*?(?:jpeg|jpg|png|svg)',
-				'g'
-			);
-			const imagesLinks = parsedContent.match(imagesRegexp);
+			const imagesLinks = [];
+			const imagesIds = [];
 
-			const idsRegexp = new RegExp('(?<=mediaID":)(.*?)(?=,)', 'g');
-			const imagesIds = parsedContent.match(idsRegexp);
+			const allImagesRegexp = new RegExp('mediaID":(.*)",', 'g');
 
-			if (!isEmpty(imagesLinks)) {
+			const allImagesLinks = parsedContent.match(allImagesRegexp);
+
+			const allImagesLinksParsed = allImagesLinks.map(image => {
+				const parsed = image.replace(/\\/g, '');
+
+				const idRegexp = new RegExp('(?<=":)(.*?)(?=,")', 'g');
+				const id = parsed.match(idRegexp);
+				imagesIds.push(id);
+
+				const urlRegexp = new RegExp(
+					'(?<=mediaURL":")(.*?)(?=",)',
+					'g'
+				);
+				const url = parsed.match(urlRegexp);
+				imagesLinks.push(url);
+
+				return null;
+			});
+
+			if (!isEmpty(allImagesLinksParsed)) {
 				let tempContent = parsedContent;
 				const imagesLinksUniq = uniq(imagesLinks);
 				const imagesIdsUniq = uniq(imagesIds);

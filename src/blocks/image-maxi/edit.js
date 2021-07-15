@@ -45,7 +45,7 @@ import { toolbarReplaceImage, placeholderImage } from '../../icons';
 class edit extends MaxiBlockComponent {
 	constructor(...args) {
 		super(...args);
-		const isImageUrl = this.props.attributes;
+		const { isImageUrl } = this.props.attributes;
 		this.state = {
 			isExternalClass: isImageUrl,
 		};

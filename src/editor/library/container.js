@@ -262,7 +262,7 @@ const LibraryContainer = props => {
 	const onRequestInsertSVG = svgCode => {
 		const clientId = select('core/block-editor').getSelectedBlockClientId();
 		const { uniqueID } =
-			select('core/editor').getBlock(clientId).attributes;
+			select('core/block-editor').getBlock(clientId).attributes;
 
 		const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
 
@@ -299,14 +299,44 @@ const LibraryContainer = props => {
 	};
 
 	const svgResults = ({ hit }) => {
+		const currentSvgAttr = select('core/block-editor').getBlock(
+			select('core/block-editor').getSelectedBlockClientId()
+		).attributes;
+
+		const fillColor = !currentSvgAttr['svg-palette-fill-color-status']
+			? currentSvgAttr['svg-fill-color']
+			: `var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-${currentSvgAttr['svg-palette-fill-color']}))`;
+
+		const lineColor = !currentSvgAttr['svg-palette-line-color-status']
+			? currentSvgAttr['svg-line-color']
+			: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${currentSvgAttr['svg-palette-line-color']}))`;
+
+		const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
+		const fillStr = `fill:${fillColor}`;
+
+		const fillRegExp2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
+		const fillStr2 = ` fill="${fillColor}`;
+
+		const strokeRegExp = new RegExp('stroke:[^n]+?(?=})', 'g');
+		const strokeStr = `stroke:${lineColor}`;
+
+		const strokeRegExp2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
+		const strokeStr2 = ` stroke="${lineColor}`;
+
+		const newContent = hit.svg_code
+			.replace(fillRegExp, fillStr)
+			.replace(fillRegExp2, fillStr2)
+			.replace(strokeRegExp, strokeStr)
+			.replace(strokeRegExp2, strokeStr2);
+
 		return (
 			<MasonryItem
 				type='svg'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
-				svgCode={hit.svg_code}
+				svgCode={newContent}
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_title}
-				onRequestInsert={() => onRequestInsertSVG(hit.svg_code)}
+				onRequestInsert={() => onRequestInsertSVG(newContent)}
 			/>
 		);
 	};

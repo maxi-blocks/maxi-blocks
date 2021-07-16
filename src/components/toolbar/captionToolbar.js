@@ -151,10 +151,10 @@ const CaptionToolbar = memo(
 								isCaptionToolbar
 							/>
 							<Alignment
-								{...getGroupAttributes(attributes, [
-									'alignment',
-									'textAlignment',
-								])}
+								{...getGroupAttributes(
+									attributes,
+									'textAlignment'
+								)}
 								onChange={obj => processAttributes(obj)}
 								breakpoint={breakpoint}
 								isCaptionToolbar

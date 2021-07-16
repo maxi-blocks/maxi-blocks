@@ -42,7 +42,7 @@ const Alignment = props => {
 
 	if (!ALLOWED_BLOCKS.includes(blockName) && !isCaptionToolbar) return null;
 
-	const isText = TEXT_BLOCKS.includes(blockName);
+	const isText = TEXT_BLOCKS.includes(blockName) || isCaptionToolbar;
 
 	const alignIcon = currentAlignIcon => {
 		switch (currentAlignIcon) {

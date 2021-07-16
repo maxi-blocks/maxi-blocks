@@ -393,8 +393,8 @@ const MaxiToolbar = memo(
 											'svg'
 										)}
 										blockName={name}
-										onChange={svgColorLine => {
-											setAttributes(svgColorLine);
+										onChange={obj => {
+											setAttributes(obj);
 										}}
 										changeSVGContent={changeSVGContent}
 										type='line'

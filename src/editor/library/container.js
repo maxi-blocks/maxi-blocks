@@ -270,10 +270,10 @@ const LibraryContainer = props => {
 		const replaceIt = `.${svgClass}`;
 
 		const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
-		const fillStr = `fill:var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-4))`;
+		const fillStr = `fill:var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-4))`;
 
 		const fillRegExp2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
-		const fillStr2 = ` fill="var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-4))`;
+		const fillStr2 = ` fill="var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-4))`;
 
 		const strokeRegExp = new RegExp('stroke:[^n]+?(?=})', 'g');
 		const strokeStr = `stroke:var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-7))`;

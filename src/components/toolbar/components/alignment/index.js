@@ -38,9 +38,9 @@ const ALLOWED_BLOCKS = [
 const TEXT_BLOCKS = ['maxi-blocks/text-maxi'];
 
 const Alignment = props => {
-	const { blockName, onChange, breakpoint } = props;
+	const { blockName, onChange, breakpoint, isCaptionToolbar = false } = props;
 
-	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
+	if (!ALLOWED_BLOCKS.includes(blockName) && !isCaptionToolbar) return null;
 
 	const isText = TEXT_BLOCKS.includes(blockName);
 

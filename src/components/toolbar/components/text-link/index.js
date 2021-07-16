@@ -250,9 +250,9 @@ const LinkContent = withFormatValue(props => {
 });
 
 const Link = props => {
-	const { blockName } = props;
+	const { blockName, isCaptionToolbar = false } = props;
 
-	if (blockName !== 'maxi-blocks/text-maxi') return null;
+	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
 	return (
 		<ToolbarPopover

@@ -219,9 +219,10 @@ const TypographyControl = withFormatValue(props => {
 		disableFormats = false,
 		isHover = false,
 		styleCardPrefix,
+		isCaptionToolbar = false,
 	} = props;
 
-	if (blockName !== 'maxi-blocks/text-maxi') return null;
+	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 

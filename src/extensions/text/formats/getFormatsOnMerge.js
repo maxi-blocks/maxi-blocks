@@ -6,11 +6,16 @@ const getFormatsOnMerge = (firstBlock, secondBlock) => {
 	const { content: secondContent, 'custom-formats': secondCustomFormats } =
 		secondBlock;
 
-	if (isEmpty(firstCustomFormats) || isEmpty(secondCustomFormats))
+	if (isEmpty(firstCustomFormats) || isEmpty(secondCustomFormats)) {
+		const newCustomFormats = merge(firstCustomFormats, secondCustomFormats);
+
 		return {
 			content: firstContent.concat(secondContent),
-			'custom-formats': merge(firstCustomFormats, secondCustomFormats),
+			...(!isEmpty(newCustomFormats) && {
+				'custom-formats': newCustomFormats,
+			}),
 		};
+	}
 
 	let newSecondContent = secondContent;
 
@@ -37,9 +42,13 @@ const getFormatsOnMerge = (firstBlock, secondBlock) => {
 		if (key !== newKey) delete secondCustomFormats[key];
 	});
 
+	const newCustomFormats = merge(firstCustomFormats, secondCustomFormats);
+
 	return {
 		content: firstContent.concat(newSecondContent),
-		'custom-formats': merge(firstCustomFormats, secondCustomFormats),
+		...(!isEmpty(newCustomFormats) && {
+			'custom-formats': newCustomFormats,
+		}),
 	};
 };
 

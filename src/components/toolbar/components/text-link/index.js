@@ -41,12 +41,30 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const LinkContent = withFormatValue(props => {
-	const { onChange, isList, formatValue, textLevel, onClose } = props;
+	const { onChange, isList, formatValue, textLevel, onClose, blockStyle } =
+		props;
 
 	const formatName = 'maxi-blocks/text-link';
 
 	const { formatOptions } = useSelect(() => {
-		const formatOptions = getActiveFormat(formatValue, formatName);
+		const isWholeLink = isEqual(
+			getFormatPosition({
+				formatValue,
+				formatName: 'maxi-blocks/text-link',
+				formatClassName: null,
+				formatAttributes: null,
+			}),
+			[0, formatValue.formats.length - 1]
+		);
+		const end = formatValue.formats.length + 1;
+		const start =
+			isWholeLink && formatValue.start === formatValue.end
+				? 0
+				: formatValue.start;
+		const formatOptions = getActiveFormat(
+			{ ...formatValue, start, end },
+			formatName
+		);
 
 		return {
 			formatOptions,
@@ -133,11 +151,12 @@ const LinkContent = withFormatValue(props => {
 
 	const removeLinkFormatHandle = () => {
 		const obj = removeLinkFormat({
-			formatValue: getUpdatedFormatValue(formatValue, linkValue),
+			formatValue,
 			isList,
 			typography,
 			textLevel,
 			attributes: linkValue,
+			blockStyle,
 		});
 
 		onChange(obj);

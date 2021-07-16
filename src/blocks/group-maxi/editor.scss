@@ -10,6 +10,11 @@
 		}
 	}
 	.block-list-appender {
+		.block-editor-button-block-appender[aria-label='Add block'] {
+			top: calc(100% - 10px);
+			left: calc(50% - 48px);
+		}
+
 		margin: 0;
 		padding: 0;
 		width: 100%;

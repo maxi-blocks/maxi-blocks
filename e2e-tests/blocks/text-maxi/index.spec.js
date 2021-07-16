@@ -417,7 +417,7 @@ describe('TextMaxi', () => {
 		await insertBlock('Text Maxi');
 
 		await setClipboardData({ html: pasteHTML });
-		await await pressKeyWithModifier('primary', 'v');
+		await pressKeyWithModifier('primary', 'v');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});

@@ -7,12 +7,11 @@ import { select, dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { fromListToText, fromTextToList } from '../../extensions/text/formats';
-
-/**
- * External dependencies
- */
-import { isEmpty, merge } from 'lodash';
+import {
+	fromListToText,
+	fromTextToList,
+	getFormatsOnMerge,
+} from '../../extensions/text/formats';
 
 const name = 'maxi-blocks/text-maxi';
 
@@ -48,14 +47,18 @@ export const onMerge = (props, forward) => {
 					: fromTextToList(nextBlockContent)
 				: nextBlockContent;
 
+			const { content: newContent, 'custom-formats': newCustomFormats } =
+				getFormatsOnMerge(
+					{ content, 'custom-formats': customFormats },
+					{
+						content: newNextBlockContent,
+						'custom-formats': nextBlockCustomFormats,
+					}
+				);
+
 			setAttributes({
-				content: content.concat(newNextBlockContent),
-				...(!isEmpty(nextBlockCustomFormats) && {
-					'custom-formats': merge(
-						customFormats,
-						nextBlockCustomFormats
-					),
-				}),
+				content: newContent,
+				'custom-formats': newCustomFormats,
 			});
 
 			removeBlock(nextBlockClientId);
@@ -75,16 +78,23 @@ export const onMerge = (props, forward) => {
 				'custom-formats': previousBlockCustomFormats,
 			} = previousBlockAttributes;
 
+			const { content: newContent, 'custom-formats': newCustomFormats } =
+				getFormatsOnMerge(
+					{
+						content: previousBlockContent,
+						'custom-formats': previousBlockCustomFormats,
+					},
+					{
+						content: attributes.isList
+							? fromListToText(content)
+							: content,
+						'custom-formats': customFormats,
+					}
+				);
+
 			updateBlockAttributes(previousBlockClientId, {
-				content: previousBlockContent.concat(
-					attributes.isList ? fromListToText(content) : content
-				),
-				...(!isEmpty(attributes['custom-formats']) && {
-					'custom-formats': merge(
-						attributes['custom-formats'],
-						previousBlockCustomFormats
-					),
-				}),
+				content: newContent,
+				'custom-formats': newCustomFormats,
 			});
 
 			removeBlock(clientId);

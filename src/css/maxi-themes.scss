@@ -57,17 +57,6 @@ body.maxi-blocks--active {
 					}
 				}
 			}
-			// backend - modal
-			.maxi-cloud-masonry-card__image {
-				svg[data-stroke],
-				svg *[data-stroke] {
-					stroke: var(--maxi-#{$style}-icon-line, #081219);
-				}
-				svg[data-fill],
-				svg *[data-fill] {
-					fill: var(--maxi-#{$style}-icon-fill, #ff4a17);
-				}
-			}
 		}
 
 		/* Individual settings per a block type */

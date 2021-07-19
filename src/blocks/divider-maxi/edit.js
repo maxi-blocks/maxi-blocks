@@ -63,7 +63,12 @@ class edit extends MaxiBlockComponent {
 		const classes = classnames(
 			lineOrientation === 'vertical'
 				? 'maxi-divider-block--vertical'
-				: 'maxi-divider-block--horizontal'
+				: 'maxi-divider-block--horizontal',
+			'maxi-divider-block__resizer',
+			`maxi-divider-block__resizer__${uniqueID}`,
+			{
+				'is-selected': isSelected,
+			}
 		);
 
 		const handleOnResizeStart = event => {
@@ -86,16 +91,13 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...this.props}
 			/>,
-			<BlockResizer
-				key={uniqueID}
-				className={classnames(
-					'maxi-block__resizer',
-					'maxi-divider-block__resizer',
-					`maxi-divider-block__resizer__${uniqueID}`,
-					{
-						'is-selected': isSelected,
-					}
-				)}
+
+			<MaxiBlock
+				key={`maxi-divider--${uniqueID}`}
+				ref={this.blockRef}
+				classes={classes}
+				{...getMaxiBlockBlockAttributes(this.props)}
+				tagName={BlockResizer}
 				size={{
 					width: '100%',
 					height: `${attributes[`height-${deviceType}`]}${
@@ -115,17 +117,10 @@ class edit extends MaxiBlockComponent {
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}
 			>
-				<MaxiBlock
-					key={`maxi-divider--${uniqueID}`}
-					ref={this.blockRef}
-					classes={classes}
-					{...getMaxiBlockBlockAttributes(this.props)}
-				>
-					{attributes['divider-border-style'] !== 'none' && (
-						<hr className='maxi-divider-block__divider' />
-					)}
-				</MaxiBlock>
-			</BlockResizer>,
+				{attributes['divider-border-style'] !== 'none' && (
+					<hr className='maxi-divider-block__divider' />
+				)}
+			</MaxiBlock>,
 		];
 	}
 }

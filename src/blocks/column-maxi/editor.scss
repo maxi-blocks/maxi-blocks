@@ -8,22 +8,15 @@
 	}
 }
 .edit-post-visual-editor {
-	.maxi-column-block__resizer {
-		div.maxi-column-block {
-			width: 100% !important;
-			max-width: 100% !important;
-			flex-basis: 100% !important;
-			margin: 0 !important;
-			height: 100%;
-			outline: 1px solid #81bdda !important;
-			vertical-align: top;
+	.maxi-column-block__resizer.maxi-column-block {
+		outline: 1px solid #81bdda !important;
+		vertical-align: top;
 
-			&.has-child-selected,
-			&.is-selected {
-				outline: 2px solid #ff4a17 !important;
-				&:focus {
-					box-shadow: none !important;
-				}
+		&.has-child-selected,
+		&.is-selected {
+			outline: 2px solid #ff4a17 !important;
+			&:focus {
+				box-shadow: none !important;
 			}
 		}
 	}

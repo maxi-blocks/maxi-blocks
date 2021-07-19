@@ -111,9 +111,14 @@ class edit extends MaxiBlockComponent {
 								propsToAvoid={['resizableObject']}
 								{...this.props}
 							/>
-							<BlockResizer
+							<MaxiBlock
+								key={`maxi-column--${uniqueID}`}
+								ref={this.blockRef}
+								{...getMaxiBlockBlockAttributes(this.props)}
+								disableMotion
+								tagName={BlockResizer}
 								resizableObject={this.resizableObject}
-								className={classnames(
+								classes={classnames(
 									'maxi-block',
 									'maxi-block--backend',
 									'maxi-column-block__resizer',
@@ -150,29 +155,22 @@ class edit extends MaxiBlockComponent {
 									});
 								}}
 							>
-								<MaxiBlock
-									key={`maxi-column--${uniqueID}`}
-									ref={this.blockRef}
-									{...getMaxiBlockBlockAttributes(this.props)}
-									disableMotion
-								>
-									<InnerBlocks
-										allowedBlocks={ALLOWED_BLOCKS}
-										orientation='horizontal'
-										renderAppender={
-											!hasInnerBlocks
-												? () => (
-														<BlockPlaceholder
-															clientId={clientId}
-														/>
-												  )
-												: () => (
-														<InnerBlocks.ButtonBlockAppender />
-												  )
-										}
-									/>
-								</MaxiBlock>
-							</BlockResizer>
+								<InnerBlocks
+									allowedBlocks={ALLOWED_BLOCKS}
+									orientation='horizontal'
+									renderAppender={
+										!hasInnerBlocks
+											? () => (
+													<BlockPlaceholder
+														clientId={clientId}
+													/>
+											  )
+											: () => (
+													<InnerBlocks.ButtonBlockAppender />
+											  )
+									}
+								/>
+							</MaxiBlock>
 						</>
 					);
 				}}

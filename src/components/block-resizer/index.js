@@ -8,11 +8,12 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
+import { forwardRef } from '@wordpress/element';
 
 /**
  * Component
  */
-const BlockResizer = props => {
+const BlockResizer = forwardRef((props, ref) => {
 	const {
 		children,
 		className,
@@ -39,10 +40,17 @@ const BlockResizer = props => {
 		...props.enable,
 	};
 
+	const handleRef = newRef => {
+		if (newRef) {
+			if (resizableObject) resizableObject.current = newRef;
+			if (ref) ref.current = newRef.resizable;
+		}
+	};
+
 	return (
 		<Resizable
 			{...rest}
-			ref={resizableObject}
+			ref={handleRef}
 			className={classes}
 			enable={enable}
 			handleClasses={{
@@ -119,6 +127,6 @@ const BlockResizer = props => {
 			{children}
 		</Resizable>
 	);
-};
+});
 
 export default BlockResizer;

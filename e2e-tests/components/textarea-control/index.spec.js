@@ -1,31 +1,37 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyWithModifier,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { openSidebar } from '../../utils';
+import { openAdvancedSidebar } from '../../utils';
 
 describe('TextareaControl', () => {
 	it('Check textarea control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
-		const accordionPanel = await openSidebar(page, 'caption');
+		const accordionPanel = await openAdvancedSidebar(page, 'hover effects');
 
-		const selectors = await accordionPanel.$(
-			'.maxi-image-caption-type select'
+		await accordionPanel.$$eval(
+			'.maxi-hover-effect-control .maxi-radio-control input',
+			buttons => buttons[2].click()
 		);
-		await selectors.select('custom');
 
-		await accordionPanel.$eval(
-			'.maxi-base-control.custom-caption .maxi-base-control__field textarea',
+		await page.$eval(
+			'.maxi-hover-effect-control .maxi-base-control__field textarea',
 			select => select.focus()
 		);
+		await pressKeyWithModifier('primary', 'a');
+		await page.keyboard.press('Backspace');
 		await page.keyboard.type('Testing everything works correctly!');
 
-		const expectText = await accordionPanel.$eval(
-			'.maxi-base-control.custom-caption .maxi-base-control__field textarea',
+		const expectText = await page.$eval(
+			'.maxi-hover-effect-control .maxi-base-control__field textarea',
 			expectHtml => expectHtml.innerHTML
 		);
 

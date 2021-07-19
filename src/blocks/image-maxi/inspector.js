@@ -34,7 +34,6 @@ import {
 	TypographyControl,
 	InfoBox,
 	ZIndexControl,
-	TextareaControl,
 } from '../../components';
 import {
 	getDefaultAttribute,
@@ -68,7 +67,6 @@ const Inspector = props => {
 		cropOptions,
 		fullWidth,
 		captionType,
-		captionContent,
 		mediaID,
 		extraClassName,
 		mediaAlt,
@@ -457,25 +455,6 @@ const Inspector = props => {
 																});
 														}}
 													/>
-													{captionType ===
-														'custom' && (
-														<TextareaControl
-															className='custom-caption'
-															placeholder={__(
-																'Add you Custom Caption here',
-																'maxi-blocks'
-															)}
-															value={
-																captionContent ||
-																''
-															}
-															onChange={captionContent =>
-																setAttributes({
-																	captionContent,
-																})
-															}
-														/>
-													)}
 													{captionType !== 'none' && (
 														<TypographyControl
 															{...getGroupAttributes(
@@ -483,21 +462,35 @@ const Inspector = props => {
 																[
 																	'typography',
 																	'textAlignment',
+																	'link',
 																]
 															)}
-															onChange={obj =>
+															textLevel='p'
+															onChange={obj => {
+																if (
+																	'content' in
+																	obj
+																) {
+																	const newCaptionContent =
+																		obj.content;
+
+																	delete obj.content;
+																	obj.captionContent =
+																		newCaptionContent;
+																}
+
 																setAttributes(
 																	obj
-																)
-															}
+																);
+															}}
 															breakpoint={
 																deviceType
 															}
 															clientId={clientId}
-															disableCustomFormats
 															blockStyle={
 																blockStyle
 															}
+															allowLink
 														/>
 													)}
 												</>

@@ -121,6 +121,7 @@ const attributes = {
 	...attributesData.hoverMargin,
 	...attributesData.hoverPadding,
 	...attributesData.hoverTitleTypography,
+	...attributesData.link,
 	...attributesData.margin,
 	...attributesData.motion,
 	...attributesData.opacity,

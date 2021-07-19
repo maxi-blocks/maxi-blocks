@@ -39,9 +39,10 @@ const TextColor = withFormatValue(props => {
 		isList,
 		textLevel,
 		styleCard,
+		isCaptionToolbar = false,
 	} = props;
 
-	if (blockName !== 'maxi-blocks/text-maxi') return null;
+	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 

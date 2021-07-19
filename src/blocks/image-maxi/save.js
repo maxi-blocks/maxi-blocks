@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { RichText } from '@wordpress/block-editor';
+
+/**
  * Internal dependencies
  */
 import { HoverPreview, RawHTML } from '../../components';
@@ -88,9 +93,11 @@ const save = props => {
 				)}
 			</HoverPreview>
 			{captionType !== 'none' && (
-				<figcaption className='maxi-image-block__caption'>
-					{captionContent}
-				</figcaption>
+				<RichText.Content
+					className='maxi-image-block__caption'
+					value={captionContent}
+					tagName='figcaption'
+				/>
 			)}
 		</MaxiBlock>
 	);

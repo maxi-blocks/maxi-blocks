@@ -153,17 +153,15 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	const changeSVGContent = (color, type) => {
-		// eslint-disable-next-line no-useless-escape
-		const replaceString1 = `${type}:(.*?)\}`;
-		const regExp1 = new RegExp(replaceString1, 'g');
+		const fillRegExp = new RegExp(`${type}:([^none])([^\\}]+)`, 'g');
+		const fillStr = `${type}:${color}`;
 
-		// eslint-disable-next-line no-useless-escape
-		const replaceString2 = `${type}="(.*?)\"`;
-		const regExp2 = new RegExp(replaceString2, 'g');
+		const fillRegExp2 = new RegExp(`${type}=[^-]([^none])([^\\"]+)`, 'g');
+		const fillStr2 = ` ${type}="${color}`;
 
-		const newContent = content
-			.replaceAll(regExp1, `${type}:${color}}`)
-			.replaceAll(regExp2, `${type}="${color}"`);
+		const newContent = ownProps.attributes.content
+			.replace(fillRegExp, fillStr)
+			.replace(fillRegExp2, fillStr2);
 
 		setAttributes({ content: newContent });
 	};

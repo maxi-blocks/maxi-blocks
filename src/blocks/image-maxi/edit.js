@@ -2,9 +2,10 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { withSelect } from '@wordpress/data';
-import { MediaUpload } from '@wordpress/block-editor';
+import { withSelect, dispatch } from '@wordpress/data';
+import { MediaUpload, RichText } from '@wordpress/block-editor';
 import { isURL } from '@wordpress/url';
+import { createRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -26,6 +27,10 @@ import {
 	ImageURL,
 } from '../../components';
 import { generateDataObject, injectImgSVG } from '../../extensions/svg/utils';
+import {
+	getHasNativeFormat,
+	setCustomFormatsWhenPaste,
+} from '../../extensions/text/formats';
 
 /**
  * External dependencies
@@ -38,6 +43,7 @@ import DOMPurify from 'dompurify';
  * Icons
  */
 import { toolbarReplaceImage, placeholderImage } from '../../icons';
+import CaptionToolbar from '../../components/toolbar/captionToolbar';
 
 /**
  * Content
@@ -49,6 +55,8 @@ class edit extends MaxiBlockComponent {
 		this.state = {
 			isExternalClass: isImageUrl,
 		};
+
+		this.textRef = createRef(null);
 	}
 
 	get getWrapperWidth() {
@@ -83,7 +91,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, imageData, setAttributes } = this.props;
+		const { attributes, imageData, setAttributes, clientId } = this.props;
 		const {
 			uniqueID,
 			fullWidth,
@@ -101,6 +109,7 @@ class edit extends MaxiBlockComponent {
 			'hover-preview': hoverPreview,
 			externalUrl,
 		} = attributes;
+		const { isExternalClass } = this.state;
 
 		const classes = classnames(
 			'maxi-image-block',
@@ -124,7 +133,67 @@ class edit extends MaxiBlockComponent {
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
 
-		const { isExternalClass } = this.state;
+		const onChangeRichText = ({ value: formatValue }) => {
+			/**
+			 * As Gutenberg doesn't allow to modify pasted content, let's do some cheats
+			 * and add some coding manually
+			 * This next script will check if there is any format directly related with
+			 * any native format and if it's so, will format it in Maxi Blocks way
+			 */
+			const hasNativeFormat = getHasNativeFormat(formatValue);
+
+			if (hasNativeFormat) {
+				const { captionContent: content } = attributes;
+
+				const cleanCustomProps = setCustomFormatsWhenPaste({
+					formatValue,
+					typography: getGroupAttributes(attributes, 'typography'),
+					isList: false,
+					content,
+					textLevel: 'p',
+				});
+
+				delete cleanCustomProps.formatValue;
+
+				setAttributes(cleanCustomProps);
+			}
+
+			// Well, how to explain this... lol
+			// React 16.13.0 introduced a warning for when a function component is updated during another component's
+			// render phase (facebook/react#17099). In version 16.13.1 the warning was adjusted to be more
+			// specific (facebook/react#18330). The warning look like:
+			// Warning: Cannot update a component (Foo) while rendering a different component (Bar).
+			// To locate the bad setState() call inside Bar, follow the stack trace as described in https://fb.me/setstate-in-render
+			//
+			// In this case the error comes from a `forceUpdate` that '@wordpress/data' triggers when updating an store.
+			// This error is not related with Maxi, but appears on our blocks. So, a way to avoid it is to set a `setTimeOut`
+			// that delays a bit the dispatch action of the store and prevents the rendering of some components while RichText
+			// is rendering. Sad but true.
+			setTimeout(() => {
+				dispatch('maxiBlocks/text').sendFormatValue(
+					formatValue,
+					clientId
+				);
+			});
+		};
+
+		/**
+		 * Prevents losing general link format when the link is affecting whole content
+		 *
+		 * In case we add a whole link format, Gutenberg doesn't keep it when creators write new content.
+		 * This method fixes it
+		 */
+		const processContent = captionContent => {
+			const isWholeLink =
+				captionContent.split('</a>').length === 2 &&
+				captionContent.startsWith('<a') &&
+				captionContent.indexOf('</a>') === captionContent.length - 5;
+
+			if (isWholeLink) {
+				const newContent = captionContent.replace('</a>', '');
+				setAttributes({ captionContent: `${newContent}</a>` });
+			} else setAttributes({ captionContent });
+		};
 
 		return [
 			<Inspector
@@ -281,9 +350,29 @@ class edit extends MaxiBlockComponent {
 											)}
 										</HoverPreview>
 										{captionType !== 'none' && (
-											<figcaption className='maxi-image-block__caption'>
-												{captionContent}
-											</figcaption>
+											<>
+												<CaptionToolbar
+													key={`caption-toolbar-${uniqueID}`}
+													ref={this.textRef}
+													{...this.props}
+												/>
+												<RichText
+													ref={this.textRef}
+													className='maxi-image-block__caption'
+													value={captionContent}
+													onChange={processContent}
+													tagName='figcaption'
+													placeholder={__(
+														'Set your Image Maxi caption here…',
+														'maxi-blocks'
+													)}
+													keepPlaceholderOnFocus
+													__unstableEmbedURLOnPaste
+													__unstableAllowPrefixTransformations
+												>
+													{onChangeRichText}
+												</RichText>
+											</>
 										)}
 									</BlockResizer>
 								</>

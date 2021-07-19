@@ -8,8 +8,10 @@ import {
 	getBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
+	getCustomFormatsStyles,
 	getDisplayStyles,
 	getHoverEffectsBackgroundStyles,
+	getLinkStyles,
 	getMarginPaddingStyles,
 	getOpacityStyles,
 	getPositionStyles,
@@ -272,6 +274,32 @@ const getStyles = props => {
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
+			...getCustomFormatsStyles(
+				' .maxi-image-block__caption',
+				props['custom-formats'],
+				false,
+				{ ...getGroupAttributes(props, 'typography') },
+				'p',
+				props.parentBlockStyle
+			),
+			...getCustomFormatsStyles(
+				':hover .maxi-image-block__caption',
+				props['custom-formats-hover'],
+				true,
+				getGroupAttributes(props, 'typographyHover'),
+				'p',
+				props.parentBlockStyle
+			),
+			...getLinkStyles(
+				{ ...getGroupAttributes(props, 'link') },
+				[' a figcaption.maxi-image-block__caption'],
+				props.parentBlockStyle
+			),
+			...getLinkStyles(
+				{ ...getGroupAttributes(props, 'link') },
+				[' figcaption.maxi-image-block__caption a'],
+				props.parentBlockStyle
+			),
 		},
 	};
 

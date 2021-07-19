@@ -71,7 +71,6 @@ const MasonryItem = props => {
 						onClick={onRequestInsert}
 					>
 						{type !== 'sc' && __('Insert', 'maxi-blocks')}
-						{type === 'sc' && __('Load', 'maxi-blocks')}
 					</Button>
 				</div>
 				{type === 'sc' && (

@@ -553,13 +553,164 @@ describe('StyleCards', () => {
 		);
 		await page.keyboard.type('Test Name');
 
-		await page.$$eval(
-			'.components-popover__content .maxi-style-cards__sc__actions button',
-			input => input[1].click()
+		await page.$eval(
+			'.components-popover__content .maxi-style-cards__sc__save button',
+			input => input.click()
 		);
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
 		const expectPresets = await receiveSavedMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
+	});
+
+	// Change Style card
+	it('Change Style Card', async () => {
+		await page.waitForTimeout(500);
+
+		await page.$$eval(
+			'.maxi-accordion-control__item .maxi-accordion-tab div',
+			accordion => accordion[7].click()
+		);
+
+		const styleCard = await page.$(
+			'.components-popover__content .maxi-blocks-sc__type--divider'
+		);
+
+		// button
+		await styleCard.$eval('.maxi-radio-control__option label', button =>
+			button.click()
+		);
+
+		// ColorControl
+		await styleCard.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.focus()
+		);
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('106D3C');
+
+		// create SC
+		await page.$eval(
+			'.components-popover__content .maxi-style-cards__sc__save input',
+			input => input.focus()
+		);
+		await page.keyboard.type('Test Name');
+
+		await page.$eval(
+			'.components-popover__content .maxi-style-cards__sc__save button',
+			input => input.click()
+		);
+
+		// change SC
+
+		const selector = await page.$(
+			'.components-popover__content .maxi-style-cards__sc__more-sc .maxi-style-cards__sc__more-sc--select select'
+		);
+
+		await selector.select('sc_maxi');
+
+		// expect
+
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const expectPresets = await receiveSavedMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
+	});
+
+	// Delete Style card
+	it('Delete Style Card', async () => {
+		await page.waitForTimeout(500);
+
+		await page.$$eval(
+			'.maxi-accordion-control__item .maxi-accordion-tab div',
+			accordion => accordion[7].click()
+		);
+
+		const styleCard = await page.$(
+			'.components-popover__content .maxi-blocks-sc__type--divider'
+		);
+
+		// button
+		await styleCard.$eval('.maxi-radio-control__option label', button =>
+			button.click()
+		);
+
+		// ColorControl
+		await styleCard.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.focus()
+		);
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('106D3C');
+
+		// create SC
+		await page.$eval(
+			'.components-popover__content .maxi-style-cards__sc__save input',
+			input => input.focus()
+		);
+		await page.keyboard.type('Test Name');
+
+		await page.$eval(
+			'.components-popover__content .maxi-style-cards__sc__save button',
+			input => input.click()
+		);
+
+		// button
+		await page.$eval(
+			'.components-popover__content .maxi-style-cards__sc__more-sc .maxi-style-cards__sc__more-sc--delete',
+			button => button.click()
+		);
+
+		// Style Card Name
+
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const expectPresets = await receiveSavedMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
+	});
+
+	//
+	it('Dark Style Preset', async () => {
+		await page.waitForTimeout(500);
+
+		// select Dark Style
+		await page.$$eval(
+			'.components-popover__content .maxi-settingstab-control .maxi-tabs-control button',
+			button => button[1].click()
+		);
+
+		// Divider
+		await page.$$eval(
+			'.maxi-accordion-control__item .maxi-accordion-tab div',
+			accordion => accordion[7].click()
+		);
+		const styleCard = await page.$(
+			'.components-popover__content .maxi-blocks-sc__type--divider'
+		);
+
+		// button
+		await styleCard.$eval('.maxi-radio-control__option label', button =>
+			button.click()
+		);
+
+		// ColorControl
+		await styleCard.$eval(
+			'.maxi-color-control .maxi-color-control__color input',
+			input => input.focus()
+		);
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('106D3C');
+
+		// Opacity
+		await styleCard.$eval('.maxi-color-control input', input =>
+			input.focus()
+		);
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('50');
+
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const expectPresets = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});

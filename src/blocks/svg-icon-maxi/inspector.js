@@ -41,6 +41,7 @@ const Inspector = props => {
 	const {
 		attributes,
 		changeSVGContent,
+		changeSVGContentWithBlockStyle,
 		changeSVGSize,
 		changeSVGStrokeWidth,
 		clientId,
@@ -89,7 +90,25 @@ const Inspector = props => {
 											isFirstOnHierarchy={
 												isFirstOnHierarchy
 											}
-											onChange={obj => setAttributes(obj)}
+											onChange={obj => {
+												setAttributes(obj);
+												changeSVGContentWithBlockStyle(
+													attributes[
+														'svg-palette-fill-color-status'
+													]
+														? `var(--maxi-${obj.parentBlockStyle}-icon-fill, var(--maxi-${obj.parentBlockStyle}-color-${attributes['svg-palette-fill-color']}))`
+														: attributes[
+																'svg-fill-color'
+														  ],
+													attributes[
+														'svg-palette-line-color-status'
+													]
+														? `var(--maxi-${obj.parentBlockStyle}-icon-line, var(--maxi-${obj.parentBlockStyle}-color-${attributes['svg-palette-line-color']}))`
+														: attributes[
+																'svg-line-color'
+														  ]
+												);
+											}}
 											clientId={clientId}
 										/>
 									</div>

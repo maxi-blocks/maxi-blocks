@@ -20,7 +20,7 @@ import getStyles from './styles';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, isNull } from 'lodash';
 
 /**
  * Content
@@ -152,16 +152,40 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		}
 	};
 
-	const changeSVGContent = (color, type) => {
-		const fillRegExp = new RegExp(`${type}:([^none])([^\\}]+)`, 'g');
-		const fillStr = `${type}:${color}`;
+	const changeSVGContentWithBlockStyle = (fillColor, strokeColor) => {
+		const fillRegExp = new RegExp('fill:([^none])([^\\}]+)', 'g');
+		const fillStr = `fill:${fillColor}`;
 
-		const fillRegExp2 = new RegExp(`${type}=[^-]([^none])([^\\"]+)`, 'g');
-		const fillStr2 = ` ${type}="${color}`;
+		const fillRegExp2 = new RegExp('fill=[^-]([^none])([^\\"]+)', 'g');
+		const fillStr2 = ` fill="${fillColor}`;
+
+		const strokeRegExp = new RegExp('stroke:([^none])([^\\}]+)', 'g');
+		const strokeStr = `stroke:${strokeColor}`;
+
+		const strokeRegExp2 = new RegExp('stroke=[^-]([^none])([^\\"]+)', 'g');
+		const strokeStr2 = ` stroke="${strokeColor}`;
 
 		const newContent = ownProps.attributes.content
 			.replace(fillRegExp, fillStr)
-			.replace(fillRegExp2, fillStr2);
+			.replace(fillRegExp2, fillStr2)
+			.replace(strokeRegExp, strokeStr)
+			.replace(strokeRegExp2, strokeStr2);
+
+		setAttributes({ content: newContent });
+	};
+
+	const changeSVGContent = (color, type) => {
+		// eslint-disable-next-line no-useless-escape
+		const replaceString1 = `${type}:(.*?)\}`;
+		const regExp1 = new RegExp(replaceString1, 'g');
+
+		// eslint-disable-next-line no-useless-escape
+		const replaceString2 = `${type}="(.*?)\"`;
+		const regExp2 = new RegExp(replaceString2, 'g');
+
+		const newContent = content
+			.replaceAll(regExp1, `${type}:${color}}`)
+			.replaceAll(regExp2, `${type}="${color}"`);
 
 		setAttributes({ content: newContent });
 	};
@@ -170,6 +194,7 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		changeSVGSize,
 		changeSVGStrokeWidth,
 		changeSVGContent,
+		changeSVGContentWithBlockStyle,
 	};
 });
 

@@ -20,7 +20,7 @@ import getStyles from './styles';
 /**
  * External dependencies
  */
-import { isEmpty, isNull } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Content

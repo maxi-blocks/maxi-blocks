@@ -274,8 +274,8 @@ const LibraryContainer = props => {
 	/** SVG Icons */
 	const onRequestInsertSVG = svgCode => {
 		const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
-		const newSvgClass = `.${currentAttributes.uniqueID} .${svgClass}`;
-		const replaceIt = `.${svgClass}`;
+		const newSvgClass = `${svgClass}__${uniqueId()}`;
+		const replaceIt = `${svgClass}`;
 
 		const finalSvgCode = svgAttributesReplacer(
 			blockStyle,

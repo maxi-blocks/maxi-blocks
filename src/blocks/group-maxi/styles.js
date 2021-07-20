@@ -15,30 +15,11 @@ import {
 
 const getNormalObject = props => {
 	const response = {
-		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
-		}),
-		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
-		}),
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(props, [
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		boxShadow: getBoxShadowStyles({
-			obj: {
-				...getGroupAttributes(props, 'boxShadow'),
-			},
-			parentBlockStyle: props.parentBlockStyle,
+		margin: getMarginPaddingStyles({
+			...getGroupAttributes(props, 'margin'),
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -89,13 +70,40 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getGroupObject = props => {
+	const response = {
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
+		padding: getMarginPaddingStyles({
+			...getGroupAttributes(props, 'padding'),
+		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: {
+			' > .maxi-group-block__group': getGroupObject(props),
+			':hover > .maxi-group-block__group': getHoverObject(props),
 			'': getNormalObject(props),
-			':hover': getHoverObject(props),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',
@@ -104,6 +112,7 @@ const getStyles = props => {
 					'backgroundVideo',
 					'backgroundGradient',
 					'backgroundSVG',
+					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
@@ -112,6 +121,7 @@ const getStyles = props => {
 					'backgroundHover',
 					'backgroundColorHover',
 					'backgroundGradientHover',
+					'borderRadiusHover',
 				]),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,

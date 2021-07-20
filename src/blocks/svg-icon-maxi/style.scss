@@ -1,6 +1,8 @@
 body.maxi-blocks--active .maxi-svg-icon-block {
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
+
 	svg {
 		z-index: 20;
 		position: relative;

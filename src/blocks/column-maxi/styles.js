@@ -18,25 +18,6 @@ import { isEmpty } from 'lodash';
 
 const getNormalObject = props => {
 	const response = {
-		boxShadow: getBoxShadowStyles({
-			obj: {
-				...getGroupAttributes(props, 'boxShadow'),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-		}),
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(props, [
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-		}),
-		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
-		}),
 		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
@@ -63,6 +44,32 @@ const getNormalObject = props => {
 					'justify-content': props.verticalAlign,
 				},
 			},
+		}),
+	};
+
+	return response;
+};
+
+const getNormalColObject = props => {
+	const response = {
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
+		padding: getMarginPaddingStyles({
+			...getGroupAttributes(props, 'padding'),
 		}),
 	};
 
@@ -118,7 +125,8 @@ const getStyles = props => {
 		[`maxi-column-block__resizer__${uniqueID}`]: getResizerObject(props),
 		[uniqueID]: {
 			'': getNormalObject(props),
-			':hover': getHoverObject(props),
+			' .block-editor-block-list__layout': getNormalColObject(props),
+			':hover .block-editor-block-list__layout': getHoverObject(props),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',
@@ -127,6 +135,7 @@ const getStyles = props => {
 					'backgroundVideo',
 					'backgroundGradient',
 					'backgroundSVG',
+					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
@@ -135,6 +144,7 @@ const getStyles = props => {
 					'backgroundHover',
 					'backgroundColorHover',
 					'backgroundGradientHover',
+					'borderRadiusHover',
 				]),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,

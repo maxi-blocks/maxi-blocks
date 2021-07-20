@@ -20,22 +20,6 @@ import { isEmpty } from 'lodash';
 
 const getNormalObject = props => {
 	let response = {
-		boxShadow: getBoxShadowStyles({
-			obj: {
-				...getGroupAttributes(props, 'boxShadow'),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-		}),
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(props, [
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-		}),
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
@@ -88,6 +72,22 @@ const getContainerObject = props => {
 		row: {
 			general: {},
 		},
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 	};
 
 	if (!isEmpty(props.horizontalAlign))
@@ -135,12 +135,13 @@ const getStyles = props => {
 		[uniqueID]: {
 			'': getNormalObject(props),
 			' .maxi-row-block__container': getContainerObject(props),
-			':hover': getHoverObject(props),
+			':hover .maxi-row-block__container': getHoverObject(props),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
 					'backgroundHover',
 					'backgroundColorHover',
 					'backgroundGradientHover',
+					'borderRadiusHover',
 				]),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
@@ -153,6 +154,7 @@ const getStyles = props => {
 					'backgroundVideo',
 					'backgroundGradient',
 					'backgroundSVG',
+					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),

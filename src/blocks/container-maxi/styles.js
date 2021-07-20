@@ -18,28 +18,12 @@ import {
 
 const getNormalObject = props => {
 	const response = {
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(props, [
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-		}),
 		size: getSizeStyles(
 			{
 				...getGroupAttributes(props, 'container'),
 			},
 			'container-'
 		),
-		boxShadow: getBoxShadowStyles({
-			obj: {
-				...getGroupAttributes(props, 'boxShadow'),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
@@ -99,6 +83,22 @@ const getContainerObject = props => {
 		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 	};
 
 	if (isFirstOnHierarchy && fullWidth === 'full')
@@ -118,7 +118,7 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: {
 			'': getNormalObject(props),
-			':hover': getHoverObject(props),
+			':hover > .maxi-container-block__container': getHoverObject(props),
 			' > .maxi-container-block__container': getContainerObject(props),
 			' .maxi-shape-divider__top': {
 				shapeDivider: {
@@ -170,6 +170,7 @@ const getStyles = props => {
 					'backgroundVideo',
 					'backgroundGradient',
 					'backgroundSVG',
+					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
@@ -178,6 +179,7 @@ const getStyles = props => {
 					'backgroundHover',
 					'backgroundColorHover',
 					'backgroundGradientHover',
+					'borderRadiusHover',
 				]),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,

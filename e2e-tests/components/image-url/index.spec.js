@@ -1,0 +1,51 @@
+/**
+ * WordPress dependencies
+ */
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+/**
+ * Internal dependencies
+ */
+import { getBlockAttributes } from '../../utils';
+
+describe('ImageURL', () => {
+	it('Check imageUrl', async () => {
+		await createNewPost();
+		await insertBlock('Image Maxi');
+
+		// select img
+		await page.$eval(
+			'.maxi-image-block__placeholder .maxi-editor-url-input__button button',
+			Url => Url.click()
+		);
+
+		await page.keyboard.type(
+			'https://www.landuum.com/wp-content/uploads/2019/03/cultura_paisajeiluminado_landuum5.jpg'
+		);
+
+		await page.$$eval(
+			'.maxi-image-block__placeholder .maxi-editor-url-input__button .maxi-editor-url-input__button-modal-line button',
+			submitUrl => submitUrl[0].click()
+		);
+
+		const expectResult =
+			'https://www.landuum.com/wp-content/uploads/2019/03/cultura_paisajeiluminado_landuum5.jpg';
+		const getImageUrl = await getBlockAttributes();
+		const getImage = getImageUrl.externalUrl;
+
+		expect(getImage).toStrictEqual(expectResult);
+
+		// invalid url
+		await page.$eval(
+			'.maxi-image-block__placeholder .maxi-editor-url-input__button button',
+			Url => Url.click()
+		);
+
+		await page.keyboard.press('Backspace');
+
+		const error = await page.$eval(
+			'.maxi-image-block__placeholder .maxi-editor-url-input__button .maxi-editor-url-input__warning',
+			expectHtml => expectHtml.innerHTML
+		);
+		expect(error).toMatchSnapshot();
+	});
+});

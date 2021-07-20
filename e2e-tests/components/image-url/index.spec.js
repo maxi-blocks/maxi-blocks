@@ -33,14 +33,26 @@ describe('ImageURL', () => {
 		const getImage = getImageUrl.externalUrl;
 
 		expect(getImage).toStrictEqual(expectResult);
+	});
 
-		// invalid url
+	it('Check invalid imageUrl', async () => {
+		await createNewPost();
+		await insertBlock('Image Maxi');
+
+		// select img
 		await page.$eval(
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button button',
 			Url => Url.click()
 		);
 
-		await page.keyboard.press('Backspace');
+		await page.keyboard.type(
+			'https://www.testImage/this/image/does/not/exist.jpg'
+		);
+
+		await page.$$eval(
+			'.maxi-image-block__placeholder .maxi-editor-url-input__button .maxi-editor-url-input__button-modal-line button',
+			submitUrl => submitUrl[0].click()
+		);
 
 		const error = await page.$eval(
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button .maxi-editor-url-input__warning',

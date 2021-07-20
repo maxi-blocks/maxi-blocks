@@ -70,7 +70,7 @@ const MasonryItem = props => {
 						className='maxi-cloud-masonry-card__button'
 						onClick={onRequestInsert}
 					>
-						{type !== 'sc' && __('Insert', 'maxi-blocks')}
+						{type !== 'sc' && __('+', 'maxi-blocks')}
 					</Button>
 				</div>
 				{type === 'sc' && (
@@ -544,22 +544,22 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
-					<div
-						className={`maxi-cloud-container__content-svg maxi-${blockStyle}`}
-					>
-						<SearchBox
-							submit={__('Find', 'maxi-blocks')}
-							autoFocus
-							searchAsYouType
-							showLoadingIndicator
-						/>
-						<RefinementList
-							className='hidden'
-							attribute='taxonomies.svg_category'
-							defaultRefinement={['Filled']}
-							showLoadingIndicator
-						/>
-						<Stats translations={resultsCount} />
+					<div className='maxi-cloud-container__content maxi-cloud-container__content-svg-shape'>
+						<div className='maxi-cloud-container__content__search-bar'>
+							<SearchBox
+								submit={__('Find', 'maxi-blocks')}
+								autoFocus
+								searchAsYouType
+								showLoadingIndicator
+							/>
+							<RefinementList
+								className='hidden'
+								attribute='taxonomies.svg_category'
+								defaultRefinement={['Filled']}
+								showLoadingIndicator
+							/>
+							<Stats translations={resultsCount} />
+						</div>
 						<InfiniteHits hitComponent={svgResults} />
 					</div>
 				</InstantSearch>
@@ -596,20 +596,22 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
-					<div className='maxi-cloud-container__content-svg-line'>
-						<SearchBox
-							submit={__('Find', 'maxi-blocks')}
-							autoFocus
-							searchAsYouType
-							showLoadingIndicator
-						/>
-						<RefinementList
-							className='hidden'
-							attribute='taxonomies.svg_category'
-							defaultRefinement={['Line']}
-							showLoadingIndicator
-						/>
-						<Stats translations={resultsCount} />
+					<div className='maxi-cloud-container__content maxi-cloud-container__content-svg-shape'>
+						<div className='maxi-cloud-container__content__search-bar'>
+							<SearchBox
+								submit={__('Find', 'maxi-blocks')}
+								autoFocus
+								searchAsYouType
+								showLoadingIndicator
+							/>
+							<RefinementList
+								className='hidden'
+								attribute='taxonomies.svg_category'
+								defaultRefinement={['Line']}
+								showLoadingIndicator
+							/>
+							<Stats translations={resultsCount} />
+						</div>
 						<InfiniteHits hitComponent={svgShapeResults} />
 					</div>
 				</InstantSearch>

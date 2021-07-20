@@ -520,9 +520,14 @@ const LibraryContainer = props => {
 
 	const resultsCount = {
 		stats(nbHits, nbSortedHits, areHitsSorted) {
-			return areHitsSorted && nbHits !== nbSortedHits
-				? `Returned: ${nbSortedHits.toLocaleString()} results of ${nbHits.toLocaleString()}`
-				: `Returned: ${nbHits.toLocaleString()} results`;
+			return areHitsSorted && nbHits !== nbSortedHits ? (
+				`Returned: ${nbSortedHits.toLocaleString()} results of ${nbHits.toLocaleString()}`
+			) : (
+				<span>
+					<strong>{nbHits.toLocaleString()}</strong>
+					<span>results</span>
+				</span>
+			);
 		},
 	};
 

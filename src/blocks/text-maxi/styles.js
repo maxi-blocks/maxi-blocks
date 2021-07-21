@@ -126,6 +126,9 @@ const getTypographyHoverObject = props => {
 			isHover: true,
 			parentBlockStyle: props.parentBlockStyle,
 			textLevel: props.textLevel,
+			normalTypography: {
+				...getGroupAttributes(props, 'typography'),
+			},
 		}),
 	};
 
@@ -190,7 +193,7 @@ const getStyles = props => {
 					: ':hover .maxi-text-block__content li',
 				props['custom-formats-hover'],
 				true,
-				getGroupAttributes(props, 'typographyHover'),
+				getGroupAttributes(props, ['typography', 'typographyHover']),
 				props.textLevel,
 				props.parentBlockStyle
 			),

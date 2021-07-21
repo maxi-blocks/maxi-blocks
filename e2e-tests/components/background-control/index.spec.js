@@ -19,6 +19,78 @@ describe('BackgroundControl', () => {
 		await insertBlock('Group Maxi');
 	});
 
+	it('Check Background Color Clip Path', async () => {
+		const accordionPanel = await openSidebar(page, 'background');
+
+		await accordionPanel.$$eval(
+			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
+			select => select[5].click()
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-clip-path-control .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
+			use => use.click()
+		);
+
+		await accordionPanel.$$eval('.clip-path-defaults button', click =>
+			click[0].click()
+		);
+
+		await page.waitForTimeout(1000);
+
+		const bgColorClipPathAttributes = await getBlockAttributes();
+		const bgColorClipPathResult =
+			bgColorClipPathAttributes['background-color-clip-path'];
+		const expectedBgColorClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+
+		expect(bgColorClipPathResult).toStrictEqual(expectedBgColorClipPath);
+	});
+
+	it('Check Background Color Layer Clip Path', async () => {
+		const accordionPanel = await openSidebar(page, 'background');
+
+		await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-background-control .maxi-base-control label',
+			selectLayers => selectLayers[1].click()
+		);
+
+		const selectLayer = await accordionPanel.$(
+			'.maxi-tabs-content .maxi-background-control .maxi-loader-control .maxi-base-control__field select'
+		);
+
+		const addNewLayer = await accordionPanel.$(
+			'.maxi-tabs-content .maxi-background-control .maxi-loader-control button'
+		);
+
+		await selectLayer.select('color');
+		await addNewLayer.click();
+
+		await accordionPanel.$$eval(
+			'.maxi-background-layers_options .maxi-background-layer span',
+			select => select[0].click()
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-clip-path-control .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
+			use => use.click()
+		);
+
+		await accordionPanel.$$eval('.clip-path-defaults button', click =>
+			click[0].click()
+		);
+
+		await page.waitForTimeout(1000);
+
+		const bgColorClipPathAttributes = await getBlockAttributes();
+		const bgColorClipPathResult =
+			bgColorClipPathAttributes['background-layers'][0][
+				'background-color-clip-path'
+			];
+		const expectedBgColorClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+
+		expect(bgColorClipPathResult).toStrictEqual(expectedBgColorClipPath);
+	});
+
 	it('Check Background Color', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
@@ -36,6 +108,37 @@ describe('BackgroundControl', () => {
 		const colorAttributes = await getBlockAttributes();
 		const result = colorAttributes['background-palette-color'];
 		const expectedColor = 4;
+
+		expect(result).toStrictEqual(expectedColor);
+	});
+
+	it('Check Background Custom Color', async () => {
+		const accordionPanel = await openSidebar(page, 'background');
+
+		await accordionPanel.$$eval(
+			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
+			select => select[5].click()
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			select => select.click()
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-color-control__color input',
+			colorInput => colorInput.focus()
+		);
+
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('000000');
+		await page.keyboard.press('Enter');
+
+		await page.waitForTimeout(500);
+
+		const colorAttributes = await getBlockAttributes();
+		const result = colorAttributes['background-color'];
+		const expectedColor = 'rgba(0,0,0,1)';
 
 		expect(result).toStrictEqual(expectedColor);
 	});
@@ -217,12 +320,14 @@ describe('BackgroundControl', () => {
 		await modalSearcher.focus();
 		await page.keyboard.type('angle 10');
 		await page.waitForTimeout(1000);
+		await page.waitForSelector('.angle-10-maxi-svg');
+		await page.waitForSelector('.maxi-cloud-masonry-card__button');
 		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
 			button.click()
 		);
 
 		const expectShape = `
-		<svg viewBox="0 0 36.1 36.1" class="angle-10-maxi-svg" data-stroke="" data-item="${uniqueID}__svg"><path fill="" data-fill="" d="M29.837 9.563L18.05 1 6.263 9.563l3.071 9.45-3.071 2.231L10.766 35.1h14.569l4.502-13.856-3.071-2.231 3.071-9.45zm-22.774.26L18.05 1.84l10.987 7.983-2.85 8.77-8.138-5.912-8.137 5.912-2.85-8.77zm18.904 9.45l-1.126 3.466H11.26l-1.126-3.466 7.917-5.752 7.917 5.752zm3.071 2.231L24.84 34.42H11.26L7.063 21.504l2.492-1.811 1.211 3.726h14.569l1.211-3.726 2.492 1.811z"></path></svg>`;
+	<svg viewBox="0 0 36.1 36.1" class="angle-10-maxi-svg" data-stroke="" data-item="${uniqueID}__svg"><path fill="" data-fill="" d="M29.837 9.563L18.05 1 6.263 9.563l3.071 9.45-3.071 2.231L10.766 35.1h14.569l4.502-13.856-3.071-2.231 3.071-9.45zm-22.774.26L18.05 1.84l10.987 7.983-2.85 8.77-8.138-5.912-8.137 5.912-2.85-8.77zm18.904 9.45l-1.126 3.466H11.26l-1.126-3.466 7.917-5.752 7.917 5.752zm3.071 2.231L24.84 34.42H11.26L7.063 21.504l2.492-1.811 1.211 3.726h14.569l1.211-3.726 2.492 1.811z"></path></svg>`;
 
 		const attributes = await getBlockAttributes();
 
@@ -231,6 +336,61 @@ describe('BackgroundControl', () => {
 				.replace(/(\r\n|\n|\r)/g, '')
 				.replace(/\s/g, '')
 		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
+	});
+
+	it('Check Background Shape Custom Color', async () => {
+		const accordionPanel = await openSidebar(page, 'background');
+		await accordionPanel.$$eval(
+			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
+			select => select[5].click()
+		);
+
+		await accordionPanel.$$eval(
+			'.maxi-settingstab-control .maxi-library-modal__action-section__buttons button',
+			click => click[0].click()
+		);
+
+		await page.waitForSelector('.maxi-library-modal');
+		const modal = await page.$('.maxi-library-modal');
+		await page.waitForSelector('.ais-SearchBox-input');
+		const modalSearcher = await modal.$('.ais-SearchBox-input');
+		await modalSearcher.focus();
+		await page.keyboard.type('angle 10');
+		await page.waitForTimeout(1000);
+		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
+			button.click()
+		);
+
+		await accordionPanel.$$eval(
+			'.maxi-background-control .maxi-settingstab-control .maxi-tabs-control button',
+			click => click[1].click()
+		);
+		await accordionPanel.$eval(
+			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			select => select.click()
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-color-control__color input',
+			colorInput => colorInput.focus()
+		);
+
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('000000');
+		await page.keyboard.press('Enter');
+
+		await page.waitForTimeout(500);
+
+		const colorAttributes = await getBlockAttributes();
+
+		const result =
+			colorAttributes['background-svg-SVGData'][
+				`${Object.keys(colorAttributes['background-svg-SVGData'])[0]}`
+			].color;
+
+		const expectedColor = 'rgba(0,0,0,1)';
+
+		expect(result).toStrictEqual(expectedColor);
 	});
 
 	it('Check Background Layers', async () => {
@@ -257,19 +417,44 @@ describe('BackgroundControl', () => {
 			'.maxi-background-layers_options .maxi-background-layer span',
 			select => select[0].click()
 		);
-		await accordionPanel.$eval(
-			'.maxi-background-layer__content .maxi-color-control__color input',
-			colorInput => colorInput.focus()
+		await accordionPanel.$$eval(
+			'.maxi-color-palette-control .maxi-sc-color-palette div',
+			select => select[3].click()
 		);
-
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('555');
+		await page.waitForTimeout(1000);
 
 		const expectAttribute = await getBlockAttributes();
 		const layers = expectAttribute['background-active-media'];
+		const bgLayerPaletteColor =
+			expectAttribute['background-layers'][0]['background-palette-color'];
 		const expectLayers = 'layers';
+		const expectedColor = 4;
 
 		expect(layers).toStrictEqual(expectLayers);
+		expect(bgLayerPaletteColor).toStrictEqual(expectedColor);
+
+		await accordionPanel.$eval(
+			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			select => select.click()
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-color-control__color input',
+			colorInput => colorInput.focus()
+		);
+
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('000000');
+		await page.keyboard.press('Enter');
+
+		await page.waitForTimeout(500);
+
+		const colorAttributes = await getBlockAttributes();
+		const bgLayerCustomColor =
+			colorAttributes['background-layers'][0]['background-color'];
+		const expectedBackgroundCustomColor = 'rgba(0,0,0,1)';
+
+		expect(bgLayerCustomColor).toStrictEqual(expectedBackgroundCustomColor);
 
 		// remove layer test
 		await accordionPanel.$$eval(
@@ -308,6 +493,7 @@ describe('BackgroundControl', () => {
 
 		await selectLayer.select('shape');
 		await addNewLayer.click();
+
 		await accordionPanel.$$eval(
 			'.maxi-background-layers_options .maxi-background-layer span',
 			select => select[50].click()
@@ -325,8 +511,68 @@ describe('BackgroundControl', () => {
 		await modalSearcher.focus();
 		await page.keyboard.type('angle 10');
 		await page.waitForTimeout(1000);
+		await page.waitForSelector('.angle-10-maxi-svg');
+		await page.waitForSelector('.maxi-cloud-masonry-card__button');
 		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
 			button.click()
+		);
+
+		await accordionPanel.$$eval(
+			'.maxi-background-control .maxi-settingstab-control .maxi-tabs-control button',
+			click => click[1].click()
+		);
+		await accordionPanel.$$eval(
+			'.maxi-color-palette-control .maxi-sc-color-palette div',
+			select => select[3].click()
+		);
+		await page.waitForTimeout(1000);
+
+		const expectShapeLayerAttribute = await getBlockAttributes();
+
+		const bgShapeLayerPaletteColor =
+			expectShapeLayerAttribute['background-layers'][4][
+				'background-palette-svg-color'
+			];
+		const expectedShapePaletteColor = 4;
+
+		expect(bgShapeLayerPaletteColor).toStrictEqual(
+			expectedShapePaletteColor
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			select => select.click()
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-color-control__color input',
+			colorInput => colorInput.focus()
+		);
+
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('000000');
+		await page.keyboard.press('Enter');
+
+		await page.waitForTimeout(500);
+
+		const shapeColorAttributes = await getBlockAttributes();
+		const bgShapeLayerCustomColor =
+			shapeColorAttributes['background-layers'][4][
+				'background-svg-SVGData'
+			][
+				`${
+					Object.keys(
+						shapeColorAttributes['background-layers'][4][
+							'background-svg-SVGData'
+						]
+					)[0]
+				}`
+			].color;
+
+		const expectedShapeBackgroundCustomColor = 'rgba(0,0,0,1)';
+
+		expect(bgShapeLayerCustomColor).toStrictEqual(
+			expectedShapeBackgroundCustomColor
 		);
 
 		const expectBackgroundLayers = await getBlockAttributes();

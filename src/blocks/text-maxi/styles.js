@@ -126,6 +126,9 @@ const getTypographyHoverObject = props => {
 			isHover: true,
 			parentBlockStyle: props.parentBlockStyle,
 			textLevel: props.textLevel,
+			normalTypography: {
+				...getGroupAttributes(props, 'typography'),
+			},
 		}),
 	};
 
@@ -162,7 +165,6 @@ const getStyles = props => {
 					'backgroundVideo',
 					'backgroundGradient',
 					'backgroundSVG',
-					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
@@ -171,7 +173,6 @@ const getStyles = props => {
 					'backgroundHover',
 					'backgroundColorHover',
 					'backgroundGradientHover',
-					'borderRadiusHover',
 				]),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
@@ -183,7 +184,8 @@ const getStyles = props => {
 				props['custom-formats'],
 				false,
 				{ ...getGroupAttributes(props, 'typography') },
-				props.textLevel
+				props.textLevel,
+				props.parentBlockStyle
 			),
 			...getCustomFormatsStyles(
 				!isList
@@ -191,22 +193,13 @@ const getStyles = props => {
 					: ':hover .maxi-text-block__content li',
 				props['custom-formats-hover'],
 				true,
-				getGroupAttributes(props, 'typographyHover'),
-				props.textLevel
-			),
-			...getLinkStyles(
-				{ ...getGroupAttributes(props, 'link') },
-				[` ${element}.maxi-text-block__content a`],
+				getGroupAttributes(props, ['typography', 'typographyHover']),
+				props.textLevel,
 				props.parentBlockStyle
 			),
 			...getLinkStyles(
 				{ ...getGroupAttributes(props, 'link') },
-				[` ${element}.maxi-text-block__content a`],
-				props.parentBlockStyle
-			),
-			...getLinkStyles(
-				{ ...getGroupAttributes(props, 'link') },
-				[` ${element}.maxi-text-block__content a`],
+				[` a ${element}.maxi-text-block__content`],
 				props.parentBlockStyle
 			),
 			...getLinkStyles(

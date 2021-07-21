@@ -45,8 +45,8 @@
 			}
 		}
 	}
+
 	.maxi-imageupload-button {
-		z-index: 1;
 		svg {
 			max-width: 100%;
 			height: auto;
@@ -59,7 +59,7 @@
 		margin: auto;
 	}
 	&__caption {
-		width: 100%;
+		width: 100% !important;
 	}
 	&__placeholder {
 		position: relative;

@@ -6,7 +6,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, isBoolean } from 'lodash';
 
 /**
  * General
@@ -25,6 +25,7 @@ const getTypographyStyles = ({
 	customFormatTypography = false,
 	parentBlockStyle,
 	textLevel = 'p',
+	normalTypography, // Just in case is hover
 }) => {
 	if (isHover && !obj[`${prefix}typography-status-hover`]) return {};
 
@@ -37,17 +38,58 @@ const getTypographyStyles = ({
 			!isCustomFormat && isHover ? '-hover' : ''
 		}`;
 
+	const getPaletteColorStatus = breakpoint => {
+		const propName = getName('palette-color-status', breakpoint);
+
+		if (isBoolean(obj[propName])) return obj[propName];
+
+		return (
+			isCustomFormat &&
+			getLastBreakpointAttribute(
+				'palette-color-status',
+				breakpoint,
+				customFormatTypography,
+				isHover
+			)
+		);
+	};
+
+	// As sometimes creators just change the value and not the unit, we need to
+	// be able to request the non-hover unit
+	const getUnitValue = (prop, breakpoint) => {
+		if (!normalTypography)
+			return getLastBreakpointAttribute(
+				`${prefix}${prop}`,
+				breakpoint,
+				isCustomFormat ? customFormatTypography : obj
+			);
+
+		const hoverUnit = getLastBreakpointAttribute(
+			`${prefix}${prop}`,
+			breakpoint,
+			isCustomFormat ? customFormatTypography : obj
+		);
+
+		if (hoverUnit) return hoverUnit;
+
+		return getLastBreakpointAttribute(
+			`${prefix}${prop}`,
+			breakpoint,
+			normalTypography
+		);
+	};
+
 	breakpoints.forEach(breakpoint => {
 		const typography = {
 			...(!isNil(obj[getName('font-family', breakpoint)]) && {
 				'font-family': obj[getName('font-family', breakpoint)],
 			}),
-			...(obj[getName('palette-color-status', breakpoint)]
+			...(getPaletteColorStatus(breakpoint)
 				? {
 						...(!isNil(
 							obj[getName('palette-color', breakpoint)]
 						) && {
-							color: `var(--maxi-light-${textLevel}-color, var(--maxi-${parentBlockStyle}-color-${
+							color: `var(--maxi-${parentBlockStyle}-${textLevel}-color, var(--maxi-${parentBlockStyle}-color-${
 								obj[getName('palette-color', breakpoint)]
 							}))`,
 						}),
@@ -60,11 +102,7 @@ const getTypographyStyles = ({
 			...(!isNil(obj[getName('font-size', breakpoint)]) && {
 				'font-size': `${
 					obj[getName('font-size', breakpoint)]
-				}${getLastBreakpointAttribute(
-					`${prefix}font-size-unit`,
-					breakpoint,
-					isCustomFormat ? customFormatTypography : obj
-				)}`,
+				}${getUnitValue('font-size-unit', breakpoint)}`,
 			}),
 			...(!isNil(obj[getName('line-height', breakpoint)]) && {
 				'line-height': `${obj[getName('line-height', breakpoint)]}${

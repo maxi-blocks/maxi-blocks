@@ -67,17 +67,16 @@ describe('MapControl', () => {
 		expect(mapMarker).toStrictEqual(expectMarker);
 
 		// Marker Opacity
-		const opacity = await accordionPanel.$$(
-			'.maxi-base-control.maxi-advanced-number-control .maxi-base-control__field input'
-		);
+		const opacity = await accordionPanel.$('.maxi-opacity-control input');
 
-		await opacity[2].focus();
+		await opacity.focus();
 		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type('50');
 
 		const expectOpacity = 0.5;
 		const mapOpacityAttribute = await getBlockAttributes();
 		const mapOpacity = mapOpacityAttribute['map-marker-opacity'];
+
 		expect(mapOpacity).toStrictEqual(expectOpacity);
 
 		// Marker Scale

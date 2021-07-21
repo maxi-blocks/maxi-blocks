@@ -57,6 +57,13 @@ class MaxiBlocks_StyleCards {
 				: $style_card['_maxi_blocks_style_card'];
 
 		if (!$style || empty($style)) {
+			$style =
+				is_preview() || is_admin() // If one fail, let's test the other one!
+					? $style_card['_maxi_blocks_style_card']
+					: $style_card['_maxi_blocks_style_card_preview'];
+		}
+
+		if (!$style || empty($style)) {
 			return false;
 		}
 

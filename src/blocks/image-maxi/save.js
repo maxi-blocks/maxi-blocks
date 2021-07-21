@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { RichText } from '@wordpress/block-editor';
+
+/**
  * Internal dependencies
  */
 import { HoverPreview, RawHTML } from '../../components';
@@ -31,6 +36,7 @@ const save = props => {
 		fullWidth,
 		'hover-type': hoverType,
 		'hover-preview': hoverPreview,
+		isImageUrl,
 	} = attributes;
 
 	const name = 'maxi-blocks/image-maxi';
@@ -74,7 +80,11 @@ const save = props => {
 					<RawHTML>{SVGElement}</RawHTML>
 				) : (
 					<img
-						className={`maxi-image-block__image wp-image-${mediaID}`}
+						className={
+							isImageUrl
+								? 'maxi-image-block__image wp-image-external'
+								: `maxi-image-block__image wp-image-${mediaID}`
+						}
 						src={mediaURL}
 						width={mediaWidth}
 						height={mediaHeight}
@@ -83,9 +93,11 @@ const save = props => {
 				)}
 			</HoverPreview>
 			{captionType !== 'none' && (
-				<figcaption className='maxi-image-block__caption'>
-					{captionContent}
-				</figcaption>
+				<RichText.Content
+					className='maxi-image-block__caption'
+					value={captionContent}
+					tagName='figcaption'
+				/>
 			)}
 		</MaxiBlock>
 	);

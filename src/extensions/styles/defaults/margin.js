@@ -1,15 +1,15 @@
 const margin = {
 	'margin-top-general': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-right-general': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-bottom-general': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-left-general': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-sync-general': {
 		type: 'boolean',
@@ -20,16 +20,16 @@ const margin = {
 		default: 'px',
 	},
 	'margin-top-xxl': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-right-xxl': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-bottom-xxl': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-left-xxl': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-sync-xxl': {
 		type: 'boolean',
@@ -38,16 +38,16 @@ const margin = {
 		type: 'string',
 	},
 	'margin-top-xl': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-right-xl': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-bottom-xl': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-left-xl': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-sync-xl': {
 		type: 'boolean',
@@ -56,16 +56,16 @@ const margin = {
 		type: 'string',
 	},
 	'margin-top-l': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-right-l': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-bottom-l': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-left-l': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-sync-l': {
 		type: 'boolean',
@@ -74,16 +74,16 @@ const margin = {
 		type: 'string',
 	},
 	'margin-top-m': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-right-m': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-bottom-m': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-left-m': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-sync-m': {
 		type: 'boolean',
@@ -92,16 +92,16 @@ const margin = {
 		type: 'string',
 	},
 	'margin-top-s': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-right-s': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-bottom-s': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-left-s': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-sync-s': {
 		type: 'boolean',
@@ -110,16 +110,16 @@ const margin = {
 		type: 'string',
 	},
 	'margin-top-xs': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-right-xs': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-bottom-xs': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-left-xs': {
-		type: 'string',
+		type: 'number',
 	},
 	'margin-sync-xs': {
 		type: 'boolean',

@@ -22,6 +22,7 @@ body.maxi-blocks--active .maxi-block {
 	box-shadow: none;
 	text-shadow: inherit;
 	transition: none;
+	line-height: 1;
 
 	&.maxi-container-block .maxi-block:not(.maxi-row-block) {
 		max-width: none;

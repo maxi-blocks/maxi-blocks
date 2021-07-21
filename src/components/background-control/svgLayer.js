@@ -9,11 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '../setting-tabs-control';
 import SVGFillControl from '../svg-fill-control';
 import AdvancedNumberControl from '../advanced-number-control';
-import {
-	getDefaultAttribute,
-	getAttributeKey,
-	getGroupAttributes,
-} from '../../extensions/styles';
+import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
 import MaxiModal from '../../editor/library/modal';
 
 /**

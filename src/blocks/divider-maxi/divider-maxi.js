@@ -9,7 +9,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType  } from '@wordpress/blocks';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Block dependencies
@@ -22,7 +22,6 @@ import save from './save';
  * Styles and icons
  */
 import './style.scss';
-import './editor.scss';
 import { dividerIcon } from '../../icons';
 
 /**

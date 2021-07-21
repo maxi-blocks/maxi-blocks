@@ -7,7 +7,11 @@ import { useState, RawHTML } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, getAttributeKey } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getAttributeKey,
+	getBlockStyle,
+} from '../../extensions/styles';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
 import FancyRadioControl from '../fancy-radio-control';
@@ -34,7 +38,7 @@ import { moveRight, toolbarSizing } from '../../icons';
  * Component
  */
 const LayerCard = props => {
-	const { onChange, onOpen, isOpen, onRemove, layerId } = props;
+	const { onChange, onOpen, isOpen, onRemove, layerId, clientId } = props;
 	const layer = cloneDeep(props.layer);
 	const { type } = layer;
 
@@ -43,11 +47,27 @@ const LayerCard = props => {
 		isOpen && 'maxi-background-layer__open'
 	);
 
+	const regexLineToChange = new RegExp('fill=".+?(?=")');
+	const changeTo = `fill="${`var(--maxi-${getBlockStyle(clientId)}-color-${
+		layer['background-palette-svg-color']
+	})`}"`;
+
+	const newSvgElement = layer['background-palette-svg-color-status']
+		? layer['background-svg-SVGElement']?.replace(
+				regexLineToChange,
+				changeTo
+		  )
+		: layer['background-svg-SVGElement'];
+
 	const previewStyles = type => {
 		switch (type) {
 			case 'color':
 				return {
-					background: layer['background-color'],
+					background: layer['background-palette-color-status']
+						? `var(--maxi-${getBlockStyle(clientId)}-color-${
+								layer['background-palette-color']
+						  })`
+						: layer['background-color'],
 				};
 			case 'gradient':
 				return {
@@ -101,9 +121,7 @@ const LayerCard = props => {
 						>
 							{type === 'shape' &&
 								layer['background-svg-SVGElement'] && (
-									<RawHTML>
-										{layer['background-svg-SVGElement']}
-									</RawHTML>
+									<RawHTML>{newSvgElement}</RawHTML>
 								)}
 						</span>
 						{getTitle(type)}
@@ -189,6 +207,7 @@ const BackgroundLayersControl = ({
 	disableGradient = false,
 	disableColor = false,
 	disableSVG = false,
+	clientId,
 	...props
 }) => {
 	const layers = cloneDeep(props.layersOptions);
@@ -320,6 +339,7 @@ const BackgroundLayersControl = ({
 									<LayerCard
 										key={`maxi-background-layers__${layer.id}`}
 										layerId={layer.id}
+										clientId={clientId}
 										layer={layer}
 										onChange={layer => {
 											layers[layer.id] = layer;

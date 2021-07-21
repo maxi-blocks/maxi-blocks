@@ -51,7 +51,7 @@ Object {
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__color": Object {
     "background": Object {
       "general": Object {
-        "background-color": "rgba(2,0,36,1)",
+        "background-color": "var(--maxi-undefined-color-1)",
         "clip-path": "rgba(2,0,36,1)",
       },
       "label": "Background Color",
@@ -139,7 +139,7 @@ Object {
       "label": "SVG Wrapper Background",
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg svg": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg svg *": Object {
     "SVGBackground": Object {
       "general": Object {
         "height": "2%",
@@ -237,7 +237,7 @@ Object {
       "label": "SVG Wrapper Background",
     },
   },
-  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg": Object {
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
     "backgroundSVG": Object {
       "general": Object {
         "height": "100%",

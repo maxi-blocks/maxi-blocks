@@ -109,6 +109,7 @@ const FullSizeControl = props => {
 						);
 					}}
 					minMaxSettings={minMaxSettings}
+					allowedUnits={['px', 'em', 'vw', '%']}
 				/>
 			)}
 			<AdvancedNumberControl
@@ -141,6 +142,7 @@ const FullSizeControl = props => {
 					);
 				}}
 				minMaxSettings={minMaxSettings}
+				allowedUnits={['px', 'em', 'vw', '%']}
 			/>
 			<FancyRadioControl
 				label={__('Advanced Width/Height', 'maxi-blocks')}
@@ -211,6 +213,7 @@ const FullSizeControl = props => {
 								);
 							}}
 							minMaxSettings={minMaxSettings}
+							allowedUnits={['px', 'em', 'vw', '%']}
 						/>
 					)}
 					<AdvancedNumberControl
@@ -247,6 +250,7 @@ const FullSizeControl = props => {
 							);
 						}}
 						minMaxSettings={minMaxSettings}
+						allowedUnits={['px', 'em', 'vw', '%']}
 					/>
 					<AdvancedNumberControl
 						label={__('Max Height', 'maxi-blocks')}
@@ -282,6 +286,7 @@ const FullSizeControl = props => {
 							);
 						}}
 						minMaxSettings={minMaxSettings}
+						allowedUnits={['px', 'em', 'vw', '%']}
 					/>
 					<AdvancedNumberControl
 						label={__('Min Height', 'maxi-blocks')}
@@ -317,6 +322,7 @@ const FullSizeControl = props => {
 							);
 						}}
 						minMaxSettings={minMaxSettings}
+						allowedUnits={['px', 'em', 'vw', '%']}
 					/>
 				</>
 			)}

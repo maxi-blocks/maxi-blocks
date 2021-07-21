@@ -30,21 +30,12 @@ import { getTypographyFromSC } from '../../extensions/style-cards';
 const SCTab = props => {
 	const {
 		type,
-		firstLabel,
-		firstColor = 'color',
-		firstColorDefault,
-		secondColor = false,
-		secondLabel,
-		secondColorDefault,
 		disableTypography = false,
 		breakpoint,
 		SC,
 		SCStyle,
 		onChangeValue,
 	} = props;
-
-	const firstColorGlobal = `${firstColor}-global`;
-	const secondColorGlobal = `${secondColor}-global`;
 
 	const options = [
 		{
@@ -61,25 +52,17 @@ const SCTab = props => {
 		<>
 			{breakpoint === 'general' && (
 				<FancyRadioControl
-					label={__(`Use Global ${firstLabel} Colour`, 'maxi-blocks')}
-					selected={processSCAttribute(SC, firstColorGlobal, type)}
+					label={__('Use Global SVG Line Colour', 'maxi-blocks')}
+					selected={processSCAttribute(SC, 'line-global', type)}
 					options={options}
 					onChange={val => {
 						onChangeValue(
 							{
-								[firstColorGlobal]: val,
+								'line-global': val,
 								...(isEmpty(
-									processSCAttribute(
-										SC,
-										firstColorGlobal,
-										type
-									)
+									processSCAttribute(SC, 'line-global', type)
 								) && {
-									[firstColor]: processSCAttribute(
-										SC,
-										firstColorDefault,
-										'color'
-									),
+									line: processSCAttribute(SC, 7, 'color'),
 								}),
 							},
 							type
@@ -88,21 +71,17 @@ const SCTab = props => {
 				/>
 			)}
 			{breakpoint === 'general' &&
-				processSCAttribute(SC, firstColorGlobal, type) && (
+				processSCAttribute(SC, 'line-global', type) && (
 					<ColorControl
-						label={__(`${firstLabel} Text`, 'maxi-blocks')}
-						className={`maxi-style-cards-control__sc__color--${SCStyle}`}
+						label={__('Line', 'maxi-blocks')}
+						className={`maxi-style-cards-control__sc__line--${SCStyle}`}
 						color={
-							processSCAttribute(SC, firstColor, type) ||
-							getStyleCardAttr(firstColorDefault, SCStyle, true)
+							processSCAttribute(SC, 'line', type) ||
+							getStyleCardAttr(7, SCStyle, true)
 						}
-						defaultColor={getStyleCardAttr(
-							firstColorDefault,
-							SCStyle,
-							true
-						)}
+						defaultColor={getStyleCardAttr(7, SCStyle, true)}
 						onChange={({ color }) => {
-							onChangeValue({ [firstColor]: color }, type);
+							onChangeValue({ line: color }, type);
 						}}
 						disableGradient
 						disablePalette
@@ -128,26 +107,19 @@ const SCTab = props => {
 					disableFontFamily={breakpoint !== 'general'}
 				/>
 			)}
-			{!!secondColor && breakpoint === 'general' && (
+			{breakpoint === 'general' && (
 				<FancyRadioControl
-					label={__(
-						`Use Global ${secondLabel} Colour`,
-						'maxi-blocks'
-					)}
-					selected={processSCAttribute(SC, secondColorGlobal, type)}
+					label={__('Use Global SVG Fill Colour', 'maxi-blocks')}
+					selected={processSCAttribute(SC, 'fill-global', type)}
 					options={options}
 					onChange={val => {
 						onChangeValue(
 							{
-								[secondColorGlobal]: val,
+								'fill-global': val,
 								...(isEmpty(
-									processSCAttribute(SC, secondColor, type)
+									processSCAttribute(SC, 'fill', type)
 								) && {
-									[secondColor]: processSCAttribute(
-										SC,
-										secondColorDefault,
-										'color'
-									),
+									fill: processSCAttribute(SC, 4, 'color'),
 								}),
 							},
 							type
@@ -155,23 +127,18 @@ const SCTab = props => {
 					}}
 				/>
 			)}
-			{!!secondColor &&
-				breakpoint === 'general' &&
-				processSCAttribute(SC, secondColorGlobal, type) && (
+			{breakpoint === 'general' &&
+				processSCAttribute(SC, 'fill-global', type) && (
 					<ColorControl
-						label={__(secondLabel, 'maxi-blocks')}
-						className={`maxi-style-cards-control__sc__${secondColor}--${SCStyle}`}
+						label={__('Fill', 'maxi-blocks')}
+						className={`maxi-style-cards-control__sc__fill--${SCStyle}`}
 						color={
-							processSCAttribute(SC, secondColor, type) ||
-							getStyleCardAttr(secondColorDefault, SCStyle, true)
+							processSCAttribute(SC, 'fill', type) ||
+							getStyleCardAttr(4, SCStyle, true)
 						}
-						defaultColor={getStyleCardAttr(
-							secondColorDefault,
-							SCStyle,
-							true
-						)}
+						defaultColor={getStyleCardAttr(4, SCStyle, true)}
 						onChange={({ color }) => {
-							onChangeValue({ [secondColor]: color }, type);
+							onChangeValue({ fill: color }, type);
 						}}
 						disableGradient
 						disablePalette
@@ -539,12 +506,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					}),
 					generateTab({
 						type: 'icon',
-						firstLabel: 'SVG Icon',
-						firstColor: 'line',
-						firstColorDefault: 7,
-						secondColor: 'fill',
-						secondLabel: 'Fill',
-						secondColorDefault: 4,
+						firstLabel: 'SVG Icons',
 						disableTypography: true,
 					}),
 					generateTab({

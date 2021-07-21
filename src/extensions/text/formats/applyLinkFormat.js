@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { applyFormat } from '@wordpress/rich-text';
+import getFormattedString from './getFormattedString';
 import setFormat from './setFormat';
 
 /**
@@ -30,7 +31,7 @@ const applyLinkFormat = ({
 		attributes: linkAttributes,
 	});
 
-	return setFormat({
+	const response = setFormat({
 		formatValue: linkCustomFormatValue,
 		typography,
 		isList,
@@ -42,6 +43,13 @@ const applyLinkFormat = ({
 		textLevel,
 		returnFormatValue,
 	});
+
+	if ('content' in response) return response;
+
+	return {
+		...response,
+		content: getFormattedString({ formatValue: linkCustomFormatValue }),
+	};
 };
 
 export default applyLinkFormat;

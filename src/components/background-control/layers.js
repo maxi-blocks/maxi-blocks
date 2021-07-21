@@ -3,6 +3,8 @@
  */
 export const colorOptions = {
 	type: 'color',
+	'background-palette-color-status': true,
+	'background-palette-color': 1,
 	'background-color': '',
 	'background-color-clip-path': '',
 };

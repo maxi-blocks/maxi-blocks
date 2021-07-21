@@ -9,7 +9,10 @@ import { withSelect, withDispatch } from '@wordpress/data';
  */
 import Inspector from './inspector';
 import { BlockResizer, MaxiBlockComponent, Toolbar } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
@@ -63,7 +66,12 @@ class edit extends MaxiBlockComponent {
 		const classes = classnames(
 			lineOrientation === 'vertical'
 				? 'maxi-divider-block--vertical'
-				: 'maxi-divider-block--horizontal'
+				: 'maxi-divider-block--horizontal',
+			'maxi-divider-block__resizer',
+			`maxi-divider-block__resizer__${uniqueID}`,
+			{
+				'is-selected': isSelected,
+			}
 		);
 
 		const handleOnResizeStart = event => {
@@ -79,6 +87,18 @@ class edit extends MaxiBlockComponent {
 			});
 		};
 
+		const position = getLastBreakpointAttribute(
+			'position',
+			deviceType,
+			attributes
+		);
+
+		// BlockResizer component comes with inherit styles where position is 'relative',
+		// so we need to give style prop to change it when positioning is set 👌
+		const style = {
+			...(position && { position }),
+		};
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
@@ -86,16 +106,13 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...this.props}
 			/>,
-			<BlockResizer
-				key={uniqueID}
-				className={classnames(
-					'maxi-block__resizer',
-					'maxi-divider-block__resizer',
-					`maxi-divider-block__resizer__${uniqueID}`,
-					{
-						'is-selected': isSelected,
-					}
-				)}
+
+			<MaxiBlock
+				key={`maxi-divider--${uniqueID}`}
+				ref={this.blockRef}
+				classes={classes}
+				{...getMaxiBlockBlockAttributes(this.props)}
+				tagName={BlockResizer}
 				size={{
 					width: '100%',
 					height: `${attributes[`height-${deviceType}`]}${
@@ -114,18 +131,12 @@ class edit extends MaxiBlockComponent {
 				}}
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}
+				style={style}
 			>
-				<MaxiBlock
-					key={`maxi-divider--${uniqueID}`}
-					ref={this.blockRef}
-					classes={classes}
-					{...getMaxiBlockBlockAttributes(this.props)}
-				>
-					{attributes['divider-border-style'] !== 'none' && (
-						<hr className='maxi-divider-block__divider' />
-					)}
-				</MaxiBlock>
-			</BlockResizer>,
+				{attributes['divider-border-style'] !== 'none' && (
+					<hr className='maxi-divider-block__divider' />
+				)}
+			</MaxiBlock>,
 		];
 	}
 }

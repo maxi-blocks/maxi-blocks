@@ -8,27 +8,28 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes } from '../../utils';
 
 describe('ImageURL', () => {
-	it('Check imageUrl', async () => {
+	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
-
+	});
+	it('Check imageUrl', async () => {
 		// select img
 		await page.$eval(
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button button',
-			Url => Url.click()
+			url => url.click()
 		);
 
-		await page.keyboard.type(
-			'https://www.landuum.com/wp-content/uploads/2019/03/cultura_paisajeiluminado_landuum5.jpg'
-		);
+		const linkImage =
+			'https://www.landuum.com/wp-content/uploads/2019/03/cultura_paisajeiluminado_landuum5.jpg';
+
+		await page.keyboard.type(linkImage);
 
 		await page.$$eval(
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button .maxi-editor-url-input__button-modal-line button',
 			submitUrl => submitUrl[0].click()
 		);
 
-		const expectResult =
-			'https://www.landuum.com/wp-content/uploads/2019/03/cultura_paisajeiluminado_landuum5.jpg';
+		const expectResult = linkImage;
 		const getImageUrl = await getBlockAttributes();
 		const getImage = getImageUrl.externalUrl;
 
@@ -36,13 +37,10 @@ describe('ImageURL', () => {
 	});
 
 	it('Check invalid imageUrl', async () => {
-		await createNewPost();
-		await insertBlock('Image Maxi');
-
 		// select img
 		await page.$eval(
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button button',
-			Url => Url.click()
+			url => url.click()
 		);
 
 		await page.keyboard.type(
@@ -58,6 +56,7 @@ describe('ImageURL', () => {
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button .maxi-editor-url-input__warning',
 			expectHtml => expectHtml.innerHTML
 		);
+
 		expect(error).toMatchSnapshot();
 	});
 });

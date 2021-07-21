@@ -472,8 +472,8 @@ Object {
       },
       "styleCard": Object {
         "divider": Object {
-          "color": "rgba(16,109,60,1)",
-          "color-global": true,
+          "line": "rgba(16,109,60,1)",
+          "line-global": true,
         },
       },
     },
@@ -958,8 +958,8 @@ Object {
         "button": Object {
           "background-color": "",
           "background-color-global": false,
-          "color": "rgba(16,109,60,0.5)",
-          "color-global": true,
+          "color": "",
+          "color-global": false,
           "font-family-general": "Roboto",
           "font-size-l": 16,
           "font-size-unit-l": "px",
@@ -975,6 +975,8 @@ Object {
           "letter-spacing-unit-xxl": "px",
           "letter-spacing-xl": 5,
           "letter-spacing-xxl": 0,
+          "line": "rgba(16,109,60,0.5)",
+          "line-global": true,
           "line-height-xl": 10,
           "line-height-xxl": 1.5,
           "text-decoration-general": "unset",
@@ -983,8 +985,8 @@ Object {
           "text-transform-xl": "capitalize",
         },
         "divider": Object {
-          "color": "rgba(16,109,60,1)",
-          "color-global": true,
+          "line": "rgba(16,109,60,1)",
+          "line-global": true,
         },
       },
     },
@@ -1467,8 +1469,8 @@ Object {
       },
       "styleCard": Object {
         "divider": Object {
-          "color": "rgba(16,109,60,0.5)",
-          "color-global": true,
+          "line": "rgba(16,109,60,0.5)",
+          "line-global": true,
         },
       },
     },
@@ -1951,12 +1953,12 @@ Object {
       },
       "styleCard": Object {
         "divider": Object {
-          "color": "rgba(16,109,60,1)",
-          "color-global": true,
+          "line": "rgba(16,109,60,1)",
+          "line-global": true,
         },
         "h1": Object {
-          "color": "rgba(16,109,60,0.5)",
-          "color-global": true,
+          "color": "",
+          "color-global": false,
           "font-family-general": "Roboto",
           "font-size-l": 40,
           "font-size-m": 36,
@@ -1978,6 +1980,8 @@ Object {
           "letter-spacing-unit-xxl": "px",
           "letter-spacing-xl": 5,
           "letter-spacing-xxl": 0,
+          "line": "rgba(16,109,60,0.5)",
+          "line-global": true,
           "line-height-l": 1.22,
           "line-height-m": 1.27,
           "line-height-xl": 1.1,
@@ -2468,12 +2472,12 @@ Object {
       },
       "styleCard": Object {
         "divider": Object {
-          "color": "rgba(16,109,60,1)",
-          "color-global": true,
+          "line": "rgba(16,109,60,1)",
+          "line-global": true,
         },
         "hover": Object {
-          "color": "rgba(16,109,60,0.5)",
-          "color-global": true,
+          "line": "rgba(16,109,60,0.5)",
+          "line-global": true,
         },
       },
     },
@@ -2956,8 +2960,8 @@ Object {
       },
       "styleCard": Object {
         "divider": Object {
-          "color": "rgba(16,109,60,1)",
-          "color-global": true,
+          "line": "rgba(16,109,60,1)",
+          "line-global": true,
         },
         "link": Object {
           "hover-color": "rgba(16,109,60,1)",
@@ -3446,12 +3450,12 @@ Object {
       },
       "styleCard": Object {
         "divider": Object {
-          "color": "rgba(16,109,60,1)",
-          "color-global": true,
+          "line": "rgba(16,109,60,1)",
+          "line-global": true,
         },
         "p": Object {
-          "color": "rgba(16,109,60,0.5)",
-          "color-global": true,
+          "color": "",
+          "color-global": false,
           "font-family-general": "Roboto",
           "font-size-unit-xl": "px",
           "font-size-unit-xxl": "px",
@@ -3465,6 +3469,8 @@ Object {
           "letter-spacing-unit-xxl": "px",
           "letter-spacing-xl": 5,
           "letter-spacing-xxl": 0,
+          "line": "rgba(16,109,60,0.5)",
+          "line-global": true,
           "line-height-xl": 10,
           "line-height-xxl": 1.5,
           "text-decoration-general": "unset",
@@ -3956,8 +3962,8 @@ Object {
           "1": "rgba(16,109,60,1)",
         },
         "divider": Object {
-          "color": "rgba(16,109,60,1)",
-          "color-global": true,
+          "line": "rgba(16,109,60,1)",
+          "line-global": true,
         },
       },
     },
@@ -4440,8 +4446,8 @@ Object {
       },
       "styleCard": Object {
         "divider": Object {
-          "color": "rgba(16,109,60,1)",
-          "color-global": true,
+          "line": "rgba(16,109,60,1)",
+          "line-global": true,
         },
         "icon": Object {
           "fill": "rgba(16,109,60,0.5)",
@@ -4929,8 +4935,8 @@ Object {
       },
       "styleCard": Object {
         "divider": Object {
-          "color": "rgba(16,109,60,1)",
-          "color-global": true,
+          "line": "rgba(16,109,60,1)",
+          "line-global": true,
         },
       },
     },
@@ -5177,8 +5183,8 @@ Object {
       },
       "styleCard": Object {
         "divider": Object {
-          "color": "rgba(16,109,60,0.5)",
-          "color-global": true,
+          "line": "rgba(16,109,60,0.5)",
+          "line-global": true,
         },
       },
     },
@@ -5418,8 +5424,8 @@ Object {
       },
       "styleCard": Object {
         "divider": Object {
-          "color": "rgba(16,109,60,1)",
-          "color-global": true,
+          "line": "rgba(16,109,60,1)",
+          "line-global": true,
         },
       },
     },
@@ -5901,8 +5907,8 @@ Object {
       },
       "styleCard": Object {
         "divider": Object {
-          "color": "rgba(16,109,60,1)",
-          "color-global": true,
+          "line": "rgba(16,109,60,1)",
+          "line-global": true,
         },
       },
     },

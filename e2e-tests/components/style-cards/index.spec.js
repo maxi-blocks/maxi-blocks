@@ -31,6 +31,7 @@ describe('StyleCards', () => {
 			button => button[1].click()
 		);
 	});
+
 	it('Check Quick Pick Colour Presets', async () => {
 		await page.waitForTimeout(500);
 		await page.$$eval(
@@ -50,10 +51,15 @@ describe('StyleCards', () => {
 		await page.keyboard.type('106D3C');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const expectPresets = await receiveSelectedMaxiStyle();
+		const {
+			value: {
+				light: { styleCard: expectPresets },
+			},
+		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
+
 	it('Check Button', async () => {
 		await page.waitForTimeout(500);
 		await page.$$eval(
@@ -138,10 +144,15 @@ describe('StyleCards', () => {
 		await decorationOptions.select('overline');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const expectPresets = await receiveSelectedMaxiStyle();
+		const {
+			value: {
+				light: { styleCard: expectPresets },
+			},
+		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
+
 	it('Check Paragraph', async () => {
 		await page.waitForTimeout(500);
 		await page.$$eval(
@@ -226,7 +237,11 @@ describe('StyleCards', () => {
 		await decorationOptions.select('overline');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const expectPresets = await receiveSelectedMaxiStyle();
+		const {
+			value: {
+				light: { styleCard: expectPresets },
+			},
+		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
@@ -301,7 +316,11 @@ describe('StyleCards', () => {
 		await buttons[7].click();
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const expectPresets = await receiveSelectedMaxiStyle();
+		const {
+			value: {
+				light: { styleCard: expectPresets },
+			},
+		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
@@ -390,7 +409,11 @@ describe('StyleCards', () => {
 		await decorationSelector.select('overline');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const expectPresets = await receiveSelectedMaxiStyle();
+		const {
+			value: {
+				light: { styleCard: expectPresets },
+			},
+		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
@@ -426,7 +449,11 @@ describe('StyleCards', () => {
 		await page.keyboard.type('50');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const expectPresets = await receiveSelectedMaxiStyle();
+		const {
+			value: {
+				light: { styleCard: expectPresets },
+			},
+		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
@@ -481,7 +508,11 @@ describe('StyleCards', () => {
 		await page.keyboard.type('50');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const expectPresets = await receiveSelectedMaxiStyle();
+		const {
+			value: {
+				light: { styleCard: expectPresets },
+			},
+		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
@@ -517,7 +548,11 @@ describe('StyleCards', () => {
 		await page.keyboard.type('50');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const expectPresets = await receiveSelectedMaxiStyle();
+		const {
+			value: {
+				light: { styleCard: expectPresets },
+			},
+		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
@@ -559,6 +594,7 @@ describe('StyleCards', () => {
 		);
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+
 		const expectPresets = await receiveSavedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
@@ -613,6 +649,7 @@ describe('StyleCards', () => {
 		// expect
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+
 		const expectPresets = await receiveSavedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
@@ -665,6 +702,7 @@ describe('StyleCards', () => {
 		// Style Card Name
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+
 		const expectPresets = await receiveSavedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
@@ -710,7 +748,11 @@ describe('StyleCards', () => {
 		await page.keyboard.type('50');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-		const expectPresets = await receiveSelectedMaxiStyle();
+		const {
+			value: {
+				dark: { styleCard: expectPresets },
+			},
+		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});

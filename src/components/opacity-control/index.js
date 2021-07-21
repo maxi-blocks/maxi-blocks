@@ -29,7 +29,7 @@ const OpacityControl = props => {
 			value={
 				opacity !== undefined && opacity !== ''
 					? round(opacity * 100, 2)
-					: ''
+					: 100
 			}
 			onChangeValue={val => {
 				onChange(

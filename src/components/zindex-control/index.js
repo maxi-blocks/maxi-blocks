@@ -37,7 +37,7 @@ const ZIndexControl = props => {
 						val !== undefined && val !== '' ? val : '',
 				});
 			}}
-			min={0}
+			min={-9999}
 			max={9999}
 			onReset={() =>
 				onChange({

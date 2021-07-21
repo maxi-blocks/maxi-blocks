@@ -3,7 +3,7 @@
  */
 import { compose } from '@wordpress/compose';
 import { RawHTML } from '@wordpress/element';
-import { withSelect, withDispatch } from '@wordpress/data';
+import { withSelect, withDispatch, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -20,7 +20,7 @@ import getStyles from './styles';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
 
 /**
  * Content
@@ -33,6 +33,24 @@ class edit extends MaxiBlockComponent {
 	state = {
 		isOpen: false,
 	};
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {
+			const { updateBlockAttributes } = dispatch('core/block-editor');
+
+			const svgCode = this.props.attributes.content;
+
+			const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
+			const newSvgClass = `${svgClass}__${uniqueId()}`;
+			const replaceIt = `${svgClass}`;
+
+			const finalSvgCode = svgCode.replaceAll(replaceIt, newSvgClass);
+
+			updateBlockAttributes(this.props.clientId, {
+				content: finalSvgCode,
+			});
+		}
+	}
 
 	get getCustomData() {
 		const { uniqueID } = this.props.attributes;

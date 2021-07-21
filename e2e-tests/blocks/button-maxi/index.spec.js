@@ -44,6 +44,7 @@ describe('Button Maxi', () => {
 		await modalSearcher.focus();
 		await page.keyboard.type('alert');
 		await page.waitForTimeout(1000);
+		await page.waitForSelector('.alert-maxi-svg');
 		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
 			button.click()
 		);

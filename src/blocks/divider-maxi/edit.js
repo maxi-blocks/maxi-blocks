@@ -9,7 +9,10 @@ import { withSelect, withDispatch } from '@wordpress/data';
  */
 import Inspector from './inspector';
 import { BlockResizer, MaxiBlockComponent, Toolbar } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
@@ -84,6 +87,18 @@ class edit extends MaxiBlockComponent {
 			});
 		};
 
+		const position = getLastBreakpointAttribute(
+			'position',
+			deviceType,
+			attributes
+		);
+
+		// BlockResizer component comes with inherit styles where position is 'relative',
+		// so we need to give style prop to change it when positioning is set 👌
+		const style = {
+			...(position && { position }),
+		};
+
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar
@@ -116,6 +131,7 @@ class edit extends MaxiBlockComponent {
 				}}
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}
+				style={style}
 			>
 				{attributes['divider-border-style'] !== 'none' && (
 					<hr className='maxi-divider-block__divider' />

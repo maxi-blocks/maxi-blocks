@@ -35,6 +35,7 @@ const attributes = {
 	},
 	...attributesData.columnSize,
 	...attributesData.opacity,
+	...attributesData.background,
 	...attributesData.backgroundColor,
 	...attributesData.backgroundImage,
 	...attributesData.backgroundVideo,

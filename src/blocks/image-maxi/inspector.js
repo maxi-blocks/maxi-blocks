@@ -260,7 +260,7 @@ const Inspector = props => {
 															}}
 														/>
 													)}
-													{isImageUrl &&
+													{!isImageUrl &&
 														imageSize ===
 															'custom' && (
 															<ImageCropControl

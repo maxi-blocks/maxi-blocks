@@ -35,6 +35,8 @@ class edit extends MaxiBlockComponent {
 	};
 
 	componentDidUpdate(prevProps) {
+		this.displayStyles();
+
 		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {
 			const { updateBlockAttributes } = dispatch('core/block-editor');
 

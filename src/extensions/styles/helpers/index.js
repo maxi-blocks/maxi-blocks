@@ -20,6 +20,7 @@ export { default as getOpacityStyles } from './getOpacityStyles';
 export { default as getPositionStyles } from './getPositionStyles';
 export { default as getShapeStyles } from './getShapeStyles';
 export { default as getSizeStyles } from './getSizeStyles';
+export { default as getSvgStyles } from './getSvgStyles';
 export { default as getTransformStyles } from './getTransformStyles';
 export { default as getTypographyStyles } from './getTypographyStyles';
 export { default as getZIndexStyles } from './getZIndexStyles';

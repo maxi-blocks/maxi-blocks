@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImageURL Check invalid imageUrl 1`] = `"Please input a valid URL to an image that exists"`;

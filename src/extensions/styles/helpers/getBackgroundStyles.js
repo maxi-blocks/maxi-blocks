@@ -7,7 +7,8 @@ import getBorderStyles from './getBorderStyles';
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, round } from 'lodash';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
  * Clean BackgroundControl object for being delivered for styling
@@ -452,6 +453,55 @@ const setBackgroundLayers = ({
 	return response;
 };
 
+const getGeneralBackgroundStyles = (props, borderProps, blockStyle) => {
+	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const size = {};
+
+	breakpoints.forEach(breakpoint => {
+		const widthTop =
+			getLastBreakpointAttribute('border-top-width', breakpoint, props) ||
+			0;
+		const widthBottom =
+			getLastBreakpointAttribute(
+				'border-bottom-width',
+				breakpoint,
+				props
+			) || 0;
+		const widthLeft =
+			getLastBreakpointAttribute(
+				'border-left-width',
+				breakpoint,
+				props
+			) || 0;
+		const widthRight =
+			getLastBreakpointAttribute(
+				'border-right-width',
+				breakpoint,
+				props
+			) || 0;
+		const widthUnit = getLastBreakpointAttribute(
+			'border-unit-width',
+			breakpoint,
+			props
+		);
+		const horizontalWidth =
+			round(widthTop / 2, 2) - round(widthBottom / 2, 2);
+		const verticalWidth =
+			round(widthLeft / 2, 2) - round(widthRight / 2, 2);
+
+		size[breakpoint] = {
+			transform: `translate(calc(-50% - ${verticalWidth}${widthUnit}), calc(-50% - ${horizontalWidth}${widthUnit}))`,
+		};
+	});
+
+	const border = getBorderStyles({
+		obj: borderProps,
+		parentBlockStyle: blockStyle,
+	});
+
+	return { border, size };
+};
+
 const getBackgroundStyles = ({
 	target = '',
 	isHover = false,
@@ -463,7 +513,9 @@ const getBackgroundStyles = ({
 		backgroundVideo: 'backgroundVideo',
 		backgroundGradient: 'backgroundGradient',
 		backgroundSVG: 'backgroundSVG',
+		border: 'border',
 		borderRadius: 'borderRadius',
+		borderWidth: 'borderWidth',
 	},
 	blockStyle,
 	...props
@@ -472,16 +524,21 @@ const getBackgroundStyles = ({
 
 	let response = {
 		[`${target}${isHover ? ':hover' : ''} > .maxi-background-displayer`]: {
-			border: getBorderStyles({
-				obj: {
+			border: getGeneralBackgroundStyles(
+				props,
+				{
 					...getGroupAttributes(
 						props,
-						groupAttrNames.borderRadius,
+						[
+							groupAttrNames.border,
+							groupAttrNames.borderRadius,
+							groupAttrNames.borderWidth,
+						],
 						isHover
 					),
 				},
-				parentBlockStyle: props.parentBlockStyle,
-			}),
+				blockStyle
+			),
 		},
 	};
 

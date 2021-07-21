@@ -2968,6 +2968,8 @@ Object {
           "hover-color-global": true,
           "link-color": "rgba(16,109,60,0.5)",
           "link-color-global": false,
+          "visited-color": "#c9340a",
+          "visited-color-global": true,
         },
       },
     },

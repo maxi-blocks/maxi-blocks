@@ -11,8 +11,8 @@ import {
  */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('Dropdown', () => {
-	it('Check dropdown', async () => {
+describe('IconControl', () => {
+	it('Check Icon Control', async () => {
 		await createNewPost();
 		await insertBlock('Button Maxi');
 
@@ -93,20 +93,11 @@ describe('Dropdown', () => {
 			button => button[2].click()
 		);
 
-		await paletteColor[4].click();
-
 		// expects
 		const expectBorder = 'dashed';
 		const borderAttributes = await getBlockAttributes();
 		const border = borderAttributes['icon-border-style-general'];
 
 		expect(border).toStrictEqual(expectBorder);
-
-		const expectBorderColor = 5;
-		const borderColorAttributes = await getBlockAttributes();
-		const borderColor =
-			borderColorAttributes['icon-border-palette-color-general'];
-
-		expect(borderColor).toStrictEqual(expectBorderColor);
 	});
 });

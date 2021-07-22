@@ -1,9 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ShapeColor Checking the shape color 1`] = `
-Object {
-  "shape-maxi-12__3": Object {
-    "color": "",
-  },
-}
-`;
+exports[`ShapeColor Checking the shape color 1`] = `"<svg data-stroke class=\\"angle-9-maxi-svg\\" viewBox=\\"0 0 36.1 36.1\\"><path d=\\"M34.235 22.079c-.23-.511-5.64-14.816-6.329-15.453-.924-.348-1.091-.435-2.569-.024L3.569 12.998c-1.069.305-2.075.586-2.254 1.203-.097.435 1.274 10.836 1.73 13.555.315 1.676.205 2.365 3.28 1.849l26.388-4.657c2.977-.529 2.046-1.423 1.523-2.87z\\" fill-rule=\\"evenodd\\" data-fill fill=\\"#081219\\"/></svg>"`;

@@ -9,7 +9,7 @@ import { getTypographyFromSC } from '../../style-cards';
 /**
  * External dependencies
  */
-import { isBoolean, isNumber } from 'lodash';
+import { isBoolean, isNumber, isNil } from 'lodash';
 
 /**
  * Retrieve the property from typography object requested
@@ -80,31 +80,33 @@ const getCustomFormatValue = ({
 	// Style Cards value
 	const SCStyle = blockStyle.replace('maxi-', '');
 	const SCLevel = styleCardPrefix || textLevel;
-	const currentSC = getTypographyFromSC(styleCard[SCStyle], SCLevel);
+	if (!isNil(styleCard)) {
+		const currentSC = getTypographyFromSC(styleCard[SCStyle], SCLevel);
 
-	const currentSCValue = getLastBreakpointAttribute(
-		prop,
-		breakpoint,
-		currentSC,
-		isHover,
-		false,
-		avoidXXL
-	);
+		const currentSCValue = getLastBreakpointAttribute(
+			prop,
+			breakpoint,
+			currentSC,
+			isHover,
+			false,
+			avoidXXL
+		);
 
-	if (currentSCValue) return currentSCValue;
+		if (currentSCValue) return currentSCValue;
 
-	const defaultSC = getTypographyFromSC(styleCard[SCStyle], SCLevel);
+		const defaultSC = getTypographyFromSC(styleCard[SCStyle], SCLevel);
 
-	const defaultSCValue = getLastBreakpointAttribute(
-		prop,
-		breakpoint,
-		defaultSC,
-		isHover,
-		false,
-		avoidXXL
-	);
+		const defaultSCValue = getLastBreakpointAttribute(
+			prop,
+			breakpoint,
+			defaultSC,
+			isHover,
+			false,
+			avoidXXL
+		);
 
-	if (defaultSCValue) return defaultSCValue;
+		if (defaultSCValue) return defaultSCValue;
+	}
 
 	return '';
 };

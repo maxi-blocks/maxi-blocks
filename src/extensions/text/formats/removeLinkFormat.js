@@ -111,7 +111,7 @@ const removeLinkFormat = ({
 						textLevel,
 						returnFormatValue: true,
 				  })
-				: { formatvalue: removedLinkFormatValue, ...cleanTypography };
+				: { formatValue: removedLinkFormatValue, ...cleanTypography };
 		// Set second part
 		const secondPartTypography =
 			end !== formatLength

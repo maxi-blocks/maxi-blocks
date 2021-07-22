@@ -80,14 +80,6 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
-		// Opacity
-		await styleCard.$eval('.maxi-color-control input', input =>
-			input.focus()
-		);
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
-		await buttons[1];
-
 		// screen size L
 		await styleCard.$$eval(
 			'.maxi-typography-control .maxi-settingstab-control .maxi-tabs-control button',
@@ -172,14 +164,6 @@ describe('StyleCards', () => {
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
-
-		// Opacity
-		await styleCard.$eval('.maxi-color-control input', input =>
-			input.focus()
-		);
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
-		await buttons[1];
 
 		// screen size L
 		await styleCard.$$eval(
@@ -271,12 +255,6 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
-		// Opacity
-		const opacity = await styleCard.$$('.maxi-color-control input');
-		await opacity[0].focus();
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
-
 		// Use Global Link Hover Colour
 		// button
 		await buttons[1].click();
@@ -344,14 +322,6 @@ describe('StyleCards', () => {
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
-
-		// Opacity
-		await styleCard.$eval('.maxi-color-control input', input =>
-			input.focus()
-		);
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
-		await buttons[1];
 
 		// screen size L
 		await styleCard.$$eval(
@@ -441,13 +411,6 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
-		// Opacity
-		await styleCard.$eval('.maxi-color-control input', input =>
-			input.focus()
-		);
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
-
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
 		const {
 			value: {
@@ -480,13 +443,6 @@ describe('StyleCards', () => {
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
 
-		// Opacity
-		await styleCard.$eval('.maxi-color-control input', input =>
-			input.focus()
-		);
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
-
 		// Use Global Fill Colour
 		// button
 		await buttons[1].click();
@@ -499,13 +455,6 @@ describe('StyleCards', () => {
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
-
-		// Opacity
-		await styleCard.$eval('.maxi-color-control input', input =>
-			input.focus()
-		);
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
 		const {
@@ -539,13 +488,6 @@ describe('StyleCards', () => {
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
-
-		// Opacity
-		await styleCard.$eval('.maxi-color-control input', input =>
-			input.focus()
-		);
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
 		const {
@@ -739,13 +681,6 @@ describe('StyleCards', () => {
 		);
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('106D3C');
-
-		// Opacity
-		await styleCard.$eval('.maxi-color-control input', input =>
-			input.focus()
-		);
-		await pressKeyTimes('Backspace', '3');
-		await page.keyboard.type('50');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
 		const {

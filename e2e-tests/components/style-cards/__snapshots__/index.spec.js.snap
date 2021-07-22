@@ -500,7 +500,7 @@ Object {
     "letter-spacing-unit-xxl": "px",
     "letter-spacing-xl": 5,
     "letter-spacing-xxl": 0,
-    "line": "rgba(16,109,60,0.5)",
+    "line": "rgba(16,109,60,1)",
     "line-global": true,
     "line-height-xl": 10,
     "line-height-xxl": 1.5,
@@ -515,7 +515,7 @@ Object {
 exports[`StyleCards Check Divider 1`] = `
 Object {
   "divider": Object {
-    "line": "rgba(16,109,60,0.5)",
+    "line": "rgba(16,109,60,1)",
     "line-global": true,
   },
 }
@@ -547,7 +547,7 @@ Object {
     "letter-spacing-unit-xxl": "px",
     "letter-spacing-xl": 5,
     "letter-spacing-xxl": 0,
-    "line": "rgba(16,109,60,0.5)",
+    "line": "rgba(16,109,60,1)",
     "line-global": true,
     "line-height-l": 1.22,
     "line-height-m": 1.27,
@@ -564,7 +564,7 @@ Object {
 exports[`StyleCards Check Hover 1`] = `
 Object {
   "hover": Object {
-    "line": "rgba(16,109,60,0.5)",
+    "line": "rgba(16,109,60,1)",
     "line-global": true,
   },
 }
@@ -573,12 +573,10 @@ Object {
 exports[`StyleCards Check Link 1`] = `
 Object {
   "link": Object {
-    "hover-color": "rgba(16,109,60,1)",
+    "hover-color": "#c9340a",
     "hover-color-global": true,
-    "link-color": "rgba(16,109,60,0.5)",
-    "link-color-global": false,
-    "visited-color": "#c9340a",
-    "visited-color-global": true,
+    "link-color": "rgba(16,109,60,1)",
+    "link-color-global": true,
   },
 }
 `;
@@ -601,7 +599,7 @@ Object {
     "letter-spacing-unit-xxl": "px",
     "letter-spacing-xl": 5,
     "letter-spacing-xxl": 0,
-    "line": "rgba(16,109,60,0.5)",
+    "line": "rgba(16,109,60,1)",
     "line-global": true,
     "line-height-xl": 10,
     "line-height-xxl": 1.5,
@@ -624,10 +622,8 @@ Object {
 exports[`StyleCards Check SVG Icon 1`] = `
 Object {
   "icon": Object {
-    "fill": "rgba(16,109,60,0.5)",
-    "fill-global": true,
-    "line": "#081219",
-    "line-global": false,
+    "line": "rgba(16,109,60,1)",
+    "line-global": true,
   },
 }
 `;
@@ -1113,7 +1109,7 @@ Object {
 exports[`StyleCards Dark Style Preset 1`] = `
 Object {
   "divider": Object {
-    "line": "rgba(16,109,60,0.5)",
+    "line": "rgba(16,109,60,1)",
     "line-global": true,
   },
 }

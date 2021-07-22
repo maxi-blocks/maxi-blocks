@@ -626,21 +626,21 @@ const LibraryContainer = props => {
 
 			{type === 'patterns' && (
 				<div className='maxi-cloud-container__patterns'>
-					<PlaceholderCheckboxControl />
 					<InstantSearch
 						indexName='maxi_posts_post'
 						searchClient={searchClient}
 					>
-						<div className='maxi-cloud-container__patterns__top-menu'>
-							<Menu
-								attribute='taxonomies.gutenberg_type'
-								defaultRefinement='Block Patterns'
-							/>
-						</div>
-						<div className='maxi-cloud-container__patterns__top'>
-							<RefinementList attribute='taxonomies.cost' />
-						</div>
 						<div className='maxi-cloud-container__patterns__sidebar'>
+							<PlaceholderCheckboxControl />
+							<div className='maxi-cloud-container__patterns__sidebar__top-menu'>
+								<Menu
+									attribute='taxonomies.gutenberg_type'
+									defaultRefinement='Block Patterns'
+								/>
+							</div>
+							<div className='maxi-cloud-container__patterns__sidebar__top'>
+								<RefinementList attribute='taxonomies.cost' />
+							</div>
 							<RefinementList
 								attribute='taxonomies.light_or_dark'
 								defaultRefinement={['Light']}

@@ -185,18 +185,18 @@ class MaxiModal extends Component {
 										attributes['background-layers']
 									);
 
-									newBgLayers[layerId][
+									delete newBgLayers[layerId][
 										'background-svg-SVGElement'
-									] = '';
-									newBgLayers[layerId][
+									];
+									delete newBgLayers[layerId][
 										'background-svg-SVGMediaID'
-									] = '';
-									newBgLayers[layerId][
+									];
+									delete newBgLayers[layerId][
 										'background-svg-SVGMediaURL'
-									] = '';
-									newBgLayers[layerId][
+									];
+									delete newBgLayers[layerId][
 										'background-svg-SVGData'
-									] = {};
+									];
 
 									dispatch(
 										'core/block-editor'

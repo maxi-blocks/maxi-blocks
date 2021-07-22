@@ -38,7 +38,7 @@ class edit extends MaxiBlockComponent {
 		this.displayStyles();
 
 		if (
-			this.props === 'maxi-blocks/svg-icon-maxi' &&
+			this.props.name === 'maxi-blocks/svg-icon-maxi' &&
 			prevProps.attributes.uniqueID !== this.props.attributes.uniqueID
 		) {
 			const { updateBlockAttributes } = dispatch('core/block-editor');

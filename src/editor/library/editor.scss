@@ -81,6 +81,7 @@
 			}
 		}
 	}
+
 	.components-modal__content {
 		position: absolute;
 		width: 100%;
@@ -293,6 +294,14 @@
 
 						.maxi-cloud-masonry-card__buttons {
 							display: block !important;
+
+							.maxi-cloud-masonry-card__button {
+								transition: all 0.5s;
+
+								&:hover {
+									background-color: #ff4a17;
+								}
+							}
 						}
 					}
 					.maxi-cloud-masonry-card {
@@ -430,6 +439,7 @@
 			border: none;
 			box-shadow: 0px 5px 1rem 0px rgba(119, 119, 119, 0.1);
 			font-weight: bold;
+			background: red;
 		}
 	}
 

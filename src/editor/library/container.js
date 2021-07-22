@@ -70,7 +70,9 @@ const MasonryItem = props => {
 						className='maxi-cloud-masonry-card__button'
 						onClick={onRequestInsert}
 					>
-						{type !== 'sc' && __('+', 'maxi-blocks')}
+						{type === 'sc' || type === 'patterns'
+							? __('Load', 'maxi-blocks')
+							: __('+', 'maxi-blocks')}
 					</Button>
 				</div>
 				{type === 'sc' && (
@@ -549,8 +551,8 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
-					<div className='maxi-cloud-container__content maxi-cloud-container__content-svg-shape'>
-						<div className='maxi-cloud-container__content__search-bar'>
+					<div className='maxi-cloud-container__content-svg-shape'>
+						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus
@@ -575,8 +577,8 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
-					<div className='maxi-cloud-container__content maxi-cloud-container__content-svg-shape'>
-						<div className='maxi-cloud-container__content__search-bar'>
+					<div className='maxi-cloud-container__content-svg-shape'>
+						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus
@@ -601,8 +603,8 @@ const LibraryContainer = props => {
 					indexName='maxi_posts_svg_icon'
 					searchClient={searchClient}
 				>
-					<div className='maxi-cloud-container__content maxi-cloud-container__content-svg-shape'>
-						<div className='maxi-cloud-container__content__search-bar'>
+					<div className='maxi-cloud-container__content-svg-shape'>
+						<div className='maxi-cloud-container__content-svg-shape__search-bar'>
 							<SearchBox
 								submit={__('Find', 'maxi-blocks')}
 								autoFocus
@@ -629,16 +631,16 @@ const LibraryContainer = props => {
 						indexName='maxi_posts_post'
 						searchClient={searchClient}
 					>
-						<div className='maxi-cloud-container__top-menu'>
+						<div className='maxi-cloud-container__patterns__top-menu'>
 							<Menu
 								attribute='taxonomies.gutenberg_type'
 								defaultRefinement='Block Patterns'
 							/>
 						</div>
-						<div className='maxi-cloud-container__top'>
+						<div className='maxi-cloud-container__patterns__top'>
 							<RefinementList attribute='taxonomies.cost' />
 						</div>
-						<div className='maxi-cloud-container__sidebar'>
+						<div className='maxi-cloud-container__patterns__sidebar'>
 							<RefinementList
 								attribute='taxonomies.light_or_dark'
 								defaultRefinement={['Light']}
@@ -657,7 +659,7 @@ const LibraryContainer = props => {
 							/>
 							<ClearRefinements />
 						</div>
-						<div className='maxi-cloud-container__content-patterns'>
+						<div className='maxi-cloud-container__patterns__content-patterns'>
 							<Stats translations={resultsCount} />
 							<InfiniteHits hitComponent={patternsResults} />
 						</div>
@@ -671,7 +673,7 @@ const LibraryContainer = props => {
 						indexName='maxi_posts_style_card'
 						searchClient={searchClient}
 					>
-						<div className='maxi-cloud-container__sidebar'>
+						<div className='maxi-cloud-container__sc__sidebar'>
 							<SearchBox
 								autoFocus
 								searchAsYouType
@@ -683,7 +685,7 @@ const LibraryContainer = props => {
 							<RefinementList attribute='taxonomies.sc_style' />
 							<ClearRefinements />
 						</div>
-						<div className='maxi-cloud-container__content-sc'>
+						<div className='maxi-cloud-container__sc__content-sc'>
 							<Stats translations={resultsCount} />
 							<InfiniteHits hitComponent={scResults} />
 						</div>

@@ -522,13 +522,14 @@ const LibraryContainer = props => {
 
 	const resultsCount = {
 		stats(nbHits, nbSortedHits, areHitsSorted) {
-			return areHitsSorted && nbHits !== nbSortedHits ? (
-				`Returned: ${nbSortedHits.toLocaleString()} results of ${nbHits.toLocaleString()}`
-			) : (
-				<span>
-					<strong>{nbHits.toLocaleString()}</strong>
-					<span>results</span>
-				</span>
+			return (
+				type !== 'sc' &&
+				type !== 'patterns' && (
+					<span>
+						<strong>{nbHits.toLocaleString()}</strong>
+						<span>results</span>
+					</span>
+				)
 			);
 		},
 	};
@@ -631,6 +632,11 @@ const LibraryContainer = props => {
 						searchClient={searchClient}
 					>
 						<div className='maxi-cloud-container__patterns__sidebar'>
+							<SearchBox
+								autoFocus
+								searchAsYouType
+								showLoadingIndicator
+							/>
 							<PlaceholderCheckboxControl />
 							<div className='maxi-cloud-container__patterns__sidebar__top-menu'>
 								<Menu
@@ -644,11 +650,6 @@ const LibraryContainer = props => {
 							<RefinementList
 								attribute='taxonomies.light_or_dark'
 								defaultRefinement={['Light']}
-							/>
-							<SearchBox
-								autoFocus
-								searchAsYouType
-								showLoadingIndicator
 							/>
 							<HierarchicalMenu
 								attributes={[

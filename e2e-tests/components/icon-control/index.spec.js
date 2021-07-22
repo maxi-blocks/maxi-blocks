@@ -22,6 +22,19 @@ describe('IconControl', () => {
 			addIcon.click()
 		);
 
+		// searcher
+		await page.$eval(
+			'.components-modal__screen-overlay .components-modal__content .maxi-cloud-container .ais-SearchBox input',
+			searcher => searcher.focus()
+		);
+		await page.keyboard.type('Sword');
+
+		await page.$eval(
+			'.components-modal__screen-overlay .components-modal__content .maxi-cloud-container .ais-SearchBox button',
+			searcherButton => searcherButton.click()
+		);
+
+		// select icon
 		await page.waitForTimeout(500);
 		await page.$$eval(
 			'.components-modal__screen-overlay .components-modal__content .maxi-cloud-container .ais-InfiniteHits-list button',

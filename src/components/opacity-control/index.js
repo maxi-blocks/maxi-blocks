@@ -27,13 +27,15 @@ const OpacityControl = props => {
 			className={classes}
 			label={`${!isEmpty(label) ? label : __('Opacity', 'maxi-blocks')}`}
 			value={
-				opacity !== undefined && opacity !== ''
+				opacity !== undefined && opacity !== '' && opacity !== -1
 					? round(opacity * 100, 2)
-					: ''
+					: opacity === -1
+					? ''
+					: 100
 			}
 			onChangeValue={val => {
 				onChange(
-					val !== undefined && val !== '' ? round(val / 100, 2) : ''
+					val !== undefined && val !== '' ? round(val / 100, 2) : -1
 				);
 			}}
 			min={0}

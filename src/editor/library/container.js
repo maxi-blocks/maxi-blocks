@@ -11,7 +11,7 @@ import { CheckboxControl } from '@wordpress/components';
  */
 import Button from '../../components/button';
 import { updateSCOnEditor } from '../../extensions/style-cards';
-import imageUploader from './util';
+import { imageUploader, svgAttributesReplacer } from './util';
 import { injectImgSVG, generateDataObject } from '../../extensions/svg/utils';
 import DOMPurify from 'dompurify';
 
@@ -100,16 +100,34 @@ const MasonryItem = props => {
 const LibraryContainer = props => {
 	const { type, onRequestClose, blockStyle, layerId } = props;
 
-	const { styleCards, selectedSCKey, selectedSCValue } = useSelect(select => {
+	const {
+		styleCards,
+		selectedSCKey,
+		selectedSCValue,
+		clientId,
+		isValidTemplate,
+		currentAttributes,
+	} = useSelect(select => {
+		const { getSelectedBlockClientId, isValidTemplate, getBlock } =
+			select('core/block-editor');
+		const clientId = getSelectedBlockClientId();
+		const currentAttributes = getBlock(clientId).attributes;
+
 		const { receiveMaxiStyleCards, receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
-
 		const styleCards = receiveMaxiStyleCards();
 		const { key: selectedSCKey, value: selectedSCValue } =
 			receiveMaxiSelectedStyleCard();
 
-		return { styleCards, selectedSCKey, selectedSCValue };
+		return {
+			styleCards,
+			selectedSCKey,
+			selectedSCValue,
+			clientId,
+			isValidTemplate,
+			currentAttributes,
+		};
 	});
 
 	const { replaceBlock, updateBlockAttributes } =
@@ -127,16 +145,13 @@ const LibraryContainer = props => {
 		'6ed8ae6d1c430c6a76e0720f74eab91c'
 	);
 
-	/** Patterns / Blocks */
+	const [isChecked, setChecked] = useState(false);
 
+	/** Patterns / Blocks */
 	const onRequestInsertPattern = (parsedContent, usePlaceholderImage) => {
-		const isValid =
-			select('core/block-editor').isValidTemplate(parsedContent);
+		const isValid = isValidTemplate(parsedContent);
 
 		if (isValid) {
-			const clientId =
-				select('core/block-editor').getSelectedBlockClientId();
-
 			const loadingMessage = `<h3>${__(
 				'LOADING…',
 				'maxi-blocks'
@@ -237,8 +252,7 @@ const LibraryContainer = props => {
 		}
 	};
 
-	const [isChecked, setChecked] = useState(false);
-
+	/** Patterns / Blocks Results */
 	const patternsResults = ({ hit }) => {
 		return (
 			<>
@@ -258,85 +272,30 @@ const LibraryContainer = props => {
 	};
 
 	/** SVG Icons */
-
 	const onRequestInsertSVG = svgCode => {
-		const clientId = select('core/block-editor').getSelectedBlockClientId();
-
-		const currentSvgAttr =
-			select('core/block-editor').getBlock(clientId).attributes;
-
 		const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
+		const newSvgClass = `${svgClass}__${uniqueId()}`;
+		const replaceIt = `${svgClass}`;
 
-		const newSvgClass = `.${currentSvgAttr.uniqueID} .${svgClass}`;
-		const replaceIt = `.${svgClass}`;
+		const finalSvgCode = svgAttributesReplacer(
+			blockStyle,
+			svgCode,
+			currentAttributes
+		).replaceAll(replaceIt, newSvgClass);
 
-		const fillColor = !currentSvgAttr['svg-palette-fill-color-status']
-			? currentSvgAttr['svg-fill-color']
-			: `var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-${currentSvgAttr['svg-palette-fill-color']}))`;
-
-		const lineColor = !currentSvgAttr['svg-palette-line-color-status']
-			? currentSvgAttr['svg-line-color']
-			: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${currentSvgAttr['svg-palette-line-color']}))`;
-
-		const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
-		const fillStr = `fill:${fillColor}`;
-
-		const fillRegExp2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
-		const fillStr2 = ` fill="${fillColor}`;
-
-		const strokeRegExp = new RegExp('stroke:[^n]+?(?=})', 'g');
-		const strokeStr = `stroke:${lineColor}`;
-
-		const strokeRegExp2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
-		const strokeStr2 = ` stroke="${lineColor}`;
-
-		const newContent = svgCode
-			.replace(fillRegExp, fillStr)
-			.replace(fillRegExp2, fillStr2)
-			.replace(strokeRegExp, strokeStr)
-			.replace(strokeRegExp2, strokeStr2);
-
-		const finalSvgCode = newContent.replaceAll(replaceIt, newSvgClass);
-
-		const isValid =
-			select('core/block-editor').isValidTemplate(finalSvgCode);
-
-		if (isValid) {
+		if (isValidTemplate(finalSvgCode)) {
 			updateBlockAttributes(clientId, { content: finalSvgCode });
 			onRequestClose();
 		}
 	};
 
+	/** SVG Icons Results */
 	const svgResults = ({ hit }) => {
-		const currentSvgAttr = select('core/block-editor').getBlock(
-			select('core/block-editor').getSelectedBlockClientId()
-		).attributes;
-
-		const fillColor = !currentSvgAttr['svg-palette-fill-color-status']
-			? currentSvgAttr['svg-fill-color']
-			: `var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-${currentSvgAttr['svg-palette-fill-color']}))`;
-
-		const lineColor = !currentSvgAttr['svg-palette-line-color-status']
-			? currentSvgAttr['svg-line-color']
-			: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${currentSvgAttr['svg-palette-line-color']}))`;
-
-		const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
-		const fillStr = `fill:${fillColor}`;
-
-		const fillRegExp2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
-		const fillStr2 = ` fill="${fillColor}`;
-
-		const strokeRegExp = new RegExp('stroke:[^n]+?(?=})', 'g');
-		const strokeStr = `stroke:${lineColor}`;
-
-		const strokeRegExp2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
-		const strokeStr2 = ` stroke="${lineColor}`;
-
-		const newContent = hit.svg_code
-			.replace(fillRegExp, fillStr)
-			.replace(fillRegExp2, fillStr2)
-			.replace(strokeRegExp, strokeStr)
-			.replace(strokeRegExp2, strokeStr2);
+		const newContent = svgAttributesReplacer(
+			blockStyle,
+			hit.svg_code,
+			currentAttributes
+		);
 
 		return (
 			<MasonryItem
@@ -352,10 +311,6 @@ const LibraryContainer = props => {
 
 	/** Shapes */
 	const onRequestInsertShape = svgCode => {
-		const clientId = select('core/block-editor').getSelectedBlockClientId();
-
-		const isValid = select('core/block-editor').isValidTemplate(svgCode);
-
 		const {
 			uniqueID,
 			mediaID,
@@ -365,11 +320,8 @@ const LibraryContainer = props => {
 			'background-svg-SVGData': svgData,
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
-		if (isValid) {
+		if (isValidTemplate(svgCode)) {
 			if (type === 'block-shape' || type === 'sidebar-block-shape') {
-				const clientId =
-					select('core/block-editor').getSelectedBlockClientId();
-
 				const SVGData = {
 					[`${uniqueID}__${uniqueId()}`]: {
 						color: '',
@@ -474,6 +426,7 @@ const LibraryContainer = props => {
 		}
 	};
 
+	/** Shapes Resutls */
 	const svgShapeResults = ({ hit }) => {
 		return (
 			<MasonryItem
@@ -488,7 +441,6 @@ const LibraryContainer = props => {
 	};
 
 	/** Style Cards */
-
 	const onRequestInsertSC = card => {
 		const parsedCard = JSON.parse(card);
 
@@ -506,6 +458,7 @@ const LibraryContainer = props => {
 		onRequestClose();
 	};
 
+	/** Style Cards Results */
 	const scResults = ({ hit }) => {
 		return (
 			<MasonryItem

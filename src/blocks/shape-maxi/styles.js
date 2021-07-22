@@ -118,9 +118,11 @@ const getStyles = props => {
 					'backgroundColorHover',
 				]),
 				isHover: true,
+				blockStyle: props.parentBlockStyle,
 			}),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, ['background', 'backgroundColor']),
+				blockStyle: props.parentBlockStyle,
 			}),
 		},
 	};

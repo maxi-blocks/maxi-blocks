@@ -1,14 +1,10 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-/**
- * Interactive dependencies
- */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { createNewPost } from '@wordpress/e2e-test-utils';
 
-describe('ParallaxControl', () => {
-	it('Test the parallax control', async () => {
+describe('Placeholder', () => {
+	it('Test placeholder', async () => {
 		await createNewPost();
 		await page.$eval('.maxi-toolbar-layout button', button =>
 			button.click()

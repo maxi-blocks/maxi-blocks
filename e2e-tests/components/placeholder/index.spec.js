@@ -44,7 +44,7 @@ describe('Placeholder', () => {
 			'.maxi-placeholder .maxi-placeholder__fieldset button',
 			button => button.click()
 		);
-
+		await page.waitForTimeout(500);
 		const library = await page.$eval(
 			'.components-modal__content .components-modal__header-heading-container h1',
 			modal => modal.innerHTML

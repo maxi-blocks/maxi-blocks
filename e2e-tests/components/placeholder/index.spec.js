@@ -20,37 +20,11 @@ describe('Placeholder', () => {
 			closeModal => closeModal.click()
 		);
 
-		// label
-
-		const placeholderLabel = await page.$eval(
-			'.maxi-placeholder .maxi-placeholder__label',
-			label => label.innerHTML
+		const placeholder = await page.$eval(
+			'.maxi-placeholder ',
+			div => div.innerHTML
 		);
 		await page.waitForTimeout(500);
-		expect(placeholderLabel).toMatchSnapshot();
-
-		// placeholder
-
-		const placeholderInstructions = await page.$eval(
-			'.maxi-placeholder .maxi-placeholder__instructions',
-			instructions => instructions.innerHTML
-		);
-		await page.waitForTimeout(500);
-		expect(placeholderInstructions).toMatchSnapshot();
-
-		// Launch the Library
-		await page.waitForTimeout(500);
-		await page.$eval(
-			'.maxi-placeholder .maxi-placeholder__fieldset button',
-			button => button.click()
-		);
-		await page.waitForTimeout(500);
-		const library = await page.$eval(
-			'.components-modal__content .components-modal__header-heading-container h1',
-			modal => modal.innerHTML
-		);
-
-		await page.waitForTimeout(500);
-		expect(library).toMatchSnapshot();
+		expect(placeholder).toMatchSnapshot();
 	});
 });

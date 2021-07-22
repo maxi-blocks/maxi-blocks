@@ -80,8 +80,7 @@ describe('IconControl', () => {
 
 		await label[1].click();
 		const expectPosition = 'left';
-		const positionAttributes = await getBlockAttributes();
-		const position = positionAttributes['icon-position'];
+		const { 'icon-position': position } = await getBlockAttributes();
 
 		expect(position).toStrictEqual(expectPosition);
 

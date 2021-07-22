@@ -28,8 +28,7 @@ const BackgroundColor = props => {
 
 	if (
 		blockName === 'maxi-blocks/divider-maxi' ||
-		blockName === 'maxi-blocks/text-maxi' ||
-		blockName === 'maxi-blocks/svg-icon-maxi'
+		blockName === 'maxi-blocks/text-maxi'
 	)
 		return null;
 

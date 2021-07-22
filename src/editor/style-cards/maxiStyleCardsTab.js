@@ -35,7 +35,16 @@ const SCTab = props => {
 		SC,
 		SCStyle,
 		onChangeValue,
+		firstLabel,
+		firstColor = 'color',
+		firstColorDefault,
+		secondColor = false,
+		secondLabel,
+		secondColorDefault,
 	} = props;
+
+	const firstColorGlobal = `${firstColor}-global`;
+	const secondColorGlobal = `${secondColor}-global`;
 
 	const options = [
 		{
@@ -52,17 +61,25 @@ const SCTab = props => {
 		<>
 			{breakpoint === 'general' && (
 				<FancyRadioControl
-					label={__('Use Global SVG Line Colour', 'maxi-blocks')}
-					selected={processSCAttribute(SC, 'line-global', type)}
+					label={__(`Use Global ${firstLabel} Colour`, 'maxi-blocks')}
+					selected={processSCAttribute(SC, firstColorGlobal, type)}
 					options={options}
 					onChange={val => {
 						onChangeValue(
 							{
-								'line-global': val,
+								[firstColorGlobal]: val,
 								...(isEmpty(
-									processSCAttribute(SC, 'line-global', type)
+									processSCAttribute(
+										SC,
+										firstColorGlobal,
+										type
+									)
 								) && {
-									line: processSCAttribute(SC, 7, 'color'),
+									[firstColor]: processSCAttribute(
+										SC,
+										firstColorDefault,
+										'color'
+									),
 								}),
 							},
 							type
@@ -71,17 +88,21 @@ const SCTab = props => {
 				/>
 			)}
 			{breakpoint === 'general' &&
-				processSCAttribute(SC, 'line-global', type) && (
+				processSCAttribute(SC, firstColorGlobal, type) && (
 					<ColorControl
-						label={__('Line', 'maxi-blocks')}
-						className={`maxi-style-cards-control__sc__line--${SCStyle}`}
+						label={__(`${firstLabel} Text`, 'maxi-blocks')}
+						className={`maxi-style-cards-control__sc__color--${SCStyle}`}
 						color={
-							processSCAttribute(SC, 'line', type) ||
-							getStyleCardAttr(7, SCStyle, true)
+							processSCAttribute(SC, firstColor, type) ||
+							getStyleCardAttr(firstColorDefault, SCStyle, true)
 						}
-						defaultColor={getStyleCardAttr(7, SCStyle, true)}
+						defaultColor={getStyleCardAttr(
+							firstColorDefault,
+							SCStyle,
+							true
+						)}
 						onChange={({ color }) => {
-							onChangeValue({ line: color }, type);
+							onChangeValue({ [firstColor]: color }, type);
 						}}
 						disableGradient
 						disablePalette
@@ -107,19 +128,26 @@ const SCTab = props => {
 					disableFontFamily={breakpoint !== 'general'}
 				/>
 			)}
-			{breakpoint === 'general' && (
+			{!!secondColor && breakpoint === 'general' && (
 				<FancyRadioControl
-					label={__('Use Global SVG Fill Colour', 'maxi-blocks')}
-					selected={processSCAttribute(SC, 'fill-global', type)}
+					label={__(
+						`Use Global ${secondLabel} Colour`,
+						'maxi-blocks'
+					)}
+					selected={processSCAttribute(SC, secondColorGlobal, type)}
 					options={options}
 					onChange={val => {
 						onChangeValue(
 							{
-								'fill-global': val,
+								[secondColorGlobal]: val,
 								...(isEmpty(
-									processSCAttribute(SC, 'fill', type)
+									processSCAttribute(SC, secondColor, type)
 								) && {
-									fill: processSCAttribute(SC, 4, 'color'),
+									[secondColor]: processSCAttribute(
+										SC,
+										secondColorDefault,
+										'color'
+									),
 								}),
 							},
 							type
@@ -127,18 +155,23 @@ const SCTab = props => {
 					}}
 				/>
 			)}
-			{breakpoint === 'general' &&
-				processSCAttribute(SC, 'fill-global', type) && (
+			{!!secondColor &&
+				breakpoint === 'general' &&
+				processSCAttribute(SC, secondColorGlobal, type) && (
 					<ColorControl
-						label={__('Fill', 'maxi-blocks')}
-						className={`maxi-style-cards-control__sc__fill--${SCStyle}`}
+						label={__(secondLabel, 'maxi-blocks')}
+						className={`maxi-style-cards-control__sc__${secondColor}--${SCStyle}`}
 						color={
-							processSCAttribute(SC, 'fill', type) ||
-							getStyleCardAttr(4, SCStyle, true)
+							processSCAttribute(SC, secondColor, type) ||
+							getStyleCardAttr(secondColorDefault, SCStyle, true)
 						}
-						defaultColor={getStyleCardAttr(4, SCStyle, true)}
+						defaultColor={getStyleCardAttr(
+							secondColorDefault,
+							SCStyle,
+							true
+						)}
 						onChange={({ color }) => {
-							onChangeValue({ fill: color }, type);
+							onChangeValue({ [secondColor]: color }, type);
 						}}
 						disableGradient
 						disablePalette
@@ -381,7 +414,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 
 	const generateTab = props => {
 		return {
-			label: __(props.firstLabel, 'maxi-blocks'),
+			label: __(props.tabLabel, 'maxi-blocks'),
 			content: (
 				<SCTab
 					breakpoint={breakpoint}
@@ -482,15 +515,17 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					generateTab({
 						type: 'button',
-						firstLabel: 'Button',
+						tabLabel: __('Button', 'maxi-blocks'),
+						firstLabel: __('Button', 'maxi-blocks'),
 						firstColorDefault: 1,
 						secondColor: 'background-color',
-						secondLabel: 'Button Background',
+						secondLabel: __('Button Background', 'maxi-bloks'),
 						secondColorDefault: 4,
 					}),
 					generateTab({
 						type: 'p',
-						firstLabel: 'Paragraph',
+						tabLabel: __('Paragraph', 'maxi-blocks'),
+						firstLabel: __('Paragraph', 'maxi-blocks'),
 						firstColorDefault: 3,
 					}),
 					LinkTab({ SC, onChangeValue, SCStyle }),
@@ -500,18 +535,26 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					generateTab({
 						type: 'hover',
-						firstLabel: 'Hover',
+						tabLabel: __('Hover', 'maxi-blocks'),
+						firstLabel: __('Hover', 'maxi-blocks'),
 						firstColorDefault: 6,
 						disableTypography: true,
 					}),
 					generateTab({
 						type: 'icon',
-						firstLabel: 'SVG Icons',
+						tabLabel: __('SVG Icons', 'maxi-blocks'),
 						disableTypography: true,
+						firstLabel: __('Line', 'maxi-blocks'),
+						firstColor: 'line',
+						firstColorDefault: 7,
+						secondColor: 'fill',
+						secondLabel: __('Fill', 'maxi-blocks'),
+						secondColorDefault: 4,
 					}),
 					generateTab({
 						type: 'divider',
-						firstLabel: 'Divider',
+						tabLabel: __('Divider', 'maxi-blocks'),
+						firstLabel: __('Divider', 'maxi-blocks'),
 						firstColorDefault: 4,
 						disableTypography: true,
 					}),

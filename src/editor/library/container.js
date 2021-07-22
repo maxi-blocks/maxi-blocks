@@ -29,6 +29,7 @@ import {
 	HierarchicalMenu,
 	Stats,
 } from 'react-instantsearch-dom';
+import classnames from 'classnames';
 import { uniq, isEmpty, uniqueId, cloneDeep } from 'lodash';
 
 const MasonryItem = props => {
@@ -76,13 +77,11 @@ const MasonryItem = props => {
 								: __('+', 'maxi-blocks')}
 						</Button>
 						<div className='maxi-cloud-masonry-card__tags'>
-							{
-								/* isPro */ true && (
-									<span className='maxi-cloud-masonry-card__tags__pro-tag'>
-										{__('PRO', 'maxi-blocks')}
-									</span>
-								)
-							}
+							{isPro && (
+								<span className='maxi-cloud-masonry-card__tags__pro-tag'>
+									{__('PRO', 'maxi-blocks')}
+								</span>
+							)}
 						</div>
 					</div>
 				</div>
@@ -136,6 +135,29 @@ const LibraryContainer = props => {
 		'39ZZ3SLI6Z',
 		'6ed8ae6d1c430c6a76e0720f74eab91c'
 	);
+
+	const Accordion = ({ children, title }) => {
+		const [isAccordionOpen, setAccordionOpen] = useState(false);
+
+		const accordionClasses = classnames(
+			'maxi-cloud-container__accordion',
+			isAccordionOpen && 'maxi-cloud-container__accordion__open'
+		);
+
+		return (
+			<div
+				onClick={() => setAccordionOpen(!isAccordionOpen)}
+				className={accordionClasses}
+			>
+				<div className='maxi-cloud-container__accordion__title'>
+					{title}
+				</div>
+				<div className='maxi-cloud-container__accordion__content'>
+					{children}
+				</div>
+			</div>
+		);
+	};
 
 	/** Patterns / Blocks */
 
@@ -689,10 +711,12 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<div>Colour</div>
-							<RefinementList attribute='taxonomies.sc_color' />
-							<div>Style</div>
-							<RefinementList attribute='taxonomies.sc_style' />
+							<Accordion title={__('Colour', 'maxi-blocks')}>
+								<RefinementList attribute='taxonomies.sc_color' />
+							</Accordion>
+							<Accordion title={__('Style', 'maxi-blocks')}>
+								<RefinementList attribute='taxonomies.sc_style' />
+							</Accordion>
 							<ClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__sc__content-sc'>

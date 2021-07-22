@@ -200,6 +200,43 @@
 		justify-content: space-between;
 		margin: 1rem;
 
+		&__accordion {
+			&__title {
+				position: relative;
+				background: #fff;
+				padding: 0.6rem 1rem;
+				border-radius: 5px;
+				border: 2px solid #e8eaeb;
+				font-weight: bold;
+				box-shadow: 0px 5px 18px 0px rgb(119, 119, 119, 0.1);
+				margin-bottom: 3px;
+				cursor: pointer;
+
+				&:after {
+					content: url(../../../img/arrow-right.svg);
+					width: 6px;
+					position: absolute;
+					top: 50%;
+					right: 12px;
+					transform: translateY(-50%) rotate(0);
+					transform-origin: center;
+					transition: transform 0.3s linear;
+				}
+			}
+			&__content {
+				display: none;
+			}
+			&__open {
+				.maxi-cloud-container__accordion__title {
+					&:after {
+						transform: translateY(-50%) rotate(90deg);
+					}
+				}
+				.maxi-cloud-container__accordion__content {
+					display: block;
+				}
+			}
+		}
 		&__content-svg-shape {
 			width: 100%;
 

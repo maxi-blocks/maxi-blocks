@@ -444,38 +444,6 @@
 				}
 			}
 		}
-
-		.maxi-cloud-container__patterns {
-			&__sidebar {
-				&__top-menu,
-				&__top {
-					width: 100%;
-					.ais-RefinementList-list,
-					.ais-Menu-list {
-						display: flex;
-					}
-				}
-			}
-
-			&__content-patterns {
-			}
-		}
-
-		.maxi-cloud-container__sc {
-			&__sidebar {
-			}
-
-			&__content-sc {
-			}
-
-			&__content-svg {
-				width: 100%;
-				.ais-RefinementList-list,
-				.ais-Menu-list {
-					display: flex;
-				}
-			}
-		}
 	}
 
 	.ais-InfiniteHits-list {

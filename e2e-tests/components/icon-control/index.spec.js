@@ -15,36 +15,26 @@ describe('IconControl', () => {
 	it('Check Icon Control', async () => {
 		await createNewPost();
 		await insertBlock('Button Maxi');
-
 		const accordionPanel = await openSidebar(page, 'icon');
 
 		await accordionPanel.$eval('.maxi-icon-control button', addIcon =>
 			addIcon.click()
 		);
 
-		// searcher
-		await page.$eval(
-			'.components-modal__screen-overlay .components-modal__content .maxi-cloud-container .ais-SearchBox input',
-			searcher => searcher.focus()
-		);
-		await page.keyboard.type('Sword');
-
-		await page.$eval(
-			'.components-modal__screen-overlay .components-modal__content .maxi-cloud-container .ais-SearchBox button',
-			searcherButton => searcherButton.click()
-		);
-
 		// select icon
-		await page.waitForTimeout(500);
-		await page.$$eval(
-			'.components-modal__screen-overlay .components-modal__content .maxi-cloud-container .ais-InfiniteHits-list button',
-			button => button[0].click()
+		await page.waitForSelector('.maxi-library-modal');
+		const modal = await page.$('.maxi-library-modal');
+		await page.waitForSelector('.ais-SearchBox-input');
+		const modalSearcher = await modal.$('.ais-SearchBox-input');
+		await modalSearcher.focus();
+		await page.keyboard.type('Sword');
+		await page.waitForTimeout(1000);
+		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
+			button.click()
 		);
 
-		const BlockAttributes = await getBlockAttributes();
-		const icon = BlockAttributes['icon-content'];
-
-		expect(icon).toMatchSnapshot();
+		const icon = await getBlockAttributes();
+		expect(icon['icon-content']).toMatchSnapshot();
 
 		// size, spacing
 		const inputs = await accordionPanel.$$(

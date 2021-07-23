@@ -5,11 +5,12 @@ import getLastBreakpointAttribute from '../../styles/getLastBreakpointAttribute'
 import getCurrentFormatClassName from './getCurrentFormatClassName';
 import getCustomFormat from './getCustomFormat';
 import { getTypographyFromSC } from '../../style-cards';
+import getActiveStyleCard from '../../style-cards/getActiveStyleCard';
 
 /**
  * External dependencies
  */
-import { isBoolean, isNumber, isNil } from 'lodash';
+import { isBoolean, isNumber } from 'lodash';
 
 /**
  * Retrieve the property from typography object requested
@@ -80,33 +81,32 @@ const getCustomFormatValue = ({
 	// Style Cards value
 	const SCStyle = blockStyle.replace('maxi-', '');
 	const SCLevel = styleCardPrefix || textLevel;
-	if (!isNil(styleCard)) {
-		const currentSC = getTypographyFromSC(styleCard[SCStyle], SCLevel);
+	const activeStyleCard = styleCard || getActiveStyleCard().value;
+	const currentSC = getTypographyFromSC(activeStyleCard[SCStyle], SCLevel);
 
-		const currentSCValue = getLastBreakpointAttribute(
-			prop,
-			breakpoint,
-			currentSC,
-			isHover,
-			false,
-			avoidXXL
-		);
+	const currentSCValue = getLastBreakpointAttribute(
+		prop,
+		breakpoint,
+		currentSC,
+		isHover,
+		false,
+		avoidXXL
+	);
 
-		if (currentSCValue) return currentSCValue;
+	if (currentSCValue) return currentSCValue;
 
-		const defaultSC = getTypographyFromSC(styleCard[SCStyle], SCLevel);
+	const defaultSC = getTypographyFromSC(activeStyleCard[SCStyle], SCLevel);
 
-		const defaultSCValue = getLastBreakpointAttribute(
-			prop,
-			breakpoint,
-			defaultSC,
-			isHover,
-			false,
-			avoidXXL
-		);
+	const defaultSCValue = getLastBreakpointAttribute(
+		prop,
+		breakpoint,
+		defaultSC,
+		isHover,
+		false,
+		avoidXXL
+	);
 
-		if (defaultSCValue) return defaultSCValue;
-	}
+	if (defaultSCValue) return defaultSCValue;
 
 	return '';
 };

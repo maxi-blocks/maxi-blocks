@@ -33,7 +33,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await accordionPanel.$$eval('.clip-path-defaults button', click =>
-			click[0].click()
+			click[1].click()
 		);
 
 		await page.waitForTimeout(1000);
@@ -76,7 +76,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await accordionPanel.$$eval('.clip-path-defaults button', click =>
-			click[0].click()
+			click[1].click()
 		);
 
 		await page.waitForTimeout(1000);

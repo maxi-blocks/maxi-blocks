@@ -568,8 +568,12 @@ const LibraryContainer = props => {
 	const PlaceholderCheckboxControl = () => {
 		return (
 			<CheckboxControl
-				label='Use placeholder for all images'
-				help='(do not download any images to your media library, use a generic grey image)'
+				className='use-placeholer-all-images'
+				label={__('Use placeholder for all images', 'maxi-blocks')}
+				help={__(
+					'(do not download any images to your media library, use a generic grey image)',
+					'maxi-blocks'
+				)}
 				checked={isChecked}
 				onChange={setChecked}
 			/>
@@ -668,27 +672,46 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<PlaceholderCheckboxControl />
-							<div className='maxi-cloud-container__patterns__sidebar__top-menu'>
+							<Accordion
+								title={__(
+									'Placeholder for Images',
+									'maxi-blocks'
+								)}
+							>
+								<PlaceholderCheckboxControl />
+							</Accordion>
+							<Accordion
+								title={__('Block Patterns', 'maxi-blocks')}
+							>
 								<Menu
 									attribute='taxonomies.gutenberg_type'
 									defaultRefinement='Block Patterns'
 								/>
-							</div>
-							<div className='maxi-cloud-container__patterns__sidebar__top'>
+							</Accordion>
+							<Accordion
+								title={__('Patterns Type', 'maxi-blocks')}
+							>
 								<RefinementList attribute='taxonomies.cost' />
-							</div>
-							<RefinementList
-								attribute='taxonomies.light_or_dark'
-								defaultRefinement={['Light']}
-							/>
-							<HierarchicalMenu
-								attributes={[
-									'taxonomies_hierarchical.category.lvl0',
-									'taxonomies_hierarchical.category.lvl1',
-									'taxonomies_hierarchical.category.lvl2',
-								]}
-							/>
+							</Accordion>
+							<Accordion
+								title={__('Patterns Style', 'maxi-blocks')}
+							>
+								<RefinementList
+									attribute='taxonomies.light_or_dark'
+									defaultRefinement={['Light']}
+								/>
+							</Accordion>
+							<Accordion
+								title={__('Patterns Category', 'maxi-blocks')}
+							>
+								<HierarchicalMenu
+									attributes={[
+										'taxonomies_hierarchical.category.lvl0',
+										'taxonomies_hierarchical.category.lvl1',
+										'taxonomies_hierarchical.category.lvl2',
+									]}
+								/>
+							</Accordion>
 							<ClearRefinements />
 						</div>
 						<div className='maxi-cloud-container__patterns__content-patterns'>

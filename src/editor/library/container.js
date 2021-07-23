@@ -107,7 +107,9 @@ const LibraryContainer = props => {
 		clientId,
 		isValidTemplate,
 	} = useSelect(select => {
-		const { isValidTemplate } = select('core/block-editor');
+		const { isValidTemplate, getSelectedBlockClientId } =
+			select('core/block-editor');
+		const clientId = getSelectedBlockClientId();
 
 		const { receiveMaxiStyleCards, receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'

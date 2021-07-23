@@ -225,6 +225,41 @@
 			}
 			&__content {
 				display: none;
+				padding: 0 1rem;
+
+				.ais-RefinementList-item {
+					&--selected {
+						.ais-RefinementList-label {
+							border-bottom: 2px solid #ff4a17;
+
+							.ais-RefinementList-count,
+							.ais-RefinementList-labelText {
+								color: #ff4a17;
+							}
+						}
+					}
+					.ais-RefinementList-label {
+						font-weight: bold;
+						transition: all 0.5s;
+
+						&:hover {
+							color: #ff4a17;
+						}
+						.ais-RefinementList-checkbox {
+							display: none;
+						}
+						.ais-RefinementList-labelText {
+						}
+						.ais-RefinementList-count {
+							&:before {
+								content: '(';
+							}
+							&:after {
+								content: ')';
+							}
+						}
+					}
+				}
 			}
 			&__open {
 				.maxi-cloud-container__accordion__title {

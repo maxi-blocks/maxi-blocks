@@ -479,19 +479,21 @@ const getGeneralBackgroundStyles = (props, borderProps, blockStyle) => {
 				breakpoint,
 				props
 			) || 0;
-		const widthUnit = getLastBreakpointAttribute(
-			'border-unit-width',
-			breakpoint,
-			props
-		);
+		const widthUnit =
+			getLastBreakpointAttribute(
+				'border-unit-width',
+				breakpoint,
+				props
+			) || '';
 		const horizontalWidth =
 			round(widthTop / 2, 2) - round(widthBottom / 2, 2);
 		const verticalWidth =
 			round(widthLeft / 2, 2) - round(widthRight / 2, 2);
 
-		size[breakpoint] = {
-			transform: `translate(calc(-50% - ${verticalWidth}${widthUnit}), calc(-50% - ${horizontalWidth}${widthUnit}))`,
-		};
+		if (!!verticalWidth || !!horizontalWidth)
+			size[breakpoint] = {
+				transform: `translate(calc(-50% - ${verticalWidth}${widthUnit}), calc(-50% - ${horizontalWidth}${widthUnit}))`,
+			};
 	});
 
 	const border = getBorderStyles({
@@ -499,7 +501,7 @@ const getGeneralBackgroundStyles = (props, borderProps, blockStyle) => {
 		parentBlockStyle: blockStyle,
 	});
 
-	return { border, size };
+	return { border, ...(!isEmpty(size) && { size }) };
 };
 
 const getBackgroundStyles = ({
@@ -524,7 +526,7 @@ const getBackgroundStyles = ({
 
 	let response = {
 		[`${target}${isHover ? ':hover' : ''} > .maxi-background-displayer`]: {
-			border: getGeneralBackgroundStyles(
+			...getGeneralBackgroundStyles(
 				props,
 				{
 					...getGroupAttributes(

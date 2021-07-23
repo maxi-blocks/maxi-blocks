@@ -440,15 +440,14 @@
 						background: #fff;
 						z-index: 9;
 
-						.maxi-cloud-masonry-card__buttons {
-							display: block !important;
+						.maxi-cloud-masonry-card__svg-container__button {
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							transition: all 0.5s;
 
-							.maxi-cloud-masonry-card__button {
-								transition: all 0.5s;
-
-								&:hover {
-									background-color: #ff4a17;
-								}
+							&:hover {
+								background-color: #ff4a17;
 							}
 						}
 					}
@@ -462,23 +461,32 @@
 								height: 50px;
 							}
 						}
-						&__container {
-							.maxi-cloud-masonry-card__buttons {
+						&__svg-container {
+							display: flex;
+							align-items: center;
+							flex-direction: column;
+
+							&__title {
+								margin-bottom: 1rem;
+								font-weight: bold;
+							}
+							&__code {
+								width: 80px;
+							}
+							&__button {
 								display: none;
 								position: absolute;
 								bottom: -1px;
 								right: -1px;
-
-								.maxi-cloud-masonry-card__button {
-									background: #081219;
-									color: #fff;
-									border-radius: 0;
-									border: none;
-									padding: 0;
-									margin: 0;
-									height: 25px;
-									width: 25px;
-								}
+								background: #081219;
+								color: #fff;
+								border-radius: 0;
+								border: none;
+								padding: 0;
+								margin: 0;
+								height: 25px;
+								width: 25px;
+								line-height: 25px;
 							}
 						}
 					}

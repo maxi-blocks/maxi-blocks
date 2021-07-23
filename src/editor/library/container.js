@@ -45,58 +45,63 @@ const MasonryItem = props => {
 
 	return (
 		<div className='maxi-cloud-masonry-card'>
-			<div className='maxi-cloud-masonry-card__container'>
-				<div className='maxi-cloud-masonry-card__container__top-bar'>
-					{type !== 'patterns' && (
-						<div className='maxi-cloud-masonry__serial-tag'>
-							{serial}
-						</div>
-					)}
-					{type === 'patterns' && (
-						<div className='maxi-cloud-masonry__serial-tag'>
-							{serial}
-						</div>
-					)}
-
-					<div className='maxi-cloud-masonry-card__buttons'>
-						{type === 'patterns' && (
-							<Button
-								className='maxi-cloud-masonry-card__button'
-								href={demoUrl}
-								target='_blank'
-							>
-								{__('Preview', 'maxi-blocks')}
-							</Button>
-						)}
-						<Button
-							className='maxi-cloud-masonry-card__button'
-							onClick={onRequestInsert}
-						>
-							{type === 'sc' || type === 'patterns'
-								? __('Load', 'maxi-blocks')
-								: __('+', 'maxi-blocks')}
-						</Button>
-						<div className='maxi-cloud-masonry-card__tags'>
-							{isPro && (
-								<span className='maxi-cloud-masonry-card__tags__pro-tag'>
-									{__('PRO', 'maxi-blocks')}
-								</span>
-							)}
+			{(type === 'patterns' || type === 'sc') && (
+				<>
+					<div className='maxi-cloud-masonry-card__container'>
+						<div className='maxi-cloud-masonry-card__container__top-bar'>
+							<div className='maxi-cloud-masonry__serial-tag'>
+								{serial}
+							</div>
+							<div className='maxi-cloud-masonry-card__buttons'>
+								{type === 'patterns' && (
+									<Button
+										className='maxi-cloud-masonry-card__button'
+										href={demoUrl}
+										target='_blank'
+									>
+										{__('Preview', 'maxi-blocks')}
+									</Button>
+								)}
+								<Button
+									className='maxi-cloud-masonry-card__button'
+									onClick={onRequestInsert}
+								>
+									{__('Load', 'maxi-blocks')}
+								</Button>
+								<div className='maxi-cloud-masonry-card__tags'>
+									{isPro && (
+										<span className='maxi-cloud-masonry-card__tags__pro-tag'>
+											{__('PRO', 'maxi-blocks')}
+										</span>
+									)}
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-				{type === 'sc' && (
 					<div className='maxi-cloud-masonry-card__image'>
-						<img src={previewIMG} alt={`Preview for ${serial}`} />
+						{(type === 'patterns' || type === 'sc') && (
+							<img
+								src={previewIMG}
+								alt={`Preview for ${serial}`}
+							/>
+						)}
 					</div>
-				)}
-			</div>
-			{type !== 'sc' && (
-				<div className='maxi-cloud-masonry-card__image'>
-					{type === 'svg' && <RawHTML>{svgCode}</RawHTML>}
-					{type === 'patterns' && (
-						<img src={previewIMG} alt={`Preview for ${serial}`} />
-					)}
+				</>
+			)}
+			{type === 'svg' && (
+				<div className='maxi-cloud-masonry-card__svg-container'>
+					<Button
+						className='maxi-cloud-masonry-card__svg-container__button'
+						onClick={onRequestInsert}
+					>
+						{__('+', 'maxi-blocks')}
+					</Button>
+					<div className='maxi-cloud-masonry-card__svg-container__title'>
+						{serial}
+					</div>
+					<RawHTML className='maxi-cloud-masonry-card__svg-container__code'>
+						{svgCode}
+					</RawHTML>
 				</div>
 			)}
 		</div>

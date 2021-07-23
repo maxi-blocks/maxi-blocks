@@ -348,6 +348,7 @@ const MaxiToolbar = memo(
 								breakpoint={breakpoint}
 								textLevel={textLevel}
 								blockStyle={parentBlockStyle}
+								styleCard={styleCard}
 							/>
 							<TextListOptions
 								blockName={name}

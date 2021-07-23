@@ -193,6 +193,7 @@ const CaptionToolbar = memo(
 								breakpoint={breakpoint}
 								textLevel={textLevel}
 								blockStyle={parentBlockStyle}
+								styleCard={styleCard}
 								isCaptionToolbar
 							/>
 						</div>

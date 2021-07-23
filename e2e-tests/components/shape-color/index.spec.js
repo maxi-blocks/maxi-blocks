@@ -16,23 +16,17 @@ describe('ShapeColor', () => {
 		await createNewPost();
 		await insertBlock('Shape Maxi');
 
-		// searcher
-		await page.$eval(
-			'.components-modal__screen-overlay .components-modal__content .maxi-cloud-container .ais-SearchBox input',
-			searcher => searcher.focus()
-		);
+		// select shape
+
+		await page.waitForSelector('.maxi-library-modal');
+		const modal = await page.$('.maxi-library-modal');
+		await page.waitForSelector('.ais-SearchBox-input');
+		const modalSearcher = await modal.$('.ais-SearchBox-input');
+		await modalSearcher.focus();
 		await page.keyboard.type('Anchor');
-
-		await page.$eval(
-			'.components-modal__screen-overlay .components-modal__content .maxi-cloud-container .ais-SearchBox button',
-			searcherButton => searcherButton.click()
-		);
-
-		// select Shape
-		await page.waitForTimeout(500);
-		await page.$$eval(
-			'.components-modal__screen-overlay .components-modal__content .maxi-cloud-container .ais-InfiniteHits-list button',
-			button => button[0].click()
+		await page.waitForTimeout(1000);
+		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
+			button.click()
 		);
 
 		const expectForm = await getBlockAttributes();

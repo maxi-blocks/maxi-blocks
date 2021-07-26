@@ -78,6 +78,12 @@
 				align-items: center;
 				justify-content: center;
 				height: 100%;
+
+				svg {
+					pattern ~ path {
+						fill: #ff4a17;
+					}
+				}
 			}
 		}
 	}

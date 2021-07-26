@@ -22,6 +22,8 @@ exports[`TextMaxi Test Text Maxi merge from top to bottom with Custom Formats 1`
 <!-- /wp:maxi-blocks/text-maxi -->"
 `;
 
+exports[`TextMaxi Test Text Maxi on List mode and changing the font color 1`] = `"<li>Testing </li><li>Text </li><li>Maxi</li>"`;
+
 exports[`TextMaxi Test Text Maxi on pressing enter 1`] = `
 "<!-- wp:maxi-blocks/text-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-3\\",\\"content\\":\\"Testing Text Maxi\\"} -->
 <div id=\\"text-maxi-3\\" class=\\"maxi-block maxi-text-block maxi-light text-maxi-3 wp-block-maxi-blocks-text-maxi\\" data-align=\\"normal\\"><p class=\\"maxi-text-block__content\\">Testing Text Maxi</p></div>

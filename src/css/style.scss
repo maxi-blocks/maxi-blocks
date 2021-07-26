@@ -11,6 +11,11 @@
 .maxi-block {
     position: relative;
 
+
+	&[data-align='full'] {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
 	.maxi-text-block--link span {
 		transition: color .3s ease;
 	}

@@ -23,7 +23,7 @@ describe('ClipPathOption', () => {
 			use => use.click()
 		);
 		await accordionPanel.$$eval('.clip-path-defaults button', click =>
-			click[0].click()
+			click[1].click()
 		);
 
 		const triangleExpect = 'polygon(50% 0%, 0% 100%, 100% 100%)';

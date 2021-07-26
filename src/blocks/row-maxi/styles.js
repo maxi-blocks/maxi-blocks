@@ -138,22 +138,28 @@ const getStyles = props => {
 			':hover': getHoverObject(props),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-				]),
-				isHover: true,
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
 					'background',
 					'backgroundColor',
 					'backgroundImage',
 					'backgroundVideo',
 					'backgroundGradient',
 					'backgroundSVG',
+					'border',
+					'borderWidth',
+					'borderRadius',
 				]),
+				blockStyle: props.parentBlockStyle,
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+					'borderHover',
+					'borderRadiusHover',
+					'borderWidthHover',
+				]),
+				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
 		},

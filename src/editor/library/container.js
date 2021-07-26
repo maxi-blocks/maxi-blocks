@@ -106,12 +106,10 @@ const LibraryContainer = props => {
 		selectedSCValue,
 		clientId,
 		isValidTemplate,
-		currentAttributes,
 	} = useSelect(select => {
-		const { getSelectedBlockClientId, isValidTemplate, getBlock } =
+		const { isValidTemplate, getSelectedBlockClientId } =
 			select('core/block-editor');
 		const clientId = getSelectedBlockClientId();
-		const currentAttributes = getBlock(clientId).attributes;
 
 		const { receiveMaxiStyleCards, receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
@@ -126,7 +124,6 @@ const LibraryContainer = props => {
 			selectedSCValue,
 			clientId,
 			isValidTemplate,
-			currentAttributes,
 		};
 	});
 
@@ -279,8 +276,7 @@ const LibraryContainer = props => {
 
 		const finalSvgCode = svgAttributesReplacer(
 			blockStyle,
-			svgCode,
-			currentAttributes
+			svgCode
 		).replaceAll(replaceIt, newSvgClass);
 
 		if (isValidTemplate(finalSvgCode)) {
@@ -291,11 +287,7 @@ const LibraryContainer = props => {
 
 	/** SVG Icons Results */
 	const svgResults = ({ hit }) => {
-		const newContent = svgAttributesReplacer(
-			blockStyle,
-			hit.svg_code,
-			currentAttributes
-		);
+		const newContent = svgAttributesReplacer(blockStyle, hit.svg_code);
 
 		return (
 			<MasonryItem

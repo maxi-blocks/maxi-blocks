@@ -41,8 +41,15 @@ import { toolbarLink } from '../../../../icons';
  * Link
  */
 const LinkContent = withFormatValue(props => {
-	const { onChange, isList, formatValue, textLevel, onClose, blockStyle } =
-		props;
+	const {
+		onChange,
+		isList,
+		formatValue,
+		textLevel,
+		onClose,
+		blockStyle,
+		styleCard,
+	} = props;
 
 	const formatName = 'maxi-blocks/text-link';
 
@@ -157,6 +164,7 @@ const LinkContent = withFormatValue(props => {
 			textLevel,
 			attributes: linkValue,
 			blockStyle,
+			styleCard,
 		});
 
 		onChange(obj);

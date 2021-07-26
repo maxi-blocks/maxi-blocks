@@ -33,6 +33,7 @@ const removeLinkFormat = ({
 	textLevel,
 	attributes,
 	blockStyle,
+	styleCard,
 }) => {
 	const { start, end } = formatValue;
 	const formatLength = formatValue.formats.length;
@@ -70,6 +71,7 @@ const removeLinkFormat = ({
 			breakpoint: 'general',
 			blockStyle,
 			textLevel,
+			styleCard,
 		}) === 'underline';
 	const isPartialOfWholeLink =
 		isWholeLink &&

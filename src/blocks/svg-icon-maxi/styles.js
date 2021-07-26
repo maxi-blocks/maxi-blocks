@@ -120,14 +120,23 @@ const getStyles = props => {
 				getSvgObject(props, 'path-stroke'),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
+					'background',
+					'backgroundColor',
+					'border',
+					'borderWidth',
+					'borderRadius',
 				]),
-				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
 			...getBackgroundStyles({
-				...getGroupAttributes(props, ['background', 'backgroundColor']),
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'borderHover',
+					'borderRadiusHover',
+					'borderWidthHover',
+				]),
+				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
 		},

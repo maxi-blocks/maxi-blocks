@@ -4,6 +4,11 @@
 		flex-wrap: wrap;
 		justify-content: flex-start;
 
+		&__items__none {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 		&__items {
 			cursor: pointer;
 			border: 2px solid #dddfe1;
@@ -12,7 +17,6 @@
 			height: calc(48px - 4px);
 			width: calc(48px - 4px);
 			padding: 0;
-
 			&:nth-child(6n) {
 				margin-right: 0;
 			}

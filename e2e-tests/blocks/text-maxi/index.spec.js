@@ -16,6 +16,7 @@ import {
  * Internal dependencies
  */
 import pasteHTML from './pasteExamples';
+import { getBlockAttributes } from '../../utils';
 
 const linkExample = 'test.com';
 describe('TextMaxi', () => {
@@ -420,5 +421,50 @@ describe('TextMaxi', () => {
 		await pressKeyWithModifier('primary', 'v');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
+	});
+
+	it('Test Text Maxi on List mode and changing the font color', async () => {
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi');
+		await page.$eval('.toolbar-item__list-options', button =>
+			button.click()
+		);
+		await page.waitForSelector(
+			'.toolbar-item__popover__list-options__button'
+		);
+		await page.$eval(
+			'.toolbar-item__popover__list-options__button',
+			button => button.click()
+		);
+		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const selectMaxiTextP = await selectMaxiTextDiv.$(
+			'.block-editor-rich-text__editable'
+		);
+		await selectMaxiTextP.focus();
+		await pressKeyTimes('ArrowRight', '8');
+		await page.keyboard.press('Enter');
+		await pressKeyTimes('ArrowRight', '5');
+		await page.keyboard.press('Enter');
+
+		const { content: expectedContent } = await getBlockAttributes();
+
+		expect(expectedContent).toMatchSnapshot();
+
+		// Change color
+		await page.$eval('.toolbar-item__text-options--color', button =>
+			button.click()
+		);
+		await page.waitForSelector('.maxi-sc-color-palette__box');
+		await page.$$eval('.maxi-sc-color-palette__box', paletteButtons =>
+			paletteButtons[3].click()
+		);
+
+		const {
+			'palette-color-general': expectedColor,
+			content: expectedContent2,
+		} = await getBlockAttributes();
+
+		expect(expectedColor).toBe(4);
+		expect(expectedContent2 === expectedContent).toBeTruthy();
 	});
 });

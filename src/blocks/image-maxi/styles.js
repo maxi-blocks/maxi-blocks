@@ -254,16 +254,6 @@ const getStyles = props => {
 			' .maxi-hover-details': getHoverEffectDetailsBoxObject(props),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-					'borderRadiusHover',
-				]),
-				isHover: true,
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
 					'background',
 					'backgroundColor',
 					'backgroundImage',
@@ -272,6 +262,16 @@ const getStyles = props => {
 					'backgroundSVG',
 					'borderRadius',
 				]),
+				blockStyle: props.parentBlockStyle,
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+					'borderRadiusHover',
+				]),
+				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
 			...getCustomFormatsStyles(

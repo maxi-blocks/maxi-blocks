@@ -37,6 +37,8 @@ describe('ImageURL', () => {
 	});
 
 	it('Check invalid imageUrl', async () => {
+		console.error = jest.fn();
+
 		// select img
 		await page.$eval(
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button button',

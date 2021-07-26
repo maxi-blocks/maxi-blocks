@@ -2,8 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
-const placeholderImage = async () => {
+export const placeholderImage = async () => {
 	const ajaxurl = wp.ajax.settings.url;
 	try {
 		const response = await fetch(
@@ -30,7 +31,7 @@ const placeholderImage = async () => {
 	return null;
 };
 
-const imageUploader = async (imageSrc, usePlaceholderImage) => {
+export const imageUploader = async (imageSrc, usePlaceholderImage) => {
 	const ajaxurl = wp.ajax.settings.url;
 	try {
 		if (usePlaceholderImage) return placeholderImage();
@@ -68,4 +69,36 @@ const imageUploader = async (imageSrc, usePlaceholderImage) => {
 	return null;
 };
 
-export default imageUploader;
+export const svgAttributesReplacer = (blockStyle, svgCode) => {
+	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
+	const clientId = getSelectedBlockClientId();
+	const currentAttributes = getBlock(clientId).attributes;
+
+	if (!currentAttributes) return false;
+
+	const fillColor = !currentAttributes['svg-palette-fill-color-status']
+		? currentAttributes['svg-fill-color']
+		: `var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-${currentAttributes['svg-palette-fill-color']}))`;
+
+	const lineColor = !currentAttributes['svg-palette-line-color-status']
+		? currentAttributes['svg-line-color']
+		: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${currentAttributes['svg-palette-line-color']}))`;
+
+	const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
+	const fillStr = `fill:${fillColor}`;
+
+	const fillRegExp2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
+	const fillStr2 = ` fill="${fillColor}`;
+
+	const strokeRegExp = new RegExp('stroke:[^n]+?(?=})', 'g');
+	const strokeStr = `stroke:${lineColor}`;
+
+	const strokeRegExp2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
+	const strokeStr2 = ` stroke="${lineColor}`;
+
+	return svgCode
+		.replace(fillRegExp, fillStr)
+		.replace(fillRegExp2, fillStr2)
+		.replace(strokeRegExp, strokeStr)
+		.replace(strokeRegExp2, strokeStr2);
+};

@@ -114,14 +114,23 @@ const getStyles = props => {
 			' .maxi-shape-block__icon svg > *': getShapeObject(props, 'path'),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
+					'background',
+					'backgroundColor',
+					'border',
+					'borderWidth',
+					'borderRadius',
 				]),
-				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
 			...getBackgroundStyles({
-				...getGroupAttributes(props, ['background', 'backgroundColor']),
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'borderHover',
+					'borderRadiusHover',
+					'borderWidthHover',
+				]),
+				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
 		},

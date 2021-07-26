@@ -8,11 +8,8 @@ import {
 } from '@wordpress/e2e-test-utils';
 
 describe('Divider Maxi', () => {
-	beforeEach(async () => {
+	it('Divider Maxi does not break', async () => {
 		await createNewPost();
-	});
-
-	it('Divider Maxi does not break ', async () => {
 		await insertBlock('Divider Maxi');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

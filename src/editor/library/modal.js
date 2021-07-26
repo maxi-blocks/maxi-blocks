@@ -20,7 +20,7 @@ import { Icon } from '../../components';
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isEmpty, cloneDeep } from 'lodash';
 
 /**
  * Icons
@@ -177,6 +177,39 @@ class MaxiModal extends Component {
 						]
 					) && (
 						<div className='maxi-library-modal__action-section__preview'>
+							<Icon
+								className='maxi-library-modal__action-section__preview--remove'
+								icon={remove}
+								onClick={() => {
+									const newBgLayers = cloneDeep(
+										attributes['background-layers']
+									);
+
+									delete newBgLayers[layerId][
+										'background-svg-SVGElement'
+									];
+									delete newBgLayers[layerId][
+										'background-svg-SVGMediaID'
+									];
+									delete newBgLayers[layerId][
+										'background-svg-SVGMediaURL'
+									];
+									delete newBgLayers[layerId][
+										'background-svg-SVGData'
+									];
+
+									dispatch(
+										'core/block-editor'
+									).updateBlockAttributes(
+										getSelectedBlockClientId(),
+										{
+											'background-layers': [
+												...newBgLayers,
+											],
+										}
+									);
+								}}
+							/>
 							<RawHTML>
 								{
 									attributes['background-layers'][layerId][
@@ -191,6 +224,20 @@ class MaxiModal extends Component {
 					!attributes['background-layers-status'] &&
 					!isEmpty(attributes['background-svg-SVGElement']) && (
 						<div className='maxi-library-modal__action-section__preview'>
+							<Icon
+								className='maxi-library-modal__action-section__preview--remove'
+								icon={remove}
+								onClick={() =>
+									dispatch(
+										'core/block-editor'
+									).updateBlockAttributes(
+										getSelectedBlockClientId(),
+										{
+											'background-svg-SVGElement': '',
+										}
+									)
+								}
+							/>
 							<RawHTML>
 								{attributes['background-svg-SVGElement']}
 							</RawHTML>
@@ -198,6 +245,21 @@ class MaxiModal extends Component {
 					)}
 				{attributes && type === 'image-shape' && attributes.SVGElement && (
 					<div className='maxi-library-modal__action-section__preview'>
+						<Icon
+							className='maxi-library-modal__action-section__preview--remove'
+							icon={remove}
+							onClick={() =>
+								dispatch(
+									'core/block-editor'
+								).updateBlockAttributes(
+									getSelectedBlockClientId(),
+									{
+										SVGElement: '',
+										SVGData: {},
+									}
+								)
+							}
+						/>
 						<RawHTML>{attributes.SVGElement}</RawHTML>
 					</div>
 				)}

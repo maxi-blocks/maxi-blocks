@@ -533,31 +533,34 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: __('Headings', 'maxi-blocks'),
 						content: <SettingTabsControl items={headingItems()} />,
 					},
-					generateTab({
-						type: 'hover',
-						tabLabel: __('Hover', 'maxi-blocks'),
-						firstLabel: __('Hover', 'maxi-blocks'),
-						firstColorDefault: 6,
-						disableTypography: true,
-					}),
-					generateTab({
-						type: 'icon',
-						tabLabel: __('SVG Icons', 'maxi-blocks'),
-						disableTypography: true,
-						firstLabel: __('Line', 'maxi-blocks'),
-						firstColor: 'line',
-						firstColorDefault: 7,
-						secondColor: 'fill',
-						secondLabel: __('Fill', 'maxi-blocks'),
-						secondColorDefault: 4,
-					}),
-					generateTab({
-						type: 'divider',
-						tabLabel: __('Divider', 'maxi-blocks'),
-						firstLabel: __('Divider', 'maxi-blocks'),
-						firstColorDefault: 4,
-						disableTypography: true,
-					}),
+					breakpoint === 'general' &&
+						generateTab({
+							type: 'hover',
+							tabLabel: __('Hover', 'maxi-blocks'),
+							firstLabel: __('Hover', 'maxi-blocks'),
+							firstColorDefault: 6,
+							disableTypography: true,
+						}),
+					breakpoint === 'general' &&
+						generateTab({
+							type: 'icon',
+							tabLabel: __('SVG Icons', 'maxi-blocks'),
+							disableTypography: true,
+							firstLabel: __('Line', 'maxi-blocks'),
+							firstColor: 'line',
+							firstColorDefault: 7,
+							secondColor: 'fill',
+							secondLabel: __('Fill', 'maxi-blocks'),
+							secondColorDefault: 4,
+						}),
+					breakpoint === 'general' &&
+						generateTab({
+							type: 'divider',
+							tabLabel: __('Divider', 'maxi-blocks'),
+							firstLabel: __('Divider', 'maxi-blocks'),
+							firstColorDefault: 4,
+							disableTypography: true,
+						}),
 				]}
 			/>
 		</div>

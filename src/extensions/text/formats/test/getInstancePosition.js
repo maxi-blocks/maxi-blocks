@@ -131,7 +131,7 @@ describe('getInstancePositions', () => {
 			formatAttributes
 		);
 
-		expect(result).toBeTruthy([8, 12]);
+		expect(result).toStrictEqual([[8, 12]]);
 	});
 });
 

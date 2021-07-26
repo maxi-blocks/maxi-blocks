@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
+import { select } from '@wordpress/data';
 
 export const placeholderImage = async () => {
 	const ajaxurl = wp.ajax.settings.url;
@@ -69,11 +69,13 @@ export const imageUploader = async (imageSrc, usePlaceholderImage) => {
 	return null;
 };
 
-export const svgAttributesReplacer = (
-	blockStyle,
-	svgCode,
-	currentAttributes
-) => {
+export const svgAttributesReplacer = (blockStyle, svgCode) => {
+	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
+	const clientId = getSelectedBlockClientId();
+	const currentAttributes = getBlock(clientId).attributes;
+
+	if (!currentAttributes) return false;
+
 	const fillColor = !currentAttributes['svg-palette-fill-color-status']
 		? currentAttributes['svg-fill-color']
 		: `var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-${currentAttributes['svg-palette-fill-color']}))`;

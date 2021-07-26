@@ -7,6 +7,7 @@
 	height: 100%;
 	overflow: hidden;
 	backface-visibility: hidden;
+	box-sizing: content-box;
 
 	&__layer {
 		position: absolute;

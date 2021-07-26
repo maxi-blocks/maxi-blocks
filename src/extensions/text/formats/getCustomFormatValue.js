@@ -5,6 +5,7 @@ import getLastBreakpointAttribute from '../../styles/getLastBreakpointAttribute'
 import getCurrentFormatClassName from './getCurrentFormatClassName';
 import getCustomFormat from './getCustomFormat';
 import { getTypographyFromSC } from '../../style-cards';
+import getActiveStyleCard from '../../style-cards/getActiveStyleCard';
 
 /**
  * External dependencies
@@ -80,7 +81,8 @@ const getCustomFormatValue = ({
 	// Style Cards value
 	const SCStyle = blockStyle.replace('maxi-', '');
 	const SCLevel = styleCardPrefix || textLevel;
-	const currentSC = getTypographyFromSC(styleCard[SCStyle], SCLevel);
+	const activeStyleCard = styleCard || getActiveStyleCard().value;
+	const currentSC = getTypographyFromSC(activeStyleCard[SCStyle], SCLevel);
 
 	const currentSCValue = getLastBreakpointAttribute(
 		prop,
@@ -93,7 +95,7 @@ const getCustomFormatValue = ({
 
 	if (currentSCValue) return currentSCValue;
 
-	const defaultSC = getTypographyFromSC(styleCard[SCStyle], SCLevel);
+	const defaultSC = getTypographyFromSC(activeStyleCard[SCStyle], SCLevel);
 
 	const defaultSCValue = getLastBreakpointAttribute(
 		prop,

@@ -102,14 +102,16 @@ const AdvancedNumberControl = props => {
 
 					if (enableUnit) {
 						if (
+							value !== '' &&
 							value >
-							minMaxSettings[isEmpty(unit) ? '-' : unit].max
+								minMaxSettings[isEmpty(unit) ? '-' : unit].max
 						)
 							value =
 								minMaxSettings[isEmpty(unit) ? '-' : unit].max;
 						if (
+							value !== '' &&
 							value <
-							minMaxSettings[isEmpty(unit) ? '-' : unit].min
+								minMaxSettings[isEmpty(unit) ? '-' : unit].min
 						)
 							value =
 								minMaxSettings[isEmpty(unit) ? '-' : unit].min;
@@ -170,7 +172,7 @@ const AdvancedNumberControl = props => {
 				</Button>
 			)}
 			<RangeControl
-				value={value}
+				value={value || defaultValue || initial || 0}
 				onChange={val => {
 					onChangeValue(+val);
 				}}

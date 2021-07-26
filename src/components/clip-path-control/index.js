@@ -13,6 +13,7 @@ import SelectControl from '../select-control';
 import BaseControl from '../base-control';
 import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
+import Icon from '../icon';
 import FancyRadioControl from '../fancy-radio-control';
 
 /**
@@ -25,6 +26,7 @@ import { isArray, isEmpty, isNil, trim } from 'lodash';
  * Styles
  */
 import './editor.scss';
+import { styleNone } from '../../icons';
 
 /**
  * Component
@@ -329,6 +331,19 @@ const ClipPathControl = props => {
 					/>
 					{!isCustom && (
 						<div className='clip-path-defaults'>
+							<Tooltip
+								key='clip-path-defaults__item__none'
+								text={__('none', 'maxi-blocks')}
+								position='bottom center'
+							>
+								<Button
+									aria-pressed={clipPath === ''}
+									className='clip-path-defaults__items clip-path-defaults__items__none'
+									onClick={() => onChange('')}
+								>
+									<Icon icon={styleNone} />
+								</Button>
+							</Tooltip>
 							{Object.entries(clipPathDefaults).map(
 								([name, newClipPath]) => (
 									<Tooltip

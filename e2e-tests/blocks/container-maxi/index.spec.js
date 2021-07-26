@@ -8,11 +8,8 @@ import {
 } from '@wordpress/e2e-test-utils';
 
 describe('Container Maxi', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
-
 	it('Container Maxi does not break', async () => {
+		await createNewPost();
 		await insertBlock('Container Maxi');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

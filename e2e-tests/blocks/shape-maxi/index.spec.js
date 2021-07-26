@@ -8,11 +8,8 @@ import {
 } from '@wordpress/e2e-test-utils';
 
 describe('Shape Maxi', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
-
 	it('Shape Maxi does not break', async () => {
+		await createNewPost();
 		await insertBlock('Shape Maxi');
 
 		await page.waitForSelector('.maxi-library-modal');

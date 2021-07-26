@@ -8,11 +8,8 @@ import {
 } from '@wordpress/e2e-test-utils';
 
 describe('Group Maxi', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
-
 	it('Group Maxi does not break', async () => {
+		await createNewPost();
 		await insertBlock('Group Maxi');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

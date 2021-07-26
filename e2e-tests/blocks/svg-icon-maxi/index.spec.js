@@ -8,11 +8,8 @@ import {
 } from '@wordpress/e2e-test-utils';
 
 describe('Svg Icon Maxi', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
-
 	it('Svg Icon Maxi does not break', async () => {
+		await createNewPost();
 		await insertBlock('SVG Icon Maxi');
 
 		await page.waitForSelector('.maxi-library-modal');

@@ -86,7 +86,7 @@ const TextColor = withFormatValue(props => {
 
 	return (
 		<ToolbarPopover
-			className='toolbar-item__text-options'
+			className='toolbar-item__text-options toolbar-item__text-options--color'
 			tooltip={__('Text Colour', 'maxi-blocks')}
 			icon={
 				<div

@@ -151,6 +151,27 @@ describe('TextMaxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
+	it('Test Text Maxi toolbar Link in whole content, and being modifiable from the end', async () => {
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Test Text Maxi');
+		await page.$eval('.toolbar-item__text-link', button => button.click());
+		await page.keyboard.type(linkExample);
+		await page.keyboard.press('Enter');
+
+		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const selectMaxiTextP = await selectMaxiTextDiv.$(
+			'.block-editor-rich-text__editable'
+		);
+		await selectMaxiTextP.focus();
+		await page.$eval('.toolbar-item__text-link', button => button.click());
+		const isLinkModifiable = await page.$eval(
+			'a.components-external-link',
+			link => link.href.length > 0
+		);
+
+		expect(isLinkModifiable).toBeTruthy();
+	});
+
 	it('Test Text Maxi toolbar Link in whole content, and then remove it', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi');
@@ -261,6 +282,25 @@ describe('TextMaxi', () => {
 			contentWrapper => contentWrapper.innerHTML.trim()
 		);
 		expect(content).toMatchSnapshot();
+	});
+
+	it('Test Text Maxi toolbar Link in part of the content and then remove it', async () => {
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Test Text Maxi');
+		await pressKeyTimes('ArrowLeft', 5);
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await page.$eval('.toolbar-item__text-link', button => button.click());
+		await page.keyboard.type(linkExample);
+		await page.keyboard.press('Enter');
+		await page.waitForSelector('.toolbar-popover-link-destroyer');
+		await page.$eval('.toolbar-popover-link-destroyer', button =>
+			button.click()
+		);
+
+		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
 	it('Test Text Maxi toolbar Link with all option on frontend', async () => {

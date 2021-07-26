@@ -7,10 +7,10 @@ import {
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
 
-describe('Group Maxi', () => {
-	it('Group Maxi does not break', async () => {
+describe('Map Maxi', () => {
+	it('Map Maxi does not break', async () => {
 		await createNewPost();
-		await insertBlock('Group Maxi');
+		await insertBlock('Map Maxi');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});

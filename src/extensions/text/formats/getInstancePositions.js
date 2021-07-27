@@ -53,7 +53,10 @@ const getInstancePositions = (
 		}
 	);
 
-	return chunk(filteredLocatedInstances, 2);
+	return chunk(filteredLocatedInstances, 2).map(instance => [
+		instance[0],
+		instance[1] + 1,
+	]);
 };
 
 export default getInstancePositions;

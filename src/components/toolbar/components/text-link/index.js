@@ -61,7 +61,7 @@ const LinkContent = withFormatValue(props => {
 				formatClassName: null,
 				formatAttributes: null,
 			}),
-			[0, formatValue.formats.length - 1]
+			[0, formatValue.formats.length]
 		);
 		const end = formatValue.formats.length + 1;
 		const start =

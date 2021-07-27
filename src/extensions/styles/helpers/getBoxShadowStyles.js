@@ -80,7 +80,8 @@ const getBoxShadowStyles = ({
 		const paletteStatus = getLastBreakpointAttribute(
 			'box-shadow-palette-color-status',
 			breakpoint,
-			obj
+			obj,
+			isHover
 		);
 
 		// Color
@@ -88,7 +89,13 @@ const getBoxShadowStyles = ({
 			paletteStatus ? getValue('palette-color') : getValue('color');
 
 		const color = paletteStatus
-			? `var(--maxi-${parentBlockStyle}-color-${paletteColor})`
+			? `var(--maxi-${parentBlockStyle}-color-${
+					obj[
+						`box-shadow-palette-color-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+					]
+			  })`
 			: paletteColor;
 
 		const isNotDefault =

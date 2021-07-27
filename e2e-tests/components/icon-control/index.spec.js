@@ -29,8 +29,9 @@ describe('IconControl', () => {
 		await modalSearcher.focus();
 		await page.keyboard.type('Sword');
 		await page.waitForTimeout(1000);
-		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
-			button.click()
+		await modal.$eval(
+			'.maxi-cloud-masonry-card__svg-container__button',
+			button => button.click()
 		);
 
 		const icon = await getBlockAttributes();

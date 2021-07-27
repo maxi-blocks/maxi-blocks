@@ -177,6 +177,16 @@ const getImageHoverObject = props => {
 
 const getImageWrapperObject = props => {
 	const response = {
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
 		}),
@@ -197,16 +207,6 @@ const getImageWrapperObject = props => {
 
 const getImageObject = props => {
 	return {
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(props, [
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-		}),
 		...(props.clipPath && {
 			image: { general: { 'clip-path': props.clipPath } },
 		}),

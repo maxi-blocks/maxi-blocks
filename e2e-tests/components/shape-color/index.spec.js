@@ -25,8 +25,9 @@ describe('ShapeColor', () => {
 		await modalSearcher.focus();
 		await page.keyboard.type('Anchor');
 		await page.waitForTimeout(1000);
-		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
-			button.click()
+		await modal.$eval(
+			'.maxi-cloud-masonry-card__svg-container__button',
+			button => button.click()
 		);
 
 		const expectForm = await getBlockAttributes();
@@ -56,10 +57,12 @@ describe('ShapeColor', () => {
 		);
 
 		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('0F0A09');
+		await page.keyboard.type('000000');
+		await page.keyboard.press('Enter');
 
 		await page.waitForTimeout(500);
-		const expectedCustomColor = 'rgba(15,10,9,1)';
+
+		const expectedCustomColor = 'rgba(0,0,0,1)';
 		const shapeAttributes = await getBlockAttributes();
 		const shapeCustomColor = shapeAttributes['shape-fill-color'];
 

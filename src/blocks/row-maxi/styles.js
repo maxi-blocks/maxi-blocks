@@ -103,6 +103,8 @@ const getHoverObject = props => {
 	const response = {
 		border:
 			props['border-status-hover'] &&
+			props['border-style-general-hover'] &&
+			props['border-style-general-hover'] !== 'none' &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(

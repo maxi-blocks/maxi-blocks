@@ -148,19 +148,21 @@ const getHoverEffectContentTextObject = props => {
 
 const getImageHoverObject = props => {
 	const response = {
-		...(props['border-status-hover'] && {
-			border: getBorderStyles({
-				obj: {
-					...getGroupAttributes(
-						props,
-						['border', 'borderWidth', 'borderRadius'],
-						true
-					),
-				},
-				isHover: true,
-				parentBlockStyle: props.parentBlockStyle,
+		...(props['border-status-hover'] &&
+			props['border-style-general-hover'] &&
+			props['border-style-general-hover'] !== 'none' && {
+				border: getBorderStyles({
+					obj: {
+						...getGroupAttributes(
+							props,
+							['border', 'borderWidth', 'borderRadius'],
+							true
+						),
+					},
+					isHover: true,
+					parentBlockStyle: props.parentBlockStyle,
+				}),
 			}),
-		}),
 		...(props['box-shadow-status-hover'] && {
 			boxShadow: getBoxShadowStyles({
 				obj: {

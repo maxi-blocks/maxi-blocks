@@ -321,9 +321,12 @@ describe('BackgroundControl', () => {
 		await page.keyboard.type('angle 10');
 		await page.waitForTimeout(1000);
 		await page.waitForSelector('.angle-10-maxi-svg');
-		await page.waitForSelector('.maxi-cloud-masonry-card__button');
-		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
-			button.click()
+		await page.waitForSelector(
+			'.maxi-cloud-masonry-card__svg-container__button'
+		);
+		await modal.$eval(
+			'.maxi-cloud-masonry-card__svg-container__button',
+			button => button.click()
 		);
 
 		const expectShape = `
@@ -357,8 +360,9 @@ describe('BackgroundControl', () => {
 		await modalSearcher.focus();
 		await page.keyboard.type('angle 10');
 		await page.waitForTimeout(1000);
-		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
-			button.click()
+		await modal.$eval(
+			'.maxi-cloud-masonry-card__svg-container__button',
+			button => button.click()
 		);
 
 		await accordionPanel.$$eval(
@@ -512,9 +516,12 @@ describe('BackgroundControl', () => {
 		await page.keyboard.type('angle 10');
 		await page.waitForTimeout(1000);
 		await page.waitForSelector('.angle-10-maxi-svg');
-		await page.waitForSelector('.maxi-cloud-masonry-card__button');
-		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
-			button.click()
+		await page.waitForSelector(
+			'.maxi-cloud-masonry-card__svg-container__button'
+		);
+		await modal.$eval(
+			'.maxi-cloud-masonry-card__svg-container__button',
+			button => button.click()
 		);
 
 		await accordionPanel.$$eval(

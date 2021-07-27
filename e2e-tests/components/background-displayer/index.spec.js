@@ -125,9 +125,12 @@ describe('BackgroundControl', () => {
 		await page.keyboard.type('angle 10');
 		await page.waitForTimeout(1000);
 		await page.waitForSelector('.angle-10-maxi-svg');
-		await page.waitForSelector('.maxi-cloud-masonry-card__button');
-		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
-			button.click()
+		await page.waitForSelector(
+			'.maxi-cloud-masonry-card__svg-container__button'
+		);
+		await modal.$eval(
+			'.maxi-cloud-masonry-card__svg-container__button',
+			button => button.click()
 		);
 
 		const backgroundShape = await page.$eval(
@@ -198,9 +201,12 @@ describe('BackgroundControl', () => {
 		await page.keyboard.type('angle 10');
 		await page.waitForTimeout(1000);
 		await page.waitForSelector('.angle-10-maxi-svg');
-		await page.waitForSelector('.maxi-cloud-masonry-card__button');
-		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
-			button.click()
+		await page.waitForSelector(
+			'.maxi-cloud-masonry-card__svg-container__button'
+		);
+		await modal.$eval(
+			'.maxi-cloud-masonry-card__svg-container__button',
+			button => button.click()
 		);
 
 		const displayerLayers = await page.$eval(

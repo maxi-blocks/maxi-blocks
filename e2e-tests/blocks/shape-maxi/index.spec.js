@@ -20,9 +20,6 @@ describe('Shape Maxi', () => {
 		await page.keyboard.type('anchor');
 		await page.waitForTimeout(1000);
 		await page.waitForSelector('.anchor-maxi-svg');
-		await page.waitForSelector(
-			'.maxi-cloud-masonry-card__svg-container__button'
-		);
 		await modal.$eval(
 			'.maxi-cloud-masonry-card__svg-container__button',
 			button => button.click()

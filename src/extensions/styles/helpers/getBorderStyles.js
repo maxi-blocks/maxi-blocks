@@ -57,7 +57,17 @@ const getBorderStyles = ({
 				);
 				const newLabel = newKey.replace(replacer, '');
 
-				if (!keyWords.some(key => newLabel.includes(key))) {
+				if (
+					key.includes('border-style') &&
+					obj[
+						`border-style-${breakpoint}${isHover ? '-hover' : ''}`
+					] &&
+					obj[
+						`border-style-${breakpoint}${isHover ? '-hover' : ''}`
+					] === 'none'
+				) {
+					response[breakpoint].border = 'none';
+				} else if (!keyWords.some(key => newLabel.includes(key))) {
 					if (key.includes('color')) {
 						const paletteStatus = getLastBreakpointAttribute(
 							`${prefix}border-palette-color-status`,

@@ -39,29 +39,31 @@ const removeLinkFormat = ({
 	const formatLength = formatValue.formats.length;
 	let newStart = start;
 	let newEnd = end;
-	if (start === end) {
-		[newStart, newEnd] = getFormatPosition({
-			formatValue,
-			formatName: 'maxi-blocks/text-link',
-			formatClassName: null,
-			formatAttributes: attributes,
-		}) || [0, formatLength];
-	}
+	const [linkPositionStart, linkPositionEnd] = getFormatPosition({
+		formatValue,
+		formatName: 'maxi-blocks/text-link',
+		formatClassName: null,
+		formatAttributes: attributes,
+	});
+	if (start === end)
+		[newStart, newEnd] = [linkPositionStart, linkPositionEnd] || [
+			0,
+			formatLength,
+		];
 
 	const removedLinkFormatValue = removeFormat(
-		{ ...formatValue, start: newStart, end: newEnd + 1 },
+		{
+			...formatValue,
+			start: newStart,
+			end: newEnd,
+		},
 		'maxi-blocks/text-link'
 	);
 
 	// Check if the removing is a partial part of the whole content
-	const isWholeLink = isEqual(
-		getFormatPosition({
-			formatValue,
-			formatName: 'maxi-blocks/text-link',
-			formatClassName: null,
-			formatAttributes: attributes,
-		}),
-		[0, formatLength - 1]
+	const isWholeContentLink = isEqual(
+		[linkPositionStart, linkPositionEnd],
+		[0, formatLength]
 	);
 	const hasUnderline =
 		getCustomFormatValue({
@@ -74,12 +76,12 @@ const removeLinkFormat = ({
 			styleCard,
 		}) === 'underline';
 	const isPartialOfWholeLink =
-		isWholeLink &&
+		isWholeContentLink &&
 		hasUnderline &&
 		newStart !== 0 &&
 		newEnd !== formatLength;
 	const isLastPartialOfWholeLink =
-		isWholeLink &&
+		isWholeContentLink &&
 		hasUnderline &&
 		newStart !== 0 &&
 		newStart !== formatLength &&
@@ -136,7 +138,7 @@ const removeLinkFormat = ({
 	}
 
 	if (
-		isWholeLink &&
+		isWholeContentLink &&
 		hasUnderline &&
 		((newStart === 0 && newEnd === formatLength) || start === end)
 	) {
@@ -159,10 +161,7 @@ const removeLinkFormat = ({
 	}
 
 	return setFormat({
-		formatValue: {
-			...removedLinkFormatValue,
-			end: removedLinkFormatValue.end - 1,
-		},
+		formatValue: removedLinkFormatValue,
 		isList,
 		typography,
 		value: {

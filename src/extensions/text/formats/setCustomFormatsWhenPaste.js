@@ -115,7 +115,7 @@ const setFormat = ({
 		newFormatValue = {
 			...newFormatValue,
 			start: pos[0],
-			end: pos[1] + 1,
+			end: pos[1],
 		};
 
 		newFormatValue = removeFormat(newFormatValue, oldFormat);

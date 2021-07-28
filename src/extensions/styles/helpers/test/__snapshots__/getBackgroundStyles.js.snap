@@ -5,46 +5,25 @@ Object {
   "maxi-test > .maxi-background-displayer": Object {
     "border": Object {
       "general": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
+        "border": "none",
       },
       "l": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
+        "border": "none",
       },
       "m": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
+        "border": "none",
       },
       "s": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
+        "border": "none",
       },
       "xl": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
+        "border": "none",
       },
       "xs": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
+        "border": "none",
       },
       "xxl": Object {
-        "border-bottom-left-radius": "4px",
-        "border-bottom-right-radius": "3px",
-        "border-top-left-radius": "1px",
-        "border-top-right-radius": "2px",
+        "border": "none",
       },
     },
   },

@@ -453,7 +453,12 @@ const setBackgroundLayers = ({
 	return response;
 };
 
-const getGeneralBackgroundStyles = (props, borderProps, blockStyle) => {
+const getGeneralBackgroundStyles = (
+	props,
+	borderProps,
+	blockStyle,
+	isHover
+) => {
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const size = {};
 
@@ -484,13 +489,13 @@ const getGeneralBackgroundStyles = (props, borderProps, blockStyle) => {
 				'border-unit-width',
 				breakpoint,
 				props
-			) || '';
+			) || 'px';
 		const horizontalWidth =
 			round(widthTop / 2, 2) - round(widthBottom / 2, 2);
 		const verticalWidth =
 			round(widthLeft / 2, 2) - round(widthRight / 2, 2);
 
-		if (!!verticalWidth || !!horizontalWidth)
+		if (!!verticalWidth || !!horizontalWidth || isHover)
 			size[breakpoint] = {
 				transform: `translate(calc(-50% - ${verticalWidth}${widthUnit}), calc(-50% - ${horizontalWidth}${widthUnit}))`,
 			};
@@ -499,6 +504,7 @@ const getGeneralBackgroundStyles = (props, borderProps, blockStyle) => {
 	const border = getBorderStyles({
 		obj: borderProps,
 		parentBlockStyle: blockStyle,
+		isHover,
 	});
 
 	return { border, ...(!isEmpty(size) && { size }) };
@@ -522,27 +528,35 @@ const getBackgroundStyles = ({
 	blockStyle,
 	...props
 }) => {
-	if (isHover && !props[`${prefix}background-status-hover`]) return {};
+	const includeBorder =
+		!isHover || (isHover && props[`${prefix}border-status-hover`]);
 
 	let response = {
-		[`${target}${isHover ? ':hover' : ''} > .maxi-background-displayer`]: {
-			...getGeneralBackgroundStyles(
-				props,
-				{
-					...getGroupAttributes(
-						props,
-						[
-							groupAttrNames.border,
-							groupAttrNames.borderRadius,
-							groupAttrNames.borderWidth,
-						],
-						isHover
-					),
-				},
-				blockStyle
-			),
-		},
+		...(includeBorder && {
+			[`${target}${
+				isHover ? ':hover' : ''
+			} > .maxi-background-displayer`]: {
+				...getGeneralBackgroundStyles(
+					props,
+					{
+						...getGroupAttributes(
+							props,
+							[
+								groupAttrNames.border,
+								groupAttrNames.borderRadius,
+								groupAttrNames.borderWidth,
+							],
+							isHover
+						),
+					},
+					blockStyle,
+					isHover
+				),
+			},
+		}),
 	};
+
+	if (isHover && !props[`${prefix}background-status-hover`]) return response;
 
 	switch (
 		props[`${prefix}background-active-media${isHover ? '-hover' : ''}`]

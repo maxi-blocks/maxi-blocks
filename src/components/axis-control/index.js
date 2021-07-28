@@ -111,7 +111,15 @@ const AxisControl = props => {
 		target,
 		auxTarget = false,
 		isHover = false,
-		inputsArray = ['top', 'right', 'bottom', 'left', 'unit', 'sync'],
+		inputsArray = [
+			'top',
+			'right',
+			'bottom',
+			'left',
+			'unit',
+			'sync',
+			'sync-horizontal',
+		],
 		optionType = 'number',
 	} = props;
 
@@ -157,11 +165,36 @@ const AxisControl = props => {
 		onChange(response);
 	};
 
-	const onChangeSync = () => {
+	// const onChangeSync = () => {
+	// 	onChange({
+	// 		[`${getKey('sync')}-${breakpoint}${isHover ? '-hover' : ''}`]:
+	// 			!getLastBreakpointAttribute(
+	// 				getKey('sync'),
+	// 				breakpoint,
+	// 				props,
+	// 				isHover
+	// 			),
+	// 	});
+	// };
+
+	// const onChangeSyncHorizontal = () => {
+	// 	onChange({
+	// 		[`${getKey('sync-horizontal')}-${breakpoint}${
+	// 			isHover ? '-hover' : ''
+	// 		}`]: !getLastBreakpointAttribute(
+	// 			getKey('sync-horizontal'),
+	// 			breakpoint,
+	// 			props,
+	// 			isHover
+	// 		),
+	// 	});
+	// };
+
+	const onChangeSync = key => {
 		onChange({
-			[`${getKey('sync')}-${breakpoint}${isHover ? '-hover' : ''}`]:
+			[`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`]:
 				!getLastBreakpointAttribute(
-					getKey('sync'),
+					getKey(key),
 					breakpoint,
 					props,
 					isHover
@@ -209,7 +242,33 @@ const AxisControl = props => {
 			const response = {};
 
 			inputsArray.forEach(key => {
-				if (key !== 'sync' && key !== 'unit')
+				if (
+					key === 'top' ||
+					key === 'left' ||
+					key === 'bottom' ||
+					key === 'right'
+				)
+					response[
+						`${target}-${key}${
+							auxTarget ? `-${auxTarget}` : ''
+						}-${breakpoint}${isHover ? '-hover' : ''}`
+					] = newValue;
+			});
+
+			onChange(response);
+		} else if (
+			(singleTarget === 'left' || singleTarget === 'right') &&
+			getLastBreakpointAttribute(
+				getKey('sync-horizontal'),
+				breakpoint,
+				props,
+				isHover
+			)
+		) {
+			const response = {};
+
+			inputsArray.forEach(key => {
+				if (key === 'left' || key === 'right')
 					response[
 						`${target}-${key}${
 							auxTarget ? `-${auxTarget}` : ''
@@ -370,7 +429,26 @@ const AxisControl = props => {
 								props,
 								isHover
 							)}
-							onClick={onChangeSync}
+							onClick={a => onChangeSync('sync')}
+							isSmall
+						>
+							{sync}
+						</Button>
+						<Button
+							aria-label={__('Sync Units', 'maxi-blocks')}
+							isPrimary={getLastBreakpointAttribute(
+								getKey('sync-horizontal'),
+								breakpoint,
+								props,
+								isHover
+							)}
+							aria-pressed={getLastBreakpointAttribute(
+								getKey('sync-horizontal'),
+								breakpoint,
+								props,
+								isHover
+							)}
+							onClick={a => onChangeSync('sync-horizontal')}
 							isSmall
 						>
 							{sync}

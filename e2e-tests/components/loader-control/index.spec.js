@@ -1,13 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+// import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Interactive dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+// import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('LoaderControl', () => {
+/* describe('LoaderControl', () => {
 	it('Check loader control', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
@@ -83,4 +83,4 @@ describe('LoaderControl', () => {
 
 		expect(allLayers).toMatchSnapshot();
 	});
-});
+}); */

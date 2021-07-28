@@ -1,7 +1,7 @@
 /**
  * WordPress
  */
-import {
+/* import {
 	createNewPost,
 	insertBlock,
 	getEditedPostContent,
@@ -14,4 +14,4 @@ describe('Maxi Cloud Library', () => {
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
-});
+}); */

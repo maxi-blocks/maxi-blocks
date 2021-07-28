@@ -1,7 +1,7 @@
 /**
  * WordPress
  */
-import {
+/* import {
 	createNewPost,
 	insertBlock,
 	getEditedPostContent,
@@ -26,3 +26,4 @@ describe('Svg Icon Maxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 });
+*/

@@ -1,9 +1,9 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost } from '@wordpress/e2e-test-utils';
+// import { createNewPost } from '@wordpress/e2e-test-utils';
 
-describe('Placeholder', () => {
+/* describe('Placeholder', () => {
 	it('Test placeholder', async () => {
 		await createNewPost();
 		await page.$eval('.maxi-toolbar-layout button', button =>
@@ -27,4 +27,4 @@ describe('Placeholder', () => {
 		await page.waitForTimeout(500);
 		expect(placeholder).toMatchSnapshot();
 	});
-});
+}); */

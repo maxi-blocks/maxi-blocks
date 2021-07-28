@@ -1,7 +1,7 @@
 /**
  * WordPress
  */
-import {
+/* import {
 	createNewPost,
 	insertBlock,
 	getEditedPostContent,
@@ -25,4 +25,4 @@ describe('Shape Maxi', () => {
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
-});
+}); */

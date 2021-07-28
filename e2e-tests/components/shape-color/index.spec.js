@@ -1,17 +1,17 @@
 /**
  * WordPress dependencies
  */
-import {
+/* import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+} from '@wordpress/e2e-test-utils'; */
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+// import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('ShapeColor', () => {
+/* describe('ShapeColor', () => {
 	it('Checking the shape color', async () => {
 		await createNewPost();
 		await insertBlock('Shape Maxi');
@@ -77,3 +77,4 @@ describe('ShapeColor', () => {
 		expect(shapeColorStatus).toStrictEqual(expectedColorStatus);
 	});
 });
+*/

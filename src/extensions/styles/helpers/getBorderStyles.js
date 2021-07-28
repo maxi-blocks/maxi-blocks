@@ -62,13 +62,14 @@ const getBorderStyles = ({
 				const newLabel = newKey.replace(replacer, '');
 
 				if (
-					isUndefined(
-						obj[
-							`border-style-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`
-						]
-					) ||
+					(isHover &&
+						isUndefined(
+							obj[
+								`border-style-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`
+							]
+						)) ||
 					obj[
 						`border-style-${breakpoint}${isHover ? '-hover' : ''}`
 					] === 'none'

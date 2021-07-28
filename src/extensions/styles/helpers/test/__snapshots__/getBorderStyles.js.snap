@@ -15,7 +15,7 @@ Object {
     "border-top-width": "1px",
   },
   "l": Object {
-    "border": "none",
+    "border-color": "rgb(255, 99, 71)",
   },
   "m": Object {},
   "s": Object {},
@@ -40,7 +40,7 @@ Object {
     "border-top-width": "1px",
   },
   "l": Object {
-    "border": "none",
+    "border-color": "var(--maxi-light-color-1);",
   },
   "m": Object {},
   "s": Object {},

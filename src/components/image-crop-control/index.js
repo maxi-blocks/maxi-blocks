@@ -86,7 +86,7 @@ const ImageCropControl = props => {
 
 		const val = cropValue || crop.crop;
 
-		return elements.every(el => !!val[el]);
+		return elements.every(el => isNumber(val[el]));
 	};
 	const [inputState, setInputState] = useState(getInputState());
 	useEffect(() => {
@@ -294,18 +294,25 @@ const ImageCropControl = props => {
 						crop={crop.crop}
 						onImageLoaded={image => onImageLoad(image)}
 						onChange={newCrop => {
-							!!newCrop.height &&
-								!!newCrop.width &&
+							if (
+								Object.keys(newCrop).every(el => {
+									if (el !== 'unit' && el !== 'aspect') {
+										return isNumber(newCrop[el]);
+									}
+									return true;
+								})
+							) {
 								setCrop({
 									...crop,
 									crop: { ...crop.crop, ...newCrop },
-								}) &&
+								});
 								setInputState(
 									getInputState({
 										...crop,
 										crop: { ...crop.crop, ...newCrop },
 									})
 								);
+							}
 						}}
 						onComplete={crop => onCropComplete(crop)}
 						keepSelection={false}

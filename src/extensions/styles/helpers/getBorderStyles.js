@@ -88,7 +88,11 @@ const getBorderStyles = ({
 							] = `var(--maxi-${parentBlockStyle}-color-${paletteColor});`;
 						else
 							response[breakpoint]['border-color'] =
-								obj[`${prefix}border-color-${breakpoint}`];
+								obj[
+									`${prefix}border-color-${breakpoint}${
+										isHover ? '-hover' : ''
+									}`
+								];
 					} else response[breakpoint][newLabel] = `${value}`;
 				} else {
 					const unitKey = keyWords.filter(key =>

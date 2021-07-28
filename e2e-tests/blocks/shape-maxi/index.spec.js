@@ -17,12 +17,10 @@ describe('Shape Maxi', () => {
 		await page.waitForSelector('.ais-SearchBox-input');
 		const modalSearcher = await modal.$('.ais-SearchBox-input');
 		await modalSearcher.focus();
-		await page.keyboard.type('anchor');
+		await page.keyboard.type('Anchor');
 		await page.waitForTimeout(1000);
-		await page.waitForSelector('.anchor-maxi-svg');
-		await modal.$eval(
-			'.maxi-cloud-masonry-card__svg-container__button',
-			button => button.click()
+		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
+			button.click()
 		);
 
 		expect(await getEditedPostContent()).toMatchSnapshot(); */

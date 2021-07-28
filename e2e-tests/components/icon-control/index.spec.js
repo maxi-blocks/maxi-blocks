@@ -1,20 +1,19 @@
 /**
  * WordPress dependencies
  */
-import {
+/* import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
-import { page } from '@wordpress/icons/build-types';
+} from '@wordpress/e2e-test-utils'; */
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+// import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('IconControl', () => {
 	it('Check Icon Control', async () => {
-		await createNewPost();
+		/* await createNewPost();
 		await insertBlock('Button Maxi');
 		const accordionPanel = await openSidebar(page, 'icon');
 
@@ -105,6 +104,6 @@ describe('IconControl', () => {
 		const borderAttributes = await getBlockAttributes();
 		const border = borderAttributes['icon-border-style-general'];
 
-		expect(border).toStrictEqual(expectBorder);
+		expect(border).toStrictEqual(expectBorder); */
 	});
 });

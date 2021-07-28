@@ -1,7 +1,7 @@
 /**
  * WordPress
  */
-/* import {
+import {
 	createNewPost,
 	insertBlock,
 	getEditedPostContent,
@@ -9,7 +9,7 @@
 
 describe('Svg Icon Maxi', () => {
 	it('Svg Icon Maxi does not break', async () => {
-		await createNewPost();
+		/* await createNewPost();
 		await insertBlock('SVG Icon Maxi');
 
 		await page.waitForSelector('.maxi-library-modal');
@@ -23,7 +23,6 @@ describe('Svg Icon Maxi', () => {
 			button.click()
 		);
 
-		expect(await getEditedPostContent()).toMatchSnapshot();
+		expect(await getEditedPostContent()).toMatchSnapshot(); */
 	});
 });
-*/

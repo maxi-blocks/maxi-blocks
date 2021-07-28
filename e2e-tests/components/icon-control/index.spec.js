@@ -11,9 +11,9 @@
  */
 // import { getBlockAttributes, openSidebar } from '../../utils';
 
-/* describe('IconControl', () => {
+describe('IconControl', () => {
 	it('Check Icon Control', async () => {
-		await createNewPost();
+		/* await createNewPost();
 		await insertBlock('Button Maxi');
 		const accordionPanel = await openSidebar(page, 'icon');
 
@@ -101,7 +101,6 @@
 		const borderAttributes = await getBlockAttributes();
 		const border = borderAttributes['icon-border-style-general'];
 
-		expect(border).toStrictEqual(expectBorder);
+		expect(border).toStrictEqual(expectBorder); */
 	});
 });
-*/

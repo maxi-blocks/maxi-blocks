@@ -11,9 +11,9 @@
  */
 // import { getBlockAttributes, openSidebar } from '../../utils';
 
-/* describe('ShapeColor', () => {
+describe('ShapeColor', () => {
 	it('Checking the shape color', async () => {
-		await createNewPost();
+		/* await createNewPost();
 		await insertBlock('Shape Maxi');
 
 		// select shape
@@ -74,7 +74,6 @@
 		const shapeColorStatus =
 			statusAttributes['shape-palette-fill-color-status'];
 
-		expect(shapeColorStatus).toStrictEqual(expectedColorStatus);
+		expect(shapeColorStatus).toStrictEqual(expectedColorStatus); */
 	});
 });
-*/

@@ -3,9 +3,9 @@
  */
 // import { createNewPost } from '@wordpress/e2e-test-utils';
 
-/* describe('Placeholder', () => {
+describe('Placeholder', () => {
 	it('Test placeholder', async () => {
-		await createNewPost();
+		/* await createNewPost();
 		await page.$eval('.maxi-toolbar-layout button', button =>
 			button.click()
 		);
@@ -25,6 +25,6 @@
 			div => div.innerHTML
 		);
 		await page.waitForTimeout(500);
-		expect(placeholder).toMatchSnapshot();
+		expect(placeholder).toMatchSnapshot(); */
 	});
-}); */
+});

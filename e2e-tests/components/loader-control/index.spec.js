@@ -7,9 +7,9 @@
  */
 // import { getBlockAttributes, openSidebar } from '../../utils';
 
-/* describe('LoaderControl', () => {
+describe('LoaderControl', () => {
 	it('Check loader control', async () => {
-		await createNewPost();
+		/* await createNewPost();
 		await insertBlock('Group Maxi');
 		const accordionPanel = await openSidebar(page, 'background');
 
@@ -81,6 +81,6 @@
 		const expectBackgroundLayers = await getBlockAttributes();
 		const allLayers = expectBackgroundLayers['background-layers'];
 
-		expect(allLayers).toMatchSnapshot();
+		expect(allLayers).toMatchSnapshot(); */
 	});
-}); */
+});

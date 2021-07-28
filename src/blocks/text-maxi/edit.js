@@ -39,7 +39,9 @@ import { isEmpty } from 'lodash';
 class edit extends MaxiBlockComponent {
 	propsToAvoidRendering = ['formatValue'];
 
-	typingTimeout = 0;
+	typingTimeoutFormatValue = 0;
+
+	typingTimeoutContent = 0;
 
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
@@ -111,11 +113,11 @@ class edit extends MaxiBlockComponent {
 				setAttributes(cleanCustomProps);
 			}
 
-			if (this.typingTimeout) {
-				clearTimeout(this.typingTimeout);
+			if (this.typingTimeoutFormatValue) {
+				clearTimeout(this.typingTimeoutFormatValue);
 			}
 
-			this.typingTimeout = setTimeout(() => {
+			this.typingTimeoutFormatValue = setTimeout(() => {
 				dispatch('maxiBlocks/text').sendFormatValue(
 					formatValue,
 					clientId
@@ -138,7 +140,15 @@ class edit extends MaxiBlockComponent {
 			if (isWholeLink) {
 				const newContent = content.replace('</a>', '');
 				setAttributes({ content: `${newContent}</a>` });
-			} else setAttributes({ content });
+			} else {
+				if (this.typingTimeoutContent) {
+					clearTimeout(this.typingTimeoutContent);
+				}
+
+				this.typingTimeoutContent = setTimeout(() => {
+					setAttributes({ content });
+				}, 100);
+			}
 		};
 
 		return [

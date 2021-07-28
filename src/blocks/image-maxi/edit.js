@@ -62,7 +62,9 @@ class edit extends MaxiBlockComponent {
 
 	propsToAvoidRendering = ['formatValue'];
 
-	typingTimeout = 0;
+	typingTimeoutFormatValue = 0;
+
+	typingTimeoutContent = 0;
 
 	get getWrapperWidth() {
 		const target = document.getElementById(`block-${this.props.clientId}`);
@@ -163,11 +165,11 @@ class edit extends MaxiBlockComponent {
 				setAttributes(cleanCustomProps);
 			}
 
-			if (this.typingTimeout) {
-				clearTimeout(this.typingTimeout);
+			if (this.typingTimeoutFormatValue) {
+				clearTimeout(this.typingTimeoutFormatValue);
 			}
 
-			this.typingTimeout = setTimeout(() => {
+			this.typingTimeoutFormatValue = setTimeout(() => {
 				dispatch('maxiBlocks/text').sendFormatValue(
 					formatValue,
 					clientId
@@ -190,7 +192,15 @@ class edit extends MaxiBlockComponent {
 			if (isWholeLink) {
 				const newContent = captionContent.replace('</a>', '');
 				setAttributes({ captionContent: `${newContent}</a>` });
-			} else setAttributes({ captionContent });
+			} else {
+				if (this.typingTimeoutContent) {
+					clearTimeout(this.typingTimeoutContent);
+				}
+
+				this.typingTimeoutContent = setTimeout(() => {
+					setAttributes({ captionContent });
+				}, 100);
+			}
 		};
 
 		return [

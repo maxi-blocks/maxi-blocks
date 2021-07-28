@@ -125,48 +125,60 @@ const Indicators = props => {
 				</div>
 			) : null}
 			{children}
-			{paddingTop && paddingTop > 19 ? (
+			{paddingTop && paddingTop > 0 ? (
 				<div
 					style={{
-						height: paddingTop,
-						top: marginTop,
+						paddingTop: `${paddingTop}${paddingUnit}`,
+						top: `${marginTop}${marginUnit}`,
 					}}
 					className='maxi-indicators__padding maxi-indicators__padding--top'
 				>
-					{`${paddingTop}${paddingUnit}`}
+					{((paddingUnit === 'px' && paddingTop > 19) ||
+						(paddingUnit !== 'px' && paddingTop > 2)) && (
+						<span>{`${paddingTop}${paddingUnit}`}</span>
+					)}
 				</div>
 			) : null}
-			{paddingRight && paddingRight > 35 ? (
+			{paddingRight && paddingRight > 0 ? (
 				<div
 					style={{
-						width: paddingRight,
-						right: marginRight,
+						paddingRight: `${paddingRight}${paddingUnit}`,
+						right: `${marginRight}${marginUnit}`,
 					}}
 					className='maxi-indicators__padding maxi-indicators__padding--right'
 				>
-					{`${paddingRight}${paddingUnit}`}
+					{((paddingUnit === 'px' && paddingRight > 35) ||
+						(paddingUnit !== 'px' && paddingRight > 2)) && (
+						<span>{`${paddingRight}${paddingUnit}`}</span>
+					)}
 				</div>
 			) : null}
-			{paddingBottom && paddingBottom > 19 ? (
+			{paddingBottom && paddingBottom > 0 ? (
 				<div
 					style={{
-						height: paddingBottom,
-						bottom: marginBottom,
+						paddingBottom: `${paddingBottom}${paddingUnit}`,
+						bottom: `${marginBottom}${marginUnit}`,
 					}}
 					className='maxi-indicators__padding maxi-indicators__padding--bottom'
 				>
-					{`${paddingBottom}${paddingUnit}`}
+					{((paddingUnit === 'px' && paddingBottom > 19) ||
+						(paddingUnit !== 'px' && paddingBottom > 2)) && (
+						<span>{`${paddingBottom}${paddingUnit}`}</span>
+					)}
 				</div>
 			) : null}
-			{paddingLeft && paddingLeft > 35 ? (
+			{paddingLeft && paddingLeft > 0 ? (
 				<div
 					style={{
-						width: paddingLeft,
-						left: marginLeft,
+						paddingLeft: `${paddingLeft}${paddingUnit}`,
+						left: `${marginLeft}${marginUnit}`,
 					}}
 					className='maxi-indicators__padding maxi-indicators__padding--left'
 				>
-					{`${paddingLeft}${paddingUnit}`}
+					{((paddingUnit === 'px' && paddingLeft > 35) ||
+						(paddingUnit !== 'px' && paddingLeft > 2)) && (
+						<span>{`${paddingLeft}${paddingUnit}`}</span>
+					)}
 				</div>
 			) : null}
 		</div>

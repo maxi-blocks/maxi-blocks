@@ -21,9 +21,15 @@
 		align-items: center;
 		width: 100%;
 		opacity: 0;
-		font: 12px Roboto, sans-serif;
 		transition: opacity 0.5s;
 
+		span {
+			font: 12px Roboto, sans-serif;
+			position: absolute;
+			top: 50%;
+			right: 50%;
+			transform: translate(-50%, -50%);
+		}
 		&--top {
 			top: 0;
 		}
@@ -31,6 +37,11 @@
 			top: 0;
 			right: 0;
 			height: 100%;
+			width: 0;
+
+			span {
+				transform: translate(50%, -50%);
+			}
 		}
 		&--bottom {
 			bottom: 0;
@@ -39,6 +50,11 @@
 			top: 0;
 			left: 0;
 			height: 100%;
+			width: 0;
+
+			span {
+				transform: translate(50%, -50%);
+			}
 		}
 	}
 	.maxi-indicators__margin {

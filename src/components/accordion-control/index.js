@@ -38,7 +38,6 @@ const AccordionControl = props => {
 		isPrimary = false,
 		isSecondary = false,
 		disablePadding = false,
-		uniqueID,
 	} = props;
 
 	const classes = classnames(

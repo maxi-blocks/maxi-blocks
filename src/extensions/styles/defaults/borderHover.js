@@ -15,7 +15,6 @@ export const borderHover = (() => {
 		if (key !== 'border-palette-color-status-general' && 'default' in value)
 			delete value.default;
 		if (key === 'border-palette-color-general') value.default = 6;
-		if (key === 'border-style-general') value.default = 'none';
 
 		response[newKey] = value;
 	});

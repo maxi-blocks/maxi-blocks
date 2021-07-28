@@ -12,7 +12,6 @@ export const border = {
 	},
 	'border-style-general': {
 		type: 'string',
-		default: 'none',
 	},
 	'border-palette-color-status-xxl': {
 		type: 'boolean',

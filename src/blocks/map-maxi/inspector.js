@@ -181,6 +181,7 @@ const Inspector = props => {
 														}
 														breakpoint={deviceType}
 														target='margin'
+														optionType='string'
 													/>
 												</>
 											),

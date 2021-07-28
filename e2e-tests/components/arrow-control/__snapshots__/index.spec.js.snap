@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ArrowControl Checking the arrow control 1`] = `"Select a background colour or border colour to see the arrow.<div class=\\"maxi-warning-box__links\\"><a>Background colour</a><a>Border colour</a></div>"`;

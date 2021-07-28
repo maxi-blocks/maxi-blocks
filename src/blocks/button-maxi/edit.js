@@ -67,11 +67,16 @@ class edit extends MaxiBlockComponent {
 		);
 
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				propsToAvoid={['buttonContent', 'formatValue']}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
+				propsToAvoid={['buttonContent', 'formatValue']}
 			/>,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}

@@ -51,6 +51,7 @@ import CaptionToolbar from '../../components/toolbar/captionToolbar';
 class edit extends MaxiBlockComponent {
 	constructor(...args) {
 		super(...args);
+
 		const { isImageUrl } = this.props.attributes;
 		this.state = {
 			isExternalClass: isImageUrl,
@@ -58,6 +59,10 @@ class edit extends MaxiBlockComponent {
 
 		this.textRef = createRef(null);
 	}
+
+	propsToAvoidRendering = ['formatValue'];
+
+	typingTimeout = 0;
 
 	get getWrapperWidth() {
 		const target = document.getElementById(`block-${this.props.clientId}`);
@@ -158,23 +163,16 @@ class edit extends MaxiBlockComponent {
 				setAttributes(cleanCustomProps);
 			}
 
-			// Well, how to explain this... lol
-			// React 16.13.0 introduced a warning for when a function component is updated during another component's
-			// render phase (facebook/react#17099). In version 16.13.1 the warning was adjusted to be more
-			// specific (facebook/react#18330). The warning look like:
-			// Warning: Cannot update a component (Foo) while rendering a different component (Bar).
-			// To locate the bad setState() call inside Bar, follow the stack trace as described in https://fb.me/setstate-in-render
-			//
-			// In this case the error comes from a `forceUpdate` that '@wordpress/data' triggers when updating an store.
-			// This error is not related with Maxi, but appears on our blocks. So, a way to avoid it is to set a `setTimeOut`
-			// that delays a bit the dispatch action of the store and prevents the rendering of some components while RichText
-			// is rendering. Sad but true.
-			setTimeout(() => {
+			if (this.typingTimeout) {
+				clearTimeout(this.typingTimeout);
+			}
+
+			this.typingTimeout = setTimeout(() => {
 				dispatch('maxiBlocks/text').sendFormatValue(
 					formatValue,
 					clientId
 				);
-			});
+			}, 100);
 		};
 
 		/**
@@ -205,11 +203,13 @@ class edit extends MaxiBlockComponent {
 					},
 				})}
 				{...this.props}
+				propsToAvoid={['captionContent', 'formatValue']}
 			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
+				propsToAvoid={['captionContent', 'formatValue']}
 			/>,
 			<MaxiBlock
 				key={`maxi-image--${uniqueID}`}
@@ -355,6 +355,10 @@ class edit extends MaxiBlockComponent {
 													key={`caption-toolbar-${uniqueID}`}
 													ref={this.textRef}
 													{...this.props}
+													propsToAvoid={[
+														'captionContent',
+														'formatValue',
+													]}
 												/>
 												<RichText
 													ref={this.textRef}

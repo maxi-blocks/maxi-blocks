@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, startCase } from 'lodash';
 
 /**
  * Internal dependencies
@@ -48,31 +48,52 @@ const Indicators = props => {
 		props
 	);
 
-	const paddingTop = getLastBreakpointAttribute(
-		'padding-top',
-		deviceType,
-		props
-	);
-	const paddingRight = getLastBreakpointAttribute(
-		'padding-right',
-		deviceType,
-		props
-	);
-	const paddingBottom = getLastBreakpointAttribute(
-		'padding-bottom',
-		deviceType,
-		props
-	);
-	const paddingLeft = getLastBreakpointAttribute(
-		'padding-left',
-		deviceType,
-		props
-	);
-	const paddingUnit = getLastBreakpointAttribute(
-		'padding-unit',
-		deviceType,
-		props
-	);
+	const margin = {
+		top: getLastBreakpointAttribute('margin-top', deviceType, props) || 0,
+		right:
+			getLastBreakpointAttribute('margin-right', deviceType, props) || 0,
+		bottom:
+			getLastBreakpointAttribute('margin-bottom', deviceType, props) || 0,
+		left: getLastBreakpointAttribute('margin-left', deviceType, props) || 0,
+		unit: getLastBreakpointAttribute('margin-unit', deviceType, props) || 0,
+	};
+
+	const padding = {
+		top: getLastBreakpointAttribute('padding-top', deviceType, props) || 0,
+		right:
+			getLastBreakpointAttribute('padding-right', deviceType, props) || 0,
+		bottom:
+			getLastBreakpointAttribute('padding-bottom', deviceType, props) ||
+			0,
+		left:
+			getLastBreakpointAttribute('padding-left', deviceType, props) || 0,
+		unit:
+			getLastBreakpointAttribute('padding-unit', deviceType, props) || 0,
+	};
+
+	const paddingIndicator = () => {
+		const direction = ['top', 'right', 'bottom', 'left'];
+
+		return direction.map(dir =>
+			padding[dir] && padding[dir] > 0 ? (
+				<div
+					key={`padding-indicator-${dir}`}
+					style={{
+						[`padding${startCase(
+							dir
+						)}`]: `${padding[dir]}${padding.unit}`,
+						[dir]: `${margin.top}${margin.unit}`,
+					}}
+					className={`maxi-indicators__padding maxi-indicators__padding--${dir}`}
+				>
+					{((padding.unit === 'px' && padding[dir] > 19) ||
+						(padding.unit !== 'px' && padding[dir] > 2)) && (
+						<span>{`${padding[dir]}${padding.unit}`}</span>
+					)}
+				</div>
+			) : null
+		);
+	};
 
 	return (
 		<div className={classes}>
@@ -125,62 +146,7 @@ const Indicators = props => {
 				</div>
 			) : null}
 			{children}
-			{paddingTop && paddingTop > 0 ? (
-				<div
-					style={{
-						paddingTop: `${paddingTop}${paddingUnit}`,
-						top: `${marginTop}${marginUnit}`,
-					}}
-					className='maxi-indicators__padding maxi-indicators__padding--top'
-				>
-					{((paddingUnit === 'px' && paddingTop > 19) ||
-						(paddingUnit !== 'px' && paddingTop > 2)) && (
-						<span>{`${paddingTop}${paddingUnit}`}</span>
-					)}
-				</div>
-			) : null}
-			{paddingRight && paddingRight > 0 ? (
-				<div
-					style={{
-						paddingRight: `${paddingRight}${paddingUnit}`,
-						right: `${marginRight}${marginUnit}`,
-					}}
-					className='maxi-indicators__padding maxi-indicators__padding--right'
-				>
-					{((paddingUnit === 'px' && paddingRight > 35) ||
-						(paddingUnit !== 'px' && paddingRight > 2)) && (
-						<span>{`${paddingRight}${paddingUnit}`}</span>
-					)}
-				</div>
-			) : null}
-			{paddingBottom && paddingBottom > 0 ? (
-				<div
-					style={{
-						paddingBottom: `${paddingBottom}${paddingUnit}`,
-						bottom: `${marginBottom}${marginUnit}`,
-					}}
-					className='maxi-indicators__padding maxi-indicators__padding--bottom'
-				>
-					{((paddingUnit === 'px' && paddingBottom > 19) ||
-						(paddingUnit !== 'px' && paddingBottom > 2)) && (
-						<span>{`${paddingBottom}${paddingUnit}`}</span>
-					)}
-				</div>
-			) : null}
-			{paddingLeft && paddingLeft > 0 ? (
-				<div
-					style={{
-						paddingLeft: `${paddingLeft}${paddingUnit}`,
-						left: `${marginLeft}${marginUnit}`,
-					}}
-					className='maxi-indicators__padding maxi-indicators__padding--left'
-				>
-					{((paddingUnit === 'px' && paddingLeft > 35) ||
-						(paddingUnit !== 'px' && paddingLeft > 2)) && (
-						<span>{`${paddingLeft}${paddingUnit}`}</span>
-					)}
-				</div>
-			) : null}
+			{paddingIndicator()}
 		</div>
 	);
 };

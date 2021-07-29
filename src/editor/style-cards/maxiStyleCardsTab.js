@@ -568,14 +568,6 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					breakpoint === 'general' &&
 						generateTab({
-							type: 'hover',
-							tabLabel: __('Hover', 'maxi-blocks'),
-							firstLabel: __('Hover', 'maxi-blocks'),
-							firstColorDefault: 6,
-							disableTypography: true,
-						}),
-					breakpoint === 'general' &&
-						generateTab({
 							type: 'icon',
 							tabLabel: __('SVG Icons', 'maxi-blocks'),
 							disableTypography: true,

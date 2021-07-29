@@ -22,6 +22,7 @@ export { default as ShapeColor } from './shape-color';
 export { default as Size } from './size';
 export { default as Style } from './style';
 export { default as SvgColor } from './svg-color';
+export { default as SvgWidth } from './svg-width';
 export { default as TextBold } from './text-bold';
 export { default as TextColor } from './text-color';
 export { default as TextItalic } from './text-italic';

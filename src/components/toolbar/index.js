@@ -37,6 +37,7 @@ import RowSettings from './components/row-settings';
 import ShapeColor from './components/shape-color';
 import Size from './components/size';
 import SvgColor from './components/svg-color';
+import SvgWidth from './components/svg-width';
 import TextBold from './components/text-bold';
 import TextColor from './components/text-color';
 import TextItalic from './components/text-italic';
@@ -401,6 +402,16 @@ const MaxiToolbar = memo(
 										changeSVGContent={changeSVGContent}
 										type='line'
 										parentBlockStyle={parentBlockStyle}
+									/>
+									<SvgWidth
+										{...getGroupAttributes(
+											attributes,
+											'svg'
+										)}
+										blockName={name}
+										onChange={obj => {
+											setAttributes(obj);
+										}}
 									/>
 								</>
 							)}

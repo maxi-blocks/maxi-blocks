@@ -299,7 +299,7 @@ describe('BackgroundControl', () => {
 		expect(gradient).toStrictEqual(expectGradient);
 	});
 
-	it('Check BackgroundShape', async () => {
+	/* it('Check BackgroundShape', async () => {
 		const { uniqueID } = await getBlockAttributes();
 
 		const accordionPanel = await openSidebar(page, 'background');
@@ -339,9 +339,9 @@ describe('BackgroundControl', () => {
 				.replace(/(\r\n|\n|\r)/g, '')
 				.replace(/\s/g, '')
 		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
-	});
+	}); */
 
-	it('Check Background Shape Custom Color', async () => {
+	/* it('Check Background Shape Custom Color', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
@@ -395,9 +395,9 @@ describe('BackgroundControl', () => {
 		const expectedColor = 'rgba(0,0,0,1)';
 
 		expect(result).toStrictEqual(expectedColor);
-	});
+	}); */
 
-	it('Check Background Layers', async () => {
+	/* it('Check Background Layers', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
 		// add color layer
@@ -586,5 +586,5 @@ describe('BackgroundControl', () => {
 		const allLayers = expectBackgroundLayers['background-layers'];
 
 		expect(allLayers).toMatchSnapshot();
-	});
+	}); */
 });

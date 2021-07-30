@@ -10,7 +10,7 @@ const getGeneralColumnAttributes = ({
 		'column-size-general': column * proportion,
 		'column-size-m': 100,
 		...(!isFirst && {
-			'margin-top-m': 1.5,
+			'margin-top-m': '1.5',
 			'margin-unit-m': 'em',
 		}),
 		...(isFirst && {
@@ -32,11 +32,11 @@ const getColumnAttributes = ({
 	return {
 		[`column-size-${breakpoint}`]: column * proportion,
 		...(columnPosition.rowNumber !== 1 && {
-			[`margin-top-${breakpoint}`]: 1.5,
+			[`margin-top-${breakpoint}`]: '1.5',
 			[`margin-unit-${breakpoint}`]: 'em',
 		}),
 		...(columnPosition.rowNumber === 1 && {
-			[`margin-top-${breakpoint}`]: 0,
+			[`margin-top-${breakpoint}`]: '0',
 		}),
 		...(columnPosition.columnsNumber === 1 && {
 			[`column-size-${breakpoint}`]: 100,

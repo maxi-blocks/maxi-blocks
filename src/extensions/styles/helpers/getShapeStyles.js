@@ -9,8 +9,10 @@ const getShapeStyles = (obj, target, parentBlockStyle) => {
 		general: {},
 	};
 
-	if (target === 'svg' && !isNil(obj['shape-width']))
+	if (target === 'svg' && !isNil(obj['shape-width'])) {
 		response.general.width = `${obj['shape-width']}${obj['shape-width-unit']}`;
+		response.general.height = `${obj['shape-width']}${obj['shape-width-unit']}`;
+	}
 
 	if (target === 'path') {
 		if (

@@ -9,6 +9,15 @@ const getSvgStyles = (obj, target, parentBlockStyle) => {
 		general: {},
 	};
 
+	if (target === 'svg' && !isNil(obj['svg-width'])) {
+		response.general.width = `${obj['svg-width']}${obj['svg-width-unit']}`;
+		response.general.height = `${obj['svg-width']}${obj['svg-width-unit']}`;
+	}
+
+	if (target === 'path' && !isNil(obj['svg-stroke'])) {
+		response.general['stroke-width'] = `${obj['svg-stroke']}`;
+	}
+
 	if (target === 'path-fill') {
 		if (
 			obj['svg-palette-fill-color-status'] &&

@@ -53,6 +53,7 @@ describe('Image Maxi', () => {
 		await text.click();
 		await page.keyboard.type('Testing Caption');
 
+		await page.waitForTimeout(500);
 		const captionAttributes = await getBlockAttributes();
 		const expectedText = 'Testing Caption';
 

@@ -58,7 +58,6 @@ describe('Button Maxi', () => {
 			attributes['icon-content']
 				.replace(/(\r\n|\n|\r)/g, '')
 				.replace(/\s/g, '')
-		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
-	});
-	*/
+		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, '')); 
+	}); */
 });

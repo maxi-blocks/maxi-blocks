@@ -14,6 +14,7 @@ import {
 
 const getNormalObject = props => {
 	const { lineAlign, lineVertical, lineHorizontal } = props;
+
 	const response = {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),

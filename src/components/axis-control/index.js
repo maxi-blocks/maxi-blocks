@@ -444,7 +444,7 @@ const AxisControl = props => {
 								props,
 								isHover
 							)}
-							onClick={a => onChangeSync('sync')}
+							onClick={type => onChangeSync('sync')}
 							isSmall
 						>
 							{sync}
@@ -482,7 +482,9 @@ const AxisControl = props => {
 									props,
 									isHover
 								)}
-								onClick={a => onChangeSync('sync-horizontal')}
+								onClick={type =>
+									onChangeSync('sync-horizontal')
+								}
 								isSmall
 							>
 								{sync}
@@ -521,7 +523,7 @@ const AxisControl = props => {
 									props,
 									isHover
 								)}
-								onClick={a => onChangeSync('sync-vertical')}
+								onClick={type => onChangeSync('sync-vertical')}
 								isSmall
 							>
 								{sync}

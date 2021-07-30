@@ -353,10 +353,6 @@ class MaxiBlocks_StyleCards {
 							"visited-color-global": false,
 							"visited-color": ""
 						},
-						"hover": {
-							"color-global": false,
-							"color": "#c9340a"
-						},
 						"icon": {
 							"line-global": false,
 							"line": "",
@@ -593,10 +589,6 @@ class MaxiBlocks_StyleCards {
 							"active-color": "",
 							"visited-color-global": false,
 							"visited-color": ""
-						},
-						"hover": {
-							"color-global": false,
-							"color": "#c9340a"
 						},
 						"icon": {
 							"line-global": false,

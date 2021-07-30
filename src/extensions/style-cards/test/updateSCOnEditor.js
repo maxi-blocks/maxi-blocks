@@ -223,10 +223,6 @@ describe('getSCVariablesObject', () => {
 						'hover-background-color-global': false,
 						'hover-background-color': '',
 					},
-					hover: {
-						'color-global': false,
-						color: '',
-					},
 					icon: {
 						'line-global': false,
 						line: '',
@@ -482,10 +478,6 @@ describe('getSCVariablesObject', () => {
 						'background-color': '',
 						'hover-background-color-global': false,
 						'hover-background-color': '',
-					},
-					hover: {
-						'color-global': false,
-						color: '',
 					},
 					icon: {
 						'line-global': false,

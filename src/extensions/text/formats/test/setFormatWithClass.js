@@ -234,10 +234,6 @@ const styleCard = {
 				'hover-background-color-global': false,
 				'hover-background-color-hover': '',
 			},
-			hover: {
-				'color-global': false,
-				color: '',
-			},
 			icon: {
 				'line-global': false,
 				line: '',
@@ -464,10 +460,6 @@ const styleCard = {
 				'background-color': '',
 				'hover-background-color-global': false,
 				'hover-background-color-hover': '',
-			},
-			hover: {
-				'color-global': false,
-				color: '',
 			},
 			icon: {
 				'line-global': false,

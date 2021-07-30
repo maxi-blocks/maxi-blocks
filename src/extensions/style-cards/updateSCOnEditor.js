@@ -50,7 +50,6 @@ export const getSCVariablesObject = styleCards => {
 		'h4',
 		'h5',
 		'h6',
-		'hover',
 		'icon',
 		'divider',
 		'link',
@@ -85,7 +84,7 @@ export const getSCVariablesObject = styleCards => {
 		'line-height',
 		'letter-spacing',
 	];
-	const elementsForColor = ['divider', 'icon', 'hover', 'link'];
+	const elementsForColor = ['divider', 'icon', 'link'];
 
 	styles.forEach(style => {
 		elements.forEach(element => {

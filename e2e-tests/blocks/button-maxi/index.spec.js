@@ -24,7 +24,6 @@ describe('Button Maxi', () => {
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
-
 	/*
 	it('Check Button Icon', async () => {
 		await insertBlock('Button Maxi');
@@ -59,7 +58,6 @@ describe('Button Maxi', () => {
 			attributes['icon-content']
 				.replace(/(\r\n|\n|\r)/g, '')
 				.replace(/\s/g, '')
-		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
-	});
-	*/
+		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, '')); 
+	}); */
 });

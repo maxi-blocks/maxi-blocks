@@ -436,15 +436,14 @@ const SquareControl = props => {
 								: '';
 
 							type !== 'origin' &&
-								onSave(xAxis, yAxis, xUnit, yUnit);
+								onSave(xAxis, newValue, xUnit, yUnit);
 							if (!sync) {
 								changeYAxis(newValue);
 								onChange(xAxis, newValue, xUnit, yUnit);
 							} else {
 								changeYAxis(newValue);
 								changeXAxis(newValue);
-								onChange(xAxis, newValue, xUnit, yUnit);
-								onChange(newValue, yAxis, xUnit, yUnit);
+								onChange(newValue, newValue, xUnit, yUnit);
 							}
 						}}
 					/>
@@ -503,15 +502,14 @@ const SquareControl = props => {
 								: '';
 
 							type !== 'origin' &&
-								onSave(xAxis, yAxis, xUnit, yUnit);
+								onSave(newValue, yAxis, xUnit, yUnit);
 							if (!sync) {
 								changeXAxis(newValue);
 								onChange(newValue, yAxis, xUnit, yUnit);
 							} else {
 								changeYAxis(newValue);
 								changeXAxis(newValue);
-								onChange(xAxis, newValue, xUnit, yUnit);
-								onChange(newValue, yAxis, xUnit, yUnit);
+								onChange(newValue, newValue, xUnit, yUnit);
 							}
 						}}
 					/>

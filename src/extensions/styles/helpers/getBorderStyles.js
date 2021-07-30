@@ -4,6 +4,11 @@
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
+ * External dependencies
+ */
+import { isUndefined } from 'lodash';
+
+/**
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -37,7 +42,6 @@ const getBorderStyles = ({
 
 		Object.entries(obj).forEach(([key, value]) => {
 			const newKey = prefix ? key.replace(prefix, '') : key;
-
 			const includesBreakpoint =
 				newKey.lastIndexOf(`-${breakpoint}${isHover ? '-hover' : ''}`) +
 					`-${breakpoint}${isHover ? '-hover' : ''}`.length ===
@@ -57,7 +61,21 @@ const getBorderStyles = ({
 				);
 				const newLabel = newKey.replace(replacer, '');
 
-				if (!keyWords.some(key => newLabel.includes(key))) {
+				if (
+					(isHover &&
+						isUndefined(
+							obj[
+								`border-style-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`
+							]
+						)) ||
+					obj[
+						`border-style-${breakpoint}${isHover ? '-hover' : ''}`
+					] === 'none'
+				) {
+					response[breakpoint].border = 'none';
+				} else if (!keyWords.some(key => newLabel.includes(key))) {
 					if (key.includes('color')) {
 						const paletteStatus = getLastBreakpointAttribute(
 							`${prefix}border-palette-color-status`,

@@ -49,7 +49,8 @@ const getMarginPaddingStyles = (obj, prefix = '') => {
 						obj
 					);
 
-					response[breakpoint][newLabel] = `${value}${unit}`;
+					response[breakpoint][newLabel] =
+						value === 'auto' ? 'auto' : `${value}${unit}`;
 				}
 			}
 		});

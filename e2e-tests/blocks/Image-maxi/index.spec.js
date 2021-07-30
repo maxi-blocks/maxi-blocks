@@ -51,9 +51,8 @@ describe('Image Maxi', () => {
 		await page.waitForSelector('.maxi-image-block__caption span');
 		const text = await page.$('.maxi-image-block__caption span');
 		await text.click();
-		await page.keyboard.type('Testing Caption');
+		await page.keyboard.type('Testing Caption', { delay: 100 });
 
-		await page.waitForTimeout(500);
 		const captionAttributes = await getBlockAttributes();
 		const expectedText = 'Testing Caption';
 

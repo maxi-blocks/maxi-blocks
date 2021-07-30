@@ -199,6 +199,8 @@ describe('getSCVariablesObject', () => {
 					button: {
 						'color-global': false,
 						color: '',
+						'hover-color-global': false,
+						'hover-color': '',
 						'font-family-general': 'Roboto',
 						'font-size-xxl': '22',
 						'font-size-unit-xxl': 'px',
@@ -457,6 +459,8 @@ describe('getSCVariablesObject', () => {
 					button: {
 						'color-global': false,
 						color: '',
+						'hover-color-global': false,
+						'hover-color': '',
 						'font-family-general': 'Roboto',
 						'font-size-xxl': '22',
 						'font-size-unit-xxl': 'px',

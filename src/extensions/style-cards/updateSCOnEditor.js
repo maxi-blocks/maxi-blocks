@@ -129,6 +129,14 @@ export const getSCVariablesObject = styleCards => {
 				response[`--maxi-${style}-${element}-background-color-hover`] =
 					obj['hover-background-color'];
 
+			if (
+				element === 'button' &&
+				obj['hover-color-global'] &&
+				!isEmpty(obj['hover-color'])
+			)
+				response[`--maxi-${style}-${element}-color-hover`] =
+					obj['hover-color'];
+
 			if (element === 'icon' && obj['line-global'] && !isEmpty(obj.line))
 				response[`--maxi-${style}-${element}-line`] = obj.line;
 			if (element === 'icon' && obj['fill-global'] && !isEmpty(obj.fill))

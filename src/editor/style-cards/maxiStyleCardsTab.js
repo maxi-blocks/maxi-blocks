@@ -51,11 +51,15 @@ const SCTab = props => {
 		thirdColor = false,
 		thirdLabel,
 		thirdColorDefault,
+		forthColor = false,
+		forthLabel,
+		forthColorDefault,
 	} = props;
 
 	const firstColorGlobal = `${firstColor}-global`;
 	const secondColorGlobal = `${secondColor}-global`;
 	const thirdColorGlobal = `${thirdColor}-global`;
+	const forthColorGlobal = `${forthColor}-global`;
 
 	const options = [
 		{
@@ -226,6 +230,52 @@ const SCTab = props => {
 						)}
 						onChange={({ color }) =>
 							onChangeValue({ [thirdColor]: color }, type)
+						}
+						disableGradient
+						disablePalette
+					/>
+				)}
+			{!!forthColor && breakpoint === 'general' && (
+				<FancyRadioControl
+					label={__(`Use Global ${forthLabel} Colour`, 'maxi-blocks')}
+					selected={processSCAttribute(SC, forthColorGlobal, type)}
+					options={options}
+					onChange={val =>
+						onChangeValue(
+							{
+								[forthColorGlobal]: val,
+								...(isEmpty(
+									processSCAttribute(SC, forthColor, type)
+								) && {
+									[forthColor]: processSCAttribute(
+										SC,
+										forthColorDefault,
+										'color'
+									),
+								}),
+							},
+							type
+						)
+					}
+				/>
+			)}
+			{!!forthColor &&
+				breakpoint === 'general' &&
+				processSCAttribute(SC, forthColorGlobal, type) && (
+					<ColorControl
+						label={__(forthLabel, 'maxi-blocks')}
+						className={`maxi-style-cards-control__sc__${forthColor}--${SCStyle}`}
+						color={
+							processSCAttribute(SC, forthColor, type) ||
+							getStyleCardAttr(forthColorDefault, SCStyle, true)
+						}
+						defaultColor={getStyleCardAttr(
+							forthColorDefault,
+							SCStyle,
+							true
+						)}
+						onChange={({ color }) =>
+							onChangeValue({ [forthColor]: color }, type)
 						}
 						disableGradient
 						disablePalette
@@ -602,8 +652,11 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						secondLabel: __('Button Background', 'maxi-bloks'),
 						secondColorDefault: 4,
 						thirdColor: 'hover-background-color',
-						thirdLabel: __('Button Hover Background', 'maxi-bloks'),
+						thirdLabel: __('Button Background Hover', 'maxi-bloks'),
 						thirdColorDefault: 6,
+						forthColor: 'hover-color',
+						forthLabel: __('Button Text Hover', 'maxi-bloks'),
+						forthColorDefault: 5,
 					}),
 					generateTab({
 						type: 'p',

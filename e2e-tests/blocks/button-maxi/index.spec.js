@@ -25,7 +25,8 @@ describe('Button Maxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
-	/* it('Check Button Icon', async () => {
+	/*
+	it('Check Button Icon', async () => {
 		await insertBlock('Button Maxi');
 
 		await page.keyboard.type('Hello');

@@ -35,6 +35,7 @@ export { default as toolbarPadding } from './padding';
 export { default as toolbarPaste } from './paste';
 export { default as toolbarReplaceImage } from './replace-image';
 export { default as toolbarReusableBlock } from './reusable-blocks';
+export { default as toolbarShapeWidth } from './shape-width';
 export { default as toolbarShow } from './show';
 export { default as toolbarSizing } from './sizing';
 export { default as toolbarSpecialPaste } from './special-paste';

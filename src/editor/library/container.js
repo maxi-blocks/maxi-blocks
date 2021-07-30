@@ -428,7 +428,11 @@ const LibraryContainer = props => {
 				};
 
 				const SVGOptions = {};
-				const cleanedContent = DOMPurify.sanitize(svgCode);
+				const newSvgCode = svgCode
+					.replace(/width="(.*?)"/g, '')
+					.replace(/height="(.*?)"/g, '');
+				const cleanedContent = DOMPurify.sanitize(newSvgCode);
+
 				const svg = document
 					.createRange()
 					.createContextualFragment(cleanedContent).firstElementChild;

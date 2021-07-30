@@ -525,6 +525,7 @@ const Inspector = props => {
 														}
 														target='margin'
 														breakpoint={deviceType}
+														optionType='string'
 													/>
 												</>
 											),
@@ -607,10 +608,8 @@ const Inspector = props => {
 														attributes,
 														'transform'
 													)}
-													onChange={transform =>
-														setAttributes({
-															transform,
-														})
+													onChange={obj =>
+														setAttributes(obj)
 													}
 													uniqueID={uniqueID}
 													breakpoint={deviceType}

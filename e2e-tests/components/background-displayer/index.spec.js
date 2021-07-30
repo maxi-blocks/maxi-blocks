@@ -105,7 +105,7 @@ describe('BackgroundControl', () => {
 		expect(backgroundGradient).toMatchSnapshot();
 	});
 
-	it('Check BackgroundShape', async () => {
+	/* it('Check BackgroundShape', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
@@ -215,5 +215,5 @@ describe('BackgroundControl', () => {
 		);
 
 		expect(displayerLayers).toMatchSnapshot();
-	});
+	}); */
 });

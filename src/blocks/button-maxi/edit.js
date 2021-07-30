@@ -29,6 +29,8 @@ import { isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlockComponent {
+	typingTimeout = 0;
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -67,11 +69,16 @@ class edit extends MaxiBlockComponent {
 		);
 
 		return [
-			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				propsToAvoid={['buttonContent', 'formatValue']}
+			/>,
 			<Toolbar
 				key={`toolbar-${uniqueID}`}
 				ref={this.blockRef}
 				{...this.props}
+				propsToAvoid={['buttonContent', 'formatValue']}
 			/>,
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
@@ -81,14 +88,21 @@ class edit extends MaxiBlockComponent {
 			>
 				<div className={buttonClasses}>
 					<RichText
-						withoutInteractiveFormatting
 						className='maxi-button-block__content'
 						value={attributes.buttonContent}
 						identifier='content'
-						onChange={buttonContent =>
-							setAttributes({ buttonContent })
-						}
+						onChange={buttonContent => {
+							if (this.typingTimeout) {
+								clearTimeout(this.typingTimeout);
+							}
+
+							this.typingTimeout = setTimeout(() => {
+								setAttributes({ buttonContent });
+							}, 100);
+						}}
 						placeholder={__('Set some text…', 'maxi-blocks')}
+						withoutInteractiveFormatting
+						__unstableDisableFormats
 					/>
 					{attributes['icon-content'] && (
 						<RawHTML className='maxi-button-block__icon'>

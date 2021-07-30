@@ -51,6 +51,9 @@ const BoxShadowControl = props => {
 	const onChangeDefault = defaultProp => {
 		const response = {};
 
+		defaultProp['box-shadow-color'] =
+			props[`box-shadow-color-${breakpoint}`];
+
 		Object.entries(defaultProp).forEach(([key, value]) => {
 			response[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] = value;
 		});

@@ -20,12 +20,13 @@ describe('Button Maxi', () => {
 	it('Button Maxi does not break', async () => {
 		await insertBlock('Button Maxi');
 
-		await page.keyboard.type('Hello');
+		await page.keyboard.type('Hello', { delay: 100 });
+		await page.waitForTimeout(150);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
-
-	/* it('Check Button Icon', async () => {
+	/*
+	it('Check Button Icon', async () => {
 		await insertBlock('Button Maxi');
 
 		await page.keyboard.type('Hello');
@@ -58,6 +59,6 @@ describe('Button Maxi', () => {
 			attributes['icon-content']
 				.replace(/(\r\n|\n|\r)/g, '')
 				.replace(/\s/g, '')
-		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
+		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, '')); 
 	}); */
 });

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, startCase } from 'lodash';
 
 /**
  * Internal dependencies
@@ -22,153 +22,77 @@ const Indicators = props => {
 
 	const classes = classnames('maxi-indicators', className);
 
-	const marginTop = getLastBreakpointAttribute(
-		'margin-top',
-		deviceType,
-		props
-	);
-	const marginRight = getLastBreakpointAttribute(
-		'margin-right',
-		deviceType,
-		props
-	);
-	const marginBottom = getLastBreakpointAttribute(
-		'margin-bottom',
-		deviceType,
-		props
-	);
-	const marginLeft = getLastBreakpointAttribute(
-		'margin-left',
-		deviceType,
-		props
-	);
-	const marginUnit = getLastBreakpointAttribute(
-		'margin-unit',
-		deviceType,
-		props
-	);
+	const margin = {
+		top: getLastBreakpointAttribute('margin-top', deviceType, props) || 0,
+		right:
+			getLastBreakpointAttribute('margin-right', deviceType, props) || 0,
+		bottom:
+			getLastBreakpointAttribute('margin-bottom', deviceType, props) || 0,
+		left: getLastBreakpointAttribute('margin-left', deviceType, props) || 0,
+		unit: getLastBreakpointAttribute('margin-unit', deviceType, props) || 0,
+	};
 
-	const paddingTop = getLastBreakpointAttribute(
-		'padding-top',
-		deviceType,
-		props
-	);
-	const paddingRight = getLastBreakpointAttribute(
-		'padding-right',
-		deviceType,
-		props
-	);
-	const paddingBottom = getLastBreakpointAttribute(
-		'padding-bottom',
-		deviceType,
-		props
-	);
-	const paddingLeft = getLastBreakpointAttribute(
-		'padding-left',
-		deviceType,
-		props
-	);
-	const paddingUnit = getLastBreakpointAttribute(
-		'padding-unit',
-		deviceType,
-		props
-	);
+	const padding = {
+		top: getLastBreakpointAttribute('padding-top', deviceType, props) || 0,
+		right:
+			getLastBreakpointAttribute('padding-right', deviceType, props) || 0,
+		bottom:
+			getLastBreakpointAttribute('padding-bottom', deviceType, props) ||
+			0,
+		left:
+			getLastBreakpointAttribute('padding-left', deviceType, props) || 0,
+		unit:
+			getLastBreakpointAttribute('padding-unit', deviceType, props) || 0,
+	};
+
+	const marginIndicator = () => {
+		return ['top', 'right', 'bottom', 'left'].map(dir =>
+			margin[dir] && margin[dir] !== 'auto' && +margin[dir] > 0 ? (
+				<div
+					key={`margin-indicator-${dir}`}
+					style={{
+						[dir === 'top' || dir === 'bottom'
+							? 'height'
+							: 'width']: `${margin[dir]}${margin.unit}`,
+						[dir]: `${-margin[dir]}${margin.unit}`,
+					}}
+					className={`maxi-indicators__margin maxi-indicators__margin--${dir}`}
+				>
+					{((margin.unit === 'px' && margin[dir] > 19) ||
+						(margin.unit !== 'px' && margin[dir] > 2)) && (
+						<span>{`${margin[dir]}${margin.unit}`}</span>
+					)}
+				</div>
+			) : null
+		);
+	};
+
+	const paddingIndicator = () => {
+		return ['top', 'right', 'bottom', 'left'].map(dir =>
+			padding[dir] && padding[dir] > 0 ? (
+				<div
+					key={`padding-indicator-${dir}`}
+					style={{
+						[`padding${startCase(
+							dir
+						)}`]: `${padding[dir]}${padding.unit}`,
+					}}
+					className={`maxi-indicators__padding maxi-indicators__padding--${dir}`}
+				>
+					{((padding.unit === 'px' && padding[dir] > 19) ||
+						(padding.unit !== 'px' && padding[dir] > 2)) && (
+						<span>{`${padding[dir]}${padding.unit}`}</span>
+					)}
+				</div>
+			) : null
+		);
+	};
 
 	return (
 		<div className={classes}>
-			{!isNil(marginTop) && marginTop !== 'auto' && +marginTop > 19 ? (
-				<div
-					style={{
-						top: -marginTop,
-						height: +marginTop,
-					}}
-					className='maxi-indicators__margin maxi-indicators__margin--top'
-				>
-					{`${marginTop}${marginUnit}`}
-				</div>
-			) : null}
-			{!isNil(marginRight) &&
-			marginRight !== 'auto' &&
-			+marginRight > 35 ? (
-				<div
-					style={{
-						right: -marginRight,
-						width: +marginRight,
-					}}
-					className='maxi-indicators__margin maxi-indicators__margin--right'
-				>
-					{`${marginRight}${marginUnit}`}
-				</div>
-			) : null}
-			{!isNil(marginBottom) &&
-			marginBottom !== 'auto' &&
-			+marginBottom > 19 ? (
-				<div
-					style={{
-						bottom: -marginBottom,
-						height: +marginBottom,
-					}}
-					className='maxi-indicators__margin maxi-indicators__margin--bottom'
-				>
-					{`${marginBottom}${marginUnit}`}
-				</div>
-			) : null}
-			{!isNil(marginLeft) && marginLeft !== 'auto' && +marginLeft > 35 ? (
-				<div
-					style={{
-						left: -marginLeft,
-						width: +marginLeft,
-					}}
-					className='maxi-indicators__margin maxi-indicators__margin--left'
-				>
-					{`${marginLeft}${marginUnit}`}
-				</div>
-			) : null}
+			{marginIndicator()}
 			{children}
-			{paddingTop && paddingTop > 19 ? (
-				<div
-					style={{
-						height: paddingTop,
-						top: marginTop,
-					}}
-					className='maxi-indicators__padding maxi-indicators__padding--top'
-				>
-					{`${paddingTop}${paddingUnit}`}
-				</div>
-			) : null}
-			{paddingRight && paddingRight > 35 ? (
-				<div
-					style={{
-						width: paddingRight,
-						right: marginRight,
-					}}
-					className='maxi-indicators__padding maxi-indicators__padding--right'
-				>
-					{`${paddingRight}${paddingUnit}`}
-				</div>
-			) : null}
-			{paddingBottom && paddingBottom > 19 ? (
-				<div
-					style={{
-						height: paddingBottom,
-						bottom: marginBottom,
-					}}
-					className='maxi-indicators__padding maxi-indicators__padding--bottom'
-				>
-					{`${paddingBottom}${paddingUnit}`}
-				</div>
-			) : null}
-			{paddingLeft && paddingLeft > 35 ? (
-				<div
-					style={{
-						width: paddingLeft,
-						left: marginLeft,
-					}}
-					className='maxi-indicators__padding maxi-indicators__padding--left'
-				>
-					{`${paddingLeft}${paddingUnit}`}
-				</div>
-			) : null}
+			{paddingIndicator()}
 		</div>
 	);
 };

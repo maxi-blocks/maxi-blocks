@@ -61,8 +61,6 @@ body.maxi-blocks--active {
 body {
 	.maxi-container-block {
 		.maxi-container-block__container {
-			padding-right: 0 !important;
-			padding-left: 0 !important;
 			& > .block-list-appender {
 				margin: 0;
 			}

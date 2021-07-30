@@ -19,6 +19,7 @@ describe('Shape Maxi', () => {
 		await modalSearcher.focus();
 		await page.keyboard.type('Anchor');
 		await page.waitForTimeout(1000);
+		await page.waitForSelector('.maxi-cloud-masonry-card__button');
 		await modal.$eval('.maxi-cloud-masonry-card__button', button =>
 			button.click()
 		);

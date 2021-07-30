@@ -34,7 +34,6 @@ const getBoxShadowStyles = ({
 
 	breakpoints.forEach(breakpoint => {
 		let boxShadowString = '';
-
 		const getValue = target => {
 			const value =
 				obj[

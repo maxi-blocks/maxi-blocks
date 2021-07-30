@@ -18,11 +18,18 @@ import { processSCAttribute } from './utils';
 import {
 	SettingTabsControl,
 	AccordionControl,
+	Button,
 	ColorControl,
+	Icon,
 	TypographyControl,
 	FancyRadioControl,
 } from '../../components';
 import { getTypographyFromSC } from '../../extensions/style-cards';
+
+/**
+ * Icons
+ */
+import { reset } from '../../icons';
 
 /**
  * Component
@@ -499,17 +506,43 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 										quickColorPreset,
 										'color'
 									)}
-									onChange={({ color }) => {
+									onChange={({ color }) =>
 										onChangeValue(
 											{
 												[`${quickColorPreset}`]: color,
 											},
 											'color'
-										);
-									}}
+										)
+									}
 									disableGradient
 									disablePalette
 								/>
+								<Button
+									className='maxi-style-cards__quick-color-presets__reset-button'
+									onClick={() =>
+										onChangeValue(
+											{
+												[`${quickColorPreset}`]:
+													SC.defaultStyleCard.color[
+														quickColorPreset
+													],
+											},
+											'color'
+										)
+									}
+								>
+									<span
+										className='maxi-style-cards__quick-color-presets__reset-button__preview'
+										style={{
+											background:
+												SC.defaultStyleCard.color[
+													quickColorPreset
+												],
+										}}
+									/>
+									<Icon icon={reset} />
+									{__('Reset Preset', 'maxi-blocks')}
+								</Button>
 							</>
 						),
 					},

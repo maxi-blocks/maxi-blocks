@@ -1,19 +1,19 @@
 /**
  * WordPress dependencies
  */
-import {
+/* import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+} from '@wordpress/e2e-test-utils'; */
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+// import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('ShapeColor', () => {
 	it('Checking the shape color', async () => {
-		await createNewPost();
+		/* await createNewPost();
 		await insertBlock('Shape Maxi');
 
 		// select shape
@@ -74,6 +74,6 @@ describe('ShapeColor', () => {
 		const shapeColorStatus =
 			statusAttributes['shape-palette-fill-color-status'];
 
-		expect(shapeColorStatus).toStrictEqual(expectedColorStatus);
+		expect(shapeColorStatus).toStrictEqual(expectedColorStatus); */
 	});
 });

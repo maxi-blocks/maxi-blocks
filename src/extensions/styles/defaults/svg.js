@@ -29,6 +29,10 @@ const svg = {
 		type: 'number',
 		default: 64,
 	},
+	'svg-width-unit': {
+		type: 'string',
+		default: 'px',
+	},
 };
 
 export default svg;

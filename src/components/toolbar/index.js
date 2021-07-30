@@ -35,8 +35,10 @@ import PaddingMargin from './components/padding-margin';
 import ReusableBlocks from './components/reusable-blocks';
 import RowSettings from './components/row-settings';
 import ShapeColor from './components/shape-color';
+import ShapeWidth from './components/shape-width';
 import Size from './components/size';
 import SvgColor from './components/svg-color';
+import SvgWidth from './components/svg-width';
 import TextBold from './components/text-bold';
 import TextColor from './components/text-color';
 import TextItalic from './components/text-italic';
@@ -367,12 +369,27 @@ const MaxiToolbar = memo(
 								clientId={clientId}
 							/>
 							{name === 'maxi-blocks/shape-maxi' && (
-								<ShapeColor
-									{...getGroupAttributes(attributes, 'shape')}
-									blockName={name}
-									onChange={obj => setAttributes(obj)}
-									clientId={clientId}
-								/>
+								<>
+									<ShapeColor
+										{...getGroupAttributes(
+											attributes,
+											'shape'
+										)}
+										blockName={name}
+										onChange={obj => setAttributes(obj)}
+										clientId={clientId}
+									/>
+									<ShapeWidth
+										{...getGroupAttributes(
+											attributes,
+											'shape'
+										)}
+										blockName={name}
+										onChange={obj => {
+											setAttributes(obj);
+										}}
+									/>
+								</>
 							)}
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
@@ -401,6 +418,16 @@ const MaxiToolbar = memo(
 										changeSVGContent={changeSVGContent}
 										type='line'
 										parentBlockStyle={parentBlockStyle}
+									/>
+									<SvgWidth
+										{...getGroupAttributes(
+											attributes,
+											'svg'
+										)}
+										blockName={name}
+										onChange={obj => {
+											setAttributes(obj);
+										}}
 									/>
 								</>
 							)}

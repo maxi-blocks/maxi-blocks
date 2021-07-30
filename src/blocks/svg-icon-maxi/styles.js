@@ -110,6 +110,11 @@ const getStyles = props => {
 		[uniqueID]: {
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
+			' .maxi-svg-icon-block__icon svg': getSvgObject(props, 'svg'),
+			' .maxi-svg-icon-block__icon svg > path': getSvgObject(
+				props,
+				'path'
+			),
 			' .maxi-svg-icon-block__icon svg > path[data-fill]:not([fill^="none"])':
 				getSvgObject(props, 'path-fill'),
 			' .maxi-svg-icon-block__icon svg > path[data-stroke]:not([stroke^="none"])':

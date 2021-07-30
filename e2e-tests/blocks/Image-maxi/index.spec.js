@@ -23,6 +23,7 @@ describe('Image Maxi', () => {
 	it('Checking the image caption', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
+
 		// select img
 		await page.$eval(
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button button',
@@ -45,11 +46,11 @@ describe('Image Maxi', () => {
 			'.maxi-image-caption-type select'
 		);
 		await selector.select('custom');
-		debugger;
+
 		// insert text
-		await page.$eval('.maxi-image-block__resizer figcaption', text =>
-			text.focus()
-		);
+		await page.waitForSelector('.maxi-image-block__caption span');
+		const text = await page.$('.maxi-image-block__caption span');
+		await text.click();
 		await page.keyboard.type('Testing Caption');
 
 		const captionAttributes = await getBlockAttributes();
@@ -77,8 +78,6 @@ describe('Image Maxi', () => {
 			select => select[3].click()
 		);
 
-		await page.waitForTimeout(500);
-
 		const colorAttributes = await getBlockAttributes();
 		const color = colorAttributes['link-palette-color-general'];
 		const expectedColor = 4;
@@ -86,53 +85,47 @@ describe('Image Maxi', () => {
 		expect(color).toStrictEqual(expectedColor);
 
 		// alignment
-		/* await accordionPanel.$$eval(
-			'.maxi-alignment-control .maxi-base-control__field input',
-			alignment => alignment[4].click()
+		await accordionPanel.$$eval(
+			'.maxi-alignment-control .maxi-base-control__field label',
+			alignment => alignment[2].click()
 		);
 
 		const alignmentAttributes = await getBlockAttributes();
 		const textAlignment = alignmentAttributes['text-alignment-general'];
 		const expectedAlignment = 'center';
 
-		expect(textAlignment).toStrictEqual(expectedAlignment); */
+		expect(textAlignment).toStrictEqual(expectedAlignment);
 
 		// size, line-height, letter-spacing
-		await accordionPanel.$eval(
-			'.maxi-typography-control__size .maxi-base-control__field input',
-			sizeSelector => sizeSelector.focus()
+		const inputs = await accordionPanel.$$(
+			'.maxi-advanced-number-control .maxi-base-control__field input'
 		);
+		await inputs[0].focus();
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('9');
 
-		await accordionPanel.$eval(
-			'.maxi-typography-control__line-height .maxi-base-control__field input',
-			lineHeightSelector => lineHeightSelector.focus()
-		);
+		await inputs[2].focus();
 		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type('2');
 
-		await accordionPanel.$eval(
-			'.maxi-typography-control__letter-spacing .maxi-base-control__field input',
-			letterSpacingSelector => letterSpacingSelector.focus()
-		);
+		await inputs[4].focus();
 		await page.keyboard.type('11');
 
 		const styleAttributes = await getBlockAttributes();
 		const typographyAttributes = (({
-			'font-size-xl': fontSize,
-			'line-height-xl': lineHeight,
-			'letter-spacing-xl': letterSpacing,
+			'font-size-m': fontSize,
+			'line-height-m': lineHeight,
+			'letter-spacing-m': letterSpacing,
 		}) => ({
-			'font-size-xl': fontSize,
-			'line-height-xl': lineHeight,
-			'letter-spacing-xl': letterSpacing,
+			'font-size-m': fontSize,
+			'line-height-m': lineHeight,
+			'letter-spacing-m': letterSpacing,
 		}))(styleAttributes);
 
 		const expectedAttributesTwo = {
-			'font-size-xl': '19',
-			'line-height-xl': '12',
-			'letter-spacing-xl': '11',
+			'font-size-m': 19,
+			'line-height-m': 12,
+			'letter-spacing-m': 11,
 		};
 
 		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
@@ -212,7 +205,6 @@ describe('Image Maxi', () => {
 		}
 
 		// Colors: LinkColour, LinkHoverColour, LinkActiveColour, LinkVisitedColour
-
 		const colors = await accordionPanel.$$(
 			'.maxi-typography-control .maxi-color-palette-control .maxi-sc-color-palette div'
 		);

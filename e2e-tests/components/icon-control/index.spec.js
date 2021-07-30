@@ -29,6 +29,9 @@ describe('IconControl', () => {
 		await modalSearcher.focus();
 		await page.keyboard.type('Sword');
 		await page.waitForTimeout(1000);
+		await page.waitForSelector(
+			'.maxi-cloud-masonry-card__svg-container__button'
+		);
 		await modal.$eval(
 			'.maxi-cloud-masonry-card__svg-container__button',
 			button => button.click()

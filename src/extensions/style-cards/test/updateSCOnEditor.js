@@ -218,6 +218,8 @@ describe('getSCVariablesObject', () => {
 						'text-decoration-general': 'unset',
 						'background-color-global': false,
 						'background-color': '',
+						'hover-background-color-global': false,
+						'hover-background-color': '',
 					},
 					hover: {
 						'color-global': false,
@@ -474,6 +476,8 @@ describe('getSCVariablesObject', () => {
 						'text-decoration-general': 'unset',
 						'background-color-global': false,
 						'background-color': '',
+						'hover-background-color-global': false,
+						'hover-background-color': '',
 					},
 					hover: {
 						'color-global': false,

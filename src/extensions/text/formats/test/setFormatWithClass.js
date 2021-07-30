@@ -229,6 +229,8 @@ const styleCard = {
 				'text-decoration-general': 'unset',
 				'background-color-global': false,
 				'background-color': '',
+				'hover-background-color-global': false,
+				'hover-background-color-hover': '',
 			},
 			hover: {
 				'color-global': false,
@@ -456,6 +458,8 @@ const styleCard = {
 				'text-decoration-general': 'unset',
 				'background-color-global': false,
 				'background-color': '',
+				'hover-background-color-global': false,
+				'hover-background-color-hover': '',
 			},
 			hover: {
 				'color-global': false,

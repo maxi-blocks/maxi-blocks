@@ -46,7 +46,9 @@ export const getColorBackgroundObject = ({
 	else if (bgStatus && isButton) {
 		response.general[
 			'background-color'
-		] = `var(--maxi-${blockStyle}-button-background-color, var(--maxi-${blockStyle}-color-${
+		] = `var(--maxi-${blockStyle}-button-background-color${
+			isHover ? '-hover' : ''
+		}, var(--maxi-${blockStyle}-color-${
 			props[`${prefix}background-palette-color${isHover ? '-hover' : ''}`]
 		}))`;
 	}

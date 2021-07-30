@@ -337,7 +337,9 @@ class MaxiBlocks_StyleCards {
 							"font-style-general": "normal",
 							"text-decoration-general": "unset",
 							"background-color-global": false,
-							"background-color": ""
+							"background-color": "",
+							"hover-background-color-global": false,
+							"hover-background-color": ""
 						},
 						"link": {
 							"link-color-global": false,
@@ -574,7 +576,9 @@ class MaxiBlocks_StyleCards {
 							"letter-spacing-unit-xl": "px",
 							"text-decoration-general": "unset",
 							"background-color-global": false,
-							"background-color": ""
+							"background-color": "",
+							"hover-background-color-global": false,
+							"hover-background-color": ""
 						},
 						"link": {
 							"link-color-global": false,

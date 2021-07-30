@@ -59,5 +59,6 @@ describe('Button Maxi', () => {
 				.replace(/(\r\n|\n|\r)/g, '')
 				.replace(/\s/g, '')
 		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
-	}); */
+	});
+	*/
 });

@@ -57,7 +57,12 @@ const TransformControl = props => {
 				getGroupAttributes(transformOptions, 'transform')
 			);
 
-			if (!transformObj || !transformObj[breakpoint]) return;
+			if (!transformObj || !transformObj[breakpoint]) {
+				node.style.transform = null;
+				node.style.transformOrigin = null;
+
+				return;
+			}
 
 			const {
 				[breakpoint]: {
@@ -102,10 +107,6 @@ const TransformControl = props => {
 									onChangeTransform({
 										'transform-scale-x': x,
 										'transform-scale-y': y,
-									});
-									onChange({
-										[`transform-scale-x-${breakpoint}`]: x,
-										[`transform-scale-y-${breakpoint}`]: y,
 									});
 									forceStyles();
 								}}
@@ -160,16 +161,6 @@ const TransformControl = props => {
 										'transform-translate-x-unit': xUnit,
 										'transform-translate-y': y,
 										'transform-translate-y-unit': yUnit,
-									});
-									onChange({
-										[`transform-translate-x-${breakpoint}`]:
-											x,
-										[`transform-translate-x-unit-${breakpoint}`]:
-											xUnit,
-										[`transform-translate-y-${breakpoint}`]:
-											y,
-										[`transform-translate-y-unit-${breakpoint}`]:
-											yUnit,
 									});
 									forceStyles();
 								}}
@@ -244,19 +235,23 @@ const TransformControl = props => {
 						content: (
 							<SquareControl
 								type='origin'
-								x={getLastBreakpointAttribute(
-									'transform-origin-x',
-									breakpoint,
-									props
-								)}
+								x={
+									getLastBreakpointAttribute(
+										'transform-origin-x',
+										breakpoint,
+										props
+									) || 'center'
+								}
 								defaultX={getDefaultAttribute(
 									'transform-origin-x'
 								)}
-								y={getLastBreakpointAttribute(
-									'transform-origin-y',
-									breakpoint,
-									props
-								)}
+								y={
+									getLastBreakpointAttribute(
+										'transform-origin-y',
+										breakpoint,
+										props
+									) || 'middle'
+								}
 								defaultY={getDefaultAttribute(
 									'transform-origin-y'
 								)}

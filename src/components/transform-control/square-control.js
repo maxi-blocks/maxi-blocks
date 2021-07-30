@@ -310,7 +310,7 @@ const SquareControl = props => {
 						/>
 						<Button
 							aria-pressed={
-								xAxis === 'center' && yAxis === 'center'
+								xAxis === 'center' && yAxis === 'middle'
 									? 'active'
 									: ''
 							}
@@ -537,7 +537,7 @@ const SquareControl = props => {
 			</div>
 
 			<div className='maxi-transform-control__square-control__sync'>
-				{type !== 'origin' && (
+				{type !== 'origin' && type !== 'drag' && (
 					<Tooltip
 						text={
 							sync

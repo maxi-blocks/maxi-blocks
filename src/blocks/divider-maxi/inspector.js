@@ -607,10 +607,8 @@ const Inspector = props => {
 														attributes,
 														'transform'
 													)}
-													onChange={transform =>
-														setAttributes({
-															transform,
-														})
+													onChange={obj =>
+														setAttributes(obj)
 													}
 													uniqueID={uniqueID}
 													breakpoint={deviceType}

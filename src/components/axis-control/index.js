@@ -119,6 +119,7 @@ const AxisControl = props => {
 			'unit',
 			'sync',
 			'sync-horizontal',
+			'sync-vertical',
 		],
 		optionType = 'number',
 	} = props;
@@ -165,31 +166,6 @@ const AxisControl = props => {
 		onChange(response);
 	};
 
-	// const onChangeSync = () => {
-	// 	onChange({
-	// 		[`${getKey('sync')}-${breakpoint}${isHover ? '-hover' : ''}`]:
-	// 			!getLastBreakpointAttribute(
-	// 				getKey('sync'),
-	// 				breakpoint,
-	// 				props,
-	// 				isHover
-	// 			),
-	// 	});
-	// };
-
-	// const onChangeSyncHorizontal = () => {
-	// 	onChange({
-	// 		[`${getKey('sync-horizontal')}-${breakpoint}${
-	// 			isHover ? '-hover' : ''
-	// 		}`]: !getLastBreakpointAttribute(
-	// 			getKey('sync-horizontal'),
-	// 			breakpoint,
-	// 			props,
-	// 			isHover
-	// 		),
-	// 	});
-	// };
-
 	const onChangeSync = key => {
 		onChange({
 			[`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`]:
@@ -200,6 +176,24 @@ const AxisControl = props => {
 					isHover
 				),
 		});
+		const resetSync = {};
+		const syncArray = ['sync-horizontal', 'sync-vertical'];
+		if (key === 'sync-vertical' || key === 'sync-horizontal') {
+			resetSync[
+				`${getKey('sync')}-${breakpoint}${isHover ? '-hover' : ''}`
+			] = getDefaultAttribute(
+				`${getKey('sync')}-${breakpoint}${isHover ? '-hover' : ''}`
+			);
+		} else {
+			syncArray.forEach(key => {
+				resetSync[
+					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
+				] = getDefaultAttribute(
+					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
+				);
+			});
+		}
+		onChange(resetSync);
 	};
 
 	const getDisplayValue = key => {
@@ -269,6 +263,27 @@ const AxisControl = props => {
 
 			inputsArray.forEach(key => {
 				if (key === 'left' || key === 'right')
+					response[
+						`${target}-${key}${
+							auxTarget ? `-${auxTarget}` : ''
+						}-${breakpoint}${isHover ? '-hover' : ''}`
+					] = newValue;
+			});
+
+			onChange(response);
+		} else if (
+			(singleTarget === 'top' || singleTarget === 'bottom') &&
+			getLastBreakpointAttribute(
+				getKey('sync-vertical'),
+				breakpoint,
+				props,
+				isHover
+			)
+		) {
+			const response = {};
+
+			inputsArray.forEach(key => {
+				if (key === 'top' || key === 'bottom')
 					response[
 						`${target}-${key}${
 							auxTarget ? `-${auxTarget}` : ''
@@ -411,12 +426,12 @@ const AxisControl = props => {
 								props,
 								isHover
 							)
-								? __('Unsync', 'maxi-blocks')
-								: __('Sync', 'maxi-blocks')
+								? __('Unsync all 4', 'maxi-blocks')
+								: __('Sync all 4', 'maxi-blocks')
 						}
 					>
 						<Button
-							aria-label={__('Sync Units', 'maxi-blocks')}
+							aria-label={__('Sync all 4 Units', 'maxi-blocks')}
 							isPrimary={getLastBreakpointAttribute(
 								getKey('sync'),
 								breakpoint,
@@ -434,27 +449,86 @@ const AxisControl = props => {
 						>
 							{sync}
 						</Button>
-						<Button
-							aria-label={__('Sync Units', 'maxi-blocks')}
-							isPrimary={getLastBreakpointAttribute(
-								getKey('sync-horizontal'),
-								breakpoint,
-								props,
-								isHover
-							)}
-							aria-pressed={getLastBreakpointAttribute(
-								getKey('sync-horizontal'),
-								breakpoint,
-								props,
-								isHover
-							)}
-							onClick={a => onChangeSync('sync-horizontal')}
-							isSmall
-						>
-							{sync}
-						</Button>
 					</Tooltip>
 				</div>
+				{(target === 'padding' || target === 'margin') && (
+					<div className='maxi-axis-control__content__item maxi-axis-control__content__item__sync'>
+						<Tooltip
+							text={
+								getLastBreakpointAttribute(
+									getKey('sync-horizontal'),
+									breakpoint,
+									props,
+									isHover
+								)
+									? __('Unsync left and right', 'maxi-blocks')
+									: __('Sync left and right', 'maxi-blocks')
+							}
+						>
+							<Button
+								aria-label={__(
+									'Sync Left and Right Units',
+									'maxi-blocks'
+								)}
+								isPrimary={getLastBreakpointAttribute(
+									getKey('sync-horizontal'),
+									breakpoint,
+									props,
+									isHover
+								)}
+								aria-pressed={getLastBreakpointAttribute(
+									getKey('sync-horizontal'),
+									breakpoint,
+									props,
+									isHover
+								)}
+								onClick={a => onChangeSync('sync-horizontal')}
+								isSmall
+							>
+								{sync}
+							</Button>
+						</Tooltip>
+					</div>
+				)}
+				{(target === 'padding' || target === 'margin') && (
+					<div className='maxi-axis-control__content__item maxi-axis-control__content__item__sync'>
+						<Tooltip
+							text={
+								getLastBreakpointAttribute(
+									getKey('sync-horizontal'),
+									breakpoint,
+									props,
+									isHover
+								)
+									? __('Unsync top and bottom', 'maxi-blocks')
+									: __('Sync top and bottom', 'maxi-blocks')
+							}
+						>
+							<Button
+								aria-label={__(
+									'Sync top and bottom Units',
+									'maxi-blocks'
+								)}
+								isPrimary={getLastBreakpointAttribute(
+									getKey('sync-vertical'),
+									breakpoint,
+									props,
+									isHover
+								)}
+								aria-pressed={getLastBreakpointAttribute(
+									getKey('sync-vertical'),
+									breakpoint,
+									props,
+									isHover
+								)}
+								onClick={a => onChangeSync('sync-vertical')}
+								isSmall
+							>
+								{sync}
+							</Button>
+						</Tooltip>
+					</div>
+				)}
 			</div>
 		</div>
 	);

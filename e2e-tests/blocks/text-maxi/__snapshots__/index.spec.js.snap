@@ -1,12 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TextMaxi Test Text Maxi merge 1`] = `
-"<!-- wp:maxi-blocks/text-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-3\\",\\"content\\":\\"est Text Maxi...\\"} -->
-<div id=\\"text-maxi-3\\" class=\\"maxi-block maxi-text-block maxi-light text-maxi-3 wp-block-maxi-blocks-text-maxi\\" data-align=\\"normal\\"><p class=\\"maxi-text-block__content\\">est Text Maxi...</p></div>
-<!-- /wp:maxi-blocks/text-maxi -->
-
-<!-- wp:maxi-blocks/text-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-4\\",\\"content\\":\\"...OnMerge\\"} -->
-<div id=\\"text-maxi-4\\" class=\\"maxi-block maxi-text-block maxi-light text-maxi-4 wp-block-maxi-blocks-text-maxi\\" data-align=\\"normal\\"><p class=\\"maxi-text-block__content\\">...OnMerge</p></div>
+"<!-- wp:maxi-blocks/text-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-3\\",\\"content\\":\\"Test Text Maxi......OnMerge\\"} -->
+<div id=\\"text-maxi-3\\" class=\\"maxi-block maxi-text-block maxi-light text-maxi-3 wp-block-maxi-blocks-text-maxi\\" data-align=\\"normal\\"><p class=\\"maxi-text-block__content\\">Test Text Maxi......OnMerge</p></div>
 <!-- /wp:maxi-blocks/text-maxi -->"
 `;
 
@@ -92,7 +88,13 @@ exports[`TextMaxi Test Text Maxi toolbar Link in whole content, and then removin
 <!-- /wp:maxi-blocks/text-maxi -->"
 `;
 
-exports[`TextMaxi Test Text Maxi toolbar Link with all option on frontend 1`] = `"<div id=\\"text-maxi-12\\" class=\\"maxi-block maxi-text-block maxi-light text-maxi-12 wp-block-maxi-blocks-text-maxi\\" data-align=\\"normal\\"><p class=\\"maxi-text-block__content\\"><a href=\\"test.com\\" rel=\\"noreferrer noopener nofollow sponsored ugc\\" target=\\"_blank\\" title=\\"\\" class=\\"maxi-text-block--link\\">Test Text Maxi</a></p></div>"`;
+exports[`TextMaxi Test Text Maxi toolbar Link with all option on frontend 1`] = `
+"<!-- wp:maxi-blocks/text-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-12\\",\\"content\\":\\"\\\\u003ca href=\\\\u0022test.com\\\\u0022 rel=\\\\u0022noreferrer noopener nofollow sponsored ugc\\\\u0022 target=\\\\u0022_blank\\\\u0022 title=\\\\u0022\\\\u0022 class=\\\\u0022maxi-text-block\\\\u002d\\\\u002dlink\\\\u0022\\\\u003eTest Text Maxi\\\\u003c/a\\\\u003e\\",\\"text-decoration-general\\":\\"underline\\"} -->
+<div id=\\"text-maxi-12\\" class=\\"maxi-block maxi-text-block maxi-light text-maxi-12 wp-block-maxi-blocks-text-maxi\\" data-align=\\"normal\\"><p class=\\"maxi-text-block__content\\"><a href=\\"test.com\\" rel=\\"noreferrer noopener nofollow sponsored ugc\\" target=\\"_blank\\" title=\\"\\" class=\\"maxi-text-block--link\\">Test Text Maxi</a></p></div>
+<!-- /wp:maxi-blocks/text-maxi -->"
+`;
+
+exports[`TextMaxi Test Text Maxi toolbar Link with all option on frontend 2`] = `"<div id=\\"text-maxi-12\\" class=\\"maxi-block maxi-text-block maxi-light text-maxi-12 wp-block-maxi-blocks-text-maxi\\" data-align=\\"normal\\"><p class=\\"maxi-text-block__content\\"><a href=\\"test.com\\" rel=\\"noreferrer noopener nofollow sponsored ugc\\" target=\\"_blank\\" title=\\"\\" class=\\"maxi-text-block--link\\">Test Text Maxi</a></p></div>"`;
 
 exports[`TextMaxi Test Text Maxi toolbar Link with multiple instances 1`] = `
 "<!-- wp:maxi-blocks/text-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"text-maxi-12\\",\\"content\\":\\"Testing \\\\u003ca href=\\\\u0022another-test.com\\\\u0022 rel=\\\\u0022\\\\u0022 title=\\\\u0022\\\\u0022 class=\\\\u0022maxi-text-block\\\\u002d\\\\u002dlink\\\\u0022\\\\u003e\\\\u003cspan class=\\\\u0022maxi-text-block\\\\u002d\\\\u002dhas-custom-format maxi-text-block__custom-format\\\\u002d\\\\u002d0\\\\u0022\\\\u003eText\\\\u003c/span\\\\u003e\\\\u003c/a\\\\u003e \\\\u003ca href=\\\\u0022test.com\\\\u0022 rel=\\\\u0022\\\\u0022 title=\\\\u0022\\\\u0022 class=\\\\u0022maxi-text-block\\\\u002d\\\\u002dlink\\\\u0022\\\\u003e\\\\u003cspan class=\\\\u0022maxi-text-block\\\\u002d\\\\u002dhas-custom-format maxi-text-block__custom-format\\\\u002d\\\\u002d0\\\\u0022\\\\u003eMaxi\\\\u003c/span\\\\u003e\\\\u003c/a\\\\u003e\\",\\"custom-formats\\":{\\"maxi-text-block__custom-format\\\\u002d\\\\u002d0\\":{\\"text-decoration-general\\":\\"underline\\"}}} -->

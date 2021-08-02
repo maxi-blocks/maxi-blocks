@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyTimes,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
@@ -45,5 +49,51 @@ describe('BoxShadowControl', () => {
 		}))(attributes);
 
 		expect(typographyAttributes).toStrictEqual(expectAttributes);
+
+		// custom Horizontal, Vertical, Blur, Spread
+		const inputs = await accordionPanel.$$(
+			'.maxi-shadow-control .maxi-advanced-number-control input'
+		);
+
+		// Horizontal
+		await inputs[0].focus();
+		await page.keyboard.type('30');
+
+		// Vertical
+		await inputs[2].focus();
+		await page.keyboard.type('40');
+
+		// Blur
+		await inputs[4].focus();
+		await pressKeyTimes('Backspace', 2);
+		await page.keyboard.type('10');
+
+		// Spread
+		await inputs[6].focus();
+		await pressKeyTimes('Backspace', 2);
+		await page.keyboard.type('60');
+
+		const expectChanges = {
+			'box-shadow-blur-general': 10,
+			'box-shadow-horizontal-general': 30,
+			'box-shadow-spread-general': 60,
+			'box-shadow-vertical-general': 40,
+		};
+
+		const shadowAttributes = await getBlockAttributes();
+
+		const boxShadow = (({
+			'box-shadow-blur-general': boxShadowBlur,
+			'box-shadow-horizontal-general': boxShadowHorizontal,
+			'box-shadow-spread-general': boxShadowSpread,
+			'box-shadow-vertical-general': boxShadowVertical,
+		}) => ({
+			'box-shadow-blur-general': boxShadowBlur,
+			'box-shadow-horizontal-general': boxShadowHorizontal,
+			'box-shadow-spread-general': boxShadowSpread,
+			'box-shadow-vertical-general': boxShadowVertical,
+		}))(shadowAttributes);
+
+		expect(boxShadow).toStrictEqual(expectChanges);
 	});
 });

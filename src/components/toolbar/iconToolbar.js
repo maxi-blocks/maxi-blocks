@@ -17,6 +17,7 @@ import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
  */
 import IconPosition from './components/icon-position';
 import IconSize from './components/icon-size';
+import IconColor from './components/icon-color';
 
 /**
  * Styles
@@ -120,6 +121,12 @@ const IconToolbar = memo(
 									blockName={name}
 									{...getGroupAttributes(attributes, 'icon')}
 									onChange={obj => processAttributes(obj)}
+								/>
+								<IconColor
+									blockName={name}
+									{...getGroupAttributes(attributes, 'icon')}
+									onChange={obj => processAttributes(obj)}
+									parentBlockStyle={parentBlockStyle}
 								/>
 							</div>
 						</Popover>

@@ -17,7 +17,7 @@ import './editor.scss';
 import { toolbarShapeWidth } from '../../../../icons';
 
 /**
- * Size
+ * Component
  */
 const IconSize = props => {
 	const { blockName, onChange } = props;

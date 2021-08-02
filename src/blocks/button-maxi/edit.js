@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { withSelect } from '@wordpress/data';
 import { RichText } from '@wordpress/block-editor';
-import { RawHTML } from '@wordpress/element';
+import { RawHTML, createRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -16,8 +16,8 @@ import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
 import { getGroupAttributes } from '../../extensions/styles';
-
 import getStyles from './styles';
+import IconToolbar from '../../components/toolbar/iconToolbar';
 
 /**
  * External dependencies
@@ -29,6 +29,12 @@ import { isEmpty } from 'lodash';
  * Content
  */
 class edit extends MaxiBlockComponent {
+	constructor(...args) {
+		super(...args);
+
+		this.iconRef = createRef(null);
+	}
+
 	typingTimeout = 0;
 
 	get getStylesObject() {
@@ -105,9 +111,20 @@ class edit extends MaxiBlockComponent {
 						__unstableDisableFormats
 					/>
 					{attributes['icon-content'] && (
-						<RawHTML className='maxi-button-block__icon'>
-							{attributes['icon-content']}
-						</RawHTML>
+						<>
+							<IconToolbar
+								key={`icon-toolbar-${uniqueID}`}
+								ref={this.iconRef}
+								{...this.props}
+								propsToAvoid={['buttonContent', 'formatValue']}
+							/>
+							<div
+								ref={this.iconRef}
+								className='maxi-button-block__icon'
+							>
+								<RawHTML>{attributes['icon-content']}</RawHTML>
+							</div>
+						</>
 					)}
 				</div>
 			</MaxiBlock>,

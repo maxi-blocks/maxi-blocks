@@ -50,7 +50,6 @@ export const getSCVariablesObject = styleCards => {
 		'h4',
 		'h5',
 		'h6',
-		'hover',
 		'icon',
 		'divider',
 		'link',
@@ -85,7 +84,7 @@ export const getSCVariablesObject = styleCards => {
 		'line-height',
 		'letter-spacing',
 	];
-	const elementsForColor = ['divider', 'icon', 'hover', 'link'];
+	const elementsForColor = ['divider', 'icon', 'link'];
 
 	styles.forEach(style => {
 		elements.forEach(element => {
@@ -120,6 +119,22 @@ export const getSCVariablesObject = styleCards => {
 			)
 				response[`--maxi-${style}-${element}-background-color`] =
 					obj['background-color'];
+
+			if (
+				element === 'button' &&
+				obj['hover-background-color-global'] &&
+				!isEmpty(obj['hover-background-color'])
+			)
+				response[`--maxi-${style}-${element}-background-color-hover`] =
+					obj['hover-background-color'];
+
+			if (
+				element === 'button' &&
+				obj['hover-color-global'] &&
+				!isEmpty(obj['hover-color'])
+			)
+				response[`--maxi-${style}-${element}-color-hover`] =
+					obj['hover-color'];
 
 			if (element === 'icon' && obj['line-global'] && !isEmpty(obj.line))
 				response[`--maxi-${style}-${element}-line`] = obj.line;

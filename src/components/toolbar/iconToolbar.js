@@ -18,6 +18,7 @@ import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
 import IconPosition from './components/icon-position';
 import IconSize from './components/icon-size';
 import IconColor from './components/icon-color';
+import IconBackground from './components/icon-background';
 
 /**
  * Styles
@@ -125,6 +126,15 @@ const IconToolbar = memo(
 								<IconColor
 									blockName={name}
 									{...getGroupAttributes(attributes, 'icon')}
+									onChange={obj => processAttributes(obj)}
+									parentBlockStyle={parentBlockStyle}
+								/>
+								<IconBackground
+									blockName={name}
+									{...getGroupAttributes(
+										attributes,
+										'iconBackgroundColor'
+									)}
 									onChange={obj => processAttributes(obj)}
 									parentBlockStyle={parentBlockStyle}
 								/>

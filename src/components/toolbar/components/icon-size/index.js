@@ -27,7 +27,7 @@ const IconSize = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__icon-size'
-			tooltip={__('Position', 'maxi-blocks')}
+			tooltip={__('Icon Size/Spacing', 'maxi-blocks')}
 			icon={toolbarShapeWidth}
 		>
 			<div className='toolbar-item__icon-size__popover'>

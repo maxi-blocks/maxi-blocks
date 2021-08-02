@@ -231,6 +231,7 @@ const LinkOptions = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
+				globalProps={{ target: 'link-color-global', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Hover', 'maxi-blocks')}
@@ -254,6 +255,7 @@ const LinkOptions = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
+				globalProps={{ target: 'hover-color-global', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Active', 'maxi-blocks')}
@@ -277,6 +279,7 @@ const LinkOptions = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
+				globalProps={{ target: 'active-color-global', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Visited', 'maxi-blocks')}
@@ -300,6 +303,7 @@ const LinkOptions = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
+				globalProps={{ target: 'visited-color-global', type: 'link' }}
 			/>
 		</>
 	);

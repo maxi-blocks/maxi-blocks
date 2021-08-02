@@ -45,7 +45,14 @@ import { isEmpty, isEqual, cloneDeep } from 'lodash';
 /**
  * Icons
  */
-import { presetOne, presetTwo, presetThree } from '../../icons';
+import {
+	presetOne,
+	presetTwo,
+	presetThree,
+	presetFour,
+	presetFive,
+	presetSix,
+} from '../../icons';
 
 /**
  * Inspector
@@ -160,6 +167,48 @@ const Inspector = memo(
 																onChange: () =>
 																	onChangePreset(
 																		3
+																	),
+															},
+															{
+																activeItem: 0,
+																content: (
+																	<Icon
+																		icon={
+																			presetFour
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		5
+																	),
+															},
+															{
+																activeItem: 0,
+																content: (
+																	<Icon
+																		icon={
+																			presetFive
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		6
+																	),
+															},
+															{
+																activeItem: 0,
+																content: (
+																	<Icon
+																		icon={
+																			presetSix
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		4
 																	),
 															},
 														]}

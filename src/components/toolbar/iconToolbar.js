@@ -16,6 +16,7 @@ import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
  * Utils
  */
 import IconPosition from './components/icon-position';
+import IconSize from './components/icon-size';
 
 /**
  * Styles
@@ -111,6 +112,11 @@ const IconToolbar = memo(
 						>
 							<div className='toolbar-wrapper icon-toolbar'>
 								<IconPosition
+									blockName={name}
+									{...getGroupAttributes(attributes, 'icon')}
+									onChange={obj => processAttributes(obj)}
+								/>
+								<IconSize
 									blockName={name}
 									{...getGroupAttributes(attributes, 'icon')}
 									onChange={obj => processAttributes(obj)}

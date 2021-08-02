@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { SVG, Path, Rect } from '@wordpress/primitives';
+import { SVG, Path } from '@wordpress/primitives';
 
 const toolbarIconAlign = (
 	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'>

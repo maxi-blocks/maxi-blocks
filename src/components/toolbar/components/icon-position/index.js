@@ -26,7 +26,7 @@ const IconPosition = props => {
 	return (
 		<ToolbarPopover
 			className='toolbar-item__icon-position'
-			tooltip={__('Position', 'maxi-blocks')}
+			tooltip={__('Icon Position', 'maxi-blocks')}
 			icon={toolbarIconAlign}
 		>
 			<div className='toolbar-item__icon-position__popover'>

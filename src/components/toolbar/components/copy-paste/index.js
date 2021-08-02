@@ -9,12 +9,13 @@ import { useSelect, useDispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import Button from '../../../button';
+import ToolbarContext from '../toolbar-popover/toolbarContext';
 import ToolbarPopover from '../toolbar-popover';
 
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Styles & Icons
@@ -67,7 +68,7 @@ const ATTRIBUTES = [
 	'zIndex',
 ];
 
-const CopyPaste = props => {
+const CopyPasteContent = props => {
 	const { clientId } = props;
 
 	const [isOpen, setIsOpen] = useState(false);
@@ -148,77 +149,86 @@ const CopyPaste = props => {
 	};
 
 	return (
+		<div className='toolbar-item__copy-paste__popover'>
+			<Button
+				className='toolbar-item__copy-paste__popover__button'
+				icon={toolbarCopy}
+				onClick={onCopy}
+			>
+				{__('Copy Style', 'maxi-blocks')}
+			</Button>
+			<Button
+				className='toolbar-item__copy-paste__popover__button'
+				icon={toolbarPaste}
+				onClick={onPaste}
+				disabled={isEmpty(copiedStyles)}
+			>
+				{__('Paste Style', 'maxi-blocks')}
+			</Button>
+			{!isEmpty(organizedAttributes) && (
+				<>
+					<Button
+						className='toolbar-item__copy-paste__popover__button'
+						icon={toolbarSpecialPaste}
+						onClick={() => setIsOpen(!isOpen)}
+					>
+						{__('Special Paste', 'maxi-blocks')}
+					</Button>
+					{isOpen && (
+						<form>
+							{!isNil(organizedAttributes) &&
+								!isEmpty(organizedAttributes) &&
+								Object.keys(organizedAttributes).map(attr => {
+									return (
+										<div
+											className='toolbar-item__copy-paste__popover__item'
+											key={`copy-paste-${attr}`}
+										>
+											<label
+												htmlFor={attr}
+												className='maxi-axis-control__content__item__checkbox'
+											>
+												<input
+													type='checkbox'
+													name={attr}
+													id={attr}
+													onClick={() =>
+														handleSpecialPaste(attr)
+													}
+												/>
+												<span>{attr}</span>
+											</label>
+										</div>
+									);
+								})}
+							<Button
+								className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
+								onClick={onSpecialPaste}
+							>
+								{__('Paste Special Style', 'maxi-blocks')}
+							</Button>
+						</form>
+					)}
+				</>
+			)}
+		</div>
+	);
+};
+
+const CopyPaste = props => {
+	return (
 		<ToolbarPopover
 			className='toolbar-item__copy-paste'
 			tooltip={__('Copy / Paste Style', 'maxi-blocks')}
 			icon={toolbarCopyPaste}
 		>
-			<div className='toolbar-item__copy-paste__popover'>
-				<Button
-					className='toolbar-item__copy-paste__popover__button'
-					icon={toolbarCopy}
-					onClick={onCopy}
-				>
-					{__('Copy Style', 'maxi-blocks')}
-				</Button>
-				<Button
-					className='toolbar-item__copy-paste__popover__button'
-					icon={toolbarPaste}
-					onClick={onPaste}
-					disabled={isEmpty(copiedStyles)}
-				>
-					{__('Paste Style', 'maxi-blocks')}
-				</Button>
-				{!isEmpty(organizedAttributes) && (
-					<>
-						<Button
-							className='toolbar-item__copy-paste__popover__button'
-							icon={toolbarSpecialPaste}
-							onClick={() => setIsOpen(!isOpen)}
-						>
-							{__('Special Paste', 'maxi-blocks')}
-						</Button>
-						{isOpen && (
-							<form>
-								{!isEmpty(organizedAttributes) &&
-									Object.keys(organizedAttributes).map(
-										attr => {
-											return (
-												<div
-													className='toolbar-item__copy-paste__popover__item'
-													key={`copy-paste-${attr}`}
-												>
-													<label
-														htmlFor={attr}
-														className='maxi-axis-control__content__item__checkbox'
-													>
-														<input
-															type='checkbox'
-															name={attr}
-															id={attr}
-															onClick={() =>
-																handleSpecialPaste(
-																	attr
-																)
-															}
-														/>
-														<span>{attr}</span>
-													</label>
-												</div>
-											);
-										}
-									)}
-								<Button
-									className='toolbar-item__copy-paste__popover__button toolbar-item__copy-paste__popover__button--special'
-									onClick={onSpecialPaste}
-								>
-									{__('Paste Special Style', 'maxi-blocks')}
-								</Button>
-							</form>
-						)}
-					</>
-				)}
-			</div>
+			<ToolbarContext.Consumer>
+				{({ isOpen }) => {
+					if (isOpen) return <CopyPasteContent {...props} />;
+
+					return null;
+				}}
+			</ToolbarContext.Consumer>
 		</ToolbarPopover>
 	);
 };

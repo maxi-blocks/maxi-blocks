@@ -180,7 +180,7 @@ const Inspector = memo(
 																),
 																onChange: () =>
 																	onChangePreset(
-																		5
+																		4
 																	),
 															},
 															{
@@ -194,7 +194,7 @@ const Inspector = memo(
 																),
 																onChange: () =>
 																	onChangePreset(
-																		6
+																		5
 																	),
 															},
 															{
@@ -208,7 +208,7 @@ const Inspector = memo(
 																),
 																onChange: () =>
 																	onChangePreset(
-																		4
+																		6
 																	),
 															},
 														]}

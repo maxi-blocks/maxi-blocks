@@ -19,6 +19,7 @@ import IconPosition from './components/icon-position';
 import IconSize from './components/icon-size';
 import IconColor from './components/icon-color';
 import IconBackground from './components/icon-background';
+import IconBorder from './components/icon-border';
 
 /**
  * Styles
@@ -137,6 +138,18 @@ const IconToolbar = memo(
 									)}
 									onChange={obj => processAttributes(obj)}
 									parentBlockStyle={parentBlockStyle}
+								/>
+								<IconBorder
+									blockName={name}
+									{...getGroupAttributes(attributes, [
+										'iconBorder',
+										'iconBorderWidth',
+										'iconBorderRadius',
+									])}
+									onChange={obj => processAttributes(obj)}
+									parentBlockStyle={parentBlockStyle}
+									clientId={clientId}
+									breakpoint={breakpoint}
 								/>
 							</div>
 						</Popover>

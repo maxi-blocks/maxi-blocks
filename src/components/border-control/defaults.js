@@ -1,27 +1,15 @@
-import {
-	border as defaultBorder,
-	borderWidth as defaultBorderWidth,
-} from '../../extensions/styles/defaults/border';
-
-export const borderNone = (prefix = '') => {
+export const borderNone = prefix => {
 	let response = {};
+
 	response = {
-		[`${prefix}border-color`]:
-			defaultBorder[`${prefix}border-color-general`].default,
-		[`${prefix}border-style`]:
-			defaultBorder[`${prefix}border-style-general`].default,
-		[`${prefix}border-top-width`]:
-			defaultBorderWidth[`${prefix}border-top-width-general`].default,
-		[`${prefix}border-right-width`]:
-			defaultBorderWidth[`${prefix}border-right-width-general`].default,
-		[`${prefix}border-bottom-width`]:
-			defaultBorderWidth[`${prefix}border-bottom-width-general`].default,
-		[`${prefix}border-left-width`]:
-			defaultBorderWidth[`${prefix}border-left-width-general`].default,
-		[`${prefix}border-sync-width`]:
-			defaultBorderWidth[`${prefix}border-sync-width-general`].default,
-		[`${prefix}border-unit-width`]:
-			defaultBorderWidth[`${prefix}border-unit-width-general`].default,
+		[`${prefix}border-color`]: '',
+		[`${prefix}border-style`]: 'none',
+		[`${prefix}border-top-width`]: 0,
+		[`${prefix}border-right-width`]: 0,
+		[`${prefix}border-bottom-width`]: 0,
+		[`${prefix}border-left-width`]: 0,
+		[`${prefix}border-sync-width`]: true,
+		[`${prefix}border-unit-width`]: 'px',
 	};
 	return response;
 };

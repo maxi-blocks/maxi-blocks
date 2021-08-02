@@ -167,7 +167,7 @@ const AxisControl = props => {
 	};
 
 	const onChangeSync = key => {
-		onChange({
+		const response = {
 			[`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`]:
 				!getLastBreakpointAttribute(
 					getKey(key),
@@ -175,25 +175,25 @@ const AxisControl = props => {
 					props,
 					isHover
 				),
-		});
-		const resetSync = {};
+		};
+
 		const syncArray = ['sync-horizontal', 'sync-vertical'];
 		if (key === 'sync-vertical' || key === 'sync-horizontal') {
-			resetSync[
+			response[
 				`${getKey('sync')}-${breakpoint}${isHover ? '-hover' : ''}`
 			] = getDefaultAttribute(
 				`${getKey('sync')}-${breakpoint}${isHover ? '-hover' : ''}`
 			);
 		} else {
 			syncArray.forEach(key => {
-				resetSync[
+				response[
 					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
 				] = getDefaultAttribute(
 					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
 				);
 			});
 		}
-		onChange(resetSync);
+		onChange(response);
 	};
 
 	const getDisplayValue = key => {

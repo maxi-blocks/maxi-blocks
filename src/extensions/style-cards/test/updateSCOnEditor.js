@@ -199,6 +199,8 @@ describe('getSCVariablesObject', () => {
 					button: {
 						'color-global': false,
 						color: '',
+						'hover-color-global': false,
+						'hover-color': '',
 						'font-family-general': 'Roboto',
 						'font-size-xxl': '22',
 						'font-size-unit-xxl': 'px',
@@ -218,10 +220,8 @@ describe('getSCVariablesObject', () => {
 						'text-decoration-general': 'unset',
 						'background-color-global': false,
 						'background-color': '',
-					},
-					hover: {
-						'color-global': false,
-						color: '',
+						'hover-background-color-global': false,
+						'hover-background-color': '',
 					},
 					icon: {
 						'line-global': false,
@@ -455,6 +455,8 @@ describe('getSCVariablesObject', () => {
 					button: {
 						'color-global': false,
 						color: '',
+						'hover-color-global': false,
+						'hover-color': '',
 						'font-family-general': 'Roboto',
 						'font-size-xxl': '22',
 						'font-size-unit-xxl': 'px',
@@ -474,10 +476,8 @@ describe('getSCVariablesObject', () => {
 						'text-decoration-general': 'unset',
 						'background-color-global': false,
 						'background-color': '',
-					},
-					hover: {
-						'color-global': false,
-						color: '',
+						'hover-background-color-global': false,
+						'hover-background-color': '',
 					},
 					icon: {
 						'line-global': false,

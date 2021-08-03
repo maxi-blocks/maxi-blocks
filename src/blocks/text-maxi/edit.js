@@ -183,7 +183,6 @@ class edit extends MaxiBlockComponent {
 							'Set your Maxi Text here…',
 							'maxi-blocks'
 						)}
-						keepPlaceholderOnFocus
 						__unstableEmbedURLOnPaste
 						__unstableAllowPrefixTransformations
 					>

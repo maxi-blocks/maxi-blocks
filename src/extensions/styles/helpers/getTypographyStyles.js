@@ -25,7 +25,7 @@ const getTypographyStyles = ({
 	customFormatTypography = false,
 	parentBlockStyle,
 	textLevel = 'p',
-	normalTypography, // Just in case is hover
+	normalTypography, // Just in case is hover,
 }) => {
 	if (isHover && !obj[`${prefix}typography-status-hover`]) return {};
 
@@ -89,7 +89,9 @@ const getTypographyStyles = ({
 						...(!isNil(
 							obj[getName('palette-color', breakpoint)]
 						) && {
-							color: `var(--maxi-${parentBlockStyle}-${textLevel}-color, var(--maxi-${parentBlockStyle}-color-${
+							color: `var(--maxi-${parentBlockStyle}-${textLevel}-color${
+								isHover ? '-hover' : ''
+							}, var(--maxi-${parentBlockStyle}-color-${
 								obj[getName('palette-color', breakpoint)]
 							}))`,
 						}),

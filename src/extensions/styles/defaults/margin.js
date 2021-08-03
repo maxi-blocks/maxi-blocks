@@ -15,6 +15,14 @@ const margin = {
 		type: 'boolean',
 		default: false,
 	},
+	'margin-sync-horizontal-general': {
+		type: 'boolean',
+		default: false,
+	},
+	'margin-sync-vertical-general': {
+		type: 'boolean',
+		default: false,
+	},
 	'margin-unit-general': {
 		type: 'string',
 		default: 'px',

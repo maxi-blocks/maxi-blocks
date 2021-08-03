@@ -140,6 +140,30 @@ const SCTab = props => {
 						disablePalette
 					/>
 				)}
+			{!!forthColor && breakpoint === 'general' && (
+				<FancyRadioControl
+					label={__(`Use Global ${forthLabel} Colour`, 'maxi-blocks')}
+					selected={processSCAttribute(SC, forthColorGlobal, type)}
+					options={options}
+					onChange={val =>
+						onChangeValue(
+							{
+								[forthColorGlobal]: val,
+								...(isEmpty(
+									processSCAttribute(SC, forthColor, type)
+								) && {
+									[forthColor]: processSCAttribute(
+										SC,
+										forthColorDefault,
+										'color'
+									),
+								}),
+							},
+							type
+						)
+					}
+				/>
+			)}
 			{!!secondColor && breakpoint === 'general' && (
 				<FancyRadioControl
 					label={__(
@@ -235,30 +259,6 @@ const SCTab = props => {
 						disablePalette
 					/>
 				)}
-			{!!forthColor && breakpoint === 'general' && (
-				<FancyRadioControl
-					label={__(`Use Global ${forthLabel} Colour`, 'maxi-blocks')}
-					selected={processSCAttribute(SC, forthColorGlobal, type)}
-					options={options}
-					onChange={val =>
-						onChangeValue(
-							{
-								[forthColorGlobal]: val,
-								...(isEmpty(
-									processSCAttribute(SC, forthColor, type)
-								) && {
-									[forthColor]: processSCAttribute(
-										SC,
-										forthColorDefault,
-										'color'
-									),
-								}),
-							},
-							type
-						)
-					}
-				/>
-			)}
 			{!!forthColor &&
 				breakpoint === 'general' &&
 				processSCAttribute(SC, forthColorGlobal, type) && (
@@ -646,7 +646,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					generateTab({
 						type: 'button',
 						tabLabel: __('Button', 'maxi-blocks'),
-						firstLabel: __('Button', 'maxi-blocks'),
+						firstLabel: __('Button Text', 'maxi-blocks'),
 						firstColorDefault: 1,
 						secondColor: 'background-color',
 						secondLabel: __('Button Background', 'maxi-blocks'),

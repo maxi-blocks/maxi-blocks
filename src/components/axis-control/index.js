@@ -237,10 +237,10 @@ const AxisControl = props => {
 
 			inputsArray.forEach(key => {
 				if (
-					key === 'top' ||
-					key === 'left' ||
-					key === 'bottom' ||
-					key === 'right'
+					key.includes('top') ||
+					key.includes('left') ||
+					key.includes('bottom') ||
+					key.includes('right')
 				)
 					response[
 						`${target}-${key}${

@@ -54,12 +54,20 @@ const SCTab = props => {
 		forthColor = false,
 		forthLabel,
 		forthColorDefault,
+		sixthColor = false,
+		sixthLabel,
+		sixthColorDefault,
+		seventhColor = false,
+		seventhLabel,
+		seventhColorDefault,
 	} = props;
 
 	const firstColorGlobal = `${firstColor}-global`;
 	const secondColorGlobal = `${secondColor}-global`;
 	const thirdColorGlobal = `${thirdColor}-global`;
 	const forthColorGlobal = `${forthColor}-global`;
+	const sixthColorGlobal = `${sixthColor}-global`;
+	const seventhColorGlobal = `${seventhColor}-global`;
 
 	const options = [
 		{
@@ -164,6 +172,28 @@ const SCTab = props => {
 					}
 				/>
 			)}
+			{!!forthColor &&
+				breakpoint === 'general' &&
+				processSCAttribute(SC, forthColorGlobal, type) && (
+					<ColorControl
+						label={__(forthLabel, 'maxi-blocks')}
+						className={`maxi-style-cards-control__sc__${forthColor}--${SCStyle}`}
+						color={
+							processSCAttribute(SC, forthColor, type) ||
+							getStyleCardAttr(forthColorDefault, SCStyle, true)
+						}
+						defaultColor={getStyleCardAttr(
+							forthColorDefault,
+							SCStyle,
+							true
+						)}
+						onChange={({ color }) =>
+							onChangeValue({ [forthColor]: color }, type)
+						}
+						disableGradient
+						disablePalette
+					/>
+				)}
 			{!!secondColor && breakpoint === 'general' && (
 				<FancyRadioControl
 					label={__(
@@ -259,23 +289,96 @@ const SCTab = props => {
 						disablePalette
 					/>
 				)}
-			{!!forthColor &&
+			{!!sixthColor && breakpoint === 'general' && (
+				<FancyRadioControl
+					label={__(`Use Global ${sixthLabel} Colour`, 'maxi-blocks')}
+					selected={processSCAttribute(SC, sixthColorGlobal, type)}
+					options={options}
+					onChange={val =>
+						onChangeValue(
+							{
+								[sixthColorGlobal]: val,
+								...(isEmpty(
+									processSCAttribute(SC, sixthColor, type)
+								) && {
+									[sixthColor]: processSCAttribute(
+										SC,
+										sixthColorDefault,
+										'color'
+									),
+								}),
+							},
+							type
+						)
+					}
+				/>
+			)}
+			{!!sixthColor &&
 				breakpoint === 'general' &&
-				processSCAttribute(SC, forthColorGlobal, type) && (
+				processSCAttribute(SC, sixthColorGlobal, type) && (
 					<ColorControl
-						label={__(forthLabel, 'maxi-blocks')}
-						className={`maxi-style-cards-control__sc__${forthColor}--${SCStyle}`}
+						label={__(sixthLabel, 'maxi-blocks')}
+						className={`maxi-style-cards-control__sc__${sixthColor}--${SCStyle}`}
 						color={
-							processSCAttribute(SC, forthColor, type) ||
-							getStyleCardAttr(forthColorDefault, SCStyle, true)
+							processSCAttribute(SC, sixthColor, type) ||
+							getStyleCardAttr(sixthColorDefault, SCStyle, true)
 						}
 						defaultColor={getStyleCardAttr(
-							forthColorDefault,
+							sixthColorDefault,
 							SCStyle,
 							true
 						)}
 						onChange={({ color }) =>
-							onChangeValue({ [forthColor]: color }, type)
+							onChangeValue({ [sixthColor]: color }, type)
+						}
+						disableGradient
+						disablePalette
+					/>
+				)}
+			{!!seventhColor && breakpoint === 'general' && (
+				<FancyRadioControl
+					label={__(
+						`Use Global ${seventhLabel} Colour`,
+						'maxi-blocks'
+					)}
+					selected={processSCAttribute(SC, seventhColorGlobal, type)}
+					options={options}
+					onChange={val =>
+						onChangeValue(
+							{
+								[seventhColorGlobal]: val,
+								...(isEmpty(
+									processSCAttribute(SC, seventhColor, type)
+								) && {
+									[seventhColor]: processSCAttribute(
+										SC,
+										seventhColorDefault,
+										'color'
+									),
+								}),
+							},
+							type
+						)
+					}
+				/>
+			)}
+			{!!seventhColor &&
+				breakpoint === 'general' &&
+				processSCAttribute(SC, seventhColorGlobal, type) && (
+					<ColorControl
+						label={__(seventhLabel, 'maxi-blocks')}
+						className={`maxi-style-cards-control__sc__${seventhColor}--${SCStyle}`}
+						color={
+							processSCAttribute(SC, seventhColor, type) ||
+							getStyleCardAttr(seventhColorDefault, SCStyle, true)
+						}
+						defaultColor={getStyleCardAttr(
+							seventhColorDefault,
+							SCStyle,
+							true
+						)}
+						onChange={({ color }) =>
+							onChangeValue({ [seventhColor]: color }, type)
 						}
 						disableGradient
 						disablePalette
@@ -660,6 +763,12 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						forthColor: 'hover-color',
 						forthLabel: __('Button Text Hover', 'maxi-blocks'),
 						forthColorDefault: 5,
+						sixthColor: 'border-color',
+						sixthLabel: __('Button Border', 'maxi-blocks'),
+						sixthColorDefault: 5,
+						seventhColor: 'hover-border-color',
+						seventhLabel: __('Button Border Hover', 'maxi-blocks'),
+						seventhColorDefault: 6,
 					}),
 					generateTab({
 						type: 'p',

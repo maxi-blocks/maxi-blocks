@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -48,6 +49,8 @@ const BorderControl = props => {
 		prefix = '',
 		clientId,
 	} = props;
+
+	const blockName = select('core/editor').getBlockName(clientId);
 
 	const classes = classnames('maxi-border-control', className);
 
@@ -207,6 +210,14 @@ const BorderControl = props => {
 					isHover={isHover}
 					deviceType={breakpoint}
 					clientId={clientId}
+					globalProps={
+						blockName === 'maxi-blocks/button-maxi' && {
+							target: `${
+								isHover ? 'hover-' : ''
+							}border-color-global`,
+							type: 'button',
+						}
+					}
 				/>
 			)}
 

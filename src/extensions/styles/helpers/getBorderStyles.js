@@ -93,7 +93,9 @@ const getBorderStyles = ({
 						if (paletteStatus && paletteColor)
 							response[breakpoint][
 								'border-color'
-							] = `var(--maxi-${parentBlockStyle}-color-${paletteColor});`;
+							] = `var(--maxi-${parentBlockStyle}-button-border-color${
+								isHover ? '-hover' : ''
+							}, var(--maxi-${parentBlockStyle}-color-${paletteColor}))`;
 						else
 							response[breakpoint]['border-color'] =
 								obj[

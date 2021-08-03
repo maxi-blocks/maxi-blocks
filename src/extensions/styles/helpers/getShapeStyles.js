@@ -19,7 +19,7 @@ const getShapeStyles = (obj, target, parentBlockStyle) => {
 			obj['shape-palette-fill-color-status'] &&
 			obj['shape-palette-fill-color']
 		)
-			response.general.fill = `var(--maxi-${parentBlockStyle}-icon-fill, var(--maxi-${parentBlockStyle}-color-${obj['shape-palette-fill-color']}))`;
+			response.general.fill = `var(--maxi-${parentBlockStyle}-color-${obj['shape-palette-fill-color']})`;
 		else if (
 			!obj['shape-palette-fill-color-status'] &&
 			!isNil(obj['shape-fill-color'])

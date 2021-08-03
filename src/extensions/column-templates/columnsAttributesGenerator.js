@@ -36,7 +36,7 @@ const getColumnAttributes = ({
 			[`margin-unit-${breakpoint}`]: '%',
 		}),
 		...(columnPosition.rowNumber === 1 && {
-			[`margin-top-${breakpoint}`]: 0,
+			[`margin-top-${breakpoint}`]: '0',
 		}),
 		...(columnPosition.columnsNumber === 1 && {
 			[`column-size-${breakpoint}`]: 100,

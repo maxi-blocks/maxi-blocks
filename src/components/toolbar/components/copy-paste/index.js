@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
+import { cloneBlock } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -67,9 +68,15 @@ const ATTRIBUTES = [
 	'typographyHover',
 	'zIndex',
 ];
+const WRAPPER_BLOCKS = [
+	'maxi-blocks/container-maxi',
+	'maxi-blocks/row-maxi',
+	'maxi-blocks/column-maxi',
+	'maxi-blocks/group-maxi',
+];
 
 const CopyPasteContent = props => {
-	const { clientId } = props;
+	const { clientId, blockName } = props;
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [specialPaste, setSpecialPaste] = useState([]);
@@ -99,32 +106,59 @@ const CopyPasteContent = props => {
 		return response;
 	};
 
-	const { blockAttributes, organizedAttributes, copiedStyles } = useSelect(
-		select => {
-			const { getBlockAttributes } = select('core/block-editor');
-			const { receiveCopiedStyles } = select('maxiBlocks');
+	const {
+		blockAttributes,
+		organizedAttributes,
+		copiedStyles,
+		copiedBlocks,
+		innerBlocks,
+		hasInnerBlocks,
+	} = useSelect(select => {
+		const { receiveCopiedStyles, receiveCopiedBlocks } =
+			select('maxiBlocks');
+		const { getBlock } = select('core/block-editor');
 
-			const copiedStyles = receiveCopiedStyles();
-			const organizedAttributes =
-				(copiedStyles && getOrganizedAttributes(copiedStyles)) || {};
+		const copiedStyles = receiveCopiedStyles();
+		const copiedBlocks = receiveCopiedBlocks();
 
-			const blockAttributes = cleanStyleAttributes(
-				getBlockAttributes(clientId)
-			);
+		const organizedAttributes =
+			(copiedStyles && getOrganizedAttributes(copiedStyles)) || {};
 
-			return {
-				blockAttributes,
-				organizedAttributes,
-				copiedStyles,
-			};
-		}
-	);
+		const blockValues = getBlock(clientId);
+		const blockAttributes = cleanStyleAttributes(blockValues.attributes);
 
-	const { copyStyles } = useDispatch('maxiBlocks');
-	const { updateBlockAttributes } = useDispatch('core/block-editor');
+		const { innerBlocks } = blockValues;
+		const hasInnerBlocks = !isEmpty(innerBlocks);
 
-	const onCopy = () => copyStyles(blockAttributes);
-	const onPaste = () => updateBlockAttributes(clientId, copiedStyles);
+		return {
+			blockAttributes,
+			organizedAttributes,
+			copiedStyles,
+			copiedBlocks,
+			innerBlocks,
+			hasInnerBlocks,
+		};
+	});
+
+	const cleanInnerBlocks = innerBlocks => {
+		const test = innerBlocks.map(block => {
+			block.innerBlocks = cleanInnerBlocks(block.innerBlocks);
+
+			return cloneBlock(block);
+		});
+
+		return test;
+	};
+
+	const { copyStyles, copyNestedBlocks } = useDispatch('maxiBlocks');
+	const { updateBlockAttributes, replaceInnerBlocks } =
+		useDispatch('core/block-editor');
+
+	const onCopyStyles = () => copyStyles(blockAttributes);
+	const onPasteStyles = () => updateBlockAttributes(clientId, copiedStyles);
+
+	const onCopyBlocks = () => copyNestedBlocks(cleanInnerBlocks(innerBlocks));
+	const onPasteBlocks = () => replaceInnerBlocks(clientId, copiedBlocks);
 
 	const handleSpecialPaste = attr => {
 		const newSpecialPaste = specialPaste.includes(attr)
@@ -145,7 +179,7 @@ const CopyPasteContent = props => {
 			if (isSelected) res = { ...res, ...val };
 		});
 
-		onPaste(res);
+		onPasteStyles(res);
 	};
 
 	return (
@@ -153,14 +187,14 @@ const CopyPasteContent = props => {
 			<Button
 				className='toolbar-item__copy-paste__popover__button'
 				icon={toolbarCopy}
-				onClick={onCopy}
+				onClick={onCopyStyles}
 			>
 				{__('Copy Style', 'maxi-blocks')}
 			</Button>
 			<Button
 				className='toolbar-item__copy-paste__popover__button'
 				icon={toolbarPaste}
-				onClick={onPaste}
+				onClick={onPasteStyles}
 				disabled={isEmpty(copiedStyles)}
 			>
 				{__('Paste Style', 'maxi-blocks')}
@@ -210,6 +244,25 @@ const CopyPasteContent = props => {
 						</form>
 					)}
 				</>
+			)}
+			{hasInnerBlocks && (
+				<Button
+					className='toolbar-item__copy-paste__popover__button'
+					icon={toolbarCopy}
+					onClick={onCopyBlocks}
+				>
+					{__('Copy Nested Blocks', 'maxi-blocks')}
+				</Button>
+			)}
+			{WRAPPER_BLOCKS.includes(blockName) && (
+				<Button
+					className='toolbar-item__copy-paste__popover__button'
+					icon={toolbarPaste}
+					onClick={onPasteBlocks}
+					disabled={isEmpty(copiedBlocks)}
+				>
+					{__('Paste Nested Blocks', 'maxi-blocks')}
+				</Button>
 			)}
 		</div>
 	);

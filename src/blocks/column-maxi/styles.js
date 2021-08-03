@@ -98,24 +98,10 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getResizerObject = props => {
-	const response = {
-		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
-		}),
-		display: getDisplayStyles({
-			...getGroupAttributes(props, 'display'),
-		}),
-	};
-
-	return response;
-};
-
 const getStyles = props => {
 	const { uniqueID } = props;
 
 	let response = {
-		[`maxi-column-block__resizer__${uniqueID}`]: getResizerObject(props),
 		[uniqueID]: {
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),

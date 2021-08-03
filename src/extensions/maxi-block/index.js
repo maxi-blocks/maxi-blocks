@@ -84,7 +84,8 @@ class MaxiBlockComponent extends Component {
 		const { attributes, clientId } = this.props;
 		const { uniqueID, blockStyle } = attributes;
 
-		this.currentBreakpoint = 'general';
+		this.currentBreakpoint =
+			select('maxiBlocks').receiveMaxiDeviceType() || 'general';
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 

@@ -3,13 +3,14 @@ import {
 	borderWidth as defaultBorderWidth,
 } from '../../extensions/styles/defaults/border';
 
-export const borderNone = (prefix = '') => {
+export const borderNone = (prefix = '', isHover) => {
 	let response = {};
 	response = {
 		[`${prefix}border-color`]:
 			defaultBorder[`${prefix}border-color-general`].default,
-		[`${prefix}border-style`]:
-			defaultBorder[`${prefix}border-style-general`].default,
+		[`${prefix}border-style`]: isHover
+			? 'none'
+			: defaultBorder[`${prefix}border-style-general`].default,
 		[`${prefix}border-top-width`]:
 			defaultBorderWidth[`${prefix}border-top-width-general`].default,
 		[`${prefix}border-right-width`]:

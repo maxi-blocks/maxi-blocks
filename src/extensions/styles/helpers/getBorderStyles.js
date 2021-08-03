@@ -60,21 +60,19 @@ const getBorderStyles = ({
 					'gm'
 				);
 				const newLabel = newKey.replace(replacer, '');
-
-				if (
-					(isHover &&
-						isUndefined(
-							obj[
-								`border-style-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`
-							]
-						)) ||
-					obj[
-						`border-style-${breakpoint}${isHover ? '-hover' : ''}`
-					] === 'none'
-				) {
-					response[breakpoint].border = 'none';
+				if (key.includes('style')) {
+					const borderStyle = getLastBreakpointAttribute(
+						'border-style',
+						breakpoint,
+						obj,
+						isHover
+					);
+					if (
+						isHover &&
+						(isUndefined(borderStyle) || borderStyle === 'none')
+					) {
+						response[breakpoint].border = 'none';
+					}
 				} else if (!keyWords.some(key => newLabel.includes(key))) {
 					if (key.includes('color')) {
 						const paletteStatus = getLastBreakpointAttribute(

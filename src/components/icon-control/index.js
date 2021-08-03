@@ -13,6 +13,7 @@ import ColorControl from '../color-control';
 import AxisControl from '../axis-control';
 import GradientControl from '../gradient-control';
 import BorderControl from '../border-control';
+import InfoBox from '../info-box';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
@@ -125,6 +126,25 @@ const IconControl = props => {
 						}
 					/>
 					<FancyRadioControl
+						label={__(
+							'Inherit Color/Backgrond from Button',
+							'maxi-block'
+						)}
+						selected={props['icon-inherit']}
+						options={[
+							{
+								label: __('Yes', 'maxi-block'),
+								value: 1,
+							},
+							{ label: __('No', 'maxi-block'), value: 0 },
+						]}
+						onChange={val =>
+							onChange({
+								'icon-inherit': val,
+							})
+						}
+					/>
+					<FancyRadioControl
 						label=''
 						fullWidthMode
 						selected={iconStyle}
@@ -133,55 +153,104 @@ const IconControl = props => {
 						onChange={val => setIconStyle(val)}
 					/>
 					{iconStyle === 'color' && (
-						<ColorControl
-							label={__('Icon', 'maxi-blocks')}
-							color={props['icon-color']}
-							defaultColor={getDefaultAttribute('icon-color')}
-							paletteColor={props['icon-palette-color']}
-							paletteStatus={props['icon-palette-color-status']}
-							onChange={({
-								color,
-								paletteColor,
-								paletteStatus,
-							}) => {
-								onChange({
-									'icon-color': color,
-									'icon-palette-color': paletteColor,
-									'icon-palette-color-status': paletteStatus,
-								});
-							}}
-							showPalette
-							disableOpacity
-						/>
+						<>
+							{!props['icon-inherit'] ? (
+								<ColorControl
+									label={__('Icon', 'maxi-blocks')}
+									color={props['icon-color']}
+									defaultColor={getDefaultAttribute(
+										'icon-color'
+									)}
+									paletteColor={props['icon-palette-color']}
+									paletteStatus={
+										props['icon-palette-color-status']
+									}
+									onChange={({
+										color,
+										paletteColor,
+										paletteStatus,
+									}) => {
+										onChange({
+											'icon-color': color,
+											'icon-palette-color': paletteColor,
+											'icon-palette-color-status':
+												paletteStatus,
+										});
+									}}
+									showPalette
+									disableOpacity
+								/>
+							) : (
+								<InfoBox
+									key='maxi-warning-box__icon-color'
+									message={__(
+										'Icon color is inheriting from button.',
+										'maxi-blocks'
+									)}
+									links={[
+										{
+											title: __(
+												'Button colour',
+												'maxi-blocks'
+											),
+											panel: 'typography',
+										},
+									]}
+								/>
+							)}
+						</>
 					)}
 					{iconStyle === 'background-color' && (
-						<ColorControl
-							label={__('Icon background', 'maxi-blocks')}
-							color={props['icon-background-color']}
-							defaultColor={getDefaultAttribute(
-								'icon-background-color'
-							)}
-							paletteColor={
-								props['icon-background-palette-color']
-							}
-							paletteStatus={
-								props['icon-background-palette-color-status']
-							}
-							onChange={({
-								color,
-								paletteColor,
-								paletteStatus,
-							}) => {
-								onChange({
-									'icon-background-color': color,
-									'icon-background-palette-color':
+						<>
+							{!props['icon-inherit'] ? (
+								<ColorControl
+									label={__('Icon background', 'maxi-blocks')}
+									color={props['icon-background-color']}
+									defaultColor={getDefaultAttribute(
+										'icon-background-color'
+									)}
+									paletteColor={
+										props['icon-background-palette-color']
+									}
+									paletteStatus={
+										props[
+											'icon-background-palette-color-status'
+										]
+									}
+									onChange={({
+										color,
 										paletteColor,
-									'icon-background-palette-color-status':
 										paletteStatus,
-								});
-							}}
-							showPalette
-						/>
+									}) => {
+										onChange({
+											'icon-background-color': color,
+											'icon-background-palette-color':
+												paletteColor,
+											'icon-background-palette-color-status':
+												paletteStatus,
+										});
+									}}
+									showPalette
+								/>
+							) : (
+								<InfoBox
+									key='maxi-warning-box__icon-background'
+									message={__(
+										'Icon background is inheriting from button.',
+										'maxi-blocks'
+									)}
+									links={[
+										{
+											title: __(
+												'Button Background colour',
+												'maxi-blocks'
+											),
+											panel: 'background',
+										},
+									]}
+								/>
+							)}
+						</>
 					)}
 					{iconStyle === 'gradient' && (
 						<GradientControl

@@ -35,6 +35,7 @@ const reducer = (
 		deviceType: 'general',
 		presets: '',
 		copiedStyles: {},
+		copiedBlocks: {},
 	},
 	action
 ) => {
@@ -90,6 +91,11 @@ const reducer = (
 			return {
 				...state,
 				copiedStyles: action.copiedStyles,
+			};
+		case 'COPY_BLOCKS':
+			return {
+				...state,
+				copiedBlocks: action.copiedBlocks,
 			};
 		default:
 			return state;

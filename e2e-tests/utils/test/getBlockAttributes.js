@@ -410,7 +410,7 @@ describe('getBlockAttributes', () => {
 									'box-shadow-palette-color-general-hover': 6,
 									'margin-sync-general': false,
 									'margin-unit-general': 'px',
-									'margin-top-m': 1.5,
+									'margin-top-m': '1.5',
 									'margin-unit-m': 'em',
 									'padding-sync-general': false,
 									'padding-unit-general': 'px',

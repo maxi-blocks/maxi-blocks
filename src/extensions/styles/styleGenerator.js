@@ -31,18 +31,18 @@ const styleStringGenerator = (target, content, breakpoint) => {
 	let string = '';
 	let generalString = '';
 
-	generalString += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},`;
-	generalString += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+	generalString += `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},`;
+	generalString += `body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
 
 	if (breakpoint === 'general') {
 		string += generalString;
 	} else if (breakpoint === 'xxl') {
-		string += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{`;
+		string += `body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="xxl"] .maxi-block.maxi-block--backend.${target}{`;
 	} else {
 		let breakpointPos = ALLOWED_BREAKPOINTS.indexOf(breakpoint);
 
 		do {
-			string += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="${
+			string += `body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive="${
 				ALLOWED_BREAKPOINTS[breakpointPos]
 			}"] .maxi-block.maxi-block--backend.${target}${
 				breakpointPos ? ',' : '{'
@@ -61,8 +61,8 @@ const mediaStylesGenerator = (target, content, breakpoint, media) => {
 	let string = '';
 	let generalString = '';
 
-	generalString += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper .maxi-block.maxi-block--backend.${target},`;
-	generalString += `body.maxi-blocks--active .edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
+	generalString += `body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.${target},`;
+	generalString += `body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.${target}{`;
 
 	// Media
 	if (breakpoint !== 'general')

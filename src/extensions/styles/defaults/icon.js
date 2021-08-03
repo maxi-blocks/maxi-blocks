@@ -1,10 +1,6 @@
 import padding from './padding';
 
 export const icon = {
-	'icon-custom-padding': {
-		type: 'boolean',
-		default: false,
-	},
 	'icon-content': {
 		type: 'string',
 		default: '',

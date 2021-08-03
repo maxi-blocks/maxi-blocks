@@ -221,35 +221,14 @@ const IconControl = props => {
 							clientId={clientId}
 						/>
 					)}
-					<FancyRadioControl
-						label={__('Custom Padding', 'maxi-blocks')}
-						selected={props['icon-custom-padding']}
-						options={[
-							{
-								label: __('Yes', 'maxi-blocks'),
-								value: 1,
-							},
-							{
-								label: __('No', 'maxi-blocks'),
-								value: 0,
-							},
-						]}
-						onChange={val =>
-							onChange({
-								'icon-custom-padding': val,
-							})
-						}
+					<AxisControl
+						{...getGroupAttributes(props, 'iconPadding')}
+						label={__('Icon Padding', 'maxi-blocks')}
+						onChange={obj => onChange(obj)}
+						breakpoint={deviceType}
+						target='icon-padding'
+						disableAuto
 					/>
-					{props['icon-custom-padding'] && (
-						<AxisControl
-							{...getGroupAttributes(props, 'iconPadding')}
-							label={__('Icon Padding', 'maxi-blocks')}
-							onChange={obj => onChange(obj)}
-							breakpoint={deviceType}
-							target='icon-padding'
-							disableAuto
-						/>
-					)}
 				</>
 			)}
 		</div>

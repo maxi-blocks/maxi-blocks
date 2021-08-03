@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { compose } from '@wordpress/compose';
 import { withSelect } from '@wordpress/data';
 import { RichText } from '@wordpress/block-editor';
-import { RawHTML, createRef } from '@wordpress/element';
+import { RawHTML, createRef, forwardRef, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -28,12 +28,49 @@ import { isEmpty } from 'lodash';
 /**
  * Content
  */
+const IconWrapper = forwardRef((props, ref) => {
+	const { children, className, changeIsSelected } = props;
+
+	useEffect(() => {
+		const handleClickOutside = event => {
+			if (ref.current && !ref.current.contains(event.target)) {
+				changeIsSelected(false);
+			}
+		};
+
+		// Bind the event listener
+		ref.current.ownerDocument.addEventListener(
+			'mousedown',
+			handleClickOutside
+		);
+
+		return () => {
+			// Unbind the event listener on clean up
+			ref.current.ownerDocument.removeEventListener(
+				'mousedown',
+				handleClickOutside
+			);
+		};
+	}, [ref]);
+
+	return (
+		<div
+			onClick={() => changeIsSelected(true)}
+			ref={ref}
+			className={className}
+		>
+			{children}
+		</div>
+	);
+});
 class edit extends MaxiBlockComponent {
 	constructor(...args) {
 		super(...args);
 
 		this.iconRef = createRef(null);
 	}
+
+	state = { isIconSelected: false };
 
 	typingTimeout = 0;
 
@@ -63,6 +100,8 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, setAttributes } = this.props;
 		const { uniqueID } = attributes;
+
+		const { isIconSelected } = this.state;
 
 		const buttonClasses = classnames(
 			'maxi-button-block__button',
@@ -117,13 +156,17 @@ class edit extends MaxiBlockComponent {
 								ref={this.iconRef}
 								{...this.props}
 								propsToAvoid={['buttonContent', 'formatValue']}
+								isSelected={isIconSelected}
 							/>
-							<div
+							<IconWrapper
 								ref={this.iconRef}
 								className='maxi-button-block__icon'
+								changeIsSelected={isIconSelected =>
+									this.setState({ isIconSelected })
+								}
 							>
 								<RawHTML>{attributes['icon-content']}</RawHTML>
-							</div>
+							</IconWrapper>
 						</>
 					)}
 				</div>

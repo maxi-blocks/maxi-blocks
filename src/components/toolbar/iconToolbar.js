@@ -33,37 +33,31 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const IconToolbar = memo(
 	forwardRef((props, ref) => {
-		const { attributes, clientId, setAttributes, name } = props;
+		const { attributes, clientId, setAttributes, name, isSelected } = props;
 		const { uniqueID, parentBlockStyle } = attributes;
 
-		const { editorVersion, breakpoint, styleCard, isSelected } = useSelect(
-			select => {
-				const { receiveMaxiSettings, receiveMaxiDeviceType } =
-					select('maxiBlocks');
-				const { receiveMaxiSelectedStyleCard } = select(
-					'maxiBlocks/style-cards'
-				);
+		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
+			const { receiveMaxiSettings, receiveMaxiDeviceType } =
+				select('maxiBlocks');
+			const { receiveMaxiSelectedStyleCard } = select(
+				'maxiBlocks/style-cards'
+			);
 
-				const maxiSettings = receiveMaxiSettings();
-				const version = !isEmpty(maxiSettings.editor)
-					? maxiSettings.editor.version
-					: null;
+			const maxiSettings = receiveMaxiSettings();
+			const version = !isEmpty(maxiSettings.editor)
+				? maxiSettings.editor.version
+				: null;
 
-				const breakpoint = receiveMaxiDeviceType();
+			const breakpoint = receiveMaxiDeviceType();
 
-				const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
-				const isSelected = ref.current?.isSameNode(
-					ref.current.activeElement
-				);
+			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-				return {
-					editorVersion: version,
-					breakpoint,
-					styleCard,
-					isSelected,
-				};
-			}
-		);
+			return {
+				editorVersion: version,
+				breakpoint,
+				styleCard,
+			};
+		});
 
 		const [anchorRef, setAnchorRef] = useState(ref.current);
 
@@ -100,75 +94,73 @@ const IconToolbar = memo(
 
 		return (
 			<>
-				{
-					/* isSelected && */ anchorRef && (
-						<Popover
-							noArrow
-							animate={false}
-							position='bottom center right'
-							focusOnMount={false}
-							anchorRef={anchorRef}
-							className={classnames('maxi-toolbar__popover')}
-							uniqueid={uniqueID}
-							__unstableSlotName='block-toolbar'
-							shouldAnchorIncludePadding
-							{...stickyProps}
-						>
-							<div className='toolbar-wrapper icon-toolbar'>
-								<IconPosition
-									blockName={name}
-									{...getGroupAttributes(attributes, 'icon')}
-									onChange={obj => processAttributes(obj)}
-								/>
-								<IconSize
-									blockName={name}
-									{...getGroupAttributes(attributes, 'icon')}
-									onChange={obj => processAttributes(obj)}
-								/>
-								<IconColor
-									blockName={name}
-									{...getGroupAttributes(attributes, 'icon')}
-									onChange={obj => processAttributes(obj)}
-									parentBlockStyle={parentBlockStyle}
-								/>
-								<IconBackground
-									blockName={name}
-									{...getGroupAttributes(
-										attributes,
-										'iconBackgroundColor'
-									)}
-									onChange={obj => processAttributes(obj)}
-									parentBlockStyle={parentBlockStyle}
-								/>
-								<Border
-									blockName={name}
-									{...getGroupAttributes(attributes, [
-										'iconBorder',
-										'iconBorderWidth',
-										'iconBorderRadius',
-									])}
-									onChange={obj => setAttributes(obj)}
-									breakpoint={breakpoint}
-									clientId={clientId}
-									isIconToolbar
-									prefix='icon-'
-								/>
-								<PaddingMargin
-									blockName={name}
-									{...getGroupAttributes(
-										attributes,
-										'iconPadding'
-									)}
-									onChange={obj => setAttributes(obj)}
-									breakpoint={breakpoint}
-									disableMargin
-									paddingTarget='icon-padding'
-									isIconToolbar
-								/>
-							</div>
-						</Popover>
-					)
-				}
+				{isSelected && anchorRef && (
+					<Popover
+						noArrow
+						animate={false}
+						position='bottom center right'
+						focusOnMount={false}
+						anchorRef={anchorRef}
+						className={classnames('maxi-toolbar__popover')}
+						uniqueid={uniqueID}
+						__unstableSlotName='block-toolbar'
+						shouldAnchorIncludePadding
+						{...stickyProps}
+					>
+						<div className='toolbar-wrapper icon-toolbar'>
+							<IconPosition
+								blockName={name}
+								{...getGroupAttributes(attributes, 'icon')}
+								onChange={obj => processAttributes(obj)}
+							/>
+							<IconSize
+								blockName={name}
+								{...getGroupAttributes(attributes, 'icon')}
+								onChange={obj => processAttributes(obj)}
+							/>
+							<IconColor
+								blockName={name}
+								{...getGroupAttributes(attributes, 'icon')}
+								onChange={obj => processAttributes(obj)}
+								parentBlockStyle={parentBlockStyle}
+							/>
+							<IconBackground
+								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									'iconBackgroundColor'
+								)}
+								onChange={obj => processAttributes(obj)}
+								parentBlockStyle={parentBlockStyle}
+							/>
+							<Border
+								blockName={name}
+								{...getGroupAttributes(attributes, [
+									'iconBorder',
+									'iconBorderWidth',
+									'iconBorderRadius',
+								])}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={breakpoint}
+								clientId={clientId}
+								isIconToolbar
+								prefix='icon-'
+							/>
+							<PaddingMargin
+								blockName={name}
+								{...getGroupAttributes(
+									attributes,
+									'iconPadding'
+								)}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={breakpoint}
+								disableMargin
+								paddingTarget='icon-padding'
+								isIconToolbar
+							/>
+						</div>
+					</Popover>
+				)}
 			</>
 		);
 	}),

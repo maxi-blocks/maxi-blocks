@@ -1,6 +1,10 @@
 import padding from './padding';
 
 export const icon = {
+	'icon-inherit': {
+		type: 'boolean',
+		default: true,
+	},
 	'icon-content': {
 		type: 'string',
 		default: '',

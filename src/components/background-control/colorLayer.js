@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -22,6 +23,7 @@ const ColorLayer = props => {
 	const { onChange, disableClipPath, isHover, prefix, clientId } = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
+	const blockName = select('core/editor').getBlockName(clientId);
 
 	return (
 		<>
@@ -90,10 +92,14 @@ const ColorLayer = props => {
 						)]: paletteStatus,
 					});
 				}}
-				globalProps={{
-					target: `${isHover ? 'hover-' : ''}background-color-global`,
-					type: 'button',
-				}}
+				globalProps={
+					blockName === 'maxi-blocks/button-maxi' && {
+						target: `${
+							isHover ? 'hover-' : ''
+						}background-color-global`,
+						type: 'button',
+					}
+				}
 				showPalette
 				isHover={isHover}
 				clientId={clientId}

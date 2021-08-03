@@ -34,7 +34,7 @@ const getColumnAttributes = ({
 		[`column-size-${breakpoint}`]: column * proportion,
 		...(columnPosition.rowNumber !== 1 &&
 			!removeColumnGap && {
-				[`margin-top-${breakpoint}`]: 2.5,
+				[`margin-top-${breakpoint}`]: '2.5',
 				[`margin-unit-${breakpoint}`]: '%',
 			}),
 		...((columnPosition.rowNumber === 1 || removeColumnGap) && {

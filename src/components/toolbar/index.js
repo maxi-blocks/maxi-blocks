@@ -520,7 +520,7 @@ const MaxiToolbar = memo(
 										: 'inherit'
 								}
 							/>
-							<CopyPaste clientId={clientId} />
+							<CopyPaste clientId={clientId} blockName={name} />
 						</div>
 					</Popover>
 				)}

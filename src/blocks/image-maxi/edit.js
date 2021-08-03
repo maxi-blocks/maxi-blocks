@@ -380,7 +380,6 @@ class edit extends MaxiBlockComponent {
 														'Set your Image Maxi caption here…',
 														'maxi-blocks'
 													)}
-													keepPlaceholderOnFocus
 													__unstableEmbedURLOnPaste
 													__unstableAllowPrefixTransformations
 												>

@@ -67,12 +67,13 @@ const getBorderStyles = ({
 						obj,
 						isHover
 					);
+
 					if (
 						isHover &&
 						(isUndefined(borderStyle) || borderStyle === 'none')
 					) {
 						response[breakpoint].border = 'none';
-					}
+					} else response[breakpoint]['border-style'] = borderStyle;
 				} else if (!keyWords.some(key => newLabel.includes(key))) {
 					if (key.includes('color')) {
 						const paletteStatus = getLastBreakpointAttribute(

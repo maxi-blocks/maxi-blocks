@@ -23,7 +23,7 @@ const ColorLayer = props => {
 	const { onChange, disableClipPath, isHover, prefix, clientId } = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
-	const blockName = select('core/editor').getBlockName(clientId);
+	const blockName = select('core/block-editor').getBlockName(clientId);
 
 	return (
 		<>

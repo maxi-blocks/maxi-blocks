@@ -50,7 +50,7 @@ const BorderControl = props => {
 		clientId,
 	} = props;
 
-	const blockName = select('core/editor').getBlockName(clientId);
+	const blockName = select('core/block-editor').getBlockName(clientId);
 
 	const classes = classnames('maxi-border-control', className);
 

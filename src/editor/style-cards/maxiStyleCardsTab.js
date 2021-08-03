@@ -649,13 +649,16 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						firstLabel: __('Button', 'maxi-blocks'),
 						firstColorDefault: 1,
 						secondColor: 'background-color',
-						secondLabel: __('Button Background', 'maxi-bloks'),
+						secondLabel: __('Button Background', 'maxi-blocks'),
 						secondColorDefault: 4,
 						thirdColor: 'hover-background-color',
-						thirdLabel: __('Button Background Hover', 'maxi-bloks'),
+						thirdLabel: __(
+							'Button Background Hover',
+							'maxi-blocks'
+						),
 						thirdColorDefault: 6,
 						forthColor: 'hover-color',
-						forthLabel: __('Button Text Hover', 'maxi-bloks'),
+						forthLabel: __('Button Text Hover', 'maxi-blocks'),
 						forthColorDefault: 5,
 					}),
 					generateTab({

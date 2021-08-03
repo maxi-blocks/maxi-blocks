@@ -1,7 +1,7 @@
 import controls from './controls';
 
 const breakpointResizer = (size, breakpoints, xxlSize = 2000) => {
-	const editorWrapper = document.querySelector('.editor-styles-wrapper');
+	const editorWrapper = document.querySelector('.edit-post-visual-editor');
 	const winHeight = window.outerWidth;
 	const responsiveWidth =
 		(size === 'general' && 'none') ||

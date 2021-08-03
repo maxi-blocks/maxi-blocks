@@ -91,7 +91,7 @@ const ColorLayer = props => {
 					});
 				}}
 				globalProps={{
-					target: 'background-color-global',
+					target: `${isHover ? 'hover-' : ''}background-color-global`,
 					type: 'button',
 				}}
 				showPalette

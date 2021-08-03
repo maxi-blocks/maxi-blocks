@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
+import FancyRadioControl from '../../../fancy-radio-control';
 import AxisControl from '../../../axis-control';
 import { getGroupAttributes } from '../../../../extensions/styles';
 
@@ -20,7 +21,18 @@ import { toolbarPadding } from '../../../../icons';
  * PaddingMargin
  */
 const PaddingMargin = props => {
-	const { onChange, breakpoint } = props;
+	const {
+		blockName,
+		breakpoint,
+		disableMargin = false,
+		disablePadding = false,
+		isIconToolbar = false,
+		marginTarget = 'margin',
+		onChange,
+		paddingTarget = 'padding',
+	} = props;
+
+	if (blockName !== 'maxi-blocks/button-maxi' && !isIconToolbar) return null;
 
 	return (
 		<ToolbarPopover
@@ -29,21 +41,29 @@ const PaddingMargin = props => {
 			icon={toolbarPadding}
 		>
 			<div className='toolbar-item__padding-margin__popover'>
-				<AxisControl
-					{...getGroupAttributes(props, 'padding')}
-					label={__('Padding', 'maxi-blocks')}
-					onChange={obj => onChange(obj)}
-					breakpoint={breakpoint}
-					target='padding'
-				/>
-				<AxisControl
-					{...getGroupAttributes(props, 'margin')}
-					label={__('Margin', 'maxi-blocks')}
-					onChange={obj => onChange(obj)}
-					breakpoint={breakpoint}
-					target='margin'
-					optionType='string'
-				/>
+				{!disablePadding && (
+					<AxisControl
+						{...getGroupAttributes(
+							props,
+							isIconToolbar ? 'iconPadding' : 'padding'
+						)}
+						label={__('Padding', 'maxi-blocks')}
+						onChange={obj => onChange(obj)}
+						breakpoint={breakpoint}
+						target={paddingTarget}
+						disableAuto
+					/>
+				)}
+				{!disableMargin && (
+					<AxisControl
+						{...getGroupAttributes(props, 'margin')}
+						label={__('Margin', 'maxi-blocks')}
+						onChange={obj => onChange(obj)}
+						breakpoint={breakpoint}
+						target={marginTarget}
+						optionType='string'
+					/>
+				)}
 			</div>
 		</ToolbarPopover>
 	);

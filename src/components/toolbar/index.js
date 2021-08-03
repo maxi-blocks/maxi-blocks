@@ -504,6 +504,7 @@ const MaxiToolbar = memo(
 								{...getGroupAttributes(attributes, [
 									'margin',
 									'padding',
+									'iconPadding',
 								])}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}

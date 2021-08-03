@@ -184,7 +184,6 @@ const getIconObject = (props, target) => {
 		},
 		padding:
 			target === 'icon' &&
-			props['icon-custom-padding'] &&
 			getMarginPaddingStyles(
 				{
 					...getGroupAttributes(props, 'iconPadding'),

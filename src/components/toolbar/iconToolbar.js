@@ -19,7 +19,8 @@ import IconPosition from './components/icon-position';
 import IconSize from './components/icon-size';
 import IconColor from './components/icon-color';
 import IconBackground from './components/icon-background';
-import IconBorder from './components/icon-border';
+import Border from './components/border';
+import PaddingMargin from './components/padding-margin';
 
 /**
  * Styles
@@ -139,17 +140,30 @@ const IconToolbar = memo(
 									onChange={obj => processAttributes(obj)}
 									parentBlockStyle={parentBlockStyle}
 								/>
-								<IconBorder
+								<Border
 									blockName={name}
 									{...getGroupAttributes(attributes, [
 										'iconBorder',
 										'iconBorderWidth',
 										'iconBorderRadius',
 									])}
-									onChange={obj => processAttributes(obj)}
-									parentBlockStyle={parentBlockStyle}
-									clientId={clientId}
+									onChange={obj => setAttributes(obj)}
 									breakpoint={breakpoint}
+									clientId={clientId}
+									isIconToolbar
+									prefix='icon-'
+								/>
+								<PaddingMargin
+									blockName={name}
+									{...getGroupAttributes(
+										attributes,
+										'iconPadding'
+									)}
+									onChange={obj => setAttributes(obj)}
+									breakpoint={breakpoint}
+									disableMargin
+									paddingTarget='icon-padding'
+									isIconToolbar
 								/>
 							</div>
 						</Popover>

@@ -15,6 +15,14 @@ const padding = {
 		type: 'boolean',
 		default: false,
 	},
+	'padding-sync-horizontal-general': {
+		type: 'boolean',
+		default: false,
+	},
+	'padding-sync-vertical-general': {
+		type: 'boolean',
+		default: false,
+	},
 	'padding-unit-general': {
 		type: 'string',
 		default: 'px',

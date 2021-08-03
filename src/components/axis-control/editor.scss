@@ -106,13 +106,14 @@
 				button {
 					height: 26px !important;
 					display: flex;
+					padding: 0 5px !important;
 
 					&[aria-pressed='true'] {
 						background: #f2f2f2 !important;
 					}
 					svg {
-						width: 18px;
-						height: 18px;
+						width: 14px;
+						height: 14px;
 					}
 				}
 			}

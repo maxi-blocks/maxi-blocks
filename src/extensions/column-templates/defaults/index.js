@@ -110,8 +110,8 @@ const columnAttributesGenerator = (columns, isResponsive) => {
 					[`column-size-${responsive}`]: column * total,
 					...(!isResponsive && { 'column-size-m': 100 }),
 					...((columnsPositions[i].rowNumber > 1 && {
-						'margin-top-m': 1.5,
-						'margin-unit-m': 'em',
+						'margin-top-m': 2.5,
+						'margin-unit-m': '%',
 					}) ||
 						(isResponsive && {
 							'margin-top-m': '',
@@ -121,8 +121,8 @@ const columnAttributesGenerator = (columns, isResponsive) => {
 					[`column-size-${responsive}`]: column * 100,
 					...(!isResponsive && { 'column-size-m': 100 }),
 					...((columnsPositions[i].rowNumber > 1 && {
-						'margin-top-m': 1.5,
-						'margin-unit-m': 'em',
+						'margin-top-m': 2.5,
+						'margin-unit-m': '%',
 					}) ||
 						(isResponsive && {
 							'margin-top-m': '',
@@ -136,8 +136,8 @@ const columnAttributesGenerator = (columns, isResponsive) => {
 					[`column-size-${responsive}`]: 100,
 					...(!isResponsive && { 'column-size-m': 100 }),
 					...((columnsPositions[i].rowNumber > 1 && {
-						'margin-top-m': 1.5,
-						'margin-unit-m': 'em',
+						'margin-top-m': 2.5,
+						'margin-unit-m': '%',
 					}) ||
 						(isResponsive && {
 							'margin-top-m': '',
@@ -147,8 +147,8 @@ const columnAttributesGenerator = (columns, isResponsive) => {
 					[`column-size-${responsive}`]: 100,
 					...(!isResponsive && { 'column-size-m': 100 }),
 					...((columnsPositions[i].rowNumber > 1 && {
-						'margin-top-m': 1.5,
-						'margin-unit-m': 'em',
+						'margin-top-m': 2.5,
+						'margin-unit-m': '%',
 					}) ||
 						(isResponsive && {
 							'margin-top-m': '',

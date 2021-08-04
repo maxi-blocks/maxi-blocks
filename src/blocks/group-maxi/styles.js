@@ -111,14 +111,21 @@ const getStyles = props => {
 				blockStyle: props.parentBlockStyle,
 			}),
 			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-					'borderHover',
-					'borderRadiusHover',
-					'borderWidthHover',
-				]),
+				...getGroupAttributes(
+					props,
+					[
+						'background',
+						'backgroundColor',
+						'backgroundImage',
+						'backgroundVideo',
+						'backgroundGradient',
+						'backgroundSVG',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					],
+					true
+				),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),

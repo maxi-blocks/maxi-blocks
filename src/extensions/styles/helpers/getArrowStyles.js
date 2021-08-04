@@ -160,18 +160,19 @@ const getArrowStyles = props => {
 			},
 		},
 		[`.${target} .maxi-container-arrow .maxi-container-arrow--content:after`]:
-			{
-				background: {
-					...getArrowColorObject(
-						getGroupAttributes(props, [
-							'background',
-							'backgroundColor',
-							'backgroundGradient',
-						]),
-						blockStyle
-					),
+			props['background-active-media'] &&
+				props['background-active-media'] === 'color' && {
+					background: {
+						...getArrowColorObject(
+							getGroupAttributes(props, [
+								'background',
+								'backgroundColor',
+								'backgroundGradient',
+							]),
+							blockStyle
+						),
+					},
 				},
-			},
 		[`.${target} .maxi-container-arrow .maxi-container-arrow--content:before`]:
 			{
 				border: {
@@ -197,23 +198,24 @@ const getArrowStyles = props => {
 			},
 		},
 		[`.${target}:hover .maxi-container-arrow .maxi-container-arrow--content:after`]:
-			{
-				background: {
-					...getArrowColorObject(
-						getGroupAttributes(
-							props,
-							[
-								'background',
-								'backgroundColor',
-								'backgroundGradient',
-							],
+			props['background-active-media-hover'] &&
+				props['background-active-media-hover'] === 'color' && {
+					background: {
+						...getArrowColorObject(
+							getGroupAttributes(
+								props,
+								[
+									'background',
+									'backgroundColor',
+									'backgroundGradient',
+								],
+								true
+							),
+							blockStyle,
 							true
 						),
-						blockStyle,
-						true
-					),
+					},
 				},
-			},
 		[`.${target}:hover .maxi-container-arrow .maxi-container-arrow--content:before`]:
 			{
 				border: {

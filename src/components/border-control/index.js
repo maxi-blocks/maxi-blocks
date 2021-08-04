@@ -98,7 +98,8 @@ const BorderControl = props => {
 								icon={styleNone}
 							/>
 						),
-						onChange: () => onChangeDefault(borderNone(prefix)),
+						onChange: () =>
+							onChangeDefault(borderNone(prefix, isHover)),
 					},
 					{
 						activeItem: getIsActive(prefix) === 'solid',
@@ -209,7 +210,6 @@ const BorderControl = props => {
 					clientId={clientId}
 				/>
 			)}
-
 			{!disableAdvanced &&
 				borderStyleValue &&
 				borderStyleValue !== 'none' && (

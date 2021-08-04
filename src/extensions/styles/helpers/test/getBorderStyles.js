@@ -117,6 +117,7 @@ describe('getBorderStyles', () => {
 		});
 		expect(result).toMatchSnapshot();
 	});
+
 	it('Return a border styles object with changes on palette color', () => {
 		const object = {
 			'border-palette-color-status-general': true,
@@ -143,6 +144,7 @@ describe('getBorderStyles', () => {
 		});
 		expect(result).toMatchSnapshot();
 	});
+
 	it('Return a border styles object with changes on custom color', () => {
 		const object = {
 			'border-palette-color-status-general': true,
@@ -167,6 +169,36 @@ describe('getBorderStyles', () => {
 		const result = getBorderStyles({
 			obj: object,
 			parentBlockStyle: 'light',
+		});
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Return a border hover styles object with changes on custom color', () => {
+		const object = {
+			'border-palette-color-status-general': true,
+			'border-palette-color-general': 1,
+			'border-palette-color-general-hover': 5,
+			'border-style-general': 'solid',
+			'border-top-width-general': 1,
+			'border-right-width-general': 2,
+			'border-bottom-width-general': 3,
+			'border-left-width-general': 4,
+			'border-sync-width-general': true,
+			'border-unit-width-general': 'px',
+			'border-top-left-radius-general': 1,
+			'border-top-right-radius-general': 2,
+			'border-bottom-right-radius-general': 3,
+			'border-bottom-left-radius-general': 4,
+			'border-sync-radius-general': true,
+			'border-unit-radius-general': 'px',
+			'border-palette-color-status-l': false,
+			'border-color-l': 'rgb(255, 99, 71)',
+		};
+
+		const result = getBorderStyles({
+			obj: object,
+			parentBlockStyle: 'light',
+			isHover: true,
 		});
 		expect(result).toMatchSnapshot();
 	});

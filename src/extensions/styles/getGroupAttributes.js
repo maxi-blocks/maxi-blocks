@@ -21,7 +21,11 @@ const getGroupAttributes = (
 ) => {
 	if (!target) return null;
 
-	const response = {};
+	const response = {
+		...(isHover && {
+			...getGroupAttributes(attributes, target, false, prefix, cleaned),
+		}),
+	};
 
 	if (typeof target === 'string') {
 		const defaultAttributes =

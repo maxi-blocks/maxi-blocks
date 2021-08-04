@@ -25,6 +25,11 @@
 			box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
 			border-radius: 5px;
 
+			& > div:not(.toolbar-block-custom-label):first-child {
+				border-top-left-radius: 5px;
+				border-bottom-left-radius: 5px;
+				padding-left: 2px;
+			}
 			.toolbar-block-custom-label {
 				font-size: 13px;
 				font-weight: bold;
@@ -38,6 +43,11 @@
 				top: -25px;
 				left: 0;
 
+				& + .toolbar-item {
+					border-top-left-radius: 5px;
+					border-bottom-left-radius: 5px;
+					padding-left: 2px;
+				}
 				&__block-style {
 					text-transform: capitalize;
 				}
@@ -77,13 +87,12 @@
 						content: none;
 					}
 				}
-				&:nth-child(2) {
-					border-top-left-radius: 5px;
-					border-bottom-left-radius: 5px;
-					padding-left: 2px;
-				}
 			}
 			.toolbar-item {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
 				&__link {
 					&--active {
 						.toolbar-item__icon {

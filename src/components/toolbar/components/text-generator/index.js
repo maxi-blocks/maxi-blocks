@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import React, { useState } from 'react';
 
 /**
@@ -17,13 +18,31 @@ import { LoremIpsum } from 'react-lorem-ipsum';
 
 import { toolbarLoremIpsum } from '../../../../icons';
 
-const addText = props => {
-	return <div className='lorem_text'>{props}</div>;
-};
-
 const TextGenerator = props => {
+	const onChange = props;
 	// const [length, setLength] = useState(0);
 	const [averageSentencesLength, setAverageSentencesLength] = useState(1);
+
+	const addText = props => {
+		// {
+		// 	LoremIpsum({
+		// 		p: 1,
+		// 		avgSentencesPerParagraph: averageSentencesLength,
+		// 	}).map(text => (
+		// 		<div className='text' key={text}>
+		// 			{text}
+		// 		</div>
+		// 	));
+		// }
+		// const getContent = content => {
+		// 	return content;
+		// };
+
+		onChange({
+			// clientId: clientId
+			content: getContent('content'),
+		});
+	};
 
 	return (
 		<ToolbarPopover
@@ -32,13 +51,16 @@ const TextGenerator = props => {
 			icon={toolbarLoremIpsum}
 		>
 			<div className='toolbar-item__text-generator-blocks__popover'>
-				<LoremIpsum
+				{/* <LoremIpsum
 					p={1}
 					avgWordsPerSentence={0}
 					avgSentencesPerParagraph={averageSentencesLength}
 					random='false'
-				/>
-				{/* {loremIpsum({ avgSentencesPerParagraph={averageSentencesLength} }).map(text => (
+				/> */}
+				{/* {LoremIpsum({
+					p: 1,
+					avgSentencesPerParagraph: averageSentencesLength,
+				}).map(text => (
 					<div className='text' key={text}>
 						{text}
 					</div>

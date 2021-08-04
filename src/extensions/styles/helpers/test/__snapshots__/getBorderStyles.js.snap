@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`getBorderStyles Return a border hover styles object with changes on custom color 1`] = `
+Object {
+  "general": Object {
+    "border-color": "var(--maxi-light-color-5);",
+  },
+  "l": Object {},
+  "m": Object {},
+  "s": Object {},
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;
+
 exports[`getBorderStyles Return a border styles object with changes on custom color 1`] = `
 Object {
   "general": Object {

@@ -28,6 +28,10 @@ const selectors = {
 		if (state) return state.copiedStyles;
 		return false;
 	},
+	receiveCopiedBlocks(state) {
+		if (state) return state.copiedBlocks;
+		return false;
+	},
 };
 
 export default selectors;

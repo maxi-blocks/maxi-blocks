@@ -55,9 +55,8 @@ const actions = {
 		};
 	},
 	setMaxiDeviceType(deviceType, width) {
-		const {
-			__experimentalSetPreviewDeviceType: setPreviewDeviceType,
-		} = dispatch('core/edit-post');
+		const { __experimentalSetPreviewDeviceType: setPreviewDeviceType } =
+			dispatch('core/edit-post');
 
 		const gutenbergDeviceType =
 			(deviceType === 'general' && 'Desktop') ||
@@ -82,6 +81,12 @@ const actions = {
 		return {
 			type: 'COPY_STYLES',
 			copiedStyles,
+		};
+	},
+	copyNestedBlocks(copiedBlocks) {
+		return {
+			type: 'COPY_BLOCKS',
+			copiedBlocks,
 		};
 	},
 };

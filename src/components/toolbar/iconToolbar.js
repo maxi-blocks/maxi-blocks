@@ -36,12 +36,9 @@ const IconToolbar = memo(
 		const { attributes, clientId, setAttributes, name, isSelected } = props;
 		const { uniqueID, parentBlockStyle } = attributes;
 
-		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
+		const { editorVersion, breakpoint } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
 				select('maxiBlocks');
-			const { receiveMaxiSelectedStyleCard } = select(
-				'maxiBlocks/style-cards'
-			);
 
 			const maxiSettings = receiveMaxiSettings();
 			const version = !isEmpty(maxiSettings.editor)
@@ -50,12 +47,9 @@ const IconToolbar = memo(
 
 			const breakpoint = receiveMaxiDeviceType();
 
-			const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
-
 			return {
 				editorVersion: version,
 				breakpoint,
-				styleCard,
 			};
 		});
 

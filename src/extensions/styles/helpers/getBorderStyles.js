@@ -23,6 +23,7 @@ const getBorderStyles = ({
 	isHover = false,
 	prefix = '',
 	parentBlockStyle,
+	isButton = false,
 }) => {
 	const keyWords = [
 		'top-left',
@@ -93,7 +94,9 @@ const getBorderStyles = ({
 						if (paletteStatus && paletteColor)
 							response[breakpoint][
 								'border-color'
-							] = `var(--maxi-${parentBlockStyle}-button-border-color${
+							] = `var(--maxi-${parentBlockStyle}-${
+								isButton ? 'button-' : ''
+							}border-color${
 								isHover ? '-hover' : ''
 							}, var(--maxi-${parentBlockStyle}-color-${paletteColor}))`;
 						else

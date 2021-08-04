@@ -3,7 +3,7 @@
 exports[`getBorderStyles Return a border hover styles object with changes on custom color 1`] = `
 Object {
   "general": Object {
-    "border-color": "var(--maxi-light-color-5);",
+    "border-color": "var(--maxi-light-border-color-hover, var(--maxi-light-color-5))",
   },
   "l": Object {},
   "m": Object {},

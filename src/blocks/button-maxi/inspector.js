@@ -399,6 +399,7 @@ const Inspector = memo(
 																			clientId={
 																				clientId
 																			}
+																			isButton
 																		/>
 																	</>
 																),
@@ -471,6 +472,7 @@ const Inspector = memo(
 																				clientId={
 																					clientId
 																				}
+																				isButton
 																			/>
 																		)}
 																	</>

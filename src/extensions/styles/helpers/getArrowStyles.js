@@ -33,22 +33,22 @@ export const getArrowBorderObject = (
 		response.general.background =
 			props[`border-color-general${isHover ? '-hover' : ''}`];
 
-	if (props['border-bottom-width-general']) {
+	if (props[`border-bottom-width-general${isHover ? '-hover' : ''}`]) {
 		response.general.top = `calc(${
-			props['border-bottom-width-general'] / 2
-		}${props['border-unit-width-general']})`;
+			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] / 2
+		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 
 		response.general.left = `calc(${
-			props['border-bottom-width-general'] / 2
-		}${props['border-unit-width-general']})`;
+			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] / 2
+		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 
 		response.general.width = `calc(50% + ${
-			props['border-bottom-width-general'] * 2
-		}${props['border-unit-width-general']})`;
+			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] * 2
+		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 
 		response.general.height = `calc(50% + ${
-			props['border-bottom-width-general'] * 2
-		}${props['border-unit-width-general']})`;
+			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] * 2
+		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 	}
 
 	return response;

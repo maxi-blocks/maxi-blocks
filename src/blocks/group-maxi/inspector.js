@@ -244,6 +244,9 @@ const Inspector = props => {
 																			{...getGroupAttributes(
 																				attributes,
 																				[
+																					'background',
+																					'backgroundColor',
+																					'backgroundGradient',
 																					'backgroundHover',
 																					'backgroundColorHover',
 																					'backgroundGradientHover',
@@ -354,6 +357,9 @@ const Inspector = props => {
 																			{...getGroupAttributes(
 																				attributes,
 																				[
+																					'border',
+																					'borderWidth',
+																					'borderRadius',
 																					'borderHover',
 																					'borderWidthHover',
 																					'borderRadiusHover',
@@ -462,7 +468,10 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				'boxShadowHover'
+																				[
+																					'boxShadow',
+																					'boxShadowHover',
+																				]
 																			)}
 																			onChange={obj =>
 																				setAttributes(

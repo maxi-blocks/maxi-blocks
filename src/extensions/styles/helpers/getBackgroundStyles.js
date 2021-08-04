@@ -575,7 +575,8 @@ const getBackgroundStyles = ({
 	if (isHover && !props[`${prefix}background-status-hover`]) return response;
 
 	switch (
-		props[`${prefix}background-active-media${isHover ? '-hover' : ''}`]
+		props[`${prefix}background-active-media${isHover ? '-hover' : ''}`] ||
+		props[`${prefix}background-active-media`]
 	) {
 		case 'layers':
 			if (

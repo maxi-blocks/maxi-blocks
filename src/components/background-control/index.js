@@ -56,12 +56,15 @@ const BackgroundControl = props => {
 	} = props;
 
 	const backgroundActiveMedia =
-		props[getAttributeKey('background-active-media', isHover, prefix)];
+		props[getAttributeKey('background-active-media', isHover, prefix)] ||
+		props[getAttributeKey('background-active-media', false, prefix)];
 	const layersOptions =
-		props[getAttributeKey('background-layers', isHover, prefix)] || [];
+		props[getAttributeKey('background-layers', isHover, prefix)] ||
+		props[getAttributeKey('background-layers', false, prefix)] ||
+		[];
 	const layersStatus =
-		props[getAttributeKey('background-layers-status', isHover, prefix)];
-
+		props[getAttributeKey('background-layers-status', isHover, prefix)] ||
+		props[getAttributeKey('background-layers-status', false, prefix)];
 	const classes = classnames('maxi-background-control', className);
 
 	const getOptions = () => {

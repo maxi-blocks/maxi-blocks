@@ -244,9 +244,6 @@ const Inspector = props => {
 																			{...getGroupAttributes(
 																				attributes,
 																				[
-																					'background',
-																					'backgroundColor',
-																					'backgroundGradient',
 																					'backgroundHover',
 																					'backgroundColorHover',
 																					'backgroundGradientHover',

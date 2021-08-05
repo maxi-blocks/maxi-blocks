@@ -62,7 +62,7 @@ const getBorderStyles = ({
 				const newLabel = newKey.replace(replacer, '');
 				if (key.includes('style')) {
 					const borderStyle = getLastBreakpointAttribute(
-						'border-style',
+						`${prefix}border-style`,
 						breakpoint,
 						obj,
 						isHover

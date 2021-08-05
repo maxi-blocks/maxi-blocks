@@ -20,17 +20,21 @@ export const getArrowBorderObject = (
 		general: {},
 	};
 
-	if (
-		props[`border-palette-color-status-general${isHover ? '-hover' : ''}`]
-	) {
-		const paletteColor =
-			props[`border-palette-color-general${isHover ? '-hover' : ''}`];
+	const paletteStatus = getLastBreakpointAttribute(
+		'border-palette-color-status',
+		'general',
+		props,
+		isHover
+	);
+	const paletteColor =
+		isHover && props['border-status-hover']
+			? props[`border-palette-color-general${isHover ? '-hover' : ''}`]
+			: props['border-palette-color-general'];
 
-		response.general.background = `var(--maxi-${parentBlockStyle}-color-${paletteColor})`;
-	} else if (
-		!isEmpty(props[`border-color-general${isHover ? '-hover' : ''}`])
-	)
-		response.general.background =
+	if (paletteStatus && paletteColor)
+		response.general.background = `var(--maxi-${parentBlockStyle}-color-${paletteColor});`;
+	else
+		response.general['border-color'] =
 			props[`border-color-general${isHover ? '-hover' : ''}`];
 
 	if (props[`border-bottom-width-general${isHover ? '-hover' : ''}`]) {
@@ -50,6 +54,9 @@ export const getArrowBorderObject = (
 			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] * 2
 		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 	}
+
+	if (isHover && props['border-status-hover']) return response;
+	if (!isHover) return response;
 
 	return response;
 };
@@ -140,96 +147,66 @@ export const getArrowColorObject = (props, blockStyle, isHover = false) => {
 		response.general['background-color'] =
 			props[`background-color${isHover ? '-hover' : ''}`];
 
-	return response;
+	if (isHover && props['background-status-hover']) return response;
+	if (!isHover) return response;
 };
 
 const getArrowStyles = props => {
-	const { target = '', blockStyle } = props;
+	const { target = '', blockStyle, isHover = false } = props;
 
 	const response = {
-		[`.${target} .maxi-container-arrow .maxi-container-arrow--content`]: {
+		[`${target} .maxi-container-arrow .maxi-container-arrow--content`]: {
 			arrow: { ...getArrowObject(getGroupAttributes(props, 'arrow')) },
 		},
-		[`.${target} .maxi-container-arrow`]: {
+		[`${target}${isHover ? ':hover' : ''} .maxi-container-arrow`]: {
 			shadow: {
 				...getBoxShadowStyles({
-					obj: getGroupAttributes(props, 'boxShadow'),
+					obj: getGroupAttributes(props, 'boxShadow', isHover),
+					isHover,
 					dropShadow: true,
 					parentBlockStyle: blockStyle,
 				}),
 			},
 		},
-		[`.${target} .maxi-container-arrow .maxi-container-arrow--content:after`]:
-			props['background-active-media'] &&
-				props['background-active-media'] === 'color' && {
-					background: {
-						...getArrowColorObject(
-							getGroupAttributes(props, [
-								'background',
-								'backgroundColor',
-								'backgroundGradient',
-							]),
-							blockStyle
-						),
-					},
-				},
-		[`.${target} .maxi-container-arrow .maxi-container-arrow--content:before`]:
-			{
-				border: {
-					...getArrowBorderObject(
-						getGroupAttributes(props, [
-							'border',
-							'borderWidth',
-							'borderRadius',
-						]),
-						blockStyle
-					),
-				},
-			},
-
-		[`.${target}:hover .maxi-container-arrow`]: {
-			shadow: {
-				...getBoxShadowStyles({
-					obj: getGroupAttributes(props, 'boxShadow', true),
-					dropShadow: true,
-					parentBlockStyle: blockStyle,
-					isHover: true,
-				}),
-			},
-		},
-		[`.${target}:hover .maxi-container-arrow .maxi-container-arrow--content:after`]:
-			props['background-active-media-hover'] &&
-				props['background-active-media-hover'] === 'color' && {
-					background: {
-						...getArrowColorObject(
-							getGroupAttributes(
-								props,
-								[
-									'background',
-									'backgroundColor',
-									'backgroundGradient',
-								],
-								true
+		...(props[`background-active-media${isHover ? '-hover' : ''}`] &&
+			props[`background-active-media${isHover ? '-hover' : ''}`] ===
+				'color' && {
+				[`${target}${
+					isHover ? ':hover' : ''
+				} .maxi-container-arrow .maxi-container-arrow--content:after`]:
+					{
+						background: {
+							...getArrowColorObject(
+								getGroupAttributes(
+									props,
+									[
+										'background',
+										'backgroundColor',
+										'backgroundGradient',
+									],
+									isHover
+								),
+								blockStyle,
+								isHover
 							),
-							blockStyle,
-							true
-						),
+						},
 					},
-				},
-		[`.${target}:hover .maxi-container-arrow .maxi-container-arrow--content:before`]:
-			{
-				border: {
-					...getArrowBorderObject(
-						getGroupAttributes(
-							props,
-							['border', 'borderWidth', 'borderRadius'],
-							true
-						),
-						blockStyle,
-						true
+			}),
+		[`${target}${
+			isHover ? ':hover' : ''
+		} .maxi-container-arrow .maxi-container-arrow--content:before`]: {
+			border: {
+				...getArrowBorderObject(
+					getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						isHover
 					),
-				},
+					blockStyle,
+					isHover
+				),
 			},
+		},
 	};
 
 	return response;

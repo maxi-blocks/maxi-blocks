@@ -2,10 +2,10 @@
 
 exports[`getArrowStyles Get a correct arrow styles 1`] = `
 Object {
-  ". .maxi-container-arrow": Object {
+  " .maxi-container-arrow": Object {
     "shadow": Object {},
   },
-  ". .maxi-container-arrow .maxi-container-arrow--content": Object {
+  " .maxi-container-arrow .maxi-container-arrow--content": Object {
     "arrow": Object {
       "general": Object {
         "display": "block",
@@ -58,7 +58,7 @@ Object {
       },
     },
   },
-  ". .maxi-container-arrow .maxi-container-arrow--content:after": Object {
+  " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
       "general": Object {
         "background-color": "rgb(255, 99, 71)",
@@ -66,28 +66,11 @@ Object {
       "label": "Arrow Color",
     },
   },
-  ". .maxi-container-arrow .maxi-container-arrow--content:before": Object {
+  " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
     "border": Object {
       "general": Object {
-        "background": "rgb(255, 99, 71)",
+        "border-color": "rgb(255, 99, 71)",
       },
-      "label": "Arrow Border",
-    },
-  },
-  ".:hover .maxi-container-arrow": Object {
-    "shadow": Object {},
-  },
-  ".:hover .maxi-container-arrow .maxi-container-arrow--content:after": Object {
-    "background": Object {
-      "general": Object {
-        "background-color": undefined,
-      },
-      "label": "Arrow Color",
-    },
-  },
-  ".:hover .maxi-container-arrow .maxi-container-arrow--content:before": Object {
-    "border": Object {
-      "general": Object {},
       "label": "Arrow Border",
     },
   },

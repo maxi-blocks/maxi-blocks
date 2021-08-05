@@ -19,12 +19,9 @@ import { LoremIpsum } from 'react-lorem-ipsum';
 import './editor.scss';
 import { toolbarLoremIpsum } from '../../../../icons';
 
-let placeholderText = 1;
-
 const TextGenerator = props => {
 	const { blockName, onChange, isCaptionToolbar = false } = props;
-	const [averageSentencesLength, setAverageSentencesLength] =
-		useState(placeholderText);
+	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
@@ -48,19 +45,18 @@ const TextGenerator = props => {
 				<form
 					onSubmit={e => {
 						e.preventDefault();
-						placeholderText = averageSentencesLength;
 						addText(averageSentencesLength);
 					}}
 				>
 					<TextControl
-						label={__('Average Sentences', 'maxi-blocks')}
+						label={__('Sentences', 'maxi-blocks')}
 						value={averageSentencesLength}
-						onChange={setAverageSentencesLength}
+						onChange={val => setAverageSentencesLength(val)}
 						type='number'
 						min='1'
 					/>
 					<Button type='submit'>
-						{__('Add Text', 'maxi-blocks')}
+						{__('Replace', 'maxi-blocks')}
 					</Button>
 				</form>
 			</div>

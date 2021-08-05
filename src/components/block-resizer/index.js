@@ -41,6 +41,7 @@ const BlockResizer = forwardRef((props, ref) => {
 	};
 
 	const handleRef = newRef => {
+		// console.log(newRef);
 		if (newRef) {
 			if (resizableObject) resizableObject.current = newRef;
 			if (ref) ref.current = newRef.resizable;

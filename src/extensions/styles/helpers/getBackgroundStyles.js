@@ -55,15 +55,17 @@ export const getColorBackgroundObject = ({
 	}
 
 	if (isIconInherit) {
-		response.general['background-color'] = props[
-			`background-palette-color-status${isHover ? '-hover' : ''}`
-		]
-			? `var(--maxi-${blockStyle}-button-background-color${
-					isHover ? '-hover' : ''
-			  }, var(--maxi-${blockStyle}-color-${
-					props[`background-palette-color${isHover ? '-hover' : ''}`]
-			  }))`
-			: props[`${prefix}background-color${isHover ? '-hover' : ''}`];
+		response.general['background-color'] =
+			props['background-active-media'] !== '' &&
+			props[`background-palette-color-status${isHover ? '-hover' : ''}`]
+				? `var(--maxi-${blockStyle}-button-background-color${
+						isHover ? '-hover' : ''
+				  }, var(--maxi-${blockStyle}-color-${
+						props[
+							`background-palette-color${isHover ? '-hover' : ''}`
+						]
+				  }))`
+				: props[`${prefix}background-color${isHover ? '-hover' : ''}`];
 	}
 
 	if (

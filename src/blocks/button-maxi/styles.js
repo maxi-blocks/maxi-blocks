@@ -174,6 +174,7 @@ const getIconObject = (props, target) => {
 			...getColorBackgroundObject({
 				...getGroupAttributes(props, [
 					'iconBackgroundColor',
+					'background',
 					'backgroundColor',
 				]),
 				prefix: 'icon-',

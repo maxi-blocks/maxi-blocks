@@ -99,8 +99,6 @@ class edit extends MaxiBlockComponent {
 			...(position && { position }),
 		};
 
-		console.log(this.blockRef);
-
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
 			<Toolbar

@@ -32,6 +32,7 @@ const ColorPaletteControl = props => {
 		clientId,
 		className,
 		globalStatus,
+		isHover,
 	} = props;
 
 	const paletteClasses = classnames(
@@ -45,6 +46,9 @@ const ColorPaletteControl = props => {
 		)}`,
 		className
 	);
+
+	console.log(`isHover ${isHover}`);
+	console.log(`status ${status}`);
 
 	return (
 		<div className={classes}>

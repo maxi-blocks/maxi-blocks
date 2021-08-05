@@ -208,7 +208,14 @@ const MaxiToolbar = memo(
 								</span>
 							</div>
 							<Mover clientId={clientId} blockName={name} />
-							<TextGenerator clientId={clientId} />
+							<TextGenerator
+								{...getGroupAttributes(
+									attributes,
+									'typography'
+								)}
+								blockName={name}
+								onChange={obj => setAttributes(obj)}
+							/>
 							<ReusableBlocks clientId={clientId} />
 							<ColumnMover clientId={clientId} blockName={name} />
 							<DividerColor

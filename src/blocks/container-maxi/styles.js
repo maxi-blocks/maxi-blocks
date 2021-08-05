@@ -114,6 +114,7 @@ const getContainerObject = props => {
 
 const getStyles = props => {
 	const { uniqueID } = props;
+
 	const response = {
 		[uniqueID]: {
 			'': getNormalObject(props),

@@ -1,5 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`getArrowStyles Get a correct arrow hover styles 1`] = `
+Object {
+  ":hover .maxi-container-arrow": Object {
+    "shadow": Object {
+      "general": Object {
+        "filter": "drop-shadow(5px 0px 0px var(--maxi-light-color-1))",
+      },
+    },
+  },
+  ":hover .maxi-container-arrow .maxi-container-arrow--content:after": Object {
+    "background": Object {
+      "general": Object {
+        "background-color": "var(--maxi-light-color-6)",
+      },
+      "label": "Arrow Color",
+    },
+  },
+  ":hover .maxi-container-arrow .maxi-container-arrow--content:before": Object {
+    "border": Object {
+      "general": Object {
+        "background": "var(--maxi-light-color-2);",
+      },
+      "label": "Arrow Border",
+    },
+  },
+}
+`;
+
 exports[`getArrowStyles Get a correct arrow styles 1`] = `
 Object {
   " .maxi-container-arrow": Object {

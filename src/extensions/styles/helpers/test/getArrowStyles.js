@@ -38,4 +38,30 @@ describe('getArrowStyles', () => {
 		const result = getArrowStyles(object);
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Get a correct arrow hover styles', () => {
+		const object = {
+			target: '',
+			isHover: true,
+			blockStyle: 'light',
+			'box-shadow-blur-general-hover': 0,
+			'box-shadow-horizontal-general-hover': 5,
+			'box-shadow-palette-color-general-hover': 1,
+			'box-shadow-palette-color-general-hover-hover': 6,
+			'box-shadow-palette-color-status-general-hover': true,
+			'box-shadow-palette-color-status-general-hover-hover': true,
+			'box-shadow-spread-general-hover': 0,
+			'box-shadow-status-hover-hover': true,
+			'border-palette-color-general-hover': 2,
+			'border-palette-color-status-general-hover': true,
+			'border-status-hover': true,
+			'background-status-hover': true,
+			'background-active-media-hover': 'color',
+			'background-palette-color-status-hover': true,
+			'background-palette-color-hover': 6,
+		};
+
+		const result = getArrowStyles(object);
+		expect(result).toMatchSnapshot();
+	});
 });

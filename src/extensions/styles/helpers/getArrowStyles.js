@@ -8,7 +8,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 export const getArrowBorderObject = (
 	props,
@@ -155,9 +155,14 @@ const getArrowStyles = props => {
 	const { target = '', blockStyle, isHover = false } = props;
 
 	const response = {
-		[`${target} .maxi-container-arrow .maxi-container-arrow--content`]: {
-			arrow: { ...getArrowObject(getGroupAttributes(props, 'arrow')) },
-		},
+		...(!isHover && {
+			[`${target} .maxi-container-arrow .maxi-container-arrow--content`]:
+				{
+					arrow: {
+						...getArrowObject(getGroupAttributes(props, 'arrow')),
+					},
+				},
+		}),
 		[`${target}${isHover ? ':hover' : ''} .maxi-container-arrow`]: {
 			shadow: {
 				...getBoxShadowStyles({

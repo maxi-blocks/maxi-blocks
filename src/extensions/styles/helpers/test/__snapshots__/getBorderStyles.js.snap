@@ -3,7 +3,7 @@
 exports[`getBorderStyles Return a border hover styles object with changes on custom color 1`] = `
 Object {
   "general": Object {
-    "border-color": "var(--maxi-light-color-5);",
+    "border-color": "var(--maxi-light-color-5)",
   },
   "l": Object {},
   "m": Object {},
@@ -20,7 +20,7 @@ Object {
     "border-bottom-left-radius": "4px",
     "border-bottom-right-radius": "3px",
     "border-bottom-width": "3px",
-    "border-color": "var(--maxi-light-color-1);",
+    "border-color": "var(--maxi-light-color-1)",
     "border-left-width": "4px",
     "border-right-width": "2px",
     "border-style": "solid",
@@ -45,7 +45,7 @@ Object {
     "border-bottom-left-radius": "4px",
     "border-bottom-right-radius": "3px",
     "border-bottom-width": "3px",
-    "border-color": "var(--maxi-light-color-1);",
+    "border-color": "var(--maxi-light-color-1)",
     "border-left-width": "4px",
     "border-right-width": "2px",
     "border-style": "solid",
@@ -54,7 +54,7 @@ Object {
     "border-top-width": "1px",
   },
   "l": Object {
-    "border-color": "var(--maxi-light-color-1);",
+    "border-color": "var(--maxi-light-color-1)",
   },
   "m": Object {},
   "s": Object {},

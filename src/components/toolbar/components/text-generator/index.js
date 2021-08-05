@@ -22,17 +22,26 @@ import { toolbarLoremIpsum } from '../../../../icons';
 const TextGenerator = props => {
 	const { blockName, onChange, isCaptionToolbar = false } = props;
 	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
+	const [averageWordsLength, setAverageWordsLength] = useState(15);
 
 	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
-	const addText = sentencesPerParagraph => {
+	const addText = (sentencesPerParagraph, wordsPerSentence) => {
 		const generatedText = LoremIpsum({
 			p: 1,
-			avgWordsPerSentence: 8,
+			avgWordsPerSentence: wordsPerSentence,
 			avgSentencesPerParagraph: sentencesPerParagraph,
 		}).map(text => text);
 
 		onChange({ isList: false, content: generatedText[0].props.children });
+	};
+
+	const replaceContent = () => {
+		addText(averageSentencesLength, averageWordsLength);
+	};
+
+	const addContent = () => {
+		addText(averageSentencesLength, averageWordsLength);
 	};
 
 	return (
@@ -43,11 +52,18 @@ const TextGenerator = props => {
 		>
 			<div className='toolbar-item__text-generator-blocks__popover'>
 				<form
-					onSubmit={e => {
-						e.preventDefault();
-						addText(averageSentencesLength);
-					}}
+				// onSubmit={e => {
+				// 	e.preventDefault();
+				// 	addText(averageSentencesLength, averageWordsLength);
+				// }}
 				>
+					<TextControl
+						label={__('Words per a sentence', 'maxi-blocks')}
+						value={averageWordsLength}
+						onChange={val => setAverageWordsLength(val)}
+						type='number'
+						min='1'
+					/>
 					<TextControl
 						label={__('Sentences', 'maxi-blocks')}
 						value={averageSentencesLength}
@@ -55,8 +71,11 @@ const TextGenerator = props => {
 						type='number'
 						min='1'
 					/>
-					<Button type='submit'>
+					<Button type='button' onClick={replaceContent}>
 						{__('Replace', 'maxi-blocks')}
+					</Button>
+					<Button type='button' onClick={addContent}>
+						{__('Add', 'maxi-blocks')}
 					</Button>
 				</form>
 			</div>

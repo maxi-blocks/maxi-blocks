@@ -38,7 +38,8 @@ import { moveRight, toolbarSizing } from '../../icons';
  * Component
  */
 const LayerCard = props => {
-	const { onChange, onOpen, isOpen, onRemove, layerId, clientId } = props;
+	const { onChange, onOpen, isOpen, onRemove, layerId, clientId, isButton } =
+		props;
 	const layer = cloneDeep(props.layer);
 	const { type } = layer;
 
@@ -144,6 +145,7 @@ const LayerCard = props => {
 							}}
 							onChange={obj => onChange({ ...layer, ...obj })}
 							type='layer'
+							isButton={isButton}
 						/>
 					)) ||
 						(type === 'image' && (
@@ -199,6 +201,7 @@ const LayerCard = props => {
 
 const BackgroundLayersControl = ({
 	isHover = false,
+	isButton = false,
 	prefix = '',
 	onChange,
 	layersStatus,
@@ -339,6 +342,7 @@ const BackgroundLayersControl = ({
 									<LayerCard
 										key={`maxi-background-layers__${layer.id}`}
 										layerId={layer.id}
+										isButton={isButton}
 										clientId={clientId}
 										layer={layer}
 										onChange={layer => {

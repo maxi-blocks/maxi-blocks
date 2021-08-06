@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 
 import { __ } from '@wordpress/i18n';
 import ToolbarPopover from '../toolbar-popover';
+import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -20,6 +21,7 @@ import { withFormatValue } from '../../../../extensions/text/formats';
 
 import './editor.scss';
 import { toolbarLoremIpsum } from '../../../../icons';
+import { insert } from '@wordpress/rich-text';
 
 const TextGenerator = withFormatValue(props => {
 	const {
@@ -27,6 +29,7 @@ const TextGenerator = withFormatValue(props => {
 		onChange,
 		formatValue,
 		isCaptionToolbar = false,
+		clientId,
 	} = props;
 	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
 	const [averageWordsLength, setAverageWordsLength] = useState(15);
@@ -45,7 +48,24 @@ const TextGenerator = withFormatValue(props => {
 
 		const newContent = `${formatValue.text} ${generatedText[0].props.children}`;
 
-		console.log(formatValue);
+		const newFormatsArray = [];
+		const newReplacementsArray = [];
+		newFormatsArray.length = newContent.length;
+		newReplacementsArray.length = newContent.length;
+
+		const newFormatValue = insert(formatValue, {
+			formats: newFormatsArray,
+			replacements: newReplacementsArray,
+			text: newContent,
+		});
+
+		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
+		setTimeout(() => {
+			dispatch('maxiBlocks/text').sendFormatValue(
+				newFormatValue,
+				clientId
+			);
+		}, 150);
 
 		onChange({ isList: false, content: newContent });
 	};

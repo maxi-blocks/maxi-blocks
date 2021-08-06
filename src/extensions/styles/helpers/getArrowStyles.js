@@ -55,9 +55,6 @@ export const getArrowBorderObject = (
 		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 	}
 
-	if (isHover && props['border-status-hover']) return response;
-	if (!isHover) return response;
-
 	return response;
 };
 
@@ -134,9 +131,9 @@ export const getArrowColorObject = (props, blockStyle, isHover = false) => {
 	) {
 		response.general.background =
 			props[`background-gradient${isHover ? '-hover' : ''}`];
-	} else if (
-		props[`background-palette-color-status${isHover ? '-hover' : ''}`]
-	) {
+	}
+
+	if (props[`background-palette-color-status${isHover ? '-hover' : ''}`]) {
 		const paletteColor =
 			props[`background-palette-color${isHover ? '-hover' : ''}`];
 
@@ -147,8 +144,7 @@ export const getArrowColorObject = (props, blockStyle, isHover = false) => {
 		response.general['background-color'] =
 			props[`background-color${isHover ? '-hover' : ''}`];
 
-	if (isHover && props['background-status-hover']) return response;
-	if (!isHover) return response;
+	return response;
 };
 
 const getArrowStyles = props => {
@@ -163,40 +159,61 @@ const getArrowStyles = props => {
 					},
 				},
 		}),
-		[`${target}${isHover ? ':hover' : ''} .maxi-container-arrow`]: {
+		[`${target} .maxi-container-arrow`]: {
 			shadow: {
 				...getBoxShadowStyles({
-					obj: getGroupAttributes(props, 'boxShadow', isHover),
-					isHover,
+					obj: getGroupAttributes(props, 'boxShadow'),
 					dropShadow: true,
 					parentBlockStyle: blockStyle,
 				}),
 			},
 		},
-		...(props[`background-active-media${isHover ? '-hover' : ''}`] &&
-			props[`background-active-media${isHover ? '-hover' : ''}`] ===
-				'color' && {
-				[`${target}${
-					isHover ? ':hover' : ''
-				} .maxi-container-arrow .maxi-container-arrow--content:after`]:
-					{
-						background: {
-							...getArrowColorObject(
-								getGroupAttributes(
-									props,
-									[
-										'background',
-										'backgroundColor',
-										'backgroundGradient',
-									],
-									isHover
-								),
-								blockStyle,
-								isHover
-							),
-						},
-					},
-			}),
+		...(props['box-shadow-status-hover'] && {
+			[`${target}${isHover ? ':hover' : ''} .maxi-container-arrow`]: {
+				shadow: {
+					...getBoxShadowStyles({
+						obj: getGroupAttributes(props, 'boxShadow', isHover),
+						isHover,
+						dropShadow: true,
+						parentBlockStyle: blockStyle,
+					}),
+				},
+			},
+		}),
+		[`${target} .maxi-container-arrow .maxi-container-arrow--content:after`]:
+			{
+				background: {
+					...getArrowColorObject(
+						getGroupAttributes(props, [
+							'background',
+							'backgroundColor',
+							'backgroundGradient',
+						]),
+						blockStyle
+					),
+				},
+			},
+		...(props['background-status-hover'] && {
+			[`${target}${
+				isHover ? ':hover' : ''
+			} .maxi-container-arrow .maxi-container-arrow--content:after`]: {
+				background: {
+					...getArrowColorObject(
+						getGroupAttributes(
+							props,
+							[
+								'background',
+								'backgroundColor',
+								'backgroundGradient',
+							],
+							isHover
+						),
+						blockStyle,
+						isHover
+					),
+				},
+			},
+		}),
 		[`${target}${
 			isHover ? ':hover' : ''
 		} .maxi-container-arrow .maxi-container-arrow--content:before`]: {

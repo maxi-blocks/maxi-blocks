@@ -117,7 +117,7 @@ Object {
   ":hover .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
       "general": Object {
-        "background-color": undefined,
+        "background-color": "var(--maxi-light-color-1)",
       },
       "label": "Arrow Color",
     },

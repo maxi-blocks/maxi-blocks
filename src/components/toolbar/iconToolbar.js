@@ -120,10 +120,10 @@ const IconToolbar = memo(
 							/>
 							<IconBackground
 								blockName={name}
-								{...getGroupAttributes(
-									attributes,
-									'iconBackgroundColor'
-								)}
+								{...getGroupAttributes(attributes, [
+									'icon',
+									'iconBackgroundColor',
+								])}
 								onChange={obj => processAttributes(obj)}
 								parentBlockStyle={parentBlockStyle}
 							/>

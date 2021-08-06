@@ -1,3 +1,14 @@
 .toolbar-item__icon-color__popover {
 	min-width: 300px;
+
+	&__warning {
+		color: #fff;
+		text-align: center;
+		font-style: italic;
+		margin-bottom: 1rem;
+		border: 1px solid #ffce01;
+		padding: 0.5rem;
+		border-radius: 5px;
+		color: #ffce01;
+	}
 }

@@ -18,40 +18,6 @@ describe('ArrowControl', () => {
 		await insertBlock('Group Maxi');
 	});
 
-	it('Check the arrow background and box shadow color', async () => {
-		// Active Group Background
-		const accordionPanel = await openSidebar(page, 'background');
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[5].click()
-		);
-		await accordionPanel.$$eval(
-			'.maxi-color-palette-control .maxi-sc-color-palette div',
-			select => select[3].click()
-		);
-
-		// Active Group Box Shadow
-		const accordionBoxShadowPanel = await openSidebar(page, 'box shadow');
-		await accordionBoxShadowPanel.$$eval(
-			'.maxi-shadow-control button',
-			click => click[1].click()
-		);
-
-		// Active arrow
-		const accordionArrowPanel = await openSidebar(page, 'arrow');
-		await accordionArrowPanel.$$eval(
-			'.maxi-accordion-control__item__panel .maxi-arrow-control .maxi-radio-control__option label',
-			click => click[0].click()
-		);
-
-		const groupWithArrow = await page.$eval(
-			'.maxi-group-block',
-			groupWithArrow => groupWithArrow.innerHTML
-		);
-
-		expect(groupWithArrow).toMatchSnapshot();
-	});
-
 	it('Check the arrow control', async () => {
 		const accordionPanel = await openSidebar(page, 'arrow');
 

@@ -21,9 +21,6 @@ export const backgroundHover = (() => {
 
 	response = {
 		...response,
-		'background-active-media-hover': {
-			type: 'string',
-		},
 		'background-status-hover': {
 			type: 'boolean',
 			default: false,

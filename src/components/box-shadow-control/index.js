@@ -2,7 +2,6 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -98,15 +97,6 @@ const BoxShadowControl = props => {
 		return false;
 	};
 
-	const [customColorStatus, setCustomColorStatus] = useState(
-		getLastBreakpointAttribute(
-			'box-shadow-palette-color-status',
-			breakpoint,
-			props,
-			isHover
-		)
-	);
-
 	return (
 		<div className={classes}>
 			<DefaultStylesControl
@@ -166,7 +156,12 @@ const BoxShadowControl = props => {
 							props,
 							isHover
 						)}
-						paletteStatus={customColorStatus}
+						paletteStatus={getLastBreakpointAttribute(
+							'box-shadow-palette-color-status',
+							breakpoint,
+							props,
+							isHover
+						)}
 						onChange={({ color, paletteColor, paletteStatus }) => {
 							onChange({
 								[`box-shadow-color-${breakpoint}${
@@ -179,7 +174,6 @@ const BoxShadowControl = props => {
 									isHover ? '-hover' : ''
 								}`]: paletteStatus,
 							});
-							setCustomColorStatus(paletteStatus);
 						}}
 						disableGradient
 						disableImage

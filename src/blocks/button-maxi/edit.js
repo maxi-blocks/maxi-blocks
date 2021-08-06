@@ -33,11 +33,7 @@ const IconWrapper = forwardRef((props, ref) => {
 
 	useEffect(() => {
 		const handleClickOutside = event => {
-			if (
-				ref.current &&
-				!event.target.classList.contains('maxi-button-block__icon') &&
-				!event.target.classList.contains('toolbar-item__icon')
-			) {
+			if (ref.current && !ref.current.contains(event.target)) {
 				changeIsSelected(false);
 			}
 		};

@@ -53,6 +53,7 @@ const BackgroundControl = props => {
 		prefix = '',
 		disablePalette,
 		clientId,
+		isButton = false,
 	} = props;
 
 	const backgroundActiveMedia =
@@ -124,6 +125,7 @@ const BackgroundControl = props => {
 					disableColor={disableColor}
 					disableSVG={disableSVG}
 					clientId={clientId}
+					isButton={isButton}
 				/>
 			)}
 			{!layersStatus && getOptions().length > 1 && (
@@ -162,6 +164,7 @@ const BackgroundControl = props => {
 							prefix={prefix}
 							disablePalette={disablePalette}
 							clientId={clientId}
+							isButton={isButton}
 						/>
 					)}
 					{!disableImage && backgroundActiveMedia === 'image' && (

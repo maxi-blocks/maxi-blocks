@@ -30,6 +30,7 @@ describe('FontLevelControl', () => {
 			const setting = fontLevelControl[i !== 6 ? i + 1 : 0];
 
 			await setting.click();
+			await page.waitForTimeout(150);
 
 			const attributes = await getBlockAttributes();
 			const text = attributes.textLevel;

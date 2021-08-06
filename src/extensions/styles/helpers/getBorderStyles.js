@@ -23,6 +23,7 @@ const getBorderStyles = ({
 	isHover = false,
 	prefix = '',
 	parentBlockStyle,
+	isButton = false,
 }) => {
 	const keyWords = [
 		'top-left',
@@ -60,21 +61,20 @@ const getBorderStyles = ({
 					'gm'
 				);
 				const newLabel = newKey.replace(replacer, '');
+				if (key.includes('style')) {
+					const borderStyle = getLastBreakpointAttribute(
+						'border-style',
+						breakpoint,
+						obj,
+						isHover
+					);
 
-				if (
-					(isHover &&
-						isUndefined(
-							obj[
-								`border-style-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`
-							]
-						)) ||
-					obj[
-						`border-style-${breakpoint}${isHover ? '-hover' : ''}`
-					] === 'none'
-				) {
-					response[breakpoint].border = 'none';
+					if (
+						isHover &&
+						(isUndefined(borderStyle) || borderStyle === 'none')
+					) {
+						response[breakpoint].border = 'none';
+					} else response[breakpoint]['border-style'] = borderStyle;
 				} else if (!keyWords.some(key => newLabel.includes(key))) {
 					if (key.includes('color')) {
 						const paletteStatus = getLastBreakpointAttribute(
@@ -91,9 +91,18 @@ const getBorderStyles = ({
 							];
 
 						if (paletteStatus && paletteColor)
-							response[breakpoint][
-								'border-color'
-							] = `var(--maxi-${parentBlockStyle}-color-${paletteColor});`;
+							if (isButton)
+								response[breakpoint][
+									'border-color'
+								] = `var(--maxi-${parentBlockStyle}-${
+									isButton ? 'button-' : ''
+								}border-color${
+									isHover ? '-hover' : ''
+								}, var(--maxi-${parentBlockStyle}-color-${paletteColor}))`;
+							else
+								response[breakpoint][
+									'border-color'
+								] = `var(--maxi-${parentBlockStyle}-color-${paletteColor})`;
 						else
 							response[breakpoint]['border-color'] =
 								obj[

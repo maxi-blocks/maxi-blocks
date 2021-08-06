@@ -34,24 +34,28 @@ const getBoxShadowStyles = ({
 
 	breakpoints.forEach(breakpoint => {
 		let boxShadowString = '';
+
 		const getValue = target => {
 			const value =
 				obj[
 					`box-shadow-${target}-${breakpoint}${
 						isHover ? '-hover' : ''
 					}`
-				];
+				] || obj[`box-shadow-${target}-${breakpoint}`];
 			const defaultValue =
 				breakpoint === 'general'
 					? defaultObj[
 							`box-shadow-${target}-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`
-					  ].default
+					  ].default ||
+					  defaultBoxShadow[`box-shadow-${target}-${breakpoint}`]
+							.default
 					: getLastBreakpointAttribute(
 							`box-shadow-${target}`,
 							getPrevBreakpoint(breakpoint),
-							obj
+							obj,
+							isHover
 					  );
 
 			return {

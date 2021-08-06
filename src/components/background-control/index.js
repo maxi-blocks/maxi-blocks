@@ -53,15 +53,19 @@ const BackgroundControl = props => {
 		prefix = '',
 		disablePalette,
 		clientId,
+		isButton = false,
 	} = props;
 
 	const backgroundActiveMedia =
-		props[getAttributeKey('background-active-media', isHover, prefix)];
+		props[getAttributeKey('background-active-media', isHover, prefix)] ||
+		props[getAttributeKey('background-active-media', false, prefix)];
 	const layersOptions =
-		props[getAttributeKey('background-layers', isHover, prefix)] || [];
+		props[getAttributeKey('background-layers', isHover, prefix)] ||
+		props[getAttributeKey('background-layers', false, prefix)] ||
+		[];
 	const layersStatus =
-		props[getAttributeKey('background-layers-status', isHover, prefix)];
-
+		props[getAttributeKey('background-layers-status', isHover, prefix)] ||
+		props[getAttributeKey('background-layers-status', false, prefix)];
 	const classes = classnames('maxi-background-control', className);
 
 	const getOptions = () => {
@@ -121,6 +125,7 @@ const BackgroundControl = props => {
 					disableColor={disableColor}
 					disableSVG={disableSVG}
 					clientId={clientId}
+					isButton={isButton}
 				/>
 			)}
 			{!layersStatus && getOptions().length > 1 && (
@@ -159,6 +164,7 @@ const BackgroundControl = props => {
 							prefix={prefix}
 							disablePalette={disablePalette}
 							clientId={clientId}
+							isButton={isButton}
 						/>
 					)}
 					{!disableImage && backgroundActiveMedia === 'image' && (

@@ -47,6 +47,7 @@ const BorderControl = props => {
 		isHover = false,
 		prefix = '',
 		clientId,
+		isButton = false,
 	} = props;
 
 	const classes = classnames('maxi-border-control', className);
@@ -98,7 +99,8 @@ const BorderControl = props => {
 								icon={styleNone}
 							/>
 						),
-						onChange: () => onChangeDefault(borderNone(prefix)),
+						onChange: () =>
+							onChangeDefault(borderNone(prefix, isHover)),
 					},
 					{
 						activeItem: getIsActive(prefix) === 'solid',
@@ -207,9 +209,16 @@ const BorderControl = props => {
 					isHover={isHover}
 					deviceType={breakpoint}
 					clientId={clientId}
+					globalProps={
+						isButton && {
+							target: `${
+								isHover ? 'hover-' : ''
+							}border-color-global`,
+							type: 'button',
+						}
+					}
 				/>
 			)}
-
 			{!disableAdvanced &&
 				borderStyleValue &&
 				borderStyleValue !== 'none' && (

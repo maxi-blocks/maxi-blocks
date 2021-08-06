@@ -24,15 +24,16 @@ const getLastBreakpointAttributeSingle = (
 	isHover,
 	avoidXXL
 ) => {
-	const { getBlockAttributes, getSelectedBlockClientId } = select(
-		'core/block-editor'
-	);
+	const { getBlockAttributes, getSelectedBlockClientId } =
+		select('core/block-editor');
 
 	const attr = attributes || getBlockAttributes(getSelectedBlockClientId());
 
 	if (isNil(attr)) return false;
 
-	let currentAttr = attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
+	let currentAttr =
+		attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`] ||
+		attr[`${target}-${breakpoint}`];
 
 	if (
 		!isNil(currentAttr) &&
@@ -68,9 +69,8 @@ const getLastBreakpointAttributeGroup = (
 	isHover,
 	avoidXXL
 ) => {
-	const { getSelectedBlockClientIds, getBlockAttributes } = select(
-		'core/block-editor'
-	);
+	const { getSelectedBlockClientIds, getBlockAttributes } =
+		select('core/block-editor');
 
 	const clientIds = getSelectedBlockClientIds();
 

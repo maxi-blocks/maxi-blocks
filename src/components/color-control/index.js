@@ -97,8 +97,6 @@ const ColorControl = props => {
 			: '';
 	};
 
-	const [customColorStatus, setCustomColorStatus] = useState(paletteStatus);
-
 	const onChangeValue = obj => {
 		const newColor =
 			!isNil(obj.paletteStatus) &&
@@ -114,8 +112,6 @@ const ColorControl = props => {
 			paletteStatus,
 			...obj,
 		});
-
-		setCustomColorStatus(obj.paletteStatus);
 	};
 
 	const onReset = () => {
@@ -139,11 +135,6 @@ const ColorControl = props => {
 		}
 	}, [color, currentColor, setCurrentColor, setColorAlpha, getRGB]);
 
-	console.log(`paletteStatus: ${paletteStatus}`);
-	console.log(`showPalette: ${showPalette}`);
-	console.log(`disablePalette: ${disablePalette}`);
-	console.log('=======================');
-
 	return (
 		<>
 			{!disablePalette && showPalette && (
@@ -159,7 +150,7 @@ const ColorControl = props => {
 					clientId={clientId}
 				/>
 			)}
-			{!showPalette || !customColorStatus || disablePalette ? (
+			{!showPalette || !paletteStatus || disablePalette ? (
 				<div className={classes}>
 					{!disableColorDisplay && (
 						<BaseControl

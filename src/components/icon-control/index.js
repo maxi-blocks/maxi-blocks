@@ -112,11 +112,11 @@ const IconControl = props => {
 						label={__('Icon Position', 'maxi-block')}
 						selected={props['icon-position']}
 						options={[
+							{ label: __('Left', 'maxi-block'), value: 'left' },
 							{
 								label: __('Right', 'maxi-block'),
 								value: 'right',
 							},
-							{ label: __('Left', 'maxi-block'), value: 'left' },
 						]}
 						optionType='string'
 						onChange={val =>

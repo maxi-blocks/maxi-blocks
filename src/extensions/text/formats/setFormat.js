@@ -19,15 +19,14 @@ import { isNil } from 'lodash';
 
 /**
  *
- * @param {Object} 	[$0]					Optional named arguments.
- * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {Object} 	[$0.typography]			MaxiBlocks typography
- * @param {boolean} [$0.isList]				Text Maxi block has list mode active
- * @param {Object}	[$0.value]				Requested values to implement
- * 											on typography object
- * @param {string} 	[$0.breakpoint]			Device type breakpoint
- * @param {boolean}	[$0.isHover]			Is the requested typography under hover state
- *
+ * @param {Object}  [$0]             Optional named arguments.
+ * @param {Object}  [$0.formatValue] RichText format value
+ * @param {Object}  [$0.typography]  MaxiBlocks typography
+ * @param {boolean} [$0.isList]      Text Maxi block has list mode active
+ * @param {Object}  [$0.value]       Requested values to implement
+ *                                   on typography object
+ * @param {string}  [$0.breakpoint]  Device type breakpoint
+ * @param {boolean} [$0.isHover]     Is the requested typography under hover state
  * @returns {Object} Formatted object
  */
 const setFormat = ({
@@ -120,7 +119,11 @@ const setFormat = ({
 			isList,
 		});
 
-		return { ...newTypography, content: newContent };
+		return {
+			...newTypography,
+			content: newContent,
+			...(returnFormatValue && { formatValue: newFormatValue }),
+		};
 	}
 
 	// Ensures the format changes are saved as undo entity on historical records

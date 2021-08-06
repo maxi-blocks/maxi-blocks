@@ -31,9 +31,11 @@ const getLastBreakpointAttributeSingle = (
 
 	if (isNil(attr)) return false;
 
-	let currentAttr =
-		attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`] ||
-		attr[`${target}-${breakpoint}`];
+	let currentAttr = !isNil(
+		attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]
+	)
+		? attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]
+		: attr[`${target}-${breakpoint}`];
 
 	if (
 		!isNil(currentAttr) &&

@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
+import FancyRadioControl from '../../../fancy-radio-control';
 import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
@@ -41,24 +42,53 @@ const IconColor = props => {
 					}}
 				/>
 			}
+			advancedOptions='icon'
 		>
 			<div className='toolbar-item__icon-color__popover'>
-				<ColorControl
-					label={__('Icon', 'maxi-blocks')}
-					color={props['icon-color']}
-					defaultColor={getDefaultAttribute('icon-color')}
-					paletteColor={props['icon-palette-color']}
-					paletteStatus={props['icon-palette-color-status']}
-					onChange={({ color, paletteColor, paletteStatus }) => {
+				<FancyRadioControl
+					label={__(
+						'Inherit Color/Backgrond from Button',
+						'maxi-block'
+					)}
+					selected={props['icon-inherit']}
+					options={[
+						{
+							label: __('Yes', 'maxi-block'),
+							value: 1,
+						},
+						{ label: __('No', 'maxi-block'), value: 0 },
+					]}
+					onChange={val =>
 						onChange({
-							'icon-color': color,
-							'icon-palette-color': paletteColor,
-							'icon-palette-color-status': paletteStatus,
-						});
-					}}
-					showPalette
-					disableOpacity
+							'icon-inherit': val,
+						})
+					}
 				/>
+				{props['icon-inherit'] ? (
+					<p className='toolbar-item__icon-color__popover__warning'>
+						{__(
+							'Icon color is inheriting from button.',
+							'maxi-button'
+						)}
+					</p>
+				) : (
+					<ColorControl
+						label={__('Icon', 'maxi-blocks')}
+						color={props['icon-color']}
+						defaultColor={getDefaultAttribute('icon-color')}
+						paletteColor={props['icon-palette-color']}
+						paletteStatus={props['icon-palette-color-status']}
+						onChange={({ color, paletteColor, paletteStatus }) => {
+							onChange({
+								'icon-color': color,
+								'icon-palette-color': paletteColor,
+								'icon-palette-color-status': paletteStatus,
+							});
+						}}
+						showPalette
+						disableOpacity
+					/>
+				)}
 			</div>
 		</ToolbarPopover>
 	);

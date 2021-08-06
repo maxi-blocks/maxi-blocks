@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
+import FancyRadioControl from '../../../fancy-radio-control';
 import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
@@ -41,26 +42,57 @@ const IconBackground = props => {
 					}}
 				/>
 			}
+			advancedOptions='icon'
 		>
 			<div className='toolbar-item__icon-background__popover'>
-				<ColorControl
-					label={__('Icon Background', 'maxi-blocks')}
-					color={props['icon-background-color']}
-					defaultColor={getDefaultAttribute('icon-background-color')}
-					paletteColor={props['icon-background-palette-color']}
-					paletteStatus={
-						props['icon-background-palette-color-status']
-					}
-					onChange={({ color, paletteColor, paletteStatus }) => {
+				<FancyRadioControl
+					label={__(
+						'Inherit Color/Backgrond from Button',
+						'maxi-block'
+					)}
+					selected={props['icon-inherit']}
+					options={[
+						{
+							label: __('Yes', 'maxi-block'),
+							value: 1,
+						},
+						{ label: __('No', 'maxi-block'), value: 0 },
+					]}
+					onChange={val =>
 						onChange({
-							'icon-background-color': color,
-							'icon-background-palette-color': paletteColor,
-							'icon-background-palette-color-status':
-								paletteStatus,
-						});
-					}}
-					showPalette
+							'icon-inherit': val,
+						})
+					}
 				/>
+				{props['icon-inherit'] ? (
+					<p className='toolbar-item__icon-background__popover__warning'>
+						{__(
+							'Icon background is inheriting from button.',
+							'maxi-button'
+						)}
+					</p>
+				) : (
+					<ColorControl
+						label={__('Icon Background', 'maxi-blocks')}
+						color={props['icon-background-color']}
+						defaultColor={getDefaultAttribute(
+							'icon-background-color'
+						)}
+						paletteColor={props['icon-background-palette-color']}
+						paletteStatus={
+							props['icon-background-palette-color-status']
+						}
+						onChange={({ color, paletteColor, paletteStatus }) => {
+							onChange({
+								'icon-background-color': color,
+								'icon-background-palette-color': paletteColor,
+								'icon-background-palette-color-status':
+									paletteStatus,
+							});
+						}}
+						showPalette
+					/>
+				)}
 			</div>
 		</ToolbarPopover>
 	);

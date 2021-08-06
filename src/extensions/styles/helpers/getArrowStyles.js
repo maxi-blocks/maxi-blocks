@@ -194,41 +194,54 @@ const getArrowStyles = props => {
 				},
 			},
 		...(props['background-status-hover'] && {
-			[`${target}${
-				isHover ? ':hover' : ''
-			} .maxi-container-arrow .maxi-container-arrow--content:after`]: {
-				background: {
-					...getArrowColorObject(
-						getGroupAttributes(
-							props,
-							[
-								'background',
-								'backgroundColor',
-								'backgroundGradient',
-							],
+			[`${target}:hover .maxi-container-arrow .maxi-container-arrow--content:after`]:
+				{
+					background: {
+						...getArrowColorObject(
+							getGroupAttributes(
+								props,
+								[
+									'background',
+									'backgroundColor',
+									'backgroundGradient',
+								],
+								isHover
+							),
+							blockStyle,
 							isHover
 						),
-						blockStyle,
-						isHover
+					},
+				},
+		}),
+		[`${target} .maxi-container-arrow .maxi-container-arrow--content:before`]:
+			{
+				border: {
+					...getArrowBorderObject(
+						getGroupAttributes(props, [
+							'border',
+							'borderWidth',
+							'borderRadius',
+						]),
+						blockStyle
 					),
 				},
 			},
+		...(props['border-status-hover'] && {
+			[`${target}:hover .maxi-container-arrow .maxi-container-arrow--content:before`]:
+				{
+					border: {
+						...getArrowBorderObject(
+							getGroupAttributes(
+								props,
+								['border', 'borderWidth', 'borderRadius'],
+								isHover
+							),
+							blockStyle,
+							isHover
+						),
+					},
+				},
 		}),
-		[`${target}${
-			isHover ? ':hover' : ''
-		} .maxi-container-arrow .maxi-container-arrow--content:before`]: {
-			border: {
-				...getArrowBorderObject(
-					getGroupAttributes(
-						props,
-						['border', 'borderWidth', 'borderRadius'],
-						isHover
-					),
-					blockStyle,
-					isHover
-				),
-			},
-		},
 	};
 
 	return response;

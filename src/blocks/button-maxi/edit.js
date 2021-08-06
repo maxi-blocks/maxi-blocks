@@ -29,12 +29,16 @@ import { isEmpty } from 'lodash';
  * Content
  */
 const IconWrapper = forwardRef((props, ref) => {
-	const { children, className, changeIsSelected } = props;
+	const { children, className, changeIsSelected, uniqueID } = props;
 
 	useEffect(() => {
 		const handleClickOutside = event => {
 			if (ref.current && !ref.current.contains(event.target)) {
-				changeIsSelected(false);
+				changeIsSelected(
+					document
+						.querySelector(`.${uniqueID}`)
+						.classList.contains('is-selected')
+				);
 			}
 		};
 
@@ -160,6 +164,7 @@ class edit extends MaxiBlockComponent {
 							/>
 							<IconWrapper
 								ref={this.iconRef}
+								uniqueID={uniqueID}
 								className='maxi-button-block__icon'
 								changeIsSelected={isIconSelected =>
 									this.setState({ isIconSelected })

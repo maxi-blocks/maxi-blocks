@@ -43,11 +43,14 @@ const frontendStyleGenerator = styles => {
 			});
 
 			if (!isEmpty(breakpointResponse)) {
-				if (breakpoint !== 'general')
+				if (breakpoint === 'xxl')
+					response += getMediaQueryString(breakpoint, breakpoints.xl);
+				else if (breakpoint !== 'general')
 					response += getMediaQueryString(
 						breakpoint,
 						breakpoints[breakpoint]
 					);
+
 				response += breakpointResponse;
 				if (breakpoint !== 'general') response += '}';
 			}

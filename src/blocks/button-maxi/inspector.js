@@ -70,8 +70,19 @@ const Inspector = memo(
 			fullWidth,
 		} = attributes;
 
-		const onChangePreset = number => {
-			setAttributes({ ...defaultPresets[`preset${number}`] });
+		const onChangePreset = (number, type = 'normal') => {
+			if (
+				type === 'icon' &&
+				!isEmpty(attributes['icon-content']) &&
+				attributes['icon-content'] !==
+					defaultPresets[`preset${number}`]['icon-content']
+			)
+				defaultPresets[`preset${number}`]['icon-content'] =
+					attributes['icon-content'];
+
+			setAttributes({
+				...defaultPresets[`preset${number}`],
+			});
 		};
 
 		return (
@@ -180,7 +191,8 @@ const Inspector = memo(
 																),
 																onChange: () =>
 																	onChangePreset(
-																		4
+																		4,
+																		'icon'
 																	),
 															},
 															{
@@ -194,7 +206,8 @@ const Inspector = memo(
 																),
 																onChange: () =>
 																	onChangePreset(
-																		5
+																		5,
+																		'icon'
 																	),
 															},
 															{
@@ -208,7 +221,8 @@ const Inspector = memo(
 																),
 																onChange: () =>
 																	onChangePreset(
-																		6
+																		6,
+																		'icon'
 																	),
 															},
 														]}

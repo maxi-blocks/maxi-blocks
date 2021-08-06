@@ -1,5 +1,14 @@
 import getDividerStyles from '../getDividerStyles';
-import '@wordpress/block-editor';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
 
 describe('getDividerStyles', () => {
 	it('Get a correct divider styles', () => {

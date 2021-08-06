@@ -112,46 +112,73 @@ export const getSCVariablesObject = styleCards => {
 			if (obj['color-global'] && !isEmpty(obj.color))
 				response[`--maxi-${style}-${element}-color`] = obj.color;
 
-			if (
-				element === 'button' &&
-				obj['background-color-global'] &&
-				!isEmpty(obj['background-color'])
-			)
-				response[`--maxi-${style}-${element}-background-color`] =
-					obj['background-color'];
+			switch (element) {
+				case 'button':
+					if (
+						obj['background-color-global'] &&
+						!isEmpty(obj['background-color'])
+					)
+						response[
+							`--maxi-${style}-${element}-background-color`
+						] = obj['background-color'];
 
-			if (
-				element === 'button' &&
-				obj['hover-background-color-global'] &&
-				!isEmpty(obj['hover-background-color'])
-			)
-				response[`--maxi-${style}-${element}-background-color-hover`] =
-					obj['hover-background-color'];
+					if (
+						obj['hover-background-color-global'] &&
+						!isEmpty(obj['hover-background-color'])
+					)
+						response[
+							`--maxi-${style}-${element}-background-color-hover`
+						] = obj['hover-background-color'];
 
-			if (
-				element === 'button' &&
-				obj['hover-color-global'] &&
-				!isEmpty(obj['hover-color'])
-			)
-				response[`--maxi-${style}-${element}-color-hover`] =
-					obj['hover-color'];
+					if (
+						obj['hover-color-global'] &&
+						!isEmpty(obj['hover-color'])
+					)
+						response[`--maxi-${style}-${element}-color-hover`] =
+							obj['hover-color'];
 
-			if (element === 'icon' && obj['line-global'] && !isEmpty(obj.line))
-				response[`--maxi-${style}-${element}-line`] = obj.line;
-			if (element === 'icon' && obj['fill-global'] && !isEmpty(obj.fill))
-				response[`--maxi-${style}-${element}-fill`] = obj.fill;
+					if (
+						obj['border-color-global'] &&
+						!isEmpty(obj['border-color'])
+					)
+						response[`--maxi-${style}-${element}-border-color`] =
+							obj['border-color'];
+					if (
+						obj['hover-border-color-global'] &&
+						!isEmpty(obj['hover-border-color'])
+					)
+						response[
+							`--maxi-${style}-${element}-border-color-hover`
+						] = obj['hover-border-color'];
 
-			if (element === 'link') {
-				if (obj['link-color-global'])
-					response[`--maxi-${style}-link`] = obj['link-color'];
-				if (obj['hover-color-global'])
-					response[`--maxi-${style}-link-hover`] = obj['hover-color'];
-				if (obj['active-color-global'])
-					response[`--maxi-${style}-link-active`] =
-						obj['active-color'];
-				if (obj['visited-color-global'])
-					response[`--maxi-${style}-link-visited`] =
-						obj['visited-color'];
+					break;
+
+				case 'icon':
+					if (obj['line-global'] && !isEmpty(obj.line))
+						response[`--maxi-${style}-${element}-line`] = obj.line;
+
+					if (obj['fill-global'] && !isEmpty(obj.fill))
+						response[`--maxi-${style}-${element}-fill`] = obj.fill;
+
+					break;
+
+				case 'link':
+					if (obj['link-color-global'])
+						response[`--maxi-${style}-link`] = obj['link-color'];
+					if (obj['hover-color-global'])
+						response[`--maxi-${style}-link-hover`] =
+							obj['hover-color'];
+					if (obj['active-color-global'])
+						response[`--maxi-${style}-link-active`] =
+							obj['active-color'];
+					if (obj['visited-color-global'])
+						response[`--maxi-${style}-link-visited`] =
+							obj['visited-color'];
+
+					break;
+
+				default:
+					return false;
 			}
 		});
 

@@ -112,10 +112,12 @@ const BackgroundColor = props => {
 							})
 						}
 						showPalette
-						globalProps={{
-							target: 'background-color-global',
-							type: 'button',
-						}}
+						globalProps={
+							blockName === 'maxi-blocks/button-maxi' && {
+								target: 'background-color-global',
+								type: 'button',
+							}
+						}
 					/>
 				)}
 			</div>

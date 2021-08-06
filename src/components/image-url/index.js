@@ -23,9 +23,15 @@ const ImageURL = props => {
 		: __('Insert image from URL', 'maxi-blocks');
 
 	function checkImageUrl(url) {
+		console.log(`url: ${url}`);
+		let src = url;
+		if (!url.startsWith('https://') && !url.startsWith('http://'))
+			src = `https://${url}`;
+
+		console.log(`src: ${src}`);
 		const urlPromise = new Promise((resolve, reject) => {
 			const img = new Image();
-			img.src = url;
+			img.src = src;
 
 			img.addEventListener('load', function onLoad() {
 				resolve(this);

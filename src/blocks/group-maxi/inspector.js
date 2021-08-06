@@ -244,10 +244,11 @@ const Inspector = props => {
 																			{...getGroupAttributes(
 																				attributes,
 																				[
-																					'backgroundHover',
-																					'backgroundColorHover',
-																					'backgroundGradientHover',
-																				]
+																					'background',
+																					'backgroundColor',
+																					'backgroundGradient',
+																				],
+																				true
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -357,10 +358,8 @@ const Inspector = props => {
 																					'border',
 																					'borderWidth',
 																					'borderRadius',
-																					'borderHover',
-																					'borderWidthHover',
-																					'borderRadiusHover',
-																				]
+																				],
+																				true
 																			)}
 																			onChange={obj =>
 																				setAttributes(

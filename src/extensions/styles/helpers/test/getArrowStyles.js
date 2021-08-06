@@ -39,26 +39,63 @@ describe('getArrowStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
-	it('Get a correct arrow hover styles', () => {
+	it('Get a correct palette colors arrow hover styles', () => {
 		const object = {
 			target: '',
 			isHover: true,
 			blockStyle: 'light',
-			'box-shadow-blur-general-hover': 0,
-			'box-shadow-horizontal-general-hover': 5,
-			'box-shadow-palette-color-general-hover': 1,
-			'box-shadow-palette-color-general-hover-hover': 6,
-			'box-shadow-palette-color-status-general-hover': true,
-			'box-shadow-palette-color-status-general-hover-hover': true,
-			'box-shadow-spread-general-hover': 0,
 			'box-shadow-status-hover-hover': true,
-			'border-palette-color-general-hover': 2,
-			'border-palette-color-status-general-hover': true,
+			'box-shadow-palette-color-status-general-hover': true,
+			'box-shadow-palette-color-general-hover': 4,
+			'box-shadow-horizontal-general-hover': 1,
+			'box-shadow-vertical-general-hover': 2,
+			'box-shadow-blur-general-hover': 3,
+			'box-shadow-spread-general-hover': 4,
 			'border-status-hover': true,
+			'border-palette-color-status-general-hover': true,
+			'border-palette-color-general-hover': 1,
+			'border-style-general-hover': 'solid',
+			'border-top-width-general-hover': 1,
+			'border-right-width-general-hover': 2,
+			'border-bottom-width-general-hover': 3,
+			'border-left-width-general-hover': 4,
+			'border-sync-width-general-hover': true,
+			'border-unit-width-general-hover': 'px',
+			'border-top-left-radius-general-hover': 1,
+			'border-top-right-radius-general-hover': 2,
+			'border-bottom-right-radius-general-hover': 3,
+			'border-bottom-left-radius-general-hover': 4,
+			'border-sync-radius-general-hover': true,
+			'border-unit-radius-general-hover': 'px',
 			'background-status-hover': true,
 			'background-active-media-hover': 'color',
-			'background-palette-color-status-hover': true,
-			'background-palette-color-hover': 6,
+			'background-palette-color-hover': 1,
+		};
+
+		const result = getArrowStyles(object);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Get a correct arrow hover styles with background, shadow and border custom colors', () => {
+		const object = {
+			target: '',
+			isHover: true,
+			blockStyle: 'light',
+			'box-shadow-status-hover': true,
+			'box-shadow-palette-color-status-general-hover': false,
+			'box-shadow-color-general': 'rgb(255, 99, 71)',
+			'box-shadow-horizontal-general-hover': 1,
+			'box-shadow-vertical-general-hover': 2,
+			'box-shadow-blur-general-hover': 3,
+			'box-shadow-spread-general-hover': 4,
+			'border-status-hover': true,
+			'border-palette-color-status-general-hover': false,
+			'border-color-general-hover': 'rgb(255, 99, 71)',
+			'border-style-general-hover': 'solid',
+			'background-status-hover': true,
+			'background-active-media-hover': 'color',
+			'background-palette-color-status-hover': false,
+			'background-color-hover': 'rgb(255, 99, 71)',
 		};
 
 		const result = getArrowStyles(object);

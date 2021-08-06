@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getArrowStyles Get a correct arrow hover styles 1`] = `
+exports[`getArrowStyles Get a correct arrow hover styles with background, shadow and border custom colors 1`] = `
 Object {
   ":hover .maxi-container-arrow": Object {
     "shadow": Object {
       "general": Object {
-        "filter": "drop-shadow(5px 0px 0px var(--maxi-light-color-1))",
+        "filter": "drop-shadow(1px 2px 1px rgb(255, 99, 71))",
       },
     },
   },
   ":hover .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
       "general": Object {
-        "background-color": "var(--maxi-light-color-6)",
+        "background-color": "rgb(255, 99, 71)",
       },
       "label": "Arrow Color",
     },
@@ -20,7 +20,7 @@ Object {
   ":hover .maxi-container-arrow .maxi-container-arrow--content:before": Object {
     "border": Object {
       "general": Object {
-        "background": "var(--maxi-light-color-2);",
+        "border-color": "rgb(255, 99, 71)",
       },
       "label": "Arrow Border",
     },
@@ -98,6 +98,38 @@ Object {
     "border": Object {
       "general": Object {
         "border-color": "rgb(255, 99, 71)",
+      },
+      "label": "Arrow Border",
+    },
+  },
+}
+`;
+
+exports[`getArrowStyles Get a correct palette colors arrow hover styles 1`] = `
+Object {
+  ":hover .maxi-container-arrow": Object {
+    "shadow": Object {
+      "general": Object {
+        "filter": "drop-shadow(1px 2px 1px var(--maxi-light-color-4))",
+      },
+    },
+  },
+  ":hover .maxi-container-arrow .maxi-container-arrow--content:after": Object {
+    "background": Object {
+      "general": Object {
+        "background-color": undefined,
+      },
+      "label": "Arrow Color",
+    },
+  },
+  ":hover .maxi-container-arrow .maxi-container-arrow--content:before": Object {
+    "border": Object {
+      "general": Object {
+        "background": "var(--maxi-light-color-1);",
+        "height": "calc(50% + 6px)",
+        "left": "calc(1.5px)",
+        "top": "calc(1.5px)",
+        "width": "calc(50% + 6px)",
       },
       "label": "Arrow Border",
     },

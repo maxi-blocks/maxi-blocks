@@ -33,6 +33,10 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
+	maxiBlockDidMount() {
+		this.blockRef.current.focus();
+	}
+
 	state = {
 		displayHandlers: false,
 	};

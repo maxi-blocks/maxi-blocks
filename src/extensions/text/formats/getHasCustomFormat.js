@@ -9,7 +9,7 @@ import getFormatType from './getFormatType';
 import { isEmpty } from 'lodash';
 
 const getHasCustomFormat = (formatValue, isHover = false) => {
-	if (isEmpty(formatValue)) return false;
+	if (isEmpty(formatValue) || isEmpty(formatValue.formats)) return false;
 
 	const { formats, start, end } = formatValue;
 

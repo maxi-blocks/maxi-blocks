@@ -15,7 +15,7 @@ import flatFormatsWithClass from './flatFormatsWithClass';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  *
@@ -69,17 +69,21 @@ const setFormat = ({
 		formatValue.start = startOffset;
 		formatValue.end = endOffset;
 	}
+
+	const formatsLength = !isEmpty(formatValue.formats)
+		? formatValue.formats.length
+		: 0;
+
 	if (
 		!formatValue ||
 		formatValue.start === formatValue.end ||
-		(formatValue.start === 0 &&
-			formatValue.end === formatValue.formats.length)
+		(formatValue.start === 0 && formatValue.end === formatsLength)
 	) {
 		const newTypography = { ...typography };
 		const newFormatValue = {
 			...formatValue,
 			start: 0,
-			end: formatValue.formats.length,
+			end: formatsLength,
 		};
 
 		Object.entries(value).forEach(([key, val]) => {

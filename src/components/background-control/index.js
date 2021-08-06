@@ -20,6 +20,7 @@ import VideoLayer from './videoLayer';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Styles and icons
@@ -63,9 +64,11 @@ const BackgroundControl = props => {
 		props[getAttributeKey('background-layers', isHover, prefix)] ||
 		props[getAttributeKey('background-layers', false, prefix)] ||
 		[];
-	const layersStatus =
-		props[getAttributeKey('background-layers-status', isHover, prefix)] ||
-		props[getAttributeKey('background-layers-status', false, prefix)];
+	const layersStatus = !isNil(
+		props[getAttributeKey('background-layers-status', isHover, prefix)]
+	)
+		? props[getAttributeKey('background-layers-status', isHover, prefix)]
+		: props[getAttributeKey('background-layers-status', false, prefix)];
 	const classes = classnames('maxi-background-control', className);
 
 	const getOptions = () => {

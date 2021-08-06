@@ -614,7 +614,7 @@ const TypographyControl = withFormatValue(props => {
 					}
 					showPalette
 					globalProps={{
-						target: 'color-global',
+						target: `${isHover ? 'hover-' : ''}color-global`,
 						type:
 							select('core/block-editor').getBlockName(
 								clientId

@@ -81,6 +81,7 @@ const getNormalObject = props => {
 				]),
 			},
 			parentBlockStyle: props.parentBlockStyle,
+			isButton: true,
 		}),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
@@ -116,6 +117,7 @@ const getHoverObject = props => {
 				},
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
+				isButton: true,
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&

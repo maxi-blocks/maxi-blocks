@@ -197,6 +197,10 @@ describe('getSCVariablesObject', () => {
 						'text-decoration-general': 'unset',
 					},
 					button: {
+						'border-color-global': false,
+						'border-color': '',
+						'hover-border-color-global': false,
+						'hover-border-color': '',
 						'color-global': false,
 						color: '',
 						'hover-color-global': false,
@@ -453,6 +457,10 @@ describe('getSCVariablesObject', () => {
 						'text-decoration-general': 'unset',
 					},
 					button: {
+						'border-color-global': false,
+						'border-color': '',
+						'hover-border-color-global': false,
+						'hover-border-color': '',
 						'color-global': false,
 						color: '',
 						'hover-color-global': false,

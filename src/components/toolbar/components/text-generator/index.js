@@ -33,11 +33,26 @@ const TextGenerator = props => {
 			avgSentencesPerParagraph: sentencesPerParagraph,
 		}).map(text => text);
 
+		const { getSelectedBlock } = wp.data.select('core/block-editor');
+		const currentContent = getSelectedBlock().attributes.content;
+
+		const newContent = `${currentContent} ${generatedText[0].props.children}`;
+
+		onChange({ isList: false, content: newContent });
+	};
+
+	const replaceText = (sentencesPerParagraph, wordsPerSentence) => {
+		const generatedText = LoremIpsum({
+			p: 1,
+			avgWordsPerSentence: wordsPerSentence,
+			avgSentencesPerParagraph: sentencesPerParagraph,
+		}).map(text => text);
+
 		onChange({ isList: false, content: generatedText[0].props.children });
 	};
 
 	const replaceContent = () => {
-		addText(averageSentencesLength, averageWordsLength);
+		replaceText(averageSentencesLength, averageWordsLength);
 	};
 
 	const addContent = () => {
@@ -51,12 +66,7 @@ const TextGenerator = props => {
 			icon={toolbarLoremIpsum}
 		>
 			<div className='toolbar-item__text-generator-blocks__popover'>
-				<form
-				// onSubmit={e => {
-				// 	e.preventDefault();
-				// 	addText(averageSentencesLength, averageWordsLength);
-				// }}
-				>
+				<form>
 					<TextControl
 						label={__('Words per a sentence', 'maxi-blocks')}
 						value={averageWordsLength}

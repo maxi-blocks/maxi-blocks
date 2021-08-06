@@ -6,8 +6,13 @@
 		color: #fff !important;
 		border-radius: 5px;
 		height: 30px;
-		width: 100%;
+		width: 49%;
+		margin-right: 2%;
 		justify-content: center;
+
+		&:last-child {
+			margin-right: 0;
+		}
 
 		&:hover {
 			background-color: #4c4f59;
@@ -18,8 +23,11 @@
 		}
 	}
 
+	.maxi-base-control:nth-child(2) {
+		margin-bottom: 12px;
+	}
+
 	.maxi-base-control__label {
-		margin-bottom: 8px;
-		color: #fff;
+		margin-bottom: 5px;
 	}
 }

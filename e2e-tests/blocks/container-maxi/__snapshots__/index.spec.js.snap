@@ -2,8 +2,8 @@
 
 exports[`Container Maxi Container Maxi does not break 1`] = `
 "<!-- wp:maxi-blocks/container-maxi {\\"parentBlockStyle\\":\\"light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"container-maxi-12\\"} -->
-<section id=\\"container-maxi-12\\" class=\\"wp-block-maxi-blocks-container-maxi maxi-block maxi-container-block maxi-light container-maxi-12 alignfull\\" data-align=\\"full\\"><div class=\\"maxi-background-displayer\\"><div class=\\"maxi-background-displayer__layer maxi-background-displayer__color\\"></div></div><div class=\\"maxi-container-block__container\\"><!-- wp:maxi-blocks/row-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-parent\\",\\"isFirstOnHierarchy\\":false,\\"uniqueID\\":\\"row-maxi-45\\"} -->
-<div id=\\"row-maxi-45\\" class=\\"wp-block-maxi-blocks-row-maxi maxi-block maxi-row-block maxi-parent row-maxi-45\\" data-align=\\"normal\\"></div>
+<section id=\\"container-maxi-12\\" class=\\"wp-block-maxi-blocks-container-maxi maxi-block maxi-container-block maxi-light container-maxi-12 alignfull\\" data-align=\\"full\\"><div class=\\"maxi-background-displayer\\"><div class=\\"maxi-background-displayer__layer maxi-background-displayer__color\\"></div></div><div class=\\"maxi-container-block__container\\"><!-- wp:maxi-blocks/row-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-parent\\",\\"isFirstOnHierarchy\\":false,\\"uniqueID\\":\\"row-maxi-34\\"} -->
+<div id=\\"row-maxi-34\\" class=\\"wp-block-maxi-blocks-row-maxi maxi-block maxi-row-block maxi-parent row-maxi-34\\" data-align=\\"normal\\"></div>
 <!-- /wp:maxi-blocks/row-maxi --></div></section>
 <!-- /wp:maxi-blocks/container-maxi -->"
 `;

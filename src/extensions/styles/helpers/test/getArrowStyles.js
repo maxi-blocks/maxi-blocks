@@ -69,6 +69,7 @@ describe('getArrowStyles', () => {
 			'border-unit-radius-general-hover': 'px',
 			'background-status-hover': true,
 			'background-active-media-hover': 'color',
+			'background-palette-color-status-hover': true,
 			'background-palette-color-hover': 1,
 		};
 

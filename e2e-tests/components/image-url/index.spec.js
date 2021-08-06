@@ -19,6 +19,11 @@ describe('ImageURL', () => {
 			url => url.click()
 		);
 
+		await page.$eval(
+			'.maxi-editor-url-input__button-modal .block-editor-url-input__input',
+			input => input.focus()
+		);
+
 		const linkImage =
 			'https://www.landuum.com/wp-content/uploads/2019/03/cultura_paisajeiluminado_landuum5.jpg';
 

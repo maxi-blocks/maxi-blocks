@@ -2,6 +2,7 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -32,8 +33,9 @@ const ColorPaletteControl = props => {
 		clientId,
 		className,
 		globalStatus,
-		isHover,
 	} = props;
+
+	const [customColorStatus, setCustomColorStatus] = useState(status);
 
 	const paletteClasses = classnames(
 		'maxi-sc-color-palette',
@@ -47,12 +49,9 @@ const ColorPaletteControl = props => {
 		className
 	);
 
-	console.log(`isHover ${isHover}`);
-	console.log(`status ${status}`);
-
 	return (
 		<div className={classes}>
-			{status && (
+			{customColorStatus && (
 				<BaseControl
 					className='maxi-color-palette-control__palette-label'
 					label={label ? `${label} Colour` : ''}
@@ -85,12 +84,15 @@ const ColorPaletteControl = props => {
 			<FancyRadioControl
 				label={__('Custom Colour', 'maxi-blocks')}
 				className='maxi-sc-color-palette__custom'
-				selected={status}
+				selected={customColorStatus}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 0 },
 					{ label: __('No', 'maxi-blocks'), value: 1 },
 				]}
-				onChange={val => onChange({ paletteStatus: val })}
+				onChange={val => {
+					setCustomColorStatus(val);
+					onChange({ paletteStatus: val });
+				}}
 			/>
 		</div>
 	);

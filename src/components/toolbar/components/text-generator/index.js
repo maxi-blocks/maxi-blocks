@@ -15,12 +15,19 @@ import ToolbarPopover from '../toolbar-popover';
 import Button from '../../../button';
 import TextControl from '../../../text-control';
 import { LoremIpsum } from 'react-lorem-ipsum';
+// import { getGroupAttributes } from '../../../../extensions/styles';
+import { withFormatValue } from '../../../../extensions/text/formats';
 
 import './editor.scss';
 import { toolbarLoremIpsum } from '../../../../icons';
 
-const TextGenerator = props => {
-	const { blockName, onChange, isCaptionToolbar = false } = props;
+const TextGenerator = withFormatValue(props => {
+	const {
+		blockName,
+		onChange,
+		formatValue,
+		isCaptionToolbar = false,
+	} = props;
 	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
 	const [averageWordsLength, setAverageWordsLength] = useState(15);
 
@@ -33,10 +40,12 @@ const TextGenerator = props => {
 			avgSentencesPerParagraph: sentencesPerParagraph,
 		}).map(text => text);
 
-		const { getSelectedBlock } = wp.data.select('core/block-editor');
-		const currentContent = getSelectedBlock().attributes.content;
+		// const { getSelectedBlock } = wp.data.select('core/block-editor');
+		// const currentContent = getSelectedBlock().attributes.content;
 
-		const newContent = `${currentContent} ${generatedText[0].props.children}`;
+		const newContent = `${formatValue.text} ${generatedText[0].props.children}`;
+
+		console.log(formatValue);
 
 		onChange({ isList: false, content: newContent });
 	};
@@ -91,6 +100,6 @@ const TextGenerator = props => {
 			</div>
 		</ToolbarPopover>
 	);
-};
+});
 
 export default TextGenerator;

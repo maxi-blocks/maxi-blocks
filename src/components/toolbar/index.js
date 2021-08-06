@@ -209,10 +209,6 @@ const MaxiToolbar = memo(
 							</div>
 							<Mover clientId={clientId} blockName={name} />
 							<TextGenerator
-								{...getGroupAttributes(
-									attributes,
-									'typography'
-								)}
 								blockName={name}
 								onChange={obj => setAttributes(obj)}
 							/>

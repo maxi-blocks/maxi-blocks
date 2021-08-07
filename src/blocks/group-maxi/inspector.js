@@ -368,14 +368,38 @@ const Inspector = props => {
 																				value: 0,
 																			},
 																		]}
-																		onChange={val =>
+																		onChange={val => {
 																			setAttributes(
 																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'border',
+																										'borderWidth',
+																										'borderRadius',
+																									]
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'border',
+																										'borderWidth',
+																										'borderRadius',
+																									],
+																									true
+																								),
+																							}
+																						)),
 																					'border-status-hover':
 																						val,
 																				}
-																			)
-																		}
+																			);
+																		}}
 																	/>
 																	{attributes[
 																		'border-status-hover'

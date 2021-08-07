@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getGroupAttributes from '../getGroupAttributes';
+import getAttributeValue from '../getAttributeValue';
 import getBorderStyles from './getBorderStyles';
 
 /**
@@ -14,7 +15,6 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
  * Clean BackgroundControl object for being delivered for styling
  *
  * @param {Object} background BackgroundControl related object
- *
  */
 export const getColorBackgroundObject = ({
 	isHover = false,
@@ -561,8 +561,7 @@ const getBackgroundStyles = ({
 	if (isHover && !props[`${prefix}background-status-hover`]) return response;
 
 	switch (
-		props[`${prefix}background-active-media${isHover ? '-hover' : ''}`] ||
-		props[`${prefix}background-active-media`]
+		getAttributeValue('background-active-media', props, isHover, prefix)
 	) {
 		case 'layers':
 			if (

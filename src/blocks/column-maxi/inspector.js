@@ -252,6 +252,7 @@ const Inspector = props => {
 																				'background-status-hover'
 																			]
 																		}
+																		className='maxi-background-status-hover'
 																		options={[
 																			{
 																				label: __(
@@ -308,10 +309,11 @@ const Inspector = props => {
 																			{...getGroupAttributes(
 																				attributes,
 																				[
-																					'backgroundHover',
-																					'backgroundColorHover',
-																					'backgroundGradientHover',
-																				]
+																					'background',
+																					'backgroundColor',
+																					'backgroundGradient',
+																				],
+																				true
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -386,6 +388,7 @@ const Inspector = props => {
 																				'border-status-hover'
 																			]
 																		}
+																		className='maxi-border-status-hover'
 																		options={[
 																			{
 																				label: __(
@@ -442,10 +445,11 @@ const Inspector = props => {
 																			{...getGroupAttributes(
 																				attributes,
 																				[
-																					'borderHover',
-																					'borderWidthHover',
-																					'borderRadiusHover',
-																				]
+																					'border',
+																					'borderWidth',
+																					'borderRadius',
+																				],
+																				true
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -511,7 +515,7 @@ const Inspector = props => {
 																<>
 																	<FancyRadioControl
 																		label={__(
-																			'Enable Border Hover',
+																			'Enable Box Shadow Hover',
 																			'maxi-blocks'
 																		)}
 																		selected={
@@ -519,6 +523,7 @@ const Inspector = props => {
 																				'box-shadow-status-hover'
 																			]
 																		}
+																		className='maxi-box-shadow-status-hover'
 																		options={[
 																			{
 																				label: __(

@@ -6,7 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, getAttributeKey } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getAttributeKey,
+	getAttributeValue,
+} from '../../extensions/styles';
 import BackgroundLayersControl from './backgroundLayersControl';
 import ColorLayer from './colorLayer';
 import FancyRadioControl from '../fancy-radio-control';
@@ -20,7 +24,6 @@ import VideoLayer from './videoLayer';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Styles and icons
@@ -57,18 +60,17 @@ const BackgroundControl = props => {
 		isButton = false,
 	} = props;
 
-	const backgroundActiveMedia =
-		props[getAttributeKey('background-active-media', isHover, prefix)] ||
-		props[getAttributeKey('background-active-media', false, prefix)];
+	const backgroundActiveMedia = getAttributeValue(
+		'background-active-media',
+		props,
+		isHover,
+		prefix
+	);
 	const layersOptions =
-		props[getAttributeKey('background-layers', isHover, prefix)] ||
-		props[getAttributeKey('background-layers', false, prefix)] ||
-		[];
-	const layersStatus = !isNil(
-		props[getAttributeKey('background-layers-status', isHover, prefix)]
-	)
-		? props[getAttributeKey('background-layers-status', isHover, prefix)]
-		: props[getAttributeKey('background-layers-status', false, prefix)];
+		getAttributeValue('background-layers', props, isHover, prefix) || [];
+	const layersStatus =
+		getAttributeValue('background-layers-status', props, isHover, prefix) ||
+		false;
 	const classes = classnames('maxi-background-control', className);
 
 	const getOptions = () => {

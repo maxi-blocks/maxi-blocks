@@ -424,6 +424,7 @@ const Inspector = memo(
 																					'background-status-hover'
 																				]
 																			}
+																			className='maxi-background-status-hover'
 																			options={[
 																				{
 																					label: __(
@@ -565,6 +566,7 @@ const Inspector = memo(
 																					'border-status-hover'
 																				]
 																			}
+																			className='maxi-border-status-hover'
 																			options={[
 																				{
 																					label: __(
@@ -621,10 +623,11 @@ const Inspector = memo(
 																				{...getGroupAttributes(
 																					attributes,
 																					[
-																						'borderHover',
-																						'borderWidthHover',
-																						'borderRadiusHover',
-																					]
+																						'border',
+																						'borderWidth',
+																						'borderRadius',
+																					],
+																					true
 																				)}
 																				onChange={obj =>
 																					setAttributes(
@@ -758,6 +761,7 @@ const Inspector = memo(
 																					'box-shadow-status-hover'
 																				]
 																			}
+																			className='maxi-box-shadow-status-hover'
 																			options={[
 																				{
 																					label: __(

@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
@@ -215,7 +215,7 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getWrapperObject(props),
 			' .maxi-button-block__button': getNormalObject(props),
 			' .maxi-button-block__icon': getIconObject(props, 'icon'),
@@ -224,7 +224,7 @@ const getStyles = props => {
 			' .maxi-button-block__button:hover': getHoverObject(props),
 			' .maxi-button-block__button:hover .maxi-button-block__content':
 				getHoverContentObject(props),
-		},
+		}),
 	};
 
 	return response;

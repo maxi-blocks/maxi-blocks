@@ -215,6 +215,7 @@ const Inspector = props => {
 																				'background-status-hover'
 																			]
 																		}
+																		className='maxi-background-status-hover'
 																		options={[
 																			{
 																				label: __(
@@ -274,10 +275,8 @@ const Inspector = props => {
 																					'background',
 																					'backgroundColor',
 																					'backgroundGradient',
-																					'backgroundHover',
-																					'backgroundColorHover',
-																					'backgroundGradientHover',
-																				]
+																				],
+																				true
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -352,6 +351,7 @@ const Inspector = props => {
 																				'border-status-hover'
 																			]
 																		}
+																		className='maxi-border-status-hover'
 																		options={[
 																			{
 																				label: __(
@@ -411,10 +411,8 @@ const Inspector = props => {
 																					'border',
 																					'borderWidth',
 																					'borderRadius',
-																					'borderHover',
-																					'borderWidthHover',
-																					'borderRadiusHover',
-																				]
+																				],
+																				true
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -488,6 +486,7 @@ const Inspector = props => {
 																				'box-shadow-status-hover'
 																			]
 																		}
+																		className='maxi-box-shadow-status-hover'
 																		options={[
 																			{
 																				label: __(

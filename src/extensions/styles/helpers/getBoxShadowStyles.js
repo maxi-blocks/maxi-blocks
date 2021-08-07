@@ -9,6 +9,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
  * External dependencies
  */
 import { round, isNumber } from 'lodash';
+import getAttributeValue from '../getAttributeValue';
 
 /**
  * General
@@ -36,12 +37,12 @@ const getBoxShadowStyles = ({
 		let boxShadowString = '';
 
 		const getValue = target => {
-			const value =
-				obj[
-					`box-shadow-${target}-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`
-				] || obj[`box-shadow-${target}-${breakpoint}`];
+			const value = getAttributeValue(
+				`box-shadow-${target}-${breakpoint}`,
+				obj,
+				isHover
+			);
+
 			const defaultValue =
 				breakpoint === 'general'
 					? defaultObj[

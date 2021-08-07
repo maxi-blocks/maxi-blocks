@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-return-await */
 /**
  * WordPress dependencies
@@ -26,11 +27,17 @@ describe('FontLevelControl', () => {
 
 		const fontLevel = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'];
 
-		for (let i = 0; i < fontLevelControl.length; i++) {
+		for (let i = 0; i < fontLevelControl.length; i += 1) {
 			const setting = fontLevelControl[i !== 6 ? i + 1 : 0];
 
 			await setting.click();
-			await page.waitForTimeout(150);
+
+			// Ensures is clicked
+			await setting.evaluate(el => {
+				const isSelected = el.getAttribute('aria-pressed') === 'true';
+
+				if (!isSelected) el.click();
+			});
 
 			const attributes = await getBlockAttributes();
 			const text = attributes.textLevel;

@@ -586,6 +586,22 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									'boxShadow'
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									'boxShadow',
+																									true
+																								),
+																							}
+																						)),
 																					'box-shadow-status-hover':
 																						val,
 																				}

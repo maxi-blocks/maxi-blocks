@@ -35,7 +35,10 @@ import {
 	ZIndexControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	setHoverAttributes,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -440,6 +443,30 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
+																						...(val &&
+																							setHoverAttributes(
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										[
+																											'background',
+																											'backgroundColor',
+																											'backgroundGradient',
+																										]
+																									),
+																								},
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										[
+																											'background',
+																											'backgroundColor',
+																											'backgroundGradient',
+																										],
+																										true
+																									),
+																								}
+																							)),
 																						'background-status-hover':
 																							val,
 																					}

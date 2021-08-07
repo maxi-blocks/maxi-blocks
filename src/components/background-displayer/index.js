@@ -153,10 +153,21 @@ const BackgroundContent = props => {
 };
 
 const BackgroundDisplayer = props => {
-	const { className, 'background-active-media': backgroundActiveMedia } =
-		props;
+	const {
+		className,
+		'background-active-media': backgroundActiveMedia,
+		'background-active-media-hover': backgroundActiveMediaHover,
+		'background-status-hover': backgroundStatusHover,
+	} = props;
 
-	if (!backgroundActiveMedia || backgroundActiveMedia === 'none') return null;
+	const noneActiveMediaNormal =
+		!backgroundActiveMedia || backgroundActiveMedia === 'none';
+	const noneActiveMediaHover =
+		!backgroundActiveMediaHover ||
+		backgroundActiveMediaHover === 'none' ||
+		!backgroundStatusHover;
+
+	if (noneActiveMediaNormal && noneActiveMediaHover) return null;
 
 	const classes = classnames('maxi-background-displayer', className);
 

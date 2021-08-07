@@ -31,6 +31,7 @@ import {
 	getGroupAttributes,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
+	setHoverAttributes,
 } from '../../extensions/styles';
 import { getColumnDefaultValue } from '../../extensions/column-templates';
 
@@ -270,6 +271,30 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'background',
+																										'backgroundColor',
+																										'backgroundGradient',
+																									]
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'background',
+																										'backgroundColor',
+																										'backgroundGradient',
+																									],
+																									true
+																								),
+																							}
+																						)),
 																					'background-status-hover':
 																						val,
 																				}

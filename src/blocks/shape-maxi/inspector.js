@@ -34,6 +34,7 @@ import {
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
+	setHoverAttributes,
 } from '../../extensions/styles';
 import MaxiModal from '../../editor/library/modal';
 
@@ -312,6 +313,30 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'background',
+																										'backgroundColor',
+																										'backgroundGradient',
+																									]
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'background',
+																										'backgroundColor',
+																										'backgroundGradient',
+																									],
+																									true
+																								),
+																							}
+																						)),
 																					'background-status-hover':
 																						val,
 																				}

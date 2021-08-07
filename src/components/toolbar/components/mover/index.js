@@ -72,9 +72,8 @@ const Mover = props => {
 		[clientId]
 	);
 	const isDragging = useRef(false);
-	const { startDraggingBlocks, stopDraggingBlocks } = useDispatch(
-		'core/block-editor'
-	);
+	const { startDraggingBlocks, stopDraggingBlocks } =
+		useDispatch('core/block-editor');
 
 	// Stop dragging blocks if the block draggable is unmounted
 	useEffect(() => {
@@ -109,8 +108,9 @@ const Mover = props => {
 					stopDraggingBlocks();
 					isDragging.current = false;
 				}}
+				__experimentalTransferDataType='wp-blocks'
 			>
-				{({ onDraggableStart, onDraggableEnd }) => (
+				{({ onDraggableStart, onDraggableEnd }, ...rest) => (
 					<Tooltip
 						text={__('Mover', 'maxi-blocks')}
 						position='bottom center'
@@ -120,6 +120,7 @@ const Mover = props => {
 							draggable={isDraggable}
 							onDragStart={onDraggableStart}
 							onDragEnd={onDraggableEnd}
+							{...rest}
 						>
 							<Icon
 								className='toolbar-item__icon'

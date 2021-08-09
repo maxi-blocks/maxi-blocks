@@ -42,7 +42,7 @@ const getBorderStyles = ({
 		response[breakpoint] = {};
 
 		const borderStyle = getLastBreakpointAttribute(
-			'border-style',
+			`${prefix}border-style`,
 			breakpoint,
 			obj,
 			isHover

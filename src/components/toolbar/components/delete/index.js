@@ -29,12 +29,11 @@ const Delete = props => {
 
 	return (
 		<Tooltip text={__('Delete', 'maxi-blocks')} position='bottom center'>
-			<Button
-				className='toolbar-item toolbar-item__delete'
-				onClick={() => removeBlock(clientId)}
-			>
-				<Icon className='toolbar-item__icon' icon={toolbarDelete} />
-			</Button>
+			<div className='toolbar-item toolbar-item__delete'>
+				<Button onClick={() => removeBlock(clientId)}>
+					<Icon className='toolbar-item__icon' icon={toolbarDelete} />
+				</Button>
+			</div>
 		</Tooltip>
 	);
 };

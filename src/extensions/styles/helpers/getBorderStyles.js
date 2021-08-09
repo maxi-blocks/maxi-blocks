@@ -61,14 +61,14 @@ const getBorderStyles = ({
 					'gm'
 				);
 				const newLabel = newKey.replace(replacer, '');
-				if (key.includes('style')) {
-					const borderStyle = getLastBreakpointAttribute(
-						'border-style',
-						breakpoint,
-						obj,
-						isHover
-					);
+				const borderStyle = getLastBreakpointAttribute(
+					`${prefix}border-style`,
+					breakpoint,
+					obj,
+					isHover
+				);
 
+				if (key.includes('style')) {
 					if (
 						isHover &&
 						(isUndefined(borderStyle) || borderStyle === 'none')
@@ -90,26 +90,31 @@ const getBorderStyles = ({
 								}`
 							];
 
-						if (paletteStatus && paletteColor)
-							if (isButton)
-								response[breakpoint][
-									'border-color'
-								] = `var(--maxi-${parentBlockStyle}-${
-									isButton ? 'button-' : ''
-								}border-color${
-									isHover ? '-hover' : ''
-								}, var(--maxi-${parentBlockStyle}-color-${paletteColor}))`;
-							else
-								response[breakpoint][
-									'border-color'
-								] = `var(--maxi-${parentBlockStyle}-color-${paletteColor})`;
-						else
-							response[breakpoint]['border-color'] =
-								obj[
-									`${prefix}border-color-${breakpoint}${
+						if (
+							!isUndefined(borderStyle) &&
+							borderStyle !== 'none'
+						) {
+							if (paletteStatus && paletteColor)
+								if (isButton)
+									response[breakpoint][
+										'border-color'
+									] = `var(--maxi-${parentBlockStyle}-${
+										isButton ? 'button-' : ''
+									}border-color${
 										isHover ? '-hover' : ''
-									}`
-								];
+									}, var(--maxi-${parentBlockStyle}-color-${paletteColor}))`;
+								else
+									response[breakpoint][
+										'border-color'
+									] = `var(--maxi-${parentBlockStyle}-color-${paletteColor})`;
+							else
+								response[breakpoint]['border-color'] =
+									obj[
+										`${prefix}border-color-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`
+									];
+						}
 					} else response[breakpoint][newLabel] = `${value}`;
 				} else {
 					const unitKey = keyWords.filter(key =>

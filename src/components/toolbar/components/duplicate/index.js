@@ -29,12 +29,14 @@ const Duplicate = props => {
 
 	return (
 		<Tooltip text={__('Duplicate', 'maxi-blocks')} position='bottom center'>
-			<Button
-				className='toolbar-item toolbar-item__duplicate'
-				onClick={() => duplicateBlocks([clientId])}
-			>
-				<Icon className='toolbar-item__icon' icon={toolbarDuplicate} />
-			</Button>
+			<div className='toolbar-item toolbar-item__duplicate'>
+				<Button onClick={() => duplicateBlocks([clientId])}>
+					<Icon
+						className='toolbar-item__icon'
+						icon={toolbarDuplicate}
+					/>
+				</Button>
+			</div>
 		</Tooltip>
 	);
 };

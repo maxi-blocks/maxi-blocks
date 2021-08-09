@@ -166,16 +166,22 @@ const getIconObject = (props, target) => {
 	const response = {
 		icon: getIconStyles(
 			{
-				...getGroupAttributes(props, 'icon'),
+				...getGroupAttributes(props, ['icon', 'typography']),
 			},
 			target,
-			props.parentBlockStyle
+			props.parentBlockStyle,
+			props['icon-inherit']
 		),
 		background: target === 'icon' && {
 			...getColorBackgroundObject({
-				...getGroupAttributes(props, 'iconBackgroundColor'),
+				...getGroupAttributes(props, [
+					'iconBackgroundColor',
+					'background',
+					'backgroundColor',
+				]),
 				prefix: 'icon-',
 				blockStyle: props.parentBlockStyle,
+				isIconInherit: props['icon-inherit'],
 			}),
 		},
 		gradient: target === 'icon' && {
@@ -186,7 +192,6 @@ const getIconObject = (props, target) => {
 		},
 		padding:
 			target === 'icon' &&
-			props['icon-custom-padding'] &&
 			getMarginPaddingStyles(
 				{
 					...getGroupAttributes(props, 'iconPadding'),

@@ -45,7 +45,14 @@ import { isEmpty, isEqual, cloneDeep } from 'lodash';
 /**
  * Icons
  */
-import { presetOne, presetTwo, presetThree } from '../../icons';
+import {
+	presetOne,
+	presetTwo,
+	presetThree,
+	presetFour,
+	presetFive,
+	presetSix,
+} from '../../icons';
 
 /**
  * Inspector
@@ -63,8 +70,19 @@ const Inspector = memo(
 			fullWidth,
 		} = attributes;
 
-		const onChangePreset = number => {
-			setAttributes({ ...defaultPresets[`preset${number}`] });
+		const onChangePreset = (number, type = 'normal') => {
+			if (
+				type === 'icon' &&
+				!isEmpty(attributes['icon-content']) &&
+				attributes['icon-content'] !==
+					defaultPresets[`preset${number}`]['icon-content']
+			)
+				defaultPresets[`preset${number}`]['icon-content'] =
+					attributes['icon-content'];
+
+			setAttributes({
+				...defaultPresets[`preset${number}`],
+			});
 		};
 
 		return (
@@ -160,6 +178,51 @@ const Inspector = memo(
 																onChange: () =>
 																	onChangePreset(
 																		3
+																	),
+															},
+															{
+																activeItem: 0,
+																content: (
+																	<Icon
+																		icon={
+																			presetFour
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		4,
+																		'icon'
+																	),
+															},
+															{
+																activeItem: 0,
+																content: (
+																	<Icon
+																		icon={
+																			presetFive
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		5,
+																		'icon'
+																	),
+															},
+															{
+																activeItem: 0,
+																content: (
+																	<Icon
+																		icon={
+																			presetSix
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		6,
+																		'icon'
 																	),
 															},
 														]}

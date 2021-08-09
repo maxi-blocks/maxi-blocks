@@ -22,7 +22,9 @@ const save = props => {
 
 	return (
 		<MaxiBlock {...getMaxiBlockBlockAttributes({ ...props, name })} isSave>
-			<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />
+			<ArrowDisplayer
+				{...getGroupAttributes(attributes, ['background', 'arrow'])}
+			/>
 			<div className='maxi-group-block__group'>
 				<InnerBlocks.Content />
 			</div>

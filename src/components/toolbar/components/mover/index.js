@@ -108,18 +108,20 @@ const Mover = props => {
 					stopDraggingBlocks();
 					isDragging.current = false;
 				}}
+				__experimentalTransferDataType='wp-blocks'
 			>
-				{({ onDraggableStart, onDraggableEnd }) => (
+				{({ onDraggableStart, onDraggableEnd }, ...rest) => (
 					<Tooltip
 						text={__('Mover', 'maxi-blocks')}
 						position='bottom center'
 					>
 						<div className='toolbar-item'>
 							<Button
-								className='toolbar-item__move'
+								className='toolbar-item toolbar-item__move'
 								draggable={isDraggable}
 								onDragStart={onDraggableStart}
 								onDragEnd={onDraggableEnd}
+								{...rest}
 							>
 								<Icon
 									className='toolbar-item__icon'

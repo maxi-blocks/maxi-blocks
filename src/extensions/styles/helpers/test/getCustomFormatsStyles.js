@@ -1,5 +1,14 @@
 import getCustomFormatsStyles from '../getCustomFormatsStyles';
-import '@wordpress/block-editor';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
 
 describe('getCustomFormatsStyles', () => {
 	it('Get a correct custom formats styles', () => {

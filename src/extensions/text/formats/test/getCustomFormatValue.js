@@ -1,5 +1,30 @@
 import getCustomFormatValue from '../getCustomFormatValue';
-import '@wordpress/block-editor';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+		registerStore: jest.fn(),
+	};
+});
+
+jest.mock('@wordpress/rich-text', () => {
+	return {
+		getActiveFormat: jest.fn(() => {
+			// return 'maxi-blocks/text-custom-hover';
+			return false;
+		}),
+	};
+});
+
+jest.mock('@wordpress/blocks', () => {
+	return {
+		getActiveFormat: jest.fn(),
+	};
+});
 
 describe('getCustomFormatValue', () => {
 	it('Returns SC value', () => {

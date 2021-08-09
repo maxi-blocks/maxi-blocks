@@ -1,5 +1,14 @@
 import getPositionStyles from '../getPositionStyles';
-import '@wordpress/block-editor';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
 
 describe('getPositionStyles', () => {
 	it('Get a correct position styles', () => {

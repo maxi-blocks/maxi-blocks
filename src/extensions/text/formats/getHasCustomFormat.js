@@ -3,7 +3,14 @@
  */
 import getFormatType from './getFormatType';
 
+/**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
 const getHasCustomFormat = (formatValue, isHover = false) => {
+	if (isEmpty(formatValue) || isEmpty(formatValue.formats)) return false;
+
 	const { formats, start, end } = formatValue;
 
 	return formats.some((formatEl, i) => {

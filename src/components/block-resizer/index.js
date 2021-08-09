@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { forwardRef } from '@wordpress/element';
+
+/**
  * External dependencies
  */
 import { Resizable } from 're-resizable';
@@ -8,7 +13,6 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { forwardRef } from '@wordpress/element';
 
 /**
  * Component
@@ -43,7 +47,10 @@ const BlockResizer = forwardRef((props, ref) => {
 	const handleRef = newRef => {
 		if (newRef) {
 			if (resizableObject) resizableObject.current = newRef;
-			if (ref) ref.current = newRef.resizable;
+			if (ref) {
+				if (typeof ref === 'function') ref(newRef.resizable);
+				else ref.current = newRef.resizable;
+			}
 		}
 	};
 

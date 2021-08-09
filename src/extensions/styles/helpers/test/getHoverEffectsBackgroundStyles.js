@@ -1,6 +1,15 @@
 import getHoverEffectsBackgroundStyles from '../getHoverEffectsBackgroundStyles';
-import '@wordpress/block-editor';
 import '@wordpress/i18n';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
 
 describe('getHoverEffectsBackgroundStyles', () => {
 	it('Get a correct hover effects background style', () => {

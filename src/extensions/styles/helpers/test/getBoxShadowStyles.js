@@ -1,5 +1,14 @@
 import getBoxShadowStyles from '../getBoxShadowStyles';
-import '@wordpress/block-editor';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
 
 describe('getBoxShadowStyles', () => {
 	it('Get a correct box shadow styles with values in all responsive and with custom color', () => {

@@ -15,19 +15,18 @@ import flatFormatsWithClass from './flatFormatsWithClass';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  *
- * @param {Object} 	[$0]					Optional named arguments.
- * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {Object} 	[$0.typography]			MaxiBlocks typography
- * @param {boolean} [$0.isList]				Text Maxi block has list mode active
- * @param {Object}	[$0.value]				Requested values to implement
- * 											on typography object
- * @param {string} 	[$0.breakpoint]			Device type breakpoint
- * @param {boolean}	[$0.isHover]			Is the requested typography under hover state
- *
+ * @param {Object}  [$0]             Optional named arguments.
+ * @param {Object}  [$0.formatValue] RichText format value
+ * @param {Object}  [$0.typography]  MaxiBlocks typography
+ * @param {boolean} [$0.isList]      Text Maxi block has list mode active
+ * @param {Object}  [$0.value]       Requested values to implement
+ *                                   on typography object
+ * @param {string}  [$0.breakpoint]  Device type breakpoint
+ * @param {boolean} [$0.isHover]     Is the requested typography under hover state
  * @returns {Object} Formatted object
  */
 const setFormat = ({
@@ -70,17 +69,21 @@ const setFormat = ({
 		formatValue.start = startOffset;
 		formatValue.end = endOffset;
 	}
+
+	const formatsLength = !isEmpty(formatValue.formats)
+		? formatValue.formats.length
+		: 0;
+
 	if (
 		!formatValue ||
 		formatValue.start === formatValue.end ||
-		(formatValue.start === 0 &&
-			formatValue.end === formatValue.formats.length)
+		(formatValue.start === 0 && formatValue.end === formatsLength)
 	) {
 		const newTypography = { ...typography };
 		const newFormatValue = {
 			...formatValue,
 			start: 0,
-			end: formatValue.formats.length,
+			end: formatsLength,
 		};
 
 		Object.entries(value).forEach(([key, val]) => {
@@ -120,7 +123,11 @@ const setFormat = ({
 			isList,
 		});
 
-		return { ...newTypography, content: newContent };
+		return {
+			...newTypography,
+			content: newContent,
+			...(returnFormatValue && { formatValue: newFormatValue }),
+		};
 	}
 
 	// Ensures the format changes are saved as undo entity on historical records

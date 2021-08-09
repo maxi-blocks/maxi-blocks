@@ -5,7 +5,7 @@
  * is necessary to add `await page.waitForTimeout(150);` as the `formatValue` takes that time to be saved
  */
 
-console.error = jest.fn();
+// console.error = jest.fn();
 
 /**
  * WordPress dependencies
@@ -15,7 +15,6 @@ import {
 	insertBlock,
 	getEditedPostContent,
 	pressKeyWithModifier,
-	openPreviewPage,
 	pressKeyTimes,
 	setClipboardData,
 } from '@wordpress/e2e-test-utils';
@@ -24,7 +23,7 @@ import {
  * Internal dependencies
  */
 import pasteHTML from './pasteExamples';
-import { getBlockAttributes } from '../../utils';
+import { getBlockAttributes, openPreviewPage } from '../../utils';
 
 const linkExample = 'test.com';
 describe('TextMaxi', () => {
@@ -57,13 +56,23 @@ describe('TextMaxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
-	it('Test Text Maxi merge', async () => {
+	it('Test Text Maxi on merge from top', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Test Text Maxi...', { delay: 100 });
 		await page.keyboard.press('Enter');
 		await page.keyboard.type('...OnMerge', { delay: 100 });
-		await pressKeyTimes('ArrowLeft', '11');
+		await pressKeyTimes('ArrowLeft', '12');
 		await page.keyboard.press('Delete');
+
+		expect(await getEditedPostContent()).toMatchSnapshot();
+	});
+	it('Test Text Maxi on merge from bottom', async () => {
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Test Text Maxi...', { delay: 100 });
+		await page.keyboard.press('Enter');
+		await page.keyboard.type('...OnMerge', { delay: 100 });
+		await pressKeyTimes('ArrowLeft', '10');
+		await page.keyboard.press('Backspace');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
@@ -93,7 +102,7 @@ describe('TextMaxi', () => {
 		await page.waitForTimeout(150);
 		await page.waitForSelector('.toolbar-item__italic');
 		await page.$eval('.toolbar-item__italic', button => button.click());
-		await pressKeyTimes('ArrowLeft', '5');
+		await pressKeyTimes('ArrowLeft', '6');
 		await page.keyboard.press('Delete');
 		await page.waitForTimeout(150);
 
@@ -144,8 +153,7 @@ describe('TextMaxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 
 		// Check frontend
-		const editorPage = page;
-		const previewPage = await openPreviewPage(editorPage);
+		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
 		const content = await previewPage.$eval(
 			'.entry-content',
@@ -449,8 +457,40 @@ describe('TextMaxi', () => {
 		await pressKeyWithModifier('shift', 'ArrowLeft');
 		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__bold', button => button.click());
+		await page.waitForTimeout(150);
 		await page.keyboard.press('ArrowLeft');
+		await page.waitForTimeout(150);
 		await page.keyboard.press('Enter');
+
+		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const selectMaxiTextP = await selectMaxiTextDiv.$(
+			'.block-editor-rich-text__editable'
+		);
+		await selectMaxiTextP.focus();
+
+		expect(await getEditedPostContent()).toMatchSnapshot();
+	});
+
+	it('Testing Text Maxi with custom formats when split a word at middle', async () => {
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi Bold', { delay: 100 });
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await page.waitForTimeout(150);
+		await page.$eval('.toolbar-item__bold', button => button.click());
+		await page.waitForTimeout(150);
+		await page.keyboard.press('ArrowLeft');
+		await pressKeyTimes('ArrowRight', 3);
+		await page.waitForTimeout(150);
+		await page.keyboard.press('Enter');
+
+		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const selectMaxiTextP = await selectMaxiTextDiv.$(
+			'.block-editor-rich-text__editable'
+		);
+		await selectMaxiTextP.focus();
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
@@ -494,7 +534,7 @@ describe('TextMaxi', () => {
 			'.block-editor-rich-text__editable'
 		);
 		await selectMaxiTextP.focus();
-		await page.keyboard.press('ArrowDown');
+		await pressKeyTimes('ArrowDown', '2');
 		await page.keyboard.press('Backspace');
 
 		expect(await getEditedPostContent()).toMatchSnapshot();

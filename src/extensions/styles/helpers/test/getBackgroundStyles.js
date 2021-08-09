@@ -1,5 +1,14 @@
 import getBackgroundStyles from '../getBackgroundStyles';
-import '@wordpress/block-editor';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
 
 describe('getBackgroundStyles', () => {
 	it('Get a correct background styles', () => {

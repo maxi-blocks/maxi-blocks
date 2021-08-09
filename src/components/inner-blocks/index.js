@@ -21,22 +21,8 @@ const InnerBlocks = forwardRef((props, ref) => {
 		className,
 		orientation = 'horizontal',
 		renderAppender = false,
+		templateInsertUpdatesSelection = true,
 	} = props;
-
-	if (!useInnerBlocksProps)
-		return (
-			<WPInnerBlocks
-				allowedBlocks={allowedBlocks}
-				templateLock={templateLock}
-				template={template}
-				orientation={orientation}
-				__experimentalTagName={tagName}
-				__experimentalPassedProps={{
-					className,
-				}}
-				renderAppender={renderAppender}
-			/>
-		);
 
 	const innerBlocksProps = useInnerBlocksProps(
 		{ className },
@@ -47,6 +33,7 @@ const InnerBlocks = forwardRef((props, ref) => {
 			template,
 			orientation,
 			renderAppender,
+			templateInsertUpdatesSelection,
 		}
 	);
 

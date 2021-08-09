@@ -13,6 +13,7 @@
 
 node_modules
 build
+/artifacts
 
 # Ignore Mac DS_Store files
 **/.DS_Store

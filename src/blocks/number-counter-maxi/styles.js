@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getOpacityStyles,
 	getZIndexStyles,
@@ -48,7 +48,7 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			' .maxi-number-counter__box .maxi-number-counter__box__circle':
 				getCircleObject(props, 'circle-bar'),
@@ -58,7 +58,7 @@ const getStyles = props => {
 				getCircleObject(props, 'text'),
 			' .maxi-number-counter__box .maxi-number-counter__box__text sup':
 				getCircleObject(props, 'sup'),
-		},
+		}),
 	};
 
 	return response;

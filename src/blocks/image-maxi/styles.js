@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
@@ -241,7 +241,7 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			' .maxi-image-block-wrapper': getImageWrapperObject(props),
 			':hover .maxi-image-block-wrapper': getImageHoverObject(props),
@@ -300,7 +300,7 @@ const getStyles = props => {
 				[' figcaption.maxi-image-block__caption a'],
 				props.parentBlockStyle
 			),
-		},
+		}),
 	};
 
 	return response;

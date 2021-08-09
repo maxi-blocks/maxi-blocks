@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getSizeStyles,
 	getBoxShadowStyles,
@@ -100,7 +100,7 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover hr.maxi-divider-block__divider': getHoverObject(props),
 			' hr.maxi-divider-block__divider': getDividerObject(props),
@@ -121,7 +121,7 @@ const getStyles = props => {
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
-		},
+		}),
 	};
 
 	return response;

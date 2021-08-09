@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBoxShadowStyles,
 	getZIndexStyles,
@@ -101,8 +101,8 @@ const getHoverObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	let response = {
-		[uniqueID]: {
+	const response = {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
 			...getBackgroundStyles({
@@ -131,11 +131,7 @@ const getStyles = props => {
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
-		},
-	};
-
-	response = {
-		...response,
+		}),
 	};
 
 	return response;

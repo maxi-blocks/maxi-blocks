@@ -12,9 +12,11 @@ import {
 import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('BoxShadowControl', () => {
-	it('Checking the boxShadow control', async () => {
+	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
+	});
+	it('Checking the boxShadow control', async () => {
 		const accordionPanel = await openSidebar(page, 'box shadow');
 
 		await accordionPanel.$$eval('.maxi-shadow-control button', click =>
@@ -92,6 +94,65 @@ describe('BoxShadowControl', () => {
 			'box-shadow-horizontal-general': boxShadowHorizontal,
 			'box-shadow-spread-general': boxShadowSpread,
 			'box-shadow-vertical-general': boxShadowVertical,
+		}))(shadowAttributes);
+
+		expect(boxShadow).toStrictEqual(expectChanges);
+	});
+
+	it('Check hover values kept after setting normal border to none', async () => {
+		const accordionPanel = await openSidebar(page, 'box shadow');
+		await accordionPanel.$$eval('.maxi-shadow-control button', click =>
+			click[1].click()
+		);
+
+		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
+			buttons[1].click()
+		);
+
+		await page.$$eval(
+			'.maxi-box-shadow-status-hover .maxi-radio-control__option',
+			buttons => buttons[0].querySelector('label').click()
+		);
+
+		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
+			buttons[0].click()
+		);
+
+		await accordionPanel.$$eval('.maxi-shadow-control button', click =>
+			click[0].click()
+		);
+
+		const expectChanges = {
+			'box-shadow-blur-general': undefined,
+			'box-shadow-blur-general-hover': 87,
+			'box-shadow-horizontal-general': undefined,
+			'box-shadow-horizontal-general-hover': 0,
+			'box-shadow-spread-general': undefined,
+			'box-shadow-spread-general-hover': 10,
+			'box-shadow-vertical-general': undefined,
+			'box-shadow-vertical-general-hover': 0,
+		};
+
+		const shadowAttributes = await getBlockAttributes();
+
+		const boxShadow = (({
+			'box-shadow-blur-general': boxShadowBlur,
+			'box-shadow-blur-general-hover': boxShadowBlurHover,
+			'box-shadow-horizontal-general': boxShadowHorizontal,
+			'box-shadow-horizontal-general-hover': boxShadowHorizontalHover,
+			'box-shadow-spread-general': boxShadowSpread,
+			'box-shadow-spread-general-hover': boxShadowSpreadHover,
+			'box-shadow-vertical-general': boxShadowVertical,
+			'box-shadow-vertical-general-hover': boxShadowVerticalHover,
+		}) => ({
+			'box-shadow-blur-general': boxShadowBlur,
+			'box-shadow-blur-general-hover': boxShadowBlurHover,
+			'box-shadow-horizontal-general': boxShadowHorizontal,
+			'box-shadow-horizontal-general-hover': boxShadowHorizontalHover,
+			'box-shadow-spread-general': boxShadowSpread,
+			'box-shadow-spread-general-hover': boxShadowSpreadHover,
+			'box-shadow-vertical-general': boxShadowVertical,
+			'box-shadow-vertical-general-hover': boxShadowVerticalHover,
 		}))(shadowAttributes);
 
 		expect(boxShadow).toStrictEqual(expectChanges);

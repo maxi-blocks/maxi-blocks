@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getBackgroundStyles,
@@ -107,7 +107,7 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
 			' .maxi-svg-icon-block__icon svg': getSvgObject(props, 'svg'),
@@ -144,7 +144,7 @@ const getStyles = props => {
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
-		},
+		}),
 	};
 
 	return response;

@@ -39,6 +39,7 @@ import {
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
+	setHoverAttributes,
 } from '../../extensions/styles';
 import MaxiModal from '../../editor/library/modal';
 
@@ -579,6 +580,7 @@ const Inspector = memo(
 																					'background-status-hover'
 																				]
 																			}
+																			className='maxi-background-status-hover'
 																			options={[
 																				{
 																					label: __(
@@ -598,6 +600,30 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
+																						...(val &&
+																							setHoverAttributes(
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										[
+																											'background',
+																											'backgroundColor',
+																											'backgroundGradient',
+																										]
+																									),
+																								},
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										[
+																											'background',
+																											'backgroundColor',
+																											'backgroundGradient',
+																										],
+																										true
+																									),
+																								}
+																							)),
 																						'background-status-hover':
 																							val,
 																					}
@@ -692,6 +718,7 @@ const Inspector = memo(
 																					'border-status-hover'
 																				]
 																			}
+																			className='maxi-border-status-hover'
 																			options={[
 																				{
 																					label: __(
@@ -711,6 +738,30 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
+																						...(val &&
+																							setHoverAttributes(
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										[
+																											'border',
+																											'borderWidth',
+																											'borderRadius',
+																										]
+																									),
+																								},
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										[
+																											'border',
+																											'borderWidth',
+																											'borderRadius',
+																										],
+																										true
+																									),
+																								}
+																							)),
 																						'border-status-hover':
 																							val,
 																					}
@@ -724,10 +775,11 @@ const Inspector = memo(
 																				{...getGroupAttributes(
 																					attributes,
 																					[
-																						'borderHover',
-																						'borderWidthHover',
-																						'borderRadiusHover',
-																					]
+																						'border',
+																						'borderWidth',
+																						'borderRadius',
+																					],
+																					true
 																				)}
 																				onChange={obj =>
 																					setAttributes(
@@ -861,6 +913,7 @@ const Inspector = memo(
 																					'box-shadow-status-hover'
 																				]
 																			}
+																			className='maxi-box-shadow-status-hover'
 																			options={[
 																				{
 																					label: __(
@@ -880,8 +933,24 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
+																						...(val &&
+																							setHoverAttributes(
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										'boxShadow'
+																									),
+																								},
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										'boxShadow',
+																										true
+																									),
+																								}
+																							)),
 																						'box-shadow-status-hover':
-																							!!+val,
+																							val,
 																					}
 																				)
 																			}

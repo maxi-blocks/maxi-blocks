@@ -25,7 +25,7 @@ const openSidebar = async (page, item) => {
 	const sidebarButtons = await sidebar.$$(
 		'.maxi-accordion-control__item__button'
 	);
-	for (let i = 0; i < sidebarButtons.length; i++) {
+	for (let i = 0; i < sidebarButtons.length; i += 1) {
 		const el = sidebarButtons[i];
 
 		el.evaluate(el => {
@@ -38,7 +38,7 @@ const openSidebar = async (page, item) => {
 	const sidebarPanels = await sidebar.$$(
 		'.maxi-accordion-control__item__panel'
 	);
-	for (let i = 0; i < sidebarPanels.length; i++) {
+	for (let i = 0; i < sidebarPanels.length; i += 1) {
 		const el = sidebarPanels[i];
 
 		el.evaluate(el => {

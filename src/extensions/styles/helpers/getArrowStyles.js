@@ -8,37 +8,51 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
-export const getArrowBorderObject = props => {
+export const getArrowBorderObject = (
+	props,
+	parentBlockStyle,
+	isHover = false
+) => {
 	const response = {
 		label: 'Arrow Border',
 		general: {},
 	};
 
-	if (props['border-palette-color-status-general']) {
-		const paletteColor = props['border-palette-color-general'];
+	const paletteStatus = getLastBreakpointAttribute(
+		'border-palette-color-status',
+		'general',
+		props,
+		isHover
+	);
+	const paletteColor =
+		isHover && props['border-status-hover']
+			? props[`border-palette-color-general${isHover ? '-hover' : ''}`]
+			: props['border-palette-color-general'];
 
-		response.general.background = `var(--maxi-${props.parentBlockStyle}-color-${paletteColor})`;
-	} else if (!isEmpty(props['border-color-general']))
-		response.general.background = props['border-color-general'];
+	if (paletteStatus && paletteColor)
+		response.general.background = `var(--maxi-${parentBlockStyle}-color-${paletteColor});`;
+	else
+		response.general['border-color'] =
+			props[`border-color-general${isHover ? '-hover' : ''}`];
 
-	if (props['border-bottom-width-general']) {
+	if (props[`border-bottom-width-general${isHover ? '-hover' : ''}`]) {
 		response.general.top = `calc(${
-			props['border-bottom-width-general'] / 2
-		}${props['border-unit-width-general']})`;
+			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] / 2
+		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 
 		response.general.left = `calc(${
-			props['border-bottom-width-general'] / 2
-		}${props['border-unit-width-general']})`;
+			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] / 2
+		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 
 		response.general.width = `calc(50% + ${
-			props['border-bottom-width-general'] * 2
-		}${props['border-unit-width-general']})`;
+			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] * 2
+		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 
 		response.general.height = `calc(50% + ${
-			props['border-bottom-width-general'] * 2
-		}${props['border-unit-width-general']})`;
+			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] * 2
+		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 	}
 
 	return response;
@@ -105,29 +119,46 @@ export const getArrowObject = props => {
 	return response;
 };
 
-export const getArrowColorObject = (props, blockStyle) => {
+export const getArrowColorObject = (props, blockStyle, isHover = false) => {
 	const response = {
 		label: 'Arrow Color',
 		general: {},
 	};
 
-	if (props['background-active-media'] === 'color') {
-		if (props['background-palette-color-status']) {
-			const paletteColor = props['background-palette-color'];
+	if (
+		props[`background-active-media${isHover ? '-hover' : ''}`] ===
+		'gradient'
+	) {
+		response.general.background =
+			props[`background-gradient${isHover ? '-hover' : ''}`];
+	}
 
-			response.general[
-				'background-color'
-			] = `var(--maxi-${blockStyle}-color-${paletteColor})`;
-		} else response.general['background-color'] = props['background-color'];
-	} else response.general.background = props['background-gradient'];
+	if (props[`background-palette-color-status${isHover ? '-hover' : ''}`]) {
+		const paletteColor =
+			props[`background-palette-color${isHover ? '-hover' : ''}`];
+
+		response.general[
+			'background-color'
+		] = `var(--maxi-${blockStyle}-color-${paletteColor})`;
+	} else
+		response.general['background-color'] =
+			props[`background-color${isHover ? '-hover' : ''}`];
 
 	return response;
 };
 
 const getArrowStyles = props => {
-	const { target = '', blockStyle } = props;
+	const { target = '', blockStyle, isHover = false } = props;
 
-	return {
+	const response = {
+		...(!isHover && {
+			[`${target} .maxi-container-arrow .maxi-container-arrow--content`]:
+				{
+					arrow: {
+						...getArrowObject(getGroupAttributes(props, 'arrow')),
+					},
+				},
+		}),
 		[`${target} .maxi-container-arrow`]: {
 			shadow: {
 				...getBoxShadowStyles({
@@ -137,9 +168,18 @@ const getArrowStyles = props => {
 				}),
 			},
 		},
-		[`${target} .maxi-container-arrow .maxi-container-arrow--content`]: {
-			arrow: { ...getArrowObject(getGroupAttributes(props, 'arrow')) },
-		},
+		...(props['box-shadow-status-hover'] && {
+			[`${target}${isHover ? ':hover' : ''} .maxi-container-arrow`]: {
+				shadow: {
+					...getBoxShadowStyles({
+						obj: getGroupAttributes(props, 'boxShadow', isHover),
+						isHover,
+						dropShadow: true,
+						parentBlockStyle: blockStyle,
+					}),
+				},
+			},
+		}),
 		[`${target} .maxi-container-arrow .maxi-container-arrow--content:after`]:
 			{
 				background: {
@@ -153,6 +193,26 @@ const getArrowStyles = props => {
 					),
 				},
 			},
+		...(props['background-status-hover'] && {
+			[`${target}:hover .maxi-container-arrow .maxi-container-arrow--content:after`]:
+				{
+					background: {
+						...getArrowColorObject(
+							getGroupAttributes(
+								props,
+								[
+									'background',
+									'backgroundColor',
+									'backgroundGradient',
+								],
+								isHover
+							),
+							blockStyle,
+							isHover
+						),
+					},
+				},
+		}),
 		[`${target} .maxi-container-arrow .maxi-container-arrow--content:before`]:
 			{
 				border: {
@@ -161,11 +221,30 @@ const getArrowStyles = props => {
 							'border',
 							'borderWidth',
 							'borderRadius',
-						])
+						]),
+						blockStyle
 					),
 				},
 			},
+		...(props['border-status-hover'] && {
+			[`${target}:hover .maxi-container-arrow .maxi-container-arrow--content:before`]:
+				{
+					border: {
+						...getArrowBorderObject(
+							getGroupAttributes(
+								props,
+								['border', 'borderWidth', 'borderRadius'],
+								isHover
+							),
+							blockStyle,
+							isHover
+						),
+					},
+				},
+		}),
 	};
+
+	return response;
 };
 
 export default getArrowStyles;

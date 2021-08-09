@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBorderStyles,
 	getSizeStyles,
@@ -140,7 +140,7 @@ const getStyles = props => {
 	const element = isList ? typeOfList : textLevel;
 
 	return {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
 			...(!isList && {
@@ -213,7 +213,7 @@ const getStyles = props => {
 				[` ${element}.maxi-text-block__content a`],
 				props.parentBlockStyle
 			),
-		},
+		}),
 	};
 };
 

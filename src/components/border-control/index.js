@@ -152,7 +152,7 @@ const BorderControl = props => {
 					]}
 					onChange={val => {
 						onChange({
-							[`${prefix || ''}border-style-${breakpoint}${
+							[`${prefix}border-style-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`]: val,
 						});
@@ -187,17 +187,13 @@ const BorderControl = props => {
 					)}
 					onChange={({ color, paletteColor, paletteStatus }) => {
 						onChange({
-							[`${prefix || ''}border-color-${breakpoint}${
+							[`${prefix}border-color-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`]: color,
-							[`${
-								prefix || ''
-							}border-palette-color-${breakpoint}${
+							[`${prefix}border-palette-color-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`]: paletteColor,
-							[`${
-								prefix || ''
-							}border-palette-color-status-${breakpoint}${
+							[`${prefix}border-palette-color-status-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`]: paletteStatus,
 						});

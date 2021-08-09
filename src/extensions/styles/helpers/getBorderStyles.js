@@ -41,6 +41,14 @@ const getBorderStyles = ({
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
+		const borderStyle = getLastBreakpointAttribute(
+			'border-style',
+			breakpoint,
+			obj,
+			isHover
+		);
+		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
+
 		Object.entries(obj).forEach(([key, value]) => {
 			const newKey = prefix ? key.replace(prefix, '') : key;
 			const includesBreakpoint =
@@ -61,18 +69,8 @@ const getBorderStyles = ({
 					'gm'
 				);
 				const newLabel = newKey.replace(replacer, '');
-				const borderStyle = getLastBreakpointAttribute(
-					`${prefix}border-style`,
-					breakpoint,
-					obj,
-					isHover
-				);
-
 				if (key.includes('style')) {
-					if (
-						isHover &&
-						(isUndefined(borderStyle) || borderStyle === 'none')
-					) {
+					if (isHover && isBorderNone) {
 						response[breakpoint].border = 'none';
 					} else response[breakpoint]['border-style'] = borderStyle;
 				} else if (!keyWords.some(key => newLabel.includes(key))) {
@@ -90,10 +88,7 @@ const getBorderStyles = ({
 								}`
 							];
 
-						if (
-							!isUndefined(borderStyle) &&
-							borderStyle !== 'none'
-						) {
+						if (!isBorderNone) {
 							if (paletteStatus && paletteColor)
 								if (isButton)
 									response[breakpoint][

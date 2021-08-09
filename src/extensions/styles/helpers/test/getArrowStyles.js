@@ -1,5 +1,15 @@
-import '@wordpress/block-editor';
+// import '@wordpress/block-editor';
 import getArrowStyles from '../getArrowStyles';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
 
 describe('getArrowStyles', () => {
 	it('Get a correct arrow styles', () => {

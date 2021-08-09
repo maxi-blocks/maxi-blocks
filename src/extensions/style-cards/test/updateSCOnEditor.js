@@ -1,4 +1,19 @@
-import '@wordpress/block-editor';
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+		registerStore: jest.fn(),
+	};
+});
+
+jest.mock('@wordpress/blocks', () => {
+	return {
+		getBlockAttributes: jest.fn(),
+	};
+});
 
 /**
  * Internal dependencies

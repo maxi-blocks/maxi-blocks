@@ -175,7 +175,14 @@ class edit extends MaxiBlockComponent {
 						value={content}
 						onChange={processContent}
 						tagName={textLevel}
-						onSplit={value => onSplit(this.props.attributes, value)}
+						onSplit={(value, isExistentBlock) =>
+							onSplit(
+								this.props.attributes,
+								value,
+								isExistentBlock,
+								clientId
+							)
+						}
 						onReplace={onReplace}
 						onMerge={forward => onMerge(this.props, forward)}
 						onRemove={onRemove}

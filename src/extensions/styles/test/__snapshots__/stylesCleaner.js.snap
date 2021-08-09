@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`styleCleaner Returns cleaned styles obj 1`] = `
+Object {
+  "": Object {
+    "border": Object {
+      "general": Object {
+        "border-bottom-width": "2px",
+        "border-color": "var(--maxi-light-color-2)",
+        "border-left-width": "2px",
+        "border-right-width": "2px",
+        "border-style": "solid",
+        "border-top-width": "2px",
+      },
+    },
+    "boxShadow": Object {
+      "general": Object {
+        "box-shadow": "0px 0px 0px 0px var(--maxi-light-color-1)",
+      },
+    },
+    "margin": Object {},
+    "opacity": Object {},
+    "padding": Object {},
+    "size": Object {},
+  },
+  " .maxi-container-arrow": Object {
+    "shadow": Object {
+      "general": Object {
+        "filter": "drop-shadow(0px 0px 0px var(--maxi-light-color-1))",
+      },
+    },
+  },
+  " .maxi-container-arrow .maxi-container-arrow--content": Object {},
+  " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
+    "background": Object {},
+  },
+  " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
+    "border": Object {
+      "general": Object {
+        "background": "var(--maxi-undefined-color-2)",
+        "height": "calc(50% + 4px)",
+        "left": "calc(1px)",
+        "top": "calc(1px)",
+        "width": "calc(50% + 4px)",
+      },
+    },
+  },
+  " > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {
+        "border-bottom-width": "2px",
+        "border-color": "var(--maxi-light-color-2)",
+        "border-left-width": "2px",
+        "border-right-width": "2px",
+        "border-style": "solid",
+        "border-top-width": "2px",
+      },
+    },
+  },
+  ":hover": Object {
+    "border": Object {
+      "general": Object {
+        "border-color": "var(--maxi-light-color-6)",
+      },
+    },
+    "boxShadow": Object {
+      "general": Object {
+        "box-shadow": "5px 5px 0px 0px var(--maxi-light-color-6)",
+      },
+    },
+  },
+  ":hover > .maxi-background-displayer": Object {
+    "border": Object {
+      "general": Object {
+        "border-color": "var(--maxi-light-color-6)",
+      },
+    },
+    "size": Object {
+      "general": Object {
+        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
+      },
+      "l": Object {
+        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
+      },
+      "m": Object {
+        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
+      },
+      "s": Object {
+        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
+      },
+      "xl": Object {
+        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
+      },
+      "xs": Object {
+        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
+      },
+      "xxl": Object {
+        "transform": "translate(calc(-50% - 0px), calc(-50% - 0px))",
+      },
+    },
+  },
+}
+`;

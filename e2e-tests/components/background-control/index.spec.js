@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-commented-out-tests */
 /**
  * WordPress dependencies
  */
@@ -299,6 +300,50 @@ describe('BackgroundControl', () => {
 
 	// 	expect(gradient).toStrictEqual(expectGradient);
 	// });
+
+	it('Background hover attributes are kept after setting none to normal background settings', async () => {
+		const accordionPanel = await openSidebar(page, 'background');
+
+		await accordionPanel.$$eval(
+			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
+			select => select[5].click()
+		);
+
+		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
+			buttons[1].click()
+		);
+
+		await page.$$eval(
+			'.maxi-background-status-hover .maxi-radio-control__option',
+			buttons => buttons[0].querySelector('label').click()
+		);
+
+		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
+			buttons[0].click()
+		);
+
+		await accordionPanel.$$eval(
+			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
+			select => select[4].click()
+		);
+
+		const expectChanges = {
+			'background-active-media': '',
+			'background-active-media-hover': 'color',
+		};
+
+		const backgroundAttributes = await getBlockAttributes();
+
+		const background = (({
+			'background-active-media': backgroundActiveMedia,
+			'background-active-media-hover': backgroundActiveMediaHover,
+		}) => ({
+			'background-active-media': backgroundActiveMedia,
+			'background-active-media-hover': backgroundActiveMediaHover,
+		}))(backgroundAttributes);
+
+		expect(background).toStrictEqual(expectChanges);
+	});
 
 	/* it('Check BackgroundShape', async () => {
 		const { uniqueID } = await getBlockAttributes();

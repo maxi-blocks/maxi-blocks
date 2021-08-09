@@ -28,7 +28,10 @@ import {
 	InfoBox,
 	ZIndexControl,
 } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	setHoverAttributes,
+} from '../../extensions/styles';
 
 /**
  * Inspector
@@ -272,6 +275,7 @@ const Inspector = props => {
 																				'background-status-hover'
 																			]
 																		}
+																		className='maxi-background-status-hover'
 																		options={[
 																			{
 																				label: __(
@@ -291,6 +295,30 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'background',
+																										'backgroundColor',
+																										'backgroundGradient',
+																									]
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'background',
+																										'backgroundColor',
+																										'backgroundGradient',
+																									],
+																									true
+																								),
+																							}
+																						)),
 																					'background-status-hover':
 																						val,
 																				}
@@ -304,10 +332,11 @@ const Inspector = props => {
 																			{...getGroupAttributes(
 																				attributes,
 																				[
-																					'backgroundHover',
-																					'backgroundColorHover',
-																					'backgroundGradientHover',
-																				]
+																					'background',
+																					'backgroundColor',
+																					'backgroundGradient',
+																				],
+																				true
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -382,6 +411,7 @@ const Inspector = props => {
 																				'border-status-hover'
 																			]
 																		}
+																		className='maxi-border-status-hover'
 																		options={[
 																			{
 																				label: __(
@@ -401,6 +431,30 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'border',
+																										'borderWidth',
+																										'borderRadius',
+																									]
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'border',
+																										'borderWidth',
+																										'borderRadius',
+																									],
+																									true
+																								),
+																							}
+																						)),
 																					'border-status-hover':
 																						val,
 																				}
@@ -414,10 +468,11 @@ const Inspector = props => {
 																			{...getGroupAttributes(
 																				attributes,
 																				[
-																					'borderHover',
-																					'borderWidthHover',
-																					'borderRadiusHover',
-																				]
+																					'border',
+																					'borderWidth',
+																					'borderRadius',
+																				],
+																				true
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -564,6 +619,7 @@ const Inspector = props => {
 																				'box-shadow-status-hover'
 																			]
 																		}
+																		className='maxi-box-shadow-status-hover'
 																		options={[
 																			{
 																				label: __(
@@ -583,6 +639,22 @@ const Inspector = props => {
 																		onChange={val =>
 																			setAttributes(
 																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									'boxShadow'
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									'boxShadow',
+																									true
+																								),
+																							}
+																						)),
 																					'box-shadow-status-hover':
 																						val,
 																				}

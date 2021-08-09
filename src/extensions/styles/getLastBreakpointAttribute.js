@@ -15,7 +15,8 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 /**
  * Gets an object base on Maxi Blocks breakpoints schema and looks for the last set value
- * for a concrete property in case is not set for the requested breakpoint
+ * for a concrete property in case is not set for the requested breakpoint. Also enables getting
+ * normal attribute on hover requests when the hover attribute doesn't exist.
  */
 const getLastBreakpointAttributeSingle = (
 	target,
@@ -31,19 +32,12 @@ const getLastBreakpointAttributeSingle = (
 
 	if (isNil(attr)) return false;
 
-	let currentAttr = !isNil(
-		attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]
-	)
-		? attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`]
-		: attr[`${target}-${breakpoint}`];
+	const attrFilter = attr =>
+		!isNil(attr) && (isNumber(attr) || isBoolean(attr) || !isEmpty(attr));
 
-	if (
-		!isNil(currentAttr) &&
-		(isNumber(currentAttr) ||
-			isBoolean(currentAttr) ||
-			!isEmpty(currentAttr))
-	)
-		return currentAttr;
+	let currentAttr = attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
+
+	if (attrFilter(currentAttr)) return currentAttr;
 
 	let breakpointPosition = breakpoints.indexOf(breakpoint);
 
@@ -61,6 +55,15 @@ const getLastBreakpointAttributeSingle = (
 		!isNumber(currentAttr) &&
 		(isEmpty(currentAttr) || isNil(currentAttr))
 	);
+
+	if (isHover && !attrFilter(currentAttr))
+		currentAttr = getLastBreakpointAttributeSingle(
+			target,
+			breakpoint,
+			attributes,
+			false,
+			avoidXXL
+		);
 
 	return currentAttr;
 };

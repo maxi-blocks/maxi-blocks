@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getOpacityStyles,
 	getZIndexStyles,
@@ -52,11 +52,11 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			' .map-marker-info-window__title': getMapObject(props, 'title'),
 			' .map-marker-info-window__address': getMapObject(props, 'address'),
-		},
+		}),
 	};
 
 	return response;

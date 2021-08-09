@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBorderStyles,
 	getSizeStyles,
@@ -116,7 +116,7 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
 			' > .maxi-container-block__container': getContainerObject(props),
@@ -218,7 +218,7 @@ const getStyles = props => {
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-		},
+		}),
 	};
 
 	return response;

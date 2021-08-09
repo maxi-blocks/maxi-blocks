@@ -35,7 +35,10 @@ import {
 	TypographyControl,
 	ZIndexControl,
 } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	setHoverAttributes,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -135,10 +138,8 @@ const Inspector = memo(
 														<FontLevelControl
 															{...getGroupAttributes(
 																attributes,
-																[
-																	'typography',
-																	'typographyHover',
-																]
+																'typography',
+																true
 															)}
 															value={textLevel}
 															onChange={obj =>
@@ -362,10 +363,8 @@ const Inspector = memo(
 																			<TypographyControl
 																				{...getGroupAttributes(
 																					attributes,
-																					[
-																						'typography',
-																						'typographyHover',
-																					]
+																					'typography',
+																					true
 																				)}
 																				textLevel={
 																					textLevel
@@ -458,6 +457,7 @@ const Inspector = memo(
 																					'background-status-hover'
 																				]
 																			}
+																			className='maxi-background-status-hover'
 																			options={[
 																				{
 																					label: __(
@@ -477,6 +477,30 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
+																						...(val &&
+																							setHoverAttributes(
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										[
+																											'background',
+																											'backgroundColor',
+																											'backgroundGradient',
+																										]
+																									),
+																								},
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										[
+																											'background',
+																											'backgroundColor',
+																											'backgroundGradient',
+																										],
+																										true
+																									),
+																								}
+																							)),
 																						'background-status-hover':
 																							val,
 																					}
@@ -490,10 +514,11 @@ const Inspector = memo(
 																				{...getGroupAttributes(
 																					attributes,
 																					[
-																						'backgroundHover',
-																						'backgroundColorHover',
-																						'backgroundGradientHover',
-																					]
+																						'background',
+																						'backgroundColor',
+																						'backgroundGradient',
+																					],
+																					true
 																				)}
 																				onChange={obj =>
 																					setAttributes(
@@ -571,6 +596,7 @@ const Inspector = memo(
 																					'border-status-hover'
 																				]
 																			}
+																			className='maxi-border-status-hover'
 																			options={[
 																				{
 																					label: __(
@@ -590,6 +616,30 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
+																						...(val &&
+																							setHoverAttributes(
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										[
+																											'border',
+																											'borderWidth',
+																											'borderRadius',
+																										]
+																									),
+																								},
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										[
+																											'border',
+																											'borderWidth',
+																											'borderRadius',
+																										],
+																										true
+																									),
+																								}
+																							)),
 																						'border-status-hover':
 																							val,
 																					}
@@ -603,10 +653,11 @@ const Inspector = memo(
 																				{...getGroupAttributes(
 																					attributes,
 																					[
-																						'borderHover',
-																						'borderWidthHover',
-																						'borderRadiusHover',
-																					]
+																						'border',
+																						'borderWidth',
+																						'borderRadius',
+																					],
+																					true
 																				)}
 																				onChange={obj =>
 																					setAttributes(
@@ -742,6 +793,7 @@ const Inspector = memo(
 																					'box-shadow-status-hover'
 																				]
 																			}
+																			className='maxi-box-shadow-status-hover'
 																			options={[
 																				{
 																					label: __(
@@ -761,6 +813,22 @@ const Inspector = memo(
 																			onChange={val =>
 																				setAttributes(
 																					{
+																						...(val &&
+																							setHoverAttributes(
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										'boxShadow'
+																									),
+																								},
+																								{
+																									...getGroupAttributes(
+																										attributes,
+																										'boxShadow',
+																										true
+																									),
+																								}
+																							)),
 																						'box-shadow-status-hover':
 																							val,
 																					}
@@ -773,9 +841,7 @@ const Inspector = memo(
 																			<BoxShadowControl
 																				{...getGroupAttributes(
 																					attributes,
-																					[
-																						'boxShadowHover',
-																					]
+																					'boxShadowHover'
 																				)}
 																				onChange={obj =>
 																					setAttributes(

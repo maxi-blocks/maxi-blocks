@@ -151,6 +151,7 @@ const LinkContent = withFormatValue(props => {
 			}),
 			isList,
 			textLevel,
+			saveFormatValue: true,
 		});
 
 		onChange(obj);

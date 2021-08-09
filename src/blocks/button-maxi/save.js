@@ -58,9 +58,11 @@ const save = props => {
 					{buttonContent}
 				</span>
 				{attributes['icon-content'] && (
-					<RawHTML className='maxi-button-block__icon'>
-						{attributes['icon-content']}
-					</RawHTML>
+					<div className='maxi-button-block__icon'>
+						<div>
+							<RawHTML>{attributes['icon-content']}</RawHTML>
+						</div>
+					</div>
 				)}
 			</Button>
 		</MaxiBlock>

@@ -1,5 +1,14 @@
 import getContainerStyles from '../getContainerStyles';
-import '@wordpress/block-editor';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
 
 describe('getContainerStyles', () => {
 	it('Get a correct container styles', () => {

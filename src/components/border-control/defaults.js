@@ -5,6 +5,7 @@ import {
 
 export const borderNone = (prefix = '', isHover) => {
 	let response = {};
+
 	response = {
 		[`${prefix}border-color`]:
 			defaultBorder[`${prefix}border-color-general`].default,

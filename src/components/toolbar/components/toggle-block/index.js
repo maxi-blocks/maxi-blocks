@@ -90,34 +90,36 @@ const ToggleBlock = props => {
 				}
 				position='bottom center'
 			>
-				<Button
-					className='toolbar-item toolbar-item__toggle-block'
-					onClick={e => {
-						e.preventDefault();
+				<div className='toolbar-item'>
+					<Button
+						className='toolbar-item__toggle-block'
+						onClick={e => {
+							e.preventDefault();
 
-						getValue() === 'none'
-							? onChange({
-									[`display-${breakpoint}`]: getOptions()[0]
-										.value,
-							  })
-							: onChange({
-									[`display-${breakpoint}`]: getOptions()[1]
-										.value,
-							  });
-					}}
-				>
-					{getValue() === 'none' ? (
-						<Icon
-							className='toolbar-item__icon'
-							icon={toolbarShow}
-						/>
-					) : (
-						<Icon
-							className='toolbar-item__icon'
-							icon={toolbarHide}
-						/>
-					)}
-				</Button>
+							getValue() === 'none'
+								? onChange({
+										[`display-${breakpoint}`]:
+											getOptions()[0].value,
+								  })
+								: onChange({
+										[`display-${breakpoint}`]:
+											getOptions()[1].value,
+								  });
+						}}
+					>
+						{getValue() === 'none' ? (
+							<Icon
+								className='toolbar-item__icon'
+								icon={toolbarShow}
+							/>
+						) : (
+							<Icon
+								className='toolbar-item__icon'
+								icon={toolbarHide}
+							/>
+						)}
+					</Button>
+				</div>
 			</Tooltip>
 		</>
 	);

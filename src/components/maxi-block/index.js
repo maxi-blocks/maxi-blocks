@@ -3,10 +3,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	__experimentalBlock as Block,
-	useBlockProps,
-} from '@wordpress/block-editor';
+import { useBlockProps } from '@wordpress/block-editor';
 import { forwardRef } from '@wordpress/element';
 
 /**
@@ -50,31 +47,6 @@ const MainBlock = forwardRef(
 		},
 		ref
 	) => {
-		if (!useBlockProps && !isSave)
-			return (
-				<Block ref={ref} tagName={TagName} {...props}>
-					{disableBackground && (
-						<BackgroundDisplayer
-							{...background}
-							blockClassName={uniqueID}
-						/>
-					)}
-					{children}
-				</Block>
-			);
-		if (!useBlockProps)
-			return (
-				<TagName ref={ref} {...props}>
-					{disableBackground && (
-						<BackgroundDisplayer
-							{...background}
-							blockClassName={uniqueID}
-						/>
-					)}
-					{children}
-				</TagName>
-			);
-
 		if (isSave)
 			return (
 				<TagName ref={ref} {...useBlockProps.save(props)}>

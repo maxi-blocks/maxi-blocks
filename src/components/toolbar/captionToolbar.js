@@ -11,6 +11,7 @@ import { getScrollContainer } from '@wordpress/dom';
  */
 import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
+
 /**
  * Utils
  */

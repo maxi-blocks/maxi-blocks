@@ -12,7 +12,7 @@ import openSidebar from '../../extensions/dom';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
 
 /**
  * Styles
@@ -31,6 +31,7 @@ const InfoBox = ({ className, message, links }) => {
 				<div className='maxi-warning-box__links'>
 					{links.map(item => (
 						<a
+							key={uniqueId('maxi-warning-box__links__item')}
 							onClick={() => {
 								if (!isEmpty(item.panel))
 									openGeneralSidebar('edit-post/block').then(

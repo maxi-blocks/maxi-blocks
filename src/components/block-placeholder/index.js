@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { ButtonBlockerAppender } from '@wordpress/block-editor';
-import { useDispatch  } from '@wordpress/data';
+import { ButtonBlockAppender } from '@wordpress/block-editor';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -37,7 +37,7 @@ const BlockPlaceholder = props => {
 			}}
 		>
 			<p className='maxi-block-placeholder__text'>{content}</p>
-			<ButtonBlockerAppender
+			<ButtonBlockAppender
 				rootClientId={clientId}
 				className='maxi-block-placeholder__button'
 			/>

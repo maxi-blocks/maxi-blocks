@@ -22,6 +22,7 @@ export { default as toolbarH5 } from './h5';
 export { default as toolbarH6 } from './h6';
 export { default as toolbarHeadingsLevel } from './headings-level';
 export { default as toolbarHide } from './hide';
+export { default as toolbarIconAlign } from './icon-align';
 export { default as toolbarIndentList } from './indent-list';
 export { default as toolbarItalic } from './italic';
 export { default as toolbarLink } from './link';

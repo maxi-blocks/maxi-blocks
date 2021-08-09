@@ -21,6 +21,7 @@ export const getColorBackgroundObject = ({
 	prefix = '',
 	blockStyle,
 	isButton = false,
+	isIconInherit = false,
 	...props
 }) => {
 	const response = {
@@ -52,6 +53,21 @@ export const getColorBackgroundObject = ({
 			props[`${prefix}background-palette-color${isHover ? '-hover' : ''}`]
 		}))`;
 	}
+
+	if (isIconInherit) {
+		response.general['background-color'] =
+			props['background-active-media'] !== '' &&
+			props[`background-palette-color-status${isHover ? '-hover' : ''}`]
+				? `var(--maxi-${blockStyle}-button-background-color${
+						isHover ? '-hover' : ''
+				  }, var(--maxi-${blockStyle}-color-${
+						props[
+							`background-palette-color${isHover ? '-hover' : ''}`
+						]
+				  }))`
+				: props[`${prefix}background-color${isHover ? '-hover' : ''}`];
+	}
+
 	if (
 		!isEmpty(
 			props[

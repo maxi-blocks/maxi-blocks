@@ -132,6 +132,8 @@ class edit extends MaxiBlockComponent {
 				onResizeStart={handleOnResizeStart}
 				onResizeStop={handleOnResizeStop}
 				style={style}
+				disableMotion
+				// onClick={() => console.log('heeeey')}
 			>
 				{attributes['divider-border-style'] !== 'none' && (
 					<hr className='maxi-divider-block__divider' />

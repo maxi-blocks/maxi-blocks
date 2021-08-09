@@ -13,12 +13,14 @@ import {
 import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('ArrowControl', () => {
-	it('Checking the arrow control', async () => {
+	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
+	});
+
+	it('Check the arrow control', async () => {
 		const accordionPanel = await openSidebar(page, 'arrow');
 
-		// Show arrow settings
 		await accordionPanel.$$eval(
 			'.maxi-accordion-control__item__panel .maxi-arrow-control .maxi-radio-control__option label',
 			button => button[0].click()
@@ -26,9 +28,8 @@ describe('ArrowControl', () => {
 
 		const values = ['top', 'bottom', 'right', 'left'];
 
-		for (let i = 0; i < values.length; i++) {
-			values[i];
-
+		/* eslint-disable no-await-in-loop */
+		for (let i = 0; i < values.length; i += 1) {
 			const positionButtons = await page.$$(
 				'.maxi-arrow-control .maxi-fancy-radio-control'
 			);

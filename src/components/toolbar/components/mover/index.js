@@ -115,18 +115,20 @@ const Mover = props => {
 						text={__('Mover', 'maxi-blocks')}
 						position='bottom center'
 					>
-						<Button
-							className='toolbar-item toolbar-item__move'
-							draggable={isDraggable}
-							onDragStart={onDraggableStart}
-							onDragEnd={onDraggableEnd}
-							{...rest}
-						>
-							<Icon
-								className='toolbar-item__icon'
-								icon={toolbarMove}
-							/>
-						</Button>
+						<div className='toolbar-item'>
+							<Button
+								className='toolbar-item toolbar-item__move'
+								draggable={isDraggable}
+								onDragStart={onDraggableStart}
+								onDragEnd={onDraggableEnd}
+								{...rest}
+							>
+								<Icon
+									className='toolbar-item__icon'
+									icon={toolbarMove}
+								/>
+							</Button>
+						</div>
 					</Tooltip>
 				)}
 			</Draggable>

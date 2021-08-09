@@ -37,7 +37,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
 			add_action('init', [$this, 'enqueue_blocks_assets']);
 
 			// Register MaxiBlocks category
-			add_filter('block_categories', [$this, 'maxi_block_category']);
+			add_filter('block_categories_all', [$this, 'maxi_block_category']);
 		}
 
 		public function enqueue_blocks_assets() {

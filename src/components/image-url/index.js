@@ -22,7 +22,7 @@ const ImageURL = props => {
 		? __('Change image URL', 'maxi-blocks')
 		: __('Insert image from URL', 'maxi-blocks');
 
-	function checkImageUrl(url) {
+	const checkImageUrl = url => {
 		const urlPromise = new Promise((resolve, reject) => {
 			const img = new Image();
 			img.src = url;
@@ -36,7 +36,16 @@ const ImageURL = props => {
 			});
 		});
 		return urlPromise;
-	}
+	};
+
+	const checkProtocol = url => {
+		let newUrl = url;
+
+		if (!url.startsWith('https://') && !url.startsWith('http://'))
+			newUrl = `https://${url}`;
+
+		return newUrl;
+	};
 
 	return (
 		<div className='maxi-editor-url-input__button'>
@@ -56,12 +65,13 @@ const ImageURL = props => {
 					value={url || ''}
 					onSubmit={event => {
 						event.preventDefault();
-						if (isURL(url)) {
-							checkImageUrl(url)
+						const checkedUrl = checkProtocol(url);
+						if (isURL(checkedUrl)) {
+							checkImageUrl(checkedUrl)
 								.then(response => {
 									setExpanded(!expanded);
 									setHideWarning(true);
-									onSubmit(url);
+									onSubmit(checkedUrl);
 								})
 								.catch(err => setHideWarning(false));
 						} else {

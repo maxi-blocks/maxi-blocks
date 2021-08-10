@@ -534,10 +534,7 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				[
-																					'boxShadow',
-																					'boxShadowHover',
-																				]
+																				'boxShadowHover'
 																			)}
 																			onChange={obj =>
 																				setAttributes(

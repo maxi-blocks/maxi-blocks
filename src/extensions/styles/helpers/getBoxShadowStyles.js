@@ -92,22 +92,22 @@ const getBoxShadowStyles = ({
 		const { value: paletteColor, defaultValue: defaultColor } =
 			paletteStatus ? getValue('palette-color') : getValue('color');
 
-		const color = paletteStatus
-			? `var(--maxi-${parentBlockStyle}-color-${
-					obj[
-						`box-shadow-palette-color-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
-					]
-			  })`
-			: paletteColor;
+		const color =
+			paletteStatus && paletteColor
+				? `var(--maxi-${parentBlockStyle}-color-${paletteColor})`
+				: paletteColor;
+
+		const isColorDefault =
+			paletteStatus &&
+			isNumber(paletteColor) &&
+			paletteColor === defaultColor;
 
 		const isNotDefault =
 			(isNumber(horizontal) && horizontal !== defaultHorizontal) ||
 			(isNumber(vertical) && vertical !== defaultVertical) ||
 			(isNumber(blur) && blur !== defaultBlur) ||
 			(isNumber(spread) && spread !== defaultSpread) ||
-			(paletteColor && color !== defaultColor);
+			(!!color && !isColorDefault);
 
 		if (isNotDefault && dropShadow) {
 			const blurValue = round(blur / 3);

@@ -1,10 +1,10 @@
-/* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-return-await */
 /**
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
@@ -24,7 +24,7 @@ describe('DividerControl', () => {
 
 		const dividerStyles = ['none', 'solid', 'dashed', 'dotted'];
 
-		for (let i = 0; i < dividerStyles.length; i++) {
+		for (let i = 0; i < dividerStyles.length; i += 1) {
 			const dividerStyle = dividerStyles[i];
 
 			await page.$$eval(
@@ -32,6 +32,8 @@ describe('DividerControl', () => {
 				(buttons, i) => buttons[i].click(),
 				i
 			);
+
+			await page.waitForTimeout(500);
 
 			const attributes = await getBlockAttributes();
 			const borderStyle = attributes['divider-border-style'];

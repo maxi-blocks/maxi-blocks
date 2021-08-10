@@ -525,6 +525,16 @@ const getGeneralBackgroundStyles = (
 		isHover,
 	});
 
+	// Clean size object
+	if (!isEmpty(size))
+		[...breakpoints].reverse().forEach(breakpoint => {
+			if (
+				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]
+					?.transform === size[breakpoint]?.transform
+			)
+				delete size[breakpoint];
+		});
+
 	return { border, ...(!isEmpty(size) && { size }) };
 };
 

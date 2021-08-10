@@ -117,7 +117,6 @@ const AxisControl = props => {
 			'bottom',
 			'left',
 			'unit',
-			'sync',
 			'sync-horizontal',
 			'sync-vertical',
 		],
@@ -227,7 +226,13 @@ const AxisControl = props => {
 
 		if (
 			getLastBreakpointAttribute(
-				getKey('sync'),
+				getKey('sync-vertical'),
+				breakpoint,
+				props,
+				isHover
+			) &&
+			getLastBreakpointAttribute(
+				getKey('sync-horizontal'),
 				breakpoint,
 				props,
 				isHover
@@ -417,40 +422,6 @@ const AxisControl = props => {
 						)
 					}
 				/>
-				<div className='maxi-axis-control__content__item maxi-axis-control__content__item__sync'>
-					<Tooltip
-						text={
-							getLastBreakpointAttribute(
-								getKey('sync'),
-								breakpoint,
-								props,
-								isHover
-							)
-								? __('Unsync all 4', 'maxi-blocks')
-								: __('Sync all 4', 'maxi-blocks')
-						}
-					>
-						<Button
-							aria-label={__('Sync all 4 Units', 'maxi-blocks')}
-							isPrimary={getLastBreakpointAttribute(
-								getKey('sync'),
-								breakpoint,
-								props,
-								isHover
-							)}
-							aria-pressed={getLastBreakpointAttribute(
-								getKey('sync'),
-								breakpoint,
-								props,
-								isHover
-							)}
-							onClick={type => onChangeSync('sync')}
-							isSmall
-						>
-							{sync}
-						</Button>
-					</Tooltip>
-				</div>
 				{(target === 'padding' || target === 'margin') && (
 					<div className='maxi-axis-control__content__item maxi-axis-control__content__item__sync'>
 						<Tooltip

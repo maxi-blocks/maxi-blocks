@@ -53,7 +53,6 @@ describe('AxisControl', () => {
 			const syncSelector = await axisControl.$$(
 				'.maxi-axis-control__content__item__sync button'
 			);
-			await syncSelector[0].click();
 			await syncSelector[1].click();
 
 			const topInputs = inputs[0];

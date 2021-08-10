@@ -35,6 +35,11 @@
 	&__top-part {
 		margin-bottom: 1rem;
 	}
+	&__middle-part {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 	&__content {
 		display: flex;
 		align-items: center;

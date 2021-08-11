@@ -4,6 +4,21 @@
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
 
+export const rgbToHex = color => {
+	const rgb = color.match(
+		/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i
+	);
+
+	return rgb && rgb.length === 4
+		? `#${`0${parseInt(rgb[1], 10).toString(16)}`.slice(-2)}${`0${parseInt(
+				rgb[2],
+				10
+		  ).toString(16)}`.slice(-2)}${`0${parseInt(rgb[3], 10).toString(
+				16
+		  )}`.slice(-2)}`
+		: '';
+};
+
 export const placeholderImage = async () => {
 	const ajaxurl = wp.ajax.settings.url;
 	try {

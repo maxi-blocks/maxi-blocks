@@ -40,6 +40,7 @@
 		"css-to-react-native": "^3.0.0",
 		"dompurify": "^2.3.0",
 		"html-react-parser": "^1.2.7",
+		"invert-color": "^2.0.0",
 		"postcss": "^8.3.6",
 		"re-resizable": "^6.9.0",
 		"react-accessible-accordion": "^3.3.5",

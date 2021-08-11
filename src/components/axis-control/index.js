@@ -124,7 +124,11 @@ const AxisControl = props => {
 		optionType = 'number',
 	} = props;
 
-	const classes = classnames('maxi-axis-control', className);
+	const classes = classnames(
+		'maxi-axis-control',
+		disableAuto && 'maxi-axis-control__disable-auto',
+		className
+	);
 
 	const getOptions = () => {
 		const options = [];
@@ -332,7 +336,7 @@ const AxisControl = props => {
 					{reset}
 				</Button>
 			</BaseControl>
-			<div className='maxi-axis-control__content'>
+			<div className='maxi-axis-control__content maxi-axis-control__top-part'>
 				<AxisInput
 					label='top'
 					placeholder={
@@ -354,27 +358,45 @@ const AxisControl = props => {
 						)
 					}
 				/>
-				<AxisInput
-					label='right'
-					placeholder={
-						getValue(inputsArray[1]) === 'auto' ? 'auto' : ''
-					}
-					value={getDisplayValue(inputsArray[1])}
-					onChange={e =>
-						onChangeValue(e.target.value, inputsArray[1])
-					}
-					ariaLabel={sprintf(__('%s Right', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit].min}
-					max={minMaxSettings[currentUnit].max}
-					disableAuto={disableAuto}
-					checked={getValue(inputsArray[1]) === 'auto'}
-					onChangeCheckbox={e =>
-						onChangeValue(
-							e.target.checked ? 'auto' : '',
-							inputsArray[1]
-						)
-					}
-				/>
+				{(target === 'padding' || target === 'margin') && (
+					<div className='maxi-axis-control__content__item__sync'>
+						<Tooltip
+							text={
+								getLastBreakpointAttribute(
+									getKey('sync-horizontal'),
+									breakpoint,
+									props,
+									isHover
+								)
+									? __('Unsync top and bottom', 'maxi-blocks')
+									: __('Sync top and bottom', 'maxi-blocks')
+							}
+						>
+							<Button
+								aria-label={__(
+									'Sync top and bottom Units',
+									'maxi-blocks'
+								)}
+								isPrimary={getLastBreakpointAttribute(
+									getKey('sync-vertical'),
+									breakpoint,
+									props,
+									isHover
+								)}
+								aria-pressed={getLastBreakpointAttribute(
+									getKey('sync-vertical'),
+									breakpoint,
+									props,
+									isHover
+								)}
+								onClick={type => onChangeSync('sync-vertical')}
+								isSmall
+							>
+								{sync}
+							</Button>
+						</Tooltip>
+					</div>
+				)}
 				<AxisInput
 					label='bottom'
 					placeholder={
@@ -396,28 +418,9 @@ const AxisControl = props => {
 						)
 					}
 				/>
-				<AxisInput
-					label='left'
-					placeholder={
-						getValue(inputsArray[3]) === 'auto' ? 'auto' : ''
-					}
-					value={getDisplayValue(inputsArray[3])}
-					onChange={e =>
-						onChangeValue(e.target.value, inputsArray[3])
-					}
-					ariaLabel={sprintf(__('%s Left', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit].min}
-					max={minMaxSettings[currentUnit].max}
-					disableAuto={disableAuto}
-					checked={getValue(inputsArray[3]) === 'auto'}
-					onChangeCheckbox={e =>
-						onChangeValue(
-							e.target.checked ? 'auto' : '',
-							inputsArray[3]
-						)
-					}
-				/>
-				<div className='maxi-axis-control__content__item maxi-axis-control__content__item__sync'>
+			</div>
+			<div className='maxi-axis-control__middle-part'>
+				<div className='maxi-axis-control__content__item__sync'>
 					<Tooltip
 						text={
 							getLastBreakpointAttribute(
@@ -451,8 +454,31 @@ const AxisControl = props => {
 						</Button>
 					</Tooltip>
 				</div>
+			</div>
+			<div className='maxi-axis-control__content maxi-axis-control__bottom-part'>
+				<AxisInput
+					label='left'
+					placeholder={
+						getValue(inputsArray[3]) === 'auto' ? 'auto' : ''
+					}
+					value={getDisplayValue(inputsArray[3])}
+					onChange={e =>
+						onChangeValue(e.target.value, inputsArray[3])
+					}
+					ariaLabel={sprintf(__('%s Left', 'maxi-blocks'), label)}
+					min={minMaxSettings[currentUnit].min}
+					max={minMaxSettings[currentUnit].max}
+					disableAuto={disableAuto}
+					checked={getValue(inputsArray[3]) === 'auto'}
+					onChangeCheckbox={e =>
+						onChangeValue(
+							e.target.checked ? 'auto' : '',
+							inputsArray[3]
+						)
+					}
+				/>
 				{(target === 'padding' || target === 'margin') && (
-					<div className='maxi-axis-control__content__item maxi-axis-control__content__item__sync'>
+					<div className='maxi-axis-control__content__item__sync'>
 						<Tooltip
 							text={
 								getLastBreakpointAttribute(
@@ -492,45 +518,27 @@ const AxisControl = props => {
 						</Tooltip>
 					</div>
 				)}
-				{(target === 'padding' || target === 'margin') && (
-					<div className='maxi-axis-control__content__item maxi-axis-control__content__item__sync'>
-						<Tooltip
-							text={
-								getLastBreakpointAttribute(
-									getKey('sync-horizontal'),
-									breakpoint,
-									props,
-									isHover
-								)
-									? __('Unsync top and bottom', 'maxi-blocks')
-									: __('Sync top and bottom', 'maxi-blocks')
-							}
-						>
-							<Button
-								aria-label={__(
-									'Sync top and bottom Units',
-									'maxi-blocks'
-								)}
-								isPrimary={getLastBreakpointAttribute(
-									getKey('sync-vertical'),
-									breakpoint,
-									props,
-									isHover
-								)}
-								aria-pressed={getLastBreakpointAttribute(
-									getKey('sync-vertical'),
-									breakpoint,
-									props,
-									isHover
-								)}
-								onClick={type => onChangeSync('sync-vertical')}
-								isSmall
-							>
-								{sync}
-							</Button>
-						</Tooltip>
-					</div>
-				)}
+				<AxisInput
+					label='right'
+					placeholder={
+						getValue(inputsArray[1]) === 'auto' ? 'auto' : ''
+					}
+					value={getDisplayValue(inputsArray[1])}
+					onChange={e =>
+						onChangeValue(e.target.value, inputsArray[1])
+					}
+					ariaLabel={sprintf(__('%s Right', 'maxi-blocks'), label)}
+					min={minMaxSettings[currentUnit].min}
+					max={minMaxSettings[currentUnit].max}
+					disableAuto={disableAuto}
+					checked={getValue(inputsArray[1]) === 'auto'}
+					onChangeCheckbox={e =>
+						onChangeValue(
+							e.target.checked ? 'auto' : '',
+							inputsArray[1]
+						)
+					}
+				/>
 			</div>
 		</div>
 	);

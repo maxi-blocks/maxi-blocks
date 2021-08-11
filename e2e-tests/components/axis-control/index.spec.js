@@ -16,14 +16,15 @@ describe('AxisControl', () => {
 		const axisControls = await accordionPanel.$$('.maxi-axis-control');
 		const instances = ['padding', 'margin'];
 
-		for (let i = 0; i < axisControls.length; i++) {
+		/* eslint-disable no-await-in-loop */
+		for (let i = 0; i < axisControls.length; i += 1) {
 			const axisControl = await axisControls[i];
 			const inputs = await axisControl.$$(
 				'.maxi-axis-control__content__item__input'
 			);
 
 			// Set value to inputs
-			for (let j = 0; j < inputs.length; j++) {
+			for (let j = 0; j < inputs.length; j += 1) {
 				const input = inputs[j];
 				await input.focus();
 				await page.keyboard.press((j + 1).toString());
@@ -38,10 +39,10 @@ describe('AxisControl', () => {
 			await unitSelector.select('%');
 			const firstAttributes = await getBlockAttributes();
 			const expectedAttributes = {
-				[`${instances[i]}-bottom-general`]: '3',
-				[`${instances[i]}-left-general`]: '4',
-				[`${instances[i]}-right-general`]: '2',
 				[`${instances[i]}-top-general`]: '1',
+				[`${instances[i]}-bottom-general`]: '2',
+				[`${instances[i]}-left-general`]: '3',
+				[`${instances[i]}-right-general`]: '4',
 				[`${instances[i]}-unit-general`]: '%',
 			};
 			Object.entries(expectedAttributes).forEach(([key, value]) => {
@@ -49,10 +50,11 @@ describe('AxisControl', () => {
 			});
 
 			// Synchronizing inputs
-			const syncSelector = await axisControl.$(
-				'.maxi-axis-control__content__item button'
+			const syncSelector = await axisControl.$$(
+				'.maxi-axis-control__content__item__sync button'
 			);
-			await syncSelector.click();
+			await syncSelector[1].click();
+
 			const topInputs = inputs[0];
 			await topInputs.focus();
 
@@ -88,10 +90,10 @@ describe('AxisControl', () => {
 			await checkBox.click();
 		}
 		const marginKeys = [
+			'margin-top-general',
 			'margin-bottom-general',
 			'margin-left-general',
 			'margin-right-general',
-			'margin-top-general',
 		];
 
 		const fourthAttributes = await getBlockAttributes();

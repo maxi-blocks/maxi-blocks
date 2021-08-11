@@ -91,6 +91,8 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 
 	if (!currentAttributes) return false;
 
+	console.log(target);
+
 	const fillColor = !currentAttributes[`${target}-palette-fill-color-status`]
 		? currentAttributes[`${target}-fill-color`]
 		: `var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-${
@@ -102,6 +104,14 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 		: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${
 				currentAttributes[`${target}-palette-line-color`]
 		  }))` || '';
+
+	const shapeFillColor = !currentAttributes[
+		`${target}-palette-fill-color-status`
+	]
+		? currentAttributes[`${target}-fill-color`]
+		: `var(--maxi-${blockStyle}-color-${
+				currentAttributes[`${target}-palette-fill-color`]
+		  })` || '';
 
 	const iconNoInheritColor = !currentAttributes[
 		`${target}-palette-color-status`
@@ -121,10 +131,12 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 		: iconNoInheritColor;
 
 	const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
-	const fillStr = `fill:${fillColor}`;
+	const fillStr = `fill:${target === 'shape' ? shapeFillColor : fillColor}`;
 
 	const fillRegExp2 = new RegExp('[^-]fill="[^n]+?(?=")', 'g');
-	const fillStr2 = ` fill="${fillColor}`;
+	const fillStr2 = ` fill="${
+		target === 'shape' ? shapeFillColor : fillColor
+	}`;
 
 	const strokeRegExp = new RegExp('stroke:[^n]+?(?=})', 'g');
 	const strokeStr = `stroke:${target === 'icon' ? iconColor : lineColor}`;

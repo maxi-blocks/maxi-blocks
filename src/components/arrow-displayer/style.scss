@@ -1,5 +1,9 @@
 body.maxi-blocks--active .maxi-block.maxi-block--has-arrow {
 	z-index: 1;
+
+	.maxi-background-displayer {
+		z-index: -1;
+	}
 }
 
 .maxi-container-arrow {

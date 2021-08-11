@@ -98,7 +98,10 @@ class edit extends MaxiBlockComponent {
 				{isFirstOnHierarchy && fullWidth && (
 					<>
 						<ArrowDisplayer
-							{...getGroupAttributes(attributes, 'arrow')}
+							{...getGroupAttributes(attributes, [
+								'background',
+								'arrow',
+							])}
 							breakpoint={deviceType}
 						/>
 						<Indicators

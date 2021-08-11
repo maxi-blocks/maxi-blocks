@@ -4,6 +4,11 @@
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
 
+/**
+ * Internal dependencies
+ */
+import { getBlockStyle } from '../../extensions/styles';
+
 export const rgbToHex = color => {
 	const rgb = color.match(
 		/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i
@@ -171,6 +176,19 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 
 	const currentAttributes = getBlock(clientId).attributes;
 
+	const { receiveStyleCardGlobalValue } = select('maxiBlocks/style-cards');
+
+	const lineColorGlobal = receiveStyleCardGlobalValue(
+		'line',
+		getBlockStyle(clientId),
+		'icon'
+	);
+	const lineColorGlobalStatus = receiveStyleCardGlobalValue(
+		'line-global',
+		getBlockStyle(clientId),
+		'icon'
+	);
+
 	const colorType =
 		target === 'icon' ? '' : target === 'svg' ? '-line' : '-fill';
 
@@ -194,5 +212,7 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 						.replaceAll(')', '')
 				);
 
-	return isColorLight(currentItemColor);
+	return target === 'svg' && lineColorGlobalStatus
+		? isColorLight(rgbToHex(lineColorGlobal))
+		: isColorLight(currentItemColor);
 };

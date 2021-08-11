@@ -466,14 +466,34 @@ const LibraryContainer = props => {
 
 	/** Shapes Resutls */
 	const svgShapeResults = ({ hit }) => {
+		const shapeType =
+			type === 'button-icon'
+				? 'icon'
+				: type === 'block-shape' ||
+				  type === 'sidebar-block-shape' ||
+				  type === 'bg-shape'
+				? 'shape'
+				: type;
+
+		const newContent = svgAttributesReplacer(
+			blockStyle,
+			hit.svg_code,
+			shapeType
+		);
+
 		return (
 			<MasonryItem
 				type='svg'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
-				svgCode={hit.svg_code}
+				svgCode={newContent}
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_title}
-				onRequestInsert={() => onRequestInsertShape(hit.svg_code)}
+				onRequestInsert={() => onRequestInsertShape(newContent)}
+				currentItemColor={
+					type === 'image-shape' || type === 'bg-shape'
+						? '#ffffff'
+						: svgInvertColor(blockStyle, shapeType)
+				}
 			/>
 		);
 	};

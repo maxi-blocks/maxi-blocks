@@ -89,20 +89,30 @@ export const imageUploader = async (imageSrc, usePlaceholderImage) => {
 	return null;
 };
 
-export const svgAttributesReplacer = (blockStyle, svgCode) => {
+export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
 	const clientId = getSelectedBlockClientId();
 	const currentAttributes = getBlock(clientId).attributes;
 
 	if (!currentAttributes) return false;
 
-	const fillColor = !currentAttributes['svg-palette-fill-color-status']
-		? currentAttributes['svg-fill-color']
-		: `var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-${currentAttributes['svg-palette-fill-color']}))`;
+	const fillColor = !currentAttributes[`${target}-palette-fill-color-status`]
+		? currentAttributes[`${target}-fill-color`]
+		: `var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-${
+				currentAttributes[`${target}-palette-fill-color`]
+		  }))` || '';
 
-	const lineColor = !currentAttributes['svg-palette-line-color-status']
-		? currentAttributes['svg-line-color']
-		: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${currentAttributes['svg-palette-line-color']}))`;
+	const lineColor = !currentAttributes[`${target}-palette-line-color-status`]
+		? currentAttributes[`${target}-line-color`]
+		: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${
+				currentAttributes[`${target}-palette-line-color`]
+		  }))` || '';
+
+	const iconColor = !currentAttributes[`${target}-palette-color-status`]
+		? currentAttributes[`${target}-color`]
+		: `var(--maxi-${blockStyle}-color-${
+				currentAttributes[`${target}-palette-color`]
+		  })` || '';
 
 	const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
 	const fillStr = `fill:${fillColor}`;
@@ -111,35 +121,50 @@ export const svgAttributesReplacer = (blockStyle, svgCode) => {
 	const fillStr2 = ` fill="${fillColor}`;
 
 	const strokeRegExp = new RegExp('stroke:[^n]+?(?=})', 'g');
-	const strokeStr = `stroke:${lineColor}`;
+	const strokeStr = `stroke:${target === 'icon' ? iconColor : lineColor}`;
 
 	const strokeRegExp2 = new RegExp('[^-]stroke="[^n]+?(?=")', 'g');
-	const strokeStr2 = ` stroke="${lineColor}`;
+	const strokeStr2 = ` stroke="${target === 'icon' ? iconColor : lineColor}`;
 
-	return svgCode
-		.replace(fillRegExp, fillStr)
-		.replace(fillRegExp2, fillStr2)
-		.replace(strokeRegExp, strokeStr)
-		.replace(strokeRegExp2, strokeStr2);
+	return target === 'svg'
+		? svgCode
+				.replace(fillRegExp, fillStr)
+				.replace(fillRegExp2, fillStr2)
+				.replace(strokeRegExp, strokeStr)
+				.replace(strokeRegExp2, strokeStr2)
+		: target === 'icon'
+		? svgCode
+				.replace(strokeRegExp, strokeStr)
+				.replace(strokeRegExp2, strokeStr2)
+		: svgCode.replace(fillRegExp, fillStr).replace(fillRegExp2, fillStr2);
 };
 
-export const svgInvertColor = blockStyle => {
+export const svgInvertColor = (blockStyle, target = 'svg') => {
 	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
 	const clientId = getSelectedBlockClientId();
 
 	const currentAttributes = getBlock(clientId).attributes;
 
-	const lineColor = !currentAttributes['svg-palette-line-color-status']
-		? currentAttributes['svg-line-color']
-		: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${currentAttributes['svg-palette-line-color']}))`;
+	const colorType =
+		target === 'icon' ? '' : target === 'svg' ? '-line' : '-fill';
 
-	const currentItemColor = !currentAttributes['svg-palette-line-color-status']
-		? rgbToHex(currentAttributes['svg-line-color'])
+	const currentColor = !currentAttributes[
+		`${target}-palette${colorType}-color-status`
+	]
+		? currentAttributes[`${target}${colorType}-color`]
+		: `var(--maxi-${blockStyle}-icon-${colorType}, var(--maxi-${blockStyle}-color-${
+				currentAttributes[`${target}-palette${colorType}-color`]
+		  }))`;
+
+	const currentItemColor = !currentAttributes[
+		`${target}-palette${colorType}-color-status`
+	]
+		? rgbToHex(currentAttributes[`${target}${colorType}-color`])
 		: window
 				.getComputedStyle(document.documentElement)
 				.getPropertyValue(
-					lineColor
-						.substr(lineColor.lastIndexOf('var(') + 4)
+					currentColor
+						.substr(currentColor.lastIndexOf('var(') + 4)
 						.replaceAll(')', '')
 				);
 

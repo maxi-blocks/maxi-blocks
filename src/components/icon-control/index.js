@@ -41,7 +41,8 @@ import {
  * Component
  */
 const IconControl = props => {
-	const { className, onChange, clientId, deviceType } = props;
+	const { className, onChange, clientId, deviceType, parentBlockStyle } =
+		props;
 
 	const classes = classnames('maxi-icon-control', className);
 
@@ -75,7 +76,7 @@ const IconControl = props => {
 
 	return (
 		<div className={classes}>
-			<MaxiModal type='button-icon' />
+			<MaxiModal type='button-icon' style={parentBlockStyle} />
 			{props['icon-content'] && (
 				<>
 					<hr />

@@ -50,6 +50,7 @@ const Inspector = props => {
 		isFirstOnHierarchy,
 		uniqueID,
 		fullWidth,
+		parentBlockStyle,
 	} = attributes;
 
 	const shapeWidthMinMaxSettings = {
@@ -171,7 +172,10 @@ const Inspector = props => {
 											label: __('Shape', 'maxi-blocks'),
 											content: (
 												<>
-													<MaxiModal type='sidebar-block-shape' />
+													<MaxiModal
+														type='sidebar-block-shape'
+														style={parentBlockStyle}
+													/>
 													<hr />
 													<ShapeColor
 														{...getGroupAttributes(

@@ -4,6 +4,11 @@
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
 
+/**
+ * External dependencies
+ */
+import invert from 'invert-color';
+
 export const rgbToHex = color => {
 	const rgb = color.match(
 		/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i
@@ -116,4 +121,27 @@ export const svgAttributesReplacer = (blockStyle, svgCode) => {
 		.replace(fillRegExp2, fillStr2)
 		.replace(strokeRegExp, strokeStr)
 		.replace(strokeRegExp2, strokeStr2);
+};
+
+export const svgInvertColor = blockStyle => {
+	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
+	const clientId = getSelectedBlockClientId();
+
+	const currentAttributes = getBlock(clientId).attributes;
+
+	const lineColor = !currentAttributes['svg-palette-line-color-status']
+		? currentAttributes['svg-line-color']
+		: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${currentAttributes['svg-palette-line-color']}))`;
+
+	const currentItemColor = !currentAttributes['svg-palette-line-color-status']
+		? rgbToHex(currentAttributes['svg-line-color'])
+		: window
+				.getComputedStyle(document.documentElement)
+				.getPropertyValue(
+					lineColor
+						.substr(lineColor.lastIndexOf('var(') + 4)
+						.replaceAll(')', '')
+				);
+
+	return invert(currentItemColor, true);
 };

@@ -11,7 +11,7 @@ import { CheckboxControl } from '@wordpress/components';
  */
 import Button from '../../components/button';
 import { updateSCOnEditor } from '../../extensions/style-cards';
-import { imageUploader, svgAttributesReplacer, rgbToHex } from './util';
+import { imageUploader, svgAttributesReplacer, svgInvertColor } from './util';
 import { injectImgSVG, generateDataObject } from '../../extensions/svg/utils';
 import DOMPurify from 'dompurify';
 
@@ -31,7 +31,6 @@ import {
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { uniq, isEmpty, uniqueId, cloneDeep } from 'lodash';
-import invert from 'invert-color';
 
 const MasonryItem = props => {
 	const {
@@ -125,9 +124,8 @@ const LibraryContainer = props => {
 		selectedSCValue,
 		clientId,
 		isValidTemplate,
-		currentItemColor,
 	} = useSelect(select => {
-		const { isValidTemplate, getSelectedBlockClientId, getBlock } =
+		const { isValidTemplate, getSelectedBlockClientId } =
 			select('core/block-editor');
 		const clientId = getSelectedBlockClientId();
 
@@ -138,31 +136,12 @@ const LibraryContainer = props => {
 		const { key: selectedSCKey, value: selectedSCValue } =
 			receiveMaxiSelectedStyleCard();
 
-		const currentAttributes = getBlock(clientId).attributes;
-
-		const lineColor = !currentAttributes['svg-palette-line-color-status']
-			? currentAttributes['svg-line-color']
-			: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${currentAttributes['svg-palette-line-color']}))`;
-
-		const currentItemColor = !currentAttributes[
-			'svg-palette-line-color-status'
-		]
-			? rgbToHex(currentAttributes['svg-line-color'])
-			: window
-					.getComputedStyle(document.documentElement)
-					.getPropertyValue(
-						lineColor
-							.substr(lineColor.lastIndexOf('var(') + 4)
-							.replaceAll(')', '')
-					);
-
 		return {
 			styleCards,
 			selectedSCKey,
 			selectedSCValue,
 			clientId,
 			isValidTemplate,
-			currentItemColor: invert(currentItemColor, true),
 		};
 	});
 
@@ -359,7 +338,7 @@ const LibraryContainer = props => {
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_title}
 				onRequestInsert={() => onRequestInsertSVG(newContent)}
-				currentItemColor={currentItemColor}
+				currentItemColor={svgInvertColor(blockStyle)}
 			/>
 		);
 	};

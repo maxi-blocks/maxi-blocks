@@ -108,11 +108,22 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 				currentAttributes[`${target}-palette-line-color`]
 		  }))` || '';
 
-	const iconColor = !currentAttributes[`${target}-palette-color-status`]
+	const iconNoInheritColor = !currentAttributes[
+		`${target}-palette-color-status`
+	]
 		? currentAttributes[`${target}-color`]
 		: `var(--maxi-${blockStyle}-color-${
 				currentAttributes[`${target}-palette-color`]
 		  })` || '';
+
+	const iconInheritColor = !currentAttributes['palette-color-status-general']
+		? currentAttributes['color-general']
+		: `var(--maxi-${blockStyle}-color-${currentAttributes['palette-color-general']})` ||
+		  '';
+
+	const iconColor = currentAttributes['icon-inherit']
+		? iconInheritColor
+		: iconNoInheritColor;
 
 	const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
 	const fillStr = `fill:${fillColor}`;

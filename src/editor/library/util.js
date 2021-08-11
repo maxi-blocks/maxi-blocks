@@ -91,8 +91,6 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 
 	if (!currentAttributes) return false;
 
-	console.log(target);
-
 	const fillColor = !currentAttributes[`${target}-palette-fill-color-status`]
 		? currentAttributes[`${target}-fill-color`]
 		: `var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-${

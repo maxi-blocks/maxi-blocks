@@ -4,11 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
 
-/**
- * External dependencies
- */
-import invert from 'invert-color';
-
 export const rgbToHex = color => {
 	const rgb = color.match(
 		/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i
@@ -150,7 +145,17 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 		: svgCode.replace(fillRegExp, fillStr).replace(fillRegExp2, fillStr2);
 };
 
-export const svgInvertColor = (blockStyle, target = 'svg') => {
+export const isColorLight = color => {
+	const hex = color.replace('#', '');
+	const colorRed = parseInt(hex.substr(0, 2), 16);
+	const colorGreen = parseInt(hex.substr(2, 2), 16);
+	const colorBlue = parseInt(hex.substr(4, 2), 16);
+	const brightness =
+		(colorRed * 299 + colorGreen * 587 + colorBlue * 114) / 1000;
+	return brightness > 155;
+};
+
+export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
 	const clientId = getSelectedBlockClientId();
 
@@ -163,9 +168,9 @@ export const svgInvertColor = (blockStyle, target = 'svg') => {
 		`${target}-palette${colorType}-color-status`
 	]
 		? currentAttributes[`${target}${colorType}-color`]
-		: `var(--maxi-${blockStyle}-icon-${colorType}, var(--maxi-${blockStyle}-color-${
+		: `var(--maxi-${blockStyle}-color-${
 				currentAttributes[`${target}-palette${colorType}-color`]
-		  }))`;
+		  })`;
 
 	const currentItemColor = !currentAttributes[
 		`${target}-palette${colorType}-color-status`
@@ -179,5 +184,5 @@ export const svgInvertColor = (blockStyle, target = 'svg') => {
 						.replaceAll(')', '')
 				);
 
-	return invert(currentItemColor, true);
+	return isColorLight(currentItemColor);
 };

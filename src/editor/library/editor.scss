@@ -440,7 +440,6 @@
 					position: relative;
 					border: 1px solid #ced5db;
 					transition: all 0.5s;
-					padding: 1rem;
 
 					&:hover {
 						position: relative;
@@ -464,7 +463,13 @@
 					.maxi-cloud-masonry-card {
 						z-index: 1;
 						transition: all 0.5s;
+						padding: 1rem;
+						height: 100%;
 
+						&__light {
+							color: #fff;
+							background-color: #000;
+						}
 						&__image {
 							svg {
 								width: 50px;

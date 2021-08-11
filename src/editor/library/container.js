@@ -11,7 +11,11 @@ import { CheckboxControl } from '@wordpress/components';
  */
 import Button from '../../components/button';
 import { updateSCOnEditor } from '../../extensions/style-cards';
-import { imageUploader, svgAttributesReplacer, svgInvertColor } from './util';
+import {
+	imageUploader,
+	svgAttributesReplacer,
+	svgCurrentColorStatus,
+} from './util';
 import { injectImgSVG, generateDataObject } from '../../extensions/svg/utils';
 import DOMPurify from 'dompurify';
 
@@ -41,11 +45,18 @@ const MasonryItem = props => {
 		onRequestInsert,
 		previewIMG,
 		demoUrl,
-		currentItemColor,
+		currentItemColorStatus = false,
 	} = props;
 
+	const masonryCardClasses = classnames(
+		'maxi-cloud-masonry-card',
+		type === 'svg' &&
+			currentItemColorStatus &&
+			'maxi-cloud-masonry-card__light'
+	);
+
 	return (
-		<div className='maxi-cloud-masonry-card'>
+		<div className={masonryCardClasses}>
 			{(type === 'patterns' || type === 'sc') && (
 				<>
 					<div className='maxi-cloud-masonry-card__container'>
@@ -101,7 +112,11 @@ const MasonryItem = props => {
 						{serial}
 					</div>
 					<RawHTML
-						style={{ backgroundColor: currentItemColor }}
+						style={{
+							backgroundColor: currentItemColorStatus
+								? '#000000'
+								: '#ffffff',
+						}}
 						className='maxi-cloud-masonry-card__svg-container__code'
 					>
 						{svgCode}
@@ -338,7 +353,7 @@ const LibraryContainer = props => {
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_title}
 				onRequestInsert={() => onRequestInsertSVG(newContent)}
-				currentItemColor={svgInvertColor(blockStyle)}
+				currentItemColorStatus={svgCurrentColorStatus(blockStyle)}
 			/>
 		);
 	};
@@ -489,10 +504,10 @@ const LibraryContainer = props => {
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_title}
 				onRequestInsert={() => onRequestInsertShape(newContent)}
-				currentItemColor={
+				currentItemColorStatus={
 					type === 'image-shape' || type === 'bg-shape'
-						? '#ffffff'
-						: svgInvertColor(blockStyle, shapeType)
+						? false
+						: svgCurrentColorStatus(blockStyle, shapeType)
 				}
 			/>
 		);

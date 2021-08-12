@@ -71,6 +71,7 @@ const Inspector = memo(
 			blockStyle,
 			extraClassName,
 			fullWidth,
+			parentBlockStyle,
 		} = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
@@ -256,6 +257,9 @@ const Inspector = memo(
 														}
 														deviceType={deviceType}
 														clientId={clientId}
+														parentBlockStyle={
+															parentBlockStyle
+														}
 													/>
 												),
 											},

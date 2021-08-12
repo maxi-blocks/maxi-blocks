@@ -501,6 +501,9 @@
 						.ais-SearchBox-submit {
 							display: none;
 						}
+						.ais-SearchBox-reset {
+							display: none;
+						}
 						.ais-SearchBox-input {
 							width: 100%;
 							background: #f0f2f4;
@@ -508,7 +511,6 @@
 							border-radius: 0;
 							padding: 0.2rem 1rem;
 							transition: all 0.5s;
-
 							&:focus {
 								border-color: #a6aaad;
 								box-shadow: none;

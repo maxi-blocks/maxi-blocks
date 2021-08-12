@@ -34,6 +34,7 @@ const BLOCKS_MAX_WIDTH = [
 	'maxi-blocks/divider-maxi',
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/map-maxi',
+	'maxi-blocks/text-maxi',
 ];
 
 /**

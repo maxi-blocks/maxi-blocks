@@ -448,17 +448,6 @@
 						transform: scale(1.1);
 						background: #fff;
 						z-index: 9;
-
-						.maxi-cloud-masonry-card__svg-container__button {
-							display: flex;
-							align-items: center;
-							justify-content: center;
-							transition: all 0.5s;
-
-							&:hover {
-								background-color: #ff4a17;
-							}
-						}
 					}
 					.maxi-cloud-masonry-card {
 						z-index: 1;
@@ -480,6 +469,7 @@
 							display: flex;
 							align-items: center;
 							flex-direction: column;
+							cursor: pointer;
 
 							&__title {
 								margin-bottom: 1rem;
@@ -489,21 +479,6 @@
 							&__code {
 								width: 80px;
 								text-align: center;
-							}
-							&__button {
-								display: none;
-								position: absolute;
-								bottom: -1px;
-								right: -1px;
-								background: #081219;
-								color: #fff;
-								border-radius: 0;
-								border: none;
-								padding: 0;
-								margin: 0;
-								height: 25px;
-								width: 25px;
-								line-height: 25px;
 							}
 						}
 					}

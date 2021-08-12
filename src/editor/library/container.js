@@ -101,13 +101,10 @@ const MasonryItem = props => {
 				</>
 			)}
 			{type === 'svg' && (
-				<div className='maxi-cloud-masonry-card__svg-container'>
-					<Button
-						className='maxi-cloud-masonry-card__svg-container__button'
-						onClick={onRequestInsert}
-					>
-						{__('+', 'maxi-blocks')}
-					</Button>
+				<div
+					className='maxi-cloud-masonry-card__svg-container'
+					onClick={onRequestInsert}
+				>
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
 						{serial}
 					</div>

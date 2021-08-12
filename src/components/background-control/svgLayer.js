@@ -4,12 +4,15 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- *
  */
 import SettingTabsControl from '../setting-tabs-control';
 import SVGFillControl from '../svg-fill-control';
 import AdvancedNumberControl from '../advanced-number-control';
-import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getAttributeKey,
+	getBlockStyle,
+} from '../../extensions/styles';
 import MaxiModal from '../../editor/library/modal';
 
 /**
@@ -22,6 +25,7 @@ import { isEmpty, cloneDeep } from 'lodash';
  */
 const SVGLayer = props => {
 	const { onChange, isHover, prefix, clientId, layerId } = props;
+
 	const SVGOptions = cloneDeep(props.SVGOptions);
 	const minMaxSettings = {
 		px: {
@@ -50,7 +54,11 @@ const SVGLayer = props => {
 					{
 						label: __('Shape', 'maxi-blocks'),
 						content: (
-							<MaxiModal type='bg-shape' layerId={layerId} />
+							<MaxiModal
+								type='bg-shape'
+								layerId={layerId}
+								style={getBlockStyle(clientId)}
+							/>
 						),
 					},
 					!isEmpty(SVGOptions['background-svg-SVGElement']) && {

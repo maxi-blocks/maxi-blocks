@@ -67,6 +67,24 @@
 			margin-right: 5px;
 			height: 66px;
 
+			&__icon {
+				svg {
+					stroke-width: 1;
+					stroke: #000;
+					* {
+						stroke-width: 1;
+						stroke: #000;
+					}
+				}
+			}
+			&__shape {
+				svg {
+					fill: #000;
+					* {
+						fill: #000;
+					}
+				}
+			}
 			&--remove {
 				width: 20px;
 				position: absolute;
@@ -555,7 +573,7 @@
 				&__button-icon {
 					.maxi-cloud-masonry-card__svg-container__code {
 						svg,
-						svg path {
+						svg * {
 							stroke-width: 1;
 						}
 					}

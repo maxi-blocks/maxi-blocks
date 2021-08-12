@@ -170,6 +170,16 @@ export const isColorLight = color => {
 	return brightness > 155;
 };
 
+export const getVarValue = currentColor => {
+	return window
+		.getComputedStyle(document.documentElement)
+		.getPropertyValue(
+			currentColor
+				.substr(currentColor.lastIndexOf('var(') + 4)
+				.replaceAll(')', '')
+		);
+};
+
 export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
 	const clientId = getSelectedBlockClientId();
@@ -192,27 +202,29 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const colorType =
 		target === 'icon' ? '' : target === 'svg' ? '-line' : '-fill';
 
+	const iconInheritColor = currentAttributes['icon-inherit']
+		? !currentAttributes['palette-color-status-general']
+			? rgbToHex(currentAttributes['color-general'])
+			: getVarValue(
+					`var(--maxi-${blockStyle}-color-${currentAttributes['palette-color-general']})`
+			  )
+		: '';
+
 	const currentColor = !currentAttributes[
 		`${target}-palette${colorType}-color-status`
 	]
-		? currentAttributes[`${target}${colorType}-color`]
-		: `var(--maxi-${blockStyle}-color-${
-				currentAttributes[`${target}-palette${colorType}-color`]
-		  })`;
-
-	const currentItemColor = !currentAttributes[
-		`${target}-palette${colorType}-color-status`
-	]
 		? rgbToHex(currentAttributes[`${target}${colorType}-color`])
-		: window
-				.getComputedStyle(document.documentElement)
-				.getPropertyValue(
-					currentColor
-						.substr(currentColor.lastIndexOf('var(') + 4)
-						.replaceAll(')', '')
-				);
+		: getVarValue(
+				`var(--maxi-${blockStyle}-color-${
+					currentAttributes[`${target}-palette${colorType}-color`]
+				})`
+		  );
 
 	return target === 'svg' && lineColorGlobalStatus
 		? isColorLight(rgbToHex(lineColorGlobal))
-		: isColorLight(currentItemColor);
+		: isColorLight(
+				target === 'icon' && currentAttributes['icon-inherit']
+					? iconInheritColor
+					: currentColor
+		  );
 };

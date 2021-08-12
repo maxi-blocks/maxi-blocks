@@ -39,6 +39,7 @@ import { uniq, isEmpty, uniqueId, cloneDeep } from 'lodash';
 const MasonryItem = props => {
 	const {
 		type,
+		target,
 		svgCode,
 		isPro,
 		serial,
@@ -50,6 +51,7 @@ const MasonryItem = props => {
 
 	const masonryCardClasses = classnames(
 		'maxi-cloud-masonry-card',
+		`maxi-cloud-masonry-card__${target}`,
 		type === 'svg' &&
 			currentItemColorStatus &&
 			'maxi-cloud-masonry-card__light'
@@ -496,6 +498,7 @@ const LibraryContainer = props => {
 		return (
 			<MasonryItem
 				type='svg'
+				target={type}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
 				isPro={hit.taxonomies.cost === 'pro'}

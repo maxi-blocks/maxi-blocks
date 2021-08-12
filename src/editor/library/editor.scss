@@ -552,6 +552,14 @@
 			position: relative;
 
 			.maxi-cloud-masonry-card {
+				&__button-icon {
+					.maxi-cloud-masonry-card__svg-container__code {
+						svg,
+						svg path {
+							stroke-width: 1;
+						}
+					}
+				}
 				&__container {
 					&__top-bar {
 						display: flex;

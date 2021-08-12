@@ -106,7 +106,6 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				{...this.props}
 			/>,
-
 			<MaxiBlock
 				key={`maxi-divider--${uniqueID}`}
 				ref={this.blockRef}
@@ -133,7 +132,6 @@ class edit extends MaxiBlockComponent {
 				onResizeStop={handleOnResizeStop}
 				style={style}
 				disableMotion
-				// onClick={() => console.log('heeeey')}
 			>
 				{attributes['divider-border-style'] !== 'none' && (
 					<hr className='maxi-divider-block__divider' />

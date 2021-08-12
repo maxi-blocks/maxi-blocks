@@ -29,22 +29,21 @@ const EXCLUDED_BLOCKS = [
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/number-counter-maxi',
 ];
-const EXCLUDED_BLOCKS_SIZE = [
+const BLOCKS_MAX_WIDTH = [
+	'maxi-blocks/button-maxi',
+	'maxi-blocks/divider-maxi',
 	'maxi-blocks/group-maxi',
-	'maxi-blocks/svg-icon-maxi',
-	'maxi-blocks/shape-maxi',
+	'maxi-blocks/map-maxi',
 ];
 
 /**
  * Size
  */
 const Size = props => {
-	const { blockName, fullWidth, onChange, isFirstOnHierarchy, breakpoint } =
+	const { blockName, breakpoint, fullWidth, isFirstOnHierarchy, onChange } =
 		props;
 
 	if (EXCLUDED_BLOCKS.includes(blockName)) return null;
-	if (!isFirstOnHierarchy && EXCLUDED_BLOCKS_SIZE.includes(blockName))
-		return null;
 
 	const currentBlockRoot = select('core/block-editor').getBlockRootClientId(
 		select('core/block-editor').getSelectedBlockClientId()
@@ -77,77 +76,75 @@ const Size = props => {
 						onChange={fullWidth => onChange({ fullWidth })}
 					/>
 				)}
-				{!EXCLUDED_BLOCKS_SIZE.includes(blockName) && (
-					<>
-						{currentBlockRoot && (
-							<AdvancedNumberControl
-								label={__('Width', 'maxi-blocks')}
-								enableUnit
-								unit={getLastBreakpointAttribute(
-									'width-unit',
-									breakpoint,
-									props
-								)}
-								onChangeUnit={val =>
-									onChange({
-										[`width-unit-${breakpoint}`]: val,
-									})
-								}
-								value={getLastBreakpointAttribute(
-									'width',
-									breakpoint,
-									props
-								)}
-								onChangeValue={val =>
-									onChange({
-										[`width-${breakpoint}`]: val,
-									})
-								}
-								onReset={() =>
-									onChange({
-										[`width-${breakpoint}`]:
-											getDefaultAttribute(
-												`width-${breakpoint}`
-											),
-										[`width-unit-${breakpoint}`]:
-											getDefaultAttribute(
-												`width-unit-${breakpoint}`
-											),
-									})
-								}
-							/>
+
+				{currentBlockRoot && (
+					<AdvancedNumberControl
+						label={__('Width', 'maxi-blocks')}
+						enableUnit
+						unit={getLastBreakpointAttribute(
+							'width-unit',
+							breakpoint,
+							props
 						)}
-						<AdvancedNumberControl
-							label={__('Max Width', 'maxi-blocks')}
-							enableUnit
-							unit={getLastBreakpointAttribute(
-								'max-width-unit',
-								breakpoint,
-								props
-							)}
-							onChangeUnit={val =>
-								onChange({
-									[`max-width-unit-${breakpoint}`]: val,
-								})
-							}
-							defaultValue={getDefaultAttribute(
-								`max-width-${breakpoint}`
-							)}
-							defaultUnit={getDefaultAttribute(
-								`max-width-unit-${breakpoint}`
-							)}
-							value={getLastBreakpointAttribute(
-								'max-width',
-								breakpoint,
-								props
-							)}
-							onChangeValue={val =>
-								onChange({
-									[`max-width-${breakpoint}`]: val,
-								})
-							}
-						/>
-					</>
+						onChangeUnit={val =>
+							onChange({
+								[`width-unit-${breakpoint}`]: val,
+							})
+						}
+						value={getLastBreakpointAttribute(
+							'width',
+							breakpoint,
+							props
+						)}
+						onChangeValue={val =>
+							onChange({
+								[`width-${breakpoint}`]: val,
+							})
+						}
+						onReset={() =>
+							onChange({
+								[`width-${breakpoint}`]: getDefaultAttribute(
+									`width-${breakpoint}`
+								),
+								[`width-unit-${breakpoint}`]:
+									getDefaultAttribute(
+										`width-unit-${breakpoint}`
+									),
+							})
+						}
+					/>
+				)}
+				{BLOCKS_MAX_WIDTH.includes(blockName) && (
+					<AdvancedNumberControl
+						label={__('Max Width', 'maxi-blocks')}
+						enableUnit
+						unit={getLastBreakpointAttribute(
+							'max-width-unit',
+							breakpoint,
+							props
+						)}
+						onChangeUnit={val =>
+							onChange({
+								[`max-width-unit-${breakpoint}`]: val,
+							})
+						}
+						defaultValue={getDefaultAttribute(
+							`max-width-${breakpoint}`
+						)}
+						defaultUnit={getDefaultAttribute(
+							`max-width-unit-${breakpoint}`
+						)}
+						value={getLastBreakpointAttribute(
+							'max-width',
+							breakpoint,
+							props
+						)}
+						onChangeValue={val =>
+							onChange({
+								[`max-width-${breakpoint}`]: val,
+							})
+						}
+					/>
 				)}
 			</div>
 		</ToolbarPopover>

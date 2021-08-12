@@ -25,7 +25,7 @@ const GradientLayer = props => {
 	return (
 		<>
 			<GradientControl
-				label={__('Background', 'maxi-blocks')}
+				label={__('Background Gradient', 'maxi-blocks')}
 				gradient={
 					gradientOptions[
 						getAttributeKey('background-gradient', isHover, prefix)

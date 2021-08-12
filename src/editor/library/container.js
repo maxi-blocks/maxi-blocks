@@ -11,7 +11,11 @@ import { CheckboxControl } from '@wordpress/components';
  */
 import Button from '../../components/button';
 import { updateSCOnEditor } from '../../extensions/style-cards';
-import { imageUploader, svgAttributesReplacer } from './util';
+import {
+	imageUploader,
+	svgAttributesReplacer,
+	svgCurrentColorStatus,
+} from './util';
 import { injectImgSVG, generateDataObject } from '../../extensions/svg/utils';
 import DOMPurify from 'dompurify';
 
@@ -41,10 +45,18 @@ const MasonryItem = props => {
 		onRequestInsert,
 		previewIMG,
 		demoUrl,
+		currentItemColorStatus = false,
 	} = props;
 
+	const masonryCardClasses = classnames(
+		'maxi-cloud-masonry-card',
+		type === 'svg' &&
+			currentItemColorStatus &&
+			'maxi-cloud-masonry-card__light'
+	);
+
 	return (
-		<div className='maxi-cloud-masonry-card'>
+		<div className={masonryCardClasses}>
 			{(type === 'patterns' || type === 'sc') && (
 				<>
 					<div className='maxi-cloud-masonry-card__container'>
@@ -99,7 +111,14 @@ const MasonryItem = props => {
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
 						{serial}
 					</div>
-					<RawHTML className='maxi-cloud-masonry-card__svg-container__code'>
+					<RawHTML
+						style={{
+							backgroundColor: currentItemColorStatus
+								? '#000000'
+								: '#ffffff',
+						}}
+						className='maxi-cloud-masonry-card__svg-container__code'
+					>
 						{svgCode}
 					</RawHTML>
 				</div>
@@ -334,6 +353,7 @@ const LibraryContainer = props => {
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_title}
 				onRequestInsert={() => onRequestInsertSVG(newContent)}
+				currentItemColorStatus={svgCurrentColorStatus(blockStyle)}
 			/>
 		);
 	};
@@ -461,14 +481,34 @@ const LibraryContainer = props => {
 
 	/** Shapes Resutls */
 	const svgShapeResults = ({ hit }) => {
+		const shapeType =
+			type === 'button-icon'
+				? 'icon'
+				: type === 'block-shape' ||
+				  type === 'sidebar-block-shape' ||
+				  type === 'bg-shape'
+				? 'shape'
+				: type;
+
+		const newContent = svgAttributesReplacer(
+			blockStyle,
+			hit.svg_code,
+			shapeType
+		);
+
 		return (
 			<MasonryItem
 				type='svg'
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
-				svgCode={hit.svg_code}
+				svgCode={newContent}
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_title}
-				onRequestInsert={() => onRequestInsertShape(hit.svg_code)}
+				onRequestInsert={() => onRequestInsertShape(newContent)}
+				currentItemColorStatus={
+					type === 'image-shape' || type === 'bg-shape'
+						? false
+						: svgCurrentColorStatus(blockStyle, shapeType)
+				}
 			/>
 		);
 	};

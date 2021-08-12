@@ -6,20 +6,12 @@ body.maxi-blocks--active .maxi-group-block {
 	flex-direction: column;
 	padding: 0;
 
-	&:before {
-		visibility: hidden;
-		content: '';
-		position: absolute;
-		transform: translateX(-50%);
-		border-style: solid;
-		width: 0;
-		height: 0;
-	}
 	&__group {
+		position: relative;
 		margin-right: auto;
 		margin-left: auto;
-		position: relative;
 	}
+
 	.maxi-group-block__group {
 		width: 100%;
 	}

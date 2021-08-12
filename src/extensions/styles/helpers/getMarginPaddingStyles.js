@@ -36,7 +36,10 @@ const getMarginPaddingStyles = (obj, prefix = '') => {
 				);
 				const newLabel = newKey.replace(replacer, '');
 
-				if (!keyWords.some(key => newLabel.includes(key)))
+				if (
+					!keyWords.some(key => newLabel.includes(key)) ||
+					value === 0
+				)
 					response[breakpoint][newLabel] = `${value}`;
 				else {
 					const unitKey = keyWords.filter(key =>

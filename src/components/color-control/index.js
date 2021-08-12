@@ -8,8 +8,8 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import BaseControl from '../base-control';
 import AdvancedNumberControl from '../advanced-number-control';
+import BaseControl from '../base-control';
 import ColorPaletteControl from './paletteControl';
 
 /**
@@ -37,8 +37,9 @@ const ColorControl = props => {
 		defaultColor = '',
 		disableColorDisplay = false,
 		disableOpacity = false,
-		paletteColor,
 		paletteStatus,
+		paletteColor,
+		paletteOpacity,
 		onChange,
 		isHover,
 		disablePalette,
@@ -47,6 +48,7 @@ const ColorControl = props => {
 		globalProps,
 		deviceType,
 		clientId,
+		format = 'rgba',
 	} = props;
 
 	const classes = classnames('maxi-color-control', className);
@@ -92,9 +94,25 @@ const ColorControl = props => {
 	const [currentColor, setCurrentColor] = useState(color);
 
 	const returnColor = (val, alpha) => {
-		return !isEmpty(val)
-			? `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${+alpha / 100})`
-			: '';
+		switch (format) {
+			case 'colorString':
+				return !isEmpty(val)
+					? `${val.rgb.r},${val.rgb.g},${val.rgb.b}`
+					: '';
+			case 'hex':
+				return val?.hex || '';
+			case 'hsl':
+				return val?.hsl || '';
+			case 'hsv':
+				return val?.hsv || '';
+			case 'rgba':
+			default:
+				return !isEmpty(val)
+					? `rgba(${val.rgb.r},${val.rgb.g},${val.rgb.b},${
+							+alpha / 100
+					  })`
+					: '';
+		}
 	};
 
 	const onChangeValue = obj => {
@@ -110,6 +128,7 @@ const ColorControl = props => {
 			color: newColor,
 			paletteColor,
 			paletteStatus,
+			paletteOpacity,
 			...obj,
 		});
 	};
@@ -148,6 +167,8 @@ const ColorControl = props => {
 					onChange={obj => onChangeValue(obj)}
 					deviceType={deviceType}
 					clientId={clientId}
+					disableOpacity={disableOpacity}
+					opacity={paletteOpacity}
 				/>
 			)}
 			{!showPalette || !paletteStatus || disablePalette ? (

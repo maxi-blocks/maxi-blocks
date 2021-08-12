@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import getColorRGBAString from '../getColorRGBAString';
+
+/**
  * External dependencies
  */
 import { isBoolean } from 'lodash';
@@ -27,11 +32,11 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 		} else if (obj[`link-palette-color-${breakpoint}`]) {
 			response[target].link[breakpoint] = {};
 
-			response[target].link[
-				breakpoint
-			].color = `var(--maxi-${parentBlockStyle}-color-${
-				obj[`link-palette-color-${breakpoint}`]
-			})`;
+			response[target].link[breakpoint].color = getColorRGBAString({
+				firstVar: `color-${obj[`link-palette-color-${breakpoint}`]}`,
+				opacity: obj[`link-palette-opacity-${breakpoint}`],
+				blockStyle: parentBlockStyle,
+			});
 		}
 		if (
 			isBoolean(obj[`link-hover-palette-color-status-${breakpoint}`]) &&
@@ -45,19 +50,16 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 			response[`${target}:hover span`].link[breakpoint].color =
 				obj[`link-hover-color-${breakpoint}`];
 		} else if (obj[`link-hover-palette-color-${breakpoint}`]) {
-			response[`${target}:hover`].link[breakpoint] = {};
-			response[`${target}:hover span`].link[breakpoint] = {};
+			const color = getColorRGBAString({
+				firstVar: `color-${
+					obj[`link-hover-palette-color-${breakpoint}`]
+				}`,
+				opacity: obj[`link-hover-palette-opacity-${breakpoint}`],
+				blockStyle: parentBlockStyle,
+			});
 
-			response[`${target}:hover`].link[
-				breakpoint
-			].color = `var(--maxi-${parentBlockStyle}-color-${
-				obj[`link-hover-palette-color-${breakpoint}`]
-			})`;
-			response[`${target}:hover span`].link[
-				breakpoint
-			].color = `var(--maxi-${parentBlockStyle}-color-${
-				obj[`link-hover-palette-color-${breakpoint}`]
-			})`;
+			response[`${target}:hover`].link[breakpoint] = { color };
+			response[`${target}:hover span`].link[breakpoint] = { color };
 		}
 		if (
 			isBoolean(obj[`link-active-palette-color-status-${breakpoint}`]) &&
@@ -71,19 +73,16 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 			response[`${target}:active span`].link[breakpoint].color =
 				obj[`link-active-color-${breakpoint}`];
 		} else if (obj[`link-active-palette-color-${breakpoint}`]) {
-			response[`${target}:active span`].link[breakpoint] = {};
-			response[`${target}:active`].link[breakpoint] = {};
+			const color = getColorRGBAString({
+				firstVar: `color-${
+					obj[`link-active-palette-color-${breakpoint}`]
+				}`,
+				opacity: obj[`link-active-palette-opacity-${breakpoint}`],
+				blockStyle: parentBlockStyle,
+			});
 
-			response[`${target}:active`].link[
-				breakpoint
-			].color = `var(--maxi-${parentBlockStyle}-color-${
-				obj[`link-active-palette-color-${breakpoint}`]
-			})`;
-			response[`${target}:active span`].link[
-				breakpoint
-			].color = `var(--maxi-${parentBlockStyle}-color-${
-				obj[`link-active-palette-color-${breakpoint}`]
-			})`;
+			response[`${target}:active span`].link[breakpoint] = { color };
+			response[`${target}:active`].link[breakpoint] = { color };
 		}
 		if (
 			isBoolean(obj[`link-visited-palette-color-status-${breakpoint}`]) &&
@@ -97,19 +96,16 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 			response[`${target}:visited span`].link[breakpoint].color =
 				obj[`link-visited-color-${breakpoint}`];
 		} else if (obj[`link-visited-palette-color-${breakpoint}`]) {
-			response[`${target}:visited`].link[breakpoint] = {};
-			response[`${target}:visited span`].link[breakpoint] = {};
+			const color = getColorRGBAString({
+				firstVar: `color-${
+					obj[`link-visited-palette-color-${breakpoint}`]
+				}`,
+				opacity: obj[`link-visited-palette-opacity-${breakpoint}`],
+				blockStyle: parentBlockStyle,
+			});
 
-			response[`${target}:visited`].link[
-				breakpoint
-			].color = `var(--maxi-${parentBlockStyle}-color-${
-				obj[`link-visited-palette-color-${breakpoint}`]
-			})`;
-			response[`${target}:visited span`].link[
-				breakpoint
-			].color = `var(--maxi-${parentBlockStyle}-color-${
-				obj[`link-visited-palette-color-${breakpoint}`]
-			})`;
+			response[`${target}:visited`].link[breakpoint] = { color };
+			response[`${target}:visited span`].link[breakpoint] = { color };
 		}
 	});
 

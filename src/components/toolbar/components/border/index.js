@@ -19,6 +19,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getBlockStyle,
+	getColorRGBAString,
 } from '../../../../extensions/styles';
 
 /**
@@ -72,11 +73,18 @@ const Border = props => {
 						borderColor: props[
 							`${prefix}border-palette-color-status-${breakpoint}`
 						]
-							? `var(--maxi-${getBlockStyle(clientId)}-color-${
-									props[
-										`${prefix}border-palette-color-${breakpoint}`
-									]
-							  })`
+							? getColorRGBAString({
+									firstVal: `color-${
+										props[
+											`${prefix}border-palette-color-${breakpoint}`
+										]
+									}`,
+									opacity:
+										props[
+											`${prefix}border-palette-color-${breakpoint}`
+										],
+									blockStyle: getBlockStyle(clientId),
+							  })
 							: props[`${prefix}border-color-${breakpoint}`],
 					}}
 				>

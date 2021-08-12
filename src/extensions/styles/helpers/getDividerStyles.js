@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import getColorRGBAString from '../getColorRGBAString';
+
+/**
  * External dependencies
  */
 import { isNil, isNumber } from 'lodash';
@@ -17,9 +22,12 @@ const getDividerStyles = (obj, target, parentBlockStyle) => {
 			obj['divider-palette-border-color-status'] &&
 			isNumber(obj['divider-palette-border-color'])
 		)
-			response.general[
-				'border-color'
-			] = `var(--maxi-${parentBlockStyle}-divider-color, var(--maxi-${parentBlockStyle}-color-${obj['divider-palette-border-color']}))`;
+			response.general['border-color'] = getColorRGBAString({
+				firstVar: 'divider-color',
+				secondVar: `color-${obj['divider-palette-border-color']}`,
+				opacity: obj['divider-palette-border-opacity'],
+				blockStyle: parentBlockStyle,
+			});
 		else if (
 			!obj['divider-palette-border-color-status'] &&
 			!isNil(obj['divider-border-color'])

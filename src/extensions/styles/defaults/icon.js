@@ -29,6 +29,9 @@ export const icon = {
 		type: 'number',
 		default: 1,
 	},
+	'icon-palette-opacity': {
+		type: 'number',
+	},
 	'icon-color': {
 		type: 'string',
 	},
@@ -55,6 +58,9 @@ export const iconBackgroundColor = {
 	'icon-background-palette-color': {
 		type: 'number',
 		default: 4,
+	},
+	'icon-background-palette-opacity': {
+		type: 'number',
 	},
 	'icon-background-color': {
 		type: 'string',

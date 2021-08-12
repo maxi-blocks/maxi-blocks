@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
 import FancyRadioControl from '../fancy-radio-control';
 import { getBlockStyle } from '../../extensions/styles';
@@ -14,6 +15,7 @@ import { getBlockStyle } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Styles
@@ -32,6 +34,8 @@ const ColorPaletteControl = props => {
 		clientId,
 		className,
 		globalStatus,
+		disableOpacity,
+		opacity,
 	} = props;
 
 	const paletteClasses = classnames(
@@ -77,6 +81,23 @@ const ColorPaletteControl = props => {
 						))}
 					</div>
 				</BaseControl>
+			)}
+			{!disableOpacity && (
+				<AdvancedNumberControl
+					label={__('Colour Opacity', 'maxi-blocks')}
+					value={opacity || 100}
+					onChangeValue={val => {
+						const value = !isNil(val) ? +val : 0;
+
+						onChange({
+							paletteOpacity: value,
+						});
+					}}
+					min={0}
+					max={100}
+					disableReset
+					initialPosition={100}
+				/>
 			)}
 			<FancyRadioControl
 				label={__('Custom Colour', 'maxi-blocks')}

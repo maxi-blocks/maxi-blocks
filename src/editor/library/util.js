@@ -4,6 +4,11 @@
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
 
+/**
+ * Internal dependencies
+ */
+import { getColorRGBAString } from '../../extensions/styles';
+
 export const placeholderImage = async () => {
 	const ajaxurl = wp.ajax.settings.url;
 	try {
@@ -78,11 +83,21 @@ export const svgAttributesReplacer = (blockStyle, svgCode) => {
 
 	const fillColor = !currentAttributes['svg-palette-fill-color-status']
 		? currentAttributes['svg-fill-color']
-		: `var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-${currentAttributes['svg-palette-fill-color']}))`;
+		: getColorRGBAString({
+				firstVar: 'icon-fill',
+				secondVar: `color-${currentAttributes['svg-palette-fill-color']}`,
+				opacity: currentAttributes['svg-palette-fill-opacity'],
+				blockStyle,
+		  });
 
 	const lineColor = !currentAttributes['svg-palette-line-color-status']
 		? currentAttributes['svg-line-color']
-		: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${currentAttributes['svg-palette-line-color']}))`;
+		: getColorRGBAString({
+				firstVar: 'icon-line',
+				secondVar: `color-${currentAttributes['svg-palette-line-color']}`,
+				opacity: currentAttributes['svg-palette-line-opacity'],
+				blockStyle,
+		  });
 
 	const fillRegExp = new RegExp('fill:[^n]+?(?=})', 'g');
 	const fillStr = `fill:${fillColor}`;

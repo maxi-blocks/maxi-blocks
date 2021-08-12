@@ -333,9 +333,9 @@ body .toolbar-item__popover {
 *******************************/
 
 svg path#styleCardBoat_a {
-	fill: var(--maxi-light-color-4);
+	fill: rgba(var(--maxi-light-color-4), 1);
 }
 
 svg path#styleCardBoat_b {
-	stroke: var(--maxi-light-color-7);
+	stroke: rgba(var(--maxi-light-color-7), 1);
 }

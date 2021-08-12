@@ -190,11 +190,11 @@ const LibraryContainer = props => {
 		);
 
 		return (
-			<div
-				onClick={() => setAccordionOpen(!isAccordionOpen)}
-				className={accordionClasses}
-			>
-				<div className='maxi-cloud-container__accordion__title'>
+			<div className={accordionClasses}>
+				<div
+					onClick={() => setAccordionOpen(!isAccordionOpen)}
+					className='maxi-cloud-container__accordion__title'
+				>
 					{title}
 				</div>
 				<div className='maxi-cloud-container__accordion__content'>

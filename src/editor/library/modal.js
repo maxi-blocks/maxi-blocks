@@ -158,14 +158,18 @@ class MaxiModal extends Component {
 									)
 								}
 							/>
-							<RawHTML>{attributes['icon-content']}</RawHTML>
+							<RawHTML className='maxi-library-modal__action-section__preview__icon'>
+								{attributes['icon-content']}
+							</RawHTML>
 						</div>
 					)}
 				{attributes &&
 					type === 'sidebar-block-shape' &&
 					attributes.shapeSVGElement && (
 						<div className='maxi-library-modal__action-section__preview'>
-							<RawHTML>{attributes.shapeSVGElement}</RawHTML>
+							<RawHTML className='maxi-library-modal__action-section__preview__shape'>
+								{attributes.shapeSVGElement}
+							</RawHTML>
 						</div>
 					)}
 				{attributes &&
@@ -210,7 +214,7 @@ class MaxiModal extends Component {
 									);
 								}}
 							/>
-							<RawHTML>
+							<RawHTML className='maxi-library-modal__action-section__preview__shape'>
 								{
 									attributes['background-layers'][layerId][
 										'background-svg-SVGElement'
@@ -238,7 +242,7 @@ class MaxiModal extends Component {
 									)
 								}
 							/>
-							<RawHTML>
+							<RawHTML className='maxi-library-modal__action-section__preview__shape'>
 								{attributes['background-svg-SVGElement']}
 							</RawHTML>
 						</div>
@@ -260,7 +264,9 @@ class MaxiModal extends Component {
 								)
 							}
 						/>
-						<RawHTML>{attributes.SVGElement}</RawHTML>
+						<RawHTML className='maxi-library-modal__action-section__preview__shape'>
+							{attributes.SVGElement}
+						</RawHTML>
 					</div>
 				)}
 			</div>

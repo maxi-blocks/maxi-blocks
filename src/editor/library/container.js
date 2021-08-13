@@ -39,6 +39,7 @@ import { uniq, isEmpty, uniqueId, cloneDeep } from 'lodash';
 const MasonryItem = props => {
 	const {
 		type,
+		target,
 		svgCode,
 		isPro,
 		serial,
@@ -50,6 +51,7 @@ const MasonryItem = props => {
 
 	const masonryCardClasses = classnames(
 		'maxi-cloud-masonry-card',
+		`maxi-cloud-masonry-card__${target}`,
 		type === 'svg' &&
 			currentItemColorStatus &&
 			'maxi-cloud-masonry-card__light'
@@ -101,15 +103,19 @@ const MasonryItem = props => {
 				</>
 			)}
 			{type === 'svg' && (
-				<div className='maxi-cloud-masonry-card__svg-container'>
-					<Button
-						className='maxi-cloud-masonry-card__svg-container__button'
-						onClick={onRequestInsert}
-					>
-						{__('+', 'maxi-blocks')}
-					</Button>
+				<div
+					className='maxi-cloud-masonry-card__svg-container'
+					onClick={onRequestInsert}
+				>
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
-						{serial}
+						{target === 'button-icon'
+							? serial.replace(' Line', '')
+							: target === 'image-shape' ||
+							  target === 'bg-shape' ||
+							  target === 'block-shape' ||
+							  target === 'sidebar-block-shape'
+							? serial.replace(' Shape', '')
+							: serial}
 					</div>
 					<RawHTML
 						style={{
@@ -184,11 +190,11 @@ const LibraryContainer = props => {
 		);
 
 		return (
-			<div
-				onClick={() => setAccordionOpen(!isAccordionOpen)}
-				className={accordionClasses}
-			>
-				<div className='maxi-cloud-container__accordion__title'>
+			<div className={accordionClasses}>
+				<div
+					onClick={() => setAccordionOpen(!isAccordionOpen)}
+					className='maxi-cloud-container__accordion__title'
+				>
 					{title}
 				</div>
 				<div className='maxi-cloud-container__accordion__content'>
@@ -499,6 +505,7 @@ const LibraryContainer = props => {
 		return (
 			<MasonryItem
 				type='svg'
+				target={type}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
 				isPro={hit.taxonomies.cost === 'pro'}

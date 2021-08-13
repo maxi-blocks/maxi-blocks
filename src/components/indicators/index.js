@@ -52,6 +52,22 @@ const Indicators = props => {
 			getLastBreakpointAttribute('padding-unit', deviceType, props) || 0,
 	};
 
+	const handleOnResizeStart = (type, e, dir) => {
+		e.preventDefault();
+		onChange({
+			[`${type}-${dir}-unit`]: [type].unit,
+		});
+	};
+
+	const handleOnResizeStop = (type, e, dir, ref, d) => {
+		onChange({
+			[`${type}-${dir}-${breakpoint}`]:
+				dir === 'top' || dir === 'bottom'
+					? round(ref.getBoundingClientRect().height)
+					: round(ref.getBoundingClientRect().width),
+		});
+	};
+
 	const marginIndicator = () => {
 		return ['top', 'right', 'bottom', 'left'].map(dir =>
 			margin[dir] && margin[dir] !== 'auto' && +margin[dir] > 0 ? (
@@ -94,25 +110,11 @@ const Indicators = props => {
 										height: '100%',
 								  }
 						}
-						onResizeStart={e => {
-							e.preventDefault();
-							onChange({
-								[`margin-${dir}-unit`]: margin.unit,
-							});
-						}}
-						onResizeStop={(e, direction, ref, d) =>
-							onChange({
-								[`margin-${dir}-${breakpoint}`]:
-									dir === 'top' || dir === 'bottom'
-										? round(
-												ref.getBoundingClientRect()
-													.height
-										  )
-										: round(
-												ref.getBoundingClientRect()
-													.width
-										  ),
-							})
+						onResizeStart={(e, dir) =>
+							handleOnResizeStart('margin', e, dir)
+						}
+						onResizeStop={(e, dir, ref, d) =>
+							handleOnResizeStop('margin', e, dir, ref, d)
 						}
 					>
 						{((margin.unit === 'px' && margin[dir] > 19) ||
@@ -130,17 +132,49 @@ const Indicators = props => {
 			padding[dir] && padding[dir] > 0 ? (
 				<div
 					key={`padding-indicator-${dir}`}
-					style={{
-						[`padding${startCase(
-							dir
-						)}`]: `${padding[dir]}${padding.unit}`,
-					}}
 					className={`maxi-indicators__padding maxi-indicators__padding--${dir}`}
 				>
-					{((padding.unit === 'px' && padding[dir] > 19) ||
-						(padding.unit !== 'px' && padding[dir] > 2)) && (
-						<span>{`${padding[dir]}${padding.unit}`}</span>
-					)}
+					<Resizable
+						enable={{
+							top: dir === 'top',
+							right: dir === 'right',
+							bottom: dir === 'bottom',
+							left: dir === 'left',
+						}}
+						defaultSize={
+							dir === 'top' || dir === 'bottom'
+								? {
+										width: '100%',
+										height: `${padding[dir]}${padding.unit}`,
+								  }
+								: {
+										width: `${padding[dir]}${padding.unit}`,
+										height: '100%',
+								  }
+						}
+						size={
+							dir === 'top' || dir === 'bottom'
+								? {
+										width: '100%',
+										height: `${padding[dir]}${padding.unit}`,
+								  }
+								: {
+										width: `${padding[dir]}${padding.unit}`,
+										height: '100%',
+								  }
+						}
+						onResizeStart={(e, dir) =>
+							handleOnResizeStart('padding', e, dir)
+						}
+						onResizeStop={(e, dir, ref, d) =>
+							handleOnResizeStop('padding', e, dir, ref, d)
+						}
+					>
+						{((padding.unit === 'px' && padding[dir] > 19) ||
+							(padding.unit !== 'px' && padding[dir] > 2)) && (
+							<span>{`${padding[dir]}${padding.unit}`}</span>
+						)}
+					</Resizable>
 				</div>
 			) : null
 		);

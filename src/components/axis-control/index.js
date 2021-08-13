@@ -347,7 +347,11 @@ const AxisControl = props => {
 						onChangeValue(e.target.value, inputsArray[0])
 					}
 					ariaLabel={sprintf(__('%s Top', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit].min}
+					min={
+						target === 'padding'
+							? 0
+							: minMaxSettings[currentUnit].min
+					}
 					max={minMaxSettings[currentUnit].max}
 					disableAuto={disableAuto}
 					checked={getValue(inputsArray[0]) === 'auto'}
@@ -407,7 +411,11 @@ const AxisControl = props => {
 						onChangeValue(e.target.value, inputsArray[2])
 					}
 					ariaLabel={sprintf(__('%s Bottom', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit].min}
+					min={
+						target === 'padding'
+							? 0
+							: minMaxSettings[currentUnit].min
+					}
 					max={minMaxSettings[currentUnit].max}
 					disableAuto={disableAuto}
 					checked={getValue(inputsArray[2]) === 'auto'}
@@ -466,7 +474,11 @@ const AxisControl = props => {
 						onChangeValue(e.target.value, inputsArray[3])
 					}
 					ariaLabel={sprintf(__('%s Left', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit].min}
+					min={
+						target === 'padding'
+							? 0
+							: minMaxSettings[currentUnit].min
+					}
 					max={minMaxSettings[currentUnit].max}
 					disableAuto={disableAuto}
 					checked={getValue(inputsArray[3]) === 'auto'}
@@ -528,7 +540,11 @@ const AxisControl = props => {
 						onChangeValue(e.target.value, inputsArray[1])
 					}
 					ariaLabel={sprintf(__('%s Right', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit].min}
+					min={
+						target === 'padding'
+							? 0
+							: minMaxSettings[currentUnit].min
+					}
 					max={minMaxSettings[currentUnit].max}
 					disableAuto={disableAuto}
 					checked={getValue(inputsArray[1]) === 'auto'}

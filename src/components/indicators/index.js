@@ -68,6 +68,44 @@ const Indicators = props => {
 		});
 	};
 
+	const handleClasses = dir => {
+		return {
+			top:
+				dir === 'top' &&
+				classnames(
+					'maxi-indicators__top-handle',
+					'maxi-indicators__handle'
+				),
+			right:
+				dir === 'right' &&
+				classnames(
+					'maxi-indicators__right-handle',
+					'maxi-indicators__handle'
+				),
+			bottom:
+				dir === 'bottom' &&
+				classnames(
+					'maxi-indicators__bottom-handle',
+					'maxi-indicators__handle'
+				),
+			left:
+				dir === 'left' &&
+				classnames(
+					'maxi-indicators__left-handle',
+					'maxi-indicators__handle'
+				),
+		};
+	};
+
+	const enableOptions = dir => {
+		return {
+			top: dir === 'top',
+			right: dir === 'right',
+			bottom: dir === 'bottom',
+			left: dir === 'left',
+		};
+	};
+
 	const marginIndicator = () => {
 		return ['top', 'right', 'bottom', 'left'].map(dir =>
 			margin[dir] && margin[dir] !== 'auto' && +margin[dir] > 0 ? (
@@ -82,12 +120,8 @@ const Indicators = props => {
 					className={`maxi-indicators__margin maxi-indicators__margin--${dir}`}
 				>
 					<Resizable
-						enable={{
-							top: dir === 'top',
-							right: dir === 'right',
-							bottom: dir === 'bottom',
-							left: dir === 'left',
-						}}
+						handleClasses={handleClasses(dir)}
+						enable={enableOptions(dir)}
 						defaultSize={
 							dir === 'top' || dir === 'bottom'
 								? {
@@ -135,12 +169,8 @@ const Indicators = props => {
 					className={`maxi-indicators__padding maxi-indicators__padding--${dir}`}
 				>
 					<Resizable
-						enable={{
-							top: dir === 'top',
-							right: dir === 'right',
-							bottom: dir === 'bottom',
-							left: dir === 'left',
-						}}
+						handleClasses={handleClasses(dir)}
+						enable={enableOptions(dir)}
 						defaultSize={
 							dir === 'top' || dir === 'bottom'
 								? {

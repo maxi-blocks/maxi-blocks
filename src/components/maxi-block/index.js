@@ -5,6 +5,7 @@
  */
 import { useBlockProps } from '@wordpress/block-editor';
 import { forwardRef, useEffect, useState } from '@wordpress/element';
+import { select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -26,7 +27,6 @@ import { isEmpty } from 'lodash';
  * Styles
  */
 import './editor.scss';
-import { useSelect } from '@wordpress/data';
 
 const WRAPPER_BLOCKS = [
 	'maxi-blocks/container-maxi',
@@ -204,20 +204,34 @@ const MaxiBlock = forwardRef((props, ref) => {
 		disableBackground: !disableBackground,
 		isSave,
 		...(INNER_BLOCKS.includes(blockName) && {
-			onDragLeave: e => {
+			onDragLeave: ({ target }) => {
 				if (
 					isDragOverBlock &&
-					(!ref.current.isSameNode(e.target) ||
+					(!ref.current.isSameNode(target) ||
 						isDraggingOrigin ||
-						!ref.current.contains(e.target))
+						!ref.current.contains(target))
 				)
 					setIsDragOverBlock(false);
 			},
 			onDragOver: () => {
+				const { getBlock } = select('core/block-editor');
+				const { innerBlocks } = getBlock(clientId);
+
+				const isLastOnHierarchy = isEmpty(innerBlocks)
+					? true
+					: innerBlocks.every(
+							({ name }) =>
+								![
+									...INNER_BLOCKS,
+									'maxi-blocks/row-maxi',
+								].includes(name)
+					  );
+
 				if (
 					!isDragOverBlock &&
 					!isSave &&
-					INNER_BLOCKS.includes(blockName)
+					INNER_BLOCKS.includes(blockName) &&
+					isLastOnHierarchy
 				)
 					setIsDragOverBlock(true);
 			},

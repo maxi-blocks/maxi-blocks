@@ -71,7 +71,7 @@ const Link = props => {
 						},
 						{
 							id: 'ugc',
-							title: __('Add "sponsored" rel', 'maxi-blocks'),
+							title: __('Add "UGC" rel', 'maxi-blocks'),
 						},
 					]}
 				/>

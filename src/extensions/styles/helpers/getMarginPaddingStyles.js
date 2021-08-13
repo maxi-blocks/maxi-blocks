@@ -25,7 +25,8 @@ const getMarginPaddingStyles = (obj, prefix = '') => {
 				newKey.length;
 
 			if (
-				typeof value !== 'undefined' &&
+				value !== undefined &&
+				value !== '' &&
 				includesBreakpoint &&
 				!newKey.includes('sync') &&
 				!newKey.includes('unit')

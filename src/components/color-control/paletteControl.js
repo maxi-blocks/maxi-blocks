@@ -36,6 +36,7 @@ const ColorPaletteControl = props => {
 		globalStatus,
 		disableOpacity,
 		opacity,
+		defaultOpacity = 100,
 	} = props;
 
 	const paletteClasses = classnames(
@@ -82,7 +83,7 @@ const ColorPaletteControl = props => {
 					</div>
 				</BaseControl>
 			)}
-			{!disableOpacity && (
+			{!disableOpacity && status && (
 				<AdvancedNumberControl
 					label={__('Colour Opacity', 'maxi-blocks')}
 					value={opacity || 100}
@@ -95,8 +96,12 @@ const ColorPaletteControl = props => {
 					}}
 					min={0}
 					max={100}
-					disableReset
-					initialPosition={100}
+					initialPosition={defaultOpacity}
+					onReset={() =>
+						onChange({
+							paletteOpacity: defaultOpacity,
+						})
+					}
 				/>
 			)}
 			<FancyRadioControl

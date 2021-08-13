@@ -116,13 +116,19 @@ const ColorControl = props => {
 	};
 
 	const onChangeValue = obj => {
-		const newColor =
+		const applyPaletteColor =
 			!isNil(obj.paletteStatus) &&
 			!obj.paletteStatus &&
 			obj.paletteStatus !== paletteStatus &&
-			isEmpty(color)
-				? getPaletteColor(clientId, paletteColor)
-				: color;
+			isEmpty(color);
+
+		const newColor = applyPaletteColor
+			? `rgba(${getPaletteColor(clientId, paletteColor)},${
+					paletteOpacity / 100 || 1
+			  })`
+			: color;
+
+		if (applyPaletteColor) setColorAlpha(getRGB(newColor).rgb.a * 100);
 
 		onChange({
 			color: newColor,

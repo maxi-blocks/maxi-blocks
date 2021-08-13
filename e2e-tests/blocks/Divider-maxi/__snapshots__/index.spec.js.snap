@@ -2,6 +2,6 @@
 
 exports[`Divider Maxi Divider Maxi does not break 1`] = `
 "<!-- wp:maxi-blocks/divider-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"divider-maxi-12\\"} -->
-<div id=\\"divider-maxi-12\\" class=\\"wp-block-maxi-blocks-divider-maxi maxi-block maxi-divider-block maxi-light divider-maxi-12 maxi-divider-block--horizontal\\" data-align=\\"normal\\"><hr class=\\"maxi-divider-block__divider\\"/></div>
+<div class=\\"wp-block-maxi-blocks-divider-maxi maxi-block maxi-divider-block maxi-light divider-maxi-12 maxi-divider-block--horizontal\\" data-align=\\"normal\\" id=\\"divider-maxi-12\\"><hr class=\\"maxi-divider-block__divider\\"/></div>
 <!-- /wp:maxi-blocks/divider-maxi -->"
 `;

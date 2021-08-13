@@ -2,6 +2,6 @@
 
 exports[`Map Maxi Map Maxi does not break 1`] = `
 "<!-- wp:maxi-blocks/map-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"map-maxi-12\\"} -->
-<div id=\\"map-maxi-12\\" class=\\"wp-block-maxi-blocks-map-maxi maxi-block maxi-light map-maxi-12 maxi-map-block\\" data-align=\\"normal\\"><div class=\\"maxi-map-container\\" id=\\"map-container-map-maxi-12\\"></div></div>
+<div class=\\"wp-block-maxi-blocks-map-maxi maxi-block maxi-light map-maxi-12 maxi-map-block\\" data-align=\\"normal\\" id=\\"map-maxi-12\\"><div class=\\"maxi-map-container\\" id=\\"map-container-map-maxi-12\\"></div></div>
 <!-- /wp:maxi-blocks/map-maxi -->"
 `;

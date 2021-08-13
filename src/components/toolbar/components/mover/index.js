@@ -101,7 +101,7 @@ const Mover = props => {
 				elementId={blockElementId}
 				transferData={transferData}
 				onDragStart={() => {
-					startDraggingBlocks();
+					startDraggingBlocks([clientId]);
 					isDragging.current = true;
 				}}
 				onDragEnd={() => {

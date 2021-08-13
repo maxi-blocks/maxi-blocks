@@ -35,7 +35,7 @@ const ColorPaletteControl = props => {
 		className,
 		globalStatus,
 		disableOpacity,
-		opacity,
+		opacity = 100,
 		defaultOpacity = 100,
 	} = props;
 
@@ -86,7 +86,7 @@ const ColorPaletteControl = props => {
 			{!disableOpacity && status && (
 				<AdvancedNumberControl
 					label={__('Colour Opacity', 'maxi-blocks')}
-					value={opacity || 100}
+					value={opacity}
 					onChangeValue={val => {
 						const value = !isNil(val) ? +val : 0;
 

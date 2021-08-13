@@ -1,3 +1,5 @@
+import { isNumber } from 'lodash';
+
 const getColorRGBAString = ({
 	firstVar,
 	secondVar = null,
@@ -6,6 +8,6 @@ const getColorRGBAString = ({
 }) =>
 	`rgba(var(--maxi-${blockStyle}-${firstVar}${
 		secondVar ? `,var(--maxi-${blockStyle}-${secondVar})` : ''
-	}), ${opacity / 100 || 1})`;
+	}), ${isNumber(opacity) ? opacity / 100 : 1})`;
 
 export default getColorRGBAString;

@@ -59,7 +59,7 @@ const Indicators = props => {
 		});
 	};
 
-	const handleOnResizeStop = (type, e, dir, ref, d) => {
+	const handleOnResize = (type, e, dir, ref, d) => {
 		onChange({
 			[`${type}-${dir}-${breakpoint}`]:
 				dir === 'top' || dir === 'bottom'
@@ -113,8 +113,8 @@ const Indicators = props => {
 						onResizeStart={(e, dir) =>
 							handleOnResizeStart('margin', e, dir)
 						}
-						onResizeStop={(e, dir, ref, d) =>
-							handleOnResizeStop('margin', e, dir, ref, d)
+						onResize={(e, dir, ref, d) =>
+							handleOnResize('margin', e, dir, ref, d)
 						}
 					>
 						{((margin.unit === 'px' && margin[dir] > 19) ||
@@ -166,8 +166,8 @@ const Indicators = props => {
 						onResizeStart={(e, dir) =>
 							handleOnResizeStart('padding', e, dir)
 						}
-						onResizeStop={(e, dir, ref, d) =>
-							handleOnResizeStop('padding', e, dir, ref, d)
+						onResize={(e, dir, ref, d) =>
+							handleOnResize('padding', e, dir, ref, d)
 						}
 					>
 						{((padding.unit === 'px' && padding[dir] > 19) ||

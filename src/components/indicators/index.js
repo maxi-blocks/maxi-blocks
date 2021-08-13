@@ -7,7 +7,7 @@ import { getLastBreakpointAttribute } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { startCase, round } from 'lodash';
+import { round } from 'lodash';
 import { Resizable } from 're-resizable';
 
 /**

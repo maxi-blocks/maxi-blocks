@@ -1,13 +1,14 @@
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-import { isNil, startCase } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import { getLastBreakpointAttribute } from '../../extensions/styles';
+
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+import { startCase, round } from 'lodash';
+import { Resizable } from 're-resizable';
 
 /**
  * Styles
@@ -18,7 +19,13 @@ import './editor.scss';
  * Component
  */
 const Indicators = props => {
-	const { className, children, deviceType } = props;
+	const {
+		breakpoint = 'general',
+		children,
+		className,
+		deviceType,
+		onChange,
+	} = props;
 
 	const classes = classnames('maxi-indicators', className);
 
@@ -58,10 +65,61 @@ const Indicators = props => {
 					}}
 					className={`maxi-indicators__margin maxi-indicators__margin--${dir}`}
 				>
-					{((margin.unit === 'px' && margin[dir] > 19) ||
-						(margin.unit !== 'px' && margin[dir] > 2)) && (
-						<span>{`${margin[dir]}${margin.unit}`}</span>
-					)}
+					<Resizable
+						enable={{
+							top: dir === 'top',
+							right: dir === 'right',
+							bottom: dir === 'bottom',
+							left: dir === 'left',
+						}}
+						defaultSize={
+							dir === 'top' || dir === 'bottom'
+								? {
+										width: '100%',
+										height: `${margin[dir]}${margin.unit}`,
+								  }
+								: {
+										width: `${margin[dir]}${margin.unit}`,
+										height: '100%',
+								  }
+						}
+						size={
+							dir === 'top' || dir === 'bottom'
+								? {
+										width: '100%',
+										height: `${margin[dir]}${margin.unit}`,
+								  }
+								: {
+										width: `${margin[dir]}${margin.unit}`,
+										height: '100%',
+								  }
+						}
+						onResizeStart={e => {
+							e.preventDefault();
+							onChange({
+								[`margin-${dir}-unit`]: margin.unit,
+							});
+						}}
+						onResizeStop={(e, direction, ref, d) =>
+							onChange({
+								[`margin-${dir}-${breakpoint}`]:
+									dir === 'top' || dir === 'bottom'
+										? round(
+												ref.getBoundingClientRect()
+													.height
+										  )
+										: round(
+												ref.getBoundingClientRect()
+													.width
+										  ),
+							})
+						}
+					>
+						{((margin.unit === 'px' && margin[dir] > 19) ||
+							(margin.unit !== 'px' && margin[dir] > 2)) && (
+							<span>{`${margin[dir]}${margin.unit}`}</span>
+						)}
+					</Resizable>
 				</div>
 			) : null
 		);

@@ -24,10 +24,10 @@ jobs:
             - name: FTP-Deploy-Action
               uses: SamKirkland/FTP-Deploy-Action@4.1.0
               with:
-                  server: ftp.learndd.dev600.com/maxi-blocks
+                  server: learndd.dev600.com/maxi-blocks
                   username: maxi-git-learndd
                   password: ${{ secrets.FTP_PASSWORD }}
-                  protocol: ftps
+                  protocol: ftp
                   exclude: .babelrc.js
                       - .editorconfig
                       - .eslintignore

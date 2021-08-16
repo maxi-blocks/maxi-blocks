@@ -35,8 +35,7 @@ describe('Image Maxi', () => {
 			input => input.focus()
 		);
 
-		const linkImage =
-			'https://www.landuum.com/wp-content/uploads/2019/03/cultura_paisajeiluminado_landuum5.jpg';
+		const linkImage = 'shorturl.at/mLT08';
 
 		await page.keyboard.type(linkImage);
 		await page.$$eval(

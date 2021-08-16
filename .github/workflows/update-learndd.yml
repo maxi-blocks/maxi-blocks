@@ -5,7 +5,7 @@ on:
         branches: [master]
 
 jobs:
-    build:
+    web-deploy:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2.1.0
@@ -29,6 +29,7 @@ jobs:
                   username: maxi-git-learndd
                   password: ${{ secrets.FTP_PASSWORD }}
                   protocol: ftp
+                  dry-run: true
                   exclude: .babelrc.js
                       - .editorconfig
                       - .eslintignore
@@ -41,9 +42,10 @@ jobs:
                       - .wp-env.json
                       - build/
                       - CODEOWNERS
-                      - e2e-tests
+                      - e2e-tests/**
                       - LICENSE
                       - readme.md
+                      - node_modules/**
             - name: Google Chat Notification
               uses: Co-qn/google-chat-notification@releases/v1
               with:

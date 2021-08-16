@@ -41,7 +41,7 @@ jobs:
                       .wp-env.json,
                       **/.git*,
                       **/.git*/**,
-                      **/.vscode*,
+                      **/.vscode/**,
                       **/e2e-tests/**,
                       **/node_modules/**,
                       **/src/**,

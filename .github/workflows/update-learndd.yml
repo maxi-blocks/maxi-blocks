@@ -24,7 +24,7 @@ jobs:
             - name: FTP-Deploy-Action
               uses: SamKirkland/FTP-Deploy-Action@4.1.0
               with:
-                  server: learndd.dev600.com/
+                  server: learndd.dev600.com
                   username: maxi-git-learndd
                   password: ${{ secrets.FTP_PASSWORD }}
                   protocol: ftp

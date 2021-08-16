@@ -22,7 +22,7 @@ jobs:
             - name: reset package-lock.json
               run: git checkout package-lock.json
             - name: FTP-Deploy-Action
-              uses: SamKirkland/FTP-Deploy-Action@3.1.1
+              uses: SamKirkland/FTP-Deploy-Action@4.1.0
               with:
                   ftp-server: ftp://learndd.dev600.com/maxi-blocks
                   ftp-username: maxi-git-learndd

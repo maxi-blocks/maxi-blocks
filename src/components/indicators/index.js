@@ -109,19 +109,23 @@ const Indicators = props => {
 
 	const marginIndicator = () => {
 		return ['top', 'right', 'bottom', 'left'].map(dir =>
-			margin[dir] && margin[dir] !== 'auto' && +margin[dir] > 0 ? (
+			margin[dir] && margin[dir] !== 'auto' ? (
 				<div
 					key={`margin-indicator-${dir}`}
 					style={{
 						[dir === 'top' || dir === 'bottom'
 							? 'height'
 							: 'width']: `${margin[dir]}${margin.unit}`,
-						[dir]: `${-margin[dir]}${margin.unit}`,
+						[dir]: `${margin[dir] <= 0 ? -4 : -margin[dir]}${
+							margin.unit
+						}`,
 					}}
 					className={`maxi-indicators__margin maxi-indicators__margin--${dir}`}
 				>
 					<Resizable
 						handleClasses={handleClasses(dir)}
+						minWidth={0}
+						minHeight={0}
 						enable={enableOptions(dir)}
 						defaultSize={
 							dir === 'top' || dir === 'bottom'
@@ -163,52 +167,52 @@ const Indicators = props => {
 	};
 
 	const paddingIndicator = () => {
-		return ['top', 'right', 'bottom', 'left'].map(dir =>
-			padding[dir] && padding[dir] > 0 ? (
-				<div
-					key={`padding-indicator-${dir}`}
-					className={`maxi-indicators__padding maxi-indicators__padding--${dir}`}
+		return ['top', 'right', 'bottom', 'left'].map(dir => (
+			<div
+				key={`padding-indicator-${dir}`}
+				className={`maxi-indicators__padding maxi-indicators__padding--${dir}`}
+			>
+				<Resizable
+					handleClasses={handleClasses(dir)}
+					minWidth={0}
+					minHeight={0}
+					enable={enableOptions(dir)}
+					defaultSize={
+						dir === 'top' || dir === 'bottom'
+							? {
+									width: '100%',
+									height: `${padding[dir]}${padding.unit}`,
+							  }
+							: {
+									width: `${padding[dir]}${padding.unit}`,
+									height: '100%',
+							  }
+					}
+					size={
+						dir === 'top' || dir === 'bottom'
+							? {
+									width: '100%',
+									height: `${padding[dir]}${padding.unit}`,
+							  }
+							: {
+									width: `${padding[dir]}${padding.unit}`,
+									height: '100%',
+							  }
+					}
+					onResizeStart={(e, dir) =>
+						handleOnResizeStart('padding', e, dir)
+					}
+					onResize={(e, dir, ref, d) =>
+						handleOnResize('padding', e, dir, ref)
+					}
 				>
-					<Resizable
-						handleClasses={handleClasses(dir)}
-						enable={enableOptions(dir)}
-						defaultSize={
-							dir === 'top' || dir === 'bottom'
-								? {
-										width: '100%',
-										height: `${padding[dir]}${padding.unit}`,
-								  }
-								: {
-										width: `${padding[dir]}${padding.unit}`,
-										height: '100%',
-								  }
-						}
-						size={
-							dir === 'top' || dir === 'bottom'
-								? {
-										width: '100%',
-										height: `${padding[dir]}${padding.unit}`,
-								  }
-								: {
-										width: `${padding[dir]}${padding.unit}`,
-										height: '100%',
-								  }
-						}
-						onResizeStart={(e, dir) =>
-							handleOnResizeStart('padding', e, dir)
-						}
-						onResize={(e, dir, ref, d) =>
-							handleOnResize('padding', e, dir, ref)
-						}
-					>
-						{((padding.unit === 'px' && padding[dir] > 19) ||
-							(padding.unit !== 'px' && padding[dir] > 2)) && (
-							<span>{`${padding[dir]}${padding.unit}`}</span>
-						)}
-					</Resizable>
-				</div>
-			) : null
-		);
+					{((padding.unit === 'px' && padding[dir] > 19) ||
+						(padding.unit !== 'px' && padding[dir] > 2)) && (
+						<span>{`${padding[dir]}${padding.unit}`}</span>
+					)}
+				</Resizable>
+			</div>
+		));
 	};
 
 	return (

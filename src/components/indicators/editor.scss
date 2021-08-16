@@ -8,9 +8,19 @@
 	transition: opacity 0.5s;
 
 	&:hover {
-		.maxi-indicators__padding,
+		.maxi-indicators__padding {
+			opacity: 1;
+
+			.maxi-indicators__handle {
+				background-color: #4517ff;
+			}
+		}
 		.maxi-indicators__margin {
 			opacity: 1;
+
+			.maxi-indicators__handle {
+				background-color: #ff4a17;
+			}
 		}
 	}
 	&__handle {
@@ -19,7 +29,6 @@
 
 		&:hover {
 			opacity: 1;
-			background-color: #ff4a17;
 		}
 	}
 	&__top-handle {

@@ -25,7 +25,7 @@ jobs:
               uses: SamKirkland/FTP-Deploy-Action@4.1.0
               with:
                   server: learndd.dev600.com
-                  server-dir: wp-content/plugins/maxi-blocks
+                  server-dir: wp-content/plugins/maxi-blocks/
                   username: maxi-git-learndd
                   password: ${{ secrets.FTP_PASSWORD }}
                   protocol: ftp

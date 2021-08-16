@@ -152,14 +152,6 @@
 		}
 	}
 
-	// ButtonControl
-	.components-button {
-		&:focus {
-			box-shadow: none !important;
-			outline: none !important;
-		}
-	}
-
 	// RangeControl
 	.components-range-control {
 		.components-range-control__root {

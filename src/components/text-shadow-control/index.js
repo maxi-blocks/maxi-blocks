@@ -121,7 +121,7 @@ const TextShadow = props => {
 			{value !== 'none' && !isEmpty(value) && (
 				<>
 					<ColorControl
-						label={__('Color', 'maxi-blocks')}
+						label={__('Colour', 'maxi-blocks')}
 						color={color}
 						onChange={({ color }) => onChangeValue(3, color)}
 						onReset={() => onChangeValue(3, defaultColor)}

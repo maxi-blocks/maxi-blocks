@@ -121,7 +121,7 @@ const DividerControl = props => {
 			/>
 			{props['divider-border-style'] !== 'none' && !disableColor && (
 				<ColorControl
-					label={__('Color', 'maxi-blocks')}
+					label={__('Colour', 'maxi-blocks')}
 					color={props['divider-border-color']}
 					defaultColor={getDefaultAttribute('divider-border-color')}
 					paletteColor={props['divider-palette-border-color']}

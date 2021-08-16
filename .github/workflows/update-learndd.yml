@@ -5,7 +5,7 @@ on:
         branches: [master]
 
 jobs:
-    build:
+    web-deploy:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2.1.0
@@ -22,12 +22,32 @@ jobs:
             - name: reset package-lock.json
               run: git checkout package-lock.json
             - name: FTP-Deploy-Action
-              uses: SamKirkland/FTP-Deploy-Action@3.1.1
+              uses: SamKirkland/FTP-Deploy-Action@4.1.0
               with:
-                  ftp-server: ftp://learndd.dev600.com/maxi-blocks
-                  ftp-username: maxi-git-learndd
-                  ftp-password: ${{ secrets.FTP_PASSWORD }}
-                  git-ftp-args: --insecure
+                  server: learndd.dev600.com
+                  # server-dir: maxi-blocks/
+                  username: maxi-git-learndd
+                  password: ${{ secrets.FTP_PASSWORD }}
+                  protocol: ftp
+                  dry-run: true
+                  exclude: .babelrc.js
+                      - .editorconfig
+                      - .eslintignore
+                      - .eslintrc.json
+                      - .git*/**
+                      - .github/*
+                      - .gitignore
+                      - .prettierignore
+                      - .prettierrc.json
+                      - .wp-env.json
+                      - **/.vscode*
+                      - **/node_modules*
+                      - /src/
+                      - build/
+                      - CODEOWNERS
+                      - e2e-tests/**
+                      - LICENSE
+                      - readme.md
             - name: Google Chat Notification
               uses: Co-qn/google-chat-notification@releases/v1
               with:

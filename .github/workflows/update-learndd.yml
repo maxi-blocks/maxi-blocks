@@ -44,6 +44,7 @@ jobs:
                       **/.vscode/**,
                       **/e2e-tests/**,
                       **/node_modules/**,
+                      !**/src/init.php,
                       **/src/**,
                       CODEOWNERS,
                       LICENSE,

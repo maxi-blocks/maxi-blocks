@@ -27,9 +27,9 @@ describe('BoxShadowControl', () => {
 			'box-shadow-blur-general': 87,
 			'box-shadow-color-general': undefined,
 			'box-shadow-horizontal-general': 0,
-			'box-shadow-spread-general': 10,
+			'box-shadow-spread-general': 0,
 			'box-shadow-status-hover': false,
-			'box-shadow-vertical-general': 0,
+			'box-shadow-vertical-general': 30,
 		};
 
 		const attributes = await getBlockAttributes();
@@ -58,22 +58,28 @@ describe('BoxShadowControl', () => {
 		);
 
 		// Horizontal
-		await inputs[2].focus();
+		await inputs[0].focus();
+		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('30');
+		await page.keyboard.press('Enter');
 
 		// Vertical
-		await inputs[4].focus();
+		await inputs[2].focus();
+		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('40');
+		await page.keyboard.press('Enter');
 
 		// Blur
-		await inputs[6].focus();
+		await inputs[4].focus();
 		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('10');
+		await page.keyboard.press('Enter');
 
 		// Spread
-		await inputs[8].focus();
+		await inputs[6].focus();
 		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('60');
+		await page.keyboard.press('Enter');
 
 		const expectChanges = {
 			'box-shadow-blur-general': 10,
@@ -128,9 +134,9 @@ describe('BoxShadowControl', () => {
 			'box-shadow-horizontal-general': undefined,
 			'box-shadow-horizontal-general-hover': 0,
 			'box-shadow-spread-general': undefined,
-			'box-shadow-spread-general-hover': 10,
+			'box-shadow-spread-general-hover': 0,
 			'box-shadow-vertical-general': undefined,
-			'box-shadow-vertical-general-hover': 0,
+			'box-shadow-vertical-general-hover': 30,
 		};
 
 		const shadowAttributes = await getBlockAttributes();

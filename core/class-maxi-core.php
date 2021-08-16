@@ -41,12 +41,6 @@ if (!class_exists('MaxiBlocks_Core')):
             // Enqueue scripts and styles
             add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts_styles']);
 
-            // Enqueue admin scripts and styles
-            add_action('admin_enqueue_scripts', [
-                $this,
-                'enqueue_admin_scripts_styles',
-            ]);
-
             // Add MaxiBlocks classes on body element
             add_filter('body_class', [$this, 'maxi_blocks_body_class'], 99);
             add_filter('admin_body_class', [$this, 'maxi_blocks_body_class'], 99);
@@ -90,17 +84,6 @@ if (!class_exists('MaxiBlocks_Core')):
                 false,
                 true,
             );
-        }
-
-        public function enqueue_admin_scripts_styles()
-        {
-            // Register block editor script for backend.
-            wp_register_style(
-                'maxi-block-css-admin', // Handle.
-                plugins_url('/css/maxi-admin.css', dirname(__FILE__)),
-            );
-
-            wp_enqueue_style('maxi-block-css-admin');
         }
 
         public function maxi_blocks_body_class($classes)

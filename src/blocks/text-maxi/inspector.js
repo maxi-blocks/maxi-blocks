@@ -727,7 +727,6 @@ const Inspector = memo(
 																attributes,
 																'size'
 															)}
-															hideMaxWidth
 															onChange={obj =>
 																setAttributes(
 																	obj

@@ -5,7 +5,7 @@ const boxShadow = {
 	},
 	'box-shadow-palette-color-general': {
 		type: 'number',
-		default: 1,
+		default: 3,
 	},
 	'box-shadow-palette-opacity-general': {
 		type: 'number',

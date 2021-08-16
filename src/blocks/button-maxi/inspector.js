@@ -75,17 +75,19 @@ const Inspector = memo(
 		} = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
+			const newDefaultPresets = cloneDeep({ ...defaultPresets });
+
 			if (
 				type === 'icon' &&
 				!isEmpty(attributes['icon-content']) &&
 				attributes['icon-content'] !==
 					defaultPresets[`preset${number}`]['icon-content']
 			)
-				defaultPresets[`preset${number}`]['icon-content'] =
+				newDefaultPresets[`preset${number}`]['icon-content'] =
 					attributes['icon-content'];
 
 			setAttributes({
-				...defaultPresets[`preset${number}`],
+				...newDefaultPresets[`preset${number}`],
 			});
 		};
 

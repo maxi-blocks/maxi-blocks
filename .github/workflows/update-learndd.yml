@@ -29,7 +29,26 @@ jobs:
                   username: maxi-git-learndd
                   password: ${{ secrets.FTP_PASSWORD }}
                   protocol: ftp
-                  exclude: '[.babelrc.js, .editorconfig, .eslintignore, .eslintrc.json, .github/*, .gitignore, .prettierignore, .prettierrc.json, .wp-env.json, **/.vscode*, **/.git*, **/.git*/**, **/node_modules/**, **/src/*, **/build/*, CODEOWNERS, **/e2e-tests/**, LICENSE, readme.md]'
+                  exclude: '[
+                      .babelrc.js,
+                      .editorconfig,
+                      .eslintignore,
+                      .eslintrc.json,
+                      .github/*,
+                      .gitignore,
+                      .prettierignore,
+                      .prettierrc.json,
+                      .wp-env.json,
+                      **/.git*,
+                      **/.git*/**,
+                      **/.vscode*,
+                      **/e2e-tests/**,
+                      **/node_modules/**,
+                      **/src/**,
+                      CODEOWNERS,
+                      LICENSE,
+                      readme.md
+                  ]'
             - name: Google Chat Notification
               uses: Co-qn/google-chat-notification@releases/v1
               with:

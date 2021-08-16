@@ -27,8 +27,7 @@ jobs:
                   server: ftp://learndd.dev600.com/maxi-blocks
                   username: maxi-git-learndd
                   password: ${{ secrets.FTP_PASSWORD }}
-                  exclude:
-                      - .babelrc.js
+                  exclude: .babelrc.js
                       - .editorconfig
                       - .eslintignore
                       - .eslintrc.json

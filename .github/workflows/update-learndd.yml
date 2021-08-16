@@ -25,12 +25,11 @@ jobs:
               uses: SamKirkland/FTP-Deploy-Action@4.1.0
               with:
                   server: learndd.dev600.com
-                  server-dir: ./wp-content/plugins/maxi-blocks/
+                  server-dir: ./maxi-blocks/
                   username: maxi-git-learndd
                   password: ${{ secrets.FTP_PASSWORD }}
                   protocol: ftp
-                  dry-run: true
-                  exclude: '[.babelrc.js, .editorconfig, .eslintignore, .eslintrc.json, .github/*, .gitignore, .prettierignore, .prettierrc.json, .wp-env.json, **/.vscode*, **/.git*, **/.git*/**, **/node_modules/**, /src/, build/, CODEOWNERS, e2e-tests/**, LICENSE, readme.md]'
+                  exclude: '[.babelrc.js, .editorconfig, .eslintignore, .eslintrc.json, .github/*, .gitignore, .prettierignore, .prettierrc.json, .wp-env.json, **/.vscode*, **/.git*, **/.git*/**, **/node_modules/**, **/src/*, **/build/*, CODEOWNERS, **/e2e-tests/**, LICENSE, readme.md]'
             - name: Google Chat Notification
               uses: Co-qn/google-chat-notification@releases/v1
               with:

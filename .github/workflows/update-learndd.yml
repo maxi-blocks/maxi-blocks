@@ -24,9 +24,9 @@ jobs:
             - name: FTP-Deploy-Action
               uses: SamKirkland/FTP-Deploy-Action@4.1.0
               with:
-                  ftp-server: ftp://learndd.dev600.com/maxi-blocks
-                  ftp-username: maxi-git-learndd
-                  ftp-password: ${{ secrets.FTP_PASSWORD }}
+                  server: ftp://learndd.dev600.com/maxi-blocks
+                  username: maxi-git-learndd
+                  password: ${{ secrets.FTP_PASSWORD }}
                   git-ftp-args: --insecure
             - name: Google Chat Notification
               uses: Co-qn/google-chat-notification@releases/v1

@@ -11,9 +11,9 @@ export const boxShadowNone = {
 export const boxShadowTotal = {
 	'box-shadow-color': 'var(--maxi-shadow-color)',
 	'box-shadow-horizontal': 0,
-	'box-shadow-vertical': 0,
+	'box-shadow-vertical': 30,
 	'box-shadow-blur': 87,
-	'box-shadow-spread': 10,
+	'box-shadow-spread': 0,
 };
 
 export const boxShadowBottom = {

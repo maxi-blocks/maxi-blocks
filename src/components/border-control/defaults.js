@@ -9,9 +9,7 @@ export const borderNone = (prefix = '', isHover) => {
 	response = {
 		[`${prefix}border-color`]:
 			defaultBorder[`${prefix}border-color-general`].default,
-		[`${prefix}border-style`]: isHover
-			? 'none'
-			: defaultBorder[`${prefix}border-style-general`].default,
+		[`${prefix}border-style`]: 'none',
 		[`${prefix}border-top-width`]:
 			defaultBorderWidth[`${prefix}border-top-width-general`].default,
 		[`${prefix}border-right-width`]:

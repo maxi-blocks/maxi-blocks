@@ -2,16 +2,18 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import SelectControl from '../select-control';
-import MediaUploaderControl from '../media-uploader-control';
-import ClipPath from '../clip-path-control';
-import OpacityControl from '../opacity-control';
-import ImageCropControl from '../image-crop-control';
 import AdvancedNumberControl from '../advanced-number-control';
+import ClipPath from '../clip-path-control';
+import FancyRadioControl from '../fancy-radio-control';
+import ImageCropControl from '../image-crop-control';
+import MediaUploaderControl from '../media-uploader-control';
+import OpacityControl from '../opacity-control';
+import SelectControl from '../select-control';
 import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
 
 /**
@@ -24,7 +26,10 @@ import { cloneDeep } from 'lodash';
  */
 const ImageLayer = props => {
 	const { onChange, disableClipPath, isHover, prefix } = props;
+
 	const imageOptions = cloneDeep(props.imageOptions);
+
+	const [moreSettings, setMoreSettings] = useState(false);
 
 	return (
 		<>
@@ -436,76 +441,6 @@ const ImageLayer = props => {
 				</>
 			)}
 			<SelectControl
-				label={__('Background origin', 'maxi-blocks')}
-				value={
-					imageOptions[
-						getAttributeKey(
-							'background-image-origin',
-							isHover,
-							prefix
-						)
-					]
-				}
-				options={[
-					{
-						label: __('Padding', 'maxi-blocks'),
-						value: 'padding-box',
-					},
-					{
-						label: __('Border', 'maxi-blocks'),
-						value: 'border-box',
-					},
-					{
-						label: __('Content', 'maxi-blocks'),
-						value: 'content-box',
-					},
-				]}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-image-origin',
-							isHover,
-							prefix
-						)]: val,
-					})
-				}
-			/>
-			<SelectControl
-				label={__('Background clip', 'maxi-blocks')}
-				value={
-					imageOptions[
-						getAttributeKey(
-							'background-image-clip-path',
-							isHover,
-							prefix
-						)
-					]
-				}
-				options={[
-					{
-						label: __('Border', 'maxi-blocks'),
-						value: 'border-box',
-					},
-					{
-						label: __('Padding', 'maxi-blocks'),
-						value: 'padding-box',
-					},
-					{
-						label: __('Content', 'maxi-blocks'),
-						value: 'content-box',
-					},
-				]}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-image-clip-path',
-							isHover,
-							prefix
-						)]: val,
-					})
-				}
-			/>
-			<SelectControl
 				label={__('Background attachment', 'maxi-blocks')}
 				value={
 					imageOptions[
@@ -540,6 +475,95 @@ const ImageLayer = props => {
 					})
 				}
 			/>
+			<FancyRadioControl
+				label={__('More Settings', 'maxi-blocks')}
+				selected={moreSettings}
+				options={[
+					{
+						label: __('Yes', 'maxi-blocks'),
+						value: 1,
+					},
+					{
+						label: __('No', 'maxi-blocks'),
+						value: 0,
+					},
+				]}
+				onChange={val => setMoreSettings(val)}
+			/>
+			{moreSettings && (
+				<>
+					<SelectControl
+						label={__('Background origin', 'maxi-blocks')}
+						value={
+							imageOptions[
+								getAttributeKey(
+									'background-image-origin',
+									isHover,
+									prefix
+								)
+							]
+						}
+						options={[
+							{
+								label: __('Padding', 'maxi-blocks'),
+								value: 'padding-box',
+							},
+							{
+								label: __('Border', 'maxi-blocks'),
+								value: 'border-box',
+							},
+							{
+								label: __('Content', 'maxi-blocks'),
+								value: 'content-box',
+							},
+						]}
+						onChange={val =>
+							onChange({
+								[getAttributeKey(
+									'background-image-origin',
+									isHover,
+									prefix
+								)]: val,
+							})
+						}
+					/>
+					<SelectControl
+						label={__('Background clip', 'maxi-blocks')}
+						value={
+							imageOptions[
+								getAttributeKey(
+									'background-image-clip-path',
+									isHover,
+									prefix
+								)
+							]
+						}
+						options={[
+							{
+								label: __('Border', 'maxi-blocks'),
+								value: 'border-box',
+							},
+							{
+								label: __('Padding', 'maxi-blocks'),
+								value: 'padding-box',
+							},
+							{
+								label: __('Content', 'maxi-blocks'),
+								value: 'content-box',
+							},
+						]}
+						onChange={val =>
+							onChange({
+								[getAttributeKey(
+									'background-image-clip-path',
+									isHover,
+									prefix
+								)]: val,
+							})
+						}
+					/>
+				</>
+			)}
 			<hr />
 			{!disableClipPath && (
 				<ClipPath

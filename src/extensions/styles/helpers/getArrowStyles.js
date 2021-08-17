@@ -152,7 +152,7 @@ const getArrowStyles = props => {
 
 	const response = {
 		...(!isHover && {
-			[`${target} .maxi-container-arrow .maxi-container-arrow--content`]:
+			[`${target} .maxi-container-arrow .maxi-container-arrow__content`]:
 				{
 					arrow: {
 						...getArrowObject(getGroupAttributes(props, 'arrow')),
@@ -180,7 +180,7 @@ const getArrowStyles = props => {
 				},
 			},
 		}),
-		[`${target} .maxi-container-arrow:before, ${target} .maxi-container-arrow .maxi-container-arrow--content:after`]:
+		[`${target} .maxi-container-arrow .maxi-container-arrow__content:after`]:
 			{
 				background: {
 					...getArrowColorObject(
@@ -193,8 +193,20 @@ const getArrowStyles = props => {
 					),
 				},
 			},
+		[`${target} .maxi-container-arrow__overlap`]: {
+			background: {
+				...getArrowColorObject(
+					getGroupAttributes(props, [
+						'background',
+						'backgroundColor',
+						'backgroundGradient',
+					]),
+					blockStyle
+				),
+			},
+		},
 		...(props['background-status-hover'] && {
-			[`${target}:hover .maxi-container-arrow .maxi-container-arrow--content:after`]:
+			[`${target}:hover .maxi-container-arrow .maxi-container-arrow__content:after`]:
 				{
 					background: {
 						...getArrowColorObject(
@@ -214,7 +226,7 @@ const getArrowStyles = props => {
 				},
 		}),
 		...(props['background-status-hover'] && {
-			[`${target}:hover .maxi-container-arrow:before`]: {
+			[`${target}:hover .maxi-container-arrow__overlap`]: {
 				background: {
 					...getArrowColorObject(
 						getGroupAttributes(
@@ -232,7 +244,7 @@ const getArrowStyles = props => {
 				},
 			},
 		}),
-		[`${target} .maxi-container-arrow .maxi-container-arrow--content:before`]:
+		[`${target} .maxi-container-arrow .maxi-container-arrow__content:before`]:
 			{
 				border: {
 					...getArrowBorderObject(
@@ -246,7 +258,7 @@ const getArrowStyles = props => {
 				},
 			},
 		...(props['border-status-hover'] && {
-			[`${target}:hover .maxi-container-arrow .maxi-container-arrow--content:before`]:
+			[`${target}:hover .maxi-container-arrow .maxi-container-arrow__content:before`]:
 				{
 					border: {
 						...getArrowBorderObject(

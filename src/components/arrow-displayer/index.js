@@ -42,9 +42,12 @@ const ArrowDisplayer = props => {
 	return (
 		!!props['arrow-status'] &&
 		(simpleBackgroundColorStatus || layerBackgroundColorStatus) && (
-			<div className={arrowClasses}>
-				<div className='maxi-container-arrow--content' />
-			</div>
+			<>
+				<div className='maxi-container-arrow__overlap' />
+				<div className={arrowClasses}>
+					<div className='maxi-container-arrow__content' />
+				</div>
+			</>
 		)
 	);
 };

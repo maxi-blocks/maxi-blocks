@@ -6,6 +6,11 @@ body.maxi-blocks--active .maxi-block.maxi-block--has-arrow {
 	}
 }
 
+.maxi-container-arrow__overlap {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
 .maxi-container-arrow {
 	position: absolute;
 	top: 0;
@@ -16,25 +21,20 @@ body.maxi-blocks--active .maxi-block.maxi-block--has-arrow {
 	backface-visibility: hidden;
 	z-index: -1;
 
-	&:before {
-		content: '';
-		width: 100%;
-		height: 100%;
-	}
-	&__bottom .maxi-container-arrow--content {
+	&__bottom .maxi-container-arrow__content {
 		margin-top: -1px;
 	}
-	&__top .maxi-container-arrow--content {
+	&__top .maxi-container-arrow__content {
 		transform: translate(-50%, -50%) rotate(225deg);
 	}
-	&__left .maxi-container-arrow--content {
+	&__left .maxi-container-arrow__content {
 		transform: translate(-50%, -50%) rotate(135deg);
 	}
-	&__right .maxi-container-arrow--content {
+	&__right .maxi-container-arrow__content {
 		transform: translate(-50%, -50%) rotate(-45deg);
 	}
 
-	&--content {
+	&__content {
 		display: none;
 		width: 80px;
 		height: 80px;

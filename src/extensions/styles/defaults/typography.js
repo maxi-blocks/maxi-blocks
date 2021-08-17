@@ -12,6 +12,9 @@ export const typography = {
 		type: 'number',
 		default: 3,
 	},
+	'palette-opacity-general': {
+		type: 'number',
+	},
 	'color-general': {
 		type: 'string',
 	},
@@ -62,6 +65,9 @@ export const typography = {
 	'palette-color-xxl': {
 		type: 'number',
 	},
+	'palette-opacity-xxl': {
+		type: 'number',
+	},
 	'color-xxl': {
 		type: 'string',
 	},
@@ -108,6 +114,9 @@ export const typography = {
 		type: 'boolean',
 	},
 	'palette-color-xl': {
+		type: 'number',
+	},
+	'palette-opacity-xl': {
 		type: 'number',
 	},
 	'color-xl': {
@@ -158,6 +167,9 @@ export const typography = {
 	'palette-color-l': {
 		type: 'number',
 	},
+	'palette-opacity-l': {
+		type: 'number',
+	},
 	'color-l': {
 		type: 'string',
 	},
@@ -204,6 +216,9 @@ export const typography = {
 		type: 'boolean',
 	},
 	'palette-color-m': {
+		type: 'number',
+	},
+	'palette-opacity-m': {
 		type: 'number',
 	},
 	'color-m': {
@@ -254,6 +269,9 @@ export const typography = {
 	'palette-color-s': {
 		type: 'number',
 	},
+	'palette-opacity-s': {
+		type: 'number',
+	},
 	'color-s': {
 		type: 'string',
 	},
@@ -300,6 +318,9 @@ export const typography = {
 		type: 'boolean',
 	},
 	'palette-color-xs': {
+		type: 'number',
+	},
+	'palette-opacity-xs': {
 		type: 'number',
 	},
 	'color-xs': {

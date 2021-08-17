@@ -1,9 +1,10 @@
 /**
  * Internal dependencies
  */
-import getGroupAttributes from '../getGroupAttributes';
 import getAttributeValue from '../getAttributeValue';
 import getBorderStyles from './getBorderStyles';
+import getColorRGBAString from '../getColorRGBAString';
+import getGroupAttributes from '../getGroupAttributes';
 
 /**
  * External dependencies
@@ -39,32 +40,65 @@ export const getColorBackgroundObject = ({
 	if (!bgStatus && !isEmpty(bgColor))
 		response.general['background-color'] = bgColor;
 	else if (bgStatus && !isButton)
-		response.general[
-			'background-color'
-		] = `var(--maxi-${blockStyle}-color-${
-			props[`${prefix}background-palette-color${isHover ? '-hover' : ''}`]
-		})`;
+		response.general['background-color'] = getColorRGBAString({
+			firstVar: `color-${
+				props[
+					`${prefix}background-palette-color${
+						isHover ? '-hover' : ''
+					}`
+				]
+			}`,
+			opacity:
+				props[
+					`${prefix}background-palette-opacity${
+						isHover ? '-hover' : ''
+					}`
+				],
+			blockStyle,
+		});
 	else if (bgStatus && isButton) {
-		response.general[
-			'background-color'
-		] = `var(--maxi-${blockStyle}-button-background-color${
-			isHover ? '-hover' : ''
-		}, var(--maxi-${blockStyle}-color-${
-			props[`${prefix}background-palette-color${isHover ? '-hover' : ''}`]
-		}))`;
+		response.general['background-color'] = getColorRGBAString({
+			firstVar: `color${isHover ? '-hover' : ''}`,
+			secondVar: `color-${
+				props[
+					`${prefix}background-palette-color${
+						isHover ? '-hover' : ''
+					}`
+				]
+			}`,
+			opacity:
+				props[
+					`${prefix}background-palette-opacity${
+						isHover ? '-hover' : ''
+					}`
+				],
+			blockStyle,
+		});
 	}
 
 	if (isIconInherit) {
 		response.general['background-color'] =
 			props['background-active-media'] !== '' &&
 			props[`background-palette-color-status${isHover ? '-hover' : ''}`]
-				? `var(--maxi-${blockStyle}-button-background-color${
-						isHover ? '-hover' : ''
-				  }, var(--maxi-${blockStyle}-color-${
-						props[
-							`background-palette-color${isHover ? '-hover' : ''}`
-						]
-				  }))`
+				? getColorRGBAString({
+						firstVar: `button-background-color${
+							isHover ? '-hover' : ''
+						}`,
+						secondVar: `color-${
+							props[
+								`background-palette-color${
+									isHover ? '-hover' : ''
+								}`
+							]
+						}`,
+						opacity:
+							props[
+								`background-palette-opacity${
+									isHover ? '-hover' : ''
+								}`
+							],
+						blockStyle,
+				  })
 				: props[`${prefix}background-color${isHover ? '-hover' : ''}`];
 	}
 
@@ -381,7 +415,11 @@ const getSVGBackgroundObject = ({ blockStyle, ...props }) => {
 		response.general.height = `${props['background-svg-size']}${props['background-svg-size--unit']}`;
 
 	if (props['background-palette-svg-color-status'])
-		response.general.fill = `var(--maxi-${blockStyle}-color-${props['background-palette-svg-color']})`;
+		response.general.fill = getColorRGBAString({
+			firstVar: `color-${props['background-palette-svg-color']}`,
+			opacity: props['background-palette-svg-opacity'],
+			blockStyle,
+		});
 
 	return response;
 };

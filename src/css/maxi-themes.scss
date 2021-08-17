@@ -84,36 +84,36 @@ body.maxi-blocks--active {
 			}
 
 			&.maxi-block--has-link .maxi-text-block__content {
-				color: var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette));
+				color: rgba(var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette)), 1);
 				&:hover, &:focus {
-			        color: var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette));
+			        color: rgba(var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette)), 1);
 			    }
 				&:active {
-					color: var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette));
+					color: rgba(var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette)), 1);
 				}
 				&:visited {
-					color: var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette));
+					color: rgba(var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette)), 1);
 				}
 			}
 			&.maxi-text-block a.maxi-text-block--link,
 			.maxi-text-block a.maxi-text-block--link {
-				color: var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette));
+				color: rgba(var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette)), 1);
 				&:hover, &:focus {
-			        color: var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette));
+			        color: rgba(var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette)), 1);
 			        span {
-			        	color: var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette));
+			        	color: rgba(var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette)), 1);
 			        }
 			    }
 				&:active {
-					color: var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette));
+					color: rgba(var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette)), 1);
 			        span {
-			        	color: var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette));
+			        	color: rgba(var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette)), 1);
 			        }
 				}
 				&:visited {
-					color: var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette));
+					color: rgba(var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette)), 1);
 			        span {
-			        	color: var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette));
+			        	color: rgba(var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette)), 1);
 			        }
 				}
 			}
@@ -126,9 +126,9 @@ body.maxi-blocks--active {
 				text-transform: var(--maxi-#{$style}-button-text-transform-general);
 				text-decoration: var(--maxi-#{$style}-button-text-decoration-general);
 				&:visited, &:hover, &:active, &:focus {
-					color: var(--maxi-#{$style}-button-hover-color, var(--maxi-#{$style}-button-hover-color-palette, var(--maxi-#{$style}-button-color, var(--maxi-#{$style}-button-color-palette))));
-					background-color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-button-background-hover-color-palette,  var(--maxi-#{$style}-button-background-color, var(--maxi-#{$style}-button-background-color-palette))));
-					border-color: var(--maxi-#{$style}-hover, var(--maxi-#{$style}-button-border-color-palette));
+					color: rgba(var(--maxi-#{$style}-button-hover-color, var(--maxi-#{$style}-button-hover-color-palette, var(--maxi-#{$style}-button-color, var(--maxi-#{$style}-button-color-palette)))), 1);
+					background-color: rgba(var(--maxi-#{$style}-hover, var(--maxi-#{$style}-button-background-hover-color-palette,  var(--maxi-#{$style}-button-background-color, var(--maxi-#{$style}-button-background-color-palette)))), 1);
+					border-color: rgba(var(--maxi-#{$style}-hover, var(--maxi-#{$style}-button-border-color-palette)), 1);
 			    }
 			}
 		}
@@ -144,7 +144,7 @@ body.maxi-blocks--active {
 		div#editor .maxi-color-palette--#{$style} {
 			@each $color_number in $color_set {
 				.maxi-sc-color-palette .maxi-sc-color-palette__box .maxi-sc-color-palette__box__item__#{$color_number} {
-					background-color: var(--maxi-#{$style}-color-#{$color_number});
+					background-color: rgba(var(--maxi-#{$style}-color-#{$color_number}), 1);
 				}
 			}
 		}

@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import getColorRGBAString from '../getColorRGBAString';
+
+/**
  * External dependencies
  */
 import { isNil } from 'lodash';
@@ -32,7 +37,11 @@ const getIconStyles = (obj, target, parentBlockStyle, isIconInherit = true) => {
 			obj['icon-palette-color']
 		) {
 			response.general.fill = 'none';
-			response.general.stroke = `var(--maxi-${parentBlockStyle}-color-${obj['icon-palette-color']})`;
+			response.general.stroke = getColorRGBAString({
+				firstVar: `color-${obj['icon-palette-color']}`,
+				opacity: obj['icon-palette-opacity'],
+				blockStyle: parentBlockStyle,
+			});
 		}
 	}
 
@@ -45,7 +54,11 @@ const getIconStyles = (obj, target, parentBlockStyle, isIconInherit = true) => {
 			obj['palette-color-general']
 		) {
 			response.general.fill = 'none';
-			response.general.stroke = `var(--maxi-${parentBlockStyle}-color-${obj['palette-color-general']})`;
+			response.general.stroke = getColorRGBAString({
+				firstVar: `color-${obj['palette-color-general']}`, // not sure about this values...
+				opacity: obj['palette-opacity-general'], // not sure about this values...
+				blockStyle: parentBlockStyle,
+			});
 		}
 	}
 

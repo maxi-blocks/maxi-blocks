@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import getColorRGBAString from '../getColorRGBAString';
+
+/**
  * External dependencies
  */
 import { isNil } from 'lodash';
@@ -23,7 +28,12 @@ const getSvgStyles = (obj, target, parentBlockStyle) => {
 			obj['svg-palette-fill-color-status'] &&
 			obj['svg-palette-fill-color']
 		)
-			response.general.fill = `var(--maxi-${parentBlockStyle}-icon-fill, var(--maxi-${parentBlockStyle}-color-${obj['svg-palette-fill-color']}))`;
+			response.general.fill = getColorRGBAString({
+				firstVar: 'icon-fill',
+				secondVar: `color-${obj['svg-palette-fill-color']}`,
+				opacity: obj['svg-palette-fill-opacity'],
+				blockStyle: parentBlockStyle,
+			});
 		else if (
 			!obj['svg-palette-fill-color-status'] &&
 			!isNil(obj['svg-fill-color'])
@@ -36,7 +46,12 @@ const getSvgStyles = (obj, target, parentBlockStyle) => {
 			obj['svg-palette-line-color-status'] &&
 			obj['svg-palette-line-color']
 		)
-			response.general.stroke = `var(--maxi-${parentBlockStyle}-icon-line, var(--maxi-${parentBlockStyle}-color-${obj['svg-palette-line-color']}))`;
+			response.general.stroke = getColorRGBAString({
+				firstVar: 'icon-line',
+				secondVar: `color-${obj['svg-palette-line-color']}`,
+				opacity: obj['svg-palette-line-opacity'],
+				blockStyle: parentBlockStyle,
+			});
 		else if (
 			!obj['svg-palette-line-color-status'] &&
 			!isNil(obj['svg-line-color'])

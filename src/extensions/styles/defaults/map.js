@@ -53,6 +53,9 @@ const map = {
 		type: 'number',
 		default: 4,
 	},
+	'map-marker-palette-text-opacity': {
+		type: 'number',
+	},
 	'map-marker-text-color': {
 		type: 'string',
 	},
@@ -67,6 +70,9 @@ const map = {
 	'map-marker-palette-address-color': {
 		type: 'number',
 		default: 5,
+	},
+	'map-marker-palette-address-opacity': {
+		type: 'number',
 	},
 	'map-marker-address-color': {
 		type: 'string',

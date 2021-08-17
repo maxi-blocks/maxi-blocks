@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import getColorRGBAString from '../getColorRGBAString';
+
+/**
  * External dependencies
  */
 import { isNil, isEmpty, isNumber } from 'lodash';
@@ -35,9 +40,11 @@ export const getShapeDividerSVGStyles = (obj, location, parentBlockStyle) => {
 		obj[`shape-divider-palette-${location}-color-status`] &&
 		isNumber(obj[`shape-divider-palette-${location}-color`])
 	) {
-		response.general.fill = `var(--maxi-${parentBlockStyle}-color-${
-			obj[`shape-divider-palette-${location}-color`]
-		})`;
+		response.general.fill = getColorRGBAString({
+			firstVar: `color-${obj[`shape-divider-palette-${location}-color`]}`,
+			opacity: obj[`shape-divider-palette-${location}-opacity`],
+			blockStyle: parentBlockStyle,
+		});
 	}
 
 	return response;

@@ -194,7 +194,7 @@ describe('BackgroundControl', () => {
 		expect(backgroundAttributes).toStrictEqual(expectAttributes);
 	});
 
-	it.only('Check Background Video', async () => {
+	it('Check Background Video', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
 		await accordionPanel.$$eval(

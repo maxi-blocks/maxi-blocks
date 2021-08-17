@@ -101,6 +101,73 @@ describe('AxisControl', () => {
 		const areAllAuto = marginKeys.every(key => {
 			return fourthAttributes[key] === 'auto';
 		});
+
 		expect(areAllAuto).toStrictEqual(true);
+
+		const syncButton = await page.$(
+			'.maxi-axis-control__top-part .maxi-axis-control__content__item__sync button'
+		);
+
+		await syncButton.click();
+		const paddingInputs = await page.$$(
+			'.maxi-axis-control .maxi-axis-control__content__item__top input'
+		);
+
+		await paddingInputs[1].focus();
+		await page.keyboard.press('5');
+
+		const padding = 5;
+		const attributes = await getBlockAttributes();
+		const attribute = attributes['padding-bottom-general'];
+
+		expect(attribute).toStrictEqual(padding);
+
+		await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button',
+			button => button[1].click()
+		);
+
+		await paddingInputs[1].focus();
+		await page.keyboard.press('Backspace');
+		await page.keyboard.press('7');
+
+		const expectChanges = {
+			'padding-bottom-general': 7,
+			'padding-left-general': 7,
+			'padding-right-general': 7,
+			'padding-top-general': 7,
+		};
+
+		const blockAttributes = await getBlockAttributes();
+
+		const blockPadding = (({
+			'padding-bottom-general': paddingBottom,
+			'padding-left-general': paddingLeft,
+			'padding-right-general': paddingRight,
+			'padding-top-general': paddingTop,
+		}) => ({
+			'padding-bottom-general': paddingBottom,
+			'padding-left-general': paddingLeft,
+			'padding-right-general': paddingRight,
+			'padding-top-general': paddingTop,
+		}))(blockAttributes);
+
+		expect(blockPadding).toStrictEqual(expectChanges);
+
+		const pressedTrue = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part',
+			expectHtml => expectHtml[1].innerHTML
+		);
+
+		expect(pressedTrue).toMatchSnapshot();
+
+		await syncButton.click();
+
+		const pressedFalse = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part',
+			expectHtml => expectHtml[1].innerHTML
+		);
+
+		expect(pressedFalse).toMatchSnapshot();
 	});
 });

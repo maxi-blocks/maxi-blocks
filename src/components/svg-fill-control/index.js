@@ -90,6 +90,14 @@ const SVGFillControl = props => {
 									onChange({
 										SVGElement: resEl.outerHTML,
 										SVGData,
+										'background-palette-svg-color':
+											props.SVGOptions[
+												'background-palette-svg-color'
+											],
+										'background-palette-svg-color-status':
+											props.SVGOptions[
+												'background-palette-svg-color-status'
+											],
 									});
 								}}
 								onRemoveImage={() => {
@@ -105,6 +113,14 @@ const SVGFillControl = props => {
 									onChange({
 										SVGElement: resEl.outerHTML,
 										SVGData,
+										'background-palette-svg-color':
+											props.SVGOptions[
+												'background-palette-svg-color'
+											],
+										'background-palette-svg-color-status':
+											props.SVGOptions[
+												'background-palette-svg-color-status'
+											],
 									});
 								}}
 							/>

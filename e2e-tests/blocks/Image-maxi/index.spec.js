@@ -36,7 +36,7 @@ describe('Image Maxi', () => {
 		);
 
 		const linkImage =
-			'https://www.landuum.com/wp-content/uploads/2019/03/cultura_paisajeiluminado_landuum5.jpg';
+			'https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg';
 
 		await page.keyboard.type(linkImage);
 		await page.$$eval(

@@ -58,25 +58,25 @@ describe('BoxShadowControl', () => {
 		);
 
 		// Horizontal
-		await inputs[0].focus();
+		await inputs[2].focus();
 		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('30');
 		await page.keyboard.press('Enter');
 
 		// Vertical
-		await inputs[2].focus();
+		await inputs[4].focus();
 		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('40');
 		await page.keyboard.press('Enter');
 
 		// Blur
-		await inputs[4].focus();
+		await inputs[6].focus();
 		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('10');
 		await page.keyboard.press('Enter');
 
 		// Spread
-		await inputs[6].focus();
+		await inputs[8].focus();
 		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('60');
 		await page.keyboard.press('Enter');

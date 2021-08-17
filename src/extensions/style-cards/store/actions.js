@@ -46,3 +46,9 @@ export function saveSCStyles(isUpdate) {
 		isUpdate,
 	};
 }
+
+export function resetSC() {
+	return {
+		type: 'RESET_STYLE_CARDS',
+	};
+}

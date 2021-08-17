@@ -9,7 +9,7 @@ Object {
       },
     },
   },
-  " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
+  " .maxi-container-arrow .maxi-container-arrow__content:after": Object {
     "background": Object {
       "general": Object {
         "background-color": "rgb(255, 99, 71)",
@@ -17,7 +17,15 @@ Object {
       "label": "Arrow Color",
     },
   },
-  " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
+  " .maxi-container-arrow .maxi-container-arrow__content:before": Object {
+    "border": Object {
+      "general": Object {
+        "border-color": "rgb(6,147,227)",
+      },
+      "label": "Arrow Border",
+    },
+  },
+  " .maxi-container-arrow__overlap": Object {
     "border": Object {
       "general": Object {
         "border-color": "rgb(6,147,227)",
@@ -32,7 +40,7 @@ Object {
       },
     },
   },
-  ":hover .maxi-container-arrow .maxi-container-arrow--content:after": Object {
+  ":hover .maxi-container-arrow .maxi-container-arrow__content:after": Object {
     "background": Object {
       "general": Object {
         "background-color": "rgb(6,147,227)",
@@ -40,7 +48,15 @@ Object {
       "label": "Arrow Color",
     },
   },
-  ":hover .maxi-container-arrow .maxi-container-arrow--content:before": Object {
+  ":hover .maxi-container-arrow .maxi-container-arrow__content:before": Object {
+    "border": Object {
+      "general": Object {
+        "border-color": "rgb(255, 99, 71)",
+      },
+      "label": "Arrow Border",
+    },
+  },
+  ":hover .maxi-container-arrow__overlap": Object {
     "border": Object {
       "general": Object {
         "border-color": "rgb(255, 99, 71)",
@@ -56,7 +72,7 @@ Object {
   " .maxi-container-arrow": Object {
     "shadow": Object {},
   },
-  " .maxi-container-arrow .maxi-container-arrow--content": Object {
+  " .maxi-container-arrow .maxi-container-arrow__content": Object {
     "arrow": Object {
       "general": Object {
         "display": "block",
@@ -109,7 +125,7 @@ Object {
       },
     },
   },
-  " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
+  " .maxi-container-arrow .maxi-container-arrow__content:after": Object {
     "background": Object {
       "general": Object {
         "background-color": "rgb(255, 99, 71)",
@@ -117,7 +133,15 @@ Object {
       "label": "Arrow Color",
     },
   },
-  " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
+  " .maxi-container-arrow .maxi-container-arrow__content:before": Object {
+    "border": Object {
+      "general": Object {
+        "border-color": "rgb(255, 99, 71)",
+      },
+      "label": "Arrow Border",
+    },
+  },
+  " .maxi-container-arrow__overlap": Object {
     "border": Object {
       "general": Object {
         "border-color": "rgb(255, 99, 71)",
@@ -137,7 +161,7 @@ Object {
       },
     },
   },
-  " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
+  " .maxi-container-arrow .maxi-container-arrow__content:after": Object {
     "background": Object {
       "general": Object {
         "background-color": "rgba(var(--maxi-light-color-5), 1)",
@@ -145,7 +169,15 @@ Object {
       "label": "Arrow Color",
     },
   },
-  " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
+  " .maxi-container-arrow .maxi-container-arrow__content:before": Object {
+    "border": Object {
+      "general": Object {
+        "background": "rgba(var(--maxi-light-color-4), 0.2)",
+      },
+      "label": "Arrow Border",
+    },
+  },
+  " .maxi-container-arrow__overlap": Object {
     "border": Object {
       "general": Object {
         "background": "rgba(var(--maxi-light-color-4), 0.2)",
@@ -160,7 +192,7 @@ Object {
       },
     },
   },
-  ":hover .maxi-container-arrow .maxi-container-arrow--content:after": Object {
+  ":hover .maxi-container-arrow .maxi-container-arrow__content:after": Object {
     "background": Object {
       "general": Object {
         "background-color": "rgba(var(--maxi-light-color-1), 1)",
@@ -168,7 +200,19 @@ Object {
       "label": "Arrow Color",
     },
   },
-  ":hover .maxi-container-arrow .maxi-container-arrow--content:before": Object {
+  ":hover .maxi-container-arrow .maxi-container-arrow__content:before": Object {
+    "border": Object {
+      "general": Object {
+        "background": "rgba(var(--maxi-light-color-1), 0.2)",
+        "height": "calc(50% + 6px)",
+        "left": "calc(1.5px)",
+        "top": "calc(1.5px)",
+        "width": "calc(50% + 6px)",
+      },
+      "label": "Arrow Border",
+    },
+  },
+  ":hover .maxi-container-arrow__overlap": Object {
     "border": Object {
       "general": Object {
         "background": "rgba(var(--maxi-light-color-1), 0.2)",

@@ -270,6 +270,33 @@ const getArrowStyles = props => {
 					),
 				},
 			},
+		[`${target} .maxi-container-arrow__overlap`]: {
+			border: {
+				...getArrowBorderObject(
+					getGroupAttributes(props, [
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle
+				),
+			},
+		},
+		...(props['border-status-hover'] && {
+			[`${target}:hover .maxi-container-arrow__overlap`]: {
+				border: {
+					...getArrowBorderObject(
+						getGroupAttributes(
+							props,
+							['border', 'borderWidth', 'borderRadius'],
+							isHover
+						),
+						blockStyle,
+						isHover
+					),
+				},
+			},
+		}),
 		...(props['border-status-hover'] && {
 			[`${target}:hover .maxi-container-arrow .maxi-container-arrow__content:before`]:
 				{

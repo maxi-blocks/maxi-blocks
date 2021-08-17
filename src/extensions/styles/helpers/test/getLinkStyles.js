@@ -8,6 +8,7 @@ describe('getLinkStyles', () => {
 			'link-color-general': 'rgba(57,189,39,1)',
 			'link-hover-palette-color-status-general': false,
 			'link-hover-palette-color-general': 4,
+			'link-hover-palette-opacity-general': 20,
 			'link-hover-color-general': 'rgba(191,192,86,1)',
 			'link-active-palette-color-status-general': false,
 			'link-active-palette-color-general': 3,

@@ -13,6 +13,7 @@ import FancyRadioControl from '../../../fancy-radio-control';
 import {
 	getDefaultAttribute,
 	getBlockStyle,
+	getColorRGBAString,
 } from '../../../../extensions/styles';
 
 /**
@@ -60,13 +61,15 @@ const BackgroundColor = props => {
 									background: props[
 										'background-palette-color-status'
 									]
-										? `var(--maxi-${getBlockStyle(
-												clientId
-										  )}-color-${
-												props[
-													'background-palette-color'
-												]
-										  })`
+										? getColorRGBAString({
+												firstVal: `color-${props['background-palette-color']}`,
+												opacity:
+													props[
+														'background-palette-opacity'
+													],
+												blockStyle:
+													getBlockStyle(clientId),
+										  })
 										: props['background-color'],
 									border: '1px solid #fff',
 							  }),

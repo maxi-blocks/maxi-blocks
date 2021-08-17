@@ -681,20 +681,17 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											<span
 												className={`maxi-style-cards__quick-color-presets__box__item maxi-style-cards__quick-color-presets__box__item__${item}`}
 												style={{
-													background:
-														processSCAttribute(
-															SC,
-															item,
-															'color'
-														),
+													background: `rgba(${processSCAttribute(
+														SC,
+														item,
+														'color'
+													)}, 1)`,
 												}}
 											/>
 										</div>
 									))}
 								</div>
 								<ColorControl
-									disableColorDisplay
-									disableOpacity
 									className={`maxi-style-cards-control__sc__color-${quickColorPreset}-${SCStyle}`}
 									color={processSCAttribute(
 										SC,
@@ -714,6 +711,9 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											'color'
 										)
 									}
+									format='colorString'
+									disableColorDisplay
+									disableOpacity
 									disableGradient
 									disablePalette
 								/>

@@ -9,7 +9,10 @@ import { __ } from '@wordpress/i18n';
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
 import FancyRadioControl from '../../../fancy-radio-control';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import {
+	getColorRGBAString,
+	getDefaultAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * Styles
@@ -26,7 +29,12 @@ const IconColor = props => {
 
 	const getColor = attr =>
 		attr['icon-palette-color-status']
-			? `var(--maxi-${parentBlockStyle}-icon, var(--maxi-${parentBlockStyle}-color-${attr['icon-palette-color']}))`
+			? getColorRGBAString({
+					firstVar: 'icon',
+					secondVar: `color-${attr['icon-palette-color']}`,
+					blockStyle: parentBlockStyle,
+					opacity: attr['icon-palette-opacity'],
+			  })
 			: attr['icon-color'];
 
 	return (

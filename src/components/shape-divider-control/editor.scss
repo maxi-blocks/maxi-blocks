@@ -2,6 +2,7 @@
 	&__shape-list {
 		.maxi-base-control__field {
 			flex-wrap: wrap;
+			min-width: 250px;
 		}
 		.maxi-radio-control {
 			&__input {

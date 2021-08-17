@@ -25,29 +25,43 @@ jobs:
               uses: SamKirkland/FTP-Deploy-Action@4.1.0
               with:
                   server: learndd.dev600.com
-                  # server-dir: maxi-blocks/
+                  server-dir: ./maxi-blocks/
                   username: maxi-git-learndd
                   password: ${{ secrets.FTP_PASSWORD }}
                   protocol: ftp
-                  dry-run: true
-                  exclude: .babelrc.js
-                      - .editorconfig
-                      - .eslintignore
-                      - .eslintrc.json
-                      - .git*/**
-                      - .github/*
-                      - .gitignore
-                      - .prettierignore
-                      - .prettierrc.json
-                      - .wp-env.json
-                      - **/.vscode*
-                      - **/node_modules*
-                      - /src/
-                      - build/
-                      - CODEOWNERS
-                      - e2e-tests/**
-                      - LICENSE
-                      - readme.md
+                  exclude: '[
+                      .babelrc.js,
+                      .editorconfig,
+                      .eslintignore,
+                      .eslintrc.json,
+                      .github/*,
+                      .gitignore,
+                      .prettierignore,
+                      .prettierrc.json,
+                      .wp-env.json,
+                      block.json,
+                      package.json,
+                      package-lock.json,
+                      README.md,
+                      **/.git*,
+                      **/.git*/**,
+                      **/.vscode/**,
+                      **/e2e-tests/**,
+                      **/node_modules/**,
+                      **/src/blocks/**,
+                      **/src/components/**,
+                      **/src/css/**,
+                      **/src/editor/**,
+                      **/src/extensions/**,
+                      **/src/icons/**,
+                      **/src/common.scss,
+                      **/src/components.js,
+                      **/src/icons.js,
+                      **/src/index.js,
+                      CODEOWNERS,
+                      LICENSE,
+                      readme.md
+                  ]'
             - name: Google Chat Notification
               uses: Co-qn/google-chat-notification@releases/v1
               with:

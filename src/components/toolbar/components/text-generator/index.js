@@ -56,7 +56,7 @@ const TextGenerator = withFormatValue(props => {
 		const newFormatValue = insert(formatValue, {
 			formats: newFormatsArray,
 			replacements: newReplacementsArray,
-			text: newContent,
+			text: ` ${generatedText[0].props.children}`,
 		});
 
 		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks

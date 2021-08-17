@@ -42,15 +42,6 @@ const ColorLayer = props => {
 				defaultColor={getDefaultAttribute(
 					getAttributeKey('background-color', isHover, prefix)
 				)}
-				paletteColor={
-					colorOptions[
-						getAttributeKey(
-							'background-palette-color',
-							isHover,
-							prefix
-						)
-					]
-				}
 				paletteStatus={
 					colorOptions[
 						getAttributeKey(
@@ -60,19 +51,30 @@ const ColorLayer = props => {
 						)
 					]
 				}
-				onChange={({ color, paletteColor, paletteStatus }) => {
-					if (color)
-						colorOptions[
-							getAttributeKey('background-color', isHover, prefix)
-						] = color;
-					if (paletteColor)
-						colorOptions[
-							getAttributeKey(
-								'background-palette-color',
-								isHover,
-								prefix
-							)
-						] = paletteColor;
+				paletteColor={
+					colorOptions[
+						getAttributeKey(
+							'background-palette-color',
+							isHover,
+							prefix
+						)
+					]
+				}
+				paletteOpacity={
+					colorOptions[
+						getAttributeKey(
+							'background-palette-opacity',
+							isHover,
+							prefix
+						)
+					]
+				}
+				onChange={({
+					color,
+					paletteColor,
+					paletteStatus,
+					paletteOpacity,
+				}) => {
 					if (paletteStatus)
 						colorOptions[
 							getAttributeKey(
@@ -81,20 +83,45 @@ const ColorLayer = props => {
 								prefix
 							)
 						] = paletteColor;
+					if (paletteColor)
+						colorOptions[
+							getAttributeKey(
+								'background-palette-color',
+								isHover,
+								prefix
+							)
+						] = paletteColor;
+					if (paletteOpacity)
+						colorOptions[
+							getAttributeKey(
+								'background-palette-opacity',
+								isHover,
+								prefix
+							)
+						] = paletteOpacity;
+					if (color)
+						colorOptions[
+							getAttributeKey('background-color', isHover, prefix)
+						] = color;
 
 					onChange({
-						[getAttributeKey('background-color', isHover, prefix)]:
-							color,
+						[getAttributeKey(
+							'background-palette-color-status',
+							isHover,
+							prefix
+						)]: paletteStatus,
 						[getAttributeKey(
 							'background-palette-color',
 							isHover,
 							prefix
 						)]: paletteColor,
 						[getAttributeKey(
-							'background-palette-color-status',
+							'background-palette-opacity',
 							isHover,
 							prefix
-						)]: paletteStatus,
+						)]: paletteOpacity,
+						[getAttributeKey('background-color', isHover, prefix)]:
+							color,
 					});
 				}}
 				globalProps={

@@ -26,6 +26,9 @@ const shapeDivider = {
 		type: 'number',
 		default: 5,
 	},
+	'shape-divider-palette-top-opacity': {
+		type: 'number',
+	},
 	'shape-divider-top-color': {
 		type: 'string',
 	},
@@ -59,6 +62,9 @@ const shapeDivider = {
 	'shape-divider-palette-bottom-color': {
 		type: 'number',
 		default: 5,
+	},
+	'shape-divider-palette-bottom-opacity': {
+		type: 'number',
 	},
 	'shape-divider-bottom-color': {
 		type: 'string',

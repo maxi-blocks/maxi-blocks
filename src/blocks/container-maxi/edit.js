@@ -19,7 +19,10 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	setHoverAttributes,
+} from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -73,7 +76,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
+		const {
+			attributes,
+			clientId,
+			deviceType,
+			hasInnerBlocks,
+			setAttributes,
+		} = this.props;
 		const { uniqueID, isFirstOnHierarchy, fullWidth } = attributes;
 
 		return [
@@ -111,6 +120,8 @@ class edit extends MaxiBlockComponent {
 								'padding',
 								'margin',
 							])}
+							onChange={obj => setAttributes(obj)}
+							breakpoint={deviceType}
 						/>
 					</>
 				)}

@@ -103,7 +103,7 @@ describe('AxisControl', () => {
 		});
 
 		expect(areAllAuto).toStrictEqual(true);
-		/////////////////////////
+
 		const syncButtonTop = await page.$(
 			'.maxi-axis-control__top-part .maxi-axis-control__content__item__sync button'
 		);

@@ -131,6 +131,7 @@ describe('getBorderStyles', () => {
 		const object = {
 			'border-palette-color-status-general': true,
 			'border-palette-color-general': 1,
+			'border-palette-opacity-general': 20,
 			'border-style-general': 'solid',
 			'border-top-width-general': 1,
 			'border-right-width-general': 2,

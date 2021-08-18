@@ -7,23 +7,23 @@ import {
 	pressKeyTimes,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('Image Maxi', () => {
-	it('Image Maxi does not break', async () => {
+	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
+	});
 
+	it('Image Maxi does not break', async () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
 	it('Checking the image caption', async () => {
-		await createNewPost();
-		await insertBlock('Image Maxi');
-
 		// select img
 		await page.$eval(
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button button',
@@ -35,7 +35,8 @@ describe('Image Maxi', () => {
 			input => input.focus()
 		);
 
-		const linkImage = 'shorturl.at/mLT08';
+		const linkImage =
+			'https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg';
 
 		await page.keyboard.type(linkImage);
 		await page.$$eval(
@@ -104,16 +105,23 @@ describe('Image Maxi', () => {
 		const inputs = await accordionPanel.$$(
 			'.maxi-advanced-number-control .maxi-base-control__field input'
 		);
-		await inputs[0].focus();
-		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('9');
 
 		await inputs[2].focus();
-		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('2');
+		await page.waitForTimeout(200);
+		await page.keyboard.press('Backspace');
+		await page.waitForTimeout(200);
+		await page.keyboard.type('9');
+		await page.waitForTimeout(200);
 
 		await inputs[4].focus();
+		await pressKeyTimes('Backspace', 4);
+		await page.waitForTimeout(200);
+		await page.keyboard.type('2');
+		await page.waitForTimeout(200);
+
+		await inputs[6].focus();
 		await page.keyboard.type('11');
+		await page.waitForTimeout(200);
 
 		const styleAttributes = await getBlockAttributes();
 		const typographyAttributes = (({

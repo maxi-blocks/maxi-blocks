@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getBlockStyle } from '../../extensions/styles';
+import { getColorRGBAString, getBlockStyle } from '../../extensions/styles';
 
 export const rgbToHex = color => {
 	const rgb = color.match(
@@ -98,15 +98,25 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 
 	const fillColor = !currentAttributes[`${target}-palette-fill-color-status`]
 		? currentAttributes[`${target}-fill-color`]
-		: `var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-${
-				currentAttributes[`${target}-palette-fill-color`]
-		  }))` || '';
+		: getColorRGBAString({
+				firstVar: 'icon-fill',
+				secondVar: `color-${
+					currentAttributes[`${target}-palette-fill-color`]
+				}`,
+				opacity: currentAttributes[`${target}-palette-fill-opacity`],
+				blockStyle,
+		  }) || '';
 
 	const lineColor = !currentAttributes[`${target}-palette-line-color-status`]
 		? currentAttributes[`${target}-line-color`]
-		: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${
-				currentAttributes[`${target}-palette-line-color`]
-		  }))` || '';
+		: getColorRGBAString({
+				firstVar: 'icon-line',
+				secondVar: `color-${
+					currentAttributes[`${target}-palette-line-color`]
+				}`,
+				opacity: currentAttributes[`${target}-palette-line-opacity`],
+				blockStyle,
+		  }) || '';
 
 	const shapeFillColor = !currentAttributes[
 		`${target}-palette-fill-color-status`

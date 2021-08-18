@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getBoxShadowStyles from './getBoxShadowStyles';
+import getColorRGBAString from '../getColorRGBAString';
 import getGroupAttributes from '../getGroupAttributes';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
@@ -30,9 +31,17 @@ export const getArrowBorderObject = (
 		isHover && props['border-status-hover']
 			? props[`border-palette-color-general${isHover ? '-hover' : ''}`]
 			: props['border-palette-color-general'];
+	const paletteOpacity =
+		isHover && props['border-status-hover']
+			? props[`border-palette-opacity-general${isHover ? '-hover' : ''}`]
+			: props['border-palette-opacity-general'];
 
 	if (paletteStatus && paletteColor)
-		response.general.background = `var(--maxi-${parentBlockStyle}-color-${paletteColor});`;
+		response.general.background = getColorRGBAString({
+			firstVar: `color-${paletteColor}`,
+			opacity: paletteOpacity,
+			blockStyle: parentBlockStyle,
+		});
 	else
 		response.general['border-color'] =
 			props[`border-color-general${isHover ? '-hover' : ''}`];
@@ -136,10 +145,14 @@ export const getArrowColorObject = (props, blockStyle, isHover = false) => {
 	if (props[`background-palette-color-status${isHover ? '-hover' : ''}`]) {
 		const paletteColor =
 			props[`background-palette-color${isHover ? '-hover' : ''}`];
+		const paletteOpacity =
+			props[`background-palette-opacity${isHover ? '-hover' : ''}`];
 
-		response.general[
-			'background-color'
-		] = `var(--maxi-${blockStyle}-color-${paletteColor})`;
+		response.general['background-color'] = getColorRGBAString({
+			firstVar: `color-${paletteColor}`,
+			opacity: paletteOpacity,
+			blockStyle,
+		});
 	} else
 		response.general['background-color'] =
 			props[`background-color${isHover ? '-hover' : ''}`];

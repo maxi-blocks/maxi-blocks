@@ -3,6 +3,7 @@
  */
 import defaultBoxShadow from '../defaults/boxShadow';
 import defaultBoxShadowHover from '../defaults/boxShadowHover';
+import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
@@ -94,7 +95,11 @@ const getBoxShadowStyles = ({
 
 		const color =
 			paletteStatus && paletteColor
-				? `var(--maxi-${parentBlockStyle}-color-${paletteColor})`
+				? getColorRGBAString({
+						firstVar: `color-${paletteColor}`,
+						opacity: getValue('palette-opacity').value,
+						blockStyle: parentBlockStyle,
+				  })
 				: paletteColor;
 
 		const isColorDefault =

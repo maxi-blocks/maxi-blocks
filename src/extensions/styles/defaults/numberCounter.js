@@ -51,6 +51,9 @@ const numberCounter = {
 		type: 'number',
 		default: 4,
 	},
+	'number-counter-palette-text-opacity': {
+		type: 'number',
+	},
 	'number-counter-text-color': {
 		type: 'string',
 	},
@@ -62,6 +65,9 @@ const numberCounter = {
 		type: 'number',
 		default: 2,
 	},
+	'number-counter-palette-circle-background-opacity': {
+		type: 'number',
+	},
 	'number-counter-circle-background-color': {
 		type: 'string',
 	},
@@ -72,6 +78,9 @@ const numberCounter = {
 	'number-counter-palette-circle-bar-color': {
 		type: 'number',
 		default: 4,
+	},
+	'number-counter-palette-circle-bar-opacity': {
+		type: 'number',
 	},
 	'number-counter-circle-bar-color': {
 		type: 'string',

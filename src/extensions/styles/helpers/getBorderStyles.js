@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
@@ -74,7 +75,7 @@ const getBorderStyles = ({
 						response[breakpoint].border = 'none';
 					} else response[breakpoint]['border-style'] = borderStyle;
 				} else if (!keyWords.some(key => newLabel.includes(key))) {
-					if (key.includes('color')) {
+					if (key.includes('color') || key.includes('opacity')) {
 						const paletteStatus = getLastBreakpointAttribute(
 							`${prefix}border-palette-color-status`,
 							breakpoint,
@@ -91,17 +92,34 @@ const getBorderStyles = ({
 						if (!isBorderNone) {
 							if (paletteStatus && paletteColor)
 								if (isButton)
-									response[breakpoint][
-										'border-color'
-									] = `var(--maxi-${parentBlockStyle}-${
-										isButton ? 'button-' : ''
-									}border-color${
-										isHover ? '-hover' : ''
-									}, var(--maxi-${parentBlockStyle}-color-${paletteColor}))`;
+									response[breakpoint]['border-color'] =
+										getColorRGBAString({
+											firstVar: `${
+												isButton ? 'button-' : ''
+											}border-color${
+												isHover ? '-hover' : ''
+											}`,
+											secondVar: `color-${paletteColor}`,
+											opacity:
+												obj[
+													`${prefix}border-palette-opacity-${breakpoint}${
+														isHover ? '-hover' : ''
+													}`
+												],
+											blockStyle: parentBlockStyle,
+										});
 								else
-									response[breakpoint][
-										'border-color'
-									] = `var(--maxi-${parentBlockStyle}-color-${paletteColor})`;
+									response[breakpoint]['border-color'] =
+										getColorRGBAString({
+											firstVar: `color-${paletteColor}`,
+											opacity:
+												obj[
+													`${prefix}border-palette-opacity-${breakpoint}${
+														isHover ? '-hover' : ''
+													}`
+												],
+											blockStyle: parentBlockStyle,
+										});
 							else
 								response[breakpoint]['border-color'] =
 									obj[

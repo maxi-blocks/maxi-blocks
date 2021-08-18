@@ -20,6 +20,9 @@ export const backgroundColor = {
 		type: 'number',
 		default: 1,
 	},
+	'background-palette-opacity': {
+		type: 'number',
+	},
 	'background-color': {
 		type: 'string',
 	},

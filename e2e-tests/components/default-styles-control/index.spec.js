@@ -17,7 +17,7 @@ describe('DefaultStylesControl', () => {
 			'.maxi-tabs-content .maxi-default-styles-control button'
 		);
 
-		const expectAttributes = ['none', 'solid', 'dashed', 'dotted'];
+		const expectAttributes = [undefined, 'solid', 'dashed', 'dotted'];
 
 		/* eslint-disable no-await-in-loop */
 		for (let i = 0; i < expectAttributes.length; i += 1) {

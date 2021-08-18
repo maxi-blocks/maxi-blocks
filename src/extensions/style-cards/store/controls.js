@@ -41,6 +41,16 @@ const controls = {
 			},
 		});
 	},
+	async RESET_STYLE_CARDS() {
+		await apiFetch({
+			path: '/maxi-blocks/v1.0/style-cards/reset',
+		}).then(() =>
+			// eslint-disable-next-line no-console
+			console.log(
+				"IMPORTANT: the changes won't have any effect until the page is refreshed"
+			)
+		);
+	},
 };
 
 export default controls;

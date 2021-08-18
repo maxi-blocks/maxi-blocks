@@ -171,6 +171,13 @@ if (!class_exists('MaxiBlocks_API')):
 					return current_user_can('edit_posts');
 				},
 			]);
+			register_rest_route($this->namespace, '/style-cards/reset', [
+				'methods' => 'GET',
+				'callback' => [$this, 'reset_maxi_blocks_style_cards'],
+				'permission_callback' => function () {
+					return current_user_can('edit_posts');
+				},
+			]);
 			register_rest_route($this->namespace, '/style-cards', [
 				'methods' => 'POST',
 				'callback' => [$this, 'set_maxi_blocks_current_style_cards'],
@@ -408,6 +415,33 @@ if (!class_exists('MaxiBlocks_API')):
 				$style_cards = $wpdb->get_var($query);
 				return $style_cards;
 			}
+		}
+
+		public function reset_maxi_blocks_style_cards() {
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
+
+			if (class_exists('MaxiBlocks_StyleCards')) {
+				$defaultStyleCard = MaxiBlocks_StyleCards::getDefaultStyleCard();
+			} else {
+				return false;
+			} // Should return an error
+
+			$response = $wpdb->replace($table_name, [
+				'id' => 'style_cards_current',
+				'object' => $defaultStyleCard,
+			]);
+
+			// Retrieve information
+			$response_code = wp_remote_retrieve_response_code($response);
+			$response_message = wp_remote_retrieve_response_message($response);
+			$response_body = wp_remote_retrieve_body($response);
+
+			return new WP_REST_Response([
+				'status' => $response_code,
+				'response' => $response_message,
+				'body_response' => $response_body,
+			]);
 		}
 
 		public function set_maxi_blocks_current_style_cards($request) {

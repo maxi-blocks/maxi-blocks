@@ -27,7 +27,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNumber } from 'lodash';
+import { isNumber, isUndefined } from 'lodash';
 
 /**
  * Icons
@@ -138,7 +138,7 @@ const BorderControl = props => {
 				<SelectControl
 					label={__('Border Type', 'maxi-blocks')}
 					className='maxi-border-control__type'
-					value={borderStyleValue}
+					value={borderStyleValue || 'none'}
 					options={[
 						{ label: 'None', value: 'none' },
 						{ label: 'Dotted', value: 'dotted' },
@@ -228,7 +228,34 @@ const BorderControl = props => {
 						target={`${prefix}border`}
 						auxTarget='width'
 						label={__('Border width', 'maxi-blocks')}
-						onChange={obj => onChange(obj)}
+						onChange={obj =>
+							onChange({
+								...obj,
+								...(isUndefined(
+									obj[
+										`${prefix}border-top-width-${breakpoint}`
+									]
+								) &&
+									isUndefined(
+										obj[
+											`${prefix}border-right-width-${breakpoint}`
+										]
+									) &&
+									isUndefined(
+										obj[
+											`${prefix}border-bottom-width-${breakpoint}`
+										]
+									) &&
+									isUndefined(
+										obj[
+											`${prefix}border-left-width-${breakpoint}`
+										]
+									) && {
+										[`${prefix}border-style-${breakpoint}`]:
+											'none',
+									}),
+							})
+						}
 						breakpoint={breakpoint}
 						allowedUnits={['px', 'em', 'vw']}
 						minMaxSettings={{

@@ -60,11 +60,10 @@ const PositionControl = props => {
 					{ label: 'Absolute', value: 'absolute' },
 					{ label: 'Fixed', value: 'fixed' },
 				]}
-				value={getLastBreakpointAttribute(
-					'position',
-					breakpoint,
-					props
-				)}
+				value={
+					getLastBreakpointAttribute('position', breakpoint, props) ||
+					''
+				}
 				onChange={val =>
 					onChange({
 						[`position-${breakpoint}`]: val,

@@ -1,37 +1,25 @@
 /**
  * WordPress dependencies
  */
-/* import {
+import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
-} from '@wordpress/e2e-test-utils'; */
+	getEditedPostContent,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-// import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, modalMock, openSidebar } from '../../utils';
 
 describe('ShapeColor', () => {
 	it('Checking the shape color', async () => {
-		/* await createNewPost();
+		await createNewPost();
 		await insertBlock('Shape Maxi');
 
 		// select shape
 
-		await page.waitForSelector('.maxi-library-modal');
-		const modal = await page.$('.maxi-library-modal');
-		await page.waitForSelector('.ais-SearchBox-input');
-		const modalSearcher = await modal.$('.ais-SearchBox-input');
-		await modalSearcher.focus();
-		await page.keyboard.type('Anchor');
-		await page.waitForTimeout(1000);
-		await modal.$eval(
-			'.maxi-cloud-masonry-card__svg-container__button',
-			button => button.click()
-		);
-
-		const expectForm = await getBlockAttributes();
-		expect(expectForm.shapeSVGElement).toMatchSnapshot();
+		await modalMock(page, { type: 'block-shape' });
 
 		// shape palette color
 		const accordionPanel = await openSidebar(page, 'shape');
@@ -74,6 +62,6 @@ describe('ShapeColor', () => {
 		const shapeColorStatus =
 			statusAttributes['shape-palette-fill-color-status'];
 
-		expect(shapeColorStatus).toStrictEqual(expectedColorStatus); */
+		expect(shapeColorStatus).toStrictEqual(expectedColorStatus);
 	});
 });

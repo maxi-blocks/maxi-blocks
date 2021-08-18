@@ -1,19 +1,20 @@
 /**
  * WordPress dependencies
  */
-/* import {
+import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
-} from '@wordpress/e2e-test-utils'; */
+	getEditedPostContent,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-// import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, modalMock } from '../../utils';
 
 describe('IconControl', () => {
 	it('Check Icon Control', async () => {
-		/* await createNewPost();
+		await createNewPost();
 		await insertBlock('Button Maxi');
 		const accordionPanel = await openSidebar(page, 'icon');
 
@@ -22,23 +23,9 @@ describe('IconControl', () => {
 		);
 
 		// select icon
-		await page.waitForSelector('.maxi-library-modal');
-		const modal = await page.$('.maxi-library-modal');
-		await page.waitForSelector('.ais-SearchBox-input');
-		const modalSearcher = await modal.$('.ais-SearchBox-input');
-		await modalSearcher.focus();
-		await page.keyboard.type('Sword');
-		await page.waitForTimeout(1000);
-		await page.waitForSelector(
-			'.maxi-cloud-masonry-card__svg-container__button'
-		);
-		await modal.$eval(
-			'.maxi-cloud-masonry-card__svg-container__button',
-			button => button.click()
-		);
+		await modalMock(page, { type: 'button-icon' });
 
-		const icon = await getBlockAttributes();
-		expect(icon['icon-content']).toMatchSnapshot();
+		expect(await getEditedPostContent()).toMatchSnapshot();
 
 		// size, spacing
 		const inputs = await accordionPanel.$$(
@@ -104,6 +91,6 @@ describe('IconControl', () => {
 		const borderAttributes = await getBlockAttributes();
 		const border = borderAttributes['icon-border-style-general'];
 
-		expect(border).toStrictEqual(expectBorder); */
+		expect(border).toStrictEqual(expectBorder);
 	});
 });

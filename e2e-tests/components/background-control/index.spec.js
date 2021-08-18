@@ -7,12 +7,13 @@ import {
 	insertBlock,
 	pressKeyTimes,
 	setBrowserViewport,
+	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
 
 /**
  * Interactive dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, modalMock } from '../../utils';
 
 describe('BackgroundControl', () => {
 	beforeEach(async () => {
@@ -194,7 +195,7 @@ describe('BackgroundControl', () => {
 		expect(backgroundAttributes).toStrictEqual(expectAttributes);
 	});
 
-	it.only('Check Background Video', async () => {
+	it('Check Background Video', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
 		await accordionPanel.$$eval(
@@ -345,9 +346,7 @@ describe('BackgroundControl', () => {
 		expect(background).toStrictEqual(expectChanges);
 	});
 
-	/* it('Check BackgroundShape', async () => {
-		const { uniqueID } = await getBlockAttributes();
-
+	it('Check BackgroundShape', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
@@ -359,35 +358,12 @@ describe('BackgroundControl', () => {
 			click => click[0].click()
 		);
 
-		await page.waitForSelector('.maxi-library-modal');
-		const modal = await page.$('.maxi-library-modal');
-		await page.waitForSelector('.ais-SearchBox-input');
-		const modalSearcher = await modal.$('.ais-SearchBox-input');
-		await modalSearcher.focus();
-		await page.keyboard.type('angle 10');
-		await page.waitForTimeout(1000);
-		await page.waitForSelector('.angle-10-maxi-svg');
-		await page.waitForSelector(
-			'.maxi-cloud-masonry-card__svg-container__button'
-		);
-		await modal.$eval(
-			'.maxi-cloud-masonry-card__svg-container__button',
-			button => button.click()
-		);
+		await modalMock(page, { type: 'bg-shape' });
 
-		const expectShape = `
-	<svg viewBox="0 0 36.1 36.1" class="angle-10-maxi-svg" data-stroke="" data-item="${uniqueID}__svg"><path fill="" data-fill="" d="M29.837 9.563L18.05 1 6.263 9.563l3.071 9.45-3.071 2.231L10.766 35.1h14.569l4.502-13.856-3.071-2.231 3.071-9.45zm-22.774.26L18.05 1.84l10.987 7.983-2.85 8.77-8.138-5.912-8.137 5.912-2.85-8.77zm18.904 9.45l-1.126 3.466H11.26l-1.126-3.466 7.917-5.752 7.917 5.752zm3.071 2.231L24.84 34.42H11.26L7.063 21.504l2.492-1.811 1.211 3.726h14.569l1.211-3.726 2.492 1.811z"></path></svg>`;
+		expect(await getEditedPostContent()).toMatchSnapshot();
+	});
 
-		const attributes = await getBlockAttributes();
-
-		expect(
-			attributes['background-svg-SVGElement']
-				.replace(/(\r\n|\n|\r)/g, '')
-				.replace(/\s/g, '')
-		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
-	}); */
-
-	/* it('Check Background Shape Custom Color', async () => {
+	it('Check Background Shape Custom Color', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
@@ -399,17 +375,7 @@ describe('BackgroundControl', () => {
 			click => click[0].click()
 		);
 
-		await page.waitForSelector('.maxi-library-modal');
-		const modal = await page.$('.maxi-library-modal');
-		await page.waitForSelector('.ais-SearchBox-input');
-		const modalSearcher = await modal.$('.ais-SearchBox-input');
-		await modalSearcher.focus();
-		await page.keyboard.type('angle 10');
-		await page.waitForTimeout(1000);
-		await modal.$eval(
-			'.maxi-cloud-masonry-card__svg-container__button',
-			button => button.click()
-		);
+		await modalMock(page, { type: 'bg-shape' });
 
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-settingstab-control .maxi-tabs-control button',
@@ -441,9 +407,9 @@ describe('BackgroundControl', () => {
 		const expectedColor = 'rgba(0,0,0,1)';
 
 		expect(result).toStrictEqual(expectedColor);
-	}); */
+	});
 
-	/* it('Check Background Layers', async () => {
+	it('Check Background Layers', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
 		// add color layer
@@ -554,21 +520,7 @@ describe('BackgroundControl', () => {
 			click => click[0].click()
 		);
 
-		await page.waitForSelector('.maxi-library-modal');
-		const modal = await page.$('.maxi-library-modal');
-		await page.waitForSelector('.ais-SearchBox-input');
-		const modalSearcher = await modal.$('.ais-SearchBox-input');
-		await modalSearcher.focus();
-		await page.keyboard.type('angle 10');
-		await page.waitForTimeout(1000);
-		await page.waitForSelector('.angle-10-maxi-svg');
-		await page.waitForSelector(
-			'.maxi-cloud-masonry-card__svg-container__button'
-		);
-		await modal.$eval(
-			'.maxi-cloud-masonry-card__svg-container__button',
-			button => button.click()
-		);
+		await modalMock(page, { type: 'background-layers' });
 
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-settingstab-control .maxi-tabs-control button',
@@ -632,5 +584,5 @@ describe('BackgroundControl', () => {
 		const allLayers = expectBackgroundLayers['background-layers'];
 
 		expect(allLayers).toMatchSnapshot();
-	}); */
+	});
 });

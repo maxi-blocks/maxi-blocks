@@ -150,29 +150,43 @@ const BoxShadowControl = props => {
 								isHover ? '-hover' : ''
 							}`
 						)}
-						paletteColor={getLastBreakpointAttribute(
-							'box-shadow-palette-color',
-							breakpoint,
-							props,
-							isHover
-						)}
 						paletteStatus={getLastBreakpointAttribute(
 							'box-shadow-palette-color-status',
 							breakpoint,
 							props,
 							isHover
 						)}
-						onChange={({ color, paletteColor, paletteStatus }) => {
+						paletteColor={getLastBreakpointAttribute(
+							'box-shadow-palette-color',
+							breakpoint,
+							props,
+							isHover
+						)}
+						paletteOpacity={getLastBreakpointAttribute(
+							'box-shadow-palette-opacity',
+							breakpoint,
+							props,
+							isHover
+						)}
+						onChange={({
+							color,
+							paletteColor,
+							paletteStatus,
+							paletteOpacity,
+						}) => {
 							onChange({
-								[`box-shadow-color-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: color,
-								[`box-shadow-palette-color-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`]: paletteColor,
 								[`box-shadow-palette-color-status-${breakpoint}${
 									isHover ? '-hover' : ''
 								}`]: paletteStatus,
+								[`box-shadow-palette-color-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: paletteColor,
+								[`box-shadow-palette-opacity-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: paletteOpacity,
+								[`box-shadow-color-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`]: color,
 							});
 						}}
 						disableGradient

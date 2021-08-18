@@ -33,6 +33,7 @@ import {
 	ZIndexControl,
 } from '../../components';
 import {
+	getColorRGBAString,
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
@@ -95,21 +96,55 @@ const Inspector = props => {
 											}
 											onChange={obj => {
 												setAttributes(obj);
+
+												const { parentBlockStyle } =
+													obj;
+
+												const {
+													'svg-palette-fill-color':
+														svgPaletteFillColor,
+													'svg-palette-fill-opacity':
+														svgPaletteFillOpacity,
+													'svg-fill-color':
+														svgFillColor,
+													'svg-palette-line-color':
+														svgPaletteLineColor,
+													'svg-palette-line-opacity':
+														svgPaletteLineOpacity,
+													'svg-line-color':
+														svgLineColor,
+												} = attributes;
+
+												const fillColorStr =
+													getColorRGBAString({
+														firstVar: 'icon-fill',
+														secondVar: `color-${svgPaletteFillColor}`,
+														opacity:
+															svgPaletteFillOpacity,
+														blockStyle:
+															parentBlockStyle,
+													});
+												const lineColorStr =
+													getColorRGBAString({
+														firstVar: 'icon-line',
+														secondVar: `color-${svgPaletteLineColor}`,
+														opacity:
+															svgPaletteLineOpacity,
+														blockStyle:
+															parentBlockStyle,
+													});
+
 												changeSVGContentWithBlockStyle(
 													attributes[
 														'svg-palette-fill-color-status'
 													]
-														? `var(--maxi-${obj.parentBlockStyle}-icon-fill, var(--maxi-${obj.parentBlockStyle}-color-${attributes['svg-palette-fill-color']}))`
-														: attributes[
-																'svg-fill-color'
-														  ],
+														? fillColorStr
+														: svgFillColor,
 													attributes[
 														'svg-palette-line-color-status'
 													]
-														? `var(--maxi-${obj.parentBlockStyle}-icon-line, var(--maxi-${obj.parentBlockStyle}-color-${attributes['svg-palette-line-color']}))`
-														: attributes[
-																'svg-line-color'
-														  ]
+														? lineColorStr
+														: svgLineColor
 												);
 											}}
 											clientId={clientId}
@@ -195,11 +230,26 @@ const Inspector = props => {
 														onChange={obj => {
 															setAttributes(obj);
 
+															const fillColorStr =
+																getColorRGBAString(
+																	{
+																		firstVar:
+																			'icon-fill',
+																		secondVar: `color-${obj['svg-palette-fill-color']}`,
+																		opacity:
+																			obj[
+																				'svg-palette-fill-opacity'
+																			],
+																		blockStyle:
+																			parentBlockStyle,
+																	}
+																);
+
 															changeSVGContent(
 																obj[
 																	'svg-palette-fill-color-status'
 																]
-																	? `var(--maxi-${parentBlockStyle}-icon-fill, var(--maxi-${parentBlockStyle}-color-${obj['svg-palette-fill-color']}))`
+																	? fillColorStr
 																	: obj[
 																			'svg-fill-color'
 																	  ],
@@ -221,11 +271,26 @@ const Inspector = props => {
 														onChange={obj => {
 															setAttributes(obj);
 
+															const lineColorStr =
+																getColorRGBAString(
+																	{
+																		firstVar:
+																			'icon-line',
+																		secondVar: `color-${obj['svg-palette-line-color']}`,
+																		opacity:
+																			obj[
+																				'svg-palette-line-opacity'
+																			],
+																		blockStyle:
+																			parentBlockStyle,
+																	}
+																);
+
 															changeSVGContent(
 																obj[
 																	'svg-palette-line-color-status'
 																]
-																	? `var(--maxi-${parentBlockStyle}-icon-line, var(--maxi-${parentBlockStyle}-color-${obj['svg-palette-line-color']}))`
+																	? lineColorStr
 																	: obj[
 																			'svg-line-color'
 																	  ],

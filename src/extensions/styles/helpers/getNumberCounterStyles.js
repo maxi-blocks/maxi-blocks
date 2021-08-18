@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import getColorRGBAString from '../getColorRGBAString';
+
+/**
  * External dependencies
  */
 import { isNil } from 'lodash';
@@ -19,7 +24,11 @@ const getNumberCounterStyles = (obj, target, parentBlockStyle) => {
 			obj['number-counter-palette-circle-bar-color-status'] &&
 			obj['number-counter-palette-circle-bar-color']
 		)
-			response.general.stroke = `var(--maxi-${parentBlockStyle}-color-${obj['number-counter-palette-circle-bar-color']})`;
+			response.general.stroke = getColorRGBAString({
+				firstVar: `color-${obj['number-counter-palette-circle-bar-color']}`,
+				opacity: obj['number-counter-palette-circle-bar-opacity'],
+				blockStyle: parentBlockStyle,
+			});
 	}
 
 	if (target === 'circle-background') {
@@ -33,7 +42,12 @@ const getNumberCounterStyles = (obj, target, parentBlockStyle) => {
 			obj['number-counter-palette-circle-background-color-status'] &&
 			obj['number-counter-palette-circle-background-color']
 		)
-			response.general.stroke = `var(--maxi-${parentBlockStyle}-color-${obj['number-counter-palette-circle-background-color']})`;
+			response.general.stroke = getColorRGBAString({
+				firstVar: `color-${obj['number-counter-palette-circle-background-color']}`,
+				opacity:
+					obj['number-counter-palette-circle-background-opacity'],
+				blockStyle: parentBlockStyle,
+			});
 	}
 
 	if (target === 'text') {
@@ -46,7 +60,11 @@ const getNumberCounterStyles = (obj, target, parentBlockStyle) => {
 			obj['number-counter-palette-text-color-status'] &&
 			obj['number-counter-palette-text-color']
 		)
-			response.general.color = `var(--maxi-${parentBlockStyle}-color-${obj['number-counter-palette-text-color']})`;
+			response.general.color = getColorRGBAString({
+				firstVar: `color-${obj['number-counter-palette-text-color']}`,
+				opacity: obj['number-counter-palette-text-opacity'],
+				blockStyle: parentBlockStyle,
+			});
 	}
 
 	if (target === 'text' && !isNil(obj['number-counter-title-font-family']))

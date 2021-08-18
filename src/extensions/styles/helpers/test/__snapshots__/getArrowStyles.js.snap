@@ -133,14 +133,14 @@ Object {
   " .maxi-container-arrow": Object {
     "shadow": Object {
       "general": Object {
-        "filter": "drop-shadow(0px 0px 0px var(--maxi-light-color-2))",
+        "filter": "drop-shadow(0px 0px 0px rgba(var(--maxi-light-color-2), 0.2))",
       },
     },
   },
   " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
       "general": Object {
-        "background-color": "var(--maxi-light-color-5)",
+        "background-color": "rgba(var(--maxi-light-color-5), 1)",
       },
       "label": "Arrow Color",
     },
@@ -148,7 +148,7 @@ Object {
   " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
     "border": Object {
       "general": Object {
-        "background": "var(--maxi-light-color-4);",
+        "background": "rgba(var(--maxi-light-color-4), 0.2)",
       },
       "label": "Arrow Border",
     },
@@ -156,14 +156,14 @@ Object {
   ":hover .maxi-container-arrow": Object {
     "shadow": Object {
       "general": Object {
-        "filter": "drop-shadow(1px 2px 1px var(--maxi-light-color-4))",
+        "filter": "drop-shadow(1px 2px 1px rgba(var(--maxi-light-color-4), 0.2))",
       },
     },
   },
   ":hover .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
       "general": Object {
-        "background-color": "var(--maxi-light-color-1)",
+        "background-color": "rgba(var(--maxi-light-color-1), 1)",
       },
       "label": "Arrow Color",
     },
@@ -171,7 +171,7 @@ Object {
   ":hover .maxi-container-arrow .maxi-container-arrow--content:before": Object {
     "border": Object {
       "general": Object {
-        "background": "var(--maxi-light-color-1);",
+        "background": "rgba(var(--maxi-light-color-1), 0.2)",
         "height": "calc(50% + 6px)",
         "left": "calc(1.5px)",
         "top": "calc(1.5px)",

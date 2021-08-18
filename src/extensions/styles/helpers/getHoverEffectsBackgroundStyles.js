@@ -1,3 +1,8 @@
+/**
+ * Internal dependencies
+ */
+import getColorRGBAString from '../getColorRGBAString';
+
 const getHoverEffectsBackgroundStyles = (props, parentBlockStyle) => {
 	const response = {
 		general: {},
@@ -8,9 +13,11 @@ const getHoverEffectsBackgroundStyles = (props, parentBlockStyle) => {
 			response.general['background-color'] =
 				props['hover-background-color'];
 		else
-			response.general[
-				'background-color'
-			] = `var(--maxi-${parentBlockStyle}-color-${props['hover-background-palette-color']})`;
+			response.general['background-color'] = getColorRGBAString({
+				firstVar: `color-${props['hover-background-palette-color']}`,
+				opacity: props['hover-background-palette-opacity'],
+				blockStyle: parentBlockStyle,
+			});
 	}
 
 	if (props['hover-background-active-media'] === 'gradient') {

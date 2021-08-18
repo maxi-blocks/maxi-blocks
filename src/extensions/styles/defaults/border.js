@@ -7,6 +7,9 @@ export const border = {
 		type: 'number',
 		default: 2,
 	},
+	'border-palette-opacity-general': {
+		type: 'number',
+	},
 	'border-color-general': {
 		type: 'string',
 	},
@@ -17,6 +20,9 @@ export const border = {
 		type: 'boolean',
 	},
 	'border-palette-color-xxl': {
+		type: 'number',
+	},
+	'border-palette-opacity-xxl': {
 		type: 'number',
 	},
 	'border-color-xxl': {
@@ -31,6 +37,9 @@ export const border = {
 	'border-palette-color-xl': {
 		type: 'number',
 	},
+	'border-palette-opacity-xl': {
+		type: 'number',
+	},
 	'border-color-xl': {
 		type: 'string',
 	},
@@ -41,6 +50,9 @@ export const border = {
 		type: 'boolean',
 	},
 	'border-palette-color-l': {
+		type: 'number',
+	},
+	'border-palette-opacity-l': {
 		type: 'number',
 	},
 	'border-color-l': {
@@ -55,6 +67,9 @@ export const border = {
 	'border-palette-color-m': {
 		type: 'number',
 	},
+	'border-palette-opacity-m': {
+		type: 'number',
+	},
 	'border-color-m': {
 		type: 'string',
 	},
@@ -67,6 +82,9 @@ export const border = {
 	'border-palette-color-s': {
 		type: 'number',
 	},
+	'border-palette-opacity-s': {
+		type: 'number',
+	},
 	'border-color-s': {
 		type: 'string',
 	},
@@ -77,6 +95,9 @@ export const border = {
 		type: 'boolean',
 	},
 	'border-palette-color-xs': {
+		type: 'number',
+	},
+	'border-palette-opacity-xs': {
 		type: 'number',
 	},
 	'border-color-xs': {

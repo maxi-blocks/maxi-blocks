@@ -7,6 +7,9 @@ const svg = {
 		type: 'number',
 		default: 4,
 	},
+	'svg-palette-fill-opacity': {
+		type: 'number',
+	},
 	'svg-fill-color': {
 		type: 'string',
 	},
@@ -17,6 +20,9 @@ const svg = {
 	'svg-palette-line-color': {
 		type: 'number',
 		default: 7,
+	},
+	'svg-palette-line-opacity': {
+		type: 'number',
 	},
 	'svg-line-color': {
 		type: 'string',

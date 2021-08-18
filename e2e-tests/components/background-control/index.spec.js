@@ -156,14 +156,28 @@ describe('BackgroundControl', () => {
 			'.maxi-tabs-content .maxi-background-control .maxi-base-control select'
 		);
 
-		const [size, repeat, position, origin, clip, attachment] = selectors;
+		const [size, repeat, position, attachment] = selectors;
 
 		await size.select('cover');
 		await repeat.select('repeat-x');
 		await position.select('left center');
+		await attachment.select('fixed');
+
+		// more settings
+		await accordionPanel.$$eval(
+			'.maxi-background-control .maxi-fancy-radio-control--more-settings .maxi-base-control__field label',
+			click => click[1].click()
+		);
+
+		// background more options
+		const moreOptions = await accordionPanel.$$(
+			'.maxi-tabs-content .maxi-background-control .maxi-background-image-more-settings .maxi-base-control select'
+		);
+
+		const [origin, clip] = moreOptions;
+
 		await origin.select('border-box');
 		await clip.select('padding-box');
-		await attachment.select('fixed');
 
 		const expectAttributes = {
 			'background-image-attachment': 'fixed',

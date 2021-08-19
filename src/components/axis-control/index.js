@@ -256,6 +256,8 @@ const AxisControl = props => {
 			newValue = val;
 		}
 
+		if (target === 'padding' && newValue < 0) newValue = 0;
+
 		if (
 			getLastBreakpointAttribute(
 				getKey('sync'),

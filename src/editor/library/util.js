@@ -122,9 +122,14 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 		`${target}-palette-fill-color-status`
 	]
 		? currentAttributes[`${target}-fill-color`]
-		: `var(--maxi-${blockStyle}-color-${
-				currentAttributes[`${target}-palette-fill-color`]
-		  })` || '';
+		: getColorRGBAString({
+				firstVar: 'shape-fill',
+				secondVar: `color-${
+					currentAttributes[`${target}-palette-fill-color`]
+				}`,
+				opacity: 100,
+				blockStyle,
+		  }) || '';
 
 	const iconNoInheritColor = !currentAttributes[
 		`${target}-palette-color-status`

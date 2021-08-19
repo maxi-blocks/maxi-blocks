@@ -25,6 +25,22 @@ Object {
       "label": "Arrow Border",
     },
   },
+  " .maxi-container-arrow:before": Object {
+    "background": Object {
+      "general": Object {
+        "background-color": "rgb(255, 99, 71)",
+      },
+      "label": "Arrow Color",
+    },
+    "border": Object {
+      "general": Object {
+        "border-color": "rgb(6,147,227)",
+        "left": 0,
+        "top": 0,
+      },
+      "label": "Arrow Border",
+    },
+  },
   ":hover .maxi-container-arrow": Object {
     "shadow": Object {
       "general": Object {
@@ -44,6 +60,16 @@ Object {
     "border": Object {
       "general": Object {
         "border-color": "rgb(255, 99, 71)",
+      },
+      "label": "Arrow Border",
+    },
+  },
+  ":hover .maxi-container-arrow:before": Object {
+    "border": Object {
+      "general": Object {
+        "border-color": undefined,
+        "left": 0,
+        "top": 0,
       },
       "label": "Arrow Border",
     },
@@ -125,6 +151,22 @@ Object {
       "label": "Arrow Border",
     },
   },
+  " .maxi-container-arrow:before": Object {
+    "background": Object {
+      "general": Object {
+        "background-color": "rgb(255, 99, 71)",
+      },
+      "label": "Arrow Color",
+    },
+    "border": Object {
+      "general": Object {
+        "border-color": "rgb(255, 99, 71)",
+        "left": 0,
+        "top": 0,
+      },
+      "label": "Arrow Border",
+    },
+  },
 }
 `;
 
@@ -153,6 +195,22 @@ Object {
       "label": "Arrow Border",
     },
   },
+  " .maxi-container-arrow:before": Object {
+    "background": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-5), 1)",
+      },
+      "label": "Arrow Color",
+    },
+    "border": Object {
+      "general": Object {
+        "border-color": "rgba(var(--maxi-light-color-4), 0.2)",
+        "left": 0,
+        "top": 0,
+      },
+      "label": "Arrow Border",
+    },
+  },
   ":hover .maxi-container-arrow": Object {
     "shadow": Object {
       "general": Object {
@@ -176,6 +234,16 @@ Object {
         "left": "calc(1.5px)",
         "top": "calc(1.5px)",
         "width": "calc(50% + 6px)",
+      },
+      "label": "Arrow Border",
+    },
+  },
+  ":hover .maxi-container-arrow:before": Object {
+    "border": Object {
+      "general": Object {
+        "border-color": "rgba(var(--maxi-light-color-4), 0.2)",
+        "left": 0,
+        "top": 0,
       },
       "label": "Arrow Border",
     },

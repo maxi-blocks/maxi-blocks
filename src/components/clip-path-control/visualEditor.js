@@ -21,23 +21,19 @@ import { round, isArray, isEmpty } from 'lodash';
  * Component
  */
 const ClipPathVisualEditor = props => {
-	const {
-		clipPathOptions,
-		colors,
-		onChange,
-		className,
-		wrapperHeight,
-	} = props;
+	const { clipPathOptions, colors, onChange, className, wrapperHeight } =
+		props;
 
 	const classes = classnames('maxi-clip-path-visual-editor', className);
 
 	const getClipPath = clipPathOptions => {
 		const { type, content } = clipPathOptions;
-		const arrayContent = Object.values(content);
 
 		let newContent = '';
 
-		if (!isEmpty(content))
+		if (!isEmpty(content)) {
+			const arrayContent = Object.values(content);
+
 			switch (type) {
 				case 'polygon':
 					newContent = arrayContent.reduce((a, b) => {
@@ -58,6 +54,7 @@ const ClipPathVisualEditor = props => {
 				default:
 					return false;
 			}
+		}
 
 		const newCP = `${type}(${newContent})`;
 

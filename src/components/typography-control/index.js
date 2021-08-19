@@ -638,12 +638,19 @@ const TypographyControl = withFormatValue(props => {
 					color={getValue(`${prefix}color`)}
 					defaultColor={getDefault(`${prefix}color`)}
 					paletteColor={getValue(`${prefix}palette-color`)}
+					paletteOpacity={getValue(`${prefix}palette-opacity`)}
 					paletteStatus={getValue(`${prefix}palette-color-status`)}
-					onChange={({ color, paletteColor, paletteStatus }) =>
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) =>
 						onChangeFormat({
 							[`${prefix}color`]: color,
 							[`${prefix}palette-color`]: paletteColor,
 							[`${prefix}palette-color-status`]: paletteStatus,
+							[`${prefix}palette-opacity`]: paletteOpacity,
 						})
 					}
 					showPalette

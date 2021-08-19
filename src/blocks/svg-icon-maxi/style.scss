@@ -7,8 +7,9 @@ body.maxi-blocks--active .maxi-svg-icon-block {
 		max-width: 100% !important;
 	}
 	svg {
-		z-index: 20;
 		position: relative;
+		width: 100%;
+		z-index: 20;
 	}
 	.maxi-background-displayer {
 		z-index: 10;

@@ -15,8 +15,8 @@ const getShapeStyles = (obj, target, parentBlockStyle) => {
 	};
 
 	if (target === 'svg' && !isNil(obj['shape-width'])) {
-		response.general.width = `${obj['shape-width']}${obj['shape-width-unit']}`;
-		response.general.height = `${obj['shape-width']}${obj['shape-width-unit']}`;
+		response.general.maxWidth = `${obj['shape-width']}${obj['shape-width-unit']}`;
+		response.general.maxHeight = `${obj['shape-width']}${obj['shape-width-unit']}`;
 	}
 
 	if (target === 'path') {

@@ -132,10 +132,6 @@ export const getArrowBorderObject = (
 				${props[`border-right-width-general${isHover ? '-hover' : ''}`]}${
 				props[`border-unit-width-general${isHover ? '-hover' : ''}`]
 			}`;
-
-			leftPosition = `-${
-				props[`border-right-width-general${isHover ? '-hover' : ''}`]
-			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]}`;
 		}
 		if (props[`border-bottom-width-general${isHover ? '-hover' : ''}`]) {
 			response.general['border-bottom-style'] = 'solid';
@@ -143,10 +139,6 @@ export const getArrowBorderObject = (
 				${props[`border-bottom-width-general${isHover ? '-hover' : ''}`]}${
 				props[`border-unit-width-general${isHover ? '-hover' : ''}`]
 			}`;
-
-			topPosition = `-${
-				props[`border-bottom-width-general${isHover ? '-hover' : ''}`]
-			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]}`;
 		}
 		if (props[`border-left-width-general${isHover ? '-hover' : ''}`]) {
 			response.general['border-left-style'] = 'solid';
@@ -160,8 +152,8 @@ export const getArrowBorderObject = (
 			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]}`;
 		}
 
-		response.general.top = topPosition;
-		response.general.left = leftPosition;
+		response.general.top = topPosition || 0;
+		response.general.left = leftPosition || 0;
 	}
 
 	return response;

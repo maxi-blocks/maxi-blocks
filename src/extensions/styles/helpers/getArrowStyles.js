@@ -14,7 +14,8 @@ import { isNil } from 'lodash';
 export const getArrowBorderObject = (
 	props,
 	parentBlockStyle,
-	isHover = false
+	isHover = false,
+	isOverlap = false
 ) => {
 	const response = {
 		label: 'Arrow Border',
@@ -36,32 +37,131 @@ export const getArrowBorderObject = (
 			? props[`border-palette-opacity-general${isHover ? '-hover' : ''}`]
 			: props['border-palette-opacity-general'];
 
-	if (paletteStatus && paletteColor)
-		response.general.background = getColorRGBAString({
-			firstVar: `color-${paletteColor}`,
-			opacity: paletteOpacity,
-			blockStyle: parentBlockStyle,
-		});
-	else
-		response.general['border-color'] =
-			props[`border-color-general${isHover ? '-hover' : ''}`];
+	if (!isOverlap) {
+		if (paletteStatus && paletteColor)
+			response.general.background = getColorRGBAString({
+				firstVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
+				blockStyle: parentBlockStyle,
+			});
+		else
+			response.general['border-color'] =
+				props[`border-color-general${isHover ? '-hover' : ''}`];
 
-	if (props[`border-bottom-width-general${isHover ? '-hover' : ''}`]) {
-		response.general.top = `calc(${
-			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] / 2
-		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
+		if (props[`border-bottom-width-general${isHover ? '-hover' : ''}`]) {
+			response.general.top = `calc(${
+				props[`border-bottom-width-general${isHover ? '-hover' : ''}`] /
+				2
+			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 
-		response.general.left = `calc(${
-			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] / 2
-		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
+			response.general.left = `calc(${
+				props[`border-bottom-width-general${isHover ? '-hover' : ''}`] /
+				2
+			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 
-		response.general.width = `calc(50% + ${
-			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] * 2
-		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
+			response.general.width = `calc(50% + ${
+				props[`border-bottom-width-general${isHover ? '-hover' : ''}`] *
+				2
+			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
 
-		response.general.height = `calc(50% + ${
-			props[`border-bottom-width-general${isHover ? '-hover' : ''}`] * 2
-		}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
+			response.general.height = `calc(50% + ${
+				props[`border-bottom-width-general${isHover ? '-hover' : ''}`] *
+				2
+			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
+		}
+	}
+
+	if (isOverlap) {
+		let topPosition = 0;
+		let leftPosition = 0;
+
+		if (props[`border-top-left-radius-general${isHover ? '-hover' : ''}`])
+			response.general['border-top-left-radius'] = `
+		${props[`border-top-left-radius-general${isHover ? '-hover' : ''}`]}${
+				props[`border-unit-radius-general${isHover ? '-hover' : ''}`]
+			}`;
+
+		if (props[`border-top-right-radius-general${isHover ? '-hover' : ''}`])
+			response.general['border-top-right-radius'] = `
+		${props[`border-top-right-radius-general${isHover ? '-hover' : ''}`]}${
+				props[`border-unit-radius-general${isHover ? '-hover' : ''}`]
+			}`;
+
+		if (
+			props[`border-bottom-left-radius-general${isHover ? '-hover' : ''}`]
+		)
+			response.general['border-bottom-left-radius'] = `
+		${props[`border-bottom-left-radius-general${isHover ? '-hover' : ''}`]}${
+				props[`border-unit-radius-general${isHover ? '-hover' : ''}`]
+			}`;
+
+		if (
+			props[
+				`border-bottom-right-radius-general${isHover ? '-hover' : ''}`
+			]
+		)
+			response.general['border-bottom-right-radius'] = `
+		${props[`border-bottom-right-radius-general${isHover ? '-hover' : ''}`]}${
+				props[`border-unit-radius-general${isHover ? '-hover' : ''}`]
+			}`;
+
+		if (paletteStatus && paletteColor)
+			response.general['border-color'] = getColorRGBAString({
+				firstVar: `color-${paletteColor}`,
+				opacity: paletteOpacity,
+				blockStyle: parentBlockStyle,
+			});
+		else
+			response.general['border-color'] =
+				props[`border-color-general${isHover ? '-hover' : ''}`];
+
+		if (props[`border-top-width-general${isHover ? '-hover' : ''}`]) {
+			response.general['border-top-style'] = 'solid';
+			response.general['border-top-width'] = `
+				${props[`border-top-width-general${isHover ? '-hover' : ''}`]}${
+				props[`border-unit-width-general${isHover ? '-hover' : ''}`]
+			}`;
+
+			topPosition = `-${
+				props[`border-top-width-general${isHover ? '-hover' : ''}`]
+			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]}`;
+		}
+		if (props[`border-right-width-general${isHover ? '-hover' : ''}`]) {
+			response.general['border-right-style'] = 'solid';
+			response.general['border-right-width'] = `
+				${props[`border-right-width-general${isHover ? '-hover' : ''}`]}${
+				props[`border-unit-width-general${isHover ? '-hover' : ''}`]
+			}`;
+
+			leftPosition = `-${
+				props[`border-right-width-general${isHover ? '-hover' : ''}`]
+			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]}`;
+		}
+		if (props[`border-bottom-width-general${isHover ? '-hover' : ''}`]) {
+			response.general['border-bottom-style'] = 'solid';
+			response.general['border-bottom-width'] = `
+				${props[`border-bottom-width-general${isHover ? '-hover' : ''}`]}${
+				props[`border-unit-width-general${isHover ? '-hover' : ''}`]
+			}`;
+
+			topPosition = `-${
+				props[`border-bottom-width-general${isHover ? '-hover' : ''}`]
+			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]}`;
+		}
+		if (props[`border-left-width-general${isHover ? '-hover' : ''}`]) {
+			response.general['border-left-style'] = 'solid';
+			response.general['border-left-width'] = `
+				${props[`border-left-width-general${isHover ? '-hover' : ''}`]}${
+				props[`border-unit-width-general${isHover ? '-hover' : ''}`]
+			}`;
+
+			leftPosition = `-${
+				props[`border-left-width-general${isHover ? '-hover' : ''}`]
+			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]}`;
+		}
+
+		response.general.top = topPosition;
+		response.general.left = leftPosition;
 	}
 
 	return response;
@@ -206,6 +306,61 @@ const getArrowStyles = props => {
 					),
 				},
 			},
+		[`${target} .maxi-container-arrow:before`]: {
+			background: {
+				...getArrowColorObject(
+					getGroupAttributes(props, [
+						'background',
+						'backgroundColor',
+						'backgroundGradient',
+					]),
+					blockStyle
+				),
+			},
+			border: {
+				...getArrowBorderObject(
+					getGroupAttributes(props, [
+						'border',
+						'borderWidth',
+						'borderRadius',
+					]),
+					blockStyle,
+					false,
+					true
+				),
+			},
+		},
+		...(props['background-status-hover'] && {
+			[`${target}:hover .maxi-container-arrow:before`]: {
+				background: {
+					...getArrowColorObject(
+						getGroupAttributes(props, [
+							'background',
+							'backgroundColor',
+							'backgroundGradient',
+						]),
+						blockStyle,
+						isHover
+					),
+				},
+			},
+		}),
+		...(props['border-status-hover'] && {
+			[`${target}:hover .maxi-container-arrow:before`]: {
+				border: {
+					...getArrowBorderObject(
+						getGroupAttributes(props, [
+							'border',
+							'borderWidth',
+							'borderRadius',
+						]),
+						blockStyle,
+						isHover,
+						true
+					),
+				},
+			},
+		}),
 		...(props['background-status-hover'] && {
 			[`${target}:hover .maxi-container-arrow .maxi-container-arrow--content:after`]:
 				{

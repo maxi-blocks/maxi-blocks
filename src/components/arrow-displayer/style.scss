@@ -16,6 +16,16 @@ body.maxi-blocks--active .maxi-block.maxi-block--has-arrow {
 	backface-visibility: hidden;
 	z-index: -1;
 
+	&::before {
+		content: '';
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		box-sizing: content-box;
+		z-index: -1;
+		top: 0;
+		left: 0;
+	}
 	&__bottom .maxi-container-arrow--content {
 		margin-top: -1px;
 	}

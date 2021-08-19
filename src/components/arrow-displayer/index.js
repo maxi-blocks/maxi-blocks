@@ -35,9 +35,10 @@ const ArrowDisplayer = props => {
 
 	const layerBackgroundColorStatus =
 		props['background-layers-status'] &&
-		props['background-layers'] &&
-		props['background-layers'][props['background-layers'].length - 1]
-			.type === 'color';
+		(props['background-layers'] === undefined ||
+			props['background-layers'].length < 1 ||
+			props['background-layers'][props['background-layers'].length - 1]
+				.type !== 'color');
 
 	return (
 		!!props['arrow-status'] &&

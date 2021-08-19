@@ -130,14 +130,23 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 		`${target}-palette-color-status`
 	]
 		? currentAttributes[`${target}-color`]
-		: `var(--maxi-${blockStyle}-color-${
-				currentAttributes[`${target}-palette-color`]
-		  })` || '';
+		: getColorRGBAString({
+				firstVar: 'color',
+				secondVar: `color-${
+					currentAttributes[`${target}-palette-color`]
+				}`,
+				opacity: 100,
+				blockStyle,
+		  }) || '';
 
 	const iconInheritColor = !currentAttributes['palette-color-status-general']
 		? currentAttributes['color-general']
-		: `var(--maxi-${blockStyle}-color-${currentAttributes['palette-color-general']})` ||
-		  '';
+		: getColorRGBAString({
+				firstVar: 'color',
+				secondVar: `color-${currentAttributes['palette-color-general']}`,
+				opacity: 100,
+				blockStyle,
+		  }) || '';
 
 	const iconColor = currentAttributes['icon-inherit']
 		? iconInheritColor
@@ -215,8 +224,10 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const iconInheritColor = currentAttributes['icon-inherit']
 		? !currentAttributes['palette-color-status-general']
 			? rgbToHex(currentAttributes['color-general'])
-			: getVarValue(
-					`var(--maxi-${blockStyle}-color-${currentAttributes['palette-color-general']})`
+			: rgbToHex(
+					`rgba(${getVarValue(
+						`var(--maxi-${blockStyle}-color-${currentAttributes['palette-color-general']})`
+					)}, 1)`
 			  )
 		: '';
 
@@ -224,10 +235,12 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 		`${target}-palette${colorType}-color-status`
 	]
 		? rgbToHex(currentAttributes[`${target}${colorType}-color`])
-		: getVarValue(
-				`var(--maxi-${blockStyle}-color-${
-					currentAttributes[`${target}-palette${colorType}-color`]
-				})`
+		: rgbToHex(
+				`rgba(${getVarValue(
+					`var(--maxi-${blockStyle}-color-${
+						currentAttributes[`${target}-palette${colorType}-color`]
+					})`
+				)},1)`
 		  );
 
 	return target === 'svg' && lineColorGlobalStatus

@@ -102,5 +102,94 @@ describe('AxisControl', () => {
 			return fourthAttributes[key] === 'auto';
 		});
 		expect(areAllAuto).toStrictEqual(true);
+
+		// Padding can't be lower than 0 and sync
+		debugger;
+		await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button',
+			button => button[1].click()
+		);
+
+		await page.$$eval(
+			'.maxi-axis-control .maxi-axis-control__content__item__top input',
+			button => button[1].focus()
+		);
+
+		await page.keyboard.type('-5');
+
+		const expectChanges = {
+			'padding-bottom-general': 0,
+			'padding-left-general': 0,
+			'padding-right-general': 0,
+			'padding-top-general': 0,
+		};
+
+		const blockAttributes = await getBlockAttributes();
+
+		const blockPadding = (({
+			'padding-bottom-general': paddingBottom,
+			'padding-left-general': paddingLeft,
+			'padding-right-general': paddingRight,
+			'padding-top-general': paddingTop,
+		}) => ({
+			'padding-bottom-general': paddingBottom,
+			'padding-left-general': paddingLeft,
+			'padding-right-general': paddingRight,
+			'padding-top-general': paddingTop,
+		}))(blockAttributes);
+
+		expect(blockPadding).toStrictEqual(expectChanges);
+
+		// value in general and responsive
+
+		// set value
+
+		await page.$$eval(
+			'.maxi-axis-control .maxi-axis-control__content__item__top input',
+			button => button[1].focus()
+		);
+		await page.keyboard.press('Backspace');
+		await page.keyboard.type('13');
+		// responsive
+		await page.$eval(
+			'.edit-post-header .edit-post-header__toolbar .maxi-toolbar-layout__button',
+			button => button.click()
+		);
+
+		await page.$$eval('.maxi-responsive-selector button', button =>
+			button[2].click()
+		);
+
+		// set responsive value
+
+		await page.$$eval(
+			'.maxi-axis-control .maxi-axis-control__content__item__top input',
+			button => button[1].focus()
+		);
+
+		await page.keyboard.type('0');
+
+		const expectResponsivePadding = {
+			'padding-bottom-xl': 0,
+			'padding-left-xl': 0,
+			'padding-right-xl': 0,
+			'padding-top-xl': 0,
+		};
+
+		const responsivePaddingAttributes = await getBlockAttributes();
+
+		const responsiveBlockPadding = (({
+			'padding-bottom-xl': paddingBottom,
+			'padding-left-xl': paddingLeft,
+			'padding-right-xl': paddingRight,
+			'padding-top-xl': paddingTop,
+		}) => ({
+			'padding-bottom-xl': paddingBottom,
+			'padding-left-xl': paddingLeft,
+			'padding-right-xl': paddingRight,
+			'padding-top-xl': paddingTop,
+		}))(responsivePaddingAttributes);
+
+		expect(responsiveBlockPadding).toStrictEqual(expectResponsivePadding);
 	});
 });

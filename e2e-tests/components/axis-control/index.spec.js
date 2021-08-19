@@ -104,52 +104,34 @@ describe('AxisControl', () => {
 		expect(areAllAuto).toStrictEqual(true);
 
 		// Padding can't be lower than 0 and sync
-		debugger;
-		await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button',
-			button => button[1].click()
+
+		const SyncButton = await page.$$(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button'
+		);
+		const topInput = await page.$$(
+			'.maxi-axis-control .maxi-axis-control__content__item__top input'
 		);
 
-		await page.$$eval(
-			'.maxi-axis-control .maxi-axis-control__content__item__top input',
-			button => button[1].focus()
-		);
+		await SyncButton[1].click();
+		await topInput[1].focus();
 
 		await page.keyboard.type('-5');
 
-		const expectChanges = {
-			'padding-bottom-general': 0,
-			'padding-left-general': 0,
-			'padding-right-general': 0,
-			'padding-top-general': 0,
-		};
+		const expectChanges = 0;
+		const attributes = await getBlockAttributes();
+		const styleAttributes = attributes['padding-bottom-general'];
 
-		const blockAttributes = await getBlockAttributes();
-
-		const blockPadding = (({
-			'padding-bottom-general': paddingBottom,
-			'padding-left-general': paddingLeft,
-			'padding-right-general': paddingRight,
-			'padding-top-general': paddingTop,
-		}) => ({
-			'padding-bottom-general': paddingBottom,
-			'padding-left-general': paddingLeft,
-			'padding-right-general': paddingRight,
-			'padding-top-general': paddingTop,
-		}))(blockAttributes);
-
-		expect(blockPadding).toStrictEqual(expectChanges);
+		expect(styleAttributes).toStrictEqual(expectChanges);
 
 		// value in general and responsive
 
 		// set value
 
-		await page.$$eval(
-			'.maxi-axis-control .maxi-axis-control__content__item__top input',
-			button => button[1].focus()
-		);
+		await topInput[1].focus();
+
 		await page.keyboard.press('Backspace');
 		await page.keyboard.type('13');
+
 		// responsive
 		await page.$eval(
 			'.edit-post-header .edit-post-header__toolbar .maxi-toolbar-layout__button',
@@ -162,10 +144,7 @@ describe('AxisControl', () => {
 
 		// set responsive value
 
-		await page.$$eval(
-			'.maxi-axis-control .maxi-axis-control__content__item__top input',
-			button => button[1].focus()
-		);
+		await topInput[1].focus();
 
 		await page.keyboard.type('0');
 

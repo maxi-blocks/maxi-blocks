@@ -19,9 +19,8 @@ describe('DefaultStylesControl', () => {
 
 		const expectAttributes = [undefined, 'solid', 'dashed', 'dotted'];
 
-		for (let i = 0; i < expectAttributes.length; i++) {
-			expectAttributes[i];
-
+		/* eslint-disable no-await-in-loop */
+		for (let i = 0; i < expectAttributes.length; i += 1) {
 			await page.$$eval(
 				'.maxi-border-control .maxi-default-styles-control button',
 				(buttons, i) => buttons[i].click(),

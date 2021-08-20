@@ -364,12 +364,13 @@ const TypographyControl = withFormatValue(props => {
 		clientId,
 		styleCardPrefix,
 		allowLink = false,
+		hoverEffect = false,
 	} = props;
 
 	const typography =
-		props.typography ||
+		(hoverEffect ? props.hoverTitleTypography : props.typography) ||
 		getGroupAttributes(props, [
-			'typography',
+			hoverEffect ? 'hoverTitleTypography' : 'typography',
 			...(allowLink ? ['link'] : []),
 			...(isHover ? ['typographyHover'] : []),
 		]);

@@ -55,7 +55,7 @@ const IconColor = props => {
 			<div className='toolbar-item__icon-color__popover'>
 				<FancyRadioControl
 					label={__(
-						'Inherit Color/Backgrond from Button',
+						'Inherit Colour/Backgrond from Button',
 						'maxi-block'
 					)}
 					selected={props['icon-inherit']}

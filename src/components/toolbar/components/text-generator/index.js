@@ -77,6 +77,26 @@ const TextGenerator = withFormatValue(props => {
 			avgSentencesPerParagraph: sentencesPerParagraph,
 		}).map(text => text);
 
+		// const { getSelectedBlock } = wp.data.select('core/block-editor');
+		// const currentContent = getSelectedBlock().attributes.content;
+
+		const newContent = generatedText[0].props.children;
+
+		const newFormatsArray = [];
+		const newReplacementsArray = [];
+		newFormatsArray.length = newContent.length;
+		newReplacementsArray.length = newContent.length;
+
+		const newFormatValue = insert(formatValue, newContent, 0);
+
+		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
+		setTimeout(() => {
+			dispatch('maxiBlocks/text').sendFormatValue(
+				newFormatValue,
+				clientId
+			);
+		}, 150);
+
 		onChange({ isList: false, content: generatedText[0].props.children });
 	};
 

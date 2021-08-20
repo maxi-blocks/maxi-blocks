@@ -104,15 +104,14 @@ describe('AxisControl', () => {
 		expect(areAllAuto).toStrictEqual(true);
 
 		// Padding can't be lower than 0 and sync
-
-		const SyncButton = await page.$$(
+		const syncButton = await page.$$(
 			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button'
 		);
 		const topInput = await page.$$(
 			'.maxi-axis-control .maxi-axis-control__content__item__top input'
 		);
 
-		await SyncButton[1].click();
+		await syncButton[1].click();
 		await topInput[1].focus();
 
 		await page.keyboard.type('-5');
@@ -124,7 +123,6 @@ describe('AxisControl', () => {
 		expect(styleAttributes).toStrictEqual(expectChanges);
 
 		// value in general and responsive
-
 		// set value
 
 		await topInput[1].focus();
@@ -143,7 +141,6 @@ describe('AxisControl', () => {
 		);
 
 		// set responsive value
-
 		await topInput[1].focus();
 
 		await page.keyboard.type('0');

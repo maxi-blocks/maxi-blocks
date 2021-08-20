@@ -147,8 +147,7 @@ const getStyles = props => {
 						{
 							...getGroupAttributes(props, 'shapeDivider'),
 						},
-						'bottom',
-						props.parentBlockStyle
+						'bottom'
 					),
 				},
 			},
@@ -158,7 +157,8 @@ const getStyles = props => {
 						{
 							...getGroupAttributes(props, ['shapeDivider']),
 						},
-						'bottom'
+						'bottom',
+						props.parentBlockStyle
 					),
 				},
 			},

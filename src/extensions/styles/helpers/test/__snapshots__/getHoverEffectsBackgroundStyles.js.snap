@@ -11,7 +11,7 @@ Object {
 exports[`getHoverEffectsBackgroundStyles Get a correct hover effects background style 2`] = `
 Object {
   "general": Object {
-    "background": "rgb(255, 99, 71)",
+    "background": "rgbrgba,1)",
   },
 }
 `;

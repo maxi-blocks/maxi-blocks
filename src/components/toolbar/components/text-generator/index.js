@@ -21,7 +21,7 @@ import { withFormatValue } from '../../../../extensions/text/formats';
 
 import './editor.scss';
 import { toolbarLoremIpsum } from '../../../../icons';
-import { insert } from '@wordpress/rich-text';
+import { create, insert } from '@wordpress/rich-text';
 
 const TextGenerator = withFormatValue(props => {
 	const {
@@ -31,6 +31,7 @@ const TextGenerator = withFormatValue(props => {
 		isCaptionToolbar = false,
 		clientId,
 	} = props;
+
 	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
 	const [averageWordsLength, setAverageWordsLength] = useState(15);
 
@@ -53,11 +54,10 @@ const TextGenerator = withFormatValue(props => {
 		newFormatsArray.length = newContent.length;
 		newReplacementsArray.length = newContent.length;
 
-		const newFormatValue = insert(formatValue, {
-			formats: newFormatsArray,
-			replacements: newReplacementsArray,
-			text: ` ${generatedText[0].props.children}`,
-		});
+		const newFormatValue = insert(
+			formatValue,
+			` ${generatedText[0].props.children}`
+		);
 
 		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
 		setTimeout(() => {
@@ -77,9 +77,6 @@ const TextGenerator = withFormatValue(props => {
 			avgSentencesPerParagraph: sentencesPerParagraph,
 		}).map(text => text);
 
-		// const { getSelectedBlock } = wp.data.select('core/block-editor');
-		// const currentContent = getSelectedBlock().attributes.content;
-
 		const newContent = generatedText[0].props.children;
 
 		const newFormatsArray = [];
@@ -87,7 +84,7 @@ const TextGenerator = withFormatValue(props => {
 		newFormatsArray.length = newContent.length;
 		newReplacementsArray.length = newContent.length;
 
-		const newFormatValue = insert(formatValue, newContent, 0);
+		const newFormatValue = create({ text: newContent });
 
 		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
 		setTimeout(() => {

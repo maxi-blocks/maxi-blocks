@@ -186,7 +186,7 @@ const IconControl = props => {
 								<InfoBox
 									key='maxi-warning-box__icon-color'
 									message={__(
-										'Icon color is inheriting from button.',
+										'Icon colour is inheriting from button.',
 										'maxi-blocks'
 									)}
 									links={[

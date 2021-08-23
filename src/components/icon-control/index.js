@@ -128,9 +128,10 @@ const IconControl = props => {
 					/>
 					<FancyRadioControl
 						label={__(
-							'Inherit Color/Backgrond from Button',
+							'Inherit Colour/Backgrond from Button',
 							'maxi-block'
 						)}
+						fullWidthMode
 						selected={props['icon-inherit']}
 						options={[
 							{
@@ -185,7 +186,7 @@ const IconControl = props => {
 								<InfoBox
 									key='maxi-warning-box__icon-color'
 									message={__(
-										'Icon color is inheriting from button.',
+										'Icon colour is inheriting from button.',
 										'maxi-blocks'
 									)}
 									links={[

@@ -17,140 +17,197 @@ export const getArrowBorderObject = (
 	isHover = false,
 	isOverlap = false
 ) => {
-	const response = {
-		label: 'Arrow Border',
-		general: {},
-	};
+	const response = {};
+	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-	const paletteStatus = getLastBreakpointAttribute(
-		'border-palette-color-status',
-		'general',
-		props,
-		isHover
-	);
-	const paletteColor =
-		isHover && props['border-status-hover']
-			? props[`border-palette-color-general${isHover ? '-hover' : ''}`]
-			: props['border-palette-color-general'];
-	const paletteOpacity =
-		isHover && props['border-status-hover']
-			? props[`border-palette-opacity-general${isHover ? '-hover' : ''}`]
-			: props['border-palette-opacity-general'];
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
 
-	if (!isOverlap) {
-		if (paletteStatus && paletteColor)
-			response.general.background = getColorRGBAString({
-				firstVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle: parentBlockStyle,
-			});
-		else
-			response.general['border-color'] =
-				props[`border-color-general${isHover ? '-hover' : ''}`];
+		const paletteStatus = getLastBreakpointAttribute(
+			'border-palette-color-status',
+			breakpoint,
+			props,
+			isHover
+		);
+		const paletteColor = getLastBreakpointAttribute(
+			'border-palette-color',
+			breakpoint,
+			props,
+			isHover
+		);
 
-		if (props[`border-bottom-width-general${isHover ? '-hover' : ''}`]) {
-			response.general.top = `calc(${
-				props[`border-bottom-width-general${isHover ? '-hover' : ''}`] /
-				2
-			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
+		const paletteOpacity = getLastBreakpointAttribute(
+			'border-palette-opacity',
+			breakpoint,
+			props,
+			isHover
+		);
 
-			response.general.left = `calc(${
-				props[`border-bottom-width-general${isHover ? '-hover' : ''}`] /
-				2
-			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
-
-			response.general.width = `calc(50% + ${
-				props[`border-bottom-width-general${isHover ? '-hover' : ''}`] *
-				2
-			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
-
-			response.general.height = `calc(50% + ${
-				props[`border-bottom-width-general${isHover ? '-hover' : ''}`] *
-				2
-			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]})`;
-		}
-	}
-
-	if (isOverlap) {
-		let topPosition = 0;
-		let leftPosition = 0;
-
-		['top-left', 'top-right', 'bottom-left', 'bottom-right'].forEach(
-			item => {
-				if (
+		if (!isOverlap) {
+			if (paletteStatus && paletteColor)
+				response[breakpoint].background = getColorRGBAString({
+					firstVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle: parentBlockStyle,
+				});
+			else
+				response[breakpoint]['border-color'] =
 					props[
-						`border-${item}-radius-general${
+						`border-color-${breakpoint}${isHover ? '-hover' : ''}`
+					];
+
+			if (
+				props[
+					`border-bottom-width-${breakpoint}${
+						isHover ? '-hover' : ''
+					}`
+				]
+			) {
+				response[breakpoint].top = `calc(${
+					props[
+						`border-bottom-width-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+					] / 2
+				}${
+					props[
+						`border-unit-width-${breakpoint}${
 							isHover ? '-hover' : ''
 						}`
 					]
-				)
-					response.general[`border-${item}-radius`] = `
-			${props[`border-${item}-radius-general${isHover ? '-hover' : ''}`]}${
-						props[
-							`border-unit-radius-general${
-								isHover ? '-hover' : ''
-							}`
-						]
-					}`;
+				})`;
+
+				response[breakpoint].left = `calc(${
+					props[
+						`border-bottom-width-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+					] / 2
+				}${
+					props[
+						`border-unit-width-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+					]
+				})`;
+
+				response[breakpoint].width = `calc(50% + ${
+					props[
+						`border-bottom-width-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+					] * 2
+				}${
+					props[
+						`border-unit-width-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+					]
+				})`;
+
+				response[breakpoint].height = `calc(50% + ${
+					props[
+						`border-bottom-width-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+					] * 2
+				}${
+					props[
+						`border-unit-width-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`
+					]
+				})`;
 			}
-		);
+		}
 
-		['top', 'right', 'bottom', 'left'].forEach(item => {
-			if (
-				props[`border-${item}-width-general${isHover ? '-hover' : ''}`]
-			) {
-				if (paletteStatus && paletteColor)
-					response.general[`border-${item}-color`] =
-						getColorRGBAString({
-							firstVar: `color-${paletteColor}`,
-							opacity: paletteOpacity,
-							blockStyle: parentBlockStyle,
-						});
-				else
-					response.general[`border-${item}-color`] =
-						props[`border-color-general${isHover ? '-hover' : ''}`];
+		if (isOverlap) {
+			let topPosition = 0;
+			let leftPosition = 0;
 
-				response.general[`border-${item}-style`] = 'solid';
-				response.general[`border-${item}-width`] = `
-					${props[`border-${item}-width-general${isHover ? '-hover' : ''}`]}${
-					props[`border-unit-width-general${isHover ? '-hover' : ''}`]
-				}`;
+			['top-left', 'top-right', 'bottom-left', 'bottom-right'].forEach(
+				item => {
+					const borderRadius = getLastBreakpointAttribute(
+						`border-${item}-radius`,
+						breakpoint,
+						props,
+						isHover
+					);
+					const borderRadiusUnit = getLastBreakpointAttribute(
+						'border-unit-radius',
+						breakpoint,
+						props,
+						isHover
+					);
 
-				if (item === 'top')
-					topPosition = `-${
-						props[
-							`border-${item}-width-general${
-								isHover ? '-hover' : ''
-							}`
-						]
-					}${
-						props[
-							`border-unit-width-general${
-								isHover ? '-hover' : ''
-							}`
-						]
-					}`;
+					if (borderRadius)
+						response[breakpoint][
+							`border-${item}-radius`
+						] = `${borderRadius}${borderRadiusUnit}`;
+				}
+			);
 
-				if (item === 'left')
-					leftPosition = `-${
-						props[
-							`border-left-width-general${
-								isHover ? '-hover' : ''
-							}`
-						]
-					}${
-						props[
-							`border-unit-width-general${
-								isHover ? '-hover' : ''
-							}`
-						]
-					}`;
-			}
-		});
+			['top', 'right', 'bottom', 'left'].forEach(item => {
+				const borderWidth = getLastBreakpointAttribute(
+					`border-${item}-width`,
+					breakpoint,
+					props,
+					isHover
+				);
+				const borderUnitWidth = getLastBreakpointAttribute(
+					'border-unit-width',
+					breakpoint,
+					props,
+					isHover
+				);
+				const borderColor = getLastBreakpointAttribute(
+					'border-color',
+					breakpoint,
+					props,
+					isHover
+				);
 
-		if (topPosition) response.general.top = topPosition;
-		if (leftPosition) response.general.left = leftPosition;
-	}
+				if (borderWidth) {
+					if (paletteStatus && paletteColor)
+						response[breakpoint][`border-${item}-color`] =
+							getColorRGBAString({
+								firstVar: `color-${paletteColor}`,
+								opacity: paletteOpacity,
+								blockStyle: parentBlockStyle,
+							});
+					else
+						response[breakpoint][`border-${item}-color`] =
+							borderColor;
+
+					response[breakpoint][`border-${item}-style`] = 'solid';
+					response[breakpoint][
+						`border-${item}-width`
+					] = `${borderWidth}${borderUnitWidth}`;
+
+					if (item === 'top')
+						topPosition = `-${
+							props[
+								`border-top-width-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`
+							]
+						}${borderUnitWidth}`;
+
+					if (item === 'left')
+						leftPosition = `-${
+							props[
+								`border-left-width-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`
+							]
+						}${borderUnitWidth}`;
+				}
+			});
+
+			if (topPosition) response[breakpoint].top = topPosition;
+			if (leftPosition) response[breakpoint].left = leftPosition;
+		}
+	});
 
 	return response;
 };

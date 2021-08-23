@@ -51,14 +51,13 @@ export const getArrowBorderObject = (
 				isHover
 			);
 
-			if (borderColor)
-				if (paletteStatus && paletteColor)
-					response[breakpoint].background = getColorRGBAString({
-						firstVar: `color-${paletteColor}`,
-						opacity: paletteOpacity,
-						blockStyle: parentBlockStyle,
-					});
-				else response[breakpoint]['border-color'] = borderColor;
+			if (paletteStatus && paletteColor)
+				response[breakpoint].background = getColorRGBAString({
+					firstVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle: parentBlockStyle,
+				});
+			else response[breakpoint]['border-color'] = borderColor;
 
 			if (
 				props[
@@ -172,45 +171,32 @@ export const getArrowBorderObject = (
 				);
 
 				if (borderWidth) {
-					if (borderColor)
-						if (paletteStatus && paletteColor)
-							response[breakpoint][`border-${item}-color`] =
-								getColorRGBAString({
-									firstVar: `color-${paletteColor}`,
-									opacity: paletteOpacity,
-									blockStyle: parentBlockStyle,
-								});
-						else
-							response[breakpoint][`border-${item}-color`] =
-								borderColor;
+					if (paletteStatus && paletteColor)
+						response[breakpoint][`border-${item}-color`] =
+							getColorRGBAString({
+								firstVar: `color-${paletteColor}`,
+								opacity: paletteOpacity,
+								blockStyle: parentBlockStyle,
+							});
+					else
+						response[breakpoint][`border-${item}-color`] =
+							borderColor;
 
 					response[breakpoint][`border-${item}-style`] = 'solid';
 					response[breakpoint][
 						`border-${item}-width`
 					] = `${borderWidth}${borderUnitWidth}`;
 
-					if (item === 'top')
-						topPosition = `-${
-							props[
-								`border-top-width-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`
-							]
-						}${borderUnitWidth}`;
+					if (item === 'top' && borderWidth)
+						topPosition = `-${borderWidth}${borderUnitWidth}`;
 
-					if (item === 'left')
-						leftPosition = `-${
-							props[
-								`border-left-width-${breakpoint}${
-									isHover ? '-hover' : ''
-								}`
-							]
-						}${borderUnitWidth}`;
+					if (item === 'left' && borderWidth)
+						leftPosition = `-${borderWidth}${borderUnitWidth}`;
 				}
 			});
 
-			if (topPosition) response[breakpoint].top = topPosition;
-			if (leftPosition) response[breakpoint].left = leftPosition;
+			response[breakpoint].top = topPosition;
+			response[breakpoint].left = leftPosition;
 		}
 	});
 

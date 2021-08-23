@@ -182,7 +182,7 @@ describe('BackgroundControl', () => {
 		const expectAttributes = {
 			'background-image-attachment': 'fixed',
 			'background-image-size': 'cover',
-			'background-image-clip-path': 'padding-box',
+			'background-image-clip': 'padding-box',
 			'background-image-origin': 'border-box',
 			'background-image-position': 'left center',
 			'background-image-repeat': 'repeat-x',
@@ -192,14 +192,14 @@ describe('BackgroundControl', () => {
 		const backgroundAttributes = (({
 			'background-image-attachment': imageAttachment,
 			'background-image-size': imageSize,
-			'background-image-clip-path': imageClipPath,
+			'background-image-clip': imageClipPath,
 			'background-image-origin': imageOrigin,
 			'background-image-position': imagePosition,
 			'background-image-repeat': imageRepeat,
 		}) => ({
 			'background-image-attachment': imageAttachment,
 			'background-image-size': imageSize,
-			'background-image-clip-path': imageClipPath,
+			'background-image-clip': imageClipPath,
 			'background-image-origin': imageOrigin,
 			'background-image-position': imagePosition,
 			'background-image-repeat': imageRepeat,

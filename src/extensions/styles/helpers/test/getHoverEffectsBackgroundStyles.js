@@ -20,7 +20,8 @@ describe('getHoverEffectsBackgroundStyles', () => {
 
 		const objectGradient = {
 			'hover-background-active-media': 'gradient',
-			'hover-background-gradient': 'rgb(255, 99, 71)',
+			'hover-background-gradient':
+				'linear-gradient(135deg,rgba(6,147,227,1) 0%,rgba(224,82,84,1) 100%)',
 		};
 
 		const result = getHoverEffectsBackgroundStyles(object);

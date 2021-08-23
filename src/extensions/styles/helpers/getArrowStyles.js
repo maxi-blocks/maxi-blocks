@@ -44,17 +44,21 @@ export const getArrowBorderObject = (
 		);
 
 		if (!isOverlap) {
-			if (paletteStatus && paletteColor)
-				response[breakpoint].background = getColorRGBAString({
-					firstVar: `color-${paletteColor}`,
-					opacity: paletteOpacity,
-					blockStyle: parentBlockStyle,
-				});
-			else
-				response[breakpoint]['border-color'] =
-					props[
-						`border-color-${breakpoint}${isHover ? '-hover' : ''}`
-					];
+			const borderColor = getLastBreakpointAttribute(
+				'border-color',
+				breakpoint,
+				props,
+				isHover
+			);
+
+			if (borderColor)
+				if (paletteStatus && paletteColor)
+					response[breakpoint].background = getColorRGBAString({
+						firstVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
+						blockStyle: parentBlockStyle,
+					});
+				else response[breakpoint]['border-color'] = borderColor;
 
 			if (
 				props[
@@ -168,16 +172,17 @@ export const getArrowBorderObject = (
 				);
 
 				if (borderWidth) {
-					if (paletteStatus && paletteColor)
-						response[breakpoint][`border-${item}-color`] =
-							getColorRGBAString({
-								firstVar: `color-${paletteColor}`,
-								opacity: paletteOpacity,
-								blockStyle: parentBlockStyle,
-							});
-					else
-						response[breakpoint][`border-${item}-color`] =
-							borderColor;
+					if (borderColor)
+						if (paletteStatus && paletteColor)
+							response[breakpoint][`border-${item}-color`] =
+								getColorRGBAString({
+									firstVar: `color-${paletteColor}`,
+									opacity: paletteOpacity,
+									blockStyle: parentBlockStyle,
+								});
+						else
+							response[breakpoint][`border-${item}-color`] =
+								borderColor;
 
 					response[breakpoint][`border-${item}-style`] = 'solid';
 					response[breakpoint][

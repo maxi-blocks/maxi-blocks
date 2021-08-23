@@ -3,7 +3,8 @@ body.maxi-blocks--active .maxi-shape-block {
 	flex-direction: column;
 
 	svg {
-		z-index: 20;
 		position: relative;
+		width: 100%;
+		z-index: 20;
 	}
 }

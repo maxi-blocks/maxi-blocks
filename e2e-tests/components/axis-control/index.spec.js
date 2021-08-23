@@ -101,6 +101,156 @@ describe('AxisControl', () => {
 		const areAllAuto = marginKeys.every(key => {
 			return fourthAttributes[key] === 'auto';
 		});
+
 		expect(areAllAuto).toStrictEqual(true);
+
+		// Padding can't be lower than 0 and sync
+		const syncButton = await page.$$(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button'
+		);
+		const topInput = await page.$$(
+			'.maxi-axis-control .maxi-axis-control__content__item__top input'
+		);
+
+		await syncButton[1].click();
+		await topInput[1].focus();
+
+		await page.keyboard.type('-5');
+
+		const expectChanges = 0;
+		const attributes = await getBlockAttributes();
+		const styleAttributes = attributes['padding-bottom-general'];
+
+		expect(styleAttributes).toStrictEqual(expectChanges);
+
+		// value in general and responsive
+		// set value
+
+		await topInput[1].focus();
+
+		await page.keyboard.press('Backspace');
+		await page.keyboard.type('13');
+
+		// responsive
+		await page.$eval(
+			'.edit-post-header .edit-post-header__toolbar .maxi-toolbar-layout__button',
+			button => button.click()
+		);
+
+		await page.$$eval('.maxi-responsive-selector button', button =>
+			button[2].click()
+		);
+
+		// set responsive value
+		await topInput[1].focus();
+
+		await page.keyboard.type('0');
+
+		const expectResponsivePadding = {
+			'padding-bottom-xl': 0,
+			'padding-left-xl': 0,
+			'padding-right-xl': 0,
+			'padding-top-xl': 0,
+		};
+
+		const responsivePaddingAttributes = await getBlockAttributes();
+
+		const responsiveBlockPadding = (({
+			'padding-bottom-xl': paddingBottom,
+			'padding-left-xl': paddingLeft,
+			'padding-right-xl': paddingRight,
+			'padding-top-xl': paddingTop,
+		}) => ({
+			'padding-bottom-xl': paddingBottom,
+			'padding-left-xl': paddingLeft,
+			'padding-right-xl': paddingRight,
+			'padding-top-xl': paddingTop,
+		}))(responsivePaddingAttributes);
+
+		expect(responsiveBlockPadding).toStrictEqual(expectResponsivePadding);
+
+		const syncButtonTop = await page.$(
+			'.maxi-axis-control__top-part .maxi-axis-control__content__item__sync button'
+		);
+
+		const syncButtonBottom = await page.$(
+			'.maxi-axis-control__bottom-part .maxi-axis-control__content__item__sync button'
+		);
+
+		const syncButtonMiddle = await page.$$(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button'
+		);
+
+		// Pressed-top and Pressed-bottom true
+		await syncButtonTop.click();
+		await syncButtonBottom.click();
+
+		const pressedTop = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
+			expectHtml => expectHtml[1].innerHTML
+		);
+
+		const pressedBottom = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
+			expectHtml => expectHtml[3].innerHTML
+		);
+
+		expect(pressedTop).toMatchSnapshot();
+		expect(pressedBottom).toMatchSnapshot();
+
+		// Pressed-top and Pressed-bottom False Pressed-middle True
+		await syncButtonMiddle[1].click();
+
+		const pressedMiddleTrue = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
+			expectHtml => expectHtml[2].innerHTML
+		);
+
+		const pressedTopFalse = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
+			expectHtml => expectHtml[1].innerHTML
+		);
+
+		const pressedBottomFalse = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
+			expectHtml => expectHtml[3].innerHTML
+		);
+
+		expect(pressedTopFalse).toMatchSnapshot();
+		expect(pressedBottomFalse).toMatchSnapshot();
+		expect(pressedMiddleTrue).toMatchSnapshot();
+
+		// Pressed-top True Pressed-middle False
+		await syncButtonTop.click();
+
+		const pressedMiddleFalse = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
+			expectHtml => expectHtml[2].innerHTML
+		);
+
+		const pressedTopTrue = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
+			expectHtml => expectHtml[1].innerHTML
+		);
+
+		expect(pressedMiddleFalse).toMatchSnapshot();
+		expect(pressedTopTrue).toMatchSnapshot();
+
+		// Pressed-bottom True Pressed-middle False
+		await syncButtonMiddle[1].click();
+		await syncButtonBottom.click();
+
+		const pressedMiddle = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
+			expectHtml => expectHtml[2].innerHTML
+		);
+
+		const pressedBottomTrue = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
+			expectHtml => expectHtml[3].innerHTML
+		);
+
+		expect(pressedMiddle).toMatchSnapshot();
+		expect(pressedBottomTrue).toMatchSnapshot();
 	});
 });

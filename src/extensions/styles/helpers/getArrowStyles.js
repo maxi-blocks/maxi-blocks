@@ -280,47 +280,14 @@ export const getArrowColorObject = (props, blockStyle, isHover = false) => {
 	};
 
 	if (
-		props[`background-active-media${isHover ? '-hover' : ''}`] === 'layers'
+		props[`background-active-media${isHover ? '-hover' : ''}`] ===
+		'gradient'
 	) {
-		if (
-			props['background-layers-status'] &&
-			props['background-layers']?.length > 0 &&
-			props['background-layers'][0].type === 'color'
-		) {
-			if (
-				props['background-layers'][0][
-					`background-palette-color-status${isHover ? '-hover' : ''}`
-				]
-			) {
-				const paletteColor =
-					props['background-layers'][0][
-						`background-palette-color${isHover ? '-hover' : ''}`
-					];
-				const paletteOpacity =
-					props['background-layers'][0][
-						`background-palette-opacity${isHover ? '-hover' : ''}`
-					];
+		response.general.background =
+			props[`background-gradient${isHover ? '-hover' : ''}`];
+	}
 
-				response.general['background-color'] = getColorRGBAString({
-					firstVar: `color-${paletteColor}`,
-					opacity: paletteOpacity,
-					blockStyle,
-				});
-			} else
-				response.general['background-color'] =
-					props['background-layers'][0][
-						`background-color${isHover ? '-hover' : ''}`
-					];
-		}
-	} else {
-		if (
-			props[`background-active-media${isHover ? '-hover' : ''}`] ===
-			'gradient'
-		) {
-			response.general.background =
-				props[`background-gradient${isHover ? '-hover' : ''}`];
-		}
-
+	if (!props['background-layers-status'])
 		if (
 			props[`background-palette-color-status${isHover ? '-hover' : ''}`]
 		) {
@@ -337,7 +304,6 @@ export const getArrowColorObject = (props, blockStyle, isHover = false) => {
 		} else
 			response.general['background-color'] =
 				props[`background-color${isHover ? '-hover' : ''}`];
-	}
 
 	return response;
 };

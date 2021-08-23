@@ -152,8 +152,8 @@ export const getArrowBorderObject = (
 			}${props[`border-unit-width-general${isHover ? '-hover' : ''}`]}`;
 		}
 
-		response.general.top = topPosition || 0;
-		response.general.left = leftPosition || 0;
+		if (topPosition) response.general.top = topPosition;
+		if (leftPosition) response.general.left = leftPosition;
 	}
 
 	return response;

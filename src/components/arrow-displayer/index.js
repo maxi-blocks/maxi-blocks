@@ -33,14 +33,9 @@ const ArrowDisplayer = props => {
 		!props['background-layers-status'] &&
 		props['background-active-media'] === 'color';
 
-	const layerBackgroundColorStatus =
-		props['background-layers-status'] &&
-		props['background-layers']?.length > 0 &&
-		props['background-layers'][0].type === 'color';
-
 	return (
 		!!props['arrow-status'] &&
-		(simpleBackgroundColorStatus || layerBackgroundColorStatus) && (
+		(simpleBackgroundColorStatus || !props['background-layers-status']) && (
 			<div className={arrowClasses}>
 				<div className='maxi-container-arrow--content' />
 			</div>

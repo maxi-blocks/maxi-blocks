@@ -556,7 +556,7 @@ const ImageLayer = props => {
 						onChange={val =>
 							onChange({
 								[getAttributeKey(
-									'background-image-clip-path',
+									'background-image-clip',
 									isHover,
 									prefix
 								)]: val,

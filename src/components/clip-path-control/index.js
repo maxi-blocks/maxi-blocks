@@ -229,13 +229,12 @@ const ClipPathControl = props => {
 
 	const [clipPathOptions, changeClipPathOptions] = useState(deconstructCP());
 
-	const [hasClipPath, changeHasClipPath] = useState(
-		isEmpty(clipPath) ? 0 : 1
-	);
+	const [hasClipPath, changeHasClipPath] = useState(!isEmpty(clipPath));
 	const [isCustom, changeIsCustom] = useState(
-		Object.values(clipPathDefaults).includes(clipPath) || isEmpty(clipPath)
-			? 0
-			: 1
+		!(
+			Object.values(clipPathDefaults).includes(clipPath) ||
+			isEmpty(clipPath)
+		)
 	);
 
 	useEffect(() => {
@@ -318,7 +317,7 @@ const ClipPathControl = props => {
 				]}
 				onChange={val => changeHasClipPath(+val)}
 			/>
-			{!!hasClipPath && (
+			{hasClipPath && (
 				<>
 					<FancyRadioControl
 						label={__('Use Custom', 'maxi-blocks')}
@@ -327,7 +326,7 @@ const ClipPathControl = props => {
 							{ label: __('Yes', 'maxi-blocks'), value: 1 },
 							{ label: __('No', 'maxi-blocks'), value: 0 },
 						]}
-						onChange={val => changeIsCustom(+val)}
+						onChange={val => changeIsCustom(val)}
 					/>
 					{!isCustom && (
 						<div className='clip-path-defaults'>
@@ -373,7 +372,7 @@ const ClipPathControl = props => {
 							)}
 						</div>
 					)}
-					{!!isCustom && (
+					{isCustom && (
 						<div className='maxi-clip-path-control__handles'>
 							<SelectControl
 								label={__('Type', 'maxi-blocks')}
@@ -399,7 +398,6 @@ const ClipPathControl = props => {
 								onChange={value => onChangeType(value)}
 							/>
 							<FancyRadioControl
-								label=''
 								fullWidthMode
 								selected={customMode}
 								options={[

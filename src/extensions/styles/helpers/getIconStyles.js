@@ -25,7 +25,7 @@ const getIconStyles = (obj, target, parentBlockStyle, isIconInherit = true) => {
 				  ] = `${obj['icon-spacing']}px`);
 
 		if (!isNil(obj['icon-size']))
-			response.general.maxWidth = `${obj['icon-size']}px`;
+			response.general.width = `${obj['icon-size']}px`;
 	}
 
 	if (target === 'svg') {

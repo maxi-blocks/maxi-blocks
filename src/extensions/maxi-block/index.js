@@ -206,7 +206,8 @@ class MaxiBlockComponent extends Component {
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		if (!shouldDisplayStyles) this.displayStyles();
 
-		if (this.maxiBlockDidUpdate) this.maxiBlockDidUpdate();
+		if (this.maxiBlockDidUpdate)
+			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
 	}
 
 	componentWillUnmount() {

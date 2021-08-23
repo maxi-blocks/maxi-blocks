@@ -44,9 +44,6 @@ const TextGenerator = withFormatValue(props => {
 			avgSentencesPerParagraph: sentencesPerParagraph,
 		}).map(text => text);
 
-		// const { getSelectedBlock } = wp.data.select('core/block-editor');
-		// const currentContent = getSelectedBlock().attributes.content;
-
 		const newContent = `${formatValue.text} ${generatedText[0].props.children}`;
 
 		const newFormatsArray = [];

@@ -42,6 +42,12 @@ const margin = {
 	'margin-sync-xxl': {
 		type: 'boolean',
 	},
+	'margin-sync-horizontal-xxl': {
+		type: 'boolean',
+	},
+	'margin-sync-vertical-xxl': {
+		type: 'boolean',
+	},
 	'margin-unit-xxl': {
 		type: 'string',
 	},
@@ -58,6 +64,12 @@ const margin = {
 		type: 'string',
 	},
 	'margin-sync-xl': {
+		type: 'boolean',
+	},
+	'margin-sync-horizontal-xl': {
+		type: 'boolean',
+	},
+	'margin-sync-vertical-xl': {
 		type: 'boolean',
 	},
 	'margin-unit-xl': {
@@ -78,6 +90,12 @@ const margin = {
 	'margin-sync-l': {
 		type: 'boolean',
 	},
+	'margin-sync-horizontal-l': {
+		type: 'boolean',
+	},
+	'margin-sync-vertical-l': {
+		type: 'boolean',
+	},
 	'margin-unit-l': {
 		type: 'string',
 	},
@@ -94,6 +112,12 @@ const margin = {
 		type: 'string',
 	},
 	'margin-sync-m': {
+		type: 'boolean',
+	},
+	'margin-sync-horizontal-m': {
+		type: 'boolean',
+	},
+	'margin-sync-vertical-m': {
 		type: 'boolean',
 	},
 	'margin-unit-m': {
@@ -114,6 +138,12 @@ const margin = {
 	'margin-sync-s': {
 		type: 'boolean',
 	},
+	'margin-sync-horizontal-s': {
+		type: 'boolean',
+	},
+	'margin-sync-vertical-s': {
+		type: 'boolean',
+	},
 	'margin-unit-s': {
 		type: 'string',
 	},
@@ -130,6 +160,12 @@ const margin = {
 		type: 'string',
 	},
 	'margin-sync-xs': {
+		type: 'boolean',
+	},
+	'margin-sync-horizontal-xs': {
+		type: 'boolean',
+	},
+	'margin-sync-vertical-xs': {
 		type: 'boolean',
 	},
 	'margin-unit-xs': {

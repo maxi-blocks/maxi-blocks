@@ -117,24 +117,6 @@ const NumberCounterControl = props => {
 				}
 			/>
 			<AdvancedNumberControl
-				label={__('Radius', 'maxi-blocks')}
-				min={90}
-				max={999}
-				initial={85}
-				step={1}
-				value={props['number-counter-radius']}
-				onChangeValue={val =>
-					onChange({ 'number-counter-radius': val })
-				}
-				onReset={() =>
-					onChange({
-						'number-counter-radius': getDefaultAttribute(
-							'number-counter-radius'
-						),
-					})
-				}
-			/>
-			<AdvancedNumberControl
 				label={__('Stroke', 'maxi-blocks')}
 				min={1}
 				max={99}

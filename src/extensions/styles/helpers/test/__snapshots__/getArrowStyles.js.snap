@@ -20,25 +20,25 @@ Object {
   " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
     "border": Object {
       "general": Object {
-        "border-color": "rgb(6,147,227)",
+        "background": "rgb(6,147,227)",
       },
       "l": Object {
-        "border-color": "rgb(6,147,227)",
+        "background": "rgb(6,147,227)",
       },
       "m": Object {
-        "border-color": "rgb(6,147,227)",
+        "background": "rgb(6,147,227)",
       },
       "s": Object {
-        "border-color": "rgb(6,147,227)",
+        "background": "rgb(6,147,227)",
       },
       "xl": Object {
-        "border-color": "rgb(6,147,227)",
+        "background": "rgb(6,147,227)",
       },
       "xs": Object {
-        "border-color": "rgb(6,147,227)",
+        "background": "rgb(6,147,227)",
       },
       "xxl": Object {
-        "border-color": "rgb(6,147,227)",
+        "background": "rgb(6,147,227)",
       },
     },
   },
@@ -50,13 +50,34 @@ Object {
       "label": "Arrow Color",
     },
     "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+      "general": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "l": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "m": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "s": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xl": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xs": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xxl": Object {
+        "left": 0,
+        "top": 0,
+      },
     },
   },
   ":hover .maxi-container-arrow": Object {
@@ -77,37 +98,58 @@ Object {
   ":hover .maxi-container-arrow .maxi-container-arrow--content:before": Object {
     "border": Object {
       "general": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
       "l": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
       "m": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
       "s": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
       "xl": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
       "xs": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
       "xxl": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
     },
   },
   ":hover .maxi-container-arrow:before": Object {
     "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+      "general": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "l": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "m": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "s": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xl": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xs": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xxl": Object {
+        "left": 0,
+        "top": 0,
+      },
     },
   },
 }
@@ -182,25 +224,25 @@ Object {
   " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
     "border": Object {
       "general": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
       "l": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
       "m": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
       "s": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
       "xl": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
       "xs": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
       "xxl": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background": "rgb(255, 99, 71)",
       },
     },
   },
@@ -212,13 +254,34 @@ Object {
       "label": "Arrow Color",
     },
     "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+      "general": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "l": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "m": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "s": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xl": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xs": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xxl": Object {
+        "left": 0,
+        "top": 0,
+      },
     },
   },
 }
@@ -243,13 +306,27 @@ Object {
   },
   " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
     "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+      "general": Object {
+        "background": "rgba(var(--maxi-light-color-4), 0.2)",
+      },
+      "l": Object {
+        "background": "rgba(var(--maxi-light-color-4), 0.2)",
+      },
+      "m": Object {
+        "background": "rgba(var(--maxi-light-color-4), 0.2)",
+      },
+      "s": Object {
+        "background": "rgba(var(--maxi-light-color-4), 0.2)",
+      },
+      "xl": Object {
+        "background": "rgba(var(--maxi-light-color-4), 0.2)",
+      },
+      "xs": Object {
+        "background": "rgba(var(--maxi-light-color-4), 0.2)",
+      },
+      "xxl": Object {
+        "background": "rgba(var(--maxi-light-color-4), 0.2)",
+      },
     },
   },
   " .maxi-container-arrow:before": Object {
@@ -260,13 +337,34 @@ Object {
       "label": "Arrow Color",
     },
     "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+      "general": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "l": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "m": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "s": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xl": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xs": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xxl": Object {
+        "left": 0,
+        "top": 0,
+      },
     },
   },
   ":hover .maxi-container-arrow": Object {
@@ -287,28 +385,62 @@ Object {
   ":hover .maxi-container-arrow .maxi-container-arrow--content:before": Object {
     "border": Object {
       "general": Object {
+        "background": "rgba(var(--maxi-light-color-1), 0.2)",
         "height": "calc(50% + 6px)",
         "left": "calc(1.5px)",
         "top": "calc(1.5px)",
         "width": "calc(50% + 6px)",
       },
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+      "l": Object {
+        "background": "rgba(var(--maxi-light-color-1), 0.2)",
+      },
+      "m": Object {
+        "background": "rgba(var(--maxi-light-color-1), 0.2)",
+      },
+      "s": Object {
+        "background": "rgba(var(--maxi-light-color-1), 0.2)",
+      },
+      "xl": Object {
+        "background": "rgba(var(--maxi-light-color-1), 0.2)",
+      },
+      "xs": Object {
+        "background": "rgba(var(--maxi-light-color-1), 0.2)",
+      },
+      "xxl": Object {
+        "background": "rgba(var(--maxi-light-color-1), 0.2)",
+      },
     },
   },
   ":hover .maxi-container-arrow:before": Object {
     "border": Object {
-      "general": Object {},
-      "l": Object {},
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+      "general": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "l": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "m": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "s": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xl": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xs": Object {
+        "left": 0,
+        "top": 0,
+      },
+      "xxl": Object {
+        "left": 0,
+        "top": 0,
+      },
     },
   },
 }

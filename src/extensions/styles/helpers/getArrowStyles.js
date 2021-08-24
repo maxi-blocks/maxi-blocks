@@ -9,7 +9,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isUndefined } from 'lodash';
 
 export const getArrowBorderObject = (
 	props,
@@ -29,12 +29,10 @@ export const getArrowBorderObject = (
 			props,
 			isHover
 		);
-		const paletteColor = getLastBreakpointAttribute(
-			'border-palette-color',
-			breakpoint,
-			props,
-			isHover
-		);
+		const paletteColor =
+			props[
+				`border-palette-color-${breakpoint}${isHover ? '-hover' : ''}`
+			];
 
 		const paletteOpacity = getLastBreakpointAttribute(
 			'border-palette-opacity',
@@ -43,21 +41,29 @@ export const getArrowBorderObject = (
 			isHover
 		);
 
-		if (!isOverlap) {
-			const borderColor = getLastBreakpointAttribute(
-				'border-color',
-				breakpoint,
-				props,
-				isHover
-			);
+		const borderStyle = getLastBreakpointAttribute(
+			'border-style',
+			breakpoint,
+			props,
+			isHover
+		);
+		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
 
-			if (paletteStatus && paletteColor)
-				response[breakpoint].background = getColorRGBAString({
-					firstVar: `color-${paletteColor}`,
-					opacity: paletteOpacity,
-					blockStyle: parentBlockStyle,
-				});
-			else response[breakpoint]['border-color'] = borderColor;
+		if (!isOverlap) {
+			if (!isBorderNone)
+				if (paletteStatus && paletteColor)
+					response[breakpoint].background = getColorRGBAString({
+						firstVar: `color-${paletteColor}`,
+						opacity: paletteOpacity,
+						blockStyle: parentBlockStyle,
+					});
+				else if (!paletteStatus)
+					response[breakpoint].background =
+						props[
+							`border-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						];
 
 			if (
 				props[

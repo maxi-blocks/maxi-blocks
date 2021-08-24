@@ -40,7 +40,6 @@ export const getArrowBorderObject = (
 			props,
 			isHover
 		);
-
 		const borderStyle = getLastBreakpointAttribute(
 			'border-style',
 			breakpoint,
@@ -50,14 +49,19 @@ export const getArrowBorderObject = (
 		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
 
 		if (!isOverlap) {
-			if (!isBorderNone)
+			if (!isBorderNone) {
 				if (paletteStatus && paletteColor)
 					response[breakpoint].background = getColorRGBAString({
 						firstVar: `color-${paletteColor}`,
 						opacity: paletteOpacity,
 						blockStyle: parentBlockStyle,
 					});
-				else if (!paletteStatus)
+				else if (
+					!paletteStatus &&
+					props[
+						`border-color-${breakpoint}${isHover ? '-hover' : ''}`
+					]
+				)
 					response[breakpoint].background =
 						props[
 							`border-color-${breakpoint}${
@@ -65,75 +69,73 @@ export const getArrowBorderObject = (
 							}`
 						];
 
-			if (
-				props[
-					`border-bottom-width-${breakpoint}${
-						isHover ? '-hover' : ''
-					}`
-				]
-			) {
-				response[breakpoint].top = `calc(${
+				if (
 					props[
 						`border-bottom-width-${breakpoint}${
 							isHover ? '-hover' : ''
 						}`
-					] / 2
-				}${
-					props[
-						`border-unit-width-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
 					]
-				})`;
+				) {
+					response[breakpoint].top = `calc(${
+						props[
+							`border-bottom-width-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						] / 2
+					}${
+						props[
+							`border-unit-width-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						]
+					})`;
 
-				response[breakpoint].left = `calc(${
-					props[
-						`border-bottom-width-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
-					] / 2
-				}${
-					props[
-						`border-unit-width-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
-					]
-				})`;
+					response[breakpoint].left = `calc(${
+						props[
+							`border-bottom-width-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						] / 2
+					}${
+						props[
+							`border-unit-width-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						]
+					})`;
 
-				response[breakpoint].width = `calc(50% + ${
-					props[
-						`border-bottom-width-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
-					] * 2
-				}${
-					props[
-						`border-unit-width-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
-					]
-				})`;
+					response[breakpoint].width = `calc(50% + ${
+						props[
+							`border-bottom-width-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						] * 2
+					}${
+						props[
+							`border-unit-width-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						]
+					})`;
 
-				response[breakpoint].height = `calc(50% + ${
-					props[
-						`border-bottom-width-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
-					] * 2
-				}${
-					props[
-						`border-unit-width-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`
-					]
-				})`;
+					response[breakpoint].height = `calc(50% + ${
+						props[
+							`border-bottom-width-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						] * 2
+					}${
+						props[
+							`border-unit-width-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						]
+					})`;
+				}
 			}
 		}
 
 		if (isOverlap) {
-			let topPosition = 0;
-			let leftPosition = 0;
-
 			['top-left', 'top-right', 'bottom-left', 'bottom-right'].forEach(
 				item => {
 					const borderRadius = getLastBreakpointAttribute(
@@ -149,7 +151,13 @@ export const getArrowBorderObject = (
 						isHover
 					);
 
-					if (borderRadius)
+					if (
+						props[
+							`border-${item}-radius-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						]
+					)
 						response[breakpoint][
 							`border-${item}-radius`
 						] = `${borderRadius}${borderRadiusUnit}`;
@@ -163,20 +171,15 @@ export const getArrowBorderObject = (
 					props,
 					isHover
 				);
+
 				const borderUnitWidth = getLastBreakpointAttribute(
 					'border-unit-width',
 					breakpoint,
 					props,
 					isHover
 				);
-				const borderColor = getLastBreakpointAttribute(
-					'border-color',
-					breakpoint,
-					props,
-					isHover
-				);
 
-				if (borderWidth) {
+				if (!isBorderNone) {
 					if (paletteStatus && paletteColor)
 						response[breakpoint][`border-${item}-color`] =
 							getColorRGBAString({
@@ -184,25 +187,45 @@ export const getArrowBorderObject = (
 								opacity: paletteOpacity,
 								blockStyle: parentBlockStyle,
 							});
-					else
+					if (
+						!paletteStatus &&
+						props[
+							`border-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						]
+					)
 						response[breakpoint][`border-${item}-color`] =
-							borderColor;
+							props[
+								`border-color-${breakpoint}${
+									isHover ? '-hover' : ''
+								}`
+							];
 
-					response[breakpoint][`border-${item}-style`] = 'solid';
-					response[breakpoint][
-						`border-${item}-width`
-					] = `${borderWidth}${borderUnitWidth}`;
+					if (
+						props[
+							`border-${item}-width-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`
+						]
+					) {
+						response[breakpoint][`border-${item}-style`] = 'solid';
+						response[breakpoint][
+							`border-${item}-width`
+						] = `${borderWidth}${borderUnitWidth}`;
 
-					if (item === 'top' && borderWidth)
-						topPosition = `-${borderWidth}${borderUnitWidth}`;
+						if (item === 'top' && borderWidth)
+							response[
+								breakpoint
+							].top = `-${borderWidth}${borderUnitWidth}`;
 
-					if (item === 'left' && borderWidth)
-						leftPosition = `-${borderWidth}${borderUnitWidth}`;
+						if (item === 'left' && borderWidth)
+							response[
+								breakpoint
+							].left = `-${borderWidth}${borderUnitWidth}`;
+					}
 				}
 			});
-
-			response[breakpoint].top = topPosition;
-			response[breakpoint].left = leftPosition;
 		}
 	});
 
@@ -284,7 +307,7 @@ export const getArrowColorObject = (props, blockStyle, isHover = false) => {
 			props[`background-gradient${isHover ? '-hover' : ''}`];
 	}
 
-	if (!props['background-layers-status'])
+	if (!props[`background-layers-status${isHover ? '-hover' : ''}`])
 		if (
 			props[`background-palette-color-status${isHover ? '-hover' : ''}`]
 		) {
@@ -379,13 +402,17 @@ const getArrowStyles = props => {
 			[`${target}:hover .maxi-container-arrow:before`]: {
 				background: {
 					...getArrowColorObject(
-						getGroupAttributes(props, [
-							'background',
-							'backgroundColor',
-							'backgroundGradient',
-						]),
+						getGroupAttributes(
+							props,
+							[
+								'background',
+								'backgroundColor',
+								'backgroundGradient',
+							],
+							true
+						),
 						blockStyle,
-						isHover
+						true
 					),
 				},
 			},
@@ -394,13 +421,13 @@ const getArrowStyles = props => {
 			[`${target}:hover .maxi-container-arrow:before`]: {
 				border: {
 					...getArrowBorderObject(
-						getGroupAttributes(props, [
-							'border',
-							'borderWidth',
-							'borderRadius',
-						]),
+						getGroupAttributes(
+							props,
+							['border', 'borderWidth', 'borderRadius'],
+							true
+						),
 						blockStyle,
-						isHover,
+						true,
 						true
 					),
 				},

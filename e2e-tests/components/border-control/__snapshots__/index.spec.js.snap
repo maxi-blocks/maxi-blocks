@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BorderControl Check Responsive border control 1`] = `"<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 62 4\\" class=\\"maxi-default-styles-control__button__icon\\" role=\\"img\\" aria-hidden=\\"true\\" focusable=\\"false\\"><path d=\\"M1 2h1\\"></path><path fill=\\"none\\" stroke=\\"#173042\\" stroke-width=\\"2\\" stroke-miterlimit=\\"10\\" stroke-dasharray=\\"2,2\\" d=\\"M4 2h55\\"></path><path d=\\"M60 2h1\\"></path></svg>"`;

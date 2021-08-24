@@ -27,7 +27,7 @@ const getHoverEffectsBackgroundStyles = (props, parentBlockStyle) => {
 				/\((\d+),(\d+),(\d+)\)/g,
 				`($1,$2,$3,${props['hover-background-gradient-opacity'] || 1})`
 			);
-		console.log(newhoverBackgroundGradient);
+
 		response.general.background = newhoverBackgroundGradient;
 	}
 

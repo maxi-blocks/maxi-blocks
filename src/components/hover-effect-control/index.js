@@ -385,17 +385,18 @@ const HoverEffectControl = props => {
 					/>
 					{props['hover-title-typography-status'] && (
 						<TypographyControl
-							{...getGroupAttributes(
-								props,
-								'hoverTitleTypography'
-							)}
+							typography={{
+								...getGroupAttributes(
+									props,
+									'hoverTitleTypography'
+								),
+							}}
 							hideAlignment
 							onChange={obj => onChange(obj)}
 							prefix='hover-title-'
 							disableCustomFormats
 							blockStyle={blockStyle}
 							clientId={clientId}
-							hoverEffect
 						/>
 					)}
 					<hr />
@@ -428,17 +429,18 @@ const HoverEffectControl = props => {
 					/>
 					{props['hover-content-typography-status'] && (
 						<TypographyControl
-							{...getGroupAttributes(
-								props,
-								'hoverContentTypography'
-							)}
+							typography={{
+								...getGroupAttributes(
+									props,
+									'hoverContentTypography'
+								),
+							}}
 							hideAlignment
 							onChange={obj => onChange(obj)}
 							prefix='hover-content-'
 							disableCustomFormats
 							blockStyle={blockStyle}
 							clientId={clientId}
-							hoverEffect
 						/>
 					)}
 					<hr />

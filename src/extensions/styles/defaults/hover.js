@@ -213,6 +213,7 @@ export const hoverTitleTypography = (() => {
 		response[newKey] = value;
 	});
 
+	response['hover-title-font-size-general'].default = 30;
 	response['hover-title-color-general'].default = '#fff';
 	response['hover-title-palette-color-general'].default = 1;
 
@@ -238,6 +239,7 @@ export const hoverContentTypography = (() => {
 		response[newKey] = value;
 	});
 
+	response['hover-content-font-size-general'].default = 18;
 	response['hover-content-color-general'].default = '#fff';
 	response['hover-content-palette-color-general'].default = 1;
 

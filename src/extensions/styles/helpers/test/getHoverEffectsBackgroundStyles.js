@@ -15,7 +15,7 @@ describe('getHoverEffectsBackgroundStyles', () => {
 	it('Get a correct hover effects background style', () => {
 		const object = {
 			'hover-background-active-media': 'color',
-			'hover-background-color': 'rgb(255, 99, 71)',
+			'hover-background-color': 'rgb(255,99,71)',
 		};
 
 		const objectGradient = {

@@ -21,7 +21,14 @@ const getHoverEffectsBackgroundStyles = (props, parentBlockStyle) => {
 	}
 
 	if (props['hover-background-active-media'] === 'gradient') {
-		response.general.background = props['hover-background-gradient'];
+		const newhoverBackgroundGradient = props['hover-background-gradient']
+			?.replace(/rgb\(/g, 'rgba(')
+			.replace(
+				/\((\d+),(\d+),(\d+)\)/g,
+				`($1,$2,$3,${props['hover-background-gradient-opacity'] || 1})`
+			);
+
+		response.general.background = newhoverBackgroundGradient;
 	}
 
 	return response;

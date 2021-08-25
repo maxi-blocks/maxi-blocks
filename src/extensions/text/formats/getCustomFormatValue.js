@@ -15,13 +15,12 @@ import { isBoolean, isNumber } from 'lodash';
 /**
  * Retrieve the property from typography object requested
  *
- * @param {Object} 	[$0]					Optional named arguments.
- * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {Object} 	[$0.typography]			MaxiBlocks typography
- * @param {Object} 	[$0.prop]				Typography property requested
- * @param {boolean} [$0.breakpoint]			Device type breakpoint
- * @param {boolean} isHover 				Is the requested typography under hover state
- *
+ * @param {Object}  [$0]             Optional named arguments.
+ * @param {Object}  [$0.formatValue] RichText format value
+ * @param {Object}  [$0.typography]  MaxiBlocks typography
+ * @param {Object}  [$0.prop]        Typography property requested
+ * @param {boolean} [$0.breakpoint]  Device type breakpoint
+ * @param {boolean} isHover          Is the requested typography under hover state
  * @returns {*} Requested property
  */
 const getCustomFormatValue = ({

@@ -135,7 +135,6 @@ export const hoverBackgroundColor = (() => {
 		const newKey = `hover-${key}`;
 		const value = { ...backgroundColor[key] };
 
-		if (key === 'background-color') value.default = '#000';
 		if (key === 'background-palette-color') value.default = 5;
 		if (key === 'background-palette-opacity') value.default = 60;
 
@@ -214,7 +213,6 @@ export const hoverTitleTypography = (() => {
 	});
 
 	response['hover-title-font-size-general'].default = 30;
-	response['hover-title-color-general'].default = '#fff';
 	response['hover-title-palette-color-general'].default = 1;
 
 	return response;
@@ -240,7 +238,6 @@ export const hoverContentTypography = (() => {
 	});
 
 	response['hover-content-font-size-general'].default = 18;
-	response['hover-content-color-general'].default = '#fff';
 	response['hover-content-palette-color-general'].default = 1;
 
 	return response;

@@ -11,7 +11,7 @@ Object {
 exports[`getHoverEffectsBackgroundStyles Get a correct hover effects background style 2`] = `
 Object {
   "general": Object {
-    "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgba(224,82,84,1) 100%)",
+    "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,0.8) 100%)",
   },
 }
 `;

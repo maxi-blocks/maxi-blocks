@@ -8,6 +8,7 @@ import {
 	getMarginPaddingStyles,
 	getOpacityStyles,
 	getPositionStyles,
+	getSizeStyles,
 	getSvgStyles,
 	getTransformStyles,
 	getZIndexStyles,
@@ -54,6 +55,9 @@ const getNormalObject = props => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
+		}),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
 		}),
 	};
 

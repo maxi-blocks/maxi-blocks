@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PositionControl Check Responsive position control 1`] = `"<p class=\\"maxi-axis-control__content__item__label\\">Right</p><input class=\\"maxi-axis-control__content__item__input\\" type=\\"number\\" aria-label=\\" Right\\" min=\\"0\\" max=\\"999\\" value=\\"\\" placeholder=\\"4\\">"`;

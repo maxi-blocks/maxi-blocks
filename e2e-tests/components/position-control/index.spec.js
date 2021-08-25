@@ -72,4 +72,60 @@ describe('PositionControl', () => {
 
 		expect(unit).toStrictEqual(expectUnit);
 	});
+
+	it('Check Responsive position control', async () => {
+		const responsiveButton = await page.$$(
+			'.maxi-responsive-selector button'
+		);
+
+		// position value remains
+		await page.$eval(
+			'.edit-post-header .edit-post-header__toolbar .maxi-toolbar-layout button',
+			button => button.click()
+		);
+
+		await responsiveButton[5].click();
+		const dottedButton = await page.$eval(
+			'.maxi-position-control .maxi-axis-control__bottom-part .maxi-axis-control__content__item__right',
+			input => input.innerHTML
+		);
+
+		expect(dottedButton).toMatchSnapshot();
+
+		// responsive S
+		// const accordionPanel = await openSidebar(page, 'border');
+
+		await page.$eval(
+			'.maxi-position-control .maxi-axis-control__bottom-part .maxi-axis-control__content__item__right input',
+			input => input.focus()
+		);
+
+		await page.waitForTimeout(150);
+		await page.keyboard.type('5');
+
+		const responsiveResult = 5;
+		const responsiveAttributes = await getBlockAttributes();
+		const responsiveStyle = responsiveAttributes['position-right-s'];
+
+		expect(responsiveStyle).toStrictEqual(responsiveResult);
+
+		// responsive XS
+		await responsiveButton[6].click();
+
+		const responsiveXsResult = 5;
+		const responsiveXsAttributes = await getBlockAttributes();
+		const responsiveXsStyle = responsiveXsAttributes['position-right-s'];
+
+		expect(responsiveXsStyle).toStrictEqual(responsiveXsResult);
+
+		// responsive M
+		await responsiveButton[4].click();
+
+		const responsiveMResult = 4;
+		const responsiveMAttributes = await getBlockAttributes();
+		const responsiveMStyle =
+			responsiveMAttributes['position-right-general'];
+
+		expect(responsiveMStyle).toStrictEqual(responsiveMResult);
+	});
 });

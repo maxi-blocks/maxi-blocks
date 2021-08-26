@@ -91,20 +91,17 @@ const getHoverEffectDetailsBoxObject = props => {
 			},
 			'hover-'
 		),
-		// ...(!props['hover-background-palette-color-status'] && {
-		...{
-			background: {
-				...getHoverEffectsBackgroundStyles(
-					{
-						...getGroupAttributes(props, [
-							'hoverBackground',
-							'hoverBackgroundColor',
-							'hoverBackgroundGradient',
-						]),
-					},
-					props.parentBlockStyle
-				),
-			},
+		background: {
+			...getHoverEffectsBackgroundStyles(
+				{
+					...getGroupAttributes(props, [
+						'hoverBackground',
+						'hoverBackgroundColor',
+						'hoverBackgroundGradient',
+					]),
+				},
+				props.parentBlockStyle
+			),
 		},
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -247,7 +244,7 @@ const getStyles = props => {
 			':hover .maxi-image-block-wrapper': getImageHoverObject(props),
 			' .maxi-image-block-wrapper img': getImageObject(props),
 			' figcaption': getFigcaptionObject(props),
-			' .maxi-hover-details .maxi-hover-details__content h3':
+			' .maxi-hover-details .maxi-hover-details__content h4':
 				getHoverEffectTitleTextObject(props),
 			' .maxi-hover-details .maxi-hover-details__content p':
 				getHoverEffectContentTextObject(props),

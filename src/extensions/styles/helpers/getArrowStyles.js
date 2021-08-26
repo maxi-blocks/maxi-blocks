@@ -49,7 +49,12 @@ export const getArrowBorderObject = (
 		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
 
 		if (!isOverlap) {
-			if (!isBorderNone) {
+			if (isBorderNone) {
+				response[breakpoint].top = 0;
+				response[breakpoint].left = 0;
+				response[breakpoint].width = '50%';
+				response[breakpoint].height = '50%';
+			} else {
 				if (paletteStatus && paletteColor)
 					response[breakpoint].background = getColorRGBAString({
 						firstVar: `color-${paletteColor}`,
@@ -179,7 +184,12 @@ export const getArrowBorderObject = (
 					isHover
 				);
 
-				if (!isBorderNone) {
+				if (isBorderNone) {
+					response[breakpoint].top = 0;
+					response[breakpoint].left = 0;
+					response[breakpoint][`border-${item}-style`] = 'none';
+					response[breakpoint][`border-${item}-width`] = '';
+				} else {
 					if (paletteStatus && paletteColor)
 						response[breakpoint][`border-${item}-color`] =
 							getColorRGBAString({

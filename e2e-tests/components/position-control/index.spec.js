@@ -5,7 +5,11 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import {
+	getBlockAttributes,
+	openAdvancedSidebar,
+	changeResponsive,
+} from '../../utils';
 
 describe('PositionControl', () => {
 	it('Checking the position control', async () => {
@@ -74,58 +78,54 @@ describe('PositionControl', () => {
 	});
 
 	it('Check Responsive position control', async () => {
-		const responsiveButton = await page.$$(
-			'.maxi-responsive-selector button'
-		);
+		await changeResponsive(page, 's');
+		await page.$eval('.maxi-text-block', block => block.focus());
 
-		// position value remains
-		await page.$eval(
-			'.edit-post-header .edit-post-header__toolbar .maxi-toolbar-layout button',
-			button => button.click()
-		);
-
-		await responsiveButton[5].click();
 		const dottedButton = await page.$eval(
-			'.maxi-position-control .maxi-axis-control__bottom-part .maxi-axis-control__content__item__right',
-			input => input.innerHTML
+			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
+			button => button.selectedOptions[0].innerHTML
 		);
 
-		expect(dottedButton).toMatchSnapshot();
+		const responsiveResult = 'Relative';
+		expect(dottedButton).toStrictEqual(responsiveResult);
 
 		// responsive S
-		// const accordionPanel = await openSidebar(page, 'border');
+		const accordionPanel = await openAdvancedSidebar(page, 'position');
+		await changeResponsive(page, 's');
 
-		await page.$eval(
-			'.maxi-position-control .maxi-axis-control__bottom-part .maxi-axis-control__content__item__right input',
-			input => input.focus()
+		const selector = await accordionPanel.$(
+			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input '
+		);
+		await selector.select('absolute');
+
+		const responsiveSOption = await page.$eval(
+			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
+			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
 		);
 
-		await page.waitForTimeout(150);
-		await page.keyboard.type('5');
-
-		const responsiveResult = 5;
-		const responsiveAttributes = await getBlockAttributes();
-		const responsiveStyle = responsiveAttributes['position-right-s'];
-
-		expect(responsiveStyle).toStrictEqual(responsiveResult);
+		const responsiveSResult = 'Absolute';
+		expect(responsiveSOption).toStrictEqual(responsiveSResult);
 
 		// responsive XS
-		await responsiveButton[6].click();
+		await changeResponsive(page, 'xs');
 
-		const responsiveXsResult = 5;
-		const responsiveXsAttributes = await getBlockAttributes();
-		const responsiveXsStyle = responsiveXsAttributes['position-right-s'];
+		const responsiveXsOption = await page.$eval(
+			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
+			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
+		);
 
-		expect(responsiveXsStyle).toStrictEqual(responsiveXsResult);
+		const responsiveXsResult = 'Absolute';
+		expect(responsiveXsOption).toStrictEqual(responsiveXsResult);
 
 		// responsive M
-		await responsiveButton[4].click();
+		await changeResponsive(page, 'm');
 
-		const responsiveMResult = 4;
-		const responsiveMAttributes = await getBlockAttributes();
-		const responsiveMStyle =
-			responsiveMAttributes['position-right-general'];
+		const responsiveMOption = await page.$eval(
+			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
+			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
+		);
 
-		expect(responsiveMStyle).toStrictEqual(responsiveMResult);
+		const responsiveMResult = 'Relative';
+		expect(responsiveMOption).toStrictEqual(responsiveMResult);
 	});
 });

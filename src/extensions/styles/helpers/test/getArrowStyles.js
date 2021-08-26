@@ -57,6 +57,7 @@ describe('getArrowStyles', () => {
 			'border-bottom-width-m': 3,
 			'border-left-width-m': 3,
 			'border-unit-width-m': 'px',
+			'border-style-s': 'none',
 		};
 
 		const result = getArrowStyles(object);

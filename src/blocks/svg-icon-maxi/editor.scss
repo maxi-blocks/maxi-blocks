@@ -41,4 +41,14 @@
 			height: 20px;
 		}
 	}
+
+	.maxi-svg-icon-block__icon {
+		height: inherit !important;
+		max-height: 100%;
+
+		svg {
+			max-width: none !important;
+			max-height: none !important;
+		}
+	}
 }

@@ -4,6 +4,7 @@ import {
 	getZIndexStyles,
 	getPositionStyles,
 	getDisplayStyles,
+	getSizeStyles,
 	getTransformStyles,
 	getNumberCounterStyles,
 } from '../../extensions/styles/helpers';
@@ -21,6 +22,9 @@ const getNormalObject = props => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
+		}),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
 		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),

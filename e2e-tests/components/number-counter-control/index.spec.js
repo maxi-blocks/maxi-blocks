@@ -19,7 +19,7 @@ describe('NumberCounterControl', () => {
 
 		// Start Animation
 		const animation = await accordionPanel.$(
-			'.maxi-number-counter-control .components-base-control__field select'
+			'.maxi-number-counter-control__start-animation .maxi-base-control__field select'
 		);
 
 		await animation.select('view-scroll');
@@ -31,43 +31,58 @@ describe('NumberCounterControl', () => {
 
 		expect(styleAttribute).toStrictEqual(expectAnimation);
 
-		// Start Number, End Number, Duration, Radius, Stroke, Title Font Size
+		// Width, Start Number, End Number, Duration, Radius, Stroke, Title Font Size
 		const inputs = await accordionPanel.$$(
 			'.maxi-base-control.maxi-advanced-number-control .maxi-advanced-number-control__value'
 		);
 
-		// Start Number
+		const widthUnitSelect = await accordionPanel.$(
+			'.maxi-number-counter-control__width .maxi-dimensions-control__units .maxi-base-control__field select'
+		);
+		await widthUnitSelect.select('%');
+
+		// Width
 		await inputs[0].focus();
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('100');
+
+		// Start Number
+		await inputs[1].focus();
+		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('20');
 
 		// End Number
-		await inputs[1].focus();
+		await inputs[2].focus();
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('50');
 
 		// Duration
-		await inputs[2].focus();
+		await inputs[3].focus();
 		await page.keyboard.type('00');
 
 		// Stroke
-		await inputs[3].focus();
+		await inputs[4].focus();
 		await pressKeyTimes('Backspace', '2');
 		await page.keyboard.type('50');
 
 		// Title Font Size
-		await inputs[4].focus();
+		await inputs[5].focus();
 		await pressKeyTimes('Backspace', '2');
 		await page.keyboard.type('1');
 
 		// expect
 		const styleAttributes = await getBlockAttributes();
 		const numberCounterAttributes = (({
+			'width-general': width,
+			'width-unit-general': widthUnit,
 			'number-counter-duration': counterDuration,
 			'number-counter-end': counterEnd,
 			'number-counter-start': counterStart,
 			'number-counter-stroke': counterStroke,
 			'number-counter-title-font-size': counterTitle,
 		}) => ({
+			'width-general': width,
+			'width-unit-general': widthUnit,
 			'number-counter-duration': counterDuration,
 			'number-counter-end': counterEnd,
 			'number-counter-start': counterStart,
@@ -76,6 +91,8 @@ describe('NumberCounterControl', () => {
 		}))(styleAttributes);
 
 		const expectedAttributes = {
+			'width-general': 100,
+			'width-unit-general': '%',
 			'number-counter-duration': 100,
 			'number-counter-end': 50,
 			'number-counter-start': 20,

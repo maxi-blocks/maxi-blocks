@@ -8,6 +8,7 @@ import {
 	getMarginPaddingStyles,
 	getOpacityStyles,
 	getPositionStyles,
+	getSizeStyles,
 	getSvgStyles,
 	getTransformStyles,
 	getZIndexStyles,
@@ -54,6 +55,9 @@ const getNormalObject = props => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
+		}),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
 		}),
 	};
 
@@ -111,10 +115,7 @@ const getStyles = props => {
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
 			' .maxi-svg-icon-block__icon svg': getSvgObject(props, 'svg'),
-			' .maxi-svg-icon-block__icon svg > path': getSvgObject(
-				props,
-				'path'
-			),
+			' .maxi-svg-icon-block__icon svg path': getSvgObject(props, 'path'),
 			' .maxi-svg-icon-block__icon svg > path[data-fill]:not([fill^="none"])':
 				getSvgObject(props, 'path-fill'),
 			' .maxi-svg-icon-block__icon svg > path[data-stroke]:not([stroke^="none"])':

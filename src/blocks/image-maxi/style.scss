@@ -92,7 +92,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 				justify-content: flex-end;
 				text-align: right;
 			}
-			h3,
+			h4,
 			p {
 				margin: 0;
 				padding: 0;
@@ -110,13 +110,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 					&__content {
 						transition-duration: inherit;
 
-						h3 {
+						h4 {
 							transition-delay: 0.2s;
 						}
 						p {
 							transition-delay: 0.4s;
 						}
-						h3,
+						h4,
 						p {
 							transform: translateY(400px);
 							transition-duration: inherit;
@@ -128,13 +128,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 						transform: translateY(0);
 
 						&__content {
-							h3 {
+							h4 {
 								transition-delay: 0.2s;
 							}
 							p {
 								transition-delay: 0.4s;
 							}
-							h3,
+							h4,
 							p {
 								transform: translateY(0);
 								transition-duration: inherit;
@@ -155,13 +155,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 					&__content {
 						transition-duration: inherit;
 
-						h3 {
+						h4 {
 							transition-delay: 0.4s;
 						}
 						p {
 							transition-delay: 0.2s;
 						}
-						h3,
+						h4,
 						p {
 							transform: translateY(-400px);
 							transition-duration: inherit;
@@ -173,13 +173,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 						transform: translateY(0);
 
 						&__content {
-							h3 {
+							h4 {
 								transition-delay: 0.4s;
 							}
 							p {
 								transition-delay: 0.2s;
 							}
-							h3,
+							h4,
 							p {
 								transform: translateY(0);
 								transition-duration: inherit;
@@ -200,13 +200,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 					&__content {
 						transition-duration: inherit;
 
-						h3 {
+						h4 {
 							transition-delay: 0.2s;
 						}
 						p {
 							transition-delay: 0.4s;
 						}
-						h3,
+						h4,
 						p {
 							transform: translateX(-100%);
 							transition-duration: inherit;
@@ -218,13 +218,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 						transform: translateX(0);
 
 						&__content {
-							h3 {
+							h4 {
 								transition-delay: 0.2s;
 							}
 							p {
 								transition-delay: 0.4s;
 							}
-							h3,
+							h4,
 							p {
 								transform: translateX(0);
 								transition-duration: inherit;
@@ -245,13 +245,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 					&__content {
 						transition-duration: inherit;
 
-						h3 {
+						h4 {
 							transition-delay: 0.2s;
 						}
 						p {
 							transition-delay: 0.4s;
 						}
-						h3,
+						h4,
 						p {
 							transform: translateX(100%);
 							transition-duration: inherit;
@@ -263,13 +263,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 						transform: translateX(0);
 
 						&__content {
-							h3 {
+							h4 {
 								transition-delay: 0.4s;
 							}
 							p {
 								transition-delay: 0.2s;
 							}
-							h3,
+							h4,
 							p {
 								transform: translateX(0);
 								transition-duration: inherit;
@@ -290,13 +290,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 					&__content {
 						transition-duration: inherit;
 
-						h3 {
+						h4 {
 							transition-delay: 0.2s;
 						}
 						p {
 							transition-delay: 0.4s;
 						}
-						h3,
+						h4,
 						p {
 							transform: translateY(400px);
 							transition-duration: inherit;
@@ -312,13 +312,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 						transform: translateY(0);
 
 						&__content {
-							h3 {
+							h4 {
 								transition-delay: 0.2s;
 							}
 							p {
 								transition-delay: 0.4s;
 							}
-							h3,
+							h4,
 							p {
 								transform: translateY(0);
 								transition-duration: inherit;
@@ -339,13 +339,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 					&__content {
 						transition-duration: inherit;
 
-						h3 {
+						h4 {
 							transition-delay: 0.4s;
 						}
 						p {
 							transition-delay: 0.2s;
 						}
-						h3,
+						h4,
 						p {
 							transform: translateY(-400px);
 							transition-duration: inherit;
@@ -361,13 +361,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 						transform: translateY(0);
 
 						&__content {
-							h3 {
+							h4 {
 								transition-delay: 0.4s;
 							}
 							p {
 								transition-delay: 0.2s;
 							}
-							h3,
+							h4,
 							p {
 								transform: translateY(0);
 								transition-duration: inherit;
@@ -388,13 +388,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 					&__content {
 						transition-duration: inherit;
 
-						h3 {
+						h4 {
 							transition-delay: 0.2s;
 						}
 						p {
 							transition-delay: 0.4s;
 						}
-						h3,
+						h4,
 						p {
 							transform: translateX(-100%);
 							transition-duration: inherit;
@@ -410,13 +410,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 						transform: translateX(0);
 
 						&__content {
-							h3 {
+							h4 {
 								transition-delay: 0.2s;
 							}
 							p {
 								transition-delay: 0.4s;
 							}
-							h3,
+							h4,
 							p {
 								transform: translateX(0);
 								transition-duration: inherit;
@@ -437,13 +437,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 					&__content {
 						transition-duration: inherit;
 
-						h3 {
+						h4 {
 							transition-delay: 0.2s;
 						}
 						p {
 							transition-delay: 0.4s;
 						}
-						h3,
+						h4,
 						p {
 							transform: translateX(100%);
 							transition-duration: inherit;
@@ -459,13 +459,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 						transform: translateX(0);
 
 						&__content {
-							h3 {
+							h4 {
 								transition-delay: 0.4s;
 							}
 							p {
 								transition-delay: 0.2s;
 							}
-							h3,
+							h4,
 							p {
 								transform: translateX(0);
 								transition-duration: inherit;
@@ -498,7 +498,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 					&__content {
 						transition-duration: inherit;
 					}
-					h3,
+					h4,
 					p {
 						opacity: 0;
 						transition-duration: inherit;
@@ -509,7 +509,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 					.maxi-hover-details {
 						transition-delay: 0s !important;
 						opacity: 1;
-						h3,
+						h4,
 						p {
 							transition-delay: 0.2s;
 							opacity: 1;

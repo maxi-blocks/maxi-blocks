@@ -101,6 +101,8 @@ const MaxiToolbar = memo(
 			setAttributes,
 			toggleHandlers,
 			rowPattern,
+			changeSVGSize,
+			changeSVGStrokeWidth,
 		} = props;
 		const {
 			content,
@@ -119,7 +121,6 @@ const MaxiToolbar = memo(
 			typeOfList,
 			uniqueID,
 			parentBlockStyle,
-			resizableObject,
 		} = attributes;
 		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
@@ -428,6 +429,11 @@ const MaxiToolbar = memo(
 										onChange={obj => {
 											setAttributes(obj);
 										}}
+										breakpoint={breakpoint}
+										changeSVGSize={changeSVGSize}
+										changeSVGStrokeWidth={
+											changeSVGStrokeWidth
+										}
 									/>
 								</>
 							)}
@@ -481,7 +487,6 @@ const MaxiToolbar = memo(
 								uniqueID={uniqueID}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
-								resizableObject={resizableObject}
 								rowPattern={rowPattern}
 								columnSize={{
 									...getGroupAttributes(

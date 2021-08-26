@@ -19,6 +19,7 @@ import {
 	DisplayControl,
 	EntranceAnimationControl,
 	FancyRadioControl,
+	FullSizeControl,
 	MotionControl,
 	OpacityControl,
 	PositionControl,
@@ -160,35 +161,49 @@ const Inspector = props => {
 												'maxi-blocks'
 											),
 											content: (
-												<FancyRadioControl
-													label={__(
-														'Full Width',
-														'maxi-blocks'
+												<>
+													{isFirstOnHierarchy && (
+														<FancyRadioControl
+															label={__(
+																'Full Width',
+																'maxi-blocks'
+															)}
+															selected={fullWidth}
+															options={[
+																{
+																	label: __(
+																		'Yes',
+																		'maxi-blocks'
+																	),
+																	value: 'full',
+																},
+																{
+																	label: __(
+																		'No',
+																		'maxi-blocks'
+																	),
+																	value: 'normal',
+																},
+															]}
+															optionType='string'
+															onChange={fullWidth =>
+																setAttributes({
+																	fullWidth,
+																})
+															}
+														/>
 													)}
-													selected={fullWidth}
-													options={[
-														{
-															label: __(
-																'Yes',
-																'maxi-blocks'
-															),
-															value: 'full',
-														},
-														{
-															label: __(
-																'No',
-																'maxi-blocks'
-															),
-															value: 'normal',
-														},
-													]}
-													optionType='string'
-													onChange={fullWidth =>
-														setAttributes({
-															fullWidth,
-														})
-													}
-												/>
+													<FullSizeControl
+														{...getGroupAttributes(
+															attributes,
+															'size'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												</>
 											),
 										},
 										{
@@ -315,9 +330,12 @@ const Inspector = props => {
 													onChange={obj => {
 														setAttributes(obj);
 														changeSVGStrokeWidth(
-															obj['svg-stroke']
+															obj[
+																`svg-stroke-${deviceType}`
+															]
 														);
 													}}
+													breakpoint={deviceType}
 												/>
 											),
 										},
@@ -335,9 +353,12 @@ const Inspector = props => {
 													onChange={obj => {
 														setAttributes(obj);
 														changeSVGSize(
-															obj['svg-width']
+															obj[
+																`svg-width-${deviceType}`
+															]
 														);
 													}}
+													breakpoint={deviceType}
 												/>
 											),
 										},

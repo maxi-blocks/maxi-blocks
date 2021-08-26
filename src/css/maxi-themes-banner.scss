@@ -27,6 +27,10 @@ body.maxi-blocks--active .maxi-block {
 	&.maxi-container-block .maxi-block:not(.maxi-row-block) {
 		max-width: none;
 	}
+
+	&.maxi-button-block .maxi-button-block__button {
+		background-color: transparent;
+	}
 }
 
 body.maxi-blocks--active .maxi-block[data-align="full"] {

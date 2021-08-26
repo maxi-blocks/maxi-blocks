@@ -98,7 +98,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, imageData, setAttributes, clientId } = this.props;
+		const { attributes, imageData, setAttributes, clientId, isSelected } =
+			this.props;
 		const {
 			uniqueID,
 			fullWidth,
@@ -275,7 +276,7 @@ class edit extends MaxiBlockComponent {
 										key={uniqueID}
 										className='maxi-block__resizer maxi-image-block__resizer'
 										size={{ width: `${imgWidth}%` }}
-										showHandle
+										showHandle={isSelected}
 										maxWidth='100%'
 										enable={{
 											topRight: true,

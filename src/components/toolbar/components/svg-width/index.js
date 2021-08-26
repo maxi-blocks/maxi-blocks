@@ -7,14 +7,14 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToolbarPopover from '../toolbar-popover';
-import AdvancedNumberControl from '../../../advanced-number-control';
-import { getDefaultAttribute } from '../../../../extensions/styles';
 
 /**
  * Styles & Icons
  */
 import './editor.scss';
 import { toolbarShapeWidth } from '../../../../icons';
+import SvgWidthControl from '../../../svg-width-control';
+import SvgStrokeWidthControl from '../../../svg-stroke-width-control';
 
 /**
  * SvgWidth
@@ -23,8 +23,9 @@ const SvgWidth = props => {
 	const {
 		blockName,
 		onChange,
-		'svg-width': svgWidth,
-		'svg-stroke': svgStroke,
+		breakpoint,
+		changeSVGSize,
+		changeSVGStrokeWidth,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
@@ -36,35 +37,21 @@ const SvgWidth = props => {
 			icon={toolbarShapeWidth}
 		>
 			<div className='toolbar-item__svg-size__popover'>
-				<AdvancedNumberControl
-					label={__('Width', 'maxi-blocks')}
-					value={svgWidth}
-					onChangeValue={val => {
-						onChange({
-							'svg-width':
-								val !== undefined && val !== '' ? val : '',
-						});
+				<SvgWidthControl
+					{...props}
+					onChange={obj => {
+						onChange(obj);
+						changeSVGSize(obj[`svg-width-${breakpoint}`]);
 					}}
-					min={10}
-					max={500}
-					step={1}
-					onReset={() => onChange(getDefaultAttribute('svg-width'))}
-					initialPosition={getDefaultAttribute('svg-width')}
+					breakpoint={breakpoint}
 				/>
-				<AdvancedNumberControl
-					label={__('Stroke Width', 'maxi-blocks')}
-					value={svgStroke}
-					onChangeValue={val => {
-						onChange({
-							'svg-stroke':
-								val !== undefined && val !== '' ? val : '',
-						});
+				<SvgStrokeWidthControl
+					{...props}
+					onChange={obj => {
+						onChange(obj);
+						changeSVGStrokeWidth(obj[`svg-stroke-${breakpoint}`]);
 					}}
-					min={0.1}
-					max={5}
-					step={0.1}
-					onReset={() => onChange(getDefaultAttribute('svg-stroke'))}
-					initialPosition={getDefaultAttribute('svg-stroke')}
+					breakpoint={breakpoint}
 				/>
 			</div>
 		</ToolbarPopover>

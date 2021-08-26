@@ -86,6 +86,8 @@ const attributes = {
 	...attributesData.iconBackgroundColor,
 	...attributesData.iconGradient,
 	...attributesData.iconBorder,
+	...attributesData.iconBorderWidth,
+	...attributesData.iconBorderRadius,
 	...attributesData.borderHover,
 	...attributesData.borderWidthHover,
 	...attributesData.borderRadiusHover,

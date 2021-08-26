@@ -6,7 +6,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { changeResponsive, getBlockAttributes, openSidebar } from '../../utils';
 
 describe('BorderControl', () => {
 	it('Checking the border control', async () => {
@@ -69,10 +69,11 @@ describe('BorderControl', () => {
 		expect(style).toStrictEqual(expectResult);
 	});
 
-	it('Check Responsive border control', async () => {
-		const responsiveButton = await page.$$(
+	it.only('Check Responsive border control', async () => {
+		/* const responsiveButton = await page.$$(
 			'.maxi-responsive-selector button'
-		);
+		); */
+		const attributes = await changeResponsive();
 
 		// Dotted bottom enabled
 		await page.$eval(
@@ -85,7 +86,7 @@ describe('BorderControl', () => {
 
 		const dottedButton = await page.$$eval(
 			'.maxi-tabs-content .maxi-default-styles-control button',
-			button => button[3].innerHTML
+			button => button.selectedOptions[0].innerHTML
 		);
 
 		expect(dottedButton).toMatchSnapshot();

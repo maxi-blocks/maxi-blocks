@@ -56,12 +56,12 @@ describe('FontLevelControl', () => {
 		await changeResponsive(page, 's');
 		await page.$eval('.maxi-text-block', block => block.focus());
 
-		const dottedButton = await page.$eval(
+		const fontLevel = await page.$eval(
 			'.maxi-typography-control__text-options-tabs .maxi-tabs-content .maxi-typography-control__size input',
 			button => button.value
 		);
 
-		expect(dottedButton).toStrictEqual('16');
+		expect(fontLevel).toStrictEqual('16');
 
 		// responsive S
 		await changeResponsive(page, 's');

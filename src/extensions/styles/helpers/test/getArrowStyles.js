@@ -69,6 +69,8 @@ describe('getArrowStyles', () => {
 			target: '',
 			isHover: true,
 			blockStyle: 'light',
+			'arrow-status': true,
+			'background-active-media': 'color',
 			'box-shadow-palette-color-status-general': true,
 			'box-shadow-palette-color-general': 2,
 			'box-shadow-palette-opacity-general': 20,
@@ -118,6 +120,8 @@ describe('getArrowStyles', () => {
 			target: '',
 			isHover: true,
 			blockStyle: 'light',
+			'arrow-status': true,
+			'background-active-media': 'color',
 			'box-shadow-palette-color-status-general': true,
 			'box-shadow-palette-color-general': 2,
 			'box-shadow-palette-opacity-general': 20,
@@ -156,6 +160,43 @@ describe('getArrowStyles', () => {
 			'background-active-media-hover': 'color',
 			'background-palette-color-status-hover': true,
 			'background-palette-color-hover': 1,
+		};
+
+		const result = getArrowStyles(object);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Return empty arrow styles when arrow status is off', () => {
+		const object = {
+			target: '',
+			blockStyle: 'light',
+			'arrow-status': false,
+		};
+
+		const result = getArrowStyles(object);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Return empty arrow styles when background color is not selected', () => {
+		const object = {
+			target: '',
+			blockStyle: 'light',
+			'arrow-status': true,
+			'background-active-media': 'gradient',
+		};
+
+		const result = getArrowStyles(object);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Return empty arrow styles when background color is selected and border is active but the style is not solid', () => {
+		const object = {
+			target: '',
+			blockStyle: 'light',
+			'arrow-status': true,
+			'background-active-media': 'color',
+			'border-style-general': undefined,
+			'border-style-s': 'dashed',
 		};
 
 		const result = getArrowStyles(object);

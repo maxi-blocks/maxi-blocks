@@ -605,7 +605,11 @@ const Inspector = props => {
 												<ArrowControl
 													{...getGroupAttributes(
 														attributes,
-														['background', 'arrow']
+														[
+															'background',
+															'arrow',
+															'border',
+														]
 													)}
 													onChange={obj =>
 														setAttributes(obj)

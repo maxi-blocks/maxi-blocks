@@ -130,6 +130,19 @@ const getStyles = props => {
 				blockStyle: props.parentBlockStyle,
 			}),
 			...getArrowStyles({
+				...getGroupAttributes(props, [
+					'arrow',
+					'border',
+					'borderWidth',
+					'borderRadius',
+					'background',
+					'backgroundColor',
+					'backgroundGradient',
+					'boxShadow',
+				]),
+				blockStyle: props.parentBlockStyle,
+			}),
+			...getArrowStyles({
 				...getGroupAttributes(
 					props,
 					[
@@ -143,21 +156,9 @@ const getStyles = props => {
 					],
 					true
 				),
+				...getGroupAttributes(props, ['arrow']),
 				blockStyle: props.parentBlockStyle,
 				isHover: true,
-			}),
-			...getArrowStyles({
-				...getGroupAttributes(props, [
-					'arrow',
-					'border',
-					'borderWidth',
-					'borderRadius',
-					'background',
-					'backgroundColor',
-					'backgroundGradient',
-					'boxShadow',
-				]),
-				blockStyle: props.parentBlockStyle,
 			}),
 		}),
 	};

@@ -23,6 +23,18 @@ export const getArrowBorderObject = (
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
+		const borderStyle = getLastBreakpointAttribute(
+			'border-style',
+			breakpoint,
+			props,
+			isHover
+		);
+
+		if (!!borderStyle && borderStyle !== 'none' && borderStyle !== 'solid')
+			return;
+
+		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
+
 		const paletteStatus = getLastBreakpointAttribute(
 			'border-palette-color-status',
 			breakpoint,
@@ -40,13 +52,6 @@ export const getArrowBorderObject = (
 			props,
 			isHover
 		);
-		const borderStyle = getLastBreakpointAttribute(
-			'border-style',
-			breakpoint,
-			props,
-			isHover
-		);
-		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
 
 		if (!isOverlap) {
 			if (isBorderNone) {
@@ -341,6 +346,36 @@ export const getArrowColorObject = (props, blockStyle, isHover = false) => {
 const getArrowStyles = props => {
 	const { target = '', blockStyle, isHover = false } = props;
 
+	// Checks if border is active on some responsive stage
+	const isBorderActive = Object.entries(props).some(([key, val]) => {
+		if (key.includes('border-style') && !isNil(val) && val !== 'none')
+			return true;
+
+		return false;
+	});
+	// Checks if all border styles are 'solid' or 'none'
+	const isCorrectBorder = Object.entries(props).every(([key, val]) => {
+		if (key.includes('border-style')) {
+			if (
+				key === 'border-style-general' &&
+				val !== 'solid' &&
+				val !== 'none'
+			)
+				return false;
+
+			if (!isNil(val) && val !== 'solid' && val !== 'none') return false;
+		}
+
+		return true;
+	});
+
+	if (
+		!props['arrow-status'] ||
+		props['background-active-media'] !== 'color' ||
+		(isBorderActive && !isCorrectBorder)
+	)
+		return {};
+
 	const response = {
 		...(!isHover && {
 			[`${target} .maxi-container-arrow .maxi-container-arrow--content`]:
@@ -408,8 +443,8 @@ const getArrowStyles = props => {
 				),
 			},
 		},
-		...(props['background-status-hover'] && {
-			[`${target}:hover .maxi-container-arrow:before`]: {
+		[`${target}:hover .maxi-container-arrow:before`]: {
+			...(props['background-status-hover'] && {
 				background: {
 					...getArrowColorObject(
 						getGroupAttributes(
@@ -425,10 +460,8 @@ const getArrowStyles = props => {
 						true
 					),
 				},
-			},
-		}),
-		...(props['border-status-hover'] && {
-			[`${target}:hover .maxi-container-arrow:before`]: {
+			}),
+			...(props['border-status-hover'] && {
 				border: {
 					...getArrowBorderObject(
 						getGroupAttributes(
@@ -441,8 +474,8 @@ const getArrowStyles = props => {
 						true
 					),
 				},
-			},
-		}),
+			}),
+		},
 		...(props['background-status-hover'] && {
 			[`${target}:hover .maxi-container-arrow .maxi-container-arrow--content:after`]:
 				{

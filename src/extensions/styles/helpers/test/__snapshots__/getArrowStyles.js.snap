@@ -85,6 +85,12 @@ Object {
     },
   },
   ":hover .maxi-container-arrow:before": Object {
+    "background": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-1), 1)",
+      },
+      "label": "Arrow Color",
+    },
     "border": Object {
       "general": Object {
         "border-bottom-color": "rgba(150,200,90)",
@@ -285,6 +291,7 @@ Object {
       "xxl": Object {},
     },
   },
+  ":hover .maxi-container-arrow:before": Object {},
 }
 `;
 
@@ -373,6 +380,12 @@ Object {
     },
   },
   ":hover .maxi-container-arrow:before": Object {
+    "background": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-1), 1)",
+      },
+      "label": "Arrow Color",
+    },
     "border": Object {
       "general": Object {
         "border-bottom-color": "rgba(var(--maxi-light-color-1), 0.2)",
@@ -404,3 +417,9 @@ Object {
   },
 }
 `;
+
+exports[`getArrowStyles Return empty arrow styles when arrow status is off 1`] = `Object {}`;
+
+exports[`getArrowStyles Return empty arrow styles when background color is not selected 1`] = `Object {}`;
+
+exports[`getArrowStyles Return empty arrow styles when background color is selected and border is active but the style is not solid 1`] = `Object {}`;

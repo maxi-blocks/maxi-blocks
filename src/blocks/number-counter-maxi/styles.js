@@ -23,11 +23,18 @@ const getNormalObject = props => {
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
+		}),
+	};
+
+	return response;
+};
+
+const getBoxObject = props => {
+	const response = {
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
 		}),
 	};
 
@@ -54,6 +61,7 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
+			' .maxi-number-counter__box': getBoxObject(props),
 			' .maxi-number-counter__box .maxi-number-counter__box__circle':
 				getCircleObject(props, 'circle-bar'),
 			' .maxi-number-counter__box .maxi-number-counter__box__background':

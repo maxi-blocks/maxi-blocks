@@ -3,17 +3,25 @@
  */
 import { compose } from '@wordpress/compose';
 import { withSelect } from '@wordpress/data';
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect, useRef, createRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent, Toolbar, Button } from '../../components';
+import {
+	BlockResizer,
+	Button,
+	MaxiBlockComponent,
+	Toolbar,
+} from '../../components';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -31,6 +39,16 @@ import { replay } from '../../icons';
  */
 
 const NumberCounter = attributes => {
+	const {
+		'number-counter-duration': countDuration,
+		'number-counter-stroke': stroke,
+		'number-counter-circle-status': circleStatus,
+		'number-counter-preview': preview,
+		'number-counter-title-font-size': fontSize,
+		deviceType,
+		resizerProps,
+	} = attributes;
+
 	const countRef = useRef(null);
 
 	const startCountValue = Math.ceil(
@@ -39,11 +57,7 @@ const NumberCounter = attributes => {
 	const endCountValue = Math.ceil(
 		(attributes['number-counter-end'] * 360) / 100
 	);
-	const countDuration = attributes['number-counter-duration'];
 	const radius = 90;
-	const stroke = attributes['number-counter-stroke'];
-	const circleStatus = attributes['number-counter-circle-status'];
-	const preview = attributes['number-counter-preview'];
 
 	const [count, setCount] = useState(startCountValue);
 	const [replyStatus, setReplyStatus] = useState(false);
@@ -85,7 +99,7 @@ const NumberCounter = attributes => {
 	]);
 
 	return (
-		<div className='maxi-number-counter'>
+		<>
 			<Button
 				className='maxi-number-counter__replay'
 				onClick={() => {
@@ -95,7 +109,47 @@ const NumberCounter = attributes => {
 				}}
 				icon={replay}
 			/>
-			<div className='maxi-number-counter__box'>
+			<BlockResizer
+				className='maxi-number-counter__box'
+				lockAspectRatio
+				size={{
+					width: `${getLastBreakpointAttribute(
+						'width',
+						deviceType,
+						attributes
+					)}${getLastBreakpointAttribute(
+						'width-unit',
+						deviceType,
+						attributes
+					)}`,
+				}}
+				defaultSize={{
+					width: `${getLastBreakpointAttribute(
+						'width',
+						deviceType,
+						attributes
+					)}${getLastBreakpointAttribute(
+						'width-unit',
+						deviceType,
+						attributes
+					)}`,
+				}}
+				maxWidth='100%'
+				minWidth={
+					!circleStatus
+						? `${fontSize * endCountValue.toString().length}px`
+						: `${fontSize}px`
+				}
+				minHeight={circleStatus && `${fontSize}px`}
+				enable={{
+					topRight: true,
+					bottomRight: true,
+					bottomLeft: true,
+					topLeft: true,
+				}}
+				{...resizerProps}
+				showHandle={!circleStatus ? resizerProps.showHandle : false}
+			>
 				{!circleStatus && (
 					<svg
 						viewBox={`0 0 ${radius * 2 + stroke} ${
@@ -139,8 +193,8 @@ const NumberCounter = attributes => {
 						</sup>
 					)}
 				</span>
-			</div>
-		</div>
+			</BlockResizer>
+		</>
 	);
 };
 
@@ -148,6 +202,32 @@ const NumberCounter = attributes => {
  * Content
  */
 class edit extends MaxiBlockComponent {
+	constructor(props) {
+		super(props);
+
+		this.resizableObject = createRef();
+	}
+
+	maxiBlockDidUpdate() {
+		if (this.resizableObject.current) {
+			const svgWidth = getLastBreakpointAttribute(
+				'width',
+				this.props.deviceType || 'general',
+				this.props.attributes
+			);
+			const svgWidthUnit = getLastBreakpointAttribute(
+				'width-unit',
+				this.props.deviceType || 'general',
+				this.props.attributes
+			);
+
+			if (this.resizableObject.current.state.width !== `${svgWidth}%`)
+				this.resizableObject.current.updateSize({
+					width: `${svgWidth}${svgWidthUnit}`,
+				});
+		}
+	}
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -170,10 +250,24 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes } = this.props;
+		const { attributes, setAttributes, deviceType, isSelected } =
+			this.props;
 		const { uniqueID } = attributes;
 
 		const classes = 'maxi-number-counter-block';
+
+		const handleOnResizeStart = event => {
+			event.preventDefault();
+			setAttributes({
+				[`width-unit-${deviceType}`]: 'px',
+			});
+		};
+
+		const handleOnResizeStop = (event, direction, elt) => {
+			setAttributes({
+				[`width-${deviceType}`]: elt.getBoundingClientRect().width,
+			});
+		};
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -189,7 +283,17 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<NumberCounter
-					{...getGroupAttributes(attributes, 'numberCounter')}
+					{...getGroupAttributes(attributes, [
+						'numberCounter',
+						'size',
+					])}
+					resizerProps={{
+						onResizeStart: handleOnResizeStart,
+						onResizeStop: handleOnResizeStop,
+						resizableObject: this.resizableObject,
+						showHandle: isSelected,
+					}}
+					deviceType={deviceType}
 				/>
 			</MaxiBlock>,
 		];

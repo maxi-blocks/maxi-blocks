@@ -3,12 +3,16 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyTimes,
+} from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getBlockAttributes } from '../../utils';
+import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
 
 describe('FontLevelControl', () => {
 	it('Checking the font level control', async () => {
@@ -46,5 +50,55 @@ describe('FontLevelControl', () => {
 			expect(text).toStrictEqual(fontLevel[i]);
 			expect(paletteColor).toStrictEqual(5);
 		}
+	});
+	it('Check Responsive font level control', async () => {
+		const accordionPanel = await openSidebar(page, 'typography');
+		await changeResponsive(page, 's');
+		await page.$eval('.maxi-text-block', block => block.focus());
+
+		const dottedButton = await page.$eval(
+			'.maxi-typography-control__text-options-tabs .maxi-tabs-content .maxi-typography-control__size input',
+			button => button.value
+		);
+
+		expect(dottedButton).toStrictEqual('16');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		debugger;
+
+		const input = await accordionPanel.$(
+			'.maxi-typography-control__text-options-tabs .maxi-tabs-content .maxi-typography-control__size input'
+		);
+		await input.focus();
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('9', { delay: 100 });
+
+		const responsiveSOption = await page.$eval(
+			'.maxi-typography-control__text-options-tabs .maxi-tabs-content .maxi-typography-control__size input',
+			selectedStyle => selectedStyle.value
+		);
+
+		expect(responsiveSOption).toStrictEqual('19');
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+
+		const responsiveXsOption = await page.$eval(
+			'.maxi-typography-control__text-options-tabs .maxi-tabs-content .maxi-typography-control__size input',
+			selectedStyle => selectedStyle.value
+		);
+
+		expect(responsiveXsOption).toStrictEqual('19');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+
+		const responsiveMOption = await page.$eval(
+			'.maxi-typography-control__text-options-tabs .maxi-tabs-content .maxi-typography-control__size input',
+			selectedStyle => selectedStyle.value
+		);
+
+		expect(responsiveMOption).toStrictEqual('16');
 	});
 });

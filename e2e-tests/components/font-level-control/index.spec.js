@@ -65,7 +65,6 @@ describe('FontLevelControl', () => {
 
 		// responsive S
 		await changeResponsive(page, 's');
-		debugger;
 
 		const input = await accordionPanel.$(
 			'.maxi-typography-control__text-options-tabs .maxi-tabs-content .maxi-typography-control__size input'

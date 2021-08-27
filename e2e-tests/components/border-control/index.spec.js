@@ -79,8 +79,7 @@ describe('BorderControl', () => {
 			button => button.selectedOptions[0].innerHTML
 		);
 
-		const responsiveResult = 'Dotted';
-		expect(dottedButton).toStrictEqual(responsiveResult);
+		expect(dottedButton).toStrictEqual('Dotted');
 
 		// responsive S
 		const accordionPanel = await openSidebar(page, 'border');
@@ -96,8 +95,7 @@ describe('BorderControl', () => {
 			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
 		);
 
-		const responsiveSResult = 'Dashed';
-		expect(responsiveSOption).toStrictEqual(responsiveSResult);
+		expect(responsiveSOption).toStrictEqual('Dashed');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
@@ -107,8 +105,7 @@ describe('BorderControl', () => {
 			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
 		);
 
-		const responsiveXsResult = 'Dashed';
-		expect(responsiveXsOption).toStrictEqual(responsiveXsResult);
+		expect(responsiveXsOption).toStrictEqual('Dashed');
 
 		// responsive M
 		await changeResponsive(page, 'm');
@@ -118,8 +115,7 @@ describe('BorderControl', () => {
 			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
 		);
 
-		const responsiveMResult = 'Dotted';
-		expect(responsiveMOption).toStrictEqual(responsiveMResult);
+		expect(responsiveMOption).toStrictEqual('Dotted');
 	});
 
 	it('Check hover values kept after setting normal border to none', async () => {

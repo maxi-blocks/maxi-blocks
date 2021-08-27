@@ -81,12 +81,12 @@ describe('PositionControl', () => {
 		await changeResponsive(page, 's');
 		await page.$eval('.maxi-text-block', block => block.focus());
 
-		const dottedButton = await page.$eval(
+		const positionSelector = await page.$eval(
 			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
 			button => button.selectedOptions[0].innerHTML
 		);
 
-		expect(dottedButton).toStrictEqual('Relative');
+		expect(positionSelector).toStrictEqual('Relative');
 
 		// responsive S
 		const accordionPanel = await openAdvancedSidebar(page, 'position');

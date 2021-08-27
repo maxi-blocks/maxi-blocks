@@ -163,9 +163,9 @@ const HoverPreview = props => {
 							{!isEmpty(
 								props['hover-title-typography-content']
 							) && (
-								<h3>
+								<h4>
 									{props['hover-title-typography-content']}
-								</h3>
+								</h4>
 							)}
 							{!isEmpty(
 								props['hover-content-typography-content']

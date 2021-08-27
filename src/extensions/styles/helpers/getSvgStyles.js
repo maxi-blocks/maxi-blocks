@@ -6,7 +6,7 @@ import getColorRGBAString from '../getColorRGBAString';
 /**
  * External dependencies
  */
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 const getSvgStyles = (obj, target, parentBlockStyle) => {
 	const response = {
@@ -14,14 +14,29 @@ const getSvgStyles = (obj, target, parentBlockStyle) => {
 		general: {},
 	};
 
-	if (target === 'svg' && !isNil(obj['svg-width'])) {
-		response.general.maxWidth = `${obj['svg-width']}${obj['svg-width-unit']}`;
-		response.general.maxHeight = `${obj['svg-width']}${obj['svg-width-unit']}`;
-	}
+	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-	if (target === 'path' && !isNil(obj['svg-stroke'])) {
-		response.general['stroke-width'] = `${obj['svg-stroke']}`;
-	}
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		if (target === 'svg' && !isNil(obj[`svg-width-${breakpoint}`])) {
+			response[breakpoint]['max-width'] = `${
+				obj[`svg-width-${breakpoint}`]
+			}${obj[`svg-width-unit-${breakpoint}`]}`;
+			response[breakpoint]['max-height'] = `${
+				obj[`svg-width-${breakpoint}`]
+			}${obj[`svg-width-unit-${breakpoint}`]}`;
+		}
+
+		if (target === 'path' && !isNil(obj[`svg-stroke-${breakpoint}`])) {
+			response[breakpoint]['stroke-width'] = `${
+				obj[`svg-stroke-${breakpoint}`]
+			}`;
+		}
+
+		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
+			delete response[breakpoint];
+	});
 
 	if (target === 'path-fill') {
 		if (

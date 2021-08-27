@@ -3,7 +3,7 @@
 exports[`getHoverEffectsBackgroundStyles Get a correct hover effects background style 1`] = `
 Object {
   "general": Object {
-    "background-color": "rgb(255, 99, 71)",
+    "background-color": "rgb(255,99,71)",
   },
 }
 `;
@@ -11,7 +11,7 @@ Object {
 exports[`getHoverEffectsBackgroundStyles Get a correct hover effects background style 2`] = `
 Object {
   "general": Object {
-    "background": "rgb(255, 99, 71)",
+    "background": "linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgba(224,82,100,0.8) 100%)",
   },
 }
 `;

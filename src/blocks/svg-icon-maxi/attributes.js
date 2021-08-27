@@ -55,6 +55,7 @@ const attributes = {
 	...attributesData.opacity,
 	...attributesData.padding,
 	...attributesData.position,
+	...attributesData.size,
 	...attributesData.svg,
 	...attributesData.transform,
 	...attributesData.zIndex,

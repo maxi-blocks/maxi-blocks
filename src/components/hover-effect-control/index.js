@@ -396,7 +396,6 @@ const HoverEffectControl = props => {
 							prefix='hover-title-'
 							disableCustomFormats
 							blockStyle={blockStyle}
-							disablePalette
 							clientId={clientId}
 						/>
 					)}
@@ -441,7 +440,6 @@ const HoverEffectControl = props => {
 							prefix='hover-content-'
 							disableCustomFormats
 							blockStyle={blockStyle}
-							disablePalette
 							clientId={clientId}
 						/>
 					)}

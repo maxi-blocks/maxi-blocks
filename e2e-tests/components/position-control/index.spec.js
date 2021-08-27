@@ -86,8 +86,7 @@ describe('PositionControl', () => {
 			button => button.selectedOptions[0].innerHTML
 		);
 
-		const responsiveResult = 'Relative';
-		expect(dottedButton).toStrictEqual(responsiveResult);
+		expect(dottedButton).toStrictEqual('Relative');
 
 		// responsive S
 		const accordionPanel = await openAdvancedSidebar(page, 'position');
@@ -103,8 +102,7 @@ describe('PositionControl', () => {
 			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
 		);
 
-		const responsiveSResult = 'Absolute';
-		expect(responsiveSOption).toStrictEqual(responsiveSResult);
+		expect(responsiveSOption).toStrictEqual('Absolute');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
@@ -114,8 +112,7 @@ describe('PositionControl', () => {
 			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
 		);
 
-		const responsiveXsResult = 'Absolute';
-		expect(responsiveXsOption).toStrictEqual(responsiveXsResult);
+		expect(responsiveXsOption).toStrictEqual('Absolute');
 
 		// responsive M
 		await changeResponsive(page, 'm');
@@ -125,7 +122,6 @@ describe('PositionControl', () => {
 			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
 		);
 
-		const responsiveMResult = 'Relative';
-		expect(responsiveMOption).toStrictEqual(responsiveMResult);
+		expect(responsiveMOption).toStrictEqual('Relative');
 	});
 });

@@ -19,10 +19,7 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import {
-	getGroupAttributes,
-	setHoverAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -107,10 +104,11 @@ class edit extends MaxiBlockComponent {
 				{isFirstOnHierarchy && fullWidth && (
 					<>
 						<ArrowDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'arrow',
-							])}
+							{...getGroupAttributes(
+								attributes,
+								['background', 'arrow', 'border'],
+								true
+							)}
 							breakpoint={deviceType}
 						/>
 						<Indicators

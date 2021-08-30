@@ -563,6 +563,26 @@ const getGeneralBackgroundStyles = (
 		isHover,
 	});
 
+	breakpoints.forEach(breakpoint => {
+		if (border[breakpoint]['border-top-width'])
+			border[breakpoint]['border-top-style'] =
+				border[breakpoint]['border-style'];
+
+		if (border[breakpoint]['border-right-width'])
+			border[breakpoint]['border-right-style'] =
+				border[breakpoint]['border-style'];
+
+		if (border[breakpoint]['border-bottom-width'])
+			border[breakpoint]['border-bottom-style'] =
+				border[breakpoint]['border-style'];
+
+		if (border[breakpoint]['border-left-width'])
+			border[breakpoint]['border-left-style'] =
+				border[breakpoint]['border-style'];
+	});
+
+	delete border.general['border-style'];
+
 	// Clean size object
 	if (!isEmpty(size))
 		[...breakpoints].reverse().forEach(breakpoint => {

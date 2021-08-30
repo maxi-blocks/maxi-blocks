@@ -86,7 +86,11 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<ArrowDisplayer
-					{...getGroupAttributes(attributes, ['background', 'arrow'])}
+					{...getGroupAttributes(
+						attributes,
+						['background', 'arrow', 'border'],
+						true
+					)}
 					breakpoint={deviceType}
 				/>
 				<InnerBlocks

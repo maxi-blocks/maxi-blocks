@@ -128,18 +128,20 @@ const getHoverObject = props => {
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
 			}),
-		...(props['background-active-media-hover'] === 'color' && {
-			background: getColorBackgroundObject({
-				...getGroupAttributes(props, 'backgroundColor', true),
-				blockStyle: props.parentBlockStyle,
-				isHover: true,
-				isButton: true,
+		...(props['background-status-hover'] && {
+			...(props['background-active-media-hover'] === 'color' && {
+				background: getColorBackgroundObject({
+					...getGroupAttributes(props, 'backgroundColor', true),
+					blockStyle: props.parentBlockStyle,
+					isHover: true,
+					isButton: true,
+				}),
 			}),
-		}),
-		...(props['background-active-media-hover'] === 'gradient' && {
-			background: getGradientBackgroundObject({
-				...getGroupAttributes(props, 'backgroundGradient', true),
-				isHover: true,
+			...(props['background-active-media-hover'] === 'gradient' && {
+				background: getGradientBackgroundObject({
+					...getGroupAttributes(props, 'backgroundGradient', true),
+					isHover: true,
+				}),
 			}),
 		}),
 	};

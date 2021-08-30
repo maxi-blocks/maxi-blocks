@@ -137,7 +137,9 @@ const NumberCounter = attributes => {
 				maxWidth='100%'
 				minWidth={
 					!circleStatus
-						? `${fontSize * endCountValue.toString().length}px`
+						? `${
+								fontSize * (endCountValue.toString().length - 1)
+						  }px`
 						: `${fontSize}px`
 				}
 				minHeight={circleStatus && `${fontSize}px`}

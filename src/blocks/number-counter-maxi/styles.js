@@ -32,10 +32,17 @@ const getNormalObject = props => {
 };
 
 const getBoxObject = props => {
+	const { 'number-counter-title-font-size': fontSize } = props;
+	const endCountValue = Math.ceil((props['number-counter-end'] * 360) / 100);
+
+	const size = getSizeStyles({ ...getGroupAttributes(props, 'size') });
+	Object.entries(size).forEach(([key, val]) => {
+		if (key.includes('min-width') && !val)
+			size[key] = fontSize * (endCountValue.toString().length - 1);
+	});
+
 	const response = {
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
+		size,
 	};
 
 	return response;

@@ -1,5 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`getBorderStyles Ensures 0 is accepted on responsive stages 1`] = `
+Object {
+  "general": Object {
+    "border-bottom-radius": "2px",
+    "border-bottom-width": "2px",
+    "border-color": "rgba(var(--maxi-light-color-7), 1)",
+    "border-left-radius": "2px",
+    "border-left-width": "2px",
+    "border-right-radius": "2px",
+    "border-right-width": "2px",
+    "border-style": "solid",
+    "border-top-radius": "2px",
+    "border-top-width": "2px",
+  },
+  "l": Object {},
+  "m": Object {},
+  "s": Object {
+    "border-right-radius": "0px",
+    "border-right-width": "0px",
+  },
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;
+
 exports[`getBorderStyles Return a border hover styles object with changes on custom color 1`] = `
 Object {
   "general": Object {

@@ -7,7 +7,6 @@ import { getLastBreakpointAttribute } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
 
 /**
  * Styles
@@ -34,32 +33,7 @@ const ArrowDisplayer = props => {
 		!props['background-layers-status'] &&
 		props['background-active-media'] === 'color';
 
-	// Checks if border is active on some responsive stage
-	const isBorderActive = Object.entries(props).some(([key, val]) => {
-		if (key.includes('border-style') && !isNil(val) && val !== 'none')
-			return true;
-
-		return false;
-	});
-	// Checks if all border styles are 'solid' or 'none'
-	const isCorrectBorder = Object.entries(props).every(([key, val]) => {
-		if (key.includes('border-style')) {
-			if (
-				key === 'border-style-general' &&
-				val !== 'solid' &&
-				val !== 'none'
-			)
-				return false;
-
-			if (!isNil(val) && val !== 'solid' && val !== 'none') return false;
-		}
-
-		return true;
-	});
-	const shouldDisplayBorder =
-		!!props['arrow-status'] &&
-		isBackgroundColor &&
-		(isBorderActive ? isCorrectBorder : true);
+	const shouldDisplayBorder = !!props['arrow-status'] && isBackgroundColor;
 
 	return (
 		shouldDisplayBorder && (

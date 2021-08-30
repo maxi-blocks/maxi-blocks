@@ -76,29 +76,6 @@ const ArrowControl = props => {
 		!props['background-layers-status'] &&
 		props['background-active-media'] !== 'color';
 
-	// Checks if border is active on some responsive stage
-	const isBorderActive = Object.entries(props).some(([key, val]) => {
-		if (key.includes('border-style') && !isNil(val) && val !== 'none')
-			return true;
-
-		return false;
-	});
-	// Checks if all border styles are 'solid' or 'none'
-	const isCorrectBorder = Object.entries(props).every(([key, val]) => {
-		if (key.includes('border-style')) {
-			if (
-				key === 'border-style-general' &&
-				val !== 'solid' &&
-				val !== 'none'
-			)
-				return false;
-
-			if (!isNil(val) && val !== 'solid' && val !== 'none') return false;
-		}
-
-		return true;
-	});
-
 	return (
 		<div className={classes}>
 			{simpleBackgroundColorStatus && (
@@ -111,34 +88,6 @@ const ArrowControl = props => {
 						{
 							title: __('Background colour', 'maxi-blocks'),
 							panel: 'background',
-						},
-					]}
-				/>
-			)}
-			{props['background-layers-status'] && (
-				<InfoBox
-					message={__(
-						'Please disable background layers and use simple background colour to see the arrow.',
-						'maxi-blocks'
-					)}
-					links={[
-						{
-							title: __('Background colour', 'maxi-blocks'),
-							panel: 'background',
-						},
-					]}
-				/>
-			)}
-			{isBorderActive && !isCorrectBorder && (
-				<InfoBox
-					message={__(
-						'Please set solid or none to all responsive border types to see the arrow.',
-						'maxi-blocks'
-					)}
-					links={[
-						{
-							title: __('Border type', 'maxi-blocks'),
-							panel: 'border',
 						},
 					]}
 				/>

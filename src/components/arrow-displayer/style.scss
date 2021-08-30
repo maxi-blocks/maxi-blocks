@@ -50,16 +50,6 @@ body.maxi-blocks--active .maxi-block.maxi-block--has-arrow {
 		box-shadow: none !important;
 		z-index: -1;
 
-		&:before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			transform: translate(-50%, -50%);
-			clip-path: polygon(100% 0, 0% 100%, 100% 100%);
-			background-color: transparent;
-		}
-
 		&:after {
 			content: '';
 			width: 50%;

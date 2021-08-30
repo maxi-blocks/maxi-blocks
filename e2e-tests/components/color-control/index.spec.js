@@ -31,9 +31,8 @@ describe('ColorControl', () => {
 	});
 
 	it('Check Responsive color control', async () => {
-		debugger;
 		const dataItem = await page.$eval(
-			'.maxi-background-control .maxi-base-control__field .maxi-sc-color-palette .maxi-sc-color-palette__box--active',
+			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette__box--active',
 			select => select.getAttribute('data-item')
 		);
 
@@ -41,37 +40,44 @@ describe('ColorControl', () => {
 		await page.$eval('.maxi-text-block', block => block.focus());
 
 		const backgroundColor = await dataItem;
-		expect(backgroundColor).toStrictEqual('4');
+		expect(backgroundColor).toStrictEqual('3');
 
 		// responsive S
 		await changeResponsive(page, 's');
-		const accordionPanel = await openSidebar(page, 'background');
-		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control label',
-			fancyRadioControls => fancyRadioControls[5].click()
-		);
+		await openSidebar(page, 'typography');
 
 		await page.$$eval(
-			'.maxi-background-control .maxi-base-control__field .maxi-sc-color-palette div',
+			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette div',
 			select => select[4].click()
 		);
-
-		const responsiveSOption = await dataItem;
+		const dataItemS = await page.$eval(
+			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette__box--active',
+			select => select.getAttribute('data-item')
+		);
+		const responsiveSOption = await dataItemS;
 
 		expect(responsiveSOption).toStrictEqual('5');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
 
-		const responsiveXsOption = await dataItem;
+		const dataItemXs = await page.$eval(
+			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette__box--active',
+			select => select.getAttribute('data-item')
+		);
+		const responsiveXsOption = await dataItemXs;
 
 		expect(responsiveXsOption).toStrictEqual('5');
 
 		// responsive M
 		await changeResponsive(page, 'm');
 
-		const responsiveMOption = await dataItem;
+		const dataItemM = await page.$eval(
+			'.maxi-typography-control .maxi-color-palette-control .maxi-color-palette-control__palette-label .maxi-sc-color-palette__box--active',
+			select => select.getAttribute('data-item')
+		);
+		const responsiveMOption = await dataItemM;
 
-		expect(responsiveMOption).toStrictEqual('4');
+		expect(responsiveMOption).toStrictEqual('3');
 	});
 });

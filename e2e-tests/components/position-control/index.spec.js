@@ -104,6 +104,12 @@ describe('PositionControl', () => {
 
 		expect(responsiveSOption).toStrictEqual('Absolute');
 
+		const positionAttributes = await getBlockAttributes();
+		const positionSAttribute = positionAttributes['position-s'];
+		const positionS = 'absolute';
+
+		expect(positionSAttribute).toStrictEqual(positionS);
+
 		// responsive XS
 		await changeResponsive(page, 'xs');
 

@@ -39,12 +39,12 @@ describe('AlignmentControl', () => {
 		const accordionPanel = await openSidebar(page, 'alignment');
 		await changeResponsive(page, 's');
 
-		const itemChecked = await page.$$eval(
+		const isItemChecked = await page.$$eval(
 			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',
 			select => select[0].checked
 		);
 
-		expect(itemChecked).toBeTruthy();
+		expect(isItemChecked).toBeTruthy();
 
 		// responsive S
 		await changeResponsive(page, 's');
@@ -59,6 +59,11 @@ describe('AlignmentControl', () => {
 		);
 
 		expect(responsiveSOption).toBeTruthy();
+
+		const expectAttributes = await getBlockAttributes();
+		const position = expectAttributes['text-alignment-s'];
+
+		expect(position).toStrictEqual('center');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

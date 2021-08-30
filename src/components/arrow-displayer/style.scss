@@ -16,6 +16,16 @@ body.maxi-blocks--active .maxi-block.maxi-block--has-arrow {
 	backface-visibility: hidden;
 	z-index: -1;
 
+	&::before {
+		content: '';
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		box-sizing: content-box;
+		z-index: -1;
+		top: 0;
+		left: 0;
+	}
 	&__bottom .maxi-container-arrow--content {
 		margin-top: -1px;
 	}
@@ -39,16 +49,6 @@ body.maxi-blocks--active .maxi-block.maxi-block--has-arrow {
 		background-color: transparent;
 		box-shadow: none !important;
 		z-index: -1;
-
-		&:before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			transform: translate(-50%, -50%);
-			clip-path: polygon(100% 0, 0% 100%, 100% 100%);
-			background-color: transparent;
-		}
 
 		&:after {
 			content: '';

@@ -394,7 +394,7 @@ const getSVGWrapperBackgroundObject = SVGOptions => {
 	};
 
 	if (SVGOptions['background-svg-size'])
-		response.general.height = `${SVGOptions['background-svg-size']}${SVGOptions['background-svg-size--unit']}`;
+		response.general.width = `${SVGOptions['background-svg-size']}${SVGOptions['background-svg-size--unit']}`;
 
 	if (SVGOptions['background-svg-top'])
 		response.general.top = `${SVGOptions['background-svg-top']}${SVGOptions['background-svg-top--unit']}`;

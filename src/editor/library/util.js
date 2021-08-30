@@ -33,12 +33,13 @@ export const fitSvg = svgCode => {
 
 	const bbox = document.querySelector('#maxi-temporary-elem svg').getBBox();
 
-	document
-		.querySelector('#maxi-temporary-elem svg')
-		.setAttribute(
-			'viewBox',
-			`${bbox.x}, ${bbox.y}, ${bbox.width}, ${bbox.height}`
-		);
+	const SVGElement = document.querySelector('#maxi-temporary-elem svg');
+	SVGElement.setAttribute(
+		'viewBox',
+		`${bbox.x}, ${bbox.y}, ${bbox.width}, ${bbox.height}`
+	);
+	SVGElement.removeAttribute('width');
+	SVGElement.removeAttribute('height');
 
 	const newSvgCode = document.querySelector(
 		'#maxi-temporary-elem svg'

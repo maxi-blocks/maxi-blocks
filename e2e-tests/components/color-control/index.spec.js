@@ -25,9 +25,8 @@ describe('ColorControl', () => {
 
 		const attributes = await getBlockAttributes();
 		const backgroundColor = attributes['background-palette-color'];
-		const expectedResult = 4;
 
-		expect(backgroundColor).toStrictEqual(expectedResult);
+		expect(backgroundColor).toStrictEqual(4);
 	});
 
 	it('Check Responsive color control', async () => {
@@ -60,9 +59,8 @@ describe('ColorControl', () => {
 
 		const attributes = await getBlockAttributes();
 		const color = attributes['palette-color-s'];
-		const expectColor = 5;
 
-		expect(color).toStrictEqual(expectColor);
+		expect(color).toStrictEqual(5);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

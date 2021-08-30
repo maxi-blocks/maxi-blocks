@@ -15,6 +15,7 @@ describe('getArrowStyles', () => {
 	it('Get a correct arrow styles', () => {
 		const object = {
 			target: '',
+			blockStyle: 'light',
 			'arrow-status': true,
 			'arrow-side-general': 'top',
 			'arrow-position-general': 1,
@@ -37,12 +38,26 @@ describe('getArrowStyles', () => {
 			'arrow-side-xs': 'bottom',
 			'arrow-position-xs': 2,
 			'arrow-width-xs': 3,
-			'border-color-general': 'rgb(255, 99, 71)',
 			'background-active-media': 'color',
 			'background-palette-color-status': false,
 			'background-color': 'rgb(255, 99, 71)',
-			'background-gradient':
-				'linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)',
+			'border-palette-color-status-general': true,
+			'border-palette-color-general': 4,
+			'border-style-general': 'solid',
+			'border-top-width-general': 1,
+			'border-right-width-general': 1,
+			'border-bottom-width-general': 1,
+			'border-left-width-general': 1,
+			'border-unit-width-general': 'px',
+			'border-palette-color-status-m': false,
+			'border-color-m': 'rgba(61,133,209)',
+			'border-style-m': 'solid',
+			'border-top-width-m': 3,
+			'border-right-width-m': 3,
+			'border-bottom-width-m': 3,
+			'border-left-width-m': 3,
+			'border-unit-width-m': 'px',
+			'border-style-s': 'none',
 		};
 
 		const result = getArrowStyles(object);
@@ -54,6 +69,8 @@ describe('getArrowStyles', () => {
 			target: '',
 			isHover: true,
 			blockStyle: 'light',
+			'arrow-status': true,
+			'background-active-media': 'color',
 			'box-shadow-palette-color-status-general': true,
 			'box-shadow-palette-color-general': 2,
 			'box-shadow-palette-opacity-general': 20,
@@ -103,24 +120,98 @@ describe('getArrowStyles', () => {
 			target: '',
 			isHover: true,
 			blockStyle: 'light',
-			'box-shadow-color-general': 'rgb(6,147,227)',
+			'arrow-status': true,
+			'background-active-media': 'color',
+			'box-shadow-palette-color-status-general': true,
+			'box-shadow-palette-color-general': 2,
+			'box-shadow-palette-opacity-general': 20,
 			'box-shadow-status-hover': true,
 			'box-shadow-palette-color-status-general-hover': false,
-			'box-shadow-color-general-hover': 'rgb(255, 99, 71)',
+			'box-shadow-color-general-hover': 'rgba(61,133,209)',
+			'box-shadow-palette-opacity-general-hover': 20,
 			'box-shadow-horizontal-general-hover': 1,
 			'box-shadow-vertical-general-hover': 2,
 			'box-shadow-blur-general-hover': 3,
 			'box-shadow-spread-general-hover': 4,
-			'border-color-general': 'rgb(6,147,227)',
+			'border-palette-color-status-general': true,
+			'border-palette-color-general': 4,
+			'border-palette-opacity-general': 20,
+			'border-style-general': 'solid',
 			'border-status-hover': true,
 			'border-palette-color-status-general-hover': false,
-			'border-color-general-hover': 'rgb(255, 99, 71)',
+			'border-color-general-hover': 'rgba(150,200,90)',
+			'border-palette-opacity-general-hover': 20,
 			'border-style-general-hover': 'solid',
-			'background-color': 'rgb(255, 99, 71)',
+			'border-top-width-general-hover': 1,
+			'border-right-width-general-hover': 2,
+			'border-bottom-width-general-hover': 3,
+			'border-left-width-general-hover': 4,
+			'border-sync-width-general-hover': true,
+			'border-unit-width-general-hover': 'px',
+			'border-top-left-radius-general-hover': 1,
+			'border-top-right-radius-general-hover': 2,
+			'border-bottom-right-radius-general-hover': 3,
+			'border-bottom-left-radius-general-hover': 4,
+			'border-sync-radius-general-hover': true,
+			'border-unit-radius-general-hover': 'px',
+			'background-palette-color-status': true,
+			'background-palette-color': 5,
 			'background-status-hover': true,
 			'background-active-media-hover': 'color',
-			'background-palette-color-status-hover': false,
-			'background-color-hover': 'rgb(6,147,227)',
+			'background-palette-color-status-hover': true,
+			'background-palette-color-hover': 1,
+		};
+
+		const result = getArrowStyles(object);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Return empty arrow styles when arrow status is off', () => {
+		const object = {
+			target: '',
+			blockStyle: 'light',
+			'arrow-status': false,
+		};
+
+		const result = getArrowStyles(object);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Return empty arrow styles when background color is not selected', () => {
+		const object = {
+			target: '',
+			blockStyle: 'light',
+			'arrow-status': true,
+			'background-active-media': 'gradient',
+		};
+
+		const result = getArrowStyles(object);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Return empty arrow styles when background color is selected and border is active but the style is not solid', () => {
+		const object = {
+			target: '',
+			blockStyle: 'light',
+			'arrow-status': true,
+			'background-active-media': 'color',
+			'border-style-general': undefined,
+			'border-style-s': 'dashed',
+		};
+
+		const result = getArrowStyles(object);
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Return empty arrow styles when background color is selected and border is active but some style on hover is not solid', () => {
+		const object = {
+			target: '',
+			blockStyle: 'light',
+			'arrow-status': true,
+			'background-active-media': 'color',
+			'border-style-general': undefined,
+			'border-style-s': 'solid',
+			'border-style-s-hover': 'dashed',
 		};
 
 		const result = getArrowStyles(object);

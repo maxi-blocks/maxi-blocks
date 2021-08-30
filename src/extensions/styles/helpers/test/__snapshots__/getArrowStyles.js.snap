@@ -422,4 +422,6 @@ exports[`getArrowStyles Return empty arrow styles when arrow status is off 1`] =
 
 exports[`getArrowStyles Return empty arrow styles when background color is not selected 1`] = `Object {}`;
 
+exports[`getArrowStyles Return empty arrow styles when background color is selected and border is active but some style on hover is not solid 1`] = `Object {}`;
+
 exports[`getArrowStyles Return empty arrow styles when background color is selected and border is active but the style is not solid 1`] = `Object {}`;

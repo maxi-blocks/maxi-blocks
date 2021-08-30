@@ -202,4 +202,19 @@ describe('getArrowStyles', () => {
 		const result = getArrowStyles(object);
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Return empty arrow styles when background color is selected and border is active but some style on hover is not solid', () => {
+		const object = {
+			target: '',
+			blockStyle: 'light',
+			'arrow-status': true,
+			'background-active-media': 'color',
+			'border-style-general': undefined,
+			'border-style-s': 'solid',
+			'border-style-s-hover': 'dashed',
+		};
+
+		const result = getArrowStyles(object);
+		expect(result).toMatchSnapshot();
+	});
 });

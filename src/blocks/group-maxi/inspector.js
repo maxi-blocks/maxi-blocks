@@ -609,7 +609,8 @@ const Inspector = props => {
 															'background',
 															'arrow',
 															'border',
-														]
+														],
+														true
 													)}
 													onChange={obj =>
 														setAttributes(obj)

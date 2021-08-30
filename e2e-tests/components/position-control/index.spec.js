@@ -5,7 +5,11 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import {
+	getBlockAttributes,
+	openAdvancedSidebar,
+	changeResponsive,
+} from '../../utils';
 
 describe('PositionControl', () => {
 	it('Checking the position control', async () => {
@@ -71,5 +75,57 @@ describe('PositionControl', () => {
 		const expectUnit = '%';
 
 		expect(unit).toStrictEqual(expectUnit);
+	});
+
+	it('Check Responsive position control', async () => {
+		await changeResponsive(page, 's');
+		await page.$eval('.maxi-text-block', block => block.focus());
+
+		const positionSelector = await page.$eval(
+			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
+			button => button.selectedOptions[0].innerHTML
+		);
+
+		expect(positionSelector).toStrictEqual('Relative');
+
+		// responsive S
+		const accordionPanel = await openAdvancedSidebar(page, 'position');
+		await changeResponsive(page, 's');
+
+		const selector = await accordionPanel.$(
+			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input '
+		);
+		await selector.select('absolute');
+
+		const responsiveSOption = await page.$eval(
+			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
+			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
+		);
+
+		expect(responsiveSOption).toStrictEqual('Absolute');
+
+		const positionAttributes = await getBlockAttributes();
+		const positionSAttribute = positionAttributes['position-s'];
+		expect(positionSAttribute).toStrictEqual('absolute');
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+
+		const responsiveXsOption = await page.$eval(
+			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
+			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
+		);
+
+		expect(responsiveXsOption).toStrictEqual('Absolute');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+
+		const responsiveMOption = await page.$eval(
+			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
+			selectedStyle => selectedStyle.selectedOptions[0].innerHTML
+		);
+
+		expect(responsiveMOption).toStrictEqual('Relative');
 	});
 });

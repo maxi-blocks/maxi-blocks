@@ -47,7 +47,11 @@ describe('FullSizeControl', () => {
 		);
 
 		expect(generalHeight).toStrictEqual('330');
-		await changeResponsive(page, 's');
+
+		const attributes = await getBlockAttributes();
+		const heightAttribute = attributes['height-general'];
+
+		expect(heightAttribute).toStrictEqual(330);
 
 		// responsive S
 		await changeResponsive(page, 's');
@@ -62,8 +66,8 @@ describe('FullSizeControl', () => {
 		);
 		expect(heightS).toStrictEqual('399');
 
-		const attributes = await getBlockAttributes();
-		const sHeight = attributes['height-s'];
+		const attributesS = await getBlockAttributes();
+		const sHeight = attributesS['height-s'];
 
 		expect(sHeight).toStrictEqual(399);
 

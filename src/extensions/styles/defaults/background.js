@@ -190,7 +190,7 @@ export const backgroundSVG = {
 	},
 	'background-svg-left': {
 		type: 'number',
-		default: 0,
+		default: 50,
 	},
 	'background-svg-size': {
 		type: 'number',

@@ -103,16 +103,19 @@ const getSVGPathStrokeStyles = (obj, blockStyle) => {
 
 const getSvgStyles = ({ obj, target, blockStyle }) => {
 	const response = {
-		[` ${target} .maxi-svg-icon-block__icon svg`]: getSVGWidthStyles(obj),
-		[` ${target} .maxi-svg-icon-block__icon svg path`]:
-			getSVGPathStyles(obj),
-		[` ${target} .maxi-svg-icon-block__icon svg > path[data-fill]:not([fill^="none"])`]:
+		[` ${target} svg`]: getSVGWidthStyles(obj),
+		[` ${target} svg path`]: getSVGPathStyles(obj),
+		[` ${target} svg path[data-fill]:not([fill^="none"])`]:
 			getSVGPathFillStyles(obj, blockStyle),
-		[` ${target} .maxi-svg-icon-block__icon svg > path[data-stroke]:not([stroke^="none"])`]:
+		[` ${target} svg path[data-stroke]:not([stroke^="none"])`]:
 			getSVGPathStrokeStyles(obj, blockStyle),
-		[` ${target} .maxi-svg-icon-block__icon svg > g[data-fill]:not([fill^="none"])`]:
+		[` ${target} svg g[data-fill]:not([fill^="none"])`]:
 			getSVGPathFillStyles(obj, blockStyle),
-		[` ${target} .maxi-svg-icon-block__icon svg > g[data-stroke]:not([stroke^="none"])`]:
+		[` ${target} svg g[data-stroke]:not([stroke^="none"])`]:
+			getSVGPathStrokeStyles(obj, blockStyle),
+		[` ${target} svg use[data-fill]:not([fill^="none"])`]:
+			getSVGPathFillStyles(obj, blockStyle),
+		[` ${target} svg use[data-stroke]:not([stroke^="none"])`]:
 			getSVGPathStrokeStyles(obj, blockStyle),
 	};
 

@@ -7,7 +7,7 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isUndefined } from 'lodash';
+import { isUndefined, isNumber } from 'lodash';
 
 /**
  * General
@@ -58,7 +58,7 @@ const getBorderStyles = ({
 				newKey.length;
 
 			if (
-				!!value &&
+				(!!value || isNumber(value)) &&
 				includesBreakpoint &&
 				!newKey.includes('sync') &&
 				!newKey.includes('unit')

@@ -219,7 +219,7 @@ const AxisControl = props => {
 				breakpoint === 'general' ? getDefaultAttribute(syncKey) : false;
 
 			response[syncKey] = newSyncValue;
-		} else {
+		} else if (target === 'padding' || target === 'margin') {
 			syncArray.forEach(key => {
 				response[
 					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
@@ -228,6 +228,7 @@ const AxisControl = props => {
 				);
 			});
 		}
+
 		onChange(response);
 	};
 

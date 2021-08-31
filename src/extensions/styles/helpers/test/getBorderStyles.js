@@ -212,4 +212,33 @@ describe('getBorderStyles', () => {
 		});
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Ensures 0 is accepted on responsive stages', () => {
+		const object = {
+			'border-palette-color-status-general': true,
+			'border-palette-color-general': 7,
+			'border-style-general': 'solid',
+			'border-top-width-general': 2,
+			'border-right-width-general': 2,
+			'border-bottom-width-general': 2,
+			'border-left-width-general': 2,
+			'border-sync-width-general': true,
+			'border-unit-width-general': 'px',
+			'border-right-width-s': 0,
+			'border-sync-width-s': false,
+			'border-top-radius-general': 2,
+			'border-right-radius-general': 2,
+			'border-bottom-radius-general': 2,
+			'border-left-radius-general': 2,
+			'border-sync-radius-general': true,
+			'border-unit-radius-general': 'px',
+			'border-right-radius-s': 0,
+		};
+
+		const result = getBorderStyles({
+			obj: object,
+			parentBlockStyle: 'light',
+		});
+		expect(result).toMatchSnapshot();
+	});
 });

@@ -15,6 +15,7 @@ import {
 	imageUploader,
 	svgAttributesReplacer,
 	svgCurrentColorStatus,
+	fitSvg,
 } from './util';
 import { injectImgSVG, generateDataObject } from '../../extensions/svg/utils';
 import DOMPurify from 'dompurify';
@@ -394,7 +395,7 @@ const LibraryContainer = props => {
 			}
 
 			if (type === 'bg-shape') {
-				const cleanedContent = DOMPurify.sanitize(svgCode);
+				const cleanedContent = DOMPurify.sanitize(fitSvg(svgCode));
 				const svg = document
 					.createRange()
 					.createContextualFragment(cleanedContent).firstElementChild;

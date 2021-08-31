@@ -1,11 +1,19 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyTimes,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import {
+	getBlockAttributes,
+	openAdvancedSidebar,
+	changeResponsive,
+} from '../../utils';
 
 describe('ZIndexControl', () => {
 	it('Checking the z-index control', async () => {
@@ -19,12 +27,51 @@ describe('ZIndexControl', () => {
 			input => input.focus()
 		);
 
-		await page.keyboard.type('2');
+		await page.keyboard.type('20');
 
 		const attributes = await getBlockAttributes();
 		const zIndex = attributes['z-index-general'];
-		const expectResult = 2;
 
-		expect(zIndex).toStrictEqual(expectResult);
+		expect(zIndex).toStrictEqual(20);
+	});
+	it('Check Responsive zIndex control', async () => {
+		const input = await page.$('.maxi-zIndex-control input');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await input.focus();
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('9');
+		const zIndexS = await page.$eval(
+			'.maxi-zIndex-control input',
+			button => button.value
+		);
+
+		expect(zIndexS).toStrictEqual('29');
+
+		const attributes = await getBlockAttributes();
+		const zIndex = attributes['z-index-s'];
+
+		expect(zIndex).toStrictEqual(29);
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+
+		const zIndexXs = await page.$eval(
+			'.maxi-zIndex-control input',
+			button => button.value
+		);
+
+		expect(zIndexXs).toStrictEqual('29');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+
+		const zIndexM = await page.$eval(
+			'.maxi-zIndex-control input',
+			button => button.value
+		);
+
+		expect(zIndexM).toStrictEqual('20');
 	});
 });

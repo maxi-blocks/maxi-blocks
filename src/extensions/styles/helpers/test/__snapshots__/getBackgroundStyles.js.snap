@@ -132,9 +132,9 @@ Object {
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg": Object {
     "SVGBackground": Object {
       "general": Object {
-        "height": "2%",
         "left": "1%",
         "top": "4%",
+        "width": "2%",
       },
       "label": "SVG Wrapper Background",
     },
@@ -232,7 +232,7 @@ Object {
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
     "backgroundSVG": Object {
       "general": Object {
-        "height": "100%",
+        "width": "100%",
       },
       "label": "SVG Wrapper Background",
     },

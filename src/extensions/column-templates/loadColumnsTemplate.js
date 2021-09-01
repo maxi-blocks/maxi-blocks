@@ -13,7 +13,7 @@ import uniqueIDGenerator from '../attributes/uniqueIDGenerator';
 /**
  * External dependencies
  */
-import { cloneDeep } from 'lodash';
+import { cloneDeep, flatten, compact } from 'lodash';
 
 const loadTemplate = (template, clientId) => {
 	template.content.forEach(column => {
@@ -35,35 +35,44 @@ const loadTemplate = (template, clientId) => {
 };
 
 const updateTemplate = (template, columnsBlockObjects, clientId) => {
-	columnsBlockObjects.forEach((column, i) => {
-		column.attributes = {
-			...column.attributes,
-			...(template.content[i] && template.content[i][1]),
+	const templateLength = template.content.length;
+	const newAttributes = template.attributes;
+	const leftoverContent = compact(
+		columnsBlockObjects.map((column, i) => {
+			if (i < templateLength) return null;
+
+			return column.innerBlocks;
+		})
+	);
+
+	// Insert leftover content on the last column
+	if (columnsBlockObjects.length > templateLength)
+		columnsBlockObjects[templateLength - 1].innerBlocks.push(
+			...flatten(leftoverContent)
+		);
+
+	const newTemplate = synchronizeBlocksWithTemplate(
+		columnsBlockObjects,
+		template.content
+	);
+
+	// Ensure column size attributes are update
+	template.content.forEach((column, i) => {
+		newTemplate[i].attributes = {
+			...newTemplate[i].attributes,
+			...column[1],
 		};
 	});
 
-	const newAttributes = template.attributes;
-	dispatch('core/block-editor').updateBlockAttributes(
-		clientId,
-		newAttributes
-	);
-
-	// Manage the content of the store
-	dispatch('maxiBlocks/columns').sendContentBackup(
-		columnsBlockObjects,
-		clientId
-	);
-	const content = select('maxiBlocks/columns').getContentBackup(clientId);
-
-	const newTemplate = synchronizeBlocksWithTemplate(
-		content,
-		template.content
-	);
-	dispatch('core/block-editor').replaceInnerBlocks(
-		clientId,
-		newTemplate,
-		false
-	);
+	const rowBlock = select('core/block-editor').getBlock(clientId);
+	dispatch('core/block-editor').replaceBlock(clientId, {
+		...rowBlock,
+		attributes: {
+			...rowBlock.attributes,
+			...newAttributes,
+		},
+		innerBlocks: newTemplate,
+	});
 };
 
 const loadColumnsTemplate = (

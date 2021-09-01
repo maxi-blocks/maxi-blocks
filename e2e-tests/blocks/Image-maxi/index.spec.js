@@ -244,10 +244,10 @@ describe('Image Maxi', () => {
 		}))(linkColorAttributes);
 
 		const expectedValues = {
-			'link-palette-color-general': 3,
-			'link-hover-palette-color-general': 4,
-			'link-active-palette-color-general': 4,
-			'link-visited-palette-color-general': 4,
+			'link-palette-color-general': 2,
+			'link-hover-palette-color-general': 2,
+			'link-active-palette-color-general': 8,
+			'link-visited-palette-color-general': 6,
 		};
 
 		expect(linkAttributes).toStrictEqual(expectedValues);

@@ -143,7 +143,7 @@ motionElems.forEach(function (elem) {
 				`#${motionID} .maxi-number-counter__box .maxi-number-counter__box__circle`
 			);
 
-			const radius = motionData['number-counter-radius'];
+			const radius = 90;
 			const circumference = 2 * Math.PI * radius;
 			const startCountValue = Math.ceil(
 				(motionData['number-counter-start'] * 360) / 100

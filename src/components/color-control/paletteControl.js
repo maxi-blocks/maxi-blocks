@@ -59,7 +59,7 @@ const ColorPaletteControl = props => {
 					label={label ? `${label} Colour` : ''}
 				>
 					<div className={paletteClasses}>
-						{[1, 2, 3, 4, 5, 6, 7].map(item => (
+						{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
 							<div
 								key={`maxi-sc-color-palette__box__${item}`}
 								className={`maxi-sc-color-palette__box ${

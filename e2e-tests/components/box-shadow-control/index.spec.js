@@ -24,7 +24,7 @@ describe('BoxShadowControl', () => {
 		);
 
 		const expectAttributes = {
-			'box-shadow-blur-general': 87,
+			'box-shadow-blur-general': 50,
 			'box-shadow-color-general': undefined,
 			'box-shadow-horizontal-general': 0,
 			'box-shadow-spread-general': 0,
@@ -130,7 +130,7 @@ describe('BoxShadowControl', () => {
 
 		const expectChanges = {
 			'box-shadow-blur-general': undefined,
-			'box-shadow-blur-general-hover': 87,
+			'box-shadow-blur-general-hover': 50,
 			'box-shadow-horizontal-general': undefined,
 			'box-shadow-horizontal-general-hover': 0,
 			'box-shadow-spread-general': undefined,

@@ -35,7 +35,7 @@ describe('AlignmentControl', () => {
 			expect(attribute).toStrictEqual(alignments[i]);
 		}
 	});
-	it('Check Responsive alignment control', async () => {
+	it('Check Responsive text-alignment control', async () => {
 		const accordionPanel = await openSidebar(page, 'alignment');
 		await changeResponsive(page, 's');
 
@@ -81,6 +81,62 @@ describe('AlignmentControl', () => {
 		const responsiveMOption = await page.$$eval(
 			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',
 			select => select[0].checked
+		);
+
+		expect(responsiveMOption).toBeTruthy();
+	});
+	/// ///////////////////////
+	it('Check Responsive alignment control', async () => {
+		await insertBlock('Button Maxi');
+		const accordionPanel = await openSidebar(page, 'alignment');
+		await changeResponsive(page, 's');
+		await accordionPanel.$$eval(
+			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',
+			button => button[1].click()
+		);
+
+		const isItemChecked = await page.$$eval(
+			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',
+			select => select[1].checked
+		);
+
+		expect(isItemChecked).toBeTruthy();
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await accordionPanel.$$eval(
+			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',
+			button => button[2].click()
+		);
+
+		const responsiveSOption = await page.$$eval(
+			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',
+			select => select[2].checked
+		);
+
+		expect(responsiveSOption).toBeTruthy();
+
+		const expectAttributes = await getBlockAttributes();
+		const position = expectAttributes['alignment-s'];
+
+		expect(position).toStrictEqual('right');
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+
+		const responsiveXsOption = await page.$$eval(
+			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',
+			select => select[2].checked
+		);
+
+		expect(responsiveXsOption).toBeTruthy();
+
+		// responsive M
+		await changeResponsive(page, 'm');
+
+		const responsiveMOption = await page.$$eval(
+			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',
+			select => select[1].checked
 		);
 
 		expect(responsiveMOption).toBeTruthy();

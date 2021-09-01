@@ -9,7 +9,11 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import {
+	getBlockAttributes,
+	openAdvancedSidebar,
+	changeResponsive,
+} from '../../utils';
 
 describe('ResponsiveControl', () => {
 	it('Test the responsive control', async () => {
@@ -41,5 +45,53 @@ describe('ResponsiveControl', () => {
 		const expectValue = 1000;
 
 		expect(breakpoint).toStrictEqual(expectValue);
+	});
+
+	it('Check Responsive to responsive control', async () => {
+		const input = await page.$('.maxi-responsive-control input');
+
+		const zIndexXl = await page.$eval(
+			'.maxi-responsive-control input',
+			button => button.value
+		);
+
+		expect(zIndexXl).toStrictEqual('1000');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await input.focus();
+		await pressKeyTimes('Backspace', '4');
+		await page.keyboard.type('1855');
+		const zIndexS = await page.$eval(
+			'.maxi-responsive-control input',
+			button => button.value
+		);
+
+		expect(zIndexS).toStrictEqual('1855');
+
+		const attributes = await getBlockAttributes();
+		const zIndex = attributes['breakpoints-s'];
+
+		expect(zIndex).toStrictEqual(1855);
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+
+		const zIndexXs = await page.$eval(
+			'.maxi-responsive-control input',
+			button => button.value
+		);
+
+		expect(zIndexXs).toStrictEqual('480');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+
+		const zIndexM = await page.$eval(
+			'.maxi-responsive-control input',
+			button => button.value
+		);
+
+		expect(zIndexM).toStrictEqual('1024');
 	});
 });

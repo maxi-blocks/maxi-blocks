@@ -38,7 +38,7 @@ describe('OpacityControl', () => {
 		expect(opacity).toStrictEqual(expectResult);
 	});
 
-	it('Check Responsive font level control', async () => {
+	it('Check Responsive opacity control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');

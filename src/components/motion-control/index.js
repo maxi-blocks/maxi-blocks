@@ -13,11 +13,15 @@ import TimelineSettings from './timelineSettings';
 import TimelinePresets from './timelinePresets';
 import { getGroupAttributes } from '../../extensions/styles';
 
+import { useState } from '@wordpress/element';
+import SelectControl from '../select-control';
+import AdvancedNumberControl from '../advanced-number-control';
+
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-
+import { isEmpty, round } from 'lodash';
 /**
  * Styles and icons
  */
@@ -27,14 +31,15 @@ import './editor.scss';
  * Component
  */
 const MotionControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, speed, label } = props;
 
 	const classes = classnames('maxi-motion-control', className);
+	const [presetLoad, setPresetLoad] = useState('');
 
 	return (
 		<div className={classes}>
 			<FancyRadioControl
-				label={__('Use Motion Effects', 'maxi-blocks')}
+				label={__('Enable Vertical', 'maxi-blocks')}
 				selected={props['motion-status']}
 				options={[
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
@@ -42,9 +47,9 @@ const MotionControl = props => {
 				]}
 				onChange={val => onChange({ 'motion-status': val })}
 			/>
-			{/* props['motion-status'] && (
+			{props['motion-status'] && (
 				<>
-					<FancyRadioControl
+					{/* <FancyRadioControl
 						label={__('Preview', 'maxi-blocks')}
 						selected={props['motion-preview-status']}
 						options={[
@@ -54,16 +59,49 @@ const MotionControl = props => {
 						onChange={val =>
 							onChange({ 'motion-preview-status': val })
 						}
+					/> */}
+					<label>Direction</label>
+					<select>
+						<option>Scroll Up</option>
+						<option>Scroll Down</option>
+					</select>
+					<AdvancedNumberControl
+						className={classes}
+						label={`${
+							!isEmpty(label) ? label : __('Speed', 'maxi-blocks')
+						}`}
+						value={
+							speed !== undefined && speed !== '' && speed !== -1
+								? round(speed * 100, 2)
+								: speed === -1
+								? ''
+								: 100
+						}
+						onChangeValue={val => {
+							onChange(
+								val !== undefined && val !== ''
+									? round(val / 100, 2)
+									: -1
+							);
+						}}
+						min={0}
+						max={100}
+						onReset={() => onChange('')}
 					/>
+					{/* <SelectControl
+						value='Scroll Up'
+						options='Scroll Up'
+						onChange={val => setPresetLoad(val)}
+					/> */}
 					<TimelinePresets
 						{...getGroupAttributes(props, 'motion')}
 						onChange={obj => onChange(obj)}
 					/>
-					<AddTimeline
+					{/* <AddTimeline
 						{...getGroupAttributes(props, 'motion')}
 						onChange={obj => onChange(obj)}
-					/>
-					<ShowTimeline
+					/> */}
+					{/* <ShowTimeline
 						{...getGroupAttributes(props, 'motion')}
 						onChange={obj => onChange(obj)}
 					/>
@@ -72,9 +110,9 @@ const MotionControl = props => {
 						onChange={obj => {
 							onChange(obj);
 						}}
-					/>
+					/> */}
 				</>
-			) */}
+			)}
 		</div>
 	);
 };

@@ -52,12 +52,12 @@ describe('OpacityControl', () => {
 		await page.waitForTimeout(100);
 		await page.keyboard.type('80');
 		await changeResponsive(page, 's');
-		const fontLevel = await page.$eval(
+		const opacityLevel = await page.$eval(
 			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input',
 			button => button.value
 		);
 
-		expect(fontLevel).toStrictEqual('80');
+		expect(opacityLevel).toStrictEqual('80');
 
 		// responsive S
 		await page.waitForTimeout(100);

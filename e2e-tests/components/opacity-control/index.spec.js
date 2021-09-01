@@ -74,6 +74,11 @@ describe('OpacityControl', () => {
 
 		expect(responsiveSOption).toStrictEqual('55');
 
+		const attributes = await getBlockAttributes();
+		const opacity = attributes['palette-opacity-s'];
+
+		expect(opacity).toStrictEqual(55);
+
 		// responsive XS
 		await page.waitForTimeout(100);
 		await changeResponsive(page, 'xs');

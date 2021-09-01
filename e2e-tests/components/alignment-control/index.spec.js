@@ -85,7 +85,7 @@ describe('AlignmentControl', () => {
 
 		expect(responsiveMOption).toBeTruthy();
 	});
-	/// ///////////////////////
+
 	it('Check Responsive alignment control', async () => {
 		await insertBlock('Button Maxi');
 		const accordionPanel = await openSidebar(page, 'alignment');

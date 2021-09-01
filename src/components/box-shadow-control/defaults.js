@@ -11,22 +11,22 @@ export const boxShadowTotal = {
 	'box-shadow-palette-opacity': 23,
 	'box-shadow-horizontal': 0,
 	'box-shadow-vertical': 30,
-	'box-shadow-blur': 87,
+	'box-shadow-blur': 50,
 	'box-shadow-spread': 0,
 };
 
 export const boxShadowBottom = {
-	'box-shadow-palette-opacity': 23,
+	'box-shadow-palette-opacity': 50,
 	'box-shadow-horizontal': 0,
-	'box-shadow-vertical': 20,
-	'box-shadow-blur': 30,
-	'box-shadow-spread': 10,
+	'box-shadow-vertical': 30,
+	'box-shadow-blur': 50,
+	'box-shadow-spread': 0,
 };
 
 export const boxShadowSolid = {
-	'box-shadow-palette-opacity': 23,
+	'box-shadow-palette-opacity': 50,
 	'box-shadow-horizontal': 5,
-	'box-shadow-vertical': 5,
+	'box-shadow-vertical': 6,
 	'box-shadow-blur': 0,
 	'box-shadow-spread': 0,
 };

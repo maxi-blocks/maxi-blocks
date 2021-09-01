@@ -27,13 +27,9 @@ const numberCounter = {
 		type: 'number',
 		default: 100,
 	},
-	'number-counter-radius': {
-		type: 'number',
-		default: 200,
-	},
 	'number-counter-stroke': {
 		type: 'number',
-		default: 20,
+		default: 5,
 	},
 	'number-counter-duration': {
 		type: 'number',

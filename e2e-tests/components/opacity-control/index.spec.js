@@ -49,9 +49,9 @@ describe('OpacityControl', () => {
 		);
 
 		await input.focus();
+		await page.waitForTimeout(100);
 		await page.keyboard.type('80');
 		await changeResponsive(page, 's');
-		debugger;
 		const fontLevel = await page.$eval(
 			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input',
 			button => button.value

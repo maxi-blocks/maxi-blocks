@@ -134,24 +134,22 @@ const BackgroundControl = props => {
 				/>
 			)}
 			{!layersStatus && getOptions().length > 1 && (
-				<>
-					<FancyRadioControl
-						label={__('Background', 'maxi-blocks')}
-						fullWidthMode
-						selected={backgroundActiveMedia || ''}
-						options={getOptions()}
-						optionType='string'
-						onChange={val =>
-							onChange({
-								[getAttributeKey(
-									'background-active-media',
-									isHover,
-									prefix
-								)]: val,
-							})
-						}
-					/>
-				</>
+				<FancyRadioControl
+					label={__('Background', 'maxi-blocks')}
+					fullWidthMode
+					selected={backgroundActiveMedia || ''}
+					options={getOptions()}
+					optionType='string'
+					onChange={val =>
+						onChange({
+							[getAttributeKey(
+								'background-active-media',
+								isHover,
+								prefix
+							)]: val,
+						})
+					}
+				/>
 			)}
 			{!layersStatus && (
 				<>

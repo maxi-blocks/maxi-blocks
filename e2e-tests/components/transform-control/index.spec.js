@@ -1,11 +1,19 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyTimes,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import {
+	getBlockAttributes,
+	openAdvancedSidebar,
+	changeResponsive,
+} from '../../utils';
 
 describe('TransformControl', () => {
 	it('Check transform control', async () => {
@@ -17,7 +25,7 @@ describe('TransformControl', () => {
 			'.maxi-transform-control .maxi-settingstab-control button'
 		);
 
-		// scale
+		// Scale
 		// Y
 		await accordionPanel.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__y-control__value input',
@@ -164,5 +172,215 @@ describe('TransformControl', () => {
 		const expectXOrigin = 20;
 
 		expect(originX).toStrictEqual(expectXOrigin);
+	});
+
+	it('Check Responsive transform control', async () => {
+		await createNewPost();
+		await insertBlock('Image Maxi');
+		await openAdvancedSidebar(page, 'transform');
+		const tabsControl = await page.$$(
+			'.maxi-transform-control .maxi-tabs-control button'
+		);
+
+		// Scale
+		// general
+		const scaleInput = await page.$(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input'
+		);
+
+		await scaleInput.focus();
+		await page.waitForTimeout(100);
+		await page.keyboard.type('5');
+		const scaleValue = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(scaleValue).toStrictEqual('5');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await scaleInput.focus();
+		await page.keyboard.type('7');
+
+		const responsiveSOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(responsiveSOption).toStrictEqual('57');
+
+		const attributes = await getBlockAttributes();
+		const opacity = attributes['transform-scale-y-s'];
+
+		expect(opacity).toStrictEqual(57);
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+		const responsiveXsOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(responsiveXsOption).toStrictEqual('57');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+		const responsiveMOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(responsiveMOption).toStrictEqual('5');
+
+		// Translate
+		await tabsControl[1].click();
+		const translateInput = await page.$(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input'
+		);
+
+		await translateInput.focus();
+		await page.keyboard.type('3');
+		const translateValue = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(translateValue).toStrictEqual('3');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await translateInput.focus();
+		await page.keyboard.type('5');
+
+		const translateSOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(translateSOption).toStrictEqual('35');
+
+		const translateAttributes = await getBlockAttributes();
+		const translate = translateAttributes['transform-translate-y-s'];
+
+		expect(translate).toStrictEqual(35);
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+		const translateXsOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(translateXsOption).toStrictEqual('35');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+		const translateMOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(translateMOption).toStrictEqual('3');
+
+		// Rotate
+		await tabsControl[2].click();
+		const rotateInput = await page.$(
+			'.maxi-transform-control .maxi-transform-control__rotate-control__item__input'
+		);
+
+		await rotateInput.focus();
+		await page.keyboard.type('9');
+		const rotateValue = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__rotate-control__item__input',
+			input => input.value
+		);
+
+		expect(rotateValue).toStrictEqual('9');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await translateInput.focus();
+		await page.keyboard.type('5');
+
+		const rotateSOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__rotate-control__item__input',
+			input => input.value
+		);
+
+		expect(rotateSOption).toStrictEqual('95');
+
+		const rotateAttributes = await getBlockAttributes();
+		const rotate = rotateAttributes['transform-rotate-x-s'];
+
+		expect(rotate).toStrictEqual(95);
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+		const rotateXsOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__rotate-control__item__input',
+			input => input.value
+		);
+
+		expect(rotateXsOption).toStrictEqual('95');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+		const rotateMOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__rotate-control__item__input',
+			input => input.value
+		);
+
+		expect(rotateMOption).toStrictEqual('9');
+
+		// Origin
+		await tabsControl[3].click();
+		const originInput = await page.$(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input'
+		);
+
+		await originInput.focus();
+		await page.keyboard.type('6');
+		const originValue = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(originValue).toStrictEqual('6');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await originInput.focus();
+		await page.keyboard.type('3');
+
+		const originSOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(originSOption).toStrictEqual('63');
+
+		const originAttributes = await getBlockAttributes();
+		const origin = originAttributes['transform-origin-y-s'];
+
+		expect(origin).toStrictEqual(63);
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+		const originXsOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(originXsOption).toStrictEqual('63');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+		const originMOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(originMOption).toStrictEqual('6');
 	});
 });

@@ -211,9 +211,9 @@ describe('TransformControl', () => {
 		expect(responsiveSOption).toStrictEqual('57');
 
 		const attributes = await getBlockAttributes();
-		const opacity = attributes['transform-scale-y-s'];
+		const transformScale = attributes['transform-scale-y-s'];
 
-		expect(opacity).toStrictEqual(57);
+		expect(transformScale).toStrictEqual(57);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

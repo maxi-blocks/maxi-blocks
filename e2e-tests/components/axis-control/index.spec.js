@@ -1,11 +1,15 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyTimes,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
 
 describe('AxisControl', () => {
 	it('Checking the axis control', async () => {
@@ -252,5 +256,71 @@ describe('AxisControl', () => {
 
 		expect(pressedMiddle).toMatchSnapshot();
 		expect(pressedBottomTrue).toMatchSnapshot();
+	});
+	it('Check Responsive axis control', async () => {
+		await createNewPost();
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi');
+		await openSidebar(page, 'padding margin');
+
+		// general
+		await page.$$eval(
+			'.maxi-axis-control .maxi-axis-control__content__item__top input',
+			input => input[1].focus()
+		);
+
+		await page.waitForTimeout(100);
+		await page.keyboard.type('50');
+		const paddingValue = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__top-part .maxi-axis-control__content__item__top input',
+			paddingInput => paddingInput[1].placeholder
+		);
+
+		expect(paddingValue).toStrictEqual('50');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await page.$$eval(
+			'.maxi-axis-control .maxi-axis-control__content__item__top input',
+			input => input[1].focus()
+		);
+
+		await page.waitForTimeout(100);
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('70');
+
+		const responsiveSOption = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__top-part .maxi-axis-control__content__item__top input',
+			paddingInput => paddingInput[1].placeholder
+		);
+
+		expect(responsiveSOption).toStrictEqual('70');
+
+		const attributes = await getBlockAttributes();
+		const opacity = attributes['padding-top-s'];
+
+		expect(opacity).toStrictEqual(70);
+
+		// responsive XS
+		await page.waitForTimeout(100);
+		await changeResponsive(page, 'xs');
+
+		const responsiveXsOption = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__top-part .maxi-axis-control__content__item__top input',
+			paddingInput => paddingInput[1].placeholder
+		);
+
+		expect(responsiveXsOption).toStrictEqual('70');
+
+		// responsive M
+		await page.waitForTimeout(100);
+		await changeResponsive(page, 'm');
+
+		const responsiveMOption = await page.$$eval(
+			'.maxi-axis-control__disable-auto .maxi-axis-control__top-part .maxi-axis-control__content__item__top input',
+			paddingInput => paddingInput[1].placeholder
+		);
+
+		expect(responsiveMOption).toStrictEqual('50');
 	});
 });

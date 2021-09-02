@@ -75,8 +75,8 @@ describe('DisplayControl', () => {
 		expect(responsiveMOption).toBeTruthy();
 
 		const expectAttributes = await getBlockAttributes();
-		const position = expectAttributes['display-general'];
+		const display = expectAttributes['display-general'];
 
-		expect(position).toStrictEqual('none');
+		expect(display).toStrictEqual('none');
 	});
 });

@@ -48,38 +48,22 @@ const getBoxObject = props => {
 	return response;
 };
 
-const getCircleObject = (props, target) => {
-	const response = {
-		numberCounter: getNumberCounterStyles(
-			{
-				...getGroupAttributes(props, 'numberCounter'),
-			},
-			target,
-			props.parentBlockStyle
-		),
-	};
-
-	return response;
-};
-
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { uniqueID, parentBlockStyle: blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			' .maxi-number-counter__box': getBoxObject(props),
-			' .maxi-number-counter__box .maxi-number-counter__box__circle':
-				getCircleObject(props, 'circle-bar'),
-			' .maxi-number-counter__box .maxi-number-counter__box__background':
-				getCircleObject(props, 'circle-background'),
-			' .maxi-number-counter__box .maxi-number-counter__box__text':
-				getCircleObject(props, 'text'),
-			' .maxi-number-counter__box .maxi-number-counter__box__text sup':
-				getCircleObject(props, 'sup'),
+			...getNumberCounterStyles({
+				obj: {
+					...getGroupAttributes(props, 'numberCounter'),
+				},
+				target: '.maxi-number-counter__box',
+				blockStyle,
+			}),
 		}),
 	};
-
 	return response;
 };
 

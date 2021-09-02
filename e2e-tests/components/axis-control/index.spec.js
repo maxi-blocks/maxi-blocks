@@ -297,9 +297,9 @@ describe('AxisControl', () => {
 		expect(responsiveSOption).toStrictEqual('70');
 
 		const attributes = await getBlockAttributes();
-		const opacity = attributes['padding-top-s'];
+		const padding = attributes['padding-top-s'];
 
-		expect(opacity).toStrictEqual(70);
+		expect(padding).toStrictEqual(70);
 
 		// responsive XS
 		await page.waitForTimeout(100);

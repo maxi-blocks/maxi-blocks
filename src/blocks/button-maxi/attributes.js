@@ -120,6 +120,7 @@ const attributes = {
 	...attributesData.entrance,
 	...attributesData.transform,
 	...attributesData.zIndex,
+	...attributesData.transitionDuration,
 };
 
 export default attributes;

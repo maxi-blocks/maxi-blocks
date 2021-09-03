@@ -12,6 +12,7 @@ import {
 	getPositionStyles,
 	getSizeStyles,
 	getTransformStyles,
+	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
@@ -68,6 +69,9 @@ const getNormalObject = props => {
 		}),
 		zIndex: getZIndexStyles({
 			...getGroupAttributes(props, 'zIndex'),
+		}),
+		transitionDuration: getTransitionStyles({
+			...getGroupAttributes(props, 'transitionDuration'),
 		}),
 		position: getPositionStyles({
 			...getGroupAttributes(props, 'position'),
@@ -158,6 +162,9 @@ const getHoverContentObject = props => {
 			isHover: true,
 			parentBlockStyle: props.parentBlockStyle,
 			textLevel: 'button',
+		}),
+		transitionDuration: getTransitionStyles({
+			...getGroupAttributes(props, 'transitionDuration'),
 		}),
 	};
 

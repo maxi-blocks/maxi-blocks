@@ -356,6 +356,7 @@ const LibraryContainer = props => {
 		return (
 			<MasonryItem
 				type='svg'
+				target={hit.taxonomies.svg_category}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
 				isPro={hit.taxonomies.cost === 'pro'}
@@ -487,7 +488,7 @@ const LibraryContainer = props => {
 		}
 	};
 
-	/** Shapes Resutls */
+	/** Shapes Results */
 	const svgShapeResults = ({ hit }) => {
 		const shapeType =
 			type === 'button-icon'

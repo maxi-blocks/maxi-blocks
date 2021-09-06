@@ -100,14 +100,6 @@ const TextGenerator = withFormatValue(props => {
 		onChange({ isList: false, content: generatedText[0].props.children });
 	};
 
-	// const replaceContent = () => {
-	// 	replaceText(averageSentencesLength, averageWordsLength);
-	// };
-
-	// const addContent = () => {
-	// 	addText(averageSentencesLength, averageWordsLength);
-	// };
-
 	return (
 		<ToolbarPopover
 			className='toolbar-item__text-generator-blocks'

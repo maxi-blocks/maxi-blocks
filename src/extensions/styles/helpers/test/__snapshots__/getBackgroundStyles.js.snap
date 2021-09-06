@@ -141,9 +141,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg svg *": Object {
     "SVGBackground": Object {
-      "general": Object {
-        "height": "2%",
-      },
+      "general": Object {},
       "label": "SVG Background",
     },
   },
@@ -239,9 +237,7 @@ Object {
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
     "backgroundSVG": Object {
-      "general": Object {
-        "height": "100%",
-      },
+      "general": Object {},
       "label": "SVG Background",
     },
   },

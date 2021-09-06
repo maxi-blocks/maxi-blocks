@@ -54,6 +54,11 @@ describe('DisplayControl', () => {
 
 		expect(responsiveSOption).toBeTruthy();
 
+		const expectAttributes = await getBlockAttributes();
+		const display = expectAttributes['display-s'];
+
+		expect(display).toStrictEqual('inherit');
+
 		// responsive XS
 		await changeResponsive(page, 'xs');
 
@@ -73,10 +78,5 @@ describe('DisplayControl', () => {
 		);
 
 		expect(responsiveMOption).toBeTruthy();
-
-		const expectAttributes = await getBlockAttributes();
-		const display = expectAttributes['display-general'];
-
-		expect(display).toStrictEqual('none');
 	});
 });

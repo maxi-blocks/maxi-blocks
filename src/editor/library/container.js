@@ -33,6 +33,7 @@ import {
 	Menu,
 	HierarchicalMenu,
 	Stats,
+	HitsPerPage,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { uniq, isEmpty, uniqueId, cloneDeep } from 'lodash';
@@ -597,13 +598,20 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<RefinementList
-								className='hidden'
+							<Menu
+								className='maxi-cloud-container__content-svg-shape__categories'
 								attribute='taxonomies.svg_category'
-								defaultRefinement={['Filled']}
 								showLoadingIndicator
 							/>
 							<Stats translations={resultsCount} />
+							<HitsPerPage
+								defaultRefinement={49}
+								items={[
+									{ value: 49, label: 'Show 50 per page' },
+									{ value: 98, label: 'Show 100 per page' },
+									{ value: 196, label: 'Show 200 per page' },
+								]}
+							/>
 						</div>
 						<InfiniteHits hitComponent={svgResults} />
 					</div>

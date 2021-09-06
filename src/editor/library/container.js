@@ -356,6 +356,13 @@ const LibraryContainer = props => {
 		const newContent = svgAttributesReplacer(blockStyle, hit.svg_code);
 		const svgType = hit.taxonomies.svg_category[0];
 
+		const shapeType =
+			type === 'button-icon'
+				? 'icon'
+				: type === 'sidebar-block-shape' || type === 'bg-shape'
+				? 'shape'
+				: type;
+
 		return (
 			<MasonryItem
 				type='svg'
@@ -365,7 +372,10 @@ const LibraryContainer = props => {
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_title}
 				onRequestInsert={() => onRequestInsertSVG(newContent, svgType)}
-				currentItemColorStatus={svgCurrentColorStatus(blockStyle)}
+				currentItemColorStatus={svgCurrentColorStatus(
+					blockStyle,
+					shapeType
+				)}
 			/>
 		);
 	};

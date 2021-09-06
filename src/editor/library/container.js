@@ -115,7 +115,6 @@ const MasonryItem = props => {
 							? serial.replace(' Line', '')
 							: target === 'image-shape' ||
 							  target === 'bg-shape' ||
-							  target === 'block-shape' ||
 							  target === 'sidebar-block-shape' ||
 							  target.includes('Shape')
 							? serial.replace(' Shape', '')
@@ -345,8 +344,10 @@ const LibraryContainer = props => {
 			svgCode
 		).replaceAll(replaceIt, newSvgClass);
 
-		if (isValidTemplate(finalSvgCode)) {
-			updateBlockAttributes(clientId, { content: finalSvgCode });
+		const cleanedContent = DOMPurify.sanitize(finalSvgCode);
+
+		if (isValidTemplate(cleanedContent)) {
+			updateBlockAttributes(clientId, { content: cleanedContent });
 			updateBlockAttributes(clientId, { svgType });
 			onRequestClose();
 		}
@@ -383,7 +384,7 @@ const LibraryContainer = props => {
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
 		if (isValidTemplate(svgCode)) {
-			if (type === 'block-shape' || type === 'sidebar-block-shape') {
+			if (type === 'sidebar-block-shape') {
 				const SVGData = {
 					[`${uniqueID}__${uniqueId()}`]: {
 						color: '',
@@ -497,9 +498,7 @@ const LibraryContainer = props => {
 		const shapeType =
 			type === 'button-icon'
 				? 'icon'
-				: type === 'block-shape' ||
-				  type === 'sidebar-block-shape' ||
-				  type === 'bg-shape'
+				: type === 'sidebar-block-shape' || type === 'bg-shape'
 				? 'shape'
 				: type;
 

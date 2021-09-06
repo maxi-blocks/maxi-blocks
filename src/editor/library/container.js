@@ -34,6 +34,7 @@ import {
 	HierarchicalMenu,
 	Stats,
 	HitsPerPage,
+	MenuSelect,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { uniq, isEmpty, uniqueId, cloneDeep } from 'lodash';
@@ -334,7 +335,7 @@ const LibraryContainer = props => {
 	};
 
 	/** SVG Icons */
-	const onRequestInsertSVG = svgCode => {
+	const onRequestInsertSVG = (svgCode, svgType) => {
 		const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
 		const newSvgClass = `${svgClass}__${uniqueId()}`;
 		const replaceIt = `${svgClass}`;
@@ -346,6 +347,7 @@ const LibraryContainer = props => {
 
 		if (isValidTemplate(finalSvgCode)) {
 			updateBlockAttributes(clientId, { content: finalSvgCode });
+			updateBlockAttributes(clientId, { svgType });
 			onRequestClose();
 		}
 	};
@@ -353,16 +355,17 @@ const LibraryContainer = props => {
 	/** SVG Icons Results */
 	const svgResults = ({ hit }) => {
 		const newContent = svgAttributesReplacer(blockStyle, hit.svg_code);
+		const svgType = hit.taxonomies.svg_category[0];
 
 		return (
 			<MasonryItem
 				type='svg'
-				target={hit.taxonomies.svg_category}
+				target={svgType}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_title}
-				onRequestInsert={() => onRequestInsertSVG(newContent)}
+				onRequestInsert={() => onRequestInsertSVG(newContent, svgType)}
 				currentItemColorStatus={svgCurrentColorStatus(blockStyle)}
 			/>
 		);
@@ -600,10 +603,15 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<Menu
+							<MenuSelect
 								className='maxi-cloud-container__content-svg-shape__categories'
 								attribute='taxonomies.svg_category'
-								showLoadingIndicator
+								translations={{
+									seeAllOption: __(
+										'All icons',
+										'maxi-blocks'
+									),
+								}}
 							/>
 							<Stats translations={resultsCount} />
 							<HitsPerPage

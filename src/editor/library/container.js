@@ -344,10 +344,8 @@ const LibraryContainer = props => {
 			svgCode
 		).replaceAll(replaceIt, newSvgClass);
 
-		const cleanedContent = DOMPurify.sanitize(finalSvgCode);
-
-		if (isValidTemplate(cleanedContent)) {
-			updateBlockAttributes(clientId, { content: cleanedContent });
+		if (isValidTemplate(finalSvgCode)) {
+			updateBlockAttributes(clientId, { content: finalSvgCode });
 			updateBlockAttributes(clientId, { svgType });
 			onRequestClose();
 		}

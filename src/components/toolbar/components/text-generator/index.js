@@ -1,13 +1,11 @@
-/* eslint-disable no-lone-blocks */
-import React, { useState } from 'react';
-
 /**
- * Internal dependencies
+ * WordPress dependencies
  */
 
 import { __ } from '@wordpress/i18n';
-import ToolbarPopover from '../toolbar-popover';
+import { useState } from '@wordpress/element';
 import { dispatch } from '@wordpress/data';
+import { create, insert } from '@wordpress/rich-text';
 
 /**
  * Internal dependencies
@@ -15,13 +13,21 @@ import { dispatch } from '@wordpress/data';
 
 import Button from '../../../button';
 import TextControl from '../../../text-control';
-import { LoremIpsum } from 'react-lorem-ipsum';
-// import { getGroupAttributes } from '../../../../extensions/styles';
+import ToolbarPopover from '../toolbar-popover';
 import { withFormatValue } from '../../../../extensions/text/formats';
+
+/**
+ * External dependencies
+ */
+
+import { LoremIpsum } from 'react-lorem-ipsum';
+
+/**
+ * Styles and icons
+ */
 
 import './editor.scss';
 import { toolbarLoremIpsum } from '../../../../icons';
-import { create, insert } from '@wordpress/rich-text';
 
 const TextGenerator = withFormatValue(props => {
 	const {
@@ -32,10 +38,10 @@ const TextGenerator = withFormatValue(props => {
 		clientId,
 	} = props;
 
+	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
+
 	const [averageSentencesLength, setAverageSentencesLength] = useState(10);
 	const [averageWordsLength, setAverageWordsLength] = useState(15);
-
-	if (blockName !== 'maxi-blocks/text-maxi' && !isCaptionToolbar) return null;
 
 	const addText = (sentencesPerParagraph, wordsPerSentence) => {
 		const generatedText = LoremIpsum({
@@ -94,13 +100,13 @@ const TextGenerator = withFormatValue(props => {
 		onChange({ isList: false, content: generatedText[0].props.children });
 	};
 
-	const replaceContent = () => {
-		replaceText(averageSentencesLength, averageWordsLength);
-	};
+	// const replaceContent = () => {
+	// 	replaceText(averageSentencesLength, averageWordsLength);
+	// };
 
-	const addContent = () => {
-		addText(averageSentencesLength, averageWordsLength);
-	};
+	// const addContent = () => {
+	// 	addText(averageSentencesLength, averageWordsLength);
+	// };
 
 	return (
 		<ToolbarPopover
@@ -109,28 +115,36 @@ const TextGenerator = withFormatValue(props => {
 			icon={toolbarLoremIpsum}
 		>
 			<div className='toolbar-item__text-generator-blocks__popover'>
-				<form>
-					<TextControl
-						label={__('Words per a sentence', 'maxi-blocks')}
-						value={averageWordsLength}
-						onChange={val => setAverageWordsLength(val)}
-						type='number'
-						min='1'
-					/>
-					<TextControl
-						label={__('Sentences', 'maxi-blocks')}
-						value={averageSentencesLength}
-						onChange={val => setAverageSentencesLength(val)}
-						type='number'
-						min='1'
-					/>
-					<Button type='button' onClick={replaceContent}>
-						{__('Replace', 'maxi-blocks')}
-					</Button>
-					<Button type='button' onClick={addContent}>
-						{__('Add', 'maxi-blocks')}
-					</Button>
-				</form>
+				<TextControl
+					label={__('Words per a sentence', 'maxi-blocks')}
+					value={averageWordsLength}
+					onChange={val => setAverageWordsLength(val)}
+					type='number'
+					min='1'
+				/>
+				<TextControl
+					label={__('Sentences', 'maxi-blocks')}
+					value={averageSentencesLength}
+					onChange={val => setAverageSentencesLength(val)}
+					type='number'
+					min='1'
+				/>
+				<Button
+					type='button'
+					onClick={obj =>
+						replaceText(averageSentencesLength, averageWordsLength)
+					}
+				>
+					{__('Replace', 'maxi-blocks')}
+				</Button>
+				<Button
+					type='button'
+					onClick={obj =>
+						addText(averageSentencesLength, averageWordsLength)
+					}
+				>
+					{__('Add', 'maxi-blocks')}
+				</Button>
 			</div>
 		</ToolbarPopover>
 	);

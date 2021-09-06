@@ -33,6 +33,7 @@ import {
 	TransformControl,
 	TypographyControl,
 	ZIndexControl,
+	TransitionControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {
@@ -1102,6 +1103,24 @@ const Inspector = memo(
 														{...getGroupAttributes(
 															attributes,
 															'zIndex'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Hover Transition',
+													'maxi-blocks'
+												),
+												content: (
+													<TransitionControl
+														{...getGroupAttributes(
+															attributes,
+															'transitionDuration'
 														)}
 														onChange={obj =>
 															setAttributes(obj)

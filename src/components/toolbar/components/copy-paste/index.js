@@ -66,6 +66,7 @@ const ATTRIBUTES = [
 	'transform',
 	'typography',
 	'typographyHover',
+	'transitionDuration',
 	'zIndex',
 ];
 const WRAPPER_BLOCKS = [

@@ -110,12 +110,13 @@ const MasonryItem = props => {
 					onClick={onRequestInsert}
 				>
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
-						{target === 'button-icon'
+						{target === 'button-icon' || target.includes('Line')
 							? serial.replace(' Line', '')
 							: target === 'image-shape' ||
 							  target === 'bg-shape' ||
 							  target === 'block-shape' ||
-							  target === 'sidebar-block-shape'
+							  target === 'sidebar-block-shape' ||
+							  target.includes('Shape')
 							? serial.replace(' Shape', '')
 							: serial}
 					</div>

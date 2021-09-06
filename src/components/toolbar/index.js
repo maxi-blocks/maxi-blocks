@@ -121,6 +121,7 @@ const MaxiToolbar = memo(
 			typeOfList,
 			uniqueID,
 			parentBlockStyle,
+			svgType,
 		} = attributes;
 		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
@@ -394,32 +395,36 @@ const MaxiToolbar = memo(
 							)}
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
-									<SvgColor
-										{...getGroupAttributes(
-											attributes,
-											'svg'
-										)}
-										blockName={name}
-										onChange={obj => {
-											setAttributes(obj);
-										}}
-										changeSVGContent={changeSVGContent}
-										type='fill'
-										parentBlockStyle={parentBlockStyle}
-									/>
-									<SvgColor
-										{...getGroupAttributes(
-											attributes,
-											'svg'
-										)}
-										blockName={name}
-										onChange={obj => {
-											setAttributes(obj);
-										}}
-										changeSVGContent={changeSVGContent}
-										type='line'
-										parentBlockStyle={parentBlockStyle}
-									/>
+									{svgType !== 'Line' && (
+										<SvgColor
+											{...getGroupAttributes(
+												attributes,
+												'svg'
+											)}
+											blockName={name}
+											onChange={obj => {
+												setAttributes(obj);
+											}}
+											changeSVGContent={changeSVGContent}
+											type='fill'
+											parentBlockStyle={parentBlockStyle}
+										/>
+									)}
+									{svgType !== 'Shape' && (
+										<SvgColor
+											{...getGroupAttributes(
+												attributes,
+												'svg'
+											)}
+											blockName={name}
+											onChange={obj => {
+												setAttributes(obj);
+											}}
+											changeSVGContent={changeSVGContent}
+											type='line'
+											parentBlockStyle={parentBlockStyle}
+										/>
+									)}
 									<SvgWidth
 										{...getGroupAttributes(
 											attributes,
@@ -434,6 +439,7 @@ const MaxiToolbar = memo(
 										changeSVGStrokeWidth={
 											changeSVGStrokeWidth
 										}
+										type={svgType}
 									/>
 								</>
 							)}

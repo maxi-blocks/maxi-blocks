@@ -617,9 +617,12 @@ const LibraryContainer = props => {
 							<HitsPerPage
 								defaultRefinement={49}
 								items={[
-									{ value: 49, label: 'Show 50 per page' },
-									{ value: 98, label: 'Show 100 per page' },
-									{ value: 196, label: 'Show 200 per page' },
+									{ value: 49, label: 'Show 50 per screen' },
+									{ value: 98, label: 'Show 100 per screen' },
+									{
+										value: 196,
+										label: 'Show 200 per screen',
+									},
 								]}
 							/>
 						</div>

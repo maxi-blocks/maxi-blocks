@@ -19,5 +19,17 @@ const actions = {
 			clientId: clientId || getSelectedBlockClientId(),
 		};
 	},
+	updateFonts(fonts) {
+		return {
+			type: 'UPDATE_FONTS',
+			fonts,
+		};
+	},
+	saveFonts(isUpdate) {
+		return {
+			type: 'SAVE_FONTS',
+			isUpdate,
+		};
+	},
 };
 export default actions;

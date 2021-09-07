@@ -27,6 +27,7 @@ export const typography = {
 	},
 	'line-height-unit-general': {
 		type: 'string',
+		default: 'px',
 	},
 	'line-height-general': {
 		type: 'number',

@@ -167,9 +167,9 @@ describe('TypographyControl', () => {
 		}))(stylesAttributes);
 
 		const expectedAttributes = {
-			'line-height-m': 14,
+			'line-height-m': 24,
 			'letter-spacing-m': 10,
-			'font-size-m': 24,
+			'font-size-m': 19,
 		};
 
 		expect(expectedResult).toStrictEqual(expectedAttributes);

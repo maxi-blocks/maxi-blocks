@@ -80,6 +80,22 @@ const attributes = {
 			type: 'number',
 			default: 10,
 		},
+		'border-top-left-radius-xxl': {
+			type: 'number',
+			default: 15,
+		},
+		'border-top-right-radius-xxl': {
+			type: 'number',
+			default: 15,
+		},
+		'border-bottom-left-radius-xxl': {
+			type: 'number',
+			default: 15,
+		},
+		'border-bottom-right-radius-xxl': {
+			type: 'number',
+			default: 15,
+		},
 	},
 	...attributesData.icon,
 	...attributesData.iconPadding,
@@ -99,19 +115,35 @@ const attributes = {
 		...attributesData.padding,
 		'padding-top-general': {
 			type: 'number',
-			default: 10,
+			default: 15,
 		},
 		'padding-right-general': {
 			type: 'number',
-			default: 20,
+			default: 36,
 		},
 		'padding-bottom-general': {
 			type: 'number',
-			default: 10,
+			default: 15,
 		},
 		'padding-left-general': {
 			type: 'number',
-			default: 20,
+			default: 36,
+		},
+		'padding-top-xxl': {
+			type: 'number',
+			default: 23,
+		},
+		'padding-right-xxl': {
+			type: 'number',
+			default: 55,
+		},
+		'padding-bottom-xxl': {
+			type: 'number',
+			default: 23,
+		},
+		'padding-left-xxl': {
+			type: 'number',
+			default: 55,
 		},
 	},
 	...attributesData.display,

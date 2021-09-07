@@ -61,6 +61,12 @@ const getNormalObject = props => {
 		}),
 	};
 
+	console.log(
+		getSizeStyles({
+			...getGroupAttributes(props, 'svg'),
+		})
+	);
+
 	return response;
 };
 

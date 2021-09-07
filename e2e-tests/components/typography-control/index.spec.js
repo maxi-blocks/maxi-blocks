@@ -144,7 +144,7 @@ describe('TypographyControl', () => {
 			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
 			select => select[2].focus()
 		);
-		await pressKeyTimes('Backspace', '4');
+		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('4');
 
 		// letter-spacing
@@ -167,7 +167,7 @@ describe('TypographyControl', () => {
 		}))(stylesAttributes);
 
 		const expectedAttributes = {
-			'line-height-m': 14,
+			'line-height-m': 24,
 			'letter-spacing-m': 10,
 			'font-size-m': 19,
 		};

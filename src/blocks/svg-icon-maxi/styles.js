@@ -8,7 +8,6 @@ import {
 	getMarginPaddingStyles,
 	getOpacityStyles,
 	getPositionStyles,
-	getSizeStyles,
 	getSvgStyles,
 	getTransformStyles,
 	getZIndexStyles,
@@ -56,30 +55,7 @@ const getNormalObject = props => {
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
 	};
-
-	const { uniqueID } = props;
-
-	if (uniqueID === 'svg-icon-maxi-1909219093') {
-		console.log(
-			`svg: ${JSON.stringify(
-				getSizeStyles({
-					...getGroupAttributes(props, 'svg'),
-				})
-			)}`
-		);
-
-		console.log(
-			`size: ${JSON.stringify(
-				getSizeStyles({
-					...getGroupAttributes(props, 'size'),
-				})
-			)}`
-		);
-	}
 
 	return response;
 };

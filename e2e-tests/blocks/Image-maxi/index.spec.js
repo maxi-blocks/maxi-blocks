@@ -114,7 +114,7 @@ describe('Image Maxi', () => {
 		await page.waitForTimeout(200);
 
 		await inputs[4].focus();
-		await pressKeyTimes('Backspace', 4);
+		await page.keyboard.press('Backspace');
 		await page.waitForTimeout(200);
 		await page.keyboard.type('2');
 		await page.waitForTimeout(200);
@@ -136,7 +136,7 @@ describe('Image Maxi', () => {
 
 		const expectedAttributesTwo = {
 			'font-size-m': 19,
-			'line-height-m': 12,
+			'line-height-m': 22,
 			'letter-spacing-m': 11,
 		};
 

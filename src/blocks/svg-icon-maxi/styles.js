@@ -61,11 +61,25 @@ const getNormalObject = props => {
 		}),
 	};
 
-	console.log(
-		getSizeStyles({
-			...getGroupAttributes(props, 'svg'),
-		})
-	);
+	const { uniqueID } = props;
+
+	if (uniqueID === 'svg-icon-maxi-1909219093') {
+		console.log(
+			`svg: ${JSON.stringify(
+				getSizeStyles({
+					...getGroupAttributes(props, 'svg'),
+				})
+			)}`
+		);
+
+		console.log(
+			`size: ${JSON.stringify(
+				getSizeStyles({
+					...getGroupAttributes(props, 'size'),
+				})
+			)}`
+		);
+	}
 
 	return response;
 };

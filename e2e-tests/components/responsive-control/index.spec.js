@@ -61,18 +61,18 @@ describe('ResponsiveControl', () => {
 		await changeResponsive(page, 's');
 		await input.focus();
 		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('1855');
+		await page.keyboard.type('855');
 		const zIndexS = await page.$eval(
 			'.maxi-responsive-control input',
 			button => button.value
 		);
 
-		expect(zIndexS).toStrictEqual('1855');
+		expect(zIndexS).toStrictEqual('855');
 
 		const attributes = await getBlockAttributes();
 		const zIndex = attributes['breakpoints-s'];
 
-		expect(zIndex).toStrictEqual(1855);
+		expect(zIndex).toStrictEqual(855);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

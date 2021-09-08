@@ -69,34 +69,34 @@ describe('FancyRadioControl', () => {
 			await pressKeyTimes('Backspace', '3');
 			await page.keyboard.type('252');
 
-			const sizeSNumber = await accordionPanel.$$eval(
+			const heightValueS = await accordionPanel.$$eval(
 				'.maxi-full-size-control .maxi-advanced-number-control input',
 				sizeInput => sizeInput[0].value
 			);
-			expect(sizeSNumber).toStrictEqual('252');
+			expect(heightValueS).toStrictEqual('252');
 
 			const attributes = await getBlockAttributes();
-			const size = attributes['container-height-s'];
+			const height = attributes['container-height-s'];
 
-			expect(size).toStrictEqual(252);
+			expect(height).toStrictEqual(252);
 
 			// xs
 			await changeResponsive(page, 'xs');
 
-			const sizeXsNumber = await accordionPanel.$$eval(
+			const heightValueXs = await accordionPanel.$$eval(
 				'.maxi-full-size-control .maxi-advanced-number-control input',
 				sizeInput => sizeInput[0].value
 			);
-			expect(sizeXsNumber).toStrictEqual('252');
+			expect(heightValueXs).toStrictEqual('252');
 
 			// m
 			await changeResponsive(page, 'm');
 
-			const sizeMNumber = await accordionPanel.$$eval(
+			const heightValueM = await accordionPanel.$$eval(
 				'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size input',
 				sizeInput => sizeInput[0].value
 			);
-			expect(sizeMNumber).toStrictEqual('856');
+			expect(heightValueM).toStrictEqual('856');
 		});
 	});
 });

@@ -19,7 +19,7 @@ const save = props => {
 
 	const classes = 'maxi-number-counter-block';
 
-	const radius = attributes['number-counter-radius'];
+	const radius = 90;
 	const stroke = attributes['number-counter-stroke'];
 	const circleStatus = attributes['number-counter-circle-status'];
 	const roundedStatus = attributes['number-counter-rounded-status'];
@@ -31,12 +31,7 @@ const save = props => {
 			{...getMaxiBlockBlockAttributes(props)}
 			isSave
 		>
-			<div
-				className='maxi-number-counter__box'
-				style={{
-					width: `${radius + stroke / 2}px`,
-				}}
-			>
+			<div className='maxi-number-counter__box'>
 				{!circleStatus && (
 					<svg
 						viewBox={`0 0 ${radius * 2 + stroke} ${

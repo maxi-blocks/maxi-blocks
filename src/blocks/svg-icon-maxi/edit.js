@@ -41,10 +41,7 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate(prevProps) {
-		if (
-			this.props.name === 'maxi-blocks/svg-icon-maxi' &&
-			prevProps.attributes.uniqueID !== this.props.attributes.uniqueID
-		) {
+		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {
 			const { updateBlockAttributes } = dispatch('core/block-editor');
 
 			const svgCode = this.props.attributes.content;

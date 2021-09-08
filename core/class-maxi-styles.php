@@ -27,14 +27,18 @@ class MaxiBlocks_Styles {
 	 * Enqueuing styles
 	 */
 	public function enqueue_styles() {
-		$styles = $this->getStyles();
+		$post_content = $this->getPostMeta();
+		$styles = $this->getStyles($post_content);
+		$fonts = $this->getFonts($post_content);
+
 		if ($styles) {
 			// Inline styles
 			wp_register_style('maxi-blocks', false);
 			wp_enqueue_style('maxi-blocks');
 			wp_add_inline_style('maxi-blocks', $styles);
-
-			$this->enqueue_fonts($styles);
+		}
+		if ($fonts) {
+			$this->enqueue_fonts($fonts);
 		}
 
 		wp_localize_script('maxi-front-scripts-js', 'maxi_custom_data', [
@@ -43,30 +47,54 @@ class MaxiBlocks_Styles {
 	}
 
 	/**
-	 * Gets meta content
+	 * Gets post meta content
 	 */
-	public function getStyles() {
+	public function getPostMeta() {
 		global $post;
+
 		if (!$post || !isset($post->ID)) {
 			return false;
 		}
 
-		$styles = get_option("mb_post_api_{$post->ID}");
+		$post_content = get_option("mb_post_api_{$post->ID}");
 
-		if (!$styles) {
+		if (!$post_content) {
 			return false;
 		}
 
+		return $post_content;
+	}
+
+	/**
+	 * Gets post styles content
+	 */
+	public function getStyles($post_content) {
 		$style =
 			is_preview() || is_admin()
-				? $styles['_maxi_blocks_styles_preview']
-				: $styles['_maxi_blocks_styles'];
+				? $post_content['_maxi_blocks_styles_preview']
+				: $post_content['_maxi_blocks_styles'];
 
 		if (!$style || empty($style)) {
 			return false;
 		}
 
 		return $style;
+	}
+
+	/**
+	 * Gets post styles content
+	 */
+	public function getFonts($post_content) {
+		$fonts =
+			is_preview() || is_admin()
+				? $post_content['_maxi_blocks_fonts_preview']
+				: $post_content['_maxi_blocks_fonts'];
+
+		if (!$fonts || empty($fonts)) {
+			return false;
+		}
+
+		return $fonts;
 	}
 
 	/**
@@ -93,18 +121,15 @@ class MaxiBlocks_Styles {
 	 * @return object   Font name with font options
 	 */
 
-	public function enqueue_fonts($styles) {
-		preg_match_all('/font-family:(\w+);/', $styles, $fonts);
-		$fonts = array_unique($fonts[1]);
-
+	public function enqueue_fonts($fonts) {
 		if (empty($fonts)) {
 			return;
 		}
 
 		foreach ($fonts as $font) {
 			wp_enqueue_style(
-				"{$font}",
-				"https://fonts.googleapis.com/css2?family={$font}",
+				$font,
+				"https://fonts.googleapis.com/css2?family=$font:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900",
 			);
 		}
 	}

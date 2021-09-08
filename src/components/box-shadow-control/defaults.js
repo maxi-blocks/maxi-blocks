@@ -1,7 +1,6 @@
 import boxShadow from '../../extensions/styles/defaults/boxShadow';
 
 export const boxShadowNone = {
-	'box-shadow-color': boxShadow['box-shadow-color-general'].default,
 	'box-shadow-horizontal': boxShadow['box-shadow-horizontal-general'].default,
 	'box-shadow-vertical': boxShadow['box-shadow-vertical-general'].default,
 	'box-shadow-blur': boxShadow['box-shadow-blur-general'].default,
@@ -9,25 +8,25 @@ export const boxShadowNone = {
 };
 
 export const boxShadowTotal = {
-	'box-shadow-color': 'var(--maxi-shadow-color)',
+	'box-shadow-palette-opacity': 23,
 	'box-shadow-horizontal': 0,
 	'box-shadow-vertical': 30,
-	'box-shadow-blur': 87,
+	'box-shadow-blur': 50,
 	'box-shadow-spread': 0,
 };
 
 export const boxShadowBottom = {
-	'box-shadow-color': 'var(--maxi-shadow-color)',
+	'box-shadow-palette-opacity': 50,
 	'box-shadow-horizontal': 0,
-	'box-shadow-vertical': 20,
-	'box-shadow-blur': 30,
-	'box-shadow-spread': 10,
+	'box-shadow-vertical': 30,
+	'box-shadow-blur': 50,
+	'box-shadow-spread': 0,
 };
 
 export const boxShadowSolid = {
-	'box-shadow-color': 'var(--maxi-shadow-color)',
+	'box-shadow-palette-opacity': 50,
 	'box-shadow-horizontal': 5,
-	'box-shadow-vertical': 5,
+	'box-shadow-vertical': 6,
 	'box-shadow-blur': 0,
 	'box-shadow-spread': 0,
 };

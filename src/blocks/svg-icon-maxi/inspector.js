@@ -118,7 +118,8 @@ const Inspector = props => {
 
 												const fillColorStr =
 													getColorRGBAString({
-														firstVar: 'icon-fill',
+														firstVar:
+															'color-icon-fill',
 														secondVar: `color-${svgPaletteFillColor}`,
 														opacity:
 															svgPaletteFillOpacity,
@@ -127,7 +128,8 @@ const Inspector = props => {
 													});
 												const lineColorStr =
 													getColorRGBAString({
-														firstVar: 'icon-line',
+														firstVar:
+															'color-icon-line',
 														secondVar: `color-${svgPaletteLineColor}`,
 														opacity:
 															svgPaletteLineOpacity,
@@ -249,7 +251,7 @@ const Inspector = props => {
 																getColorRGBAString(
 																	{
 																		firstVar:
-																			'icon-fill',
+																			'color-icon-fill',
 																		secondVar: `color-${obj['svg-palette-fill-color']}`,
 																		opacity:
 																			obj[
@@ -290,7 +292,7 @@ const Inspector = props => {
 																getColorRGBAString(
 																	{
 																		firstVar:
-																			'icon-line',
+																			'color-icon-line',
 																		secondVar: `color-${obj['svg-palette-line-color']}`,
 																		opacity:
 																			obj[

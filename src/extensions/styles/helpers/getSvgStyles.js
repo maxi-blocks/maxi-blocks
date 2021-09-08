@@ -65,7 +65,7 @@ const getSVGPathFillStyles = (obj, blockStyle) => {
 
 	if (obj['svg-palette-fill-color-status'] && obj['svg-palette-fill-color'])
 		response.general.fill = getColorRGBAString({
-			firstVar: 'icon-fill',
+			firstVar: 'color-icon-fill',
 			secondVar: `color-${obj['svg-palette-fill-color']}`,
 			opacity: obj['svg-palette-fill-opacity'],
 			blockStyle,
@@ -87,7 +87,7 @@ const getSVGPathStrokeStyles = (obj, blockStyle) => {
 
 	if (obj['svg-palette-line-color-status'] && obj['svg-palette-line-color'])
 		response.general.stroke = getColorRGBAString({
-			firstVar: 'icon-line',
+			firstVar: 'color-icon-line',
 			secondVar: `color-${obj['svg-palette-line-color']}`,
 			opacity: obj['svg-palette-line-opacity'],
 			blockStyle,

@@ -36,7 +36,7 @@ const SvgColorToolbar = props => {
 		attr[`svg-palette-${type}-color-status`]
 			? getColorRGBAString({
 					firstVar: `icon-${type}`,
-					secondVar: `${attr[`svg-palette-${type}-color`]}`,
+					secondVar: `color-${attr[`svg-palette-${type}-color`]}`,
 					opacity: attr[`svg-palette-${type}-opacity`],
 					blockStyle: parentBlockStyle,
 			  })

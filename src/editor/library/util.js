@@ -125,7 +125,7 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 	const fillColor = !currentAttributes[`${target}-palette-fill-color-status`]
 		? currentAttributes[`${target}-fill-color`]
 		: getColorRGBAString({
-				firstVar: 'color-icon-fill',
+				firstVar: 'icon-fill',
 				secondVar: `color-${
 					currentAttributes[`${target}-palette-fill-color`]
 				}`,
@@ -136,7 +136,7 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 	const lineColor = !currentAttributes[`${target}-palette-line-color-status`]
 		? currentAttributes[`${target}-line-color`]
 		: getColorRGBAString({
-				firstVar: 'color-icon-line',
+				firstVar: 'icon-line',
 				secondVar: `color-${
 					currentAttributes[`${target}-palette-line-color`]
 				}`,

@@ -41,11 +41,10 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate(prevProps) {
+		const { updateBlockAttributes } = dispatch('core/block-editor');
+		const svgCode = this.props.attributes.content;
+
 		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {
-			const { updateBlockAttributes } = dispatch('core/block-editor');
-
-			const svgCode = this.props.attributes.content;
-
 			const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
 			const newSvgClass = `${svgClass}__${uniqueId()}`;
 			const replaceIt = `${svgClass}`;
@@ -69,10 +68,31 @@ class edit extends MaxiBlockComponent {
 				this.props.attributes
 			);
 
-			if (this.resizableObject.current.state.width !== `${svgWidth}%`)
+			if (this.resizableObject.current.state.width !== `${svgWidth}%`) {
+				const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
 				this.resizableObject.current.updateSize({
-					width: `${svgWidth}${svgWidthUnit}`,
+					width: fullWidthValue,
 				});
+				const regexLineToChange = new RegExp('width=".+?(?=")');
+				const changeTo = `width="${fullWidthValue}`;
+
+				const regexLineToChange2 = new RegExp('height=".+?(?=")');
+				const changeTo2 = `height="${fullWidthValue}`;
+
+				let newContent = svgCode
+					.replace(regexLineToChange, changeTo)
+					.replace(regexLineToChange2, changeTo2);
+
+				if (newContent.indexOf('viewBox') === -1) {
+					const changeTo3 = ' viewBox="0 0 64 64"><defs>';
+					newContent = newContent.replace(/><defs>/, changeTo3);
+				}
+
+				if (!isEmpty(newContent))
+					updateBlockAttributes(this.props.clientId, {
+						content: newContent,
+					});
+			}
 		}
 	}
 

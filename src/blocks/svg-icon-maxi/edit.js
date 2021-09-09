@@ -73,19 +73,14 @@ class edit extends MaxiBlockComponent {
 				this.resizableObject.current.updateSize({
 					width: fullWidthValue,
 				});
-				const regexLineToChange = new RegExp('width=".+?(?=")');
-				const changeTo = `width="${fullWidthValue}`;
-
-				const regexLineToChange2 = new RegExp('height=".+?(?=")');
-				const changeTo2 = `height="${fullWidthValue}`;
 
 				let newContent = svgCode
-					.replace(regexLineToChange, changeTo)
-					.replace(regexLineToChange2, changeTo2);
+					.replace('height="64px"', '')
+					.replace('width="64px"', '');
 
 				if (newContent.indexOf('viewBox') === -1) {
-					const changeTo3 = ' viewBox="0 0 64 64"><defs>';
-					newContent = newContent.replace(/><defs>/, changeTo3);
+					const changeTo = ' viewBox="0 0 64 64"><defs>';
+					newContent = newContent.replace(/><defs>/, changeTo);
 				}
 
 				if (!isEmpty(newContent))

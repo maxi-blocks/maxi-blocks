@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getColorRGBAString from '../getColorRGBAString';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
  * External dependencies
@@ -22,10 +23,10 @@ const getSVGWidthStyles = obj => {
 		if (!isNil(obj[`svg-width-${breakpoint}`])) {
 			response[breakpoint]['max-width'] = `${
 				obj[`svg-width-${breakpoint}`]
-			}${obj[`svg-width-unit-${breakpoint}`]}`;
+			}${getLastBreakpointAttribute('svg-width-unit', breakpoint, obj)}`;
 			response[breakpoint]['max-height'] = `${
 				obj[`svg-width-${breakpoint}`]
-			}${obj[`svg-width-unit-${breakpoint}`]}`;
+			}${getLastBreakpointAttribute('svg-width-unit', breakpoint, obj)}`;
 		}
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')

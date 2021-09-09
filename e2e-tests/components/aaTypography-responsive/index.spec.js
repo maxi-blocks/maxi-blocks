@@ -379,8 +379,7 @@ describe('OpacityControl', () => {
 		);
 
 		expect(heightMNumber).toStrictEqual('1.555');
-<<<<<<< Updated upstream
-	});
+	}); */
 
 	it.only('Check Responsive palette-color-status', async () => {
 		await createNewPost();
@@ -437,7 +436,4 @@ describe('OpacityControl', () => {
 
 		expect(customMColorCheck).toStrictEqual(false); // revise
 	});
-=======
-	}); */
->>>>>>> Stashed changes
 });

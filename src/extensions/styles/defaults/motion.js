@@ -38,6 +38,14 @@ export const motion = {
 		type: 'boolean',
 		default: true,
 	},
+	'motion-transition-duration-general': {
+		type: 'number',
+		default: 0,
+	},
+	'motion-transition-easing': {
+		type: 'number',
+		default: 0,
+	},
 };
 
 export const entrance = {

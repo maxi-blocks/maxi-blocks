@@ -1099,6 +1099,7 @@ const Inspector = memo(
 												),
 												content: (
 													<MotionControl
+														uniqueID={uniqueID}
 														{...getGroupAttributes(
 															attributes,
 															'motion'
@@ -1106,6 +1107,8 @@ const Inspector = memo(
 														onChange={obj =>
 															setAttributes(obj)
 														}
+														blockStyle={blockStyle}
+														clientId={clientId}
 													/>
 												),
 											},

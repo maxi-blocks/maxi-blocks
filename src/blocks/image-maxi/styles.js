@@ -19,6 +19,7 @@ import {
 	getTransformStyles,
 	getTypographyStyles,
 	getZIndexStyles,
+	getMotionDuration,
 } from '../../extensions/styles/helpers';
 
 /**
@@ -234,12 +235,23 @@ const getFigcaptionObject = props => {
 	return response;
 };
 
+const getMotionDurationObject = props => {
+	const response = {
+		transition: getMotionDuration({
+			...getGroupAttributes(props, 'motion'),
+		}),
+	};
+
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
+			' .maxi-motion-effect ': getMotionDurationObject(props),
 			' .maxi-image-block-wrapper': getImageWrapperObject(props),
 			':hover .maxi-image-block-wrapper': getImageHoverObject(props),
 			' .maxi-image-block-wrapper img': getImageObject(props),

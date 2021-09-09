@@ -25,5 +25,6 @@ export { default as getTransformStyles } from './getTransformStyles';
 export { default as getTransitionStyles } from './getTransitionStyles';
 export { default as getTypographyStyles } from './getTypographyStyles';
 export { default as getZIndexStyles } from './getZIndexStyles';
+export { default as getMotionDuration } from './getMotionDuration';
 export * from './getBackgroundStyles';
 export * from './getShapeDividerStyles';

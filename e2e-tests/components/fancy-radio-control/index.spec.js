@@ -1,20 +1,11 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openAdvancedSidebar,
-	changeResponsive,
-	openSidebar,
-} from '../../utils';
+import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
 
 describe('FancyRadioControl', () => {
 	it('Checking the fancy radio control', async () => {

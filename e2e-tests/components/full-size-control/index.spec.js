@@ -89,4 +89,68 @@ describe('FullSizeControl', () => {
 		);
 		expect(heightM).toStrictEqual('330');
 	});
+
+	it('Checking responsive container height', async () => {
+		await insertBlock('Container Maxi');
+		await page.$eval('.maxi-container-block', container =>
+			container.focus()
+		);
+		const accordionPanel = await openSidebar(page, 'width height');
+
+		const input = await accordionPanel.$$(
+			'.maxi-full-size-control .maxi-advanced-number-control input'
+		);
+
+		await input[0].focus();
+		await page.waitForTimeout(100);
+		await page.keyboard.type('865');
+
+		const heightValue = await accordionPanel.$$eval(
+			'.maxi-full-size-control .maxi-advanced-number-control input',
+			heightInput => heightInput[0].value
+		);
+		expect(heightValue).toStrictEqual('865');
+
+		// s
+		await changeResponsive(page, 's');
+
+		const inputS = await accordionPanel.$$(
+			'.maxi-full-size-control .maxi-advanced-number-control input'
+		);
+
+		await page.waitForTimeout(100);
+		await inputS[0].focus();
+		await page.waitForTimeout(100);
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('85');
+
+		const heightValueS = await accordionPanel.$$eval(
+			'.maxi-full-size-control .maxi-advanced-number-control input',
+			heightInput => heightInput[0].value
+		);
+		expect(heightValueS).toStrictEqual('885');
+
+		const attributes = await getBlockAttributes();
+		const height = attributes['container-height-s'];
+
+		expect(height).toStrictEqual(885);
+
+		// xs
+		await changeResponsive(page, 'xs');
+
+		const heightValueXs = await accordionPanel.$$eval(
+			'.maxi-full-size-control .maxi-advanced-number-control input',
+			heightInput => heightInput[0].value
+		);
+		expect(heightValueXs).toStrictEqual('885');
+
+		// m
+		await changeResponsive(page, 'm');
+
+		const heightValueM = await accordionPanel.$$eval(
+			'.maxi-full-size-control .maxi-advanced-number-control input',
+			heightInput => heightInput[0].value
+		);
+		expect(heightValueM).toStrictEqual('865');
+	});
 });

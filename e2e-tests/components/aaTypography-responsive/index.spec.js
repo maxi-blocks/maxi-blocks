@@ -236,7 +236,7 @@ describe('OpacityControl', () => {
 			select => select[0].checked
 		);
 
-		expect(customColorCheck).toStrictEqual(false);
+		expect(customColorCheck).toStrictEqual(false); // revise
 
 		// s
 		debugger;
@@ -251,9 +251,27 @@ describe('OpacityControl', () => {
 
 		expect(customSColorCheck).toBeTruthy();
 
-		const attributes = await getBlockAttributes();
+		/* const attributes = await getBlockAttributes();
 		const color = attributes['palette-color-status-s'];
 
-		expect(color).toStrictEqual(true);
+		expect(color).toStrictEqual(true); */
+
+		// xs
+		await changeResponsive(page, 'xs');
+		const customXsColorCheck = await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
+			select => select[1].checked
+		);
+
+		expect(customXsColorCheck).toBeTruthy();
+
+		// m
+		await changeResponsive(page, 'm');
+		const customMColorCheck = await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
+			select => select[0].checked
+		);
+
+		expect(customMColorCheck).toStrictEqual(false); // revise
 	});
 });

@@ -200,7 +200,169 @@ describe('OpacityControl', () => {
 		);
 		expect(heightMNumber).toStrictEqual('1.555');
 	});
-	it('Check Responsive color', async () => {
+
+	it('Check Responsive letter-spacing', async () => {
+		// await changeResponsive(page, 'general');
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi');
+		const accordionPanel = await openSidebar(page, 'typography');
+
+		const input = await accordionPanel.$$(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input'
+		);
+
+		await input[0].focus();
+		await page.waitForTimeout(100);
+		await page.keyboard.type('2');
+
+		const heightNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input',
+			heightInput => heightInput[0].value
+		);
+		expect(heightNumber).toStrictEqual('2');
+		// s
+		await changeResponsive(page, 's');
+
+		const inputS = await accordionPanel.$$(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input'
+		);
+
+		await page.waitForTimeout(100);
+		await inputS[0].focus();
+		await page.waitForTimeout(100);
+		await page.keyboard.type('3');
+
+		const heightSNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input',
+			heightInput => heightInput[0].value
+		);
+		expect(heightSNumber).toStrictEqual('23');
+
+		const attributes = await getBlockAttributes();
+		const height = attributes['letter-spacing-s'];
+
+		expect(height).toStrictEqual(23);
+
+		// xs
+		await changeResponsive(page, 'xs');
+
+		const heightXsNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input',
+			heightInput => heightInput[0].value
+		);
+		expect(heightXsNumber).toStrictEqual('23');
+
+		// m
+		await changeResponsive(page, 'm');
+
+		const heightMNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input',
+			heightInput => heightInput[0].value
+		);
+		expect(heightMNumber).toStrictEqual('2');
+	});
+
+	it('Check Responsive font-family', async () => {
+		// await changeResponsive(page, 'general');
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi');
+		const accordionPanel = await openSidebar(page, 'typography');
+		const closeAccordion = await page.$$(
+			'.interface-interface-skeleton__sidebar .edit-post-sidebar__panel-tabs button'
+		);
+		const input = await accordionPanel.$(
+			'.maxi-typography-control .maxi-typography-control__font-family input'
+		);
+		await input.focus();
+		await page.keyboard.type('Lato');
+		await page.keyboard.press('Enter');
+
+		const typographyInput = await accordionPanel.$(
+			'.maxi-typography-control .maxi-typography-control__font-family input'
+		);
+
+		expect(typographyInput).toStrictEqual('Lato');
+
+		// s
+		await closeAccordion[2].click();
+		await changeResponsive(page, 's');
+		await openSidebar(page, 'typography');
+
+		await input.focus();
+		await pressKeyTimes('Backspace', '4');
+		await page.keyboard.type('Arial');
+		await page.keyboard.press('Enter');
+
+		const typographyInputS = await accordionPanel.$(
+			'.maxi-typography-control .maxi-typography-control__font-family input'
+		);
+
+		expect(typographyInputS).toStrictEqual('Arial');
+
+		const attributes = await getBlockAttributes();
+		const height = attributes['font-family-s'];
+
+		expect(height).toStrictEqual('Arial');
+
+		// xs
+		await closeAccordion[2].click();
+		await changeResponsive(page, 'xs');
+		await openSidebar(page, 'typography');
+
+		const typographyInputXs = await accordionPanel.$(
+			'.maxi-typography-control .maxi-typography-control__font-family input'
+		);
+
+		expect(typographyInputXs).toStrictEqual('Arial');
+
+		// m
+		await closeAccordion[2].click();
+		await changeResponsive(page, 'm');
+		await openSidebar(page, 'typography');
+
+		const typographyInputM = await accordionPanel.$(
+			'.maxi-typography-control .maxi-typography-control__font-family input'
+		);
+
+		expect(typographyInputM).toStrictEqual('Lato');
+	});
+	/* it.only('Check Responsive font-size-unit', async () => {
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi');
+		const accordionPanel = await openSidebar(page, 'typography');
+
+		const selector = await accordionPanel.$$(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size select'
+		);
+		await selector.select('em');
+		await page.waitForTimeout(100);
+
+		const sizeNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size select',
+			sizeInput => sizeInput.value
+		);
+		expect(sizeNumber).toStrictEqual('em');
+	}); 
+
+	it.only('Check Responsive font-size-unit', async () => {
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi');
+		const accordionPanel = await openSidebar(page, 'typography');
+
+		const selector = await accordionPanel.$$(
+			'.maxi-typography-control .maxi-typography-control__weight select'
+		);
+		await selector.select('100');
+		await page.waitForTimeout(100);
+
+		const sizeNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size select',
+			sizeInput => sizeInput.value
+		);
+		expect(sizeNumber).toStrictEqual('100');
+	}); */
+
+	/* it('Check Responsive color', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
@@ -217,6 +379,7 @@ describe('OpacityControl', () => {
 		);
 
 		expect(heightMNumber).toStrictEqual('1.555');
+<<<<<<< Updated upstream
 	});
 
 	it.only('Check Responsive palette-color-status', async () => {
@@ -274,4 +437,7 @@ describe('OpacityControl', () => {
 
 		expect(customMColorCheck).toStrictEqual(false); // revise
 	});
+=======
+	}); */
+>>>>>>> Stashed changes
 });

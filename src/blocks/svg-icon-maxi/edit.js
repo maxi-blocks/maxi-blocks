@@ -207,28 +207,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		setAttributes,
 	} = ownProps;
 
-	const changeSVGSize = width => {
-		const regexLineToChange = new RegExp('width=".+?(?=")');
-		const changeTo = `width="${width}`;
-
-		const regexLineToChange2 = new RegExp('height=".+?(?=")');
-		const changeTo2 = `height="${width}`;
-
-		let newContent = content
-			.replace(regexLineToChange, changeTo)
-			.replace(regexLineToChange2, changeTo2);
-
-		if (newContent.indexOf('viewBox') === -1) {
-			const changeTo3 = ' viewBox="0 0 64 64"><defs>';
-			newContent = newContent.replace(/><defs>/, changeTo3);
-		}
-
-		if (!isEmpty(newContent))
-			setAttributes({
-				content: newContent,
-			});
-	};
-
 	const changeSVGStrokeWidth = width => {
 		if (width) {
 			const regexLineToChange = new RegExp('stroke-width:.+?(?=})', 'g');
@@ -287,7 +265,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	return {
-		changeSVGSize,
 		changeSVGStrokeWidth,
 		changeSVGContent,
 		changeSVGContentWithBlockStyle,

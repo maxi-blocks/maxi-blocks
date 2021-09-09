@@ -218,4 +218,42 @@ describe('OpacityControl', () => {
 
 		expect(heightMNumber).toStrictEqual('1.555');
 	});
+
+	it.only('Check Responsive palette-color-status', async () => {
+		await createNewPost();
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi');
+		const accordionPanel = await openSidebar(page, 'typography');
+
+		const customColor = await accordionPanel.$$(
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option label'
+		);
+
+		// general
+		await customColor[0].click();
+		const customColorCheck = await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
+			select => select[0].checked
+		);
+
+		expect(customColorCheck).toStrictEqual(false);
+
+		// s
+		debugger;
+		await changeResponsive(page, 's');
+		await page.waitForTimeout(100);
+		await customColor[1].click();
+		await page.waitForTimeout(100);
+		const customSColorCheck = await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
+			select => select[1].checked
+		);
+
+		expect(customSColorCheck).toBeTruthy();
+
+		const attributes = await getBlockAttributes();
+		const color = attributes['palette-color-status-s'];
+
+		expect(color).toStrictEqual(true);
+	});
 });

@@ -47,6 +47,7 @@ const SvgWidth = props => {
 					breakpoint={breakpoint}
 				/>
 				<SvgStrokeWidthControl
+					prefix='svg-'
 					{...props}
 					onChange={obj => {
 						onChange(obj);

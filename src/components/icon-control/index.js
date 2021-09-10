@@ -97,12 +97,19 @@ const IconControl = props => {
 						max={999}
 						initial={1}
 						step={1}
-						value={props['icon-spacing']}
-						onChangeValue={val => onChange({ 'icon-spacing': val })}
+						value={props[`icon-spacing-${deviceType}`]}
+						onChangeValue={val => {
+							onChange({
+								[`icon-spacing-${deviceType}`]:
+									val !== undefined && val !== '' ? val : '',
+							});
+						}}
 						onReset={() =>
 							onChange({
-								'icon-spacing':
-									getDefaultAttribute('icon-spacing'),
+								[`icon-spacing-${deviceType}`]:
+									getDefaultAttribute(
+										`icon-spacing-${deviceType}`
+									),
 							})
 						}
 					/>

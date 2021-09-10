@@ -290,7 +290,7 @@ const IconControl = props => {
 							}
 						/>
 					)}
-					{iconStyle === 'border' && (
+					{
 						<BorderControl
 							{...getGroupAttributes(props, [
 								'iconBorder',
@@ -302,7 +302,7 @@ const IconControl = props => {
 							breakpoint={deviceType}
 							clientId={clientId}
 						/>
-					)}
+					}
 					<AxisControl
 						{...getGroupAttributes(props, 'iconPadding')}
 						label={__('Icon Padding', 'maxi-blocks')}

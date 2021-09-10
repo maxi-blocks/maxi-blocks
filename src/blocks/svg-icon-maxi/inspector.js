@@ -47,7 +47,6 @@ const Inspector = props => {
 		attributes,
 		changeSVGContent,
 		changeSVGContentWithBlockStyle,
-		changeSVGSize,
 		changeSVGStrokeWidth,
 		clientId,
 		deviceType,
@@ -353,11 +352,6 @@ const Inspector = props => {
 													)}
 													onChange={obj => {
 														setAttributes(obj);
-														changeSVGSize(
-															obj[
-																`svg-width-${deviceType}`
-															]
-														);
 													}}
 													breakpoint={deviceType}
 												/>

@@ -96,7 +96,7 @@ const IconControl = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Spacing', 'maxi-blocks')}
-						min={1}
+						min={0}
 						max={999}
 						initial={1}
 						step={1}
@@ -128,7 +128,7 @@ const IconControl = props => {
 					/>
 					<FancyRadioControl
 						label={__(
-							'Inherit Colour/Backgrond from Button',
+							'Inherit Colour/Background from Button',
 							'maxi-block'
 						)}
 						fullWidthMode

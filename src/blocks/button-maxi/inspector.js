@@ -236,7 +236,7 @@ const Inspector = memo(
 													/>
 												),
 											},
-											deviceType === 'general' && {
+											{
 												label: __(
 													'Icon',
 													'maxi-blocks'

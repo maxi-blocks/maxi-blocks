@@ -13,13 +13,71 @@ export const icon = {
 		type: 'string',
 		default: 'right',
 	},
-	'icon-size': {
+	'icon-size-general': {
 		type: 'number',
 		default: 32,
 	},
-	'icon-spacing': {
+	'icon-size-xxl': {
+		type: 'number',
+	},
+	'icon-size-xl': {
+		type: 'number',
+	},
+	'icon-size-l': {
+		type: 'number',
+	},
+	'icon-size-m': {
+		type: 'number',
+	},
+	'icon-size-s': {
+		type: 'number',
+	},
+	'icon-size-xs': {
+		type: 'number',
+	},
+	'icon-spacing-general': {
 		type: 'number',
 		default: 5,
+	},
+	'icon-spacing-xxl': {
+		type: 'number',
+	},
+	'icon-spacing-xl': {
+		type: 'number',
+	},
+	'icon-spacing-l': {
+		type: 'number',
+	},
+	'icon-spacing-m': {
+		type: 'number',
+	},
+	'icon-spacing-s': {
+		type: 'number',
+	},
+	'icon-spacing-xs': {
+		type: 'number',
+	},
+	'icon-stroke-general': {
+		type: 'number',
+		default: 2,
+	},
+	'icon-stroke-xxl': {
+		type: 'number',
+	},
+	'icon-stroke-xl': {
+		type: 'number',
+	},
+	'icon-stroke-l': {
+		type: 'number',
+	},
+	'icon-stroke-m': {
+		type: 'number',
+	},
+	'icon-stroke-s': {
+		type: 'number',
+	},
+	'icon-stroke-xs': {
+		type: 'number',
 	},
 	'icon-palette-color-status': {
 		type: 'boolean',
@@ -46,6 +104,8 @@ export const iconPadding = (() => {
 
 		response[newKey] = value;
 	});
+
+	console.log(response);
 
 	return response;
 })();

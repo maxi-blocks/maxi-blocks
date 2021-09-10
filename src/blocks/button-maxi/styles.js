@@ -6,7 +6,11 @@ import { isNil, isEmpty } from 'lodash';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	stylesCleaner,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
@@ -18,7 +22,6 @@ import {
 	getIconStyles,
 	getMarginPaddingStyles,
 	getPositionStyles,
-	getSizeStyles,
 	getTransformStyles,
 	getTransitionStyles,
 	getTypographyStyles,
@@ -70,9 +73,6 @@ const getNormalObject = props => {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
 			parentBlockStyle: props.parentBlockStyle,
-		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
 		}),
 		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
@@ -181,9 +181,9 @@ const getHoverContentObject = props => {
 	return response;
 };
 
-const getIconWidthStyles = obj => {
+const getIconResponsiveStyles = obj => {
 	const response = {
-		label: 'Icon width',
+		label: 'Icon responsive',
 		general: {},
 	};
 
@@ -193,17 +193,38 @@ const getIconWidthStyles = obj => {
 		if (!isNil(obj[`icon-width-${breakpoint}`])) {
 			response[breakpoint]['max-width'] = `${
 				obj[`icon-width-${breakpoint}`]
-			}${obj[`icon-width-unit-${breakpoint}`]}`;
+			}${getLastBreakpointAttribute('icon-width-unit', breakpoint, obj)}`;
 			response[breakpoint]['max-height'] = `${
 				obj[`icon-width-${breakpoint}`]
-			}${obj[`icon-width-unit-${breakpoint}`]}`;
+			}${getLastBreakpointAttribute('icon-width-unit', breakpoint, obj)}`;
+		}
+
+		if (
+			!isNil(obj[`icon-spacing-${breakpoint}`]) &&
+			!isNil(obj['icon-position'])
+		) {
+			obj['icon-position'] === 'left'
+				? (response[breakpoint][
+						'margin-right'
+				  ] = `${getLastBreakpointAttribute(
+						'icon-spacing',
+						breakpoint,
+						obj
+				  )}px`)
+				: (response[breakpoint][
+						'margin-left'
+				  ] = `${getLastBreakpointAttribute(
+						'icon-spacing',
+						breakpoint,
+						obj
+				  )}px`);
 		}
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
 			delete response[breakpoint];
 	});
 
-	return { IconWidth: response };
+	return { IconResponsive: response };
 };
 
 const getIconObject = (props, target) => {
@@ -268,7 +289,10 @@ const getStyles = props => {
 			'': getWrapperObject(props),
 			' .maxi-button-block__button': getNormalObject(props),
 			' .maxi-button-block__icon': getIconObject(props, 'icon'),
-			' .maxi-button-block__icon svg': getIconWidthStyles(props, 'icon'),
+			' .maxi-button-block__icon svg': getIconResponsiveStyles(
+				props,
+				'icon'
+			),
 			' .maxi-button-block__icon svg > *': getIconObject(props, 'svg'),
 			' .maxi-button-block__content': getContentObject(props),
 			' .maxi-button-block__button:hover': getHoverObject(props),

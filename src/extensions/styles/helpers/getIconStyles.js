@@ -14,20 +14,6 @@ const getIconStyles = (obj, target, parentBlockStyle, isIconInherit = true) => {
 		general: {},
 	};
 
-	if (target === 'icon') {
-		if (!isNil(obj['icon-spacing']) && !isNil(obj['icon-position']))
-			obj['icon-position'] === 'left'
-				? (response.general[
-						'margin-right'
-				  ] = `${obj['icon-spacing']}px`)
-				: (response.general[
-						'margin-left'
-				  ] = `${obj['icon-spacing']}px`);
-
-		if (!isNil(obj['icon-size']))
-			response.general['max-width'] = `${obj['icon-size']}px`;
-	}
-
 	if (target === 'svg') {
 		if (!obj['icon-palette-color-status'] && !isNil(obj['icon-color'])) {
 			response.general.fill = 'none';

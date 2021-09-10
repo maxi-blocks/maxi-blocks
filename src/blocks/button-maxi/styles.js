@@ -1,3 +1,11 @@
+/**
+ * External dependencies
+ */
+import { isNil, isEmpty } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
@@ -16,6 +24,8 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getWrapperObject = props => {
 	const response = {
@@ -171,6 +181,31 @@ const getHoverContentObject = props => {
 	return response;
 };
 
+const getIconWidthStyles = obj => {
+	const response = {
+		label: 'Icon width',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		if (!isNil(obj[`icon-width-${breakpoint}`])) {
+			response[breakpoint]['max-width'] = `${
+				obj[`icon-width-${breakpoint}`]
+			}${obj[`icon-width-unit-${breakpoint}`]}`;
+			response[breakpoint]['max-height'] = `${
+				obj[`icon-width-${breakpoint}`]
+			}${obj[`icon-width-unit-${breakpoint}`]}`;
+		}
+
+		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
+			delete response[breakpoint];
+	});
+
+	return { IconWidth: response };
+};
+
 const getIconObject = (props, target) => {
 	const response = {
 		icon: getIconStyles(
@@ -233,6 +268,7 @@ const getStyles = props => {
 			'': getWrapperObject(props),
 			' .maxi-button-block__button': getNormalObject(props),
 			' .maxi-button-block__icon': getIconObject(props, 'icon'),
+			' .maxi-button-block__icon svg': getIconWidthStyles(props, 'icon'),
 			' .maxi-button-block__icon svg > *': getIconObject(props, 'svg'),
 			' .maxi-button-block__content': getContentObject(props),
 			' .maxi-button-block__button:hover': getHoverObject(props),

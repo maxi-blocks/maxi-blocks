@@ -17,7 +17,6 @@ import InfoBox from '../info-box';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
-	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import SvgWidthControl from '../svg-width-control';
 import SvgStrokeWidthControl from '../svg-stroke-width-control';

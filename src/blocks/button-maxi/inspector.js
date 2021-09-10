@@ -255,9 +255,9 @@ const Inspector = memo(
 																'iconPadding',
 															]
 														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
+														onChange={obj => {
+															setAttributes(obj);
+														}}
 														deviceType={deviceType}
 														clientId={clientId}
 														parentBlockStyle={

@@ -91,6 +91,14 @@ const IconControl = props => {
 						}}
 						breakpoint={deviceType}
 					/>
+					<SvgStrokeWidthControl
+						prefix='icon-'
+						{...getGroupAttributes(props, 'icon')}
+						onChange={obj => {
+							onChange(obj);
+						}}
+						breakpoint={deviceType}
+					/>
 					<AdvancedNumberControl
 						label={__('Spacing', 'maxi-blocks')}
 						min={0}

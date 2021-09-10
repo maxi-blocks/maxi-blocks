@@ -227,6 +227,28 @@ const getIconResponsiveStyles = obj => {
 	return { IconResponsive: response };
 };
 
+const getIconPathStyles = obj => {
+	const response = {
+		label: 'Icon path',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		if (!isNil(obj[`icon-stroke-${breakpoint}`])) {
+			response[breakpoint]['stroke-width'] = `${
+				obj[`icon-stroke-${breakpoint}`]
+			}`;
+		}
+
+		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
+			delete response[breakpoint];
+	});
+
+	return { IconPath: response };
+};
+
 const getIconObject = (props, target) => {
 	const response = {
 		icon: getIconStyles(
@@ -294,6 +316,10 @@ const getStyles = props => {
 				'icon'
 			),
 			' .maxi-button-block__icon svg > *': getIconObject(props, 'svg'),
+			' .maxi-button-block__icon svg path': getIconPathStyles(
+				props,
+				'icon'
+			),
 			' .maxi-button-block__content': getContentObject(props),
 			' .maxi-button-block__button:hover': getHoverObject(props),
 			' .maxi-button-block__button:hover .maxi-button-block__content':

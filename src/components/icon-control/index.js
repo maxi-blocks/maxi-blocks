@@ -17,7 +17,10 @@ import InfoBox from '../info-box';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import SvgWidthControl from '../svg-width-control';
+import SvgStrokeWidthControl from '../svg-stroke-width-control';
 import MaxiModal from '../../editor/library/modal';
 import Icon from '../icon';
 
@@ -80,19 +83,13 @@ const IconControl = props => {
 			{props['icon-content'] && (
 				<>
 					<hr />
-					<AdvancedNumberControl
-						label={__('Size', 'maxi-blocks')}
-						min={1}
-						max={999}
-						initial={1}
-						step={1}
-						value={props['icon-size']}
-						onChangeValue={val => onChange({ 'icon-size': val })}
-						onReset={() =>
-							onChange({
-								'icon-size': getDefaultAttribute('icon-size'),
-							})
-						}
+					<SvgWidthControl
+						prefix='icon-'
+						{...getGroupAttributes(props, 'icon')}
+						onChange={obj => {
+							onChange(obj);
+						}}
+						breakpoint={deviceType}
 					/>
 					<AdvancedNumberControl
 						label={__('Spacing', 'maxi-blocks')}

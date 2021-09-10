@@ -13,27 +13,49 @@ export const icon = {
 		type: 'string',
 		default: 'right',
 	},
-	'icon-size-general': {
+	'icon-width-general': {
 		type: 'number',
 		default: 32,
 	},
-	'icon-size-xxl': {
+	'icon-width-xxl': {
 		type: 'number',
 	},
-	'icon-size-xl': {
+	'icon-width-xl': {
 		type: 'number',
 	},
-	'icon-size-l': {
+	'icon-width-l': {
 		type: 'number',
 	},
-	'icon-size-m': {
+	'icon-width-m': {
 		type: 'number',
 	},
-	'icon-size-s': {
+	'icon-width-s': {
 		type: 'number',
 	},
-	'icon-size-xs': {
+	'icon-width-xs': {
 		type: 'number',
+	},
+	'icon-width-unit-general': {
+		type: 'string',
+		default: 'px',
+	},
+	'icon-width-unit-xxl': {
+		type: 'string',
+	},
+	'icon-width-unit-xl': {
+		type: 'string',
+	},
+	'icon-width-unit-l': {
+		type: 'string',
+	},
+	'icon-width-unit-m': {
+		type: 'string',
+	},
+	'icon-width-unit-s': {
+		type: 'string',
+	},
+	'icon-width-unit-xs': {
+		type: 'string',
 	},
 	'icon-spacing-general': {
 		type: 'number',
@@ -104,8 +126,6 @@ export const iconPadding = (() => {
 
 		response[newKey] = value;
 	});
-
-	console.log(response);
 
 	return response;
 })();

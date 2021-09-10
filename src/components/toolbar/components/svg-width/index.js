@@ -38,6 +38,7 @@ const SvgWidth = props => {
 		>
 			<div className='toolbar-item__svg-size__popover'>
 				<SvgWidthControl
+					prefix='svg-'
 					{...props}
 					onChange={obj => {
 						onChange(obj);

@@ -346,6 +346,7 @@ const Inspector = props => {
 											),
 											content: (
 												<SvgWidthControl
+													prefix='svg-'
 													{...getGroupAttributes(
 														attributes,
 														'svg'

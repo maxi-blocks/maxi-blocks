@@ -16,17 +16,17 @@ import AdvancedNumberControl from '../advanced-number-control';
  * Component
  */
 const SvgWidthControl = props => {
-	const { onChange, breakpoint } = props;
+	const { onChange, breakpoint, prefix } = props;
 
-	const width = props[`svg-width-${breakpoint}`];
-	const defaultWidth = getDefaultAttribute(`svg-width-${breakpoint}`);
+	const width = props[`${prefix}width-${breakpoint}`];
+	const defaultWidth = getDefaultAttribute(`${prefix}width-${breakpoint}`);
 	const widthUnit = getLastBreakpointAttribute(
-		'svg-width-unit',
+		`${prefix}width-unit`,
 		breakpoint,
 		props
 	);
 	const defaultWidthUnit = getDefaultAttribute(
-		`svg-width-unit-${breakpoint}`
+		`${prefix}width-unit-${breakpoint}`
 	);
 
 	return (
@@ -37,7 +37,7 @@ const SvgWidthControl = props => {
 				placeholder={
 					breakpoint !== 'general'
 						? getLastBreakpointAttribute(
-								'svg-width',
+								`${prefix}width`,
 								breakpoint,
 								props
 						  )
@@ -45,7 +45,7 @@ const SvgWidthControl = props => {
 				}
 				onChangeValue={val => {
 					onChange({
-						[`svg-width-${breakpoint}`]:
+						[`${prefix}width-${breakpoint}`]:
 							val !== undefined && val !== '' ? val : '',
 					});
 				}}
@@ -54,7 +54,7 @@ const SvgWidthControl = props => {
 				allowedUnits={['px', 'em', 'vw', '%']}
 				onChangeUnit={val => {
 					onChange({
-						[`svg-width-unit-${breakpoint}`]: val,
+						[`${prefix}width-unit-${breakpoint}`]: val,
 					});
 				}}
 				min={10}
@@ -62,8 +62,8 @@ const SvgWidthControl = props => {
 				step={1}
 				onReset={() =>
 					onChange({
-						[`svg-width-${breakpoint}`]: defaultWidth,
-						[`svg-width-unit-${breakpoint}`]: defaultWidthUnit,
+						[`${prefix}width-${breakpoint}`]: defaultWidth,
+						[`${prefix}width-unit-${breakpoint}`]: defaultWidthUnit,
 					})
 				}
 				initialPosition={defaultWidth}

@@ -35,6 +35,14 @@ const attributes = {
 	...attributesData.textAlignment,
 	...{
 		...attributesData.typography,
+		'line-height-unit-general': {
+			type: 'string',
+			default: '%',
+		},
+		'line-height-general': {
+			type: 'number',
+			default: '100',
+		},
 		'palette-color-general': {
 			type: 'number',
 			default: 1,
@@ -79,22 +87,6 @@ const attributes = {
 		'border-bottom-right-radius-general': {
 			type: 'number',
 			default: 10,
-		},
-		'border-top-left-radius-xxl': {
-			type: 'number',
-			default: 15,
-		},
-		'border-top-right-radius-xxl': {
-			type: 'number',
-			default: 15,
-		},
-		'border-bottom-left-radius-xxl': {
-			type: 'number',
-			default: 15,
-		},
-		'border-bottom-right-radius-xxl': {
-			type: 'number',
-			default: 15,
 		},
 	},
 	...attributesData.icon,

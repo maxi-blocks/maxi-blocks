@@ -175,7 +175,6 @@ describe('TransformControl', () => {
 	});
 
 	it('Check Responsive transform control', async () => {
-		await createNewPost();
 		await insertBlock('Image Maxi');
 		await openAdvancedSidebar(page, 'transform');
 		const tabsControl = await page.$$(

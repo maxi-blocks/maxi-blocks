@@ -289,7 +289,7 @@ const Inspector = props => {
 																getColorRGBAString(
 																	{
 																		firstVar:
-																			'icon-line',
+																			'color-icon-line',
 																		secondVar: `color-${obj['svg-palette-line-color']}`,
 																		opacity:
 																			obj[

@@ -34,6 +34,7 @@ import {
 	TransformControl,
 	TypographyControl,
 	ZIndexControl,
+	TransitionControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -1089,6 +1090,24 @@ const Inspector = memo(
 																	val,
 															})
 														}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Link Hover Transition',
+													'maxi-blocks'
+												),
+												content: (
+													<TransitionControl
+														{...getGroupAttributes(
+															attributes,
+															'transitionDuration'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
 													/>
 												),
 											},

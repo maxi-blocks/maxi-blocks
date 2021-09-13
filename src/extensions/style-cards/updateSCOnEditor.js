@@ -182,7 +182,7 @@ export const getSCVariablesObject = styleCards => {
 			}
 		});
 
-		times(7, n => {
+		times(8, n => {
 			response[`--maxi-${style}-color-${n + 1}`] = SC[style].color[n + 1];
 		});
 	});

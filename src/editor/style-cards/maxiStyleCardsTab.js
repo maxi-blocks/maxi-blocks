@@ -662,7 +662,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						content: (
 							<>
 								<div className='maxi-style-cards__quick-color-presets'>
-									{[1, 2, 3, 4, 5, 6, 7].map(item => (
+									{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
 										<div
 											key={`maxi-style-cards__quick-color-presets__box__${item}`}
 											className={`maxi-style-cards__quick-color-presets__box ${
@@ -693,16 +693,16 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 								</div>
 								<ColorControl
 									className={`maxi-style-cards-control__sc__color-${quickColorPreset}-${SCStyle}`}
-									color={processSCAttribute(
+									color={`rgba(${processSCAttribute(
 										SC,
 										quickColorPreset,
 										'color'
-									)}
-									defaultColor={processSCAttribute(
+									)}, 1)`}
+									defaultColor={`rgba(${processSCAttribute(
 										SC,
 										quickColorPreset,
 										'color'
-									)}
+									)}, 1)`}
 									onChange={({ color }) =>
 										onChangeValue(
 											{

@@ -21,6 +21,7 @@ import {
 /**
  * Styles and icons
  */
+
 import './editor.scss';
 import { toolbarItalic } from '../../../../icons';
 

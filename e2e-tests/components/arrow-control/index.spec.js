@@ -10,7 +10,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
 
 describe('ArrowControl', () => {
 	beforeEach(async () => {
@@ -75,5 +75,63 @@ describe('ArrowControl', () => {
 		);
 		await page.waitForTimeout(500);
 		expect(warningBox).toMatchSnapshot();
+	});
+
+	it('Check the responsive arrow control', async () => {
+		await createNewPost();
+		await insertBlock('Group Maxi');
+		const accordionPanel = await openSidebar(page, 'arrow');
+
+		await accordionPanel.$$eval(
+			'.maxi-arrow-control .maxi-fancy-radio-control .maxi-radio-control__option label',
+			openArrowControl => openArrowControl[0].click()
+		);
+
+		const isItemChecked = await accordionPanel.$$eval(
+			'.maxi-arrow-control .maxi-radio-control input',
+			select => select[3].checked
+		);
+
+		expect(isItemChecked).toBeTruthy();
+
+		// responsive S
+		await changeResponsive(page, 's');
+
+		await accordionPanel.$$eval(
+			'.maxi-arrow-control .maxi-radio-control input',
+			select => select[4].click()
+		);
+
+		await page.waitForTimeout(100);
+		const responsiveSOption = await page.$$eval(
+			'.maxi-arrow-control .maxi-radio-control .maxi-radio-control__option input',
+			select => select[4].checked
+		);
+
+		expect(responsiveSOption).toBeTruthy();
+		const expectAttributes = await getBlockAttributes();
+		const position = expectAttributes['arrow-side-s'];
+
+		expect(position).toStrictEqual('right');
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+
+		const responsiveXsOption = await page.$$eval(
+			'.maxi-arrow-control .maxi-radio-control .maxi-radio-control__option input',
+			select => select[4].checked
+		);
+
+		expect(responsiveXsOption).toBeTruthy();
+
+		// responsive M
+		await changeResponsive(page, 'm');
+
+		const responsiveMOption = await page.$$eval(
+			'.maxi-arrow-control .maxi-radio-control input',
+			select => select[3].checked
+		);
+
+		expect(responsiveMOption).toBeTruthy();
 	});
 });

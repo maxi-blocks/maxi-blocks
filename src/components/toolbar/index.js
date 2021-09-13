@@ -34,8 +34,6 @@ import Mover from './components/mover';
 import PaddingMargin from './components/padding-margin';
 import ReusableBlocks from './components/reusable-blocks';
 import RowSettings from './components/row-settings';
-import ShapeColor from './components/shape-color';
-import ShapeWidth from './components/shape-width';
 import Size from './components/size';
 import SvgColor from './components/svg-color';
 import SvgWidth from './components/svg-width';
@@ -69,7 +67,6 @@ const allowedBlocks = [
 	'maxi-blocks/map-maxi',
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/row-maxi',
-	'maxi-blocks/shape-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/text-maxi',
 ];
@@ -84,7 +81,6 @@ const flexBlocks = [
 	'maxi-blocks/map-maxi',
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/row-maxi',
-	'maxi-blocks/shape-maxi',
 	'maxi-blocks/svg-icon-maxi',
 ];
 
@@ -122,6 +118,7 @@ const MaxiToolbar = memo(
 			typeOfList,
 			uniqueID,
 			parentBlockStyle,
+			svgType,
 		} = attributes;
 		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
@@ -375,57 +372,38 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
 							/>
-							{name === 'maxi-blocks/shape-maxi' && (
-								<>
-									<ShapeColor
-										{...getGroupAttributes(
-											attributes,
-											'shape'
-										)}
-										blockName={name}
-										onChange={obj => setAttributes(obj)}
-										clientId={clientId}
-									/>
-									<ShapeWidth
-										{...getGroupAttributes(
-											attributes,
-											'shape'
-										)}
-										blockName={name}
-										onChange={obj => {
-											setAttributes(obj);
-										}}
-									/>
-								</>
-							)}
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
-									<SvgColor
-										{...getGroupAttributes(
-											attributes,
-											'svg'
-										)}
-										blockName={name}
-										onChange={obj => {
-											setAttributes(obj);
-										}}
-										changeSVGContent={changeSVGContent}
-										type='fill'
-										parentBlockStyle={parentBlockStyle}
-									/>
-									<SvgColor
-										{...getGroupAttributes(
-											attributes,
-											'svg'
-										)}
-										blockName={name}
-										onChange={obj => {
-											setAttributes(obj);
-										}}
-										changeSVGContent={changeSVGContent}
-										type='line'
-										parentBlockStyle={parentBlockStyle}
-									/>
+									{svgType !== 'Line' && (
+										<SvgColor
+											{...getGroupAttributes(
+												attributes,
+												'svg'
+											)}
+											blockName={name}
+											onChange={obj => {
+												setAttributes(obj);
+											}}
+											changeSVGContent={changeSVGContent}
+											type='fill'
+											parentBlockStyle={parentBlockStyle}
+										/>
+									)}
+									{svgType !== 'Shape' && (
+										<SvgColor
+											{...getGroupAttributes(
+												attributes,
+												'svg'
+											)}
+											blockName={name}
+											onChange={obj => {
+												setAttributes(obj);
+											}}
+											changeSVGContent={changeSVGContent}
+											type='line'
+											parentBlockStyle={parentBlockStyle}
+										/>
+									)}
 									<SvgWidth
 										{...getGroupAttributes(
 											attributes,
@@ -440,6 +418,7 @@ const MaxiToolbar = memo(
 										changeSVGStrokeWidth={
 											changeSVGStrokeWidth
 										}
+										type={svgType}
 									/>
 								</>
 							)}

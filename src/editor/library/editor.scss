@@ -388,7 +388,7 @@
 			&__search-bar {
 				display: flex;
 				align-items: center;
-				width: 50%;
+				width: 70%;
 
 				.ais-SearchBox {
 					width: 100%;
@@ -448,6 +448,19 @@
 					strong {
 						margin-right: 3px;
 						color: #ff4a17;
+					}
+				}
+			}
+
+			&__categories {
+				display: flex;
+				width: 51%;
+				justify-content: space-between;
+				margin-right: 5%;
+				.ais-Menu-list {
+					display: flex;
+					li {
+						padding-right: 3%;
 					}
 				}
 			}
@@ -570,7 +583,8 @@
 			position: relative;
 
 			.maxi-cloud-masonry-card {
-				&__button-icon {
+				&__button-icon,
+				&__Line {
 					.maxi-cloud-masonry-card__svg-container__code {
 						svg,
 						svg * {

@@ -45,8 +45,6 @@ describe('ColumnPattern', () => {
 	});
 
 	it('Check responsive row-pattern', async () => {
-		await createNewPost();
-		await insertBlock('Container Maxi');
 		const accordionControl = await openSidebar(page, 'row settings');
 
 		// general

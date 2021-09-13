@@ -1,0 +1,31 @@
+.toolbar-item__text-generator-blocks__popover {
+	.components-button {
+		border: 2px solid #80828a;
+		color: #fff !important;
+		border-radius: 5px;
+		height: 30px;
+		width: 49%;
+		margin-right: 2%;
+		justify-content: center;
+
+		&:last-child {
+			margin-right: 0;
+		}
+
+		&:hover {
+			background-color: #4c4f59;
+		}
+
+		&:active {
+			background-color: #80828a;
+		}
+	}
+
+	.maxi-base-control:nth-child(2) {
+		margin-bottom: 12px;
+	}
+
+	.maxi-base-control__label {
+		margin-bottom: 5px;
+	}
+}

@@ -30,7 +30,6 @@ describe('FullSizeControl', () => {
 	});
 
 	it('Check Responsive full size control', async () => {
-		await createNewPost();
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebar(page, 'width height');
 

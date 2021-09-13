@@ -25,6 +25,9 @@ const attributes = {
 	svgType: {
 		type: 'string',
 	},
+	svgType: {
+		type: 'string',
+	},
 	content: {
 		type: 'string',
 	},

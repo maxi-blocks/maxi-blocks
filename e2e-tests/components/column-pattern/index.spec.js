@@ -44,7 +44,7 @@ describe('ColumnPattern', () => {
 		expect(gapAttribute).toStrictEqual(expectGap);
 	});
 
-	it('Check row-pattern', async () => {
+	it('Check responsive row-pattern', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 		const accordionControl = await openSidebar(page, 'row settings');

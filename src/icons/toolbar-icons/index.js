@@ -47,3 +47,4 @@ export { default as toolbarSuperScript } from './superscript';
 export { default as toolbarType } from './type';
 export { default as toolbarUnderline } from './underline';
 export { default as toolbarUnorderedList } from './unordered-list';
+export { default as toolbarLoremIpsum } from './lorem-ipsum';

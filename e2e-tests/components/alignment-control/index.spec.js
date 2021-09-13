@@ -37,7 +37,6 @@ describe('AlignmentControl', () => {
 	});
 	it('Check Responsive text-alignment control', async () => {
 		const accordionPanel = await openSidebar(page, 'alignment');
-		await changeResponsive(page, 's');
 
 		const isItemChecked = await page.$$eval(
 			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',

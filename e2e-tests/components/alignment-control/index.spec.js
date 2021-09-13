@@ -89,7 +89,7 @@ describe('AlignmentControl', () => {
 	it('Check Responsive alignment control', async () => {
 		await insertBlock('Button Maxi');
 		const accordionPanel = await openSidebar(page, 'alignment');
-		await changeResponsive(page, 's');
+
 		await accordionPanel.$$eval(
 			'.maxi-alignment-control .maxi-base-control__field .maxi-radio-control__option input',
 			button => button[1].click()

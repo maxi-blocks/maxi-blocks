@@ -46,6 +46,7 @@ import TextListOptions from './components/text-list-options';
 import ToggleBlock from './components/toggle-block';
 import ToolbarColumnPattern from './components/column-pattern';
 import TypographyControl from './components/typography-control';
+import TextGenerator from './components/text-generator';
 
 /**
  * Styles
@@ -204,6 +205,11 @@ const MaxiToolbar = memo(
 								</span>
 							</div>
 							<Mover clientId={clientId} blockName={name} />
+							<TextGenerator
+								clientId={clientId}
+								blockName={name}
+								onChange={obj => setAttributes(obj)}
+							/>
 							<ReusableBlocks clientId={clientId} />
 							<ColumnMover clientId={clientId} blockName={name} />
 							<DividerColor

@@ -113,10 +113,11 @@ const MasonryItem = props => {
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
 						{target === 'button-icon' || target.includes('Line')
 							? serial.replace(' Line', '')
-							: target === 'image-shape' ||
-							  target === 'bg-shape' ||
-							  target === 'sidebar-block-shape' ||
-							  target.includes('Shape')
+							: [
+									'image-shape',
+									'bg-shape',
+									'sidebar-block-shape',
+							  ].includes(target) || target.includes('Shape')
 							? serial.replace(' Shape', '')
 							: serial}
 					</div>
@@ -314,6 +315,19 @@ const LibraryContainer = props => {
 		}
 	};
 
+	const getShapeType = type => {
+		switch (type) {
+			case 'button-icon':
+				return 'icon';
+			case 'sidebar-block-shape':
+				return 'shape';
+			case 'bg-shape':
+				return 'shape';
+			default:
+				return type;
+		}
+	};
+
 	/** Patterns / Blocks Results */
 	const patternsResults = ({ hit }) => {
 		return (
@@ -355,13 +369,7 @@ const LibraryContainer = props => {
 	const svgResults = ({ hit }) => {
 		const newContent = svgAttributesReplacer(blockStyle, hit.svg_code);
 		const svgType = hit.taxonomies.svg_category[0];
-
-		const shapeType =
-			type === 'button-icon'
-				? 'icon'
-				: type === 'sidebar-block-shape' || type === 'bg-shape'
-				? 'shape'
-				: type;
+		const shapeType = getShapeType(type);
 
 		return (
 			<MasonryItem
@@ -503,12 +511,7 @@ const LibraryContainer = props => {
 
 	/** Shapes Results */
 	const svgShapeResults = ({ hit }) => {
-		const shapeType =
-			type === 'button-icon'
-				? 'icon'
-				: type === 'sidebar-block-shape' || type === 'bg-shape'
-				? 'shape'
-				: type;
+		const shapeType = getShapeType(type);
 
 		const newContent = svgAttributesReplacer(
 			blockStyle,

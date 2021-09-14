@@ -6,7 +6,6 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
-	setBrowserViewport,
 } from '@wordpress/e2e-test-utils';
 
 /**

@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -148,7 +149,7 @@ describe('TypographyControl', () => {
 			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
 			select => select[2].focus()
 		);
-		await pressKeyTimes('Backspace', '1');
+		await pressKeyWithModifier('primary', 'a');
 		await page.waitForTimeout(200);
 
 		await page.keyboard.type('4');
@@ -175,7 +176,7 @@ describe('TypographyControl', () => {
 		}))(stylesAttributes);
 
 		const expectedAttributes = {
-			'line-height-m': 1.624,
+			'line-height-m': 4,
 			'letter-spacing-m': 10,
 			'font-size-m': 19,
 		};

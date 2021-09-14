@@ -486,7 +486,7 @@ const LibraryContainer = props => {
 		}
 	};
 
-	/** Shapes Resutls */
+	/** Shapes Results */
 	const svgShapeResults = ({ hit }) => {
 		const shapeType =
 			type === 'button-icon'

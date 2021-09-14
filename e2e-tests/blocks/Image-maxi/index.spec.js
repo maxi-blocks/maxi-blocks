@@ -23,7 +23,7 @@ describe('Image Maxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
-	it('Checking the image caption', async () => {
+	it.only('Checking the image caption', async () => {
 		// select img
 		await page.$eval(
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button button',
@@ -119,6 +119,8 @@ describe('Image Maxi', () => {
 		await page.keyboard.type('2');
 		await page.waitForTimeout(200);
 
+		debugger;
+
 		await inputs[6].focus();
 		await page.keyboard.type('11');
 		await page.waitForTimeout(200);
@@ -136,7 +138,7 @@ describe('Image Maxi', () => {
 
 		const expectedAttributesTwo = {
 			'font-size-m': 19,
-			'line-height-m': 22,
+			'line-height-m': 1.622,
 			'letter-spacing-m': 11,
 		};
 

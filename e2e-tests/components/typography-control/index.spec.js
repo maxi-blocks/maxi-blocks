@@ -167,7 +167,7 @@ describe('TypographyControl', () => {
 		}))(stylesAttributes);
 
 		const expectedAttributes = {
-			'line-height-m': 24,
+			'line-height-m': 1.624,
 			'letter-spacing-m': 10,
 			'font-size-m': 19,
 		};

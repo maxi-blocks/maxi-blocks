@@ -1,4 +1,5 @@
 export const preset1 = {
+	'icon-only': false,
 	'border-bottom-width-general': '',
 	'border-color-general': '',
 	'border-left-width-general': '',
@@ -82,6 +83,7 @@ export const preset1 = {
 };
 
 export const preset2 = {
+	'icon-only': false,
 	'border-bottom-width-general': 2,
 	'border-color-general': '',
 	'border-left-width-general': 2,
@@ -164,6 +166,7 @@ export const preset2 = {
 };
 
 export const preset3 = {
+	'icon-only': false,
 	'border-bottom-left-radius-xxl': 0,
 	'border-bottom-right-radius-xxl': 0,
 	'border-bottom-width-general': 2,
@@ -250,6 +253,7 @@ export const preset3 = {
 };
 
 export const preset4 = {
+	'icon-only': false,
 	'border-bottom-left-radius-general': 10,
 	'border-bottom-right-radius-general': 10,
 	'border-bottom-width-general': '',
@@ -335,6 +339,7 @@ export const preset4 = {
 };
 
 export const preset5 = {
+	'icon-only': false,
 	'background-active-media': '',
 	'border-bottom-left-radius-general': 50,
 	'border-bottom-right-radius-general': 50,
@@ -425,6 +430,7 @@ export const preset5 = {
 };
 
 export const preset6 = {
+	'icon-only': false,
 	'border-style-general': 'none',
 	'padding-bottom-general': 3,
 	'padding-bottom-xxl': 21,
@@ -488,6 +494,8 @@ export const preset7 = {
 	'padding-top-general': 0,
 	'padding-sync-general': true,
 	'padding-unit-general': 'px',
+	'palette-color-general': 4,
+	'palette-color-status-general': true,
 	// icon
 	'icon-background-color': '',
 	'icon-background-palette-color': 1,

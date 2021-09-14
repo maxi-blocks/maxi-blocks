@@ -21,8 +21,6 @@ export { default as Mover } from './mover';
 export { default as PaddingMargin } from './padding-margin';
 export { default as ReusableBlocks } from './reusable-blocks';
 export { default as RowSettings } from './row-settings';
-export { default as ShapeColor } from './shape-color';
-export { default as ShapeWidth } from './shape-width';
 export { default as Size } from './size';
 export { default as Style } from './style';
 export { default as SvgColor } from './svg-color';

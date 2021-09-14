@@ -6,7 +6,6 @@ import {
 	insertBlock,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
-import { page } from '@wordpress/icons/build-types';
 
 /**
  * Internal dependencies

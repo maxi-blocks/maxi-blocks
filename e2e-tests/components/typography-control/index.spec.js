@@ -138,7 +138,10 @@ describe('TypographyControl', () => {
 			select => select[0].focus()
 		);
 		await pressKeyTimes('Backspace', '1');
+		await page.waitForTimeout(200);
+
 		await page.keyboard.type('9');
+		await page.waitForTimeout(200);
 
 		// line-height
 		await accordionPanel.$$eval(
@@ -146,7 +149,10 @@ describe('TypographyControl', () => {
 			select => select[2].focus()
 		);
 		await pressKeyTimes('Backspace', '1');
+		await page.waitForTimeout(200);
+
 		await page.keyboard.type('4');
+		await page.waitForTimeout(200);
 
 		// letter-spacing
 		await accordionPanel.$$eval(
@@ -154,6 +160,7 @@ describe('TypographyControl', () => {
 			select => select[4].focus()
 		);
 		await page.keyboard.type('10');
+		await page.waitForTimeout(200);
 
 		const stylesAttributes = await getBlockAttributes();
 

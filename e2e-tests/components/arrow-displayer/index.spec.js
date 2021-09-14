@@ -24,4 +24,3 @@ describe('ArrowDisplay', () => {
 		expect(hasClass).toBeTruthy();
 	});
 });
-d;

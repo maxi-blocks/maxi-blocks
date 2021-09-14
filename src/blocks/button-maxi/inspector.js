@@ -56,6 +56,11 @@ import {
 	presetFour,
 	presetFive,
 	presetSix,
+	presetSeven,
+	presetEight,
+	presetNine,
+	presetTen,
+	presetEleven,
 } from '../../icons';
 
 /**
@@ -229,6 +234,81 @@ const Inspector = memo(
 																onChange: () =>
 																	onChangePreset(
 																		6,
+																		'icon'
+																	),
+															},
+															{
+																activeItem: 0,
+																content: (
+																	<Icon
+																		icon={
+																			presetSeven
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		7,
+																		'icon'
+																	),
+															},
+															{
+																activeItem: 0,
+																content: (
+																	<Icon
+																		icon={
+																			presetEight
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		8,
+																		'icon'
+																	),
+															},
+															{
+																activeItem: 0,
+																content: (
+																	<Icon
+																		icon={
+																			presetNine
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		9,
+																		'icon'
+																	),
+															},
+															{
+																activeItem: 0,
+																content: (
+																	<Icon
+																		icon={
+																			presetTen
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		10,
+																		'icon'
+																	),
+															},
+															{
+																activeItem: 0,
+																content: (
+																	<Icon
+																		icon={
+																			presetEleven
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		11,
 																		'icon'
 																	),
 															},

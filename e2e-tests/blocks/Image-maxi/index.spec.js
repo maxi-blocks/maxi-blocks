@@ -4,9 +4,9 @@
 import {
 	createNewPost,
 	insertBlock,
-	pressKeyTimes,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
+import { page } from '@wordpress/icons/build-types';
 
 /**
  * Internal dependencies
@@ -23,7 +23,7 @@ describe('Image Maxi', () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
-	it.only('Checking the image caption', async () => {
+	it('Checking the image caption', async () => {
 		// select img
 		await page.$eval(
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button button',
@@ -70,6 +70,7 @@ describe('Image Maxi', () => {
 		await fontFamilySelector.click();
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(100);
 
 		const attributes = await getBlockAttributes();
 		const fontFamily = attributes['font-family-general'];
@@ -118,8 +119,6 @@ describe('Image Maxi', () => {
 		await page.waitForTimeout(200);
 		await page.keyboard.type('2');
 		await page.waitForTimeout(200);
-
-		debugger;
 
 		await inputs[6].focus();
 		await page.keyboard.type('11');

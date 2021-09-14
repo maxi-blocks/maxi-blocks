@@ -82,6 +82,20 @@ const IconControl = props => {
 			{props['icon-content'] && (
 				<>
 					<hr />
+					<FancyRadioControl
+						label={__('Icon only (remove text)', 'maxi-blocks')}
+						className='maxi-sc-color-palette__custom'
+						selected={props['icon-only']}
+						options={[
+							{ label: __('Yes', 'maxi-blocks'), value: 1 },
+							{ label: __('No', 'maxi-blocks'), value: 0 },
+						]}
+						onChange={val =>
+							onChange({
+								'icon-only': val,
+							})
+						}
+					/>
 					<SvgWidthControl
 						prefix='icon-'
 						{...getGroupAttributes(props, 'icon')}

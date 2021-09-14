@@ -9,6 +9,10 @@ export const icon = {
 		type: 'string',
 		default: '',
 	},
+	'icon-only': {
+		type: 'boolean',
+		default: false,
+	},
 	'icon-position': {
 		type: 'string',
 		default: 'right',

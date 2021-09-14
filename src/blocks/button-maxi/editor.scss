@@ -12,3 +12,7 @@ body.maxi-blocks--active .maxi-controls {
 		}
 	}
 }
+
+body.maxi-blocks--active .maxi-button-block__content.hidden {
+	display: none !important;
+}

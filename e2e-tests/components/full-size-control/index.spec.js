@@ -88,9 +88,68 @@ describe('FullSizeControl', () => {
 		);
 		expect(heightM).toStrictEqual('330');
 	});
-
-	it('Checking responsive container height', async () => {
+	it('Checking responsive ColumnSize', async () => {
 		await insertBlock('Container Maxi');
+		await page.$$eval('.maxi-row-block__template button', buttons =>
+			buttons[1].click()
+		);
+
+		const accordionPanel = await openSidebar(page, 'width height');
+		const input = await accordionPanel.$$(
+			'.maxi-full-size-control .maxi-advanced-number-control input'
+		);
+
+		await input[0].focus();
+		await page.waitForTimeout(100);
+		await page.keyboard.type('652');
+
+		const widthValue = await accordionPanel.$$eval(
+			'.maxi-full-size-control .maxi-advanced-number-control input',
+			widthInput => widthInput[0].value
+		);
+		expect(widthValue).toStrictEqual('652');
+
+		// s
+		await changeResponsive(page, 's');
+
+		const inputS = await accordionPanel.$$(
+			'.maxi-full-size-control .maxi-advanced-number-control input'
+		);
+
+		await inputS[0].focus();
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('88');
+
+		const widthValueS = await accordionPanel.$$eval(
+			'.maxi-full-size-control .maxi-advanced-number-control input',
+			widthInput => widthInput[0].value
+		);
+		expect(widthValueS).toStrictEqual('688');
+
+		const attributes = await getBlockAttributes();
+		const width = attributes['width-s'];
+
+		expect(width).toStrictEqual(688);
+
+		// xs
+		await changeResponsive(page, 'xs');
+
+		const widthValueXs = await accordionPanel.$$eval(
+			'.maxi-full-size-control .maxi-advanced-number-control input',
+			widthInput => widthInput[0].value
+		);
+		expect(widthValueXs).toStrictEqual('688');
+
+		// m
+		await changeResponsive(page, 'm');
+
+		const widthValueM = await accordionPanel.$$eval(
+			'.maxi-full-size-control .maxi-advanced-number-control input',
+			widthInput => widthInput[0].value
+		);
+		expect(widthValueM).toStrictEqual('652');
+	});
+	it('Checking responsive container height', async () => {
 		await page.$eval('.maxi-container-block', container =>
 			container.focus()
 		);

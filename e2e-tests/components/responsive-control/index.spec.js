@@ -50,12 +50,12 @@ describe('ResponsiveControl', () => {
 	it('Check Responsive to responsive control', async () => {
 		const input = await page.$('.maxi-responsive-control input');
 
-		const zIndexXl = await page.$eval(
+		const zIndex = await page.$eval(
 			'.maxi-responsive-control input',
 			button => button.value
 		);
 
-		expect(zIndexXl).toStrictEqual('1000');
+		expect(zIndex).toStrictEqual('1000');
 
 		// responsive S
 		await changeResponsive(page, 's');
@@ -70,9 +70,9 @@ describe('ResponsiveControl', () => {
 		expect(zIndexS).toStrictEqual('855');
 
 		const attributes = await getBlockAttributes();
-		const zIndex = attributes['breakpoints-s'];
+		const breakpoint = attributes['breakpoints-s'];
 
-		expect(zIndex).toStrictEqual(855);
+		expect(breakpoint).toStrictEqual(855);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

@@ -50,7 +50,6 @@ export { default as RawHTML } from './raw-html';
 export { default as ResponsiveControl } from './responsive-control';
 export { default as SelectControl } from './select-control';
 export { default as SettingTabsControl } from './setting-tabs-control';
-export { default as ShapeColor } from './shape-color';
 export { default as ShapeDivider } from './shape-divider';
 export { default as ShapeDividerControl } from './shape-divider-control';
 export { default as Spinner } from './spinner';

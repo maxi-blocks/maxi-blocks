@@ -1,5 +1,15 @@
 import getSVGStyles from '../getSvgStyles';
 
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
+
 describe('getSVGStyles', () => {
 	it('Returns correct styles', () => {
 		const obj = {

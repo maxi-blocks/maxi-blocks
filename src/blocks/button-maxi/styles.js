@@ -181,9 +181,9 @@ const getHoverContentObject = props => {
 	return response;
 };
 
-const getIconResponsiveStyles = obj => {
+const getIconSize = obj => {
 	const response = {
-		label: 'Icon responsive',
+		label: 'Icon width',
 		general: {},
 	};
 
@@ -197,27 +197,6 @@ const getIconResponsiveStyles = obj => {
 			response[breakpoint]['max-height'] = `${
 				obj[`icon-width-${breakpoint}`]
 			}${getLastBreakpointAttribute('icon-width-unit', breakpoint, obj)}`;
-		}
-
-		if (
-			!isNil(obj[`icon-spacing-${breakpoint}`]) &&
-			!isNil(obj['icon-position'])
-		) {
-			obj['icon-position'] === 'left'
-				? (response[breakpoint][
-						'margin-right'
-				  ] = `${getLastBreakpointAttribute(
-						'icon-spacing',
-						breakpoint,
-						obj
-				  )}px`)
-				: (response[breakpoint][
-						'margin-left'
-				  ] = `${getLastBreakpointAttribute(
-						'icon-spacing',
-						breakpoint,
-						obj
-				  )}px`);
 		}
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
@@ -303,6 +282,40 @@ const getIconObject = (props, target) => {
 	return response;
 };
 
+const getIconResponsive = obj => {
+	const response = {
+		label: 'Icon responsive',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		if (
+			!isNil(obj[`icon-spacing-${breakpoint}`]) &&
+			!isNil(obj['icon-position'])
+		) {
+			obj['icon-position'] === 'left'
+				? (response[breakpoint][
+						'margin-right'
+				  ] = `${getLastBreakpointAttribute(
+						'icon-spacing',
+						breakpoint,
+						obj
+				  )}px`)
+				: (response[breakpoint][
+						'margin-left'
+				  ] = `${getLastBreakpointAttribute(
+						'icon-spacing',
+						breakpoint,
+						obj
+				  )}px`);
+		}
+	});
+
+	return { IconResponsive: response };
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -310,11 +323,11 @@ const getStyles = props => {
 		[uniqueID]: stylesCleaner({
 			'': getWrapperObject(props),
 			' .maxi-button-block__button': getNormalObject(props),
-			' .maxi-button-block__icon': getIconObject(props, 'icon'),
-			' .maxi-button-block__icon svg': getIconResponsiveStyles(
-				props,
-				'icon'
-			),
+			' .maxi-button-block__icon': [
+				getIconObject(props, 'icon'),
+				getIconResponsive(props, 'icon'),
+			],
+			' .maxi-button-block__icon svg': getIconSize(props, 'icon'),
 			' .maxi-button-block__icon svg > *': getIconObject(props, 'svg'),
 			' .maxi-button-block__icon svg path': getIconPathStyles(
 				props,

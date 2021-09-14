@@ -175,31 +175,28 @@ describe('TransformControl', () => {
 	});
 
 	it('Check Responsive transform control', async () => {
-		await insertBlock('Image Maxi');
 		await openAdvancedSidebar(page, 'transform');
 		const tabsControl = await page.$$(
 			'.maxi-transform-control .maxi-tabs-control button'
 		);
 
 		// Scale
-		// general
+		await tabsControl[0].click();
 		const scaleInput = await page.$(
 			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input'
 		);
 
-		await scaleInput.focus();
-		await page.waitForTimeout(100);
-		await page.keyboard.type('5');
 		const scaleValue = await page.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
 			input => input.value
 		);
 
-		expect(scaleValue).toStrictEqual('5');
+		expect(scaleValue).toStrictEqual('55');
 
 		// responsive S
 		await changeResponsive(page, 's');
 		await scaleInput.focus();
+		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('7');
 
 		const responsiveSOption = await page.$eval(
@@ -230,7 +227,7 @@ describe('TransformControl', () => {
 			input => input.value
 		);
 
-		expect(responsiveMOption).toStrictEqual('5');
+		expect(responsiveMOption).toStrictEqual('55');
 
 		// Translate
 		await tabsControl[1].click();
@@ -238,31 +235,30 @@ describe('TransformControl', () => {
 			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input'
 		);
 
-		await translateInput.focus();
-		await page.keyboard.type('3');
 		const translateValue = await page.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
 			input => input.value
 		);
 
-		expect(translateValue).toStrictEqual('3');
+		expect(translateValue).toStrictEqual('55');
 
 		// responsive S
 		await changeResponsive(page, 's');
 		await translateInput.focus();
-		await page.keyboard.type('5');
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('3');
 
 		const translateSOption = await page.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
 			input => input.value
 		);
 
-		expect(translateSOption).toStrictEqual('35');
+		expect(translateSOption).toStrictEqual('53');
 
 		const translateAttributes = await getBlockAttributes();
 		const translate = translateAttributes['transform-translate-y-s'];
 
-		expect(translate).toStrictEqual(35);
+		expect(translate).toStrictEqual(53);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
@@ -271,7 +267,7 @@ describe('TransformControl', () => {
 			input => input.value
 		);
 
-		expect(translateXsOption).toStrictEqual('35');
+		expect(translateXsOption).toStrictEqual('53');
 
 		// responsive M
 		await changeResponsive(page, 'm');
@@ -280,7 +276,7 @@ describe('TransformControl', () => {
 			input => input.value
 		);
 
-		expect(translateMOption).toStrictEqual('3');
+		expect(translateMOption).toStrictEqual('55');
 
 		// Rotate
 		await tabsControl[2].click();
@@ -288,18 +284,17 @@ describe('TransformControl', () => {
 			'.maxi-transform-control .maxi-transform-control__rotate-control__item__input'
 		);
 
-		await rotateInput.focus();
-		await page.keyboard.type('9');
 		const rotateValue = await page.$eval(
 			'.maxi-transform-control .maxi-transform-control__rotate-control__item__input',
 			input => input.value
 		);
 
-		expect(rotateValue).toStrictEqual('9');
+		expect(rotateValue).toStrictEqual('150');
 
 		// responsive S
 		await changeResponsive(page, 's');
-		await translateInput.focus();
+		await rotateInput.focus();
+		await pressKeyTimes('Backspace', '2');
 		await page.keyboard.type('5');
 
 		const rotateSOption = await page.$eval(
@@ -307,12 +302,12 @@ describe('TransformControl', () => {
 			input => input.value
 		);
 
-		expect(rotateSOption).toStrictEqual('95');
+		expect(rotateSOption).toStrictEqual('15');
 
 		const rotateAttributes = await getBlockAttributes();
 		const rotate = rotateAttributes['transform-rotate-x-s'];
 
-		expect(rotate).toStrictEqual(95);
+		expect(rotate).toStrictEqual(15);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
@@ -321,7 +316,7 @@ describe('TransformControl', () => {
 			input => input.value
 		);
 
-		expect(rotateXsOption).toStrictEqual('95');
+		expect(rotateXsOption).toStrictEqual('15');
 
 		// responsive M
 		await changeResponsive(page, 'm');
@@ -330,7 +325,7 @@ describe('TransformControl', () => {
 			input => input.value
 		);
 
-		expect(rotateMOption).toStrictEqual('9');
+		expect(rotateMOption).toStrictEqual('150');
 
 		// Origin
 		await tabsControl[3].click();
@@ -338,31 +333,30 @@ describe('TransformControl', () => {
 			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input'
 		);
 
-		await originInput.focus();
-		await page.keyboard.type('6');
 		const originValue = await page.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
 			input => input.value
 		);
 
-		expect(originValue).toStrictEqual('6');
+		expect(originValue).toStrictEqual('80');
 
 		// responsive S
 		await changeResponsive(page, 's');
 		await originInput.focus();
-		await page.keyboard.type('3');
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('8');
 
 		const originSOption = await page.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
 			input => input.value
 		);
 
-		expect(originSOption).toStrictEqual('63');
+		expect(originSOption).toStrictEqual('88');
 
 		const originAttributes = await getBlockAttributes();
 		const origin = originAttributes['transform-origin-y-s'];
 
-		expect(origin).toStrictEqual(63);
+		expect(origin).toStrictEqual(88);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
@@ -371,7 +365,7 @@ describe('TransformControl', () => {
 			input => input.value
 		);
 
-		expect(originXsOption).toStrictEqual('63');
+		expect(originXsOption).toStrictEqual('88');
 
 		// responsive M
 		await changeResponsive(page, 'm');
@@ -380,6 +374,6 @@ describe('TransformControl', () => {
 			input => input.value
 		);
 
-		expect(originMOption).toStrictEqual('6');
+		expect(originMOption).toStrictEqual('80');
 	});
 });

@@ -88,7 +88,7 @@ describe('FullSizeControl', () => {
 		);
 		expect(heightM).toStrictEqual('330');
 	});
-	it('Checking responsive ColumnSize', async () => {
+	it('Checking responsive column size', async () => {
 		await insertBlock('Container Maxi');
 		await page.$$eval('.maxi-row-block__template button', buttons =>
 			buttons[1].click()

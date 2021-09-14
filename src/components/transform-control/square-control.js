@@ -420,8 +420,8 @@ const SquareControl = props => {
 							onChange(value, value, xUnit, yUnit);
 						}
 					}}
-					min={getMinMax().min}
-					max={getMinMax().max}
+					min={getMinMax()?.min}
+					max={getMinMax()?.max}
 					step='.5'
 				/>
 				<div className='maxi-transform-control__square-control__y-control__value'>
@@ -486,8 +486,8 @@ const SquareControl = props => {
 							onChange(value, value, xUnit, yUnit);
 						}
 					}}
-					min={getMinMax().min}
-					max={getMinMax().max}
+					min={getMinMax()?.min}
+					max={getMinMax()?.max}
 					step='.5'
 				/>
 				<div className='maxi-transform-control__square-control__x-control__value'>

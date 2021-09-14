@@ -50,48 +50,48 @@ describe('ResponsiveControl', () => {
 	it('Check Responsive to responsive control', async () => {
 		const input = await page.$('.maxi-responsive-control input');
 
-		const zIndex = await page.$eval(
+		const breakpoint = await page.$eval(
 			'.maxi-responsive-control input',
 			button => button.value
 		);
 
-		expect(zIndex).toStrictEqual('1000');
+		expect(breakpoint).toStrictEqual('1000');
 
 		// responsive S
 		await changeResponsive(page, 's');
 		await input.focus();
 		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type('855');
-		const zIndexS = await page.$eval(
+		const breakpointS = await page.$eval(
 			'.maxi-responsive-control input',
 			button => button.value
 		);
 
-		expect(zIndexS).toStrictEqual('855');
+		expect(breakpointS).toStrictEqual('855');
 
 		const attributes = await getBlockAttributes();
-		const breakpoint = attributes['breakpoints-s'];
+		const breakpoints = attributes['breakpoints-s'];
 
-		expect(breakpoint).toStrictEqual(855);
+		expect(breakpoints).toStrictEqual(855);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
 
-		const zIndexXs = await page.$eval(
+		const breakpointXs = await page.$eval(
 			'.maxi-responsive-control input',
 			button => button.value
 		);
 
-		expect(zIndexXs).toStrictEqual('480');
+		expect(breakpointXs).toStrictEqual('480');
 
 		// responsive M
 		await changeResponsive(page, 'm');
 
-		const zIndexM = await page.$eval(
+		const breakpointM = await page.$eval(
 			'.maxi-responsive-control input',
 			button => button.value
 		);
 
-		expect(zIndexM).toStrictEqual('1024');
+		expect(breakpointM).toStrictEqual('1024');
 	});
 });

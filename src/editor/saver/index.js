@@ -8,30 +8,38 @@ import { useDispatch, useSelect } from '@wordpress/data';
  * Component
  */
 const BlockStylesSaver = () => {
-	const { isSaving, isPreviewing } = useSelect(select => {
-		const { isSavingPost, isPreviewingPost } = select('core/editor');
+	const { isSaving, isPreviewing, isDraft } = useSelect(select => {
+		const { isSavingPost, isPreviewingPost, getCurrentPostAttribute } =
+			select('core/editor');
 
 		const isSaving = isSavingPost();
 		const isPreviewing = isPreviewingPost();
+		const isDraft = getCurrentPostAttribute('status') === 'draft';
 
 		return {
 			isSaving,
 			isPreviewing,
+			isDraft,
 		};
 	});
 
 	const { saveStyles } = useDispatch('maxiBlocks/styles');
+	const { saveFonts } = useDispatch('maxiBlocks/text');
 	const { saveCustomData } = useDispatch('maxiBlocks/customData');
 	const { saveSCStyles } = useDispatch('maxiBlocks/style-cards');
 
 	useEffect(() => {
-		if (isSaving && !isPreviewing) {
-			saveStyles(true);
-			saveCustomData(true);
-		} else if (isSaving && isPreviewing) {
-			saveStyles(false);
-			saveCustomData(true);
-			saveSCStyles(false);
+		if (isSaving) {
+			if (!isPreviewing && !isDraft) {
+				saveStyles(true);
+				saveFonts(true);
+				saveCustomData(true);
+			} else if (isPreviewing || isDraft) {
+				saveStyles(false);
+				saveFonts(false);
+				saveCustomData(true);
+				saveSCStyles(false);
+			}
 		}
 	});
 

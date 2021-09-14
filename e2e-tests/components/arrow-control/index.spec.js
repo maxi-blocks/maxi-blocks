@@ -13,12 +13,9 @@ import {
 import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
 
 describe('ArrowControl', () => {
-	beforeEach(async () => {
+	it('Check the arrow control', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
-	});
-
-	it('Check the arrow control', async () => {
 		const accordionPanel = await openSidebar(page, 'arrow');
 
 		await accordionPanel.$$eval(
@@ -78,13 +75,16 @@ describe('ArrowControl', () => {
 	});
 
 	it('Check the responsive arrow control', async () => {
-		await createNewPost();
-		await insertBlock('Group Maxi');
 		const accordionPanel = await openSidebar(page, 'arrow');
 
 		await accordionPanel.$$eval(
 			'.maxi-arrow-control .maxi-fancy-radio-control .maxi-radio-control__option label',
 			openArrowControl => openArrowControl[0].click()
+		);
+
+		await accordionPanel.$$eval(
+			'.maxi-arrow-control .maxi-radio-control input',
+			select => select[3].click()
 		);
 
 		const isItemChecked = await accordionPanel.$$eval(

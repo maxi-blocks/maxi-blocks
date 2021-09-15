@@ -179,6 +179,7 @@ describe('NumberCounterControl', () => {
 		await fontFamilySelector.click();
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(100);
 
 		const attributes = await getBlockAttributes();
 		const fontFamily = attributes['number-counter-title-font-family'];

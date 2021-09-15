@@ -21,6 +21,7 @@ describe('FontFamilySelector', () => {
 
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(100);
 
 		const attributes = await getBlockAttributes();
 		const fontFamily = attributes['font-family-general'];

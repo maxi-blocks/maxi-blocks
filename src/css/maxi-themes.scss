@@ -157,7 +157,7 @@ body.maxi-blocks--active {
 @each $responsive_size in $responsive_sizes {
 	body.maxi-blocks--active {
 		@each $style in $styles {
-			.edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="#{$responsive_size}"] {
+			.edit-post-visual-editor[maxi-blocks-responsive="#{$responsive_size}"] {
 				.maxi-block--backend {
 					&.maxi-#{$style} {
 						&.maxi-text-block,

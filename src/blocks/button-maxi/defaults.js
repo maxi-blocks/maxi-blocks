@@ -588,7 +588,9 @@ export const preset7 = {
 	'icon-stroke-general': 1.5,
 	'icon-width-general': 23,
 	'icon-width-unit-general': 'px',
-	'icon-width-xxl': 30,
+	// 4k
+	'icon-width-xxl': 35,
+	'icon-stroke-xxl': 1,
 };
 
 export const preset8 = {

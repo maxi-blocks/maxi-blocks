@@ -5,6 +5,7 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
+	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
@@ -25,6 +26,7 @@ describe('TypographyControl', () => {
 		await fontFamilySelector.click();
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(100);
 
 		const attributes = await getBlockAttributes();
 		const fontFamily = attributes['font-family-general'];
@@ -137,15 +139,21 @@ describe('TypographyControl', () => {
 			select => select[0].focus()
 		);
 		await pressKeyTimes('Backspace', '1');
+		await page.waitForTimeout(200);
+
 		await page.keyboard.type('9');
+		await page.waitForTimeout(200);
 
 		// line-height
 		await accordionPanel.$$eval(
 			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
 			select => select[2].focus()
 		);
-		await pressKeyTimes('Backspace', '1');
+		await pressKeyWithModifier('primary', 'a');
+		await page.waitForTimeout(200);
+
 		await page.keyboard.type('4');
+		await page.waitForTimeout(200);
 
 		// letter-spacing
 		await accordionPanel.$$eval(
@@ -153,6 +161,7 @@ describe('TypographyControl', () => {
 			select => select[4].focus()
 		);
 		await page.keyboard.type('10');
+		await page.waitForTimeout(200);
 
 		const stylesAttributes = await getBlockAttributes();
 
@@ -167,7 +176,7 @@ describe('TypographyControl', () => {
 		}))(stylesAttributes);
 
 		const expectedAttributes = {
-			'line-height-m': 24,
+			'line-height-m': 4,
 			'letter-spacing-m': 10,
 			'font-size-m': 19,
 		};

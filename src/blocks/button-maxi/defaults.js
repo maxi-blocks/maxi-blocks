@@ -25,20 +25,12 @@ export const preset1 = {
 	'padding-bottom-general': 13,
 	'padding-left-general': 33,
 	'padding-unit-general': 'px',
-	'box-shadow-blur-general': '',
-	'box-shadow-color-general': '#ffffff',
-	'box-shadow-horizontal-general': '',
-	'box-shadow-palette-color-general': 1,
-	'box-shadow-palette-color-general-hover': 6,
-	'box-shadow-palette-color-status-general': true,
-	'box-shadow-palette-color-status-general-hover': true,
-	'box-shadow-spread-general': '',
-	'box-shadow-vertical-general': '',
 	'background-active-media': 'color',
 	'background-palette-color-status': true,
 	'background-palette-color': 4,
 	'palette-color-general': 1,
 	'palette-color-status-general': true,
+	'box-shadow-palette-color-status-general': false,
 	// icon
 	'icon-background-color': '',
 	'icon-background-gradient-opacity': 1,
@@ -119,15 +111,7 @@ export const preset2 = {
 	'padding-bottom-general': 13,
 	'padding-left-general': 33,
 	'padding-unit-general': 'px',
-	'box-shadow-blur-general': '',
-	'box-shadow-color-general': '#ffffff',
-	'box-shadow-horizontal-general': '',
-	'box-shadow-palette-color-general': 1,
-	'box-shadow-palette-color-general-hover': 6,
-	'box-shadow-palette-color-status-general': true,
-	'box-shadow-palette-color-status-general-hover': true,
-	'box-shadow-spread-general': '',
-	'box-shadow-vertical-general': '',
+	'box-shadow-palette-color-status-general': false,
 	'background-active-media': '',
 	'background-palette-color-status': true,
 	'background-palette-color': 4,
@@ -318,15 +302,7 @@ export const preset4 = {
 	'padding-bottom-general': 4,
 	'padding-left-general': 10,
 	'padding-unit-general': 'px',
-	'box-shadow-blur-general': '',
-	'box-shadow-color-general': '#ffffff',
-	'box-shadow-horizontal-general': '',
-	'box-shadow-palette-color-general': 1,
-	'box-shadow-palette-color-general-hover': 6,
-	'box-shadow-palette-color-status-general': true,
-	'box-shadow-palette-color-status-general-hover': true,
-	'box-shadow-spread-general': '',
-	'box-shadow-vertical-general': '',
+	'box-shadow-palette-color-status-general': false,
 	'background-active-media': 'color',
 	'background-palette-color-status': true,
 	'background-palette-color': 4,
@@ -435,14 +411,7 @@ export const preset5 = {
 	'padding-sync-vertical-general': true,
 	'padding-top-general': 3,
 	'padding-unit-general': 'px',
-	'box-shadow-blur-general': '',
-	'box-shadow-color-general': '#ffffff',
-	'box-shadow-horizontal-general': '',
-	'box-shadow-palette-color-general': 1,
-	'box-shadow-palette-color-general-hover': 6,
-	'box-shadow-palette-color-status-general': true,
-	'box-shadow-spread-general': '',
-	'box-shadow-vertical-general': '',
+	'box-shadow-palette-color-status-general': false,
 	'palette-color-status-general': true,
 	'palette-color-general': 4,
 	// icon
@@ -606,6 +575,7 @@ export const preset7 = {
 	'padding-unit-general': 'px',
 	'palette-color-general': 4,
 	'palette-color-status-general': true,
+	'box-shadow-palette-color-status-general': false,
 	// icon
 	'icon-background-color': '',
 	'icon-background-palette-color': 1,
@@ -629,6 +599,12 @@ export const preset7 = {
 	// 4k
 	'icon-width-xxl': 35,
 	'icon-stroke-xxl': 1.5,
+	// hover
+	'background-active-media-hover': 'none',
+	'border-status-hover': false,
+	'palette-color-status-hover': false,
+	'typography-status-hover': false,
+	'box-shadow-status-hover': false,
 };
 
 export const preset8 = {
@@ -643,6 +619,7 @@ export const preset8 = {
 	'padding-unit-general': 'px',
 	'palette-color-general': 4,
 	'palette-color-status-general': true,
+	'box-shadow-palette-color-status-general': false,
 	// icon
 	'icon-background-color': '',
 	'icon-background-palette-color': 1,
@@ -692,6 +669,12 @@ export const preset8 = {
 	'icon-padding-top-xxl': 7,
 	'icon-padding-sync-xxl': true,
 	'icon-stroke-xxl': 1.3,
+	// hover
+	'background-active-media-hover': 'none',
+	'border-status-hover': false,
+	'palette-color-status-hover': false,
+	'typography-status-hover': false,
+	'box-shadow-status-hover': false,
 };
 
 export const preset9 = {
@@ -706,6 +689,7 @@ export const preset9 = {
 	'padding-unit-general': 'px',
 	'palette-color-general': 1,
 	'palette-color-status-general': true,
+	'box-shadow-palette-color-status-general': false,
 	// icon
 	'icon-inherit': false,
 	'icon-background-color': '',
@@ -748,6 +732,12 @@ export const preset9 = {
 	'icon-padding-top-xxl': 9,
 	'icon-padding-sync-xxl': true,
 	'icon-stroke-xxl': 1.3,
+	// hover
+	'background-active-media-hover': 'none',
+	'border-status-hover': false,
+	'palette-color-status-hover': false,
+	'typography-status-hover': false,
+	'box-shadow-status-hover': false,
 };
 
 export const preset10 = {
@@ -762,6 +752,7 @@ export const preset10 = {
 	'padding-unit-general': 'px',
 	'palette-color-general': 4,
 	'palette-color-status-general': true,
+	'box-shadow-palette-color-status-general': false,
 	// icon
 	'icon-background-color': '',
 	'icon-background-palette-color': 1,
@@ -811,6 +802,12 @@ export const preset10 = {
 	'icon-padding-top-xxl': 7,
 	'icon-padding-sync-xxl': true,
 	'icon-stroke-xxl': 1.3,
+	// hover
+	'background-active-media-hover': 'none',
+	'border-status-hover': false,
+	'palette-color-status-hover': false,
+	'typography-status-hover': false,
+	'box-shadow-status-hover': false,
 };
 
 export const preset11 = {
@@ -825,6 +822,7 @@ export const preset11 = {
 	'padding-unit-general': 'px',
 	'palette-color-general': 1,
 	'palette-color-status-general': true,
+	'box-shadow-palette-color-status-general': false,
 	// icon
 	'icon-inherit': false,
 	'icon-background-color': '',
@@ -867,4 +865,10 @@ export const preset11 = {
 	'icon-padding-top-xxl': 9,
 	'icon-padding-sync-xxl': true,
 	'icon-stroke-xxl': 1.3,
+	// hover
+	'background-active-media-hover': 'none',
+	'border-status-hover': false,
+	'palette-color-status-hover': false,
+	'typography-status-hover': false,
+	'box-shadow-status-hover': false,
 };

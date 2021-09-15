@@ -1,7 +1,6 @@
 /**
  * Internal dependencies
  */
-import controls from './controls';
 import fonts from '../fonts/fonts';
 
 /**
@@ -47,13 +46,6 @@ function reducer(
 				...state,
 				postFonts: sortedUniq([...state.postFonts, ...action.fonts]),
 			};
-		case 'SAVE_FONTS':
-			controls.SAVE_FONTS({
-				isUpdate: action.isUpdate,
-				fonts: state.postFonts,
-			});
-
-			return state;
 		default:
 			return state;
 	}

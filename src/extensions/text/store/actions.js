@@ -25,11 +25,5 @@ const actions = {
 			fonts,
 		};
 	},
-	saveFonts(isUpdate) {
-		return {
-			type: 'SAVE_FONTS',
-			isUpdate,
-		};
-	},
 };
 export default actions;

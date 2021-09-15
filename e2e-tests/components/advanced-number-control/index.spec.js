@@ -6,10 +6,11 @@ import {
 	insertBlock,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
 
 describe('Advanced Number Control', () => {
 	it('Checking the advanced number control', async () => {
@@ -62,5 +63,63 @@ describe('Advanced Number Control', () => {
 		const expectAuto = '';
 
 		expect(resetAttribute).toStrictEqual(expectAuto);
+	});
+	it('Checking responsive ColumnSize', async () => {
+		await insertBlock('Container Maxi');
+		await page.$$eval('.maxi-row-block__template button', buttons =>
+			buttons[1].click()
+		);
+		await page.$$eval(
+			'.maxi-row-block__container .maxi-column-block',
+			column => column[0].focus()
+		);
+
+		const accordionPanel = await openSidebar(page, 'column settings');
+
+		const widthValue = await accordionPanel.$$eval(
+			'.maxi-advanced-number-control .maxi-base-control__field input',
+			widthInput => widthInput[0].value
+		);
+
+		expect(widthValue).toStrictEqual('48.75');
+
+		// s
+		await changeResponsive(page, 's');
+		const inputS = await accordionPanel.$$(
+			'.maxi-advanced-number-control .maxi-base-control__field input'
+		);
+
+		await inputS[0].focus();
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('8');
+
+		const widthValueS = await accordionPanel.$$eval(
+			'.maxi-advanced-number-control .maxi-base-control__field input',
+			widthInput => widthInput[0].value
+		);
+		expect(widthValueS).toStrictEqual('18');
+
+		const attributes = await getBlockAttributes();
+		const width = attributes['column-size-s'];
+
+		expect(width).toStrictEqual(18);
+
+		// xs
+		await changeResponsive(page, 'xs');
+
+		const widthValueXs = await accordionPanel.$$eval(
+			'.maxi-advanced-number-control .maxi-base-control__field input',
+			widthInput => widthInput[0].value
+		);
+		expect(widthValueXs).toStrictEqual('18');
+
+		// m
+		await changeResponsive(page, 'm');
+
+		const widthValueM = await accordionPanel.$$eval(
+			'.maxi-advanced-number-control .maxi-base-control__field input',
+			widthInput => widthInput[0].value
+		);
+		expect(widthValueM).toStrictEqual('100');
 	});
 });

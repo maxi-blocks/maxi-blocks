@@ -174,6 +174,4 @@ describe('TypographyControl', () => {
 
 		expect(expectedResult).toStrictEqual(expectedAttributes);
 	});
-
-	it('Checking the typography control', async () => {});
 });

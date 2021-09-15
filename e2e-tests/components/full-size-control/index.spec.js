@@ -123,6 +123,13 @@ describe('FullSizeControl', () => {
 		await page.waitForTimeout(100);
 		await inputS[0].focus();
 		await page.waitForTimeout(100);
+
+		const heightValueGeneral = await accordionPanel.$$eval(
+			'.maxi-full-size-control .maxi-advanced-number-control input',
+			heightInput => heightInput[0].value
+		);
+		expect(heightValueGeneral).toStrictEqual('865');
+
 		await pressKeyTimes('Backspace', '2');
 		await page.keyboard.type('85');
 

@@ -537,9 +537,10 @@ export const preset6 = {
 	'icon-palette-color-status': true,
 	'icon-position': 'right',
 	'icon-spacing-general': 13,
-	'icon-stroke-general': 3,
+	'icon-stroke-general': 4,
 	'icon-width-general': 20,
 	'icon-width-unit-general': 'px',
+	'icon-inherit': true,
 	// 4k
 	'border-top-left-radius-xxl': 0,
 	'border-top-right-radius-xxl': 0,
@@ -548,10 +549,10 @@ export const preset6 = {
 	'border-unit-radius-xxl': 'px',
 	'border-sync-radius-xxl': true,
 	'icon-width-xxl': 30,
-	'padding-bottom-xxl': 21,
-	'padding-left-xxl': 52,
-	'padding-right-xxl': 52,
-	'padding-top-xxl': 21,
+	'padding-bottom-xxl': 8,
+	'padding-left-xxl': 22,
+	'padding-right-xxl': 6,
+	'padding-top-xxl': 8,
 	'icon-spacing-xxl': 13,
 };
 

@@ -6,7 +6,7 @@ body.maxi-blocks--active .maxi-text-block {
 	}
 	&__content {
 		position: relative;
-		display: inline-block;
+		display: block;
 		margin: 0;
 	}
 	p:not(&__content) {

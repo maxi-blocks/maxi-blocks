@@ -5,6 +5,11 @@ import { select } from '@wordpress/data';
 
 const { getSelectedBlockClientId } = select('core/block-editor');
 
+export const getPostFonts = state => {
+	if (state.postFonts) return state.postFonts;
+	return state;
+};
+
 export const getFonts = state => {
 	if (state.fonts) return state.fonts;
 	return state;

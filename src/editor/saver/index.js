@@ -24,7 +24,6 @@ const BlockStylesSaver = () => {
 	});
 
 	const { saveStyles } = useDispatch('maxiBlocks/styles');
-	const { saveFonts } = useDispatch('maxiBlocks/text');
 	const { saveCustomData } = useDispatch('maxiBlocks/customData');
 	const { saveSCStyles } = useDispatch('maxiBlocks/style-cards');
 
@@ -32,11 +31,9 @@ const BlockStylesSaver = () => {
 		if (isSaving) {
 			if (!isPreviewing && !isDraft) {
 				saveStyles(true);
-				saveFonts(true);
 				saveCustomData(true);
 			} else if (isPreviewing || isDraft) {
 				saveStyles(false);
-				saveFonts(false);
 				saveCustomData(true);
 				saveSCStyles(false);
 			}

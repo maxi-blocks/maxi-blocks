@@ -4,8 +4,8 @@
 import {
 	createNewPost,
 	insertBlock,
-	getEditedPostContent,
 	pressKeyWithModifier,
+	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -117,8 +117,7 @@ describe('Image Maxi', () => {
 		await inputs[4].focus();
 		await pressKeyWithModifier('primary', 'a');
 		await page.waitForTimeout(200);
-		await page.keyboard.type('2');
-		await page.waitForTimeout(200);
+		await page.keyboard.type('4');
 
 		await inputs[6].focus();
 		await page.keyboard.type('11');
@@ -137,7 +136,7 @@ describe('Image Maxi', () => {
 
 		const expectedAttributesTwo = {
 			'font-size-m': 19,
-			'line-height-m': 2,
+			'line-height-m': 4,
 			'letter-spacing-m': 11,
 		};
 

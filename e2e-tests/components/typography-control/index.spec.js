@@ -126,6 +126,7 @@ describe('TypographyControl', () => {
 				i
 			);
 
+			await page.waitForTimeout(200);
 			const shadowAttributes = await getBlockAttributes();
 			const textShadow = shadowAttributes['text-shadow-general'];
 			expect(textShadow).toStrictEqual(setting);

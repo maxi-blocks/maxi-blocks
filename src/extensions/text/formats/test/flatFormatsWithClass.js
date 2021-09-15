@@ -697,4 +697,215 @@ describe('flatFormatsWithClass', () => {
 
 		expect(result).toStrictEqual(expectResult);
 	});
+
+	it('Should remove a format class-name which does not exist on the customFormats attribute', () => {
+		const formatValue = {
+			formats: [
+				,
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				[
+					{
+						type: 'maxi-blocks/text-custom',
+						attributes: {
+							className: 'maxi-text-block__custom-format--0',
+						},
+						unregisteredAttributes: {},
+					},
+				],
+				,
+			],
+			replacements: [, , , , , , , , , , , , , , , , , , , ,],
+			text: 'Testing Text Maxi',
+			start: 0,
+			end: 20,
+			activeFormats: [
+				{
+					type: 'maxi-blocks/text-custom',
+					attributes: {
+						className: 'maxi-text-block__custom-format--0',
+					},
+					unregisteredAttributes: {},
+				},
+			],
+		};
+		const typography = {
+			'font-weight-general': 800,
+		};
+		const content =
+			'<span class="maxi-text-block--has-custom-format maxi-text-block__custom-format--0">Testing Text Maxi</span>';
+		const isList = false;
+		const value = {
+			'font-weight': 800,
+		};
+		const breakpoint = 'general';
+		const textLevel = 'p';
+
+		const result = flatFormatsWithClass({
+			formatValue,
+			typography,
+			content,
+			isList,
+			value,
+			breakpoint,
+			textLevel,
+		});
+		const expectResult = {
+			typography: { 'font-weight-general': 800 },
+			content: 'Testing Text Maxi',
+		};
+
+		expect(result).toStrictEqual(expectResult);
+	});
 });

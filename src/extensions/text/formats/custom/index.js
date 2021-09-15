@@ -4,19 +4,19 @@
 import { __ } from '@wordpress/i18n';
 
 /**
- * Text-custom-hover format
+ * Text-custom format
  */
-const name = 'maxi-blocks/text-custom-hover';
-const title = __('Text custom hover', 'maxi-blocks');
+const name = 'maxi-blocks/text-custom';
+const title = __('Text custom', 'maxi-blocks');
 
-const customHover = {
+const custom = {
 	name,
 	title,
 	tagName: 'span',
-	className: 'maxi-text-block--has-custom-hover-format',
+	className: 'maxi-text-block--has-custom-format',
 	attributes: {
 		className: 'class',
 	},
 };
 
-export default customHover;
+export default custom;

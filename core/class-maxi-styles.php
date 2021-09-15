@@ -122,8 +122,12 @@ class MaxiBlocks_Styles {
 	 */
 
 	public function enqueue_fonts($fonts) {
-		if (empty($fonts)) {
-			return;
+		if (!is_array($fonts)) {
+			$fonts = [];
+		}
+
+		if (!array_key_exists('Roboto', $fonts)) {
+			array_push($fonts, 'Roboto');
 		}
 
 		foreach ($fonts as $font) {

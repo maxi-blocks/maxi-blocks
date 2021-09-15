@@ -35,20 +35,30 @@ export const getRepeatedClassNames = (customFormats, formatValue) => {
 	Object.values(multiFormatObj).forEach(format => {
 		if (!format.className) return;
 
-		const objStyles = customFormats[format.className];
+		if (!customFormats?.[format.className]) {
+			// This is an exceptional case: when the format is set but the customFormat attribute
+			// doesn't contain that specific format.
+			repeatedClasses.push(format.className);
+			customFormats[format.className] = {}; // sets an empty object to be deleted after
+		} else {
+			const objStyles = customFormats[format.className];
 
-		repeatedClasses.push(
-			Object.entries(customFormats).map(([target, style]) => {
-				if (
-					target !== format.className &&
-					isEqual(JSON.stringify(objStyles), JSON.stringify(style))
-				) {
-					return target;
-				}
+			repeatedClasses.push(
+				Object.entries(customFormats).map(([target, style]) => {
+					if (
+						target !== format.className &&
+						isEqual(
+							JSON.stringify(objStyles),
+							JSON.stringify(style)
+						)
+					) {
+						return target;
+					}
 
-				return null;
-			})
-		);
+					return null;
+				})
+			);
+		}
 	});
 
 	return compact(uniq(flattenDeep(repeatedClasses)));
@@ -232,55 +242,82 @@ const flatFormatsWithClass = ({
 	const { [`custom-formats${isHover ? '-hover' : ''}`]: customFormats } =
 		typography;
 
-	const repeatedClasses = getRepeatedClassNames(customFormats, formatValue);
-
 	let newContent = content;
 	let newFormatValue = { ...formatValue };
 	let newTypography = { ...typography };
 
-	if (repeatedClasses.length > 1) {
-		const {
-			formatValue: preformattedFormatValue,
-			typography: preformattedTypography,
-		} = flatRepeatedClassNames(
-			repeatedClasses,
-			formatValue,
-			typography,
-			isHover
+	if (customFormats) {
+		const repeatedClasses = getRepeatedClassNames(
+			customFormats,
+			formatValue
 		);
 
-		newContent = toHTMLString({
-			value: preformattedFormatValue,
-			multilineTag: isList ? 'li' : null,
-			preserveWhiteSpace: true,
+		if (repeatedClasses.length >= 1) {
+			const {
+				formatValue: preformattedFormatValue,
+				typography: preformattedTypography,
+			} = flatRepeatedClassNames(
+				repeatedClasses,
+				formatValue,
+				typography,
+				isHover
+			);
+
+			newContent = toHTMLString({
+				value: preformattedFormatValue,
+				multilineTag: isList ? 'li' : null,
+				preserveWhiteSpace: true,
+			});
+
+			newFormatValue = preformattedFormatValue;
+			newTypography = preformattedTypography;
+		}
+
+		const {
+			formatValue: cleanedFormatValue,
+			typography: cleanedTypography,
+			content: cleanedContent,
+		} = removeUnnecessaryFormats({
+			formatValue: newFormatValue,
+			typography: newTypography,
+			content: newContent,
+			isList,
+			value,
+			breakpoint,
+			textLevel,
+			isHover,
+			styleCardPrefix,
+			styleCard,
 		});
 
-		newFormatValue = preformattedFormatValue;
-		newTypography = preformattedTypography;
+		return {
+			typography: cleanedTypography,
+			content: cleanedContent,
+			...(returnFormatValue && {
+				formatValue: cleanedFormatValue,
+			}),
+		};
 	}
 
-	const {
-		formatValue: cleanedFormatValue,
-		typography: cleanedTypography,
-		content: cleanedContent,
-	} = removeUnnecessaryFormats({
-		formatValue: newFormatValue,
-		typography: newTypography,
-		content: newContent,
-		isList,
-		value,
-		breakpoint,
-		textLevel,
-		isHover,
-		styleCardPrefix,
-		styleCard,
+	// Remove all formats
+	newFormatValue = removeFormat(
+		newFormatValue,
+		`maxi-blocks/text-custom${isHover ? '-hover' : ''}`,
+		0,
+		newFormatValue.formats.length
+	);
+
+	newContent = toHTMLString({
+		value: newFormatValue,
+		multilineTag: isList ? 'li' : null,
+		preserveWhiteSpace: true,
 	});
 
 	return {
-		typography: cleanedTypography,
-		content: cleanedContent,
+		typography: newTypography,
+		content: newContent,
 		...(returnFormatValue && {
-			formatValue: cleanedFormatValue,
+			formatValue: newFormatValue,
 		}),
 	};
 };

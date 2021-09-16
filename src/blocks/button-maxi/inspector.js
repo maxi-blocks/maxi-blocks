@@ -151,7 +151,6 @@ const Inspector = memo(
 														className='maxi-button-default-styles'
 														items={[
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -165,7 +164,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -179,7 +177,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -193,7 +190,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -208,7 +204,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -223,7 +218,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -238,7 +232,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -253,7 +246,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -268,7 +260,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -283,7 +274,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -298,7 +288,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={

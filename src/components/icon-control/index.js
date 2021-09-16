@@ -43,8 +43,14 @@ import {
  * Component
  */
 const IconControl = props => {
-	const { className, onChange, clientId, deviceType, parentBlockStyle } =
-		props;
+	const {
+		className,
+		onChange,
+		clientId,
+		deviceType,
+		parentBlockStyle,
+		isHover = false,
+	} = props;
 
 	const classes = classnames('maxi-icon-control', className);
 

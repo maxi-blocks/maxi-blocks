@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /**
  * WordPress dependencies
  */
@@ -45,6 +46,7 @@ describe('TextShadowControl', () => {
 				(buttons, i) => buttons[i].click(),
 				i
 			);
+			await page.waitForTimeout(200);
 
 			const shadowAttributes = await getBlockAttributes();
 			const textShadow = shadowAttributes['text-shadow-general'];

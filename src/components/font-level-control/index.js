@@ -8,10 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '../button';
-import {
-	getGroupAttributes,
-	getDefaultAttribute,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -72,9 +69,12 @@ const FontLevelControl = props => {
 		} else if (!isNil(fontOptions)) {
 			fontOptResponse = {
 				...fontOptions,
-				'palette-color-general': state === 'p' ? 3 : 5,
+				'palette-color-general': value === 'p' ? 3 : 5,
 			};
-			fontOptResponseHover = getDefaultAttribute('typographyHover');
+			fontOptResponseHover = {
+				...fontOptionsHover,
+				'palette-color-general-hover': 5,
+			};
 		}
 
 		onChange({

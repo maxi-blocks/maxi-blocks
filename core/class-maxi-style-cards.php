@@ -1,143 +1,134 @@
 <?php
 
-class MaxiBlocks_StyleCards
-{
-    /**
-     * This plugin's instance.
-     *
-     * @var MaxiBlocks_StyleCards
-     */
-    private static $instance;
+class MaxiBlocks_StyleCards {
+	/**
+	 * This plugin's instance.
+	 *
+	 * @var MaxiBlocks_StyleCards
+	 */
+	private static $instance;
 
-    /**
-     * Registers the plugin.
-     */
-    public static function register()
-    {
-        if (null === self::$instance) {
-            self::$instance = new MaxiBlocks_StyleCards();
-        }
-    }
+	/**
+	 * Registers the plugin.
+	 */
+	public static function register() {
+		if (null === self::$instance) {
+			self::$instance = new MaxiBlocks_StyleCards();
+		}
+	}
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
-    }
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
+		add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+	}
 
-    /**
-     * Enqueuing styles
-     */
-    public function enqueue_styles()
-    {
-        $vars = $this->getStylesString();
+	/**
+	 * Enqueuing styles
+	 */
+	public function enqueue_styles() {
+		$vars = $this->getStylesString();
 
-        // Inline styles
-        if ($vars) {
-            wp_register_style('maxi-blocks-sc-vars', false);
-            wp_enqueue_style('maxi-blocks-sc-vars');
-            wp_add_inline_style('maxi-blocks-sc-vars', $vars);
+		// Inline styles
+		if ($vars) {
+			wp_register_style('maxi-blocks-sc-vars', false);
+			wp_enqueue_style('maxi-blocks-sc-vars');
+			wp_add_inline_style('maxi-blocks-sc-vars', $vars);
 
-            $this->enqueue_fonts($vars);
-        }
-    }
+			$this->enqueue_fonts($vars);
+		}
+	}
 
-    /**
-     * Get SC
-     */
-    public function getStylesString()
-    {
-        $style_card = get_option('mb_sc_string');
+	/**
+	 * Get SC
+	 */
+	public function getStylesString() {
+		$style_card = get_option('mb_sc_string');
 
-        if (!$style_card) {
-            return false;
-        }
+		if (!$style_card) {
+			return false;
+		}
 
-        $style =
-            is_preview() || is_admin()
-                ? $style_card['_maxi_blocks_style_card_preview']
-                : $style_card['_maxi_blocks_style_card'];
+		$style =
+			is_preview() || is_admin()
+				? $style_card['_maxi_blocks_style_card_preview']
+				: $style_card['_maxi_blocks_style_card'];
 
-        if (!$style || empty($style)) {
-            $style =
-                is_preview() || is_admin() // If one fail, let's test the other one!
-                    ? $style_card['_maxi_blocks_style_card']
-                    : $style_card['_maxi_blocks_style_card_preview'];
-        }
+		if (!$style || empty($style)) {
+			$style =
+				is_preview() || is_admin() // If one fail, let's test the other one!
+					? $style_card['_maxi_blocks_style_card']
+					: $style_card['_maxi_blocks_style_card_preview'];
+		}
 
-        if (!$style || empty($style)) {
-            return false;
-        }
+		if (!$style || empty($style)) {
+			return false;
+		}
 
-        return $style;
-    }
+		return $style;
+	}
 
-    public function get_maxi_blocks_current_style_cards()
-    {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
-        $query =
-            'SELECT object FROM ' .
-            $table_name .
-            ' where id = "style_cards_current"';
-        $maxi_blocks_style_cards_current = $wpdb->get_var($query);
-        if (
-            $maxi_blocks_style_cards_current &&
-            !empty($maxi_blocks_style_cards_current)
-        ) {
-            return $maxi_blocks_style_cards_current;
-        } else {
-            $defaultStyleCard = $this->getDefaultStyleCard();
+	public function get_maxi_blocks_current_style_cards() {
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
+		$query =
+			'SELECT object FROM ' .
+			$table_name .
+			' where id = "style_cards_current"';
+		$maxi_blocks_style_cards_current = $wpdb->get_var($query);
+		if (
+			$maxi_blocks_style_cards_current &&
+			!empty($maxi_blocks_style_cards_current)
+		) {
+			return $maxi_blocks_style_cards_current;
+		} else {
+			$defaultStyleCard = $this->getDefaultStyleCard();
 
-            $wpdb->replace($table_name, [
-                'id' => 'style_cards_current',
-                'object' => $defaultStyleCard,
-            ]);
-            $maxi_blocks_style_cards_current = $wpdb->get_var($query);
-            return $maxi_blocks_style_cards_current;
-        }
-    }
+			$wpdb->replace($table_name, [
+				'id' => 'style_cards_current',
+				'object' => $defaultStyleCard,
+			]);
+			$maxi_blocks_style_cards_current = $wpdb->get_var($query);
+			return $maxi_blocks_style_cards_current;
+		}
+	}
 
-    public function get_maxi_blocks_active_style_card()
-    {
-        $maxi_blocks_style_cards = $this->get_maxi_blocks_current_style_cards();
+	public function get_maxi_blocks_active_style_card() {
+		$maxi_blocks_style_cards = $this->get_maxi_blocks_current_style_cards();
 
-        $maxi_blocks_style_cards_array = json_decode(
-            $maxi_blocks_style_cards,
-            true,
-        );
+		$maxi_blocks_style_cards_array = json_decode(
+			$maxi_blocks_style_cards,
+			true,
+		);
 
-        foreach ($maxi_blocks_style_cards_array as $key => $sc) {
-            if ($sc['status'] === 'active') {
-                return $sc;
-            }
-        }
-        return false;
-    }
+		foreach ($maxi_blocks_style_cards_array as $key => $sc) {
+			if ($sc['status'] === 'active') {
+				return $sc;
+			}
+		}
+		return false;
+	}
 
-    public function enqueue_fonts($vars)
-    {
-        preg_match_all('/font-family-general:(\w+);/', $vars, $fonts);
-        $fonts = array_unique($fonts[1]);
+	public function enqueue_fonts($vars) {
+		preg_match_all('/font-family-general:(\w+);/', $vars, $fonts);
+		$fonts = array_unique($fonts[1]);
 
-        if (empty($fonts)) {
-            return;
-        }
+		if (empty($fonts)) {
+			return;
+		}
 
-        foreach ($fonts as $font) {
-            wp_enqueue_style(
-                "{$font}",
-                "https://fonts.googleapis.com/css2?family={$font}",
-            );
-        }
-    }
+		foreach ($fonts as $font) {
+			wp_enqueue_style(
+				"{$font}",
+				"https://fonts.googleapis.com/css2?family={$font}",
+			);
+		}
+	}
 
-    public static function getDefaultStyleCard()
-    {
-        $json = '{
+	public static function getDefaultStyleCard() {
+		$json = '{
 			"sc_maxi": {
 				"name": "Maxi (Default)",
 				"status": "active",
@@ -146,13 +137,13 @@ class MaxiBlocks_StyleCards
 					"defaultStyleCard": {
 						"color": {
 							"1": "8,18,25",
-							"2": "6,39,57",
+							"2": "5,23,33",
 							"3": "155,155,155",
 							"4": "255,74,23",
 							"5": "255,255,255",
 							"6": "201,52,10",
 							"7": "245,245,245",
-							"8": "7,16,23"
+							"8": "9,60,88"
 						},
 						"p": {
 							"color-global": false,
@@ -682,6 +673,6 @@ class MaxiBlocks_StyleCards
 			}
 		}';
 
-        return $json;
-    }
+		return $json;
+	}
 }

@@ -93,6 +93,10 @@ const ColorControl = props => {
 	const [colorAlpha, setColorAlpha] = useState(getRGB(color).rgb.a * 100);
 	const [currentColor, setCurrentColor] = useState(color);
 
+	useEffect(() => {
+		if (colorAlpha !== paletteOpacity) setColorAlpha(paletteOpacity);
+	});
+
 	const returnColor = (val, alpha) => {
 		switch (format) {
 			case 'colorString':

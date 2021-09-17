@@ -20,7 +20,6 @@ import {
 	withFormatValue,
 } from '../../extensions/text/formats';
 import {
-	getBlockStyle,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -364,6 +363,7 @@ const TypographyControl = withFormatValue(props => {
 		clientId,
 		styleCardPrefix,
 		allowLink = false,
+		blockStyle,
 	} = props;
 
 	const typography =
@@ -450,8 +450,6 @@ const TypographyControl = withFormatValue(props => {
 				false,
 				avoidXXL
 			);
-
-		const blockStyle = getBlockStyle(clientId);
 
 		const nonHoverValue = getCustomFormatValue({
 			typography,
@@ -822,8 +820,10 @@ const TypographyControl = withFormatValue(props => {
 						breakpoint,
 						typography
 					)}
+					blockStyle={blockStyle}
 				/>
 			)}
+			<hr />
 			{allowLink && (
 				<LinkOptions
 					getValue={getValue}

@@ -256,6 +256,7 @@ const MaxiToolbar = memo(
 								textLevel={textLevel}
 								styleCard={styleCard}
 								clientId={clientId}
+								blockStyle={parentBlockStyle}
 							/>
 							<TextColor
 								blockName={name}

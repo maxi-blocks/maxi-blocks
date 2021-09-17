@@ -16,9 +16,10 @@ import AdvancedNumberControl from '../advanced-number-control';
  * Component
  */
 const SvgWidthControl = props => {
-	const { onChange, breakpoint, prefix } = props;
+	const { onChange, breakpoint, prefix, isHover } = props;
 
-	const width = props[`${prefix}width-${breakpoint}`];
+	const width =
+		props[`${prefix}width-${breakpoint}${isHover ? '-hover' : ''}`];
 	const defaultWidth = getDefaultAttribute(`${prefix}width-${breakpoint}`);
 	const widthUnit = getLastBreakpointAttribute(
 		`${prefix}width-unit`,
@@ -39,14 +40,16 @@ const SvgWidthControl = props => {
 						? getLastBreakpointAttribute(
 								`${prefix}width`,
 								breakpoint,
+								isHover,
 								props
 						  )
 						: null
 				}
 				onChangeValue={val => {
 					onChange({
-						[`${prefix}width-${breakpoint}`]:
-							val !== undefined && val !== '' ? val : '',
+						[`${prefix}width-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: val !== undefined && val !== '' ? val : '',
 					});
 				}}
 				enableUnit
@@ -54,7 +57,9 @@ const SvgWidthControl = props => {
 				allowedUnits={['px', 'em', 'vw', '%']}
 				onChangeUnit={val => {
 					onChange({
-						[`${prefix}width-unit-${breakpoint}`]: val,
+						[`${prefix}width-unit-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: val,
 					});
 				}}
 				min={10}
@@ -62,11 +67,16 @@ const SvgWidthControl = props => {
 				step={1}
 				onReset={() =>
 					onChange({
-						[`${prefix}width-${breakpoint}`]: defaultWidth,
-						[`${prefix}width-unit-${breakpoint}`]: defaultWidthUnit,
+						[`${prefix}width-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: defaultWidth,
+						[`${prefix}width-unit-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: defaultWidthUnit,
 					})
 				}
 				initialPosition={defaultWidth}
+				isHover={isHover}
 			/>
 		</>
 	);

@@ -1,18 +1,14 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	insertBlock,
-	pressKeyTimes,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
 import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
 
 describe('AxisControl', () => {
-	it('Checking the axis control', async () => {
+	it.only('Checking AxisControl', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 
@@ -69,21 +65,135 @@ describe('AxisControl', () => {
 				if (key !== `${instances[i]}-unit-general`)
 					expect(secondAttributes[key].toString()).toBe('2');
 			});
-
-			// Resetting values
-			const resetButton = await axisControl.$(
-				'.maxi-axis-control .maxi-axis-control__header button'
-			);
-
-			await resetButton.click();
-			const thirdAttributes = await getBlockAttributes();
-
-			Object.keys(expectedAttributes).forEach(key => {
-				if (key !== `${instances[i]}-unit-general`)
-					expect(thirdAttributes[key]).toBe(undefined);
-				else expect(thirdAttributes[key]).toBe('px');
-			});
 		}
+	});
+	it.only('Checking responsive AxisControl', async () => {
+		// responsiveS
+		await changeResponsive(page, 's');
+		const accordionPanel = await openSidebar(page, 'padding margin');
+		const axisControls = await accordionPanel.$$(
+			'.maxi-axis-control .maxi-axis-control__top-part input'
+		);
+		const unitSelector = await accordionPanel.$$(
+			'.maxi-axis-control .maxi-axis-control__units select'
+		);
+
+		await axisControls[2].focus();
+		await page.keyboard.type('33', { delay: 100 });
+
+		await unitSelector[1].select('px');
+
+		const expectSResponsiveMargin = {
+			'margin-bottom-s': '33',
+			'margin-left-s': '33',
+			'margin-right-s': '33',
+			'margin-top-s': '33',
+			'margin-unit-s': 'px',
+		};
+
+		const responsiveSMarginAttributes = await getBlockAttributes();
+
+		const responsiveSBlockMargin = (({
+			'margin-bottom-s': marginBottom,
+			'margin-left-s': marginLeft,
+			'margin-right-s': marginRight,
+			'margin-top-s': marginTop,
+			'margin-unit-s': marginUnit,
+		}) => ({
+			'margin-bottom-s': marginBottom,
+			'margin-left-s': marginLeft,
+			'margin-right-s': marginRight,
+			'margin-top-s': marginTop,
+			'margin-unit-s': marginUnit,
+		}))(responsiveSMarginAttributes);
+
+		expect(responsiveSBlockMargin).toStrictEqual(expectSResponsiveMargin);
+
+		// responsive xs
+		await changeResponsive(page, 'xs');
+
+		const marginXs = await accordionPanel.$$eval(
+			'.maxi-axis-control .maxi-axis-control__top-part input',
+			button => button[2].placeholder
+		);
+		expect(marginXs).toStrictEqual('33');
+
+		const unitXsSelector = await accordionPanel.$$eval(
+			'.maxi-axis-control .maxi-axis-control__units select',
+			button => button[1].value
+		);
+		expect(unitXsSelector).toStrictEqual('px');
+		// responsive m
+		await changeResponsive(page, 'm');
+
+		const marginM = await accordionPanel.$$eval(
+			'.maxi-axis-control .maxi-axis-control__top-part input',
+			button => button[2].placeholder
+		);
+		expect(marginM).toStrictEqual('2');
+
+		const unitMSelector = await accordionPanel.$$eval(
+			'.maxi-axis-control .maxi-axis-control__units select',
+			button => button[1].value
+		);
+		expect(unitMSelector).toStrictEqual('%');
+	});
+
+	it.only('Check responsive reset values', async () => {
+		await changeResponsive(page, 'base');
+		const accordionPanel = await openSidebar(page, 'padding margin');
+
+		// Base value
+		const marginGeneral = await accordionPanel.$$eval(
+			'.maxi-axis-control .maxi-axis-control__top-part input',
+			button => button[2].value
+		);
+		expect(marginGeneral).toStrictEqual('2');
+
+		// expect value
+		await accordionPanel.$$eval(
+			'.maxi-axis-control .maxi-axis-control__header button',
+			button => button[1].click()
+		);
+
+		const deletedMarginGeneral = await accordionPanel.$$eval(
+			'.maxi-axis-control .maxi-axis-control__top-part input',
+			button => button[2].value
+		);
+		expect(deletedMarginGeneral).toStrictEqual('');
+
+		// responsive s
+		await changeResponsive(page, 's');
+
+		const marginS = await accordionPanel.$$eval(
+			'.maxi-axis-control .maxi-axis-control__top-part input',
+			button => button[2].value
+		);
+		expect(marginS).toStrictEqual('33');
+
+		// responsive xs
+		await changeResponsive(page, 'xs');
+
+		const marginXs = await accordionPanel.$$eval(
+			'.maxi-axis-control .maxi-axis-control__top-part input',
+			button => button[2].placeholder
+		);
+		expect(marginXs).toStrictEqual('33');
+
+		// responsive m
+		await changeResponsive(page, 'm');
+
+		const marginM = await accordionPanel.$$eval(
+			'.maxi-axis-control .maxi-axis-control__top-part input',
+			button => button[2].value
+		);
+		expect(marginM).toStrictEqual('');
+	});
+	it.only('CheckBox', async () => {
+		debugger;
+		await changeResponsive(page, 'base');
+		const accordionPanel = await openSidebar(page, 'padding margin');
+		const axisControls = await accordionPanel.$$('.maxi-axis-control');
 
 		const marginControl = axisControls[1];
 		const checkBoxes = await marginControl.$$(
@@ -107,8 +217,34 @@ describe('AxisControl', () => {
 		});
 
 		expect(areAllAuto).toStrictEqual(true);
+	});
 
-		// Padding can't be lower than 0 and sync
+	it.only('Responsive CheckBox', async () => {
+		await changeResponsive(page, 's');
+		const accordionPanel = await openSidebar(page, 'padding margin');
+		const checkBox = await accordionPanel.$$(
+			'.maxi-axis-control__content__item .maxi-axis-control__content__item__checkbox input'
+		);
+		const axisControls = await accordionPanel.$$(
+			'.maxi-axis-control .maxi-axis-control__top-part input'
+		);
+
+		const marginS = await accordionPanel.$$eval(
+			'.maxi-axis-control .maxi-axis-control__top-part input',
+			button => button[2].value
+		);
+		expect(marginS).toStrictEqual('33');
+
+		await checkBox[1].click();
+
+		const marginBottomAuto = await accordionPanel.$$eval(
+			'.maxi-axis-control .maxi-axis-control__top-part input',
+			button => button[3].placeholder
+		);
+
+		expect(marginBottomAuto).toStrictEqual('auto');
+	});
+	it('Padding cannot be less than 0 and sync', async () => {
 		const syncButton = await page.$$(
 			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button'
 		);
@@ -126,53 +262,9 @@ describe('AxisControl', () => {
 		const styleAttributes = attributes['padding-bottom-general'];
 
 		expect(styleAttributes).toStrictEqual(expectChanges);
+	});
 
-		// value in general and responsive
-		// set value
-
-		await topInput[1].focus();
-
-		await page.keyboard.press('Backspace');
-		await page.keyboard.type('13');
-
-		// responsive
-		await page.$eval(
-			'.edit-post-header .edit-post-header__toolbar .maxi-toolbar-layout__button',
-			button => button.click()
-		);
-
-		await page.$$eval('.maxi-responsive-selector button', button =>
-			button[2].click()
-		);
-
-		// set responsive value
-		await topInput[1].focus();
-
-		await page.keyboard.type('0');
-
-		const expectResponsivePadding = {
-			'padding-bottom-xl': 0,
-			'padding-left-xl': 0,
-			'padding-right-xl': 0,
-			'padding-top-xl': 0,
-		};
-
-		const responsivePaddingAttributes = await getBlockAttributes();
-
-		const responsiveBlockPadding = (({
-			'padding-bottom-xl': paddingBottom,
-			'padding-left-xl': paddingLeft,
-			'padding-right-xl': paddingRight,
-			'padding-top-xl': paddingTop,
-		}) => ({
-			'padding-bottom-xl': paddingBottom,
-			'padding-left-xl': paddingLeft,
-			'padding-right-xl': paddingRight,
-			'padding-top-xl': paddingTop,
-		}))(responsivePaddingAttributes);
-
-		expect(responsiveBlockPadding).toStrictEqual(expectResponsivePadding);
-
+	it('Sync responsive buttons', async () => {
 		const syncButtonTop = await page.$(
 			'.maxi-axis-control__top-part .maxi-axis-control__content__item__sync button'
 		);
@@ -257,70 +349,49 @@ describe('AxisControl', () => {
 		expect(pressedMiddle).toMatchSnapshot();
 		expect(pressedBottomTrue).toMatchSnapshot();
 	});
-	it('Check Responsive axis control', async () => {
-		await createNewPost();
-		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi');
-		await openSidebar(page, 'padding margin');
-
-		// general
-		await page.$$eval(
-			'.maxi-axis-control .maxi-axis-control__content__item__top input',
-			input => input[1].focus()
-		);
-
-		await page.waitForTimeout(100);
-		await page.keyboard.type('50');
-		const paddingValue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__top-part .maxi-axis-control__content__item__top input',
-			paddingInput => paddingInput[1].placeholder
-		);
-
-		expect(paddingValue).toStrictEqual('50');
-
-		// responsive S
-		await changeResponsive(page, 's');
-		await page.$$eval(
-			'.maxi-axis-control .maxi-axis-control__content__item__top input',
-			input => input[1].focus()
-		);
-
-		await page.waitForTimeout(100);
-		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('70');
-
-		const responsiveSOption = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__top-part .maxi-axis-control__content__item__top input',
-			paddingInput => paddingInput[1].placeholder
-		);
-
-		expect(responsiveSOption).toStrictEqual('70');
-
-		const attributes = await getBlockAttributes();
-		const padding = attributes['padding-top-s'];
-
-		expect(padding).toStrictEqual(70);
-
-		// responsive XS
-		await page.waitForTimeout(100);
-		await changeResponsive(page, 'xs');
-
-		const responsiveXsOption = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__top-part .maxi-axis-control__content__item__top input',
-			paddingInput => paddingInput[1].placeholder
-		);
-
-		expect(responsiveXsOption).toStrictEqual('70');
-
-		// responsive M
-		await page.waitForTimeout(100);
-		await changeResponsive(page, 'm');
-
-		const responsiveMOption = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__top-part .maxi-axis-control__content__item__top input',
-			paddingInput => paddingInput[1].placeholder
-		);
-
-		expect(responsiveMOption).toStrictEqual('50');
-	});
 });
+/* // value in general and responsive
+		// set value
+
+		await topInput[1].focus();
+
+		await page.keyboard.press('Backspace');
+		await page.keyboard.type('13');
+
+		// responsive
+		await page.$eval(
+			'.edit-post-header .edit-post-header__toolbar .maxi-toolbar-layout__button',
+			button => button.click()
+		);
+
+		await page.$$eval('.maxi-responsive-selector button', button =>
+			button[2].click()
+		);
+
+		// set responsive value
+		await topInput[1].focus();
+
+		await page.keyboard.type('0');
+
+		const expectResponsivePadding = {
+			'padding-bottom-xl': 0,
+			'padding-left-xl': 0,
+			'padding-right-xl': 0,
+			'padding-top-xl': 0,
+		};
+
+		const responsivePaddingAttributes = await getBlockAttributes();
+
+		const responsiveBlockPadding = (({
+			'padding-bottom-xl': paddingBottom,
+			'padding-left-xl': paddingLeft,
+			'padding-right-xl': paddingRight,
+			'padding-top-xl': paddingTop,
+		}) => ({
+			'padding-bottom-xl': paddingBottom,
+			'padding-left-xl': paddingLeft,
+			'padding-right-xl': paddingRight,
+			'padding-top-xl': paddingTop,
+		}))(responsivePaddingAttributes);
+
+		expect(responsiveBlockPadding).toStrictEqual(expectResponsivePadding); */

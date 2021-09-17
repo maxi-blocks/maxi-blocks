@@ -168,11 +168,11 @@ const TextShadow = props => {
 		{
 			light: {
 				data: '4px 4px 0px',
-				color: { paletteOpacity: 50 },
+				color: { paletteOpacity: 21 },
 			},
 			dark: {
 				data: '2px 2px 0px',
-				color: { paletteOpacity: 50 },
+				color: { paletteOpacity: 77 },
 			},
 		},
 	];

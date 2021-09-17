@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import { isString } from 'lodash';
+
+/**
  * Returns an array with RGBA color parts
  *
  * @param {string} value 			RGBA color
@@ -7,15 +12,18 @@
  */
 
 const getColorRGBAParts = (value, advancedSplit = false) => {
+	if (!isString(value)) return false;
+
 	const hasVar = value.includes('var(--');
 
 	if (hasVar) {
 		const decomposedValue = value.split(',');
 		const color = +decomposedValue[0]
-			.replace('rgba(var(--maxi-light-color-', '')
-			.replace('rgba(var(--maxi-dark-color-', '')
+			.replace('rgba(', '')
+			.replace('var(--maxi-light-color-', '')
+			.replace('var(--maxi-dark-color-', '')
 			.replace(')', '');
-		const opacity = +decomposedValue[1].replace(')', '');
+		const opacity = +decomposedValue[1]?.replace(')', '') || 1;
 
 		return { color, opacity };
 	}
@@ -25,9 +33,9 @@ const getColorRGBAParts = (value, advancedSplit = false) => {
 		const r = +decomposedValue[0].replace('rgba(', '');
 		const g = +decomposedValue[1];
 		const b = +decomposedValue[2].replace(')', '');
-		const opacity = +decomposedValue[3].replace(')', '');
+		const a = +decomposedValue[3].replace(')', '');
 
-		return { r, g, b, opacity };
+		return { r, g, b, a };
 	}
 
 	const decomposedValue = [

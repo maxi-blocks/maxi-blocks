@@ -16,7 +16,7 @@ import ColorPaletteControl from './paletteControl';
  * External dependencies
  */
 import ChromePicker from 'react-color';
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, isNumber } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -24,7 +24,7 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 import { getPaletteColor } from '../../extensions/style-cards';
-import { getBlockStyle } from '../../extensions/styles';
+import { getBlockStyle, getColorRGBAParts } from '../../extensions/styles';
 
 /**
  * Component
@@ -39,7 +39,7 @@ const ColorControl = props => {
 		disableOpacity = false,
 		paletteStatus,
 		paletteColor,
-		paletteOpacity,
+		paletteOpacity: rawPaletteOpacity,
 		onChange,
 		isHover,
 		disablePalette,
@@ -50,6 +50,10 @@ const ColorControl = props => {
 		clientId,
 		format = 'rgba',
 	} = props;
+
+	const paletteOpacity = isNumber(rawPaletteOpacity)
+		? rawPaletteOpacity
+		: 100;
 
 	const classes = classnames('maxi-color-control', className);
 
@@ -69,7 +73,7 @@ const ColorControl = props => {
 		if (!colorString) return { rgb: { r: 1, g: 1, b: 1, a: 1 } };
 
 		const rgbKeys = ['r', 'g', 'b', 'a'];
-		const output = {};
+		let output = {};
 
 		if (colorString.charAt(0) === '#') {
 			const aRgbHex = colorString.replace('#', '').match(/.{1,2}/g);
@@ -77,25 +81,17 @@ const ColorControl = props => {
 			rgbKeys.forEach((item, i) => {
 				output[rgbKeys[i]] = parseInt(aRgbHex[i], 16) || 1;
 			});
-		} else {
-			const color = colorString
-				.replace(/^rgba?\(|\s+|\)$/g, '')
-				.split(',');
+		} else output = getColorRGBAParts(colorString, true);
 
-			rgbKeys.forEach((item, i) => {
-				output[rgbKeys[i]] = color[i] || 1;
-			});
-		}
-
-		return { rgb: { ...output } };
+		return {
+			rgb: output,
+		};
 	};
 
-	const [colorAlpha, setColorAlpha] = useState(getRGB(color).rgb.a * 100);
+	const [colorAlpha, setColorAlpha] = useState(
+		getRGB(color).rgb.a * 100 || paletteOpacity
+	);
 	const [currentColor, setCurrentColor] = useState(color);
-
-	useEffect(() => {
-		if (colorAlpha !== paletteOpacity) setColorAlpha(paletteOpacity);
-	});
 
 	const returnColor = (val, alpha) => {
 		switch (format) {
@@ -162,7 +158,15 @@ const ColorControl = props => {
 					: colorAlpha
 			);
 		}
-	}, [color, currentColor, setCurrentColor, setColorAlpha, getRGB]);
+		if (colorAlpha !== paletteOpacity) setColorAlpha(paletteOpacity);
+	}, [
+		color,
+		currentColor,
+		setCurrentColor,
+		setColorAlpha,
+		getRGB,
+		paletteOpacity,
+	]);
 
 	return (
 		<>
@@ -179,6 +183,7 @@ const ColorControl = props => {
 					clientId={clientId}
 					disableOpacity={disableOpacity}
 					opacity={paletteOpacity}
+					className={className}
 				/>
 			)}
 			{!showPalette || !paletteStatus || disablePalette ? (

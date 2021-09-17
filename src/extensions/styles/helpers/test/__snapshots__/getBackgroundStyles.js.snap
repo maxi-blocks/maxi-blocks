@@ -51,7 +51,7 @@ Object {
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__color": Object {
     "background": Object {
       "general": Object {
-        "background-color": "rgba(var(--maxi-undefined-color-1), 0.2)",
+        "background-color": "rgba(var(--maxi-undefined-color-1),0.2)",
         "clip-path": "rgba(2,0,36,1)",
       },
       "label": "Background Color",

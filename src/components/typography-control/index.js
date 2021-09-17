@@ -213,7 +213,7 @@ const LinkOptions = props => {
 		<>
 			<ColorControl
 				label={__('Link', 'maxi-blocks')}
-				className='maxi-typography-control__color'
+				className='maxi-typography-link-color'
 				color={getValue(`${prefix}link-color`)}
 				defaultColor={getDefault(`${prefix}link-color`)}
 				paletteStatus={getValue(`${prefix}link-palette-color-status`)}
@@ -241,7 +241,7 @@ const LinkOptions = props => {
 			/>
 			<ColorControl
 				label={__('Link Hover', 'maxi-blocks')}
-				className='maxi-typography-control__color'
+				className='maxi-typography-link-hover-color'
 				color={getValue(`${prefix}link-hover-color`)}
 				defaultColor={getDefault(`${prefix}link-hover-color`)}
 				paletteStatus={getValue(
@@ -272,7 +272,7 @@ const LinkOptions = props => {
 			/>
 			<ColorControl
 				label={__('Link Active', 'maxi-blocks')}
-				className='maxi-typography-control__color'
+				className='maxi-typography-link-active-color'
 				color={getValue(`${prefix}link-active-color`)}
 				defaultColor={getDefault(`${prefix}link-active-color`)}
 				paletteStatus={getValue(
@@ -306,7 +306,7 @@ const LinkOptions = props => {
 			/>
 			<ColorControl
 				label={__('Link Visited', 'maxi-blocks')}
-				className='maxi-typography-control__color'
+				className='maxi-typography-link-visited-color'
 				color={getValue(`${prefix}link-visited-color`)}
 				defaultColor={getDefault(`${prefix}link-visited-color`)}
 				paletteStatus={getValue(

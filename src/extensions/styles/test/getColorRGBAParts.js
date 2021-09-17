@@ -23,7 +23,7 @@ describe('getColorRGBAParts', () => {
 		const color = 'rgba(255,0,0,0.3)';
 
 		const result = getColorRGBAParts(color, true);
-		const expectedResult = { r: 255, g: 0, b: 0, opacity: 0.3 };
+		const expectedResult = { r: 255, g: 0, b: 0, a: 0.3 };
 
 		expect(result).toStrictEqual(expectedResult);
 	});

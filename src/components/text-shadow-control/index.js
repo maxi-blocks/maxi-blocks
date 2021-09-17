@@ -122,7 +122,8 @@ const TextShadow = props => {
 	const getActiveItem = val => {
 		if (
 			isNil(val) ||
-			(val === 'none' && (isNil(value) || value === 'none'))
+			(val === 'none' &&
+				(isNil(value) || isEmpty(value) || value === 'none'))
 		)
 			return true;
 		if (val === 'none') return false;

@@ -58,6 +58,16 @@ const FontLevelControl = props => {
 		});
 	};
 
+	const getNewColor = (newLevel, currentColor) => {
+		const { lastLevel } = state;
+
+		if (lastLevel !== 'p' && newLevel === 'p' && currentColor === 5)
+			return 3;
+		if (lastLevel === 'p' && newLevel.includes('h') && currentColor === 3)
+			return 5;
+		return currentColor;
+	};
+
 	const onChangeValue = value => {
 		saveOldies(value);
 		let fontOptResponse = {};
@@ -67,9 +77,13 @@ const FontLevelControl = props => {
 			fontOptResponse = state[value];
 			fontOptResponseHover = state[`${value}Hover`];
 		} else if (!isNil(fontOptions)) {
+			const newColor = getNewColor(
+				value,
+				fontOptions['palette-color-general']
+			);
 			fontOptResponse = {
 				...fontOptions,
-				'palette-color-general': value === 'p' ? 3 : 5,
+				'palette-color-general': newColor,
 			};
 			fontOptResponseHover = {
 				...fontOptionsHover,

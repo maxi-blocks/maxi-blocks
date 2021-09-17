@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -292,15 +292,27 @@ const TypographyControl = withFormatValue(props => {
 		);
 	};
 
-	const onChangeFormat = value => {
+	const onChangeFormat = (value, customBreakpoint) => {
 		const obj = setFormat({
 			formatValue,
 			isList,
 			typography: { ...getGroupAttributes(props, 'typography') },
 			value,
-			breakpoint,
+			breakpoint: customBreakpoint ?? breakpoint,
 			textLevel,
+			returnFormatValue: true,
 		});
+
+		const newFormatValue = { ...obj.formatValue };
+		delete obj.formatValue;
+
+		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
+		setTimeout(() => {
+			dispatch('maxiBlocks/text').sendFormatValue(
+				newFormatValue,
+				clientId
+			);
+		}, 200); // higher than the 150 of `onChangeRichText` method
 
 		onChange(obj);
 	};

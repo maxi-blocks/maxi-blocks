@@ -239,10 +239,10 @@ describe('AxisControl', () => {
 
 		const marginBottomAuto = await accordionPanel.$$eval(
 			'.maxi-axis-control .maxi-axis-control__top-part input',
-			button => button[3].placeholder
+			button => button[4].placeholder
 		);
 
-		expect(marginBottomAuto).toStrictEqual('auto');
+		expect(marginBottomAuto).toStrictEqual('auto'); /// /////////////////
 	});
 	it('Padding cannot be less than 0 and sync', async () => {
 		const syncButton = await page.$$(

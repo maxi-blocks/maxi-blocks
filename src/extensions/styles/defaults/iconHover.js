@@ -1,161 +1,108 @@
-import padding from './padding';
-
-export const icon = {
-	'icon-inherit': {
-		type: 'boolean',
-		default: true,
-	},
-	'icon-content': {
-		type: 'string',
-		default: '',
-	},
-	'icon-only': {
-		type: 'boolean',
-		default: false,
-	},
-	'icon-position': {
-		type: 'string',
-		default: 'right',
-	},
-	'icon-width-general': {
+export const iconHover = {
+	'icon-width-general-hover': {
 		type: 'number',
 		default: 32,
 	},
-	'icon-width-xxl': {
+	'icon-width-xxl-hover': {
 		type: 'number',
 	},
-	'icon-width-xl': {
+	'icon-width-xl-hover': {
 		type: 'number',
 	},
-	'icon-width-l': {
+	'icon-width-l-hover': {
 		type: 'number',
 	},
-	'icon-width-m': {
+	'icon-width-m-hover': {
 		type: 'number',
 	},
-	'icon-width-s': {
+	'icon-width-s-hover': {
 		type: 'number',
 	},
-	'icon-width-xs': {
+	'icon-width-xs-hover': {
 		type: 'number',
 	},
-	'icon-width-unit-general': {
+	'icon-width-unit-general-hover': {
 		type: 'string',
 		default: 'px',
 	},
-	'icon-width-unit-xxl': {
+	'icon-width-unit-xxl-hover': {
 		type: 'string',
 	},
-	'icon-width-unit-xl': {
+	'icon-width-unit-xl-hover': {
 		type: 'string',
 	},
-	'icon-width-unit-l': {
+	'icon-width-unit-l-hover': {
 		type: 'string',
 	},
-	'icon-width-unit-m': {
+	'icon-width-unit-m-hover': {
 		type: 'string',
 	},
-	'icon-width-unit-s': {
+	'icon-width-unit-s-hover': {
 		type: 'string',
 	},
-	'icon-width-unit-xs': {
+	'icon-width-unit-xs-hover': {
 		type: 'string',
 	},
-	'icon-spacing-general': {
-		type: 'number',
-		default: 5,
-	},
-	'icon-spacing-xxl': {
-		type: 'number',
-	},
-	'icon-spacing-xl': {
-		type: 'number',
-	},
-	'icon-spacing-l': {
-		type: 'number',
-	},
-	'icon-spacing-m': {
-		type: 'number',
-	},
-	'icon-spacing-s': {
-		type: 'number',
-	},
-	'icon-spacing-xs': {
-		type: 'number',
-	},
-	'icon-stroke-general': {
+	'icon-stroke-general-hover': {
 		type: 'number',
 		default: 2,
 	},
-	'icon-stroke-xxl': {
+	'icon-stroke-xxl-hover': {
 		type: 'number',
 	},
-	'icon-stroke-xl': {
+	'icon-stroke-xl-hover': {
 		type: 'number',
 	},
-	'icon-stroke-l': {
+	'icon-stroke-l-hover': {
 		type: 'number',
 	},
-	'icon-stroke-m': {
+	'icon-stroke-m-hover': {
 		type: 'number',
 	},
-	'icon-stroke-s': {
+	'icon-stroke-s-hover': {
 		type: 'number',
 	},
-	'icon-stroke-xs': {
+	'icon-stroke-xs-hover': {
 		type: 'number',
 	},
-	'icon-palette-color-status': {
+	'icon-palette-color-status-hover': {
 		type: 'boolean',
 		default: true,
 	},
-	'icon-palette-color': {
+	'icon-palette-color-hover': {
 		type: 'number',
 		default: 1,
 	},
-	'icon-palette-opacity': {
+	'icon-palette-opacity-hover': {
 		type: 'number',
 	},
-	'icon-color': {
+	'icon-color-hover': {
 		type: 'string',
 	},
 };
 
-export const iconPadding = (() => {
-	const response = {};
-
-	Object.keys(padding).forEach(key => {
-		const newKey = `icon-${key}`;
-		const value = { ...padding[key] };
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
-
-export const iconBackgroundColor = {
-	'icon-background-palette-color-status': {
+export const iconBackgroundColorHover = {
+	'icon-background-palette-color-status-hover': {
 		type: 'boolean',
 		default: true,
 	},
-	'icon-background-palette-color': {
+	'icon-background-palette-color-hover': {
 		type: 'number',
 		default: 4,
 	},
-	'icon-background-palette-opacity': {
+	'icon-background-palette-opacity-hover': {
 		type: 'number',
 	},
-	'icon-background-color': {
+	'icon-background-color-hover': {
 		type: 'string',
 	},
 };
 
-export const iconGradient = {
-	'icon-background-gradient': {
+export const iconGradientHover = {
+	'icon-background-gradient-hover': {
 		type: 'string',
 	},
-	'icon-background-gradient-opacity': {
+	'icon-background-gradient-opacity-hover': {
 		type: 'number',
 		default: 1,
 	},

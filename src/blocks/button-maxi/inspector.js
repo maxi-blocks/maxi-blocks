@@ -311,27 +311,82 @@ const Inspector = memo(
 													'maxi-blocks'
 												),
 												content: (
-													<IconControl
-														{...getGroupAttributes(
-															attributes,
-															[
-																'icon',
-																'iconGradient',
-																'iconBackgroundColor',
-																'iconBorder',
-																'iconBorderWidth',
-																'iconBorderRadius',
-																'iconPadding',
-															]
-														)}
-														onChange={obj => {
-															setAttributes(obj);
-														}}
-														deviceType={deviceType}
-														clientId={clientId}
-														parentBlockStyle={
-															parentBlockStyle
-														}
+													<SettingTabsControl
+														items={[
+															{
+																label: __(
+																	'Normal',
+																	'maxi-blocks'
+																),
+																content: (
+																	<IconControl
+																		{...getGroupAttributes(
+																			attributes,
+																			[
+																				'icon',
+																				'iconGradient',
+																				'iconBackgroundColor',
+																				'iconBorder',
+																				'iconBorderWidth',
+																				'iconBorderRadius',
+																				'iconPadding',
+																			]
+																		)}
+																		onChange={obj => {
+																			setAttributes(
+																				obj
+																			);
+																		}}
+																		deviceType={
+																			deviceType
+																		}
+																		clientId={
+																			clientId
+																		}
+																		parentBlockStyle={
+																			parentBlockStyle
+																		}
+																	/>
+																),
+															},
+															{
+																label: __(
+																	'Hover',
+																	'maxi-blocks'
+																),
+																content: (
+																	<IconControl
+																		{...getGroupAttributes(
+																			attributes,
+																			[
+																				'icon',
+																				'iconGradient',
+																				'iconBackgroundColor',
+																				'iconBorder',
+																				'iconBorderWidth',
+																				'iconBorderRadius',
+																				'iconPadding',
+																			]
+																		)}
+																		onChange={obj => {
+																			setAttributes(
+																				obj
+																			);
+																		}}
+																		deviceType={
+																			deviceType
+																		}
+																		clientId={
+																			clientId
+																		}
+																		parentBlockStyle={
+																			parentBlockStyle
+																		}
+																		isHover
+																	/>
+																),
+															},
+														]}
 													/>
 												),
 											},

@@ -25,5 +25,6 @@ export const getFormatValue = (state, clientId) => {
 
 	if (state.formatValues && state.formatValues[selectedClientId])
 		return state.formatValues[selectedClientId];
+
 	return {};
 };

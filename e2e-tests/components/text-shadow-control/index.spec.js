@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /**
  * WordPress dependencies
  */
@@ -30,13 +31,6 @@ describe('TextShadowControl', () => {
 			'2px 4px 0px #a2a2a2',
 		];
 
-		await accordionPanel.$$eval(
-			'.maxi-textshadow-control.maxi-typography-control__text-shadow .maxi-default-styles-control button',
-			buttons => {
-				buttons[1].click();
-			}
-		);
-
 		for (let i = 0; i < shadowStyles.length; i += 1) {
 			const setting = shadowStyles[i];
 
@@ -45,6 +39,7 @@ describe('TextShadowControl', () => {
 				(buttons, i) => buttons[i].click(),
 				i
 			);
+			await page.waitForTimeout(200);
 
 			const shadowAttributes = await getBlockAttributes();
 			const textShadow = shadowAttributes['text-shadow-general'];

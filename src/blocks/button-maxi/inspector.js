@@ -359,13 +359,12 @@ const Inspector = memo(
 																		{...getGroupAttributes(
 																			attributes,
 																			[
-																				'icon',
-																				'iconGradient',
-																				'iconBackgroundColor',
-																				'iconBorder',
-																				'iconBorderWidth',
-																				'iconBorderRadius',
-																				'iconPadding',
+																				'iconHover',
+																				'iconGradientHover',
+																				'iconBackgroundColorHover',
+																				'iconBorderHover',
+																				'iconBorderWidthHover',
+																				'iconBorderRadiusHover',
 																			]
 																		)}
 																		onChange={obj => {

@@ -87,7 +87,7 @@ const IconControl = props => {
 			{!isHover && deviceType === 'general' && (
 				<MaxiModal type='button-icon' style={parentBlockStyle} />
 			)}
-			{props['icon-content'] && (
+			{(props['icon-content'] || isHover) && (
 				<>
 					{!isHover && deviceType === 'general' && (
 						<>

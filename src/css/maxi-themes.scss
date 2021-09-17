@@ -84,36 +84,36 @@ body.maxi-blocks--active {
 			}
 
 			&.maxi-block--has-link .maxi-text-block__content {
-				color: rgba(var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette)), 1);
+				color: var(--maxi-#{$style}-link);
 				&:hover, &:focus {
-			        color: rgba(var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette)), 1);
+			        color: var(--maxi-#{$style}-link-hover);
 			    }
 				&:active {
-					color: rgba(var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette)), 1);
+					color: var(--maxi-#{$style}-link-active);
 				}
 				&:visited {
-					color: rgba(var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette)), 1);
+					color: var(--maxi-#{$style}-link-visited);
 				}
 			}
 			&.maxi-text-block a.maxi-text-block--link,
 			.maxi-text-block a.maxi-text-block--link {
-				color: rgba(var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette)), 1);
+				color: var(--maxi-#{$style}-link);
 				&:hover, &:focus {
-			        color: rgba(var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette)), 1);
+			        color: var(--maxi-#{$style}-link-hover);
 			        span {
-			        	color: rgba(var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette)), 1);
+			        	color: var(--maxi-#{$style}-link-hover);
 			        }
 			    }
 				&:active {
-					color: rgba(var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette)), 1);
+					color: var(--maxi-#{$style}-link-active);
 			        span {
-			        	color: rgba(var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette)), 1);
+			        	color: var(--maxi-#{$style}-link-active);
 			        }
 				}
 				&:visited {
-					color: rgba(var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette)), 1);
+					color: var(--maxi-#{$style}-link-visited);
 			        span {
-			        	color: rgba(var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette)), 1);
+			        	color: var(--maxi-#{$style}-link-visited);
 			        }
 				}
 			}

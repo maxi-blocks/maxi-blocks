@@ -63,7 +63,7 @@ export const styleObjectManipulator = ({
 		defaultTypography[`${target}-${breakpoint}`];
 
 	Object.entries(value).forEach(([target, val]) => {
-		if (isNil(val)) return;
+		if (isNil(val)) delete style[`${target}-${breakpoint}`];
 		if (getCurrentValue(target) === val)
 			delete style[`${target}-${breakpoint}`];
 		else if (

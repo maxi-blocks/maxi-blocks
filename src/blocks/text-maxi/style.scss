@@ -3,6 +3,11 @@ body.maxi-blocks--active .maxi-text-block {
 
 	&.maxi-list-block {
 		overflow: visible;
+
+		ol,
+		ul {
+			list-style-position: inside;
+		}
 	}
 	&__content {
 		position: relative;

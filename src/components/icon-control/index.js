@@ -139,8 +139,6 @@ const IconControl = props => {
 							/>
 						</>
 					)}
-					{/* {!isHover && (
-						<> */}
 					<SvgWidthControl
 						prefix='icon-'
 						{...getGroupAttributes(
@@ -167,38 +165,6 @@ const IconControl = props => {
 						breakpoint={deviceType}
 						isHover={isHover}
 					/>
-					{/* </>
-					)} */}
-					{/* {isHover && (
-						<>
-							<SvgWidthControl
-								prefix='icon-'
-								{...getGroupAttributes(
-									props,
-									'iconHover',
-									true
-								)}
-								onChange={obj => {
-									onChange(obj);
-								}}
-								breakpoint={deviceType}
-								isHover
-							/>
-							<SvgStrokeWidthControl
-								prefix='icon-'
-								{...getGroupAttributes(
-									props,
-									'iconHover',
-									true
-								)}
-								onChange={obj => {
-									onChange(obj);
-								}}
-								breakpoint={deviceType}
-								isHover
-							/>
-						</>
-					)} */}
 					{!isHover && (
 						<>
 							<AdvancedNumberControl

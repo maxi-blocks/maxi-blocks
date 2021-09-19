@@ -40,7 +40,7 @@ const SvgWidthControl = props => {
 						? getLastBreakpointAttribute(
 								`${prefix}width`,
 								breakpoint,
-								isHover,
+								false,
 								props
 						  )
 						: null
@@ -67,12 +67,8 @@ const SvgWidthControl = props => {
 				step={1}
 				onReset={() =>
 					onChange({
-						[`${prefix}width-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: defaultWidth,
-						[`${prefix}width-unit-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: defaultWidthUnit,
+						[`${prefix}width-${breakpoint}`]: defaultWidth,
+						[`${prefix}width-unit-${breakpoint}`]: defaultWidthUnit,
 					})
 				}
 				initialPosition={defaultWidth}

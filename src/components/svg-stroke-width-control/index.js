@@ -47,7 +47,8 @@ const SvgStrokeWidthControl = props => {
 			step={0.1}
 			onReset={() =>
 				onChange({
-					[`${prefix}stroke-${breakpoint}`]: defaultStroke,
+					[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]:
+						defaultStroke,
 				})
 			}
 			initialPosition={defaultStroke}

@@ -67,8 +67,12 @@ const SvgWidthControl = props => {
 				step={1}
 				onReset={() =>
 					onChange({
-						[`${prefix}width-${breakpoint}`]: defaultWidth,
-						[`${prefix}width-unit-${breakpoint}`]: defaultWidthUnit,
+						[`${prefix}width-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: defaultWidth,
+						[`${prefix}width-unit-${breakpoint}${
+							isHover ? '-hover' : ''
+						}`]: defaultWidthUnit,
 					})
 				}
 				initialPosition={defaultWidth}

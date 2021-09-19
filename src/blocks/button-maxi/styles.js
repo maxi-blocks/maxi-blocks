@@ -213,8 +213,6 @@ const getIconSize = (obj, isHover = false) => {
 			delete response[breakpoint];
 	});
 
-	console.log(response);
-
 	return { IconSize: response };
 };
 

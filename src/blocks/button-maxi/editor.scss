@@ -6,6 +6,10 @@ body.maxi-blocks--active .maxi-controls {
 			margin-bottom: 8px;
 			padding: 0;
 
+			&:nth-child(n + 7) {
+				width: 18%;
+			}
+
 			&:hover {
 				opacity: 0.7;
 			}

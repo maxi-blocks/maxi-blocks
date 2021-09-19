@@ -5,6 +5,7 @@ export const iconHover = {
 	},
 	'icon-width-general-hover': {
 		type: 'number',
+		default: 32,
 	},
 	'icon-width-xxl-hover': {
 		type: 'number',

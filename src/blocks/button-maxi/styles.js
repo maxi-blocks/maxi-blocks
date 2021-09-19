@@ -181,7 +181,7 @@ const getHoverContentObject = props => {
 	return response;
 };
 
-const getIconSize = obj => {
+const getIconSize = (obj, isHover = false) => {
 	const response = {
 		label: 'Icon size',
 		general: {},
@@ -190,18 +190,30 @@ const getIconSize = obj => {
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
-		if (!isNil(obj[`icon-width-${breakpoint}`])) {
+		if (!isNil(obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`])) {
 			response[breakpoint]['max-width'] = `${
-				obj[`icon-width-${breakpoint}`]
-			}${getLastBreakpointAttribute('icon-width-unit', breakpoint, obj)}`;
+				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
+			}${getLastBreakpointAttribute(
+				'icon-width-unit',
+				breakpoint,
+				obj,
+				isHover
+			)}`;
 			response[breakpoint]['max-height'] = `${
-				obj[`icon-width-${breakpoint}`]
-			}${getLastBreakpointAttribute('icon-width-unit', breakpoint, obj)}`;
+				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
+			}${getLastBreakpointAttribute(
+				'icon-width-unit',
+				breakpoint,
+				obj,
+				isHover
+			)}`;
 		}
 
 		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
 			delete response[breakpoint];
 	});
+
+	console.log(response);
 
 	return { IconSize: response };
 };
@@ -396,7 +408,7 @@ const getStyles = props => {
 				getIconObject(props, 'icon'),
 				getIconResponsive(props, 'icon'),
 			],
-			' .maxi-button-block__icon svg': getIconSize(props, 'icon'),
+			' .maxi-button-block__icon svg': getIconSize(props, false),
 			' .maxi-button-block__icon svg > *': getIconObject(props, 'svg'),
 			' .maxi-button-block__icon svg path': getIconPathStyles(
 				props,
@@ -409,6 +421,8 @@ const getStyles = props => {
 			' .maxi-button-block__icon:hover':
 				props['icon-status-hover'] &&
 				getIconHoverObject(props, 'iconHover'),
+			' .maxi-button-block__icon svg:hover':
+				props['icon-status-hover'] && getIconSize(props, true),
 			' .maxi-button-block__icon svg:hover path':
 				props['icon-status-hover'] && getIconPathStyles(props, true),
 		}),

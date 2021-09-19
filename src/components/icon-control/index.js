@@ -87,7 +87,29 @@ const IconControl = props => {
 			{!isHover && deviceType === 'general' && (
 				<MaxiModal type='button-icon' style={parentBlockStyle} />
 			)}
-			{(props['icon-content'] || isHover) && (
+			{isHover && (
+				<FancyRadioControl
+					label={__('Enable Icon Hover', 'maxi-blocks')}
+					selected={props['icon-status-hover']}
+					options={[
+						{
+							label: __('Yes', 'maxi-blocks'),
+							value: 1,
+						},
+						{
+							label: __('No', 'maxi-blocks'),
+							value: 0,
+						},
+					]}
+					onChange={val =>
+						onChange({
+							'icon-status-hover': val,
+						})
+					}
+				/>
+			)}
+			{(props['icon-content'] ||
+				(isHover && props['icon-status-hover'])) && (
 				<>
 					{!isHover && deviceType === 'general' && (
 						<>
@@ -117,9 +139,15 @@ const IconControl = props => {
 							/>
 						</>
 					)}
+					{/* {!isHover && (
+						<> */}
 					<SvgWidthControl
 						prefix='icon-'
-						{...getGroupAttributes(props, 'icon', isHover)}
+						{...getGroupAttributes(
+							props,
+							`icon${isHover ? 'Hover' : ''}`,
+							isHover
+						)}
 						onChange={obj => {
 							onChange(obj);
 						}}
@@ -128,13 +156,49 @@ const IconControl = props => {
 					/>
 					<SvgStrokeWidthControl
 						prefix='icon-'
-						{...getGroupAttributes(props, 'icon', isHover)}
+						{...getGroupAttributes(
+							props,
+							`icon${isHover ? 'Hover' : ''}`,
+							isHover
+						)}
 						onChange={obj => {
 							onChange(obj);
 						}}
 						breakpoint={deviceType}
 						isHover={isHover}
 					/>
+					{/* </>
+					)} */}
+					{/* {isHover && (
+						<>
+							<SvgWidthControl
+								prefix='icon-'
+								{...getGroupAttributes(
+									props,
+									'iconHover',
+									true
+								)}
+								onChange={obj => {
+									onChange(obj);
+								}}
+								breakpoint={deviceType}
+								isHover
+							/>
+							<SvgStrokeWidthControl
+								prefix='icon-'
+								{...getGroupAttributes(
+									props,
+									'iconHover',
+									true
+								)}
+								onChange={obj => {
+									onChange(obj);
+								}}
+								breakpoint={deviceType}
+								isHover
+							/>
+						</>
+					)} */}
 					{!isHover && (
 						<>
 							<AdvancedNumberControl
@@ -407,12 +471,26 @@ const IconControl = props => {
 							isHover={isHover}
 						/>
 					)}
-					{iconStyle === 'border' && (
+					{iconStyle === 'border' && !isHover && (
 						<BorderControl
 							{...getGroupAttributes(props, [
 								'iconBorder',
 								'iconBorderWidth',
 								'iconBorderRadius',
+							])}
+							prefix='icon-'
+							onChange={obj => onChange(obj)}
+							breakpoint={deviceType}
+							clientId={clientId}
+							isHover={isHover}
+						/>
+					)}
+					{iconStyle === 'border' && isHover && (
+						<BorderControl
+							{...getGroupAttributes(props, [
+								'iconBorderHover',
+								'iconBorderWidthHover',
+								'iconBorderRadiusHover',
 							])}
 							prefix='icon-'
 							onChange={obj => onChange(obj)}

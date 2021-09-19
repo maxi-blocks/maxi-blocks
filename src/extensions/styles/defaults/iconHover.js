@@ -1,7 +1,10 @@
 export const iconHover = {
+	'icon-status-hover': {
+		type: 'boolean',
+		default: false,
+	},
 	'icon-width-general-hover': {
 		type: 'number',
-		default: 32,
 	},
 	'icon-width-xxl-hover': {
 		type: 'number',

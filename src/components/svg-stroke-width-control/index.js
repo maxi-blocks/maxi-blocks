@@ -16,9 +16,10 @@ import AdvancedNumberControl from '../advanced-number-control';
  * Component
  */
 const SvgStrokeWidthControl = props => {
-	const { onChange, breakpoint, prefix } = props;
+	const { onChange, breakpoint, prefix, isHover = false } = props;
 
-	const stroke = props[`${prefix}stroke-${breakpoint}`];
+	const stroke =
+		props[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`];
 	const defaultStroke = getDefaultAttribute(`${prefix}stroke-${breakpoint}`);
 
 	return (
@@ -30,13 +31,14 @@ const SvgStrokeWidthControl = props => {
 					? getLastBreakpointAttribute(
 							`${prefix}stroke`,
 							breakpoint,
-							props
+							props,
+							isHover
 					  )
 					: null
 			}
 			onChangeValue={val => {
 				onChange({
-					[`${prefix}stroke-${breakpoint}`]:
+					[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]:
 						val !== undefined && val !== '' ? val : '',
 				});
 			}}

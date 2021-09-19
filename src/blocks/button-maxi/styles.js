@@ -246,9 +246,9 @@ const getIconObject = (props, target) => {
 			{
 				...getGroupAttributes(props, ['icon', 'typography']),
 			},
-			target,
 			props.parentBlockStyle,
-			props['icon-inherit']
+			props['icon-inherit'],
+			false
 		),
 		background: target === 'icon' && {
 			...getColorBackgroundObject({
@@ -290,7 +290,6 @@ const getIconObject = (props, target) => {
 				parentBlockStyle: props.parentBlockStyle,
 			}),
 	};
-
 	return response;
 };
 
@@ -306,7 +305,6 @@ const getIconHoverObject = (props, target) => {
 						true
 					),
 				},
-				target,
 				props.parentBlockStyle,
 				props['icon-inherit'],
 				true
@@ -417,6 +415,9 @@ const getStyles = props => {
 			' .maxi-button-block__button:hover .maxi-button-block__content':
 				getHoverContentObject(props),
 			' .maxi-button-block__icon:hover':
+				props['icon-status-hover'] &&
+				getIconHoverObject(props, 'iconHover'),
+			' .maxi-button-block__icon:hover svg > *':
 				props['icon-status-hover'] &&
 				getIconHoverObject(props, 'iconHover'),
 			' .maxi-button-block__icon svg:hover':

@@ -8,24 +8,36 @@ import getColorRGBAString from '../getColorRGBAString';
  */
 import { isNil } from 'lodash';
 
-const getIconStyles = (obj, target, parentBlockStyle, isIconInherit = true) => {
+const getIconStyles = (
+	obj,
+	target,
+	parentBlockStyle,
+	isIconInherit = true,
+	isHover = false
+) => {
 	const response = {
 		label: 'Icon',
 		general: {},
 	};
 
 	if (target === 'svg') {
-		if (!obj['icon-palette-color-status'] && !isNil(obj['icon-color'])) {
+		if (
+			!obj[`icon-palette-color-status${isHover ? '-hover' : ''}`] &&
+			!isNil(obj[`icon-color${isHover ? '-hover' : ''}`])
+		) {
 			response.general.fill = 'none';
-			response.general.stroke = obj['icon-color'];
+			response.general.stroke =
+				obj[`icon-color${isHover ? '-hover' : ''}`];
 		} else if (
-			obj['icon-palette-color-status'] &&
-			obj['icon-palette-color']
+			obj[`icon-palette-color-status${isHover ? '-hover' : ''}`] &&
+			obj[`icon-palette-color${isHover ? '-hover' : ''}`]
 		) {
 			response.general.fill = 'none';
 			response.general.stroke = getColorRGBAString({
-				firstVar: `color-${obj['icon-palette-color']}`,
-				opacity: obj['icon-palette-opacity'],
+				firstVar: `color-${
+					obj[`icon-palette-color${isHover ? '-hover' : ''}`]
+				}`,
+				opacity: obj[`icon-palette-opacity${isHover ? '-hover' : ''}`],
 				blockStyle: parentBlockStyle,
 			});
 		}

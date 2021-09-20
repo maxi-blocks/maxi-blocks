@@ -14,6 +14,7 @@ export const iconHover = (() => {
 
 		if (key === 'icon-palette-color-hover') value.default = 6;
 		if (key === 'icon-width-general') value.default = '';
+		if (key === 'icon-stroke-general') value.default = '';
 
 		response[newKey] = value;
 	});

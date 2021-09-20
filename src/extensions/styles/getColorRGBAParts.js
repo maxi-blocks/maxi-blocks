@@ -1,22 +1,21 @@
 /**
  * External dependencies
  */
-import { isString } from 'lodash';
+import { isString, isEmpty } from 'lodash';
+import tinycolor from 'tinycolor2';
 
 /**
  * Returns an array with RGBA color parts
  *
- * @param {string} value 			RGBA color
- * @param {boolean} advancedSplit 	In case colors should be split in RGB
+ * @param {string}  value         RGBA color
+ * @param {boolean} advancedSplit In case colors should be split in RGB
  * @returns
  */
 
 const getColorRGBAParts = (value, advancedSplit = false) => {
-	if (!isString(value)) return false;
+	if (!isString(value) || isEmpty(value)) return false;
 
-	const hasVar = value.includes('var(--');
-
-	if (hasVar) {
+	if (value.includes('var(--')) {
 		const decomposedValue = value.split(',');
 		const color = +decomposedValue[0]
 			.replace('rgba(', '')
@@ -28,25 +27,37 @@ const getColorRGBAParts = (value, advancedSplit = false) => {
 		return { color, opacity };
 	}
 
-	if (advancedSplit) {
-		const decomposedValue = value.split(',');
-		const r = +decomposedValue[0].replace('rgba(', '');
-		const g = +decomposedValue[1];
-		const b = +decomposedValue[2].replace(')', '');
-		const a = +decomposedValue[3].replace(')', '');
+	const sampleColor = tinycolor(value);
 
-		return { r, g, b, a };
+	if (!sampleColor.isValid) return false;
+
+	const decomposedColor = sampleColor.toRgb();
+
+	if (advancedSplit) return decomposedColor;
+
+	// Ensures HEX or HUE is transformed to RGBA
+	const RGBAColor = sampleColor.toRgbString().replace(/\s/g, '');
+
+	const hasAlpha = RGBAColor.includes('rgba');
+
+	if (hasAlpha) {
+		const decomposedValue = [
+			RGBAColor.substring(0, RGBAColor.lastIndexOf(',')),
+			RGBAColor.substring(RGBAColor.lastIndexOf(',') + 1),
+		];
+
+		const color = decomposedValue[0]
+			.replace('rgba(', '')
+			.replace('rgb(', '')
+			.replace(')', '');
+		const opacity = +decomposedValue[1].replace(')', '');
+
+		return { color, opacity };
 	}
 
-	const decomposedValue = [
-		value.substring(0, value.lastIndexOf(',')),
-		value.substring(value.lastIndexOf(',') + 1),
-	];
+	const color = RGBAColor.replace('rgb(', '').replace(')', '');
 
-	const color = decomposedValue[0].replace('rgba(', '').replace(')', '');
-	const opacity = +decomposedValue[1].replace(')', '');
-
-	return { color, opacity };
+	return { color, opacity: 1 };
 };
 
 export default getColorRGBAParts;

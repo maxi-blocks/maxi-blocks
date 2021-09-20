@@ -232,7 +232,6 @@ const LinkOptions = props => {
 						[`${prefix}link-color`]: color,
 					})
 				}
-				showPalette
 				textLevel={textLevel}
 				deviceType={breakpoint}
 				clientId={clientId}
@@ -263,7 +262,6 @@ const LinkOptions = props => {
 						[`${prefix}link-hover-color`]: color,
 					})
 				}
-				showPalette
 				textLevel={textLevel}
 				deviceType={breakpoint}
 				clientId={clientId}
@@ -297,7 +295,6 @@ const LinkOptions = props => {
 						[`${prefix}link-active-color`]: color,
 					})
 				}
-				showPalette
 				textLevel={textLevel}
 				deviceType={breakpoint}
 				clientId={clientId}
@@ -331,7 +328,6 @@ const LinkOptions = props => {
 						[`${prefix}link-visited-color`]: color,
 					})
 				}
-				showPalette
 				textLevel={textLevel}
 				deviceType={breakpoint}
 				clientId={clientId}
@@ -661,7 +657,6 @@ const TypographyControl = withFormatValue(props => {
 							[`${prefix}palette-opacity`]: paletteOpacity,
 						})
 					}
-					showPalette
 					globalProps={{
 						target: `${isHover ? 'hover-' : ''}color-global`,
 						type:

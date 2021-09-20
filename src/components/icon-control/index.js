@@ -179,7 +179,6 @@ const IconControl = props => {
 												paletteStatus,
 										});
 									}}
-									showPalette
 									disableOpacity
 								/>
 							) : (
@@ -232,7 +231,6 @@ const IconControl = props => {
 												paletteStatus,
 										});
 									}}
-									showPalette
 								/>
 							) : (
 								<InfoBox

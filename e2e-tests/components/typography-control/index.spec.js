@@ -56,7 +56,7 @@ describe('TypographyControl', () => {
 
 		const colorAttributes = await getBlockAttributes();
 		const color = colorAttributes['color-general'];
-		const expectedColor = 'rgba(250,250,3,1)';
+		const expectedColor = 'rgb(250,250,3)';
 
 		expect(color).toStrictEqual(expectedColor);
 

@@ -577,6 +577,7 @@ export const preset7 = {
 	'palette-color-status-general': true,
 	'box-shadow-palette-color-status-general': false,
 	// icon
+	'icon-inherit': false,
 	'icon-background-color': '',
 	'icon-background-palette-color': 1,
 	'icon-background-palette-color-status': true,
@@ -605,6 +606,10 @@ export const preset7 = {
 	'palette-color-status-hover': false,
 	'typography-status-hover': false,
 	'box-shadow-status-hover': false,
+	'icon-status-hover': true,
+	'icon-palette-color-hover': 6,
+	'icon-palette-color-status-hover': true,
+	'icon-border-style-general-hover': 'none',
 };
 
 export const preset8 = {
@@ -675,6 +680,13 @@ export const preset8 = {
 	'palette-color-status-hover': false,
 	'typography-status-hover': false,
 	'box-shadow-status-hover': false,
+	'icon-status-hover': true,
+	'icon-palette-color-hover': 6,
+	'icon-palette-color-status-hover': true,
+	'icon-border-style-general-hover': 'solid',
+	'icon-background-palette-color-status-hover': false,
+	'icon-border-palette-color-status-general-hover': true,
+	'icon-border-palette-color-general-hover': 6,
 };
 
 export const preset9 = {
@@ -738,6 +750,11 @@ export const preset9 = {
 	'palette-color-status-hover': false,
 	'typography-status-hover': false,
 	'box-shadow-status-hover': false,
+	'icon-status-hover': true,
+	'icon-border-style-general-hover': 'none',
+	'icon-background-palette-color-status-hover': true,
+	'icon-background-palette-color-general-hover': 6,
+	'icon-border-palette-color-status-general-hover': false,
 };
 
 export const preset10 = {
@@ -754,6 +771,7 @@ export const preset10 = {
 	'palette-color-status-general': true,
 	'box-shadow-palette-color-status-general': false,
 	// icon
+	'icon-inherit': false,
 	'icon-background-color': '',
 	'icon-background-palette-color': 1,
 	'icon-background-palette-color-status': true,
@@ -808,6 +826,13 @@ export const preset10 = {
 	'palette-color-status-hover': false,
 	'typography-status-hover': false,
 	'box-shadow-status-hover': false,
+	'icon-status-hover': true,
+	'icon-palette-color-hover': 6,
+	'icon-palette-color-status-hover': true,
+	'icon-border-style-general-hover': 'solid',
+	'icon-background-palette-color-status-hover': false,
+	'icon-border-palette-color-status-general-hover': true,
+	'icon-border-palette-color-general-hover': 6,
 };
 
 export const preset11 = {
@@ -871,4 +896,5 @@ export const preset11 = {
 	'palette-color-status-hover': false,
 	'typography-status-hover': false,
 	'box-shadow-status-hover': false,
+	'icon-border-style-general-hover': 'none',
 };

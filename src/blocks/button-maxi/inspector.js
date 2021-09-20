@@ -348,7 +348,7 @@ const Inspector = memo(
 																		}
 																		disableCustomFormats
 																		blockStyle={
-																			blockStyle
+																			parentBlockStyle
 																		}
 																		styleCardPrefix='button'
 																	/>
@@ -422,7 +422,7 @@ const Inspector = memo(
 																				}
 																				disableCustomFormats
 																				blockStyle={
-																					blockStyle
+																					parentBlockStyle
 																				}
 																				styleCardPrefix='button'
 																			/>

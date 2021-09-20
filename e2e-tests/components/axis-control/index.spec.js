@@ -309,76 +309,76 @@ describe('AxisControl', () => {
 		await syncButtonTop.click();
 		await syncButtonBottom.click();
 
-		const pressedTop = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[1].innerHTML
+		const pressedTop = await page.$eval(
+			'.maxi-axis-control__top-part .maxi-axis-control__content__item__sync button',
+			expectHtml => expectHtml.ariaPressed
 		);
 
-		const pressedBottom = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[3].innerHTML
+		const pressedBottom = await page.$eval(
+			'.maxi-axis-control__bottom-part .maxi-axis-control__content__item__sync button',
+			expectHtml => expectHtml.ariaPressed
 		);
 
-		expect(pressedTop).toMatchSnapshot();
-		expect(pressedBottom).toMatchSnapshot();
+		expect(pressedTop).toBeTruthy();
+		expect(pressedBottom).toBeTruthy();
 
 		// Pressed-top and Pressed-bottom False Pressed-middle True
 		await syncButtonMiddle[1].click();
 
 		const pressedMiddleTrue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[2].innerHTML
+			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button',
+			expectHtml => expectHtml[1].ariaPressed
 		);
 
-		const pressedTopFalse = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[1].innerHTML
+		const pressedTopFalse = await page.$eval(
+			'.maxi-axis-control__top-part .maxi-axis-control__content__item__sync button',
+			expectHtml => expectHtml.ariaPressed
 		);
 
-		const pressedBottomFalse = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[3].innerHTML
+		const pressedBottomFalse = await page.$eval(
+			'.maxi-axis-control__bottom-part .maxi-axis-control__content__item__sync button',
+			expectHtml => expectHtml.ariaPressed
 		);
 
-		expect(pressedTopFalse).toMatchSnapshot();
-		expect(pressedBottomFalse).toMatchSnapshot();
-		expect(pressedMiddleTrue).toMatchSnapshot();
+		expect(pressedTopFalse).toStrictEqual('false');
+		expect(pressedBottomFalse).toStrictEqual('false');
+		expect(pressedMiddleTrue).toBeTruthy();
 
 		// Pressed-top True Pressed-middle False
 		await syncButtonTop.click();
 
 		const pressedMiddleFalse = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[2].innerHTML
+			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button',
+			expectHtml => expectHtml[1].ariaPressed
 		);
 
-		const pressedTopTrue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[1].innerHTML
+		const pressedTopTrue = await page.$eval(
+			'.maxi-axis-control__top-part .maxi-axis-control__content__item__sync button',
+			expectHtml => expectHtml.ariaPressed
 		);
 
-		expect(pressedMiddleFalse).toMatchSnapshot();
-		expect(pressedTopTrue).toMatchSnapshot();
+		expect(pressedMiddleFalse).toStrictEqual('false');
+		expect(pressedTopTrue).toBeTruthy();
 
 		// Pressed-bottom True Pressed-middle False
 		await syncButtonMiddle[1].click();
 		await syncButtonBottom.click();
 
 		const pressedMiddle = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[2].innerHTML
+			'.maxi-axis-control__disable-auto .maxi-axis-control__middle-part button',
+			expectHtml => expectHtml[1].ariaPressed
 		);
 
-		const pressedBottomTrue = await page.$$eval(
-			'.maxi-axis-control__disable-auto .maxi-axis-control__content__item__sync',
-			expectHtml => expectHtml[3].innerHTML
+		const pressedBottomTrue = await page.$eval(
+			'.maxi-axis-control__bottom-part .maxi-axis-control__content__item__sync button',
+			expectHtml => expectHtml.ariaPressed
 		);
 
-		expect(pressedMiddle).toMatchSnapshot();
-		expect(pressedBottomTrue).toMatchSnapshot();
+		expect(pressedMiddle).toStrictEqual('false');
+		expect(pressedBottomTrue).toBeTruthy();
 	});
 
-	it('Sync responsive buttons', async () => {
+	/* it('Sync responsive buttons', async () => {
 		// general
 		const accordionPanel = await openSidebar(page, 'padding margin');
 
@@ -457,5 +457,5 @@ describe('AxisControl', () => {
 		);
 
 		expect(syncMButtonBottom).toBeTruthy();
-	});
+	}); */
 });

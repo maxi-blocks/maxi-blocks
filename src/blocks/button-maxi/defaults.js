@@ -380,6 +380,7 @@ export const preset4 = {
 	'border-status-hover': false,
 	'typography-status-hover': false,
 	'box-shadow-status-hover': false,
+	'icon-status-hover': false,
 };
 
 export const preset5 = {
@@ -485,6 +486,13 @@ export const preset5 = {
 	'palette-color-status-hover': true,
 	'typography-status-hover': true,
 	'box-shadow-status-hover': false,
+	'icon-status-hover': true,
+	'icon-palette-color-hover': 6,
+	'icon-palette-color-status-hover': true,
+	'icon-border-style-general-hover': 'solid',
+	'icon-background-palette-color-status-hover': false,
+	'icon-border-palette-color-status-general-hover': true,
+	'icon-border-palette-color-general-hover': 6,
 };
 
 export const preset6 = {
@@ -561,6 +569,7 @@ export const preset6 = {
 	'palette-color-status-hover': true,
 	'typography-status-hover': true,
 	'box-shadow-status-hover': false,
+	'icon-background-palette-color-status-hover': false,
 };
 
 export const preset7 = {
@@ -753,8 +762,9 @@ export const preset9 = {
 	'icon-status-hover': true,
 	'icon-border-style-general-hover': 'none',
 	'icon-background-palette-color-status-hover': true,
-	'icon-background-palette-color-general-hover': 6,
+	'icon-background-palette-color-hover': 6,
 	'icon-border-palette-color-status-general-hover': false,
+	'icon-palette-color-status-hover': false,
 };
 
 export const preset10 = {
@@ -897,4 +907,8 @@ export const preset11 = {
 	'typography-status-hover': false,
 	'box-shadow-status-hover': false,
 	'icon-border-style-general-hover': 'none',
+	'icon-background-palette-color-status-hover': true,
+	'icon-background-palette-color-hover': 6,
+	'icon-border-palette-color-status-general-hover': false,
+	'icon-palette-color-status-hover': false,
 };

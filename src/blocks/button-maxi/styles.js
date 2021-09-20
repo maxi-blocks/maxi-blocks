@@ -414,15 +414,15 @@ const getStyles = props => {
 			' .maxi-button-block__button:hover': getHoverObject(props),
 			' .maxi-button-block__button:hover .maxi-button-block__content':
 				getHoverContentObject(props),
-			' .maxi-button-block__icon:hover':
+			' .maxi-button-block__button:hover .maxi-button-block__icon':
 				props['icon-status-hover'] &&
 				getIconHoverObject(props, 'iconHover'),
-			' .maxi-button-block__icon:hover svg > *':
+			' .maxi-button-block__button:hover .maxi-button-block__icon svg > *':
 				props['icon-status-hover'] &&
 				getIconHoverObject(props, 'iconHover'),
-			' .maxi-button-block__icon svg:hover':
+			' .maxi-button-block__button:hover .maxi-button-block__icon svg':
 				props['icon-status-hover'] && getIconSize(props, true),
-			' .maxi-button-block__icon svg:hover path':
+			' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
 				props['icon-status-hover'] && getIconPathStyles(props, true),
 		}),
 	};

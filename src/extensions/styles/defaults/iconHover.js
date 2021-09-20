@@ -12,10 +12,11 @@ export const iconHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...icon[key] };
 
+		if (key === 'icon-palette-color-hover') value.default = 6;
+		if (key === 'icon-width-general') value.default = '';
+
 		response[newKey] = value;
 	});
-
-	response['icon-palette-color-hover'].default = 6;
 
 	return response;
 })();

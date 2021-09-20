@@ -32,7 +32,6 @@ const ALLOWED_BLOCKS = [
 	'maxi-blocks/button-maxi',
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/svg-icon-maxi',
-	'maxi-blocks/shape-maxi',
 ];
 
 const TEXT_BLOCKS = ['maxi-blocks/text-maxi'];

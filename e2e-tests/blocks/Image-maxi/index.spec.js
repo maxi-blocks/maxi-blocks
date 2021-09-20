@@ -1,10 +1,11 @@
+/* eslint-disable no-await-in-loop */
 /**
  * WordPress dependencies
  */
 import {
 	createNewPost,
 	insertBlock,
-	pressKeyTimes,
+	pressKeyWithModifier,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
 
@@ -70,6 +71,7 @@ describe('Image Maxi', () => {
 		await fontFamilySelector.click();
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(100);
 
 		const attributes = await getBlockAttributes();
 		const fontFamily = attributes['font-family-general'];
@@ -114,10 +116,9 @@ describe('Image Maxi', () => {
 		await page.waitForTimeout(200);
 
 		await inputs[4].focus();
-		await pressKeyTimes('Backspace', 4);
+		await pressKeyWithModifier('primary', 'a');
 		await page.waitForTimeout(200);
-		await page.keyboard.type('2');
-		await page.waitForTimeout(200);
+		await page.keyboard.type('4');
 
 		await inputs[6].focus();
 		await page.keyboard.type('11');
@@ -136,7 +137,7 @@ describe('Image Maxi', () => {
 
 		const expectedAttributesTwo = {
 			'font-size-m': 19,
-			'line-height-m': 12,
+			'line-height-m': 4,
 			'letter-spacing-m': 11,
 		};
 
@@ -202,7 +203,7 @@ describe('Image Maxi', () => {
 			'2px 4px 0px #a2a2a2',
 		];
 
-		for (let i = 0; i < shadowStyles.length; i++) {
+		for (let i = 0; i < shadowStyles.length; i += 1) {
 			const setting = shadowStyles[i];
 
 			await accordionPanel.$$eval(
@@ -210,6 +211,7 @@ describe('Image Maxi', () => {
 				(buttons, i) => buttons[i].click(),
 				i
 			);
+			await page.waitForTimeout(200);
 
 			const shadowAttributes = await getBlockAttributes();
 			const textShadow = shadowAttributes['text-shadow-general'];

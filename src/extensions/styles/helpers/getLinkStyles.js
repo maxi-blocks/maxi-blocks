@@ -33,7 +33,8 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 			response[target].link[breakpoint] = {};
 
 			response[target].link[breakpoint].color = getColorRGBAString({
-				firstVar: `color-${obj[`link-palette-color-${breakpoint}`]}`,
+				firstVar: 'link',
+				secondVar: `color-${obj[`link-palette-color-${breakpoint}`]}`,
 				opacity: obj[`link-palette-opacity-${breakpoint}`],
 				blockStyle: parentBlockStyle,
 			});
@@ -51,7 +52,8 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 				obj[`link-hover-color-${breakpoint}`];
 		} else if (obj[`link-hover-palette-color-${breakpoint}`]) {
 			const color = getColorRGBAString({
-				firstVar: `color-${
+				firstVar: 'link-hover',
+				secondVar: `color-${
 					obj[`link-hover-palette-color-${breakpoint}`]
 				}`,
 				opacity: obj[`link-hover-palette-opacity-${breakpoint}`],
@@ -74,7 +76,8 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 				obj[`link-active-color-${breakpoint}`];
 		} else if (obj[`link-active-palette-color-${breakpoint}`]) {
 			const color = getColorRGBAString({
-				firstVar: `color-${
+				firstVar: 'link-active',
+				secondVar: `color-${
 					obj[`link-active-palette-color-${breakpoint}`]
 				}`,
 				opacity: obj[`link-active-palette-opacity-${breakpoint}`],
@@ -97,7 +100,8 @@ const getLinkStyles = (obj, target, parentBlockStyle) => {
 				obj[`link-visited-color-${breakpoint}`];
 		} else if (obj[`link-visited-palette-color-${breakpoint}`]) {
 			const color = getColorRGBAString({
-				firstVar: `color-${
+				firstVar: 'link-visited',
+				secondVar: `color-${
 					obj[`link-visited-palette-color-${breakpoint}`]
 				}`,
 				opacity: obj[`link-visited-palette-opacity-${breakpoint}`],

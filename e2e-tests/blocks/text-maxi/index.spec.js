@@ -597,4 +597,30 @@ describe('TextMaxi', () => {
 		expect(expectedColor).toBe(4);
 		expect(expectedContent2 === expectedContent).toBeTruthy();
 	});
+
+	it('Testing changing custom format and showing the correct value', async () => {
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
+		await page.waitForTimeout(150);
+
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+
+		await page.$eval('.toolbar-item__typography-control', button =>
+			button.click()
+		);
+
+		const input = await page.$('.maxi-typography-control__size input');
+		await input.focus();
+		await page.keyboard.press('Backspace');
+		await page.waitForTimeout(200);
+		await page.keyboard.press(0);
+		await page.waitForTimeout(200);
+
+		const inputValue = await input.evaluate(input => input.value);
+
+		expect(inputValue).toStrictEqual('10');
+	});
 });

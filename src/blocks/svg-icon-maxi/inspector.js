@@ -400,9 +400,7 @@ const Inspector = props => {
 																				obj
 																			)
 																		}
-																		disableImage
 																		disableVideo
-																		disableGradient
 																		disableSVG
 																		disableClipPath
 																		clientId={

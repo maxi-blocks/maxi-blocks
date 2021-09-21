@@ -20,7 +20,6 @@ import {
 	ClipPath,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
 	FancyRadioControl,
 	FullSizeControl,
 	HoverEffectControl,
@@ -1138,23 +1137,6 @@ const Inspector = memo(
 														}
 														blockStyle={blockStyle}
 														clientId={clientId}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Entrance Animation',
-													'maxi-blocks'
-												),
-												content: (
-													<EntranceAnimationControl
-														{...getGroupAttributes(
-															attributes,
-															'entrance'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
 													/>
 												),
 											},

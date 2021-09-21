@@ -102,17 +102,12 @@ class edit extends MaxiBlockComponent {
 	get getCustomData() {
 		const { uniqueID } = this.props.attributes;
 
-		const motionStatus =
-			!!this.props.attributes['motion-status'] ||
-			!isEmpty(this.props.attributes['entrance-type']);
+		const motionStatus = !!this.props.attributes['motion-status'];
 
 		return {
 			[uniqueID]: {
 				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'entrance',
-					]),
+					...getGroupAttributes(this.props.attributes, 'motion'),
 				}),
 			},
 		};

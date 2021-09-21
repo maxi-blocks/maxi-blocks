@@ -109,7 +109,6 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...attributesData.container,
 	...attributesData.display,
-	...attributesData.entrance,
 	...attributesData.hover,
 	...attributesData.hoverBackground,
 	...attributesData.hoverBackgroundColor,

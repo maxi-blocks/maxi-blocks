@@ -19,7 +19,6 @@ import {
 	CustomLabel,
 	DefaultStylesControl,
 	DisplayControl,
-	EntranceAnimationControl,
 	FancyRadioControl,
 	FullSizeControl,
 	Icon,
@@ -1118,23 +1117,6 @@ const Inspector = memo(
 														{...getGroupAttributes(
 															attributes,
 															'motion'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Entrance Animation',
-													'maxi-blocks'
-												),
-												content: (
-													<EntranceAnimationControl
-														{...getGroupAttributes(
-															attributes,
-															'entrance'
 														)}
 														onChange={obj =>
 															setAttributes(obj)

@@ -56,6 +56,11 @@ import {
 	presetFour,
 	presetFive,
 	presetSix,
+	presetSeven,
+	presetEight,
+	presetNine,
+	presetTen,
+	presetEleven,
 } from '../../icons';
 
 /**
@@ -146,7 +151,6 @@ const Inspector = memo(
 														className='maxi-button-default-styles'
 														items={[
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -160,7 +164,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -174,7 +177,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -188,7 +190,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -203,7 +204,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -218,7 +218,6 @@ const Inspector = memo(
 																	),
 															},
 															{
-																activeItem: 0,
 																content: (
 																	<Icon
 																		icon={
@@ -232,37 +231,161 @@ const Inspector = memo(
 																		'icon'
 																	),
 															},
+															{
+																content: (
+																	<Icon
+																		icon={
+																			presetSeven
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		7,
+																		'icon'
+																	),
+															},
+															{
+																content: (
+																	<Icon
+																		icon={
+																			presetEight
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		8,
+																		'icon'
+																	),
+															},
+															{
+																content: (
+																	<Icon
+																		icon={
+																			presetNine
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		9,
+																		'icon'
+																	),
+															},
+															{
+																content: (
+																	<Icon
+																		icon={
+																			presetTen
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		10,
+																		'icon'
+																	),
+															},
+															{
+																content: (
+																	<Icon
+																		icon={
+																			presetEleven
+																		}
+																	/>
+																),
+																onChange: () =>
+																	onChangePreset(
+																		11,
+																		'icon'
+																	),
+															},
 														]}
 													/>
 												),
 											},
-											deviceType === 'general' && {
+											{
 												label: __(
 													'Icon',
 													'maxi-blocks'
 												),
 												content: (
-													<IconControl
-														{...getGroupAttributes(
-															attributes,
-															[
-																'icon',
-																'iconGradient',
-																'iconBackgroundColor',
-																'iconBorder',
-																'iconBorderWidth',
-																'iconBorderRadius',
-																'iconPadding',
-															]
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														deviceType={deviceType}
-														clientId={clientId}
-														parentBlockStyle={
-															parentBlockStyle
-														}
+													<SettingTabsControl
+														items={[
+															{
+																label: __(
+																	'Normal',
+																	'maxi-blocks'
+																),
+																content: (
+																	<IconControl
+																		{...getGroupAttributes(
+																			attributes,
+																			[
+																				'icon',
+																				'iconGradient',
+																				'iconBackgroundColor',
+																				'iconBorder',
+																				'iconBorderWidth',
+																				'iconBorderRadius',
+																				'iconPadding',
+																			]
+																		)}
+																		onChange={obj => {
+																			setAttributes(
+																				obj
+																			);
+																		}}
+																		deviceType={
+																			deviceType
+																		}
+																		clientId={
+																			clientId
+																		}
+																		parentBlockStyle={
+																			parentBlockStyle
+																		}
+																	/>
+																),
+															},
+															{
+																label: __(
+																	'Hover',
+																	'maxi-blocks'
+																),
+																content: (
+																	<IconControl
+																		{...getGroupAttributes(
+																			attributes,
+																			[
+																				'iconHover',
+																				'iconGradientHover',
+																				'iconBackgroundColorHover',
+																				'iconBorderHover',
+																				'iconBorderWidthHover',
+																				'iconBorderRadiusHover',
+																			]
+																		)}
+																		onChange={obj => {
+																			setAttributes(
+																				obj
+																			);
+																		}}
+																		deviceType={
+																			deviceType
+																		}
+																		clientId={
+																			clientId
+																		}
+																		parentBlockStyle={
+																			parentBlockStyle
+																		}
+																		isHover
+																	/>
+																),
+															},
+														]}
 													/>
 												),
 											},

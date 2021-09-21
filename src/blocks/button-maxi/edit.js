@@ -119,11 +119,6 @@ class edit extends MaxiBlockComponent {
 				'maxi-button-block__button--icon-right'
 		);
 
-		const buttonTextClasses = classnames(
-			'maxi-button-block__content',
-			attributes['icon-only'] && 'hidden'
-		);
-
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -143,23 +138,25 @@ class edit extends MaxiBlockComponent {
 				disableBackground
 			>
 				<div className={buttonClasses}>
-					<RichText
-						className={buttonTextClasses}
-						value={attributes.buttonContent}
-						identifier='content'
-						onChange={buttonContent => {
-							if (this.typingTimeout) {
-								clearTimeout(this.typingTimeout);
-							}
+					{!attributes['icon-only'] && (
+						<RichText
+							className='maxi-button-block__content'
+							value={attributes.buttonContent}
+							identifier='content'
+							onChange={buttonContent => {
+								if (this.typingTimeout) {
+									clearTimeout(this.typingTimeout);
+								}
 
-							this.typingTimeout = setTimeout(() => {
-								setAttributes({ buttonContent });
-							}, 100);
-						}}
-						placeholder={__('Set some text…', 'maxi-blocks')}
-						withoutInteractiveFormatting
-						__unstableDisableFormats
-					/>
+								this.typingTimeout = setTimeout(() => {
+									setAttributes({ buttonContent });
+								}, 100);
+							}}
+							placeholder={__('Set some text…', 'maxi-blocks')}
+							withoutInteractiveFormatting
+							__unstableDisableFormats
+						/>
+					)}
 					{attributes['icon-content'] && (
 						<>
 							<IconToolbar

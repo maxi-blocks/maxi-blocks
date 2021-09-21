@@ -14,7 +14,7 @@ import {
 import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
 
 describe('TypographyControl', () => {
-	it.only('Checking the fontFamily', async () => {
+	it('Checking the FontFamily', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
@@ -27,7 +27,6 @@ describe('TypographyControl', () => {
 		await fontFamilySelector.click();
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
-		await page.waitForTimeout(100);
 
 		const attributes = await getBlockAttributes();
 		const fontFamily = attributes['font-family-general'];
@@ -35,7 +34,7 @@ describe('TypographyControl', () => {
 
 		expect(fontFamily).toStrictEqual(expectedFontFamily);
 	});
-	it.only('Checking the responsive fontFamily', async () => {
+	it('Checking the responsive FontFamily', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 		const closeAccordion = await page.$$(
 			'.interface-interface-skeleton__sidebar .edit-post-sidebar__panel-tabs button'
@@ -43,17 +42,16 @@ describe('TypographyControl', () => {
 		const input = await page.$(
 			'.maxi-typography-control .maxi-typography-control__font-family input'
 		);
+
 		await input.focus();
 		await page.keyboard.type('Lato');
-		await page.waitForTimeout(100);
 		await page.keyboard.press('Enter');
-		await page.waitForTimeout(100);
+
 		const typographyInput = await page.$$eval(
 			'.maxi-typography-control__font-family div div div',
 			fontValue => fontValue[0].innerHTML
 		);
 
-		await page.waitForTimeout(100);
 		expect(typographyInput).toStrictEqual('Lato');
 
 		// s
@@ -69,7 +67,6 @@ describe('TypographyControl', () => {
 			'.maxi-typography-control__font-family div div div',
 			fontValue => fontValue[0].innerHTML
 		);
-
 		expect(typographyInputS).toStrictEqual('Arial');
 
 		const attributes = await getBlockAttributes();
@@ -101,11 +98,9 @@ describe('TypographyControl', () => {
 		expect(typographyInputM).toStrictEqual('Lato');
 	});
 
-	it.only('Checking the fontColor', async () => {
+	it('Checking the FontColor', async () => {
 		await changeResponsive(page, 'base');
-
 		const accordionPanel = await openSidebar(page, 'typography');
-
 		await accordionPanel.$eval(
 			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
 			select => select.click()
@@ -119,8 +114,7 @@ describe('TypographyControl', () => {
 		await pressKeyTimes('Backspace', '6');
 		await page.keyboard.type('FAFA03');
 		await page.keyboard.press('Enter');
-
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(250);
 
 		const colorAttributes = await getBlockAttributes();
 		const color = colorAttributes['color-general'];
@@ -129,18 +123,20 @@ describe('TypographyControl', () => {
 		expect(color).toStrictEqual(expectedColor);
 	});
 
-	it.only('Check responsive palette-opacity', async () => {
-		debugger;
+	it('Check responsive PaletteOpacity', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
-
+		await accordionPanel.$$eval(
+			'.maxi-sc-color-palette__custom .maxi-radio-control__option label',
+			select => select[1].click()
+		);
 		const input = await accordionPanel.$(
 			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input'
 		);
 
 		await input.focus();
-		await page.waitForTimeout(100);
 		await page.keyboard.type('80');
 		await changeResponsive(page, 's');
+
 		const opacityLevel = await page.$eval(
 			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input',
 			button => button.value
@@ -149,7 +145,6 @@ describe('TypographyControl', () => {
 		expect(opacityLevel).toStrictEqual('80');
 
 		// responsive S
-		await page.waitForTimeout(100);
 		await changeResponsive(page, 's');
 
 		await input.focus();
@@ -169,7 +164,6 @@ describe('TypographyControl', () => {
 		expect(opacity).toStrictEqual(55);
 
 		// responsive XS
-		await page.waitForTimeout(100);
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$eval(
@@ -180,7 +174,6 @@ describe('TypographyControl', () => {
 		expect(responsiveXsOption).toStrictEqual('55');
 
 		// responsive M
-		await page.waitForTimeout(100);
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$eval(
@@ -191,7 +184,7 @@ describe('TypographyControl', () => {
 		expect(responsiveMOption).toStrictEqual('80');
 	});
 
-	it.only('Check responsive palette-color', async () => {
+	it('Check responsive PaletteColor', async () => {
 		await changeResponsive(page, 'base');
 		const accordionPanel = await openSidebar(page, 'typography');
 
@@ -206,7 +199,6 @@ describe('TypographyControl', () => {
 		const customColor = await accordionPanel.$$(
 			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option label'
 		);
-
 		await customColor[0].click();
 
 		const paletteColorSStatus = await accordionPanel.$$eval(
@@ -240,7 +232,7 @@ describe('TypographyControl', () => {
 		expect(paletteColorMStatus).toStrictEqual(true);
 	});
 
-	it('Checking the typography-control', async () => {
+	it('Checking the Weight, Transform, Style and Decoration', async () => {
 		await changeResponsive(page, 'base');
 		const accordionPanel = await openSidebar(page, 'typography');
 
@@ -286,15 +278,13 @@ describe('TypographyControl', () => {
 
 		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
 	});
-	it('Check responsive font-weight', async () => {
+	it('Check responsive FontWeight', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
-
 		const selector = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__weight select'
 		);
 
 		await selector.select('400');
-		await page.waitForTimeout(100);
 
 		const weightNumber = await accordionPanel.$eval(
 			'.maxi-typography-control .maxi-typography-control__weight select',
@@ -304,7 +294,6 @@ describe('TypographyControl', () => {
 
 		// s
 		await changeResponsive(page, 's');
-		await page.waitForTimeout(100);
 		const selectorS = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__weight select'
 		);
@@ -328,6 +317,7 @@ describe('TypographyControl', () => {
 			'.maxi-typography-control .maxi-typography-control__weight select',
 			weightSelector => weightSelector.selectedIndex
 		);
+
 		expect(weightXsNumber).toStrictEqual(4);
 
 		// m
@@ -337,38 +327,38 @@ describe('TypographyControl', () => {
 			'.maxi-typography-control .maxi-typography-control__weight select',
 			weightSelector => weightSelector.selectedIndex
 		);
+
 		expect(weightMNumber).toStrictEqual(2);
 	});
 
-	it('Check responsive transform', async () => {
+	it('Check responsive Transform', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
-
 		const selector = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__transform select'
 		);
 
 		await selector.select('lowercase');
-		await page.waitForTimeout(100);
 
 		const transformType = await accordionPanel.$eval(
 			'.maxi-typography-control .maxi-typography-control__transform select',
-			weightSelector => weightSelector.selectedIndex
+			transformSelector => transformSelector.selectedIndex
 		);
+
 		expect(transformType).toStrictEqual(3);
 
 		// s
 		await changeResponsive(page, 's');
-		await page.waitForTimeout(100);
 		const selectorS = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__transform select'
 		);
 		await selectorS.select('uppercase');
 
-		const weightSNumber = await accordionPanel.$eval(
+		const TransformSNumber = await accordionPanel.$eval(
 			'.maxi-typography-control .maxi-typography-control__transform select',
-			weightSelector => weightSelector.selectedIndex
+			TransformSelector => TransformSelector.selectedIndex
 		);
-		expect(weightSNumber).toStrictEqual(2);
+
+		expect(TransformSNumber).toStrictEqual(2);
 
 		const attributes = await getBlockAttributes();
 		const fontUnit = attributes['text-transform-s'];
@@ -378,53 +368,53 @@ describe('TypographyControl', () => {
 		// xs
 		await changeResponsive(page, 'xs');
 
-		const weightXsNumber = await accordionPanel.$eval(
+		const TransformXsNumber = await accordionPanel.$eval(
 			'.maxi-typography-control .maxi-typography-control__transform select',
-			weightSelector => weightSelector.selectedIndex
+			TransformSelector => TransformSelector.selectedIndex
 		);
-		expect(weightXsNumber).toStrictEqual(2);
+
+		expect(TransformXsNumber).toStrictEqual(2);
 
 		// m
 		await changeResponsive(page, 'm');
 
-		const weightMNumber = await accordionPanel.$eval(
+		const transformMNumber = await accordionPanel.$eval(
 			'.maxi-typography-control .maxi-typography-control__transform select',
-			weightSelector => weightSelector.selectedIndex
+			transformSelector => transformSelector.selectedIndex
 		);
-		expect(weightMNumber).toStrictEqual(3);
+
+		expect(transformMNumber).toStrictEqual(3);
 	});
 
-	it('Check responsive font-style', async () => {
+	it('Check responsive Style', async () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openSidebar(page, 'typography');
-
 		const selector = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__font-style select'
 		);
 
 		await selector.select('italic');
-		await page.waitForTimeout(100);
 
 		const fontStyleType = await accordionPanel.$eval(
 			'.maxi-typography-control .maxi-typography-control__font-style select',
-			weightSelector => weightSelector.selectedIndex
+			styleSelector => styleSelector.selectedIndex
 		);
 		expect(fontStyleType).toStrictEqual(0);
 
 		// s
 		await changeResponsive(page, 's');
-		await page.waitForTimeout(100);
 		const selectorS = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__font-style select'
 		);
 		await selectorS.select('oblique');
 
-		const weightSNumber = await accordionPanel.$eval(
+		const styleSNumber = await accordionPanel.$eval(
 			'.maxi-typography-control .maxi-typography-control__font-style select',
-			weightSelector => weightSelector.selectedIndex
+			styleSelector => styleSelector.selectedIndex
 		);
-		expect(weightSNumber).toStrictEqual(2);
+
+		expect(styleSNumber).toStrictEqual(2);
 
 		const attributes = await getBlockAttributes();
 		const fontUnit = attributes['font-style-s'];
@@ -434,31 +424,29 @@ describe('TypographyControl', () => {
 		// xs
 		await changeResponsive(page, 'xs');
 
-		const weightXsNumber = await accordionPanel.$eval(
+		const styleXsNumber = await accordionPanel.$eval(
 			'.maxi-typography-control .maxi-typography-control__font-style select',
-			weightSelector => weightSelector.selectedIndex
+			styleSelector => styleSelector.selectedIndex
 		);
-		expect(weightXsNumber).toStrictEqual(2);
+		expect(styleXsNumber).toStrictEqual(2);
 
 		// m
 		await changeResponsive(page, 'm');
 
-		const weightMNumber = await accordionPanel.$eval(
+		const styleMNumber = await accordionPanel.$eval(
 			'.maxi-typography-control .maxi-typography-control__font-style select',
-			weightSelector => weightSelector.selectedIndex
+			styleSelector => styleSelector.selectedIndex
 		);
-		expect(weightMNumber).toStrictEqual(0);
+		expect(styleMNumber).toStrictEqual(0);
 	});
 
-	it('Check responsive text-decoration', async () => {
+	it('Check responsive Decoration', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
-
 		const selector = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__decoration select'
 		);
-		await page.waitForTimeout(500);
+
 		await selector.select('overline');
-		await page.waitForTimeout(500);
 
 		const textDecoration = await page.$eval(
 			'.maxi-typography-control .maxi-typography-control__decoration select',
@@ -469,7 +457,7 @@ describe('TypographyControl', () => {
 
 		// s
 		await changeResponsive(page, 's');
-		await page.waitForTimeout(100);
+
 		const selectorS = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__decoration select'
 		);
@@ -479,6 +467,7 @@ describe('TypographyControl', () => {
 			'.maxi-typography-control .maxi-typography-control__decoration select',
 			decorationSelector => decorationSelector.selectedIndex
 		);
+
 		expect(decorationSSelection).toStrictEqual(3);
 
 		const attributes = await getBlockAttributes();
@@ -493,6 +482,7 @@ describe('TypographyControl', () => {
 			'.maxi-typography-control .maxi-typography-control__decoration select',
 			decorationSelector => decorationSelector.selectedIndex
 		);
+
 		expect(decorationXsSelection).toStrictEqual(3);
 
 		// m
@@ -502,18 +492,16 @@ describe('TypographyControl', () => {
 			'.maxi-typography-control .maxi-typography-control__decoration select',
 			decorationSelector => decorationSelector.selectedIndex
 		);
+
 		expect(decorationMSelection).toStrictEqual(1);
 	});
-	it('Check text-shadow', async () => {
+	it('Check TextShadow', async () => {
 		await changeResponsive(page, 'base');
-
 		const accordionPanel = await openSidebar(page, 'typography');
-
 		await accordionPanel.$$eval(
 			'.maxi-typography-control .maxi-textshadow-control .maxi-base-control__field label',
 			select => select[1].click()
 		);
-
 		await accordionPanel.$$(
 			'.maxi-textshadow-control.maxi-typography-control__text-shadow .maxi-default-styles-control'
 		);
@@ -541,29 +529,24 @@ describe('TypographyControl', () => {
 		}
 	});
 
-	it('Check tabs-control', async () => {
+	it('Check Size, LineHeight and LetterSpacing', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
-
 		await accordionPanel.$$eval(
 			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
 			select => select[0].focus()
 		);
-		await pressKeyTimes('Backspace', '1');
-		await page.waitForTimeout(200);
 
+		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('9');
-		await page.waitForTimeout(200);
 
 		// line-height
 		await accordionPanel.$$eval(
 			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
 			select => select[2].focus()
 		);
-		await pressKeyWithModifier('primary', 'a');
-		await page.waitForTimeout(200);
 
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('4');
-		await page.waitForTimeout(200);
 
 		// letter-spacing
 		await accordionPanel.$$eval(
@@ -571,7 +554,6 @@ describe('TypographyControl', () => {
 			select => select[4].focus()
 		);
 		await page.keyboard.type('10');
-		await page.waitForTimeout(200);
 
 		const stylesAttributes = await getBlockAttributes();
 
@@ -592,5 +574,337 @@ describe('TypographyControl', () => {
 		};
 
 		expect(expectedResult).toStrictEqual(expectedAttributes);
+	});
+
+	it('Check responsive FontSize', async () => {
+		const accordionPanel = await openSidebar(page, 'typography');
+		const input = await accordionPanel.$$(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size input'
+		);
+
+		await input[0].focus();
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('9');
+
+		const sizeNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size input',
+			sizeInput => sizeInput[0].value
+		);
+
+		expect(sizeNumber).toStrictEqual('19');
+
+		// s
+		await changeResponsive(page, 's');
+		const inputS = await accordionPanel.$$(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size input'
+		);
+
+		await inputS[0].focus();
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('1');
+
+		const sizeSNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size input',
+			sizeInput => sizeInput[0].value
+		);
+		expect(sizeSNumber).toStrictEqual('11');
+
+		const attributes = await getBlockAttributes();
+		const size = attributes['font-size-s'];
+
+		expect(size).toStrictEqual(11);
+
+		// xs
+		await changeResponsive(page, 'xs');
+		const sizeXsNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size input',
+			sizeInput => sizeInput[0].value
+		);
+
+		expect(sizeXsNumber).toStrictEqual('11');
+
+		// m
+		await changeResponsive(page, 'm');
+		const sizeMNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size input',
+			sizeInput => sizeInput[0].value
+		);
+
+		expect(sizeMNumber).toStrictEqual('19');
+	});
+
+	it('Check responsive font-size-unit', async () => {
+		const accordionPanel = await openSidebar(page, 'typography');
+		const selector = await accordionPanel.$(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__size select'
+		);
+
+		await selector.select('em');
+
+		const fontSizeUnit = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__size select',
+			fontSizeSelector => fontSizeSelector.selectedIndex
+		);
+
+		expect(fontSizeUnit).toStrictEqual(1);
+
+		// s
+		await changeResponsive(page, 's');
+		const selectorS = await accordionPanel.$(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__size select'
+		);
+
+		await selectorS.select('%');
+
+		const weightSNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__size select',
+			fontSizeSelector => fontSizeSelector.selectedIndex
+		);
+
+		expect(weightSNumber).toStrictEqual(3);
+
+		const attributes = await getBlockAttributes();
+		const fontUnit = attributes['font-size-unit-s'];
+
+		expect(fontUnit).toStrictEqual('%');
+
+		// xs
+		await changeResponsive(page, 'xs');
+		const weightXsNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__size select',
+			fontSizeSelector => fontSizeSelector.selectedIndex
+		);
+
+		expect(weightXsNumber).toStrictEqual(3);
+
+		// m
+		await changeResponsive(page, 'm');
+		const weightMNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__size select',
+			fontSizeSelector => fontSizeSelector.selectedIndex
+		);
+
+		expect(weightMNumber).toStrictEqual(1);
+	});
+	it('Check responsive line-height', async () => {
+		const accordionPanel = await openSidebar(page, 'typography');
+		const input = await accordionPanel.$$(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input'
+		);
+
+		await input[0].focus();
+		await page.keyboard.type('5');
+
+		const heightNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input',
+			heightInput => heightInput[0].value
+		);
+
+		expect(heightNumber).toStrictEqual('45');
+
+		// s
+		await changeResponsive(page, 's');
+		const inputS = await accordionPanel.$$(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input'
+		);
+
+		await inputS[0].focus();
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('3');
+
+		const heightSNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input',
+			heightInput => heightInput[0].value
+		);
+
+		expect(heightSNumber).toStrictEqual('43');
+
+		const attributes = await getBlockAttributes();
+		const height = attributes['line-height-s'];
+
+		expect(height).toStrictEqual(43);
+
+		// xs
+		await changeResponsive(page, 'xs');
+		const heightXsNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input',
+			heightInput => heightInput[0].value
+		);
+
+		expect(heightXsNumber).toStrictEqual('43');
+
+		// m
+		await changeResponsive(page, 'm');
+		const heightMNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input',
+			heightInput => heightInput[0].value
+		);
+
+		expect(heightMNumber).toStrictEqual('45');
+	});
+
+	it('Check responsive line-height-unit', async () => {
+		const accordionPanel = await openSidebar(page, 'typography');
+		const selector = await accordionPanel.$(
+			'.maxi-typography-control .maxi-typography-control__line-height select'
+		);
+
+		await selector.select('em');
+
+		const heightNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-typography-control__line-height select',
+			heightSelector => heightSelector.selectedIndex
+		);
+
+		expect(heightNumber).toStrictEqual(1);
+
+		// s
+		await changeResponsive(page, 's');
+		const selectorS = await accordionPanel.$(
+			'.maxi-typography-control .maxi-typography-control__line-height select'
+		);
+
+		await selectorS.select('%');
+
+		const heightSNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-typography-control__line-height select',
+			heightSelector => heightSelector.selectedIndex
+		);
+
+		expect(heightSNumber).toStrictEqual(3);
+
+		const attributes = await getBlockAttributes();
+		const fontUnit = attributes['line-height-unit-s'];
+
+		expect(fontUnit).toStrictEqual('%');
+
+		// xs
+		await changeResponsive(page, 'xs');
+		const heightXsNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__line-height select',
+			heightInput => heightInput.selectedIndex
+		);
+
+		expect(heightXsNumber).toStrictEqual(3);
+
+		// m
+		await changeResponsive(page, 'm');
+		const heightMNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__line-height select',
+			heightInput => heightInput.selectedIndex
+		);
+
+		expect(heightMNumber).toStrictEqual(1);
+	});
+
+	it('Check responsive letter-spacing', async () => {
+		const accordionPanel = await openSidebar(page, 'typography');
+
+		const input = await accordionPanel.$$(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input'
+		);
+
+		await input[0].focus();
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('2');
+
+		const heightNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input',
+			heightInput => heightInput[0].value
+		);
+
+		expect(heightNumber).toStrictEqual('2');
+
+		// s
+		await changeResponsive(page, 's');
+
+		const inputS = await accordionPanel.$$(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input'
+		);
+
+		await inputS[0].focus();
+		await page.keyboard.type('3');
+
+		const heightSNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input',
+			heightInput => heightInput[0].value
+		);
+		expect(heightSNumber).toStrictEqual('23');
+
+		const attributes = await getBlockAttributes();
+		const height = attributes['letter-spacing-s'];
+
+		expect(height).toStrictEqual(23);
+
+		// xs
+		await changeResponsive(page, 'xs');
+
+		const heightXsNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input',
+			heightInput => heightInput[0].value
+		);
+		expect(heightXsNumber).toStrictEqual('23');
+
+		// m
+		await changeResponsive(page, 'm');
+
+		const heightMNumber = await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__letter-spacing input',
+			heightInput => heightInput[0].value
+		);
+		expect(heightMNumber).toStrictEqual('2');
+	});
+
+	it('Check responsive letter-spacing-unit', async () => {
+		await insertBlock('Text Maxi');
+		const accordionPanel = await openSidebar(page, 'typography');
+
+		const selector = await accordionPanel.$(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__letter-spacing select'
+		);
+
+		await selector.select('em');
+
+		const letterSpaceNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__letter-spacing select',
+			letterSpaceSelector => letterSpaceSelector.selectedIndex
+		);
+		expect(letterSpaceNumber).toStrictEqual(1);
+
+		// s
+		await changeResponsive(page, 's');
+		const selectorS = await accordionPanel.$(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__letter-spacing select'
+		);
+		await selectorS.select('vw');
+
+		const letterSpaceSNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__letter-spacing select',
+			letterSpaceSelector => letterSpaceSelector.selectedIndex
+		);
+		expect(letterSpaceSNumber).toStrictEqual(2);
+
+		const attributes = await getBlockAttributes();
+		const fontUnit = attributes['letter-spacing-unit-s'];
+
+		expect(fontUnit).toStrictEqual('vw');
+
+		// xs
+		await changeResponsive(page, 'xs');
+
+		const letterSpaceXsNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__letter-spacing select',
+			letterSpaceSelector => letterSpaceSelector.selectedIndex
+		);
+		expect(letterSpaceXsNumber).toStrictEqual(2);
+
+		// m
+		await changeResponsive(page, 'm');
+
+		const letterSpaceMNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__letter-spacing select',
+			letterSpaceSelector => letterSpaceSelector.selectedIndex
+		);
+		expect(letterSpaceMNumber).toStrictEqual(1);
 	});
 });

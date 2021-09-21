@@ -654,63 +654,6 @@ describe('OpacityControl', () => {
 		);
 		expect(weightMNumber).toStrictEqual(2);
 	});
-	/// //////////////////////////////////////////////////////////////////
-	it('Check responsive font-weight', async () => {
-		await createNewPost();
-		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openSidebar(page, 'typography');
-
-		const selector = await accordionPanel.$(
-			'.maxi-typography-control .maxi-typography-control__weight select'
-		);
-
-		await selector.select('300');
-		await page.waitForTimeout(100);
-
-		const weightNumber = await accordionPanel.$eval(
-			'.maxi-typography-control .maxi-typography-control__weight select',
-			weightSelector => weightSelector.selectedIndex
-		);
-		expect(weightNumber).toStrictEqual(2);
-
-		// s
-		await changeResponsive(page, 's');
-		await page.waitForTimeout(100);
-		const selectorS = await accordionPanel.$(
-			'.maxi-typography-control .maxi-typography-control__weight select'
-		);
-		await selectorS.select('500');
-
-		const weightSNumber = await accordionPanel.$eval(
-			'.maxi-typography-control .maxi-typography-control__weight select',
-			weightSelector => weightSelector.selectedIndex
-		);
-		expect(weightSNumber).toStrictEqual(3);
-
-		const attributes = await getBlockAttributes();
-		const fontUnit = attributes['font-weight-s'];
-
-		expect(fontUnit).toStrictEqual('500');
-
-		// xs
-		await changeResponsive(page, 'xs');
-
-		const weightXsNumber = await accordionPanel.$eval(
-			'.maxi-typography-control .maxi-typography-control__weight select',
-			weightSelector => weightSelector.selectedIndex
-		);
-		expect(weightXsNumber).toStrictEqual(3);
-
-		// m
-		await changeResponsive(page, 'm');
-
-		const weightMNumber = await accordionPanel.$eval(
-			'.maxi-typography-control .maxi-typography-control__weight select',
-			weightSelector => weightSelector.selectedIndex
-		);
-		expect(weightMNumber).toStrictEqual(2);
-	});
 
 	it('Check responsive transform', async () => {
 		await insertBlock('Text Maxi');

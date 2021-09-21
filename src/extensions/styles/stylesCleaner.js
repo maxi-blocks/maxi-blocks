@@ -6,7 +6,7 @@ import { isObject, isEmpty } from 'lodash';
 const hoverStylesCleaner = (normalObj, hoverObj) => {
 	if (normalObj)
 		Object.entries(normalObj).forEach(([key, val]) => {
-			if (key in hoverObj)
+			if (hoverObj && key in hoverObj)
 				Object.entries(val).forEach(([breakpoint, breakpointVal]) => {
 					if (breakpoint in hoverObj[key])
 						Object.entries(breakpointVal).forEach(

@@ -58,7 +58,8 @@
 		"react-paginate": "^6.5.0",
 		"react-select": "^4.1.0",
 		"react-tilt": "^0.1.4",
-		"tilt.js": "^1.2.1"
+		"tilt.js": "^1.2.1",
+		"tinycolor2": "^1.4.2"
 	},
 	"devDependencies": {
 		"@babel/plugin-proposal-class-properties": "^7.13.0",

@@ -30,13 +30,7 @@ import { getColorRGBAString, getColorRGBAParts } from '../../extensions/styles';
  * Component
  */
 const TextShadow = props => {
-	const {
-		value,
-		onChange,
-		defaultColor,
-		// eslint-disable-next-line no-use-before-define
-		blockStyle: rawBlockStyle,
-	} = props;
+	const { value, onChange, defaultColor, blockStyle: rawBlockStyle } = props;
 
 	const blockStyle = rawBlockStyle.replace('maxi-', '');
 
@@ -244,7 +238,6 @@ const TextShadow = props => {
 						onReset={() => onChangeValue(3, defaultColor)}
 						disableGradient
 						disableGradientAboveBackground
-						showPalette
 					/>
 					<AdvancedNumberControl
 						label={__('X', 'maxi-blocks')}

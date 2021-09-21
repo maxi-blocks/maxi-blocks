@@ -93,7 +93,6 @@ const IconColor = props => {
 								'icon-palette-color-status': paletteStatus,
 							});
 						}}
-						showPalette
 						disableOpacity
 					/>
 				)}

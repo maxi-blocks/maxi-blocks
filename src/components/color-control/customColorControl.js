@@ -57,6 +57,7 @@ const CustomColorControl = props => {
 
 							onChangeValue({
 								color: tinycolor(color).toRgbString(),
+								paletteOpacity: value,
 							});
 						}
 					}}

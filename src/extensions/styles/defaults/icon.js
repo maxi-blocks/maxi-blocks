@@ -9,17 +9,101 @@ export const icon = {
 		type: 'string',
 		default: '',
 	},
+	'icon-only': {
+		type: 'boolean',
+		default: false,
+	},
 	'icon-position': {
 		type: 'string',
 		default: 'right',
 	},
-	'icon-size': {
+	'icon-width-general': {
 		type: 'number',
 		default: 32,
 	},
-	'icon-spacing': {
+	'icon-width-xxl': {
+		type: 'number',
+	},
+	'icon-width-xl': {
+		type: 'number',
+	},
+	'icon-width-l': {
+		type: 'number',
+	},
+	'icon-width-m': {
+		type: 'number',
+	},
+	'icon-width-s': {
+		type: 'number',
+	},
+	'icon-width-xs': {
+		type: 'number',
+	},
+	'icon-width-unit-general': {
+		type: 'string',
+		default: 'px',
+	},
+	'icon-width-unit-xxl': {
+		type: 'string',
+	},
+	'icon-width-unit-xl': {
+		type: 'string',
+	},
+	'icon-width-unit-l': {
+		type: 'string',
+	},
+	'icon-width-unit-m': {
+		type: 'string',
+	},
+	'icon-width-unit-s': {
+		type: 'string',
+	},
+	'icon-width-unit-xs': {
+		type: 'string',
+	},
+	'icon-spacing-general': {
 		type: 'number',
 		default: 5,
+	},
+	'icon-spacing-xxl': {
+		type: 'number',
+	},
+	'icon-spacing-xl': {
+		type: 'number',
+	},
+	'icon-spacing-l': {
+		type: 'number',
+	},
+	'icon-spacing-m': {
+		type: 'number',
+	},
+	'icon-spacing-s': {
+		type: 'number',
+	},
+	'icon-spacing-xs': {
+		type: 'number',
+	},
+	'icon-stroke-general': {
+		type: 'number',
+		default: 2,
+	},
+	'icon-stroke-xxl': {
+		type: 'number',
+	},
+	'icon-stroke-xl': {
+		type: 'number',
+	},
+	'icon-stroke-l': {
+		type: 'number',
+	},
+	'icon-stroke-m': {
+		type: 'number',
+	},
+	'icon-stroke-s': {
+		type: 'number',
+	},
+	'icon-stroke-xs': {
+		type: 'number',
 	},
 	'icon-palette-color-status': {
 		type: 'boolean',

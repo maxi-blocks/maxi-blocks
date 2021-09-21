@@ -32,5 +32,7 @@ export * from './borderHover';
 export * from './hover';
 export * from './icon';
 export * from './iconBorder';
+export * from './iconHover';
+export * from './iconBorderHover';
 export * from './motion';
 export * from './typography';

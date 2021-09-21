@@ -42,10 +42,6 @@ export const iconBorderRadiusHover = (() => {
 
 	response = {
 		...response,
-		'icon-border-unit-radius-general': {
-			type: 'string',
-			default: 'px',
-		},
 		'icon-border-unit-radius-general-hover': {
 			type: 'string',
 			default: 'px',

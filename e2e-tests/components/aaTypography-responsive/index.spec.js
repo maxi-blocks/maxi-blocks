@@ -142,6 +142,112 @@ describe('OpacityControl', () => {
 		expect(responsiveMOption).toStrictEqual('80');
 	});
 
+	it('Check responsive palette-color', async () => {
+		await changeResponsive(page, 'base');
+		const accordionPanel = await openSidebar(page, 'typography');
+
+		const attributes = await getBlockAttributes();
+		const colorStatus = attributes['palette-color-status-general'];
+
+		expect(colorStatus).toStrictEqual(true);
+
+		// s
+		await changeResponsive(page, 's');
+
+		const customColor = await accordionPanel.$$(
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option label'
+		);
+
+		await customColor[0].click();
+
+		const paletteColorSStatus = await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
+			select => select[0].checked
+		);
+
+		expect(paletteColorSStatus).toStrictEqual(true);
+
+		const attributesS = await getBlockAttributes();
+		const colorStatusS = attributesS['palette-color-status-s'];
+
+		expect(colorStatusS).toStrictEqual(false);
+
+		// xs
+		await changeResponsive(page, 'xs');
+		const paletteColorXsStatus = await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
+			select => select[0].checked
+		);
+
+		expect(paletteColorXsStatus).toStrictEqual(false);
+
+		// m
+		await changeResponsive(page, 'xs');
+		const paletteColorMStatus = await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
+			select => select[1].checked
+		);
+
+		expect(paletteColorMStatus).toStrictEqual(true);
+	});
+
+	/*it('Check responsive color-general', async () => {
+		debugger;
+		await changeResponsive(page, 'base');
+		const accordionPanel = await openSidebar(page, 'typography');
+
+		await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-sc-color-palette__custom .maxi-base-control__field input',
+			button => button[0].click()
+		);
+
+		const attributes = await getBlockAttributes();
+		const colorStatus = attributes['color-general'];
+
+		expect(colorStatus).toStrictEqual('rgba(155,155,155,1)');
+
+		// s
+		await changeResponsive(page, 's');
+
+		const colorInput = await accordionPanel.$(
+			'.maxi-typography-control .maxi-typography-control__color .maxi-typography-control__color input'
+		);
+
+		await colorInput.focus();
+		await pressKeyTimes('Backspace', '6');
+		await page.keyboard.type('298c29');
+
+		const inputValue = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-typography-control__color .maxi-typography-control__color input',
+			input => input.value
+		);
+
+		expect(inputValue).toStrictEqual('#298C29');
+
+		const attributesS = await getBlockAttributes();
+		const colorStatusS = attributesS['color-s'];
+
+		expect(colorStatusS).toStrictEqual(false);*/
+
+		// xs
+		/* await changeResponsive(page, 'xs');
+		const paletteColorXsStatus = await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
+			select => select[0].checked
+		);
+
+		expect(paletteColorXsStatus).toStrictEqual(false);
+
+		// m
+		await changeResponsive(page, 'xs');
+		const paletteColorMStatus = await accordionPanel.$$eval(
+			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
+			select => select[1].checked
+		);
+
+		expect(paletteColorMStatus).toStrictEqual(true); */
+	});
+
 	/// ////////////////////////////////////////////////////////////////////////////////////
 	it('Check responsive font-size', async () => {
 		await createNewPost();
@@ -492,6 +598,62 @@ describe('OpacityControl', () => {
 		expect(letterSpaceMNumber).toStrictEqual(1);
 	});
 	/// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	it('Check responsive font-weight', async () => {
+		await createNewPost();
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi');
+		const accordionPanel = await openSidebar(page, 'typography');
+
+		const selector = await accordionPanel.$(
+			'.maxi-typography-control .maxi-typography-control__weight select'
+		);
+
+		await selector.select('300');
+		await page.waitForTimeout(100);
+
+		const weightNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-typography-control__weight select',
+			weightSelector => weightSelector.selectedIndex
+		);
+		expect(weightNumber).toStrictEqual(2);
+
+		// s
+		await changeResponsive(page, 's');
+		await page.waitForTimeout(100);
+		const selectorS = await accordionPanel.$(
+			'.maxi-typography-control .maxi-typography-control__weight select'
+		);
+		await selectorS.select('500');
+
+		const weightSNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-typography-control__weight select',
+			weightSelector => weightSelector.selectedIndex
+		);
+		expect(weightSNumber).toStrictEqual(3);
+
+		const attributes = await getBlockAttributes();
+		const fontUnit = attributes['font-weight-s'];
+
+		expect(fontUnit).toStrictEqual('500');
+
+		// xs
+		await changeResponsive(page, 'xs');
+
+		const weightXsNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-typography-control__weight select',
+			weightSelector => weightSelector.selectedIndex
+		);
+		expect(weightXsNumber).toStrictEqual(3);
+
+		// m
+		await changeResponsive(page, 'm');
+
+		const weightMNumber = await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-typography-control__weight select',
+			weightSelector => weightSelector.selectedIndex
+		);
+		expect(weightMNumber).toStrictEqual(2);
+	});
 	/// //////////////////////////////////////////////////////////////////
 	it('Check responsive font-weight', async () => {
 		await createNewPost();
@@ -718,7 +880,7 @@ describe('OpacityControl', () => {
 	});
 	/// //////////////////////////////////////////////////////////////////////
 
-	/* it.only('Check Responsive color', async () => {
+	/* it('Check Responsive color', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
@@ -737,7 +899,7 @@ describe('OpacityControl', () => {
 		expect(heightMNumber).toStrictEqual('1.555');
 	}); */
 
-	/* it.only('Check Responsive palette-color-status', async () => {
+	/* it('Check Responsive palette-color-status', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
@@ -792,7 +954,7 @@ describe('OpacityControl', () => {
 
 		expect(customMColorCheck).toStrictEqual(false); // revise 
 	}); */
-	/* it.only('Check responsive color-status', async () => {
+	/* it('Check responsive color-status', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
@@ -817,7 +979,7 @@ describe('OpacityControl', () => {
 
 		expect(value).toStrictEqual('#9B9B9B');
 	}); */
-	/*it.only('Check responsive text-shadow', async () => {
+	/* it('Check responsive text-shadow', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
@@ -887,6 +1049,6 @@ describe('OpacityControl', () => {
 
 		expect(expectedMClass).toStrictEqual(
 			'maxi-textshadow-control__default maxi-textshadow-control__default__total'
-		); */
-	});
+		); 
+	}); */
 });

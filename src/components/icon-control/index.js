@@ -437,26 +437,12 @@ const IconControl = props => {
 							isHover={isHover}
 						/>
 					)}
-					{iconStyle === 'border' && !isHover && (
+					{iconStyle === 'border' && (
 						<BorderControl
 							{...getGroupAttributes(props, [
-								'iconBorder',
-								'iconBorderWidth',
-								'iconBorderRadius',
-							])}
-							prefix='icon-'
-							onChange={obj => onChange(obj)}
-							breakpoint={deviceType}
-							clientId={clientId}
-							isHover={isHover}
-						/>
-					)}
-					{iconStyle === 'border' && isHover && (
-						<BorderControl
-							{...getGroupAttributes(props, [
-								'iconBorderHover',
-								'iconBorderWidthHover',
-								'iconBorderRadiusHover',
+								`iconBorder${isHover ? 'Hover' : ''}`,
+								`iconBorderWidth${isHover ? 'Hover' : ''}`,
+								`iconBorderRadius${isHover ? 'Hover' : ''}`,
 							])}
 							prefix='icon-'
 							onChange={obj => onChange(obj)}

@@ -135,6 +135,7 @@ class MaxiModal extends Component {
 										getSelectedBlockClientId(),
 										{
 											'icon-content': '',
+											'icon-only': false,
 										}
 									)
 								}

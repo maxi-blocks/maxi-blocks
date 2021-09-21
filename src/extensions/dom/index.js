@@ -135,6 +135,12 @@ wp.domReady(() => {
 										'none';
 								if (blockToolbarEditor)
 									blockToolbarEditor.style.display = 'none';
+
+								const blockCardContent = document.querySelector(
+									'.maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card .block-editor-block-card__content'
+								);
+								blockCardContent.outerHTML =
+									blockCardContent.innerHTML;
 							} else {
 								if (editPostSidebarNode)
 									editPostSidebarNode.classList.remove(

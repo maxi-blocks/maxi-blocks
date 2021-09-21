@@ -3,16 +3,24 @@
 ***********/
 .maxi-sidebar {
 	.block-editor-block-icon {
-		width: 33px;
-		height: 33px;
+		width: 16px;
+		height: 16px;
+		flex: 0;
+		margin: 0;
+
 		svg {
-			transform: scale(1.63);
+			width: 16px;
+			height: 16px;
+			min-width: 16px;
+			min-height: 16px;
+			max-width: 16px;
+			max-height: 16px;
 		}
 	}
 	.block-editor-block-inspector.maxi-controls {
 		.block-editor-block-card {
 			color: #fff;
-			padding: 9px 17px;
+			padding: 8px;
 			box-shadow: 0 5px 15px 0 rgba(119, 119, 119, 0.1);
 			position: relative;
 			border-bottom: 1px solid #f4f4f4;
@@ -21,31 +29,15 @@
 			letter-spacing: 0;
 			font: 400 20px Roboto, -apple-system, BlinkMacSystemFont, Segoe UI,
 				Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
+			flex-wrap: wrap;
 
-			&__content {
-				background: inherit !important;
-			}
 			&__title {
-				line-height: 33px;
-				margin-bottom: 0;
-				background: none !important;
-				position: relative;
-				font-size: 1rem;
-				color: #232433;
-				font-weight: 500;
+				line-height: unset;
+				margin: 0 0 0 8px;
 			}
 			&__description {
-				display: block !important;
-				position: relative;
-				padding-top: 8px;
-				border-top: 2px solid #eef0f0;
-				margin: 10px -15px 0 -55px;
-				padding: 10px 15px 0;
-
-				@at-root .rtl #{&} {
-					margin-left: unset;
-					margin-right: -40px;
-				}
+				width: 100%;
+				margin: 8px 0 0;
 			}
 		}
 	}

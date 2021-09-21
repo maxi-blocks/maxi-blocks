@@ -1,10 +1,10 @@
 import { border, borderWidth, borderRadius } from './border';
 
-export const iconBorder = (() => {
+export const iconBorderHover = (() => {
 	const response = {};
 
 	Object.keys(border).forEach(key => {
-		const newKey = `icon-${key}`;
+		const newKey = `icon-${key}-hover`;
 		const value = { ...border[key] };
 
 		response[newKey] = value;
@@ -13,11 +13,11 @@ export const iconBorder = (() => {
 	return response;
 })();
 
-export const iconBorderWidth = (() => {
+export const iconBorderWidthHover = (() => {
 	const response = {};
 
 	Object.keys(borderWidth).forEach(key => {
-		const newKey = `icon-${key}`;
+		const newKey = `icon-${key}-hover`;
 		const value = { ...borderWidth[key] };
 
 		if ('default' in value) delete value.default;
@@ -28,11 +28,11 @@ export const iconBorderWidth = (() => {
 	return response;
 })();
 
-export const iconBorderRadius = (() => {
+export const iconBorderRadiusHover = (() => {
 	let response = {};
 
 	Object.keys(borderRadius).forEach(key => {
-		const newKey = `icon-${key}`;
+		const newKey = `icon-${key}-hover`;
 		const value = { ...borderRadius[key] };
 
 		if ('default' in value) delete value.default;
@@ -42,7 +42,7 @@ export const iconBorderRadius = (() => {
 
 	response = {
 		...response,
-		'icon-border-unit-radius-general': {
+		'icon-border-unit-radius-general-hover': {
 			type: 'string',
 			default: 'px',
 		},

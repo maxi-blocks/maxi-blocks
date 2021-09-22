@@ -192,7 +192,6 @@ const BoxShadowControl = props => {
 						disableGradient
 						disableImage
 						disableVideo
-						showPalette
 						isHover={isHover}
 						deviceType={breakpoint}
 						clientId={clientId}

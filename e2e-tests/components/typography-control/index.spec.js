@@ -133,6 +133,7 @@ describe('TypographyControl', () => {
 		);
 
 		await input.focus();
+		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('80');
 		await changeResponsive(page, 's');
 

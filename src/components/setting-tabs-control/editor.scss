@@ -4,8 +4,9 @@
 	.maxi-tabs-control {
 		display: flex;
 		padding-top: 0;
+
 		&:not(.maxi-tabs-control--disable-padding) {
-			margin-bottom: 10px;
+			margin-bottom: 8px;
 		}
 		&__button {
 			position: relative;
@@ -13,31 +14,36 @@
 			flex-direction: column;
 			width: 100%;
 			height: auto;
-			font-size: 13px;
-			color: #000;
-			font-weight: 500;
+			color: #141516;
 			text-align: center;
-			border-bottom: 2px solid #e8eaeb;
+			border-bottom: 1px solid #dbdde6;
+			border-top: 1px solid #dbdde6;
+			border-right: 1px solid #dbdde6;
 			border-radius: 0;
-			padding-top: 10px;
-			padding-bottom: 10px;
+			padding: 8px;
 			background-color: #fff;
+			transform: 0.5s all;
+
+			&:last-child {
+				border-right: none;
+			}
 			&:hover {
 				cursor: pointer;
-				color: #000;
+				background-color: rgba(180, 180, 180, 0.12);
 			}
 			&:focus {
 				box-shadow: none !important;
 				outline: none !important;
+				background-color: rgba(180, 180, 180, 0.4);
 			}
-			&:hover,
-			&:active,
-			&:focus {
-				background: #f2f2f2;
+			&:active {
+				background-color: rgba(180, 180, 180, 0.12);
 			}
 			&[aria-pressed='true'] {
-				background-color: #f2f2f2;
+				background-color: #fcfcfc;
+				color: #151617;
 				border-bottom: 2px solid #ff4a17;
+				font-weight: 500;
 			}
 		}
 
@@ -64,12 +70,19 @@
 
 		.maxi-tab-content {
 			display: none;
+
 			&__box {
-				padding: 16px 10px 10px;
+				padding: 8px;
 				background-color: #fff;
-				margin-bottom: 10px;
-				border-top: 2px solid #e8eaeb;
-				border-bottom: 1px solid #e8eaeb;
+				margin-bottom: 8px;
+				border-top: 1px solid #dbdde6;
+				border-bottom: 1px solid #dbdde6;
+
+				& > *:last-child {
+					.maxi-base-control__field {
+						margin-bottom: 0 !important;
+					}
+				}
 				.components-base-control__label {
 					flex: none;
 					width: 50%;

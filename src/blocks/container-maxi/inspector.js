@@ -77,7 +77,6 @@ const Inspector = props => {
 												setAttributes({ customLabel })
 											}
 										/>
-										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
 											isFirstOnHierarchy={

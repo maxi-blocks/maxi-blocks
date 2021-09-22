@@ -125,7 +125,6 @@ const Inspector = memo(
 													})
 												}
 											/>
-											<hr />
 											<BlockStylesControl
 												blockStyle={blockStyle}
 												isFirstOnHierarchy={

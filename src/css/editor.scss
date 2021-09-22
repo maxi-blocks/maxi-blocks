@@ -21,8 +21,8 @@ h2.gx_error {
 .maxi-sidebar *:not(i),
 .maxi-popover *:not(i) {
 	font-family: "Roboto", Helvetica, Arial, Lucida, sans-serif !important;
-	font-weight: 500 !important;
-	font-size: 13px;
+	font-weight: normal;
+	font-size: 12px;
 	color: #464a53;
 }
 
@@ -32,6 +32,12 @@ h2.gx_error {
 		svg {
 			fill: #fff !important;
 		}
+	}
+}
+
+.interface-interface-skeleton {
+	&__sidebar {
+		border-left: 1px solid #dbdde6 !important;
 	}
 }
 
@@ -140,10 +146,10 @@ body {
 * Gutenberg Panel
 ****************/
 .maxi-controls {
-	background: #f2f2f2;
+	background: #f5f5f5;
 
 	> div {
-		background: #f2f2f2;
+		background: #f5f5f5;
 	}
 
 	* {
@@ -177,13 +183,14 @@ body .toolbar-item__popover {
 	select {
 		min-height: unset;
 		max-height: unset !important;
-		border-radius: 5px;
-		background-color: rgba(33, 141, 250, 0);
-		border: 2px solid #dddfe1;
-		font-size: 13px;
+		border-radius: 0;
+		background-color: #fff;
+		border: 1px solid #DBDDE6;
+		font-size: 12px;
 		color: #464a53;
-		font-weight: 500;
-		flex: 1;
+		flex: 1.3;
+		padding: 8px 16px;
+		line-height: 12px;
 	}
 	input[type="number"] {
 		padding: 0 0 0 8px;

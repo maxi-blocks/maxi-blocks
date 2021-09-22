@@ -302,7 +302,6 @@ const IconControl = props => {
 											}`]: paletteStatus,
 										});
 									}}
-									showPalette
 									disableOpacity
 									isHover={isHover}
 								/>
@@ -373,7 +372,6 @@ const IconControl = props => {
 											}`]: paletteStatus,
 										});
 									}}
-									showPalette
 									isHover={isHover}
 								/>
 							) : (

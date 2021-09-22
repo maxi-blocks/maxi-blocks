@@ -121,7 +121,7 @@ const MapControl = props => {
 				}
 			/>
 			<FancyRadioControl
-				label={__('Custom Maker Colours', 'maxi-block')}
+				label={__('Custom Marker Colours', 'maxi-block')}
 				selected={props['map-marker-custom-color-status']}
 				options={[
 					{ label: __('Yes', 'maxi-block'), value: 1 },
@@ -143,6 +143,7 @@ const MapControl = props => {
 						onChange={({ color }) =>
 							onChange({ 'map-marker-fill-color': color })
 						}
+						disablePalette
 					/>
 					<ColorControl
 						label={__('Marker Stroke', 'maxi-blocks')}
@@ -154,6 +155,7 @@ const MapControl = props => {
 						onChange={({ color }) =>
 							onChange({ 'map-marker-stroke-color': color })
 						}
+						disablePalette
 					/>
 				</>
 			)}
@@ -177,7 +179,6 @@ const MapControl = props => {
 						'map-marker-palette-text-color-status': paletteStatus,
 					})
 				}
-				showPalette
 				disableOpacity
 			/>
 			<TextControl
@@ -200,7 +201,6 @@ const MapControl = props => {
 							paletteStatus,
 					})
 				}
-				showPalette
 				disableOpacity
 			/>
 		</div>

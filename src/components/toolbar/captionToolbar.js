@@ -138,6 +138,7 @@ const CaptionToolbar = memo(
 								styleCard={styleCard}
 								clientId={clientId}
 								isCaptionToolbar
+								blockStyle={parentBlockStyle}
 							/>
 							<TextColor
 								{...getGroupAttributes(

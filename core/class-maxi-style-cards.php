@@ -455,7 +455,7 @@ class MaxiBlocks_StyleCards {
 							"palette-status": true,
 							"palette-color": 1,
 							"palette-opacity": "",
-							"color": "",
+							"color": ""
 						}
 					}
 				},
@@ -782,7 +782,7 @@ class MaxiBlocks_StyleCards {
 							"palette-status": true,
 							"palette-color": 1,
 							"palette-opacity": "",
-							"color": "",
+							"color": ""
 						}
 					}
 				}

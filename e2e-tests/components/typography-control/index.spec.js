@@ -8,6 +8,7 @@ import {
 	pressKeyTimes,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
@@ -17,7 +18,7 @@ describe('TypographyControl', () => {
 	it('Checking the typography control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi');
+		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		const accordionPanel = await openSidebar(page, 'typography');
 
 		// fontFamily
@@ -46,15 +47,16 @@ describe('TypographyControl', () => {
 			select => select.focus()
 		);
 
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('FAFA03');
+		await pressKeyWithModifier('primary', 'a');
+		await pressKeyTimes('Backspace', '1');
+		await page.waitForTimeout(500);
+		await page.keyboard.type('#FAFA03');
 		await page.keyboard.press('Enter');
-
 		await page.waitForTimeout(500);
 
 		const colorAttributes = await getBlockAttributes();
 		const color = colorAttributes['color-general'];
-		const expectedColor = 'rgba(250,250,3,1)';
+		const expectedColor = 'rgb(250,250,3)';
 
 		expect(color).toStrictEqual(expectedColor);
 
@@ -113,9 +115,9 @@ describe('TypographyControl', () => {
 
 		const shadowStyles = [
 			'none',
-			'0px 0px 5px #a2a2a2',
-			'5px 0px 3px #a2a2a2',
-			'2px 4px 0px #a2a2a2',
+			'2px 4px 3px rgba(250,250,3,0.3)',
+			'2px 4px 3px rgba(250,250,3,0.5)',
+			'4px 4px 0px rgba(250,250,3,0.21)',
 		];
 
 		for (let i = 0; i < shadowStyles.length; i += 1) {
@@ -133,8 +135,7 @@ describe('TypographyControl', () => {
 			expect(textShadow).toStrictEqual(setting);
 		}
 
-		// size, Line height and Letter spacing
-
+		// Size, Line height and Letter spacing
 		// size
 		await accordionPanel.$$eval(
 			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',

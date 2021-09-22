@@ -64,6 +64,7 @@ const Inspector = memo(
 			typeOfList,
 			listStart,
 			listReversed,
+			parentBlockStyle,
 		} = attributes;
 
 		return (
@@ -310,7 +311,7 @@ const Inspector = memo(
 																			isList
 																		}
 																		blockStyle={
-																			blockStyle
+																			parentBlockStyle
 																		}
 																		allowLink
 																	/>
@@ -387,7 +388,7 @@ const Inspector = memo(
 																				}
 																				isHover
 																				blockStyle={
-																					blockStyle
+																					parentBlockStyle
 																				}
 																			/>
 																		)}

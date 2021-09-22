@@ -114,7 +114,6 @@ const BackgroundColor = props => {
 									paletteStatus,
 							})
 						}
-						showPalette
 						globalProps={
 							blockName === 'maxi-blocks/button-maxi' && {
 								target: 'background-color-global',

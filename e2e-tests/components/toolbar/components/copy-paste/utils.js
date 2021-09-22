@@ -166,7 +166,8 @@ export const block = {
 		'font-family-general': 'Montserrat',
 		'font-size-unit-general': 'px',
 		'letter-spacing-unit-general': 'px',
-		'text-shadow-general': '5px 0px 3px #a2a2a2',
+		'text-shadow-general':
+			'2px 4px 3px rgba(var(--maxi-light-color-8),0.3)',
 		'font-size-xl': 20,
 		'custom-formats': {
 			'maxi-text-block__custom-format--0': {

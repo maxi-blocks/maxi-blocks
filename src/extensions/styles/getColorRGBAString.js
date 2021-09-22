@@ -7,10 +7,10 @@ const getColorRGBAString = ({
 	blockStyle,
 }) =>
 	secondVar
-		? `var(--maxi-${blockStyle}-${firstVar},rgba(var(--maxi-${blockStyle}-${secondVar}), ${
+		? `var(--maxi-${blockStyle}-${firstVar},rgba(var(--maxi-${blockStyle}-${secondVar}),${
 				isNumber(opacity) ? opacity / 100 : 1
 		  }))`
-		: `rgba(var(--maxi-${blockStyle}-${firstVar}), ${
+		: `rgba(var(--maxi-${blockStyle}-${firstVar}),${
 				isNumber(opacity) ? opacity / 100 : 1
 		  })`;
 

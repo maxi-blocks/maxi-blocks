@@ -36,12 +36,7 @@ export const receiveStyleCardsList = state => {
 	return false;
 };
 
-export const receiveStyleCardGlobalValue = (
-	state,
-	target,
-	blockStyle,
-	SCEntry
-) => {
+export const receiveStyleCardValue = (state, target, blockStyle, SCEntry) => {
 	if (state.styleCards) {
 		const selectedSCStyleCard =
 			state.styleCards.sc_maxi?.[blockStyle]?.styleCard;

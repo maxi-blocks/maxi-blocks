@@ -41,16 +41,20 @@ const ColorControl = props => {
 		deviceType,
 		clientId,
 		disablePalette,
+		blockStyle: rawBlockStyle,
 		disableOpacity = false,
 		disableColorDisplay = false,
 	} = props;
 
+	const blockStyle = rawBlockStyle
+		? rawBlockStyle.replace('maxi-', '')
+		: getBlockStyle(clientId);
+
 	const classes = classnames(
 		'maxi-color-control',
 		!disablePalette &&
-			`maxi-color-palette-control maxi-color-palette--${getBlockStyle(
-				clientId
-			)}`,
+			paletteStatus &&
+			`maxi-color-palette-control maxi-color-palette--${blockStyle}`,
 		className
 	);
 
@@ -80,9 +84,11 @@ const ColorControl = props => {
 			paletteStatus,
 			paletteColor,
 			paletteOpacity,
-			color: `rgba(${getPaletteColor(clientId, paletteColor)},${
-				paletteOpacity / 100 || 1
-			})`,
+			color: `rgba(${getPaletteColor(
+				clientId,
+				paletteColor,
+				blockStyle
+			)},${paletteOpacity / 100 || 1})`,
 		});
 	};
 
@@ -118,7 +124,8 @@ const ColorControl = props => {
 							...(!val && {
 								color: `rgba(${getPaletteColor(
 									clientId,
-									paletteColor
+									paletteColor,
+									blockStyle
 								)},${paletteOpacity / 100 || 1})`,
 							}),
 							// If palette is set, save the custom color opacity

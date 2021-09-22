@@ -138,22 +138,20 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			width: 13%;
-			height: 35px;
-			background-color: #eee;
-			border: 2px solid transparent;
+			width: 32px;
+			height: 32px;
+			border: 1px solid #dbdde6;
 			cursor: pointer;
 			transition: all 0.5s;
 
 			&--active,
 			&:hover {
-				border: 2px solid #bdbdbd;
+				border-color: #ff4a17;
 			}
 			&__item {
 				width: 20px;
 				height: 20px;
-				border: 1px solid #dfe2e4;
-				border-radius: 3px;
+				border: 1px solid #141516;
 			}
 		}
 	}

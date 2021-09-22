@@ -83,6 +83,12 @@ function reducer(state = { styleCards: {}, savedStyleCards: {} }, action) {
 			return {
 				...state,
 			};
+		case 'RESET_STYLE_CARDS':
+			controls.RESET_STYLE_CARDS();
+
+			return {
+				...state,
+			};
 		default:
 			return state;
 	}

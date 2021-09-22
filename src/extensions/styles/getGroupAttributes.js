@@ -21,11 +21,15 @@ const getGroupAttributes = (
 ) => {
 	if (!target) return null;
 
-	const response = {};
+	const response = {
+		...(isHover && {
+			...getGroupAttributes(attributes, target, false, prefix, cleaned),
+		}),
+	};
 
 	if (typeof target === 'string') {
 		const defaultAttributes =
-			defaults[`${target}${isHover ? 'Hover' : ''}`];
+			defaults[`${target}${isHover ? 'Hover' : ''}`] || defaults[target];
 
 		Object.keys(defaultAttributes).forEach(key => {
 			if (getIsValid(cleaned, attributes[`${prefix}${key}`]))
@@ -34,7 +38,7 @@ const getGroupAttributes = (
 	} else
 		target.forEach(el => {
 			const defaultAttributes =
-				defaults[`${el}${isHover ? 'Hover' : ''}`];
+				defaults[`${el}${isHover ? 'Hover' : ''}`] || defaults[el];
 
 			Object.keys(defaultAttributes).forEach(key => {
 				if (getIsValid(cleaned, attributes[`${prefix}${key}`]))

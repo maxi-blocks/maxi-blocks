@@ -6,7 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, getAttributeKey } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	getAttributeKey,
+	getAttributeValue,
+} from '../../extensions/styles';
 import BackgroundLayersControl from './backgroundLayersControl';
 import ColorLayer from './colorLayer';
 import FancyRadioControl from '../fancy-radio-control';
@@ -53,15 +57,20 @@ const BackgroundControl = props => {
 		prefix = '',
 		disablePalette,
 		clientId,
+		isButton = false,
 	} = props;
 
-	const backgroundActiveMedia =
-		props[getAttributeKey('background-active-media', isHover, prefix)];
+	const backgroundActiveMedia = getAttributeValue(
+		'background-active-media',
+		props,
+		isHover,
+		prefix
+	);
 	const layersOptions =
-		props[getAttributeKey('background-layers', isHover, prefix)] || [];
+		getAttributeValue('background-layers', props, isHover, prefix) || [];
 	const layersStatus =
-		props[getAttributeKey('background-layers-status', isHover, prefix)];
-
+		getAttributeValue('background-layers-status', props, isHover, prefix) ||
+		false;
 	const classes = classnames('maxi-background-control', className);
 
 	const getOptions = () => {
@@ -121,6 +130,7 @@ const BackgroundControl = props => {
 					disableColor={disableColor}
 					disableSVG={disableSVG}
 					clientId={clientId}
+					isButton={isButton}
 				/>
 			)}
 			{!layersStatus && getOptions().length > 1 && (
@@ -159,6 +169,7 @@ const BackgroundControl = props => {
 							prefix={prefix}
 							disablePalette={disablePalette}
 							clientId={clientId}
+							isButton={isButton}
 						/>
 					)}
 					{!disableImage && backgroundActiveMedia === 'image' && (

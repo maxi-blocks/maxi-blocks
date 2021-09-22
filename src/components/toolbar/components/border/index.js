@@ -19,6 +19,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 	getBlockStyle,
+	getColorRGBAString,
 } from '../../../../extensions/styles';
 
 /**
@@ -36,44 +37,55 @@ const Border = props => {
 		breakpoint,
 		disableColor = false,
 		clientId,
+		isIconToolbar = false,
+		prefix = '',
 	} = props;
 
-	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
+	if (!ALLOWED_BLOCKS.includes(blockName) && !isIconToolbar) return null;
 
 	return (
 		<ToolbarPopover
 			className='toolbar-item__border'
-			advancedOptions='border'
+			advancedOptions={isIconToolbar ? 'icon' : 'border'}
 			tooltip={__('Border', 'maxi-blocks')}
 			icon={
 				<div
 					className='toolbar-item__border__icon'
 					style={{
 						borderStyle: getLastBreakpointAttribute(
-							'border-style',
+							`${prefix}border-style`,
 							breakpoint,
 							props
 						),
 						background:
 							getLastBreakpointAttribute(
-								'border-style',
+								`${prefix}border-style`,
 								breakpoint,
 								props
 							) === 'none'
 								? 'transparent'
 								: getLastBreakpointAttribute(
-										'border-style',
+										`${prefix}border-style`,
 										breakpoint,
 										props
 								  ),
 						borderWidth: '1px',
 						borderColor: props[
-							`border-palette-color-status-${breakpoint}`
+							`${prefix}border-palette-color-status-${breakpoint}`
 						]
-							? `var(--maxi-${getBlockStyle(clientId)}-color-${
-									props[`border-palette-color-${breakpoint}`]
-							  })`
-							: props[`border-color-${breakpoint}`],
+							? getColorRGBAString({
+									firstVal: `color-${
+										props[
+											`${prefix}border-palette-color-${breakpoint}`
+										]
+									}`,
+									opacity:
+										props[
+											`${prefix}border-palette-color-${breakpoint}`
+										],
+									blockStyle: getBlockStyle(clientId),
+							  })
+							: props[`${prefix}border-color-${breakpoint}`],
 					}}
 				>
 					<Icon
@@ -85,16 +97,22 @@ const Border = props => {
 		>
 			<div className='toolbar-item__border__popover'>
 				<BorderControl
-					{...getGroupAttributes(props, [
-						'border',
-						'borderWidth',
-						'borderRadius',
-					])}
+					{...getGroupAttributes(
+						props,
+						isIconToolbar
+							? [
+									'iconBorder',
+									'iconBorderWidth',
+									'iconBorderRadius',
+							  ]
+							: ['border', 'borderWidth', 'borderRadius']
+					)}
 					onChange={value => onChange(value)}
 					breakpoint={breakpoint}
 					disableAdvanced
 					disableColor={disableColor}
 					clientId={clientId}
+					prefix={prefix}
 				/>
 			</div>
 		</ToolbarPopover>

@@ -87,25 +87,6 @@
 				min-height: 18px;
 			}
 
-			// SelectorControl
-			.maxi-select-control__input {
-				background: #fff url(../../img/arrow-down.svg) no-repeat right 7px top
-					50%;
-				background-size: 9px 9px !important;
-				border-radius: 5px !important;
-				min-height: unset;
-				max-height: unset !important;
-				color: #464a53;
-				font-weight: 500;
-				height: 31px;
-				margin: 0 !important;
-				@at-root .rtl #{&} {
-					background: #fff url(../../img/arrow-down.svg) no-repeat left 7px top
-						50%;
-					padding: 0 10px 0px 24px !important;
-				}
-			}
-
 			// RadioControl
 			.maxi-radio-control__option:not(:last-child) {
 				margin-bottom: 0 !important;
@@ -168,14 +149,6 @@
 					margin: auto;
 				}
 			}
-		}
-	}
-
-	// ButtonControl
-	.components-button {
-		&:focus {
-			box-shadow: none !important;
-			outline: none !important;
 		}
 	}
 

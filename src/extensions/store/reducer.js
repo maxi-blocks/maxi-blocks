@@ -1,7 +1,7 @@
 import controls from './controls';
 
 const breakpointResizer = (size, breakpoints, xxlSize = 2000) => {
-	const editorWrapper = document.querySelector('.editor-styles-wrapper');
+	const editorWrapper = document.querySelector('.edit-post-visual-editor');
 	const winHeight = window.outerWidth;
 	const responsiveWidth =
 		(size === 'general' && 'none') ||
@@ -35,6 +35,7 @@ const reducer = (
 		deviceType: 'general',
 		presets: '',
 		copiedStyles: {},
+		copiedBlocks: {},
 	},
 	action
 ) => {
@@ -90,6 +91,11 @@ const reducer = (
 			return {
 				...state,
 				copiedStyles: action.copiedStyles,
+			};
+		case 'COPY_BLOCKS':
+			return {
+				...state,
+				copiedBlocks: action.copiedBlocks,
 			};
 		default:
 			return state;

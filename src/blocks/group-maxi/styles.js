@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBorderStyles,
 	getSizeStyles,
@@ -93,7 +93,7 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
 			...getBackgroundStyles({
@@ -104,15 +104,28 @@ const getStyles = props => {
 					'backgroundVideo',
 					'backgroundGradient',
 					'backgroundSVG',
+					'border',
+					'borderWidth',
+					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
 			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-				]),
+				...getGroupAttributes(
+					props,
+					[
+						'background',
+						'backgroundColor',
+						'backgroundImage',
+						'backgroundVideo',
+						'backgroundGradient',
+						'backgroundSVG',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					],
+					true
+				),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
@@ -129,7 +142,25 @@ const getStyles = props => {
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-		},
+			...getArrowStyles({
+				...getGroupAttributes(
+					props,
+					[
+						'border',
+						'borderWidth',
+						'borderRadius',
+						'background',
+						'backgroundColor',
+						'backgroundGradient',
+						'boxShadow',
+					],
+					true
+				),
+				...getGroupAttributes(props, ['arrow']),
+				blockStyle: props.parentBlockStyle,
+				isHover: true,
+			}),
+		}),
 	};
 
 	return response;

@@ -19,5 +19,11 @@ const actions = {
 			clientId: clientId || getSelectedBlockClientId(),
 		};
 	},
+	updateFonts(fonts) {
+		return {
+			type: 'UPDATE_FONTS',
+			fonts,
+		};
+	},
 };
 export default actions;

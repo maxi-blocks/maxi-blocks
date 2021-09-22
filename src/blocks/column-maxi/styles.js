@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBoxShadowStyles,
 	getZIndexStyles,
@@ -98,25 +98,11 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getResizerObject = props => {
-	const response = {
-		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
-		}),
-		display: getDisplayStyles({
-			...getGroupAttributes(props, 'display'),
-		}),
-	};
-
-	return response;
-};
-
 const getStyles = props => {
 	const { uniqueID } = props;
 
-	let response = {
-		[`maxi-column-block__resizer__${uniqueID}`]: getResizerObject(props),
-		[uniqueID]: {
+	const response = {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
 			...getBackgroundStyles({
@@ -127,6 +113,9 @@ const getStyles = props => {
 					'backgroundVideo',
 					'backgroundGradient',
 					'backgroundSVG',
+					'border',
+					'borderWidth',
+					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
@@ -135,15 +124,14 @@ const getStyles = props => {
 					'backgroundHover',
 					'backgroundColorHover',
 					'backgroundGradientHover',
+					'borderHover',
+					'borderRadiusHover',
+					'borderWidthHover',
 				]),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
-		},
-	};
-
-	response = {
-		...response,
+		}),
 	};
 
 	return response;

@@ -72,37 +72,37 @@ const ArrowControl = props => {
 		},
 	};
 
+	const simpleBackgroundColorStatus =
+		!props['background-layers-status'] &&
+		props['background-active-media'] !== 'color';
+
 	return (
 		<div className={classes}>
-			{
-				<FancyRadioControl
-					label={__('Show Arrow', 'maxi-blocks')}
-					selected={props['arrow-status']}
-					options={[
-						{ label: __('Yes', 'maxi-blocks'), value: 1 },
-						{ label: __('No', 'maxi-blocks'), value: 0 },
+			{simpleBackgroundColorStatus && (
+				<InfoBox
+					message={__(
+						'Please set background colour to see the arrow.',
+						'maxi-blocks'
+					)}
+					links={[
+						{
+							title: __('Background colour', 'maxi-blocks'),
+							panel: 'background',
+						},
 					]}
-					onChange={val => onChange({ 'arrow-status': val })}
 				/>
-			}
+			)}
+			<FancyRadioControl
+				label={__('Show Arrow', 'maxi-blocks')}
+				selected={props['arrow-status']}
+				options={[
+					{ label: __('Yes', 'maxi-blocks'), value: 1 },
+					{ label: __('No', 'maxi-blocks'), value: 0 },
+				]}
+				onChange={val => onChange({ 'arrow-status': val })}
+			/>
 			{props['arrow-status'] && (
 				<>
-					<InfoBox
-						message={__(
-							'Select a background colour or border colour to see the arrow.',
-							'maxi-blocks'
-						)}
-						links={[
-							{
-								title: __('Background colour', 'maxi-blocks'),
-								panel: 'background',
-							},
-							{
-								title: __('Border colour', 'maxi-blocks'),
-								panel: 'border',
-							},
-						]}
-					/>
 					<FancyRadioControl
 						label=''
 						selected={getLastBreakpointAttribute(

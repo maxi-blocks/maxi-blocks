@@ -310,7 +310,7 @@ const SquareControl = props => {
 						/>
 						<Button
 							aria-pressed={
-								xAxis === 'center' && yAxis === 'center'
+								xAxis === 'center' && yAxis === 'middle'
 									? 'active'
 									: ''
 							}
@@ -420,8 +420,8 @@ const SquareControl = props => {
 							onChange(value, value, xUnit, yUnit);
 						}
 					}}
-					min={getMinMax().min}
-					max={getMinMax().max}
+					min={getMinMax()?.min}
+					max={getMinMax()?.max}
 					step='.5'
 				/>
 				<div className='maxi-transform-control__square-control__y-control__value'>
@@ -436,15 +436,14 @@ const SquareControl = props => {
 								: '';
 
 							type !== 'origin' &&
-								onSave(xAxis, yAxis, xUnit, yUnit);
+								onSave(xAxis, newValue, xUnit, yUnit);
 							if (!sync) {
 								changeYAxis(newValue);
 								onChange(xAxis, newValue, xUnit, yUnit);
 							} else {
 								changeYAxis(newValue);
 								changeXAxis(newValue);
-								onChange(xAxis, newValue, xUnit, yUnit);
-								onChange(newValue, yAxis, xUnit, yUnit);
+								onChange(newValue, newValue, xUnit, yUnit);
 							}
 						}}
 					/>
@@ -487,8 +486,8 @@ const SquareControl = props => {
 							onChange(value, value, xUnit, yUnit);
 						}
 					}}
-					min={getMinMax().min}
-					max={getMinMax().max}
+					min={getMinMax()?.min}
+					max={getMinMax()?.max}
 					step='.5'
 				/>
 				<div className='maxi-transform-control__square-control__x-control__value'>
@@ -503,15 +502,14 @@ const SquareControl = props => {
 								: '';
 
 							type !== 'origin' &&
-								onSave(xAxis, yAxis, xUnit, yUnit);
+								onSave(newValue, yAxis, xUnit, yUnit);
 							if (!sync) {
 								changeXAxis(newValue);
 								onChange(newValue, yAxis, xUnit, yUnit);
 							} else {
 								changeYAxis(newValue);
 								changeXAxis(newValue);
-								onChange(xAxis, newValue, xUnit, yUnit);
-								onChange(newValue, yAxis, xUnit, yUnit);
+								onChange(newValue, newValue, xUnit, yUnit);
 							}
 						}}
 					/>
@@ -537,7 +535,7 @@ const SquareControl = props => {
 			</div>
 
 			<div className='maxi-transform-control__square-control__sync'>
-				{type !== 'origin' && (
+				{type !== 'origin' && type !== 'drag' && (
 					<Tooltip
 						text={
 							sync

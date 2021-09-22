@@ -1,25 +1,28 @@
 /**
  * Internal dependencies
  */
-import getGroupAttributes from '../getGroupAttributes';
+import getAttributeValue from '../getAttributeValue';
 import getBorderStyles from './getBorderStyles';
+import getColorRGBAString from '../getColorRGBAString';
+import getGroupAttributes from '../getGroupAttributes';
 
 /**
  * External dependencies
  */
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty, isNil, round } from 'lodash';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
  * Clean BackgroundControl object for being delivered for styling
  *
  * @param {Object} background BackgroundControl related object
- *
  */
 export const getColorBackgroundObject = ({
 	isHover = false,
 	prefix = '',
 	blockStyle,
 	isButton = false,
+	isIconInherit = false,
 	...props
 }) => {
 	const response = {
@@ -37,18 +40,68 @@ export const getColorBackgroundObject = ({
 	if (!bgStatus && !isEmpty(bgColor))
 		response.general['background-color'] = bgColor;
 	else if (bgStatus && !isButton)
-		response.general[
-			'background-color'
-		] = `var(--maxi-${blockStyle}-color-${
-			props[`${prefix}background-palette-color${isHover ? '-hover' : ''}`]
-		})`;
+		response.general['background-color'] = getColorRGBAString({
+			firstVar: `color-${
+				props[
+					`${prefix}background-palette-color${
+						isHover ? '-hover' : ''
+					}`
+				]
+			}`,
+			opacity:
+				props[
+					`${prefix}background-palette-opacity${
+						isHover ? '-hover' : ''
+					}`
+				],
+			blockStyle,
+		});
 	else if (bgStatus && isButton) {
-		response.general[
-			'background-color'
-		] = `var(--maxi-${blockStyle}-button-background-color, var(--maxi-${blockStyle}-color-${
-			props[`${prefix}background-palette-color${isHover ? '-hover' : ''}`]
-		}))`;
+		response.general['background-color'] = getColorRGBAString({
+			firstVar: `color${isHover ? '-hover' : ''}`,
+			secondVar: `color-${
+				props[
+					`${prefix}background-palette-color${
+						isHover ? '-hover' : ''
+					}`
+				]
+			}`,
+			opacity:
+				props[
+					`${prefix}background-palette-opacity${
+						isHover ? '-hover' : ''
+					}`
+				],
+			blockStyle,
+		});
 	}
+
+	if (isIconInherit) {
+		response.general['background-color'] =
+			props['background-active-media'] !== '' &&
+			props[`background-palette-color-status${isHover ? '-hover' : ''}`]
+				? getColorRGBAString({
+						firstVar: `button-background-color${
+							isHover ? '-hover' : ''
+						}`,
+						secondVar: `color-${
+							props[
+								`background-palette-color${
+									isHover ? '-hover' : ''
+								}`
+							]
+						}`,
+						opacity:
+							props[
+								`background-palette-opacity${
+									isHover ? '-hover' : ''
+								}`
+							],
+						blockStyle,
+				  })
+				: props[`${prefix}background-color${isHover ? '-hover' : ''}`];
+	}
+
 	if (
 		!isEmpty(
 			props[
@@ -341,7 +394,7 @@ const getSVGWrapperBackgroundObject = SVGOptions => {
 	};
 
 	if (SVGOptions['background-svg-size'])
-		response.general.height = `${SVGOptions['background-svg-size']}${SVGOptions['background-svg-size--unit']}`;
+		response.general.width = `${SVGOptions['background-svg-size']}${SVGOptions['background-svg-size--unit']}`;
 
 	if (SVGOptions['background-svg-top'])
 		response.general.top = `${SVGOptions['background-svg-top']}${SVGOptions['background-svg-top--unit']}`;
@@ -358,11 +411,12 @@ const getSVGBackgroundObject = ({ blockStyle, ...props }) => {
 		general: {},
 	};
 
-	if (props['background-svg-size'])
-		response.general.height = `${props['background-svg-size']}${props['background-svg-size--unit']}`;
-
 	if (props['background-palette-svg-color-status'])
-		response.general.fill = `var(--maxi-${blockStyle}-color-${props['background-palette-svg-color']})`;
+		response.general.fill = getColorRGBAString({
+			firstVar: `color-${props['background-palette-svg-color']}`,
+			opacity: props['background-palette-svg-opacity'],
+			blockStyle,
+		});
 
 	return response;
 };
@@ -452,6 +506,93 @@ const setBackgroundLayers = ({
 	return response;
 };
 
+const getGeneralBackgroundStyles = (
+	props,
+	borderProps,
+	blockStyle,
+	isHover
+) => {
+	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const size = {};
+
+	breakpoints.forEach(breakpoint => {
+		const widthTop =
+			getLastBreakpointAttribute('border-top-width', breakpoint, props) ||
+			0;
+		const widthBottom =
+			getLastBreakpointAttribute(
+				'border-bottom-width',
+				breakpoint,
+				props
+			) || 0;
+		const widthLeft =
+			getLastBreakpointAttribute(
+				'border-left-width',
+				breakpoint,
+				props
+			) || 0;
+		const widthRight =
+			getLastBreakpointAttribute(
+				'border-right-width',
+				breakpoint,
+				props
+			) || 0;
+		const widthUnit =
+			getLastBreakpointAttribute(
+				'border-unit-width',
+				breakpoint,
+				props
+			) || 'px';
+		const horizontalWidth =
+			round(widthTop / 2, 2) - round(widthBottom / 2, 2);
+		const verticalWidth =
+			round(widthLeft / 2, 2) - round(widthRight / 2, 2);
+
+		if (!!verticalWidth || !!horizontalWidth || isHover)
+			size[breakpoint] = {
+				transform: `translate(calc(-50% - ${verticalWidth}${widthUnit}), calc(-50% - ${horizontalWidth}${widthUnit}))`,
+			};
+	});
+
+	const border = getBorderStyles({
+		obj: borderProps,
+		parentBlockStyle: blockStyle,
+		isHover,
+	});
+
+	breakpoints.forEach(breakpoint => {
+		if (border[breakpoint]['border-top-width'])
+			border[breakpoint]['border-top-style'] =
+				border[breakpoint]['border-style'];
+
+		if (border[breakpoint]['border-right-width'])
+			border[breakpoint]['border-right-style'] =
+				border[breakpoint]['border-style'];
+
+		if (border[breakpoint]['border-bottom-width'])
+			border[breakpoint]['border-bottom-style'] =
+				border[breakpoint]['border-style'];
+
+		if (border[breakpoint]['border-left-width'])
+			border[breakpoint]['border-left-style'] =
+				border[breakpoint]['border-style'];
+	});
+
+	delete border.general['border-style'];
+
+	// Clean size object
+	if (!isEmpty(size))
+		[...breakpoints].reverse().forEach(breakpoint => {
+			if (
+				size[breakpoints[breakpoints.indexOf(breakpoint) - 1]]
+					?.transform === size[breakpoint]?.transform
+			)
+				delete size[breakpoint];
+		});
+
+	return { border, ...(!isEmpty(size) && { size }) };
+};
+
 const getBackgroundStyles = ({
 	target = '',
 	isHover = false,
@@ -463,30 +604,45 @@ const getBackgroundStyles = ({
 		backgroundVideo: 'backgroundVideo',
 		backgroundGradient: 'backgroundGradient',
 		backgroundSVG: 'backgroundSVG',
+		border: 'border',
 		borderRadius: 'borderRadius',
+		borderWidth: 'borderWidth',
 	},
 	blockStyle,
 	...props
 }) => {
-	if (isHover && !props[`${prefix}background-status-hover`]) return {};
+	const includeBorder =
+		!isHover || (isHover && props[`${prefix}border-status-hover`]);
 
 	let response = {
-		[`${target}${isHover ? ':hover' : ''} > .maxi-background-displayer`]: {
-			border: getBorderStyles({
-				obj: {
-					...getGroupAttributes(
-						props,
-						groupAttrNames.borderRadius,
-						isHover
-					),
-				},
-				parentBlockStyle: props.parentBlockStyle,
-			}),
-		},
+		...(includeBorder && {
+			[`${target}${
+				isHover ? ':hover' : ''
+			} > .maxi-background-displayer`]: {
+				...getGeneralBackgroundStyles(
+					props,
+					{
+						...getGroupAttributes(
+							props,
+							[
+								groupAttrNames.border,
+								groupAttrNames.borderRadius,
+								groupAttrNames.borderWidth,
+							],
+							isHover
+						),
+					},
+					blockStyle,
+					isHover
+				),
+			},
+		}),
 	};
 
+	if (isHover && !props[`${prefix}background-status-hover`]) return response;
+
 	switch (
-		props[`${prefix}background-active-media${isHover ? '-hover' : ''}`]
+		getAttributeValue('background-active-media', props, isHover, prefix)
 	) {
 		case 'layers':
 			if (

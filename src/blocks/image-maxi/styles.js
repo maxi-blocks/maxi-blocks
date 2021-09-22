@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
@@ -91,20 +91,17 @@ const getHoverEffectDetailsBoxObject = props => {
 			},
 			'hover-'
 		),
-		// ...(!props['hover-background-palette-color-status'] && {
-		...{
-			background: {
-				...getHoverEffectsBackgroundStyles(
-					{
-						...getGroupAttributes(props, [
-							'hoverBackground',
-							'hoverBackgroundColor',
-							'hoverBackgroundGradient',
-						]),
-					},
-					props.parentBlockStyle
-				),
-			},
+		background: {
+			...getHoverEffectsBackgroundStyles(
+				{
+					...getGroupAttributes(props, [
+						'hoverBackground',
+						'hoverBackgroundColor',
+						'hoverBackgroundGradient',
+					]),
+				},
+				props.parentBlockStyle
+			),
 		},
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
@@ -177,6 +174,16 @@ const getImageHoverObject = props => {
 
 const getImageWrapperObject = props => {
 	const response = {
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
 		}),
@@ -197,16 +204,6 @@ const getImageWrapperObject = props => {
 
 const getImageObject = props => {
 	return {
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(props, [
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-		}),
 		...(props.clipPath && {
 			image: { general: { 'clip-path': props.clipPath } },
 		}),
@@ -241,27 +238,17 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			' .maxi-image-block-wrapper': getImageWrapperObject(props),
 			':hover .maxi-image-block-wrapper': getImageHoverObject(props),
 			' .maxi-image-block-wrapper img': getImageObject(props),
 			' figcaption': getFigcaptionObject(props),
-			' .maxi-hover-details .maxi-hover-details__content h3':
+			' .maxi-hover-details .maxi-hover-details__content h4':
 				getHoverEffectTitleTextObject(props),
 			' .maxi-hover-details .maxi-hover-details__content p':
 				getHoverEffectContentTextObject(props),
 			' .maxi-hover-details': getHoverEffectDetailsBoxObject(props),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-					'borderRadiusHover',
-				]),
-				isHover: true,
-				blockStyle: props.parentBlockStyle,
-			}),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',
@@ -272,6 +259,16 @@ const getStyles = props => {
 					'backgroundSVG',
 					'borderRadius',
 				]),
+				blockStyle: props.parentBlockStyle,
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+					'borderRadiusHover',
+				]),
+				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),
 			...getCustomFormatsStyles(
@@ -300,7 +297,7 @@ const getStyles = props => {
 				[' figcaption.maxi-image-block__caption a'],
 				props.parentBlockStyle
 			),
-		},
+		}),
 	};
 
 	return response;

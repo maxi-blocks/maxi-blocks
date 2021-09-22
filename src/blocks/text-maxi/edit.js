@@ -39,6 +39,10 @@ import { isEmpty } from 'lodash';
 class edit extends MaxiBlockComponent {
 	propsToAvoidRendering = ['formatValue'];
 
+	typingTimeoutFormatValue = 0;
+
+	typingTimeoutContent = 0;
+
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
@@ -109,23 +113,16 @@ class edit extends MaxiBlockComponent {
 				setAttributes(cleanCustomProps);
 			}
 
-			// Well, how to explain this... lol
-			// React 16.13.0 introduced a warning for when a function component is updated during another component's
-			// render phase (facebook/react#17099). In version 16.13.1 the warning was adjusted to be more
-			// specific (facebook/react#18330). The warning look like:
-			// Warning: Cannot update a component (Foo) while rendering a different component (Bar).
-			// To locate the bad setState() call inside Bar, follow the stack trace as described in https://fb.me/setstate-in-render
-			//
-			// In this case the error comes from a `forceUpdate` that '@wordpress/data' triggers when updating an store.
-			// This error is not related with Maxi, but appears on our blocks. So, a way to avoid it is to set a `setTimeOut`
-			// that delays a bit the dispatch action of the store and prevents the rendering of some components while RichText
-			// is rendering. Sad but true.
-			setTimeout(() => {
+			if (this.typingTimeoutFormatValue) {
+				clearTimeout(this.typingTimeoutFormatValue);
+			}
+
+			this.typingTimeoutFormatValue = setTimeout(() => {
 				dispatch('maxiBlocks/text').sendFormatValue(
 					formatValue,
 					clientId
 				);
-			});
+			}, 100);
 		};
 
 		/**
@@ -143,7 +140,15 @@ class edit extends MaxiBlockComponent {
 			if (isWholeLink) {
 				const newContent = content.replace('</a>', '');
 				setAttributes({ content: `${newContent}</a>` });
-			} else setAttributes({ content });
+			} else {
+				if (this.typingTimeoutContent) {
+					clearTimeout(this.typingTimeoutContent);
+				}
+
+				this.typingTimeoutContent = setTimeout(() => {
+					setAttributes({ content });
+				}, 100);
+			}
 		};
 
 		return [
@@ -170,7 +175,14 @@ class edit extends MaxiBlockComponent {
 						value={content}
 						onChange={processContent}
 						tagName={textLevel}
-						onSplit={value => onSplit(this.props.attributes, value)}
+						onSplit={(value, isExistentBlock) =>
+							onSplit(
+								this.props.attributes,
+								value,
+								isExistentBlock,
+								clientId
+							)
+						}
 						onReplace={onReplace}
 						onMerge={forward => onMerge(this.props, forward)}
 						onRemove={onRemove}
@@ -178,7 +190,6 @@ class edit extends MaxiBlockComponent {
 							'Set your Maxi Text here…',
 							'maxi-blocks'
 						)}
-						keepPlaceholderOnFocus
 						__unstableEmbedURLOnPaste
 						__unstableAllowPrefixTransformations
 					>

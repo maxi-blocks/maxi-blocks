@@ -29,6 +29,7 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * Column patterns
@@ -79,7 +80,11 @@ const ColumnPatternsInspector = props => {
 
 		columnsBlockObjects.forEach(columnObject => {
 			columnsSizes.push(
-				columnObject.attributes[`column-size-${breakpoint}`]
+				getLastBreakpointAttribute(
+					'column-size',
+					breakpoint,
+					columnObject.attributes
+				)
 			);
 		});
 

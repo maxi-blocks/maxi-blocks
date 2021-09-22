@@ -57,7 +57,7 @@ export const block = {
 		'background-svg-top--unit': '%',
 		'background-svg-top': 0,
 		'background-svg-left--unit': '%',
-		'background-svg-left': 0,
+		'background-svg-left': 50,
 		'background-svg-size': 100,
 		'background-svg-size--unit': '%',
 		'background-video-loop': false,

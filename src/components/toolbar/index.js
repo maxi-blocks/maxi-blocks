@@ -11,41 +11,45 @@ import { getScrollContainer } from '@wordpress/dom';
  */
 import classnames from 'classnames';
 import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
+
 /**
  * Utils
  */
-import Alignment from './components/alignment';
-import BackgroundColor from './components/background-color';
-import Border from './components/border';
-import BoxShadow from './components/box-shadow';
 import Breadcrumbs from '../breadcrumbs';
-import ColumnMover from './components/column-mover';
-import ColumnsHandlers from './components/columns-handlers';
-import ColumnSize from './components/column-size';
-import CopyPaste from './components/copy-paste';
-import Delete from './components/delete';
-import Divider from './components/divider-line';
-import DividerAlignment from './components/divider-alignment';
-import DividerColor from './components/divider-color';
-import Duplicate from './components/duplicate';
-import ImageSize from './components/image-size';
-import Link from './components/link';
-import Mover from './components/mover';
-import PaddingMargin from './components/padding-margin';
-import ReusableBlocks from './components/reusable-blocks';
-import RowSettings from './components/row-settings';
-import ShapeColor from './components/shape-color';
-import Size from './components/size';
-import SvgColor from './components/svg-color';
-import TextBold from './components/text-bold';
-import TextColor from './components/text-color';
-import TextItalic from './components/text-italic';
-import TextLevel from './components/text-level';
-import TextLink from './components/text-link';
-import TextListOptions from './components/text-list-options';
-import ToggleBlock from './components/toggle-block';
-import ToolbarColumnPattern from './components/column-pattern';
-import TypographyControl from './components/typography-control';
+import {
+	Alignment,
+	BackgroundColor,
+	Border,
+	BoxShadow,
+	ColumnMover,
+	ColumnsHandlers,
+	ColumnSize,
+	CopyPaste,
+	Delete,
+	Divider,
+	DividerAlignment,
+	DividerColor,
+	Duplicate,
+	ImageSize,
+	Link,
+	Mover,
+	PaddingMargin,
+	ReusableBlocks,
+	RowSettings,
+	Size,
+	SvgColor,
+	SvgWidth,
+	TextBold,
+	TextColor,
+	TextItalic,
+	TextLevel,
+	TextLink,
+	TextListOptions,
+	ToggleBlock,
+	ToolbarColumnPattern,
+	TextOptions,
+	TextGenerator,
+} from './components';
 
 /**
  * Styles
@@ -66,7 +70,6 @@ const allowedBlocks = [
 	'maxi-blocks/map-maxi',
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/row-maxi',
-	'maxi-blocks/shape-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/text-maxi',
 ];
@@ -81,7 +84,6 @@ const flexBlocks = [
 	'maxi-blocks/map-maxi',
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/row-maxi',
-	'maxi-blocks/shape-maxi',
 	'maxi-blocks/svg-icon-maxi',
 ];
 
@@ -99,6 +101,8 @@ const MaxiToolbar = memo(
 			setAttributes,
 			toggleHandlers,
 			rowPattern,
+			changeSVGSize,
+			changeSVGStrokeWidth,
 		} = props;
 		const {
 			content,
@@ -117,7 +121,7 @@ const MaxiToolbar = memo(
 			typeOfList,
 			uniqueID,
 			parentBlockStyle,
-			resizableObject,
+			svgType,
 		} = attributes;
 		const { editorVersion, breakpoint, styleCard } = useSelect(select => {
 			const { receiveMaxiSettings, receiveMaxiDeviceType } =
@@ -204,6 +208,11 @@ const MaxiToolbar = memo(
 								</span>
 							</div>
 							<Mover clientId={clientId} blockName={name} />
+							<TextGenerator
+								clientId={clientId}
+								blockName={name}
+								onChange={obj => setAttributes(obj)}
+							/>
 							<ReusableBlocks clientId={clientId} />
 							<ColumnMover clientId={clientId} blockName={name} />
 							<DividerColor
@@ -235,7 +244,7 @@ const MaxiToolbar = memo(
 									setAttributes({ lineVertical })
 								}
 							/>
-							<TypographyControl
+							<TextOptions
 								{...getGroupAttributes(
 									attributes,
 									'typography'
@@ -348,6 +357,7 @@ const MaxiToolbar = memo(
 								breakpoint={breakpoint}
 								textLevel={textLevel}
 								blockStyle={parentBlockStyle}
+								styleCard={styleCard}
 							/>
 							<TextListOptions
 								blockName={name}
@@ -365,17 +375,39 @@ const MaxiToolbar = memo(
 								onChange={obj => setAttributes(obj)}
 								clientId={clientId}
 							/>
-							{name === 'maxi-blocks/shape-maxi' && (
-								<ShapeColor
-									{...getGroupAttributes(attributes, 'shape')}
-									blockName={name}
-									onChange={obj => setAttributes(obj)}
-									clientId={clientId}
-								/>
-							)}
 							{name === 'maxi-blocks/svg-icon-maxi' && (
 								<>
-									<SvgColor
+									{svgType !== 'Line' && (
+										<SvgColor
+											{...getGroupAttributes(
+												attributes,
+												'svg'
+											)}
+											blockName={name}
+											onChange={obj => {
+												setAttributes(obj);
+											}}
+											changeSVGContent={changeSVGContent}
+											type='fill'
+											parentBlockStyle={parentBlockStyle}
+										/>
+									)}
+									{svgType !== 'Shape' && (
+										<SvgColor
+											{...getGroupAttributes(
+												attributes,
+												'svg'
+											)}
+											blockName={name}
+											onChange={obj => {
+												setAttributes(obj);
+											}}
+											changeSVGContent={changeSVGContent}
+											type='line'
+											parentBlockStyle={parentBlockStyle}
+										/>
+									)}
+									<SvgWidth
 										{...getGroupAttributes(
 											attributes,
 											'svg'
@@ -384,22 +416,12 @@ const MaxiToolbar = memo(
 										onChange={obj => {
 											setAttributes(obj);
 										}}
-										changeSVGContent={changeSVGContent}
-										type='fill'
-										parentBlockStyle={parentBlockStyle}
-									/>
-									<SvgColor
-										{...getGroupAttributes(
-											attributes,
-											'svg'
-										)}
-										blockName={name}
-										onChange={obj => {
-											setAttributes(obj);
-										}}
-										changeSVGContent={changeSVGContent}
-										type='line'
-										parentBlockStyle={parentBlockStyle}
+										breakpoint={breakpoint}
+										changeSVGSize={changeSVGSize}
+										changeSVGStrokeWidth={
+											changeSVGStrokeWidth
+										}
+										type={svgType}
 									/>
 								</>
 							)}
@@ -453,7 +475,6 @@ const MaxiToolbar = memo(
 								uniqueID={uniqueID}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
-								resizableObject={resizableObject}
 								rowPattern={rowPattern}
 								columnSize={{
 									...getGroupAttributes(
@@ -476,6 +497,7 @@ const MaxiToolbar = memo(
 								{...getGroupAttributes(attributes, [
 									'margin',
 									'padding',
+									'iconPadding',
 								])}
 								onChange={obj => setAttributes(obj)}
 								breakpoint={breakpoint}
@@ -492,7 +514,7 @@ const MaxiToolbar = memo(
 										: 'inherit'
 								}
 							/>
-							<CopyPaste clientId={clientId} />
+							<CopyPaste clientId={clientId} blockName={name} />
 						</div>
 					</Popover>
 				)}

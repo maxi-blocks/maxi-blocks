@@ -84,7 +84,8 @@ class MaxiBlockComponent extends Component {
 		const { attributes, clientId } = this.props;
 		const { uniqueID, blockStyle } = attributes;
 
-		this.currentBreakpoint = 'general';
+		this.currentBreakpoint =
+			select('maxiBlocks').receiveMaxiDeviceType() || 'general';
 		this.blockRef = createRef();
 		this.typography = getGroupAttributes(attributes, 'typography');
 
@@ -205,7 +206,8 @@ class MaxiBlockComponent extends Component {
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		if (!shouldDisplayStyles) this.displayStyles();
 
-		if (this.maxiBlockDidUpdate) this.maxiBlockDidUpdate();
+		if (this.maxiBlockDidUpdate)
+			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
 	}
 
 	componentWillUnmount() {
@@ -279,6 +281,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	loadFonts() {
+		// Ensures Roboto is fully accessible from the editor
+		loadFonts('Roboto');
+
 		Object.entries(this.typography).forEach(([key, val]) => {
 			if (key.includes('font-family')) loadFonts(val);
 		});

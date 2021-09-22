@@ -91,6 +91,9 @@ const AdvancedNumberControl = props => {
 		return options;
 	};
 
+	const minValue = minMaxSettings[isEmpty(unit) ? '-' : unit]?.min;
+	const maxValue = minMaxSettings[isEmpty(unit) ? '-' : unit]?.max;
+
 	return (
 		<BaseControl label={label} className={classes}>
 			<input
@@ -101,18 +104,8 @@ const AdvancedNumberControl = props => {
 					let { value } = e.target;
 
 					if (enableUnit) {
-						if (
-							value >
-							minMaxSettings[isEmpty(unit) ? '-' : unit].max
-						)
-							value =
-								minMaxSettings[isEmpty(unit) ? '-' : unit].max;
-						if (
-							value <
-							minMaxSettings[isEmpty(unit) ? '-' : unit].min
-						)
-							value =
-								minMaxSettings[isEmpty(unit) ? '-' : unit].min;
+						if (value !== '' && value > maxValue) value = maxValue;
+						if (value !== '' && value < minValue) value = minValue;
 					} else {
 						if (value !== '' && +value > max) value = max;
 						if (value !== '' && +value !== 0 && +value < min)
@@ -121,16 +114,8 @@ const AdvancedNumberControl = props => {
 
 					onChangeValue(value === '' ? value : +value);
 				}}
-				min={
-					enableUnit
-						? minMaxSettings[isEmpty(unit) ? '-' : unit].min
-						: min
-				}
-				max={
-					enableUnit
-						? minMaxSettings[isEmpty(unit) ? '-' : unit].max
-						: max
-				}
+				min={enableUnit ? minValue : min}
+				max={enableUnit ? maxValue : max}
 				step={stepValue}
 				placeholder={placeholder}
 			/>
@@ -142,12 +127,7 @@ const AdvancedNumberControl = props => {
 					onChange={val => {
 						onChangeUnit(val);
 
-						if (
-							value > minMaxSettings[isEmpty(val) ? '-' : val].max
-						)
-							onChangeValue(
-								minMaxSettings[isEmpty(val) ? '-' : val].max
-							);
+						if (value > maxValue) onChangeValue(maxValue);
 					}}
 				/>
 			)}
@@ -170,20 +150,12 @@ const AdvancedNumberControl = props => {
 				</Button>
 			)}
 			<RangeControl
-				value={value}
+				value={value || defaultValue || initial || 0}
 				onChange={val => {
 					onChangeValue(+val);
 				}}
-				min={
-					enableUnit
-						? minMaxSettings[isEmpty(unit) ? '-' : unit].min
-						: min
-				}
-				max={
-					enableUnit
-						? minMaxSettings[isEmpty(unit) ? '-' : unit].max
-						: max
-				}
+				min={enableUnit ? minValue : min}
+				max={enableUnit ? maxValue : max}
 				step={stepValue}
 				withInputField={false}
 				initialPosition={value || initial}

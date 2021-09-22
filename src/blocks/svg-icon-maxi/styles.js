@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getBackgroundStyles,
@@ -89,48 +89,42 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getSvgObject = (props, target) => {
-	const response = {
-		shape: getSvgStyles(
-			{
-				...getGroupAttributes(props, 'svg'),
-			},
-			target,
-			props.parentBlockStyle
-		),
-	};
-
-	return response;
-};
-
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { uniqueID, parentBlockStyle: blockStyle } = props;
 
 	const response = {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
-			' .maxi-svg-icon-block__icon svg > path[data-fill]:not([fill^="none"])':
-				getSvgObject(props, 'path-fill'),
-			' .maxi-svg-icon-block__icon svg > path[data-stroke]:not([stroke^="none"])':
-				getSvgObject(props, 'path-stroke'),
-			' .maxi-svg-icon-block__icon svg > g[data-fill]:not([fill^="none"])':
-				getSvgObject(props, 'path-fill'),
-			' .maxi-svg-icon-block__icon svg > g[data-stroke]:not([stroke^="none"])':
-				getSvgObject(props, 'path-stroke'),
+			...getSvgStyles({
+				obj: {
+					...getGroupAttributes(props, 'svg'),
+				},
+				target: ' .maxi-svg-icon-block__icon',
+				blockStyle,
+			}),
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'background',
+					'backgroundColor',
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+				blockStyle,
+			}),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
 					'backgroundHover',
 					'backgroundColorHover',
+					'borderHover',
+					'borderRadiusHover',
+					'borderWidthHover',
 				]),
 				isHover: true,
-				blockStyle: props.parentBlockStyle,
+				blockStyle,
 			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, ['background', 'backgroundColor']),
-				blockStyle: props.parentBlockStyle,
-			}),
-		},
+		}),
 	};
 
 	return response;

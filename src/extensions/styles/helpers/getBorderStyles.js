@@ -1,7 +1,13 @@
 /**
  * Internal dependencies
  */
+import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+
+/**
+ * External dependencies
+ */
+import { isUndefined, isNumber } from 'lodash';
 
 /**
  * General
@@ -18,6 +24,7 @@ const getBorderStyles = ({
 	isHover = false,
 	prefix = '',
 	parentBlockStyle,
+	isButton = false,
 }) => {
 	const keyWords = [
 		'top-left',
@@ -35,16 +42,23 @@ const getBorderStyles = ({
 	breakpoints.forEach(breakpoint => {
 		response[breakpoint] = {};
 
+		const borderStyle = getLastBreakpointAttribute(
+			`${prefix}border-style`,
+			breakpoint,
+			obj,
+			isHover
+		);
+		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
+
 		Object.entries(obj).forEach(([key, value]) => {
 			const newKey = prefix ? key.replace(prefix, '') : key;
-
 			const includesBreakpoint =
 				newKey.lastIndexOf(`-${breakpoint}${isHover ? '-hover' : ''}`) +
 					`-${breakpoint}${isHover ? '-hover' : ''}`.length ===
 				newKey.length;
 
 			if (
-				!!value &&
+				(!!value || isNumber(value)) &&
 				includesBreakpoint &&
 				!newKey.includes('sync') &&
 				!newKey.includes('unit')
@@ -56,9 +70,12 @@ const getBorderStyles = ({
 					'gm'
 				);
 				const newLabel = newKey.replace(replacer, '');
-
-				if (!keyWords.some(key => newLabel.includes(key))) {
-					if (key.includes('color')) {
+				if (key.includes('style')) {
+					if (isHover && isBorderNone) {
+						response[breakpoint].border = 'none';
+					} else response[breakpoint]['border-style'] = borderStyle;
+				} else if (!keyWords.some(key => newLabel.includes(key))) {
+					if (key.includes('color') || key.includes('opacity')) {
 						const paletteStatus = getLastBreakpointAttribute(
 							`${prefix}border-palette-color-status`,
 							breakpoint,
@@ -72,13 +89,45 @@ const getBorderStyles = ({
 								}`
 							];
 
-						if (paletteStatus && paletteColor)
-							response[breakpoint][
-								'border-color'
-							] = `var(--maxi-${parentBlockStyle}-color-${paletteColor});`;
-						else
-							response[breakpoint]['border-color'] =
-								obj[`${prefix}border-color-${breakpoint}`];
+						if (!isBorderNone) {
+							if (paletteStatus && paletteColor)
+								if (isButton)
+									response[breakpoint]['border-color'] =
+										getColorRGBAString({
+											firstVar: `${
+												isButton ? 'button-' : ''
+											}border-color${
+												isHover ? '-hover' : ''
+											}`,
+											secondVar: `color-${paletteColor}`,
+											opacity:
+												obj[
+													`${prefix}border-palette-opacity-${breakpoint}${
+														isHover ? '-hover' : ''
+													}`
+												],
+											blockStyle: parentBlockStyle,
+										});
+								else
+									response[breakpoint]['border-color'] =
+										getColorRGBAString({
+											firstVar: `color-${paletteColor}`,
+											opacity:
+												obj[
+													`${prefix}border-palette-opacity-${breakpoint}${
+														isHover ? '-hover' : ''
+													}`
+												],
+											blockStyle: parentBlockStyle,
+										});
+							else
+								response[breakpoint]['border-color'] =
+									obj[
+										`${prefix}border-color-${breakpoint}${
+											isHover ? '-hover' : ''
+										}`
+									];
+						}
 					} else response[breakpoint][newLabel] = `${value}`;
 				} else {
 					const unitKey = keyWords.filter(key =>

@@ -85,11 +85,15 @@ const Inspector = props => {
 												<NumberCounterControl
 													{...getGroupAttributes(
 														attributes,
-														['numberCounter']
+														[
+															'numberCounter',
+															'size',
+														]
 													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}
+													breakpoint={deviceType}
 												/>
 											),
 										},
@@ -130,6 +134,7 @@ const Inspector = props => {
 														}
 														breakpoint={deviceType}
 														target='margin'
+														optionType='string'
 													/>
 												</>
 											),

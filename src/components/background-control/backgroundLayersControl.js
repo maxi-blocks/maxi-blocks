@@ -11,6 +11,7 @@ import {
 	getGroupAttributes,
 	getAttributeKey,
 	getBlockStyle,
+	getColorRGBAString,
 } from '../../extensions/styles';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
@@ -38,7 +39,8 @@ import { moveRight, toolbarSizing } from '../../icons';
  * Component
  */
 const LayerCard = props => {
-	const { onChange, onOpen, isOpen, onRemove, layerId, clientId } = props;
+	const { onChange, onOpen, isOpen, onRemove, layerId, clientId, isButton } =
+		props;
 	const layer = cloneDeep(props.layer);
 	const { type } = layer;
 
@@ -48,9 +50,12 @@ const LayerCard = props => {
 	);
 
 	const regexLineToChange = new RegExp('fill=".+?(?=")');
-	const changeTo = `fill="${`var(--maxi-${getBlockStyle(clientId)}-color-${
-		layer['background-palette-svg-color']
-	})`}"`;
+	const colorStr = getColorRGBAString({
+		firstVal: `color-${layer['background-palette-svg-color']}`,
+		opacity: layer['background-palette-svg-opacity'],
+		blockStyle: getBlockStyle(clientId),
+	});
+	const changeTo = `fill="${colorStr}"`;
 
 	const newSvgElement = layer['background-palette-svg-color-status']
 		? layer['background-svg-SVGElement']?.replace(
@@ -61,14 +66,19 @@ const LayerCard = props => {
 
 	const previewStyles = type => {
 		switch (type) {
-			case 'color':
+			case 'color': {
+				const colorStr = getColorRGBAString({
+					firstVal: `color-${layer['background-palette-color']}`,
+					opacity: layer['background-palette-opacity'],
+					blockStyle: getBlockStyle(clientId),
+				});
+
 				return {
 					background: layer['background-palette-color-status']
-						? `var(--maxi-${getBlockStyle(clientId)}-color-${
-								layer['background-palette-color']
-						  })`
+						? colorStr
 						: layer['background-color'],
 				};
+			}
 			case 'gradient':
 				return {
 					background: layer['background-gradient'],
@@ -144,6 +154,7 @@ const LayerCard = props => {
 							}}
 							onChange={obj => onChange({ ...layer, ...obj })}
 							type='layer'
+							isButton={isButton}
 						/>
 					)) ||
 						(type === 'image' && (
@@ -199,6 +210,7 @@ const LayerCard = props => {
 
 const BackgroundLayersControl = ({
 	isHover = false,
+	isButton = false,
 	prefix = '',
 	onChange,
 	layersStatus,
@@ -339,6 +351,7 @@ const BackgroundLayersControl = ({
 									<LayerCard
 										key={`maxi-background-layers__${layer.id}`}
 										layerId={layer.id}
+										isButton={isButton}
 										clientId={clientId}
 										layer={layer}
 										onChange={layer => {

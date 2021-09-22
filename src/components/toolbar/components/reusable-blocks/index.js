@@ -26,9 +26,8 @@ const ReusableBlocks = props => {
 
 	const [title, setTitle] = useState('');
 
-	const {
-		__experimentalConvertBlocksToReusable: convertBlocksToReusable,
-	} = useDispatch('maxiBlocks/reusable-blocks');
+	const { __experimentalConvertBlocksToReusable: convertBlocksToReusable } =
+		useDispatch('maxiBlocks/reusable-blocks');
 
 	const onConvert = useCallback(
 		async function (reusableBlockTitle) {

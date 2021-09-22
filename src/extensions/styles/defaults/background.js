@@ -20,6 +20,9 @@ export const backgroundColor = {
 		type: 'number',
 		default: 1,
 	},
+	'background-palette-opacity': {
+		type: 'number',
+	},
 	'background-color': {
 		type: 'string',
 	},
@@ -187,7 +190,7 @@ export const backgroundSVG = {
 	},
 	'background-svg-left': {
 		type: 'number',
-		default: 0,
+		default: 50,
 	},
 	'background-svg-size': {
 		type: 'number',

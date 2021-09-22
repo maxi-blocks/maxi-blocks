@@ -5,6 +5,7 @@ import getLastBreakpointAttribute from '../../styles/getLastBreakpointAttribute'
 import getCurrentFormatClassName from './getCurrentFormatClassName';
 import getCustomFormat from './getCustomFormat';
 import { getTypographyFromSC } from '../../style-cards';
+import getActiveStyleCard from '../../style-cards/getActiveStyleCard';
 
 /**
  * External dependencies
@@ -14,13 +15,12 @@ import { isBoolean, isNumber } from 'lodash';
 /**
  * Retrieve the property from typography object requested
  *
- * @param {Object} 	[$0]					Optional named arguments.
- * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {Object} 	[$0.typography]			MaxiBlocks typography
- * @param {Object} 	[$0.prop]				Typography property requested
- * @param {boolean} [$0.breakpoint]			Device type breakpoint
- * @param {boolean} isHover 				Is the requested typography under hover state
- *
+ * @param {Object}  [$0]             Optional named arguments.
+ * @param {Object}  [$0.formatValue] RichText format value
+ * @param {Object}  [$0.typography]  MaxiBlocks typography
+ * @param {Object}  [$0.prop]        Typography property requested
+ * @param {boolean} [$0.breakpoint]  Device type breakpoint
+ * @param {boolean} isHover          Is the requested typography under hover state
  * @returns {*} Requested property
  */
 const getCustomFormatValue = ({
@@ -80,7 +80,8 @@ const getCustomFormatValue = ({
 	// Style Cards value
 	const SCStyle = blockStyle.replace('maxi-', '');
 	const SCLevel = styleCardPrefix || textLevel;
-	const currentSC = getTypographyFromSC(styleCard[SCStyle], SCLevel);
+	const activeStyleCard = styleCard || getActiveStyleCard().value;
+	const currentSC = getTypographyFromSC(activeStyleCard[SCStyle], SCLevel);
 
 	const currentSCValue = getLastBreakpointAttribute(
 		prop,
@@ -93,7 +94,7 @@ const getCustomFormatValue = ({
 
 	if (currentSCValue) return currentSCValue;
 
-	const defaultSC = getTypographyFromSC(styleCard[SCStyle], SCLevel);
+	const defaultSC = getTypographyFromSC(activeStyleCard[SCStyle], SCLevel);
 
 	const defaultSCValue = getLastBreakpointAttribute(
 		prop,

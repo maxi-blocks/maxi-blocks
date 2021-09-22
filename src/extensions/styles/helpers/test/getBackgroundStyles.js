@@ -1,5 +1,14 @@
 import getBackgroundStyles from '../getBackgroundStyles';
-import '@wordpress/block-editor';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
 
 describe('getBackgroundStyles', () => {
 	it('Get a correct background styles', () => {
@@ -9,8 +18,9 @@ describe('getBackgroundStyles', () => {
 			prefix: '',
 			'background-active-media': 'color',
 			'background-color': 'rgba(2,0,36,1)',
-			'background-palette-color': 1,
 			'background-palette-color-status': true,
+			'background-palette-color': 1,
+			'background-palette-opacity': 20,
 			'background-color-clip-path': 'rgba(2,0,36,1)',
 			'border-top-left-radius-general': 1,
 			'border-top-right-radius-general': 2,

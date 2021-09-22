@@ -1,8 +1,10 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-return-await */
 /**
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
@@ -12,7 +14,8 @@ describe('FontLevelControl', () => {
 	it('Checking the font level control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi');
+		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
+		await page.waitForTimeout(150);
 		await page.$eval('.toolbar-item__text-level', button => button.click());
 
 		await page.waitForSelector(
@@ -24,17 +27,24 @@ describe('FontLevelControl', () => {
 
 		const fontLevel = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'];
 
-		for (let i = 0; i < fontLevelControl.length; i++) {
+		for (let i = 0; i < fontLevelControl.length; i += 1) {
 			const setting = fontLevelControl[i !== 6 ? i + 1 : 0];
 
 			await setting.click();
+
+			// Ensures is clicked
+			await setting.evaluate(el => {
+				const isSelected = el.getAttribute('aria-pressed') === 'true';
+
+				if (!isSelected) el.click();
+			});
 
 			const attributes = await getBlockAttributes();
 			const text = attributes.textLevel;
 			const paletteColor = attributes['palette-color-general'];
 
 			expect(text).toStrictEqual(fontLevel[i]);
-			expect(paletteColor).toStrictEqual(5);
+			expect(paletteColor).toStrictEqual(i !== 6 ? 5 : 3);
 		}
 	});
 });

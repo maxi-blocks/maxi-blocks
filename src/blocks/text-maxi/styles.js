@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getBorderStyles,
 	getSizeStyles,
@@ -11,6 +11,7 @@ import {
 	getBackgroundStyles,
 	getMarginPaddingStyles,
 	getTypographyStyles,
+	getTransitionStyles,
 	getCustomFormatsStyles,
 	getAlignmentTextStyles,
 	getLinkStyles,
@@ -95,6 +96,16 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getLinkObject = props => {
+	const response = {
+		transitionDuration: getTransitionStyles({
+			...getGroupAttributes(props, 'transitionDuration'),
+		}),
+	};
+
+	return response;
+};
+
 const getTypographyObject = (props, isList = false) => {
 	const response = {
 		typography: getTypographyStyles({
@@ -140,8 +151,10 @@ const getStyles = props => {
 	const element = isList ? typeOfList : textLevel;
 
 	return {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
+			' .maxi-text-block--link, .maxi-text-block--link span':
+				getLinkObject(props),
 			':hover': getHoverObject(props),
 			...(!isList && {
 				[` ${element}.maxi-text-block__content`]: getTypographyObject(
@@ -165,6 +178,9 @@ const getStyles = props => {
 					'backgroundVideo',
 					'backgroundGradient',
 					'backgroundSVG',
+					'border',
+					'borderWidth',
+					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
@@ -173,6 +189,9 @@ const getStyles = props => {
 					'backgroundHover',
 					'backgroundColorHover',
 					'backgroundGradientHover',
+					'borderHover',
+					'borderRadiusHover',
+					'borderWidthHover',
 				]),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
@@ -207,7 +226,7 @@ const getStyles = props => {
 				[` ${element}.maxi-text-block__content a`],
 				props.parentBlockStyle
 			),
-		},
+		}),
 	};
 };
 

@@ -2,15 +2,23 @@
  * WordPress dependencies
  */
 import { compose } from '@wordpress/compose';
-import { RawHTML } from '@wordpress/element';
+import { createRef } from '@wordpress/element';
 import { withSelect, withDispatch, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
-import { MaxiBlockComponent, Toolbar } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	MaxiBlockComponent,
+	Toolbar,
+	BlockResizer,
+	RawHTML,
+} from '../../components';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -26,25 +34,17 @@ import { isEmpty, uniqueId } from 'lodash';
  * Content
  */
 class edit extends MaxiBlockComponent {
-	get getStylesObject() {
-		return getStyles(this.props.attributes);
+	constructor(props) {
+		super(props);
+
+		this.resizableObject = createRef();
 	}
 
-	state = {
-		isOpen: false,
-	};
+	maxiBlockDidUpdate(prevProps) {
+		const { updateBlockAttributes } = dispatch('core/block-editor');
+		const svgCode = this.props.attributes.content;
 
-	componentDidUpdate(prevProps) {
-		this.displayStyles();
-
-		if (
-			this.props.name === 'maxi-blocks/svg-icon-maxi' &&
-			prevProps.attributes.uniqueID !== this.props.attributes.uniqueID
-		) {
-			const { updateBlockAttributes } = dispatch('core/block-editor');
-
-			const svgCode = this.props.attributes.content;
-
+		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {
 			const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
 			const newSvgClass = `${svgClass}__${uniqueId()}`;
 			const replaceIt = `${svgClass}`;
@@ -55,7 +55,49 @@ class edit extends MaxiBlockComponent {
 				content: finalSvgCode,
 			});
 		}
+
+		if (this.resizableObject.current) {
+			const svgWidth = getLastBreakpointAttribute(
+				'svg-width',
+				this.props.deviceType || 'general',
+				this.props.attributes
+			);
+			const svgWidthUnit = getLastBreakpointAttribute(
+				'svg-width-unit',
+				this.props.deviceType || 'general',
+				this.props.attributes
+			);
+
+			if (this.resizableObject.current.state.width !== `${svgWidth}%`) {
+				const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
+				this.resizableObject.current.updateSize({
+					width: fullWidthValue,
+				});
+
+				let newContent = svgCode
+					.replace('height="64px"', '')
+					.replace('width="64px"', '');
+
+				if (newContent.indexOf('viewBox') === -1) {
+					const changeTo = ' viewBox="0 0 64 64"><defs>';
+					newContent = newContent.replace(/><defs>/, changeTo);
+				}
+
+				if (!isEmpty(newContent))
+					updateBlockAttributes(this.props.clientId, {
+						content: newContent,
+					});
+			}
+		}
 	}
+
+	get getStylesObject() {
+		return getStyles(this.props.attributes);
+	}
+
+	state = {
+		isOpen: false,
+	};
 
 	get getCustomData() {
 		const { uniqueID } = this.props.attributes;
@@ -77,20 +119,39 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, clientId } = this.props;
+		const { attributes, clientId, deviceType, setAttributes, isSelected } =
+			this.props;
 		const { uniqueID, parentBlockStyle, content, openFirstTime } =
 			attributes;
 
 		const isEmptyContent = isEmpty(content);
 
+		const handleOnResizeStart = event => {
+			event.preventDefault();
+			setAttributes({
+				[`svg-width-unit-${deviceType}`]: 'px',
+			});
+		};
+
+		const handleOnResizeStop = (event, direction, elt) => {
+			setAttributes({
+				[`svg-width-${deviceType}`]: elt.getBoundingClientRect().width,
+			});
+		};
+
 		return [
 			!isEmptyContent && (
-				<Inspector key={`block-settings-${uniqueID}`} {...this.props} />
+				<Inspector
+					key={`block-settings-${uniqueID}`}
+					{...this.props}
+					resizableObject={this.resizableObject}
+				/>
 			),
 			!isEmptyContent && (
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
 					ref={this.blockRef}
+					propsToAvoid={['resizableObject']}
 					{...this.props}
 				/>
 			),
@@ -108,9 +169,23 @@ class edit extends MaxiBlockComponent {
 						openFirstTime={openFirstTime}
 					/>
 					{!isEmptyContent && (
-						<RawHTML className='maxi-svg-icon-block__icon'>
-							{content}
-						</RawHTML>
+						<BlockResizer
+							className='maxi-svg-icon-block__icon'
+							resizableObject={this.resizableObject}
+							lockAspectRatio
+							maxWidth='100%'
+							showHandle={isSelected}
+							enable={{
+								topRight: true,
+								bottomRight: true,
+								bottomLeft: true,
+								topLeft: true,
+							}}
+							onResizeStart={handleOnResizeStart}
+							onResizeStop={handleOnResizeStop}
+						>
+							<RawHTML>{content}</RawHTML>
+						</BlockResizer>
 					)}
 				</>
 			</MaxiBlock>,
@@ -131,28 +206,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		attributes: { content },
 		setAttributes,
 	} = ownProps;
-
-	const changeSVGSize = width => {
-		const regexLineToChange = new RegExp('width=".+?(?=")');
-		const changeTo = `width="${width}`;
-
-		const regexLineToChange2 = new RegExp('height=".+?(?=")');
-		const changeTo2 = `height="${width}`;
-
-		let newContent = content
-			.replace(regexLineToChange, changeTo)
-			.replace(regexLineToChange2, changeTo2);
-
-		if (newContent.indexOf('viewBox') === -1) {
-			const changeTo3 = ' viewBox="0 0 64 64"><defs>';
-			newContent = newContent.replace(/><defs>/, changeTo3);
-		}
-
-		if (!isEmpty(newContent))
-			setAttributes({
-				content: newContent,
-			});
-	};
 
 	const changeSVGStrokeWidth = width => {
 		if (width) {
@@ -212,7 +265,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	return {
-		changeSVGSize,
 		changeSVGStrokeWidth,
 		changeSVGContent,
 		changeSVGContentWithBlockStyle,

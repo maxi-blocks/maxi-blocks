@@ -1,4 +1,4 @@
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getSizeStyles,
 	getContainerStyles,
@@ -132,19 +132,10 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			' .maxi-row-block__container': getContainerObject(props),
 			':hover': getHoverObject(props),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-				]),
-				isHover: true,
-				blockStyle: props.parentBlockStyle,
-			}),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',
@@ -153,10 +144,25 @@ const getStyles = props => {
 					'backgroundVideo',
 					'backgroundGradient',
 					'backgroundSVG',
+					'border',
+					'borderWidth',
+					'borderRadius',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-		},
+			...getBackgroundStyles({
+				...getGroupAttributes(props, [
+					'backgroundHover',
+					'backgroundColorHover',
+					'backgroundGradientHover',
+					'borderHover',
+					'borderRadiusHover',
+					'borderWidthHover',
+				]),
+				isHover: true,
+				blockStyle: props.parentBlockStyle,
+			}),
+		}),
 	};
 
 	return response;

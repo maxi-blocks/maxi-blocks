@@ -47,6 +47,7 @@ const BorderControl = props => {
 		isHover = false,
 		prefix = '',
 		clientId,
+		isButton = false,
 	} = props;
 
 	const classes = classnames('maxi-border-control', className);
@@ -98,7 +99,8 @@ const BorderControl = props => {
 								icon={styleNone}
 							/>
 						),
-						onChange: () => onChangeDefault(borderNone(prefix)),
+						onChange: () =>
+							onChangeDefault(borderNone(prefix, isHover)),
 					},
 					{
 						activeItem: getIsActive(prefix) === 'solid',
@@ -136,7 +138,7 @@ const BorderControl = props => {
 				<SelectControl
 					label={__('Border Type', 'maxi-blocks')}
 					className='maxi-border-control__type'
-					value={borderStyleValue}
+					value={borderStyleValue || 'none'}
 					options={[
 						{ label: 'None', value: 'none' },
 						{ label: 'Dotted', value: 'dotted' },
@@ -150,7 +152,7 @@ const BorderControl = props => {
 					]}
 					onChange={val => {
 						onChange({
-							[`${prefix || ''}border-style-${breakpoint}${
+							[`${prefix}border-style-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`]: val,
 						});
@@ -171,33 +173,43 @@ const BorderControl = props => {
 							isHover ? '-hover' : ''
 						}`
 					)}
-					paletteColor={getLastBreakpointAttribute(
-						`${prefix}border-palette-color`,
-						breakpoint,
-						props,
-						isHover
-					)}
 					paletteStatus={getLastBreakpointAttribute(
 						`${prefix}border-palette-color-status`,
 						breakpoint,
 						props,
 						isHover
 					)}
-					onChange={({ color, paletteColor, paletteStatus }) => {
+					paletteColor={getLastBreakpointAttribute(
+						`${prefix}border-palette-color`,
+						breakpoint,
+						props,
+						isHover
+					)}
+					paletteOpacity={getLastBreakpointAttribute(
+						`${prefix}border-palette-opacity`,
+						breakpoint,
+						props,
+						isHover
+					)}
+					onChange={({
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+						color,
+					}) => {
 						onChange({
-							[`${prefix || ''}border-color-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`]: color,
-							[`${
-								prefix || ''
-							}border-palette-color-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`]: paletteColor,
-							[`${
-								prefix || ''
-							}border-palette-color-status-${breakpoint}${
+							[`${prefix}border-palette-color-status-${breakpoint}${
 								isHover ? '-hover' : ''
 							}`]: paletteStatus,
+							[`${prefix}border-palette-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: paletteColor,
+							[`${prefix}border-palette-opacity-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: paletteOpacity,
+							[`${prefix}border-color-${breakpoint}${
+								isHover ? '-hover' : ''
+							}`]: color,
 						});
 					}}
 					disableImage
@@ -207,9 +219,16 @@ const BorderControl = props => {
 					isHover={isHover}
 					deviceType={breakpoint}
 					clientId={clientId}
+					globalProps={
+						isButton && {
+							target: `${
+								isHover ? 'hover-' : ''
+							}border-color-global`,
+							type: 'button',
+						}
+					}
 				/>
 			)}
-
 			{!disableAdvanced &&
 				borderStyleValue &&
 				borderStyleValue !== 'none' && (

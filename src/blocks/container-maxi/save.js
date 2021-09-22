@@ -35,7 +35,13 @@ const save = props => {
 			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>
-			<ArrowDisplayer {...getGroupAttributes(attributes, 'arrow')} />
+			<ArrowDisplayer
+				{...getGroupAttributes(
+					attributes,
+					['background', 'arrow', 'border'],
+					true
+				)}
+			/>
 			{attributes['shape-divider-top-status'] && (
 				<ShapeDivider
 					{...getGroupAttributes(attributes, 'shapeDivider')}

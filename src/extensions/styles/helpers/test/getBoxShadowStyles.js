@@ -1,5 +1,14 @@
 import getBoxShadowStyles from '../getBoxShadowStyles';
-import '@wordpress/block-editor';
+
+jest.mock('@wordpress/data', () => {
+	return {
+		select: jest.fn(() => {
+			return {
+				getSelectedBlockCount: jest.fn(() => 1),
+			};
+		}),
+	};
+});
 
 describe('getBoxShadowStyles', () => {
 	it('Get a correct box shadow styles with values in all responsive and with custom color', () => {
@@ -64,6 +73,7 @@ describe('getBoxShadowStyles', () => {
 			'box-shadow-blur-general': 3,
 			'box-shadow-spread-general': 4,
 			'box-shadow-palette-color-l': 2,
+			'box-shadow-palette-opacity-l': 20,
 		};
 
 		const result = getBoxShadowStyles({

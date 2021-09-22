@@ -3,25 +3,44 @@ import {
 	borderWidth as defaultBorderWidth,
 } from '../../extensions/styles/defaults/border';
 
-export const borderNone = (prefix = '') => {
+import {
+	iconBorder as defaultIconBorder,
+	iconBorderWidth as defaultIconBorderWidth,
+} from '../../extensions/styles/defaults/iconBorder';
+
+export const borderNone = (prefix = '', isHover) => {
 	let response = {};
+
+	const currentDefaultBorder =
+		prefix === 'icon-' ? defaultIconBorder : defaultBorder;
+
+	const currentDefaultBorderWidth =
+		prefix === 'icon-' ? defaultIconBorderWidth : defaultBorderWidth;
+
 	response = {
 		[`${prefix}border-color`]:
-			defaultBorder[`${prefix}border-color-general`].default,
-		[`${prefix}border-style`]:
-			defaultBorder[`${prefix}border-style-general`].default,
+			currentDefaultBorder[`${prefix}border-color-general`].default,
+		[`${prefix}border-style`]: isHover
+			? 'none'
+			: currentDefaultBorder[`${prefix}border-style-general`].default,
 		[`${prefix}border-top-width`]:
-			defaultBorderWidth[`${prefix}border-top-width-general`].default,
+			currentDefaultBorderWidth[`${prefix}border-top-width-general`]
+				.default,
 		[`${prefix}border-right-width`]:
-			defaultBorderWidth[`${prefix}border-right-width-general`].default,
+			currentDefaultBorderWidth[`${prefix}border-right-width-general`]
+				.default,
 		[`${prefix}border-bottom-width`]:
-			defaultBorderWidth[`${prefix}border-bottom-width-general`].default,
+			currentDefaultBorderWidth[`${prefix}border-bottom-width-general`]
+				.default,
 		[`${prefix}border-left-width`]:
-			defaultBorderWidth[`${prefix}border-left-width-general`].default,
+			currentDefaultBorderWidth[`${prefix}border-left-width-general`]
+				.default,
 		[`${prefix}border-sync-width`]:
-			defaultBorderWidth[`${prefix}border-sync-width-general`].default,
+			currentDefaultBorderWidth[`${prefix}border-sync-width-general`]
+				.default,
 		[`${prefix}border-unit-width`]:
-			defaultBorderWidth[`${prefix}border-unit-width-general`].default,
+			currentDefaultBorderWidth[`${prefix}border-unit-width-general`]
+				.default,
 	};
 	return response;
 };

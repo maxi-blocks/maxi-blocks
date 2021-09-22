@@ -73,7 +73,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
+		const {
+			attributes,
+			clientId,
+			deviceType,
+			hasInnerBlocks,
+			setAttributes,
+		} = this.props;
 		const { uniqueID, isFirstOnHierarchy, fullWidth } = attributes;
 
 		return [
@@ -98,7 +104,11 @@ class edit extends MaxiBlockComponent {
 				{isFirstOnHierarchy && fullWidth && (
 					<>
 						<ArrowDisplayer
-							{...getGroupAttributes(attributes, 'arrow')}
+							{...getGroupAttributes(
+								attributes,
+								['background', 'arrow', 'border'],
+								true
+							)}
 							breakpoint={deviceType}
 						/>
 						<Indicators
@@ -108,6 +118,8 @@ class edit extends MaxiBlockComponent {
 								'padding',
 								'margin',
 							])}
+							onChange={obj => setAttributes(obj)}
+							breakpoint={deviceType}
 						/>
 					</>
 				)}

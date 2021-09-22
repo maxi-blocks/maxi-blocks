@@ -6,11 +6,6 @@
 	outline: 1px solid #81bdda !important;
 	z-index: 2;
 
-	&[data-align='full'] {
-		width: auto;
-		max-width: 100% !important;
-	}
-
 	&__container {
 		display: flex;
 		width: 100%;

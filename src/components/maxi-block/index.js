@@ -3,11 +3,9 @@
 /**
  * WordPress dependencies
  */
-import {
-	__experimentalBlock as Block,
-	useBlockProps,
-} from '@wordpress/block-editor';
-import { forwardRef } from '@wordpress/element';
+import { useBlockProps } from '@wordpress/block-editor';
+import { forwardRef, useEffect, useState } from '@wordpress/element';
+import { select, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -25,11 +23,18 @@ import MotionPreview from '../motion-preview';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
+/**
+ * Styles
+ */
+import './editor.scss';
+
 const WRAPPER_BLOCKS = [
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/row-maxi',
 	'maxi-blocks/group-maxi',
 ];
+
+const INNER_BLOCKS = ['maxi-blocks/group-maxi', 'maxi-blocks/column-maxi'];
 
 const getBlockClassName = blockName => {
 	return `maxi-${blockName
@@ -50,31 +55,6 @@ const MainBlock = forwardRef(
 		},
 		ref
 	) => {
-		if (!useBlockProps && !isSave)
-			return (
-				<Block ref={ref} tagName={TagName} {...props}>
-					{disableBackground && (
-						<BackgroundDisplayer
-							{...background}
-							blockClassName={uniqueID}
-						/>
-					)}
-					{children}
-				</Block>
-			);
-		if (!useBlockProps)
-			return (
-				<TagName ref={ref} {...props}>
-					{disableBackground && (
-						<BackgroundDisplayer
-							{...background}
-							blockClassName={uniqueID}
-						/>
-					)}
-					{children}
-				</TagName>
-			);
-
 		if (isSave)
 			return (
 				<TagName ref={ref} {...useBlockProps.save(props)}>
@@ -104,6 +84,7 @@ const MainBlock = forwardRef(
 
 const MaxiBlock = forwardRef((props, ref) => {
 	const {
+		clientId,
 		blockName,
 		tagName = 'div',
 		children,
@@ -146,6 +127,39 @@ const MaxiBlock = forwardRef((props, ref) => {
 		}
 	}
 
+	// Not usable/necessary on save blocks
+	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
+
+	// Not usable/necessary on save blocks
+	const { isDragging, isDraggingOrigin } =
+		isSave || (!isSave && !INNER_BLOCKS.includes(blockName))
+			? { isDragging: false, isDraggingOrigin: false }
+			: useSelect(select => {
+					const {
+						isDraggingBlocks,
+						getDraggedBlockClientIds,
+						getBlockParentsByBlockName,
+					} = select('core/block-editor');
+
+					const draggedBlockClientIds = getDraggedBlockClientIds();
+					const blockParents = getBlockParentsByBlockName(
+						draggedBlockClientIds[0],
+						INNER_BLOCKS,
+						true
+					);
+					const isDraggingOrigin = blockParents.includes(clientId);
+
+					return {
+						isDragging: isDraggingBlocks(),
+						isDraggingOrigin,
+					};
+			  });
+
+	if (!isSave && !INNER_BLOCKS.includes(blockName))
+		useEffect(() => {
+			if (!isDragging && isDragOverBlock) setIsDragOverBlock(false);
+		}, [isDragging]);
+
 	const classes = classnames(
 		'maxi-block',
 		blockName && getBlockClassName(blockName),
@@ -174,51 +188,69 @@ const MaxiBlock = forwardRef((props, ref) => {
 		customClasses,
 		paletteClasses,
 		hasArrow && 'maxi-block--has-arrow',
-		hasLink && 'maxi-block--has-link'
+		hasLink && 'maxi-block--has-link',
+		isDragging && isDragOverBlock && 'maxi-block--is-drag-over'
 	);
+
 	const blockProps = {
 		tagName,
 		className: classes,
 		'data-align': fullWidth,
+		ref,
+		id: uniqueID,
+		key: `maxi-block-${uniqueID}`,
+		uniqueID,
+		background,
+		disableBackground: !disableBackground,
+		isSave,
+		...(INNER_BLOCKS.includes(blockName) && {
+			onDragLeave: ({ target }) => {
+				if (
+					isDragOverBlock &&
+					(!ref.current.isSameNode(target) ||
+						isDraggingOrigin ||
+						!ref.current.contains(target))
+				)
+					setIsDragOverBlock(false);
+			},
+			onDragOver: () => {
+				const { getBlock } = select('core/block-editor');
+				const { innerBlocks } = getBlock(clientId);
+
+				const isLastOnHierarchy = isEmpty(innerBlocks)
+					? true
+					: innerBlocks.every(
+							({ name }) =>
+								![
+									...INNER_BLOCKS,
+									'maxi-blocks/row-maxi',
+								].includes(name)
+					  );
+
+				if (
+					!isDragOverBlock &&
+					!isSave &&
+					INNER_BLOCKS.includes(blockName) &&
+					isLastOnHierarchy
+				)
+					setIsDragOverBlock(true);
+			},
+		}),
 		...extraProps,
 	};
 
 	if (!disableMotion && !isSave)
 		return (
 			<MotionPreview key={`motion-preview-${uniqueID}`} {...motion}>
-				<MainBlock
-					ref={ref}
-					id={uniqueID}
-					key={`maxi-block-${uniqueID}`}
-					uniqueID={uniqueID}
-					background={background}
-					disableBackground={!disableBackground}
-					isSave={isSave}
-					{...blockProps}
-				>
-					{children}
-				</MainBlock>
+				<MainBlock {...blockProps}>{children}</MainBlock>
 			</MotionPreview>
 		);
 
-	return (
-		<MainBlock
-			ref={ref}
-			id={uniqueID}
-			key={`maxi-block-${uniqueID}`}
-			uniqueID={uniqueID}
-			background={background}
-			disableBackground={!disableBackground}
-			isSave={isSave}
-			{...blockProps}
-		>
-			{children}
-		</MainBlock>
-	);
+	return <MainBlock {...blockProps}>{children}</MainBlock>;
 });
 
 export const getMaxiBlockBlockAttributes = props => {
-	const { name, deviceType, attributes } = props;
+	const { name, deviceType, attributes, clientId } = props;
 	const { blockStyle, extraClassName, uniqueID, fullWidth, linkSettings } =
 		attributes;
 	const displayValue = getLastBreakpointAttribute(
@@ -260,6 +292,7 @@ export const getMaxiBlockBlockAttributes = props => {
 		linkSettings && !isEmpty(linkSettings) && !isEmpty(linkSettings.url);
 
 	return {
+		clientId,
 		blockName: name,
 		blockStyle,
 		extraClassName,

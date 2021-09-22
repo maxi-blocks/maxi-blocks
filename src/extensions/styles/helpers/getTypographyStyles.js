@@ -1,6 +1,7 @@
 /**
  * Internal dependencies
  */
+import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
@@ -25,7 +26,7 @@ const getTypographyStyles = ({
 	customFormatTypography = false,
 	parentBlockStyle,
 	textLevel = 'p',
-	normalTypography, // Just in case is hover
+	normalTypography, // Just in case is hover,
 }) => {
 	if (isHover && !obj[`${prefix}typography-status-hover`]) return {};
 
@@ -89,9 +90,17 @@ const getTypographyStyles = ({
 						...(!isNil(
 							obj[getName('palette-color', breakpoint)]
 						) && {
-							color: `var(--maxi-${parentBlockStyle}-${textLevel}-color, var(--maxi-${parentBlockStyle}-color-${
-								obj[getName('palette-color', breakpoint)]
-							}))`,
+							color: getColorRGBAString({
+								firstVar: `${textLevel}-color${
+									isHover ? '-hover' : ''
+								}`,
+								secondVar: `color-${
+									obj[getName('palette-color', breakpoint)]
+								}`,
+								opacity:
+									obj[getName('palette-opacity', breakpoint)],
+								blockStyle: parentBlockStyle,
+							}),
 						}),
 				  }
 				: {

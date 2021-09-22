@@ -9,17 +9,18 @@
 	margin-right: calc(-100vw / 2 + 500px / 2);
 }
 .maxi-block {
-    position: relative;
+	position: relative;
 
-	.maxi-text-block--link span {
-		transition: color .3s ease;
+	&[data-align='full'] {
+		width: 100% !important;
+		max-width: 100% !important;
 	}
 }
 
 .maxi-link-wrapper {
-    display: block;
+	display: block;
 
-	.maxi-text-block__content{
-		transition: color .3s ease;
+	.maxi-text-block__content {
+		transition: color 0.3s ease;
 	}
 }

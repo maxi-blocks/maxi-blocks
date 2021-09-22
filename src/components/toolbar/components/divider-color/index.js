@@ -12,6 +12,7 @@ import ToolbarPopover from '../toolbar-popover';
 import {
 	getDefaultAttribute,
 	getBlockStyle,
+	getColorRGBAString,
 } from '../../../../extensions/styles';
 
 /**
@@ -37,9 +38,12 @@ const DividerColor = props => {
 					className='toolbar-item__text-options__icon'
 					style={{
 						background: props['divider-palette-border-color-status']
-							? `var(--maxi-${getBlockStyle(clientId)}-color-${
-									props['divider-palette-border-color']
-							  })`
+							? getColorRGBAString({
+									firstVal: `color-${props['divider-palette-border-color']}`,
+									opacity:
+										props['divider-palette-border-opacity'],
+									blockStyle: getBlockStyle(clientId),
+							  })
 							: props['divider-color'],
 						borderWidth: '1px',
 						borderColor: '#fff',

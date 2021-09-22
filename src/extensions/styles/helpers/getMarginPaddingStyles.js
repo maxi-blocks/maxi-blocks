@@ -25,7 +25,8 @@ const getMarginPaddingStyles = (obj, prefix = '') => {
 				newKey.length;
 
 			if (
-				!!value &&
+				value !== undefined &&
+				`${value}` !== '' &&
 				includesBreakpoint &&
 				!newKey.includes('sync') &&
 				!newKey.includes('unit')
@@ -36,7 +37,10 @@ const getMarginPaddingStyles = (obj, prefix = '') => {
 				);
 				const newLabel = newKey.replace(replacer, '');
 
-				if (!keyWords.some(key => newLabel.includes(key)))
+				if (
+					!keyWords.some(key => newLabel.includes(key)) ||
+					value === 0
+				)
 					response[breakpoint][newLabel] = `${value}`;
 				else {
 					const unitKey = keyWords.filter(key =>
@@ -49,7 +53,8 @@ const getMarginPaddingStyles = (obj, prefix = '') => {
 						obj
 					);
 
-					response[breakpoint][newLabel] = `${value}${unit}`;
+					response[breakpoint][newLabel] =
+						value === 'auto' ? 'auto' : `${value}${unit}`;
 				}
 			}
 		});

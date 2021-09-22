@@ -19,8 +19,13 @@ describe('ImageURL', () => {
 			url => url.click()
 		);
 
+		await page.$eval(
+			'.maxi-editor-url-input__button-modal .block-editor-url-input__input',
+			input => input.focus()
+		);
+
 		const linkImage =
-			'https://www.landuum.com/wp-content/uploads/2019/03/cultura_paisajeiluminado_landuum5.jpg';
+			'https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg';
 
 		await page.keyboard.type(linkImage);
 
@@ -37,6 +42,8 @@ describe('ImageURL', () => {
 	});
 
 	it('Check invalid imageUrl', async () => {
+		console.error = jest.fn();
+
 		// select img
 		await page.$eval(
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button button',

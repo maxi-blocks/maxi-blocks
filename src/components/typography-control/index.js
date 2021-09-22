@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useSelect, useDispatch } from '@wordpress/data';
+import { select, dispatch, useSelect, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -217,13 +217,20 @@ const LinkOptions = props => {
 				className='maxi-typography-control__color'
 				color={getValue(`${prefix}link-color`)}
 				defaultColor={getDefault(`${prefix}link-color`)}
-				paletteColor={getValue(`${prefix}link-palette-color`)}
 				paletteStatus={getValue(`${prefix}link-palette-color-status`)}
-				onChange={({ color, paletteColor, paletteStatus }) =>
+				paletteColor={getValue(`${prefix}link-palette-color`)}
+				paletteOpacity={getValue(`${prefix}link-palette-opacity`)}
+				onChange={({
+					paletteColor,
+					paletteStatus,
+					paletteOpacity,
+					color,
+				}) =>
 					onChangeFormat({
-						[`${prefix}link-color`]: color,
-						[`${prefix}link-palette-color`]: paletteColor,
 						[`${prefix}link-palette-color-status`]: paletteStatus,
+						[`${prefix}link-palette-color`]: paletteColor,
+						[`${prefix}link-palette-opacity`]: paletteOpacity,
+						[`${prefix}link-color`]: color,
 					})
 				}
 				showPalette
@@ -231,22 +238,30 @@ const LinkOptions = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
+				globalProps={{ target: 'link-color-global', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Hover', 'maxi-blocks')}
 				className='maxi-typography-control__color'
 				color={getValue(`${prefix}link-hover-color`)}
 				defaultColor={getDefault(`${prefix}link-hover-color`)}
-				paletteColor={getValue(`${prefix}link-hover-palette-color`)}
 				paletteStatus={getValue(
 					`${prefix}link-hover-palette-color-status`
 				)}
-				onChange={({ color, paletteColor, paletteStatus }) =>
+				paletteColor={getValue(`${prefix}link-hover-palette-color`)}
+				paletteOpacity={getValue(`${prefix}link-hover-palette-opacity`)}
+				onChange={({
+					paletteColor,
+					paletteStatus,
+					paletteOpacity,
+					color,
+				}) =>
 					onChangeFormat({
-						[`${prefix}link-hover-color`]: color,
-						[`${prefix}link-hover-palette-color`]: paletteColor,
 						[`${prefix}link-hover-palette-color-status`]:
 							paletteStatus,
+						[`${prefix}link-hover-palette-color`]: paletteColor,
+						[`${prefix}link-hover-palette-opacity`]: paletteOpacity,
+						[`${prefix}link-hover-color`]: color,
 					})
 				}
 				showPalette
@@ -254,22 +269,33 @@ const LinkOptions = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
+				globalProps={{ target: 'hover-color-global', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Active', 'maxi-blocks')}
 				className='maxi-typography-control__color'
 				color={getValue(`${prefix}link-active-color`)}
 				defaultColor={getDefault(`${prefix}link-active-color`)}
-				paletteColor={getValue(`${prefix}link-active-palette-color`)}
 				paletteStatus={getValue(
 					`${prefix}link-active-palette-color-status`
 				)}
-				onChange={({ color, paletteColor, paletteStatus }) =>
+				paletteColor={getValue(`${prefix}link-active-palette-color`)}
+				paletteOpacity={getValue(
+					`${prefix}link-active-palette-opacity`
+				)}
+				onChange={({
+					paletteColor,
+					paletteStatus,
+					paletteOpacity,
+					color,
+				}) =>
 					onChangeFormat({
-						[`${prefix}link-active-color`]: color,
-						[`${prefix}link-active-palette-color`]: paletteColor,
 						[`${prefix}link-active-palette-color-status`]:
 							paletteStatus,
+						[`${prefix}link-active-palette-color`]: paletteColor,
+						[`${prefix}link-active-palette-opacity`]:
+							paletteOpacity,
+						[`${prefix}link-active-color`]: color,
 					})
 				}
 				showPalette
@@ -277,22 +303,33 @@ const LinkOptions = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
+				globalProps={{ target: 'active-color-global', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Visited', 'maxi-blocks')}
 				className='maxi-typography-control__color'
 				color={getValue(`${prefix}link-visited-color`)}
 				defaultColor={getDefault(`${prefix}link-visited-color`)}
-				paletteColor={getValue(`${prefix}link-visited-palette-color`)}
 				paletteStatus={getValue(
 					`${prefix}link-visited-palette-color-status`
 				)}
-				onChange={({ color, paletteColor, paletteStatus }) =>
+				paletteColor={getValue(`${prefix}link-visited-palette-color`)}
+				paletteOpacity={getValue(
+					`${prefix}link-visited-palette-opacity`
+				)}
+				onChange={({
+					paletteColor,
+					paletteStatus,
+					paletteOpacity,
+					color,
+				}) =>
 					onChangeFormat({
-						[`${prefix}link-visited-color`]: color,
-						[`${prefix}link-visited-palette-color`]: paletteColor,
 						[`${prefix}link-visited-palette-color-status`]:
 							paletteStatus,
+						[`${prefix}link-visited-palette-color`]: paletteColor,
+						[`${prefix}link-visited-palette-opacity`]:
+							paletteOpacity,
+						[`${prefix}link-visited-color`]: color,
 					})
 				}
 				showPalette
@@ -300,6 +337,7 @@ const LinkOptions = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
+				globalProps={{ target: 'visited-color-global', type: 'link' }}
 			/>
 		</>
 	);
@@ -538,7 +576,19 @@ const TypographyControl = withFormatValue(props => {
 			textLevel,
 			disableCustomFormats,
 			styleCardPrefix,
+			returnFormatValue: true,
 		});
+
+		const newFormatValue = { ...obj.formatValue };
+		delete obj.formatValue;
+
+		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
+		setTimeout(() => {
+			dispatch('maxiBlocks/text').sendFormatValue(
+				newFormatValue,
+				clientId
+			);
+		}, 200); // higher than the 150 of `onChangeRichText` method
 
 		onChange(obj);
 	};
@@ -600,17 +650,24 @@ const TypographyControl = withFormatValue(props => {
 					color={getValue(`${prefix}color`)}
 					defaultColor={getDefault(`${prefix}color`)}
 					paletteColor={getValue(`${prefix}palette-color`)}
+					paletteOpacity={getValue(`${prefix}palette-opacity`)}
 					paletteStatus={getValue(`${prefix}palette-color-status`)}
-					onChange={({ color, paletteColor, paletteStatus }) =>
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) =>
 						onChangeFormat({
 							[`${prefix}color`]: color,
 							[`${prefix}palette-color`]: paletteColor,
 							[`${prefix}palette-color-status`]: paletteStatus,
+							[`${prefix}palette-opacity`]: paletteOpacity,
 						})
 					}
 					showPalette
 					globalProps={{
-						target: 'color-global',
+						target: `${isHover ? 'hover-' : ''}color-global`,
 						type:
 							select('core/block-editor').getBlockName(
 								clientId

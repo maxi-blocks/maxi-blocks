@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select, dispatch, subscribe, useSelect } from '@wordpress/data';
+import { select, dispatch, subscribe } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -245,8 +245,13 @@ wp.domReady(() => {
 			'maxiBlocks/style-cards'
 		).receiveMaxiActiveStyleCard();
 
+		const SCList = select('maxiBlocks/style-cards').receiveStyleCardsList();
+		const SCCount = Object.keys(SCList).length;
+
 		if (SC && !isEmpty(SC)) {
 			updateSCOnEditor(SC.value);
+			if (SCCount === 1 && SC.key === 'sc_maxi') console.log('save');
+			// dispatch('maxiBlocks/style-cards').saveSCStyles();
 			SCStylesSubscriber();
 		}
 	});

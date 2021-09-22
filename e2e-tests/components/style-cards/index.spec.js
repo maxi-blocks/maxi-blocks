@@ -388,7 +388,7 @@ describe('StyleCards', () => {
 		expect(expectPresets).toMatchSnapshot();
 	});
 
-	it('Check Hover', async () => {
+	/* it('Check Hover', async () => {
 		await page.waitForTimeout(500);
 		await page.$$eval(
 			'.maxi-accordion-control__item .maxi-accordion-tab div',
@@ -446,7 +446,7 @@ describe('StyleCards', () => {
 		// Use Global Fill Colour
 		// button
 		await buttons[1].click();
-		await buttons[2].click();
+			await buttons[2].click();
 
 		// ColorControl
 		await styleCard.$eval(
@@ -466,7 +466,7 @@ describe('StyleCards', () => {
 		expect(expectPresets).toMatchSnapshot();
 	});
 
-	it('Check Divider', async () => {
+it('Check Divider', async () => {
 		await page.waitForTimeout(500);
 		await page.$$eval(
 			'.maxi-accordion-control__item .maxi-accordion-tab div',
@@ -690,5 +690,5 @@ describe('StyleCards', () => {
 		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
-	});
+	}); */
 });

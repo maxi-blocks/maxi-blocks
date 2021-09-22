@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StyleCards, Buttons Check Paragraph 1`] = `
+Object {
+  "p": Object {
+    "color": "rgba(16,109,60,1)",
+    "color-global": true,
+    "font-family-general": "Roboto",
+    "font-size-unit-xl": "px",
+    "font-size-unit-xxl": "px",
+    "font-size-xl": 99,
+    "font-size-xxl": 24,
+    "font-style-general": "normal",
+    "font-style-xl": "italic",
+    "font-weight-general": 400,
+    "font-weight-xl": "300",
+    "letter-spacing-unit-xl": "px",
+    "letter-spacing-unit-xxl": "px",
+    "letter-spacing-xl": 5,
+    "letter-spacing-xxl": 0,
+    "line-height-unit-xl": "px",
+    "line-height-unit-xxl": "px",
+    "line-height-xl": 99,
+    "line-height-xxl": 34,
+    "text-decoration-general": "unset",
+    "text-decoration-xl": "overline",
+    "text-transform-general": "none",
+    "text-transform-xl": "capitalize",
+  },
+}
+`;

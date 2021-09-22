@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StyleCards, Buttons Check Button 1`] = `
+Object {
+  "button": Object {
+    "background-color": "",
+    "background-color-global": false,
+    "border-color": "",
+    "border-color-global": false,
+    "color": "rgba(16,109,60,1)",
+    "color-global": true,
+    "font-family-general": "Roboto",
+    "font-size-l": 16,
+    "font-size-unit-l": "px",
+    "font-size-unit-xl": "px",
+    "font-size-unit-xxl": "px",
+    "font-size-xl": 99,
+    "font-size-xxl": 22,
+    "font-style-general": "normal",
+    "font-style-xl": "italic",
+    "font-weight-general": 400,
+    "font-weight-xl": "300",
+    "hover-background-color": "",
+    "hover-background-color-global": false,
+    "hover-border-color": "",
+    "hover-border-color-global": false,
+    "hover-color": "",
+    "hover-color-global": false,
+    "letter-spacing-unit-xl": "px",
+    "letter-spacing-unit-xxl": "px",
+    "letter-spacing-xl": 5,
+    "letter-spacing-xxl": 0,
+    "line-height-xl": 10,
+    "line-height-xxl": 1.5,
+    "text-decoration-general": "unset",
+    "text-decoration-xl": "overline",
+    "text-transform-general": "none",
+    "text-transform-xl": "capitalize",
+  },
+}
+`;

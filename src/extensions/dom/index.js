@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select, dispatch, subscribe } from '@wordpress/data';
+import { select, dispatch, subscribe, useSelect } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -240,19 +240,16 @@ wp.domReady(() => {
 		}
 	});
 
-	const SCElement = document.querySelector('#maxi-blocks-sc-vars-inline-css');
-	if (!SCElement) {
-		const SCStylesSubscriber = subscribe(() => {
-			const SC = select(
-				'maxiBlocks/style-cards'
-			).receiveMaxiActiveStyleCard();
+	const SCStylesSubscriber = subscribe(() => {
+		const SC = select(
+			'maxiBlocks/style-cards'
+		).receiveMaxiActiveStyleCard();
 
-			if (SC && !isEmpty(SC)) {
-				updateSCOnEditor(SC.value);
-				SCStylesSubscriber();
-			}
-		});
-	}
+		if (SC && !isEmpty(SC)) {
+			updateSCOnEditor(SC.value);
+			SCStylesSubscriber();
+		}
+	});
 });
 
 const openSidebar = item => {

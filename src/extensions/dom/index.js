@@ -256,7 +256,7 @@ wp.domReady(() => {
 
 			clearInterval(SCVarsUpdate);
 		}
-	}, 500);
+	}, 300);
 });
 
 const openSidebar = item => {

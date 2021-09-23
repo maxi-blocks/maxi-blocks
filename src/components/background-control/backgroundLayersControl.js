@@ -15,7 +15,6 @@ import {
 } from '../../extensions/styles';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
-import FancyRadioControl from '../fancy-radio-control';
 import GradientLayer from './gradientLayer';
 import Icon from '../icon';
 import ImageLayer from './imageLayer';
@@ -318,29 +317,6 @@ const BackgroundLayersControl = ({
 					})
 				}
 			/>
-			<FancyRadioControl
-				label={__('Use layers', 'maxi-blocks')}
-				selected={layersStatus}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-layers-status',
-							isHover,
-							prefix
-						)]: !!+val,
-						[getAttributeKey(
-							'background-active-media',
-							isHover,
-							prefix
-						)]: +val ? 'layers' : '',
-					})
-				}
-			/>
-
 			{layersStatus && (
 				<div>
 					{!isEmpty(layers) && (

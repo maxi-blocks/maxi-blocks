@@ -21,19 +21,19 @@ import {
 	CustomLabel,
 	DisplayControl,
 	EntranceAnimationControl,
-	FancyRadioControl,
 	FullSizeControl,
 	HoverEffectControl,
 	ImageCropControl,
+	InfoBox,
 	MotionControl,
 	OpacityControl,
 	PositionControl,
 	ResponsiveControl,
 	SelectControl,
 	SettingTabsControl,
+	ToggleSwitch,
 	TransformControl,
 	TypographyControl,
-	InfoBox,
 	ZIndexControl,
 } from '../../components';
 import {
@@ -569,7 +569,7 @@ const Inspector = memo(
 																),
 																content: (
 																	<>
-																		<FancyRadioControl
+																		<ToggleSwitch
 																			label={__(
 																				'Enable Background Hover',
 																				'maxi-blocks'
@@ -580,26 +580,12 @@ const Inspector = memo(
 																				]
 																			}
 																			className='maxi-background-status-hover'
-																			options={[
-																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
-																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
-																			onChange={val =>
+																			onChange={() =>
 																				setAttributes(
 																					{
-																						...(val &&
+																						...(attributes[
+																							'background-status-hover'
+																						] &&
 																							setHoverAttributes(
 																								{
 																									...getGroupAttributes(
@@ -624,7 +610,9 @@ const Inspector = memo(
 																								}
 																							)),
 																						'background-status-hover':
-																							val,
+																							!attributes[
+																								'background-status-hover'
+																							],
 																					}
 																				)
 																			}
@@ -707,7 +695,7 @@ const Inspector = memo(
 																),
 																content: (
 																	<>
-																		<FancyRadioControl
+																		<ToggleSwitch
 																			label={__(
 																				'Enable Border Hover',
 																				'maxi-blocks'
@@ -718,26 +706,12 @@ const Inspector = memo(
 																				]
 																			}
 																			className='maxi-border-status-hover'
-																			options={[
-																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
-																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
-																			onChange={val =>
+																			onChange={() =>
 																				setAttributes(
 																					{
-																						...(val &&
+																						...(attributes[
+																							'border-status-hover'
+																						] &&
 																							setHoverAttributes(
 																								{
 																									...getGroupAttributes(
@@ -762,7 +736,9 @@ const Inspector = memo(
 																								}
 																							)),
 																						'border-status-hover':
-																							val,
+																							!attributes[
+																								'border-status-hover'
+																							],
 																					}
 																				)
 																			}
@@ -809,35 +785,23 @@ const Inspector = memo(
 												content: (
 													<>
 														{isFirstOnHierarchy && (
-															<FancyRadioControl
+															<ToggleSwitch
 																label={__(
 																	'Full Width',
 																	'maxi-blocks'
 																)}
 																selected={
-																	fullWidth
+																	fullWidth ===
+																	'normal'
 																}
-																options={[
-																	{
-																		label: __(
-																			'Yes',
-																			'maxi-blocks'
-																		),
-																		value: 'full',
-																	},
-																	{
-																		label: __(
-																			'No',
-																			'maxi-blocks'
-																		),
-																		value: 'normal',
-																	},
-																]}
-																optionType='string'
-																onChange={fullWidth =>
+																onChange={() =>
 																	setAttributes(
 																		{
-																			fullWidth,
+																			fullWidth:
+																				fullWidth ===
+																				'normal'
+																					? 'full'
+																					: 'normal',
 																		}
 																	)
 																}
@@ -902,7 +866,7 @@ const Inspector = memo(
 																),
 																content: (
 																	<>
-																		<FancyRadioControl
+																		<ToggleSwitch
 																			label={__(
 																				'Enable Box Shadow Hover',
 																				'maxi-blocks'
@@ -913,26 +877,12 @@ const Inspector = memo(
 																				]
 																			}
 																			className='maxi-box-shadow-status-hover'
-																			options={[
-																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
-																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
-																			onChange={val =>
+																			onChange={() =>
 																				setAttributes(
 																					{
-																						...(val &&
+																						...(attributes[
+																							'box-shadow-status-hover'
+																						] &&
 																							setHoverAttributes(
 																								{
 																									...getGroupAttributes(
@@ -949,7 +899,9 @@ const Inspector = memo(
 																								}
 																							)),
 																						'box-shadow-status-hover':
-																							val,
+																							!attributes[
+																								'box-shadow-status-hover'
+																							],
 																					}
 																				)
 																			}

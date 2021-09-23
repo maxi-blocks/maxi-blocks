@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import Icon from '../icon';
 import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
@@ -158,18 +158,14 @@ const DividerControl = props => {
 			{props['divider-border-style'] !== 'none' &&
 				!disableBorderRadius &&
 				props['divider-border-style'] === 'solid' && (
-					<FancyRadioControl
+					<ToggleSwitch
 						label={__('Line Radius', 'maxi-blocks')}
 						selected={props['divider-border-radius']}
-						options={[
-							{
-								label: __('Yes', 'maxi-blocks'),
-								value: 1,
-							},
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
-						onChange={val =>
-							onChange({ 'divider-border-radius': val })
+						onChange={() =>
+							onChange({
+								'divider-border-radius':
+									!props['divider-border-radius'],
+							})
 						}
 					/>
 				)}

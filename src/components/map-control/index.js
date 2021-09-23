@@ -10,7 +10,7 @@ import { TextControl } from '@wordpress/components';
 import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
 import OpacityControl from '../opacity-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import { getDefaultAttribute } from '../../extensions/styles';
 
 /**
@@ -120,15 +120,14 @@ const MapControl = props => {
 					})
 				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Custom Maker Colours', 'maxi-block')}
 				selected={props['map-marker-custom-color-status']}
-				options={[
-					{ label: __('Yes', 'maxi-block'), value: 1 },
-					{ label: __('No', 'maxi-block'), value: 0 },
-				]}
-				onChange={val =>
-					onChange({ 'map-marker-custom-color-status': val })
+				onChange={() =>
+					onChange({
+						'map-marker-custom-color-status':
+							!props['map-marker-custom-color-status'],
+					})
 				}
 			/>
 			{props['map-marker-custom-color-status'] && (

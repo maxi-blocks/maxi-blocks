@@ -10,6 +10,7 @@ import { useState } from '@wordpress/element';
 import RadioControl from '../radio-control';
 import OpacityControl from '../opacity-control';
 import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import ColorControl from '../color-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import Dropdown from '../dropdown';
@@ -219,20 +220,19 @@ const ShapeDividerControl = props => {
 			/>
 			{shapeDividerStatus === 'top' && (
 				<>
-					<FancyRadioControl
+					<ToggleSwitch
 						label={__('Enable Top Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-top-status']}
-						options={[
-							{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
-						onChange={val =>
-							onChange({ 'shape-divider-top-status': val })
+						onChange={() =>
+							onChange({
+								'shape-divider-top-status':
+									!props['shape-divider-top-status'],
+							})
 						}
 					/>
 					{!!props['shape-divider-top-status'] && (
 						<>
-							<FancyRadioControl
+							<ToggleSwitch
 								label={__(
 									'Enable Scroll Effect',
 									'maxi-blocks'
@@ -240,19 +240,12 @@ const ShapeDividerControl = props => {
 								selected={
 									props['shape-divider-top-effects-status']
 								}
-								options={[
-									{
-										label: __('Yes', 'maxi-blocks'),
-										value: 1,
-									},
-									{
-										label: __('No', 'maxi-blocks'),
-										value: 0,
-									},
-								]}
-								onChange={val =>
+								onChange={() =>
 									onChange({
-										'shape-divider-top-effects-status': val,
+										'shape-divider-top-effects-status':
+											!props[
+												'shape-divider-top-effects-status'
+											],
 									})
 								}
 							/>
@@ -359,20 +352,19 @@ const ShapeDividerControl = props => {
 			)}
 			{shapeDividerStatus === 'bottom' && (
 				<>
-					<FancyRadioControl
+					<ToggleSwitch
 						label={__('Enable Bottom Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-bottom-status']}
-						options={[
-							{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
-						onChange={val =>
-							onChange({ 'shape-divider-bottom-status': val })
+						onChange={() =>
+							onChange({
+								'shape-divider-bottom-status':
+									!props['shape-divider-bottom-status'],
+							})
 						}
 					/>
 					{!!props['shape-divider-bottom-status'] && (
 						<>
-							<FancyRadioControl
+							<ToggleSwitch
 								label={__(
 									'Enable Scroll Effect',
 									'maxi-blocks'
@@ -380,20 +372,12 @@ const ShapeDividerControl = props => {
 								selected={
 									props['shape-divider-bottom-effects-status']
 								}
-								options={[
-									{
-										label: __('Yes', 'maxi-blocks'),
-										value: 1,
-									},
-									{
-										label: __('No', 'maxi-blocks'),
-										value: 0,
-									},
-								]}
-								onChange={val =>
+								onChange={() =>
 									onChange({
 										'shape-divider-bottom-effects-status':
-											val,
+											!props[
+												'shape-divider-bottom-effects-status'
+											],
 									})
 								}
 							/>

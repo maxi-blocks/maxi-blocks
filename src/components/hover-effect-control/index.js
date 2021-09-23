@@ -6,15 +6,16 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import AxisControl from '../axis-control';
 import BackgroundControl from '../background-control';
 import BorderControl from '../border-control';
 import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
-import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
-import TypographyControl from '../typography-control';
 import TextareaControl from '../textarea-control';
+import ToggleSwitch from '../toggle-switch';
+import TypographyControl from '../typography-control';
 
 /**
  * External dependencies
@@ -72,23 +73,19 @@ const HoverEffectControl = props => {
 					});
 				}}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Preview', 'maxi-blocks')}
 				selected={props['hover-preview']}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
-				onChange={val => onChange({ 'hover-preview': val })}
+				onChange={() =>
+					onChange({ 'hover-preview': !props['hover-preview'] })
+				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Allow extension', 'maxi-blocks')}
 				selected={props['hover-extension']}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
-				onChange={val => onChange({ 'hover-extension': val })}
+				onChange={() =>
+					onChange({ 'hover-extension': !props['hover-extension'] })
+				}
 			/>
 			{props['hover-type'] !== 'none' &&
 				(props['hover-type'] === 'text' ||
@@ -372,15 +369,14 @@ const HoverEffectControl = props => {
 							})
 						}
 					/>
-					<FancyRadioControl
+					<ToggleSwitch
 						label={__('Custom Hover Text', 'maxi-block')}
 						selected={props['hover-title-typography-status']}
-						options={[
-							{ label: __('Yes', 'maxi-block'), value: 1 },
-							{ label: __('No', 'maxi-block'), value: 0 },
-						]}
-						onChange={val =>
-							onChange({ 'hover-title-typography-status': val })
+						onChange={() =>
+							onChange({
+								'hover-title-typography-status':
+									!props['hover-title-typography-status'],
+							})
 						}
 					/>
 					{props['hover-title-typography-status'] && (
@@ -416,15 +412,14 @@ const HoverEffectControl = props => {
 							})
 						}
 					/>
-					<FancyRadioControl
+					<ToggleSwitch
 						label={__('Custom Content Text', 'maxi-block')}
 						selected={props['hover-content-typography-status']}
-						options={[
-							{ label: __('Yes', 'maxi-block'), value: 1 },
-							{ label: __('No', 'maxi-block'), value: 0 },
-						]}
-						onChange={val =>
-							onChange({ 'hover-content-typography-status': val })
+						onChange={() =>
+							onChange({
+								'hover-content-typography-status':
+									!props['hover-content-typography-status'],
+							})
 						}
 					/>
 					{props['hover-content-typography-status'] && (
@@ -459,15 +454,14 @@ const HoverEffectControl = props => {
 						prefix='hover-'
 						clientId={clientId}
 					/>
-					<FancyRadioControl
+					<ToggleSwitch
 						label={__('Custom Border', 'maxi-block')}
 						selected={props['hover-border-status']}
-						options={[
-							{ label: __('Yes', 'maxi-block'), value: 1 },
-							{ label: __('No', 'maxi-block'), value: 0 },
-						]}
-						onChange={val =>
-							onChange({ 'hover-border-status': val })
+						onChange={() =>
+							onChange({
+								'hover-border-status':
+									!props['hover-border-status'],
+							})
 						}
 					/>
 					{props['hover-border-status'] && (
@@ -483,15 +477,14 @@ const HoverEffectControl = props => {
 							clientId={clientId}
 						/>
 					)}
-					<FancyRadioControl
+					<ToggleSwitch
 						label={__('Custom Padding', 'maxi-block')}
 						selected={props['hover-padding-status']}
-						options={[
-							{ label: __('Yes', 'maxi-block'), value: 1 },
-							{ label: __('No', 'maxi-block'), value: 0 },
-						]}
-						onChange={val =>
-							onChange({ 'hover-padding-status': val })
+						onChange={() =>
+							onChange({
+								'hover-padding-status':
+									!props['hover-padding-status'],
+							})
 						}
 					/>
 					{props['hover-padding-status'] && (
@@ -503,15 +496,14 @@ const HoverEffectControl = props => {
 							disableAuto
 						/>
 					)}
-					<FancyRadioControl
+					<ToggleSwitch
 						label={__('Custom Margin', 'maxi-block')}
 						selected={props['hover-margin-status']}
-						options={[
-							{ label: __('Yes', 'maxi-block'), value: 1 },
-							{ label: __('No', 'maxi-block'), value: 0 },
-						]}
-						onChange={val =>
-							onChange({ 'hover-margin-status': val })
+						onChange={() =>
+							onChange({
+								'hover-margin-status':
+									!props['hover-margin-status'],
+							})
 						}
 					/>
 					{props['hover-margin-status'] && (

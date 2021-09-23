@@ -11,7 +11,7 @@ import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import TextControl from '../text-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import { getAttributeKey } from '../../extensions/styles';
 
 /**
@@ -138,7 +138,7 @@ const VideoLayer = props => {
 					})
 				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Loop', 'maxi-blocks')}
 				selected={
 					videoOptions[
@@ -149,16 +149,6 @@ const VideoLayer = props => {
 						)
 					]
 				}
-				options={[
-					{
-						label: __('Yes', 'maxi-blocks'),
-						value: 1,
-					},
-					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-				]}
 				disabled={
 					!!+videoOptions[
 						getAttributeKey(
@@ -168,17 +158,24 @@ const VideoLayer = props => {
 						)
 					]
 				}
-				onChange={val =>
+				onChange={() =>
 					onChange({
 						[getAttributeKey(
 							'background-video-loop',
 							isHover,
 							prefix
-						)]: val,
+						)]:
+							!videoOptions[
+								getAttributeKey(
+									'background-video-loop',
+									isHover,
+									prefix
+								)
+							],
 					})
 				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Play on Mobile', 'maxi-blocks')}
 				selected={
 					videoOptions[
@@ -189,23 +186,20 @@ const VideoLayer = props => {
 						)
 					]
 				}
-				options={[
-					{
-						label: __('Yes', 'maxi-blocks'),
-						value: 1,
-					},
-					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-				]}
-				onChange={val =>
+				onChange={() =>
 					onChange({
 						[getAttributeKey(
 							'background-video-playOnMobile',
 							isHover,
 							prefix
-						)]: val,
+						)]:
+							!videoOptions[
+								getAttributeKey(
+									'background-video-playOnMobile',
+									isHover,
+									prefix
+								)
+							],
 					})
 				}
 			/>

@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import { getBlockStyle } from '../../extensions/styles';
 
 /**
@@ -104,15 +104,11 @@ const ColorPaletteControl = props => {
 					}
 				/>
 			)}
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Custom Colour', 'maxi-blocks')}
 				className='maxi-sc-color-palette__custom'
 				selected={status}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 0 },
-					{ label: __('No', 'maxi-blocks'), value: 1 },
-				]}
-				onChange={val => onChange({ paletteStatus: val })}
+				onChange={() => onChange({ paletteStatus: !status })}
 			/>
 		</div>
 	);

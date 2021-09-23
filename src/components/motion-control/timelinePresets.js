@@ -10,7 +10,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
  */
 import Button from '../button';
 import SelectControl from '../select-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies
@@ -62,20 +62,14 @@ const TimelinePresets = props => {
 
 	return (
 		<div className='maxi-motion-control__preset'>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Preset', 'maxi-blocks')}
 				selected={props['motion-preset-status']}
-				options={[
-					{
-						label: __('Yes', 'maxi-blocks'),
-						value: 1,
-					},
-					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-				]}
-				onChange={val => onChange({ 'motion-preset-status': val })}
+				onChange={() =>
+					onChange({
+						'motion-preset-status': !props['motion-preset-status'],
+					})
+				}
 			/>
 			{props['motion-preset-status'] && getPresetsOptions().length > 1 && (
 				<div className='maxi-motion-control__preset__load'>

@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import InfoBox from '../info-box';
 import {
 	getLastBreakpointAttribute,
@@ -92,14 +93,12 @@ const ArrowControl = props => {
 					]}
 				/>
 			)}
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Show Arrow', 'maxi-blocks')}
 				selected={props['arrow-status']}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
-				onChange={val => onChange({ 'arrow-status': val })}
+				onChange={() =>
+					onChange({ 'arrow-status': !props['arrow-status'] })
+				}
 			/>
 			{props['arrow-status'] && (
 				<>

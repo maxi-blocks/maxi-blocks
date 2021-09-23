@@ -9,6 +9,7 @@ import { useState } from '@wordpress/element';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import ColorControl from '../color-control';
 import AxisControl from '../axis-control';
 import GradientControl from '../gradient-control';
@@ -88,22 +89,12 @@ const IconControl = props => {
 				<MaxiModal type='button-icon' style={parentBlockStyle} />
 			)}
 			{isHover && (
-				<FancyRadioControl
+				<ToggleSwitch
 					label={__('Enable Icon Hover', 'maxi-blocks')}
 					selected={props['icon-status-hover']}
-					options={[
-						{
-							label: __('Yes', 'maxi-blocks'),
-							value: 1,
-						},
-						{
-							label: __('No', 'maxi-blocks'),
-							value: 0,
-						},
-					]}
-					onChange={val =>
+					onChange={() =>
 						onChange({
-							'icon-status-hover': val,
+							'icon-status-hover': !props['icon-status-hover'],
 						})
 					}
 				/>
@@ -114,26 +105,16 @@ const IconControl = props => {
 					{!isHover && deviceType === 'general' && (
 						<>
 							<hr />
-							<FancyRadioControl
+							<ToggleSwitch
 								label={__(
 									'Icon only (remove text)',
 									'maxi-blocks'
 								)}
 								className='maxi-sc-color-palette__custom'
 								selected={props['icon-only']}
-								options={[
-									{
-										label: __('Yes', 'maxi-blocks'),
-										value: 1,
-									},
-									{
-										label: __('No', 'maxi-blocks'),
-										value: 0,
-									},
-								]}
-								onChange={val =>
+								onChange={() =>
 									onChange({
-										'icon-only': val,
+										'icon-only': !props['icon-only'],
 									})
 								}
 							/>
@@ -220,26 +201,16 @@ const IconControl = props => {
 											})
 										}
 									/>
-									<FancyRadioControl
+									<ToggleSwitch
 										label={__(
 											'Inherit Colour/Background from Button',
 											'maxi-block'
 										)}
-										fullWidthMode
 										selected={props['icon-inherit']}
-										options={[
-											{
-												label: __('Yes', 'maxi-block'),
-												value: 1,
-											},
-											{
-												label: __('No', 'maxi-block'),
-												value: 0,
-											},
-										]}
-										onChange={val =>
+										onChange={() =>
 											onChange({
-												'icon-inherit': val,
+												'icon-inherit':
+													!props['icon-inherit'],
 											})
 										}
 									/>

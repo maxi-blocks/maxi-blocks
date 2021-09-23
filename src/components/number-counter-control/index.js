@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import FontFamilySelector from '../font-family-selector';
 import SelectControl from '../select-control';
 
@@ -85,14 +85,15 @@ const NumberCounterControl = props => {
 				minMaxSettings={minMaxSettings}
 				allowedUnits={['px', 'em', 'vw', '%']}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Preview', 'maxi-block')}
 				selected={props['number-counter-preview']}
-				options={[
-					{ label: __('Yes', 'maxi-block'), value: 1 },
-					{ label: __('No', 'maxi-block'), value: 0 },
-				]}
-				onChange={val => onChange({ 'number-counter-preview': val })}
+				onChange={() =>
+					onChange({
+						'number-counter-preview':
+							!props['number-counter-preview'],
+					})
+				}
 			/>
 			<SelectControl
 				label={__('Start Animation', 'maxi-blocks')}
@@ -216,41 +217,41 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Show Percentage Sign', 'maxi-block')}
 				selected={props['number-counter-percentage-sign-status']}
-				options={[
-					{ label: __('Yes', 'maxi-block'), value: 1 },
-					{ label: __('No', 'maxi-block'), value: 0 },
-				]}
-				onChange={val =>
-					onChange({ 'number-counter-percentage-sign-status': val })
+				onChange={() =>
+					onChange({
+						'number-counter-percentage-sign-status':
+							!props['number-counter-percentage-sign-status'],
+					})
 				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Hide Circle', 'maxi-block')}
 				selected={props['number-counter-circle-status']}
-				options={[
-					{ label: __('Yes', 'maxi-block'), value: 1 },
-					{ label: __('No', 'maxi-block'), value: 0 },
-				]}
-				onChange={val => {
-					onChange({ 'number-counter-circle-status': val });
+				onChange={() => {
+					onChange({
+						'number-counter-circle-status':
+							!props['number-counter-circle-status'],
+					});
 
-					if (!val && props['number-counter-end'] > 100)
+					if (
+						!props['number-counter-circle-status'] &&
+						props['number-counter-end'] > 100
+					)
 						onChange({ 'number-counter-end': 100 });
 				}}
 			/>
 			{!props['number-counter-circle-status'] && (
-				<FancyRadioControl
+				<ToggleSwitch
 					label={__('Rounded Bar', 'maxi-block')}
 					selected={props['number-counter-rounded-status']}
-					options={[
-						{ label: __('Yes', 'maxi-block'), value: 1 },
-						{ label: __('No', 'maxi-block'), value: 0 },
-					]}
-					onChange={val =>
-						onChange({ 'number-counter-rounded-status': val })
+					onChange={() =>
+						onChange({
+							'number-counter-rounded-status':
+								!props['number-counter-rounded-status'],
+						})
 					}
 				/>
 			)}

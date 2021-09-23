@@ -72,6 +72,7 @@
 			}
 			&[aria-expanded='true'] {
 				background: #fff;
+				border-bottom: 1px solid #dbdde6;
 
 				&:after {
 					transform: translateY(-50%) rotate(90deg);

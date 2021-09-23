@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StyleCards, Buttons Check Paragraph 1`] = `
+exports[`StyleCards Paragraph Check Paragraph 1`] = `
 Object {
   "p": Object {
     "color": "rgba(16,109,60,1)",

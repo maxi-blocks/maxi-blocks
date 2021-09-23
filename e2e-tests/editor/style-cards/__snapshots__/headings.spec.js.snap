@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StyleCards, Buttons Check Headings 1`] = `
+exports[`StyleCards headings Check Headings 1`] = `
 Object {
   "h1": Object {
     "color": "rgba(16,109,60,1)",

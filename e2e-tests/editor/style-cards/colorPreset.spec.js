@@ -11,7 +11,7 @@ const receiveSelectedMaxiStyle = async () => {
 	});
 };
 
-describe('StyleCards, ColorPresets', () => {
+describe('StyleCards ColorPresets', () => {
 	it('Check Quick Pick Colour Presets', async () => {
 		await createNewPost();
 

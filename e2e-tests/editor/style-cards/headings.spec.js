@@ -11,8 +11,8 @@ const receiveSelectedMaxiStyle = async () => {
 	});
 };
 
-describe('StyleCards, Buttons', () => {
-	it('Check Paragraph', async () => {
+describe('StyleCards headings', () => {
+	it('Check Headings', async () => {
 		await createNewPost();
 
 		await page.$eval('.maxi-toolbar-layout button', button =>
@@ -27,10 +27,10 @@ describe('StyleCards, Buttons', () => {
 
 		await page.$$eval(
 			'.maxi-accordion-control__item .maxi-accordion-tab div',
-			accordion => accordion[2].click()
+			accordion => accordion[4].click()
 		);
 		const styleCard = await page.$(
-			'.components-popover__content .maxi-blocks-sc__type--p'
+			'.components-popover__content .maxi-blocks-sc__type--heading'
 		);
 		const buttons = await styleCard.$$('.maxi-radio-control__option label');
 
@@ -74,29 +74,29 @@ describe('StyleCards, Buttons', () => {
 		// Selectors
 
 		// Weight
-		const weightOptions = await styleCard.$(
+		const weightSelector = await styleCard.$(
 			'.maxi-typography-control .maxi-typography-control__weight select'
 		);
 
 		// Transform
-		const transformOptions = await styleCard.$(
+		const transformSelector = await styleCard.$(
 			'.maxi-typography-control .maxi-typography-control__transform select'
 		);
 
 		// Style
-		const styleOptions = await styleCard.$(
+		const styleSelector = await styleCard.$(
 			'.maxi-typography-control .maxi-typography-control__font-style select'
 		);
 
 		// Decoration
-		const decorationOptions = await styleCard.$(
+		const decorationSelector = await styleCard.$(
 			'.maxi-typography-control .maxi-typography-control__decoration select'
 		);
 
-		await weightOptions.select('300');
-		await transformOptions.select('capitalize');
-		await styleOptions.select('italic');
-		await decorationOptions.select('overline');
+		await weightSelector.select('300');
+		await transformSelector.select('capitalize');
+		await styleSelector.select('italic');
+		await decorationSelector.select('overline');
 
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
 		const {

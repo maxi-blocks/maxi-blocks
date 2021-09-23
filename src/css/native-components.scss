@@ -94,21 +94,18 @@
 
 			// ButtonControl
 			.components-button {
-				display: inline-flex;
-				width: 31px;
-				min-width: 31px;
-				height: 31px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 8px;
 				text-decoration: none;
 				cursor: pointer;
 				-webkit-appearance: none;
-				background: none;
-				background-color: rgba(0, 0, 0, 0);
-				transition: box-shadow 0.1s linear;
-				align-items: center;
+				background-color: #fff;
+				transition: 0.5s linear;
 				overflow: hidden;
-				padding: 0;
 				opacity: 1;
-				border-radius: 5px;
+				border-radius: 0;
 
 				&:hover {
 					box-shadow: none !important;
@@ -126,11 +123,11 @@
 
 				&.is-secondary {
 					box-shadow: none !important;
-					border: 2px solid #dddfe1;
+					border: 1px solid #dbdde6;
 
 					&:hover {
-						background-color: white;
-						border-color: #c5c5c5;
+						background-color: #f6f6f6;
+						border-color : #E1E2EA;
 					}
 
 					svg {

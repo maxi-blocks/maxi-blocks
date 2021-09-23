@@ -207,13 +207,6 @@ body .toolbar-item__popover {
 		.components-input-control__backdrop {
 			border: none;
 		}
-		.components-input-control__input {
-			border: 2px solid #dddfe2;
-			border-radius: 5px;
-			padding-right: 0;
-			height: 30px;
-			line-height: 30px;
-		}
 	}
 
 	select {
@@ -226,10 +219,10 @@ body .toolbar-item__popover {
 		font-size: 0 !important;
 
 		&:before {
-			content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 16 15.7"> <defs/> <g class="cls-1"> <path d="M16.5 1.1v5a.91.91 0 01-.3.7.91.91 0 01-.7.3h-5.1a.91.91 0 01-.7-.3 1 1 0 010-1.4.91.91 0 01.7-.3H13A8.09 8.09 0 0011 3a4.46 4.46 0 00-2.6-.8 5.66 5.66 0 00-4.1 1.7A5.3 5.3 0 002.6 8a5.66 5.66 0 001.7 4.1 5.66 5.66 0 004.1 1.7 5.75 5.75 0 003.4-1.1 5.63 5.63 0 002.1-2.9 1 1 0 01.5-.6 1.41 1.41 0 01.9-.1 1 1 0 01.6.5 1.06 1.06 0 01.1.8 7.49 7.49 0 01-2.9 3.9 7.67 7.67 0 01-4.6 1.5 7.7 7.7 0 01-5.6-2.3A7.56 7.56 0 01.5 8a7.87 7.87 0 012.3-5.6A7.7 7.7 0 018.4.1a3.08 3.08 0 011 .1c.3 0 .6.1.9.1a1.33 1.33 0 01.8.3 3.63 3.63 0 00.7.3 2.09 2.09 0 01.6.4c.2.2.4.3.5.4l.5.5c.2.2.3.4.4.4s.2.2.4.5a3 3 0 00.3.4V1.1a.91.91 0 01.3-.7 1 1 0 011.4 0 .91.91 0 01.3.7z" class="cls-2" transform="translate(-.5 -.1)"/> </g> </svg>') !important;
+			content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.34 11.5" role="img" aria-hidden="true" focusable="false"><path d="M11.32.75a.74.74 0 0 0-.75-.75.76.76 0 0 0-.75.75v1.49A5.6 5.6 0 1 0 5.6 11.5a5.44 5.44 0 0 0 1.48-.2.74.74 0 0 0 .52-.92.76.76 0 0 0-.92-.53A4.1 4.1 0 1 1 9.22 4H6.57a.75.75 0 0 0 0 1.5h4a.75.75 0 0 0 .53-.22.77.77 0 0 0 .22-.54Z"></path></svg>') !important;
 			margin: auto;
 			margin-left: auto;
-			color: #464a53;
+			color: #141516;
 			width: 14px;
 			height: 14px;
 		}
@@ -327,6 +320,7 @@ body .toolbar-item__popover {
     box-shadow: none;
     border: 1px solid #E1E2EA;
 	transition: all 0.5s;
+	margin-left: 8px;
 
 	&:hover {
 		background: #f6f6f6;

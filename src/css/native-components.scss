@@ -162,26 +162,39 @@
 
 			.components-range-control__wrapper {
 				margin-left: 0;
+				width: 16px;
+				height: 16px;
+				min-height: 16px;
+			}
+			.components-range-control__tooltip {
+				top: auto;
+				bottom: -26px !important;
+				background-color: #141516;
 			}
 			.components-range-control__slider {
 				& + span {
 					background: #dddfe1;
-					height: 4px;
+					height: 2px;
+					margin-top: 6px;
 				}
 			}
 			.components-range-control__track {
-				height: 4px;
+				height: 2px;
+				margin-top: 6px;
 				background: #dddfe1 !important;
 
 				& + span {
-					top: 1px;
+					top: -6px;
+					height: 16px;
+					width: 16px;
+
 					span {
 						position: relative;
 						box-shadow: none !important;
 						border: none !important;
 						width: 8px;
 						height: 8px;
-						background-color: #464a53;
+						background-color: #141516;
 
 						&:before {
 							content: "";
@@ -191,7 +204,7 @@
 							transform: translate(-50%, -50%);
 							width: 16px;
 							height: 16px;
-							border: 2px solid #464a53;
+							border: 2px solid #141516;
 							border-radius: 50%;
 						}
 					}

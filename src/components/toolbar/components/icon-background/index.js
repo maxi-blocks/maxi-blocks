@@ -98,7 +98,6 @@ const IconBackground = props => {
 									paletteStatus,
 							});
 						}}
-						showPalette
 					/>
 				)}
 			</div>

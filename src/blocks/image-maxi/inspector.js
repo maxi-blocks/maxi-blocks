@@ -80,6 +80,7 @@ const Inspector = memo(
 			clipPath,
 			imageRatio,
 			isImageUrl,
+			parentBlockStyle,
 		} = attributes;
 		const { wpAlt, titleAlt } = altOptions || {};
 
@@ -515,7 +516,7 @@ const Inspector = memo(
 																	clientId
 																}
 																blockStyle={
-																	blockStyle
+																	parentBlockStyle
 																}
 																allowLink
 															/>

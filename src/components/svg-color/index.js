@@ -26,7 +26,6 @@ const SvgColor = props => {
 							'svg-palette-line-color-status': paletteStatus,
 						});
 					}}
-					showPalette
 					globalProps={{ target: 'line-global', type: 'icon' }}
 					disableOpacity
 				/>
@@ -44,7 +43,6 @@ const SvgColor = props => {
 							'svg-palette-fill-color-status': paletteStatus,
 						});
 					}}
-					showPalette
 					globalProps={{ target: 'fill-global', type: 'icon' }}
 					disableOpacity
 				/>

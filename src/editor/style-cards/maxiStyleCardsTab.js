@@ -709,7 +709,9 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									onChange={({ color }) =>
 										onChangeValue(
 											{
-												[`${quickColorPreset}`]: color,
+												[`${quickColorPreset}`]: color
+													.replace('rgb(', '')
+													.replace(')', ''),
 											},
 											'color'
 										)

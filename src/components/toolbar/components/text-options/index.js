@@ -26,7 +26,6 @@ import {
 	getGroupAttributes,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
-	getBlockStyle,
 } from '../../../../extensions/styles';
 
 /**
@@ -261,14 +260,11 @@ const TypographyControl = withFormatValue(props => {
 				avoidXXL
 			);
 
-		const blockStyle = getBlockStyle(clientId);
-
 		const nonHoverValue = getCustomFormatValue({
 			typography,
 			formatValue,
 			prop,
 			breakpoint: currentBreakpoint,
-			blockStyle,
 			textLevel,
 			styleCard,
 			styleCardPrefix,
@@ -284,7 +280,6 @@ const TypographyControl = withFormatValue(props => {
 				prop,
 				breakpoint: currentBreakpoint,
 				isHover,
-				blockStyle,
 				textLevel,
 				styleCard,
 				styleCardPrefix,

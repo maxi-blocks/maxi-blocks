@@ -240,21 +240,34 @@ wp.domReady(() => {
 		}
 	});
 
-	const SCStylesSubscriber = subscribe(() => {
+	// const SCStylesSubscriber = subscribe(() => {
+	// 	const SC = select(
+	// 		'maxiBlocks/style-cards'
+	// 	).receiveMaxiActiveStyleCard();
+
+	// 	if (SC && !isEmpty(SC)) {
+	// 		updateSCOnEditor(SC.value);
+	// 		SCStylesSubscriber();
+	// 	}
+	// });
+
+	const SCVarsUpdate = setInterval(() => {
 		const SC = select(
 			'maxiBlocks/style-cards'
 		).receiveMaxiActiveStyleCard();
-
-		const SCList = select('maxiBlocks/style-cards').receiveStyleCardsList();
-		const SCCount = Object.keys(SCList).length;
-
 		if (SC && !isEmpty(SC)) {
 			updateSCOnEditor(SC.value);
-			if (SCCount === 1 && SC.key === 'sc_maxi') console.log('save');
-			// dispatch('maxiBlocks/style-cards').saveSCStyles();
-			SCStylesSubscriber();
+			const SCList = select(
+				'maxiBlocks/style-cards'
+			).receiveStyleCardsList();
+			const SCListCount = Object.keys(SCList).length;
+
+			if (SCListCount === 1 && SC.key === 'sc_maxi')
+				dispatch('maxiBlocks/style-cards').saveSCStyles(true);
+
+			clearInterval(SCVarsUpdate);
 		}
-	});
+	}, 500);
 });
 
 const openSidebar = item => {

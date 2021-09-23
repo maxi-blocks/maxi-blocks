@@ -1,7 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	pressKeyTimes,
+	setBrowserViewport,
+} from '@wordpress/e2e-test-utils';
 
 const receiveSelectedMaxiStyle = async () => {
 	return page.evaluate(() => {
@@ -22,6 +26,7 @@ const receiveSavedMaxiStyle = async () => {
 describe('StyleCards', () => {
 	it('Check Save', async () => {
 		await createNewPost();
+		await setBrowserViewport('large');
 
 		await page.$eval('.maxi-toolbar-layout button', button =>
 			button.click()
@@ -75,6 +80,7 @@ describe('StyleCards', () => {
 
 	it('Change Style Card', async () => {
 		await createNewPost();
+		await setBrowserViewport('large');
 
 		await page.$eval('.maxi-toolbar-layout button', button =>
 			button.click()
@@ -140,6 +146,7 @@ describe('StyleCards', () => {
 
 	it('Delete Style Card', async () => {
 		await createNewPost();
+		await setBrowserViewport('large');
 
 		await page.$eval('.maxi-toolbar-layout button', button =>
 			button.click()
@@ -203,6 +210,7 @@ describe('StyleCards', () => {
 
 	it('Dark Style Preset', async () => {
 		await createNewPost();
+		await setBrowserViewport('large');
 
 		await page.$eval('.maxi-toolbar-layout button', button =>
 			button.click()

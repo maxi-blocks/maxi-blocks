@@ -240,17 +240,6 @@ wp.domReady(() => {
 		}
 	});
 
-	// const SCStylesSubscriber = subscribe(() => {
-	// 	const SC = select(
-	// 		'maxiBlocks/style-cards'
-	// 	).receiveMaxiActiveStyleCard();
-
-	// 	if (SC && !isEmpty(SC)) {
-	// 		updateSCOnEditor(SC.value);
-	// 		SCStylesSubscriber();
-	// 	}
-	// });
-
 	const SCVarsUpdate = setInterval(() => {
 		const SC = select(
 			'maxiBlocks/style-cards'

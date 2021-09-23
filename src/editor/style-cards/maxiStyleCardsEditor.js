@@ -224,17 +224,25 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 	};
 
 	const resetCurrentSC = () => {
+		console.log(styleCards);
 		const resetStyleCards = {
 			...styleCards,
 			[selectedSCKey]: {
 				...styleCards[selectedSCKey],
-				styleCard: {
-					light: {},
-					dark: {},
+				dark: {
+					styleCard: {},
+					defaultStyleCard: {
+						...styleCards[selectedSCKey].dark.defaultStyleCard,
+					},
+				},
+				light: {
+					styleCard: {},
+					defaultStyleCard: {
+						...styleCards[selectedSCKey].light.defaultStyleCard,
+					},
 				},
 			},
 		};
-
 		saveMaxiStyleCards(resetStyleCards);
 		updateSCOnEditor(resetStyleCards[selectedSCKey]);
 	};

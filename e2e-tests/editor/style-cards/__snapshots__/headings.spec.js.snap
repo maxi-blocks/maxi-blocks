@@ -3,7 +3,7 @@
 exports[`StyleCards headings Check Headings 1`] = `
 Object {
   "h1": Object {
-    "color": "rgba(16,109,60,1)",
+    "color": "rgb(16,109,60)",
     "color-global": true,
     "font-family-general": "Roboto",
     "font-size-l": 40,

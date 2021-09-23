@@ -7,7 +7,7 @@ Object {
     "background-color-global": false,
     "border-color": "",
     "border-color-global": false,
-    "color": "rgba(16,109,60,1)",
+    "color": "rgb(16,109,60)",
     "color-global": true,
     "font-family-general": "Roboto",
     "font-size-l": 16,

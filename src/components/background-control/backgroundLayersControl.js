@@ -22,6 +22,7 @@ import ImageLayer from './imageLayer';
 import LoaderControl from '../loader-control';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies
@@ -299,6 +300,24 @@ const BackgroundLayersControl = ({
 
 	return (
 		<div className='maxi-background-control__layers'>
+			<ToggleSwitch
+				label={__('Use layers', 'maxi-blocks')}
+				selected={layersStatus}
+				onChange={() =>
+					onChange({
+						[getAttributeKey(
+							'background-layers-status',
+							isHover,
+							prefix
+						)]: !layersStatus,
+						[getAttributeKey(
+							'background-active-media',
+							isHover,
+							prefix
+						)]: layersStatus ? 'layers' : '',
+					})
+				}
+			/>
 			<FancyRadioControl
 				label={__('Use layers', 'maxi-blocks')}
 				selected={layersStatus}

@@ -309,7 +309,6 @@ body .toolbar-item__popover {
 /*************
 * Reset Button
 *************/
-
 .maxi-base-control .components-maxi-control__reset-button {
     -webkit-appearance: none;
     display: flex;
@@ -319,7 +318,7 @@ body .toolbar-item__popover {
     text-decoration: none;
     cursor: pointer;
     background: none;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: #fff;
     transition: box-shadow 0.1s linear;
     overflow: hidden;
     padding: 8px;
@@ -327,15 +326,19 @@ body .toolbar-item__popover {
     border-radius: 0;
     box-shadow: none;
     border: 1px solid #E1E2EA;
+	transition: all 0.5s;
 
-	@at-root .rtl #{&} {
-		margin-right: 8px;
+	&:hover {
+		background: #f6f6f6;
 	}
 	svg {
 		width: 14px;
 		height: 14px;
-		fill: #464a53;
+		fill: #141516;
 		margin: auto;
+	}
+	@at-root .rtl #{&} {
+		margin-right: 8px;
 	}
 }
 

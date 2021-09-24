@@ -71,7 +71,7 @@ describe('Image Maxi', () => {
 		await fontFamilySelector.click();
 		await page.keyboard.type('Montserrat');
 		await page.keyboard.press('Enter');
-		await page.waitForTimeout(100);
+		await page.waitForTimeout(200);
 
 		const attributes = await getBlockAttributes();
 		const fontFamily = attributes['font-family-general'];

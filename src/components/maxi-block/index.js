@@ -169,16 +169,14 @@ const MaxiBlock = forwardRef((props, ref) => {
 			motion['shape-divider-bottom-status'] ||
 			motion['parallax-status'] ||
 			motion['number-counter-status'] ||
-			motion['motion-status'] ||
-			(motion['entrance-type'] && motion['entrance-type'] !== 'none')) &&
+			motion['motion-status']) &&
 			'maxi-motion-effect',
 		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
 			motion['shape-divider-top-status'] ||
 			motion['shape-divider-bottom-status'] ||
 			motion['parallax-status'] ||
 			motion['number-counter-status'] ||
-			motion['motion-status'] ||
-			(motion['entrance-type'] && motion['entrance-type'] !== 'none')) &&
+			motion['motion-status']) &&
 			`maxi-motion-effect-${uniqueID}`,
 		blockStyle,
 		extraClassName,
@@ -263,7 +261,6 @@ export const getMaxiBlockBlockAttributes = props => {
 	const motion = {
 		...getGroupAttributes(attributes, [
 			'motion',
-			'entrance',
 			'numberCounter',
 			'parallax',
 			'shapeDivider',

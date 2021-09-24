@@ -5,49 +5,49 @@ Object {
   " p.maxi-text-block__content a": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4), 1))",
+        "color": "var(--maxi-light-link,rgba(var(--maxi-light-color-4),1))",
       },
     },
   },
   " p.maxi-text-block__content a:active": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3), 1))",
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3),1))",
       },
     },
   },
   " p.maxi-text-block__content a:active span": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3), 1))",
+        "color": "var(--maxi-light-link-active,rgba(var(--maxi-light-color-3),1))",
       },
     },
   },
   " p.maxi-text-block__content a:hover": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4), 0.2))",
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4),0.2))",
       },
     },
   },
   " p.maxi-text-block__content a:hover span": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4), 0.2))",
+        "color": "var(--maxi-light-link-hover,rgba(var(--maxi-light-color-4),0.2))",
       },
     },
   },
   " p.maxi-text-block__content a:visited": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3), 1))",
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3),1))",
       },
     },
   },
   " p.maxi-text-block__content a:visited span": Object {
     "link": Object {
       "general": Object {
-        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3), 1))",
+        "color": "var(--maxi-light-link-visited,rgba(var(--maxi-light-color-3),1))",
       },
     },
   },

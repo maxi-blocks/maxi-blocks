@@ -20,7 +20,6 @@ import {
 	ClipPath,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
 	FullSizeControl,
 	HoverEffectControl,
 	ImageCropControl,
@@ -80,6 +79,7 @@ const Inspector = memo(
 			clipPath,
 			imageRatio,
 			isImageUrl,
+			parentBlockStyle,
 		} = attributes;
 		const { wpAlt, titleAlt } = altOptions || {};
 
@@ -514,7 +514,7 @@ const Inspector = memo(
 																	clientId
 																}
 																blockStyle={
-																	blockStyle
+																	parentBlockStyle
 																}
 																allowLink
 															/>
@@ -1089,23 +1089,6 @@ const Inspector = memo(
 														}
 														blockStyle={blockStyle}
 														clientId={clientId}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Entrance Animation',
-													'maxi-blocks'
-												),
-												content: (
-													<EntranceAnimationControl
-														{...getGroupAttributes(
-															attributes,
-															'entrance'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
 													/>
 												),
 											},

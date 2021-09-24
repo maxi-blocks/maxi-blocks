@@ -54,7 +54,6 @@ const ATTRIBUTES = [
 	'columnSize',
 	'display',
 	'divider',
-	'entrance',
 	'margin',
 	'motion',
 	'opacity',

@@ -142,6 +142,7 @@ const MapControl = props => {
 						onChange={({ color }) =>
 							onChange({ 'map-marker-fill-color': color })
 						}
+						disablePalette
 					/>
 					<ColorControl
 						label={__('Marker Stroke', 'maxi-blocks')}
@@ -153,6 +154,7 @@ const MapControl = props => {
 						onChange={({ color }) =>
 							onChange({ 'map-marker-stroke-color': color })
 						}
+						disablePalette
 					/>
 				</>
 			)}
@@ -176,7 +178,6 @@ const MapControl = props => {
 						'map-marker-palette-text-color-status': paletteStatus,
 					})
 				}
-				showPalette
 				disableOpacity
 			/>
 			<TextControl
@@ -199,7 +200,6 @@ const MapControl = props => {
 							paletteStatus,
 					})
 				}
-				showPalette
 				disableOpacity
 			/>
 		</div>

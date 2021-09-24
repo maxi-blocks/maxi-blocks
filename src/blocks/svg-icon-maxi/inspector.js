@@ -17,7 +17,6 @@ import {
 	BoxShadowControl,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
 	FullSizeControl,
 	InfoBox,
 	MotionControl,
@@ -815,23 +814,6 @@ const Inspector = props => {
 													{...getGroupAttributes(
 														attributes,
 														'motion'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-												/>
-											),
-										},
-										{
-											label: __(
-												'Entrance Animation',
-												'maxi-blocks'
-											),
-											content: (
-												<EntranceAnimationControl
-													{...getGroupAttributes(
-														attributes,
-														'entrance'
 													)}
 													onChange={obj =>
 														setAttributes(obj)

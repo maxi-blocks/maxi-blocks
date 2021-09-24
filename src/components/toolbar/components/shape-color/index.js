@@ -62,7 +62,6 @@ const ShapeColor = props => {
 							'shape-palette-fill-color-status': paletteStatus,
 						});
 					}}
-					showPalette
 					disableOpacity
 				/>
 			</div>

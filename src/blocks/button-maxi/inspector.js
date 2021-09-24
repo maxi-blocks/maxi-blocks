@@ -19,7 +19,6 @@ import {
 	CustomLabel,
 	DefaultStylesControl,
 	DisplayControl,
-	EntranceAnimationControl,
 	FullSizeControl,
 	Icon,
 	IconControl,
@@ -471,7 +470,7 @@ const Inspector = memo(
 																		}
 																		disableCustomFormats
 																		blockStyle={
-																			blockStyle
+																			parentBlockStyle
 																		}
 																		styleCardPrefix='button'
 																	/>
@@ -531,7 +530,7 @@ const Inspector = memo(
 																				}
 																				disableCustomFormats
 																				blockStyle={
-																					blockStyle
+																					parentBlockStyle
 																				}
 																				styleCardPrefix='button'
 																			/>
@@ -1056,23 +1055,6 @@ const Inspector = memo(
 														{...getGroupAttributes(
 															attributes,
 															'motion'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Entrance Animation',
-													'maxi-blocks'
-												),
-												content: (
-													<EntranceAnimationControl
-														{...getGroupAttributes(
-															attributes,
-															'entrance'
 														)}
 														onChange={obj =>
 															setAttributes(obj)

@@ -2,13 +2,13 @@
  * Wordpress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import BaseControl from '../base-control';
-import ToggleSwitch from '../toggle-switch';
 import { getBlockStyle } from '../../extensions/styles';
 
 /**
@@ -29,61 +29,61 @@ const ColorPaletteControl = props => {
 	const {
 		label = '',
 		value,
-		status,
 		onChange,
-		clientId,
-		className,
-		globalStatus,
+		globalProps,
 		disableOpacity,
 		opacity = 100,
 		defaultOpacity = 100,
+		clientId,
 	} = props;
+
+	const { globalStatus } = useSelect(select => {
+		const globalStatus = globalProps
+			? select('maxiBlocks/style-cards').receiveStyleCardGlobalValue(
+					globalProps?.target,
+					globalProps ? getBlockStyle(clientId) : null,
+					globalProps?.type
+			  )
+			: false;
+
+		return { globalStatus };
+	});
 
 	const paletteClasses = classnames(
 		'maxi-sc-color-palette',
 		globalStatus && 'palette-disabled'
 	);
 
-	const classes = classnames(
-		`maxi-color-palette-control maxi-color-palette--${getBlockStyle(
-			clientId
-		)}`,
-		className
-	);
-
 	return (
-		<div className={classes}>
-			{status && (
-				<BaseControl
-					className='maxi-color-palette-control__palette-label'
-					label={label ? `${label} Colour` : ''}
-				>
-					<div className={paletteClasses}>
-						{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
-							<div
-								key={`maxi-sc-color-palette__box__${item}`}
-								className={`maxi-sc-color-palette__box ${
-									value === item
-										? 'maxi-sc-color-palette__box--active'
-										: ''
-								}`}
-								data-item={item}
-								onClick={e =>
-									onChange({
-										paletteColor:
-											+e.currentTarget.dataset.item,
-									})
-								}
-							>
-								<span
-									className={`maxi-sc-color-palette__box__item maxi-sc-color-palette__box__item__${item}`}
-								/>
-							</div>
-						))}
-					</div>
-				</BaseControl>
-			)}
-			{!disableOpacity && status && (
+		<>
+			<BaseControl
+				className='maxi-color-palette-control__palette-label'
+				label={label ? `${label} Colour` : ''}
+			>
+				<div className={paletteClasses}>
+					{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
+						<div
+							key={`maxi-sc-color-palette__box__${item}`}
+							className={`maxi-sc-color-palette__box ${
+								value === item
+									? 'maxi-sc-color-palette__box--active'
+									: ''
+							}`}
+							data-item={item}
+							onClick={e =>
+								onChange({
+									paletteColor: +e.currentTarget.dataset.item,
+								})
+							}
+						>
+							<span
+								className={`maxi-sc-color-palette__box__item maxi-sc-color-palette__box__item__${item}`}
+							/>
+						</div>
+					))}
+				</div>
+			</BaseControl>
+			{!disableOpacity && (
 				<AdvancedNumberControl
 					label={__('Colour Opacity', 'maxi-blocks')}
 					value={opacity}
@@ -104,13 +104,7 @@ const ColorPaletteControl = props => {
 					}
 				/>
 			)}
-			<ToggleSwitch
-				label={__('Custom Colour', 'maxi-blocks')}
-				className='maxi-sc-color-palette__custom'
-				selected={status}
-				onChange={() => onChange({ paletteStatus: !status })}
-			/>
-		</div>
+		</>
 	);
 };
 

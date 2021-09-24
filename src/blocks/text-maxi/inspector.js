@@ -19,7 +19,6 @@ import {
 	BoxShadowControl,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
 	FontLevelControl,
 	FullSizeControl,
 	InfoBox,
@@ -64,6 +63,7 @@ const Inspector = memo(
 			typeOfList,
 			listStart,
 			listReversed,
+			parentBlockStyle,
 		} = attributes;
 
 		return (
@@ -309,7 +309,7 @@ const Inspector = memo(
 																			isList
 																		}
 																		blockStyle={
-																			blockStyle
+																			parentBlockStyle
 																		}
 																		allowLink
 																	/>
@@ -372,7 +372,7 @@ const Inspector = memo(
 																				}
 																				isHover
 																				blockStyle={
-																					blockStyle
+																					parentBlockStyle
 																				}
 																			/>
 																		)}
@@ -894,23 +894,6 @@ const Inspector = memo(
 														{...getGroupAttributes(
 															attributes,
 															'motion'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Entrance Animation',
-													'maxi-blocks'
-												),
-												content: (
-													<EntranceAnimationControl
-														{...getGroupAttributes(
-															attributes,
-															'entrance'
 														)}
 														onChange={obj =>
 															setAttributes(obj)

@@ -272,7 +272,6 @@ const NumberCounterControl = props => {
 							paletteStatus,
 					})
 				}
-				showPalette
 			/>
 			<hr />
 			<ColorControl
@@ -298,7 +297,6 @@ const NumberCounterControl = props => {
 							paletteStatus,
 					})
 				}
-				showPalette
 			/>
 			<hr />
 			<ColorControl
@@ -319,7 +317,6 @@ const NumberCounterControl = props => {
 							paletteStatus,
 					})
 				}
-				showPalette
 			/>
 		</div>
 	);

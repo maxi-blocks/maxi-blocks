@@ -278,7 +278,7 @@ describe('TypographyControl', () => {
 
 		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
 	});
-	it('Check responsive font weight', async () => {
+	it('Check responsive font-weight', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 
 		const weightNumber = await accordionPanel.$eval(
@@ -326,7 +326,7 @@ describe('TypographyControl', () => {
 		expect(weightMNumber).toStrictEqual(2);
 	});
 
-	it('Check responsive Transform', async () => {
+	it('Check responsive text-transform', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 
 		const transformType = await accordionPanel.$eval(
@@ -343,12 +343,12 @@ describe('TypographyControl', () => {
 		);
 		await selectorS.select('uppercase');
 
-		const TransformSNumber = await accordionPanel.$eval(
+		const transformSNumber = await accordionPanel.$eval(
 			'.maxi-typography-control .maxi-typography-control__transform select',
-			TransformSelector => TransformSelector.selectedIndex
+			transformSelector => transformSelector.selectedIndex
 		);
 
-		expect(TransformSNumber).toStrictEqual(2);
+		expect(transformSNumber).toStrictEqual(2);
 
 		const attributes = await getBlockAttributes();
 		const fontUnit = attributes['text-transform-s'];
@@ -358,12 +358,12 @@ describe('TypographyControl', () => {
 		// xs
 		await changeResponsive(page, 'xs');
 
-		const TransformXsNumber = await accordionPanel.$eval(
+		const transformXsNumber = await accordionPanel.$eval(
 			'.maxi-typography-control .maxi-typography-control__transform select',
-			TransformSelector => TransformSelector.selectedIndex
+			transformSelector => transformSelector.selectedIndex
 		);
 
-		expect(TransformXsNumber).toStrictEqual(2);
+		expect(transformXsNumber).toStrictEqual(2);
 
 		// m
 		await changeResponsive(page, 'm');
@@ -376,7 +376,7 @@ describe('TypographyControl', () => {
 		expect(transformMNumber).toStrictEqual(1);
 	});
 
-	it('Check responsive Style', async () => {
+	it('Check responsive font-style', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 
 		const fontStyleType = await accordionPanel.$eval(
@@ -423,7 +423,7 @@ describe('TypographyControl', () => {
 		expect(styleMNumber).toStrictEqual(1);
 	});
 
-	it('Check responsive Decoration', async () => {
+	it('Check responsive text-decoration', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 
 		const textDecoration = await page.$eval(
@@ -473,7 +473,7 @@ describe('TypographyControl', () => {
 
 		expect(decorationMSelection).toStrictEqual(1);
 	});
-	it('Check text shadow', async () => {
+	it('Check text-shadow', async () => {
 		await changeResponsive(page, 'base');
 		const accordionPanel = await openSidebar(page, 'typography');
 		await accordionPanel.$$eval(
@@ -554,7 +554,7 @@ describe('TypographyControl', () => {
 		expect(expectedResult).toStrictEqual(expectedAttributes);
 	});
 
-	it('Check responsive font size', async () => {
+	it('Check responsive font-size', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 		const input = await accordionPanel.$$(
 			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__size input'
@@ -611,7 +611,7 @@ describe('TypographyControl', () => {
 		expect(sizeMNumber).toStrictEqual('19');
 	});
 
-	it('Check responsive font size unit', async () => {
+	it('Check responsive font-size-unit', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 		const selector = await accordionPanel.$(
 			'.maxi-typography-control .maxi-tabs-content .maxi-typography-control__size select'
@@ -664,7 +664,7 @@ describe('TypographyControl', () => {
 
 		expect(unitM).toStrictEqual(1);
 	});
-	it('Check responsive line height', async () => {
+	it('Check responsive line-height', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 		const input = await accordionPanel.$$(
 			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-typography-control__line-height input'
@@ -721,7 +721,7 @@ describe('TypographyControl', () => {
 		expect(heightMNumber).toStrictEqual('45');
 	});
 
-	it('Check responsive line height unit', async () => {
+	it('Check responsive line-height-unit', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 		const selector = await accordionPanel.$(
 			'.maxi-typography-control .maxi-typography-control__line-height select'
@@ -775,7 +775,7 @@ describe('TypographyControl', () => {
 		expect(heightMNumber).toStrictEqual(1);
 	});
 
-	it('Check responsive letter spacing', async () => {
+	it('Check responsive letter-spacing', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 
 		const input = await accordionPanel.$$(
@@ -833,7 +833,7 @@ describe('TypographyControl', () => {
 		expect(letterSpacingMNumber).toStrictEqual('2');
 	});
 
-	it('Check responsive letter spacing unit', async () => {
+	it('Check responsive letter-spacing-unit', async () => {
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebar(page, 'typography');
 

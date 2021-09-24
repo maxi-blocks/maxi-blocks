@@ -48,6 +48,7 @@ export default class Edit extends Component {
 							type='patterns'
 							openFirstTime={openFirstTime}
 							onOpen={obj => setAttributes(obj)}
+							onSelect={obj => setAttributes(obj)}
 							{...this.props}
 						/>
 					</Placeholder>

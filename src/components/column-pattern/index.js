@@ -10,7 +10,7 @@ import { useState, useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '../button';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import Icon from '../icon';
 import AdvancedNumberControl from '../advanced-number-control';
 import {
@@ -34,7 +34,7 @@ import { getLastBreakpointAttribute } from '../../extensions/styles';
 /**
  * Column patterns
  *
- * */
+ */
 const ColumnPatternsInspector = props => {
 	const {
 		clientId,
@@ -211,18 +211,14 @@ const ColumnPatternsInspector = props => {
 			{!toolbar && (
 				<div className='components-column-pattern__gap'>
 					{numCol !== 1 && breakpoint === 'general' && (
-						<FancyRadioControl
+						<ToggleSwitch
 							label={__('Remove Gap', 'maxi-blocks')}
 							selected={removeColumnGap}
-							options={[
-								{ label: __('Yes', 'maxi-blocks'), value: 1 },
-								{ label: __('No', 'maxi-blocks'), value: 0 },
-							]}
-							onChange={removeColumnGap => {
-								onChange({ removeColumnGap });
+							onChange={() => {
+								onChange({ removeColumnGap: !removeColumnGap });
 								loadColumnsTemplate(
 									props['row-pattern-general'],
-									!!+removeColumnGap,
+									!removeColumnGap,
 									clientId,
 									breakpoint
 								);

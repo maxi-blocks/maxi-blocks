@@ -409,7 +409,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											'color'
 										)
 									}
-									format='colorString'
+									blockStyle={SCStyle}
 									disableColorDisplay
 									disableOpacity
 									disableGradient

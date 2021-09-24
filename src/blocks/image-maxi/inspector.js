@@ -1089,7 +1089,13 @@ const Inspector = memo(
 													'maxi-blocks'
 												),
 												content: (
-													<MaxiModal type='image-shape' />
+													<MaxiModal
+														type='image-shape'
+														onSelect={obj => {
+															setAttributes(obj);
+														}}
+														{...attributes}
+													/>
 												),
 											},
 											{

@@ -79,26 +79,6 @@ export const getSCVariablesObject = styleCards => {
 			),
 		},
 	};
-	// const SC = {
-	// 	dark: {
-	// 		...styleCards.dark.defaultStyleCard,
-	// 	},
-	// 	light: { ...styleCards.light.defaultStyleCard },
-	// };
-	// const SC = {
-	// 	dark: {
-	// 		...merge(
-	// 			{ ...styleCards.dark.defaultStyleCard },
-	// 			{ ...styleCards.dark.styleCard }
-	// 		),
-	// 	},
-	// 	light: {
-	// 		...merge(
-	// 			{ ...styleCards.light.defaultStyleCard },
-	// 			{ ...styleCards.light.styleCard }
-	// 		),
-	// 	},
-	// };
 	const settingsToAvoidInGeneral = [
 		'font-size',
 		'line-height',

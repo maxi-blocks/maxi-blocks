@@ -309,6 +309,7 @@ const Inspector = memo(
 													'Icon',
 													'maxi-blocks'
 												),
+												disablePadding: true,
 												content: (
 													<SettingTabsControl
 														items={[

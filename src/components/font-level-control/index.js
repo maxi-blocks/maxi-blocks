@@ -105,49 +105,49 @@ const FontLevelControl = props => {
 				aria-pressed={value === 'p'}
 				onClick={() => onChangeValue('p')}
 			>
-				{__('P', 'maxi-blocks')}
+				<span>{__('P', 'maxi-blocks')}</span>
 			</Button>
 			<Button
 				className='maxi-font-level-control__button'
 				aria-pressed={value === 'h1'}
 				onClick={() => onChangeValue('h1')}
 			>
-				{__('H1', 'maxi-blocks')}
+				<span>{__('H1', 'maxi-blocks')}</span>
 			</Button>
 			<Button
 				className='maxi-font-level-control__button'
 				aria-pressed={value === 'h2'}
 				onClick={() => onChangeValue('h2')}
 			>
-				{__('H2', 'maxi-blocks')}
+				<span>{__('H2', 'maxi-blocks')}</span>
 			</Button>
 			<Button
 				className='maxi-font-level-control__button'
 				aria-pressed={value === 'h3'}
 				onClick={() => onChangeValue('h3')}
 			>
-				{__('H3', 'maxi-blocks')}
+				<span>{__('H3', 'maxi-blocks')}</span>
 			</Button>
 			<Button
 				className='maxi-font-level-control__button'
 				aria-pressed={value === 'h4'}
 				onClick={() => onChangeValue('h4')}
 			>
-				{__('H4', 'maxi-blocks')}
+				<span>{__('H4', 'maxi-blocks')}</span>
 			</Button>
 			<Button
 				className='maxi-font-level-control__button'
 				aria-pressed={value === 'h5'}
 				onClick={() => onChangeValue('h5')}
 			>
-				{__('H5', 'maxi-blocks')}
+				<span>{__('H5', 'maxi-blocks')}</span>
 			</Button>
 			<Button
 				className='maxi-font-level-control__button'
 				aria-pressed={value === 'h6'}
 				onClick={() => onChangeValue('h6')}
 			>
-				{__('H6', 'maxi-blocks')}
+				<span>{__('H6', 'maxi-blocks')}</span>
 			</Button>
 		</div>
 	);

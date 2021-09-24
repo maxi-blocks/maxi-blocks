@@ -19,7 +19,12 @@ const ToggleSwitch = ({ className, selected = false, onChange, label }) => {
 	return (
 		<div className={classes}>
 			{label && (
-				<span className='maxi-toggle-switch__label'>{label}</span>
+				<span
+					onClick={val => onChange(val)}
+					className='maxi-toggle-switch__label'
+				>
+					{label}
+				</span>
 			)}
 			<div className='maxi-toggle-switch__toggle'>
 				<input

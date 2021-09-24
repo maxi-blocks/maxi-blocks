@@ -80,6 +80,7 @@ const Inspector = memo(
 			imageRatio,
 			isImageUrl,
 			parentBlockStyle,
+			SVGElement,
 		} = attributes;
 		const { wpAlt, titleAlt } = altOptions || {};
 
@@ -1097,7 +1098,7 @@ const Inspector = memo(
 														onRemove={obj => {
 															setAttributes(obj);
 														}}
-														{...attributes}
+														icon={SVGElement}
 													/>
 												),
 											},

@@ -165,7 +165,6 @@ class edit extends MaxiBlockComponent {
 						onOpen={obj => setAttributes(obj)}
 						onSelect={obj => setAttributes(obj)}
 						onRemove={obj => setAttributes(obj)}
-						{...this.props}
 					/>
 					{!isEmptyContent && (
 						<BlockResizer

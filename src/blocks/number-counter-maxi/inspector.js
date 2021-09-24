@@ -14,7 +14,6 @@ import {
 	BlockStylesControl,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
 	NumberCounterControl,
 	OpacityControl,
 	PositionControl,
@@ -167,23 +166,6 @@ const Inspector = props => {
 													setAttributes({
 														extraClassName,
 													})
-												}
-											/>
-										),
-									},
-									{
-										label: __(
-											'Entrance Animation',
-											'maxi-blocks'
-										),
-										content: (
-											<EntranceAnimationControl
-												{...getGroupAttributes(
-													attributes,
-													'entrance'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
 												}
 											/>
 										),

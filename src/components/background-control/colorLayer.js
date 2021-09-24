@@ -132,7 +132,6 @@ const ColorLayer = props => {
 						type: 'button',
 					}
 				}
-				showPalette
 				isHover={isHover}
 				clientId={clientId}
 			/>

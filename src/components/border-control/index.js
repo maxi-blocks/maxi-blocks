@@ -215,7 +215,6 @@ const BorderControl = props => {
 					disableImage
 					disableVideo
 					disableGradient
-					showPalette
 					isHover={isHover}
 					deviceType={breakpoint}
 					clientId={clientId}

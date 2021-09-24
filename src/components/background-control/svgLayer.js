@@ -58,6 +58,8 @@ const SVGLayer = props => {
 								type='bg-shape'
 								layerId={layerId}
 								style={getBlockStyle(clientId)}
+								onSelect={obj => onChange(obj)}
+								{...SVGOptions}
 							/>
 						),
 					},

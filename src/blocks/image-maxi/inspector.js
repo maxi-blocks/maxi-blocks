@@ -1094,6 +1094,9 @@ const Inspector = memo(
 														onSelect={obj => {
 															setAttributes(obj);
 														}}
+														onRemove={obj => {
+															setAttributes(obj);
+														}}
 														{...attributes}
 													/>
 												),

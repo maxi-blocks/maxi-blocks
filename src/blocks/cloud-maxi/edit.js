@@ -49,6 +49,7 @@ export default class Edit extends Component {
 							openFirstTime={openFirstTime}
 							onOpen={obj => setAttributes(obj)}
 							onSelect={obj => setAttributes(obj)}
+							onRemove={obj => setAttributes(obj)}
 							{...this.props}
 						/>
 					</Placeholder>

@@ -89,6 +89,7 @@ const IconControl = props => {
 					type='button-icon'
 					style={parentBlockStyle}
 					onSelect={obj => onChange(obj)}
+					onRemove={obj => onChange(obj)}
 					{...props}
 				/>
 			)}

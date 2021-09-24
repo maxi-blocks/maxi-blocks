@@ -164,6 +164,7 @@ class edit extends MaxiBlockComponent {
 						openFirstTime={openFirstTime}
 						onOpen={obj => setAttributes(obj)}
 						onSelect={obj => setAttributes(obj)}
+						onRemove={obj => setAttributes(obj)}
 						{...this.props}
 					/>
 					{!isEmptyContent && (

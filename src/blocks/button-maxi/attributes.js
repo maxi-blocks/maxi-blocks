@@ -147,7 +147,6 @@ const attributes = {
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.motion,
-	...attributesData.entrance,
 	...attributesData.transform,
 	...attributesData.zIndex,
 	...attributesData.transitionDuration,

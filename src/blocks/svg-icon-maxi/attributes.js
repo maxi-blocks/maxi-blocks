@@ -52,7 +52,6 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.display,
-	...attributesData.entrance,
 	...attributesData.margin,
 	...attributesData.motion,
 	...attributesData.opacity,

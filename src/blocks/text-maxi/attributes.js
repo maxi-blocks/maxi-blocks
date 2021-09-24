@@ -66,7 +66,6 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...attributesData.container,
 	...attributesData.display,
-	...attributesData.entrance,
 	...attributesData.link,
 	...attributesData.margin,
 	...attributesData.motion,

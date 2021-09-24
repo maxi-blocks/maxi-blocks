@@ -59,6 +59,7 @@ const SVGLayer = props => {
 								layerId={layerId}
 								style={getBlockStyle(clientId)}
 								onSelect={obj => onChange(obj)}
+								onRemove={obj => onChange(obj)}
 								{...SVGOptions}
 							/>
 						),

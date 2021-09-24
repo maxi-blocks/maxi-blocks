@@ -30,8 +30,6 @@ const controls = {
 	},
 	async UPDATE_STYLE_CARD(styleCards, isUpdate) {
 		const varSC = getSCVariablesObject(styleCards.value);
-		console.log('UPDATE_STYLE_CARD');
-		console.log(styleCards.value);
 		const parsedSC = createSCStyleString(varSC);
 
 		await apiFetch({

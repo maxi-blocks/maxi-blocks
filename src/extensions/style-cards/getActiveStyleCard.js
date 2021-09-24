@@ -15,9 +15,6 @@ const getActiveStyleCard = styleCards => {
 		SC = select('maxiBlocks/style-cards').receiveMaxiStyleCards();
 	else SC = styleCards;
 
-	console.log('SC in getActiveStyleCard: ');
-	console.log(SC);
-
 	let styleCardActive;
 
 	forIn(SC, (value, key) => {
@@ -25,8 +22,6 @@ const getActiveStyleCard = styleCards => {
 			styleCardActive = { key, value };
 		}
 	});
-	console.log('return styleCardActive: ');
-	console.log(styleCardActive);
 
 	return styleCardActive || false;
 };

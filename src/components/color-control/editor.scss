@@ -142,14 +142,14 @@
 			height: 32px;
 			border: 1px solid #dbdde6;
 			cursor: pointer;
-			transition: color 0.5s;
+			transition: all 0.5s;
 
 			&--active {
 				border: 2px solid #ff4a17;
 			}
 			&:hover {
-				background: #f6f6f6;
-				border-color: rgba(180, 180, 180, 0.5);
+				background: #f1f1f1;
+				border-color: rgba(180, 180, 180, 0.8);
 			}
 			&__item {
 				width: 20px;

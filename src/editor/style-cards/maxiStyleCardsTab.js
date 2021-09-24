@@ -14,7 +14,7 @@ import { isEmpty } from 'lodash';
  * Internal dependencies
  */
 import getStyleCardAttr from '../../extensions/styles/defaults/style-card';
-import { processSCAttribute } from './utils';
+import { processSCAttribute, getDefaultSCAttribute } from './utils';
 import {
 	SettingTabsControl,
 	AccordionControl,
@@ -736,10 +736,11 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									<span
 										className='maxi-style-cards__quick-color-presets__reset-button__preview'
 										style={{
-											background:
-												SC.defaultStyleCard.color[
-													quickColorPreset
-												],
+											background: `rgba(${getDefaultSCAttribute(
+												SC,
+												quickColorPreset,
+												'color'
+											)}, 1)`,
 										}}
 									/>
 									<Icon icon={reset} />

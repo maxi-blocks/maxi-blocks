@@ -224,7 +224,6 @@ const MaxiStyleCardsEditor = ({ styleCards }) => {
 	};
 
 	const resetCurrentSC = () => {
-		console.log(styleCards);
 		const resetStyleCards = {
 			...styleCards,
 			[selectedSCKey]: {

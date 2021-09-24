@@ -7,7 +7,7 @@ import { uniqueId } from 'lodash';
 /**
  * Styles
  */
-import './style.scss';
+import './editor.scss';
 
 /**
  * Component

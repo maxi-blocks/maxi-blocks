@@ -9,7 +9,7 @@ import { useState } from '@wordpress/element';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-import FancyRadioControl from '../../../toggle-switch';
+import FancyRadioControl from '../../../fancy-radio-control';
 import {
 	getDefaultAttribute,
 	getBlockStyle,

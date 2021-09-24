@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { RawHTML, useState } from '@wordpress/element';
 import { Button } from '@wordpress/components';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -15,7 +14,7 @@ import { Icon } from '../../components';
 /**
  * External dependencies
  */
-import { isEmpty, cloneDeep } from 'lodash';
+import { isEmpty } from 'lodash';
 
 /**
  * Icons
@@ -31,19 +30,14 @@ const MaxiModal = props => {
 		clientId,
 		empty,
 		style,
-		layerId,
 		openFirstTime,
 		onOpen = null,
 		onRemove,
 		onSelect,
-		...rest
+		icon,
 	} = props;
 
 	const [isOpen, changeIsOpen] = useState(openFirstTime);
-
-	const { getBlockAttributes } = select('core/block-editor');
-
-	const attributes = rest || getBlockAttributes(clientId);
 
 	const onClick = () => {
 		changeIsOpen(!isOpen);
@@ -106,14 +100,13 @@ const MaxiModal = props => {
 						className='maxi-library-modal__action-section__buttons__load-library'
 						onClick={onClick}
 					>
-						{isEmpty(attributes['icon-content'])
+						{isEmpty(icon)
 							? __('Add Icon', 'maxi-blocks')
 							: __('Replace Icon', 'maxi-blocks')}
 					</Button>
 				)}
 				{isOpen && (
 					<CloudLibrary
-						layerId={layerId}
 						cloudType={type}
 						onClose={onClick}
 						blockStyle={style}
@@ -121,98 +114,40 @@ const MaxiModal = props => {
 					/>
 				)}
 			</div>
-			{attributes &&
-				type === 'button-icon' &&
-				attributes['icon-content'] && (
-					<div className='maxi-library-modal__action-section__preview'>
-						<Icon
-							className='maxi-library-modal__action-section__preview--remove'
-							icon={remove}
-							onClick={() =>
-								onRemove({
-									'icon-content': '',
-									'icon-only': false,
-								})
-							}
-						/>
-						<RawHTML className='maxi-library-modal__action-section__preview__icon'>
-							{attributes['icon-content']}
-						</RawHTML>
-					</div>
-				)}
-			{attributes &&
-				type === 'sidebar-block-shape' &&
-				attributes.shapeSVGElement && (
-					<div className='maxi-library-modal__action-section__preview'>
-						<RawHTML className='maxi-library-modal__action-section__preview__shape'>
-							{attributes.shapeSVGElement}
-						</RawHTML>
-					</div>
-				)}
-			{attributes &&
-				type === 'bg-shape' &&
-				attributes['background-layers-status'] &&
-				!isEmpty(
-					attributes['background-layers'][layerId][
-						'background-svg-SVGElement'
-					]
-				) && (
-					<div className='maxi-library-modal__action-section__preview'>
-						<Icon
-							className='maxi-library-modal__action-section__preview--remove'
-							icon={remove}
-							onClick={() => {
-								const newBgLayers = cloneDeep(
-									attributes['background-layers']
-								);
-
-								delete newBgLayers[layerId][
-									'background-svg-SVGElement'
-								];
-								delete newBgLayers[layerId][
-									'background-svg-SVGMediaID'
-								];
-								delete newBgLayers[layerId][
-									'background-svg-SVGMediaURL'
-								];
-								delete newBgLayers[layerId][
-									'background-svg-SVGData'
-								];
-
-								onRemove({
-									'background-layers': [...newBgLayers],
-								});
-							}}
-						/>
-						<RawHTML className='maxi-library-modal__action-section__preview__shape'>
-							{
-								attributes['background-layers'][layerId][
-									'background-svg-SVGElement'
-								]
-							}
-						</RawHTML>
-					</div>
-				)}
-			{attributes &&
-				type === 'bg-shape' &&
-				!attributes['background-layers-status'] &&
-				!isEmpty(attributes['background-svg-SVGElement']) && (
-					<div className='maxi-library-modal__action-section__preview'>
-						<Icon
-							className='maxi-library-modal__action-section__preview--remove'
-							icon={remove}
-							onClick={() =>
-								onRemove({
-									'background-svg-SVGElement': '',
-								})
-							}
-						/>
-						<RawHTML className='maxi-library-modal__action-section__preview__shape'>
-							{attributes['background-svg-SVGElement']}
-						</RawHTML>
-					</div>
-				)}
-			{attributes && type === 'image-shape' && attributes.SVGElement && (
+			{type === 'button-icon' && !isEmpty(icon) && (
+				<div className='maxi-library-modal__action-section__preview'>
+					<Icon
+						className='maxi-library-modal__action-section__preview--remove'
+						icon={remove}
+						onClick={() =>
+							onRemove({
+								'icon-content': '',
+								'icon-only': false,
+							})
+						}
+					/>
+					<RawHTML className='maxi-library-modal__action-section__preview__icon'>
+						{icon}
+					</RawHTML>
+				</div>
+			)}
+			{type === 'bg-shape' && !isEmpty(icon) && (
+				<div className='maxi-library-modal__action-section__preview'>
+					<Icon
+						className='maxi-library-modal__action-section__preview--remove'
+						icon={remove}
+						onClick={() => {
+							onRemove({
+								'background-svg-SVGElement': '',
+							});
+						}}
+					/>
+					<RawHTML className='maxi-library-modal__action-section__preview__shape'>
+						{icon}
+					</RawHTML>
+				</div>
+			)}
+			{type === 'image-shape' && !isEmpty(icon) && (
 				<div className='maxi-library-modal__action-section__preview'>
 					<Icon
 						className='maxi-library-modal__action-section__preview--remove'
@@ -225,7 +160,7 @@ const MaxiModal = props => {
 						}
 					/>
 					<RawHTML className='maxi-library-modal__action-section__preview__shape'>
-						{attributes.SVGElement}
+						{icon}
 					</RawHTML>
 				</div>
 			)}

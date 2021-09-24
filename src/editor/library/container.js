@@ -141,7 +141,7 @@ const MasonryItem = props => {
  * Component
  */
 const LibraryContainer = props => {
-	const { type, onRequestClose, blockStyle, layerId, onSelect } = props;
+	const { type, onRequestClose, blockStyle, onSelect } = props;
 
 	const {
 		styleCards,
@@ -393,8 +393,6 @@ const LibraryContainer = props => {
 			uniqueID,
 			mediaID,
 			mediaURL,
-			'background-layers': bgLayers,
-			'background-layers-status': bgLayersStatus,
 			'background-svg-SVGData': svgData,
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
@@ -443,26 +441,12 @@ const LibraryContainer = props => {
 
 				const resEl = injectImgSVG(svg, resData);
 
-				if (!bgLayersStatus) {
-					onSelect({
-						'background-svg-SVGElement': resEl.outerHTML,
-						'background-svg-SVGMediaID': null,
-						'background-svg-SVGMediaURL': null,
-						'background-svg-SVGData': resData,
-					});
-				} else {
-					const newBgLayers = cloneDeep(bgLayers);
-
-					newBgLayers[layerId]['background-svg-SVGElement'] =
-						resEl.outerHTML;
-					newBgLayers[layerId]['background-svg-SVGMediaID'] = '';
-					newBgLayers[layerId]['background-svg-SVGMediaURL'] = '';
-					newBgLayers[layerId]['background-svg-SVGData'] = resData;
-
-					onSelect({
-						'background-layers': [...newBgLayers],
-					});
-				}
+				onSelect({
+					'background-svg-SVGElement': resEl.outerHTML,
+					'background-svg-SVGMediaID': null,
+					'background-svg-SVGMediaURL': null,
+					'background-svg-SVGData': resData,
+				});
 
 				onRequestClose();
 			}

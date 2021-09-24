@@ -90,7 +90,7 @@ const IconControl = props => {
 					style={parentBlockStyle}
 					onSelect={obj => onChange(obj)}
 					onRemove={obj => onChange(obj)}
-					{...props}
+					icon={props['icon-content']}
 				/>
 			)}
 			{isHover && (

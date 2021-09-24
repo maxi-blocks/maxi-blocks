@@ -152,6 +152,8 @@
 	// RangeControl
 	.components-range-control {
 		.components-range-control__root {
+			align-items: center;
+
 			& > span:not(.components-range-control__wrapper) {
 				margin-left: 8px;
 			}

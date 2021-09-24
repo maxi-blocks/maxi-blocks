@@ -338,48 +338,6 @@ motionElems.forEach(function (elem) {
 			}
 		}
 
-		// Entrance Animation
-		if (
-			'entrance-type' in motionData &&
-			motionData['entrance-type'] !== 'none'
-		) {
-			const entranceElem = document.querySelector(`#${motionID}`);
-
-			const entranceType = motionData['entrance-type'];
-			const entranceDuration =
-				motionData['entrance-duration'] === ''
-					? 1
-					: motionData['entrance-duration'];
-			const entranceDelay =
-				motionData['entrance-delay'] === ''
-					? 1
-					: motionData['entrance-delay'];
-
-			if (entranceType !== '') {
-				entranceElem.style.opacity = '0';
-
-				let waypoint = new Waypoint({
-					element: entranceElem,
-					handler: function () {
-						entranceElem.style.opacity = '1';
-						entranceElem.style.setProperty(
-							'--animate-duration',
-							'' + entranceDuration + 's'
-						);
-						entranceElem.style.setProperty(
-							'animation-delay',
-							'' + entranceDelay + 's'
-						);
-						entranceElem.classList.add(
-							'animate__animated',
-							'animate__' + entranceType + ''
-						);
-					},
-					offset: '100%',
-				});
-			}
-		}
-
 		// Motion Effects
 		const interactionStatus = motionData['motion-status'];
 		const motionMobileStatus = motionData['motion-mobile-status'];

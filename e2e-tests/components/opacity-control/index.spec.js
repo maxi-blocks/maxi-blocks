@@ -39,41 +39,40 @@ describe('OpacityControl', () => {
 	});
 
 	it('Check Responsive opacity control', async () => {
-		const accordionPanel = await openSidebar(page, 'typography');
-
-		const input = await accordionPanel.$(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input'
-		);
+		const accordionPanel = await openAdvancedSidebar(page, 'opacity');
 
 		const generalAttributes = await getBlockAttributes();
-		const opacityGeneral = generalAttributes['palette-opacity-general'];
+		const opacityGeneral = generalAttributes['opacity-general'];
 
-		expect(opacityGeneral).toStrictEqual(19);
+		expect(opacityGeneral).toStrictEqual(0.19);
 
 		// responsive S
 		await changeResponsive(page, 's');
+		await accordionPanel.$eval(
+			'.maxi-opacity-control .maxi-base-control__field input',
+			input => input.focus()
+		);
 
-		await input.focus();
 		await pressKeyTimes('Backspace', '2');
 		await page.keyboard.type('55');
 
 		const responsiveSOption = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input',
+			'.maxi-opacity-control .maxi-base-control__field input',
 			selectedStyle => selectedStyle.value
 		);
 
 		expect(responsiveSOption).toStrictEqual('55');
 
 		const attributes = await getBlockAttributes();
-		const opacity = attributes['palette-opacity-s'];
+		const opacity = attributes['opacity-s'];
 
-		expect(opacity).toStrictEqual(55);
+		expect(opacity).toStrictEqual(0.55);
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input',
+			'.maxi-opacity-control .maxi-base-control__field input',
 			selectedStyle => selectedStyle.value
 		);
 
@@ -83,7 +82,7 @@ describe('OpacityControl', () => {
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input',
+			'.maxi-opacity-control .maxi-base-control__field input',
 			selectedStyle => selectedStyle.value
 		);
 

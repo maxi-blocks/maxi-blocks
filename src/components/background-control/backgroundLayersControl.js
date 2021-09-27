@@ -302,7 +302,7 @@ const BackgroundLayersControl = ({
 			<ToggleSwitch
 				label={__('Use layers', 'maxi-blocks')}
 				selected={layersStatus}
-				onChange={() =>
+				onChange={() => {
 					onChange({
 						[getAttributeKey(
 							'background-layers-status',
@@ -314,8 +314,8 @@ const BackgroundLayersControl = ({
 							isHover,
 							prefix
 						)]: layersStatus ? 'layers' : '',
-					})
-				}
+					});
+				}}
 			/>
 			{layersStatus && (
 				<div>

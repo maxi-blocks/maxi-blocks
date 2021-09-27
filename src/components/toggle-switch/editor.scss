@@ -5,8 +5,13 @@
 	justify-content: space-between;
 	margin-bottom: 8px;
 
-	&__label {
-		cursor: pointer;
+	.maxi-base-control {
+		&__field {
+			width: 100%;
+		}
+		&__label {
+			cursor: pointer;
+		}
 	}
 	&__toggle {
 		cursor: pointer;

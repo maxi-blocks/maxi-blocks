@@ -1,8 +1,17 @@
 /**
+ * WordPress dependencies
+ */
+import { useInstanceId } from '@wordpress/compose';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
-import { uniqueId } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
+import BaseControl from '../base-control';
 
 /**
  * Styles
@@ -12,30 +21,35 @@ import './editor.scss';
 /**
  * Component
  */
-const ToggleSwitch = ({ className, selected = false, onChange, label }) => {
+const ToggleSwitch = ({
+	className,
+	selected = false,
+	onChange,
+	label,
+	help,
+}) => {
 	const classes = classnames('maxi-toggle-switch', className);
-	const labelId = uniqueId('maxi-toggle-switch');
+	const instanceId = useInstanceId(ToggleSwitch);
+	const id = `maxi-toggle-switch-${instanceId}`;
 
 	return (
-		<div className={classes}>
-			{label && (
-				<span
-					onClick={val => onChange(val)}
-					className='maxi-toggle-switch__label'
-				>
-					{label}
-				</span>
-			)}
+		<BaseControl
+			label={label}
+			id={id}
+			help={help}
+			className={classes}
+			onClick={val => onChange(val)}
+		>
 			<div className='maxi-toggle-switch__toggle'>
 				<input
 					onChange={val => onChange(val)}
 					checked={selected}
 					type='checkbox'
-					id={labelId}
+					id={id}
 				/>
-				<label htmlFor={labelId} />
+				<label htmlFor={id} />
 			</div>
-		</div>
+		</BaseControl>
 	);
 };
 

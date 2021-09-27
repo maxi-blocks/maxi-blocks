@@ -135,7 +135,7 @@ const DividerControl = props => {
 						})
 					}
 					disableGradient
-					globalProps={{ target: 'color-global', type: 'divider' }}
+					globalProps={{ target: '', type: 'divider' }}
 					isHover={isHover}
 					clientId={clientId}
 				/>

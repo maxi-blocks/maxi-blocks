@@ -80,6 +80,7 @@ const Inspector = memo(
 			imageRatio,
 			isImageUrl,
 			parentBlockStyle,
+			SVGElement,
 		} = attributes;
 		const { wpAlt, titleAlt } = altOptions || {};
 
@@ -1089,7 +1090,16 @@ const Inspector = memo(
 													'maxi-blocks'
 												),
 												content: (
-													<MaxiModal type='image-shape' />
+													<MaxiModal
+														type='image-shape'
+														onSelect={obj => {
+															setAttributes(obj);
+														}}
+														onRemove={obj => {
+															setAttributes(obj);
+														}}
+														icon={SVGElement}
+													/>
 												),
 											},
 											{
@@ -1239,17 +1249,14 @@ const Inspector = memo(
 												),
 												content: (
 													<OpacityControl
-														opacity={
-															attributes[
-																`opacity-${deviceType}`
-															]
+														{...getGroupAttributes(
+															attributes,
+															'opacity'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
 														}
-														onChange={val =>
-															setAttributes({
-																[`opacity-${deviceType}`]:
-																	val,
-															})
-														}
+														breakpoint={deviceType}
 													/>
 												),
 											},

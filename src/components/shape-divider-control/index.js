@@ -321,7 +321,6 @@ const ShapeDividerControl = props => {
 											paletteStatus,
 									})
 								}
-								showPalette
 								disableOpacity
 							/>
 							<AdvancedNumberControl
@@ -462,7 +461,6 @@ const ShapeDividerControl = props => {
 											paletteStatus,
 									})
 								}
-								showPalette
 								disableOpacity
 							/>
 							<AdvancedNumberControl

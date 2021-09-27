@@ -116,7 +116,7 @@ const BackgroundColor = props => {
 						}
 						globalProps={
 							blockName === 'maxi-blocks/button-maxi' && {
-								target: 'background-color-global',
+								target: 'background',
 								type: 'button',
 							}
 						}

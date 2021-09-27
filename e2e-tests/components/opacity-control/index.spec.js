@@ -39,33 +39,23 @@ describe('OpacityControl', () => {
 	});
 
 	it('Check Responsive opacity control', async () => {
-		await createNewPost();
-		await insertBlock('Text Maxi');
-		await page.keyboard.type('Testing Text Maxi');
 		const accordionPanel = await openSidebar(page, 'typography');
 
 		const input = await accordionPanel.$(
 			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input'
 		);
 
-		await input.focus();
-		await page.waitForTimeout(100);
-		await page.keyboard.type('80');
-		await changeResponsive(page, 's');
-		const opacityLevel = await page.$eval(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input',
-			button => button.value
-		);
+		const generalAttributes = await getBlockAttributes();
+		const opacityGeneral = generalAttributes['palette-opacity-general'];
 
-		expect(opacityLevel).toStrictEqual('80');
+		expect(opacityGeneral).toStrictEqual(19);
 
 		// responsive S
-		await page.waitForTimeout(100);
 		await changeResponsive(page, 's');
 
 		await input.focus();
 		await pressKeyTimes('Backspace', '2');
-		await page.keyboard.type('55', { delay: 100 });
+		await page.keyboard.type('55');
 
 		const responsiveSOption = await page.$eval(
 			'.maxi-typography-control .maxi-color-palette-control .maxi-advanced-number-control input',
@@ -80,7 +70,6 @@ describe('OpacityControl', () => {
 		expect(opacity).toStrictEqual(55);
 
 		// responsive XS
-		await page.waitForTimeout(100);
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$eval(
@@ -91,7 +80,6 @@ describe('OpacityControl', () => {
 		expect(responsiveXsOption).toStrictEqual('55');
 
 		// responsive M
-		await page.waitForTimeout(100);
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$eval(
@@ -99,6 +87,6 @@ describe('OpacityControl', () => {
 			selectedStyle => selectedStyle.value
 		);
 
-		expect(responsiveMOption).toStrictEqual('80');
+		expect(responsiveMOption).toStrictEqual('19');
 	});
 });

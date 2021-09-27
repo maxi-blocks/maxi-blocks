@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	pressKeyTimes,
-	setBrowserViewport,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyTimes } from '@wordpress/e2e-test-utils';
 
 const receiveSelectedMaxiStyle = async () => {
 	return page.evaluate(() => {
@@ -18,7 +14,11 @@ const receiveSelectedMaxiStyle = async () => {
 describe('StyleCards headings', () => {
 	it('Check Headings', async () => {
 		await createNewPost();
-		await setBrowserViewport('large');
+		await page.setViewport({
+			width: 1280,
+			height: 1800,
+		});
+
 		await page.$eval('.maxi-toolbar-layout button', button =>
 			button.click()
 		);

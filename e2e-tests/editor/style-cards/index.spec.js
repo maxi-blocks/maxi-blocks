@@ -2,10 +2,16 @@
  * WordPress dependencies
  */
 import {
+	insertBlock,
 	createNewPost,
 	pressKeyTimes,
 	setBrowserViewport,
 } from '@wordpress/e2e-test-utils';
+
+/**
+ * Internal dependencies
+ */
+import { getBlockAttributes, openSidebar } from '../../utils';
 
 const receiveSelectedMaxiStyle = async () => {
 	return page.evaluate(() => {
@@ -259,5 +265,53 @@ describe('StyleCards', () => {
 		} = await receiveSelectedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
+	});
+
+	it('Maxi Cloud Library', async () => {
+		await createNewPost();
+		await setBrowserViewport('large');
+
+		await page.$eval('.maxi-toolbar-layout button', button =>
+			button.click()
+		);
+
+		await page.$$eval(
+			'.maxi-responsive-selector .action-buttons__button',
+			button => button[1].click()
+		);
+
+		await page.waitForTimeout(500);
+
+		await page.$eval(
+			'.maxi-style-cards__sc .maxi-style-cards__sc__more-sc .maxi-library-modal__action-section button',
+			button => button.click()
+		);
+
+		await page.waitForTimeout(500);
+
+		await page.$$eval(
+			'.components-modal__content .maxi-cloud-container .maxi-cloud-container__sc__content-sc .maxi-cloud-masonry-card__container .maxi-cloud-masonry-card__buttons button',
+			button => button[0].click()
+		);
+
+		// colour preset
+		await page.$$eval(
+			'.maxi-accordion-control__item .maxi-accordion-tab div',
+			accordion => accordion[0].click()
+		);
+
+		await page.waitForTimeout(1500); // Ensures SC is saved on the store
+		const {
+			value: {
+				light: { styleCard: expectPresets },
+			},
+		} = await receiveSelectedMaxiStyle();
+
+		expect(expectPresets).toMatchSnapshot();
+
+		await page.$$eval(
+			'.maxi-settingstab-control .maxi-tabs-control button',
+			button => button[1].click()
+		);
 	});
 });

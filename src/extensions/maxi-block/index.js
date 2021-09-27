@@ -123,6 +123,7 @@ class MaxiBlockComponent extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		// Even when not rendering, on breakpoint stage change
 		// re-render the styles
+		console.log('re-render');
 		const breakpoint = select('maxiBlocks').receiveMaxiDeviceType();
 
 		if (breakpoint !== this.currentBreakpoint) {
@@ -137,6 +138,7 @@ class MaxiBlockComponent extends Component {
 			const changedStyle = this.getParentStyle();
 
 			if (changedStyle) {
+				console.log('change style');
 				this.displayStyles(); // force rendering styles after changing parentBlockStyle
 				return true;
 			}
@@ -163,7 +165,7 @@ class MaxiBlockComponent extends Component {
 				delete newAttributes[prop];
 			});
 
-			if (!isEqual(oldAttributes, newAttributes) && false)
+			if (!isEqual(oldAttributes, newAttributes))
 				// Just for debugging 👍
 				this.difference(oldAttributes, newAttributes);
 

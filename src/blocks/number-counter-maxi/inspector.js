@@ -14,7 +14,6 @@ import {
 	BlockStylesControl,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
 	NumberCounterControl,
 	OpacityControl,
 	PositionControl,
@@ -172,23 +171,6 @@ const Inspector = props => {
 										),
 									},
 									{
-										label: __(
-											'Entrance Animation',
-											'maxi-blocks'
-										),
-										content: (
-											<EntranceAnimationControl
-												{...getGroupAttributes(
-													attributes,
-													'entrance'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-											/>
-										),
-									},
-									{
 										label: __('Transform', 'maxi-blocks'),
 										content: (
 											<TransformControl
@@ -268,17 +250,14 @@ const Inspector = props => {
 										label: __('Opacity', 'maxi-blocks'),
 										content: (
 											<OpacityControl
-												opacity={
-													attributes[
-														`opacity-${deviceType}`
-													]
+												{...getGroupAttributes(
+													attributes,
+													'opacity'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
 												}
-												onChange={val =>
-													setAttributes({
-														[`opacity-${deviceType}`]:
-															val,
-													})
-												}
+												breakpoint={deviceType}
 											/>
 										),
 									},

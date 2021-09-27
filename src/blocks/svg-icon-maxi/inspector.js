@@ -17,7 +17,6 @@ import {
 	BoxShadowControl,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
 	FancyRadioControl,
 	FullSizeControl,
 	MotionControl,
@@ -871,23 +870,6 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Entrance Animation',
-												'maxi-blocks'
-											),
-											content: (
-												<EntranceAnimationControl
-													{...getGroupAttributes(
-														attributes,
-														'entrance'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-												/>
-											),
-										},
-										{
-											label: __(
 												'Transform',
 												'maxi-blocks'
 											),
@@ -976,17 +958,14 @@ const Inspector = props => {
 											label: __('Opacity', 'maxi-blocks'),
 											content: (
 												<OpacityControl
-													opacity={
-														attributes[
-															`opacity-${deviceType}`
-														]
+													{...getGroupAttributes(
+														attributes,
+														'opacity'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
 													}
-													onChange={val =>
-														setAttributes({
-															[`opacity-${deviceType}`]:
-																val,
-														})
-													}
+													breakpoint={deviceType}
 												/>
 											),
 										},

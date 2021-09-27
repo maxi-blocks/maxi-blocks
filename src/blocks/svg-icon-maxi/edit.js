@@ -102,17 +102,12 @@ class edit extends MaxiBlockComponent {
 	get getCustomData() {
 		const { uniqueID } = this.props.attributes;
 
-		const motionStatus =
-			!!this.props.attributes['motion-status'] ||
-			!isEmpty(this.props.attributes['entrance-type']);
+		const motionStatus = !!this.props.attributes['motion-status'];
 
 		return {
 			[uniqueID]: {
 				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'entrance',
-					]),
+					...getGroupAttributes(this.props.attributes, 'motion'),
 				}),
 			},
 		};
@@ -167,6 +162,9 @@ class edit extends MaxiBlockComponent {
 						empty={isEmptyContent}
 						style={parentBlockStyle}
 						openFirstTime={openFirstTime}
+						onOpen={obj => setAttributes(obj)}
+						onSelect={obj => setAttributes(obj)}
+						onRemove={obj => setAttributes(obj)}
 					/>
 					{!isEmptyContent && (
 						<BlockResizer

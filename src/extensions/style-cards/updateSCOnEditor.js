@@ -89,14 +89,14 @@ export const getSCVariablesObject = styleCards => {
 	const SC = {
 		dark: {
 			...merge(
-				{ ...styleCards.dark.defaultStyleCard },
-				{ ...styleCards.dark.styleCard }
+				{ ...cloneDeep(styleCards.dark.defaultStyleCard) },
+				{ ...cloneDeep(styleCards.dark.styleCard) }
 			),
 		},
 		light: {
 			...merge(
-				{ ...styleCards.light.defaultStyleCard },
-				{ ...styleCards.light.styleCard }
+				{ ...cloneDeep(styleCards.light.defaultStyleCard) },
+				{ ...cloneDeep(styleCards.light.styleCard) }
 			),
 		},
 	};

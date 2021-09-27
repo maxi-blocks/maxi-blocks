@@ -7,7 +7,8 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import { processSCAttribute } from './utils';
+import { processSCAttribute, getDefaultSCAttribute } from './utils';
+
 import {
 	SettingTabsControl,
 	AccordionControl,
@@ -71,7 +72,6 @@ const GlobalColor = props => {
 			/>
 			{processSCAttribute(SC, globalAttr, groupAttr) && (
 				<ColorControl
-					label={__('Link', 'maxi-blocks')}
 					className={`maxi-style-cards-control__sc__link--${SCStyle}`}
 					paletteStatus={processSCAttribute(
 						SC,
@@ -432,10 +432,11 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									<span
 										className='maxi-style-cards__quick-color-presets__reset-button__preview'
 										style={{
-											background:
-												SC.defaultStyleCard.color[
-													quickColorPreset
-												],
+											background: `rgba(${getDefaultSCAttribute(
+												SC,
+												quickColorPreset,
+												'color'
+											)}, 1)`,
 										}}
 									/>
 									<Icon icon={reset} />

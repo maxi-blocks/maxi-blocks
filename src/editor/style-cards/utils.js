@@ -80,11 +80,8 @@ export const exportStyleCard = (data, fileName) => {
 	document.body.removeChild(a);
 };
 
-export const processSCAttribute = (SC, attr, type) => {
+export const getDefaultSCAttribute = (SC, attr, type) => {
 	if (!isEmpty(SC)) {
-		const value = SC.styleCard?.[type]?.[attr];
-		if (!isNil(value)) return value;
-
 		const defaultValue = SC.defaultStyleCard?.[type]?.[attr];
 		if (!isNil(defaultValue)) {
 			if (isString(defaultValue) && defaultValue.includes('var')) {
@@ -93,6 +90,17 @@ export const processSCAttribute = (SC, attr, type) => {
 				if (!isNil(colorValue)) return colorValue;
 			} else return defaultValue;
 		}
+	}
+
+	return null;
+};
+
+export const processSCAttribute = (SC, attr, type) => {
+	if (!isEmpty(SC)) {
+		const value = SC.styleCard?.[type]?.[attr];
+		if (!isNil(value)) return value;
+
+		return getDefaultSCAttribute(SC, attr, type);
 	}
 
 	return null;

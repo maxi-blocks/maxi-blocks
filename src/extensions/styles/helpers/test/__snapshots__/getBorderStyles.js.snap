@@ -1,9 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`getBorderStyles Ensures 0 is accepted on responsive stages 1`] = `
+Object {
+  "general": Object {
+    "border-bottom-radius": "2px",
+    "border-bottom-width": "2px",
+    "border-color": "rgba(var(--maxi-light-color-7),1)",
+    "border-left-radius": "2px",
+    "border-left-width": "2px",
+    "border-right-radius": "2px",
+    "border-right-width": "2px",
+    "border-style": "solid",
+    "border-top-radius": "2px",
+    "border-top-width": "2px",
+  },
+  "l": Object {},
+  "m": Object {},
+  "s": Object {
+    "border-right-radius": "0px",
+    "border-right-width": "0px",
+  },
+  "xl": Object {},
+  "xs": Object {},
+  "xxl": Object {},
+}
+`;
+
 exports[`getBorderStyles Return a border hover styles object with changes on custom color 1`] = `
 Object {
   "general": Object {
-    "border-color": "rgba(var(--maxi-light-color-5), 1)",
+    "border-color": "rgba(var(--maxi-light-color-5),1)",
   },
   "l": Object {},
   "m": Object {},
@@ -20,7 +46,7 @@ Object {
     "border-bottom-left-radius": "4px",
     "border-bottom-right-radius": "3px",
     "border-bottom-width": "3px",
-    "border-color": "rgba(var(--maxi-light-color-1), 1)",
+    "border-color": "rgba(var(--maxi-light-color-1),1)",
     "border-left-width": "4px",
     "border-right-width": "2px",
     "border-style": "solid",
@@ -45,7 +71,7 @@ Object {
     "border-bottom-left-radius": "4px",
     "border-bottom-right-radius": "3px",
     "border-bottom-width": "3px",
-    "border-color": "rgba(var(--maxi-light-color-1), 0.2)",
+    "border-color": "rgba(var(--maxi-light-color-1),0.2)",
     "border-left-width": "4px",
     "border-right-width": "2px",
     "border-style": "solid",
@@ -54,7 +80,7 @@ Object {
     "border-top-width": "1px",
   },
   "l": Object {
-    "border-color": "rgba(var(--maxi-light-color-1), 1)",
+    "border-color": "rgba(var(--maxi-light-color-1),1)",
   },
   "m": Object {},
   "s": Object {},

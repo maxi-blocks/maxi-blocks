@@ -4,3 +4,8 @@ export { default as presetThree } from './preset-3';
 export { default as presetFour } from './preset-4';
 export { default as presetFive } from './preset-5';
 export { default as presetSix } from './preset-6';
+export { default as presetSeven } from './preset-7';
+export { default as presetEight } from './preset-8';
+export { default as presetNine } from './preset-9';
+export { default as presetTen } from './preset-10';
+export { default as presetEleven } from './preset-11';

@@ -66,7 +66,6 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...attributesData.container,
 	...attributesData.display,
-	...attributesData.entrance,
 	...attributesData.link,
 	...attributesData.margin,
 	...attributesData.motion,
@@ -80,6 +79,7 @@ const attributes = {
 	...attributesData.typography,
 	...attributesData.typographyHover,
 	...attributesData.zIndex,
+	...attributesData.transitionDuration,
 };
 
 export default attributes;

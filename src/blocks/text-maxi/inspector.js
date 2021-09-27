@@ -18,7 +18,6 @@ import {
 	BoxShadowControl,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
 	FancyRadioControl,
 	FontLevelControl,
 	FullSizeControl,
@@ -34,6 +33,7 @@ import {
 	TransformControl,
 	TypographyControl,
 	ZIndexControl,
+	TransitionControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -63,6 +63,7 @@ const Inspector = memo(
 			typeOfList,
 			listStart,
 			listReversed,
+			parentBlockStyle,
 		} = attributes;
 
 		return (
@@ -309,7 +310,7 @@ const Inspector = memo(
 																			isList
 																		}
 																		blockStyle={
-																			blockStyle
+																			parentBlockStyle
 																		}
 																		allowLink
 																	/>
@@ -386,7 +387,7 @@ const Inspector = memo(
 																				}
 																				isHover
 																				blockStyle={
-																					blockStyle
+																					parentBlockStyle
 																				}
 																			/>
 																		)}
@@ -965,23 +966,6 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Entrance Animation',
-													'maxi-blocks'
-												),
-												content: (
-													<EntranceAnimationControl
-														{...getGroupAttributes(
-															attributes,
-															'entrance'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-													/>
-												),
-											},
-											{
-												label: __(
 													'Transform',
 													'maxi-blocks'
 												),
@@ -1089,6 +1073,24 @@ const Inspector = memo(
 																	val,
 															})
 														}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Link Hover Transition',
+													'maxi-blocks'
+												),
+												content: (
+													<TransitionControl
+														{...getGroupAttributes(
+															attributes,
+															'transitionDuration'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
 													/>
 												),
 											},

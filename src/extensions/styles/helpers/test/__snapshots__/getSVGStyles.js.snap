@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getSVGStyles Returns correct styles 1`] = `
+Object {
+  "  .maxi-svg-icon-block__icon svg": Object {
+    "SVGWidth": Object {
+      "general": Object {
+        "max-height": "64px",
+        "max-width": "64px",
+      },
+      "label": "SVG width",
+    },
+  },
+  "  .maxi-svg-icon-block__icon svg g[data-fill]:not([fill^=\\"none\\"])": Object {
+    "SVGPathFill": Object {
+      "general": Object {
+        "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4),1))",
+      },
+      "label": "SVG path-fill",
+    },
+  },
+  "  .maxi-svg-icon-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"])": Object {
+    "SVGPathStroke": Object {
+      "general": Object {
+        "stroke": "var(--maxi-light-icon-line,rgba(var(--maxi-light-color-7),1))",
+      },
+      "label": "SVG",
+    },
+  },
+  "  .maxi-svg-icon-block__icon svg path": Object {
+    "SVGPath": Object {
+      "general": Object {
+        "stroke-width": "2",
+      },
+      "label": "SVG path",
+    },
+  },
+  "  .maxi-svg-icon-block__icon svg path[data-fill]:not([fill^=\\"none\\"])": Object {
+    "SVGPathFill": Object {
+      "general": Object {
+        "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4),1))",
+      },
+      "label": "SVG path-fill",
+    },
+  },
+  "  .maxi-svg-icon-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"])": Object {
+    "SVGPathStroke": Object {
+      "general": Object {
+        "stroke": "var(--maxi-light-icon-line,rgba(var(--maxi-light-color-7),1))",
+      },
+      "label": "SVG",
+    },
+  },
+  "  .maxi-svg-icon-block__icon svg use[data-fill]:not([fill^=\\"none\\"])": Object {
+    "SVGPathFill": Object {
+      "general": Object {
+        "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4),1))",
+      },
+      "label": "SVG path-fill",
+    },
+  },
+  "  .maxi-svg-icon-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"])": Object {
+    "SVGPathStroke": Object {
+      "general": Object {
+        "stroke": "var(--maxi-light-icon-line,rgba(var(--maxi-light-color-7),1))",
+      },
+      "label": "SVG",
+    },
+  },
+}
+`;

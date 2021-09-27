@@ -16,13 +16,17 @@ const controls = {
 	async SAVE_STYLES({ isUpdate, styles }) {
 		const id = select('core/editor').getCurrentPostId();
 		const parsedStyles = frontendStyleGenerator(styles);
+		const fonts = select('maxiBlocks/text').getPostFonts();
 
 		await apiFetch({
 			path: '/maxi-blocks/v1.0/post',
 			method: 'POST',
 			data: {
 				id,
-				meta: parsedStyles,
+				meta: JSON.stringify({
+					styles: parsedStyles,
+					fonts,
+				}),
 				update: isUpdate,
 			},
 		});

@@ -8,7 +8,6 @@ import {
 	getMarginPaddingStyles,
 	getOpacityStyles,
 	getPositionStyles,
-	getSizeStyles,
 	getSvgStyles,
 	getTransformStyles,
 	getZIndexStyles,
@@ -56,9 +55,6 @@ const getNormalObject = props => {
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
 	};
 
 	return response;
@@ -93,37 +89,20 @@ const getHoverObject = props => {
 	return response;
 };
 
-const getSvgObject = (props, target) => {
-	const response = {
-		shape: getSvgStyles(
-			{
-				...getGroupAttributes(props, 'svg'),
-			},
-			target,
-			props.parentBlockStyle
-		),
-	};
-
-	return response;
-};
-
 const getStyles = props => {
-	const { uniqueID } = props;
+	const { uniqueID, parentBlockStyle: blockStyle } = props;
 
 	const response = {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
-			' .maxi-svg-icon-block__icon svg': getSvgObject(props, 'svg'),
-			' .maxi-svg-icon-block__icon svg path': getSvgObject(props, 'path'),
-			' .maxi-svg-icon-block__icon svg > path[data-fill]:not([fill^="none"])':
-				getSvgObject(props, 'path-fill'),
-			' .maxi-svg-icon-block__icon svg > path[data-stroke]:not([stroke^="none"])':
-				getSvgObject(props, 'path-stroke'),
-			' .maxi-svg-icon-block__icon svg > g[data-fill]:not([fill^="none"])':
-				getSvgObject(props, 'path-fill'),
-			' .maxi-svg-icon-block__icon svg > g[data-stroke]:not([stroke^="none"])':
-				getSvgObject(props, 'path-stroke'),
+			...getSvgStyles({
+				obj: {
+					...getGroupAttributes(props, 'svg'),
+				},
+				target: ' .maxi-svg-icon-block__icon',
+				blockStyle,
+			}),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',
@@ -132,7 +111,7 @@ const getStyles = props => {
 					'borderWidth',
 					'borderRadius',
 				]),
-				blockStyle: props.parentBlockStyle,
+				blockStyle,
 			}),
 			...getBackgroundStyles({
 				...getGroupAttributes(props, [
@@ -143,7 +122,7 @@ const getStyles = props => {
 					'borderWidthHover',
 				]),
 				isHover: true,
-				blockStyle: props.parentBlockStyle,
+				blockStyle,
 			}),
 		}),
 	};

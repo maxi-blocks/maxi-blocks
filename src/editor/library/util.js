@@ -24,6 +24,32 @@ export const rgbToHex = color => {
 		: '';
 };
 
+export const fitSvg = svgCode => {
+	const template = document.createElement('div');
+
+	template.setAttribute('id', 'maxi-temporary-elem');
+	template.innerHTML = svgCode.trim();
+	document.querySelector('body').append(template);
+
+	const bbox = document.querySelector('#maxi-temporary-elem svg').getBBox();
+
+	const SVGElement = document.querySelector('#maxi-temporary-elem svg');
+	SVGElement.setAttribute(
+		'viewBox',
+		`${bbox.x}, ${bbox.y}, ${bbox.width}, ${bbox.height}`
+	);
+	SVGElement.removeAttribute('width');
+	SVGElement.removeAttribute('height');
+
+	const newSvgCode = document.querySelector(
+		'#maxi-temporary-elem svg'
+	).outerHTML;
+
+	document.querySelector('#maxi-temporary-elem').remove();
+
+	return newSvgCode;
+};
+
 export const placeholderImage = async () => {
 	const ajaxurl = wp.ajax.settings.url;
 	try {
@@ -210,14 +236,14 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 
 	const currentAttributes = getBlock(clientId).attributes;
 
-	const { receiveStyleCardGlobalValue } = select('maxiBlocks/style-cards');
+	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 
-	const lineColorGlobal = receiveStyleCardGlobalValue(
+	const lineColorGlobal = receiveStyleCardValue(
 		'line',
 		getBlockStyle(clientId),
 		'icon'
 	);
-	const lineColorGlobalStatus = receiveStyleCardGlobalValue(
+	const lineColorGlobalStatus = receiveStyleCardValue(
 		'line-global',
 		getBlockStyle(clientId),
 		'icon'

@@ -15,6 +15,7 @@ import {
 	imageUploader,
 	svgAttributesReplacer,
 	svgCurrentColorStatus,
+	fitSvg,
 } from './util';
 import { injectImgSVG, generateDataObject } from '../../extensions/svg/utils';
 import DOMPurify from 'dompurify';
@@ -32,6 +33,8 @@ import {
 	Menu,
 	HierarchicalMenu,
 	Stats,
+	HitsPerPage,
+	MenuSelect,
 } from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import { uniq, isEmpty, uniqueId, cloneDeep } from 'lodash';
@@ -108,12 +111,13 @@ const MasonryItem = props => {
 					onClick={onRequestInsert}
 				>
 					<div className='maxi-cloud-masonry-card__svg-container__title'>
-						{target === 'button-icon'
+						{target === 'button-icon' || target.includes('Line')
 							? serial.replace(' Line', '')
-							: target === 'image-shape' ||
-							  target === 'bg-shape' ||
-							  target === 'block-shape' ||
-							  target === 'sidebar-block-shape'
+							: [
+									'image-shape',
+									'bg-shape',
+									'sidebar-block-shape',
+							  ].includes(target) || target.includes('Shape')
 							? serial.replace(' Shape', '')
 							: serial}
 					</div>
@@ -311,6 +315,19 @@ const LibraryContainer = props => {
 		}
 	};
 
+	const getShapeType = type => {
+		switch (type) {
+			case 'button-icon':
+				return 'icon';
+			case 'sidebar-block-shape':
+				return 'shape';
+			case 'bg-shape':
+				return 'shape';
+			default:
+				return type;
+		}
+	};
+
 	/** Patterns / Blocks Results */
 	const patternsResults = ({ hit }) => {
 		return (
@@ -331,7 +348,7 @@ const LibraryContainer = props => {
 	};
 
 	/** SVG Icons */
-	const onRequestInsertSVG = svgCode => {
+	const onRequestInsertSVG = (svgCode, svgType) => {
 		const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
 		const newSvgClass = `${svgClass}__${uniqueId()}`;
 		const replaceIt = `${svgClass}`;
@@ -343,6 +360,7 @@ const LibraryContainer = props => {
 
 		if (isValidTemplate(finalSvgCode)) {
 			updateBlockAttributes(clientId, { content: finalSvgCode });
+			updateBlockAttributes(clientId, { svgType });
 			onRequestClose();
 		}
 	};
@@ -350,16 +368,22 @@ const LibraryContainer = props => {
 	/** SVG Icons Results */
 	const svgResults = ({ hit }) => {
 		const newContent = svgAttributesReplacer(blockStyle, hit.svg_code);
+		const svgType = hit.taxonomies.svg_category[0];
+		const shapeType = getShapeType(type);
 
 		return (
 			<MasonryItem
 				type='svg'
+				target={svgType}
 				key={`maxi-cloud-masonry__item-${hit.post_id}`}
 				svgCode={newContent}
 				isPro={hit.taxonomies.cost === 'pro'}
 				serial={hit.post_title}
-				onRequestInsert={() => onRequestInsertSVG(newContent)}
-				currentItemColorStatus={svgCurrentColorStatus(blockStyle)}
+				onRequestInsert={() => onRequestInsertSVG(newContent, svgType)}
+				currentItemColorStatus={svgCurrentColorStatus(
+					blockStyle,
+					shapeType
+				)}
 			/>
 		);
 	};
@@ -376,7 +400,7 @@ const LibraryContainer = props => {
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
 		if (isValidTemplate(svgCode)) {
-			if (type === 'block-shape' || type === 'sidebar-block-shape') {
+			if (type === 'sidebar-block-shape') {
 				const SVGData = {
 					[`${uniqueID}__${uniqueId()}`]: {
 						color: '',
@@ -394,7 +418,7 @@ const LibraryContainer = props => {
 			}
 
 			if (type === 'bg-shape') {
-				const cleanedContent = DOMPurify.sanitize(svgCode);
+				const cleanedContent = DOMPurify.sanitize(fitSvg(svgCode));
 				const svg = document
 					.createRange()
 					.createContextualFragment(cleanedContent).firstElementChild;
@@ -485,16 +509,9 @@ const LibraryContainer = props => {
 		}
 	};
 
-	/** Shapes Resutls */
+	/** Shapes Results */
 	const svgShapeResults = ({ hit }) => {
-		const shapeType =
-			type === 'button-icon'
-				? 'icon'
-				: type === 'block-shape' ||
-				  type === 'sidebar-block-shape' ||
-				  type === 'bg-shape'
-				? 'shape'
-				: type;
+		const shapeType = getShapeType(type);
 
 		const newContent = svgAttributesReplacer(
 			blockStyle,
@@ -596,13 +613,28 @@ const LibraryContainer = props => {
 								searchAsYouType
 								showLoadingIndicator
 							/>
-							<RefinementList
-								className='hidden'
+							<MenuSelect
+								className='maxi-cloud-container__content-svg-shape__categories'
 								attribute='taxonomies.svg_category'
-								defaultRefinement={['Filled']}
-								showLoadingIndicator
+								translations={{
+									seeAllOption: __(
+										'All icons',
+										'maxi-blocks'
+									),
+								}}
 							/>
 							<Stats translations={resultsCount} />
+							<HitsPerPage
+								defaultRefinement={49}
+								items={[
+									{ value: 49, label: 'Show 50 per screen' },
+									{ value: 98, label: 'Show 100 per screen' },
+									{
+										value: 196,
+										label: 'Show 200 per screen',
+									},
+								]}
+							/>
 						</div>
 						<InfiniteHits hitComponent={svgResults} />
 					</div>

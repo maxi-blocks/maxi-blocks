@@ -219,7 +219,7 @@ const AxisControl = props => {
 				breakpoint === 'general' ? getDefaultAttribute(syncKey) : false;
 
 			response[syncKey] = newSyncValue;
-		} else {
+		} else if (target === 'padding' || target === 'margin') {
 			syncArray.forEach(key => {
 				response[
 					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
@@ -228,6 +228,7 @@ const AxisControl = props => {
 				);
 			});
 		}
+
 		onChange(response);
 	};
 
@@ -374,8 +375,8 @@ const AxisControl = props => {
 						onChangeValue(e.target.value, inputsArray[0])
 					}
 					ariaLabel={sprintf(__('%s Top', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit].min}
-					max={minMaxSettings[currentUnit].max}
+					min={minMaxSettings[currentUnit]?.min}
+					max={minMaxSettings[currentUnit]?.max}
 					disableAuto={disableAuto}
 					checked={getLastBreakpointValue(inputsArray[0]) === 'auto'}
 					onChangeCheckbox={e =>
@@ -424,8 +425,8 @@ const AxisControl = props => {
 						onChangeValue(e.target.value, inputsArray[2])
 					}
 					ariaLabel={sprintf(__('%s Bottom', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit].min}
-					max={minMaxSettings[currentUnit].max}
+					min={minMaxSettings[currentUnit]?.min}
+					max={minMaxSettings[currentUnit]?.max}
 					disableAuto={disableAuto}
 					checked={getLastBreakpointValue(inputsArray[2]) === 'auto'}
 					onChangeCheckbox={e =>
@@ -473,8 +474,8 @@ const AxisControl = props => {
 						onChangeValue(e.target.value, inputsArray[3])
 					}
 					ariaLabel={sprintf(__('%s Left', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit].min}
-					max={minMaxSettings[currentUnit].max}
+					min={minMaxSettings[currentUnit]?.min}
+					max={minMaxSettings[currentUnit]?.max}
 					disableAuto={disableAuto}
 					checked={getLastBreakpointValue(inputsArray[3]) === 'auto'}
 					onChangeCheckbox={e =>
@@ -523,8 +524,8 @@ const AxisControl = props => {
 						onChangeValue(e.target.value, inputsArray[1])
 					}
 					ariaLabel={sprintf(__('%s Right', 'maxi-blocks'), label)}
-					min={minMaxSettings[currentUnit].min}
-					max={minMaxSettings[currentUnit].max}
+					min={minMaxSettings[currentUnit]?.min}
+					max={minMaxSettings[currentUnit]?.max}
 					disableAuto={disableAuto}
 					checked={getLastBreakpointValue(inputsArray[1]) === 'auto'}
 					onChangeCheckbox={e =>

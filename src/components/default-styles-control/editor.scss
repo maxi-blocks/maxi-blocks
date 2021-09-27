@@ -10,10 +10,19 @@
 		width: calc(25% - 8px);
 		margin: 4px 0;
 		height: 40px;
-		background: #f8f8f8;
+		border: 1px solid #dbdde6;
 
 		&--active {
-			border: 2px solid #dddfe2;
+			background-color: #f8fbfd;
+			border: 1px solid #e2e3eb;
+			&:first-child,
+			&:nth-child-4 {
+				svg {
+					path {
+						fill: #007cba;
+					}
+				}
+			}
 		}
 
 		&:focus {

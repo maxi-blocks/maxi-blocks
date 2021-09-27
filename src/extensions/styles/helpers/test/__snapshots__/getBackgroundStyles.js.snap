@@ -51,7 +51,7 @@ Object {
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__color": Object {
     "background": Object {
       "general": Object {
-        "background-color": "rgba(var(--maxi-undefined-color-1), 0.2)",
+        "background-color": "rgba(var(--maxi-undefined-color-1),0.2)",
         "clip-path": "rgba(2,0,36,1)",
       },
       "label": "Background Color",
@@ -132,18 +132,16 @@ Object {
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg": Object {
     "SVGBackground": Object {
       "general": Object {
-        "height": "2%",
         "left": "1%",
         "top": "4%",
+        "width": "2%",
       },
       "label": "SVG Wrapper Background",
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg svg *": Object {
     "SVGBackground": Object {
-      "general": Object {
-        "height": "2%",
-      },
+      "general": Object {},
       "label": "SVG Background",
     },
   },
@@ -232,16 +230,14 @@ Object {
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
     "backgroundSVG": Object {
       "general": Object {
-        "height": "100%",
+        "width": "100%",
       },
       "label": "SVG Wrapper Background",
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
     "backgroundSVG": Object {
-      "general": Object {
-        "height": "100%",
-      },
+      "general": Object {},
       "label": "SVG Background",
     },
   },

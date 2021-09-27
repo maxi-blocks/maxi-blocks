@@ -1,5 +1,3 @@
-import './store';
-
 export { default as getColumnDefaultValue } from './getColumnDefaultValue';
 export { default as getNumCol } from './getNumCol';
 export { default as getTemplateObject } from './getTemplateObject';

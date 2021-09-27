@@ -76,33 +76,12 @@ const ArrowControl = props => {
 		!props['background-layers-status'] &&
 		props['background-active-media'] !== 'color';
 
-	const layerBackgroundColorStatus =
-		props['background-layers-status'] &&
-		(props['background-layers'] === undefined ||
-			props['background-layers'].length < 1 ||
-			props['background-layers'][props['background-layers'].length - 1]
-				.type !== 'color');
-
 	return (
 		<div className={classes}>
 			{simpleBackgroundColorStatus && (
 				<InfoBox
 					message={__(
 						'Please set background colour to see the arrow.',
-						'maxi-blocks'
-					)}
-					links={[
-						{
-							title: __('Background colour', 'maxi-blocks'),
-							panel: 'background',
-						},
-					]}
-				/>
-			)}
-			{layerBackgroundColorStatus && (
-				<InfoBox
-					message={__(
-						'The first background layer should be a colour to see the arrow.',
 						'maxi-blocks'
 					)}
 					links={[

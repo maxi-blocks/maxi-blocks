@@ -394,7 +394,7 @@ const getSVGWrapperBackgroundObject = SVGOptions => {
 	};
 
 	if (SVGOptions['background-svg-size'])
-		response.general.height = `${SVGOptions['background-svg-size']}${SVGOptions['background-svg-size--unit']}`;
+		response.general.width = `${SVGOptions['background-svg-size']}${SVGOptions['background-svg-size--unit']}`;
 
 	if (SVGOptions['background-svg-top'])
 		response.general.top = `${SVGOptions['background-svg-top']}${SVGOptions['background-svg-top--unit']}`;
@@ -410,9 +410,6 @@ const getSVGBackgroundObject = ({ blockStyle, ...props }) => {
 		label: 'SVG Background',
 		general: {},
 	};
-
-	if (props['background-svg-size'])
-		response.general.height = `${props['background-svg-size']}${props['background-svg-size--unit']}`;
 
 	if (props['background-palette-svg-color-status'])
 		response.general.fill = getColorRGBAString({
@@ -562,6 +559,26 @@ const getGeneralBackgroundStyles = (
 		parentBlockStyle: blockStyle,
 		isHover,
 	});
+
+	breakpoints.forEach(breakpoint => {
+		if (border[breakpoint]['border-top-width'])
+			border[breakpoint]['border-top-style'] =
+				border[breakpoint]['border-style'];
+
+		if (border[breakpoint]['border-right-width'])
+			border[breakpoint]['border-right-style'] =
+				border[breakpoint]['border-style'];
+
+		if (border[breakpoint]['border-bottom-width'])
+			border[breakpoint]['border-bottom-style'] =
+				border[breakpoint]['border-style'];
+
+		if (border[breakpoint]['border-left-width'])
+			border[breakpoint]['border-left-style'] =
+				border[breakpoint]['border-style'];
+	});
+
+	delete border.general['border-style'];
 
 	// Clean size object
 	if (!isEmpty(size))

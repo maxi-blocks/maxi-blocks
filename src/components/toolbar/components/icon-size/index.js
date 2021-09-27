@@ -9,6 +9,8 @@ import { __ } from '@wordpress/i18n';
 import AdvancedNumberControl from '../../../advanced-number-control';
 import ToolbarPopover from '../toolbar-popover';
 import { getDefaultAttribute } from '../../../../extensions/styles';
+import SvgWidthControl from '../../../svg-width-control';
+import SvgStrokeWidthControl from '../../../svg-stroke-width-control';
 
 /**
  * Styles & Icons
@@ -20,7 +22,7 @@ import { toolbarShapeWidth } from '../../../../icons';
  * Component
  */
 const IconSize = props => {
-	const { blockName, onChange } = props;
+	const { blockName, onChange, breakpoint } = props;
 
 	if (blockName !== 'maxi-blocks/button-maxi') return null;
 
@@ -31,31 +33,40 @@ const IconSize = props => {
 			icon={toolbarShapeWidth}
 		>
 			<div className='toolbar-item__icon-size__popover'>
-				<AdvancedNumberControl
-					label={__('Size', 'maxi-blocks')}
-					min={1}
-					max={999}
-					initial={1}
-					step={1}
-					value={props['icon-size']}
-					onChangeValue={val => onChange({ 'icon-size': val })}
-					onReset={() =>
-						onChange({
-							'icon-size': getDefaultAttribute('icon-size'),
-						})
-					}
+				<SvgWidthControl
+					prefix='icon-'
+					{...props}
+					onChange={obj => {
+						onChange(obj);
+					}}
+					breakpoint={breakpoint}
+				/>
+				<SvgStrokeWidthControl
+					prefix='icon-'
+					{...props}
+					onChange={obj => {
+						onChange(obj);
+					}}
+					breakpoint={breakpoint}
 				/>
 				<AdvancedNumberControl
 					label={__('Spacing', 'maxi-blocks')}
-					min={1}
+					min={0}
 					max={999}
 					initial={1}
 					step={1}
-					value={props['icon-spacing']}
-					onChangeValue={val => onChange({ 'icon-spacing': val })}
+					value={props[`icon-spacing-${breakpoint}`]}
+					onChangeValue={val => {
+						onChange({
+							[`icon-spacing-${breakpoint}`]:
+								val !== undefined && val !== '' ? val : '',
+						});
+					}}
 					onReset={() =>
 						onChange({
-							'icon-spacing': getDefaultAttribute('icon-spacing'),
+							[`icon-spacing-${breakpoint}`]: getDefaultAttribute(
+								`icon-spacing-${breakpoint}`
+							),
 						})
 					}
 				/>

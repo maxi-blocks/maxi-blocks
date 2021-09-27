@@ -36,7 +36,11 @@ const save = props => {
 			isSave
 		>
 			<ArrowDisplayer
-				{...getGroupAttributes(attributes, ['background', 'arrow'])}
+				{...getGroupAttributes(
+					attributes,
+					['background', 'arrow', 'border'],
+					true
+				)}
 			/>
 			{attributes['shape-divider-top-status'] && (
 				<ShapeDivider

@@ -3,6 +3,26 @@ import getLinkStyles from '../getLinkStyles';
 describe('getLinkStyles', () => {
 	it('Returns a correct object', () => {
 		const obj = {
+			'link-palette-color-status-general': true,
+			'link-palette-color-general': 4,
+			'link-hover-palette-color-status-general': true,
+			'link-hover-palette-color-general': 4,
+			'link-hover-palette-opacity-general': 20,
+			'link-active-palette-color-status-general': true,
+			'link-active-palette-color-general': 3,
+			'link-visited-palette-color-status-general': true,
+			'link-visited-palette-color-general': 3,
+		};
+		const target = ' p.maxi-text-block__content a';
+		const parentBlockStyles = 'light';
+
+		const result = getLinkStyles(obj, target, parentBlockStyles);
+
+		expect(result).toMatchSnapshot();
+	});
+
+	it('Returns a correct object with custom colors', () => {
+		const obj = {
 			'link-palette-color-status-general': false,
 			'link-palette-color-general': 4,
 			'link-color-general': 'rgba(57,189,39,1)',

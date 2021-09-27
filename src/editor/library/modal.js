@@ -92,25 +92,6 @@ class MaxiModal extends Component {
 							icon={toolbarReplaceImage}
 						/>
 					)}
-					{type === 'block-shape' && empty && (
-						<div className='maxi-shape-block__placeholder'>
-							<Button
-								isPrimary
-								key={`maxi-block-library__modal-button--${clientId}`}
-								className='maxi-block-library__modal-button'
-								onClick={onClick}
-							>
-								{__('Select Shape', 'maxi-blocks')}
-							</Button>
-						</div>
-					)}
-					{type === 'block-shape' && (
-						<Button
-							className='maxi-shape-block__replace-icon'
-							onClick={onClick}
-							icon={toolbarReplaceImage}
-						/>
-					)}
 					{(type === 'bg-shape' ||
 						type === 'image-shape' ||
 						type === 'sidebar-block-shape') && (
@@ -154,6 +135,7 @@ class MaxiModal extends Component {
 										getSelectedBlockClientId(),
 										{
 											'icon-content': '',
+											'icon-only': false,
 										}
 									)
 								}

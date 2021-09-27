@@ -6,7 +6,6 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
-	setBrowserViewport,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -139,7 +138,7 @@ describe('BackgroundControl', () => {
 
 		const colorAttributes = await getBlockAttributes();
 		const result = colorAttributes['background-color'];
-		const expectedColor = 'rgba(0,0,0,1)';
+		const expectedColor = 'rgb(0,0,0)';
 
 		expect(result).toStrictEqual(expectedColor);
 	});

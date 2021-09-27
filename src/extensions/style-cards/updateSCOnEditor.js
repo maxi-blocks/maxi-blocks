@@ -6,13 +6,34 @@ import { dispatch } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, getLastBreakpointAttribute } from '../styles';
+import {
+	getColorRGBAString,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '../styles';
 
 /**
  * External dependencies
  */
 import { times, isEmpty, merge, cloneDeep } from 'lodash';
 import { getTypographyStyles } from '../styles/helpers';
+
+const getColorString = (obj, target, style) => {
+	const prefix = target ? `${target}-` : '';
+
+	const paletteStatus = obj[`${prefix}palette-status`];
+	const paletteColor = obj[`${prefix}palette-color`];
+	const paletteOpacity = obj[`${prefix}palette-opacity`];
+	const color = obj[`${prefix}color`];
+
+	return paletteStatus
+		? getColorRGBAString({
+				firstVar: `color-${paletteColor}`,
+				blockStyle: style,
+				opacity: paletteOpacity,
+		  })
+		: color;
+};
 
 const getParsedObj = obj => {
 	const newObj = cloneDeep(obj);
@@ -109,9 +130,12 @@ export const getSCVariablesObject = styleCards => {
 					});
 				});
 
-			if (obj['color-global'] && !isEmpty(obj.color))
-				response[`--maxi-${style}-${element}-color`] = obj.color;
-
+			if (obj['color-global'])
+				response[`--maxi-${style}-${element}-color`] = getColorString(
+					obj,
+					null,
+					style
+				);
 			switch (element) {
 				case 'button':
 					if (
@@ -155,34 +179,43 @@ export const getSCVariablesObject = styleCards => {
 
 				case 'icon':
 					if (obj['line-global'] && !isEmpty(obj.line))
-						response[`--maxi-${style}-${element}-line`] = obj.line;
+						response[`--maxi-${style}-${element}-line`] =
+							getColorString(obj, 'line', style);
 
 					if (obj['fill-global'] && !isEmpty(obj.fill))
-						response[`--maxi-${style}-${element}-fill`] = obj.fill;
+						response[`--maxi-${style}-${element}-fill`] =
+							getColorString(obj, 'fill', style);
 
 					break;
 
 				case 'link':
 					if (obj['link-color-global'])
-						response[`--maxi-${style}-link`] = obj['link-color'];
+						response[`--maxi-${style}-link`] = getColorString(
+							obj,
+							'link',
+							style
+						);
 					if (obj['hover-color-global'])
-						response[`--maxi-${style}-link-hover`] =
-							obj['hover-color'];
+						response[`--maxi-${style}-link-hover`] = getColorString(
+							obj,
+							'hover',
+							style
+						);
 					if (obj['active-color-global'])
 						response[`--maxi-${style}-link-active`] =
-							obj['active-color'];
+							getColorString(obj, 'active', style);
 					if (obj['visited-color-global'])
 						response[`--maxi-${style}-link-visited`] =
-							obj['visited-color'];
+							getColorString(obj, 'visited', style);
 
 					break;
 
 				default:
-					return false;
+					break;
 			}
 		});
 
-		times(7, n => {
+		times(8, n => {
 			response[`--maxi-${style}-color-${n + 1}`] = SC[style].color[n + 1];
 		});
 	});

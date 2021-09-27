@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getNumberCounterStyles Returns correct styles 1`] = `
+Object {
+  " .maxi-number-counter__box .maxi-number-counter__box__background": Object {
+    "numberCounterBackground": Object {
+      "general": Object {
+        "stroke": "rgba(var(--maxi-light-color-2),1)",
+      },
+      "label": "Number Counter",
+    },
+  },
+  " .maxi-number-counter__box .maxi-number-counter__box__circle": Object {
+    "numberCounterCircleBar": Object {
+      "general": Object {
+        "stroke": "rgba(var(--maxi-light-color-4),1)",
+      },
+      "label": "Number Counter",
+    },
+  },
+  " .maxi-number-counter__box .maxi-number-counter__box__text": Object {
+    "numberCounterText": Object {
+      "general": Object {
+        "color": "rgba(var(--maxi-light-color-5),1)",
+        "font-family": "Roboto",
+        "font-size": "40px",
+      },
+      "label": "Number Counter",
+    },
+  },
+  " .maxi-number-counter__box .maxi-number-counter__box__text sup": Object {
+    "numberCounterSup": Object {
+      "general": Object {
+        "font-size": "calc(26.666666666666668px)",
+      },
+      "label": "Number Counter",
+    },
+  },
+}
+`;

@@ -27,7 +27,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNumber, isUndefined } from 'lodash';
+import { isNumber } from 'lodash';
 
 /**
  * Icons
@@ -215,7 +215,6 @@ const BorderControl = props => {
 					disableImage
 					disableVideo
 					disableGradient
-					showPalette
 					isHover={isHover}
 					deviceType={breakpoint}
 					clientId={clientId}
@@ -242,34 +241,7 @@ const BorderControl = props => {
 						target={`${prefix}border`}
 						auxTarget='width'
 						label={__('Border width', 'maxi-blocks')}
-						onChange={obj =>
-							onChange({
-								...obj,
-								...(isUndefined(
-									obj[
-										`${prefix}border-top-width-${breakpoint}`
-									]
-								) &&
-									isUndefined(
-										obj[
-											`${prefix}border-right-width-${breakpoint}`
-										]
-									) &&
-									isUndefined(
-										obj[
-											`${prefix}border-bottom-width-${breakpoint}`
-										]
-									) &&
-									isUndefined(
-										obj[
-											`${prefix}border-left-width-${breakpoint}`
-										]
-									) && {
-										[`${prefix}border-style-${breakpoint}`]:
-											'none',
-									}),
-							})
-						}
+						onChange={obj => onChange(obj)}
 						breakpoint={breakpoint}
 						allowedUnits={['px', 'em', 'vw']}
 						minMaxSettings={{

@@ -11,6 +11,7 @@ import {
 	getBackgroundStyles,
 	getMarginPaddingStyles,
 	getTypographyStyles,
+	getTransitionStyles,
 	getCustomFormatsStyles,
 	getAlignmentTextStyles,
 	getLinkStyles,
@@ -95,6 +96,16 @@ const getHoverObject = props => {
 	return response;
 };
 
+const getLinkObject = props => {
+	const response = {
+		transitionDuration: getTransitionStyles({
+			...getGroupAttributes(props, 'transitionDuration'),
+		}),
+	};
+
+	return response;
+};
+
 const getTypographyObject = (props, isList = false) => {
 	const response = {
 		typography: getTypographyStyles({
@@ -142,6 +153,8 @@ const getStyles = props => {
 	return {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
+			' .maxi-text-block--link, .maxi-text-block--link span':
+				getLinkObject(props),
 			':hover': getHoverObject(props),
 			...(!isList && {
 				[` ${element}.maxi-text-block__content`]: getTypographyObject(

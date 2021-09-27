@@ -135,10 +135,9 @@ const DividerControl = props => {
 						})
 					}
 					disableGradient
-					showPalette
-					globalProps={{ target: 'color-global', type: 'divider' }}
+					globalProps={{ target: '', type: 'divider' }}
 					isHover={isHover}
-					clienId={clientId}
+					clientId={clientId}
 				/>
 			)}
 			{!disableLineStyle && (

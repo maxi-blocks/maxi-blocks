@@ -19,10 +19,7 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import {
-	getGroupAttributes,
-	setHoverAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -49,7 +46,6 @@ class edit extends MaxiBlockComponent {
 
 		const motionStatus =
 			!!this.props.attributes['motion-status'] ||
-			!isEmpty(this.props.attributes['entrance-type']) ||
 			!!this.props.attributes['parallax-status'];
 
 		const shapeStatus =
@@ -61,7 +57,6 @@ class edit extends MaxiBlockComponent {
 				...(motionStatus && {
 					...getGroupAttributes(this.props.attributes, [
 						'motion',
-						'entrance',
 						'parallax',
 					]),
 				}),
@@ -107,10 +102,11 @@ class edit extends MaxiBlockComponent {
 				{isFirstOnHierarchy && fullWidth && (
 					<>
 						<ArrowDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'arrow',
-							])}
+							{...getGroupAttributes(
+								attributes,
+								['background', 'arrow', 'border'],
+								true
+							)}
 							breakpoint={deviceType}
 						/>
 						<Indicators

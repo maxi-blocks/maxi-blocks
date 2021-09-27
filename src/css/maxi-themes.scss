@@ -7,7 +7,7 @@ $responsive_sizes: 'general', 'xxl', 'xl', 'l', 'm', 's', 'xs';
 $responsive_breakpoints: 1921, 1920, 1366, 1024, 768, 480;
 $responsive_width: '';
 $current_responsive_stage: 'general';
-$color_set: '1', '2', '3', '4', '5', '6', '7';
+$color_set: '1', '2', '3', '4', '5', '6', '7', '8';
 
 /**
 * Styles
@@ -84,36 +84,36 @@ body.maxi-blocks--active {
 			}
 
 			&.maxi-block--has-link .maxi-text-block__content {
-				color: rgba(var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette)), 1);
+				color: var(--maxi-#{$style}-link);
 				&:hover, &:focus {
-			        color: rgba(var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette)), 1);
+			        color: var(--maxi-#{$style}-link-hover);
 			    }
 				&:active {
-					color: rgba(var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette)), 1);
+					color: var(--maxi-#{$style}-link-active);
 				}
 				&:visited {
-					color: rgba(var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette)), 1);
+					color: var(--maxi-#{$style}-link-visited);
 				}
 			}
 			&.maxi-text-block a.maxi-text-block--link,
 			.maxi-text-block a.maxi-text-block--link {
-				color: rgba(var(--maxi-#{$style}-link, var(--maxi-#{$style}-link-palette)), 1);
+				color: var(--maxi-#{$style}-link);
 				&:hover, &:focus {
-			        color: rgba(var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette)), 1);
+			        color: var(--maxi-#{$style}-link-hover);
 			        span {
-			        	color: rgba(var(--maxi-#{$style}-link-hover, var(--maxi-#{$style}-link-hover-palette)), 1);
+			        	color: var(--maxi-#{$style}-link-hover);
 			        }
 			    }
 				&:active {
-					color: rgba(var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette)), 1);
+					color: var(--maxi-#{$style}-link-active);
 			        span {
-			        	color: rgba(var(--maxi-#{$style}-link-active, var(--maxi-#{$style}-link-active-palette)), 1);
+			        	color: var(--maxi-#{$style}-link-active);
 			        }
 				}
 				&:visited {
-					color: rgba(var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette)), 1);
+					color: var(--maxi-#{$style}-link-visited);
 			        span {
-			        	color: rgba(var(--maxi-#{$style}-link-visited, var(--maxi-#{$style}-link-visited-palette)), 1);
+			        	color: var(--maxi-#{$style}-link-visited);
 			        }
 				}
 			}
@@ -157,7 +157,7 @@ body.maxi-blocks--active {
 @each $responsive_size in $responsive_sizes {
 	body.maxi-blocks--active {
 		@each $style in $styles {
-			.edit-post-visual-editor.editor-styles-wrapper[maxi-blocks-responsive="#{$responsive_size}"] {
+			.edit-post-visual-editor[maxi-blocks-responsive="#{$responsive_size}"] {
 				.maxi-block--backend {
 					&.maxi-#{$style} {
 						&.maxi-text-block,

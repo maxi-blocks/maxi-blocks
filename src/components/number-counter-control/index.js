@@ -2,17 +2,20 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
 import FancyRadioControl from '../fancy-radio-control';
-import AdvancedNumberControl from '../advanced-number-control';
 import FontFamilySelector from '../font-family-selector';
+import SelectControl from '../select-control';
 
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -28,12 +31,60 @@ import './editor.scss';
  * Component
  */
 const NumberCounterControl = props => {
-	const { className, onChange } = props;
+	const { className, breakpoint, onChange } = props;
 
 	const classes = classnames('maxi-number-counter-control', className);
 
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 3999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 999,
+		},
+		'%': {
+			min: 0,
+			max: 100,
+		},
+	};
+
 	return (
 		<div className={classes}>
+			<AdvancedNumberControl
+				label={__('Width', 'maxi-blocks')}
+				className='maxi-number-counter-control__width'
+				enableUnit
+				unit={getLastBreakpointAttribute(
+					'width-unit',
+					breakpoint,
+					props
+				)}
+				onChangeUnit={val =>
+					onChange({ [`width-unit-${breakpoint}`]: val })
+				}
+				value={getLastBreakpointAttribute('width', breakpoint, props)}
+				onChangeValue={val =>
+					onChange({ [`width-${breakpoint}`]: val })
+				}
+				onReset={() =>
+					onChange({
+						[`width-${breakpoint}`]: getDefaultAttribute(
+							`width-${breakpoint}`
+						),
+						[`width-unit-${breakpoint}`]: getDefaultAttribute(
+							`width-unit-${breakpoint}`
+						),
+					})
+				}
+				minMaxSettings={minMaxSettings}
+				allowedUnits={['px', 'em', 'vw', '%']}
+			/>
 			<FancyRadioControl
 				label={__('Preview', 'maxi-block')}
 				selected={props['number-counter-preview']}
@@ -45,6 +96,7 @@ const NumberCounterControl = props => {
 			/>
 			<SelectControl
 				label={__('Start Animation', 'maxi-blocks')}
+				className='maxi-number-counter-control__start-animation'
 				value={props['number-counter-start-animation']}
 				options={[
 					{
@@ -112,24 +164,6 @@ const NumberCounterControl = props => {
 					onChange({
 						'number-counter-duration': getDefaultAttribute(
 							'number-counter-duration'
-						),
-					})
-				}
-			/>
-			<AdvancedNumberControl
-				label={__('Radius', 'maxi-blocks')}
-				min={90}
-				max={999}
-				initial={85}
-				step={1}
-				value={props['number-counter-radius']}
-				onChangeValue={val =>
-					onChange({ 'number-counter-radius': val })
-				}
-				onReset={() =>
-					onChange({
-						'number-counter-radius': getDefaultAttribute(
-							'number-counter-radius'
 						),
 					})
 				}
@@ -237,7 +271,6 @@ const NumberCounterControl = props => {
 							paletteStatus,
 					})
 				}
-				showPalette
 			/>
 			<hr />
 			<ColorControl
@@ -263,7 +296,6 @@ const NumberCounterControl = props => {
 							paletteStatus,
 					})
 				}
-				showPalette
 			/>
 			<hr />
 			<ColorControl
@@ -284,7 +316,6 @@ const NumberCounterControl = props => {
 							paletteStatus,
 					})
 				}
-				showPalette
 			/>
 		</div>
 	);

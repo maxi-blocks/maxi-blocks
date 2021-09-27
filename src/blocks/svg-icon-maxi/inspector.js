@@ -17,7 +17,6 @@ import {
 	BoxShadowControl,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
 	FancyRadioControl,
 	FullSizeControl,
 	MotionControl,
@@ -47,7 +46,6 @@ const Inspector = props => {
 		attributes,
 		changeSVGContent,
 		changeSVGContentWithBlockStyle,
-		changeSVGSize,
 		changeSVGStrokeWidth,
 		clientId,
 		deviceType,
@@ -61,6 +59,7 @@ const Inspector = props => {
 		uniqueID,
 		fullWidth,
 		parentBlockStyle,
+		svgType,
 	} = attributes;
 
 	return (
@@ -232,113 +231,127 @@ const Inspector = props => {
 											),
 											content: (
 												<>
-													<SvgColor
-														{...getGroupAttributes(
-															attributes,
-															'svg'
-														)}
-														type='fill'
-														label={__(
-															'SVG Fill',
-															'maxi-blocks'
-														)}
-														onChange={obj => {
-															setAttributes(obj);
+													{svgType !== 'Line' && (
+														<>
+															<SvgColor
+																{...getGroupAttributes(
+																	attributes,
+																	'svg'
+																)}
+																type='fill'
+																label={__(
+																	'SVG Fill',
+																	'maxi-blocks'
+																)}
+																onChange={obj => {
+																	setAttributes(
+																		obj
+																	);
 
-															const fillColorStr =
-																getColorRGBAString(
-																	{
-																		firstVar:
-																			'icon-fill',
-																		secondVar: `color-${obj['svg-palette-fill-color']}`,
-																		opacity:
-																			obj[
-																				'svg-palette-fill-opacity'
-																			],
-																		blockStyle:
-																			parentBlockStyle,
-																	}
+																	const fillColorStr =
+																		getColorRGBAString(
+																			{
+																				firstVar:
+																					'icon-fill',
+																				secondVar: `color-${obj['svg-palette-fill-color']}`,
+																				opacity:
+																					obj[
+																						'svg-palette-fill-opacity'
+																					],
+																				blockStyle:
+																					parentBlockStyle,
+																			}
+																		);
+
+																	changeSVGContent(
+																		obj[
+																			'svg-palette-fill-color-status'
+																		]
+																			? fillColorStr
+																			: obj[
+																					'svg-fill-color'
+																			  ],
+																		'fill'
+																	);
+																}}
+															/>
+															{svgType ===
+																'Filled' && (
+																<hr />
+															)}
+														</>
+													)}
+													{svgType !== 'Shape' && (
+														<SvgColor
+															{...getGroupAttributes(
+																attributes,
+																'svg'
+															)}
+															type='line'
+															label={__(
+																'SVG Line',
+																'maxi-blocks'
+															)}
+															onChange={obj => {
+																setAttributes(
+																	obj
 																);
 
-															changeSVGContent(
-																obj[
-																	'svg-palette-fill-color-status'
-																]
-																	? fillColorStr
-																	: obj[
-																			'svg-fill-color'
-																	  ],
-																'fill'
-															);
-														}}
-													/>
-													<hr />
-													<SvgColor
-														{...getGroupAttributes(
-															attributes,
-															'svg'
-														)}
-														type='line'
-														label={__(
-															'SVG Line',
-															'maxi-blocks'
-														)}
-														onChange={obj => {
-															setAttributes(obj);
+																const lineColorStr =
+																	getColorRGBAString(
+																		{
+																			firstVar:
+																				'icon-line',
+																			secondVar: `color-${obj['svg-palette-line-color']}`,
+																			opacity:
+																				obj[
+																					'svg-palette-line-opacity'
+																				],
+																			blockStyle:
+																				parentBlockStyle,
+																		}
+																	);
 
-															const lineColorStr =
-																getColorRGBAString(
-																	{
-																		firstVar:
-																			'icon-line',
-																		secondVar: `color-${obj['svg-palette-line-color']}`,
-																		opacity:
-																			obj[
-																				'svg-palette-line-opacity'
-																			],
-																		blockStyle:
-																			parentBlockStyle,
-																	}
+																changeSVGContent(
+																	obj[
+																		'svg-palette-line-color-status'
+																	]
+																		? lineColorStr
+																		: obj[
+																				'svg-line-color'
+																		  ],
+																	'stroke'
 																);
-
-															changeSVGContent(
-																obj[
-																	'svg-palette-line-color-status'
-																]
-																	? lineColorStr
-																	: obj[
-																			'svg-line-color'
-																	  ],
-																'stroke'
-															);
-														}}
-													/>
+															}}
+														/>
+													)}
 												</>
 											),
 										},
-										attributes.content && {
-											label: __(
-												'SVG Line Width',
-												'maxi-blocks'
-											),
-											content: (
-												<SvgStrokeWidthControl
-													{...getGroupAttributes(
-														attributes,
-														'svg'
-													)}
-													onChange={obj => {
-														setAttributes(obj);
-														changeSVGStrokeWidth(
-															obj[
-																`svg-stroke-${deviceType}`
-															]
-														);
-													}}
-													breakpoint={deviceType}
-												/>
-											),
-										},
+										attributes.content &&
+											svgType !== 'Shape' && {
+												label: __(
+													'SVG Line Width',
+													'maxi-blocks'
+												),
+												content: (
+													<SvgStrokeWidthControl
+														{...getGroupAttributes(
+															attributes,
+															'svg'
+														)}
+														onChange={obj => {
+															setAttributes(obj);
+															changeSVGStrokeWidth(
+																obj[
+																	`svg-stroke-${deviceType}`
+																]
+															);
+														}}
+														breakpoint={deviceType}
+													/>
+												),
+											},
 										attributes.content && {
 											label: __(
 												'SVG Width',
@@ -352,11 +365,6 @@ const Inspector = props => {
 													)}
 													onChange={obj => {
 														setAttributes(obj);
-														changeSVGSize(
-															obj[
-																`svg-width-${deviceType}`
-															]
-														);
 													}}
 													breakpoint={deviceType}
 												/>
@@ -853,23 +861,6 @@ const Inspector = props => {
 													{...getGroupAttributes(
 														attributes,
 														'motion'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-												/>
-											),
-										},
-										{
-											label: __(
-												'Entrance Animation',
-												'maxi-blocks'
-											),
-											content: (
-												<EntranceAnimationControl
-													{...getGroupAttributes(
-														attributes,
-														'entrance'
 													)}
 													onChange={obj =>
 														setAttributes(obj)

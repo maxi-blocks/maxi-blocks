@@ -13,7 +13,6 @@ import {
 	getBlockAttributes,
 	openAdvancedSidebar,
 	changeResponsive,
-	openSidebar,
 } from '../../utils';
 
 describe('OpacityControl', () => {

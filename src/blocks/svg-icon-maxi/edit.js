@@ -162,6 +162,9 @@ class edit extends MaxiBlockComponent {
 						empty={isEmptyContent}
 						style={parentBlockStyle}
 						openFirstTime={openFirstTime}
+						onOpen={obj => setAttributes(obj)}
+						onSelect={obj => setAttributes(obj)}
+						onRemove={obj => setAttributes(obj)}
 					/>
 					{!isEmptyContent && (
 						<BlockResizer

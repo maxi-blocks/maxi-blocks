@@ -141,7 +141,7 @@ const MasonryItem = props => {
  * Component
  */
 const LibraryContainer = props => {
-	const { type, onRequestClose, blockStyle, layerId } = props;
+	const { type, onRequestClose, blockStyle, onSelect } = props;
 
 	const {
 		styleCards,
@@ -170,8 +170,7 @@ const LibraryContainer = props => {
 		};
 	});
 
-	const { replaceBlock, updateBlockAttributes } =
-		useDispatch('core/block-editor');
+	const { replaceBlock } = useDispatch('core/block-editor');
 	const { saveMaxiStyleCards, setSelectedStyleCard } = useDispatch(
 		'maxiBlocks/style-cards'
 	);
@@ -220,7 +219,7 @@ const LibraryContainer = props => {
 				'maxi-blocks'
 			)}<span class="maxi-spinner"></span></h3>`;
 
-			updateBlockAttributes(clientId, { content: loadingMessage });
+			onSelect({ content: loadingMessage });
 
 			onRequestClose();
 
@@ -359,8 +358,8 @@ const LibraryContainer = props => {
 		).replaceAll(replaceIt, newSvgClass);
 
 		if (isValidTemplate(finalSvgCode)) {
-			updateBlockAttributes(clientId, { content: finalSvgCode });
-			updateBlockAttributes(clientId, { svgType });
+			onSelect({ content: finalSvgCode });
+			onSelect({ svgType });
 			onRequestClose();
 		}
 	};
@@ -394,8 +393,6 @@ const LibraryContainer = props => {
 			uniqueID,
 			mediaID,
 			mediaURL,
-			'background-layers': bgLayers,
-			'background-layers-status': bgLayersStatus,
 			'background-svg-SVGData': svgData,
 		} = select('core/block-editor').getBlockAttributes(clientId);
 
@@ -409,7 +406,7 @@ const LibraryContainer = props => {
 					},
 				};
 
-				updateBlockAttributes(clientId, {
+				onSelect({
 					shapeSVGElement: svgCode,
 					shapeSVGData: SVGData,
 				});
@@ -444,26 +441,12 @@ const LibraryContainer = props => {
 
 				const resEl = injectImgSVG(svg, resData);
 
-				if (!bgLayersStatus) {
-					updateBlockAttributes(clientId, {
-						'background-svg-SVGElement': resEl.outerHTML,
-						'background-svg-SVGMediaID': null,
-						'background-svg-SVGMediaURL': null,
-						'background-svg-SVGData': resData,
-					});
-				} else {
-					const newBgLayers = cloneDeep(bgLayers);
-
-					newBgLayers[layerId]['background-svg-SVGElement'] =
-						resEl.outerHTML;
-					newBgLayers[layerId]['background-svg-SVGMediaID'] = '';
-					newBgLayers[layerId]['background-svg-SVGMediaURL'] = '';
-					newBgLayers[layerId]['background-svg-SVGData'] = resData;
-
-					updateBlockAttributes(clientId, {
-						'background-layers': [...newBgLayers],
-					});
-				}
+				onSelect({
+					'background-svg-SVGElement': resEl.outerHTML,
+					'background-svg-SVGMediaID': null,
+					'background-svg-SVGMediaURL': null,
+					'background-svg-SVGData': resData,
+				});
 
 				onRequestClose();
 			}
@@ -489,7 +472,7 @@ const LibraryContainer = props => {
 				const resData = generateDataObject(SVGOptions[SVGData], svg);
 				const resEl = injectImgSVG(svg, resData);
 
-				updateBlockAttributes(clientId, {
+				onSelect({
 					SVGElement: injectImgSVG(resEl, SVGData).outerHTML,
 					SVGData,
 				});
@@ -500,7 +483,7 @@ const LibraryContainer = props => {
 			if (type === 'button-icon') {
 				const cleanedContent = DOMPurify.sanitize(svgCode);
 
-				updateBlockAttributes(clientId, {
+				onSelect({
 					'icon-content': cleanedContent,
 				});
 

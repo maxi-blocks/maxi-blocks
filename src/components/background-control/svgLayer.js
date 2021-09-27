@@ -56,8 +56,26 @@ const SVGLayer = props => {
 						content: (
 							<MaxiModal
 								type='bg-shape'
-								layerId={layerId}
 								style={getBlockStyle(clientId)}
+								onSelect={obj => onChange(obj)}
+								onRemove={obj => {
+									if (layerId) {
+										delete SVGOptions[
+											'background-svg-SVGElement'
+										];
+										delete SVGOptions[
+											'background-svg-SVGMediaID'
+										];
+										delete SVGOptions[
+											'background-svg-SVGMediaURL'
+										];
+										delete SVGOptions[
+											'background-svg-SVGData'
+										];
+									}
+									onChange({ ...SVGOptions, ...obj });
+								}}
+								icon={SVGOptions['background-svg-SVGElement']}
 							/>
 						),
 					},

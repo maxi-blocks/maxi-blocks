@@ -36,17 +36,15 @@ const MotionControl = props => {
 			<ToggleSwitch
 				label={__('Use Motion Effects', 'maxi-blocks')}
 				selected={props['motion-status']}
-				onChange={() =>
-					onChange({ 'motion-status': !props['motion-status'] })
-				}
+				onChange={val => onChange({ 'motion-status': val })}
 			/>
 			{/* props['motion-status'] && (
 				<>
 					<ToggleSwitch
 						label={__('Preview', 'maxi-blocks')}
 						selected={props['motion-preview-status']}
-						onChange={() =>
-							onChange({ 'motion-preview-status': !props['motion-preview-status'] })
+						onChange={val =>
+							onChange({ 'motion-preview-status': val })
 						}
 					/>
 					<TimelinePresets

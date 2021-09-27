@@ -147,10 +147,9 @@ const FullSizeControl = props => {
 			<ToggleSwitch
 				label={__('Advanced Width/Height', 'maxi-blocks')}
 				selected={props[`${prefix}size-advanced-options`] || 0}
-				onChange={() => {
+				onChange={val => {
 					onChange({
-						[`${prefix}size-advanced-options`]:
-							!props[`${prefix}size-advanced-options`],
+						[`${prefix}size-advanced-options`]: val,
 					});
 					if (props[`${prefix}size-advanced-options`]) {
 						onChangeValue(

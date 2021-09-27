@@ -312,14 +312,14 @@ const ClipPathControl = props => {
 			<ToggleSwitch
 				label={__('Use Clip-path', 'maxi-blocks')}
 				selected={hasClipPath}
-				onChange={() => changeHasClipPath(!hasClipPath)}
+				onChange={val => changeHasClipPath(val)}
 			/>
 			{hasClipPath && (
 				<>
 					<ToggleSwitch
 						label={__('Use Custom', 'maxi-blocks')}
 						selected={isCustom}
-						onChange={() => changeIsCustom(!isCustom)}
+						onChange={val => changeIsCustom(val)}
 					/>
 					{!isCustom && (
 						<div className='clip-path-defaults'>

@@ -76,16 +76,12 @@ const HoverEffectControl = props => {
 			<ToggleSwitch
 				label={__('Preview', 'maxi-blocks')}
 				selected={props['hover-preview']}
-				onChange={() =>
-					onChange({ 'hover-preview': !props['hover-preview'] })
-				}
+				onChange={val => onChange({ 'hover-preview': val })}
 			/>
 			<ToggleSwitch
 				label={__('Allow extension', 'maxi-blocks')}
 				selected={props['hover-extension']}
-				onChange={() =>
-					onChange({ 'hover-extension': !props['hover-extension'] })
-				}
+				onChange={val => onChange({ 'hover-extension': val })}
 			/>
 			{props['hover-type'] !== 'none' &&
 				(props['hover-type'] === 'text' ||
@@ -372,10 +368,9 @@ const HoverEffectControl = props => {
 					<ToggleSwitch
 						label={__('Custom Hover Text', 'maxi-block')}
 						selected={props['hover-title-typography-status']}
-						onChange={() =>
+						onChange={val =>
 							onChange({
-								'hover-title-typography-status':
-									!props['hover-title-typography-status'],
+								'hover-title-typography-status': val,
 							})
 						}
 					/>
@@ -415,10 +410,9 @@ const HoverEffectControl = props => {
 					<ToggleSwitch
 						label={__('Custom Content Text', 'maxi-block')}
 						selected={props['hover-content-typography-status']}
-						onChange={() =>
+						onChange={val =>
 							onChange({
-								'hover-content-typography-status':
-									!props['hover-content-typography-status'],
+								'hover-content-typography-status': val,
 							})
 						}
 					/>
@@ -457,10 +451,9 @@ const HoverEffectControl = props => {
 					<ToggleSwitch
 						label={__('Custom Border', 'maxi-block')}
 						selected={props['hover-border-status']}
-						onChange={() =>
+						onChange={val =>
 							onChange({
-								'hover-border-status':
-									!props['hover-border-status'],
+								'hover-border-status': val,
 							})
 						}
 					/>
@@ -480,10 +473,9 @@ const HoverEffectControl = props => {
 					<ToggleSwitch
 						label={__('Custom Padding', 'maxi-block')}
 						selected={props['hover-padding-status']}
-						onChange={() =>
+						onChange={val =>
 							onChange({
-								'hover-padding-status':
-									!props['hover-padding-status'],
+								'hover-padding-status': val,
 							})
 						}
 					/>
@@ -499,10 +491,9 @@ const HoverEffectControl = props => {
 					<ToggleSwitch
 						label={__('Custom Margin', 'maxi-block')}
 						selected={props['hover-margin-status']}
-						onChange={() =>
+						onChange={val =>
 							onChange({
-								'hover-margin-status':
-									!props['hover-margin-status'],
+								'hover-margin-status': val,
 							})
 						}
 					/>

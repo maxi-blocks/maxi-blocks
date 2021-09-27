@@ -252,12 +252,10 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-background-status-hover'
-																		onChange={() =>
+																		onChange={val =>
 																			setAttributes(
 																				{
-																					...(attributes[
-																						'background-status-hover'
-																					] &&
+																					...(val &&
 																						setHoverAttributes(
 																							{
 																								...getGroupAttributes(
@@ -282,9 +280,7 @@ const Inspector = props => {
 																							}
 																						)),
 																					'background-status-hover':
-																						!attributes[
-																							'background-status-hover'
-																						],
+																						val,
 																				}
 																			)
 																		}
@@ -376,12 +372,10 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-border-status-hover'
-																		onChange={() =>
+																		onChange={val =>
 																			setAttributes(
 																				{
-																					...(attributes[
-																						'border-status-hover'
-																					] &&
+																					...(val &&
 																						setHoverAttributes(
 																							{
 																								...getGroupAttributes(
@@ -406,9 +400,7 @@ const Inspector = props => {
 																							}
 																						)),
 																					'border-status-hover':
-																						!attributes[
-																							'border-status-hover'
-																						],
+																						val,
 																				}
 																			)
 																		}
@@ -499,12 +491,10 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-box-shadow-status-hover'
-																		onChange={() =>
+																		onChange={val =>
 																			setAttributes(
 																				{
-																					...(attributes[
-																						'box-shadow-status-hover'
-																					] &&
+																					...(val &&
 																						setHoverAttributes(
 																							{
 																								...getGroupAttributes(
@@ -521,9 +511,7 @@ const Inspector = props => {
 																							}
 																						)),
 																					'box-shadow-status-hover':
-																						!attributes[
-																							'box-shadow-status-hover'
-																						],
+																						val,
 																				}
 																			)
 																		}

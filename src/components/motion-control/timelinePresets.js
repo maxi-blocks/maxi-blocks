@@ -65,9 +65,9 @@ const TimelinePresets = props => {
 			<ToggleSwitch
 				label={__('Preset', 'maxi-blocks')}
 				selected={props['motion-preset-status']}
-				onChange={() =>
+				onChange={val =>
 					onChange({
-						'motion-preset-status': !props['motion-preset-status'],
+						'motion-preset-status': val,
 					})
 				}
 			/>

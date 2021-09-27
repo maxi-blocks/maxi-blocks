@@ -96,9 +96,7 @@ const ArrowControl = props => {
 			<ToggleSwitch
 				label={__('Show Arrow', 'maxi-blocks')}
 				selected={props['arrow-status']}
-				onChange={() =>
-					onChange({ 'arrow-status': !props['arrow-status'] })
-				}
+				onChange={val => onChange({ 'arrow-status': val })}
 			/>
 			{props['arrow-status'] && (
 				<>

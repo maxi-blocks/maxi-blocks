@@ -98,9 +98,9 @@ const IconControl = props => {
 				<ToggleSwitch
 					label={__('Enable Icon Hover', 'maxi-blocks')}
 					selected={props['icon-status-hover']}
-					onChange={() =>
+					onChange={val =>
 						onChange({
-							'icon-status-hover': !props['icon-status-hover'],
+							'icon-status-hover': val,
 						})
 					}
 				/>
@@ -118,9 +118,9 @@ const IconControl = props => {
 								)}
 								className='maxi-sc-color-palette__custom'
 								selected={props['icon-only']}
-								onChange={() =>
+								onChange={val =>
 									onChange({
-										'icon-only': !props['icon-only'],
+										'icon-only': val,
 									})
 								}
 							/>
@@ -213,10 +213,9 @@ const IconControl = props => {
 											'maxi-block'
 										)}
 										selected={props['icon-inherit']}
-										onChange={() =>
+										onChange={val =>
 											onChange({
-												'icon-inherit':
-													!props['icon-inherit'],
+												'icon-inherit': val,
 											})
 										}
 									/>

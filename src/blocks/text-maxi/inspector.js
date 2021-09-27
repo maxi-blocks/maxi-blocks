@@ -332,13 +332,11 @@ const Inspector = memo(
 																					'typography-status-hover'
 																				]
 																			}
-																			onChange={() =>
+																			onChange={val =>
 																				setAttributes(
 																					{
 																						'typography-status-hover':
-																							!attributes[
-																								'typography-status-hover'
-																							],
+																							val,
 																					}
 																				)
 																			}
@@ -444,12 +442,10 @@ const Inspector = memo(
 																				]
 																			}
 																			className='maxi-background-status-hover'
-																			onChange={() =>
+																			onChange={val =>
 																				setAttributes(
 																					{
-																						...(attributes[
-																							'background-status-hover'
-																						] &&
+																						...(val &&
 																							setHoverAttributes(
 																								{
 																									...getGroupAttributes(
@@ -474,9 +470,7 @@ const Inspector = memo(
 																								}
 																							)),
 																						'background-status-hover':
-																							!attributes[
-																								'background-status-hover'
-																							],
+																							val,
 																					}
 																				)
 																			}
@@ -571,12 +565,10 @@ const Inspector = memo(
 																				]
 																			}
 																			className='maxi-border-status-hover'
-																			onChange={() =>
+																			onChange={val =>
 																				setAttributes(
 																					{
-																						...(attributes[
-																							'background-status-hover'
-																						] &&
+																						...(val &&
 																							setHoverAttributes(
 																								{
 																									...getGroupAttributes(
@@ -601,9 +593,7 @@ const Inspector = memo(
 																								}
 																							)),
 																						'border-status-hover':
-																							!attributes[
-																								'background-status-hover'
-																							],
+																							val,
 																					}
 																				)
 																			}
@@ -659,12 +649,11 @@ const Inspector = memo(
 																	fullWidth ===
 																	'normal'
 																}
-																onChange={() =>
+																onChange={val =>
 																	setAttributes(
 																		{
 																			fullWidth:
-																				fullWidth ===
-																				'normal'
+																				val
 																					? 'full'
 																					: 'normal',
 																		}
@@ -743,12 +732,10 @@ const Inspector = memo(
 																				]
 																			}
 																			className='maxi-box-shadow-status-hover'
-																			onChange={() =>
+																			onChange={val =>
 																				setAttributes(
 																					{
-																						...(attributes[
-																							'box-shadow-status-hover'
-																						] &&
+																						...(val &&
 																							setHoverAttributes(
 																								{
 																									...getGroupAttributes(
@@ -765,9 +752,7 @@ const Inspector = memo(
 																								}
 																							)),
 																						'box-shadow-status-hover':
-																							!attributes[
-																								'box-shadow-status-hover'
-																							],
+																							val,
 																					}
 																				)
 																			}

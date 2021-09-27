@@ -88,10 +88,9 @@ const NumberCounterControl = props => {
 			<ToggleSwitch
 				label={__('Preview', 'maxi-block')}
 				selected={props['number-counter-preview']}
-				onChange={() =>
+				onChange={val =>
 					onChange({
-						'number-counter-preview':
-							!props['number-counter-preview'],
+						'number-counter-preview': val,
 					})
 				}
 			/>
@@ -220,20 +219,18 @@ const NumberCounterControl = props => {
 			<ToggleSwitch
 				label={__('Show Percentage Sign', 'maxi-block')}
 				selected={props['number-counter-percentage-sign-status']}
-				onChange={() =>
+				onChange={val =>
 					onChange({
-						'number-counter-percentage-sign-status':
-							!props['number-counter-percentage-sign-status'],
+						'number-counter-percentage-sign-status': val,
 					})
 				}
 			/>
 			<ToggleSwitch
 				label={__('Hide Circle', 'maxi-block')}
 				selected={props['number-counter-circle-status']}
-				onChange={() => {
+				onChange={val => {
 					onChange({
-						'number-counter-circle-status':
-							!props['number-counter-circle-status'],
+						'number-counter-circle-status': val,
 					});
 
 					if (
@@ -247,10 +244,9 @@ const NumberCounterControl = props => {
 				<ToggleSwitch
 					label={__('Rounded Bar', 'maxi-block')}
 					selected={props['number-counter-rounded-status']}
-					onChange={() =>
+					onChange={val =>
 						onChange({
-							'number-counter-rounded-status':
-								!props['number-counter-rounded-status'],
+							'number-counter-rounded-status': val,
 						})
 					}
 				/>

@@ -214,11 +214,11 @@ const ColumnPatternsInspector = props => {
 						<ToggleSwitch
 							label={__('Remove Gap', 'maxi-blocks')}
 							selected={removeColumnGap}
-							onChange={() => {
-								onChange({ removeColumnGap: !removeColumnGap });
+							onChange={val => {
+								onChange({ removeColumnGap: val });
 								loadColumnsTemplate(
 									props['row-pattern-general'],
-									!removeColumnGap,
+									val,
 									clientId,
 									breakpoint
 								);

@@ -302,20 +302,20 @@ const BackgroundLayersControl = ({
 			<ToggleSwitch
 				label={__('Use layers', 'maxi-blocks')}
 				selected={layersStatus}
-				onChange={() => {
+				onChange={val =>
 					onChange({
 						[getAttributeKey(
 							'background-layers-status',
 							isHover,
 							prefix
-						)]: !layersStatus,
+						)]: val,
 						[getAttributeKey(
 							'background-active-media',
 							isHover,
 							prefix
-						)]: layersStatus ? 'layers' : '',
-					});
-				}}
+						)]: val ? 'layers' : '',
+					})
+				}
 			/>
 			{layersStatus && (
 				<div>

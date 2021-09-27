@@ -479,7 +479,7 @@ const ImageLayer = props => {
 				className='maxi-fancy-radio-control--more-settings'
 				label={__('More Settings', 'maxi-blocks')}
 				selected={moreSettings}
-				onChange={() => setMoreSettings(!moreSettings)}
+				onChange={val => setMoreSettings(val)}
 			/>
 			{moreSettings && (
 				<div className='maxi-background-image-more-settings'>

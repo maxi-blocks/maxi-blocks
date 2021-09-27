@@ -223,10 +223,9 @@ const ShapeDividerControl = props => {
 					<ToggleSwitch
 						label={__('Enable Top Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-top-status']}
-						onChange={() =>
+						onChange={val =>
 							onChange({
-								'shape-divider-top-status':
-									!props['shape-divider-top-status'],
+								'shape-divider-top-status': val,
 							})
 						}
 					/>
@@ -240,12 +239,9 @@ const ShapeDividerControl = props => {
 								selected={
 									props['shape-divider-top-effects-status']
 								}
-								onChange={() =>
+								onChange={val =>
 									onChange({
-										'shape-divider-top-effects-status':
-											!props[
-												'shape-divider-top-effects-status'
-											],
+										'shape-divider-top-effects-status': val,
 									})
 								}
 							/>
@@ -354,10 +350,9 @@ const ShapeDividerControl = props => {
 					<ToggleSwitch
 						label={__('Enable Bottom Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-bottom-status']}
-						onChange={() =>
+						onChange={val =>
 							onChange({
-								'shape-divider-bottom-status':
-									!props['shape-divider-bottom-status'],
+								'shape-divider-bottom-status': val,
 							})
 						}
 					/>
@@ -371,12 +366,10 @@ const ShapeDividerControl = props => {
 								selected={
 									props['shape-divider-bottom-effects-status']
 								}
-								onChange={() =>
+								onChange={val =>
 									onChange({
 										'shape-divider-bottom-effects-status':
-											!props[
-												'shape-divider-bottom-effects-status'
-											],
+											val,
 									})
 								}
 							/>

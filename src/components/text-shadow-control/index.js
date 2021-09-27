@@ -302,9 +302,9 @@ const TextShadowControl = props => {
 			<ToggleSwitch
 				label={__('Text Shadow', 'maxi-blocks')}
 				selected={showOptions}
-				onChange={() => {
-					changeShowOptions(!showOptions);
-					if (showOptions) {
+				onChange={val => {
+					changeShowOptions(val);
+					if (val) {
 						changeLastValue(textShadow);
 						onChange('');
 					} else onChange(lastValue);

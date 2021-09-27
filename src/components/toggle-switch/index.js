@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { useInstanceId } from '@wordpress/compose';
+import { useState } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -21,29 +22,21 @@ import './editor.scss';
 /**
  * Component
  */
-const ToggleSwitch = ({
-	className,
-	selected = false,
-	onChange,
-	label,
-	help,
-}) => {
+const ToggleSwitch = ({ className, onChange, label, help, selected }) => {
 	const classes = classnames('maxi-toggle-switch', className);
 	const instanceId = useInstanceId(ToggleSwitch);
 	const id = `maxi-toggle-switch-${instanceId}`;
+	const [value, setValue] = useState(selected || false);
 
 	return (
-		<BaseControl
-			label={label}
-			id={id}
-			help={help}
-			className={classes}
-			onClick={val => onChange(val)}
-		>
+		<BaseControl label={label} id={id} help={help} className={classes}>
 			<div className='maxi-toggle-switch__toggle'>
 				<input
-					onChange={val => onChange(val)}
-					checked={selected}
+					onChange={() => {
+						setValue(!value);
+						onChange(!value);
+					}}
+					checked={value}
 					type='checkbox'
 					id={id}
 				/>

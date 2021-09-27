@@ -29,12 +29,10 @@ const ParallaxControl = props => {
 			<ToggleSwitch
 				label={__('Use Parallax Effect', 'maxi-blocks')}
 				selected={props['parallax-status']}
-				onChange={() =>
+				onChange={val =>
 					onChange({
-						'parallax-status': !props['parallax-status'],
-						'background-image-size': !props['parallax-status']
-							? 'cover'
-							: 'auto',
+						'parallax-status': val,
+						'background-image-size': val ? 'cover' : 'auto',
 					})
 				}
 			/>

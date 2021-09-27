@@ -160,10 +160,9 @@ const DividerControl = props => {
 					<ToggleSwitch
 						label={__('Line Radius', 'maxi-blocks')}
 						selected={props['divider-border-radius']}
-						onChange={() =>
+						onChange={val =>
 							onChange({
-								'divider-border-radius':
-									!props['divider-border-radius'],
+								'divider-border-radius': val,
 							})
 						}
 					/>

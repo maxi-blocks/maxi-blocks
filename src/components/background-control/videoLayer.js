@@ -158,20 +158,13 @@ const VideoLayer = props => {
 						)
 					]
 				}
-				onChange={() =>
+				onChange={val =>
 					onChange({
 						[getAttributeKey(
 							'background-video-loop',
 							isHover,
 							prefix
-						)]:
-							!videoOptions[
-								getAttributeKey(
-									'background-video-loop',
-									isHover,
-									prefix
-								)
-							],
+						)]: val,
 					})
 				}
 			/>
@@ -186,20 +179,13 @@ const VideoLayer = props => {
 						)
 					]
 				}
-				onChange={() =>
+				onChange={val =>
 					onChange({
 						[getAttributeKey(
 							'background-video-playOnMobile',
 							isHover,
 							prefix
-						)]:
-							!videoOptions[
-								getAttributeKey(
-									'background-video-playOnMobile',
-									isHover,
-									prefix
-								)
-							],
+						)]: val,
 					})
 				}
 			/>

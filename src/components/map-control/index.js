@@ -123,10 +123,9 @@ const MapControl = props => {
 			<ToggleSwitch
 				label={__('Custom Maker Colours', 'maxi-block')}
 				selected={props['map-marker-custom-color-status']}
-				onChange={() =>
+				onChange={val =>
 					onChange({
-						'map-marker-custom-color-status':
-							!props['map-marker-custom-color-status'],
+						'map-marker-custom-color-status': val,
 					})
 				}
 			/>

@@ -16,16 +16,45 @@ import { injectImgSVG } from '../../extensions/svg/utils';
  */
 import classnames from 'classnames';
 import { cloneDeep } from 'lodash';
+import {
+	getAttributeKey,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * Component
  */
 const SVGFillControl = props => {
-	const { onChange, className, clientId, isHover, SVGOptions } = props;
+	const {
+		onChange,
+		className,
+		clientId,
+		isHover,
+		SVGOptions,
+		breakpoint = '',
+	} = props;
 
 	const classes = classnames('maxi-svg-fill-control', className);
 
-	const SVGData = cloneDeep(SVGOptions['background-svg-SVGData']);
+	const SVGData = cloneDeep(
+		getLastBreakpointAttribute(
+			'background-svg-SVGData',
+			breakpoint,
+			SVGOptions,
+			isHover
+		)
+	);
+
+	console.log(
+		injectImgSVG(
+			getLastBreakpointAttribute(
+				'background-svg-SVGElement',
+				breakpoint,
+				SVGOptions
+			),
+			SVGData
+		)
+	);
 
 	const getFillItem = ([id, value]) => {
 		return (
@@ -37,36 +66,72 @@ const SVGFillControl = props => {
 						content: (
 							<ColorControl
 								label={__('Fill', 'maxi-blocks')}
-								color={value.color}
+								color={getLastBreakpointAttribute(
+									'color',
+									breakpoint,
+									value,
+									isHover
+								)}
 								onChange={({
 									color,
 									paletteColor,
 									paletteStatus,
 								}) => {
-									SVGData[id].color = color;
+									SVGData[id][
+										getAttributeKey(
+											'color',
+											isHover,
+											false,
+											breakpoint
+										)
+									] = color;
 
 									onChange({
-										SVGElement: injectImgSVG(
-											SVGOptions[
-												'background-svg-SVGElement'
-											],
+										[getAttributeKey(
+											'SVGElement',
+											isHover,
+											false,
+											breakpoint
+										)]: injectImgSVG(
+											getLastBreakpointAttribute(
+												'background-svg-SVGElement',
+												breakpoint,
+												SVGOptions
+											),
 											SVGData
 										).outerHTML,
-										SVGData,
-										'background-palette-svg-color':
-											paletteColor,
-										'background-palette-svg-color-status':
-											paletteStatus,
+										[getAttributeKey(
+											'SVGData',
+											isHover,
+											false,
+											breakpoint
+										)]: SVGData,
+										[getAttributeKey(
+											'background-palette-svg-color',
+											isHover,
+											false,
+											breakpoint
+										)]: paletteColor,
+										[getAttributeKey(
+											'background-palette-svg-color-status',
+											isHover,
+											false,
+											breakpoint
+										)]: paletteStatus,
 									});
 								}}
-								paletteColor={
-									SVGOptions['background-palette-svg-color']
-								}
-								paletteStatus={
-									SVGOptions[
-										'background-palette-svg-color-status'
-									]
-								}
+								paletteColor={getLastBreakpointAttribute(
+									'background-palette-svg-color',
+									breakpoint,
+									SVGOptions,
+									isHover
+								)}
+								paletteStatus={getLastBreakpointAttribute(
+									'background-palette-svg-color-status',
+									breakpoint,
+									SVGOptions,
+									isHover
+								)}
 								isHover={isHover}
 								clientId={clientId}
 							/>

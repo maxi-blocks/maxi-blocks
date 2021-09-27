@@ -35,7 +35,12 @@ const getLastBreakpointAttributeSingle = (
 	const attrFilter = attr =>
 		!isNil(attr) && (isNumber(attr) || isBoolean(attr) || !isEmpty(attr));
 
-	let currentAttr = attr[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];
+	let currentAttr =
+		attr[
+			`${!isEmpty(target) ? `${target}-` : ''}${breakpoint}${
+				isHover ? '-hover' : ''
+			}`
+		];
 
 	if (attrFilter(currentAttr)) return currentAttr;
 
@@ -46,9 +51,9 @@ const getLastBreakpointAttributeSingle = (
 		if (!(avoidXXL && breakpoints[breakpointPosition] === 'xxl'))
 			currentAttr =
 				attr[
-					`${target}-${breakpoints[breakpointPosition]}${
-						isHover ? '-hover' : ''
-					}`
+					`${!isEmpty(target) ? `${target}-` : ''}${
+						breakpoints[breakpointPosition]
+					}${isHover ? '-hover' : ''}`
 				];
 	} while (
 		breakpointPosition > 0 &&

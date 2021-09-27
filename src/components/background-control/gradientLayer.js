@@ -8,7 +8,11 @@ import { __ } from '@wordpress/i18n';
  */
 import GradientControl from '../gradient-control';
 import ClipPath from '../clip-path-control';
-import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getAttributeKey,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -19,27 +23,25 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const GradientLayer = props => {
-	const { onChange, disableClipPath, isHover, prefix } = props;
+	const { onChange, disableClipPath, isHover, prefix, breakpoint } = props;
 	const gradientOptions = cloneDeep(props.gradientOptions);
 
 	return (
 		<>
 			<GradientControl
 				label={__('Background Gradient', 'maxi-blocks')}
-				gradient={
-					gradientOptions[
-						getAttributeKey('background-gradient', isHover, prefix)
-					]
-				}
-				gradientOpacity={
-					gradientOptions[
-						getAttributeKey(
-							'background-gradient-opacity',
-							isHover,
-							prefix
-						)
-					]
-				}
+				gradient={getLastBreakpointAttribute(
+					`${prefix}background-gradient`,
+					breakpoint,
+					gradientOptions,
+					isHover
+				)}
+				gradientOpacity={getLastBreakpointAttribute(
+					`${prefix}background-gradient-opacity`,
+					breakpoint,
+					gradientOptions,
+					isHover
+				)}
 				defaultGradient={getDefaultAttribute(
 					getAttributeKey('background-gradient', isHover, prefix)
 				)}
@@ -48,7 +50,8 @@ const GradientLayer = props => {
 						[getAttributeKey(
 							'background-gradient',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: val,
 					})
 				}
@@ -57,28 +60,27 @@ const GradientLayer = props => {
 						[getAttributeKey(
 							'background-gradient-opacity',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: val,
 					})
 				}
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={
-						gradientOptions[
-							getAttributeKey(
-								'background-gradient-clip-path',
-								isHover,
-								prefix
-							)
-						]
-					}
+					clipPath={getLastBreakpointAttribute(
+						`${prefix}background-gradient-clip-path`,
+						breakpoint,
+						gradientOptions,
+						isHover
+					)}
 					onChange={val =>
 						onChange({
 							[getAttributeKey(
 								'background-gradient-clip-path',
 								isHover,
-								prefix
+								prefix,
+								breakpoint
 							)]: val,
 						})
 					}

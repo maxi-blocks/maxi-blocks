@@ -141,7 +141,7 @@ const Inspector = props => {
 												</>
 											),
 										},
-										deviceType === 'general' && {
+										{
 											label: __(
 												'Background',
 												'maxi-blocks'
@@ -176,6 +176,9 @@ const Inspector = props => {
 																		}
 																		clientId={
 																			clientId
+																		}
+																		breakpoint={
+																			deviceType
 																		}
 																	/>
 																	{attributes[

@@ -315,7 +315,7 @@ const ClipPathControl = props => {
 					{ label: __('Yes', 'maxi-blocks'), value: 1 },
 					{ label: __('No', 'maxi-blocks'), value: 0 },
 				]}
-				onChange={val => changeHasClipPath(+val)}
+				onChange={val => changeHasClipPath(val)}
 			/>
 			{hasClipPath && (
 				<>

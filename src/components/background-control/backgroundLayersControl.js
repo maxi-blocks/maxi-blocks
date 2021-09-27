@@ -39,8 +39,16 @@ import { moveRight, toolbarSizing } from '../../icons';
  * Component
  */
 const LayerCard = props => {
-	const { onChange, onOpen, isOpen, onRemove, layerId, clientId, isButton } =
-		props;
+	const {
+		onChange,
+		onOpen,
+		isOpen,
+		onRemove,
+		layerId,
+		clientId,
+		isButton,
+		breakpoint,
+	} = props;
 	const layer = cloneDeep(props.layer);
 	const { type } = layer;
 
@@ -155,6 +163,7 @@ const LayerCard = props => {
 							onChange={obj => onChange({ ...layer, ...obj })}
 							type='layer'
 							isButton={isButton}
+							breakpoint={breakpoint}
 						/>
 					)) ||
 						(type === 'image' && (
@@ -166,6 +175,7 @@ const LayerCard = props => {
 									),
 								}}
 								onChange={obj => onChange({ ...layer, ...obj })}
+								breakpoint={breakpoint}
 							/>
 						)) ||
 						(type === 'video' && (
@@ -177,6 +187,7 @@ const LayerCard = props => {
 									),
 								}}
 								onChange={obj => onChange({ ...layer, ...obj })}
+								breakpoint={breakpoint}
 							/>
 						)) ||
 						(type === 'gradient' && (
@@ -188,6 +199,7 @@ const LayerCard = props => {
 									),
 								}}
 								onChange={obj => onChange({ ...layer, ...obj })}
+								breakpoint={breakpoint}
 							/>
 						)) ||
 						(type === 'shape' && (
@@ -200,6 +212,7 @@ const LayerCard = props => {
 								}}
 								onChange={obj => onChange({ ...layer, ...obj })}
 								layerId={layerId}
+								breakpoint={breakpoint}
 							/>
 						))}
 				</div>
@@ -220,6 +233,7 @@ const BackgroundLayersControl = ({
 	disableColor = false,
 	disableSVG = false,
 	clientId,
+	breakpoint,
 	...props
 }) => {
 	const layers = cloneDeep(props.layersOptions);
@@ -311,12 +325,14 @@ const BackgroundLayersControl = ({
 						[getAttributeKey(
 							'background-layers-status',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: !!+val,
 						[getAttributeKey(
 							'background-active-media',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: +val ? 'layers' : '',
 					})
 				}
@@ -338,7 +354,8 @@ const BackgroundLayersControl = ({
 									[getAttributeKey(
 										'background-layers',
 										isHover,
-										prefix
+										prefix,
+										breakpoint
 									)]: layers,
 								});
 							}}
@@ -361,7 +378,8 @@ const BackgroundLayersControl = ({
 												[getAttributeKey(
 													'background-layers',
 													isHover,
-													prefix
+													prefix,
+													breakpoint
 												)]: layers,
 											});
 										}}
@@ -381,13 +399,15 @@ const BackgroundLayersControl = ({
 												[getAttributeKey(
 													'background-layers',
 													isHover,
-													prefix
+													prefix,
+													breakpoint
 												)]: layers,
 												...(layers.length === 0 && {
 													[getAttributeKey(
 														'background-active-media',
 														isHover,
-														prefix
+														prefix,
+														breakpoint
 													)]: 'none',
 												}),
 											});
@@ -406,13 +426,15 @@ const BackgroundLayersControl = ({
 								[getAttributeKey(
 									'background-layers',
 									isHover,
-									prefix
+									prefix,
+									breakpoint
 								)]: layers,
 								...(layers.length > 0 && {
 									[getAttributeKey(
 										'background-active-media',
 										isHover,
-										prefix
+										prefix,
+										breakpoint
 									)]: 'layers',
 								}),
 							});

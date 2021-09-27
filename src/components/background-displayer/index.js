@@ -4,16 +4,20 @@
 import { RawHTML } from '@wordpress/element';
 
 /**
+ * Internal Dependencies
+ */
+import VideoLayer from './videoLayer';
+import {
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+	getAttributeValue,
+} from '../../extensions/styles';
+
+/**
  * External dependencies
  */
 import classnames from 'classnames';
 import { cloneDeep } from 'lodash';
-
-/**
- * Internal Dependencies
- */
-import VideoLayer from './videoLayer';
-import { getGroupAttributes } from '../../extensions/styles';
 
 /**
  * Styles
@@ -23,8 +27,11 @@ import './style.scss';
 /**
  * Component
  */
+
+const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 const BackgroundContent = props => {
-	const { blockClassName, isHover = false } = props;
+	const { blockClassName, isHover = false, activeLayers } = props;
 
 	const layers = cloneDeep(
 		props[`background-layers${isHover ? '-hover' : ''}`]
@@ -34,147 +41,176 @@ const BackgroundContent = props => {
 
 	return (
 		<>
-			{!props[`background-layers-status${isHover ? '-hover' : ''}`] ? (
-				<>
-					{(props[
-						`background-active-media${isHover ? '-hover' : ''}`
-					] === 'color' ||
-						props[
-							`background-active-media${isHover ? '-hover' : ''}`
-						] === 'gradient') && (
-						<div
-							className={classnames(
-								'maxi-background-displayer__layer',
-								'maxi-background-displayer__color'
-							)}
-						/>
-					)}
-					{props[
-						`background-active-media${isHover ? '-hover' : ''}`
-					] === 'image' && (
-						<div
-							className={classnames(
-								'maxi-background-displayer__layer',
-								'maxi-background-displayer__images'
-							)}
-						/>
-					)}
-					{props[
-						`background-active-media${isHover ? '-hover' : ''}`
-					] === 'video' && (
-						<VideoLayer
-							videoOptions={getGroupAttributes(
-								props,
-								'backgroundVideo',
-								isHover
-							)}
-							blockClassName={blockClassName}
-						/>
-					)}
-					{props[
-						`background-active-media${isHover ? '-hover' : ''}`
-					] === 'svg' &&
-						props[
-							`background-svg-SVGElement${
-								isHover ? '-hover' : ''
-							}`
-						] && (
-							<RawHTML
-								className={classnames(
-									'maxi-background-displayer__layer',
-									'maxi-background-displayer__svg'
-								)}
-							>
-								{
-									props[
-										`background-svg-SVGElement${
-											isHover ? '-hover' : ''
-										}`
-									]
-								}
-							</RawHTML>
-						)}
-				</>
-			) : (
-				layers &&
-				layers.length > 0 &&
-				layers.map(layer => {
-					switch (layer.type) {
-						case 'color':
-						case 'gradient':
-						case 'image':
-							return (
-								<div
-									key={`maxi-background-displayer__${layer.type}__${layer.id}`}
-									className={classnames(
-										'maxi-background-displayer__layer',
-										`maxi-background-displayer__${layer.id}`
-									)}
-								/>
-							);
-						case 'video':
-							return (
-								<VideoLayer
-									key={`maxi-background-displayer__${layer.type}__${layer.id}`}
-									videoOptions={getGroupAttributes(
-										layer,
-										'backgroundVideo',
-										isHover
-									)}
-									blockClassName={blockClassName}
-									className={`maxi-background-displayer__${layer.id}`}
-								/>
-							);
-						case 'shape':
-							return (
-								(layer['background-svg-SVGElement'] && (
-									<RawHTML
-										key={`maxi-background-displayer__${layer.type}__${layer.id}`}
+			<>
+				{Object.entries(activeLayers).map(
+					([breakpoint, activeMedia]) => {
+						switch (activeMedia) {
+							case 'color':
+								return (
+									<div
 										className={classnames(
 											'maxi-background-displayer__layer',
-											'maxi-background-displayer__svg',
-											`maxi-background-displayer__${layer.id}`
+											'maxi-background-displayer__color'
+										)}
+									/>
+								);
+							case 'gradient':
+								return (
+									<div
+										className={classnames(
+											'maxi-background-displayer__layer',
+											'maxi-background-displayer__gradient'
+										)}
+									/>
+								);
+							case 'image':
+								return (
+									<div
+										className={classnames(
+											'maxi-background-displayer__layer',
+											'maxi-background-displayer__images'
+										)}
+									/>
+								);
+							case 'video':
+								return (
+									<VideoLayer
+										videoOptions={getGroupAttributes(
+											props,
+											'backgroundVideo',
+											isHover
+										)}
+										blockClassName={blockClassName}
+										breakpoint={breakpoint}
+									/>
+								);
+							case 'svg':
+								return (
+									<RawHTML
+										className={classnames(
+											'maxi-background-displayer__layer',
+											'maxi-background-displayer__svg'
 										)}
 									>
-										{layer['background-svg-SVGElement']}
+										{getLastBreakpointAttribute(
+											'background-svg-SVGElement',
+											breakpoint,
+											props,
+											isHover
+										)}
 									</RawHTML>
-								)) ||
-								null
-							);
-						default:
-							break;
+								);
+							default:
+								return null;
+						}
 					}
-
-					return null;
-				})
-			)}
+				)}
+			</>
 		</>
 	);
 };
 
+const getBackgroundActiveMedia = (props, prefix = '', isHover = false) => {
+	const response = {};
+	const target = `${prefix}background-active-media`;
+
+	Object.entries(props).forEach(([key, val]) => {
+		if (!key.includes(target) || !val) return;
+
+		const breakpoint = key.replace(`${target}-`, '').replace('-hover', '');
+		const prevBreakpoint =
+			breakpoint !== 'general'
+				? BREAKPOINTS[BREAKPOINTS.indexOf(breakpoint) - 1]
+				: breakpoint;
+		const lastValue = getLastBreakpointAttribute(
+			target,
+			prevBreakpoint,
+			props,
+			isHover
+		);
+		const currentValue = getLastBreakpointAttribute(
+			target,
+			breakpoint,
+			props,
+			isHover
+		);
+
+		if (breakpoint === 'general' || lastValue !== val)
+			response[breakpoint] = val;
+
+		// Ensures a repeated activeElement for video in case some of the options
+		// present on the url of the element are different from the previous breakpoint
+		if (currentValue === 'video' && response[breakpoint] !== 'video') {
+			const repeatVideo = [
+				'mediaURL',
+				'loop',
+				'startTime',
+				'endTime',
+				'playOnMobile',
+			].some(target => {
+				const currentVideo = getAttributeValue({
+					target: `background-video-${target}`,
+					props,
+					breakpoint,
+				});
+				const prevVideo = getAttributeValue({
+					target: `background-video-${target}`,
+					props,
+					breakpoint: prevBreakpoint,
+				});
+
+				if (currentVideo && currentVideo !== prevVideo) return true;
+
+				return false;
+			});
+
+			if (repeatVideo) response[breakpoint] = val;
+		}
+		// Ensures a repeated activeElement for video in case some of the options
+		// present on the url of the element are different from the previous breakpoint
+		if (currentValue === 'svg') {
+			const currentSVG = getAttributeValue({
+				target: 'background-svg-SVGElement',
+				props,
+				breakpoint,
+			});
+			const prevSVG = getAttributeValue({
+				target: 'background-svg-SVGElement',
+				props,
+				breakpoint: prevBreakpoint,
+			});
+
+			if (currentSVG !== prevSVG) response[breakpoint] = val;
+		}
+	});
+
+	return response;
+};
+
 const BackgroundDisplayer = props => {
-	const {
-		className,
-		'background-active-media': backgroundActiveMedia,
-		'background-active-media-hover': backgroundActiveMediaHover,
-		'background-status-hover': backgroundStatusHover,
-	} = props;
+	const { className } = props;
 
-	const noneActiveMediaNormal =
-		!backgroundActiveMedia || backgroundActiveMedia === 'none';
-	const noneActiveMediaHover =
-		!backgroundActiveMediaHover ||
-		backgroundActiveMediaHover === 'none' ||
-		!backgroundStatusHover;
+	const activeLayers = getBackgroundActiveMedia(props);
 
-	if (noneActiveMediaNormal && noneActiveMediaHover) return null;
+	// const noneActiveMediaNormal =
+	// 	!backgroundActiveMedia || backgroundActiveMedia === 'none';
+	// const noneActiveMediaHover =
+	// 	!backgroundActiveMediaHover ||
+	// 	backgroundActiveMediaHover === 'none' ||
+	// 	!backgroundStatusHover;
+
+	// if (noneActiveMediaNormal && noneActiveMediaHover) return null;
 
 	const classes = classnames('maxi-background-displayer', className);
 
 	return (
 		<div className={classes}>
-			<BackgroundContent {...props} isHover={false} />
-			<BackgroundContent {...props} isHover />
+			<BackgroundContent
+				{...props}
+				activeLayers={activeLayers}
+				isHover={false}
+			/>
+			{/* <BackgroundContent {...props} activeLayers={activeLayers} isHover /> */}
 		</div>
 	);
 };

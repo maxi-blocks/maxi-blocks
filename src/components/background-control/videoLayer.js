@@ -12,7 +12,10 @@ import OpacityControl from '../opacity-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import TextControl from '../text-control';
 import FancyRadioControl from '../fancy-radio-control';
-import { getAttributeKey } from '../../extensions/styles';
+import {
+	getAttributeKey,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -23,7 +26,7 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const VideoLayer = props => {
-	const { onChange, isHover, prefix } = props;
+	const { onChange, isHover, prefix, breakpoint } = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
 
@@ -38,15 +41,12 @@ const VideoLayer = props => {
 				label='URL'
 				type='url'
 				// help={__('Add Video', 'maxi-blocks')}
-				value={
-					videoOptions[
-						getAttributeKey(
-							'background-video-mediaURL',
-							isHover,
-							prefix
-						)
-					]
-				}
+				value={getLastBreakpointAttribute(
+					`${prefix}background-video-mediaURL`,
+					breakpoint,
+					videoOptions,
+					isHover
+				)}
 				placeholder='Youtube, Vimeo, or Direct Link'
 				onChange={val => {
 					if (val && !videoUrlRegex.test(val)) {
@@ -61,7 +61,8 @@ const VideoLayer = props => {
 						[getAttributeKey(
 							'background-video-mediaURL',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: val,
 					});
 				}}
@@ -69,21 +70,19 @@ const VideoLayer = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('Start Time (s)', 'maxi-blocks')}
-				value={
-					videoOptions[
-						getAttributeKey(
-							'background-video-startTime',
-							isHover,
-							prefix
-						)
-					]
-				}
+				value={getLastBreakpointAttribute(
+					`${prefix}background-video-startTime`,
+					breakpoint,
+					videoOptions,
+					isHover
+				)}
 				onChangeValue={val => {
 					onChange({
 						[getAttributeKey(
 							'background-video-startTime',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: val !== undefined && val !== '' ? val : '',
 					});
 				}}
@@ -94,34 +93,34 @@ const VideoLayer = props => {
 						[getAttributeKey(
 							'background-video-startTime',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: '',
 					})
 				}
 			/>
 			<AdvancedNumberControl
 				label={__('End Time (s)', 'maxi-blocks')}
-				value={
-					videoOptions[
-						getAttributeKey(
-							'background-video-endTime',
-							isHover,
-							prefix
-						)
-					]
-				}
+				value={getLastBreakpointAttribute(
+					`${prefix}background-video-endTime`,
+					breakpoint,
+					videoOptions,
+					isHover
+				)}
 				onChangeValue={val => {
 					onChange({
 						[getAttributeKey(
 							'background-video-endTime',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: val !== undefined && val !== '' ? val : '',
 						...(!!val && {
 							[getAttributeKey(
 								'background-video-loop',
 								isHover,
-								prefix
+								prefix,
+								breakpoint
 							)]: 0,
 						}),
 					});
@@ -133,22 +132,20 @@ const VideoLayer = props => {
 						[getAttributeKey(
 							'background-video-endTime',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: '',
 					})
 				}
 			/>
 			<FancyRadioControl
 				label={__('Loop', 'maxi-blocks')}
-				selected={
-					videoOptions[
-						getAttributeKey(
-							'background-video-loop',
-							isHover,
-							prefix
-						)
-					]
-				}
+				selected={getLastBreakpointAttribute(
+					`${prefix}background-video-loop`,
+					breakpoint,
+					videoOptions,
+					isHover
+				)}
 				options={[
 					{
 						label: __('Yes', 'maxi-blocks'),
@@ -164,7 +161,8 @@ const VideoLayer = props => {
 						getAttributeKey(
 							'background-video-endTime',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)
 					]
 				}
@@ -173,22 +171,20 @@ const VideoLayer = props => {
 						[getAttributeKey(
 							'background-video-loop',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: val,
 					})
 				}
 			/>
 			<FancyRadioControl
 				label={__('Play on Mobile', 'maxi-blocks')}
-				selected={
-					videoOptions[
-						getAttributeKey(
-							'background-video-playOnMobile',
-							isHover,
-							prefix
-						)
-					]
-				}
+				selected={getLastBreakpointAttribute(
+					`${prefix}background-video-playOnMobile`,
+					breakpoint,
+					videoOptions,
+					isHover
+				)}
 				options={[
 					{
 						label: __('Yes', 'maxi-blocks'),
@@ -204,28 +200,27 @@ const VideoLayer = props => {
 						[getAttributeKey(
 							'background-video-playOnMobile',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: val,
 					})
 				}
 			/>
 			<OpacityControl
 				label={__('Video Opacity', 'maxi-blocks')}
-				opacity={
-					videoOptions[
-						getAttributeKey(
-							'background-video-opacity',
-							isHover,
-							prefix
-						)
-					]
-				}
+				opacity={getLastBreakpointAttribute(
+					`${prefix}background-video-opacity`,
+					breakpoint,
+					videoOptions,
+					isHover
+				)}
 				onChange={opacity => {
 					videoOptions[
 						getAttributeKey(
 							'background-video-opacity',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)
 					] = opacity;
 					onChange(videoOptions);
@@ -234,26 +229,25 @@ const VideoLayer = props => {
 			<MediaUploaderControl
 				className='maxi-mediauploader-control__video-fallback'
 				placeholder={__('Background Fallback')}
-				mediaID={
-					videoOptions[
-						getAttributeKey(
-							'background-video-fallbackID',
-							isHover,
-							prefix
-						)
-					]
-				}
+				mediaID={getLastBreakpointAttribute(
+					`${prefix}background-video-fallbackID`,
+					breakpoint,
+					videoOptions,
+					isHover
+				)}
 				onSelectImage={val =>
 					onChange({
 						[getAttributeKey(
 							'background-video-fallbackID',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: val.id,
 						[getAttributeKey(
 							'background-video-fallbackURL',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: val.url,
 					})
 				}
@@ -262,12 +256,14 @@ const VideoLayer = props => {
 						[getAttributeKey(
 							'background-video-fallbackID',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: '',
 						[getAttributeKey(
 							'background-video-fallbackURL',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: '',
 					})
 				}

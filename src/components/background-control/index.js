@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	getGroupAttributes,
 	getAttributeKey,
-	getAttributeValue,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import BackgroundLayersControl from './backgroundLayersControl';
 import ColorLayer from './colorLayer';
@@ -58,19 +58,30 @@ const BackgroundControl = props => {
 		disablePalette,
 		clientId,
 		isButton = false,
+		breakpoint = 'general',
 	} = props;
 
-	const backgroundActiveMedia = getAttributeValue(
-		'background-active-media',
+	const backgroundActiveMedia = getLastBreakpointAttribute(
+		`${prefix}background-active-media`,
+		breakpoint,
 		props,
-		isHover,
-		prefix
+		isHover
 	);
 	const layersOptions =
-		getAttributeValue('background-layers', props, isHover, prefix) || [];
+		getLastBreakpointAttribute(
+			`${prefix}background-layers`,
+			breakpoint,
+			props,
+			isHover
+		) || [];
 	const layersStatus =
-		getAttributeValue('background-layers-status', props, isHover, prefix) ||
-		false;
+		getLastBreakpointAttribute(
+			`${prefix}background-layers-status`,
+			breakpoint,
+			props,
+			isHover
+		) || false;
+
 	const classes = classnames('maxi-background-control', className);
 
 	const getOptions = () => {
@@ -131,6 +142,7 @@ const BackgroundControl = props => {
 					disableSVG={disableSVG}
 					clientId={clientId}
 					isButton={isButton}
+					breakpoint={breakpoint}
 				/>
 			)}
 			{!layersStatus && getOptions().length > 1 && (
@@ -145,7 +157,8 @@ const BackgroundControl = props => {
 							[getAttributeKey(
 								'background-active-media',
 								isHover,
-								prefix
+								prefix,
+								breakpoint
 							)]: val,
 						})
 					}
@@ -170,6 +183,7 @@ const BackgroundControl = props => {
 							disablePalette={disablePalette}
 							clientId={clientId}
 							isButton={isButton}
+							breakpoint={breakpoint}
 						/>
 					)}
 					{!disableImage && backgroundActiveMedia === 'image' && (
@@ -186,6 +200,7 @@ const BackgroundControl = props => {
 							disableClipPath={disableClipPath}
 							isHover={isHover}
 							prefix={prefix}
+							breakpoint={breakpoint}
 						/>
 					)}
 					{!disableVideo && backgroundActiveMedia === 'video' && (
@@ -202,6 +217,7 @@ const BackgroundControl = props => {
 							disableClipPath={disableClipPath}
 							isHover={isHover}
 							prefix={prefix}
+							breakpoint={breakpoint}
 						/>
 					)}
 					{!disableGradient && backgroundActiveMedia === 'gradient' && (
@@ -218,6 +234,7 @@ const BackgroundControl = props => {
 							disableClipPath={disableClipPath}
 							isHover={isHover}
 							prefix={prefix}
+							breakpoint={breakpoint}
 						/>
 					)}
 					{!disableSVG && backgroundActiveMedia === 'svg' && (
@@ -234,6 +251,7 @@ const BackgroundControl = props => {
 							isHover={isHover}
 							prefix={prefix}
 							clientId={clientId}
+							breakpoint={breakpoint}
 						/>
 					)}
 				</>

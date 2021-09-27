@@ -12,6 +12,7 @@ import {
 	getDefaultAttribute,
 	getAttributeKey,
 	getBlockStyle,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import MaxiModal from '../../editor/library/modal';
 
@@ -24,7 +25,7 @@ import { isEmpty, cloneDeep } from 'lodash';
  * Component
  */
 const SVGLayer = props => {
-	const { onChange, isHover, prefix, clientId, layerId } = props;
+	const { onChange, isHover, prefix, clientId, layerId, breakpoint } = props;
 
 	const SVGOptions = cloneDeep(props.SVGOptions);
 	const minMaxSettings = {
@@ -57,7 +58,6 @@ const SVGLayer = props => {
 							<MaxiModal
 								type='bg-shape'
 								style={getBlockStyle(clientId)}
-								onSelect={obj => onChange(obj)}
 								onRemove={obj => {
 									if (layerId) {
 										delete SVGOptions[
@@ -75,79 +75,89 @@ const SVGLayer = props => {
 									}
 									onChange({ ...SVGOptions, ...obj });
 								}}
-								icon={SVGOptions['background-svg-SVGElement']}
-							/>
-						),
-					},
-					!isEmpty(SVGOptions['background-svg-SVGElement']) && {
-						label: __('Fill', 'maxi-blocks'),
-						content: (
-							<SVGFillControl
-								SVGOptions={SVGOptions}
-								onChange={obj =>
-									onChange({
-										'background-palette-svg-color':
-											obj['background-palette-svg-color'],
-										'background-palette-svg-color-status':
-											obj[
-												'background-palette-svg-color-status'
-											],
-										[getAttributeKey(
-											'background-svg-SVGData',
-											isHover,
-											prefix
-										)]: obj.SVGData,
-										[getAttributeKey(
-											'background-svg-SVGElement',
-											isHover,
-											prefix
-										)]: obj.SVGElement,
-									})
-								}
-								clientId={clientId}
-								isHover={isHover}
+								icon={getLastBreakpointAttribute(
+									`${prefix}background-svg-SVGElement`,
+									breakpoint,
+									SVGOptions,
+									isHover
+								)}
+								onSelect={obj => {
+									if (breakpoint)
+										Object.entries(obj).forEach(
+											([key, val]) => {
+												if (
+													key.lastIndexOf(
+														`-${breakpoint}`
+													) !==
+													key.length -
+														`-${breakpoint}`.length
+												) {
+													obj[
+														`${key}-${breakpoint}`
+													] = val;
+
+													delete obj[key];
+												}
+											}
+										);
+
+									onChange(obj);
+								}}
 							/>
 						),
 					},
 					!isEmpty(
-						SVGOptions[
-							getAttributeKey(
-								'background-svg-SVGElement',
-								isHover,
-								prefix
-							)
-						]
+						getLastBreakpointAttribute(
+							`${prefix}background-svg-SVGElement`,
+							breakpoint,
+							SVGOptions,
+							isHover
+						)
+					) && {
+						label: __('Fill', 'maxi-blocks'),
+						content: (
+							<SVGFillControl
+								SVGOptions={SVGOptions}
+								onChange={obj => onChange(obj)}
+								clientId={clientId}
+								isHover={isHover}
+								breakpoint={breakpoint}
+							/>
+						),
+					},
+					!isEmpty(
+						getLastBreakpointAttribute(
+							`${prefix}background-svg-SVGElement`,
+							breakpoint,
+							SVGOptions,
+							isHover
+						)
 					) && {
 						label: __('Position', 'maxi-blocks'),
 						content: (
 							<>
 								<AdvancedNumberControl
 									label={__('Y-axis', 'maxi-blocks')}
-									value={
-										SVGOptions[
-											getAttributeKey(
-												'background-svg-top',
-												isHover,
-												prefix
-											)
-										]
-									}
+									value={getLastBreakpointAttribute(
+										`${prefix}background-svg-top`,
+										breakpoint,
+										SVGOptions,
+										isHover
+									)}
 									enableUnit
-									unit={
-										SVGOptions[
-											getAttributeKey(
-												'background-svg-top--unit',
-												isHover,
-												prefix
-											)
-										]
-									}
+									unit={getLastBreakpointAttribute(
+										`${prefix}background-svg-top--unit`,
+										breakpoint,
+										SVGOptions,
+										isHover
+									)}
 									onChangeValue={val => {
 										onChange({
 											[getAttributeKey(
 												'background-svg-top',
 												isHover,
-												prefix
+												prefix,
+												breakpoint
 											)]: val,
 										});
 									}}
@@ -156,7 +166,8 @@ const SVGLayer = props => {
 											[getAttributeKey(
 												'background-svg-top--unit',
 												isHover,
-												prefix
+												prefix,
+												breakpoint
 											)]: val,
 										})
 									}
@@ -165,23 +176,27 @@ const SVGLayer = props => {
 											[getAttributeKey(
 												'background-svg-top',
 												isHover,
-												prefix
+												prefix,
+												breakpoint
 											)]: getDefaultAttribute(
 												getAttributeKey(
 													'background-svg-top',
 													isHover,
-													prefix
+													prefix,
+													breakpoint
 												)
 											),
 											[getAttributeKey(
 												'background-svg-top--unit',
 												isHover,
-												prefix
+												prefix,
+												breakpoint
 											)]: getDefaultAttribute(
 												getAttributeKey(
 													'background-svg-top--unit',
 													isHover,
-													prefix
+													prefix,
+													breakpoint
 												)
 											),
 										})
@@ -190,31 +205,26 @@ const SVGLayer = props => {
 								/>
 								<AdvancedNumberControl
 									label={__('X-axis', 'maxi-blocks')}
-									value={
-										SVGOptions[
-											getAttributeKey(
-												'background-svg-left',
-												isHover,
-												prefix
-											)
-										]
-									}
+									value={getLastBreakpointAttribute(
+										`${prefix}background-svg-left`,
+										breakpoint,
+										SVGOptions,
+										isHover
+									)}
 									enableUnit
-									unit={
-										SVGOptions[
-											getAttributeKey(
-												'background-svg-left--unit',
-												isHover,
-												prefix
-											)
-										]
-									}
+									unit={getLastBreakpointAttribute(
+										`${prefix}background-svg-left--unit`,
+										breakpoint,
+										SVGOptions,
+										isHover
+									)}
 									onChangeValue={val => {
 										onChange({
 											[getAttributeKey(
 												'background-svg-left',
 												isHover,
-												prefix
+												prefix,
+												breakpoint
 											)]: val,
 										});
 									}}
@@ -223,7 +233,8 @@ const SVGLayer = props => {
 											[getAttributeKey(
 												'background-svg-left--unit',
 												isHover,
-												prefix
+												prefix,
+												breakpoint
 											)]: val,
 										})
 									}
@@ -232,23 +243,27 @@ const SVGLayer = props => {
 											[getAttributeKey(
 												'background-svg-left',
 												isHover,
-												prefix
+												prefix,
+												breakpoint
 											)]: getDefaultAttribute(
 												getAttributeKey(
 													'background-svg-left',
 													isHover,
-													prefix
+													prefix,
+													breakpoint
 												)
 											),
 											[getAttributeKey(
 												'background-svg-left--unit',
 												isHover,
-												prefix
+												prefix,
+												breakpoint
 											)]: getDefaultAttribute(
 												getAttributeKey(
 													'background-svg-left--unit',
 													isHover,
-													prefix
+													prefix,
+													breakpoint
 												)
 											),
 										})
@@ -263,32 +278,27 @@ const SVGLayer = props => {
 						content: (
 							<AdvancedNumberControl
 								label={__('Size', 'maxi-blocks')}
-								value={
-									SVGOptions[
-										getAttributeKey(
-											'background-svg-size',
-											isHover,
-											prefix
-										)
-									]
-								}
+								value={getLastBreakpointAttribute(
+									`${prefix}background-svg-size`,
+									breakpoint,
+									SVGOptions,
+									isHover
+								)}
 								allowedUnits={['px', 'em', 'vw', '%']}
 								enableUnit
-								unit={
-									SVGOptions[
-										getAttributeKey(
-											'background-svg-size--unit',
-											isHover,
-											prefix
-										)
-									]
-								}
+								unit={getLastBreakpointAttribute(
+									`${prefix}background-svg-size--unit`,
+									breakpoint,
+									SVGOptions,
+									isHover
+								)}
 								onChangeValue={val => {
 									onChange({
 										[getAttributeKey(
 											'background-svg-size',
 											isHover,
-											prefix
+											prefix,
+											breakpoint
 										)]: val,
 									});
 								}}
@@ -297,7 +307,8 @@ const SVGLayer = props => {
 										[getAttributeKey(
 											'background-svg-size--unit',
 											isHover,
-											prefix
+											prefix,
+											breakpoint
 										)]: val,
 									})
 								}
@@ -306,23 +317,27 @@ const SVGLayer = props => {
 										[getAttributeKey(
 											'background-svg-size',
 											isHover,
-											prefix
+											prefix,
+											breakpoint
 										)]: getDefaultAttribute(
 											getAttributeKey(
 												'background-svg-size',
 												isHover,
-												prefix
+												prefix,
+												breakpoint
 											)
 										),
 										[getAttributeKey(
 											'background-svg-size--unit',
 											isHover,
-											prefix
+											prefix,
+											breakpoint
 										)]: getDefaultAttribute(
 											getAttributeKey(
 												'background-svg-size--unit',
 												isHover,
-												prefix
+												prefix,
+												breakpoint
 											)
 										),
 									})

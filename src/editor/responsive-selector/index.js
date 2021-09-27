@@ -40,9 +40,8 @@ const ResponsiveSelector = props => {
 	const { insertBlock } = useDispatch('core/block-editor');
 
 	const { deviceType, breakpoints } = useSelect(select => {
-		const { receiveMaxiDeviceType, receiveMaxiBreakpoints } = select(
-			'maxiBlocks'
-		);
+		const { receiveMaxiDeviceType, receiveMaxiBreakpoints } =
+			select('maxiBlocks');
 
 		return {
 			deviceType: receiveMaxiDeviceType(),

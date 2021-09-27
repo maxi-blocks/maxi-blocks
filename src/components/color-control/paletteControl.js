@@ -37,22 +37,48 @@ const ColorPaletteControl = props => {
 		clientId,
 	} = props;
 
-	const { globalStatus } = useSelect(select => {
-		const globalStatus = globalProps
-			? select('maxiBlocks/style-cards').receiveStyleCardGlobalValue(
-					globalProps?.target,
-					globalProps ? getBlockStyle(clientId) : null,
-					globalProps?.type
-			  )
-			: false;
+	const { globalStatus, globalPaletteColor, globalPaletteOpacity } =
+		useSelect(select => {
+			const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 
-		return { globalStatus };
-	});
+			const prefix = globalProps?.target ? `${globalProps?.target}-` : '';
+
+			const globalStatus = globalProps
+				? receiveStyleCardValue(
+						`${prefix}color-global`,
+						globalProps ? getBlockStyle(clientId) : null,
+						globalProps?.type
+				  )
+				: false;
+			const globalPaletteColor = globalProps
+				? receiveStyleCardValue(
+						`${prefix}palette-color`,
+						globalProps ? getBlockStyle(clientId) : null,
+						globalProps?.type
+				  )
+				: false;
+			const globalPaletteOpacity = globalProps
+				? receiveStyleCardValue(
+						`${prefix}palette-opacity`,
+						globalProps ? getBlockStyle(clientId) : null,
+						globalProps?.type
+				  )
+				: false;
+
+			return { globalStatus, globalPaletteColor, globalPaletteOpacity };
+		});
 
 	const paletteClasses = classnames(
 		'maxi-sc-color-palette',
 		globalStatus && 'palette-disabled'
 	);
+
+	const getIsActive = item => {
+		if (globalStatus && globalPaletteColor === item) return true;
+		if (!globalStatus && value === item) return true;
+
+		return false;
+	};
 
 	return (
 		<>
@@ -65,7 +91,7 @@ const ColorPaletteControl = props => {
 						<div
 							key={`maxi-sc-color-palette__box__${item}`}
 							className={`maxi-sc-color-palette__box ${
-								value === item
+								getIsActive(item)
 									? 'maxi-sc-color-palette__box--active'
 									: ''
 							}`}
@@ -86,7 +112,7 @@ const ColorPaletteControl = props => {
 			{!disableOpacity && (
 				<AdvancedNumberControl
 					label={__('Colour Opacity', 'maxi-blocks')}
-					value={opacity}
+					value={globalStatus ? globalPaletteOpacity : opacity}
 					onChangeValue={val => {
 						const value = !isNil(val) ? +val : 0;
 

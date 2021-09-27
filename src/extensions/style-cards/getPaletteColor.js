@@ -4,9 +4,9 @@
 import { getBlockStyle } from '../styles';
 import getActiveStyleCard from './getActiveStyleCard';
 
-const getPaletteColor = (clientId, color) => {
+const getPaletteColor = (clientId, color, blockStyle) => {
 	const SCValue = getActiveStyleCard().value;
-	const parentBlockStyle = getBlockStyle(clientId);
+	const parentBlockStyle = blockStyle ?? getBlockStyle(clientId);
 
 	return (
 		SCValue[parentBlockStyle].styleCard?.color?.[color] ||

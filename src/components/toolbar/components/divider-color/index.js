@@ -73,7 +73,7 @@ const DividerColor = props => {
 						})
 					}
 					disableGradient
-					globalProps={{ target: 'color-global', type: 'divider' }}
+					globalProps={{ target: '', type: 'divider' }}
 				/>
 			</div>
 		</ToolbarPopover>

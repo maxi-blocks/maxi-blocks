@@ -535,3 +535,4 @@ if (!class_exists('MaxiBlocks_API')):
 		}
 	}
 endif;
+

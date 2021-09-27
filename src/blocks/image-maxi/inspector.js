@@ -1249,17 +1249,14 @@ const Inspector = memo(
 												),
 												content: (
 													<OpacityControl
-														opacity={
-															attributes[
-																`opacity-${deviceType}`
-															]
+														{...getGroupAttributes(
+															attributes,
+															'opacity'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
 														}
-														onChange={val =>
-															setAttributes({
-																[`opacity-${deviceType}`]:
-																	val,
-															})
-														}
+														breakpoint={deviceType}
 													/>
 												),
 											},

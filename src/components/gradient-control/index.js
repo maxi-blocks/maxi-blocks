@@ -9,7 +9,6 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import BaseControl from '../base-control';
-import Button from '../button';
 import OpacityControl from '../opacity-control';
 
 /**
@@ -21,7 +20,6 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
-import { reset } from '../../icons';
 
 /**
  * Component
@@ -40,10 +38,6 @@ const GradientControl = props => {
 	const [currentGradient, setCurrentGradient] = useState(gradient);
 
 	const classes = classnames('maxi-gradient-control', className);
-
-	const onReset = () => {
-		onChange(defaultGradient);
-	};
 
 	return (
 		<div className={classes}>

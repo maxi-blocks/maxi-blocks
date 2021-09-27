@@ -72,7 +72,6 @@ const GlobalColor = props => {
 			/>
 			{processSCAttribute(SC, globalAttr, groupAttr) && (
 				<ColorControl
-					label={__('Link', 'maxi-blocks')}
 					className={`maxi-style-cards-control__sc__link--${SCStyle}`}
 					paletteStatus={processSCAttribute(
 						SC,

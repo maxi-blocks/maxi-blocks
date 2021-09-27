@@ -80,6 +80,7 @@ const Inspector = memo(
 			imageRatio,
 			isImageUrl,
 			parentBlockStyle,
+			SVGElement,
 		} = attributes;
 		const { wpAlt, titleAlt } = altOptions || {};
 
@@ -1089,7 +1090,16 @@ const Inspector = memo(
 													'maxi-blocks'
 												),
 												content: (
-													<MaxiModal type='image-shape' />
+													<MaxiModal
+														type='image-shape'
+														onSelect={obj => {
+															setAttributes(obj);
+														}}
+														onRemove={obj => {
+															setAttributes(obj);
+														}}
+														icon={SVGElement}
+													/>
 												),
 											},
 											{

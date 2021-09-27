@@ -247,19 +247,23 @@ wp.domReady(() => {
 		}
 	});
 
-	const SCElement = document.querySelector('#maxi-blocks-sc-vars-inline-css');
-	if (!SCElement) {
-		const SCStylesSubscriber = subscribe(() => {
-			const SC = select(
+	const SCVarsUpdate = setInterval(() => {
+		const SC = select(
+			'maxiBlocks/style-cards'
+		).receiveMaxiActiveStyleCard();
+		if (SC && !isEmpty(SC)) {
+			updateSCOnEditor(SC.value);
+			const SCList = select(
 				'maxiBlocks/style-cards'
-			).receiveMaxiActiveStyleCard();
+			).receiveStyleCardsList();
+			const SCListCount = Object.keys(SCList).length;
 
-			if (SC && !isEmpty(SC)) {
-				updateSCOnEditor(SC.value);
-				SCStylesSubscriber();
-			}
-		});
-	}
+			if (SCListCount === 1 && SC.key === 'sc_maxi')
+				dispatch('maxiBlocks/style-cards').saveSCStyles(true);
+
+			clearInterval(SCVarsUpdate);
+		}
+	}, 300);
 });
 
 const openSidebar = item => {

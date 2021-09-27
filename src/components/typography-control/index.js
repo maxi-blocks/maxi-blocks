@@ -236,7 +236,7 @@ const LinkOptions = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
-				globalProps={{ target: 'link-color-global', type: 'link' }}
+				globalProps={{ target: 'link', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Hover', 'maxi-blocks')}
@@ -266,7 +266,7 @@ const LinkOptions = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
-				globalProps={{ target: 'hover-color-global', type: 'link' }}
+				globalProps={{ target: 'hover', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Active', 'maxi-blocks')}
@@ -299,7 +299,7 @@ const LinkOptions = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
-				globalProps={{ target: 'active-color-global', type: 'link' }}
+				globalProps={{ target: 'active', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Visited', 'maxi-blocks')}
@@ -332,7 +332,7 @@ const LinkOptions = props => {
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
-				globalProps={{ target: 'visited-color-global', type: 'link' }}
+				globalProps={{ target: 'visited', type: 'link' }}
 			/>
 		</>
 	);
@@ -658,7 +658,7 @@ const TypographyControl = withFormatValue(props => {
 						})
 					}
 					globalProps={{
-						target: `${isHover ? 'hover-' : ''}color-global`,
+						target: isHover ? 'hover-' : '',
 						type:
 							select('core/block-editor').getBlockName(
 								clientId
@@ -810,23 +810,25 @@ const TypographyControl = withFormatValue(props => {
 					});
 				}}
 			/>
-			<hr />
 			{!hideTextShadow && (
-				<TextShadowControl
-					className='maxi-typography-control__text-shadow'
-					textShadow={getValue(`${prefix}text-shadow`)}
-					onChange={val => {
-						onChangeFormat({
-							[`${prefix}text-shadow`]: val,
-						});
-					}}
-					defaultColor={getLastBreakpointAttribute(
-						'color',
-						breakpoint,
-						typography
-					)}
-					blockStyle={blockStyle}
-				/>
+				<>
+					<hr />
+					<TextShadowControl
+						className='maxi-typography-control__text-shadow'
+						textShadow={getValue(`${prefix}text-shadow`)}
+						onChange={val => {
+							onChangeFormat({
+								[`${prefix}text-shadow`]: val,
+							});
+						}}
+						defaultColor={getLastBreakpointAttribute(
+							'color',
+							breakpoint,
+							typography
+						)}
+						blockStyle={blockStyle}
+					/>
+				</>
 			)}
 			<hr />
 			{allowLink && (

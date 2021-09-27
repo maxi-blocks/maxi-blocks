@@ -86,7 +86,13 @@ const IconControl = props => {
 	return (
 		<div className={classes}>
 			{!isHover && deviceType === 'general' && (
-				<MaxiModal type='button-icon' style={parentBlockStyle} />
+				<MaxiModal
+					type='button-icon'
+					style={parentBlockStyle}
+					onSelect={obj => onChange(obj)}
+					onRemove={obj => onChange(obj)}
+					icon={props['icon-content']}
+				/>
 			)}
 			{isHover && (
 				<ToggleSwitch

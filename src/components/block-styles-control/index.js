@@ -2,6 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -18,6 +19,7 @@ import classnames from 'classnames';
  * Styles and icons
  */
 import './editor.scss';
+import { isEmpty } from 'lodash';
 
 /**
  * Component
@@ -25,6 +27,9 @@ import './editor.scss';
 const BlockStylesControl = props => {
 	const { blockStyle, onChange, isFirstOnHierarchy, className, clientId } =
 		props;
+
+	const { getBlockOrder } = select('core/block-editor');
+	const { updateBlockAttributes } = dispatch('core/block-editor');
 
 	const classes = classnames('maxi-block-style-control', className);
 
@@ -35,6 +40,22 @@ const BlockStylesControl = props => {
 				{ label: __('Light', 'maxi-blocks'), value: 'maxi-light' },
 			];
 		return [{ label: __('Parent', 'maxi-blocks'), value: 'maxi-parent' }];
+	};
+
+	const getAllInnerBlocks = (id, parentBlockStyle) => {
+		const innerBlockIds = id ? getBlockOrder(id) : getBlockOrder(clientId);
+		const innerBlocksStyle = parentBlockStyle || '';
+
+		if (innerBlockIds) {
+			innerBlockIds.forEach(innerBlockId => {
+				if (!isEmpty(innerBlocksStyle))
+					updateBlockAttributes(innerBlockId, {
+						parentBlockStyle: innerBlocksStyle,
+					});
+
+				getAllInnerBlocks(innerBlockId, parentBlockStyle);
+			});
+		}
 	};
 
 	return (
@@ -51,6 +72,8 @@ const BlockStylesControl = props => {
 							'maxi-',
 							''
 						);
+
+						getAllInnerBlocks(clientId, parentBlockStyle);
 
 						onChange({
 							blockStyle,

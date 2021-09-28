@@ -1096,8 +1096,7 @@ Object {
 
 exports[`StyleCards Dark Style Preset 1`] = `
 Object {
-  "divider": Object {
-    "color": "rgb(16,109,60)",
+  "button": Object {
     "color-global": true,
   },
 }

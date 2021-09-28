@@ -3,8 +3,8 @@
 exports[`StyleCards Paragraph Check Paragraph 1`] = `
 Object {
   "p": Object {
-    "color": "rgb(16,109,60)",
-    "color-global": true,
+    "color": "",
+    "color-global": false,
     "font-family-general": "Roboto",
     "font-size-unit-xl": "px",
     "font-size-unit-xxl": "px",

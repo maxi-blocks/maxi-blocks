@@ -356,6 +356,8 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				items={[
 					{
 						label: __('Quick Pick Colour Presets', 'maxi-blocks'),
+						classNameItem:
+							'maxi-blocks-sc__type--quick-color-presets',
 						content: (
 							<>
 								<div className='maxi-style-cards__quick-color-presets'>
@@ -445,10 +447,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 								</Button>
 							</>
 						),
-						classNameItem: 'maxi-blocks-sc__type--quick-color',
 					},
 					{
 						label: buttonTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--button',
 						content: (
 							<SCAccordion
 								{...buttonTabs}
@@ -461,6 +463,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 					},
 					{
 						label: pTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--paragraph',
 						content: (
 							<SCAccordion
 								{...pTabs}

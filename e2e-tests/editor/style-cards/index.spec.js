@@ -2,16 +2,10 @@
  * WordPress dependencies
  */
 import {
-	insertBlock,
 	createNewPost,
 	pressKeyTimes,
 	setBrowserViewport,
 } from '@wordpress/e2e-test-utils';
-
-/**
- * Internal dependencies
- */
-import { getBlockAttributes, openSidebar } from '../../utils';
 
 const receiveSelectedMaxiStyle = async () => {
 	return page.evaluate(() => {
@@ -38,27 +32,19 @@ describe('StyleCards', () => {
 			button.click()
 		);
 
-		await page.$$eval(
-			'.maxi-responsive-selector .action-buttons__button',
-			button => button[1].click()
+		await page.$eval(
+			'.maxi-responsive-selector .style-card-button',
+			button => button.click()
 		);
-
 		await page.waitForTimeout(500);
-		await page.$$eval(
-			'.maxi-accordion-control__item .maxi-accordion-tab div',
-			accordion => accordion[6].click()
-		);
-		const styleCard = await page.$(
-			'.components-popover__content .maxi-blocks-sc__type--divider'
-		);
 
-		// button
-		await styleCard.$eval('.maxi-radio-control__option label', button =>
-			button.click()
+		await page.$eval(
+			'.maxi-blocks-sc__type--quick-color-presets .maxi-accordion-control__item__button',
+			accordion => accordion.click()
 		);
 
 		// ColorControl
-		await styleCard.$eval(
+		await page.$eval(
 			'.maxi-color-control .maxi-color-control__color input',
 			input => input.focus()
 		);
@@ -70,8 +56,9 @@ describe('StyleCards', () => {
 			'.components-popover__content .maxi-style-cards__sc__save input',
 			input => input.focus()
 		);
+		await page.waitForTimeout(500);
 		await page.keyboard.type('Test Name');
-
+		await page.waitForTimeout(500);
 		await page.$eval(
 			'.components-popover__content .maxi-style-cards__sc__save button',
 			input => input.click()
@@ -85,56 +72,7 @@ describe('StyleCards', () => {
 	});
 
 	it('Change Style Card', async () => {
-		await createNewPost();
-		await setBrowserViewport('large');
-
-		await page.$eval('.maxi-toolbar-layout button', button =>
-			button.click()
-		);
-
-		await page.$$eval(
-			'.maxi-responsive-selector .action-buttons__button',
-			button => button[1].click()
-		);
-
-		await page.waitForTimeout(500);
-
-		await page.$$eval(
-			'.maxi-accordion-control__item .maxi-accordion-tab div',
-			accordion => accordion[6].click()
-		);
-
-		const styleCard = await page.$(
-			'.components-popover__content .maxi-blocks-sc__type--divider'
-		);
-
-		// button
-		await styleCard.$eval('.maxi-radio-control__option label', button =>
-			button.click()
-		);
-
-		// ColorControl
-		await styleCard.$eval(
-			'.maxi-color-control .maxi-color-control__color input',
-			input => input.focus()
-		);
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('106D3C');
-
-		// create SC
-		await page.$eval(
-			'.components-popover__content .maxi-style-cards__sc__save input',
-			input => input.focus()
-		);
-		await page.keyboard.type('Test Name');
-
-		await page.$eval(
-			'.components-popover__content .maxi-style-cards__sc__save button',
-			input => input.click()
-		);
-
 		// change SC
-
 		const selector = await page.$(
 			'.components-popover__content .maxi-style-cards__sc__more-sc .maxi-style-cards__sc__more-sc--select select'
 		);
@@ -142,63 +80,13 @@ describe('StyleCards', () => {
 		await selector.select('sc_maxi');
 
 		// expect
-
 		await page.waitForTimeout(1500); // Ensures SC is saved on the store
-
 		const expectPresets = await receiveSavedMaxiStyle();
 
 		expect(expectPresets).toMatchSnapshot();
 	});
 
 	it('Delete Style Card', async () => {
-		await createNewPost();
-		await setBrowserViewport('large');
-
-		await page.$eval('.maxi-toolbar-layout button', button =>
-			button.click()
-		);
-
-		await page.$$eval(
-			'.maxi-responsive-selector .action-buttons__button',
-			button => button[1].click()
-		);
-
-		await page.waitForTimeout(500);
-
-		await page.$$eval(
-			'.maxi-accordion-control__item .maxi-accordion-tab div',
-			accordion => accordion[6].click()
-		);
-
-		const styleCard = await page.$(
-			'.components-popover__content .maxi-blocks-sc__type--divider'
-		);
-
-		// button
-		await styleCard.$eval('.maxi-radio-control__option label', button =>
-			button.click()
-		);
-
-		// ColorControl
-		await styleCard.$eval(
-			'.maxi-color-control .maxi-color-control__color input',
-			input => input.focus()
-		);
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('106D3C');
-
-		// create SC
-		await page.$eval(
-			'.components-popover__content .maxi-style-cards__sc__save input',
-			input => input.focus()
-		);
-		await page.keyboard.type('Test Name');
-
-		await page.$eval(
-			'.components-popover__content .maxi-style-cards__sc__save button',
-			input => input.click()
-		);
-
 		// button
 		await page.$eval(
 			'.components-popover__content .maxi-style-cards__sc__more-sc .maxi-style-cards__sc__more-sc--delete',
@@ -240,17 +128,14 @@ describe('StyleCards', () => {
 			'.maxi-accordion-control__item .maxi-accordion-tab div',
 			accordion => accordion[6].click()
 		);
-		const styleCard = await page.$(
-			'.components-popover__content .maxi-blocks-sc__type--divider'
-		);
 
 		// button
-		await styleCard.$eval('.maxi-radio-control__option label', button =>
+		await page.$eval('.maxi-radio-control__option label', button =>
 			button.click()
 		);
 
 		// ColorControl
-		await styleCard.$eval(
+		await page.$eval(
 			'.maxi-color-control .maxi-color-control__color input',
 			input => input.focus()
 		);

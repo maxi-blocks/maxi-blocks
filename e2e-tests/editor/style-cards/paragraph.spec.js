@@ -24,54 +24,41 @@ describe('StyleCards Paragraph', () => {
 			button.click()
 		);
 
-		await page.$$eval(
-			'.maxi-responsive-selector .action-buttons__button',
-			button => button[1].click()
+		await page.$eval(
+			'.maxi-responsive-selector .style-card-button',
+			button => button.click()
 		);
 		await page.waitForTimeout(500);
 
-		await page.$$eval(
-			'.maxi-accordion-control__item .maxi-accordion-tab div',
-			accordion => accordion[2].click()
+		await page.$eval(
+			'.maxi-blocks-sc__type--paragraph .maxi-accordion-control__item__button',
+			accordion => accordion.click()
 		);
-		const styleCard = await page.$(
-			'.components-popover__content .maxi-blocks-sc__type--p'
-		);
-		const buttons = await styleCard.$$('.maxi-radio-control__option label');
-
-		// ColorControl
-		await buttons[0].click();
-		await styleCard.$eval(
-			'.maxi-color-control .maxi-color-control__color input',
-			input => input.focus()
-		);
-		await pressKeyTimes('Backspace', '6');
-		await page.keyboard.type('106D3C');
 
 		// screen size L
-		await styleCard.$$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-tabs-control button',
+		await page.$$eval(
+			'.maxi-blocks-sc__type--paragraph .maxi-tabs-control button',
 			screenSize => screenSize[1].click()
 		);
 		// Size
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__size input',
+		await page.$eval(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__size input',
 			size => size.focus()
 		);
 		await pressKeyTimes('Backspace', '2');
 		await page.keyboard.type('20');
 
 		// Line Height
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__line-height input',
+		await page.$eval(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__line-height input',
 			size => size.focus()
 		);
 		await pressKeyTimes('Backspace', '4');
 		await page.keyboard.type('0');
 
 		// Letter Spacing
-		await styleCard.$eval(
-			'.maxi-typography-control .maxi-settingstab-control .maxi-typography-control__letter-spacing input',
+		await page.$eval(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__letter-spacing input',
 			size => size.focus()
 		);
 		await page.keyboard.type('5');
@@ -79,23 +66,23 @@ describe('StyleCards Paragraph', () => {
 		// Selectors
 
 		// Weight
-		const weightOptions = await styleCard.$(
-			'.maxi-typography-control .maxi-typography-control__weight select'
+		const weightOptions = await page.$(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__weight select'
 		);
 
 		// Transform
-		const transformOptions = await styleCard.$(
-			'.maxi-typography-control .maxi-typography-control__transform select'
+		const transformOptions = await page.$(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__transform select'
 		);
 
 		// Style
-		const styleOptions = await styleCard.$(
-			'.maxi-typography-control .maxi-typography-control__font-style select'
+		const styleOptions = await page.$(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__font-style select'
 		);
 
 		// Decoration
-		const decorationOptions = await styleCard.$(
-			'.maxi-typography-control .maxi-typography-control__decoration select'
+		const decorationOptions = await page.$(
+			'.maxi-blocks-sc__type--paragraph .maxi-typography-control__decoration select'
 		);
 
 		await weightOptions.select('300');

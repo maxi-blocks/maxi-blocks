@@ -7,6 +7,7 @@ import { select } from '@wordpress/data';
  * External dependencies
  */
 import { uniqueId, isObject, isEmpty, isElement } from 'lodash';
+import parse from 'html-react-parser';
 
 /**
  * Utils
@@ -101,4 +102,16 @@ export const generateDataObject = (data, svg) => {
 		});
 
 	return response;
+};
+
+export const getSVGClassName = svg => {
+	if (!svg) return false;
+
+	const parsedContent = parse(svg);
+
+	const {
+		props: { className },
+	} = parsedContent;
+
+	return className;
 };

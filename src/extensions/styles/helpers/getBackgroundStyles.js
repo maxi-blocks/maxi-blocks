@@ -10,7 +10,8 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, round } from 'lodash';
+import { isEmpty, isNil, round, isNumber } from 'lodash';
+import { getSVGClassName } from '../../svg/utils';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -39,14 +40,14 @@ export const getColorBackgroundObject = ({
 		props,
 		isHover
 	);
-	const bgPaletteColor = getAttributeValue({
+	const currentBgPaletteColor = getAttributeValue({
 		target: 'background-palette-color',
 		props,
 		prefix,
 		isHover,
 		breakpoint,
 	});
-	const bgPaletteOpacity = getAttributeValue({
+	const currentBgPaletteOpacity = getAttributeValue({
 		target: 'background-palette-opacity',
 		props,
 		prefix,
@@ -70,7 +71,27 @@ export const getColorBackgroundObject = ({
 
 	if (!bgPaletteStatus && !isEmpty(bgColor))
 		response[breakpoint]['background-color'] = bgColor;
-	else if (bgPaletteStatus && (bgPaletteColor || bgPaletteOpacity)) {
+	else if (
+		bgPaletteStatus &&
+		(currentBgPaletteColor || currentBgPaletteOpacity)
+	) {
+		const bgPaletteColor =
+			currentBgPaletteColor ||
+			getLastBreakpointAttribute(
+				`${prefix}background-palette-color`,
+				breakpoint,
+				props,
+				isHover
+			);
+		const bgPaletteOpacity =
+			currentBgPaletteOpacity ||
+			getLastBreakpointAttribute(
+				`${prefix}background-palette-opacity`,
+				breakpoint,
+				props,
+				isHover
+			);
+
 		if (isButton)
 			response[breakpoint]['background-color'] = getColorRGBAString({
 				firstVar: `color${isHover ? '-hover' : ''}`,
@@ -93,8 +114,8 @@ export const getColorBackgroundObject = ({
 						firstVar: `button-background-color${
 							isHover ? '-hover' : ''
 						}`,
-						secondVar: `color-${bgPaletteColor}`,
-						opacity: bgPaletteOpacity,
+						secondVar: `color-${currentBgPaletteColor}`,
+						opacity: currentBgPaletteOpacity,
 						blockStyle,
 				  })
 				: bgColor;
@@ -138,7 +159,7 @@ export const getGradientBackgroundObject = ({
 		breakpoint,
 	});
 
-	if (!isNil(bgGradientOpacity) && !isEmpty(bgGradientOpacity))
+	if (isNumber(bgGradientOpacity))
 		response[breakpoint].opacity = bgGradientOpacity;
 	if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
 	if (!isEmpty(bgGradientClipPath))
@@ -166,6 +187,8 @@ export const getImageBackgroundObject = ({
 			isHover,
 			breakpoint,
 		});
+	const getBgImageLastBreakpointAttribute = target =>
+		getLastBreakpointAttribute(prefix + target, breakpoint, props, isHover);
 
 	const bgImageUrl = getBgImageAttributeValue('background-image-mediaURL');
 
@@ -230,21 +253,21 @@ export const getImageBackgroundObject = ({
 	if (bgImagePosition !== 'custom')
 		response[breakpoint]['background-position'] = bgImagePosition;
 	else {
-		const bgImagePositionWidth = getBgImageAttributeValue(
+		const bgImagePositionWidth = getBgImageLastBreakpointAttribute(
 			'background-image-position-width'
 		);
-		const bgImagePositionWidthUnit = getBgImageAttributeValue(
+		const bgImagePositionWidthUnit = getBgImageLastBreakpointAttribute(
 			'background-image-position-width-unit'
 		);
-		const bgImagePositionHeight = getBgImageAttributeValue(
+		const bgImagePositionHeight = getBgImageLastBreakpointAttribute(
 			'background-image-position-height'
 		);
-		const bgImagePositionHeightUnit = getBgImageAttributeValue(
+		const bgImagePositionHeightUnit = getBgImageLastBreakpointAttribute(
 			'background-image-position-height-unit'
 		);
-		response[breakpoint]['background-position'] = `${
-			bgImagePositionWidth + bgImagePositionWidthUnit
-		} ${bgImagePositionHeight + bgImagePositionHeightUnit}`;
+		response[breakpoint][
+			'background-position'
+		] = `${bgImagePositionWidth}${bgImagePositionWidthUnit} ${bgImagePositionHeight}${bgImagePositionHeightUnit}`;
 	}
 	// Origin
 	if (bgImageOrigin)
@@ -297,20 +320,21 @@ export const getVideoBackgroundObject = ({
 		isHover
 	);
 	const bgVideoFallbackUrl = getLastBreakpointAttribute(
-		`${prefix}background-video-fallbackUrl`,
+		`${prefix}background-video-fallbackURL`,
 		breakpoint,
 		props,
 		isHover
 	);
 
 	// Opacity
-	if (!isNil(bgVideoOpacity) && !isEmpty(bgVideoOpacity))
-		response[breakpoint].opacity = bgVideoOpacity;
+	if (isNumber(bgVideoOpacity))
+		response[breakpoint].opacity = bgVideoOpacity / 100;
 
 	// Clip-path
 	if (!isEmpty(bgVideoClipPath))
 		response[breakpoint]['clip-path'] = bgVideoClipPath;
 
+	// Fallback URL
 	if (!isEmpty(bgVideoFallbackUrl)) {
 		response[breakpoint].background = `url(${bgVideoFallbackUrl})`;
 		response[breakpoint]['background-size'] = 'cover';
@@ -418,7 +442,7 @@ const getSVGBackgroundObject = ({
 
 		response[breakpoint].fill = getColorRGBAString({
 			firstVar: `color-${bgSVGPaletteColor}`,
-			opacity: props[bgSVGPaletteOpacity],
+			opacity: bgSVGPaletteOpacity,
 			blockStyle,
 		});
 	}
@@ -633,26 +657,169 @@ const setTargetsToStyles = (target, obj) => {
 		video: `${target} > .maxi-background-displayer .maxi-background-displayer__video-player`,
 		svg: {
 			wrapper: `${target} > .maxi-background-displayer .maxi-background-displayer__svg`,
-			svg: `${target} > .maxi-background-displayer .maxi-background-displayer__svg *`,
+			svg: `${target} > .maxi-background-displayer .maxi-background-displayer__svg`, // Originally comes with ` *`
 		},
 	};
 
 	Object.entries(targets).forEach(([key, val]) => {
 		if (key === 'svg') {
-			if (
-				obj[key] &&
-				obj[key].wrapper &&
-				obj[key].svg &&
-				!isEmpty(obj[key].wrapper) &&
-				!isEmpty(obj[key].svg)
-			) {
-				response[val.wrapper] = obj[key].wrapper;
-				response[val.svg] = obj[key].svg;
+			if (obj[key] && !isEmpty(obj[key])) {
+				Object.keys(obj[key]).forEach(SVGClassName => {
+					response[
+						`${val.wrapper}.maxi-background-displayer__svg--${SVGClassName}`
+					] = obj[key][SVGClassName].wrapper;
+					response[
+						`${val.svg}.maxi-background-displayer__svg--${SVGClassName} *`
+					] = obj[key][SVGClassName].svg;
+				});
 			}
 		} else if (obj[key] && !isEmpty(obj[key])) response[val] = obj[key];
 	});
 
 	return response;
+};
+
+const getBasicResponseObject = ({ isHover, prefix, blockStyle, ...props }) => {
+	const includeBorder =
+		!isHover || (isHover && props[`${prefix}border-status-hover`]);
+
+	const borderObj =
+		includeBorder &&
+		getGeneralBackgroundStyles(
+			props,
+			{
+				...getGroupAttributes(
+					props,
+					['border', 'borderRadius', 'borderWidth'],
+					isHover
+				),
+			},
+			blockStyle,
+			isHover
+		);
+
+	return {
+		...(includeBorder && { ...borderObj }),
+	};
+};
+
+const getResponseActiveMedia = ({
+	activeMedia,
+	response,
+	isHover,
+	prefix,
+	blockStyle,
+	breakpoint,
+	SVGClassName,
+	...props
+}) => {
+	switch (activeMedia) {
+		// case 'layers':
+		// 	if (
+		// 		props[
+		// 			`${prefix}background-layers${isHover ? '-hover' : ''}`
+		// 		] &&
+		// 		props[
+		// 			`${prefix}background-layers${isHover ? '-hover' : ''}`
+		// 		].length > 0
+		// 	) {
+		// 		response = setBackgroundLayers({
+		// 			response,
+		// 			layers: props[
+		// 				`${prefix}background-layers${
+		// 					isHover ? '-hover' : ''
+		// 				}`
+		// 			],
+		// 			target,
+		// 			isHover,
+		// 			blockStyle,
+		// 		});
+		// 	}
+		// 	break;
+		case 'color':
+			return {
+				...getColorBackgroundObject({
+					...getGroupAttributes(props, 'backgroundColor', isHover),
+					isHover,
+					prefix,
+					blockStyle,
+					breakpoint,
+				}),
+			};
+
+		case 'gradient':
+			return {
+				...{
+					...getGradientBackgroundObject({
+						...getGroupAttributes(
+							props,
+							'backgroundGradient',
+							isHover
+						),
+						isHover,
+						prefix,
+						breakpoint,
+					}),
+				},
+			};
+
+		case 'image':
+			return {
+				...getImageBackgroundObject({
+					...getGroupAttributes(props, 'backgroundImage', isHover),
+					isHover,
+					prefix,
+					breakpoint,
+				}),
+			};
+
+		case 'video':
+			return {
+				...getVideoBackgroundObject({
+					...getGroupAttributes(props, 'backgroundVideo', isHover),
+					isHover,
+					prefix,
+					breakpoint,
+				}),
+			};
+
+		case 'svg':
+			return {
+				[SVGClassName]: {
+					wrapper: {
+						...response.svg?.[SVGClassName]?.wrapper,
+						...{
+							...getSVGWrapperBackgroundObject({
+								...getGroupAttributes(
+									props,
+									'backgroundSVG',
+									isHover
+								),
+								breakpoint,
+								isHover,
+							}),
+						},
+					},
+					svg: {
+						...response.svg?.[SVGClassName]?.svg,
+						...{
+							...getSVGBackgroundObject({
+								...getGroupAttributes(
+									props,
+									'backgroundSVG',
+									isHover
+								),
+								blockStyle,
+								breakpoint,
+								isHover,
+							}),
+						},
+					},
+				},
+			};
+		default:
+			return {};
+	}
 };
 
 const getBackgroundStyles = ({
@@ -675,30 +842,12 @@ const getBackgroundStyles = ({
 }) => {
 	const target = `${rawTarget ?? ''}${isHover ? ':hover' : ''}`;
 
-	const includeBorder =
-		!isHover || (isHover && props[`${prefix}border-status-hover`]);
-	const borderObj =
-		includeBorder &&
-		getGeneralBackgroundStyles(
-			props,
-			{
-				...getGroupAttributes(
-					props,
-					[
-						groupAttrNames.border,
-						groupAttrNames.borderRadius,
-						groupAttrNames.borderWidth,
-					],
-					isHover
-				),
-			},
-			blockStyle,
-			isHover
-		);
-
-	const response = {
-		...(includeBorder && { ...borderObj }),
-	};
+	const response = getBasicResponseObject({
+		isHover,
+		prefix,
+		blockStyle,
+		...props,
+	});
 
 	if (isHover && !props[`${prefix}background-status-hover`]) return response;
 
@@ -726,166 +875,102 @@ const getBackgroundStyles = ({
 			prevBreakpoint,
 			activeMedias
 		);
-
-		if (!response[activeMedia]) {
-			if (activeMedia === 'svg')
-				response[activeMedia] = {
-					wrapper: {},
-					svg: {},
-				};
-			else response[activeMedia] = {};
-		}
-
-		switch (activeMedia) {
-			// case 'layers':
-			// 	if (
-			// 		props[
-			// 			`${prefix}background-layers${isHover ? '-hover' : ''}`
-			// 		] &&
-			// 		props[
-			// 			`${prefix}background-layers${isHover ? '-hover' : ''}`
-			// 		].length > 0
-			// 	) {
-			// 		response = setBackgroundLayers({
-			// 			response,
-			// 			layers: props[
-			// 				`${prefix}background-layers${
-			// 					isHover ? '-hover' : ''
-			// 				}`
-			// 			],
-			// 			target,
-			// 			isHover,
-			// 			blockStyle,
-			// 		});
-			// 	}
-			// 	break;
-			case 'color':
-				response.color = {
-					...response.color,
-					...getColorBackgroundObject({
-						...getGroupAttributes(
-							props,
-							groupAttrNames.backgroundColor,
-							isHover
-						),
-						isHover,
-						prefix,
-						blockStyle,
-						breakpoint,
-					}),
-				};
-				break;
-			case 'gradient':
-				response.gradient = {
-					...response.gradient,
-					...{
-						...getGradientBackgroundObject({
-							...getGroupAttributes(
-								props,
-								groupAttrNames.backgroundGradient,
-								isHover
-							),
-							isHover,
-							prefix,
+		const SVGClassName =
+			activeMedia === 'svg'
+				? getSVGClassName(
+						getLastBreakpointAttribute(
+							'background-svg-SVGElement',
 							breakpoint,
-						}),
-					},
-				};
-				break;
-			case 'image':
-				response.image = {
-					...response.image,
-					...getImageBackgroundObject({
-						...getGroupAttributes(
 							props,
-							groupAttrNames.backgroundImage,
 							isHover
-						),
-						isHover,
-						prefix,
-						breakpoint,
-					}),
-				};
-				break;
-			case 'video':
-				response.video = {
-					...response.video,
-					...getVideoBackgroundObject({
-						...getGroupAttributes(
-							props,
-							groupAttrNames.backgroundVideo,
-							isHover
-						),
-						isHover,
-						prefix,
-						breakpoint,
-					}),
-				};
-				break;
-			case 'svg':
-				response.svg = {
+						)
+				  )
+				: null;
+
+		if (activeMedia === 'svg') {
+			const activeMediaContent = getResponseActiveMedia({
+				activeMedia,
+				response,
+				isHover,
+				prefix,
+				blockStyle,
+				breakpoint,
+				SVGClassName,
+				...props,
+			});
+
+			// if (breakpoint === 'xs') debugger;
+
+			response.svg = {
+				...response.svg,
+				[SVGClassName]: {
+					...response.svg?.[SVGClassName],
 					wrapper: {
-						...response.svg.wrapper,
-						...{
-							...getSVGWrapperBackgroundObject({
-								...getGroupAttributes(
-									props,
-									groupAttrNames.backgroundSVG,
-									isHover
-								),
-								isHover,
-								prefix,
-							}),
-						},
+						...response.svg?.[SVGClassName]?.wrapper,
+						...activeMediaContent[SVGClassName].wrapper,
 					},
 					svg: {
-						...response.svg.svg,
-						...{
-							...getSVGBackgroundObject({
-								...getGroupAttributes(
-									props,
-									groupAttrNames.backgroundSVG,
-									isHover
-								),
-								blockStyle,
-								breakpoint,
-								isHover,
-							}),
-						},
+						...response.svg?.[SVGClassName]?.svg,
+						...activeMediaContent[SVGClassName].svg,
 					},
-				};
-				break;
-			default:
-				break;
-		}
+				},
+			};
+		} else
+			response[activeMedia] = {
+				...response[activeMedia],
+				...getResponseActiveMedia({
+					activeMedia,
+					response,
+					isHover,
+					prefix,
+					blockStyle,
+					breakpoint,
+					SVGClassName,
+					...props,
+				}),
+			};
 
 		// Ensures different active medias to be visible
 		if (currentActiveMedia && currentActiveMedia !== lastActiveMedia) {
+			// Hide
 			if (lastActiveMedia === 'svg')
-				response[lastActiveMedia].wrapper[breakpoint] = {
+				response.svg[
+					getSVGClassName(
+						getLastBreakpointAttribute(
+							'background-svg-SVGElement',
+							prevBreakpoint,
+							props,
+							isHover
+						)
+					)
+				].wrapper[breakpoint] = {
 					display: 'none',
 				};
+			else
+				response[lastActiveMedia][breakpoint] = {
+					...response[lastActiveMedia][breakpoint],
+					display: 'none',
+				};
+			// Show
 			if (activeMedia === 'svg')
-				response[activeMedia].wrapper[breakpoint] = {
-					...response[activeMedia][breakpoint],
+				response.svg[SVGClassName].wrapper[breakpoint] = {
+					...response.svg[[SVGClassName]].wrapper[breakpoint],
 					display: 'block',
 				};
-			else {
-				response[lastActiveMedia][breakpoint] = { display: 'none' };
+			else
 				response[activeMedia][breakpoint] = {
 					...response[activeMedia][breakpoint],
 					display: 'block',
 				};
-			}
 		} else if (breakpoint === 'general')
 			if (currentActiveMedia === 'svg')
-				response[activeMedia].wrapper.general = {
-					...response[activeMedia][breakpoint],
+				response.svg[SVGClassName].wrapper.general = {
+					...response.svg[SVGClassName].wrapper.general,
 					display: 'block',
 				};
 			else
 				response[activeMedia].general = {
-					...response[activeMedia][breakpoint],
+					...response[activeMedia].general,
 					display: 'block',
 				};
 	});

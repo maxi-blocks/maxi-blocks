@@ -166,6 +166,9 @@ const backgroundSVGGeneral = {
 		type: 'number',
 		default: 5,
 	},
+	'background-palette-svg-opacity-general': {
+		type: 'number',
+	},
 	'background-svg-SVGElement-general': {
 		type: 'string',
 	},

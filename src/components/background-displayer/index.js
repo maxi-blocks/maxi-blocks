@@ -12,6 +12,7 @@ import {
 	getLastBreakpointAttribute,
 	getAttributeValue,
 } from '../../extensions/styles';
+import { getSVGClassName } from '../../extensions/svg/utils';
 
 /**
  * External dependencies
@@ -84,22 +85,29 @@ const BackgroundContent = props => {
 										breakpoint={breakpoint}
 									/>
 								);
-							case 'svg':
+							case 'svg': {
+								const svg = getLastBreakpointAttribute(
+									'background-svg-SVGElement',
+									breakpoint,
+									props,
+									isHover
+								);
+
 								return (
 									<RawHTML
 										className={classnames(
 											'maxi-background-displayer__layer',
-											'maxi-background-displayer__svg'
+											'maxi-background-displayer__svg',
+											svg &&
+												`maxi-background-displayer__svg--${getSVGClassName(
+													svg
+												)}`
 										)}
 									>
-										{getLastBreakpointAttribute(
-											'background-svg-SVGElement',
-											breakpoint,
-											props,
-											isHover
-										)}
+										{svg}
 									</RawHTML>
 								);
+							}
 							default:
 								return null;
 						}

@@ -10,15 +10,21 @@
 		}
 	}
 	.block-list-appender {
+		width: 100%;
+		height: 100%;
+		padding: 0;
+		margin: 0;
+		z-index: 1;
+
 		.block-editor-button-block-appender[aria-label='Add block'] {
 			top: calc(100% - 10px);
 			left: calc(50% - 48px);
 		}
-
-		width: 100%;
-		height: 100%;
-		margin: 0;
-		padding: 0;
-		z-index: 1;
+		.maxi-block-placeholder {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+		}
 	}
 }

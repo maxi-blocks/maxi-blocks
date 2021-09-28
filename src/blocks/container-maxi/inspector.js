@@ -92,7 +92,7 @@ const Inspector = props => {
 									items={[
 										{
 											label: __(
-												'Width / Height',
+												'Height / Width',
 												'maxi-blocks'
 											),
 											content: (
@@ -169,7 +169,7 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Padding / Margin',
+												'Margin / Padding',
 												'maxi-blocks'
 											),
 											content: (

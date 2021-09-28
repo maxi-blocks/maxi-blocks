@@ -39,6 +39,7 @@ const ParallaxControl = props => {
 			{props['parallax-status'] && (
 				<>
 					<FancyRadioControl
+						className='parallax-direction'
 						label={__('Direction', 'maxi-blocks')}
 						selected={props['parallax-direction']}
 						options={[

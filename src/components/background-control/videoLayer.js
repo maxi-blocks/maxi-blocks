@@ -139,6 +139,7 @@ const VideoLayer = props => {
 				}
 			/>
 			<ToggleSwitch
+				className='video-loop'
 				label={__('Loop', 'maxi-blocks')}
 				selected={
 					videoOptions[
@@ -169,6 +170,7 @@ const VideoLayer = props => {
 				}
 			/>
 			<ToggleSwitch
+				className='video-play-mobile'
 				label={__('Play on Mobile', 'maxi-blocks')}
 				selected={
 					videoOptions[

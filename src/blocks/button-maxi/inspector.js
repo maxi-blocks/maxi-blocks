@@ -810,7 +810,7 @@ const Inspector = memo(
 																)}
 																selected={
 																	fullWidth ===
-																	'normal'
+																	'full'
 																}
 																onChange={val =>
 																	setAttributes(

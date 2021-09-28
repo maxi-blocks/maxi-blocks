@@ -234,7 +234,7 @@ const Inspector = props => {
 															)}
 															selected={
 																fullWidth ===
-																'normal'
+																'full'
 															}
 															onChange={val =>
 																setAttributes({

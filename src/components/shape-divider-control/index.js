@@ -221,6 +221,7 @@ const ShapeDividerControl = props => {
 			{shapeDividerStatus === 'top' && (
 				<>
 					<ToggleSwitch
+						className='shape-divider-top-status'
 						label={__('Enable Top Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-top-status']}
 						onChange={val =>
@@ -232,6 +233,7 @@ const ShapeDividerControl = props => {
 					{!!props['shape-divider-top-status'] && (
 						<>
 							<ToggleSwitch
+								className='shape-divider-top-effects-status'
 								label={__(
 									'Enable Scroll Effect',
 									'maxi-blocks'
@@ -348,6 +350,7 @@ const ShapeDividerControl = props => {
 			{shapeDividerStatus === 'bottom' && (
 				<>
 					<ToggleSwitch
+						className='shape-divider-bottom-status'
 						label={__('Enable Bottom Shape Divider', 'maxi-blocks')}
 						selected={props['shape-divider-bottom-status']}
 						onChange={val =>
@@ -359,6 +362,7 @@ const ShapeDividerControl = props => {
 					{!!props['shape-divider-bottom-status'] && (
 						<>
 							<ToggleSwitch
+								className='shape-divider-bottom-effects-status'
 								label={__(
 									'Enable Scroll Effect',
 									'maxi-blocks'

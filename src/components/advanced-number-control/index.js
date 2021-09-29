@@ -3,6 +3,7 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
+import { useInstanceId } from '@wordpress/compose';
 
 /**
  * Internal dependencies
@@ -72,6 +73,10 @@ const AdvancedNumberControl = props => {
 
 	const stepValue = unit === '-' || isEmpty(unit) ? 0.01 : step;
 
+	const advancedNumberControlId = `maxi-advanced-number-control__${useInstanceId(
+		AdvancedNumberControl
+	)}`;
+
 	const getOptions = () => {
 		const options = [];
 
@@ -95,8 +100,13 @@ const AdvancedNumberControl = props => {
 	const maxValue = minMaxSettings[isEmpty(unit) ? '-' : unit]?.max;
 
 	return (
-		<BaseControl label={label} className={classes}>
+		<BaseControl
+			id={advancedNumberControlId}
+			label={label}
+			className={classes}
+		>
 			<input
+				id={advancedNumberControlId}
 				type='number'
 				className='maxi-advanced-number-control__value'
 				value={value === undefined ? defaultValue : trim(value)}

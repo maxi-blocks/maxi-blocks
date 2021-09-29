@@ -1,6 +1,4 @@
 .maxi-base-control {
-	margin-bottom: 7px;
-
 	&__field {
 		display: flex !important;
 		align-items: center;
@@ -10,10 +8,8 @@
 	&__label {
 		display: inline-block;
 		flex: 1;
-		width: 50%;
 		min-height: 18px;
-		margin-right: 10px;
-		margin-bottom: 0;
+		margin: 0;
 	}
 
 	&__help {

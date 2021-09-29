@@ -41,7 +41,7 @@ const BlockStylesControl = props => {
 		<>
 			{isFirstOnHierarchy ? (
 				<SelectControl
-					label={__('Block Style', 'maxi-blocks')}
+					label={__('Block tone', 'maxi-blocks')}
 					className={classes}
 					value={blockStyle}
 					options={getSelectorOptions()}
@@ -60,7 +60,7 @@ const BlockStylesControl = props => {
 				/>
 			) : (
 				<div className='maxi-block-style-preview'>
-					{__('Block Style: ', 'maxi-blocks')}
+					{__('Block style: ', 'maxi-blocks')}
 					<span
 						className={`maxi-block-style-preview__${getBlockStyle(
 							clientId

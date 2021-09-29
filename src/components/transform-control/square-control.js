@@ -409,15 +409,16 @@ const SquareControl = props => {
 					value={yAxis || ''}
 					onChange={e => {
 						const value = Number(e.target.value);
-						type !== 'origin' && onSave(xAxis, yAxis, xUnit, yUnit);
 
 						if (!sync) {
 							changeYAxis(value);
 							onChange(xAxis, value, xUnit, yUnit);
+							onSave(xAxis, value, xUnit, yUnit);
 						} else {
 							changeYAxis(value);
 							changeXAxis(value);
 							onChange(value, value, xUnit, yUnit);
+							onSave(value, value, xUnit, yUnit);
 						}
 					}}
 					min={getMinMax()?.min}
@@ -435,15 +436,15 @@ const SquareControl = props => {
 								? Number(e.target.value)
 								: '';
 
-							type !== 'origin' &&
-								onSave(xAxis, newValue, xUnit, yUnit);
 							if (!sync) {
 								changeYAxis(newValue);
 								onChange(xAxis, newValue, xUnit, yUnit);
+								onSave(xAxis, newValue, xUnit, yUnit);
 							} else {
 								changeYAxis(newValue);
 								changeXAxis(newValue);
 								onChange(newValue, newValue, xUnit, yUnit);
+								onSave(newValue, newValue, xUnit, yUnit);
 							}
 						}}
 					/>
@@ -473,17 +474,17 @@ const SquareControl = props => {
 					className='maxi-transform-control__square-control__x-control__range'
 					value={xAxis || ''}
 					onChange={e => {
-						type !== 'origin' && onSave(xAxis, yAxis, xUnit, yUnit);
-
 						const value = Number(e.target.value);
 
 						if (!sync) {
 							changeXAxis(value);
 							onChange(value, yAxis, xUnit, yUnit);
+							onSave(value, yAxis, xUnit, yUnit);
 						} else {
 							changeYAxis(value);
 							changeXAxis(value);
 							onChange(value, value, xUnit, yUnit);
+							onSave(value, value, xUnit, yUnit);
 						}
 					}}
 					min={getMinMax()?.min}
@@ -501,15 +502,15 @@ const SquareControl = props => {
 								? Number(e.target.value)
 								: '';
 
-							type !== 'origin' &&
-								onSave(newValue, yAxis, xUnit, yUnit);
 							if (!sync) {
 								changeXAxis(newValue);
 								onChange(newValue, yAxis, xUnit, yUnit);
+								onSave(newValue, yAxis, xUnit, yUnit);
 							} else {
 								changeYAxis(newValue);
 								changeXAxis(newValue);
 								onChange(newValue, newValue, xUnit, yUnit);
+								onSave(newValue, newValue, xUnit, yUnit);
 							}
 						}}
 					/>

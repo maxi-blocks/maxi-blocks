@@ -464,19 +464,18 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Width / Height',
+												'Height / Width',
 												'maxi-blocks'
 											),
 											content: (
 												<>
 													<ToggleSwitch
 														label={__(
-															'Full Width',
+															'Set container to full-width',
 															'maxi-blocks'
 														)}
 														selected={
-															fullWidth ===
-															'full'
+															fullWidth === 'full'
 														}
 														onChange={val =>
 															setAttributes({

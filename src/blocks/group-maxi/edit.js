@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { withSelect, select } from '@wordpress/data';
+import { withSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -55,8 +55,6 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, deviceType, hasInnerBlock, clientId } = this.props;
 		const { uniqueID } = attributes;
-		const currentBlockCount =
-			select('core/block-editor').getBlockCount(clientId);
 
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
@@ -80,7 +78,7 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 			/>,
 			<MaxiBlock
-				className={currentBlockCount > 0 && 'has-child'}
+				className={hasInnerBlock && 'has-child'}
 				key={`maxi-group--${uniqueID}`}
 				ref={this.blockRef}
 				{...getMaxiBlockBlockAttributes(this.props)}

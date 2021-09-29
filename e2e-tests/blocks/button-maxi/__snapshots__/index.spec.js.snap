@@ -2,6 +2,6 @@
 
 exports[`Button Maxi Button Maxi does not break 1`] = `
 "<!-- wp:maxi-blocks/button-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"button-maxi-12\\",\\"buttonContent\\":\\"Hello\\"} -->
-<div class=\\"wp-block-maxi-blocks-button-maxi maxi-block maxi-button-block maxi-light button-maxi-12 has-child\\" data-align=\\"normal\\" id=\\"button-maxi-12\\"><button type=\\"button\\" class=\\"maxi-components-button components-button maxi-button-block__button\\"><span class=\\"maxi-button-block__content\\">Hello</span></button></div>
+<div class=\\"wp-block-maxi-blocks-button-maxi maxi-block maxi-button-block maxi-light button-maxi-12\\" data-align=\\"normal\\" id=\\"button-maxi-12\\"><button type=\\"button\\" class=\\"maxi-components-button components-button maxi-button-block__button\\"><span class=\\"maxi-button-block__content\\">Hello</span></button></div>
 <!-- /wp:maxi-blocks/button-maxi -->"
 `;

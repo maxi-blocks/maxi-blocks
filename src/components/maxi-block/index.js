@@ -160,9 +160,6 @@ const MaxiBlock = forwardRef((props, ref) => {
 			if (!isDragging && isDragOverBlock) setIsDragOverBlock(false);
 		}, [isDragging]);
 
-	const currentBlockCount =
-		select('core/block-editor').getBlockCount(clientId);
-
 	const classes = classnames(
 		'maxi-block',
 		blockName && getBlockClassName(blockName),
@@ -190,8 +187,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		paletteClasses,
 		hasArrow && 'maxi-block--has-arrow',
 		hasLink && 'maxi-block--has-link',
-		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
-		currentBlockCount > 0 && 'has-child'
+		isDragging && isDragOverBlock && 'maxi-block--is-drag-over'
 	);
 
 	const blockProps = {

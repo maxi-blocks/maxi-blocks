@@ -29,20 +29,22 @@ const ToggleSwitch = ({ className, onChange, label, help, selected }) => {
 	const [value, setValue] = useState(selected || false);
 
 	return (
-		<BaseControl label={label} id={id} help={help} className={classes}>
-			<div className='maxi-toggle-switch__toggle'>
-				<input
-					onChange={() => {
-						setValue(!value);
-						onChange(!value);
-					}}
-					checked={value}
-					type='checkbox'
-					id={id}
-				/>
-				<label htmlFor={id} />
-			</div>
-		</BaseControl>
+		<div className='maxi-toggle-switch-wrapper' tabIndex='0'>
+			<BaseControl label={label} id={id} help={help} className={classes}>
+				<div className='maxi-toggle-switch__toggle'>
+					<input
+						onChange={() => {
+							setValue(!value);
+							onChange(!value);
+						}}
+						checked={value}
+						type='checkbox'
+						id={id}
+					/>
+					<label htmlFor={id} />
+				</div>
+			</BaseControl>
+		</div>
 	);
 };
 

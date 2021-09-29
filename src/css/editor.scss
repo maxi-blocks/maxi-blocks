@@ -184,6 +184,10 @@ body .toolbar-item__popover {
 		line-height: 12px;
 		border-radius: 0;
 		border: 1px solid #DBDDE6;
+
+		&:focus {
+			border-color: #2271b1;
+		}
 	}
 	input[type=number] {
 		padding-right: 0;

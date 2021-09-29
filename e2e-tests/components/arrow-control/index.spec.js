@@ -31,8 +31,8 @@ describe('ArrowControl', () => {
 				(buttons, i) => buttons[i].click(),
 				i
 			);
-			const attributesx = await getBlockAttributes();
-			const arrowAttributex = attributesx['arrow-side-general'];
+			const attributes = await getBlockAttributes();
+			const arrowAttributex = attributes['arrow-side-general'];
 			expect(arrowAttributex).toStrictEqual(values[i]);
 		}
 

@@ -8,7 +8,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { registerBlockType  } from '@wordpress/blocks';
+import { registerBlockType } from '@wordpress/blocks';
 
 /**
  * Block dependencies
@@ -31,7 +31,7 @@ import { containerIcon } from '../../icons';
 registerBlockType('maxi-blocks/container-maxi', {
 	title: __('Container Maxi', 'maxi-blocks'),
 	icon: containerIcon,
-	description: 'Group of blocks composed with a similar style or layout',
+	description: 'Arrange blocks within a container to create patterns',
 	category: 'maxi-blocks',
 	supports: {
 		align: true,

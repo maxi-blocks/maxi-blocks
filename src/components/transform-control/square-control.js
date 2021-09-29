@@ -71,7 +71,7 @@ const SquareControl = props => {
 	const getPlaceholder = value => {
 		switch (type) {
 			case 'resize':
-				return '100%';
+				return '100';
 			case 'drag':
 				return '0%';
 			case 'origin':

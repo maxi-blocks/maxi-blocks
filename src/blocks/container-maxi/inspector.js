@@ -92,7 +92,7 @@ const Inspector = props => {
 									items={[
 										{
 											label: __(
-												'Width / Height',
+												'Height / Width',
 												'maxi-blocks'
 											),
 											content: (
@@ -100,7 +100,7 @@ const Inspector = props => {
 													{isFirstOnHierarchy && (
 														<FancyRadioControl
 															label={__(
-																'Full Width',
+																'Full width',
 																'maxi-blocks'
 															)}
 															selected={fullWidth}
@@ -128,7 +128,6 @@ const Inspector = props => {
 															}
 														/>
 													)}
-
 													{fullWidth === 'full' ? (
 														<FullSizeControl
 															{...getGroupAttributes(
@@ -165,6 +164,48 @@ const Inspector = props => {
 															hideMaxWidth
 														/>
 													)}
+												</>
+											),
+										},
+										{
+											label: __(
+												'Margin / Padding',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													<AxisControl
+														{...getGroupAttributes(
+															attributes,
+															'padding'
+														)}
+														label={__(
+															'Padding',
+															'maxi-blocks'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+														target='padding'
+														disableAuto
+													/>
+													<AxisControl
+														{...getGroupAttributes(
+															attributes,
+															'margin'
+														)}
+														label={__(
+															'Margin',
+															'maxi-blocks'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+														target='margin'
+														optionType='string'
+													/>
 												</>
 											),
 										},
@@ -464,7 +505,7 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Box Shadow',
+												'Box shadow',
 												'maxi-blocks'
 											),
 											disablePadding: true,
@@ -586,48 +627,9 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Padding & Margin',
+												'Callout arrow',
 												'maxi-blocks'
 											),
-											content: (
-												<>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'padding'
-														)}
-														label={__(
-															'Padding',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='padding'
-														disableAuto
-													/>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'margin'
-														)}
-														label={__(
-															'Margin',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='margin'
-														optionType='string'
-													/>
-												</>
-											),
-										},
-										{
-											label: __('Arrow', 'maxi-blocks'),
 											content: (
 												<ArrowControl
 													{...getGroupAttributes(
@@ -660,7 +662,7 @@ const Inspector = props => {
 								items={[
 									deviceType === 'general' && {
 										label: __(
-											'Custom Classes',
+											'Custom classes',
 											'maxi-blocks'
 										),
 										content: (
@@ -681,7 +683,7 @@ const Inspector = props => {
 									},
 									{
 										label: __(
-											'Shape Divider',
+											'Shape divider',
 											'maxi-blocks'
 										),
 										content: (
@@ -698,7 +700,7 @@ const Inspector = props => {
 									},
 									{
 										label: __(
-											'Motion Effects',
+											'Motion effects',
 											'maxi-blocks'
 										),
 										content: (

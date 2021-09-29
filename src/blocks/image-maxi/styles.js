@@ -19,6 +19,7 @@ import {
 	getTransformStyles,
 	getTypographyStyles,
 	getZIndexStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 /**
@@ -54,6 +55,9 @@ const getNormalObject = props => {
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 

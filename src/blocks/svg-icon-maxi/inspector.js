@@ -31,6 +31,7 @@ import {
 	TransformControl,
 	InfoBox,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import {
 	getColorRGBAString,
@@ -961,6 +962,24 @@ const Inspector = props => {
 													{...getGroupAttributes(
 														attributes,
 														'opacity'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Overflow',
+												'maxi-blocks'
+											),
+											content: (
+												<OverflowControl
+													{...getGroupAttributes(
+														attributes,
+														'overflow'
 													)}
 													onChange={obj =>
 														setAttributes(obj)

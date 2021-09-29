@@ -36,6 +36,7 @@ const attributes = {
 	},
 	...attributesData.transform,
 	...attributesData.zIndex,
+	...attributesData.overflow,
 };
 
 export default attributes;

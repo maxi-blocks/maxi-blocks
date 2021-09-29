@@ -28,9 +28,10 @@ const OverflowControl = props => {
 			<SelectControl
 				label={__('Overflow', 'maxi-blocks')}
 				options={[
-					{ label: 'Auto', value: 'auto' },
+					{ label: 'Default', value: '' },
 					{ label: 'Visible', value: 'visible' },
 					{ label: 'Hidden', value: 'hidden' },
+					{ label: 'Auto', value: 'auto' },
 					{ label: 'Clip', value: 'clip' },
 					{ label: 'Scroll', value: 'scroll' },
 				]}

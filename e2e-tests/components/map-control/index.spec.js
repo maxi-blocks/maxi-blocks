@@ -94,10 +94,10 @@ describe('MapControl', () => {
 		expect(mapScale).toStrictEqual(expectScale);
 
 		// custom color
-		const customColor = await accordionPanel.$$(
-			'.maxi-map-control .maxi-fancy-radio-control .maxi-base-control__field label'
+		await accordionPanel.$eval(
+			'.maxi-map-control .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
-		await customColor[1].click();
 
 		await accordionPanel.$eval('.maxi-color-control input', color =>
 			color.focus()

@@ -1,6 +1,11 @@
 .maxi-group-block {
 	margin: auto;
 
+	&:not(.has-child) {
+		.maxi-group-block__group {
+			height: inherit;
+		}
+	}
 	&__group {
 		border: 1px solid #7fbddc;
 		width: 100%;

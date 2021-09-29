@@ -10,7 +10,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
 
 describe('Column Maxi', () => {
 	it('Column Maxi does not break', async () => {
@@ -50,5 +50,47 @@ describe('Column Maxi', () => {
 
 		const verticalAttributes = await getBlockAttributes();
 		expect(verticalAttributes.verticalAlign).toStrictEqual('center');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await page.$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			input => input.focus()
+		);
+
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('9');
+
+		const responsiveSOption = await page.$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			select => select.value
+		);
+
+		expect(responsiveSOption).toStrictEqual('19');
+
+		const expectAttributes = await getBlockAttributes();
+		const position = expectAttributes['column-size-s'];
+
+		expect(position).toStrictEqual(19);
+
+		// responsive xs
+		await changeResponsive(page, 'xs');
+
+		const responsiveXsOption = await page.$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			select => select.value
+		);
+
+		expect(responsiveXsOption).toStrictEqual('19');
+
+		// responsive m
+		await changeResponsive(page, 'm');
+
+		const responsiveMOption = await page.$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			select => select.value
+		);
+
+		expect(responsiveMOption).toStrictEqual('100');
 	});
 });

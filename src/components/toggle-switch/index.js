@@ -28,8 +28,19 @@ const ToggleSwitch = ({ className, onChange, label, help, selected }) => {
 	const id = `maxi-toggle-switch-${instanceId}`;
 	const [value, setValue] = useState(selected || false);
 
+	const handleKeyPress = e => {
+		if (e.keyCode == 0 || e.keyCode == 32) {
+			setValue(!value);
+			onChange(!value);
+		}
+	};
+
 	return (
-		<div className='maxi-toggle-switch-wrapper' tabIndex='0'>
+		<div
+			onKeyPress={handleKeyPress}
+			className='maxi-toggle-switch-wrapper'
+			tabIndex='0'
+		>
 			<BaseControl label={label} id={id} help={help} className={classes}>
 				<div className='maxi-toggle-switch__toggle'>
 					<input

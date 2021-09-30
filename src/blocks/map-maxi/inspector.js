@@ -87,22 +87,26 @@ const Inspector = props => {
 											),
 											content: (
 												<>
-													<ToggleSwitch
-														label={__(
-															'Set map to full-width',
-															'maxi-blocks'
-														)}
-														selected={
-															fullWidth === 'full'
-														}
-														onChange={val =>
-															setAttributes({
-																fullWidth: val
-																	? 'full'
-																	: 'normal',
-															})
-														}
-													/>
+													{isFirstOnHierarchy && (
+														<ToggleSwitch
+															label={__(
+																'Set map to full-width',
+																'maxi-blocks'
+															)}
+															selected={
+																fullWidth ===
+																'full'
+															}
+															onChange={val =>
+																setAttributes({
+																	fullWidth:
+																		val
+																			? 'full'
+																			: 'normal',
+																})
+															}
+														/>
+													)}
 													<FullSizeControl
 														{...getGroupAttributes(
 															attributes,

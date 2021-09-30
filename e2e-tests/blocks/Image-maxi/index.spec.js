@@ -7,21 +7,35 @@ import {
 	insertBlock,
 	pressKeyWithModifier,
 	getEditedPostContent,
+	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
-
 /**
  * Internal dependencies
  */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('Image Maxi', () => {
-	beforeEach(async () => {
+	it('Image Maxi does not break', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
+		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
-	it('Image Maxi does not break', async () => {
-		expect(await getEditedPostContent()).toMatchSnapshot();
+	it('Image alt tag', async () => {
+		await openSidebar(page, 'image alt tag');
+
+		// width
+		const selector = await page.$('.maxi-image-alt-tag select');
+		await selector.select('custom');
+
+		await page.$eval('.maxi-image-custom-tag input', input =>
+			input.focus()
+		);
+
+		await page.keyboard.type('Image Tag');
+
+		const altTag = await getBlockAttributes();
+		expect(altTag.mediaAlt).toStrictEqual('Image Tag');
 	});
 
 	it('Checking the image caption', async () => {
@@ -261,5 +275,36 @@ describe('Image Maxi', () => {
 		};
 
 		expect(linkAttributes).toStrictEqual(expectedValues);
+	});
+
+	it('Image Dimension', async () => {
+		await openSidebar(page, 'image dimension');
+
+		// width
+		await page.$eval(
+			'.maxi-image-dimension-width .components-input-control__input',
+			input => input.focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('60');
+
+		const imageWidth = await getBlockAttributes();
+		expect(imageWidth.imgWidth).toStrictEqual(60);
+
+		// reset width
+		const button = await page.$('.maxi-image-dimension-width button');
+		await button.click();
+
+		const imageWidthReset = await getBlockAttributes();
+		expect(imageWidthReset.imgWidth).toStrictEqual(100);
+
+		// imageRatio
+		const selector = await page.$('.maxi-image-ratio select');
+
+		await selector.select('ar11');
+
+		const ratio = await getBlockAttributes();
+		expect(ratio.imageRatio).toStrictEqual('ar11');
 	});
 });

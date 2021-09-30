@@ -51,6 +51,7 @@ const ToggleSwitch = ({ className, onChange, label, help, selected }) => {
 						checked={value}
 						type='checkbox'
 						id={id}
+						aria-describedby={help ? `${id}__help` : undefined}
 					/>
 					<label htmlFor={id} />
 				</div>

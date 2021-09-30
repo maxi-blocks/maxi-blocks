@@ -21,6 +21,7 @@ import { getTransformStyles } from '../../extensions/styles/helpers';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Styles and icons
@@ -36,6 +37,22 @@ const TransformControl = props => {
 	const [transformOptions, changeTransformOptions] = useState(
 		getGroupAttributes(props, 'transform')
 	);
+
+	const isTransformed = () => {
+		let transform = false;
+
+		Object.entries(transformOptions).forEach(([key, val]) => {
+			if (
+				!key.includes('unit') &&
+				!key.includes('translate') &&
+				!isNil(val)
+			)
+				transform = true;
+		});
+
+		return transform;
+	};
+
 	const [transformStatus, setTransformStatus] = useState('scale');
 
 	const onChangeTransform = obj => {
@@ -91,7 +108,11 @@ const TransformControl = props => {
 						value: 'translate',
 					},
 					{ label: __('Rotate', 'maxi-blocks'), value: 'rotate' },
-					{ label: __('Origin', 'maxi-blocks'), value: 'origin' },
+					{
+						label: __('Origin', 'maxi-blocks'),
+						value: 'origin',
+						hidden: !isTransformed(),
+					},
 				]}
 				optionType='string'
 				onChange={val => setTransformStatus(val)}

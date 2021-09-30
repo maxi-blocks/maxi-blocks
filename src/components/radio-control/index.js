@@ -46,7 +46,9 @@ const RadioControl = ({
 				{options.map((option, index) => (
 					<div
 						key={`${id}-${index}`}
-						className='maxi-radio-control__option'
+						className={`maxi-radio-control__option ${
+							option.hidden ? 'hidden' : ''
+						}`}
 					>
 						<input
 							id={`${id}-${index}`}
@@ -56,9 +58,7 @@ const RadioControl = ({
 							value={option.value}
 							onChange={onChangeValue}
 							checked={option.value === selected}
-							aria-describedby={
-								!!help ? `${id}__help` : undefined
-							}
+							aria-describedby={help ? `${id}__help` : undefined}
 							{...props}
 						/>
 						<label htmlFor={`${id}-${index}`}>{option.label}</label>

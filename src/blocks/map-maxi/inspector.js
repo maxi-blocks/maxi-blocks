@@ -89,7 +89,7 @@ const Inspector = props => {
 												<>
 													<ToggleSwitch
 														label={__(
-															'Set container to full-width',
+															'Set map to full-width',
 															'maxi-blocks'
 														)}
 														selected={

@@ -229,7 +229,7 @@ const Inspector = props => {
 													{isFirstOnHierarchy && (
 														<ToggleSwitch
 															label={__(
-																'Set container to full-width',
+																'Set divider to full-width',
 																'maxi-blocks'
 															)}
 															selected={

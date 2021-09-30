@@ -45,7 +45,6 @@ const Inspector = props => {
 		blockStyle,
 		horizontalAlign,
 		verticalAlign,
-		fullWidth,
 		extraClassName,
 	} = attributes;
 
@@ -469,56 +468,17 @@ const Inspector = props => {
 											),
 											content: (
 												<>
-													<ToggleSwitch
-														label={__(
-															'Set container to full-width',
-															'maxi-blocks'
+													<FullSizeControl
+														{...getGroupAttributes(
+															attributes,
+															'size'
 														)}
-														selected={
-															fullWidth === 'full'
+														onChange={obj =>
+															setAttributes(obj)
 														}
-														onChange={val =>
-															setAttributes({
-																fullWidth: val
-																	? 'full'
-																	: 'normal',
-															})
-														}
+														breakpoint={deviceType}
+														hideMaxWidth
 													/>
-													{fullWidth === 'full' ? (
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'size'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															hideWidth
-															hideMaxWidth
-														/>
-													) : (
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'size'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															hideMaxWidth
-														/>
-													)}
 												</>
 											),
 										},

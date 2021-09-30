@@ -113,6 +113,63 @@ const BackgroundContent = props => {
 						}
 					}
 				)}
+				{layers &&
+					layers.length > 0 &&
+					layers.map(layer => {
+						switch (layer.type) {
+							case 'color':
+							case 'gradient':
+							case 'image':
+								return (
+									<div
+										key={`maxi-background-displayer__${layer.type}__${layer.id}`}
+										className={classnames(
+											'maxi-background-displayer__layer',
+											`maxi-background-displayer__${layer.id}`
+										)}
+									/>
+								);
+							case 'video':
+								return (
+									<VideoLayer
+										key={`maxi-background-displayer__${layer.type}__${layer.id}`}
+										videoOptions={getGroupAttributes(
+											layer,
+											'backgroundVideo',
+											isHover
+										)}
+										blockClassName={blockClassName}
+										className={`maxi-background-displayer__${layer.id}`}
+									/>
+								);
+							case 'shape':
+								return (
+									(layer[
+										'background-svg-SVGElement-general'
+									] && (
+										<RawHTML
+											key={`maxi-background-displayer__${layer.type}__${layer.id}`}
+											className={classnames(
+												'maxi-background-displayer__layer',
+												'maxi-background-displayer__svg',
+												`maxi-background-displayer__${layer.id}`
+											)}
+										>
+											{
+												layer[
+													'background-svg-SVGElement-general'
+												]
+											}
+										</RawHTML>
+									)) ||
+									null
+								);
+							default:
+								break;
+						}
+
+						return null;
+					})}
 			</>
 		</>
 	);

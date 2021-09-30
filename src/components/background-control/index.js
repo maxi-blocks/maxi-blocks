@@ -10,6 +10,7 @@ import {
 	getGroupAttributes,
 	getAttributeKey,
 	getLastBreakpointAttribute,
+	getAttributeValue,
 } from '../../extensions/styles';
 import BackgroundLayersControl from './backgroundLayersControl';
 import ColorLayer from './colorLayer';
@@ -68,12 +69,12 @@ const BackgroundControl = props => {
 		isHover
 	);
 	const layersOptions =
-		getLastBreakpointAttribute(
-			`${prefix}background-layers`,
-			breakpoint,
+		getAttributeValue({
+			target: 'background-layers',
 			props,
-			isHover
-		) || [];
+			isHover,
+			prefix,
+		}) || [];
 	const layersStatus =
 		getLastBreakpointAttribute(
 			`${prefix}background-layers-status`,

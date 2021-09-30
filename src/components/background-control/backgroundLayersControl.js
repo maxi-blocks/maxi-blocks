@@ -12,6 +12,7 @@ import {
 	getAttributeKey,
 	getBlockStyle,
 	getColorRGBAString,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
@@ -121,6 +122,20 @@ const LayerCard = props => {
 		}
 	};
 
+	const onChangeDisplay = () => {
+		const currentDisplay = getLastBreakpointAttribute(
+			'display',
+			breakpoint,
+			layer
+		);
+
+		onChange({
+			...layer,
+			[`display-${breakpoint}`]:
+				currentDisplay === 'block' ? 'none' : 'block',
+		});
+	};
+
 	return (
 		<div className={classes}>
 			<div
@@ -148,6 +163,12 @@ const LayerCard = props => {
 						<Icon icon={toolbarSizing} />
 					</span>
 					<span
+						className='maxi-background-layer__title__display'
+						onClick={onChangeDisplay}
+					>
+						<Icon icon={toolbarSizing} />
+					</span>
+					<span
 						className='maxi-background-layer__title__remover'
 						onClick={onRemove}
 					/>
@@ -161,7 +182,6 @@ const LayerCard = props => {
 								...getGroupAttributes(layer, 'backgroundColor'),
 							}}
 							onChange={obj => onChange({ ...layer, ...obj })}
-							type='layer'
 							isButton={isButton}
 							breakpoint={breakpoint}
 						/>
@@ -222,6 +242,7 @@ const LayerCard = props => {
 };
 
 const BackgroundLayersControl = ({
+	layersOptions,
 	isHover = false,
 	isButton = false,
 	prefix = '',
@@ -234,38 +255,51 @@ const BackgroundLayersControl = ({
 	disableSVG = false,
 	clientId,
 	breakpoint,
-	...props
 }) => {
-	const layers = cloneDeep(props.layersOptions);
+	const layers = cloneDeep(layersOptions);
 	layers.sort((a, b) => a.id - b.id);
 
 	const [selector, changeSelector] = useState(null);
+
+	const setBreakpointToLayer = layer => {
+		const response = {};
+
+		Object.entries(cloneDeep(layer)).forEach(([key, val]) => {
+			if (!['type'].includes(key)) {
+				response[`${key}-${breakpoint}`] = val;
+
+				delete layer[key];
+			} else response[key] = val;
+		});
+
+		return response;
+	};
 
 	const getObject = type => {
 		switch (type) {
 			case 'color':
 				return {
-					...backgroundLayers.colorOptions,
+					...setBreakpointToLayer(backgroundLayers.colorOptions),
 					id: layers.length,
 				};
 			case 'image':
 				return {
-					...backgroundLayers.imageOptions,
+					...setBreakpointToLayer(backgroundLayers.imageOptions),
 					id: layers.length,
 				};
 			case 'video':
 				return {
-					...backgroundLayers.videoOptions,
+					...setBreakpointToLayer(backgroundLayers.videoOptions),
 					id: layers.length,
 				};
 			case 'gradient':
 				return {
-					...backgroundLayers.gradientOptions,
+					...setBreakpointToLayer(backgroundLayers.gradientOptions),
 					id: layers.length,
 				};
 			case 'shape':
 				return {
-					...backgroundLayers.SVGOptions,
+					...setBreakpointToLayer(backgroundLayers.SVGOptions),
 					id: layers.length,
 				};
 			default:
@@ -284,7 +318,7 @@ const BackgroundLayersControl = ({
 				value: 'color',
 			});
 
-		!disableColor &&
+		!disableImage &&
 			options.push({
 				label: __('Background Image', 'maxi-blocks'),
 				value: 'image',
@@ -375,12 +409,7 @@ const BackgroundLayersControl = ({
 											layers[layer.id] = layer;
 
 											onChange({
-												[getAttributeKey(
-													'background-layers',
-													isHover,
-													prefix,
-													breakpoint
-												)]: layers,
+												'background-layers': layers,
 											});
 										}}
 										onOpen={isOpen => {
@@ -396,12 +425,7 @@ const BackgroundLayersControl = ({
 											layers.splice(i, 1);
 
 											onChange({
-												[getAttributeKey(
-													'background-layers',
-													isHover,
-													prefix,
-													breakpoint
-												)]: layers,
+												'background-layers': layers,
 												...(layers.length === 0 && {
 													[getAttributeKey(
 														'background-active-media',
@@ -412,6 +436,7 @@ const BackgroundLayersControl = ({
 												}),
 											});
 										}}
+										breakpoint={breakpoint}
 									/>
 								))}
 							</div>
@@ -423,12 +448,7 @@ const BackgroundLayersControl = ({
 							layers.push(getObject(value));
 
 							onChange({
-								[getAttributeKey(
-									'background-layers',
-									isHover,
-									prefix,
-									breakpoint
-								)]: layers,
+								'background-layers': layers,
 								...(layers.length > 0 && {
 									[getAttributeKey(
 										'background-active-media',

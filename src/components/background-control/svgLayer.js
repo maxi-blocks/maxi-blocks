@@ -25,7 +25,14 @@ import { isEmpty, cloneDeep } from 'lodash';
  * Component
  */
 const SVGLayer = props => {
-	const { onChange, isHover, prefix, clientId, layerId, breakpoint } = props;
+	const {
+		onChange,
+		isHover,
+		prefix = '',
+		clientId,
+		layerId,
+		breakpoint,
+	} = props;
 
 	const SVGOptions = cloneDeep(props.SVGOptions);
 	const minMaxSettings = {

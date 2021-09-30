@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { select } from '@wordpress/data';
+import getAttributeValue from './getAttributeValue';
 
 /**
  * External dependencies
@@ -31,6 +32,13 @@ const getLastBreakpointAttributeSingle = (
 	const attr = attributes || getBlockAttributes(getSelectedBlockClientId());
 
 	if (isNil(attr)) return false;
+	if (isNil(breakpoint))
+		return getAttributeValue({
+			target,
+			props: attr,
+			isHover,
+			breakpoint,
+		});
 
 	const attrFilter = attr =>
 		!isNil(attr) && (isNumber(attr) || isBoolean(attr) || !isEmpty(attr));

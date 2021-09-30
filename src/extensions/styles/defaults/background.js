@@ -4,7 +4,7 @@ const backgroundGeneral = {
 	'background-active-media-general': {
 		type: 'string',
 	},
-	'background-layers-general': {
+	'background-layers': {
 		type: 'array',
 	},
 	'background-layers-status-general': {
@@ -213,6 +213,8 @@ const breakpointObjectCreator = obj => {
 	Object.entries(obj).forEach(([key, val]) => {
 		const newVal = { ...val };
 		delete newVal.default;
+
+		if (['background-layers'].includes(key)) return;
 
 		breakpoints.forEach(breakpoint => {
 			const newKey = key.replace('general', breakpoint);

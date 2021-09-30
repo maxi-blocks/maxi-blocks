@@ -585,6 +585,417 @@ Object {
 }
 `;
 
+exports[`getBackgroundStyles Get correct layers background styles for general responsive stage 1`] = `
+Object {
+  "border": Object {
+    "general": Object {},
+    "l": Object {},
+    "m": Object {},
+    "s": Object {},
+    "xl": Object {},
+    "xs": Object {},
+    "xxl": Object {},
+  },
+  "general": Object {
+    "display": "block",
+  },
+  "layers": Object {
+    "border": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+    "general": Object {
+      "display": "block",
+    },
+    "layers": Object {
+      "border": Object {
+        "general": Object {},
+        "l": Object {},
+        "m": Object {},
+        "s": Object {},
+        "xl": Object {},
+        "xs": Object {},
+        "xxl": Object {},
+      },
+      "general": Object {
+        "display": "block",
+      },
+      "layers": Object {
+        "border": Object {
+          "general": Object {},
+          "l": Object {},
+          "m": Object {},
+          "s": Object {},
+          "xl": Object {},
+          "xs": Object {},
+          "xxl": Object {},
+        },
+        "general": Object {
+          "display": "block",
+        },
+        "layers": Object {
+          "border": Object {
+            "general": Object {},
+            "l": Object {},
+            "m": Object {},
+            "s": Object {},
+            "xl": Object {},
+            "xs": Object {},
+            "xxl": Object {},
+          },
+          "general": Object {
+            "display": "block",
+          },
+          "layers": Object {
+            "border": Object {
+              "general": Object {},
+              "l": Object {},
+              "m": Object {},
+              "s": Object {},
+              "xl": Object {},
+              "xs": Object {},
+              "xxl": Object {},
+            },
+            "general": Object {
+              "display": "block",
+            },
+            "layers": Object {
+              "border": Object {
+                "general": Object {},
+                "l": Object {},
+                "m": Object {},
+                "s": Object {},
+                "xl": Object {},
+                "xs": Object {},
+                "xxl": Object {},
+              },
+              "general": Object {
+                "display": "block",
+              },
+              "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+                "color": Object {
+                  "general": Object {
+                    "background-color": "rgba(var(--maxi-light-color-1),1)",
+                    "display": "block",
+                  },
+                  "label": "Background Color",
+                },
+              },
+              "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
+                "image": Object {},
+              },
+              "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
+                "video": Object {
+                  "general": Object {
+                    "opacity": 0.01,
+                  },
+                  "label": "Video Background",
+                },
+              },
+              "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
+                "gradient": Object {
+                  "general": Object {
+                    "opacity": 1,
+                  },
+                  "label": "Background Gradient",
+                },
+              },
+            },
+            "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+              "color": Object {
+                "general": Object {
+                  "background-color": "rgba(var(--maxi-light-color-1),1)",
+                  "display": "block",
+                },
+                "label": "Background Color",
+                "xxl": Object {},
+              },
+            },
+            "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
+              "image": Object {},
+            },
+            "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
+              "video": Object {
+                "general": Object {
+                  "opacity": 0.01,
+                },
+                "label": "Video Background",
+                "xxl": Object {
+                  "opacity": 0.01,
+                },
+              },
+            },
+            "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
+              "gradient": Object {
+                "general": Object {
+                  "opacity": 1,
+                },
+                "label": "Background Gradient",
+                "xxl": Object {},
+              },
+            },
+          },
+          "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+            "color": Object {
+              "general": Object {
+                "background-color": "rgba(var(--maxi-light-color-1),1)",
+                "display": "block",
+              },
+              "label": "Background Color",
+              "xl": Object {},
+              "xxl": Object {},
+            },
+          },
+          "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
+            "image": Object {},
+          },
+          "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
+            "video": Object {
+              "general": Object {
+                "opacity": 0.01,
+              },
+              "label": "Video Background",
+              "xl": Object {
+                "opacity": 0.01,
+              },
+              "xxl": Object {
+                "opacity": 0.01,
+              },
+            },
+          },
+          "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
+            "gradient": Object {
+              "general": Object {
+                "opacity": 1,
+              },
+              "label": "Background Gradient",
+              "xl": Object {},
+              "xxl": Object {},
+            },
+          },
+        },
+        "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+          "color": Object {
+            "general": Object {
+              "background-color": "rgba(var(--maxi-light-color-1),1)",
+              "display": "block",
+            },
+            "l": Object {},
+            "label": "Background Color",
+            "xl": Object {},
+            "xxl": Object {},
+          },
+        },
+        "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
+          "image": Object {},
+        },
+        "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
+          "video": Object {
+            "general": Object {
+              "opacity": 0.01,
+            },
+            "l": Object {
+              "opacity": 0.01,
+            },
+            "label": "Video Background",
+            "xl": Object {
+              "opacity": 0.01,
+            },
+            "xxl": Object {
+              "opacity": 0.01,
+            },
+          },
+        },
+        "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
+          "gradient": Object {
+            "general": Object {
+              "opacity": 1,
+            },
+            "l": Object {},
+            "label": "Background Gradient",
+            "xl": Object {},
+            "xxl": Object {},
+          },
+        },
+      },
+      "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+        "color": Object {
+          "general": Object {
+            "background-color": "rgba(var(--maxi-light-color-1),1)",
+            "display": "block",
+          },
+          "l": Object {},
+          "label": "Background Color",
+          "m": Object {},
+          "xl": Object {},
+          "xxl": Object {},
+        },
+      },
+      "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
+        "image": Object {},
+      },
+      "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
+        "video": Object {
+          "general": Object {
+            "opacity": 0.01,
+          },
+          "l": Object {
+            "opacity": 0.01,
+          },
+          "label": "Video Background",
+          "m": Object {
+            "opacity": 0.01,
+          },
+          "xl": Object {
+            "opacity": 0.01,
+          },
+          "xxl": Object {
+            "opacity": 0.01,
+          },
+        },
+      },
+      "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
+        "gradient": Object {
+          "general": Object {
+            "opacity": 1,
+          },
+          "l": Object {},
+          "label": "Background Gradient",
+          "m": Object {},
+          "xl": Object {},
+          "xxl": Object {},
+        },
+      },
+    },
+    "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+      "color": Object {
+        "general": Object {
+          "background-color": "rgba(var(--maxi-light-color-1),1)",
+          "display": "block",
+        },
+        "l": Object {},
+        "label": "Background Color",
+        "m": Object {},
+        "s": Object {},
+        "xl": Object {},
+        "xxl": Object {},
+      },
+    },
+    "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
+      "image": Object {},
+    },
+    "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
+      "video": Object {
+        "general": Object {
+          "opacity": 0.01,
+        },
+        "l": Object {
+          "opacity": 0.01,
+        },
+        "label": "Video Background",
+        "m": Object {
+          "opacity": 0.01,
+        },
+        "s": Object {
+          "opacity": 0.01,
+        },
+        "xl": Object {
+          "opacity": 0.01,
+        },
+        "xxl": Object {
+          "opacity": 0.01,
+        },
+      },
+    },
+    "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
+      "gradient": Object {
+        "general": Object {
+          "opacity": 1,
+        },
+        "l": Object {},
+        "label": "Background Gradient",
+        "m": Object {},
+        "s": Object {},
+        "xl": Object {},
+        "xxl": Object {},
+      },
+    },
+  },
+  "maxi-test > .maxi-background-displayer": Object {
+    "general": Object {},
+    "l": Object {},
+    "m": Object {},
+    "s": Object {},
+    "xl": Object {},
+    "xs": Object {},
+    "xxl": Object {},
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
+    "color": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+        "display": "block",
+      },
+      "l": Object {},
+      "label": "Background Color",
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
+    "image": Object {},
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
+    "video": Object {
+      "general": Object {
+        "opacity": 0.01,
+      },
+      "l": Object {
+        "opacity": 0.01,
+      },
+      "label": "Video Background",
+      "m": Object {
+        "opacity": 0.01,
+      },
+      "s": Object {
+        "opacity": 0.01,
+      },
+      "xl": Object {
+        "opacity": 0.01,
+      },
+      "xs": Object {
+        "opacity": 0.01,
+      },
+      "xxl": Object {
+        "opacity": 0.01,
+      },
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
+    "gradient": Object {
+      "general": Object {
+        "opacity": 1,
+      },
+      "l": Object {},
+      "label": "Background Gradient",
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
+  },
+}
+`;
+
 exports[`getBackgroundStyles Gets correct styles on different breakpoints, with different types of background and options 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {

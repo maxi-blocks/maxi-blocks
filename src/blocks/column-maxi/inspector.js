@@ -9,6 +9,7 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import {
 	AccordionControl,
+	AdvancedNumberControl,
 	AxisControl,
 	BackgroundControl,
 	BlockStylesControl,
@@ -16,14 +17,13 @@ import {
 	BoxShadowControl,
 	CustomLabel,
 	DisplayControl,
-	FancyRadioControl,
 	InfoBox,
 	OpacityControl,
 	ResponsiveControl,
 	SelectControl,
 	SettingTabsControl,
-	AdvancedNumberControl,
 	TextControl,
+	ToggleSwitch,
 	TransformControl,
 	ZIndexControl,
 	OverflowControl,
@@ -76,7 +76,6 @@ const Inspector = props => {
 												setAttributes({ customLabel })
 											}
 										/>
-										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
 											isFirstOnHierarchy={
@@ -243,7 +242,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Background Hover',
 																			'maxi-blocks'
@@ -254,22 +253,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-background-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val =>
 																			setAttributes(
 																				{
@@ -379,7 +362,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -390,22 +373,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-border-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val =>
 																			setAttributes(
 																				{
@@ -514,7 +481,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Box Shadow Hover',
 																			'maxi-blocks'
@@ -525,22 +492,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-box-shadow-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val =>
 																			setAttributes(
 																				{

@@ -16,16 +16,16 @@ import {
 	ColumnPattern,
 	CustomLabel,
 	DisplayControl,
-	FancyRadioControl,
 	FullSizeControl,
+	InfoBox,
 	OpacityControl,
 	PositionControl,
 	ResponsiveControl,
 	SelectControl,
 	SettingTabsControl,
 	TextControl,
+	ToggleSwitch,
 	TransformControl,
-	InfoBox,
 	ZIndexControl,
 	OverflowControl,
 } from '../../components';
@@ -76,7 +76,6 @@ const Inspector = props => {
 												setAttributes({ customLabel })
 											}
 										/>
-										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
 											isFirstOnHierarchy={
@@ -266,7 +265,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Background Hover',
 																			'maxi-blocks'
@@ -277,22 +276,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-background-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val =>
 																			setAttributes(
 																				{
@@ -402,7 +385,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -413,22 +396,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-border-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val =>
 																			setAttributes(
 																				{
@@ -503,32 +470,20 @@ const Inspector = props => {
 											),
 											content: (
 												<>
-													<FancyRadioControl
+													<ToggleSwitch
 														label={__(
 															'Full Width',
 															'maxi-blocks'
 														)}
-														selected={fullWidth}
-														options={[
-															{
-																label: __(
-																	'Yes',
-																	'maxi-blocks'
-																),
-																value: 'full',
-															},
-															{
-																label: __(
-																	'No',
-																	'maxi-blocks'
-																),
-																value: 'normal',
-															},
-														]}
-														optionType='string'
-														onChange={fullWidth =>
+														selected={
+															fullWidth ===
+															'full'
+														}
+														onChange={val =>
 															setAttributes({
-																fullWidth,
+																fullWidth: val
+																	? 'full'
+																	: 'normal',
 															})
 														}
 													/>
@@ -610,7 +565,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Box Shadow Hover',
 																			'maxi-blocks'
@@ -621,22 +576,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-box-shadow-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val =>
 																			setAttributes(
 																				{

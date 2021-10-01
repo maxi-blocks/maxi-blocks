@@ -28,7 +28,6 @@ import { isEmpty } from 'lodash';
 /**
  * Edit
  */
-
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
@@ -79,6 +78,7 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 			/>,
 			<MaxiBlock
+				className={hasInnerBlock && 'has-child'}
 				key={`maxi-group--${uniqueID}`}
 				ref={this.blockRef}
 				{...getMaxiBlockBlockAttributes(this.props)}

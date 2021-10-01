@@ -3,9 +3,9 @@
 ***********/
 .maxi-sidebar {
 	.block-editor-block-icon {
-		width: 16px;
-		height: 16px;
 		flex: 0;
+		height: 16px;
+		width: 16px;
 		margin: 0;
 
 		svg {
@@ -19,25 +19,27 @@
 	}
 	.block-editor-block-inspector.maxi-controls {
 		.block-editor-block-card {
-			color: #fff;
-			padding: 8px;
-			margin: 0 0 8px 0 !important;
 			position: relative;
+			margin: 0 0 8px 0 !important;
+			padding: 8px;
+			color: #fff;
 			border-bottom: 1px solid #dbdde6;
 			background: #fff;
 			letter-spacing: 0;
-			flex-wrap: wrap;
 
-
-			&__title {
-				line-height: unset;
+			&__content {
 				margin: 0 0 0 8px;
+			}
+			&__title {
+				margin: 0 0 8px 0;
 				font-size: 14px;
 				font-weight: 500;
+				line-height: unset;
 			}
 			&__description {
+				display: block;
 				width: 100%;
-				margin: 8px 0 0;
+				margin: 0;
 			}
 		}
 	}

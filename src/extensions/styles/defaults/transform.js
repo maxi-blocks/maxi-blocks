@@ -34,6 +34,14 @@ const transform = {
 	'transform-origin-y-general': {
 		type: 'string',
 	},
+	'transform-origin-x-unit-general': {
+		type: 'string',
+		default: '%',
+	},
+	'transform-origin-y-unit-general': {
+		type: 'string',
+		default: '%',
+	},
 	'transform-scale-x-xxl': {
 		type: 'number',
 	},

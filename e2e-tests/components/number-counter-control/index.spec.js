@@ -108,7 +108,10 @@ describe('NumberCounterControl', () => {
 		);
 
 		// Show Percentage Sign
-		await buttons[4].click();
+		await accordionPanel.$eval(
+			'.maxi-number-counter-control .maxi-toggle-switch.number-counter-percentage-sign-status .maxi-base-control__label',
+			click => click.click()
+		);
 
 		const showPercentage = true;
 		const percentageAttributes = await getBlockAttributes();
@@ -118,7 +121,10 @@ describe('NumberCounterControl', () => {
 		expect(showPercentageAttribute).toStrictEqual(showPercentage);
 
 		// Rounded Bar
-		await buttons[10].click();
+		await accordionPanel.$eval(
+			'.maxi-number-counter-control .maxi-toggle-switch.number-counter-rounded-status .maxi-base-control__label',
+			click => click.click()
+		);
 
 		const roundedBar = true;
 		const roundedAttributes = await getBlockAttributes();
@@ -128,7 +134,10 @@ describe('NumberCounterControl', () => {
 		expect(roundedBarAttribute).toStrictEqual(roundedBar);
 
 		// Hide Circle
-		await buttons[7].click();
+		await accordionPanel.$eval(
+			'.maxi-number-counter-control .maxi-toggle-switch.number-counter-circle-status .maxi-base-control__label',
+			click => click.click()
+		);
 
 		const hideCircle = true;
 		const circleAttributes = await getBlockAttributes();

@@ -16,13 +16,13 @@ import {
 } from '../../extensions/styles';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
-import FancyRadioControl from '../fancy-radio-control';
 import GradientLayer from './gradientLayer';
 import Icon from '../icon';
 import ImageLayer from './imageLayer';
 import LoaderControl from '../loader-control';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies
@@ -357,13 +357,9 @@ const BackgroundLayersControl = ({
 
 	return (
 		<div className='maxi-background-control__layers'>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Use layers', 'maxi-blocks')}
 				selected={layersStatus}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
 				onChange={val =>
 					onChange({
 						[getAttributeKey(
@@ -371,17 +367,16 @@ const BackgroundLayersControl = ({
 							isHover,
 							prefix,
 							breakpoint
-						)]: !!+val,
+						)]: val,
 						[getAttributeKey(
 							'background-active-media',
 							isHover,
 							prefix,
 							breakpoint
-						)]: +val ? 'layers' : '',
+						)]: val ? 'layers' : '',
 					})
 				}
 			/>
-
 			{layersStatus && (
 				<div>
 					{!isEmpty(layers) && (

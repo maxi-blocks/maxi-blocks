@@ -9,7 +9,7 @@ import { useState } from '@wordpress/element';
  */
 import ColorControl from '../color-control';
 import DefaultStylesControl from '../default-styles-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import AdvancedNumberControl from '../advanced-number-control';
 import Icon from '../icon';
 
@@ -299,22 +299,17 @@ const TextShadowControl = props => {
 
 	return (
 		<div className={classes}>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Text Shadow', 'maxi-blocks')}
 				selected={showOptions}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
-				onChange={() => {
-					changeShowOptions(!showOptions);
-					if (showOptions) {
+				onChange={val => {
+					changeShowOptions(val);
+					if (val) {
 						changeLastValue(textShadow);
 						onChange('');
 					} else onChange(lastValue);
 				}}
 			/>
-
 			{!!showOptions && (
 				<TextShadow
 					value={lastValue}

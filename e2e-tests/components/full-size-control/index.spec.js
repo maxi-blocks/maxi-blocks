@@ -17,9 +17,9 @@ describe('FullSizeControl', () => {
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebar(page, 'width height');
 
-		await accordionPanel.$$eval(
-			'.maxi-fancy-radio-control .maxi-base-control__field label',
-			click => click[1].click()
+		await accordionPanel.$eval(
+			'.maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		const expectResult = 'full';

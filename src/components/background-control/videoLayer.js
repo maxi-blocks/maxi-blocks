@@ -11,11 +11,11 @@ import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import TextControl from '../text-control';
-import FancyRadioControl from '../fancy-radio-control';
 import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies
@@ -138,7 +138,8 @@ const VideoLayer = props => {
 					})
 				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
+				className='video-loop'
 				label={__('Loop', 'maxi-blocks')}
 				selected={getLastBreakpointAttribute(
 					`${prefix}background-video-loop`,
@@ -146,16 +147,6 @@ const VideoLayer = props => {
 					videoOptions,
 					isHover
 				)}
-				options={[
-					{
-						label: __('Yes', 'maxi-blocks'),
-						value: 1,
-					},
-					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-				]}
 				disabled={
 					!!+videoOptions[
 						getAttributeKey(
@@ -177,7 +168,8 @@ const VideoLayer = props => {
 					})
 				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
+				className='video-play-mobile'
 				label={__('Play on Mobile', 'maxi-blocks')}
 				selected={getLastBreakpointAttribute(
 					`${prefix}background-video-playOnMobile`,
@@ -185,16 +177,6 @@ const VideoLayer = props => {
 					videoOptions,
 					isHover
 				)}
-				options={[
-					{
-						label: __('Yes', 'maxi-blocks'),
-						value: 1,
-					},
-					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-				]}
 				onChange={val =>
 					onChange({
 						[getAttributeKey(

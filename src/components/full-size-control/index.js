@@ -8,7 +8,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
@@ -144,16 +144,14 @@ const FullSizeControl = props => {
 				minMaxSettings={minMaxSettings}
 				allowedUnits={['px', 'em', 'vw', '%']}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Advanced Width/Height', 'maxi-blocks')}
 				selected={props[`${prefix}size-advanced-options`] || 0}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
 				onChange={val => {
-					onChange({ [`${prefix}size-advanced-options`]: val });
-					if (!+val) {
+					onChange({
+						[`${prefix}size-advanced-options`]: val,
+					});
+					if (props[`${prefix}size-advanced-options`]) {
 						onChangeValue(
 							[
 								'min-width',

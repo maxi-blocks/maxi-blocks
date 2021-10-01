@@ -223,9 +223,10 @@ const AxisControl = props => {
 			syncArray.forEach(key => {
 				response[
 					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
-				] = getDefaultAttribute(
-					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
-				);
+				] =
+					getDefaultAttribute(
+						`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
+					) || false;
 			});
 		}
 

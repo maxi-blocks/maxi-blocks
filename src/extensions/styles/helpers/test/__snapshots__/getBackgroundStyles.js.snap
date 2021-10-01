@@ -687,11 +687,16 @@ Object {
                 },
               },
               "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
-                "image": Object {},
+                "image": Object {
+                  "general": Object {
+                    "display": "block",
+                  },
+                },
               },
               "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
                 "video": Object {
                   "general": Object {
+                    "display": "block",
                     "opacity": 0.01,
                   },
                   "label": "Video Background",
@@ -700,9 +705,28 @@ Object {
               "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
                 "gradient": Object {
                   "general": Object {
+                    "display": "block",
                     "opacity": 1,
                   },
                   "label": "Background Gradient",
+                },
+              },
+              "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
+                "shape": Object {
+                  "general": Object {
+                    "display": "block",
+                    "width": "100%",
+                  },
+                  "label": "SVG Wrapper Background",
+                },
+              },
+              "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
+                "shape": Object {
+                  "general": Object {
+                    "display": "block",
+                    "fill": "rgba(var(--maxi-light-color-5),1)",
+                  },
+                  "label": "SVG Background",
                 },
               },
             },
@@ -717,11 +741,16 @@ Object {
               },
             },
             "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
-              "image": Object {},
+              "image": Object {
+                "general": Object {
+                  "display": "block",
+                },
+              },
             },
             "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
               "video": Object {
                 "general": Object {
+                  "display": "block",
                   "opacity": 0.01,
                 },
                 "label": "Video Background",
@@ -733,10 +762,35 @@ Object {
             "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
               "gradient": Object {
                 "general": Object {
+                  "display": "block",
                   "opacity": 1,
                 },
                 "label": "Background Gradient",
                 "xxl": Object {},
+              },
+            },
+            "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
+              "shape": Object {
+                "general": Object {
+                  "display": "block",
+                  "width": "100%",
+                },
+                "label": "SVG Wrapper Background",
+                "xxl": Object {
+                  "width": "100%",
+                },
+              },
+            },
+            "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
+              "shape": Object {
+                "general": Object {
+                  "display": "block",
+                  "fill": "rgba(var(--maxi-light-color-5),1)",
+                },
+                "label": "SVG Background",
+                "xxl": Object {
+                  "fill": "rgba(var(--maxi-light-color-5),1)",
+                },
               },
             },
           },
@@ -752,11 +806,16 @@ Object {
             },
           },
           "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
-            "image": Object {},
+            "image": Object {
+              "general": Object {
+                "display": "block",
+              },
+            },
           },
           "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
             "video": Object {
               "general": Object {
+                "display": "block",
                 "opacity": 0.01,
               },
               "label": "Video Background",
@@ -771,11 +830,42 @@ Object {
           "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
             "gradient": Object {
               "general": Object {
+                "display": "block",
                 "opacity": 1,
               },
               "label": "Background Gradient",
               "xl": Object {},
               "xxl": Object {},
+            },
+          },
+          "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
+            "shape": Object {
+              "general": Object {
+                "display": "block",
+                "width": "100%",
+              },
+              "label": "SVG Wrapper Background",
+              "xl": Object {
+                "width": "100%",
+              },
+              "xxl": Object {
+                "width": "100%",
+              },
+            },
+          },
+          "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
+            "shape": Object {
+              "general": Object {
+                "display": "block",
+                "fill": "rgba(var(--maxi-light-color-5),1)",
+              },
+              "label": "SVG Background",
+              "xl": Object {
+                "fill": "rgba(var(--maxi-light-color-5),1)",
+              },
+              "xxl": Object {
+                "fill": "rgba(var(--maxi-light-color-5),1)",
+              },
             },
           },
         },
@@ -792,11 +882,16 @@ Object {
           },
         },
         "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
-          "image": Object {},
+          "image": Object {
+            "general": Object {
+              "display": "block",
+            },
+          },
         },
         "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
           "video": Object {
             "general": Object {
+              "display": "block",
               "opacity": 0.01,
             },
             "l": Object {
@@ -814,12 +909,49 @@ Object {
         "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
           "gradient": Object {
             "general": Object {
+              "display": "block",
               "opacity": 1,
             },
             "l": Object {},
             "label": "Background Gradient",
             "xl": Object {},
             "xxl": Object {},
+          },
+        },
+        "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
+          "shape": Object {
+            "general": Object {
+              "display": "block",
+              "width": "100%",
+            },
+            "l": Object {
+              "width": "100%",
+            },
+            "label": "SVG Wrapper Background",
+            "xl": Object {
+              "width": "100%",
+            },
+            "xxl": Object {
+              "width": "100%",
+            },
+          },
+        },
+        "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
+          "shape": Object {
+            "general": Object {
+              "display": "block",
+              "fill": "rgba(var(--maxi-light-color-5),1)",
+            },
+            "l": Object {
+              "fill": "rgba(var(--maxi-light-color-5),1)",
+            },
+            "label": "SVG Background",
+            "xl": Object {
+              "fill": "rgba(var(--maxi-light-color-5),1)",
+            },
+            "xxl": Object {
+              "fill": "rgba(var(--maxi-light-color-5),1)",
+            },
           },
         },
       },
@@ -837,11 +969,16 @@ Object {
         },
       },
       "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
-        "image": Object {},
+        "image": Object {
+          "general": Object {
+            "display": "block",
+          },
+        },
       },
       "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
         "video": Object {
           "general": Object {
+            "display": "block",
             "opacity": 0.01,
           },
           "l": Object {
@@ -862,6 +999,7 @@ Object {
       "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
         "gradient": Object {
           "general": Object {
+            "display": "block",
             "opacity": 1,
           },
           "l": Object {},
@@ -869,6 +1007,48 @@ Object {
           "m": Object {},
           "xl": Object {},
           "xxl": Object {},
+        },
+      },
+      "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
+        "shape": Object {
+          "general": Object {
+            "display": "block",
+            "width": "100%",
+          },
+          "l": Object {
+            "width": "100%",
+          },
+          "label": "SVG Wrapper Background",
+          "m": Object {
+            "width": "100%",
+          },
+          "xl": Object {
+            "width": "100%",
+          },
+          "xxl": Object {
+            "width": "100%",
+          },
+        },
+      },
+      "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
+        "shape": Object {
+          "general": Object {
+            "display": "block",
+            "fill": "rgba(var(--maxi-light-color-5),1)",
+          },
+          "l": Object {
+            "fill": "rgba(var(--maxi-light-color-5),1)",
+          },
+          "label": "SVG Background",
+          "m": Object {
+            "fill": "rgba(var(--maxi-light-color-5),1)",
+          },
+          "xl": Object {
+            "fill": "rgba(var(--maxi-light-color-5),1)",
+          },
+          "xxl": Object {
+            "fill": "rgba(var(--maxi-light-color-5),1)",
+          },
         },
       },
     },
@@ -887,11 +1067,16 @@ Object {
       },
     },
     "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
-      "image": Object {},
+      "image": Object {
+        "general": Object {
+          "display": "block",
+        },
+      },
     },
     "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
       "video": Object {
         "general": Object {
+          "display": "block",
           "opacity": 0.01,
         },
         "l": Object {
@@ -915,6 +1100,7 @@ Object {
     "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
       "gradient": Object {
         "general": Object {
+          "display": "block",
           "opacity": 1,
         },
         "l": Object {},
@@ -923,6 +1109,54 @@ Object {
         "s": Object {},
         "xl": Object {},
         "xxl": Object {},
+      },
+    },
+    "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
+      "shape": Object {
+        "general": Object {
+          "display": "block",
+          "width": "100%",
+        },
+        "l": Object {
+          "width": "100%",
+        },
+        "label": "SVG Wrapper Background",
+        "m": Object {
+          "width": "100%",
+        },
+        "s": Object {
+          "width": "100%",
+        },
+        "xl": Object {
+          "width": "100%",
+        },
+        "xxl": Object {
+          "width": "100%",
+        },
+      },
+    },
+    "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
+      "shape": Object {
+        "general": Object {
+          "display": "block",
+          "fill": "rgba(var(--maxi-light-color-5),1)",
+        },
+        "l": Object {
+          "fill": "rgba(var(--maxi-light-color-5),1)",
+        },
+        "label": "SVG Background",
+        "m": Object {
+          "fill": "rgba(var(--maxi-light-color-5),1)",
+        },
+        "s": Object {
+          "fill": "rgba(var(--maxi-light-color-5),1)",
+        },
+        "xl": Object {
+          "fill": "rgba(var(--maxi-light-color-5),1)",
+        },
+        "xxl": Object {
+          "fill": "rgba(var(--maxi-light-color-5),1)",
+        },
       },
     },
   },
@@ -951,11 +1185,16 @@ Object {
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
-    "image": Object {},
+    "image": Object {
+      "general": Object {
+        "display": "block",
+      },
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__2": Object {
     "video": Object {
       "general": Object {
+        "display": "block",
         "opacity": 0.01,
       },
       "l": Object {
@@ -982,6 +1221,7 @@ Object {
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__3": Object {
     "gradient": Object {
       "general": Object {
+        "display": "block",
         "opacity": 1,
       },
       "l": Object {},
@@ -991,6 +1231,60 @@ Object {
       "xl": Object {},
       "xs": Object {},
       "xxl": Object {},
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4": Object {
+    "shape": Object {
+      "general": Object {
+        "display": "block",
+        "width": "100%",
+      },
+      "l": Object {
+        "width": "100%",
+      },
+      "label": "SVG Wrapper Background",
+      "m": Object {
+        "width": "100%",
+      },
+      "s": Object {
+        "width": "100%",
+      },
+      "xl": Object {
+        "width": "100%",
+      },
+      "xs": Object {
+        "width": "100%",
+      },
+      "xxl": Object {
+        "width": "100%",
+      },
+    },
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
+    "shape": Object {
+      "general": Object {
+        "display": "block",
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
+      "l": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
+      "label": "SVG Background",
+      "m": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
+      "s": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
+      "xl": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
+      "xs": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
+      "xxl": Object {
+        "fill": "rgba(var(--maxi-light-color-5),1)",
+      },
     },
   },
 }

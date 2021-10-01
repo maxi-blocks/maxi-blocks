@@ -29,7 +29,7 @@ import ToggleSwitch from '../toggle-switch';
  */
 import ReactDragListView from 'react-drag-listview';
 import classnames from 'classnames';
-import { isEmpty, cloneDeep } from 'lodash';
+import { isEmpty, cloneDeep, uniqueId } from 'lodash';
 
 /**
  * Styles and icons
@@ -188,6 +188,7 @@ const LayerCard = props => {
 				<div className='maxi-background-layer__content'>
 					{(type === 'color' && (
 						<ColorLayer
+							key={uniqueId('background-color-layer--')}
 							colorOptions={{
 								...getGroupAttributes(layer, 'backgroundColor'),
 							}}
@@ -198,6 +199,7 @@ const LayerCard = props => {
 					)) ||
 						(type === 'image' && (
 							<ImageLayer
+								key={uniqueId('background-image-layer--')}
 								imageOptions={{
 									...getGroupAttributes(
 										layer,
@@ -210,6 +212,7 @@ const LayerCard = props => {
 						)) ||
 						(type === 'video' && (
 							<VideoLayer
+								key={uniqueId('background-video-layer--')}
 								videoOptions={{
 									...getGroupAttributes(
 										layer,
@@ -222,6 +225,7 @@ const LayerCard = props => {
 						)) ||
 						(type === 'gradient' && (
 							<GradientLayer
+								key={uniqueId('background-gradient-layer--')}
 								gradientOptions={{
 									...getGroupAttributes(
 										layer,
@@ -234,6 +238,7 @@ const LayerCard = props => {
 						)) ||
 						(type === 'shape' && (
 							<SVGLayer
+								key={uniqueId('background-SVG-layer--')}
 								SVGOptions={{
 									...getGroupAttributes(
 										layer,

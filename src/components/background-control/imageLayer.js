@@ -476,10 +476,12 @@ const ImageLayer = props => {
 				}
 			/>
 			<ToggleSwitch
-				className='maxi-fancy-radio-control--more-settings'
+				className='maxi-background-image-more-settings--toggle'
 				label={__('More Settings', 'maxi-blocks')}
 				selected={moreSettings}
-				onChange={val => setMoreSettings(val)}
+				onChange={val => {
+					setMoreSettings(val);
+				}}
 			/>
 			{moreSettings && (
 				<div className='maxi-background-image-more-settings'>

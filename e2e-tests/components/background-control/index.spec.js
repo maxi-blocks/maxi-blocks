@@ -23,8 +23,8 @@ describe('BackgroundControl', () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
 		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[5].click()
+			'.maxi-background-control__simple label',
+			select => select[2].click()
 		);
 
 		await accordionPanel.$eval(
@@ -146,8 +146,8 @@ describe('BackgroundControl', () => {
 	it('Check Background Image', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
-			select => select[2].click()
+			'.maxi-background-control__simple label',
+			select => select[3].click()
 		);
 
 		// background options
@@ -164,7 +164,7 @@ describe('BackgroundControl', () => {
 
 		// more settings
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--more-settings .maxi-base-control__field label',
+			'.maxi-background-control .maxi-background-image-more-settings--toggle label',
 			click => click[1].click()
 		);
 

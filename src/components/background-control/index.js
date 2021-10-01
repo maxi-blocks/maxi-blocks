@@ -149,6 +149,7 @@ const BackgroundControl = props => {
 			{!layersStatus && getOptions().length > 1 && (
 				<FancyRadioControl
 					label={__('Background', 'maxi-blocks')}
+					className='maxi-background-control__simple'
 					fullWidthMode
 					selected={backgroundActiveMedia || ''}
 					options={getOptions()}

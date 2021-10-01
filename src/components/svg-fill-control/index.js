@@ -45,17 +45,6 @@ const SVGFillControl = props => {
 		)
 	);
 
-	console.log(
-		injectImgSVG(
-			getLastBreakpointAttribute(
-				'background-svg-SVGElement',
-				breakpoint,
-				SVGOptions
-			),
-			SVGData
-		)
-	);
-
 	const getFillItem = ([id, value]) => {
 		return (
 			<SettingTabsControl

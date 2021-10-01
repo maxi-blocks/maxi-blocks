@@ -738,10 +738,10 @@ const setTargetsToStyles = (target, obj) => {
 				Object.keys(obj[key]).forEach(SVGClassName => {
 					response[
 						`${val.wrapper}.maxi-background-displayer__svg--${SVGClassName}`
-					] = obj[key][SVGClassName].wrapper;
+					].background = obj[key][SVGClassName].wrapper;
 					response[
 						`${val.svg}.maxi-background-displayer__svg--${SVGClassName} *`
-					] = obj[key][SVGClassName].svg;
+					].background = obj[key][SVGClassName].svg;
 				});
 			}
 		} else if (obj[key] && !isEmpty(obj[key])) response[val] = obj[key];
@@ -749,7 +749,7 @@ const setTargetsToStyles = (target, obj) => {
 
 	if (response.layer)
 		Object.entries(response.layer).forEach(([key, val]) => {
-			response[key] = val;
+			response[key].background = val;
 
 			delete response.layer.key;
 		});

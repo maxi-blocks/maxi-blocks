@@ -139,6 +139,7 @@ const attributes = {
 			default: 'center',
 		},
 	},
+	...attributesData.overflow,
 };
 
 export default attributes;

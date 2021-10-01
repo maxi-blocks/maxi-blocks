@@ -11,6 +11,7 @@ import {
 	getBackgroundStyles,
 	getBorderStyles,
 	getOpacityStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 /**
@@ -63,6 +64,9 @@ const getNormalObject = props => {
 		row: {
 			general: {},
 		},
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
 	};
 
 	if (props.fullWidth !== 'full') {

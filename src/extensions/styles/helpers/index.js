@@ -17,6 +17,7 @@ export { default as getMapStyles } from './getMapStyles';
 export { default as getMarginPaddingStyles } from './getMarginPaddingStyles';
 export { default as getNumberCounterStyles } from './getNumberCounterStyles';
 export { default as getOpacityStyles } from './getOpacityStyles';
+export { default as getOverflowStyles } from './getOverflowStyles';
 export { default as getPositionStyles } from './getPositionStyles';
 export { default as getShapeStyles } from './getShapeStyles';
 export { default as getSizeStyles } from './getSizeStyles';

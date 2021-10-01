@@ -91,7 +91,7 @@ const BackgroundControl = props => {
 		!disableNoneStyle &&
 			options.push({
 				label: <Icon icon={styleNone} />,
-				value: '',
+				value: 'none',
 			});
 
 		!disableColor &&
@@ -151,7 +151,7 @@ const BackgroundControl = props => {
 					label={__('Background', 'maxi-blocks')}
 					className='maxi-background-control__simple'
 					fullWidthMode
-					selected={backgroundActiveMedia || ''}
+					selected={backgroundActiveMedia || 'none'}
 					options={getOptions()}
 					optionType='string'
 					onChange={val =>

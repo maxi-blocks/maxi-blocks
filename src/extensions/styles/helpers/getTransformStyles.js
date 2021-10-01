@@ -103,6 +103,8 @@ const getTransformStyles = obj => {
 					return 0;
 				case 'center':
 					return 50;
+				case 'middle':
+					return 50;
 				default:
 					return false;
 			}

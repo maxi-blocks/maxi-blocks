@@ -33,7 +33,7 @@ describe('ColumnPattern', () => {
 
 		// remove Gap
 		await accordionControl.$eval(
-			'.components-column-pattern__gap .maxi-radio-control__option label',
+			'.components-column-pattern__gap .maxi-toggle-switch .maxi-base-control__label',
 			click => click.click()
 		);
 

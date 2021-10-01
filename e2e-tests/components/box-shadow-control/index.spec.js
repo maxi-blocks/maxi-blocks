@@ -115,9 +115,9 @@ describe('BoxShadowControl', () => {
 			buttons[1].click()
 		);
 
-		await page.$$eval(
-			'.maxi-box-shadow-status-hover .maxi-radio-control__option',
-			buttons => buttons[0].querySelector('label').click()
+		await page.$eval(
+			'.maxi-box-shadow-status-hover.maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>

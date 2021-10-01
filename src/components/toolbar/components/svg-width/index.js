@@ -26,6 +26,7 @@ const SvgWidth = props => {
 		breakpoint,
 		changeSVGSize,
 		changeSVGStrokeWidth,
+		type,
 	} = props;
 
 	if (blockName !== 'maxi-blocks/svg-icon-maxi') return null;
@@ -45,14 +46,18 @@ const SvgWidth = props => {
 					}}
 					breakpoint={breakpoint}
 				/>
-				<SvgStrokeWidthControl
-					{...props}
-					onChange={obj => {
-						onChange(obj);
-						changeSVGStrokeWidth(obj[`svg-stroke-${breakpoint}`]);
-					}}
-					breakpoint={breakpoint}
-				/>
+				{type !== 'Shape' && (
+					<SvgStrokeWidthControl
+						{...props}
+						onChange={obj => {
+							onChange(obj);
+							changeSVGStrokeWidth(
+								obj[`svg-stroke-${breakpoint}`]
+							);
+						}}
+						breakpoint={breakpoint}
+					/>
+				)}
 			</div>
 		</ToolbarPopover>
 	);

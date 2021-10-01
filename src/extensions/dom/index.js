@@ -25,7 +25,6 @@ const allowedBlocks = [
 	'maxi-blocks/group-maxi',
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/svg-icon-maxi',
-	'maxi-blocks/shape-maxi',
 ];
 
 wp.domReady(() => {
@@ -136,6 +135,13 @@ wp.domReady(() => {
 										'none';
 								if (blockToolbarEditor)
 									blockToolbarEditor.style.display = 'none';
+
+								const blockCardContent = document.querySelector(
+									'.maxi-sidebar .block-editor-block-inspector.maxi-controls .block-editor-block-card .block-editor-block-card__content'
+								);
+								if (blockCardContent)
+									blockCardContent.outerHTML =
+										blockCardContent.innerHTML;
 							} else {
 								if (editPostSidebarNode)
 									editPostSidebarNode.classList.remove(
@@ -241,19 +247,23 @@ wp.domReady(() => {
 		}
 	});
 
-	const SCElement = document.querySelector('#maxi-blocks-sc-vars-inline-css');
-	if (!SCElement) {
-		const SCStylesSubscriber = subscribe(() => {
-			const SC = select(
+	const SCVarsUpdate = setInterval(() => {
+		const SC = select(
+			'maxiBlocks/style-cards'
+		).receiveMaxiActiveStyleCard();
+		if (SC && !isEmpty(SC)) {
+			updateSCOnEditor(SC.value);
+			const SCList = select(
 				'maxiBlocks/style-cards'
-			).receiveMaxiActiveStyleCard();
+			).receiveStyleCardsList();
+			const SCListCount = Object.keys(SCList).length;
 
-			if (SC && !isEmpty(SC)) {
-				updateSCOnEditor(SC.value);
-				SCStylesSubscriber();
-			}
-		});
-	}
+			if (SCListCount === 1 && SC.key === 'sc_maxi')
+				dispatch('maxiBlocks/style-cards').saveSCStyles(true);
+
+			clearInterval(SCVarsUpdate);
+		}
+	}, 300);
 });
 
 const openSidebar = item => {

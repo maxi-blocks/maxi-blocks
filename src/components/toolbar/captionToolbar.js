@@ -15,12 +15,14 @@ import { isEmpty, cloneDeep, isEqual, isNaN } from 'lodash';
 /**
  * Utils
  */
-import Alignment from './components/alignment';
-import TextBold from './components/text-bold';
-import TextColor from './components/text-color';
-import TextItalic from './components/text-italic';
-import TextLink from './components/text-link';
-import TypographyControl from './components/typography-control';
+import {
+	Alignment,
+	TextBold,
+	TextColor,
+	TextItalic,
+	TextLink,
+	TextOptions,
+} from './components';
 
 /**
  * Styles
@@ -122,7 +124,7 @@ const CaptionToolbar = memo(
 						{...stickyProps}
 					>
 						<div className='toolbar-wrapper caption-toolbar'>
-							<TypographyControl
+							<TextOptions
 								{...getGroupAttributes(
 									attributes,
 									'typography'
@@ -136,6 +138,7 @@ const CaptionToolbar = memo(
 								styleCard={styleCard}
 								clientId={clientId}
 								isCaptionToolbar
+								blockStyle={parentBlockStyle}
 							/>
 							<TextColor
 								{...getGroupAttributes(

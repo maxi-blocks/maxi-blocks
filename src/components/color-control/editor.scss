@@ -1,6 +1,6 @@
 .maxi-color-control {
 	.chrome-picker {
-		width: 290px !important;
+		width: 100% !important;
 		box-shadow: none !important;
 
 		& > div {
@@ -138,22 +138,23 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			width: 13%;
-			height: 35px;
-			background-color: #eee;
-			border: 2px solid transparent;
+			width: 32px;
+			height: 32px;
+			border: 1px solid #dbdde6;
 			cursor: pointer;
 			transition: all 0.5s;
 
-			&--active,
+			&--active {
+				border: 2px solid #ff4a17;
+			}
 			&:hover {
-				border: 2px solid #bdbdbd;
+				background: #f1f1f1;
+				border-color: rgba(180, 180, 180, 0.8);
 			}
 			&__item {
 				width: 20px;
 				height: 20px;
-				border: 1px solid #dfe2e4;
-				border-radius: 3px;
+				border: 1px solid #141516;
 			}
 		}
 	}

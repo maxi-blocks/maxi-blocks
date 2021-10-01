@@ -4,6 +4,11 @@
 import fonts from '../fonts/fonts';
 
 /**
+ * External dependencies
+ */
+import { sortedUniq } from 'lodash';
+
+/**
  * Reducer managing the styles
  *
  * @param {Object} state  Current state.
@@ -11,7 +16,10 @@ import fonts from '../fonts/fonts';
  *
  * @return {Object} Updated state.
  */
-function reducer(state = { fonts: { ...fonts }, formatValues: {} }, action) {
+function reducer(
+	state = { fonts: { ...fonts }, formatValues: {}, postFonts: [] },
+	action
+) {
 	switch (action.type) {
 		case 'RECEIVE_FONTS':
 			return {
@@ -33,6 +41,11 @@ function reducer(state = { fonts: { ...fonts }, formatValues: {} }, action) {
 		case 'REMOVE_FORMAT_VALUE':
 			delete state.formatValues[action.clientId];
 			return state;
+		case 'UPDATE_FONTS':
+			return {
+				...state,
+				postFonts: sortedUniq([...state.postFonts, ...action.fonts]),
+			};
 		default:
 			return state;
 	}

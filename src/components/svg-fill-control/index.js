@@ -59,7 +59,6 @@ const SVGFillControl = props => {
 											paletteStatus,
 									});
 								}}
-								showPalette
 								paletteColor={
 									SVGOptions['background-palette-svg-color']
 								}

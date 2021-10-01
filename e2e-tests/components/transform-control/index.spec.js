@@ -1,11 +1,19 @@
 /**
  * WordPress dependencies
  */
-import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
+import {
+	createNewPost,
+	insertBlock,
+	pressKeyTimes,
+} from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import {
+	getBlockAttributes,
+	openAdvancedSidebar,
+	changeResponsive,
+} from '../../utils';
 
 describe('TransformControl', () => {
 	it('Check transform control', async () => {
@@ -14,10 +22,10 @@ describe('TransformControl', () => {
 		const accordionPanel = await openAdvancedSidebar(page, 'transform');
 
 		const buttons = await accordionPanel.$$(
-			'.maxi-transform-control .maxi-settingstab-control button'
+			'.maxi-transform-control .maxi-fancy-radio-control .maxi-radio-control__option label'
 		);
 
-		// scale
+		// Scale
 		// Y
 		await accordionPanel.$eval(
 			'.maxi-transform-control .maxi-transform-control__square-control .maxi-transform-control__square-control__y-control__value input',
@@ -164,5 +172,208 @@ describe('TransformControl', () => {
 		const expectXOrigin = 20;
 
 		expect(originX).toStrictEqual(expectXOrigin);
+	});
+
+	it('Check Responsive transform control', async () => {
+		await openAdvancedSidebar(page, 'transform');
+		const tabsControl = await page.$$(
+			'.maxi-transform-control .maxi-fancy-radio-control .maxi-radio-control__option label'
+		);
+
+		// Scale
+		await tabsControl[0].click();
+		const scaleInput = await page.$(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input'
+		);
+
+		const scaleValue = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(scaleValue).toStrictEqual('55');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await scaleInput.focus();
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('7');
+
+		const responsiveSOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(responsiveSOption).toStrictEqual('57');
+
+		const attributes = await getBlockAttributes();
+		const transformScale = attributes['transform-scale-y-s'];
+
+		expect(transformScale).toStrictEqual(57);
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+		const responsiveXsOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(responsiveXsOption).toStrictEqual('57');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+		const responsiveMOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(responsiveMOption).toStrictEqual('55');
+
+		// Translate
+		await tabsControl[1].click();
+		const translateInput = await page.$(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input'
+		);
+
+		const translateValue = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(translateValue).toStrictEqual('55');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await translateInput.focus();
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('3');
+
+		const translateSOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(translateSOption).toStrictEqual('53');
+
+		const translateAttributes = await getBlockAttributes();
+		const translate = translateAttributes['transform-translate-y-s'];
+
+		expect(translate).toStrictEqual(53);
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+		const translateXsOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(translateXsOption).toStrictEqual('53');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+		const translateMOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(translateMOption).toStrictEqual('55');
+
+		// Rotate
+		await tabsControl[2].click();
+		const rotateInput = await page.$(
+			'.maxi-transform-control .maxi-transform-control__rotate-control__item__input'
+		);
+
+		const rotateValue = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__rotate-control__item__input',
+			input => input.value
+		);
+
+		expect(rotateValue).toStrictEqual('150');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await rotateInput.focus();
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('5');
+
+		const rotateSOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__rotate-control__item__input',
+			input => input.value
+		);
+
+		expect(rotateSOption).toStrictEqual('15');
+
+		const rotateAttributes = await getBlockAttributes();
+		const rotate = rotateAttributes['transform-rotate-x-s'];
+
+		expect(rotate).toStrictEqual(15);
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+		const rotateXsOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__rotate-control__item__input',
+			input => input.value
+		);
+
+		expect(rotateXsOption).toStrictEqual('15');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+		const rotateMOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__rotate-control__item__input',
+			input => input.value
+		);
+
+		expect(rotateMOption).toStrictEqual('150');
+
+		// Origin
+		await tabsControl[3].click();
+		const originInput = await page.$(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input'
+		);
+
+		const originValue = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(originValue).toStrictEqual('80');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await originInput.focus();
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('8');
+
+		const originSOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(originSOption).toStrictEqual('88');
+
+		const originAttributes = await getBlockAttributes();
+		const origin = originAttributes['transform-origin-y-s'];
+
+		expect(origin).toStrictEqual(88);
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+		const originXsOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(originXsOption).toStrictEqual('88');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+		const originMOption = await page.$eval(
+			'.maxi-transform-control .maxi-transform-control__square-control__y-control__value input',
+			input => input.value
+		);
+
+		expect(originMOption).toStrictEqual('80');
 	});
 });

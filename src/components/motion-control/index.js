@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import AddTimeline from './addTimeline';
 import ShowTimeline from './showTimeline';
 import TimelineSettings from './timelineSettings';
@@ -33,24 +33,16 @@ const MotionControl = props => {
 
 	return (
 		<div className={classes}>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Use Motion Effects', 'maxi-blocks')}
 				selected={props['motion-status']}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
 				onChange={val => onChange({ 'motion-status': val })}
 			/>
 			{/* props['motion-status'] && (
 				<>
-					<FancyRadioControl
+					<ToggleSwitch
 						label={__('Preview', 'maxi-blocks')}
 						selected={props['motion-preview-status']}
-						options={[
-							{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
 						onChange={val =>
 							onChange({ 'motion-preview-status': val })
 						}

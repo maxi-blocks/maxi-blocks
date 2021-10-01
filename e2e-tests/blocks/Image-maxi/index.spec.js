@@ -1,10 +1,11 @@
+/* eslint-disable no-await-in-loop */
 /**
  * WordPress dependencies
  */
 import {
 	createNewPost,
 	insertBlock,
-	pressKeyTimes,
+	pressKeyWithModifier,
 	getEditedPostContent,
 } from '@wordpress/e2e-test-utils';
 
@@ -68,8 +69,9 @@ describe('Image Maxi', () => {
 			'.maxi-typography-control .maxi-typography-control__font-family'
 		);
 		await fontFamilySelector.click();
-		await page.keyboard.type('Montserrat');
+		await page.keyboard.type('Montserrat', { delay: 100 });
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(200);
 
 		const attributes = await getBlockAttributes();
 		const fontFamily = attributes['font-family-general'];
@@ -114,10 +116,9 @@ describe('Image Maxi', () => {
 		await page.waitForTimeout(200);
 
 		await inputs[4].focus();
-		await pressKeyTimes('Backspace', 4);
+		await pressKeyWithModifier('primary', 'a');
 		await page.waitForTimeout(200);
-		await page.keyboard.type('2');
-		await page.waitForTimeout(200);
+		await page.keyboard.type('4');
 
 		await inputs[6].focus();
 		await page.keyboard.type('11');
@@ -136,7 +137,7 @@ describe('Image Maxi', () => {
 
 		const expectedAttributesTwo = {
 			'font-size-m': 19,
-			'line-height-m': 12,
+			'line-height-m': 4,
 			'letter-spacing-m': 11,
 		};
 
@@ -197,12 +198,12 @@ describe('Image Maxi', () => {
 
 		const shadowStyles = [
 			'none',
-			'0px 0px 5px #a2a2a2',
-			'5px 0px 3px #a2a2a2',
-			'2px 4px 0px #a2a2a2',
+			'2px 4px 3px rgba(var(--maxi-light-color-8),0.3)',
+			'2px 4px 3px rgba(var(--maxi-light-color-8),0.5)',
+			'4px 4px 0px rgba(var(--maxi-light-color-8),0.21)',
 		];
 
-		for (let i = 0; i < shadowStyles.length; i++) {
+		for (let i = 0; i < shadowStyles.length; i += 1) {
 			const setting = shadowStyles[i];
 
 			await accordionPanel.$$eval(
@@ -210,25 +211,34 @@ describe('Image Maxi', () => {
 				(buttons, i) => buttons[i].click(),
 				i
 			);
+			await page.waitForTimeout(200);
 
 			const shadowAttributes = await getBlockAttributes();
 			const textShadow = shadowAttributes['text-shadow-general'];
 			expect(textShadow).toStrictEqual(setting);
 		}
 
-		// Colors: LinkColour, LinkHoverColour, LinkActiveColour, LinkVisitedColour
-		const colors = await accordionPanel.$$(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-sc-color-palette div'
+		// Colors: LinkColor, LinkHoverColor, LinkActiveColor, LinkVisitedColor
+		// LinkColor
+		await accordionPanel.$$eval(
+			'.maxi-typography-link-color .maxi-sc-color-palette div',
+			colors => colors[1].click()
 		);
-
-		// LinkColour
-		await colors[9].click();
-		// LinkHoverColour
-		await colors[17].click();
-		// LinkActiveColour
-		await colors[24].click();
-		// LinkVisitedColour
-		await colors[31].click();
+		// LinkHoverColor
+		await accordionPanel.$$eval(
+			'.maxi-typography-link-hover-color .maxi-sc-color-palette div',
+			colors => colors[2].click()
+		);
+		// LinkActiveColor
+		await accordionPanel.$$eval(
+			'.maxi-typography-link-active-color .maxi-sc-color-palette div',
+			colors => colors[3].click()
+		);
+		// LinkVisitedColor
+		await accordionPanel.$$eval(
+			'.maxi-typography-link-visited-color .maxi-sc-color-palette div',
+			colors => colors[4].click()
+		);
 
 		const linkColorAttributes = await getBlockAttributes();
 		const linkAttributes = (({
@@ -245,9 +255,9 @@ describe('Image Maxi', () => {
 
 		const expectedValues = {
 			'link-palette-color-general': 2,
-			'link-hover-palette-color-general': 2,
-			'link-active-palette-color-general': 8,
-			'link-visited-palette-color-general': 6,
+			'link-hover-palette-color-general': 3,
+			'link-active-palette-color-general': 4,
+			'link-visited-palette-color-general': 5,
 		};
 
 		expect(linkAttributes).toStrictEqual(expectedValues);

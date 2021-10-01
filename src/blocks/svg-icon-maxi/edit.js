@@ -41,11 +41,10 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate(prevProps) {
+		const { updateBlockAttributes } = dispatch('core/block-editor');
+		const svgCode = this.props.attributes.content;
+
 		if (prevProps.attributes.uniqueID !== this.props.attributes.uniqueID) {
-			const { updateBlockAttributes } = dispatch('core/block-editor');
-
-			const svgCode = this.props.attributes.content;
-
 			const svgClass = svgCode.match(/ class="(.+?(?=))"/)[1];
 			const newSvgClass = `${svgClass}__${uniqueId()}`;
 			const replaceIt = `${svgClass}`;
@@ -69,10 +68,26 @@ class edit extends MaxiBlockComponent {
 				this.props.attributes
 			);
 
-			if (this.resizableObject.current.state.width !== `${svgWidth}%`)
+			if (this.resizableObject.current.state.width !== `${svgWidth}%`) {
+				const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
 				this.resizableObject.current.updateSize({
-					width: `${svgWidth}${svgWidthUnit}`,
+					width: fullWidthValue,
 				});
+
+				let newContent = svgCode
+					.replace('height="64px"', '')
+					.replace('width="64px"', '');
+
+				if (newContent.indexOf('viewBox') === -1) {
+					const changeTo = ' viewBox="0 0 64 64"><defs>';
+					newContent = newContent.replace(/><defs>/, changeTo);
+				}
+
+				if (!isEmpty(newContent))
+					updateBlockAttributes(this.props.clientId, {
+						content: newContent,
+					});
+			}
 		}
 	}
 
@@ -87,17 +102,12 @@ class edit extends MaxiBlockComponent {
 	get getCustomData() {
 		const { uniqueID } = this.props.attributes;
 
-		const motionStatus =
-			!!this.props.attributes['motion-status'] ||
-			!isEmpty(this.props.attributes['entrance-type']);
+		const motionStatus = !!this.props.attributes['motion-status'];
 
 		return {
 			[uniqueID]: {
 				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'entrance',
-					]),
+					...getGroupAttributes(this.props.attributes, 'motion'),
 				}),
 			},
 		};
@@ -152,6 +162,9 @@ class edit extends MaxiBlockComponent {
 						empty={isEmptyContent}
 						style={parentBlockStyle}
 						openFirstTime={openFirstTime}
+						onOpen={obj => setAttributes(obj)}
+						onSelect={obj => setAttributes(obj)}
+						onRemove={obj => setAttributes(obj)}
 					/>
 					{!isEmptyContent && (
 						<BlockResizer
@@ -191,28 +204,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 		attributes: { content },
 		setAttributes,
 	} = ownProps;
-
-	const changeSVGSize = width => {
-		const regexLineToChange = new RegExp('width=".+?(?=")');
-		const changeTo = `width="${width}`;
-
-		const regexLineToChange2 = new RegExp('height=".+?(?=")');
-		const changeTo2 = `height="${width}`;
-
-		let newContent = content
-			.replace(regexLineToChange, changeTo)
-			.replace(regexLineToChange2, changeTo2);
-
-		if (newContent.indexOf('viewBox') === -1) {
-			const changeTo3 = ' viewBox="0 0 64 64"><defs>';
-			newContent = newContent.replace(/><defs>/, changeTo3);
-		}
-
-		if (!isEmpty(newContent))
-			setAttributes({
-				content: newContent,
-			});
-	};
 
 	const changeSVGStrokeWidth = width => {
 		if (width) {
@@ -272,7 +263,6 @@ const editDispatch = withDispatch((dispatch, ownProps) => {
 	};
 
 	return {
-		changeSVGSize,
 		changeSVGStrokeWidth,
 		changeSVGContent,
 		changeSVGContentWithBlockStyle,

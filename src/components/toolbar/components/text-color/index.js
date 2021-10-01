@@ -131,8 +131,7 @@ const TextColor = withFormatValue(props => {
 							'palette-color-status': paletteStatus,
 						})
 					}
-					showPalette
-					globalProps={{ target: 'color-global', type: textLevel }}
+					globalProps={{ target: '', type: textLevel }}
 					textLevel={textLevel}
 				/>
 			</div>

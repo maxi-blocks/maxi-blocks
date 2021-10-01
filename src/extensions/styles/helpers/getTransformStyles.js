@@ -80,6 +80,16 @@ const getTransformStyles = obj => {
 			breakpoint,
 			obj
 		);
+		const originXUnit = getLastBreakpointAttribute(
+			'transform-origin-x-unit',
+			breakpoint,
+			obj
+		);
+		const originYUnit = getLastBreakpointAttribute(
+			'transform-origin-y-unit',
+			breakpoint,
+			obj
+		);
 
 		const originValueToNumber = value => {
 			switch (value) {
@@ -113,8 +123,10 @@ const getTransformStyles = obj => {
 		if (isString(originY))
 			transformOriginString += `${originValueToNumber(originY)}% `;
 
-		if (isNumber(originX)) transformOriginString += `${originX}% `;
-		if (isNumber(originY)) transformOriginString += `${originY}% `;
+		if (isNumber(originX))
+			transformOriginString += `${originX}${originXUnit} `;
+		if (isNumber(originY))
+			transformOriginString += `${originY}${originYUnit} `;
 
 		const transformObj = {
 			...(!isEmpty(transformString) && { transform: transformString }),

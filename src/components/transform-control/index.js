@@ -96,6 +96,16 @@ const TransformControl = props => {
 
 	useEffect(forceStyles);
 
+	console.log('transform-origin-x');
+	console.log(
+		getLastBreakpointAttribute('transform-origin-x', breakpoint, props)
+	);
+
+	console.log('transform-origin-y');
+	console.log(
+		getLastBreakpointAttribute('transform-origin-y', breakpoint, props)
+	);
+
 	return (
 		<div className={classes}>
 			<FancyRadioControl
@@ -256,14 +266,37 @@ const TransformControl = props => {
 						) || 'middle'
 					}
 					defaultY={getDefaultAttribute('transform-origin-y')}
-					onChange={(x, y) => {
+					xUnit={getLastBreakpointAttribute(
+						'transform-origin-x-unit',
+						breakpoint,
+						props
+					)}
+					yUnit={getLastBreakpointAttribute(
+						'transform-origin-y-unit',
+						breakpoint,
+						props
+					)}
+					onChange={(x, y, xUnit, yUnit) => {
 						onChangeTransform({
-							[`transform-origin-x-${breakpoint}`]: x,
-							[`transform-origin-y-${breakpoint}`]: y,
+							'transform-origin-x': x,
+							'transform-origin-x-unit': xUnit,
+							'transform-origin-y': y,
+							'transform-origin-y-unit': yUnit,
+						});
+						forceStyles();
+					}}
+					onSave={(x, y, xUnit, yUnit) => {
+						onChangeTransform({
+							'transform-origin-x': x,
+							'transform-origin-x-unit': xUnit,
+							'transform-origin-y': y,
+							'transform-origin-y-unit': yUnit,
 						});
 						onChange({
 							[`transform-origin-x-${breakpoint}`]: x,
+							[`transform-origin-x-unit-${breakpoint}`]: xUnit,
 							[`transform-origin-y-${breakpoint}`]: y,
+							[`transform-origin-y-unit-${breakpoint}`]: yUnit,
 						});
 						forceStyles();
 					}}

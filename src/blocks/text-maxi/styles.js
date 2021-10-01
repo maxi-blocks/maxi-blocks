@@ -15,6 +15,7 @@ import {
 	getCustomFormatsStyles,
 	getAlignmentTextStyles,
 	getLinkStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -61,6 +62,9 @@ const getNormalObject = props => {
 		}),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 

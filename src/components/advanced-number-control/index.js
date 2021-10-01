@@ -131,6 +131,8 @@ const AdvancedNumberControl = props => {
 			/>
 			{enableUnit && (
 				<SelectControl
+					label={__('Unit', 'maxi-blocks')}
+					hideLabelFromVision
 					className='maxi-dimensions-control__units'
 					options={getOptions()}
 					value={unit}
@@ -160,6 +162,7 @@ const AdvancedNumberControl = props => {
 				</Button>
 			)}
 			<RangeControl
+				label={label}
 				value={value || defaultValue || initial || 0}
 				onChange={val => {
 					onChangeValue(+val);

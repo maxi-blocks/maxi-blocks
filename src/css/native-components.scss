@@ -158,6 +158,16 @@
 				margin-left: 8px;
 			}
 		}
+		.components-base-control__label {
+			border: 0;
+			clip: rect(0 0 0 0);
+			height: 1px;
+			margin: -1px;
+			overflow: hidden;
+			padding: 0;
+			position: absolute;
+			width: 1px;
+		}
 		.components-base-control__field {
 			flex-wrap: wrap;
 			margin-bottom: 0 !important;

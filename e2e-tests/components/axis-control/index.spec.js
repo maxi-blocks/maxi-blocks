@@ -166,6 +166,11 @@ describe('AxisControl', () => {
 		);
 		expect(deletedMarginGeneral).toStrictEqual('');
 
+		const attributes = await getBlockAttributes();
+		const expectValue = attributes['margin-top-general'];
+
+		expect(expectValue).toStrictEqual();
+
 		// responsive s
 		await changeResponsive(page, 's');
 
@@ -174,6 +179,11 @@ describe('AxisControl', () => {
 			button => button[2].value
 		);
 		expect(marginS).toStrictEqual('33');
+
+		const sAttributes = await getBlockAttributes();
+		const expectSValue = sAttributes['margin-top-s'];
+
+		expect(expectSValue).toStrictEqual('33');
 
 		// responsive xs
 		await changeResponsive(page, 'xs');
@@ -247,6 +257,11 @@ describe('AxisControl', () => {
 		);
 
 		expect(marginBottomAuto).toStrictEqual('auto');
+
+		const attributes = await getBlockAttributes();
+		const autoValue = attributes['margin-top-general'];
+
+		expect(autoValue).toStrictEqual('auto');
 
 		// xs
 		await changeResponsive(page, 'xs');

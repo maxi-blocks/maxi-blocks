@@ -18,7 +18,7 @@ import { getSVGClassName } from '../../extensions/svg/utils';
  * External dependencies
  */
 import classnames from 'classnames';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -257,14 +257,7 @@ const BackgroundDisplayer = props => {
 
 	const activeLayers = getBackgroundActiveMedia(props);
 
-	// const noneActiveMediaNormal =
-	// 	!backgroundActiveMedia || backgroundActiveMedia === 'none';
-	// const noneActiveMediaHover =
-	// 	!backgroundActiveMediaHover ||
-	// 	backgroundActiveMediaHover === 'none' ||
-	// 	!backgroundStatusHover;
-
-	// if (noneActiveMediaNormal && noneActiveMediaHover) return null;
+	if (isEmpty(activeLayers)) return null;
 
 	const classes = classnames('maxi-background-displayer', className);
 

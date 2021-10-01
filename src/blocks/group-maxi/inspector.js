@@ -32,6 +32,7 @@ import {
 } from '../../components';
 import {
 	getGroupAttributes,
+	getLastBreakpointAttribute,
 	setHoverAttributes,
 } from '../../extensions/styles';
 
@@ -181,9 +182,11 @@ const Inspector = props => {
 																			deviceType
 																		}
 																	/>
-																	{attributes[
-																		'background-active-media'
-																	] ===
+																	{getLastBreakpointAttribute(
+																		'background-active-media',
+																		deviceType,
+																		attributes
+																	) ===
 																		'image' && (
 																		<ParallaxControl
 																			{...getGroupAttributes(

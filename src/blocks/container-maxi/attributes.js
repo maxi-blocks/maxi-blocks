@@ -32,7 +32,7 @@ const attributes = {
 	...attributesData.container,
 	...{
 		...attributesData.background,
-		'background-active-media': {
+		'background-active-media-general': {
 			type: 'string',
 			default: 'color',
 		},

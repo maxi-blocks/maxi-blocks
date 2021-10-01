@@ -136,6 +136,16 @@ const LayerCard = props => {
 		});
 	};
 
+	const getIsDisplayed = () => {
+		const currentDisplay = getLastBreakpointAttribute(
+			'display',
+			breakpoint,
+			layer
+		);
+
+		return currentDisplay === 'block' ? 'block' : 'none';
+	};
+
 	return (
 		<div className={classes}>
 			<div
@@ -163,7 +173,7 @@ const LayerCard = props => {
 						<Icon icon={toolbarSizing} />
 					</span>
 					<span
-						className='maxi-background-layer__title__display'
+						className={`maxi-background-layer__title__display maxi-background-layer__title__display--${getIsDisplayed()}`}
 						onClick={onChangeDisplay}
 					>
 						<Icon icon={toolbarSizing} />

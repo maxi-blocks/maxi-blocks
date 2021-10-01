@@ -24,7 +24,7 @@ describe('ColorControl', () => {
 		);
 
 		const attributes = await getBlockAttributes();
-		const backgroundColor = attributes['background-palette-color'];
+		const backgroundColor = attributes['background-palette-color-general'];
 
 		expect(backgroundColor).toStrictEqual(4);
 	});

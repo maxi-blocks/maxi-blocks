@@ -116,6 +116,33 @@
 					}
 				}
 			}
+			&__display {
+				display: block;
+				width: 15px;
+				height: 15px;
+				position: absolute;
+				top: 50%;
+				right: 30px;
+				transform: translateY(-50%);
+				cursor: move;
+
+				svg {
+					width: 15px;
+					height: 15px;
+				}
+
+				&--block {
+					path {
+						stroke: #000;
+					}
+				}
+				&--none {
+					path {
+						stroke: red; // TODO: style this part
+					}
+				}
+			}
+
 			&__remover {
 				position: relative;
 				display: block;

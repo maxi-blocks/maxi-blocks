@@ -40,7 +40,7 @@ describe('BackgroundControl', () => {
 
 		const bgColorClipPathAttributes = await getBlockAttributes();
 		const bgColorClipPathResult =
-			bgColorClipPathAttributes['background-color-clip-path'];
+			bgColorClipPathAttributes['background-color-clip-path-general'];
 		const expectedBgColorClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
 
 		expect(bgColorClipPathResult).toStrictEqual(expectedBgColorClipPath);
@@ -84,7 +84,7 @@ describe('BackgroundControl', () => {
 		const bgColorClipPathAttributes = await getBlockAttributes();
 		const bgColorClipPathResult =
 			bgColorClipPathAttributes['background-layers'][0][
-				'background-color-clip-path'
+				'background-color-clip-path-general'
 			];
 		const expectedBgColorClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
 
@@ -106,7 +106,7 @@ describe('BackgroundControl', () => {
 		await page.waitForTimeout(1000);
 
 		const colorAttributes = await getBlockAttributes();
-		const result = colorAttributes['background-palette-color'];
+		const result = colorAttributes['background-palette-color-general'];
 		const expectedColor = 4;
 
 		expect(result).toStrictEqual(expectedColor);
@@ -137,7 +137,7 @@ describe('BackgroundControl', () => {
 		await page.waitForTimeout(500);
 
 		const colorAttributes = await getBlockAttributes();
-		const result = colorAttributes['background-color'];
+		const result = colorAttributes['background-color-general'];
 		const expectedColor = 'rgb(0,0,0)';
 
 		expect(result).toStrictEqual(expectedColor);
@@ -189,12 +189,12 @@ describe('BackgroundControl', () => {
 
 		const pageAttributes = await getBlockAttributes();
 		const backgroundAttributes = (({
-			'background-image-attachment': imageAttachment,
-			'background-image-size': imageSize,
-			'background-image-clip': imageClipPath,
-			'background-image-origin': imageOrigin,
-			'background-image-position': imagePosition,
-			'background-image-repeat': imageRepeat,
+			'background-image-attachment-general': imageAttachment,
+			'background-image-size-general': imageSize,
+			'background-image-clip-general': imageClipPath,
+			'background-image-origin-general': imageOrigin,
+			'background-image-position-general': imagePosition,
+			'background-image-repeat-general': imageRepeat,
 		}) => ({
 			'background-image-attachment': imageAttachment,
 			'background-image-size': imageSize,
@@ -240,7 +240,7 @@ describe('BackgroundControl', () => {
 		await page.keyboard.press('Enter');
 
 		const expectVideo = await getBlockAttributes();
-		expect(expectVideo['background-video-mediaURL']).toStrictEqual(
+		expect(expectVideo['background-video-mediaURL-general']).toStrictEqual(
 			VideoUrl
 		);
 
@@ -255,9 +255,9 @@ describe('BackgroundControl', () => {
 		const expectAttribute = await getBlockAttributes();
 		const backgroundSettings = 'video';
 
-		expect(expectAttribute['background-active-media']).toStrictEqual(
-			backgroundSettings
-		);
+		expect(
+			expectAttribute['background-active-media-general']
+		).toStrictEqual(backgroundSettings);
 	});
 
 	// TODO: needs to be fixed with #1931
@@ -348,8 +348,8 @@ describe('BackgroundControl', () => {
 		const backgroundAttributes = await getBlockAttributes();
 
 		const background = (({
-			'background-active-media': backgroundActiveMedia,
-			'background-active-media-hover': backgroundActiveMediaHover,
+			'background-active-media-general': backgroundActiveMedia,
+			'background-active-media-general-hover': backgroundActiveMediaHover,
 		}) => ({
 			'background-active-media': backgroundActiveMedia,
 			'background-active-media-hover': backgroundActiveMediaHover,

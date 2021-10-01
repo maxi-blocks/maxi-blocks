@@ -2,7 +2,7 @@
 
 exports[`BackgroundControl Check Background Color 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__color\\"></div>"`;
 
-exports[`BackgroundControl Check Background Gradient 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__color\\"></div>"`;
+exports[`BackgroundControl Check Background Gradient 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__gradient\\"></div>"`;
 
 exports[`BackgroundControl Check Background Image 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__images\\"></div>"`;
 

@@ -162,6 +162,8 @@ const SquareControl = props => {
 				return 0;
 			case 'center':
 				return 50;
+			case 'middle':
+				return 50;
 			default:
 				return Number(value);
 		}
@@ -448,9 +450,11 @@ const SquareControl = props => {
 						placeholder={getPlaceholder(yAxis)}
 						className='maxi-transform-control__square-control__y-control__value__input'
 						value={
-							!isNumber(yAxis)
-								? originValueToNumber(yAxis)
-								: yAxis
+							!isEmpty(yAxis)
+								? !isNumber(yAxis)
+									? originValueToNumber(yAxis)
+									: yAxis
+								: ''
 						}
 						onChange={e => {
 							const newValue = !isEmpty(e.target.value)
@@ -521,9 +525,11 @@ const SquareControl = props => {
 						placeholder={getPlaceholder(xAxis)}
 						className='maxi-transform-control__square-control__x-control__value__input'
 						value={
-							!isNumber(xAxis)
-								? originValueToNumber(xAxis)
-								: xAxis
+							!isEmpty(xAxis)
+								? !isNumber(xAxis)
+									? originValueToNumber(xAxis)
+									: xAxis
+								: ''
 						}
 						onChange={e => {
 							const newValue = !isEmpty(e.target.value)

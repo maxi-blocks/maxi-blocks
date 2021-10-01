@@ -14,12 +14,12 @@ import { getBlockStyle } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import { isEmpty } from 'lodash';
 
 /**
  * Component
@@ -27,9 +27,6 @@ import { isEmpty } from 'lodash';
 const BlockStylesControl = props => {
 	const { blockStyle, onChange, isFirstOnHierarchy, className, clientId } =
 		props;
-
-	const { getBlockOrder } = select('core/block-editor');
-	const { updateBlockAttributes } = dispatch('core/block-editor');
 
 	const classes = classnames('maxi-block-style-control', className);
 
@@ -43,6 +40,8 @@ const BlockStylesControl = props => {
 	};
 
 	const getAllInnerBlocks = (id, parentBlockStyle) => {
+		const { getBlockOrder } = select('core/block-editor');
+		const { updateBlockAttributes } = dispatch('core/block-editor');
 		const innerBlockIds = id ? getBlockOrder(id) : getBlockOrder(clientId);
 		const innerBlocksStyle = parentBlockStyle || '';
 

@@ -7,6 +7,7 @@ import {
 	getTransformStyles,
 	getMapStyles,
 	getSizeStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -28,6 +29,9 @@ const getNormalObject = props => {
 		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 

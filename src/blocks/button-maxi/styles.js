@@ -26,6 +26,7 @@ import {
 	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -46,6 +47,9 @@ const getWrapperObject = props => {
 		}),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 

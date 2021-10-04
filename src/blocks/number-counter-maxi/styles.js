@@ -7,6 +7,7 @@ import {
 	getSizeStyles,
 	getTransformStyles,
 	getNumberCounterStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -25,6 +26,9 @@ const getNormalObject = props => {
 		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 

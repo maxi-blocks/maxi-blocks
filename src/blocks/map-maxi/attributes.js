@@ -40,6 +40,7 @@ const attributes = {
 	...attributesData.transform,
 	...attributesData.display,
 	...attributesData.zIndex,
+	...attributesData.overflow,
 };
 
 export default attributes;

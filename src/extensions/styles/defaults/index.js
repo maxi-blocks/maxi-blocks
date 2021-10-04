@@ -13,6 +13,7 @@ export { default as map } from './map';
 export { default as margin } from './margin';
 export { default as numberCounter } from './numberCounter';
 export { default as opacity } from './opacity';
+export { default as overflow } from './overflow';
 export { default as padding } from './padding';
 export { default as position } from './position';
 export { default as rowPattern } from './rowPattern';

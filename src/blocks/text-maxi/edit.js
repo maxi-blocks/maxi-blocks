@@ -29,11 +29,6 @@ import {
 } from '../../extensions/text/formats';
 
 /**
- * External dependencies
- */
-import { isEmpty } from 'lodash';
-
-/**
  * Content
  */
 class edit extends MaxiBlockComponent {

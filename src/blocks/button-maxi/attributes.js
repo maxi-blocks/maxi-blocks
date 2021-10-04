@@ -150,6 +150,7 @@ const attributes = {
 	...attributesData.transform,
 	...attributesData.zIndex,
 	...attributesData.transitionDuration,
+	...attributesData.overflow,
 };
 
 export default attributes;

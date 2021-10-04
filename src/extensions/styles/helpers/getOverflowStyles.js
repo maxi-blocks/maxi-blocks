@@ -12,10 +12,14 @@ const getOverflowStyles = obj => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		if (obj[`overflow-${breakpoint}`])
-			response[breakpoint] = {
-				overflow: obj[`overflow-${breakpoint}`],
-			};
+		response[breakpoint] = {
+			...(obj[`overflow-x-${breakpoint}`] && {
+				'overflow-x': obj[`overflow-x-${breakpoint}`],
+			}),
+			...(obj[`overflow-y-${breakpoint}`] && {
+				'overflow-y': obj[`overflow-y-${breakpoint}`],
+			}),
+		};
 	});
 
 	return response;

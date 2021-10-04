@@ -197,7 +197,7 @@ const Inspector = props => {
 												</>
 											),
 										},
-										deviceType === 'general' && {
+										{
 											label: __(
 												'Background',
 												'maxi-blocks'
@@ -230,7 +230,9 @@ const Inspector = props => {
 																				obj
 																			)
 																		}
-																		useStyleCard
+																		breakpoint={
+																			deviceType
+																		}
 																		clientId={
 																			clientId
 																		}
@@ -322,6 +324,9 @@ const Inspector = props => {
 																				setAttributes(
 																					obj
 																				)
+																			}
+																			breakpoint={
+																				deviceType
 																			}
 																			disableImage
 																			disableVideo

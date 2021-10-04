@@ -93,8 +93,7 @@ const getStyles = props => {
 	const { uniqueID } = props;
 
 	const response = {
-		// [uniqueID]: stylesCleaner({
-		[uniqueID]: {
+		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
 			...getBackgroundStyles({
@@ -161,8 +160,7 @@ const getStyles = props => {
 				blockStyle: props.parentBlockStyle,
 				isHover: true,
 			}),
-			// }),
-		},
+		}),
 	};
 
 	return response;

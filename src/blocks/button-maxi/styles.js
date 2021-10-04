@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { isNil, isEmpty } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import {
@@ -27,6 +22,11 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+
+/**
+ * External dependencies
+ */
+import { isNil, isEmpty, merge } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -66,6 +66,44 @@ const getContentObject = props => {
 	return response;
 };
 
+const getBackgroundObject = props => {
+	const { isHover } = props;
+
+	const response = {};
+
+	breakpoints.forEach(breakpoint => {
+		const currentActiveMedia = getLastBreakpointAttribute(
+			'background-active-media',
+			breakpoint,
+			props,
+			isHover
+		);
+
+		if (!currentActiveMedia) return;
+
+		merge(response, {
+			...(currentActiveMedia === 'color' && {
+				background: getColorBackgroundObject({
+					...getGroupAttributes(props, 'backgroundColor'),
+					blockStyle: props.parentBlockStyle,
+					isButton: true,
+					breakpoint,
+					isHover,
+				}),
+			}),
+			...(currentActiveMedia === 'gradient' && {
+				background: getGradientBackgroundObject({
+					...getGroupAttributes(props, 'backgroundGradient'),
+					breakpoint,
+					isHover,
+				}),
+			}),
+		});
+	});
+
+	return response;
+};
+
 const getNormalObject = props => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
@@ -100,18 +138,7 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		...(props['background-active-media'] === 'color' && {
-			background: getColorBackgroundObject({
-				...getGroupAttributes(props, 'backgroundColor'),
-				blockStyle: props.parentBlockStyle,
-				isButton: true,
-			}),
-		}),
-		...(props['background-active-media'] === 'gradient' && {
-			background: getGradientBackgroundObject({
-				...getGroupAttributes(props, 'backgroundGradient'),
-			}),
-		}),
+		...getBackgroundObject(props),
 	};
 
 	return response;

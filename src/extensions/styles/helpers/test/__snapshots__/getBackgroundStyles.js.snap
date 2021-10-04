@@ -3,75 +3,81 @@
 exports[`getBackgroundStyles Get a correct SVG background styles 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg.maxi-background-displayer__svg--shape-23-maxi-svg": Object {
-    "general": Object {
-      "display": "block",
-      "left": "1%",
-      "top": "4%",
-      "width": "2%",
-    },
-    "l": Object {
-      "left": "1%",
-      "top": "4%",
-      "width": "2%",
-    },
-    "label": "SVG Wrapper Background",
-    "m": Object {
-      "left": "1%",
-      "top": "4%",
-      "width": "2%",
-    },
-    "s": Object {
-      "left": "1%",
-      "top": "4%",
-      "width": "2%",
-    },
-    "xl": Object {
-      "left": "1%",
-      "top": "4%",
-      "width": "2%",
-    },
-    "xs": Object {
-      "left": "1%",
-      "top": "4%",
-      "width": "2%",
-    },
-    "xxl": Object {
-      "left": "1%",
-      "top": "4%",
-      "width": "2%",
+    "background": Object {
+      "general": Object {
+        "display": "block",
+        "left": "1%",
+        "top": "4%",
+        "width": "2%",
+      },
+      "l": Object {
+        "left": "1%",
+        "top": "4%",
+        "width": "2%",
+      },
+      "label": "SVG Wrapper Background",
+      "m": Object {
+        "left": "1%",
+        "top": "4%",
+        "width": "2%",
+      },
+      "s": Object {
+        "left": "1%",
+        "top": "4%",
+        "width": "2%",
+      },
+      "xl": Object {
+        "left": "1%",
+        "top": "4%",
+        "width": "2%",
+      },
+      "xs": Object {
+        "left": "1%",
+        "top": "4%",
+        "width": "2%",
+      },
+      "xxl": Object {
+        "left": "1%",
+        "top": "4%",
+        "width": "2%",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg.maxi-background-displayer__svg--shape-23-maxi-svg *": Object {
-    "general": Object {
-      "fill": "rgba(var(--maxi-light-color-4),0.4)",
-    },
-    "l": Object {
-      "fill": "rgba(var(--maxi-light-color-4),0.4)",
-    },
-    "label": "SVG Background",
-    "m": Object {
-      "fill": "rgba(var(--maxi-light-color-4),0.4)",
-    },
-    "s": Object {
-      "fill": "rgba(var(--maxi-light-color-4),0.4)",
-    },
-    "xl": Object {
-      "fill": "rgba(var(--maxi-light-color-4),0.4)",
-    },
-    "xs": Object {
-      "fill": "rgba(var(--maxi-light-color-4),0.4)",
-    },
-    "xxl": Object {
-      "fill": "rgba(var(--maxi-light-color-4),0.4)",
+    "background": Object {
+      "general": Object {
+        "fill": "rgba(var(--maxi-light-color-4),0.4)",
+      },
+      "l": Object {
+        "fill": "rgba(var(--maxi-light-color-4),0.4)",
+      },
+      "label": "SVG Background",
+      "m": Object {
+        "fill": "rgba(var(--maxi-light-color-4),0.4)",
+      },
+      "s": Object {
+        "fill": "rgba(var(--maxi-light-color-4),0.4)",
+      },
+      "xl": Object {
+        "fill": "rgba(var(--maxi-light-color-4),0.4)",
+      },
+      "xs": Object {
+        "fill": "rgba(var(--maxi-light-color-4),0.4)",
+      },
+      "xxl": Object {
+        "fill": "rgba(var(--maxi-light-color-4),0.4)",
+      },
     },
   },
 }
@@ -80,75 +86,81 @@ Object {
 exports[`getBackgroundStyles Get a correct SVG background styles on different breakpoints 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg.maxi-background-displayer__svg--shape-23-maxi-svg": Object {
-    "general": Object {
-      "display": "block",
-      "left": "1%",
-      "top": "4%",
-      "width": "2%",
-    },
-    "l": Object {
-      "left": "1%",
-      "top": "4px",
-      "width": "2%",
-    },
-    "label": "SVG Wrapper Background",
-    "m": Object {
-      "left": "1%",
-      "top": "4px",
-      "width": "2%",
-    },
-    "s": Object {
-      "left": "1%",
-      "top": "4px",
-      "width": "2%",
-    },
-    "xl": Object {
-      "left": "1%",
-      "top": "4%",
-      "width": "2%",
-    },
-    "xs": Object {
-      "left": "1%",
-      "top": "4px",
-      "width": "2%",
-    },
-    "xxl": Object {
-      "left": "1%",
-      "top": "4%",
-      "width": "2%",
+    "background": Object {
+      "general": Object {
+        "display": "block",
+        "left": "1%",
+        "top": "4%",
+        "width": "2%",
+      },
+      "l": Object {
+        "left": "1%",
+        "top": "4px",
+        "width": "2%",
+      },
+      "label": "SVG Wrapper Background",
+      "m": Object {
+        "left": "1%",
+        "top": "4px",
+        "width": "2%",
+      },
+      "s": Object {
+        "left": "1%",
+        "top": "4px",
+        "width": "2%",
+      },
+      "xl": Object {
+        "left": "1%",
+        "top": "4%",
+        "width": "2%",
+      },
+      "xs": Object {
+        "left": "1%",
+        "top": "4px",
+        "width": "2%",
+      },
+      "xxl": Object {
+        "left": "1%",
+        "top": "4%",
+        "width": "2%",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg.maxi-background-displayer__svg--shape-23-maxi-svg *": Object {
-    "general": Object {
-      "fill": "rgba(var(--maxi-light-color-4),0.4)",
-    },
-    "l": Object {
-      "fill": "rgba(var(--maxi-light-color-2),0.6)",
-    },
-    "label": "SVG Background",
-    "m": Object {
-      "fill": "rgba(var(--maxi-light-color-2),0.6)",
-    },
-    "s": Object {
-      "fill": "rgba(var(--maxi-light-color-2),0.6)",
-    },
-    "xl": Object {
-      "fill": "rgba(var(--maxi-light-color-4),0.4)",
-    },
-    "xs": Object {
-      "fill": "rgba(var(--maxi-light-color-2),0.6)",
-    },
-    "xxl": Object {
-      "fill": "rgba(var(--maxi-light-color-4),0.4)",
+    "background": Object {
+      "general": Object {
+        "fill": "rgba(var(--maxi-light-color-4),0.4)",
+      },
+      "l": Object {
+        "fill": "rgba(var(--maxi-light-color-2),0.6)",
+      },
+      "label": "SVG Background",
+      "m": Object {
+        "fill": "rgba(var(--maxi-light-color-2),0.6)",
+      },
+      "s": Object {
+        "fill": "rgba(var(--maxi-light-color-2),0.6)",
+      },
+      "xl": Object {
+        "fill": "rgba(var(--maxi-light-color-4),0.4)",
+      },
+      "xs": Object {
+        "fill": "rgba(var(--maxi-light-color-2),0.6)",
+      },
+      "xxl": Object {
+        "fill": "rgba(var(--maxi-light-color-4),0.4)",
+      },
     },
   },
 }
@@ -157,27 +169,49 @@ Object {
 exports[`getBackgroundStyles Get a correct colour background styles 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__color": Object {
-    "general": Object {
-      "background-color": "rgba(var(--maxi-light-color-1),0.2)",
-      "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
-      "display": "block",
+    "background": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+        "display": "block",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "label": "Background Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "s": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "xs": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
     },
-    "l": Object {},
-    "label": "Background Color",
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
   },
 }
 `;
@@ -185,33 +219,49 @@ Object {
 exports[`getBackgroundStyles Get a correct colour background styles on different breakpoints 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__color": Object {
-    "general": Object {
-      "background-color": "rgba(var(--maxi-light-color-1),0.2)",
-      "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
-      "display": "block",
+    "background": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+        "display": "block",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-2),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "label": "Background Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-3),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "s": Object {
+        "background-color": "rgba(var(--maxi-light-color-3),0.8)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "xs": Object {
+        "background-color": "rgba(var(--maxi-light-color-3),0.8)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
     },
-    "l": Object {
-      "background-color": "rgba(var(--maxi-light-color-2),0.2)",
-    },
-    "label": "Background Color",
-    "m": Object {
-      "background-color": "rgba(var(--maxi-light-color-3),0.2)",
-    },
-    "s": Object {
-      "background-color": "rgba(var(--maxi-light-color-3),0.8)",
-    },
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
   },
 }
 `;
@@ -219,37 +269,59 @@ Object {
 exports[`getBackgroundStyles Get a correct colour background styles with border 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {
-      "border-bottom-style": "solid",
-      "border-bottom-width": "3px",
-      "border-color": "rgba(var(--maxi-light-color-4),1)",
-      "border-left-style": "solid",
-      "border-left-width": "3px",
-      "border-right-style": "solid",
-      "border-right-width": "3px",
-      "border-top-style": "solid",
-      "border-top-width": "3px",
+    "background": Object {
+      "general": Object {
+        "border-bottom-style": "solid",
+        "border-bottom-width": "3px",
+        "border-color": "rgba(var(--maxi-light-color-4),1)",
+        "border-left-style": "solid",
+        "border-left-width": "3px",
+        "border-right-style": "solid",
+        "border-right-width": "3px",
+        "border-top-style": "solid",
+        "border-top-width": "3px",
+      },
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
     },
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__color": Object {
-    "general": Object {
-      "background-color": "rgba(var(--maxi-light-color-1),0.2)",
-      "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
-      "display": "block",
+    "background": Object {
+      "general": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+        "display": "block",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "label": "Background Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "s": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "xs": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.2)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+      },
     },
-    "l": Object {},
-    "label": "Background Color",
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
   },
 }
 `;
@@ -257,28 +329,44 @@ Object {
 exports[`getBackgroundStyles Get a correct gradient background styles 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__gradient": Object {
-    "general": Object {
-      "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
-      "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
-      "display": "block",
-      "opacity": 0.66,
+    "background": Object {
+      "general": Object {
+        "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
+        "clip-path": "clip-path: polygon(50% 0%, 0% 100%, 100% 100%);",
+        "display": "block",
+        "opacity": 0.66,
+      },
+      "l": Object {
+        "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
+      },
+      "label": "Background Gradient",
+      "m": Object {
+        "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
+      },
+      "s": Object {
+        "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
+      },
+      "xl": Object {
+        "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
+      },
+      "xs": Object {
+        "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
+      },
+      "xxl": Object {
+        "background": "linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(50,98,118) 49%,rgb(155,81,224) 100%)",
+      },
     },
-    "l": Object {},
-    "label": "Background Gradient",
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
   },
 }
 `;
@@ -286,27 +374,31 @@ Object {
 exports[`getBackgroundStyles Get a correct image background styles 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__images": Object {
-    "general": Object {
-      "background-attachment": "scroll",
-      "background-clip": "border-box",
-      "background-image": "url('/test/')",
-      "background-origin": "padding-box",
-      "background-position": "relative",
-      "background-repeat": "no-repeat",
-      "background-size": "auto",
-      "clip-path": "none",
-      "display": "block",
+    "background": Object {
+      "general": Object {
+        "background-attachment": "scroll",
+        "background-clip": "border-box",
+        "background-image": "url('/test/')",
+        "background-origin": "padding-box",
+        "background-position": "relative",
+        "background-repeat": "no-repeat",
+        "background-size": "auto",
+        "clip-path": "none",
+        "display": "block",
+      },
+      "label": "Background Image",
     },
-    "label": "Background Image",
   },
 }
 `;
@@ -314,36 +406,40 @@ Object {
 exports[`getBackgroundStyles Get a correct image background styles on different breakpoints 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__images": Object {
-    "general": Object {
-      "background-attachment": "scroll",
-      "background-clip": "border-box",
-      "background-image": "url('/test/')",
-      "background-origin": "padding-box",
-      "background-position": "relative",
-      "background-repeat": "no-repeat",
-      "background-size": "auto",
-      "clip-path": "none",
-      "display": "block",
-    },
-    "l": Object {
-      "background-image": "url('/test-4/')",
-      "background-position": "2px 3px",
-      "background-size": "auto",
-    },
-    "label": "Background Image",
-    "s": Object {
-      "background-image": "url('/test-5/')",
-      "background-position": "2px 4px",
-      "background-size": "auto",
+    "background": Object {
+      "general": Object {
+        "background-attachment": "scroll",
+        "background-clip": "border-box",
+        "background-image": "url('/test/')",
+        "background-origin": "padding-box",
+        "background-position": "relative",
+        "background-repeat": "no-repeat",
+        "background-size": "auto",
+        "clip-path": "none",
+        "display": "block",
+      },
+      "l": Object {
+        "background-image": "url('/test-4/')",
+        "background-position": "2px 3px",
+        "background-size": "auto",
+      },
+      "label": "Background Image",
+      "s": Object {
+        "background-image": "url('/test-5/')",
+        "background-position": "2px 4px",
+        "background-size": "auto",
+      },
     },
   },
 }
@@ -352,58 +448,62 @@ Object {
 exports[`getBackgroundStyles Get a correct video background styles 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__video-player": Object {
-    "general": Object {
-      "background": "url(/test/)",
-      "background-size": "cover",
-      "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
-      "display": "block",
-      "opacity": 0.3,
-    },
-    "l": Object {
-      "background": "url(/test/)",
-      "background-size": "cover",
-      "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
-      "opacity": 0.3,
-    },
-    "label": "Video Background",
-    "m": Object {
-      "background": "url(/test/)",
-      "background-size": "cover",
-      "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
-      "opacity": 0.3,
-    },
-    "s": Object {
-      "background": "url(/test/)",
-      "background-size": "cover",
-      "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
-      "opacity": 0.3,
-    },
-    "xl": Object {
-      "background": "url(/test/)",
-      "background-size": "cover",
-      "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
-      "opacity": 0.3,
-    },
-    "xs": Object {
-      "background": "url(/test/)",
-      "background-size": "cover",
-      "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
-      "opacity": 0.3,
-    },
-    "xxl": Object {
-      "background": "url(/test/)",
-      "background-size": "cover",
-      "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
-      "opacity": 0.3,
+    "background": Object {
+      "general": Object {
+        "background": "url(/test/)",
+        "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "display": "block",
+        "opacity": 0.3,
+      },
+      "l": Object {
+        "background": "url(/test/)",
+        "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "opacity": 0.3,
+      },
+      "label": "Video Background",
+      "m": Object {
+        "background": "url(/test/)",
+        "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "opacity": 0.3,
+      },
+      "s": Object {
+        "background": "url(/test/)",
+        "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "opacity": 0.3,
+      },
+      "xl": Object {
+        "background": "url(/test/)",
+        "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "opacity": 0.3,
+      },
+      "xs": Object {
+        "background": "url(/test/)",
+        "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "opacity": 0.3,
+      },
+      "xxl": Object {
+        "background": "url(/test/)",
+        "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "opacity": 0.3,
+      },
     },
   },
 }
@@ -412,58 +512,62 @@ Object {
 exports[`getBackgroundStyles Get a correct video background styles on different breakpoints 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__video-player": Object {
-    "general": Object {
-      "background": "url(/test/)",
-      "background-size": "cover",
-      "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
-      "display": "block",
-      "opacity": 0.3,
-    },
-    "l": Object {
-      "background": "url(/test-2/)",
-      "background-size": "cover",
-      "clip-path": "polygon(40% 0%, 0% 100%, 90% 100%)",
-      "opacity": 0.6,
-    },
-    "label": "Video Background",
-    "m": Object {
-      "background": "url(/test-2/)",
-      "background-size": "cover",
-      "clip-path": "polygon(40% 0%, 0% 100%, 90% 100%)",
-      "opacity": 0.6,
-    },
-    "s": Object {
-      "background": "url(/test-2/)",
-      "background-size": "cover",
-      "clip-path": "polygon(40% 0%, 0% 100%, 90% 100%)",
-      "opacity": 0.4,
-    },
-    "xl": Object {
-      "background": "url(/test/)",
-      "background-size": "cover",
-      "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
-      "opacity": 0.3,
-    },
-    "xs": Object {
-      "background": "url(/test-2/)",
-      "background-size": "cover",
-      "clip-path": "polygon(40% 0%, 0% 100%, 90% 100%)",
-      "opacity": 0.4,
-    },
-    "xxl": Object {
-      "background": "url(/test/)",
-      "background-size": "cover",
-      "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
-      "opacity": 0.3,
+    "background": Object {
+      "general": Object {
+        "background": "url(/test/)",
+        "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "display": "block",
+        "opacity": 0.3,
+      },
+      "l": Object {
+        "background": "url(/test-2/)",
+        "background-size": "cover",
+        "clip-path": "polygon(40% 0%, 0% 100%, 90% 100%)",
+        "opacity": 0.6,
+      },
+      "label": "Video Background",
+      "m": Object {
+        "background": "url(/test-2/)",
+        "background-size": "cover",
+        "clip-path": "polygon(40% 0%, 0% 100%, 90% 100%)",
+        "opacity": 0.6,
+      },
+      "s": Object {
+        "background": "url(/test-2/)",
+        "background-size": "cover",
+        "clip-path": "polygon(40% 0%, 0% 100%, 90% 100%)",
+        "opacity": 0.4,
+      },
+      "xl": Object {
+        "background": "url(/test/)",
+        "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "opacity": 0.3,
+      },
+      "xs": Object {
+        "background": "url(/test-2/)",
+        "background-size": "cover",
+        "clip-path": "polygon(40% 0%, 0% 100%, 90% 100%)",
+        "opacity": 0.4,
+      },
+      "xxl": Object {
+        "background": "url(/test/)",
+        "background-size": "cover",
+        "clip-path": "polygon(50% 0%, 0% 100%, 100% 100%)",
+        "opacity": 0.3,
+      },
     },
   },
 }
@@ -472,63 +576,77 @@ Object {
 exports[`getBackgroundStyles Get correct displays on different breakpoints with video and svg 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__gradient": Object {
-    "l": Object {
-      "display": "block",
-    },
-    "label": "Background Gradient",
-    "m": Object {
-      "display": "none",
-    },
-    "s": Object {
-      "display": "block",
-    },
-    "xs": Object {
-      "display": "none",
+    "background": Object {
+      "l": Object {
+        "display": "block",
+      },
+      "label": "Background Gradient",
+      "m": Object {
+        "display": "none",
+      },
+      "s": Object {
+        "display": "block",
+      },
+      "xs": Object {
+        "display": "none",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg.maxi-background-displayer__svg--shape-23-maxi-svg": Object {
-    "general": Object {
-      "display": "block",
+    "background": Object {
+      "general": Object {
+        "display": "block",
+      },
+      "l": Object {
+        "display": "none",
+      },
+      "label": "SVG Wrapper Background",
+      "xl": Object {},
+      "xxl": Object {},
     },
-    "l": Object {
-      "display": "none",
-    },
-    "label": "SVG Wrapper Background",
-    "xl": Object {},
-    "xxl": Object {},
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg.maxi-background-displayer__svg--shape-23-maxi-svg *": Object {
-    "general": Object {},
-    "label": "SVG Background",
-    "xl": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "label": "SVG Background",
+      "xl": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg.maxi-background-displayer__svg--shape-34-maxi-svg": Object {
-    "label": "SVG Wrapper Background",
-    "xs": Object {
-      "display": "block",
+    "background": Object {
+      "label": "SVG Wrapper Background",
+      "xs": Object {
+        "display": "block",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg.maxi-background-displayer__svg--shape-34-maxi-svg *": Object {
-    "label": "SVG Background",
-    "xs": Object {},
+    "background": Object {
+      "label": "SVG Background",
+      "xs": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__video-player": Object {
-    "label": "Video Background",
-    "m": Object {
-      "display": "block",
-    },
-    "s": Object {
-      "display": "none",
+    "background": Object {
+      "label": "Video Background",
+      "m": Object {
+        "display": "block",
+      },
+      "s": Object {
+        "display": "none",
+      },
     },
   },
 }
@@ -537,49 +655,57 @@ Object {
 exports[`getBackgroundStyles Get correct displays on different breakpoints without video and svg 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__color": Object {
-    "general": Object {
-      "display": "block",
+    "background": Object {
+      "general": Object {
+        "display": "block",
+      },
+      "l": Object {
+        "display": "none",
+      },
+      "label": "Background Color",
+      "xl": Object {},
+      "xs": Object {
+        "display": "block",
+      },
+      "xxl": Object {},
     },
-    "l": Object {
-      "display": "none",
-    },
-    "label": "Background Color",
-    "xl": Object {},
-    "xs": Object {
-      "display": "block",
-    },
-    "xxl": Object {},
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__gradient": Object {
-    "l": Object {
-      "display": "block",
-    },
-    "label": "Background Gradient",
-    "m": Object {
-      "display": "none",
-    },
-    "s": Object {
-      "display": "block",
-    },
-    "xs": Object {
-      "display": "none",
+    "background": Object {
+      "l": Object {
+        "display": "block",
+      },
+      "label": "Background Gradient",
+      "m": Object {
+        "display": "none",
+      },
+      "s": Object {
+        "display": "block",
+      },
+      "xs": Object {
+        "display": "none",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__images": Object {
-    "m": Object {
-      "display": "block",
-    },
-    "s": Object {
-      "display": "none",
+    "background": Object {
+      "m": Object {
+        "display": "block",
+      },
+      "s": Object {
+        "display": "none",
+      },
     },
   },
 }
@@ -737,7 +863,9 @@ Object {
                   "display": "block",
                 },
                 "label": "Background Color",
-                "xxl": Object {},
+                "xxl": Object {
+                  "background-color": "rgba(var(--maxi-light-color-1),1)",
+                },
               },
             },
             "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
@@ -801,8 +929,12 @@ Object {
                 "display": "block",
               },
               "label": "Background Color",
-              "xl": Object {},
-              "xxl": Object {},
+              "xl": Object {
+                "background-color": "rgba(var(--maxi-light-color-1),1)",
+              },
+              "xxl": Object {
+                "background-color": "rgba(var(--maxi-light-color-1),1)",
+              },
             },
           },
           "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
@@ -875,10 +1007,16 @@ Object {
               "background-color": "rgba(var(--maxi-light-color-1),1)",
               "display": "block",
             },
-            "l": Object {},
+            "l": Object {
+              "background-color": "rgba(var(--maxi-light-color-1),1)",
+            },
             "label": "Background Color",
-            "xl": Object {},
-            "xxl": Object {},
+            "xl": Object {
+              "background-color": "rgba(var(--maxi-light-color-1),1)",
+            },
+            "xxl": Object {
+              "background-color": "rgba(var(--maxi-light-color-1),1)",
+            },
           },
         },
         "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
@@ -961,11 +1099,19 @@ Object {
             "background-color": "rgba(var(--maxi-light-color-1),1)",
             "display": "block",
           },
-          "l": Object {},
+          "l": Object {
+            "background-color": "rgba(var(--maxi-light-color-1),1)",
+          },
           "label": "Background Color",
-          "m": Object {},
-          "xl": Object {},
-          "xxl": Object {},
+          "m": Object {
+            "background-color": "rgba(var(--maxi-light-color-1),1)",
+          },
+          "xl": Object {
+            "background-color": "rgba(var(--maxi-light-color-1),1)",
+          },
+          "xxl": Object {
+            "background-color": "rgba(var(--maxi-light-color-1),1)",
+          },
         },
       },
       "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
@@ -1058,12 +1204,22 @@ Object {
           "background-color": "rgba(var(--maxi-light-color-1),1)",
           "display": "block",
         },
-        "l": Object {},
+        "l": Object {
+          "background-color": "rgba(var(--maxi-light-color-1),1)",
+        },
         "label": "Background Color",
-        "m": Object {},
-        "s": Object {},
-        "xl": Object {},
-        "xxl": Object {},
+        "m": Object {
+          "background-color": "rgba(var(--maxi-light-color-1),1)",
+        },
+        "s": Object {
+          "background-color": "rgba(var(--maxi-light-color-1),1)",
+        },
+        "xl": Object {
+          "background-color": "rgba(var(--maxi-light-color-1),1)",
+        },
+        "xxl": Object {
+          "background-color": "rgba(var(--maxi-light-color-1),1)",
+        },
       },
     },
     "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
@@ -1161,13 +1317,15 @@ Object {
     },
   },
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__0": Object {
     "color": Object {
@@ -1175,13 +1333,25 @@ Object {
         "background-color": "rgba(var(--maxi-light-color-1),1)",
         "display": "block",
       },
-      "l": Object {},
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+      },
       "label": "Background Color",
-      "m": Object {},
-      "s": Object {},
-      "xl": Object {},
-      "xs": Object {},
-      "xxl": Object {},
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+      },
+      "s": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+      },
+      "xs": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__1": Object {
@@ -1293,94 +1463,112 @@ Object {
 exports[`getBackgroundStyles Gets correct styles on different breakpoints, with different types of background and options 1`] = `
 Object {
   "maxi-test > .maxi-background-displayer": Object {
-    "general": Object {},
-    "l": Object {},
-    "m": Object {},
-    "s": Object {},
-    "xl": Object {},
-    "xs": Object {},
-    "xxl": Object {},
+    "background": Object {
+      "general": Object {},
+      "l": Object {},
+      "m": Object {},
+      "s": Object {},
+      "xl": Object {},
+      "xs": Object {},
+      "xxl": Object {},
+    },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__color": Object {
-    "l": Object {
-      "display": "none",
-    },
-    "label": "Background Color",
-    "xl": Object {
-      "background-color": "rgba(var(--maxi-light-color-4),1)",
-      "display": "block",
+    "background": Object {
+      "l": Object {
+        "display": "none",
+      },
+      "label": "Background Color",
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-4),1)",
+        "display": "block",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__gradient": Object {
-    "label": "Background Gradient",
-    "s": Object {
-      "background": "linear-gradient(135deg,rgb(6,147,227) 0%,rgb(69,159,197) 53%,rgb(155,81,224) 100%)",
-      "display": "block",
-    },
-    "xs": Object {
-      "display": "none",
+    "background": Object {
+      "label": "Background Gradient",
+      "s": Object {
+        "background": "linear-gradient(135deg,rgb(6,147,227) 0%,rgb(69,159,197) 53%,rgb(155,81,224) 100%)",
+        "display": "block",
+      },
+      "xs": Object {
+        "display": "none",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__images": Object {
-    "l": Object {
-      "background-image": "url('http://localhost:8888/wp-content/uploads/2021/08/IMG_9344-2.jpeg')",
-      "background-position": "center center",
-      "background-size": "auto",
-      "display": "block",
-    },
-    "label": "Background Image",
-    "m": Object {
-      "display": "none",
+    "background": Object {
+      "l": Object {
+        "background-image": "url('http://localhost:8888/wp-content/uploads/2021/08/IMG_9344-2.jpeg')",
+        "background-position": "center center",
+        "background-size": "auto",
+        "display": "block",
+      },
+      "label": "Background Image",
+      "m": Object {
+        "display": "none",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg.maxi-background-displayer__svg--shape-22-maxi-svg": Object {
-    "label": "SVG Wrapper Background",
-    "m": Object {
-      "display": "block",
-      "left": "50%",
-      "width": "100%",
-    },
-    "s": Object {
-      "display": "none",
+    "background": Object {
+      "label": "SVG Wrapper Background",
+      "m": Object {
+        "display": "block",
+        "left": "50%",
+        "width": "100%",
+      },
+      "s": Object {
+        "display": "none",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg.maxi-background-displayer__svg--shape-22-maxi-svg *": Object {
-    "label": "SVG Background",
-    "m": Object {
-      "fill": "rgba(var(--maxi-light-color-1),1)",
+    "background": Object {
+      "label": "SVG Background",
+      "m": Object {
+        "fill": "rgba(var(--maxi-light-color-1),1)",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg.maxi-background-displayer__svg--shape-23-maxi-svg": Object {
-    "general": Object {
-      "display": "block",
-      "left": "50%",
-      "width": "100%",
-    },
-    "label": "SVG Wrapper Background",
-    "xl": Object {
-      "display": "none",
-    },
-    "xxl": Object {
-      "left": "50%",
-      "width": "100%",
+    "background": Object {
+      "general": Object {
+        "display": "block",
+        "left": "50%",
+        "width": "100%",
+      },
+      "label": "SVG Wrapper Background",
+      "xl": Object {
+        "display": "none",
+      },
+      "xxl": Object {
+        "left": "50%",
+        "width": "100%",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__svg.maxi-background-displayer__svg--shape-23-maxi-svg *": Object {
-    "general": Object {
-      "fill": "rgba(var(--maxi-light-color-4),1)",
-    },
-    "label": "SVG Background",
-    "xxl": Object {
-      "fill": "rgba(var(--maxi-light-color-7),1)",
+    "background": Object {
+      "general": Object {
+        "fill": "rgba(var(--maxi-light-color-4),1)",
+      },
+      "label": "SVG Background",
+      "xxl": Object {
+        "fill": "rgba(var(--maxi-light-color-7),1)",
+      },
     },
   },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__video-player": Object {
-    "label": "Video Background",
-    "xs": Object {
-      "background": "url(http://localhost:8888/wp-content/uploads/2021/08/IMG_9344-2.jpeg)",
-      "background-size": "cover",
-      "display": "block",
-      "opacity": 1,
+    "background": Object {
+      "label": "Video Background",
+      "xs": Object {
+        "background": "url(http://localhost:8888/wp-content/uploads/2021/08/IMG_9344-2.jpeg)",
+        "background-size": "cover",
+        "display": "block",
+        "opacity": 1,
+      },
     },
   },
 }

@@ -24,6 +24,28 @@ import { isNil } from 'lodash';
 /**
  * Component
  */
+const getIsBackgroundColor = props => {
+	const bgLayersStatus = Object.entries(props).some(([key, val]) => {
+		if (key.includes('background-layers-status')) return !!val;
+
+		return false;
+	});
+
+	if (bgLayersStatus) return false;
+
+	// eslint-disable-next-line consistent-return
+	const activeMedias = Object.entries(props).filter(([key, val]) => {
+		if (key.includes('background-active-media')) return val === 'color';
+
+		return false;
+	});
+	const isBackgroundColor =
+		activeMedias.length > 0 &&
+		activeMedias.every(activeMedia => activeMedia[1] === 'color');
+
+	return isBackgroundColor;
+};
+
 const ArrowControl = props => {
 	const {
 		className,
@@ -73,13 +95,11 @@ const ArrowControl = props => {
 		},
 	};
 
-	const simpleBackgroundColorStatus =
-		!props['background-layers-status'] &&
-		props['background-active-media'] !== 'color';
+	const isBackgroundColor = getIsBackgroundColor(props);
 
 	return (
 		<div className={classes}>
-			{simpleBackgroundColorStatus && (
+			{!isBackgroundColor && (
 				<InfoBox
 					message={__(
 						'Please set background colour to see the arrow.',

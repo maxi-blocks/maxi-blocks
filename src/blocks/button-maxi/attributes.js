@@ -51,14 +51,14 @@ const attributes = {
 	...attributesData.typographyHover,
 	...{
 		...attributesData.background,
-		'background-active-media': {
+		'background-active-media-general': {
 			type: 'string',
 			default: 'color',
 		},
 	},
 	...{
 		...attributesData.backgroundColor,
-		'background-palette-color': {
+		'background-palette-color-general': {
 			type: 'number',
 			default: 4,
 		},

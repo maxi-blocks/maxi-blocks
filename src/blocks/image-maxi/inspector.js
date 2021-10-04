@@ -523,7 +523,7 @@ const Inspector = memo(
 													</>
 												),
 											},
-											deviceType === 'general' && {
+											{
 												label: __(
 													'Background',
 													'maxi-blocks'
@@ -637,6 +637,9 @@ const Inspector = memo(
 																				isHover
 																				clientId={
 																					clientId
+																				}
+																				breakpoint={
+																					deviceType
 																				}
 																			/>
 																		)}

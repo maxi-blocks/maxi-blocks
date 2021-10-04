@@ -102,8 +102,7 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														selected={
-															fullWidth ===
-															'full'
+															fullWidth === 'full'
 														}
 														onChange={val =>
 															setAttributes({
@@ -265,6 +264,9 @@ const Inspector = props => {
 																			isHover
 																			clientId={
 																				clientId
+																			}
+																			breakpoint={
+																				deviceType
 																			}
 																		/>
 																	)}

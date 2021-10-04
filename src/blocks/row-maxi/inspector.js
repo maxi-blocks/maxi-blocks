@@ -217,7 +217,7 @@ const Inspector = props => {
 												</>
 											),
 										},
-										deviceType === 'general' && {
+										{
 											label: __(
 												'Background',
 												'maxi-blocks'
@@ -248,6 +248,9 @@ const Inspector = props => {
 																			setAttributes(
 																				obj
 																			)
+																		}
+																		breakpoint={
+																			deviceType
 																		}
 																		disableVideo
 																		clientId={
@@ -325,6 +328,9 @@ const Inspector = props => {
 																				setAttributes(
 																					obj
 																				)
+																			}
+																			breakpoint={
+																				deviceType
 																			}
 																			disableVideo
 																			disableImage
@@ -475,8 +481,7 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														selected={
-															fullWidth ===
-															'full'
+															fullWidth === 'full'
 														}
 														onChange={val =>
 															setAttributes({

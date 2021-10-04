@@ -16,6 +16,28 @@ import './style.scss';
 /**
  * Component
  */
+const getIsBackgroundColor = props => {
+	const bgLayersStatus = Object.entries(props).some(([key, val]) => {
+		if (key.includes('background-layers-status')) return !!val;
+
+		return false;
+	});
+
+	if (bgLayersStatus) return false;
+
+	// eslint-disable-next-line consistent-return
+	const activeMedias = Object.entries(props).filter(([key, val]) => {
+		if (key.includes('background-active-media')) return val === 'color';
+
+		return false;
+	});
+	const isBackgroundColor =
+		activeMedias.length > 0 &&
+		activeMedias.every(activeMedia => activeMedia[1] === 'color');
+
+	return isBackgroundColor;
+};
+
 const ArrowDisplayer = props => {
 	const { className, breakpoint = 'general' } = props;
 
@@ -29,9 +51,7 @@ const ArrowDisplayer = props => {
 		className
 	);
 
-	const isBackgroundColor =
-		!props['background-layers-status'] &&
-		props['background-active-media'] === 'color';
+	const isBackgroundColor = getIsBackgroundColor(props);
 
 	const shouldDisplayBorder = !!props['arrow-status'] && isBackgroundColor;
 

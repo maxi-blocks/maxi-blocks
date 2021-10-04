@@ -540,7 +540,7 @@ const Inspector = memo(
 													/>
 												),
 											},
-											deviceType === 'general' && {
+											{
 												label: __(
 													'Background',
 													'maxi-blocks'
@@ -569,6 +569,9 @@ const Inspector = memo(
 																				setAttributes(
 																					obj
 																				)
+																			}
+																			breakpoint={
+																				deviceType
 																			}
 																			disableImage
 																			disableVideo
@@ -650,6 +653,9 @@ const Inspector = memo(
 																					setAttributes(
 																						obj
 																					)
+																				}
+																				breakpoint={
+																					deviceType
 																				}
 																				disableImage
 																				disableVideo

@@ -193,7 +193,7 @@ const Inspector = props => {
 												</>
 											),
 										},
-										deviceType === 'general' && {
+										{
 											label: __(
 												'Background',
 												'maxi-blocks'
@@ -226,10 +226,13 @@ const Inspector = props => {
 																				obj
 																			)
 																		}
-																		disableVideo
+																		breakpoint={
+																			deviceType
+																		}
 																		clientId={
 																			clientId
 																		}
+																		disableVideo
 																	/>
 																</>
 															),
@@ -302,6 +305,9 @@ const Inspector = props => {
 																				setAttributes(
 																					obj
 																				)
+																			}
+																			breakpoint={
+																				deviceType
 																			}
 																			disableImage
 																			disableVideo

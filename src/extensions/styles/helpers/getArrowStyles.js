@@ -11,6 +11,8 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
  */
 import { isNil } from 'lodash';
 
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
 export const getArrowObject = props => {
 	const response = {};
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -78,31 +80,67 @@ export const getArrowColorObject = (props, blockStyle, isHover = false) => {
 		general: {},
 	};
 
-	if (
-		props[`background-active-media${isHover ? '-hover' : ''}`] ===
-		'gradient'
-	) {
-		response.general.background =
-			props[`background-gradient${isHover ? '-hover' : ''}`];
-	}
+	breakpoints.forEach(breakpoint => {
+		const activeMedia = getLastBreakpointAttribute(
+			'background-active-media',
+			breakpoint,
+			props,
+			isHover
+		);
+		if (activeMedia === 'gradient') {
+			const gradient = getLastBreakpointAttribute(
+				'background-gradient',
+				breakpoint,
+				props,
+				isHover
+			);
+			response[breakpoint].background = gradient;
+		}
 
-	if (!props[`background-layers-status${isHover ? '-hover' : ''}`])
-		if (
-			props[`background-palette-color-status${isHover ? '-hover' : ''}`]
-		) {
-			const paletteColor =
-				props[`background-palette-color${isHover ? '-hover' : ''}`];
-			const paletteOpacity =
-				props[`background-palette-opacity${isHover ? '-hover' : ''}`];
+		const backgroundLayersStatus = getLastBreakpointAttribute(
+			'background-layers-status',
+			breakpoint,
+			props,
+			isHover
+		);
 
-			response.general['background-color'] = getColorRGBAString({
-				firstVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-		} else
-			response.general['background-color'] =
-				props[`background-color${isHover ? '-hover' : ''}`];
+		if (!backgroundLayersStatus) {
+			const backgroundPaletteStatus = getLastBreakpointAttribute(
+				'background-palette-color-status',
+				breakpoint,
+				props,
+				isHover
+			);
+			if (backgroundPaletteStatus) {
+				const paletteColor = getLastBreakpointAttribute(
+					'background-palette-color',
+					breakpoint,
+					props,
+					isHover
+				);
+				const paletteOpacity = getLastBreakpointAttribute(
+					'background-palette-opacity',
+					breakpoint,
+					props,
+					isHover
+				);
+
+				response.general['background-color'] = getColorRGBAString({
+					firstVar: `color-${paletteColor}`,
+					opacity: paletteOpacity,
+					blockStyle,
+				});
+			} else {
+				const backgroundColor = getLastBreakpointAttribute(
+					'background-color',
+					breakpoint,
+					props,
+					isHover
+				);
+				response.general['background-color'] = backgroundColor;
+			}
+		}
+	});
 
 	return response;
 };
@@ -133,9 +171,16 @@ const getArrowStyles = props => {
 		return true;
 	});
 
+	const isBGColorActiveMedia = Object.entries(props).every(([key, val]) => {
+		if (key.includes('background-active-media') && val)
+			return val === 'color';
+
+		return true;
+	});
+
 	if (
 		!props['arrow-status'] ||
-		props['background-active-media'] !== 'color' ||
+		!isBGColorActiveMedia ||
 		(isBorderActive && !isCorrectBorder)
 	)
 		return {};

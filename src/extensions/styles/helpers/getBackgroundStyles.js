@@ -41,34 +41,30 @@ export const getColorBackgroundObject = ({
 		props,
 		isHover
 	);
-	const currentBgPaletteColor = getAttributeValue({
-		target: 'background-palette-color',
-		props,
-		prefix,
-		isHover,
+	const currentBgPaletteColor = getLastBreakpointAttribute(
+		`${prefix}background-palette-color`,
 		breakpoint,
-	});
-	const currentBgPaletteOpacity = getAttributeValue({
-		target: 'background-palette-opacity',
 		props,
-		prefix,
-		isHover,
+		isHover
+	);
+	const currentBgPaletteOpacity = getLastBreakpointAttribute(
+		`${prefix}background-palette-opacity`,
 		breakpoint,
-	});
-	const bgColor = getAttributeValue({
-		target: 'background-color',
 		props,
-		prefix,
-		isHover,
+		isHover
+	);
+	const bgColor = getLastBreakpointAttribute(
+		`${prefix}background-color`,
 		breakpoint,
-	});
-	const bgClipPath = getAttributeValue({
-		target: 'background-color-clip-path',
 		props,
-		prefix,
-		isHover,
+		isHover
+	);
+	const bgClipPath = getLastBreakpointAttribute(
+		`${prefix}background-color-clip-path`,
 		breakpoint,
-	});
+		props,
+		isHover
+	);
 
 	if (!bgPaletteStatus && !isEmpty(bgColor))
 		response[breakpoint]['background-color'] = bgColor;
@@ -94,7 +90,7 @@ export const getColorBackgroundObject = ({
 			);
 
 		if (isButton)
-			response[breakpoint]['background-color'] = getColorRGBAString({
+			response[breakpoint].background = getColorRGBAString({
 				firstVar: `color${isHover ? '-hover' : ''}`,
 				secondVar: `color-${bgPaletteColor}`,
 				opacity: bgPaletteOpacity,
@@ -145,13 +141,12 @@ export const getGradientBackgroundObject = ({
 		isHover,
 		breakpoint,
 	});
-	const bgGradient = getAttributeValue({
-		target: 'background-gradient',
-		props,
-		prefix,
-		isHover,
+	const bgGradient = getLastBreakpointAttribute(
+		`${prefix}background-gradient`,
 		breakpoint,
-	});
+		props,
+		isHover
+	);
 	const bgGradientClipPath = getAttributeValue({
 		target: 'background-gradient-clip-path',
 		props,
@@ -736,15 +731,24 @@ const setTargetsToStyles = (target, obj) => {
 		if (key === 'svg') {
 			if (obj[key] && !isEmpty(obj[key])) {
 				Object.keys(obj[key]).forEach(SVGClassName => {
-					response[
-						`${val.wrapper}.maxi-background-displayer__svg--${SVGClassName}`
-					].background = obj[key][SVGClassName].wrapper;
-					response[
-						`${val.svg}.maxi-background-displayer__svg--${SVGClassName} *`
-					].background = obj[key][SVGClassName].svg;
+					const wrapperKey = `${val.wrapper}.maxi-background-displayer__svg--${SVGClassName}`;
+					const svgKey = `${val.svg}.maxi-background-displayer__svg--${SVGClassName} *`;
+
+					if (!response[wrapperKey])
+						response[wrapperKey] = { background: {} };
+					if (!response[svgKey])
+						response[svgKey] = { background: {} };
+
+					response[wrapperKey].background =
+						obj[key][SVGClassName].wrapper;
+					response[svgKey].background = obj[key][SVGClassName].svg;
 				});
 			}
-		} else if (obj[key] && !isEmpty(obj[key])) response[val] = obj[key];
+		} else if (obj[key] && !isEmpty(obj[key])) {
+			if (!response?.[val]?.background)
+				response[val] = { background: {} };
+			response[val].background = obj[key];
+		}
 	});
 
 	if (response.layer)
@@ -981,6 +985,9 @@ const getBackgroundStyles = ({
 			SVGClassName,
 			...props,
 		});
+
+		// is currentActiveMedia always equal to activeMedia???
+		// console.log(currentActiveMedia === activeMedia);
 
 		if (activeMedia === 'svg')
 			response.svg = {

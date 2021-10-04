@@ -387,6 +387,9 @@ const Inspector = props => {
 																				obj
 																			)
 																		}
+																		breakpoint={
+																			deviceType
+																		}
 																		disableImage
 																		disableVideo
 																		disableGradient
@@ -466,6 +469,9 @@ const Inspector = props => {
 																				setAttributes(
 																					obj
 																				)
+																			}
+																			breakpoint={
+																				deviceType
 																			}
 																			disableColor={
 																				!!attributes[

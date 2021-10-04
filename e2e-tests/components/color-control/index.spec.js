@@ -15,7 +15,7 @@ describe('ColorControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-fancy-radio-control label',
-			fancyRadioControls => fancyRadioControls[5].click()
+			fancyRadioControls => fancyRadioControls[2].click()
 		);
 
 		await page.$$eval(

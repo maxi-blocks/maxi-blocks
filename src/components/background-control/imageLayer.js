@@ -9,7 +9,7 @@ import { useState } from '@wordpress/element';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import ClipPath from '../clip-path-control';
-import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import ImageCropControl from '../image-crop-control';
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
@@ -475,20 +475,10 @@ const ImageLayer = props => {
 					})
 				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
 				className='maxi-fancy-radio-control--more-settings'
 				label={__('More Settings', 'maxi-blocks')}
 				selected={moreSettings}
-				options={[
-					{
-						label: __('Yes', 'maxi-blocks'),
-						value: 1,
-					},
-					{
-						label: __('No', 'maxi-blocks'),
-						value: 0,
-					},
-				]}
 				onChange={val => setMoreSettings(val)}
 			/>
 			{moreSettings && (

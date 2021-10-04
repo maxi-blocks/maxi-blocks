@@ -4,6 +4,11 @@
 import { dispatch } from '@wordpress/data';
 
 const actions = {
+	receiveMaxiAdminOptions() {
+		return {
+			type: 'RECEIVE_ADMIN_OPTIONS',
+		};
+	},
 	receiveMaxiSettings() {
 		return {
 			type: 'RECEIVE_GENERAL_SETTINGS',
@@ -29,6 +34,12 @@ const actions = {
 		return {
 			type: 'SAVE_MOTION_PRESETS',
 			presets,
+		};
+	},
+	sendMaxiAdminOptions(adminOptions) {
+		return {
+			type: 'SEND_ADMIN_OPTIONS',
+			adminOptions,
 		};
 	},
 	sendMaxiSettings(settings) {

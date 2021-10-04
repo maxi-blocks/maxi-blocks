@@ -1,6 +1,10 @@
 import actions from './actions';
 
 const resolvers = {
+	*receiveMaxiAdminOptions() {
+		const maxiAdminOptions = yield actions.receiveMaxiAdminOptions();
+		return actions.sendMaxiAdminOptions(maxiAdminOptions);
+	},
 	*receiveMaxiSettings() {
 		const maxiSettings = yield actions.receiveMaxiSettings();
 		return actions.sendMaxiSettings(maxiSettings);

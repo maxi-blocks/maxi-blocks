@@ -53,6 +53,13 @@ describe('Column Maxi', () => {
 
 		// responsive S
 		await changeResponsive(page, 's');
+		const columnSizeInput = await page.$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			select => select.value
+		);
+
+		expect(columnSizeInput).toStrictEqual('100');
+
 		await page.$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
 			input => input.focus()
@@ -92,5 +99,78 @@ describe('Column Maxi', () => {
 		);
 
 		expect(responsiveMOption).toStrictEqual('100');
+	});
+
+	it('check responsive column size', async () => {
+		await changeResponsive(page, 'base');
+
+		await page.$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			input => input.focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('50');
+
+		const attributes = await getBlockAttributes();
+		const columnSize = attributes['column-size-general'];
+
+		expect(columnSize).toStrictEqual(50);
+
+		// responsive m
+		await changeResponsive(page, 'm');
+
+		const responsiveMOption = await page.$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			select => select.value
+		);
+
+		expect(responsiveMOption).toStrictEqual('100');
+
+		// responsive S
+		await changeResponsive(page, 's');
+
+		await page.$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			input => input.focus()
+		);
+
+		await pressKeyTimes('Backspace', '1');
+		await page.keyboard.type('7');
+
+		const responsiveMAttributes = await getBlockAttributes();
+		const columnSizeM = responsiveMAttributes['column-size-s'];
+
+		expect(columnSizeM).toStrictEqual(17);
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+
+		const responsiveXsOption = await page.$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			select => select.value
+		);
+
+		expect(responsiveXsOption).toStrictEqual('17');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+
+		const returnToMResponsive = await page.$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			select => select.value
+		);
+
+		expect(returnToMResponsive).toStrictEqual('100');
+
+		// responsive L
+		await changeResponsive(page, 'l');
+
+		const responsiveL = await page.$eval(
+			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
+			select => select.value
+		);
+
+		expect(responsiveL).toStrictEqual('50');
 	});
 });

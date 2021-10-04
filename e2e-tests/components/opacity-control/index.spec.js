@@ -40,10 +40,12 @@ describe('OpacityControl', () => {
 	it('Check Responsive opacity control', async () => {
 		const accordionPanel = await openAdvancedSidebar(page, 'opacity');
 
-		const generalAttributes = await getBlockAttributes();
-		const opacityGeneral = generalAttributes['opacity-general'];
+		const responsiveBaseOption = await page.$eval(
+			'.maxi-opacity-control .maxi-base-control__field input',
+			selectedStyle => selectedStyle.value
+		);
 
-		expect(opacityGeneral).toStrictEqual(0.19);
+		expect(responsiveBaseOption).toStrictEqual('19');
 
 		// responsive S
 		await changeResponsive(page, 's');

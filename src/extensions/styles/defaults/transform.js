@@ -29,10 +29,10 @@ const transform = {
 		type: 'number',
 	},
 	'transform-origin-x-general': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-origin-y-general': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-origin-x-unit-general': {
 		type: 'string',
@@ -70,10 +70,10 @@ const transform = {
 		type: 'number',
 	},
 	'transform-origin-x-xxl': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-origin-y-xxl': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-scale-x-xl': {
 		type: 'number',
@@ -103,10 +103,10 @@ const transform = {
 		type: 'number',
 	},
 	'transform-origin-x-xl': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-origin-y-xl': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-scale-x-l': {
 		type: 'number',
@@ -136,10 +136,10 @@ const transform = {
 		type: 'number',
 	},
 	'transform-origin-x-l': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-origin-y-l': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-scale-x-m': {
 		type: 'number',
@@ -169,10 +169,10 @@ const transform = {
 		type: 'number',
 	},
 	'transform-origin-x-m': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-origin-y-m': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-scale-x-s': {
 		type: 'number',
@@ -202,10 +202,10 @@ const transform = {
 		type: 'number',
 	},
 	'transform-origin-x-s': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-origin-y-s': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-scale-x-xs': {
 		type: 'number',
@@ -235,10 +235,10 @@ const transform = {
 		type: 'number',
 	},
 	'transform-origin-x-xs': {
-		type: 'number',
+		type: 'string',
 	},
 	'transform-origin-y-xs': {
-		type: 'number',
+		type: 'string',
 	},
 };
 

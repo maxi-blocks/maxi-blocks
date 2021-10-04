@@ -150,25 +150,6 @@ const SquareControl = props => {
 		changeYUnit(yUnit);
 	}, [xUnit, yUnit]);
 
-	const originValueToNumber = value => {
-		switch (value) {
-			case 'top':
-				return 0;
-			case 'right':
-				return 100;
-			case 'bottom':
-				return 100;
-			case 'left':
-				return 0;
-			case 'center':
-				return 50;
-			case 'middle':
-				return 50;
-			default:
-				return Number(value);
-		}
-	};
-
 	return (
 		<div className='maxi-transform-control__square-control'>
 			<div
@@ -271,6 +252,7 @@ const SquareControl = props => {
 								changeXAxis('left');
 								changeYAxis('top');
 								onChange('left', 'top');
+								onSave('left', 'top');
 							}}
 						/>
 						<Button
@@ -289,6 +271,7 @@ const SquareControl = props => {
 								changeXAxis('middle');
 								changeYAxis('top');
 								onChange('center', 'top');
+								onSave('center', 'top');
 							}}
 						/>
 						<Button
@@ -307,6 +290,7 @@ const SquareControl = props => {
 								changeXAxis('right');
 								changeYAxis('top');
 								onChange('right', 'top');
+								onSave('right', 'top');
 							}}
 						/>
 						<Button
@@ -325,6 +309,7 @@ const SquareControl = props => {
 								changeXAxis('left');
 								changeYAxis('center');
 								onChange('left', 'center');
+								onSave('left', 'center');
 							}}
 						/>
 						<Button
@@ -343,6 +328,7 @@ const SquareControl = props => {
 								changeXAxis('middle');
 								changeYAxis('center');
 								onChange('center', 'center');
+								onSave('center', 'center');
 							}}
 						/>
 						<Button
@@ -361,6 +347,7 @@ const SquareControl = props => {
 								changeXAxis('right');
 								changeYAxis('center');
 								onChange('right', 'center');
+								onSave('right', 'center');
 							}}
 						/>
 						<Button
@@ -379,6 +366,7 @@ const SquareControl = props => {
 								changeXAxis('left');
 								changeYAxis('bottom');
 								onChange('left', 'bottom');
+								onSave('left', 'bottom');
 							}}
 						/>
 						<Button
@@ -397,6 +385,7 @@ const SquareControl = props => {
 								changeXAxis('middle');
 								changeYAxis('bottom');
 								onChange('center', 'bottom');
+								onSave('center', 'bottom');
 							}}
 						/>
 						<Button
@@ -415,163 +404,386 @@ const SquareControl = props => {
 								changeXAxis('right');
 								changeYAxis('bottom');
 								onChange('right', 'bottom');
+								onSave('right', 'bottom');
 							}}
 						/>
 					</div>
 				)}
 				<span className='maxi-transform-control__square-control__canvas__placeholder' />
 			</div>
-			<div className='maxi-transform-control__square-control__y-control'>
-				<input
-					type='range'
-					className='maxi-transform-control__square-control__y-control__range'
-					value={yAxis || ''}
-					onChange={e => {
-						const value = Number(e.target.value);
+			{type === 'origin' && (
+				<>
+					<div className='maxi-transform-control__square-control__y-control'>
+						<input
+							type='range'
+							className='maxi-transform-control__square-control__y-control__range'
+							value={yAxis || ''}
+							onChange={e => {
+								const value = Number(e.target.value);
 
-						if (!sync) {
-							changeYAxis(value);
-							onChange(xAxis, value, xUnit, yUnit);
-							onSave(xAxis, value, xUnit, yUnit);
-						} else {
-							changeYAxis(value);
-							changeXAxis(value);
-							onChange(value, value, xUnit, yUnit);
-							onSave(value, value, xUnit, yUnit);
-						}
-					}}
-					min={getMinMax()?.min}
-					max={getMinMax()?.max}
-					step='.5'
-				/>
-				<div className='maxi-transform-control__square-control__y-control__value'>
-					<input
-						type='number'
-						placeholder={getPlaceholder(yAxis)}
-						className='maxi-transform-control__square-control__y-control__value__input'
-						value={
-							!isEmpty(yAxis)
-								? !isNumber(yAxis)
-									? originValueToNumber(yAxis)
-									: yAxis
-								: ''
-						}
-						onChange={e => {
-							const newValue = !isEmpty(e.target.value)
-								? originValueToNumber(e.target.value)
-								: '';
-
-							console.log(`newValue y: ${newValue}`);
-							console.log(`is number y: ${isNumber(newValue)}`);
-
-							if (!sync) {
-								changeYAxis(newValue);
-								onChange(xAxis, newValue, xUnit, yUnit);
-								onSave(xAxis, newValue, xUnit, yUnit);
-							} else {
-								changeYAxis(newValue);
-								changeXAxis(newValue);
-								onChange(newValue, newValue, xUnit, yUnit);
-								onSave(newValue, newValue, xUnit, yUnit);
-							}
-						}}
-					/>
-					{!!yUnit && (
-						<SelectControl
-							options={[
-								{ label: 'PX', value: 'px' },
-								{ label: 'EM', value: 'em' },
-								{ label: 'VW', value: 'vw' },
-								{ label: '%', value: '%' },
-							]}
-							value={yAxisUnit}
-							onChange={val => {
-								changeYUnit(val);
-								changeYAxis(yAxis);
-								changeXAxis(xAxis);
-								onChange(xAxis, yAxis, xUnit, val);
-								onSave(xAxis, yAxis, xUnit, val);
+								if (!sync) {
+									changeYAxis(value);
+									onChange(
+										`${xAxis}`,
+										`${value}`,
+										xUnit,
+										yUnit
+									);
+									onSave(
+										`${xAxis}`,
+										`${value}`,
+										xUnit,
+										yUnit
+									);
+								} else {
+									changeYAxis(value);
+									changeXAxis(value);
+									onChange(value, value, xUnit, yUnit);
+									onSave(value, value, xUnit, yUnit);
+								}
 							}}
+							min={getMinMax()?.min}
+							max={getMinMax()?.max}
+							step='.5'
 						/>
-					)}
-				</div>
-			</div>
-			<div className='maxi-transform-control__square-control__x-control'>
-				<input
-					type='range'
-					className='maxi-transform-control__square-control__x-control__range'
-					value={xAxis || ''}
-					onChange={e => {
-						const value = Number(e.target.value);
+						<div className='maxi-transform-control__square-control__y-control__value'>
+							<input
+								type='number'
+								placeholder={getPlaceholder(yAxis)}
+								className='maxi-transform-control__square-control__y-control__value__input'
+								value={yAxis}
+								// value={!isNumber(yAxis) ? '' : yAxis}
+								// value={
+								// 	!isEmpty(yAxis)
+								// 		? !isNumber(yAxis)
+								// 			? originValueToNumber(yAxis)
+								// 			: yAxis
+								// 		: ''
+								// }
+								onChange={e => {
+									const newValue = !isEmpty(e.target.value)
+										? Number(e.target.value)
+										: '';
+									// const newValue = !isEmpty(e.target.value)
+									// 	? originValueToNumber(e.target.value)
+									// 	: '';
 
-						if (!sync) {
-							changeXAxis(value);
-							onChange(value, yAxis, xUnit, yUnit);
-							onSave(value, yAxis, xUnit, yUnit);
-						} else {
-							changeYAxis(value);
-							changeXAxis(value);
-							onChange(value, value, xUnit, yUnit);
-							onSave(value, value, xUnit, yUnit);
-						}
-					}}
-					min={getMinMax()?.min}
-					max={getMinMax()?.max}
-					step='.5'
-				/>
-				<div className='maxi-transform-control__square-control__x-control__value'>
-					<input
-						type='number'
-						placeholder={getPlaceholder(xAxis)}
-						className='maxi-transform-control__square-control__x-control__value__input'
-						value={
-							!isEmpty(xAxis)
-								? !isNumber(xAxis)
-									? originValueToNumber(xAxis)
-									: xAxis
-								: ''
-						}
-						onChange={e => {
-							const newValue = !isEmpty(e.target.value)
-								? originValueToNumber(e.target.value)
-								: '';
+									console.log(`newValue y: ${newValue}`);
+									console.log(
+										`is number y: ${isNumber(newValue)}`
+									);
 
-							console.log(`newValue x: ${newValue}`);
-							console.log(`is number x: ${isNumber(newValue)}`);
+									if (!sync) {
+										changeYAxis(newValue);
+										onChange(
+											`${xAxis}`,
+											`${newValue}`,
+											xUnit,
+											yUnit
+										);
+										onSave(
+											`${xAxis}`,
+											`${newValue}`,
+											xUnit,
+											yUnit
+										);
+									} else {
+										changeYAxis(newValue);
+										changeXAxis(newValue);
+										onChange(
+											`${newValue}`,
+											`${newValue}`,
+											xUnit,
+											yUnit
+										);
+										onSave(
+											`${newValue}`,
+											`${newValue}`,
+											xUnit,
+											yUnit
+										);
+									}
+								}}
+							/>
+							{!!yUnit && (
+								<SelectControl
+									options={[
+										{ label: 'PX', value: 'px' },
+										{ label: 'EM', value: 'em' },
+										{ label: 'VW', value: 'vw' },
+										{ label: '%', value: '%' },
+									]}
+									value={yAxisUnit}
+									onChange={val => {
+										changeYUnit(val);
+										changeYAxis(yAxis);
+										changeXAxis(xAxis);
+										onChange(xAxis, yAxis, xUnit, val);
+										onSave(xAxis, yAxis, xUnit, val);
+									}}
+								/>
+							)}
+						</div>
+					</div>
+					<div className='maxi-transform-control__square-control__x-control'>
+						<input
+							type='range'
+							className='maxi-transform-control__square-control__x-control__range'
+							value={xAxis || ''}
+							onChange={e => {
+								const value = Number(e.target.value);
 
-							if (!sync) {
-								changeXAxis(newValue);
-								onChange(newValue, yAxis, xUnit, yUnit);
-								onSave(newValue, yAxis, xUnit, yUnit);
-							} else {
-								changeYAxis(newValue);
-								changeXAxis(newValue);
-								onChange(newValue, newValue, xUnit, yUnit);
-								onSave(newValue, newValue, xUnit, yUnit);
-							}
-						}}
-					/>
-					{!!xUnit && (
-						<SelectControl
-							options={[
-								{ label: 'PX', value: 'px' },
-								{ label: 'EM', value: 'em' },
-								{ label: 'VW', value: 'vw' },
-								{ label: '%', value: '%' },
-							]}
-							value={xAxisUnit}
-							onChange={val => {
-								changeXUnit(val);
-								changeYAxis(yAxis);
-								changeXAxis(xAxis);
-								onChange(xAxis, yAxis, val, yUnit);
-								onSave(xAxis, yAxis, val, yUnit);
+								if (!sync) {
+									changeXAxis(value);
+									onChange(value, yAxis, xUnit, yUnit);
+									onSave(value, yAxis, xUnit, yUnit);
+								} else {
+									changeYAxis(value);
+									changeXAxis(value);
+									onChange(value, value, xUnit, yUnit);
+									onSave(value, value, xUnit, yUnit);
+								}
 							}}
+							min={getMinMax()?.min}
+							max={getMinMax()?.max}
+							step='.5'
 						/>
-					)}
-				</div>
-			</div>
+						<div className='maxi-transform-control__square-control__x-control__value'>
+							<input
+								type='number'
+								placeholder={getPlaceholder(xAxis)}
+								className='maxi-transform-control__square-control__x-control__value__input'
+								value={xAxis}
+								// value={
+								// 	!isEmpty(xAxis)
+								// 		? !isNumber(xAxis)
+								// 			? originValueToNumber(xAxis)
+								// 			: xAxis
+								// 		: ''
+								// }
+								onChange={e => {
+									const newValue = !isEmpty(e.target.value)
+										? Number(e.target.value)
+										: '';
+									// const newValue = !isEmpty(e.target.value)
+									// 	? originValueToNumber(e.target.value)
+									// 	: '';
 
+									console.log(`newValue x: ${newValue}`);
+									console.log(
+										`is number x: ${isNumber(newValue)}`
+									);
+
+									if (!sync) {
+										changeXAxis(newValue);
+										onChange(
+											`${newValue}`,
+											`${yAxis}`,
+											xUnit,
+											yUnit
+										);
+										onSave(
+											`${newValue}`,
+											`${yAxis}`,
+											xUnit,
+											yUnit
+										);
+									} else {
+										changeYAxis(newValue);
+										changeXAxis(newValue);
+										onChange(
+											`${newValue}`,
+											`${newValue}`,
+											xUnit,
+											yUnit
+										);
+										onSave(
+											`${newValue}`,
+											`${newValue}`,
+											xUnit,
+											yUnit
+										);
+									}
+								}}
+							/>
+							{!!xUnit && (
+								<SelectControl
+									options={[
+										{ label: 'PX', value: 'px' },
+										{ label: 'EM', value: 'em' },
+										{ label: 'VW', value: 'vw' },
+										{ label: '%', value: '%' },
+									]}
+									value={xAxisUnit}
+									onChange={val => {
+										changeXUnit(val);
+										changeYAxis(yAxis);
+										changeXAxis(xAxis);
+										onChange(xAxis, yAxis, val, yUnit);
+										onSave(xAxis, yAxis, val, yUnit);
+									}}
+								/>
+							)}
+						</div>
+					</div>
+				</>
+			)}
+			{type !== 'origin' && (
+				<>
+					<div className='maxi-transform-control__square-control__y-control'>
+						<input
+							type='range'
+							className='maxi-transform-control__square-control__y-control__range'
+							value={yAxis || ''}
+							onChange={e => {
+								const value = Number(e.target.value);
+
+								if (!sync) {
+									changeYAxis(value);
+									onChange(xAxis, value, xUnit, yUnit);
+									onSave(xAxis, value, xUnit, yUnit);
+								} else {
+									changeYAxis(value);
+									changeXAxis(value);
+									onChange(value, value, xUnit, yUnit);
+									onSave(value, value, xUnit, yUnit);
+								}
+							}}
+							min={getMinMax()?.min}
+							max={getMinMax()?.max}
+							step='.5'
+						/>
+						<div className='maxi-transform-control__square-control__y-control__value'>
+							<input
+								type='number'
+								placeholder={getPlaceholder(yAxis)}
+								className='maxi-transform-control__square-control__y-control__value__input'
+								value={!isNumber(yAxis) ? '' : yAxis}
+								onChange={e => {
+									const newValue = !isEmpty(e.target.value)
+										? Number(e.target.value)
+										: '';
+
+									if (!sync) {
+										changeYAxis(newValue);
+										onChange(xAxis, newValue, xUnit, yUnit);
+										onSave(xAxis, newValue, xUnit, yUnit);
+									} else {
+										changeYAxis(newValue);
+										changeXAxis(newValue);
+										onChange(
+											newValue,
+											newValue,
+											xUnit,
+											yUnit
+										);
+										onSave(
+											newValue,
+											newValue,
+											xUnit,
+											yUnit
+										);
+									}
+								}}
+							/>
+							{!!yUnit && (
+								<SelectControl
+									options={[
+										{ label: 'PX', value: 'px' },
+										{ label: 'EM', value: 'em' },
+										{ label: 'VW', value: 'vw' },
+										{ label: '%', value: '%' },
+									]}
+									value={yAxisUnit}
+									onChange={val => {
+										changeYUnit(val);
+										changeYAxis(yAxis);
+										changeXAxis(xAxis);
+										onChange(xAxis, yAxis, xUnit, val);
+										onSave(xAxis, yAxis, xUnit, val);
+									}}
+								/>
+							)}
+						</div>
+					</div>
+					<div className='maxi-transform-control__square-control__x-control'>
+						<input
+							type='range'
+							className='maxi-transform-control__square-control__x-control__range'
+							value={xAxis || ''}
+							onChange={e => {
+								const value = Number(e.target.value);
+
+								if (!sync) {
+									changeXAxis(value);
+									onChange(value, yAxis, xUnit, yUnit);
+									onSave(value, yAxis, xUnit, yUnit);
+								} else {
+									changeYAxis(value);
+									changeXAxis(value);
+									onChange(value, value, xUnit, yUnit);
+									onSave(value, value, xUnit, yUnit);
+								}
+							}}
+							min={getMinMax()?.min}
+							max={getMinMax()?.max}
+							step='.5'
+						/>
+						<div className='maxi-transform-control__square-control__x-control__value'>
+							<input
+								type='number'
+								placeholder={getPlaceholder(xAxis)}
+								className='maxi-transform-control__square-control__x-control__value__input'
+								value={!isNumber(xAxis) ? '' : xAxis}
+								onChange={e => {
+									const newValue = !isEmpty(e.target.value)
+										? Number(e.target.value)
+										: '';
+
+									if (!sync) {
+										changeXAxis(newValue);
+										onChange(newValue, yAxis, xUnit, yUnit);
+										onSave(newValue, yAxis, xUnit, yUnit);
+									} else {
+										changeYAxis(newValue);
+										changeXAxis(newValue);
+										onChange(
+											newValue,
+											newValue,
+											xUnit,
+											yUnit
+										);
+										onSave(
+											newValue,
+											newValue,
+											xUnit,
+											yUnit
+										);
+									}
+								}}
+							/>
+							{!!xUnit && (
+								<SelectControl
+									options={[
+										{ label: 'PX', value: 'px' },
+										{ label: 'EM', value: 'em' },
+										{ label: 'VW', value: 'vw' },
+										{ label: '%', value: '%' },
+									]}
+									value={xAxisUnit}
+									onChange={val => {
+										changeXUnit(val);
+										changeYAxis(yAxis);
+										changeXAxis(xAxis);
+										onChange(xAxis, yAxis, val, yUnit);
+										onSave(xAxis, yAxis, val, yUnit);
+									}}
+								/>
+							)}
+						</div>
+					</div>
+				</>
+			)}
 			<div className='maxi-transform-control__square-control__sync'>
 				{type !== 'drag' && (
 					<Tooltip

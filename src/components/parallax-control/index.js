@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import AdvancedNumberControl from '../advanced-number-control';
 import { getDefaultAttribute } from '../../extensions/styles';
 
@@ -25,25 +26,20 @@ const ParallaxControl = props => {
 
 	return (
 		<div className={classes}>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Use Parallax Effect', 'maxi-blocks')}
 				selected={props['parallax-status']}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
 				onChange={val =>
 					onChange({
 						'parallax-status': val,
-						'background-image-size': !props['parallax-status']
-							? 'cover'
-							: 'auto',
+						'background-image-size': val ? 'cover' : 'auto',
 					})
 				}
 			/>
 			{props['parallax-status'] && (
 				<>
 					<FancyRadioControl
+						className='parallax-direction'
 						label={__('Direction', 'maxi-blocks')}
 						selected={props['parallax-direction']}
 						options={[

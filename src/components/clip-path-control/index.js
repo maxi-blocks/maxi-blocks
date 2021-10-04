@@ -15,6 +15,7 @@ import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
 import Icon from '../icon';
 import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies
@@ -308,24 +309,17 @@ const ClipPathControl = props => {
 
 	return (
 		<div className={classes}>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Use Clip-path', 'maxi-blocks')}
 				selected={hasClipPath}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
-				onChange={val => changeHasClipPath(+val)}
+				onChange={val => changeHasClipPath(val)}
 			/>
 			{hasClipPath && (
 				<>
-					<FancyRadioControl
+					<ToggleSwitch
+						className='clip-path-custom'
 						label={__('Use Custom', 'maxi-blocks')}
 						selected={isCustom}
-						options={[
-							{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
 						onChange={val => changeIsCustom(val)}
 					/>
 					{!isCustom && (

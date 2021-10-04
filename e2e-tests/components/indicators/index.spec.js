@@ -20,7 +20,7 @@ describe('Indicators', () => {
 			container.focus()
 		);
 
-		const accordionPanel = await openSidebar(page, 'padding margin');
+		const accordionPanel = await openSidebar(page, 'margin padding');
 
 		const selectPadding = await accordionPanel.$$(
 			'.maxi-axis-control .maxi-axis-control__content'

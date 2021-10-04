@@ -2,6 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -13,6 +14,7 @@ import { getBlockStyle } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles and icons
@@ -37,11 +39,29 @@ const BlockStylesControl = props => {
 		return [{ label: __('Parent', 'maxi-blocks'), value: 'maxi-parent' }];
 	};
 
+	const getAllInnerBlocks = (id, parentBlockStyle) => {
+		const { getBlockOrder } = select('core/block-editor');
+		const { updateBlockAttributes } = dispatch('core/block-editor');
+		const innerBlockIds = id ? getBlockOrder(id) : getBlockOrder(clientId);
+		const innerBlocksStyle = parentBlockStyle || '';
+
+		if (innerBlockIds) {
+			innerBlockIds.forEach(innerBlockId => {
+				if (!isEmpty(innerBlocksStyle))
+					updateBlockAttributes(innerBlockId, {
+						parentBlockStyle: innerBlocksStyle,
+					});
+
+				getAllInnerBlocks(innerBlockId, parentBlockStyle);
+			});
+		}
+	};
+
 	return (
 		<>
 			{isFirstOnHierarchy ? (
 				<SelectControl
-					label={__('Block Style', 'maxi-blocks')}
+					label={__('Block tone', 'maxi-blocks')}
 					className={classes}
 					value={blockStyle}
 					options={getSelectorOptions()}
@@ -52,6 +72,8 @@ const BlockStylesControl = props => {
 							''
 						);
 
+						getAllInnerBlocks(clientId, parentBlockStyle);
+
 						onChange({
 							blockStyle,
 							...(!dependsOnParent && { parentBlockStyle }),
@@ -60,7 +82,7 @@ const BlockStylesControl = props => {
 				/>
 			) : (
 				<div className='maxi-block-style-preview'>
-					{__('Block Style: ', 'maxi-blocks')}
+					{__('Block style: ', 'maxi-blocks')}
 					<span
 						className={`maxi-block-style-preview__${getBlockStyle(
 							clientId

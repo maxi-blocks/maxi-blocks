@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/blockEditor';
+import { InspectorControls } from '@wordpress/block-editor';
 import { TextControl } from '@wordpress/components';
 
 /**
@@ -22,6 +22,7 @@ import {
 	TransformControl,
 	InfoBox,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 
@@ -64,7 +65,6 @@ const Inspector = props => {
 												setAttributes({ customLabel })
 											}
 										/>
-										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
 											isFirstOnHierarchy={
@@ -253,6 +253,21 @@ const Inspector = props => {
 												{...getGroupAttributes(
 													attributes,
 													'opacity'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Overflow', 'maxi-blocks'),
+										content: (
+											<OverflowControl
+												{...getGroupAttributes(
+													attributes,
+													'overflow'
 												)}
 												onChange={obj =>
 													setAttributes(obj)

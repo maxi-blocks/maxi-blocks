@@ -35,50 +35,28 @@
 		&__option {
 			opacity: 1 !important;
 			min-width: 40px;
-			height: 40px;
-			background-color: rgba(33, 141, 250, 0);
-			font-size: 20px;
+			height: 32px;
+			background-color: #fff;
 			color: #464a53;
-			font-weight: 500;
 			flex: 1;
-			border: 2px solid #dddfe1;
-			border-right: 0;
+			border: 1px solid #dbdde6;
 			margin-bottom: 0;
+			transition: all 0.5s;
 
-			@at-root .rtl #{&} {
-				border-right: 2px solid #dddfe1;
-				border-left: 0;
+			&:hover {
+				background-color: rgba(180, 180, 180, 0.12);
 			}
-
-			&:first-of-type {
-				border-top-left-radius: 5px;
-				border-bottom-left-radius: 5px;
-				@at-root .rtl #{&} {
-					border-top-left-radius: 0;
-					border-bottom-left-radius: 0;
-					border-top-right-radius: 5px;
-					border-bottom-right-radius: 5px;
-				}
-			}
-
-			&:last-of-type {
-				border-top-right-radius: 5px;
-				border-bottom-right-radius: 5px;
-				border-right: 2px solid #dddfe1;
-				@at-root .rtl #{&} {
-					border-top-right-radius: 0;
-					border-bottom-right-radius: 0;
-					border-top-left-radius: 5px;
-					border-bottom-left-radius: 5px;
-					border-left: 2px solid #dddfe1;
-				}
+			&:focus {
+				outline: none !important;
+				box-shadow: none !important;
+				background-color: rgba(180, 180, 180, 0.4);
 			}
 			input {
 				display: none;
 
 				&:checked ~ label {
-					background-color: #f2f2f2;
-					outline: 1px solid transparent;
+					background-color: #f8fbfd;
+					border-bottom: 2px solid #007cba;
 					position: relative;
 					z-index: 1;
 				}

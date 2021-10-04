@@ -11,22 +11,22 @@
 		background-color: #fff;
 		color: #464a53;
 		flex: 1;
-		border: 1px solid #757575;
+		border: 1px solid var(--maxi-grey-1-color);
 		margin: 0;
 		transition: all 0.5s;
 
 		&:hover {
-			background-color: rgba(180, 180, 180, 0.12);
+			background-color: var(--maxi-grey-3-color);
 		}
 		&:focus {
-			background-color: rgba(180, 180, 180, 0.4);
+			background-color: var(--maxi-grey-2-color);
 		}
 		input {
 			display: none;
 
 			&:checked ~ label {
 				background-color: #f8fbfd;
-				border-bottom: 2px solid #007cba;
+				border-bottom: 2px solid var(--maxi-secondary-color);
 				position: relative;
 				z-index: 1;
 			}

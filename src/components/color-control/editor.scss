@@ -140,7 +140,7 @@
 			justify-content: center;
 			width: 32px;
 			height: 32px;
-			border: 1px solid #757575;
+			border: 1px solid var(--maxi-grey-1-color);
 			cursor: pointer;
 			transition: all 0.5s;
 
@@ -148,7 +148,7 @@
 				border: 2px solid #ff4a17;
 			}
 			&:hover {
-				background: #f1f1f1;
+				background: var(--maxi-white-1-color);
 				border-color: rgba(180, 180, 180, 0.8);
 			}
 			&__item {

@@ -29,13 +29,13 @@
 			}
 			&:hover {
 				cursor: pointer;
-				background-color: rgba(180, 180, 180, 0.12);
+				background-color: var(--maxi-grey-3-color);
 			}
 			&:focus {
-				background-color: rgba(180, 180, 180, 0.04);
+				background-color: var(--maxi-grey-2-color);
 			}
 			&:active {
-				background-color: rgba(180, 180, 180, 0.12);
+				background-color: var(--maxi-grey-3-color);
 			}
 			&[aria-pressed='true'] {
 				background-color: #fcfcfc;

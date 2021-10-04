@@ -8,7 +8,7 @@
 		display: flex;
 		justify-content: center;
 		height: 32px;
-		border: 1px solid #757575;
+		border: 1px solid var(--maxi-grey-1-color);
 		flex: 1;
 		border-radius: 0;
 		transition: all 0.5s;
@@ -16,7 +16,7 @@
 		&--active {
 			background-color: #f8fbfd;
 			border: 1px solid #dbdde6;
-			border-bottom: 2px solid #007cba;
+			border-bottom: 2px solid var(--maxi-secondary-color);
 
 			&:first-child,
 			&:nth-child-4 {
@@ -28,10 +28,10 @@
 			}
 		}
 		&:hover {
-			background-color: rgba(180, 180, 180, 0.12);
+			background-color: var(--maxi-grey-3-color);
 		}
 		&:focus {
-			background-color: rgba(180, 180, 180, 0.4);
+			background-color: var(--maxi-grey-4-color);
 		}
 		&__icon {
 			width: 40px;

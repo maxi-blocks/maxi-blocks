@@ -193,10 +193,12 @@ body .toolbar-item__popover {
 		font-size: 12px;
 		line-height: 12px;
 		border-radius: 0;
-		border: 1px solid #757575;
+		border: 1px solid var(--maxi-grey-1-color);
 
 		&:focus {
-			border-color: #2271b1;
+			border-color: var(--maxi-black-1-color);
+			box-shadow: none;
+			outline: none;
 		}
 	}
 	input[type=number] {
@@ -211,12 +213,15 @@ body .toolbar-item__popover {
 			border: none;
 		}
 	}
-
 	select {
 		padding: 0 24px 0px 10px !important;
 		opacity: 1 !important;
 	}
-
+	.components-button:focus:not(:disabled) {
+		border-color: var(--maxi-black-1-color);
+		box-shadow: none;
+		outline: none;
+	}
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {
 		font-size: 0 !important;
@@ -229,12 +234,10 @@ body .toolbar-item__popover {
 			color: #141516;
 		}
 	}
-
 	.components-panel {
 		background: transparent;
 		border: none;
 	}
-
 	.components-simple-tooltip {
 		color: #fff;
 	}
@@ -315,7 +318,7 @@ body .toolbar-item__popover {
     background: #fff;
     text-decoration: none;
     border-radius: 0;
-    border: 1px solid #757575;
+    border: 1px solid var(--maxi-grey-1-color);
 	transition: all 0.5s;
     -webkit-appearance: none;
     box-shadow: none;
@@ -323,7 +326,7 @@ body .toolbar-item__popover {
     opacity: 1;
 
 	&:hover {
-		background: #f1f1f1;
+		background: var(--maxi-white-1-color);
 	}
 	svg {
 		width: 14px;

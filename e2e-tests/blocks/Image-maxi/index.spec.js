@@ -12,7 +12,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
 
 describe('Image Maxi', () => {
 	beforeEach(async () => {
@@ -126,19 +126,19 @@ describe('Image Maxi', () => {
 
 		const styleAttributes = await getBlockAttributes();
 		const typographyAttributes = (({
-			'font-size-m': fontSize,
-			'line-height-m': lineHeight,
-			'letter-spacing-m': letterSpacing,
+			'font-size-xs': fontSize,
+			'line-height-xs': lineHeight,
+			'letter-spacing-xs': letterSpacing,
 		}) => ({
-			'font-size-m': fontSize,
-			'line-height-m': lineHeight,
-			'letter-spacing-m': letterSpacing,
+			'font-size-xs': fontSize,
+			'line-height-xs': lineHeight,
+			'letter-spacing-xs': letterSpacing,
 		}))(styleAttributes);
 
 		const expectedAttributesTwo = {
-			'font-size-m': 19,
-			'line-height-m': 4,
-			'letter-spacing-m': 11,
+			'font-size-xs': 19,
+			'line-height-xs': 4,
+			'letter-spacing-xs': 11,
 		};
 
 		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
@@ -187,9 +187,9 @@ describe('Image Maxi', () => {
 		expect(textAttributes).toStrictEqual(expectedAttributes);
 
 		// Text shadow
-		await accordionPanel.$$eval(
-			'.maxi-typography-control .maxi-textshadow-control .maxi-base-control__field label',
-			select => select[1].click()
+		await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-textshadow-control .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		await accordionPanel.$$(

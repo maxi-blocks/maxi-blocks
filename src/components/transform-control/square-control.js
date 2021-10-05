@@ -109,7 +109,8 @@ const SquareControl = props => {
 			case 'resize':
 				changeXAxis(defaultX);
 				changeYAxis(defaultY);
-				onSave(defaultX, defaultY, '%', '%');
+				onChange(defaultX, defaultY);
+				onSave(defaultX, defaultY);
 				break;
 			case 'drag':
 				changeXAxis(0);
@@ -439,8 +440,18 @@ const SquareControl = props => {
 								} else {
 									changeYAxis(value);
 									changeXAxis(value);
-									onChange(value, value, xUnit, yUnit);
-									onSave(value, value, xUnit, yUnit);
+									onChange(
+										`${value}`,
+										`${value}`,
+										xUnit,
+										yUnit
+									);
+									onSave(
+										`${value}`,
+										`${value}`,
+										xUnit,
+										yUnit
+									);
 								}
 							}}
 							min={getMinMax()?.min}
@@ -524,13 +535,33 @@ const SquareControl = props => {
 
 								if (!sync) {
 									changeXAxis(value);
-									onChange(value, yAxis, xUnit, yUnit);
-									onSave(value, yAxis, xUnit, yUnit);
+									onChange(
+										`${value}`,
+										`${yAxis}`,
+										xUnit,
+										yUnit
+									);
+									onSave(
+										`${value}`,
+										`${yAxis}`,
+										xUnit,
+										yUnit
+									);
 								} else {
 									changeYAxis(value);
 									changeXAxis(value);
-									onChange(value, value, xUnit, yUnit);
-									onSave(value, value, xUnit, yUnit);
+									onChange(
+										`${value}`,
+										`${value}`,
+										xUnit,
+										yUnit
+									);
+									onSave(
+										`${value}`,
+										`${value}`,
+										xUnit,
+										yUnit
+									);
 								}
 							}}
 							min={getMinMax()?.min}

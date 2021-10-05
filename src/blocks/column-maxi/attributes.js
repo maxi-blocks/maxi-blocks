@@ -58,6 +58,7 @@ const attributes = {
 	...attributesData.display,
 	...attributesData.transform,
 	...attributesData.zIndex,
+	...attributesData.overflow,
 };
 
 export default attributes;

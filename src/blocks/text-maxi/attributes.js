@@ -80,6 +80,7 @@ const attributes = {
 	...attributesData.typographyHover,
 	...attributesData.zIndex,
 	...attributesData.transitionDuration,
+	...attributesData.overflow,
 };
 
 export default attributes;

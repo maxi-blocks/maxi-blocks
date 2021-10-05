@@ -24,6 +24,7 @@ import {
 	ToggleSwitch,
 	TransformControl,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 
@@ -296,6 +297,21 @@ const Inspector = props => {
 															val,
 													})
 												}
+											/>
+										),
+									},
+									{
+										label: __('Overflow', 'maxi-blocks'),
+										content: (
+											<OverflowControl
+												{...getGroupAttributes(
+													attributes,
+													'overflow'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
+												}
+												breakpoint={deviceType}
 											/>
 										),
 									},

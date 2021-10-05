@@ -11,6 +11,7 @@ import { Tooltip } from '@wordpress/components';
 import Button from '../button';
 import SelectControl from '../select-control';
 import BlockResizer from '../block-resizer';
+import { validateOriginValue } from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -451,27 +452,15 @@ const SquareControl = props => {
 								type='number'
 								placeholder={getPlaceholder(yAxis)}
 								className='maxi-transform-control__square-control__y-control__value__input'
-								value={yAxis}
-								// value={!isNumber(yAxis) ? '' : yAxis}
-								// value={
-								// 	!isEmpty(yAxis)
-								// 		? !isNumber(yAxis)
-								// 			? originValueToNumber(yAxis)
-								// 			: yAxis
-								// 		: ''
-								// }
+								value={
+									!isNumber(validateOriginValue(yAxis))
+										? ''
+										: validateOriginValue(yAxis)
+								}
 								onChange={e => {
 									const newValue = !isEmpty(e.target.value)
-										? Number(e.target.value)
+										? validateOriginValue(e.target.value)
 										: '';
-									// const newValue = !isEmpty(e.target.value)
-									// 	? originValueToNumber(e.target.value)
-									// 	: '';
-
-									console.log(`newValue y: ${newValue}`);
-									console.log(
-										`is number y: ${isNumber(newValue)}`
-									);
 
 									if (!sync) {
 										changeYAxis(newValue);
@@ -553,26 +542,15 @@ const SquareControl = props => {
 								type='number'
 								placeholder={getPlaceholder(xAxis)}
 								className='maxi-transform-control__square-control__x-control__value__input'
-								value={xAxis}
-								// value={
-								// 	!isEmpty(xAxis)
-								// 		? !isNumber(xAxis)
-								// 			? originValueToNumber(xAxis)
-								// 			: xAxis
-								// 		: ''
-								// }
+								value={
+									!isNumber(validateOriginValue(xAxis))
+										? ''
+										: validateOriginValue(xAxis)
+								}
 								onChange={e => {
 									const newValue = !isEmpty(e.target.value)
-										? Number(e.target.value)
+										? validateOriginValue(e.target.value)
 										: '';
-									// const newValue = !isEmpty(e.target.value)
-									// 	? originValueToNumber(e.target.value)
-									// 	: '';
-
-									console.log(`newValue x: ${newValue}`);
-									console.log(
-										`is number x: ${isNumber(newValue)}`
-									);
 
 									if (!sync) {
 										changeXAxis(newValue);

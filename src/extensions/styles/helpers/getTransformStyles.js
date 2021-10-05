@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import { validateOriginValue } from '..';
 
 /**
  * External dependencies
@@ -92,7 +93,7 @@ const getTransformStyles = obj => {
 		);
 
 		const originValueToNumber = value => {
-			switch (value) {
+			switch (validateOriginValue(value)) {
 				case 'top':
 					return 0;
 				case 'right':
@@ -106,7 +107,7 @@ const getTransformStyles = obj => {
 				case 'middle':
 					return 50;
 				default:
-					return false;
+					return value;
 			}
 		};
 
@@ -120,14 +121,14 @@ const getTransformStyles = obj => {
 		if (isNumber(rotateY)) transformString += `rotateY(${rotateY}deg) `;
 		if (isNumber(rotateZ)) transformString += `rotateZ(${rotateZ}deg) `;
 
-		if (isString(originX))
+		if (isString(validateOriginValue(originX)))
 			transformOriginString += `${originValueToNumber(originX)}% `;
-		if (isString(originY))
+		if (isString(validateOriginValue(originY)))
 			transformOriginString += `${originValueToNumber(originY)}% `;
 
-		if (isNumber(originX))
+		if (isNumber(validateOriginValue(originX)))
 			transformOriginString += `${originX}${originXUnit} `;
-		if (isNumber(originY))
+		if (isNumber(validateOriginValue(originY)))
 			transformOriginString += `${originY}${originYUnit} `;
 
 		const transformObj = {

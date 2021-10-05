@@ -46,8 +46,8 @@ const RadioControl = ({
 				{options.map((option, index) => (
 					<div
 						key={`${id}-${index}`}
-						className={`maxi-radio-control__option ${
-							option.hidden ? 'hidden' : ''
+						className={`maxi-radio-control__option${
+							option.hidden ? ' hidden' : ''
 						}`}
 					>
 						<input

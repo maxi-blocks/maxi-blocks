@@ -18,19 +18,19 @@ h2.gx_error {
 	text-align: center;
 }
 .visuallyhidden {
-	border: 0;
-	clip: rect(0 0 0 0);
-	height: 1px;
-	margin: -1px;
-	overflow: hidden;
-	padding: 0;
 	position: absolute;
+	overflow: hidden;
 	width: 1px;
+	height: 1px;
+	padding: 0;
+	border: 0;
+	margin: -1px;
+	clip: rect(0 0 0 0);
 }
 .maxi-sidebar,
 .maxi-sidebar *:not(i),
 .maxi-popover *:not(i) {
-	color: #464a53;
+	color: var(--maxi-grey-5-color);
 	font-family: "Roboto", Helvetica, Arial, Lucida, sans-serif !important;
 	font-size: 12px;
 	font-weight: normal;
@@ -38,6 +38,7 @@ h2.gx_error {
 
 .block-editor-inserter {
 	color: #fff !important;
+
 	&__toggle {
 		svg {
 			fill: #fff !important;
@@ -88,7 +89,6 @@ body {
 }
 .maxi-block {
 	.block-editor-block-list__layout {
-		// padding: 10px;
 		&:focus:after {
 			box-shadow: none !important;
 		}
@@ -215,12 +215,12 @@ body .toolbar-item__popover {
 		max-height: unset !important;
 		min-height: unset;
 		padding: 8px;
+		border: 1px solid var(--maxi-grey-1-color);
+		border-radius: 0;
 		color: #464a53;
 		background-color: #fff;
 		font-size: 12px;
 		line-height: 12px;
-		border-radius: 0;
-		border: 1px solid var(--maxi-grey-1-color);
 
 		&:focus {
 			border-color: var(--maxi-grey-1-color);
@@ -316,12 +316,13 @@ body .toolbar-item__popover {
 /************
 * Unit Select
 ************/
-
 .maxi-base-control {
 	.maxi-dimensions-control__units {
 		margin-bottom: 0 !important;
+
 		.maxi-base-control__field {
 			margin-bottom: 0;
+
 			.maxi-select-control__input {
 				min-width: 3.2rem;
 				max-width: 100%;
@@ -335,16 +336,16 @@ body .toolbar-item__popover {
 *************/
 .maxi-base-control .components-maxi-control__reset-button {
 	display: flex;
+    overflow: hidden;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
     height: auto;
     padding: 8px;
+    border: 1px solid var(--maxi-grey-1-color);
+    border-radius: 0;
 	margin-left: 8px;
     background: #fff;
     text-decoration: none;
-    border-radius: 0;
-    border: 1px solid var(--maxi-grey-1-color);
 	transition: all 0.5s;
     -webkit-appearance: none;
     box-shadow: none;
@@ -358,7 +359,7 @@ body .toolbar-item__popover {
 		width: 14px;
 		height: 14px;
 		margin: auto;
-		fill: #141516;
+		fill: var(--maxi-black-1-color);
 	}
 	@at-root .rtl #{&} {
 		margin-right: 8px;

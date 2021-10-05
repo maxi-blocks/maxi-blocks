@@ -142,7 +142,7 @@ const Inspector = memo(
 										items={[
 											deviceType === 'general' && {
 												label: __(
-													'Style',
+													'Style shortcut',
 													'maxi-blocks'
 												),
 												content: (

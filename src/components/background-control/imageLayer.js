@@ -29,7 +29,13 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const ImageLayer = props => {
-	const { onChange, disableClipPath, isHover, prefix, breakpoint } = props;
+	const {
+		onChange,
+		disableClipPath,
+		isHover = false,
+		prefix = '',
+		breakpoint,
+	} = props;
 
 	const imageOptions = cloneDeep(props.imageOptions);
 

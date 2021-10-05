@@ -27,7 +27,7 @@ import { isEmpty, cloneDeep } from 'lodash';
 const SVGLayer = props => {
 	const {
 		onChange,
-		isHover,
+		isHover = false,
 		prefix = '',
 		clientId,
 		layerId,

@@ -23,7 +23,13 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const GradientLayer = props => {
-	const { onChange, disableClipPath, isHover, prefix, breakpoint } = props;
+	const {
+		onChange,
+		disableClipPath,
+		isHover = false,
+		prefix = '',
+		breakpoint,
+	} = props;
 	const gradientOptions = cloneDeep(props.gradientOptions);
 
 	return (

@@ -26,7 +26,7 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const VideoLayer = props => {
-	const { onChange, isHover, prefix, breakpoint } = props;
+	const { onChange, isHover = false, prefix = '', breakpoint } = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
 

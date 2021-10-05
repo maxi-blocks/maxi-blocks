@@ -198,6 +198,10 @@ body.maxi-blocks--active .maxi-sidebar.maxi-accessibility-sidebar {
 	.maxi-base-control .components-maxi-control__reset-button {
 		border-color: var(--maxi-accessibility-grey-1-color);
 	}
+	.maxi-settingstab-control .maxi-tabs-control__button:focus:not(:disabled) {
+		border: 1px solid var(--maxi-secondary-color);
+		border-bottom-width: 2px;
+	}
 }
 
 body.maxi-blocks--active .maxi-sidebar,
@@ -219,7 +223,7 @@ body .toolbar-item__popover {
 		border: 1px solid var(--maxi-grey-1-color);
 
 		&:focus {
-			border-color: var(--maxi-black-1-color);
+			border-color: var(--maxi-grey-1-color);
 			box-shadow: none;
 			outline: none;
 		}
@@ -241,7 +245,6 @@ body .toolbar-item__popover {
 		opacity: 1 !important;
 	}
 	.components-button:focus:not(:disabled) {
-		border-color: var(--maxi-black-1-color);
 		box-shadow: none;
 		outline: none;
 	}

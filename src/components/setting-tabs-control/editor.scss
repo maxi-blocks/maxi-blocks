@@ -14,55 +14,54 @@
 			flex-direction: column;
 			width: 100%;
 			height: auto;
-			color: #141516;
-			text-align: center;
-			border-bottom: 1px solid #dbdde6;
-			border-top: 1px solid #dbdde6;
-			border-right: 1px solid #dbdde6;
-			border-radius: 0;
 			padding: 8px;
+			border-bottom: 1px solid var(--maxi-grey-1-color);
+			border-top: 1px solid var(--maxi-grey-1-color);
+			border-right: 1px solid var(--maxi-grey-1-color);
+			border-radius: 0;
+			color: var(--maxi-black-1-color);
 			background-color: #fff;
+			text-align: center;
 			transform: 0.5s all;
 
 			&:last-child {
 				border-right: none;
 			}
 			&:hover {
-				cursor: pointer;
 				background-color: var(--maxi-grey-3-color);
+				cursor: pointer;
 			}
-			&:focus {
+			&:focus:not(:disabled) {
 				background-color: var(--maxi-grey-2-color);
+				box-shadow: none !important;
+				outline: none !important;
 			}
 			&:active {
 				background-color: var(--maxi-grey-3-color);
 			}
 			&[aria-pressed='true'] {
-				background-color: #fcfcfc;
-				color: #151617;
-				border-bottom: 2px solid #ff4a17;
+				border-bottom: 2px solid var(--maxi-primary-color);
+				color: var(--maxi-black-1-color);
+				background-color: var(--maxi-white-3-color);
 				font-weight: 500;
 			}
 		}
 
 		&__notification {
 			position: absolute;
+			z-index: 8;
 			top: 0;
 			left: 100%;
-			transform: translate(-50%, -50%);
 			width: 1rem;
 			height: 1rem;
 			background: red;
 			border-radius: 50%;
-			z-index: 8;
+			transform: translate(-50%, -50%);
 		}
 	}
 	.maxi-tabs-content {
 		&:not(.maxi-tabs-content--disable-padding) {
-			padding-top: 12px !important;
-			padding-left: 12px !important;
-			padding-right: 12px !important;
-			padding-bottom: 12px !important;
+			padding: 12px !important;
 			background-color: #fff;
 		}
 
@@ -71,10 +70,10 @@
 
 			&__box {
 				padding: 8px;
-				background-color: #fff;
+				border-top: 1px solid var(--maxi-grey-1-color);
+				border-bottom: 1px solid var(--maxi-grey-1-color);
 				margin-bottom: 8px;
-				border-top: 1px solid #dbdde6;
-				border-bottom: 1px solid #dbdde6;
+				background-color: #fff;
 
 				& > *:last-child {
 					.maxi-base-control__field {
@@ -86,7 +85,6 @@
 					width: 50%;
 				}
 			}
-
 			&--selected {
 				display: block;
 			}

@@ -96,16 +96,6 @@ const TransformControl = props => {
 
 	useEffect(forceStyles);
 
-	console.log('transform-origin-x');
-	console.log(
-		getLastBreakpointAttribute('transform-origin-x', breakpoint, props)
-	);
-
-	console.log('transform-origin-y');
-	console.log(
-		getLastBreakpointAttribute('transform-origin-y', breakpoint, props)
-	);
-
 	return (
 		<div className={classes}>
 			<FancyRadioControl

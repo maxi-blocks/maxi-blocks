@@ -23,28 +23,37 @@ const OverflowControl = props => {
 
 	const classes = classnames('maxi-position-control', className);
 
+	const axes = ['x', 'y'];
+
 	return (
 		<div className={classes}>
-			<SelectControl
-				label={__('Overflow', 'maxi-blocks')}
-				options={[
-					{ label: 'Default', value: '' },
-					{ label: 'Visible', value: 'visible' },
-					{ label: 'Hidden', value: 'hidden' },
-					{ label: 'Auto', value: 'auto' },
-					{ label: 'Clip', value: 'clip' },
-					{ label: 'Scroll', value: 'scroll' },
-				]}
-				value={
-					getLastBreakpointAttribute('overflow', breakpoint, props) ||
-					''
-				}
-				onChange={val =>
-					onChange({
-						[`overflow-${breakpoint}`]: !isEmpty(val) ? val : null,
-					})
-				}
-			/>
+			{axes.map(axis => (
+				<SelectControl
+					label={__(`Overflow ${axis}`, 'maxi-blocks')}
+					options={[
+						{ label: 'Default', value: '' },
+						{ label: 'Visible', value: 'visible' },
+						{ label: 'Hidden', value: 'hidden' },
+						{ label: 'Auto', value: 'auto' },
+						{ label: 'Clip', value: 'clip' },
+						{ label: 'Scroll', value: 'scroll' },
+					]}
+					value={
+						getLastBreakpointAttribute(
+							`overflow-${axis}`,
+							breakpoint,
+							props
+						) || ''
+					}
+					onChange={val =>
+						onChange({
+							[`overflow-${axis}-${breakpoint}`]: !isEmpty(val)
+								? val
+								: null,
+						})
+					}
+				/>
+			))}
 		</div>
 	);
 };

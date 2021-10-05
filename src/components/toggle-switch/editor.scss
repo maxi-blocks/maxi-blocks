@@ -1,3 +1,13 @@
+.maxi-accessibility-sidebar {
+	.maxi-toggle-switch-wrapper {
+		&:focus {
+			.maxi-toggle-switch__toggle {
+				box-shadow: 0 0 0 2px var(--maxi-secondary-color);
+				outline: 2px solid transparent;
+			}
+		}
+	}
+}
 .maxi-toggle-switch-wrapper {
 	&:focus {
 		.maxi-toggle-switch__toggle {

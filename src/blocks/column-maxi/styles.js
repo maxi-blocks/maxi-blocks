@@ -9,6 +9,7 @@ import {
 	getBackgroundStyles,
 	getBorderStyles,
 	getOpacityStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 /**
@@ -57,6 +58,9 @@ const getNormalObject = props => {
 				...getGroupAttributes(props, 'columnSize'),
 			}),
 		},
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
 		...(!isEmpty(props.verticalAlign) && {
 			column: {
 				general: {

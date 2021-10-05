@@ -48,44 +48,6 @@ const ColumnSize = props => {
 			advancedOptions='column settings'
 		>
 			<div className='toolbar-item__column-size__popover'>
-				<AdvancedNumberControl
-					label={__('Column Size (%)', 'maxi-blocks')}
-					value={round(
-						getLastBreakpointAttribute(
-							'column-size',
-							breakpoint,
-							attributes
-						),
-						2
-					)}
-					onChangeValue={val => {
-						onChange({
-							[`column-size-${breakpoint}`]:
-								val !== undefined && val !== '' ? val : '',
-							verticalAlign,
-						});
-					}}
-					min={0}
-					max={100}
-					step={0.1}
-					onReset={() =>
-						onChange({
-							[`column-size-${breakpoint}`]:
-								getColumnDefaultValue(
-									rowPattern,
-									columnSize,
-									clientId,
-									breakpoint
-								),
-						})
-					}
-					initialPosition={getColumnDefaultValue(
-						rowPattern,
-						columnSize,
-						clientId,
-						breakpoint
-					)}
-				/>
 				<SelectControl
 					label={__('Vertical align', 'maxi-blocks')}
 					value={verticalAlign}

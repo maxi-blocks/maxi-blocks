@@ -34,6 +34,7 @@ import {
 	TransformControl,
 	TypographyControl,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import {
 	getDefaultAttribute,
@@ -1190,6 +1191,24 @@ const Inspector = memo(
 														{...getGroupAttributes(
 															attributes,
 															'opacity'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Overflow',
+													'maxi-blocks'
+												),
+												content: (
+													<OverflowControl
+														{...getGroupAttributes(
+															attributes,
+															'overflow'
 														)}
 														onChange={obj =>
 															setAttributes(obj)

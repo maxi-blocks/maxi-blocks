@@ -22,7 +22,6 @@ import ImageLayer from './imageLayer';
 import LoaderControl from '../loader-control';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
-import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies
@@ -362,117 +361,95 @@ const BackgroundLayersControl = ({
 
 	return (
 		<div className='maxi-background-control__layers'>
-			<ToggleSwitch
-				label={__('Use layers', 'maxi-blocks')}
-				selected={layersStatus}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-layers-status',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-						[getAttributeKey(
-							'background-active-media',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val ? 'layers' : '',
-					})
-				}
-			/>
-			{layersStatus && (
-				<div>
-					{!isEmpty(layers) && (
-						<ReactDragListView
-							onDragEnd={(fromIndex, toIndex) => {
-								const layer = layers.splice(fromIndex, 1)[0];
-								layers.splice(toIndex, 0, layer);
+			<div>
+				{!isEmpty(layers) && (
+					<ReactDragListView
+						onDragEnd={(fromIndex, toIndex) => {
+							const layer = layers.splice(fromIndex, 1)[0];
+							layers.splice(toIndex, 0, layer);
 
-								layers.forEach((layer, i) => {
-									layers[i].id = i;
-								});
-
-								onChange({
-									[getAttributeKey(
-										'background-layers',
-										isHover,
-										prefix,
-										breakpoint
-									)]: layers,
-								});
-							}}
-							nodeSelector='div.maxi-background-layer'
-							handleSelector='span.maxi-background-layer__title__mover'
-							ignoreSelector='div.maxi-background-layer__content'
-						>
-							<div className='maxi-background-layers_options'>
-								{layers.map((layer, i) => (
-									<LayerCard
-										key={`maxi-background-layers__${layer.id}`}
-										layerId={layer.id}
-										isButton={isButton}
-										clientId={clientId}
-										layer={layer}
-										onChange={layer => {
-											layers[layer.id] = layer;
-
-											onChange({
-												'background-layers': layers,
-											});
-										}}
-										onOpen={isOpen => {
-											if (isOpen) changeSelector(null);
-											else
-												selector !== layer.id
-													? changeSelector(layer.id)
-													: changeSelector(null);
-										}}
-										isOpen={selector === layer.id}
-										onRemove={() => {
-											changeSelector(null);
-											layers.splice(i, 1);
-
-											onChange({
-												'background-layers': layers,
-												...(layers.length === 0 && {
-													[getAttributeKey(
-														'background-active-media',
-														isHover,
-														prefix,
-														breakpoint
-													)]: 'none',
-												}),
-											});
-										}}
-										breakpoint={breakpoint}
-									/>
-								))}
-							</div>
-						</ReactDragListView>
-					)}
-					<LoaderControl
-						options={getOptions()}
-						onClick={value => {
-							layers.push(getObject(value));
+							layers.forEach((layer, i) => {
+								layers[i].id = i;
+							});
 
 							onChange({
-								'background-layers': layers,
-								...(layers.length > 0 && {
-									[getAttributeKey(
-										'background-active-media',
-										isHover,
-										prefix,
-										breakpoint
-									)]: 'layers',
-								}),
+								[getAttributeKey(
+									'background-layers',
+									isHover,
+									prefix,
+									breakpoint
+								)]: layers,
 							});
 						}}
-						forwards
-					/>
-				</div>
-			)}
+						nodeSelector='div.maxi-background-layer'
+						handleSelector='span.maxi-background-layer__title__mover'
+						ignoreSelector='div.maxi-background-layer__content'
+					>
+						<div className='maxi-background-layers_options'>
+							{layers.map((layer, i) => (
+								<LayerCard
+									key={`maxi-background-layers__${layer.id}`}
+									layerId={layer.id}
+									isButton={isButton}
+									clientId={clientId}
+									layer={layer}
+									onChange={layer => {
+										layers[layer.id] = layer;
+
+										onChange({
+											'background-layers': layers,
+										});
+									}}
+									onOpen={isOpen => {
+										if (isOpen) changeSelector(null);
+										else
+											selector !== layer.id
+												? changeSelector(layer.id)
+												: changeSelector(null);
+									}}
+									isOpen={selector === layer.id}
+									onRemove={() => {
+										changeSelector(null);
+										layers.splice(i, 1);
+
+										onChange({
+											'background-layers': layers,
+											...(layers.length === 0 && {
+												[getAttributeKey(
+													'background-active-media',
+													isHover,
+													prefix,
+													breakpoint
+												)]: 'none',
+											}),
+										});
+									}}
+									breakpoint={breakpoint}
+								/>
+							))}
+						</div>
+					</ReactDragListView>
+				)}
+				<LoaderControl
+					options={getOptions()}
+					onClick={value => {
+						layers.push(getObject(value));
+
+						onChange({
+							'background-layers': layers,
+							...(layers.length > 0 && {
+								[getAttributeKey(
+									'background-active-media',
+									isHover,
+									prefix,
+									breakpoint
+								)]: 'layers',
+							}),
+						});
+					}}
+					forwards
+				/>
+			</div>
 		</div>
 	);
 };

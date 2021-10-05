@@ -11,8 +11,7 @@ import getDisplayStyles from './getDisplayStyles';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, round, isNumber, merge, cloneDeep } from 'lodash';
-import { getSVGClassName } from '../../svg/utils';
+import { isEmpty, isNil, round, isNumber, merge } from 'lodash';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -684,84 +683,13 @@ const getGeneralBackgroundStyles = (
 	return { border, ...(!isEmpty(size) && { size }) };
 };
 
-const getBackgroundActiveMedia = (props, prefix = '', isHover = false) => {
-	const response = {};
-	const target = `${prefix}background-active-media`;
-
-	Object.entries(props).forEach(([key, val]) => {
-		if (!key.includes(target) || !val) return;
-
-		const breakpoint = key.replace(`${target}-`, '').replace('-hover', '');
-		const lastValue = getLastBreakpointAttribute(
-			target,
-			breakpoint !== 'general'
-				? BREAKPOINTS[BREAKPOINTS.indexOf(breakpoint) - 1]
-				: breakpoint,
-			props,
-			isHover
-		);
-
-		if (breakpoint === 'general' || lastValue !== val)
-			response[breakpoint] = val;
-	});
-
-	return response;
-};
-
-const setTargetsToStyles = (target, obj) => {
-	const response = cloneDeep({
-		...(obj.layers && { ...obj.layers }),
-	});
-
-	delete obj.layers;
-
-	const targets = {
-		border: `${target} > .maxi-background-displayer`,
-		color: `${target} > .maxi-background-displayer .maxi-background-displayer__color`,
-		gradient: `${target} > .maxi-background-displayer .maxi-background-displayer__gradient`,
-		image: `${target} > .maxi-background-displayer .maxi-background-displayer__images`,
-		video: `${target} > .maxi-background-displayer .maxi-background-displayer__video-player`,
-		svg: {
-			wrapper: `${target} > .maxi-background-displayer .maxi-background-displayer__svg`,
-			svg: `${target} > .maxi-background-displayer .maxi-background-displayer__svg`, // Originally comes with ` *`
-		},
-	};
-
-	Object.entries(targets).forEach(([key, val]) => {
-		if (key === 'svg') {
-			if (obj[key] && !isEmpty(obj[key])) {
-				Object.keys(obj[key]).forEach(SVGClassName => {
-					const wrapperKey = `${val.wrapper}.maxi-background-displayer__svg--${SVGClassName}`;
-					const svgKey = `${val.svg}.maxi-background-displayer__svg--${SVGClassName} *`;
-
-					if (!response[wrapperKey])
-						response[wrapperKey] = { background: {} };
-					if (!response[svgKey])
-						response[svgKey] = { background: {} };
-
-					response[wrapperKey].background =
-						obj[key][SVGClassName].wrapper;
-					response[svgKey].background = obj[key][SVGClassName].svg;
-				});
-			}
-		} else if (obj[key] && !isEmpty(obj[key])) {
-			if (!response?.[val]?.background)
-				response[val] = { background: {} };
-			response[val].background = obj[key];
-		}
-	});
-
-	if (response.layer)
-		Object.entries(response.layer).forEach(([key, val]) => {
-			response[key].background = val;
-
-			delete response.layer.key;
-		});
-
-	return response;
-};
-
-const getBasicResponseObject = ({ isHover, prefix, blockStyle, ...props }) => {
+const getBasicResponseObject = ({
+	target,
+	isHover,
+	prefix,
+	blockStyle,
+	...props
+}) => {
 	const includeBorder =
 		!isHover || (isHover && props[`${prefix}border-status-hover`]);
 
@@ -781,155 +709,23 @@ const getBasicResponseObject = ({ isHover, prefix, blockStyle, ...props }) => {
 		);
 
 	return {
-		...(includeBorder && { ...borderObj }),
+		...(includeBorder && {
+			[`${target} > .maxi-background-displayer`]: { ...borderObj },
+		}),
 	};
-};
-
-const getResponseActiveMedia = ({
-	target,
-	activeMedia,
-	response: rawResponse,
-	isHover,
-	prefix,
-	blockStyle,
-	breakpoint,
-	SVGClassName,
-	...props
-}) => {
-	const response = cloneDeep(rawResponse);
-
-	switch (activeMedia) {
-		case 'layers': {
-			const layers = getAttributeValue({
-				target: 'background-layers',
-				props,
-				isHover,
-				prefix,
-			});
-
-			if (layers && layers.length > 0) {
-				return {
-					...setBackgroundLayers({
-						response,
-						layers,
-						target,
-						isHover,
-						blockStyle,
-						prefix,
-						breakpoint,
-					}),
-				};
-			}
-
-			return {};
-		}
-		case 'color':
-			return {
-				...getColorBackgroundObject({
-					...getGroupAttributes(props, 'backgroundColor', isHover),
-					isHover,
-					prefix,
-					blockStyle,
-					breakpoint,
-				}),
-			};
-
-		case 'gradient':
-			return {
-				...{
-					...getGradientBackgroundObject({
-						...getGroupAttributes(
-							props,
-							'backgroundGradient',
-							isHover
-						),
-						isHover,
-						prefix,
-						breakpoint,
-					}),
-				},
-			};
-
-		case 'image':
-			return {
-				...getImageBackgroundObject({
-					...getGroupAttributes(props, 'backgroundImage', isHover),
-					isHover,
-					prefix,
-					breakpoint,
-				}),
-			};
-
-		case 'video':
-			return {
-				...getVideoBackgroundObject({
-					...getGroupAttributes(props, 'backgroundVideo', isHover),
-					isHover,
-					prefix,
-					breakpoint,
-				}),
-			};
-
-		case 'svg':
-			return {
-				[SVGClassName]: {
-					wrapper: {
-						...response.svg?.[SVGClassName]?.wrapper,
-						...{
-							...getSVGWrapperBackgroundObject({
-								...getGroupAttributes(
-									props,
-									'backgroundSVG',
-									isHover
-								),
-								breakpoint,
-								isHover,
-							}),
-						},
-					},
-					svg: {
-						...response.svg?.[SVGClassName]?.svg,
-						...{
-							...getSVGBackgroundObject({
-								...getGroupAttributes(
-									props,
-									'backgroundSVG',
-									isHover
-								),
-								blockStyle,
-								breakpoint,
-								isHover,
-							}),
-						},
-					},
-				},
-			};
-		default:
-			return {};
-	}
 };
 
 const getBackgroundStyles = ({
 	target: rawTarget,
 	isHover = false,
 	prefix = '',
-	groupAttrNames = {
-		background: 'background',
-		backgroundColor: 'backgroundColor',
-		backgroundImage: 'backgroundImage',
-		backgroundVideo: 'backgroundVideo',
-		backgroundGradient: 'backgroundGradient',
-		backgroundSVG: 'backgroundSVG',
-		border: 'border',
-		borderRadius: 'borderRadius',
-		borderWidth: 'borderWidth',
-	},
 	blockStyle,
 	...props
 }) => {
 	const target = `${rawTarget ?? ''}${isHover ? ':hover' : ''}`;
 
-	const response = getBasicResponseObject({
+	let response = getBasicResponseObject({
+		target,
 		isHover,
 		prefix,
 		blockStyle,
@@ -938,130 +734,34 @@ const getBackgroundStyles = ({
 
 	if (isHover && !props[`${prefix}background-status-hover`]) return response;
 
-	const activeMedias = getBackgroundActiveMedia(props, prefix);
-
-	BREAKPOINTS.forEach(breakpoint => {
-		const activeMedia = getLastBreakpointAttribute(
-			'',
-			breakpoint,
-			activeMedias
-		);
-		const currentActiveMedia = getAttributeValue({
-			target: 'background-active-media',
-			props,
-			isHover,
-			breakpoint,
-			prefix,
-		});
-		const prevBreakpoint =
-			breakpoint !== 'general'
-				? BREAKPOINTS[BREAKPOINTS.indexOf(breakpoint) - 1]
-				: breakpoint;
-		const lastActiveMedia = getLastBreakpointAttribute(
-			'',
-			prevBreakpoint,
-			activeMedias
-		);
-		const SVGClassName =
-			activeMedia === 'svg'
-				? getSVGClassName(
-						getLastBreakpointAttribute(
-							'background-svg-SVGElement',
-							breakpoint,
-							props,
-							isHover
-						)
-				  )
-				: null;
-
-		const activeMediaContent = getResponseActiveMedia({
-			target,
-			activeMedia,
-			response,
-			isHover,
-			prefix,
-			blockStyle,
-			breakpoint,
-			SVGClassName,
-			...props,
-		});
-
-		// is currentActiveMedia always equal to activeMedia???
-		// console.log(currentActiveMedia === activeMedia);
-
-		if (activeMedia === 'svg')
-			response.svg = {
-				...response.svg,
-				[SVGClassName]: {
-					...response.svg?.[SVGClassName],
-					wrapper: {
-						...response.svg?.[SVGClassName]?.wrapper,
-						...activeMediaContent[SVGClassName].wrapper,
-					},
-					svg: {
-						...response.svg?.[SVGClassName]?.svg,
-						...activeMediaContent[SVGClassName].svg,
-					},
-				},
-			};
-		else
-			response[activeMedia] = {
-				...merge(
-					{ ...response[activeMedia] },
-					{ ...activeMediaContent }
-				),
-			};
-
-		// Ensures different active medias to be visible
-		if (
-			currentActiveMedia &&
-			currentActiveMedia !== 'layers' &&
-			currentActiveMedia !== lastActiveMedia
-		) {
-			// Hide
-			if (lastActiveMedia === 'svg')
-				response.svg[
-					getSVGClassName(
-						getLastBreakpointAttribute(
-							'background-svg-SVGElement',
-							prevBreakpoint,
-							props,
-							isHover
-						)
-					)
-				].wrapper[breakpoint] = {
-					display: 'none',
-				};
-			else
-				response[lastActiveMedia][breakpoint] = {
-					...response[lastActiveMedia][breakpoint],
-					display: 'none',
-				};
-			// Show
-			if (activeMedia === 'svg')
-				response.svg[SVGClassName].wrapper[breakpoint] = {
-					...response.svg[[SVGClassName]].wrapper[breakpoint],
-					display: 'block',
-				};
-			else
-				response[activeMedia][breakpoint] = {
-					...response[activeMedia][breakpoint],
-					display: 'block',
-				};
-		} else if (breakpoint === 'general')
-			if (currentActiveMedia === 'svg')
-				response.svg[SVGClassName].wrapper.general = {
-					...response.svg[SVGClassName].wrapper.general,
-					display: 'block',
-				};
-			else
-				response[activeMedia].general = {
-					...response[activeMedia].general,
-					display: 'block',
-				};
+	const layers = getAttributeValue({
+		target: 'background-layers',
+		props,
+		isHover,
+		prefix,
 	});
 
-	return setTargetsToStyles(target, response);
+	if (layers && layers.length > 0)
+		BREAKPOINTS.forEach(breakpoint => {
+			response = {
+				...merge(
+					{ ...response },
+					{
+						...setBackgroundLayers({
+							response,
+							layers,
+							target,
+							isHover,
+							blockStyle,
+							prefix,
+							breakpoint,
+						}),
+					}
+				),
+			};
+		});
+
+	return response;
 };
 
 export default getBackgroundStyles;

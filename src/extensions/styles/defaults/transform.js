@@ -38,9 +38,45 @@ const transform = {
 		type: 'string',
 		default: '%',
 	},
+	'transform-origin-x-unit-xxl': {
+		type: 'string',
+	},
+	'transform-origin-x-unit-xl': {
+		type: 'string',
+	},
+	'transform-origin-x-unit-l': {
+		type: 'string',
+	},
+	'transform-origin-x-unit-m': {
+		type: 'string',
+	},
+	'transform-origin-x-unit-s': {
+		type: 'string',
+	},
+	'transform-origin-x-unit-xs': {
+		type: 'string',
+	},
 	'transform-origin-y-unit-general': {
 		type: 'string',
 		default: '%',
+	},
+	'transform-origin-y-unit-xxl': {
+		type: 'string',
+	},
+	'transform-origin-y-unit-xl': {
+		type: 'string',
+	},
+	'transform-origin-y-unit-l': {
+		type: 'string',
+	},
+	'transform-origin-y-unit-m': {
+		type: 'string',
+	},
+	'transform-origin-y-unit-s': {
+		type: 'string',
+	},
+	'transform-origin-y-unit-xs': {
+		type: 'string',
 	},
 	'transform-scale-x-xxl': {
 		type: 'number',

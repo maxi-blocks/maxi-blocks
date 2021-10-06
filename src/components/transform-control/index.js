@@ -38,20 +38,16 @@ const TransformControl = props => {
 		getGroupAttributes(props, 'transform')
 	);
 
-	const isTransformed = () => {
-		let transform = false;
-
-		Object.entries(transformOptions).forEach(([key, val]) => {
+	const isTransformed = () =>
+		Object.entries(transformOptions).some(([key, val]) => {
 			if (
 				!key.includes('unit') &&
 				!key.includes('translate') &&
 				!isNil(val)
 			)
-				transform = true;
+				return true;
+			return false;
 		});
-
-		return transform;
-	};
 
 	const [transformStatus, setTransformStatus] = useState('scale');
 

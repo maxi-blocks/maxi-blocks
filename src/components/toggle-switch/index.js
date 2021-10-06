@@ -23,40 +23,30 @@ import './editor.scss';
  * Component
  */
 const ToggleSwitch = ({ className, onChange, label, help, selected }) => {
-	const classes = classnames('maxi-toggle-switch', className);
 	const instanceId = useInstanceId(ToggleSwitch);
 	const id = `maxi-toggle-switch-${instanceId}`;
-	const [value, setValue] = useState(selected || false);
-
-	const handleKeyPress = e => {
-		if (e.keyCode == 0 || e.keyCode == 32) {
-			setValue(!value);
-			onChange(!value);
-		}
-	};
+	const [checked, setValue] = useState(selected || false);
+	const classes = classnames('maxi-toggle-switch', className, {
+		'is-checked': checked,
+	});
 
 	return (
-		<div
-			onKeyPress={handleKeyPress}
-			className='maxi-toggle-switch-wrapper'
-			tabIndex='0'
-		>
-			<BaseControl label={label} id={id} help={help} className={classes}>
-				<div className='maxi-toggle-switch__toggle'>
-					<input
-						onChange={() => {
-							setValue(!value);
-							onChange(!value);
-						}}
-						checked={value}
-						type='checkbox'
-						id={id}
-						aria-describedby={help ? `${id}__help` : undefined}
-					/>
-					<label htmlFor={id} />
-				</div>
-			</BaseControl>
-		</div>
+		<BaseControl label={label} id={id} help={help} className={classes}>
+			<div className='maxi-toggle-switch__toggle'>
+				<input
+					onChange={() => {
+						setValue(!checked);
+						onChange(!checked);
+					}}
+					checked={checked}
+					type='checkbox'
+					id={id}
+					aria-describedby={help ? `${id}__help` : undefined}
+				/>
+				<span className='maxi-toggle-switch__toggle__track' />
+				<span className='maxi-toggle-switch__toggle__thumb' />
+			</div>
+		</BaseControl>
 	);
 };
 

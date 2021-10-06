@@ -49,6 +49,7 @@ export { default as PositionControl } from './position-control';
 export { default as RadioControl } from './radio-control';
 export { default as RawHTML } from './raw-html';
 export { default as ResponsiveControl } from './responsive-control';
+export { default as ResponsiveTabsControl } from './responsive-tabs-control';
 export { default as SelectControl } from './select-control';
 export { default as SettingTabsControl } from './setting-tabs-control';
 export { default as ShapeDivider } from './shape-divider';

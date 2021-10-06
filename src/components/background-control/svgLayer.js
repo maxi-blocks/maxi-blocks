@@ -4,6 +4,7 @@
 import { __ } from '@wordpress/i18n';
 
 /**
+ * Internal dependencies
  */
 import SettingTabsControl from '../setting-tabs-control';
 import SVGFillControl from '../svg-fill-control';

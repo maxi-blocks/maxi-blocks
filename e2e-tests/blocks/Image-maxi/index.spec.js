@@ -103,6 +103,12 @@ describe('Image Maxi', () => {
 
 		expect(textAlignment).toStrictEqual(expectedAlignment);
 
+		await accordionPanel.$$eval(
+			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-tabs-control__button',
+			select => select[1].click()
+		);
+		await page.waitForTimeout(1000);
+
 		// size, line-height, letter-spacing
 		const inputs = await accordionPanel.$$(
 			'.maxi-advanced-number-control .maxi-base-control__field input'
@@ -126,19 +132,19 @@ describe('Image Maxi', () => {
 
 		const styleAttributes = await getBlockAttributes();
 		const typographyAttributes = (({
-			'font-size-xs': fontSize,
-			'line-height-xs': lineHeight,
-			'letter-spacing-xs': letterSpacing,
+			'font-size-xl': fontSize,
+			'line-height-xl': lineHeight,
+			'letter-spacing-xl': letterSpacing,
 		}) => ({
-			'font-size-xs': fontSize,
-			'line-height-xs': lineHeight,
-			'letter-spacing-xs': letterSpacing,
+			'font-size-xl': fontSize,
+			'line-height-xl': lineHeight,
+			'letter-spacing-xl': letterSpacing,
 		}))(styleAttributes);
 
 		const expectedAttributesTwo = {
-			'font-size-xs': 19,
-			'line-height-xs': 4,
-			'letter-spacing-xs': 11,
+			'font-size-xl': 19,
+			'line-height-xl': 4,
+			'letter-spacing-xl': 11,
 		};
 
 		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);

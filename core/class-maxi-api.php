@@ -80,13 +80,6 @@ if (!class_exists('MaxiBlocks_API')):
 		 * Register REST API routes
 		 */
 		public function mb_register_routes() {
-			register_rest_route($this->namespace, '/admin-options', [
-				'methods' => 'GET',
-				'callback' => [$this, 'get_maxi_blocks_admin_options'],
-				'permission_callback' => function () {
-					return true;
-				},
-			]);
 			register_rest_route($this->namespace, '/settings', [
 				'methods' => 'GET',
 				'callback' => [$this, 'get_maxi_blocks_options'],
@@ -252,19 +245,6 @@ if (!class_exists('MaxiBlocks_API')):
 					return current_user_can('edit_posts');
 				},
 			]);
-		}
-
-		/**
-		 * Returns Maxi Blocks admin options
-		 */
-		public function get_maxi_blocks_admin_options() {
-
-			$response = [
-				'accessibility_option' => get_option('accessibility_option'),
-			];
-
-			return $response;
-
 		}
 
 		/**

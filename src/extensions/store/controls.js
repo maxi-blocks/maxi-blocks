@@ -5,9 +5,6 @@ import apiFetch from '@wordpress/api-fetch';
 import { select } from '@wordpress/data';
 
 const controls = {
-	async RECEIVE_ADMIN_OPTIONS() {
-		return apiFetch({ path: '/maxi-blocks/v1.0/admin-options/' });
-	},
 	async RECEIVE_GENERAL_SETTINGS() {
 		return apiFetch({ path: '/maxi-blocks/v1.0/settings' });
 	},

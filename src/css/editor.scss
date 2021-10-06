@@ -17,7 +17,7 @@ h2.gx_error {
 	font-size: 16px;
 	text-align: center;
 }
-.visuallyhidden {
+.visually-hidden {
 	position: absolute;
 	overflow: hidden;
 	width: 1px;
@@ -177,7 +177,7 @@ body {
 	}
 }
 
-body.maxi-blocks--active .maxi-sidebar.maxi-accessibility-sidebar {
+body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	input[type="text"],
 	input[type="number"],
 	textarea,
@@ -190,7 +190,7 @@ body.maxi-blocks--active .maxi-sidebar.maxi-accessibility-sidebar {
 			outline: 2px solid transparent;
 		}
 	}
-	.components-button:focus:not(:disabled) {
+	.maxi-components-button:focus:not(:disabled) {
 		border-color: var(--maxi-secondary-color);
 		box-shadow: 0 0 0 1px var(--maxi-secondary-color);
 		outline: 2px solid transparent;
@@ -244,7 +244,7 @@ body .toolbar-item__popover {
 		padding: 0 24px 0px 10px !important;
 		opacity: 1 !important;
 	}
-	.components-button:focus:not(:disabled) {
+	.maxi-components-button:focus:not(:disabled) {
 		box-shadow: none;
 		outline: none;
 	}

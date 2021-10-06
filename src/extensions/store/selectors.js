@@ -1,10 +1,6 @@
 const selectors = {
-	receiveMaxiAdminOptions(state) {
-		if (state) return state.adminOptions;
-		return false;
-	},
 	receiveMaxiSettings(state) {
-		if (state) return state;
+		if (state) return state.settings;
 		return false;
 	},
 	receiveMaxiBreakpoints(state) {

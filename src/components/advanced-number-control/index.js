@@ -131,7 +131,6 @@ const AdvancedNumberControl = props => {
 			/>
 			{enableUnit && (
 				<SelectControl
-					label={__('Unit', 'maxi-blocks')}
 					hideLabelFromVision
 					className='maxi-dimensions-control__units'
 					options={getOptions()}

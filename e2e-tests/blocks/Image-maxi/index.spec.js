@@ -12,7 +12,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('Image Maxi', () => {
 	beforeEach(async () => {

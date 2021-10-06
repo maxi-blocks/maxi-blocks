@@ -30,7 +30,6 @@ const breakpointResizer = (size, breakpoints, xxlSize = 2000) => {
 
 const reducer = (
 	state = {
-		adminOptions: {},
 		settings: {},
 		breakpoints: {},
 		deviceType: 'general',
@@ -41,11 +40,6 @@ const reducer = (
 	action
 ) => {
 	switch (action.type) {
-		case 'SEND_ADMIN_OPTIONS':
-			return {
-				...state,
-				adminOptions: action.adminOptions,
-			};
 		case 'SEND_GLOBAL_SETTINGS':
 			return {
 				...state,

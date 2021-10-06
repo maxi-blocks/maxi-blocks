@@ -92,18 +92,12 @@ wp.domReady(() => {
 						const blockToolbarEditor = document.querySelector(
 							'.block-editor-block-list__block-popover'
 						);
-						const { accessibility_option } =
-							select('maxiBlocks').receiveMaxiAdminOptions();
 
 						if (
 							!isEmpty(blockNames) &&
 							selectedBlocks &&
 							allowedBlocks.includes(blockNames[0].name)
 						) {
-							if (editPostSidebarNode && !!accessibility_option)
-								editPostSidebarNode.classList.add(
-									'maxi-accessibility-sidebar'
-								);
 							if (editPostSidebarNode)
 								editPostSidebarNode.classList.add(
 									'maxi-sidebar'
@@ -113,10 +107,6 @@ wp.domReady(() => {
 									'maxi-controls'
 								);
 						} else {
-							if (editPostSidebarNode && !!accessibility_option)
-								editPostSidebarNode.classList.remove(
-									'maxi-accessibility-sidebar'
-								);
 							if (editPostSidebarNode)
 								editPostSidebarNode.classList.remove(
 									'maxi-sidebar'
@@ -132,13 +122,6 @@ wp.domReady(() => {
 								!!blockName &&
 								allowedBlocks.includes(blockName)
 							) {
-								if (
-									editPostSidebarNode &&
-									!!accessibility_option
-								)
-									editPostSidebarNode.classList.add(
-										'maxi-accessibility-sidebar'
-									);
 								if (editPostSidebarNode)
 									editPostSidebarNode.classList.add(
 										'maxi-sidebar'
@@ -153,13 +136,6 @@ wp.domReady(() => {
 								if (blockToolbarEditor)
 									blockToolbarEditor.style.display = 'none';
 							} else {
-								if (
-									editPostSidebarNode &&
-									!!accessibility_option
-								)
-									editPostSidebarNode.classList.remove(
-										'maxi-accessibility-sidebar'
-									);
 								if (editPostSidebarNode)
 									editPostSidebarNode.classList.remove(
 										'maxi-sidebar'

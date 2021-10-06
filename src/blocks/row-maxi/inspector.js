@@ -40,13 +40,14 @@ import {
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
-		customLabel,
-		uniqueID,
-		isFirstOnHierarchy,
 		blockStyle,
-		horizontalAlign,
-		verticalAlign,
+		customLabel,
 		extraClassName,
+		fullWidth,
+		horizontalAlign,
+		isFirstOnHierarchy,
+		uniqueID,
+		verticalAlign,
 	} = attributes;
 
 	return (
@@ -469,6 +470,22 @@ const Inspector = props => {
 											),
 											content: (
 												<>
+													<ToggleSwitch
+														label={__(
+															'Set row to full-width',
+															'maxi-blocks'
+														)}
+														selected={
+															fullWidth === 'full'
+														}
+														onChange={val =>
+															setAttributes({
+																fullWidth: val
+																	? 'full'
+																	: 'normal',
+															})
+														}
+													/>
 													<FullSizeControl
 														{...getGroupAttributes(
 															attributes,

@@ -43,12 +43,12 @@ import {
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
-		customLabel,
-		uniqueID,
-		isFirstOnHierarchy,
 		blockStyle,
-		fullWidth,
+		customLabel,
 		extraClassName,
+		fullWidth,
+		isFirstOnHierarchy,
+		uniqueID,
 	} = attributes;
 
 	return (

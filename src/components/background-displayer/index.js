@@ -12,7 +12,7 @@ import VideoLayer from './videoLayer';
  * External dependencies
  */
 import classnames from 'classnames';
-import { cloneDeep, uniqueId } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 /**
  * Styles
@@ -91,12 +91,8 @@ const BackgroundDisplayer = props => {
 
 	return (
 		<div className={classes}>
-			<BackgroundContent
-				key={uniqueId('background-displayer-content--')}
-				{...props}
-				isHover={false}
-			/>
-			{/* <BackgroundContent {...props} activeLayers={activeLayers} isHover /> */}
+			<BackgroundContent {...props} isHover={false} />
+			{/* <BackgroundContent {...props} isHover /> */}
 		</div>
 	);
 };

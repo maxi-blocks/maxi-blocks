@@ -31,10 +31,12 @@ const VideoLayer = props => {
 
 	// TODO: needs to be changed by a ref of the parent
 	const parentEl = document.querySelector(`.${blockClassName}`);
-	let iframeHeight = '100%';
-	if (parentEl) {
-		iframeHeight = `${parentEl.offsetWidth / 1.77}px`; // Set the height of the iframe according to the aspect ratio 16:9
-	}
+	const iframeHeight = '100%';
+
+	// TOFIX: makes the component break when reloading the site
+	// if (parentEl) {
+	// 	iframeHeight = `${parentEl.offsetWidth / 1.77}px`; // Set the height of the iframe according to the aspect ratio 16:9
+	// }
 
 	const videoLoop = getLastBreakpointAttribute(
 		'background-video-loop',

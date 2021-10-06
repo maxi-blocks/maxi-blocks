@@ -322,8 +322,7 @@ export const getVideoBackgroundObject = ({
 	);
 
 	// Opacity
-	if (isNumber(bgVideoOpacity))
-		response[breakpoint].opacity = bgVideoOpacity / 100;
+	if (isNumber(bgVideoOpacity)) response[breakpoint].opacity = bgVideoOpacity;
 
 	// Clip-path
 	if (!isEmpty(bgVideoClipPath))

@@ -236,6 +236,7 @@ const VideoLayer = props => {
 			/>
 			<ResponsiveTabsControl breakpoint={breakpoint}>
 				<VideoLayerContent
+					videoOptions={videoOptions}
 					onChange={onChange}
 					isHover={isHover}
 					prefix={prefix}

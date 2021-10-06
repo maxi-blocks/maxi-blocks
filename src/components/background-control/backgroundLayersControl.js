@@ -242,7 +242,6 @@ const BackgroundLayersControl = ({
 	isButton = false,
 	prefix = '',
 	onChange,
-	layersStatus,
 	disableImage = false,
 	disableVideo = false,
 	disableGradient = false,

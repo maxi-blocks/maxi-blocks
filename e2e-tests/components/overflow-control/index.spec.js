@@ -17,16 +17,16 @@ describe('OverflowControl', () => {
 		await insertBlock('Text Maxi');
 		await openAdvancedSidebar(page, 'overflow');
 
-		const selector = await page.$$('.maxi-position-control select');
+		const selector = await page.$$('.maxi-overflow-control select');
 
-		await selector[1].select('hidden');
+		await selector[0].select('hidden');
 
 		const attributes = await getBlockAttributes();
 		const generalOverflow = attributes['overflow-x-general'];
 
 		expect(generalOverflow).toStrictEqual('hidden');
 
-		await selector[2].select('clip');
+		await selector[1].select('clip');
 
 		const generalAttributes = await getBlockAttributes();
 		const generalYOverflow = generalAttributes['overflow-y-general'];
@@ -38,16 +38,16 @@ describe('OverflowControl', () => {
 		await changeResponsive(page, 's');
 
 		const responsiveSOverflowX = await page.$$eval(
-			'.maxi-position-control select',
-			selectorS => selectorS[1].value
+			'.maxi-overflow-control select',
+			selectorS => selectorS[0].value
 		);
 
 		expect(responsiveSOverflowX).toStrictEqual('hidden');
 
 		// change overflow
-		const selector = await page.$$('.maxi-position-control select');
+		const selector = await page.$$('.maxi-overflow-control select');
 
-		await selector[1].select('clip');
+		await selector[0].select('clip');
 
 		const sAttributes = await getBlockAttributes();
 		const sYOverflow = sAttributes['overflow-x-s'];
@@ -57,8 +57,8 @@ describe('OverflowControl', () => {
 		// responsive xs
 		await changeResponsive(page, 's');
 		const responsiveXsOverflowX = await page.$$eval(
-			'.maxi-position-control select',
-			selectorXs => selectorXs[1].value
+			'.maxi-overflow-control select',
+			selectorXs => selectorXs[0].value
 		);
 
 		expect(responsiveXsOverflowX).toStrictEqual('clip');
@@ -67,8 +67,8 @@ describe('OverflowControl', () => {
 		await changeResponsive(page, 'm');
 
 		const responsiveMOverflowX = await page.$$eval(
-			'.maxi-position-control select',
-			selectorM => selectorM[1].value
+			'.maxi-overflow-control select',
+			selectorM => selectorM[0].value
 		);
 
 		expect(responsiveMOverflowX).toStrictEqual('hidden');

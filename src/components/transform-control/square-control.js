@@ -11,7 +11,7 @@ import { Tooltip } from '@wordpress/components';
 import Button from '../button';
 import SelectControl from '../select-control';
 import BlockResizer from '../block-resizer';
-import { validateOriginValue } from '../../extensions/styles';
+import validateOriginValue from '../../extensions/styles/utils';
 
 /**
  * External dependencies

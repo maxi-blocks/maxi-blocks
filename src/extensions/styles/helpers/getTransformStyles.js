@@ -2,7 +2,7 @@
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
-import validateOriginValue from '../validateOriginValue';
+import validateOriginValue from '../utils';
 
 /**
  * External dependencies

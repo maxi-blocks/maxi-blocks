@@ -9,33 +9,17 @@ import {
 	getEditedPostContent,
 	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, openPreviewPage } from '../../utils';
 
 describe('Image Maxi', () => {
 	it('Image Maxi does not break', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
 		expect(await getEditedPostContent()).toMatchSnapshot();
-	});
-
-	it('Image alt tag', async () => {
-		await openSidebar(page, 'image alt tag');
-
-		// width
-		const selector = await page.$('.maxi-image-alt-tag select');
-		await selector.select('custom');
-
-		await page.$eval('.maxi-image-custom-tag input', input =>
-			input.focus()
-		);
-
-		await page.keyboard.type('Image Tag');
-
-		const altTag = await getBlockAttributes();
-		expect(altTag.mediaAlt).toStrictEqual('Image Tag');
 	});
 
 	it('Checking the image caption', async () => {
@@ -282,7 +266,7 @@ describe('Image Maxi', () => {
 
 		// width
 		await page.$eval(
-			'.maxi-image-dimension-width .components-input-control__input',
+			'.maxi-image-inspector__dimension-width .components-input-control__input',
 			input => input.focus()
 		);
 
@@ -293,18 +277,57 @@ describe('Image Maxi', () => {
 		expect(imageWidth.imgWidth).toStrictEqual(60);
 
 		// reset width
-		const button = await page.$('.maxi-image-dimension-width button');
+		const button = await page.$(
+			'.maxi-image-inspector__dimension-width button'
+		);
 		await button.click();
 
 		const imageWidthReset = await getBlockAttributes();
 		expect(imageWidthReset.imgWidth).toStrictEqual(100);
 
 		// imageRatio
-		const selector = await page.$('.maxi-image-ratio select');
+		const selector = await page.$('.maxi-image-inspector__ratio select');
 
 		await selector.select('ar11');
 
 		const ratio = await getBlockAttributes();
 		expect(ratio.imageRatio).toStrictEqual('ar11');
+
+		const checkFrontend = await page.$eval(
+			'.maxi-image-block .maxi-image-ratio__ar11',
+			div => div.innerHTML
+		);
+
+		expect(checkFrontend).toMatchSnapshot();
+	});
+	it('Image alt tag', async () => {
+		await openSidebar(page, 'image alt tag');
+
+		// width
+		const selector = await page.$('.maxi-image-inspector__alt-tag select');
+		await selector.select('custom');
+
+		await page.$eval('.maxi-image-inspector__custom-tag input', input =>
+			input.focus()
+		);
+
+		await page.keyboard.type('Image Tag');
+
+		const altTag = await getBlockAttributes();
+		expect(altTag.mediaAlt).toStrictEqual('Image Tag');
+
+		/* await changeResponsive(page, 'xl');
+		await page.$eval(
+			'.maxi-style-cards__sc .maxi-style-cards__sc__actions a',
+			button => button.click()
+		); */
+
+		const previewPage = await openPreviewPage(page);
+		await page.waitForTimeout(200);
+		const expectAlt = await previewPage.$eval(
+			'figure div img',
+			alterative => alterative.alt
+		);
+		expect(expectAlt).toStrictEqual('Image Tag');
 	});
 });

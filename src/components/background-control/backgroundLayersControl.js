@@ -405,14 +405,6 @@ const BackgroundLayersControl = ({
 
 										onChange({
 											'background-layers': layers,
-											...(layers.length === 0 && {
-												[getAttributeKey(
-													'background-active-media',
-													isHover,
-													prefix,
-													breakpoint
-												)]: 'none',
-											}),
 										});
 									}}
 									breakpoint={breakpoint}

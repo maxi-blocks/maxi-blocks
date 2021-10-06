@@ -13,7 +13,7 @@ import {
 	AdvancedNumberControl,
 	AlignmentControl,
 	AxisControl,
-	BackgroundControl,
+	BlockBackgroundControl,
 	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
@@ -398,7 +398,7 @@ const Inspector = memo(
 																),
 																content: (
 																	<>
-																		<BackgroundControl
+																		<BlockBackgroundControl
 																			{...getGroupAttributes(
 																				attributes,
 																				[
@@ -482,7 +482,7 @@ const Inspector = memo(
 																		{attributes[
 																			'background-status-hover'
 																		] && (
-																			<BackgroundControl
+																			<BlockBackgroundControl
 																				{...getGroupAttributes(
 																					attributes,
 																					[

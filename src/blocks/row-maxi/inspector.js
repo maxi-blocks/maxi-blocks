@@ -9,7 +9,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	AxisControl,
-	BackgroundControl,
+	BlockBackgroundControl,
 	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
@@ -234,7 +234,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<BackgroundControl
+																	<BlockBackgroundControl
 																		{...getGroupAttributes(
 																			attributes,
 																			[
@@ -315,7 +315,7 @@ const Inspector = props => {
 																	{attributes[
 																		'background-status-hover'
 																	] && (
-																		<BackgroundControl
+																		<BlockBackgroundControl
 																			{...getGroupAttributes(
 																				attributes,
 																				[

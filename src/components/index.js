@@ -5,6 +5,7 @@ export { default as ArrowControl } from './arrow-control';
 export { default as ArrowDisplayer } from './arrow-displayer';
 export { default as AxisControl } from './axis-control';
 export { default as BackgroundControl } from './background-control';
+export { default as BlockBackgroundControl } from './background-control/blockBackgroundControl';
 export { default as BackgroundDisplayer } from './background-displayer';
 export { default as BaseControl } from './base-control';
 export { default as BlockPlaceholder } from './block-placeholder';

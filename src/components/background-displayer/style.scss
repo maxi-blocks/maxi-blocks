@@ -57,17 +57,3 @@
 		}
 	}
 }
-
-// Hide video background on mobile
-@media only screen and (max-width: 768px) {
-	.maxi-background-displayer {
-		&__video-player {
-			&--mobile-hidden {
-				iframe,
-				video {
-					display: none;
-				}
-			}
-		}
-	}
-}

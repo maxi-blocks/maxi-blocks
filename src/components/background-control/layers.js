@@ -45,7 +45,6 @@ export const videoOptions = {
 	'background-video-clipPath': '',
 	'background-video-fallbackID': null,
 	'background-video-fallbackURL': '',
-	'background-video-playOnMobile': false,
 	'background-video-opacity': 1,
 };
 
@@ -66,10 +65,10 @@ export const SVGOptions = {
 	'background-svg-SVGData': {},
 	'background-svg-SVGMediaID': null,
 	'background-svg-SVGMediaURL': '',
-	'background-svg-top--unit': '%',
+	'background-svg-top-unit': '%',
 	'background-svg-top': null,
-	'background-svg-left--unit': '%',
+	'background-svg-left-unit': '%',
 	'background-svg-left': null,
 	'background-svg-size': 100,
-	'background-svg-size--unit': '%',
+	'background-svg-size-unit': '%',
 };

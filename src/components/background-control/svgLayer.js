@@ -21,17 +21,17 @@ import MaxiModal from '../../editor/library/modal';
  * External dependencies
  */
 import { isEmpty, cloneDeep } from 'lodash';
+import { ResponsiveTabsControl } from '..';
 
 /**
  * Component
  */
-const SVGLayer = props => {
+const SVGLayerContent = props => {
 	const {
 		onChange,
 		isHover = false,
 		prefix = '',
 		clientId,
-		layerId,
 		breakpoint,
 	} = props;
 
@@ -61,67 +61,6 @@ const SVGLayer = props => {
 				disablePadding
 				items={[
 					{
-						label: __('Shape', 'maxi-blocks'),
-						content: (
-							<MaxiModal
-								type='bg-shape'
-								style={getBlockStyle(clientId)}
-								onRemove={obj => {
-									if (layerId) {
-										delete SVGOptions[
-											'background-svg-SVGElement'
-										];
-										delete SVGOptions[
-											'background-svg-SVGMediaID'
-										];
-										delete SVGOptions[
-											'background-svg-SVGMediaURL'
-										];
-										delete SVGOptions[
-											'background-svg-SVGData'
-										];
-									}
-									onChange({ ...SVGOptions, ...obj });
-								}}
-								icon={getLastBreakpointAttribute(
-									`${prefix}background-svg-SVGElement`,
-									breakpoint,
-									SVGOptions,
-									isHover
-								)}
-								onSelect={obj => {
-									if (breakpoint)
-										Object.entries(obj).forEach(
-											([key, val]) => {
-												if (
-													key.lastIndexOf(
-														`-${breakpoint}`
-													) !==
-													key.length -
-														`-${breakpoint}`.length
-												) {
-													obj[
-														`${key}-${breakpoint}`
-													] = val;
-
-													delete obj[key];
-												}
-											}
-										);
-
-									onChange(obj);
-								}}
-							/>
-						),
-					},
-					!isEmpty(
-						getLastBreakpointAttribute(
-							`${prefix}background-svg-SVGElement`,
-							breakpoint,
-							SVGOptions,
-							isHover
-						)
-					) && {
 						label: __('Fill', 'maxi-blocks'),
 						content: (
 							<SVGFillControl
@@ -133,14 +72,7 @@ const SVGLayer = props => {
 							/>
 						),
 					},
-					!isEmpty(
-						getLastBreakpointAttribute(
-							`${prefix}background-svg-SVGElement`,
-							breakpoint,
-							SVGOptions,
-							isHover
-						)
-					) && {
+					{
 						label: __('Position', 'maxi-blocks'),
 						content: (
 							<>
@@ -154,7 +86,7 @@ const SVGLayer = props => {
 									)}
 									enableUnit
 									unit={getLastBreakpointAttribute(
-										`${prefix}background-svg-top--unit`,
+										`${prefix}background-svg-top-unit`,
 										breakpoint,
 										SVGOptions,
 										isHover
@@ -172,7 +104,7 @@ const SVGLayer = props => {
 									onChangeUnit={val =>
 										onChange({
 											[getAttributeKey(
-												'background-svg-top--unit',
+												'background-svg-top-unit',
 												isHover,
 												prefix,
 												breakpoint
@@ -195,13 +127,13 @@ const SVGLayer = props => {
 												)
 											),
 											[getAttributeKey(
-												'background-svg-top--unit',
+												'background-svg-top-unit',
 												isHover,
 												prefix,
 												breakpoint
 											)]: getDefaultAttribute(
 												getAttributeKey(
-													'background-svg-top--unit',
+													'background-svg-top-unit',
 													isHover,
 													prefix,
 													breakpoint
@@ -221,7 +153,7 @@ const SVGLayer = props => {
 									)}
 									enableUnit
 									unit={getLastBreakpointAttribute(
-										`${prefix}background-svg-left--unit`,
+										`${prefix}background-svg-left-unit`,
 										breakpoint,
 										SVGOptions,
 										isHover
@@ -239,7 +171,7 @@ const SVGLayer = props => {
 									onChangeUnit={val =>
 										onChange({
 											[getAttributeKey(
-												'background-svg-left--unit',
+												'background-svg-left-unit',
 												isHover,
 												prefix,
 												breakpoint
@@ -262,13 +194,13 @@ const SVGLayer = props => {
 												)
 											),
 											[getAttributeKey(
-												'background-svg-left--unit',
+												'background-svg-left-unit',
 												isHover,
 												prefix,
 												breakpoint
 											)]: getDefaultAttribute(
 												getAttributeKey(
-													'background-svg-left--unit',
+													'background-svg-left-unit',
 													isHover,
 													prefix,
 													breakpoint
@@ -295,7 +227,7 @@ const SVGLayer = props => {
 								allowedUnits={['px', 'em', 'vw', '%']}
 								enableUnit
 								unit={getLastBreakpointAttribute(
-									`${prefix}background-svg-size--unit`,
+									`${prefix}background-svg-size-unit`,
 									breakpoint,
 									SVGOptions,
 									isHover
@@ -313,7 +245,7 @@ const SVGLayer = props => {
 								onChangeUnit={val =>
 									onChange({
 										[getAttributeKey(
-											'background-svg-size--unit',
+											'background-svg-size-unit',
 											isHover,
 											prefix,
 											breakpoint
@@ -336,13 +268,13 @@ const SVGLayer = props => {
 											)
 										),
 										[getAttributeKey(
-											'background-svg-size--unit',
+											'background-svg-size-unit',
 											isHover,
 											prefix,
 											breakpoint
 										)]: getDefaultAttribute(
 											getAttributeKey(
-												'background-svg-size--unit',
+												'background-svg-size-unit',
 												isHover,
 												prefix,
 												breakpoint
@@ -356,6 +288,54 @@ const SVGLayer = props => {
 					},
 				]}
 			/>
+		</>
+	);
+};
+
+const SVGLayer = props => {
+	const {
+		clientId,
+		SVGOptions,
+		layerId,
+		onChange,
+		prefix,
+		isHover,
+		breakpoint,
+	} = props;
+
+	const SVGElement =
+		SVGOptions[
+			getAttributeKey('background-svg-SVGElement', isHover, prefix)
+		];
+
+	return (
+		<>
+			<MaxiModal
+				type='bg-shape'
+				style={getBlockStyle(clientId)}
+				onRemove={obj => {
+					if (layerId) {
+						delete SVGOptions['background-svg-SVGElement'];
+						delete SVGOptions['background-svg-SVGMediaID'];
+						delete SVGOptions['background-svg-SVGMediaURL'];
+						delete SVGOptions['background-svg-SVGData'];
+					}
+					onChange({ ...SVGOptions, ...obj });
+				}}
+				icon={SVGElement}
+				onSelect={obj => onChange(obj)}
+			/>
+			{!isEmpty(SVGElement) && (
+				<ResponsiveTabsControl breakpoint={breakpoint}>
+					<SVGLayerContent
+						clientId={clientId}
+						SVGOptions={SVGOptions}
+						onChange={onChange}
+						prefix={prefix}
+						isHover={isHover}
+					/>
+				</ResponsiveTabsControl>
+			)}
 		</>
 	);
 };

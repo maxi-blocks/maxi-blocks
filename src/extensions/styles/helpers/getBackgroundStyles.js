@@ -369,7 +369,7 @@ const getSVGWrapperBackgroundObject = ({
 
 	if (bgSVGSize) {
 		const bgSVGSizeUnit = getLastBreakpointAttribute(
-			'background-svg-size--unit',
+			'background-svg-size-unit',
 			breakpoint,
 			props,
 			isHover
@@ -380,7 +380,7 @@ const getSVGWrapperBackgroundObject = ({
 
 	if (bgSVGTop) {
 		const bgSVGTopUnit = getLastBreakpointAttribute(
-			'background-svg-top--unit',
+			'background-svg-top-unit',
 			breakpoint,
 			props,
 			isHover
@@ -391,7 +391,7 @@ const getSVGWrapperBackgroundObject = ({
 
 	if (bgSVGLeft) {
 		const bgSVGLeftUnit = getLastBreakpointAttribute(
-			'background-svg-left--unit',
+			'background-svg-left-unit',
 			breakpoint,
 			props,
 			isHover

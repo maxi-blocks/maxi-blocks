@@ -25,7 +25,7 @@ import { getLastBreakpointAttribute } from '../../extensions/styles';
 const VideoLayer = props => {
 	const { videoOptions, blockClassName, className, breakpoint } = props;
 
-	let videoUrl = videoOptions[`background-video-mediaURL-${breakpoint}`];
+	let videoUrl = videoOptions['background-video-mediaURL'];
 
 	if (isNil(videoUrl)) return null;
 
@@ -48,11 +48,6 @@ const VideoLayer = props => {
 	);
 	const videoEndTime = getLastBreakpointAttribute(
 		'background-video-endTime',
-		breakpoint,
-		videoOptions
-	);
-	const videoPlayOnMobile = getLastBreakpointAttribute(
-		'background-video-playOnMobile',
 		breakpoint,
 		videoOptions
 	);
@@ -91,8 +86,6 @@ const VideoLayer = props => {
 	const videoPlayerClasses = classnames(
 		'maxi-background-displayer__layer',
 		'maxi-background-displayer__video-player',
-		!videoPlayOnMobile &&
-			'maxi-background-displayer__video-player--mobile-hidden',
 		className
 	);
 

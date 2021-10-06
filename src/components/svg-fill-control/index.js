@@ -37,12 +37,7 @@ const SVGFillControl = props => {
 	const classes = classnames('maxi-svg-fill-control', className);
 
 	const SVGData = cloneDeep(
-		getLastBreakpointAttribute(
-			'background-svg-SVGData',
-			breakpoint,
-			SVGOptions,
-			isHover
-		)
+		SVGOptions[getAttributeKey('background-svg-SVGData', isHover)]
 	);
 
 	const getFillItem = ([id, value]) => {

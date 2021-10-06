@@ -181,7 +181,7 @@ const backgroundSVGGeneral = {
 	'background-svg-SVGMediaURL-general': {
 		type: 'string',
 	},
-	'background-svg-top--unit-general': {
+	'background-svg-top-unit-general': {
 		type: 'string',
 		default: '%',
 	},
@@ -189,7 +189,7 @@ const backgroundSVGGeneral = {
 		type: 'number',
 		default: 0,
 	},
-	'background-svg-left--unit-general': {
+	'background-svg-left-unit-general': {
 		type: 'string',
 		default: '%',
 	},
@@ -201,7 +201,7 @@ const backgroundSVGGeneral = {
 		type: 'number',
 		default: 100,
 	},
-	'background-svg-size--unit-general': {
+	'background-svg-size-unit-general': {
 		type: 'string',
 		default: '%',
 	},

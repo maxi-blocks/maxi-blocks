@@ -9,11 +9,12 @@ import { useState } from '@wordpress/element';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import ClipPath from '../clip-path-control';
-import ToggleSwitch from '../toggle-switch';
 import ImageCropControl from '../image-crop-control';
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
+import ToggleSwitch from '../toggle-switch';
 import {
 	getDefaultAttribute,
 	getAttributeKey,
@@ -28,7 +29,7 @@ import { cloneDeep } from 'lodash';
 /**
  * Component
  */
-const ImageLayer = props => {
+const ImageLayerContent = props => {
 	const {
 		onChange,
 		disableClipPath,
@@ -581,6 +582,16 @@ const ImageLayer = props => {
 				/>
 			)}
 		</>
+	);
+};
+
+const ImageLayer = props => {
+	const { breakpoint, ...rest } = props;
+
+	return (
+		<ResponsiveTabsControl breakpoint={breakpoint}>
+			<ImageLayerContent {...rest} />
+		</ResponsiveTabsControl>
 	);
 };
 

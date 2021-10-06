@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ColorControl from '../color-control';
 import ClipPath from '../clip-path-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import {
 	getDefaultAttribute,
 	getAttributeKey,
@@ -22,7 +23,7 @@ import { cloneDeep } from 'lodash';
 /**
  * Component
  */
-const ColorLayer = props => {
+const ColorLayerContent = props => {
 	const {
 		onChange,
 		disableClipPath,
@@ -183,6 +184,16 @@ const ColorLayer = props => {
 				/>
 			)}
 		</>
+	);
+};
+
+const ColorLayer = props => {
+	const { breakpoint, ...rest } = props;
+
+	return (
+		<ResponsiveTabsControl breakpoint={breakpoint}>
+			<ColorLayerContent {...rest} />
+		</ResponsiveTabsControl>
 	);
 };
 

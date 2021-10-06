@@ -8,7 +8,6 @@ import { useState, RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import {
-	getGroupAttributes,
 	getAttributeKey,
 	getBlockStyle,
 	getColorRGBAString,
@@ -145,6 +144,51 @@ const LayerCard = props => {
 		return currentDisplay === 'block' ? 'block' : 'none';
 	};
 
+	const layerContent = {
+		color: (
+			<ColorLayer
+				key={uniqueId('background-color-layer--')}
+				colorOptions={layer}
+				onChange={obj => onChange({ ...layer, ...obj })}
+				isButton={isButton}
+				breakpoint={breakpoint}
+			/>
+		),
+		image: (
+			<ImageLayer
+				key={uniqueId('background-image-layer--')}
+				imageOptions={layer}
+				onChange={obj => onChange({ ...layer, ...obj })}
+				breakpoint={breakpoint}
+			/>
+		),
+		video: (
+			<VideoLayer
+				key={uniqueId('background-video-layer--')}
+				videoOptions={layer}
+				onChange={obj => onChange({ ...layer, ...obj })}
+				breakpoint={breakpoint}
+			/>
+		),
+		gradient: (
+			<GradientLayer
+				key={uniqueId('background-gradient-layer--')}
+				gradientOptions={layer}
+				onChange={obj => onChange({ ...layer, ...obj })}
+				breakpoint={breakpoint}
+			/>
+		),
+		shape: (
+			<SVGLayer
+				key={uniqueId('background-SVG-layer--')}
+				SVGOptions={layer}
+				onChange={obj => onChange({ ...layer, ...obj })}
+				layerId={layerId}
+				breakpoint={breakpoint}
+			/>
+		),
+	};
+
 	return (
 		<div className={classes}>
 			<div
@@ -185,70 +229,7 @@ const LayerCard = props => {
 			</div>
 			{isOpen && (
 				<div className='maxi-background-layer__content'>
-					{(type === 'color' && (
-						<ColorLayer
-							key={uniqueId('background-color-layer--')}
-							colorOptions={{
-								...getGroupAttributes(layer, 'backgroundColor'),
-							}}
-							onChange={obj => onChange({ ...layer, ...obj })}
-							isButton={isButton}
-							breakpoint={breakpoint}
-						/>
-					)) ||
-						(type === 'image' && (
-							<ImageLayer
-								key={uniqueId('background-image-layer--')}
-								imageOptions={{
-									...getGroupAttributes(
-										layer,
-										'backgroundImage'
-									),
-								}}
-								onChange={obj => onChange({ ...layer, ...obj })}
-								breakpoint={breakpoint}
-							/>
-						)) ||
-						(type === 'video' && (
-							<VideoLayer
-								key={uniqueId('background-video-layer--')}
-								videoOptions={{
-									...getGroupAttributes(
-										layer,
-										'backgroundVideo'
-									),
-								}}
-								onChange={obj => onChange({ ...layer, ...obj })}
-								breakpoint={breakpoint}
-							/>
-						)) ||
-						(type === 'gradient' && (
-							<GradientLayer
-								key={uniqueId('background-gradient-layer--')}
-								gradientOptions={{
-									...getGroupAttributes(
-										layer,
-										'backgroundGradient'
-									),
-								}}
-								onChange={obj => onChange({ ...layer, ...obj })}
-								breakpoint={breakpoint}
-							/>
-						)) ||
-						(type === 'shape' && (
-							<SVGLayer
-								key={uniqueId('background-SVG-layer--')}
-								SVGOptions={{
-									...getGroupAttributes(
-										layer,
-										'backgroundSVG'
-									),
-								}}
-								onChange={obj => onChange({ ...layer, ...obj })}
-								layerId={layerId}
-								breakpoint={breakpoint}
-							/>
-						))}
+					{layerContent[type]}
 				</div>
 			)}
 		</div>
@@ -278,12 +259,23 @@ const BackgroundLayersControl = ({
 	const setBreakpointToLayer = layer => {
 		const response = {};
 
-		Object.entries(cloneDeep(layer)).forEach(([key, val]) => {
-			if (!['type'].includes(key)) {
-				response[`${key}-${breakpoint}`] = val;
+		const nonBreakpointAttr = [
+			'type',
+			'background-video-mediaID',
+			'background-video-mediaURL',
+			'background-video-startTime',
+			'background-video-endTime',
+			'background-video-loop',
+			'background-svg-SVGElement',
+			'background-svg-SVGData',
+			'background-svg-SVGMediaID',
+			'background-svg-SVGMediaURL',
+		];
 
-				delete layer[key];
-			} else response[key] = val;
+		Object.entries(layer).forEach(([key, val]) => {
+			if (!nonBreakpointAttr.includes(key))
+				response[`${key}-${breakpoint}`] = val;
+			else response[key] = val;
 		});
 
 		return response;
@@ -437,14 +429,6 @@ const BackgroundLayersControl = ({
 
 						onChange({
 							'background-layers': layers,
-							...(layers.length > 0 && {
-								[getAttributeKey(
-									'background-active-media',
-									isHover,
-									prefix,
-									breakpoint
-								)]: 'layers',
-							}),
 						});
 					}}
 					forwards

@@ -6,7 +6,12 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { changeResponsive, getBlockAttributes, openSidebar } from '../../utils';
+import {
+	changeResponsive,
+	getBlockAttributes,
+	openSidebar,
+	getBlockStyle,
+} from '../../utils';
 
 describe('BorderControl', () => {
 	it('Checking the border control', async () => {
@@ -191,5 +196,8 @@ describe('BorderControl', () => {
 		}))(borderAttributes);
 
 		expect(border).toStrictEqual(expectChanges);
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

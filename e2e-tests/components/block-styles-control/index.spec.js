@@ -10,7 +10,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes } from '../../utils';
+import { getBlockAttributes, getBlockStyle } from '../../utils';
 
 describe('BlockStylesControl', () => {
 	it('Checking the block styles control', async () => {
@@ -29,5 +29,8 @@ describe('BlockStylesControl', () => {
 		const styleAttributes = attributes.blockStyle;
 
 		expect(styleAttributes).toStrictEqual(expectAttribute);
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

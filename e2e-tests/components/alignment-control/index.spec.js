@@ -6,7 +6,12 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebar,
+	changeResponsive,
+	getBlockStyle,
+} from '../../utils';
 
 describe('AlignmentControl', () => {
 	it('Checking the operation of alignment-control', async () => {
@@ -139,5 +144,8 @@ describe('AlignmentControl', () => {
 		);
 
 		expect(responsiveMOption).toBeTruthy();
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

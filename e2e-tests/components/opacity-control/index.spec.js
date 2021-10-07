@@ -36,7 +36,7 @@ describe('OpacityControl', () => {
 
 		expect(opacity).toStrictEqual(expectResult);
 
-		const test = await getBlockStyle(page);
-		expect(test).toMatchSnapshot();
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

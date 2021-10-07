@@ -27,7 +27,7 @@ const ToggleSwitch = ({ className, onChange, label, help, selected }) => {
 	const id = `maxi-toggle-switch-${instanceId}`;
 	const [checked, setValue] = useState(selected || false);
 	const classes = classnames('maxi-toggle-switch', className, {
-		'is-checked': checked,
+		'maxi-toggle-switch--is-checked': checked,
 	});
 
 	return (

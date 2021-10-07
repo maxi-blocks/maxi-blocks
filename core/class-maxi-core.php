@@ -89,7 +89,7 @@ if (!class_exists('MaxiBlocks_Core')):
         public function maxi_blocks_body_class($classes)
         {
             $MBClassAccessibilityClass = get_option('accessibility_option') ? ' maxi-blocks--accessibility ' : '';
-            $MBClass = ' maxi-blocks--active '.  $MBClassAccessibilityClass .'';
+			$MBClass = " maxi-blocks--active $MBClassAccessibilityClass";
 
             if (gettype($classes) === 'string') {
                 $classes .= $MBClass;

@@ -523,7 +523,7 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Shape Masks',
+													'Shape Mask',
 													'maxi-blocks'
 												),
 												content: (
@@ -532,13 +532,7 @@ const Inspector = memo(
 															attributes,
 															'imageShape'
 														)}
-														onSelect={obj => {
-															setAttributes(obj);
-														}}
 														onChange={obj => {
-															setAttributes(obj);
-														}}
-														onRemove={obj => {
 															setAttributes(obj);
 														}}
 														icon={SVGElement}

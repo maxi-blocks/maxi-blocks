@@ -342,8 +342,16 @@ describe('BackgroundControl', () => {
 			select => select[3].click()
 		);
 
+		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
+			buttons[0].click()
+		);
+		await accordionPanel.$$eval(
+			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
+			select => select[2].click()
+		);
+
 		const expectChanges = {
-			'background-active-media': 'color',
+			'background-active-media': '',
 			'background-active-media-hover': 'color',
 		};
 

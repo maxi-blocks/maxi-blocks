@@ -150,6 +150,10 @@ const Inspector = memo(
 														className='maxi-button-default-styles'
 														items={[
 															{
+																label: __(
+																	'Button shortcut 1',
+																	'maxi-blocks'
+																),
 																content: (
 																	<Icon
 																		icon={
@@ -163,6 +167,10 @@ const Inspector = memo(
 																	),
 															},
 															{
+																label: __(
+																	'Button shortcut 2',
+																	'maxi-blocks'
+																),
 																content: (
 																	<Icon
 																		icon={
@@ -176,6 +184,10 @@ const Inspector = memo(
 																	),
 															},
 															{
+																label: __(
+																	'Button shortcut 3',
+																	'maxi-blocks'
+																),
 																content: (
 																	<Icon
 																		icon={
@@ -189,6 +201,10 @@ const Inspector = memo(
 																	),
 															},
 															{
+																label: __(
+																	'Button shortcut 4',
+																	'maxi-blocks'
+																),
 																content: (
 																	<Icon
 																		icon={
@@ -203,6 +219,10 @@ const Inspector = memo(
 																	),
 															},
 															{
+																label: __(
+																	'Button shortcut 5',
+																	'maxi-blocks'
+																),
 																content: (
 																	<Icon
 																		icon={
@@ -217,6 +237,10 @@ const Inspector = memo(
 																	),
 															},
 															{
+																label: __(
+																	'Button shortcut 6',
+																	'maxi-blocks'
+																),
 																content: (
 																	<Icon
 																		icon={
@@ -231,6 +255,10 @@ const Inspector = memo(
 																	),
 															},
 															{
+																label: __(
+																	'Button shortcut 7',
+																	'maxi-blocks'
+																),
 																content: (
 																	<Icon
 																		icon={
@@ -245,6 +273,10 @@ const Inspector = memo(
 																	),
 															},
 															{
+																label: __(
+																	'Button shortcut 8',
+																	'maxi-blocks'
+																),
 																content: (
 																	<Icon
 																		icon={
@@ -259,6 +291,10 @@ const Inspector = memo(
 																	),
 															},
 															{
+																label: __(
+																	'Button shortcut 9',
+																	'maxi-blocks'
+																),
 																content: (
 																	<Icon
 																		icon={
@@ -273,6 +309,10 @@ const Inspector = memo(
 																	),
 															},
 															{
+																label: __(
+																	'Button shortcut 10',
+																	'maxi-blocks'
+																),
 																content: (
 																	<Icon
 																		icon={
@@ -287,6 +327,10 @@ const Inspector = memo(
 																	),
 															},
 															{
+																label: __(
+																	'Button shortcut 11',
+																	'maxi-blocks'
+																),
 																content: (
 																	<Icon
 																		icon={

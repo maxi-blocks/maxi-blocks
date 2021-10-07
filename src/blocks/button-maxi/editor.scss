@@ -12,6 +12,9 @@ body.maxi-blocks--active .maxi-controls {
 			margin-bottom: 8px;
 			transition: background 0.4s;
 
+			&:focus {
+				background: rgba(180, 180, 180, 0.12);
+			}
 			&:hover {
 				background: #f1f1f1;
 				border-color: rgba(180, 180, 180, 0.8);

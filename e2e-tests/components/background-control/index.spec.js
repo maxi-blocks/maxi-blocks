@@ -334,15 +334,6 @@ describe('BackgroundControl', () => {
 		);
 
 		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
-			buttons[1].click()
-		);
-
-		await accordionPanel.$$eval(
-			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[3].click()
-		);
-
-		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
 			buttons[0].click()
 		);
 		await accordionPanel.$$eval(

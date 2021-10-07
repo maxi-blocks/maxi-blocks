@@ -9,7 +9,11 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import {
+	getBlockAttributes,
+	openAdvancedSidebar,
+	getBlockStyle,
+} from '../../utils';
 
 describe('OpacityControl', () => {
 	it('Checking the opacity control', async () => {
@@ -31,5 +35,8 @@ describe('OpacityControl', () => {
 		const expectResult = 0.19;
 
 		expect(opacity).toStrictEqual(expectResult);
+
+		const test = await getBlockStyle(page);
+		expect(test).toMatchSnapshot();
 	});
 });

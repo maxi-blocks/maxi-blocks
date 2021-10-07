@@ -1,8 +1,15 @@
 body.maxi-blocks--active .maxi-button-block {
 	display: flex;
 	flex-direction: column;
-	width: 100%;
+	max-width: 100%;
+	text-align: center;
 
+	&[data-align='full'] {
+		.maxi-button-block__button {
+			width: 100%;
+			text-align: center;
+		}
+	}
 	&__icon {
 		box-sizing: content-box;
 
@@ -19,11 +26,11 @@ body.maxi-blocks--active .maxi-button-block {
 	}
 	&__content {
 		position: relative;
+		z-index: 1;
 		display: block;
 		order: 1;
 		width: 100%;
 		min-width: 1px;
-		z-index: 1;
 	}
 	&__button {
 		position: relative;

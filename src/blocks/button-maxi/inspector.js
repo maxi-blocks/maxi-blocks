@@ -842,7 +842,7 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Width / Height',
+													'Height / Width',
 													'maxi-blocks'
 												),
 												content: (
@@ -850,7 +850,7 @@ const Inspector = memo(
 														{isFirstOnHierarchy && (
 															<ToggleSwitch
 																label={__(
-																	'Full Width',
+																	'Set button to full-width',
 																	'maxi-blocks'
 																)}
 																selected={

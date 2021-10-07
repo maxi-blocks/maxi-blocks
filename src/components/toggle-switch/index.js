@@ -23,24 +23,28 @@ import './editor.scss';
  * Component
  */
 const ToggleSwitch = ({ className, onChange, label, help, selected }) => {
-	const classes = classnames('maxi-toggle-switch', className);
 	const instanceId = useInstanceId(ToggleSwitch);
 	const id = `maxi-toggle-switch-${instanceId}`;
-	const [value, setValue] = useState(selected || false);
+	const [checked, setValue] = useState(selected || false);
+	const classes = classnames('maxi-toggle-switch', className, {
+		'maxi-toggle-switch--is-checked': checked,
+	});
 
 	return (
 		<BaseControl label={label} id={id} help={help} className={classes}>
 			<div className='maxi-toggle-switch__toggle'>
 				<input
 					onChange={() => {
-						setValue(!value);
-						onChange(!value);
+						setValue(!checked);
+						onChange(!checked);
 					}}
-					checked={value}
+					checked={checked}
 					type='checkbox'
 					id={id}
+					aria-describedby={help ? `${id}__help` : undefined}
 				/>
-				<label htmlFor={id} />
+				<span className='maxi-toggle-switch__toggle__track' />
+				<span className='maxi-toggle-switch__toggle__thumb' />
 			</div>
 		</BaseControl>
 	);

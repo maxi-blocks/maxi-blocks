@@ -254,6 +254,9 @@ const IconControl = props => {
 											}`
 										]
 									}
+									paletteOpacity={
+										props['icon-palette-opacity']
+									}
 									paletteStatus={
 										props[
 											`icon-palette-color-status${
@@ -265,6 +268,7 @@ const IconControl = props => {
 										color,
 										paletteColor,
 										paletteStatus,
+										paletteOpacity,
 									}) => {
 										onChange({
 											[`icon-color${
@@ -276,9 +280,10 @@ const IconControl = props => {
 											[`icon-palette-color-status${
 												isHover ? '-hover' : ''
 											}`]: paletteStatus,
+											['icon-palette-opacity']:
+												paletteOpacity,
 										});
 									}}
-									disableOpacity
 									isHover={isHover}
 								/>
 							) : (
@@ -324,6 +329,9 @@ const IconControl = props => {
 											}`
 										]
 									}
+									paletteOpacity={
+										props['icon-background-palette-opacity']
+									}
 									paletteStatus={
 										props[
 											`icon-background-palette-color-status${
@@ -335,6 +343,7 @@ const IconControl = props => {
 										color,
 										paletteColor,
 										paletteStatus,
+										paletteOpacity,
 									}) => {
 										onChange({
 											[`icon-background-color${
@@ -346,6 +355,8 @@ const IconControl = props => {
 											[`icon-background-palette-color-status${
 												isHover ? '-hover' : ''
 											}`]: paletteStatus,
+											['icon-background-palette-opacity']:
+												paletteOpacity,
 										});
 									}}
 									isHover={isHover}

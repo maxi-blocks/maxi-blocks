@@ -15,9 +15,9 @@ describe('TextShadowControl', () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		const accordionPanel = await openSidebar(page, 'typography');
 
-		await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-typography-control .maxi-textshadow-control label',
-			select => select[1].click()
+		await accordionPanel.$eval(
+			'.maxi-tabs-content .maxi-typography-control .maxi-textshadow-control .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		await accordionPanel.$$(

@@ -22,6 +22,7 @@ import {
 	getIconStyles,
 	getMarginPaddingStyles,
 	getPositionStyles,
+	getSizeStyles,
 	getTransformStyles,
 	getTransitionStyles,
 	getTypographyStyles,
@@ -72,6 +73,9 @@ const getContentObject = props => {
 
 const getNormalObject = props => {
 	const response = {
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),

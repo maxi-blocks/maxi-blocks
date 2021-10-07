@@ -23,6 +23,7 @@ import {
 	FullSizeControl,
 	HoverEffectControl,
 	ImageCropControl,
+	ImageShape,
 	InfoBox,
 	MotionControl,
 	OpacityControl,
@@ -41,11 +42,7 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
-import MaxiModal from '../../editor/library/modal';
 
-/**
- * External dependencies
- */
 /**
  * External dependencies
  */
@@ -522,6 +519,31 @@ const Inspector = memo(
 															/>
 														)}
 													</>
+												),
+											},
+											{
+												label: __(
+													'Shape Masks',
+													'maxi-blocks'
+												),
+												content: (
+													<ImageShape
+														{...getGroupAttributes(
+															attributes,
+															'imageShape'
+														)}
+														onSelect={obj => {
+															setAttributes(obj);
+														}}
+														onChange={obj => {
+															setAttributes(obj);
+														}}
+														onRemove={obj => {
+															setAttributes(obj);
+														}}
+														icon={SVGElement}
+														breakpoint={deviceType}
+													/>
 												),
 											},
 											deviceType === 'general' && {
@@ -1020,24 +1042,6 @@ const Inspector = memo(
 																clipPath,
 															})
 														}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Shape',
-													'maxi-blocks'
-												),
-												content: (
-													<MaxiModal
-														type='image-shape'
-														onSelect={obj => {
-															setAttributes(obj);
-														}}
-														onRemove={obj => {
-															setAttributes(obj);
-														}}
-														icon={SVGElement}
 													/>
 												),
 											},

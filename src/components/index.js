@@ -32,6 +32,7 @@ export { default as HoverPreview } from './hover-preview';
 export { default as Icon } from './icon';
 export { default as IconControl } from './icon-control';
 export { default as ImageCropControl } from './image-crop-control';
+export { default as ImageShape } from './image-shape';
 export { default as ImageURL } from './image-url';
 export { default as Indicators } from './indicators';
 export { default as InfoBox } from './info-box';

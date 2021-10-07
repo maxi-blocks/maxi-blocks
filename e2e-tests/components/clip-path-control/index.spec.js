@@ -9,7 +9,11 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import {
+	getBlockAttributes,
+	openAdvancedSidebar,
+	getBlockStyle,
+} from '../../utils';
 
 describe('ClipPathOption', () => {
 	it('Checking the clip-path control', async () => {
@@ -82,5 +86,8 @@ describe('ClipPathOption', () => {
 		const customExpect = 'inset(28% 5% 15% 64%)';
 
 		expect(customClipPath).toStrictEqual(customExpect);
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

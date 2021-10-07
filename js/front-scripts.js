@@ -320,7 +320,7 @@ motionElems.forEach(function (elem) {
 		// Parallax Effect
 		if ('parallax-status' in motionData) {
 			const parallaxElem = document.querySelector(
-				`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__images`
+				`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__parallax`
 			);
 			const parallaxStatus = motionData['parallax-status'];
 			const parallaxSpeed = motionData['parallax-speed'];

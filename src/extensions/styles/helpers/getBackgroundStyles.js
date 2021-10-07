@@ -444,7 +444,7 @@ const getSVGBackgroundObject = ({
 	return response;
 };
 
-const setBackgroundLayers = ({
+const getBackgroundLayers = ({
 	response,
 	layers,
 	target,
@@ -456,9 +456,7 @@ const setBackgroundLayers = ({
 	layers.forEach(layer => {
 		const { type } = layer;
 
-		const layerTarget = `${target}${
-			isHover ? ':hover' : ''
-		} > .maxi-background-displayer .maxi-background-displayer__${layer.id}`;
+		const layerTarget = `${target} > .maxi-background-displayer .maxi-background-displayer__${layer.id}`;
 
 		switch (type) {
 			case 'color':
@@ -733,6 +731,11 @@ const getBackgroundStyles = ({
 
 	if (isHover && !props[`${prefix}background-status-hover`]) return response;
 
+	const parallaxStatus = getAttributeValue({
+		target: 'parallax-status',
+		props,
+	});
+
 	const layers = getAttributeValue({
 		target: 'background-layers',
 		props,
@@ -740,13 +743,13 @@ const getBackgroundStyles = ({
 		prefix,
 	});
 
-	if (layers && layers.length > 0)
+	if (!parallaxStatus && layers && layers.length > 0)
 		BREAKPOINTS.forEach(breakpoint => {
 			response = {
 				...merge(
 					{ ...response },
 					{
-						...setBackgroundLayers({
+						...getBackgroundLayers({
 							response,
 							layers,
 							target,
@@ -759,6 +762,29 @@ const getBackgroundStyles = ({
 				),
 			};
 		});
+	else if (parallaxStatus) {
+		const parallaxTarget = `${target} > .maxi-background-displayer .maxi-background-displayer__parallax`;
+
+		BREAKPOINTS.forEach(breakpoint => {
+			response[parallaxTarget] = {
+				...merge(
+					{
+						...response[parallaxTarget],
+					},
+					{
+						image: {
+							...getImageBackgroundObject({
+								...getGroupAttributes(props, 'parallax'),
+								isHover,
+								prefix: 'parallax-',
+								breakpoint,
+							}),
+						},
+					}
+				),
+			};
+		});
+	}
 
 	return response;
 };

@@ -21,7 +21,6 @@ import {
 	InfoBox,
 	MotionControl,
 	OpacityControl,
-	ParallaxControl,
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
@@ -237,23 +236,8 @@ const Inspector = props => {
 																		clientId={
 																			clientId
 																		}
+																		enableParallax
 																	/>
-																	{attributes[
-																		'background-active-media'
-																	] ===
-																		'image' && (
-																		<ParallaxControl
-																			{...getGroupAttributes(
-																				attributes,
-																				'parallax'
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																		/>
-																	)}
 																</>
 															),
 														},

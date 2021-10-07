@@ -9,7 +9,8 @@
 	backface-visibility: hidden;
 	box-sizing: content-box;
 
-	&__layer {
+	&__layer,
+	&__parallax {
 		position: absolute;
 		display: none;
 		width: 100%;
@@ -44,6 +45,11 @@
 			transform: translate(-50%, -50%);
 		}
 	}
+
+	&__parallax {
+		display: block;
+	}
+
 	&__svg {
 		position: absolute;
 		top: 0;

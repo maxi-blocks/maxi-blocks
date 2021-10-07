@@ -21,7 +21,6 @@ import {
 	InfoBox,
 	MotionControl,
 	OpacityControl,
-	ParallaxControl,
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
@@ -33,7 +32,6 @@ import {
 } from '../../components';
 import {
 	getGroupAttributes,
-	getLastBreakpointAttribute,
 	setHoverAttributes,
 } from '../../extensions/styles';
 
@@ -155,6 +153,7 @@ const Inspector = props => {
 																				'backgroundVideo',
 																				'backgroundGradient',
 																				'backgroundSVG',
+																				'parallax',
 																			]
 																		)}
 																		onChange={obj =>
@@ -168,25 +167,8 @@ const Inspector = props => {
 																		breakpoint={
 																			deviceType
 																		}
+																		enableParallax
 																	/>
-																	{getLastBreakpointAttribute(
-																		'background-active-media',
-																		deviceType,
-																		attributes
-																	) ===
-																		'image' && (
-																		<ParallaxControl
-																			{...getGroupAttributes(
-																				attributes,
-																				'parallax'
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																		/>
-																	)}
 																</>
 															),
 														},

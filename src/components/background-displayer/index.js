@@ -85,14 +85,21 @@ const BackgroundContent = props => {
 };
 
 const BackgroundDisplayer = props => {
-	const { className } = props;
+	const { className, 'parallax-status': parallaxStatus } = props;
 
 	const classes = classnames('maxi-background-displayer', className);
 
 	return (
 		<div className={classes}>
-			<BackgroundContent {...props} isHover={false} />
-			{/* <BackgroundContent {...props} isHover /> */}
+			{!parallaxStatus && (
+				<>
+					<BackgroundContent {...props} isHover={false} />
+					{/* <BackgroundContent {...props} isHover /> */}{' '}
+				</>
+			)}
+			{parallaxStatus && (
+				<div className='maxi-background-displayer__parallax' />
+			)}
 		</div>
 	);
 };

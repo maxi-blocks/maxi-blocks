@@ -282,6 +282,7 @@ export const getMaxiBlockBlockAttributes = props => {
 			'backgroundVideoHover',
 			'backgroundGradientHover',
 			'backgroundSVGHover',
+			'parallax',
 		]),
 	};
 	const hasArrow = props.attributes['arrow-status'] || false;

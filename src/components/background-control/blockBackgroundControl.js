@@ -1,8 +1,9 @@
 /**
  * Internal dependencies
  */
-import { getAttributeValue } from '../../extensions/styles';
+import { getAttributeValue, getGroupAttributes } from '../../extensions/styles';
 import BackgroundLayersControl from './backgroundLayersControl';
+import { ParallaxControl } from '..';
 
 /**
  * External dependencies
@@ -20,17 +21,18 @@ import './editor.scss';
 const BlockBackgroundControl = props => {
 	const {
 		className,
-		disableImage = false,
-		disableVideo = false,
-		disableGradient = false,
-		disableColor = false,
-		disableSVG = false,
 		onChange,
 		isHover = false,
 		prefix = '',
 		clientId,
 		isButton = false,
 		breakpoint = 'general',
+		disableImage = false,
+		disableVideo = false,
+		disableGradient = false,
+		disableColor = false,
+		disableSVG = false,
+		enableParallax = false,
 	} = props;
 
 	const layersOptions =
@@ -41,24 +43,35 @@ const BlockBackgroundControl = props => {
 			prefix,
 		}) || [];
 
+	const parallaxStatus = props['parallax-status'];
+
 	const classes = classnames('maxi-background-control', className);
 
 	return (
 		<div className={classes}>
-			<BackgroundLayersControl
-				layersOptions={layersOptions}
-				onChange={obj => onChange(obj)}
-				isHover={isHover}
-				prefix={prefix}
-				disableImage={disableImage}
-				disableVideo={disableVideo}
-				disableGradient={disableGradient}
-				disableColor={disableColor}
-				disableSVG={disableSVG}
-				clientId={clientId}
-				isButton={isButton}
-				breakpoint={breakpoint}
-			/>
+			{!parallaxStatus && (
+				<BackgroundLayersControl
+					layersOptions={layersOptions}
+					onChange={obj => onChange(obj)}
+					isHover={isHover}
+					prefix={prefix}
+					disableImage={disableImage}
+					disableVideo={disableVideo}
+					disableGradient={disableGradient}
+					disableColor={disableColor}
+					disableSVG={disableSVG}
+					clientId={clientId}
+					isButton={isButton}
+					breakpoint={breakpoint}
+				/>
+			)}
+			{enableParallax && (
+				<ParallaxControl
+					{...getGroupAttributes(props, 'parallax')}
+					onChange={obj => onChange(obj)}
+					breakpoint={breakpoint}
+				/>
+			)}
 		</div>
 	);
 };

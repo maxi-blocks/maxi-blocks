@@ -27,7 +27,6 @@ const ImageShape = props => {
 	const shapeFlipVertically = props[`image-shape-flip-y-${breakpoint}`];
 
 	const defaultScale = null;
-
 	let newIcon = icon;
 
 	const changeIcon = (attr, value) => {

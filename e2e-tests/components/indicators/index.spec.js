@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { openSidebar } from '../../utils';
+import { openSidebar, getBlockStyle } from '../../utils';
 
 describe('Indicators', () => {
 	it('Checking the indicators', async () => {
@@ -40,5 +40,8 @@ describe('Indicators', () => {
 		);
 
 		expect(maxiIndicator).toMatchSnapshot();
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

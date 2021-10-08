@@ -5,7 +5,12 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebar,
+	changeResponsive,
+	getBlockStyle,
+} from '../../utils';
 
 describe('ColumnPattern', () => {
 	it('Check column pattern', async () => {
@@ -100,5 +105,8 @@ describe('ColumnPattern', () => {
 		);
 
 		expect(rowSelectedL).toBeTruthy();
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

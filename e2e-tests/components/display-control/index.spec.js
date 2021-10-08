@@ -9,6 +9,7 @@ import {
 	getBlockAttributes,
 	openAdvancedSidebar,
 	changeResponsive,
+	getBlockStyle,
 } from '../../utils';
 
 describe('DisplayControl', () => {
@@ -78,5 +79,8 @@ describe('DisplayControl', () => {
 		);
 
 		expect(responsiveMOption).toBeTruthy();
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

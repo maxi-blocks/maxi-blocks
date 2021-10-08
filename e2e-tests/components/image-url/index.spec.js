@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes } from '../../utils';
+import { getBlockAttributes, getBlockStyle } from '../../utils';
 
 describe('ImageURL', () => {
 	beforeEach(async () => {
@@ -65,5 +65,8 @@ describe('ImageURL', () => {
 		);
 
 		expect(error).toMatchSnapshot();
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

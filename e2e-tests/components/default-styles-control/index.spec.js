@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 describe('DefaultStylesControl', () => {
 	it('Checking the default styles control', async () => {
@@ -32,5 +32,8 @@ describe('DefaultStylesControl', () => {
 
 			expect(borderAttribute).toStrictEqual(expectAttributes[i]);
 		}
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

@@ -53,7 +53,10 @@ const getImageShapeStyles = (target = 'svg', obj) => {
 
 		if (isNumber(rotate)) {
 			if (target === 'svg') transformString += `rotate(${rotate}deg) `;
-			if (target === 'image') transformString += `rotate(-${rotate}deg) `;
+			if (target === 'image')
+				if ((flipX && !flipY) || (!flipX && flipY))
+					transformString += `rotate(${rotate}deg) `;
+				else transformString += `rotate(-${rotate}deg) `;
 		}
 
 		if (flipX) {

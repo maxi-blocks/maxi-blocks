@@ -63,6 +63,42 @@ const getWrapperObject = props => {
 			parentBlockStyle: props.parentBlockStyle,
 			isButton: true,
 		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
+	};
+
+	return response;
+};
+
+const getHoverWrapperObject = props => {
+	const response = {
+		border:
+			props['border-status-hover'] &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						true
+					),
+				},
+				parentBlockStyle: props.parentBlockStyle,
+				isHover: true,
+				isButton: true,
+			}),
+		boxShadow:
+			props['box-shadow-status-hover'] &&
+			getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', true),
+				},
+				parentBlockStyle: props.parentBlockStyle,
+				isHover: true,
+			}),
 	};
 
 	return response;
@@ -87,12 +123,6 @@ const getNormalObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
-		boxShadow: getBoxShadowStyles({
-			obj: {
-				...getGroupAttributes(props, 'boxShadow'),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-		}),
 		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
@@ -116,6 +146,13 @@ const getNormalObject = props => {
 			},
 			parentBlockStyle: props.parentBlockStyle,
 			isButton: true,
+			prefix: 'button-',
+		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow', false, 'button-'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'button-',
 		}),
 		textAlignment: getAlignmentTextStyles({
@@ -155,12 +192,13 @@ const getHoverObject = props => {
 				isButton: true,
 			}),
 		boxShadow:
-			props['box-shadow-status-hover'] &&
+			props['button-box-shadow-status-hover'] &&
 			getBoxShadowStyles({
 				obj: {
-					...getGroupAttributes(props, 'boxShadow', true),
+					...getGroupAttributes(props, 'boxShadow', true, 'button-'),
 				},
 				isHover: true,
+				prefix: 'button-',
 				parentBlockStyle: props.parentBlockStyle,
 			}),
 		...(props['background-status-hover'] && {
@@ -420,6 +458,7 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: stylesCleaner({
 			'': getWrapperObject(props),
+			':hover': getHoverWrapperObject(props),
 			' .maxi-button-block__button': getNormalObject(props),
 			' .maxi-button-block__icon': [
 				getIconObject(props, 'icon'),

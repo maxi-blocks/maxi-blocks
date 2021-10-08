@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import defaultBoxShadow from '../defaults/boxShadow';
-import defaultBoxShadowHover from '../defaults/boxShadowHover';
+import { boxShadow as defaultBoxShadow } from '../defaults/boxShadow';
+import { boxShadowHover as defaultBoxShadowHover } from '../defaults/boxShadowHover';
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
@@ -29,6 +29,7 @@ const getBoxShadowStyles = ({
 	obj,
 	isHover = false,
 	dropShadow = false,
+	prefix = '',
 	parentBlockStyle,
 }) => {
 	const response = {};
@@ -39,7 +40,7 @@ const getBoxShadowStyles = ({
 
 		const getValue = target => {
 			const value = getAttributeValue(
-				`box-shadow-${target}-${breakpoint}`,
+				`${prefix}box-shadow-${target}-${breakpoint}`,
 				obj,
 				isHover
 			);
@@ -54,7 +55,7 @@ const getBoxShadowStyles = ({
 					  defaultBoxShadow[`box-shadow-${target}-${breakpoint}`]
 							.default
 					: getLastBreakpointAttribute(
-							`box-shadow-${target}`,
+							`${prefix}box-shadow-${target}`,
 							getPrevBreakpoint(breakpoint),
 							obj,
 							isHover
@@ -83,7 +84,7 @@ const getBoxShadowStyles = ({
 
 		// Palette
 		const paletteStatus = getLastBreakpointAttribute(
-			'box-shadow-palette-color-status',
+			`${prefix}box-shadow-palette-color-status`,
 			breakpoint,
 			obj,
 			isHover

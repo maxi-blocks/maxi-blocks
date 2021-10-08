@@ -109,6 +109,8 @@ const attributes = {
 	...attributesData.borderWidthHover,
 	...attributesData.borderRadiusHover,
 	...attributesData.size,
+	...attributesData.buttonBoxShadow,
+	...attributesData.buttonBoxShadowHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.margin,

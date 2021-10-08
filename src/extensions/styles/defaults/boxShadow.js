@@ -1,4 +1,4 @@
-const boxShadow = {
+export const boxShadow = {
 	'box-shadow-palette-color-status-general': {
 		type: 'boolean',
 		default: true,
@@ -171,4 +171,15 @@ const boxShadow = {
 	},
 };
 
-export default boxShadow;
+export const buttonBoxShadow = (() => {
+	const response = {};
+
+	Object.keys(boxShadow).forEach(key => {
+		const newKey = `button-${key}`;
+		const value = { ...boxShadow[key] };
+
+		response[newKey] = value;
+	});
+
+	return response;
+})();

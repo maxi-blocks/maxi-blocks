@@ -1,6 +1,6 @@
-import boxShadow from './boxShadow';
+import { boxShadow } from './boxShadow';
 
-const boxShadowHover = (function boxShadowHoverGenerator() {
+export const boxShadowHover = (() => {
 	const response = {
 		'box-shadow-status-hover': {
 			type: 'boolean',
@@ -25,4 +25,17 @@ const boxShadowHover = (function boxShadowHoverGenerator() {
 	return response;
 })();
 
-export default boxShadowHover;
+export const buttonBoxShadowHover = (() => {
+	const response = {};
+
+	Object.keys(boxShadowHover).forEach(key => {
+		const newKey = `${key}-hover`;
+		const value = { ...boxShadowHover[key] };
+
+		if ('default' in value) delete value.default;
+
+		response[newKey] = value;
+	});
+
+	return response;
+})();

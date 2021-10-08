@@ -23,7 +23,6 @@ import IconToolbar from '../../components/toolbar/iconToolbar';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Content

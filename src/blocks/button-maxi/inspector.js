@@ -112,7 +112,7 @@ const Inspector = memo(
 					deviceType={deviceType}
 					items={[
 						{
-							label: __('Style', 'maxi-blocks'),
+							label: __('Settings', 'maxi-blocks'),
 							content: (
 								<>
 									{deviceType === 'general' && (
@@ -587,7 +587,7 @@ const Inspector = memo(
 											},
 											deviceType === 'general' && {
 												label: __(
-													'Background',
+													'Button background',
 													'maxi-blocks'
 												),
 												disablePadding: true,
@@ -737,8 +737,11 @@ const Inspector = memo(
 																				'border',
 																				'borderWidth',
 																				'borderRadius',
-																			]
+																			],
+																			false,
+																			'button-'
 																		)}
+																		prefix='button-'
 																		onChange={obj => {
 																			setAttributes(
 																				obj
@@ -768,7 +771,7 @@ const Inspector = memo(
 																			)}
 																			selected={
 																				attributes[
-																					'border-status-hover'
+																					'button-border-status-hover'
 																				]
 																			}
 																			className='maxi-border-status-hover'
@@ -781,32 +784,35 @@ const Inspector = memo(
 																									...getGroupAttributes(
 																										attributes,
 																										[
-																											'border',
-																											'borderWidth',
-																											'borderRadius',
-																										]
+																											'brder',
+																											'brderWidth',
+																											'brderRadius',
+																										],
+																										false,
+																										'button-'
 																									),
 																								},
 																								{
 																									...getGroupAttributes(
 																										attributes,
 																										[
-																											'border',
-																											'borderWidth',
-																											'borderRadius',
+																											'brder',
+																											'brderWidth',
+																											'brderRadius',
 																										],
-																										true
+																										true,
+																										'button-'
 																									),
 																								}
 																							)),
-																						'border-status-hover':
+																						'button-border-status-hover':
 																							val,
 																					}
 																				)
 																			}
 																		/>
 																		{attributes[
-																			'border-status-hover'
+																			'button-border-status-hover'
 																		] && (
 																			<BorderControl
 																				{...getGroupAttributes(
@@ -816,8 +822,10 @@ const Inspector = memo(
 																						'borderWidth',
 																						'borderRadius',
 																					],
-																					true
+																					true,
+																					'button-'
 																				)}
+																				prefix='button-'
 																				onChange={obj =>
 																					setAttributes(
 																						obj
@@ -842,53 +850,7 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Height / Width',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														{isFirstOnHierarchy && (
-															<ToggleSwitch
-																label={__(
-																	'Set button to full-width',
-																	'maxi-blocks'
-																)}
-																selected={
-																	fullWidth ===
-																	'full'
-																}
-																onChange={val =>
-																	setAttributes(
-																		{
-																			fullWidth:
-																				val
-																					? 'full'
-																					: 'normal',
-																		}
-																	)
-																}
-															/>
-														)}
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'size'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-														/>
-													</>
-												),
-											},
-											{
-												label: __(
-													'Box Shadow',
+													'Box shadow',
 													'maxi-blocks'
 												),
 												disablePadding: true,
@@ -994,7 +956,53 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Padding / Margin',
+													'Height / Width',
+													'maxi-blocks'
+												),
+												content: (
+													<>
+														{isFirstOnHierarchy && (
+															<ToggleSwitch
+																label={__(
+																	'Set button to full-width',
+																	'maxi-blocks'
+																)}
+																selected={
+																	fullWidth ===
+																	'full'
+																}
+																onChange={val =>
+																	setAttributes(
+																		{
+																			fullWidth:
+																				val
+																					? 'full'
+																					: 'normal',
+																		}
+																	)
+																}
+															/>
+														)}
+														<FullSizeControl
+															{...getGroupAttributes(
+																attributes,
+																'size'
+															)}
+															onChange={obj =>
+																setAttributes(
+																	obj
+																)
+															}
+															breakpoint={
+																deviceType
+															}
+														/>
+													</>
+												),
+											},
+											{
+												label: __(
+													'Margin / Padding',
 													'maxi-blocks'
 												),
 												content: (
@@ -1048,181 +1056,308 @@ const Inspector = memo(
 							),
 						},
 						{
+							label: __('Canvas', 'maxi-blocks'),
+							content: (
+								<AccordionControl
+									isPrimary
+									items={[
+										{
+											label: __('Border', 'maxi-blocks'),
+											disablePadding: true,
+											content: (
+												<SettingTabsControl
+													items={[
+														{
+															label: __(
+																'Normal',
+																'maxi-blocks'
+															),
+															content: (
+																<BorderControl
+																	{...getGroupAttributes(
+																		attributes,
+																		[
+																			'border',
+																			'borderWidth',
+																			'borderRadius',
+																		]
+																	)}
+																	onChange={obj => {
+																		setAttributes(
+																			obj
+																		);
+																	}}
+																	breakpoint={
+																		deviceType
+																	}
+																	clientId={
+																		clientId
+																	}
+																	isButton
+																/>
+															),
+														},
+														{
+															label: __(
+																'Hover',
+																'maxi-blocks'
+															),
+															content: (
+																<>
+																	<ToggleSwitch
+																		label={__(
+																			'Enable Border Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={
+																			attributes[
+																				'border-status-hover'
+																			]
+																		}
+																		className='maxi-border-status-hover'
+																		onChange={val =>
+																			setAttributes(
+																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'border',
+																										'borderWidth',
+																										'borderRadius',
+																									]
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'border',
+																										'borderWidth',
+																										'borderRadius',
+																									],
+																									true
+																								),
+																							}
+																						)),
+																					'border-status-hover':
+																						val,
+																				}
+																			)
+																		}
+																	/>
+																	{attributes[
+																		'border-status-hover'
+																	] && (
+																		<BorderControl
+																			{...getGroupAttributes(
+																				attributes,
+																				[
+																					'border',
+																					'borderWidth',
+																					'borderRadius',
+																				],
+																				true
+																			)}
+																			onChange={obj =>
+																				setAttributes(
+																					obj
+																				)
+																			}
+																			breakpoint={
+																				deviceType
+																			}
+																			isHover
+																			clientId={
+																				clientId
+																			}
+																			isButton
+																		/>
+																	)}
+																</>
+															),
+														},
+													]}
+												/>
+											),
+										},
+									]}
+								/>
+							),
+						},
+						{
 							label: __('Advanced', 'maxi-blocks'),
 							content: (
-								<>
-									<AccordionControl
-										isPrimary
-										items={[
-											deviceType === 'general' && {
-												label: __(
-													'Custom Classes',
-													'maxi-blocks'
-												),
-												content: (
-													<TextControl
-														label={__(
-															'Additional CSS Classes',
-															'maxi-blocks'
-														)}
-														className='maxi-additional__css-classes'
-														value={extraClassName}
-														onChange={extraClassName =>
-															setAttributes({
-																extraClassName,
-															})
-														}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Motion Effects',
-													'maxi-blocks'
-												),
-												content: (
-													<MotionControl
-														{...getGroupAttributes(
-															attributes,
-															'motion'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Transform',
-													'maxi-blocks'
-												),
-												content: (
-													<TransformControl
-														{...getGroupAttributes(
-															attributes,
-															'transform'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														uniqueID={uniqueID}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Display',
-													'maxi-blocks'
-												),
-												content: (
-													<DisplayControl
-														{...getGroupAttributes(
-															attributes,
-															'display'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														defaultDisplay='flex'
-													/>
-												),
-											},
-											{
-												label: __(
-													'Position',
-													'maxi-blocks'
-												),
-												content: (
-													<PositionControl
-														{...getGroupAttributes(
-															attributes,
-															'position'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-											deviceType !== 'general' && {
-												label: __(
-													'Breakpoint',
-													'maxi-blocks'
-												),
-												content: (
-													<ResponsiveControl
-														{...getGroupAttributes(
-															attributes,
-															'breakpoints'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Z-index',
-													'maxi-blocks'
-												),
-												content: (
-													<ZIndexControl
-														{...getGroupAttributes(
-															attributes,
-															'zIndex'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Hover Transition',
-													'maxi-blocks'
-												),
-												content: (
-													<TransitionControl
-														{...getGroupAttributes(
-															attributes,
-															'transitionDuration'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Overflow',
-													'maxi-blocks'
-												),
-												content: (
-													<OverflowControl
-														{...getGroupAttributes(
-															attributes,
-															'overflow'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-										]}
-									/>
-								</>
+								<AccordionControl
+									isPrimary
+									items={[
+										deviceType === 'general' && {
+											label: __(
+												'Custom Classes',
+												'maxi-blocks'
+											),
+											content: (
+												<TextControl
+													label={__(
+														'Add CSS class/id',
+														'maxi-blocks'
+													)}
+													className='maxi-additional__css-classes'
+													value={extraClassName}
+													onChange={extraClassName =>
+														setAttributes({
+															extraClassName,
+														})
+													}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Motion effect',
+												'maxi-blocks'
+											),
+											content: (
+												<MotionControl
+													{...getGroupAttributes(
+														attributes,
+														'motion'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Transform',
+												'maxi-blocks'
+											),
+											content: (
+												<TransformControl
+													{...getGroupAttributes(
+														attributes,
+														'transform'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													uniqueID={uniqueID}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Hover transition',
+												'maxi-blocks'
+											),
+											content: (
+												<TransitionControl
+													{...getGroupAttributes(
+														attributes,
+														'transitionDuration'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Show/hide block',
+												'maxi-blocks'
+											),
+											content: (
+												<DisplayControl
+													{...getGroupAttributes(
+														attributes,
+														'display'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+													defaultDisplay='flex'
+												/>
+											),
+										},
+										{
+											label: __(
+												'Position',
+												'maxi-blocks'
+											),
+											content: (
+												<PositionControl
+													{...getGroupAttributes(
+														attributes,
+														'position'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										deviceType !== 'general' && {
+											label: __(
+												'Breakpoint',
+												'maxi-blocks'
+											),
+											content: (
+												<ResponsiveControl
+													{...getGroupAttributes(
+														attributes,
+														'breakpoints'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Overflow',
+												'maxi-blocks'
+											),
+											content: (
+												<OverflowControl
+													{...getGroupAttributes(
+														attributes,
+														'overflow'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __('Z-index', 'maxi-blocks'),
+											content: (
+												<ZIndexControl
+													{...getGroupAttributes(
+														attributes,
+														'zIndex'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+									]}
+								/>
 							),
 						},
 					]}

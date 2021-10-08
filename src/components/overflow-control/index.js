@@ -13,7 +13,7 @@ import { getLastBreakpointAttribute } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, uniqueId } from 'lodash';
 
 /**
  * Component
@@ -30,6 +30,7 @@ const OverflowControl = props => {
 			{axes.map(axis => (
 				<SelectControl
 					label={__(`Overflow ${axis}`, 'maxi-blocks')}
+					key={uniqueId('maxi-position-control__overflow')}
 					options={[
 						{ label: 'Default', value: '' },
 						{ label: 'Visible', value: 'visible' },

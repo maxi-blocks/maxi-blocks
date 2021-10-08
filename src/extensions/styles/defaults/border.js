@@ -369,3 +369,42 @@ export const borderRadius = {
 		type: 'string',
 	},
 };
+
+export const buttonBorder = (() => {
+	const response = {};
+
+	Object.keys(border).forEach(key => {
+		const newKey = `button-${key}`;
+		const value = { ...border[key] };
+
+		response[newKey] = value;
+	});
+
+	return response;
+})();
+
+export const buttonBorderWidth = (() => {
+	const response = {};
+
+	Object.keys(borderWidth).forEach(key => {
+		const newKey = `button-${key}`;
+		const value = { ...borderWidth[key] };
+
+		response[newKey] = value;
+	});
+
+	return response;
+})();
+
+export const buttonBorderRadius = (() => {
+	const response = {};
+
+	Object.keys(borderRadius).forEach(key => {
+		const newKey = `button-${key}`;
+		const value = { ...borderRadius[key] };
+
+		response[newKey] = value;
+	});
+
+	return response;
+})();

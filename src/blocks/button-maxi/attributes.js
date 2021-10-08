@@ -68,27 +68,30 @@ const attributes = {
 	...attributesData.backgroundColorHover,
 	...attributesData.backgroundGradientHover,
 	...attributesData.opacity,
-	...attributesData.border,
-	...attributesData.borderWidth,
+	...attributesData.buttonBorder,
+	...attributesData.buttonBorderWidth,
 	...{
-		...attributesData.borderRadius,
-		'border-top-left-radius-general': {
+		...attributesData.buttonBorderRadius,
+		'button-border-top-left-radius-general': {
 			type: 'number',
 			default: 10,
 		},
-		'border-top-right-radius-general': {
+		'button-border-top-right-radius-general': {
 			type: 'number',
 			default: 10,
 		},
-		'border-bottom-left-radius-general': {
+		'button-border-bottom-left-radius-general': {
 			type: 'number',
 			default: 10,
 		},
-		'border-bottom-right-radius-general': {
+		'button-border-bottom-right-radius-general': {
 			type: 'number',
 			default: 10,
 		},
 	},
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...attributesData.borderRadius,
 	...attributesData.icon,
 	...attributesData.iconPadding,
 	...attributesData.iconBackgroundColor,

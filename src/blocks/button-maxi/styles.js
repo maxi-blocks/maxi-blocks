@@ -52,6 +52,17 @@ const getWrapperObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+			isButton: true,
+		}),
 	};
 
 	return response;
@@ -96,14 +107,16 @@ const getNormalObject = props => {
 		}),
 		border: getBorderStyles({
 			obj: {
-				...getGroupAttributes(props, [
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
+				...getGroupAttributes(
+					props,
+					['border', 'borderWidth', 'borderRadius'],
+					false,
+					'button-'
+				),
 			},
 			parentBlockStyle: props.parentBlockStyle,
 			isButton: true,
+			prefix: 'button-',
 		}),
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),

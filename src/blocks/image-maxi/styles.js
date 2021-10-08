@@ -11,6 +11,7 @@ import {
 	getCustomFormatsStyles,
 	getDisplayStyles,
 	getHoverEffectsBackgroundStyles,
+	getImageShapeStyles,
 	getLinkStyles,
 	getMarginPaddingStyles,
 	getOpacityStyles,
@@ -238,6 +239,18 @@ const getFigcaptionObject = props => {
 	return response;
 };
 
+const getImageShapeObject = props => {
+	const response = {
+		...(props.SVGElement && {
+			transform: getImageShapeStyles({
+				...getGroupAttributes(props, 'imageShape'),
+			}),
+		}),
+	};
+	console.log(response);
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -245,6 +258,8 @@ const getStyles = props => {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			' .maxi-image-block-wrapper': getImageWrapperObject(props),
+			' .maxi-image-block-wrapper > svg:first-child':
+				getImageShapeObject(props),
 			':hover .maxi-image-block-wrapper': getImageHoverObject(props),
 			' .maxi-image-block-wrapper img': getImageObject(props),
 			' figcaption': getFigcaptionObject(props),

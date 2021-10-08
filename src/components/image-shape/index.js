@@ -19,6 +19,8 @@ const ImageShape = props => {
 	const shapeScale = props[`image-shape-scale-${breakpoint}`];
 	const shapePosition = props[`image-shape-position-${breakpoint}`];
 
+	const defaultScale = 100;
+
 	let newIcon = icon;
 
 	const changeIcon = (attr, value) => {
@@ -37,13 +39,6 @@ const ImageShape = props => {
 					.replaceAll(' meet', '')
 					.replaceAll(' slice', '')
 					.replace(oldPreserveAspectRatio, newPreserveAspectRatio);
-				return newIcon;
-			}
-			case 'scale': {
-				const oldViewBox = icon.split('viewBox="').pop().split('"')[0];
-				const newViewBoxValues = [0, 0, 36.1 / value, 36.1 / value];
-				const newViewBox = newViewBoxValues.join(' ');
-				newIcon = icon.replace(oldViewBox, newViewBox);
 				return newIcon;
 			}
 			case 'position': {
@@ -104,27 +99,26 @@ const ImageShape = props => {
 					/>
 					<AdvancedNumberControl
 						label={__('Scale', 'maxi-blocks')}
-						value={shapeScale || 1}
+						value={shapeScale || defaultScale}
 						min={0}
-						max={5}
-						step={0.01}
-						initialPosition={1}
+						max={500}
+						step={1}
+						initialPosition={defaultScale}
 						onChangeValue={val => {
 							onChange({
 								[`image-shape-scale-${breakpoint}`]:
 									val !== undefined && val !== '' ? val : '',
-								SVGElement: changeIcon('scale', val),
 							});
 						}}
 						onReset={() =>
 							onChange({
-								[`image-shape-scale-${breakpoint}`]: 1,
-								SVGElement: changeIcon('scale', 1),
+								[`image-shape-scale-${breakpoint}`]:
+									defaultScale,
 							})
 						}
 					/>
 					<SelectControl
-						label={__('Position', 'maxi-blocks')}
+						label={__('Image Position', 'maxi-blocks')}
 						value={shapePosition || 'xMidYMid'}
 						options={[
 							{

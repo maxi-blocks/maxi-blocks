@@ -239,10 +239,10 @@ const getFigcaptionObject = props => {
 	return response;
 };
 
-const getImageShapeObject = props => {
+const getImageShapeObject = (target, props) => {
 	const response = {
 		...(props.SVGElement && {
-			transform: getImageShapeStyles({
+			transform: getImageShapeStyles(target, {
 				...getGroupAttributes(props, 'imageShape'),
 			}),
 		}),
@@ -258,8 +258,12 @@ const getStyles = props => {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			' .maxi-image-block-wrapper': getImageWrapperObject(props),
-			' .maxi-image-block-wrapper > svg:first-child':
-				getImageShapeObject(props),
+			' .maxi-image-block-wrapper > svg:first-child': getImageShapeObject(
+				'svg',
+				props
+			),
+			' .maxi-image-block-wrapper > svg:first-child pattern image':
+				getImageShapeObject('image', props),
 			':hover .maxi-image-block-wrapper': getImageHoverObject(props),
 			' .maxi-image-block-wrapper img': getImageObject(props),
 			' figcaption': getFigcaptionObject(props),

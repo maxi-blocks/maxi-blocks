@@ -28,9 +28,14 @@ const getImageShapeStyles = obj => {
 			breakpoint,
 			obj
 		);
-		console.log(scale);
+		const rotate = getLastBreakpointAttribute(
+			'image-shape-rotate',
+			breakpoint,
+			obj
+		);
 
 		if (isNumber(scale)) transformString += `scale(${scale / 100}) `;
+		if (isNumber(rotate)) transformString += `rotate(${rotate}deg) `;
 
 		const transformObj = {
 			...(!isEmpty(transformString) && { transform: transformString }),

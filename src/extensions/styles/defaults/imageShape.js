@@ -23,7 +23,6 @@ const imageShape = {
 	},
 	'image-shape-scale-general': {
 		type: 'number',
-		default: 100,
 	},
 	'image-shape-scale-xxl': {
 		type: 'number',
@@ -64,6 +63,27 @@ const imageShape = {
 	},
 	'image-shape-position-xs': {
 		type: 'string',
+	},
+	'image-shape-rotate-general': {
+		type: 'number',
+	},
+	'image-shape-rotate-xxl': {
+		type: 'number',
+	},
+	'image-shape-rotate-xl': {
+		type: 'number',
+	},
+	'image-shape-rotate-l': {
+		type: 'number',
+	},
+	'image-shape-rotate-m': {
+		type: 'number',
+	},
+	'image-shape-rotate-s': {
+		type: 'number',
+	},
+	'image-shape-rotate-xs': {
+		type: 'number',
 	},
 };
 

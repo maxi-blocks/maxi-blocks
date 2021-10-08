@@ -71,13 +71,6 @@ describe('ArrowControl', () => {
 		const sizeAttributes = await getBlockAttributes();
 		const arrowSizeAttribute = sizeAttributes['arrow-width-general'];
 		expect(arrowSizeAttribute).toStrictEqual(expectSize);
-
-		const warningBox = await page.$eval(
-			'.maxi-arrow-control .maxi-warning-box',
-			warning => warning.innerHTML
-		);
-		await page.waitForTimeout(500);
-		expect(warningBox).toMatchSnapshot();
 	});
 
 	it('Check the responsive arrow control', async () => {
@@ -151,5 +144,13 @@ describe('ArrowControl', () => {
 
 		const blockStyles = await getBlockStyle(page);
 		expect(blockStyles).toMatchSnapshot();
+
+		await page.waitForTimeout(500);
+		const warningBox = await page.$eval(
+			'.maxi-warning-box',
+			warning => warning.innerHTML
+		);
+		await page.waitForTimeout(500);
+		expect(warningBox).toMatchSnapshot();
 	});
 });

@@ -57,9 +57,6 @@ const getNormalObject = props => {
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
-		overflow: getOverflowStyles({
-			...getGroupAttributes(props, 'overflow'),
-		}),
 	};
 
 	return response;
@@ -201,6 +198,9 @@ const getImageWrapperObject = props => {
 		}),
 		...(props['hover-extension'] && {
 			hoverExtension: { general: { overflow: 'visible' } },
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 

@@ -24,6 +24,8 @@ import {
 	IconControl,
 	InfoBox,
 	MotionControl,
+	OpacityControl,
+	OverflowControl,
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
@@ -33,7 +35,6 @@ import {
 	TransitionControl,
 	TypographyControl,
 	ZIndexControl,
-	OverflowControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {
@@ -1296,6 +1297,21 @@ const Inspector = memo(
 															),
 														},
 													]}
+												/>
+											),
+										},
+										{
+											label: __('Opacity', 'maxi-blocks'),
+											content: (
+												<OpacityControl
+													{...getGroupAttributes(
+														attributes,
+														'opacity'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
 												/>
 											),
 										},

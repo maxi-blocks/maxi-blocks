@@ -21,13 +21,14 @@ import {
 	getGradientBackgroundObject,
 	getIconStyles,
 	getMarginPaddingStyles,
+	getOpacityStyles,
+	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
 	getTransformStyles,
 	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
-	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -68,6 +69,9 @@ const getWrapperObject = props => {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
 			parentBlockStyle: props.parentBlockStyle,
+		}),
+		opacity: getOpacityStyles({
+			...getGroupAttributes(props, 'opacity'),
 		}),
 	};
 

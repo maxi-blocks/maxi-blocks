@@ -19,7 +19,7 @@ describe('ParallaxControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-base-control label',
-			button => button[5].click()
+			button => button[4].click()
 		);
 
 		// display parallax

@@ -96,6 +96,11 @@ if (class_exists('MaxiBlocks_ImageUpload')) {
  * TODO: Old init.php file. Please, delete these lines of comment and require onces this file has been removed
  */
 require_once plugin_dir_path(__FILE__) . 'src/init.php';
+/**
+ * TODO: After creating dashboard plugin we should remove this file
+ */
+require_once MAXI_PLUGIN_DIR_PATH . 'src/options.php';
+
 
 //======================================================================
 // MaxiBlocks clean on deactivation

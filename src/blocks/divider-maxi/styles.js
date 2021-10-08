@@ -7,7 +7,7 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getMarginPaddingStyles,
 	getDividerStyles,
 	getOverflowStyles,
@@ -108,7 +108,7 @@ const getStyles = props => {
 			'': getNormalObject(props),
 			':hover hr.maxi-divider-block__divider': getHoverObject(props),
 			' hr.maxi-divider-block__divider': getDividerObject(props),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',
 					'backgroundColor',
@@ -116,7 +116,7 @@ const getStyles = props => {
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
 					'backgroundHover',
 					'backgroundColorHover',

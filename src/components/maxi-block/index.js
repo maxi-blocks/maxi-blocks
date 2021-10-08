@@ -269,21 +269,7 @@ export const getMaxiBlockBlockAttributes = props => {
 	};
 
 	const background = {
-		...getGroupAttributes(attributes, [
-			'background',
-			'backgroundColor',
-			'backgroundImage',
-			'backgroundVideo',
-			'backgroundGradient',
-			'backgroundSVG',
-			'backgroundHover',
-			'backgroundColorHover',
-			'backgroundImageHover',
-			'backgroundVideoHover',
-			'backgroundGradientHover',
-			'backgroundSVGHover',
-			'parallax',
-		]),
+		...getGroupAttributes(attributes, ['background', 'parallax']),
 	};
 	const hasArrow = props.attributes['arrow-status'] || false;
 	const hasLink =

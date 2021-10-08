@@ -8,7 +8,7 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getMarginPaddingStyles,
 	getTypographyStyles,
 	getTransitionStyles,
@@ -174,7 +174,7 @@ const getStyles = props => {
 				[` ${element}.maxi-text-block__content li:hover`]:
 					getTypographyHoverObject(props),
 			}),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',
 					'backgroundColor',
@@ -188,7 +188,7 @@ const getStyles = props => {
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
 					'backgroundHover',
 					'backgroundColorHover',

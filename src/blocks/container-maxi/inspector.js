@@ -218,11 +218,7 @@ const Inspector = props => {
 																			attributes,
 																			[
 																				'background',
-																				'backgroundColor',
-																				'backgroundImage',
-																				'backgroundVideo',
-																				'backgroundGradient',
-																				'backgroundSVG',
+																				'parallax',
 																			]
 																		)}
 																		onChange={obj =>
@@ -269,8 +265,7 @@ const Inspector = props => {
 																									attributes,
 																									[
 																										'background',
-																										'backgroundColor',
-																										'backgroundGradient',
+																										'parallax',
 																									]
 																								),
 																							},
@@ -279,8 +274,7 @@ const Inspector = props => {
 																									attributes,
 																									[
 																										'background',
-																										'backgroundColor',
-																										'backgroundGradient',
+																										'parallax',
 																									],
 																									true
 																								),

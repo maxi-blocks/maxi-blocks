@@ -8,7 +8,7 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getMarginPaddingStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getBorderStyles,
 	getOpacityStyles,
 	getOverflowStyles,
@@ -140,7 +140,7 @@ const getStyles = props => {
 			'': getNormalObject(props),
 			' .maxi-row-block__container': getContainerObject(props),
 			':hover': getHoverObject(props),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',
 					'backgroundColor',
@@ -154,7 +154,7 @@ const getStyles = props => {
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
 					'backgroundHover',
 					'backgroundColorHover',

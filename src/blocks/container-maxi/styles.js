@@ -8,7 +8,7 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getArrowStyles,
 	getMarginPaddingStyles,
 	getShapeDividerStyles,
@@ -166,7 +166,7 @@ const getStyles = props => {
 					),
 				},
 			},
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',
 					'backgroundColor',
@@ -181,7 +181,7 @@ const getStyles = props => {
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
 					'backgroundHover',
 					'backgroundColorHover',

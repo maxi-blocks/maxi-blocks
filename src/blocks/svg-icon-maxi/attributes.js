@@ -39,6 +39,7 @@ const attributes = {
 			default: 'center',
 		},
 	},
+	...attributesData.background,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

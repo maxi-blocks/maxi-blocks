@@ -36,6 +36,7 @@ const attributes = {
 	...attributesData.container,
 	...attributesData.rowPattern,
 	...attributesData.opacity,
+	...attributesData.background,
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,

@@ -87,6 +87,7 @@ const attributes = {
 		default: '',
 	},
 	...attributesData.alignment,
+	...attributesData.background,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

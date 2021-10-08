@@ -324,7 +324,7 @@ const Inspector = memo(
 																			attributes,
 																			[
 																				'icon',
-																				'iconGradient',
+																				'iconBackgroundGradient',
 																				'iconBackgroundColor',
 																				'iconBorder',
 																				'iconBorderWidth',
@@ -337,7 +337,7 @@ const Inspector = memo(
 																				obj
 																			);
 																		}}
-																		deviceType={
+																		breakpoint={
 																			deviceType
 																		}
 																		clientId={
@@ -360,7 +360,7 @@ const Inspector = memo(
 																			attributes,
 																			[
 																				'iconHover',
-																				'iconGradientHover',
+																				'iconBackgroundGradientHover',
 																				'iconBackgroundColorHover',
 																				'iconBorderHover',
 																				'iconBorderWidthHover',
@@ -372,7 +372,7 @@ const Inspector = memo(
 																				obj
 																			);
 																		}}
-																		deviceType={
+																		breakpoint={
 																			deviceType
 																		}
 																		clientId={

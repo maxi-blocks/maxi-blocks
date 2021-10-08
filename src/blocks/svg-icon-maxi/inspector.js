@@ -378,10 +378,7 @@ const Inspector = props => {
 																	<BlockBackgroundControl
 																		{...getGroupAttributes(
 																			attributes,
-																			[
-																				'background',
-																				'backgroundColor',
-																			]
+																			'background'
 																		)}
 																		onChange={obj =>
 																			setAttributes(
@@ -429,21 +426,13 @@ const Inspector = props => {
 																							{
 																								...getGroupAttributes(
 																									attributes,
-																									[
-																										'background',
-																										'backgroundColor',
-																										'backgroundGradient',
-																									]
+																									'background'
 																								),
 																							},
 																							{
 																								...getGroupAttributes(
 																									attributes,
-																									[
-																										'background',
-																										'backgroundColor',
-																										'backgroundGradient',
-																									],
+																									'background',
 																									true
 																								),
 																							}
@@ -460,10 +449,7 @@ const Inspector = props => {
 																		<BlockBackgroundControl
 																			{...getGroupAttributes(
 																				attributes,
-																				[
-																					'background',
-																					'backgroundColor',
-																				],
+																				'background',
 																				true
 																			)}
 																			onChange={obj =>

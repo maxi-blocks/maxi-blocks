@@ -9,6 +9,7 @@ import {
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
+	getBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
 	getColorBackgroundObject,
@@ -16,12 +17,12 @@ import {
 	getGradientBackgroundObject,
 	getIconStyles,
 	getMarginPaddingStyles,
+	getOverflowStyles,
 	getPositionStyles,
 	getTransformStyles,
 	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
-	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 /**
@@ -70,43 +71,12 @@ const getContentObject = props => {
 	return response;
 };
 
-const getBackgroundObject = props => {
-	const { isHover } = props;
-
-	const response = {};
-
-	breakpoints.forEach(breakpoint => {
-		const currentActiveMedia = getLastBreakpointAttribute(
-			'background-active-media',
-			breakpoint,
-			props,
-			isHover
-		);
-
-		if (!currentActiveMedia) return;
-
-		merge(response, {
-			...(currentActiveMedia === 'color' && {
-				background: getColorBackgroundObject({
-					...getGroupAttributes(props, 'backgroundColor'),
-					blockStyle: props.parentBlockStyle,
-					isButton: true,
-					breakpoint,
-					isHover,
-				}),
-			}),
-			...(currentActiveMedia === 'gradient' && {
-				background: getGradientBackgroundObject({
-					...getGroupAttributes(props, 'backgroundGradient'),
-					breakpoint,
-					isHover,
-				}),
-			}),
-		});
+const getBackgroundObject = props =>
+	getBackgroundStyles({
+		isButton: true,
+		blockStyle: props.parentBlockStyle,
+		...props,
 	});
-
-	return response;
-};
 
 const getNormalObject = props => {
 	const response = {
@@ -271,6 +241,37 @@ const getIconPathStyles = (obj, isHover = false) => {
 	return { IconPath: response };
 };
 
+const getIconBackgroundObject = props => {
+	let response = {};
+
+	breakpoints.forEach(breakpoint => {
+		response = merge(response, {
+			background: {
+				...getColorBackgroundObject({
+					...getGroupAttributes(props, [
+						'iconBackgroundColor',
+						'background',
+						'backgroundColor',
+					]),
+					prefix: 'icon-',
+					blockStyle: props.parentBlockStyle,
+					isIconInherit: props['icon-inherit'],
+					breakpoint,
+				}),
+			},
+			gradient: {
+				...getGradientBackgroundObject({
+					...getGroupAttributes(props, 'iconBackgroundGradient'),
+					prefix: 'icon-',
+					breakpoint,
+				}),
+			},
+		});
+	});
+
+	return response;
+};
+
 const getIconObject = (props, target) => {
 	const response = {
 		icon: getIconStyles(
@@ -281,24 +282,14 @@ const getIconObject = (props, target) => {
 			props['icon-inherit'],
 			false
 		),
-		background: target === 'icon' && {
-			...getColorBackgroundObject({
-				...getGroupAttributes(props, [
-					'iconBackgroundColor',
-					'background',
-					'backgroundColor',
-				]),
-				prefix: 'icon-',
-				blockStyle: props.parentBlockStyle,
-				isIconInherit: props['icon-inherit'],
-			}),
-		},
-		gradient: target === 'icon' && {
-			...getGradientBackgroundObject({
-				...getGroupAttributes(props, 'iconGradient'),
-				prefix: 'icon-',
-			}),
-		},
+		...(target === 'icon' && getIconBackgroundObject(props)),
+		// background: target === 'icon' && getIconBackgroundObject(props),
+		// gradient: target === 'icon' && {
+		// 	...getGradientBackgroundObject({
+		// 		...getGroupAttributes(props, 'iconBackgroundGradient'),
+		// 		prefix: 'icon-',
+		// 	}),
+		// },
 		padding:
 			target === 'icon' &&
 			getMarginPaddingStyles(
@@ -361,7 +352,11 @@ const getIconHoverObject = (props, target) => {
 		gradient: props['icon-status-hover'] &&
 			target === 'iconHover' && {
 				...getGradientBackgroundObject({
-					...getGroupAttributes(props, 'iconGradientHover', true),
+					...getGroupAttributes(
+						props,
+						'iconBackgroundGradientHover',
+						true
+					),
 					prefix: 'icon-',
 					isHover: true,
 				}),

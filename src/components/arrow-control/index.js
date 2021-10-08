@@ -19,33 +19,11 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Component
  */
-const getIsBackgroundColor = props => {
-	const bgLayersStatus = Object.entries(props).some(([key, val]) => {
-		if (key.includes('background-layers-status')) return !!val;
-
-		return false;
-	});
-
-	if (bgLayersStatus) return false;
-
-	// eslint-disable-next-line consistent-return
-	const activeMedias = Object.entries(props).filter(([key, val]) => {
-		if (key.includes('background-active-media')) return val === 'color';
-
-		return false;
-	});
-	const isBackgroundColor =
-		activeMedias.length > 0 &&
-		activeMedias.every(activeMedia => activeMedia[1] === 'color');
-
-	return isBackgroundColor;
-};
-
 const ArrowControl = props => {
 	const {
 		className,
@@ -53,6 +31,7 @@ const ArrowControl = props => {
 		isFullWidth,
 		breakpoint = 'general',
 		isFirstOnHierarchy,
+		'background-layers': backgroundLayers,
 	} = props;
 
 	const classes = classnames('maxi-arrow-control', className);
@@ -95,14 +74,16 @@ const ArrowControl = props => {
 		},
 	};
 
-	const isBackgroundColor = getIsBackgroundColor(props);
+	const isBackgroundColor = !isEmpty(backgroundLayers)
+		? backgroundLayers.some(layer => layer.type === 'color')
+		: false;
 
 	return (
 		<div className={classes}>
 			{!isBackgroundColor && (
 				<InfoBox
 					message={__(
-						'Please set background colour to see the arrow.',
+						'Please set a background colour layer to see the arrow.',
 						'maxi-blocks'
 					)}
 					links={[

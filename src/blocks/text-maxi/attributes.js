@@ -44,6 +44,7 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
+	...attributesData.background,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

@@ -9,7 +9,7 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getArrowStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getMarginPaddingStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
@@ -100,7 +100,7 @@ const getStyles = props => {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',
 					'backgroundColor',
@@ -115,7 +115,7 @@ const getStyles = props => {
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(
 					props,
 					[

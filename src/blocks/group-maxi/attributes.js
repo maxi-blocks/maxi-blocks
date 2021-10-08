@@ -22,6 +22,7 @@ const attributes = {
 		default: 'normal',
 	},
 	...attributesData.arrow,
+	...attributesData.background,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

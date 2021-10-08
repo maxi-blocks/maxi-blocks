@@ -401,14 +401,7 @@ const Inspector = memo(
 																		<BlockBackgroundControl
 																			{...getGroupAttributes(
 																				attributes,
-																				[
-																					'background',
-																					'backgroundColor',
-																					'backgroundImage',
-																					'backgroundVideo',
-																					'backgroundGradient',
-																					'backgroundSVG',
-																				]
+																				'background'
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -454,21 +447,13 @@ const Inspector = memo(
 																								{
 																									...getGroupAttributes(
 																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										]
+																										'background'
 																									),
 																								},
 																								{
 																									...getGroupAttributes(
 																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										],
+																										'background',
 																										true
 																									),
 																								}
@@ -485,11 +470,7 @@ const Inspector = memo(
 																			<BlockBackgroundControl
 																				{...getGroupAttributes(
 																					attributes,
-																					[
-																						'background',
-																						'backgroundColor',
-																						'backgroundGradient',
-																					],
+																					'background',
 																					true
 																				)}
 																				onChange={obj =>

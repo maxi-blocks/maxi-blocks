@@ -712,7 +712,7 @@ const getBasicResponseObject = ({
 	};
 };
 
-const getBackgroundStyles = ({
+export const getBlockBackgroundStyles = ({
 	target: rawTarget,
 	isHover = false,
 	prefix = '',
@@ -789,4 +789,50 @@ const getBackgroundStyles = ({
 	return response;
 };
 
-export default getBackgroundStyles;
+export const getBackgroundStyles = ({
+	isHover = false,
+	prefix = '',
+	isButton = false,
+	blockStyle: rawBlockStyle,
+	isIconInherit = false,
+	...props
+}) => {
+	const blockStyle = rawBlockStyle.replace('maxi-', '');
+
+	const response = {};
+
+	BREAKPOINTS.forEach(breakpoint => {
+		const currentActiveMedia = getLastBreakpointAttribute(
+			`${prefix}background-active-media`,
+			breakpoint,
+			props,
+			isHover
+		);
+
+		if (!currentActiveMedia) return;
+
+		merge(response, {
+			...(currentActiveMedia === 'color' && {
+				background: getColorBackgroundObject({
+					...getGroupAttributes(props, 'backgroundColor'),
+					blockStyle,
+					isButton,
+					breakpoint,
+					isHover,
+					prefix,
+					isIconInherit,
+				}),
+			}),
+			...(currentActiveMedia === 'gradient' && {
+				background: getGradientBackgroundObject({
+					...getGroupAttributes(props, 'backgroundGradient'),
+					breakpoint,
+					isHover,
+					prefix,
+				}),
+			}),
+		});
+	});
+
+	return response;
+};

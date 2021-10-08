@@ -5,7 +5,7 @@ import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
 	getCustomFormatsStyles,
@@ -253,7 +253,7 @@ const getStyles = props => {
 			' .maxi-hover-details .maxi-hover-details__content p':
 				getHoverEffectContentTextObject(props),
 			' .maxi-hover-details': getHoverEffectDetailsBoxObject(props),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
 					'background',
 					'backgroundColor',
@@ -265,7 +265,7 @@ const getStyles = props => {
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
 					'backgroundHover',
 					'backgroundColorHover',

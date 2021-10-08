@@ -1,8 +1,7 @@
 export { default as getAlignmentFlexStyles } from './getAlignmentFlexStyles';
 export { default as getAlignmentTextStyles } from './getAlignmentTextStyles';
-export { default as getArrowStyles } from './getArrowStyles';
-export { default as getBackgroundStyles } from './getBackgroundStyles';
 export { default as getBorderStyles } from './getBorderStyles';
+export { default as getArrowStyles } from './getArrowStyles';
 export { default as getBoxShadowStyles } from './getBoxShadowStyles';
 export { default as getBreakpoints } from './getBreakpoints';
 export { default as getColumnSizeStyles } from './getColumnSizeStyles';

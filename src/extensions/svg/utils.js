@@ -14,7 +14,12 @@ import { uniqueId, isObject, isEmpty, isElement } from 'lodash';
 export const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
 	const { getBlockAttributes, getSelectedBlockClientId } =
 		select('core/block-editor');
-	const { uniqueID } = getBlockAttributes(getSelectedBlockClientId());
+	const props = getBlockAttributes(getSelectedBlockClientId());
+	const { uniqueID } = props;
+	const imageShapeSize = props['image-shape-size-general'];
+	const imageShapePosition = props['image-shape-position-general'];
+
+	const imageShapeSizeValue = imageShapeSize === 'fill' ? ' slice' : '';
 
 	const SVGValue = !isObject(SVGData) ? JSON.parse(SVGData) : SVGData;
 
@@ -51,7 +56,16 @@ export const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
 				image.setAttribute('x', '0');
 				image.setAttribute('y', '0');
 				image.setAttribute('href', el.imageURL);
-				image.setAttribute('preserveAspectRatio', 'xMidYMid');
+
+				if (!isEmpty(imageShapePosition))
+					image.setAttribute(
+						'preserveAspectRatio',
+						`${imageShapePosition}${imageShapeSizeValue}`
+					);
+				image.setAttribute(
+					'preserveAspectRatio',
+					`xMidYMid${imageShapeSizeValue}`
+				);
 
 				pattern.append(image);
 				SVGElement.prepend(pattern);

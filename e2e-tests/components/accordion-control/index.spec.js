@@ -18,7 +18,7 @@ describe('AccordionControl', () => {
 			'typography',
 			'background',
 			'border',
-			'width height',
+			'height width',
 			'box shadow',
 			'padding margin',
 		];

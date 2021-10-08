@@ -9,13 +9,15 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
 
 describe('Advanced Number Control', () => {
 	it('Checking the advanced number control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		const accordionPanel = await openSidebar(page, 'typography');
+
+		await changeResponsive(page, 'm');
 
 		// Max value
 		await accordionPanel.$eval(

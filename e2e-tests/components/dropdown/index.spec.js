@@ -14,9 +14,9 @@ describe('Dropdown', () => {
 		await page.$eval('.maxi-container-block', select => select.focus());
 		const accordionPanel = await openAdvancedSidebar(page, 'shape divider');
 
-		await accordionPanel.$$eval(
-			'.maxi-shapedividercontrol .maxi-base-control label',
-			click => click[3].click()
+		await accordionPanel.$eval(
+			'.maxi-shapedividercontrol .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		await accordionPanel.$eval(

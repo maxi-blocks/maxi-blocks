@@ -12,7 +12,7 @@ import VideoLayer from './videoLayer';
  * External dependencies
  */
 import classnames from 'classnames';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -86,6 +86,10 @@ const BackgroundContent = props => {
 
 const BackgroundDisplayer = props => {
 	const { className, 'parallax-status': parallaxStatus } = props;
+
+	const layers = props['background-layers'];
+
+	if (!parallaxStatus && (!!layers || isEmpty(layers))) return null;
 
 	const classes = classnames('maxi-background-displayer', className);
 

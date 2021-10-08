@@ -455,4 +455,47 @@ describe('getBackgroundStyles', () => {
 
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Get correct parallax background styles', () => {
+		const result = getBackgroundStyles({
+			target: 'maxi-test',
+			isHover: false,
+			blockStyle: 'light',
+			'parallax-background-image-attachment-general': 'scroll',
+			'parallax-background-image-clip-general': 'border-box',
+			'parallax-background-image-height-general': 300,
+			'parallax-background-image-height-m': 600,
+			'parallax-background-image-height-unit-general': '%',
+			'parallax-background-image-height-xl': 300,
+			'parallax-background-image-mediaID-general': 302,
+			'parallax-background-image-mediaID-m': 226,
+			'parallax-background-image-mediaID-xl': 302,
+			'parallax-background-image-mediaURL-general':
+				'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
+			'parallax-background-image-mediaURL-m':
+				'http://localhost:8888/wp-content/uploads/2021/09/maxi-a6848490-test.jpg',
+			'parallax-background-image-mediaURL-xl':
+				'http://localhost:8888/wp-content/uploads/2021/10/maxi-PIL-65.jpg',
+			'parallax-background-image-opacity-general': 0.23,
+			'parallax-background-image-opacity-m': 0.78,
+			'parallax-background-image-opacity-xl': 0.23,
+			'parallax-background-image-opacity-xxl': 0.73,
+			'parallax-background-image-origin-general': 'padding-box',
+			'parallax-background-image-position-general': 'center center',
+			'parallax-background-image-position-height-general': 0,
+			'parallax-background-image-position-height-unit-general': '%',
+			'parallax-background-image-position-width-general': 0,
+			'parallax-background-image-position-width-unit-general': '%',
+			'parallax-background-image-repeat-general': 'no-repeat',
+			'parallax-background-image-size-general': 'auto',
+			'parallax-background-image-width-general': 470,
+			'parallax-background-image-width-m': 600,
+			'parallax-background-image-width-unit-general': '%',
+			'parallax-background-image-width-xl': 470,
+			'parallax-direction': 'down',
+			'parallax-speed': 4,
+		});
+
+		expect(result).toMatchSnapshot();
+	});
 });

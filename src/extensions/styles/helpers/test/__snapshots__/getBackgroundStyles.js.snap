@@ -415,6 +415,8 @@ Object {
 }
 `;
 
+exports[`getBackgroundStyles Get correct parallax background styles 1`] = `Object {}`;
+
 exports[`getBackgroundStyles Get correct simple background styles 1`] = `
 Object {
   "background": Object {

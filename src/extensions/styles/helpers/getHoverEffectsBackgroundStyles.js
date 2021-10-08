@@ -1,7 +1,8 @@
 /**
  * Internal dependencies
  */
-import { getGroupAttributes, getLastBreakpointAttribute } from '..';
+import getGroupAttributes from '../getGroupAttributes';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import {
 	getColorBackgroundObject,
 	getGradientBackgroundObject,
@@ -56,9 +57,14 @@ const getHoverEffectsBackgroundStyles = (props, parentBlockStyle) => {
 			}),
 		});
 
-		if (currentActiveMedia === 'gradient')
-			response.background[breakpoint] = response.background[breakpoint]
-				?.replace(/rgb\(/g, 'rgba(')
+		if (
+			currentActiveMedia === 'gradient' &&
+			response.background?.[breakpoint]?.background
+		)
+			response.background[breakpoint].background = response.background[
+				breakpoint
+			].background
+				.replace(/rgb\(/g, 'rgba(')
 				.replace(
 					/\((\d+),(\d+),(\d+)\)/g,
 					`($1,$2,$3,${

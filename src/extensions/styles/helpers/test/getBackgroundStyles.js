@@ -1,5 +1,7 @@
-import { getBackgroundStyles } from '..';
-import { getBlockBackgroundStyles } from '../getBackgroundStyles';
+import {
+	getBlockBackgroundStyles,
+	getBackgroundStyles,
+} from '../getBackgroundStyles';
 
 jest.mock('@wordpress/data', () => {
 	return {

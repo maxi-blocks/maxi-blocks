@@ -414,3 +414,33 @@ Object {
   "target": "maxi-test",
 }
 `;
+
+exports[`getBackgroundStyles Get correct simple background styles 1`] = `
+Object {
+  "background": Object {
+    "general": Object {
+      "background-color": "rgba(var(--maxi-light-color-1),0.39)",
+    },
+    "l": Object {
+      "background": "linear-gradient(135deg,rgb(6,147,227) 0%,rgb(73,131,156) 39%,rgb(155,81,224) 100%)",
+      "opacity": 0.29,
+    },
+    "label": "Background Gradient",
+    "m": Object {
+      "background-color": "rgba(var(--maxi-light-color-4),0.39)",
+    },
+    "s": Object {
+      "background-color": "rgba(43,43,179,0.39)",
+    },
+    "xl": Object {
+      "background-color": "rgba(var(--maxi-light-color-1),0.39)",
+    },
+    "xs": Object {
+      "background": "linear-gradient(135deg,rgb(6,147,227) 0%,rgb(73,131,156) 39%,rgb(102,186,223) 67%,rgb(155,81,224) 100%)",
+    },
+    "xxl": Object {
+      "background-color": "rgba(var(--maxi-light-color-2),0.39)",
+    },
+  },
+}
+`;

@@ -17,6 +17,10 @@ const attributes = {
 		type: 'string',
 		default: __('Button', 'maxi-blocks'),
 	},
+	canvasFullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
 	fullWidth: {
 		type: 'string',
 		default: 'normal',
@@ -109,6 +113,7 @@ const attributes = {
 	...attributesData.borderWidthHover,
 	...attributesData.borderRadiusHover,
 	...attributesData.size,
+	...attributesData.buttonSize,
 	...attributesData.buttonBoxShadow,
 	...attributesData.buttonBoxShadowHover,
 	...attributesData.boxShadow,

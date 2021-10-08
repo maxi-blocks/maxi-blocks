@@ -73,6 +73,9 @@ const getWrapperObject = props => {
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
 		}),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 	};
 
 	return response;
@@ -124,9 +127,12 @@ const getContentObject = props => {
 
 const getNormalObject = props => {
 	const response = {
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
+		size: getSizeStyles(
+			{
+				...getGroupAttributes(props, 'size', false, 'button-'),
+			},
+			'button-'
+		),
 		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),

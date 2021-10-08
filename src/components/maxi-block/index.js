@@ -93,7 +93,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		uniqueID,
 		className,
 		displayValue,
-		fullWidth,
+		canvasFullWidth,
 		motion,
 		background,
 		disableMotion = false,
@@ -193,7 +193,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 	const blockProps = {
 		tagName,
 		className: classes,
-		'data-align': fullWidth,
+		'data-align': canvasFullWidth,
 		ref,
 		id: uniqueID,
 		key: `maxi-block-${uniqueID}`,
@@ -249,8 +249,13 @@ const MaxiBlock = forwardRef((props, ref) => {
 
 export const getMaxiBlockBlockAttributes = props => {
 	const { name, deviceType, attributes, clientId } = props;
-	const { blockStyle, extraClassName, uniqueID, fullWidth, linkSettings } =
-		attributes;
+	const {
+		blockStyle,
+		extraClassName,
+		uniqueID,
+		canvasFullWidth,
+		linkSettings,
+	} = attributes;
 	const displayValue = getLastBreakpointAttribute(
 		'display',
 		deviceType,
@@ -294,7 +299,7 @@ export const getMaxiBlockBlockAttributes = props => {
 		blockStyle,
 		extraClassName,
 		uniqueID,
-		fullWidth,
+		canvasFullWidth,
 		displayValue,
 		motion,
 		background,

@@ -72,13 +72,14 @@ const Inspector = memo(
 		const { attributes, deviceType, setAttributes, clientId } = props;
 
 		const {
-			customLabel,
-			uniqueID,
-			isFirstOnHierarchy,
 			blockStyle,
+			customLabel,
 			extraClassName,
 			fullWidth,
+			isFirstOnHierarchy,
 			parentBlockStyle,
+			canvasFullWidth,
+			uniqueID,
 		} = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
@@ -996,8 +997,11 @@ const Inspector = memo(
 														<FullSizeControl
 															{...getGroupAttributes(
 																attributes,
-																'size'
+																'size',
+																false,
+																'button-'
 															)}
+															prefix='button-'
 															onChange={obj =>
 																setAttributes(
 																	obj
@@ -1313,6 +1317,46 @@ const Inspector = memo(
 													}
 													breakpoint={deviceType}
 												/>
+											),
+										},
+										{
+											label: __(
+												'Height / Width',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													{isFirstOnHierarchy && (
+														<ToggleSwitch
+															label={__(
+																'Set button canvas to full-width',
+																'maxi-blocks'
+															)}
+															selected={
+																canvasFullWidth ===
+																'full'
+															}
+															onChange={val =>
+																setAttributes({
+																	canvasFullWidth:
+																		val
+																			? 'full'
+																			: 'normal',
+																})
+															}
+														/>
+													)}
+													<FullSizeControl
+														{...getGroupAttributes(
+															attributes,
+															'size'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												</>
 											),
 										},
 									]}

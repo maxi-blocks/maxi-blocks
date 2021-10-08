@@ -12,12 +12,7 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openSidebar,
-	changeResponsive,
-	getBlockStyle,
-} from '../../utils';
+import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
 
 describe('TypographyControl', () => {
 	it('Checking the font family', async () => {
@@ -895,8 +890,5 @@ describe('TypographyControl', () => {
 			letterSpaceSelector => letterSpaceSelector.selectedIndex
 		);
 		expect(letterSpaceMNumber).toStrictEqual(1);
-
-		const blockStyles = await getBlockStyle(page);
-		expect(blockStyles).toMatchSnapshot();
 	});
 });

@@ -23,7 +23,7 @@ const imageShape = {
 	},
 	'image-shape-scale-general': {
 		type: 'number',
-		default: 1,
+		default: 100,
 	},
 	'image-shape-scale-xxl': {
 		type: 'number',

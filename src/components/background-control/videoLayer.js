@@ -15,6 +15,7 @@ import TextControl from '../text-control';
 import ToggleSwitch from '../toggle-switch';
 import {
 	getAttributeKey,
+	getAttributeValue,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 
@@ -27,7 +28,13 @@ import { cloneDeep } from 'lodash';
  * Component
  */
 const VideoLayerContent = props => {
-	const { onChange, isHover = false, prefix = '', breakpoint } = props;
+	const {
+		onChange,
+		isHover = false,
+		prefix = '',
+		breakpoint,
+		isGeneral = false,
+	} = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
 
@@ -50,6 +57,17 @@ const VideoLayerContent = props => {
 							breakpoint
 						)
 					] = opacity;
+
+					if (isGeneral)
+						videoOptions[
+							getAttributeKey(
+								'background-video-opacity',
+								isHover,
+								prefix,
+								'general'
+							)
+						] = opacity;
+
 					onChange(videoOptions);
 				}}
 			/>
@@ -76,6 +94,20 @@ const VideoLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: val.url,
+						...(isGeneral && {
+							[getAttributeKey(
+								'background-video-fallbackID',
+								isHover,
+								prefix,
+								'general'
+							)]: val.id,
+							[getAttributeKey(
+								'background-video-fallbackURL',
+								isHover,
+								prefix,
+								'general'
+							)]: val.url,
+						}),
 					})
 				}
 				onRemoveImage={() =>
@@ -92,6 +124,20 @@ const VideoLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: '',
+						...(isGeneral && {
+							[getAttributeKey(
+								'background-video-fallbackID',
+								isHover,
+								prefix,
+								'general'
+							)]: '',
+							[getAttributeKey(
+								'background-video-fallbackURL',
+								isHover,
+								prefix,
+								'general'
+							)]: '',
+						}),
 					})
 				}
 			/>
@@ -115,12 +161,11 @@ const VideoLayer = props => {
 				label='URL'
 				type='url'
 				// help={__('Add Video', 'maxi-blocks')}
-				value={getLastBreakpointAttribute(
-					`${prefix}background-video-mediaURL`,
-					breakpoint,
-					videoOptions,
-					isHover
-				)}
+				value={getAttributeValue({
+					target: `${prefix}background-video-mediaURL`,
+					props: videoOptions,
+					isHover,
+				})}
 				placeholder='Youtube, Vimeo, or Direct Link'
 				onChange={val => {
 					if (val && !videoUrlRegex.test(val)) {
@@ -143,12 +188,11 @@ const VideoLayer = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('Start Time (s)', 'maxi-blocks')}
-				value={getLastBreakpointAttribute(
-					`${prefix}background-video-startTime`,
-					breakpoint,
-					videoOptions,
-					isHover
-				)}
+				value={getAttributeValue({
+					target: `${prefix}background-video-startTime`,
+					props: videoOptions,
+					isHover,
+				})}
 				onChangeValue={val => {
 					onChange({
 						[getAttributeKey(
@@ -172,29 +216,20 @@ const VideoLayer = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('End Time (s)', 'maxi-blocks')}
-				value={getLastBreakpointAttribute(
-					`${prefix}background-video-endTime`,
-					breakpoint,
-					videoOptions,
-					isHover
-				)}
-				onChangeValue={val => {
+				value={getAttributeValue({
+					target: `${prefix}background-video-endTime`,
+					props: videoOptions,
+					isHover,
+				})}
+				onChangeValue={val =>
 					onChange({
 						[getAttributeKey(
 							'background-video-endTime',
 							isHover,
-							prefix,
-							breakpoint
+							prefix
 						)]: val !== undefined && val !== '' ? val : '',
-						...(!!val && {
-							[getAttributeKey(
-								'background-video-loop',
-								isHover,
-								prefix
-							)]: 0,
-						}),
-					});
-				}}
+					})
+				}
 				min={0}
 				max={999}
 				onReset={() =>
@@ -217,12 +252,12 @@ const VideoLayer = props => {
 					isHover
 				)}
 				disabled={
-					!!+getLastBreakpointAttribute(
+					+getLastBreakpointAttribute(
 						`${prefix}background-video-endTime`,
 						breakpoint,
 						videoOptions,
 						isHover
-					)
+					) === 0
 				}
 				onChange={val =>
 					onChange({

@@ -22,8 +22,19 @@ import './editor.scss';
 /**
  * Component
  */
-const ToggleSwitch = ({ className, onChange, label, help, selected }) => {
-	const classes = classnames('maxi-toggle-switch', className);
+const ToggleSwitch = ({
+	className,
+	onChange,
+	label,
+	help,
+	selected,
+	disabled,
+}) => {
+	const classes = classnames(
+		'maxi-toggle-switch',
+		disabled && 'maxi-toggle-switch--disabled', // TODO
+		className
+	);
 	const instanceId = useInstanceId(ToggleSwitch);
 	const id = `maxi-toggle-switch-${instanceId}`;
 	const [value, setValue] = useState(selected || false);

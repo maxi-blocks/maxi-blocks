@@ -33,6 +33,7 @@ const SVGLayerContent = props => {
 		prefix = '',
 		clientId,
 		breakpoint,
+		isGeneral = false,
 	} = props;
 
 	const SVGOptions = cloneDeep(props.SVGOptions);
@@ -65,7 +66,24 @@ const SVGLayerContent = props => {
 						content: (
 							<SVGFillControl
 								SVGOptions={SVGOptions}
-								onChange={obj => onChange(obj)}
+								onChange={obj => {
+									if (isGeneral) {
+										Object.entries(obj).forEach(
+											([key, val]) => {
+												const newKey = `${key.substring(
+													0,
+													key.lastIndexOf(
+														`-${breakpoint}`
+													)
+												)}-general`;
+
+												obj[newKey] = val;
+											}
+										);
+									}
+
+									onChange(obj);
+								}}
 								clientId={clientId}
 								isHover={isHover}
 								breakpoint={breakpoint}
@@ -99,6 +117,14 @@ const SVGLayerContent = props => {
 												prefix,
 												breakpoint
 											)]: val,
+											...(isGeneral && {
+												[getAttributeKey(
+													'background-svg-top',
+													isHover,
+													prefix,
+													'general'
+												)]: val,
+											}),
 										});
 									}}
 									onChangeUnit={val =>
@@ -109,6 +135,14 @@ const SVGLayerContent = props => {
 												prefix,
 												breakpoint
 											)]: val,
+											...(isGeneral && {
+												[getAttributeKey(
+													'background-svg-top-unit',
+													isHover,
+													prefix,
+													'general'
+												)]: val,
+											}),
 										})
 									}
 									onReset={() =>
@@ -139,6 +173,34 @@ const SVGLayerContent = props => {
 													breakpoint
 												)
 											),
+											...(isGeneral && {
+												[getAttributeKey(
+													'background-svg-top',
+													isHover,
+													prefix,
+													'general'
+												)]: getDefaultAttribute(
+													getAttributeKey(
+														'background-svg-top',
+														isHover,
+														prefix,
+														'general'
+													)
+												),
+												[getAttributeKey(
+													'background-svg-top-unit',
+													isHover,
+													prefix,
+													'general'
+												)]: getDefaultAttribute(
+													getAttributeKey(
+														'background-svg-top-unit',
+														isHover,
+														prefix,
+														'general'
+													)
+												),
+											}),
 										})
 									}
 									min={0}
@@ -166,6 +228,14 @@ const SVGLayerContent = props => {
 												prefix,
 												breakpoint
 											)]: val,
+											...(isGeneral && {
+												[getAttributeKey(
+													'background-svg-left',
+													isHover,
+													prefix,
+													'general'
+												)]: val,
+											}),
 										});
 									}}
 									onChangeUnit={val =>
@@ -176,6 +246,14 @@ const SVGLayerContent = props => {
 												prefix,
 												breakpoint
 											)]: val,
+											...(isGeneral && {
+												[getAttributeKey(
+													'background-svg-left-unit',
+													isHover,
+													prefix,
+													'general'
+												)]: val,
+											}),
 										})
 									}
 									onReset={() =>
@@ -206,6 +284,34 @@ const SVGLayerContent = props => {
 													breakpoint
 												)
 											),
+											...(isGeneral && {
+												[getAttributeKey(
+													'background-svg-left',
+													isHover,
+													prefix,
+													'general'
+												)]: getDefaultAttribute(
+													getAttributeKey(
+														'background-svg-left',
+														isHover,
+														prefix,
+														'general'
+													)
+												),
+												[getAttributeKey(
+													'background-svg-left-unit',
+													isHover,
+													prefix,
+													'general'
+												)]: getDefaultAttribute(
+													getAttributeKey(
+														'background-svg-left-unit',
+														isHover,
+														prefix,
+														'general'
+													)
+												),
+											}),
 										})
 									}
 									min={0}
@@ -240,6 +346,14 @@ const SVGLayerContent = props => {
 											prefix,
 											breakpoint
 										)]: val,
+										...(isGeneral && {
+											[getAttributeKey(
+												'background-svg-size',
+												isHover,
+												prefix,
+												'general'
+											)]: val,
+										}),
 									});
 								}}
 								onChangeUnit={val =>
@@ -250,6 +364,14 @@ const SVGLayerContent = props => {
 											prefix,
 											breakpoint
 										)]: val,
+										...(isGeneral && {
+											[getAttributeKey(
+												'background-svg-size-unit',
+												isHover,
+												prefix,
+												'general'
+											)]: val,
+										}),
 									})
 								}
 								onReset={() =>
@@ -280,6 +402,34 @@ const SVGLayerContent = props => {
 												breakpoint
 											)
 										),
+										...(isGeneral && {
+											[getAttributeKey(
+												'background-svg-size',
+												isHover,
+												prefix,
+												'general'
+											)]: getDefaultAttribute(
+												getAttributeKey(
+													'background-svg-size',
+													isHover,
+													prefix,
+													'general'
+												)
+											),
+											[getAttributeKey(
+												'background-svg-size-unit',
+												isHover,
+												prefix,
+												'general'
+											)]: getDefaultAttribute(
+												getAttributeKey(
+													'background-svg-size-unit',
+													isHover,
+													prefix,
+													'general'
+												)
+											),
+										}),
 									})
 								}
 								minMaxSettings={minMaxSettings}

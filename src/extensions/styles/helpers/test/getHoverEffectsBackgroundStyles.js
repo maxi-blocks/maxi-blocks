@@ -10,6 +10,11 @@ jest.mock('@wordpress/data', () => {
 		}),
 	};
 });
+// jest.mock('@wordpress/blocks', () => {
+// 	return {
+// 		getBlockAttributes: jest.fn(),
+// 	};
+// });
 
 describe('getHoverEffectsBackgroundStyles', () => {
 	it('Get a correct hover effects background style', () => {
@@ -25,10 +30,13 @@ describe('getHoverEffectsBackgroundStyles', () => {
 				'linear-gradient(135deg,rgba(6,147,200,0.5) 0%,rgb(224,82,100) 100%)',
 		};
 
+		debugger;
+
 		const result = getHoverEffectsBackgroundStyles(object);
 		expect(result).toMatchSnapshot();
 
 		const resultGradient = getHoverEffectsBackgroundStyles(objectGradient);
+
 		expect(resultGradient).toMatchSnapshot();
 	});
 });

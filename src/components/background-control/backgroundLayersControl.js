@@ -27,7 +27,7 @@ import VideoLayer from './videoLayer';
  */
 import ReactDragListView from 'react-drag-listview';
 import classnames from 'classnames';
-import { isEmpty, cloneDeep, uniqueId } from 'lodash';
+import { isEmpty, cloneDeep } from 'lodash';
 
 /**
  * Styles and icons
@@ -147,7 +147,7 @@ const LayerCard = props => {
 	const layerContent = {
 		color: (
 			<ColorLayer
-				key={uniqueId('background-color-layer--')}
+				key={`background-color-layer--${layer.id}`}
 				colorOptions={layer}
 				onChange={obj => onChange({ ...layer, ...obj })}
 				isButton={isButton}
@@ -156,7 +156,7 @@ const LayerCard = props => {
 		),
 		image: (
 			<ImageLayer
-				key={uniqueId('background-image-layer--')}
+				key={`background-image-layer--${layer.id}`}
 				imageOptions={layer}
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
@@ -164,7 +164,7 @@ const LayerCard = props => {
 		),
 		video: (
 			<VideoLayer
-				key={uniqueId('background-video-layer--')}
+				key={`background-video-layer--${layer.id}`}
 				videoOptions={layer}
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
@@ -172,7 +172,7 @@ const LayerCard = props => {
 		),
 		gradient: (
 			<GradientLayer
-				key={uniqueId('background-gradient-layer--')}
+				key={`background-gradient-layer--${layer.id}`}
 				gradientOptions={layer}
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
@@ -180,7 +180,7 @@ const LayerCard = props => {
 		),
 		shape: (
 			<SVGLayer
-				key={uniqueId('background-SVG-layer--')}
+				key={`background-SVG-layer--${layer.id}`}
 				SVGOptions={layer}
 				onChange={obj => onChange({ ...layer, ...obj })}
 				layerId={layerId}

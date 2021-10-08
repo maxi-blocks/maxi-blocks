@@ -185,7 +185,9 @@ export const getImageBackgroundObject = ({
 	const getBgImageLastBreakpointAttribute = target =>
 		getLastBreakpointAttribute(prefix + target, breakpoint, props, isHover);
 
-	const bgImageUrl = getBgImageAttributeValue('background-image-mediaURL');
+	const bgImageUrl = getBgImageLastBreakpointAttribute(
+		'background-image-mediaURL'
+	);
 
 	if (isEmpty(bgImageUrl)) return {};
 
@@ -281,8 +283,7 @@ export const getImageBackgroundObject = ({
 	}
 
 	// Opacity
-	if (!isNil(bgImageOpacity) && !isEmpty(bgImageOpacity))
-		response[breakpoint].opacity = bgImageOpacity;
+	if (isNumber(bgImageOpacity)) response[breakpoint].opacity = bgImageOpacity;
 
 	// Clip-path
 	if (!isEmpty(bgImageClipPath))

@@ -66,6 +66,7 @@ const getLastBreakpointAttributeSingle = (
 	} while (
 		breakpointPosition > 0 &&
 		!isNumber(currentAttr) &&
+		!isBoolean(currentAttr) &&
 		(isEmpty(currentAttr) || isNil(currentAttr))
 	);
 

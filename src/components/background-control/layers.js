@@ -6,6 +6,7 @@ export const colorOptions = {
 	display: 'block',
 	'background-palette-color-status': true,
 	'background-palette-color': 1,
+	'background-palette-opacity': 100,
 	'background-color': '',
 	'background-color-clip-path': '',
 };
@@ -66,9 +67,9 @@ export const SVGOptions = {
 	'background-svg-SVGMediaID': null,
 	'background-svg-SVGMediaURL': '',
 	'background-svg-top-unit': '%',
-	'background-svg-top': null,
+	'background-svg-top': 0,
 	'background-svg-left-unit': '%',
-	'background-svg-left': null,
+	'background-svg-left': 50,
 	'background-svg-size': 100,
 	'background-svg-size-unit': '%',
 };

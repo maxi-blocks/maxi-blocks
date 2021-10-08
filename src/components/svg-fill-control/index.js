@@ -50,6 +50,24 @@ const SVGFillControl = props => {
 						content: (
 							<ColorControl
 								label={__('Fill', 'maxi-blocks')}
+								paletteStatus={getLastBreakpointAttribute(
+									'background-palette-svg-color-status',
+									breakpoint,
+									SVGOptions,
+									isHover
+								)}
+								paletteColor={getLastBreakpointAttribute(
+									'background-palette-svg-color',
+									breakpoint,
+									SVGOptions,
+									isHover
+								)}
+								paletteOpacity={getLastBreakpointAttribute(
+									'background-palette-svg-opacity',
+									breakpoint,
+									SVGOptions,
+									isHover
+								)}
 								color={getLastBreakpointAttribute(
 									'color',
 									breakpoint,
@@ -57,9 +75,10 @@ const SVGFillControl = props => {
 									isHover
 								)}
 								onChange={({
-									color,
-									paletteColor,
 									paletteStatus,
+									paletteColor,
+									paletteOpacity,
+									color,
 								}) => {
 									SVGData[id][
 										getAttributeKey(
@@ -91,31 +110,31 @@ const SVGFillControl = props => {
 											breakpoint
 										)]: SVGData,
 										[getAttributeKey(
+											'background-palette-svg-color-status',
+											isHover,
+											false,
+											breakpoint
+										)]: paletteStatus,
+										[getAttributeKey(
 											'background-palette-svg-color',
 											isHover,
 											false,
 											breakpoint
 										)]: paletteColor,
 										[getAttributeKey(
-											'background-palette-svg-color-status',
+											'background-palette-svg-opacity',
 											isHover,
 											false,
 											breakpoint
-										)]: paletteStatus,
+										)]: paletteOpacity,
+										[getAttributeKey(
+											'background-palette-svg-opacity',
+											isHover,
+											false,
+											breakpoint
+										)]: paletteOpacity,
 									});
 								}}
-								paletteColor={getLastBreakpointAttribute(
-									'background-palette-svg-color',
-									breakpoint,
-									SVGOptions,
-									isHover
-								)}
-								paletteStatus={getLastBreakpointAttribute(
-									'background-palette-svg-color-status',
-									breakpoint,
-									SVGOptions,
-									isHover
-								)}
 								isHover={isHover}
 								clientId={clientId}
 							/>

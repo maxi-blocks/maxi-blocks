@@ -32,6 +32,7 @@ const ColorLayerContent = props => {
 		clientId,
 		isButton = false,
 		breakpoint,
+		isGeneral = false,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -66,14 +67,10 @@ const ColorLayerContent = props => {
 					colorOptions
 				)}
 				paletteOpacity={getLastBreakpointAttribute(
-					getAttributeKey(
-						'background-palette-opacity',
-						isHover,
-						prefix,
-						breakpoint
-					),
+					`${prefix}background-palette-opacity`,
 					breakpoint,
-					colorOptions
+					colorOptions,
+					isHover
 				)}
 				onChange={({
 					color,
@@ -81,43 +78,6 @@ const ColorLayerContent = props => {
 					paletteStatus,
 					paletteOpacity,
 				}) => {
-					if (paletteStatus)
-						colorOptions[
-							getAttributeKey(
-								'background-palette-color-status',
-								isHover,
-								prefix,
-								breakpoint
-							)
-						] = paletteColor;
-					if (paletteColor)
-						colorOptions[
-							getAttributeKey(
-								'background-palette-color',
-								isHover,
-								prefix,
-								breakpoint
-							)
-						] = paletteColor;
-					if (paletteOpacity)
-						colorOptions[
-							getAttributeKey(
-								'background-palette-opacity',
-								isHover,
-								prefix,
-								breakpoint
-							)
-						] = paletteOpacity;
-					if (color)
-						colorOptions[
-							getAttributeKey(
-								'background-color',
-								isHover,
-								prefix,
-								breakpoint
-							)
-						] = color;
-
 					onChange({
 						[getAttributeKey(
 							'background-palette-color-status',
@@ -143,6 +103,32 @@ const ColorLayerContent = props => {
 							prefix,
 							breakpoint
 						)]: color,
+						...(isGeneral && {
+							[getAttributeKey(
+								'background-palette-color-status',
+								isHover,
+								prefix,
+								'general'
+							)]: paletteStatus,
+							[getAttributeKey(
+								'background-palette-color',
+								isHover,
+								prefix,
+								'general'
+							)]: paletteColor,
+							[getAttributeKey(
+								'background-palette-opacity',
+								isHover,
+								prefix,
+								'general'
+							)]: paletteOpacity,
+							[getAttributeKey(
+								'background-color',
+								isHover,
+								prefix,
+								'general'
+							)]: color,
+						}),
 					});
 				}}
 				globalProps={
@@ -159,16 +145,12 @@ const ColorLayerContent = props => {
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={
-						colorOptions[
-							getAttributeKey(
-								'background-color-clip-path',
-								isHover,
-								prefix,
-								breakpoint
-							)
-						]
-					}
+					clipPath={getLastBreakpointAttribute(
+						`${prefix}background-color-clip-path`,
+						breakpoint,
+						colorOptions,
+						isHover
+					)}
 					onChange={val => {
 						colorOptions[
 							getAttributeKey(
@@ -178,6 +160,16 @@ const ColorLayerContent = props => {
 								breakpoint
 							)
 						] = val;
+
+						if (isGeneral)
+							colorOptions[
+								getAttributeKey(
+									'background-color-clip-path',
+									isHover,
+									prefix,
+									'general'
+								)
+							] = val;
 
 						onChange(colorOptions);
 					}}

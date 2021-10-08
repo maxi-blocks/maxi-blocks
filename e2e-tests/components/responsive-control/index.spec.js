@@ -13,6 +13,7 @@ import {
 	getBlockAttributes,
 	openAdvancedSidebar,
 	changeResponsive,
+	getBlockStyle,
 } from '../../utils';
 
 describe('ResponsiveControl', () => {
@@ -93,5 +94,8 @@ describe('ResponsiveControl', () => {
 		);
 
 		expect(breakpointM).toStrictEqual('1024');
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

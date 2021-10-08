@@ -23,5 +23,8 @@ describe('SelectControl', () => {
 		const style = attributes['border-style-general'];
 
 		expect(style).toStrictEqual(expectResult);
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

@@ -6,7 +6,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 describe('TextShadowControl', () => {
 	it('Checking the text shadow control', async () => {
@@ -46,5 +46,8 @@ describe('TextShadowControl', () => {
 
 			expect(textShadow).toStrictEqual(setting);
 		}
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

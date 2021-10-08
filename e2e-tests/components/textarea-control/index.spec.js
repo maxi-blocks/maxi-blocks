@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { openAdvancedSidebar } from '../../utils';
+import { openAdvancedSidebar, getBlockStyle } from '../../utils';
 
 describe('TextareaControl', () => {
 	it('Check textarea control', async () => {
@@ -36,5 +36,8 @@ describe('TextareaControl', () => {
 		);
 
 		expect(expectText).toMatchSnapshot();
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

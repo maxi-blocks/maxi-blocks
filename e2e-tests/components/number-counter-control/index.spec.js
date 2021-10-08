@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 describe('NumberCounterControl', () => {
 	it('Check number counter control', async () => {
@@ -195,5 +195,8 @@ describe('NumberCounterControl', () => {
 		const expectedFontFamily = 'Montserrat';
 
 		expect(fontFamily).toStrictEqual(expectedFontFamily);
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

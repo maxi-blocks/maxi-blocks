@@ -6,7 +6,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 describe('RadioControl', () => {
 	it('Check radio control', async () => {
@@ -30,5 +30,8 @@ describe('RadioControl', () => {
 
 			expect(attribute).toStrictEqual(alignments[i]);
 		}
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 });

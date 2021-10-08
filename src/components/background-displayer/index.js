@@ -89,7 +89,7 @@ const BackgroundDisplayer = props => {
 
 	const layers = props['background-layers'];
 
-	if (!parallaxStatus && (!!layers || isEmpty(layers))) return null;
+	if (!parallaxStatus && (!layers || isEmpty(layers))) return null;
 
 	const classes = classnames('maxi-background-displayer', className);
 

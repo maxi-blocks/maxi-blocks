@@ -163,7 +163,7 @@ const ImageShape = props => {
 								onChange={val =>
 									onChange({
 										[`image-shape-position-${breakpoint}`]:
-											shapePosition,
+											val,
 										SVGElement: changeIcon('position', val),
 									})
 								}

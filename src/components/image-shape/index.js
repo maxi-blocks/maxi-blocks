@@ -18,6 +18,7 @@ const ImageShape = props => {
 	const shapeSize = props[`image-shape-size-${breakpoint}`];
 	const shapeScale = props[`image-shape-scale-${breakpoint}`];
 	const shapePosition = props[`image-shape-position-${breakpoint}`];
+	const shapeRotate = props[`image-shape-rotate-${breakpoint}`];
 
 	const defaultScale = 100;
 
@@ -114,6 +115,25 @@ const ImageShape = props => {
 							onChange({
 								[`image-shape-scale-${breakpoint}`]:
 									defaultScale,
+							})
+						}
+					/>
+					<AdvancedNumberControl
+						label={__('Rotate', 'maxi-blocks')}
+						value={shapeRotate}
+						min={0}
+						max={360}
+						step={1}
+						initialPosition={0}
+						onChangeValue={val => {
+							onChange({
+								[`image-shape-rotate-${breakpoint}`]:
+									val !== undefined && val !== '' ? val : '',
+							});
+						}}
+						onReset={() =>
+							onChange({
+								[`image-shape-rotate-${breakpoint}`]: '',
 							})
 						}
 					/>

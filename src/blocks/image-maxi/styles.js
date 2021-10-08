@@ -247,7 +247,6 @@ const getImageShapeObject = (target, props) => {
 			}),
 		}),
 	};
-	console.log(response);
 	return response;
 };
 

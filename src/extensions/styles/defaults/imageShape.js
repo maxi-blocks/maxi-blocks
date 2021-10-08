@@ -85,6 +85,48 @@ const imageShape = {
 	'image-shape-rotate-xs': {
 		type: 'number',
 	},
+	'image-shape-flip-x-general': {
+		type: 'boolean',
+	},
+	'image-shape-flip-x-xxl': {
+		type: 'boolean',
+	},
+	'image-shape-flip-x-xl': {
+		type: 'boolean',
+	},
+	'image-shape-flip-x-l': {
+		type: 'boolean',
+	},
+	'image-shape-flip-x-m': {
+		type: 'boolean',
+	},
+	'image-shape-flip-x-s': {
+		type: 'boolean',
+	},
+	'image-shape-flip-x-xs': {
+		type: 'boolean',
+	},
+	'image-shape-flip-y-general': {
+		type: 'boolean',
+	},
+	'image-shape-flip-y-xxl': {
+		type: 'boolean',
+	},
+	'image-shape-flip-y-xl': {
+		type: 'boolean',
+	},
+	'image-shape-flip-y-l': {
+		type: 'boolean',
+	},
+	'image-shape-flip-y-m': {
+		type: 'boolean',
+	},
+	'image-shape-flip-y-s': {
+		type: 'boolean',
+	},
+	'image-shape-flip-y-xs': {
+		type: 'boolean',
+	},
 };
 
 export default imageShape;

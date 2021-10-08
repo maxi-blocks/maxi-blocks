@@ -6,7 +6,11 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { SelectControl, AdvancedNumberControl } from '../../components';
+import {
+	AdvancedNumberControl,
+	SelectControl,
+	ToggleSwitch,
+} from '../../components';
 import MaxiModal from '../../editor/library/modal';
 
 /**
@@ -19,8 +23,10 @@ const ImageShape = props => {
 	const shapeScale = props[`image-shape-scale-${breakpoint}`];
 	const shapePosition = props[`image-shape-position-${breakpoint}`];
 	const shapeRotate = props[`image-shape-rotate-${breakpoint}`];
+	const shapeFlipHorizontally = props[`image-shape-flip-x-${breakpoint}`];
+	const shapeFlipVertically = props[`image-shape-flip-y-${breakpoint}`];
 
-	const defaultScale = 100;
+	const defaultScale = null;
 
 	let newIcon = icon;
 
@@ -68,43 +74,111 @@ const ImageShape = props => {
 
 	return (
 		<>
-			<MaxiModal
-				type='image-shape'
-				onSelect={obj => onChange(obj)}
-				onRemove={obj => {
-					onChange(obj);
-				}}
-				icon={icon}
-			/>
+			{breakpoint === 'general' && (
+				<MaxiModal
+					type='image-shape'
+					onSelect={obj => onChange(obj)}
+					onRemove={obj => {
+						onChange(obj);
+					}}
+					icon={icon}
+				/>
+			)}
 			{icon && (
 				<>
-					<SelectControl
-						label={__('Size', 'maxi-blocks')}
-						value={shapeSize || ''}
-						options={[
-							{
-								label: __('Fit', 'maxi-blocks'),
-								value: '',
-							},
-							{
-								label: __('Fill', 'maxi-blocks'),
-								value: 'fill',
-							},
-						]}
-						onChange={shapeSize =>
-							onChange({
-								[`image-shape-size-${breakpoint}`]: shapeSize,
-								SVGElement: changeIcon('size', shapeSize),
-							})
-						}
-					/>
+					{breakpoint === 'general' && (
+						<>
+							<SelectControl
+								label={__('Image ratio', 'maxi-blocks')}
+								value={shapeSize || ''}
+								options={[
+									{
+										label: __('Fit', 'maxi-blocks'),
+										value: '',
+									},
+									{
+										label: __('Fill', 'maxi-blocks'),
+										value: 'fill',
+									},
+								]}
+								onChange={val =>
+									onChange({
+										[`image-shape-size-${breakpoint}`]: val,
+										SVGElement: changeIcon('size', val),
+									})
+								}
+							/>
+							<SelectControl
+								label={__('Image position', 'maxi-blocks')}
+								value={shapePosition || 'xMidYMid'}
+								options={[
+									{
+										label: __(
+											'Center Center',
+											'maxi-blocks'
+										),
+										value: 'xMidYMid',
+									},
+									{
+										label: __('Left Center', 'maxi-blocks'),
+										value: 'xMinYMid',
+									},
+									{
+										label: __(
+											'Right Center',
+											'maxi-blocks'
+										),
+										value: 'xMaxYMid',
+									},
+									{
+										label: __('Center Top', 'maxi-blocks'),
+										value: 'xMidYMax',
+									},
+									{
+										label: __(
+											'Center Bottom',
+											'maxi-blocks'
+										),
+										value: 'xMidYMin',
+									},
+									{
+										label: __('Left Bottom', 'maxi-blocks'),
+										value: 'xMinYMin',
+									},
+									{
+										label: __(
+											'Right Bottom',
+											'maxi-blocks'
+										),
+										value: 'xMaxYMin',
+									},
+									{
+										label: __('Left Top', 'maxi-blocks'),
+										value: 'xMinYMax',
+									},
+									{
+										label: __('Right Top', 'maxi-blocks'),
+										value: 'xMaxYMax',
+									},
+								]}
+								onChange={val =>
+									onChange({
+										[`image-shape-position-${breakpoint}`]:
+											shapePosition,
+										SVGElement: changeIcon('position', val),
+									})
+								}
+							/>
+						</>
+					)}
 					<AdvancedNumberControl
-						label={__('Scale', 'maxi-blocks')}
+						label={__('Scale shape', 'maxi-blocks')}
 						value={shapeScale || defaultScale}
 						min={0}
 						max={500}
 						step={1}
-						initialPosition={defaultScale}
+						initialPosition={100}
+						placeholder='100%'
 						onChangeValue={val => {
 							onChange({
 								[`image-shape-scale-${breakpoint}`]:
@@ -119,12 +193,13 @@ const ImageShape = props => {
 						}
 					/>
 					<AdvancedNumberControl
-						label={__('Rotate', 'maxi-blocks')}
+						label={__('Rotate shape', 'maxi-blocks')}
 						value={shapeRotate}
 						min={0}
 						max={360}
 						step={1}
 						initialPosition={0}
+						placeholder='0deg'
 						onChangeValue={val => {
 							onChange({
 								[`image-shape-rotate-${breakpoint}`]:
@@ -137,57 +212,23 @@ const ImageShape = props => {
 							})
 						}
 					/>
-					<SelectControl
-						label={__('Image Position', 'maxi-blocks')}
-						value={shapePosition || 'xMidYMid'}
-						options={[
-							{
-								label: __('Center Center', 'maxi-blocks'),
-								value: 'xMidYMid',
-							},
-							{
-								label: __('Left Center', 'maxi-blocks'),
-								value: 'xMinYMid',
-							},
-							{
-								label: __('Right Center', 'maxi-blocks'),
-								value: 'xMaxYMid',
-							},
-							{
-								label: __('Center Top', 'maxi-blocks'),
-								value: 'xMidYMax',
-							},
-							{
-								label: __('Center Bottom', 'maxi-blocks'),
-								value: 'xMidYMin',
-							},
-							{
-								label: __('Left Bottom', 'maxi-blocks'),
-								value: 'xMinYMin',
-							},
-							{
-								label: __('Right Bottom', 'maxi-blocks'),
-								value: 'xMaxYMin',
-							},
-							{
-								label: __('Left Top', 'maxi-blocks'),
-								value: 'xMinYMax',
-							},
-							{
-								label: __('Right Top', 'maxi-blocks'),
-								value: 'xMaxYMax',
-							},
-						]}
-						onChange={shapePosition =>
+					<ToggleSwitch
+						label={__('Flip shape horizontally', 'maxi-blocks')}
+						selected={shapeFlipHorizontally || 0}
+						onChange={val => {
 							onChange({
-								[`image-shape-position-${breakpoint}`]:
-									shapePosition,
-								SVGElement: changeIcon(
-									'position',
-									shapePosition
-								),
-							})
-						}
+								[`image-shape-flip-x-${breakpoint}`]: val,
+							});
+						}}
+					/>
+					<ToggleSwitch
+						label={__('Flip shape vertically', 'maxi-blocks')}
+						selected={shapeFlipVertically || 0}
+						onChange={val => {
+							onChange({
+								[`image-shape-flip-y-${breakpoint}`]: val,
+							});
+						}}
 					/>
 				</>
 			)}

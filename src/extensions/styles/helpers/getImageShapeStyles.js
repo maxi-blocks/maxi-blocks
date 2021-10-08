@@ -34,8 +34,10 @@ const getImageShapeStyles = (target = 'svg', obj) => {
 			obj
 		);
 
-		if (isNumber(scale) && target === 'svg')
-			transformString += `scale(${scale / 100}) `;
+		if (isNumber(scale)) {
+			if (target === 'svg') transformString += `scale(${scale / 100}) `;
+			if (target === 'image') transformString += `scale(${100 / scale}) `;
+		}
 
 		if (isNumber(rotate)) {
 			if (target === 'svg') transformString += `rotate(${rotate}deg) `;

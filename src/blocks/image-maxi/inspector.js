@@ -523,7 +523,7 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Shape Mask',
+													'Shape mask',
 													'maxi-blocks'
 												),
 												content: (

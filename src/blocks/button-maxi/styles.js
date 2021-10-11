@@ -351,12 +351,12 @@ const getIconObject = (props, target) => {
 		},
 		padding:
 			target === 'icon' &&
-			getMarginPaddingStyles(
-				{
+			getMarginPaddingStyles({
+				obj: {
 					...getGroupAttributes(props, 'iconPadding'),
 				},
-				'icon-'
-			),
+				prefix: 'icon-',
+			}),
 		border:
 			target === 'icon' &&
 			getBorderStyles({

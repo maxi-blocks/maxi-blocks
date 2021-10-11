@@ -12,7 +12,8 @@
 	&.maxi-svg-icon-block,
 	&.maxi-shape-block,
 	&.maxi-row-block,
-	&.maxi-button-block {
+	&.maxi-button-block,
+	&.maxi-group-block {
 		display: flex !important;
 	}
 	& * {

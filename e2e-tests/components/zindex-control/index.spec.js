@@ -75,7 +75,6 @@ describe('ZIndexControl', () => {
 
 		expect(zIndexM).toStrictEqual('20');
 
-		const blockStyles = await getBlockStyle(page);
-		expect(blockStyles).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

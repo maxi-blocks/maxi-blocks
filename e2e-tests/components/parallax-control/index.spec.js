@@ -56,7 +56,6 @@ describe('ParallaxControl', () => {
 		const expectSpeed = 4;
 		expect(parallaxSpeed).toStrictEqual(expectSpeed);
 
-		const blockStyles = await getBlockStyle(page);
-		expect(blockStyles).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

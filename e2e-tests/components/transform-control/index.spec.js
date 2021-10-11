@@ -377,7 +377,6 @@ describe('TransformControl', () => {
 
 		expect(originMOption).toStrictEqual('80');
 
-		const blockStyles = await getBlockStyle(page);
-		expect(blockStyles).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

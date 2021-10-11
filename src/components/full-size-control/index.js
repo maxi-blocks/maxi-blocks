@@ -145,7 +145,7 @@ const FullSizeControl = props => {
 				allowedUnits={['px', 'em', 'vw', '%']}
 			/>
 			<ToggleSwitch
-				label={__('Advanced Width/Height', 'maxi-blocks')}
+				label={__('Set custom min/max values', 'maxi-blocks')}
 				selected={props[`${prefix}size-advanced-options`] || 0}
 				onChange={val => {
 					onChange({
@@ -178,7 +178,7 @@ const FullSizeControl = props => {
 				<>
 					{!hideMaxWidth && (
 						<AdvancedNumberControl
-							label={__('Max Width', 'maxi-blocks')}
+							label={__('Maximum width', 'maxi-blocks')}
 							enableUnit
 							unit={getLastBreakpointAttribute(
 								`${prefix}max-width-unit`,
@@ -215,7 +215,7 @@ const FullSizeControl = props => {
 						/>
 					)}
 					<AdvancedNumberControl
-						label={__('Min Width', 'maxi-blocks')}
+						label={__('Minimum width', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute(
 							`${prefix}min-width-unit`,
@@ -251,7 +251,7 @@ const FullSizeControl = props => {
 						allowedUnits={['px', 'em', 'vw', '%']}
 					/>
 					<AdvancedNumberControl
-						label={__('Max Height', 'maxi-blocks')}
+						label={__('Maximum height', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute(
 							`${prefix}max-height-unit`,
@@ -287,7 +287,7 @@ const FullSizeControl = props => {
 						allowedUnits={['px', 'em', 'vw', '%']}
 					/>
 					<AdvancedNumberControl
-						label={__('Min Height', 'maxi-blocks')}
+						label={__('Minimum height', 'maxi-blocks')}
 						enableUnit
 						unit={getLastBreakpointAttribute(
 							`${prefix}min-height-unit`,

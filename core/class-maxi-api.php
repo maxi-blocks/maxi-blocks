@@ -162,7 +162,6 @@ if (!class_exists('MaxiBlocks_API')):
 				'methods' => 'GET',
 				'callback' => [$this, 'get_maxi_blocks_breakpoints'],
 				'permission_callback' => function () {
-					// return current_user_can('edit_posts');
 					return true;
 				},
 			]);

@@ -13,6 +13,7 @@ import {
 	getBlockAttributes,
 	openAdvancedSidebar,
 	changeResponsive,
+	getBlockStyle,
 } from '../../utils';
 
 describe('OpacityControl', () => {
@@ -35,6 +36,9 @@ describe('OpacityControl', () => {
 		const expectResult = 0.19;
 
 		expect(opacity).toStrictEqual(expectResult);
+
+		const blockStyles = await getBlockStyle(page);
+		expect(blockStyles).toMatchSnapshot();
 	});
 
 	it('Check Responsive opacity control', async () => {

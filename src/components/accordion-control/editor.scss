@@ -31,26 +31,26 @@
 
 		&:last-child {
 			.maxi-accordion-control__item__button {
-				border-bottom: 1px solid #dbdde6;
+				border-bottom: 1px solid var(--maxi-grey-1-color);
 			}
 		}
 		&__button {
 			position: relative;
-			background: #f9f9f9;
+			background: var(--maxi-white-2-color);
 			display: flex;
 			align-items: center;
 			padding: 8px;
-			border-top: 1px solid #dbdde6;
+			border-top: 1px solid var(--maxi-grey-1-color);
 			margin-bottom: 0;
 			z-index: 2;
 
 			&:hover {
 				cursor: pointer;
-				background: rgba(180, 180, 180, 0.04);
+				background: var(--maxi-grey-2-color);
 			}
 			&:active,
 			&:focus {
-				background: rgba(180, 180, 180, 0.12);
+				background: var(--maxi-grey-3-color);
 			}
 			&:before {
 				margin-right: 8px;
@@ -72,7 +72,7 @@
 			}
 			&[aria-expanded='true'] {
 				background: #fff;
-				border-bottom: 1px solid #dbdde6;
+				border-bottom: 1px solid var(--maxi-grey-1-color);
 
 				&:after {
 					transform: translateY(-50%) rotate(90deg);

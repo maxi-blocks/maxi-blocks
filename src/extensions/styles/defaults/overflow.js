@@ -1,24 +1,45 @@
 const overflow = {
 	label: 'Overflow',
-	'overflow-general': {
+	'overflow-x-general': {
 		type: 'string',
 	},
-	'overflow-xxl': {
+	'overflow-x-xxl': {
 		type: 'string',
 	},
-	'overflow-xl': {
+	'overflow-x-xl': {
 		type: 'string',
 	},
-	'overflow-l': {
+	'overflow-x-l': {
 		type: 'string',
 	},
-	'overflow-m': {
+	'overflow-x-m': {
 		type: 'string',
 	},
-	'overflow-s': {
+	'overflow-x-s': {
 		type: 'string',
 	},
-	'overflow-xs': {
+	'overflow-x-xs': {
+		type: 'string',
+	},
+	'overflow-y-general': {
+		type: 'string',
+	},
+	'overflow-y-xxl': {
+		type: 'string',
+	},
+	'overflow-y-xl': {
+		type: 'string',
+	},
+	'overflow-y-l': {
+		type: 'string',
+	},
+	'overflow-y-m': {
+		type: 'string',
+	},
+	'overflow-y-s': {
+		type: 'string',
+	},
+	'overflow-y-xs': {
 		type: 'string',
 	},
 };

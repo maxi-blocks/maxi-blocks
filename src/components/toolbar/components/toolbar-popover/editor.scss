@@ -87,11 +87,6 @@
 	.components-color-picker__inputs-toggle {
 		border: 0;
 
-		&:focus {
-			outline: none !important;
-			box-shadow: none !important;
-		}
-
 		svg {
 			fill: #fff;
 		}

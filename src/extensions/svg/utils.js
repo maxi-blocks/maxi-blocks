@@ -15,9 +15,11 @@ export const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
 	const { getBlockAttributes, getSelectedBlockClientId } =
 		select('core/block-editor');
 	const props = getBlockAttributes(getSelectedBlockClientId());
-	const { uniqueID } = props;
-	const imageShapeSize = props['image-shape-size-general'];
-	const imageShapePosition = props['image-shape-position-general'];
+const {
+	uniqueID,
+	'image-shape-size-general': imageShapeSize,
+	'image-shape-position-general': imageShapePosition,
+} = props;
 
 	const imageShapeSizeValue = imageShapeSize === 'fill' ? ' slice' : '';
 

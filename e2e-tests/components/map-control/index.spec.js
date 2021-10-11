@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 console.error = jest.fn();
 
@@ -136,5 +136,7 @@ describe('MapControl', () => {
 		const mapColorText =
 			mapColorTextAttribute['map-marker-palette-text-color'];
 		expect(mapColorText).toStrictEqual(expectColorText);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -19,14 +19,14 @@ import MaxiModal from '../../editor/library/modal';
 const ImageShape = props => {
 	const { onChange, breakpoint, icon } = props;
 
-const {
-	[`image-shape-size-${breakpoint}`]: shapeSize,
-	[`image-shape-scale-${breakpoint}`]: shapeScale,
-	[`image-shape-position-${breakpoint}`]: shapePosition,
-	[`image-shape-rotate-${breakpoint}`]: shapeRotate,
-	[`image-shape-flip-x-${breakpoint}`]: shapeFlipHorizontally,
-	[`image-shape-flip-y-${breakpoint}`]: shapeFlipVertically,
-} = props;
+	const {
+		[`image-shape-size-${breakpoint}`]: shapeSize,
+		[`image-shape-scale-${breakpoint}`]: shapeScale,
+		[`image-shape-position-${breakpoint}`]: shapePosition,
+		[`image-shape-rotate-${breakpoint}`]: shapeRotate,
+		[`image-shape-flip-x-${breakpoint}`]: shapeFlipHorizontally,
+		[`image-shape-flip-y-${breakpoint}`]: shapeFlipVertically,
+	} = props;
 
 	const defaultScale = null;
 	let newIcon = icon;
@@ -54,13 +54,13 @@ const {
 					.split('preserveaspectratio="')
 					.pop()
 					.split('"')[0];
-				let newPreserveAspectRatio;
-				if (oldPreserveAspectRatio.includes('slice'))
-					newPreserveAspectRatio = ' slice';
-				if (oldPreserveAspectRatio.includes('meet'))
-					newPreserveAspectRatio = ' meet';
+				let newPreserveAspectRatio = value;
 
-				newPreserveAspectRatio = value + newPreserveAspectRatio;
+				if (oldPreserveAspectRatio.includes('slice'))
+					newPreserveAspectRatio += ' slice';
+
+				if (oldPreserveAspectRatio.includes('meet'))
+					newPreserveAspectRatio += ' meet';
 
 				newIcon = icon.replace(
 					oldPreserveAspectRatio,

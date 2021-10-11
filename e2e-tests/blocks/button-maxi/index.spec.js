@@ -24,7 +24,7 @@ describe('Button Maxi', () => {
 	});
 
 	it('Button Style', async () => {
-		await openSidebar(page, 'style');
+		await openSidebar(page, 'style shortcut');
 
 		const buttons = await page.$$('.maxi-button-default-styles button');
 		await buttons[4].click();
@@ -66,6 +66,6 @@ describe('Button Maxi', () => {
 			attributes['icon-content']
 				.replace(/(\r\n|\n|\r)/g, '')
 				.replace(/\s/g, '')
-		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, '')); 
+		).toEqual(expectShape.replace(/(\r\n|\n|\r)/g, '').replace(/\s/g, ''));
 	}); */
 });

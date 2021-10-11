@@ -5,12 +5,13 @@ export const boxShadowNone = prefix => {
 
 	response = {
 		[`${[prefix]}box-shadow-horizontal`]:
-			boxShadow['box-shadow-horizontal-general'],
+			boxShadow['box-shadow-horizontal-general']?.default,
 		[`${[prefix]}box-shadow-vertical`]:
-			boxShadow['box-shadow-vertical-general'],
-		[`${[prefix]}box-shadow-blur`]: boxShadow['box-shadow-blur-general'],
+			boxShadow['box-shadow-vertical-general']?.default,
+		[`${[prefix]}box-shadow-blur`]:
+			boxShadow['box-shadow-blur-general']?.default,
 		[`${[prefix]}box-shadow-spread`]:
-			boxShadow['box-shadow-spread-general'],
+			boxShadow['box-shadow-spread-general']?.default,
 	};
 
 	return response;

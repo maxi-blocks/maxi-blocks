@@ -106,7 +106,6 @@ describe('ColumnPattern', () => {
 
 		expect(rowSelectedL).toBeTruthy();
 
-		const blockStyles = await getBlockStyle(page);
-		expect(blockStyles).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

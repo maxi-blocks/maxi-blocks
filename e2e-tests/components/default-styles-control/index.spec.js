@@ -33,7 +33,6 @@ describe('DefaultStylesControl', () => {
 			expect(borderAttribute).toStrictEqual(expectAttributes[i]);
 		}
 
-		const blockStyles = await getBlockStyle(page);
-		expect(blockStyles).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

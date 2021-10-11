@@ -197,7 +197,6 @@ describe('BorderControl', () => {
 
 		expect(border).toStrictEqual(expectChanges);
 
-		const blockStyles = await getBlockStyle(page);
-		expect(blockStyles).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

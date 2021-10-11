@@ -142,15 +142,13 @@ describe('ArrowControl', () => {
 
 		expect(responsiveMOption).toBeTruthy();
 
-		const blockStyles = await getBlockStyle(page);
-		expect(blockStyles).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 
-		await page.waitForTimeout(500);
 		const warningBox = await page.$eval(
 			'.maxi-warning-box',
 			warning => warning.innerHTML
 		);
-		await page.waitForTimeout(500);
+
 		expect(warningBox).toMatchSnapshot();
 	});
 });

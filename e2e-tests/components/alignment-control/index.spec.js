@@ -145,7 +145,6 @@ describe('AlignmentControl', () => {
 
 		expect(responsiveMOption).toBeTruthy();
 
-		const blockStyles = await getBlockStyle(page);
-		expect(blockStyles).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

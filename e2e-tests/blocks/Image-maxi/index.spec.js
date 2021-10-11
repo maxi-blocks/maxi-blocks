@@ -303,7 +303,7 @@ describe('Image Maxi', () => {
 	it('Image alt tag', async () => {
 		await openSidebar(page, 'image alt tag');
 
-		// width
+		// select custom alt tag
 		const selector = await page.$('.maxi-image-inspector__alt-tag select');
 		await selector.select('custom');
 
@@ -315,12 +315,6 @@ describe('Image Maxi', () => {
 
 		const altTag = await getBlockAttributes();
 		expect(altTag.mediaAlt).toStrictEqual('Image Tag');
-
-		/* await changeResponsive(page, 'xl');
-		await page.$eval(
-			'.maxi-style-cards__sc .maxi-style-cards__sc__actions a',
-			button => button.click()
-		); */
 
 		const previewPage = await openPreviewPage(page);
 		await page.waitForTimeout(200);

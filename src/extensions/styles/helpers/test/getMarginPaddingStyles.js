@@ -57,7 +57,9 @@ describe('getMarginPaddingStyles', () => {
 			'margin-unit-xs': 'px',
 		};
 
-		const result = getMarginPaddingStyles(object);
+		const result = getMarginPaddingStyles({
+			obj: object,
+		});
 		expect(result).toMatchSnapshot();
 	});
 
@@ -107,7 +109,9 @@ describe('getMarginPaddingStyles', () => {
 			'margin-unit-xs': 'px',
 		};
 
-		const result = getMarginPaddingStyles(object);
+		const result = getMarginPaddingStyles({
+			obj: object,
+		});
 		expect(result).toMatchSnapshot();
 	});
 });

@@ -53,7 +53,6 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 							breakpoint,
 							obj
 						);
-
 						response[breakpoint][newLabel] =
 							value === 'auto' ? 'auto' : `${value}${unit}`;
 					}

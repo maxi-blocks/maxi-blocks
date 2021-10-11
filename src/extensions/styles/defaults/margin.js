@@ -1,4 +1,4 @@
-const margin = {
+export const margin = {
 	'margin-top-general': {
 		type: 'string',
 	},
@@ -173,4 +173,15 @@ const margin = {
 	},
 };
 
-export default margin;
+export const buttonMargin = (() => {
+	const response = {};
+
+	Object.keys(margin).forEach(key => {
+		const newKey = `button-${key}`;
+		const value = { ...margin[key] };
+
+		response[newKey] = value;
+	});
+
+	return response;
+})();

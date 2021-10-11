@@ -2,8 +2,8 @@ import { __ } from '@wordpress/i18n';
 
 import { border, borderWidth, borderRadius } from './border';
 import { background, backgroundColor, backgroundGradient } from './background';
-import margin from './margin';
-import padding from './padding';
+import { margin } from './margin';
+import { padding } from './padding';
 import { typography } from './typography';
 
 export const hover = {

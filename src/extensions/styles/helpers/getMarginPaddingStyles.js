@@ -8,57 +8,58 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getMarginPaddingStyles = (obj, prefix = '') => {
+const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 
 	const response = {};
 
-	breakpoints.forEach(breakpoint => {
-		response[breakpoint] = {};
+	if (obj)
+		breakpoints.forEach(breakpoint => {
+			response[breakpoint] = {};
 
-		Object.entries(obj).forEach(([key, value]) => {
-			const newKey = key.replace(prefix, '');
+			Object.entries(obj).forEach(([key, value]) => {
+				const newKey = key.replace(prefix, '');
 
-			const includesBreakpoint =
-				newKey.lastIndexOf(`-${breakpoint}`) +
-					`-${breakpoint}`.length ===
-				newKey.length;
-
-			if (
-				value !== undefined &&
-				`${value}` !== '' &&
-				includesBreakpoint &&
-				!newKey.includes('sync') &&
-				!newKey.includes('unit')
-			) {
-				const replacer = new RegExp(
-					`\\b-${breakpoint}\\b(?!.*\\b-${breakpoint}\\b)`,
-					'gm'
-				);
-				const newLabel = newKey.replace(replacer, '');
+				const includesBreakpoint =
+					newKey.lastIndexOf(`-${breakpoint}`) +
+						`-${breakpoint}`.length ===
+					newKey.length;
 
 				if (
-					!keyWords.some(key => newLabel.includes(key)) ||
-					value === 0
-				)
-					response[breakpoint][newLabel] = `${value}`;
-				else {
-					const unitKey = keyWords.filter(key =>
-						newLabel.includes(key)
+					value !== undefined &&
+					`${value}` !== '' &&
+					includesBreakpoint &&
+					!newKey.includes('sync') &&
+					!newKey.includes('unit')
+				) {
+					const replacer = new RegExp(
+						`\\b-${breakpoint}\\b(?!.*\\b-${breakpoint}\\b)`,
+						'gm'
 					);
+					const newLabel = newKey.replace(replacer, '');
 
-					const unit = getLastBreakpointAttribute(
-						`${prefix}${newLabel.replace(unitKey, 'unit')}`,
-						breakpoint,
-						obj
-					);
+					if (
+						!keyWords.some(key => newLabel.includes(key)) ||
+						value === 0
+					)
+						response[breakpoint][newLabel] = `${value}`;
+					else {
+						const unitKey = keyWords.filter(key =>
+							newLabel.includes(key)
+						);
 
-					response[breakpoint][newLabel] =
-						value === 'auto' ? 'auto' : `${value}${unit}`;
+						const unit = getLastBreakpointAttribute(
+							`${prefix}${newLabel.replace(unitKey, 'unit')}`,
+							breakpoint,
+							obj
+						);
+
+						response[breakpoint][newLabel] =
+							value === 'auto' ? 'auto' : `${value}${unit}`;
+					}
 				}
-			}
+			});
 		});
-	});
 
 	return response;
 };

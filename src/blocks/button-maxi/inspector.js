@@ -1024,8 +1024,11 @@ const Inspector = memo(
 														<AxisControl
 															{...getGroupAttributes(
 																attributes,
-																'padding'
+																'padding',
+																false,
+																'button-'
 															)}
+															prefix='button-'
 															label={__(
 																'Padding',
 																'maxi-blocks'
@@ -1044,8 +1047,11 @@ const Inspector = memo(
 														<AxisControl
 															{...getGroupAttributes(
 																attributes,
-																'margin'
+																'margin',
+																false,
+																'button-'
 															)}
+															prefix='button-'
 															label={__(
 																'Margin',
 																'maxi-blocks'
@@ -1355,6 +1361,48 @@ const Inspector = memo(
 															setAttributes(obj)
 														}
 														breakpoint={deviceType}
+													/>
+												</>
+											),
+										},
+										{
+											label: __(
+												'Margin / Padding',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													<AxisControl
+														{...getGroupAttributes(
+															attributes,
+															'padding'
+														)}
+														label={__(
+															'Padding',
+															'maxi-blocks'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+														target='padding'
+														disableAuto
+													/>
+													<AxisControl
+														{...getGroupAttributes(
+															attributes,
+															'margin'
+														)}
+														label={__(
+															'Margin',
+															'maxi-blocks'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+														target='margin'
+														optionType='string'
 													/>
 												</>
 											),

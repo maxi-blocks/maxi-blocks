@@ -119,37 +119,39 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.margin,
+	...attributesData.padding,
+	...attributesData.buttonMargin,
 	...{
-		...attributesData.padding,
-		'padding-top-general': {
+		...attributesData.buttonPadding,
+		'button-padding-top-general': {
 			type: 'number',
 			default: 15,
 		},
-		'padding-right-general': {
+		'button-padding-right-general': {
 			type: 'number',
 			default: 36,
 		},
-		'padding-bottom-general': {
+		'button-padding-bottom-general': {
 			type: 'number',
 			default: 15,
 		},
-		'padding-left-general': {
+		'button-padding-left-general': {
 			type: 'number',
 			default: 36,
 		},
-		'padding-top-xxl': {
+		'button-padding-top-xxl': {
 			type: 'number',
 			default: 23,
 		},
-		'padding-right-xxl': {
+		'button-padding-right-xxl': {
 			type: 'number',
 			default: 55,
 		},
-		'padding-bottom-xxl': {
+		'button-padding-bottom-xxl': {
 			type: 'number',
 			default: 23,
 		},
-		'padding-left-xxl': {
+		'button-padding-left-xxl': {
 			type: 'number',
 			default: 55,
 		},

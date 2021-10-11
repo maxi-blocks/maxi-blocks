@@ -41,6 +41,9 @@ const getWrapperObject = props => {
 		margin: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'margin'),
 		}),
+		padding: getMarginPaddingStyles({
+			...getGroupAttributes(props, 'padding'),
+		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
 		}),
@@ -133,9 +136,6 @@ const getNormalObject = props => {
 			},
 			'button-'
 		),
-		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
-		}),
 		zIndex: getZIndexStyles({
 			...getGroupAttributes(props, 'zIndex'),
 		}),
@@ -179,6 +179,18 @@ const getNormalObject = props => {
 			background: getGradientBackgroundObject({
 				...getGroupAttributes(props, 'backgroundGradient'),
 			}),
+		}),
+		margin: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'margin', false, 'button-'),
+			},
+			prefix: 'button-',
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'padding', false, 'button-'),
+			},
+			prefix: 'button-',
 		}),
 	};
 

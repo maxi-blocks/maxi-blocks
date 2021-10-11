@@ -55,7 +55,7 @@ describe('OverflowControl', () => {
 		expect(sYOverflow).toStrictEqual('clip');
 
 		// responsive xs
-		await changeResponsive(page, 's');
+		await changeResponsive(page, 'xs');
 		const responsiveXsOverflowX = await page.$$eval(
 			'.maxi-overflow-control select',
 			selectorXs => selectorXs[0].value

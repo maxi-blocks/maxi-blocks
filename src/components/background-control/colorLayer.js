@@ -64,7 +64,8 @@ const ColorLayerContent = props => {
 				paletteColor={getLastBreakpointAttribute(
 					`${prefix}background-palette-color`,
 					breakpoint,
-					colorOptions
+					colorOptions,
+					isHover
 				)}
 				paletteOpacity={getLastBreakpointAttribute(
 					`${prefix}background-palette-opacity`,

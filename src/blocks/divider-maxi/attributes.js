@@ -49,6 +49,7 @@ const attributes = {
 		},
 	},
 	...attributesData.background,
+	...attributesData.backgroundHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.display,

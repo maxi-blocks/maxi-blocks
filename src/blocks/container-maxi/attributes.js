@@ -32,6 +32,7 @@ const attributes = {
 	...attributesData.container,
 	...{
 		...attributesData.background,
+		...attributesData.backgroundHover,
 		'background-layers': {
 			type: 'array',
 			default: [

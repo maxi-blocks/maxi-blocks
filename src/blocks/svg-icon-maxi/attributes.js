@@ -40,6 +40,7 @@ const attributes = {
 		},
 	},
 	...attributesData.background,
+	...attributesData.backgroundHover,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

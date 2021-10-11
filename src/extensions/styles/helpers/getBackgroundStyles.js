@@ -23,12 +23,14 @@ const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 export const getColorBackgroundObject = ({
 	isHover = false,
 	prefix = '',
-	blockStyle,
+	blockStyle: rawBlockStyle,
 	isButton = false,
 	isIconInherit = false,
 	breakpoint,
 	...props
 }) => {
+	const blockStyle = rawBlockStyle.replace('maxi-', '');
+
 	const response = {
 		label: 'Background Color',
 		[breakpoint]: {},
@@ -440,6 +442,15 @@ const getSVGBackgroundObject = ({
 			opacity: bgSVGPaletteOpacity,
 			blockStyle,
 		});
+	} else {
+		const bgSVGColor = getLastBreakpointAttribute(
+			'background-svg-color',
+			breakpoint,
+			props,
+			isHover
+		);
+
+		response[breakpoint].fill = bgSVGColor;
 	}
 
 	return response;
@@ -560,8 +571,13 @@ const getBackgroundLayers = ({
 						...merge(
 							response?.[layerTarget]?.[type],
 							getSVGWrapperBackgroundObject({
-								...getGroupAttributes(layer, 'backgroundSVG'),
+								...getGroupAttributes(
+									layer,
+									'backgroundSVG',
+									isHover
+								),
 								breakpoint,
+								isHover,
 							}),
 							getDisplayStyles({
 								...getGroupAttributes(layer, 'display'),
@@ -575,9 +591,14 @@ const getBackgroundLayers = ({
 						...merge(
 							response?.[`${layerTarget} svg *`]?.[type],
 							getSVGBackgroundObject({
-								...getGroupAttributes(layer, 'backgroundSVG'),
+								...getGroupAttributes(
+									layer,
+									'backgroundSVG',
+									isHover
+								),
 								blockStyle,
 								breakpoint,
+								isHover,
 							}),
 							getDisplayStyles({
 								...getGroupAttributes(layer, 'display'),
@@ -740,7 +761,6 @@ export const getBlockBackgroundStyles = ({
 	const layers = getAttributeValue({
 		target: 'background-layers',
 		props,
-		isHover,
 		prefix,
 	});
 

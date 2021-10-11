@@ -45,8 +45,8 @@ const LayerCard = props => {
 		onRemove,
 		layerId,
 		clientId,
-		isButton,
 		breakpoint,
+		isHover,
 	} = props;
 	const layer = cloneDeep(props.layer);
 	const { type } = layer;
@@ -74,16 +74,43 @@ const LayerCard = props => {
 	const previewStyles = type => {
 		switch (type) {
 			case 'color': {
-				const colorStr = getColorRGBAString({
-					firstVal: `color-${layer['background-palette-color']}`,
-					opacity: layer['background-palette-opacity'],
-					blockStyle: getBlockStyle(clientId),
-				});
+				const paletteStatus = getLastBreakpointAttribute(
+					'background-palette-color-status',
+					breakpoint,
+					layer,
+					isHover
+				);
+
+				if (paletteStatus) {
+					const paletteColor = getLastBreakpointAttribute(
+						'background-palette-color',
+						breakpoint,
+						layer,
+						isHover
+					);
+					const paletteOpacity = getLastBreakpointAttribute(
+						'background-palette-opacity',
+						breakpoint,
+						layer,
+						isHover
+					);
+
+					return {
+						background: getColorRGBAString({
+							firstVar: `color-${paletteColor}`,
+							opacity: paletteOpacity,
+							blockStyle: getBlockStyle(clientId),
+						}),
+					};
+				}
 
 				return {
-					background: layer['background-palette-color-status']
-						? colorStr
-						: layer['background-color'],
+					background: getLastBreakpointAttribute(
+						'background-color',
+						breakpoint,
+						layer,
+						isHover
+					),
 				};
 			}
 			case 'gradient':
@@ -150,8 +177,8 @@ const LayerCard = props => {
 				key={`background-color-layer--${layer.id}`}
 				colorOptions={layer}
 				onChange={obj => onChange({ ...layer, ...obj })}
-				isButton={isButton}
 				breakpoint={breakpoint}
+				isHover={isHover}
 			/>
 		),
 		image: (
@@ -160,6 +187,7 @@ const LayerCard = props => {
 				imageOptions={layer}
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
+				isHover={isHover}
 			/>
 		),
 		video: (
@@ -168,6 +196,7 @@ const LayerCard = props => {
 				videoOptions={layer}
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
+				isHover={isHover}
 			/>
 		),
 		gradient: (
@@ -176,6 +205,7 @@ const LayerCard = props => {
 				gradientOptions={layer}
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
+				isHover={isHover}
 			/>
 		),
 		shape: (
@@ -185,6 +215,7 @@ const LayerCard = props => {
 				onChange={obj => onChange({ ...layer, ...obj })}
 				layerId={layerId}
 				breakpoint={breakpoint}
+				isHover={isHover}
 			/>
 		),
 	};
@@ -239,7 +270,6 @@ const LayerCard = props => {
 const BackgroundLayersControl = ({
 	layersOptions,
 	isHover = false,
-	isButton = false,
 	prefix = '',
 	onChange,
 	disableImage = false,
@@ -381,7 +411,7 @@ const BackgroundLayersControl = ({
 								<LayerCard
 									key={`maxi-background-layers__${layer.id}`}
 									layerId={layer.id}
-									isButton={isButton}
+									isHover={isHover}
 									clientId={clientId}
 									layer={layer}
 									onChange={layer => {

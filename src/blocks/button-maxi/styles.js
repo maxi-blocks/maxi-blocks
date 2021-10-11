@@ -71,13 +71,6 @@ const getContentObject = props => {
 	return response;
 };
 
-const getBackgroundObject = props =>
-	getBackgroundStyles({
-		isButton: true,
-		blockStyle: props.parentBlockStyle,
-		...props,
-	});
-
 const getNormalObject = props => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
@@ -112,7 +105,15 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		...getBackgroundObject(props),
+		...getBackgroundStyles({
+			...getGroupAttributes(props, [
+				'background',
+				'backgroundColor',
+				'backgroundGradient',
+			]),
+			isButton: true,
+			blockStyle: props.parentBlockStyle,
+		}),
 	};
 
 	return response;
@@ -283,13 +284,6 @@ const getIconObject = (props, target) => {
 			false
 		),
 		...(target === 'icon' && getIconBackgroundObject(props)),
-		// background: target === 'icon' && getIconBackgroundObject(props),
-		// gradient: target === 'icon' && {
-		// 	...getGradientBackgroundObject({
-		// 		...getGroupAttributes(props, 'iconBackgroundGradient'),
-		// 		prefix: 'icon-',
-		// 	}),
-		// },
 		padding:
 			target === 'icon' &&
 			getMarginPaddingStyles(

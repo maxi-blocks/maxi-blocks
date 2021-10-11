@@ -51,6 +51,7 @@ const attributes = {
 	...attributesData.typographyHover,
 	...{
 		...attributesData.background,
+		...attributesData.backgroundHover,
 		'background-active-media-general': {
 			type: 'string',
 			default: 'color',

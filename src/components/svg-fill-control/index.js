@@ -37,7 +37,8 @@ const SVGFillControl = props => {
 	const classes = classnames('maxi-svg-fill-control', className);
 
 	const SVGData = cloneDeep(
-		SVGOptions[getAttributeKey('background-svg-SVGData', isHover)]
+		SVGOptions[getAttributeKey('background-svg-SVGData', isHover)] ||
+			SVGOptions['background-svg-SVGData']
 	);
 
 	const getFillItem = ([id, value]) => {
@@ -90,12 +91,7 @@ const SVGFillControl = props => {
 									] = color;
 
 									onChange({
-										[getAttributeKey(
-											'SVGElement',
-											isHover,
-											false,
-											breakpoint
-										)]: injectImgSVG(
+										SVGElement: injectImgSVG(
 											getLastBreakpointAttribute(
 												'background-svg-SVGElement',
 												breakpoint,
@@ -103,12 +99,7 @@ const SVGFillControl = props => {
 											),
 											SVGData
 										).outerHTML,
-										[getAttributeKey(
-											'SVGData',
-											isHover,
-											false,
-											breakpoint
-										)]: SVGData,
+										SVGData,
 										[getAttributeKey(
 											'background-palette-svg-color-status',
 											isHover,

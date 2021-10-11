@@ -25,7 +25,6 @@ const BlockBackgroundControl = props => {
 		isHover = false,
 		prefix = '',
 		clientId,
-		isButton = false,
 		breakpoint = 'general',
 		disableImage = false,
 		disableVideo = false,
@@ -39,7 +38,6 @@ const BlockBackgroundControl = props => {
 		getAttributeValue({
 			target: 'background-layers',
 			props,
-			isHover,
 			prefix,
 		}) || [];
 
@@ -61,7 +59,6 @@ const BlockBackgroundControl = props => {
 					disableColor={disableColor}
 					disableSVG={disableSVG}
 					clientId={clientId}
-					isButton={isButton}
 					breakpoint={breakpoint}
 				/>
 			)}

@@ -70,14 +70,20 @@ const SVGLayerContent = props => {
 									if (isGeneral) {
 										Object.entries(obj).forEach(
 											([key, val]) => {
-												const newKey = `${key.substring(
-													0,
+												const breakpointPos =
 													key.lastIndexOf(
 														`-${breakpoint}`
-													)
-												)}-general`;
+													);
+												if (breakpointPos > 0) {
+													const newKey = `${key.substring(
+														0,
+														breakpointPos
+													)}-general${
+														isHover ? '-hover' : ''
+													}`;
 
-												obj[newKey] = val;
+													obj[newKey] = val;
+												}
 											}
 										);
 									}
@@ -448,15 +454,12 @@ const SVGLayer = props => {
 		SVGOptions,
 		layerId,
 		onChange,
-		prefix,
-		isHover,
+		prefix = '',
+		isHover = false,
 		breakpoint,
 	} = props;
 
-	const SVGElement =
-		SVGOptions[
-			getAttributeKey('background-svg-SVGElement', isHover, prefix)
-		];
+	const SVGElement = SVGOptions[`${prefix}background-svg-SVGElement`];
 
 	return (
 		<>
@@ -465,10 +468,12 @@ const SVGLayer = props => {
 				style={getBlockStyle(clientId)}
 				onRemove={obj => {
 					if (layerId) {
-						delete SVGOptions['background-svg-SVGElement'];
-						delete SVGOptions['background-svg-SVGMediaID'];
-						delete SVGOptions['background-svg-SVGMediaURL'];
-						delete SVGOptions['background-svg-SVGData'];
+						delete SVGOptions[`${prefix}background-svg-SVGElement`];
+						delete SVGOptions[`${prefix}background-svg-SVGMediaID`];
+						delete SVGOptions[
+							`${prefix}background-svg-SVGMediaURL`
+						];
+						delete SVGOptions[`${prefix}background-svg-SVGData`];
 					}
 					onChange({ ...SVGOptions, ...obj });
 				}}

@@ -118,7 +118,8 @@ const ImageLayerContent = props => {
 						[getAttributeKey(
 							'background-image-mediaURL',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: '',
 						[getAttributeKey(
 							'background-image-width',
@@ -135,6 +136,12 @@ const ImageLayerContent = props => {
 						...(isGeneral && {
 							[getAttributeKey(
 								'background-image-mediaID',
+								isHover,
+								prefix,
+								'general'
+							)]: '',
+							[getAttributeKey(
+								'background-image-mediaURL',
 								isHover,
 								prefix,
 								'general'

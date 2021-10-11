@@ -88,6 +88,7 @@ const attributes = {
 	},
 	...attributesData.alignment,
 	...attributesData.background,
+	...attributesData.backgroundHover,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

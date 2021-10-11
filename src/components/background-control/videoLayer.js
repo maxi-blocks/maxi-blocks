@@ -164,7 +164,6 @@ const VideoLayer = props => {
 				value={getAttributeValue({
 					target: `${prefix}background-video-mediaURL`,
 					props: videoOptions,
-					isHover,
 				})}
 				placeholder='Youtube, Vimeo, or Direct Link'
 				onChange={val => {
@@ -191,7 +190,6 @@ const VideoLayer = props => {
 				value={getAttributeValue({
 					target: `${prefix}background-video-startTime`,
 					props: videoOptions,
-					isHover,
 				})}
 				onChangeValue={val => {
 					onChange({
@@ -219,7 +217,6 @@ const VideoLayer = props => {
 				value={getAttributeValue({
 					target: `${prefix}background-video-endTime`,
 					props: videoOptions,
-					isHover,
 				})}
 				onChangeValue={val =>
 					onChange({
@@ -248,8 +245,7 @@ const VideoLayer = props => {
 				selected={getLastBreakpointAttribute(
 					`${prefix}background-video-loop`,
 					breakpoint,
-					videoOptions,
-					isHover
+					videoOptions
 				)}
 				disabled={
 					+getLastBreakpointAttribute(

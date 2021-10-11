@@ -188,28 +188,6 @@ const Inspector = props => {
 																		onChange={val => {
 																			setAttributes(
 																				{
-																					...(val &&
-																						setHoverAttributes(
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									[
-																										'background',
-																										'parallax',
-																									]
-																								),
-																							},
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									[
-																										'background',
-																										'parallax',
-																									],
-																									true
-																								),
-																							}
-																						)),
 																					'background-status-hover':
 																						val,
 																				}

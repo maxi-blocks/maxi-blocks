@@ -17,7 +17,7 @@ describe('BackgroundControl', () => {
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[5].click()
+			select => select[4].click()
 		);
 
 		const backgroundColor = await page.$eval(

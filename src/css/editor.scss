@@ -6,6 +6,7 @@
  *
 */
 
+@import "./backend-variables.scss";
 @import "./native-components.scss";
 @import "./inserter-card.scss";
 
@@ -16,11 +17,10 @@ h2.gx_error {
 	font-size: 16px;
 	text-align: center;
 }
-
 .maxi-sidebar,
 .maxi-sidebar *:not(i),
 .maxi-popover *:not(i) {
-	color: #464a53;
+	color: var(--maxi-grey-5-color);
 	font-family: "Roboto", Helvetica, Arial, Lucida, sans-serif !important;
 	font-size: 12px;
 	font-weight: normal;
@@ -28,6 +28,7 @@ h2.gx_error {
 
 .block-editor-inserter {
 	color: #fff !important;
+
 	&__toggle {
 		svg {
 			fill: #fff !important;
@@ -78,7 +79,6 @@ body {
 }
 .maxi-block {
 	.block-editor-block-list__layout {
-		// padding: 10px;
 		&:focus:after {
 			box-shadow: none !important;
 		}
@@ -167,6 +167,33 @@ body {
 	}
 }
 
+body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
+	input[type="text"],
+	input[type="number"],
+	textarea,
+	select {
+		border-color: var(--maxi-accessibility-grey-1-color);
+
+		&:focus {
+			border-color: var(--maxi-secondary-color);
+			box-shadow: 0 0 0 1px var(--maxi-secondary-color);
+			outline: 2px solid transparent;
+		}
+	}
+	.maxi-components-button:focus:not(:disabled) {
+		border-color: var(--maxi-secondary-color);
+		box-shadow: 0 0 0 1px var(--maxi-secondary-color);
+		outline: 2px solid transparent;
+	}
+	.maxi-base-control .components-maxi-control__reset-button {
+		border-color: var(--maxi-accessibility-grey-1-color);
+	}
+	.maxi-settingstab-control .maxi-tabs-control__button:focus:not(:disabled) {
+		border: 1px solid var(--maxi-secondary-color);
+		border-bottom-width: 2px;
+	}
+}
+
 body.maxi-blocks--active .maxi-sidebar,
 body .maxi-popover,
 body .toolbar-item__popover {
@@ -178,35 +205,39 @@ body .toolbar-item__popover {
 		max-height: unset !important;
 		min-height: unset;
 		padding: 8px;
+		border: 1px solid var(--maxi-grey-1-color);
+		border-radius: 0;
 		color: #464a53;
 		background-color: #fff;
 		font-size: 12px;
 		line-height: 12px;
-		border-radius: 0;
-		border: 1px solid #DBDDE6;
+
+		&:focus {
+			border-color: var(--maxi-grey-6-color);
+			box-shadow: none;
+			outline: none;
+		}
 	}
 	input[type=number] {
 		padding-right: 0;
 	}
 	input[type=number]::-webkit-inner-spin-button {
-		width: 30px;
-		height: 30px;
-		background-color: #fff !important;
+		height: 31px;
 		opacity: 1;
 	}
-
-
 	.components-range-control__number {
 		.components-input-control__backdrop {
 			border: none;
 		}
 	}
-
 	select {
 		padding: 0 24px 0px 10px !important;
 		opacity: 1 !important;
 	}
-
+	.maxi-components-button:focus:not(:disabled) {
+		box-shadow: none;
+		outline: none;
+	}
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {
 		font-size: 0 !important;
@@ -216,15 +247,13 @@ body .toolbar-item__popover {
 			width: 14px;
 			height: 14px;
 			margin: auto;
-			color: #141516;
+			color: var(--maxi-black-1-color);
 		}
 	}
-
 	.components-panel {
 		background: transparent;
 		border: none;
 	}
-
 	.components-simple-tooltip {
 		color: #fff;
 	}
@@ -277,12 +306,13 @@ body .toolbar-item__popover {
 /************
 * Unit Select
 ************/
-
 .maxi-base-control {
 	.maxi-dimensions-control__units {
 		margin-bottom: 0 !important;
+
 		.maxi-base-control__field {
 			margin-bottom: 0;
+
 			.maxi-select-control__input {
 				min-width: 3.2rem;
 				max-width: 100%;
@@ -296,16 +326,16 @@ body .toolbar-item__popover {
 *************/
 .maxi-base-control .components-maxi-control__reset-button {
 	display: flex;
+    overflow: hidden;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
     height: auto;
     padding: 8px;
+    border: 1px solid var(--maxi-grey-1-color);
+    border-radius: 0;
 	margin-left: 8px;
     background: #fff;
     text-decoration: none;
-    border-radius: 0;
-    border: 1px solid #E1E2EA;
 	transition: all 0.5s;
     -webkit-appearance: none;
     box-shadow: none;
@@ -313,13 +343,16 @@ body .toolbar-item__popover {
     opacity: 1;
 
 	&:hover {
-		background: #f1f1f1;
+		background: var(--maxi-white-1-color);
+	}
+	&:focus {
+		border-color: var(--maxi-grey-6-color);
 	}
 	svg {
 		width: 14px;
 		height: 14px;
 		margin: auto;
-		fill: #141516;
+		fill: var(--maxi-black-1-color);
 	}
 	@at-root .rtl #{&} {
 		margin-right: 8px;

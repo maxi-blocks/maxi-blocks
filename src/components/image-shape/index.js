@@ -19,12 +19,14 @@ import MaxiModal from '../../editor/library/modal';
 const ImageShape = props => {
 	const { onChange, breakpoint, icon } = props;
 
-	const shapeSize = props[`image-shape-size-${breakpoint}`];
-	const shapeScale = props[`image-shape-scale-${breakpoint}`];
-	const shapePosition = props[`image-shape-position-${breakpoint}`];
-	const shapeRotate = props[`image-shape-rotate-${breakpoint}`];
-	const shapeFlipHorizontally = props[`image-shape-flip-x-${breakpoint}`];
-	const shapeFlipVertically = props[`image-shape-flip-y-${breakpoint}`];
+const {
+	[`image-shape-size-${breakpoint}`]: shapeSize,
+	[`image-shape-scale-${breakpoint}`]: shapeScale,
+	[`image-shape-position-${breakpoint}`]: shapePosition,
+	[`image-shape-rotate-${breakpoint}`]: shapeRotate,
+	[`image-shape-flip-x-${breakpoint}`]: shapeFlipHorizontally,
+	[`image-shape-flip-y-${breakpoint}`]: shapeFlipVertically,
+} = props;
 
 	const defaultScale = null;
 	let newIcon = icon;

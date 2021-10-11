@@ -10,14 +10,11 @@ import {
 /**
  * Interactive dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { openSidebar } from '../../utils';
 
 describe('Button Maxi', () => {
-	beforeEach(async () => {
-		await createNewPost();
-	});
-
 	it('Button Maxi does not break', async () => {
+		await createNewPost();
 		await insertBlock('Button Maxi');
 
 		await page.keyboard.type('Hello', { delay: 100 });
@@ -25,6 +22,16 @@ describe('Button Maxi', () => {
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
+
+	it('Button Style', async () => {
+		await openSidebar(page, 'style');
+
+		const buttons = await page.$$('.maxi-button-default-styles button');
+		await buttons[4].click();
+
+		await expect(await getEditedPostContent()).toMatchSnapshot();
+	});
+
 	/*
 	it('Check Button Icon', async () => {
 		await insertBlock('Button Maxi');

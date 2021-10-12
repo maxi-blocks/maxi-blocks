@@ -10,12 +10,24 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebar,
+	changeResponsive,
+	getBlockStyle,
+} from '../../utils';
 
 describe('ArrowControl', () => {
 	it('Check the arrow control', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
+		await openSidebar(page, 'background');
+
+		const backgroundColor = await page.$$(
+			'.maxi-settingstab-control .maxi-tab-content .maxi-radio-control__option'
+		);
+		await backgroundColor[1].click();
+
 		const accordionPanel = await openSidebar(page, 'arrow');
 
 		await accordionPanel.$eval(
@@ -59,13 +71,6 @@ describe('ArrowControl', () => {
 		const sizeAttributes = await getBlockAttributes();
 		const arrowSizeAttribute = sizeAttributes['arrow-width-general'];
 		expect(arrowSizeAttribute).toStrictEqual(expectSize);
-
-		const warningBox = await page.$eval(
-			'.maxi-arrow-control .maxi-warning-box',
-			warning => warning.innerHTML
-		);
-		await page.waitForTimeout(500);
-		expect(warningBox).toMatchSnapshot();
 	});
 
 	it('Check the responsive arrow control', async () => {
@@ -136,5 +141,7 @@ describe('ArrowControl', () => {
 		);
 
 		expect(responsiveMOption).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

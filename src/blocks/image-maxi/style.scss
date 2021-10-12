@@ -43,6 +43,10 @@ body.maxi-blocks--active figure.maxi-image-block {
 		width: 100%;
 		overflow: hidden;
 		position: relative;
+		
+		> svg:first-child pattern image {
+			transform-origin: 50% 50%;
+		}
 	}
 	.maxi-image-block {
 		&__caption {

@@ -21,7 +21,7 @@ import { isEmpty } from 'lodash';
 const OverflowControl = props => {
 	const { className, onChange, breakpoint = 'general' } = props;
 
-	const classes = classnames('maxi-position-control', className);
+	const classes = classnames('maxi-overflow-control', className);
 
 	const axes = ['x', 'y'];
 

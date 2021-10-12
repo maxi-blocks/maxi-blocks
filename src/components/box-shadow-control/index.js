@@ -64,6 +64,7 @@ const BoxShadowControl = props => {
 
 	const getIsActive = (typeObj, type) => {
 		const items = [
+			`${prefix}box-shadow-palette-opacity`,
 			`${prefix}box-shadow-horizontal`,
 			`${prefix}box-shadow-vertical`,
 			`${prefix}box-shadow-blur`,
@@ -104,7 +105,10 @@ const BoxShadowControl = props => {
 			<DefaultStylesControl
 				items={[
 					{
-						activeItem: getIsActive(boxShadowNone, 'none'),
+						activeItem: getIsActive(
+							{ ...boxShadowNone(prefix) },
+							'none'
+						),
 						content: (
 							<Icon
 								className='maxi-default-styles-control__button__icon'
@@ -114,14 +118,20 @@ const BoxShadowControl = props => {
 						onChange: () => onChangeDefault(boxShadowNone(prefix)),
 					},
 					{
-						activeItem: getIsActive(boxShadowTotal, 'total'),
+						activeItem: getIsActive(
+							{ ...boxShadowTotal(prefix) },
+							'total'
+						),
 						content: (
 							<div className='maxi-shadow-control__default maxi-shadow-control__default__total' />
 						),
 						onChange: () => onChangeDefault(boxShadowTotal(prefix)),
 					},
 					{
-						activeItem: getIsActive(boxShadowBottom, 'bottom'),
+						activeItem: getIsActive(
+							{ ...boxShadowBottom(prefix) },
+							'bottom'
+						),
 						content: (
 							<div className='maxi-shadow-control__default maxi-shadow-control__default__bottom' />
 						),
@@ -129,7 +139,10 @@ const BoxShadowControl = props => {
 							onChangeDefault(boxShadowBottom(prefix)),
 					},
 					{
-						activeItem: getIsActive(boxShadowSolid, 'solid'),
+						activeItem: getIsActive(
+							{ ...boxShadowSolid(prefix) },
+							'solid'
+						),
 						content: (
 							<div className='maxi-shadow-control__default maxi-shadow-control__default__solid' />
 						),

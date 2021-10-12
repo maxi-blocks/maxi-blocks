@@ -4,6 +4,8 @@ export const boxShadowNone = prefix => {
 	let response = {};
 
 	response = {
+		[`${[prefix]}box-shadow-palette-opacity`]:
+			boxShadow['box-shadow-palette-opacity-general']?.default,
 		[`${[prefix]}box-shadow-horizontal`]:
 			boxShadow['box-shadow-horizontal-general']?.default,
 		[`${[prefix]}box-shadow-vertical`]:

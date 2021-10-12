@@ -109,7 +109,6 @@ const attributes = {
 	...attributesData.boxShadowHover,
 	...attributesData.container,
 	...attributesData.display,
-	...attributesData.entrance,
 	...attributesData.hover,
 	...attributesData.hoverBackground,
 	...attributesData.hoverBackgroundColor,
@@ -140,6 +139,7 @@ const attributes = {
 			default: 'center',
 		},
 	},
+	...attributesData.overflow,
 };
 
 export default attributes;

@@ -15,11 +15,11 @@ describe('FullSizeControl', () => {
 	it('Checking the full size control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const accordionPanel = await openSidebar(page, 'width height');
+		const accordionPanel = await openSidebar(page, 'height width');
 
-		await accordionPanel.$$eval(
-			'.maxi-fancy-radio-control .maxi-base-control__field label',
-			click => click[1].click()
+		await accordionPanel.$eval(
+			'.maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		const expectResult = 'full';
@@ -32,7 +32,7 @@ describe('FullSizeControl', () => {
 	it('Check Responsive full size control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const accordionPanel = await openSidebar(page, 'width height');
+		const accordionPanel = await openSidebar(page, 'height width');
 
 		const inputs = await accordionPanel.$$(
 			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value'

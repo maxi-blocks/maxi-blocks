@@ -25,6 +25,9 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
+	svgType: {
+		type: 'string',
+	},
 	content: {
 		type: 'string',
 		default: '',
@@ -49,7 +52,6 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.display,
-	...attributesData.entrance,
 	...attributesData.margin,
 	...attributesData.motion,
 	...attributesData.opacity,
@@ -59,6 +61,7 @@ const attributes = {
 	...attributesData.svg,
 	...attributesData.transform,
 	...attributesData.zIndex,
+	...attributesData.overflow,
 };
 
 export default attributes;

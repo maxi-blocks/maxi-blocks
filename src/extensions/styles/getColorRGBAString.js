@@ -6,8 +6,12 @@ const getColorRGBAString = ({
 	opacity,
 	blockStyle,
 }) =>
-	`rgba(var(--maxi-${blockStyle}-${firstVar}${
-		secondVar ? `,var(--maxi-${blockStyle}-${secondVar})` : ''
-	}), ${isNumber(opacity) ? opacity / 100 : 1})`;
+	secondVar
+		? `var(--maxi-${blockStyle}-${firstVar},rgba(var(--maxi-${blockStyle}-${secondVar}),${
+				isNumber(opacity) ? opacity / 100 : 1
+		  }))`
+		: `rgba(var(--maxi-${blockStyle}-${firstVar}),${
+				isNumber(opacity) ? opacity / 100 : 1
+		  })`;
 
 export default getColorRGBAString;

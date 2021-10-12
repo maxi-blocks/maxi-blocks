@@ -47,6 +47,5 @@ export const iconBorderRadius = (() => {
 			default: 'px',
 		},
 	};
-
 	return response;
 })();

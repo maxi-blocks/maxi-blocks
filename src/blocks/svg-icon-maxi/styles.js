@@ -12,10 +12,14 @@ import {
 	getSvgStyles,
 	getTransformStyles,
 	getZIndexStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
 	const response = {
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
@@ -56,8 +60,8 @@ const getNormalObject = props => {
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
 		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 

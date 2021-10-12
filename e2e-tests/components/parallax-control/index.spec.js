@@ -19,12 +19,13 @@ describe('ParallaxControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-base-control label',
-			button => button[6].click()
+			button => button[4].click()
 		);
 
 		// display parallax
-		await accordionPanel.$$eval('.maxi-parallax-control label', click =>
-			click[1].click()
+		await accordionPanel.$eval(
+			'.maxi-parallax-control .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		const attributes = await getBlockAttributes();
@@ -32,8 +33,9 @@ describe('ParallaxControl', () => {
 		expect(parallaxStatus).toBeTruthy();
 
 		// direction
-		await accordionPanel.$$eval('.maxi-parallax-control label', click =>
-			click[5].click()
+		await accordionPanel.$$eval(
+			'.maxi-parallax-control .parallax-direction label',
+			click => click[2].click()
 		);
 
 		const groupAttributes = await getBlockAttributes();

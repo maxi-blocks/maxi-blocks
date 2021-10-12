@@ -43,7 +43,6 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.display,
-	...attributesData.entrance,
 	...attributesData.margin,
 	...attributesData.motion,
 	...attributesData.opacity,
@@ -53,6 +52,7 @@ const attributes = {
 	...attributesData.size,
 	...attributesData.transform,
 	...attributesData.zIndex,
+	...attributesData.overflow,
 };
 
 export default attributes;

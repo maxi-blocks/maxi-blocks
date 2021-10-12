@@ -17,3 +17,10 @@ build
 
 # Ignore Mac DS_Store files
 **/.DS_Store
+
+# Ignore PR and issue templates
+
+.github/PULL_REQUEST_TEMPLATE/
+.github/PULL_REQUEST_TEMPLATE/*
+.github/ISSUE_TEMPLATE/
+.github/ISSUE_TEMPLATE/*

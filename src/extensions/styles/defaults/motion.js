@@ -48,21 +48,6 @@ export const motion = {
 	},
 };
 
-export const entrance = {
-	'entrance-type': {
-		type: 'string',
-		default: 'none',
-	},
-	'entrance-duration': {
-		type: 'number',
-		default: 1,
-	},
-	'entrance-delay': {
-		type: 'number',
-		default: 1,
-	},
-};
-
 export const parallax = {
 	'parallax-status': {
 		type: 'boolean',

@@ -93,3 +93,4 @@ if (!class_exists('MaxiBlocks_Blocks')):
 		}
 	}
 endif;
+

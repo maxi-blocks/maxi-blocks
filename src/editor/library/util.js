@@ -236,14 +236,14 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 
 	const currentAttributes = getBlock(clientId).attributes;
 
-	const { receiveStyleCardGlobalValue } = select('maxiBlocks/style-cards');
+	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 
-	const lineColorGlobal = receiveStyleCardGlobalValue(
+	const lineColorGlobal = receiveStyleCardValue(
 		'line',
 		getBlockStyle(clientId),
 		'icon'
 	);
-	const lineColorGlobalStatus = receiveStyleCardGlobalValue(
+	const lineColorGlobalStatus = receiveStyleCardValue(
 		'line-global',
 		getBlockStyle(clientId),
 		'icon'

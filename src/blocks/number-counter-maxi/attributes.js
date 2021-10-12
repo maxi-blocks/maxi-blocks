@@ -18,7 +18,6 @@ const attributes = {
 		default: __('Number Counter', 'maxi-blocks'),
 	},
 	...attributesData.display,
-	...attributesData.entrance,
 	...attributesData.margin,
 	...attributesData.numberCounter,
 	...attributesData.opacity,
@@ -37,6 +36,7 @@ const attributes = {
 	},
 	...attributesData.transform,
 	...attributesData.zIndex,
+	...attributesData.overflow,
 };
 
 export default attributes;

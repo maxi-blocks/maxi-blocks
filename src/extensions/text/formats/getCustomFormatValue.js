@@ -11,6 +11,7 @@ import getActiveStyleCard from '../../style-cards/getActiveStyleCard';
  * External dependencies
  */
 import { isBoolean, isNumber } from 'lodash';
+import { getBlockStyle } from '../../styles';
 
 /**
  * Retrieve the property from typography object requested
@@ -78,7 +79,10 @@ const getCustomFormatValue = ({
 	if (value || isBoolean(value) || isNumber(value)) return value;
 
 	// Style Cards value
-	const SCStyle = blockStyle.replace('maxi-', '');
+	const rawSCStyle = blockStyle ? blockStyle.replace('maxi-', '') : undefined;
+	const SCStyle = ['light', 'dark'].includes(rawSCStyle)
+		? rawSCStyle
+		: getBlockStyle();
 	const SCLevel = styleCardPrefix || textLevel;
 	const activeStyleCard = styleCard || getActiveStyleCard().value;
 	const currentSC = getTypographyFromSC(activeStyleCard[SCStyle], SCLevel);

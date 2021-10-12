@@ -14,7 +14,7 @@ Object {
   "  .maxi-svg-icon-block__icon svg g[data-fill]:not([fill^=\\"none\\"])": Object {
     "SVGPathFill": Object {
       "general": Object {
-        "fill": "rgba(var(--maxi-light-icon-fill,var(--maxi-light-color-4)), 1)",
+        "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4),1))",
       },
       "label": "SVG path-fill",
     },
@@ -22,7 +22,7 @@ Object {
   "  .maxi-svg-icon-block__icon svg g[data-stroke]:not([stroke^=\\"none\\"])": Object {
     "SVGPathStroke": Object {
       "general": Object {
-        "stroke": "rgba(var(--maxi-light-icon-line,var(--maxi-light-color-7)), 1)",
+        "stroke": "var(--maxi-light-icon-line,rgba(var(--maxi-light-color-7),1))",
       },
       "label": "SVG",
     },
@@ -38,7 +38,7 @@ Object {
   "  .maxi-svg-icon-block__icon svg path[data-fill]:not([fill^=\\"none\\"])": Object {
     "SVGPathFill": Object {
       "general": Object {
-        "fill": "rgba(var(--maxi-light-icon-fill,var(--maxi-light-color-4)), 1)",
+        "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4),1))",
       },
       "label": "SVG path-fill",
     },
@@ -46,7 +46,7 @@ Object {
   "  .maxi-svg-icon-block__icon svg path[data-stroke]:not([stroke^=\\"none\\"])": Object {
     "SVGPathStroke": Object {
       "general": Object {
-        "stroke": "rgba(var(--maxi-light-icon-line,var(--maxi-light-color-7)), 1)",
+        "stroke": "var(--maxi-light-icon-line,rgba(var(--maxi-light-color-7),1))",
       },
       "label": "SVG",
     },
@@ -54,7 +54,7 @@ Object {
   "  .maxi-svg-icon-block__icon svg use[data-fill]:not([fill^=\\"none\\"])": Object {
     "SVGPathFill": Object {
       "general": Object {
-        "fill": "rgba(var(--maxi-light-icon-fill,var(--maxi-light-color-4)), 1)",
+        "fill": "var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-4),1))",
       },
       "label": "SVG path-fill",
     },
@@ -62,7 +62,7 @@ Object {
   "  .maxi-svg-icon-block__icon svg use[data-stroke]:not([stroke^=\\"none\\"])": Object {
     "SVGPathStroke": Object {
       "general": Object {
-        "stroke": "rgba(var(--maxi-light-icon-line,var(--maxi-light-color-7)), 1)",
+        "stroke": "var(--maxi-light-icon-line,rgba(var(--maxi-light-color-7),1))",
       },
       "label": "SVG",
     },

@@ -55,21 +55,16 @@ const MotionControl = props => {
 			{props['motion-status'] && (
 				<>
 					{/* <FancyRadioControl
-						label={__('Preview', 'maxi-blocks')}
-						selected={props['motion-preview-status']}
-						options={[
-							{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
-						onChange={val =>
-							onChange({ 'motion-preview-status': val })
-						}
-					/> */}
-					{/* <label>Direction</label>
-					<select>
-						<option>Scroll Up</option>
-						<option>Scroll Down</option>
-					</select> */}
+						 label={__('Preview', 'maxi-blocks')}
+						 selected={props['motion-preview-status']}
+						 options={[
+							 { label: __('Yes', 'maxi-blocks'), value: 1 },
+							 { label: __('No', 'maxi-blocks'), value: 0 },
+						 ]}
+						 onChange={val =>
+							 onChange({ 'motion-preview-status': val })
+						 }
+					 /> */}
 					<SelectControl
 						label={__('Easing', 'maxi-blocks')}
 						value={props['motion-transition-easing']}
@@ -128,28 +123,28 @@ const MotionControl = props => {
 						)}
 					/>
 					{/* <SelectControl
-						value='Scroll Up'
-						options='Scroll Up'
-						onChange={val => setPresetLoad(val)}
-					/> */}
+						 value='Scroll Up'
+						 options='Scroll Up'
+						 onChange={val => setPresetLoad(val)}
+					 /> */}
 					{/* <TimelinePresets
-						{...getGroupAttributes(props, 'motion')}
-						onChange={obj => onChange(obj)}
-					/> */}
+						 {...getGroupAttributes(props, 'motion')}
+						 onChange={obj => onChange(obj)}
+					 /> */}
 					{/* <AddTimeline
-						{...getGroupAttributes(props, 'motion')}
-						onChange={obj => onChange(obj)}
-					/> */}
+						 {...getGroupAttributes(props, 'motion')}
+						 onChange={obj => onChange(obj)}
+					 /> */}
 					{/* <ShowTimeline
-						{...getGroupAttributes(props, 'motion')}
-						onChange={obj => onChange(obj)}
-					/>
-					<TimelineSettings
-						{...getGroupAttributes(props, 'motion')}
-						onChange={obj => {
-							onChange(obj);
-						}}
-					/> */}
+						 {...getGroupAttributes(props, 'motion')}
+						 onChange={obj => onChange(obj)}
+					 />
+					 <TimelineSettings
+						 {...getGroupAttributes(props, 'motion')}
+						 onChange={obj => {
+							 onChange(obj);
+						 }}
+					 /> */}
 				</>
 			)}
 		</div>

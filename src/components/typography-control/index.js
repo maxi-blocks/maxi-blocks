@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useSelect, useDispatch } from '@wordpress/data';
+import { select, dispatch, useSelect, useDispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -20,7 +20,6 @@ import {
 	withFormatValue,
 } from '../../extensions/text/formats';
 import {
-	getBlockStyle,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -214,7 +213,7 @@ const LinkOptions = props => {
 		<>
 			<ColorControl
 				label={__('Link', 'maxi-blocks')}
-				className='maxi-typography-control__color'
+				className='maxi-typography-link-color'
 				color={getValue(`${prefix}link-color`)}
 				defaultColor={getDefault(`${prefix}link-color`)}
 				paletteStatus={getValue(`${prefix}link-palette-color-status`)}
@@ -233,16 +232,15 @@ const LinkOptions = props => {
 						[`${prefix}link-color`]: color,
 					})
 				}
-				showPalette
 				textLevel={textLevel}
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
-				globalProps={{ target: 'link-color-global', type: 'link' }}
+				globalProps={{ target: 'link', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Hover', 'maxi-blocks')}
-				className='maxi-typography-control__color'
+				className='maxi-typography-link-hover-color'
 				color={getValue(`${prefix}link-hover-color`)}
 				defaultColor={getDefault(`${prefix}link-hover-color`)}
 				paletteStatus={getValue(
@@ -264,16 +262,15 @@ const LinkOptions = props => {
 						[`${prefix}link-hover-color`]: color,
 					})
 				}
-				showPalette
 				textLevel={textLevel}
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
-				globalProps={{ target: 'hover-color-global', type: 'link' }}
+				globalProps={{ target: 'hover', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Active', 'maxi-blocks')}
-				className='maxi-typography-control__color'
+				className='maxi-typography-link-active-color'
 				color={getValue(`${prefix}link-active-color`)}
 				defaultColor={getDefault(`${prefix}link-active-color`)}
 				paletteStatus={getValue(
@@ -298,16 +295,15 @@ const LinkOptions = props => {
 						[`${prefix}link-active-color`]: color,
 					})
 				}
-				showPalette
 				textLevel={textLevel}
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
-				globalProps={{ target: 'active-color-global', type: 'link' }}
+				globalProps={{ target: 'active', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Visited', 'maxi-blocks')}
-				className='maxi-typography-control__color'
+				className='maxi-typography-link-visited-color'
 				color={getValue(`${prefix}link-visited-color`)}
 				defaultColor={getDefault(`${prefix}link-visited-color`)}
 				paletteStatus={getValue(
@@ -332,12 +328,11 @@ const LinkOptions = props => {
 						[`${prefix}link-visited-color`]: color,
 					})
 				}
-				showPalette
 				textLevel={textLevel}
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
-				globalProps={{ target: 'visited-color-global', type: 'link' }}
+				globalProps={{ target: 'visited', type: 'link' }}
 			/>
 		</>
 	);
@@ -364,6 +359,7 @@ const TypographyControl = withFormatValue(props => {
 		clientId,
 		styleCardPrefix,
 		allowLink = false,
+		blockStyle,
 	} = props;
 
 	const typography =
@@ -451,14 +447,11 @@ const TypographyControl = withFormatValue(props => {
 				avoidXXL
 			);
 
-		const blockStyle = getBlockStyle(clientId);
-
 		const nonHoverValue = getCustomFormatValue({
 			typography,
 			formatValue,
 			prop,
 			breakpoint: currentBreakpoint,
-			blockStyle,
 			textLevel,
 			styleCard,
 			styleCardPrefix,
@@ -473,7 +466,6 @@ const TypographyControl = withFormatValue(props => {
 			prop,
 			breakpoint: currentBreakpoint,
 			isHover,
-			blockStyle,
 			textLevel,
 			styleCard,
 			styleCardPrefix,
@@ -576,7 +568,19 @@ const TypographyControl = withFormatValue(props => {
 			textLevel,
 			disableCustomFormats,
 			styleCardPrefix,
+			returnFormatValue: true,
 		});
+
+		const newFormatValue = { ...obj.formatValue };
+		delete obj.formatValue;
+
+		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
+		setTimeout(() => {
+			dispatch('maxiBlocks/text').sendFormatValue(
+				newFormatValue,
+				clientId
+			);
+		}, 200); // higher than the 150 of `onChangeRichText` method
 
 		onChange(obj);
 	};
@@ -653,9 +657,8 @@ const TypographyControl = withFormatValue(props => {
 							[`${prefix}palette-opacity`]: paletteOpacity,
 						})
 					}
-					showPalette
 					globalProps={{
-						target: `${isHover ? 'hover-' : ''}color-global`,
+						target: isHover ? 'hover-' : '',
 						type:
 							select('core/block-editor').getBlockName(
 								clientId
@@ -807,23 +810,27 @@ const TypographyControl = withFormatValue(props => {
 					});
 				}}
 			/>
-			<hr />
 			{!hideTextShadow && (
-				<TextShadowControl
-					className='maxi-typography-control__text-shadow'
-					textShadow={getValue(`${prefix}text-shadow`)}
-					onChange={val => {
-						onChangeFormat({
-							[`${prefix}text-shadow`]: val,
-						});
-					}}
-					defaultColor={getLastBreakpointAttribute(
-						'color',
-						breakpoint,
-						typography
-					)}
-				/>
+				<>
+					<hr />
+					<TextShadowControl
+						className='maxi-typography-control__text-shadow'
+						textShadow={getValue(`${prefix}text-shadow`)}
+						onChange={val => {
+							onChangeFormat({
+								[`${prefix}text-shadow`]: val,
+							});
+						}}
+						defaultColor={getLastBreakpointAttribute(
+							'color',
+							breakpoint,
+							typography
+						)}
+						blockStyle={blockStyle}
+					/>
+				</>
 			)}
+			<hr />
 			{allowLink && (
 				<LinkOptions
 					getValue={getValue}

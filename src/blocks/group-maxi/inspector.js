@@ -17,9 +17,8 @@ import {
 	BoxShadowControl,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
-	FancyRadioControl,
 	FullSizeControl,
+	InfoBox,
 	MotionControl,
 	OpacityControl,
 	ParallaxControl,
@@ -27,9 +26,10 @@ import {
 	ResponsiveControl,
 	SettingTabsControl,
 	TextControl,
+	ToggleSwitch,
 	TransformControl,
-	InfoBox,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -76,7 +76,6 @@ const Inspector = props => {
 												setAttributes({ customLabel })
 											}
 										/>
-										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
 											isFirstOnHierarchy={
@@ -92,37 +91,24 @@ const Inspector = props => {
 									items={[
 										{
 											label: __(
-												'Width / Height',
+												'Height / Width',
 												'maxi-blocks'
 											),
 											content: (
 												<>
-													<FancyRadioControl
+													<ToggleSwitch
 														label={__(
-															'Full Width',
+															'Set group to full-width',
 															'maxi-blocks'
 														)}
-														selected={fullWidth}
-														options={[
-															{
-																label: __(
-																	'Yes',
-																	'maxi-blocks'
-																),
-																value: 'full',
-															},
-															{
-																label: __(
-																	'No',
-																	'maxi-blocks'
-																),
-																value: 'normal',
-															},
-														]}
-														optionType='string'
-														onChange={fullWidth =>
+														selected={
+															fullWidth === 'full'
+														}
+														onChange={val =>
 															setAttributes({
-																fullWidth,
+																fullWidth: val
+																	? 'full'
+																	: 'normal',
 															})
 														}
 													/>
@@ -205,7 +191,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Background Hover',
 																			'maxi-blocks'
@@ -216,22 +202,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-background-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val => {
 																			setAttributes(
 																				{
@@ -341,7 +311,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -352,22 +322,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-border-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val => {
 																			setAttributes(
 																				{
@@ -476,7 +430,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Box Shadow Hover',
 																			'maxi-blocks'
@@ -487,22 +441,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-box-shadow-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val =>
 																			setAttributes(
 																				{
@@ -670,23 +608,6 @@ const Inspector = props => {
 										),
 									},
 									{
-										label: __(
-											'Entrance Animation',
-											'maxi-blocks'
-										),
-										content: (
-											<EntranceAnimationControl
-												{...getGroupAttributes(
-													attributes,
-													'entrance'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-											/>
-										),
-									},
-									{
 										label: __('Transform', 'maxi-blocks'),
 										content: (
 											<TransformControl
@@ -766,17 +687,29 @@ const Inspector = props => {
 										label: __('Opacity', 'maxi-blocks'),
 										content: (
 											<OpacityControl
-												opacity={
-													attributes[
-														`opacity-${deviceType}`
-													]
+												{...getGroupAttributes(
+													attributes,
+													'opacity'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
 												}
-												onChange={val =>
-													setAttributes({
-														[`opacity-${deviceType}`]:
-															val,
-													})
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Overflow', 'maxi-blocks'),
+										content: (
+											<OverflowControl
+												{...getGroupAttributes(
+													attributes,
+													'overflow'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
 												}
+												breakpoint={deviceType}
 											/>
 										),
 									},

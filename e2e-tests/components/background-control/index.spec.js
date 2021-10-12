@@ -6,7 +6,6 @@ import {
 	createNewPost,
 	insertBlock,
 	pressKeyTimes,
-	setBrowserViewport,
 } from '@wordpress/e2e-test-utils';
 
 /**
@@ -25,11 +24,11 @@ describe('BackgroundControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[5].click()
+			select => select[4].click()
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-clip-path-control .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
+			'.maxi-clip-path-control .maxi-toggle-switch .maxi-base-control__label',
 			use => use.click()
 		);
 
@@ -41,7 +40,7 @@ describe('BackgroundControl', () => {
 
 		const bgColorClipPathAttributes = await getBlockAttributes();
 		const bgColorClipPathResult =
-			bgColorClipPathAttributes['background-color-clip-path'];
+			bgColorClipPathAttributes['background-image-clip-path'];
 		const expectedBgColorClipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
 
 		expect(bgColorClipPathResult).toStrictEqual(expectedBgColorClipPath);
@@ -50,9 +49,9 @@ describe('BackgroundControl', () => {
 	it('Check Background Color Layer Clip Path', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
-		await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-background-control .maxi-base-control label',
-			selectLayers => selectLayers[1].click()
+		await accordionPanel.$eval(
+			'.maxi-tabs-content .maxi-background-control .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		const selectLayer = await accordionPanel.$(
@@ -72,7 +71,7 @@ describe('BackgroundControl', () => {
 		);
 
 		await accordionPanel.$eval(
-			'.maxi-clip-path-control .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
+			'.maxi-clip-path-control .maxi-toggle-switch .maxi-base-control__label',
 			use => use.click()
 		);
 
@@ -97,7 +96,7 @@ describe('BackgroundControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[5].click()
+			select => select[3].click()
 		);
 
 		await accordionPanel.$$eval(
@@ -118,7 +117,7 @@ describe('BackgroundControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[5].click()
+			select => select[3].click()
 		);
 
 		await accordionPanel.$eval(
@@ -139,7 +138,7 @@ describe('BackgroundControl', () => {
 
 		const colorAttributes = await getBlockAttributes();
 		const result = colorAttributes['background-color'];
-		const expectedColor = 'rgba(0,0,0,1)';
+		const expectedColor = 'rgb(0,0,0)';
 
 		expect(result).toStrictEqual(expectedColor);
 	});
@@ -164,9 +163,9 @@ describe('BackgroundControl', () => {
 		await attachment.select('fixed');
 
 		// more settings
-		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--more-settings .maxi-base-control__field label',
-			click => click[1].click()
+		await accordionPanel.$eval(
+			'.maxi-background-control .maxi-fancy-radio-control--more-settings.maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		// background more options
@@ -213,7 +212,7 @@ describe('BackgroundControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[7].click()
+			select => select[5].click()
 		);
 
 		// insert URL
@@ -245,12 +244,14 @@ describe('BackgroundControl', () => {
 			VideoUrl
 		);
 
-		await accordionPanel.$$eval(
-			'.maxi-background-control__video .maxi-fancy-radio-control label',
-			select => {
-				select[2].click(); // loop
-				select[5].click(); // Play on mobile
-			}
+		await accordionPanel.$eval(
+			'.maxi-background-control__video .maxi-toggle-switch.video-loop .maxi-base-control__label',
+			use => use.click()
+		);
+
+		await accordionPanel.$eval(
+			'.maxi-background-control__video .maxi-toggle-switch.video-play-mobile .maxi-base-control__label',
+			use => use.click()
 		);
 
 		const expectAttribute = await getBlockAttributes();
@@ -320,25 +321,24 @@ describe('BackgroundControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[5].click()
+			select => select[3].click()
 		);
 
 		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
 			buttons[1].click()
 		);
 
-		await page.$$eval(
-			'.maxi-background-status-hover .maxi-radio-control__option',
-			buttons => buttons[0].querySelector('label').click()
+		await accordionPanel.$eval(
+			'.maxi-background-status-hover.maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
 			buttons[0].click()
 		);
-
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[4].click()
+			select => select[2].click()
 		);
 
 		const expectChanges = {

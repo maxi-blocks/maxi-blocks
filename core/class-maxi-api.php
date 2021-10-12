@@ -132,30 +132,6 @@ if (!class_exists('MaxiBlocks_API')):
 					return current_user_can('edit_posts');
 				},
 			]);
-			register_rest_route($this->namespace, '/post/fonts', [
-				'methods' => 'POST',
-				'callback' => [$this, 'post_maxi_blocks_fonts'],
-				'args' => [
-					'id' => [
-						'validate_callback' => function ($param) {
-							return is_numeric($param);
-						},
-					],
-					'meta' => [
-						'validate_callback' => function ($param) {
-							return is_string($param);
-						},
-					],
-					'update' => [
-						'validate_callback' => function ($param) {
-							return is_bool($param);
-						},
-					],
-				],
-				'permission_callback' => function () {
-					return current_user_can('edit_posts');
-				},
-			]);
 			register_rest_route($this->namespace, '/style-card', [
 				'methods' => 'GET',
 				'callback' => [$this, 'get_maxi_blocks_sc_string'],
@@ -186,7 +162,6 @@ if (!class_exists('MaxiBlocks_API')):
 				'methods' => 'GET',
 				'callback' => [$this, 'get_maxi_blocks_breakpoints'],
 				'permission_callback' => function () {
-					// return current_user_can('edit_posts');
 					return true;
 				},
 			]);
@@ -350,6 +325,7 @@ if (!class_exists('MaxiBlocks_API')):
 			$id = $data['id'];
 			$meta = json_decode($data['meta'], true);
 			$styles = $meta['styles'];
+			$fonts = $meta['fonts'];
 
 			$this->mb_register_post_options($id);
 
@@ -358,31 +334,10 @@ if (!class_exists('MaxiBlocks_API')):
 			if ($data['update']) {
 				$post['_maxi_blocks_styles'] = $styles;
 				$post['_maxi_blocks_styles_preview'] = $styles;
-			} else {
-				$post['_maxi_blocks_styles_preview'] = $styles;
-			}
-
-			update_option("mb_post_api_{$id}", $post);
-
-			return $post;
-		}
-
-		/**
-		 * Post the fonts of the post
-		 */
-		public function post_maxi_blocks_fonts($data) {
-			$id = $data['id'];
-			$meta = json_decode($data['meta'], true);
-			$fonts = $meta['fonts'];
-
-			$this->mb_register_post_options($id);
-
-			$post = get_option("mb_post_api_{$id}");
-
-			if ($data['update']) {
 				$post['_maxi_blocks_fonts'] = $fonts;
 				$post['_maxi_blocks_fonts_preview'] = $fonts;
 			} else {
+				$post['_maxi_blocks_styles_preview'] = $styles;
 				$post['_maxi_blocks_fonts_preview'] = $fonts;
 			}
 
@@ -579,3 +534,4 @@ if (!class_exists('MaxiBlocks_API')):
 		}
 	}
 endif;
+

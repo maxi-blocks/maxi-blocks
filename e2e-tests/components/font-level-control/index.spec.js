@@ -44,7 +44,7 @@ describe('FontLevelControl', () => {
 			const paletteColor = attributes['palette-color-general'];
 
 			expect(text).toStrictEqual(fontLevel[i]);
-			expect(paletteColor).toStrictEqual(5);
+			expect(paletteColor).toStrictEqual(i !== 6 ? 5 : 3);
 		}
 	});
 });

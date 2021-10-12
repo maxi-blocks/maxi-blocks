@@ -20,6 +20,7 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 	getMotionDuration,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 /**
@@ -55,6 +56,9 @@ const getNormalObject = props => {
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 
@@ -242,6 +246,9 @@ const getMotionDurationObject = props => {
 		}),
 	};
 
+	console.log('motion effects');
+	console.log(response);
+
 	return response;
 };
 
@@ -251,7 +258,7 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
-			' .maxi-motion-effect ': getMotionDurationObject(props),
+			'.maxi-motion-effect ': getMotionDurationObject(props),
 			' .maxi-image-block-wrapper': getImageWrapperObject(props),
 			':hover .maxi-image-block-wrapper': getImageHoverObject(props),
 			' .maxi-image-block-wrapper img': getImageObject(props),

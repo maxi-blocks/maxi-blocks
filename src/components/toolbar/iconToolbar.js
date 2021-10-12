@@ -111,6 +111,7 @@ const IconToolbar = memo(
 								blockName={name}
 								{...getGroupAttributes(attributes, 'icon')}
 								onChange={obj => processAttributes(obj)}
+								breakpoint={breakpoint}
 							/>
 							<IconColor
 								blockName={name}

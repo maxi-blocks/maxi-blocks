@@ -91,7 +91,9 @@ const getTypographyStyles = ({
 							obj[getName('palette-color', breakpoint)]
 						) && {
 							color: getColorRGBAString({
-								firstVar: `color${isHover ? '-hover' : ''}`,
+								firstVar: `${textLevel}-color${
+									isHover ? '-hover' : ''
+								}`,
 								secondVar: `color-${
 									obj[getName('palette-color', breakpoint)]
 								}`,

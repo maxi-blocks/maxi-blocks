@@ -10,6 +10,7 @@ import { memo } from '@wordpress/element';
  */
 import {
 	AccordionControl,
+	AdvancedNumberControl,
 	AlignmentControl,
 	AxisControl,
 	BackgroundControl,
@@ -18,8 +19,6 @@ import {
 	BoxShadowControl,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
-	FancyRadioControl,
 	FontLevelControl,
 	FullSizeControl,
 	InfoBox,
@@ -29,12 +28,13 @@ import {
 	ResponsiveControl,
 	SelectControl,
 	SettingTabsControl,
-	AdvancedNumberControl,
 	TextControl,
+	ToggleSwitch,
 	TransformControl,
+	TransitionControl,
 	TypographyControl,
 	ZIndexControl,
-	TransitionControl,
+	OverflowControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -64,6 +64,7 @@ const Inspector = memo(
 			typeOfList,
 			listStart,
 			listReversed,
+			parentBlockStyle,
 		} = attributes;
 
 		return (
@@ -94,7 +95,6 @@ const Inspector = memo(
 													})
 												}
 											/>
-											<hr />
 											<BlockStylesControl
 												blockStyle={blockStyle}
 												isFirstOnHierarchy={
@@ -310,7 +310,7 @@ const Inspector = memo(
 																			isList
 																		}
 																		blockStyle={
-																			blockStyle
+																			parentBlockStyle
 																		}
 																		allowLink
 																	/>
@@ -323,7 +323,7 @@ const Inspector = memo(
 																),
 																content: (
 																	<>
-																		<FancyRadioControl
+																		<ToggleSwitch
 																			label={__(
 																				'Enable Typography Hover',
 																				'maxi-blocks'
@@ -333,22 +333,6 @@ const Inspector = memo(
 																					'typography-status-hover'
 																				]
 																			}
-																			options={[
-																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
-																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
 																			onChange={val =>
 																				setAttributes(
 																					{
@@ -387,7 +371,7 @@ const Inspector = memo(
 																				}
 																				isHover
 																				blockStyle={
-																					blockStyle
+																					parentBlockStyle
 																				}
 																			/>
 																		)}
@@ -448,7 +432,7 @@ const Inspector = memo(
 																),
 																content: (
 																	<>
-																		<FancyRadioControl
+																		<ToggleSwitch
 																			label={__(
 																				'Enable Background Hover',
 																				'maxi-blocks'
@@ -459,22 +443,6 @@ const Inspector = memo(
 																				]
 																			}
 																			className='maxi-background-status-hover'
-																			options={[
-																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
-																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
 																			onChange={val =>
 																				setAttributes(
 																					{
@@ -587,7 +555,7 @@ const Inspector = memo(
 																),
 																content: (
 																	<>
-																		<FancyRadioControl
+																		<ToggleSwitch
 																			label={__(
 																				'Enable Border Hover',
 																				'maxi-blocks'
@@ -598,22 +566,6 @@ const Inspector = memo(
 																				]
 																			}
 																			className='maxi-border-status-hover'
-																			options={[
-																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
-																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
 																			onChange={val =>
 																				setAttributes(
 																					{
@@ -683,41 +635,28 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Width / Height',
+													'Height / Width',
 													'maxi-blocks'
 												),
 												content: (
 													<>
 														{isFirstOnHierarchy && (
-															<FancyRadioControl
+															<ToggleSwitch
 																label={__(
-																	'Full Width',
+																	'Set text to full-width',
 																	'maxi-blocks'
 																)}
 																selected={
-																	fullWidth
+																	fullWidth ===
+																	'full'
 																}
-																options={[
-																	{
-																		label: __(
-																			'Yes',
-																			'maxi-blocks'
-																		),
-																		value: 'full',
-																	},
-																	{
-																		label: __(
-																			'No',
-																			'maxi-blocks'
-																		),
-																		value: 'normal',
-																	},
-																]}
-																optionType='string'
-																onChange={fullWidth =>
+																onChange={val =>
 																	setAttributes(
 																		{
-																			fullWidth,
+																			fullWidth:
+																				val
+																					? 'full'
+																					: 'normal',
 																		}
 																	)
 																}
@@ -783,7 +722,7 @@ const Inspector = memo(
 																),
 																content: (
 																	<>
-																		<FancyRadioControl
+																		<ToggleSwitch
 																			label={__(
 																				'Enable Box Shadow Hover',
 																				'maxi-blocks'
@@ -794,22 +733,6 @@ const Inspector = memo(
 																				]
 																			}
 																			className='maxi-box-shadow-status-hover'
-																			options={[
-																				{
-																					label: __(
-																						'Yes',
-																						'maxi-blocks'
-																					),
-																					value: 1,
-																				},
-																				{
-																					label: __(
-																						'No',
-																						'maxi-blocks'
-																					),
-																					value: 0,
-																				},
-																			]}
 																			onChange={val =>
 																				setAttributes(
 																					{
@@ -966,23 +889,6 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Entrance Animation',
-													'maxi-blocks'
-												),
-												content: (
-													<EntranceAnimationControl
-														{...getGroupAttributes(
-															attributes,
-															'entrance'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-													/>
-												),
-											},
-											{
-												label: __(
 													'Transform',
 													'maxi-blocks'
 												),
@@ -1079,17 +985,14 @@ const Inspector = memo(
 												),
 												content: (
 													<OpacityControl
-														opacity={
-															attributes[
-																`opacity-${deviceType}`
-															]
+														{...getGroupAttributes(
+															attributes,
+															'opacity'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
 														}
-														onChange={val =>
-															setAttributes({
-																[`opacity-${deviceType}`]:
-																	val,
-															})
-														}
+														breakpoint={deviceType}
 													/>
 												),
 											},
@@ -1103,6 +1006,24 @@ const Inspector = memo(
 														{...getGroupAttributes(
 															attributes,
 															'transitionDuration'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Overflow',
+													'maxi-blocks'
+												),
+												content: (
+													<OverflowControl
+														{...getGroupAttributes(
+															attributes,
+															'overflow'
 														)}
 														onChange={obj =>
 															setAttributes(obj)

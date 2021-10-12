@@ -1,143 +1,134 @@
 <?php
 
-class MaxiBlocks_StyleCards
-{
-    /**
-     * This plugin's instance.
-     *
-     * @var MaxiBlocks_StyleCards
-     */
-    private static $instance;
+class MaxiBlocks_StyleCards {
+	/**
+	 * This plugin's instance.
+	 *
+	 * @var MaxiBlocks_StyleCards
+	 */
+	private static $instance;
 
-    /**
-     * Registers the plugin.
-     */
-    public static function register()
-    {
-        if (null === self::$instance) {
-            self::$instance = new MaxiBlocks_StyleCards();
-        }
-    }
+	/**
+	 * Registers the plugin.
+	 */
+	public static function register() {
+		if (null === self::$instance) {
+			self::$instance = new MaxiBlocks_StyleCards();
+		}
+	}
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
-    }
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
+		add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+	}
 
-    /**
-     * Enqueuing styles
-     */
-    public function enqueue_styles()
-    {
-        $vars = $this->getStylesString();
+	/**
+	 * Enqueuing styles
+	 */
+	public function enqueue_styles() {
+		$vars = $this->getStylesString();
 
-        // Inline styles
-        if ($vars) {
-            wp_register_style('maxi-blocks-sc-vars', false);
-            wp_enqueue_style('maxi-blocks-sc-vars');
-            wp_add_inline_style('maxi-blocks-sc-vars', $vars);
+		// Inline styles
+		if ($vars) {
+			wp_register_style('maxi-blocks-sc-vars', false);
+			wp_enqueue_style('maxi-blocks-sc-vars');
+			wp_add_inline_style('maxi-blocks-sc-vars', $vars);
 
-            $this->enqueue_fonts($vars);
-        }
-    }
+			$this->enqueue_fonts($vars);
+		}
+	}
 
-    /**
-     * Get SC
-     */
-    public function getStylesString()
-    {
-        $style_card = get_option('mb_sc_string');
+	/**
+	 * Get SC
+	 */
+	public function getStylesString() {
+		$style_card = get_option('mb_sc_string');
 
-        if (!$style_card) {
-            return false;
-        }
+		if (!$style_card) {
+			return false;
+		}
 
-        $style =
-            is_preview() || is_admin()
-                ? $style_card['_maxi_blocks_style_card_preview']
-                : $style_card['_maxi_blocks_style_card'];
+		$style =
+			is_preview() || is_admin()
+				? $style_card['_maxi_blocks_style_card_preview']
+				: $style_card['_maxi_blocks_style_card'];
 
-        if (!$style || empty($style)) {
-            $style =
-                is_preview() || is_admin() // If one fail, let's test the other one!
-                    ? $style_card['_maxi_blocks_style_card']
-                    : $style_card['_maxi_blocks_style_card_preview'];
-        }
+		if (!$style || empty($style)) {
+			$style =
+				is_preview() || is_admin() // If one fail, let's test the other one!
+					? $style_card['_maxi_blocks_style_card']
+					: $style_card['_maxi_blocks_style_card_preview'];
+		}
 
-        if (!$style || empty($style)) {
-            return false;
-        }
+		if (!$style || empty($style)) {
+			return false;
+		}
 
-        return $style;
-    }
+		return $style;
+	}
 
-    public function get_maxi_blocks_current_style_cards()
-    {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
-        $query =
-            'SELECT object FROM ' .
-            $table_name .
-            ' where id = "style_cards_current"';
-        $maxi_blocks_style_cards_current = $wpdb->get_var($query);
-        if (
-            $maxi_blocks_style_cards_current &&
-            !empty($maxi_blocks_style_cards_current)
-        ) {
-            return $maxi_blocks_style_cards_current;
-        } else {
-            $defaultStyleCard = $this->getDefaultStyleCard();
+	public function get_maxi_blocks_current_style_cards() {
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
+		$query =
+			'SELECT object FROM ' .
+			$table_name .
+			' where id = "style_cards_current"';
+		$maxi_blocks_style_cards_current = $wpdb->get_var($query);
+		if (
+			$maxi_blocks_style_cards_current &&
+			!empty($maxi_blocks_style_cards_current)
+		) {
+			return $maxi_blocks_style_cards_current;
+		} else {
+			$defaultStyleCard = $this->getDefaultStyleCard();
 
-            $wpdb->replace($table_name, [
-                'id' => 'style_cards_current',
-                'object' => $defaultStyleCard,
-            ]);
-            $maxi_blocks_style_cards_current = $wpdb->get_var($query);
-            return $maxi_blocks_style_cards_current;
-        }
-    }
+			$wpdb->replace($table_name, [
+				'id' => 'style_cards_current',
+				'object' => $defaultStyleCard,
+			]);
+			$maxi_blocks_style_cards_current = $wpdb->get_var($query);
+			return $maxi_blocks_style_cards_current;
+		}
+	}
 
-    public function get_maxi_blocks_active_style_card()
-    {
-        $maxi_blocks_style_cards = $this->get_maxi_blocks_current_style_cards();
+	public function get_maxi_blocks_active_style_card() {
+		$maxi_blocks_style_cards = $this->get_maxi_blocks_current_style_cards();
 
-        $maxi_blocks_style_cards_array = json_decode(
-            $maxi_blocks_style_cards,
-            true,
-        );
+		$maxi_blocks_style_cards_array = json_decode(
+			$maxi_blocks_style_cards,
+			true,
+		);
 
-        foreach ($maxi_blocks_style_cards_array as $key => $sc) {
-            if ($sc['status'] === 'active') {
-                return $sc;
-            }
-        }
-        return false;
-    }
+		foreach ($maxi_blocks_style_cards_array as $key => $sc) {
+			if ($sc['status'] === 'active') {
+				return $sc;
+			}
+		}
+		return false;
+	}
 
-    public function enqueue_fonts($vars)
-    {
-        preg_match_all('/font-family-general:(\w+);/', $vars, $fonts);
-        $fonts = array_unique($fonts[1]);
+	public function enqueue_fonts($vars) {
+		preg_match_all('/font-family-general:(\w+);/', $vars, $fonts);
+		$fonts = array_unique($fonts[1]);
 
-        if (empty($fonts)) {
-            return;
-        }
+		if (empty($fonts)) {
+			return;
+		}
 
-        foreach ($fonts as $font) {
-            wp_enqueue_style(
-                "{$font}",
-                "https://fonts.googleapis.com/css2?family={$font}",
-            );
-        }
-    }
+		foreach ($fonts as $font) {
+			wp_enqueue_style(
+				"{$font}",
+				"https://fonts.googleapis.com/css2?family={$font}",
+			);
+		}
+	}
 
-    public static function getDefaultStyleCard()
-    {
-        $json = '{
+	public static function getDefaultStyleCard() {
+		$json = '{
 			"sc_maxi": {
 				"name": "Maxi (Default)",
 				"status": "active",
@@ -146,16 +137,19 @@ class MaxiBlocks_StyleCards
 					"defaultStyleCard": {
 						"color": {
 							"1": "8,18,25",
-							"2": "6,39,57",
+							"2": "5,23,33",
 							"3": "155,155,155",
 							"4": "255,74,23",
 							"5": "255,255,255",
 							"6": "201,52,10",
 							"7": "245,245,245",
-							"8": "7,16,23"
+							"8": "9,60,88"
 						},
 						"p": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 3,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 24,
@@ -177,6 +171,9 @@ class MaxiBlocks_StyleCards
 						},
 						"h1": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 5,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 65,
@@ -214,6 +211,9 @@ class MaxiBlocks_StyleCards
 						},
 						"h2": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 5,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 55,
@@ -251,6 +251,9 @@ class MaxiBlocks_StyleCards
 						},
 						"h3": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 5,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 45,
@@ -280,6 +283,9 @@ class MaxiBlocks_StyleCards
 						},
 						"h4": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 5,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 38,
@@ -309,6 +315,9 @@ class MaxiBlocks_StyleCards
 						},
 						"h5": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 5,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 34,
@@ -334,6 +343,9 @@ class MaxiBlocks_StyleCards
 						},
 						"h6": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 5,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 30,
@@ -359,53 +371,90 @@ class MaxiBlocks_StyleCards
 						},
 						"button": {
 							"border-color-global": false,
+							"border-palette-status": true,
+							"border-palette-color": 5,
+							"border-palette-opacity": "",
 							"border-color": "",
 							"hover-border-color-global": false,
+							"hover-border-palette-status": true,
+							"hover-border-palette-color": 6,
+							"hover-border-palette-opacity": "",
 							"hover-border-color": "",
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 1,
+							"palette-opacity": "",
 							"color": "",
 							"hover-color-global": false,
+							"hover-palette-status": true,
+							"hover-palette-color": 5,
+							"hover-palette-opacity": "",
 							"hover-color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 22,
+							"font-size-xxl": 24,
 							"font-size-unit-xxl": "px",
-							"font-size-xl": 18,
+							"font-size-xl": 16,
 							"font-size-unit-xl": "px",
-							"font-size-l": 16,
-							"font-size-unit-l": "px",
-							"line-height-xxl": 1.5,
-							"line-height-xl": 1.625,
+							"line-height-xl": 100,
+							"line-height-unit-xl": "%",
+							"font-weight-general": 400,
+							"text-transform-general": "none",
+							"font-style-general": "normal",
 							"letter-spacing-xxl": 0,
 							"letter-spacing-unit-xxl": "px",
 							"letter-spacing-xl": 0,
 							"letter-spacing-unit-xl": "px",
-							"font-weight-general": 400,
-							"text-transform-general": "none",
-							"font-style-general": "normal",
 							"text-decoration-general": "unset",
 							"background-color-global": false,
+							"background-palette-status": true,
+							"background-palette-color": 4,
+							"background-palette-opacity": "",
 							"background-color": "",
 							"hover-background-color-global": false,
+							"hover-background-palette-status": true,
+							"hover-background-palette-color": 6,
+							"hover-background-palette-opacity": "",
 							"hover-background-color": ""
 						},
 						"link": {
 							"link-color-global": false,
+							"link-palette-status": true,
+							"link-palette-color": 4,
+							"link-palette-opacity": "",
 							"link-color": "",
 							"hover-color-global": false,
+							"hover-palette-status": true,
+							"hover-palette-color": 6,
+							"hover-palette-opacity": "",
 							"hover-color": "",
 							"active-color-global": false,
+							"active-palette-status": true,
+							"active-palette-color": 6,
+							"active-palette-opacity": "",
 							"active-color": "",
 							"visited-color-global": false,
+							"visited-palette-status": true,
+							"visited-palette-color": 6,
+							"visited-palette-opacity": "",
 							"visited-color": ""
 						},
 						"icon": {
 							"line-global": false,
+							"line-palette-status": true,
+							"line-palette-color": 7,
+							"line-palette-opacity": "",
 							"line": "",
 							"fill-global": false,
+							"fill-palette-status": true,
+							"fill-palette-color": 4,
+							"fill-palette-opacity": "",
 							"fill": ""
 						},
 						"divider": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 1,
+							"palette-opacity": "",
 							"color": ""
 						}
 					}
@@ -425,6 +474,9 @@ class MaxiBlocks_StyleCards
 						},
 						"p": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 3,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 24,
@@ -446,6 +498,9 @@ class MaxiBlocks_StyleCards
 						},
 						"h1": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 5,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 65,
@@ -483,6 +538,9 @@ class MaxiBlocks_StyleCards
 						},
 						"h2": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 5,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 55,
@@ -520,6 +578,9 @@ class MaxiBlocks_StyleCards
 						},
 						"h3": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 5,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 45,
@@ -549,6 +610,9 @@ class MaxiBlocks_StyleCards
 						},
 						"h4": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 5,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 38,
@@ -578,6 +642,9 @@ class MaxiBlocks_StyleCards
 						},
 						"h5": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 5,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 34,
@@ -603,6 +670,9 @@ class MaxiBlocks_StyleCards
 						},
 						"h6": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 5,
+							"palette-opacity": "",
 							"color": "",
 							"font-family-general": "Roboto",
 							"font-size-xxl": 30,
@@ -628,22 +698,32 @@ class MaxiBlocks_StyleCards
 						},
 						"button": {
 							"border-color-global": false,
+							"border-palette-status": true,
+							"border-palette-color": 5,
+							"border-palette-opacity": "",
 							"border-color": "",
 							"hover-border-color-global": false,
+							"hover-border-palette-status": true,
+							"hover-border-palette-color": 6,
+							"hover-border-palette-opacity": "",
 							"hover-border-color": "",
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 1,
+							"palette-opacity": "",
 							"color": "",
 							"hover-color-global": false,
+							"hover-palette-status": true,
+							"hover-palette-color": 5,
+							"hover-palette-opacity": "",
 							"hover-color": "",
 							"font-family-general": "Roboto",
-							"font-size-xxl": 22,
+							"font-size-xxl": 24,
 							"font-size-unit-xxl": "px",
-							"font-size-xl": 18,
+							"font-size-xl": 16,
 							"font-size-unit-xl": "px",
-							"font-size-l": 16,
-							"font-size-unit-l": "px",
-							"line-height-xxl": 1.5,
-							"line-height-xl": 1.625,
+							"line-height-xl": 100,
+							"line-height-unit-xl": "%",
 							"font-weight-general": 400,
 							"text-transform-general": "none",
 							"font-style-general": "normal",
@@ -653,28 +733,55 @@ class MaxiBlocks_StyleCards
 							"letter-spacing-unit-xl": "px",
 							"text-decoration-general": "unset",
 							"background-color-global": false,
+							"background-palette-status": true,
+							"background-palette-color": 4,
+							"background-palette-opacity": "",
 							"background-color": "",
 							"hover-background-color-global": false,
+							"hover-background-palette-status": true,
+							"hover-background-palette-color": 6,
+							"hover-background-palette-opacity": "",
 							"hover-background-color": ""
 						},
 						"link": {
 							"link-color-global": false,
+							"link-palette-status": true,
+							"link-palette-color": 4,
+							"link-palette-opacity": "",
 							"link-color": "",
 							"hover-color-global": false,
+							"hover-palette-status": true,
+							"hover-palette-color": 6,
+							"hover-palette-opacity": "",
 							"hover-color": "",
 							"active-color-global": false,
+							"active-palette-status": true,
+							"active-palette-color": 6,
+							"active-palette-opacity": "",
 							"active-color": "",
 							"visited-color-global": false,
+							"visited-palette-status": true,
+							"visited-palette-color": 6,
+							"visited-palette-opacity": "",
 							"visited-color": ""
 						},
 						"icon": {
-							"line-global": false,
+							"line-color-global": false,
+							"line-palette-status": true,
+							"line-palette-color": 7,
+							"line-palette-opacity": "",
 							"line": "",
-							"fill-global": false,
+							"fill-color-global": false,
+							"fill-palette-status": true,
+							"fill-palette-color": 4,
+							"fill-palette-opacity": "",
 							"fill": ""
 						},
 						"divider": {
 							"color-global": false,
+							"palette-status": true,
+							"palette-color": 1,
+							"palette-opacity": "",
 							"color": ""
 						}
 					}
@@ -682,6 +789,6 @@ class MaxiBlocks_StyleCards
 			}
 		}';
 
-        return $json;
-    }
+		return $json;
+	}
 }

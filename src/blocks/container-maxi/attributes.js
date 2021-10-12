@@ -73,12 +73,12 @@ const attributes = {
 	...attributesData.arrow,
 	...attributesData.shapeDivider,
 	...attributesData.motion,
-	...attributesData.entrance,
 	...attributesData.parallax,
 	...attributesData.transform,
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.zIndex,
+	...attributesData.overflow,
 };
 
 export default attributes;

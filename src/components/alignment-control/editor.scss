@@ -7,59 +7,34 @@
 	.maxi-radio-control__option {
 		opacity: 1 !important;
 		min-width: 40px;
-		height: 30px;
-		background-color: rgba(33, 141, 250, 0);
-		font-size: 20px;
+		height: 32px;
+		background-color: #fff;
 		color: #464a53;
-		font-weight: 500;
 		flex: 1;
-		border: 2px solid #dddfe1;
-		border-right: 0;
+		border: 1px solid var(--maxi-grey-1-color);
 		margin: 0;
+		transition: all 0.5s;
 
-		&:first-of-type {
-			border-top-left-radius: 5px;
-			border-bottom-left-radius: 5px;
-
-			@at-root .rtl #{&} {
-				border-top-right-radius: 5px;
-				border-bottom-right-radius: 5px;
-				border-top-left-radius: 0;
-				border-bottom-left-radius: 0;
-				border-right: 2px solid #dddfe1;
-			}
+		&:hover {
+			background-color: var(--maxi-grey-3-color);
 		}
-		&:last-of-type {
-			border-top-right-radius: 5px;
-			border-bottom-right-radius: 5px;
-			border-right: 2px solid #dddfe1;
-
-			@at-root .rtl #{&} {
-				border-top-left-radius: 5px;
-				border-bottom-left-radius: 5px;
-				border-top-right-radius: 0;
-				border-bottom-right-radius: 0;
-				border-left: 2px solid #dddfe1;
-				border-right: unset;
-			}
+		&:focus {
+			background-color: var(--maxi-grey-2-color);
 		}
-
 		input {
 			display: none;
 
 			&:checked ~ label {
-				background-color: #f2f2f2;
-				outline: 1px solid transparent;
+				background-color: #f8fbfd;
+				border-bottom: 2px solid var(--maxi-secondary-color);
 				position: relative;
 				z-index: 1;
 			}
 		}
-
 		label {
 			display: block;
 			height: 100%;
 		}
-
 		svg {
 			display: block;
 			height: 100%;

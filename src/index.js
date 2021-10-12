@@ -26,7 +26,6 @@ import './blocks/image-maxi/image-maxi';
 import './blocks/map-maxi/map-maxi';
 import './blocks/number-counter-maxi/number-counter-maxi';
 import './blocks/row-maxi/row-maxi';
-import './blocks/shape-maxi/shape-maxi';
 import './blocks/svg-icon-maxi/svg-icon-maxi';
 import './blocks/text-maxi/text-maxi';
 

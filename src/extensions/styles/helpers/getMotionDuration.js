@@ -11,10 +11,12 @@ const getMotionDuration = obj => {
 
 	breakpoints.forEach(breakpoint => {
 		const transition = getLastBreakpointAttribute(
-			'transition',
+			'motion',
 			breakpoint,
 			obj
 		);
+
+		console.log(transition);
 
 		if (isNumber(transition)) transitionSetting += `${transition}s`;
 

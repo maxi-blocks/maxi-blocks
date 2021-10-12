@@ -46,7 +46,6 @@ class edit extends MaxiBlockComponent {
 
 		const motionStatus =
 			!!this.props.attributes['motion-status'] ||
-			!isEmpty(this.props.attributes['entrance-type']) ||
 			!!this.props.attributes['parallax-status'];
 
 		const shapeStatus =
@@ -58,7 +57,6 @@ class edit extends MaxiBlockComponent {
 				...(motionStatus && {
 					...getGroupAttributes(this.props.attributes, [
 						'motion',
-						'entrance',
 						'parallax',
 					]),
 				}),
@@ -93,7 +91,6 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-container--${uniqueID}`}
 				ref={this.blockRef}
 				{...getMaxiBlockBlockAttributes(this.props)}
-				disableMotion
 			>
 				{attributes['shape-divider-top-status'] && (
 					<ShapeDivider

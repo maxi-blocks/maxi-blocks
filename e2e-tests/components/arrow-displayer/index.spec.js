@@ -11,10 +11,11 @@ describe('ArrowDisplay', () => {
 		await page.$eval('.maxi-container-block', container =>
 			container.focus()
 		);
-		const accordionPanel = await openSidebar(page, 'arrow');
+		const accordionPanel = await openSidebar(page, 'callout arrow');
 
-		await accordionPanel.$$eval('.maxi-arrow-control label', button =>
-			button[1].click()
+		await accordionPanel.$eval(
+			'.maxi-arrow-control .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		const hasClass = page.$$eval('.maxi-container-block div', test =>

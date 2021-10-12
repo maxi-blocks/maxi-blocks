@@ -71,9 +71,40 @@ describe('AxisControl', () => {
 			});
 		}
 	});
+
 	it('Checking responsive AxisControl', async () => {
-		// responsiveS
+		// check general values remain
 		await changeResponsive(page, 's');
+
+		const expectGeneralResponsiveMargin = {
+			'margin-bottom-general': '2',
+			'margin-left-general': '2',
+			'margin-right-general': '2',
+			'margin-top-general': '2',
+			'margin-unit-general': '%',
+		};
+
+		const responsiveGeneralMarginAttributes = await getBlockAttributes();
+
+		const responsiveGeneralBlockMargin = (({
+			'margin-bottom-general': marginBottom,
+			'margin-left-general': marginLeft,
+			'margin-right-general': marginRight,
+			'margin-top-general': marginTop,
+			'margin-unit-general': marginUnit,
+		}) => ({
+			'margin-bottom-general': marginBottom,
+			'margin-left-general': marginLeft,
+			'margin-right-general': marginRight,
+			'margin-top-general': marginTop,
+			'margin-unit-general': marginUnit,
+		}))(responsiveGeneralMarginAttributes);
+
+		expect(responsiveGeneralBlockMargin).toStrictEqual(
+			expectGeneralResponsiveMargin
+		);
+
+		// change values S responsive
 		const accordionPanel = await openSidebar(page, 'padding margin');
 		const axisControls = await accordionPanel.$$(
 			'.maxi-axis-control .maxi-axis-control__top-part input'
@@ -127,6 +158,7 @@ describe('AxisControl', () => {
 			button => button[1].value
 		);
 		expect(unitXsSelector).toStrictEqual('px');
+
 		// responsive m
 		await changeResponsive(page, 'm');
 
@@ -176,7 +208,7 @@ describe('AxisControl', () => {
 
 		const marginS = await accordionPanel.$$eval(
 			'.maxi-axis-control .maxi-axis-control__top-part input',
-			button => button[2].value
+			button => button[4].value
 		);
 		expect(marginS).toStrictEqual('33');
 
@@ -203,6 +235,7 @@ describe('AxisControl', () => {
 		);
 		expect(marginM).toStrictEqual('');
 	});
+
 	it('CheckBox', async () => {
 		await changeResponsive(page, 'base');
 		const accordionPanel = await openSidebar(page, 'padding margin');
@@ -245,23 +278,21 @@ describe('AxisControl', () => {
 
 		const marginS = await accordionPanel.$$eval(
 			'.maxi-axis-control .maxi-axis-control__top-part input',
-			button => button[2].value
+			button => button[4].placeholder
 		);
 		expect(marginS).toStrictEqual('33');
-
-		await checkBox[1].click();
 
 		const marginBottomAuto = await accordionPanel.$$eval(
 			'.maxi-axis-control .maxi-axis-control__top-part input',
 			button => button[4].placeholder
 		);
 
-		expect(marginBottomAuto).toStrictEqual('auto');
+		expect(marginBottomAuto).toStrictEqual('33');
 
 		const attributes = await getBlockAttributes();
-		const autoValue = attributes['margin-top-general'];
+		const autoValue = attributes['margin-top-s'];
 
-		expect(autoValue).toStrictEqual('auto');
+		expect(autoValue).toStrictEqual('33');
 
 		// xs
 		await changeResponsive(page, 'xs');
@@ -271,7 +302,7 @@ describe('AxisControl', () => {
 			button => button[4].placeholder
 		);
 
-		expect(marginXsBottomAuto).toStrictEqual('auto');
+		expect(marginXsBottomAuto).toStrictEqual('33');
 
 		// m
 		await changeResponsive(page, 'm');
@@ -285,6 +316,7 @@ describe('AxisControl', () => {
 
 		expect(marginMBottomAuto).toStrictEqual('auto');
 	});
+
 	it('Padding cannot be less than 0 and sync', async () => {
 		await changeResponsive(page, 'base');
 
@@ -334,8 +366,19 @@ describe('AxisControl', () => {
 			expectHtml => expectHtml.ariaPressed
 		);
 
-		expect(pressedTop).toBeTruthy();
-		expect(pressedBottom).toBeTruthy();
+		expect(pressedTop).toStrictEqual('true');
+		expect(pressedBottom).toStrictEqual('true');
+
+		// expect attributes
+		const attributes = await getBlockAttributes();
+		const syncHorizontal = attributes['padding-sync-horizontal-general'];
+
+		expect(syncHorizontal).toStrictEqual(true);
+
+		const syncAttributes = await getBlockAttributes();
+		const syncVertical = syncAttributes['padding-sync-vertical-general'];
+
+		expect(syncVertical).toStrictEqual(true);
 
 		// Pressed-top and Pressed-bottom False Pressed-middle True
 		await syncButtonMiddle[1].click();
@@ -357,7 +400,12 @@ describe('AxisControl', () => {
 
 		expect(pressedTopFalse).toStrictEqual('false');
 		expect(pressedBottomFalse).toStrictEqual('false');
-		expect(pressedMiddleTrue).toBeTruthy();
+		expect(pressedMiddleTrue).toStrictEqual('true');
+
+		const syncAttribute = await getBlockAttributes();
+		const syncMiddle = syncAttribute['padding-sync-general'];
+
+		expect(syncMiddle).toStrictEqual(true);
 
 		// Pressed-top True Pressed-middle False
 		await syncButtonTop.click();
@@ -373,7 +421,7 @@ describe('AxisControl', () => {
 		);
 
 		expect(pressedMiddleFalse).toStrictEqual('false');
-		expect(pressedTopTrue).toBeTruthy();
+		expect(pressedTopTrue).toStrictEqual('true');
 
 		// Pressed-bottom True Pressed-middle False
 		await syncButtonMiddle[1].click();
@@ -390,6 +438,6 @@ describe('AxisControl', () => {
 		);
 
 		expect(pressedMiddle).toStrictEqual('false');
-		expect(pressedBottomTrue).toBeTruthy();
+		expect(pressedBottomTrue).toStrictEqual('true');
 	});
 });

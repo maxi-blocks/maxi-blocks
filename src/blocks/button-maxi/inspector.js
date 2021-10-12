@@ -33,6 +33,7 @@ import {
 	TransitionControl,
 	TypographyControl,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {
@@ -797,7 +798,7 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Width / Height',
+													'Height / Width',
 													'maxi-blocks'
 												),
 												content: (
@@ -805,7 +806,7 @@ const Inspector = memo(
 														{isFirstOnHierarchy && (
 															<ToggleSwitch
 																label={__(
-																	'Full Width',
+																	'Set button to full-width',
 																	'maxi-blocks'
 																)}
 																selected={
@@ -1149,6 +1150,24 @@ const Inspector = memo(
 														{...getGroupAttributes(
 															attributes,
 															'transitionDuration'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Overflow',
+													'maxi-blocks'
+												),
+												content: (
+													<OverflowControl
+														{...getGroupAttributes(
+															attributes,
+															'overflow'
 														)}
 														onChange={obj =>
 															setAttributes(obj)

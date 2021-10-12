@@ -29,6 +29,7 @@ import {
 	ToggleSwitch,
 	TransformControl,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -90,19 +91,18 @@ const Inspector = props => {
 									items={[
 										{
 											label: __(
-												'Width / Height',
+												'Height / Width',
 												'maxi-blocks'
 											),
 											content: (
 												<>
 													<ToggleSwitch
 														label={__(
-															'Full Width',
+															'Set group to full-width',
 															'maxi-blocks'
 														)}
 														selected={
-															fullWidth ===
-															'full'
+															fullWidth === 'full'
 														}
 														onChange={val =>
 															setAttributes({
@@ -690,6 +690,21 @@ const Inspector = props => {
 												{...getGroupAttributes(
 													attributes,
 													'opacity'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Overflow', 'maxi-blocks'),
+										content: (
+											<OverflowControl
+												{...getGroupAttributes(
+													attributes,
+													'overflow'
 												)}
 												onChange={obj =>
 													setAttributes(obj)

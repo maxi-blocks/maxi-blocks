@@ -16,11 +16,6 @@ import Icon from '../icon';
 import classnames from 'classnames';
 import { isArray } from 'lodash';
 
-/**
- * Style
- */
-import './editor.scss';
-
 const disabledEventsOnDisabledButton = ['onMouseDown', 'onClick'];
 
 export function SimpleButton(props, ref) {

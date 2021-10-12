@@ -10,6 +10,7 @@ import {
 	getBackgroundStyles,
 	getMarginPaddingStyles,
 	getDividerStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -50,6 +51,9 @@ const getNormalObject = props => {
 			null,
 			props.parentBlockStyle
 		),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
 	};
 
 	return response;

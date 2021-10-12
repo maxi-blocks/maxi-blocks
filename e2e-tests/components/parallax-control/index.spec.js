@@ -9,7 +9,7 @@ import {
 /**
  * Interactive dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 describe('ParallaxControl', () => {
 	it('Test the parallax control', async () => {
@@ -19,7 +19,7 @@ describe('ParallaxControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-base-control label',
-			button => button[5].click()
+			button => button[4].click()
 		);
 
 		// display parallax
@@ -55,5 +55,7 @@ describe('ParallaxControl', () => {
 		const parallaxSpeed = groupAttribute['parallax-speed'];
 		const expectSpeed = 4;
 		expect(parallaxSpeed).toStrictEqual(expectSpeed);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

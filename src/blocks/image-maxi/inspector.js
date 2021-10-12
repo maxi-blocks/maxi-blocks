@@ -23,6 +23,7 @@ import {
 	FullSizeControl,
 	HoverEffectControl,
 	ImageCropControl,
+	ImageShape,
 	InfoBox,
 	MotionControl,
 	OpacityControl,
@@ -34,17 +35,14 @@ import {
 	TransformControl,
 	TypographyControl,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
-import MaxiModal from '../../editor/library/modal';
 
-/**
- * External dependencies
- */
 /**
  * External dependencies
  */
@@ -523,6 +521,25 @@ const Inspector = memo(
 													</>
 												),
 											},
+											{
+												label: __(
+													'Shape mask',
+													'maxi-blocks'
+												),
+												content: (
+													<ImageShape
+														{...getGroupAttributes(
+															attributes,
+															'imageShape'
+														)}
+														onChange={obj => {
+															setAttributes(obj);
+														}}
+														icon={SVGElement}
+														breakpoint={deviceType}
+													/>
+												),
+											},
 											deviceType === 'general' && {
 												label: __(
 													'Background',
@@ -772,7 +789,7 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Width / Height',
+													'Height / Width',
 													'maxi-blocks'
 												),
 												content: (
@@ -780,7 +797,7 @@ const Inspector = memo(
 														{isFirstOnHierarchy && (
 															<ToggleSwitch
 																label={__(
-																	'Full Width',
+																	'Set image to full-width',
 																	'maxi-blocks'
 																)}
 																selected={
@@ -1024,24 +1041,6 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Shape',
-													'maxi-blocks'
-												),
-												content: (
-													<MaxiModal
-														type='image-shape'
-														onSelect={obj => {
-															setAttributes(obj);
-														}}
-														onRemove={obj => {
-															setAttributes(obj);
-														}}
-														icon={SVGElement}
-													/>
-												),
-											},
-											{
-												label: __(
 													'Motion Effects',
 													'maxi-blocks'
 												),
@@ -1190,6 +1189,24 @@ const Inspector = memo(
 														{...getGroupAttributes(
 															attributes,
 															'opacity'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Overflow',
+													'maxi-blocks'
+												),
+												content: (
+													<OverflowControl
+														{...getGroupAttributes(
+															attributes,
+															'overflow'
 														)}
 														onChange={obj =>
 															setAttributes(obj)

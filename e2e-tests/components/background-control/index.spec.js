@@ -11,7 +11,7 @@ import {
 /**
  * Interactive dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 describe('BackgroundControl', () => {
 	beforeEach(async () => {
@@ -24,7 +24,7 @@ describe('BackgroundControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[5].click()
+			select => select[4].click()
 		);
 
 		await accordionPanel.$eval(
@@ -49,9 +49,9 @@ describe('BackgroundControl', () => {
 	it('Check Background Color Layer Clip Path', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
-		await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-background-control .maxi-base-control label',
-			selectLayers => selectLayers[1].click()
+		await accordionPanel.$eval(
+			'.maxi-tabs-content .maxi-background-control .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		const selectLayer = await accordionPanel.$(
@@ -96,7 +96,7 @@ describe('BackgroundControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[4].click()
+			select => select[3].click()
 		);
 
 		await accordionPanel.$$eval(
@@ -117,7 +117,7 @@ describe('BackgroundControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[4].click()
+			select => select[3].click()
 		);
 
 		await accordionPanel.$eval(
@@ -163,9 +163,9 @@ describe('BackgroundControl', () => {
 		await attachment.select('fixed');
 
 		// more settings
-		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--more-settings .maxi-base-control__field label',
-			click => click[1].click()
+		await accordionPanel.$eval(
+			'.maxi-background-control .maxi-fancy-radio-control--more-settings.maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		// background more options
@@ -212,7 +212,7 @@ describe('BackgroundControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[6].click()
+			select => select[5].click()
 		);
 
 		// insert URL
@@ -321,7 +321,7 @@ describe('BackgroundControl', () => {
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[4].click()
+			select => select[3].click()
 		);
 
 		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
@@ -336,14 +336,13 @@ describe('BackgroundControl', () => {
 		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
 			buttons[0].click()
 		);
-
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[4].click()
+			select => select[2].click()
 		);
 
 		const expectChanges = {
-			'background-active-media': 'color',
+			'background-active-media': '',
 			'background-active-media-hover': 'color',
 		};
 
@@ -358,6 +357,8 @@ describe('BackgroundControl', () => {
 		}))(backgroundAttributes);
 
 		expect(background).toStrictEqual(expectChanges);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	/* it('Check BackgroundShape', async () => {

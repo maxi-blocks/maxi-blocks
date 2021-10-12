@@ -31,6 +31,7 @@ import {
 	ToggleSwitch,
 	TransformControl,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import {
 	getColorRGBAString,
@@ -155,7 +156,7 @@ const Inspector = props => {
 									items={[
 										isFirstOnHierarchy && {
 											label: __(
-												'Width / Height',
+												'Height / Width',
 												'maxi-blocks'
 											),
 											content: (
@@ -163,7 +164,7 @@ const Inspector = props => {
 													{isFirstOnHierarchy && (
 														<ToggleSwitch
 															label={__(
-																'Full Width',
+																'Set svg icon to full-width',
 																'maxi-blocks'
 															)}
 															selected={
@@ -355,6 +356,7 @@ const Inspector = props => {
 														setAttributes(obj);
 													}}
 													breakpoint={deviceType}
+													prefix='svg-'
 												/>
 											),
 										},
@@ -901,6 +903,24 @@ const Inspector = props => {
 													{...getGroupAttributes(
 														attributes,
 														'opacity'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Overflow',
+												'maxi-blocks'
+											),
+											content: (
+												<OverflowControl
+													{...getGroupAttributes(
+														attributes,
+														'overflow'
 													)}
 													onChange={obj =>
 														setAttributes(obj)

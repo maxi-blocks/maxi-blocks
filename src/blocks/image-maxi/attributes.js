@@ -139,6 +139,8 @@ const attributes = {
 			default: 'center',
 		},
 	},
+	...attributesData.overflow,
+	...attributesData.imageShape,
 };
 
 export default attributes;

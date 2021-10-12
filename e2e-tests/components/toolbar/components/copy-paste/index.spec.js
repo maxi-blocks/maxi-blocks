@@ -26,6 +26,7 @@ describe('CopyPaste from Toolbar', () => {
 		await page.waitForTimeout(200);
 
 		// Focus the block
+		await page.waitForSelector('.maxi-text-block');
 		await page.$eval('.maxi-text-block', block => block.focus());
 
 		// Copy styles
@@ -49,6 +50,7 @@ describe('CopyPaste from Toolbar', () => {
 
 		// Compare attributes
 		const secondBlockAttr = await getBlockAttributes();
+		await page.waitForSelector('.maxi-text-block');
 		await page.$eval('.maxi-text-block', block => block.focus());
 		const firstBlockAttr = await getBlockAttributes();
 
@@ -69,6 +71,7 @@ describe('CopyPaste from Toolbar', () => {
 		await page.waitForTimeout(200);
 
 		// Focus the block
+		await page.waitForSelector('.maxi-text-block');
 		await page.$eval('.maxi-text-block', block => block.focus());
 
 		// Copy styles
@@ -111,6 +114,7 @@ describe('CopyPaste from Toolbar', () => {
 			secondBlockAttr,
 			'typography'
 		);
+		await page.waitForSelector('.maxi-text-block');
 		await page.$eval('.maxi-text-block', block => block.focus());
 		const firstBlockAttr = await getBlockAttributes();
 		const firstBlockTypography = getGroupAttributes(

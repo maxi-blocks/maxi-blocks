@@ -103,11 +103,8 @@ describe('Image Maxi', () => {
 
 		expect(textAlignment).toStrictEqual(expectedAlignment);
 
-		await accordionPanel.$$eval(
-			'.maxi-typography-control .maxi-typography-control__text-options-tabs .maxi-tabs-control__button',
-			select => select[1].click()
-		);
-		await page.waitForTimeout(1000);
+		// await changeResponsive(page, 'xl');
+		// accordionPanel = await openSidebar(page, 'caption');
 
 		// size, line-height, letter-spacing
 		const inputs = await accordionPanel.$$(
@@ -130,24 +127,32 @@ describe('Image Maxi', () => {
 		await page.keyboard.type('11');
 		await page.waitForTimeout(200);
 
+		const responsiveStage = await accordionPanel.$eval(
+			'.maxi-typography-control__text-options-tabs .maxi-tabs-control__button[aria-pressed="true"]',
+			tab => tab.innerText.toLowerCase()
+		);
+
 		const styleAttributes = await getBlockAttributes();
 		const typographyAttributes = (({
-			'font-size-xl': fontSize,
-			'line-height-xl': lineHeight,
-			'letter-spacing-xl': letterSpacing,
+			[`font-size-${responsiveStage}`]: fontSize,
+			[`line-height-${responsiveStage}`]: lineHeight,
+			[`letter-spacing-${responsiveStage}`]: letterSpacing,
 		}) => ({
-			'font-size-xl': fontSize,
-			'line-height-xl': lineHeight,
-			'letter-spacing-xl': letterSpacing,
+			[`font-size-${responsiveStage}`]: fontSize,
+			[`line-height-${responsiveStage}`]: lineHeight,
+			[`letter-spacing-${responsiveStage}`]: letterSpacing,
 		}))(styleAttributes);
 
 		const expectedAttributesTwo = {
-			'font-size-xl': 19,
-			'line-height-xl': 4,
-			'letter-spacing-xl': 11,
+			[`font-size-${responsiveStage}`]: 19,
+			[`line-height-${responsiveStage}`]: 4,
+			[`letter-spacing-${responsiveStage}`]: 11,
 		};
 
 		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
+
+		// await changeResponsive(page, 'general');
+		// accordionPanel = await openSidebar(page, 'caption');
 
 		// Weight, Transform, Style, Decoration
 		const weightSelector = await accordionPanel.$(

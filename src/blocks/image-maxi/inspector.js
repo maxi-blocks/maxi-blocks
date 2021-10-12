@@ -447,7 +447,7 @@ const Inspector = memo(
 													</>
 												),
 											},
-											deviceType === 'general' && {
+											{
 												label: __(
 													'Caption',
 													'maxi-blocks'
@@ -540,7 +540,7 @@ const Inspector = memo(
 													/>
 												),
 											},
-											deviceType === 'general' && {
+											{
 												label: __(
 													'Background',
 													'maxi-blocks'

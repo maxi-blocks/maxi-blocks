@@ -1,6 +1,8 @@
 import {
 	border as defaultBorder,
 	borderWidth as defaultBorderWidth,
+	buttonBorder as defaultButtonBorder,
+	buttonBorderWidth as defaultButtonBorderWidth,
 } from '../../extensions/styles/defaults/border';
 
 import {
@@ -11,11 +13,34 @@ import {
 export const borderNone = (prefix = '', isHover) => {
 	let response = {};
 
-	const currentDefaultBorder =
-		prefix === 'icon-' ? defaultIconBorder : defaultBorder;
+	let currentDefaultBorder;
+	let currentDefaultBorderWidth;
 
-	const currentDefaultBorderWidth =
-		prefix === 'icon-' ? defaultIconBorderWidth : defaultBorderWidth;
+	switch (prefix) {
+		case 'icon-':
+			currentDefaultBorder = defaultIconBorder;
+			break;
+
+		case 'button-':
+			currentDefaultBorder = defaultButtonBorder;
+			break;
+
+		default:
+			currentDefaultBorder = defaultBorder;
+	}
+
+	switch (prefix) {
+		case 'icon-':
+			currentDefaultBorderWidth = defaultIconBorderWidth;
+			break;
+
+		case 'button-':
+			currentDefaultBorderWidth = defaultButtonBorderWidth;
+			break;
+
+		default:
+			currentDefaultBorderWidth = defaultBorderWidth;
+	}
 
 	response = {
 		[`${prefix}border-color`]:

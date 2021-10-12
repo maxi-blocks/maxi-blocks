@@ -69,7 +69,7 @@ const BorderControl = props => {
 		isHover
 	);
 
-	const getIsActive = () => {
+	const getIsActive = prefix => {
 		const items = [
 			`${prefix}border-top-width`,
 			`${prefix}border-right-width`,

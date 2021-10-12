@@ -40,14 +40,14 @@ import {
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
-		customLabel,
-		uniqueID,
-		isFirstOnHierarchy,
 		blockStyle,
-		horizontalAlign,
-		verticalAlign,
-		fullWidth,
+		customLabel,
 		extraClassName,
+		fullWidth,
+		horizontalAlign,
+		isFirstOnHierarchy,
+		uniqueID,
+		verticalAlign,
 	} = attributes;
 
 	return (
@@ -453,14 +453,14 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Width / Height',
+												'Height / Width',
 												'maxi-blocks'
 											),
 											content: (
 												<>
 													<ToggleSwitch
 														label={__(
-															'Full Width',
+															'Set row to full-width',
 															'maxi-blocks'
 														)}
 														selected={
@@ -474,40 +474,16 @@ const Inspector = props => {
 															})
 														}
 													/>
-													{fullWidth === 'full' ? (
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'size'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															hideWidth
-															hideMaxWidth
-														/>
-													) : (
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'size'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															hideMaxWidth
-														/>
-													)}
+													<FullSizeControl
+														{...getGroupAttributes(
+															attributes,
+															'size'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
 												</>
 											),
 										},

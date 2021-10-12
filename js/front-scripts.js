@@ -115,7 +115,8 @@ Object.values(maxi_custom_data.custom_data).map(item => {
 		});
 	};
 
-	document.head.appendChild(script);
+	if (document.querySelectorAll(`script[src="${script.src}"]`).length === 0)
+		document.head.appendChild(script);
 });
 
 // Motion Effects

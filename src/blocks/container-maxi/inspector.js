@@ -42,12 +42,12 @@ import {
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
-		customLabel,
-		uniqueID,
-		isFirstOnHierarchy,
 		blockStyle,
-		fullWidth,
+		customLabel,
 		extraClassName,
+		fullWidth,
+		isFirstOnHierarchy,
+		uniqueID,
 	} = attributes;
 
 	return (
@@ -99,7 +99,7 @@ const Inspector = props => {
 													{isFirstOnHierarchy && (
 														<ToggleSwitch
 															label={__(
-																'Full width',
+																'Set container to full-width',
 																'maxi-blocks'
 															)}
 															selected={

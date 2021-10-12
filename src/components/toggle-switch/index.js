@@ -30,28 +30,32 @@ const ToggleSwitch = ({
 	selected,
 	disabled,
 }) => {
+	const instanceId = useInstanceId(ToggleSwitch);
+	const id = `maxi-toggle-switch-${instanceId}`;
+	const [checked, setValue] = useState(selected || false);
+
 	const classes = classnames(
 		'maxi-toggle-switch',
+		checked && 'maxi-toggle-switch--is-checked',
 		disabled && 'maxi-toggle-switch--disabled', // TODO
 		className
 	);
-	const instanceId = useInstanceId(ToggleSwitch);
-	const id = `maxi-toggle-switch-${instanceId}`;
-	const [value, setValue] = useState(selected || false);
 
 	return (
 		<BaseControl label={label} id={id} help={help} className={classes}>
 			<div className='maxi-toggle-switch__toggle'>
 				<input
 					onChange={() => {
-						setValue(!value);
-						onChange(!value);
+						setValue(!checked);
+						onChange(!checked);
 					}}
-					checked={value}
+					checked={checked}
 					type='checkbox'
 					id={id}
+					aria-describedby={help ? `${id}__help` : undefined}
 				/>
-				<label htmlFor={id} />
+				<span className='maxi-toggle-switch__toggle__track' />
+				<span className='maxi-toggle-switch__toggle__thumb' />
 			</div>
 		</BaseControl>
 	);

@@ -13,6 +13,7 @@ import {
 	getBlockAttributes,
 	openAdvancedSidebar,
 	changeResponsive,
+	getBlockStyle,
 } from '../../utils';
 
 describe('TransformControl', () => {
@@ -155,7 +156,7 @@ describe('TransformControl', () => {
 
 		const transformOriginY = await getBlockAttributes();
 		const originY = transformOriginY['transform-origin-y-general'];
-		const expectYOrigin = 80;
+		const expectYOrigin = '80';
 
 		expect(originY).toStrictEqual(expectYOrigin);
 
@@ -169,7 +170,7 @@ describe('TransformControl', () => {
 
 		const transformOriginX = await getBlockAttributes();
 		const originX = transformOriginX['transform-origin-x-general'];
-		const expectXOrigin = 20;
+		const expectXOrigin = '20';
 
 		expect(originX).toStrictEqual(expectXOrigin);
 	});
@@ -356,7 +357,7 @@ describe('TransformControl', () => {
 		const originAttributes = await getBlockAttributes();
 		const origin = originAttributes['transform-origin-y-s'];
 
-		expect(origin).toStrictEqual(88);
+		expect(origin).toStrictEqual('88');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');
@@ -375,5 +376,7 @@ describe('TransformControl', () => {
 		);
 
 		expect(originMOption).toStrictEqual('80');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -129,6 +129,7 @@ const attributes = {
 		},
 	},
 	...attributesData.overflow,
+	...attributesData.imageShape,
 };
 
 export default attributes;

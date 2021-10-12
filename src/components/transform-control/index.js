@@ -21,6 +21,7 @@ import { getTransformStyles } from '../../extensions/styles/helpers';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isNil } from 'lodash';
 
 /**
  * Styles and icons
@@ -36,6 +37,18 @@ const TransformControl = props => {
 	const [transformOptions, changeTransformOptions] = useState(
 		getGroupAttributes(props, 'transform')
 	);
+
+	const isTransformed = () =>
+		Object.entries(transformOptions).some(([key, val]) => {
+			if (
+				!key.includes('unit') &&
+				!key.includes('translate') &&
+				!isNil(val)
+			)
+				return true;
+			return false;
+		});
+
 	const [transformStatus, setTransformStatus] = useState('scale');
 
 	const onChangeTransform = obj => {
@@ -91,7 +104,11 @@ const TransformControl = props => {
 						value: 'translate',
 					},
 					{ label: __('Rotate', 'maxi-blocks'), value: 'rotate' },
-					{ label: __('Origin', 'maxi-blocks'), value: 'origin' },
+					{
+						label: __('Origin', 'maxi-blocks'),
+						value: 'origin',
+						hidden: !isTransformed(),
+					},
 				]}
 				optionType='string'
 				onChange={val => setTransformStatus(val)}
@@ -235,14 +252,37 @@ const TransformControl = props => {
 						) || 'middle'
 					}
 					defaultY={getDefaultAttribute('transform-origin-y')}
-					onChange={(x, y) => {
+					xUnit={getLastBreakpointAttribute(
+						'transform-origin-x-unit',
+						breakpoint,
+						props
+					)}
+					yUnit={getLastBreakpointAttribute(
+						'transform-origin-y-unit',
+						breakpoint,
+						props
+					)}
+					onChange={(x, y, xUnit, yUnit) => {
 						onChangeTransform({
-							[`transform-origin-x-${breakpoint}`]: x,
-							[`transform-origin-y-${breakpoint}`]: y,
+							'transform-origin-x': x,
+							'transform-origin-x-unit': xUnit,
+							'transform-origin-y': y,
+							'transform-origin-y-unit': yUnit,
+						});
+						forceStyles();
+					}}
+					onSave={(x, y, xUnit, yUnit) => {
+						onChangeTransform({
+							'transform-origin-x': x,
+							'transform-origin-x-unit': xUnit,
+							'transform-origin-y': y,
+							'transform-origin-y-unit': yUnit,
 						});
 						onChange({
 							[`transform-origin-x-${breakpoint}`]: x,
+							[`transform-origin-x-unit-${breakpoint}`]: xUnit,
 							[`transform-origin-y-${breakpoint}`]: y,
+							[`transform-origin-y-unit-${breakpoint}`]: yUnit,
 						});
 						forceStyles();
 					}}

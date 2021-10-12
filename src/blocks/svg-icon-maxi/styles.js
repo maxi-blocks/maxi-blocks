@@ -8,6 +8,7 @@ import {
 	getMarginPaddingStyles,
 	getOpacityStyles,
 	getPositionStyles,
+	getSizeStyles,
 	getSvgStyles,
 	getTransformStyles,
 	getZIndexStyles,
@@ -16,6 +17,9 @@ import {
 
 const getNormalObject = props => {
 	const response = {
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),

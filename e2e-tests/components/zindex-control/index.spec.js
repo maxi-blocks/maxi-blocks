@@ -13,6 +13,7 @@ import {
 	getBlockAttributes,
 	openAdvancedSidebar,
 	changeResponsive,
+	getBlockStyle,
 } from '../../utils';
 
 describe('ZIndexControl', () => {
@@ -73,5 +74,7 @@ describe('ZIndexControl', () => {
 		);
 
 		expect(zIndexM).toStrictEqual('20');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

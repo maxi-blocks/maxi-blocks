@@ -3,12 +3,4 @@
 	width: 100%;
 	margin-bottom: 10px;
 	z-index: 9;
-
-	input[type='text'] {
-		&:focus {
-			border: none !important;
-			box-shadow: none !important;
-			outline: none !important;
-		}
-	}
 }

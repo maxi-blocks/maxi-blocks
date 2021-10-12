@@ -6,7 +6,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 describe('TextShadowControl', () => {
 	it('Checking the text shadow control', async () => {
@@ -15,9 +15,9 @@ describe('TextShadowControl', () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		const accordionPanel = await openSidebar(page, 'typography');
 
-		await accordionPanel.$$eval(
-			'.maxi-tabs-content .maxi-typography-control .maxi-textshadow-control label',
-			select => select[1].click()
+		await accordionPanel.$eval(
+			'.maxi-tabs-content .maxi-typography-control .maxi-textshadow-control .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		await accordionPanel.$$(
@@ -46,5 +46,7 @@ describe('TextShadowControl', () => {
 
 			expect(textShadow).toStrictEqual(setting);
 		}
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

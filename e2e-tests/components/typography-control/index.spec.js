@@ -38,6 +38,7 @@ describe('TypographyControl', () => {
 
 		expect(fontFamily).toStrictEqual(expectedFontFamily);
 	});
+
 	it('Checking the responsive font family', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 		const closeAccordion = await page.$$(
@@ -283,6 +284,7 @@ describe('TypographyControl', () => {
 
 		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
 	});
+
 	it('Check responsive font-weight', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 
@@ -478,12 +480,13 @@ describe('TypographyControl', () => {
 
 		expect(decorationMSelection).toStrictEqual(1);
 	});
+
 	it('Check text-shadow', async () => {
 		await changeResponsive(page, 'base');
 		const accordionPanel = await openSidebar(page, 'typography');
-		await accordionPanel.$$eval(
-			'.maxi-typography-control .maxi-textshadow-control .maxi-base-control__field label',
-			select => select[1].click()
+		await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-textshadow-control .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 		await accordionPanel.$$(
 			'.maxi-textshadow-control.maxi-typography-control__text-shadow .maxi-default-styles-control'
@@ -513,6 +516,8 @@ describe('TypographyControl', () => {
 	});
 
 	it('Check Size, line height and letter spacing', async () => {
+		await changeResponsive(page, 'm');
+
 		const accordionPanel = await openSidebar(page, 'typography');
 		await accordionPanel.$$eval(
 			'.maxi-tabs-content .maxi-typography-control__text-options-tabs .maxi-tabs-content input',
@@ -669,6 +674,7 @@ describe('TypographyControl', () => {
 
 		expect(unitM).toStrictEqual(1);
 	});
+
 	it('Check responsive line-height', async () => {
 		const accordionPanel = await openSidebar(page, 'typography');
 		const input = await accordionPanel.$$(

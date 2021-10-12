@@ -8,7 +8,6 @@ import { useState, RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import {
-	getAttributeKey,
 	getBlockStyle,
 	getColorRGBAString,
 	getLastBreakpointAttribute,
@@ -32,7 +31,7 @@ import { isEmpty, cloneDeep } from 'lodash';
 /**
  * Styles and icons
  */
-import { moveRight, toolbarSizing } from '../../icons';
+import { moveRight, toolbarSizing, toolbarShow } from '../../icons';
 
 /**
  * Component
@@ -113,18 +112,62 @@ const LayerCard = props => {
 					),
 				};
 			}
-			case 'gradient':
+			case 'gradient': {
+				const bgGradient = getLastBreakpointAttribute(
+					'background-gradient',
+					breakpoint,
+					layer,
+					isHover
+				);
+				const bgGradientOpacity = getLastBreakpointAttribute(
+					'background-gradient-opacity',
+					breakpoint,
+					layer,
+					isHover
+				);
 				return {
-					background: layer['background-gradient'],
+					background: bgGradient,
+					opacity: bgGradientOpacity,
 				};
-			case 'image':
+			}
+			case 'image': {
+				const bgImageURL = getLastBreakpointAttribute(
+					'background-image-mediaURL',
+					breakpoint,
+					layer,
+					isHover
+				);
+				const bgImageOpacity = getLastBreakpointAttribute(
+					'background-image-opacity',
+					breakpoint,
+					layer,
+					isHover
+				);
+
 				return {
-					background: `url(${layer['background-image-mediaURL']})`,
+					background: `url(${bgImageURL})`,
+					opacity: bgImageOpacity,
 				};
-			case 'video':
+			}
+			case 'video': {
+				const bgFallbackUrl = getLastBreakpointAttribute(
+					'background-video-fallbackURL',
+					breakpoint,
+					layer,
+					isHover
+				);
+				const bgVideoOpacity = getLastBreakpointAttribute(
+					'background-video-opacity',
+					breakpoint,
+					layer,
+					isHover
+				);
+
 				return {
-					background: `url(${layer['background-video-fallbackURL']})`,
+					background: `url(${bgFallbackUrl})`,
+					opacity: bgVideoOpacity,
 				};
+			}
 			default:
 				return {};
 		}
@@ -224,7 +267,16 @@ const LayerCard = props => {
 		<div className={classes}>
 			<div
 				className='maxi-background-layer__row'
-				onClick={() => onOpen(!!isOpen)}
+				onClick={({ target }) => {
+					if (
+						!target
+							?.closest('span')
+							?.classList?.contains(
+								'maxi-background-layer__ignore-open'
+							)
+					)
+						onOpen(!!isOpen);
+				}}
 			>
 				<span className='maxi-background-layer__arrow'>
 					{moveRight}
@@ -243,23 +295,37 @@ const LayerCard = props => {
 						</span>
 						{getTitle(type)}
 					</span>
-					<span className='maxi-background-layer__title__mover'>
-						<Icon icon={toolbarSizing} />
-					</span>
 					<span
-						className={`maxi-background-layer__title__display maxi-background-layer__title__display--${getIsDisplayed()}`}
-						onClick={onChangeDisplay}
+						className={classnames(
+							'maxi-background-layer__title__mover',
+							'maxi-background-layer__ignore-open'
+						)}
 					>
 						<Icon icon={toolbarSizing} />
 					</span>
 					<span
-						className='maxi-background-layer__title__remover'
+						className={classnames(
+							'maxi-background-layer__title__display',
+							`maxi-background-layer__title__display--${getIsDisplayed()}`,
+							'maxi-background-layer__ignore-move',
+							'maxi-background-layer__ignore-open'
+						)}
+						onClick={onChangeDisplay}
+					>
+						<Icon icon={toolbarShow} />
+					</span>
+					<span
+						className={classnames(
+							'maxi-background-layer__title__remover',
+							'maxi-background-layer__ignore-move',
+							'maxi-background-layer__ignore-open'
+						)}
 						onClick={onRemove}
 					/>
 				</div>
 			</div>
 			{isOpen && (
-				<div className='maxi-background-layer__content'>
+				<div className='maxi-background-layer__content maxi-background-layer__ignore-move'>
 					{layerContent[type]}
 				</div>
 			)}
@@ -394,17 +460,12 @@ const BackgroundLayersControl = ({
 							});
 
 							onChange({
-								[getAttributeKey(
-									'background-layers',
-									isHover,
-									prefix,
-									breakpoint
-								)]: layers,
+								'background-layers': layers,
 							});
 						}}
 						nodeSelector='div.maxi-background-layer'
 						handleSelector='span.maxi-background-layer__title__mover'
-						ignoreSelector='div.maxi-background-layer__content'
+						ignoreSelector='.maxi-background-layer__ignore-move'
 					>
 						<div className='maxi-background-layers_options'>
 							{layers.map((layer, i) => (
@@ -445,6 +506,7 @@ const BackgroundLayersControl = ({
 				)}
 				<LoaderControl
 					options={getOptions()}
+					buttonText={__('Add New Layer', 'maxi-blocks')}
 					onClick={value => {
 						layers.push(getObject(value));
 
@@ -453,6 +515,7 @@ const BackgroundLayersControl = ({
 						});
 					}}
 					forwards
+					buttonLess
 				/>
 			</div>
 		</div>

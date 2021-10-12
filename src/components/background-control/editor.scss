@@ -102,10 +102,7 @@
 				display: block;
 				width: 15px;
 				height: 15px;
-				position: absolute;
-				top: 50%;
-				right: 30px;
-				transform: translateY(-50%);
+				margin: auto 7px auto auto;
 				cursor: move;
 
 				svg {
@@ -120,11 +117,8 @@
 				display: block;
 				width: 15px;
 				height: 15px;
-				position: absolute;
-				top: 50%;
-				right: 30px;
-				transform: translateY(-50%);
-				cursor: move;
+				margin: auto 7px auto auto;
+				cursor: pointer;
 
 				svg {
 					width: 15px;

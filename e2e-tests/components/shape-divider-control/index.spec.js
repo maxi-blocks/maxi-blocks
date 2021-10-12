@@ -9,7 +9,11 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import {
+	getBlockAttributes,
+	openAdvancedSidebar,
+	getBlockStyle,
+} from '../../utils';
 
 describe('ShapeDividerControl', () => {
 	it('Checking the shape divider control', async () => {
@@ -100,5 +104,7 @@ describe('ShapeDividerControl', () => {
 		const shapeTopHeight = shapeHeightAttribute['shape-divider-top-height'];
 
 		expect(shapeTopHeight).toStrictEqual(expectedTopHeight);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

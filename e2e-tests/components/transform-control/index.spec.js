@@ -13,6 +13,7 @@ import {
 	getBlockAttributes,
 	openAdvancedSidebar,
 	changeResponsive,
+	getBlockStyle,
 } from '../../utils';
 
 describe('TransformControl', () => {
@@ -375,5 +376,7 @@ describe('TransformControl', () => {
 		);
 
 		expect(originMOption).toStrictEqual('80');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -11,7 +11,7 @@ import {
 /**
  * Interactive dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 describe('BackgroundControl', () => {
 	beforeEach(async () => {
@@ -357,6 +357,8 @@ describe('BackgroundControl', () => {
 		}))(backgroundAttributes);
 
 		expect(background).toStrictEqual(expectChanges);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	/* it('Check BackgroundShape', async () => {

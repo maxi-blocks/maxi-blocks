@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`BackgroundControl Check Background Color 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__images\\"></div>"`;
-
-exports[`BackgroundControl Check Background Gradient 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__gradient\\"></div>"`;
-
-exports[`BackgroundControl Check Background Image 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__images\\"></div>"`;
-
-exports[`BackgroundControl Check Background Video 1`] = `"<div class=\\"maxi-background-displayer__layer maxi-background-displayer__video-player\\" data-start=\\"1\\" data-end=\\"3\\" data-type=\\"youtube\\"><div class=\\"maxi-background-displayer__video-player__iframe-wrapper\\"><iframe title=\\"youtube video\\" src=\\"https://www.youtube.com/embed/hM7Eh0gGNKA?controls=0&amp;showinfo=0&amp;rel=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=hM7Eh0gGNKA&amp;start=1&amp;end=3\\" frameborder=\\"0\\" allow=\\"autoplay\\" allowfullscreen=\\"\\" style=\\"height: 344.633px;\\"></iframe></div></div>"`;

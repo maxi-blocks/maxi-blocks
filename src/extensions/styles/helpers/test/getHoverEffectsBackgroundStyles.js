@@ -18,7 +18,7 @@ describe('getHoverEffectsBackgroundStyles', () => {
 			'hover-background-color-general': 'rgb(255,99,71)',
 		};
 
-		const result = getHoverEffectsBackgroundStyles(object);
+		const result = getHoverEffectsBackgroundStyles(object, 'light');
 		expect(result).toMatchSnapshot();
 	});
 

@@ -7,10 +7,6 @@ const backgroundGeneral = {
 	'background-layers': {
 		type: 'array',
 	},
-	'background-layers-status-general': {
-		type: 'boolean',
-		default: false,
-	},
 };
 
 const backgroundColorGeneral = {

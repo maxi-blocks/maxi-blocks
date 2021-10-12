@@ -21,7 +21,7 @@ export const backgroundHover = (() => {
 
 	response = {
 		...response,
-		'background-status-hover': {
+		'background-hover-status': {
 			type: 'boolean',
 			default: false,
 		},

@@ -23,11 +23,13 @@ describe('CopyPaste from Toolbar', () => {
 		await page.evaluate(block => {
 			window.wp.data.dispatch('core/block-editor').insertBlock(block);
 		}, block);
+		await page.waitForTimeout(200);
 
 		// Focus the block
 		await page.$eval('.maxi-text-block', block => block.focus());
 
 		// Copy styles
+		await page.waitForSelector('.toolbar-item__copy-paste');
 		await page.$eval('.toolbar-item__copy-paste', button => button.click());
 		await page.waitForSelector('.toolbar-item__copy-paste__popover');
 		await page.$eval('.toolbar-item__copy-paste__popover button', button =>
@@ -38,6 +40,7 @@ describe('CopyPaste from Toolbar', () => {
 		await insertBlock('Text Maxi');
 
 		// Paste styles
+		await page.waitForSelector('.toolbar-item__copy-paste');
 		await page.$eval('.toolbar-item__copy-paste', button => button.click());
 		await page.waitForSelector('.toolbar-item__copy-paste__popover');
 		await page.$$eval('.toolbar-item__copy-paste__popover button', button =>
@@ -63,11 +66,13 @@ describe('CopyPaste from Toolbar', () => {
 		await page.evaluate(block => {
 			window.wp.data.dispatch('core/block-editor').insertBlock(block);
 		}, block);
+		await page.waitForTimeout(200);
 
 		// Focus the block
 		await page.$eval('.maxi-text-block', block => block.focus());
 
 		// Copy styles
+		await page.waitForSelector('.toolbar-item__copy-paste');
 		await page.$eval('.toolbar-item__copy-paste', button => button.click());
 		await page.waitForSelector('.toolbar-item__copy-paste__popover');
 		await page.$eval('.toolbar-item__copy-paste__popover button', button =>
@@ -78,6 +83,7 @@ describe('CopyPaste from Toolbar', () => {
 		await insertBlock('Text Maxi');
 
 		// Paste styles
+		await page.waitForSelector('.toolbar-item__copy-paste');
 		await page.$eval('.toolbar-item__copy-paste', button => button.click());
 		await page.waitForSelector('.toolbar-item__copy-paste__popover');
 		await page.$$eval('.toolbar-item__copy-paste__popover button', button =>

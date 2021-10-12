@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebar } from '../../utils';
 
-describe('BackgroundControl', () => {
+describe.skip('BackgroundDisplayerControl', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');

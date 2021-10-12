@@ -13,7 +13,7 @@ import {
  */
 import { getBlockAttributes, openSidebar } from '../../utils';
 
-describe('BackgroundControl', () => {
+describe.skip('BackgroundControl', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');

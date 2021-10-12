@@ -601,7 +601,7 @@ const Inspector = memo(
 																			)}
 																			selected={
 																				attributes[
-																					'background-status-hover'
+																					'background-hover-status'
 																				]
 																			}
 																			className='maxi-background-status-hover'
@@ -632,14 +632,14 @@ const Inspector = memo(
 																									),
 																								}
 																							)),
-																						'background-status-hover':
+																						'background-hover-status':
 																							val,
 																					}
 																				)
 																			}
 																		/>
 																		{attributes[
-																			'background-status-hover'
+																			'background-hover-status'
 																		] && (
 																			<BackgroundControl
 																				{...getGroupAttributes(

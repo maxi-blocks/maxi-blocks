@@ -147,7 +147,7 @@ describe('getArrowStyles', () => {
 			'border-unit-radius-general-hover': 'px',
 			'background-palette-color-status-general': true,
 			'background-palette-color-general': 5,
-			'background-status-hover': true,
+			'background-hover-status': true,
 			'background-active-media-general-hover': 'color',
 			'background-palette-color-status-general-hover': true,
 			'background-palette-color-general-hover': 1,

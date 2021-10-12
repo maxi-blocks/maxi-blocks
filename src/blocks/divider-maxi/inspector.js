@@ -313,7 +313,7 @@ const Inspector = props => {
 																		)}
 																		selected={
 																			attributes[
-																				'background-status-hover'
+																				'background-hover-status'
 																			]
 																		}
 																		className='maxi-background-status-hover'
@@ -336,14 +336,14 @@ const Inspector = props => {
 																								),
 																							}
 																						)),
-																					'background-status-hover':
+																					'background-hover-status':
 																						val,
 																				}
 																			)
 																		}
 																	/>
 																	{attributes[
-																		'background-status-hover'
+																		'background-hover-status'
 																	] && (
 																		<BlockBackgroundControl
 																			{...getGroupAttributes(

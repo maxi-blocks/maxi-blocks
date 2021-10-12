@@ -144,7 +144,7 @@ const getHoverObject = props => {
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
 			}),
-		...(props['background-status-hover'] && {
+		...(props['background-hover-status'] && {
 			...(props['background-active-media-hover'] === 'color' && {
 				background: getColorBackgroundObject({
 					...getGroupAttributes(props, 'backgroundColor', true),

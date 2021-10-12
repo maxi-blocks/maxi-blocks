@@ -29,6 +29,7 @@ const OverflowControl = props => {
 		<div className={classes}>
 			{axes.map(axis => (
 				<SelectControl
+					key={axis}
 					label={__(`Overflow ${axis}`, 'maxi-blocks')}
 					options={[
 						{ label: 'Default', value: '' },

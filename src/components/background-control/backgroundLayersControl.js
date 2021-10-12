@@ -336,7 +336,6 @@ const LayerCard = props => {
 const BackgroundLayersControl = ({
 	layersOptions,
 	isHover = false,
-	prefix = '',
 	onChange,
 	disableImage = false,
 	disableVideo = false,

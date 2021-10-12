@@ -31,9 +31,9 @@ const ToggleSwitch = ({ className, onChange, label, help, selected }) => {
 	});
 
 	useEffect(() => {
-		if (selected !== checked) {
-			setValue(!checked);
-			onChange(!checked);
+		if (!!selected !== checked) {
+			setValue(!!selected);
+			onChange(!!selected);
 		}
 	}, [selected]);
 

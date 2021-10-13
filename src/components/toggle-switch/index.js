@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { useInstanceId } from '@wordpress/compose';
-import { useState, useEffect } from '@wordpress/element';
 
 /**
  * External dependencies
@@ -25,27 +24,16 @@ import './editor.scss';
 const ToggleSwitch = ({ className, onChange, label, help, selected }) => {
 	const instanceId = useInstanceId(ToggleSwitch);
 	const id = `maxi-toggle-switch-${instanceId}`;
-	const [checked, setValue] = useState(!!selected);
 	const classes = classnames('maxi-toggle-switch', className, {
-		'maxi-toggle-switch--is-checked': checked,
+		'maxi-toggle-switch--is-checked': selected,
 	});
-
-	useEffect(() => {
-		if (!!selected !== checked) {
-			setValue(!!selected);
-			onChange(!!selected);
-		}
-	}, [selected]);
 
 	return (
 		<BaseControl label={label} id={id} help={help} className={classes}>
 			<div className='maxi-toggle-switch__toggle'>
 				<input
-					onChange={() => {
-						setValue(!checked);
-						onChange(!checked);
-					}}
-					checked={checked}
+					onChange={() => onChange(!selected)}
+					checked={selected}
 					type='checkbox'
 					id={id}
 					aria-describedby={help ? `${id}__help` : undefined}

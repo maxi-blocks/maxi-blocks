@@ -12,7 +12,7 @@ jest.mock('@wordpress/data', () => {
 
 describe('getMarginPaddingStyles', () => {
 	it('Get a correct margin and padding', () => {
-		const object = {
+		const obj = {
 			'margin-top-general': '1',
 			'margin-right-general': '2',
 			'margin-bottom-general': '3',
@@ -58,13 +58,13 @@ describe('getMarginPaddingStyles', () => {
 		};
 
 		const result = getMarginPaddingStyles({
-			obj: object,
+			obj,
 		});
 		expect(result).toMatchSnapshot();
 	});
 
 	it('Different values ​​depends on the responsive', () => {
-		const object = {
+		const obj = {
 			'margin-top-general': '11',
 			'margin-right-general': '11',
 			'margin-bottom-general': '11',
@@ -110,7 +110,7 @@ describe('getMarginPaddingStyles', () => {
 		};
 
 		const result = getMarginPaddingStyles({
-			obj: object,
+			obj,
 		});
 		expect(result).toMatchSnapshot();
 	});

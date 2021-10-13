@@ -103,9 +103,6 @@ describe('Image Maxi', () => {
 
 		expect(textAlignment).toStrictEqual(expectedAlignment);
 
-		// await changeResponsive(page, 'xl');
-		// accordionPanel = await openSidebar(page, 'caption');
-
 		// size, line-height, letter-spacing
 		const inputs = await accordionPanel.$$(
 			'.maxi-advanced-number-control .maxi-base-control__field input'

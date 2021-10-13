@@ -44,7 +44,9 @@ const BackgroundContent = props => {
 						case 'image':
 							return (
 								<div
-									key={`maxi-background-displayer__${type}__${id}`}
+									key={`maxi-background-displayer__${type}-${id}${
+										isHover ? '--hover' : ''
+									}`}
 									className={classnames(
 										'maxi-background-displayer__layer',
 										`maxi-background-displayer__${id}`
@@ -54,7 +56,9 @@ const BackgroundContent = props => {
 						case 'video':
 							return (
 								<VideoLayer
-									key={`maxi-background-displayer__${type}__${id}`}
+									key={`maxi-background-displayer__${type}-${id}${
+										isHover ? '--hover' : ''
+									}`}
 									videoOptions={layer}
 									blockClassName={blockClassName}
 									className={`maxi-background-displayer__${id}`}
@@ -65,7 +69,9 @@ const BackgroundContent = props => {
 
 							return (
 								<RawHTML
-									key={`maxi-background-displayer__${type}__${id}`}
+									key={`maxi-background-displayer__${type}-${id}${
+										isHover ? '--hover' : ''
+									}`}
 									className={classnames(
 										'maxi-background-displayer__layer',
 										'maxi-background-displayer__svg',
@@ -97,8 +103,16 @@ const BackgroundDisplayer = props => {
 		<div className={classes}>
 			{!parallaxStatus && (
 				<>
-					<BackgroundContent {...props} isHover={false} />
-					<BackgroundContent {...props} isHover />
+					<BackgroundContent
+						key='maxi-background-displayer__content'
+						isHover={false}
+						{...props}
+					/>
+					<BackgroundContent
+						key='maxi-background-displayer__content--hover'
+						isHover
+						{...props}
+					/>
 				</>
 			)}
 			{parallaxStatus && (

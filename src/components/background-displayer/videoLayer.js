@@ -1,8 +1,4 @@
 /**
- * WordPress dependencies
- */
-
-/**
  * External dependencies
  */
 import classnames from 'classnames';
@@ -10,6 +6,7 @@ import classnames from 'classnames';
 /**
  * Internal Dependencies
  */
+import { getLastBreakpointAttribute } from '../../extensions/styles';
 import parseVideo from './utils';
 import { isNil } from 'lodash';
 
@@ -17,7 +14,6 @@ import { isNil } from 'lodash';
  * Styles
  */
 import './style.scss';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
 
 /**
  * Component

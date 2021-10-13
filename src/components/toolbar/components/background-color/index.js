@@ -43,7 +43,10 @@ const BackgroundColor = props => {
 	)
 		return null;
 
-	const layer = backgroundLayers?.filter(layer => layer.type === 'color')[0];
+	const colorLayers =
+		backgroundLayers &&
+		backgroundLayers.filter(layer => layer.type === 'color');
+	const layer = colorLayers ? colorLayers[colorLayers.length - 1] : null;
 
 	const isBackgroundColor = !isEmpty(layer);
 

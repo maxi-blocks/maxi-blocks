@@ -375,32 +375,37 @@ const BackgroundLayersControl = ({
 		return response;
 	};
 
+	const getNewLayerId = () =>
+		layers && !isEmpty(layers)
+			? layers.reduce(({ id1, id2 }) => (id1 > id2 ? id1 : id2)).id + 1
+			: 1;
+
 	const getObject = type => {
 		switch (type) {
 			case 'color':
 				return {
 					...setBreakpointToLayer(backgroundLayers.colorOptions),
-					id: layers.length,
+					id: getNewLayerId(),
 				};
 			case 'image':
 				return {
 					...setBreakpointToLayer(backgroundLayers.imageOptions),
-					id: layers.length,
+					id: getNewLayerId(),
 				};
 			case 'video':
 				return {
 					...setBreakpointToLayer(backgroundLayers.videoOptions),
-					id: layers.length,
+					id: getNewLayerId(),
 				};
 			case 'gradient':
 				return {
 					...setBreakpointToLayer(backgroundLayers.gradientOptions),
-					id: layers.length,
+					id: getNewLayerId(),
 				};
 			case 'shape':
 				return {
 					...setBreakpointToLayer(backgroundLayers.SVGOptions),
-					id: layers.length,
+					id: getNewLayerId(),
 				};
 			default:
 				break;
@@ -469,13 +474,15 @@ const BackgroundLayersControl = ({
 						<div className='maxi-background-layers_options'>
 							{layers.map((layer, i) => (
 								<LayerCard
-									key={`maxi-background-layers__${layer.id}`}
+									key={`maxi-background-layers__${layer.id}${
+										isHover ? '--hover' : ''
+									}`}
 									layerId={layer.id}
 									isHover={isHover}
 									clientId={clientId}
 									layer={layer}
-									onChange={layer => {
-										layers[layer.id] = layer;
+									onChange={newLayer => {
+										layers[layer.id - 1] = newLayer;
 
 										onChange({
 											'background-layers': layers,

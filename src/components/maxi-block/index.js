@@ -93,7 +93,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 		uniqueID,
 		className,
 		displayValue,
-		canvasFullWidth,
+		blockFullWidth,
 		motion,
 		background,
 		disableMotion = false,
@@ -193,7 +193,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 	const blockProps = {
 		tagName,
 		className: classes,
-		'data-align': canvasFullWidth,
+		'data-align': blockFullWidth,
 		ref,
 		id: uniqueID,
 		key: `maxi-block-${uniqueID}`,
@@ -253,7 +253,7 @@ export const getMaxiBlockBlockAttributes = props => {
 		blockStyle,
 		extraClassName,
 		uniqueID,
-		canvasFullWidth,
+		blockFullWidth,
 		linkSettings,
 	} = attributes;
 	const displayValue = getLastBreakpointAttribute(
@@ -299,7 +299,7 @@ export const getMaxiBlockBlockAttributes = props => {
 		blockStyle,
 		extraClassName,
 		uniqueID,
-		canvasFullWidth,
+		blockFullWidth,
 		displayValue,
 		motion,
 		background,

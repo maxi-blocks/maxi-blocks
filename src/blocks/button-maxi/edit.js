@@ -99,7 +99,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, setAttributes } = this.props;
-		const { uniqueID, canvasFullWidth, fullWidth } = attributes;
+		const { uniqueID, blockFullWidth, fullWidth } = attributes;
 
 		const { isIconSelected } = this.state;
 
@@ -128,7 +128,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
-				canvasFullWidth={canvasFullWidth}
+				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockBlockAttributes(this.props)}
 				disableBackground
 			>

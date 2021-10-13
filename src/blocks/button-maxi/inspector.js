@@ -78,7 +78,7 @@ const Inspector = memo(
 			fullWidth,
 			isFirstOnHierarchy,
 			parentBlockStyle,
-			canvasFullWidth,
+			blockFullWidth,
 			uniqueID,
 		} = attributes;
 
@@ -1339,12 +1339,12 @@ const Inspector = memo(
 																'maxi-blocks'
 															)}
 															selected={
-																canvasFullWidth ===
+																blockFullWidth ===
 																'full'
 															}
 															onChange={val =>
 																setAttributes({
-																	canvasFullWidth:
+																	blockFullWidth:
 																		val
 																			? 'full'
 																			: 'normal',

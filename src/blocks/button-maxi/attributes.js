@@ -17,7 +17,7 @@ const attributes = {
 		type: 'string',
 		default: __('Button', 'maxi-blocks'),
 	},
-	canvasFullWidth: {
+	blockFullWidth: {
 		type: 'string',
 		default: 'normal',
 	},

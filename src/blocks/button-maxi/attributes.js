@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { getPrefixedAttributes } from '../../extensions/styles';
 
 /**
  * Attributes
@@ -72,10 +73,10 @@ const attributes = {
 	...attributesData.backgroundColorHover,
 	...attributesData.backgroundGradientHover,
 	...attributesData.opacity,
-	...attributesData.buttonBorder,
-	...attributesData.buttonBorderWidth,
+	...getPrefixedAttributes(attributesData.border, 'button-'),
+	...getPrefixedAttributes(attributesData.borderWidth, 'button-'),
 	...{
-		...attributesData.buttonBorderRadius,
+		...getPrefixedAttributes(attributesData.borderRadius, 'button-'),
 		'button-border-top-left-radius-general': {
 			type: 'number',
 			default: 10,
@@ -93,9 +94,21 @@ const attributes = {
 			default: 10,
 		},
 	},
+	...{
+		...getPrefixedAttributes(attributesData.borderHover, 'button-'),
+		'button-border-status-hover': {
+			type: 'boolean',
+			default: false,
+		},
+	},
+	...getPrefixedAttributes(attributesData.borderWidthHover, 'button-'),
+	...getPrefixedAttributes(attributesData.borderRadiusHover, 'button-'),
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,
+	...attributesData.borderHover,
+	...attributesData.borderWidthHover,
+	...attributesData.borderRadiusHover,
 	...attributesData.icon,
 	...attributesData.iconPadding,
 	...attributesData.iconBackgroundColor,
@@ -109,9 +122,6 @@ const attributes = {
 	...attributesData.iconBorderHover,
 	...attributesData.iconBorderWidthHover,
 	...attributesData.iconBorderRadiusHover,
-	...attributesData.borderHover,
-	...attributesData.borderWidthHover,
-	...attributesData.borderRadiusHover,
 	...attributesData.size,
 	...attributesData.buttonSize,
 	...attributesData.buttonBoxShadow,

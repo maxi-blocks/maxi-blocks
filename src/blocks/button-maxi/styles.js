@@ -204,18 +204,20 @@ const getNormalObject = props => {
 const getHoverObject = props => {
 	const response = {
 		border:
-			props['border-status-hover'] &&
+			props['button-border-status-hover'] &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
-						true
+						true,
+						'button-'
 					),
 				},
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
 				isButton: true,
+				prefix: 'button-',
 			}),
 		boxShadow:
 			props['button-box-shadow-status-hover'] &&

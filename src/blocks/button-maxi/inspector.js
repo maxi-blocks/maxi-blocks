@@ -786,9 +786,9 @@ const Inspector = memo(
 																									...getGroupAttributes(
 																										attributes,
 																										[
-																											'brder',
-																											'brderWidth',
-																											'brderRadius',
+																											'border',
+																											'borderWidth',
+																											'borderRadius',
 																										],
 																										false,
 																										'button-'
@@ -798,9 +798,9 @@ const Inspector = memo(
 																									...getGroupAttributes(
 																										attributes,
 																										[
-																											'brder',
-																											'brderWidth',
-																											'brderRadius',
+																											'border',
+																											'borderWidth',
+																											'borderRadius',
 																										],
 																										true,
 																										'button-'

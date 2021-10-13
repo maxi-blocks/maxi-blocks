@@ -20,7 +20,7 @@ import {
 	getTransformStyles,
 	getTypographyStyles,
 	getZIndexStyles,
-	getMotionDuration,
+	getMotionStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
@@ -240,9 +240,9 @@ const getFigcaptionObject = props => {
 	return response;
 };
 
-const getMotionDurationObject = props => {
+const getMotionObject = props => {
 	const response = {
-		transition: getMotionDuration({
+		transition: getMotionStyles({
 			...getGroupAttributes(props, 'motion'),
 		}),
 	};
@@ -269,7 +269,7 @@ const getStyles = props => {
 	const response = {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
-			'.maxi-motion-effect ': getMotionDurationObject(props),
+			'.maxi-motion-effect ': getMotionObject(props),
 			' .maxi-image-block-wrapper': getImageWrapperObject(props),
 			' .maxi-image-block-wrapper > svg:first-child': getImageShapeObject(
 				'svg',

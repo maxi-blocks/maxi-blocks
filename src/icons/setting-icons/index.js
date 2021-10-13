@@ -47,3 +47,5 @@ export { default as tablet } from './tablet';
 export { default as typography } from './typography';
 export { default as ui } from './ui';
 export { default as width } from './width';
+export { default as motionVertical } from './motion-vertical';
+export { default as motionHorizontal } from './motion-horizontal';

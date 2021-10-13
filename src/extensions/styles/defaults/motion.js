@@ -1,52 +1,71 @@
-export const motion = {
-	'motion-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'motion-time-line': {
-		type: 'object',
-	},
-	'motion-active-time-line-time': {
-		type: 'number',
-		default: 0,
-	},
-	'motion-active-time-line-index': {
-		type: 'number',
-		default: 0,
-	},
-	'motion-transform-origin-x': {
-		type: 'string',
-		default: 'center',
-	},
-	'motion-transform-origin-y': {
-		type: 'string',
-		default: 'center',
-	},
-	'motion-preset-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'motion-preview-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'motion-tablet-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'motion-mobile-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'motion-transition-duration-general': {
-		type: 'number',
-		default: 0,
-	},
-	'motion-transition-easing': {
-		type: 'number',
-		default: 0,
-	},
-};
+const motionTypes = [
+	'vertical',
+	'horizontal',
+	'rotate',
+	'scale',
+	'fade',
+	'blur',
+];
+
+export const motion = (() => {
+	const response = {
+		'motion-active': {
+			type: 'string',
+		},
+		'motion-preset-status': {
+			type: 'boolean',
+			default: false,
+		},
+		'motion-preview-status': {
+			type: 'boolean',
+			default: false,
+		},
+	};
+
+	Object.values(motionTypes).forEach(type => {
+		const statusKey = `motion-status-${type}`;
+		const statusValue = {
+			type: 'boolean',
+			default: false,
+		};
+		response[statusKey] = statusValue;
+
+		const statusTabletKey = `motion-status-table-${type}`;
+		const statusTableValue = {
+			type: 'boolean',
+			default: true,
+		};
+		response[statusTabletKey] = statusTableValue;
+
+		const statusMobileKey = `motion-status-mobile-${type}`;
+		const statusMobileValue = {
+			type: 'boolean',
+			default: true,
+		};
+		response[statusMobileKey] = statusMobileValue;
+
+		const easingKey = `motion-easing-${type}`;
+		const easingValue = {
+			type: 'string',
+		};
+		response[easingKey] = easingValue;
+
+		const directionKey = `motion-direction-${type}`;
+		const directionValue = {
+			type: 'string',
+		};
+		response[directionKey] = directionValue;
+
+		const speedKey = `motion-speed-${type}`;
+		const speedValue = {
+			type: 'number',
+			default: 2,
+		};
+		response[speedKey] = speedValue;
+	});
+
+	return response;
+})();
 
 export const parallax = {
 	'parallax-status': {

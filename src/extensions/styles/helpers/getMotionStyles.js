@@ -4,7 +4,7 @@ import { isNumber, isEmpty } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
-const getMotionDuration = obj => {
+const getMotionStyles = obj => {
 	let transitionSetting = '';
 
 	const response = {};
@@ -15,8 +15,6 @@ const getMotionDuration = obj => {
 			breakpoint,
 			obj
 		);
-
-		console.log(transition);
 
 		if (isNumber(transition)) transitionSetting += `${transition}s`;
 
@@ -32,4 +30,4 @@ const getMotionDuration = obj => {
 	return response;
 };
 
-export default getMotionDuration;
+export default getMotionStyles;

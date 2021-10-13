@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import FancyRadioControl from '../fancy-radio-control';
+import Icon from '../icon';
 // import AddTimeline from './addTimeline';
 // import ShowTimeline from './showTimeline';
 // import TimelineSettings from './timelineSettings';
@@ -30,6 +31,12 @@ import classnames from 'classnames';
 /**
  * Styles and icons
  */
+import {
+	styleNone,
+	motionHorizontal,
+	motionVertical,
+	reset,
+} from '../../icons';
 import './editor.scss';
 
 /**
@@ -38,23 +45,95 @@ import './editor.scss';
 const MotionControl = props => {
 	const { className, onChange } = props;
 
+	const motionTypes = [
+		'vertical',
+		'horizontal',
+		'rotate',
+		'scale',
+		'fade',
+		'blur',
+	];
+
 	const classes = classnames('maxi-motion-control', className);
 	// const [presetLoad, setPresetLoad] = useState('');
+
+	const motionOptions = [
+		{ label: <Icon icon={styleNone} />, value: '' },
+		{ label: <Icon icon={motionVertical} />, value: 'vertical' },
+		{ label: <Icon icon={motionHorizontal} />, value: 'horizontal' },
+		{ label: <Icon icon={reset} />, value: 'rotate' },
+	];
+
+	const easingOptions = [
+		{
+			label: __('Ease', 'maxi-blocks'),
+			value: 'ease',
+		},
+		{
+			label: __('Linear', 'maxi-blocks'),
+			value: 'linear',
+		},
+		{
+			label: __('Ease In', 'maxi-blocks'),
+			value: 'ease-in',
+		},
+		{
+			label: __('Ease Out', 'maxi-blocks'),
+			value: 'ease-out',
+		},
+		{
+			label: __('Ease In Out', 'maxi-blocks'),
+			value: 'ease-in-out',
+		},
+		{
+			label: __('Cubic Bezier', 'maxi-blocks'),
+			value: 'cubic-bezier',
+		},
+	];
+
+	const getDirectionOptions = type => {
+		const directionVerticalOptions = [
+			{
+				label: __('Scroll Up', 'maxi-blocks'),
+				value: 'up',
+			},
+			{
+				label: __('Scroll Down', 'maxi-blocks'),
+				value: 'down',
+			},
+		];
+
+		const directionHorizontalOptions = [
+			{
+				label: __('To Left', 'maxi-blocks'),
+				value: 'left',
+			},
+			{
+				label: __('To Right', 'maxi-blocks'),
+				value: 'right',
+			},
+		];
+
+		switch (type) {
+			case 'vertical':
+				return directionVerticalOptions;
+			case 'horizontal':
+				return directionHorizontalOptions;
+			default:
+				return null;
+		}
+	};
 
 	return (
 		<div className={classes}>
 			<FancyRadioControl
-				label={__('Enable Vertical', 'maxi-blocks')}
-				selected={props['motion-status']}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
-				onChange={val => onChange({ 'motion-status': val })}
+				fullWidthMode
+				selected={props['motion-active'] || ''}
+				options={motionOptions}
+				optionType='string'
+				onChange={val => onChange({ 'motion-active': val })}
 			/>
-			{props['motion-status'] && (
-				<>
-					{/* <FancyRadioControl
+			{/* <FancyRadioControl
 						 label={__('Preview', 'maxi-blocks')}
 						 selected={props['motion-preview-status']}
 						 options={[
@@ -65,88 +144,95 @@ const MotionControl = props => {
 							 onChange({ 'motion-preview-status': val })
 						 }
 					 /> */}
-					<SelectControl
-						label={__('Easing', 'maxi-blocks')}
-						value={props['motion-transition-easing']}
-						onChange={val =>
-							onChange({ 'motion-transition-easing': val })
-						}
-						options={[
-							{
-								label: __('ease', 'maxi-blocks'),
-								value: 'ease',
-							},
-							{
-								label: __('linear', 'maxi-blocks'),
-								value: 'linear',
-							},
-							{
-								label: __('ease-in', 'maxi-blocks'),
-								value: 'ease-in',
-							},
-							{
-								label: __('ease-out', 'maxi-blocks'),
-								value: 'ease-out',
-							},
-							{
-								label: __('ease-in-out', 'maxi-blocks'),
-								value: 'ease-in-out',
-							},
-							{
-								label: __('cubic-bezier', 'maxi-blocks'),
-								value: 'cubic-bezier',
-							},
-						]}
-					/>
-					<AdvancedNumberControl
-						label={__('Speed', 'maxi-blocks')}
-						value={props['motion-transition-duration-general']}
-						onChangeValue={val => {
-							onChange({
-								'motion-transition-duration-general':
-									val !== undefined && val !== '' ? val : '',
-							});
-						}}
-						min={0}
-						step={0.1}
-						max={10}
-						onReset={() =>
-							onChange({
-								'motion-transition-duration-general':
-									getDefaultAttribute(
-										'motion-transition-duration-general'
-									),
-							})
-						}
-						initialPosition={getDefaultAttribute(
-							'motion-transition-duration-general'
+			{motionTypes.map(type => {
+				console.log(`type ${type}`);
+				console.log(props['motion-active']);
+				console.log(props['motion-active'] === type);
+				console.log('=================================');
+				const typeCapitalize =
+					type.charAt(0).toUpperCase() + type.slice(1);
+				return (
+					<div key={`maxi-motion-control-${type}`}>
+						{props['motion-active'] === type && (
+							<FancyRadioControl
+								label={__(
+									`Enable ${typeCapitalize}`,
+									'maxi-blocks'
+								)}
+								selected={props[`motion-status-${type}`]}
+								options={[
+									{
+										label: __('Yes', 'maxi-blocks'),
+										value: 1,
+									},
+									{
+										label: __('No', 'maxi-blocks'),
+										value: 0,
+									},
+								]}
+								onChange={val =>
+									onChange({ [`motion-status-${type}`]: val })
+								}
+							/>
 						)}
-					/>
-					{/* <SelectControl
-						 value='Scroll Up'
-						 options='Scroll Up'
-						 onChange={val => setPresetLoad(val)}
-					 /> */}
-					{/* <TimelinePresets
-						 {...getGroupAttributes(props, 'motion')}
-						 onChange={obj => onChange(obj)}
-					 /> */}
-					{/* <AddTimeline
-						 {...getGroupAttributes(props, 'motion')}
-						 onChange={obj => onChange(obj)}
-					 /> */}
-					{/* <ShowTimeline
-						 {...getGroupAttributes(props, 'motion')}
-						 onChange={obj => onChange(obj)}
-					 />
-					 <TimelineSettings
-						 {...getGroupAttributes(props, 'motion')}
-						 onChange={obj => {
-							 onChange(obj);
-						 }}
-					 /> */}
-				</>
-			)}
+						{props['motion-active'] === type &&
+							props[`motion-status-${type}`] && (
+								<>
+									<SelectControl
+										label={__('Easing', 'maxi-blocks')}
+										value={props[`motion-easing-${type}`]}
+										onChange={val =>
+											onChange({
+												[`motion-easing-${type}`]: val,
+											})
+										}
+										options={easingOptions}
+									/>
+									<SelectControl
+										label={__('Direction', 'maxi-blocks')}
+										value={
+											props[`motion-direction-${type}`]
+										}
+										options={getDirectionOptions(type)}
+										onChange={val =>
+											onChange({
+												[`motion-direction-${type}`]:
+													val,
+											})
+										}
+									/>
+									<AdvancedNumberControl
+										label={__('Speed', 'maxi-blocks')}
+										value={props[`motion-speed-${type}`]}
+										onChangeValue={val => {
+											onChange({
+												[`motion-speed-${type}`]:
+													val !== undefined &&
+													val !== ''
+														? val
+														: '',
+											});
+										}}
+										min={0}
+										step={0.1}
+										max={10}
+										onReset={() =>
+											onChange({
+												[`motion-speed-${type}`]:
+													getDefaultAttribute(
+														`motion-speed-${type}`
+													),
+											})
+										}
+										initialPosition={getDefaultAttribute(
+											`motion-speed-${type}`
+										)}
+									/>
+								</>
+							)}
+					</div>
+				);
+			})}
 		</div>
 	);
 };

@@ -1,4 +1,4 @@
-import { padding } from './padding';
+import padding from './padding';
 
 export const icon = {
 	'icon-inherit': {

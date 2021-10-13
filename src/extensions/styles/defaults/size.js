@@ -1,4 +1,4 @@
-export const size = {
+const size = {
 	'size-advanced-options': {
 		type: 'boolean',
 		default: false,
@@ -263,15 +263,4 @@ export const size = {
 	},
 };
 
-export const buttonSize = (() => {
-	const response = {};
-
-	Object.keys(size).forEach(key => {
-		const newKey = `button-${key}`;
-		const value = { ...size[key] };
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
+export default size;

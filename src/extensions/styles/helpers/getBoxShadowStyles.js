@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import { boxShadow as defaultBoxShadow } from '../defaults/boxShadow';
-import { boxShadowHover as defaultBoxShadowHover } from '../defaults/boxShadowHover';
+import defaultBoxShadow from '../defaults/boxShadow';
+import defaultBoxShadowHover from '../defaults/boxShadowHover';
 import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 

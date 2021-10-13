@@ -1,4 +1,4 @@
-export const padding = {
+const padding = {
 	'padding-top-general': {
 		type: 'number',
 	},
@@ -173,15 +173,4 @@ export const padding = {
 	},
 };
 
-export const buttonPadding = (() => {
-	const response = {};
-
-	Object.keys(padding).forEach(key => {
-		const newKey = `button-${key}`;
-		const value = { ...padding[key] };
-
-		response[newKey] = value;
-	});
-
-	return response;
-})();
+export default padding;

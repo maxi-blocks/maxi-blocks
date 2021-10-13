@@ -9,7 +9,6 @@ import { useState } from '@wordpress/element';
  */
 import Button from '../button';
 import Dropdown from '../dropdown';
-import RadioControl from '../radio-control';
 import SelectControl from '../select-control';
 
 /**
@@ -76,17 +75,23 @@ const LoaderControl = props => {
 						</div>
 					)}
 					renderContent={({ onToggle }) => (
-						<RadioControl
-							className='maxi-loader-control__dropdown-list'
-							selected={presetLoad}
-							options={options}
-							onChange={val => {
-								onClick(val);
-								!forwards && setPresetLoad('');
+						<div className='maxi-loader-content'>
+							{options.map(option => (
+								<Button
+									className={classnames(
+										'maxi-loader-control__content-item',
+										`maxi-loader-control__content-item${option.value}`
+									)}
+									onClick={() => {
+										onClick(option.value);
 
-								onToggle();
-							}}
-						/>
+										onToggle();
+									}}
+								>
+									{option.label}
+								</Button>
+							))}
+						</div>
 					)}
 				/>
 			)}

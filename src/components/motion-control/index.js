@@ -22,6 +22,7 @@ import SelectControl from '../select-control';
 // import { useState } from '@wordpress/element';
 // import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
+import RangeSliderControl from '../range-slider-control';
 
 /**
  * External dependencies
@@ -145,10 +146,12 @@ const MotionControl = props => {
 						 }
 					 /> */}
 			{motionTypes.map(type => {
-				console.log(`type ${type}`);
+				{
+					/* console.log(`type ${type}`);
 				console.log(props['motion-active']);
 				console.log(props['motion-active'] === type);
-				console.log('=================================');
+				console.log('================================='); */
+				}
 				const typeCapitalize =
 					type.charAt(0).toUpperCase() + type.slice(1);
 				return (
@@ -227,6 +230,31 @@ const MotionControl = props => {
 										initialPosition={getDefaultAttribute(
 											`motion-speed-${type}`
 										)}
+									/>
+									<RangeSliderControl
+										label={__('Offset', 'maxi-blocks')}
+										step={0.1}
+										min={0}
+										max={100}
+										values={[
+											props[
+												`motion-offset-start-${type}`
+											],
+											props[
+												`motion-offset-middle-${type}`
+											],
+											props[`motion-offset-end-${type}`],
+										]}
+										onChange={values =>
+											onChange({
+												[`motion-offset-start-${type}`]:
+													values[0],
+												[`motion-offset-middle-${type}`]:
+													values[1],
+												[`motion-offset-end-${type}`]:
+													values[2],
+											})
+										}
 									/>
 								</>
 							)}

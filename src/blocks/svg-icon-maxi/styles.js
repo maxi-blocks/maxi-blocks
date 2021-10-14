@@ -27,10 +27,14 @@ const getNormalObject = props => {
 			parentBlockStyle: props.parentBlockStyle,
 		}),
 		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
+			obj: {
+				...getGroupAttributes(props, 'margin'),
+			},
 		}),
 		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
+			obj: {
+				...getGroupAttributes(props, 'padding'),
+			},
 		}),
 		border: getBorderStyles({
 			obj: {

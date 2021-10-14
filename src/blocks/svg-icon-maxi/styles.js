@@ -33,6 +33,22 @@ const getWrapperObject = props => {
 			},
 			parentBlockStyle: props.parentBlockStyle,
 		}),
+		opacity: getOpacityStyles({
+			...getGroupAttributes(props, 'opacity'),
+		}),
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
+		margin: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'margin'),
+			},
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'padding'),
+			},
+		}),
 	};
 
 	return response;
@@ -69,9 +85,6 @@ const getWrapperObjectHover = props => {
 
 const getNormalObject = props => {
 	const response = {
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow', false, 'svg-'),
@@ -81,13 +94,15 @@ const getNormalObject = props => {
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
-				...getGroupAttributes(props, 'margin'),
+				...getGroupAttributes(props, 'margin', false, 'svg-'),
 			},
+			prefix: 'svg-',
 		}),
 		padding: getMarginPaddingStyles({
 			obj: {
-				...getGroupAttributes(props, 'padding'),
+				...getGroupAttributes(props, 'padding', false, 'svg-'),
 			},
+			prefix: 'svg-',
 		}),
 		border: getBorderStyles({
 			obj: {
@@ -100,9 +115,6 @@ const getNormalObject = props => {
 			},
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'svg-',
-		}),
-		opacity: getOpacityStyles({
-			...getGroupAttributes(props, 'opacity'),
 		}),
 		zIndex: getZIndexStyles({
 			...getGroupAttributes(props, 'zIndex'),

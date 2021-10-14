@@ -116,8 +116,13 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const { attributes, clientId, deviceType, setAttributes, isSelected } =
 			this.props;
-		const { uniqueID, parentBlockStyle, content, openFirstTime } =
-			attributes;
+		const {
+			blockFullWidth,
+			content,
+			openFirstTime,
+			parentBlockStyle,
+			uniqueID,
+		} = attributes;
 
 		const isEmptyContent = isEmpty(content);
 
@@ -153,6 +158,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}
+				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<>

@@ -53,14 +53,14 @@ const Inspector = props => {
 		setAttributes,
 	} = props;
 	const {
+		blockFullWidth,
 		blockStyle,
 		customLabel,
 		extraClassName,
 		isFirstOnHierarchy,
-		uniqueID,
-		fullWidth,
 		parentBlockStyle,
 		svgType,
+		uniqueID,
 	} = attributes;
 
 	return (
@@ -570,8 +570,11 @@ const Inspector = props => {
 													<AxisControl
 														{...getGroupAttributes(
 															attributes,
-															'padding'
+															'padding',
+															false,
+															'svg-'
 														)}
+														prefix='svg-'
 														label={__(
 															'Padding',
 															'maxi-blocks'
@@ -586,8 +589,11 @@ const Inspector = props => {
 													<AxisControl
 														{...getGroupAttributes(
 															attributes,
-															'margin'
+															'margin',
+															false,
+															'svg-'
 														)}
+														prefix='svg-'
 														label={__(
 															'Margin',
 															'maxi-blocks'
@@ -997,13 +1003,15 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														selected={
-															fullWidth === 'full'
+															blockFullWidth ===
+															'full'
 														}
 														onChange={val =>
 															setAttributes({
-																fullWidth: val
-																	? 'full'
-																	: 'normal',
+																blockFullWidth:
+																	val
+																		? 'full'
+																		: 'normal',
 															})
 														}
 													/>

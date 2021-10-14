@@ -22,7 +22,7 @@ const attributes = {
 		type: 'boolean',
 		default: true,
 	},
-	fullWidth: {
+	blockFullWidth: {
 		type: 'string',
 		default: 'normal',
 	},
@@ -61,9 +61,11 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.display,
-	...attributesData.margin,
 	...attributesData.motion,
 	...attributesData.opacity,
+	...getPrefixedAttributes(attributesData.margin, 'svg-'),
+	...getPrefixedAttributes(attributesData.padding, 'svg-'),
+	...attributesData.margin,
 	...attributesData.padding,
 	...attributesData.position,
 	...attributesData.size,

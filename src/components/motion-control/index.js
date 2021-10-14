@@ -15,7 +15,8 @@ import Icon from '../icon';
 // import { getGroupAttributes } from '../../extensions/styles';
 import {
 	getDefaultAttribute,
-	// getGroupAttributes,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import SelectControl from '../select-control';
 
@@ -44,7 +45,7 @@ import './editor.scss';
  * Component
  */
 const MotionControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, breakpoint = 'general' } = props;
 
 	const motionTypes = [
 		'vertical',
@@ -129,10 +130,18 @@ const MotionControl = props => {
 		<div className={classes}>
 			<FancyRadioControl
 				fullWidthMode
-				selected={props['motion-active'] || ''}
+				selected={
+					getLastBreakpointAttribute(
+						'motion-active',
+						breakpoint,
+						props
+					) || ''
+				}
 				options={motionOptions}
 				optionType='string'
-				onChange={val => onChange({ 'motion-active': val })}
+				onChange={val =>
+					onChange({ [`motion-active-${breakpoint}`]: val })
+				}
 			/>
 			{/* <FancyRadioControl
 						 label={__('Preview', 'maxi-blocks')}
@@ -155,14 +164,18 @@ const MotionControl = props => {
 				const typeCapitalize =
 					type.charAt(0).toUpperCase() + type.slice(1);
 				return (
-					<div key={`maxi-motion-control-${type}`}>
-						{props['motion-active'] === type && (
+					<div key={`maxi-motion-control-${type}-${breakpoint}`}>
+						{props[`motion-active-${breakpoint}`] === type && (
 							<FancyRadioControl
 								label={__(
 									`Enable ${typeCapitalize}`,
 									'maxi-blocks'
 								)}
-								selected={props[`motion-status-${type}`]}
+								selected={getLastBreakpointAttribute(
+									`motion-status-${type}`,
+									breakpoint,
+									props
+								)}
 								options={[
 									{
 										label: __('Yes', 'maxi-blocks'),
@@ -174,42 +187,56 @@ const MotionControl = props => {
 									},
 								]}
 								onChange={val =>
-									onChange({ [`motion-status-${type}`]: val })
+									onChange({
+										[`motion-status-${type}-${breakpoint}`]:
+											val,
+									})
 								}
 							/>
 						)}
-						{props['motion-active'] === type &&
-							props[`motion-status-${type}`] && (
+						{props[`motion-active-${breakpoint}`] === type &&
+							props[`motion-status-${type}-${breakpoint}`] && (
 								<>
 									<SelectControl
 										label={__('Easing', 'maxi-blocks')}
-										value={props[`motion-easing-${type}`]}
+										value={getLastBreakpointAttribute(
+											`motion-easing-${type}`,
+											breakpoint,
+											props
+										)}
 										onChange={val =>
 											onChange({
-												[`motion-easing-${type}`]: val,
+												[`motion-easing-${type}-${breakpoint}`]:
+													val,
 											})
 										}
 										options={easingOptions}
 									/>
 									<SelectControl
 										label={__('Direction', 'maxi-blocks')}
-										value={
-											props[`motion-direction-${type}`]
-										}
+										value={getLastBreakpointAttribute(
+											`motion-direction-${type}`,
+											breakpoint,
+											props
+										)}
 										options={getDirectionOptions(type)}
 										onChange={val =>
 											onChange({
-												[`motion-direction-${type}`]:
+												[`motion-direction-${type}-${breakpoint}`]:
 													val,
 											})
 										}
 									/>
 									<AdvancedNumberControl
 										label={__('Speed', 'maxi-blocks')}
-										value={props[`motion-speed-${type}`]}
+										value={getLastBreakpointAttribute(
+											`motion-speed-${type}`,
+											breakpoint,
+											props
+										)}
 										onChangeValue={val => {
 											onChange({
-												[`motion-speed-${type}`]:
+												[`motion-speed-${type}-${breakpoint}`]:
 													val !== undefined &&
 													val !== ''
 														? val
@@ -221,14 +248,14 @@ const MotionControl = props => {
 										max={10}
 										onReset={() =>
 											onChange({
-												[`motion-speed-${type}`]:
+												[`motion-speed-${type}-${breakpoint}`]:
 													getDefaultAttribute(
-														`motion-speed-${type}`
+														`motion-speed-${type}-general`
 													),
 											})
 										}
 										initialPosition={getDefaultAttribute(
-											`motion-speed-${type}`
+											`motion-speed-${type}-general`
 										)}
 									/>
 									<RangeSliderControl
@@ -237,21 +264,29 @@ const MotionControl = props => {
 										min={0}
 										max={100}
 										values={[
-											props[
-												`motion-offset-start-${type}`
-											],
-											props[
-												`motion-offset-middle-${type}`
-											],
-											props[`motion-offset-end-${type}`],
+											getLastBreakpointAttribute(
+												`motion-offset-start-${type}`,
+												breakpoint,
+												props
+											),
+											getLastBreakpointAttribute(
+												`motion-offset-middle-${type}`,
+												breakpoint,
+												props
+											),
+											getLastBreakpointAttribute(
+												`motion-offset-end-${type}`,
+												breakpoint,
+												props
+											),
 										]}
 										onChange={values =>
 											onChange({
-												[`motion-offset-start-${type}`]:
+												[`motion-offset-start-${type}-${breakpoint}`]:
 													values[0],
-												[`motion-offset-middle-${type}`]:
+												[`motion-offset-middle-${type}-${breakpoint}`]:
 													values[1],
-												[`motion-offset-end-${type}`]:
+												[`motion-offset-end-${type}-${breakpoint}`]:
 													values[2],
 											})
 										}

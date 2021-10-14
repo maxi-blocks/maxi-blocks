@@ -1060,6 +1060,7 @@ const Inspector = memo(
 														}
 														blockStyle={blockStyle}
 														clientId={clientId}
+														breakpoint={deviceType}
 													/>
 												),
 											},

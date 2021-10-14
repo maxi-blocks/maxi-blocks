@@ -21,7 +21,7 @@ import { isEmpty, uniqueId } from 'lodash';
 const OverflowControl = props => {
 	const { className, onChange, breakpoint = 'general' } = props;
 
-	const classes = classnames('maxi-position-control', className);
+	const classes = classnames('maxi-overflow-control', className);
 
 	const axes = ['x', 'y'];
 
@@ -29,6 +29,7 @@ const OverflowControl = props => {
 		<div className={classes}>
 			{axes.map(axis => (
 				<SelectControl
+					key={axis}
 					label={__(`Overflow ${axis}`, 'maxi-blocks')}
 					key={uniqueId('maxi-position-control__overflow')}
 					options={[

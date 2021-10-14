@@ -8,6 +8,7 @@ export { default as container } from './container';
 export { default as display } from './display';
 export { default as divider } from './divider';
 export { default as global } from './global';
+export { default as imageShape } from './imageShape';
 export { default as link } from './link';
 export { default as map } from './map';
 export { default as margin } from './margin';

@@ -12,6 +12,7 @@ import {
 import {
 	getBlockAttributes,
 	openAdvancedSidebar,
+	changeResponsive,
 	getBlockStyle,
 } from '../../utils';
 
@@ -36,7 +37,59 @@ describe('OpacityControl', () => {
 
 		expect(opacity).toStrictEqual(expectResult);
 
-		const blockStyles = await getBlockStyle(page);
-		expect(blockStyles).toMatchSnapshot();
+		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check Responsive opacity control', async () => {
+		const accordionPanel = await openAdvancedSidebar(page, 'opacity');
+
+		const responsiveBaseOption = await page.$eval(
+			'.maxi-opacity-control .maxi-base-control__field input',
+			selectedStyle => selectedStyle.value
+		);
+
+		expect(responsiveBaseOption).toStrictEqual('19');
+
+		// responsive S
+		await changeResponsive(page, 's');
+		await accordionPanel.$eval(
+			'.maxi-opacity-control .maxi-base-control__field input',
+			input => input.focus()
+		);
+
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('55');
+
+		const responsiveSOption = await page.$eval(
+			'.maxi-opacity-control .maxi-base-control__field input',
+			selectedStyle => selectedStyle.value
+		);
+
+		expect(responsiveSOption).toStrictEqual('55');
+
+		const attributes = await getBlockAttributes();
+		const opacity = attributes['opacity-s'];
+
+		expect(opacity).toStrictEqual(0.55);
+
+		// responsive XS
+		await changeResponsive(page, 'xs');
+
+		const responsiveXsOption = await page.$eval(
+			'.maxi-opacity-control .maxi-base-control__field input',
+			selectedStyle => selectedStyle.value
+		);
+
+		expect(responsiveXsOption).toStrictEqual('55');
+
+		// responsive M
+		await changeResponsive(page, 'm');
+
+		const responsiveMOption = await page.$eval(
+			'.maxi-opacity-control .maxi-base-control__field input',
+			selectedStyle => selectedStyle.value
+		);
+
+		expect(responsiveMOption).toStrictEqual('19');
 	});
 });

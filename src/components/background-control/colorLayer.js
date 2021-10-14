@@ -153,26 +153,22 @@ const ColorLayerContent = props => {
 						isHover
 					)}
 					onChange={val => {
-						colorOptions[
-							getAttributeKey(
+						onChange({
+							[getAttributeKey(
 								'background-color-clip-path',
 								isHover,
 								prefix,
 								breakpoint
-							)
-						] = val;
-
-						if (isGeneral)
-							colorOptions[
-								getAttributeKey(
+							)]: val,
+							...(isGeneral && {
+								[getAttributeKey(
 									'background-color-clip-path',
 									isHover,
 									prefix,
 									'general'
-								)
-							] = val;
-
-						onChange(colorOptions);
+								)]: val,
+							}),
+						});
 					}}
 				/>
 			)}

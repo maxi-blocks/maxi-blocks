@@ -377,7 +377,9 @@ const BackgroundLayersControl = ({
 
 	const getNewLayerId = () =>
 		layers && !isEmpty(layers)
-			? layers.reduce(({ id1, id2 }) => (id1 > id2 ? id1 : id2)).id + 1
+			? layers.reduce((layerA, layerB) =>
+					layerA.id > layerB.id ? layerA : layerB
+			  ).id + 1
 			: 1;
 
 	const getObject = type => {

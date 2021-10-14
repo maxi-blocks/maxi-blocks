@@ -317,8 +317,11 @@ const Inspector = props => {
 																			'border',
 																			'borderWidth',
 																			'borderRadius',
-																		]
+																		],
+																		false,
+																		'svg-'
 																	)}
+																	prefix='svg-'
 																	onChange={obj => {
 																		setAttributes(
 																			obj
@@ -347,7 +350,7 @@ const Inspector = props => {
 																		)}
 																		selected={
 																			attributes[
-																				'border-status-hover'
+																				'svg-border-status-hover'
 																			]
 																		}
 																		className='maxi-border-status-hover'
@@ -363,7 +366,9 @@ const Inspector = props => {
 																										'border',
 																										'borderWidth',
 																										'borderRadius',
-																									]
+																									],
+																									false,
+																									'svg-'
 																								),
 																							},
 																							{
@@ -374,18 +379,19 @@ const Inspector = props => {
 																										'borderWidth',
 																										'borderRadius',
 																									],
-																									true
+																									true,
+																									'svg-'
 																								),
 																							}
 																						)),
-																					'border-status-hover':
+																					'svg-border-status-hover':
 																						val,
 																				}
 																			)
 																		}
 																	/>
 																	{attributes[
-																		'border-status-hover'
+																		'svg-border-status-hover'
 																	] && (
 																		<BorderControl
 																			{...getGroupAttributes(
@@ -395,8 +401,10 @@ const Inspector = props => {
 																					'borderWidth',
 																					'borderRadius',
 																				],
-																				true
+																				true,
+																				'svg-'
 																			)}
+																			prefix='svg-'
 																			onChange={obj =>
 																				setAttributes(
 																					obj

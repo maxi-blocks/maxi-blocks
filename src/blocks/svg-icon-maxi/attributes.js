@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { getPrefixedAttributes } from '../../extensions/styles';
 
 /**
  * Attributes
@@ -43,6 +44,12 @@ const attributes = {
 	...attributesData.backgroundColor,
 	...attributesData.backgroundColorHover,
 	...attributesData.backgroundHover,
+	...getPrefixedAttributes(attributesData.border, 'svg-'),
+	...getPrefixedAttributes(attributesData.borderHover, 'svg-'),
+	...getPrefixedAttributes(attributesData.borderRadius, 'svg-'),
+	...getPrefixedAttributes(attributesData.borderRadiusHover, 'svg-'),
+	...getPrefixedAttributes(attributesData.borderWidth, 'svg-'),
+	...getPrefixedAttributes(attributesData.borderWidthHover, 'svg-'),
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,

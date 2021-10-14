@@ -15,6 +15,43 @@ import {
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
+const getWrapperObject = props => {
+	const response = {
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
+	};
+
+	return response;
+};
+
+const getWrapperObjectHover = props => {
+	const response = {
+		border:
+			props['border-status-hover'] &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						true
+					),
+				},
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
+	};
+
+	return response;
+};
+
 const getNormalObject = props => {
 	const response = {
 		size: getSizeStyles({
@@ -38,13 +75,15 @@ const getNormalObject = props => {
 		}),
 		border: getBorderStyles({
 			obj: {
-				...getGroupAttributes(props, [
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
+				...getGroupAttributes(
+					props,
+					['border', 'borderWidth', 'borderRadius'],
+					false,
+					'svg-'
+				),
 			},
 			parentBlockStyle: props.parentBlockStyle,
+			prefix: 'svg-',
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -75,17 +114,19 @@ const getNormalObject = props => {
 const getHoverObject = props => {
 	const response = {
 		border:
-			props['border-status-hover'] &&
+			props['svg-border-status-hover'] &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
-						true
+						true,
+						'svg-'
 					),
 				},
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
+				prefix: 'svg-',
 			}),
 		boxShadow:
 			props['box-shadow-status-hover'] &&
@@ -106,8 +147,10 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
-			':hover': getHoverObject(props),
+			'': getWrapperObject(props),
+			':hover': getWrapperObjectHover(props),
+			' .maxi-svg-icon-block__icon': getNormalObject(props),
+			' .maxi-svg-icon-block__icon:hover': getHoverObject(props),
 			...getSvgStyles({
 				obj: {
 					...getGroupAttributes(props, 'svg'),

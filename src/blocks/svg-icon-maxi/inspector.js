@@ -728,6 +728,244 @@ const Inspector = props => {
 											/>
 										),
 									},
+									{
+										label: __('Border', 'maxi-blocks'),
+										disablePadding: true,
+										content: (
+											<SettingTabsControl
+												items={[
+													{
+														label: __(
+															'Normal',
+															'maxi-blocks'
+														),
+														content: (
+															<BorderControl
+																{...getGroupAttributes(
+																	attributes,
+																	[
+																		'border',
+																		'borderWidth',
+																		'borderRadius',
+																	]
+																)}
+																onChange={obj => {
+																	setAttributes(
+																		obj
+																	);
+																}}
+																breakpoint={
+																	deviceType
+																}
+																clientId={
+																	clientId
+																}
+															/>
+														),
+													},
+													{
+														label: __(
+															'Hover',
+															'maxi-blocks'
+														),
+														content: (
+															<>
+																<ToggleSwitch
+																	label={__(
+																		'Enable Border Hover',
+																		'maxi-blocks'
+																	)}
+																	selected={
+																		attributes[
+																			'border-status-hover'
+																		]
+																	}
+																	className='maxi-border-status-hover'
+																	onChange={val =>
+																		setAttributes(
+																			{
+																				...(val &&
+																					setHoverAttributes(
+																						{
+																							...getGroupAttributes(
+																								attributes,
+																								[
+																									'border',
+																									'borderWidth',
+																									'borderRadius',
+																								]
+																							),
+																						},
+																						{
+																							...getGroupAttributes(
+																								attributes,
+																								[
+																									'border',
+																									'borderWidth',
+																									'borderRadius',
+																								],
+																								true
+																							),
+																						}
+																					)),
+																				'border-status-hover':
+																					val,
+																			}
+																		)
+																	}
+																/>
+																{attributes[
+																	'border-status-hover'
+																] && (
+																	<BorderControl
+																		{...getGroupAttributes(
+																			attributes,
+																			[
+																				'border',
+																				'borderWidth',
+																				'borderRadius',
+																			],
+																			true
+																		)}
+																		onChange={obj =>
+																			setAttributes(
+																				obj
+																			)
+																		}
+																		breakpoint={
+																			deviceType
+																		}
+																		isHover
+																		clientId={
+																			clientId
+																		}
+																	/>
+																)}
+															</>
+														),
+													},
+												]}
+											/>
+										),
+									},
+									{
+										label: __('Box shadow', 'maxi-blocks'),
+										disablePadding: true,
+										content: (
+											<SettingTabsControl
+												items={[
+													{
+														label: __(
+															'Normal',
+															'maxi-blocks'
+														),
+														content: (
+															<BoxShadowControl
+																{...getGroupAttributes(
+																	attributes,
+																	'boxShadow'
+																)}
+																onChange={obj =>
+																	setAttributes(
+																		obj
+																	)
+																}
+																breakpoint={
+																	deviceType
+																}
+																clientId={
+																	clientId
+																}
+															/>
+														),
+													},
+													{
+														label: __(
+															'Hover',
+															'maxi-blocks'
+														),
+														content: (
+															<>
+																<ToggleSwitch
+																	label={__(
+																		'Enable Box Shadow Hover',
+																		'maxi-blocks'
+																	)}
+																	selected={
+																		attributes[
+																			'box-shadow-status-hover'
+																		]
+																	}
+																	className='maxi-box-shadow-status-hover'
+																	onChange={val =>
+																		setAttributes(
+																			{
+																				...(val &&
+																					setHoverAttributes(
+																						{
+																							...getGroupAttributes(
+																								attributes,
+																								'boxShadow'
+																							),
+																						},
+																						{
+																							...getGroupAttributes(
+																								attributes,
+																								'boxShadow',
+																								true
+																							),
+																						}
+																					)),
+																				'box-shadow-status-hover':
+																					val,
+																			}
+																		)
+																	}
+																/>
+																{attributes[
+																	'box-shadow-status-hover'
+																] && (
+																	<BoxShadowControl
+																		{...getGroupAttributes(
+																			attributes,
+																			'boxShadowHover'
+																		)}
+																		onChange={obj =>
+																			setAttributes(
+																				obj
+																			)
+																		}
+																		breakpoint={
+																			deviceType
+																		}
+																		isHover
+																		clientId={
+																			clientId
+																		}
+																	/>
+																)}
+															</>
+														),
+													},
+												]}
+											/>
+										),
+									},
+									{
+										label: __('Opacity', 'maxi-blocks'),
+										content: (
+											<OpacityControl
+												{...getGroupAttributes(
+													attributes,
+													'opacity'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
 									isFirstOnHierarchy && {
 										label: __(
 											'Height / Width',
@@ -767,18 +1005,45 @@ const Inspector = props => {
 										),
 									},
 									{
-										label: __('Opacity', 'maxi-blocks'),
+										label: __(
+											'Margin / Padding',
+											'maxi-blocks'
+										),
 										content: (
-											<OpacityControl
-												{...getGroupAttributes(
-													attributes,
-													'opacity'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
+											<>
+												<AxisControl
+													{...getGroupAttributes(
+														attributes,
+														'padding'
+													)}
+													label={__(
+														'Padding',
+														'maxi-blocks'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+													target='padding'
+													disableAuto
+												/>
+												<AxisControl
+													{...getGroupAttributes(
+														attributes,
+														'margin'
+													)}
+													label={__(
+														'Margin',
+														'maxi-blocks'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+													target='margin'
+													optionType='string'
+												/>
+											</>
 										),
 									},
 								]}

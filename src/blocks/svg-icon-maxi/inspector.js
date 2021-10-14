@@ -286,6 +286,7 @@ const Inspector = props => {
 															attributes,
 															'svg'
 														)}
+														prefix='svg-'
 														onChange={obj => {
 															setAttributes(obj);
 															changeSVGStrokeWidth(

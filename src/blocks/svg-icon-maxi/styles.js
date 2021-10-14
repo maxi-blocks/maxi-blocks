@@ -49,6 +49,24 @@ const getWrapperObject = props => {
 				...getGroupAttributes(props, 'padding'),
 			},
 		}),
+		zIndex: getZIndexStyles({
+			...getGroupAttributes(props, 'zIndex'),
+		}),
+		alignment: getAlignmentFlexStyles({
+			...getGroupAttributes(props, 'alignment'),
+		}),
+		position: getPositionStyles({
+			...getGroupAttributes(props, 'position'),
+		}),
+		transform: getTransformStyles({
+			...getGroupAttributes(props, 'transform'),
+		}),
+		display: getDisplayStyles({
+			...getGroupAttributes(props, 'display'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
 	};
 
 	return response;
@@ -115,24 +133,6 @@ const getNormalObject = props => {
 			},
 			parentBlockStyle: props.parentBlockStyle,
 			prefix: 'svg-',
-		}),
-		zIndex: getZIndexStyles({
-			...getGroupAttributes(props, 'zIndex'),
-		}),
-		alignment: getAlignmentFlexStyles({
-			...getGroupAttributes(props, 'alignment'),
-		}),
-		position: getPositionStyles({
-			...getGroupAttributes(props, 'position'),
-		}),
-		transform: getTransformStyles({
-			...getGroupAttributes(props, 'transform'),
-		}),
-		display: getDisplayStyles({
-			...getGroupAttributes(props, 'display'),
-		}),
-		overflow: getOverflowStyles({
-			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 

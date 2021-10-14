@@ -5,7 +5,12 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebar,
+	changeResponsive,
+	getBlockStyle,
+} from '../../utils';
 
 describe.skip('ColorControl', () => {
 	it('Checking the color control', async () => {
@@ -83,5 +88,7 @@ describe.skip('ColorControl', () => {
 		const responsiveMOption = await dataItemM;
 
 		expect(responsiveMOption).toStrictEqual('3');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

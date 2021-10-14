@@ -12,7 +12,12 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebar,
+	changeResponsive,
+	getBlockStyle,
+} from '../../utils';
 
 describe('TypographyControl', () => {
 	beforeAll(async () => {
@@ -842,6 +847,8 @@ describe('TypographyControl', () => {
 			letterSpacingInput => letterSpacingInput[0].value
 		);
 		expect(letterSpacingMNumber).toStrictEqual('2');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check responsive letter-spacing-unit', async () => {

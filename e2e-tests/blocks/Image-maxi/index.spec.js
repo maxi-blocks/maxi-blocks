@@ -7,20 +7,18 @@ import {
 	insertBlock,
 	pressKeyWithModifier,
 	getEditedPostContent,
+	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, openPreviewPage } from '../../utils';
 
 describe('Image Maxi', () => {
-	beforeEach(async () => {
+	it('Image Maxi does not break', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
-	});
-
-	it('Image Maxi does not break', async () => {
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
@@ -269,5 +267,69 @@ describe('Image Maxi', () => {
 		};
 
 		expect(linkAttributes).toStrictEqual(expectedValues);
+	});
+
+	it('Image Dimension', async () => {
+		await openSidebar(page, 'image dimension');
+
+		// width
+		await page.$eval(
+			'.maxi-image-inspector__dimension-width .components-input-control__input',
+			input => input.focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('60');
+
+		const imageWidth = await getBlockAttributes();
+		expect(imageWidth.imgWidth).toStrictEqual(60);
+
+		// reset width
+		const button = await page.$(
+			'.maxi-image-inspector__dimension-width button'
+		);
+		await button.click();
+
+		const imageWidthReset = await getBlockAttributes();
+		expect(imageWidthReset.imgWidth).toStrictEqual(100);
+
+		// imageRatio
+		const selector = await page.$('.maxi-image-inspector__ratio select');
+
+		await selector.select('ar11');
+
+		const ratio = await getBlockAttributes();
+		expect(ratio.imageRatio).toStrictEqual('ar11');
+
+		const checkFrontend = await page.$eval(
+			'.maxi-image-block .maxi-image-ratio__ar11',
+			div => div.innerHTML
+		);
+
+		expect(checkFrontend).toMatchSnapshot();
+	});
+	it('Image alt tag', async () => {
+		await openSidebar(page, 'image alt tag');
+
+		// select custom alt tag
+		const selector = await page.$('.maxi-image-inspector__alt-tag select');
+		await selector.select('custom');
+
+		await page.$eval('.maxi-image-inspector__custom-tag input', input =>
+			input.focus()
+		);
+
+		await page.keyboard.type('Image Tag');
+
+		const altTag = await getBlockAttributes();
+		expect(altTag.mediaAlt).toStrictEqual('Image Tag');
+
+		const previewPage = await openPreviewPage(page);
+		await page.waitForTimeout(200);
+		const expectAlt = await previewPage.$eval(
+			'figure div img',
+			alterative => alterative.alt
+		);
+		expect(expectAlt).toStrictEqual('Image Tag');
 	});
 });

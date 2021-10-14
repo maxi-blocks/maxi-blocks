@@ -302,6 +302,7 @@ const Inspector = memo(
 																/>
 															)}
 														<RangeControl
+															className='maxi-image-inspector__dimension-width'
 															label={__(
 																'Width',
 																'maxi-blocks'
@@ -336,6 +337,7 @@ const Inspector = memo(
 															)}
 														/>
 														<SelectControl
+															className='maxi-image-inspector__ratio'
 															label={__(
 																'Image Ratio',
 																'maxi-blocks'
@@ -402,6 +404,7 @@ const Inspector = memo(
 												content: (
 													<>
 														<SelectControl
+															className='maxi-image-inspector__alt-tag'
 															label={__(
 																'Image Alt Tag',
 																'maxi-blocks'
@@ -427,6 +430,7 @@ const Inspector = memo(
 														{altSelector ===
 															'custom' && (
 															<TextControl
+																className='maxi-image-inspector__custom-tag'
 																placeholder={__(
 																	'Add Your Alt Tag Here',
 																	'maxi-blocks'

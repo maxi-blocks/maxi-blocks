@@ -56,6 +56,8 @@ const attributes = {
 	...attributesData.borderRadiusHover,
 	...attributesData.borderWidth,
 	...attributesData.borderWidthHover,
+	...getPrefixedAttributes(attributesData.boxShadow, 'svg-'),
+	...getPrefixedAttributes(attributesData.boxShadowHover, 'svg-'),
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.display,

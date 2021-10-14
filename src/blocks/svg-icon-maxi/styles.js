@@ -27,6 +27,12 @@ const getWrapperObject = props => {
 			},
 			parentBlockStyle: props.parentBlockStyle,
 		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 	};
 
 	return response;
@@ -47,6 +53,15 @@ const getWrapperObjectHover = props => {
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
 			}),
+		boxShadow:
+			props['box-shadow-status-hover'] &&
+			getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', true),
+				},
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
 	};
 
 	return response;
@@ -59,9 +74,10 @@ const getNormalObject = props => {
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
-				...getGroupAttributes(props, 'boxShadow'),
+				...getGroupAttributes(props, 'boxShadow', false, 'svg-'),
 			},
 			parentBlockStyle: props.parentBlockStyle,
+			prefix: 'svg-',
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
@@ -129,13 +145,14 @@ const getHoverObject = props => {
 				prefix: 'svg-',
 			}),
 		boxShadow:
-			props['box-shadow-status-hover'] &&
+			props['svg-box-shadow-status-hover'] &&
 			getBoxShadowStyles({
 				obj: {
-					...getGroupAttributes(props, 'boxShadow', true),
+					...getGroupAttributes(props, 'boxShadow', true, 'svg-'),
 				},
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
+				prefix: 'svg-',
 			}),
 	};
 

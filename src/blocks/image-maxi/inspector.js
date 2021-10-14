@@ -182,7 +182,7 @@ const Inspector = memo(
 					deviceType={deviceType}
 					items={[
 						{
-							label: __('Style', 'maxi-blocks'),
+							label: __('Settings', 'maxi-blocks'),
 							content: (
 								<>
 									{deviceType === 'general' && (
@@ -210,28 +210,9 @@ const Inspector = memo(
 									<AccordionControl
 										isSecondary
 										items={[
-											{
-												label: __(
-													'Alignment',
-													'maxi-blocks'
-												),
-												content: (
-													<AlignmentControl
-														{...getGroupAttributes(
-															attributes,
-															'alignment'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														disableJustify
-													/>
-												),
-											},
 											deviceType === 'general' && {
 												label: __(
-													'Image Dimension',
+													'Dimension',
 													'maxi-blocks'
 												),
 												content: (
@@ -394,9 +375,28 @@ const Inspector = memo(
 													</>
 												),
 											},
+											{
+												label: __(
+													'Alignment',
+													'maxi-blocks'
+												),
+												content: (
+													<AlignmentControl
+														{...getGroupAttributes(
+															attributes,
+															'alignment'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+														disableJustify
+													/>
+												),
+											},
 											deviceType === 'general' && {
 												label: __(
-													'Image Alt Tag',
+													'Alt tag',
 													'maxi-blocks'
 												),
 												content: (
@@ -523,6 +523,38 @@ const Inspector = memo(
 											},
 											{
 												label: __(
+													'Hover effect',
+													'maxi-blocks'
+												),
+												content: (
+													<HoverEffectControl
+														uniqueID={uniqueID}
+														{...getGroupAttributes(
+															attributes,
+															[
+																'hover',
+																'hoverBorder',
+																'hoverBorderWidth',
+																'hoverBorderRadius',
+																'hoverBackground',
+																'hoverBackgroundColor',
+																'hoverBackgroundGradient',
+																'hoverMargin',
+																'hoverPadding',
+																'hoverTitleTypography',
+																'hoverContentTypography',
+															]
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														blockStyle={blockStyle}
+														clientId={clientId}
+													/>
+												),
+											},
+											{
+												label: __(
 													'Shape mask',
 													'maxi-blocks'
 												),
@@ -540,127 +572,19 @@ const Inspector = memo(
 													/>
 												),
 											},
-											deviceType === 'general' && {
+											{
 												label: __(
-													'Background',
+													'Clip-path',
 													'maxi-blocks'
 												),
-												disablePadding: true,
 												content: (
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Normal',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<BackgroundControl
-																			{...getGroupAttributes(
-																				attributes,
-																				[
-																					'background',
-																					'backgroundColor',
-																					'backgroundImage',
-																					'backgroundVideo',
-																					'backgroundGradient',
-																					'backgroundSVG',
-																				]
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			clientId={
-																				clientId
-																			}
-																		/>
-																	</>
-																),
-															},
-															{
-																label: __(
-																	'Hover',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<ToggleSwitch
-																			label={__(
-																				'Enable Background Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				attributes[
-																					'background-status-hover'
-																				]
-																			}
-																			className='maxi-background-status-hover'
-																			onChange={val =>
-																				setAttributes(
-																					{
-																						...(val &&
-																							setHoverAttributes(
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										]
-																									),
-																								},
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										],
-																										true
-																									),
-																								}
-																							)),
-																						'background-status-hover':
-																							val,
-																					}
-																				)
-																			}
-																		/>
-																		{attributes[
-																			'background-status-hover'
-																		] && (
-																			<BackgroundControl
-																				{...getGroupAttributes(
-																					attributes,
-																					[
-																						'backgroundHover',
-																						'backgroundColorHover',
-																						'backgroundGradientHover',
-																					]
-																				)}
-																				onChange={obj =>
-																					setAttributes(
-																						obj
-																					)
-																				}
-																				disableImage
-																				disableVideo
-																				disableSVG
-																				isHover
-																				clientId={
-																					clientId
-																				}
-																			/>
-																		)}
-																	</>
-																),
-															},
-														]}
+													<ClipPath
+														clipPath={clipPath}
+														onChange={clipPath =>
+															setAttributes({
+																clipPath,
+															})
+														}
 													/>
 												),
 											},
@@ -789,54 +713,7 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Height / Width',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														{isFirstOnHierarchy && (
-															<ToggleSwitch
-																label={__(
-																	'Set image to full-width',
-																	'maxi-blocks'
-																)}
-																selected={
-																	fullWidth ===
-																	'full'
-																}
-																onChange={val =>
-																	setAttributes(
-																		{
-																			fullWidth:
-																				val
-																					? 'full'
-																					: 'normal',
-																		}
-																	)
-																}
-															/>
-														)}
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'size'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															hideWith
-														/>
-													</>
-												),
-											},
-											{
-												label: __(
-													'Box Shadow',
+													'Box shadow',
 													'maxi-blocks'
 												),
 												disablePadding: true,
@@ -942,7 +819,54 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Padding & Margin',
+													'Height / Width',
+													'maxi-blocks'
+												),
+												content: (
+													<>
+														{isFirstOnHierarchy && (
+															<ToggleSwitch
+																label={__(
+																	'Set image to full-width',
+																	'maxi-blocks'
+																)}
+																selected={
+																	fullWidth ===
+																	'full'
+																}
+																onChange={val =>
+																	setAttributes(
+																		{
+																			fullWidth:
+																				val
+																					? 'full'
+																					: 'normal',
+																		}
+																	)
+																}
+															/>
+														)}
+														<FullSizeControl
+															{...getGroupAttributes(
+																attributes,
+																'size'
+															)}
+															onChange={obj =>
+																setAttributes(
+																	obj
+																)
+															}
+															breakpoint={
+																deviceType
+															}
+															hideWith
+														/>
+													</>
+												),
+											},
+											{
+												label: __(
+													'Margin / Padding',
 													'maxi-blocks'
 												),
 												content: (
@@ -996,6 +920,156 @@ const Inspector = memo(
 							),
 						},
 						{
+							label: __('Canvas', 'maxi-blocks'),
+							content: (
+								<AccordionControl
+									isPrimary
+									items={[
+										deviceType === 'general' && {
+											label: __(
+												'Background / Layer',
+												'maxi-blocks'
+											),
+											disablePadding: true,
+											content: (
+												<SettingTabsControl
+													items={[
+														{
+															label: __(
+																'Normal',
+																'maxi-blocks'
+															),
+															content: (
+																<>
+																	<BackgroundControl
+																		{...getGroupAttributes(
+																			attributes,
+																			[
+																				'background',
+																				'backgroundColor',
+																				'backgroundImage',
+																				'backgroundVideo',
+																				'backgroundGradient',
+																				'backgroundSVG',
+																			]
+																		)}
+																		onChange={obj =>
+																			setAttributes(
+																				obj
+																			)
+																		}
+																		clientId={
+																			clientId
+																		}
+																	/>
+																</>
+															),
+														},
+														{
+															label: __(
+																'Hover',
+																'maxi-blocks'
+															),
+															content: (
+																<>
+																	<ToggleSwitch
+																		label={__(
+																			'Enable Background Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={
+																			attributes[
+																				'background-status-hover'
+																			]
+																		}
+																		className='maxi-background-status-hover'
+																		onChange={val =>
+																			setAttributes(
+																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'background',
+																										'backgroundColor',
+																										'backgroundGradient',
+																									]
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'background',
+																										'backgroundColor',
+																										'backgroundGradient',
+																									],
+																									true
+																								),
+																							}
+																						)),
+																					'background-status-hover':
+																						val,
+																				}
+																			)
+																		}
+																	/>
+																	{attributes[
+																		'background-status-hover'
+																	] && (
+																		<BackgroundControl
+																			{...getGroupAttributes(
+																				attributes,
+																				[
+																					'backgroundHover',
+																					'backgroundColorHover',
+																					'backgroundGradientHover',
+																				]
+																			)}
+																			onChange={obj =>
+																				setAttributes(
+																					obj
+																				)
+																			}
+																			disableImage
+																			disableVideo
+																			disableSVG
+																			isHover
+																			clientId={
+																				clientId
+																			}
+																		/>
+																	)}
+																</>
+															),
+														},
+													]}
+												/>
+											),
+										},
+										{
+											label: __('Opacity', 'maxi-blocks'),
+											content: (
+												<OpacityControl
+													{...getGroupAttributes(
+														attributes,
+														'opacity'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+												/>
+											),
+										},
+									]}
+								/>
+							),
+						},
+
+						{
 							label: __('Advanced', 'maxi-blocks'),
 							content: (
 								<>
@@ -1004,7 +1078,7 @@ const Inspector = memo(
 										items={[
 											deviceType === 'general' && {
 												label: __(
-													'Custom Classes',
+													'Add CSS class/id',
 													'maxi-blocks'
 												),
 												content: (
@@ -1018,22 +1092,6 @@ const Inspector = memo(
 														onChange={extraClassName =>
 															setAttributes({
 																extraClassName,
-															})
-														}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Clip-Path',
-													'maxi-blocks'
-												),
-												content: (
-													<ClipPath
-														clipPath={clipPath}
-														onChange={clipPath =>
-															setAttributes({
-																clipPath,
 															})
 														}
 													/>
@@ -1058,38 +1116,6 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Hover Effects',
-													'maxi-blocks'
-												),
-												content: (
-													<HoverEffectControl
-														uniqueID={uniqueID}
-														{...getGroupAttributes(
-															attributes,
-															[
-																'hover',
-																'hoverBorder',
-																'hoverBorderWidth',
-																'hoverBorderRadius',
-																'hoverBackground',
-																'hoverBackgroundColor',
-																'hoverBackgroundGradient',
-																'hoverMargin',
-																'hoverPadding',
-																'hoverTitleTypography',
-																'hoverContentTypography',
-															]
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														blockStyle={blockStyle}
-														clientId={clientId}
-													/>
-												),
-											},
-											{
-												label: __(
 													'Transform',
 													'maxi-blocks'
 												),
@@ -1109,7 +1135,7 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Display',
+													'Show/hide block',
 													'maxi-blocks'
 												),
 												content: (
@@ -1163,42 +1189,6 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Z-index',
-													'maxi-blocks'
-												),
-												content: (
-													<ZIndexControl
-														{...getGroupAttributes(
-															attributes,
-															'zIndex'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Opacity',
-													'maxi-blocks'
-												),
-												content: (
-													<OpacityControl
-														{...getGroupAttributes(
-															attributes,
-															'opacity'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-											{
-												label: __(
 													'Overflow',
 													'maxi-blocks'
 												),
@@ -1207,6 +1197,24 @@ const Inspector = memo(
 														{...getGroupAttributes(
 															attributes,
 															'overflow'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Z-index',
+													'maxi-blocks'
+												),
+												content: (
+													<ZIndexControl
+														{...getGroupAttributes(
+															attributes,
+															'zIndex'
 														)}
 														onChange={obj =>
 															setAttributes(obj)

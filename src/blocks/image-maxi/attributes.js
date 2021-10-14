@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Imports
  */
 import * as attributesData from '../../extensions/styles/defaults/index';
+import { getPrefixedAttributes } from '../../extensions/styles';
 
 /**
  * Attributes

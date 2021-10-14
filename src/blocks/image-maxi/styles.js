@@ -31,10 +31,14 @@ import { isEmpty, isNil } from 'lodash';
 const getNormalObject = props => {
 	const response = {
 		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
+			obj: {
+				...getGroupAttributes(props, 'margin'),
+			},
 		}),
 		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
+			obj: {
+				...getGroupAttributes(props, 'padding'),
+			},
 		}),
 		zIndex: getZIndexStyles({
 			...getGroupAttributes(props, 'zIndex'),
@@ -81,18 +85,18 @@ const getHoverEffectDetailsBoxObject = props => {
 				parentBlockStyle: props.parentBlockStyle,
 			}),
 		}),
-		margin: getMarginPaddingStyles(
-			{
+		margin: getMarginPaddingStyles({
+			obj: {
 				...getGroupAttributes(props, 'hoverMargin'),
 			},
-			'hover-'
-		),
-		padding: getMarginPaddingStyles(
-			{
+			prefix: 'hover-',
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
 				...getGroupAttributes(props, 'hoverPadding'),
 			},
-			'hover-'
-		),
+			prefix: 'hover-',
+		}),
 		background: {
 			...getHoverEffectsBackgroundStyles(
 				{

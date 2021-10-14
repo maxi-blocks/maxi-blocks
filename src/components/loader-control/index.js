@@ -78,9 +78,10 @@ const LoaderControl = props => {
 						<div className='maxi-loader-content'>
 							{options.map(option => (
 								<Button
+									key={`maxi-loader-control__content-item-${option.value}`}
 									className={classnames(
 										'maxi-loader-control__content-item',
-										`maxi-loader-control__content-item${option.value}`
+										`maxi-loader-control__content-item-${option.value}`
 									)}
 									onClick={() => {
 										onClick(option.value);

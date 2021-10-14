@@ -482,7 +482,7 @@ const BackgroundLayersControl = ({
 									clientId={clientId}
 									layer={layer}
 									onChange={newLayer => {
-										layers[layer.id - 1] = newLayer;
+										layers[i] = newLayer;
 
 										onChange({
 											'background-layers': layers,

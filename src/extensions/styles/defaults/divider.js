@@ -7,6 +7,9 @@ const divider = {
 		type: 'number',
 		default: 4,
 	},
+	'divider-palette-border-opacity': {
+		type: 'number',
+	},
 	'divider-border-color': {
 		type: 'string',
 	},

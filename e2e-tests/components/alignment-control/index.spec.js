@@ -14,17 +14,19 @@ import {
 } from '../../utils';
 
 describe('AlignmentControl', () => {
-	it('Checking the operation of alignment-control', async () => {
+	beforeAll(async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
+	});
+	it('Checking the operation of alignment-control', async () => {
 		await page.$eval('.toolbar-item__alignment', button => button.click());
 
 		await page.waitForSelector(
 			'.components-popover__content .maxi-alignment-control__no-label'
 		);
 		const alignmentSettings = await page.$$(
-			'.components-popover__content .maxi-alignment-control__no-label .components-radio-control__option'
+			'.components-popover__content .maxi-alignment-control__no-label .maxi-radio-control__option'
 		);
 
 		const alignments = ['center', 'right', 'justify', 'left'];
@@ -34,12 +36,12 @@ describe('AlignmentControl', () => {
 
 			await setting.click();
 
-			const attribute = attributes['text-alignment-general'];
 			const attributes = await getBlockAttributes();
-
+			const attribute = attributes['text-alignment-general'];
 			expect(attribute).toStrictEqual(alignments[i]);
 		}
 	});
+
 	it('Check Responsive text-alignment control', async () => {
 		const accordionPanel = await openSidebar(page, 'alignment');
 
@@ -88,9 +90,12 @@ describe('AlignmentControl', () => {
 		);
 
 		expect(responsiveMOption).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 
 	it('Check Responsive alignment control', async () => {
+		await createNewPost();
 		await insertBlock('Button Maxi');
 		const accordionPanel = await openSidebar(page, 'alignment');
 

@@ -118,7 +118,8 @@ class edit extends MaxiBlockComponent {
 
 		const classes = classnames(
 			'maxi-image-block',
-			fullWidth === 'full' && 'alignfull'
+			fullWidth === 'full' && 'alignfull',
+			attributes['motion-status-vertical-general'] && 'maxi-block-motion'
 		);
 
 		const wrapperClassName = classnames(
@@ -201,6 +202,39 @@ class edit extends MaxiBlockComponent {
 			}
 		};
 
+		const motionData = () => {
+			const response = {};
+			const { attributes } = this.props;
+			const motionSettings = [
+				'speed',
+				'direction',
+				'offset-start',
+				'offset-middle',
+				'offset-top',
+				'viewport-bottom',
+				'viewport-middle',
+				'viewport-top',
+			];
+
+			const dataMotionTypeValue = attributes[
+				'motion-status-vertical-general'
+			]
+				? 'vertical'
+				: '';
+			response['data-motion-type'] = dataMotionTypeValue;
+
+			motionSettings.map(setting => {
+				const motionSettingValue =
+					attributes[`motion-${setting}-vertical-general`];
+				if (attributes[`motion-${setting}-vertical-general`])
+					response[`data-motion-${setting}`] = motionSettingValue;
+
+				return null;
+			});
+
+			return response;
+		};
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -224,6 +258,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				tagName='figure'
 				className={classes}
+				{...motionData()}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<MediaUpload

@@ -58,10 +58,46 @@ const save = props => {
 			`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 	);
 
+	const motionData = () => {
+		const response = {};
+		const { attributes } = props;
+		const motionSettings = [
+			'speed',
+			'direction',
+			'offset-start',
+			'offset-middle',
+			'offset-top',
+			'viewport-bottom',
+			'viewport-middle',
+			'viewport-top',
+		];
+
+		const dataMotionTypeValue = attributes['motion-status-vertical-general']
+			? 'vertical'
+			: '';
+		response['data-motion-type'] = dataMotionTypeValue;
+
+		motionSettings.map(setting => {
+			const motionSettingValue =
+				attributes[`motion-${setting}-vertical-general`];
+			if (attributes[`motion-${setting}-vertical-general`])
+				response[`data-motion-${setting}`] = motionSettingValue;
+
+			return null;
+		});
+
+		return response;
+	};
+
 	return (
 		<MaxiBlock
 			tagName='figure'
-			className={fullWidth === 'full' && 'alignfull'}
+			className={
+				(fullWidth === 'full' && 'alignfull',
+				attributes['motion-status-vertical-general'] &&
+					'maxi-block-motion')
+			}
+			{...motionData()}
 			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>

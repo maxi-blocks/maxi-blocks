@@ -337,115 +337,6 @@ motionElements.forEach(function (elem) {
 				});
 			}
 		}
-
-		// Motion Effects
-		const interactionStatus = motionData['motion-status'];
-		const motionMobileStatus = motionData['motion-mobile-status'];
-		const motionTabletStatus = motionData['motion-tablet-status'];
-		const xAxis = motionData['motion-transform-origin-x'];
-		const yAxis = motionData['motion-transform-origin-y'];
-
-		if (
-			!!interactionStatus &&
-			((!!motionMobileStatus && getDeviceType() === 'mobile') ||
-				(!!motionTabletStatus && getDeviceType() === 'tablet') ||
-				getDeviceType() === 'desktop')
-		) {
-			Object.entries(motionData['motion-time-line']).forEach(
-				([key, value], index, array) => {
-					let actions = {};
-					value.forEach(act => {
-						switch (act.type) {
-							case 'move':
-								actions = {
-									...actions,
-									x:
-										act.settings.unit !== ''
-											? `${act.settings.x}${act.settings.unitX}`
-											: act.settings.x,
-									y:
-										act.settings.unit !== ''
-											? `${act.settings.y}${act.settings.unitY}`
-											: act.settings.y,
-									z:
-										act.settings.unit !== ''
-											? `${act.settings.z}${act.settings.unitZ}`
-											: act.settings.z,
-									transformPerspective: 1000,
-									transformStyle: 'preserve-3d',
-									transformOrigin: `${xAxis} ${yAxis}`,
-								};
-								break;
-							case 'rotate':
-								actions = {
-									...actions,
-									rotationX: act.settings.x,
-									rotationY: act.settings.y,
-									rotationZ: act.settings.z,
-									transformPerspective: 1000,
-									transformStyle: 'preserve-3d',
-									transformOrigin: `${xAxis} ${yAxis}`,
-								};
-								break;
-
-							case 'scale':
-								actions = {
-									...actions,
-									scaleX: act.settings.x,
-									scaleY: act.settings.y,
-									scaleZ: act.settings.z,
-									transformPerspective: 1000,
-									transformStyle: 'preserve-3d',
-									transformOrigin: `${xAxis} ${yAxis}`,
-								};
-								break;
-							case 'skew':
-								actions = {
-									...actions,
-									skewX: act.settings.x,
-									skewY: act.settings.y,
-									transformOrigin: `${xAxis} ${yAxis}`,
-								};
-								break;
-							case 'opacity':
-								actions = {
-									...actions,
-									autoAlpha: act.settings.opacity,
-								};
-								break;
-							case 'blur':
-								actions = {
-									...actions,
-									webkitFilter: `blur(${act.settings.blur}px)`,
-									filter: `blur(${act.settings.blur}px)`,
-								};
-								break;
-							default:
-						}
-					});
-
-					const startTime = Number(key);
-					const endTime = array[index + 1]
-						? Number(array[index + 1][0])
-						: null;
-
-					endTime !== null &&
-						ScrollTrigger.create({
-							trigger: document.body,
-							start: `${startTime}% ${startTime}%`,
-							end: `${endTime}% ${endTime}%`,
-							animation: gsap
-								.timeline({
-									paused: true,
-									reversed: true,
-								})
-								.to(`#${motionID}`, actions),
-							scrub: true,
-							markers: false,
-						});
-				}
-			);
-		}
 	}
 });
 
@@ -510,4 +401,44 @@ containerElems.forEach(function (elem) {
 			}
 		}
 	}
+});
+
+// Motion Effects
+const className = 'maxi-container-motion';
+const elements = Array.from(
+	document.getElementsByClassName('maxi-block-motion')
+);
+
+elements.forEach(function (element, index) {
+	const viewportTopPercent =
+		parseFloat(element.getAttribute('data-motion-viewport-top')) || 0;
+	const viewportBottomPercent =
+		parseFloat(element.getAttribute('data-motion-viewport-bottom')) || 0;
+	const viewportMidPercent =
+		parseFloat(element.getAttribute('data-motion-viewport-middle')) || 0;
+
+	element.parentNode
+		.closest('.maxi-container-block')
+		.classList.add(className);
+
+	console.log(viewportBottomPercent + viewportTopPercent);
+
+	const parentHeight =
+		element.parentNode.closest('.maxi-container-block').offsetHeight -
+		(viewportBottomPercent + viewportTopPercent);
+	const windowHeight = window.innerHeight;
+	const style = window.getComputedStyle(element);
+	const transform = parseInt(style.getPropertyValue('top'), 10) * 2;
+
+	console.log(`transform ${transform}`);
+	console.log(`parentHeight ${parentHeight}`);
+	console.log(`windowHeight ${windowHeight}`);
+
+	element.setAttribute('transform', transform);
+
+	const transformSize = transform / (parentHeight + windowHeight);
+
+	console.log(`transformSize ${transformSize}`);
+
+	element.setAttribute('transform-size', transformSize);
 });

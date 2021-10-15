@@ -6,14 +6,14 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes } from '../../utils';
+import { getBlockAttributes } from '../../../../utils';
 
 describe('AlignmentControl', () => {
 	it('Checking the operation of alignment-control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		debugger;
+
 		await page.$eval('.toolbar-wrapper .toolbar-item__alignment', button =>
 			button.click()
 		);

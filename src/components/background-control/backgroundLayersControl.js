@@ -516,11 +516,14 @@ const BackgroundLayersControl = ({
 					options={getOptions()}
 					buttonText={__('Add New Layer', 'maxi-blocks')}
 					onClick={value => {
-						layers.push(getObject(value));
+						const newLayer = getObject(value);
+						layers.push(newLayer);
 
 						onChange({
 							'background-layers': layers,
 						});
+
+						changeSelector(newLayer.id);
 					}}
 					forwards
 					buttonLess

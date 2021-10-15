@@ -6,9 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SVGFillControl from '../svg-fill-control';
-import AdvancedNumberControl from '../advanced-number-control';
 import {
 	getDefaultAttribute,
 	getAttributeKey,
@@ -21,7 +22,6 @@ import MaxiModal from '../../editor/library/modal';
  * External dependencies
  */
 import { isEmpty, cloneDeep } from 'lodash';
-import { ResponsiveTabsControl } from '..';
 
 /**
  * Component

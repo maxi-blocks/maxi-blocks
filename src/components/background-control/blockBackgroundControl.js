@@ -3,7 +3,7 @@
  */
 import { getAttributeValue, getGroupAttributes } from '../../extensions/styles';
 import BackgroundLayersControl from './backgroundLayersControl';
-import { ParallaxControl } from '..';
+import ParallaxControl from '../parallax-control';
 
 /**
  * External dependencies

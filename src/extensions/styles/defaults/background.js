@@ -1,11 +1,14 @@
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+export const blockBackground = {
+	'background-layers': {
+		type: 'array',
+	},
+};
+
 const backgroundGeneral = {
 	'background-active-media-general': {
 		type: 'string',
-	},
-	'background-layers': {
-		type: 'array',
 	},
 };
 

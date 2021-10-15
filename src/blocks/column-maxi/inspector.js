@@ -19,6 +19,7 @@ import {
 	DisplayControl,
 	InfoBox,
 	OpacityControl,
+	OverflowControl,
 	ResponsiveControl,
 	SelectControl,
 	SettingTabsControl,
@@ -26,7 +27,6 @@ import {
 	ToggleSwitch,
 	TransformControl,
 	ZIndexControl,
-	OverflowControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -65,7 +65,7 @@ const Inspector = props => {
 				deviceType={deviceType}
 				items={[
 					{
-						label: __('Style', 'maxi-blocks'),
+						label: __('Settings', 'maxi-blocks'),
 						content: (
 							<>
 								{deviceType === 'general' && (
@@ -91,7 +91,7 @@ const Inspector = props => {
 									items={[
 										{
 											label: __(
-												'Column Settings',
+												'Column settings',
 												'maxi-blocks'
 											),
 											content: (
@@ -196,7 +196,7 @@ const Inspector = props => {
 										},
 										deviceType === 'general' && {
 											label: __(
-												'Background',
+												'Background / Layer',
 												'maxi-blocks'
 											),
 											disablePadding: true,
@@ -442,7 +442,7 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Box Shadow',
+												'Box shadow',
 												'maxi-blocks'
 											),
 											disablePadding: true,
@@ -523,7 +523,8 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				'boxShadowHover'
+																				'boxShadow',
+																				true
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -548,7 +549,7 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Padding / Margin',
+												'Margin / Padding',
 												'maxi-blocks'
 											),
 											content: (
@@ -601,7 +602,7 @@ const Inspector = props => {
 								items={[
 									deviceType === 'general' && {
 										label: __(
-											'Custom classes',
+											'Add CSS class/id',
 											'maxi-blocks'
 										),
 										content: (
@@ -637,7 +638,10 @@ const Inspector = props => {
 										),
 									},
 									{
-										label: __('Display', 'maxi-blocks'),
+										label: __(
+											'Show/hide block',
+											'maxi-blocks'
+										),
 										content: (
 											<DisplayControl
 												{...getGroupAttributes(
@@ -658,21 +662,6 @@ const Inspector = props => {
 												{...getGroupAttributes(
 													attributes,
 													'breakpoints'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Z-index', 'maxi-blocks'),
-										content: (
-											<ZIndexControl
-												{...getGroupAttributes(
-													attributes,
-													'zIndex'
 												)}
 												onChange={obj =>
 													setAttributes(obj)
@@ -703,6 +692,21 @@ const Inspector = props => {
 												{...getGroupAttributes(
 													attributes,
 													'overflow'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Z-index', 'maxi-blocks'),
+										content: (
+											<ZIndexControl
+												{...getGroupAttributes(
+													attributes,
+													'zIndex'
 												)}
 												onChange={obj =>
 													setAttributes(obj)

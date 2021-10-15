@@ -19,6 +19,7 @@ import {
 	FullSizeControl,
 	InfoBox,
 	OpacityControl,
+	OverflowControl,
 	PositionControl,
 	ResponsiveControl,
 	SelectControl,
@@ -27,7 +28,6 @@ import {
 	ToggleSwitch,
 	TransformControl,
 	ZIndexControl,
-	OverflowControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -65,7 +65,7 @@ const Inspector = props => {
 				deviceType={deviceType}
 				items={[
 					{
-						label: __('Style', 'maxi-blocks'),
+						label: __('Settings', 'maxi-blocks'),
 						content: (
 							<>
 								{deviceType === 'general' && (
@@ -91,7 +91,7 @@ const Inspector = props => {
 									items={[
 										{
 											label: __(
-												'Row Settings',
+												'Column picker',
 												'maxi-blocks'
 											),
 											content: (
@@ -220,7 +220,7 @@ const Inspector = props => {
 										},
 										deviceType === 'general' && {
 											label: __(
-												'Background',
+												'Background / Layer',
 												'maxi-blocks'
 											),
 											disablePadding: true,
@@ -465,43 +465,7 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Height / Width',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													<ToggleSwitch
-														label={__(
-															'Set row to full-width',
-															'maxi-blocks'
-														)}
-														selected={
-															fullWidth === 'full'
-														}
-														onChange={val =>
-															setAttributes({
-																fullWidth: val
-																	? 'full'
-																	: 'normal',
-															})
-														}
-													/>
-													<FullSizeControl
-														{...getGroupAttributes(
-															attributes,
-															'size'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												</>
-											),
-										},
-										{
-											label: __(
-												'Box Shadow',
+												'Box shadow',
 												'maxi-blocks'
 											),
 											disablePadding: true,
@@ -582,7 +546,8 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				'boxShadowHover'
+																				'boxShadow',
+																				true
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -607,7 +572,43 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Padding / Margin',
+												'Height / Width',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													<ToggleSwitch
+														label={__(
+															'Set row to full-width',
+															'maxi-blocks'
+														)}
+														selected={
+															fullWidth === 'full'
+														}
+														onChange={val =>
+															setAttributes({
+																fullWidth: val
+																	? 'full'
+																	: 'normal',
+															})
+														}
+													/>
+													<FullSizeControl
+														{...getGroupAttributes(
+															attributes,
+															'size'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												</>
+											),
+										},
+										{
+											label: __(
+												'Margin / Padding',
 												'maxi-blocks'
 											),
 											content: (
@@ -660,7 +661,7 @@ const Inspector = props => {
 								items={[
 									deviceType === 'general' && {
 										label: __(
-											'Custom classes',
+											'Add CSS class/id',
 											'maxi-blocks'
 										),
 										content: (
@@ -696,12 +697,30 @@ const Inspector = props => {
 										),
 									},
 									{
-										label: __('Display', 'maxi-blocks'),
+										label: __(
+											'Show/hide block',
+											'maxi-blocks'
+										),
 										content: (
 											<DisplayControl
 												{...getGroupAttributes(
 													attributes,
 													'display'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Opacity', 'maxi-blocks'),
+										content: (
+											<OpacityControl
+												{...getGroupAttributes(
+													attributes,
+													'opacity'
 												)}
 												onChange={obj =>
 													setAttributes(obj)
@@ -741,42 +760,27 @@ const Inspector = props => {
 										),
 									},
 									{
-										label: __('Z-index', 'maxi-blocks'),
-										content: (
-											<ZIndexControl
-												{...getGroupAttributes(
-													attributes,
-													'zIndex'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Opacity', 'maxi-blocks'),
-										content: (
-											<OpacityControl
-												{...getGroupAttributes(
-													attributes,
-													'opacity'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
 										label: __('Overflow', 'maxi-blocks'),
 										content: (
 											<OverflowControl
 												{...getGroupAttributes(
 													attributes,
 													'overflow'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Z-index', 'maxi-blocks'),
+										content: (
+											<ZIndexControl
+												{...getGroupAttributes(
+													attributes,
+													'zIndex'
 												)}
 												onChange={obj =>
 													setAttributes(obj)

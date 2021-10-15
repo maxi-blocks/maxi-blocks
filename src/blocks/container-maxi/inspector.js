@@ -21,6 +21,7 @@ import {
 	InfoBox,
 	MotionControl,
 	OpacityControl,
+	OverflowControl,
 	ParallaxControl,
 	PositionControl,
 	ResponsiveControl,
@@ -30,7 +31,6 @@ import {
 	ToggleSwitch,
 	TransformControl,
 	ZIndexControl,
-	OverflowControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -66,7 +66,7 @@ const Inspector = props => {
 				deviceType={deviceType}
 				items={[
 					{
-						label: __('Style', 'maxi-blocks'),
+						label: __('Settings', 'maxi-blocks'),
 						content: (
 							<>
 								{deviceType === 'general' && (
@@ -92,115 +92,48 @@ const Inspector = props => {
 									items={[
 										{
 											label: __(
-												'Height / Width',
+												'Callout arrow',
 												'maxi-blocks'
 											),
 											content: (
-												<>
-													{isFirstOnHierarchy && (
-														<ToggleSwitch
-															label={__(
-																'Set container to full-width',
-																'maxi-blocks'
-															)}
-															selected={
-																fullWidth ===
-																'full'
-															}
-															onChange={val =>
-																setAttributes({
-																	fullWidth:
-																		val
-																			? 'full'
-																			: 'normal',
-																})
-															}
-														/>
+												<ArrowControl
+													{...getGroupAttributes(
+														attributes,
+														[
+															'background',
+															'arrow',
+															'border',
+														],
+														true
 													)}
-													{fullWidth === 'full' ? (
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'container'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															prefix='container-'
-															hideWidth
-															hideMaxWidth
-														/>
-													) : (
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'container'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															prefix='container-'
-															hideMaxWidth
-														/>
-													)}
-												</>
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													isFullWidth={fullWidth}
+													breakpoint={deviceType}
+												/>
 											),
 										},
 										{
 											label: __(
-												'Margin / Padding',
+												'Shape divider',
 												'maxi-blocks'
 											),
 											content: (
-												<>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'padding'
-														)}
-														label={__(
-															'Padding',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='padding'
-														disableAuto
-													/>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'margin'
-														)}
-														label={__(
-															'Margin',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='margin'
-														optionType='string'
-													/>
-												</>
+												<ShapeDividerControl
+													{...getGroupAttributes(
+														attributes,
+														'shapeDivider'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+												/>
 											),
 										},
 										deviceType === 'general' && {
 											label: __(
-												'Background',
+												'Background / Layer',
 												'maxi-blocks'
 											),
 											disablePadding: true,
@@ -543,7 +476,8 @@ const Inspector = props => {
 																		<BoxShadowControl
 																			{...getGroupAttributes(
 																				attributes,
-																				'boxShadowHover'
+																				'boxShadow',
+																				true
 																			)}
 																			onChange={obj =>
 																				setAttributes(
@@ -568,26 +502,110 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Callout arrow',
+												'Height / Width',
 												'maxi-blocks'
 											),
 											content: (
-												<ArrowControl
-													{...getGroupAttributes(
-														attributes,
-														[
-															'background',
-															'arrow',
-															'border',
-														],
-														true
+												<>
+													{isFirstOnHierarchy && (
+														<ToggleSwitch
+															label={__(
+																'Set container to full-width',
+																'maxi-blocks'
+															)}
+															selected={
+																fullWidth ===
+																'full'
+															}
+															onChange={val =>
+																setAttributes({
+																	fullWidth:
+																		val
+																			? 'full'
+																			: 'normal',
+																})
+															}
+														/>
 													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													isFullWidth={fullWidth}
-													breakpoint={deviceType}
-												/>
+													{fullWidth === 'full' ? (
+														<FullSizeControl
+															{...getGroupAttributes(
+																attributes,
+																'container'
+															)}
+															onChange={obj =>
+																setAttributes(
+																	obj
+																)
+															}
+															breakpoint={
+																deviceType
+															}
+															prefix='container-'
+															hideWidth
+															hideMaxWidth
+														/>
+													) : (
+														<FullSizeControl
+															{...getGroupAttributes(
+																attributes,
+																'container'
+															)}
+															onChange={obj =>
+																setAttributes(
+																	obj
+																)
+															}
+															breakpoint={
+																deviceType
+															}
+															prefix='container-'
+															hideMaxWidth
+														/>
+													)}
+												</>
+											),
+										},
+										{
+											label: __(
+												'Margin / Padding',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													<AxisControl
+														{...getGroupAttributes(
+															attributes,
+															'padding'
+														)}
+														label={__(
+															'Padding',
+															'maxi-blocks'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+														target='padding'
+														disableAuto
+													/>
+													<AxisControl
+														{...getGroupAttributes(
+															attributes,
+															'margin'
+														)}
+														label={__(
+															'Margin',
+															'maxi-blocks'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+														target='margin'
+														optionType='string'
+													/>
+												</>
 											),
 										},
 									]}
@@ -603,7 +621,7 @@ const Inspector = props => {
 								items={[
 									deviceType === 'general' && {
 										label: __(
-											'Custom classes',
+											'Add CSS class/id',
 											'maxi-blocks'
 										),
 										content: (
@@ -624,24 +642,7 @@ const Inspector = props => {
 									},
 									{
 										label: __(
-											'Shape divider',
-											'maxi-blocks'
-										),
-										content: (
-											<ShapeDividerControl
-												{...getGroupAttributes(
-													attributes,
-													'shapeDivider'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-											/>
-										),
-									},
-									{
-										label: __(
-											'Motion effects',
+											'Motion effect',
 											'maxi-blocks'
 										),
 										content: (
@@ -673,12 +674,30 @@ const Inspector = props => {
 										),
 									},
 									{
-										label: __('Display', 'maxi-blocks'),
+										label: __(
+											'Show/hide block',
+											'maxi-blocks'
+										),
 										content: (
 											<DisplayControl
 												{...getGroupAttributes(
 													attributes,
 													'display'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Opacity', 'maxi-blocks'),
+										content: (
+											<OpacityControl
+												{...getGroupAttributes(
+													attributes,
+													'opacity'
 												)}
 												onChange={obj =>
 													setAttributes(obj)
@@ -718,42 +737,27 @@ const Inspector = props => {
 										),
 									},
 									{
-										label: __('Z-index', 'maxi-blocks'),
-										content: (
-											<ZIndexControl
-												{...getGroupAttributes(
-													attributes,
-													'zIndex'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Opacity', 'maxi-blocks'),
-										content: (
-											<OpacityControl
-												{...getGroupAttributes(
-													attributes,
-													'opacity'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
 										label: __('Overflow', 'maxi-blocks'),
 										content: (
 											<OverflowControl
 												{...getGroupAttributes(
 													attributes,
 													'overflow'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Z-index', 'maxi-blocks'),
+										content: (
+											<ZIndexControl
+												{...getGroupAttributes(
+													attributes,
+													'zIndex'
 												)}
 												onChange={obj =>
 													setAttributes(obj)

@@ -41,10 +41,10 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'size'),
 		}),
 		margin: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'margin'),
+			obj: { ...getGroupAttributes(props, 'margin') },
 		}),
 		padding: getMarginPaddingStyles({
-			...getGroupAttributes(props, 'padding'),
+			obj: { ...getGroupAttributes(props, 'padding') },
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),

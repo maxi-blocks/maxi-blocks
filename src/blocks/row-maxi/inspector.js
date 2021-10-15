@@ -40,10 +40,10 @@ import {
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
+		blockFullWidth,
 		blockStyle,
 		customLabel,
 		extraClassName,
-		fullWidth,
 		horizontalAlign,
 		isFirstOnHierarchy,
 		uniqueID,
@@ -583,13 +583,15 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														selected={
-															fullWidth === 'full'
+															blockFullWidth ===
+															'full'
 														}
 														onChange={val =>
 															setAttributes({
-																fullWidth: val
-																	? 'full'
-																	: 'normal',
+																blockFullWidth:
+																	val
+																		? 'full'
+																		: 'normal',
 															})
 														}
 													/>

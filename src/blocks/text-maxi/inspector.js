@@ -24,6 +24,7 @@ import {
 	InfoBox,
 	MotionControl,
 	OpacityControl,
+	OverflowControl,
 	PositionControl,
 	ResponsiveControl,
 	SelectControl,
@@ -34,7 +35,6 @@ import {
 	TransitionControl,
 	TypographyControl,
 	ZIndexControl,
-	OverflowControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -53,18 +53,18 @@ const Inspector = memo(
 	props => {
 		const { attributes, deviceType, setAttributes, clientId } = props;
 		const {
-			customLabel,
-			isFirstOnHierarchy,
-			uniqueID,
+			blockFullWidth,
 			blockStyle,
-			fullWidth,
+			customLabel,
 			extraClassName,
-			textLevel,
+			isFirstOnHierarchy,
 			isList,
-			typeOfList,
-			listStart,
 			listReversed,
+			listStart,
 			parentBlockStyle,
+			textLevel,
+			typeOfList,
+			uniqueID,
 		} = attributes;
 
 		return (
@@ -82,7 +82,7 @@ const Inspector = memo(
 					deviceType={deviceType}
 					items={[
 						{
-							label: __('Style', 'maxi-blocks'),
+							label: __('Settings', 'maxi-blocks'),
 							content: (
 								<>
 									{deviceType === 'general' && (
@@ -110,29 +110,10 @@ const Inspector = memo(
 									<AccordionControl
 										isSecondary
 										items={[
-											{
-												label: __(
-													'Alignment',
-													'maxi-blocks'
-												),
-												content: (
-													<AlignmentControl
-														{...getGroupAttributes(
-															attributes,
-															'textAlignment'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														type='text'
-													/>
-												),
-											},
 											deviceType === 'general' &&
 												!isList && {
 													label: __(
-														'Level',
+														'Heading / Paragraph tag',
 														'maxi-blocks'
 													),
 													content: (
@@ -154,7 +135,7 @@ const Inspector = memo(
 											deviceType === 'general' &&
 												isList && {
 													label: __(
-														'List Options',
+														'List options',
 														'maxi-blocks'
 													),
 													content: (
@@ -268,6 +249,25 @@ const Inspector = memo(
 														</>
 													),
 												},
+											{
+												label: __(
+													'Alignment',
+													'maxi-blocks'
+												),
+												content: (
+													<AlignmentControl
+														{...getGroupAttributes(
+															attributes,
+															'textAlignment'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+														type='text'
+													/>
+												),
+											},
 											{
 												label: __(
 													'Typography',
@@ -384,7 +384,7 @@ const Inspector = memo(
 											},
 											deviceType === 'general' && {
 												label: __(
-													'Background',
+													'Background / Layer',
 													'maxi-blocks'
 												),
 												disablePadding: true,
@@ -635,53 +635,7 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Height / Width',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														{isFirstOnHierarchy && (
-															<ToggleSwitch
-																label={__(
-																	'Set text to full-width',
-																	'maxi-blocks'
-																)}
-																selected={
-																	fullWidth ===
-																	'full'
-																}
-																onChange={val =>
-																	setAttributes(
-																		{
-																			fullWidth:
-																				val
-																					? 'full'
-																					: 'normal',
-																		}
-																	)
-																}
-															/>
-														)}
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'size'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-														/>
-													</>
-												),
-											},
-											{
-												label: __(
-													'Box Shadow',
+													'Box shadow',
 													'maxi-blocks'
 												),
 												disablePadding: true,
@@ -764,7 +718,8 @@ const Inspector = memo(
 																			<BoxShadowControl
 																				{...getGroupAttributes(
 																					attributes,
-																					'boxShadowHover'
+																					'boxShadow',
+																					true
 																				)}
 																				onChange={obj =>
 																					setAttributes(
@@ -789,7 +744,53 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Padding / Margin',
+													'Height / Width',
+													'maxi-blocks'
+												),
+												content: (
+													<>
+														{isFirstOnHierarchy && (
+															<ToggleSwitch
+																label={__(
+																	'Set text to full-width',
+																	'maxi-blocks'
+																)}
+																selected={
+																	blockFullWidth ===
+																	'full'
+																}
+																onChange={val =>
+																	setAttributes(
+																		{
+																			blockFullWidth:
+																				val
+																					? 'full'
+																					: 'normal',
+																		}
+																	)
+																}
+															/>
+														)}
+														<FullSizeControl
+															{...getGroupAttributes(
+																attributes,
+																'size'
+															)}
+															onChange={obj =>
+																setAttributes(
+																	obj
+																)
+															}
+															breakpoint={
+																deviceType
+															}
+														/>
+													</>
+												),
+											},
+											{
+												label: __(
+													'Margin / Padding',
 													'maxi-blocks'
 												),
 												content: (
@@ -851,7 +852,7 @@ const Inspector = memo(
 										items={[
 											deviceType === 'general' && {
 												label: __(
-													'Custom Classes',
+													'Add CSS class/id',
 													'maxi-blocks'
 												),
 												content: (
@@ -872,7 +873,7 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Motion Effects',
+													'Motion effect',
 													'maxi-blocks'
 												),
 												content: (
@@ -908,7 +909,25 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Display',
+													'Hyperlink hover transition',
+													'maxi-blocks'
+												),
+												content: (
+													<TransitionControl
+														{...getGroupAttributes(
+															attributes,
+															'transitionDuration'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Show/hide block',
 													'maxi-blocks'
 												),
 												content: (
@@ -916,6 +935,24 @@ const Inspector = memo(
 														{...getGroupAttributes(
 															attributes,
 															'display'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Opacity',
+													'maxi-blocks'
+												),
+												content: (
+													<OpacityControl
+														{...getGroupAttributes(
+															attributes,
+															'opacity'
 														)}
 														onChange={obj =>
 															setAttributes(obj)
@@ -962,60 +999,6 @@ const Inspector = memo(
 											},
 											{
 												label: __(
-													'Z-index',
-													'maxi-blocks'
-												),
-												content: (
-													<ZIndexControl
-														{...getGroupAttributes(
-															attributes,
-															'zIndex'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Opacity',
-													'maxi-blocks'
-												),
-												content: (
-													<OpacityControl
-														{...getGroupAttributes(
-															attributes,
-															'opacity'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Link Hover Transition',
-													'maxi-blocks'
-												),
-												content: (
-													<TransitionControl
-														{...getGroupAttributes(
-															attributes,
-															'transitionDuration'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
-											{
-												label: __(
 													'Overflow',
 													'maxi-blocks'
 												),
@@ -1024,6 +1007,24 @@ const Inspector = memo(
 														{...getGroupAttributes(
 															attributes,
 															'overflow'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												),
+											},
+											{
+												label: __(
+													'Z-index',
+													'maxi-blocks'
+												),
+												content: (
+													<ZIndexControl
+														{...getGroupAttributes(
+															attributes,
+															'zIndex'
 														)}
 														onChange={obj =>
 															setAttributes(obj)

@@ -17,7 +17,7 @@ const attributes = {
 		type: 'string',
 		default: __('Map', 'maxi-blocks'),
 	},
-	fullWidth: {
+	blockFullWidth: {
 		type: 'string',
 		default: 'normal',
 	},
@@ -41,6 +41,14 @@ const attributes = {
 	...attributesData.display,
 	...attributesData.zIndex,
 	...attributesData.overflow,
+	...attributesData.border,
+	...attributesData.borderHover,
+	...attributesData.borderRadius,
+	...attributesData.borderRadiusHover,
+	...attributesData.borderWidth,
+	...attributesData.borderWidthHover,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
 };
 
 export default attributes;

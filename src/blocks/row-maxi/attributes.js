@@ -17,7 +17,7 @@ const attributes = {
 		type: 'string',
 		default: __('Row', 'maxi-blocks'),
 	},
-	fullWidth: {
+	blockFullWidth: {
 		type: 'string',
 		default: 'normal',
 	},

@@ -43,10 +43,10 @@ import {
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
+		blockFullWidth,
 		blockStyle,
 		customLabel,
 		extraClassName,
-		fullWidth,
 		isFirstOnHierarchy,
 		uniqueID,
 	} = attributes;
@@ -109,7 +109,7 @@ const Inspector = props => {
 													onChange={obj =>
 														setAttributes(obj)
 													}
-													isFullWidth={fullWidth}
+													isFullWidth={blockFullWidth}
 													breakpoint={deviceType}
 												/>
 											),
@@ -514,12 +514,12 @@ const Inspector = props => {
 																'maxi-blocks'
 															)}
 															selected={
-																fullWidth ===
+																blockFullWidth ===
 																'full'
 															}
 															onChange={val =>
 																setAttributes({
-																	fullWidth:
+																	blockFullWidth:
 																		val
 																			? 'full'
 																			: 'normal',
@@ -527,7 +527,8 @@ const Inspector = props => {
 															}
 														/>
 													)}
-													{fullWidth === 'full' ? (
+													{blockFullWidth ===
+													'full' ? (
 														<FullSizeControl
 															{...getGroupAttributes(
 																attributes,

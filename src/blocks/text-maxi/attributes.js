@@ -36,7 +36,7 @@ const attributes = {
 		type: 'number',
 		default: 0,
 	},
-	fullWidth: {
+	blockFullWidth: {
 		type: 'string',
 		default: 'normal',
 	},

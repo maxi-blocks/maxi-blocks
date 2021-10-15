@@ -42,12 +42,12 @@ import {
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
-		customLabel,
-		uniqueID,
-		isFirstOnHierarchy,
+		blockFullWidth,
 		blockStyle,
+		customLabel,
 		extraClassName,
-		fullWidth,
+		isFirstOnHierarchy,
+		uniqueID,
 	} = attributes;
 
 	return (
@@ -108,7 +108,7 @@ const Inspector = props => {
 													onChange={obj =>
 														setAttributes(obj)
 													}
-													isFullWidth={fullWidth}
+													isFullWidth={blockFullWidth}
 													breakpoint={deviceType}
 												/>
 											),
@@ -494,13 +494,15 @@ const Inspector = props => {
 															'maxi-blocks'
 														)}
 														selected={
-															fullWidth === 'full'
+															blockFullWidth ===
+															'full'
 														}
 														onChange={val =>
 															setAttributes({
-																fullWidth: val
-																	? 'full'
-																	: 'normal',
+																blockFullWidth:
+																	val
+																		? 'full'
+																		: 'normal',
 															})
 														}
 													/>
@@ -514,7 +516,8 @@ const Inspector = props => {
 														}
 														breakpoint={deviceType}
 														hideMaxWidth={
-															fullWidth === 'full'
+															blockFullWidth ===
+															'full'
 														}
 													/>
 												</>
@@ -581,7 +584,7 @@ const Inspector = props => {
 										content: (
 											<TextControl
 												label={__(
-													'Custom Classes',
+													'Additional CSS Classes',
 													'maxi-blocks'
 												)}
 												className='maxi-additional__css-classes'

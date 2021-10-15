@@ -54,31 +54,32 @@ import { capitalize, isEmpty, isNil, isEqual, cloneDeep } from 'lodash';
 const Inspector = memo(
 	props => {
 		const {
+			altOptions,
 			attributes,
-			imageData,
 			clientId,
 			deviceType,
+			imageData,
 			setAttributes,
-			altOptions,
 		} = props;
 		const {
-			customLabel,
-			uniqueID,
-			isFirstOnHierarchy,
-			blockStyle,
-			imageSize,
-			cropOptions,
-			fullWidth,
-			captionType,
-			mediaID,
-			extraClassName,
-			mediaAlt,
 			altSelector,
+			blockFullWidth,
+			blockStyle,
+			captionType,
 			clipPath,
+			cropOptions,
+			customLabel,
+			extraClassName,
+			fullWidth,
 			imageRatio,
+			imageSize,
+			isFirstOnHierarchy,
 			isImageUrl,
+			mediaAlt,
+			mediaID,
 			parentBlockStyle,
 			SVGElement,
+			uniqueID,
 		} = attributes;
 		const { wpAlt, titleAlt } = altOptions || {};
 
@@ -610,8 +611,11 @@ const Inspector = memo(
 																				'border',
 																				'borderWidth',
 																				'borderRadius',
-																			]
+																			],
+																			false,
+																			'image-'
 																		)}
+																		prefix='image-'
 																		onChange={obj =>
 																			setAttributes(
 																				obj
@@ -640,7 +644,7 @@ const Inspector = memo(
 																			)}
 																			selected={
 																				attributes[
-																					'border-status-hover'
+																					'image-border-status-hover'
 																				]
 																			}
 																			className='maxi-border-status-hover'
@@ -656,7 +660,9 @@ const Inspector = memo(
 																											'border',
 																											'borderWidth',
 																											'borderRadius',
-																										]
+																										],
+																										false,
+																										'image-'
 																									),
 																								},
 																								{
@@ -667,18 +673,19 @@ const Inspector = memo(
 																											'borderWidth',
 																											'borderRadius',
 																										],
-																										true
+																										true,
+																										'image-'
 																									),
 																								}
 																							)),
-																						'border-status-hover':
+																						'image-border-status-hover':
 																							val,
 																					}
 																				)
 																			}
 																		/>
 																		{attributes[
-																			'border-status-hover'
+																			'image-border-status-hover'
 																		] && (
 																			<BorderControl
 																				{...getGroupAttributes(
@@ -688,8 +695,10 @@ const Inspector = memo(
 																						'borderWidth',
 																						'borderRadius',
 																					],
-																					true
+																					true,
+																					'image-'
 																				)}
+																				prefix='image-'
 																				onChange={obj =>
 																					setAttributes(
 																						obj
@@ -729,8 +738,11 @@ const Inspector = memo(
 																	<BoxShadowControl
 																		{...getGroupAttributes(
 																			attributes,
-																			'boxShadow'
+																			'boxShadow',
+																			false,
+																			'image-'
 																		)}
+																		prefix='image-'
 																		onChange={obj =>
 																			setAttributes(
 																				obj
@@ -759,7 +771,7 @@ const Inspector = memo(
 																			)}
 																			selected={
 																				attributes[
-																					'box-shadow-status-hover'
+																					'image-box-shadow-status-hover'
 																				]
 																			}
 																			className='maxi-box-shadow-status-hover'
@@ -771,31 +783,37 @@ const Inspector = memo(
 																								{
 																									...getGroupAttributes(
 																										attributes,
-																										'boxShadow'
+																										'boxShadow',
+																										false,
+																										'image-'
 																									),
 																								},
 																								{
 																									...getGroupAttributes(
 																										attributes,
 																										'boxShadow',
-																										true
+																										true,
+																										'image-'
 																									),
 																								}
 																							)),
-																						'box-shadow-status-hover':
+																						'image-box-shadow-status-hover':
 																							val,
 																					}
 																				)
 																			}
 																		/>
 																		{attributes[
-																			'box-shadow-status-hover'
+																			'image-box-shadow-status-hover'
 																		] && (
 																			<BoxShadowControl
 																				{...getGroupAttributes(
 																					attributes,
-																					'boxShadowHover'
+																					'boxShadow',
+																					true,
+																					'image-'
 																				)}
+																				prefix='image-'
 																				onChange={obj =>
 																					setAttributes(
 																						obj
@@ -837,6 +855,11 @@ const Inspector = memo(
 																onChange={val =>
 																	setAttributes(
 																		{
+																			imageRatio:
+																				'original',
+																			imageSize:
+																				'full',
+																			imgWidth: 100,
 																			fullWidth:
 																				val
 																					? 'full'
@@ -849,8 +872,11 @@ const Inspector = memo(
 														<FullSizeControl
 															{...getGroupAttributes(
 																attributes,
-																'size'
+																'size',
+																false,
+																'image-'
 															)}
+															prefix='image-'
 															onChange={obj =>
 																setAttributes(
 																	obj
@@ -874,8 +900,11 @@ const Inspector = memo(
 														<AxisControl
 															{...getGroupAttributes(
 																attributes,
-																'padding'
+																'padding',
+																false,
+																'image-'
 															)}
+															prefix='image-'
 															label={__(
 																'Padding',
 																'maxi-blocks'
@@ -894,8 +923,11 @@ const Inspector = memo(
 														<AxisControl
 															{...getGroupAttributes(
 																attributes,
-																'margin'
+																'margin',
+																false,
+																'image-'
 															)}
+															prefix='image-'
 															label={__(
 																'Margin',
 																'maxi-blocks'
@@ -1050,6 +1082,232 @@ const Inspector = memo(
 											),
 										},
 										{
+											label: __('Border', 'maxi-blocks'),
+											disablePadding: true,
+											content: (
+												<SettingTabsControl
+													items={[
+														{
+															label: __(
+																'Normal',
+																'maxi-blocks'
+															),
+															content: (
+																<BorderControl
+																	{...getGroupAttributes(
+																		attributes,
+																		[
+																			'border',
+																			'borderWidth',
+																			'borderRadius',
+																		]
+																	)}
+																	onChange={obj =>
+																		setAttributes(
+																			obj
+																		)
+																	}
+																	breakpoint={
+																		deviceType
+																	}
+																	clientId={
+																		clientId
+																	}
+																/>
+															),
+														},
+														{
+															label: __(
+																'Hover',
+																'maxi-blocks'
+															),
+															content: (
+																<>
+																	<ToggleSwitch
+																		label={__(
+																			'Enable Border Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={
+																			attributes[
+																				'border-status-hover'
+																			]
+																		}
+																		className='maxi-border-status-hover'
+																		onChange={val =>
+																			setAttributes(
+																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'border',
+																										'borderWidth',
+																										'borderRadius',
+																									]
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'border',
+																										'borderWidth',
+																										'borderRadius',
+																									],
+																									true
+																								),
+																							}
+																						)),
+																					'border-status-hover':
+																						val,
+																				}
+																			)
+																		}
+																	/>
+																	{attributes[
+																		'border-status-hover'
+																	] && (
+																		<BorderControl
+																			{...getGroupAttributes(
+																				attributes,
+																				[
+																					'border',
+																					'borderWidth',
+																					'borderRadius',
+																				],
+																				true
+																			)}
+																			onChange={obj =>
+																				setAttributes(
+																					obj
+																				)
+																			}
+																			breakpoint={
+																				deviceType
+																			}
+																			isHover
+																			clientId={
+																				clientId
+																			}
+																		/>
+																	)}
+																</>
+															),
+														},
+													]}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Box shadow',
+												'maxi-blocks'
+											),
+											disablePadding: true,
+											content: (
+												<SettingTabsControl
+													items={[
+														{
+															label: __(
+																'Normal',
+																'maxi-blocks'
+															),
+															content: (
+																<BoxShadowControl
+																	{...getGroupAttributes(
+																		attributes,
+																		'boxShadow'
+																	)}
+																	onChange={obj =>
+																		setAttributes(
+																			obj
+																		)
+																	}
+																	breakpoint={
+																		deviceType
+																	}
+																	clientId={
+																		clientId
+																	}
+																/>
+															),
+														},
+														{
+															label: __(
+																'Hover',
+																'maxi-blocks'
+															),
+															content: (
+																<>
+																	<ToggleSwitch
+																		label={__(
+																			'Enable Box Shadow Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={
+																			attributes[
+																				'box-shadow-status-hover'
+																			]
+																		}
+																		className='maxi-box-shadow-status-hover'
+																		onChange={val =>
+																			setAttributes(
+																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									'boxShadow'
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									'boxShadow',
+																									true
+																								),
+																							}
+																						)),
+																					'box-shadow-status-hover':
+																						val,
+																				}
+																			)
+																		}
+																	/>
+																	{attributes[
+																		'box-shadow-status-hover'
+																	] && (
+																		<BoxShadowControl
+																			{...getGroupAttributes(
+																				attributes,
+																				'boxShadowHover'
+																			)}
+																			onChange={obj =>
+																				setAttributes(
+																					obj
+																				)
+																			}
+																			breakpoint={
+																				deviceType
+																			}
+																			isHover
+																			clientId={
+																				clientId
+																			}
+																		/>
+																	)}
+																</>
+															),
+														},
+													]}
+												/>
+											),
+										},
+										{
 											label: __('Opacity', 'maxi-blocks'),
 											content: (
 												<OpacityControl
@@ -1062,6 +1320,89 @@ const Inspector = memo(
 													}
 													breakpoint={deviceType}
 												/>
+											),
+										},
+										{
+											label: __(
+												'Height / Width',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													{isFirstOnHierarchy && (
+														<ToggleSwitch
+															label={__(
+																'Set image to full-width',
+																'maxi-blocks'
+															)}
+															selected={
+																blockFullWidth ===
+																'full'
+															}
+															onChange={val =>
+																setAttributes({
+																	blockFullWidth:
+																		val
+																			? 'full'
+																			: 'normal',
+																})
+															}
+														/>
+													)}
+													<FullSizeControl
+														{...getGroupAttributes(
+															attributes,
+															'size'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+														hideWith
+													/>
+												</>
+											),
+										},
+										{
+											label: __(
+												'Margin / Padding',
+												'maxi-blocks'
+											),
+											content: (
+												<>
+													<AxisControl
+														{...getGroupAttributes(
+															attributes,
+															'padding'
+														)}
+														label={__(
+															'Padding',
+															'maxi-blocks'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+														target='padding'
+														disableAuto
+													/>
+													<AxisControl
+														{...getGroupAttributes(
+															attributes,
+															'margin'
+														)}
+														label={__(
+															'Margin',
+															'maxi-blocks'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+														target='margin'
+														optionType='string'
+													/>
+												</>
 											),
 										},
 									]}

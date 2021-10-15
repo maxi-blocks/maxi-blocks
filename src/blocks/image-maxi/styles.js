@@ -28,8 +28,25 @@ import {
  */
 import { isEmpty, isNil } from 'lodash';
 
-const getNormalObject = props => {
+const getWrapperObject = props => {
 	const response = {
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(props, [
+					'border',
+					'borderWidth',
+					'borderRadius',
+				]),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow'),
+			},
+			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
+			parentBlockStyle: props.parentBlockStyle,
+		}),
 		margin: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'margin'),
@@ -60,6 +77,37 @@ const getNormalObject = props => {
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
+		}),
+	};
+
+	return response;
+};
+
+const getHoverWrapperObject = props => {
+	const response = {
+		...(props['border-status-hover'] && {
+			border: getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['border', 'borderWidth', 'borderRadius'],
+						true
+					),
+				},
+				isHover: true,
+				parentBlockStyle: props.parentBlockStyle,
+			}),
+		}),
+		...(props['box-shadow-status-hover'] && {
+			boxShadow: getBoxShadowStyles({
+				obj: {
+					...getGroupAttributes(props, 'boxShadow', true),
+				},
+				dropShadow:
+					!isEmpty(props.clipPath) || !isNil(props.SVGElement),
+				parentBlockStyle: props.parentBlockStyle,
+				isHover: true,
+			}),
 		}),
 	};
 
@@ -149,28 +197,31 @@ const getHoverEffectContentTextObject = props => {
 	return response;
 };
 
-const getImageHoverObject = props => {
+const getHoverImageWrapperObject = props => {
 	const response = {
-		...(props['border-status-hover'] && {
+		...(props['image-border-status-hover'] && {
 			border: getBorderStyles({
 				obj: {
 					...getGroupAttributes(
 						props,
 						['border', 'borderWidth', 'borderRadius'],
-						true
+						true,
+						'image-'
 					),
 				},
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
+				prefix: 'image-',
 			}),
 		}),
-		...(props['box-shadow-status-hover'] && {
+		...(props['image-box-shadow-status-hover'] && {
 			boxShadow: getBoxShadowStyles({
 				obj: {
-					...getGroupAttributes(props, 'boxShadow', true),
+					...getGroupAttributes(props, 'boxShadow', true, 'image-'),
 				},
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
+				prefix: 'image-',
 			}),
 		}),
 	};
@@ -180,31 +231,46 @@ const getImageHoverObject = props => {
 
 const getImageWrapperObject = props => {
 	const response = {
-		border: getBorderStyles({
-			obj: {
-				...getGroupAttributes(props, [
-					'border',
-					'borderWidth',
-					'borderRadius',
-				]),
-			},
-			parentBlockStyle: props.parentBlockStyle,
-		}),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
-		}),
-		boxShadow: getBoxShadowStyles({
-			obj: {
-				...getGroupAttributes(props, 'boxShadow'),
-			},
-			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
-			parentBlockStyle: props.parentBlockStyle,
 		}),
 		...(props['hover-extension'] && {
 			hoverExtension: { general: { overflow: 'visible' } },
 		}),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
+		}),
+		border: getBorderStyles({
+			obj: {
+				...getGroupAttributes(
+					props,
+					['border', 'borderWidth', 'borderRadius'],
+					false,
+					'image-'
+				),
+			},
+			parentBlockStyle: props.parentBlockStyle,
+			prefix: 'image-',
+		}),
+		boxShadow: getBoxShadowStyles({
+			obj: {
+				...getGroupAttributes(props, 'boxShadow', false, 'image-'),
+			},
+			dropShadow: !isEmpty(props.clipPath) || !isNil(props.SVGElement),
+			parentBlockStyle: props.parentBlockStyle,
+			prefix: 'image-',
+		}),
+		margin: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'margin', false, 'image-'),
+			},
+			prefix: 'image-',
+		}),
+		padding: getMarginPaddingStyles({
+			obj: {
+				...getGroupAttributes(props, 'padding', false, 'image-'),
+			},
+			prefix: 'image-',
 		}),
 	};
 
@@ -219,6 +285,12 @@ const getImageObject = props => {
 		...(props.imgWidth && {
 			imgWidth: { general: { width: `${props.imgWidth}%` } },
 		}),
+		size: getSizeStyles(
+			{
+				...getGroupAttributes(props, 'size', false, 'image-'),
+			},
+			'image-'
+		),
 	};
 };
 
@@ -259,15 +331,17 @@ const getStyles = props => {
 
 	const response = {
 		[uniqueID]: stylesCleaner({
-			'': getNormalObject(props),
+			'': getWrapperObject(props),
+			':hover': getHoverWrapperObject(props),
 			' .maxi-image-block-wrapper': getImageWrapperObject(props),
+			':hover .maxi-image-block-wrapper':
+				getHoverImageWrapperObject(props),
 			' .maxi-image-block-wrapper > svg:first-child': getImageShapeObject(
 				'svg',
 				props
 			),
 			' .maxi-image-block-wrapper > svg:first-child pattern image':
 				getImageShapeObject('image', props),
-			':hover .maxi-image-block-wrapper': getImageHoverObject(props),
 			' .maxi-image-block-wrapper img': getImageObject(props),
 			' figcaption': getFigcaptionObject(props),
 			' .maxi-hover-details .maxi-hover-details__content h4':

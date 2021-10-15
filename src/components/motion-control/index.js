@@ -40,6 +40,7 @@ import {
 	reset,
 } from '../../icons';
 import './editor.scss';
+import { useState } from 'react';
 
 /**
  * Component
@@ -59,8 +60,15 @@ const MotionControl = props => {
 	const classes = classnames('maxi-motion-control', className);
 	// const [presetLoad, setPresetLoad] = useState('');
 
+	const [motionStatus, setMotionStatus] = useState(
+		getLastBreakpointAttribute('motion-active', breakpoint, props) ||
+			'vertical'
+	);
+
+	// console.log(`motionStatus ${motionStatus}`);
+
 	const motionOptions = [
-		{ label: <Icon icon={styleNone} />, value: '' },
+		{ label: <Icon icon={styleNone} />, value: 'none' },
 		{ label: <Icon icon={motionVertical} />, value: 'vertical' },
 		{ label: <Icon icon={motionHorizontal} />, value: 'horizontal' },
 		{ label: <Icon icon={reset} />, value: 'rotate' },
@@ -125,23 +133,21 @@ const MotionControl = props => {
 				return null;
 		}
 	};
+	console.log(`breakpoint ${breakpoint}`);
+	console.log(getLastBreakpointAttribute('motion-active', breakpoint, props));
+	console.log('===================');
 
 	return (
 		<div className={classes}>
 			<FancyRadioControl
 				fullWidthMode
-				selected={
-					getLastBreakpointAttribute(
-						'motion-active',
-						breakpoint,
-						props
-					) || ''
-				}
+				selected={motionStatus}
 				options={motionOptions}
 				optionType='string'
-				onChange={val =>
-					onChange({ [`motion-active-${breakpoint}`]: val })
-				}
+				onChange={val => {
+					onChange({ [`motion-active-${breakpoint}`]: val });
+					setMotionStatus(val);
+				}}
 			/>
 			{/* <FancyRadioControl
 						 label={__('Preview', 'maxi-blocks')}
@@ -287,6 +293,39 @@ const MotionControl = props => {
 												[`motion-offset-middle-${type}-${breakpoint}`]:
 													values[1],
 												[`motion-offset-end-${type}-${breakpoint}`]:
+													values[2],
+											})
+										}
+									/>
+									<RangeSliderControl
+										label={__('Viewport', 'maxi-blocks')}
+										step={0.1}
+										min={0}
+										max={100}
+										values={[
+											getLastBreakpointAttribute(
+												`motion-viewport-bottom-${type}`,
+												breakpoint,
+												props
+											),
+											getLastBreakpointAttribute(
+												`motion-viewport-middle-${type}`,
+												breakpoint,
+												props
+											),
+											getLastBreakpointAttribute(
+												`motion-viewport-top-${type}`,
+												breakpoint,
+												props
+											),
+										]}
+										onChange={values =>
+											onChange({
+												[`motion-viewport-bottom-${type}-${breakpoint}`]:
+													values[0],
+												[`motion-viewport-middle-${type}-${breakpoint}`]:
+													values[1],
+												[`motion-viewport-top-${type}-${breakpoint}`]:
 													values[2],
 											})
 										}

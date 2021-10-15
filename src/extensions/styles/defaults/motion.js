@@ -70,6 +70,27 @@ export const motion = (() => {
 			default: 100,
 		};
 		response[offsetEndKey] = offsetEndValue;
+
+		const viewportBottomKey = `motion-viewport-bottom-${type}-general`;
+		const viewportBottomValue = {
+			type: 'number',
+			default: 0,
+		};
+		response[viewportBottomKey] = viewportBottomValue;
+
+		const viewportMiddleKey = `motion-viewport-middle-${type}-general`;
+		const viewportMiddleValue = {
+			type: 'number',
+			default: 50,
+		};
+		response[viewportMiddleKey] = viewportMiddleValue;
+
+		const viewportTopKey = `motion-viewport-top-${type}-general`;
+		const viewportTopValue = {
+			type: 'number',
+			default: 100,
+		};
+		response[viewportTopKey] = viewportTopValue;
 	});
 
 	Object.values(breakpoints).forEach(breakpoint => {
@@ -133,6 +154,24 @@ export const motion = (() => {
 				type: 'number',
 			};
 			response[offsetEndKey] = offsetEndValue;
+
+			const viewportBottomKey = `motion-viewport-bottom-${type}-${breakpoint}`;
+			const viewportBottomValue = {
+				type: 'number',
+			};
+			response[viewportBottomKey] = viewportBottomValue;
+
+			const viewportMiddleKey = `motion-viewport-middle-${type}-${breakpoint}`;
+			const viewportMiddleValue = {
+				type: 'number',
+			};
+			response[viewportMiddleKey] = viewportMiddleValue;
+
+			const viewportTopKey = `motion-viewport-top-${type}-${breakpoint}`;
+			const viewportTopValue = {
+				type: 'number',
+			};
+			response[viewportTopKey] = viewportTopValue;
 		});
 	});
 

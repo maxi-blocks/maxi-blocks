@@ -26,21 +26,22 @@ class Parallax {
 	setPosition() {
 		if (window.pageYOffset !== undefined) {
 			return window.pageYOffset;
-		} else {
-			return (
-				document.documentElement ||
-				document.body.parentNode ||
-				document.body
-			).scrollTop;
 		}
+		return (
+			document.documentElement ||
+			document.body.parentNode ||
+			document.body
+		).scrollTop;
 	}
+
 	animateItem(el, displace) {
 		if (typeof window.orientation !== 'undefined') {
 			return;
 		}
 		const scrollPosition = this.setPosition();
-		el.style.transform =
-			'translate3d(0px, ' + scrollPosition / displace + 'px, 0px)';
+		el.style.transform = `translate3d(0px, ${
+			scrollPosition / displace
+		}px, 0px)`;
 	}
 }
 
@@ -119,9 +120,30 @@ Object.values(maxi_custom_data.custom_data).map(item => {
 		document.head.appendChild(script);
 });
 
+function startCounter() {
+	const interval = setInterval(() => {
+		count += 1;
+
+		if (count >= endCountValue) {
+			count = endCountValue;
+			clearInterval(interval);
+		}
+
+		numberCounterElemText.innerHTML = `${parseInt(
+			(count / 360) * 100
+		)}<sup>${countPercentageSign ? '%' : ''}</sup>`;
+
+		numberCounterElemCircle &&
+			numberCounterElemCircle.setAttribute(
+				'stroke-dasharray',
+				`${parseInt((count / 360) * circumference)} ${circumference}`
+			);
+	}, frameDuration);
+}
+
 // Motion Effects
-const motionElems = document.querySelectorAll('.maxi-motion-effect');
-motionElems.forEach(function (elem) {
+const motionElements = document.querySelectorAll('.maxi-motion-effect');
+motionElements.forEach(function (elem) {
 	if (!maxi_custom_data.custom_data) return;
 
 	const motionID = elem.id;
@@ -159,35 +181,12 @@ motionElems.forEach(function (elem) {
 
 			const frameDuration = countDuration / 60;
 
-			let count = startCountValue;
-
-			function startCounter() {
-				const interval = setInterval(() => {
-					count = count + 1;
-
-					if (count >= endCountValue) {
-						count = endCountValue;
-						clearInterval(interval);
-					}
-
-					numberCounterElemText.innerHTML = `${parseInt(
-						(count / 360) * 100
-					)}<sup>${countPercentageSign ? '%' : ''}</sup>`;
-
-					numberCounterElemCircle &&
-						numberCounterElemCircle.setAttribute(
-							'stroke-dasharray',
-							`${parseInt(
-								(count / 360) * circumference
-							)} ${circumference}`
-						);
-				}, frameDuration);
-			}
+			const count = startCountValue;
 
 			if (startAnimation === 'view-scroll') {
-				let waypoint = new Waypoint({
+				const waypoint = new Waypoint({
 					element: numberCounterElem,
-					handler: function () {
+					handler() {
 						startCounter();
 					},
 					offset: '100%',
@@ -346,7 +345,6 @@ motionElems.forEach(function (elem) {
 		const xAxis = motionData['motion-transform-origin-x'];
 		const yAxis = motionData['motion-transform-origin-y'];
 
-		/*
 		if (
 			!!interactionStatus &&
 			((!!motionMobileStatus && getDeviceType() === 'mobile') ||
@@ -418,18 +416,16 @@ motionElems.forEach(function (elem) {
 							case 'blur':
 								actions = {
 									...actions,
-									webkitFilter:
-										'blur(' + act.settings.blur + 'px)',
-									filter: 'blur(' + act.settings.blur + 'px)',
+									webkitFilter: `blur(${act.settings.blur}px)`,
+									filter: `blur(${act.settings.blur}px)`,
 								};
 								break;
 							default:
-								return;
 						}
 					});
 
 					const startTime = Number(key);
-					const endTime = !!array[index + 1]
+					const endTime = array[index + 1]
 						? Number(array[index + 1][0])
 						: null;
 
@@ -450,7 +446,6 @@ motionElems.forEach(function (elem) {
 				}
 			);
 		}
-		*/
 	}
 });
 
@@ -480,7 +475,7 @@ containerElems.forEach(function (elem) {
 			);
 
 			if (vimeoIsMounted === -1) {
-				let script = document.createElement('script');
+				const script = document.createElement('script');
 				script.src = 'https://player.vimeo.com/api/player.js';
 				script.id = 'maxi-vimeo-sdk';
 				script.async = true;

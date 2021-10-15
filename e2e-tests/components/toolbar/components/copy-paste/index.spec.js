@@ -22,10 +22,7 @@ describe('CopyPaste from Toolbar', () => {
 
 		// Inserts styled block
 		await page.evaluate(block => {
-			window.wp.data
-				.dispatch('core/block-editor')
-				.insertBlock(block)
-				.catch(err => console.error(err));
+			window.wp.data.dispatch('core/block-editor').insertBlock(block);
 		}, block);
 		await page.waitForTimeout(1000);
 

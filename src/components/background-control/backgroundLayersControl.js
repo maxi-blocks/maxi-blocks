@@ -8,6 +8,7 @@ import { useState, RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import {
+	getAttributeKey,
 	getBlockStyle,
 	getColorRGBAString,
 	getLastBreakpointAttribute,
@@ -208,7 +209,8 @@ const LayerCard = props => {
 		const currentDisplay = getLastBreakpointAttribute(
 			'display',
 			breakpoint,
-			layer
+			layer,
+			isHover
 		);
 
 		return currentDisplay === 'block' ? 'block' : 'none';
@@ -344,6 +346,7 @@ const BackgroundLayersControl = ({
 	disableSVG = false,
 	clientId,
 	breakpoint,
+	hoverStatus = false,
 }) => {
 	const layers = cloneDeep(layersOptions);
 	layers.sort((a, b) => a.id - b.id);
@@ -353,7 +356,7 @@ const BackgroundLayersControl = ({
 	const setBreakpointToLayer = layer => {
 		const response = {};
 
-		const nonBreakpointAttr = [
+		const sameLabelAttr = [
 			'type',
 			'background-video-mediaID',
 			'background-video-mediaURL',
@@ -367,9 +370,17 @@ const BackgroundLayersControl = ({
 		];
 
 		Object.entries(layer).forEach(([key, val]) => {
-			if (!nonBreakpointAttr.includes(key))
-				response[`${key}-${breakpoint}`] = val;
+			if (!sameLabelAttr.includes(key))
+				response[getAttributeKey(key, false, false, breakpoint)] = val;
+			if (isHover && !sameLabelAttr.includes(key))
+				response[getAttributeKey(key, isHover, false, breakpoint)] =
+					val;
 			else response[key] = val;
+
+			if (isHover && key === 'display')
+				response['display-general'] = 'none';
+			else if (key === 'display' && hoverStatus)
+				response['display-general-hover'] = 'none';
 		});
 
 		return response;

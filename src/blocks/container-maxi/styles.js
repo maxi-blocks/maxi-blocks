@@ -196,9 +196,7 @@ const getStyles = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
-					'background',
-					'backgroundColor',
-					'backgroundGradient',
+					'blockBackground',
 					'boxShadow',
 				]),
 				blockStyle: props.parentBlockStyle,
@@ -207,12 +205,11 @@ const getStyles = props => {
 				...getGroupAttributes(
 					props,
 					[
+						'arrow',
 						'border',
 						'borderWidth',
 						'borderRadius',
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
+						'blockBackground',
 						'boxShadow',
 					],
 					true

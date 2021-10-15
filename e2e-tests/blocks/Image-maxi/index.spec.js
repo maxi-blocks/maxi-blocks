@@ -325,7 +325,8 @@ describe('Image Maxi', () => {
 		expect(altTag.mediaAlt).toStrictEqual('Image Tag');
 
 		const previewPage = await openPreviewPage(page);
-		await page.waitForTimeout(200);
+		await previewPage.waitForSelector('.entry-content');
+
 		const expectAlt = await previewPage.$eval(
 			'figure div img',
 			alterative => alterative.alt

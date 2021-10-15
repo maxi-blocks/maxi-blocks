@@ -488,9 +488,16 @@ const getBackgroundLayers = ({
 								blockStyle,
 								breakpoint,
 							}),
-							getDisplayStyles({
-								...getGroupAttributes(layer, 'display'),
-							})
+							getDisplayStyles(
+								{
+									...getGroupAttributes(
+										layer,
+										'display',
+										isHover
+									),
+								},
+								isHover
+							)
 						),
 					},
 				};
@@ -511,9 +518,16 @@ const getBackgroundLayers = ({
 								prefix,
 								breakpoint,
 							}),
-							getDisplayStyles({
-								...getGroupAttributes(layer, 'display'),
-							})
+							getDisplayStyles(
+								{
+									...getGroupAttributes(
+										layer,
+										'display',
+										isHover
+									),
+								},
+								isHover
+							)
 						),
 					},
 				};
@@ -534,9 +548,16 @@ const getBackgroundLayers = ({
 								prefix,
 								breakpoint,
 							}),
-							getDisplayStyles({
-								...getGroupAttributes(layer, 'display'),
-							})
+							getDisplayStyles(
+								{
+									...getGroupAttributes(
+										layer,
+										'display',
+										isHover
+									),
+								},
+								isHover
+							)
 						),
 					},
 				};
@@ -557,9 +578,16 @@ const getBackgroundLayers = ({
 								prefix,
 								breakpoint,
 							}),
-							getDisplayStyles({
-								...getGroupAttributes(layer, 'display'),
-							})
+							getDisplayStyles(
+								{
+									...getGroupAttributes(
+										layer,
+										'display',
+										isHover
+									),
+								},
+								isHover
+							)
 						),
 					},
 				};
@@ -579,9 +607,16 @@ const getBackgroundLayers = ({
 								breakpoint,
 								isHover,
 							}),
-							getDisplayStyles({
-								...getGroupAttributes(layer, 'display'),
-							})
+							getDisplayStyles(
+								{
+									...getGroupAttributes(
+										layer,
+										'display',
+										isHover
+									),
+								},
+								isHover
+							)
 						),
 					},
 				};
@@ -600,9 +635,16 @@ const getBackgroundLayers = ({
 								breakpoint,
 								isHover,
 							}),
-							getDisplayStyles({
-								...getGroupAttributes(layer, 'display'),
-							})
+							getDisplayStyles(
+								{
+									...getGroupAttributes(
+										layer,
+										'display',
+										isHover
+									),
+								},
+								isHover
+							)
 						),
 					},
 				};
@@ -751,7 +793,7 @@ export const getBlockBackgroundStyles = ({
 		...props,
 	});
 
-	if (isHover && !props[`${prefix}background-status-hover`]) return response;
+	if (isHover && !props[`${prefix}background-hover-status`]) return response;
 
 	const parallaxStatus = getAttributeValue({
 		target: 'parallax-status',

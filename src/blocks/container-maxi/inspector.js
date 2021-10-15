@@ -434,7 +434,7 @@ const Inspector = props => {
 													{...getGroupAttributes(
 														attributes,
 														[
-															'background',
+															'blockBackground',
 															'arrow',
 															'border',
 														],

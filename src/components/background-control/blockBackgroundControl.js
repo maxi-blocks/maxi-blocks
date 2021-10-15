@@ -41,6 +41,12 @@ const BlockBackgroundControl = props => {
 			prefix,
 		}) || [];
 
+	const hoverStatus = getAttributeValue({
+		target: 'background-hover-status',
+		props,
+		prefix,
+	});
+
 	const parallaxStatus = props['parallax-status'];
 
 	const classes = classnames('maxi-background-control', className);
@@ -60,9 +66,10 @@ const BlockBackgroundControl = props => {
 					disableSVG={disableSVG}
 					clientId={clientId}
 					breakpoint={breakpoint}
+					hoverStatus={hoverStatus}
 				/>
 			)}
-			{enableParallax && (
+			{enableParallax && !isHover && (
 				<ParallaxControl
 					{...getGroupAttributes(props, 'parallax')}
 					onChange={obj => onChange(obj)}

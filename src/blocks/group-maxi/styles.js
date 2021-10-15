@@ -140,6 +140,7 @@ const getStyles = props => {
 				...getGroupAttributes(
 					props,
 					[
+						'arrow',
 						'border',
 						'borderWidth',
 						'borderRadius',

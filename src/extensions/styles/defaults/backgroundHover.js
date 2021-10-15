@@ -8,7 +8,7 @@ import {
 } from './background';
 
 export const backgroundHover = (() => {
-	let response = {};
+	const response = {};
 
 	Object.keys(background).forEach(key => {
 		const newKey = `${key}-hover`;
@@ -18,14 +18,6 @@ export const backgroundHover = (() => {
 
 		response[newKey] = value;
 	});
-
-	response = {
-		...response,
-		'background-hover-status': {
-			type: 'boolean',
-			default: false,
-		},
-	};
 
 	return response;
 })();

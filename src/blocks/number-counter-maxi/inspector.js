@@ -12,31 +12,39 @@ import {
 	AccordionControl,
 	AxisControl,
 	BlockStylesControl,
+	BorderControl,
+	BoxShadowControl,
 	CustomLabel,
 	DisplayControl,
+	FullSizeControl,
+	InfoBox,
 	NumberCounterControl,
 	OpacityControl,
+	OverflowControl,
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
+	ToggleSwitch,
 	TransformControl,
-	InfoBox,
 	ZIndexControl,
-	OverflowControl,
 } from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import {
+	getGroupAttributes,
+	setHoverAttributes,
+} from '../../extensions/styles';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId } = props;
+	const { attributes, clientId, deviceType, setAttributes } = props;
 	const {
-		customLabel,
-		uniqueID,
-		isFirstOnHierarchy,
+		blockFullWidth,
 		blockStyle,
+		customLabel,
 		extraClassName,
+		isFirstOnHierarchy,
+		uniqueID,
 	} = attributes;
 
 	return (
@@ -54,7 +62,7 @@ const Inspector = props => {
 				deviceType={deviceType}
 				items={[
 					{
-						label: __('Style', 'maxi-blocks'),
+						label: __('Settings', 'maxi-blocks'),
 						content: (
 							<>
 								{deviceType === 'general' && (
@@ -84,15 +92,261 @@ const Inspector = props => {
 												<NumberCounterControl
 													{...getGroupAttributes(
 														attributes,
-														[
-															'numberCounter',
-															'size',
-														]
+														'numberCounter'
+													)}
+													{...getGroupAttributes(
+														attributes,
+														'size',
+														false,
+														'number-counter-'
 													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}
 													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __('Border', 'maxi-blocks'),
+											disablePadding: true,
+											content: (
+												<SettingTabsControl
+													items={[
+														{
+															label: __(
+																'Normal',
+																'maxi-blocks'
+															),
+															content: (
+																<BorderControl
+																	{...getGroupAttributes(
+																		attributes,
+																		[
+																			'border',
+																			'borderWidth',
+																			'borderRadius',
+																		],
+																		false,
+																		'number-counter-'
+																	)}
+																	prefix='number-counter-'
+																	onChange={obj => {
+																		setAttributes(
+																			obj
+																		);
+																	}}
+																	breakpoint={
+																		deviceType
+																	}
+																	clientId={
+																		clientId
+																	}
+																/>
+															),
+														},
+														{
+															label: __(
+																'Hover',
+																'maxi-blocks'
+															),
+															content: (
+																<>
+																	<ToggleSwitch
+																		label={__(
+																			'Enable Border Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={
+																			attributes[
+																				'number-counter-border-status-hover'
+																			]
+																		}
+																		className='maxi-border-status-hover'
+																		onChange={val =>
+																			setAttributes(
+																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'border',
+																										'borderWidth',
+																										'borderRadius',
+																									],
+																									false,
+																									'number-counter-'
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									[
+																										'border',
+																										'borderWidth',
+																										'borderRadius',
+																									],
+																									true,
+																									'number-counter-'
+																								),
+																							}
+																						)),
+																					'number-counter-border-status-hover':
+																						val,
+																				}
+																			)
+																		}
+																	/>
+																	{attributes[
+																		'number-counter-border-status-hover'
+																	] && (
+																		<BorderControl
+																			{...getGroupAttributes(
+																				attributes,
+																				[
+																					'border',
+																					'borderWidth',
+																					'borderRadius',
+																				],
+																				true,
+																				'number-counter-'
+																			)}
+																			prefix='number-counter-'
+																			onChange={obj =>
+																				setAttributes(
+																					obj
+																				)
+																			}
+																			breakpoint={
+																				deviceType
+																			}
+																			isHover
+																			clientId={
+																				clientId
+																			}
+																		/>
+																	)}
+																</>
+															),
+														},
+													]}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Box shadow',
+												'maxi-blocks'
+											),
+											disablePadding: true,
+											content: (
+												<SettingTabsControl
+													items={[
+														{
+															label: __(
+																'Normal',
+																'maxi-blocks'
+															),
+															content: (
+																<BoxShadowControl
+																	{...getGroupAttributes(
+																		attributes,
+																		'boxShadow',
+																		false,
+																		'number-counter-'
+																	)}
+																	prefix='number-counter-'
+																	onChange={obj =>
+																		setAttributes(
+																			obj
+																		)
+																	}
+																	breakpoint={
+																		deviceType
+																	}
+																	clientId={
+																		clientId
+																	}
+																/>
+															),
+														},
+														{
+															label: __(
+																'Hover',
+																'maxi-blocks'
+															),
+															content: (
+																<>
+																	<ToggleSwitch
+																		label={__(
+																			'Enable Box Shadow Hover',
+																			'maxi-blocks'
+																		)}
+																		selected={
+																			attributes[
+																				'number-counter-box-shadow-status-hover'
+																			]
+																		}
+																		className='maxi-box-shadow-status-hover'
+																		onChange={val =>
+																			setAttributes(
+																				{
+																					...(val &&
+																						setHoverAttributes(
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									'boxShadow',
+																									false,
+																									'number-counter-'
+																								),
+																							},
+																							{
+																								...getGroupAttributes(
+																									attributes,
+																									'boxShadow',
+																									true,
+																									'number-counter-'
+																								),
+																							}
+																						)),
+																					'number-counter-box-shadow-status-hover':
+																						val,
+																				}
+																			)
+																		}
+																	/>
+																	{attributes[
+																		'number-counter-box-shadow-status-hover'
+																	] && (
+																		<BoxShadowControl
+																			{...getGroupAttributes(
+																				attributes,
+																				'boxShadow',
+																				true,
+																				'number-counter-'
+																			)}
+																			prefix='number-counter-'
+																			onChange={obj =>
+																				setAttributes(
+																					obj
+																				)
+																			}
+																			breakpoint={
+																				deviceType
+																			}
+																			isHover
+																			clientId={
+																				clientId
+																			}
+																		/>
+																	)}
+																</>
+															),
+														},
+													]}
 												/>
 											),
 										},
@@ -106,8 +360,11 @@ const Inspector = props => {
 													<AxisControl
 														{...getGroupAttributes(
 															attributes,
-															'padding'
+															'padding',
+															false,
+															'number-counter-'
 														)}
+														prefix='number-counter-'
 														label={__(
 															'Padding',
 															'maxi-blocks'
@@ -122,8 +379,11 @@ const Inspector = props => {
 													<AxisControl
 														{...getGroupAttributes(
 															attributes,
-															'margin'
+															'margin',
+															false,
+															'number-counter-'
 														)}
+														prefix='number-counter-'
 														label={__(
 															'Margin',
 															'maxi-blocks'
@@ -144,6 +404,336 @@ const Inspector = props => {
 						),
 					},
 					{
+						label: __('Canvas', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									{
+										label: __('Border', 'maxi-blocks'),
+										disablePadding: true,
+										content: (
+											<SettingTabsControl
+												items={[
+													{
+														label: __(
+															'Normal',
+															'maxi-blocks'
+														),
+														content: (
+															<BorderControl
+																{...getGroupAttributes(
+																	attributes,
+																	[
+																		'border',
+																		'borderWidth',
+																		'borderRadius',
+																	]
+																)}
+																onChange={obj => {
+																	setAttributes(
+																		obj
+																	);
+																}}
+																breakpoint={
+																	deviceType
+																}
+																clientId={
+																	clientId
+																}
+															/>
+														),
+													},
+													{
+														label: __(
+															'Hover',
+															'maxi-blocks'
+														),
+														content: (
+															<>
+																<ToggleSwitch
+																	label={__(
+																		'Enable Border Hover',
+																		'maxi-blocks'
+																	)}
+																	selected={
+																		attributes[
+																			'border-status-hover'
+																		]
+																	}
+																	className='maxi-border-status-hover'
+																	onChange={val =>
+																		setAttributes(
+																			{
+																				...(val &&
+																					setHoverAttributes(
+																						{
+																							...getGroupAttributes(
+																								attributes,
+																								[
+																									'border',
+																									'borderWidth',
+																									'borderRadius',
+																								]
+																							),
+																						},
+																						{
+																							...getGroupAttributes(
+																								attributes,
+																								[
+																									'border',
+																									'borderWidth',
+																									'borderRadius',
+																								],
+																								true
+																							),
+																						}
+																					)),
+																				'border-status-hover':
+																					val,
+																			}
+																		)
+																	}
+																/>
+																{attributes[
+																	'border-status-hover'
+																] && (
+																	<BorderControl
+																		{...getGroupAttributes(
+																			attributes,
+																			[
+																				'border',
+																				'borderWidth',
+																				'borderRadius',
+																			],
+																			true
+																		)}
+																		onChange={obj =>
+																			setAttributes(
+																				obj
+																			)
+																		}
+																		breakpoint={
+																			deviceType
+																		}
+																		isHover
+																		clientId={
+																			clientId
+																		}
+																	/>
+																)}
+															</>
+														),
+													},
+												]}
+											/>
+										),
+									},
+									{
+										label: __('Box shadow', 'maxi-blocks'),
+										disablePadding: true,
+										content: (
+											<SettingTabsControl
+												items={[
+													{
+														label: __(
+															'Normal',
+															'maxi-blocks'
+														),
+														content: (
+															<BoxShadowControl
+																{...getGroupAttributes(
+																	attributes,
+																	'boxShadow'
+																)}
+																onChange={obj =>
+																	setAttributes(
+																		obj
+																	)
+																}
+																breakpoint={
+																	deviceType
+																}
+																clientId={
+																	clientId
+																}
+															/>
+														),
+													},
+													{
+														label: __(
+															'Hover',
+															'maxi-blocks'
+														),
+														content: (
+															<>
+																<ToggleSwitch
+																	label={__(
+																		'Enable Box Shadow Hover',
+																		'maxi-blocks'
+																	)}
+																	selected={
+																		attributes[
+																			'box-shadow-status-hover'
+																		]
+																	}
+																	className='maxi-box-shadow-status-hover'
+																	onChange={val =>
+																		setAttributes(
+																			{
+																				...(val &&
+																					setHoverAttributes(
+																						{
+																							...getGroupAttributes(
+																								attributes,
+																								'boxShadow'
+																							),
+																						},
+																						{
+																							...getGroupAttributes(
+																								attributes,
+																								'boxShadow',
+																								true
+																							),
+																						}
+																					)),
+																				'box-shadow-status-hover':
+																					val,
+																			}
+																		)
+																	}
+																/>
+																{attributes[
+																	'box-shadow-status-hover'
+																] && (
+																	<BoxShadowControl
+																		{...getGroupAttributes(
+																			attributes,
+																			'boxShadowHover'
+																		)}
+																		onChange={obj =>
+																			setAttributes(
+																				obj
+																			)
+																		}
+																		breakpoint={
+																			deviceType
+																		}
+																		isHover
+																		clientId={
+																			clientId
+																		}
+																	/>
+																)}
+															</>
+														),
+													},
+												]}
+											/>
+										),
+									},
+									{
+										label: __('Opacity', 'maxi-blocks'),
+										content: (
+											<OpacityControl
+												{...getGroupAttributes(
+													attributes,
+													'opacity'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									isFirstOnHierarchy && {
+										label: __(
+											'Height / Width',
+											'maxi-blocks'
+										),
+										content: (
+											<>
+												{isFirstOnHierarchy && (
+													<ToggleSwitch
+														label={__(
+															'Set number counter to full-width',
+															'maxi-blocks'
+														)}
+														selected={
+															blockFullWidth ===
+															'full'
+														}
+														onChange={val =>
+															setAttributes({
+																blockFullWidth:
+																	val
+																		? 'full'
+																		: 'normal',
+															})
+														}
+													/>
+												)}
+												<FullSizeControl
+													{...getGroupAttributes(
+														attributes,
+														'size'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+												/>
+											</>
+										),
+									},
+									{
+										label: __(
+											'Padding & Margin',
+											'maxi-blocks'
+										),
+										content: (
+											<>
+												<AxisControl
+													{...getGroupAttributes(
+														attributes,
+														'padding'
+													)}
+													label={__(
+														'Padding',
+														'maxi-blocks'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+													target='padding'
+													disableAuto
+												/>
+												<AxisControl
+													{...getGroupAttributes(
+														attributes,
+														'margin'
+													)}
+													label={__(
+														'Margin',
+														'maxi-blocks'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
+													}
+													breakpoint={deviceType}
+													target='margin'
+													optionType='string'
+												/>
+											</>
+										),
+									},
+								]}
+							/>
+						),
+					},
+					{
 						label: __('Advanced', 'maxi-blocks'),
 						content: (
 							<AccordionControl
@@ -151,7 +741,7 @@ const Inspector = props => {
 								items={[
 									deviceType === 'general' && {
 										label: __(
-											'Custom Classes',
+											'Add CSS class/id',
 											'maxi-blocks'
 										),
 										content: (
@@ -187,7 +777,10 @@ const Inspector = props => {
 										),
 									},
 									{
-										label: __('Display', 'maxi-blocks'),
+										label: __(
+											'Show/hide block',
+											'maxi-blocks'
+										),
 										content: (
 											<DisplayControl
 												{...getGroupAttributes(
@@ -232,42 +825,27 @@ const Inspector = props => {
 										),
 									},
 									{
-										label: __('Z-index', 'maxi-blocks'),
-										content: (
-											<ZIndexControl
-												{...getGroupAttributes(
-													attributes,
-													'zIndex'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Opacity', 'maxi-blocks'),
-										content: (
-											<OpacityControl
-												{...getGroupAttributes(
-													attributes,
-													'opacity'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
 										label: __('Overflow', 'maxi-blocks'),
 										content: (
 											<OverflowControl
 												{...getGroupAttributes(
 													attributes,
 													'overflow'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
+												}
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Z-index', 'maxi-blocks'),
+										content: (
+											<ZIndexControl
+												{...getGroupAttributes(
+													attributes,
+													'zIndex'
 												)}
 												onChange={obj =>
 													setAttributes(obj)

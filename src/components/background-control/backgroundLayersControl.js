@@ -199,12 +199,13 @@ const LayerCard = props => {
 		const currentDisplay = getLastBreakpointAttribute(
 			'display',
 			breakpoint,
-			layer
+			layer,
+			isHover
 		);
 
 		onChange({
 			...layer,
-			[`display-${breakpoint}`]:
+			[getAttributeKey('display', isHover, false, breakpoint)]:
 				currentDisplay === 'block' ? 'none' : 'block',
 		});
 	};

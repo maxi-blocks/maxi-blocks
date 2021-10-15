@@ -12,6 +12,7 @@ import { getPrefixedAttributes } from '../../extensions/styles';
 /**
  * Attributes
  */
+const prefix = 'divider';
 const attributes = {
 	...attributesData.global,
 	customLabel: {
@@ -53,15 +54,15 @@ const attributes = {
 			default: 'px',
 		},
 	},
-	...getPrefixedAttributes(attributesData.size, 'divider-'),
+	...getPrefixedAttributes(attributesData.size, prefix),
 	...attributesData.background,
 	...attributesData.backgroundColor,
 	...attributesData.backgroundColorHover,
 	...attributesData.backgroundGradient,
 	...attributesData.backgroundGradientHover,
 	...attributesData.backgroundHover,
-	...getPrefixedAttributes(attributesData.boxShadow, 'divider-'),
-	...getPrefixedAttributes(attributesData.boxShadowHover, 'divider-'),
+	...getPrefixedAttributes(attributesData.boxShadow, prefix),
+	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.border,
@@ -69,8 +70,8 @@ const attributes = {
 	...attributesData.borderRadius,
 	...attributesData.display,
 	...attributesData.divider,
-	...getPrefixedAttributes(attributesData.margin, 'divider-'),
-	...getPrefixedAttributes(attributesData.padding, 'divider-'),
+	...getPrefixedAttributes(attributesData.margin, prefix),
+	...getPrefixedAttributes(attributesData.padding, prefix),
 	...attributesData.margin,
 	...attributesData.padding,
 	...attributesData.motion,

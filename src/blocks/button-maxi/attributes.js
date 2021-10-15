@@ -12,6 +12,7 @@ import { getPrefixedAttributes } from '../../extensions/styles';
 /**
  * Attributes
  */
+const prefix = 'button-';
 const attributes = {
 	...attributesData.global,
 	customLabel: {
@@ -73,36 +74,36 @@ const attributes = {
 	...attributesData.backgroundColorHover,
 	...attributesData.backgroundGradientHover,
 	...attributesData.opacity,
-	...getPrefixedAttributes(attributesData.border, 'button-'),
-	...getPrefixedAttributes(attributesData.borderWidth, 'button-'),
+	...getPrefixedAttributes(attributesData.border, prefix),
+	...getPrefixedAttributes(attributesData.borderWidth, prefix),
 	...{
-		...getPrefixedAttributes(attributesData.borderRadius, 'button-'),
-		'button-border-top-left-radius-general': {
+		...getPrefixedAttributes(attributesData.borderRadius, prefix),
+		[`${prefix}border-top-left-radius-general`]: {
 			type: 'number',
 			default: 10,
 		},
-		'button-border-top-right-radius-general': {
+		[`${prefix}border-top-right-radius-general`]: {
 			type: 'number',
 			default: 10,
 		},
-		'button-border-bottom-left-radius-general': {
+		[`${prefix}border-bottom-left-radius-general`]: {
 			type: 'number',
 			default: 10,
 		},
-		'button-border-bottom-right-radius-general': {
+		[`${prefix}border-bottom-right-radius-general`]: {
 			type: 'number',
 			default: 10,
 		},
 	},
 	...{
-		...getPrefixedAttributes(attributesData.borderHover, 'button-'),
-		'button-border-status-hover': {
+		...getPrefixedAttributes(attributesData.borderHover, prefix),
+		[`${prefix}border-status-hover`]: {
 			type: 'boolean',
 			default: false,
 		},
 	},
-	...getPrefixedAttributes(attributesData.borderWidthHover, 'button-'),
-	...getPrefixedAttributes(attributesData.borderRadiusHover, 'button-'),
+	...getPrefixedAttributes(attributesData.borderWidthHover, prefix),
+	...getPrefixedAttributes(attributesData.borderRadiusHover, prefix),
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,
@@ -123,45 +124,45 @@ const attributes = {
 	...attributesData.iconBorderWidthHover,
 	...attributesData.iconBorderRadiusHover,
 	...attributesData.size,
-	...getPrefixedAttributes(attributesData.size, 'button-'),
+	...getPrefixedAttributes(attributesData.size, prefix),
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
-	...getPrefixedAttributes(attributesData.boxShadow, 'button-'),
-	...getPrefixedAttributes(attributesData.boxShadowHover, 'button-'),
+	...getPrefixedAttributes(attributesData.boxShadow, prefix),
+	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
 	...attributesData.margin,
 	...attributesData.padding,
-	...getPrefixedAttributes(attributesData.margin, 'button-'),
+	...getPrefixedAttributes(attributesData.margin, prefix),
 	...{
-		...getPrefixedAttributes(attributesData.padding, 'button-'),
-		'button-padding-top-general': {
+		...getPrefixedAttributes(attributesData.padding, prefix),
+		[`${prefix}padding-top-general`]: {
 			type: 'number',
 			default: 15,
 		},
-		'button-padding-right-general': {
+		[`${prefix}padding-right-general`]: {
 			type: 'number',
 			default: 36,
 		},
-		'button-padding-bottom-general': {
+		[`${prefix}padding-bottom-general`]: {
 			type: 'number',
 			default: 15,
 		},
-		'button-padding-left-general': {
+		[`${prefix}padding-left-general`]: {
 			type: 'number',
 			default: 36,
 		},
-		'button-padding-top-xxl': {
+		[`${prefix}padding-top-xxl`]: {
 			type: 'number',
 			default: 23,
 		},
-		'button-padding-right-xxl': {
+		[`${prefix}padding-right-xxl`]: {
 			type: 'number',
 			default: 55,
 		},
-		'button-padding-bottom-xxl': {
+		[`${prefix}padding-bottom-xxl`]: {
 			type: 'number',
 			default: 23,
 		},
-		'button-padding-left-xxl': {
+		[`${prefix}padding-left-xxl`]: {
 			type: 'number',
 			default: 55,
 		},

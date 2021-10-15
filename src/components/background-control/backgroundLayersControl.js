@@ -146,7 +146,9 @@ const LayerCard = props => {
 				);
 
 				return {
-					background: `url(${bgImageURL})`,
+					background: !isEmpty(bgImageURL)
+						? `url(${bgImageURL})`
+						: '',
 					opacity: bgImageOpacity,
 				};
 			}
@@ -165,7 +167,9 @@ const LayerCard = props => {
 				);
 
 				return {
-					background: `url(${bgFallbackUrl})`,
+					background: !isEmpty(bgFallbackUrl)
+						? `url(${bgFallbackUrl})`
+						: '',
 					opacity: bgVideoOpacity,
 				};
 			}

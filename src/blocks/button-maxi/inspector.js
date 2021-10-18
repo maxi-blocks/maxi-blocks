@@ -405,13 +405,14 @@ const Inspector = memo(
 																		{...getGroupAttributes(
 																			attributes,
 																			[
-																				'iconHover',
-																				'iconBackgroundGradientHover',
-																				'iconBackgroundColorHover',
-																				'iconBorderHover',
-																				'iconBorderWidthHover',
-																				'iconBorderRadiusHover',
-																			]
+																				'icon',
+																				'iconBackgroundGradient',
+																				'iconBackgroundColor',
+																				'iconBorder',
+																				'iconBorderWidth',
+																				'iconBorderRadius',
+																			],
+																			true
 																		)}
 																		onChange={obj => {
 																			setAttributes(
@@ -578,136 +579,6 @@ const Inspector = memo(
 																					parentBlockStyle
 																				}
 																				styleCardPrefix='button'
-																			/>
-																		)}
-																	</>
-																),
-															},
-														]}
-													/>
-												),
-											},
-											deviceType === 'general' && {
-												label: __(
-													'Button background',
-													'maxi-blocks'
-												),
-												disablePadding: true,
-												content: (
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Normal',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<BackgroundControl
-																			{...getGroupAttributes(
-																				attributes,
-																				[
-																					'background',
-																					'backgroundColor',
-																					'backgroundGradient',
-																				]
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			disableImage
-																			disableVideo
-																			disableClipPath
-																			disableSVG
-																			disableLayers
-																			clientId={
-																				clientId
-																			}
-																			isButton
-																		/>
-																	</>
-																),
-															},
-															{
-																label: __(
-																	'Hover',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<ToggleSwitch
-																			label={__(
-																				'Enable Background Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				attributes[
-																					'background-status-hover'
-																				]
-																			}
-																			className='maxi-background-status-hover'
-																			onChange={val =>
-																				setAttributes(
-																					{
-																						...(val &&
-																							setHoverAttributes(
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										]
-																									),
-																								},
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										],
-																										true
-																									),
-																								}
-																							)),
-																						'background-status-hover':
-																							val,
-																					}
-																				)
-																			}
-																		/>
-																		{attributes[
-																			'background-status-hover'
-																		] && (
-																			<BackgroundControl
-																				{...getGroupAttributes(
-																					attributes,
-																					[
-																						'backgroundHover',
-																						'backgroundColorHover',
-																						'backgroundGradientHover',
-																					]
-																				)}
-																				onChange={obj =>
-																					setAttributes(
-																						obj
-																					)
-																				}
-																				disableImage
-																				disableVideo
-																				disableClipPath
-																				disableSVG
-																				disableLayers
-																				isHover
-																				clientId={
-																					clientId
-																				}
-																				isButton
 																			/>
 																		)}
 																	</>
@@ -1081,6 +952,9 @@ const Inspector = memo(
 								<AccordionControl
 									isPrimary
 									items={[
+										...inspectorTabs.background({
+											props,
+										}),
 										{
 											label: __('Border', 'maxi-blocks'),
 											disablePadding: true,

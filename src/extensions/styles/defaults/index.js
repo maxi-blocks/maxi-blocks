@@ -36,6 +36,7 @@ export * from './border';
 export * from './borderHover';
 export * from './hover';
 export * from './icon';
+export * from './iconHover';
 export * from './iconBorder';
 export * from './iconBorderHover';
 export * from './typography';

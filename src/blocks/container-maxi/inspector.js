@@ -100,11 +100,10 @@ const Inspector = props => {
 													{...getGroupAttributes(
 														attributes,
 														[
-															'background',
+															'blockBackground',
 															'arrow',
 															'border',
-														],
-														true
+														]
 													)}
 													onChange={obj =>
 														setAttributes(obj)

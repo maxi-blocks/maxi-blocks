@@ -9,7 +9,7 @@ import {
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
 	getColorBackgroundObject,
@@ -84,6 +84,12 @@ const getWrapperObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
+		background: {
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(props, ['blockBackground']),
+				blockStyle: props.parentBlockStyle,
+			}),
+		},
 	};
 
 	return response;
@@ -114,6 +120,13 @@ const getHoverWrapperObject = props => {
 				parentBlockStyle: props.parentBlockStyle,
 				isHover: true,
 			}),
+		background: {
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(props, ['blockBackground'], true),
+				blockStyle: props.parentBlockStyle,
+				isHover: true,
+			}),
+		},
 	};
 
 	return response;
@@ -173,13 +186,12 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		...getBackgroundStyles({
+		...getBlockBackgroundStyles({
 			...getGroupAttributes(props, [
 				'background',
 				'backgroundColor',
 				'backgroundGradient',
 			]),
-			isButton: true,
 			blockStyle: props.parentBlockStyle,
 		}),
 		margin: getMarginPaddingStyles({
@@ -227,22 +239,6 @@ const getHoverObject = props => {
 				prefix: 'button-',
 				parentBlockStyle: props.parentBlockStyle,
 			}),
-		...(props['background-hover-status'] && {
-			...(props['background-active-media-hover'] === 'color' && {
-				background: getColorBackgroundObject({
-					...getGroupAttributes(props, 'backgroundColor', true),
-					blockStyle: props.parentBlockStyle,
-					isHover: true,
-					isButton: true,
-				}),
-			}),
-			...(props['background-active-media-hover'] === 'gradient' && {
-				background: getGradientBackgroundObject({
-					...getGroupAttributes(props, 'backgroundGradient', true),
-					isHover: true,
-				}),
-			}),
-		}),
 	};
 
 	return response;
@@ -512,6 +508,7 @@ const getStyles = props => {
 			' .maxi-button-block__button:hover': getHoverObject(props),
 			' .maxi-button-block__button:hover .maxi-button-block__content':
 				getHoverContentObject(props),
+
 			' .maxi-button-block__button:hover .maxi-button-block__icon':
 				props['icon-status-hover'] &&
 				getIconHoverObject(props, 'iconHover'),

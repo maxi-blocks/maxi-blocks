@@ -1,7 +1,7 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
 	getDisplayStyles,
@@ -111,24 +111,28 @@ const getStyles = props => {
 				target: ' .maxi-svg-icon-block__icon',
 				blockStyle,
 			}),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
+					'blockBackground',
 					'border',
 					'borderWidth',
 					'borderRadius',
+					'parallax',
 				]),
 				blockStyle,
 			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'borderHover',
-					'borderRadiusHover',
-					'borderWidthHover',
-				]),
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(
+					props,
+					[
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+						'parallax',
+					],
+					true
+				),
 				isHover: true,
 				blockStyle,
 			}),

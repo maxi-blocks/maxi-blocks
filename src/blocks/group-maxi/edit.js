@@ -86,7 +86,7 @@ class edit extends MaxiBlockComponent {
 				<ArrowDisplayer
 					{...getGroupAttributes(
 						attributes,
-						['background', 'arrow', 'border'],
+						['blockBackground', 'arrow', 'border'],
 						true
 					)}
 					breakpoint={deviceType}

@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import { openSidebar } from '../../utils';
 
-describe('BackgroundControl', () => {
+describe.skip('BackgroundDisplayerControl', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
@@ -65,12 +65,12 @@ describe('BackgroundControl', () => {
 		);
 
 		// start Time
-		await inputs[2].focus();
+		await inputs[0].focus();
 		await page.keyboard.type('1');
 		await page.keyboard.press('Enter');
 
 		// end time
-		await inputs[4].focus();
+		await inputs[2].focus();
 		await page.keyboard.type('3');
 		await page.keyboard.press('Enter');
 

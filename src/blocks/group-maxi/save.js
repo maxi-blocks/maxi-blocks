@@ -25,7 +25,7 @@ const save = props => {
 			<ArrowDisplayer
 				{...getGroupAttributes(
 					attributes,
-					['background', 'arrow', 'border'],
+					['blockBackground', 'arrow', 'border'],
 					true
 				)}
 			/>

@@ -30,7 +30,7 @@ const getBlocksName = clientIds => {
  * Returns default property of the block
  *
  * @param {string} clientId Block's client id
- * @param {string} prop Claimed property to return
+ * @param {string} prop     Claimed property to return
  */
 const getDefaultAttribute = (prop, clientIds = null) => {
 	const { getBlockName, getSelectedBlockClientIds } =

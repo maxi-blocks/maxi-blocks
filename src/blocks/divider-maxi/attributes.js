@@ -12,7 +12,7 @@ import { getPrefixedAttributes } from '../../extensions/styles';
 /**
  * Attributes
  */
-const prefix = 'divider';
+const prefix = 'divider-';
 const attributes = {
 	...attributesData.global,
 	customLabel: {

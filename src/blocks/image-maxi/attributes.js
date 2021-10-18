@@ -143,7 +143,17 @@ const attributes = {
 	...attributesData.opacity,
 	...attributesData.parallax,
 	...attributesData.position,
-	...getPrefixedAttributes(attributesData.size, prefix),
+	...{
+		...getPrefixedAttributes(attributesData.size, prefix),
+		[`${prefix}height-general`]: {
+			type: 'number',
+			default: 100,
+		},
+		[`${prefix}height-unit-general`]: {
+			type: 'string',
+			default: '%',
+		},
+	},
 	...attributesData.size,
 	...attributesData.textAlignment,
 	...attributesData.transform,

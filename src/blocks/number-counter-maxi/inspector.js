@@ -791,6 +791,7 @@ const Inspector = props => {
 													setAttributes(obj)
 												}
 												breakpoint={deviceType}
+												defaultDisplay='flex'
 											/>
 										),
 									},

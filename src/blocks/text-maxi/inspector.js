@@ -382,7 +382,9 @@ const Inspector = memo(
 													/>
 												),
 											},
-											...inspectorTabs.background(props),
+											...inspectorTabs.background({
+												props,
+											}),
 											{
 												label: __(
 													'Border',

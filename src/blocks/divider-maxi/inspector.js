@@ -260,7 +260,7 @@ const Inspector = props => {
 												</>
 											),
 										},
-										...inspectorTabs.background(props),
+										...inspectorTabs.background({ props }),
 										{
 											label: __(
 												'Box Shadow',

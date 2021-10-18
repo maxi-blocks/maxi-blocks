@@ -127,7 +127,10 @@ const Inspector = props => {
 												</>
 											),
 										},
-										...inspectorTabs.background(props),
+										...inspectorTabs.background({
+											props,
+											enableParallax: true,
+										}),
 										{
 											label: __('Border', 'maxi-blocks'),
 											disablePadding: true,

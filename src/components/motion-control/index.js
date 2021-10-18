@@ -65,7 +65,7 @@ const MotionControl = props => {
 			'vertical'
 	);
 
-	// console.log(`motionStatus ${motionStatus}`);
+	console.log(`motionStatus ${motionStatus}`);
 
 	const motionOptions = [
 		{ label: <Icon icon={styleNone} />, value: 'none' },
@@ -169,9 +169,10 @@ const MotionControl = props => {
 				}
 				const typeCapitalize =
 					type.charAt(0).toUpperCase() + type.slice(1);
+
 				return (
 					<div key={`maxi-motion-control-${type}-${breakpoint}`}>
-						{props[`motion-active-${breakpoint}`] === type && (
+						{motionStatus === type && (
 							<FancyRadioControl
 								label={__(
 									`Enable ${typeCapitalize}`,
@@ -266,6 +267,7 @@ const MotionControl = props => {
 									/>
 									<RangeSliderControl
 										label={__('Offset', 'maxi-blocks')}
+										type='offset'
 										step={0.1}
 										min={0}
 										max={100}
@@ -299,6 +301,7 @@ const MotionControl = props => {
 									/>
 									<RangeSliderControl
 										label={__('Viewport', 'maxi-blocks')}
+										type='viewport'
 										step={0.1}
 										min={0}
 										max={100}

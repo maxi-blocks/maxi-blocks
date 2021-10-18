@@ -32,7 +32,7 @@
 		}
 	}
 	input[type='text'],
-	input[type='number'] {
+	input[type='number']:not(:last-child) {
 		margin-right: 5px;
 	}
 	&__preset {

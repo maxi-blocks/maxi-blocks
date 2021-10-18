@@ -7,6 +7,7 @@ import { useInstanceId } from '@wordpress/compose';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import SelectControl from '../select-control';
 import BaseControl from '../base-control';
 import Button from '../button';
@@ -30,6 +31,7 @@ import { reset } from '../../icons';
  */
 const RangeSliderControl = props => {
 	const {
+		type,
 		label,
 		className,
 		placeholder = '',
@@ -43,11 +45,27 @@ const RangeSliderControl = props => {
 		onReset,
 	} = props;
 
-	const classes = classnames('maxi-advanced-number-control', className);
+	const classes = classnames(
+		'maxi-advanced-number-control maxi-range-slider-control',
+		className
+	);
 
 	const rangeSliderControlId = `maxi-advanced-number-control__${useInstanceId(
 		RangeSliderControl
 	)}`;
+
+	const getDefaultValue = key => {
+		switch (key) {
+			case 0:
+				return 0;
+			case 1:
+				return 50;
+			case 2:
+				return 100;
+			default:
+				return 0;
+		}
+	};
 
 	return (
 		<BaseControl
@@ -70,6 +88,7 @@ const RangeSliderControl = props => {
 							height: '2px',
 							width: '100%',
 							background: '#dddfe1',
+							marginBottom: '20px',
 						}}
 					>
 						{children}
@@ -89,6 +108,26 @@ const RangeSliderControl = props => {
 					/>
 				)}
 			/>
+			{values.map((value, key) => {
+				return (
+					<input
+						// eslint-disable-next-line react/no-array-index-key
+						key={key}
+						className='maxi-range-slider-control__content__item__input'
+						type='number'
+						//	placeholder={getDefaultValue(key)}
+						value={value}
+						onChange={val => {
+							const newValues = [];
+							newValues[key] = val.target.value;
+							onChange({ ...values, ...newValues });
+						}}
+						min={0}
+						max={100}
+						step={0.1}
+					/>
+				);
+			})}
 		</BaseControl>
 	);
 };

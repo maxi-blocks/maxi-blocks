@@ -16,8 +16,10 @@ import GradientControl from '../gradient-control';
 import BorderControl from '../border-control';
 import InfoBox from '../info-box';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import SvgWidthControl from '../svg-width-control';
 import SvgStrokeWidthControl from '../svg-stroke-width-control';
@@ -48,7 +50,7 @@ const IconControl = props => {
 		className,
 		onChange,
 		clientId,
-		deviceType,
+		breakpoint,
 		parentBlockStyle,
 		isHover = false,
 	} = props;
@@ -85,7 +87,7 @@ const IconControl = props => {
 
 	return (
 		<div className={classes}>
-			{!isHover && deviceType === 'general' && (
+			{!isHover && breakpoint === 'general' && (
 				<MaxiModal
 					type='button-icon'
 					style={parentBlockStyle}
@@ -108,7 +110,7 @@ const IconControl = props => {
 			{(props['icon-content'] ||
 				(isHover && props['icon-status-hover'])) && (
 				<>
-					{!isHover && deviceType === 'general' && (
+					{!isHover && breakpoint === 'general' && (
 						<>
 							<hr />
 							<ToggleSwitch
@@ -136,7 +138,7 @@ const IconControl = props => {
 						onChange={obj => {
 							onChange(obj);
 						}}
-						breakpoint={deviceType}
+						breakpoint={breakpoint}
 						isHover={isHover}
 					/>
 					<SvgStrokeWidthControl
@@ -149,7 +151,7 @@ const IconControl = props => {
 						onChange={obj => {
 							onChange(obj);
 						}}
-						breakpoint={deviceType}
+						breakpoint={breakpoint}
 						isHover={isHover}
 					/>
 					{!isHover && (
@@ -160,11 +162,11 @@ const IconControl = props => {
 								max={999}
 								initial={1}
 								step={1}
-								breakpoint={deviceType}
-								value={props[`icon-spacing-${deviceType}`]}
+								breakpoint={breakpoint}
+								value={props[`icon-spacing-${breakpoint}`]}
 								onChangeValue={val => {
 									onChange({
-										[`icon-spacing-${deviceType}`]:
+										[`icon-spacing-${breakpoint}`]:
 											val !== undefined && val !== ''
 												? val
 												: '',
@@ -172,14 +174,14 @@ const IconControl = props => {
 								}}
 								onReset={() =>
 									onChange({
-										[`icon-spacing-${deviceType}`]:
+										[`icon-spacing-${breakpoint}`]:
 											getDefaultAttribute(
-												`icon-spacing-${deviceType}`
+												`icon-spacing-${breakpoint}`
 											),
 									})
 								}
 							/>
-							{deviceType === 'general' && (
+							{breakpoint === 'general' && (
 								<>
 									<FancyRadioControl
 										label={__(
@@ -306,46 +308,69 @@ const IconControl = props => {
 							{!props['icon-inherit'] ? (
 								<ColorControl
 									label={__('Icon background', 'maxi-blocks')}
-									color={
-										props[
-											`icon-background-color${
-												isHover ? '-hover' : ''
-											}`
-										]
-									}
-									defaultColor={getDefaultAttribute(
-										'icon-background-color',
+									paletteStatus={getLastBreakpointAttribute(
+										'icon-background-palette-color-status',
+										breakpoint,
+										props,
 										isHover
 									)}
-									paletteColor={
-										props[
-											`icon-background-palette-color${
-												isHover ? '-hover' : ''
-											}`
-										]
-									}
-									paletteStatus={
-										props[
-											`icon-background-palette-color-status${
-												isHover ? '-hover' : ''
-											}`
-										]
-									}
+									paletteColor={getLastBreakpointAttribute(
+										'icon-background-palette-color',
+										breakpoint,
+										props,
+										isHover
+									)}
+									paletteOpacity={getLastBreakpointAttribute(
+										'icon-background-palette-opacity',
+										breakpoint,
+										props,
+										isHover
+									)}
+									color={getLastBreakpointAttribute(
+										'icon-background-color',
+										breakpoint,
+										props,
+										isHover
+									)}
+									defaultColor={getDefaultAttribute(
+										getAttributeKey(
+											'background-color',
+											isHover,
+											'icon-',
+											breakpoint
+										)
+									)}
 									onChange={({
-										color,
-										paletteColor,
 										paletteStatus,
+										paletteColor,
+										paletteOpacity,
+										color,
 									}) => {
 										onChange({
-											[`icon-background-color${
-												isHover ? '-hover' : ''
-											}`]: color,
-											[`icon-background-palette-color${
-												isHover ? '-hover' : ''
-											}`]: paletteColor,
-											[`icon-background-palette-color-status${
-												isHover ? '-hover' : ''
-											}`]: paletteStatus,
+											[getAttributeKey(
+												'background-palette-color-status',
+												isHover,
+												'icon-',
+												breakpoint
+											)]: paletteStatus,
+											[getAttributeKey(
+												'background-palette-color',
+												isHover,
+												'icon-',
+												breakpoint
+											)]: paletteColor,
+											[getAttributeKey(
+												'background-palette-opacity',
+												isHover,
+												'icon-',
+												breakpoint
+											)]: paletteOpacity,
+											[getAttributeKey(
+												'background-color',
+												isHover,
+												'icon-',
+												breakpoint
+											)]: color,
 										});
 									}}
 									isHover={isHover}
@@ -376,36 +401,44 @@ const IconControl = props => {
 								'Icon Background Gradient',
 								'maxi-blocks'
 							)}
-							gradient={
-								props[
-									`icon-background-gradient${
-										isHover ? '-hover' : ''
-									}`
-								]
-							}
-							gradientOpacity={
-								props[
-									`icon-background-gradient-opacity${
-										isHover ? '-hover' : ''
-									}`
-								]
-							}
-							defaultGradient={getDefaultAttribute(
+							gradient={getLastBreakpointAttribute(
 								'icon-background-gradient',
+								breakpoint,
+								props,
 								isHover
+							)}
+							gradientOpacity={getLastBreakpointAttribute(
+								'icon-background-gradient-opacity',
+								breakpoint,
+								props,
+								isHover
+							)}
+							defaultGradient={getDefaultAttribute(
+								getAttributeKey(
+									'background-gradient',
+									isHover,
+									'icon-',
+									breakpoint
+								)
 							)}
 							onChange={val =>
 								onChange({
-									[`icon-background-gradient${
-										isHover ? '-hover' : ''
-									}`]: val,
+									[getAttributeKey(
+										'background-gradient',
+										isHover,
+										'icon-',
+										breakpoint
+									)]: val,
 								})
 							}
 							onChangeOpacity={val =>
 								onChange({
-									[`icon-background-gradient-opacity${
-										isHover ? '-hover' : ''
-									}`]: val,
+									[getAttributeKey(
+										'background-gradient-opacity',
+										isHover,
+										'icon-',
+										breakpoint
+									)]: val,
 								})
 							}
 							isHover={isHover}
@@ -420,7 +453,7 @@ const IconControl = props => {
 							])}
 							prefix='icon-'
 							onChange={obj => onChange(obj)}
-							breakpoint={deviceType}
+							breakpoint={breakpoint}
 							clientId={clientId}
 							isHover={isHover}
 						/>
@@ -430,7 +463,7 @@ const IconControl = props => {
 							{...getGroupAttributes(props, 'iconPadding')}
 							label={__('Icon Padding', 'maxi-blocks')}
 							onChange={obj => onChange(obj)}
-							breakpoint={deviceType}
+							breakpoint={breakpoint}
 							target='icon-padding'
 							disableAuto
 						/>

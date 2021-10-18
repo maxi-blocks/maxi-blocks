@@ -178,17 +178,4 @@ export const motion = (() => {
 	return response;
 })();
 
-export const parallax = {
-	'parallax-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'parallax-speed': {
-		type: 'number',
-		default: 4,
-	},
-	'parallax-direction': {
-		type: 'string',
-		default: 'up',
-	},
-};
+export default motion;

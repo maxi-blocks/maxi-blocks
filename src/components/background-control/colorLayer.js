@@ -8,7 +8,12 @@ import { __ } from '@wordpress/i18n';
  */
 import ColorControl from '../color-control';
 import ClipPath from '../clip-path-control';
-import { getDefaultAttribute, getAttributeKey } from '../../extensions/styles';
+import ResponsiveTabsControl from '../responsive-tabs-control';
+import {
+	getDefaultAttribute,
+	getAttributeKey,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -18,14 +23,16 @@ import { cloneDeep } from 'lodash';
 /**
  * Component
  */
-const ColorLayer = props => {
+const ColorLayerContent = props => {
 	const {
 		onChange,
 		disableClipPath,
-		isHover,
-		prefix,
+		isHover = false,
+		prefix = '',
 		clientId,
 		isButton = false,
+		breakpoint,
+		isGeneral = false,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -34,94 +41,95 @@ const ColorLayer = props => {
 		<>
 			<ColorControl
 				label={__('Background', 'maxi-blocks')}
-				color={
-					colorOptions[
-						getAttributeKey('background-color', isHover, prefix)
-					]
-				}
-				defaultColor={getDefaultAttribute(
-					getAttributeKey('background-color', isHover, prefix)
+				color={getLastBreakpointAttribute(
+					`${prefix}background-color`,
+					breakpoint,
+					colorOptions,
+					isHover
 				)}
-				paletteStatus={
-					colorOptions[
-						getAttributeKey(
-							'background-palette-color-status',
-							isHover,
-							prefix
-						)
-					]
-				}
-				paletteColor={
-					colorOptions[
-						getAttributeKey(
-							'background-palette-color',
-							isHover,
-							prefix
-						)
-					]
-				}
-				paletteOpacity={
-					colorOptions[
-						getAttributeKey(
-							'background-palette-opacity',
-							isHover,
-							prefix
-						)
-					]
-				}
+				defaultColor={getDefaultAttribute(
+					getAttributeKey(
+						'background-color',
+						isHover,
+						prefix,
+						breakpoint
+					)
+				)}
+				paletteStatus={getLastBreakpointAttribute(
+					`${prefix}background-palette-color-status`,
+					breakpoint,
+					colorOptions,
+					isHover
+				)}
+				paletteColor={getLastBreakpointAttribute(
+					`${prefix}background-palette-color`,
+					breakpoint,
+					colorOptions,
+					isHover
+				)}
+				paletteOpacity={getLastBreakpointAttribute(
+					`${prefix}background-palette-opacity`,
+					breakpoint,
+					colorOptions,
+					isHover
+				)}
 				onChange={({
 					color,
 					paletteColor,
 					paletteStatus,
 					paletteOpacity,
 				}) => {
-					if (paletteStatus)
-						colorOptions[
-							getAttributeKey(
-								'background-palette-color-status',
-								isHover,
-								prefix
-							)
-						] = paletteColor;
-					if (paletteColor)
-						colorOptions[
-							getAttributeKey(
-								'background-palette-color',
-								isHover,
-								prefix
-							)
-						] = paletteColor;
-					if (paletteOpacity)
-						colorOptions[
-							getAttributeKey(
-								'background-palette-opacity',
-								isHover,
-								prefix
-							)
-						] = paletteOpacity;
-					if (color)
-						colorOptions[
-							getAttributeKey('background-color', isHover, prefix)
-						] = color;
-
 					onChange({
 						[getAttributeKey(
 							'background-palette-color-status',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: paletteStatus,
 						[getAttributeKey(
 							'background-palette-color',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: paletteColor,
 						[getAttributeKey(
 							'background-palette-opacity',
 							isHover,
-							prefix
+							prefix,
+							breakpoint
 						)]: paletteOpacity,
-						[getAttributeKey('background-color', isHover, prefix)]:
-							color,
+						[getAttributeKey(
+							'background-color',
+							isHover,
+							prefix,
+							breakpoint
+						)]: color,
+						...(isGeneral && {
+							[getAttributeKey(
+								'background-palette-color-status',
+								isHover,
+								prefix,
+								'general'
+							)]: paletteStatus,
+							[getAttributeKey(
+								'background-palette-color',
+								isHover,
+								prefix,
+								'general'
+							)]: paletteColor,
+							[getAttributeKey(
+								'background-palette-opacity',
+								isHover,
+								prefix,
+								'general'
+							)]: paletteOpacity,
+							[getAttributeKey(
+								'background-color',
+								isHover,
+								prefix,
+								'general'
+							)]: color,
+						}),
 					});
 				}}
 				globalProps={
@@ -134,32 +142,47 @@ const ColorLayer = props => {
 				}
 				isHover={isHover}
 				clientId={clientId}
+				deviceType={breakpoint}
 			/>
 			{!disableClipPath && (
 				<ClipPath
-					clipPath={
-						colorOptions[
-							getAttributeKey(
-								'background-color-clip-path',
-								isHover,
-								prefix
-							)
-						]
-					}
+					clipPath={getLastBreakpointAttribute(
+						`${prefix}background-color-clip-path`,
+						breakpoint,
+						colorOptions,
+						isHover
+					)}
 					onChange={val => {
-						colorOptions[
-							getAttributeKey(
+						onChange({
+							[getAttributeKey(
 								'background-color-clip-path',
 								isHover,
-								prefix
-							)
-						] = val;
-
-						onChange(colorOptions);
+								prefix,
+								breakpoint
+							)]: val,
+							...(isGeneral && {
+								[getAttributeKey(
+									'background-color-clip-path',
+									isHover,
+									prefix,
+									'general'
+								)]: val,
+							}),
+						});
 					}}
 				/>
 			)}
 		</>
+	);
+};
+
+const ColorLayer = props => {
+	const { breakpoint, ...rest } = props;
+
+	return (
+		<ResponsiveTabsControl breakpoint={breakpoint}>
+			<ColorLayerContent {...rest} />
+		</ResponsiveTabsControl>
 	);
 };
 

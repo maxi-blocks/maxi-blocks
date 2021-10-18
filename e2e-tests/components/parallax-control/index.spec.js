@@ -11,7 +11,7 @@ import {
  */
 import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
-describe('ParallaxControl', () => {
+describe.skip('ParallaxControl', () => {
 	it('Test the parallax control', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');

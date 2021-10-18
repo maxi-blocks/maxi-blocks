@@ -10,7 +10,6 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	AxisControl,
-	BackgroundControl,
 	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
@@ -35,6 +34,7 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
+import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
  * Inspector

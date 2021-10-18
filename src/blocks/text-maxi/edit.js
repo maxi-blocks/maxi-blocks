@@ -50,10 +50,7 @@ class edit extends MaxiBlockComponent {
 		return {
 			[uniqueID]: {
 				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'parallax',
-					]),
+					...getGroupAttributes(this.props.attributes, ['motion']),
 				}),
 			},
 		};

@@ -355,6 +355,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				items={[
 					{
 						label: __('Quick Pick Colour Presets', 'maxi-blocks'),
+						classNameItem: 'testing',
 						content: (
 							<>
 								<div className='maxi-style-cards__quick-color-presets'>

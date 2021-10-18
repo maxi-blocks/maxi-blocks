@@ -11,7 +11,6 @@ import {
 	AccordionControl,
 	AdvancedNumberControl,
 	AxisControl,
-	BackgroundControl,
 	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
@@ -35,6 +34,7 @@ import {
 	setHoverAttributes,
 } from '../../extensions/styles';
 import { getColumnDefaultValue } from '../../extensions/column-templates';
+import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
  * Inspector

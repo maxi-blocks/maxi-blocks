@@ -20,15 +20,12 @@ import {
 describe('ArrowControl', () => {
 	it('Check the arrow control', async () => {
 		await createNewPost();
-		await insertBlock('Group Maxi');
-		await openSidebar(page, 'background');
-
-		const backgroundColor = await page.$$(
-			'.maxi-settingstab-control .maxi-tab-content .maxi-radio-control__option'
+		await insertBlock('Container Maxi');
+		await page.$eval('.maxi-container-block', container =>
+			container.focus()
 		);
-		await backgroundColor[1].click();
 
-		const accordionPanel = await openSidebar(page, 'arrow');
+		const accordionPanel = await openSidebar(page, 'callout arrow');
 
 		await accordionPanel.$eval(
 			'.maxi-arrow-control .maxi-toggle-switch .maxi-base-control__label',
@@ -44,8 +41,8 @@ describe('ArrowControl', () => {
 				i
 			);
 			const attributes = await getBlockAttributes();
-			const arrowAttributex = attributes['arrow-side-general'];
-			expect(arrowAttributex).toStrictEqual(values[i]);
+			const arrowAttributeX = attributes['arrow-side-general'];
+			expect(arrowAttributeX).toStrictEqual(values[i]);
 		}
 
 		// Use Position
@@ -74,7 +71,7 @@ describe('ArrowControl', () => {
 	});
 
 	it('Check the responsive arrow control', async () => {
-		const accordionPanel = await openSidebar(page, 'arrow');
+		const accordionPanel = await openSidebar(page, 'callout arrow');
 
 		await accordionPanel.$$eval(
 			'.maxi-arrow-control .maxi-fancy-radio-control .maxi-radio-control__option label',

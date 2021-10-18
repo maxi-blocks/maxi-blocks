@@ -21,12 +21,23 @@ import './editor.scss';
 /**
  * Component
  */
-const ToggleSwitch = ({ className, onChange, label, help, selected }) => {
+const ToggleSwitch = ({
+	className,
+	onChange,
+	label,
+	help,
+	selected,
+	disabled,
+}) => {
 	const instanceId = useInstanceId(ToggleSwitch);
 	const id = `maxi-toggle-switch-${instanceId}`;
-	const classes = classnames('maxi-toggle-switch', className, {
-		'maxi-toggle-switch--is-checked': selected,
-	});
+
+	const classes = classnames(
+		'maxi-toggle-switch',
+		selected && 'maxi-toggle-switch--is-checked',
+		disabled && 'maxi-toggle-switch--disabled', // TODO
+		className
+	);
 
 	return (
 		<BaseControl label={label} id={id} help={help} className={classes}>

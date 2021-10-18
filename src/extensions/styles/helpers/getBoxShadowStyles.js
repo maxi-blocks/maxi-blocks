@@ -39,11 +39,13 @@ const getBoxShadowStyles = ({
 		let boxShadowString = '';
 
 		const getValue = target => {
-			const value = getAttributeValue(
-				`${prefix}box-shadow-${target}-${breakpoint}`,
-				obj,
-				isHover
-			);
+			const value = getAttributeValue({
+				target,
+				props: obj,
+				isHover,
+				prefix: 'box-shadow-',
+				breakpoint,
+			});
 
 			const defaultValue =
 				breakpoint === 'general'

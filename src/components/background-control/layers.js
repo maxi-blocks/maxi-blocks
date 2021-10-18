@@ -3,14 +3,17 @@
  */
 export const colorOptions = {
 	type: 'color',
+	display: 'block',
 	'background-palette-color-status': true,
 	'background-palette-color': 1,
+	'background-palette-opacity': 100,
 	'background-color': '',
 	'background-color-clip-path': '',
 };
 
 export const imageOptions = {
 	type: 'image',
+	display: 'block',
 	'background-image-mediaID': '',
 	'background-image-mediaURL': '',
 	'background-image-size': '',
@@ -34,6 +37,7 @@ export const imageOptions = {
 
 export const videoOptions = {
 	type: 'video',
+	display: 'block',
 	'background-video-mediaID': null,
 	'background-video-mediaURL': '',
 	'background-video-startTime': '',
@@ -42,12 +46,12 @@ export const videoOptions = {
 	'background-video-clipPath': '',
 	'background-video-fallbackID': null,
 	'background-video-fallbackURL': '',
-	'background-video-playOnMobile': false,
 	'background-video-opacity': 1,
 };
 
 export const gradientOptions = {
 	type: 'gradient',
+	display: 'block',
 	'background-gradient': '',
 	'background-gradient-opacity': 1,
 	'background-gradient-clip-path': '',
@@ -55,16 +59,17 @@ export const gradientOptions = {
 
 export const SVGOptions = {
 	type: 'shape',
+	display: 'block',
 	'background-palette-svg-color-status': true,
 	'background-palette-svg-color': 5,
 	'background-svg-SVGElement': '',
 	'background-svg-SVGData': {},
 	'background-svg-SVGMediaID': null,
 	'background-svg-SVGMediaURL': '',
-	'background-svg-top--unit': '%',
-	'background-svg-top': null,
-	'background-svg-left--unit': '%',
-	'background-svg-left': null,
+	'background-svg-top-unit': '%',
+	'background-svg-top': 0,
+	'background-svg-left-unit': '%',
+	'background-svg-left': 50,
 	'background-svg-size': 100,
-	'background-svg-size--unit': '%',
+	'background-svg-size-unit': '%',
 };

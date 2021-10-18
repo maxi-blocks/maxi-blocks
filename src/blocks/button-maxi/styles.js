@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import { isNil, isEmpty } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import {
@@ -14,6 +9,7 @@ import {
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
+	getBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
 	getColorBackgroundObject,
@@ -30,6 +26,11 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+
+/**
+ * External dependencies
+ */
+import { isNil, isEmpty, merge } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -172,17 +173,14 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		...(props['background-active-media'] === 'color' && {
-			background: getColorBackgroundObject({
-				...getGroupAttributes(props, 'backgroundColor'),
-				blockStyle: props.parentBlockStyle,
-				isButton: true,
-			}),
-		}),
-		...(props['background-active-media'] === 'gradient' && {
-			background: getGradientBackgroundObject({
-				...getGroupAttributes(props, 'backgroundGradient'),
-			}),
+		...getBackgroundStyles({
+			...getGroupAttributes(props, [
+				'background',
+				'backgroundColor',
+				'backgroundGradient',
+			]),
+			isButton: true,
+			blockStyle: props.parentBlockStyle,
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
@@ -229,7 +227,7 @@ const getHoverObject = props => {
 				prefix: 'button-',
 				parentBlockStyle: props.parentBlockStyle,
 			}),
-		...(props['background-status-hover'] && {
+		...(props['background-hover-status'] && {
 			...(props['background-active-media-hover'] === 'color' && {
 				background: getColorBackgroundObject({
 					...getGroupAttributes(props, 'backgroundColor', true),
@@ -327,6 +325,37 @@ const getIconPathStyles = (obj, isHover = false) => {
 	return { IconPath: response };
 };
 
+const getIconBackgroundObject = props => {
+	let response = {};
+
+	breakpoints.forEach(breakpoint => {
+		response = merge(response, {
+			background: {
+				...getColorBackgroundObject({
+					...getGroupAttributes(props, [
+						'iconBackgroundColor',
+						'background',
+						'backgroundColor',
+					]),
+					prefix: 'icon-',
+					blockStyle: props.parentBlockStyle,
+					isIconInherit: props['icon-inherit'],
+					breakpoint,
+				}),
+			},
+			gradient: {
+				...getGradientBackgroundObject({
+					...getGroupAttributes(props, 'iconBackgroundGradient'),
+					prefix: 'icon-',
+					breakpoint,
+				}),
+			},
+		});
+	});
+
+	return response;
+};
+
 const getIconObject = (props, target) => {
 	const response = {
 		icon: getIconStyles(
@@ -337,24 +366,7 @@ const getIconObject = (props, target) => {
 			props['icon-inherit'],
 			false
 		),
-		background: target === 'icon' && {
-			...getColorBackgroundObject({
-				...getGroupAttributes(props, [
-					'iconBackgroundColor',
-					'background',
-					'backgroundColor',
-				]),
-				prefix: 'icon-',
-				blockStyle: props.parentBlockStyle,
-				isIconInherit: props['icon-inherit'],
-			}),
-		},
-		gradient: target === 'icon' && {
-			...getGradientBackgroundObject({
-				...getGroupAttributes(props, 'iconGradient'),
-				prefix: 'icon-',
-			}),
-		},
+		...(target === 'icon' && getIconBackgroundObject(props)),
 		padding:
 			target === 'icon' &&
 			getMarginPaddingStyles({
@@ -381,30 +393,28 @@ const getIconObject = (props, target) => {
 };
 
 const getIconHoverObject = (props, target) => {
+	const iconHoverStatus = props['icon-status-hover'];
+
 	const response = {
 		icon:
-			props['icon-status-hover'] &&
+			iconHoverStatus &&
 			getIconStyles(
 				{
-					...getGroupAttributes(
-						props,
-						['iconHover', 'typography'],
-						true
-					),
+					...getGroupAttributes(props, ['icon', 'typography'], true),
 				},
 				props.parentBlockStyle,
 				props['icon-inherit'],
 				true
 			),
-		background: props['icon-status-hover'] &&
+		background: iconHoverStatus &&
 			target === 'iconHover' && {
 				...getColorBackgroundObject({
 					...getGroupAttributes(
 						props,
 						[
-							'iconBackgroundColorHover',
-							'backgroundHover',
-							'backgroundColorHover',
+							'iconBackgroundColor',
+							'background',
+							'backgroundColor',
 						],
 						true
 					),
@@ -414,26 +424,26 @@ const getIconHoverObject = (props, target) => {
 					isHover: true,
 				}),
 			},
-		gradient: props['icon-status-hover'] &&
+		gradient: iconHoverStatus &&
 			target === 'iconHover' && {
 				...getGradientBackgroundObject({
-					...getGroupAttributes(props, 'iconGradientHover', true),
+					...getGroupAttributes(
+						props,
+						'iconBackgroundGradient',
+						true
+					),
 					prefix: 'icon-',
 					isHover: true,
 				}),
 			},
 		border:
-			props['icon-status-hover'] &&
+			iconHoverStatus &&
 			target === 'iconHover' &&
 			getBorderStyles({
 				obj: {
 					...getGroupAttributes(
 						props,
-						[
-							'iconBorderHover',
-							'iconBorderWidthHover',
-							'iconBorderRadiusHover',
-						],
+						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
 						true
 					),
 				},

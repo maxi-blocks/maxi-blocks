@@ -57,14 +57,15 @@ const attributes = {
 	...attributesData.typographyHover,
 	...{
 		...attributesData.background,
-		'background-active-media': {
+		...attributesData.backgroundHover,
+		'background-active-media-general': {
 			type: 'string',
 			default: 'color',
 		},
 	},
 	...{
 		...attributesData.backgroundColor,
-		'background-palette-color': {
+		'background-palette-color-general': {
 			type: 'number',
 			default: 4,
 		},
@@ -113,13 +114,10 @@ const attributes = {
 	...attributesData.icon,
 	...attributesData.iconPadding,
 	...attributesData.iconBackgroundColor,
-	...attributesData.iconGradient,
+	...attributesData.iconBackgroundGradient,
 	...attributesData.iconBorder,
 	...attributesData.iconBorderWidth,
 	...attributesData.iconBorderRadius,
-	...attributesData.iconHover,
-	...attributesData.iconBackgroundColorHover,
-	...attributesData.iconGradientHover,
 	...attributesData.iconBorderHover,
 	...attributesData.iconBorderWidthHover,
 	...attributesData.iconBorderRadiusHover,

@@ -8,7 +8,7 @@ import {
 } from './background';
 
 export const backgroundHover = (() => {
-	let response = {};
+	const response = {};
 
 	Object.keys(background).forEach(key => {
 		const newKey = `${key}-hover`;
@@ -18,18 +18,6 @@ export const backgroundHover = (() => {
 
 		response[newKey] = value;
 	});
-
-	response = {
-		...response,
-		'background-status-hover': {
-			type: 'boolean',
-			default: false,
-		},
-		'background-layers-status-hover': {
-			type: 'boolean',
-			default: false,
-		},
-	};
 
 	return response;
 })();
@@ -41,9 +29,9 @@ export const backgroundColorHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...backgroundColor[key] };
 
-		if (key === 'background-palette-color') value.default = 6;
+		if (key === 'background-palette-color-general') value.default = 6;
 		else if (
-			key !== 'background-palette-color-status' &&
+			key !== 'background-palette-color-status-general' &&
 			'default' in value
 		)
 			delete value.default;
@@ -106,9 +94,9 @@ export const backgroundSVGHover = (() => {
 		const newKey = `${key}-hover`;
 		const value = { ...backgroundSVG[key] };
 
-		if (key === 'background-palette-svg-color') value.default = 6;
+		if (key === 'background-palette-svg-color-general') value.default = 6;
 		else if (
-			key !== 'background-palette-svg-color-status' &&
+			key !== 'background-palette-svg-color-status-general' &&
 			'default' in value
 		)
 			delete value.default;

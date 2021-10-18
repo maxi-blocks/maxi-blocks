@@ -302,14 +302,16 @@ const LayerCard = props => {
 						</span>
 						{getTitle(type)}
 					</span>
-					<span
-						className={classnames(
-							'maxi-background-layer__title__mover',
-							'maxi-background-layer__ignore-open'
-						)}
-					>
-						<Icon icon={toolbarSizing} />
-					</span>
+					{breakpoint === 'general' && (
+						<span
+							className={classnames(
+								'maxi-background-layer__title__mover',
+								'maxi-background-layer__ignore-open'
+							)}
+						>
+							<Icon icon={toolbarSizing} />
+						</span>
+					)}
 					<span
 						className={classnames(
 							'maxi-background-layer__title__display',
@@ -375,17 +377,40 @@ const BackgroundLayersControl = ({
 		];
 
 		Object.entries(layer).forEach(([key, val]) => {
-			if (!sameLabelAttr.includes(key))
+			if (!sameLabelAttr.includes(key)) {
+				// Current non-hover values
 				response[getAttributeKey(key, false, false, breakpoint)] = val;
-			if (isHover && !sameLabelAttr.includes(key))
-				response[getAttributeKey(key, isHover, false, breakpoint)] =
-					val;
-			else response[key] = val;
 
-			if (isHover && key === 'display')
-				response['display-general'] = 'none';
-			else if (key === 'display' && hoverStatus)
-				response['display-general-hover'] = 'none';
+				// Current hover values
+				if (isHover)
+					response[getAttributeKey(key, isHover, false, breakpoint)] =
+						val;
+
+				if (breakpoint !== 'general') {
+					// General non-hover values
+					response[getAttributeKey(key, false, false, 'general')] =
+						val;
+
+					// General hover values
+					if (isHover)
+						response[
+							getAttributeKey(key, isHover, false, 'general')
+						] = val;
+				}
+			} else response[key] = val;
+
+			if (key === 'display') {
+				if (isHover || breakpoint !== 'general')
+					response['display-general'] = 'none';
+
+				// In case hover status is enabled, makes the layers added
+				// on normal be hidden by default on hover
+				if (hoverStatus || breakpoint !== 'general')
+					response['display-general-hover'] = 'none';
+
+				if (!hoverStatus && breakpoint !== 'general')
+					response[`display-${breakpoint}-hover`] = 'block';
+			}
 		});
 
 		return response;

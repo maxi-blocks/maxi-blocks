@@ -369,7 +369,7 @@ const MaxiToolbar = memo(
 							<BackgroundColor
 								{...getGroupAttributes(
 									attributes,
-									'backgroundColor'
+									'background'
 								)}
 								blockName={name}
 								breakpoint={breakpoint}

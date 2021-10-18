@@ -39,7 +39,7 @@ export const iconBackgroundColorHover = {
 	},
 };
 
-export const iconGradientHover = {
+export const iconBackgroundGradientHover = {
 	'icon-background-gradient-hover': {
 		type: 'string',
 	},

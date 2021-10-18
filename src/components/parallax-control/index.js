@@ -7,9 +7,13 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import FancyRadioControl from '../fancy-radio-control';
+import ImageLayer from '../background-control/imageLayer';
 import ToggleSwitch from '../toggle-switch';
 import AdvancedNumberControl from '../advanced-number-control';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -20,7 +24,7 @@ import classnames from 'classnames';
  * Component
  */
 const ParallaxControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, breakpoint } = props;
 
 	const classes = classnames('maxi-parallax-control', className);
 
@@ -38,6 +42,16 @@ const ParallaxControl = props => {
 			/>
 			{props['parallax-status'] && (
 				<>
+					<ImageLayer
+						imageOptions={{
+							...getGroupAttributes(props, 'parallax'),
+						}}
+						onChange={obj => onChange(obj)}
+						disableClipPath
+						prefix='parallax-'
+						breakpoint={breakpoint}
+						hideSettings
+					/>
 					<FancyRadioControl
 						className='parallax-direction'
 						label={__('Direction', 'maxi-blocks')}

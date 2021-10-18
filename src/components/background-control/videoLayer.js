@@ -7,12 +7,17 @@ import { useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import MediaUploaderControl from '../media-uploader-control';
 import OpacityControl from '../opacity-control';
-import AdvancedNumberControl from '../advanced-number-control';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import TextControl from '../text-control';
 import ToggleSwitch from '../toggle-switch';
-import { getAttributeKey } from '../../extensions/styles';
+import {
+	getAttributeKey,
+	getAttributeValue,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -22,8 +27,126 @@ import { cloneDeep } from 'lodash';
 /**
  * Component
  */
+const VideoLayerContent = props => {
+	const {
+		onChange,
+		isHover = false,
+		prefix = '',
+		breakpoint,
+		isGeneral = false,
+	} = props;
+
+	const videoOptions = cloneDeep(props.videoOptions);
+
+	return (
+		<>
+			<OpacityControl
+				label={__('Video Opacity', 'maxi-blocks')}
+				opacity={getLastBreakpointAttribute(
+					`${prefix}background-video-opacity`,
+					breakpoint,
+					videoOptions,
+					isHover
+				)}
+				onChange={opacity => {
+					videoOptions[
+						getAttributeKey(
+							'background-video-opacity',
+							isHover,
+							prefix,
+							breakpoint
+						)
+					] = opacity;
+
+					if (isGeneral)
+						videoOptions[
+							getAttributeKey(
+								'background-video-opacity',
+								isHover,
+								prefix,
+								'general'
+							)
+						] = opacity;
+
+					onChange(videoOptions);
+				}}
+			/>
+			<MediaUploaderControl
+				className='maxi-mediauploader-control__video-fallback'
+				placeholder={__('Background Fallback')}
+				mediaID={getLastBreakpointAttribute(
+					`${prefix}background-video-fallbackID`,
+					breakpoint,
+					videoOptions,
+					isHover
+				)}
+				onSelectImage={val =>
+					onChange({
+						[getAttributeKey(
+							'background-video-fallbackID',
+							isHover,
+							prefix,
+							breakpoint
+						)]: val.id,
+						[getAttributeKey(
+							'background-video-fallbackURL',
+							isHover,
+							prefix,
+							breakpoint
+						)]: val.url,
+						...(isGeneral && {
+							[getAttributeKey(
+								'background-video-fallbackID',
+								isHover,
+								prefix,
+								'general'
+							)]: val.id,
+							[getAttributeKey(
+								'background-video-fallbackURL',
+								isHover,
+								prefix,
+								'general'
+							)]: val.url,
+						}),
+					})
+				}
+				onRemoveImage={() =>
+					onChange({
+						[getAttributeKey(
+							'background-video-fallbackID',
+							isHover,
+							prefix,
+							breakpoint
+						)]: '',
+						[getAttributeKey(
+							'background-video-fallbackURL',
+							isHover,
+							prefix,
+							breakpoint
+						)]: '',
+						...(isGeneral && {
+							[getAttributeKey(
+								'background-video-fallbackID',
+								isHover,
+								prefix,
+								'general'
+							)]: '',
+							[getAttributeKey(
+								'background-video-fallbackURL',
+								isHover,
+								prefix,
+								'general'
+							)]: '',
+						}),
+					})
+				}
+			/>
+		</>
+	);
+};
+
 const VideoLayer = props => {
-	const { onChange, isHover, prefix } = props;
+	const { onChange, isHover = false, prefix = '', breakpoint } = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
 
@@ -38,15 +161,10 @@ const VideoLayer = props => {
 				label='URL'
 				type='url'
 				// help={__('Add Video', 'maxi-blocks')}
-				value={
-					videoOptions[
-						getAttributeKey(
-							'background-video-mediaURL',
-							isHover,
-							prefix
-						)
-					]
-				}
+				value={getAttributeValue({
+					target: `${prefix}background-video-mediaURL`,
+					props: videoOptions,
+				})}
 				placeholder='Youtube, Vimeo, or Direct Link'
 				onChange={val => {
 					if (val && !videoUrlRegex.test(val)) {
@@ -69,15 +187,10 @@ const VideoLayer = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('Start Time (s)', 'maxi-blocks')}
-				value={
-					videoOptions[
-						getAttributeKey(
-							'background-video-startTime',
-							isHover,
-							prefix
-						)
-					]
-				}
+				value={getAttributeValue({
+					target: `${prefix}background-video-startTime`,
+					props: videoOptions,
+				})}
 				onChangeValue={val => {
 					onChange({
 						[getAttributeKey(
@@ -101,31 +214,19 @@ const VideoLayer = props => {
 			/>
 			<AdvancedNumberControl
 				label={__('End Time (s)', 'maxi-blocks')}
-				value={
-					videoOptions[
-						getAttributeKey(
-							'background-video-endTime',
-							isHover,
-							prefix
-						)
-					]
-				}
-				onChangeValue={val => {
+				value={getAttributeValue({
+					target: `${prefix}background-video-endTime`,
+					props: videoOptions,
+				})}
+				onChangeValue={val =>
 					onChange({
 						[getAttributeKey(
 							'background-video-endTime',
 							isHover,
 							prefix
 						)]: val !== undefined && val !== '' ? val : '',
-						...(!!val && {
-							[getAttributeKey(
-								'background-video-loop',
-								isHover,
-								prefix
-							)]: 0,
-						}),
-					});
-				}}
+					})
+				}
 				min={0}
 				max={999}
 				onReset={() =>
@@ -141,23 +242,18 @@ const VideoLayer = props => {
 			<ToggleSwitch
 				className='video-loop'
 				label={__('Loop', 'maxi-blocks')}
-				selected={
-					videoOptions[
-						getAttributeKey(
-							'background-video-loop',
-							isHover,
-							prefix
-						)
-					]
-				}
+				selected={getLastBreakpointAttribute(
+					`${prefix}background-video-loop`,
+					breakpoint,
+					videoOptions
+				)}
 				disabled={
-					!!+videoOptions[
-						getAttributeKey(
-							'background-video-endTime',
-							isHover,
-							prefix
-						)
-					]
+					+getLastBreakpointAttribute(
+						`${prefix}background-video-endTime`,
+						breakpoint,
+						videoOptions,
+						isHover
+					) === 0
 				}
 				onChange={val =>
 					onChange({
@@ -169,91 +265,14 @@ const VideoLayer = props => {
 					})
 				}
 			/>
-			<ToggleSwitch
-				className='video-play-mobile'
-				label={__('Play on Mobile', 'maxi-blocks')}
-				selected={
-					videoOptions[
-						getAttributeKey(
-							'background-video-playOnMobile',
-							isHover,
-							prefix
-						)
-					]
-				}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-video-playOnMobile',
-							isHover,
-							prefix
-						)]: val,
-					})
-				}
-			/>
-			<OpacityControl
-				label={__('Video Opacity', 'maxi-blocks')}
-				opacity={
-					videoOptions[
-						getAttributeKey(
-							'background-video-opacity',
-							isHover,
-							prefix
-						)
-					]
-				}
-				onChange={opacity => {
-					videoOptions[
-						getAttributeKey(
-							'background-video-opacity',
-							isHover,
-							prefix
-						)
-					] = opacity;
-					onChange(videoOptions);
-				}}
-			/>
-			<MediaUploaderControl
-				className='maxi-mediauploader-control__video-fallback'
-				placeholder={__('Background Fallback')}
-				mediaID={
-					videoOptions[
-						getAttributeKey(
-							'background-video-fallbackID',
-							isHover,
-							prefix
-						)
-					]
-				}
-				onSelectImage={val =>
-					onChange({
-						[getAttributeKey(
-							'background-video-fallbackID',
-							isHover,
-							prefix
-						)]: val.id,
-						[getAttributeKey(
-							'background-video-fallbackURL',
-							isHover,
-							prefix
-						)]: val.url,
-					})
-				}
-				onRemoveImage={() =>
-					onChange({
-						[getAttributeKey(
-							'background-video-fallbackID',
-							isHover,
-							prefix
-						)]: '',
-						[getAttributeKey(
-							'background-video-fallbackURL',
-							isHover,
-							prefix
-						)]: '',
-					})
-				}
-			/>
+			<ResponsiveTabsControl breakpoint={breakpoint}>
+				<VideoLayerContent
+					videoOptions={videoOptions}
+					onChange={onChange}
+					isHover={isHover}
+					prefix={prefix}
+				/>
+			</ResponsiveTabsControl>
 		</div>
 	);
 };

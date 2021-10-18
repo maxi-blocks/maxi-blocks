@@ -2,17 +2,17 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, dispatch, useSelect, useDispatch } from '@wordpress/data';
+import { select, dispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
-import SettingTabsControl from '../setting-tabs-control';
-import AdvancedNumberControl from '../advanced-number-control';
 import TextShadowControl from '../text-shadow-control';
 import {
 	setFormat,
@@ -29,18 +29,11 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, inRange, isEmpty, isBoolean, isNumber } from 'lodash';
-
-/**
- * Styles
- */
-import './editor.scss';
+import { isNil, isBoolean, isNumber } from 'lodash';
 
 /**
  * Component
  */
-const breakpoints = ['XXL', 'XL', 'L', 'M', 'S', 'XS'];
-
 const TextOptions = props => {
 	const {
 		getValue,
@@ -370,27 +363,17 @@ const TypographyControl = withFormatValue(props => {
 			...(isHover ? ['typographyHover'] : []),
 		]);
 
-	const { styleCard, winWidth, maxiBreakpoints } = useSelect(select => {
+	const { styleCard } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
-		const { receiveMaxiSettings, receiveMaxiBreakpoints } =
-			select('maxiBlocks');
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-		const winWidth = receiveMaxiSettings().window?.width || null;
-
-		const maxiBreakpoints = receiveMaxiBreakpoints();
-
 		return {
 			styleCard,
-			winWidth,
-			maxiBreakpoints,
 		};
 	});
-
-	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
 
 	const classes = classnames('maxi-typography-control', className);
 
@@ -585,42 +568,6 @@ const TypographyControl = withFormatValue(props => {
 		onChange(obj);
 	};
 
-	const getWinBreakpoint = () => {
-		if (!maxiBreakpoints || isEmpty(maxiBreakpoints)) return null;
-
-		if (winWidth > maxiBreakpoints.xl) return 'xxl';
-
-		const response = Object.entries(maxiBreakpoints).reduce(
-			([prevKey, prevValue], [currKey, currValue]) => {
-				if (!prevValue) return [prevKey];
-				if (inRange(winWidth, prevValue, currValue + 1))
-					return [currKey];
-
-				return [prevKey, prevValue];
-			}
-		)[0];
-
-		return response.toLowerCase();
-	};
-
-	const showNotification = customBreakpoint => {
-		if (breakpoint !== 'general')
-			return breakpoint === customBreakpoint.toLowerCase();
-
-		return getWinBreakpoint() === customBreakpoint.toLowerCase();
-	};
-
-	const getTextOptionsTab = () => {
-		if (breakpoint !== 'general')
-			return breakpoints.indexOf(breakpoint.toUpperCase());
-
-		const userBreakpoint = getWinBreakpoint();
-
-		if (!userBreakpoint) return null;
-
-		return breakpoints.indexOf(userBreakpoint.toUpperCase());
-	};
-
 	return (
 		<div className={classes}>
 			{!disableFontFamily && (
@@ -684,34 +631,20 @@ const TypographyControl = withFormatValue(props => {
 					type='text'
 				/>
 			)}
-			<SettingTabsControl
+			<ResponsiveTabsControl
 				className='maxi-typography-control__text-options-tabs'
-				items={breakpoints.map(breakpoint => {
-					return {
-						label: breakpoint,
-						content: (
-							<TextOptions
-								getValue={getValue}
-								getDefault={getDefault}
-								onChangeFormat={onChangeFormat}
-								prefix={prefix}
-								minMaxSettings={minMaxSettings}
-								minMaxSettingsLetterSpacing={
-									minMaxSettingsLetterSpacing
-								}
-								breakpoint={breakpoint.toLowerCase()}
-								avoidXXL={!styleCards}
-							/>
-						),
-						showNotification: showNotification(breakpoint),
-						callback: () =>
-							styleCards
-								? setMaxiDeviceType(breakpoint.toLowerCase())
-								: null,
-					};
-				})}
-				forceTab={getTextOptionsTab()}
-			/>
+				breakpoint={breakpoint}
+			>
+				<TextOptions
+					getValue={getValue}
+					getDefault={getDefault}
+					onChangeFormat={onChangeFormat}
+					prefix={prefix}
+					minMaxSettings={minMaxSettings}
+					minMaxSettingsLetterSpacing={minMaxSettingsLetterSpacing}
+					avoidXXL={!styleCards}
+				/>
+			</ResponsiveTabsControl>
 			<hr />
 			{!disableFontFamily &&
 				!disableColor &&

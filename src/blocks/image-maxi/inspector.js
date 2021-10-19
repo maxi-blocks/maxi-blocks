@@ -20,11 +20,9 @@ import {
 	ImageCropControl,
 	ImageShape,
 	InfoBox,
-	MotionControl,
 	SelectControl,
 	SettingTabsControl,
 	ToggleSwitch,
-	TransformControl,
 	TypographyControl,
 } from '../../components';
 import {
@@ -733,42 +731,12 @@ const Inspector = memo(
 													props,
 												}),
 											},
-											{
-												label: __(
-													'Motion Effects',
-													'maxi-blocks'
-												),
-												content: (
-													<MotionControl
-														{...getGroupAttributes(
-															attributes,
-															'motion'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Transform',
-													'maxi-blocks'
-												),
-												content: (
-													<TransformControl
-														{...getGroupAttributes(
-															attributes,
-															'transform'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														uniqueID={uniqueID}
-														breakpoint={deviceType}
-													/>
-												),
-											},
+											...inspectorTabs.motion({
+												props,
+											}),
+											...inspectorTabs.transform({
+												props,
+											}),
 											...inspectorTabs.display({
 												props,
 											}),

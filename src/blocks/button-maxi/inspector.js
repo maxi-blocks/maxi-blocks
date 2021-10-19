@@ -19,10 +19,8 @@ import {
 	Icon,
 	IconControl,
 	InfoBox,
-	MotionControl,
 	SettingTabsControl,
 	ToggleSwitch,
-	TransformControl,
 	TransitionControl,
 	TypographyControl,
 } from '../../components';
@@ -69,7 +67,6 @@ const Inspector = memo(
 			isFirstOnHierarchy,
 			parentBlockStyle,
 			blockFullWidth,
-			uniqueID,
 		} = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
@@ -860,42 +857,12 @@ const Inspector = memo(
 												props,
 											}),
 										},
-										{
-											label: __(
-												'Motion effect',
-												'maxi-blocks'
-											),
-											content: (
-												<MotionControl
-													{...getGroupAttributes(
-														attributes,
-														'motion'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-												/>
-											),
-										},
-										{
-											label: __(
-												'Transform',
-												'maxi-blocks'
-											),
-											content: (
-												<TransformControl
-													{...getGroupAttributes(
-														attributes,
-														'transform'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													uniqueID={uniqueID}
-													breakpoint={deviceType}
-												/>
-											),
-										},
+										...inspectorTabs.motion({
+											props,
+										}),
+										...inspectorTabs.transform({
+											props,
+										}),
 										{
 											label: __(
 												'Hover transition',

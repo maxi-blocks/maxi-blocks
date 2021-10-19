@@ -14,10 +14,8 @@ import {
 	CustomLabel,
 	FullSizeControl,
 	InfoBox,
-	MotionControl,
 	SettingTabsControl,
 	ToggleSwitch,
-	TransformControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -27,13 +25,8 @@ import * as inspectorTabs from '../../components/inspector-tabs';
  */
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
-	const {
-		blockFullWidth,
-		blockStyle,
-		customLabel,
-		isFirstOnHierarchy,
-		uniqueID,
-	} = attributes;
+	const { blockFullWidth, blockStyle, customLabel, isFirstOnHierarchy } =
+		attributes;
 
 	return (
 		<InspectorControls>
@@ -168,39 +161,12 @@ const Inspector = props => {
 											props,
 										}),
 									},
-									{
-										label: __(
-											'Motion effect',
-											'maxi-blocks'
-										),
-										content: (
-											<MotionControl
-												{...getGroupAttributes(
-													attributes,
-													'motion'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-											/>
-										),
-									},
-									{
-										label: __('Transform', 'maxi-blocks'),
-										content: (
-											<TransformControl
-												{...getGroupAttributes(
-													attributes,
-													'transform'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												uniqueID={uniqueID}
-												breakpoint={deviceType}
-											/>
-										),
-									},
+									...inspectorTabs.motion({
+										props,
+									}),
+									...inspectorTabs.transform({
+										props,
+									}),
 									...inspectorTabs.display({
 										props,
 									}),

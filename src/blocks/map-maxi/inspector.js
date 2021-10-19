@@ -16,7 +16,6 @@ import {
 	MapControl,
 	SettingTabsControl,
 	ToggleSwitch,
-	TransformControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 
@@ -25,13 +24,8 @@ import { getGroupAttributes } from '../../extensions/styles';
  */
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
-	const {
-		customLabel,
-		uniqueID,
-		isFirstOnHierarchy,
-		blockStyle,
-		blockFullWidth,
-	} = attributes;
+	const { customLabel, isFirstOnHierarchy, blockStyle, blockFullWidth } =
+		attributes;
 
 	return (
 		<InspectorControls>
@@ -151,22 +145,9 @@ const Inspector = props => {
 											props,
 										}),
 									},
-									{
-										label: __('Transform', 'maxi-blocks'),
-										content: (
-											<TransformControl
-												{...getGroupAttributes(
-													attributes,
-													'transform'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												uniqueID={uniqueID}
-												breakpoint={deviceType}
-											/>
-										),
-									},
+									...inspectorTabs.transform({
+										props,
+									}),
 									...inspectorTabs.display({
 										props,
 									}),

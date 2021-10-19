@@ -14,13 +14,11 @@ import {
 	CustomLabel,
 	FullSizeControl,
 	InfoBox,
-	MotionControl,
 	SettingTabsControl,
 	SvgColor,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
 	ToggleSwitch,
-	TransformControl,
 } from '../../components';
 import {
 	getColorRGBAString,
@@ -48,7 +46,6 @@ const Inspector = props => {
 		isFirstOnHierarchy,
 		parentBlockStyle,
 		svgType,
-		uniqueID,
 	} = attributes;
 
 	return (
@@ -404,42 +401,12 @@ const Inspector = props => {
 												props,
 											}),
 										},
-										{
-											label: __(
-												'Motion effect',
-												'maxi-blocks'
-											),
-											content: (
-												<MotionControl
-													{...getGroupAttributes(
-														attributes,
-														'motion'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-												/>
-											),
-										},
-										{
-											label: __(
-												'Transform',
-												'maxi-blocks'
-											),
-											content: (
-												<TransformControl
-													{...getGroupAttributes(
-														attributes,
-														'transform'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													uniqueID={uniqueID}
-													breakpoint={deviceType}
-												/>
-											),
-										},
+										...inspectorTabs.motion({
+											props,
+										}),
+										...inspectorTabs.transform({
+											props,
+										}),
 										...inspectorTabs.display({
 											props,
 										}),

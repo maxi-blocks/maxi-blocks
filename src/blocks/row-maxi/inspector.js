@@ -16,7 +16,6 @@ import {
 	SelectControl,
 	SettingTabsControl,
 	ToggleSwitch,
-	TransformControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -32,7 +31,6 @@ const Inspector = props => {
 		customLabel,
 		horizontalAlign,
 		isFirstOnHierarchy,
-		uniqueID,
 		verticalAlign,
 	} = attributes;
 
@@ -268,22 +266,9 @@ const Inspector = props => {
 											props,
 										}),
 									},
-									{
-										label: __('Transform', 'maxi-blocks'),
-										content: (
-											<TransformControl
-												{...getGroupAttributes(
-													attributes,
-													'transform'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												uniqueID={uniqueID}
-												breakpoint={deviceType}
-											/>
-										),
-									},
+									...inspectorTabs.transform({
+										props,
+									}),
 									...inspectorTabs.display({
 										props,
 									}),

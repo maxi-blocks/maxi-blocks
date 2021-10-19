@@ -15,10 +15,8 @@ import {
 	FancyRadioControl,
 	FullSizeControl,
 	InfoBox,
-	MotionControl,
 	SettingTabsControl,
 	ToggleSwitch,
-	TransformControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -37,7 +35,6 @@ const Inspector = props => {
 		lineHorizontal,
 		lineOrientation,
 		lineVertical,
-		uniqueID,
 	} = attributes;
 
 	return (
@@ -342,42 +339,12 @@ const Inspector = props => {
 												props,
 											}),
 										},
-										{
-											label: __(
-												'Motion effects',
-												'maxi-blocks'
-											),
-											content: (
-												<MotionControl
-													{...getGroupAttributes(
-														attributes,
-														'motion'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-												/>
-											),
-										},
-										{
-											label: __(
-												'Transform',
-												'maxi-blocks'
-											),
-											content: (
-												<TransformControl
-													{...getGroupAttributes(
-														attributes,
-														'transform'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													uniqueID={uniqueID}
-													breakpoint={deviceType}
-												/>
-											),
-										},
+										...inspectorTabs.motion({
+											props,
+										}),
+										...inspectorTabs.transform({
+											props,
+										}),
 										...inspectorTabs.display({
 											props,
 										}),

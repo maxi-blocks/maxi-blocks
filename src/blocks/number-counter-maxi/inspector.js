@@ -16,7 +16,6 @@ import {
 	NumberCounterControl,
 	SettingTabsControl,
 	ToggleSwitch,
-	TransformControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -26,13 +25,8 @@ import * as inspectorTabs from '../../components/inspector-tabs';
  */
 const Inspector = props => {
 	const { attributes, clientId, deviceType, setAttributes } = props;
-	const {
-		blockFullWidth,
-		blockStyle,
-		customLabel,
-		isFirstOnHierarchy,
-		uniqueID,
-	} = attributes;
+	const { blockFullWidth, blockStyle, customLabel, isFirstOnHierarchy } =
+		attributes;
 
 	return (
 		<InspectorControls>
@@ -187,22 +181,9 @@ const Inspector = props => {
 											props,
 										}),
 									},
-									{
-										label: __('Transform', 'maxi-blocks'),
-										content: (
-											<TransformControl
-												{...getGroupAttributes(
-													attributes,
-													'transform'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												uniqueID={uniqueID}
-												breakpoint={deviceType}
-											/>
-										),
-									},
+									...inspectorTabs.transform({
+										props,
+									}),
 									...inspectorTabs.display({
 										props,
 									}),

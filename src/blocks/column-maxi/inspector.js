@@ -15,7 +15,6 @@ import {
 	InfoBox,
 	SelectControl,
 	SettingTabsControl,
-	TransformControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -31,8 +30,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId, rowPattern } =
 		props;
-	const { customLabel, uniqueID, isFirstOnHierarchy, blockStyle } =
-		attributes;
+	const { customLabel, isFirstOnHierarchy, blockStyle } = attributes;
 
 	return (
 		<InspectorControls>
@@ -207,22 +205,9 @@ const Inspector = props => {
 											props,
 										}),
 									},
-									{
-										label: __('Transform', 'maxi-blocks'),
-										content: (
-											<TransformControl
-												{...getGroupAttributes(
-													attributes,
-													'transform'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												uniqueID={uniqueID}
-												breakpoint={deviceType}
-											/>
-										),
-									},
+									...inspectorTabs.transform({
+										props,
+									}),
 									...inspectorTabs.display({
 										props,
 									}),

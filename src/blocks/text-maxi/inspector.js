@@ -17,11 +17,9 @@ import {
 	FontLevelControl,
 	FullSizeControl,
 	InfoBox,
-	MotionControl,
 	SelectControl,
 	SettingTabsControl,
 	ToggleSwitch,
-	TransformControl,
 	TransitionControl,
 	TypographyControl,
 } from '../../components';
@@ -50,7 +48,6 @@ const Inspector = memo(
 			parentBlockStyle,
 			textLevel,
 			typeOfList,
-			uniqueID,
 		} = attributes;
 
 		return (
@@ -443,42 +440,12 @@ const Inspector = memo(
 													props,
 												}),
 											},
-											{
-												label: __(
-													'Motion effect',
-													'maxi-blocks'
-												),
-												content: (
-													<MotionControl
-														{...getGroupAttributes(
-															attributes,
-															'motion'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Transform',
-													'maxi-blocks'
-												),
-												content: (
-													<TransformControl
-														{...getGroupAttributes(
-															attributes,
-															'transform'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														uniqueID={uniqueID}
-														breakpoint={deviceType}
-													/>
-												),
-											},
+											...inspectorTabs.motion({
+												props,
+											}),
+											...inspectorTabs.transform({
+												props,
+											}),
 											{
 												label: __(
 													'Hyperlink hover transition',

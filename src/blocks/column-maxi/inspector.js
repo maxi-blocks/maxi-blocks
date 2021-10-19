@@ -12,7 +12,6 @@ import {
 	AdvancedNumberControl,
 	BlockStylesControl,
 	CustomLabel,
-	InfoBox,
 	SelectControl,
 	SettingTabsControl,
 } from '../../components';
@@ -34,14 +33,7 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			{deviceType !== 'general' && (
-				<InfoBox
-					message={__(
-						'You are currently in responsive editing mode. Select Base to continue editing general settings.',
-						'maxi-blocks'
-					)}
-				/>
-			)}
+			{inspectorTabs.infoBox({ props, deviceType })}
 			<SettingTabsControl
 				disablePadding
 				deviceType={deviceType}

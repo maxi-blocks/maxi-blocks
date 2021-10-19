@@ -16,11 +16,9 @@ import {
 	CustomLabel,
 	FontLevelControl,
 	FullSizeControl,
-	InfoBox,
 	SelectControl,
 	SettingTabsControl,
 	ToggleSwitch,
-	TransitionControl,
 	TypographyControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
@@ -52,14 +50,7 @@ const Inspector = memo(
 
 		return (
 			<InspectorControls>
-				{deviceType !== 'general' && (
-					<InfoBox
-						message={__(
-							'You are currently in responsive editing mode. Select Base to continue editing general settings.',
-							'maxi-blocks'
-						)}
-					/>
-				)}
+				{inspectorTabs.infoBox({ props, deviceType })}
 				<SettingTabsControl
 					disablePadding
 					deviceType={deviceType}
@@ -446,24 +437,13 @@ const Inspector = memo(
 											...inspectorTabs.transform({
 												props,
 											}),
-											{
+											...inspectorTabs.transition({
+												props,
 												label: __(
 													'Hyperlink hover transition',
 													'maxi-blocks'
 												),
-												content: (
-													<TransitionControl
-														{...getGroupAttributes(
-															attributes,
-															'transitionDuration'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												),
-											},
+											}),
 											...inspectorTabs.display({
 												props,
 											}),

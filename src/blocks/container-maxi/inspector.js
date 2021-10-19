@@ -10,7 +10,6 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	ArrowControl,
-	AxisControl,
 	BlockStylesControl,
 	CustomLabel,
 	DisplayControl,
@@ -28,10 +27,7 @@ import {
 	TransformControl,
 	ZIndexControl,
 } from '../../components';
-import {
-	getGroupAttributes,
-	setHoverAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
@@ -204,48 +200,9 @@ const Inspector = props => {
 												</>
 											),
 										},
-										{
-											label: __(
-												'Margin / Padding',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'padding'
-														)}
-														label={__(
-															'Padding',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='padding'
-														disableAuto
-													/>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'margin'
-														)}
-														label={__(
-															'Margin',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='margin'
-														optionType='string'
-													/>
-												</>
-											),
-										},
+										...inspectorTabs.marginPadding({
+											props,
+										}),
 									]}
 								/>
 							</>

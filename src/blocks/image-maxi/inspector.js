@@ -12,7 +12,6 @@ import { memo } from '@wordpress/element';
 import {
 	AccordionControl,
 	AlignmentControl,
-	AxisControl,
 	BlockStylesControl,
 	ClipPath,
 	CustomLabel,
@@ -37,7 +36,6 @@ import {
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
-	setHoverAttributes,
 } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
@@ -654,62 +652,10 @@ const Inspector = memo(
 													</>
 												),
 											},
-											{
-												label: __(
-													'Margin / Padding',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														<AxisControl
-															{...getGroupAttributes(
-																attributes,
-																'padding',
-																false,
-																'image-'
-															)}
-															prefix='image-'
-															label={__(
-																'Padding',
-																'maxi-blocks'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															target='padding'
-															disableAuto
-														/>
-														<AxisControl
-															{...getGroupAttributes(
-																attributes,
-																'margin',
-																false,
-																'image-'
-															)}
-															prefix='image-'
-															label={__(
-																'Margin',
-																'maxi-blocks'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															target='margin'
-															optionType='string'
-														/>
-													</>
-												),
-											},
+											...inspectorTabs.marginPadding({
+												props,
+												prefix: 'image-',
+											}),
 										]}
 									/>
 								</>
@@ -786,48 +732,9 @@ const Inspector = memo(
 												</>
 											),
 										},
-										{
-											label: __(
-												'Margin / Padding',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'padding'
-														)}
-														label={__(
-															'Padding',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='padding'
-														disableAuto
-													/>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'margin'
-														)}
-														label={__(
-															'Margin',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='margin'
-														optionType='string'
-													/>
-												</>
-											),
-										},
+										...inspectorTabs.marginPadding({
+											props,
+										}),
 									]}
 								/>
 							),

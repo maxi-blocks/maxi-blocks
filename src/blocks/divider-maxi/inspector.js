@@ -9,7 +9,6 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import {
 	AccordionControl,
-	AxisControl,
 	BlockStylesControl,
 	CustomLabel,
 	DisplayControl,
@@ -28,10 +27,7 @@ import {
 	TransformControl,
 	ZIndexControl,
 } from '../../components';
-import {
-	getGroupAttributes,
-	setHoverAttributes,
-} from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
@@ -267,54 +263,10 @@ const Inspector = props => {
 												</>
 											),
 										},
-										{
-											label: __(
-												'Margin / Padding',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'padding',
-															false,
-															'divider-'
-														)}
-														prefix='divider-'
-														label={__(
-															'Padding',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														target='padding'
-														disableAuto
-													/>
-													<AxisControl
-														{...getGroupAttributes(
-															attributes,
-															'margin',
-															false,
-															'divider-'
-														)}
-														prefix='divider-'
-														label={__(
-															'Margin',
-															'maxi-blocks'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														target='margin'
-														breakpoint={deviceType}
-														optionType='string'
-													/>
-												</>
-											),
-										},
+										...inspectorTabs.marginPadding({
+											props,
+											prefix: 'divider-',
+										}),
 									]}
 								/>
 							</>
@@ -390,48 +342,9 @@ const Inspector = props => {
 											</>
 										),
 									},
-									{
-										label: __(
-											'Margin / Padding',
-											'maxi-blocks'
-										),
-										content: (
-											<>
-												<AxisControl
-													{...getGroupAttributes(
-														attributes,
-														'padding'
-													)}
-													label={__(
-														'Padding',
-														'maxi-blocks'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													breakpoint={deviceType}
-													target='padding'
-													disableAuto
-												/>
-												<AxisControl
-													{...getGroupAttributes(
-														attributes,
-														'margin'
-													)}
-													label={__(
-														'Margin',
-														'maxi-blocks'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													target='margin'
-													breakpoint={deviceType}
-													optionType='string'
-												/>
-											</>
-										),
-									},
+									...inspectorTabs.marginPadding({
+										props,
+									}),
 								]}
 							/>
 						),

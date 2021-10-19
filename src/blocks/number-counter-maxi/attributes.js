@@ -28,6 +28,7 @@ const attributes = {
 	...getPrefixedAttributes(attributesData.padding, prefix),
 	...attributesData.margin,
 	...attributesData.padding,
+	...attributesData.blockBackground,
 	...getPrefixedAttributes(attributesData.border, prefix),
 	...getPrefixedAttributes(attributesData.borderHover, prefix),
 	...getPrefixedAttributes(attributesData.borderRadius, prefix),

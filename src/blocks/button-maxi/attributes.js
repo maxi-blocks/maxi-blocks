@@ -73,7 +73,7 @@ const attributes = {
 	...getPrefixedAttributes(attributesData.backgroundHover, prefix),
 	...getPrefixedAttributes(attributesData.backgroundColorHover, prefix),
 	...getPrefixedAttributes(attributesData.backgroundGradientHover, prefix),
-	...getPrefixedAttributes(attributesData.blockBackground, prefix),
+	...attributesData.blockBackground,
 	...getPrefixedAttributes(attributesData.opacity, prefix),
 	...getPrefixedAttributes(attributesData.border, prefix),
 	...getPrefixedAttributes(attributesData.borderWidth, prefix),

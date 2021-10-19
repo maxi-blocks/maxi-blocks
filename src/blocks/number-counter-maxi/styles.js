@@ -1,5 +1,6 @@
 import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
+	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
 	getDisplayStyles,
@@ -62,6 +63,12 @@ const getWrapperObject = props => {
 		size: getSizeStyles({
 			...getGroupAttributes(props, 'size'),
 		}),
+		background: {
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(props, ['blockBackground']),
+				blockStyle: props.parentBlockStyle,
+			}),
+		},
 	};
 
 	return response;
@@ -91,6 +98,13 @@ const getHoverWrapperObject = props => {
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
 			}),
+		background: {
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(props, ['blockBackground'], true),
+				blockStyle: props.parentBlockStyle,
+				isHover: true,
+			}),
+		},
 	};
 
 	return response;

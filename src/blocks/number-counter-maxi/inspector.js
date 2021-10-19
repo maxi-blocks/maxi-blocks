@@ -32,6 +32,7 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
+import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
  * Inspector
@@ -409,6 +410,9 @@ const Inspector = props => {
 							<AccordionControl
 								isPrimary
 								items={[
+									...inspectorTabs.background({
+										props,
+									}),
 									{
 										label: __('Border', 'maxi-blocks'),
 										disablePadding: true,

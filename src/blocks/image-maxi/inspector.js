@@ -12,9 +12,7 @@ import { memo } from '@wordpress/element';
 import {
 	AccordionControl,
 	AlignmentControl,
-	BlockStylesControl,
 	ClipPath,
-	CustomLabel,
 	FullSizeControl,
 	HoverEffectControl,
 	ImageCropControl,
@@ -55,7 +53,6 @@ const Inspector = memo(
 			captionType,
 			clipPath,
 			cropOptions,
-			customLabel,
 			fullWidth,
 			imageRatio,
 			imageSize,

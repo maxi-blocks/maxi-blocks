@@ -9,8 +9,6 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import {
 	AccordionControl,
-	BlockStylesControl,
-	CustomLabel,
 	FullSizeControl,
 	MapControl,
 	SettingTabsControl,
@@ -22,9 +20,8 @@ import { getGroupAttributes } from '../../extensions/styles';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId } = props;
-	const { customLabel, isFirstOnHierarchy, blockStyle, blockFullWidth } =
-		attributes;
+	const { attributes, deviceType, setAttributes } = props;
+	const { isFirstOnHierarchy, blockFullWidth } = attributes;
 
 	return (
 		<InspectorControls>

@@ -9,8 +9,6 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import {
 	AccordionControl,
-	BlockStylesControl,
-	CustomLabel,
 	DividerControl,
 	FancyRadioControl,
 	FullSizeControl,
@@ -27,8 +25,6 @@ const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
 		blockFullWidth,
-		blockStyle,
-		customLabel,
 		fullWidth,
 		isFirstOnHierarchy,
 		lineHorizontal,

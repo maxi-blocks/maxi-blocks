@@ -29,7 +29,6 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId, rowPattern } =
 		props;
-	const { customLabel, isFirstOnHierarchy, blockStyle } = attributes;
 
 	return (
 		<InspectorControls>

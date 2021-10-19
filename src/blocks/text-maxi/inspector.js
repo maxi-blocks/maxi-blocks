@@ -12,8 +12,6 @@ import {
 	AccordionControl,
 	AdvancedNumberControl,
 	AlignmentControl,
-	BlockStylesControl,
-	CustomLabel,
 	FontLevelControl,
 	FullSizeControl,
 	SelectControl,
@@ -37,8 +35,6 @@ const Inspector = memo(
 		const { attributes, deviceType, setAttributes, clientId } = props;
 		const {
 			blockFullWidth,
-			blockStyle,
-			customLabel,
 			isFirstOnHierarchy,
 			isList,
 			listReversed,

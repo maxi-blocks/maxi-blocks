@@ -10,8 +10,6 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	ArrowControl,
-	BlockStylesControl,
-	CustomLabel,
 	FullSizeControl,
 	SettingTabsControl,
 	ToggleSwitch,
@@ -23,9 +21,8 @@ import * as inspectorTabs from '../../components/inspector-tabs';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes, clientId } = props;
-	const { blockFullWidth, blockStyle, customLabel, isFirstOnHierarchy } =
-		attributes;
+	const { attributes, deviceType, setAttributes } = props;
+	const { blockFullWidth } = attributes;
 
 	return (
 		<InspectorControls>

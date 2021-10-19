@@ -16,6 +16,7 @@ import MaxiBlock, {
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty, isNil } from '@wordpress/rich-text';
 
 /**
  * Save
@@ -64,6 +65,7 @@ const save = props => {
 		const motionSettings = [
 			'speed',
 			'direction',
+			'easing',
 			'offset-start',
 			'offset-middle',
 			'offset-top',
@@ -72,20 +74,56 @@ const save = props => {
 			'viewport-top',
 		];
 
-		const dataMotionTypeValue = attributes['motion-status-vertical-general']
-			? 'vertical'
-			: '';
-		response['data-motion-type'] = dataMotionTypeValue;
+		const motionTypes = [
+			'vertical',
+			'horizontal',
+			'rotate',
+			'scale',
+			'fade',
+			'blur',
+		];
 
-		motionSettings.map(setting => {
-			const motionSettingValue =
-				attributes[`motion-${setting}-vertical-general`];
-			if (attributes[`motion-${setting}-vertical-general`])
-				response[`data-motion-${setting}`] = motionSettingValue;
+		const dataMotionTypeValue = () => {
+			let responseString = '';
+			motionTypes.map(type => {
+				if (attributes[`motion-status-${type}-general`])
+					responseString += `${type} `;
 
-			return null;
-		});
+				return null;
+			});
 
+			return responseString;
+		};
+
+		const enabledMotions = dataMotionTypeValue();
+
+		console.log(`dataMotionTypeValue: ${enabledMotions}`);
+
+		if (enabledMotions !== '') {
+			response['data-motion-type'] = enabledMotions;
+
+			motionTypes.map(type => {
+				if (enabledMotions.includes(type)) {
+					response[`data-motion-${type}-general`] = '';
+
+					motionSettings.map(setting => {
+						const motionSettingValue =
+							attributes[`motion-${setting}-${type}-general`];
+						if (attributes[`motion-${setting}-${type}-general`]) {
+							response[
+								`data-motion-${type}-general`
+							] += `${motionSettingValue} `;
+						} else response[`data-motion-${type}-general`] += 'no ';
+
+						return null;
+					});
+				}
+
+				return null;
+			});
+
+			return response;
+		}
 		return response;
 	};
 

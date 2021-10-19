@@ -410,73 +410,82 @@ const elements = Array.from(
 );
 
 elements.forEach(function (element, index) {
-	const viewportTopPercent =
-		parseFloat(element.getAttribute('data-motion-viewport-top')) || 0;
-	const viewportBottomPercent =
-		parseFloat(element.getAttribute('data-motion-viewport-bottom')) || 0;
-	const viewportMidPercent =
-		parseFloat(element.getAttribute('data-motion-viewport-middle')) || 0;
+	const motionType = element.getAttribute('data-motion-type');
+	// motion data format date-motion-${type}=
+	// 'speed direction ease offset-starting offset-middle offset-end viewport-top viewport-middle viewport-bottom'
+	if (motionType.includes('vertical')) {
+		const viewportTopPercent =
+			parseFloat(element.getAttribute('data-motion-viewport-top')) || 0;
+		const viewportBottomPercent =
+			parseFloat(element.getAttribute('data-motion-viewport-bottom')) ||
+			0;
+		const viewportMidPercent =
+			parseFloat(element.getAttribute('data-motion-viewport-middle')) ||
+			0;
 
-	element.parentNode
-		.closest('.maxi-container-block')
-		.classList.add(className);
+		element.parentNode
+			.closest('.maxi-container-block')
+			.classList.add(className);
 
-	console.log(viewportBottomPercent + viewportTopPercent);
+		console.log(viewportBottomPercent + viewportTopPercent);
 
-	const parentHeight =
-		element.parentNode.closest('.maxi-container-block').offsetHeight -
-		(viewportBottomPercent + viewportTopPercent);
-	const windowHeight = window.innerHeight;
-	const style = window.getComputedStyle(element);
-	let transform = parseInt(style.getPropertyValue('top'), 10) * 2;
+		const parentHeight =
+			element.parentNode.closest('.maxi-container-block').offsetHeight -
+			(viewportBottomPercent + viewportTopPercent);
+		const windowHeight = window.innerHeight;
+		const style = window.getComputedStyle(element);
+		let transform = parseInt(style.getPropertyValue('top'), 10) * 2;
 
-	element.setAttribute('transform', transform);
+		element.setAttribute('transform', transform);
 
-	let transformSize = transform / (parentHeight + windowHeight);
+		let transformSize = transform / (parentHeight + windowHeight);
 
-	element.setAttribute('transform-size', transformSize);
+		element.setAttribute('transform-size', transformSize);
 
-	const speedValue = element.getAttribute('data-motion-speed');
+		const speedValue = element.getAttribute('data-motion-speed');
+		const easingValue = element.getAttribute('data-motion-easing');
 
-	if (speedValue) {
-		element.style.transition = `${speedValue}s`;
-	}
+		if (speedValue) {
+			element.style.transition = `translateY ${speedValue}s ${easingValue}`;
+		}
 
-	const direction = element.getAttribute('data-motion-direction');
+		const direction = element.getAttribute('data-motion-direction');
 
-	if (direction === 'up') {
-		element.style.transform = 'translate(0px, 0px)';
-		element.classList.remove('scroll_down');
-		element.classList.add('scroll_up');
-	} else if (direction === 'down') {
-		element.style.transform = 'translate(0px, 0px)';
-		element.classList.remove('scroll_up');
-		element.classList.add('scroll_down');
-	}
-
-	transform = Math.abs(parseInt(style.getPropertyValue('top'), 10)) * 2;
-
-	const offsetTop = element.getAttribute('data-motion-offset-start');
-	const offsetBottom = element.getAttribute('data-motion-offset-end');
-
-	if (offsetTop) {
-		if (element.classList.contains('scroll_up')) {
-			element.style.top = `${offsetTop * 100}px`;
-		} else if (element.classList.contains('scroll_down')) {
-			element.style.top = `-${offsetTop * 100}px`;
+		if (direction === 'up') {
+			element.style.transform = 'translate(0px, 0px)';
+			element.classList.remove('scroll_down');
+			element.classList.add('scroll_up');
+		} else if (direction === 'down') {
+			element.style.transform = 'translate(0px, 0px)';
+			element.classList.remove('scroll_up');
+			element.classList.add('scroll_down');
 		}
 
 		transform = Math.abs(parseInt(style.getPropertyValue('top'), 10)) * 2;
-	}
-	if (offsetBottom) {
-		transform =
-			Math.abs(parseInt(style.getPropertyValue('top'), 10)) +
-			offsetBottom * 100;
-	}
 
-	element.setAttribute('transform', transform);
-	transformSize = transform / (parentHeight + windowHeight);
-	element.setAttribute('transform-size', transformSize);
+		const offsetTop = element.getAttribute('data-motion-offset-start');
+		const offsetBottom = element.getAttribute('data-motion-offset-end');
+
+		if (offsetTop) {
+			if (element.classList.contains('scroll_up')) {
+				element.style.top = `${offsetTop * 100}px`;
+			} else if (element.classList.contains('scroll_down')) {
+				element.style.top = `-${offsetTop * 100}px`;
+			}
+
+			transform =
+				Math.abs(parseInt(style.getPropertyValue('top'), 10)) * 2;
+		}
+		if (offsetBottom) {
+			transform =
+				Math.abs(parseInt(style.getPropertyValue('top'), 10)) +
+				offsetBottom * 100;
+		}
+
+		element.setAttribute('transform', transform);
+		transformSize = transform / (parentHeight + windowHeight);
+		element.setAttribute('transform-size', transformSize);
+	}
 });
 
 // function for Element Transform
@@ -494,192 +503,215 @@ let elementScrollSize = 0;
 // eslint-disable-next-line @wordpress/no-global-event-listener
 window.addEventListener('scroll', () => {
 	elements.forEach(function (element, index) {
-		const viewportTopPercent =
-			parseFloat(element.getAttribute('data-motion-viewport-top')) || 0;
-		const viewportBottomPercent =
-			parseFloat(element.getAttribute('data-motion-viewport-bottom')) ||
-			0;
-		const viewportMidPercent =
-			parseFloat(element.getAttribute('data-motion-viewport-middle')) ||
-			0;
+		const motionType = element.getAttribute('data-motion-type');
 
-		const offsetTop = element.getAttribute('data-motion-offset-start');
-		const offsetBottom = element.getAttribute('data-motion-offset-end');
-		const offsetMid = element.getAttribute('data-motion-offset-middle');
+		if (motionType.includes('vertical')) {
+			const viewportTopPercent =
+				parseFloat(element.getAttribute('data-motion-viewport-top')) ||
+				0;
+			const viewportBottomPercent =
+				parseFloat(
+					element.getAttribute('data-motion-viewport-bottom')
+				) || 0;
+			const viewportMidPercent =
+				parseFloat(
+					element.getAttribute('data-motion-viewport-middle')
+				) || 0;
 
-		const topPos = element.parentNode.closest(
-			'.maxi-container-block'
-		).offsetTop;
-		const { scrollTop } = document.documentElement;
-		const parentHeight =
-			element.parentNode.closest('.maxi-container-block').offsetHeight -
-			(viewportBottomPercent + viewportTopPercent);
-		const windowHeight = window.innerHeight;
+			const offsetTop = element.getAttribute('data-motion-offset-start');
+			const offsetBottom = element.getAttribute('data-motion-offset-end');
+			const offsetMid = element.getAttribute('data-motion-offset-middle');
 
-		if (
-			scrollTop + windowHeight >= topPos + viewportTopPercent &&
-			scrollTop <= topPos + parentHeight + viewportTopPercent
-		) {
-			let elementViewSize =
-				scrollTop + windowHeight - (topPos + viewportTopPercent);
+			const topPos = element.parentNode.closest(
+				'.maxi-container-block'
+			).offsetTop;
+			const { scrollTop } = document.documentElement;
+			const parentHeight =
+				element.parentNode.closest('.maxi-container-block')
+					.offsetHeight -
+				(viewportBottomPercent + viewportTopPercent);
+			const windowHeight = window.innerHeight;
 
-			let transformSizeAttr = element.getAttribute('transform-size');
+			if (
+				scrollTop + windowHeight >= topPos + viewportTopPercent &&
+				scrollTop <= topPos + parentHeight + viewportTopPercent
+			) {
+				let elementViewSize =
+					scrollTop + windowHeight - (topPos + viewportTopPercent);
 
-			elementScrollSize = elementViewSize * transformSizeAttr;
+				let transformSizeAttr = element.getAttribute('transform-size');
 
-			if (viewportMidPercent) {
-				if (elementViewSize <= viewportMidPercent) {
-					if (offsetBottom || (offsetTop && offsetBottom)) {
-						transformSizeAttr =
-							(element.getAttribute('transform') -
-								offsetBottom * 100) /
-							viewportMidPercent;
-					} else if (offsetTop) {
-						transformSizeAttr =
-							(offsetTop * 100) / viewportMidPercent;
+				elementScrollSize = elementViewSize * transformSizeAttr;
+
+				if (viewportMidPercent) {
+					if (elementViewSize <= viewportMidPercent) {
+						if (offsetBottom || (offsetTop && offsetBottom)) {
+							transformSizeAttr =
+								(element.getAttribute('transform') -
+									offsetBottom * 100) /
+								viewportMidPercent;
+						} else if (offsetTop) {
+							transformSizeAttr =
+								(offsetTop * 100) / viewportMidPercent;
+						} else {
+							transformSizeAttr =
+								element.getAttribute('transform') /
+								2 /
+								viewportMidPercent;
+						}
+
+						currentTransformSize = element.getAttribute(
+							'transform-size-current'
+						);
+
+						elementScrollSize = elementViewSize * transformSizeAttr;
+						element.setAttribute(
+							'transform-size-current',
+							elementScrollSize
+						);
 					} else {
-						transformSizeAttr =
-							element.getAttribute('transform') /
-							2 /
-							viewportMidPercent;
-					}
+						if (offsetBottom || (offsetBottom && offsetTop)) {
+							transformSizeAttr =
+								(offsetBottom * 100) /
+								(Math.abs(parentHeight - viewportMidPercent) +
+									windowHeight);
+						} else if (offsetTop) {
+							transformSizeAttr =
+								(element.getAttribute('transform') -
+									offsetTop * 100) /
+								(Math.abs(parentHeight - viewportMidPercent) +
+									windowHeight);
+						} else {
+							const style = window.getComputedStyle(element);
+							transformSizeAttr =
+								Math.abs(
+									parseInt(style.getPropertyValue('top'), 10)
+								) /
+								(parentHeight -
+									viewportMidPercent +
+									windowHeight);
+						}
 
-					currentTransformSize = element.getAttribute(
-						'transform-size-current'
-					);
-
-					elementScrollSize = elementViewSize * transformSizeAttr;
-					element.setAttribute(
-						'transform-size-current',
-						elementScrollSize
-					);
-				} else {
-					if (offsetBottom || (offsetBottom && offsetTop)) {
-						transformSizeAttr =
-							(offsetBottom * 100) /
-							(Math.abs(parentHeight - viewportMidPercent) +
-								windowHeight);
-					} else if (offsetTop) {
-						transformSizeAttr =
-							(element.getAttribute('transform') -
-								offsetTop * 100) /
-							(Math.abs(parentHeight - viewportMidPercent) +
-								windowHeight);
-					} else {
-						const style = window.getComputedStyle(element);
-						transformSizeAttr =
+						elementScrollSize =
+							parseInt(currentTransformSize) +
 							Math.abs(
-								parseInt(style.getPropertyValue('top'), 10)
-							) /
-							(parentHeight - viewportMidPercent + windowHeight);
+								elementViewSize -
+									(viewportMidPercent - viewportTopPercent)
+							) *
+								transformSizeAttr;
 					}
-
-					elementScrollSize =
-						parseInt(currentTransformSize) +
-						Math.abs(
-							elementViewSize -
-								(viewportMidPercent - viewportTopPercent)
-						) *
-							transformSizeAttr;
 				}
-			}
 
-			if (offsetMid) {
-				if (
-					elementViewSize <=
-					parentHeight + (viewportBottomPercent + viewportTopPercent)
-				) {
-					elementViewSize = scrollTop + windowHeight - topPos;
-					if (offsetBottom || (offsetTop && offsetBottom)) {
-						transformSizeAttr =
-							(element.getAttribute('transform') -
-								offsetBottom * 100 -
-								offsetMid) /
-							(parentHeight +
-								viewportBottomPercent +
-								viewportTopPercent);
-					} else if (offsetTop) {
-						transformSizeAttr =
-							(offsetTop * 100 - offsetMid) /
-							(parentHeight +
-								(viewportBottomPercent + viewportTopPercent));
-					} else {
-						transformSizeAttr =
-							(element.getAttribute('transform') / 2 -
-								offsetMid) /
-							(parentHeight +
-								viewportBottomPercent +
-								viewportTopPercent);
-					}
-
-					currentTransformSize = element.getAttribute(
-						'transform-size-current'
-					);
-
-					elementScrollSize = elementViewSize * transformSizeAttr;
-					element.setAttribute(
-						'transform-size-current',
-						elementScrollSize
-					);
-				} else {
-					if (offsetBottom || (offsetBottom && offsetTop)) {
-						transformSizeAttr =
-							Math.abs(
-								element.getAttribute('transform') -
-									parseInt(currentTransformSize)
-							) /
-							Math.abs(
-								parentHeight +
+				if (offsetMid) {
+					if (
+						elementViewSize <=
+						parentHeight +
+							(viewportBottomPercent + viewportTopPercent)
+					) {
+						elementViewSize = scrollTop + windowHeight - topPos;
+						if (offsetBottom || (offsetTop && offsetBottom)) {
+							transformSizeAttr =
+								(element.getAttribute('transform') -
+									offsetBottom * 100 -
+									offsetMid) /
+								(parentHeight +
+									viewportBottomPercent +
+									viewportTopPercent);
+						} else if (offsetTop) {
+							transformSizeAttr =
+								(offsetTop * 100 - offsetMid) /
+								(parentHeight +
 									(viewportBottomPercent +
-										viewportTopPercent) -
-									viewportMidPercent
-							);
-					} else if (offsetTop) {
-						transformSizeAttr =
-							Math.abs(
-								element.getAttribute('transform') -
-									(offsetTop - offsetMid)
-							) /
-							(parentHeight +
-								(viewportBottomPercent + viewportTopPercent));
+										viewportTopPercent));
+						} else {
+							transformSizeAttr =
+								(element.getAttribute('transform') / 2 -
+									offsetMid) /
+								(parentHeight +
+									viewportBottomPercent +
+									viewportTopPercent);
+						}
+
+						currentTransformSize = element.getAttribute(
+							'transform-size-current'
+						);
+
+						elementScrollSize = elementViewSize * transformSizeAttr;
+						element.setAttribute(
+							'transform-size-current',
+							elementScrollSize
+						);
 					} else {
-						transformSizeAttr =
-							Math.abs(
-								element.getAttribute('transform') -
-									(element.getAttribute('transform') / 2 -
-										offsetMid)
-							) /
-							(parentHeight +
-								(viewportBottomPercent + viewportTopPercent));
+						if (offsetBottom || (offsetBottom && offsetTop)) {
+							transformSizeAttr =
+								Math.abs(
+									element.getAttribute('transform') -
+										parseInt(currentTransformSize)
+								) /
+								Math.abs(
+									parentHeight +
+										(viewportBottomPercent +
+											viewportTopPercent) -
+										viewportMidPercent
+								);
+						} else if (offsetTop) {
+							transformSizeAttr =
+								Math.abs(
+									element.getAttribute('transform') -
+										(offsetTop - offsetMid)
+								) /
+								(parentHeight +
+									(viewportBottomPercent +
+										viewportTopPercent));
+						} else {
+							transformSizeAttr =
+								Math.abs(
+									element.getAttribute('transform') -
+										(element.getAttribute('transform') / 2 -
+											offsetMid)
+								) /
+								(parentHeight +
+									(viewportBottomPercent +
+										viewportTopPercent));
+						}
+
+						console.log(
+							`currentTransformSize: ${currentTransformSize}`
+						);
+						console.log(`elementViewSize: ${elementViewSize}`);
+						console.log(
+							`viewportBottomPercent: ${viewportBottomPercent}`
+						);
+						console.log(
+							`viewportTopPercent: ${viewportTopPercent}`
+						);
+						console.log(`transformSizeAttr: ${transformSizeAttr}`);
+
+						elementScrollSize =
+							parseFloat(currentTransformSize) +
+							(elementViewSize -
+								(parentHeight +
+									(viewportBottomPercent +
+										viewportTopPercent))) *
+								transformSizeAttr;
 					}
+				}
 
-					console.log(
-						`currentTransformSize: ${currentTransformSize}`
+				if (element.classList.contains('scroll_up')) {
+					setTransform(
+						element,
+						`translateY( -${elementScrollSize}px)`
 					);
-					console.log(`elementViewSize: ${elementViewSize}`);
-					console.log(
-						`viewportBottomPercent: ${viewportBottomPercent}`
+				} else if (element.classList.contains('scroll_down')) {
+					setTransform(element, `translateY(${elementScrollSize}px)`);
+				} else {
+					setTransform(
+						element,
+						`translateY( -${elementScrollSize}px)`
 					);
-					console.log(`viewportTopPercent: ${viewportTopPercent}`);
-					console.log(`transformSizeAttr: ${transformSizeAttr}`);
-
-					elementScrollSize =
-						parseFloat(currentTransformSize) +
-						(elementViewSize -
-							(parentHeight +
-								(viewportBottomPercent + viewportTopPercent))) *
-							transformSizeAttr;
 				}
 			}
-
-			if (element.classList.contains('scroll_up')) {
-				setTransform(element, `translateY( -${elementScrollSize}px)`);
-			} else if (element.classList.contains('scroll_down')) {
-				setTransform(element, `translateY(${elementScrollSize}px)`);
-			} else {
-				setTransform(element, `translateY( -${elementScrollSize}px)`);
-			}
-		}
+		} // vertical motion ends
 	});
 });
 

@@ -61,8 +61,7 @@ const MotionControl = props => {
 	// const [presetLoad, setPresetLoad] = useState('');
 
 	const [motionStatus, setMotionStatus] = useState(
-		getLastBreakpointAttribute('motion-active', breakpoint, props) ||
-			'vertical'
+		getLastBreakpointAttribute('motion-active', breakpoint, props) || 'none'
 	);
 
 	console.log(`motionStatus ${motionStatus}`);
@@ -206,11 +205,13 @@ const MotionControl = props => {
 								<>
 									<SelectControl
 										label={__('Easing', 'maxi-blocks')}
-										value={getLastBreakpointAttribute(
-											`motion-easing-${type}`,
-											breakpoint,
-											props
-										)}
+										value={
+											getLastBreakpointAttribute(
+												`motion-easing-${type}`,
+												breakpoint,
+												props
+											) || 'ease'
+										}
 										onChange={val =>
 											onChange({
 												[`motion-easing-${type}-${breakpoint}`]:
@@ -221,11 +222,13 @@ const MotionControl = props => {
 									/>
 									<SelectControl
 										label={__('Direction', 'maxi-blocks')}
-										value={getLastBreakpointAttribute(
-											`motion-direction-${type}`,
-											breakpoint,
-											props
-										)}
+										value={
+											getLastBreakpointAttribute(
+												`motion-direction-${type}`,
+												breakpoint,
+												props
+											) || 'up'
+										}
 										options={getDirectionOptions(type)}
 										onChange={val =>
 											onChange({
@@ -236,11 +239,13 @@ const MotionControl = props => {
 									/>
 									<AdvancedNumberControl
 										label={__('Speed', 'maxi-blocks')}
-										value={getLastBreakpointAttribute(
-											`motion-speed-${type}`,
-											breakpoint,
-											props
-										)}
+										value={
+											getLastBreakpointAttribute(
+												`motion-speed-${type}`,
+												breakpoint,
+												props
+											) || 2
+										}
 										onChangeValue={val => {
 											onChange({
 												[`motion-speed-${type}-${breakpoint}`]:
@@ -276,17 +281,17 @@ const MotionControl = props => {
 												`motion-offset-start-${type}`,
 												breakpoint,
 												props
-											),
+											) || 0,
 											getLastBreakpointAttribute(
 												`motion-offset-middle-${type}`,
 												breakpoint,
 												props
-											),
+											) || 50,
 											getLastBreakpointAttribute(
 												`motion-offset-end-${type}`,
 												breakpoint,
 												props
-											),
+											) || 100,
 										]}
 										onChange={values =>
 											onChange({
@@ -310,17 +315,17 @@ const MotionControl = props => {
 												`motion-viewport-bottom-${type}`,
 												breakpoint,
 												props
-											),
+											) || 0,
 											getLastBreakpointAttribute(
 												`motion-viewport-middle-${type}`,
 												breakpoint,
 												props
-											),
+											) || 50,
 											getLastBreakpointAttribute(
 												`motion-viewport-top-${type}`,
 												breakpoint,
 												props
-											),
+											) || 100,
 										]}
 										onChange={values =>
 											onChange({

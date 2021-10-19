@@ -43,7 +43,7 @@ const getBoxShadowStyles = ({
 				target,
 				props: obj,
 				isHover,
-				prefix: 'box-shadow-',
+				prefix: `${prefix}box-shadow-`,
 				breakpoint,
 			});
 

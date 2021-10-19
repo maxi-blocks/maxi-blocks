@@ -15,7 +15,6 @@ import {
 	AxisControl,
 	BlockStylesControl,
 	BorderControl,
-	BoxShadowControl,
 	ClipPath,
 	CustomLabel,
 	DisplayControl,
@@ -724,121 +723,10 @@ const Inspector = memo(
 													/>
 												),
 											},
-											{
-												label: __(
-													'Box shadow',
-													'maxi-blocks'
-												),
-												disablePadding: true,
-												content: (
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Normal',
-																	'maxi-blocks'
-																),
-																content: (
-																	<BoxShadowControl
-																		{...getGroupAttributes(
-																			attributes,
-																			'boxShadow',
-																			false,
-																			'image-'
-																		)}
-																		prefix='image-'
-																		onChange={obj =>
-																			setAttributes(
-																				obj
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																		clientId={
-																			clientId
-																		}
-																	/>
-																),
-															},
-															{
-																label: __(
-																	'Hover',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<ToggleSwitch
-																			label={__(
-																				'Enable Box Shadow Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				attributes[
-																					'image-box-shadow-status-hover'
-																				]
-																			}
-																			className='maxi-box-shadow-status-hover'
-																			onChange={val =>
-																				setAttributes(
-																					{
-																						...(val &&
-																							setHoverAttributes(
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										'boxShadow',
-																										false,
-																										'image-'
-																									),
-																								},
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										'boxShadow',
-																										true,
-																										'image-'
-																									),
-																								}
-																							)),
-																						'image-box-shadow-status-hover':
-																							val,
-																					}
-																				)
-																			}
-																		/>
-																		{attributes[
-																			'image-box-shadow-status-hover'
-																		] && (
-																			<BoxShadowControl
-																				{...getGroupAttributes(
-																					attributes,
-																					'boxShadow',
-																					true,
-																					'image-'
-																				)}
-																				prefix='image-'
-																				onChange={obj =>
-																					setAttributes(
-																						obj
-																					)
-																				}
-																				breakpoint={
-																					deviceType
-																				}
-																				isHover
-																				clientId={
-																					clientId
-																				}
-																			/>
-																		)}
-																	</>
-																),
-															},
-														]}
-													/>
-												),
-											},
+											...inspectorTabs.boxShadow({
+												props,
+												prefix: 'image-',
+											}),
 											{
 												label: __(
 													'Height / Width',
@@ -1084,112 +972,9 @@ const Inspector = memo(
 												/>
 											),
 										},
-										{
-											label: __(
-												'Box shadow',
-												'maxi-blocks'
-											),
-											disablePadding: true,
-											content: (
-												<SettingTabsControl
-													items={[
-														{
-															label: __(
-																'Normal',
-																'maxi-blocks'
-															),
-															content: (
-																<BoxShadowControl
-																	{...getGroupAttributes(
-																		attributes,
-																		'boxShadow'
-																	)}
-																	onChange={obj =>
-																		setAttributes(
-																			obj
-																		)
-																	}
-																	breakpoint={
-																		deviceType
-																	}
-																	clientId={
-																		clientId
-																	}
-																/>
-															),
-														},
-														{
-															label: __(
-																'Hover',
-																'maxi-blocks'
-															),
-															content: (
-																<>
-																	<ToggleSwitch
-																		label={__(
-																			'Enable Box Shadow Hover',
-																			'maxi-blocks'
-																		)}
-																		selected={
-																			attributes[
-																				'box-shadow-status-hover'
-																			]
-																		}
-																		className='maxi-box-shadow-status-hover'
-																		onChange={val =>
-																			setAttributes(
-																				{
-																					...(val &&
-																						setHoverAttributes(
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									'boxShadow'
-																								),
-																							},
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									'boxShadow',
-																									true
-																								),
-																							}
-																						)),
-																					'box-shadow-status-hover':
-																						val,
-																				}
-																			)
-																		}
-																	/>
-																	{attributes[
-																		'box-shadow-status-hover'
-																	] && (
-																		<BoxShadowControl
-																			{...getGroupAttributes(
-																				attributes,
-																				'boxShadowHover'
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			breakpoint={
-																				deviceType
-																			}
-																			isHover
-																			clientId={
-																				clientId
-																			}
-																		/>
-																	)}
-																</>
-															),
-														},
-													]}
-												/>
-											),
-										},
+										...inspectorTabs.boxShadow({
+											props,
+										}),
 										{
 											label: __('Opacity', 'maxi-blocks'),
 											content: (

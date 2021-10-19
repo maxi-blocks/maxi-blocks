@@ -13,7 +13,6 @@ import {
 	AlignmentControl,
 	BackgroundControl,
 	DefaultStylesControl,
-	FullSizeControl,
 	Icon,
 	IconControl,
 	SettingTabsControl,
@@ -56,12 +55,7 @@ const Inspector = memo(
 	props => {
 		const { attributes, deviceType, setAttributes, clientId } = props;
 
-		const {
-			fullWidth,
-			isFirstOnHierarchy,
-			parentBlockStyle,
-			blockFullWidth,
-		} = attributes;
+		const { parentBlockStyle } = attributes;
 
 		const onChangePreset = (number, type = 'normal') => {
 			const newDefaultPresets = cloneDeep({ ...defaultPresets });
@@ -691,55 +685,10 @@ const Inspector = memo(
 												props,
 												prefix: 'button-',
 											}),
-											{
-												label: __(
-													'Height / Width',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														{isFirstOnHierarchy && (
-															<ToggleSwitch
-																label={__(
-																	'Set button to full-width',
-																	'maxi-blocks'
-																)}
-																selected={
-																	fullWidth ===
-																	'full'
-																}
-																onChange={val =>
-																	setAttributes(
-																		{
-																			fullWidth:
-																				val
-																					? 'full'
-																					: 'normal',
-																		}
-																	)
-																}
-															/>
-														)}
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'size',
-																false,
-																'button-'
-															)}
-															prefix='button-'
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-														/>
-													</>
-												),
-											},
+											...inspectorTabs.size({
+												props,
+												prefix: 'button-',
+											}),
 											...inspectorTabs.marginPadding({
 												props,
 												prefix: 'button-',
@@ -767,46 +716,10 @@ const Inspector = memo(
 										...inspectorTabs.opacity({
 											props,
 										}),
-										{
-											label: __(
-												'Height / Width',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													{isFirstOnHierarchy && (
-														<ToggleSwitch
-															label={__(
-																'Set button canvas to full-width',
-																'maxi-blocks'
-															)}
-															selected={
-																blockFullWidth ===
-																'full'
-															}
-															onChange={val =>
-																setAttributes({
-																	blockFullWidth:
-																		val
-																			? 'full'
-																			: 'normal',
-																})
-															}
-														/>
-													)}
-													<FullSizeControl
-														{...getGroupAttributes(
-															attributes,
-															'size'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												</>
-											),
-										},
+										...inspectorTabs.size({
+											props,
+											block: true,
+										}),
 										...inspectorTabs.marginPadding({
 											props,
 										}),

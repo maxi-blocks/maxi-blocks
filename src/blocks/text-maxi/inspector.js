@@ -13,7 +13,6 @@ import {
 	AdvancedNumberControl,
 	AlignmentControl,
 	FontLevelControl,
-	FullSizeControl,
 	SelectControl,
 	SettingTabsControl,
 	ToggleSwitch,
@@ -34,8 +33,6 @@ const Inspector = memo(
 	props => {
 		const { attributes, deviceType, setAttributes, clientId } = props;
 		const {
-			blockFullWidth,
-			isFirstOnHierarchy,
 			isList,
 			listReversed,
 			listStart,
@@ -342,52 +339,10 @@ const Inspector = memo(
 											...inspectorTabs.boxShadow({
 												props,
 											}),
-											{
-												label: __(
-													'Height / Width',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														{isFirstOnHierarchy && (
-															<ToggleSwitch
-																label={__(
-																	'Set text to full-width',
-																	'maxi-blocks'
-																)}
-																selected={
-																	blockFullWidth ===
-																	'full'
-																}
-																onChange={val =>
-																	setAttributes(
-																		{
-																			blockFullWidth:
-																				val
-																					? 'full'
-																					: 'normal',
-																		}
-																	)
-																}
-															/>
-														)}
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'size'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-														/>
-													</>
-												),
-											},
+											...inspectorTabs.size({
+												props,
+												block: true,
+											}),
 											...inspectorTabs.marginPadding({
 												props,
 											}),

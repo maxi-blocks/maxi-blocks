@@ -12,12 +12,10 @@ import {
 	AlignmentControl,
 	BlockStylesControl,
 	CustomLabel,
-	FullSizeControl,
 	SettingTabsControl,
 	SvgColor,
 	SvgStrokeWidthControl,
 	SvgWidthControl,
-	ToggleSwitch,
 } from '../../components';
 import {
 	getColorRGBAString,
@@ -39,7 +37,6 @@ const Inspector = props => {
 		setAttributes,
 	} = props;
 	const {
-		blockFullWidth,
 		blockStyle,
 		customLabel,
 		isFirstOnHierarchy,
@@ -334,46 +331,10 @@ const Inspector = props => {
 									...inspectorTabs.opacity({
 										props,
 									}),
-									isFirstOnHierarchy && {
-										label: __(
-											'Height / Width',
-											'maxi-blocks'
-										),
-										content: (
-											<>
-												{isFirstOnHierarchy && (
-													<ToggleSwitch
-														label={__(
-															'Set svg icon to full-width',
-															'maxi-blocks'
-														)}
-														selected={
-															blockFullWidth ===
-															'full'
-														}
-														onChange={val =>
-															setAttributes({
-																blockFullWidth:
-																	val
-																		? 'full'
-																		: 'normal',
-															})
-														}
-													/>
-												)}
-												<FullSizeControl
-													{...getGroupAttributes(
-														attributes,
-														'size'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													breakpoint={deviceType}
-												/>
-											</>
-										),
-									},
+									...inspectorTabs.size({
+										props,
+										block: true,
+									}),
 									...inspectorTabs.marginPadding({
 										props,
 									}),

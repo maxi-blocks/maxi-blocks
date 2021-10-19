@@ -10,10 +10,8 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	ArrowControl,
-	FullSizeControl,
 	SettingTabsControl,
 	ShapeDividerControl,
-	ToggleSwitch,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -23,7 +21,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
  */
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes } = props;
-	const { blockFullWidth, isFirstOnHierarchy } = attributes;
+	const { blockFullWidth } = attributes;
 
 	return (
 		<InspectorControls>
@@ -92,73 +90,10 @@ const Inspector = props => {
 										...inspectorTabs.boxShadow({
 											props,
 										}),
-										{
-											label: __(
-												'Height / Width',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													{isFirstOnHierarchy && (
-														<ToggleSwitch
-															label={__(
-																'Set container to full-width',
-																'maxi-blocks'
-															)}
-															selected={
-																blockFullWidth ===
-																'full'
-															}
-															onChange={val =>
-																setAttributes({
-																	blockFullWidth:
-																		val
-																			? 'full'
-																			: 'normal',
-																})
-															}
-														/>
-													)}
-													{blockFullWidth ===
-													'full' ? (
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'container'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															prefix='container-'
-															hideWidth
-															hideMaxWidth
-														/>
-													) : (
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'container'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															prefix='container-'
-															hideMaxWidth
-														/>
-													)}
-												</>
-											),
-										},
+										...inspectorTabs.size({
+											props,
+											block: true,
+										}),
 										...inspectorTabs.marginPadding({
 											props,
 										}),

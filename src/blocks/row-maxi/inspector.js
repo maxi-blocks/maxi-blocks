@@ -9,10 +9,8 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	ColumnPattern,
-	FullSizeControl,
 	SelectControl,
 	SettingTabsControl,
-	ToggleSwitch,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -22,7 +20,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
  */
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
-	const { blockFullWidth, horizontalAlign, verticalAlign } = attributes;
+	const { horizontalAlign, verticalAlign } = attributes;
 
 	return (
 		<InspectorControls>
@@ -177,44 +175,10 @@ const Inspector = props => {
 										...inspectorTabs.boxShadow({
 											props,
 										}),
-										{
-											label: __(
-												'Height / Width',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													<ToggleSwitch
-														label={__(
-															'Set row to full-width',
-															'maxi-blocks'
-														)}
-														selected={
-															blockFullWidth ===
-															'full'
-														}
-														onChange={val =>
-															setAttributes({
-																blockFullWidth:
-																	val
-																		? 'full'
-																		: 'normal',
-															})
-														}
-													/>
-													<FullSizeControl
-														{...getGroupAttributes(
-															attributes,
-															'size'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												</>
-											),
-										},
+										...inspectorTabs.size({
+											props,
+											block: true,
+										}),
 										...inspectorTabs.marginPadding({
 											props,
 										}),

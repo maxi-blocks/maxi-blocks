@@ -11,9 +11,7 @@ import {
 	AccordionControl,
 	DividerControl,
 	FancyRadioControl,
-	FullSizeControl,
 	SettingTabsControl,
-	ToggleSwitch,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -23,14 +21,7 @@ import * as inspectorTabs from '../../components/inspector-tabs';
  */
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
-	const {
-		blockFullWidth,
-		fullWidth,
-		isFirstOnHierarchy,
-		lineHorizontal,
-		lineOrientation,
-		lineVertical,
-	} = attributes;
+	const { lineHorizontal, lineOrientation, lineVertical } = attributes;
 
 	return (
 		<InspectorControls>
@@ -182,49 +173,10 @@ const Inspector = props => {
 											props,
 											prefix: 'divider-',
 										}),
-										{
-											label: __(
-												'Height / Width',
-												'maxi-blocks'
-											),
-											content: (
-												<>
-													{isFirstOnHierarchy && (
-														<ToggleSwitch
-															label={__(
-																'Set divider to full-width',
-																'maxi-blocks'
-															)}
-															selected={
-																fullWidth ===
-																'full'
-															}
-															onChange={val =>
-																setAttributes({
-																	fullWidth:
-																		val
-																			? 'full'
-																			: 'normal',
-																})
-															}
-														/>
-													)}
-													<FullSizeControl
-														{...getGroupAttributes(
-															attributes,
-															'size',
-															false,
-															'divider-'
-														)}
-														prefix='divider-'
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-													/>
-												</>
-											),
-										},
+										...inspectorTabs.size({
+											props,
+											prefix: 'divider-',
+										}),
 										...inspectorTabs.marginPadding({
 											props,
 											prefix: 'divider-',
@@ -252,46 +204,10 @@ const Inspector = props => {
 									...inspectorTabs.opacity({
 										props,
 									}),
-									{
-										label: __(
-											'Height / Width',
-											'maxi-blocks'
-										),
-										content: (
-											<>
-												{isFirstOnHierarchy && (
-													<ToggleSwitch
-														label={__(
-															'Set divider to full-width',
-															'maxi-blocks'
-														)}
-														selected={
-															blockFullWidth ===
-															'full'
-														}
-														onChange={val =>
-															setAttributes({
-																blockFullWidth:
-																	val
-																		? 'full'
-																		: 'normal',
-															})
-														}
-													/>
-												)}
-												<FullSizeControl
-													{...getGroupAttributes(
-														attributes,
-														'size'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													breakpoint={deviceType}
-												/>
-											</>
-										),
-									},
+									...inspectorTabs.size({
+										props,
+										block: true,
+									}),
 									...inspectorTabs.marginPadding({
 										props,
 									}),

@@ -11,6 +11,7 @@ export { default as opacity } from './inspector-opacity';
 export { default as overflow } from './inspector-overflow';
 export { default as position } from './inspector-position';
 export { default as responsive } from './inspector-responsive';
+export { default as size } from './inspector-size';
 export { default as transform } from './inspector-transform';
 export { default as transition } from './inspector-transition';
 export { default as zindex } from './inspector-zindex';

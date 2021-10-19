@@ -59,7 +59,6 @@ const Inspector = memo(
 			clipPath,
 			cropOptions,
 			customLabel,
-			extraClassName,
 			fullWidth,
 			imageRatio,
 			imageSize,
@@ -730,25 +729,9 @@ const Inspector = memo(
 										isPrimary
 										items={[
 											deviceType === 'general' && {
-												label: __(
-													'Add CSS class/id',
-													'maxi-blocks'
-												),
-												content: (
-													<TextControl
-														label={__(
-															'Additional CSS Classes',
-															'maxi-blocks'
-														)}
-														className='maxi-additional__css-classes'
-														value={extraClassName}
-														onChange={extraClassName =>
-															setAttributes({
-																extraClassName,
-															})
-														}
-													/>
-												),
+												...inspectorTabs.customClasses({
+													props,
+												}),
 											},
 											{
 												label: __(

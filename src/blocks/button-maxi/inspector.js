@@ -21,7 +21,6 @@ import {
 	InfoBox,
 	MotionControl,
 	SettingTabsControl,
-	TextControl,
 	ToggleSwitch,
 	TransformControl,
 	TransitionControl,
@@ -66,7 +65,6 @@ const Inspector = memo(
 		const {
 			blockStyle,
 			customLabel,
-			extraClassName,
 			fullWidth,
 			isFirstOnHierarchy,
 			parentBlockStyle,
@@ -858,25 +856,9 @@ const Inspector = memo(
 									isPrimary
 									items={[
 										deviceType === 'general' && {
-											label: __(
-												'Custom Classes',
-												'maxi-blocks'
-											),
-											content: (
-												<TextControl
-													label={__(
-														'Add CSS class/id',
-														'maxi-blocks'
-													)}
-													className='maxi-additional__css-classes'
-													value={extraClassName}
-													onChange={extraClassName =>
-														setAttributes({
-															extraClassName,
-														})
-													}
-												/>
-											),
+											...inspectorTabs.customClasses({
+												props,
+											}),
 										},
 										{
 											label: __(

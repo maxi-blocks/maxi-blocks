@@ -15,7 +15,6 @@ import {
 	InfoBox,
 	SelectControl,
 	SettingTabsControl,
-	TextControl,
 	TransformControl,
 } from '../../components';
 import {
@@ -32,13 +31,8 @@ import * as inspectorTabs from '../../components/inspector-tabs';
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId, rowPattern } =
 		props;
-	const {
-		customLabel,
-		uniqueID,
-		isFirstOnHierarchy,
-		blockStyle,
-		extraClassName,
-	} = attributes;
+	const { customLabel, uniqueID, isFirstOnHierarchy, blockStyle } =
+		attributes;
 
 	return (
 		<InspectorControls>
@@ -209,25 +203,9 @@ const Inspector = props => {
 								isPrimary
 								items={[
 									deviceType === 'general' && {
-										label: __(
-											'Add CSS class/id',
-											'maxi-blocks'
-										),
-										content: (
-											<TextControl
-												label={__(
-													'Additional CSS Classes',
-													'maxi-blocks'
-												)}
-												className='maxi-additional__css-classes'
-												value={extraClassName}
-												onChange={extraClassName =>
-													setAttributes({
-														extraClassName,
-													})
-												}
-											/>
-										),
+										...inspectorTabs.customClasses({
+											props,
+										}),
 									},
 									{
 										label: __('Transform', 'maxi-blocks'),

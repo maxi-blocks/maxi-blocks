@@ -15,11 +15,11 @@ export const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
 	const { getBlockAttributes, getSelectedBlockClientId } =
 		select('core/block-editor');
 	const props = getBlockAttributes(getSelectedBlockClientId());
-const {
-	uniqueID,
-	'image-shape-size-general': imageShapeSize,
-	'image-shape-position-general': imageShapePosition,
-} = props;
+	const {
+		uniqueID,
+		'image-shape-size-general': imageShapeSize,
+		'image-shape-position-general': imageShapePosition,
+	} = props;
 
 	const imageShapeSizeValue = imageShapeSize === 'fill' ? ' slice' : '';
 
@@ -118,3 +118,5 @@ export const generateDataObject = (data, svg) => {
 
 	return response;
 };
+
+export const getSVGHasImage = svg => svg.includes('maxi-svg-block__pattern');

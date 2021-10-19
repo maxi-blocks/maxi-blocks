@@ -49,7 +49,7 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			{inspectorTabs.infoBox({ props, deviceType })}
+			{inspectorTabs.infoBox({ props })}
 			<SettingTabsControl
 				disablePadding
 				deviceType={deviceType}

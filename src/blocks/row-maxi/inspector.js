@@ -35,7 +35,7 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			{inspectorTabs.infoBox({ props, deviceType })}
+			{inspectorTabs.infoBox({ props })}
 			<SettingTabsControl
 				disablePadding
 				deviceType={deviceType}
@@ -44,24 +44,9 @@ const Inspector = props => {
 						label: __('Settings', 'maxi-blocks'),
 						content: (
 							<>
-								{deviceType === 'general' && (
-									<div className='maxi-tab-content__box'>
-										<CustomLabel
-											customLabel={customLabel}
-											onChange={customLabel =>
-												setAttributes({ customLabel })
-											}
-										/>
-										<BlockStylesControl
-											blockStyle={blockStyle}
-											isFirstOnHierarchy={
-												isFirstOnHierarchy
-											}
-											onChange={obj => setAttributes(obj)}
-											clientId={clientId}
-										/>
-									</div>
-								)}
+								{inspectorTabs.blockSettings({
+									props,
+								})}
 								<AccordionControl
 									isPrimary
 									items={[

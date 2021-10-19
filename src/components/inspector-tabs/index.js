@@ -1,4 +1,5 @@
 export { default as background } from './inspector-background';
+export { default as blockSettings } from './inspector-block-settings';
 export { default as border } from './inspector-border';
 export { default as boxShadow } from './inspector-box-shadow';
 export { default as customClasses } from './inspector-custom-classes';

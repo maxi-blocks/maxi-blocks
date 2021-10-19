@@ -11,19 +11,13 @@ import {
 	BlockStylesControl,
 	ColumnPattern,
 	CustomLabel,
-	DisplayControl,
 	FullSizeControl,
 	InfoBox,
-	OpacityControl,
-	OverflowControl,
-	PositionControl,
-	ResponsiveControl,
 	SelectControl,
 	SettingTabsControl,
 	TextControl,
 	ToggleSwitch,
 	TransformControl,
-	ZIndexControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -308,99 +302,26 @@ const Inspector = props => {
 											/>
 										),
 									},
-									{
-										label: __(
-											'Show/hide block',
-											'maxi-blocks'
-										),
-										content: (
-											<DisplayControl
-												{...getGroupAttributes(
-													attributes,
-													'display'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Opacity', 'maxi-blocks'),
-										content: (
-											<OpacityControl
-												{...getGroupAttributes(
-													attributes,
-													'opacity'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Position', 'maxi-blocks'),
-										content: (
-											<PositionControl
-												{...getGroupAttributes(
-													attributes,
-													'position'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
+									...inspectorTabs.display({
+										props,
+									}),
+									...inspectorTabs.opacity({
+										props,
+									}),
+									...inspectorTabs.position({
+										props,
+									}),
 									deviceType !== 'general' && {
-										label: __('Breakpoint', 'maxi-blocks'),
-										content: (
-											<ResponsiveControl
-												{...getGroupAttributes(
-													attributes,
-													'breakpoints'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
+										...inspectorTabs.responsive({
+											props,
+										}),
 									},
-									{
-										label: __('Overflow', 'maxi-blocks'),
-										content: (
-											<OverflowControl
-												{...getGroupAttributes(
-													attributes,
-													'overflow'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
-									{
-										label: __('Z-index', 'maxi-blocks'),
-										content: (
-											<ZIndexControl
-												{...getGroupAttributes(
-													attributes,
-													'zIndex'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
-												}
-												breakpoint={deviceType}
-											/>
-										),
-									},
+									...inspectorTabs.overflow({
+										props,
+									}),
+									...inspectorTabs.zindex({
+										props,
+									}),
 								]}
 							/>
 						),

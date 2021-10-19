@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import ColorControl from '../color-control';
 import MediaUploaderControl from '../media-uploader-control';
 import SettingTabsControl from '../setting-tabs-control';
-import { injectImgSVG } from '../../extensions/svg/utils';
+import { injectImgSVG, getSVGHasImage } from '../../extensions/svg/utils';
 
 /**
  * External dependencies
@@ -20,10 +20,114 @@ import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { ResponsiveTabsControl } from '..';
 
 /**
  * Component
  */
+const ColorContent = ({
+	SVGOptions,
+	SVGData,
+	breakpoint,
+	isHover,
+	id,
+	value,
+	isGeneral,
+	onChange,
+	clientId,
+}) => (
+	<ColorControl
+		label={__('Fill', 'maxi-blocks')}
+		paletteStatus={getLastBreakpointAttribute(
+			'background-palette-svg-color-status',
+			breakpoint,
+			SVGOptions,
+			isHover
+		)}
+		paletteColor={getLastBreakpointAttribute(
+			'background-palette-svg-color',
+			breakpoint,
+			SVGOptions,
+			isHover
+		)}
+		paletteOpacity={getLastBreakpointAttribute(
+			'background-palette-svg-opacity',
+			breakpoint,
+			SVGOptions,
+			isHover
+		)}
+		color={getLastBreakpointAttribute('color', breakpoint, value, isHover)}
+		onChange={({ paletteStatus, paletteColor, paletteOpacity, color }) => {
+			SVGData[id][getAttributeKey('color', isHover, false, breakpoint)] =
+				color;
+
+			onChange({
+				SVGElement: injectImgSVG(
+					getLastBreakpointAttribute(
+						'background-svg-SVGElement',
+						breakpoint,
+						SVGOptions
+					),
+					SVGData
+				).outerHTML,
+				SVGData,
+				[getAttributeKey(
+					'background-palette-svg-color-status',
+					isHover,
+					false,
+					breakpoint
+				)]: paletteStatus,
+				[getAttributeKey(
+					'background-palette-svg-color',
+					isHover,
+					false,
+					breakpoint
+				)]: paletteColor,
+				[getAttributeKey(
+					'background-palette-svg-opacity',
+					isHover,
+					false,
+					breakpoint
+				)]: paletteOpacity,
+				[getAttributeKey(
+					'background-palette-svg-opacity',
+					isHover,
+					false,
+					breakpoint
+				)]: paletteOpacity,
+				...(isGeneral && {
+					[getAttributeKey(
+						'background-palette-svg-color-status',
+						isHover,
+						false,
+						'general'
+					)]: paletteStatus,
+					[getAttributeKey(
+						'background-palette-svg-color',
+						isHover,
+						false,
+						'general'
+					)]: paletteColor,
+					[getAttributeKey(
+						'background-palette-svg-opacity',
+						isHover,
+						false,
+						'general'
+					)]: paletteOpacity,
+					[getAttributeKey(
+						'background-palette-svg-opacity',
+						isHover,
+						false,
+						'general'
+					)]: paletteOpacity,
+				}),
+			});
+		}}
+		isHover={isHover}
+		clientId={clientId}
+	/>
+);
+
 const SVGFillControl = props => {
 	const {
 		onChange,
@@ -45,90 +149,51 @@ const SVGFillControl = props => {
 		return (
 			<SettingTabsControl
 				disablePadding
+				callback={(item, i) => {
+					const isColorSelected = i === 0;
+					const tempSVGData = cloneDeep(SVGData);
+
+					if (isColorSelected) {
+						tempSVGData[id].imageID = '';
+						tempSVGData[id].imageURL = '';
+					}
+
+					const resEl = injectImgSVG(
+						SVGOptions['background-svg-SVGElement'],
+						tempSVGData,
+						isColorSelected
+					);
+
+					onChange({
+						'background-svg-SVGElement': resEl.outerHTML,
+						'background-svg-SVGData': SVGData,
+						'background-palette-svg-color':
+							props.SVGOptions['background-palette-svg-color'],
+						'background-palette-svg-color-status':
+							props.SVGOptions[
+								'background-palette-svg-color-status'
+							],
+					});
+				}}
+				forceTab={
+					+getSVGHasImage(SVGOptions['background-svg-SVGElement'])
+				}
 				items={[
 					{
 						label: __('Colour', 'maxi-blocks'),
 						content: (
-							<ColorControl
-								label={__('Fill', 'maxi-blocks')}
-								paletteStatus={getLastBreakpointAttribute(
-									'background-palette-svg-color-status',
-									breakpoint,
-									SVGOptions,
-									isHover
-								)}
-								paletteColor={getLastBreakpointAttribute(
-									'background-palette-svg-color',
-									breakpoint,
-									SVGOptions,
-									isHover
-								)}
-								paletteOpacity={getLastBreakpointAttribute(
-									'background-palette-svg-opacity',
-									breakpoint,
-									SVGOptions,
-									isHover
-								)}
-								color={getLastBreakpointAttribute(
-									'color',
-									breakpoint,
-									value,
-									isHover
-								)}
-								onChange={({
-									paletteStatus,
-									paletteColor,
-									paletteOpacity,
-									color,
-								}) => {
-									SVGData[id][
-										getAttributeKey(
-											'color',
-											isHover,
-											false,
-											breakpoint
-										)
-									] = color;
-
-									onChange({
-										SVGElement: injectImgSVG(
-											getLastBreakpointAttribute(
-												'background-svg-SVGElement',
-												breakpoint,
-												SVGOptions
-											),
-											SVGData
-										).outerHTML,
-										SVGData,
-										[getAttributeKey(
-											'background-palette-svg-color-status',
-											isHover,
-											false,
-											breakpoint
-										)]: paletteStatus,
-										[getAttributeKey(
-											'background-palette-svg-color',
-											isHover,
-											false,
-											breakpoint
-										)]: paletteColor,
-										[getAttributeKey(
-											'background-palette-svg-opacity',
-											isHover,
-											false,
-											breakpoint
-										)]: paletteOpacity,
-										[getAttributeKey(
-											'background-palette-svg-opacity',
-											isHover,
-											false,
-											breakpoint
-										)]: paletteOpacity,
-									});
-								}}
-								isHover={isHover}
-								clientId={clientId}
-							/>
+							<ResponsiveTabsControl breakpoint={breakpoint}>
+								<ColorContent
+									breakpoint={breakpoint}
+									SVGOptions={SVGOptions}
+									SVGData={SVGData}
+									isHover={isHover}
+									id={id}
+									value={value}
+									onChange={onChange}
+									clientId={clientId}
+								/>
+							</ResponsiveTabsControl>
 						),
 					},
 					{
@@ -146,8 +211,9 @@ const SVGFillControl = props => {
 									);
 
 									onChange({
-										SVGElement: resEl.outerHTML,
-										SVGData,
+										'background-svg-SVGElement':
+											resEl.outerHTML,
+										'background-svg-SVGData': SVGData,
 										'background-palette-svg-color':
 											props.SVGOptions[
 												'background-palette-svg-color'
@@ -169,8 +235,9 @@ const SVGFillControl = props => {
 									);
 
 									onChange({
-										SVGElement: resEl.outerHTML,
-										SVGData,
+										'background-svg-SVGElement':
+											resEl.outerHTML,
+										'background-svg-SVGData': SVGData,
 										'background-palette-svg-color':
 											props.SVGOptions[
 												'background-palette-svg-color'

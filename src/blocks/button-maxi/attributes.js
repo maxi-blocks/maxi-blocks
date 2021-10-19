@@ -55,8 +55,26 @@ const attributes = {
 		},
 	},
 	...attributesData.typographyHover,
-	...attributesData.blockBackground,
-	...attributesData.opacity,
+	...{
+		...getPrefixedAttributes(attributesData.background, prefix),
+		[`${prefix}background-active-media-general`]: {
+			type: 'string',
+			default: 'color',
+		},
+	},
+	...{
+		...getPrefixedAttributes(attributesData.backgroundColor, prefix),
+		[`${prefix}background-palette-color-general`]: {
+			type: 'number',
+			default: 4,
+		},
+	},
+	...getPrefixedAttributes(attributesData.backgroundGradient, prefix),
+	...getPrefixedAttributes(attributesData.backgroundHover, prefix),
+	...getPrefixedAttributes(attributesData.backgroundColorHover, prefix),
+	...getPrefixedAttributes(attributesData.backgroundGradientHover, prefix),
+	...getPrefixedAttributes(attributesData.blockBackground, prefix),
+	...getPrefixedAttributes(attributesData.opacity, prefix),
 	...getPrefixedAttributes(attributesData.border, prefix),
 	...getPrefixedAttributes(attributesData.borderWidth, prefix),
 	...{

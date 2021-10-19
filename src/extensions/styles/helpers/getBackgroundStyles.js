@@ -877,7 +877,12 @@ export const getBackgroundStyles = ({
 		merge(response, {
 			...(currentActiveMedia === 'color' && {
 				background: getColorBackgroundObject({
-					...getGroupAttributes(props, 'backgroundColor'),
+					...getGroupAttributes(
+						props,
+						'backgroundColor',
+						isHover,
+						prefix
+					),
 					blockStyle,
 					isButton,
 					breakpoint,
@@ -888,7 +893,12 @@ export const getBackgroundStyles = ({
 			}),
 			...(currentActiveMedia === 'gradient' && {
 				background: getGradientBackgroundObject({
-					...getGroupAttributes(props, 'backgroundGradient'),
+					...getGroupAttributes(
+						props,
+						'backgroundGradient',
+						isHover,
+						prefix
+					),
 					breakpoint,
 					isHover,
 					prefix,
@@ -896,6 +906,5 @@ export const getBackgroundStyles = ({
 			}),
 		});
 	});
-
 	return response;
 };

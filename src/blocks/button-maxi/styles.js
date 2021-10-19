@@ -9,6 +9,7 @@ import {
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
+	getBackgroundStyles,
 	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
@@ -186,13 +187,16 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		...getBlockBackgroundStyles({
-			...getGroupAttributes(props, [
-				'background',
-				'backgroundColor',
-				'backgroundGradient',
-			]),
+		...getBackgroundStyles({
+			...getGroupAttributes(
+				props,
+				['background', 'backgroundColor', 'backgroundGradient'],
+				false,
+				'button-'
+			),
+			isButton: true,
 			blockStyle: props.parentBlockStyle,
+			prefix: 'button-',
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
@@ -239,6 +243,18 @@ const getHoverObject = props => {
 				prefix: 'button-',
 				parentBlockStyle: props.parentBlockStyle,
 			}),
+		...getBackgroundStyles({
+			...getGroupAttributes(
+				props,
+				['background', 'backgroundColor', 'backgroundGradient'],
+				true,
+				'button-'
+			),
+			isButton: true,
+			blockStyle: props.parentBlockStyle,
+			isHover: true,
+			prefix: 'button-',
+		}),
 	};
 
 	return response;

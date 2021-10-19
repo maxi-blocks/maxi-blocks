@@ -14,6 +14,7 @@ import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getDefaultLayerAttr } from './utils';
 
 /**
  * External dependencies
@@ -33,9 +34,18 @@ const ColorLayerContent = props => {
 		isButton = false,
 		breakpoint,
 		isGeneral = false,
+		isLayer = false,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
+
+	const getDefaultAttr = target => {
+		if (isLayer) return getDefaultLayerAttr('colorOptions', target);
+
+		return getDefaultAttribute(
+			getAttributeKey(target, isHover, prefix, breakpoint)
+		);
+	};
 
 	return (
 		<>
@@ -47,14 +57,7 @@ const ColorLayerContent = props => {
 					colorOptions,
 					isHover
 				)}
-				defaultColor={getDefaultAttribute(
-					getAttributeKey(
-						'background-color',
-						isHover,
-						prefix,
-						breakpoint
-					)
-				)}
+				defaultColor={getDefaultAttr('background-color')}
 				paletteStatus={getLastBreakpointAttribute(
 					`${prefix}background-palette-color-status`,
 					breakpoint,

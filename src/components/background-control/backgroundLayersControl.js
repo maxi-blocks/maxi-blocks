@@ -230,6 +230,7 @@ const LayerCard = props => {
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
 				isHover={isHover}
+				isLayer
 			/>
 		),
 		image: (
@@ -239,6 +240,7 @@ const LayerCard = props => {
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
 				isHover={isHover}
+				isLayer
 			/>
 		),
 		video: (
@@ -248,6 +250,7 @@ const LayerCard = props => {
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
 				isHover={isHover}
+				isLayer
 			/>
 		),
 		gradient: (
@@ -257,6 +260,7 @@ const LayerCard = props => {
 				onChange={obj => onChange({ ...layer, ...obj })}
 				breakpoint={breakpoint}
 				isHover={isHover}
+				isLayer
 			/>
 		),
 		shape: (
@@ -267,6 +271,7 @@ const LayerCard = props => {
 				layerId={layerId}
 				breakpoint={breakpoint}
 				isHover={isHover}
+				isLayer
 			/>
 		),
 	};

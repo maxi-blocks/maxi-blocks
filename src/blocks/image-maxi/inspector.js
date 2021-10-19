@@ -11,7 +11,6 @@ import { memo } from '@wordpress/element';
  */
 import {
 	AccordionControl,
-	AlignmentControl,
 	ClipPath,
 	FullSizeControl,
 	HoverEffectControl,
@@ -334,25 +333,11 @@ const Inspector = memo(
 													</>
 												),
 											},
-											{
-												label: __(
-													'Alignment',
-													'maxi-blocks'
-												),
-												content: (
-													<AlignmentControl
-														{...getGroupAttributes(
-															attributes,
-															'alignment'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														disableJustify
-													/>
-												),
-											},
+											...inspectorTabs.alignment({
+												props,
+												isAlignment: true,
+												disableJustify: true,
+											}),
 											deviceType === 'general' && {
 												label: __(
 													'Alt tag',

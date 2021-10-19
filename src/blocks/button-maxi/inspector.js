@@ -10,7 +10,6 @@ import { memo } from '@wordpress/element';
  */
 import {
 	AccordionControl,
-	AlignmentControl,
 	BackgroundControl,
 	DefaultStylesControl,
 	Icon,
@@ -385,54 +384,20 @@ const Inspector = memo(
 													/>
 												),
 											},
-											{
-												label: __(
-													'Alignment',
+											...inspectorTabs.alignment({
+												props,
+												isAlignment: true,
+												isTextAlignment: true,
+												alignmentLable: __(
+													'Button',
 													'maxi-blocks'
 												),
-												content: (
-													<>
-														<AlignmentControl
-															label={__(
-																'Button',
-																'maxi-blocks'
-															)}
-															{...getGroupAttributes(
-																attributes,
-																'alignment'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															disableJustify
-														/>
-														<AlignmentControl
-															label={__(
-																'Text',
-																'maxi-blocks'
-															)}
-															{...getGroupAttributes(
-																attributes,
-																'textAlignment'
-															)}
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															type='text'
-														/>
-													</>
+												textAlignmentLable: __(
+													'Text',
+													'maxi-blocks'
 												),
-											},
+												disableJustify: true,
+											}),
 											{
 												label: __(
 													'Typography',

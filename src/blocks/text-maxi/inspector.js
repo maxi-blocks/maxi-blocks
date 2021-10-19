@@ -11,7 +11,6 @@ import { memo } from '@wordpress/element';
 import {
 	AccordionControl,
 	AdvancedNumberControl,
-	AlignmentControl,
 	FontLevelControl,
 	SelectControl,
 	SettingTabsControl,
@@ -197,25 +196,10 @@ const Inspector = memo(
 														</>
 													),
 												},
-											{
-												label: __(
-													'Alignment',
-													'maxi-blocks'
-												),
-												content: (
-													<AlignmentControl
-														{...getGroupAttributes(
-															attributes,
-															'textAlignment'
-														)}
-														onChange={obj =>
-															setAttributes(obj)
-														}
-														breakpoint={deviceType}
-														type='text'
-													/>
-												),
-											},
+											...inspectorTabs.alignment({
+												props,
+												isTextAlignment: true,
+											}),
 											{
 												label: __(
 													'Typography',

@@ -9,7 +9,6 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import {
 	AccordionControl,
-	AlignmentControl,
 	BlockStylesControl,
 	CustomLabel,
 	SettingTabsControl,
@@ -128,25 +127,11 @@ const Inspector = props => {
 								<AccordionControl
 									isSecondary
 									items={[
-										{
-											label: __(
-												'Alignment',
-												'maxi-blocks'
-											),
-											content: (
-												<AlignmentControl
-													{...getGroupAttributes(
-														attributes,
-														'alignment'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													breakpoint={deviceType}
-													disableJustify
-												/>
-											),
-										},
+										...inspectorTabs.alignment({
+											props,
+											isAlignment: true,
+											disableJustify: true,
+										}),
 										attributes.content && {
 											label: __('Colour', 'maxi-blocks'),
 											content: (

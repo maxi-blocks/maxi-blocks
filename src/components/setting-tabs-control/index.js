@@ -28,6 +28,7 @@ const SettingTabsControl = props => {
 		className,
 		forceTab,
 		returnValue,
+		callback,
 	} = props;
 
 	const [tab, setTab] = useState(0);
@@ -66,6 +67,7 @@ const SettingTabsControl = props => {
 								onClick={() => {
 									setTab(i);
 
+									if (callback) callback(item, i);
 									if (item.callback) item.callback();
 								}}
 								aria-pressed={tab === i}

@@ -31,7 +31,6 @@ const SVGLayerContent = props => {
 		onChange,
 		isHover = false,
 		prefix = '',
-		clientId,
 		breakpoint,
 		isGeneral = false,
 	} = props;
@@ -61,41 +60,6 @@ const SVGLayerContent = props => {
 			<SettingTabsControl
 				disablePadding
 				items={[
-					{
-						label: __('Fill', 'maxi-blocks'),
-						content: (
-							<SVGFillControl
-								SVGOptions={SVGOptions}
-								onChange={obj => {
-									if (isGeneral) {
-										Object.entries(obj).forEach(
-											([key, val]) => {
-												const breakpointPos =
-													key.lastIndexOf(
-														`-${breakpoint}`
-													);
-												if (breakpointPos > 0) {
-													const newKey = `${key.substring(
-														0,
-														breakpointPos
-													)}-general${
-														isHover ? '-hover' : ''
-													}`;
-
-													obj[newKey] = val;
-												}
-											}
-										);
-									}
-
-									onChange(obj);
-								}}
-								clientId={clientId}
-								isHover={isHover}
-								breakpoint={breakpoint}
-							/>
-						),
-					},
 					{
 						label: __('Position', 'maxi-blocks'),
 						content: (
@@ -481,15 +445,23 @@ const SVGLayer = props => {
 				onSelect={obj => onChange(obj)}
 			/>
 			{!isEmpty(SVGElement) && (
-				<ResponsiveTabsControl breakpoint={breakpoint}>
-					<SVGLayerContent
-						clientId={clientId}
+				<>
+					<SVGFillControl
 						SVGOptions={SVGOptions}
-						onChange={onChange}
-						prefix={prefix}
+						onChange={obj => onChange(obj)}
+						clientId={clientId}
 						isHover={isHover}
+						breakpoint={breakpoint}
 					/>
-				</ResponsiveTabsControl>
+					<ResponsiveTabsControl breakpoint={breakpoint}>
+						<SVGLayerContent
+							SVGOptions={SVGOptions}
+							onChange={onChange}
+							prefix={prefix}
+							isHover={isHover}
+						/>
+					</ResponsiveTabsControl>
+				</>
 			)}
 		</>
 	);

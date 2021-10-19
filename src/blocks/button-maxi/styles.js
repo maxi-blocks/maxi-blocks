@@ -211,7 +211,7 @@ const getNormalObject = props => {
 			prefix: 'button-',
 		}),
 	};
-	console.log(response);
+
 	return response;
 };
 

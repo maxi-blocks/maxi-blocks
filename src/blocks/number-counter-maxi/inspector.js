@@ -12,7 +12,6 @@ import {
 	AccordionControl,
 	AxisControl,
 	BlockStylesControl,
-	BorderControl,
 	CustomLabel,
 	DisplayControl,
 	FullSizeControl,
@@ -107,134 +106,10 @@ const Inspector = props => {
 												/>
 											),
 										},
-										{
-											label: __('Border', 'maxi-blocks'),
-											disablePadding: true,
-											content: (
-												<SettingTabsControl
-													items={[
-														{
-															label: __(
-																'Normal',
-																'maxi-blocks'
-															),
-															content: (
-																<BorderControl
-																	{...getGroupAttributes(
-																		attributes,
-																		[
-																			'border',
-																			'borderWidth',
-																			'borderRadius',
-																		],
-																		false,
-																		'number-counter-'
-																	)}
-																	prefix='number-counter-'
-																	onChange={obj => {
-																		setAttributes(
-																			obj
-																		);
-																	}}
-																	breakpoint={
-																		deviceType
-																	}
-																	clientId={
-																		clientId
-																	}
-																/>
-															),
-														},
-														{
-															label: __(
-																'Hover',
-																'maxi-blocks'
-															),
-															content: (
-																<>
-																	<ToggleSwitch
-																		label={__(
-																			'Enable Border Hover',
-																			'maxi-blocks'
-																		)}
-																		selected={
-																			attributes[
-																				'number-counter-border-status-hover'
-																			]
-																		}
-																		className='maxi-border-status-hover'
-																		onChange={val =>
-																			setAttributes(
-																				{
-																					...(val &&
-																						setHoverAttributes(
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									[
-																										'border',
-																										'borderWidth',
-																										'borderRadius',
-																									],
-																									false,
-																									'number-counter-'
-																								),
-																							},
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									[
-																										'border',
-																										'borderWidth',
-																										'borderRadius',
-																									],
-																									true,
-																									'number-counter-'
-																								),
-																							}
-																						)),
-																					'number-counter-border-status-hover':
-																						val,
-																				}
-																			)
-																		}
-																	/>
-																	{attributes[
-																		'number-counter-border-status-hover'
-																	] && (
-																		<BorderControl
-																			{...getGroupAttributes(
-																				attributes,
-																				[
-																					'border',
-																					'borderWidth',
-																					'borderRadius',
-																				],
-																				true,
-																				'number-counter-'
-																			)}
-																			prefix='number-counter-'
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			breakpoint={
-																				deviceType
-																			}
-																			isHover
-																			clientId={
-																				clientId
-																			}
-																		/>
-																	)}
-																</>
-															),
-														},
-													]}
-												/>
-											),
-										},
+										...inspectorTabs.border({
+											props,
+											prefix: 'number-counter-',
+										}),
 										...inspectorTabs.boxShadow({
 											props,
 											prefox: 'number-counter-',
@@ -301,126 +176,9 @@ const Inspector = props => {
 									...inspectorTabs.background({
 										props,
 									}),
-									{
-										label: __('Border', 'maxi-blocks'),
-										disablePadding: true,
-										content: (
-											<SettingTabsControl
-												items={[
-													{
-														label: __(
-															'Normal',
-															'maxi-blocks'
-														),
-														content: (
-															<BorderControl
-																{...getGroupAttributes(
-																	attributes,
-																	[
-																		'border',
-																		'borderWidth',
-																		'borderRadius',
-																	]
-																)}
-																onChange={obj => {
-																	setAttributes(
-																		obj
-																	);
-																}}
-																breakpoint={
-																	deviceType
-																}
-																clientId={
-																	clientId
-																}
-															/>
-														),
-													},
-													{
-														label: __(
-															'Hover',
-															'maxi-blocks'
-														),
-														content: (
-															<>
-																<ToggleSwitch
-																	label={__(
-																		'Enable Border Hover',
-																		'maxi-blocks'
-																	)}
-																	selected={
-																		attributes[
-																			'border-status-hover'
-																		]
-																	}
-																	className='maxi-border-status-hover'
-																	onChange={val =>
-																		setAttributes(
-																			{
-																				...(val &&
-																					setHoverAttributes(
-																						{
-																							...getGroupAttributes(
-																								attributes,
-																								[
-																									'border',
-																									'borderWidth',
-																									'borderRadius',
-																								]
-																							),
-																						},
-																						{
-																							...getGroupAttributes(
-																								attributes,
-																								[
-																									'border',
-																									'borderWidth',
-																									'borderRadius',
-																								],
-																								true
-																							),
-																						}
-																					)),
-																				'border-status-hover':
-																					val,
-																			}
-																		)
-																	}
-																/>
-																{attributes[
-																	'border-status-hover'
-																] && (
-																	<BorderControl
-																		{...getGroupAttributes(
-																			attributes,
-																			[
-																				'border',
-																				'borderWidth',
-																				'borderRadius',
-																			],
-																			true
-																		)}
-																		onChange={obj =>
-																			setAttributes(
-																				obj
-																			)
-																		}
-																		breakpoint={
-																			deviceType
-																		}
-																		isHover
-																		clientId={
-																			clientId
-																		}
-																	/>
-																)}
-															</>
-														),
-													},
-												]}
-											/>
-										),
-									},
+									...inspectorTabs.border({
+										props,
+									}),
 									...inspectorTabs.boxShadow({
 										props,
 									}),

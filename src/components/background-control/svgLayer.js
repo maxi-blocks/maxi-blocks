@@ -11,12 +11,13 @@ import ResponsiveTabsControl from '../responsive-tabs-control';
 import SettingTabsControl from '../setting-tabs-control';
 import SVGFillControl from '../svg-fill-control';
 import {
-	getDefaultAttribute,
 	getAttributeKey,
 	getBlockStyle,
+	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import MaxiModal from '../../editor/library/modal';
+import { getDefaultLayerAttr } from './utils';
 
 /**
  * External dependencies
@@ -33,6 +34,7 @@ const SVGLayerContent = props => {
 		prefix = '',
 		breakpoint,
 		isGeneral = false,
+		isLayer = false,
 	} = props;
 
 	const SVGOptions = cloneDeep(props.SVGOptions);
@@ -53,6 +55,14 @@ const SVGLayerContent = props => {
 			min: 0,
 			max: 999,
 		},
+	};
+
+	const getDefaultAttr = target => {
+		if (isLayer) return getDefaultLayerAttr('SVGOptions', target);
+
+		return getDefaultAttribute(
+			getAttributeKey(target, isHover, prefix, breakpoint)
+		);
 	};
 
 	return (
@@ -122,26 +132,17 @@ const SVGLayerContent = props => {
 												isHover,
 												prefix,
 												breakpoint
-											)]: getDefaultAttribute(
-												getAttributeKey(
-													'background-svg-top',
-													isHover,
-													prefix,
-													breakpoint
-												)
-											),
+											)]:
+												getDefaultAttr(
+													'background-svg-top'
+												),
 											[getAttributeKey(
 												'background-svg-top-unit',
 												isHover,
 												prefix,
 												breakpoint
-											)]: getDefaultAttribute(
-												getAttributeKey(
-													'background-svg-top-unit',
-													isHover,
-													prefix,
-													breakpoint
-												)
+											)]: getDefaultAttr(
+												'background-svg-top-unit'
 											),
 											...(isGeneral && {
 												[getAttributeKey(
@@ -149,31 +150,39 @@ const SVGLayerContent = props => {
 													isHover,
 													prefix,
 													'general'
-												)]: getDefaultAttribute(
-													getAttributeKey(
-														'background-svg-top',
-														isHover,
-														prefix,
-														'general'
-													)
-												),
+												)]:
+													getDefaultAttr(
+														'background-svg-top'
+													),
 												[getAttributeKey(
 													'background-svg-top-unit',
 													isHover,
 													prefix,
 													'general'
-												)]: getDefaultAttribute(
-													getAttributeKey(
-														'background-svg-top-unit',
-														isHover,
-														prefix,
-														'general'
-													)
+												)]: getDefaultAttr(
+													'background-svg-top-unit'
 												),
 											}),
 										})
 									}
-									min={0}
+									minMaxSettings={{
+										px: {
+											min: 0,
+											max: 3999,
+										},
+										em: {
+											min: 0,
+											max: 999,
+										},
+										vw: {
+											min: 0,
+											max: 999,
+										},
+										'%': {
+											min: -100,
+											max: 100,
+										},
+									}}
 								/>
 								<AdvancedNumberControl
 									label={__('X-axis', 'maxi-blocks')}
@@ -233,26 +242,16 @@ const SVGLayerContent = props => {
 												isHover,
 												prefix,
 												breakpoint
-											)]: getDefaultAttribute(
-												getAttributeKey(
-													'background-svg-left',
-													isHover,
-													prefix,
-													breakpoint
-												)
+											)]: getDefaultAttr(
+												'background-svg-left'
 											),
 											[getAttributeKey(
 												'background-svg-left-unit',
 												isHover,
 												prefix,
 												breakpoint
-											)]: getDefaultAttribute(
-												getAttributeKey(
-													'background-svg-left-unit',
-													isHover,
-													prefix,
-													breakpoint
-												)
+											)]: getDefaultAttr(
+												'background-svg-left-unit'
 											),
 											...(isGeneral && {
 												[getAttributeKey(
@@ -260,31 +259,38 @@ const SVGLayerContent = props => {
 													isHover,
 													prefix,
 													'general'
-												)]: getDefaultAttribute(
-													getAttributeKey(
-														'background-svg-left',
-														isHover,
-														prefix,
-														'general'
-													)
+												)]: getDefaultAttr(
+													'background-svg-left'
 												),
 												[getAttributeKey(
 													'background-svg-left-unit',
 													isHover,
 													prefix,
 													'general'
-												)]: getDefaultAttribute(
-													getAttributeKey(
-														'background-svg-left-unit',
-														isHover,
-														prefix,
-														'general'
-													)
+												)]: getDefaultAttr(
+													'background-svg-left-unit'
 												),
 											}),
 										})
 									}
-									min={0}
+									minMaxSettings={{
+										px: {
+											min: 0,
+											max: 3999,
+										},
+										em: {
+											min: 0,
+											max: 999,
+										},
+										vw: {
+											min: 0,
+											max: 999,
+										},
+										'%': {
+											min: -100,
+											max: 100,
+										},
+									}}
 								/>
 							</>
 						),
@@ -351,26 +357,16 @@ const SVGLayerContent = props => {
 											isHover,
 											prefix,
 											breakpoint
-										)]: getDefaultAttribute(
-											getAttributeKey(
-												'background-svg-size',
-												isHover,
-												prefix,
-												breakpoint
-											)
+										)]: getDefaultAttr(
+											'background-svg-size'
 										),
 										[getAttributeKey(
 											'background-svg-size-unit',
 											isHover,
 											prefix,
 											breakpoint
-										)]: getDefaultAttribute(
-											getAttributeKey(
-												'background-svg-size-unit',
-												isHover,
-												prefix,
-												breakpoint
-											)
+										)]: getDefaultAttr(
+											'background-svg-size-unit'
 										),
 										...(isGeneral && {
 											[getAttributeKey(
@@ -378,26 +374,16 @@ const SVGLayerContent = props => {
 												isHover,
 												prefix,
 												'general'
-											)]: getDefaultAttribute(
-												getAttributeKey(
-													'background-svg-size',
-													isHover,
-													prefix,
-													'general'
-												)
+											)]: getDefaultAttr(
+												'background-svg-size'
 											),
 											[getAttributeKey(
 												'background-svg-size-unit',
 												isHover,
 												prefix,
 												'general'
-											)]: getDefaultAttribute(
-												getAttributeKey(
-													'background-svg-size-unit',
-													isHover,
-													prefix,
-													'general'
-												)
+											)]: getDefaultAttr(
+												'background-svg-size-unit'
 											),
 										}),
 									})
@@ -418,9 +404,10 @@ const SVGLayer = props => {
 		SVGOptions,
 		layerId,
 		onChange,
+		breakpoint,
 		prefix = '',
 		isHover = false,
-		breakpoint,
+		isLayer = false,
 	} = props;
 
 	const SVGElement = SVGOptions[`${prefix}background-svg-SVGElement`];
@@ -459,6 +446,7 @@ const SVGLayer = props => {
 							onChange={onChange}
 							prefix={prefix}
 							isHover={isHover}
+							isLayer={isLayer}
 						/>
 					</ResponsiveTabsControl>
 				</>

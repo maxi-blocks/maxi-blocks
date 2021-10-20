@@ -23,7 +23,7 @@ import './style.scss';
  * Component
  */
 const BackgroundContent = props => {
-	const { blockClassName, isHover = false } = props;
+	const { isHover = false } = props;
 
 	const layers = cloneDeep(
 		props[`background-layers${isHover ? '-hover' : ''}`]
@@ -60,7 +60,6 @@ const BackgroundContent = props => {
 										isHover ? '--hover' : ''
 									}`}
 									videoOptions={layer}
-									blockClassName={blockClassName}
 									className={`maxi-background-displayer__${id}`}
 								/>
 							);

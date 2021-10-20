@@ -115,19 +115,7 @@ const IconControl = props => {
 					icon={props['icon-content']}
 				/>
 			)}
-			{isHover && (
-				<ToggleSwitch
-					label={__('Enable Icon Hover', 'maxi-blocks')}
-					selected={props['icon-status-hover']}
-					onChange={val =>
-						onChange({
-							'icon-status-hover': val,
-						})
-					}
-				/>
-			)}
-			{(props['icon-content'] ||
-				(isHover && props['icon-status-hover'])) && (
+			{props['icon-content'] && (
 				<>
 					{!isHover && breakpoint === 'general' && (
 						<>
@@ -276,7 +264,11 @@ const IconControl = props => {
 										]
 									}
 									paletteOpacity={
-										props['icon-palette-opacity']
+										props[
+											`icon-palette-opacity${
+												isHover ? '-hover' : ''
+											}`
+										]
 									}
 									paletteStatus={
 										props[
@@ -301,8 +293,9 @@ const IconControl = props => {
 											[`icon-palette-color-status${
 												isHover ? '-hover' : ''
 											}`]: paletteStatus,
-											['icon-palette-opacity']:
-												paletteOpacity,
+											[`icon-palette-opacity${
+												isHover ? '-hover' : ''
+											}`]: paletteOpacity,
 										});
 									}}
 									isHover={isHover}
@@ -356,20 +349,6 @@ const IconControl = props => {
 										props,
 										isHover
 									)}
-									paletteColor={
-										props[
-											`icon-background-palette-color${
-												isHover ? '-hover' : ''
-											}`
-										]
-									}
-									paletteStatus={
-										props[
-											`icon-background-palette-color-status${
-												isHover ? '-hover' : ''
-											}`
-										]
-									}
 									defaultColor={getDefaultAttribute(
 										getAttributeKey(
 											'background-color',

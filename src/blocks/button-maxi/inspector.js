@@ -348,35 +348,60 @@ const Inspector = memo(
 																	'maxi-blocks'
 																),
 																content: (
-																	<IconControl
-																		{...getGroupAttributes(
-																			attributes,
-																			[
-																				'icon',
-																				'iconBackgroundGradient',
-																				'iconBackgroundColor',
-																				'iconBorder',
-																				'iconBorderWidth',
-																				'iconBorderRadius',
-																			],
-																			true
+																	<>
+																		<ToggleSwitch
+																			label={__(
+																				'Enable Icon Hover',
+																				'maxi-blocks'
+																			)}
+																			selected={
+																				attributes[
+																					'icon-status-hover'
+																				]
+																			}
+																			onChange={val =>
+																				setAttributes(
+																					{
+																						'icon-status-hover':
+																							val,
+																					}
+																				)
+																			}
+																		/>
+																		{attributes[
+																			'icon-status-hover'
+																		] && (
+																			<IconControl
+																				{...getGroupAttributes(
+																					attributes,
+																					[
+																						'icon',
+																						'iconBackgroundGradient',
+																						'iconBackgroundColor',
+																						'iconBorder',
+																						'iconBorderWidth',
+																						'iconBorderRadius',
+																					],
+																					true
+																				)}
+																				onChange={obj => {
+																					setAttributes(
+																						obj
+																					);
+																				}}
+																				breakpoint={
+																					deviceType
+																				}
+																				clientId={
+																					clientId
+																				}
+																				parentBlockStyle={
+																					parentBlockStyle
+																				}
+																				isHover
+																			/>
 																		)}
-																		onChange={obj => {
-																			setAttributes(
-																				obj
-																			);
-																		}}
-																		breakpoint={
-																			deviceType
-																		}
-																		clientId={
-																			clientId
-																		}
-																		parentBlockStyle={
-																			parentBlockStyle
-																		}
-																		isHover
-																	/>
+																	</>
 																),
 															},
 														]}

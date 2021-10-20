@@ -6,14 +6,14 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes } from '../../utils';
+import { getBlockAttributes } from '../../../../utils';
 import { block } from './utils';
 
 /**
  * External dependencies
  */
 import { isEqual } from 'lodash';
-import getGroupAttributes from '../../../src/extensions/styles/getGroupAttributes';
+import getGroupAttributes from '../../../../../src/extensions/styles/getGroupAttributes';
 
 describe('CopyPaste from Toolbar', () => {
 	it('Should copy and paste bulk styles', async () => {

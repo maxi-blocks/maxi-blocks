@@ -9,7 +9,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 import { getBlockAttributes } from '../../../../utils';
 
 describe('AlignmentControl', () => {
-	it('Checking the operation of alignment-control', async () => {
+	it('Checking alignment in toolbar', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');

@@ -288,7 +288,7 @@ const getIconSize = (obj, isHover = false) => {
 		response[breakpoint] = {};
 
 		if (!isNil(obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`])) {
-			response[breakpoint]['max-width'] = `${
+			response[breakpoint]['width'] = `${
 				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
 			}${getLastBreakpointAttribute(
 				'icon-width-unit',
@@ -296,7 +296,7 @@ const getIconSize = (obj, isHover = false) => {
 				obj,
 				isHover
 			)}`;
-			response[breakpoint]['max-height'] = `${
+			response[breakpoint]['height'] = `${
 				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
 			}${getLastBreakpointAttribute(
 				'icon-width-unit',

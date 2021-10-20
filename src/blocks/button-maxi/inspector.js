@@ -16,7 +16,6 @@ import {
 	IconControl,
 	SettingTabsControl,
 	ToggleSwitch,
-	TypographyControl,
 } from '../../components';
 import * as defaultPresets from './defaults';
 import {
@@ -398,110 +397,12 @@ const Inspector = memo(
 												),
 												disableJustify: true,
 											}),
-											{
-												label: __(
-													'Typography',
-													'maxi-blocks'
-												),
-												disablePadding: true,
-												content: (
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Normal',
-																	'maxi-blocks'
-																),
-																content: (
-																	<TypographyControl
-																		{...getGroupAttributes(
-																			attributes,
-																			'typography'
-																		)}
-																		onChange={obj =>
-																			setAttributes(
-																				obj
-																			)
-																		}
-																		hideAlignment
-																		breakpoint={
-																			deviceType
-																		}
-																		clientId={
-																			clientId
-																		}
-																		disableCustomFormats
-																		blockStyle={
-																			parentBlockStyle
-																		}
-																		styleCardPrefix='button'
-																	/>
-																),
-															},
-															{
-																label: __(
-																	'Hover',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<ToggleSwitch
-																			label={__(
-																				'Enable Typography Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				attributes[
-																					'typography-status-hover'
-																				]
-																			}
-																			onChange={val =>
-																				setAttributes(
-																					{
-																						'typography-status-hover':
-																							val,
-																					}
-																				)
-																			}
-																		/>
-																		{attributes[
-																			'typography-status-hover'
-																		] && (
-																			<TypographyControl
-																				{...getGroupAttributes(
-																					attributes,
-																					[
-																						'typography',
-																						'typographyHover',
-																					]
-																				)}
-																				onChange={obj =>
-																					setAttributes(
-																						obj
-																					)
-																				}
-																				hideAlignment
-																				breakpoint={
-																					deviceType
-																				}
-																				isHover
-																				clientId={
-																					clientId
-																				}
-																				disableCustomFormats
-																				blockStyle={
-																					parentBlockStyle
-																				}
-																				styleCardPrefix='button'
-																			/>
-																		)}
-																	</>
-																),
-															},
-														]}
-													/>
-												),
-											},
+											...inspectorTabs.typography({
+												props,
+												styleCardPrefix: 'button',
+												hideAlignment: true,
+												disableCustomFormats: true,
+											}),
 											deviceType === 'general' && {
 												label: __(
 													'Button background',

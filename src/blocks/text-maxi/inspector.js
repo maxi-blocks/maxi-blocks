@@ -14,8 +14,6 @@ import {
 	FontLevelControl,
 	SelectControl,
 	SettingTabsControl,
-	ToggleSwitch,
-	TypographyControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
@@ -30,15 +28,9 @@ import { isEmpty, isEqual, cloneDeep } from 'lodash';
  */
 const Inspector = memo(
 	props => {
-		const { attributes, deviceType, setAttributes, clientId } = props;
-		const {
-			isList,
-			listReversed,
-			listStart,
-			parentBlockStyle,
-			textLevel,
-			typeOfList,
-		} = attributes;
+		const { attributes, deviceType, setAttributes } = props;
+		const { isList, listReversed, listStart, textLevel, typeOfList } =
+			attributes;
 
 		return (
 			<InspectorControls>
@@ -200,120 +192,12 @@ const Inspector = memo(
 												props,
 												isTextAlignment: true,
 											}),
-											{
-												label: __(
-													'Typography',
-													'maxi-blocks'
-												),
-												disablePadding: true,
-												content: (
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Normal',
-																	'maxi-blocks'
-																),
-																content: (
-																	<TypographyControl
-																		{...getGroupAttributes(
-																			attributes,
-																			[
-																				'typography',
-																				'link',
-																			]
-																		)}
-																		textLevel={
-																			textLevel
-																		}
-																		onChange={obj =>
-																			setAttributes(
-																				obj
-																			)
-																		}
-																		hideAlignment
-																		breakpoint={
-																			deviceType
-																		}
-																		clientId={
-																			clientId
-																		}
-																		isList={
-																			isList
-																		}
-																		blockStyle={
-																			parentBlockStyle
-																		}
-																		allowLink
-																	/>
-																),
-															},
-															{
-																label: __(
-																	'Hover',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<ToggleSwitch
-																			label={__(
-																				'Enable Typography Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				attributes[
-																					'typography-status-hover'
-																				]
-																			}
-																			onChange={val =>
-																				setAttributes(
-																					{
-																						'typography-status-hover':
-																							val,
-																					}
-																				)
-																			}
-																		/>
-																		{attributes[
-																			'typography-status-hover'
-																		] && (
-																			<TypographyControl
-																				{...getGroupAttributes(
-																					attributes,
-																					'typography',
-																					true
-																				)}
-																				textLevel={
-																					textLevel
-																				}
-																				onChange={obj =>
-																					setAttributes(
-																						obj
-																					)
-																				}
-																				hideAlignment
-																				breakpoint={
-																					deviceType
-																				}
-																				clientId={
-																					clientId
-																				}
-																				isList={
-																					isList
-																				}
-																				isHover
-																				blockStyle={
-																					parentBlockStyle
-																				}
-																			/>
-																		)}
-																	</>
-																),
-															},
-														]}
-													/>
-												),
-											},
+											...inspectorTabs.typography({
+												props,
+												styleCardPrefix: '',
+												hideAlignment: true,
+												allowLink: true,
+											}),
 											...inspectorTabs.background({
 												props,
 											}),

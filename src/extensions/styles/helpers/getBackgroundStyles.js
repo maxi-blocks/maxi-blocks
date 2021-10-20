@@ -357,13 +357,31 @@ const getSVGWrapperBackgroundObject = ({
 		isHover
 	);
 	const bgSVGTop = getLastBreakpointAttribute(
-		'background-svg-top',
+		'background-svg-position-top',
+		breakpoint,
+		props,
+		isHover
+	);
+	const bgSVGRight = getLastBreakpointAttribute(
+		'background-svg-position-right',
+		breakpoint,
+		props,
+		isHover
+	);
+	const bgSVGbottom = getLastBreakpointAttribute(
+		'background-svg-position-bottom',
 		breakpoint,
 		props,
 		isHover
 	);
 	const bgSVGLeft = getLastBreakpointAttribute(
-		'background-svg-left',
+		'background-svg-position-left',
+		breakpoint,
+		props,
+		isHover
+	);
+	const bgSVGUnit = getLastBreakpointAttribute(
+		'background-svg-position-unit',
 		breakpoint,
 		props,
 		isHover
@@ -380,27 +398,22 @@ const getSVGWrapperBackgroundObject = ({
 		response[breakpoint].width = `${bgSVGSize}${bgSVGSizeUnit}`;
 	}
 
-	if (bgSVGTop) {
-		const bgSVGTopUnit = getLastBreakpointAttribute(
-			'background-svg-top-unit',
-			breakpoint,
-			props,
-			isHover
-		);
-
-		response[breakpoint].top = `${bgSVGTop}${bgSVGTopUnit}`;
-	}
-
-	if (bgSVGLeft) {
-		const bgSVGLeftUnit = getLastBreakpointAttribute(
-			'background-svg-left-unit',
-			breakpoint,
-			props,
-			isHover
-		);
-
-		response[breakpoint].left = `${bgSVGLeft}${bgSVGLeftUnit}`;
-	}
+	if (!isEmpty(bgSVGTop) || isNumber(bgSVGTop))
+		response[breakpoint].top = `${bgSVGTop}${
+			bgSVGTop !== 'auto' ? bgSVGUnit : ''
+		}`;
+	if (!isEmpty(bgSVGRight) || isNumber(bgSVGRight))
+		response[breakpoint].right = `${bgSVGRight}${
+			bgSVGRight !== 'auto' ? bgSVGUnit : ''
+		}`;
+	if (!isEmpty(bgSVGbottom) || isNumber(bgSVGbottom))
+		response[breakpoint].bottom = `${bgSVGbottom}${
+			bgSVGbottom !== 'auto' ? bgSVGUnit : ''
+		}`;
+	if (!isEmpty(bgSVGLeft) || isNumber(bgSVGLeft))
+		response[breakpoint].left = `${bgSVGLeft}${
+			bgSVGLeft !== 'auto' ? bgSVGUnit : ''
+		}`;
 
 	return response;
 };

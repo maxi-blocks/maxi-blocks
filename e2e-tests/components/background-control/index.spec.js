@@ -11,15 +11,148 @@ import {
 /**
  * Interactive dependencies
  */
-import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebar,
+	addBackgroundLayer,
+} from '../../utils';
 
-describe.skip('BackgroundControl', () => {
-	beforeEach(async () => {
+describe('BackgroundControl', () => {
+	it('Check Background Color layer', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
+		await openSidebar(page, 'background');
+
+		await addBackgroundLayer(page, 'color');
+
+		// change color
+		await page.$$eval(
+			'.maxi-background-layer__content .maxi-sc-color-palette__box',
+			colorPalette => colorPalette[4].click()
+		);
+
+		// opacity
+		await page.$eval(
+			'.maxi-background-control .maxi-advanced-number-control input',
+			opacity => opacity.focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('45');
+
+		// clip-path
+		await page.$eval(
+			'.maxi-clip-path-control .maxi-toggle-switch__toggle input',
+			input => input.click()
+		);
+		await page.$$eval('.clip-path-defaults button', buttons =>
+			buttons[3].click()
+		);
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
 
-	it('Check Background Color Clip Path', async () => {
+	it('Check Background Color layer hover', async () => {
+		const accordion = await openSidebar(page, 'background');
+		// hover
+		await accordion.$$eval(
+			'.maxi-tabs-control--disable-padding button',
+			button => button[1].click()
+		);
+
+		// enable hover
+		await page.$eval(
+			'.maxi-background-status-hover .maxi-toggle-switch__toggle input',
+			button => button.click()
+		);
+
+		// hover options
+		await page.$eval(
+			'.maxi-background-layers_options .maxi-background-layer__arrow',
+			options => options.click()
+		);
+
+		// change color
+		await page.$$eval(
+			'.maxi-background-layer__content .maxi-sc-color-palette__box',
+			colorPalette => colorPalette[4].click()
+		);
+
+		// opacity
+		await page.$eval(
+			'.maxi-background-control .maxi-advanced-number-control input',
+			opacity => opacity.focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('45');
+
+		// opacity
+		await page.$$eval('.clip-path-defaults button', buttons =>
+			buttons[2].click()
+		);
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+	});
+
+	it('Check Background image layer', async () => {
+		debugger;
+		await addBackgroundLayer(page, 'image');
+
+		// opacity
+		await page.$$eval(
+			'.maxi-background-control .maxi-advanced-number-control input',
+			opacity => opacity[0].focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('55');
+
+		// background size
+		const sizeSelector = await page.$eval('.maxi-background-size select');
+		await sizeSelector.select('contain');
+
+		// background repeat
+		const repeatSelector = await page.$eval(
+			'.maxi-background-repeat select'
+		);
+		await repeatSelector.select('repeat');
+
+		// background position
+		const positionSelector = await page.$eval(
+			'.maxi-background-position select'
+		);
+		await positionSelector.select('left top');
+
+		// background attachment
+		const attachmentSelector = await page.$eval(
+			'.maxi-background-attachment select'
+		);
+		await attachmentSelector.select('fixed');
+
+		// more settings
+		await page.$eval(
+			'.maxi-tabs-content .maxi-background-image-more-settings--toggle input',
+			button => button.click()
+		);
+
+		// background origin
+		const originSelector = await page.$eval(
+			'.maxi-background-origin select'
+		);
+		await originSelector.select('fixed');
+
+		// background clip
+		const clipSelector = await page.$eval('.maxi-background-clip select');
+		await clipSelector.select('fixed');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+	});
+
+	/* it('Check Background Color Clip Path', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
 		await accordionPanel.$$eval(
@@ -260,7 +393,7 @@ describe.skip('BackgroundControl', () => {
 		expect(
 			expectAttribute['background-active-media-general']
 		).toStrictEqual(backgroundSettings);
-	});
+	}); */
 
 	// TODO: needs to be fixed with #1931
 	// it('Check Background Gradient', async () => {
@@ -316,7 +449,7 @@ describe.skip('BackgroundControl', () => {
 	// 	expect(gradient).toStrictEqual(expectGradient);
 	// });
 
-	it('Background hover attributes are kept after setting none to normal background settings', async () => {
+	/* it('Background hover attributes are kept after setting none to normal background settings', async () => {
 		const accordionPanel = await openSidebar(page, 'background');
 
 		await accordionPanel.$$eval(
@@ -359,7 +492,7 @@ describe.skip('BackgroundControl', () => {
 		expect(background).toStrictEqual(expectChanges);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
-	});
+	}); */
 
 	/* it('Check BackgroundShape', async () => {
 		const { uniqueID } = await getBlockAttributes();

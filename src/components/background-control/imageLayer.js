@@ -194,6 +194,7 @@ const ImageLayerContent = props => {
 			{!hideSettings && (
 				<>
 					<SelectControl
+						className='maxi-background-size'
 						label={__('Background size', 'maxi-blocks')}
 						value={getLastBreakpointAttribute(
 							`${prefix}background-image-size`,
@@ -290,6 +291,7 @@ const ImageLayerContent = props => {
 						/>
 					)}
 					<SelectControl
+						className='maxi-background-repeat'
 						label={__('Background repeat', 'maxi-blocks')}
 						value={getLastBreakpointAttribute(
 							`${prefix}background-image-repeat`,
@@ -343,6 +345,7 @@ const ImageLayerContent = props => {
 						}
 					/>
 					<SelectControl
+						className='maxi-background-position'
 						label={__('Background position', 'maxi-blocks')}
 						value={getLastBreakpointAttribute(
 							`${prefix}background-image-position`,
@@ -641,6 +644,7 @@ const ImageLayerContent = props => {
 						</>
 					)}
 					<SelectControl
+						className='maxi-background-attachment'
 						label={__('Background attachment', 'maxi-blocks')}
 						value={getLastBreakpointAttribute(
 							`${prefix}background-image-attachment`,
@@ -692,6 +696,7 @@ const ImageLayerContent = props => {
 					{moreSettings && (
 						<div className='maxi-background-image-more-settings'>
 							<SelectControl
+								className='maxi-background-origin'
 								label={__('Background origin', 'maxi-blocks')}
 								value={getLastBreakpointAttribute(
 									`${prefix}background-image-origin`,
@@ -733,6 +738,7 @@ const ImageLayerContent = props => {
 								}
 							/>
 							<SelectControl
+								className='maxi-background-clip'
 								label={__('Background clip', 'maxi-blocks')}
 								value={getLastBreakpointAttribute(
 									`${prefix}background-image-clip-path`,

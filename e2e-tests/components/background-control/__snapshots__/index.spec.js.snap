@@ -1,3 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BackgroundControl Background hover attributes are kept after setting none to normal background settings 1`] = `"<style>body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__color,body.maxi-blocks--active .edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend.group-maxi-12:hover > .maxi-background-displayer .maxi-background-displayer__color{ background-color: rgba(var(--maxi-light-color-6),1);}</style>"`;
+exports[`BackgroundControl Check Background Color layer 1`] = `
+Array [
+  Object {
+    "background-color-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-color-clip-path-m": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-color-general": "",
+    "background-color-m": "",
+    "background-palette-color-general": 5,
+    "background-palette-color-m": 5,
+    "background-palette-color-status-general": true,
+    "background-palette-color-status-m": true,
+    "background-palette-opacity-general": 45,
+    "background-palette-opacity-m": 45,
+    "display-general": "block",
+    "id": 1,
+    "type": "color",
+  },
+]
+`;
+
+exports[`BackgroundControl Check Background Color layer hover 1`] = `
+Array [
+  Object {
+    "background-color-clip-path-general": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-color-clip-path-general-hover": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+    "background-color-clip-path-m": "polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)",
+    "background-color-clip-path-m-hover": "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+    "background-color-general": "",
+    "background-color-general-hover": "",
+    "background-color-m": "",
+    "background-color-m-hover": "",
+    "background-palette-color-general": 5,
+    "background-palette-color-general-hover": 5,
+    "background-palette-color-m": 5,
+    "background-palette-color-m-hover": 5,
+    "background-palette-color-status-general": true,
+    "background-palette-color-status-general-hover": true,
+    "background-palette-color-status-m": true,
+    "background-palette-color-status-m-hover": true,
+    "background-palette-opacity-general": 45,
+    "background-palette-opacity-general-hover": 0,
+    "background-palette-opacity-m": 45,
+    "background-palette-opacity-m-hover": 0,
+    "display-general": "block",
+    "id": 1,
+    "type": "color",
+  },
+]
+`;

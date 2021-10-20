@@ -1,3 +1,4 @@
+export { default as addBackgroundLayer } from './addBackgroundLayer';
 export { default as getClientId } from './getClientId';
 export { default as getBlockAttributes } from './getBlockAttributes';
 export { default as getBlockStyle } from './getBlockStyle';

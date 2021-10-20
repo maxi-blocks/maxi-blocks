@@ -369,7 +369,7 @@ const getSVGWrapperBackgroundObject = ({
 		isHover
 	);
 
-	if (bgSVGSize) {
+	if (isNumber(bgSVGSize)) {
 		const bgSVGSizeUnit = getLastBreakpointAttribute(
 			'background-svg-size-unit',
 			breakpoint,
@@ -380,7 +380,7 @@ const getSVGWrapperBackgroundObject = ({
 		response[breakpoint].width = `${bgSVGSize}${bgSVGSizeUnit}`;
 	}
 
-	if (bgSVGTop) {
+	if (isNumber(bgSVGTop)) {
 		const bgSVGTopUnit = getLastBreakpointAttribute(
 			'background-svg-top-unit',
 			breakpoint,
@@ -391,7 +391,7 @@ const getSVGWrapperBackgroundObject = ({
 		response[breakpoint].top = `${bgSVGTop}${bgSVGTopUnit}`;
 	}
 
-	if (bgSVGLeft) {
+	if (isNumber(bgSVGLeft)) {
 		const bgSVGLeftUnit = getLastBreakpointAttribute(
 			'background-svg-left-unit',
 			breakpoint,

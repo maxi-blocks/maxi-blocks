@@ -20,6 +20,7 @@ import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getDefaultLayerAttr } from './utils';
 
 /**
  * External dependencies
@@ -38,11 +39,20 @@ const ImageLayerContent = props => {
 		breakpoint,
 		hideSettings,
 		isGeneral = false,
+		isLayer = false,
 	} = props;
 
 	const imageOptions = cloneDeep(props.imageOptions);
 
 	const [moreSettings, setMoreSettings] = useState(false);
+
+	const getDefaultAttr = target => {
+		if (isLayer) return getDefaultLayerAttr('imageOptions', target);
+
+		return getDefaultAttribute(
+			getAttributeKey(target, isHover, prefix, breakpoint)
+		);
+	};
 
 	return (
 		<>
@@ -476,26 +486,16 @@ const ImageLayerContent = props => {
 											isHover,
 											prefix,
 											breakpoint
-										)]: getDefaultAttribute(
-											getAttributeKey(
-												'background-image-position-width',
-												isHover,
-												prefix,
-												breakpoint
-											)
+										)]: getDefaultAttr(
+											'background-image-position-width'
 										),
 										[getAttributeKey(
 											'background-image-position-width-unit',
 											isHover,
 											prefix,
 											breakpoint
-										)]: getDefaultAttribute(
-											getAttributeKey(
-												'background-image-position-width-unit',
-												isHover,
-												prefix,
-												breakpoint
-											)
+										)]: getDefaultAttr(
+											'background-image-position-width-unit'
 										),
 										...(isGeneral && {
 											[getAttributeKey(
@@ -503,26 +503,16 @@ const ImageLayerContent = props => {
 												isHover,
 												prefix,
 												'general'
-											)]: getDefaultAttribute(
-												getAttributeKey(
-													'background-image-position-width',
-													isHover,
-													prefix,
-													'general'
-												)
+											)]: getDefaultAttr(
+												'background-image-position-width'
 											),
 											[getAttributeKey(
 												'background-image-position-width-unit',
 												isHover,
 												prefix,
 												'general'
-											)]: getDefaultAttribute(
-												getAttributeKey(
-													'background-image-position-width-unit',
-													isHover,
-													prefix,
-													'general'
-												)
+											)]: getDefaultAttr(
+												'background-image-position-width-unit'
 											),
 										}),
 									})
@@ -586,26 +576,16 @@ const ImageLayerContent = props => {
 											isHover,
 											prefix,
 											breakpoint
-										)]: getDefaultAttribute(
-											getAttributeKey(
-												'background-image-position-height',
-												isHover,
-												prefix,
-												breakpoint
-											)
+										)]: getDefaultAttr(
+											'background-image-position-height'
 										),
 										[getAttributeKey(
 											'background-image-position-height-unit',
 											isHover,
 											prefix,
 											breakpoint
-										)]: getDefaultAttribute(
-											getAttributeKey(
-												'background-image-position-height-unit',
-												isHover,
-												prefix,
-												breakpoint
-											)
+										)]: getDefaultAttr(
+											'background-image-position-height-unit'
 										),
 										...(isGeneral && {
 											[getAttributeKey(
@@ -613,26 +593,16 @@ const ImageLayerContent = props => {
 												isHover,
 												prefix,
 												'general'
-											)]: getDefaultAttribute(
-												getAttributeKey(
-													'background-image-position-height',
-													isHover,
-													prefix,
-													'general'
-												)
+											)]: getDefaultAttr(
+												'background-image-position-height'
 											),
 											[getAttributeKey(
 												'background-image-position-height-unit',
 												isHover,
 												prefix,
 												'general'
-											)]: getDefaultAttribute(
-												getAttributeKey(
-													'background-image-position-height-unit',
-													isHover,
-													prefix,
-													'general'
-												)
+											)]: getDefaultAttr(
+												'background-image-position-height-unit'
 											),
 										}),
 									})

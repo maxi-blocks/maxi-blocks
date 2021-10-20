@@ -88,7 +88,7 @@ describe('BackgroundControl', () => {
 		await pressKeyTimes('Backspace', '3');
 		await page.keyboard.type('45');
 
-		// opacity
+		// clip-path
 		await page.$$eval('.clip-path-defaults button', buttons =>
 			buttons[2].click()
 		);
@@ -97,7 +97,15 @@ describe('BackgroundControl', () => {
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
 
+<<<<<<< Updated upstream
 	it('Check Background image layer', async () => {
+=======
+	it.only('Check Background image layer', async () => {
+		await createNewPost();
+		await insertBlock('Group Maxi');
+		await openSidebar(page, 'background');
+
+>>>>>>> Stashed changes
 		await addBackgroundLayer(page, 'image');
 
 		// opacity
@@ -110,23 +118,22 @@ describe('BackgroundControl', () => {
 		await page.keyboard.type('55');
 
 		// background size
-		const sizeSelector = await page.$eval('.maxi-background-size select');
+		debugger;
+		const sizeSelector = await page.$('.maxi-background-size select');
 		await sizeSelector.select('contain');
 
 		// background repeat
-		const repeatSelector = await page.$eval(
-			'.maxi-background-repeat select'
-		);
+		const repeatSelector = await page.$('.maxi-background-repeat select');
 		await repeatSelector.select('repeat');
 
 		// background position
-		const positionSelector = await page.$eval(
+		const positionSelector = await page.$(
 			'.maxi-background-position select'
 		);
 		await positionSelector.select('left top');
 
 		// background attachment
-		const attachmentSelector = await page.$eval(
+		const attachmentSelector = await page.$(
 			'.maxi-background-attachment select'
 		);
 		await attachmentSelector.select('fixed');
@@ -138,14 +145,12 @@ describe('BackgroundControl', () => {
 		);
 
 		// background origin
-		const originSelector = await page.$eval(
-			'.maxi-background-origin select'
-		);
-		await originSelector.select('fixed');
+		/* const originSelector = await page.$('.maxi-background-origin select');
+		await originSelector.select('border-box');
 
 		// background clip
 		const clipSelector = await page.$eval('.maxi-background-clip select');
-		await clipSelector.select('fixed');
+		await clipSelector.select('content-box'); */
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();

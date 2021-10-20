@@ -49,3 +49,37 @@ Array [
   },
 ]
 `;
+
+exports[`BackgroundControl Check Background image layer 1`] = `
+Array [
+  Object {
+    "background-image-attachment-general": "fixed",
+    "background-image-attachment-m": "fixed",
+    "background-image-clip-general": "border-box",
+    "background-image-clip-path-general": "",
+    "background-image-crop-options-general": null,
+    "background-image-height-general": 100,
+    "background-image-height-unit-general": "%",
+    "background-image-mediaID-general": "",
+    "background-image-mediaURL-general": "",
+    "background-image-opacity-general": 0.55,
+    "background-image-opacity-m": 0.55,
+    "background-image-origin-general": "padding-box",
+    "background-image-position-general": "left top",
+    "background-image-position-height-general": 0,
+    "background-image-position-height-unit-general": "%",
+    "background-image-position-m": "left top",
+    "background-image-position-width-general": 0,
+    "background-image-position-width-unit-general": "%",
+    "background-image-repeat-general": "repeat",
+    "background-image-repeat-m": "repeat",
+    "background-image-size-general": "contain",
+    "background-image-size-m": "contain",
+    "background-image-width-general": 100,
+    "background-image-width-unit-general": "%",
+    "display-general": "block",
+    "id": 1,
+    "type": "image",
+  },
+]
+`;

@@ -14,6 +14,7 @@ import {
 	getAttributeKey,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import { getDefaultLayerAttr } from './utils';
 
 /**
  * External dependencies
@@ -31,9 +32,18 @@ const GradientLayerContent = props => {
 		prefix = '',
 		breakpoint,
 		isGeneral = false,
+		isLayer = false,
 	} = props;
 
 	const gradientOptions = cloneDeep(props.gradientOptions);
+
+	const getDefaultAttr = target => {
+		if (isLayer) return getDefaultLayerAttr('colorOptions', target);
+
+		return getDefaultAttribute(
+			getAttributeKey(target, isHover, prefix, breakpoint)
+		);
+	};
 
 	return (
 		<>
@@ -51,9 +61,7 @@ const GradientLayerContent = props => {
 					gradientOptions,
 					isHover
 				)}
-				defaultGradient={getDefaultAttribute(
-					getAttributeKey('background-gradient', isHover, prefix)
-				)}
+				defaultGradient={getDefaultAttr('background-gradient')}
 				onChange={val =>
 					onChange({
 						[getAttributeKey(

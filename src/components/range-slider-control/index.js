@@ -122,9 +122,9 @@ const RangeSliderControl = props => {
 							newValues[key] = val.target.value;
 							onChange({ ...values, ...newValues });
 						}}
-						min={0}
-						max={100}
-						step={0.1}
+						step={step}
+						min={min}
+						max={max}
 					/>
 				);
 			})}

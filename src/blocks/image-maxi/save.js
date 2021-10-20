@@ -8,6 +8,7 @@ import { RichText } from '@wordpress/block-editor';
  */
 import { HoverPreview, RawHTML } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
+import motionData from '../../extensions/motions';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -16,7 +17,6 @@ import MaxiBlock, {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNil } from '@wordpress/rich-text';
 
 /**
  * Save
@@ -59,74 +59,6 @@ const save = props => {
 			`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 	);
 
-	const motionData = () => {
-		const response = {};
-		const { attributes } = props;
-		const motionSettings = [
-			'speed',
-			'direction',
-			'easing',
-			'offset-start',
-			'offset-middle',
-			'offset-top',
-			'viewport-bottom',
-			'viewport-middle',
-			'viewport-top',
-		];
-
-		const motionTypes = [
-			'vertical',
-			'horizontal',
-			'rotate',
-			'scale',
-			'fade',
-			'blur',
-		];
-
-		const dataMotionTypeValue = () => {
-			let responseString = '';
-			motionTypes.map(type => {
-				if (attributes[`motion-status-${type}-general`])
-					responseString += `${type} `;
-
-				return null;
-			});
-
-			return responseString;
-		};
-
-		const enabledMotions = dataMotionTypeValue();
-
-		console.log(`dataMotionTypeValue: ${enabledMotions}`);
-
-		if (enabledMotions !== '') {
-			response['data-motion-type'] = enabledMotions;
-
-			motionTypes.map(type => {
-				if (enabledMotions.includes(type)) {
-					response[`data-motion-${type}-general`] = '';
-
-					motionSettings.map(setting => {
-						const motionSettingValue =
-							attributes[`motion-${setting}-${type}-general`];
-						if (attributes[`motion-${setting}-${type}-general`]) {
-							response[
-								`data-motion-${type}-general`
-							] += `${motionSettingValue} `;
-						} else response[`data-motion-${type}-general`] += 'no ';
-
-						return null;
-					});
-				}
-
-				return null;
-			});
-
-			return response;
-		}
-		return response;
-	};
-
 	return (
 		<MaxiBlock
 			tagName='figure'
@@ -135,7 +67,7 @@ const save = props => {
 				attributes['motion-status-vertical-general'] &&
 					'maxi-block-motion')
 			}
-			{...motionData()}
+			{...motionData(props)}
 			{...getMaxiBlockBlockAttributes({ ...props, name })}
 			isSave
 		>

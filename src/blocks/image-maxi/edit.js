@@ -13,6 +13,7 @@ import { createRef } from '@wordpress/element';
 import getStyles from './styles';
 import Inspector from './inspector';
 import { getGroupAttributes } from '../../extensions/styles';
+import motionData from '../../extensions/motions';
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
@@ -202,39 +203,6 @@ class edit extends MaxiBlockComponent {
 			}
 		};
 
-		const motionData = () => {
-			const response = {};
-			const { attributes } = this.props;
-			const motionSettings = [
-				'speed',
-				'direction',
-				'offset-start',
-				'offset-middle',
-				'offset-top',
-				'viewport-bottom',
-				'viewport-middle',
-				'viewport-top',
-			];
-
-			const dataMotionTypeValue = attributes[
-				'motion-status-vertical-general'
-			]
-				? 'vertical'
-				: '';
-			response['data-motion-type'] = dataMotionTypeValue;
-
-			motionSettings.map(setting => {
-				const motionSettingValue =
-					attributes[`motion-${setting}-vertical-general`];
-				if (attributes[`motion-${setting}-vertical-general`])
-					response[`data-motion-${setting}`] = motionSettingValue;
-
-				return null;
-			});
-
-			return response;
-		};
-
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
@@ -258,7 +226,7 @@ class edit extends MaxiBlockComponent {
 				ref={this.blockRef}
 				tagName='figure'
 				className={classes}
-				{...motionData()}
+				{...motionData(this.props)}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<MediaUpload

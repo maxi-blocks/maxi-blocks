@@ -412,16 +412,20 @@ const elements = Array.from(
 elements.forEach(function (element, index) {
 	const motionType = element.getAttribute('data-motion-type');
 	// motion data format date-motion-${type}=
-	// 'speed direction ease offset-starting offset-middle offset-end viewport-top viewport-middle viewport-bottom'
+	// 'speed direction ease offset-starting offset-middle offset-end viewport-bottom viewport-middle viewport-top'
 	if (motionType.includes('vertical')) {
-		const viewportTopPercent =
-			parseFloat(element.getAttribute('data-motion-viewport-top')) || 0;
-		const viewportBottomPercent =
-			parseFloat(element.getAttribute('data-motion-viewport-bottom')) ||
-			0;
-		const viewportMidPercent =
-			parseFloat(element.getAttribute('data-motion-viewport-middle')) ||
-			0;
+		const dataMotionVertical = element.getAttribute(
+			'data-motion-vertical-general'
+		);
+
+		if (!dataMotionVertical) return;
+
+		const dataMotionVerticalArray = dataMotionVertical.trim().split(' ');
+
+		console.log(dataMotionVerticalArray);
+		const viewportTopPercent = parseFloat(dataMotionVerticalArray[8]);
+		const viewportMidPercent = parseFloat(dataMotionVerticalArray[7]);
+		const viewportBottomPercent = parseFloat(dataMotionVerticalArray[6]);
 
 		element.parentNode
 			.closest('.maxi-container-block')
@@ -442,14 +446,14 @@ elements.forEach(function (element, index) {
 
 		element.setAttribute('transform-size', transformSize);
 
-		const speedValue = element.getAttribute('data-motion-speed');
-		const easingValue = element.getAttribute('data-motion-easing');
+		const speedValue = parseFloat(dataMotionVerticalArray[0]);
+		const easingValue = dataMotionVerticalArray[2];
 
 		if (speedValue) {
-			element.style.transition = `translateY ${speedValue}s ${easingValue}`;
+			element.style.transition = `all ${speedValue}s ${easingValue}`;
 		}
 
-		const direction = element.getAttribute('data-motion-direction');
+		const direction = dataMotionVerticalArray[1];
 
 		if (direction === 'up') {
 			element.style.transform = 'translate(0px, 0px)';
@@ -463,8 +467,8 @@ elements.forEach(function (element, index) {
 
 		transform = Math.abs(parseInt(style.getPropertyValue('top'), 10)) * 2;
 
-		const offsetTop = element.getAttribute('data-motion-offset-start');
-		const offsetBottom = element.getAttribute('data-motion-offset-end');
+		const offsetTop = parseFloat(dataMotionVerticalArray[5]);
+		const offsetBottom = parseFloat(dataMotionVerticalArray[4]);
 
 		if (offsetTop) {
 			if (element.classList.contains('scroll_up')) {
@@ -506,21 +510,24 @@ window.addEventListener('scroll', () => {
 		const motionType = element.getAttribute('data-motion-type');
 
 		if (motionType.includes('vertical')) {
-			const viewportTopPercent =
-				parseFloat(element.getAttribute('data-motion-viewport-top')) ||
-				0;
-			const viewportBottomPercent =
-				parseFloat(
-					element.getAttribute('data-motion-viewport-bottom')
-				) || 0;
-			const viewportMidPercent =
-				parseFloat(
-					element.getAttribute('data-motion-viewport-middle')
-				) || 0;
+			const dataMotionVertical = element.getAttribute(
+				'data-motion-vertical-general'
+			);
 
-			const offsetTop = element.getAttribute('data-motion-offset-start');
-			const offsetBottom = element.getAttribute('data-motion-offset-end');
-			const offsetMid = element.getAttribute('data-motion-offset-middle');
+			if (!dataMotionVertical) return;
+
+			const dataMotionVerticalArray = dataMotionVertical
+				.trim()
+				.split(' ');
+
+			const viewportTopPercent = parseFloat(dataMotionVerticalArray[8]);
+			const viewportMidPercent = parseFloat(dataMotionVerticalArray[7]);
+			const viewportBottomPercent = parseFloat(
+				dataMotionVerticalArray[6]
+			);
+			const offsetTop = parseFloat(dataMotionVerticalArray[5]);
+			const offsetMid = parseFloat(dataMotionVerticalArray[4]);
+			const offsetBottom = parseFloat(dataMotionVerticalArray[3]);
 
 			const topPos = element.parentNode.closest(
 				'.maxi-container-block'
@@ -674,18 +681,6 @@ window.addEventListener('scroll', () => {
 									(viewportBottomPercent +
 										viewportTopPercent));
 						}
-
-						console.log(
-							`currentTransformSize: ${currentTransformSize}`
-						);
-						console.log(`elementViewSize: ${elementViewSize}`);
-						console.log(
-							`viewportBottomPercent: ${viewportBottomPercent}`
-						);
-						console.log(
-							`viewportTopPercent: ${viewportTopPercent}`
-						);
-						console.log(`transformSizeAttr: ${transformSizeAttr}`);
 
 						elementScrollSize =
 							parseFloat(currentTransformSize) +

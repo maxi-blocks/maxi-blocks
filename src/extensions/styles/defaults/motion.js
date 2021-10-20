@@ -34,61 +34,63 @@ export const motion = (() => {
 		const easingKey = `motion-easing-${type}-general`;
 		const easingValue = {
 			type: 'string',
+			default: 'ease',
 		};
 		response[easingKey] = easingValue;
 
 		const directionKey = `motion-direction-${type}-general`;
 		const directionValue = {
 			type: 'string',
+			default: 'up',
 		};
 		response[directionKey] = directionValue;
 
 		const speedKey = `motion-speed-${type}-general`;
 		const speedValue = {
 			type: 'number',
-			// default: 2,
+			default: 2,
 		};
 		response[speedKey] = speedValue;
 
 		const offsetStartKey = `motion-offset-start-${type}-general`;
 		const offsetStartValue = {
 			type: 'number',
-			// default: 0,
+			default: 0,
 		};
 		response[offsetStartKey] = offsetStartValue;
 
 		const offsetMiddleKey = `motion-offset-middle-${type}-general`;
 		const offsetMiddleValue = {
 			type: 'number',
-			// default: 50,
+			default: 50,
 		};
 		response[offsetMiddleKey] = offsetMiddleValue;
 
 		const offsetEndKey = `motion-offset-end-${type}-general`;
 		const offsetEndValue = {
 			type: 'number',
-			// default: 100,
+			default: 100,
 		};
 		response[offsetEndKey] = offsetEndValue;
 
 		const viewportBottomKey = `motion-viewport-bottom-${type}-general`;
 		const viewportBottomValue = {
 			type: 'number',
-			// default: 0,
+			default: 0,
 		};
 		response[viewportBottomKey] = viewportBottomValue;
 
 		const viewportMiddleKey = `motion-viewport-middle-${type}-general`;
 		const viewportMiddleValue = {
 			type: 'number',
-			// default: 50,
+			default: 50,
 		};
 		response[viewportMiddleKey] = viewportMiddleValue;
 
 		const viewportTopKey = `motion-viewport-top-${type}-general`;
 		const viewportTopValue = {
 			type: 'number',
-			// default: 100,
+			default: 100,
 		};
 		response[viewportTopKey] = viewportTopValue;
 	});

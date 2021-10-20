@@ -401,6 +401,7 @@ const getIconObject = (props, target) => {
 				parentBlockStyle: props.parentBlockStyle,
 			}),
 	};
+
 	return response;
 };
 

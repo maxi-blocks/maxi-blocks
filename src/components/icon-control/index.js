@@ -85,6 +85,25 @@ const IconControl = props => {
 		return options;
 	};
 
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 999,
+		},
+		'%': {
+			min: 0,
+			max: 100,
+		},
+	};
+
 	return (
 		<div className={classes}>
 			{!isHover && breakpoint === 'general' && (
@@ -485,6 +504,7 @@ const IconControl = props => {
 							breakpoint={breakpoint}
 							target='icon-padding'
 							disableAuto
+							minMaxSettings={minMaxSettings}
 						/>
 					)}
 				</>

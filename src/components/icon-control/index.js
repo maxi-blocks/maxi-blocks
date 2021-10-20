@@ -344,9 +344,6 @@ const IconControl = props => {
 											}`
 										]
 									}
-									paletteOpacity={
-										props['icon-background-palette-opacity']
-									}
 									paletteStatus={
 										props[
 											`icon-background-palette-color-status${

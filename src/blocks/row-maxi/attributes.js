@@ -13,6 +13,10 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  */
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
 	customLabel: {
 		type: 'string',
 		default: __('Row', 'maxi-blocks'),
@@ -35,7 +39,6 @@ const attributes = {
 	},
 	...attributesData.container,
 	...attributesData.rowPattern,
-	...attributesData.opacity,
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderWidth,
@@ -43,16 +46,21 @@ const attributes = {
 	...attributesData.borderHover,
 	...attributesData.borderWidthHover,
 	...attributesData.borderRadiusHover,
-	...attributesData.size,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.size,
 	...attributesData.margin,
 	...attributesData.padding,
-	...attributesData.display,
-	...attributesData.position,
+
+	/**
+	 * Advanced
+	 */
 	...attributesData.transform,
-	...attributesData.zIndex,
+	...attributesData.display,
+	...attributesData.opacity,
+	...attributesData.position,
 	...attributesData.overflow,
+	...attributesData.zIndex,
 };
 
 export default attributes;

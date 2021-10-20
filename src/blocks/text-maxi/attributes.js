@@ -13,9 +13,21 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  */
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
 	customLabel: {
 		type: 'string',
 		default: __('Text', 'maxi-blocks'),
+	},
+	blockFullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
+	content: {
+		type: 'string',
+		default: '',
 	},
 	textLevel: {
 		type: 'string',
@@ -36,14 +48,11 @@ const attributes = {
 		type: 'number',
 		default: 0,
 	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
-	},
-	content: {
-		type: 'string',
-		default: '',
-	},
+	...attributesData.container,
+	...attributesData.link,
+	...attributesData.textAlignment,
+	...attributesData.typography,
+	...attributesData.typographyHover,
 	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
@@ -53,22 +62,21 @@ const attributes = {
 	...attributesData.borderWidthHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
-	...attributesData.container,
-	...attributesData.display,
-	...attributesData.link,
-	...attributesData.margin,
-	...attributesData.motion,
-	...attributesData.opacity,
-	...attributesData.padding,
-	...attributesData.position,
 	...attributesData.size,
-	...attributesData.textAlignment,
+	...attributesData.margin,
+	...attributesData.padding,
+
+	/**
+	 * Advanced
+	 */
+	...attributesData.motion,
 	...attributesData.transform,
-	...attributesData.typography,
-	...attributesData.typographyHover,
-	...attributesData.zIndex,
 	...attributesData.transitionDuration,
+	...attributesData.display,
+	...attributesData.opacity,
+	...attributesData.position,
 	...attributesData.overflow,
+	...attributesData.zIndex,
 };
 
 export default attributes;

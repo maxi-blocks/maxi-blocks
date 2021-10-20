@@ -15,13 +15,14 @@ import { getPrefixedAttributes } from '../../extensions/styles';
 const prefix = 'divider-';
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
+	...attributesData.divider,
 	customLabel: {
 		type: 'string',
 		default: __('Divider', 'maxi-blocks'),
-	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
 	},
 	fullWidth: {
 		type: 'string',
@@ -43,6 +44,26 @@ const attributes = {
 		type: 'string',
 		default: 'row',
 	},
+	...getPrefixedAttributes(attributesData.size, prefix),
+	...getPrefixedAttributes(attributesData.boxShadow, prefix),
+	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
+	...getPrefixedAttributes(attributesData.margin, prefix),
+	...getPrefixedAttributes(attributesData.padding, prefix),
+
+	/**
+	 * Canvas styles
+	 */
+	blockFullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
+	...attributesData.blockBackground,
+	...attributesData.border,
+	...attributesData.borderWidth,
+	...attributesData.borderRadius,
+	...attributesData.boxShadow,
+	...attributesData.boxShadowHover,
+	...attributesData.opacity,
 	...{
 		...attributesData.size,
 		'height-general': {
@@ -54,26 +75,17 @@ const attributes = {
 			default: 'px',
 		},
 	},
-	...getPrefixedAttributes(attributesData.size, prefix),
-	...attributesData.blockBackground,
-	...getPrefixedAttributes(attributesData.boxShadow, prefix),
-	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
-	...attributesData.boxShadow,
-	...attributesData.boxShadowHover,
-	...attributesData.border,
-	...attributesData.borderWidth,
-	...attributesData.borderRadius,
-	...attributesData.display,
-	...attributesData.divider,
-	...getPrefixedAttributes(attributesData.margin, prefix),
-	...getPrefixedAttributes(attributesData.padding, prefix),
 	...attributesData.margin,
 	...attributesData.padding,
+
+	/**
+	 * Advanced
+	 */
 	...attributesData.motion,
-	...attributesData.opacity,
-	...attributesData.position,
 	...attributesData.transform,
-	...attributesData.zIndex,
+	...attributesData.display,
+	...attributesData.position,
 	...attributesData.overflow,
+	...attributesData.zIndex,
 };
 export default attributes;

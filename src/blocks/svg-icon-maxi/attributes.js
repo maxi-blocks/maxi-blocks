@@ -15,6 +15,11 @@ import { getPrefixedAttributes } from '../../extensions/styles';
 const prefix = 'svg-';
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
+	...attributesData.svg,
 	customLabel: {
 		type: 'string',
 		default: __('SVG Icon', 'maxi-blocks'),
@@ -22,10 +27,6 @@ const attributes = {
 	openFirstTime: {
 		type: 'boolean',
 		default: true,
-	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
 	},
 	svgType: {
 		type: 'string',
@@ -41,36 +42,47 @@ const attributes = {
 			default: 'center',
 		},
 	},
-	...attributesData.blockBackground,
 	...getPrefixedAttributes(attributesData.border, prefix),
 	...getPrefixedAttributes(attributesData.borderHover, prefix),
 	...getPrefixedAttributes(attributesData.borderRadius, prefix),
 	...getPrefixedAttributes(attributesData.borderRadiusHover, prefix),
 	...getPrefixedAttributes(attributesData.borderWidth, prefix),
 	...getPrefixedAttributes(attributesData.borderWidthHover, prefix),
+	...getPrefixedAttributes(attributesData.boxShadow, prefix),
+	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
+	...getPrefixedAttributes(attributesData.margin, prefix),
+	...getPrefixedAttributes(attributesData.padding, prefix),
+
+	/**
+	 * Canvas styles
+	 */
+	blockFullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
+	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
 	...attributesData.borderRadiusHover,
 	...attributesData.borderWidth,
 	...attributesData.borderWidthHover,
-	...getPrefixedAttributes(attributesData.boxShadow, prefix),
-	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
-	...attributesData.display,
-	...attributesData.motion,
 	...attributesData.opacity,
-	...getPrefixedAttributes(attributesData.margin, prefix),
-	...getPrefixedAttributes(attributesData.padding, prefix),
+	...attributesData.size,
 	...attributesData.margin,
 	...attributesData.padding,
-	...attributesData.position,
-	...attributesData.size,
-	...attributesData.svg,
+
+	/**
+	 * Advanced
+	 */
+	...attributesData.motion,
 	...attributesData.transform,
-	...attributesData.zIndex,
+	...attributesData.display,
+	...attributesData.position,
 	...attributesData.overflow,
+	...attributesData.zIndex,
 };
 
 export default attributes;

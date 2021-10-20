@@ -15,13 +15,13 @@ import { getPrefixedAttributes } from '../../extensions/styles';
 const prefix = 'button-';
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
 	customLabel: {
 		type: 'string',
 		default: __('Button', 'maxi-blocks'),
-	},
-	blockFullWidth: {
-		type: 'string',
-		default: 'normal',
 	},
 	fullWidth: {
 		type: 'string',
@@ -31,6 +31,17 @@ const attributes = {
 		type: 'string',
 		default: '',
 	},
+	...attributesData.icon,
+	...attributesData.iconHover,
+	...attributesData.iconPadding,
+	...attributesData.iconBackgroundColor,
+	...attributesData.iconBackgroundGradient,
+	...attributesData.iconBorder,
+	...attributesData.iconBorderWidth,
+	...attributesData.iconBorderRadius,
+	...attributesData.iconBorderHover,
+	...attributesData.iconBorderWidthHover,
+	...attributesData.iconBorderRadiusHover,
 	...{
 		...attributesData.alignment,
 		'alignment-general': {
@@ -73,8 +84,6 @@ const attributes = {
 	...getPrefixedAttributes(attributesData.backgroundHover, prefix),
 	...getPrefixedAttributes(attributesData.backgroundColorHover, prefix),
 	...getPrefixedAttributes(attributesData.backgroundGradientHover, prefix),
-	...attributesData.blockBackground,
-	...getPrefixedAttributes(attributesData.opacity, prefix),
 	...getPrefixedAttributes(attributesData.border, prefix),
 	...getPrefixedAttributes(attributesData.borderWidth, prefix),
 	...{
@@ -105,31 +114,26 @@ const attributes = {
 	},
 	...getPrefixedAttributes(attributesData.borderWidthHover, prefix),
 	...getPrefixedAttributes(attributesData.borderRadiusHover, prefix),
+	...getPrefixedAttributes(attributesData.boxShadow, prefix),
+	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
+
+	/**
+	 * Canvas styles
+	 */
+	blockFullWidth: {
+		type: 'string',
+		default: 'normal',
+	},
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,
 	...attributesData.borderHover,
 	...attributesData.borderWidthHover,
 	...attributesData.borderRadiusHover,
-	...attributesData.icon,
-	...attributesData.iconHover,
-	...attributesData.iconPadding,
-	...attributesData.iconBackgroundColor,
-	...attributesData.iconBackgroundGradient,
-	...attributesData.iconBorder,
-	...attributesData.iconBorderWidth,
-	...attributesData.iconBorderRadius,
-	...attributesData.iconBorderHover,
-	...attributesData.iconBorderWidthHover,
-	...attributesData.iconBorderRadiusHover,
-	...attributesData.size,
-	...getPrefixedAttributes(attributesData.size, prefix),
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
-	...getPrefixedAttributes(attributesData.boxShadow, prefix),
-	...getPrefixedAttributes(attributesData.boxShadowHover, prefix),
-	...attributesData.margin,
-	...attributesData.padding,
+	...getPrefixedAttributes(attributesData.opacity, prefix),
+	...getPrefixedAttributes(attributesData.size, prefix),
 	...getPrefixedAttributes(attributesData.margin, prefix),
 	...{
 		...getPrefixedAttributes(attributesData.padding, prefix),
@@ -166,13 +170,21 @@ const attributes = {
 			default: 55,
 		},
 	},
-	...attributesData.display,
-	...attributesData.position,
+
+	/**
+	 * Advanced
+	 */
+	...attributesData.blockBackground,
 	...attributesData.motion,
 	...attributesData.transform,
-	...attributesData.zIndex,
 	...attributesData.transitionDuration,
+	...attributesData.display,
+	...attributesData.position,
 	...attributesData.overflow,
+	...attributesData.zIndex,
+	...attributesData.size,
+	...attributesData.margin,
+	...attributesData.padding,
 };
 
 export default attributes;

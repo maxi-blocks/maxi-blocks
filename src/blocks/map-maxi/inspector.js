@@ -13,6 +13,7 @@ import {
 	SettingTabsControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
+import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
  * Inspector

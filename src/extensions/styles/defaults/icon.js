@@ -1,3 +1,4 @@
+import { backgroundColor, backgroundGradient } from './background';
 import padding from './padding';
 
 export const icon = {
@@ -134,29 +135,32 @@ export const iconPadding = (() => {
 	return response;
 })();
 
-export const iconBackgroundColor = {
-	'icon-background-palette-color-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'icon-background-palette-color': {
-		type: 'number',
-		default: 4,
-	},
-	'icon-background-palette-opacity': {
-		type: 'number',
-	},
-	'icon-background-color': {
-		type: 'string',
-	},
-};
+export const iconBackgroundColor = (() => {
+	const response = {};
 
-export const iconGradient = {
-	'icon-background-gradient': {
-		type: 'string',
-	},
-	'icon-background-gradient-opacity': {
-		type: 'number',
-		default: 1,
-	},
-};
+	Object.keys(backgroundColor).forEach(key => {
+		if (key === 'background-color-clip-path-general') return;
+
+		const newKey = `icon-${key}`;
+		const value = { ...padding[key] };
+
+		response[newKey] = value;
+	});
+
+	return response;
+})();
+
+export const iconBackgroundGradient = (() => {
+	const response = {};
+
+	Object.keys(backgroundGradient).forEach(key => {
+		if (key === 'background-gradient-clip-path-general') return;
+
+		const newKey = `icon-${key}`;
+		const value = { ...padding[key] };
+
+		response[newKey] = value;
+	});
+
+	return response;
+})();

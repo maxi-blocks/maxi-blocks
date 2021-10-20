@@ -12,17 +12,53 @@ Object {
   " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
       "general": Object {
-        "background-color": "rgba(var(--maxi-light-color-5),1)",
+        "background-color": "rgba(150,200,90)",
+      },
+      "l": Object {
+        "background-color": "rgba(150,200,90)",
       },
       "label": "Arrow Color",
+      "m": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "s": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xl": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xs": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(150,200,90)",
+      },
     },
   },
   " .maxi-container-arrow:before": Object {
     "background": Object {
       "general": Object {
-        "background-color": "rgba(var(--maxi-light-color-5),1)",
+        "background-color": "rgba(150,200,90)",
+      },
+      "l": Object {
+        "background-color": "rgba(150,200,90)",
       },
       "label": "Arrow Color",
+      "m": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "s": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xl": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xs": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(150,200,90)",
+      },
     },
   },
   ":hover .maxi-container-arrow": Object {
@@ -32,26 +68,10 @@ Object {
       },
     },
   },
-  ":hover .maxi-container-arrow .maxi-container-arrow--content:after": Object {
-    "background": Object {
-      "general": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
-      },
-      "label": "Arrow Color",
-    },
-  },
-  ":hover .maxi-container-arrow:before": Object {
-    "background": Object {
-      "general": Object {
-        "background-color": "rgba(var(--maxi-light-color-1),1)",
-      },
-      "label": "Arrow Color",
-    },
-  },
 }
 `;
 
-exports[`getArrowStyles Get a correct arrow styles 1`] = `
+exports[`getArrowStyles Get a correct arrow styles with different values for different responsive stages color background settings 1`] = `
 Object {
   " .maxi-container-arrow": Object {
     "shadow": Object {},
@@ -112,17 +132,53 @@ Object {
   " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
       "general": Object {
-        "background-color": "rgb(255, 99, 71)",
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-4),0.3)",
       },
       "label": "Arrow Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-5),0.59)",
+      },
+      "s": Object {
+        "background-color": "rgba(204,68,68,0.59)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+      },
+      "xs": Object {
+        "background-color": "rgba(204,68,68,0.59)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-2),0.2)",
+      },
     },
   },
   " .maxi-container-arrow:before": Object {
     "background": Object {
       "general": Object {
-        "background-color": "rgb(255, 99, 71)",
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-4),0.3)",
       },
       "label": "Arrow Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-5),0.59)",
+      },
+      "s": Object {
+        "background-color": "rgba(204,68,68,0.59)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+      },
+      "xs": Object {
+        "background-color": "rgba(204,68,68,0.59)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-2),0.2)",
+      },
     },
   },
 }

@@ -7,6 +7,7 @@ import { getLastBreakpointAttribute } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Styles
@@ -17,7 +18,11 @@ import './style.scss';
  * Component
  */
 const ArrowDisplayer = props => {
-	const { className, breakpoint = 'general' } = props;
+	const {
+		className,
+		breakpoint = 'general',
+		'background-layers': backgroundLayers,
+	} = props;
 
 	const arrowClasses = classnames(
 		'maxi-container-arrow',
@@ -29,11 +34,11 @@ const ArrowDisplayer = props => {
 		className
 	);
 
-	const isBackgroundColor =
-		!props['background-layers-status'] &&
-		props['background-active-media'] === 'color';
+	const backgroundLayer = !isEmpty(backgroundLayers)
+		? backgroundLayers.some(layer => layer.type === 'color')
+		: false;
 
-	const shouldDisplayBorder = !!props['arrow-status'] && isBackgroundColor;
+	const shouldDisplayBorder = !!props['arrow-status'] && backgroundLayer;
 
 	return (
 		shouldDisplayBorder && (

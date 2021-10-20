@@ -9,7 +9,7 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getArrowStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getMarginPaddingStyles,
 	getOverflowStyles,
 } from '../../extensions/styles/helpers';
@@ -100,33 +100,25 @@ const getStyles = props => {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			':hover': getHoverObject(props),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
+					'blockBackground',
 					'border',
 					'borderWidth',
 					'borderRadius',
+					'parallax',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(
 					props,
 					[
-						'background',
-						'backgroundColor',
-						'backgroundImage',
-						'backgroundVideo',
-						'backgroundGradient',
-						'backgroundSVG',
+						'blockBackground',
 						'border',
 						'borderWidth',
 						'borderRadius',
+						'parallax',
 					],
 					true
 				),
@@ -139,9 +131,7 @@ const getStyles = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
-					'background',
-					'backgroundColor',
-					'backgroundGradient',
+					'blockBackground',
 					'boxShadow',
 				]),
 				blockStyle: props.parentBlockStyle,
@@ -150,12 +140,11 @@ const getStyles = props => {
 				...getGroupAttributes(
 					props,
 					[
+						'arrow',
 						'border',
 						'borderWidth',
 						'borderRadius',
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
+						'blockBackground',
 						'boxShadow',
 					],
 					true

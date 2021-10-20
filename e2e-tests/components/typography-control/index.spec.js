@@ -20,9 +20,12 @@ import {
 } from '../../utils';
 
 describe('TypographyControl', () => {
-	it('Checking the font family', async () => {
+	beforeAll(async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
+	});
+
+	it('Checking the font family', async () => {
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		const accordionPanel = await openSidebar(page, 'typography');
 
@@ -221,12 +224,14 @@ describe('TypographyControl', () => {
 
 		// xs
 		await changeResponsive(page, 'xs');
+
 		const paletteColorXsStatus = await accordionPanel.$$eval(
 			'.maxi-tabs-content .maxi-sc-color-palette__custom .maxi-radio-control__option input',
 			select => select[0].checked
 		);
+		await page.waitForTimeout(200);
 
-		expect(paletteColorXsStatus).toStrictEqual(false);
+		expect(paletteColorXsStatus).toStrictEqual(true);
 
 		// m
 		await changeResponsive(page, 'm');

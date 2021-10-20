@@ -12,7 +12,6 @@ import {
 	AccordionControl,
 	AlignmentControl,
 	AxisControl,
-	BackgroundControl,
 	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
@@ -40,6 +39,7 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
+import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
  * External dependencies
@@ -324,7 +324,7 @@ const Inspector = memo(
 																			attributes,
 																			[
 																				'icon',
-																				'iconGradient',
+																				'iconBackgroundGradient',
 																				'iconBackgroundColor',
 																				'iconBorder',
 																				'iconBorderWidth',
@@ -337,7 +337,7 @@ const Inspector = memo(
 																				obj
 																			);
 																		}}
-																		deviceType={
+																		breakpoint={
 																			deviceType
 																		}
 																		clientId={
@@ -360,7 +360,7 @@ const Inspector = memo(
 																			attributes,
 																			[
 																				'iconHover',
-																				'iconGradientHover',
+																				'iconBackgroundGradientHover',
 																				'iconBackgroundColorHover',
 																				'iconBorderHover',
 																				'iconBorderWidthHover',
@@ -372,7 +372,7 @@ const Inspector = memo(
 																				obj
 																			);
 																		}}
-																		deviceType={
+																		breakpoint={
 																			deviceType
 																		}
 																		clientId={
@@ -541,136 +541,9 @@ const Inspector = memo(
 													/>
 												),
 											},
-											deviceType === 'general' && {
-												label: __(
-													'Background',
-													'maxi-blocks'
-												),
-												disablePadding: true,
-												content: (
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Normal',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<BackgroundControl
-																			{...getGroupAttributes(
-																				attributes,
-																				[
-																					'background',
-																					'backgroundColor',
-																					'backgroundGradient',
-																				]
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			disableImage
-																			disableVideo
-																			disableClipPath
-																			disableSVG
-																			disableLayers
-																			clientId={
-																				clientId
-																			}
-																			isButton
-																		/>
-																	</>
-																),
-															},
-															{
-																label: __(
-																	'Hover',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<ToggleSwitch
-																			label={__(
-																				'Enable Background Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				attributes[
-																					'background-status-hover'
-																				]
-																			}
-																			className='maxi-background-status-hover'
-																			onChange={val =>
-																				setAttributes(
-																					{
-																						...(val &&
-																							setHoverAttributes(
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										]
-																									),
-																								},
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										],
-																										true
-																									),
-																								}
-																							)),
-																						'background-status-hover':
-																							val,
-																					}
-																				)
-																			}
-																		/>
-																		{attributes[
-																			'background-status-hover'
-																		] && (
-																			<BackgroundControl
-																				{...getGroupAttributes(
-																					attributes,
-																					[
-																						'backgroundHover',
-																						'backgroundColorHover',
-																						'backgroundGradientHover',
-																					]
-																				)}
-																				onChange={obj =>
-																					setAttributes(
-																						obj
-																					)
-																				}
-																				disableImage
-																				disableVideo
-																				disableClipPath
-																				disableSVG
-																				disableLayers
-																				isHover
-																				clientId={
-																					clientId
-																				}
-																				isButton
-																			/>
-																		)}
-																	</>
-																),
-															},
-														]}
-													/>
-												),
-											},
+											...inspectorTabs.background({
+												props,
+											}),
 											{
 												label: __(
 													'Border',

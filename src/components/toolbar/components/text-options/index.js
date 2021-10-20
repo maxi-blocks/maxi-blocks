@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch, dispatch } from '@wordpress/data';
+import { useSelect, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -15,7 +15,6 @@ import TextFormatOverline from '../text-format-overline';
 import TextFormatSubscript from '../text-format-subscript';
 import TextFormatSuperscript from '../text-format-superscript';
 import TextFormatCode from '../text-format-code';
-import SettingTabsControl from '../../../setting-tabs-control';
 import AdvancedNumberControl from '../../../advanced-number-control';
 import {
 	setFormat,
@@ -29,21 +28,15 @@ import {
 } from '../../../../extensions/styles';
 
 /**
- * External dependencies
- */
-import { isEmpty, inRange } from 'lodash';
-
-/**
  * Styles and icons
  */
 import './editor.scss';
 import { toolbarType } from '../../../../icons';
+import { ResponsiveTabsControl } from '../../..';
 
 /**
  * Component
  */
-const breakpoints = ['XXL', 'XL', 'L', 'M', 'S', 'XS'];
-
 const TextOptions = props => {
 	const {
 		getValue,
@@ -225,27 +218,17 @@ const TypographyControl = withFormatValue(props => {
 
 	const typography = { ...getGroupAttributes(props, 'typography') };
 
-	const { styleCard, winWidth, maxiBreakpoints } = useSelect(select => {
+	const { styleCard } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = wp.data.select(
 			'maxiBlocks/style-cards'
 		);
-		const { receiveMaxiSettings, receiveMaxiBreakpoints } =
-			wp.data.select('maxiBlocks');
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-		const winWidth = receiveMaxiSettings().window?.width || null;
-
-		const maxiBreakpoints = receiveMaxiBreakpoints();
-
 		return {
 			styleCard,
-			winWidth,
-			maxiBreakpoints,
 		};
 	});
-
-	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
 
 	const getValue = (prop, customBreakpoint, avoidXXL) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
@@ -312,24 +295,6 @@ const TypographyControl = withFormatValue(props => {
 		onChange(obj);
 	};
 
-	const getWinBreakpoint = () => {
-		if (!maxiBreakpoints || isEmpty(maxiBreakpoints)) return null;
-
-		if (winWidth > maxiBreakpoints.xl) return 'xxl';
-
-		const response = Object.entries(maxiBreakpoints).reduce(
-			([prevKey, prevValue], [currKey, currValue]) => {
-				if (!prevValue) return [prevKey];
-				if (inRange(winWidth, prevValue, currValue + 1))
-					return [currKey];
-
-				return [prevKey, prevValue];
-			}
-		)[0];
-
-		return response.toLowerCase();
-	};
-
 	const getDefault = (prop, customBreakpoint) => {
 		const currentBreakpoint = customBreakpoint || breakpoint;
 		const defaultAttribute = getDefaultAttribute(
@@ -338,24 +303,6 @@ const TypographyControl = withFormatValue(props => {
 		);
 
 		return defaultAttribute;
-	};
-
-	const showNotification = customBreakpoint => {
-		if (breakpoint !== 'general')
-			return breakpoint === customBreakpoint.toLowerCase();
-
-		return getWinBreakpoint() === customBreakpoint.toLowerCase();
-	};
-
-	const getTextOptionsTab = () => {
-		if (breakpoint !== 'general')
-			return breakpoints.indexOf(breakpoint.toUpperCase());
-
-		const userBreakpoint = getWinBreakpoint();
-
-		if (!userBreakpoint) return null;
-
-		return breakpoints.indexOf(userBreakpoint.toUpperCase());
 	};
 
 	const minMaxSettings = {
@@ -420,36 +367,22 @@ const TypographyControl = withFormatValue(props => {
 					/>
 				</div>
 				<>
-					<SettingTabsControl
+					<ResponsiveTabsControl
 						className='toolbar-item__typography-control__typography-tabs'
-						items={breakpoints.map(breakpoint => {
-							return {
-								label: breakpoint,
-								content: (
-									<TextOptions
-										getValue={getValue}
-										getDefault={getDefault}
-										onChangeFormat={onChangeFormat}
-										prefix={prefix}
-										minMaxSettings={minMaxSettings}
-										minMaxSettingsLetterSpacing={
-											minMaxSettingsLetterSpacing
-										}
-										breakpoint={breakpoint.toLowerCase()}
-										avoidXXL={!styleCards}
-									/>
-								),
-								showNotification: showNotification(breakpoint),
-								callback: () =>
-									styleCards
-										? setMaxiDeviceType(
-												breakpoint.toLowerCase()
-										  )
-										: null,
-							};
-						})}
-						forceTab={getTextOptionsTab()}
-					/>
+						breakpoint={breakpoint}
+					>
+						<TextOptions
+							getValue={getValue}
+							getDefault={getDefault}
+							onChangeFormat={onChangeFormat}
+							prefix={prefix}
+							minMaxSettings={minMaxSettings}
+							minMaxSettingsLetterSpacing={
+								minMaxSettingsLetterSpacing
+							}
+							avoidXXL={!styleCards}
+						/>
+					</ResponsiveTabsControl>
 					<div className='toolbar-item__typography-control__extra-text-options'>
 						<TextFormatOverline
 							{...getGroupAttributes(props, 'typography')}

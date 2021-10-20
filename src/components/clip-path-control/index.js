@@ -241,7 +241,7 @@ const ClipPathControl = props => {
 	useEffect(() => {
 		if (JSON.stringify(clipPathOptions) !== JSON.stringify(deconstructCP()))
 			changeClipPathOptions(deconstructCP());
-	}, [clipPathOptions, deconstructCP]);
+	}, [clipPath, clipPathOptions]);
 
 	const generateCP = clipPath => {
 		const { type, content } = clipPath;
@@ -272,6 +272,8 @@ const ClipPathControl = props => {
 		const newCP = `${type}(${newContent})`;
 
 		onChange(newCP);
+
+		changeClipPathOptions(clipPath);
 	};
 
 	const onChangeType = newType => {

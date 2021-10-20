@@ -7,20 +7,14 @@ import { InspectorControls } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import {
-	AccordionControl,
-	ArrowControl,
-	SettingTabsControl,
-} from '../../components';
-import { getGroupAttributes } from '../../extensions/styles';
+import { AccordionControl, SettingTabsControl } from '../../components';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, setAttributes } = props;
-	const { blockFullWidth } = attributes;
+	const { deviceType } = props;
 
 	return (
 		<InspectorControls>
@@ -39,29 +33,9 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
-										{
-											label: __(
-												'Callout arrow',
-												'maxi-blocks'
-											),
-											content: (
-												<ArrowControl
-													{...getGroupAttributes(
-														attributes,
-														[
-															'blockBackground',
-															'arrow',
-															'border',
-														]
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													isFullWidth={blockFullWidth}
-													breakpoint={deviceType}
-												/>
-											),
-										},
+										...inspectorTabs.callout({
+											props,
+										}),
 										...inspectorTabs.background({
 											props,
 											enableParallax: true,

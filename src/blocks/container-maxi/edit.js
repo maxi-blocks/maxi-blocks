@@ -73,13 +73,12 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const {
 			attributes,
-			blockFullWidth,
 			clientId,
 			deviceType,
 			hasInnerBlocks,
 			setAttributes,
 		} = this.props;
-		const { uniqueID, isFirstOnHierarchy, fullWidth } = attributes;
+		const { uniqueID, isFirstOnHierarchy, blockFullWidth } = attributes;
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -101,7 +100,7 @@ class edit extends MaxiBlockComponent {
 						location='top'
 					/>
 				)}
-				{isFirstOnHierarchy && fullWidth && (
+				{isFirstOnHierarchy && blockFullWidth === 'full' && (
 					<>
 						<ArrowDisplayer
 							{...getGroupAttributes(

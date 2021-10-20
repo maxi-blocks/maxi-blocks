@@ -9,7 +9,6 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import {
 	AccordionControl,
-	ArrowControl,
 	SettingTabsControl,
 	ShapeDividerControl,
 } from '../../components';
@@ -21,7 +20,6 @@ import * as inspectorTabs from '../../components/inspector-tabs';
  */
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes } = props;
-	const { blockFullWidth } = attributes;
 
 	return (
 		<InspectorControls>
@@ -40,29 +38,9 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
-										{
-											label: __(
-												'Callout arrow',
-												'maxi-blocks'
-											),
-											content: (
-												<ArrowControl
-													{...getGroupAttributes(
-														attributes,
-														[
-															'blockBackground',
-															'arrow',
-															'border',
-														]
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-													isFullWidth={blockFullWidth}
-													breakpoint={deviceType}
-												/>
-											),
-										},
+										...inspectorTabs.callout({
+											props,
+										}),
 										{
 											label: __(
 												'Shape divider',

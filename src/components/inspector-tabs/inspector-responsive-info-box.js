@@ -11,7 +11,7 @@ import InfoBox from '../info-box';
 /**
  * Component
  */
-const infoBox = ({ props }) => {
+const responsiveInfoBox = ({ props }) => {
 	const { deviceType } = props;
 
 	return (
@@ -26,4 +26,4 @@ const infoBox = ({ props }) => {
 	);
 };
 
-export default infoBox;
+export default responsiveInfoBox;

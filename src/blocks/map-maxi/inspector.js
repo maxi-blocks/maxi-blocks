@@ -23,7 +23,7 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			{inspectorTabs.infoBox({ props })}
+			{inspectorTabs.responsiveInfoBox({ props })}
 			<SettingTabsControl
 				disablePadding
 				deviceType={deviceType}

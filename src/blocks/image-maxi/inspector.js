@@ -147,7 +147,7 @@ const Inspector = memo(
 
 		return (
 			<InspectorControls>
-				{inspectorTabs.infoBox({ props })}
+				{inspectorTabs.responsiveInfoBox({ props })}
 				<SettingTabsControl
 					disablePadding
 					deviceType={deviceType}

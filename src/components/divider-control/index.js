@@ -138,7 +138,7 @@ const DividerControl = props => {
 							'divider-palette-border-color': paletteColor,
 							'divider-palette-border-color-status':
 								paletteStatus,
-							['divider-palette-border-opacity']: paletteOpacity,
+							'divider-palette-border-opacity': paletteOpacity,
 						})
 					}
 					disableGradient

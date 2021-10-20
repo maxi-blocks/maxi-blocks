@@ -18,7 +18,7 @@ const Inspector = props => {
 
 	return (
 		<InspectorControls>
-			{inspectorTabs.infoBox({ props })}
+			{inspectorTabs.responsiveInfoBox({ props })}
 			<SettingTabsControl
 				disablePadding
 				deviceType={deviceType}
@@ -33,7 +33,7 @@ const Inspector = props => {
 								<AccordionControl
 									isPrimary
 									items={[
-										...inspectorTabs.callout({
+										...inspectorTabs.calloutArrow({
 											props,
 										}),
 										...inspectorTabs.background({

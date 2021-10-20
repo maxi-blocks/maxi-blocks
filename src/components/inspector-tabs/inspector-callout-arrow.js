@@ -12,7 +12,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const callout = ({ props }) => {
+const calloutArrow = ({ props }) => {
 	const { attributes, deviceType, setAttributes } = props;
 	const { blockFullWidth } = attributes;
 
@@ -33,4 +33,4 @@ const callout = ({ props }) => {
 	};
 };
 
-export default callout;
+export default calloutArrow;

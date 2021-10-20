@@ -1,12 +1,12 @@
 import openSidebar from './openSidebar';
 
 const addBackgroundLayer = async (page, type, isHover = false) => {
-	debugger;
-	/* const accordion = await openSidebar(page, 'background');
+	const accordion = await openSidebar(page, 'background');
 	await accordion.$$eval(
 		'.maxi-tabs-control--disable-padding button',
-		button => button[+isHover].click()
-	); */
+		(button, _isHover) => button[+_isHover].click(),
+		isHover
+	);
 
 	await page.$eval(
 		'.maxi-background-control .maxi-loader-control__dropdown-selector-title',

@@ -98,7 +98,6 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background image layer', async () => {
-		debugger;
 		await addBackgroundLayer(page, 'image');
 
 		// opacity

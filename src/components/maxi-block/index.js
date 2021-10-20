@@ -36,6 +36,12 @@ const WRAPPER_BLOCKS = [
 
 const INNER_BLOCKS = ['maxi-blocks/group-maxi', 'maxi-blocks/column-maxi'];
 
+const getBlockClassName = blockName => {
+	return `maxi-${blockName
+		.replace('maxi-blocks/', '')
+		.replace('-maxi', '')}-block`;
+};
+
 const MainBlock = forwardRef(
 	(
 		{
@@ -149,6 +155,7 @@ const MaxiBlock = forwardRef((props, ref) => {
 	const classes = classnames(
 		'maxi-block',
 		!isSave && 'maxi-block--backend',
+		blockName && getBlockClassName(blockName),
 		((motion['hover-type'] && motion['hover-type'] !== 'none') ||
 			motion['shape-divider-top-status'] ||
 			motion['shape-divider-bottom-status'] ||

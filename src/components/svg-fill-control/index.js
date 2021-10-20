@@ -62,15 +62,11 @@ const ColorContent = ({
 				color;
 
 			onChange({
-				SVGElement: injectImgSVG(
-					getLastBreakpointAttribute(
-						'background-svg-SVGElement',
-						breakpoint,
-						SVGOptions
-					),
+				'background-svg-SVGElement': injectImgSVG(
+					SVGOptions['background-svg-SVGElement'],
 					SVGData
 				).outerHTML,
-				SVGData,
+				'background-svg-SVGData': SVGData,
 				[getAttributeKey(
 					'background-palette-svg-color-status',
 					isHover,

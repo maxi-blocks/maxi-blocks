@@ -12,13 +12,11 @@ import { memo } from '@wordpress/element';
 import {
 	AccordionControl,
 	ClipPath,
-	FullSizeControl,
 	HoverEffectControl,
 	ImageCropControl,
 	ImageShape,
 	SelectControl,
 	SettingTabsControl,
-	ToggleSwitch,
 	TypographyControl,
 } from '../../components';
 import {
@@ -51,10 +49,8 @@ const Inspector = memo(
 			captionType,
 			clipPath,
 			cropOptions,
-			fullWidth,
 			imageRatio,
 			imageSize,
-			isFirstOnHierarchy,
 			isImageUrl,
 			mediaAlt,
 			mediaID,
@@ -542,61 +538,12 @@ const Inspector = memo(
 												props,
 												prefix: 'image-',
 											}),
-											{
-												label: __(
-													'Height / Width',
-													'maxi-blocks'
-												),
-												content: (
-													<>
-														{isFirstOnHierarchy && (
-															<ToggleSwitch
-																label={__(
-																	'Set image to full-width',
-																	'maxi-blocks'
-																)}
-																selected={
-																	fullWidth ===
-																	'full'
-																}
-																onChange={val =>
-																	setAttributes(
-																		{
-																			imageRatio:
-																				'original',
-																			imageSize:
-																				'full',
-																			imgWidth: 100,
-																			fullWidth:
-																				val
-																					? 'full'
-																					: 'normal',
-																		}
-																	)
-																}
-															/>
-														)}
-														<FullSizeControl
-															{...getGroupAttributes(
-																attributes,
-																'size',
-																false,
-																'image-'
-															)}
-															prefix='image-'
-															onChange={obj =>
-																setAttributes(
-																	obj
-																)
-															}
-															breakpoint={
-																deviceType
-															}
-															hideWith
-														/>
-													</>
-												),
-											},
+											...inspectorTabs.size({
+												props,
+												prefix: 'image-',
+												isImage: true,
+												hideWith: true,
+											}),
 											...inspectorTabs.marginPadding({
 												props,
 												prefix: 'image-',

@@ -13,7 +13,14 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const zindex = ({ props, prefix = '', block = false }) => {
+const zindex = ({
+	props,
+	prefix = '',
+	block = false,
+	hideWith = false,
+	hideMaxWidth = false,
+	isImage = false,
+}) => {
 	const { attributes, deviceType, setAttributes } = props;
 	const { fullWidth, blockFullWidth, isFirstOnHierarchy } = attributes;
 
@@ -37,9 +44,16 @@ const zindex = ({ props, prefix = '', block = false }) => {
 							label={__('Set full-width', 'maxi-blocks')}
 							selected={fullWidth === 'full'}
 							onChange={val =>
-								setAttributes({
-									fullWidth: val ? 'full' : 'normal',
-								})
+								isImage
+									? setAttributes({
+											imageRatio: 'original',
+											imageSize: 'full',
+											imgWidth: 100,
+											fullWidth: val ? 'full' : 'normal',
+									  })
+									: setAttributes({
+											fullWidth: val ? 'full' : 'normal',
+									  })
 							}
 						/>
 					))}
@@ -48,6 +62,8 @@ const zindex = ({ props, prefix = '', block = false }) => {
 					prefix={prefix}
 					onChange={obj => setAttributes(obj)}
 					breakpoint={deviceType}
+					hideWith={hideWith}
+					hideMaxWidth={hideMaxWidth}
 				/>
 			</>
 		),

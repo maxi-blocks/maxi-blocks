@@ -202,48 +202,41 @@ const MotionControl = props => {
 						{props[`motion-active-${breakpoint}`] === type &&
 							props[`motion-status-${type}-${breakpoint}`] && (
 								<>
+									<SelectControl
+										label={__('Easing', 'maxi-blocks')}
+										value={getLastBreakpointAttribute(
+											`motion-easing-${type}`,
+											breakpoint,
+											props
+										)}
+										onChange={val =>
+											onChange({
+												[`motion-easing-${type}-${breakpoint}`]:
+													val,
+											})
+										}
+										options={easingOptions}
+									/>
 									{(type === 'vertical' ||
 										type === 'horizontal') && (
-										<>
-											<SelectControl
-												label={__(
-													'Easing',
-													'maxi-blocks'
-												)}
-												value={getLastBreakpointAttribute(
-													`motion-easing-${type}`,
-													breakpoint,
-													props
-												)}
-												onChange={val =>
-													onChange({
-														[`motion-easing-${type}-${breakpoint}`]:
-															val,
-													})
-												}
-												options={easingOptions}
-											/>
-											<SelectControl
-												label={__(
-													'Direction',
-													'maxi-blocks'
-												)}
-												value={getLastBreakpointAttribute(
-													`motion-direction-${type}`,
-													breakpoint,
-													props
-												)}
-												options={getDirectionOptions(
-													type
-												)}
-												onChange={val =>
-													onChange({
-														[`motion-direction-${type}-${breakpoint}`]:
-															val,
-													})
-												}
-											/>
-										</>
+										<SelectControl
+											label={__(
+												'Direction',
+												'maxi-blocks'
+											)}
+											value={getLastBreakpointAttribute(
+												`motion-direction-${type}`,
+												breakpoint,
+												props
+											)}
+											options={getDirectionOptions(type)}
+											onChange={val =>
+												onChange({
+													[`motion-direction-${type}-${breakpoint}`]:
+														val,
+												})
+											}
+										/>
 									)}
 									<AdvancedNumberControl
 										label={__('Speed', 'maxi-blocks')}
@@ -263,7 +256,7 @@ const MotionControl = props => {
 										}}
 										min={0}
 										step={0.1}
-										max={10}
+										max={20}
 										onReset={() =>
 											onChange({
 												[`motion-speed-${type}-${breakpoint}`]:
@@ -275,6 +268,40 @@ const MotionControl = props => {
 										initialPosition={getDefaultAttribute(
 											`motion-speed-${type}-general`
 										)}
+									/>
+									<RangeSliderControl
+										label={__('Viewport', 'maxi-blocks')}
+										type='viewport'
+										step={1}
+										min={0}
+										max={100}
+										values={[
+											getLastBreakpointAttribute(
+												`motion-viewport-bottom-${type}`,
+												breakpoint,
+												props
+											),
+											getLastBreakpointAttribute(
+												`motion-viewport-middle-${type}`,
+												breakpoint,
+												props
+											),
+											getLastBreakpointAttribute(
+												`motion-viewport-top-${type}`,
+												breakpoint,
+												props
+											),
+										]}
+										onChange={values =>
+											onChange({
+												[`motion-viewport-bottom-${type}-${breakpoint}`]:
+													values[0],
+												[`motion-viewport-middle-${type}-${breakpoint}`]:
+													values[1],
+												[`motion-viewport-top-${type}-${breakpoint}`]:
+													values[2],
+											})
+										}
 									/>
 									{(type === 'vertical' ||
 										type === 'horizontal') && (
@@ -349,40 +376,6 @@ const MotionControl = props => {
 											}
 										/>
 									)}
-									<RangeSliderControl
-										label={__('Viewport', 'maxi-blocks')}
-										type='viewport'
-										step={0.1}
-										min={0}
-										max={100}
-										values={[
-											getLastBreakpointAttribute(
-												`motion-viewport-bottom-${type}`,
-												breakpoint,
-												props
-											),
-											getLastBreakpointAttribute(
-												`motion-viewport-middle-${type}`,
-												breakpoint,
-												props
-											),
-											getLastBreakpointAttribute(
-												`motion-viewport-top-${type}`,
-												breakpoint,
-												props
-											),
-										]}
-										onChange={values =>
-											onChange({
-												[`motion-viewport-bottom-${type}-${breakpoint}`]:
-													values[0],
-												[`motion-viewport-middle-${type}-${breakpoint}`]:
-													values[1],
-												[`motion-viewport-top-${type}-${breakpoint}`]:
-													values[2],
-											})
-										}
-									/>
 								</>
 							)}
 					</div>

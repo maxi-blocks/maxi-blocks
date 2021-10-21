@@ -409,6 +409,13 @@ const elements = Array.from(
 	document.getElementsByClassName('maxi-block-motion')
 );
 
+// function for Element Transform
+function setTransform(el, transform) {
+	el.style.transform = transform;
+	el.style.WebkitTransform = transform;
+}
+// End function for Element Transform
+
 elements.forEach(function (element, index) {
 	const motionType = element.getAttribute('data-motion-type');
 	// motion data format date-motion-${type}=
@@ -423,15 +430,13 @@ elements.forEach(function (element, index) {
 		const dataMotionVerticalArray = dataMotionVertical.trim().split(' ');
 
 		console.log(dataMotionVerticalArray);
-		const viewportTopPercent = parseFloat(dataMotionVerticalArray[8]);
-		const viewportMidPercent = parseFloat(dataMotionVerticalArray[7]);
-		const viewportBottomPercent = parseFloat(dataMotionVerticalArray[6]);
+		const viewportTopPercent = parseInt(dataMotionVerticalArray[8]);
+		const viewportMidPercent = parseInt(dataMotionVerticalArray[7]);
+		const viewportBottomPercent = parseInt(dataMotionVerticalArray[6]);
 
 		element.parentNode
 			.closest('.maxi-container-block')
 			.classList.add(className);
-
-		console.log(viewportBottomPercent + viewportTopPercent);
 
 		const parentHeight =
 			element.parentNode.closest('.maxi-container-block').offsetHeight -
@@ -446,7 +451,7 @@ elements.forEach(function (element, index) {
 
 		element.setAttribute('transform-size', transformSize);
 
-		const speedValue = parseFloat(dataMotionVerticalArray[0]);
+		const speedValue = parseInt(dataMotionVerticalArray[0]);
 		const easingValue = dataMotionVerticalArray[2];
 
 		if (speedValue) {
@@ -457,23 +462,25 @@ elements.forEach(function (element, index) {
 
 		if (direction === 'up') {
 			element.style.transform = 'translate(0px, 0px)';
-			element.classList.remove('scroll_down');
-			element.classList.add('scroll_up');
+			element.classList.remove('motion-direction-scroll-down');
+			element.classList.add('motion-direction-scroll-up');
 		} else if (direction === 'down') {
 			element.style.transform = 'translate(0px, 0px)';
-			element.classList.remove('scroll_up');
-			element.classList.add('scroll_down');
+			element.classList.remove('motion-direction-scroll-up');
+			element.classList.add('motion-direction-scroll-down');
 		}
 
 		transform = Math.abs(parseInt(style.getPropertyValue('top'), 10)) * 2;
 
-		const offsetTop = parseFloat(dataMotionVerticalArray[5]);
-		const offsetBottom = parseFloat(dataMotionVerticalArray[4]);
+		const offsetTop = parseInt(dataMotionVerticalArray[5]);
+		const offsetBottom = parseInt(dataMotionVerticalArray[4]);
 
 		if (offsetTop) {
-			if (element.classList.contains('scroll_up')) {
+			if (element.classList.contains('motion-direction-scroll-up')) {
 				element.style.top = `${offsetTop * 100}px`;
-			} else if (element.classList.contains('scroll_down')) {
+			} else if (
+				element.classList.contains('motion-direction-scroll-down')
+			) {
 				element.style.top = `-${offsetTop * 100}px`;
 			}
 
@@ -491,13 +498,6 @@ elements.forEach(function (element, index) {
 		element.setAttribute('transform-size', transformSize);
 	}
 });
-
-// function for Element Transform
-function setTransform(el, transform) {
-	el.style.transform = transform;
-	el.style.WebkitTransform = transform;
-}
-// End function for Element Transform
 
 let currentTransformSize = 0;
 let elementScrollSize = 0;
@@ -520,14 +520,12 @@ window.addEventListener('scroll', () => {
 				.trim()
 				.split(' ');
 
-			const viewportTopPercent = parseFloat(dataMotionVerticalArray[8]);
-			const viewportMidPercent = parseFloat(dataMotionVerticalArray[7]);
-			const viewportBottomPercent = parseFloat(
-				dataMotionVerticalArray[6]
-			);
-			const offsetTop = parseFloat(dataMotionVerticalArray[5]);
-			const offsetMid = parseFloat(dataMotionVerticalArray[4]);
-			const offsetBottom = parseFloat(dataMotionVerticalArray[3]);
+			const viewportTopPercent = parseInt(dataMotionVerticalArray[8]);
+			const viewportMidPercent = parseInt(dataMotionVerticalArray[7]);
+			const viewportBottomPercent = parseInt(dataMotionVerticalArray[6]);
+			const offsetTop = parseInt(dataMotionVerticalArray[5]);
+			const offsetMid = parseInt(dataMotionVerticalArray[4]);
+			const offsetBottom = parseInt(dataMotionVerticalArray[3]);
 
 			const topPos = element.parentNode.closest(
 				'.maxi-container-block'
@@ -683,7 +681,7 @@ window.addEventListener('scroll', () => {
 						}
 
 						elementScrollSize =
-							parseFloat(currentTransformSize) +
+							parseInt(currentTransformSize) +
 							(elementViewSize -
 								(parentHeight +
 									(viewportBottomPercent +
@@ -692,12 +690,15 @@ window.addEventListener('scroll', () => {
 					}
 				}
 
-				if (element.classList.contains('scroll_up')) {
+				if (element.classList.contains('motion-direction-scroll-up')) {
+					console.log(`BUG: translateY( -${elementScrollSize}px)`);
 					setTransform(
 						element,
 						`translateY( -${elementScrollSize}px)`
 					);
-				} else if (element.classList.contains('scroll_down')) {
+				} else if (
+					element.classList.contains('motion-direction-scroll-down')
+				) {
 					setTransform(element, `translateY(${elementScrollSize}px)`);
 				} else {
 					setTransform(

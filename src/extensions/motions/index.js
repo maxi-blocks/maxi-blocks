@@ -1,4 +1,4 @@
-import { isEmpty, isNil } from 'lodash';
+import { isEmpty } from 'lodash';
 
 const motionData = props => {
 	const response = {};
@@ -49,20 +49,25 @@ const motionData = props => {
 				motionSettings.map(setting => {
 					const motionSettingValue =
 						attributes[`motion-${setting}-${type}-general`];
+					// console.log(setting);
+					// console.log(motionSettingValue);
 					// console.log(
 					// 	`motion-${setting}-${type}-general: ${
 					// 		attributes[`motion-${setting}-${type}-general`]
 					// 	}`
 					// );
-					if (attributes[`motion-${setting}-${type}-general`]) {
-						response[
-							`data-motion-${type}-general`
-						] += `${motionSettingValue} `;
-					} else response[`data-motion-${type}-general`] += '0 ';
+					// if (!isEmpty(motionSettingValue)) {
+					response[
+						`data-motion-${type}-general`
+					] += `${motionSettingValue} `;
+					// } else response[`data-motion-${type}-general`] += '0 ';
+
+					// console.log('final response');
+					// console.log(response);
 
 					return null;
 				});
-				if (response[`data-motion-${type}-general`])
+				if (!isEmpty(response[`data-motion-${type}-general`]))
 					response[`data-motion-${type}-general`].trim();
 			}
 

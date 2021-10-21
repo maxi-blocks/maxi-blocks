@@ -70,7 +70,7 @@ export const motion = (() => {
 
 		if (type === 'vertical' || type === 'horizontal') {
 			generateAttr(type, 'direction', 'string', 'up');
-			generateUniqueAttributes(type, 'offset', [-8, 0, 8]);
+			generateUniqueAttributes(type, 'offset', [-4, 0, 4]);
 		}
 
 		if (type === 'rotate') {
@@ -177,9 +177,6 @@ export const motion = (() => {
 			}
 		});
 	});
-
-	console.log('response:');
-	console.log(response);
 
 	return response;
 })();

@@ -153,10 +153,16 @@ const MotionControl = props => {
 			{motionTypes.map(type => {
 				{
 					/* console.log(`type ${type}`);
-				console.log(props['motion-active']);
-				console.log(props['motion-active'] === type);
+				console.log(
+					getLastBreakpointAttribute(
+						`motion-offset-start-${type}`,
+						breakpoint,
+						props
+					)
+				);
 				console.log('================================='); */
 				}
+
 				const typeCapitalize =
 					type.charAt(0).toUpperCase() + type.slice(1);
 

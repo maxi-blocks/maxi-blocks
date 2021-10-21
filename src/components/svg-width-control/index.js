@@ -34,7 +34,7 @@ const SvgWidthControl = props => {
 		<>
 			<AdvancedNumberControl
 				label={__('Width', 'maxi-blocks')}
-				value={width}
+				value={width || defaultWidth}
 				placeholder={
 					breakpoint !== 'general'
 						? getLastBreakpointAttribute(
@@ -75,6 +75,7 @@ const SvgWidthControl = props => {
 						}`]: defaultWidthUnit,
 					})
 				}
+				defaultValue={defaultWidth}
 				initialPosition={defaultWidth}
 				isHover={isHover}
 			/>

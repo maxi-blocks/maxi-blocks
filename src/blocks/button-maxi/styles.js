@@ -419,24 +419,15 @@ const getIconHoverObject = (props, target) => {
 				props['icon-inherit'],
 				true
 			),
-		background: iconHoverStatus &&
-			target === 'iconHover' && {
-				...getColorBackgroundObject({
-					...getGroupAttributes(
-						props,
-						[
-							'iconBackgroundColor',
-							'background',
-							'backgroundColor',
-						],
-						true
-					),
-					prefix: 'icon-',
-					blockStyle: props.parentBlockStyle,
-					isIconInherit: props['icon-inherit'],
-					isHover: true,
-				}),
-			},
+		background: {
+			...getColorBackgroundObject({
+				...getGroupAttributes(props, ['iconBackgroundColor'], true),
+				prefix: 'icon-',
+				blockStyle: props.parentBlockStyle,
+				isIconInherit: props['icon-inherit'],
+				isHover: true,
+			}),
+		},
 		gradient: iconHoverStatus &&
 			target === 'iconHover' && {
 				...getGradientBackgroundObject({

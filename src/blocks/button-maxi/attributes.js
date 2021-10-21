@@ -34,7 +34,17 @@ const attributes = {
 	...attributesData.icon,
 	...attributesData.iconHover,
 	...attributesData.iconPadding,
-	...attributesData.iconBackgroundColor,
+	...{
+		...attributesData.iconBackgroundColor,
+		['icon-background-palette-color-status-general']: {
+			type: 'boolean',
+			default: true,
+		},
+		['icon-background-palette-color-general']: {
+			type: 'number',
+			default: 4,
+		},
+	},
 	...attributesData.iconBackgroundColorHover,
 	...attributesData.iconBackgroundGradient,
 	...attributesData.iconBackgroundGradientHover,

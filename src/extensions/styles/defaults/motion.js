@@ -48,28 +48,28 @@ export const motion = (() => {
 		const speedKey = `motion-speed-${type}-general`;
 		const speedValue = {
 			type: 'number',
-			default: 2,
+			default: 5,
 		};
 		response[speedKey] = speedValue;
 
 		const offsetStartKey = `motion-offset-start-${type}-general`;
 		const offsetStartValue = {
 			type: 'number',
-			default: 0,
+			default: -8,
 		};
 		response[offsetStartKey] = offsetStartValue;
 
 		const offsetMiddleKey = `motion-offset-middle-${type}-general`;
 		const offsetMiddleValue = {
 			type: 'number',
-			default: 50,
+			default: 0,
 		};
 		response[offsetMiddleKey] = offsetMiddleValue;
 
 		const offsetEndKey = `motion-offset-end-${type}-general`;
 		const offsetEndValue = {
 			type: 'number',
-			default: 100,
+			default: 8,
 		};
 		response[offsetEndKey] = offsetEndValue;
 

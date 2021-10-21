@@ -1,4 +1,10 @@
 .maxi-motion-control {
+	.maxi-motion-unique-control {
+		display: flex;
+		.maxi-base-control__field {
+			flex-direction: column-reverse;
+		}
+	}
 	&__timeline-item-settings {
 		&__setting {
 			height: 40px;

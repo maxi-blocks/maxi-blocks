@@ -8,20 +8,13 @@ import { __ } from '@wordpress/i18n';
  */
 import FancyRadioControl from '../fancy-radio-control';
 import Icon from '../icon';
-// import AddTimeline from './addTimeline';
-// import ShowTimeline from './showTimeline';
-// import TimelineSettings from './timelineSettings';
-// import TimelinePresets from './timelinePresets';
-// import { getGroupAttributes } from '../../extensions/styles';
+import MotionUniqueControl from './motion-unique-control';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import SelectControl from '../select-control';
-
-// import { useState } from '@wordpress/element';
-// import SelectControl from '../select-control';
 import AdvancedNumberControl from '../advanced-number-control';
 import RangeSliderControl from '../range-slider-control';
 
@@ -305,12 +298,10 @@ const MotionControl = props => {
 									/>
 									{(type === 'vertical' ||
 										type === 'horizontal') && (
-										<RangeSliderControl
+										<MotionUniqueControl
 											label={__('Offset', 'maxi-blocks')}
 											type='offset'
-											step={0.1}
-											min={0}
-											max={100}
+											step={1}
 											values={[
 												getLastBreakpointAttribute(
 													`motion-offset-start-${type}`,

@@ -94,40 +94,23 @@ const RangeSliderControl = props => {
 						{children}
 					</div>
 				)}
-				renderThumb={({ props }) => (
-					<div
-						{...props}
-						style={{
-							...props.style,
-							height: '16px',
-							width: '16px',
-							borderRadius: '50%',
-							background: '#fff',
-							border: '1px solid rgb(126, 137, 147)',
-						}}
-					/>
+				renderThumb={({ index, props }) => (
+					<div {...props} style={{ ...props.style, top: '-17px' }}>
+						<span>{values[index]}%</span>
+						<div
+							{...props}
+							style={{
+								...props.style,
+								height: '16px',
+								width: '16px',
+								borderRadius: '50%',
+								background: '#fff',
+								border: '1px solid rgb(126, 137, 147)',
+							}}
+						/>
+					</div>
 				)}
 			/>
-			{values.map((value, key) => {
-				return (
-					<input
-						// eslint-disable-next-line react/no-array-index-key
-						key={key}
-						className='maxi-range-slider-control__content__item__input'
-						type='number'
-						//	placeholder={getDefaultValue(key)}
-						value={value}
-						onChange={val => {
-							const newValues = [];
-							newValues[key] = val.target.value;
-							onChange({ ...values, ...newValues });
-						}}
-						step={step}
-						min={min}
-						max={max}
-					/>
-				);
-			})}
 		</BaseControl>
 	);
 };

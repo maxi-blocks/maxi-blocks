@@ -29,7 +29,10 @@ import {
 	styleNone,
 	motionHorizontal,
 	motionVertical,
-	reset,
+	motionFade,
+	motionBlur,
+	motionRotate,
+	motionScale,
 } from '../../icons';
 import './editor.scss';
 import { useState } from 'react';
@@ -62,10 +65,10 @@ const MotionControl = props => {
 		{ label: <Icon icon={styleNone} />, value: 'none' },
 		{ label: <Icon icon={motionVertical} />, value: 'vertical' },
 		{ label: <Icon icon={motionHorizontal} />, value: 'horizontal' },
-		{ label: <Icon icon={reset} />, value: 'rotate' },
-		{ label: <Icon icon={reset} />, value: 'scale' },
-		{ label: <Icon icon={reset} />, value: 'fade' },
-		{ label: <Icon icon={reset} />, value: 'blur' },
+		{ label: <Icon icon={motionRotate} />, value: 'rotate' },
+		{ label: <Icon icon={motionScale} />, value: 'scale' },
+		{ label: <Icon icon={motionFade} />, value: 'fade' },
+		{ label: <Icon icon={motionBlur} />, value: 'blur' },
 	];
 
 	const easingOptions = [

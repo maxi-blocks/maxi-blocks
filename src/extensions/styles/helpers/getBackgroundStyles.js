@@ -37,6 +37,13 @@ export const getColorBackgroundObject = ({
 	BREAKPOINTS.forEach(breakpoint => {
 		response[breakpoint] = {};
 
+		const bgActiveMedia = getLastBreakpointAttribute(
+			`${prefix}background-active-media`,
+			breakpoint,
+			props,
+			isHover
+		);
+
 		const bgPaletteStatus = getLastBreakpointAttribute(
 			`${prefix}background-palette-color-status`,
 			breakpoint,
@@ -98,7 +105,7 @@ export const getColorBackgroundObject = ({
 					opacity: bgPaletteOpacity,
 					blockStyle,
 				});
-			else
+			else if (bgActiveMedia === 'background-color')
 				response[breakpoint]['background-color'] = getColorRGBAString({
 					firstVar: `color-${bgPaletteColor}`,
 					opacity: bgPaletteOpacity,
@@ -108,12 +115,18 @@ export const getColorBackgroundObject = ({
 
 		if (isIconInherit) {
 			response[breakpoint]['background-color'] =
-				props['background-active-media'] !== '' && bgPaletteStatus
+				props['button-background-active-media-general'] !== '' &&
+				bgPaletteStatus
 					? getColorRGBAString({
 							firstVar: `button-background-color${
 								isHover ? '-hover' : ''
 							}`,
-							secondVar: `color-${currentBgPaletteColor}`,
+							secondVar: `color-${getLastBreakpointAttribute(
+								'button-background-palette-color',
+								breakpoint,
+								props,
+								isHover
+							)}`,
 							opacity: currentBgPaletteOpacity,
 							blockStyle,
 					  })
@@ -140,6 +153,13 @@ export const getGradientBackgroundObject = ({
 	BREAKPOINTS.forEach(breakpoint => {
 		response[breakpoint] = {};
 
+		const bgActiveMedia = getLastBreakpointAttribute(
+			`${prefix}background-active-media`,
+			breakpoint,
+			props,
+			isHover
+		);
+
 		const bgGradientOpacity = getAttributeValue({
 			target: 'background-gradient-opacity',
 			props,
@@ -163,7 +183,8 @@ export const getGradientBackgroundObject = ({
 
 		if (isNumber(bgGradientOpacity))
 			response[breakpoint].opacity = bgGradientOpacity;
-		if (!isEmpty(bgGradient)) response[breakpoint].background = bgGradient;
+		if (!isEmpty(bgGradient) && bgActiveMedia === 'gradient')
+			response[breakpoint].background = bgGradient;
 		if (!isEmpty(bgGradientClipPath))
 			response[breakpoint]['clip-path'] = bgGradientClipPath;
 	});

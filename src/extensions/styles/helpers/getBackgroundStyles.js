@@ -387,7 +387,7 @@ const getSVGWrapperBackgroundObject = ({
 		isHover
 	);
 
-	if (bgSVGSize) {
+	if (isNumber(bgSVGSize)) {
 		const bgSVGSizeUnit = getLastBreakpointAttribute(
 			'background-svg-size-unit',
 			breakpoint,

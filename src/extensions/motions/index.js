@@ -49,11 +49,11 @@ const motionData = props => {
 				motionSettings.map(setting => {
 					const motionSettingValue =
 						attributes[`motion-${setting}-${type}-general`];
-					console.log(
-						`motion-${setting}-${type}-general: ${
-							attributes[`motion-${setting}-${type}-general`]
-						}`
-					);
+					// console.log(
+					// 	`motion-${setting}-${type}-general: ${
+					// 		attributes[`motion-${setting}-${type}-general`]
+					// 	}`
+					// );
 					if (attributes[`motion-${setting}-${type}-general`]) {
 						response[
 							`data-motion-${type}-general`

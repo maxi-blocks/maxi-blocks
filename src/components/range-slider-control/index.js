@@ -38,7 +38,7 @@ const RangeSliderControl = props => {
 		min = 0,
 		max = 999,
 		step = 1,
-		defaultValues = '',
+		defaultValues = [0, 50, 100],
 		values,
 		onChange,
 		disableReset = false,
@@ -54,25 +54,30 @@ const RangeSliderControl = props => {
 		RangeSliderControl
 	)}`;
 
-	const getDefaultValue = key => {
-		switch (key) {
-			case 0:
-				return 0;
-			case 1:
-				return 50;
-			case 2:
-				return 100;
-			default:
-				return 0;
-		}
-	};
-
 	return (
 		<BaseControl
 			id={rangeSliderControlId}
 			label={label}
 			className={classes}
 		>
+			{!disableReset && (
+				<Button
+					className='components-maxi-control__reset-button'
+					onClick={e => {
+						e.preventDefault();
+						onChange({ ...defaultValues });
+					}}
+					isSmall
+					aria-label={sprintf(
+						/* translators: %s: a textual label  */
+						__('Reset %s settings', 'maxi-blocks'),
+						label.toLowerCase()
+					)}
+					type='reset'
+				>
+					{reset}
+				</Button>
+			)}
 			<Range
 				label={label}
 				step={step}

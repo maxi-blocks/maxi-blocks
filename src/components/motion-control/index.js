@@ -332,36 +332,34 @@ const MotionControl = props => {
 										/>
 									)}
 									{type === 'rotate' && (
-										<RangeSliderControl
+										<MotionUniqueControl
 											label={__('Rotate', 'maxi-blocks')}
 											type='rotate'
 											step={1}
-											min={0}
-											max={360}
 											values={[
 												getLastBreakpointAttribute(
-													`motion-offset-start-${type}`,
+													`motion-rotate-start-${type}`,
 													breakpoint,
 													props
 												),
 												getLastBreakpointAttribute(
-													`motion-offset-middle-${type}`,
+													`motion-rotate-middle-${type}`,
 													breakpoint,
 													props
 												),
 												getLastBreakpointAttribute(
-													`motion-offset-end-${type}`,
+													`motion-rotate-end-${type}`,
 													breakpoint,
 													props
 												),
 											]}
 											onChange={values =>
 												onChange({
-													[`motion-offset-start-${type}-${breakpoint}`]:
+													[`motion-rotate-start-${type}-${breakpoint}`]:
 														values[0],
-													[`motion-offset-middle-${type}-${breakpoint}`]:
+													[`motion-rotate-middle-${type}-${breakpoint}`]:
 														values[1],
-													[`motion-offset-end-${type}-${breakpoint}`]:
+													[`motion-rotate-end-${type}-${breakpoint}`]:
 														values[2],
 												})
 											}

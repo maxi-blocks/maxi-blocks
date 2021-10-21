@@ -9,90 +9,85 @@ const motionTypes = [
 
 const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const response = {
+	'motion-active-general': {
+		type: 'string',
+	},
+	'motion-preset-status-general': {
+		type: 'boolean',
+		default: false,
+	},
+	'motion-preview-status-general': {
+		type: 'boolean',
+		default: false,
+	},
+};
+
+const generateAttr = (
+	motionType,
+	attr,
+	valueType = 'number',
+	defaultValue,
+	breakpoint = 'general'
+) => {
+	const key = `motion-${attr}-${motionType}-${breakpoint}`;
+	const value =
+		defaultValue !== 'noDefault'
+			? {
+					type: valueType,
+					default: defaultValue,
+			  }
+			: {
+					type: valueType,
+			  };
+
+	response[key] = value;
+
+	return null;
+};
+
+const generateUniqueAttributes = (
+	type,
+	attr,
+	defaults = [0, 0, 0],
+	breakpoint = 'general'
+) => {
+	generateAttr(type, `${attr}-start`, 'number', defaults[0], breakpoint);
+	generateAttr(type, `${attr}-middle`, 'number', defaults[1], breakpoint);
+	generateAttr(type, `${attr}-end`, 'number', defaults[2], breakpoint);
+
+	return null;
+};
+
 export const motion = (() => {
-	const response = {
-		'motion-active-general': {
-			type: 'string',
-		},
-		'motion-preset-status-general': {
-			type: 'boolean',
-			default: false,
-		},
-		'motion-preview-status-general': {
-			type: 'boolean',
-			default: false,
-		},
-	};
 	Object.values(motionTypes).forEach(type => {
-		const statusKey = `motion-status-${type}-general`;
-		const statusValue = {
-			type: 'boolean',
-			default: false,
-		};
-		response[statusKey] = statusValue;
+		generateAttr(type, 'status', 'boolean', false);
+		generateAttr(type, 'easing', 'string', 'easing');
+		generateAttr(type, 'speed', 'number', 5);
+		generateAttr(type, 'viewport-bottom', 'number', 0);
+		generateAttr(type, 'viewport-middle', 'number', 50);
+		generateAttr(type, 'viewport-top', 'number', 100);
 
-		const easingKey = `motion-easing-${type}-general`;
-		const easingValue = {
-			type: 'string',
-			default: 'ease',
-		};
-		response[easingKey] = easingValue;
+		if (type === 'vertical' || type === 'horizontal') {
+			generateAttr(type, 'direction', 'string', 'up');
+			generateUniqueAttributes(type, 'offset', [-8, 0, 8]);
+		}
 
-		const directionKey = `motion-direction-${type}-general`;
-		const directionValue = {
-			type: 'string',
-			default: 'up',
-		};
-		response[directionKey] = directionValue;
+		if (type === 'rotate') {
+			generateUniqueAttributes(type, 'rotate', [90, 0, 0]);
+		}
 
-		const speedKey = `motion-speed-${type}-general`;
-		const speedValue = {
-			type: 'number',
-			default: 5,
-		};
-		response[speedKey] = speedValue;
+		if (type === 'scale') {
+			generateUniqueAttributes(type, 'scale', [70, 100, 100]);
+		}
 
-		const offsetStartKey = `motion-offset-start-${type}-general`;
-		const offsetStartValue = {
-			type: 'number',
-			default: -8,
-		};
-		response[offsetStartKey] = offsetStartValue;
+		if (type === 'fade') {
+			generateUniqueAttributes(type, 'opacity', [0, 100, 100]);
+		}
 
-		const offsetMiddleKey = `motion-offset-middle-${type}-general`;
-		const offsetMiddleValue = {
-			type: 'number',
-			default: 0,
-		};
-		response[offsetMiddleKey] = offsetMiddleValue;
-
-		const offsetEndKey = `motion-offset-end-${type}-general`;
-		const offsetEndValue = {
-			type: 'number',
-			default: 8,
-		};
-		response[offsetEndKey] = offsetEndValue;
-
-		const viewportBottomKey = `motion-viewport-bottom-${type}-general`;
-		const viewportBottomValue = {
-			type: 'number',
-			default: 0,
-		};
-		response[viewportBottomKey] = viewportBottomValue;
-
-		const viewportMiddleKey = `motion-viewport-middle-${type}-general`;
-		const viewportMiddleValue = {
-			type: 'number',
-			default: 50,
-		};
-		response[viewportMiddleKey] = viewportMiddleValue;
-
-		const viewportTopKey = `motion-viewport-top-${type}-general`;
-		const viewportTopValue = {
-			type: 'number',
-			default: 100,
-		};
-		response[viewportTopKey] = viewportTopValue;
+		if (type === 'blur') {
+			generateUniqueAttributes(type, 'blur', [10, 0, 0]);
+		}
 	});
 
 	Object.values(breakpoints).forEach(breakpoint => {
@@ -103,79 +98,88 @@ export const motion = (() => {
 		response[activeKey] = activeValue;
 
 		Object.values(motionTypes).forEach(type => {
-			const statusKey = `motion-status-${type}-${breakpoint}`;
-			const statusValue = {
-				type: 'boolean',
-			};
-			response[statusKey] = statusValue;
+			generateAttr(type, 'status', 'boolean', 'noDefault', breakpoint);
+			generateAttr(type, 'easing', 'string', 'noDefault', breakpoint);
+			generateAttr(type, 'speed', 'number', 'noDefault', breakpoint);
 
-			const statusTabletKey = `motion-status-table-${type}-${breakpoint}`;
-			const statusTableValue = {
-				type: 'boolean',
-			};
-			response[statusTabletKey] = statusTableValue;
+			generateAttr(
+				type,
+				'viewport-bottom',
+				'number',
+				'noDefault',
+				breakpoint
+			);
+			generateAttr(
+				type,
+				'viewport-middle',
+				'number',
+				'noDefault',
+				breakpoint
+			);
+			generateAttr(
+				type,
+				'viewport-top',
+				'number',
+				'noDefault',
+				breakpoint
+			);
 
-			const statusMobileKey = `motion-status-mobile-${type}-${breakpoint}`;
-			const statusMobileValue = {
-				type: 'boolean',
-			};
-			response[statusMobileKey] = statusMobileValue;
+			if (type === 'vertical' || type === 'horizontal') {
+				generateAttr(
+					type,
+					'direction',
+					'string',
+					'noDefault',
+					breakpoint
+				);
+				generateUniqueAttributes(
+					type,
+					'offset',
+					['noDefault', 'noDefault', 'noDefault'],
+					breakpoint
+				);
+			}
 
-			const easingKey = `motion-easing-${type}-${breakpoint}`;
-			const easingValue = {
-				type: 'string',
-			};
-			response[easingKey] = easingValue;
+			if (type === 'rotate') {
+				generateUniqueAttributes(
+					type,
+					'rotate',
+					['noDefault', 'noDefault', 'noDefault'],
+					breakpoint
+				);
+			}
 
-			const directionKey = `motion-direction-${type}-${breakpoint}`;
-			const directionValue = {
-				type: 'string',
-			};
-			response[directionKey] = directionValue;
+			if (type === 'scale') {
+				generateUniqueAttributes(
+					type,
+					'scale',
+					['noDefault', 'noDefault', 'noDefault'],
+					breakpoint
+				);
+			}
 
-			const speedKey = `motion-speed-${type}-${breakpoint}`;
-			const speedValue = {
-				type: 'number',
-			};
-			response[speedKey] = speedValue;
+			if (type === 'fade') {
+				generateUniqueAttributes(
+					type,
+					'opacity',
+					['noDefault', 'noDefault', 'noDefault'],
+					breakpoint
+				);
+			}
 
-			const offsetStartKey = `motion-offset-start-${type}-${breakpoint}`;
-			const offsetStartValue = {
-				type: 'number',
-			};
-			response[offsetStartKey] = offsetStartValue;
-
-			const offsetMiddleKey = `motion-offset-middle-${type}-${breakpoint}`;
-			const offsetMiddleValue = {
-				type: 'number',
-			};
-			response[offsetMiddleKey] = offsetMiddleValue;
-
-			const offsetEndKey = `motion-offset-end-${type}-${breakpoint}`;
-			const offsetEndValue = {
-				type: 'number',
-			};
-			response[offsetEndKey] = offsetEndValue;
-
-			const viewportBottomKey = `motion-viewport-bottom-${type}-${breakpoint}`;
-			const viewportBottomValue = {
-				type: 'number',
-			};
-			response[viewportBottomKey] = viewportBottomValue;
-
-			const viewportMiddleKey = `motion-viewport-middle-${type}-${breakpoint}`;
-			const viewportMiddleValue = {
-				type: 'number',
-			};
-			response[viewportMiddleKey] = viewportMiddleValue;
-
-			const viewportTopKey = `motion-viewport-top-${type}-${breakpoint}`;
-			const viewportTopValue = {
-				type: 'number',
-			};
-			response[viewportTopKey] = viewportTopValue;
+			if (type === 'blur') {
+				generateUniqueAttributes(
+					type,
+					'blur',
+					['noDefault', 'noDefault', 'noDefault'],
+					breakpoint
+				);
+			}
 		});
 	});
+
+	console.log('response:');
+	console.log(response);
 
 	return response;
 })();

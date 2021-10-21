@@ -247,8 +247,8 @@ const getMotionObject = props => {
 		}),
 	};
 
-	console.log('motion effects');
-	console.log(response);
+	// console.log('motion effects');
+	// console.log(response);
 	return response;
 };
 

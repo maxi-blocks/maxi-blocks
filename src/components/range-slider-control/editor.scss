@@ -1,9 +1,14 @@
-.maxi-advanced-number-control {
+.maxi-range-slider-control {
 	margin-bottom: 20px;
 	.maxi-base-control__field {
 		margin: 0 5px 0 0 !important;
 		.maxi-base-control__label {
-			margin-bottom: 13px !important;
+			margin-bottom: 40px !important;
+			margin-top: 10px;
+		}
+		.components-maxi-control__reset-button {
+			margin-right: 20px;
+			margin-top: -20px;
 		}
 	}
 }

@@ -8,13 +8,17 @@ import { useInstanceId } from '@wordpress/compose';
  * Internal dependencies
  */
 import BaseControl from '../base-control';
-
-import { Range } from 'react-range';
+import Button from '../button';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
+
+/**
+ * Icons
+ */
+import { reset } from '../../icons';
 
 /**
  * Component
@@ -29,8 +33,8 @@ const MotionUniqueControl = props => {
 		step = 1,
 		values,
 		onChange,
+		defaultValues = [0, 0, 0],
 		disableReset = false,
-		onReset,
 	} = props;
 
 	const classes = classnames(
@@ -52,7 +56,7 @@ const MotionUniqueControl = props => {
 						// eslint-disable-next-line react/no-array-index-key
 						key={key}
 						id={motionUniqueControlId}
-						label={`${labels[key]} ${label}`}
+						label={__(`${labels[key]} ${label}`, 'maxi-blocks')}
 					>
 						<input
 							className='maxi-motion-unique-control__content__item__input'
@@ -67,6 +71,26 @@ const MotionUniqueControl = props => {
 							min={min}
 							max={max}
 						/>
+						{!disableReset && (
+							<Button
+								className='components-maxi-control__reset-button'
+								onClick={e => {
+									e.preventDefault();
+									const newValues = [];
+									newValues[key] = defaultValues[key];
+									onChange({ ...values, ...newValues });
+								}}
+								isSmall
+								aria-label={sprintf(
+									/* translators: %s: a textual label  */
+									__('Reset %s settings', 'maxi-blocks'),
+									label.toLowerCase()
+								)}
+								type='reset'
+							>
+								{reset}
+							</Button>
+						)}
 					</BaseControl>
 				);
 			})}

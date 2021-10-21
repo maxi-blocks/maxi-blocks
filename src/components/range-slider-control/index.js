@@ -7,8 +7,6 @@ import { useInstanceId } from '@wordpress/compose';
 /**
  * Internal dependencies
  */
-import AdvancedNumberControl from '../advanced-number-control';
-import SelectControl from '../select-control';
 import BaseControl from '../base-control';
 import Button from '../button';
 
@@ -18,10 +16,9 @@ import { Range } from 'react-range';
  * External dependencies
  */
 import classnames from 'classnames';
-import { trim, isEmpty } from 'lodash';
 
 /**
- * Styles
+ * Styles and Icons
  */
 import './editor.scss';
 import { reset } from '../../icons';

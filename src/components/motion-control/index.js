@@ -11,7 +11,6 @@ import Icon from '../icon';
 import MotionUniqueControl from './motion-unique-control';
 import {
 	getDefaultAttribute,
-	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import SelectControl from '../select-control';
@@ -319,6 +318,17 @@ const MotionControl = props => {
 													props
 												),
 											]}
+											defaultValues={[
+												getDefaultAttribute(
+													`motion-offset-start-${type}-general`
+												),
+												getDefaultAttribute(
+													`motion-offset-middle-${type}-general`
+												),
+												getDefaultAttribute(
+													`motion-offset-end-${type}-general`
+												),
+											]}
 											onChange={values =>
 												onChange({
 													[`motion-offset-start-${type}-${breakpoint}`]:
@@ -351,6 +361,17 @@ const MotionControl = props => {
 													`motion-rotate-end-${type}`,
 													breakpoint,
 													props
+												),
+											]}
+											defaultValues={[
+												getDefaultAttribute(
+													`motion-rotate-start-${type}-general`
+												),
+												getDefaultAttribute(
+													`motion-rotate-middle-${type}-general`
+												),
+												getDefaultAttribute(
+													`motion-rotate-end-${type}-general`
 												),
 											]}
 											onChange={values =>

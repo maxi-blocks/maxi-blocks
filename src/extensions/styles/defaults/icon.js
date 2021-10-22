@@ -18,9 +18,6 @@ export const icon = {
 		type: 'string',
 		default: 'right',
 	},
-	'icon-background-active-media-general': {
-		type: 'string',
-	},
 	'icon-width-general': {
 		type: 'number',
 		default: 32,

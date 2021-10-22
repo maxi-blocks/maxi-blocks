@@ -36,11 +36,10 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 import {
+	smileIcon,
 	backgroundColor,
 	backgroundGradient,
-	smileIcon,
 	solid,
-	styleNone,
 } from '../../icons';
 
 /**
@@ -69,22 +68,6 @@ const IconControl = props => {
 		});
 
 		options.push({
-			label: <Icon icon={solid} />,
-			value: 'border',
-		});
-
-		return options;
-	};
-
-	const getBackgroundOptions = () => {
-		const options = [];
-
-		options.push({
-			label: <Icon icon={styleNone} />,
-			value: 'none',
-		});
-
-		options.push({
 			label: <Icon icon={backgroundColor} />,
 			value: 'background-color',
 		});
@@ -92,6 +75,11 @@ const IconControl = props => {
 		options.push({
 			label: <Icon icon={backgroundGradient} />,
 			value: 'gradient',
+		});
+
+		options.push({
+			label: <Icon icon={solid} />,
+			value: 'border',
 		});
 
 		return options;
@@ -115,13 +103,6 @@ const IconControl = props => {
 			max: 100,
 		},
 	};
-
-	const iconBackgroundActiveMedia = getLastBreakpointAttribute(
-		`icon-background-active-media`,
-		breakpoint,
-		props,
-		isHover
-	);
 
 	return (
 		<div className={classes}>
@@ -339,38 +320,7 @@ const IconControl = props => {
 							)}
 						</>
 					)}
-					{iconStyle === 'border' && (
-						<BorderControl
-							{...getGroupAttributes(props, [
-								`iconBorder${isHover ? 'Hover' : ''}`,
-								`iconBorderWidth${isHover ? 'Hover' : ''}`,
-								`iconBorderRadius${isHover ? 'Hover' : ''}`,
-							])}
-							prefix='icon-'
-							onChange={obj => onChange(obj)}
-							breakpoint={breakpoint}
-							clientId={clientId}
-							isHover={isHover}
-						/>
-					)}
-					<FancyRadioControl
-						label=''
-						fullWidthMode
-						selected={iconBackgroundActiveMedia || 'none'}
-						options={getBackgroundOptions()}
-						optionType='string'
-						onChange={val =>
-							onChange({
-								[getAttributeKey(
-									'background-active-media',
-									isHover,
-									'icon-',
-									breakpoint
-								)]: val,
-							})
-						}
-					/>
-					{iconBackgroundActiveMedia === 'background-color' && (
+					{iconStyle === 'background-color' && (
 						<>
 							{!props['icon-inherit'] ? (
 								<ColorControl
@@ -462,7 +412,7 @@ const IconControl = props => {
 							)}
 						</>
 					)}
-					{iconBackgroundActiveMedia === 'gradient' && (
+					{iconStyle === 'gradient' && (
 						<GradientControl
 							label={__(
 								'Icon Background Gradient',
@@ -508,6 +458,20 @@ const IconControl = props => {
 									)]: val,
 								})
 							}
+							isHover={isHover}
+						/>
+					)}
+					{iconStyle === 'border' && (
+						<BorderControl
+							{...getGroupAttributes(props, [
+								`iconBorder${isHover ? 'Hover' : ''}`,
+								`iconBorderWidth${isHover ? 'Hover' : ''}`,
+								`iconBorderRadius${isHover ? 'Hover' : ''}`,
+							])}
+							prefix='icon-'
+							onChange={obj => onChange(obj)}
+							breakpoint={breakpoint}
+							clientId={clientId}
 							isHover={isHover}
 						/>
 					)}

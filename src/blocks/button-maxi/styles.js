@@ -337,6 +337,37 @@ const getIconPathStyles = (obj, isHover = false) => {
 	return { IconPath: response };
 };
 
+const getIconBackgroundObject = props => {
+	let response = {};
+
+	breakpoints.forEach(breakpoint => {
+		response = merge(response, {
+			background: {
+				...getColorBackgroundObject({
+					...getGroupAttributes(props, [
+						'iconBackgroundColor',
+						'background',
+						'backgroundColor',
+					]),
+					prefix: 'icon-',
+					blockStyle: props.parentBlockStyle,
+					isIconInherit: props['icon-inherit'],
+					breakpoint,
+				}),
+			},
+			gradient: {
+				...getGradientBackgroundObject({
+					...getGroupAttributes(props, 'iconBackgroundGradient'),
+					prefix: 'icon-',
+					breakpoint,
+				}),
+			},
+		});
+	});
+
+	return response;
+};
+
 const getIconObject = (props, target) => {
 	const response = {
 		icon: getIconStyles(
@@ -347,27 +378,7 @@ const getIconObject = (props, target) => {
 			props['icon-inherit'],
 			false
 		),
-		background: {
-			...getColorBackgroundObject({
-				...getGroupAttributes(props, [
-					'icon',
-					'background',
-					'iconBackgroundColor',
-				]),
-				prefix: 'icon-',
-				blockStyle: props.parentBlockStyle,
-				isIconInherit: props['icon-inherit'],
-			}),
-		},
-		gradient: {
-			...getGradientBackgroundObject({
-				...getGroupAttributes(props, [
-					'icon',
-					'iconBackgroundGradient',
-				]),
-				prefix: 'icon-',
-			}),
-		},
+		...(target === 'icon' && getIconBackgroundObject(props)),
 		padding:
 			target === 'icon' &&
 			getMarginPaddingStyles({
@@ -410,11 +421,7 @@ const getIconHoverObject = (props, target) => {
 			),
 		background: {
 			...getColorBackgroundObject({
-				...getGroupAttributes(
-					props,
-					['icon', 'iconBackgroundColor'],
-					true
-				),
+				...getGroupAttributes(props, ['iconBackgroundColor'], true),
 				prefix: 'icon-',
 				blockStyle: props.parentBlockStyle,
 				isIconInherit: props['icon-inherit'],
@@ -426,7 +433,7 @@ const getIconHoverObject = (props, target) => {
 				...getGradientBackgroundObject({
 					...getGroupAttributes(
 						props,
-						['icon', 'iconBackgroundGradient'],
+						'iconBackgroundGradient',
 						true
 					),
 					prefix: 'icon-',

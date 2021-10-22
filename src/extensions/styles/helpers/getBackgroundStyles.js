@@ -4,9 +4,10 @@
 import getAttributeValue from '../getAttributeValue';
 import getBorderStyles from './getBorderStyles';
 import getColorRGBAString from '../getColorRGBAString';
-import getGroupAttributes from '../getGroupAttributes';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getDisplayStyles from './getDisplayStyles';
+import getGroupAttributes from '../getGroupAttributes';
+import getImageShapeStyles from './getImageShapeStyles';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
  * External dependencies
@@ -647,20 +648,55 @@ const getBackgroundLayers = ({
 								blockStyle,
 								breakpoint,
 								isHover,
-							}),
-							getDisplayStyles(
-								{
-									...getGroupAttributes(
-										layer,
-										'display',
-										isHover
-									),
-								},
-								isHover
-							)
+							})
 						),
 					},
 				};
+				if (breakpoint === 'general') {
+					response[`${layerTarget} > svg:first-child`] = {
+						...response[`${layerTarget} > svg:first-child`],
+						[type]: {
+							...merge(
+								response?.[
+									`${layerTarget} > svg:first-child`
+								]?.[type],
+								...getImageShapeStyles(
+									'svg',
+									getGroupAttributes(
+										layer,
+										'imageShape',
+										false,
+										'background-svg-'
+									),
+									'background-svg-'
+								)
+							),
+						},
+					};
+					response[`${layerTarget} > svg:first-child pattern image`] =
+						{
+							...response[
+								`${layerTarget} > svg:first-child pattern image`
+							],
+							[type]: {
+								...merge(
+									response?.[
+										`${layerTarget} > svg:first-child pattern image`
+									]?.[type],
+									...getImageShapeStyles(
+										'image',
+										getGroupAttributes(
+											layer,
+											'imageShape',
+											false,
+											'background-svg-'
+										),
+										'background-svg-'
+									)
+								),
+							},
+						};
+				}
 				break;
 			default:
 				break;

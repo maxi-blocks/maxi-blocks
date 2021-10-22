@@ -4,16 +4,17 @@ import {
 	rawBackgroundImage,
 	rawBackgroundVideo,
 	rawBackgroundSVG,
-} from '../../extensions/styles/defaults/background';
+	rawImageShape,
+} from '../../extensions/styles/defaults';
 
 /**
  * Layers
  */
-const getLayerAttributes = attr => {
+const getLayerAttributes = (attr, prefix = '') => {
 	const response = {};
 
 	Object.entries(attr).forEach(([key, val]) => {
-		response[key] = val.default;
+		response[prefix + key] = val.default;
 	});
 
 	return response;
@@ -47,4 +48,5 @@ export const SVGOptions = {
 	type: 'shape',
 	display: 'block',
 	...getLayerAttributes(rawBackgroundSVG),
+	...getLayerAttributes(rawImageShape, 'background-svg-'),
 };

@@ -7,6 +7,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ColorControl from '../color-control';
+import ImageShape from '../image-shape';
 import MediaUploaderControl from '../media-uploader-control';
 import SettingTabsControl from '../setting-tabs-control';
 import { injectImgSVG, getSVGHasImage } from '../../extensions/svg/utils';
@@ -199,56 +200,85 @@ const SVGFillControl = props => {
 					{
 						label: __('Image', 'maxi-blocks'),
 						content: (
-							<MediaUploaderControl
-								allowedTypes={['image']}
-								mediaID={value.imageID}
-								onSelectImage={imageData => {
-									SVGData[id].imageID = imageData.id;
-									SVGData[id].imageURL = imageData.url;
-									const resEl = injectImgSVG(
-										SVGOptions['background-svg-SVGElement'],
-										SVGData
-									);
+							<>
+								<MediaUploaderControl
+									allowedTypes={['image']}
+									mediaID={value.imageID}
+									onSelectImage={imageData => {
+										SVGData[id].imageID = imageData.id;
+										SVGData[id].imageURL = imageData.url;
+										const resEl = injectImgSVG(
+											SVGOptions[
+												'background-svg-SVGElement'
+											],
+											SVGData
+										);
 
-									onChange({
-										'background-svg-SVGElement':
-											resEl.outerHTML,
-										'background-svg-SVGData': SVGData,
-										'background-palette-svg-color':
-											props.SVGOptions[
-												'background-palette-svg-color'
-											],
-										'background-palette-svg-color-status':
-											props.SVGOptions[
-												'background-palette-svg-color-status'
-											],
-									});
-								}}
-								onRemoveImage={() => {
-									SVGData[id].imageID = '';
-									SVGData[id].imageURL = '';
+										onChange({
+											'background-svg-SVGElement':
+												resEl.outerHTML,
+											'background-svg-SVGData': SVGData,
+											'background-palette-svg-color':
+												props.SVGOptions[
+													'background-palette-svg-color'
+												],
+											'background-palette-svg-color-status':
+												props.SVGOptions[
+													'background-palette-svg-color-status'
+												],
+										});
+									}}
+									onRemoveImage={() => {
+										SVGData[id].imageID = '';
+										SVGData[id].imageURL = '';
 
-									const resEl = injectImgSVG(
-										SVGOptions['background-svg-SVGElement'],
-										SVGData,
-										true
-									);
+										const resEl = injectImgSVG(
+											SVGOptions[
+												'background-svg-SVGElement'
+											],
+											SVGData,
+											true
+										);
 
-									onChange({
-										'background-svg-SVGElement':
-											resEl.outerHTML,
-										'background-svg-SVGData': SVGData,
-										'background-palette-svg-color':
-											props.SVGOptions[
-												'background-palette-svg-color'
-											],
-										'background-palette-svg-color-status':
-											props.SVGOptions[
-												'background-palette-svg-color-status'
-											],
-									});
-								}}
-							/>
+										onChange({
+											'background-svg-SVGElement':
+												resEl.outerHTML,
+											'background-svg-SVGData': SVGData,
+											'background-palette-svg-color':
+												props.SVGOptions[
+													'background-palette-svg-color'
+												],
+											'background-palette-svg-color-status':
+												props.SVGOptions[
+													'background-palette-svg-color-status'
+												],
+										});
+									}}
+								/>
+								<ImageShape
+									{...SVGOptions}
+									onChange={obj => {
+										['SVGElement', 'SVGData'].forEach(
+											el => {
+												if (el in obj) {
+													obj[
+														`background-svg-${el}`
+													] = obj[el];
+
+													delete obj[el];
+												}
+											}
+										);
+
+										onChange(obj);
+									}}
+									icon={
+										SVGOptions['background-svg-SVGElement']
+									}
+									breakpoint={breakpoint}
+									prefix='background-svg-'
+								/>
+							</>
 						),
 					},
 				]}

@@ -13,7 +13,6 @@ import {
 	AccordionControl,
 	AlignmentControl,
 	AxisControl,
-	BackgroundControl,
 	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
@@ -23,6 +22,7 @@ import {
 	FullSizeControl,
 	HoverEffectControl,
 	ImageCropControl,
+	ImageShape,
 	InfoBox,
 	MotionControl,
 	OpacityControl,
@@ -41,11 +41,8 @@ import {
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
-import MaxiModal from '../../editor/library/modal';
+import * as inspectorTabs from '../../components/inspector-tabs';
 
-/**
- * External dependencies
- */
 /**
  * External dependencies
  */
@@ -305,6 +302,7 @@ const Inspector = memo(
 																/>
 															)}
 														<RangeControl
+															className='maxi-image-inspector__dimension-width'
 															label={__(
 																'Width',
 																'maxi-blocks'
@@ -339,6 +337,7 @@ const Inspector = memo(
 															)}
 														/>
 														<SelectControl
+															className='maxi-image-inspector__ratio'
 															label={__(
 																'Image Ratio',
 																'maxi-blocks'
@@ -405,6 +404,7 @@ const Inspector = memo(
 												content: (
 													<>
 														<SelectControl
+															className='maxi-image-inspector__alt-tag'
 															label={__(
 																'Image Alt Tag',
 																'maxi-blocks'
@@ -430,6 +430,7 @@ const Inspector = memo(
 														{altSelector ===
 															'custom' && (
 															<TextControl
+																className='maxi-image-inspector__custom-tag'
 																placeholder={__(
 																	'Add Your Alt Tag Here',
 																	'maxi-blocks'
@@ -450,7 +451,7 @@ const Inspector = memo(
 													</>
 												),
 											},
-											deviceType === 'general' && {
+											{
 												label: __(
 													'Caption',
 													'maxi-blocks'
@@ -524,130 +525,28 @@ const Inspector = memo(
 													</>
 												),
 											},
-											deviceType === 'general' && {
+											{
 												label: __(
-													'Background',
+													'Shape mask',
 													'maxi-blocks'
 												),
-												disablePadding: true,
 												content: (
-													<SettingTabsControl
-														items={[
-															{
-																label: __(
-																	'Normal',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<BackgroundControl
-																			{...getGroupAttributes(
-																				attributes,
-																				[
-																					'background',
-																					'backgroundColor',
-																					'backgroundImage',
-																					'backgroundVideo',
-																					'backgroundGradient',
-																					'backgroundSVG',
-																				]
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			clientId={
-																				clientId
-																			}
-																		/>
-																	</>
-																),
-															},
-															{
-																label: __(
-																	'Hover',
-																	'maxi-blocks'
-																),
-																content: (
-																	<>
-																		<ToggleSwitch
-																			label={__(
-																				'Enable Background Hover',
-																				'maxi-blocks'
-																			)}
-																			selected={
-																				attributes[
-																					'background-status-hover'
-																				]
-																			}
-																			className='maxi-background-status-hover'
-																			onChange={val =>
-																				setAttributes(
-																					{
-																						...(val &&
-																							setHoverAttributes(
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										]
-																									),
-																								},
-																								{
-																									...getGroupAttributes(
-																										attributes,
-																										[
-																											'background',
-																											'backgroundColor',
-																											'backgroundGradient',
-																										],
-																										true
-																									),
-																								}
-																							)),
-																						'background-status-hover':
-																							val,
-																					}
-																				)
-																			}
-																		/>
-																		{attributes[
-																			'background-status-hover'
-																		] && (
-																			<BackgroundControl
-																				{...getGroupAttributes(
-																					attributes,
-																					[
-																						'backgroundHover',
-																						'backgroundColorHover',
-																						'backgroundGradientHover',
-																					]
-																				)}
-																				onChange={obj =>
-																					setAttributes(
-																						obj
-																					)
-																				}
-																				disableImage
-																				disableVideo
-																				disableSVG
-																				isHover
-																				clientId={
-																					clientId
-																				}
-																			/>
-																		)}
-																	</>
-																),
-															},
-														]}
+													<ImageShape
+														{...getGroupAttributes(
+															attributes,
+															'imageShape'
+														)}
+														onChange={obj => {
+															setAttributes(obj);
+														}}
+														icon={SVGElement}
+														breakpoint={deviceType}
 													/>
 												),
 											},
+											...inspectorTabs.background({
+												props,
+											}),
 											{
 												label: __(
 													'Border',
@@ -1020,24 +919,6 @@ const Inspector = memo(
 																clipPath,
 															})
 														}
-													/>
-												),
-											},
-											{
-												label: __(
-													'Shape',
-													'maxi-blocks'
-												),
-												content: (
-													<MaxiModal
-														type='image-shape'
-														onSelect={obj => {
-															setAttributes(obj);
-														}}
-														onRemove={obj => {
-															setAttributes(obj);
-														}}
-														icon={SVGElement}
 													/>
 												),
 											},

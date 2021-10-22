@@ -16,18 +16,18 @@ import { isEqual } from 'lodash';
 import getGroupAttributes from '../../../../../src/extensions/styles/getGroupAttributes';
 
 describe('CopyPaste from Toolbar', () => {
-	it('Should copy and paste bulk styles', async () => {
+	beforeEach(async () => {
 		await createNewPost();
+		await page.waitForTimeout(1000);
 
 		// Inserts styled block
 		await page.evaluate(block => {
 			window.wp.data.dispatch('core/block-editor').insertBlock(block);
 		}, block);
-
-		// Focus the block
-		await page.$eval('.maxi-text-block', block => block.focus());
+		await page.waitForTimeout(1000);
 
 		// Copy styles
+		await page.waitForSelector('.toolbar-item__copy-paste');
 		await page.$eval('.toolbar-item__copy-paste', button => button.click());
 		await page.waitForSelector('.toolbar-item__copy-paste__popover');
 		await page.$eval('.toolbar-item__copy-paste__popover button', button =>
@@ -36,8 +36,11 @@ describe('CopyPaste from Toolbar', () => {
 
 		// Set new block
 		await insertBlock('Text Maxi');
+	});
 
+	it('Should copy and paste bulk styles', async () => {
 		// Paste styles
+		await page.waitForSelector('.toolbar-item__copy-paste');
 		await page.$eval('.toolbar-item__copy-paste', button => button.click());
 		await page.waitForSelector('.toolbar-item__copy-paste__popover');
 		await page.$$eval('.toolbar-item__copy-paste__popover button', button =>
@@ -46,6 +49,7 @@ describe('CopyPaste from Toolbar', () => {
 
 		// Compare attributes
 		const secondBlockAttr = await getBlockAttributes();
+		await page.waitForSelector('.maxi-text-block');
 		await page.$eval('.maxi-text-block', block => block.focus());
 		const firstBlockAttr = await getBlockAttributes();
 
@@ -57,27 +61,8 @@ describe('CopyPaste from Toolbar', () => {
 		await expect(isEqual(firstBlockAttr, secondBlockAttr)).toBeTruthy();
 	});
 	it('Should copy and paste styles with special paste', async () => {
-		await createNewPost();
-
-		// Inserts styled block
-		await page.evaluate(block => {
-			window.wp.data.dispatch('core/block-editor').insertBlock(block);
-		}, block);
-
-		// Focus the block
-		await page.$eval('.maxi-text-block', block => block.focus());
-
-		// Copy styles
-		await page.$eval('.toolbar-item__copy-paste', button => button.click());
-		await page.waitForSelector('.toolbar-item__copy-paste__popover');
-		await page.$eval('.toolbar-item__copy-paste__popover button', button =>
-			button.click()
-		);
-
-		// Set new block
-		await insertBlock('Text Maxi');
-
 		// Paste styles
+		await page.waitForSelector('.toolbar-item__copy-paste');
 		await page.$eval('.toolbar-item__copy-paste', button => button.click());
 		await page.waitForSelector('.toolbar-item__copy-paste__popover');
 		await page.$$eval('.toolbar-item__copy-paste__popover button', button =>
@@ -105,6 +90,7 @@ describe('CopyPaste from Toolbar', () => {
 			secondBlockAttr,
 			'typography'
 		);
+		await page.waitForSelector('.maxi-text-block');
 		await page.$eval('.maxi-text-block', block => block.focus());
 		const firstBlockAttr = await getBlockAttributes();
 		const firstBlockTypography = getGroupAttributes(

@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 describe('BoxShadowControl', () => {
 	beforeEach(async () => {
@@ -162,5 +162,7 @@ describe('BoxShadowControl', () => {
 		}))(shadowAttributes);
 
 		expect(boxShadow).toStrictEqual(expectChanges);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

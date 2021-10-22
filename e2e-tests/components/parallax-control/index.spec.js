@@ -9,9 +9,9 @@ import {
 /**
  * Interactive dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
-describe('ParallaxControl', () => {
+describe.skip('ParallaxControl', () => {
 	it('Test the parallax control', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
@@ -55,5 +55,7 @@ describe('ParallaxControl', () => {
 		const parallaxSpeed = groupAttribute['parallax-speed'];
 		const expectSpeed = 4;
 		expect(parallaxSpeed).toStrictEqual(expectSpeed);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

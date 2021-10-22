@@ -10,13 +10,22 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebar,
+	changeResponsive,
+	getBlockStyle,
+} from '../../utils';
 
 describe('ArrowControl', () => {
 	it('Check the arrow control', async () => {
 		await createNewPost();
-		await insertBlock('Group Maxi');
-		const accordionPanel = await openSidebar(page, 'arrow');
+		await insertBlock('Container Maxi');
+		await page.$eval('.maxi-container-block', container =>
+			container.focus()
+		);
+
+		const accordionPanel = await openSidebar(page, 'callout arrow');
 
 		await accordionPanel.$eval(
 			'.maxi-arrow-control .maxi-toggle-switch .maxi-base-control__label',
@@ -32,8 +41,8 @@ describe('ArrowControl', () => {
 				i
 			);
 			const attributes = await getBlockAttributes();
-			const arrowAttributex = attributes['arrow-side-general'];
-			expect(arrowAttributex).toStrictEqual(values[i]);
+			const arrowAttributeX = attributes['arrow-side-general'];
+			expect(arrowAttributeX).toStrictEqual(values[i]);
 		}
 
 		// Use Position
@@ -59,17 +68,10 @@ describe('ArrowControl', () => {
 		const sizeAttributes = await getBlockAttributes();
 		const arrowSizeAttribute = sizeAttributes['arrow-width-general'];
 		expect(arrowSizeAttribute).toStrictEqual(expectSize);
-
-		const warningBox = await page.$eval(
-			'.maxi-arrow-control .maxi-warning-box',
-			warning => warning.innerHTML
-		);
-		await page.waitForTimeout(500);
-		expect(warningBox).toMatchSnapshot();
 	});
 
 	it('Check the responsive arrow control', async () => {
-		const accordionPanel = await openSidebar(page, 'arrow');
+		const accordionPanel = await openSidebar(page, 'callout arrow');
 
 		await accordionPanel.$$eval(
 			'.maxi-arrow-control .maxi-fancy-radio-control .maxi-radio-control__option label',
@@ -136,5 +138,7 @@ describe('ArrowControl', () => {
 		);
 
 		expect(responsiveMOption).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

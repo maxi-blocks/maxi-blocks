@@ -9,6 +9,7 @@ import {
 	getBlockAttributes,
 	openAdvancedSidebar,
 	changeResponsive,
+	getBlockStyle,
 } from '../../utils';
 
 describe('PositionControl', () => {
@@ -127,5 +128,7 @@ describe('PositionControl', () => {
 		);
 
 		expect(responsiveMOption).toStrictEqual('Relative');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

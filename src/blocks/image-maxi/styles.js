@@ -5,12 +5,13 @@ import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
 	getCustomFormatsStyles,
 	getDisplayStyles,
 	getHoverEffectsBackgroundStyles,
+	getImageShapeStyles,
 	getLinkStyles,
 	getMarginPaddingStyles,
 	getOpacityStyles,
@@ -55,9 +56,6 @@ const getNormalObject = props => {
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
-		}),
-		overflow: getOverflowStyles({
-			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 
@@ -201,6 +199,9 @@ const getImageWrapperObject = props => {
 		...(props['hover-extension'] && {
 			hoverExtension: { general: { overflow: 'visible' } },
 		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
 	};
 
 	return response;
@@ -238,6 +239,17 @@ const getFigcaptionObject = props => {
 	return response;
 };
 
+const getImageShapeObject = (target, props) => {
+	const response = {
+		...(props.SVGElement && {
+			transform: getImageShapeStyles(target, {
+				...getGroupAttributes(props, 'imageShape'),
+			}),
+		}),
+	};
+	return response;
+};
+
 const getStyles = props => {
 	const { uniqueID } = props;
 
@@ -245,6 +257,12 @@ const getStyles = props => {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
 			' .maxi-image-block-wrapper': getImageWrapperObject(props),
+			' .maxi-image-block-wrapper > svg:first-child': getImageShapeObject(
+				'svg',
+				props
+			),
+			' .maxi-image-block-wrapper > svg:first-child pattern image':
+				getImageShapeObject('image', props),
 			':hover .maxi-image-block-wrapper': getImageHoverObject(props),
 			' .maxi-image-block-wrapper img': getImageObject(props),
 			' figcaption': getFigcaptionObject(props),
@@ -253,25 +271,28 @@ const getStyles = props => {
 			' .maxi-hover-details .maxi-hover-details__content p':
 				getHoverEffectContentTextObject(props),
 			' .maxi-hover-details': getHoverEffectDetailsBoxObject(props),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
+					'blockBackground',
+					'border',
+					'borderWidth',
 					'borderRadius',
+					'parallax',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-					'borderRadiusHover',
-				]),
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(
+					props,
+					[
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+						'parallax',
+					],
+					true
+				),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),

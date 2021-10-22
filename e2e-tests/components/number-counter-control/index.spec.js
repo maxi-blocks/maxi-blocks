@@ -73,16 +73,16 @@ describe('NumberCounterControl', () => {
 		// expect
 		const styleAttributes = await getBlockAttributes();
 		const numberCounterAttributes = (({
-			'width-general': width,
-			'width-unit-general': widthUnit,
+			'number-counter-width-general': width,
+			'number-counter-width-unit-general': widthUnit,
 			'number-counter-duration': counterDuration,
 			'number-counter-end': counterEnd,
 			'number-counter-start': counterStart,
 			'number-counter-stroke': counterStroke,
 			'number-counter-title-font-size': counterTitle,
 		}) => ({
-			'width-general': width,
-			'width-unit-general': widthUnit,
+			'number-counter-width-general': width,
+			'number-counter-width-unit-general': widthUnit,
 			'number-counter-duration': counterDuration,
 			'number-counter-end': counterEnd,
 			'number-counter-start': counterStart,
@@ -91,8 +91,8 @@ describe('NumberCounterControl', () => {
 		}))(styleAttributes);
 
 		const expectedAttributes = {
-			'width-general': 100,
-			'width-unit-general': '%',
+			'number-counter-width-general': 100,
+			'number-counter-width-unit-general': '%',
 			'number-counter-duration': 100,
 			'number-counter-end': 50,
 			'number-counter-start': 20,

@@ -15,7 +15,7 @@ describe('TextControl', () => {
 
 		const accordionPanel = await openAdvancedSidebar(
 			page,
-			'custom classes'
+			'add css class id'
 		);
 
 		await accordionPanel.$eval(

@@ -9,18 +9,14 @@ import {
 /**
  * Internal dependencies
  */
-import {
-	getBlockAttributes,
-	openAdvancedSidebar,
-	getBlockStyle,
-} from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 describe('ShapeDividerControl', () => {
 	it('Checking the shape divider control', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 		await page.$eval('.maxi-container-block', select => select.focus());
-		const accordionPanel = await openAdvancedSidebar(page, 'shape divider');
+		const accordionPanel = await openSidebar(page, 'shape divider');
 
 		await accordionPanel.$eval(
 			'.maxi-shapedividercontrol .maxi-toggle-switch.shape-divider-top-status .maxi-base-control__label',

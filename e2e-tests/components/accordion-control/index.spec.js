@@ -13,14 +13,14 @@ describe('AccordionControl', () => {
 		await insertBlock('Text Maxi');
 
 		const accordionNames = [
+			'heading paragraph tag',
 			'alignment',
-			'level',
 			'typography',
-			'background',
+			'background layer',
 			'border',
 			'height width',
 			'box shadow',
-			'padding margin',
+			'margin padding',
 		];
 
 		for (const accordionItem of accordionNames) {

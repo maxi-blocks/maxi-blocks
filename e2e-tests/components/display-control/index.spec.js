@@ -16,7 +16,10 @@ describe('DisplayControl', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'display');
+		const accordionPanel = await openAdvancedSidebar(
+			page,
+			'show hide block'
+		);
 
 		await accordionPanel.$$eval(
 			'.maxi-display-control .maxi-base-control__field label',
@@ -31,7 +34,7 @@ describe('DisplayControl', () => {
 	});
 
 	it('Check Responsive display control', async () => {
-		await openAdvancedSidebar(page, 'display');
+		await openAdvancedSidebar(page, 'show hide block');
 		const displayButtons = await page.$$(
 			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option'
 		);
@@ -57,7 +60,7 @@ describe('DisplayControl', () => {
 		const expectAttributes = await getBlockAttributes();
 		const display = expectAttributes['display-s'];
 
-		expect(display).toStrictEqual('inherit');
+		expect(display).toStrictEqual('flex');
 
 		// responsive XS
 		await changeResponsive(page, 'xs');

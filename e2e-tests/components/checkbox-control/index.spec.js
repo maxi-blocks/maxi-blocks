@@ -11,7 +11,7 @@ describe('CheckBoxControl', () => {
 	it('checking the checkbox control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const accordionPanel = await openSidebar(page, 'padding margin');
+		const accordionPanel = await openSidebar(page, 'margin padding');
 		const axisControls = await accordionPanel.$$('.maxi-axis-control');
 		const marginControl = axisControls[1];
 		const checkBoxes = await marginControl.$$(

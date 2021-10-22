@@ -11,7 +11,7 @@ describe('ColumnPattern', () => {
 	it('Check column pattern', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
-		const accordionControl = await openSidebar(page, 'row settings');
+		const accordionControl = await openSidebar(page, 'column picker');
 
 		// select column
 		await accordionControl.$eval(
@@ -45,7 +45,7 @@ describe('ColumnPattern', () => {
 	});
 
 	it('Check responsive row-pattern', async () => {
-		const accordionControl = await openSidebar(page, 'row settings');
+		const accordionControl = await openSidebar(page, 'column picker');
 
 		// general
 		await accordionControl.$eval(

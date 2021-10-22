@@ -24,7 +24,7 @@ describe('FullSizeControl', () => {
 
 		const expectResult = 'full';
 		const expectAttributes = await getBlockAttributes();
-		const width = expectAttributes.fullWidth;
+		const width = expectAttributes.blockFullWidth;
 
 		expect(width).toStrictEqual(expectResult);
 	});

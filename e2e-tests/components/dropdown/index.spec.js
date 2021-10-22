@@ -5,14 +5,14 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar } from '../../utils';
 
 describe('Dropdown', () => {
 	it('Check dropdown', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
 		await page.$eval('.maxi-container-block', select => select.focus());
-		const accordionPanel = await openAdvancedSidebar(page, 'shape divider');
+		const accordionPanel = await openSidebar(page, 'shape divider');
 
 		await accordionPanel.$eval(
 			'.maxi-shapedividercontrol .maxi-toggle-switch .maxi-base-control__label',

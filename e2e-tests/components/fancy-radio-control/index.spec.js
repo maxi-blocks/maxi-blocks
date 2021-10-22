@@ -12,7 +12,10 @@ describe('FancyRadioControl', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'display');
+		const accordionPanel = await openAdvancedSidebar(
+			page,
+			'show hide block'
+		);
 
 		await accordionPanel.$$eval(
 			'.maxi-display-control .maxi-base-control__field label',

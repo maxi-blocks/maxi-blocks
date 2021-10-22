@@ -47,7 +47,7 @@ describe('ResponsiveControl', () => {
 		expect(breakpoint).toStrictEqual(expectValue);
 	});
 
-	it('Check Responsive to responsive control', async () => {
+	/* it('Check Responsive to responsive control', async () => {
 		const input = await page.$('.maxi-responsive-control input');
 
 		const breakpoint = await page.$eval(
@@ -93,5 +93,5 @@ describe('ResponsiveControl', () => {
 		);
 
 		expect(breakpointM).toStrictEqual('1024');
-	});
+	}); */
 });

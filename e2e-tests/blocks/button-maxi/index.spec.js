@@ -24,7 +24,7 @@ describe('Button Maxi', () => {
 	});
 
 	it('Button Style', async () => {
-		await openSidebar(page, 'style shortcut');
+		await openSidebar(page, 'style');
 
 		const buttons = await page.$$('.maxi-button-default-styles button');
 		await buttons[4].click();

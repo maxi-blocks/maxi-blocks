@@ -1,19 +1,30 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, cloneDeep } from 'lodash';
 
 const motionData = props => {
 	const response = {};
 	const { attributes } = props;
 
-	const motionSettings = [
+	const motionSettingsVertical = [
 		'speed',
-		'direction',
 		'easing',
-		'offset-start',
-		'offset-middle',
-		'offset-end',
 		'viewport-bottom',
 		'viewport-middle',
 		'viewport-top',
+		'direction',
+		'offset-start',
+		'offset-middle',
+		'offset-end',
+	];
+
+	const motionSettingsRotate = [
+		'speed',
+		'easing',
+		'viewport-bottom',
+		'viewport-middle',
+		'viewport-top',
+		'rotate-start',
+		'rotate-middle',
+		'rotate-end',
 	];
 
 	const motionTypes = [
@@ -45,6 +56,18 @@ const motionData = props => {
 		motionTypes.map(type => {
 			if (enabledMotions.includes(type)) {
 				response[`data-motion-${type}-general`] = '';
+				let motionSettings;
+
+				switch (type) {
+					case 'vertical':
+						motionSettings = motionSettingsVertical;
+						break;
+					case 'rotate':
+						motionSettings = motionSettingsRotate;
+						break;
+					default:
+						break;
+				}
 
 				motionSettings.map(setting => {
 					const motionSettingValue =

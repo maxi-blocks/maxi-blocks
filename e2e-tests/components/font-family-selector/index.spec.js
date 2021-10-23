@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 describe('FontFamilySelector', () => {
 	it('Checking the font family selector', async () => {
@@ -28,5 +28,7 @@ describe('FontFamilySelector', () => {
 		const expectedResult = 'Montserrat';
 
 		expect(fontFamily).toStrictEqual(expectedResult);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

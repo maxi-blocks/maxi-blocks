@@ -55,5 +55,8 @@
 			width: 100%;
 			height: auto;
 		}
+		& > svg:first-child pattern image {
+			transform-origin: 50% 50%;
+		}
 	}
 }

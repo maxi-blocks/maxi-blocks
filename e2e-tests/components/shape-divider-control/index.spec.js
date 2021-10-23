@@ -9,7 +9,11 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import {
+	getBlockAttributes,
+	openAdvancedSidebar,
+	getBlockStyle,
+} from '../../utils';
 
 describe('ShapeDividerControl', () => {
 	it('Checking the shape divider control', async () => {
@@ -18,9 +22,9 @@ describe('ShapeDividerControl', () => {
 		await page.$eval('.maxi-container-block', select => select.focus());
 		const accordionPanel = await openAdvancedSidebar(page, 'shape divider');
 
-		await accordionPanel.$$eval(
-			'.maxi-shapedividercontrol .maxi-base-control label',
-			click => click[3].click()
+		await accordionPanel.$eval(
+			'.maxi-shapedividercontrol .maxi-toggle-switch.shape-divider-top-status .maxi-base-control__label',
+			click => click.click()
 		);
 
 		const expectedTopStatus = true;
@@ -30,9 +34,9 @@ describe('ShapeDividerControl', () => {
 		expect(shapeTopStatus).toStrictEqual(expectedTopStatus);
 
 		// effects
-		await accordionPanel.$$eval(
-			'.maxi-shapedividercontrol .maxi-base-control label',
-			click => click[6].click()
+		await accordionPanel.$eval(
+			'.maxi-shapedividercontrol .maxi-toggle-switch.shape-divider-top-effects-status .maxi-base-control__label',
+			click => click.click()
 		);
 
 		const expectedTopEffectStatus = true;
@@ -100,5 +104,7 @@ describe('ShapeDividerControl', () => {
 		const shapeTopHeight = shapeHeightAttribute['shape-divider-top-height'];
 
 		expect(shapeTopHeight).toStrictEqual(expectedTopHeight);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

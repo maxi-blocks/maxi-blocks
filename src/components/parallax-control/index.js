@@ -7,8 +7,13 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import FancyRadioControl from '../fancy-radio-control';
+import ImageLayer from '../background-control/imageLayer';
+import ToggleSwitch from '../toggle-switch';
 import AdvancedNumberControl from '../advanced-number-control';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -19,31 +24,36 @@ import classnames from 'classnames';
  * Component
  */
 const ParallaxControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, breakpoint } = props;
 
 	const classes = classnames('maxi-parallax-control', className);
 
 	return (
 		<div className={classes}>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Use Parallax Effect', 'maxi-blocks')}
 				selected={props['parallax-status']}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
 				onChange={val =>
 					onChange({
 						'parallax-status': val,
-						'background-image-size': !props['parallax-status']
-							? 'cover'
-							: 'auto',
+						'background-image-size': val ? 'cover' : 'auto',
 					})
 				}
 			/>
 			{props['parallax-status'] && (
 				<>
+					<ImageLayer
+						imageOptions={{
+							...getGroupAttributes(props, 'parallax'),
+						}}
+						onChange={obj => onChange(obj)}
+						disableClipPath
+						prefix='parallax-'
+						breakpoint={breakpoint}
+						hideSettings
+					/>
 					<FancyRadioControl
+						className='parallax-direction'
 						label={__('Direction', 'maxi-blocks')}
 						selected={props['parallax-direction']}
 						options={[

@@ -1,12 +1,8 @@
 /* eslint-disable no-return-await */
-
 /**
  * IMPORTANT: when testing on non-interactive there are no delay times between action, so is possible that
  * is necessary to add `await page.waitForTimeout(150);` as the `formatValue` takes that time to be saved
  */
-
-// console.error = jest.fn();
-
 /**
  * WordPress dependencies
  */
@@ -196,7 +192,9 @@ describe('TextMaxi', () => {
 		);
 		await selectMaxiTextP.focus();
 		await page.waitForTimeout(150);
+		await page.waitForSelector('.toolbar-item__text-link');
 		await page.$eval('.toolbar-item__text-link', button => button.click());
+		await page.waitForSelector('a.components-external-link');
 		const isLinkModifiable = await page.$eval(
 			'a.components-external-link',
 			link => link.href.length > 0
@@ -342,6 +340,7 @@ describe('TextMaxi', () => {
 		await page.$eval('.toolbar-popover-link-destroyer', button =>
 			button.click()
 		);
+		await page.waitForTimeout(200);
 
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
@@ -596,5 +595,31 @@ describe('TextMaxi', () => {
 
 		expect(expectedColor).toBe(4);
 		expect(expectedContent2 === expectedContent).toBeTruthy();
+	});
+
+	it('Testing changing custom format and showing the correct value', async () => {
+		await insertBlock('Text Maxi');
+		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
+		await page.waitForTimeout(150);
+
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+		await pressKeyWithModifier('shift', 'ArrowLeft');
+
+		await page.$eval('.toolbar-item__typography-control', button =>
+			button.click()
+		);
+
+		const input = await page.$('.maxi-typography-control__size input');
+		await input.focus();
+		await page.keyboard.press('Backspace');
+		await page.waitForTimeout(200);
+		await page.keyboard.press(0);
+		await page.waitForTimeout(200);
+
+		const inputValue = await input.evaluate(input => input.value);
+
+		expect(inputValue).toStrictEqual('10');
 	});
 });

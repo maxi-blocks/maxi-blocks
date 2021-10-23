@@ -1,29 +1,28 @@
+/* eslint-disable no-await-in-loop */
 /**
  * WordPress dependencies
  */
 import {
 	createNewPost,
 	insertBlock,
-	pressKeyTimes,
+	pressKeyWithModifier,
 	getEditedPostContent,
+	pressKeyTimes,
 } from '@wordpress/e2e-test-utils';
+
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, openPreviewPage } from '../../utils';
 
 describe('Image Maxi', () => {
 	it('Image Maxi does not break', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
-
 		expect(await getEditedPostContent()).toMatchSnapshot();
 	});
 
 	it('Checking the image caption', async () => {
-		await createNewPost();
-		await insertBlock('Image Maxi');
-
 		// select img
 		await page.$eval(
 			'.maxi-image-block__placeholder .maxi-editor-url-input__button button',
@@ -36,7 +35,7 @@ describe('Image Maxi', () => {
 		);
 
 		const linkImage =
-			'https://www.landuum.com/wp-content/uploads/2019/03/cultura_paisajeiluminado_landuum5.jpg';
+			'https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg';
 
 		await page.keyboard.type(linkImage);
 		await page.$$eval(
@@ -68,8 +67,9 @@ describe('Image Maxi', () => {
 			'.maxi-typography-control .maxi-typography-control__font-family'
 		);
 		await fontFamilySelector.click();
-		await page.keyboard.type('Montserrat');
+		await page.keyboard.type('Montserrat', { delay: 100 });
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(200);
 
 		const attributes = await getBlockAttributes();
 		const fontFamily = attributes['font-family-general'];
@@ -105,35 +105,49 @@ describe('Image Maxi', () => {
 		const inputs = await accordionPanel.$$(
 			'.maxi-advanced-number-control .maxi-base-control__field input'
 		);
-		await inputs[0].focus();
-		await pressKeyTimes('Backspace', '1');
-		await page.keyboard.type('9');
 
 		await inputs[2].focus();
-		await pressKeyTimes('Backspace', '4');
-		await page.keyboard.type('2');
+		await page.waitForTimeout(200);
+		await page.keyboard.press('Backspace');
+		await page.waitForTimeout(200);
+		await page.keyboard.type('9');
+		await page.waitForTimeout(200);
 
 		await inputs[4].focus();
+		await pressKeyWithModifier('primary', 'a');
+		await page.waitForTimeout(200);
+		await page.keyboard.type('4');
+
+		await inputs[6].focus();
 		await page.keyboard.type('11');
+		await page.waitForTimeout(200);
+
+		const responsiveStage = await accordionPanel.$eval(
+			'.maxi-typography-control__text-options-tabs .maxi-tabs-control__button[aria-pressed="true"]',
+			tab => tab.innerText.toLowerCase()
+		);
 
 		const styleAttributes = await getBlockAttributes();
 		const typographyAttributes = (({
-			'font-size-m': fontSize,
-			'line-height-m': lineHeight,
-			'letter-spacing-m': letterSpacing,
+			[`font-size-${responsiveStage}`]: fontSize,
+			[`line-height-${responsiveStage}`]: lineHeight,
+			[`letter-spacing-${responsiveStage}`]: letterSpacing,
 		}) => ({
-			'font-size-m': fontSize,
-			'line-height-m': lineHeight,
-			'letter-spacing-m': letterSpacing,
+			[`font-size-${responsiveStage}`]: fontSize,
+			[`line-height-${responsiveStage}`]: lineHeight,
+			[`letter-spacing-${responsiveStage}`]: letterSpacing,
 		}))(styleAttributes);
 
 		const expectedAttributesTwo = {
-			'font-size-m': 19,
-			'line-height-m': 12,
-			'letter-spacing-m': 11,
+			[`font-size-${responsiveStage}`]: 19,
+			[`line-height-${responsiveStage}`]: 4,
+			[`letter-spacing-${responsiveStage}`]: 11,
 		};
 
 		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
+
+		// await changeResponsive(page, 'general');
+		// accordionPanel = await openSidebar(page, 'caption');
 
 		// Weight, Transform, Style, Decoration
 		const weightSelector = await accordionPanel.$(
@@ -179,9 +193,9 @@ describe('Image Maxi', () => {
 		expect(textAttributes).toStrictEqual(expectedAttributes);
 
 		// Text shadow
-		await accordionPanel.$$eval(
-			'.maxi-typography-control .maxi-textshadow-control .maxi-base-control__field label',
-			select => select[1].click()
+		await accordionPanel.$eval(
+			'.maxi-typography-control .maxi-textshadow-control .maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		await accordionPanel.$$(
@@ -190,12 +204,12 @@ describe('Image Maxi', () => {
 
 		const shadowStyles = [
 			'none',
-			'0px 0px 5px #a2a2a2',
-			'5px 0px 3px #a2a2a2',
-			'2px 4px 0px #a2a2a2',
+			'2px 4px 3px rgba(var(--maxi-light-color-8),0.3)',
+			'2px 4px 3px rgba(var(--maxi-light-color-8),0.5)',
+			'4px 4px 0px rgba(var(--maxi-light-color-8),0.21)',
 		];
 
-		for (let i = 0; i < shadowStyles.length; i++) {
+		for (let i = 0; i < shadowStyles.length; i += 1) {
 			const setting = shadowStyles[i];
 
 			await accordionPanel.$$eval(
@@ -203,25 +217,34 @@ describe('Image Maxi', () => {
 				(buttons, i) => buttons[i].click(),
 				i
 			);
+			await page.waitForTimeout(200);
 
 			const shadowAttributes = await getBlockAttributes();
 			const textShadow = shadowAttributes['text-shadow-general'];
 			expect(textShadow).toStrictEqual(setting);
 		}
 
-		// Colors: LinkColour, LinkHoverColour, LinkActiveColour, LinkVisitedColour
-		const colors = await accordionPanel.$$(
-			'.maxi-typography-control .maxi-color-palette-control .maxi-sc-color-palette div'
+		// Colors: LinkColor, LinkHoverColor, LinkActiveColor, LinkVisitedColor
+		// LinkColor
+		await accordionPanel.$$eval(
+			'.maxi-typography-link-color .maxi-sc-color-palette div',
+			colors => colors[1].click()
 		);
-
-		// LinkColour
-		await colors[9].click();
-		// LinkHoverColour
-		await colors[17].click();
-		// LinkActiveColour
-		await colors[24].click();
-		// LinkVisitedColour
-		await colors[31].click();
+		// LinkHoverColor
+		await accordionPanel.$$eval(
+			'.maxi-typography-link-hover-color .maxi-sc-color-palette div',
+			colors => colors[2].click()
+		);
+		// LinkActiveColor
+		await accordionPanel.$$eval(
+			'.maxi-typography-link-active-color .maxi-sc-color-palette div',
+			colors => colors[3].click()
+		);
+		// LinkVisitedColor
+		await accordionPanel.$$eval(
+			'.maxi-typography-link-visited-color .maxi-sc-color-palette div',
+			colors => colors[4].click()
+		);
 
 		const linkColorAttributes = await getBlockAttributes();
 		const linkAttributes = (({
@@ -237,12 +260,77 @@ describe('Image Maxi', () => {
 		}))(linkColorAttributes);
 
 		const expectedValues = {
-			'link-palette-color-general': 3,
-			'link-hover-palette-color-general': 4,
+			'link-palette-color-general': 2,
+			'link-hover-palette-color-general': 3,
 			'link-active-palette-color-general': 4,
-			'link-visited-palette-color-general': 4,
+			'link-visited-palette-color-general': 5,
 		};
 
 		expect(linkAttributes).toStrictEqual(expectedValues);
+	});
+
+	it('Image Dimension', async () => {
+		await openSidebar(page, 'image dimension');
+
+		// width
+		await page.$eval(
+			'.maxi-image-inspector__dimension-width .components-input-control__input',
+			input => input.focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('60');
+
+		const imageWidth = await getBlockAttributes();
+		expect(imageWidth.imgWidth).toStrictEqual(60);
+
+		// reset width
+		const button = await page.$(
+			'.maxi-image-inspector__dimension-width button'
+		);
+		await button.click();
+
+		const imageWidthReset = await getBlockAttributes();
+		expect(imageWidthReset.imgWidth).toStrictEqual(100);
+
+		// imageRatio
+		const selector = await page.$('.maxi-image-inspector__ratio select');
+
+		await selector.select('ar11');
+
+		const ratio = await getBlockAttributes();
+		expect(ratio.imageRatio).toStrictEqual('ar11');
+
+		const checkFrontend = await page.$eval(
+			'.maxi-image-block .maxi-image-ratio__ar11',
+			div => div.innerHTML
+		);
+
+		expect(checkFrontend).toMatchSnapshot();
+	});
+	it('Image alt tag', async () => {
+		await openSidebar(page, 'image alt tag');
+
+		// select custom alt tag
+		const selector = await page.$('.maxi-image-inspector__alt-tag select');
+		await selector.select('custom');
+
+		await page.$eval('.maxi-image-inspector__custom-tag input', input =>
+			input.focus()
+		);
+
+		await page.keyboard.type('Image Tag');
+
+		const altTag = await getBlockAttributes();
+		expect(altTag.mediaAlt).toStrictEqual('Image Tag');
+
+		const previewPage = await openPreviewPage(page);
+		await previewPage.waitForSelector('.entry-content');
+
+		const expectAlt = await previewPage.$eval(
+			'figure div img',
+			alterative => alterative.alt
+		);
+		expect(expectAlt).toStrictEqual('Image Tag');
 	});
 });

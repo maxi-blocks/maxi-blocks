@@ -1,10 +1,16 @@
 body.maxi-blocks--active .maxi-button-block {
 	display: flex;
 	flex-direction: column;
-	width: 100%;
+	max-width: 100%;
+	text-align: center;
 
+	&[data-align='full'] {
+		.maxi-button-block__button {
+			width: 100%;
+			text-align: center;
+		}
+	}
 	&__icon {
-		width: 32px;
 		box-sizing: content-box;
 
 		div {
@@ -19,17 +25,18 @@ body.maxi-blocks--active .maxi-button-block {
 		}
 	}
 	&__content {
-		z-index: 1;
-		min-width: 1px;
 		position: relative;
+		z-index: 1;
 		display: block;
 		order: 1;
+		width: 100%;
+		min-width: 1px;
 	}
 	&__button {
-		height: auto;
-		align-items: center;
-		display: flex;
 		position: relative;
+		display: flex;
+		align-items: center;
+		height: auto;
 
 		&--icon-left {
 			.maxi-button-block__icon {

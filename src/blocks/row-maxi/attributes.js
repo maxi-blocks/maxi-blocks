@@ -36,16 +36,7 @@ const attributes = {
 	...attributesData.container,
 	...attributesData.rowPattern,
 	...attributesData.opacity,
-	...attributesData.background,
-	...attributesData.backgroundColor,
-	...attributesData.backgroundImage,
-	...attributesData.backgroundVideo,
-	...attributesData.backgroundGradient,
-	...attributesData.backgroundSVG,
-	...attributesData.backgroundHover,
-	...attributesData.backgroundColorHover,
-	...attributesData.backgroundImageHover,
-	...attributesData.backgroundGradientHover,
+	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,
@@ -61,6 +52,7 @@ const attributes = {
 	...attributesData.position,
 	...attributesData.transform,
 	...attributesData.zIndex,
+	...attributesData.overflow,
 };
 
 export default attributes;

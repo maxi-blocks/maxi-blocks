@@ -2,17 +2,20 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { SelectControl } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import ColorControl from '../color-control';
-import FancyRadioControl from '../fancy-radio-control';
 import AdvancedNumberControl from '../advanced-number-control';
+import ColorControl from '../color-control';
+import ToggleSwitch from '../toggle-switch';
 import FontFamilySelector from '../font-family-selector';
+import SelectControl from '../select-control';
 
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -28,23 +31,72 @@ import './editor.scss';
  * Component
  */
 const NumberCounterControl = props => {
-	const { className, onChange } = props;
+	const { className, breakpoint, onChange } = props;
 
 	const classes = classnames('maxi-number-counter-control', className);
 
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 3999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 999,
+		},
+		'%': {
+			min: 0,
+			max: 100,
+		},
+	};
+
 	return (
 		<div className={classes}>
-			<FancyRadioControl
+			<AdvancedNumberControl
+				label={__('Width', 'maxi-blocks')}
+				className='maxi-number-counter-control__width'
+				enableUnit
+				unit={getLastBreakpointAttribute(
+					'width-unit',
+					breakpoint,
+					props
+				)}
+				onChangeUnit={val =>
+					onChange({ [`width-unit-${breakpoint}`]: val })
+				}
+				value={getLastBreakpointAttribute('width', breakpoint, props)}
+				onChangeValue={val =>
+					onChange({ [`width-${breakpoint}`]: val })
+				}
+				onReset={() =>
+					onChange({
+						[`width-${breakpoint}`]: getDefaultAttribute(
+							`width-${breakpoint}`
+						),
+						[`width-unit-${breakpoint}`]: getDefaultAttribute(
+							`width-unit-${breakpoint}`
+						),
+					})
+				}
+				minMaxSettings={minMaxSettings}
+				allowedUnits={['px', 'em', 'vw', '%']}
+			/>
+			<ToggleSwitch
 				label={__('Preview', 'maxi-block')}
 				selected={props['number-counter-preview']}
-				options={[
-					{ label: __('Yes', 'maxi-block'), value: 1 },
-					{ label: __('No', 'maxi-block'), value: 0 },
-				]}
-				onChange={val => onChange({ 'number-counter-preview': val })}
+				onChange={val =>
+					onChange({
+						'number-counter-preview': val,
+					})
+				}
 			/>
 			<SelectControl
 				label={__('Start Animation', 'maxi-blocks')}
+				className='maxi-number-counter-control__start-animation'
 				value={props['number-counter-start-animation']}
 				options={[
 					{
@@ -117,24 +169,6 @@ const NumberCounterControl = props => {
 				}
 			/>
 			<AdvancedNumberControl
-				label={__('Radius', 'maxi-blocks')}
-				min={90}
-				max={999}
-				initial={85}
-				step={1}
-				value={props['number-counter-radius']}
-				onChangeValue={val =>
-					onChange({ 'number-counter-radius': val })
-				}
-				onReset={() =>
-					onChange({
-						'number-counter-radius': getDefaultAttribute(
-							'number-counter-radius'
-						),
-					})
-				}
-			/>
-			<AdvancedNumberControl
 				label={__('Stroke', 'maxi-blocks')}
 				min={1}
 				max={99}
@@ -182,41 +216,41 @@ const NumberCounterControl = props => {
 					})
 				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
+				className='number-counter-percentage-sign-status'
 				label={__('Show Percentage Sign', 'maxi-block')}
 				selected={props['number-counter-percentage-sign-status']}
-				options={[
-					{ label: __('Yes', 'maxi-block'), value: 1 },
-					{ label: __('No', 'maxi-block'), value: 0 },
-				]}
 				onChange={val =>
-					onChange({ 'number-counter-percentage-sign-status': val })
+					onChange({
+						'number-counter-percentage-sign-status': val,
+					})
 				}
 			/>
-			<FancyRadioControl
+			<ToggleSwitch
+				className='number-counter-circle-status'
 				label={__('Hide Circle', 'maxi-block')}
 				selected={props['number-counter-circle-status']}
-				options={[
-					{ label: __('Yes', 'maxi-block'), value: 1 },
-					{ label: __('No', 'maxi-block'), value: 0 },
-				]}
 				onChange={val => {
-					onChange({ 'number-counter-circle-status': val });
+					onChange({
+						'number-counter-circle-status': val,
+					});
 
-					if (!val && props['number-counter-end'] > 100)
+					if (
+						!props['number-counter-circle-status'] &&
+						props['number-counter-end'] > 100
+					)
 						onChange({ 'number-counter-end': 100 });
 				}}
 			/>
 			{!props['number-counter-circle-status'] && (
-				<FancyRadioControl
+				<ToggleSwitch
+					className='number-counter-rounded-status'
 					label={__('Rounded Bar', 'maxi-block')}
 					selected={props['number-counter-rounded-status']}
-					options={[
-						{ label: __('Yes', 'maxi-block'), value: 1 },
-						{ label: __('No', 'maxi-block'), value: 0 },
-					]}
 					onChange={val =>
-						onChange({ 'number-counter-rounded-status': val })
+						onChange({
+							'number-counter-rounded-status': val,
+						})
 					}
 				/>
 			)}
@@ -237,7 +271,6 @@ const NumberCounterControl = props => {
 							paletteStatus,
 					})
 				}
-				showPalette
 			/>
 			<hr />
 			<ColorControl
@@ -263,7 +296,6 @@ const NumberCounterControl = props => {
 							paletteStatus,
 					})
 				}
-				showPalette
 			/>
 			<hr />
 			<ColorControl
@@ -284,7 +316,6 @@ const NumberCounterControl = props => {
 							paletteStatus,
 					})
 				}
-				showPalette
 			/>
 		</div>
 	);

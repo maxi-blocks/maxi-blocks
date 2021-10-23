@@ -1,7 +1,15 @@
-import { getGroupAttributes, stylesCleaner } from '../../extensions/styles';
+/**
+ * Internal dependencies
+ */
+import {
+	getGroupAttributes,
+	stylesCleaner,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 import {
 	getAlignmentFlexStyles,
 	getAlignmentTextStyles,
+	getBackgroundStyles,
 	getBorderStyles,
 	getBoxShadowStyles,
 	getColorBackgroundObject,
@@ -9,12 +17,21 @@ import {
 	getGradientBackgroundObject,
 	getIconStyles,
 	getMarginPaddingStyles,
+	getOverflowStyles,
 	getPositionStyles,
 	getSizeStyles,
 	getTransformStyles,
+	getTransitionStyles,
 	getTypographyStyles,
 	getZIndexStyles,
 } from '../../extensions/styles/helpers';
+
+/**
+ * External dependencies
+ */
+import { isNil, isEmpty, merge } from 'lodash';
+
+const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const getWrapperObject = props => {
 	const response = {
@@ -32,6 +49,9 @@ const getWrapperObject = props => {
 		}),
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
 		}),
 	};
 
@@ -54,20 +74,23 @@ const getContentObject = props => {
 
 const getNormalObject = props => {
 	const response = {
+		size: getSizeStyles({
+			...getGroupAttributes(props, 'size'),
+		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
 			},
 			parentBlockStyle: props.parentBlockStyle,
 		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
 		padding: getMarginPaddingStyles({
 			...getGroupAttributes(props, 'padding'),
 		}),
 		zIndex: getZIndexStyles({
 			...getGroupAttributes(props, 'zIndex'),
+		}),
+		transitionDuration: getTransitionStyles({
+			...getGroupAttributes(props, 'transitionDuration'),
 		}),
 		position: getPositionStyles({
 			...getGroupAttributes(props, 'position'),
@@ -86,17 +109,14 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
-		...(props['background-active-media'] === 'color' && {
-			background: getColorBackgroundObject({
-				...getGroupAttributes(props, 'backgroundColor'),
-				blockStyle: props.parentBlockStyle,
-				isButton: true,
-			}),
-		}),
-		...(props['background-active-media'] === 'gradient' && {
-			background: getGradientBackgroundObject({
-				...getGroupAttributes(props, 'backgroundGradient'),
-			}),
+		...getBackgroundStyles({
+			...getGroupAttributes(props, [
+				'background',
+				'backgroundColor',
+				'backgroundGradient',
+			]),
+			isButton: true,
+			blockStyle: props.parentBlockStyle,
 		}),
 	};
 
@@ -128,18 +148,20 @@ const getHoverObject = props => {
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
 			}),
-		...(props['background-active-media-hover'] === 'color' && {
-			background: getColorBackgroundObject({
-				...getGroupAttributes(props, 'backgroundColor', true),
-				blockStyle: props.parentBlockStyle,
-				isHover: true,
-				isButton: true,
+		...(props['background-hover-status'] && {
+			...(props['background-active-media-hover'] === 'color' && {
+				background: getColorBackgroundObject({
+					...getGroupAttributes(props, 'backgroundColor', true),
+					blockStyle: props.parentBlockStyle,
+					isHover: true,
+					isButton: true,
+				}),
 			}),
-		}),
-		...(props['background-active-media-hover'] === 'gradient' && {
-			background: getGradientBackgroundObject({
-				...getGroupAttributes(props, 'backgroundGradient', true),
-				isHover: true,
+			...(props['background-active-media-hover'] === 'gradient' && {
+				background: getGradientBackgroundObject({
+					...getGroupAttributes(props, 'backgroundGradient', true),
+					isHover: true,
+				}),
 			}),
 		}),
 	};
@@ -157,7 +179,100 @@ const getHoverContentObject = props => {
 			parentBlockStyle: props.parentBlockStyle,
 			textLevel: 'button',
 		}),
+		transitionDuration: getTransitionStyles({
+			...getGroupAttributes(props, 'transitionDuration'),
+		}),
 	};
+
+	return response;
+};
+
+const getIconSize = (obj, isHover = false) => {
+	const response = {
+		label: 'Icon size',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		if (!isNil(obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`])) {
+			response[breakpoint]['max-width'] = `${
+				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
+			}${getLastBreakpointAttribute(
+				'icon-width-unit',
+				breakpoint,
+				obj,
+				isHover
+			)}`;
+			response[breakpoint]['max-height'] = `${
+				obj[`icon-width-${breakpoint}${isHover ? '-hover' : ''}`]
+			}${getLastBreakpointAttribute(
+				'icon-width-unit',
+				breakpoint,
+				obj,
+				isHover
+			)}`;
+		}
+
+		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
+			delete response[breakpoint];
+	});
+
+	return { IconSize: response };
+};
+
+const getIconPathStyles = (obj, isHover = false) => {
+	const response = {
+		label: 'Icon path',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		if (
+			!isNil(obj[`icon-stroke-${breakpoint}${isHover ? '-hover' : ''}`])
+		) {
+			response[breakpoint]['stroke-width'] = `${
+				obj[`icon-stroke-${breakpoint}${isHover ? '-hover' : ''}`]
+			}`;
+		}
+
+		if (isEmpty(response[breakpoint]) && breakpoint !== 'general')
+			delete response[breakpoint];
+	});
+
+	return { IconPath: response };
+};
+
+const getIconBackgroundObject = props => {
+	let response = {};
+
+	breakpoints.forEach(breakpoint => {
+		response = merge(response, {
+			background: {
+				...getColorBackgroundObject({
+					...getGroupAttributes(props, [
+						'iconBackgroundColor',
+						'background',
+						'backgroundColor',
+					]),
+					prefix: 'icon-',
+					blockStyle: props.parentBlockStyle,
+					isIconInherit: props['icon-inherit'],
+					breakpoint,
+				}),
+			},
+			gradient: {
+				...getGradientBackgroundObject({
+					...getGroupAttributes(props, 'iconBackgroundGradient'),
+					prefix: 'icon-',
+					breakpoint,
+				}),
+			},
+		});
+	});
 
 	return response;
 };
@@ -168,28 +283,11 @@ const getIconObject = (props, target) => {
 			{
 				...getGroupAttributes(props, ['icon', 'typography']),
 			},
-			target,
 			props.parentBlockStyle,
-			props['icon-inherit']
+			props['icon-inherit'],
+			false
 		),
-		background: target === 'icon' && {
-			...getColorBackgroundObject({
-				...getGroupAttributes(props, [
-					'iconBackgroundColor',
-					'background',
-					'backgroundColor',
-				]),
-				prefix: 'icon-',
-				blockStyle: props.parentBlockStyle,
-				isIconInherit: props['icon-inherit'],
-			}),
-		},
-		gradient: target === 'icon' && {
-			...getGradientBackgroundObject({
-				...getGroupAttributes(props, 'iconGradient'),
-				prefix: 'icon-',
-			}),
-		},
+		...(target === 'icon' && getIconBackgroundObject(props)),
 		padding:
 			target === 'icon' &&
 			getMarginPaddingStyles(
@@ -212,8 +310,105 @@ const getIconObject = (props, target) => {
 				parentBlockStyle: props.parentBlockStyle,
 			}),
 	};
+	return response;
+};
+
+const getIconHoverObject = (props, target) => {
+	const iconHoverStatus = props['icon-status-hover'];
+
+	const response = {
+		icon:
+			iconHoverStatus &&
+			getIconStyles(
+				{
+					...getGroupAttributes(props, ['icon', 'typography'], true),
+				},
+				props.parentBlockStyle,
+				props['icon-inherit'],
+				true
+			),
+		background: iconHoverStatus &&
+			target === 'iconHover' && {
+				...getColorBackgroundObject({
+					...getGroupAttributes(
+						props,
+						[
+							'iconBackgroundColor',
+							'background',
+							'backgroundColor',
+						],
+						true
+					),
+					prefix: 'icon-',
+					blockStyle: props.parentBlockStyle,
+					isIconInherit: props['icon-inherit'],
+					isHover: true,
+				}),
+			},
+		gradient: iconHoverStatus &&
+			target === 'iconHover' && {
+				...getGradientBackgroundObject({
+					...getGroupAttributes(
+						props,
+						'iconBackgroundGradient',
+						true
+					),
+					prefix: 'icon-',
+					isHover: true,
+				}),
+			},
+		border:
+			iconHoverStatus &&
+			target === 'iconHover' &&
+			getBorderStyles({
+				obj: {
+					...getGroupAttributes(
+						props,
+						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
+						true
+					),
+				},
+				prefix: 'icon-',
+				parentBlockStyle: props.parentBlockStyle,
+				isHover: true,
+			}),
+	};
 
 	return response;
+};
+
+const getIconResponsive = obj => {
+	const response = {
+		label: 'Icon responsive',
+		general: {},
+	};
+
+	breakpoints.forEach(breakpoint => {
+		response[breakpoint] = {};
+
+		if (
+			!isNil(obj[`icon-spacing-${breakpoint}`]) &&
+			!isNil(obj['icon-position'])
+		) {
+			obj['icon-position'] === 'left'
+				? (response[breakpoint][
+						'margin-right'
+				  ] = `${getLastBreakpointAttribute(
+						'icon-spacing',
+						breakpoint,
+						obj
+				  )}px`)
+				: (response[breakpoint][
+						'margin-left'
+				  ] = `${getLastBreakpointAttribute(
+						'icon-spacing',
+						breakpoint,
+						obj
+				  )}px`);
+		}
+	});
+
+	return { IconResponsive: response };
 };
 
 const getStyles = props => {
@@ -223,12 +418,30 @@ const getStyles = props => {
 		[uniqueID]: stylesCleaner({
 			'': getWrapperObject(props),
 			' .maxi-button-block__button': getNormalObject(props),
-			' .maxi-button-block__icon': getIconObject(props, 'icon'),
+			' .maxi-button-block__icon': [
+				getIconObject(props, 'icon'),
+				getIconResponsive(props, 'icon'),
+			],
+			' .maxi-button-block__icon svg': getIconSize(props, false),
 			' .maxi-button-block__icon svg > *': getIconObject(props, 'svg'),
+			' .maxi-button-block__icon svg path': getIconPathStyles(
+				props,
+				false
+			),
 			' .maxi-button-block__content': getContentObject(props),
 			' .maxi-button-block__button:hover': getHoverObject(props),
 			' .maxi-button-block__button:hover .maxi-button-block__content':
 				getHoverContentObject(props),
+			' .maxi-button-block__button:hover .maxi-button-block__icon':
+				props['icon-status-hover'] &&
+				getIconHoverObject(props, 'iconHover'),
+			' .maxi-button-block__button:hover .maxi-button-block__icon svg > *':
+				props['icon-status-hover'] &&
+				getIconHoverObject(props, 'iconHover'),
+			' .maxi-button-block__button:hover .maxi-button-block__icon svg':
+				props['icon-status-hover'] && getIconSize(props, true),
+			' .maxi-button-block__button:hover .maxi-button-block__icon svg path':
+				props['icon-status-hover'] && getIconPathStyles(props, true),
 		}),
 	};
 

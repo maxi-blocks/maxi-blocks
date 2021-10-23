@@ -5,7 +5,10 @@ const boxShadow = {
 	},
 	'box-shadow-palette-color-general': {
 		type: 'number',
-		default: 1,
+		default: 8,
+	},
+	'box-shadow-palette-opacity-general': {
+		type: 'number',
 	},
 	'box-shadow-color-general': {
 		type: 'string',
@@ -26,6 +29,9 @@ const boxShadow = {
 		type: 'boolean',
 	},
 	'box-shadow-palette-color-xxl': {
+		type: 'number',
+	},
+	'box-shadow-palette-opacity-xxl': {
 		type: 'number',
 	},
 	'box-shadow-color-xxl': {
@@ -49,6 +55,9 @@ const boxShadow = {
 	'box-shadow-palette-color-xl': {
 		type: 'number',
 	},
+	'box-shadow-palette-opacity-xl': {
+		type: 'number',
+	},
 	'box-shadow-color-xl': {
 		type: 'string',
 	},
@@ -68,6 +77,9 @@ const boxShadow = {
 		type: 'boolean',
 	},
 	'box-shadow-palette-color-l': {
+		type: 'number',
+	},
+	'box-shadow-palette-opacity-l': {
 		type: 'number',
 	},
 	'box-shadow-color-l': {
@@ -91,6 +103,9 @@ const boxShadow = {
 	'box-shadow-palette-color-m': {
 		type: 'number',
 	},
+	'box-shadow-palette-opacity-m': {
+		type: 'number',
+	},
 	'box-shadow-color-m': {
 		type: 'string',
 	},
@@ -112,6 +127,9 @@ const boxShadow = {
 	'box-shadow-palette-color-s': {
 		type: 'number',
 	},
+	'box-shadow-palette-opacity-s': {
+		type: 'number',
+	},
 	'box-shadow-color-s': {
 		type: 'string',
 	},
@@ -131,6 +149,9 @@ const boxShadow = {
 		type: 'boolean',
 	},
 	'box-shadow-palette-color-xs': {
+		type: 'number',
+	},
+	'box-shadow-palette-opacity-xs': {
 		type: 'number',
 	},
 	'box-shadow-color-xs': {

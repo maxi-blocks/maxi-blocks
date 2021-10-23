@@ -8,7 +8,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes } from '../../utils';
+import { getBlockAttributes, getBlockStyle } from '../../utils';
 
 describe('FontLevelControl', () => {
 	it('Checking the font level control', async () => {
@@ -44,7 +44,9 @@ describe('FontLevelControl', () => {
 			const paletteColor = attributes['palette-color-general'];
 
 			expect(text).toStrictEqual(fontLevel[i]);
-			expect(paletteColor).toStrictEqual(5);
+			expect(paletteColor).toStrictEqual(i !== 6 ? 5 : 3);
 		}
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

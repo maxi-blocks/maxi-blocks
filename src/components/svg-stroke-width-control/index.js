@@ -2,7 +2,10 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { getDefaultAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * Internal dependencies
@@ -13,24 +16,41 @@ import AdvancedNumberControl from '../advanced-number-control';
  * Component
  */
 const SvgStrokeWidthControl = props => {
-	const { onChange } = props;
+	const { onChange, breakpoint, prefix, isHover = false } = props;
 
-	const stroke = props['svg-stroke'];
-	const defaultStroke = getDefaultAttribute('svg-stroke');
+	const stroke =
+		props[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`];
+	const defaultStroke = getDefaultAttribute(`${prefix}stroke-${breakpoint}`);
 
 	return (
 		<AdvancedNumberControl
 			label={__('Stroke Width', 'maxi-blocks')}
 			value={stroke}
+			placeholder={
+				breakpoint !== 'general'
+					? getLastBreakpointAttribute(
+							`${prefix}stroke`,
+							breakpoint,
+							props,
+							isHover
+					  )
+					: null
+			}
 			onChangeValue={val => {
 				onChange({
-					'svg-stroke': val !== undefined && val !== '' ? val : '',
+					[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]:
+						val !== undefined && val !== '' ? val : '',
 				});
 			}}
 			min={0.1}
 			max={5}
 			step={0.1}
-			onReset={() => onChange(defaultStroke)}
+			onReset={() =>
+				onChange({
+					[`${prefix}stroke-${breakpoint}${isHover ? '-hover' : ''}`]:
+						defaultStroke,
+				})
+			}
 			initialPosition={defaultStroke}
 		/>
 	);

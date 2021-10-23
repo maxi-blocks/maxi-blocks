@@ -1,92 +1,40 @@
 .maxi-gradient-control {
-	&__gradient {
-		.components-circular-option-picker {
-			margin-top: 0;
-		}
-		.components-angle-picker-control {
-			width: 100%;
-			&__input-field {
-				padding: 0 0 0 8px !important;
-				line-height: 2;
-				@at-root .rtl #{&} {
-					padding: 0 8px 0 0 !important;
-				}
-			}
-			.components-angle-picker-control {
-				&__angle-circle-indicator,
-				&__angle-circle {
-					border-color: #dddfe2;
-				}
-			}
-			.maxi-base-control__field {
-				&__label {
-					flex: 5 !important;
-				}
-			}
-		}
-		.components-circular-option-picker {
-			&__custom-clear-wrapper {
-				display: none;
-			}
-		}
-		.components-custom-gradient-picker {
-			margin-top: 0;
+	position: relative;
 
-			&__toolbar {
-				min-height: auto;
-				& > div {
-					margin: 0 !important;
-				}
-				& > div:first-of-type {
-					.components-toolbar__control {
-						border-top-right-radius: 0 !important;
-						border-bottom-right-radius: 0 !important;
-						@at-root .rtl #{&} {
-							border-top-left-radius: 0 !important;
-							border-bottom-left-radius: 0 !important;
-							border-top-right-radius: 5px !important;
-							border-bottom-right-radius: 5px !important;
-						}
-					}
-				}
-				& > div:last-of-type {
-					.components-toolbar__control {
-						border-top-left-radius: 0 !important;
-						border-bottom-left-radius: 0 !important;
-						border-left: 0;
-						@at-root .rtl #{&} {
-							border-top-right-radius: 0 !important;
-							border-bottom-right-radius: 0 !important;
-							border-top-left-radius: 5px !important;
-							border-bottom-left-radius: 5px !important;
-							border-left: 2px solid #dddfe1;
-						}
-					}
-				}
-				button.components-toolbar__control {
-					border: 2px solid #dddfe1;
-					width: 37px !important;
+	.components-angle-picker-control {
+		&__angle-circle {
+			border-width: 2px !important;
+		}
+	}
+	.components-input-control {
+		&__input {
+			line-height: 2 !important;
+		}
+		&__backdrop {
+			border: 2px solid #dddfe1 !important;
+			border-radius: 5px !important;
+		}
+	}
+	.components-circular-option-picker {
+		display: flex;
+		flex-direction: column-reverse;
 
-					&.is-pressed,
-					&:hover {
-						background-color: #f1f1f1 !important;
-						border-color: #dddfe1 !important;
+		&__custom-clear-wrapper {
+			position: absolute;
+			top: 0;
+			right: 35px;
+		}
+		&__clear {
+			border: 2px solid #dddfe1;
+			box-shadow: none;
+			border-radius: 5px;
+			padding: 0;
+			height: 31px;
+			width: 31px;
 
-						& > svg {
-							background-color: #f1f1f1;
-						}
-					}
-					svg {
-						border: none !important;
-						border-radius: 0 !important;
-					}
-					&:before {
-						content: none;
-					}
-				}
-			}
-			&__ui-line {
-				flex-direction: column;
+			&:hover,
+			&:focus {
+				box-shadow: none !important;
 			}
 		}
 	}

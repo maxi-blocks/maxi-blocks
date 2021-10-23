@@ -17,15 +17,26 @@ const attributes = {
 		type: 'string',
 		default: __('Number Counter', 'maxi-blocks'),
 	},
-	...attributesData.numberCounter,
-	...attributesData.margin,
-	...attributesData.padding,
-	...attributesData.opacity,
-	...attributesData.position,
-	...attributesData.transform,
 	...attributesData.display,
-	...attributesData.entrance,
+	...attributesData.margin,
+	...attributesData.numberCounter,
+	...attributesData.opacity,
+	...attributesData.padding,
+	...attributesData.position,
+	...{
+		...attributesData.size,
+		'width-general': {
+			type: 'number',
+			default: 250,
+		},
+		'width-unit-general': {
+			type: 'string',
+			default: 'px',
+		},
+	},
+	...attributesData.transform,
 	...attributesData.zIndex,
+	...attributesData.overflow,
 };
 
 export default attributes;

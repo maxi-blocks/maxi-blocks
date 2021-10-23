@@ -28,7 +28,6 @@ import { isEmpty } from 'lodash';
 /**
  * Edit
  */
-
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
@@ -39,7 +38,6 @@ class edit extends MaxiBlockComponent {
 
 		const motionStatus =
 			!!this.props.attributes['motion-status'] ||
-			!isEmpty(this.props.attributes['entrance-type']) ||
 			!!this.props.attributes['parallax-status'];
 
 		return {
@@ -47,7 +45,6 @@ class edit extends MaxiBlockComponent {
 				...(motionStatus && {
 					...getGroupAttributes(this.props.attributes, [
 						'motion',
-						'entrance',
 						'parallax',
 					]),
 				}),
@@ -81,12 +78,17 @@ class edit extends MaxiBlockComponent {
 				{...this.props}
 			/>,
 			<MaxiBlock
+				className={hasInnerBlock && 'has-child'}
 				key={`maxi-group--${uniqueID}`}
 				ref={this.blockRef}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>
 				<ArrowDisplayer
-					{...getGroupAttributes(attributes, ['background', 'arrow'])}
+					{...getGroupAttributes(
+						attributes,
+						['blockBackground', 'arrow', 'border'],
+						true
+					)}
 					breakpoint={deviceType}
 				/>
 				<InnerBlocks

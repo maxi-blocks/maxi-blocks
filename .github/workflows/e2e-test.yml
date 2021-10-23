@@ -3,8 +3,6 @@ name: E2E Tests
 on:
     pull_request:
         branches: [master]
-    push:
-        branches: [master]
 
 jobs:
     e2e-js:

@@ -14,16 +14,17 @@ import {
 	BlockStylesControl,
 	CustomLabel,
 	DisplayControl,
-	FancyRadioControl,
 	FullSizeControl,
+	InfoBox,
 	MapControl,
 	OpacityControl,
 	PositionControl,
 	ResponsiveControl,
 	SettingTabsControl,
+	ToggleSwitch,
 	TransformControl,
-	InfoBox,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 
@@ -67,7 +68,6 @@ const Inspector = props => {
 												setAttributes({ customLabel })
 											}
 										/>
-										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
 											isFirstOnHierarchy={
@@ -83,40 +83,31 @@ const Inspector = props => {
 									items={[
 										{
 											label: __(
-												'Width / Height',
+												'Height / Width',
 												'maxi-blocks'
 											),
 											content: (
 												<>
-													<FancyRadioControl
-														label={__(
-															'Full Width',
-															'maxi-blocks'
-														)}
-														selected={fullWidth}
-														options={[
-															{
-																label: __(
-																	'Yes',
-																	'maxi-blocks'
-																),
-																value: 'full',
-															},
-															{
-																label: __(
-																	'No',
-																	'maxi-blocks'
-																),
-																value: 'normal',
-															},
-														]}
-														optionType='string'
-														onChange={fullWidth =>
-															setAttributes({
-																fullWidth,
-															})
-														}
-													/>
+													{isFirstOnHierarchy && (
+														<ToggleSwitch
+															label={__(
+																'Set map to full-width',
+																'maxi-blocks'
+															)}
+															selected={
+																fullWidth ===
+																'full'
+															}
+															onChange={val =>
+																setAttributes({
+																	fullWidth:
+																		val
+																			? 'full'
+																			: 'normal',
+																})
+															}
+														/>
+													)}
 													<FullSizeControl
 														{...getGroupAttributes(
 															attributes,
@@ -309,6 +300,21 @@ const Inspector = props => {
 															val,
 													})
 												}
+											/>
+										),
+									},
+									{
+										label: __('Overflow', 'maxi-blocks'),
+										content: (
+											<OverflowControl
+												{...getGroupAttributes(
+													attributes,
+													'overflow'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
+												}
+												breakpoint={deviceType}
 											/>
 										),
 									},

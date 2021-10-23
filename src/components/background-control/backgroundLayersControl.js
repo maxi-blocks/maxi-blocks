@@ -8,19 +8,20 @@ import { useState, RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import {
-	getGroupAttributes,
 	getAttributeKey,
 	getBlockStyle,
+	getColorRGBAString,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
 import * as backgroundLayers from './layers';
 import ColorLayer from './colorLayer';
-import FancyRadioControl from '../fancy-radio-control';
 import GradientLayer from './gradientLayer';
 import Icon from '../icon';
 import ImageLayer from './imageLayer';
 import LoaderControl from '../loader-control';
 import SVGLayer from './svgLayer';
 import VideoLayer from './videoLayer';
+import { setBreakpointToLayer } from './utils';
 
 /**
  * External dependencies
@@ -30,16 +31,24 @@ import classnames from 'classnames';
 import { isEmpty, cloneDeep } from 'lodash';
 
 /**
- * Styles and icons
+ * Icons
  */
-import { moveRight, toolbarSizing } from '../../icons';
+import { moveRight, toolbarSizing, toolbarShow } from '../../icons';
 
 /**
  * Component
  */
 const LayerCard = props => {
-	const { onChange, onOpen, isOpen, onRemove, layerId, clientId, isButton } =
-		props;
+	const {
+		onChange,
+		onOpen,
+		isOpen,
+		onRemove,
+		layerId,
+		clientId,
+		breakpoint,
+		isHover,
+	} = props;
 	const layer = cloneDeep(props.layer);
 	const { type } = layer;
 
@@ -49,9 +58,12 @@ const LayerCard = props => {
 	);
 
 	const regexLineToChange = new RegExp('fill=".+?(?=")');
-	const changeTo = `fill="${`var(--maxi-${getBlockStyle(clientId)}-color-${
-		layer['background-palette-svg-color']
-	})`}"`;
+	const colorStr = getColorRGBAString({
+		firstVal: `color-${layer['background-palette-svg-color']}`,
+		opacity: layer['background-palette-svg-opacity'],
+		blockStyle: getBlockStyle(clientId),
+	});
+	const changeTo = `fill="${colorStr}"`;
 
 	const newSvgElement = layer['background-palette-svg-color-status']
 		? layer['background-svg-SVGElement']?.replace(
@@ -62,26 +74,106 @@ const LayerCard = props => {
 
 	const previewStyles = type => {
 		switch (type) {
-			case 'color':
+			case 'color': {
+				const paletteStatus = getLastBreakpointAttribute(
+					'background-palette-color-status',
+					breakpoint,
+					layer,
+					isHover
+				);
+
+				if (paletteStatus) {
+					const paletteColor = getLastBreakpointAttribute(
+						'background-palette-color',
+						breakpoint,
+						layer,
+						isHover
+					);
+					const paletteOpacity = getLastBreakpointAttribute(
+						'background-palette-opacity',
+						breakpoint,
+						layer,
+						isHover
+					);
+
+					return {
+						background: getColorRGBAString({
+							firstVar: `color-${paletteColor}`,
+							opacity: paletteOpacity,
+							blockStyle: getBlockStyle(clientId),
+						}),
+					};
+				}
+
 				return {
-					background: layer['background-palette-color-status']
-						? `var(--maxi-${getBlockStyle(clientId)}-color-${
-								layer['background-palette-color']
-						  })`
-						: layer['background-color'],
+					background: getLastBreakpointAttribute(
+						'background-color',
+						breakpoint,
+						layer,
+						isHover
+					),
 				};
-			case 'gradient':
+			}
+			case 'gradient': {
+				const bgGradient = getLastBreakpointAttribute(
+					'background-gradient',
+					breakpoint,
+					layer,
+					isHover
+				);
+				const bgGradientOpacity = getLastBreakpointAttribute(
+					'background-gradient-opacity',
+					breakpoint,
+					layer,
+					isHover
+				);
 				return {
-					background: layer['background-gradient'],
+					background: bgGradient,
+					opacity: bgGradientOpacity,
 				};
-			case 'image':
+			}
+			case 'image': {
+				const bgImageURL = getLastBreakpointAttribute(
+					'background-image-mediaURL',
+					breakpoint,
+					layer,
+					isHover
+				);
+				const bgImageOpacity = getLastBreakpointAttribute(
+					'background-image-opacity',
+					breakpoint,
+					layer,
+					isHover
+				);
+
 				return {
-					background: `url(${layer['background-image-mediaURL']})`,
+					background: !isEmpty(bgImageURL)
+						? `url(${bgImageURL})`
+						: '',
+					opacity: bgImageOpacity,
 				};
-			case 'video':
+			}
+			case 'video': {
+				const bgFallbackUrl = getLastBreakpointAttribute(
+					'background-video-fallbackURL',
+					breakpoint,
+					layer,
+					isHover
+				);
+				const bgVideoOpacity = getLastBreakpointAttribute(
+					'background-video-opacity',
+					breakpoint,
+					layer,
+					isHover
+				);
+
 				return {
-					background: `url(${layer['background-video-fallbackURL']})`,
+					background: !isEmpty(bgFallbackUrl)
+						? `url(${bgFallbackUrl})`
+						: '',
+					opacity: bgVideoOpacity,
 				};
+			}
 			default:
 				return {};
 		}
@@ -104,11 +196,100 @@ const LayerCard = props => {
 		}
 	};
 
+	const onChangeDisplay = () => {
+		const currentDisplay = getLastBreakpointAttribute(
+			'display',
+			breakpoint,
+			layer,
+			isHover
+		);
+
+		onChange({
+			...layer,
+			[getAttributeKey('display', isHover, false, breakpoint)]:
+				currentDisplay === 'block' ? 'none' : 'block',
+		});
+	};
+
+	const getIsDisplayed = () => {
+		const currentDisplay = getLastBreakpointAttribute(
+			'display',
+			breakpoint,
+			layer,
+			isHover
+		);
+
+		return currentDisplay === 'block' ? 'block' : 'none';
+	};
+
+	const layerContent = {
+		color: (
+			<ColorLayer
+				key={`background-color-layer--${layer.id}`}
+				colorOptions={layer}
+				onChange={obj => onChange({ ...layer, ...obj })}
+				breakpoint={breakpoint}
+				isHover={isHover}
+				isLayer
+			/>
+		),
+		image: (
+			<ImageLayer
+				key={`background-image-layer--${layer.id}`}
+				imageOptions={layer}
+				onChange={obj => onChange({ ...layer, ...obj })}
+				breakpoint={breakpoint}
+				isHover={isHover}
+				isLayer
+			/>
+		),
+		video: (
+			<VideoLayer
+				key={`background-video-layer--${layer.id}`}
+				videoOptions={layer}
+				onChange={obj => onChange({ ...layer, ...obj })}
+				breakpoint={breakpoint}
+				isHover={isHover}
+				isLayer
+			/>
+		),
+		gradient: (
+			<GradientLayer
+				key={`background-gradient-layer--${layer.id}`}
+				gradientOptions={layer}
+				onChange={obj => onChange({ ...layer, ...obj })}
+				breakpoint={breakpoint}
+				isHover={isHover}
+				isLayer
+			/>
+		),
+		shape: (
+			<SVGLayer
+				key={`background-SVG-layer--${layer.id}`}
+				SVGOptions={layer}
+				onChange={obj => onChange({ ...layer, ...obj })}
+				layerId={layerId}
+				breakpoint={breakpoint}
+				isHover={isHover}
+				isLayer
+			/>
+		),
+	};
+
 	return (
 		<div className={classes}>
 			<div
 				className='maxi-background-layer__row'
-				onClick={() => onOpen(!!isOpen)}
+				onClick={({ target }) => {
+					if (
+						!target
+							?.closest('span')
+							?.classList?.contains(
+								'maxi-background-layer__ignore-open'
+							)
+					)
+						onOpen(!!isOpen);
+				}}
 			>
 				<span className='maxi-background-layer__arrow'>
 					{moveRight}
@@ -127,72 +308,40 @@ const LayerCard = props => {
 						</span>
 						{getTitle(type)}
 					</span>
-					<span className='maxi-background-layer__title__mover'>
-						<Icon icon={toolbarSizing} />
+					{breakpoint === 'general' && (
+						<span
+							className={classnames(
+								'maxi-background-layer__title__mover',
+								'maxi-background-layer__ignore-open'
+							)}
+						>
+							<Icon icon={toolbarSizing} />
+						</span>
+					)}
+					<span
+						className={classnames(
+							'maxi-background-layer__title__display',
+							`maxi-background-layer__title__display--${getIsDisplayed()}`,
+							'maxi-background-layer__ignore-move',
+							'maxi-background-layer__ignore-open'
+						)}
+						onClick={onChangeDisplay}
+					>
+						<Icon icon={toolbarShow} />
 					</span>
 					<span
-						className='maxi-background-layer__title__remover'
+						className={classnames(
+							'maxi-background-layer__title__remover',
+							'maxi-background-layer__ignore-move',
+							'maxi-background-layer__ignore-open'
+						)}
 						onClick={onRemove}
 					/>
 				</div>
 			</div>
 			{isOpen && (
-				<div className='maxi-background-layer__content'>
-					{(type === 'color' && (
-						<ColorLayer
-							colorOptions={{
-								...getGroupAttributes(layer, 'backgroundColor'),
-							}}
-							onChange={obj => onChange({ ...layer, ...obj })}
-							type='layer'
-							isButton={isButton}
-						/>
-					)) ||
-						(type === 'image' && (
-							<ImageLayer
-								imageOptions={{
-									...getGroupAttributes(
-										layer,
-										'backgroundImage'
-									),
-								}}
-								onChange={obj => onChange({ ...layer, ...obj })}
-							/>
-						)) ||
-						(type === 'video' && (
-							<VideoLayer
-								videoOptions={{
-									...getGroupAttributes(
-										layer,
-										'backgroundVideo'
-									),
-								}}
-								onChange={obj => onChange({ ...layer, ...obj })}
-							/>
-						)) ||
-						(type === 'gradient' && (
-							<GradientLayer
-								gradientOptions={{
-									...getGroupAttributes(
-										layer,
-										'backgroundGradient'
-									),
-								}}
-								onChange={obj => onChange({ ...layer, ...obj })}
-							/>
-						)) ||
-						(type === 'shape' && (
-							<SVGLayer
-								SVGOptions={{
-									...getGroupAttributes(
-										layer,
-										'backgroundSVG'
-									),
-								}}
-								onChange={obj => onChange({ ...layer, ...obj })}
-								layerId={layerId}
-							/>
-						))}
+				<div className='maxi-background-layer__content maxi-background-layer__ignore-move'>
+					{layerContent[type]}
 				</div>
 			)}
 		</div>
@@ -200,50 +349,81 @@ const LayerCard = props => {
 };
 
 const BackgroundLayersControl = ({
+	layersOptions,
 	isHover = false,
-	isButton = false,
-	prefix = '',
 	onChange,
-	layersStatus,
 	disableImage = false,
 	disableVideo = false,
 	disableGradient = false,
 	disableColor = false,
 	disableSVG = false,
 	clientId,
-	...props
+	breakpoint,
+	hoverStatus = false,
 }) => {
-	const layers = cloneDeep(props.layersOptions);
+	const layers = cloneDeep(layersOptions);
 	layers.sort((a, b) => a.id - b.id);
 
 	const [selector, changeSelector] = useState(null);
+
+	const getNewLayerId = () =>
+		layers && !isEmpty(layers)
+			? layers.reduce((layerA, layerB) =>
+					layerA.id > layerB.id ? layerA : layerB
+			  ).id + 1
+			: 1;
 
 	const getObject = type => {
 		switch (type) {
 			case 'color':
 				return {
-					...backgroundLayers.colorOptions,
-					id: layers.length,
+					...setBreakpointToLayer({
+						layer: backgroundLayers.colorOptions,
+						breakpoint,
+						isHover,
+						hoverStatus,
+					}),
+					id: getNewLayerId(),
 				};
 			case 'image':
 				return {
-					...backgroundLayers.imageOptions,
-					id: layers.length,
+					...setBreakpointToLayer({
+						layer: backgroundLayers.imageOptions,
+						breakpoint,
+						isHover,
+						hoverStatus,
+					}),
+					id: getNewLayerId(),
 				};
 			case 'video':
 				return {
-					...backgroundLayers.videoOptions,
-					id: layers.length,
+					...setBreakpointToLayer({
+						layer: backgroundLayers.videoOptions,
+						breakpoint,
+						isHover,
+						hoverStatus,
+					}),
+					id: getNewLayerId(),
 				};
 			case 'gradient':
 				return {
-					...backgroundLayers.gradientOptions,
-					id: layers.length,
+					...setBreakpointToLayer({
+						layer: backgroundLayers.gradientOptions,
+						breakpoint,
+						isHover,
+						hoverStatus,
+					}),
+					id: getNewLayerId(),
 				};
 			case 'shape':
 				return {
-					...backgroundLayers.SVGOptions,
-					id: layers.length,
+					...setBreakpointToLayer({
+						layer: backgroundLayers.SVGOptions,
+						breakpoint,
+						isHover,
+						hoverStatus,
+					}),
+					id: getNewLayerId(),
 				};
 			default:
 				break;
@@ -261,7 +441,7 @@ const BackgroundLayersControl = ({
 				value: 'color',
 			});
 
-		!disableColor &&
+		!disableImage &&
 			options.push({
 				label: __('Background Image', 'maxi-blocks'),
 				value: 'image',
@@ -290,128 +470,81 @@ const BackgroundLayersControl = ({
 
 	return (
 		<div className='maxi-background-control__layers'>
-			<FancyRadioControl
-				label={__('Use layers', 'maxi-blocks')}
-				selected={layersStatus}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-layers-status',
-							isHover,
-							prefix
-						)]: !!+val,
-						[getAttributeKey(
-							'background-active-media',
-							isHover,
-							prefix
-						)]: +val ? 'layers' : '',
-					})
-				}
-			/>
+			<div>
+				{!isEmpty(layers) && (
+					<ReactDragListView
+						onDragEnd={(fromIndex, toIndex) => {
+							const layer = layers.splice(fromIndex, 1)[0];
+							layers.splice(toIndex, 0, layer);
 
-			{layersStatus && (
-				<div>
-					{!isEmpty(layers) && (
-						<ReactDragListView
-							onDragEnd={(fromIndex, toIndex) => {
-								const layer = layers.splice(fromIndex, 1)[0];
-								layers.splice(toIndex, 0, layer);
-
-								layers.forEach((layer, i) => {
-									layers[i].id = i;
-								});
-
-								onChange({
-									[getAttributeKey(
-										'background-layers',
-										isHover,
-										prefix
-									)]: layers,
-								});
-							}}
-							nodeSelector='div.maxi-background-layer'
-							handleSelector='span.maxi-background-layer__title__mover'
-							ignoreSelector='div.maxi-background-layer__content'
-						>
-							<div className='maxi-background-layers_options'>
-								{layers.map((layer, i) => (
-									<LayerCard
-										key={`maxi-background-layers__${layer.id}`}
-										layerId={layer.id}
-										isButton={isButton}
-										clientId={clientId}
-										layer={layer}
-										onChange={layer => {
-											layers[layer.id] = layer;
-
-											onChange({
-												[getAttributeKey(
-													'background-layers',
-													isHover,
-													prefix
-												)]: layers,
-											});
-										}}
-										onOpen={isOpen => {
-											if (isOpen) changeSelector(null);
-											else
-												selector !== layer.id
-													? changeSelector(layer.id)
-													: changeSelector(null);
-										}}
-										isOpen={selector === layer.id}
-										onRemove={() => {
-											changeSelector(null);
-											layers.splice(i, 1);
-
-											onChange({
-												[getAttributeKey(
-													'background-layers',
-													isHover,
-													prefix
-												)]: layers,
-												...(layers.length === 0 && {
-													[getAttributeKey(
-														'background-active-media',
-														isHover,
-														prefix
-													)]: 'none',
-												}),
-											});
-										}}
-									/>
-								))}
-							</div>
-						</ReactDragListView>
-					)}
-					<LoaderControl
-						options={getOptions()}
-						onClick={value => {
-							layers.push(getObject(value));
+							layers.forEach((layer, i) => {
+								layers[i].id = i;
+							});
 
 							onChange({
-								[getAttributeKey(
-									'background-layers',
-									isHover,
-									prefix
-								)]: layers,
-								...(layers.length > 0 && {
-									[getAttributeKey(
-										'background-active-media',
-										isHover,
-										prefix
-									)]: 'layers',
-								}),
+								'background-layers': layers,
 							});
 						}}
-						forwards
-					/>
-				</div>
-			)}
+						nodeSelector='div.maxi-background-layer'
+						handleSelector='span.maxi-background-layer__title__mover'
+						ignoreSelector='.maxi-background-layer__ignore-move'
+					>
+						<div className='maxi-background-layers_options'>
+							{layers.map((layer, i) => (
+								<LayerCard
+									key={`maxi-background-layers__${layer.id}${
+										isHover ? '--hover' : ''
+									}`}
+									layerId={layer.id}
+									isHover={isHover}
+									clientId={clientId}
+									layer={layer}
+									onChange={newLayer => {
+										layers[i] = newLayer;
+
+										onChange({
+											'background-layers': layers,
+										});
+									}}
+									onOpen={isOpen => {
+										if (isOpen) changeSelector(null);
+										else
+											selector !== layer.id
+												? changeSelector(layer.id)
+												: changeSelector(null);
+									}}
+									isOpen={selector === layer.id}
+									onRemove={() => {
+										changeSelector(null);
+										layers.splice(i, 1);
+
+										onChange({
+											'background-layers': layers,
+										});
+									}}
+									breakpoint={breakpoint}
+								/>
+							))}
+						</div>
+					</ReactDragListView>
+				)}
+				<LoaderControl
+					options={getOptions()}
+					buttonText={__('Add New Layer', 'maxi-blocks')}
+					onClick={value => {
+						const newLayer = getObject(value);
+						layers.push(newLayer);
+
+						onChange({
+							'background-layers': layers,
+						});
+
+						changeSelector(newLayer.id);
+					}}
+					forwards
+					buttonLess
+				/>
+			</div>
 		</div>
 	);
 };

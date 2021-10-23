@@ -9,7 +9,10 @@ import { __ } from '@wordpress/i18n';
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
 import FancyRadioControl from '../../../fancy-radio-control';
-import { getDefaultAttribute } from '../../../../extensions/styles';
+import {
+	getColorRGBAString,
+	getDefaultAttribute,
+} from '../../../../extensions/styles';
 
 /**
  * Styles
@@ -26,7 +29,12 @@ const IconColor = props => {
 
 	const getColor = attr =>
 		attr['icon-palette-color-status']
-			? `var(--maxi-${parentBlockStyle}-icon, var(--maxi-${parentBlockStyle}-color-${attr['icon-palette-color']}))`
+			? getColorRGBAString({
+					firstVar: 'icon',
+					secondVar: `color-${attr['icon-palette-color']}`,
+					blockStyle: parentBlockStyle,
+					opacity: attr['icon-palette-opacity'],
+			  })
 			: attr['icon-color'];
 
 	return (
@@ -47,7 +55,7 @@ const IconColor = props => {
 			<div className='toolbar-item__icon-color__popover'>
 				<FancyRadioControl
 					label={__(
-						'Inherit Color/Backgrond from Button',
+						'Inherit Colour/Backgrond from Button',
 						'maxi-block'
 					)}
 					selected={props['icon-inherit']}
@@ -67,7 +75,7 @@ const IconColor = props => {
 				{props['icon-inherit'] ? (
 					<p className='toolbar-item__icon-color__popover__warning'>
 						{__(
-							'Icon color is inheriting from button.',
+							'Icon colour is inheriting from button.',
 							'maxi-button'
 						)}
 					</p>
@@ -85,7 +93,6 @@ const IconColor = props => {
 								'icon-palette-color-status': paletteStatus,
 							});
 						}}
-						showPalette
 						disableOpacity
 					/>
 				)}

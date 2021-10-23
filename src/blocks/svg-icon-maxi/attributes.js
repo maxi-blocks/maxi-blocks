@@ -25,6 +25,9 @@ const attributes = {
 		type: 'string',
 		default: 'normal',
 	},
+	svgType: {
+		type: 'string',
+	},
 	content: {
 		type: 'string',
 		default: '',
@@ -36,10 +39,7 @@ const attributes = {
 			default: 'center',
 		},
 	},
-	...attributesData.background,
-	...attributesData.backgroundColor,
-	...attributesData.backgroundColorHover,
-	...attributesData.backgroundHover,
+	...attributesData.blockBackground,
 	...attributesData.border,
 	...attributesData.borderHover,
 	...attributesData.borderRadius,
@@ -49,15 +49,16 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.display,
-	...attributesData.entrance,
 	...attributesData.margin,
 	...attributesData.motion,
 	...attributesData.opacity,
 	...attributesData.padding,
 	...attributesData.position,
+	...attributesData.size,
 	...attributesData.svg,
 	...attributesData.transform,
 	...attributesData.zIndex,
+	...attributesData.overflow,
 };
 
 export default attributes;

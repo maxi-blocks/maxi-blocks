@@ -9,23 +9,23 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 import {
 	AccordionControl,
+	AdvancedNumberControl,
 	AxisControl,
-	BackgroundControl,
 	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
 	CustomLabel,
 	DisplayControl,
-	FancyRadioControl,
 	InfoBox,
 	OpacityControl,
 	ResponsiveControl,
 	SelectControl,
 	SettingTabsControl,
-	AdvancedNumberControl,
 	TextControl,
+	ToggleSwitch,
 	TransformControl,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -34,6 +34,7 @@ import {
 	setHoverAttributes,
 } from '../../extensions/styles';
 import { getColumnDefaultValue } from '../../extensions/column-templates';
+import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
  * Inspector
@@ -75,7 +76,6 @@ const Inspector = props => {
 												setAttributes({ customLabel })
 											}
 										/>
-										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
 											isFirstOnHierarchy={
@@ -194,148 +194,7 @@ const Inspector = props => {
 												</>
 											),
 										},
-										deviceType === 'general' && {
-											label: __(
-												'Background',
-												'maxi-blocks'
-											),
-											disablePadding: true,
-											content: (
-												<SettingTabsControl
-													items={[
-														{
-															label: __(
-																'Normal',
-																'maxi-blocks'
-															),
-															content: (
-																<>
-																	<BackgroundControl
-																		{...getGroupAttributes(
-																			attributes,
-																			[
-																				'background',
-																				'backgroundColor',
-																				'backgroundImage',
-																				'backgroundVideo',
-																				'backgroundGradient',
-																				'backgroundSVG',
-																			]
-																		)}
-																		onChange={obj =>
-																			setAttributes(
-																				obj
-																			)
-																		}
-																		disableVideo
-																		clientId={
-																			clientId
-																		}
-																	/>
-																</>
-															),
-														},
-														{
-															label: __(
-																'Hover',
-																'maxi-blocks'
-															),
-															content: (
-																<>
-																	<FancyRadioControl
-																		label={__(
-																			'Enable Background Hover',
-																			'maxi-blocks'
-																		)}
-																		selected={
-																			attributes[
-																				'background-status-hover'
-																			]
-																		}
-																		className='maxi-background-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
-																		onChange={val =>
-																			setAttributes(
-																				{
-																					...(val &&
-																						setHoverAttributes(
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									[
-																										'background',
-																										'backgroundColor',
-																										'backgroundGradient',
-																									]
-																								),
-																							},
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									[
-																										'background',
-																										'backgroundColor',
-																										'backgroundGradient',
-																									],
-																									true
-																								),
-																							}
-																						)),
-																					'background-status-hover':
-																						val,
-																				}
-																			)
-																		}
-																	/>
-																	{attributes[
-																		'background-status-hover'
-																	] && (
-																		<BackgroundControl
-																			{...getGroupAttributes(
-																				attributes,
-																				[
-																					'background',
-																					'backgroundColor',
-																					'backgroundGradient',
-																				],
-																				true
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			disableImage
-																			disableVideo
-																			disableSVG
-																			isHover
-																			clientId={
-																				clientId
-																			}
-																		/>
-																	)}
-																</>
-															),
-														},
-													]}
-												/>
-											),
-										},
+										...inspectorTabs.background({ props }),
 										{
 											label: __('Border', 'maxi-blocks'),
 											disablePadding: true,
@@ -378,7 +237,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -389,22 +248,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-border-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val =>
 																			setAttributes(
 																				{
@@ -513,7 +356,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Box Shadow Hover',
 																			'maxi-blocks'
@@ -524,22 +367,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-box-shadow-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val =>
 																			setAttributes(
 																				{
@@ -733,17 +560,29 @@ const Inspector = props => {
 										label: __('Opacity', 'maxi-blocks'),
 										content: (
 											<OpacityControl
-												opacity={
-													attributes[
-														`opacity-${deviceType}`
-													]
+												{...getGroupAttributes(
+													attributes,
+													'opacity'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
 												}
-												onChange={val =>
-													setAttributes({
-														[`opacity-${deviceType}`]:
-															val,
-													})
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Overflow', 'maxi-blocks'),
+										content: (
+											<OverflowControl
+												{...getGroupAttributes(
+													attributes,
+													'overflow'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
 												}
+												breakpoint={deviceType}
 											/>
 										),
 									},

@@ -115,7 +115,8 @@ Object.values(maxi_custom_data.custom_data).map(item => {
 		});
 	};
 
-	document.head.appendChild(script);
+	if (document.querySelectorAll(`script[src="${script.src}"]`).length === 0)
+		document.head.appendChild(script);
 });
 
 // Motion Effects
@@ -143,7 +144,7 @@ motionElems.forEach(function (elem) {
 				`#${motionID} .maxi-number-counter__box .maxi-number-counter__box__circle`
 			);
 
-			const radius = motionData['number-counter-radius'];
+			const radius = 90;
 			const circumference = 2 * Math.PI * radius;
 			const startCountValue = Math.ceil(
 				(motionData['number-counter-start'] * 360) / 100
@@ -320,7 +321,7 @@ motionElems.forEach(function (elem) {
 		// Parallax Effect
 		if ('parallax-status' in motionData) {
 			const parallaxElem = document.querySelector(
-				`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__images`
+				`#${motionID} > .maxi-background-displayer > .maxi-background-displayer__parallax`
 			);
 			const parallaxStatus = motionData['parallax-status'];
 			const parallaxSpeed = motionData['parallax-speed'];
@@ -334,48 +335,6 @@ motionElems.forEach(function (elem) {
 							? -parallaxSpeed
 							: parallaxSpeed
 					);
-				});
-			}
-		}
-
-		// Entrance Animation
-		if (
-			'entrance-type' in motionData &&
-			motionData['entrance-type'] !== 'none'
-		) {
-			const entranceElem = document.querySelector(`#${motionID}`);
-
-			const entranceType = motionData['entrance-type'];
-			const entranceDuration =
-				motionData['entrance-duration'] === ''
-					? 1
-					: motionData['entrance-duration'];
-			const entranceDelay =
-				motionData['entrance-delay'] === ''
-					? 1
-					: motionData['entrance-delay'];
-
-			if (entranceType !== '') {
-				entranceElem.style.opacity = '0';
-
-				let waypoint = new Waypoint({
-					element: entranceElem,
-					handler: function () {
-						entranceElem.style.opacity = '1';
-						entranceElem.style.setProperty(
-							'--animate-duration',
-							'' + entranceDuration + 's'
-						);
-						entranceElem.style.setProperty(
-							'animation-delay',
-							'' + entranceDelay + 's'
-						);
-						entranceElem.classList.add(
-							'animate__animated',
-							'animate__' + entranceType + ''
-						);
-					},
-					offset: '100%',
 				});
 			}
 		}

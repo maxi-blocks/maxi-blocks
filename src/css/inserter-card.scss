@@ -3,121 +3,44 @@
 ***********/
 .maxi-sidebar {
 	.block-editor-block-icon {
-		width: 33px;
-		height: 33px;
+		flex: 0;
+		height: 16px;
+		width: 16px;
+		margin: 0;
+
 		svg {
-			transform: scale(1.63);
+			width: 16px;
+			height: 16px;
+			min-width: 16px;
+			min-height: 16px;
+			max-width: 16px;
+			max-height: 16px;
 		}
 	}
 	.block-editor-block-inspector.maxi-controls {
 		.block-editor-block-card {
-			color: #fff;
-			padding: 9px 17px;
-			box-shadow: 0 5px 15px 0 rgba(119, 119, 119, 0.1);
 			position: relative;
-			border-bottom: 1px solid #f4f4f4;
+			margin: 0 0 8px 0 !important;
+			padding: 8px;
+			color: #fff;
+			border-bottom: 1px solid #dbdde6;
 			background: #fff;
-			margin-left: 0 !important;
 			letter-spacing: 0;
-			font: 400 20px Roboto, -apple-system, BlinkMacSystemFont, Segoe UI,
-				Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
 
 			&__content {
-				background: inherit !important;
+				margin: 0 0 0 8px;
 			}
 			&__title {
-				line-height: 33px;
-				margin-bottom: 0;
-				background: none !important;
-				position: relative;
-				font-size: 1rem;
-				color: #232433;
+				margin: 0 0 2px 0;
+				font-size: 14px;
 				font-weight: 500;
+				line-height: unset;
 			}
 			&__description {
-				display: block !important;
-				position: relative;
-				padding-top: 8px;
-				border-top: 2px solid #eef0f0;
-				margin: 10px -15px 0 -55px;
-				padding: 10px 15px 0;
-
-				@at-root .rtl #{&} {
-					margin-left: unset;
-					margin-right: -40px;
-				}
+				display: block;
+				width: 100%;
+				margin: 0;
 			}
 		}
 	}
-}
-
-/***************
-* Block inserter
-****************/
-body .maxi-panel-body-inserter,
-body .maxi-panel-body-inserter:hover,
-body .maxi-panel-body-inserter.is-opened,
-body .maxi-panel-body-inserter:active,
-body .maxi-panel-body-inserter.components-panel__body h2,
-body .maxi-panel-body-inserter.is-opened h2,
-body .maxi-panel-body-inserter.components-panel__body h2:hover,
-body .maxi-panel-body-inserter h2:active,
-body .maxi-panel-body-inserter.is-opened h2:hover,
-body .maxi-panel-body-inserter.is-opened h2:active,
-body .maxi-panel-body-inserter h2 button,
-body .maxi-panel-body-inserter h2 button:focus {
-	background: #000000 !important;
-	background-color: #000000 !important;
-}
-
-.maxi-panel-body-inserter h2 button,
-.maxi-panel-body-inserter.is-opened h2 button {
-	font-size: 16px;
-	letter-spacing: 0px;
-	font-weight: 400;
-	color: #ffffff !important;
-}
-
-.maxi-panel-body-inserter *,
-.maxi-panel-body-inserter.is-opened * {
-	color: #ffffff !important;
-}
-
-.maxi-panel-body-inserter h2 button:before {
-	content: url("../../img/maxi-icon-white.svg");
-	display: inline-block;
-	position: absolute;
-	top: 8px;
-	width: 25px;
-}
-
-.maxi-panel-body-inserter h2 button span {
-	margin-left: 40px;
-}
-
-button[class*="maxi-blocks"] {
-	border-radius: 10px;
-	padding-top: 10px !important;
-	max-width: 95%;
-	margin: 0 auto;
-}
-
-button[class*="maxi-blocks"] .block-editor-block-types-list__item-icon {
-	background: #fff;
-	border-radius: 10rem;
-	margin: auto;
-	padding: 0;
-	height: 45px;
-	width: 45px;
-}
-
-button[class*="maxi-blocks"]
-	.block-editor-block-types-list__item-icon
-	.block-editor-block-icon {
-	margin: 6.5px auto !important;
-}
-
-button[class*="maxi-blocks"] span.block-editor-block-types-list__item-title {
-	color: black !important;
-	font-style: 16px;
 }

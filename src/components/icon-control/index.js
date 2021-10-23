@@ -9,15 +9,20 @@ import { useState } from '@wordpress/element';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import ColorControl from '../color-control';
 import AxisControl from '../axis-control';
 import GradientControl from '../gradient-control';
 import BorderControl from '../border-control';
 import InfoBox from '../info-box';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getGroupAttributes,
+	getLastBreakpointAttribute,
 } from '../../extensions/styles';
+import SvgWidthControl from '../svg-width-control';
+import SvgStrokeWidthControl from '../svg-stroke-width-control';
 import MaxiModal from '../../editor/library/modal';
 import Icon from '../icon';
 
@@ -41,8 +46,14 @@ import {
  * Component
  */
 const IconControl = props => {
-	const { className, onChange, clientId, deviceType, parentBlockStyle } =
-		props;
+	const {
+		className,
+		onChange,
+		clientId,
+		breakpoint,
+		parentBlockStyle,
+		isHover = false,
+	} = props;
 
 	const classes = classnames('maxi-icon-control', className);
 
@@ -76,75 +87,144 @@ const IconControl = props => {
 
 	return (
 		<div className={classes}>
-			<MaxiModal type='button-icon' style={parentBlockStyle} />
-			{props['icon-content'] && (
+			{!isHover && breakpoint === 'general' && (
+				<MaxiModal
+					type='button-icon'
+					style={parentBlockStyle}
+					onSelect={obj => onChange(obj)}
+					onRemove={obj => onChange(obj)}
+					icon={props['icon-content']}
+				/>
+			)}
+			{isHover && (
+				<ToggleSwitch
+					label={__('Enable Icon Hover', 'maxi-blocks')}
+					selected={props['icon-status-hover']}
+					onChange={val =>
+						onChange({
+							'icon-status-hover': val,
+						})
+					}
+				/>
+			)}
+			{(props['icon-content'] ||
+				(isHover && props['icon-status-hover'])) && (
 				<>
-					<hr />
-					<AdvancedNumberControl
-						label={__('Size', 'maxi-blocks')}
-						min={1}
-						max={999}
-						initial={1}
-						step={1}
-						value={props['icon-size']}
-						onChangeValue={val => onChange({ 'icon-size': val })}
-						onReset={() =>
-							onChange({
-								'icon-size': getDefaultAttribute('icon-size'),
-							})
-						}
-					/>
-					<AdvancedNumberControl
-						label={__('Spacing', 'maxi-blocks')}
-						min={1}
-						max={999}
-						initial={1}
-						step={1}
-						value={props['icon-spacing']}
-						onChangeValue={val => onChange({ 'icon-spacing': val })}
-						onReset={() =>
-							onChange({
-								'icon-spacing':
-									getDefaultAttribute('icon-spacing'),
-							})
-						}
-					/>
-					<FancyRadioControl
-						label={__('Icon Position', 'maxi-block')}
-						selected={props['icon-position']}
-						options={[
-							{ label: __('Left', 'maxi-block'), value: 'left' },
-							{
-								label: __('Right', 'maxi-block'),
-								value: 'right',
-							},
-						]}
-						optionType='string'
-						onChange={val =>
-							onChange({
-								'icon-position': val,
-							})
-						}
-					/>
-					<FancyRadioControl
-						label={__(
-							'Inherit Color/Backgrond from Button',
-							'maxi-block'
+					{!isHover && breakpoint === 'general' && (
+						<>
+							<hr />
+							<ToggleSwitch
+								label={__(
+									'Icon only (remove text)',
+									'maxi-blocks'
+								)}
+								className='maxi-sc-color-palette__custom'
+								selected={props['icon-only']}
+								onChange={val =>
+									onChange({
+										'icon-only': val,
+									})
+								}
+							/>
+						</>
+					)}
+					<SvgWidthControl
+						prefix='icon-'
+						{...getGroupAttributes(
+							props,
+							`icon${isHover ? 'Hover' : ''}`,
+							isHover
 						)}
-						selected={props['icon-inherit']}
-						options={[
-							{
-								label: __('Yes', 'maxi-block'),
-								value: 1,
-							},
-							{ label: __('No', 'maxi-block'), value: 0 },
-						]}
-						onChange={val =>
-							onChange({
-								'icon-inherit': val,
-							})
-						}
+						onChange={obj => {
+							onChange(obj);
+						}}
+						breakpoint={breakpoint}
+						isHover={isHover}
 					/>
+					<SvgStrokeWidthControl
+						prefix='icon-'
+						{...getGroupAttributes(
+							props,
+							`icon${isHover ? 'Hover' : ''}`,
+							isHover
+						)}
+						onChange={obj => {
+							onChange(obj);
+						}}
+						breakpoint={breakpoint}
+						isHover={isHover}
+					/>
+					{!isHover && (
+						<>
+							<AdvancedNumberControl
+								label={__('Spacing', 'maxi-blocks')}
+								min={0}
+								max={999}
+								initial={1}
+								step={1}
+								breakpoint={breakpoint}
+								value={props[`icon-spacing-${breakpoint}`]}
+								onChangeValue={val => {
+									onChange({
+										[`icon-spacing-${breakpoint}`]:
+											val !== undefined && val !== ''
+												? val
+												: '',
+									});
+								}}
+								onReset={() =>
+									onChange({
+										[`icon-spacing-${breakpoint}`]:
+											getDefaultAttribute(
+												`icon-spacing-${breakpoint}`
+											),
+									})
+								}
+							/>
+							{breakpoint === 'general' && (
+								<>
+									<FancyRadioControl
+										label={__(
+											'Icon Position',
+											'maxi-block'
+										)}
+										selected={props['icon-position']}
+										options={[
+											{
+												label: __('Left', 'maxi-block'),
+												value: 'left',
+											},
+											{
+												label: __(
+													'Right',
+													'maxi-block'
+												),
+												value: 'right',
+											},
+										]}
+										optionType='string'
+										onChange={val =>
+											onChange({
+												'icon-position': val,
+											})
+										}
+									/>
+									<ToggleSwitch
+										label={__(
+											'Inherit Colour/Background from Button',
+											'maxi-block'
+										)}
+										selected={props['icon-inherit']}
+										onChange={val =>
+											onChange({
+												'icon-inherit': val,
+											})
+										}
+									/>
+								</>
+							)}
+						</>
+					)}
 					<FancyRadioControl
 						label=''
 						fullWidthMode
@@ -158,13 +238,30 @@ const IconControl = props => {
 							{!props['icon-inherit'] ? (
 								<ColorControl
 									label={__('Icon', 'maxi-blocks')}
-									color={props['icon-color']}
+									color={
+										props[
+											`icon-color${
+												isHover ? '-hover' : ''
+											}`
+										]
+									}
 									defaultColor={getDefaultAttribute(
-										'icon-color'
+										'icon-color',
+										isHover
 									)}
-									paletteColor={props['icon-palette-color']}
+									paletteColor={
+										props[
+											`icon-palette-color${
+												isHover ? '-hover' : ''
+											}`
+										]
+									}
 									paletteStatus={
-										props['icon-palette-color-status']
+										props[
+											`icon-palette-color-status${
+												isHover ? '-hover' : ''
+											}`
+										]
 									}
 									onChange={({
 										color,
@@ -172,20 +269,25 @@ const IconControl = props => {
 										paletteStatus,
 									}) => {
 										onChange({
-											'icon-color': color,
-											'icon-palette-color': paletteColor,
-											'icon-palette-color-status':
-												paletteStatus,
+											[`icon-color${
+												isHover ? '-hover' : ''
+											}`]: color,
+											[`icon-palette-color${
+												isHover ? '-hover' : ''
+											}`]: paletteColor,
+											[`icon-palette-color-status${
+												isHover ? '-hover' : ''
+											}`]: paletteStatus,
 										});
 									}}
-									showPalette
 									disableOpacity
+									isHover={isHover}
 								/>
 							) : (
 								<InfoBox
 									key='maxi-warning-box__icon-color'
 									message={__(
-										'Icon color is inheriting from button.',
+										'Icon colour is inheriting from button.',
 										'maxi-blocks'
 									)}
 									links={[
@@ -206,32 +308,72 @@ const IconControl = props => {
 							{!props['icon-inherit'] ? (
 								<ColorControl
 									label={__('Icon background', 'maxi-blocks')}
-									color={props['icon-background-color']}
-									defaultColor={getDefaultAttribute(
-										'icon-background-color'
+									paletteStatus={getLastBreakpointAttribute(
+										'icon-background-palette-color-status',
+										breakpoint,
+										props,
+										isHover
 									)}
-									paletteColor={
-										props['icon-background-palette-color']
-									}
-									paletteStatus={
-										props[
-											'icon-background-palette-color-status'
-										]
-									}
+									paletteColor={getLastBreakpointAttribute(
+										'icon-background-palette-color',
+										breakpoint,
+										props,
+										isHover
+									)}
+									paletteOpacity={getLastBreakpointAttribute(
+										'icon-background-palette-opacity',
+										breakpoint,
+										props,
+										isHover
+									)}
+									color={getLastBreakpointAttribute(
+										'icon-background-color',
+										breakpoint,
+										props,
+										isHover
+									)}
+									defaultColor={getDefaultAttribute(
+										getAttributeKey(
+											'background-color',
+											isHover,
+											'icon-',
+											breakpoint
+										)
+									)}
 									onChange={({
-										color,
-										paletteColor,
 										paletteStatus,
+										paletteColor,
+										paletteOpacity,
+										color,
 									}) => {
 										onChange({
-											'icon-background-color': color,
-											'icon-background-palette-color':
-												paletteColor,
-											'icon-background-palette-color-status':
-												paletteStatus,
+											[getAttributeKey(
+												'background-palette-color-status',
+												isHover,
+												'icon-',
+												breakpoint
+											)]: paletteStatus,
+											[getAttributeKey(
+												'background-palette-color',
+												isHover,
+												'icon-',
+												breakpoint
+											)]: paletteColor,
+											[getAttributeKey(
+												'background-palette-opacity',
+												isHover,
+												'icon-',
+												breakpoint
+											)]: paletteOpacity,
+											[getAttributeKey(
+												'background-color',
+												isHover,
+												'icon-',
+												breakpoint
+											)]: color,
 										});
 									}}
-									showPalette
+									isHover={isHover}
 								/>
 							) : (
 								<InfoBox
@@ -259,46 +401,73 @@ const IconControl = props => {
 								'Icon Background Gradient',
 								'maxi-blocks'
 							)}
-							gradient={props['icon-background-gradient']}
-							gradientOpacity={
-								props['icon-background-gradient-opacity']
-							}
+							gradient={getLastBreakpointAttribute(
+								'icon-background-gradient',
+								breakpoint,
+								props,
+								isHover
+							)}
+							gradientOpacity={getLastBreakpointAttribute(
+								'icon-background-gradient-opacity',
+								breakpoint,
+								props,
+								isHover
+							)}
 							defaultGradient={getDefaultAttribute(
-								'icon-background-gradient'
+								getAttributeKey(
+									'background-gradient',
+									isHover,
+									'icon-',
+									breakpoint
+								)
 							)}
 							onChange={val =>
 								onChange({
-									'icon-background-gradient': val,
+									[getAttributeKey(
+										'background-gradient',
+										isHover,
+										'icon-',
+										breakpoint
+									)]: val,
 								})
 							}
 							onChangeOpacity={val =>
 								onChange({
-									'icon-background-gradient-opacity': val,
+									[getAttributeKey(
+										'background-gradient-opacity',
+										isHover,
+										'icon-',
+										breakpoint
+									)]: val,
 								})
 							}
+							isHover={isHover}
 						/>
 					)}
 					{iconStyle === 'border' && (
 						<BorderControl
 							{...getGroupAttributes(props, [
-								'iconBorder',
-								'iconBorderWidth',
-								'iconBorderRadius',
+								`iconBorder${isHover ? 'Hover' : ''}`,
+								`iconBorderWidth${isHover ? 'Hover' : ''}`,
+								`iconBorderRadius${isHover ? 'Hover' : ''}`,
 							])}
 							prefix='icon-'
 							onChange={obj => onChange(obj)}
-							breakpoint={deviceType}
+							breakpoint={breakpoint}
 							clientId={clientId}
+							isHover={isHover}
 						/>
 					)}
-					<AxisControl
-						{...getGroupAttributes(props, 'iconPadding')}
-						label={__('Icon Padding', 'maxi-blocks')}
-						onChange={obj => onChange(obj)}
-						breakpoint={deviceType}
-						target='icon-padding'
-						disableAuto
-					/>
+					{!isHover && (
+						<AxisControl
+							{...getGroupAttributes(props, 'iconPadding')}
+							label={__('Icon Padding', 'maxi-blocks')}
+							onChange={obj => onChange(obj)}
+							breakpoint={breakpoint}
+							target='icon-padding'
+							disableAuto
+						/>
+					)}
 				</>
 			)}
 		</div>

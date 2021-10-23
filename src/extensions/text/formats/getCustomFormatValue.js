@@ -11,17 +11,17 @@ import getActiveStyleCard from '../../style-cards/getActiveStyleCard';
  * External dependencies
  */
 import { isBoolean, isNumber } from 'lodash';
+import { getBlockStyle } from '../../styles';
 
 /**
  * Retrieve the property from typography object requested
  *
- * @param {Object} 	[$0]					Optional named arguments.
- * @param {Object} 	[$0.formatValue]		RichText format value
- * @param {Object} 	[$0.typography]			MaxiBlocks typography
- * @param {Object} 	[$0.prop]				Typography property requested
- * @param {boolean} [$0.breakpoint]			Device type breakpoint
- * @param {boolean} isHover 				Is the requested typography under hover state
- *
+ * @param {Object}  [$0]             Optional named arguments.
+ * @param {Object}  [$0.formatValue] RichText format value
+ * @param {Object}  [$0.typography]  MaxiBlocks typography
+ * @param {Object}  [$0.prop]        Typography property requested
+ * @param {boolean} [$0.breakpoint]  Device type breakpoint
+ * @param {boolean} isHover          Is the requested typography under hover state
  * @returns {*} Requested property
  */
 const getCustomFormatValue = ({
@@ -79,7 +79,10 @@ const getCustomFormatValue = ({
 	if (value || isBoolean(value) || isNumber(value)) return value;
 
 	// Style Cards value
-	const SCStyle = blockStyle.replace('maxi-', '');
+	const rawSCStyle = blockStyle ? blockStyle.replace('maxi-', '') : undefined;
+	const SCStyle = ['light', 'dark'].includes(rawSCStyle)
+		? rawSCStyle
+		: getBlockStyle();
 	const SCLevel = styleCardPrefix || textLevel;
 	const activeStyleCard = styleCard || getActiveStyleCard().value;
 	const currentSC = getTypographyFromSC(activeStyleCard[SCStyle], SCLevel);

@@ -10,6 +10,7 @@ import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
 import {
 	getBlockStyle,
+	getColorRGBAString,
 	getDefaultAttribute,
 } from '../../../../extensions/styles';
 
@@ -35,9 +36,12 @@ const ShapeColor = props => {
 					className='toolbar-item__icon'
 					style={{
 						background: props['shape-palette-fill-color-status']
-							? `var(--maxi-${getBlockStyle(clientId)}-color-${
-									props['shape-palette-fill-color']
-							  })`
+							? getColorRGBAString({
+									firstVar: `color-${props['shape-palette-fill-color']}`,
+									opacity:
+										props['shape-palette-fill-opacity'],
+									blockStyle: getBlockStyle(clientId),
+							  })
 							: props['shape-fill-color'],
 						border: '1px solid #fff',
 					}}
@@ -58,7 +62,6 @@ const ShapeColor = props => {
 							'shape-palette-fill-color-status': paletteStatus,
 						});
 					}}
-					showPalette
 					disableOpacity
 				/>
 			</div>

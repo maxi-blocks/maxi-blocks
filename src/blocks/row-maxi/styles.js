@@ -8,9 +8,10 @@ import {
 	getDisplayStyles,
 	getTransformStyles,
 	getMarginPaddingStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getBorderStyles,
 	getOpacityStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 /**
@@ -63,6 +64,9 @@ const getNormalObject = props => {
 		row: {
 			general: {},
 		},
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
 	};
 
 	if (props.fullWidth !== 'full') {
@@ -136,29 +140,28 @@ const getStyles = props => {
 			'': getNormalObject(props),
 			' .maxi-row-block__container': getContainerObject(props),
 			':hover': getHoverObject(props),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
+					'blockBackground',
 					'border',
 					'borderWidth',
 					'borderRadius',
+					'parallax',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-					'borderHover',
-					'borderRadiusHover',
-					'borderWidthHover',
-				]),
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(
+					props,
+					[
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+						'parallax',
+					],
+					true
+				),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),

@@ -11,14 +11,13 @@ import {
 	AccordionControl,
 	AlignmentControl,
 	AxisControl,
-	BackgroundControl,
 	BlockStylesControl,
 	BorderControl,
 	BoxShadowControl,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
-	FancyRadioControl,
+	FullSizeControl,
+	InfoBox,
 	MotionControl,
 	OpacityControl,
 	PositionControl,
@@ -28,14 +27,17 @@ import {
 	SvgStrokeWidthControl,
 	SvgWidthControl,
 	TextControl,
+	ToggleSwitch,
 	TransformControl,
-	InfoBox,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import {
+	getColorRGBAString,
 	getGroupAttributes,
 	setHoverAttributes,
 } from '../../extensions/styles';
+import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
  * Inspector
@@ -45,7 +47,6 @@ const Inspector = props => {
 		attributes,
 		changeSVGContent,
 		changeSVGContentWithBlockStyle,
-		changeSVGSize,
 		changeSVGStrokeWidth,
 		clientId,
 		deviceType,
@@ -59,6 +60,7 @@ const Inspector = props => {
 		uniqueID,
 		fullWidth,
 		parentBlockStyle,
+		svgType,
 	} = attributes;
 
 	return (
@@ -87,7 +89,6 @@ const Inspector = props => {
 												setAttributes({ customLabel })
 											}
 										/>
-										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
 											isFirstOnHierarchy={
@@ -95,21 +96,55 @@ const Inspector = props => {
 											}
 											onChange={obj => {
 												setAttributes(obj);
+
+												const { parentBlockStyle } =
+													obj;
+
+												const {
+													'svg-palette-fill-color':
+														svgPaletteFillColor,
+													'svg-palette-fill-opacity':
+														svgPaletteFillOpacity,
+													'svg-fill-color':
+														svgFillColor,
+													'svg-palette-line-color':
+														svgPaletteLineColor,
+													'svg-palette-line-opacity':
+														svgPaletteLineOpacity,
+													'svg-line-color':
+														svgLineColor,
+												} = attributes;
+
+												const fillColorStr =
+													getColorRGBAString({
+														firstVar: 'icon-fill',
+														secondVar: `color-${svgPaletteFillColor}`,
+														opacity:
+															svgPaletteFillOpacity,
+														blockStyle:
+															parentBlockStyle,
+													});
+												const lineColorStr =
+													getColorRGBAString({
+														firstVar: 'icon-line',
+														secondVar: `color-${svgPaletteLineColor}`,
+														opacity:
+															svgPaletteLineOpacity,
+														blockStyle:
+															parentBlockStyle,
+													});
+
 												changeSVGContentWithBlockStyle(
 													attributes[
 														'svg-palette-fill-color-status'
 													]
-														? `var(--maxi-${obj.parentBlockStyle}-icon-fill, var(--maxi-${obj.parentBlockStyle}-color-${attributes['svg-palette-fill-color']}))`
-														: attributes[
-																'svg-fill-color'
-														  ],
+														? fillColorStr
+														: svgFillColor,
 													attributes[
 														'svg-palette-line-color-status'
 													]
-														? `var(--maxi-${obj.parentBlockStyle}-icon-line, var(--maxi-${obj.parentBlockStyle}-color-${attributes['svg-palette-line-color']}))`
-														: attributes[
-																'svg-line-color'
-														  ]
+														? lineColorStr
+														: svgLineColor
 												);
 											}}
 											clientId={clientId}
@@ -121,39 +156,42 @@ const Inspector = props => {
 									items={[
 										isFirstOnHierarchy && {
 											label: __(
-												'Width / Height',
+												'Height / Width',
 												'maxi-blocks'
 											),
 											content: (
-												<FancyRadioControl
-													label={__(
-														'Full Width',
-														'maxi-blocks'
+												<>
+													{isFirstOnHierarchy && (
+														<ToggleSwitch
+															label={__(
+																'Set svg icon to full-width',
+																'maxi-blocks'
+															)}
+															selected={
+																fullWidth ===
+																'full'
+															}
+															onChange={val =>
+																setAttributes({
+																	fullWidth:
+																		val
+																			? 'full'
+																			: 'normal',
+																})
+															}
+														/>
 													)}
-													selected={fullWidth}
-													options={[
-														{
-															label: __(
-																'Yes',
-																'maxi-blocks'
-															),
-															value: 'full',
-														},
-														{
-															label: __(
-																'No',
-																'maxi-blocks'
-															),
-															value: 'normal',
-														},
-													]}
-													optionType='string'
-													onChange={fullWidth =>
-														setAttributes({
-															fullWidth,
-														})
-													}
-												/>
+													<FullSizeControl
+														{...getGroupAttributes(
+															attributes,
+															'size'
+														)}
+														onChange={obj =>
+															setAttributes(obj)
+														}
+														breakpoint={deviceType}
+													/>
+												</>
 											),
 										},
 										{
@@ -182,80 +220,127 @@ const Inspector = props => {
 											),
 											content: (
 												<>
-													<SvgColor
-														{...getGroupAttributes(
-															attributes,
-															'svg'
-														)}
-														type='fill'
-														label={__(
-															'SVG Fill',
-															'maxi-blocks'
-														)}
-														onChange={obj => {
-															setAttributes(obj);
+													{svgType !== 'Line' && (
+														<>
+															<SvgColor
+																{...getGroupAttributes(
+																	attributes,
+																	'svg'
+																)}
+																type='fill'
+																label={__(
+																	'SVG Fill',
+																	'maxi-blocks'
+																)}
+																onChange={obj => {
+																	setAttributes(
+																		obj
+																	);
 
-															changeSVGContent(
-																obj[
-																	'svg-palette-fill-color-status'
-																]
-																	? `var(--maxi-${parentBlockStyle}-icon-fill, var(--maxi-${parentBlockStyle}-color-${obj['svg-palette-fill-color']}))`
-																	: obj[
-																			'svg-fill-color'
-																	  ],
-																'fill'
-															);
-														}}
-													/>
-													<hr />
-													<SvgColor
-														{...getGroupAttributes(
-															attributes,
-															'svg'
-														)}
-														type='line'
-														label={__(
-															'SVG Line',
-															'maxi-blocks'
-														)}
-														onChange={obj => {
-															setAttributes(obj);
+																	const fillColorStr =
+																		getColorRGBAString(
+																			{
+																				firstVar:
+																					'icon-fill',
+																				secondVar: `color-${obj['svg-palette-fill-color']}`,
+																				opacity:
+																					obj[
+																						'svg-palette-fill-opacity'
+																					],
+																				blockStyle:
+																					parentBlockStyle,
+																			}
+																		);
 
-															changeSVGContent(
-																obj[
-																	'svg-palette-line-color-status'
-																]
-																	? `var(--maxi-${parentBlockStyle}-icon-line, var(--maxi-${parentBlockStyle}-color-${obj['svg-palette-line-color']}))`
-																	: obj[
-																			'svg-line-color'
-																	  ],
-																'stroke'
-															);
-														}}
-													/>
+																	changeSVGContent(
+																		obj[
+																			'svg-palette-fill-color-status'
+																		]
+																			? fillColorStr
+																			: obj[
+																					'svg-fill-color'
+																			  ],
+																		'fill'
+																	);
+																}}
+															/>
+															{svgType ===
+																'Filled' && (
+																<hr />
+															)}
+														</>
+													)}
+													{svgType !== 'Shape' && (
+														<SvgColor
+															{...getGroupAttributes(
+																attributes,
+																'svg'
+															)}
+															type='line'
+															label={__(
+																'SVG Line',
+																'maxi-blocks'
+															)}
+															onChange={obj => {
+																setAttributes(
+																	obj
+																);
+
+																const lineColorStr =
+																	getColorRGBAString(
+																		{
+																			firstVar:
+																				'icon-line',
+																			secondVar: `color-${obj['svg-palette-line-color']}`,
+																			opacity:
+																				obj[
+																					'svg-palette-line-opacity'
+																				],
+																			blockStyle:
+																				parentBlockStyle,
+																		}
+																	);
+
+																changeSVGContent(
+																	obj[
+																		'svg-palette-line-color-status'
+																	]
+																		? lineColorStr
+																		: obj[
+																				'svg-line-color'
+																		  ],
+																	'stroke'
+																);
+															}}
+														/>
+													)}
 												</>
 											),
 										},
-										attributes.content && {
-											label: __(
-												'SVG Line Width',
-												'maxi-blocks'
-											),
-											content: (
-												<SvgStrokeWidthControl
-													{...getGroupAttributes(
-														attributes,
-														'svg'
-													)}
-													onChange={obj => {
-														setAttributes(obj);
-														changeSVGStrokeWidth(
-															obj['svg-stroke']
-														);
-													}}
-												/>
-											),
-										},
+										attributes.content &&
+											svgType !== 'Shape' && {
+												label: __(
+													'SVG Line Width',
+													'maxi-blocks'
+												),
+												content: (
+													<SvgStrokeWidthControl
+														{...getGroupAttributes(
+															attributes,
+															'svg'
+														)}
+														onChange={obj => {
+															setAttributes(obj);
+															changeSVGStrokeWidth(
+																obj[
+																	`svg-stroke-${deviceType}`
+																]
+															);
+														}}
+														breakpoint={deviceType}
+													/>
+												),
+											},
 										attributes.content && {
 											label: __(
 												'SVG Width',
@@ -269,161 +354,13 @@ const Inspector = props => {
 													)}
 													onChange={obj => {
 														setAttributes(obj);
-														changeSVGSize(
-															obj['svg-width']
-														);
 													}}
+													breakpoint={deviceType}
+													prefix='svg-'
 												/>
 											),
 										},
-										{
-											label: __(
-												'Background',
-												'maxi-blocks'
-											),
-											disablePadding: true,
-											content: (
-												<SettingTabsControl
-													items={[
-														{
-															label: __(
-																'Normal',
-																'maxi-blocks'
-															),
-															content: (
-																<>
-																	<BackgroundControl
-																		{...getGroupAttributes(
-																			attributes,
-																			[
-																				'background',
-																				'backgroundColor',
-																			]
-																		)}
-																		onChange={obj =>
-																			setAttributes(
-																				obj
-																			)
-																		}
-																		disableImage
-																		disableVideo
-																		disableGradient
-																		disableSVG
-																		disableClipPath
-																		clientId={
-																			clientId
-																		}
-																	/>
-																</>
-															),
-														},
-														{
-															label: __(
-																'Hover',
-																'maxi-blocks'
-															),
-															content: (
-																<>
-																	<FancyRadioControl
-																		label={__(
-																			'Enable Background Hover',
-																			'maxi-blocks'
-																		)}
-																		selected={
-																			attributes[
-																				'background-status-hover'
-																			]
-																		}
-																		className='maxi-background-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
-																		onChange={val =>
-																			setAttributes(
-																				{
-																					...(val &&
-																						setHoverAttributes(
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									[
-																										'background',
-																										'backgroundColor',
-																										'backgroundGradient',
-																									]
-																								),
-																							},
-																							{
-																								...getGroupAttributes(
-																									attributes,
-																									[
-																										'background',
-																										'backgroundColor',
-																										'backgroundGradient',
-																									],
-																									true
-																								),
-																							}
-																						)),
-																					'background-status-hover':
-																						val,
-																				}
-																			)
-																		}
-																	/>
-																	{attributes[
-																		'background-status-hover'
-																	] && (
-																		<BackgroundControl
-																			{...getGroupAttributes(
-																				attributes,
-																				[
-																					'background',
-																					'backgroundColor',
-																				],
-																				true
-																			)}
-																			onChange={obj =>
-																				setAttributes(
-																					obj
-																				)
-																			}
-																			disableColor={
-																				!!attributes[
-																					'background-Highlight'
-																				]
-																			}
-																			disableImage
-																			disableVideo
-																			disableGradient
-																			disableSVG
-																			disableClipPath
-																			isHover
-																			clientId={
-																				clientId
-																			}
-																		/>
-																	)}
-																</>
-															),
-														},
-													]}
-												/>
-											),
-										},
+										...inspectorTabs.background({ props }),
 										{
 											label: __('Border', 'maxi-blocks'),
 											disablePadding: true,
@@ -466,7 +403,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Border Hover',
 																			'maxi-blocks'
@@ -477,22 +414,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-border-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val =>
 																			setAttributes(
 																				{
@@ -601,7 +522,7 @@ const Inspector = props => {
 															),
 															content: (
 																<>
-																	<FancyRadioControl
+																	<ToggleSwitch
 																		label={__(
 																			'Enable Box Shadow Hover',
 																			'maxi-blocks'
@@ -612,22 +533,6 @@ const Inspector = props => {
 																			]
 																		}
 																		className='maxi-box-shadow-status-hover'
-																		options={[
-																			{
-																				label: __(
-																					'Yes',
-																					'maxi-blocks'
-																				),
-																				value: 1,
-																			},
-																			{
-																				label: __(
-																					'No',
-																					'maxi-blocks'
-																				),
-																				value: 0,
-																			},
-																		]}
 																		onChange={val =>
 																			setAttributes(
 																				{
@@ -776,23 +681,6 @@ const Inspector = props => {
 										},
 										{
 											label: __(
-												'Entrance Animation',
-												'maxi-blocks'
-											),
-											content: (
-												<EntranceAnimationControl
-													{...getGroupAttributes(
-														attributes,
-														'entrance'
-													)}
-													onChange={obj =>
-														setAttributes(obj)
-													}
-												/>
-											),
-										},
-										{
-											label: __(
 												'Transform',
 												'maxi-blocks'
 											),
@@ -881,17 +769,32 @@ const Inspector = props => {
 											label: __('Opacity', 'maxi-blocks'),
 											content: (
 												<OpacityControl
-													opacity={
-														attributes[
-															`opacity-${deviceType}`
-														]
+													{...getGroupAttributes(
+														attributes,
+														'opacity'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
 													}
-													onChange={val =>
-														setAttributes({
-															[`opacity-${deviceType}`]:
-																val,
-														})
+													breakpoint={deviceType}
+												/>
+											),
+										},
+										{
+											label: __(
+												'Overflow',
+												'maxi-blocks'
+											),
+											content: (
+												<OverflowControl
+													{...getGroupAttributes(
+														attributes,
+														'overflow'
+													)}
+													onChange={obj =>
+														setAttributes(obj)
 													}
+													breakpoint={deviceType}
 												/>
 											),
 										},

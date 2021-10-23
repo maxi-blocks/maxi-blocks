@@ -99,20 +99,28 @@ const setFormat = ({
 				isList,
 			});
 
-			const { typography: cleanedTypography, content: cleanedContent } =
-				flatFormatsWithClass({
-					formatValue: newFormatValue,
-					typography: newTypography,
-					content,
-					isList,
-					value,
-					breakpoint,
-					textLevel,
-					isHover,
-					styleCardPrefix,
-				});
+			const {
+				typography: cleanedTypography,
+				content: cleanedContent,
+				formatValue: cleanedFormatValue,
+			} = flatFormatsWithClass({
+				formatValue: newFormatValue,
+				typography: newTypography,
+				content,
+				isList,
+				value,
+				breakpoint,
+				textLevel,
+				isHover,
+				styleCardPrefix,
+				returnFormatValue,
+			});
 
-			return { ...cleanedTypography, content: cleanedContent };
+			return {
+				...cleanedTypography,
+				content: cleanedContent,
+				...(returnFormatValue && { formatValue: cleanedFormatValue }),
+			};
 		}
 
 		// Ensures the format changes are saved as undo entity on historical records

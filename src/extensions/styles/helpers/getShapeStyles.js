@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import getColorRGBAString from '../getColorRGBAString';
+
+/**
  * External dependencies
  */
 import { isNil } from 'lodash';
@@ -10,8 +15,12 @@ const getShapeStyles = (obj, target, parentBlockStyle) => {
 	};
 
 	if (target === 'svg' && !isNil(obj['shape-width'])) {
-		response.general.width = `${obj['shape-width']}${obj['shape-width-unit']}`;
-		response.general.height = `${obj['shape-width']}${obj['shape-width-unit']}`;
+		response.general[
+			'max-width'
+		] = `${obj['shape-width']}${obj['shape-width-unit']}`;
+		response.general[
+			'max-height'
+		] = `${obj['shape-width']}${obj['shape-width-unit']}`;
 	}
 
 	if (target === 'path') {
@@ -19,7 +28,11 @@ const getShapeStyles = (obj, target, parentBlockStyle) => {
 			obj['shape-palette-fill-color-status'] &&
 			obj['shape-palette-fill-color']
 		)
-			response.general.fill = `var(--maxi-${parentBlockStyle}-color-${obj['shape-palette-fill-color']})`;
+			response.general.fill = getColorRGBAString({
+				firstVar: `color-${obj['shape-palette-fill-color']}`,
+				opacity: obj['shape-palette-fill-opacity'],
+				blockStyle: parentBlockStyle,
+			});
 		else if (
 			!obj['shape-palette-fill-color-status'] &&
 			!isNil(obj['shape-fill-color'])

@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes } from '../../utils';
+import { getBlockAttributes, getBlockStyle } from '../../utils';
 
 describe('ImageURL', () => {
 	beforeEach(async () => {
@@ -25,7 +25,7 @@ describe('ImageURL', () => {
 		);
 
 		const linkImage =
-			'https://www.landuum.com/wp-content/uploads/2019/03/cultura_paisajeiluminado_landuum5.jpg';
+			'https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg';
 
 		await page.keyboard.type(linkImage);
 
@@ -65,5 +65,7 @@ describe('ImageURL', () => {
 		);
 
 		expect(error).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -11,7 +11,7 @@ import {
  */
 import { openSidebar, modalMock } from '../../utils';
 
-describe('BackgroundControl', () => {
+describe.skip('BackgroundDisplayerControl', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
@@ -21,7 +21,7 @@ describe('BackgroundControl', () => {
 		const accordionPanel = await openSidebar(page, 'background');
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
-			select => select[5].click()
+			select => select[4].click()
 		);
 
 		const backgroundColor = await page.$eval(
@@ -69,23 +69,24 @@ describe('BackgroundControl', () => {
 		);
 
 		// start Time
-		await inputs[2].focus();
+		await inputs[0].focus();
 		await page.keyboard.type('1');
 		await page.keyboard.press('Enter');
 
 		// end time
-		await inputs[4].focus();
+		await inputs[2].focus();
 		await page.keyboard.type('3');
 		await page.keyboard.press('Enter');
 
-		await accordionPanel.$$eval(
-			'.maxi-background-control__video .maxi-fancy-radio-control label',
-			select => {
-				select[2].click(); // loop
-				select[5].click(); // Play on mobile
-			}
+		await accordionPanel.$eval(
+			'.maxi-background-control__video .maxi-toggle-switch.video-loop .maxi-base-control__label',
+			use => use.click()
 		);
 
+		await accordionPanel.$eval(
+			'.maxi-background-control__video .maxi-toggle-switch.video-play-mobile .maxi-base-control__label',
+			use => use.click()
+		);
 		const backgroundVideo = await page.$eval(
 			'.maxi-background-displayer',
 			expect => expect.innerHTML

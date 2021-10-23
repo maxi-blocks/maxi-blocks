@@ -7,9 +7,10 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getMarginPaddingStyles,
 	getDividerStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -50,6 +51,9 @@ const getNormalObject = props => {
 			null,
 			props.parentBlockStyle
 		),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
 	};
 
 	return response;
@@ -104,20 +108,27 @@ const getStyles = props => {
 			'': getNormalObject(props),
 			':hover hr.maxi-divider-block__divider': getHoverObject(props),
 			' hr.maxi-divider-block__divider': getDividerObject(props),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
-					'backgroundGradient',
+					'blockBackground',
+					'border',
+					'borderWidth',
+					'borderRadius',
+					'parallax',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-				]),
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(
+					props,
+					[
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+					],
+					true
+				),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),

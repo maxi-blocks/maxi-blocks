@@ -8,12 +8,14 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getMarginPaddingStyles,
 	getTypographyStyles,
+	getTransitionStyles,
 	getCustomFormatsStyles,
 	getAlignmentTextStyles,
 	getLinkStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -61,6 +63,9 @@ const getNormalObject = props => {
 		textAlignment: getAlignmentTextStyles({
 			...getGroupAttributes(props, 'textAlignment'),
 		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
+		}),
 	};
 
 	return response;
@@ -90,6 +95,16 @@ const getHoverObject = props => {
 				isHover: true,
 				parentBlockStyle: props.parentBlockStyle,
 			}),
+	};
+
+	return response;
+};
+
+const getLinkObject = props => {
+	const response = {
+		transitionDuration: getTransitionStyles({
+			...getGroupAttributes(props, 'transitionDuration'),
+		}),
 	};
 
 	return response;
@@ -142,6 +157,8 @@ const getStyles = props => {
 	return {
 		[uniqueID]: stylesCleaner({
 			'': getNormalObject(props),
+			' .maxi-text-block--link, .maxi-text-block--link span':
+				getLinkObject(props),
 			':hover': getHoverObject(props),
 			...(!isList && {
 				[` ${element}.maxi-text-block__content`]: getTypographyObject(
@@ -157,29 +174,28 @@ const getStyles = props => {
 				[` ${element}.maxi-text-block__content li:hover`]:
 					getTypographyHoverObject(props),
 			}),
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
+					'blockBackground',
 					'border',
 					'borderWidth',
 					'borderRadius',
+					'parallax',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-					'borderHover',
-					'borderRadiusHover',
-					'borderWidthHover',
-				]),
+			...getBlockBackgroundStyles({
+				...getGroupAttributes(
+					props,
+					[
+						'blockBackground',
+						'border',
+						'borderWidth',
+						'borderRadius',
+						'parallax',
+					],
+					true
+				),
 				isHover: true,
 				blockStyle: props.parentBlockStyle,
 			}),

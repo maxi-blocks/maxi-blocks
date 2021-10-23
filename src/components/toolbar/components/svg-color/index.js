@@ -8,7 +8,10 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import SvgColor from '../../../svg-color';
-import { getGroupAttributes } from '../../../../extensions/styles';
+import {
+	getColorRGBAString,
+	getGroupAttributes,
+} from '../../../../extensions/styles';
 
 /**
  * External dependencies
@@ -31,9 +34,12 @@ const SvgColorToolbar = props => {
 
 	const getColor = attr =>
 		attr[`svg-palette-${type}-color-status`]
-			? `var(--maxi-${parentBlockStyle}-icon-${type}, var(--maxi-${parentBlockStyle}-color-${
-					attr[`svg-palette-${type}-color`]
-			  }))`
+			? getColorRGBAString({
+					firstVar: `icon-${type}`,
+					secondVar: `color-${attr[`svg-palette-${type}-color`]}`,
+					opacity: attr[`svg-palette-${type}-opacity`],
+					blockStyle: parentBlockStyle,
+			  })
 			: attr[`svg-${type}-color`];
 
 	const typeNumber = {

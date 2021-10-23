@@ -12,6 +12,7 @@
 	.block-editor-link-control {
 		.block-editor-url-input__input {
 			color: #fff;
+
 			&::placeholder {
 				color: #5f6063 !important;
 			}
@@ -20,12 +21,13 @@
 			color: #b7b7b7;
 		}
 		&__search-item-action {
-			background-color: #000;
 			color: #fff;
+			background-color: #000;
 			box-shadow: inset 0 0 0 1px #fff;
+
 			&:hover {
-				box-shadow: inset 0 0 0 1px #ff4a17 !important;
 				color: #ff4a17 !important;
+				box-shadow: inset 0 0 0 1px #ff4a17 !important;
 			}
 		}
 		&__search-item-title {
@@ -45,17 +47,18 @@
 			border-radius: 2px;
 		}
 		&__search-item {
-			background-color: #4f515c;
 			margin-bottom: 3px;
 			color: #fff;
+			background-color: #4f515c;
 
 			&.is-current {
-				background-color: #4f515c;
 				margin-bottom: 10px;
 				color: #fff;
+				background-color: #4f515c;
+
 				a {
-					color: #ff4a17;
 					margin-bottom: 5px;
+					color: #ff4a17;
 					text-decoration: none;
 				}
 			}
@@ -81,29 +84,10 @@
 			align-items: center;
 
 			.components-base-control__label {
-				margin-bottom: 0;
-				margin-right: 10px;
 				flex: 1;
 				min-height: 18px;
-			}
-
-			// SelectorControl
-			.maxi-select-control__input {
-				background: #fff url(../../img/arrow-down.svg) no-repeat right 7px top
-					50%;
-				background-size: 9px 9px !important;
-				border-radius: 5px !important;
-				min-height: unset;
-				max-height: unset !important;
-				color: #464a53;
-				font-weight: 500;
-				height: 31px;
-				margin: 0 !important;
-				@at-root .rtl #{&} {
-					background: #fff url(../../img/arrow-down.svg) no-repeat left 7px top
-						50%;
-					padding: 0 10px 0px 24px !important;
-				}
+				margin-bottom: 0;
+				margin-right: 10px;
 			}
 
 			// RadioControl
@@ -113,25 +97,22 @@
 
 			// ButtonControl
 			.components-button {
-				display: inline-flex;
-				width: 31px;
-				min-width: 31px;
-				height: 31px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				overflow: hidden;
+				padding: 8px;
+				border-radius: 0;
+				background-color: #fff;
 				text-decoration: none;
+				transition: 0.5s linear;
 				cursor: pointer;
 				-webkit-appearance: none;
-				background: none;
-				background-color: rgba(0, 0, 0, 0);
-				transition: box-shadow 0.1s linear;
-				align-items: center;
-				overflow: hidden;
-				padding: 0;
 				opacity: 1;
-				border-radius: 5px;
 
 				&:hover {
-					box-shadow: none !important;
 					border-color: #c5c5c5;
+					box-shadow: none !important;
 					cursor: pointer;
 				}
 
@@ -144,12 +125,12 @@
 				}
 
 				&.is-secondary {
+					border: 1px solid var(--maxi-grey-1-color);
 					box-shadow: none !important;
-					border: 2px solid #dddfe1;
 
 					&:hover {
-						background-color: white;
-						border-color: #c5c5c5;
+						background-color: var(--maxi-white-1-color);
+						border-color : rgba(180,180,180,0.8);
 					}
 
 					svg {
@@ -171,59 +152,61 @@
 		}
 	}
 
-	// ButtonControl
-	.components-button {
-		&:focus {
-			box-shadow: none !important;
-			outline: none !important;
-		}
-	}
-
 	// RangeControl
 	.components-range-control {
 		.components-range-control__root {
+			align-items: center;
+
 			& > span:not(.components-range-control__wrapper) {
-				margin-left: 4px;
+				margin-left: 8px;
 			}
 		}
+		.components-base-control__label {
+			position: absolute;
+			overflow: hidden;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			border: 0;
+			margin: -1px;
+			clip: rect(0 0 0 0);
+		}
 		.components-base-control__field {
-			margin-bottom: 0 !important;
 			flex-wrap: wrap;
+			margin-bottom: 0 !important;
 
 			.components-range-control__wrapper {
+				width: 16px;
+				height: 16px;
+				min-height: 16px;
 				margin-left: 0;
+			}
+			.components-range-control__tooltip {
+				top: auto;
+				bottom: -26px !important;
+				background-color: #141516;
 			}
 			.components-range-control__slider {
 				& + span {
+					height: 2px;
+					margin-top: 6px;
 					background: #dddfe1;
-					height: 4px;
 				}
 			}
 			.components-range-control__track {
-				height: 4px;
-				background: #dddfe1 !important;
+				height: 2px;
+				margin-top: 6px;
+				background: var(--maxi-secondary-color) !important;
 
 				& + span {
-					top: 1px;
+					top: -6px;
+					width: 16px;
+					height: 16px;
+
 					span {
 						position: relative;
-						box-shadow: none !important;
-						border: none !important;
-						width: 8px;
-						height: 8px;
-						background-color: #464a53;
-
-						&:before {
-							content: "";
-							position: absolute;
-							top: 50%;
-							left: 50%;
-							transform: translate(-50%, -50%);
-							width: 16px;
-							height: 16px;
-							border: 2px solid #464a53;
-							border-radius: 50%;
-						}
+						width: 16px;
+						height: 16px;
 					}
 				}
 			}
@@ -236,9 +219,10 @@
 
 .maxi-popover {
 	.components-popover__content {
-		padding: 20px;
 		min-width: 373px !important;
+		padding: 20px;
 		box-shadow: 0 46px 133px rgba(150, 176, 203, 0.23) !important;
+
 		@at-root .rtl #{&} {
 			min-width: 0px !important;
 		}

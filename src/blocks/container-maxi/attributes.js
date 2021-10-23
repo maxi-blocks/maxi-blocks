@@ -31,23 +31,23 @@ const attributes = {
 	},
 	...attributesData.container,
 	...{
-		...attributesData.background,
-		'background-active-media': {
-			type: 'string',
-			default: 'color',
+		...attributesData.blockBackground,
+		'background-layers': {
+			type: 'array',
+			default: [
+				{
+					type: 'color',
+					'display-general': 'block',
+					'background-palette-color-status-general': true,
+					'background-palette-color-general': 1,
+					'background-palette-opacity': 100,
+					'background-color-general': '',
+					'background-color-clip-path-general': '',
+					id: 0,
+				},
+			],
 		},
 	},
-	...attributesData.backgroundColor,
-	...attributesData.backgroundImage,
-	...attributesData.backgroundVideo,
-	...attributesData.backgroundGradient,
-	...attributesData.backgroundSVG,
-	...attributesData.backgroundHover,
-	...attributesData.backgroundColorHover,
-	...attributesData.backgroundImageHover,
-	...attributesData.backgroundVideoHover,
-	...attributesData.backgroundGradientHover,
-	...attributesData.backgroundSVGHover,
 	...attributesData.size,
 	...attributesData.opacity,
 	...attributesData.border,
@@ -73,12 +73,12 @@ const attributes = {
 	...attributesData.arrow,
 	...attributesData.shapeDivider,
 	...attributesData.motion,
-	...attributesData.entrance,
 	...attributesData.parallax,
 	...attributesData.transform,
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.zIndex,
+	...attributesData.overflow,
 };
 
 export default attributes;

@@ -50,18 +50,23 @@ export function SimpleButton(props, ref) {
 		});
 	}
 
-	const classes = classnames('components-button', className, {
-		'is-secondary': isDefault || isSecondary,
-		'is-primary': isPrimary,
-		'is-small': isSmall,
-		'is-tertiary': isTertiary,
-		'is-pressed': isPressed,
-		'is-busy': isBusy,
-		'is-link': isLink,
-		'is-destructive': isDestructive,
-		'has-text': !!icon && !!children,
-		'has-icon': !!icon,
-	});
+	const classes = classnames(
+		'maxi-components-button',
+		'components-button',
+		className,
+		{
+			'is-secondary': isDefault || isSecondary,
+			'is-primary': isPrimary,
+			'is-small': isSmall,
+			'is-tertiary': isTertiary,
+			'is-pressed': isPressed,
+			'is-busy': isBusy,
+			'is-link': isLink,
+			'is-destructive': isDestructive,
+			'has-text': !!icon && !!children,
+			'has-icon': !!icon,
+		}
+	);
 
 	const trulyDisabled = disabled && !isFocusable;
 	const Tag = href !== undefined && !trulyDisabled ? 'a' : 'button';

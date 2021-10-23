@@ -1,4 +1,9 @@
 /**
+ * Internal dependencies
+ */
+import getAttributeKey from '../getAttributeKey';
+
+/**
  * General
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -8,13 +13,14 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  *
  * @param {Object} obj Block size properties
  */
-const getDisplayStyles = obj => {
+const getDisplayStyles = (obj, isHover = false) => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
-		if (obj[`display-${breakpoint}`])
+		const attrKey = getAttributeKey('display', isHover, false, breakpoint);
+		if (obj[attrKey])
 			response[breakpoint] = {
-				display: obj[`display-${breakpoint}`],
+				display: obj[attrKey],
 			};
 	});
 

@@ -35,6 +35,14 @@ const attributes = {
 	...attributesData.textAlignment,
 	...{
 		...attributesData.typography,
+		'line-height-unit-general': {
+			type: 'string',
+			default: '%',
+		},
+		'line-height-general': {
+			type: 'number',
+			default: '100',
+		},
 		'palette-color-general': {
 			type: 'number',
 			default: 1,
@@ -43,14 +51,15 @@ const attributes = {
 	...attributesData.typographyHover,
 	...{
 		...attributesData.background,
-		'background-active-media': {
+		...attributesData.backgroundHover,
+		'background-active-media-general': {
 			type: 'string',
 			default: 'color',
 		},
 	},
 	...{
 		...attributesData.backgroundColor,
-		'background-palette-color': {
+		'background-palette-color-general': {
 			type: 'number',
 			default: 4,
 		},
@@ -84,8 +93,16 @@ const attributes = {
 	...attributesData.icon,
 	...attributesData.iconPadding,
 	...attributesData.iconBackgroundColor,
-	...attributesData.iconGradient,
+	...attributesData.iconBackgroundGradient,
 	...attributesData.iconBorder,
+	...attributesData.iconBorderWidth,
+	...attributesData.iconBorderRadius,
+	...attributesData.iconHover,
+	...attributesData.iconBackgroundColorHover,
+	...attributesData.iconBackgroundGradientHover,
+	...attributesData.iconBorderHover,
+	...attributesData.iconBorderWidthHover,
+	...attributesData.iconBorderRadiusHover,
 	...attributesData.borderHover,
 	...attributesData.borderWidthHover,
 	...attributesData.borderRadiusHover,
@@ -97,27 +114,44 @@ const attributes = {
 		...attributesData.padding,
 		'padding-top-general': {
 			type: 'number',
-			default: 10,
+			default: 15,
 		},
 		'padding-right-general': {
 			type: 'number',
-			default: 20,
+			default: 36,
 		},
 		'padding-bottom-general': {
 			type: 'number',
-			default: 10,
+			default: 15,
 		},
 		'padding-left-general': {
 			type: 'number',
-			default: 20,
+			default: 36,
+		},
+		'padding-top-xxl': {
+			type: 'number',
+			default: 23,
+		},
+		'padding-right-xxl': {
+			type: 'number',
+			default: 55,
+		},
+		'padding-bottom-xxl': {
+			type: 'number',
+			default: 23,
+		},
+		'padding-left-xxl': {
+			type: 'number',
+			default: 55,
 		},
 	},
 	...attributesData.display,
 	...attributesData.position,
 	...attributesData.motion,
-	...attributesData.entrance,
 	...attributesData.transform,
 	...attributesData.zIndex,
+	...attributesData.transitionDuration,
+	...attributesData.overflow,
 };
 
 export default attributes;

@@ -1,200 +1,239 @@
-export const background = {
-	'background-active-media': {
-		type: 'string',
-	},
+const breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+export const blockBackground = {
 	'background-layers': {
 		type: 'array',
 	},
-	'background-layers-status': {
+	'background-hover-status': {
 		type: 'boolean',
 		default: false,
 	},
 };
 
-export const backgroundColor = {
-	'background-palette-color-status': {
-		type: 'boolean',
-		default: true,
-	},
-	'background-palette-color': {
-		type: 'number',
-		default: 1,
-	},
-	'background-color': {
-		type: 'string',
-	},
-	'background-color-clip-path': {
+const backgroundGeneral = {
+	'background-active-media-general': {
 		type: 'string',
 	},
 };
 
-export const backgroundImage = {
-	'background-image-mediaID': {
+const backgroundColorGeneral = {
+	'background-palette-color-status-general': {
+		type: 'boolean',
+		default: true,
+	},
+	'background-palette-color-general': {
+		type: 'number',
+		default: 1,
+	},
+	'background-palette-opacity-general': {
 		type: 'number',
 	},
-	'background-image-mediaURL': {
+	'background-color-general': {
 		type: 'string',
 	},
-	'background-image-size': {
+	'background-color-clip-path-general': {
+		type: 'string',
+	},
+};
+
+const backgroundImageGeneral = {
+	'background-image-mediaID-general': {
+		type: 'number',
+	},
+	'background-image-mediaURL-general': {
+		type: 'string',
+	},
+	'background-image-size-general': {
 		type: 'string',
 		default: 'auto',
 	},
-	'background-image-width': {
+	'background-image-width-general': {
 		type: 'number',
 		default: 100,
 	},
-	'background-image-width-unit': {
+	'background-image-width-unit-general': {
 		type: 'string',
 		default: '%',
 	},
-	'background-image-height': {
+	'background-image-height-general': {
 		type: 'number',
 		default: 100,
 	},
-	'background-image-height-unit': {
+	'background-image-height-unit-general': {
 		type: 'string',
 		default: '%',
 	},
-	'background-image-crop-options': {
+	'background-image-crop-options-general': {
 		type: 'object',
 	},
-	'background-image-repeat': {
+	'background-image-repeat-general': {
 		type: 'string',
 		default: 'no-repeat',
 	},
-	'background-image-position': {
+	'background-image-position-general': {
 		type: 'string',
 		default: 'center center',
 	},
-	'background-image-position-width-unit': {
+	'background-image-position-width-unit-general': {
 		type: 'string',
 		default: '%',
 	},
-	'background-image-position-width': {
+	'background-image-position-width-general': {
 		type: 'number',
 		default: 0,
 	},
-	'background-image-position-height-unit': {
+	'background-image-position-height-unit-general': {
 		type: 'string',
 		default: '%',
 	},
-	'background-image-position-height': {
+	'background-image-position-height-general': {
 		type: 'number',
 		default: 0,
 	},
-	'background-image-origin': {
+	'background-image-origin-general': {
 		type: 'string',
 		default: 'padding-box',
 	},
-	'background-image-clip': {
+	'background-image-clip-general': {
 		type: 'string',
 		default: 'border-box',
 	},
-	'background-image-attachment': {
+	'background-image-attachment-general': {
 		type: 'string',
 		default: 'scroll',
 	},
-	'background-image-clip-path': {
+	'background-image-clip-path-general': {
 		type: 'string',
 	},
-	'background-image-opacity': {
+	'background-image-opacity-general': {
 		type: 'number',
 		default: 1,
 	},
 };
 
-export const backgroundVideo = {
-	'background-video-mediaID': {
+const backgroundVideoGeneral = {
+	'background-video-mediaID-general': {
 		type: 'number',
 	},
-	'background-video-mediaURL': {
+	'background-video-mediaURL-general': {
 		type: 'string',
 	},
-	'background-video-startTime': {
+	'background-video-startTime-general': {
 		type: 'string',
 	},
-	'background-video-endTime': {
+	'background-video-endTime-general': {
 		type: 'string',
 	},
-	'background-video-loop': {
+	'background-video-loop-general': {
 		type: 'boolean',
 		default: false,
 	},
-	'background-video-clip-path': {
+	'background-video-clip-path-general': {
 		type: 'string',
 	},
-	'background-video-fallbackID': {
+	'background-video-fallbackID-general': {
 		type: 'number',
 	},
-	'background-video-fallbackURL': {
+	'background-video-fallbackURL-general': {
 		type: 'string',
 	},
-	'background-video-playOnMobile': {
+	'background-video-playOnMobile-general': {
 		type: 'boolean',
 		default: false,
 	},
-	'background-video-opacity': {
+	'background-video-opacity-general': {
 		type: 'number',
 		default: 100,
 	},
 };
 
-export const backgroundGradient = {
-	'background-gradient': {
+const backgroundGradientGeneral = {
+	'background-gradient-general': {
 		type: 'string',
 	},
-	'background-gradient-opacity': {
+	'background-gradient-opacity-general': {
 		type: 'number',
 		default: 1,
 	},
-	'background-gradient-clip-path': {
+	'background-gradient-clip-path-general': {
 		type: 'string',
 	},
 };
 
-export const backgroundSVG = {
-	'background-palette-svg-color-status': {
+const backgroundSVGGeneral = {
+	'background-palette-svg-color-status-general': {
 		type: 'boolean',
 		default: true,
 	},
-	'background-palette-svg-color': {
+	'background-palette-svg-color-general': {
 		type: 'number',
 		default: 5,
 	},
-	'background-svg-SVGElement': {
+	'background-palette-svg-opacity-general': {
+		type: 'number',
+	},
+	'background-svg-SVGElement-general': {
 		type: 'string',
 	},
-	'background-svg-SVGData': {
+	'background-svg-SVGData-general': {
 		type: 'object',
 	},
-	'background-svg-SVGMediaID': {
+	'background-svg-SVGMediaID-general': {
 		type: 'number',
 	},
-	'background-svg-SVGMediaURL': {
+	'background-svg-SVGMediaURL-general': {
 		type: 'string',
 	},
-	'background-svg-top--unit': {
-		type: 'string',
-		default: '%',
-	},
-	'background-svg-top': {
-		type: 'number',
-		default: 0,
-	},
-	'background-svg-left--unit': {
+	'background-svg-top-unit-general': {
 		type: 'string',
 		default: '%',
 	},
-	'background-svg-left': {
+	'background-svg-top-general': {
 		type: 'number',
 		default: 0,
 	},
-	'background-svg-size': {
+	'background-svg-left-unit-general': {
+		type: 'string',
+		default: '%',
+	},
+	'background-svg-left-general': {
+		type: 'number',
+		default: 50,
+	},
+	'background-svg-size-general': {
 		type: 'number',
 		default: 100,
 	},
-	'background-svg-size--unit': {
+	'background-svg-size-unit-general': {
 		type: 'string',
 		default: '%',
 	},
 };
+
+const breakpointObjectCreator = obj => {
+	const response = { ...obj };
+
+	Object.entries(obj).forEach(([key, val]) => {
+		const newVal = { ...val };
+		delete newVal.default;
+
+		if (['background-layers'].includes(key)) return;
+
+		breakpoints.forEach(breakpoint => {
+			const newKey = key.replace('general', breakpoint);
+
+			response[newKey] = newVal;
+		});
+	});
+
+	return response;
+};
+
+export const background = breakpointObjectCreator(backgroundGeneral);
+export const backgroundColor = breakpointObjectCreator(backgroundColorGeneral);
+export const backgroundImage = breakpointObjectCreator(backgroundImageGeneral);
+export const backgroundVideo = breakpointObjectCreator(backgroundVideoGeneral);
+export const backgroundGradient = breakpointObjectCreator(
+	backgroundGradientGeneral
+);
+export const backgroundSVG = breakpointObjectCreator(backgroundSVGGeneral);

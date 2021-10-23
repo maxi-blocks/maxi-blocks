@@ -1,4 +1,4 @@
-export const motion = {
+const motion = {
 	'motion-status': {
 		type: 'boolean',
 		default: false,
@@ -40,32 +40,4 @@ export const motion = {
 	},
 };
 
-export const entrance = {
-	'entrance-type': {
-		type: 'string',
-		default: 'none',
-	},
-	'entrance-duration': {
-		type: 'number',
-		default: 1,
-	},
-	'entrance-delay': {
-		type: 'number',
-		default: 1,
-	},
-};
-
-export const parallax = {
-	'parallax-status': {
-		type: 'boolean',
-		default: false,
-	},
-	'parallax-speed': {
-		type: 'number',
-		default: 4,
-	},
-	'parallax-direction': {
-		type: 'string',
-		default: 'up',
-	},
-};
+export default motion;

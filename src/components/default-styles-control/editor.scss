@@ -7,24 +7,35 @@
 	&__button {
 		display: flex;
 		justify-content: center;
-		width: calc(25% - 8px);
-		margin: 4px 0;
-		height: 40px;
-		background: #f8f8f8;
+		height: 32px;
+		border: 1px solid var(--maxi-grey-1-color);
+		flex: 1;
+		border-radius: 0;
+		transition: all 0.5s;
 
 		&--active {
-			border: 2px solid #dddfe2;
-		}
+			background-color: #f8fbfd;
+			border: 1px solid #dbdde6;
+			border-bottom: 2px solid var(--maxi-secondary-color);
 
+			&:first-child,
+			&:nth-child-4 {
+				svg {
+					path {
+						fill: #007cba;
+					}
+				}
+			}
+		}
+		&:hover {
+			background-color: var(--maxi-grey-3-color);
+		}
 		&:focus {
-			outline: none !important;
-			box-shadow: none !important;
+			background-color: var(--maxi-grey-4-color);
 		}
-
 		&__icon {
 			width: 40px;
 		}
-
 		svg {
 			width: 100%;
 			height: 100%;

@@ -8,12 +8,13 @@ import {
 	getPositionStyles,
 	getDisplayStyles,
 	getTransformStyles,
-	getBackgroundStyles,
+	getBlockBackgroundStyles,
 	getArrowStyles,
 	getMarginPaddingStyles,
 	getShapeDividerStyles,
 	getShapeDividerSVGStyles,
 	getContainerStyles,
+	getOverflowStyles,
 } from '../../extensions/styles/helpers';
 
 const getNormalObject = props => {
@@ -51,6 +52,9 @@ const getNormalObject = props => {
 		}),
 		display: getDisplayStyles({
 			...getGroupAttributes(props, 'display'),
+		}),
+		overflow: getOverflowStyles({
+			...getGroupAttributes(props, 'overflow'),
 		}),
 		transform: getTransformStyles({
 			...getGroupAttributes(props, 'transform'),
@@ -147,8 +151,7 @@ const getStyles = props => {
 						{
 							...getGroupAttributes(props, 'shapeDivider'),
 						},
-						'bottom',
-						props.parentBlockStyle
+						'bottom'
 					),
 				},
 			},
@@ -158,52 +161,34 @@ const getStyles = props => {
 						{
 							...getGroupAttributes(props, ['shapeDivider']),
 						},
-						'bottom'
+						'bottom',
+						props.parentBlockStyle
 					),
 				},
 			},
-			...getBackgroundStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(props, [
-					'background',
-					'backgroundColor',
-					'backgroundImage',
-					'backgroundVideo',
-					'backgroundGradient',
-					'backgroundSVG',
+					'blockBackground',
 					'border',
 					'borderWidth',
 					'borderRadius',
+					'parallax',
 				]),
 				blockStyle: props.parentBlockStyle,
 			}),
-			...getBackgroundStyles({
-				...getGroupAttributes(props, [
-					'backgroundHover',
-					'backgroundColorHover',
-					'backgroundGradientHover',
-					'borderHover',
-					'borderRadiusHover',
-					'borderWidthHover',
-				]),
-				isHover: true,
-				blockStyle: props.parentBlockStyle,
-			}),
-			...getArrowStyles({
+			...getBlockBackgroundStyles({
 				...getGroupAttributes(
 					props,
 					[
+						'blockBackground',
 						'border',
 						'borderWidth',
 						'borderRadius',
-						'background',
-						'backgroundColor',
-						'backgroundGradient',
-						'boxShadow',
 					],
 					true
 				),
-				blockStyle: props.parentBlockStyle,
 				isHover: true,
+				blockStyle: props.parentBlockStyle,
 			}),
 			...getArrowStyles({
 				...getGroupAttributes(props, [
@@ -211,12 +196,27 @@ const getStyles = props => {
 					'border',
 					'borderWidth',
 					'borderRadius',
-					'background',
-					'backgroundColor',
-					'backgroundGradient',
+					'blockBackground',
 					'boxShadow',
 				]),
 				blockStyle: props.parentBlockStyle,
+			}),
+			...getArrowStyles({
+				...getGroupAttributes(
+					props,
+					[
+						'arrow',
+						'border',
+						'borderWidth',
+						'borderRadius',
+						'blockBackground',
+						'boxShadow',
+					],
+					true
+				),
+				...getGroupAttributes(props, ['arrow']),
+				blockStyle: props.parentBlockStyle,
+				isHover: true,
 			}),
 		}),
 	};

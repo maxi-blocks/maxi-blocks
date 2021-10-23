@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/blockEditor';
+import { InspectorControls } from '@wordpress/block-editor';
 import { TextControl } from '@wordpress/components';
 
 /**
@@ -14,7 +14,6 @@ import {
 	BlockStylesControl,
 	CustomLabel,
 	DisplayControl,
-	EntranceAnimationControl,
 	NumberCounterControl,
 	OpacityControl,
 	PositionControl,
@@ -23,6 +22,7 @@ import {
 	TransformControl,
 	InfoBox,
 	ZIndexControl,
+	OverflowControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
 
@@ -65,7 +65,6 @@ const Inspector = props => {
 												setAttributes({ customLabel })
 											}
 										/>
-										<hr />
 										<BlockStylesControl
 											blockStyle={blockStyle}
 											isFirstOnHierarchy={
@@ -85,11 +84,15 @@ const Inspector = props => {
 												<NumberCounterControl
 													{...getGroupAttributes(
 														attributes,
-														['numberCounter']
+														[
+															'numberCounter',
+															'size',
+														]
 													)}
 													onChange={obj =>
 														setAttributes(obj)
 													}
+													breakpoint={deviceType}
 												/>
 											),
 										},
@@ -163,23 +166,6 @@ const Inspector = props => {
 													setAttributes({
 														extraClassName,
 													})
-												}
-											/>
-										),
-									},
-									{
-										label: __(
-											'Entrance Animation',
-											'maxi-blocks'
-										),
-										content: (
-											<EntranceAnimationControl
-												{...getGroupAttributes(
-													attributes,
-													'entrance'
-												)}
-												onChange={obj =>
-													setAttributes(obj)
 												}
 											/>
 										),
@@ -264,17 +250,29 @@ const Inspector = props => {
 										label: __('Opacity', 'maxi-blocks'),
 										content: (
 											<OpacityControl
-												opacity={
-													attributes[
-														`opacity-${deviceType}`
-													]
+												{...getGroupAttributes(
+													attributes,
+													'opacity'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
 												}
-												onChange={val =>
-													setAttributes({
-														[`opacity-${deviceType}`]:
-															val,
-													})
+												breakpoint={deviceType}
+											/>
+										),
+									},
+									{
+										label: __('Overflow', 'maxi-blocks'),
+										content: (
+											<OverflowControl
+												{...getGroupAttributes(
+													attributes,
+													'overflow'
+												)}
+												onChange={obj =>
+													setAttributes(obj)
 												}
+												breakpoint={deviceType}
 											/>
 										),
 									},

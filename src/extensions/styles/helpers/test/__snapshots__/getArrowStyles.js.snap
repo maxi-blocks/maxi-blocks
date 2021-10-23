@@ -5,53 +5,73 @@ Object {
   " .maxi-container-arrow": Object {
     "shadow": Object {
       "general": Object {
-        "filter": "drop-shadow(0px 0px 0px rgb(6,147,227))",
+        "filter": "drop-shadow(0px 0px 0px rgba(var(--maxi-light-color-2),0.2))",
       },
     },
   },
   " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
       "general": Object {
-        "background-color": "rgb(255, 99, 71)",
+        "background-color": "rgba(150,200,90)",
+      },
+      "l": Object {
+        "background-color": "rgba(150,200,90)",
       },
       "label": "Arrow Color",
+      "m": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "s": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xl": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xs": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(150,200,90)",
+      },
     },
   },
-  " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
-    "border": Object {
+  " .maxi-container-arrow:before": Object {
+    "background": Object {
       "general": Object {
-        "border-color": "rgb(6,147,227)",
+        "background-color": "rgba(150,200,90)",
       },
-      "label": "Arrow Border",
+      "l": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "label": "Arrow Color",
+      "m": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "s": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xl": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xs": Object {
+        "background-color": "rgba(150,200,90)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(150,200,90)",
+      },
     },
   },
   ":hover .maxi-container-arrow": Object {
     "shadow": Object {
       "general": Object {
-        "filter": "drop-shadow(1px 2px 1px rgb(255, 99, 71))",
+        "filter": "drop-shadow(1px 2px 1px rgba(61,133,209))",
       },
-    },
-  },
-  ":hover .maxi-container-arrow .maxi-container-arrow--content:after": Object {
-    "background": Object {
-      "general": Object {
-        "background-color": "rgb(6,147,227)",
-      },
-      "label": "Arrow Color",
-    },
-  },
-  ":hover .maxi-container-arrow .maxi-container-arrow--content:before": Object {
-    "border": Object {
-      "general": Object {
-        "border-color": "rgb(255, 99, 71)",
-      },
-      "label": "Arrow Border",
     },
   },
 }
 `;
 
-exports[`getArrowStyles Get a correct arrow styles 1`] = `
+exports[`getArrowStyles Get a correct arrow styles with different values for different responsive stages color background settings 1`] = `
 Object {
   " .maxi-container-arrow": Object {
     "shadow": Object {},
@@ -112,17 +132,53 @@ Object {
   " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
       "general": Object {
-        "background-color": "rgb(255, 99, 71)",
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+      },
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-4),0.3)",
       },
       "label": "Arrow Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-5),0.59)",
+      },
+      "s": Object {
+        "background-color": "rgba(204,68,68,0.59)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+      },
+      "xs": Object {
+        "background-color": "rgba(204,68,68,0.59)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-2),0.2)",
+      },
     },
   },
-  " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
-    "border": Object {
+  " .maxi-container-arrow:before": Object {
+    "background": Object {
       "general": Object {
-        "border-color": "rgb(255, 99, 71)",
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
       },
-      "label": "Arrow Border",
+      "l": Object {
+        "background-color": "rgba(var(--maxi-light-color-4),0.3)",
+      },
+      "label": "Arrow Color",
+      "m": Object {
+        "background-color": "rgba(var(--maxi-light-color-5),0.59)",
+      },
+      "s": Object {
+        "background-color": "rgba(204,68,68,0.59)",
+      },
+      "xl": Object {
+        "background-color": "rgba(var(--maxi-light-color-1),0.07)",
+      },
+      "xs": Object {
+        "background-color": "rgba(204,68,68,0.59)",
+      },
+      "xxl": Object {
+        "background-color": "rgba(var(--maxi-light-color-2),0.2)",
+      },
     },
   },
 }
@@ -133,52 +189,56 @@ Object {
   " .maxi-container-arrow": Object {
     "shadow": Object {
       "general": Object {
-        "filter": "drop-shadow(0px 0px 0px var(--maxi-light-color-2))",
+        "filter": "drop-shadow(0px 0px 0px rgba(var(--maxi-light-color-2),0.2))",
       },
     },
   },
   " .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
       "general": Object {
-        "background-color": "var(--maxi-light-color-5)",
+        "background-color": "rgba(var(--maxi-light-color-5),1)",
       },
       "label": "Arrow Color",
     },
   },
-  " .maxi-container-arrow .maxi-container-arrow--content:before": Object {
-    "border": Object {
+  " .maxi-container-arrow:before": Object {
+    "background": Object {
       "general": Object {
-        "background": "var(--maxi-light-color-4);",
+        "background-color": "rgba(var(--maxi-light-color-5),1)",
       },
-      "label": "Arrow Border",
+      "label": "Arrow Color",
     },
   },
   ":hover .maxi-container-arrow": Object {
     "shadow": Object {
       "general": Object {
-        "filter": "drop-shadow(1px 2px 1px var(--maxi-light-color-4))",
+        "filter": "drop-shadow(1px 2px 1px rgba(var(--maxi-light-color-4),0.2))",
       },
     },
   },
   ":hover .maxi-container-arrow .maxi-container-arrow--content:after": Object {
     "background": Object {
       "general": Object {
-        "background-color": "var(--maxi-light-color-1)",
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
       },
       "label": "Arrow Color",
     },
   },
-  ":hover .maxi-container-arrow .maxi-container-arrow--content:before": Object {
-    "border": Object {
+  ":hover .maxi-container-arrow:before": Object {
+    "background": Object {
       "general": Object {
-        "background": "var(--maxi-light-color-1);",
-        "height": "calc(50% + 6px)",
-        "left": "calc(1.5px)",
-        "top": "calc(1.5px)",
-        "width": "calc(50% + 6px)",
+        "background-color": "rgba(var(--maxi-light-color-1),1)",
       },
-      "label": "Arrow Border",
+      "label": "Arrow Color",
     },
   },
 }
 `;
+
+exports[`getArrowStyles Return empty arrow styles when arrow status is off 1`] = `Object {}`;
+
+exports[`getArrowStyles Return empty arrow styles when background color is not selected 1`] = `Object {}`;
+
+exports[`getArrowStyles Return empty arrow styles when background color is selected and border is active but some style on hover is not solid 1`] = `Object {}`;
+
+exports[`getArrowStyles Return empty arrow styles when background color is selected and border is active but the style is not solid 1`] = `Object {}`;

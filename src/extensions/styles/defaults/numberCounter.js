@@ -27,13 +27,9 @@ const numberCounter = {
 		type: 'number',
 		default: 100,
 	},
-	'number-counter-radius': {
-		type: 'number',
-		default: 200,
-	},
 	'number-counter-stroke': {
 		type: 'number',
-		default: 20,
+		default: 5,
 	},
 	'number-counter-duration': {
 		type: 'number',
@@ -51,6 +47,9 @@ const numberCounter = {
 		type: 'number',
 		default: 4,
 	},
+	'number-counter-palette-text-opacity': {
+		type: 'number',
+	},
 	'number-counter-text-color': {
 		type: 'string',
 	},
@@ -62,6 +61,9 @@ const numberCounter = {
 		type: 'number',
 		default: 2,
 	},
+	'number-counter-palette-circle-background-opacity': {
+		type: 'number',
+	},
 	'number-counter-circle-background-color': {
 		type: 'string',
 	},
@@ -72,6 +74,9 @@ const numberCounter = {
 	'number-counter-palette-circle-bar-color': {
 		type: 'number',
 		default: 4,
+	},
+	'number-counter-palette-circle-bar-opacity': {
+		type: 'number',
 	},
 	'number-counter-circle-bar-color': {
 		type: 'string',

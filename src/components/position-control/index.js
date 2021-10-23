@@ -8,7 +8,10 @@ import { __ } from '@wordpress/i18n';
  */
 import SelectControl from '../select-control';
 import AxisControl from '../axis-control';
-import { getLastBreakpointAttribute } from '../../extensions/styles';
+import {
+	getDefaultAttribute,
+	getLastBreakpointAttribute,
+} from '../../extensions/styles';
 
 /**
  * External dependencies
@@ -24,14 +27,45 @@ const PositionControl = props => {
 
 	const classes = classnames('maxi-position-control', className);
 
+	const minMaxSettings = {
+		px: {
+			min: -3000,
+			max: 3000,
+		},
+		em: {
+			min: -999,
+			max: 999,
+		},
+		vw: {
+			min: -999,
+			max: 999,
+		},
+		'%': {
+			min: -999,
+			max: 999,
+		},
+	};
+
 	const getCleanOptions = () => {
 		return {
-			[`position-top-${breakpoint}`]: '',
-			[`position-right-${breakpoint}`]: '',
-			[`position-bottom-${breakpoint}`]: '',
-			[`position-left-${breakpoint}`]: '',
-			[`position-sync-${breakpoint}`]: false,
-			[`position-unit-${breakpoint}`]: '',
+			[`position-top-${breakpoint}`]: getDefaultAttribute(
+				`position-top-${breakpoint}`
+			),
+			[`position-right-${breakpoint}`]: getDefaultAttribute(
+				`position-right-${breakpoint}`
+			),
+			[`position-bottom-${breakpoint}`]: getDefaultAttribute(
+				`position-bottom-${breakpoint}`
+			),
+			[`position-left-${breakpoint}`]: getDefaultAttribute(
+				`position-left-${breakpoint}`
+			),
+			[`position-sync-${breakpoint}`]: getDefaultAttribute(
+				`position-sync-${breakpoint}`
+			),
+			[`position-unit-${breakpoint}`]: getDefaultAttribute(
+				`position-unit-${breakpoint}`
+			),
 		};
 	};
 
@@ -45,11 +79,10 @@ const PositionControl = props => {
 					{ label: 'Absolute', value: 'absolute' },
 					{ label: 'Fixed', value: 'fixed' },
 				]}
-				value={getLastBreakpointAttribute(
-					'position',
-					breakpoint,
-					props
-				)}
+				value={
+					getLastBreakpointAttribute('position', breakpoint, props) ||
+					''
+				}
 				onChange={val =>
 					onChange({
 						[`position-${breakpoint}`]: val,
@@ -65,6 +98,7 @@ const PositionControl = props => {
 					target='position'
 					onChange={obj => onChange(obj)}
 					breakpoint={breakpoint}
+					minMaxSettings={minMaxSettings}
 					disableAuto
 				/>
 			)}

@@ -4,8 +4,9 @@
 	.maxi-tabs-control {
 		display: flex;
 		padding-top: 0;
+
 		&:not(.maxi-tabs-control--disable-padding) {
-			margin-bottom: 10px;
+			margin-bottom: 8px;
 		}
 		&__button {
 			position: relative;
@@ -13,69 +14,77 @@
 			flex-direction: column;
 			width: 100%;
 			height: auto;
-			font-size: 13px;
-			color: #000;
-			font-weight: 500;
-			text-align: center;
-			border-bottom: 2px solid #e8eaeb;
+			padding: 8px;
+			border-bottom: 1px solid var(--maxi-grey-1-color);
+			border-top: 1px solid var(--maxi-grey-1-color);
+			border-right: 1px solid var(--maxi-grey-1-color);
 			border-radius: 0;
-			padding-top: 10px;
-			padding-bottom: 10px;
+			color: var(--maxi-black-1-color);
 			background-color: #fff;
-			&:hover {
-				cursor: pointer;
-				color: #000;
+			text-align: center;
+			transform: 0.5s all;
+
+			&:last-child {
+				border-right: none;
 			}
-			&:focus {
+			&:hover {
+				background-color: var(--maxi-grey-3-color);
+				cursor: pointer;
+			}
+			&:focus:not(:disabled) {
+				background-color: var(--maxi-grey-2-color);
 				box-shadow: none !important;
 				outline: none !important;
 			}
-			&:hover,
-			&:active,
-			&:focus {
-				background: #f2f2f2;
+			&:active {
+				background-color: var(--maxi-grey-3-color);
 			}
 			&[aria-pressed='true'] {
-				background-color: #f2f2f2;
-				border-bottom: 2px solid #ff4a17;
+				border-bottom: 2px solid var(--maxi-primary-color);
+				color: var(--maxi-black-1-color);
+				background-color: var(--maxi-white-3-color);
+				font-weight: 500;
 			}
 		}
 
 		&__notification {
 			position: absolute;
+			z-index: 8;
 			top: 0;
 			left: 100%;
-			transform: translate(-50%, -50%);
 			width: 1rem;
 			height: 1rem;
 			background: red;
 			border-radius: 50%;
-			z-index: 8;
+			transform: translate(-50%, -50%);
 		}
 	}
 	.maxi-tabs-content {
 		&:not(.maxi-tabs-content--disable-padding) {
-			padding-top: 12px !important;
-			padding-left: 12px !important;
-			padding-right: 12px !important;
-			padding-bottom: 12px !important;
+			padding: 12px !important;
 			background-color: #fff;
 		}
 
 		.maxi-tab-content {
 			display: none;
+
 			&__box {
-				padding: 16px 10px 10px;
+				padding: 8px;
+				border-top: 1px solid var(--maxi-grey-1-color);
+				border-bottom: 1px solid var(--maxi-grey-1-color);
+				margin-bottom: 8px;
 				background-color: #fff;
-				margin-bottom: 10px;
-				border-top: 2px solid #e8eaeb;
-				border-bottom: 1px solid #e8eaeb;
+
+				& > *:last-child {
+					.maxi-base-control__field {
+						margin-bottom: 0 !important;
+					}
+				}
 				.components-base-control__label {
 					flex: none;
 					width: 50%;
 				}
 			}
-
 			&--selected {
 				display: block;
 			}

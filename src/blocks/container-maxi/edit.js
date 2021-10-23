@@ -46,7 +46,6 @@ class edit extends MaxiBlockComponent {
 
 		const motionStatus =
 			!!this.props.attributes['motion-status'] ||
-			!isEmpty(this.props.attributes['entrance-type']) ||
 			!!this.props.attributes['parallax-status'];
 
 		const shapeStatus =
@@ -58,7 +57,6 @@ class edit extends MaxiBlockComponent {
 				...(motionStatus && {
 					...getGroupAttributes(this.props.attributes, [
 						'motion',
-						'entrance',
 						'parallax',
 					]),
 				}),
@@ -73,7 +71,13 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
+		const {
+			attributes,
+			clientId,
+			deviceType,
+			hasInnerBlocks,
+			setAttributes,
+		} = this.props;
 		const { uniqueID, isFirstOnHierarchy, fullWidth } = attributes;
 
 		return [
@@ -98,10 +102,11 @@ class edit extends MaxiBlockComponent {
 				{isFirstOnHierarchy && fullWidth && (
 					<>
 						<ArrowDisplayer
-							{...getGroupAttributes(attributes, [
-								'background',
-								'arrow',
-							])}
+							{...getGroupAttributes(
+								attributes,
+								['blockBackground', 'arrow', 'border'],
+								true
+							)}
 							breakpoint={deviceType}
 						/>
 						<Indicators
@@ -111,6 +116,8 @@ class edit extends MaxiBlockComponent {
 								'padding',
 								'margin',
 							])}
+							onChange={obj => setAttributes(obj)}
+							breakpoint={deviceType}
 						/>
 					</>
 				)}

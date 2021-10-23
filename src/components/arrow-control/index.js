@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 import InfoBox from '../info-box';
 import {
 	getLastBreakpointAttribute,
@@ -18,7 +19,7 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Component
@@ -30,6 +31,7 @@ const ArrowControl = props => {
 		isFullWidth,
 		breakpoint = 'general',
 		isFirstOnHierarchy,
+		'background-layers': backgroundLayers,
 	} = props;
 
 	const classes = classnames('maxi-arrow-control', className);
@@ -72,23 +74,16 @@ const ArrowControl = props => {
 		},
 	};
 
-	const simpleBackgroundColorStatus =
-		!props['background-layers-status'] &&
-		props['background-active-media'] !== 'color';
-
-	const layerBackgroundColorStatus =
-		props['background-layers-status'] &&
-		(props['background-layers'] === undefined ||
-			props['background-layers'].length < 1 ||
-			props['background-layers'][props['background-layers'].length - 1]
-				.type !== 'color');
+	const isBackgroundColor = !isEmpty(backgroundLayers)
+		? backgroundLayers.some(layer => layer.type === 'color')
+		: false;
 
 	return (
 		<div className={classes}>
-			{simpleBackgroundColorStatus && (
+			{!isBackgroundColor && (
 				<InfoBox
 					message={__(
-						'Please set background colour to see the arrow.',
+						'Please set a background colour layer to see the arrow.',
 						'maxi-blocks'
 					)}
 					links={[
@@ -99,27 +94,9 @@ const ArrowControl = props => {
 					]}
 				/>
 			)}
-			{layerBackgroundColorStatus && (
-				<InfoBox
-					message={__(
-						'The first background layer should be a colour to see the arrow.',
-						'maxi-blocks'
-					)}
-					links={[
-						{
-							title: __('Background colour', 'maxi-blocks'),
-							panel: 'background',
-						},
-					]}
-				/>
-			)}
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Show Arrow', 'maxi-blocks')}
 				selected={props['arrow-status']}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
 				onChange={val => onChange({ 'arrow-status': val })}
 			/>
 			{props['arrow-status'] && (

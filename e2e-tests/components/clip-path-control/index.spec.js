@@ -9,7 +9,11 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openAdvancedSidebar } from '../../utils';
+import {
+	getBlockAttributes,
+	openAdvancedSidebar,
+	getBlockStyle,
+} from '../../utils';
 
 describe('ClipPathOption', () => {
 	it('Checking the clip-path control', async () => {
@@ -19,7 +23,7 @@ describe('ClipPathOption', () => {
 
 		// Use clip-path to create a triangle
 		await accordionPanel.$eval(
-			'.maxi-clip-path-control .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
+			'.maxi-clip-path-control .maxi-toggle-switch .maxi-base-control__label',
 			use => use.click()
 		);
 		await accordionPanel.$$eval('.clip-path-defaults button', click =>
@@ -33,9 +37,9 @@ describe('ClipPathOption', () => {
 		expect(triangleClipPath).toStrictEqual(triangleExpect);
 
 		// Transform the triangle into a square
-		await accordionPanel.$$eval(
-			'.maxi-base-control__field .maxi-radio-control__option label',
-			use => use[2].click()
+		await accordionPanel.$eval(
+			'.maxi-toggle-switch.clip-path-custom .maxi-base-control__label',
+			use => use.click()
 		);
 
 		const selectType = await accordionPanel.$(
@@ -82,5 +86,7 @@ describe('ClipPathOption', () => {
 		const customExpect = 'inset(28% 5% 15% 64%)';
 
 		expect(customClipPath).toStrictEqual(customExpect);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

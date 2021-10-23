@@ -1,16 +1,15 @@
 .maxi-background-displayer {
 	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
 	backface-visibility: hidden;
 	box-sizing: content-box;
 
-	&__layer {
+	&__layer,
+	&__parallax {
 		position: absolute;
+		display: none;
 		width: 100%;
 		height: 100%;
 		backface-visibility: hidden;
@@ -43,30 +42,21 @@
 			transform: translate(-50%, -50%);
 		}
 	}
+
+	&__parallax {
+		display: block;
+	}
+
 	&__svg {
 		position: absolute;
-		top: 50%;
+		top: 0;
 		left: 50%;
-		transform: translate(-50%, -50%);
+		transform: translateX(-50%);
 		width: 100%;
-		height: 100%;
+		height: auto;
 		& svg {
 			width: 100%;
-			height: 100%;
-		}
-	}
-}
-
-// Hide video background on mobile
-@media only screen and (max-width: 768px) {
-	.maxi-background-displayer {
-		&__video-player {
-			&--mobile-hidden {
-				iframe,
-				video {
-					display: none;
-				}
-			}
+			height: auto;
 		}
 	}
 }

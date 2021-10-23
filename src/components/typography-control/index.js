@@ -2,17 +2,17 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { select, useSelect, useDispatch } from '@wordpress/data';
+import { select, dispatch, useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
+import AdvancedNumberControl from '../advanced-number-control';
 import AlignmentControl from '../alignment-control';
 import ColorControl from '../color-control';
 import FontFamilySelector from '../font-family-selector';
+import ResponsiveTabsControl from '../responsive-tabs-control';
 import SelectControl from '../select-control';
-import SettingTabsControl from '../setting-tabs-control';
-import AdvancedNumberControl from '../advanced-number-control';
 import TextShadowControl from '../text-shadow-control';
 import {
 	setFormat,
@@ -20,7 +20,6 @@ import {
 	withFormatValue,
 } from '../../extensions/text/formats';
 import {
-	getBlockStyle,
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -30,18 +29,11 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isNil, inRange, isEmpty, isBoolean, isNumber } from 'lodash';
-
-/**
- * Styles
- */
-import './editor.scss';
+import { isNil, isBoolean, isNumber } from 'lodash';
 
 /**
  * Component
  */
-const breakpoints = ['XXL', 'XL', 'L', 'M', 'S', 'XS'];
-
 const TextOptions = props => {
 	const {
 		getValue,
@@ -214,96 +206,126 @@ const LinkOptions = props => {
 		<>
 			<ColorControl
 				label={__('Link', 'maxi-blocks')}
-				className='maxi-typography-control__color'
+				className='maxi-typography-link-color'
 				color={getValue(`${prefix}link-color`)}
 				defaultColor={getDefault(`${prefix}link-color`)}
-				paletteColor={getValue(`${prefix}link-palette-color`)}
 				paletteStatus={getValue(`${prefix}link-palette-color-status`)}
-				onChange={({ color, paletteColor, paletteStatus }) =>
+				paletteColor={getValue(`${prefix}link-palette-color`)}
+				paletteOpacity={getValue(`${prefix}link-palette-opacity`)}
+				onChange={({
+					paletteColor,
+					paletteStatus,
+					paletteOpacity,
+					color,
+				}) =>
 					onChangeFormat({
-						[`${prefix}link-color`]: color,
-						[`${prefix}link-palette-color`]: paletteColor,
 						[`${prefix}link-palette-color-status`]: paletteStatus,
+						[`${prefix}link-palette-color`]: paletteColor,
+						[`${prefix}link-palette-opacity`]: paletteOpacity,
+						[`${prefix}link-color`]: color,
 					})
 				}
-				showPalette
 				textLevel={textLevel}
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
-				globalProps={{ target: 'link-color-global', type: 'link' }}
+				globalProps={{ target: 'link', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Hover', 'maxi-blocks')}
-				className='maxi-typography-control__color'
+				className='maxi-typography-link-hover-color'
 				color={getValue(`${prefix}link-hover-color`)}
 				defaultColor={getDefault(`${prefix}link-hover-color`)}
-				paletteColor={getValue(`${prefix}link-hover-palette-color`)}
 				paletteStatus={getValue(
 					`${prefix}link-hover-palette-color-status`
 				)}
-				onChange={({ color, paletteColor, paletteStatus }) =>
+				paletteColor={getValue(`${prefix}link-hover-palette-color`)}
+				paletteOpacity={getValue(`${prefix}link-hover-palette-opacity`)}
+				onChange={({
+					paletteColor,
+					paletteStatus,
+					paletteOpacity,
+					color,
+				}) =>
 					onChangeFormat({
-						[`${prefix}link-hover-color`]: color,
-						[`${prefix}link-hover-palette-color`]: paletteColor,
 						[`${prefix}link-hover-palette-color-status`]:
 							paletteStatus,
+						[`${prefix}link-hover-palette-color`]: paletteColor,
+						[`${prefix}link-hover-palette-opacity`]: paletteOpacity,
+						[`${prefix}link-hover-color`]: color,
 					})
 				}
-				showPalette
 				textLevel={textLevel}
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
-				globalProps={{ target: 'hover-color-global', type: 'link' }}
+				globalProps={{ target: 'hover', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Active', 'maxi-blocks')}
-				className='maxi-typography-control__color'
+				className='maxi-typography-link-active-color'
 				color={getValue(`${prefix}link-active-color`)}
 				defaultColor={getDefault(`${prefix}link-active-color`)}
-				paletteColor={getValue(`${prefix}link-active-palette-color`)}
 				paletteStatus={getValue(
 					`${prefix}link-active-palette-color-status`
 				)}
-				onChange={({ color, paletteColor, paletteStatus }) =>
+				paletteColor={getValue(`${prefix}link-active-palette-color`)}
+				paletteOpacity={getValue(
+					`${prefix}link-active-palette-opacity`
+				)}
+				onChange={({
+					paletteColor,
+					paletteStatus,
+					paletteOpacity,
+					color,
+				}) =>
 					onChangeFormat({
-						[`${prefix}link-active-color`]: color,
-						[`${prefix}link-active-palette-color`]: paletteColor,
 						[`${prefix}link-active-palette-color-status`]:
 							paletteStatus,
+						[`${prefix}link-active-palette-color`]: paletteColor,
+						[`${prefix}link-active-palette-opacity`]:
+							paletteOpacity,
+						[`${prefix}link-active-color`]: color,
 					})
 				}
-				showPalette
 				textLevel={textLevel}
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
-				globalProps={{ target: 'active-color-global', type: 'link' }}
+				globalProps={{ target: 'active', type: 'link' }}
 			/>
 			<ColorControl
 				label={__('Link Visited', 'maxi-blocks')}
-				className='maxi-typography-control__color'
+				className='maxi-typography-link-visited-color'
 				color={getValue(`${prefix}link-visited-color`)}
 				defaultColor={getDefault(`${prefix}link-visited-color`)}
-				paletteColor={getValue(`${prefix}link-visited-palette-color`)}
 				paletteStatus={getValue(
 					`${prefix}link-visited-palette-color-status`
 				)}
-				onChange={({ color, paletteColor, paletteStatus }) =>
+				paletteColor={getValue(`${prefix}link-visited-palette-color`)}
+				paletteOpacity={getValue(
+					`${prefix}link-visited-palette-opacity`
+				)}
+				onChange={({
+					paletteColor,
+					paletteStatus,
+					paletteOpacity,
+					color,
+				}) =>
 					onChangeFormat({
-						[`${prefix}link-visited-color`]: color,
-						[`${prefix}link-visited-palette-color`]: paletteColor,
 						[`${prefix}link-visited-palette-color-status`]:
 							paletteStatus,
+						[`${prefix}link-visited-palette-color`]: paletteColor,
+						[`${prefix}link-visited-palette-opacity`]:
+							paletteOpacity,
+						[`${prefix}link-visited-color`]: color,
 					})
 				}
-				showPalette
 				textLevel={textLevel}
 				deviceType={breakpoint}
 				clientId={clientId}
 				disableGradient
-				globalProps={{ target: 'visited-color-global', type: 'link' }}
+				globalProps={{ target: 'visited', type: 'link' }}
 			/>
 		</>
 	);
@@ -330,6 +352,7 @@ const TypographyControl = withFormatValue(props => {
 		clientId,
 		styleCardPrefix,
 		allowLink = false,
+		blockStyle,
 	} = props;
 
 	const typography =
@@ -340,27 +363,17 @@ const TypographyControl = withFormatValue(props => {
 			...(isHover ? ['typographyHover'] : []),
 		]);
 
-	const { styleCard, winWidth, maxiBreakpoints } = useSelect(select => {
+	const { styleCard } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
-		const { receiveMaxiSettings, receiveMaxiBreakpoints } =
-			select('maxiBlocks');
 
 		const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 
-		const winWidth = receiveMaxiSettings().window?.width || null;
-
-		const maxiBreakpoints = receiveMaxiBreakpoints();
-
 		return {
 			styleCard,
-			winWidth,
-			maxiBreakpoints,
 		};
 	});
-
-	const { setMaxiDeviceType } = useDispatch('maxiBlocks');
 
 	const classes = classnames('maxi-typography-control', className);
 
@@ -417,14 +430,11 @@ const TypographyControl = withFormatValue(props => {
 				avoidXXL
 			);
 
-		const blockStyle = getBlockStyle(clientId);
-
 		const nonHoverValue = getCustomFormatValue({
 			typography,
 			formatValue,
 			prop,
 			breakpoint: currentBreakpoint,
-			blockStyle,
 			textLevel,
 			styleCard,
 			styleCardPrefix,
@@ -439,7 +449,6 @@ const TypographyControl = withFormatValue(props => {
 			prop,
 			breakpoint: currentBreakpoint,
 			isHover,
-			blockStyle,
 			textLevel,
 			styleCard,
 			styleCardPrefix,
@@ -542,45 +551,21 @@ const TypographyControl = withFormatValue(props => {
 			textLevel,
 			disableCustomFormats,
 			styleCardPrefix,
+			returnFormatValue: true,
 		});
 
+		const newFormatValue = { ...obj.formatValue };
+		delete obj.formatValue;
+
+		// Needs a time-out to don't be overwrite by the method `onChangeRichText` used on text related blocks
+		setTimeout(() => {
+			dispatch('maxiBlocks/text').sendFormatValue(
+				newFormatValue,
+				clientId
+			);
+		}, 200); // higher than the 150 of `onChangeRichText` method
+
 		onChange(obj);
-	};
-
-	const getWinBreakpoint = () => {
-		if (!maxiBreakpoints || isEmpty(maxiBreakpoints)) return null;
-
-		if (winWidth > maxiBreakpoints.xl) return 'xxl';
-
-		const response = Object.entries(maxiBreakpoints).reduce(
-			([prevKey, prevValue], [currKey, currValue]) => {
-				if (!prevValue) return [prevKey];
-				if (inRange(winWidth, prevValue, currValue + 1))
-					return [currKey];
-
-				return [prevKey, prevValue];
-			}
-		)[0];
-
-		return response.toLowerCase();
-	};
-
-	const showNotification = customBreakpoint => {
-		if (breakpoint !== 'general')
-			return breakpoint === customBreakpoint.toLowerCase();
-
-		return getWinBreakpoint() === customBreakpoint.toLowerCase();
-	};
-
-	const getTextOptionsTab = () => {
-		if (breakpoint !== 'general')
-			return breakpoints.indexOf(breakpoint.toUpperCase());
-
-		const userBreakpoint = getWinBreakpoint();
-
-		if (!userBreakpoint) return null;
-
-		return breakpoints.indexOf(userBreakpoint.toUpperCase());
 	};
 
 	return (
@@ -604,17 +589,23 @@ const TypographyControl = withFormatValue(props => {
 					color={getValue(`${prefix}color`)}
 					defaultColor={getDefault(`${prefix}color`)}
 					paletteColor={getValue(`${prefix}palette-color`)}
+					paletteOpacity={getValue(`${prefix}palette-opacity`)}
 					paletteStatus={getValue(`${prefix}palette-color-status`)}
-					onChange={({ color, paletteColor, paletteStatus }) =>
+					onChange={({
+						color,
+						paletteColor,
+						paletteStatus,
+						paletteOpacity,
+					}) =>
 						onChangeFormat({
 							[`${prefix}color`]: color,
 							[`${prefix}palette-color`]: paletteColor,
 							[`${prefix}palette-color-status`]: paletteStatus,
+							[`${prefix}palette-opacity`]: paletteOpacity,
 						})
 					}
-					showPalette
 					globalProps={{
-						target: `${isHover ? 'hover-' : ''}color-global`,
+						target: isHover ? 'hover-' : '',
 						type:
 							select('core/block-editor').getBlockName(
 								clientId
@@ -640,34 +631,20 @@ const TypographyControl = withFormatValue(props => {
 					type='text'
 				/>
 			)}
-			<SettingTabsControl
+			<ResponsiveTabsControl
 				className='maxi-typography-control__text-options-tabs'
-				items={breakpoints.map(breakpoint => {
-					return {
-						label: breakpoint,
-						content: (
-							<TextOptions
-								getValue={getValue}
-								getDefault={getDefault}
-								onChangeFormat={onChangeFormat}
-								prefix={prefix}
-								minMaxSettings={minMaxSettings}
-								minMaxSettingsLetterSpacing={
-									minMaxSettingsLetterSpacing
-								}
-								breakpoint={breakpoint.toLowerCase()}
-								avoidXXL={!styleCards}
-							/>
-						),
-						showNotification: showNotification(breakpoint),
-						callback: () =>
-							styleCards
-								? setMaxiDeviceType(breakpoint.toLowerCase())
-								: null,
-					};
-				})}
-				forceTab={getTextOptionsTab()}
-			/>
+				breakpoint={breakpoint}
+			>
+				<TextOptions
+					getValue={getValue}
+					getDefault={getDefault}
+					onChangeFormat={onChangeFormat}
+					prefix={prefix}
+					minMaxSettings={minMaxSettings}
+					minMaxSettingsLetterSpacing={minMaxSettingsLetterSpacing}
+					avoidXXL={!styleCards}
+				/>
+			</ResponsiveTabsControl>
 			<hr />
 			{!disableFontFamily &&
 				!disableColor &&
@@ -766,23 +743,27 @@ const TypographyControl = withFormatValue(props => {
 					});
 				}}
 			/>
-			<hr />
 			{!hideTextShadow && (
-				<TextShadowControl
-					className='maxi-typography-control__text-shadow'
-					textShadow={getValue(`${prefix}text-shadow`)}
-					onChange={val => {
-						onChangeFormat({
-							[`${prefix}text-shadow`]: val,
-						});
-					}}
-					defaultColor={getLastBreakpointAttribute(
-						'color',
-						breakpoint,
-						typography
-					)}
-				/>
+				<>
+					<hr />
+					<TextShadowControl
+						className='maxi-typography-control__text-shadow'
+						textShadow={getValue(`${prefix}text-shadow`)}
+						onChange={val => {
+							onChangeFormat({
+								[`${prefix}text-shadow`]: val,
+							});
+						}}
+						defaultColor={getLastBreakpointAttribute(
+							'color',
+							breakpoint,
+							typography
+						)}
+						blockStyle={blockStyle}
+					/>
+				</>
 			)}
+			<hr />
 			{allowLink && (
 				<LinkOptions
 					getValue={getValue}

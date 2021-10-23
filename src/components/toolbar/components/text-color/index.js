@@ -18,6 +18,7 @@ import {
 	getGroupAttributes,
 	getDefaultAttribute,
 	getBlockStyle,
+	getColorRGBAString,
 } from '../../../../extensions/styles';
 
 /**
@@ -54,6 +55,14 @@ const TextColor = withFormatValue(props => {
 		textLevel,
 		styleCard,
 	});
+	const colorPaletteStatus = getCustomFormatValue({
+		typography,
+		formatValue,
+		prop: 'palette-color-status',
+		breakpoint,
+		textLevel,
+		styleCard,
+	});
 	const colorPalette = getCustomFormatValue({
 		typography,
 		formatValue,
@@ -62,10 +71,10 @@ const TextColor = withFormatValue(props => {
 		textLevel,
 		styleCard,
 	});
-	const colorPaletteStatus = getCustomFormatValue({
+	const colorOpacity = getCustomFormatValue({
 		typography,
 		formatValue,
-		prop: 'palette-color-status',
+		prop: 'palette-opacity',
 		breakpoint,
 		textLevel,
 		styleCard,
@@ -93,9 +102,11 @@ const TextColor = withFormatValue(props => {
 					className='toolbar-item__text-options__icon'
 					style={{
 						background: colorPaletteStatus
-							? `var(--maxi-${getBlockStyle(
-									clientId
-							  )}-color-${colorPalette})`
+							? getColorRGBAString({
+									firstVar: `color-${colorPalette}`,
+									opacity: colorOpacity,
+									blockStyle: getBlockStyle(clientId),
+							  })
 							: color,
 					}}
 				>
@@ -120,8 +131,7 @@ const TextColor = withFormatValue(props => {
 							'palette-color-status': paletteStatus,
 						})
 					}
-					showPalette
-					globalProps={{ target: 'color-global', type: textLevel }}
+					globalProps={{ target: '', type: textLevel }}
 					textLevel={textLevel}
 				/>
 			</div>

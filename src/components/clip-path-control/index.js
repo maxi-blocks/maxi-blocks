@@ -15,6 +15,7 @@ import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
 import Icon from '../icon';
 import FancyRadioControl from '../fancy-radio-control';
+import ToggleSwitch from '../toggle-switch';
 
 /**
  * External dependencies
@@ -229,19 +230,18 @@ const ClipPathControl = props => {
 
 	const [clipPathOptions, changeClipPathOptions] = useState(deconstructCP());
 
-	const [hasClipPath, changeHasClipPath] = useState(
-		isEmpty(clipPath) ? 0 : 1
-	);
+	const [hasClipPath, changeHasClipPath] = useState(!isEmpty(clipPath));
 	const [isCustom, changeIsCustom] = useState(
-		Object.values(clipPathDefaults).includes(clipPath) || isEmpty(clipPath)
-			? 0
-			: 1
+		!(
+			Object.values(clipPathDefaults).includes(clipPath) ||
+			isEmpty(clipPath)
+		)
 	);
 
 	useEffect(() => {
 		if (JSON.stringify(clipPathOptions) !== JSON.stringify(deconstructCP()))
 			changeClipPathOptions(deconstructCP());
-	}, [clipPathOptions, deconstructCP]);
+	}, [clipPath, clipPathOptions]);
 
 	const generateCP = clipPath => {
 		const { type, content } = clipPath;
@@ -272,6 +272,8 @@ const ClipPathControl = props => {
 		const newCP = `${type}(${newContent})`;
 
 		onChange(newCP);
+
+		changeClipPathOptions(clipPath);
 	};
 
 	const onChangeType = newType => {
@@ -309,25 +311,18 @@ const ClipPathControl = props => {
 
 	return (
 		<div className={classes}>
-			<FancyRadioControl
+			<ToggleSwitch
 				label={__('Use Clip-path', 'maxi-blocks')}
 				selected={hasClipPath}
-				options={[
-					{ label: __('Yes', 'maxi-blocks'), value: 1 },
-					{ label: __('No', 'maxi-blocks'), value: 0 },
-				]}
-				onChange={val => changeHasClipPath(+val)}
+				onChange={val => changeHasClipPath(val)}
 			/>
-			{!!hasClipPath && (
+			{hasClipPath && (
 				<>
-					<FancyRadioControl
+					<ToggleSwitch
+						className='clip-path-custom'
 						label={__('Use Custom', 'maxi-blocks')}
 						selected={isCustom}
-						options={[
-							{ label: __('Yes', 'maxi-blocks'), value: 1 },
-							{ label: __('No', 'maxi-blocks'), value: 0 },
-						]}
-						onChange={val => changeIsCustom(+val)}
+						onChange={val => changeIsCustom(val)}
 					/>
 					{!isCustom && (
 						<div className='clip-path-defaults'>
@@ -373,7 +368,7 @@ const ClipPathControl = props => {
 							)}
 						</div>
 					)}
-					{!!isCustom && (
+					{isCustom && (
 						<div className='maxi-clip-path-control__handles'>
 							<SelectControl
 								label={__('Type', 'maxi-blocks')}
@@ -399,7 +394,6 @@ const ClipPathControl = props => {
 								onChange={value => onChangeType(value)}
 							/>
 							<FancyRadioControl
-								label=''
 								fullWidthMode
 								selected={customMode}
 								options={[

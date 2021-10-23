@@ -3,6 +3,7 @@
  */
 import defaultBoxShadow from '../defaults/boxShadow';
 import defaultBoxShadowHover from '../defaults/boxShadowHover';
+import getColorRGBAString from '../getColorRGBAString';
 import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
@@ -37,11 +38,13 @@ const getBoxShadowStyles = ({
 		let boxShadowString = '';
 
 		const getValue = target => {
-			const value = getAttributeValue(
-				`box-shadow-${target}-${breakpoint}`,
-				obj,
-				isHover
-			);
+			const value = getAttributeValue({
+				target,
+				props: obj,
+				isHover,
+				prefix: 'box-shadow-',
+				breakpoint,
+			});
 
 			const defaultValue =
 				breakpoint === 'general'
@@ -94,7 +97,11 @@ const getBoxShadowStyles = ({
 
 		const color =
 			paletteStatus && paletteColor
-				? `var(--maxi-${parentBlockStyle}-color-${paletteColor})`
+				? getColorRGBAString({
+						firstVar: `color-${paletteColor}`,
+						opacity: getValue('palette-opacity').value,
+						blockStyle: parentBlockStyle,
+				  })
 				: paletteColor;
 
 		const isColorDefault =
@@ -109,23 +116,32 @@ const getBoxShadowStyles = ({
 			(isNumber(spread) && spread !== defaultSpread) ||
 			(!!color && !isColorDefault);
 
-		if (isNotDefault && dropShadow) {
-			const blurValue = round(blur / 3);
-			const defaultBlurValue = round(defaultBlur / 3);
+		const horizontalValue = isNumber(horizontal)
+			? horizontal
+			: defaultHorizontal;
+		const verticalValue = isNumber(vertical) ? vertical : defaultVertical;
 
-			boxShadowString += `${horizontal || defaultHorizontal || 0}px `;
-			boxShadowString += `${vertical || defaultVertical || 0}px `;
-			boxShadowString += `${blurValue || defaultBlurValue || 0}px `;
+		if (isNotDefault && dropShadow) {
+			const blurValue = isNumber(blur)
+				? round(blur / 3)
+				: round(defaultBlur / 3);
+
+			boxShadowString += `${horizontalValue || 0}px `;
+			boxShadowString += `${verticalValue || 0}px `;
+			boxShadowString += `${blurValue || 0}px `;
 			boxShadowString += color || defaultColor;
 
 			response[breakpoint] = {
 				filter: `drop-shadow(${boxShadowString.trim()})`,
 			};
 		} else if (isNotDefault) {
-			boxShadowString += `${horizontal || defaultHorizontal || 0}px `;
-			boxShadowString += `${vertical || defaultVertical || 0}px `;
-			boxShadowString += `${blur || defaultBlur || 0}px `;
-			boxShadowString += `${spread || defaultSpread || 0}px `;
+			const blurValue = isNumber(blur) ? blur : defaultBlur;
+			const spreadValue = isNumber(spread) ? spread : defaultSpread;
+
+			boxShadowString += `${horizontalValue || 0}px `;
+			boxShadowString += `${verticalValue || 0}px `;
+			boxShadowString += `${blurValue || 0}px `;
+			boxShadowString += `${spreadValue || 0}px `;
 			boxShadowString += color || defaultColor;
 
 			response[breakpoint] = {

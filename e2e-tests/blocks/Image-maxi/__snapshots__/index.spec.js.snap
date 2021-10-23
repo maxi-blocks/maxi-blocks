@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Image Maxi Image Dimension 1`] = `"<img class=\\"maxi-image-block__image wp-image-external\\" src=\\"https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg\\">"`;
+
 exports[`Image Maxi Image Maxi does not break 1`] = `
 "<!-- wp:maxi-blocks/image-maxi {\\"parentBlockStyle\\":\\"light\\",\\"blockStyle\\":\\"maxi-light\\",\\"isFirstOnHierarchy\\":true,\\"uniqueID\\":\\"image-maxi-12\\"} -->
-<figure id=\\"image-maxi-12\\" class=\\"wp-block-maxi-blocks-image-maxi maxi-block maxi-image-block maxi-light image-maxi-12\\" data-align=\\"normal\\"><div class=\\"maxi-hover-preview maxi-image-block-wrapper maxi-image-ratio maxi-image-ratio__original\\"><img class=\\"maxi-image-block__image wp-image-undefined\\"/></div></figure>
+<figure class=\\"wp-block-maxi-blocks-image-maxi maxi-block maxi-image-block maxi-light image-maxi-12\\" data-align=\\"normal\\" id=\\"image-maxi-12\\"><div class=\\"maxi-hover-preview maxi-image-block-wrapper maxi-image-ratio maxi-image-ratio__original\\"><img class=\\"maxi-image-block__image wp-image-undefined\\"/></div></figure>
 <!-- /wp:maxi-blocks/image-maxi -->"
 `;

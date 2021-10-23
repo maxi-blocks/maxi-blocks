@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getBlockStyle } from '../../extensions/styles';
+import { getColorRGBAString, getBlockStyle } from '../../extensions/styles';
 
 export const rgbToHex = color => {
 	const rgb = color.match(
@@ -22,6 +22,32 @@ export const rgbToHex = color => {
 				16
 		  )}`.slice(-2)}`
 		: '';
+};
+
+export const fitSvg = svgCode => {
+	const template = document.createElement('div');
+
+	template.setAttribute('id', 'maxi-temporary-elem');
+	template.innerHTML = svgCode.trim();
+	document.querySelector('body').append(template);
+
+	const bbox = document.querySelector('#maxi-temporary-elem svg').getBBox();
+
+	const SVGElement = document.querySelector('#maxi-temporary-elem svg');
+	SVGElement.setAttribute(
+		'viewBox',
+		`${bbox.x}, ${bbox.y}, ${bbox.width}, ${bbox.height}`
+	);
+	SVGElement.removeAttribute('width');
+	SVGElement.removeAttribute('height');
+
+	const newSvgCode = document.querySelector(
+		'#maxi-temporary-elem svg'
+	).outerHTML;
+
+	document.querySelector('#maxi-temporary-elem').remove();
+
+	return newSvgCode;
 };
 
 export const placeholderImage = async () => {
@@ -98,36 +124,60 @@ export const svgAttributesReplacer = (blockStyle, svgCode, target = 'svg') => {
 
 	const fillColor = !currentAttributes[`${target}-palette-fill-color-status`]
 		? currentAttributes[`${target}-fill-color`]
-		: `var(--maxi-${blockStyle}-icon-fill, var(--maxi-${blockStyle}-color-${
-				currentAttributes[`${target}-palette-fill-color`]
-		  }))` || '';
+		: getColorRGBAString({
+				firstVar: 'icon-fill',
+				secondVar: `color-${
+					currentAttributes[`${target}-palette-fill-color`]
+				}`,
+				opacity: currentAttributes[`${target}-palette-fill-opacity`],
+				blockStyle,
+		  }) || '';
 
 	const lineColor = !currentAttributes[`${target}-palette-line-color-status`]
 		? currentAttributes[`${target}-line-color`]
-		: `var(--maxi-${blockStyle}-icon-line, var(--maxi-${blockStyle}-color-${
-				currentAttributes[`${target}-palette-line-color`]
-		  }))` || '';
+		: getColorRGBAString({
+				firstVar: 'icon-line',
+				secondVar: `color-${
+					currentAttributes[`${target}-palette-line-color`]
+				}`,
+				opacity: currentAttributes[`${target}-palette-line-opacity`],
+				blockStyle,
+		  }) || '';
 
 	const shapeFillColor = !currentAttributes[
 		`${target}-palette-fill-color-status`
 	]
 		? currentAttributes[`${target}-fill-color`]
-		: `var(--maxi-${blockStyle}-color-${
-				currentAttributes[`${target}-palette-fill-color`]
-		  })` || '';
+		: getColorRGBAString({
+				firstVar: 'shape-fill',
+				secondVar: `color-${
+					currentAttributes[`${target}-palette-fill-color`]
+				}`,
+				opacity: 100,
+				blockStyle,
+		  }) || '';
 
 	const iconNoInheritColor = !currentAttributes[
 		`${target}-palette-color-status`
 	]
 		? currentAttributes[`${target}-color`]
-		: `var(--maxi-${blockStyle}-color-${
-				currentAttributes[`${target}-palette-color`]
-		  })` || '';
+		: getColorRGBAString({
+				firstVar: 'color',
+				secondVar: `color-${
+					currentAttributes[`${target}-palette-color`]
+				}`,
+				opacity: 100,
+				blockStyle,
+		  }) || '';
 
 	const iconInheritColor = !currentAttributes['palette-color-status-general']
 		? currentAttributes['color-general']
-		: `var(--maxi-${blockStyle}-color-${currentAttributes['palette-color-general']})` ||
-		  '';
+		: getColorRGBAString({
+				firstVar: 'color',
+				secondVar: `color-${currentAttributes['palette-color-general']}`,
+				opacity: 100,
+				blockStyle,
+		  }) || '';
 
 	const iconColor = currentAttributes['icon-inherit']
 		? iconInheritColor
@@ -186,14 +236,14 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 
 	const currentAttributes = getBlock(clientId).attributes;
 
-	const { receiveStyleCardGlobalValue } = select('maxiBlocks/style-cards');
+	const { receiveStyleCardValue } = select('maxiBlocks/style-cards');
 
-	const lineColorGlobal = receiveStyleCardGlobalValue(
+	const lineColorGlobal = receiveStyleCardValue(
 		'line',
 		getBlockStyle(clientId),
 		'icon'
 	);
-	const lineColorGlobalStatus = receiveStyleCardGlobalValue(
+	const lineColorGlobalStatus = receiveStyleCardValue(
 		'line-global',
 		getBlockStyle(clientId),
 		'icon'
@@ -205,8 +255,10 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 	const iconInheritColor = currentAttributes['icon-inherit']
 		? !currentAttributes['palette-color-status-general']
 			? rgbToHex(currentAttributes['color-general'])
-			: getVarValue(
-					`var(--maxi-${blockStyle}-color-${currentAttributes['palette-color-general']})`
+			: rgbToHex(
+					`rgba(${getVarValue(
+						`var(--maxi-${blockStyle}-color-${currentAttributes['palette-color-general']})`
+					)}, 1)`
 			  )
 		: '';
 
@@ -214,10 +266,12 @@ export const svgCurrentColorStatus = (blockStyle, target = 'svg') => {
 		`${target}-palette${colorType}-color-status`
 	]
 		? rgbToHex(currentAttributes[`${target}${colorType}-color`])
-		: getVarValue(
-				`var(--maxi-${blockStyle}-color-${
-					currentAttributes[`${target}-palette${colorType}-color`]
-				})`
+		: rgbToHex(
+				`rgba(${getVarValue(
+					`var(--maxi-${blockStyle}-color-${
+						currentAttributes[`${target}-palette${colorType}-color`]
+					})`
+				)},1)`
 		  );
 
 	return target === 'svg' && lineColorGlobalStatus

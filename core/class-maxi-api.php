@@ -54,6 +54,8 @@ if (!class_exists('MaxiBlocks_API')):
 			$default_array = [
 				'_maxi_blocks_styles' => '',
 				'_maxi_blocks_styles_preview' => '',
+				'_maxi_blocks_fonts' => '',
+				'_maxi_blocks_fonts_preview' => '',
 			];
 			if (!get_option("mb_post_api_$id")) {
 				add_option("mb_post_api_$id", $default_array);
@@ -160,13 +162,19 @@ if (!class_exists('MaxiBlocks_API')):
 				'methods' => 'GET',
 				'callback' => [$this, 'get_maxi_blocks_breakpoints'],
 				'permission_callback' => function () {
-					// return current_user_can('edit_posts');
 					return true;
 				},
 			]);
 			register_rest_route($this->namespace, '/style-cards', [
 				'methods' => 'GET',
 				'callback' => [$this, 'get_maxi_blocks_current_style_cards'],
+				'permission_callback' => function () {
+					return current_user_can('edit_posts');
+				},
+			]);
+			register_rest_route($this->namespace, '/style-cards/reset', [
+				'methods' => 'GET',
+				'callback' => [$this, 'reset_maxi_blocks_style_cards'],
 				'permission_callback' => function () {
 					return current_user_can('edit_posts');
 				},
@@ -296,9 +304,11 @@ if (!class_exists('MaxiBlocks_API')):
 		 * @return $posts JSON feed of returned objects
 		 */
 		public function get_maxi_blocks_post($data) {
-			$this->mb_register_post_options($data['id']);
+			$id = $data['id'];
 
-			$response = get_option("mb_post_api_{$data['id']}")[
+			$this->mb_register_post_options($id);
+
+			$response = get_option("mb_post_api_{$id}")[
 				'_maxi_blocks_styles_preview'
 			];
 			if (!$response) {
@@ -312,22 +322,28 @@ if (!class_exists('MaxiBlocks_API')):
 		 * Post the posts
 		 */
 		public function post_maxi_blocks_post($data) {
-			$this->mb_register_post_options($data['id']);
+			$id = $data['id'];
+			$meta = json_decode($data['meta'], true);
+			$styles = $meta['styles'];
+			$fonts = $meta['fonts'];
 
-			$styles = get_option("mb_post_api_{$data['id']}");
+			$this->mb_register_post_options($id);
+
+			$post = get_option("mb_post_api_{$id}");
 
 			if ($data['update']) {
-				$styles = [
-					'_maxi_blocks_styles' => $data['meta'],
-					'_maxi_blocks_styles_preview' => $data['meta'],
-				];
+				$post['_maxi_blocks_styles'] = $styles;
+				$post['_maxi_blocks_styles_preview'] = $styles;
+				$post['_maxi_blocks_fonts'] = $fonts;
+				$post['_maxi_blocks_fonts_preview'] = $fonts;
 			} else {
-				$styles['_maxi_blocks_styles_preview'] = $data['meta'];
+				$post['_maxi_blocks_styles_preview'] = $styles;
+				$post['_maxi_blocks_fonts_preview'] = $fonts;
 			}
 
-			update_option("mb_post_api_{$data['id']}", $styles);
+			update_option("mb_post_api_{$id}", $post);
 
-			return $styles;
+			return $post;
 		}
 
 		/**
@@ -408,6 +424,33 @@ if (!class_exists('MaxiBlocks_API')):
 				$style_cards = $wpdb->get_var($query);
 				return $style_cards;
 			}
+		}
+
+		public function reset_maxi_blocks_style_cards() {
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'maxi_blocks_general'; // table name
+
+			if (class_exists('MaxiBlocks_StyleCards')) {
+				$defaultStyleCard = MaxiBlocks_StyleCards::getDefaultStyleCard();
+			} else {
+				return false;
+			} // Should return an error
+
+			$response = $wpdb->replace($table_name, [
+				'id' => 'style_cards_current',
+				'object' => $defaultStyleCard,
+			]);
+
+			// Retrieve information
+			$response_code = wp_remote_retrieve_response_code($response);
+			$response_message = wp_remote_retrieve_response_message($response);
+			$response_body = wp_remote_retrieve_body($response);
+
+			return new WP_REST_Response([
+				'status' => $response_code,
+				'response' => $response_message,
+				'body_response' => $response_body,
+			]);
 		}
 
 		public function set_maxi_blocks_current_style_cards($request) {
@@ -491,3 +534,4 @@ if (!class_exists('MaxiBlocks_API')):
 		}
 	}
 endif;
+

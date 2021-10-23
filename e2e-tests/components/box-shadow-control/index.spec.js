@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar } from '../../utils';
+import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
 
 describe('BoxShadowControl', () => {
 	beforeEach(async () => {
@@ -24,12 +24,12 @@ describe('BoxShadowControl', () => {
 		);
 
 		const expectAttributes = {
-			'box-shadow-blur-general': 87,
+			'box-shadow-blur-general': 50,
 			'box-shadow-color-general': undefined,
 			'box-shadow-horizontal-general': 0,
-			'box-shadow-spread-general': 10,
+			'box-shadow-spread-general': 0,
 			'box-shadow-status-hover': false,
-			'box-shadow-vertical-general': 0,
+			'box-shadow-vertical-general': 30,
 		};
 
 		const attributes = await getBlockAttributes();
@@ -58,22 +58,28 @@ describe('BoxShadowControl', () => {
 		);
 
 		// Horizontal
-		await inputs[0].focus();
+		await inputs[2].focus();
+		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('30');
+		await page.keyboard.press('Enter');
 
 		// Vertical
-		await inputs[2].focus();
-		await page.keyboard.type('40');
-
-		// Blur
 		await inputs[4].focus();
 		await pressKeyTimes('Backspace', 2);
-		await page.keyboard.type('10');
+		await page.keyboard.type('40');
+		await page.keyboard.press('Enter');
 
-		// Spread
+		// Blur
 		await inputs[6].focus();
 		await pressKeyTimes('Backspace', 2);
+		await page.keyboard.type('10');
+		await page.keyboard.press('Enter');
+
+		// Spread
+		await inputs[8].focus();
+		await pressKeyTimes('Backspace', 2);
 		await page.keyboard.type('60');
+		await page.keyboard.press('Enter');
 
 		const expectChanges = {
 			'box-shadow-blur-general': 10,
@@ -109,9 +115,9 @@ describe('BoxShadowControl', () => {
 			buttons[1].click()
 		);
 
-		await page.$$eval(
-			'.maxi-box-shadow-status-hover .maxi-radio-control__option',
-			buttons => buttons[0].querySelector('label').click()
+		await page.$eval(
+			'.maxi-box-shadow-status-hover.maxi-toggle-switch .maxi-base-control__label',
+			use => use.click()
 		);
 
 		await accordionPanel.$$eval('.maxi-tabs-control__button', buttons =>
@@ -124,13 +130,13 @@ describe('BoxShadowControl', () => {
 
 		const expectChanges = {
 			'box-shadow-blur-general': undefined,
-			'box-shadow-blur-general-hover': 87,
+			'box-shadow-blur-general-hover': 50,
 			'box-shadow-horizontal-general': undefined,
 			'box-shadow-horizontal-general-hover': 0,
 			'box-shadow-spread-general': undefined,
-			'box-shadow-spread-general-hover': 10,
+			'box-shadow-spread-general-hover': 0,
 			'box-shadow-vertical-general': undefined,
-			'box-shadow-vertical-general-hover': 0,
+			'box-shadow-vertical-general-hover': 30,
 		};
 
 		const shadowAttributes = await getBlockAttributes();
@@ -156,5 +162,7 @@ describe('BoxShadowControl', () => {
 		}))(shadowAttributes);
 
 		expect(boxShadow).toStrictEqual(expectChanges);
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -211,7 +211,9 @@ const LinkOptions = props => {
 				defaultColor={getDefault(`${prefix}link-color`)}
 				paletteStatus={getValue(`${prefix}link-palette-color-status`)}
 				paletteColor={getValue(`${prefix}link-palette-color`)}
-				paletteOpacity={getValue(`${prefix}link-palette-opacity`)}
+				paletteOpacity={
+					getValue(`${prefix}link-palette-opacity`) || 100
+				}
 				onChange={({
 					paletteColor,
 					paletteStatus,
@@ -589,7 +591,7 @@ const TypographyControl = withFormatValue(props => {
 					color={getValue(`${prefix}color`)}
 					defaultColor={getDefault(`${prefix}color`)}
 					paletteColor={getValue(`${prefix}palette-color`)}
-					paletteOpacity={getValue(`${prefix}palette-opacity`)}
+					paletteOpacity={getValue(`${prefix}palette-opacity`) || 100}
 					paletteStatus={getValue(`${prefix}palette-color-status`)}
 					onChange={({
 						color,

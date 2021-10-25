@@ -416,26 +416,39 @@ const setTransform = (el, transform) => {
 };
 // End function for Element Transform
 
-const getViewport = (data, parent) => {
+const getGeneralMotionSetting = (data, parent) => {
 	const response = {};
 
 	const dataMotionVerticalArray = data.trim().split(' ');
-	console.log(dataMotionVerticalArray);
 
-	const viewportTop = parseInt(dataMotionVerticalArray[4]);
-	const viewportMid = parseInt(dataMotionVerticalArray[3]);
-	const viewportBottom = parseInt(dataMotionVerticalArray[2]);
+	response.viewportTop = parseInt(dataMotionVerticalArray[4]);
+	response.viewportMid = parseInt(dataMotionVerticalArray[3]);
+	response.viewportBottom = parseInt(dataMotionVerticalArray[2]);
 
-	const viewportMidPercent = (parent.offsetHeight / 100) * viewportMid;
-	const viewportTopPercent =
-		parent.offsetHeight - (parent.offsetHeight / 100) * viewportTop;
-	const viewportBottomPercent = (parent.offsetHeight / 100) * viewportBottom;
+	response.viewportMidPercent =
+		(parent.offsetHeight / 100) * response.viewportMid;
+	response.viewportTopPercent =
+		parent.offsetHeight -
+		(parent.offsetHeight / 100) * response.viewportTop;
+	response.viewportBottomPercent =
+		(parent.offsetHeight / 100) * response.viewportTop;
+
+	response.speedValue = parseFloat(dataMotionVerticalArray[0]);
+
+	const easingValue = dataMotionVerticalArray[1];
+
+	response.easingValue = easingValue;
+
+	console.log('response: ');
+	console.log(response);
 
 	return response;
 };
 
 elements.forEach(function maxiMotion(element, index) {
 	const motionType = element.getAttribute('data-motion-type');
+
+	console.log(motionType);
 
 	if (motionType.includes('vertical')) {
 		// motion data format date-motion-vertical=
@@ -446,24 +459,20 @@ elements.forEach(function maxiMotion(element, index) {
 
 		if (!dataMotionVertical) return;
 
-		const dataMotionVerticalArray = dataMotionVertical.trim().split(' ');
-
-		console.log(dataMotionVerticalArray);
-		const viewportTop = parseInt(dataMotionVerticalArray[4]);
-		const viewportMid = parseInt(dataMotionVerticalArray[3]);
-		const viewportBottom = parseInt(dataMotionVerticalArray[2]);
-
 		const parent =
 			element.parentNode.closest('.maxi-container-block') ||
 			element.parentNode.closest('article');
 
-		console.log(`parent: ${parent.classList}`);
-
-		const viewportMidPercent = (parent.offsetHeight / 100) * viewportMid;
-		const viewportTopPercent =
-			parent.offsetHeight - (parent.offsetHeight / 100) * viewportTop;
-		const viewportBottomPercent =
-			(parent.offsetHeight / 100) * viewportBottom;
+		const {
+			viewportTop,
+			viewportMid,
+			viewportBottom,
+			viewportTopPercent,
+			viewportMidPercent,
+			viewportBottomPercent,
+			speedValue,
+			easingValue,
+		} = getGeneralMotionSetting(dataMotionVertical, parent);
 
 		element.parentNode
 			.closest('.maxi-container-block')
@@ -481,14 +490,12 @@ elements.forEach(function maxiMotion(element, index) {
 
 		element.setAttribute('transform-size', transformSize);
 
-		const speedValue = dataMotionVerticalArray[0];
-		const easingValue = dataMotionVerticalArray[1];
-
-		if (speedValue) {
+		if (speedValue && easingValue) {
 			element.style.transition = `all ${speedValue}s ${easingValue}`;
-		}
+		} else element.style.transition = 'all 2s ease';
 
-		const direction = dataMotionVerticalArray[5];
+		const dataMotionVerticalArray = dataMotionVertical.trim().split(' ');
+		const direction = parseInt(dataMotionVerticalArray[5]);
 
 		if (direction === 'up') {
 			element.style.transform = 'translate(0px, 0px)';
@@ -521,6 +528,7 @@ elements.forEach(function maxiMotion(element, index) {
 			transform =
 				Math.abs(parseInt(style.getPropertyValue('top'), 10)) +
 				offsetBottom * 100;
+			transform = 'rotateX(90deg)';
 		}
 
 		element.setAttribute('transform', transform);
@@ -528,13 +536,51 @@ elements.forEach(function maxiMotion(element, index) {
 		element.setAttribute('transform-size', transformSize);
 	}
 
-	if (motionType.includes('rotation')) {
-		console.log('rotation');
+	if (motionType.includes('rotate')) {
+		const dataMotionRotate = element.getAttribute(
+			'data-motion-rotate-general'
+		);
+
+		if (!dataMotionRotate) return;
+
+		const parent =
+			element.parentNode.closest('.maxi-container-block') ||
+			element.parentNode.closest('article');
+
+		const {
+			viewportTop,
+			viewportMid,
+			viewportBottom,
+			viewportTopPercent,
+			viewportMidPercent,
+			viewportBottomPercent,
+			speedValue,
+			easingValue,
+		} = getGeneralMotionSetting(dataMotionRotate, parent);
+
+		const dataMotionRotateArray = dataMotionRotate.trim().split(' ');
+
+		const rotateStart = parseInt(dataMotionRotateArray[5]);
+		const rotateMid = parseInt(dataMotionRotateArray[6]);
+		const rotateEnd = parseInt(dataMotionRotateArray[7]);
+
+		const transform = `rotateZ(${rotateStart}deg)`;
+
+		setTransform(element, transform);
+
+		// if (speedValue && easingValue) {
+		// 	element.style.transition = `all ${speedValue}s ${easingValue}`;
+		// } else element.style.transition = 'all 2s ease';
+
+		console.log(rotateStart, rotateMid, rotateEnd);
 	}
 });
 
 let currentTransformSize = 0;
 let elementScrollSize = 0;
+
+let oldValue = 0;
+let newValue = 0;
 
 // Scroll Function
 
@@ -753,6 +799,81 @@ window.addEventListener('scroll', () => {
 				}
 			}
 		} // vertical motion ends
+
+		if (motionType.includes('rotate')) {
+			const dataMotionRotate = element.getAttribute(
+				'data-motion-rotate-general'
+			);
+
+			if (!dataMotionRotate) return;
+
+			const parent =
+				element.parentNode.closest('.maxi-container-block') ||
+				element.parentNode.closest('article');
+
+			const {
+				viewportTop,
+				viewportMid,
+				viewportBottom,
+				viewportTopPercent,
+				viewportMidPercent,
+				viewportBottomPercent,
+				speedValue,
+				easingValue,
+			} = getGeneralMotionSetting(dataMotionRotate, parent);
+
+			const dataMotionRotateArray = dataMotionRotate.trim().split(' ');
+
+			const rotateStart = parseInt(dataMotionRotateArray[5]);
+			const rotateMid = parseInt(dataMotionRotateArray[6]);
+			const rotateEnd = parseInt(dataMotionRotateArray[7]);
+
+			const transform = `rotateZ(${rotateStart}deg)`;
+
+			// setTransform(element, transform);
+
+			if (speedValue && easingValue) {
+				element.style.transition = `all ${speedValue}s ${easingValue}`;
+			} else element.style.transition = 'all 2s ease';
+
+			//	console.log(rotateStart, rotateMid, rotateEnd);
+
+			const rect = element.getBoundingClientRect();
+			const windowHeight = window.innerHeight;
+			const pageHeight = document.documentElement.scrollHeight;
+
+			const elementTopInViewCoordinate = Math.round(
+				rect.top - windowHeight
+			);
+			console.log(elementTopInViewCoordinate);
+
+			newValue = window.pageYOffset;
+			if (oldValue < newValue) {
+				console.log('Down');
+				if (elementTopInViewCoordinate <= 0) {
+					console.log('below 0!');
+					setTransform(element, `rotate(${rotateEnd}deg)`);
+				}
+			} else if (oldValue > newValue) {
+				console.log('Up');
+				if (elementTopInViewCoordinate <= 0) {
+					setTransform(element, `rotate(${rotateStart}deg)`);
+				}
+			}
+			oldValue = newValue;
+
+			const parentHeight =
+				parent.offsetHeight -
+				(viewportBottomPercent + viewportTopPercent);
+
+			//	console.log(windowHeight);
+			// console.log(pageHeight);
+			// console.log(window.pageYOffset);
+
+			// console.log(rect.top, rect.right, rect.bottom, rect.left);
+
+			const style = window.getComputedStyle(element);
+		}
 	});
 });
 

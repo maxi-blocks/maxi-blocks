@@ -17,6 +17,7 @@ import MaxiBlock, {
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Save
@@ -64,7 +65,7 @@ const save = props => {
 			tagName='figure'
 			className={
 				(fullWidth === 'full' && 'alignfull',
-				attributes['motion-status-vertical-general'] &&
+				!isEmpty(attributes['motion-active-general']) &&
 					'maxi-block-motion')
 			}
 			{...motionData(props)}

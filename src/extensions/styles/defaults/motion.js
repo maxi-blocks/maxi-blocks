@@ -62,8 +62,8 @@ const generateUniqueAttributes = (
 export const motion = (() => {
 	Object.values(motionTypes).forEach(type => {
 		generateAttr(type, 'status', 'boolean', false);
-		generateAttr(type, 'easing', 'string', 'easing');
-		generateAttr(type, 'speed', 'number', 5);
+		generateAttr(type, 'easing', 'string', 'ease');
+		generateAttr(type, 'speed', 'number', 3);
 		generateAttr(type, 'viewport-bottom', 'number', 0);
 		generateAttr(type, 'viewport-middle', 'number', 50);
 		generateAttr(type, 'viewport-top', 'number', 100);

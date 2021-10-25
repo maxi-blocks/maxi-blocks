@@ -149,6 +149,7 @@ const Inspector = memo(
 			<InspectorControls>
 				{inspectorTabs.responsiveInfoBox({ props })}
 				<SettingTabsControl
+					target='sidebar-settings-tabs'
 					disablePadding
 					deviceType={deviceType}
 					items={[

@@ -9,13 +9,17 @@ import {
 /**
  * Internal dependencies
  */
-import { openSidebar, getBlockStyle } from '../../utils';
+import { openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('TextareaControl', () => {
 	it('Check textarea control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
-		const accordionPanel = await openSidebar(page, 'hover effect');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'hover effect'
+		);
 
 		await accordionPanel.$$eval(
 			'.maxi-hover-effect-control .maxi-radio-control input',

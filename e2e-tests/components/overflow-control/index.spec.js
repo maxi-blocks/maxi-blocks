@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import {
 	getBlockAttributes,
-	openCanvasSidebar,
+	openSidebarTab,
 	changeResponsive,
 } from '../../utils';
 
@@ -15,8 +15,8 @@ describe('OverflowControl', () => {
 	it('Checking the overflow control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await openCanvasSidebar(page, 'overflow');
-		debugger;
+		await openSidebarTab(page, 'advanced', 'overflow');
+
 		const selector = await page.$$('.maxi-overflow-control select');
 
 		await selector[0].select('hidden');
@@ -26,12 +26,13 @@ describe('OverflowControl', () => {
 
 		expect(generalOverflow).toStrictEqual('hidden');
 		await page.waitForTimeout(250);
-		await selector[1].select('clip');
+		await selector[1].select('auto');
 
+		await page.waitForTimeout(250);
 		const generalAttributes = await getBlockAttributes();
 		const generalYOverflow = generalAttributes['overflow-y-general'];
 
-		expect(generalYOverflow).toStrictEqual('clip');
+		expect(generalYOverflow).toStrictEqual('auto');
 	});
 
 	/* it('Checking the overflow responsive', async () => {

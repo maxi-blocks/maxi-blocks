@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
+import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 console.error = jest.fn();
 
@@ -17,7 +17,7 @@ describe('MapControl', () => {
 	it('Check map control', async () => {
 		await createNewPost();
 		await insertBlock('Map Maxi');
-		const accordionPanel = await openSidebar(page, 'map');
+		const accordionPanel = await openSidebarTab(page, 'style', 'map');
 
 		const inputs = await accordionPanel.$$(
 			'.components-base-control .components-base-control__field input'

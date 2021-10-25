@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import {
 	getBlockAttributes,
-	openAdvancedSidebar,
+	openSidebarTab,
 	changeResponsive,
 } from '../../utils';
 
@@ -16,8 +16,9 @@ describe('DisplayControl', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openAdvancedSidebar(
+		const accordionPanel = await openSidebarTab(
 			page,
+			'advanced',
 			'show hide block'
 		);
 
@@ -34,7 +35,7 @@ describe('DisplayControl', () => {
 	});
 
 	it('Check Responsive display control', async () => {
-		await openAdvancedSidebar(page, 'show hide block');
+		await openSidebarTab(page, 'advanced', 'show hide block');
 		const displayButtons = await page.$$(
 			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option'
 		);

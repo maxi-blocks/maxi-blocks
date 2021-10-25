@@ -5,7 +5,8 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import openSidebar from '../../utils/openSidebar';
+// import openSidebarTab from '../../utils/openSidebarTab'; // nono, sacala del archivo de reexportacion
+import { openSidebarTab } from '../../utils';
 
 describe('AccordionControl', () => {
 	it('Checking the accordion control', async () => {
@@ -18,13 +19,17 @@ describe('AccordionControl', () => {
 			'typography',
 			'background layer',
 			'border',
-			'height width',
 			'box shadow',
+			'height width',
 			'margin padding',
 		];
 
 		for (const accordionItem of accordionNames) {
-			const accordionPanel = await openSidebar(page, `${accordionItem}`);
+			const accordionPanel = await openSidebarTab(
+				page,
+				'style',
+				accordionItem
+			);
 
 			expect(accordionPanel).toBeTruthy();
 		}

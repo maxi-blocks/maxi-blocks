@@ -24,7 +24,7 @@ describe('Button Maxi', () => {
 	});
 
 	it('Button Style', async () => {
-		await openSidebar(page, 'style shortcut');
+		await openSidebarTab(page, 'style', 'style shortcut');
 
 		const buttons = await page.$$('.maxi-button-default-styles button');
 		await buttons[4].click();
@@ -38,7 +38,7 @@ describe('Button Maxi', () => {
 
 		await page.keyboard.type('Hello');
 
-		const accordionPanel = await openSidebar(page, 'icon');
+		const accordionPanel = await openSidebarTab(page, 'style', 'icon');
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-library-modal__action-section__buttons button',

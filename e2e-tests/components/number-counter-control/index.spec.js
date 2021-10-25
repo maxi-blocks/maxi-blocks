@@ -9,13 +9,13 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
+import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('NumberCounterControl', () => {
 	it('Check number counter control', async () => {
 		await createNewPost();
 		await insertBlock('Number Counter Maxi');
-		const accordionPanel = await openSidebar(page, 'number');
+		const accordionPanel = await openSidebarTab(page, 'style', 'number');
 
 		// Start Animation
 		const animation = await accordionPanel.$(

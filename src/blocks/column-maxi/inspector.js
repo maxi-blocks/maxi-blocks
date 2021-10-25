@@ -34,6 +34,7 @@ const Inspector = props => {
 		<InspectorControls>
 			{inspectorTabs.responsiveInfoBox({ props })}
 			<SettingTabsControl
+				target='sidebar-settings-tabs'
 				disablePadding
 				deviceType={deviceType}
 				items={[

@@ -582,6 +582,21 @@ let elementScrollSize = 0;
 let oldValue = 0;
 let newValue = 0;
 
+const getScrollDirection = () => {
+	newValue = window.pageYOffset;
+	if (oldValue < newValue) {
+		console.log('Down');
+		return 'down';
+	}
+	if (oldValue > newValue) {
+		console.log('Up');
+		return 'up';
+	}
+	oldValue = newValue;
+
+	return 0;
+};
+
 // Scroll Function
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
@@ -834,37 +849,49 @@ window.addEventListener('scroll', () => {
 
 			if (speedValue && easingValue) {
 				element.style.transition = `all ${speedValue}s ${easingValue}`;
-			} else element.style.transition = 'all 2s ease';
+			} else element.style.transition = 'all 3s ease';
 
 			//	console.log(rotateStart, rotateMid, rotateEnd);
 
 			const rect = element.getBoundingClientRect();
 			const windowHeight = window.innerHeight;
-			const pageHeight = document.documentElement.scrollHeight;
+			const elementHeight = element.offsetHeight;
 
 			const elementTopInViewCoordinate = Math.round(
 				rect.top - windowHeight
 			);
-			console.log(elementTopInViewCoordinate);
 
-			newValue = window.pageYOffset;
-			if (oldValue < newValue) {
-				console.log('Down');
-				if (elementTopInViewCoordinate <= 0) {
-					console.log('below 0!');
+			const elementBottomInViewCoordinate = Math.round(
+				rect.bottom - windowHeight
+			);
+
+			const elementMidInViewCoordinate =
+				elementTopInViewCoordinate + elementHeight / 2;
+
+			console.log(`Top: ${elementTopInViewCoordinate}`);
+			console.log(`Mid: ${elementMidInViewCoordinate}`);
+			console.log(`Bottom: ${elementBottomInViewCoordinate}`);
+
+			const scrollDirection = getScrollDirection();
+
+			if (scrollDirection === 'down' && elementTopInViewCoordinate <= 0) {
+				if (elementMidInViewCoordinate >= 0) {
+					console.log('Down - To Mid');
+					setTransform(element, `rotate(${rotateMid}deg)`);
+				} else {
+					console.log('Down - To End');
 					setTransform(element, `rotate(${rotateEnd}deg)`);
 				}
-			} else if (oldValue > newValue) {
-				console.log('Up');
-				if (elementTopInViewCoordinate <= 0) {
+			}
+			if (scrollDirection === 'up' && elementTopInViewCoordinate <= 0) {
+				if (elementMidInViewCoordinate <= 0) {
+					console.log('Up - To Mid');
+					setTransform(element, `rotate(${rotateMid}deg)`);
+				} else {
+					console.log('Up - To Start');
 					setTransform(element, `rotate(${rotateStart}deg)`);
 				}
 			}
-			oldValue = newValue;
-
-			const parentHeight =
-				parent.offsetHeight -
-				(viewportBottomPercent + viewportTopPercent);
 
 			//	console.log(windowHeight);
 			// console.log(pageHeight);

@@ -42,7 +42,7 @@ export const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
 		SVGLayers.forEach((item, i) => {
 			if (isEmpty(el.imageURL) && removeMode) {
 				SVGLayers[i].removeAttribute('style');
-				SVGElement.querySelector('.maxi-svg-block__pattern').remove();
+				SVGElement.querySelector('.maxi-svg-block__pattern')?.remove();
 			}
 			if (!isEmpty(el.imageURL)) {
 				const pattern = document.createElement('pattern');
@@ -122,4 +122,4 @@ export const generateDataObject = (data, svg) => {
 	return response;
 };
 
-export const getSVGHasImage = svg => svg.includes('maxi-svg-block__pattern');
+export const getSVGHasImage = svg => !!svg?.includes('maxi-svg-block__pattern');

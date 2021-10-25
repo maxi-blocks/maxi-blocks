@@ -39,6 +39,8 @@ const ColorContent = props => {
 		clientId,
 	} = props;
 
+	const SVGElement = SVGOptions['background-svg-SVGElement'];
+
 	return (
 		<ColorControl
 			label={__('Fill', 'maxi-blocks')}
@@ -77,10 +79,7 @@ const ColorContent = props => {
 				] = color;
 
 				onChange({
-					SVGElement: injectImgSVG(
-						SVGOptions['background-svg-SVGElement'],
-						SVGData
-					).outerHTML,
+					SVGElement: injectImgSVG(SVGElement, SVGData).outerHTML,
 					SVGData,
 					[getAttributeKey(
 						'background-palette-svg-color-status',
@@ -152,6 +151,7 @@ const SVGFillControl = props => {
 
 	const classes = classnames('maxi-svg-fill-control', className);
 
+	const SVGElement = SVGOptions['background-svg-SVGElement'];
 	const SVGData = cloneDeep(
 		SVGOptions[getAttributeKey('background-svg-SVGData', isHover)] ||
 			SVGOptions['background-svg-SVGData']
@@ -171,7 +171,7 @@ const SVGFillControl = props => {
 					}
 
 					const resEl = injectImgSVG(
-						SVGOptions['background-svg-SVGElement'],
+						SVGElement,
 						tempSVGData,
 						isColorSelected
 					);
@@ -187,9 +187,7 @@ const SVGFillControl = props => {
 							],
 					});
 				}}
-				forceTab={
-					+getSVGHasImage(SVGOptions['background-svg-SVGElement'])
-				}
+				forceTab={+getSVGHasImage(SVGElement)}
 				items={[
 					{
 						label: __('Colour', 'maxi-blocks'),
@@ -219,9 +217,7 @@ const SVGFillControl = props => {
 										SVGData[id].imageID = imageData.id;
 										SVGData[id].imageURL = imageData.url;
 										const resEl = injectImgSVG(
-											SVGOptions[
-												'background-svg-SVGElement'
-											],
+											SVGElement,
 											SVGData
 										);
 
@@ -244,9 +240,7 @@ const SVGFillControl = props => {
 										SVGData[id].imageURL = '';
 
 										const resEl = injectImgSVG(
-											SVGOptions[
-												'background-svg-SVGElement'
-											],
+											SVGElement,
 											SVGData,
 											true
 										);
@@ -266,30 +260,30 @@ const SVGFillControl = props => {
 										});
 									}}
 								/>
-								<ImageShape
-									{...SVGOptions}
-									onChange={obj => {
-										['SVGElement', 'SVGData'].forEach(
-											el => {
-												if (el in obj) {
-													obj[
-														`background-svg-${el}`
-													] = obj[el];
+								{getSVGHasImage(SVGElement) && (
+									<ImageShape
+										{...SVGOptions}
+										onChange={obj => {
+											['SVGElement', 'SVGData'].forEach(
+												el => {
+													if (el in obj) {
+														obj[
+															`background-svg-${el}`
+														] = obj[el];
 
-													delete obj[el];
+														delete obj[el];
+													}
 												}
-											}
-										);
+											);
 
-										onChange(obj);
-									}}
-									icon={
-										SVGOptions['background-svg-SVGElement']
-									}
-									breakpoint={breakpoint}
-									prefix='background-svg-'
-									disableModal
-								/>
+											onChange(obj);
+										}}
+										icon={SVGElement}
+										breakpoint={breakpoint}
+										prefix='background-svg-'
+										disableModal
+									/>
+								)}
 							</>
 						),
 					},

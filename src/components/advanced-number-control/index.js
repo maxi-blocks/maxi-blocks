@@ -80,18 +80,13 @@ const AdvancedNumberControl = props => {
 	const getOptions = () => {
 		const options = [];
 
-		allowedUnits.includes('px') &&
-			options.push({ label: 'PX', value: 'px' });
-
-		allowedUnits.includes('em') &&
-			options.push({ label: 'EM', value: 'em' });
-
-		allowedUnits.includes('vw') &&
-			options.push({ label: 'VW', value: 'vw' });
-
-		allowedUnits.includes('%') && options.push({ label: '%', value: '%' });
-
-		allowedUnits.includes('-') && options.push({ label: '-', value: '' });
+		allowedUnits.forEach(unit => {
+			// In case allowedUnits is not defined but minMaxSettings is
+			// with less than default allowedUnit items, it takes minMaxSettings
+			// as the one which checks if some unit is allowed
+			if (unit in minMaxSettings)
+				options.push({ label: unit.toUpperCase(), value: unit });
+		});
 
 		return options;
 	};

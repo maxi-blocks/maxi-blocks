@@ -97,15 +97,7 @@ describe('BackgroundControl', () => {
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
 
-<<<<<<< Updated upstream
 	it('Check Background image layer', async () => {
-=======
-	it.only('Check Background image layer', async () => {
-		await createNewPost();
-		await insertBlock('Group Maxi');
-		await openSidebar(page, 'background');
-
->>>>>>> Stashed changes
 		await addBackgroundLayer(page, 'image');
 
 		// opacity
@@ -118,7 +110,6 @@ describe('BackgroundControl', () => {
 		await page.keyboard.type('55');
 
 		// background size
-		debugger;
 		const sizeSelector = await page.$('.maxi-background-size select');
 		await sizeSelector.select('contain');
 
@@ -145,12 +136,275 @@ describe('BackgroundControl', () => {
 		);
 
 		// background origin
-		/* const originSelector = await page.$('.maxi-background-origin select');
+		const originSelector = await page.$('.maxi-background-origin select');
 		await originSelector.select('border-box');
 
 		// background clip
-		const clipSelector = await page.$eval('.maxi-background-clip select');
-		await clipSelector.select('content-box'); */
+		const clipSelector = await page.$('.maxi-background-clip select');
+		await clipSelector.select('content-box');
+
+		// clip-path
+		await page.$eval(
+			'.maxi-clip-path-control .maxi-toggle-switch__toggle input',
+			input => input.click()
+		);
+		await page.$$eval('.clip-path-defaults button', buttons =>
+			buttons[3].click()
+		);
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+	});
+
+	it('Check Background image layer hover', async () => {
+		const accordion = await openSidebar(page, 'background');
+		debugger;
+		// hover
+		await accordion.$$eval(
+			'.maxi-tabs-control--disable-padding button',
+			button => button[1].click()
+		);
+
+		// hover options
+		await page.$$eval(
+			'.maxi-background-layers_options .maxi-background-layer__arrow',
+			options => options[1].click()
+		);
+
+		// opacity
+		await page.$$eval(
+			'.maxi-background-control .maxi-advanced-number-control input',
+			opacity => opacity[0].focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('82');
+
+		// background size
+		const sizeSelector = await page.$('.maxi-background-size select');
+		await sizeSelector.select('cover');
+
+		// background repeat
+		const repeatSelector = await page.$('.maxi-background-repeat select');
+		await repeatSelector.select('repeat-x');
+
+		// background position
+		const positionSelector = await page.$(
+			'.maxi-background-position select'
+		);
+		await positionSelector.select('center top');
+
+		// background attachment
+		const attachmentSelector = await page.$(
+			'.maxi-background-attachment select'
+		);
+		await attachmentSelector.select('local');
+
+		// more settings
+		await page.$eval(
+			'.maxi-tabs-content .maxi-background-image-more-settings--toggle input',
+			button => button.click()
+		);
+
+		// background origin
+		const originSelector = await page.$('.maxi-background-origin select');
+		await originSelector.select('content-box');
+
+		// background clip
+		const clipSelector = await page.$('.maxi-background-clip select');
+		await clipSelector.select('padding-box');
+
+		// clip-path
+		await page.$$eval('.clip-path-defaults button', buttons =>
+			buttons[3].click()
+		);
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+	});
+
+	it('Check Background video layer', async () => {
+		await addBackgroundLayer(page, 'video');
+
+		const video =
+			'https://www.youtube.com/watch?v=C0DPdy98e4c&ab_channel=SimonYapp';
+
+		// add VideoURL
+		await page.$eval(
+			'.maxi-background-control__video .maxi-text-control input',
+			input => input.focus()
+		);
+		await page.keyboard.type(video);
+
+		// edit start time
+		await page.$eval('.maxi-background-video-start-time input', input =>
+			input.focus()
+		);
+		await page.keyboard.type('55');
+
+		// edit end time
+		await page.$eval('.maxi-background-video-start-time input', input =>
+			input.focus()
+		);
+		await page.keyboard.type('77');
+
+		// add loop
+		await page.$eval('.video-loop input', button => button.click());
+
+		// video opacity
+		await page.$$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			opacity => opacity[0].focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('44');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+	});
+
+	it('Check Background video layer hover', async () => {
+		const accordion = await openSidebar(page, 'background');
+		// hover
+		await accordion.$$eval(
+			'.maxi-tabs-control--disable-padding button',
+			button => button[1].click()
+		);
+
+		// hover options
+		await page.$$eval(
+			'.maxi-background-layers_options .maxi-background-layer__arrow',
+			options => options[2].click()
+		);
+
+		const video =
+			'https://www.youtube.com/watch?v=ScMzIvxBSi4&ab_channel=BenMarquezTX';
+
+		debugger;
+		// add VideoURL
+		await page.$eval(
+			'.maxi-background-control__video .maxi-text-control input',
+			input => input.focus()
+		);
+		await page.keyboard.type(video);
+
+		// edit start time
+		await page.$eval('.maxi-background-video-start-time input', input =>
+			input.focus()
+		);
+		await page.keyboard.type('11');
+
+		// edit end time
+		await page.$eval('.maxi-background-video-start-time input', input =>
+			input.focus()
+		);
+		await page.keyboard.type('33');
+
+		// add loop
+		await page.$eval('.video-loop input', button => button.click());
+
+		// video opacity
+		await page.$$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			opacity => opacity[0].focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('82');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+	});
+
+	it('Check Background video layer', async () => {
+		await addBackgroundLayer(page, 'video');
+
+		const video =
+			'https://www.youtube.com/watch?v=C0DPdy98e4c&ab_channel=SimonYapp';
+
+		// add VideoURL
+		await page.$eval(
+			'.maxi-background-control__video .maxi-text-control input',
+			input => input.focus()
+		);
+		await page.keyboard.type(video);
+
+		// edit start time
+		await page.$eval('.maxi-background-video-start-time input', input =>
+			input.focus()
+		);
+		await page.keyboard.type('55');
+
+		// edit end time
+		await page.$eval('.maxi-background-video-start-time input', input =>
+			input.focus()
+		);
+		await page.keyboard.type('77');
+
+		// add loop
+		await page.$eval('.video-loop input', button => button.click());
+
+		// video opacity
+		await page.$$eval(
+			'.maxi-background-control .maxi-opacity-control input',
+			opacity => opacity[0].focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('44');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+	});
+	/* it('Check Background gradient layer', async () => {
+		await addBackgroundLayer(page, 'gradient');
+
+		const layerExpect = await getBlockAttributes();
+		expect(layerExpect['background-layers']).toMatchSnapshot();
+	}); */
+
+	it('Check Background shape layer', async () => {
+		await addBackgroundLayer(page, 'shape');
+
+		// fill color
+		await page.$$eval(
+			'.maxi-svg-fill-control .maxi-sc-color-palette div',
+			opacity => opacity[3].click()
+		);
+
+		// color opacity
+		await page.$$eval(
+			'.maxi-background-control .maxi-advanced-number-control input',
+			opacity => opacity[0].focus()
+		);
+
+		await pressKeyTimes('Backspace', '3');
+		await page.keyboard.type('66');
+
+		// position
+		await page.$$eval(
+			'.maxi-background-layer__content .maxi-tabs-content .maxi-tabs-control button',
+			opacity => opacity[1].click()
+		);
+
+		// Y-axis
+		await page.$$eval(
+			'.maxi-settingstab-control .maxi-advanced-number-control .maxi-base-control__field input',
+			opacity => opacity[2].focus()
+		);
+
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('53');
+
+		// Y-axis
+		await page.$$eval(
+			'.maxi-settingstab-control .maxi-advanced-number-control .maxi-base-control__field input',
+			opacity => opacity[4].focus()
+		);
+
+		await pressKeyTimes('Backspace', '2');
+		await page.keyboard.type('36');
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();

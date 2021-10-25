@@ -186,6 +186,7 @@ const VideoLayer = props => {
 				validationText={validationText}
 			/>
 			<AdvancedNumberControl
+				className='maxi-background-video-start-time'
 				label={__('Start Time (s)', 'maxi-blocks')}
 				value={getAttributeValue({
 					target: `${prefix}background-video-startTime`,
@@ -213,6 +214,7 @@ const VideoLayer = props => {
 				}
 			/>
 			<AdvancedNumberControl
+				className='maxi-background-video-end-time'
 				label={__('End Time (s)', 'maxi-blocks')}
 				value={getAttributeValue({
 					target: `${prefix}background-video-endTime`,

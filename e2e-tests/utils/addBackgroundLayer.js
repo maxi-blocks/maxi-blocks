@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import openSidebar from './openSidebar';
 
 const addBackgroundLayer = async (page, type, isHover = false) => {
@@ -9,9 +8,6 @@ const addBackgroundLayer = async (page, type, isHover = false) => {
 		isHover
 	);
 
-=======
-const addBackgroundLayer = async (page, type) => {
->>>>>>> Stashed changes
 	await page.$eval(
 		'.maxi-background-control .maxi-loader-control__dropdown-selector-title',
 		button => button.click()

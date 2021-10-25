@@ -126,14 +126,16 @@ const setFormat = ({
 		// Ensures the format changes are saved as undo entity on historical records
 		markLastChangeAsPersistent();
 
-		const newContent = getFormattedString({
-			formatValue: newFormatValue,
-			isList,
-		});
+		const newContent = newFormatValue.text
+			? getFormattedString({
+					formatValue: newFormatValue,
+					isList,
+			  })
+			: false;
 
 		return {
 			...newTypography,
-			content: newContent,
+			...(newContent && { content: newContent }),
 			...(returnFormatValue && { formatValue: newFormatValue }),
 		};
 	}

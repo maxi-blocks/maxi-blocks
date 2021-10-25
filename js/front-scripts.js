@@ -439,8 +439,8 @@ const getGeneralMotionSetting = (data, parent) => {
 
 	response.easingValue = easingValue;
 
-	console.log('response: ');
-	console.log(response);
+	// console.log('response: ');
+	// console.log(response);
 
 	return response;
 };
@@ -584,23 +584,36 @@ let newValue = 0;
 
 const getScrollDirection = () => {
 	newValue = window.pageYOffset;
+	console.log(`window.pageYOffset ${window.pageYOffset}`);
 	if (oldValue < newValue) {
-		console.log('Down');
+		console.log('Scroll Down');
+		oldValue = newValue;
 		return 'down';
 	}
-	if (oldValue > newValue) {
-		console.log('Up');
+	if (oldValue >= newValue) {
+		console.log('Scroll Up');
+		oldValue = newValue;
 		return 'up';
 	}
-	oldValue = newValue;
 
 	return 0;
 };
 
 // Scroll Function
+let isScrolling;
+let scrolls = 1;
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
 window.addEventListener('scroll', () => {
+	// Clear our timeout throughout the scroll
+	window.clearTimeout(isScrolling);
+
+	// Set a timeout to run after scrolling ends
+	isScrolling = setTimeout(function () {
+		scrolls = 0;
+		console.log('Scrolling has stopped.');
+	}, 66);
+
 	elements.forEach(function motionOnScroll(element, index) {
 		const motionType = element.getAttribute('data-motion-type');
 		// 'speed(0) ease(1) viewport-bottom(2) viewport-middle(3) viewport-top(4) direction(5) offset-starting(6) offset-middle(7) offset-end(8)'
@@ -851,6 +864,8 @@ window.addEventListener('scroll', () => {
 				element.style.transition = `all ${speedValue}s ${easingValue}`;
 			} else element.style.transition = 'all 3s ease';
 
+			//	if (!scrolls) element.style.transition = 'none';
+
 			//	console.log(rotateStart, rotateMid, rotateEnd);
 
 			const rect = element.getBoundingClientRect();
@@ -876,20 +891,24 @@ window.addEventListener('scroll', () => {
 
 			if (scrollDirection === 'down' && elementTopInViewCoordinate <= 0) {
 				if (elementMidInViewCoordinate >= 0) {
+					// from starting to middle
 					console.log('Down - To Mid');
 					setTransform(element, `rotate(${rotateMid}deg)`);
 				} else {
 					console.log('Down - To End');
-					setTransform(element, `rotate(${rotateEnd}deg)`);
+					setTransform(element, `rotate(${rotateEnd}deg)`); // from middle to ending
 				}
 			}
-			if (scrollDirection === 'up' && elementTopInViewCoordinate <= 0) {
+			if (
+				scrollDirection === 'up' &&
+				elementBottomInViewCoordinate >= 0
+			) {
 				if (elementMidInViewCoordinate <= 0) {
 					console.log('Up - To Mid');
-					setTransform(element, `rotate(${rotateMid}deg)`);
+					setTransform(element, `rotate(${rotateMid}deg)`); // from ending to middle
 				} else {
 					console.log('Up - To Start');
-					setTransform(element, `rotate(${rotateStart}deg)`);
+					setTransform(element, `rotate(${rotateStart}deg)`); // from middle to starting
 				}
 			}
 

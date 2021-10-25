@@ -37,4 +37,41 @@ describe('AlignmentControl', () => {
 			expect(attribute).toStrictEqual(alignments[i]);
 		}
 	});
+
+	it('Checking alignment in toolbar responsive', async () => {
+		// check general
+		const expectAttributes = await getBlockAttributes();
+		const position = expectAttributes['text-alignment-general'];
+
+		expect(position).toStrictEqual('left');
+
+		// responsive s
+
+		await page.$eval('.toolbar-wrapper .toolbar-item__alignment', button =>
+			button.click()
+		);
+
+		const toolbarAlignment = await page.$$(
+			'.components-popover__content .maxi-alignment-control__no-label label'
+		);
+
+		await toolbarAlignment[2].click();
+
+		const expectSAttributes = await getBlockAttributes();
+		const positionS = expectSAttributes['text-alignment-s'];
+
+		expect(positionS).toStrictEqual('right');
+
+		// responsive xs
+		const expectXsAttributes = await getBlockAttributes();
+		const positionXs = expectXsAttributes['text-alignment-xs'];
+
+		expect(positionXs).toStrictEqual('right');
+
+		// responsive m
+		const expectMAttributes = await getBlockAttributes();
+		const positionM = expectMAttributes['text-alignment-m'];
+
+		expect(positionM).toStrictEqual('left');
+	});
 });

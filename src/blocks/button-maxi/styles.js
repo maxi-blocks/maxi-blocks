@@ -31,7 +31,7 @@ import {
 /**
  * External dependencies
  */
-import { isNil, isEmpty, merge } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -347,7 +347,8 @@ const getIconObject = (props, target) => {
 			props['icon-inherit'],
 			false
 		),
-		background: {
+		background: props['icon-background-active-media-general'] ===
+			'background-color' && {
 			...getColorBackgroundObject({
 				...getGroupAttributes(props, [
 					'icon',
@@ -357,15 +358,18 @@ const getIconObject = (props, target) => {
 				prefix: 'icon-',
 				blockStyle: props.parentBlockStyle,
 				isIconInherit: props['icon-inherit'],
+				isIcon: true,
 			}),
 		},
-		gradient: {
+		gradient: props['icon-background-active-media-general'] ===
+			'gradient' && {
 			...getGradientBackgroundObject({
 				...getGroupAttributes(props, [
 					'icon',
 					'iconBackgroundGradient',
 				]),
 				prefix: 'icon-',
+				isIcon: true,
 			}),
 		},
 		padding:
@@ -419,6 +423,7 @@ const getIconHoverObject = (props, target) => {
 				blockStyle: props.parentBlockStyle,
 				isIconInherit: props['icon-inherit'],
 				isHover: true,
+				isIcon: true,
 			}),
 		},
 		gradient: iconHoverStatus &&
@@ -431,6 +436,7 @@ const getIconHoverObject = (props, target) => {
 					),
 					prefix: 'icon-',
 					isHover: true,
+					isIcon: true,
 				}),
 			},
 		border:

@@ -17,18 +17,18 @@ describe('OverflowControl', () => {
 		await insertBlock('Text Maxi');
 		await openSidebarTab(page, 'advanced', 'overflow');
 
-		const selector = await page.$$('.maxi-overflow-control select');
+		const selectorX = await page.$$('.maxi-overflow-control select');
 
-		await selector[0].select('hidden');
+		await selectorX[0].select('hidden');
 
 		const attributes = await getBlockAttributes();
 		const generalOverflow = attributes['overflow-x-general'];
 
 		expect(generalOverflow).toStrictEqual('hidden');
-		await page.waitForTimeout(250);
-		await selector[1].select('auto');
 
-		await page.waitForTimeout(250);
+		const selectorY = await page.$$('.maxi-overflow-control select');
+		await selectorY[1].select('auto');
+
 		const generalAttributes = await getBlockAttributes();
 		const generalYOverflow = generalAttributes['overflow-y-general'];
 

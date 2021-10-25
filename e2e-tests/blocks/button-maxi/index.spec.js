@@ -10,7 +10,7 @@ import {
 /**
  * Interactive dependencies
  */
-import { openSidebar } from '../../utils';
+import { openSidebarTab } from '../../utils';
 
 describe('Button Maxi', () => {
 	it('Button Maxi does not break', async () => {

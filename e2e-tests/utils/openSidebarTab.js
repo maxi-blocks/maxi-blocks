@@ -6,13 +6,7 @@ import {
 	openDocumentSettingsSidebar,
 } from '@wordpress/e2e-test-utils';
 
-/**
- * Chat temporal lol
- *
- * J: me sigues? siiiiii
- */
-
-const openCanvasSidebar = async (page, tab, item) => {
+const openSidebarTab = async (page, tab, item) => {
 	await openDocumentSettingsSidebar();
 	await ensureSidebarOpened();
 
@@ -29,7 +23,6 @@ const openCanvasSidebar = async (page, tab, item) => {
 			: ['style', 'advanced'];
 
 	await options[tabs.indexOf(tab)].click();
-	debugger;
 
 	const wrapperElement = await page.$(
 		`.maxi-accordion-control__item[data-name="${item}"]`
@@ -69,4 +62,4 @@ const openCanvasSidebar = async (page, tab, item) => {
 	return content;
 };
 
-export default openCanvasSidebar;
+export default openSidebarTab;

@@ -54,6 +54,7 @@ describe('TypographyControl', () => {
 			'style',
 			'typography'
 		);
+		debugger;
 		const closeAccordion = await page.$$(
 			'.interface-interface-skeleton__sidebar .edit-post-sidebar__panel-tabs button'
 		);

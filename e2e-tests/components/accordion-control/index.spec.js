@@ -5,7 +5,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-// import openSidebarTab from '../../utils/openSidebarTab'; // nono, sacala del archivo de reexportacion
+
 import { openSidebarTab } from '../../utils';
 
 describe('AccordionControl', () => {

@@ -26,108 +26,119 @@ import { ResponsiveTabsControl } from '..';
 /**
  * Component
  */
-const ColorContent = ({
-	SVGOptions,
-	SVGData,
-	breakpoint,
-	isHover,
-	id,
-	value,
-	isGeneral,
-	onChange,
-	clientId,
-}) => (
-	<ColorControl
-		label={__('Fill', 'maxi-blocks')}
-		paletteStatus={getLastBreakpointAttribute(
-			'background-palette-svg-color-status',
-			breakpoint,
-			SVGOptions,
-			isHover
-		)}
-		paletteColor={getLastBreakpointAttribute(
-			'background-palette-svg-color',
-			breakpoint,
-			SVGOptions,
-			isHover
-		)}
-		paletteOpacity={getLastBreakpointAttribute(
-			'background-palette-svg-opacity',
-			breakpoint,
-			SVGOptions,
-			isHover
-		)}
-		color={getLastBreakpointAttribute('color', breakpoint, value, isHover)}
-		onChange={({ paletteStatus, paletteColor, paletteOpacity, color }) => {
-			SVGData[id][getAttributeKey('color', isHover, false, breakpoint)] =
-				color;
+const ColorContent = props => {
+	const {
+		SVGOptions,
+		SVGData,
+		breakpoint,
+		isHover,
+		id,
+		value,
+		isGeneral,
+		onChange,
+		clientId,
+	} = props;
 
-			onChange({
-				SVGElement: injectImgSVG(
-					getLastBreakpointAttribute(
-						'background-svg-SVGElement',
-						breakpoint,
-						SVGOptions
-					),
-					SVGData
-				).outerHTML,
-				SVGData,
-				[getAttributeKey(
-					'background-palette-svg-color-status',
-					isHover,
-					false,
-					breakpoint
-				)]: paletteStatus,
-				[getAttributeKey(
-					'background-palette-svg-color',
-					isHover,
-					false,
-					breakpoint
-				)]: paletteColor,
-				[getAttributeKey(
-					'background-palette-svg-opacity',
-					isHover,
-					false,
-					breakpoint
-				)]: paletteOpacity,
-				[getAttributeKey(
-					'background-palette-svg-opacity',
-					isHover,
-					false,
-					breakpoint
-				)]: paletteOpacity,
-				...(isGeneral && {
+	return (
+		<ColorControl
+			label={__('Fill', 'maxi-blocks')}
+			paletteStatus={getLastBreakpointAttribute(
+				'background-palette-svg-color-status',
+				breakpoint,
+				SVGOptions,
+				isHover
+			)}
+			paletteColor={getLastBreakpointAttribute(
+				'background-palette-svg-color',
+				breakpoint,
+				SVGOptions,
+				isHover
+			)}
+			paletteOpacity={getLastBreakpointAttribute(
+				'background-palette-svg-opacity',
+				breakpoint,
+				SVGOptions,
+				isHover
+			)}
+			color={getLastBreakpointAttribute(
+				'color',
+				breakpoint,
+				value,
+				isHover
+			)}
+			onChange={({
+				paletteStatus,
+				paletteColor,
+				paletteOpacity,
+				color,
+			}) => {
+				SVGData[id][
+					getAttributeKey('color', isHover, false, breakpoint)
+				] = color;
+
+				onChange({
+					SVGElement: injectImgSVG(
+						SVGOptions['background-svg-SVGElement'],
+						SVGData
+					).outerHTML,
+					SVGData,
 					[getAttributeKey(
 						'background-palette-svg-color-status',
 						isHover,
 						false,
-						'general'
+						breakpoint
 					)]: paletteStatus,
 					[getAttributeKey(
 						'background-palette-svg-color',
 						isHover,
 						false,
-						'general'
+						breakpoint
 					)]: paletteColor,
 					[getAttributeKey(
 						'background-palette-svg-opacity',
 						isHover,
 						false,
-						'general'
+						breakpoint
 					)]: paletteOpacity,
 					[getAttributeKey(
 						'background-palette-svg-opacity',
 						isHover,
 						false,
-						'general'
+						breakpoint
 					)]: paletteOpacity,
-				}),
-			});
-		}}
-		isHover={isHover}
-		clientId={clientId}
-	/>
-);
+					...(isGeneral && {
+						[getAttributeKey(
+							'background-palette-svg-color-status',
+							isHover,
+							false,
+							'general'
+						)]: paletteStatus,
+						[getAttributeKey(
+							'background-palette-svg-color',
+							isHover,
+							false,
+							'general'
+						)]: paletteColor,
+						[getAttributeKey(
+							'background-palette-svg-opacity',
+							isHover,
+							false,
+							'general'
+						)]: paletteOpacity,
+						[getAttributeKey(
+							'background-palette-svg-opacity',
+							isHover,
+							false,
+							'general'
+						)]: paletteOpacity,
+					}),
+				});
+			}}
+			isHover={isHover}
+			clientId={clientId}
+		/>
+	);
+};
 
 const SVGFillControl = props => {
 	const {
@@ -277,6 +288,7 @@ const SVGFillControl = props => {
 									}
 									breakpoint={breakpoint}
 									prefix='background-svg-'
+									disableModal
 								/>
 							</>
 						),

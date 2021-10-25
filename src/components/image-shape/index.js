@@ -17,7 +17,13 @@ import MaxiModal from '../../editor/library/modal';
  * ImageShape
  */
 const ImageShape = props => {
-	const { onChange, breakpoint, icon, prefix = '' } = props;
+	const {
+		onChange,
+		breakpoint,
+		icon,
+		prefix = '',
+		disableModal = false,
+	} = props;
 
 	const {
 		[`${prefix}image-shape-size-${breakpoint}`]: shapeSize,
@@ -75,7 +81,7 @@ const ImageShape = props => {
 
 	return (
 		<>
-			{breakpoint === 'general' && (
+			{!disableModal && breakpoint === 'general' && (
 				<MaxiModal
 					type='image-shape'
 					onSelect={obj => onChange(obj)}
@@ -85,7 +91,7 @@ const ImageShape = props => {
 					icon={icon}
 				/>
 			)}
-			{icon && (
+			{(!disableModal || icon) && (
 				<>
 					{breakpoint === 'general' && (
 						<>

@@ -157,8 +157,9 @@ const CopyPasteContent = props => {
 	const onCopyStyles = () => copyStyles(blockAttributes);
 	const onPasteStyles = () => updateBlockAttributes(clientId, copiedStyles);
 
-	const onCopyBlocks = () => copyNestedBlocks(cleanInnerBlocks(innerBlocks));
-	const onPasteBlocks = () => replaceInnerBlocks(clientId, copiedBlocks);
+	const onCopyBlocks = () => copyNestedBlocks(innerBlocks);
+	const onPasteBlocks = () =>
+		replaceInnerBlocks(clientId, cleanInnerBlocks(copiedBlocks));
 
 	const handleSpecialPaste = attr => {
 		const newSpecialPaste = specialPaste.includes(attr)

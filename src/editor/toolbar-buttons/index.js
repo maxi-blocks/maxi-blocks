@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { subscribe } from '@wordpress/data';
+import { subscribe, select } from '@wordpress/data';
 import { useState, render } from '@wordpress/element';
 
 /**

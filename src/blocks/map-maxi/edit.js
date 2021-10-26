@@ -42,10 +42,9 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes } = this.props;
+		const { attributes, apiKey } = this.props;
 		const {
 			uniqueID,
-			'map-api-key': mapApiKey,
 			'map-latitude': mapLatitude,
 			'map-longitude': mapLongitude,
 			'map-zoom': mapZoom,
@@ -59,10 +58,12 @@ class edit extends MaxiBlockComponent {
 		} = attributes;
 
 		const loader = new Loader({
-			apiKey: mapApiKey,
+			apiKey,
 			version: 'weekly',
 			libraries: ['places'],
 		});
+
+		console.log('>>>> :)', apiKey);
 
 		loader
 			.load()
@@ -134,10 +135,14 @@ class edit extends MaxiBlockComponent {
 }
 
 const editSelect = withSelect(select => {
-	const deviceType = select('maxiBlocks').receiveMaxiDeviceType();
+	const { receiveMaxiSettings, receiveMaxiDeviceType } = select('maxiBlocks');
+
+	const deviceType = receiveMaxiDeviceType();
+	const maxiSettings = receiveMaxiSettings();
 
 	return {
 		deviceType,
+		apiKey: maxiSettings['google_api_key'],
 	};
 });
 

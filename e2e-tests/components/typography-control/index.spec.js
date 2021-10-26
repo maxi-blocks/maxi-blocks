@@ -23,7 +23,6 @@ describe.skip('TypographyControl', () => {
 	it('Checking the font family', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		debugger;
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		const accordionPanel = await openSidebarTab(
 			page,

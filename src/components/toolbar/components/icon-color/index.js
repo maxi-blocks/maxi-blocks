@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorControl from '../../../color-control';
-import FancyRadioControl from '../../../fancy-radio-control';
+import RadioControl from '../../../fancy-radio-control';
 import {
 	getColorRGBAString,
 	getDefaultAttribute,
@@ -53,7 +53,7 @@ const IconColor = props => {
 			advancedOptions='icon'
 		>
 			<div className='toolbar-item__icon-color__popover'>
-				<FancyRadioControl
+				<RadioControl
 					label={__(
 						'Inherit Colour/Backgrond from Button',
 						'maxi-block'

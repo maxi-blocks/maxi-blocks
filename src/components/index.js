@@ -24,7 +24,6 @@ export { default as DefaultStylesControl } from './default-styles-control';
 export { default as DisplayControl } from './display-control';
 export { default as DividerControl } from './divider-control';
 export { default as Dropdown } from './dropdown';
-export { default as FancyRadioControl } from './fancy-radio-control';
 export { default as FontFamilySelector } from './font-family-selector';
 export { default as FontLevelControl } from './font-level-control';
 export { default as FullSizeControl } from './full-size-control';

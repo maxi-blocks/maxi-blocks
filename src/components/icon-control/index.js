@@ -8,7 +8,7 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '../advanced-number-control';
-import FancyRadioControl from '../fancy-radio-control';
+import RadioControl from '../radio-control';
 import ToggleSwitch from '../toggle-switch';
 import ColorControl from '../color-control';
 import AxisControl from '../axis-control';
@@ -183,7 +183,7 @@ const IconControl = props => {
 							/>
 							{breakpoint === 'general' && (
 								<>
-									<FancyRadioControl
+									<RadioControl
 										label={__(
 											'Icon Position',
 											'maxi-block'
@@ -202,7 +202,6 @@ const IconControl = props => {
 												value: 'right',
 											},
 										]}
-										optionType='string'
 										onChange={val =>
 											onChange({
 												'icon-position': val,
@@ -225,12 +224,11 @@ const IconControl = props => {
 							)}
 						</>
 					)}
-					<FancyRadioControl
+					<RadioControl
 						label=''
 						fullWidthMode
 						selected={iconStyle}
 						options={getOptions()}
-						optionType='string'
 						onChange={val => setIconStyle(val)}
 					/>
 					{iconStyle === 'color' && (

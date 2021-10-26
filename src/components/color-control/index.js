@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import CustomColorControl from './customColorControl';
 import ColorPaletteControl from './paletteControl';
-import FancyRadioControl from '../fancy-radio-control';
+import RadioControl from '../radio-control';
 import { getBlockStyle, getColorRGBAParts } from '../../extensions/styles';
 import { getPaletteColor } from '../../extensions/style-cards';
 
@@ -109,7 +109,7 @@ const ColorControl = props => {
 				/>
 			)}
 			{!disablePalette && (
-				<FancyRadioControl
+				<RadioControl
 					label={__('Custom Colour', 'maxi-blocks')}
 					className='maxi-sc-color-palette__custom'
 					selected={paletteStatus}

@@ -220,12 +220,17 @@ const LinkOptions = props => {
 					paletteOpacity,
 					color,
 				}) =>
-					onChangeFormat({
-						[`${prefix}link-palette-color-status`]: paletteStatus,
-						[`${prefix}link-palette-color`]: paletteColor,
-						[`${prefix}link-palette-opacity`]: paletteOpacity,
-						[`${prefix}link-color`]: color,
-					})
+					onChangeFormat(
+						{
+							[`${prefix}link-palette-color-status`]:
+								paletteStatus,
+							[`${prefix}link-palette-color`]: paletteColor,
+							[`${prefix}link-palette-opacity`]: paletteOpacity,
+							[`${prefix}link-color`]: color,
+						},
+						false,
+						true
+					)
 				}
 				textLevel={textLevel}
 				deviceType={breakpoint}
@@ -249,13 +254,18 @@ const LinkOptions = props => {
 					paletteOpacity,
 					color,
 				}) =>
-					onChangeFormat({
-						[`${prefix}link-hover-palette-color-status`]:
-							paletteStatus,
-						[`${prefix}link-hover-palette-color`]: paletteColor,
-						[`${prefix}link-hover-palette-opacity`]: paletteOpacity,
-						[`${prefix}link-hover-color`]: color,
-					})
+					onChangeFormat(
+						{
+							[`${prefix}link-hover-palette-color-status`]:
+								paletteStatus,
+							[`${prefix}link-hover-palette-color`]: paletteColor,
+							[`${prefix}link-hover-palette-opacity`]:
+								paletteOpacity,
+							[`${prefix}link-hover-color`]: color,
+						},
+						false,
+						true
+					)
 				}
 				textLevel={textLevel}
 				deviceType={breakpoint}
@@ -281,14 +291,19 @@ const LinkOptions = props => {
 					paletteOpacity,
 					color,
 				}) =>
-					onChangeFormat({
-						[`${prefix}link-active-palette-color-status`]:
-							paletteStatus,
-						[`${prefix}link-active-palette-color`]: paletteColor,
-						[`${prefix}link-active-palette-opacity`]:
-							paletteOpacity,
-						[`${prefix}link-active-color`]: color,
-					})
+					onChangeFormat(
+						{
+							[`${prefix}link-active-palette-color-status`]:
+								paletteStatus,
+							[`${prefix}link-active-palette-color`]:
+								paletteColor,
+							[`${prefix}link-active-palette-opacity`]:
+								paletteOpacity,
+							[`${prefix}link-active-color`]: color,
+						},
+						false,
+						true
+					)
 				}
 				textLevel={textLevel}
 				deviceType={breakpoint}
@@ -314,14 +329,19 @@ const LinkOptions = props => {
 					paletteOpacity,
 					color,
 				}) =>
-					onChangeFormat({
-						[`${prefix}link-visited-palette-color-status`]:
-							paletteStatus,
-						[`${prefix}link-visited-palette-color`]: paletteColor,
-						[`${prefix}link-visited-palette-opacity`]:
-							paletteOpacity,
-						[`${prefix}link-visited-color`]: color,
-					})
+					onChangeFormat(
+						{
+							[`${prefix}link-visited-palette-color-status`]:
+								paletteStatus,
+							[`${prefix}link-visited-palette-color`]:
+								paletteColor,
+							[`${prefix}link-visited-palette-opacity`]:
+								paletteOpacity,
+							[`${prefix}link-visited-color`]: color,
+						},
+						false,
+						true
+					)
 				}
 				textLevel={textLevel}
 				deviceType={breakpoint}
@@ -542,7 +562,11 @@ const TypographyControl = withFormatValue(props => {
 		return defaultAttribute;
 	};
 
-	const onChangeFormat = (value, customBreakpoint) => {
+	const onChangeFormat = (
+		value,
+		customBreakpoint,
+		forceDisableCustomFormats = false
+	) => {
 		const obj = setFormat({
 			formatValue,
 			isList,
@@ -551,7 +575,8 @@ const TypographyControl = withFormatValue(props => {
 			breakpoint: customBreakpoint || breakpoint,
 			isHover,
 			textLevel,
-			disableCustomFormats,
+			disableCustomFormats:
+				forceDisableCustomFormats ?? disableCustomFormats,
 			styleCardPrefix,
 			returnFormatValue: true,
 		});

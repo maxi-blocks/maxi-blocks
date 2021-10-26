@@ -16,6 +16,7 @@ import MaxiBlock, {
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 
 /**
  * Save
@@ -92,7 +93,7 @@ const save = props => {
 					/>
 				)}
 			</HoverPreview>
-			{captionType !== 'none' && (
+			{captionType !== 'none' && !isEmpty(captionContent) && (
 				<RichText.Content
 					className='maxi-image-block__caption'
 					value={captionContent}

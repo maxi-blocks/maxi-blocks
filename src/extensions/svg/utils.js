@@ -34,12 +34,15 @@ export const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
 			'path, circle, rect, polygon, line, ellipse'
 		)
 	);
+	const SVGViewBox = SVGElement.getAttribute('viewBox')
+		.replace(/,/g, '')
+		.split(' ');
 
 	Object.entries(SVGValue).forEach(([id, el]) => {
 		SVGLayers.forEach((item, i) => {
 			if (isEmpty(el.imageURL) && removeMode) {
 				SVGLayers[i].removeAttribute('style');
-				SVGElement.querySelector('.maxi-svg-block__pattern').remove();
+				SVGElement.querySelector('.maxi-svg-block__pattern')?.remove();
 			}
 			if (!isEmpty(el.imageURL)) {
 				const pattern = document.createElement('pattern');
@@ -47,8 +50,8 @@ export const injectImgSVG = (svg, SVGData = {}, removeMode = false) => {
 				pattern.classList.add('maxi-svg-block__pattern');
 				pattern.setAttribute('width', '100%');
 				pattern.setAttribute('height', '100%');
-				pattern.setAttribute('x', '0');
-				pattern.setAttribute('y', '0');
+				pattern.setAttribute('x', SVGViewBox[0]);
+				pattern.setAttribute('y', SVGViewBox[1]);
 				pattern.setAttribute('patternUnits', 'userSpaceOnUse');
 
 				const image = document.createElement('image');
@@ -119,4 +122,4 @@ export const generateDataObject = (data, svg) => {
 	return response;
 };
 
-export const getSVGHasImage = svg => svg.includes('maxi-svg-block__pattern');
+export const getSVGHasImage = svg => !!svg?.includes('maxi-svg-block__pattern');

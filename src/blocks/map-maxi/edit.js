@@ -57,13 +57,13 @@ class edit extends MaxiBlockComponent {
 			'map-marker-address': mapMarkerAddress,
 		} = attributes;
 
+		console.log(apiKey);
+
 		const loader = new Loader({
 			apiKey,
 			version: 'weekly',
 			libraries: ['places'],
 		});
-
-		console.log('>>>> :)', apiKey);
 
 		loader
 			.load()
@@ -139,10 +139,11 @@ const editSelect = withSelect(select => {
 
 	const deviceType = receiveMaxiDeviceType();
 	const maxiSettings = receiveMaxiSettings();
+	const { google_api_key: apiKey = false } = maxiSettings;
 
 	return {
 		deviceType,
-		apiKey: maxiSettings['google_api_key'],
+		apiKey,
 	};
 });
 

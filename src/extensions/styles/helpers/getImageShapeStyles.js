@@ -18,30 +18,30 @@ import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
  *
  * @param {Object} obj Block overflow properties
  */
-const getImageShapeStyles = (target = 'svg', obj) => {
+const getImageShapeStyles = (target = 'svg', obj, prefix = '') => {
 	const response = {};
 
 	breakpoints.forEach(breakpoint => {
 		let transformString = '';
 		const scale = getLastBreakpointAttribute(
-			'image-shape-scale',
+			`${prefix}image-shape-scale`,
 			breakpoint,
 			obj
 		);
 		const rotate = getLastBreakpointAttribute(
-			'image-shape-rotate',
+			`${prefix}image-shape-rotate`,
 			breakpoint,
 			obj
 		);
 
 		const flipX = getLastBreakpointAttribute(
-			'image-shape-flip-x',
+			`${prefix}image-shape-flip-x`,
 			breakpoint,
 			obj
 		);
 
 		const flipY = getLastBreakpointAttribute(
-			'image-shape-flip-y',
+			`${prefix}image-shape-flip-y`,
 			breakpoint,
 			obj
 		);

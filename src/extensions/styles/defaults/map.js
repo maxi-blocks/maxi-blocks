@@ -2,11 +2,11 @@ import { __ } from '@wordpress/i18n';
 
 const map = {
 	'map-latitude': {
-		type: 'number',
+		type: 'string',
 		default: 52.514477,
 	},
 	'map-longitude': {
-		type: 'number',
+		type: 'string',
 		default: 13.350174,
 	},
 	'map-zoom': {

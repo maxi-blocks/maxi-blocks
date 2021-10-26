@@ -35,22 +35,21 @@ const MapControl = props => {
 
 	const classes = classnames('maxi-map-control', className);
 
-	const { googleApiKey } = useSelect(select => {
+	const { mapApiKey } = useSelect(select => {
 		const { receiveMaxiSettings } = select('maxiBlocks');
-
 		const maxiSettings = receiveMaxiSettings();
-		const googleApiKey = !isEmpty(maxiSettings['google_api_key'])
-			? maxiSettings['google_api_key']
-			: null;
+		const { google_api_key: apiKey } = maxiSettings;
+
+		const mapApiKey = !isEmpty(apiKey) ? apiKey : false;
 
 		return {
-			googleApiKey,
+			mapApiKey,
 		};
 	});
 
 	return (
 		<div className={classes}>
-			{!googleApiKey && (
+			{!mapApiKey && (
 				<InfoBox
 					message={__(
 						'You have not set your Google map API key, please navigate to the Maxi Block Options and set it',

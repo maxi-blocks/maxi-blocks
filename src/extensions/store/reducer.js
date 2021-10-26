@@ -1,11 +1,16 @@
 import controls from './controls';
 
-const breakpointResizer = (size, breakpoints, xxlSize = 2000) => {
+const breakpointResizer = (
+	size,
+	breakpoints,
+	xxlSize = breakpoints.xl + 1,
+	winSize = 0
+) => {
 	const editorWrapper = document.querySelector('.edit-post-visual-editor');
 	const winHeight = window.outerWidth;
 	const responsiveWidth =
 		(size === 'general' && 'none') ||
-		(size === 'xxl' && xxlSize) ||
+		(size === 'xxl' && (xxlSize > winSize ? xxlSize : winSize)) ||
 		breakpoints[size];
 
 	editorWrapper.setAttribute(
@@ -18,11 +23,10 @@ const breakpointResizer = (size, breakpoints, xxlSize = 2000) => {
 		editorWrapper.style.width = '';
 		editorWrapper.style.margin = '';
 	} else {
-		if (size !== 'xxl')
-			editorWrapper.style.width = `${breakpoints[size]}px`;
-		else editorWrapper.style.width = `${xxlSize}px`;
+		if (size !== 'xxl') editorWrapper.style.width = `${responsiveWidth}px`;
+		else editorWrapper.style.width = `${responsiveWidth}px`;
 
-		if (winHeight > breakpoints[size])
+		if (winHeight > responsiveWidth)
 			editorWrapper.style.margin = '36px auto';
 		else editorWrapper.style.margin = '';
 	}
@@ -73,6 +77,7 @@ const reducer = (
 			breakpointResizer(
 				action.deviceType,
 				state.breakpoints,
+				action.width,
 				state.settings.window.width
 			);
 			return {

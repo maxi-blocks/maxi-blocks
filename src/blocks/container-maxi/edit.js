@@ -19,7 +19,7 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes } from '../../extensions/styles';
+import { getGroupAttributes, getParallaxLayers } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -42,29 +42,27 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getCustomData() {
-		const { uniqueID } = this.props.attributes;
+		const { attributes } = this.props;
+		const {
+			uniqueID,
+			'background-layers': bgLayers,
+			'motion-status': motionStatus,
+			'shape-divider-top-status': shapeDividerTopStatus,
+			'shape-divider-bottom-status': shapeDividerBottomStatus,
+		} = attributes;
 
-		const motionStatus =
-			!!this.props.attributes['motion-status'] ||
-			!!this.props.attributes['parallax-status'];
+		const bgParallaxLayers = getParallaxLayers(bgLayers);
 
-		const shapeStatus =
-			!!this.props.attributes['shape-divider-top-status'] ||
-			!!this.props.attributes['shape-divider-bottom-status'];
+		const shapeStatus = shapeDividerTopStatus || shapeDividerBottomStatus;
 
 		return {
 			[uniqueID]: {
 				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, [
-						'motion',
-						'parallax',
-					]),
+					...getGroupAttributes(attributes, ['motion']),
 				}),
+				...(!isEmpty(bgParallaxLayers) && { bgParallaxLayers }),
 				...(shapeStatus && {
-					...getGroupAttributes(
-						this.props.attributes,
-						'shapeDivider'
-					),
+					...getGroupAttributes(attributes, 'shapeDivider'),
 				}),
 			},
 		};

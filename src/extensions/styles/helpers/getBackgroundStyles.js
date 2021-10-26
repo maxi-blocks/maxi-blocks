@@ -808,18 +808,13 @@ export const getBlockBackgroundStyles = ({
 
 	if (isHover && !props[`${prefix}background-hover-status`]) return response;
 
-	const parallaxStatus = getAttributeValue({
-		target: 'parallax-status',
-		props,
-	});
-
 	const layers = getAttributeValue({
 		target: 'background-layers',
 		props,
 		prefix,
 	});
 
-	if (!parallaxStatus && layers && layers.length > 0)
+	if (layers && layers.length > 0)
 		BREAKPOINTS.forEach(breakpoint => {
 			response = {
 				...merge(
@@ -838,29 +833,6 @@ export const getBlockBackgroundStyles = ({
 				),
 			};
 		});
-	else if (parallaxStatus) {
-		const parallaxTarget = `${target} > .maxi-background-displayer .maxi-background-displayer__parallax`;
-
-		BREAKPOINTS.forEach(breakpoint => {
-			response[parallaxTarget] = {
-				...merge(
-					{
-						...response[parallaxTarget],
-					},
-					{
-						image: {
-							...getImageBackgroundObject({
-								...getGroupAttributes(props, 'parallax'),
-								isHover,
-								prefix: 'parallax-',
-								breakpoint,
-							}),
-						},
-					}
-				),
-			};
-		});
-	}
 
 	return response;
 };

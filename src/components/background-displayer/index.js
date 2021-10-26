@@ -91,33 +91,26 @@ const BackgroundContent = props => {
 };
 
 const BackgroundDisplayer = props => {
-	const { className, 'parallax-status': parallaxStatus } = props;
+	const { className } = props;
 
 	const haveLayers = !isEmpty(props['background-layers']);
 
-	if (!parallaxStatus && !haveLayers) return null;
+	if (!haveLayers) return null;
 
 	const classes = classnames('maxi-background-displayer', className);
 
 	return (
 		<div className={classes}>
-			{!parallaxStatus && (
-				<>
-					<BackgroundContent
-						key='maxi-background-displayer__content'
-						isHover={false}
-						{...props}
-					/>
-					<BackgroundContent
-						key='maxi-background-displayer__content--hover'
-						isHover
-						{...props}
-					/>
-				</>
-			)}
-			{parallaxStatus && (
-				<div className='maxi-background-displayer__parallax' />
-			)}
+			<BackgroundContent
+				key='maxi-background-displayer__content'
+				isHover={false}
+				{...props}
+			/>
+			<BackgroundContent
+				key='maxi-background-displayer__content--hover'
+				isHover
+				{...props}
+			/>
 		</div>
 	);
 };

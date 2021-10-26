@@ -32,7 +32,6 @@ const background = ({ props, enableParallax = false }) => {
 								<BlockBackgroundControl
 									{...getGroupAttributes(attributes, [
 										'blockBackground',
-										'parallax',
 									])}
 									onChange={obj => setAttributes(obj)}
 									clientId={clientId}

@@ -73,7 +73,6 @@ const attributes = {
 	...attributesData.arrow,
 	...attributesData.shapeDivider,
 	...attributesData.motion,
-	...attributesData.parallax,
 	...attributesData.transform,
 	...attributesData.display,
 	...attributesData.position,

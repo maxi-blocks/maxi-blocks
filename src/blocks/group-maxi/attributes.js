@@ -36,7 +36,6 @@ const attributes = {
 	...attributesData.motion,
 	...attributesData.opacity,
 	...attributesData.padding,
-	...attributesData.parallax,
 	...attributesData.position,
 	...attributesData.size,
 	...attributesData.transform,

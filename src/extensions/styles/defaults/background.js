@@ -109,6 +109,18 @@ export const rawBackgroundImage = {
 		type: 'number',
 		default: 1,
 	},
+	'background-image-parallax-status': {
+		type: 'boolean',
+		default: false,
+	},
+	'background-image-parallax-speed': {
+		type: 'number',
+		default: 4,
+	},
+	'background-image-parallax-direction': {
+		type: 'string',
+		default: 'up',
+	},
 };
 
 export const rawBackgroundVideo = {

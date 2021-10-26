@@ -584,14 +584,11 @@ let newValue = 0;
 
 const getScrollDirection = () => {
 	newValue = window.pageYOffset;
-	console.log(`window.pageYOffset ${window.pageYOffset}`);
 	if (oldValue < newValue) {
-		console.log('Scroll Down');
 		oldValue = newValue;
 		return 'down';
 	}
 	if (oldValue >= newValue) {
-		console.log('Scroll Up');
 		oldValue = newValue;
 		return 'up';
 	}
@@ -602,6 +599,8 @@ const getScrollDirection = () => {
 // Scroll Function
 let isScrolling;
 let scrolls = 1;
+let newRotateMid = 0;
+let newRotateEnd = 0;
 
 // eslint-disable-next-line @wordpress/no-global-event-listener
 window.addEventListener('scroll', () => {
@@ -861,7 +860,7 @@ window.addEventListener('scroll', () => {
 			// setTransform(element, transform);
 
 			if (speedValue && easingValue) {
-				element.style.transition = `all ${speedValue}s ${easingValue}`;
+				element.style.transition = `all 0.2s ${easingValue}`;
 			} else element.style.transition = 'all 3s ease';
 
 			//	if (!scrolls) element.style.transition = 'none';
@@ -873,11 +872,11 @@ window.addEventListener('scroll', () => {
 			const elementHeight = element.offsetHeight;
 
 			const elementTopInViewCoordinate = Math.round(
-				rect.top - windowHeight
+				rect.top - windowHeight / 2
 			);
 
 			const elementBottomInViewCoordinate = Math.round(
-				rect.bottom - windowHeight
+				rect.bottom - windowHeight / 2
 			);
 
 			const elementMidInViewCoordinate =
@@ -893,10 +892,19 @@ window.addEventListener('scroll', () => {
 				if (elementMidInViewCoordinate >= 0) {
 					// from starting to middle
 					console.log('Down - To Mid');
-					setTransform(element, `rotate(${rotateMid}deg)`);
+					const stepMid =
+						Math.abs(rotateStart - rotateMid) / windowHeight;
+
+					newRotateMid += stepMid;
+					const finalRotateStartMid = newRotateMid + rotateStart;
+					setTransform(element, `rotate(${finalRotateStartMid}deg)`);
 				} else {
 					console.log('Down - To End');
-					setTransform(element, `rotate(${rotateEnd}deg)`); // from middle to ending
+					const stepEnd =
+						Math.abs(rotateEnd - rotateMid) / windowHeight;
+					newRotateEnd += stepEnd;
+					const finalRotateMidEnd = newRotateEnd + rotateMid;
+					setTransform(element, `rotate(${finalRotateMidEnd}deg)`); // from middle to ending
 				}
 			}
 			if (
@@ -905,10 +913,20 @@ window.addEventListener('scroll', () => {
 			) {
 				if (elementMidInViewCoordinate <= 0) {
 					console.log('Up - To Mid');
-					setTransform(element, `rotate(${rotateMid}deg)`); // from ending to middle
+					const stepEnd =
+						Math.abs(rotateEnd - rotateMid) / windowHeight;
+					newRotateEnd -= stepEnd;
+					const finalRotateMidEnd = newRotateEnd + rotateMid;
+					setTransform(element, `rotate(${finalRotateMidEnd}deg)`); // from ending to middle
+					//	setTransform(element, `rotate(${rotateMid}deg)`);
 				} else {
 					console.log('Up - To Start');
-					setTransform(element, `rotate(${rotateStart}deg)`); // from middle to starting
+					const stepMid =
+						Math.abs(rotateStart - rotateMid) / windowHeight;
+
+					newRotateMid -= stepMid;
+					const finalRotateStartMid = newRotateMid + rotateStart;
+					setTransform(element, `rotate(${finalRotateStartMid}deg)`); // from middle to starting
 				}
 			}
 

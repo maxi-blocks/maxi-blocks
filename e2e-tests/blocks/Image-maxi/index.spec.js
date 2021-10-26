@@ -150,9 +150,6 @@ describe('Image Maxi', () => {
 
 		expect(typographyAttributes).toStrictEqual(expectedAttributesTwo);
 
-		// await changeResponsive(page, 'general');
-		// accordionPanel = await openSidebarTab(page, 'style', 'caption');
-
 		// Weight, Transform, Style, Decoration
 		const weightSelector = await accordionPanel.$(
 			'.maxi-typography-control__weight .maxi-base-control__field select'
@@ -274,7 +271,7 @@ describe('Image Maxi', () => {
 	});
 
 	it('Image Dimension', async () => {
-		await openSidebarTab(page, 'style', 'image dimension');
+		await openSidebarTab(page, 'style', 'dimension');
 
 		// width
 		await page.$eval(
@@ -313,7 +310,7 @@ describe('Image Maxi', () => {
 		expect(checkFrontend).toMatchSnapshot();
 	});
 	it('Image alt tag', async () => {
-		await openSidebarTab(page, 'style', 'image alt tag');
+		await openSidebarTab(page, 'style', 'alt tag');
 
 		// select custom alt tag
 		const selector = await page.$('.maxi-image-inspector__alt-tag select');

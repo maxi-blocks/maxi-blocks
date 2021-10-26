@@ -19,7 +19,6 @@ describe('ResponsiveControl', () => {
 	it('Test the responsive control', async () => {
 		await createNewPost();
 		await changeResponsive(page, 'xs');
-		debugger;
 		await insertBlock('Button Maxi');
 		const accordionPanel = await openSidebarTab(
 			page,

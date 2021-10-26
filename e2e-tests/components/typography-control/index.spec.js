@@ -19,13 +19,11 @@ import {
 	getBlockStyle,
 } from '../../utils';
 
-describe('TypographyControl', () => {
-	beforeAll(async () => {
+describe.skip('TypographyControl', () => {
+	it('Checking the font family', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-	});
-
-	it('Checking the font family', async () => {
+		debugger;
 		await page.keyboard.type('Testing Text Maxi', { delay: 100 });
 		const accordionPanel = await openSidebarTab(
 			page,
@@ -54,7 +52,6 @@ describe('TypographyControl', () => {
 			'style',
 			'typography'
 		);
-		debugger;
 		const closeAccordion = await page.$$(
 			'.interface-interface-skeleton__sidebar .edit-post-sidebar__panel-tabs button'
 		);
@@ -102,7 +99,7 @@ describe('TypographyControl', () => {
 
 		// m
 		await changeResponsive(page, 'm');
-		await closeAccordion[2].click();
+		// await closeAccordion[2].click();
 		await openSidebarTab(page, 'style', 'typography');
 
 		const typographyInputM = await accordionPanel.$$eval(

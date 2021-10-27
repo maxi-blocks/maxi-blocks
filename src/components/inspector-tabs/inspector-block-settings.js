@@ -13,7 +13,7 @@ import CustomLabel from '../custom-label';
  * Component
  */
 const blockSettings = ({ props }) => {
-	const { attributes, deviceType, clientId } = props;
+	const { attributes, deviceType, clientId, setAttributes } = props;
 	const { blockStyle, customLabel, isFirstOnHierarchy } = attributes;
 
 	return (

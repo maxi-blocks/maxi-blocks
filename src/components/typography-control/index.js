@@ -211,19 +211,26 @@ const LinkOptions = props => {
 				defaultColor={getDefault(`${prefix}link-color`)}
 				paletteStatus={getValue(`${prefix}link-palette-color-status`)}
 				paletteColor={getValue(`${prefix}link-palette-color`)}
-				paletteOpacity={getValue(`${prefix}link-palette-opacity`)}
+				paletteOpacity={
+					getValue(`${prefix}link-palette-opacity`) || 100
+				}
 				onChange={({
 					paletteColor,
 					paletteStatus,
 					paletteOpacity,
 					color,
 				}) =>
-					onChangeFormat({
-						[`${prefix}link-palette-color-status`]: paletteStatus,
-						[`${prefix}link-palette-color`]: paletteColor,
-						[`${prefix}link-palette-opacity`]: paletteOpacity,
-						[`${prefix}link-color`]: color,
-					})
+					onChangeFormat(
+						{
+							[`${prefix}link-palette-color-status`]:
+								paletteStatus,
+							[`${prefix}link-palette-color`]: paletteColor,
+							[`${prefix}link-palette-opacity`]: paletteOpacity,
+							[`${prefix}link-color`]: color,
+						},
+						false,
+						true
+					)
 				}
 				textLevel={textLevel}
 				deviceType={breakpoint}
@@ -240,20 +247,27 @@ const LinkOptions = props => {
 					`${prefix}link-hover-palette-color-status`
 				)}
 				paletteColor={getValue(`${prefix}link-hover-palette-color`)}
-				paletteOpacity={getValue(`${prefix}link-hover-palette-opacity`)}
+				paletteOpacity={
+					getValue(`${prefix}link-hover-palette-opacity`) || 100
+				}
 				onChange={({
 					paletteColor,
 					paletteStatus,
 					paletteOpacity,
 					color,
 				}) =>
-					onChangeFormat({
-						[`${prefix}link-hover-palette-color-status`]:
-							paletteStatus,
-						[`${prefix}link-hover-palette-color`]: paletteColor,
-						[`${prefix}link-hover-palette-opacity`]: paletteOpacity,
-						[`${prefix}link-hover-color`]: color,
-					})
+					onChangeFormat(
+						{
+							[`${prefix}link-hover-palette-color-status`]:
+								paletteStatus,
+							[`${prefix}link-hover-palette-color`]: paletteColor,
+							[`${prefix}link-hover-palette-opacity`]:
+								paletteOpacity,
+							[`${prefix}link-hover-color`]: color,
+						},
+						false,
+						true
+					)
 				}
 				textLevel={textLevel}
 				deviceType={breakpoint}
@@ -270,23 +284,28 @@ const LinkOptions = props => {
 					`${prefix}link-active-palette-color-status`
 				)}
 				paletteColor={getValue(`${prefix}link-active-palette-color`)}
-				paletteOpacity={getValue(
-					`${prefix}link-active-palette-opacity`
-				)}
+				paletteOpacity={
+					getValue(`${prefix}link-active-palette-opacity`) || 100
+				}
 				onChange={({
 					paletteColor,
 					paletteStatus,
 					paletteOpacity,
 					color,
 				}) =>
-					onChangeFormat({
-						[`${prefix}link-active-palette-color-status`]:
-							paletteStatus,
-						[`${prefix}link-active-palette-color`]: paletteColor,
-						[`${prefix}link-active-palette-opacity`]:
-							paletteOpacity,
-						[`${prefix}link-active-color`]: color,
-					})
+					onChangeFormat(
+						{
+							[`${prefix}link-active-palette-color-status`]:
+								paletteStatus,
+							[`${prefix}link-active-palette-color`]:
+								paletteColor,
+							[`${prefix}link-active-palette-opacity`]:
+								paletteOpacity,
+							[`${prefix}link-active-color`]: color,
+						},
+						false,
+						true
+					)
 				}
 				textLevel={textLevel}
 				deviceType={breakpoint}
@@ -303,23 +322,28 @@ const LinkOptions = props => {
 					`${prefix}link-visited-palette-color-status`
 				)}
 				paletteColor={getValue(`${prefix}link-visited-palette-color`)}
-				paletteOpacity={getValue(
-					`${prefix}link-visited-palette-opacity`
-				)}
+				paletteOpacity={
+					getValue(`${prefix}link-visited-palette-opacity`) || 100
+				}
 				onChange={({
 					paletteColor,
 					paletteStatus,
 					paletteOpacity,
 					color,
 				}) =>
-					onChangeFormat({
-						[`${prefix}link-visited-palette-color-status`]:
-							paletteStatus,
-						[`${prefix}link-visited-palette-color`]: paletteColor,
-						[`${prefix}link-visited-palette-opacity`]:
-							paletteOpacity,
-						[`${prefix}link-visited-color`]: color,
-					})
+					onChangeFormat(
+						{
+							[`${prefix}link-visited-palette-color-status`]:
+								paletteStatus,
+							[`${prefix}link-visited-palette-color`]:
+								paletteColor,
+							[`${prefix}link-visited-palette-opacity`]:
+								paletteOpacity,
+							[`${prefix}link-visited-color`]: color,
+						},
+						false,
+						true
+					)
 				}
 				textLevel={textLevel}
 				deviceType={breakpoint}
@@ -540,7 +564,11 @@ const TypographyControl = withFormatValue(props => {
 		return defaultAttribute;
 	};
 
-	const onChangeFormat = (value, customBreakpoint) => {
+	const onChangeFormat = (
+		value,
+		customBreakpoint,
+		forceDisableCustomFormats = false
+	) => {
 		const obj = setFormat({
 			formatValue,
 			isList,
@@ -549,7 +577,8 @@ const TypographyControl = withFormatValue(props => {
 			breakpoint: customBreakpoint || breakpoint,
 			isHover,
 			textLevel,
-			disableCustomFormats,
+			disableCustomFormats:
+				forceDisableCustomFormats ?? disableCustomFormats,
 			styleCardPrefix,
 			returnFormatValue: true,
 		});
@@ -589,7 +618,7 @@ const TypographyControl = withFormatValue(props => {
 					color={getValue(`${prefix}color`)}
 					defaultColor={getDefault(`${prefix}color`)}
 					paletteColor={getValue(`${prefix}palette-color`)}
-					paletteOpacity={getValue(`${prefix}palette-opacity`)}
+					paletteOpacity={getValue(`${prefix}palette-opacity`) || 100}
 					paletteStatus={getValue(`${prefix}palette-color-status`)}
 					onChange={({
 						color,

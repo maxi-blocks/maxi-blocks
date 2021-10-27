@@ -185,6 +185,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				label: __(`H${item}`, 'maxi-blocks'),
 				content: (
 					<SCAccordion
+						key={`sc-accordion__h${item}`}
 						colorContent={[
 							{
 								label: __(`H${item}`, 'maxi-blocks'),
@@ -450,6 +451,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: buttonTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${buttonTabs.label}`}
 								{...buttonTabs}
 								breakpoint={breakpoint}
 								SC={SC}
@@ -462,6 +464,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: pTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${pTabs.label}`}
 								{...pTabs}
 								breakpoint={breakpoint}
 								SC={SC}
@@ -474,6 +477,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: linkTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${linkTabs.label}`}
 								{...linkTabs}
 								breakpoint={breakpoint}
 								SC={SC}
@@ -491,6 +495,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: iconTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${iconTabs.label}`}
 								{...iconTabs}
 								breakpoint={breakpoint}
 								SC={SC}
@@ -504,6 +509,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						label: dividerTabs.label,
 						content: (
 							<SCAccordion
+								key={`sc-accordion__${dividerTabs.label}`}
 								{...dividerTabs}
 								breakpoint={breakpoint}
 								SC={SC}

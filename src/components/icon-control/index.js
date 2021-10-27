@@ -85,6 +85,25 @@ const IconControl = props => {
 		return options;
 	};
 
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 999,
+		},
+		'%': {
+			min: 0,
+			max: 100,
+		},
+	};
+
 	return (
 		<div className={classes}>
 			{!isHover && breakpoint === 'general' && (
@@ -96,19 +115,7 @@ const IconControl = props => {
 					icon={props['icon-content']}
 				/>
 			)}
-			{isHover && (
-				<ToggleSwitch
-					label={__('Enable Icon Hover', 'maxi-blocks')}
-					selected={props['icon-status-hover']}
-					onChange={val =>
-						onChange({
-							'icon-status-hover': val,
-						})
-					}
-				/>
-			)}
-			{(props['icon-content'] ||
-				(isHover && props['icon-status-hover'])) && (
+			{props['icon-content'] && (
 				<>
 					{!isHover && breakpoint === 'general' && (
 						<>
@@ -256,6 +263,13 @@ const IconControl = props => {
 											}`
 										]
 									}
+									paletteOpacity={
+										props[
+											`icon-palette-opacity${
+												isHover ? '-hover' : ''
+											}`
+										]
+									}
 									paletteStatus={
 										props[
 											`icon-palette-color-status${
@@ -267,6 +281,7 @@ const IconControl = props => {
 										color,
 										paletteColor,
 										paletteStatus,
+										paletteOpacity,
 									}) => {
 										onChange({
 											[`icon-color${
@@ -278,9 +293,11 @@ const IconControl = props => {
 											[`icon-palette-color-status${
 												isHover ? '-hover' : ''
 											}`]: paletteStatus,
+											[`icon-palette-opacity${
+												isHover ? '-hover' : ''
+											}`]: paletteOpacity,
 										});
 									}}
-									disableOpacity
 									isHover={isHover}
 								/>
 							) : (
@@ -466,6 +483,7 @@ const IconControl = props => {
 							breakpoint={breakpoint}
 							target='icon-padding'
 							disableAuto
+							minMaxSettings={minMaxSettings}
 						/>
 					)}
 				</>

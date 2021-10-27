@@ -13,6 +13,10 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  */
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
 	customLabel: {
 		type: 'string',
 		default: __('Column', 'maxi-blocks'),
@@ -24,10 +28,6 @@ const attributes = {
 	verticalAlign: {
 		type: 'string',
 		default: 'stretch',
-	},
-	extraClassName: {
-		type: 'string',
-		default: '',
 	},
 	extraStyles: {
 		type: 'string',
@@ -41,12 +41,16 @@ const attributes = {
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
 	...attributesData.columnSize,
-	...attributesData.display,
 	...attributesData.margin,
+	...attributesData.padding,
+
+	/**
+	 * Advanced
+	 */
+	...attributesData.transform,
+	...attributesData.display,
 	...attributesData.opacity,
 	...attributesData.overflow,
-	...attributesData.padding,
-	...attributesData.transform,
 	...attributesData.zIndex,
 };
 

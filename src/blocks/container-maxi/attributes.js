@@ -13,11 +13,16 @@ import * as attributesData from '../../extensions/styles/defaults/index';
  */
 const attributes = {
 	...attributesData.global,
+
+	/**
+	 * Block styles
+	 */
+	...attributesData.container,
 	customLabel: {
 		type: 'string',
 		default: __('Container', 'maxi-blocks'),
 	},
-	fullWidth: {
+	blockFullWidth: {
 		type: 'string',
 		default: 'full',
 	},
@@ -29,7 +34,9 @@ const attributes = {
 		type: 'number',
 		default: 0,
 	},
-	...attributesData.container,
+	...attributesData.arrow,
+	...attributesData.shapeDivider,
+	...attributesData.parallax,
 	...{
 		...attributesData.blockBackground,
 		'background-layers': {
@@ -48,8 +55,6 @@ const attributes = {
 			],
 		},
 	},
-	...attributesData.size,
-	...attributesData.opacity,
 	...attributesData.border,
 	...attributesData.borderWidth,
 	...attributesData.borderRadius,
@@ -58,6 +63,7 @@ const attributes = {
 	...attributesData.borderRadiusHover,
 	...attributesData.boxShadow,
 	...attributesData.boxShadowHover,
+	...attributesData.size,
 	...attributesData.margin,
 	...{
 		...attributesData.padding,
@@ -70,15 +76,17 @@ const attributes = {
 			default: 20,
 		},
 	},
-	...attributesData.arrow,
-	...attributesData.shapeDivider,
+
+	/**
+	 * Advanced
+	 */
 	...attributesData.motion,
-	...attributesData.parallax,
 	...attributesData.transform,
 	...attributesData.display,
+	...attributesData.opacity,
 	...attributesData.position,
-	...attributesData.zIndex,
 	...attributesData.overflow,
+	...attributesData.zIndex,
 };
 
 export default attributes;

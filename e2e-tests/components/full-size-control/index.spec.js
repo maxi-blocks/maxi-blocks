@@ -11,16 +11,19 @@ import {
  */
 import {
 	getBlockAttributes,
-	openSidebar,
+	openSidebarTab,
 	changeResponsive,
-	getBlockStyle,
 } from '../../utils';
 
 describe('FullSizeControl', () => {
 	it('Checking the full size control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const accordionPanel = await openSidebar(page, 'height width');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'height width'
+		);
 
 		await accordionPanel.$eval(
 			'.maxi-toggle-switch .maxi-base-control__label',
@@ -29,7 +32,7 @@ describe('FullSizeControl', () => {
 
 		const expectResult = 'full';
 		const expectAttributes = await getBlockAttributes();
-		const width = expectAttributes.fullWidth;
+		const width = expectAttributes.blockFullWidth;
 
 		expect(width).toStrictEqual(expectResult);
 	});
@@ -37,7 +40,11 @@ describe('FullSizeControl', () => {
 	it('Check Responsive full size control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const accordionPanel = await openSidebar(page, 'height width');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'height width'
+		);
 
 		const inputs = await accordionPanel.$$(
 			'.maxi-full-size-control .maxi-advanced-number-control .maxi-advanced-number-control__value'

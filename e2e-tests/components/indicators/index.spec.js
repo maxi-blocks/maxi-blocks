@@ -9,7 +9,7 @@ import {
 /**
  * Internal dependencies
  */
-import { openSidebar, getBlockStyle } from '../../utils';
+import { openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('Indicators', () => {
 	it('Checking the indicators', async () => {
@@ -20,7 +20,7 @@ describe('Indicators', () => {
 			container.focus()
 		);
 
-		const accordionPanel = await openSidebar(page, 'margin padding');
+		const accordionPanel = await openSidebarTab(page, 'margin padding');
 
 		const selectPadding = await accordionPanel.$$(
 			'.maxi-axis-control .maxi-axis-control__content'

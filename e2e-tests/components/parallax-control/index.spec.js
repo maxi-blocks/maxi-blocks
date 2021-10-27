@@ -9,13 +9,17 @@ import {
 /**
  * Interactive dependencies
  */
-import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
+import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 describe.skip('ParallaxControl', () => {
 	it('Test the parallax control', async () => {
 		await createNewPost();
 		await insertBlock('Group Maxi');
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-base-control label',

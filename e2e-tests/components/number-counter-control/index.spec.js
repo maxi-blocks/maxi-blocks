@@ -9,13 +9,13 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
+import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('NumberCounterControl', () => {
 	it('Check number counter control', async () => {
 		await createNewPost();
 		await insertBlock('Number Counter Maxi');
-		const accordionPanel = await openSidebar(page, 'number');
+		const accordionPanel = await openSidebarTab(page, 'style', 'number');
 
 		// Start Animation
 		const animation = await accordionPanel.$(
@@ -73,16 +73,16 @@ describe('NumberCounterControl', () => {
 		// expect
 		const styleAttributes = await getBlockAttributes();
 		const numberCounterAttributes = (({
-			'width-general': width,
-			'width-unit-general': widthUnit,
+			'number-counter-width-general': width,
+			'number-counter-width-unit-general': widthUnit,
 			'number-counter-duration': counterDuration,
 			'number-counter-end': counterEnd,
 			'number-counter-start': counterStart,
 			'number-counter-stroke': counterStroke,
 			'number-counter-title-font-size': counterTitle,
 		}) => ({
-			'width-general': width,
-			'width-unit-general': widthUnit,
+			'number-counter-width-general': width,
+			'number-counter-width-unit-general': widthUnit,
 			'number-counter-duration': counterDuration,
 			'number-counter-end': counterEnd,
 			'number-counter-start': counterStart,
@@ -91,8 +91,8 @@ describe('NumberCounterControl', () => {
 		}))(styleAttributes);
 
 		const expectedAttributes = {
-			'width-general': 100,
-			'width-unit-general': '%',
+			'number-counter-width-general': 100,
+			'number-counter-width-unit-general': '%',
 			'number-counter-duration': 100,
 			'number-counter-end': 50,
 			'number-counter-start': 20,

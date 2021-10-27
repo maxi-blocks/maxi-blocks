@@ -20,6 +20,11 @@ describe('getSVGStyles', () => {
 			'svg-stroke-general': 2,
 			'svg-width-general': 64,
 			'svg-width-unit-general': 'px',
+			'svg-responsive-general': false,
+			'svg-stroke-m': 20,
+			'svg-width-m': 640,
+			'svg-width-unit-m': 'vw',
+			'svg-responsive-m': true,
 		};
 		const target = ' .maxi-svg-icon-block__icon';
 		const blockStyle = 'light';

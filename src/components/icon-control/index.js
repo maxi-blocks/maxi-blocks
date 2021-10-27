@@ -129,7 +129,6 @@ const IconControl = props => {
 						</>
 					)}
 					<SvgWidthControl
-						prefix='icon-'
 						{...getGroupAttributes(
 							props,
 							`icon${isHover ? 'Hover' : ''}`,
@@ -138,11 +137,11 @@ const IconControl = props => {
 						onChange={obj => {
 							onChange(obj);
 						}}
+						prefix='icon-'
 						breakpoint={breakpoint}
 						isHover={isHover}
 					/>
 					<SvgStrokeWidthControl
-						prefix='icon-'
 						{...getGroupAttributes(
 							props,
 							`icon${isHover ? 'Hover' : ''}`,
@@ -151,6 +150,7 @@ const IconControl = props => {
 						onChange={obj => {
 							onChange(obj);
 						}}
+						prefix='icon-'
 						breakpoint={breakpoint}
 						isHover={isHover}
 					/>

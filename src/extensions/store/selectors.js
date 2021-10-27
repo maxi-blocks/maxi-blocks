@@ -19,7 +19,9 @@ const selectors = {
 		if (state && state.settings?.window?.width) {
 			const { width: winWidth } = state.settings.window;
 
-			return winWidth >= 2000 ? winWidth : 2000;
+			return winWidth >= state.breakpoints.xl
+				? winWidth
+				: state.breakpoints.xl + 1;
 		}
 
 		return false;

@@ -9,6 +9,7 @@ import { TextControl } from '@wordpress/components';
  */
 import AdvancedNumberControl from '../advanced-number-control';
 import ColorControl from '../color-control';
+import InfoBox from '../info-box';
 import OpacityControl from '../opacity-control';
 import ToggleSwitch from '../toggle-switch';
 import { getDefaultAttribute } from '../../extensions/styles';
@@ -29,29 +30,26 @@ import * as mapMarkers from '../../icons/map-icons';
  * Component
  */
 const MapControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, hasApiKey = false } = props;
 
 	const classes = classnames('maxi-map-control', className);
 
 	return (
 		<div className={classes}>
-			<TextControl
-				className='maxi-map-control__full-width-text'
-				label={__('API Key', 'maxi-blocks')}
-				value={props['map-api-key']}
-				onChange={val => onChange({ 'map-api-key': val })}
-			/>
-			<p className='maxi-map-control__help'>
-				{__('Please create your own API key on the ', 'maxi-blocks')}
-				<a
-					href='https://console.developers.google.com'
-					target='_blank'
-					rel='noreferrer'
-				>
-					{__('Google Console ', 'maxi-blocks')}
-				</a>
-				{__('This is a requirement enforced by Google.', 'maxi-blocks')}
-			</p>
+			{!hasApiKey && (
+				<InfoBox
+					message={__(
+						'You have not set your Google map API key, please navigate to the Maxi Block Options and set it',
+						'maxi-blocks'
+					)}
+					links={[
+						{
+							title: __('Maxi Block Options', 'maxi-blocks'),
+							href: '/wp-admin/admin.php?page=maxi-blocks.php',
+						},
+					]}
+				/>
+			)}
 			<TextControl
 				label={__('Latitude', 'maxi-blocks')}
 				value={props['map-latitude']}

@@ -8,7 +8,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes } from '../../utils';
+import { getBlockAttributes, getBlockStyle } from '../../utils';
 
 describe('DividerControl', () => {
 	it('Checking the style selector', async () => {
@@ -40,5 +40,7 @@ describe('DividerControl', () => {
 
 			expect(borderStyle).toStrictEqual(dividerStyle);
 		}
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

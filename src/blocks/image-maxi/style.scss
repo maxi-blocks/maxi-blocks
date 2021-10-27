@@ -43,7 +43,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 		width: 100%;
 		overflow: hidden;
 		position: relative;
-		
+
 		> svg:first-child pattern image {
 			transform-origin: 50% 50%;
 		}
@@ -52,6 +52,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 		&__caption {
 			position: relative;
 			margin-top: 1rem;
+			text-align: left;
 		}
 	}
 	.maxi-hover-details {

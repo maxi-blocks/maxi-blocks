@@ -216,10 +216,15 @@ Object {
       },
     },
   },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 > svg:first-child": Object {
+    "shape": Object {},
+  },
+  "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 > svg:first-child pattern image": Object {
+    "shape": Object {},
+  },
   "maxi-test > .maxi-background-displayer .maxi-background-displayer__4 svg *": Object {
     "shape": Object {
       "general": Object {
-        "display": "block",
         "fill": "rgba(var(--maxi-light-color-5),1)",
       },
       "l": Object {
@@ -491,34 +496,7 @@ Object {
           "imageURL": "http://localhost:8888/wp-content/uploads/2021/08/IMG_9344-2.jpeg",
         },
       },
-      "SVGData-l": Object {
-        "group-maxi-12__30": Object {
-          "color": "",
-          "imageID": "",
-          "imageURL": "",
-        },
-      },
-      "SVGData-s": Object {
-        "group-maxi-12__30": Object {
-          "color": "",
-          "imageID": "",
-          "imageURL": "",
-        },
-      },
-      "SVGData-xxl": Object {
-        "group-maxi-12__30": Object {
-          "color": "",
-          "imageID": "",
-          "imageURL": "",
-        },
-      },
       "SVGElement": "<svg viewBox=\\"2.500000238418579, 11.457558631896973, 31.10000228881836, 12.842442512512207\\" class=\\"shape-22-maxi-svg\\" data-item=\\"group-maxi-12__svg\\"><pattern xmlns=\\"http://www.w3.org/1999/xhtml\\" id=\\"group-maxi-12__30__img\\" class=\\"maxi-svg-block__pattern\\" width=\\"100%\\" height=\\"100%\\" x=\\"0\\" y=\\"0\\" patternunits=\\"userSpaceOnUse\\"><image class=\\"maxi-svg-block__pattern__image\\" width=\\"100%\\" height=\\"100%\\" x=\\"0\\" y=\\"0\\" href=\\"http://localhost:8888/wp-content/uploads/2021/08/IMG_9344-2.jpeg\\" preserveaspectratio=\\"xMidYMid\\"></image></pattern><path fill=\\"url(#group-maxi-12__30__img)\\" data-fill=\\"\\" d=\\"M33.6 12.9c-.4-.8-1.5-1-2.3-.8s-1.6.8-2.3 1.3-1.5 1-2.4 1.1c-1 .1-2-.5-3-.5-1.3 0-2.5.8-3.8.6-1.9-.2-3-2.4-4.8-3-1.7-.5-3.4.4-4.9 1.4S7 15.1 5.3 14.8c-1.3-.2-2.5-1.3-2.8-2.6v12.1h31.1V12.9z\\" style=\\"fill: url(#group-maxi-12__30__img)\\"/></svg>",
-      "SVGElement-l": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\" data-item=\\"group-maxi-12__svg\\"><body><parsererror style=\\"display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 0 1em; margin: 1em; background-color: #fdd; color: black\\"><h3>This page contains the following errors:</h3><div style=\\"font-family:monospace;font-size:12px\\">error on line 1 at column 1: Document is empty
-</div><h3>Below is a rendering of the page up to the first error.</h3></parsererror></body></html>",
-      "SVGElement-s": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\" data-item=\\"group-maxi-12__svg\\"><body><parsererror style=\\"display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 0 1em; margin: 1em; background-color: #fdd; color: black\\"><h3>This page contains the following errors:</h3><div style=\\"font-family:monospace;font-size:12px\\">error on line 1 at column 1: Document is empty
-</div><h3>Below is a rendering of the page up to the first error.</h3></parsererror></body></html>",
-      "SVGElement-xxl": "<html xmlns=\\"http://www.w3.org/1999/xhtml\\" data-item=\\"group-maxi-12__svg\\"><body><parsererror style=\\"display: block; white-space: pre; border: 2px solid #c77; padding: 0 1em 0 1em; margin: 1em; background-color: #fdd; color: black\\"><h3>This page contains the following errors:</h3><div style=\\"font-family:monospace;font-size:12px\\">error on line 1 at column 1: Document is empty
-</div><h3>Below is a rendering of the page up to the first error.</h3></parsererror></body></html>",
       "background-palette-svg-color-general": 5,
       "background-palette-svg-color-l": 3,
       "background-palette-svg-color-s": 7,
@@ -530,16 +508,13 @@ Object {
       "background-palette-svg-opacity-l": 37,
       "background-palette-svg-opacity-s": 37,
       "background-palette-svg-opacity-xxl": 37,
-      "background-svg-SVGData": Object {
-        "group-maxi-12__30": Object {
-          "color": "",
-          "imageID": "",
-          "imageURL": "",
-        },
-      },
-      "background-svg-SVGElement": "<svg viewBox=\\"2.500000238418579, 11.457558631896973, 31.10000228881836, 12.842442512512207\\" class=\\"shape-22-maxi-svg\\" data-item=\\"group-maxi-12__svg\\"><path fill=\\"\\" data-fill=\\"\\" d=\\"M33.6 12.9c-.4-.8-1.5-1-2.3-.8s-1.6.8-2.3 1.3-1.5 1-2.4 1.1c-1 .1-2-.5-3-.5-1.3 0-2.5.8-3.8.6-1.9-.2-3-2.4-4.8-3-1.7-.5-3.4.4-4.9 1.4S7 15.1 5.3 14.8c-1.3-.2-2.5-1.3-2.8-2.6v12.1h31.1V12.9z\\"></path></svg>",
       "background-svg-SVGMediaID": null,
       "background-svg-SVGMediaURL": null,
+      "background-svg-image-shape-flip-x-general": false,
+      "background-svg-image-shape-flip-y-general": false,
+      "background-svg-image-shape-position-general": "",
+      "background-svg-image-shape-rotate-general": 104,
+      "background-svg-image-shape-scale-general": 72,
       "background-svg-left-general": 50,
       "background-svg-left-l": 62,
       "background-svg-left-s": 31,

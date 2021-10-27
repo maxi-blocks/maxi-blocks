@@ -17,15 +17,21 @@ import MaxiModal from '../../editor/library/modal';
  * ImageShape
  */
 const ImageShape = props => {
-	const { onChange, breakpoint, icon } = props;
+	const {
+		onChange,
+		breakpoint,
+		icon,
+		prefix = '',
+		disableModal = false,
+	} = props;
 
 	const {
-		[`image-shape-size-${breakpoint}`]: shapeSize,
-		[`image-shape-scale-${breakpoint}`]: shapeScale,
-		[`image-shape-position-${breakpoint}`]: shapePosition,
-		[`image-shape-rotate-${breakpoint}`]: shapeRotate,
-		[`image-shape-flip-x-${breakpoint}`]: shapeFlipHorizontally,
-		[`image-shape-flip-y-${breakpoint}`]: shapeFlipVertically,
+		[`${prefix}image-shape-size-${breakpoint}`]: shapeSize,
+		[`${prefix}image-shape-scale-${breakpoint}`]: shapeScale,
+		[`${prefix}image-shape-position-${breakpoint}`]: shapePosition,
+		[`${prefix}image-shape-rotate-${breakpoint}`]: shapeRotate,
+		[`${prefix}image-shape-flip-x-${breakpoint}`]: shapeFlipHorizontally,
+		[`${prefix}image-shape-flip-y-${breakpoint}`]: shapeFlipVertically,
 	} = props;
 
 	const defaultScale = null;
@@ -75,7 +81,7 @@ const ImageShape = props => {
 
 	return (
 		<>
-			{breakpoint === 'general' && (
+			{!disableModal && breakpoint === 'general' && (
 				<MaxiModal
 					type='image-shape'
 					onSelect={obj => onChange(obj)}
@@ -85,7 +91,7 @@ const ImageShape = props => {
 					icon={icon}
 				/>
 			)}
-			{icon && (
+			{(!disableModal || icon) && (
 				<>
 					{breakpoint === 'general' && (
 						<>
@@ -104,7 +110,8 @@ const ImageShape = props => {
 								]}
 								onChange={val =>
 									onChange({
-										[`image-shape-size-${breakpoint}`]: val,
+										[`${prefix}image-shape-size-${breakpoint}`]:
+											val,
 										SVGElement: changeIcon('size', val),
 									})
 								}
@@ -164,7 +171,7 @@ const ImageShape = props => {
 								]}
 								onChange={val =>
 									onChange({
-										[`image-shape-position-${breakpoint}`]:
+										[`${prefix}image-shape-position-${breakpoint}`]:
 											val,
 										SVGElement: changeIcon('position', val),
 									})
@@ -182,13 +189,13 @@ const ImageShape = props => {
 						placeholder='100%'
 						onChangeValue={val => {
 							onChange({
-								[`image-shape-scale-${breakpoint}`]:
+								[`${prefix}image-shape-scale-${breakpoint}`]:
 									val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						onReset={() =>
 							onChange({
-								[`image-shape-scale-${breakpoint}`]:
+								[`${prefix}image-shape-scale-${breakpoint}`]:
 									defaultScale,
 							})
 						}
@@ -203,13 +210,14 @@ const ImageShape = props => {
 						placeholder='0deg'
 						onChangeValue={val => {
 							onChange({
-								[`image-shape-rotate-${breakpoint}`]:
+								[`${prefix}image-shape-rotate-${breakpoint}`]:
 									val !== undefined && val !== '' ? val : '',
 							});
 						}}
 						onReset={() =>
 							onChange({
-								[`image-shape-rotate-${breakpoint}`]: '',
+								[`${prefix}image-shape-rotate-${breakpoint}`]:
+									'',
 							})
 						}
 					/>
@@ -218,7 +226,8 @@ const ImageShape = props => {
 						selected={shapeFlipHorizontally || 0}
 						onChange={val => {
 							onChange({
-								[`image-shape-flip-x-${breakpoint}`]: val,
+								[`${prefix}image-shape-flip-x-${breakpoint}`]:
+									val,
 							});
 						}}
 					/>
@@ -227,7 +236,8 @@ const ImageShape = props => {
 						selected={shapeFlipVertically || 0}
 						onChange={val => {
 							onChange({
-								[`image-shape-flip-y-${breakpoint}`]: val,
+								[`${prefix}image-shape-flip-y-${breakpoint}`]:
+									val,
 							});
 						}}
 					/>

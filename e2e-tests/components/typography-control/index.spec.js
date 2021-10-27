@@ -57,6 +57,7 @@ describe('TypographyControl', () => {
 			'.maxi-typography-control__font-family div div div',
 			fontValue => fontValue[0].innerHTML
 		);
+		await page.waitForTimeout(200);
 
 		expect(typographyInput).toStrictEqual('Montserrat');
 

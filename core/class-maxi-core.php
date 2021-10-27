@@ -84,6 +84,11 @@ if (!class_exists('MaxiBlocks_Core')):
                 false,
                 true,
             );
+			wp_localize_script( 'maxi-front-scripts-js', 'google_map_api_options',
+				array(
+					'google_api_key' => get_option('google_api_key_option'),
+				)
+			);
         }
 
         public function maxi_blocks_body_class($classes)

@@ -121,14 +121,19 @@ class edit extends MaxiBlockComponent {
 
 		const isEmptyContent = isEmpty(content);
 
-		const handleOnResizeStart = event => {
+		const handleOnResizeStart = (event, direction, elt) => {
 			event.preventDefault();
+
+			elt.querySelector('svg').style.width = 'auto';
+
 			setAttributes({
 				[`svg-width-unit-${deviceType}`]: 'px',
 			});
 		};
 
 		const handleOnResizeStop = (event, direction, elt) => {
+			elt.querySelector('svg').style.width = null;
+
 			setAttributes({
 				[`svg-width-${deviceType}`]: elt.getBoundingClientRect().width,
 			});

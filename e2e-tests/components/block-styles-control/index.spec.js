@@ -12,7 +12,7 @@ import {
  */
 import { getBlockAttributes, getBlockStyle } from '../../utils';
 
-describe.skip('BlockStylesControl', () => {
+describe('BlockStylesControl', () => {
 	it('Checking the block styles control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');

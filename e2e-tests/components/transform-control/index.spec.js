@@ -25,15 +25,7 @@ describe('TransformControl', () => {
 			'advanced',
 			'transform'
 		);
-		// hola?
-		// hola don pepito xdddd
-		// ves la consola?
-		// si
-		// en la consola compartida, no se por que no me ejecuta el test
-		// Porque estas en bash, tienes que tirarla desde zsh
-		// ya, pero es que solo me crea esta al hacer termianl compartida
-		// yo te veo compartidas como 5, la de node, dos zsh, bash y term
-		// perfecto, pues mira la ultima  zsh, tienes que ver 3 ahora => si, estoy en ella
+
 		const buttons = await accordionPanel.$$(
 			'.maxi-transform-control .maxi-fancy-radio-control .maxi-radio-control__option label'
 		);

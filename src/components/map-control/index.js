@@ -3,7 +3,6 @@
  */
 import { __ } from '@wordpress/i18n';
 import { TextControl } from '@wordpress/components';
-import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -19,7 +18,7 @@ import { getDefaultAttribute } from '../../extensions/styles';
  * External dependencies
  */
 import classnames from 'classnames';
-import { uniqueId, isEmpty } from 'lodash';
+import { uniqueId } from 'lodash';
 
 /**
  * Styles and icons
@@ -31,25 +30,13 @@ import * as mapMarkers from '../../icons/map-icons';
  * Component
  */
 const MapControl = props => {
-	const { className, onChange } = props;
+	const { className, onChange, hasApiKey = false } = props;
 
 	const classes = classnames('maxi-map-control', className);
 
-	const { mapApiKey } = useSelect(select => {
-		const { receiveMaxiSettings } = select('maxiBlocks');
-		const maxiSettings = receiveMaxiSettings();
-		const { google_api_key: apiKey } = maxiSettings;
-
-		const mapApiKey = !isEmpty(apiKey) ? apiKey : false;
-
-		return {
-			mapApiKey,
-		};
-	});
-
 	return (
 		<div className={classes}>
-			{!mapApiKey && (
+			{!hasApiKey && (
 				<InfoBox
 					message={__(
 						'You have not set your Google map API key, please navigate to the Maxi Block Options and set it',

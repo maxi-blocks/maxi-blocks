@@ -46,6 +46,8 @@ const MotionUniqueControl = props => {
 		MotionUniqueControl
 	)}`;
 
+	const inputLabel = type === 'fade' ? 'opacity' : label;
+
 	const labels = ['Starting', 'Mid', 'End'];
 
 	return (
@@ -56,7 +58,10 @@ const MotionUniqueControl = props => {
 						// eslint-disable-next-line react/no-array-index-key
 						key={key}
 						id={motionUniqueControlId}
-						label={__(`${labels[key]} ${label}`, 'maxi-blocks')}
+						label={__(
+							`${labels[key]} ${inputLabel}`,
+							'maxi-blocks'
+						)}
 					>
 						<input
 							className='maxi-motion-unique-control__content__item__input'

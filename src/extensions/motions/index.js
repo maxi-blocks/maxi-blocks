@@ -27,6 +27,17 @@ const motionData = props => {
 		'rotate-end',
 	];
 
+	const motionSettingsFade = [
+		'speed',
+		'easing',
+		'viewport-bottom',
+		'viewport-middle',
+		'viewport-top',
+		'opacity-start',
+		'opacity-middle',
+		'opacity-end',
+	];
+
 	const motionTypes = [
 		'vertical',
 		'horizontal',
@@ -65,6 +76,9 @@ const motionData = props => {
 					case 'rotate':
 						motionSettings = motionSettingsRotate;
 						break;
+					case 'fade':
+						motionSettings = motionSettingsFade;
+						break;
 					default:
 						break;
 				}
@@ -72,21 +86,10 @@ const motionData = props => {
 				motionSettings.map(setting => {
 					const motionSettingValue =
 						attributes[`motion-${setting}-${type}-general`];
-					// console.log(setting);
-					// console.log(motionSettingValue);
-					// console.log(
-					// 	`motion-${setting}-${type}-general: ${
-					// 		attributes[`motion-${setting}-${type}-general`]
-					// 	}`
-					// );
-					// if (!isEmpty(motionSettingValue)) {
+
 					response[
 						`data-motion-${type}-general`
 					] += `${motionSettingValue} `;
-					// } else response[`data-motion-${type}-general`] += '0 ';
-
-					// console.log('final response');
-					// console.log(response);
 
 					return null;
 				});

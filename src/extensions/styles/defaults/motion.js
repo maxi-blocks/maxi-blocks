@@ -74,7 +74,7 @@ export const motion = (() => {
 		}
 
 		if (type === 'rotate') {
-			generateUniqueAttributes(type, 'rotate', [90, 0, 0]);
+			generateUniqueAttributes(type, 'rotate', [90, 180, 0]);
 		}
 
 		if (type === 'scale') {
@@ -82,7 +82,7 @@ export const motion = (() => {
 		}
 
 		if (type === 'fade') {
-			generateUniqueAttributes(type, 'opacity', [0, 100, 100]);
+			generateUniqueAttributes(type, 'opacity', [0, 50, 100]);
 		}
 
 		if (type === 'blur') {

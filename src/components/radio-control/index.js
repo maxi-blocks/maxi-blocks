@@ -30,7 +30,6 @@ const RadioControl = ({
 	onChange,
 	options = [],
 	fullWidthMode = false,
-	type = 'fancy',
 	...props
 }) => {
 	const instanceId = useInstanceId(RadioControl);
@@ -39,9 +38,6 @@ const RadioControl = ({
 
 	const classes = classnames(
 		'maxi-radio-control',
-		type === 'classic-border' &&
-			'maxi-classic-radio-control maxi-classic-radio-control__border',
-		type === 'fancy' && 'maxi-radio-control__fancy',
 		fullWidthMode && 'maxi-radio-control__full-width',
 		className
 	);

@@ -69,6 +69,7 @@ const actions = {
 		return {
 			type: 'SET_DEVICE_TYPE',
 			deviceType,
+			width,
 		};
 	},
 	setWindowSize(winSize) {

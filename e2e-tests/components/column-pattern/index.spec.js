@@ -9,6 +9,7 @@ import {
 	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
+	getBlockStyle,
 } from '../../utils';
 
 describe('ColumnPattern', () => {

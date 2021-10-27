@@ -15,12 +15,16 @@ describe('Indicators', () => {
 	it('Checking the indicators', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
-
+		debugger;
 		await page.$eval('.maxi-container-block', container =>
 			container.focus()
 		);
 
-		const accordionPanel = await openSidebarTab(page, 'margin padding');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'margin padding'
+		);
 
 		const selectPadding = await accordionPanel.$$(
 			'.maxi-axis-control .maxi-axis-control__content'

@@ -13,6 +13,7 @@ import {
 	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
+	getBlockStyle,
 } from '../../utils';
 
 describe('FullSizeControl', () => {

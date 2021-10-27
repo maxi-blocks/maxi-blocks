@@ -207,7 +207,7 @@ const ImageLayerContent = props => {
 					forceTab={+imageOptions['background-image-parallax-status']}
 					items={[
 						{
-							label: __('Normal', 'maxi-blocks'),
+							label: __('Settings', 'maxi-blocks'),
 							content: (
 								<>
 									<SelectControl
@@ -904,11 +904,6 @@ const ImageLayerContent = props => {
 						},
 						{
 							label: __('Parallax', 'maxi-blocks'),
-							callback: () =>
-								onChange({
-									'background-image-parallax-status': true,
-									'background-image-size': 'cover',
-								}),
 							content: (
 								<>
 									<FancyRadioControl

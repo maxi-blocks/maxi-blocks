@@ -291,7 +291,7 @@ describe.skip('BackgroundControl', () => {
 	// 	await setBrowserViewport('large');
 	// 	const accordionPanel = await openSidebarTab(page,'style', 'background');
 	// 	await accordionPanel.$$eval(
-	// 		'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
+	// 		'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
 	// 		select => select[4].click()
 	// 	);
 
@@ -394,7 +394,7 @@ describe.skip('BackgroundControl', () => {
 
 		const accordionPanel = await openSidebarTab(page,'style', 'background');
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
+			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
 			select => select[5].click()
 		);
 
@@ -434,7 +434,7 @@ describe.skip('BackgroundControl', () => {
 	/* it('Check Background Shape Custom Color', async () => {
 		const accordionPanel = await openSidebarTab(page,'style', 'background');
 		await accordionPanel.$$eval(
-			'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
+			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
 			select => select[5].click()
 		);
 

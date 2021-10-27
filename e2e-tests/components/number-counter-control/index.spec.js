@@ -102,11 +102,6 @@ describe('NumberCounterControl', () => {
 
 		expect(numberCounterAttributes).toStrictEqual(expectedAttributes);
 
-		// buttons
-		const buttons = await accordionPanel.$$(
-			'.maxi-fancy-radio-control .maxi-base-control__field label'
-		);
-
 		// Show Percentage Sign
 		await accordionPanel.$eval(
 			'.maxi-number-counter-control .maxi-toggle-switch.number-counter-percentage-sign-status .maxi-base-control__label',

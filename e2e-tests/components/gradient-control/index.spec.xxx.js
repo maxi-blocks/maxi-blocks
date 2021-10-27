@@ -20,7 +20,7 @@ import { getBlockAttributes, openSidebar } from '../../utils';
 // 	await insertBlock('Group Maxi');
 // 	const accordionPanel = await openSidebarTab(page, 'style', 'background');
 // 	await accordionPanel.$$eval(
-// 		'.maxi-background-control .maxi-fancy-radio-control--full-width .maxi-base-control__field input',
+// 		'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
 // 		select => select[4].click()
 // 	);
 // 	await page.$eval('.maxi-sidebar', sideBar =>

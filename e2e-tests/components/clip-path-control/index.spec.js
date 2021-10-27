@@ -51,7 +51,7 @@ describe('ClipPathOption', () => {
 
 		// Edit the square
 		await accordionPanel.$$eval(
-			'.maxi-clip-path-control__handles .maxi-fancy-radio-control .maxi-base-control__field .maxi-radio-control__option label',
+			'.maxi-clip-path-control__handles .maxi-radio-control .maxi-base-control__field .maxi-radio-control__option label',
 			use => use[1].click()
 		);
 

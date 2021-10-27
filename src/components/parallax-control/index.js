@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import FancyRadioControl from '../fancy-radio-control';
+import RadioControl from '../radio-control';
 import ImageLayer from '../background-control/imageLayer';
 import ToggleSwitch from '../toggle-switch';
 import AdvancedNumberControl from '../advanced-number-control';
@@ -52,7 +52,7 @@ const ParallaxControl = props => {
 						breakpoint={breakpoint}
 						hideSettings
 					/>
-					<FancyRadioControl
+					<RadioControl
 						className='parallax-direction'
 						label={__('Direction', 'maxi-blocks')}
 						selected={props['parallax-direction']}
@@ -63,7 +63,6 @@ const ParallaxControl = props => {
 								value: 'down',
 							},
 						]}
-						optionType='string'
 						onChange={val =>
 							onChange({ 'parallax-direction': val })
 						}

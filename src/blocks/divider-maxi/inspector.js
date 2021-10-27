@@ -10,7 +10,7 @@ import { InspectorControls } from '@wordpress/block-editor';
 import {
 	AccordionControl,
 	DividerControl,
-	FancyRadioControl,
+	RadioControl,
 	SettingTabsControl,
 } from '../../components';
 import { getGroupAttributes } from '../../extensions/styles';
@@ -45,7 +45,7 @@ const Inspector = props => {
 											label: __('Line', 'maxi-blocks'),
 											content: (
 												<>
-													<FancyRadioControl
+													<RadioControl
 														fullWidthMode
 														label={__(
 															'Line Orientation',
@@ -70,14 +70,13 @@ const Inspector = props => {
 																value: 'vertical',
 															},
 														]}
-														optionType='string'
 														onChange={lineOrientation =>
 															setAttributes({
 																lineOrientation,
 															})
 														}
 													/>
-													<FancyRadioControl
+													<RadioControl
 														fullWidthMode
 														label={__(
 															'Line Vertical Position',
@@ -107,14 +106,13 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
-														optionType='string'
 														onChange={lineVertical =>
 															setAttributes({
 																lineVertical,
 															})
 														}
 													/>
-													<FancyRadioControl
+													<RadioControl
 														fullWidthMode
 														label={__(
 															'Line Horizontal Position',
@@ -146,7 +144,6 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
-														optionType='string'
 														onChange={lineHorizontal =>
 															setAttributes({
 																lineHorizontal,

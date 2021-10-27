@@ -15,7 +15,7 @@ import { block } from './utils';
 import { isEqual } from 'lodash';
 import getGroupAttributes from '../../../../../src/extensions/styles/getGroupAttributes';
 
-describe('CopyPaste from Toolbar', () => {
+describe.skip('CopyPaste from Toolbar', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await page.waitForTimeout(1000);

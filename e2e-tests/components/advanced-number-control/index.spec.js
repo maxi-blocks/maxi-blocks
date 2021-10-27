@@ -9,13 +9,21 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	changeResponsive,
+} from '../../utils';
 
 describe('Advanced Number Control', () => {
 	it('Checking the advanced number control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		const accordionPanel = await openSidebar(page, 'typography');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'typography'
+		);
 
 		await changeResponsive(page, 'm');
 

@@ -19,7 +19,7 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes, getParallaxLayers } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -41,30 +41,19 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
-	get getCustomData() {
+	get getMaxiCustomData() {
 		const { attributes } = this.props;
 		const {
-			uniqueID,
-			'background-layers': bgLayers,
-			'motion-status': motionStatus,
 			'shape-divider-top-status': shapeDividerTopStatus,
 			'shape-divider-bottom-status': shapeDividerBottomStatus,
 		} = attributes;
 
-		const bgParallaxLayers = getParallaxLayers(bgLayers);
-
 		const shapeStatus = shapeDividerTopStatus || shapeDividerBottomStatus;
 
 		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(attributes, ['motion']),
-				}),
-				...(!isEmpty(bgParallaxLayers) && { bgParallaxLayers }),
-				...(shapeStatus && {
-					...getGroupAttributes(attributes, 'shapeDivider'),
-				}),
-			},
+			...(shapeStatus && {
+				...getGroupAttributes(attributes, 'shapeDivider'),
+			}),
 		};
 	}
 

@@ -906,66 +906,98 @@ const ImageLayerContent = props => {
 							label: __('Parallax', 'maxi-blocks'),
 							content: (
 								<>
-									<FancyRadioControl
-										className='parallax-direction'
-										label={__('Direction', 'maxi-blocks')}
+									<ToggleSwitch
+										label={__(
+											'Enable Parallax',
+											'maxi-blocks'
+										)}
 										selected={
 											imageOptions[
-												'background-image-parallax-direction'
+												'background-image-parallax-status'
 											]
 										}
-										options={[
-											{
-												label: __('Up', 'maxi-blocks'),
-												value: 'up',
-											},
-											{
-												label: __(
-													'Down',
-													'maxi-blocks'
-												),
-												value: 'down',
-											},
-										]}
-										optionType='string'
 										onChange={val =>
 											onChange({
-												'background-image-parallax-direction':
+												'background-image-parallax-status':
 													val,
 											})
 										}
 									/>
-									<AdvancedNumberControl
-										label={__('Speed', 'maxi-blocks')}
-										value={
-											imageOptions[
-												'background-image-parallax-speed'
-											]
-										}
-										onChangeValue={val => {
-											onChange({
-												'background-image-parallax-speed':
-													val !== undefined &&
-													val !== ''
-														? val
-														: '',
-											});
-										}}
-										min={0.2}
-										max={10}
-										step={0.1}
-										onReset={() =>
-											onChange({
-												'background-image-parallax-speed':
-													getDefaultAttr(
+									{imageOptions[
+										'background-image-parallax-status'
+									] && (
+										<>
+											<FancyRadioControl
+												className='parallax-direction'
+												label={__(
+													'Direction',
+													'maxi-blocks'
+												)}
+												selected={
+													imageOptions[
+														'background-image-parallax-direction'
+													]
+												}
+												options={[
+													{
+														label: __(
+															'Up',
+															'maxi-blocks'
+														),
+														value: 'up',
+													},
+													{
+														label: __(
+															'Down',
+															'maxi-blocks'
+														),
+														value: 'down',
+													},
+												]}
+												optionType='string'
+												onChange={val =>
+													onChange({
+														'background-image-parallax-direction':
+															val,
+													})
+												}
+											/>
+											<AdvancedNumberControl
+												label={__(
+													'Speed',
+													'maxi-blocks'
+												)}
+												value={
+													imageOptions[
 														'background-image-parallax-speed'
-													),
-											})
-										}
-										initialPosition={getDefaultAttr(
-											'background-image-parallax-speed'
-										)}
-									/>
+													]
+												}
+												onChangeValue={val => {
+													onChange({
+														'background-image-parallax-speed':
+															val !== undefined &&
+															val !== ''
+																? val
+																: '',
+													});
+												}}
+												min={0.2}
+												max={10}
+												step={0.1}
+												onReset={() =>
+													onChange({
+														'background-image-parallax-speed':
+															getDefaultAttr(
+																'background-image-parallax-speed'
+															),
+													})
+												}
+												initialPosition={getDefaultAttr(
+													'background-image-parallax-speed'
+												)}
+											/>
+										</>
+									)}
 								</>
 							),
 						},

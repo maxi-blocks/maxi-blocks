@@ -17,7 +17,7 @@ import {
 import MaxiBlock, {
 	getMaxiBlockBlockAttributes,
 } from '../../components/maxi-block';
-import { getGroupAttributes, getParallaxLayers } from '../../extensions/styles';
+import { getGroupAttributes } from '../../extensions/styles';
 import getStyles from './styles';
 
 /**
@@ -31,25 +31,6 @@ import { isEmpty } from 'lodash';
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
-	}
-
-	get getCustomData() {
-		const {
-			uniqueID,
-			'background-layers': bgLayers,
-			'motion-status': motionStatus,
-		} = this.props.attributes;
-
-		const bgParallaxLayers = getParallaxLayers(bgLayers);
-
-		return {
-			[uniqueID]: {
-				...(motionStatus && {
-					...getGroupAttributes(this.props.attributes, ['motion']),
-				}),
-				...(!isEmpty(bgParallaxLayers) && { bgParallaxLayers }),
-			},
-		};
 	}
 
 	render() {

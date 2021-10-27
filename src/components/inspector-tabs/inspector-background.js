@@ -14,9 +14,7 @@ import { getGroupAttributes } from '../../extensions/styles';
 /**
  * Component
  */
-const background = ({ props, enableParallax = false }) => {
-	const { attributes, clientId, deviceType, setAttributes } = props;
-
+const background = ({ attributes, clientId, deviceType, setAttributes }) => {
 	const bgHoverStatus = attributes['background-hover-status'];
 
 	return {
@@ -36,7 +34,6 @@ const background = ({ props, enableParallax = false }) => {
 									onChange={obj => setAttributes(obj)}
 									clientId={clientId}
 									breakpoint={deviceType}
-									enableParallax={enableParallax}
 								/>
 							</>
 						),

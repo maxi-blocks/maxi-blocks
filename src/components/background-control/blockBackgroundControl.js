@@ -30,7 +30,6 @@ const BlockBackgroundControl = props => {
 		disableGradient = false,
 		disableColor = false,
 		disableSVG = false,
-		enableParallax = false,
 	} = props;
 
 	const layersOptions =
@@ -63,7 +62,6 @@ const BlockBackgroundControl = props => {
 				clientId={clientId}
 				breakpoint={breakpoint}
 				hoverStatus={hoverStatus}
-				enableParallax={enableParallax}
 			/>
 		</div>
 	);

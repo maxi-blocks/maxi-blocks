@@ -1,16 +1,12 @@
 import { __ } from '@wordpress/i18n';
 
 const map = {
-	'map-api-key': {
-		type: 'string',
-		default: 'AIzaSyBW3BXol38RXkWnc49Zrgvw0pVZA9ISC1E',
-	},
 	'map-latitude': {
-		type: 'number',
+		type: 'string',
 		default: 52.514477,
 	},
 	'map-longitude': {
-		type: 'number',
+		type: 'string',
 		default: 13.350174,
 	},
 	'map-zoom': {

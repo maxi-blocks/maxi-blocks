@@ -15,19 +15,19 @@ import {
 	CustomLabel,
 	DisplayControl,
 	DividerControl,
-	FancyRadioControl,
 	FullSizeControl,
 	InfoBox,
 	MotionControl,
 	OpacityControl,
+	OverflowControl,
 	PositionControl,
+	RadioControl,
 	ResponsiveControl,
 	SettingTabsControl,
 	TextControl,
 	ToggleSwitch,
 	TransformControl,
 	ZIndexControl,
-	OverflowControl,
 } from '../../components';
 import {
 	getGroupAttributes,
@@ -95,7 +95,7 @@ const Inspector = props => {
 											label: __('Line', 'maxi-blocks'),
 											content: (
 												<>
-													<FancyRadioControl
+													<RadioControl
 														fullWidthMode
 														label={__(
 															'Line Orientation',
@@ -120,14 +120,13 @@ const Inspector = props => {
 																value: 'vertical',
 															},
 														]}
-														optionType='string'
 														onChange={lineOrientation =>
 															setAttributes({
 																lineOrientation,
 															})
 														}
 													/>
-													<FancyRadioControl
+													<RadioControl
 														fullWidthMode
 														label={__(
 															'Line Vertical Position',
@@ -157,14 +156,13 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
-														optionType='string'
 														onChange={lineVertical =>
 															setAttributes({
 																lineVertical,
 															})
 														}
 													/>
-													<FancyRadioControl
+													<RadioControl
 														fullWidthMode
 														label={__(
 															'Line Horizontal Position',
@@ -196,7 +194,6 @@ const Inspector = props => {
 																value: 'flex-end',
 															},
 														]}
-														optionType='string'
 														onChange={lineHorizontal =>
 															setAttributes({
 																lineHorizontal,

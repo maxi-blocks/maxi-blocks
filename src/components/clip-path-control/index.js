@@ -14,7 +14,7 @@ import BaseControl from '../base-control';
 import clipPathDefaults from './defaults';
 import ClipPathVisualEditor from './visualEditor';
 import Icon from '../icon';
-import FancyRadioControl from '../fancy-radio-control';
+import RadioControl from '../radio-control';
 import ToggleSwitch from '../toggle-switch';
 
 /**
@@ -393,7 +393,7 @@ const ClipPathControl = props => {
 								]}
 								onChange={value => onChangeType(value)}
 							/>
-							<FancyRadioControl
+							<RadioControl
 								fullWidthMode
 								selected={customMode}
 								options={[
@@ -406,7 +406,6 @@ const ClipPathControl = props => {
 										value: 'data',
 									},
 								]}
-								optionType='string'
 								onChange={val => setCustomMode(val)}
 							/>
 							{customMode === 'visual' && (

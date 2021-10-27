@@ -8,7 +8,7 @@ import {} from '@wordpress/element';
  * Internal dependencies
  */
 // import SelectControl from '../select-control';
-// import FancyRadioControl from '../fancy-radio-control';
+// import RadioControl from '../radio-control';
 // import RangeSliderControl from '../range-slider-control';
 
 /**
@@ -396,7 +396,7 @@ const TimelineSettings = props => {
 			{!isNil(getCurrentTimelineItem()) && (
 				<>
 					<hr />
-					<FancyRadioControl
+					<RadioControl
 						label={__('X-Axis', 'maxi-blocks')}
 						selected={props['motion-transform-origin-x']}
 						options={[
@@ -413,12 +413,11 @@ const TimelineSettings = props => {
 								value: 'right',
 							},
 						]}
-						optionType='string'
 						onChange={val =>
 							onChange({ 'motion-transform-origin-x': val })
 						}
 					/>
-					<FancyRadioControl
+					<RadioControl
 						label={__('Y-Axis', 'maxi-blocks')}
 						selected={props['motion-transform-origin-y']}
 						options={[
@@ -435,13 +434,12 @@ const TimelineSettings = props => {
 								value: 'bottom',
 							},
 						]}
-						optionType='string'
 						onChange={val =>
 							onChange({ 'motion-transform-origin-y': val })
 						}
 					/>
 					<hr />
-					<FancyRadioControl
+					<RadioControl
 						label={__('Tablet', 'maxi-blocks')}
 						selected={props['motion-tablet-status']}
 						options={[
@@ -458,7 +456,7 @@ const TimelineSettings = props => {
 							onChange({ 'motion-tablet-status': val })
 						}
 					/>
-					<FancyRadioControl
+					<RadioControl
 						label={__('Mobile', 'maxi-blocks')}
 						selected={props['motion-mobile-status']}
 						options={[

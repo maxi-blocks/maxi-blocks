@@ -69,7 +69,7 @@ describe('IconControl', () => {
 
 		// icon position
 		const label = await accordionPanel.$$(
-			'.maxi-fancy-radio-control .maxi-radio-control__option label'
+			'.maxi-radio-control .maxi-radio-control__option label'
 		);
 
 		await label[1].click();

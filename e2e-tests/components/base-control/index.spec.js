@@ -15,7 +15,7 @@ describe('BaseControl', () => {
 
 		// check base control label
 		const expectLabel = await accordionPanel.$eval(
-			'.maxi-fancy-radio-control .maxi-base-control',
+			'.maxi-radio-control.maxi-base-control',
 			select => select.innerHTML
 		);
 

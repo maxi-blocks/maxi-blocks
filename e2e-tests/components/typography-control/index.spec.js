@@ -57,6 +57,7 @@ describe('TypographyControl', () => {
 			'.maxi-typography-control__font-family div div div',
 			fontValue => fontValue[0].innerHTML
 		);
+		await page.waitForTimeout(200);
 
 		expect(typographyInput).toStrictEqual('Montserrat');
 
@@ -142,8 +143,9 @@ describe('TypographyControl', () => {
 		);
 
 		await input.focus();
-		await pressKeyTimes('Backspace', '3');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('80');
+
 		await changeResponsive(page, 's');
 
 		const opacityLevel = await page.$eval(
@@ -157,7 +159,7 @@ describe('TypographyControl', () => {
 		await changeResponsive(page, 's');
 
 		await input.focus();
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('55', { delay: 100 });
 
 		const responsiveSOption = await page.$eval(

@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import FancyRadioControl from '../fancy-radio-control';
+import RadioControl from '../radio-control';
 
 /**
  * External dependencies
@@ -87,11 +87,10 @@ const DisplayControl = props => {
 
 	return (
 		<div className={classes}>
-			<FancyRadioControl
+			<RadioControl
 				label={__('Display block', 'maxi-blocks')}
 				selected={getValue()}
 				options={getOptions()}
-				optionType='string'
 				onChange={val =>
 					onChange({
 						[`display-${breakpoint}`]: !isEmpty(val) ? val : null,

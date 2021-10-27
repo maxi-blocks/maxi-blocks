@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToolbarPopover from '../toolbar-popover';
 import ColorLayer from '../../../background-control/colorLayer';
-import FancyRadioControl from '../../../fancy-radio-control';
+import RadioControl from '../../../radio-control';
 import {
 	getBlockStyle,
 	getColorRGBAString,
@@ -102,7 +102,7 @@ const BackgroundColor = props => {
 			icon={<div className='toolbar-item__icon' style={getStyle()} />}
 		>
 			<div className='toolbar-item__background__popover'>
-				<FancyRadioControl
+				<RadioControl
 					label={__('Enable Background Colour', 'maxi-blocks')}
 					selected={isBackgroundColor}
 					options={[

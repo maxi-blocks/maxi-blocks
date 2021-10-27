@@ -155,8 +155,9 @@ describe.skip('TypographyControl', () => {
 		);
 
 		await input.focus();
-		await pressKeyTimes('Backspace', '3');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('80');
+
 		await changeResponsive(page, 's');
 
 		const opacityLevel = await page.$eval(
@@ -170,7 +171,7 @@ describe.skip('TypographyControl', () => {
 		await changeResponsive(page, 's');
 
 		await input.focus();
-		await pressKeyTimes('Backspace', '2');
+		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('55', { delay: 100 });
 
 		const responsiveSOption = await page.$eval(

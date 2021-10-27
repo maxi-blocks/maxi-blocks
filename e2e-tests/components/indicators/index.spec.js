@@ -9,13 +9,12 @@ import {
 /**
  * Internal dependencies
  */
-import { openSidebarTab } from '../../utils';
+import { openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('Indicators', () => {
 	it('Checking the indicators', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
-
 		await page.$eval('.maxi-container-block', container =>
 			container.focus()
 		);
@@ -44,5 +43,7 @@ describe('Indicators', () => {
 		);
 
 		expect(maxiIndicator).toMatchSnapshot();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -1,3 +1,5 @@
+import './store';
+
 export { default as getAttributeKey } from './getAttributeKey';
 export { default as getAttributeValue } from './getAttributeValue';
 export { default as getBlockStyle } from './getBlockStyle';
@@ -11,4 +13,4 @@ export { default as setHoverAttributes } from './setHoverAttributes';
 export { default as styleGenerator } from './styleGenerator';
 export { default as styleResolver } from './styleResolver';
 export { default as stylesCleaner } from './stylesCleaner';
-import './store';
+export * from './utils';

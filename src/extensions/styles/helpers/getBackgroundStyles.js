@@ -4,9 +4,10 @@
 import getAttributeValue from '../getAttributeValue';
 import getBorderStyles from './getBorderStyles';
 import getColorRGBAString from '../getColorRGBAString';
-import getGroupAttributes from '../getGroupAttributes';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 import getDisplayStyles from './getDisplayStyles';
+import getGroupAttributes from '../getGroupAttributes';
+import getImageShapeStyles from './getImageShapeStyles';
+import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
 
 /**
  * External dependencies
@@ -381,13 +382,31 @@ const getSVGWrapperBackgroundObject = ({
 		isHover
 	);
 	const bgSVGTop = getLastBreakpointAttribute(
-		'background-svg-top',
+		'background-svg-position-top',
+		breakpoint,
+		props,
+		isHover
+	);
+	const bgSVGRight = getLastBreakpointAttribute(
+		'background-svg-position-right',
+		breakpoint,
+		props,
+		isHover
+	);
+	const bgSVGbottom = getLastBreakpointAttribute(
+		'background-svg-position-bottom',
 		breakpoint,
 		props,
 		isHover
 	);
 	const bgSVGLeft = getLastBreakpointAttribute(
-		'background-svg-left',
+		'background-svg-position-left',
+		breakpoint,
+		props,
+		isHover
+	);
+	const bgSVGUnit = getLastBreakpointAttribute(
+		'background-svg-position-unit',
 		breakpoint,
 		props,
 		isHover
@@ -404,27 +423,22 @@ const getSVGWrapperBackgroundObject = ({
 		response[breakpoint].width = `${bgSVGSize}${bgSVGSizeUnit}`;
 	}
 
-	if (isNumber(bgSVGTop)) {
-		const bgSVGTopUnit = getLastBreakpointAttribute(
-			'background-svg-top-unit',
-			breakpoint,
-			props,
-			isHover
-		);
-
-		response[breakpoint].top = `${bgSVGTop}${bgSVGTopUnit}`;
-	}
-
-	if (isNumber(bgSVGLeft)) {
-		const bgSVGLeftUnit = getLastBreakpointAttribute(
-			'background-svg-left-unit',
-			breakpoint,
-			props,
-			isHover
-		);
-
-		response[breakpoint].left = `${bgSVGLeft}${bgSVGLeftUnit}`;
-	}
+	if (!isEmpty(bgSVGTop) || isNumber(bgSVGTop))
+		response[breakpoint].top = `${bgSVGTop}${
+			bgSVGTop !== 'auto' ? bgSVGUnit : ''
+		}`;
+	if (!isEmpty(bgSVGRight) || isNumber(bgSVGRight))
+		response[breakpoint].right = `${bgSVGRight}${
+			bgSVGRight !== 'auto' ? bgSVGUnit : ''
+		}`;
+	if (!isEmpty(bgSVGbottom) || isNumber(bgSVGbottom))
+		response[breakpoint].bottom = `${bgSVGbottom}${
+			bgSVGbottom !== 'auto' ? bgSVGUnit : ''
+		}`;
+	if (!isEmpty(bgSVGLeft) || isNumber(bgSVGLeft))
+		response[breakpoint].left = `${bgSVGLeft}${
+			bgSVGLeft !== 'auto' ? bgSVGUnit : ''
+		}`;
 
 	return response;
 };
@@ -658,20 +672,55 @@ const getBackgroundLayers = ({
 								blockStyle,
 								breakpoint,
 								isHover,
-							}),
-							getDisplayStyles(
-								{
-									...getGroupAttributes(
-										layer,
-										'display',
-										isHover
-									),
-								},
-								isHover
-							)
+							})
 						),
 					},
 				};
+				if (breakpoint === 'general') {
+					response[`${layerTarget} > svg:first-child`] = {
+						...response[`${layerTarget} > svg:first-child`],
+						[type]: {
+							...merge(
+								response?.[
+									`${layerTarget} > svg:first-child`
+								]?.[type],
+								...getImageShapeStyles(
+									'svg',
+									getGroupAttributes(
+										layer,
+										'imageShape',
+										false,
+										'background-svg-'
+									),
+									'background-svg-'
+								)
+							),
+						},
+					};
+					response[`${layerTarget} > svg:first-child pattern image`] =
+						{
+							...response[
+								`${layerTarget} > svg:first-child pattern image`
+							],
+							[type]: {
+								...merge(
+									response?.[
+										`${layerTarget} > svg:first-child pattern image`
+									]?.[type],
+									...getImageShapeStyles(
+										'image',
+										getGroupAttributes(
+											layer,
+											'imageShape',
+											false,
+											'background-svg-'
+										),
+										'background-svg-'
+									)
+								),
+							},
+						};
+				}
 				break;
 			default:
 				break;

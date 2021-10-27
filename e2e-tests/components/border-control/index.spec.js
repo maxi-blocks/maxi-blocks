@@ -152,7 +152,7 @@ describe('BorderControl', () => {
 
 		const expectChanges = {
 			'border-color-general': undefined,
-			'border-color-general-hover': '',
+			'border-color-general-hover': undefined,
 			'border-style-general': undefined,
 			'border-style-general-hover': 'solid',
 			'border-top-width-general': undefined,

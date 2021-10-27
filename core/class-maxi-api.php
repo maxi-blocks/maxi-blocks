@@ -286,6 +286,7 @@ if (!class_exists('MaxiBlocks_API')):
 			}
 
 			$response = [
+				'google_api_key' => get_option('google_api_key_option'),
 				'core' => [
 					'version' => $wp_version,
 				],

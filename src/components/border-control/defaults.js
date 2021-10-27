@@ -17,6 +17,13 @@ export const borderNone = (prefix = '', isHover) => {
 		: defaultBorderWidth;
 
 	response = {
+		[`${prefix}border-palette-color-status`]:
+			currentDefaultBorder[`${prefix}border-palette-color-status-general`]
+				.default,
+		[`${prefix}border-palette-color`]:
+			currentDefaultBorder[`${prefix}border-palette-color-general`]
+				.default,
+		[`${prefix}border-palette-opacity`]: 100,
 		[`${prefix}border-color`]:
 			currentDefaultBorder[`${prefix}border-color-general`].default,
 		[`${prefix}border-style`]: isHover
@@ -47,7 +54,6 @@ export const borderNone = (prefix = '', isHover) => {
 export const borderSolid = prefix => {
 	let response = {};
 	response = {
-		[`${prefix}border-color`]: '',
 		[`${prefix}border-style`]: 'solid',
 		[`${prefix}border-top-width`]: 2,
 		[`${prefix}border-right-width`]: 2,
@@ -62,7 +68,6 @@ export const borderSolid = prefix => {
 export const borderDashed = prefix => {
 	let response = {};
 	response = {
-		[`${prefix}border-color`]: '',
 		[`${prefix}border-style`]: 'dashed',
 		[`${prefix}border-top-width`]: 2,
 		[`${prefix}border-right-width`]: 2,
@@ -77,7 +82,6 @@ export const borderDashed = prefix => {
 export const borderDotted = prefix => {
 	let response = {};
 	response = {
-		[`${prefix}border-color`]: '',
 		[`${prefix}border-style`]: 'dotted',
 		[`${prefix}border-top-width`]: 2,
 		[`${prefix}border-right-width`]: 2,

@@ -13,6 +13,7 @@ import {
 	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
+	getBlockStyle,
 } from '../../utils';
 
 describe('FullSizeControl', () => {
@@ -100,5 +101,7 @@ describe('FullSizeControl', () => {
 			button => button.value
 		);
 		expect(heightM).toStrictEqual('330');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -9,6 +9,7 @@ import {
 	getBlockAttributes,
 	openSidebarTab,
 	changeResponsive,
+	getBlockStyle,
 } from '../../utils';
 
 describe('ColumnPattern', () => {
@@ -112,5 +113,7 @@ describe('ColumnPattern', () => {
 		);
 
 		expect(rowSelectedL).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

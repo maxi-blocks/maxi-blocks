@@ -16,10 +16,16 @@ import { getGroupAttributes } from '../../extensions/styles';
 import * as inspectorTabs from '../../components/inspector-tabs';
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Inspector
  */
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes } = props;
+	const { apiKey } = attributes;
 
 	return (
 		<InspectorControls>
@@ -50,6 +56,7 @@ const Inspector = props => {
 													onChange={obj =>
 														setAttributes(obj)
 													}
+													hasApiKey={!isEmpty(apiKey)}
 												/>
 											),
 										},

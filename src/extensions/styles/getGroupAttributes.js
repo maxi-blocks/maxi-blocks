@@ -1,16 +1,8 @@
 /**
  * Internal dependencies
  */
+import { getIsValid } from './utils';
 import * as defaults from './defaults/index';
-
-/**
- * External dependencies
- */
-import { isNumber, isBoolean, isEmpty } from 'lodash';
-
-const getIsValid = (cleaned, val) =>
-	(cleaned && (val || isNumber(val) || isBoolean(val) || isEmpty(val))) ||
-	!cleaned;
 
 const getGroupAttributes = (
 	attributes,
@@ -32,7 +24,7 @@ const getGroupAttributes = (
 			defaults[`${target}${isHover ? 'Hover' : ''}`] || defaults[target];
 
 		Object.keys(defaultAttributes).forEach(key => {
-			if (getIsValid(cleaned, attributes[`${prefix}${key}`]))
+			if (getIsValid(attributes[`${prefix}${key}`], cleaned))
 				response[`${prefix}${key}`] = attributes[`${prefix}${key}`];
 		});
 	} else
@@ -41,7 +33,7 @@ const getGroupAttributes = (
 				defaults[`${el}${isHover ? 'Hover' : ''}`] || defaults[el];
 
 			Object.keys(defaultAttributes).forEach(key => {
-				if (getIsValid(cleaned, attributes[`${prefix}${key}`]))
+				if (getIsValid(attributes[`${prefix}${key}`], cleaned))
 					response[`${prefix}${key}`] = attributes[`${prefix}${key}`];
 			});
 		});

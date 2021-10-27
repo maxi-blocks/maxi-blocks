@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -42,6 +42,10 @@ const FontFamilySelector = props => {
 	});
 
 	const [value, setValue] = useState({ label: font, value: font });
+
+	useEffect(() => {
+		if (value.label !== font) setValue({ label: font, value: font });
+	}, [font]);
 
 	const selectFontFamilyStyles = {
 		control: styles => ({

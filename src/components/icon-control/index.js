@@ -117,7 +117,7 @@ const IconControl = props => {
 	};
 
 	const iconBackgroundActiveMedia = getLastBreakpointAttribute(
-		`icon-background-active-media`,
+		'icon-background-active-media',
 		breakpoint,
 		props,
 		isHover
@@ -351,8 +351,7 @@ const IconControl = props => {
 							isHover={isHover}
 						/>
 					)}
-					<FancyRadioControl
-						label=''
+					<RadioControl
 						fullWidthMode
 						selected={iconBackgroundActiveMedia || 'none'}
 						options={getBackgroundOptions()}

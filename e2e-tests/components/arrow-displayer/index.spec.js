@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
-import { openSidebar } from '../../utils';
+import { openSidebarTab } from '../../utils';
 
 describe('ArrowDisplay', () => {
 	it('Cheking the arrow display', async () => {
@@ -11,7 +11,11 @@ describe('ArrowDisplay', () => {
 		await page.$eval('.maxi-container-block', container =>
 			container.focus()
 		);
-		const accordionPanel = await openSidebar(page, 'callout arrow');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'callout arrow'
+		);
 
 		await accordionPanel.$eval(
 			'.maxi-arrow-control .maxi-toggle-switch .maxi-base-control__label',

@@ -8,6 +8,7 @@ export { default as getColorRGBAString } from './getColorRGBAString';
 export { default as getDefaultAttribute } from './getDefaultAttribute';
 export { default as getGroupAttributes } from './getGroupAttributes';
 export { default as getLastBreakpointAttribute } from './getLastBreakpointAttribute';
+export { default as getPrefixedAttributes } from './getPrefixedAttributes';
 export { default as setHoverAttributes } from './setHoverAttributes';
 export { default as styleGenerator } from './styleGenerator';
 export { default as styleResolver } from './styleResolver';

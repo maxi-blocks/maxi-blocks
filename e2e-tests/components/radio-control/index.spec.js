@@ -6,13 +6,13 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
+import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 describe('RadioControl', () => {
 	it('Check radio control', async () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
-		await openSidebar(page, 'alignment');
+		await openSidebarTab(page, 'style', 'alignment');
 
 		const radioOptions = await page.$$(
 			'.components-popover__content .maxi-alignment-control__no-label .components-radio-control__option'

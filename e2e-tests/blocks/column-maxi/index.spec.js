@@ -10,7 +10,11 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebarTab,
+	changeResponsive,
+} from '../../utils';
 
 describe('Column Maxi', () => {
 	it('Column Maxi does not break', async () => {
@@ -28,7 +32,7 @@ describe('Column Maxi', () => {
 			'.block-editor-block-list__layout .block-editor-inserter',
 			select => select.click()
 		);
-		await openSidebar(page, 'column settings');
+		await openSidebarTab(page, 'style', 'column settings');
 
 		await page.$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',

@@ -181,6 +181,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		}
 	}
 	.maxi-components-button:focus:not(:disabled) {
+		z-index: 2;
 		border-color: var(--maxi-secondary-color);
 		box-shadow: 0 0 0 1px var(--maxi-secondary-color);
 		outline: 2px solid transparent;

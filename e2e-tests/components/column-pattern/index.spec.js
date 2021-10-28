@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import {
 	getBlockAttributes,
-	openSidebar,
+	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
 } from '../../utils';
@@ -16,7 +16,11 @@ describe('ColumnPattern', () => {
 	it('Check column pattern', async () => {
 		await createNewPost();
 		await insertBlock('Container Maxi');
-		const accordionControl = await openSidebar(page, 'row settings');
+		const accordionControl = await openSidebarTab(
+			page,
+			'style',
+			'column picker'
+		);
 
 		// select column
 		await accordionControl.$eval(
@@ -50,7 +54,11 @@ describe('ColumnPattern', () => {
 	});
 
 	it('Check responsive row-pattern', async () => {
-		const accordionControl = await openSidebar(page, 'row settings');
+		const accordionControl = await openSidebarTab(
+			page,
+			'style',
+			'column picker'
+		);
 
 		// general
 		await accordionControl.$eval(

@@ -15,7 +15,7 @@ describe('IconControl', () => {
 	it('Check Icon Control', async () => {
 		/* await createNewPost();
 		await insertBlock('Button Maxi');
-		const accordionPanel = await openSidebar(page, 'icon');
+		const accordionPanel = await openSidebarTab(page, 'style', 'icon');
 
 		await accordionPanel.$eval('.maxi-icon-control button', addIcon =>
 			addIcon.click()

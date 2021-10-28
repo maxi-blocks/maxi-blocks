@@ -11,7 +11,7 @@ import {
 /**
  * Interactive dependencies
  */
-import { getBlockAttributes, openSidebar, getBlockStyle } from '../../utils';
+import { getBlockAttributes, openSidebarTab, getBlockStyle } from '../../utils';
 
 describe.skip('BackgroundControl', () => {
 	beforeEach(async () => {
@@ -20,7 +20,11 @@ describe.skip('BackgroundControl', () => {
 	});
 
 	it('Check Background Color Clip Path', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 
 		await accordionPanel.$$eval(
 			'.maxi-background-control__simple label',
@@ -47,7 +51,11 @@ describe.skip('BackgroundControl', () => {
 	});
 
 	it('Check Background Color Layer Clip Path', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 
 		await accordionPanel.$eval(
 			'.maxi-tabs-content .maxi-background-control .maxi-toggle-switch .maxi-base-control__label',
@@ -92,7 +100,11 @@ describe.skip('BackgroundControl', () => {
 	});
 
 	it('Check Background Color', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
@@ -113,7 +125,11 @@ describe.skip('BackgroundControl', () => {
 	});
 
 	it('Check Background Custom Color', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
@@ -144,7 +160,11 @@ describe.skip('BackgroundControl', () => {
 	});
 
 	it('Check Background Image', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 		await accordionPanel.$$eval(
 			'.maxi-background-control__simple label',
 			select => select[3].click()
@@ -208,7 +228,11 @@ describe.skip('BackgroundControl', () => {
 	});
 
 	it('Check Background Video', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
@@ -265,7 +289,7 @@ describe.skip('BackgroundControl', () => {
 	// TODO: needs to be fixed with #1931
 	// it('Check Background Gradient', async () => {
 	// 	await setBrowserViewport('large');
-	// 	const accordionPanel = await openSidebar(page, 'background');
+	// 	const accordionPanel = await openSidebarTab(page,'style', 'background');
 	// 	await accordionPanel.$$eval(
 	// 		'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
 	// 		select => select[4].click()
@@ -317,7 +341,11 @@ describe.skip('BackgroundControl', () => {
 	// });
 
 	it('Background hover attributes are kept after setting none to normal background settings', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'style',
+			'background'
+		);
 
 		await accordionPanel.$$eval(
 			'.maxi-settingstab-control .maxi-tabs-content .maxi-background-control .maxi-base-control__field label',
@@ -364,7 +392,7 @@ describe.skip('BackgroundControl', () => {
 	/* it('Check BackgroundShape', async () => {
 		const { uniqueID } = await getBlockAttributes();
 
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(page,'style', 'background');
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
 			select => select[5].click()
@@ -404,7 +432,7 @@ describe.skip('BackgroundControl', () => {
 	}); */
 
 	/* it('Check Background Shape Custom Color', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(page,'style', 'background');
 		await accordionPanel.$$eval(
 			'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
 			select => select[5].click()
@@ -460,7 +488,7 @@ describe.skip('BackgroundControl', () => {
 	}); */
 
 	/* it('Check Background Layers', async () => {
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(page,'style', 'background');
 
 		// add color layer
 		await accordionPanel.$$eval(

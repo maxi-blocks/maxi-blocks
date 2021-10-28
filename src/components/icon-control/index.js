@@ -36,10 +36,11 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 import {
-	smileIcon,
 	backgroundColor,
 	backgroundGradient,
+	smileIcon,
 	solid,
+	styleNone,
 } from '../../icons';
 
 /**
@@ -68,6 +69,22 @@ const IconControl = props => {
 		});
 
 		options.push({
+			label: <Icon icon={solid} />,
+			value: 'border',
+		});
+
+		return options;
+	};
+
+	const getBackgroundOptions = () => {
+		const options = [];
+
+		options.push({
+			label: <Icon icon={styleNone} />,
+			value: 'none',
+		});
+
+		options.push({
 			label: <Icon icon={backgroundColor} />,
 			value: 'background-color',
 		});
@@ -77,13 +94,34 @@ const IconControl = props => {
 			value: 'gradient',
 		});
 
-		options.push({
-			label: <Icon icon={solid} />,
-			value: 'border',
-		});
-
 		return options;
 	};
+
+	const minMaxSettings = {
+		px: {
+			min: 0,
+			max: 999,
+		},
+		em: {
+			min: 0,
+			max: 999,
+		},
+		vw: {
+			min: 0,
+			max: 999,
+		},
+		'%': {
+			min: 0,
+			max: 100,
+		},
+	};
+
+	const iconBackgroundActiveMedia = getLastBreakpointAttribute(
+		'icon-background-active-media',
+		breakpoint,
+		props,
+		isHover
+	);
 
 	return (
 		<div className={classes}>
@@ -96,19 +134,7 @@ const IconControl = props => {
 					icon={props['icon-content']}
 				/>
 			)}
-			{isHover && (
-				<ToggleSwitch
-					label={__('Enable Icon Hover', 'maxi-blocks')}
-					selected={props['icon-status-hover']}
-					onChange={val =>
-						onChange({
-							'icon-status-hover': val,
-						})
-					}
-				/>
-			)}
-			{(props['icon-content'] ||
-				(isHover && props['icon-status-hover'])) && (
+			{props['icon-content'] && (
 				<>
 					{!isHover && breakpoint === 'general' && (
 						<>
@@ -254,6 +280,13 @@ const IconControl = props => {
 											}`
 										]
 									}
+									paletteOpacity={
+										props[
+											`icon-palette-opacity${
+												isHover ? '-hover' : ''
+											}`
+										]
+									}
 									paletteStatus={
 										props[
 											`icon-palette-color-status${
@@ -265,6 +298,7 @@ const IconControl = props => {
 										color,
 										paletteColor,
 										paletteStatus,
+										paletteOpacity,
 									}) => {
 										onChange({
 											[`icon-color${
@@ -276,9 +310,11 @@ const IconControl = props => {
 											[`icon-palette-color-status${
 												isHover ? '-hover' : ''
 											}`]: paletteStatus,
+											[`icon-palette-opacity${
+												isHover ? '-hover' : ''
+											}`]: paletteOpacity,
 										});
 									}}
-									disableOpacity
 									isHover={isHover}
 								/>
 							) : (
@@ -301,7 +337,37 @@ const IconControl = props => {
 							)}
 						</>
 					)}
-					{iconStyle === 'background-color' && (
+					{iconStyle === 'border' && (
+						<BorderControl
+							{...getGroupAttributes(props, [
+								`iconBorder${isHover ? 'Hover' : ''}`,
+								`iconBorderWidth${isHover ? 'Hover' : ''}`,
+								`iconBorderRadius${isHover ? 'Hover' : ''}`,
+							])}
+							prefix='icon-'
+							onChange={obj => onChange(obj)}
+							breakpoint={breakpoint}
+							clientId={clientId}
+							isHover={isHover}
+						/>
+					)}
+					<RadioControl
+						fullWidthMode
+						selected={iconBackgroundActiveMedia || 'none'}
+						options={getBackgroundOptions()}
+						optionType='string'
+						onChange={val =>
+							onChange({
+								[getAttributeKey(
+									'background-active-media',
+									isHover,
+									'icon-',
+									breakpoint
+								)]: val,
+							})
+						}
+					/>
+					{iconBackgroundActiveMedia === 'background-color' && (
 						<>
 							{!props['icon-inherit'] ? (
 								<ColorControl
@@ -393,7 +459,7 @@ const IconControl = props => {
 							)}
 						</>
 					)}
-					{iconStyle === 'gradient' && (
+					{iconBackgroundActiveMedia === 'gradient' && (
 						<GradientControl
 							label={__(
 								'Icon Background Gradient',
@@ -442,20 +508,6 @@ const IconControl = props => {
 							isHover={isHover}
 						/>
 					)}
-					{iconStyle === 'border' && (
-						<BorderControl
-							{...getGroupAttributes(props, [
-								`iconBorder${isHover ? 'Hover' : ''}`,
-								`iconBorderWidth${isHover ? 'Hover' : ''}`,
-								`iconBorderRadius${isHover ? 'Hover' : ''}`,
-							])}
-							prefix='icon-'
-							onChange={obj => onChange(obj)}
-							breakpoint={breakpoint}
-							clientId={clientId}
-							isHover={isHover}
-						/>
-					)}
 					{!isHover && (
 						<AxisControl
 							{...getGroupAttributes(props, 'iconPadding')}
@@ -464,6 +516,7 @@ const IconControl = props => {
 							breakpoint={breakpoint}
 							target='icon-padding'
 							disableAuto
+							minMaxSettings={minMaxSettings}
 						/>
 					)}
 				</>

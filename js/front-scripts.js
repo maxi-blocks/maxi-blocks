@@ -575,12 +575,16 @@ const scrollTransform = (element, type) => {
 			if (start < mid) newMidDown += stepMid;
 			else newMidDown -= stepMid;
 
-			const finalStartMid = Math.trunc(start + newMidDown);
+			const finalStartMid =
+				Math.abs(Math.trunc(start + newMidDown)) < Math.abs(mid)
+					? Math.trunc(start + newMidDown)
+					: mid;
+
+			console.log(`finalStartMid ${finalStartMid}`);
 
 			if (type !== 'fade')
 				setTransform(element, `rotate(${finalStartMid}deg)`); // from start to middle
-			if (type === 'fade' && finalStartMid)
-				setOpacity(element, `${finalStartMid}%`);
+			if (type === 'fade') setOpacity(element, `${finalStartMid}%`);
 		} else {
 			console.log('Down - To End');
 			const stepEnd =
@@ -590,7 +594,12 @@ const scrollTransform = (element, type) => {
 			if (mid < end) newEndDown += stepEnd;
 			else newEndDown -= stepEnd;
 
-			const finalMidEnd = Math.trunc(newEndDown + mid);
+			const finalMidEnd =
+				Math.abs(Math.trunc(newEndDown + mid)) < Math.abs(end)
+					? Math.trunc(newEndDown + mid)
+					: end;
+
+			console.log(`finalMidEnd ${finalMidEnd}`);
 
 			if (type !== 'fade')
 				setTransform(element, `rotate(${finalMidEnd}deg)`); // from middle to ending
@@ -611,7 +620,10 @@ const scrollTransform = (element, type) => {
 			if (end < mid) newEndUp += stepEnd;
 			else newEndUp -= stepEnd;
 
-			const finalMidEnd = Math.trunc(newEndUp + mid);
+			const finalMidEnd =
+				Math.abs(Math.trunc(newEndUp + mid)) < Math.abs(mid)
+					? Math.trunc(newEndUp + mid)
+					: mid;
 
 			console.log(`finalMidEnd: ${finalMidEnd}`);
 
@@ -629,7 +641,10 @@ const scrollTransform = (element, type) => {
 			if (mid > start) newEndUp -= stepMid;
 			else newMidUp += stepMid;
 
-			const finalStartMid = Math.trunc(newMidUp + start);
+			const finalStartMid =
+				Math.abs(Math.trunc(newMidUp + start)) < Math.abs(start)
+					? Math.trunc(newMidUp + start)
+					: start;
 
 			console.log(`finalStartMid: ${finalStartMid}`);
 

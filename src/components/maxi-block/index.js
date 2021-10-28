@@ -60,10 +60,7 @@ const MainBlock = forwardRef(
 			return (
 				<TagName ref={ref} {...useBlockProps.save(props)}>
 					{disableBackground && (
-						<BackgroundDisplayer
-							{...background}
-							blockClassName={uniqueID}
-						/>
+						<BackgroundDisplayer {...background} />
 					)}
 					{children}
 				</TagName>
@@ -71,12 +68,7 @@ const MainBlock = forwardRef(
 
 		return (
 			<TagName {...useBlockProps({ ...props, ref })}>
-				{disableBackground && (
-					<BackgroundDisplayer
-						{...background}
-						blockClassName={uniqueID}
-					/>
-				)}
+				{disableBackground && <BackgroundDisplayer {...background} />}
 				{children}
 			</TagName>
 		);
@@ -163,8 +155,8 @@ const MaxiBlock = forwardRef((props, ref) => {
 
 	const classes = classnames(
 		'maxi-block',
-		blockName && getBlockClassName(blockName),
 		!isSave && 'maxi-block--backend',
+		blockName && getBlockClassName(blockName),
 		(motion['hover-type'] && motion['hover-type'] !== 'none') ||
 			motion['shape-divider-top-status'] ||
 			motion['shape-divider-bottom-status'] ||

@@ -469,13 +469,6 @@ containerElems.forEach(function (elem) {
 		const videoEnd = videoPlayerElement.getAttribute('data-end');
 		const videoType = videoPlayerElement.getAttribute('data-type');
 
-		// Make youtube & vimeo videos cover the container
-		if (videoType === 'youtube' || videoType === 'vimeo') {
-			const iframeElement = videoPlayerElement.querySelector('iframe');
-			const iframeWidth = videoPlayerElement.offsetWidth;
-			iframeElement.style.height = `${iframeWidth / 1.77}px`; // 1.77 is the aspect ratio 16:9
-		}
-
 		if (videoType === 'vimeo' && videoEnd) {
 			const scriptsArray = Array.from(window.document.scripts);
 

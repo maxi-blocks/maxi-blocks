@@ -510,11 +510,6 @@ let newEndUp = 0;
 let newMidDown = 0;
 let newEndDown = 0;
 
-const checkOpacityRange = opacity => {
-	if (opacity >= 0 && opacity <= 100) return true;
-	return false;
-};
-
 const scrollTransform = (element, type) => {
 	const dataMotion = element.getAttribute(`data-motion-${type}-general`);
 
@@ -584,7 +579,7 @@ const scrollTransform = (element, type) => {
 
 			if (type !== 'fade')
 				setTransform(element, `rotate(${finalStartMid}deg)`); // from start to middle
-			if (type === 'fade' && checkOpacityRange(finalStartMid))
+			if (type === 'fade' && finalStartMid)
 				setOpacity(element, `${finalStartMid}%`);
 		} else {
 			console.log('Down - To End');
@@ -600,7 +595,7 @@ const scrollTransform = (element, type) => {
 			if (type !== 'fade')
 				setTransform(element, `rotate(${finalMidEnd}deg)`); // from middle to ending
 
-			if (type === 'fade' && checkOpacityRange(finalMidEnd))
+			if (type === 'fade' && finalMidEnd)
 				setOpacity(element, `${finalMidEnd}%`);
 		}
 	}
@@ -622,7 +617,7 @@ const scrollTransform = (element, type) => {
 
 			if (type !== 'fade')
 				setTransform(element, `rotate(${finalMidEnd}deg)`); // from ending to middle
-			if (type === 'fade' && checkOpacityRange(finalMidEnd))
+			if (type === 'fade' && finalMidEnd)
 				setOpacity(element, `${finalMidEnd}%`);
 		} else {
 			console.log('Up - To Start');
@@ -640,7 +635,7 @@ const scrollTransform = (element, type) => {
 
 			if (type !== 'fade')
 				setTransform(element, `rotate(${finalStartMid}deg)`); // from middle to starting
-			if (type === 'fade' && checkOpacityRange(finalStartMid))
+			if (type === 'fade' && finalStartMid)
 				setOpacity(element, `${finalStartMid}%`);
 		}
 	}
@@ -742,65 +737,13 @@ elements.forEach(function maxiMotion(element, index) {
 	if (motionType.includes('rotate') || motionType.includes('fade')) {
 		startingTransform(element, motionType);
 	}
-
-	// if (motionType.includes('rotate')) {
-	// 	const dataMotionRotate = element.getAttribute(
-	// 		'data-motion-rotate-general'
-	// 	);
-
-	// 	if (!dataMotionRotate) return;
-
-	// 	const parent =
-	// 		element.parentNode.closest('.maxi-container-block') ||
-	// 		element.parentNode.closest('article');
-
-	// 	const {
-	// 		viewportTop,
-	// 		viewportMid,
-	// 		viewportBottom,
-	// 		viewportTopPercent,
-	// 		viewportMidPercent,
-	// 		viewportBottomPercent,
-	// 		speedValue,
-	// 		easingValue,
-	// 	} = getGeneralMotionSetting(dataMotionRotate, parent);
-
-	// 	const dataMotionRotateArray = dataMotionRotate.trim().split(' ');
-
-	// 	const rotateStart = parseInt(dataMotionRotateArray[5]);
-	// 	const rotateMid = parseInt(dataMotionRotateArray[6]);
-	// 	const rotateEnd = parseInt(dataMotionRotateArray[7]);
-
-	// 	const transform = `rotateZ(${rotateStart}deg)`;
-
-	// 	setTransform(element, transform);
-
-	// 	// if (speedValue && easingValue) {
-	// 	// 	element.style.transition = `all ${speedValue}s ${easingValue}`;
-	// 	// } else element.style.transition = 'all 200ms ease';
-
-	// 	console.log(rotateStart, rotateMid, rotateEnd);
-	// }
 });
 
 let currentTransformSize = 0;
 let elementScrollSize = 0;
 
-// Scroll Function
-let isScrolling;
-let scrolls = 1;
-
 // eslint-disable-next-line @wordpress/no-global-event-listener
 window.addEventListener('scroll', () => {
-	// Clear our timeout throughout the scroll
-	window.clearTimeout(isScrolling);
-
-	// Set a timeout to run after scrolling ends
-	isScrolling = setTimeout(function () {
-		scrolls = 0;
-		// console.log('Scrolling has stopped.');
-	}, 66);
-
 	elements.forEach(function motionOnScroll(element, index) {
 		const motionType = element.getAttribute('data-motion-type');
 		// 'speed(0) ease(1) viewport-bottom(2) viewport-middle(3) viewport-top(4) direction(5) offset-starting(6) offset-middle(7) offset-end(8)'
@@ -1018,160 +961,6 @@ window.addEventListener('scroll', () => {
 		if (motionType.includes('rotate') || motionType.includes('fade')) {
 			scrollTransform(element, motionType);
 		}
-
-		// if (motionType.includes('rotate')) {
-		// 	const dataMotionRotate = element.getAttribute(
-		// 		'data-motion-rotate-general'
-		// 	);
-
-		// 	if (!dataMotionRotate) return;
-
-		// 	const parent =
-		// 		element.parentNode.closest('.maxi-container-block') ||
-		// 		element.parentNode.closest('article');
-
-		// 	const {
-		// 		viewportTop,
-		// 		viewportMid,
-		// 		viewportBottom,
-		// 		viewportTopPercent,
-		// 		viewportMidPercent,
-		// 		viewportBottomPercent,
-		// 		speedValue,
-		// 		easingValue,
-		// 	} = getGeneralMotionSetting(dataMotionRotate, parent);
-
-		// 	const dataMotionRotateArray = dataMotionRotate.trim().split(' ');
-
-		// 	const rotateStart = parseInt(dataMotionRotateArray[5]);
-		// 	const rotateMid = parseInt(dataMotionRotateArray[6]);
-		// 	const rotateEnd = parseInt(dataMotionRotateArray[7]);
-
-		// 	const transform = `rotateZ(${rotateStart}deg)`;
-
-		// 	// setTransform(element, transform);
-
-		// 	if (easingValue) {
-		// 		element.style.transition = `all 200ms ${easingValue}`;
-		// 	} else element.style.transition = 'all 200ms ease';
-
-		// 	//	if (!scrolls) element.style.transition = 'none';
-
-		// 	//	console.log(rotateStart, rotateMid, rotateEnd);
-
-		// 	const rect = element.getBoundingClientRect();
-		// 	const windowHeight = window.innerHeight;
-		// 	const windowHalfHeight = windowHeight / 2;
-		// 	const elementHeight = element.offsetHeight;
-		// 	const elementHalfHeight = elementHeight / 2;
-
-		// 	const elementTopInViewCoordinate = Math.round(
-		// 		rect.top - windowHalfHeight
-		// 	);
-
-		// 	const elementBottomInViewCoordinate = Math.round(
-		// 		rect.bottom - windowHalfHeight
-		// 	);
-
-		// 	const elementMidInViewCoordinate =
-		// 		elementTopInViewCoordinate + elementHalfHeight;
-
-		// 	// console.log(`Top: ${elementTopInViewCoordinate}`);
-		// 	// console.log(`Mid: ${elementMidInViewCoordinate}`);
-		// 	// console.log(`Bottom: ${elementBottomInViewCoordinate}`);
-
-		// 	const scrollDirection = getScrollDirection();
-
-		// 	if (scrollDirection === 'down' && elementTopInViewCoordinate <= 0) {
-		// 		if (elementMidInViewCoordinate >= 0) {
-		// 			// from starting to middle
-		// 			console.log('Down - To Mid');
-		// 			const stepMid =
-		// 				elementHalfHeight / Math.abs(rotateStart - rotateMid);
-
-		// 			//	console.log(`stepMid: ${stepMid}`);
-
-		// 			newRotateMid += stepMid;
-		// 			const finalRotateStartMid = Math.trunc(
-		// 				newRotateMid + rotateStart
-		// 			);
-		// 			if (
-		// 				finalRotateStartMid > rotateStart &&
-		// 				finalRotateStartMid <= rotateMid
-		// 			)
-		// 				setTransform(
-		// 					element,
-		// 					`rotate(${finalRotateStartMid}deg)`
-		// 				);
-		// 		} else {
-		// 			console.log('Down - To End');
-		// 			const stepEnd =
-		// 				elementHalfHeight / Math.abs(rotateEnd - rotateMid);
-		// 			newRotateEnd += stepEnd;
-		// 			const finalRotateMidEnd = Math.trunc(
-		// 				newRotateEnd + rotateMid
-		// 			);
-		// 			console.log(`finalRotateMidEnd: ${finalRotateMidEnd}`);
-		// 			if (
-		// 				finalRotateMidEnd > rotateMid &&
-		// 				finalRotateMidEnd <= rotateEnd
-		// 			)
-		// 				setTransform(
-		// 					element,
-		// 					`rotate(${finalRotateMidEnd}deg)`
-		// 				); // from middle to ending
-		// 		}
-		// 	}
-		// 	if (
-		// 		scrollDirection === 'up' &&
-		// 		elementBottomInViewCoordinate >= 0
-		// 	) {
-		// 		if (elementMidInViewCoordinate <= 0) {
-		// 			console.log('Up - To Mid');
-		// 			const stepEnd =
-		// 				elementHalfHeight / Math.abs(rotateEnd - rotateMid);
-		// 			newRotateEnd -= stepEnd;
-		// 			const finalRotateMidEnd = Math.trunc(
-		// 				newRotateEnd - rotateMid
-		// 			);
-		// 			console.log(`finalRotateMidEnd: ${finalRotateMidEnd}`);
-		// 			if (
-		// 				finalRotateMidEnd < rotateEnd &&
-		// 				finalRotateMidEnd >= rotateMid
-		// 			)
-		// 				setTransform(
-		// 					element,
-		// 					`rotate(${finalRotateMidEnd}deg)`
-		// 				); // from ending to middle
-		// 		} else {
-		// 			console.log('Up - To Start');
-		// 			const stepMid =
-		// 				elementHalfHeight / Math.abs(rotateMid - rotateStart);
-
-		// 			newRotateMid -= stepMid;
-		// 			const finalRotateStartMid = Math.trunc(
-		// 				newRotateMid - rotateStart
-		// 			);
-		// 			console.log(`finalRotateStartMid: ${finalRotateStartMid}`);
-		// 			if (
-		// 				finalRotateStartMid < rotateMid &&
-		// 				finalRotateStartMid >= rotateStart
-		// 			)
-		// 				setTransform(
-		// 					element,
-		// 					`rotate(${finalRotateStartMid}deg)`
-		// 				); // from middle to starting
-		// 		}
-		// 	}
-
-		// 	//	console.log(windowHeight);
-		// 	// console.log(pageHeight);
-		// 	// console.log(window.pageYOffset);
-
-		// 	// console.log(rect.top, rect.right, rect.bottom, rect.left);
-
-		// 	const style = window.getComputedStyle(element);
-		// }
 	});
 });
 

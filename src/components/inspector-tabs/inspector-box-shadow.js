@@ -1,0 +1,109 @@
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
+ * Internal dependencies
+ */
+import SettingTabsControl from '../setting-tabs-control';
+import BoxShadowControl from '../box-shadow-control';
+import ToggleSwitch from '../toggle-switch';
+import {
+	getGroupAttributes,
+	setHoverAttributes,
+} from '../../extensions/styles';
+
+/**
+ * Component
+ */
+const boxShadow = ({ props, prefix = '' }) => {
+	const { attributes, clientId, deviceType, setAttributes } = props;
+
+	const hoverStatus = attributes[`${prefix}box-shadow-status-hover`];
+
+	return {
+		label: __('Box shadow', 'maxi-blocks'),
+		disablePadding: true,
+		content: (
+			<SettingTabsControl
+				items={[
+					{
+						label: __('Normal', 'maxi-blocks'),
+						content: (
+							<BoxShadowControl
+								{...getGroupAttributes(
+									attributes,
+									'boxShadow',
+									false,
+									prefix
+								)}
+								prefix={prefix}
+								onChange={obj => setAttributes(obj)}
+								breakpoint={deviceType}
+								clientId={clientId}
+							/>
+						),
+					},
+					{
+						label: __('Hover', 'maxi-blocks'),
+						content: (
+							<>
+								<ToggleSwitch
+									label={__(
+										'Enable Box Shadow Hover',
+										'maxi-blocks'
+									)}
+									selected={hoverStatus}
+									className='maxi-box-shadow-status-hover'
+									onChange={val =>
+										setAttributes({
+											...(val &&
+												setHoverAttributes(
+													{
+														...getGroupAttributes(
+															attributes,
+															'boxShadow',
+															false,
+															prefix
+														),
+													},
+													{
+														...getGroupAttributes(
+															attributes,
+															'boxShadow',
+															true,
+															prefix
+														),
+													}
+												)),
+											[`${prefix}box-shadow-status-hover`]:
+												val,
+										})
+									}
+								/>
+								{hoverStatus && (
+									<BoxShadowControl
+										{...getGroupAttributes(
+											attributes,
+											'boxShadow',
+											true,
+											prefix
+										)}
+										prefix={prefix}
+										onChange={obj => setAttributes(obj)}
+										breakpoint={deviceType}
+										isHover
+										clientId={clientId}
+									/>
+								)}
+							</>
+						),
+					},
+				]}
+			/>
+		),
+	};
+};
+
+export default boxShadow;

@@ -7,7 +7,7 @@ import { createNewPost, insertBlock } from '@wordpress/e2e-test-utils';
  */
 import {
 	getBlockAttributes,
-	openAdvancedSidebar,
+	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
 } from '../../utils';
@@ -17,7 +17,11 @@ describe('PositionControl', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'position');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'position'
+		);
 
 		const selectPosition = await accordionPanel.$(
 			'.maxi-position-control .maxi-base-control__field select'
@@ -90,7 +94,11 @@ describe('PositionControl', () => {
 		expect(positionSelector).toStrictEqual('Relative');
 
 		// responsive S
-		const accordionPanel = await openAdvancedSidebar(page, 'position');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'position'
+		);
 		await changeResponsive(page, 's');
 
 		const selector = await accordionPanel.$(

@@ -28,7 +28,7 @@ import { setBreakpointToLayer } from './utils';
  */
 import ReactDragListView from 'react-drag-listview';
 import classnames from 'classnames';
-import { isEmpty, cloneDeep } from 'lodash';
+import { isEmpty, cloneDeep, isEqual } from 'lodash';
 
 /**
  * Icons
@@ -500,11 +500,13 @@ const BackgroundLayersControl = ({
 									clientId={clientId}
 									layer={layer}
 									onChange={newLayer => {
-										layers[i] = newLayer;
+										const newLayers = cloneDeep(layers);
+										newLayers[i] = newLayer;
 
-										onChange({
-											'background-layers': layers,
-										});
+										if (!isEqual(newLayers, layers))
+											onChange({
+												'background-layers': newLayers,
+											});
 									}}
 									onOpen={isOpen => {
 										if (isOpen) changeSelector(null);

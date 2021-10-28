@@ -23,7 +23,6 @@ import IconToolbar from '../../components/toolbar/iconToolbar';
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
 
 /**
  * Content
@@ -100,7 +99,7 @@ class edit extends MaxiBlockComponent {
 
 	render() {
 		const { attributes, setAttributes } = this.props;
-		const { uniqueID } = attributes;
+		const { uniqueID, blockFullWidth, fullWidth } = attributes;
 
 		const { isIconSelected } = this.state;
 
@@ -129,10 +128,11 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-button--${uniqueID}`}
 				ref={this.blockRef}
+				blockFullWidth={blockFullWidth}
 				{...getMaxiBlockBlockAttributes(this.props)}
 				disableBackground
 			>
-				<div className={buttonClasses}>
+				<div data-align={fullWidth} className={buttonClasses}>
 					{!attributes['icon-only'] && (
 						<RichText
 							className='maxi-button-block__content'

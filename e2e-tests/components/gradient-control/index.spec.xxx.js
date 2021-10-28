@@ -18,7 +18,7 @@ import { getBlockAttributes, openSidebar } from '../../utils';
 // 	await createNewPost();
 // 	await setBrowserViewport('large');
 // 	await insertBlock('Group Maxi');
-// 	const accordionPanel = await openSidebar(page, 'background');
+// 	const accordionPanel = await openSidebarTab(page, 'style', 'background');
 // 	await accordionPanel.$$eval(
 // 		'.maxi-background-control .maxi-radio-control--full-width .maxi-base-control__field input',
 // 		select => select[4].click()

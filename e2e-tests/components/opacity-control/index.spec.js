@@ -11,7 +11,7 @@ import {
  */
 import {
 	getBlockAttributes,
-	openAdvancedSidebar,
+	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
 } from '../../utils';
@@ -21,7 +21,11 @@ describe('OpacityControl', () => {
 		await createNewPost();
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'opacity');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'opacity'
+		);
 
 		await accordionPanel.$eval(
 			'.maxi-opacity-control .maxi-base-control__field input',
@@ -41,7 +45,11 @@ describe('OpacityControl', () => {
 	});
 
 	it('Check Responsive opacity control', async () => {
-		const accordionPanel = await openAdvancedSidebar(page, 'opacity');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'opacity'
+		);
 
 		const responsiveBaseOption = await page.$eval(
 			'.maxi-opacity-control .maxi-base-control__field input',

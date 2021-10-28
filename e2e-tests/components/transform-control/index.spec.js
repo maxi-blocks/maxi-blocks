@@ -11,7 +11,7 @@ import {
  */
 import {
 	getBlockAttributes,
-	openAdvancedSidebar,
+	openSidebarTab,
 	changeResponsive,
 	getBlockStyle,
 } from '../../utils';
@@ -20,7 +20,11 @@ describe('TransformControl', () => {
 	it('Check transform control', async () => {
 		await createNewPost();
 		await insertBlock('Image Maxi');
-		const accordionPanel = await openAdvancedSidebar(page, 'transform');
+		const accordionPanel = await openSidebarTab(
+			page,
+			'advanced',
+			'transform'
+		);
 
 		const buttons = await accordionPanel.$$(
 			'.maxi-transform-control .maxi-radio-control .maxi-radio-control__option label'
@@ -176,7 +180,7 @@ describe('TransformControl', () => {
 	});
 
 	it('Check Responsive transform control', async () => {
-		await openAdvancedSidebar(page, 'transform');
+		await openSidebarTab(page, 'advanced', 'transform');
 		const tabsControl = await page.$$(
 			'.maxi-transform-control .maxi-radio-control .maxi-radio-control__option label'
 		);

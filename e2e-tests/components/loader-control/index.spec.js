@@ -11,7 +11,7 @@ describe('LoaderControl', () => {
 	it('Check loader control', async () => {
 		/* await createNewPost();
 		await insertBlock('Group Maxi');
-		const accordionPanel = await openSidebar(page, 'background');
+		const accordionPanel = await openSidebarTab(page, 'style', 'background');
 
 		// add color layer
 		await accordionPanel.$$eval(

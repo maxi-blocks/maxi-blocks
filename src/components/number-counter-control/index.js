@@ -61,25 +61,33 @@ const NumberCounterControl = props => {
 				className='maxi-number-counter-control__width'
 				enableUnit
 				unit={getLastBreakpointAttribute(
-					'width-unit',
+					'number-counter-width-unit',
 					breakpoint,
 					props
 				)}
 				onChangeUnit={val =>
-					onChange({ [`width-unit-${breakpoint}`]: val })
+					onChange({
+						[`number-counter-width-unit-${breakpoint}`]: val,
+					})
 				}
-				value={getLastBreakpointAttribute('width', breakpoint, props)}
+				value={getLastBreakpointAttribute(
+					'number-counter-width',
+					breakpoint,
+					props
+				)}
 				onChangeValue={val =>
-					onChange({ [`width-${breakpoint}`]: val })
+					onChange({ [`number-counter-width-${breakpoint}`]: val })
 				}
 				onReset={() =>
 					onChange({
-						[`width-${breakpoint}`]: getDefaultAttribute(
-							`width-${breakpoint}`
-						),
-						[`width-unit-${breakpoint}`]: getDefaultAttribute(
-							`width-unit-${breakpoint}`
-						),
+						[`number-counter-width-${breakpoint}`]:
+							getDefaultAttribute(
+								`number-counter-width-${breakpoint}`
+							),
+						[`number-counter-width-unit-${breakpoint}`]:
+							getDefaultAttribute(
+								`number-counter-width-unit-${breakpoint}`
+							),
 					})
 				}
 				minMaxSettings={minMaxSettings}

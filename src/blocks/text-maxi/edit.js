@@ -59,21 +59,22 @@ class edit extends MaxiBlockComponent {
 	render() {
 		const {
 			attributes,
-			isSelected,
-			setAttributes,
-			onReplace,
-			onRemove,
+			blockFullWidth,
 			clientId,
+			isSelected,
 			name,
+			onRemove,
+			onReplace,
+			setAttributes,
 		} = this.props;
 		const {
-			uniqueID,
-			textLevel,
 			content,
 			isList,
-			typeOfList,
-			listStart,
 			listReversed,
+			listStart,
+			textLevel,
+			typeOfList,
+			uniqueID,
 		} = attributes;
 
 		const onChangeRichText = ({ value: formatValue }) => {
@@ -155,6 +156,7 @@ class edit extends MaxiBlockComponent {
 			<MaxiBlock
 				key={`maxi-text--${uniqueID}`}
 				classes={`${isList ? 'maxi-list-block' : ''}`}
+				blockFullWidth={blockFullWidth}
 				ref={this.blockRef}
 				{...getMaxiBlockBlockAttributes(this.props)}
 			>

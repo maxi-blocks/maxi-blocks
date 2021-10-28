@@ -84,7 +84,7 @@ class edit extends MaxiBlockComponent {
 				}
 
 				if (!isEmpty(newContent))
-					updateBlockAttributes(this.props.clientId, {
+					this.props.setAttributes({
 						content: newContent,
 					});
 			}
@@ -126,14 +126,19 @@ class edit extends MaxiBlockComponent {
 
 		const isEmptyContent = isEmpty(content);
 
-		const handleOnResizeStart = event => {
+		const handleOnResizeStart = (event, direction, elt) => {
 			event.preventDefault();
+
+			elt.querySelector('svg').style.width = 'auto';
+
 			setAttributes({
 				[`svg-width-unit-${deviceType}`]: 'px',
 			});
 		};
 
 		const handleOnResizeStop = (event, direction, elt) => {
+			elt.querySelector('svg').style.width = null;
+
 			setAttributes({
 				[`svg-width-${deviceType}`]: elt.getBoundingClientRect().width,
 			});
@@ -177,7 +182,15 @@ class edit extends MaxiBlockComponent {
 							className='maxi-svg-icon-block__icon'
 							resizableObject={this.resizableObject}
 							lockAspectRatio
-							maxWidth='100%'
+							maxWidth={
+								getLastBreakpointAttribute(
+									'svg-responsive',
+									deviceType,
+									attributes
+								)
+									? '100%'
+									: null
+							}
 							showHandle={isSelected}
 							enable={{
 								topRight: true,

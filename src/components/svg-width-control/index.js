@@ -2,7 +2,9 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { ToggleSwitch } from '..';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '../../extensions/styles';
@@ -16,7 +18,13 @@ import AdvancedNumberControl from '../advanced-number-control';
  * Component
  */
 const SvgWidthControl = props => {
-	const { onChange, breakpoint, prefix, isHover } = props;
+	const {
+		onChange,
+		breakpoint,
+		prefix,
+		isHover,
+		enableResponsive = false,
+	} = props;
 
 	const width =
 		props[`${prefix}width-${breakpoint}${isHover ? '-hover' : ''}`];
@@ -47,19 +55,21 @@ const SvgWidthControl = props => {
 				}
 				onChangeValue={val => {
 					onChange({
-						[`${prefix}width-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: val !== undefined && val !== '' ? val : '',
+						[getAttributeKey('width', isHover, prefix, breakpoint)]:
+							val !== undefined && val !== '' ? val : '',
 					});
 				}}
 				enableUnit
 				unit={widthUnit}
-				allowedUnits={['px', 'em', 'vw', '%']}
+				allowedUnits={['px', 'vw', '%']}
 				onChangeUnit={val => {
 					onChange({
-						[`${prefix}width-unit-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: val,
+						[getAttributeKey(
+							'width-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: val,
 					});
 				}}
 				min={10}
@@ -67,18 +77,41 @@ const SvgWidthControl = props => {
 				step={1}
 				onReset={() =>
 					onChange({
-						[`${prefix}width-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: defaultWidth,
-						[`${prefix}width-unit-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: defaultWidthUnit,
+						[getAttributeKey('width', isHover, prefix, breakpoint)]:
+							defaultWidth,
+						[getAttributeKey(
+							'width-unit',
+							isHover,
+							prefix,
+							breakpoint
+						)]: defaultWidthUnit,
 					})
 				}
 				defaultValue={defaultWidth}
 				initialPosition={defaultWidth}
 				isHover={isHover}
 			/>
+			{enableResponsive && (
+				<ToggleSwitch
+					label={__('Force responsive', 'maxi-blocks')}
+					selected={getLastBreakpointAttribute(
+						`${prefix}responsive`,
+						breakpoint,
+						false,
+						props
+					)}
+					onChange={val =>
+						onChange({
+							[getAttributeKey(
+								'responsive',
+								false,
+								prefix,
+								breakpoint
+							)]: val,
+						})
+					}
+				/>
+			)}
 		</>
 	);
 };

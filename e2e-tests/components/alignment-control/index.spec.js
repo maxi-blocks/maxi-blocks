@@ -19,7 +19,7 @@ describe('AlignmentControl', () => {
 		await insertBlock('Text Maxi');
 		await page.keyboard.type('Testing Text Maxi');
 
-		await openSidebar(page, 'alignment');
+		await openSidebarTab(page, 'style', 'alignment');
 
 		const alignmentSettings = await page.$$(
 			'.maxi-alignment-control label'

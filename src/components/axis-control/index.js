@@ -14,6 +14,7 @@ import SelectControl from '../select-control';
 import {
 	getLastBreakpointAttribute,
 	getDefaultAttribute,
+	getAttributeKey,
 } from '../../extensions/styles';
 
 /**
@@ -212,23 +213,29 @@ const AxisControl = props => {
 		};
 
 		const syncArray = ['sync-horizontal', 'sync-vertical'];
-		if (key === 'sync-vertical' || key === 'sync-horizontal') {
-			const syncKey = `${getKey('sync')}-${breakpoint}${
-				isHover ? '-hover' : ''
-			}`;
+		if (syncArray.includes(key)) {
+			const syncKey = getAttributeKey(
+				getKey('sync'),
+				isHover,
+				false,
+				breakpoint
+			);
 			const newSyncValue =
 				breakpoint === 'general' ? getDefaultAttribute(syncKey) : false;
 
 			response[syncKey] = newSyncValue;
-		} else if (target === 'padding' || target === 'margin') {
+		} else if (target === 'padding' || target === 'margin')
 			syncArray.forEach(key => {
-				response[
-					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
-				] = getDefaultAttribute(
-					`${getKey(key)}-${breakpoint}${isHover ? '-hover' : ''}`
+				const newKey = getAttributeKey(
+					getKey(key),
+					isHover,
+					false,
+					breakpoint
 				);
+				const newValue = getDefaultAttribute(newKey);
+
+				response[newKey] = !!newValue;
 			});
-		}
 
 		onChange(response);
 	};

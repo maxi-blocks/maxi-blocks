@@ -79,8 +79,11 @@ const ColorContent = props => {
 				] = color;
 
 				onChange({
-					SVGElement: injectImgSVG(SVGElement, SVGData).outerHTML,
-					SVGData,
+					'background-svg-SVGElement': injectImgSVG(
+						SVGOptions['background-svg-SVGElement'],
+						SVGData
+					).outerHTML,
+					'background-svg-SVGData': SVGData,
 					[getAttributeKey(
 						'background-palette-svg-color-status',
 						isHover,

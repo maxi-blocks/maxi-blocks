@@ -110,7 +110,7 @@ const ColorControl = props => {
 			)}
 			{!disablePalette && (
 				<RadioControl
-					label={__('Custom Colour', 'maxi-blocks')}
+					label={__('Set custom colour', 'maxi-blocks')}
 					className='maxi-sc-color-palette__custom'
 					selected={+paletteStatus}
 					options={[

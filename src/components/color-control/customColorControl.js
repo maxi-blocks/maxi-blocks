@@ -34,7 +34,7 @@ const CustomColorControl = props => {
 			{!disableColorDisplay && (
 				<BaseControl
 					className='maxi-color-control__display'
-					label={`${label} ${__('Colour', 'maxi-blocks')}`}
+					label={`${label} ${__('colour', 'maxi-blocks')}`}
 				>
 					<div className='maxi-color-control__display__color'>
 						<span
@@ -47,7 +47,7 @@ const CustomColorControl = props => {
 			)}
 			{!disableOpacity && (
 				<AdvancedNumberControl
-					label={__('Colour Opacity', 'maxi-blocks')}
+					label={__('Colour opacity', 'maxi-blocks')}
 					value={color.a * 100}
 					onChangeValue={val => {
 						const value = !isNil(val) ? +val : 0;

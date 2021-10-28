@@ -84,7 +84,7 @@ const ColorPaletteControl = props => {
 		<>
 			<BaseControl
 				className='maxi-color-palette-control__palette-label'
-				label={label ? `${label} Colour` : ''}
+				label={label ? `${label} colour` : ''}
 			>
 				<div className={paletteClasses}>
 					{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
@@ -111,7 +111,7 @@ const ColorPaletteControl = props => {
 			</BaseControl>
 			{!disableOpacity && (
 				<AdvancedNumberControl
-					label={__('Colour Opacity', 'maxi-blocks')}
+					label={__('Colour opacity', 'maxi-blocks')}
 					value={globalStatus ? globalPaletteOpacity : opacity}
 					onChangeValue={val => {
 						const value = !isNil(val) ? +val : 0;

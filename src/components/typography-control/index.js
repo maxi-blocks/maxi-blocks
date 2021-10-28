@@ -50,7 +50,7 @@ const TextOptions = props => {
 		<>
 			<AdvancedNumberControl
 				className='maxi-typography-control__size'
-				label={__('Size', 'maxi-blocks')}
+				label={__('Font size', 'maxi-blocks')}
 				enableUnit
 				unit={getValue(`${prefix}font-size-unit`, breakpoint, avoidXXL)}
 				defaultUnit={getDefault(`${prefix}font-size-unit`, breakpoint)}
@@ -90,7 +90,7 @@ const TextOptions = props => {
 			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__line-height'
-				label={__('Line Height', 'maxi-blocks')}
+				label={__('Line height', 'maxi-blocks')}
 				enableUnit
 				unit={
 					getValue(
@@ -139,7 +139,7 @@ const TextOptions = props => {
 			/>
 			<AdvancedNumberControl
 				className='maxi-typography-control__letter-spacing'
-				label={__('Letter Spacing', 'maxi-blocks')}
+				label={__('Letter spacing', 'maxi-blocks')}
 				enableUnit
 				allowedUnits={['px', 'em', 'vw']}
 				unit={getValue(
@@ -680,7 +680,7 @@ const TypographyControl = withFormatValue(props => {
 				!styleCards &&
 				!hideAlignment && <Divider />}
 			<SelectControl
-				label={__('Weight', 'maxi-blocks')}
+				label={__('Font weight', 'maxi-blocks')}
 				className='maxi-typography-control__weight'
 				value={getValue(`${prefix}font-weight`)}
 				options={getWeightOptions()}
@@ -689,7 +689,7 @@ const TypographyControl = withFormatValue(props => {
 				}}
 			/>
 			<SelectControl
-				label={__('Transform', 'maxi-blocks')}
+				label={__('Text transform', 'maxi-blocks')}
 				className='maxi-typography-control__transform'
 				value={getValue(`${prefix}text-transform`)}
 				options={[
@@ -741,7 +741,7 @@ const TypographyControl = withFormatValue(props => {
 				}}
 			/>
 			<SelectControl
-				label={__('Decoration', 'maxi-blocks')}
+				label={__('Text decoration', 'maxi-blocks')}
 				className='maxi-typography-control__decoration'
 				value={getValue(`${prefix}text-decoration`)}
 				options={[

@@ -156,6 +156,7 @@
 	.components-range-control {
 		.components-range-control__root {
 			align-items: center;
+			margin: 0;
 
 			& > span:not(.components-range-control__wrapper) {
 				margin-left: 8px;

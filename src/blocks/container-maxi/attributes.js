@@ -36,7 +36,6 @@ const attributes = {
 	},
 	...attributesData.arrow,
 	...attributesData.shapeDivider,
-	...attributesData.parallax,
 	...{
 		...attributesData.blockBackground,
 		'background-layers': {

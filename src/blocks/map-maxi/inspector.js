@@ -29,17 +29,23 @@ import {
 import { getGroupAttributes } from '../../extensions/styles';
 
 /**
+ * External dependencies
+ */
+import { isEmpty } from 'lodash';
+
+/**
  * Inspector
  */
 const Inspector = props => {
 	const { attributes, deviceType, setAttributes, clientId } = props;
 	const {
-		customLabel,
-		uniqueID,
-		isFirstOnHierarchy,
+		apiKey,
 		blockStyle,
+		customLabel,
 		extraClassName,
 		fullWidth,
+		isFirstOnHierarchy,
+		uniqueID,
 	} = attributes;
 
 	return (
@@ -132,6 +138,7 @@ const Inspector = props => {
 													onChange={obj =>
 														setAttributes(obj)
 													}
+													hasApiKey={!isEmpty(apiKey)}
 												/>
 											),
 										},

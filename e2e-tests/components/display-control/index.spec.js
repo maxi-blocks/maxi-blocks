@@ -9,6 +9,7 @@ import {
 	getBlockAttributes,
 	openAdvancedSidebar,
 	changeResponsive,
+	getBlockStyle,
 } from '../../utils';
 
 describe('DisplayControl', () => {
@@ -33,11 +34,11 @@ describe('DisplayControl', () => {
 	it('Check Responsive display control', async () => {
 		await openAdvancedSidebar(page, 'display');
 		const displayButtons = await page.$$(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option'
+			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option'
 		);
 
 		const isItemChecked = await page.$$eval(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option input',
+			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
 			select => select[1].checked
 		);
 
@@ -48,7 +49,7 @@ describe('DisplayControl', () => {
 		await displayButtons[0].click();
 
 		const responsiveSOption = await page.$$eval(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option input',
+			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
 			select => select[0].checked
 		);
 
@@ -63,7 +64,7 @@ describe('DisplayControl', () => {
 		await changeResponsive(page, 'xs');
 
 		const responsiveXsOption = await page.$$eval(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option input',
+			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
 			select => select[0].checked
 		);
 
@@ -73,10 +74,12 @@ describe('DisplayControl', () => {
 		await changeResponsive(page, 'm');
 
 		const responsiveMOption = await page.$$eval(
-			'.maxi-display-control .maxi-fancy-radio-control .maxi-radio-control__option input',
+			'.maxi-display-control .maxi-radio-control .maxi-radio-control__option input',
 			select => select[1].checked
 		);
 
 		expect(responsiveMOption).toBeTruthy();
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

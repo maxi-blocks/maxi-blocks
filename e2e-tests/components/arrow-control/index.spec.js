@@ -36,7 +36,7 @@ describe('ArrowControl', () => {
 
 		for (let i = 0; i < values.length; i++) {
 			await page.$$eval(
-				'.maxi-arrow-control .maxi-fancy-radio-control .maxi-radio-control__option label',
+				'.maxi-arrow-control .maxi-radio-control .maxi-radio-control__option label',
 				(buttons, i) => buttons[i].click(),
 				i
 			);
@@ -74,7 +74,7 @@ describe('ArrowControl', () => {
 		const accordionPanel = await openSidebar(page, 'callout arrow');
 
 		await accordionPanel.$$eval(
-			'.maxi-arrow-control .maxi-fancy-radio-control .maxi-radio-control__option label',
+			'.maxi-arrow-control .maxi-radio-control .maxi-radio-control__option label',
 			openArrowControl => openArrowControl[0].click()
 		);
 

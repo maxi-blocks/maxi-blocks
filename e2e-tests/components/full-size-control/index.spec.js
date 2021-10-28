@@ -9,7 +9,12 @@ import {
 /**
  * Internal dependencies
  */
-import { getBlockAttributes, openSidebar, changeResponsive } from '../../utils';
+import {
+	getBlockAttributes,
+	openSidebar,
+	changeResponsive,
+	getBlockStyle,
+} from '../../utils';
 
 describe('FullSizeControl', () => {
 	it('Checking the full size control', async () => {
@@ -88,5 +93,7 @@ describe('FullSizeControl', () => {
 			button => button.value
 		);
 		expect(heightM).toStrictEqual('330');
+
+		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
 });

@@ -9,7 +9,6 @@ import { useState } from '@wordpress/element';
  */
 import RadioControl from '../radio-control';
 import OpacityControl from '../opacity-control';
-import FancyRadioControl from '../fancy-radio-control';
 import ToggleSwitch from '../toggle-switch';
 import ColorControl from '../color-control';
 import AdvancedNumberControl from '../advanced-number-control';
@@ -208,14 +207,13 @@ const ShapeDividerControl = props => {
 
 	return (
 		<div className='maxi-shapedividercontrol'>
-			<FancyRadioControl
+			<RadioControl
 				label=''
 				selected={shapeDividerStatus}
 				options={[
 					{ label: __('Top', 'maxi-blocks'), value: 'top' },
 					{ label: __('Bottom', 'maxi-blocks'), value: 'bottom' },
 				]}
-				optionType='string'
 				onChange={val => setShapeDividerStatus(val)}
 			/>
 			{shapeDividerStatus === 'top' && (

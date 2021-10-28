@@ -23,7 +23,7 @@ describe('TransformControl', () => {
 		const accordionPanel = await openAdvancedSidebar(page, 'transform');
 
 		const buttons = await accordionPanel.$$(
-			'.maxi-transform-control .maxi-fancy-radio-control .maxi-radio-control__option label'
+			'.maxi-transform-control .maxi-radio-control .maxi-radio-control__option label'
 		);
 
 		// Scale
@@ -178,7 +178,7 @@ describe('TransformControl', () => {
 	it('Check Responsive transform control', async () => {
 		await openAdvancedSidebar(page, 'transform');
 		const tabsControl = await page.$$(
-			'.maxi-transform-control .maxi-fancy-radio-control .maxi-radio-control__option label'
+			'.maxi-transform-control .maxi-radio-control .maxi-radio-control__option label'
 		);
 
 		// Scale
